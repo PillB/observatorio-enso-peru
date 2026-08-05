@@ -968,4 +968,165 @@ export function buildFactSheet(indicatorId: string): IndicatorFactSheet | null {
   };
 }
 
+// ============================================================================
+// Historial de alertas: línea de tiempo de estados ENSO oficiales y derivados.
+// ----------------------------------------------------------------------------
+// Reconstruye el historial de alertas a partir de las series normalizadas,
+// etiquetando periodos por categoría. Las alertas OFICIALES se citan
+// textualmente de ENFEN y NOAA/CPC; este historial es una reconstrucción
+// derivada del observatorio con fines de seguimiento.
+// ============================================================================
+
+export interface AlertPeriod {
+  startMonth: string;
+  endMonth: string;
+  phase: "El Niño" | "Neutral" | "La Niña";
+  scope: "costero" | "cuenca";
+  /** Intensidad pico en el periodo. */
+  peakValue: number;
+  peakMonth: string;
+  /** Duración en meses. */
+  durationMonths: number;
+  /** Categoría de intensidad derivada. */
+  intensity: string;
+}
+
+export function buildAlertHistory(): AlertPeriod[] {
+  const all = generateAllSeries();
+  const periods: AlertPeriod[] = [];
+
+  // Cuenca: sobre Niño 3.4 con umbral ±0.5 °C
+  periods.push(...extractPeriods(all.nino34.points, "cuenca"));
+  // Costero: sobre ICEN con umbral ±0.4 °C
+  periods.push(...extractPeriods(all.icen.points, "costero", 0.4));
+
+  return periods.sort((a, b) => a.startMonth.localeCompare(b.startMonth));
+}
+
+function extractPeriods(
+  points: { month: string; value: number | null }[],
+  scope: "costero" | "cuenca",
+  threshold = 0.5
+): AlertPeriod[] {
+  const out: AlertPeriod[] = [];
+  let current: { phase: "El Niño" | "La Niña"; start: string; peak: number; peakMonth: string } | null = null;
+  for (const p of points) {
+    if (p.value === null) continue;
+    const phase: "El Niño" | "Neutral" | "La Niña" =
+      p.value >= threshold ? "El Niño" : p.value <= -threshold ? "La Niña" : "Neutral";
+    if (phase === "Neutral") {
+      if (current) {
+        out.push({
+          startMonth: current.start,
+          endMonth: p.month,
+          phase: current.phase,
+          scope,
+          peakValue: Math.round(current.peak * 100) / 100,
+          peakMonth: current.peakMonth,
+          durationMonths: monthDiff(current.start, p.month),
+          intensity: intensityLabel(current.peak, scope, threshold),
+        });
+        current = null;
+      }
+    } else {
+      if (!current) {
+        current = { phase, start: p.month, peak: p.value, peakMonth: p.month };
+      } else if (current.phase === phase) {
+        if (Math.abs(p.value) > Math.abs(current.peak)) {
+          current.peak = p.value;
+          current.peakMonth = p.month;
+        }
+      } else {
+        // cambio de fase (Niño→Niña o viceversa)
+        out.push({
+          startMonth: current.start,
+          endMonth: p.month,
+          phase: current.phase,
+          scope,
+          peakValue: Math.round(current.peak * 100) / 100,
+          peakMonth: current.peakMonth,
+          durationMonths: monthDiff(current.start, p.month),
+          intensity: intensityLabel(current.peak, scope, threshold),
+        });
+        current = { phase, start: p.month, peak: p.value, peakMonth: p.month };
+      }
+    }
+  }
+  if (current) {
+    const last = points[points.length - 1];
+    out.push({
+      startMonth: current.start,
+      endMonth: last?.month ?? current.start,
+      phase: current.phase,
+      scope,
+      peakValue: Math.round(current.peak * 100) / 100,
+      peakMonth: current.peakMonth,
+      durationMonths: monthDiff(current.start, last?.month ?? current.start),
+      intensity: intensityLabel(current.peak, scope, threshold),
+    });
+  }
+  return out;
+}
+
+function monthDiff(start: string, end: string): number {
+  const [y1, m1] = start.split("-").map(Number);
+  const [y2, m2] = end.split("-").map(Number);
+  return (y2 - y1) * 12 + (m2 - m1) + 1;
+}
+
+function intensityLabel(peak: number, scope: "costero" | "cuenca", threshold: number): string {
+  const a = Math.abs(peak);
+  const sign = peak >= 0 ? (scope === "costero" ? "El Niño Costero" : "El Niño") : (scope === "costero" ? "La Niña Costera" : "La Niña");
+  if (scope === "costero") {
+    if (a < 0.4) return "Normal";
+    if (a < 1.0) return `${sign} débil`;
+    if (a < 1.5) return `${sign} moderado`;
+    if (a < 2.0) return `${sign} fuerte`;
+    return `${sign} muy fuerte`;
+  }
+  // cuenca
+  if (a < threshold) return "Neutral";
+  if (a < 1.0) return `${sign} débil`;
+  if (a < 1.5) return `${sign} moderado`;
+  if (a < 2.0) return `${sign} fuerte`;
+  return `${sign} muy fuerte`;
+}
+
+// ============================================================================
+// Diagrama de fases ENSO: espacio de fase Niño 3.4 vs SOI.
+// ----------------------------------------------------------------------------
+// Cada punto es un mes; la trayectoria muestra la evolución temporal del
+// sistema acoplado océano-atmósfera. Útil para visualizar la coherencia
+// entre la componente oceánica (Niño 3.4) y atmosférica (SOI).
+// ============================================================================
+
+export interface PhasePoint {
+  month: string;
+  nino34: number | null;
+  soi: number | null;
+  /** Etiqueta de fase ENSO. */
+  phase: "El Niño" | "Neutral" | "La Niña";
+}
+
+export function buildPhaseSpace(windowMonths = 60): PhasePoint[] {
+  const all = generateAllSeries();
+  const n = Math.min(windowMonths, all.nino34.points.length);
+  const start = all.nino34.points.length - n;
+  const out: PhasePoint[] = [];
+  for (let i = start; i < all.nino34.points.length; i++) {
+    const v34 = all.nino34.points[i].value;
+    const vsoi = all.soi.points[i].value;
+    if (v34 === null) continue;
+    const phase: "El Niño" | "Neutral" | "La Niña" =
+      v34 >= 0.5 ? "El Niño" : v34 <= -0.5 ? "La Niña" : "Neutral";
+    out.push({
+      month: all.nino34.points[i].month,
+      nino34: v34,
+      soi: vsoi,
+      phase,
+    });
+  }
+  return out;
+}
+
 export { AS_OF_DATE, AS_OF_MONTH, generateAllSeries, getSeries, latest };

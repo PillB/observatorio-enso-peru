@@ -309,3 +309,25 @@ Stage Summary:
 - Tests: 254 passed (+13), 3 skipped. Lint limpio.
 - Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Tendencias y fichas calculadas en código; el modelo no participa. Fichas distinguen indicadores oficiales vs derivados.
 - Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
+
+---
+Task ID: 11-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA, 2 nuevas vistas (Historial de alertas + Diagrama de fases ENSO), 14 nuevos tests.
+
+Work Log:
+- Revisado worklog.md (secciones previas hasta 10-cron-review). Estado previo: 25 vistas, 254 tests.
+- QA inicial con agent-browser: verificadas las vistas clave — todas renderizan. Chatbot consistente (ICEN +1.77 °C / RONI +1.39 °C coherentes con alertas oficiales); corrige correctamente «SOI costero». `bun run lint` limpio; `python -m pytest`: 254 passed, 3 skipped.
+- AÑADIDAS 2 NUEVAS VISTAS (total ahora 27):
+  1. **Historial de alertas** — `src/components/enso/AlertHistoryView.tsx`: reconstruye el historial de periodos ENSO a partir de las series normalizadas (costero ICEN ±0.4 °C, cuenca Niño 3.4 ±0.5 °C), con línea de tiempo visual SVG (pistas paralelas costero/cuenca con bloques coloreados por fase), tarjetas resumen (periodos costeros, de cuenca, El Niño, La Niña), tablas separadas de periodos costeros y de cuenca (inicio, fin, fase, intensidad, pico, mes pico, duración). Etiquetado como reconstrucción derivada del observatorio.
+  2. **Diagrama de fases ENSO** — `src/components/enso/PhaseDiagramView.tsx`: espacio de fase Niño 3.4 (X) vs SOI (Y) con trayectoria temporal conectando meses, puntos coloreados por fase (El Niño cálido, La Niña frío, Neutral gris), mes actual resaltado, cuadrantes con colores de fondo (coherente cálido/frío), selector de ventana (24/60/120/240 meses), tarjetas de posición actual y cuadrante, distribución por cuadrante (coherente vs incoherente), tooltip al pasar el cursor. Cálculo determinista en código.
+- AÑADIDA lógica a `src/lib/enso/derived.ts`: `buildAlertHistory()` (extrae periodos activos con fase, pico, mes pico, duración e intensidad para costero y cuenca), `extractPeriods()` (detecta periodos consecutivos sobre umbral con cambios de fase), `buildPhaseSpace()` (construye puntos Niño 3.4 vs SOI con etiqueta de fase para ventana configurable), `intensityLabel()` (categorías de intensidad en español: débil, moderado, fuerte, muy fuerte).
+- AÑADIDOS 14 nuevos tests de contrato en `python/tests/test_alert_history_and_phases.py`: historial reconstruye periodos, distingue costero/cuenca, campos requeridos, etiquetado como derivado, línea de tiempo visual, tablas separadas; diagrama usa Niño 3.4 y SOI, puntos con fase, ventana configurable, selector, determinista, análisis de cuadrantes, gráfico de dispersión, etiquetas de intensidad en español.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **268 passed** (+14), 3 skipped. Las 27 vistas renderizan sin errores. Dev log limpio (200 OK, sin errores de runtime). Chatbot verificado: corrige «SOI costero» con cita [EVID-soi] y datos consistentes.
+
+Stage Summary:
+- Nuevas vistas: Historial de alertas (línea de tiempo de periodos ENSO con pista costero/cuenca) + Diagrama de fases ENSO (espacio Niño 3.4 vs SOI con trayectoria y cuadrantes). Total vistas: 27.
+- Lógica nueva: buildAlertHistory + extractPeriods + buildPhaseSpace + intensityLabel en derived.ts.
+- Tests: 268 passed (+14), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Historial etiquetado como reconstrucción derivada; diagrama de fases calculado en código.
+- Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.

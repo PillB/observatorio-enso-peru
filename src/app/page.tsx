@@ -22,6 +22,8 @@ import { ProbabilityView } from "@/components/enso/ProbabilityView";
 import { TeleconnectionsView } from "@/components/enso/TeleconnectionsView";
 import { TrendsView } from "@/components/enso/TrendsView";
 import { FactSheetsView } from "@/components/enso/FactSheetsView";
+import { AlertHistoryView } from "@/components/enso/AlertHistoryView";
+import { PhaseDiagramView } from "@/components/enso/PhaseDiagramView";
 import { DownloadsView } from "@/components/enso/DownloadsView";
 import { ChatView } from "@/components/enso/ChatView";
 import { MethodologyView } from "@/components/enso/MethodologyView";
@@ -33,14 +35,14 @@ import {
   LayoutDashboard, Waves, Wind, Thermometer, Gauge, History, Map, Database,
   Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock, Film, Wind as WindIcon,
   TrendingUp, MapPin, AlertTriangle, GitCompare, BookA, Layers, Calendar, Layers3,
-  Activity, Globe, LineChart, FileText,
+  Activity, Globe, LineChart, FileText, ScatterChart, Timer,
 } from "lucide-react";
 
 type ViewId =
   | "overview" | "tsm" | "vientos" | "termoclina" | "soi"
   | "historico" | "mapas" | "viento-mapa" | "animacion" | "pronostico" | "regional"
-  | "alertas" | "correlaciones" | "compuesto" | "eventos-comparar" | "estacionalidad"
-  | "probabilidad" | "teleconexiones" | "tendencias" | "fichas"
+  | "alertas" | "alertas-historial" | "correlaciones" | "compuesto" | "eventos-comparar" | "estacionalidad"
+  | "probabilidad" | "teleconexiones" | "tendencias" | "fichas" | "fases"
   | "datos" | "asistente" | "metodologia" | "glosario" | "fuentes";
 
 const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coastal" | "basin" }[] = [
@@ -58,9 +60,11 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "pronostico", label: "Pronóstico", icon: TrendingUp },
   { id: "probabilidad", label: "Probabilidad", icon: Activity },
   { id: "tendencias", label: "Tendencias", icon: LineChart },
+  { id: "fases", label: "Diagrama de fases", icon: ScatterChart },
   { id: "regional", label: "Perú regional", icon: MapPin },
   { id: "teleconexiones", label: "Teleconexiones", icon: Globe },
   { id: "alertas", label: "Alertas", icon: AlertTriangle },
+  { id: "alertas-historial", label: "Historial alertas", icon: Timer },
   { id: "correlaciones", label: "Correlaciones", icon: GitCompare },
   { id: "compuesto", label: "Índice compuesto", icon: Layers },
   { id: "fichas", label: "Fichas técnicas", icon: FileText },
@@ -84,6 +88,7 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   pronostico: { title: "Pronóstico ENSO", subtitle: "Ensamble probabilístico por trimestre (interpretación del observatorio)." },
   regional: { title: "Impacto regional — Perú", subtitle: "Departamentos costeros: TSM, precipitación y riesgo relativo derivado." },
   alertas: { title: "Alertas y umbrales", subtitle: "Seguimiento de condiciones de activación de evento (derivadas del observatorio)." },
+  "alertas-historial": { title: "Historial de alertas", subtitle: "Línea de tiempo de periodos ENSO (reconstrucción derivada del observatorio)." },
   correlaciones: { title: "Correlaciones entre indicadores", subtitle: "Coeficientes de Pearson calculados en código sobre la historia completa." },
   compuesto: { title: "Índice compuesto ENSO", subtitle: "Síntesis integrada de indicadores oceánicos y atmosféricos (interpretación del observatorio)." },
   "eventos-comparar": { title: "Comparador de eventos", subtitle: "Seleccione y compare eventos históricos alineados por mes de pico." },
@@ -91,6 +96,7 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   probabilidad: { title: "Banda de probabilidad ENSO", subtitle: "Probabilidad de cada categoría (El Niño/Neutral/La Niña) en ventana móvil." },
   teleconexiones: { title: "Teleconexiones e impactos globales", subtitle: "Impactos típicos de ENSO sobre regiones del mundo (conocimiento climático curado)." },
   tendencias: { title: "Análisis de tendencias", subtitle: "Regresión lineal móvil, R² y detección de cambios de fase ENSO." },
+  fases: { title: "Diagrama de fases ENSO", subtitle: "Espacio de fase Niño 3.4 vs SOI: coherencia océano-atmósfera." },
   fichas: { title: "Fichas técnicas por indicador", subtitle: "Informe detallado con estadísticas, metadatos y descarga CSV." },
   datos: { title: "Datos y descargas", subtitle: "Tabla histórica filtrable, CSV por serie y del resultado filtrado." },
   asistente: { title: "Asistente conversacional", subtitle: "Respuestas con base determinista (grounded) en los datos del observatorio." },
@@ -247,6 +253,7 @@ export default function Home() {
           {view === "pronostico" && <ForecastsView />}
           {view === "regional" && <RegionalView />}
           {view === "alertas" && <AlertsView />}
+          {view === "alertas-historial" && <AlertHistoryView />}
           {view === "correlaciones" && <CorrelationsView />}
           {view === "compuesto" && <CompositeView />}
           {view === "eventos-comparar" && <EventComparisonView />}
@@ -254,6 +261,7 @@ export default function Home() {
           {view === "probabilidad" && <ProbabilityView />}
           {view === "teleconexiones" && <TeleconnectionsView />}
           {view === "tendencias" && <TrendsView />}
+          {view === "fases" && <PhaseDiagramView />}
           {view === "fichas" && <FactSheetsView />}
           {view === "datos" && <DownloadsView />}
           {view === "asistente" && <ChatView />}
