@@ -6,7 +6,7 @@ import { INDICATOR_BY_ID } from "@/lib/enso/methodology";
 import { getSource } from "@/lib/enso/sources";
 import { SectionCard, ScopeBadge, InfoNote } from "./primitives";
 import { fmtMonth, fmtValue } from "@/lib/enso/ui";
-import { Download, FileSpreadsheet, Filter } from "lucide-react";
+import { Download, FileSpreadsheet, Filter, ExternalLink } from "lucide-react";
 
 type Row = { month: string } & Record<string, number | null>;
 
@@ -98,8 +98,40 @@ export function DownloadsView() {
         Todas las tablas, gráficos, descargas y respuestas del asistente se derivan de la{" "}
         <strong>misma fuente única de verdad</strong>. Los CSV incluyen metadatos (unidades, región,
         climatología, fuente, convención de signos y suma de comprobación). Los datos faltantes se
-        preservan como celdas vacías, nunca se sustituyen por valores fabricados.
+        preservan como celdas vacías, nunca se sustituyen por valores fabricados. También hay
+        artefactos estáticos servidos en <code className="rounded bg-muted px-1 text-[11px]">/data/</code>{" "}
+        (manifiesto, status, quality, series JSON y CSV por indicador) para despliegue en GitHub Pages.
       </InfoNote>
+
+      {/* Enlace a artefactos estáticos */}
+      <SectionCard title="Artefactos estáticos (servidos en /data/)" description="Para consumo desde aplicaciones externas o despliegue 100% estático en GitHub Pages.">
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { f: "manifest.json", d: "Manifiesto de publicación" },
+            { f: "status.json", d: "Estado consolidado actual" },
+            { f: "quality.json", d: "Resumen de frescura y calidad" },
+            { f: "all-series.json", d: "Todas las series en JSON" },
+            { f: "observatorio-enso-todas-las-series.csv", d: "CSV combinado" },
+            { f: "latest-grid.json", d: "Campo grilleado más reciente" },
+            { f: "sources.json", d: "Catálogo de fuentes" },
+            { f: "indicators.json", d: "Definiciones de indicadores" },
+          ].map((x) => (
+            <a
+              key={x.f}
+              href={`/data/${x.f}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-between gap-2 rounded-lg border px-3 py-2 text-xs hover:bg-muted"
+            >
+              <span>
+                <span className="block font-mono text-[11px] text-[color:var(--enso-basin)] group-hover:underline">{x.f}</span>
+                <span className="text-muted-foreground">{x.d}</span>
+              </span>
+              <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground" />
+            </a>
+          ))}
+        </div>
+      </SectionCard>
 
       {/* Descargas por serie */}
       <SectionCard title="Descargar series individuales" description="CSV completo con metadatos y suma de comprobación (checksum).">

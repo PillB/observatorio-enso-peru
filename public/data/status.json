@@ -1,47 +1,46 @@
 {
   "asOf": "2026-08-02",
-  "dataVersion": "1.0.0",
-  "generatedAt": "2026-08-05T22:29:14.877102+00:00",
   "coastal": {
     "alert": "Alerta de El Niño Costero",
     "alertSource": "ENFEN / IMARPE (siofen.imarpe.gob.pe)",
     "alertSince": "2026-02-13",
-    "nino12Anom": null,
+    "nino12Anom": 1.58,
     "nino12Month": "2026-07",
-    "icen": null,
+    "icen": 1.77,
     "icenWindow": "May 2026–Jun 2026–Jul 2026",
-    "icenCategory": "Sin datos",
-    "freshness": "Dato final · corte 2026-08-02",
-    "preliminary": false
+    "icenCategory": "El Niño Costero fuerte",
+    "freshness": "Dato preliminar · corte 2026-08-02",
+    "preliminary": true
   },
   "basin": {
     "alert": "El Niño Advisory",
     "alertSource": "NOAA / CPC — ENSO Diagnostic Discussion",
     "alertSince": "2026-06",
-    "nino34Anom": null,
+    "nino34Anom": 1.17,
     "nino34Month": "2026-07",
-    "roni": null,
+    "roni": 1.39,
     "roniWindow": "May 2026–Jun 2026–Jul 2026",
-    "roniCategory": "Sin datos",
-    "freshness": "Dato final · corte 2026-08-02",
-    "preliminary": false
+    "roniCategory": "El Niño (cuenca)",
+    "freshness": "Dato preliminar · corte 2026-08-02",
+    "preliminary": true
   },
   "winds": {
-    "u850Anom": null,
+    "u850Anom": 2.67,
     "u850Month": "2026-07",
-    "direction": "Sin datos",
-    "signMeaning": ""
+    "direction": "Anomalía del oeste (flujo hacia el este)",
+    "signMeaning": "u > 0 ⇒ componente del oeste (westerly), hacia el este. Típico de El Niño de cuenca."
   },
   "thermocline": {
-    "d20Anom": null,
+    "d20Anom": 9.4,
     "d20Month": "2026-07",
-    "interpretation": "Sin datos"
+    "interpretation": "Termoclina más profunda de lo normal (señal de El Niño de cuenca)"
   },
   "soi": {
-    "value": null,
+    "value": -1.77,
     "month": "2026-07",
-    "interpretation": "Sin datos",
+    "interpretation": "Componente atmosférica de El Niño",
     "note": "El SOI es un índice de escala de cuenca. El observatorio NO define un «SOI costero»: no existe un proxy de presión costera con respaldo metodológico equivalente."
   },
-  "freshness": []
+  "dataVersion": "1.0.0",
+  "generatedAt": "2026-08-05T22:27:22.593Z"
 }

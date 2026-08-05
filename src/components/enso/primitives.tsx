@@ -17,15 +17,18 @@ export function SectionCard({
   return (
     <section
       id={id}
-      className={cn("rounded-xl border bg-card text-card-foreground shadow-sm", className)}
+      className={cn(
+        "rounded-xl border bg-card text-card-foreground shadow-sm enso-card-elevated transition-shadow hover:shadow-md",
+        className
+      )}
     >
       {(title || right) && (
-        <header className="flex items-start justify-between gap-3 border-b px-4 py-3 sm:px-5">
-          <div>
+        <header className="enso-card-header flex items-start justify-between gap-3 border-b px-4 py-3 sm:px-5">
+          <div className="min-w-0">
             {title && <h3 className="text-sm font-semibold leading-tight">{title}</h3>}
             {description && <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>}
           </div>
-          {right}
+          {right && <div className="shrink-0">{right}</div>}
         </header>
       )}
       <div className="p-4 sm:p-5">{children}</div>
@@ -50,13 +53,15 @@ export function ScopeBadge({ scope }: { scope: "coastal" | "basin" }) {
 /** Etiqueta de estado con color semántico. */
 export function StatusPill({ label, tone = "neutral" }: { label: string; tone?: "warm" | "cool" | "neutral" | "warn" }) {
   const cls = {
-    warm: "bg-[color:var(--enso-warm)]/15 text-[color:var(--enso-warm)] border-[color:var(--enso-warm)]/30",
-    cool: "bg-[color:var(--enso-cool)]/15 text-[color:var(--enso-cool)] border-[color:var(--enso-cool)]/30",
+    warm: "enso-chip-warm",
+    cool: "enso-chip-cool",
     neutral: "bg-muted text-muted-foreground border-border",
     warn: "bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/40 dark:text-amber-200 dark:border-amber-800",
   }[tone];
   return (
     <span className={cn("inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium", cls)}>
+      {tone === "warm" && <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--enso-warm)]" aria-hidden />}
+      {tone === "cool" && <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--enso-cool)]" aria-hidden />}
       {label}
     </span>
   );
@@ -81,7 +86,8 @@ export function InfoNote({ tone = "info", title, children }: { tone?: "info" | "
 export function PreliminaryTag({ show }: { show: boolean }) {
   if (!show) return null;
   return (
-    <span className="inline-flex items-center rounded border border-amber-400 bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800 dark:bg-amber-950/40 dark:text-amber-200 dark:border-amber-700">
+    <span className="inline-flex items-center gap-1 rounded border border-amber-400 bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800 dark:bg-amber-950/40 dark:text-amber-200 dark:border-amber-700" title="Este valor puede revisarse en publicaciones posteriores">
+      <span className="h-1.5 w-1.5 rounded-full bg-amber-500 enso-pulse" aria-hidden />
       Dato preliminar
     </span>
   );
@@ -96,7 +102,7 @@ export function BigValue({ value, units, tone = "neutral" }: { value: string; un
   }[tone];
   return (
     <div className="flex items-baseline gap-1">
-      <span className={cn("text-2xl font-bold tabular-nums enso-num", cls)}>{value}</span>
+      <span className={cn("text-2xl font-bold tabular-nums enso-num tracking-tight", cls)}>{value}</span>
       {units && <span className="text-xs text-muted-foreground">{units}</span>}
     </div>
   );

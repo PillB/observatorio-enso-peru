@@ -8,6 +8,8 @@ import { ThermoclineView } from "@/components/enso/ThermoclineView";
 import { SoiView } from "@/components/enso/SoiView";
 import { HistoricalView } from "@/components/enso/HistoricalView";
 import { MapsView } from "@/components/enso/MapsView";
+import { WindMapView } from "@/components/enso/WindMapView";
+import { TimelapseView } from "@/components/enso/TimelapseView";
 import { DownloadsView } from "@/components/enso/DownloadsView";
 import { ChatView } from "@/components/enso/ChatView";
 import { MethodologyView } from "@/components/enso/MethodologyView";
@@ -16,12 +18,13 @@ import { buildCurrentStatus } from "@/lib/enso/derived";
 import { AS_OF_DATE } from "@/lib/enso/series";
 import {
   LayoutDashboard, Waves, Wind, Thermometer, Gauge, History, Map, Database,
-  Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock,
+  Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock, Film, Wind as WindIcon,
 } from "lucide-react";
 
 type ViewId =
   | "overview" | "tsm" | "vientos" | "termoclina" | "soi"
-  | "historico" | "mapas" | "datos" | "asistente" | "metodologia" | "fuentes";
+  | "historico" | "mapas" | "viento-mapa" | "animacion" | "datos"
+  | "asistente" | "metodologia" | "fuentes";
 
 const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coastal" | "basin" }[] = [
   { id: "overview", label: "Resumen", icon: LayoutDashboard },
@@ -31,6 +34,8 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "soi", label: "SOI y presión", icon: Gauge },
   { id: "historico", label: "Histórico", icon: History },
   { id: "mapas", label: "Mapas", icon: Map },
+  { id: "viento-mapa", label: "Viento mapa", icon: WindIcon },
+  { id: "animacion", label: "Animación", icon: Film },
   { id: "datos", label: "Datos", icon: Database },
   { id: "asistente", label: "Asistente", icon: Bot },
   { id: "metodologia", label: "Metodología", icon: BookOpen },
@@ -45,6 +50,8 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   soi: { title: "SOI y presión", subtitle: "Índice de Oscilación del Sur (escala de cuenca). Sin «SOI costero»." },
   historico: { title: "Comparación histórica", subtitle: "Eventos ENSO, percentiles y caso 2017 (costero sin cuenca)." },
   mapas: { title: "Mapas de anomalía", subtitle: "TSM y D20 sobre el Pacífico ecuatorial." },
+  "viento-mapa": { title: "Mapa de viento", subtitle: "Vectores de anomalía del viento a 850 hPa con convención de signos." },
+  animacion: { title: "Animación temporal", subtitle: "Evolución mensual del campo de anomalía con controles accesibles." },
   datos: { title: "Datos y descargas", subtitle: "Tabla histórica filtrable, CSV por serie y del resultado filtrado." },
   asistente: { title: "Asistente conversacional", subtitle: "Respuestas con base determinista (grounded) en los datos del observatorio." },
   metodologia: { title: "Metodología", subtitle: "Definiciones, convenciones, climatología y comparación de fuentes." },
@@ -70,12 +77,12 @@ export default function Home() {
   const meta = VIEW_TITLES[view];
 
   return (
-    <div className="enso-shell bg-background text-foreground">
+    <div className="enso-shell text-foreground">
       {/* ===== Encabezado ===== */}
-      <header className="sticky top-0 z-30 border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <header className="enso-header-glass sticky top-0 z-30 border-b">
         <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5">
           <div className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
+            <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground shadow-sm" style={{ background: "linear-gradient(135deg, var(--enso-basin), color-mix(in oklch, var(--enso-basin) 60%, var(--enso-coastal)))" }}>
               <Anchor className="h-5 w-5" />
             </span>
             <div className="leading-tight">
@@ -89,9 +96,11 @@ export default function Home() {
           {/* Estado rápido en el header */}
           <div className="ml-auto hidden items-center gap-2 lg:flex">
             <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] enso-badge-coastal">
+              <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--enso-coastal-fg)] enso-pulse" aria-hidden />
               <span className="font-semibold">Costero:</span> {status.coastal.alert}
             </span>
             <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] enso-badge-basin">
+              <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--enso-basin-fg)] enso-pulse" aria-hidden />
               <span className="font-semibold">Cuenca:</span> {status.basin.alert}
             </span>
             <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
@@ -102,7 +111,7 @@ export default function Home() {
           {/* Botón menú móvil */}
           <button
             onClick={() => setNavOpen((v) => !v)}
-            className="ml-auto inline-flex items-center justify-center rounded-md border p-2 lg:hidden"
+            className="ml-auto inline-flex items-center justify-center rounded-md border p-2 lg:hidden enso-focus-ring"
             aria-label="Abrir menú de navegación"
             aria-expanded={navOpen}
           >
@@ -137,10 +146,10 @@ export default function Home() {
                 key={n.id}
                 onClick={() => navigate(n.id)}
                 aria-current={view === n.id ? "page" : undefined}
-                className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`enso-focus-ring flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
                   view === n.id
                     ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-foreground/80 hover:bg-muted hover:text-foreground"
+                    : "text-foreground/80 hover:bg-muted hover:text-foreground hover:translate-x-0.5"
                 }`}
               >
                 <n.icon className="h-4 w-4 shrink-0" />
@@ -158,9 +167,12 @@ export default function Home() {
 
         {/* ===== Contenido principal ===== */}
         <main ref={mainRef} className="min-w-0 flex-1">
-          <div className="mb-4">
-            <h2 className="text-xl font-bold tracking-tight sm:text-2xl">{meta.title}</h2>
-            <p className="mt-0.5 text-sm text-muted-foreground">{meta.subtitle}</p>
+          <div key={view} className="enso-view-enter mb-4">
+            <div className="flex items-center gap-2">
+              <span className="h-6 w-1 rounded-full" style={{ background: "linear-gradient(180deg, var(--enso-basin), var(--enso-coastal))" }} aria-hidden />
+              <h2 className="text-xl font-bold tracking-tight sm:text-2xl">{meta.title}</h2>
+            </div>
+            <p className="mt-1 text-sm text-muted-foreground">{meta.subtitle}</p>
           </div>
 
           <div className="lg:hidden -mx-1 mb-4 overflow-x-auto enso-scroll">
@@ -169,7 +181,7 @@ export default function Home() {
                 <button
                   key={n.id}
                   onClick={() => navigate(n.id)}
-                  className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium ${view === n.id ? "border-primary bg-primary text-primary-foreground" : "hover:bg-muted"}`}
+                  className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium enso-focus-ring ${view === n.id ? "border-primary bg-primary text-primary-foreground" : "hover:bg-muted"}`}
                 >
                   <n.icon className="h-3.5 w-3.5" /> {n.label}
                 </button>
@@ -184,6 +196,8 @@ export default function Home() {
           {view === "soi" && <SoiView />}
           {view === "historico" && <HistoricalView />}
           {view === "mapas" && <MapsView />}
+          {view === "viento-mapa" && <WindMapView />}
+          {view === "animacion" && <TimelapseView />}
           {view === "datos" && <DownloadsView />}
           {view === "asistente" && <ChatView />}
           {view === "metodologia" && <MethodologyView />}

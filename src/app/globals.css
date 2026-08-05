@@ -197,3 +197,133 @@
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
+
+/* ---- Mejoras visuales: profundidad, gradientes, micro-interacciones ---- */
+
+/* Fondo con degradado sutil del océano (capa base) */
+.enso-shell {
+  background:
+    radial-gradient(1200px 600px at 100% -10%, color-mix(in oklch, var(--enso-basin) 10%, transparent), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, color-mix(in oklch, var(--enso-coastal) 8%, transparent), transparent 55%),
+    var(--background);
+  background-attachment: fixed;
+}
+
+/* Tarjetas con elevación suave y borde superior de marca */
+.enso-card-elevated {
+  position: relative;
+  overflow: hidden;
+}
+.enso-card-elevated::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--enso-basin), var(--enso-coastal), var(--enso-warm));
+  opacity: 0.6;
+}
+
+/* Encabezado de tarjeta con fondo degradado tenue */
+.enso-card-header {
+  background: linear-gradient(180deg, color-mix(in oklch, var(--enso-basin) 4%, transparent), transparent);
+}
+
+/* Botón de marca con brillo */
+.enso-glow-btn {
+  position: relative;
+  box-shadow: 0 1px 2px color-mix(in oklch, var(--enso-basin) 30%, transparent),
+              0 0 0 0 color-mix(in oklch, var(--enso-basin) 40%, transparent);
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+.enso-glow-btn:hover {
+  box-shadow: 0 4px 14px color-mix(in oklch, var(--enso-basin) 35%, transparent),
+              0 0 0 3px color-mix(in oklch, var(--enso-basin) 12%, transparent);
+  transform: translateY(-1px);
+}
+.enso-glow-btn:active {
+  transform: translateY(0);
+}
+
+/* Indicador de latido para estado activo (respetando movimiento reducido) */
+.enso-pulse {
+  position: relative;
+}
+.enso-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 2px solid currentColor;
+  opacity: 0;
+  animation: enso-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes enso-ping {
+  0% { transform: scale(1); opacity: 0.5; }
+  75%, 100% { transform: scale(1.15); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .enso-pulse::after { animation: none; }
+}
+
+/* Realce de enfoque accesible y visible */
+.enso-focus-ring:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Chip de estado con degradado */
+.enso-chip-warm {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--enso-warm) 22%, var(--card)), color-mix(in oklch, var(--enso-warm) 12%, var(--card)));
+  color: var(--enso-warm);
+  border: 1px solid color-mix(in oklch, var(--enso-warm) 35%, transparent);
+}
+.enso-chip-cool {
+  background: linear-gradient(135deg, color-mix(in oklch, var(--enso-cool) 22%, var(--card)), color-mix(in oklch, var(--enso-cool) 12%, var(--card)));
+  color: var(--enso-cool);
+  border: 1px solid color-mix(in oklch, var(--enso-cool) 35%, transparent);
+}
+
+/* Línea separadora con degradado de marca */
+.enso-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklch, var(--enso-basin) 40%, transparent), transparent);
+}
+
+/* KBD estilizado para atajos */
+kbd.enso-kbd {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 1px 0 var(--border);
+  color: var(--foreground);
+}
+
+/* Transición suave de entrada para vistas (respeta movimiento reducido) */
+.enso-view-enter {
+  animation: enso-fade-in 0.25s ease-out;
+}
+@keyframes enso-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .enso-view-enter { animation: none; }
+}
+
+/* Encabezado glass con blur reforzado */
+.enso-header-glass {
+  background: color-mix(in oklch, var(--background) 80%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+}
+
+/* Tooltip de valor con fondo sólido */
+.enso-value-pop {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px color-mix(in oklch, var(--foreground) 12%, transparent);
+}

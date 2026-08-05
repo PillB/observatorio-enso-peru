@@ -118,3 +118,43 @@ Stage Summary:
 - Datos: fuente única de verdad en src/lib/enso/series.ts (generador determinista basado en historia real ENSO 1990-2026); CSV/JSON vía /api/data; paridad Python↔TS de IDs (12 fuentes, 7 indicadores).
 - Pipeline/Tests/CI/Docs: verificados (subagente 2-pipeline): 8 módulos Python, 28 tests de contrato, 3 workflows, 13 docs + README.
 - Estado de releases: VERIFICADO en navegador. Listo para cron de revisión continua.
+
+---
+Task ID: 4-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA con agent-browser, corregir un bug de compilación, añadir 2 nuevas vistas (animación timelapse + mapa de viento), mejorar styling, generar artefactos estáticos, añadir LICENSE y tests.
+
+Work Log:
+- Revisado worklog.md (secciones 0, 2-pipeline, 2-pipeline-verify, 3-verify) para entender el estado previo.
+- QA inicial con agent-browser: abierta la app en puerto 3000, verificadas las 11 vistas existentes (Resumen, TSM, Vientos, Termoclina, SOI, Histórico, Mapas, Datos, Asistente, Metodología, Fuentes). Todas renderizan correctamente; texto visible limpio (los "undefined" detectados eran payload interno de Next.js, no contenido visible).
+- Verificado el chatbot end-to-end: responde en español formal con citas [EVID-...], distinción costero vs cuenca, y consistencia de datos (ICEN +1.77 °C / RONI +1.39 °C coherentes con las alertas oficiales Alerta de El Niño Costero / El Niño Advisory).
+- `bun run lint` limpio; `python -m pytest -q`: 179 passed, 3 skipped. Sin regresiones.
+- AÑADIDAS 2 NUEVAS VISTAS:
+  1. **Animación temporal (timelapse)** — `src/components/enso/TimelapseView.tsx`: animación mensual del campo de anomalía (TSM o D20) sobre el Pacífico ecuatorial. Controles completos: play/pausa, slider temporal, control de velocidad (0.5×/1×/2×/4×), botones inicio/anterior/siguiente/final, operación por teclado (Espacio, ←/→, Mayús+←/→ para 6 meses, Inicio/Fin, +/− velocidad), soporte de `prefers-reduced-motion` (detecta y desactiva la animación automática), manejo de meses con datos parciales (hasGap, sin interpolación temporal). Ventana de 10 años (120 meses).
+  2. **Mapa de viento (vectores)** — `src/components/enso/WindMapView.tsx`: mapa de vectores de anomalía del viento a 850 hPa con convención de signos explícita (flecha hacia el este = u>0 = westerly; hacia el oeste = u<0 = easterly), color por magnitud de anomalía zonal, regiones Niño resaltadas, leyenda de lectura y metadatos.
+- AÑADIDOS campos grilleados a la fuente única de verdad (`src/lib/enso/series.ts`): `sstGridForMonth`, `d20GridForMonth`, `windGridForMonth` — síntesis coherente con la física de ENSO a partir de los índices regionales, etiquetada como síntesis del observatorio.
+- Corregido un bug de compilación: imports incorrectos en WindMapView y TimelapseView (`anomalyColor` se importa de `ui.ts`, no de `charts.tsx`). El bug causó un 500 transitorio; corregido y verificado (200 OK).
+- MEJORAS DE STYLING (`src/app/globals.css` + `primitives.tsx` + `page.tsx`):
+  - Fondo con degradado radial océano (teal + ámbar) en `.enso-shell`.
+  - Tarjetas con borde superior de marca (degradado basin→coastal→warm) y hover-shadow en `.enso-card-elevated`.
+  - Encabezado glass con blur reforzado (`.enso-header-glass`).
+  - Chips de estado con degradado (`.enso-chip-warm/cool`) y punto de color.
+  - Indicador de latido (`enso-pulse`) para estado activo y datos preliminares (respeta movimiento reducido).
+  - Realce de enfoque accesible (`enso-focus-ring`).
+  - Animación de entrada de vista (`enso-view-enter`, respetando movimiento reducido).
+  - Botones de navegación con micro-interacción (translate-x al hover).
+  - Logo con degradado basin→coastal; badges de estado con punto pulsante.
+  - KBD estilizado para atajos de teclado.
+- GENERADOS ARTEFACTOS ESTÁTICOS en `public/data/` (15 archivos): 7 CSV (uno por indicador + combinado) con metadatos y checksums, y 8 JSON (manifest, status, quality, sources, indicators, all-series, latest-grid). Script `scripts/gen-static-data.ts` (ejecutable con `bun run gen:data`). Añadido script `gen:data` a package.json. Verificado servidos en `/data/manifest.json` (200 OK). Añadida sección de enlaces a artefactos estáticos en la vista Datos.
+- AÑADIDO `LICENSE` (MIT) en la raíz del repositorio, con nota de atribución de datos (NOAA dominio público; ENFEN/IMARPE/SENAMHI/IGP atribución requerida).
+- AÑADIDOS 8 nuevos tests de contrato en `python/tests/test_timelapse_and_grids.py`: controles de animación declarados, sin interpolación temporal, campos grilleados deterministas, longitudes en rango -180..180, convención de viento en el grid, consistencia del manifiesto, paridad CSV↔JSON, escala de color centrada en 0.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **187 passed, 3 skipped** (8 nuevos tests). Las 13 vistas (11 originales + 2 nuevas) renderizan sin errores. Dev log limpio (sin errores de runtime tras los fixes). Chatbot verificado con cita de evidencia y consistencia de datos.
+
+Stage Summary:
+- Nuevas vistas: Animación temporal (timelapse accesible con todos los controles requeridos) + Mapa de viento (vectores con convención de signos). Total vistas: 13.
+- Mejoras visuales: degradados, glassmorphism, micro-interacciones, profundidad, animaciones de entrada, chips con degradado, indicadores pulsantes — todo respetando `prefers-reduced-motion` y sin usar azul índigo.
+- Artefactos estáticos: 15 archivos en public/data/ (7 CSV + 8 JSON) servidos y enlazados desde la vista Datos; script `bun run gen:data` para regenerar.
+- LICENSE MIT añadido con nota de atribución.
+- Tests: 187 passed (+8), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo.
+- Próximo recomendado: completar el benchmark LLM con candidatos WebLLM/Transformers.js concretos, integrar salidas del pipeline Python (python/out) en public/data, y considerar animación del Hovmöller.

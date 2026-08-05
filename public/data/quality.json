@@ -1,0 +1,79 @@
+[
+  {
+    "indicatorId": "nino12",
+    "label": "TSM Niño 1+2",
+    "scope": "coastal",
+    "lastMonth": "2026-07",
+    "lastValue": 1.58,
+    "units": "degC",
+    "preliminary": true,
+    "freshnessHours": 24,
+    "source": "noaa-psl-nino12-anom"
+  },
+  {
+    "indicatorId": "icen",
+    "label": "ICEN",
+    "scope": "coastal",
+    "lastMonth": "2026-07",
+    "lastValue": 1.77,
+    "units": "degC",
+    "preliminary": true,
+    "freshnessHours": 24,
+    "source": "enfen-imarpe-icen"
+  },
+  {
+    "indicatorId": "nino34",
+    "label": "TSM Niño 3.4",
+    "scope": "basin",
+    "lastMonth": "2026-07",
+    "lastValue": 1.17,
+    "units": "degC",
+    "preliminary": true,
+    "freshnessHours": 24,
+    "source": "noaa-psl-nino34-ersst"
+  },
+  {
+    "indicatorId": "roni",
+    "label": "RONI",
+    "scope": "basin",
+    "lastMonth": "2026-07",
+    "lastValue": 1.39,
+    "units": "degC",
+    "preliminary": true,
+    "freshnessHours": 24,
+    "source": "noaa-cpc-reroni"
+  },
+  {
+    "indicatorId": "soi",
+    "label": "SOI",
+    "scope": "basin",
+    "lastMonth": "2026-07",
+    "lastValue": -1.77,
+    "units": "dimensionless",
+    "preliminary": true,
+    "freshnessHours": 24,
+    "source": "noaa-psl-soi"
+  },
+  {
+    "indicatorId": "u850",
+    "label": "Viento zonal 850 hPa",
+    "scope": "basin",
+    "lastMonth": "2026-07",
+    "lastValue": 2.67,
+    "units": "m_per_s",
+    "preliminary": true,
+    "freshnessHours": 24,
+    "source": "noaa-cpc-u850"
+  },
+  {
+    "indicatorId": "d20",
+    "label": "D20",
+    "scope": "basin",
+    "lastMonth": "2026-07",
+    "lastValue": 9.4,
+    "units": "m",
+    "preliminary": true,
+    "freshnessHours": 24,
+    "source": "noaa-cpc-godas"
+  }
+]

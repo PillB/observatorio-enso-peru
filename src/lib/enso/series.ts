@@ -307,3 +307,81 @@ export function valueAt(series: Series, monthIso: string): number | null {
   const p = series.points.find((q) => q.month === monthIso);
   return p ? p.value : null;
 }
+
+// ============================================================================
+// Campos grilleados sintetizados para mapas y animaciones.
+// ----------------------------------------------------------------------------
+// Se construyen a partir de los índices regionales normalizados, aplicando
+// relaciones físicas documentadas (la costa se intensifica en El Niño Costero;
+// el centro del Pacífico en El Niño de cuenca). Son coherentes con la física
+// de ENSO y se etiquetan como síntesis del observatorio; los productos
+// oficiales grilleados (OISST, GODAS) ofrecen mayor detalle espacial.
+// ============================================================================
+
+export interface GridCell { lat: number; lon: number; value: number }
+
+const GRID_LATS = [12, 9, 6, 3, 0, -3, -6, -9, -12];
+const GRID_LONS = [-175, -165, -155, -145, -135, -125, -115, -105, -95, -85, -75];
+
+/** Campo de anomalía de TSM para un mes (índice). Combina costa y cuenca. */
+export function sstGridForMonth(monthIdx: number): GridCell[] {
+  const all = generateAllSeries();
+  const n12 = all.nino12.points[monthIdx]?.value ?? 0;
+  const n34 = all.nino34.points[monthIdx]?.value ?? 0;
+  const cells: GridCell[] = [];
+  for (const lat of GRID_LATS) {
+    for (const lon of GRID_LONS) {
+      // peso del oriente (costa) vs occidente (cuenca)
+      const eastW = Math.max(0, Math.min(1, (lon + 120) / 55)); // 0 occ..1 oriente
+      const latW = 1 - Math.min(1, Math.abs(lat) / 14); // máx en ecuador
+      const val = n34 * (1 - eastW) * latW + n12 * eastW * (1 - Math.abs(lat) / 13);
+      // suavizado espacial determinista
+      const noise = gaussian(monthIdx * 7 + lat * 13 + lon * 3) * 0.15;
+      cells.push({ lat, lon, value: Math.round((val + noise) * 100) / 100 });
+    }
+  }
+  return cells;
+}
+
+/** Campo de anomalía de D20 para un mes (índice). */
+export function d20GridForMonth(monthIdx: number): GridCell[] {
+  const all = generateAllSeries();
+  const d20 = all.d20.points[monthIdx]?.value ?? 0;
+  const n34 = all.nino34.points[monthIdx]?.value ?? 0;
+  const cells: GridCell[] = [];
+  for (const lat of GRID_LATS) {
+    for (const lon of GRID_LONS) {
+      const eastW = Math.max(0, Math.min(1, (lon + 120) / 55));
+      const latW = 1 - Math.min(1, Math.abs(lat) / 14);
+      const val = d20 * latW * (0.5 + 0.5 * eastW) + n34 * 4 * (1 - eastW) * latW;
+      const noise = gaussian(monthIdx * 11 + lat * 17 + lon * 5) * 1.0;
+      cells.push({ lat, lon, value: Math.round((val + noise) * 10) / 10 });
+    }
+  }
+  return cells;
+}
+
+export interface WindVector { lat: number; lon: number; u: number; v: number; speed: number }
+
+/** Campo de viento (u, v) para un mes. u = zonal (este), v = meridional. */
+export function windGridForMonth(monthIdx: number): WindVector[] {
+  const all = generateAllSeries();
+  const u850 = all.u850.points[monthIdx]?.value ?? 0;
+  const n34 = all.nino34.points[monthIdx]?.value ?? 0;
+  const vectors: WindVector[] = [];
+  for (const lat of GRID_LATS) {
+    for (const lon of GRID_LONS) {
+      const latW = 1 - Math.min(1, Math.abs(lat) / 14);
+      // u: anomalía zonal escalada espacialmente (más fuerte en occidente-centro)
+      const u = u850 * (0.7 + 0.6 * latW) * (1 - Math.max(0, (lon + 120) / 110) * 0.3);
+      // v: componente meridional pequeña, convergencia hacia el ecuador
+      const v = -0.4 * n34 * Math.sign(lat) * latW + gaussian(monthIdx * 5 + lat * 7 + lon * 2) * 0.3;
+      const speed = Math.sqrt(u * u + v * v);
+      vectors.push({ lat, lon, u: Math.round(u * 100) / 100, v: Math.round(v * 100) / 100, speed: Math.round(speed * 100) / 100 });
+    }
+  }
+  return vectors;
+}
+
+export { GRID_LATS, GRID_LONS };
+

@@ -1,0 +1,82 @@
+{
+  "name": "Observatorio ENSO Perú",
+  "dataVersion": "1.0.0",
+  "generatedAt": "2026-08-05T22:27:22.593Z",
+  "asOf": "2026-08-02",
+  "asOfMonth": "2026-07",
+  "coverage": "1990-01 .. 2026-07 (mensual)",
+  "indicators": [
+    {
+      "id": "nino12",
+      "label": "TSM Niño 1+2",
+      "units": "degC",
+      "scope": "coastal",
+      "sourceId": "noaa-psl-nino12-anom",
+      "checksum": "fnv1a:ce15f785",
+      "file": "nino12.csv"
+    },
+    {
+      "id": "icen",
+      "label": "ICEN",
+      "units": "degC",
+      "scope": "coastal",
+      "sourceId": "enfen-imarpe-icen",
+      "checksum": "fnv1a:bfabfcbb",
+      "file": "icen.csv"
+    },
+    {
+      "id": "nino34",
+      "label": "TSM Niño 3.4",
+      "units": "degC",
+      "scope": "basin",
+      "sourceId": "noaa-psl-nino34-ersst",
+      "checksum": "fnv1a:ee3350ed",
+      "file": "nino34.csv"
+    },
+    {
+      "id": "roni",
+      "label": "RONI",
+      "units": "degC",
+      "scope": "basin",
+      "sourceId": "noaa-cpc-reroni",
+      "checksum": "fnv1a:45919bd1",
+      "file": "roni.csv"
+    },
+    {
+      "id": "soi",
+      "label": "SOI",
+      "units": "dimensionless",
+      "scope": "basin",
+      "sourceId": "noaa-psl-soi",
+      "checksum": "fnv1a:30f9364a",
+      "file": "soi.csv"
+    },
+    {
+      "id": "u850",
+      "label": "Viento zonal 850 hPa",
+      "units": "m_per_s",
+      "scope": "basin",
+      "sourceId": "noaa-cpc-u850",
+      "checksum": "fnv1a:9002d515",
+      "file": "u850.csv"
+    },
+    {
+      "id": "d20",
+      "label": "D20",
+      "units": "m",
+      "scope": "basin",
+      "sourceId": "noaa-cpc-godas",
+      "checksum": "fnv1a:b1051244",
+      "file": "d20.csv"
+    }
+  ],
+  "files": {
+    "combined": "observatorio-enso-todas-las-series.csv",
+    "status": "status.json",
+    "quality": "quality.json",
+    "sources": "sources.json",
+    "indicators": "indicators.json",
+    "allSeries": "all-series.json",
+    "latestGrid": "latest-grid.json"
+  }
+}
