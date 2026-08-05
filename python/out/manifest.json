@@ -1,0 +1,87 @@
+{
+  "data_version": "1.0.0",
+  "as_of_month": "2026-07",
+  "as_of_date": "2026-08-02",
+  "started_at": "2026-08-05T22:09:33.361721+00:00",
+  "finished_at": "2026-08-05T22:09:33.362162+00:00",
+  "ok": false,
+  "indicators": [
+    {
+      "id": "nino12",
+      "ok": false,
+      "stale": true,
+      "from_cache": false,
+      "preliminary": false,
+      "last_month": null,
+      "last_value": null,
+      "checksum": "",
+      "error": "noaa-psl-nino12-anom: sin red y sin caché disponible"
+    },
+    {
+      "id": "nino34",
+      "ok": false,
+      "stale": true,
+      "from_cache": false,
+      "preliminary": false,
+      "last_month": null,
+      "last_value": null,
+      "checksum": "",
+      "error": "noaa-psl-nino34-ersst: sin red y sin caché disponible"
+    },
+    {
+      "id": "soi",
+      "ok": false,
+      "stale": true,
+      "from_cache": false,
+      "preliminary": false,
+      "last_month": null,
+      "last_value": null,
+      "checksum": "",
+      "error": "noaa-psl-soi: sin red y sin caché disponible"
+    },
+    {
+      "id": "u850",
+      "ok": false,
+      "stale": true,
+      "from_cache": false,
+      "preliminary": false,
+      "last_month": null,
+      "last_value": null,
+      "checksum": "",
+      "error": "noaa-cpc-u850: sin red y sin caché disponible"
+    },
+    {
+      "id": "d20",
+      "ok": false,
+      "stale": true,
+      "from_cache": false,
+      "preliminary": false,
+      "last_month": null,
+      "last_value": null,
+      "checksum": "",
+      "error": "noaa-cpc-godas: sin red y sin caché disponible"
+    },
+    {
+      "id": "icen",
+      "ok": false,
+      "stale": true,
+      "from_cache": false,
+      "preliminary": false,
+      "last_month": null,
+      "last_value": null,
+      "checksum": "",
+      "error": "enfen-imarpe-icen: sin red y sin caché disponible"
+    },
+    {
+      "id": "roni",
+      "ok": false,
+      "stale": true,
+      "from_cache": false,
+      "preliminary": false,
+      "last_month": null,
+      "last_value": null,
+      "checksum": "",
+      "error": "noaa-cpc-reroni: sin red y sin caché disponible"
+    }
+  ]
+}

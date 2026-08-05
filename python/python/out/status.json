@@ -1,0 +1,47 @@
+{
+  "asOf": "2026-08-02",
+  "dataVersion": "1.0.0",
+  "generatedAt": "2026-08-05T22:19:28.660185+00:00",
+  "coastal": {
+    "alert": "Alerta de El Niño Costero",
+    "alertSource": "ENFEN / IMARPE (siofen.imarpe.gob.pe)",
+    "alertSince": "2026-02-13",
+    "nino12Anom": null,
+    "nino12Month": "2026-07",
+    "icen": null,
+    "icenWindow": "May 2026–Jun 2026–Jul 2026",
+    "icenCategory": "Sin datos",
+    "freshness": "Dato final · corte 2026-08-02",
+    "preliminary": false
+  },
+  "basin": {
+    "alert": "El Niño Advisory",
+    "alertSource": "NOAA / CPC — ENSO Diagnostic Discussion",
+    "alertSince": "2026-06",
+    "nino34Anom": null,
+    "nino34Month": "2026-07",
+    "roni": null,
+    "roniWindow": "May 2026–Jun 2026–Jul 2026",
+    "roniCategory": "Sin datos",
+    "freshness": "Dato final · corte 2026-08-02",
+    "preliminary": false
+  },
+  "winds": {
+    "u850Anom": null,
+    "u850Month": "2026-07",
+    "direction": "Sin datos",
+    "signMeaning": ""
+  },
+  "thermocline": {
+    "d20Anom": null,
+    "d20Month": "2026-07",
+    "interpretation": "Sin datos"
+  },
+  "soi": {
+    "value": null,
+    "month": "2026-07",
+    "interpretation": "Sin datos",
+    "note": "El SOI es un índice de escala de cuenca. El observatorio NO define un «SOI costero»: no existe un proxy de presión costera con respaldo metodológico equivalente."
+  },
+  "freshness": []
+}
