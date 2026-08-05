@@ -12,6 +12,8 @@ import { WindMapView } from "@/components/enso/WindMapView";
 import { TimelapseView } from "@/components/enso/TimelapseView";
 import { ForecastsView } from "@/components/enso/ForecastsView";
 import { RegionalView } from "@/components/enso/RegionalView";
+import { AlertsView } from "@/components/enso/AlertsView";
+import { CorrelationsView } from "@/components/enso/CorrelationsView";
 import { DownloadsView } from "@/components/enso/DownloadsView";
 import { ChatView } from "@/components/enso/ChatView";
 import { MethodologyView } from "@/components/enso/MethodologyView";
@@ -22,12 +24,13 @@ import { AS_OF_DATE } from "@/lib/enso/series";
 import {
   LayoutDashboard, Waves, Wind, Thermometer, Gauge, History, Map, Database,
   Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock, Film, Wind as WindIcon,
-  TrendingUp, MapPin,
+  TrendingUp, MapPin, AlertTriangle, GitCompare,
 } from "lucide-react";
 
 type ViewId =
   | "overview" | "tsm" | "vientos" | "termoclina" | "soi"
   | "historico" | "mapas" | "viento-mapa" | "animacion" | "pronostico" | "regional"
+  | "alertas" | "correlaciones"
   | "datos" | "asistente" | "metodologia" | "fuentes";
 
 const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coastal" | "basin" }[] = [
@@ -42,6 +45,8 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "animacion", label: "Animación", icon: Film },
   { id: "pronostico", label: "Pronóstico", icon: TrendingUp },
   { id: "regional", label: "Perú regional", icon: MapPin },
+  { id: "alertas", label: "Alertas", icon: AlertTriangle },
+  { id: "correlaciones", label: "Correlaciones", icon: GitCompare },
   { id: "datos", label: "Datos", icon: Database },
   { id: "asistente", label: "Asistente", icon: Bot },
   { id: "metodologia", label: "Metodología", icon: BookOpen },
@@ -60,6 +65,8 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   animacion: { title: "Animación temporal", subtitle: "Evolución mensual del campo de anomalía con controles accesibles." },
   pronostico: { title: "Pronóstico ENSO", subtitle: "Ensamble probabilístico por trimestre (interpretación del observatorio)." },
   regional: { title: "Impacto regional — Perú", subtitle: "Departamentos costeros: TSM, precipitación y riesgo relativo derivado." },
+  alertas: { title: "Alertas y umbrales", subtitle: "Seguimiento de condiciones de activación de evento (derivadas del observatorio)." },
+  correlaciones: { title: "Correlaciones entre indicadores", subtitle: "Coeficientes de Pearson calculados en código sobre la historia completa." },
   datos: { title: "Datos y descargas", subtitle: "Tabla histórica filtrable, CSV por serie y del resultado filtrado." },
   asistente: { title: "Asistente conversacional", subtitle: "Respuestas con base determinista (grounded) en los datos del observatorio." },
   metodologia: { title: "Metodología", subtitle: "Definiciones, convenciones, climatología y comparación de fuentes." },
@@ -213,6 +220,8 @@ export default function Home() {
           {view === "animacion" && <TimelapseView />}
           {view === "pronostico" && <ForecastsView />}
           {view === "regional" && <RegionalView />}
+          {view === "alertas" && <AlertsView />}
+          {view === "correlaciones" && <CorrelationsView />}
           {view === "datos" && <DownloadsView />}
           {view === "asistente" && <ChatView />}
           {view === "metodologia" && <MethodologyView />}

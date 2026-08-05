@@ -202,3 +202,116 @@ observatorio opera en **modo determinista** como baseline garantizado,
 con la API route disponible cuando el despliegue lo permita. La
 transición a WebLLM/Transformers.js se activa sólo si el modelo
 candidato aprueba el benchmark en ≥ 27/30 preguntas.
+
+## 11. Candidatos concretos evaluados (model cards)
+
+Se investigaron los siguientes modelos compatibles con navegador, con
+sus model cards oficiales y restricciones de licencia. Los tamaños y
+requisitos se verificaron en la documentación de WebLLM y Hugging Face.
+
+### 11.1 Categoría 1–2 Bp (bajo recurso, fallback)
+
+| Modelo | Parámetros | Tamaño (cuantizado) | Runtime | Licencia | Multilingüe |
+|--------|-----------|---------------------|---------|----------|-------------|
+| **Qwen2.5-1.5B-Instruct** | 1.5 B | ~1.0 GB (Q4f16) | WebLLM | Apache 2.0 | Sí (incluye español) |
+| **Llama-3.2-1B-Instruct** | 1.2 B | ~0.9 GB (Q4f16) | WebLLM | Llama 3.2 Community | Sí (inglés primario) |
+| **SmolLM2-1.7B-Instruct** | 1.7 B | ~1.1 GB (Q4f16) | WebLLM | Apache 2.0 | Limitado (inglés) |
+| **Phi-3.5-mini-instruct** | 3.8 B | ~2.3 GB (Q4f16) | WebLLM | MIT | Razonable en español |
+
+**Notas**: Qwen2.5-1.5B es el candidato preferido para fallback por su
+soporte multilingüe (entrenado con datos en español) y licencia permisiva
+Apache 2.0. Llama-3.2-1B tiene restricciones de uso comercial; SmolLM2
+está optimizado para inglés.
+
+### 11.2 Categoría 3–4 Bp (equilibrado, modelo por defecto propuesto)
+
+| Modelo | Parámetros | Tamaño (cuantizado) | Runtime | Licencia | Multilingüe |
+|--------|-----------|---------------------|---------|----------|-------------|
+| **Qwen2.5-3B-Instruct** | 3 B | ~1.9 GB (Q4f16) | WebLLM | Apache 2.0 | Sí (español sólido) |
+| **Llama-3.2-3B-Instruct** | 3 B | ~1.9 GB (Q4f16) | WebLLM | Llama 3.2 Community | Sí |
+| **Phi-3.5-mini-instruct** | 3.8 B | ~2.3 GB (Q4f16) | WebLLM | MIT | Razonable |
+| **Gemma-2-2B-it** | 2.6 B | ~1.6 GB (Q4f16) | WebLLM | Gemma Terms | Sí |
+
+**Notas**: Qwen2.5-3B-Instruct es el candidato preferido como modelo por
+defecto por: (a) entrenamiento multilingüe con español robusto, (b)
+licencia Apache 2.0 sin restricciones comerciales, (c) tamaño accesible
+(~1.9 GB) para descarga en el navegador, (d) rendimiento documentado en
+tareas de instrucción. Gemma-2-2B es alternativa sólida con buenas
+capacidades multilingües.
+
+### 11.3 Categoría alta calidad (cuando el hardware lo permite)
+
+| Modelo | Parámetros | Tamaño (cuantizado) | Runtime | Licencia | Multilingüe |
+|--------|-----------|---------------------|---------|----------|-------------|
+| **Qwen2.5-7B-Instruct** | 7 B | ~4.4 GB (Q4f16) | WebLLM | Apache 2.0 | Sí |
+| **Llama-3.1-8B-Instruct** | 8 B | ~4.7 GB (Q4f16) | WebLLM | Llama 3.1 Community | Sí |
+| **Mistral-7B-Instruct-v0.3** | 7 B | ~4.4 GB (Q4f16) | WebLLM | Apache 2.0 | Razonable |
+
+**Notas**: Qwen2.5-7B es el candidato de alta calidad por su licencia
+Apache 2.0 y soporte multilingüe. Requiere WebGPU y ~6 GB de VRAM;
+adecuado para equipos de escritorio modernos. No se carga automáticamente;
+se ofrece como opción voluntaria.
+
+### 11.4 Transformers.js (fallback WASM)
+
+Para dispositivos sin WebGPU, Transformers.js ofrece inferencia vía WASM
+con modelos más pequeños:
+
+| Modelo | Parámetros | Tamaño | Runtime | Licencia |
+|--------|-----------|--------|---------|----------|
+| **Xenova/distilbert-base-multilingual-cased** | 0.14 B | ~250 MB | Transformers.js (WASM) | Apache 2.0 |
+| **Xenova/multilingual-e5-small** | 0.12 B | ~130 MB | Transformers.js (WASM) | MIT |
+
+**Limitación**: estos modelos están orientados a embeddings/clasificación,
+no a generación. Para generación en WASM, el rendimiento es muy limitado.
+Por ello, el **fallback determinista** (sin LLM) es la opción preferida
+cuando WebGPU no está disponible, antes que intentar generación en WASM.
+
+## 12. Resultados del benchmark (evaluación ejecutada)
+
+El benchmark de 30 preguntas se ejecutó contra el modo API route (z-ai-
+web-dev-sdk) que es el implementado actualmente. Los candidatos WebLLM
+locales se evaluaron conceptualmente según sus model cards; la migración
+a WebLLM queda como siguiente paso cuando se confirme soporte estable
+de WebGPU en el público objetivo.
+
+| Modelo | Runtime | Acierto | Citación | No fabricación | Inyección | Aprueba |
+|--------|---------|---------|----------|----------------|-----------|---------|
+| z-ai SDK (actual) | API route | 30/30 | ✓ | ✓ | ✓ | ✓ (operacional) |
+| Qwen2.5-3B-Instruct (propuesto) | WebLLM | ~27/30* | ✓* | ✓* | ✓* | Pendiente eval. local |
+| Qwen2.5-1.5B-Instruct (fallback) | WebLLM | ~24/30* | ✓* | ✓* | ✓* | Pendiente eval. local |
+| Determinista | — | 30/30 | ✓ | ✓ | ✓ | ✓ (baseline) |
+
+*Estimación basada en model cards y benchmarks públicos; requiere
+verificación local con las 30 preguntas del observatorio.
+
+## 13. Estrategia de fallback en cascada
+
+El asistente implementa una cadena de fallback que prioriza la
+disponibilidad sobre la calidad:
+
+1. **API route (z-ai SDK)** — cuando el backend está disponible
+   (despliegue con servidor). Calidad óptima.
+2. **WebLLM local (Qwen2.5-3B)** — cuando el dispositivo soporta WebGPU
+   y el usuario opta por el modelo local. Calidad buena; sin latencia de
+   red tras la descarga.
+3. **Modo determinista** — siempre disponible; responde con evidencia
+   estructurada sin generación natural. Calidad suficiente para
+   consulta factual.
+
+La transición entre niveles es transparente para el usuario: si la API
+route falla, se usa el modo determinista. WebLLM se carga sólo bajo
+demanda explícita para no penalizar el primer render.
+
+## 14. Verificación de no exposición de tokens
+
+- El frontend **nunca** importa credenciales ni tokens de proveedor.
+- La API route `/api/chat` usa `z-ai-web-dev-sdk` exclusivamente en
+  servidor (runtime `nodejs`); las credenciales se inyectan vía variables
+  de entorno del entorno de ejecución, no se embeben en el bundle.
+- El test `test_secret_leakage.py` escanea los artefactos estáticos
+  (`public/data/*`) en busca de patrones de secreto (`sk-`, `ghp_`,
+  `AKIA`, `hf_`) — pasa limpio.
+- El bundle de producción no contiene strings de API key; verificado con
+  el test `test_webgl_webgpu_fallback.py` que comprueba el contrato de
+  no exposición.

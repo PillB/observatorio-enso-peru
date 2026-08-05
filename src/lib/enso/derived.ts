@@ -221,4 +221,174 @@ function monthEndMs(monthIso: string): number {
   return next.getTime();
 }
 
+// ============================================================================
+// Alertas y umbrales de activación de evento.
+// ----------------------------------------------------------------------------
+// Sigue las definiciones operacionales: ICEN requiere 3 meses consecutivos con
+// anomalía ≥ +0.4 °C (El Niño Costero) o ≤ −0.4 °C (La Niña Costera); RONI
+// requiere media móvil de 3 meses ≥ +0.5 °C (El Niño de cuenca) o ≤ −0.5 °C
+// (La Niña de cuenca). Estas son condiciones de activación derivadas por el
+// observatorio; la declaración oficial corresponde a ENFEN y NOAA/CPC.
+// ============================================================================
+
+export interface AlertState {
+  indicatorId: string;
+  label: string;
+  scope: "coastal" | "basin";
+  threshold: number;
+  current: number | null;
+  currentMonth: string;
+  /** Meses consecutivos actuales sobre el umbral (misma dirección). */
+  consecutiveMonths: number;
+  /** Meses consecutivos requeridos para activación. */
+  requiredMonths: number;
+  /** Dirección: 'warm' (El Niño) o 'cool' (La Niña) o 'neutral'. */
+  direction: "warm" | "cool" | "neutral";
+  /** Estado de activación derivado. */
+  status: "Cumplido" | "En vigilancia" | "Neutral";
+  /** Porcentaje de progreso hacia la activación (0-100). */
+  progress: number;
+  note: string;
+}
+
+export function buildAlertStates(): AlertState[] {
+  const all = generateAllSeries();
+  const states: AlertState[] = [];
+
+  // ICEN: 3 meses consecutivos ≥ +0.4 (El Niño Costero) o ≤ −0.4 (La Niña Costera)
+  states.push(buildAlertFromSeries(all.icen, "icen", "ICEN", "coastal", 0.4, 3));
+  // RONI: 3 meses consecutivos ≥ +0.5 (El Niño de cuenca) o ≤ −0.5 (La Niña de cuenca)
+  states.push(buildAlertFromSeries(all.roni, "roni", "RONI", "basin", 0.5, 3));
+
+  return states;
+}
+
+function buildAlertFromSeries(
+  series: Series,
+  indicatorId: string,
+  label: string,
+  scope: "coastal" | "basin",
+  threshold: number,
+  requiredMonths: number
+): AlertState {
+  const points = series.points;
+  let current: number | null = null;
+  let currentMonth = "";
+  let consecutive = 0;
+  let direction: "warm" | "cool" | "neutral" = "neutral";
+
+  for (let i = points.length - 1; i >= 0; i--) {
+    const v = points[i].value;
+    if (v === null) continue;
+    if (current === null) {
+      current = v;
+      currentMonth = points[i].month;
+      if (v >= threshold) direction = "warm";
+      else if (v <= -threshold) direction = "cool";
+      else direction = "neutral";
+    }
+    // Contar consecutivos hacia atrás en la misma dirección.
+    if (direction === "warm" && v >= threshold) consecutive++;
+    else if (direction === "cool" && v <= -threshold) consecutive++;
+    else if (direction === "neutral" && Math.abs(v) < threshold) {
+      // neutral: no cuenta para activación
+    } else break;
+  }
+
+  const progress = direction === "neutral" ? 0 : Math.min(100, Math.round((consecutive / requiredMonths) * 100));
+  const status: AlertState["status"] =
+    direction === "neutral" ? "Neutral" : consecutive >= requiredMonths ? "Cumplido" : "En vigilancia";
+  const dirLabel = direction === "warm" ? (scope === "coastal" ? "El Niño Costero" : "El Niño de cuenca") : direction === "cool" ? (scope === "coastal" ? "La Niña Costera" : "La Niña de cuenca") : "Neutral";
+  const note =
+    direction === "neutral"
+      ? `Valor actual dentro del rango neutral (|valor| < ${threshold}). Sin condición de activación.`
+      : `${dirLabel}: ${consecutive} de ${requiredMonths} meses consecutivos sobre el umbral (${threshold}). ${status === "Cumplido" ? "Condición de activación derivada cumplida." : "En vigilancia."} Interpretación del observatorio; la declaración oficial corresponde a ${scope === "coastal" ? "ENFEN" : "NOAA/CPC"}.`;
+
+  return {
+    indicatorId,
+    label,
+    scope,
+    threshold,
+    current,
+    currentMonth,
+    consecutiveMonths: consecutive,
+    requiredMonths,
+    direction,
+    status,
+    progress,
+    note,
+  };
+}
+
+// ============================================================================
+// Correlaciones entre indicadores (cálculo determinista en código).
+// ============================================================================
+
+export interface CorrelationPair {
+  idA: string;
+  idB: string;
+  labelA: string;
+  labelB: string;
+  /** Coeficiente de Pearson en [-1, 1]. */
+  pearson: number;
+  /** Etiqueta cualitativa. */
+  strength: string;
+  /** Interpretación en español. */
+  interpretation: string;
+}
+
+export function buildCorrelations(): CorrelationPair[] {
+  const all = generateAllSeries();
+  const ids = Object.keys(all);
+  const pairs: CorrelationPair[] = [];
+  const labels: Record<string, string> = {
+    nino12: "Niño 1+2", icen: "ICEN", nino34: "Niño 3.4", roni: "RONI",
+    soi: "SOI", u850: "u850", d20: "D20",
+  };
+  const expectations: Record<string, string> = {
+    "nino34-soi": "Anticorrelación esperada: SOI negativo acompaña a El Niño de cuenca.",
+    "nino34-d20": "Correlación positiva esperada: D20 se profundiza con El Niño de cuenca.",
+    "nino34-u850": "Correlación positiva esperada: anomalías del oeste acompañan a El Niño de cuenca.",
+    "nino12-nino34": "Correlación parcial: la costa y la cuenca pueden divergir (caso 2017).",
+    "icen-nino12": "Alta correlación esperada: ICEN se deriva de Niño 1+2.",
+    "roni-nino34": "Alta correlación esperada: RONI se deriva de Niño 3.4.",
+  };
+
+  for (let i = 0; i < ids.length; i++) {
+    for (let j = i + 1; j < ids.length; j++) {
+      const a = all[ids[i]], b = all[ids[j]];
+      const vals = a.points
+        .map((p, k) => [p.value, b.points[k].value])
+        .filter(([x, y]) => x !== null && y !== null) as [number, number][];
+      if (vals.length < 10) continue;
+      const r = pearson(vals.map((v) => v[0]), vals.map((v) => v[1]));
+      const abs = Math.abs(r);
+      const strength = abs >= 0.7 ? "Fuerte" : abs >= 0.4 ? "Moderada" : abs >= 0.2 ? "Débil" : "Nula";
+      const key = `${ids[i]}-${ids[j]}`;
+      const interp = expectations[key] ?? `Coeficiente de Pearson r = ${r.toFixed(2)}. Interpretación del observatorio.`;
+      pairs.push({
+        idA: ids[i], idB: ids[j],
+        labelA: labels[ids[i]] ?? ids[i], labelB: labels[ids[j]] ?? ids[j],
+        pearson: Math.round(r * 100) / 100,
+        strength, interpretation: interp,
+      });
+    }
+  }
+  return pairs.sort((a, b) => Math.abs(b.pearson) - Math.abs(a.pearson));
+}
+
+function pearson(x: number[], y: number[]): number {
+  const n = x.length;
+  if (n === 0) return 0;
+  const mx = x.reduce((a, b) => a + b, 0) / n;
+  const my = y.reduce((a, b) => a + b, 0) / n;
+  let num = 0, dx = 0, dy = 0;
+  for (let i = 0; i < n; i++) {
+    const a = x[i] - mx, b = y[i] - my;
+    num += a * b; dx += a * a; dy += b * b;
+  }
+  const den = Math.sqrt(dx * dy);
+  return den === 0 ? 0 : num / den;
+}
+
 export { AS_OF_DATE, AS_OF_MONTH, generateAllSeries, getSeries, latest };

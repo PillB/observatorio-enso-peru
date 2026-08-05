@@ -188,3 +188,32 @@ Stage Summary:
 - Tests: 196 passed (+9), 3 skipped. Lint limpio.
 - Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Pronósticos e impactos claramente etiquetados como interpretación del observatorio, no oficiales.
 - Próximo recomendado: expandir docs/evaluacion-llm.md con modelos WebLLM/Transformers.js concretos y resultados, integrar salidas del pipeline Python en public/data, añadir skeletons de carga.
+
+---
+Task ID: 6-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA, 2 nuevas vistas (Alertas y umbrales + Correlaciones), expansión del doc de evaluación LLM con modelos concretos, 9 nuevos tests.
+
+Work Log:
+- Revisado worklog.md (secciones previas hasta 5-cron-review). Estado previo: 15 vistas, 196 tests, tema oscuro, pronósticos, impacto regional.
+- QA inicial con agent-browser: verificadas las 15 vistas existentes — todas renderizan. Chatbot consistente (ICEN +1.77 °C / RONI +1.39 °C coherentes con alertas oficiales). `bun run lint` limpio; `python -m pytest`: 196 passed, 3 skipped.
+- AÑADIDAS 2 NUEVAS VISTAS (total ahora 17):
+  1. **Alertas y umbrales** — `src/components/enso/AlertsView.tsx`: seguimiento de condiciones de activación de evento (meses consecutivos sobre umbral). Tarjetas por indicador (ICEN ±0.4 °C/3 meses, RONI ±0.5 °C/3 meses) con estado derivado (Cumplido/En vigilancia/Neutral), progreso visual, series temporales con bandas de umbral y tabla de definiciones operacionales. Etiquetado como interpretación del observatorio; deriva a ENFEN/NOAA/CPC. Verificado: ICEN muestra "Cumplido" (8 de 3 meses), consistente con la Alerta de El Niño Costero.
+  2. **Correlaciones entre indicadores** — `src/components/enso/CorrelationsView.tsx`: matriz de correlación N×N en SVG con celdas coloreadas (Pearson, azul=anticorrelación, cálido=correlación), top 4 pares con serie temporal dual, tabla completa ordenada por |r|, notas físicas (SOI↔Niño 3.4 anticorrelación, D20↔Niño 3.4 positiva, ICEN↔Niño 1+2 alta por construcción). Cálculo determinista en código; el modelo no participa.
+- AÑADIDA lógica a `src/lib/enso/derived.ts`: `buildAlertStates()` (cuenta meses consecutivos sobre umbral en la misma dirección, calcula progreso y estado), `buildCorrelations()` (coeficiente de Pearson entre todos los pares de indicadores sobre la historia completa, con interpretaciones físicas curadas).
+- EXPANDIDO `docs/evaluacion-llm.md` con 5 nuevas secciones (11-15):
+  - Model cards concretos por categoría: 1-2 Bp (Qwen2.5-1.5B, Llama-3.2-1B, SmolLM2-1.7B, Phi-3.5-mini), 3-4 Bp (Qwen2.5-3B, Llama-3.2-3B, Gemma-2-2B), alta calidad (Qwen2.5-7B, Llama-3.1-8B, Mistral-7B), Transformers.js (WASM).
+  - Resultados del benchmark ejecutado (z-ai SDK actual 30/30, candidatos WebLLM pendientes eval. local).
+  - Estrategia de fallback en cascada (API route → WebLLM → determinista).
+  - Verificación de no exposición de tokens.
+  - Selección: Qwen2.5-3B-Instruct (Apache 2.0, español sólido) como modelo por defecto propuesto; Qwen2.5-1.5B como fallback; Qwen2.5-7B como opción de alta calidad.
+- AÑADIDOS 9 nuevos tests de contrato en `python/tests/test_alerts_and_correlations.py`: vista etiqueta como interpretación derivada, umbrales correctos (ICEN ±0.4, RONI ±0.5), valores de estado válidos, correlaciones en código (Pearson), anticorrelación SOI-Niño 3.4, alta correlación ICEN-Niño 1+2, matriz cubre 7 indicadores, deriva a instituciones oficiales, no fabricación de valores.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **205 passed** (+9), 3 skipped. Las 17 vistas renderizan sin errores (verificadas con agent-browser). Dev log limpio (200 OK). Dark mode verificado con las nuevas vistas. Chatbot verificado con cita [EVID-nino12] y [EVID-nino34], datos consistentes.
+
+Stage Summary:
+- Nuevas vistas: Alertas y umbrales (seguimiento de activación de evento) + Correlaciones (matriz de Pearson entre indicadores). Total vistas: 17.
+- Lógica nueva: buildAlertStates (meses consecutivos sobre umbral) + buildCorrelations (Pearson sobre historia completa) en derived.ts.
+- Doc LLM expandido: 5 secciones nuevas con model cards concretos (Qwen2.5, Llama, Phi, Gemma, Mistral), resultados del benchmark, estrategia de fallback en cascada, verificación de no exposición de tokens.
+- Tests: 205 passed (+9), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Alertas y correlaciones etiquetadas como interpretación/derivadas del observatorio; deriva a ENFEN/NOAA/CPC para declaraciones oficiales.
+- Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
