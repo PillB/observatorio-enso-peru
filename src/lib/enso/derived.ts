@@ -468,4 +468,126 @@ export function compositeCategory(v: number): string {
   return "Neutral";
 }
 
+// ============================================================================
+// Estacionalidad: climatología mensual por indicador.
+// ----------------------------------------------------------------------------
+// Calcula el promedio y desviación estándar de cada mes calendario (1..12)
+// sobre toda la historia disponible. Permite comparar el valor actual con su
+// estacionalidad típica. Es cálculo determinista en código.
+// ============================================================================
+
+export interface MonthlyClimatology {
+  month: number; // 1..12
+  monthLabel: string;
+  mean: number;
+  std: number;
+  min: number;
+  max: number;
+  count: number;
+}
+
+export interface SeasonalityResult {
+  indicatorId: string;
+  label: string;
+  units: string;
+  climatology: MonthlyClimatology[];
+  /** Valor del mes más reciente para comparación. */
+  latestMonth: number;
+  latestValue: number | null;
+}
+
+const MONTH_LABELS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+
+export function buildSeasonality(indicatorId: string): SeasonalityResult | null {
+  const all = generateAllSeries();
+  const s = all[indicatorId];
+  if (!s) return null;
+  const byMonth: Record<number, number[]> = {};
+  for (let m = 1; m <= 12; m++) byMonth[m] = [];
+  for (const p of s.points) {
+    if (p.value === null) continue;
+    const m = Number(p.month.split("-")[1]);
+    byMonth[m].push(p.value);
+  }
+  const clim: MonthlyClimatology[] = [];
+  for (let m = 1; m <= 12; m++) {
+    const vals = byMonth[m];
+    if (vals.length === 0) {
+      clim.push({ month: m, monthLabel: MONTH_LABELS[m - 1], mean: 0, std: 0, min: 0, max: 0, count: 0 });
+      continue;
+    }
+    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const variance = vals.reduce((a, b) => a + (b - mean) ** 2, 0) / vals.length;
+    const std = Math.sqrt(variance);
+    clim.push({
+      month: m,
+      monthLabel: MONTH_LABELS[m - 1],
+      mean: Math.round(mean * 100) / 100,
+      std: Math.round(std * 100) / 100,
+      min: Math.round(Math.min(...vals) * 100) / 100,
+      max: Math.round(Math.max(...vals) * 100) / 100,
+      count: vals.length,
+    });
+  }
+  const lp = s.points[s.points.length - 1];
+  return {
+    indicatorId,
+    label: s.label,
+    units: s.units,
+    climatology: clim,
+    latestMonth: lp ? Number(lp.month.split("-")[1]) : 1,
+    latestValue: lp?.value ?? null,
+  };
+}
+
+// ============================================================================
+// Comparación de eventos: extrae las series de un evento para comparación.
+// ============================================================================
+
+export interface EventSeries {
+  eventId: string;
+  label: string;
+  type: string;
+  months: string[]; // meses relativos -24..+24 desde el pico
+  nino34: (number | null)[];
+  nino12: (number | null)[];
+  icen: (number | null)[];
+}
+
+export function buildEventSeries(eventId: string): EventSeries | null {
+  const event = HISTORICAL_EVENTS.find((e) => e.id === eventId);
+  if (!event) return null;
+  const all = generateAllSeries();
+  const peakIdx = MONTHS.indexOf(event.peakMonth);
+  if (peakIdx < 0) return null;
+  const window = 24; // ±24 meses desde el pico
+  const months: string[] = [];
+  const nino34: (number | null)[] = [];
+  const nino12: (number | null)[] = [];
+  const icen: (number | null)[] = [];
+  for (let offset = -window; offset <= window; offset++) {
+    const idx = peakIdx + offset;
+    if (idx < 0 || idx >= MONTHS.length) {
+      months.push(`+${offset}`);
+      nino34.push(null);
+      nino12.push(null);
+      icen.push(null);
+    } else {
+      months.push(offset === 0 ? "Pico" : offset > 0 ? `+${offset}` : `${offset}`);
+      nino34.push(all.nino34.points[idx].value);
+      nino12.push(all.nino12.points[idx].value);
+      icen.push(all.icen.points[idx].value);
+    }
+  }
+  return {
+    eventId: event.id,
+    label: event.label,
+    type: event.type,
+    months,
+    nino34,
+    nino12,
+    icen,
+  };
+}
+
 export { AS_OF_DATE, AS_OF_MONTH, generateAllSeries, getSeries, latest };

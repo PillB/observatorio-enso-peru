@@ -241,3 +241,25 @@ Stage Summary:
 - Tests: 217 passed (+12), 3 skipped. Lint limpio.
 - Integridad científica preservada: no coastal SOI (glosario lo aclara explícitamente), separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Índice compuesto y glosario etiquetados como interpretación del observatorio.
 - Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
+
+---
+Task ID: 8-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA, 2 nuevas vistas (Comparador de eventos + Estacionalidad), 11 nuevos tests.
+
+Work Log:
+- Revisado worklog.md (secciones previas hasta 7-cron-review). Estado previo: 19 vistas, 217 tests.
+- QA inicial con agent-browser: verificadas las 19 vistas existentes — todas renderizan. Chatbot consistente (ICEN +1.77 °C / RONI +1.39 °C coherentes con alertas oficiales). `bun run lint` limpio; `python -m pytest`: 217 passed, 3 skipped.
+- AÑADIDAS 2 NUEVAS VISTAS (total ahora 21):
+  1. **Comparador de eventos** — `src/components/enso/EventComparisonView.tsx`: selector interactivo de hasta 5 eventos históricos con gráfico de comparación alineada por mes de pico (offset 0, ±24 meses), selector de métrica (Niño 3.4/Niño 1+2/ICEN), tabla de detalle y notas interpretativas. Permite contrastar intensidad y duración de diferentes eventos (ej. 1997-98 vs 2015-16 vs 2017).
+  2. **Estacionalidad** — `src/components/enso/SeasonalityView.tsx`: climatología mensual por indicador (promedio, ±1σ, min/max sobre la historia completa), selector de indicador (7 opciones), tarjetas de valor actual vs climatología del mismo mes con anomalía y evaluación de normalidad (|1.5σ|), gráfico SVG del ciclo estacional con banda ±1σ y mes actual resaltado, tabla detallada con resaltado del mes actual.
+- AÑADIDA lógica a `src/lib/enso/derived.ts`: `buildSeasonality()` (calcula promedio, desviación estándar, min, max y count por mes calendario sobre la historia completa; compara con el valor actual) y `buildEventSeries()` (extrae series de ±24 meses alrededor del pico de un evento para Niño 3.4, Niño 1+2 e ICEN).
+- AÑADIDOS 11 nuevos tests de contrato en `python/tests/test_seasonality_and_events.py`: estacionalidad tiene 12 meses, calcula media y std, tiene selector de indicador, es determinista; comparación de eventos alinea por pico, ventana ±24 meses, incluye 2017, máximo 5 eventos, selector de métrica, compara actual con climatología, sin valores fabricados.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **228 passed** (+11), 3 skipped. Las 21 vistas renderizan sin errores. Dev log limpio (200 OK, sin errores de runtime). Chatbot verificado con citas [EVID-nino12] y [EVID-nino34], datos consistentes (1.58 °C / 1.17 °C).
+
+Stage Summary:
+- Nuevas vistas: Comparador de eventos (selector interactivo de hasta 5 eventos alineados por pico) + Estacionalidad (climatología mensual con ±1σ y comparación con valor actual). Total vistas: 21.
+- Lógica nueva: buildSeasonality + buildEventSeries en derived.ts.
+- Tests: 228 passed (+11), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Estacionalidad y comparación calculadas en código; el modelo no participa.
+- Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.

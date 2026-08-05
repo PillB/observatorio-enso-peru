@@ -16,6 +16,8 @@ import { AlertsView } from "@/components/enso/AlertsView";
 import { CorrelationsView } from "@/components/enso/CorrelationsView";
 import { GlossaryView } from "@/components/enso/GlossaryView";
 import { CompositeView } from "@/components/enso/CompositeView";
+import { SeasonalityView } from "@/components/enso/SeasonalityView";
+import { EventComparisonView } from "@/components/enso/EventComparisonView";
 import { DownloadsView } from "@/components/enso/DownloadsView";
 import { ChatView } from "@/components/enso/ChatView";
 import { MethodologyView } from "@/components/enso/MethodologyView";
@@ -26,13 +28,13 @@ import { AS_OF_DATE } from "@/lib/enso/series";
 import {
   LayoutDashboard, Waves, Wind, Thermometer, Gauge, History, Map, Database,
   Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock, Film, Wind as WindIcon,
-  TrendingUp, MapPin, AlertTriangle, GitCompare, BookA, Layers,
+  TrendingUp, MapPin, AlertTriangle, GitCompare, BookA, Layers, Calendar, Layers3,
 } from "lucide-react";
 
 type ViewId =
   | "overview" | "tsm" | "vientos" | "termoclina" | "soi"
   | "historico" | "mapas" | "viento-mapa" | "animacion" | "pronostico" | "regional"
-  | "alertas" | "correlaciones" | "compuesto"
+  | "alertas" | "correlaciones" | "compuesto" | "eventos-comparar" | "estacionalidad"
   | "datos" | "asistente" | "metodologia" | "glosario" | "fuentes";
 
 const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coastal" | "basin" }[] = [
@@ -42,6 +44,8 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "termoclina", label: "Termoclina", icon: Thermometer },
   { id: "soi", label: "SOI y presión", icon: Gauge },
   { id: "historico", label: "Histórico", icon: History },
+  { id: "eventos-comparar", label: "Comparar eventos", icon: Layers3 },
+  { id: "estacionalidad", label: "Estacionalidad", icon: Calendar },
   { id: "mapas", label: "Mapas", icon: Map },
   { id: "viento-mapa", label: "Viento mapa", icon: WindIcon },
   { id: "animacion", label: "Animación", icon: Film },
@@ -72,6 +76,8 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   alertas: { title: "Alertas y umbrales", subtitle: "Seguimiento de condiciones de activación de evento (derivadas del observatorio)." },
   correlaciones: { title: "Correlaciones entre indicadores", subtitle: "Coeficientes de Pearson calculados en código sobre la historia completa." },
   compuesto: { title: "Índice compuesto ENSO", subtitle: "Síntesis integrada de indicadores oceánicos y atmosféricos (interpretación del observatorio)." },
+  "eventos-comparar": { title: "Comparador de eventos", subtitle: "Seleccione y compare eventos históricos alineados por mes de pico." },
+  estacionalidad: { title: "Estacionalidad", subtitle: "Climatología mensual por indicador: promedio, dispersión y valor actual." },
   datos: { title: "Datos y descargas", subtitle: "Tabla histórica filtrable, CSV por serie y del resultado filtrado." },
   asistente: { title: "Asistente conversacional", subtitle: "Respuestas con base determinista (grounded) en los datos del observatorio." },
   metodologia: { title: "Metodología", subtitle: "Definiciones, convenciones, climatología y comparación de fuentes." },
@@ -229,6 +235,8 @@ export default function Home() {
           {view === "alertas" && <AlertsView />}
           {view === "correlaciones" && <CorrelationsView />}
           {view === "compuesto" && <CompositeView />}
+          {view === "eventos-comparar" && <EventComparisonView />}
+          {view === "estacionalidad" && <SeasonalityView />}
           {view === "datos" && <DownloadsView />}
           {view === "asistente" && <ChatView />}
           {view === "metodologia" && <MethodologyView />}
