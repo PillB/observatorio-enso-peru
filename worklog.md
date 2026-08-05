@@ -287,3 +287,25 @@ Stage Summary:
 - Tests: 241 passed (+13), 3 skipped. Lint limpio.
 - Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Probabilidad calculada en código; teleconexiones etiquetadas como conocimiento curado, no pronóstico.
 - Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
+
+---
+Task ID: 10-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA, 2 nuevas vistas (Análisis de tendencias + Fichas técnicas), 13 nuevos tests.
+
+Work Log:
+- Revisado worklog.md (secciones previas hasta 9-cron-review). Estado previo: 23 vistas, 241 tests.
+- QA inicial con agent-browser: verificadas las 23 vistas existentes — todas renderizan. Chatbot consistente (ICEN +1.77 °C / RONI +1.39 °C coherentes con alertas oficiales); corrige correctamente «SOI costero». `bun run lint` limpio; `python -m pytest`: 241 passed, 3 skipped.
+- AÑADIDAS 2 NUEVAS VISTAS (total ahora 25):
+  1. **Análisis de tendencias** — `src/components/enso/TrendsView.tsx`: regresión lineal móvil (pendiente y R²) sobre ventana configurable (12/24/36/60 meses) con selector de indicador (7 opciones), gráfico SVG de evolución de la pendiente (cálido=creciente, frío=decreciente), gráfico de R² en el tiempo, tabla de cambios de fase ENSO (transiciones entre El Niño/Neutral/La Niña sobre Niño 3.4, umbral ±0.5 °C). Tarjetas de tendencia actual (pendiente anualizada, R², valor medio). Cálculo determinista en código.
+  2. **Fichas técnicas por indicador** — `src/components/enso/FactSheetsView.tsx`: informe detallado por indicador con selector (7 opciones), cabecera con valor actual + percentil histórico + media/desviación/extremos + tendencias a 12 y 24 meses, metadatos científicos completos (región, nivel, agregación, climatología, dataset, convención de signos, fuente con URL y licencia), distribución de signos (positivos vs negativos), umbrales y categorías, descarga CSV de la ficha completa.
+- AÑADIDA lógica a `src/lib/enso/derived.ts`: `buildTrend()` (regresión lineal móvil con pendiente, R² y media sobre ventana configurable, interpretación en español), `buildPhaseChanges()` (detección de transiciones entre categorías ENSO sobre Niño 3.4 con umbral ±0.5 °C), `buildFactSheet()` (estadísticas completas: media, std, min, max, percentil, tendencias 12m/24m, meses positivos/negativos, metadatos científicos).
+- AÑADIDOS 13 nuevos tests de contrato en `python/tests/test_trends_and_factsheets.py`: regresión lineal con pendiente y R², ventana configurable, selectores de indicador y ventana; detección de cambios de fase, umbral ±0.5; fichas con estadísticas completas, tendencias 12m/24m, descargables CSV, selector de indicador; cálculo determinista, metadatos incluidos, distinción oficial/derivada, interpretación en español.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **254 passed** (+13), 3 skipped. Las 25 vistas renderizan sin errores. Dev log limpio (200 OK, sin errores de runtime). Chatbot verificado: corrige «SOI costero» y cita evidencia con datos consistentes.
+
+Stage Summary:
+- Nuevas vistas: Análisis de tendencias (regresión lineal móvil + R² + cambios de fase) + Fichas técnicas por indicador (informe detallado con descarga CSV). Total vistas: 25.
+- Lógica nueva: buildTrend + buildPhaseChanges + buildFactSheet en derived.ts.
+- Tests: 254 passed (+13), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Tendencias y fichas calculadas en código; el modelo no participa. Fichas distinguen indicadores oficiales vs derivados.
+- Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.

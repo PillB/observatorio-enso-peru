@@ -20,6 +20,8 @@ import { SeasonalityView } from "@/components/enso/SeasonalityView";
 import { EventComparisonView } from "@/components/enso/EventComparisonView";
 import { ProbabilityView } from "@/components/enso/ProbabilityView";
 import { TeleconnectionsView } from "@/components/enso/TeleconnectionsView";
+import { TrendsView } from "@/components/enso/TrendsView";
+import { FactSheetsView } from "@/components/enso/FactSheetsView";
 import { DownloadsView } from "@/components/enso/DownloadsView";
 import { ChatView } from "@/components/enso/ChatView";
 import { MethodologyView } from "@/components/enso/MethodologyView";
@@ -31,14 +33,14 @@ import {
   LayoutDashboard, Waves, Wind, Thermometer, Gauge, History, Map, Database,
   Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock, Film, Wind as WindIcon,
   TrendingUp, MapPin, AlertTriangle, GitCompare, BookA, Layers, Calendar, Layers3,
-  Activity, Globe,
+  Activity, Globe, LineChart, FileText,
 } from "lucide-react";
 
 type ViewId =
   | "overview" | "tsm" | "vientos" | "termoclina" | "soi"
   | "historico" | "mapas" | "viento-mapa" | "animacion" | "pronostico" | "regional"
   | "alertas" | "correlaciones" | "compuesto" | "eventos-comparar" | "estacionalidad"
-  | "probabilidad" | "teleconexiones"
+  | "probabilidad" | "teleconexiones" | "tendencias" | "fichas"
   | "datos" | "asistente" | "metodologia" | "glosario" | "fuentes";
 
 const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coastal" | "basin" }[] = [
@@ -55,11 +57,13 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "animacion", label: "Animación", icon: Film },
   { id: "pronostico", label: "Pronóstico", icon: TrendingUp },
   { id: "probabilidad", label: "Probabilidad", icon: Activity },
+  { id: "tendencias", label: "Tendencias", icon: LineChart },
   { id: "regional", label: "Perú regional", icon: MapPin },
   { id: "teleconexiones", label: "Teleconexiones", icon: Globe },
   { id: "alertas", label: "Alertas", icon: AlertTriangle },
   { id: "correlaciones", label: "Correlaciones", icon: GitCompare },
   { id: "compuesto", label: "Índice compuesto", icon: Layers },
+  { id: "fichas", label: "Fichas técnicas", icon: FileText },
   { id: "datos", label: "Datos", icon: Database },
   { id: "asistente", label: "Asistente", icon: Bot },
   { id: "metodologia", label: "Metodología", icon: BookOpen },
@@ -86,6 +90,8 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   estacionalidad: { title: "Estacionalidad", subtitle: "Climatología mensual por indicador: promedio, dispersión y valor actual." },
   probabilidad: { title: "Banda de probabilidad ENSO", subtitle: "Probabilidad de cada categoría (El Niño/Neutral/La Niña) en ventana móvil." },
   teleconexiones: { title: "Teleconexiones e impactos globales", subtitle: "Impactos típicos de ENSO sobre regiones del mundo (conocimiento climático curado)." },
+  tendencias: { title: "Análisis de tendencias", subtitle: "Regresión lineal móvil, R² y detección de cambios de fase ENSO." },
+  fichas: { title: "Fichas técnicas por indicador", subtitle: "Informe detallado con estadísticas, metadatos y descarga CSV." },
   datos: { title: "Datos y descargas", subtitle: "Tabla histórica filtrable, CSV por serie y del resultado filtrado." },
   asistente: { title: "Asistente conversacional", subtitle: "Respuestas con base determinista (grounded) en los datos del observatorio." },
   metodologia: { title: "Metodología", subtitle: "Definiciones, convenciones, climatología y comparación de fuentes." },
@@ -247,6 +253,8 @@ export default function Home() {
           {view === "estacionalidad" && <SeasonalityView />}
           {view === "probabilidad" && <ProbabilityView />}
           {view === "teleconexiones" && <TeleconnectionsView />}
+          {view === "tendencias" && <TrendsView />}
+          {view === "fichas" && <FactSheetsView />}
           {view === "datos" && <DownloadsView />}
           {view === "asistente" && <ChatView />}
           {view === "metodologia" && <MethodologyView />}

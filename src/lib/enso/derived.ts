@@ -776,4 +776,196 @@ export const TELECONNECTIONS: TeleconnectionImpact[] = [
   },
 ];
 
+// ============================================================================
+// Análisis de tendencias: regresión lineal y detección de cambio de fase.
+// ----------------------------------------------------------------------------
+// Para cada indicador, calcula la tendencia lineal (pendiente por mes) sobre
+// ventanas móviles, y detecta cambios de fase (transiciones entre categorías).
+// Es cálculo determinista en código; el modelo no participa.
+// ============================================================================
+
+export interface TrendPoint {
+  month: string;
+  /** Pendiente de la regresión lineal sobre la ventana (por mes). */
+  slope: number;
+  /** R² del ajuste (0-1). */
+  r2: number;
+  /** Valor medio en la ventana. */
+  mean: number;
+}
+
+export interface TrendResult {
+  indicatorId: string;
+  label: string;
+  units: string;
+  /** Tendencia sobre los últimos N meses. */
+  windowMonths: number;
+  points: TrendPoint[];
+  /** Tendencia actual (última ventana). */
+  currentSlope: number;
+  currentR2: number;
+  /** Interpretación de la tendencia. */
+  interpretation: string;
+}
+
+export function buildTrend(indicatorId: string, windowMonths = 24): TrendResult | null {
+  const all = generateAllSeries();
+  const s = all[indicatorId];
+  if (!s) return null;
+  const points: TrendPoint[] = [];
+  for (let i = windowMonths - 1; i < s.points.length; i++) {
+    const window = s.points.slice(i - windowMonths + 1, i + 1);
+    const vals = window.map((p) => p.value).filter((v): v is number => v !== null);
+    if (vals.length < windowMonths / 2) continue;
+    const xs = vals.map((_, j) => j);
+    const n = vals.length;
+    const mx = xs.reduce((a, b) => a + b, 0) / n;
+    const my = vals.reduce((a, b) => a + b, 0) / n;
+    let num = 0, dx = 0, dy = 0;
+    for (let j = 0; j < n; j++) {
+      const a = xs[j] - mx, b = vals[j] - my;
+      num += a * b; dx += a * a; dy += b * b;
+    }
+    const slope = dx === 0 ? 0 : num / dx;
+    const r2 = dy === 0 ? 0 : Math.max(0, (num * num) / (dx * dy));
+    points.push({
+      month: s.points[i].month,
+      slope: Math.round(slope * 10000) / 10000,
+      r2: Math.round(r2 * 100) / 100,
+      mean: Math.round(my * 100) / 100,
+    });
+  }
+  const last = points[points.length - 1];
+  const interp = last
+    ? last.slope > 0.01
+      ? `Tendencia creciente (${(last.slope * 12).toFixed(2)} por año)`
+      : last.slope < -0.01
+      ? `Tendencia decreciente (${(last.slope * 12).toFixed(2)} por año)`
+      : "Tendencia estable"
+    : "Sin datos suficientes";
+  return {
+    indicatorId,
+    label: s.label,
+    units: s.units,
+    windowMonths,
+    points,
+    currentSlope: last?.slope ?? 0,
+    currentR2: last?.r2 ?? 0,
+    interpretation: interp,
+  };
+}
+
+// ============================================================================
+// Detección de cambios de fase (transiciones entre categorías ENSO).
+// ============================================================================
+
+export interface PhaseChange {
+  month: string;
+  fromPhase: "El Niño" | "Neutral" | "La Niña";
+  toPhase: "El Niño" | "Neutral" | "La Niña";
+  value: number;
+}
+
+export function buildPhaseChanges(): PhaseChange[] {
+  const all = generateAllSeries();
+  const n34 = all.nino34.points;
+  const changes: PhaseChange[] = [];
+  let prevPhase: "El Niño" | "Neutral" | "La Niña" | null = null;
+  for (const p of n34) {
+    if (p.value === null) continue;
+    const phase: "El Niño" | "Neutral" | "La Niña" =
+      p.value >= 0.5 ? "El Niño" : p.value <= -0.5 ? "La Niña" : "Neutral";
+    if (prevPhase !== null && phase !== prevPhase) {
+      changes.push({
+        month: p.month,
+        fromPhase: prevPhase,
+        toPhase: phase,
+        value: Math.round(p.value * 100) / 100,
+      });
+    }
+    prevPhase = phase;
+  }
+  return changes;
+}
+
+// ============================================================================
+// Fichas técnicas por indicador: estadísticas completas.
+// ============================================================================
+
+export interface IndicatorFactSheet {
+  indicatorId: string;
+  label: string;
+  name: string;
+  scope: "coastal" | "basin";
+  units: string;
+  region: string;
+  level: string | undefined;
+  aggregation: string;
+  climatology: string;
+  dataset: string;
+  signConvention: string;
+  sourceId: string;
+  latestValue: number | null;
+  latestMonth: string;
+  mean: number;
+  std: number;
+  min: number;
+  max: number;
+  percentileLatest: number | null;
+  trend12m: number;
+  trend24m: number;
+  positiveMonths: number;
+  negativeMonths: number;
+  totalMonths: number;
+  isOfficial: boolean;
+}
+
+export function buildFactSheet(indicatorId: string): IndicatorFactSheet | null {
+  const all = generateAllSeries();
+  const s = all[indicatorId];
+  const ind = INDICATOR_BY_ID[indicatorId];
+  if (!s || !ind) return null;
+  const vals = s.points.map((p) => p.value).filter((v): v is number => v !== null);
+  if (vals.length === 0) return null;
+  const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+  const std = Math.sqrt(vals.reduce((a, b) => a + (b - mean) ** 2, 0) / vals.length);
+  const min = Math.min(...vals);
+  const max = Math.max(...vals);
+  const lp = s.points[s.points.length - 1];
+  let below = 0;
+  for (const v of vals) if (v < (lp?.value ?? 0)) below++;
+  const pct = lp?.value !== null ? Math.round((below / vals.length) * 100) : null;
+  const trend12 = buildTrend(indicatorId, 12);
+  const trend24 = buildTrend(indicatorId, 24);
+  const positive = vals.filter((v) => v > 0).length;
+  const negative = vals.filter((v) => v < 0).length;
+  return {
+    indicatorId,
+    label: s.label,
+    name: ind.name,
+    scope: ind.scope,
+    units: ind.units,
+    region: ind.region,
+    level: ind.level,
+    aggregation: ind.aggregation,
+    climatology: ind.climatology,
+    dataset: ind.dataset,
+    signConvention: ind.signConvention,
+    sourceId: ind.sourceId,
+    latestValue: lp?.value ?? null,
+    latestMonth: lp?.month ?? "",
+    mean: Math.round(mean * 100) / 100,
+    std: Math.round(std * 100) / 100,
+    min: Math.round(min * 100) / 100,
+    max: Math.round(max * 100) / 100,
+    percentileLatest: pct,
+    trend12m: trend12?.currentSlope ?? 0,
+    trend24m: trend24?.currentSlope ?? 0,
+    positiveMonths: positive,
+    negativeMonths: negative,
+    totalMonths: vals.length,
+    isOfficial: ind.isOfficial,
+  };
+}
+
 export { AS_OF_DATE, AS_OF_MONTH, generateAllSeries, getSeries, latest };
