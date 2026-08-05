@@ -24,6 +24,8 @@ import { TrendsView } from "@/components/enso/TrendsView";
 import { FactSheetsView } from "@/components/enso/FactSheetsView";
 import { AlertHistoryView } from "@/components/enso/AlertHistoryView";
 import { PhaseDiagramView } from "@/components/enso/PhaseDiagramView";
+import { EventCatalogView } from "@/components/enso/EventCatalogView";
+import { ScopeComparisonView } from "@/components/enso/ScopeComparisonView";
 import { DownloadsView } from "@/components/enso/DownloadsView";
 import { ChatView } from "@/components/enso/ChatView";
 import { MethodologyView } from "@/components/enso/MethodologyView";
@@ -35,14 +37,14 @@ import {
   LayoutDashboard, Waves, Wind, Thermometer, Gauge, History, Map, Database,
   Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock, Film, Wind as WindIcon,
   TrendingUp, MapPin, AlertTriangle, GitCompare, BookA, Layers, Calendar, Layers3,
-  Activity, Globe, LineChart, FileText, ScatterChart, Timer,
+  Activity, Globe, LineChart, FileText, ScatterChart, Timer, Table, Columns2,
 } from "lucide-react";
 
 type ViewId =
   | "overview" | "tsm" | "vientos" | "termoclina" | "soi"
   | "historico" | "mapas" | "viento-mapa" | "animacion" | "pronostico" | "regional"
   | "alertas" | "alertas-historial" | "correlaciones" | "compuesto" | "eventos-comparar" | "estacionalidad"
-  | "probabilidad" | "teleconexiones" | "tendencias" | "fichas" | "fases"
+  | "probabilidad" | "teleconexiones" | "tendencias" | "fichas" | "fases" | "catalogo" | "costero-vs-cuenca"
   | "datos" | "asistente" | "metodologia" | "glosario" | "fuentes";
 
 const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coastal" | "basin" }[] = [
@@ -53,6 +55,8 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "soi", label: "SOI y presión", icon: Gauge },
   { id: "historico", label: "Histórico", icon: History },
   { id: "eventos-comparar", label: "Comparar eventos", icon: Layers3 },
+  { id: "catalogo", label: "Catálogo eventos", icon: Table },
+  { id: "costero-vs-cuenca", label: "Costero vs cuenca", icon: Columns2 },
   { id: "estacionalidad", label: "Estacionalidad", icon: Calendar },
   { id: "mapas", label: "Mapas", icon: Map },
   { id: "viento-mapa", label: "Viento mapa", icon: WindIcon },
@@ -92,6 +96,8 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   correlaciones: { title: "Correlaciones entre indicadores", subtitle: "Coeficientes de Pearson calculados en código sobre la historia completa." },
   compuesto: { title: "Índice compuesto ENSO", subtitle: "Síntesis integrada de indicadores oceánicos y atmosféricos (interpretación del observatorio)." },
   "eventos-comparar": { title: "Comparador de eventos", subtitle: "Seleccione y compare eventos históricos alineados por mes de pico." },
+  catalogo: { title: "Catálogo de eventos ENSO", subtitle: "Tabla maestra filtrable de todos los periodos ENSO con descarga CSV." },
+  "costero-vs-cuenca": { title: "Comparación costero vs cuenca", subtitle: "Panel lado a lado con métricas clave de ambas escalas." },
   estacionalidad: { title: "Estacionalidad", subtitle: "Climatología mensual por indicador: promedio, dispersión y valor actual." },
   probabilidad: { title: "Banda de probabilidad ENSO", subtitle: "Probabilidad de cada categoría (El Niño/Neutral/La Niña) en ventana móvil." },
   teleconexiones: { title: "Teleconexiones e impactos globales", subtitle: "Impactos típicos de ENSO sobre regiones del mundo (conocimiento climático curado)." },
@@ -257,6 +263,8 @@ export default function Home() {
           {view === "correlaciones" && <CorrelationsView />}
           {view === "compuesto" && <CompositeView />}
           {view === "eventos-comparar" && <EventComparisonView />}
+          {view === "catalogo" && <EventCatalogView />}
+          {view === "costero-vs-cuenca" && <ScopeComparisonView />}
           {view === "estacionalidad" && <SeasonalityView />}
           {view === "probabilidad" && <ProbabilityView />}
           {view === "teleconexiones" && <TeleconnectionsView />}

@@ -1129,4 +1129,159 @@ export function buildPhaseSpace(windowMonths = 60): PhasePoint[] {
   return out;
 }
 
+// ============================================================================
+// Catálogo maestro de eventos ENSO.
+// ----------------------------------------------------------------------------
+// Tabla exhaustiva de todos los periodos ENSO (costero y cuenca) con
+// estadísticas completas para filtrado y comparación. Es cálculo determinista
+// en código; el modelo no participa.
+// ============================================================================
+
+export interface CatalogEntry {
+  id: string;
+  scope: "costero" | "cuenca";
+  phase: "El Niño" | "La Niña";
+  startMonth: string;
+  endMonth: string;
+  peakMonth: string;
+  peakValue: number;
+  durationMonths: number;
+  intensity: string;
+  /** Año de inicio. */
+  year: number;
+  /** Década. */
+  decade: number;
+  /** Intensidad numérica (1=débil, 2=moderado, 3=fuerte, 4=muy fuerte). */
+  intensityRank: 1 | 2 | 3 | 4;
+}
+
+export function buildEventCatalog(): CatalogEntry[] {
+  const history = buildAlertHistory();
+  return history
+    .filter((p) => p.phase !== "Neutral")
+    .map((p, i) => {
+      const year = Number(p.startMonth.split("-")[0]);
+      const decade = Math.floor(year / 10) * 10;
+      const rank = intensityToRank(p.peakValue, p.scope);
+      return {
+        id: `${p.scope}-${i}-${p.startMonth}`,
+        scope: p.scope,
+        phase: p.phase as "El Niño" | "La Niña",
+        startMonth: p.startMonth,
+        endMonth: p.endMonth,
+        peakMonth: p.peakMonth,
+        peakValue: p.peakValue,
+        durationMonths: p.durationMonths,
+        intensity: p.intensity,
+        year,
+        decade,
+        intensityRank: rank,
+      };
+    });
+}
+
+function intensityToRank(peak: number, scope: "costero" | "cuenca"): 1 | 2 | 3 | 4 {
+  const a = Math.abs(peak);
+  if (scope === "costero") {
+    if (a < 1.0) return 1;
+    if (a < 1.5) return 2;
+    if (a < 2.0) return 3;
+    return 4;
+  }
+  // cuenca
+  if (a < 1.0) return 1;
+  if (a < 1.5) return 2;
+  if (a < 2.0) return 3;
+  return 4;
+}
+
+// ============================================================================
+// Comparación costero vs cuenca: métricas lado a lado.
+// ============================================================================
+
+export interface ScopeComparison {
+  metric: string;
+  coastal: string | number;
+  basin: string | number;
+  note: string;
+}
+
+export function buildScopeComparison(): ScopeComparison[] {
+  const all = generateAllSeries();
+  const coastalEvents = buildAlertHistory().filter((p) => p.scope === "costero" && p.phase !== "Neutral");
+  const basinEvents = buildAlertHistory().filter((p) => p.scope === "basin" && p.phase !== "Neutral");
+  const coastalNino = coastalEvents.filter((p) => p.phase === "El Niño");
+  const basinNino = basinEvents.filter((p) => p.phase === "El Niño");
+  const coastalNina = coastalEvents.filter((p) => p.phase === "La Niña");
+  const basinNina = basinEvents.filter((p) => p.phase === "La Niña");
+
+  const coastalDurations = coastalEvents.map((p) => p.durationMonths);
+  const basinDurations = basinEvents.map((p) => p.durationMonths);
+  const coastalPeaks = coastalEvents.map((p) => Math.abs(p.peakValue));
+  const basinPeaks = basinEvents.map((p) => Math.abs(p.peakValue));
+
+  return [
+    {
+      metric: "Total de eventos (Niño + Niña)",
+      coastal: coastalEvents.length,
+      basin: basinEvents.length,
+      note: "Número de periodos activos reconstruidos sobre la historia.",
+    },
+    {
+      metric: "Eventos El Niño",
+      coastal: coastalNino.length,
+      basin: basinNino.length,
+      note: "Periodos cálidos por escala.",
+    },
+    {
+      metric: "Eventos La Niña",
+      coastal: coastalNina.length,
+      basin: basinNina.length,
+      note: "Periodos fríos por escala.",
+    },
+    {
+      metric: "Duración media (meses)",
+      coastal: coastalDurations.length ? (coastalDurations.reduce((a, b) => a + b, 0) / coastalDurations.length).toFixed(1) : "—",
+      basin: basinDurations.length ? (basinDurations.reduce((a, b) => a + b, 0) / basinDurations.length).toFixed(1) : "—",
+      note: "Duración típica de los periodos activos.",
+    },
+    {
+      metric: "Intensidad pico media (°C)",
+      coastal: coastalPeaks.length ? (coastalPeaks.reduce((a, b) => a + b, 0) / coastalPeaks.length).toFixed(2) : "—",
+      basin: basinPeaks.length ? (basinPeaks.reduce((a, b) => a + b, 0) / basinPeaks.length).toFixed(2) : "—",
+      note: "Valor absoluto pico medio de los eventos.",
+    },
+    {
+      metric: "Intensidad pico máxima (°C)",
+      coastal: coastalPeaks.length ? Math.max(...coastalPeaks).toFixed(2) : "—",
+      basin: basinPeaks.length ? Math.max(...basinPeaks).toFixed(2) : "—",
+      note: "Evento más intenso registrado en cada escala.",
+    },
+    {
+      metric: "Umbral de activación",
+      coastal: "±0.4 °C (ICEN)",
+      basin: "±0.5 °C (Niño 3.4)",
+      note: "Umbral operacional derivado del observatorio.",
+    },
+    {
+      metric: "Persistencia requerida",
+      coastal: "3 meses consecutivos",
+      basin: "3 meses consecutivos",
+      note: "Condición de activación derivada.",
+    },
+    {
+      metric: "Índice actual",
+      coastal: `ICEN ${all.icen.points[all.icen.points.length - 1].value ?? "—"} °C`,
+      basin: `RONI ${all.roni.points[all.roni.points.length - 1].value ?? "—"} °C`,
+      note: "Valor más reciente disponible.",
+    },
+    {
+      metric: "Estado oficial actual",
+      coastal: "Alerta de El Niño Costero",
+      basin: "El Niño Advisory",
+      note: "Cita textual de ENFEN y NOAA/CPC.",
+    },
+  ];
+}
+
 export { AS_OF_DATE, AS_OF_MONTH, generateAllSeries, getSeries, latest };

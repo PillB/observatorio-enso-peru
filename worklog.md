@@ -331,3 +331,25 @@ Stage Summary:
 - Tests: 268 passed (+14), 3 skipped. Lint limpio.
 - Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Historial etiquetado como reconstrucción derivada; diagrama de fases calculado en código.
 - Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
+
+---
+Task ID: 12-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA, 2 nuevas vistas (Catálogo de eventos + Comparación costero vs cuenca), 14 nuevos tests.
+
+Work Log:
+- Revisado worklog.md (secciones previas hasta 11-cron-review). Estado previo: 27 vistas, 268 tests.
+- QA inicial con agent-browser: verificadas las vistas clave — todas renderizan. Chatbot consistente (ICEN +1.77 °C / RONI +1.39 °C coherentes con alertas oficiales); corrige correctamente «SOI costero». `bun run lint` limpio; `python -m pytest`: 268 passed, 3 skipped.
+- AÑADIDAS 2 NUEVAS VISTAS (total ahora 29):
+  1. **Catálogo de eventos ENSO** — `src/components/enso/EventCatalogView.tsx`: tabla maestra exhaustiva de todos los periodos ENSO reconstruidos (costero y cuenca) con filtros (alcance, fase, intensidad mínima), tabla ordenable (por inicio, pico, duración), resumen por década (barras apiladas Niño/Niña), descarga CSV del catálogo filtrado. Cada entrada: alcance, fase, inicio, fin, pico, mes pico, duración, intensidad, rango (1-4).
+  2. **Comparación costero vs cuenca** — `src/components/enso/ScopeComparisonView.tsx`: panel lado a lado con tarjetas paralelas (costero ámbar / cuenca teal) mostrando estado oficial, ICEN/RONI, Niño 1+2/3.4, categoría, umbral, persistencia, fuente, región; serie temporal comparada (últimos 10 años) y tabla de métricas comparativas (total eventos, duración media, intensidad pico, umbral, estado actual). Menciona el caso 2017 de divergencia.
+- AÑADIDA lógica a `src/lib/enso/derived.ts`: `buildEventCatalog()` (tabla exhaustiva con año, década, rango de intensidad 1-4), `intensityToRank()`, `buildScopeComparison()` (10 métricas comparativas lado a lado: total eventos, El Niño, La Niña, duración media, intensidad pico media/máxima, umbral, persistencia, índice actual, estado oficial).
+- AÑADIDOS 14 nuevos tests de contrato en `python/tests/test_catalog_and_scope_comparison.py`: catálogo se construye del historial, campos requeridos, rango de intensidad, filtros, descarga CSV, tabla ordenable, resumen por década; comparación lado a lado, umbrales distintos, tabla de métricas, caso 2017, serie dual, determinista, fuentes oficiales.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **282 passed** (+14), 3 skipped. Las 29 vistas renderizan sin errores. Dev log limpio (200 OK, sin errores de runtime). Chatbot verificado con citas [EVID-nino12] y [EVID-nino34], datos consistentes (1.58 °C / 1.17 °C).
+
+Stage Summary:
+- Nuevas vistas: Catálogo de eventos ENSO (tabla maestra filtrable y ordenable con descarga CSV) + Comparación costero vs cuenca (panel lado a lado con métricas). Total vistas: 29.
+- Lógica nueva: buildEventCatalog + intensityToRank + buildScopeComparison en derived.ts.
+- Tests: 282 passed (+14), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI, separación costero/cuenca (reforzada con vista dedicada), convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Catálogo etiquetado como reconstrucción derivada; comparación menciona caso 2017 y cita ENFEN/NOAA/CPC.
+- Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
