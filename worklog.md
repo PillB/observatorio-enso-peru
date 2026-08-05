@@ -217,3 +217,27 @@ Stage Summary:
 - Tests: 205 passed (+9), 3 skipped. Lint limpio.
 - Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Alertas y correlaciones etiquetadas como interpretación/derivadas del observatorio; deriva a ENFEN/NOAA/CPC para declaraciones oficiales.
 - Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
+
+---
+Task ID: 7-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA, 2 nuevas vistas (Glosario climático + Índice compuesto ENSO), 12 nuevos tests.
+
+Work Log:
+- Revisado worklog.md (secciones previas hasta 6-cron-review). Estado previo: 17 vistas, 205 tests.
+- QA inicial con agent-browser: verificadas las 17 vistas existentes — todas renderizan. Chatbot consistente (ICEN +1.77 °C / RONI +1.39 °C coherentes con alertas oficiales); corrige correctamente «SOI costero». `bun run lint` limpio; `python -m pytest`: 205 passed, 3 skipped.
+- AÑADIDAS 2 NUEVAS VISTAS (total ahora 19):
+  1. **Glosario climático** — `src/components/enso/GlossaryView.tsx`: glosario searchable de términos ENSO en español formal con ~24 entradas (ENSO, El Niño, La Niña, El Niño Costero, ICEN, RONI, ONI, SOI, Niño 1+2, Niño 3.4, regiones Niño, D20, termoclina, u850, alisios, ENFEN, SENAMHI, IGP, INDECI, CENEPRED, teleconexión, climatología, anomalía, dato preliminar). Buscador en tiempo real, filtros por categoría (costero/cuenca/general/físico/institucional), panel de detalle con definición completa, indicadores relacionados y véase también. NO define «SOI costero» (respeta integridad científica).
+  2. **Índice compuesto ENSO** — `src/components/enso/CompositeView.tsx`: índice integrado adimensional que combina 5 indicadores (Niño 3.4 30%, Niño 1+2 25%, SOI invertido 20%, D20 15%, u850 10%) con tarjetas de valor actual/componentes/ponderación, serie temporal con bandas de categoría, serie larga 1990-2026, tabla de meses extremos (|índice|≥1.5) y metodología. Etiquetado como interpretación del observatorio; verificado: muestra "El Niño (cuenca)" consistente con la alerta oficial.
+- AÑADIDA lógica a `src/lib/enso/derived.ts`: `buildCompositeIndex()` (combina 5 indicadores normalizados por escala típica con ponderaciones, invierte SOI, omite meses con datos faltantes sin interpolar) y `compositeCategory()` (categorías: Neutral ±0.3, Tendencia ±0.3-0.8, Evento ±0.8-1.5, Fuerte ≥1.5).
+- AÑADIDO `src/lib/enso/glossary.ts`: 24 entradas de glosario con término, categoría, definición breve y completa, indicadores relacionados y véase también; función `searchGlossary()` y `GLOSSARY_CATEGORIES`.
+- Corregido un bug de parsing JSX en CompositeView (expresiones adyacentes `{a}{b}` unificadas en template literal).
+- AÑADIDOS 12 nuevos tests de contrato en `python/tests/test_glossary_and_composite.py`: glosario incluye términos clave, no define SOI costero, incluye instituciones peruanas, está en español, tiene búsqueda; índice compuesto etiquetado como observatorio, combina 5 indicadores, ponderaciones suman 1, SOI invertido, categorías cubren Niño/Niña/Neutral, sin interpolación, vista tiene búsqueda y filtros.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **217 passed** (+12), 3 skipped. Las 19 vistas renderizan sin errores. Dev log limpio (200 OK, sin errores de runtime). Chatbot verificado: corrige «SOI costero» y cita evidencia con datos consistentes.
+
+Stage Summary:
+- Nuevas vistas: Glosario climático (24 términos searchable) + Índice compuesto ENSO (índice integrado de 5 indicadores). Total vistas: 19.
+- Lógica nueva: buildCompositeIndex + compositeCategory en derived.ts; glossary.ts con 24 entradas y búsqueda.
+- Tests: 217 passed (+12), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI (glosario lo aclara explícitamente), separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Índice compuesto y glosario etiquetados como interpretación del observatorio.
+- Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.

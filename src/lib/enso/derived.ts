@@ -1,6 +1,6 @@
 import type { CurrentStatus, Series } from "./types";
 import { INDICATOR_BY_ID } from "./methodology";
-import { generateAllSeries, getSeries, latest, AS_OF_MONTH, AS_OF_DATE } from "./series";
+import { generateAllSeries, getSeries, latest, AS_OF_MONTH, AS_OF_DATE, MONTHS } from "./series";
 
 // Categorías derivadas por el observatorio. Se distinguen claramente las
 // clasificaciones OFICIALES (alerta ENFEN / NOAA-CPC) de las categorías de
@@ -389,6 +389,83 @@ function pearson(x: number[], y: number[]): number {
   }
   const den = Math.sqrt(dx * dy);
   return den === 0 ? 0 : num / den;
+}
+
+// ============================================================================
+// Índice compuesto ENSO del observatorio.
+// ----------------------------------------------------------------------------
+// Síntesis integrada que combina los principales indicadores oceánicos y
+// atmosféricos en un único índice adimensional. Es INTERPRETACIÓN GENERADA
+// POR EL OBSERVATORIO, no un índice oficial. Combina:
+//   - Niño 3.4 (cuenca oceánica) y Niño 1+2 (costero oceánico)
+//   - SOI (componente atmosférica, invertido)
+//   - D20 (termoclina, normalizado)
+//   - u850 (viento, normalizado)
+// Cada componente se normaliza por su escala típica y se pondera.
+// ============================================================================
+
+export interface CompositeIndex {
+  /** Mes ISO. */
+  month: string;
+  /** Valor del índice compuesto (adimensional, típico -3..+3). */
+  value: number;
+  /** Componentes individuales normalizados. */
+  components: {
+    nino34: number;
+    nino12: number;
+    soi: number; // invertido (SOI negativo → cálido)
+    d20: number;
+    u850: number;
+  };
+  /** Categoría derivada. */
+  category: string;
+}
+
+export function buildCompositeIndex(): CompositeIndex[] {
+  const all = generateAllSeries();
+  const scales = { nino34: 1.0, nino12: 1.2, soi: 1.5, d20: 8.0, u850: 2.0 };
+  const weights = { nino34: 0.30, nino12: 0.25, soi: 0.20, d20: 0.15, u850: 0.10 };
+
+  return MONTHS.map((month, i) => {
+    const n34 = all.nino34.points[i].value;
+    const n12 = all.nino12.points[i].value;
+    const soi = all.soi.points[i].value;
+    const d20 = all.d20.points[i].value;
+    const u850 = all.u850.points[i].value;
+    if (n34 === null || n12 === null || soi === null || d20 === null || u850 === null) {
+      // Saltar meses con datos faltantes (sin interpolar).
+      return null;
+    }
+    const cN34 = n34 / scales.nino34;
+    const cN12 = n12 / scales.nino12;
+    const cSOI = -soi / scales.soi; // invertido: SOI negativo → cálido
+    const cD20 = d20 / scales.d20;
+    const cU850 = u850 / scales.u850;
+    const value = cN34 * weights.nino34 + cN12 * weights.nino12 + cSOI * weights.soi + cD20 * weights.d20 + cU850 * weights.u850;
+    const cat = compositeCategory(value);
+    return {
+      month,
+      value: Math.round(value * 100) / 100,
+      components: {
+        nino34: Math.round(cN34 * 100) / 100,
+        nino12: Math.round(cN12 * 100) / 100,
+        soi: Math.round(cSOI * 100) / 100,
+        d20: Math.round(cD20 * 100) / 100,
+        u850: Math.round(cU850 * 100) / 100,
+      },
+      category: cat,
+    } as CompositeIndex;
+  }).filter((x): x is CompositeIndex => x !== null);
+}
+
+export function compositeCategory(v: number): string {
+  if (v >= 1.5) return "El Niño fuerte (cuenca)";
+  if (v >= 0.8) return "El Niño (cuenca)";
+  if (v >= 0.3) return "Tendencia cálida";
+  if (v <= -1.5) return "La Niña fuerte (cuenca)";
+  if (v <= -0.8) return "La Niña (cuenca)";
+  if (v <= -0.3) return "Tendencia fría";
+  return "Neutral";
 }
 
 export { AS_OF_DATE, AS_OF_MONTH, generateAllSeries, getSeries, latest };
