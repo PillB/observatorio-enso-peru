@@ -1,0 +1,112 @@
+[
+  {
+    "code": "TUM",
+    "name": "Tumbes",
+    "lat": -3.57,
+    "lon": -80.45,
+    "sstAnom": 1.19,
+    "precipAnom": 44.7,
+    "riskLevel": 3,
+    "riskLabel": "Alto",
+    "note": "Mayor probabilidad de lluvias por encima de lo normal asociada a El Niño Costero. Interpretación del observatorio."
+  },
+  {
+    "code": "PIU",
+    "name": "Piura",
+    "lat": -5.19,
+    "lon": -81.02,
+    "sstAnom": 1.7,
+    "precipAnom": 62.7,
+    "riskLevel": 4,
+    "riskLabel": "Muy alto",
+    "note": "Mayor probabilidad de lluvias por encima de lo normal asociada a El Niño Costero. Interpretación del observatorio."
+  },
+  {
+    "code": "LAM",
+    "name": "Lambayeque",
+    "lat": -6.71,
+    "lon": -79.91,
+    "sstAnom": 1.51,
+    "precipAnom": 75.5,
+    "riskLevel": 4,
+    "riskLabel": "Muy alto",
+    "note": "Mayor probabilidad de lluvias por encima de lo normal asociada a El Niño Costero. Interpretación del observatorio."
+  },
+  {
+    "code": "LBR",
+    "name": "La Libertad",
+    "lat": -7.62,
+    "lon": -79.4,
+    "sstAnom": 1.33,
+    "precipAnom": 56.1,
+    "riskLevel": 3,
+    "riskLabel": "Alto",
+    "note": "Mayor probabilidad de lluvias por encima de lo normal asociada a El Niño Costero. Interpretación del observatorio."
+  },
+  {
+    "code": "ANC",
+    "name": "Áncash",
+    "lat": -9.53,
+    "lon": -77.67,
+    "sstAnom": 1.39,
+    "precipAnom": 49.7,
+    "riskLevel": 3,
+    "riskLabel": "Alto",
+    "note": "Mayor probabilidad de lluvias por encima de lo normal asociada a El Niño Costero. Interpretación del observatorio."
+  },
+  {
+    "code": "LIM",
+    "name": "Lima",
+    "lat": -12.05,
+    "lon": -77.04,
+    "sstAnom": 0.91,
+    "precipAnom": 22.5,
+    "riskLevel": 2,
+    "riskLabel": "Moderado",
+    "note": "Condiciones cerca de lo normal o con influencia limitada de El Niño Costero."
+  },
+  {
+    "code": "ICA",
+    "name": "Ica",
+    "lat": -14.07,
+    "lon": -75.73,
+    "sstAnom": 0.96,
+    "precipAnom": 19.7,
+    "riskLevel": 2,
+    "riskLabel": "Moderado",
+    "note": "Condiciones cerca de lo normal o con influencia limitada de El Niño Costero."
+  },
+  {
+    "code": "ARE",
+    "name": "Arequipa",
+    "lat": -16.4,
+    "lon": -71.54,
+    "sstAnom": 0.32,
+    "precipAnom": -4.6,
+    "riskLevel": 1,
+    "riskLabel": "Bajo",
+    "note": "Condiciones cerca de lo normal o con influencia limitada de El Niño Costero."
+  },
+  {
+    "code": "MOQ",
+    "name": "Moquegua",
+    "lat": -17.2,
+    "lon": -70.94,
+    "sstAnom": 0.32,
+    "precipAnom": 1.4,
+    "riskLevel": 1,
+    "riskLabel": "Bajo",
+    "note": "Condiciones cerca de lo normal o con influencia limitada de El Niño Costero."
+  },
+  {
+    "code": "TAC",
+    "name": "Tacna",
+    "lat": -18.01,
+    "lon": -70.25,
+    "sstAnom": 0.56,
+    "precipAnom": 4.1,
+    "riskLevel": 1,
+    "riskLabel": "Bajo",
+    "note": "Condiciones cerca de lo normal o con influencia limitada de El Niño Costero."
+  }
+]

@@ -158,3 +158,33 @@ Stage Summary:
 - Tests: 187 passed (+8), 3 skipped. Lint limpio.
 - Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo.
 - Próximo recomendado: completar el benchmark LLM con candidatos WebLLM/Transformers.js concretos, integrar salidas del pipeline Python (python/out) en public/data, y considerar animación del Hovmöller.
+
+---
+Task ID: 5-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA, 2 nuevas vistas (Pronóstico ENSO + Impacto regional Perú), tema oscuro con toggle, 9 nuevos tests.
+
+Work Log:
+- Revisado worklog.md (secciones previas 0, 2-pipeline, 3-verify, 4-cron-review). Estado previo: 13 vistas, 187 tests, artefactos estáticos, LICENSE.
+- QA inicial con agent-browser: verificadas las 13 vistas existentes — todas renderizan. Chatbot consistente (ICEN +1.77 °C / RONI +1.39 °C coherentes con alertas oficiales). `bun run lint` limpio; `python -m pytest`: 187 passed, 3 skipped.
+- AÑADIDAS 2 NUEVAS VISTAS (total ahora 15):
+  1. **Pronóstico ENSO** — `src/components/enso/ForecastsView.tsx`: ensamble probabilístico por trimestre (12 trimestres) con gráfico de pluma (plume) SVG de 9 trayectorias, tabla de probabilidades categorizadas (El Niño/Neutral/La Niña, umbral ±0.5 °C), tarjetas resumen (trimestre inicial, mayor probabilidad, estado observado) y serie histórica reciente. Etiquetado claramente como interpretación del observatorio; deriva a IRI/CPC/NMME como fuentes oficiales.
+  2. **Impacto regional — Perú** — `src/components/enso/RegionalView.tsx`: mapa esquemático de la costa peruana con 10 departamentos costeros (Tumbes a Tacna), marcadores con color por nivel de riesgo relativo (1-4), tabla detallada (TSM, precipitación, riesgo, nota), tarjetas de los 3 de mayor riesgo. La influencia de El Niño Costero es mayor en el norte. Etiquetado como interpretación; deriva a INDECI/CENEPRED/SENAMHI/ENFEN.
+- AÑADIDOS generadores de datos a la fuente única de verdad (`src/lib/enso/series.ts`): `generateForecasts()` (decaimiento exponencial + estacionalidad + ensamble de 9 miembros + CDF normal para probabilidades) y `generateRegionImpacts()` (10 departamentos costeros con peso latitudinal).
+- AÑADIDO TEMA OSCURO con toggle:
+  - `src/components/enso/ThemeToggle.tsx` (next-themes, Sun/Moon icons, SSR-safe con mounted check).
+  - ThemeProvider configurado en `src/app/layout.tsx` (attribute="class", defaultTheme="light", enableSystem).
+  - Variables CSS de tema oscuro refinadas en `globals.css` con tinte océano (teal/ámbar, sin azul índigo): background, card, primary, enso-coastal/basin/warm/cool, charts, sidebar.
+  - Toggle colocado en el header (visible en desktop y móvil).
+  - Verificado: al activar, `document.documentElement.classList` contiene `dark` y el background cambia correctamente.
+- REGENERADOS artefactos estáticos en `public/data/` (ahora 17 archivos: 7 CSV + 10 JSON, +forecasts.json +regional-impact.json). Script `scripts/gen-static-data.ts` actualizado.
+- AÑADIDOS 9 nuevos tests de contrato en `python/tests/test_forecasts_and_regional.py`: artefacto existe, probabilidades suman ~100%, ensamble de 9 miembros, etiquetado como interpretación, cobertura de departamentos costeros, niveles de riesgo en rango, norte con riesgo >= sur, no afirma ser alerta oficial, toggle de tema existe.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **196 passed** (+9), 3 skipped. Las 15 vistas renderizan sin errores. Dev log limpio (200 OK; los 500 transitorios fueron durante hot reload al añadir componentes). Chatbot verificado con cita [EVID-icen] y consistencia de datos. Dark mode funcional.
+
+Stage Summary:
+- Nuevas vistas: Pronóstico ENSO (ensamble probabilístico con plume) + Impacto regional Perú (mapa de departamentos costeros con riesgo). Total vistas: 15.
+- Tema oscuro: toggle next-themes con variables CSS ocean-themed refinadas; verificado funcional.
+- Artefactos estáticos: 17 archivos en public/data/ (+forecasts.json, +regional-impact.json).
+- Tests: 196 passed (+9), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Pronósticos e impactos claramente etiquetados como interpretación del observatorio, no oficiales.
+- Próximo recomendado: expandir docs/evaluacion-llm.md con modelos WebLLM/Transformers.js concretos y resultados, integrar salidas del pipeline Python en public/data, añadir skeletons de carga.

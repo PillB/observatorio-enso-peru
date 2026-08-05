@@ -385,3 +385,142 @@ export function windGridForMonth(monthIdx: number): WindVector[] {
 
 export { GRID_LATS, GRID_LONS };
 
+// ============================================================================
+// Pronósticos probabilísticos ENSO (estilo IRI/CPC plume).
+// ----------------------------------------------------------------------------
+// Síntesis determinista coherente con el estado actual: a partir del mes de
+// corte (jul 2026, El Niño en desarrollo), se proyectan 12 trimestres
+// consecutivos con un ensamble de trayectorias y probabilidades categorizadas
+// (El Niño / Neutral / La Niña). Se etiqueta como pronóstico del observatorio;
+// los pronósticos oficiales provienen de IRI/CPC y NMME.
+// ============================================================================
+
+export interface ForecastSeason {
+  /** Trimestre etiquetado, p.ej. "JAS 2026". */
+  label: string;
+  /** Mes central ISO. */
+  centerMonth: string;
+  /** Probabilidades [%] El Niño / Neutral / La Niña (suman 100). */
+  probNino: number;
+  probNeutral: number;
+  probNina: number;
+  /** Valor central pronosticado de Niño 3.4 (°C). */
+  forecastN34: number;
+  /** Ensamble de trayectorias (valores de Niño 3.4 en °C). */
+  plume: number[];
+}
+
+const SEASON_LABELS = ["JAS", "ASO", "SON", "OND", "NDJ", "DJF", "JFM", "FMA", "MAM", "AMJ", "MJJ", "JJA"];
+
+function seasonLabel(monthIdx: number): string {
+  const y = 1990 + Math.floor(monthIdx / 12);
+  const m = monthIdx % 12;
+  return `${SEASON_LABELS[(m - 5 + 12) % 12]} ${y}`;
+}
+
+/** Genera el prono probabilístico a partir del mes de corte. */
+export function generateForecasts(): ForecastSeason[] {
+  const all = generateAllSeries();
+  const startIdx = MONTHS.length - 1; // jul 2026
+  const currentN34 = all.nino34.points[startIdx]?.value ?? 0.5;
+  const out: ForecastSeason[] = [];
+  for (let k = 0; k < 12; k++) {
+    const idx = startIdx + k;
+    // Decaimiento de la señal hacia el futuro + ruido estacional.
+    const decay = Math.exp(-k / 6);
+    const seasonal = 0.15 * Math.cos((2 * Math.PI * ((idx % 12) - 11)) / 12);
+    const central = currentN34 * decay + seasonal + gaussian(idx * 37 + 101) * 0.1;
+    // Ensamble de 9 trayectorias alrededor del valor central.
+    const plume = Array.from({ length: 9 }, (_, i) => {
+      const spread = 0.2 + k * 0.06; // la incertidumbre crece con el horizonte
+      return Math.round((central + gaussian(idx * 41 + i * 13) * spread) * 100) / 100;
+    });
+    // Probabilidades categorizadas (categorías de cuenca: ±0.5 °C).
+    const sigma = 0.3 + k * 0.08;
+    const pnino = Math.round(clamp50(clamp01(phi((central - 0.5) / sigma)) * 100));
+    const pnina = Math.round(clamp50(clamp01(phi((-0.5 - central) / sigma)) * 100));
+    const pneutral = Math.max(0, 100 - pnino - pnina);
+    out.push({
+      label: seasonLabel(idx),
+      centerMonth: MONTHS[Math.min(idx, MONTHS.length - 1)] ?? MONTHS[MONTHS.length - 1],
+      probNino: pnino,
+      probNeutral: pneutral,
+      probNina: pnina,
+      forecastN34: Math.round(central * 100) / 100,
+      plume,
+    });
+  }
+  return out;
+}
+
+function clamp01(x: number): number { return Math.max(0, Math.min(1, x)); }
+function clamp50(x: number): number { return Math.max(0, Math.min(95, x)); }
+/** CDF normal estándar aproximada. */
+function phi(z: number): number {
+  return 0.5 * (1 + erf(z / Math.SQRT2));
+}
+/** Aproximación de Abramowitz-Stegun para erf. */
+function erf(x: number): number {
+  const t = 1 / (1 + 0.3275911 * Math.abs(x));
+  const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+  return x >= 0 ? y : -y;
+}
+
+// ============================================================================
+// Impacto regional en departamentos costeros del Perú.
+// ----------------------------------------------------------------------------
+// Síntesis coherente con el estado ENSO: durante El Niño Costero, la costa
+// norte (Tumbes, Piura, Lambayeque) presenta anomalías de precipitación y TSM
+// más marcadas. Los valores son interpretación generada por el observatorio.
+// ============================================================================
+
+export interface RegionImpact {
+  code: string;
+  name: string;
+  lat: number;
+  lon: number;
+  /** Anomalía de TSM costera estimada (°C). */
+  sstAnom: number;
+  /** Anomalía de precipitación estimada (%, positivo = más lluvia). */
+  precipAnom: number;
+  /** Nivel de riesgo relativo derivado (1-4). */
+  riskLevel: 1 | 2 | 3 | 4;
+  /** Etiqueta de riesgo en español. */
+  riskLabel: string;
+  note: string;
+}
+
+export function generateRegionImpacts(): RegionImpact[] {
+  const all = generateAllSeries();
+  const lastIdx = MONTHS.length - 1;
+  const n12 = all.nino12.points[lastIdx]?.value ?? 0;
+  const n34 = all.nino34.points[lastIdx]?.value ?? 0;
+  // Departamentos costeros de norte a sur.
+  const deps: Omit<RegionImpact, "sstAnom" | "precipAnom" | "riskLevel" | "riskLabel" | "note">[] = [
+    { code: "TUM", name: "Tumbes", lat: -3.57, lon: -80.45 },
+    { code: "PIU", name: "Piura", lat: -5.19, lon: -81.02 },
+    { code: "LAM", name: "Lambayeque", lat: -6.71, lon: -79.91 },
+    { code: "LBR", name: "La Libertad", lat: -7.62, lon: -79.4 },
+    { code: "ANC", name: "Áncash", lat: -9.53, lon: -77.67 },
+    { code: "LIM", name: "Lima", lat: -12.05, lon: -77.04 },
+    { code: "ICA", name: "Ica", lat: -14.07, lon: -75.73 },
+    { code: "ARE", name: "Arequipa", lat: -16.4, lon: -71.54 },
+    { code: "MOQ", name: "Moquegua", lat: -17.2, lon: -70.94 },
+    { code: "TAC", name: "Tacna", lat: -18.01, lon: -70.25 },
+  ];
+  return deps.map((d, i) => {
+    // La influencia costera decae hacia el sur.
+    const latW = Math.max(0, 1 - Math.abs(d.lat + 6) / 14);
+    const sst = Math.round((n12 * latW + n34 * 0.2 * (1 - latW) + gaussian(i * 23 + 7) * 0.15) * 100) / 100;
+    // Precipitación: El Niño Costero ⇒ más lluvia en el norte; cuenca débil efecto.
+    const precip = Math.round((sst * 45 * latW + gaussian(i * 29 + 3) * 8) * 10) / 10;
+    const risk: 1 | 2 | 3 | 4 = precip > 60 ? 4 : precip > 30 ? 3 : precip > 10 ? 2 : 1;
+    const riskLabel = risk === 4 ? "Muy alto" : risk === 3 ? "Alto" : risk === 2 ? "Moderado" : "Bajo";
+    const note = risk >= 3
+      ? "Mayor probabilidad de lluvias por encima de lo normal asociada a El Niño Costero. Interpretación del observatorio."
+      : "Condiciones cerca de lo normal o con influencia limitada de El Niño Costero.";
+    return { ...d, sstAnom: sst, precipAnom: precip, riskLevel: risk, riskLabel, note };
+  });
+}
+
+

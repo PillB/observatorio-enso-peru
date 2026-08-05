@@ -10,21 +10,25 @@ import { HistoricalView } from "@/components/enso/HistoricalView";
 import { MapsView } from "@/components/enso/MapsView";
 import { WindMapView } from "@/components/enso/WindMapView";
 import { TimelapseView } from "@/components/enso/TimelapseView";
+import { ForecastsView } from "@/components/enso/ForecastsView";
+import { RegionalView } from "@/components/enso/RegionalView";
 import { DownloadsView } from "@/components/enso/DownloadsView";
 import { ChatView } from "@/components/enso/ChatView";
 import { MethodologyView } from "@/components/enso/MethodologyView";
 import { SourcesView } from "@/components/enso/SourcesView";
+import { ThemeToggle } from "@/components/enso/ThemeToggle";
 import { buildCurrentStatus } from "@/lib/enso/derived";
 import { AS_OF_DATE } from "@/lib/enso/series";
 import {
   LayoutDashboard, Waves, Wind, Thermometer, Gauge, History, Map, Database,
   Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock, Film, Wind as WindIcon,
+  TrendingUp, MapPin,
 } from "lucide-react";
 
 type ViewId =
   | "overview" | "tsm" | "vientos" | "termoclina" | "soi"
-  | "historico" | "mapas" | "viento-mapa" | "animacion" | "datos"
-  | "asistente" | "metodologia" | "fuentes";
+  | "historico" | "mapas" | "viento-mapa" | "animacion" | "pronostico" | "regional"
+  | "datos" | "asistente" | "metodologia" | "fuentes";
 
 const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coastal" | "basin" }[] = [
   { id: "overview", label: "Resumen", icon: LayoutDashboard },
@@ -36,6 +40,8 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "mapas", label: "Mapas", icon: Map },
   { id: "viento-mapa", label: "Viento mapa", icon: WindIcon },
   { id: "animacion", label: "Animación", icon: Film },
+  { id: "pronostico", label: "Pronóstico", icon: TrendingUp },
+  { id: "regional", label: "Perú regional", icon: MapPin },
   { id: "datos", label: "Datos", icon: Database },
   { id: "asistente", label: "Asistente", icon: Bot },
   { id: "metodologia", label: "Metodología", icon: BookOpen },
@@ -52,6 +58,8 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   mapas: { title: "Mapas de anomalía", subtitle: "TSM y D20 sobre el Pacífico ecuatorial." },
   "viento-mapa": { title: "Mapa de viento", subtitle: "Vectores de anomalía del viento a 850 hPa con convención de signos." },
   animacion: { title: "Animación temporal", subtitle: "Evolución mensual del campo de anomalía con controles accesibles." },
+  pronostico: { title: "Pronóstico ENSO", subtitle: "Ensamble probabilístico por trimestre (interpretación del observatorio)." },
+  regional: { title: "Impacto regional — Perú", subtitle: "Departamentos costeros: TSM, precipitación y riesgo relativo derivado." },
   datos: { title: "Datos y descargas", subtitle: "Tabla histórica filtrable, CSV por serie y del resultado filtrado." },
   asistente: { title: "Asistente conversacional", subtitle: "Respuestas con base determinista (grounded) en los datos del observatorio." },
   metodologia: { title: "Metodología", subtitle: "Definiciones, convenciones, climatología y comparación de fuentes." },
@@ -108,10 +116,15 @@ export default function Home() {
             </span>
           </div>
 
+          {/* Toggle de tema (claro/oscuro) */}
+          <div className="lg:ml-2">
+            <ThemeToggle />
+          </div>
+
           {/* Botón menú móvil */}
           <button
             onClick={() => setNavOpen((v) => !v)}
-            className="ml-auto inline-flex items-center justify-center rounded-md border p-2 lg:hidden enso-focus-ring"
+            className="inline-flex items-center justify-center rounded-md border p-2 lg:hidden enso-focus-ring"
             aria-label="Abrir menú de navegación"
             aria-expanded={navOpen}
           >
@@ -198,6 +211,8 @@ export default function Home() {
           {view === "mapas" && <MapsView />}
           {view === "viento-mapa" && <WindMapView />}
           {view === "animacion" && <TimelapseView />}
+          {view === "pronostico" && <ForecastsView />}
+          {view === "regional" && <RegionalView />}
           {view === "datos" && <DownloadsView />}
           {view === "asistente" && <ChatView />}
           {view === "metodologia" && <MethodologyView />}

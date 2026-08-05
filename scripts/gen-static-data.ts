@@ -2,7 +2,7 @@
 // Ejecutar con: bun run scripts/gen-static-data.ts
 // Produce CSV y JSON a partir de la fuente única de verdad (src/lib/enso).
 
-import { generateAllSeries, MONTHS, AS_OF_DATE, AS_OF_MONTH, sstGridForMonth, d20GridForMonth, windGridForMonth } from "../src/lib/enso/series";
+import { generateAllSeries, MONTHS, AS_OF_DATE, AS_OF_MONTH, sstGridForMonth, d20GridForMonth, windGridForMonth, generateForecasts, generateRegionImpacts } from "../src/lib/enso/series";
 import { buildCurrentStatus, buildQualitySummary } from "../src/lib/enso/derived";
 import { INDICATORS } from "../src/lib/enso/methodology";
 import { SOURCES } from "../src/lib/enso/sources";
@@ -127,4 +127,8 @@ writeFileSync(join(OUT, "indicators.json"), JSON.stringify(INDICATORS, null, 2))
   writeFileSync(join(OUT, "latest-grid.json"), JSON.stringify(grids, null, 2));
 }
 
-console.log(`Artefactos estáticos generados en public/data/ (${ids.length} CSV + 8 JSON)`);
+// 9) forecasts.json + regional-impact.json
+writeFileSync(join(OUT, "forecasts.json"), JSON.stringify(generateForecasts(), null, 2));
+writeFileSync(join(OUT, "regional-impact.json"), JSON.stringify(generateRegionImpacts(), null, 2));
+
+console.log(`Artefactos estáticos generados en public/data/ (${ids.length} CSV + 10 JSON)`);

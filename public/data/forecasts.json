@@ -1,0 +1,230 @@
+[
+  {
+    "label": "ASO 2026",
+    "centerMonth": "2026-07",
+    "probNino": 95,
+    "probNeutral": 5,
+    "probNina": 0,
+    "forecastN34": 1.16,
+    "plume": [
+      1.19,
+      1.59,
+      1.11,
+      1.22,
+      1.12,
+      1.51,
+      1.14,
+      1.01,
+      1.22
+    ]
+  },
+  {
+    "label": "SON 2026",
+    "centerMonth": "2026-07",
+    "probNino": 89,
+    "probNeutral": 11,
+    "probNina": 0,
+    "forecastN34": 0.97,
+    "plume": [
+      0.65,
+      0.73,
+      0.63,
+      1.3,
+      1.12,
+      0.95,
+      1.26,
+      0.51,
+      0.55
+    ]
+  },
+  {
+    "label": "OND 2026",
+    "centerMonth": "2026-07",
+    "probNino": 84,
+    "probNeutral": 16,
+    "probNina": 0,
+    "forecastN34": 0.96,
+    "plume": [
+      0.92,
+      0.97,
+      0.79,
+      1.51,
+      1.3,
+      1.19,
+      0.93,
+      0.88,
+      0.23
+    ]
+  },
+  {
+    "label": "NDJ 2026",
+    "centerMonth": "2026-07",
+    "probNino": 68,
+    "probNeutral": 31,
+    "probNina": 1,
+    "forecastN34": 0.75,
+    "plume": [
+      0.44,
+      0.01,
+      1.29,
+      1.37,
+      0.35,
+      0.39,
+      0.14,
+      1.11,
+      0.52
+    ]
+  },
+  {
+    "label": "DJF 2026",
+    "centerMonth": "2026-07",
+    "probNino": 74,
+    "probNeutral": 25,
+    "probNina": 1,
+    "forecastN34": 0.89,
+    "plume": [
+      1.29,
+      -0.15,
+      2.03,
+      0.38,
+      1.41,
+      0.6,
+      1.69,
+      0.36,
+      0.4
+    ]
+  },
+  {
+    "label": "JFM 2026",
+    "centerMonth": "2026-07",
+    "probNino": 55,
+    "probNeutral": 39,
+    "probNina": 6,
+    "forecastN34": 0.59,
+    "plume": [
+      1.22,
+      0.59,
+      0.37,
+      1.25,
+      -0.04,
+      0.69,
+      0.67,
+      0.34,
+      0.92
+    ]
+  },
+  {
+    "label": "FMA 2027",
+    "centerMonth": "2026-07",
+    "probNino": 45,
+    "probNeutral": 43,
+    "probNina": 12,
+    "forecastN34": 0.41,
+    "plume": [
+      0.76,
+      0.73,
+      -0.52,
+      0.49,
+      0.56,
+      -0.1,
+      0.77,
+      -0.34,
+      0.93
+    ]
+  },
+  {
+    "label": "MAM 2027",
+    "centerMonth": "2026-07",
+    "probNino": 47,
+    "probNeutral": 39,
+    "probNina": 14,
+    "forecastN34": 0.43,
+    "plume": [
+      -0.28,
+      0.92,
+      0.29,
+      -0.28,
+      1.4,
+      -0.22,
+      -0.18,
+      1.24,
+      0.34
+    ]
+  },
+  {
+    "label": "AMJ 2027",
+    "centerMonth": "2026-07",
+    "probNino": 41,
+    "probNeutral": 39,
+    "probNina": 20,
+    "forecastN34": 0.28,
+    "plume": [
+      -0.37,
+      -0.35,
+      -0.06,
+      0.14,
+      0.05,
+      0.19,
+      1.03,
+      0.32,
+      0.54
+    ]
+  },
+  {
+    "label": "MJJ 2027",
+    "centerMonth": "2026-07",
+    "probNino": 39,
+    "probNeutral": 37,
+    "probNina": 24,
+    "forecastN34": 0.21,
+    "plume": [
+      0.71,
+      -1.2,
+      0.43,
+      0.87,
+      -1.2,
+      0.15,
+      0.16,
+      0.02,
+      -0.05
+    ]
+  },
+  {
+    "label": "JJA 2027",
+    "centerMonth": "2026-07",
+    "probNino": 41,
+    "probNeutral": 34,
+    "probNina": 25,
+    "forecastN34": 0.25,
+    "plume": [
+      1.26,
+      -0.01,
+      2.33,
+      -0.25,
+      0.56,
+      0.91,
+      -0.26,
+      -0.07,
+      0.83
+    ]
+  },
+  {
+    "label": "JAS 2027",
+    "centerMonth": "2026-07",
+    "probNino": 38,
+    "probNeutral": 33,
+    "probNina": 29,
+    "forecastN34": 0.14,
+    "plume": [
+      0.24,
+      0.6,
+      -0.02,
+      -0.97,
+      -0.8,
+      -1.58,
+      0.06,
+      -0.74,
+      0.98
+    ]
+  }
+]
