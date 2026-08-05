@@ -590,4 +590,190 @@ export function buildEventSeries(eventId: string): EventSeries | null {
   };
 }
 
+// ============================================================================
+// Banda de probabilidad ENSO (ventana móvil).
+// ----------------------------------------------------------------------------
+// Para cada mes, calcula la fracción de meses (en una ventana móvil de N meses
+// alrededor) que estuvieron en cada categoría (El Niño / Neutral / La Niña).
+// Es cálculo determinista en código; el modelo no participa.
+// ============================================================================
+
+export interface ProbabilityBand {
+  month: string;
+  probNino: number; // 0-100
+  probNeutral: number;
+  probNina: number;
+  /** Valor central de Niño 3.4 en la ventana. */
+  meanN34: number | null;
+}
+
+export function buildProbabilityBands(windowMonths = 12): ProbabilityBand[] {
+  const all = generateAllSeries();
+  const n34 = all.nino34.points;
+  const result: ProbabilityBand[] = [];
+  const half = Math.floor(windowMonths / 2);
+  for (let i = 0; i < n34.length; i++) {
+    const start = Math.max(0, i - half);
+    const end = Math.min(n34.length - 1, i + half);
+    let nino = 0, neutral = 0, nina = 0, count = 0, sum = 0;
+    for (let j = start; j <= end; j++) {
+      const v = n34[j].value;
+      if (v === null) continue;
+      count++;
+      sum += v;
+      if (v >= 0.5) nino++;
+      else if (v <= -0.5) nina++;
+      else neutral++;
+    }
+    if (count === 0) {
+      result.push({ month: n34[i].month, probNino: 0, probNeutral: 0, probNina: 0, meanN34: null });
+    } else {
+      result.push({
+        month: n34[i].month,
+        probNino: Math.round((nino / count) * 100),
+        probNeutral: Math.round((neutral / count) * 100),
+        probNina: Math.round((nina / count) * 100),
+        meanN34: Math.round((sum / count) * 100) / 100,
+      });
+    }
+  }
+  return result;
+}
+
+// ============================================================================
+// Teleconexiones e impactos globales de ENSO.
+// ----------------------------------------------------------------------------
+// Describe los impactos típicos de El Niño y La Niña sobre diferentes regiones
+// del mundo. Es conocimiento climático curado, no un pronóstico.
+// ============================================================================
+
+export interface TeleconnectionImpact {
+  region: string;
+  lat: number;
+  lon: number;
+  /** Impacto durante El Niño. */
+  ninoImpact: string;
+  /** Impacto durante La Niña. */
+  ninaImpact: string;
+  /** Confianza en la teleconexión (Alta/Media/Baja). */
+  confidence: "Alta" | "Media" | "Baja";
+  /** Variables afectadas. */
+  variables: string[];
+}
+
+export const TELECONNECTIONS: TeleconnectionImpact[] = [
+  {
+    region: "Perú — costa norte",
+    lat: -5, lon: -81,
+    ninoImpact: "Lluvias intensas, inundaciones, calentamiento costero (El Niño Costero).",
+    ninaImpact: "Condiciones más secas, enfriamiento costero.",
+    confidence: "Alta",
+    variables: ["Precipitación", "TSM costera"],
+  },
+  {
+    region: "Perú — sierra sur",
+    lat: -14, lon: -72,
+    ninoImpact: "Sequías, déficit de precipitación en altiplano.",
+    ninaImpact: "Lluvias cercanas a lo normal o superiores.",
+    confidence: "Media",
+    variables: ["Precipitación"],
+  },
+  {
+    region: "Ecuador — costa",
+    lat: -1, lon: -80,
+    ninoImpact: "Lluvias intensas, inundaciones (junto con Perú costa norte).",
+    ninaImpact: "Condiciones secas.",
+    confidence: "Alta",
+    variables: ["Precipitación", "TSM"],
+  },
+  {
+    region: "Brasil — Amazonía nororiental",
+    lat: -5, lon: -50,
+    ninoImpact: "Sequías, riesgo de incendios.",
+    ninaImpact: "Lluvias abundantes.",
+    confidence: "Alta",
+    variables: ["Precipitación"],
+  },
+  {
+    region: "Brasil — sur",
+    lat: -30, lon: -52,
+    ninoImpact: "Lluvias por encima de lo normal.",
+    ninaImpact: "Sequías.",
+    confidence: "Alta",
+    variables: ["Precipitación"],
+  },
+  {
+    region: "Australia — este",
+    lat: -30, lon: 145,
+    ninoImpact: "Sequías, olas de calor, riesgo de incendios.",
+    ninaImpact: "Lluvias abundantes, riesgo de inundaciones.",
+    confidence: "Alta",
+    variables: ["Precipitación", "Temperatura"],
+  },
+  {
+    region: "Indonesia",
+    lat: -2, lon: 118,
+    ninoImpact: "Sequías, riesgo de incendios forestales.",
+    ninaImpact: "Lluvias abundantes.",
+    confidence: "Alta",
+    variables: ["Precipitación"],
+  },
+  {
+    region: "India — monzón",
+    lat: 22, lon: 78,
+    ninoImpact: "Monzón debilitado, menos precipitación.",
+    ninaImpact: "Monzón fortalecido.",
+    confidence: "Alta",
+    variables: ["Precipitación"],
+  },
+  {
+    region: "EE. UU. — sur",
+    lat: 32, lon: -97,
+    ninoImpact: "Invierno más húmedo y fresco en el sur.",
+    ninaImpact: "Invierno más seco y cálido.",
+    confidence: "Alta",
+    variables: ["Precipitación", "Temperatura"],
+  },
+  {
+    region: "EE. UU. — noreste",
+    lat: 42, lon: -75,
+    ninoImpact: "Invierno más cálido.",
+    ninaImpact: "Invierno más frío y nevoso.",
+    confidence: "Media",
+    variables: ["Temperatura"],
+  },
+  {
+    region: "África oriental",
+    lat: 0, lon: 38,
+    ninoImpact: "Lluvias por encima de lo normal en cortas estaciones (oct-dic, mar-may).",
+    ninaImpact: "Sequías.",
+    confidence: "Media",
+    variables: ["Precipitación"],
+  },
+  {
+    region: "África austral",
+    lat: -20, lon: 28,
+    ninoImpact: "Sequías.",
+    ninaImpact: "Lluvias por encima de lo normal.",
+    confidence: "Media",
+    variables: ["Precipitación"],
+  },
+  {
+    region: "Argentina — pampa",
+    lat: -35, lon: -63,
+    ninoImpact: "Lluvias por encima de lo normal.",
+    ninaImpact: "Sequías.",
+    confidence: "Media",
+    variables: ["Precipitación"],
+  },
+  {
+    region: "Asia oriental (China/Japón)",
+    lat: 35, lon: 115,
+    ninoImpact: "Verano más fresco, anomalías en el monzón.",
+    ninaImpact: "Verano más cálido.",
+    confidence: "Media",
+    variables: ["Temperatura", "Precipitación"],
+  },
+];
+
 export { AS_OF_DATE, AS_OF_MONTH, generateAllSeries, getSeries, latest };

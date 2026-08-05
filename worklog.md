@@ -263,3 +263,27 @@ Stage Summary:
 - Tests: 228 passed (+11), 3 skipped. Lint limpio.
 - Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Estacionalidad y comparación calculadas en código; el modelo no participa.
 - Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
+
+---
+Task ID: 9-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA, 2 nuevas vistas (Banda de probabilidad ENSO + Teleconexiones globales), 13 nuevos tests.
+
+Work Log:
+- Revisado worklog.md (secciones previas hasta 8-cron-review). Estado previo: 21 vistas, 228 tests.
+- QA inicial con agent-browser: verificadas las 21 vistas existentes — todas renderizan. Chatbot consistente (ICEN +1.77 °C / RONI +1.39 °C coherentes con alertas oficiales); corrige correctamente «SOI costero». `bun run lint` limpio; `python -m pytest`: 228 passed, 3 skipped.
+- AÑADIDAS 2 NUEVAS VISTAS (total ahora 23):
+  1. **Banda de probabilidad ENSO** — `src/components/enso/ProbabilityView.tsx`: para cada mes, calcula la fracción de meses (en ventana móvil configurable de 6/12/24/36 meses) que estuvieron en cada categoría (El Niño ≥+0.5 °C, Neutral ±0.5 °C, La Niña ≤−0.5 °C). Gráfico de bandas apiladas SVG (cálido/gris/frío), tarjetas de probabilidad actual, serie temporal del valor medio de Niño 3.4 en la ventana, tabla de periodos con alta probabilidad de El Niño (>80%). Cálculo determinista en código.
+  2. **Teleconexiones e impactos globales** — `src/components/enso/TeleconnectionsView.tsx`: mapa mundial esquemático SVG con 14 regiones de impacto (Perú costa norte/sierra sur, Ecuador, Brasil Amazonía/sur, Australia, Indonesia, India monzón, EE. UU. sur/noreste, África oriental/austral, Argentina pampa, Asia oriental), marcadores interactivos con panel de detalle, tarjetas por región con impacto de El Niño/La Niña, nivel de confianza (Alta/Media/Baja) y variables afectadas, filtro por fase. Etiquetado como conocimiento climático curado, no pronóstico; deriva a servicios meteorológicos nacionales.
+- AÑADIDA lógica a `src/lib/enso/derived.ts`: `buildProbabilityBands()` (ventana móvil con fracciones por categoría ±0.5 °C sobre Niño 3.4) y `TELECONNECTIONS` (14 regiones con impacto El Niño/La Niña, confianza y variables).
+- Corregido un bug de parsing JSX en ProbabilityView (carácter `>` literal en texto reemplazado por «más de»).
+- Corregido texto en inglés («above lo normal» → «por encima de lo normal») en teleconexiones.
+- AÑADIDOS 13 nuevos tests de contrato en `python/tests/test_probability_and_teleconnections.py`: cálculo de bandas, umbral ±0.5, ventana configurable, selector de ventana; teleconexiones globales, incluyen Perú, etiquetadas como curado, deriva a oficiales, niveles de confianza, impacto Niño/Niña, sin inglés, mapa mundial, filtro por fase.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **241 passed** (+13), 3 skipped. Las 23 vistas renderizan sin errores. Dev log limpio (200 OK, sin errores de runtime). Chatbot verificado: corrige «SOI costero» y cita evidencia con datos consistentes.
+
+Stage Summary:
+- Nuevas vistas: Banda de probabilidad ENSO (ventana móvil con bandas apiladas) + Teleconexiones globales (mapa mundial con 14 regiones de impacto). Total vistas: 23.
+- Lógica nueva: buildProbabilityBands + TELECONNECTIONS en derived.ts.
+- Tests: 241 passed (+13), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Probabilidad calculada en código; teleconexiones etiquetadas como conocimiento curado, no pronóstico.
+- Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
