@@ -1284,4 +1284,118 @@ export function buildScopeComparison(): ScopeComparison[] {
   ];
 }
 
+// ============================================================================
+// Caja de bigotes: distribución de valores por categoría de evento.
+// ----------------------------------------------------------------------------
+// Para cada indicador, agrupa los valores mensuales por categoría de evento
+// (El Niño / Neutral / La Niña) y calcula los estadísticos de caja: mediana,
+// cuartiles Q1/Q3, bigotes (1.5×RIC), atípicos. Es cálculo determinista.
+// ============================================================================
+
+export interface BoxStats {
+  category: string;
+  q1: number;
+  median: number;
+  q3: number;
+  whiskerMin: number;
+  whiskerMax: number;
+  min: number;
+  max: number;
+  count: number;
+  outliers: number[];
+}
+
+export interface BoxPlotResult {
+  indicatorId: string;
+  label: string;
+  units: string;
+  boxes: BoxStats[];
+}
+
+export function buildBoxPlot(indicatorId: string): BoxPlotResult | null {
+  const all = generateAllSeries();
+  const s = all[indicatorId];
+  if (!s) return null;
+  const groups: Record<string, number[]> = { "El Niño": [], "Neutral": [], "La Niña": [] };
+  // Usar Niño 3.4 como referencia de fase para todos los indicadores
+  const n34 = all.nino34.points;
+  for (let i = 0; i < s.points.length; i++) {
+    const v = s.points[i].value;
+    const phase = n34[i]?.value;
+    if (v === null || phase === null || phase === undefined) continue;
+    const cat = phase >= 0.5 ? "El Niño" : phase <= -0.5 ? "La Niña" : "Neutral";
+    groups[cat].push(v);
+  }
+  const boxes: BoxStats[] = [];
+  for (const cat of ["El Niño", "Neutral", "La Niña"]) {
+    const vals = groups[cat].sort((a, b) => a - b);
+    if (vals.length === 0) {
+      boxes.push({ category: cat, q1: 0, median: 0, q3: 0, whiskerMin: 0, whiskerMax: 0, min: 0, max: 0, count: 0, outliers: [] });
+      continue;
+    }
+    const q = (p: number) => {
+      const idx = (vals.length - 1) * p;
+      const lo = Math.floor(idx), hi = Math.ceil(idx);
+      return lo === hi ? vals[lo] : vals[lo] * (hi - idx) + vals[hi] * (idx - lo);
+    };
+    const q1 = q(0.25), median = q(0.5), q3 = q(0.75);
+    const iqr = q3 - q1;
+    const whiskerMin = Math.max(vals[0], q1 - 1.5 * iqr);
+    const whiskerMax = Math.min(vals[vals.length - 1], q3 + 1.5 * iqr);
+    const outliers = vals.filter((v) => v < whiskerMin || v > whiskerMax);
+    boxes.push({
+      category: cat,
+      q1: Math.round(q1 * 100) / 100,
+      median: Math.round(median * 100) / 100,
+      q3: Math.round(q3 * 100) / 100,
+      whiskerMin: Math.round(whiskerMin * 100) / 100,
+      whiskerMax: Math.round(whiskerMax * 100) / 100,
+      min: Math.round(vals[0] * 100) / 100,
+      max: Math.round(vals[vals.length - 1] * 100) / 100,
+      count: vals.length,
+      outliers: outliers.slice(0, 20).map((v) => Math.round(v * 100) / 100),
+    });
+  }
+  return { indicatorId, label: s.label, units: s.units, boxes };
+}
+
+// ============================================================================
+// Correlación móvil: matriz de correlación en ventanas temporales.
+// ----------------------------------------------------------------------------
+// Calcula la correlación de Pearson entre pares de indicadores en ventanas
+// móviles, mostrando cómo evoluciona la coherencia del sistema ENSO.
+// ============================================================================
+
+export interface RollingCorrelationPoint {
+  month: string;
+  correlations: { pair: string; value: number }[];
+}
+
+export function buildRollingCorrelations(windowMonths = 36): RollingCorrelationPoint[] {
+  const all = generateAllSeries();
+  const ids = Object.keys(all);
+  const pairs: [string, string][] = [];
+  for (let i = 0; i < ids.length; i++) {
+    for (let j = i + 1; j < ids.length; j++) {
+      pairs.push([ids[i], ids[j]]);
+    }
+  }
+  const result: RollingCorrelationPoint[] = [];
+  for (let i = windowMonths - 1; i < all[ids[0]].points.length; i++) {
+    const month = all[ids[0]].points[i].month;
+    const correlations: { pair: string; value: number }[] = [];
+    for (const [a, b] of pairs) {
+      const xs: number[] = [], ys: number[] = [];
+      for (let k = i - windowMonths + 1; k <= i; k++) {
+        const va = all[a].points[k].value, vb = all[b].points[k].value;
+        if (va !== null && vb !== null) { xs.push(va); ys.push(vb); }
+      }
+      if (xs.length < windowMonths / 2) { correlations.push({ pair: `${a}-${b}`, value: 0 }); continue; }
+      correlations.push({ pair: `${a}-${b}`, value: Math.round(pearson(xs, ys) * 100) / 100 });
+    }
+    result.push({ month, correlations });
+  }
+  return result;
+}
+
 export { AS_OF_DATE, AS_OF_MONTH, generateAllSeries, getSeries, latest };

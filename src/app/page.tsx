@@ -26,6 +26,8 @@ import { AlertHistoryView } from "@/components/enso/AlertHistoryView";
 import { PhaseDiagramView } from "@/components/enso/PhaseDiagramView";
 import { EventCatalogView } from "@/components/enso/EventCatalogView";
 import { ScopeComparisonView } from "@/components/enso/ScopeComparisonView";
+import { BoxPlotView } from "@/components/enso/BoxPlotView";
+import { RollingCorrelationView } from "@/components/enso/RollingCorrelationView";
 import { DownloadsView } from "@/components/enso/DownloadsView";
 import { ChatView } from "@/components/enso/ChatView";
 import { MethodologyView } from "@/components/enso/MethodologyView";
@@ -38,13 +40,14 @@ import {
   Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock, Film, Wind as WindIcon,
   TrendingUp, MapPin, AlertTriangle, GitCompare, BookA, Layers, Calendar, Layers3,
   Activity, Globe, LineChart, FileText, ScatterChart, Timer, Table, Columns2,
+  Box, Grid3x3,
 } from "lucide-react";
 
 type ViewId =
   | "overview" | "tsm" | "vientos" | "termoclina" | "soi"
   | "historico" | "mapas" | "viento-mapa" | "animacion" | "pronostico" | "regional"
-  | "alertas" | "alertas-historial" | "correlaciones" | "compuesto" | "eventos-comparar" | "estacionalidad"
-  | "probabilidad" | "teleconexiones" | "tendencias" | "fichas" | "fases" | "catalogo" | "costero-vs-cuenca"
+  | "alertas" | "alertas-historial" | "correlaciones" | "correlacion-movil" | "compuesto" | "eventos-comparar" | "estacionalidad"
+  | "probabilidad" | "teleconexiones" | "tendencias" | "fichas" | "fases" | "catalogo" | "costero-vs-cuenca" | "bigotes"
   | "datos" | "asistente" | "metodologia" | "glosario" | "fuentes";
 
 const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coastal" | "basin" }[] = [
@@ -58,6 +61,7 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "catalogo", label: "Catálogo eventos", icon: Table },
   { id: "costero-vs-cuenca", label: "Costero vs cuenca", icon: Columns2 },
   { id: "estacionalidad", label: "Estacionalidad", icon: Calendar },
+  { id: "bigotes", label: "Caja de bigotes", icon: Box },
   { id: "mapas", label: "Mapas", icon: Map },
   { id: "viento-mapa", label: "Viento mapa", icon: WindIcon },
   { id: "animacion", label: "Animación", icon: Film },
@@ -70,6 +74,7 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "alertas", label: "Alertas", icon: AlertTriangle },
   { id: "alertas-historial", label: "Historial alertas", icon: Timer },
   { id: "correlaciones", label: "Correlaciones", icon: GitCompare },
+  { id: "correlacion-movil", label: "Correlación móvil", icon: Grid3x3 },
   { id: "compuesto", label: "Índice compuesto", icon: Layers },
   { id: "fichas", label: "Fichas técnicas", icon: FileText },
   { id: "datos", label: "Datos", icon: Database },
@@ -94,11 +99,13 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   alertas: { title: "Alertas y umbrales", subtitle: "Seguimiento de condiciones de activación de evento (derivadas del observatorio)." },
   "alertas-historial": { title: "Historial de alertas", subtitle: "Línea de tiempo de periodos ENSO (reconstrucción derivada del observatorio)." },
   correlaciones: { title: "Correlaciones entre indicadores", subtitle: "Coeficientes de Pearson calculados en código sobre la historia completa." },
+  "correlacion-movil": { title: "Correlación móvil", subtitle: "Evolución temporal de correlaciones entre pares en ventanas móviles." },
   compuesto: { title: "Índice compuesto ENSO", subtitle: "Síntesis integrada de indicadores oceánicos y atmosféricos (interpretación del observatorio)." },
   "eventos-comparar": { title: "Comparador de eventos", subtitle: "Seleccione y compare eventos históricos alineados por mes de pico." },
   catalogo: { title: "Catálogo de eventos ENSO", subtitle: "Tabla maestra filtrable de todos los periodos ENSO con descarga CSV." },
   "costero-vs-cuenca": { title: "Comparación costero vs cuenca", subtitle: "Panel lado a lado con métricas clave de ambas escalas." },
   estacionalidad: { title: "Estacionalidad", subtitle: "Climatología mensual por indicador: promedio, dispersión y valor actual." },
+  bigotes: { title: "Caja de bigotes", subtitle: "Distribución de valores por fase ENSO (El Niño/Neutral/La Niña)." },
   probabilidad: { title: "Banda de probabilidad ENSO", subtitle: "Probabilidad de cada categoría (El Niño/Neutral/La Niña) en ventana móvil." },
   teleconexiones: { title: "Teleconexiones e impactos globales", subtitle: "Impactos típicos de ENSO sobre regiones del mundo (conocimiento climático curado)." },
   tendencias: { title: "Análisis de tendencias", subtitle: "Regresión lineal móvil, R² y detección de cambios de fase ENSO." },
@@ -261,11 +268,13 @@ export default function Home() {
           {view === "alertas" && <AlertsView />}
           {view === "alertas-historial" && <AlertHistoryView />}
           {view === "correlaciones" && <CorrelationsView />}
+          {view === "correlacion-movil" && <RollingCorrelationView />}
           {view === "compuesto" && <CompositeView />}
           {view === "eventos-comparar" && <EventComparisonView />}
           {view === "catalogo" && <EventCatalogView />}
           {view === "costero-vs-cuenca" && <ScopeComparisonView />}
           {view === "estacionalidad" && <SeasonalityView />}
+          {view === "bigotes" && <BoxPlotView />}
           {view === "probabilidad" && <ProbabilityView />}
           {view === "teleconexiones" && <TeleconnectionsView />}
           {view === "tendencias" && <TrendsView />}

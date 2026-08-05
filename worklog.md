@@ -353,3 +353,25 @@ Stage Summary:
 - Tests: 282 passed (+14), 3 skipped. Lint limpio.
 - Integridad científica preservada: no coastal SOI, separación costero/cuenca (reforzada con vista dedicada), convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Catálogo etiquetado como reconstrucción derivada; comparación menciona caso 2017 y cita ENFEN/NOAA/CPC.
 - Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
+
+---
+Task ID: 13-cron-review
+Agent: orchestrator (cron webDevReview)
+Task: Revisión continua — QA, 2 nuevas vistas (Caja de bigotes + Correlación móvil), 14 nuevos tests.
+
+Work Log:
+- Revisado worklog.md (secciones previas hasta 12-cron-review). Estado previo: 29 vistas, 282 tests.
+- QA inicial con agent-browser: verificadas las vistas clave — todas renderizan. Chatbot consistente (ICEN +1.77 °C / RONI +1.39 °C coherentes con alertas oficiales); corrige correctamente «SOI costero». `bun run lint` limpio; `python -m pytest`: 282 passed, 3 skipped.
+- AÑADIDAS 2 NUEVAS VISTAS (total ahora 31):
+  1. **Caja de bigotes** — `src/components/enso/BoxPlotView.tsx`: para cada indicador, agrupa valores mensuales por fase ENSO (El Niño/Neutral/La Niña, según Niño 3.4 ±0.5 °C) y calcula mediana, Q1, Q3, bigotes (1.5×RIC), atípicos. Gráfico SVG de caja de bigotes con cajas coloreadas por fase, tabla de estadísticos por categoría (mínimo, Q1, mediana, Q3, máximo, bigotes, atípicos, conteo), selector de indicador (7 opciones). Cálculo determinista en código.
+  2. **Correlación móvil** — `src/components/enso/RollingCorrelationView.tsx`: evolución temporal de correlaciones de Pearson entre pares de indicadores en ventanas móviles configurables (24/36/60/120 meses), selector de pares (hasta 6), gráfico de líneas de evolución (rango [-1,1] con bandas de umbral), mapa de calor de correlación actual (última ventana) con tarjetas coloreadas. Cálculo determinista en código.
+- AÑADIDA lógica a `src/lib/enso/derived.ts`: `buildBoxPlot()` (agrupa por fase usando Niño 3.4 como referencia, calcula cuartiles con interpolación, bigotes 1.5×RIC, atípicos), `buildRollingCorrelations()` (correlación de Pearson entre todos los pares en ventanas móviles).
+- AÑADIDOS 14 nuevos tests de contrato en `python/tests/test_boxplot_and_rolling.py`: caja agrupa por fase, usa Niño 3.4 ±0.5, calcula cuartiles y bigotes, selector de indicador, gráfico SVG, determinista; correlación móvil usa Pearson, ventana configurable, selector de ventana y pares, gráfico de líneas, mapa de calor, determinista, tabla de estadísticos.
+- Verificación final: `bun run lint` limpio (0 errores, 0 advertencias); `python -m pytest -q`: **296 passed** (+14), 3 skipped. Las 31 vistas renderizan sin errores. Dev log limpio (200 OK, sin errores de runtime). Chatbot verificado: corrige «SOI costero» y cita evidencia con datos consistentes.
+
+Stage Summary:
+- Nuevas vistas: Caja de bigotes (distribución por fase ENSO con cuartiles y atípicos) + Correlación móvil (evolución temporal de Pearson entre pares con mapa de calor). Total vistas: 31.
+- Lógica nueva: buildBoxPlot + buildRollingCorrelations en derived.ts.
+- Tests: 296 passed (+14), 3 skipped. Lint limpio.
+- Integridad científica preservada: no coastal SOI, separación costero/cuenca, convención de viento u>0=este, D20 +=profundo, sin valores fabricados, español formal, paleta teal/ámbar sin índigo. Caja de bigotes y correlación móvil calculadas en código; el modelo no participa.
+- Próximo recomendado: integrar salidas del pipeline Python en public/data, añadir skeletons de carga, considerar animación del Hovmöller, implementar carga opcional de WebLLM.
