@@ -47,15 +47,15 @@ jobs:
       - name: Run pipeline
         run: |
           cd python
-          ARGS="--offline"
+          ARGS=""
           if [ "${{ inputs.force_refresh }}" = "true" ]; then
             ARGS="$ARGS --force"
           fi
           if [ -n "${{ inputs.source }}" ]; then
             ARGS="$ARGS --source ${{ inputs.source }}"
           fi
-          python -m enso.cli run $ARGS || true
-          python -m enso.cli validate || true
+          python -m enso.cli run $ARGS
+          python -m enso.cli validate
 
       - name: Generate health and required data
         run: python3 scripts/gen-health-and-required-data.py

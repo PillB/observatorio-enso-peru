@@ -1,0 +1,13 @@
+{
+  "decision": "CONTAIN — label all current data as demonstration, not observed",
+  "actions": [
+    "Replace current-value displays with 'Datos de demostración — no observados'",
+    "Prevent synthetic values from driving GRD alert signals",
+    "Label chat as 'Guía determinista de datos (demostración)'",
+    "Label maps as 'Esquema ilustrativo — no datos observados'",
+    "Label health.json as 'Generado estáticamente — no evidencia de adquisición'",
+    "Add prominent site-wide disclaimer banner"
+  ],
+  "previous_sha": "f92ea320d3951b2e09f4258f13a6adb506cca2e4",
+  "timestamp": "2026-08-06T04:50:26.123813+00:00"
+}

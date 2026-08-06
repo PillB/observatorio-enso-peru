@@ -1,0 +1,26 @@
+{
+  "live_pages_url": "https://pillb.github.io/observatorio-enso-peru/",
+  "repository_url": "https://github.com/PillB/observatorio-enso-peru",
+  "local_zip_path": null,
+  "expected_production_branch": "main",
+  "expected_pages_environment": "github-pages",
+  "authorized_domains": [
+    "pillb.github.io"
+  ],
+  "permission_to_modify_repository": true,
+  "permission_to_create_branch": true,
+  "permission_to_open_pull_request": true,
+  "permission_to_merge": true,
+  "permission_to_trigger_workflows": true,
+  "permission_to_deploy": true,
+  "permission_to_rollback": true,
+  "authorized_security_scope": [
+    "static GitHub Pages frontend"
+  ],
+  "prohibited_actions": [
+    "attack NOAA/ENFEN/IMARPE/GitHub infrastructure"
+  ],
+  "maximum_remediation_rounds": 3,
+  "zip_status": "BLOCKED_BY_MISSING_ZIP — no ZIP artifact found in upload/ or execution environment",
+  "timestamp": "2026-08-06T04:50:26.123813+00:00"
+}

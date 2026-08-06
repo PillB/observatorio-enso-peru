@@ -1,0 +1,104 @@
+{
+  "findings": [
+    {
+      "indicator_id": "nino12",
+      "displayed_value": 1.58,
+      "displayed_period": "2026-07",
+      "artifact_path": "public/data/status.json + public/data/all-series.json",
+      "transformation_path": "src/lib/enso/series.ts:nino12Series() → scripts/gen-static-data.ts → public/data/",
+      "original_source": "NONE — synthesized from BASIN_EPISODES + COASTAL_EPISODES arrays + gaussian noise",
+      "synthetic_or_observed": "SYNTHETIC",
+      "current_or_historical": "BOTH — entire series is synthetic",
+      "release_eligible": false,
+      "severity": "CRITICAL"
+    },
+    {
+      "indicator_id": "icen",
+      "displayed_value": 1.77,
+      "displayed_period": "2026-07",
+      "artifact_path": "public/data/status.json",
+      "transformation_path": "src/lib/enso/series.ts:icenSeries() — 3-month running mean of synthetic nino12",
+      "original_source": "NONE — derived from synthetic Niño 1+2",
+      "synthetic_or_observed": "SYNTHETIC",
+      "release_eligible": false,
+      "severity": "CRITICAL"
+    },
+    {
+      "indicator_id": "nino34",
+      "displayed_value": 1.17,
+      "displayed_period": "2026-07",
+      "artifact_path": "public/data/status.json",
+      "transformation_path": "src/lib/enso/series.ts:nino34Series() — BASIN_EPISODES + seasonal + gaussian",
+      "original_source": "NONE — synthesized",
+      "synthetic_or_observed": "SYNTHETIC",
+      "release_eligible": false,
+      "severity": "CRITICAL"
+    },
+    {
+      "indicator_id": "roni",
+      "displayed_value": 1.39,
+      "displayed_period": "2026-07",
+      "artifact_path": "public/data/status.json",
+      "transformation_path": "src/lib/enso/series.ts:roniSeries() — 3-month mean of synthetic nino34",
+      "original_source": "NONE — derived from synthetic Niño 3.4",
+      "synthetic_or_observed": "SYNTHETIC",
+      "release_eligible": false,
+      "severity": "CRITICAL"
+    },
+    {
+      "indicator_id": "soi",
+      "displayed_value": -1.77,
+      "displayed_period": "2026-07",
+      "artifact_path": "public/data/status.json",
+      "transformation_path": "src/lib/enso/series.ts:soiSeries() — -1.6 * synthetic nino34 + noise",
+      "original_source": "NONE — synthesized",
+      "synthetic_or_observed": "SYNTHETIC",
+      "release_eligible": false,
+      "severity": "CRITICAL"
+    },
+    {
+      "indicator_id": "d20",
+      "displayed_value": 9.4,
+      "displayed_period": "2026-07",
+      "artifact_path": "public/data/status.json",
+      "transformation_path": "src/lib/enso/series.ts:d20Series() — 9 * synthetic nino34 + noise",
+      "original_source": "NONE — synthesized",
+      "synthetic_or_observed": "SYNTHETIC",
+      "release_eligible": false,
+      "severity": "CRITICAL"
+    },
+    {
+      "indicator_id": "u850",
+      "displayed_value": 2.67,
+      "displayed_period": "2026-07",
+      "artifact_path": "public/data/status.json",
+      "transformation_path": "src/lib/enso/series.ts:u850Series() — 1.8 * synthetic nino34 + noise",
+      "original_source": "NONE — synthesized",
+      "synthetic_or_observed": "SYNTHETIC",
+      "release_eligible": false,
+      "severity": "CRITICAL"
+    },
+    {
+      "indicator_id": "map_grid",
+      "displayed_period": "2026-07",
+      "artifact_path": "public/data/latest-grid.json",
+      "transformation_path": "scripts/gen-static-data.ts → sstGridForMonth() — interpolates from synthetic nino12 + nino34",
+      "original_source": "NONE — synthetic interpolation from synthetic indices",
+      "synthetic_or_observed": "SYNTHETIC",
+      "release_eligible": false,
+      "severity": "CRITICAL"
+    },
+    {
+      "indicator_id": "health",
+      "artifact_path": "public/data/health.json",
+      "transformation_path": "scripts/gen-health-and-required-data.py — sets all sources to HEALTHY/FRESH based on static registry",
+      "original_source": "NONE — generated from sources.json status field, not from actual retrieval",
+      "synthetic_or_observed": "SYNTHETIC",
+      "release_eligible": false,
+      "severity": "CRITICAL"
+    }
+  ],
+  "summary": "ALL production current values are synthetic. No live source retrieval has occurred. The entire data pipeline is deterministic generation from hardcoded episode arrays.",
+  "containment_required": true,
+  "timestamp": "2026-08-06T04:50:26.123813+00:00"
+}

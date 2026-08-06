@@ -1,0 +1,12 @@
+{
+  "deployed_sha": "f92ea320d3951b2e09f4258f13a6adb506cca2e4",
+  "live_url": "https://pillb.github.io/observatorio-enso-peru/",
+  "html_sha256": "29e37f0a0c73b85fe9e484fb4e2a66488a72b9118cb3a448f1c6b17b5fe75ba1",
+  "pages_build_type": "workflow",
+  "pages_status": "built",
+  "observation_as_of": "2026-08-02",
+  "observation_valid_month": "2026-07",
+  "coastal_icen": 1.77,
+  "basin_roni": 1.39,
+  "timestamp": "2026-08-06T04:50:26.123813+00:00"
+}
