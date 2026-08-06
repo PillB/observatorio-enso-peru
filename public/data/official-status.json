@@ -11,5 +11,7 @@
     "status": "El Niño Advisory",
     "since": "2026-06",
     "source": "NOAA / CPC — ENSO Diagnostic Discussion"
-  }
+  },
+  "publicationId": "d5f15625f54d",
+  "pipelineVersion": "3.0.0"
 }

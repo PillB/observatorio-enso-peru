@@ -3,9 +3,10 @@
 # Soporta: manual dispatch, repository_dispatch (enso-refresh), force-refresh, dry-run.
 name: daily-data-update
 
+# ARCHIVED: Superseded by daily-refresh.yml which uses the unified
+# concurrency group 'enso-production-publication'. This workflow is
+# retained for reference only and no longer runs on schedule.
 on:
-  schedule:
-    - cron: '37 4 * * *'
   workflow_dispatch:
     inputs:
       force_refresh:
@@ -34,7 +35,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: data-update
+  group: enso-production-publication
   cancel-in-progress: false
 
 jobs:

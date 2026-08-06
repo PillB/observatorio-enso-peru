@@ -1688,5 +1688,7 @@
       "v": 0.16,
       "speed": 1.85
     }
-  ]
+  ],
+  "publicationId": "d5f15625f54d",
+  "pipelineVersion": "3.0.0"
 }

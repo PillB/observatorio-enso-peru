@@ -82,5 +82,7 @@
       "freshnessHours": 24,
       "source": "noaa-cpc-godas"
     }
-  ]
+  ],
+  "publicationId": "d5f15625f54d",
+  "pipelineVersion": "3.0.0"
 }

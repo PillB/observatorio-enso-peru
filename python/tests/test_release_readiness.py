@@ -102,8 +102,14 @@ class TestWorkflowConfiguration:
         assert (WORKFLOWS / "daily-data-update.yml").exists()
 
     def test_daily_data_update_has_correct_schedule(self):
-        content = (WORKFLOWS / "daily-data-update.yml").read_text()
-        assert "37 4" in content, "Schedule debe ser 04:37 UTC (23:37 Lima)"
+        """daily-data-update.yml is archived; daily-refresh.yml is canonical."""
+        # The schedule moved to daily-refresh.yml
+        daily_refresh = (WORKFLOWS / "daily-refresh.yml").read_text()
+        assert "37 4" in daily_refresh, "daily-refresh.yml debe tener schedule 04:37 UTC"
+        # daily-data-update.yml should be archived (no schedule)
+        archived = (WORKFLOWS / "daily-data-update.yml").read_text()
+        assert "37 4 * * *" not in archived or "ARCHIVED" in archived, \
+            "daily-data-update.yml schedule should be disabled (archived)"
 
     def test_daily_data_update_has_repository_dispatch(self):
         content = (WORKFLOWS / "daily-data-update.yml").read_text()

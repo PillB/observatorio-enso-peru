@@ -182,5 +182,7 @@
       "notes": "Validación cruzada de índices costeros y pronósticos estacionales para Perú.",
       "fallbackSourceId": "enfen-imarpe-icen"
     }
-  ]
+  ],
+  "publicationId": "d5f15625f54d",
+  "pipelineVersion": "3.0.0"
 }

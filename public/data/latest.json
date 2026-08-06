@@ -41,5 +41,7 @@
     "month": "2026-07",
     "interpretation": "Componente atmosférica de El Niño",
     "note": "El SOI es un índice de escala de cuenca. El observatorio NO define un «SOI costero»: no existe un proxy de presión costera con respaldo metodológico equivalente."
-  }
+  },
+  "publicationId": "d5f15625f54d",
+  "pipelineVersion": "3.0.0"
 }

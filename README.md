@@ -1,3 +1,9 @@
+
+## ⚠️ Canonical Frontend
+
+The production frontend is `public/index.html` (static HTML/JS).
+The `src/` directory contains a Next.js application that is **NOT deployed**.
+All production changes must be applied to `public/index.html`.
 # Observatorio ENSO Perú
 
 Plataforma de monitoreo de los indicadores ENSO **costero** (frente a

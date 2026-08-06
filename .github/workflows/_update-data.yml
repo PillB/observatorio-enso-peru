@@ -1,3 +1,5 @@
+# ARCHIVED: Superseded by _refresh-build-deploy.yml.
+# This reusable workflow is retained for reference only.
 # Implementación compartida de actualización de datos.
 # Reutilizada por daily-data-update.yml y freshness-watchdog.yml.
 name: _update-data

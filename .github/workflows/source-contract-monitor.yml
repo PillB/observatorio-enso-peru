@@ -49,3 +49,7 @@ jobs:
                   print(f'OK: {src[\"id\"]} - {src[\"institution\"]}')
           print('Contrato de fuentes verificado')
           "
+
+concurrency:
+  group: enso-production-publication
+  cancel-in-progress: false
