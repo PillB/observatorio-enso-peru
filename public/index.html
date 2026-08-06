@@ -755,7 +755,8 @@ function renderMiniCard(icon,title,value,detail,scope){return`<div class="card">
 
 function renderCoastal(){
   const s=STATUS;const e=evalCoastalSST(s.coastal.icen);const o=evalICEN(s.coastal.icen);
-  return `<div class="info-note warn"><strong>El Niño Costero</strong> afecta el Pacífico oriental frente a Ecuador y el norte del Perú. Se monitorea mediante el ICEN (media móvil de 3 meses de TSM en Niño 1+2).</div>
+  return `${renderAlertBanner({scope:'coastal'})}
+  <div class="info-note warn"><strong>El Niño Costero</strong> afecta el Pacífico oriental frente a Ecuador y el norte del Perú. Se monitorea mediante el ICEN (media móvil de 3 meses de TSM en Niño 1+2). Las señales del equipo GRD mostradas arriba <strong>no constituyen alertas oficiales</strong>.</div>
   <div class="grid-2">
     <div class="card"><div class="card-header"><div class="card-title">${ICONS.coastal} ICEN — Índice Costero El Niño</div><span class="badge badge-coastal">Costero</span></div>
       <p style="font-size:11px;color:var(--muted)">${s.coastal.icenWindow}</p><p class="big-value value-warm">${fmtValue(s.coastal.icen,'degC')}</p>
@@ -773,7 +774,8 @@ function renderCoastal(){
 
 function renderBasin(){
   const s=STATUS;const e=evalBasinSST(s.basin.roni);
-  return `<div class="info-note info"><strong>ENSO de cuenca</strong> monitorea el Pacífico ecuatorial mediante RONI (NOAA/CPC) sobre Niño 3.4.</div>
+  return `${renderAlertBanner({scope:'basin'})}
+  <div class="info-note info"><strong>ENSO de cuenca</strong> monitorea el Pacífico ecuatorial mediante RONI (NOAA/CPC) sobre Niño 3.4. Las señales del equipo GRD mostradas arriba <strong>no constituyen alertas oficiales</strong>.</div>
   <div class="grid-2">
     <div class="card"><div class="card-header"><div class="card-title">${ICONS.basin} RONI — Índice Oceánico Relativo del Niño</div><span class="badge badge-basin">Cuenca</span></div>
       <p style="font-size:11px;color:var(--muted)">${s.basin.roniWindow}</p><p class="big-value value-warm">${fmtValue(s.basin.roni,'degC')}</p>
@@ -785,7 +787,7 @@ function renderBasin(){
   </div>`;
 }
 
-function renderSST(){var s=STATUS;var cExp=evalCoastalSST(s.coastal.nino12Anom);var bExp=evalBasinSST(s.basin.nino34Anom);var banner='<div style="display:flex;gap:12px;margin-bottom:16px"><div style="flex:1;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--'+(cExp.color==='green'?'green':cExp.color==='yellow'?'yellow':'gray')+';border-radius:8px;padding:10px 14px"><span class="pill pill-'+(cExp.color==='green'?'green':cExp.color==='yellow'?'yellow':'gray')+'" style="font-size:13px">'+cExp.classification+'</span><span style="font-size:11px;color:var(--muted);margin-left:8px">Costero · Equipo GRD</span></div><div style="flex:1;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--'+(bExp.color==='green'?'green':bExp.color==='yellow'?'yellow':'gray')+';border-radius:8px;padding:10px 14px"><span class="pill pill-'+(bExp.color==='green'?'green':bExp.color==='yellow'?'yellow':'gray')+'" style="font-size:13px">'+bExp.classification+'</span><span style="font-size:11px;color:var(--muted);margin-left:8px">Cuenca · Equipo GRD</span></div></div>';return banner+`<div class="info-note info">Anomalía de TSM costera (Niño 1+2) y de cuenca (Niño 3.4) en °C.</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Comparación costero vs cuenca</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-120),'degC',280)}</div></div><div class="grid-2"><div class="card"><div class="card-header"><div class="card-title">Niño 1+2 (costero)</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-240),'degC',200)}</div></div><div class="card"><div class="card-header"><div class="card-title">Niño 3.4 (cuenca)</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino34.points.slice(-240),'degC',200)}</div></div></div>`;}
+function renderSST(){var s=STATUS;return renderAlertBanner({scope:'both'})+`<div class="info-note info">Anomalía de TSM costera (Niño 1+2) y de cuenca (Niño 3.4) en °C. Las señales del equipo GRD mostradas arriba <strong>no constituyen alertas oficiales</strong>.</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Comparación costero vs cuenca</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-120),'degC',280)}</div></div><div class="grid-2"><div class="card"><div class="card-header"><div class="card-title">Niño 1+2 (costero)</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-240),'degC',200)}</div></div><div class="card"><div class="card-header"><div class="card-title">Niño 3.4 (cuenca)</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino34.points.slice(-240),'degC',200)}</div></div></div>`;}
 function renderWinds(){
   const s=STATUS;
   const grdBanner = `<div class="alert-banner"><div class="alert-card alert-gray" style="flex:1">
