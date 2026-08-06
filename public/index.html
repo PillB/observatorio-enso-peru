@@ -217,6 +217,21 @@
     .pill-red { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); border-color: color-mix(in srgb, var(--red) 30%, transparent); }
     .pill-gray { background: color-mix(in srgb, var(--gray) 10%, transparent); color: var(--gray); border-color: var(--border); }
 
+    /* Header alert level — prominent frontloaded indicator */
+    .hdr-alert-level {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 6px; font-size: 11px;
+      font-weight: 700; letter-spacing: 0.02em; white-space: nowrap;
+      border: 2px solid transparent; transition: all 0.2s;
+    }
+    .hdr-alert-level.level-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .hdr-alert-level.level-yellow { background: var(--yellow); color: #fff; border-color: var(--yellow); }
+    .hdr-alert-level.level-green { background: var(--green); color: #fff; border-color: var(--green); }
+    .hdr-alert-level.level-gray { background: var(--gray); color: #fff; border-color: var(--gray); }
+    .hdr-alert-level .level-icon { font-size: 13px; }
+    @media (max-width: 640px) { .hdr-alert-level { font-size: 10px; padding: 2px 6px; } }
+    @media (max-width: 380px) { .hdr-alert-level { display: none; } }
+
     /* Header GRD pill — small signal indicator next to alert badges */
     .hdr-grd-pill {
       display: inline-flex; align-items: center; padding: 1px 6px;
@@ -269,6 +284,33 @@
       color: var(--muted); font-style: italic;
     }
     .alert-note strong { font-style: normal; color: var(--fg); }
+
+    /* Alert summary grid — frontloaded in Resumen */
+    .alert-summary-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
+    }
+    @media (max-width: 640px) { .alert-summary-grid { grid-template-columns: 1fr; } }
+    .alert-summary-card {
+      border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px;
+      background: var(--card-grad); box-shadow: var(--shadow);
+    }
+    .alert-summary-card.alert-summary-official { border-left: 4px solid var(--accent-deep); }
+    .alert-summary-card.alert-summary-grd { border-left: 4px solid var(--accent-teal); }
+    .alert-summary-header {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.04em; color: var(--muted); margin-bottom: 8px;
+    }
+    .alert-summary-row {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      font-size: 12px; margin-top: 6px;
+    }
+    .alert-summary-label { font-weight: 600; color: var(--muted); min-width: 140px; }
+    .alert-summary-value { color: var(--fg); font-weight: 500; }
+    .alert-summary-degraded {
+      font-size: 9px; color: var(--yellow); font-weight: 700;
+      padding: 1px 6px; border: 1px solid var(--yellow); border-radius: 4px;
+    }
+    .alert-summary-date { font-size: 10px; color: var(--muted); }
 
     /* Info note — metallic panel */
     .info-note {
@@ -472,6 +514,7 @@
       <div class="header-badges">
         <span class="badge badge-coastal" id="hdr-coastal"><span class="pulse-dot"></span> Costero: —</span>
         <span class="badge badge-basin" id="hdr-basin"><span class="pulse-dot"></span> Cuenca: —</span>
+        <span class="hdr-alert-level" id="hdr-alert-level"></span>
         <button class="tutorial-btn" onclick="startTutorial()" aria-label="Iniciar tutorial">Tutorial</button>
         <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" aria-label="Cambiar tema">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path id="theme-icon" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -660,6 +703,29 @@ function renderHeader(){
   const cDegLabel = cDegraded ? ' <span style="font-size:9px;color:var(--yellow);font-weight:700">⚠ FALLBACK</span>' : '';
   document.getElementById('hdr-coastal').innerHTML=`<span class="pulse-dot"></span> Costero: <span style="opacity:0.85">${STATUS.coastal.alert}</span>${cDegLabel} <span class="hdr-grd-pill pill-${cColor}" title="Señal operativa del equipo GRD (no oficial)">GRD: ${cExp.classification}</span>`;
   document.getElementById('hdr-basin').innerHTML=`<span class="pulse-dot"></span> Cuenca: <span style="opacity:0.85">${STATUS.basin.alert}</span> <span class="hdr-grd-pill pill-${bColor}" title="Señal operativa del equipo GRD (no oficial)">GRD: ${bExp.classification}</span>`;
+
+  // Frontloaded alert level: show the highest alert level across all indicators
+  // Combines ENFEN/NOAA official status + GRD team signals
+  const levels = [
+    {source: 'ENFEN', label: STATUS.coastal.alert, color: STATUS.coastal.alert.includes('Alerta') ? 'red' : STATUS.coastal.alert.includes('Vigilancia') ? 'yellow' : 'green'},
+    {source: 'NOAA', label: STATUS.basin.alert, color: STATUS.basin.alert.includes('El Niño Advisory') ? 'yellow' : STATUS.basin.alert.includes('La Niña Advisory') ? 'yellow' : 'green'},
+    {source: 'GRD Costero', label: cExp.classification, color: cColor},
+    {source: 'GRD Cuenca', label: bExp.classification, color: bColor},
+  ];
+  // Determine highest alert level (red > yellow > green > gray)
+  const priority = {red: 3, yellow: 2, green: 1, gray: 0};
+  let highest = levels[0];
+  for (const l of levels) {
+    if (priority[l.color] > priority[highest.color]) highest = l;
+  }
+  const levelIcons = {red: '🔴', yellow: '🟡', green: '🟢', gray: '⚪'};
+  const levelLabels = {red: 'ROJO', yellow: 'AMARILLO', green: 'NORMAL', gray: 'SIN CLASIFICAR'};
+  const alertEl = document.getElementById('hdr-alert-level');
+  if (alertEl) {
+    alertEl.className = `hdr-alert-level level-${highest.color}`;
+    alertEl.innerHTML = `<span class="level-icon">${levelIcons[highest.color]}</span> Nivel: ${levelLabels[highest.color]}`;
+    alertEl.title = `Nivel más alto: ${highest.source} — ${highest.label}`;
+  }
 }
 
 // Shared alert banner: fronloads GRD signal + official alert reference + disclaimer.
@@ -739,7 +805,48 @@ function renderView(viewId){
 
 function renderOverview(){
   const s=STATUS;const rN12=ALL_SERIES.series.nino12.points.slice(-60);const rN34=ALL_SERIES.series.nino34.points.slice(-60);
-  return `${renderAlertBanner({scope:'both'})}
+  // Compute alert levels for frontloaded summary
+  const cExp = evalCoastalSST(s.coastal.icen);
+  const bExp = evalBasinSST(s.basin.roni);
+  const oIcen = evalICEN(s.coastal.icen);
+  const cDegraded = s.coastal.alertSourceMethod === 'fallback' || s.coastal.alertSourceMethod === 'unavailable';
+
+  // Build frontloaded alert status summary
+  const alertSummary = `
+  <div class="alert-summary-grid">
+    <div class="alert-summary-card alert-summary-official">
+      <div class="alert-summary-header">Estado oficial</div>
+      <div class="alert-summary-row">
+        <span class="alert-summary-label">ENFEN (Costero):</span>
+        <span class="alert-summary-value">${s.coastal.alert}</span>
+        ${cDegraded ? '<span class="alert-summary-degraded">⚠ FALLBACK</span>' : ''}
+      </div>
+      <div class="alert-summary-row">
+        <span class="alert-summary-label">NOAA/CPC (Cuenca):</span>
+        <span class="alert-summary-value">${s.basin.alert}</span>
+        ${s.basin.alertDate ? `<span class="alert-summary-date">${s.basin.alertDate}</span>` : ''}
+      </div>
+    </div>
+    <div class="alert-summary-card alert-summary-grd">
+      <div class="alert-summary-header">Señal operativa del equipo GRD <span style="font-size:9px;font-weight:400;opacity:0.7">(no oficial)</span></div>
+      <div class="alert-summary-row">
+        <span class="alert-summary-label">Costero (ICEN ${fmtValue(s.coastal.icen,'degC')}):</span>
+        <span class="pill pill-${cExp.color==='green'?'green':cExp.color==='yellow'?'yellow':cExp.color==='red'?'red':'gray'}" style="font-weight:700">${cExp.classification}</span>
+        ${cExp.is_unclassified ? `<span style="color:var(--yellow);font-size:10px">⚠ ${cExp.unclassified_reason}</span>` : ''}
+      </div>
+      <div class="alert-summary-row">
+        <span class="alert-summary-label">Cuenca (RONI ${fmtValue(s.basin.roni,'degC')}):</span>
+        <span class="pill pill-${bExp.color==='green'?'green':bExp.color==='yellow'?'yellow':bExp.color==='red'?'red':'gray'}" style="font-weight:700">${bExp.classification}</span>
+      </div>
+      <div class="alert-summary-row">
+        <span class="alert-summary-label">ICEN oficial (ENFEN):</span>
+        <span class="alert-summary-value">${oIcen.classification}</span>
+      </div>
+    </div>
+  </div>`;
+
+  return `${alertSummary}
+  ${renderAlertBanner({scope:'both'})}
   <div class="info-note info"><strong>Estado oficial vs interpretación:</strong> Las alertas oficiales se citan de ENFEN y NOAA/CPC. Las señales operativas del equipo GRD son generadas por el observatorio y <strong>no constituyen alertas oficiales</strong>.</div>
   <div class="grid-2">
     <div class="card"><div class="card-header"><div class="card-title">${ICONS.coastal} El Niño Costero</div><span class="badge badge-coastal">Costero</span></div>
