@@ -709,7 +709,32 @@ function renderMaps(){
   var n12 = STATUS.coastal.nino12Anom;
   var lats = [12,9,6,3,0,-3,-6,-9,-12];
   var lons = [-175,-155,-135,-115,-95,-75];
-  var cells = '';
+  
+  // SVG dimensions - equirectangular projection
+  // lon: -180 to -60 (120 degrees), lat: 15 to -15 (30 degrees)
+  var svgW = 800, svgH = 200;
+  var padL = 40, padR = 20, padT = 20, padB = 30;
+  var plotW = svgW - padL - padR;
+  var plotH = svgH - padT - padB;
+  var lonMin = -180, lonMax = -60, latMin = -15, latMax = 15;
+  
+  function sx(lon) { return padL + ((lon - lonMin) / (lonMax - lonMin)) * plotW; }
+  function sy(lat) { return padT + ((latMax - lat) / (latMax - latMin)) * plotH; }
+  
+  // Simplified continent outlines (equirectangular, low-poly)
+  // South America (west coast)
+  var saPath = 'M ' + sx(-80) + ',' + sy(12) + ' L ' + sx(-78) + ',' + sy(8) + ' L ' + sx(-76) + ',' + sy(4) + ' L ' + sx(-75) + ',' + sy(0) + ' L ' + sx(-77) + ',' + sy(-5) + ' L ' + sx(-75) + ',' + sy(-10) + ' L ' + sx(-72) + ',' + sy(-14) + ' L ' + sx(-70) + ',' + sy(-12) + ' L ' + sx(-68) + ',' + sy(-8) + ' L ' + sx(-65) + ',' + sy(-5) + ' L ' + sx(-60) + ',' + sy(-3) + ' L ' + sx(-55) + ',' + sy(0) + ' L ' + sx(-50) + ',' + sy(2) + ' L ' + sx(-48) + ',' + sy(5) + ' L ' + sx(-52) + ',' + sy(8) + ' L ' + sx(-60) + ',' + sy(10) + ' L ' + sx(-70) + ',' + sy(12) + ' L ' + sx(-78) + ',' + sy(13) + ' Z';
+  // North America (southwest)
+  var naPath = 'M ' + sx(-115) + ',' + sy(15) + ' L ' + sx(-110) + ',' + sy(12) + ' L ' + sx(-105) + ',' + sy(10) + ' L ' + sx(-100) + ',' + sy(8) + ' L ' + sx(-95) + ',' + sy(5) + ' L ' + sx(-90) + ',' + sy(3) + ' L ' + sx(-85) + ',' + sy(0) + ' L ' + sx(-82) + ',' + sy(-2) + ' L ' + sx(-80) + ',' + sy(0) + ' L ' + sx(-78) + ',' + sy(3) + ' L ' + sx(-75) + ',' + sy(5) + ' L ' + sx(-80) + ',' + sy(8) + ' L ' + sx(-85) + ',' + sy(10) + ' L ' + sx(-95) + ',' + sy(12) + ' L ' + sx(-105) + ',' + sy(14) + ' L ' + sx(-115) + ',' + sy(15) + ' Z';
+  // Australia
+  var auPath = 'M ' + sx(115) + ',' + sy(-2) + ' L ' + sx(125) + ',' + sy(-5) + ' L ' + sx(135) + ',' + sy(-8) + ' L ' + sx(145) + ',' + sy(-6) + ' L ' + sx(150) + ',' + sy(-2) + ' L ' + sx(148) + ',' + sy(2) + ' L ' + sx(140) + ',' + sy(5) + ' L ' + sx(130) + ',' + sy(4) + ' L ' + sx(120) + ',' + sy(2) + ' L ' + sx(115) + ',' + sy(-2) + ' Z';
+  // Asia/Southeast Asia
+  var asPath = 'M ' + sx(100) + ',' + sy(15) + ' L ' + sx(110) + ',' + sy(10) + ' L ' + sx(115) + ',' + sy(5) + ' L ' + sx(120) + ',' + sy(0) + ' L ' + sx(125) + ',' + sy(-3) + ' L ' + sx(130) + ',' + sy(0) + ' L ' + sx(135) + ',' + sy(5) + ' L ' + sx(130) + ',' + sy(10) + ' L ' + sx(120) + ',' + sy(13) + ' L ' + sx(110) + ',' + sy(15) + ' L ' + sx(100) + ',' + sy(15) + ' Z';
+  
+  // Build grid cells as SVG rects
+  var cellW = plotW / (lons.length);
+  var cellH = plotH / (lats.length);
+  var cellSvg = '';
   for (var li = 0; li < lats.length; li++) {
     for (var ci = 0; ci < lons.length; ci++) {
       var lat = lats[li], lon = lons[ci];
@@ -717,22 +742,59 @@ function renderMaps(){
       var latW = 1 - Math.min(1, Math.abs(lat) / 14);
       var val = n34 * (1 - eastW) * latW + n12 * eastW * (1 - Math.abs(lat) / 13);
       var t = Math.max(-1, Math.min(1, val / 2.5));
-      var bg;
+      var fill;
       if (t >= 0) {
-        bg = 'color-mix(in srgb, var(--card) ' + ((1-t)*100) + '%, var(--warm) ' + (t*100) + '%)';
+        fill = 'color-mix(in srgb, var(--warm) ' + (t*100) + '%, transparent)';
       } else {
-        bg = 'color-mix(in srgb, var(--card) ' + ((1-Math.abs(t))*100) + '%, var(--cool) ' + (Math.abs(t)*100) + '%)';
+        fill = 'color-mix(in srgb, var(--cool) ' + (Math.abs(t)*100) + '%, transparent)';
       }
+      var cx = sx(lon) - cellW/2;
+      var cy = sy(lat) - cellH/2;
       var v = val.toFixed(2);
-      var sign = v > 0 ? '+' : '';
-      cells += '<div class="map-cell" style="background:' + bg + '" title="' + lat + '\u00b0, ' + lon + '\u00b0: ' + sign + v + ' \u00b0C"></div>';
+      var sign = val > 0 ? '+' : '';
+      cellSvg += '<rect x="' + cx + '" y="' + cy + '" width="' + (cellW+1) + '" height="' + (cellH+1) + '" fill="' + fill + '" rx="2"><title>' + lat + '\u00b0, ' + lon + '\u00b0: ' + sign + v + ' \u00b0C</title></rect>';
     }
   }
-  var html = '<div class="info-note info">Mapa de anomal\u00eda de TSM sobre el Pac\u00edfico ecuatorial. Mes: ' + fmtMonth(STATUS.coastal.nino12Month) + '. C\u00e1lido = rojo, fr\u00edo = azul. Pase el cursor sobre una celda para ver el valor.</div>';
+  
+  // Region labels
+  var nino12Box = '<rect x="' + sx(-90) + '" y="' + sy(0) + '" width="' + (sx(-80)-sx(-90)) + '" height="' + (sy(-10)-sy(0)) + '" fill="none" stroke="var(--coastal)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7"/>';
+  nino12Box += '<text x="' + ((sx(-90)+sx(-80))/2) + '" y="' + (sy(-11)) + '" text-anchor="middle" font-size="9" fill="var(--coastal)" font-weight="bold">Ni\u00f1o 1+2</text>';
+  var nino34Box = '<rect x="' + sx(-170) + '" y="' + sy(5) + '" width="' + (sx(-120)-sx(-170)) + '" height="' + (sy(-5)-sy(5)) + '" fill="none" stroke="var(--basin)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7"/>';
+  nino34Box += '<text x="' + ((sx(-170)+sx(-120))/2) + '" y="' + (sy(-7)) + '" text-anchor="middle" font-size="9" fill="var(--basin)" font-weight="bold">Ni\u00f1o 3.4</text>';
+  
+  // Axis labels
+  var axisLabels = '';
+  [-180,-150,-120,-90,-60].forEach(function(lon) {
+    axisLabels += '<text x="' + sx(lon) + '" y="' + (svgH - 8) + '" text-anchor="middle" font-size="9" fill="currentColor" fill-opacity="0.5">' + lon + '\u00b0</text>';
+  });
+  [15,0,-15].forEach(function(lat) {
+    axisLabels += '<text x="' + (padL - 6) + '" y="' + (sy(lat)+3) + '" text-anchor="end" font-size="9" fill="currentColor" fill-opacity="0.5">' + lat + '\u00b0</text>';
+  });
+  
+  // Build SVG
+  var svg = '<svg viewBox="0 0 ' + svgW + ' ' + svgH + '" role="img" aria-label="Mapa de anomal\u00eda de TSM sobre el Pac\u00edfico ecuatorial con continentes">';
+  svg += '<defs><pattern id="oceanGrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" stroke-opacity="0.03" stroke-width="0.5"/></pattern></defs>';
+  // Ocean background
+  svg += '<rect x="' + padL + '" y="' + padT + '" width="' + plotW + '" height="' + plotH + '" fill="url(#oceanGrid)" />';
+  // Continent underlay (unobtrusive but visible)
+  svg += '<g opacity="0.12" fill="currentColor"><path d="' + saPath + '"/><path d="' + naPath + '"/></g>';
+  svg += '<g opacity="0.08" fill="currentColor"><path d="' + auPath + '"/><path d="' + asPath + '"/></g>';
+  // Data cells
+  svg += '<g>' + cellSvg + '</g>';
+  // Region boxes
+  svg += nino12Box + nino34Box;
+  // Axes
+  svg += '<line x1="' + padL + '" y1="' + padT + '" x2="' + padL + '" y2="' + (padT+plotH) + '" stroke="currentColor" stroke-opacity="0.2"/>';
+  svg += '<line x1="' + padL + '" y1="' + (padT+plotH) + '" x2="' + (padL+plotW) + '" y2="' + (padT+plotH) + '" stroke="currentColor" stroke-opacity="0.2"/>';
+  svg += axisLabels;
+  svg += '<text x="' + (padL + plotW/2) + '" y="' + (svgH - 1) + '" text-anchor="middle" font-size="10" fill="currentColor" fill-opacity="0.5">Longitud (\u00b0O)</text>';
+  svg += '</svg>';
+  
+  var html = '<div class="info-note info">Mapa de anomal\u00eda de TSM sobre el Pac\u00edfico ecuatorial con continentes de referencia. Mes: ' + fmtMonth(STATUS.coastal.nino12Month) + '. C\u00e1lido = rojo, fr\u00edo = azul. Pase el cursor sobre una celda para ver el valor.</div>';
   html += '<div class="card"><div class="card-header"><div class="card-title">' + ICONS.maps + ' Mapa de anomal\u00eda de TSM</div></div>';
-  html += '<div class="map-grid" style="grid-template-columns: repeat(' + lons.length + ', 1fr);">' + cells + '</div>';
+  html += '<div class="chart-container">' + svg + '</div>';
   html += '<div class="map-legend-bar"><span style="font-size:11px;color:var(--cool)">\u22122.5 \u00b0C</span><div class="gradient"></div><span style="font-size:11px;color:var(--warm)">+2.5 \u00b0C</span></div>';
-  html += '<p style="font-size:11px;color:var(--muted);margin-top:8px">S\u00edntesis coherente con la f\u00edsica de ENSO. Datos grilleados completos: <a href="' + DATA + '/latest-grid.json" target="_blank">latest-grid.json</a>.</p></div>';
+  html += '<p style="font-size:11px;color:var(--muted);margin-top:8px">S\u00edntesis coherente con la f\u00edsica de ENSO a partir de \u00edndices regionales. Los continentes se muestran como referencia geogr\u00e1fica (proyecci\u00f3n equirectangular, baja resoluci\u00f3n). Datos grilleados completos: <a href="' + DATA + '/latest-grid.json" target="_blank">latest-grid.json</a>.</p></div>';
   return html;
 }
 function renderData(){
