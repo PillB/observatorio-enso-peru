@@ -716,3 +716,49 @@ Stage Summary:
 - Local vs live: idénticos después del deploy
 - Mobile overflow: 0px en iPhone 13 Pro
 - 408 tests passed, 3 skipped. Lint limpio.
+
+---
+Task ID: 22-premium-design-pass
+Agent: orchestrator (main)
+Task: Rediseño completo del header y pasada visual/art/design de todo el sitio.
+
+Work Log:
+- Análisis VLM del diseño anterior: identificado como "cheap/amateur" (logo genérico, fonts por defecto, spacing cramped, hyperlink blue, badges outline débiles, tutorial button invisible).
+- 20 mejoras de diseño aplicadas:
+  1. Paleta deep ocean premium: primario #0c4a6e (navy), accent #0891b2 (teal), warm #b91c1c (crimson)
+  2. Dark mode: deep abyss (#080d18) con gradientes radiales sutiles
+  3. Inter font de Google Fonts (weights 400-800)
+  4. Header: padding generoso (14px 20px), background sólido con blur+saturate
+  5. Badges: solid fill con white text (no más outlines débiles)
+  6. Theme toggle: minimal icon sin borde, hover sutil
+  7. Cards: border-radius 10px, sombras sutiles, accent bar superior centrada
+  8. Nav: color muted por defecto, active state con background tint + font-weight 600
+  9. Section title: 24px, font-weight 700, accent bar sin glow
+  10. Big values: 28px, letter-spacing -0.03em
+  11. Tutorial button: ghost style con hover, no border teal brillante
+  12. Pills: border-radius 6px (no más pills redondos), sin box-shadow
+  13. Info notes: padding mejorado, accent bar con border-radius
+  14. Footer: background sólido, accent bar sutil
+  15. Mobile nav: border-radius 8px, color muted por defecto
+  16. Table headers: background sólido (no gradient)
+  17. Spinner: simplificado, sin glow
+  18. Chart paths: sin drop-shadow excesivo
+  19. Scanlines: opacidad reducida a 0.015
+  20. Font smoothing: antialiased + moz-osx-font-smoothing
+- VLM rating: **8/10** (antes: ~3/10 "cheap")
+- Validación en vivo:
+  - Inter font: cargada ✅
+  - Badge background: rgb(3, 105, 161) = deep ocean blue sólido ✅
+  - 14/14 vistas cargan ✅
+  - Mobile overflow: 0px ✅
+  - Sin emojis ✅
+  - Datos consistentes ✅
+- CI/CD: deploy-pages success, sin pages-build-deployment failure (build_type=workflow funcionando)
+- Commit: d1a2e93. Desplegado a GitHub Pages exitosamente.
+
+Stage Summary:
+- Diseño: deep ocean premium, Inter font, solid badges, refined spacing
+- VLM: 8/10 (de 3/10 a 8/10)
+- GitHub Pages: LIVE con nuevo diseño
+- CI/CD: limpio, sin fallos
+- Mobile: 0px overflow
