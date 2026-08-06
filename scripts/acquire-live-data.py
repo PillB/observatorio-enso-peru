@@ -18,10 +18,19 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
+
+# Add python/ to path for enso module imports
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "python"))
+try:
+    from enso.official_status import fetch_noaa_enso_advisory, fetch_enfen_status
+except ImportError:
+    fetch_noaa_enso_advisory = None
+    fetch_enfen_status = None
 
 try:
     import httpx
@@ -64,6 +73,22 @@ SOURCES = {
         "scope": "basin",
         "institution": "NOAA / CPC",
         "product": "ERSST v5 Niño indices + RONI",
+    },
+    "d20": {
+        "url": "https://psl.noaa.gov/thredds/dodsC/Datasets/godas/dbss_obil",
+        "format": "opendap_ascii_grid",
+        "units": "m",
+        "scope": "basin",
+        "institution": "NOAA / PSL (GODAS dbss_obil)",
+        "product": "Anomalía de D20 (proxy: dbss_obil) — Niño 3.4",
+    },
+    "u850": {
+        "url": "https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/uwnd.mon.mean.nc",
+        "format": "opendap_ascii_grid",
+        "units": "m_per_s",
+        "scope": "basin",
+        "institution": "NOAA / PSL (NCEP/NCAR Reanalysis)",
+        "product": "Anomalía de viento zonal a 850 hPa — Niño 3.4",
     },
 }
 
@@ -172,6 +197,60 @@ def compute_3mo_mean(points: list[dict]) -> list[dict]:
     return result
 
 
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Fetchers para D20 (GODAS dbss_obil) y u850 (NCEP Reanalysis) via OPeNDAP
+# ---------------------------------------------------------------------------
+def fetch_d20_anomaly():
+    """Adquiere la serie mensual de anomalías D20 (proxy dbss_obil) vía OPeNDAP.
+
+    Usa el módulo ``enso.opendap_fetchers.GodasD20Fetcher`` que accede al
+    endpoint ASCII de PSL OPeNDAP para los archivos GODAS anuales
+    (``dbss_obil.{year}.nc``). Calcula la media areal sobre Niño 3.4
+    (5°S–5°N, 170°O–120°O) y la anomalía respecto a la climatología
+    1991–2020.
+    """
+    import sys as _sys
+    _sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "python"))
+    from enso.opendap_fetchers import GodasD20Fetcher
+
+    f = GodasD20Fetcher()
+    anom_points = f.fetch_anomaly_series()
+    out = []
+    for p in anom_points:
+        out.append({
+            "month": p.month,
+            "value": p.value,
+            "flag": "preliminary" if p.flag.value == "preliminary" else "final",
+        })
+    return out
+
+
+def fetch_u850_anomaly():
+    """Adquiere la serie mensual de anomalías u850 (NCEP Reanalysis) vía OPeNDAP.
+
+    Usa el módulo ``enso.opendap_fetchers.NcepU850Fetcher`` que accede al
+    endpoint ASCII de PSL OPeNDAP para ``uwnd.mon.mean.nc`` (NCEP/NCAR
+    Reanalysis1 monthly mean, nivel 850 hPa). Calcula la media areal sobre
+    Niño 3.4 (5°S–5°N, 170°O–120°O) y la anomalía respecto a la
+    climatología 1991–2020.
+    """
+    import sys as _sys
+    _sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "python"))
+    from enso.opendap_fetchers import NcepU850Fetcher
+
+    f = NcepU850Fetcher()
+    anom_points = f.fetch_anomaly_series()
+    out = []
+    for p in anom_points:
+        out.append({
+            "month": p.month,
+            "value": p.value,
+            "flag": "preliminary" if p.flag.value == "preliminary" else "final",
+        })
+    return out
+
+
 def write_series_csv(series_id: str, points: list[dict], units: str, source: str):
     """Escribe CSV con metadatos."""
     now = datetime.now(timezone.utc).isoformat()
@@ -189,8 +268,12 @@ def write_series_csv(series_id: str, points: list[dict], units: str, source: str
     (DATA_DIR / f"{series_id}.csv").write_text("\n".join(lines))
 
 
-def write_status_json(n12: list, n34: list, icen: list, roni: list, soi: list, d20: list, u850: list):
-    """Escribe status.json con valores reales más recientes."""
+def write_status_json(n12: list, n34: list, icen: list, roni: list, soi: list, d20: list, u850: list, noaa_advisory=None, enfen_status=None):
+    """Escribe status.json con valores reales más recientes.
+
+    Si ``noaa_advisory`` o ``enfen_status`` son None, se usa el mensaje
+    "Consulte ..." como fallback.
+    """
     def latest(points):
         for p in reversed(points):
             if p["value"] is not None:
@@ -202,6 +285,8 @@ def write_status_json(n12: list, n34: list, icen: list, roni: list, soi: list, d
     licen = latest(icen)
     lroni = latest(roni)
     lsoi = latest(soi)
+    ld20 = latest(d20) if d20 else {"month": "", "value": None}
+    lu850 = latest(u850) if u850 else {"month": "", "value": None}
 
     now = datetime.now(timezone.utc).isoformat()
 
@@ -211,8 +296,10 @@ def write_status_json(n12: list, n34: list, icen: list, roni: list, soi: list, d
         "generatedAt": now,
         "dataSource": "LIVE_OBSERVED",
         "coastal": {
-            "alert": "Consulte ENFEN en siofen.imarpe.gob.pe",
+            "alert": enfen_status["alert"] if enfen_status else "Consulte ENFEN en siofen.imarpe.gob.pe",
             "alertSource": "ENFEN / IMARPE",
+            "alertOfficialUrl": "https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen",
+            "alertDate": enfen_status.get("month", "") if enfen_status else "",
             "nino12Anom": ln12["value"],
             "nino12Month": ln12["month"],
             "icen": licen["value"],
@@ -222,8 +309,10 @@ def write_status_json(n12: list, n34: list, icen: list, roni: list, soi: list, d
             "preliminary": False,
         },
         "basin": {
-            "alert": "Consulte NOAA/CPC en cpc.ncep.noaa.gov",
+            "alert": noaa_advisory["alert"] if noaa_advisory else "Consulte NOAA/CPC en cpc.ncep.noaa.gov",
             "alertSource": "NOAA / CPC",
+            "alertOfficialUrl": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml",
+            "alertDate": noaa_advisory.get("date", "") if noaa_advisory else "",
             "nino34Anom": ln34["value"],
             "nino34Month": ln34["month"],
             "roni": lroni["value"],
@@ -233,15 +322,15 @@ def write_status_json(n12: list, n34: list, icen: list, roni: list, soi: list, d
             "preliminary": False,
         },
         "winds": {
-            "u850Anom": None,
-            "u850Month": "",
-            "direction": "Datos de viento no disponibles en esta fuente",
+            "u850Anom": lu850["value"],
+            "u850Month": lu850["month"],
+            "direction": _u850_direction(lu850["value"]),
             "signMeaning": "u > 0 ⇒ este (westerly); u < 0 ⇒ oeste (easterly)",
         },
         "thermocline": {
-            "d20Anom": None,
-            "d20Month": "",
-            "interpretation": "Datos de D20 no disponibles en esta fuente",
+            "d20Anom": ld20["value"],
+            "d20Month": ld20["month"],
+            "interpretation": _d20_interpretation(ld20["value"]),
         },
         "soi": {
             "value": lsoi["value"],
@@ -276,6 +365,20 @@ def _soi_category(v):
     if v <= -0.5: return "Componente atmosférica de El Niño"
     if v >= 0.5: return "Componente atmosférica de La Niña"
     return "Componente atmosférica neutral"
+
+
+def _u850_direction(v):
+    if v is None: return "Sin datos"
+    if v > 0.5: return "Anomalía de westerlies (reforzada hacia el este)"
+    if v < -0.5: return "Anomalía de easterlies (reforzada hacia el oeste)"
+    return "Anomalía neutral (cerca de cero)"
+
+
+def _d20_interpretation(v):
+    if v is None: return "Sin datos"
+    if v > 10: return "Termoclina más profunda de lo normal (El Niño)"
+    if v < -10: return "Termoclina más somera de lo normal (La Niña)"
+    return "Termoclina cerca de la profundidad normal"
 
 
 def write_health_json(sources_status: dict):
@@ -383,13 +486,85 @@ def main():
         write_series_csv("icen", icen, "degC", "ENFEN/IMARPE (calculado desde Niño 1+2 PSL)")
         print(f"ICEN: {len(icen)} puntos, último: {icen[-1]}")
 
-    # 6. D20 and u850 — not available from these sources
-    d20 = []
-    u850 = []
-    print("D20 y u850: no disponibles en fuentes PSL/CPC. Se requieren GODAS/NCEP.")
+    # 6. D20 (GODAS dbss_obil via OPeNDAP)
+    try:
+        print("Adquiriendo D20 (GODAS dbss_obil via OPeNDAP)...")
+        d20 = fetch_d20_anomaly()
+        if d20:
+            write_series_csv("d20", d20, "m", SOURCES["d20"]["institution"])
+            h = hashlib.sha256(str(d20).encode()).hexdigest()[:16]
+            sources_status["d20"] = {"institution": SOURCES["d20"]["institution"], "product": SOURCES["d20"]["product"], "success": True, "evidence": f"OPeNDAP, {len(d20)} puntos, sha256:{h}", "hash": h}
+            print(f"  ✅ {len(d20)} puntos, último: {d20[-1]}")
+        else:
+            raise RuntimeError("D20: sin datos parseados")
+    except Exception as e:
+        print(f"  ❌ Error D20: {e}")
+        sources_status["d20"] = {"institution": SOURCES["d20"]["institution"], "product": SOURCES["d20"]["product"], "success": False, "evidence": str(e), "hash": ""}
+        d20 = []
 
-    # 7. Write status.json with real values
-    write_status_json(n12, n34, icen, roni, soi, d20, u850)
+    # 7. u850 (NCEP Reanalysis via OPeNDAP)
+    try:
+        print("Adquiriendo u850 (NCEP Reanalysis via OPeNDAP)...")
+        u850 = fetch_u850_anomaly()
+        if u850:
+            write_series_csv("u850", u850, "m_per_s", SOURCES["u850"]["institution"])
+            h = hashlib.sha256(str(u850).encode()).hexdigest()[:16]
+            sources_status["u850"] = {"institution": SOURCES["u850"]["institution"], "product": SOURCES["u850"]["product"], "success": True, "evidence": f"OPeNDAP, {len(u850)} puntos, sha256:{h}", "hash": h}
+            print(f"  ✅ {len(u850)} puntos, último: {u850[-1]}")
+        else:
+            raise RuntimeError("u850: sin datos parseados")
+    except Exception as e:
+        print(f"  ❌ Error u850: {e}")
+        sources_status["u850"] = {"institution": SOURCES["u850"]["institution"], "product": SOURCES["u850"]["product"], "success": False, "evidence": str(e), "hash": ""}
+        u850 = []
+
+    # 8. Official status from NOAA/CPC and ENFEN
+    noaa_advisory = None
+    enfen_status = None
+    try:
+        print("Adquiriendo estado oficial NOAA/CPC ENSO Advisory...")
+        if fetch_noaa_enso_advisory:
+            noaa_advisory = fetch_noaa_enso_advisory()
+            print(f"  ✅ NOAA: {noaa_advisory["alert"]} ({noaa_advisory["date"]})")
+            sources_status["noaa_enso_advisory"] = {
+                "institution": "NOAA / CPC",
+                "product": "ENSO Alert System Status",
+                "success": True,
+                "evidence": f"HTML parse, alert={noaa_advisory["alert"]}, date={noaa_advisory["date"]}",
+                "hash": hashlib.sha256(noaa_advisory["alert"].encode()).hexdigest()[:16],
+            }
+        else:
+            print("  ⚠ Módulo official_status no disponible")
+    except Exception as e:
+        print(f"  ❌ Error NOAA advisory: {e}")
+        sources_status["noaa_enso_advisory"] = {
+            "institution": "NOAA / CPC", "product": "ENSO Alert System Status",
+            "success": False, "evidence": str(e), "hash": "",
+        }
+
+    try:
+        print("Adquiriendo estado oficial ENFEN...")
+        if fetch_enfen_status:
+            enfen_status = fetch_enfen_status()
+            print(f"  {'✅' if enfen_status['source'] == 'live' else '⚠'} ENFEN: {enfen_status["alert"]} (source={enfen_status["source"]})")
+            sources_status["enfen_status"] = {
+                "institution": "ENFEN / IMARPE",
+                "product": "Estado oficial El Niño Costero",
+                "success": enfen_status["source"] in ("live", "fallback"),
+                "evidence": f"source={enfen_status["source"]}, alert={enfen_status["alert"]}",
+                "hash": hashlib.sha256(enfen_status["alert"].encode()).hexdigest()[:16],
+            }
+        else:
+            print("  ⚠ Módulo official_status no disponible")
+    except Exception as e:
+        print(f"  ❌ Error ENFEN: {e}")
+        sources_status["enfen_status"] = {
+            "institution": "ENFEN / IMARPE", "product": "Estado oficial El Niño Costero",
+            "success": False, "evidence": str(e), "hash": "",
+        }
+
+    # 9. Write status.json with real values
+    write_status_json(n12, n34, icen, roni, soi, d20, u850, noaa_advisory, enfen_status)
     print("status.json escrito con valores observados")
 
     # 8. Write health.json with real evidence

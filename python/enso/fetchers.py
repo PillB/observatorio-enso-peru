@@ -502,6 +502,412 @@ class CpcU850Fetcher(CpcHtmlFetcher):
 
 
 # ----------------------------------------------------------------------------
+# GODAS D20 — Ocean Isothermal Layer Depth (dbss_obil) como proxy de D20
+# ----------------------------------------------------------------------------
+# GODAS no publica un archivo "D20" directo en PSL; el producto derivado más
+# cercano es ``dbss_obil`` (Ocean Isothermal Layer Depth below sea surface),
+# operación usado como proxy de la profundidad de la termoclina / isoterma de
+# 20 °C en el Pacífico ecuatorial. Se adquiere vía OPeNDAP/ASCII del THREDDS
+# de PSL. La climatología 1991-2020 se obtiene del archivo LTM derivado.
+# ----------------------------------------------------------------------------
+class GodasD20Fetcher(PslCsvFetcher):
+    """Fetcher mensual de anomalías de D20 (proxy: dbss_obil) desde GODAS/PSL.
+
+    Estrategia:
+      1. Descarga la climatología mensual 1991-2020 desde
+         ``Datasets/godas/Derived/dbss_obil.mon.ltm.nc`` (vía OPeNDAP/ASCII).
+      2. Descarga, año por año desde 1980 hasta el año en curso, los
+         archivos ``dbss_obil.<year>.nc`` subconjuntados a la región
+         Niño 3.4 (5°S–5°N, 190°E–240°E).
+      3. Calcula la media areal (ponderada por cos(lat)) por mes.
+      4. Calcula anomalías vs la climatología 1991-2020.
+
+    El contenido cacheado es un CSV sintético en formato PSL
+    (``year m1 m2 ... m12``) que reutiliza ``validate``/``parse`` de
+    ``PslCsvFetcher``.
+
+    Notas científicas: ``dbss_obil`` es la profundidad de la capa isotermal
+    (definida donde T = SST − 0.2 °C), no exactamente la profundidad de la
+    isoterma de 20 °C (D20). En el Pacífico ecuatorial ambos son proxies
+    operacionales equivalentes de la profundidad de la termoclina.
+    """
+
+    source_id = "noaa-cpc-godas-d20"
+    url = "https://psl.noaa.gov/thredds/dodsC/Datasets/godas/dbss_obil"
+    expected_header_re = r"(year|Year|YEAR)"
+
+    # Región Niño 3.4 (5°S–5°N, 170°W–120°W = 190°E–240°E).
+    # Resolución GODAS: lat 1/3° (418 pts), lon 1° (360 pts).
+    # lat[i] = -74.5 + i/3  →  i(-5°) = 208.5, i(5°) = 238.5
+    # lon[i] = 0.5 + i      →  i(190°) = 189.5, i(240°) = 239.5
+    LAT_IDX_START = 209   # ≈ -4.83°
+    LAT_IDX_END = 238     # ≈  4.83°
+    LON_IDX_START = 190   # ≈ 190.5°E
+    LON_IDX_END = 240     # ≈ 240.5°E
+
+    GODAS_START_YEAR = 1980
+
+    CLIMATOLOGY_URL = (
+        "https://psl.noaa.gov/thredds/dodsC/Datasets/godas/Derived/"
+        "dbss_obil.mon.ltm.nc.ascii"
+    )
+    ANNUAL_URL_TEMPLATE = (
+        "https://psl.noaa.gov/thredds/dodsC/Datasets/godas/"
+        "dbss_obil.{year}.nc.ascii"
+    )
+
+    def _subset_query(self, time_start: int = 0, time_end: int = 11) -> str:
+        """Construye la query OPeNDAP/ASCII con subconjunto Niño 3.4."""
+        return (
+            f"dbss_obil%5B{time_start}:{time_end}%5D"
+            f"%5B{self.LAT_IDX_START}:{self.LAT_IDX_END}%5D"
+            f"%5B{self.LON_IDX_START}:{self.LON_IDX_END}%5D"
+        )
+
+    def _do_request(self, client: Any) -> tuple[int, bytes, dict[str, str]]:
+        """Descarga climatología + años anuales, produce CSV sintético.
+
+        NO fabrica valores: si un año falla, se omite (sin relleno).
+        """
+        from datetime import datetime as _dt, timezone as _tz
+
+        # 1. Climatología (siempre 12 meses).
+        clim_query = self._subset_query(0, 11)
+        clim_url = f"{self.CLIMATOLOGY_URL}?{clim_query}"
+        clim_resp = client.get(clim_url, headers=self._build_headers(),
+                               timeout=self.timeout)
+        clim_resp.raise_for_status()
+        clim_text = clim_resp.text
+        clim_monthly = _parse_opendap_grid_area_mean(
+            clim_text, var_name="dbss_obil", lat_count=30, lon_count=51
+        )
+        if len(clim_monthly) != 12 or any(v is None for v in clim_monthly):
+            raise SchemaValidationError(
+                f"{self.source_id}: climatología incompleta "
+                f"(meses={len(clim_monthly)})"
+            )
+
+        # 2. Años anuales. Para cada año, primero consultamos el .dds para
+        #    conocer el número de meses disponibles (el año en curso puede
+        #    estar incompleto) y luego pedimos el subconjunto correcto.
+        current_year = _dt.now(_tz.utc).year
+        by_year: dict[int, list[Optional[float]]] = {}
+        for year in range(self.GODAS_START_YEAR, current_year + 1):
+            base = self.ANNUAL_URL_TEMPLATE.format(year=year).replace(".ascii", "")
+            dds_url = f"{base}.dds"
+            try:
+                self._respect_rate_limit()
+                dds_resp = client.get(dds_url, headers=self._build_headers(),
+                                      timeout=self.timeout)
+                dds_resp.raise_for_status()
+            except Exception:
+                continue
+            n_months = self._parse_time_dim(dds_resp.text, "dbss_obil")
+            if n_months <= 0:
+                continue
+            data_url = (
+                f"{self.ANNUAL_URL_TEMPLATE.format(year=year)}?"
+                f"{self._subset_query(0, n_months - 1)}"
+            )
+            try:
+                self._respect_rate_limit()
+                resp = client.get(data_url, headers=self._build_headers(),
+                                  timeout=self.timeout)
+                resp.raise_for_status()
+            except Exception:
+                continue
+            monthly_vals = _parse_opendap_grid_area_mean(
+                resp.text, var_name="dbss_obil", lat_count=30, lon_count=51
+            )
+            if not monthly_vals:
+                continue
+            # Anomalías vs climatología
+            anomalies: list[Optional[float]] = []
+            for m, val in enumerate(monthly_vals):
+                if val is None or m >= len(clim_monthly) or clim_monthly[m] is None:
+                    anomalies.append(None)
+                else:
+                    anomalies.append(round(val - clim_monthly[m], 2))
+            by_year[year] = anomalies
+
+        # 3. Sintetiza CSV PSL-style. Se rellenan los meses faltantes del año
+        #    en curso con -99.99 (centinela de faltante) para que el parser
+        #    heredado de PslCsvFetcher (que exige 13 columnas) los acepte.
+        lines = [
+            "# GODAS dbss_obil — anomalía mensual (proxy D20)",
+            "# Región: Niño 3.4 (5°S–5°N, 170°O–120°O)",
+            "# Climatología: 1991-2020 (PSL ltm)",
+            "# Fuente: NOAA/PSL THREDDS OPeNDAP ASCII",
+            "# Unidades: m",
+            "year Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec",
+        ]
+        for year in sorted(by_year.keys()):
+            vals = by_year[year]
+            # Rellena con None hasta 12 meses si el año está incompleto.
+            padded = list(vals) + [None] * (12 - len(vals))
+            row = [str(year)]
+            for v in padded[:12]:
+                row.append("-99.99" if v is None else f"{v:.2f}")
+            lines.append(" ".join(row))
+        content = "\n".join(lines).encode("utf-8") + b"\n"
+        return 200, content, {}
+
+    @staticmethod
+    def _parse_time_dim(dds_text: str, var_name: str) -> int:
+        """Extrae el tamaño de la dimensión time del DDS de OPeNDAP.
+
+        Formato típico: ``Float32 dbss_obil[time = 12][lat = 30][lon = 51];``
+        """
+        # Busca el patrón ``var_name[time = N]``
+        m = re.search(
+            rf"{var_name}\[time\s*=\s*(\d+)\]", dds_text
+        )
+        if m:
+            return int(m.group(1))
+        # Alternativa: busca ``time = N`` en cualquier lugar.
+        m = re.search(r"\[time\s*=\s*(\d+)\]", dds_text)
+        return int(m.group(1)) if m else 0
+
+    def _detect_preliminary(self, content: bytes, headers: dict[str, str]) -> bool:
+        """Marca como preliminar si el último año está incompleto."""
+        text = content.decode("utf-8", errors="replace")
+        lines = [ln for ln in text.splitlines()
+                 if ln.strip() and not ln.startswith("#")
+                 and not ln.lower().startswith("year")]
+        if not lines:
+            return False
+        last = lines[-1].split()
+        if len(last) < 13:
+            return True
+        # Si hay -99.99 en los últimos meses del último año → preliminar
+        return any(v == "-99.99" for v in last[-6:])
+
+
+# ----------------------------------------------------------------------------
+# NCEP u850 — Anomalía del viento zonal a 850 hPa
+# ----------------------------------------------------------------------------
+class NcepU850Fetcher(PslCsvFetcher):
+    """Fetcher mensual de anomalías de u850 desde NCEP/NCAR Reanalysis (PSL).
+
+    Estrategia:
+      1. Descarga el ASCII del wizard de PSL (``timeseries.pl``) que devuelve
+         la media areal mensual de u a 850 hPa en Niño 3.4 (5°S–5°N,
+         170°O–120°O) desde 1948 hasta el presente.
+      2. Calcula la climatología 1981-2010 desde la propia serie.
+      3. Calcula anomalías mensuales.
+
+    El contenido cacheado es el ASCII crudo del wizard (formato año + 12
+    valores mensuales separados por espacios); ``validate``/``parse`` se
+    heredan de ``PslCsvFetcher``. La anomalía se computa en ``parse``.
+
+    Convención de signos: u > 0 ⇒ componente del oeste (westerly, hacia el
+    este); u < 0 ⇒ componente del este (easterly, hacia el oeste).
+    """
+
+    source_id = "noaa-cpc-u850-anom"
+    url = (
+        "https://psl.noaa.gov/cgi-bin/data/timeseries/timeseries.pl"
+        "?ntype=1&var=Zonal+Wind&level=850"
+        "&lat1=-5&lat2=5&lon1=190&lon2=240"
+        "&iseas=0&mon1=0&mon2=11&iarea=1&typeout=1"
+        "&Submit=Create+Timeseries"
+    )
+    expected_header_re = r"(\d{4}|year|Year|YEAR)"
+
+    #: Año base para la climatología (estándar NOAA actual).
+    CLIM_START_YEAR = 1981
+    CLIM_END_YEAR = 2010
+
+    def validate(self, content: bytes) -> None:
+        text = content.decode("utf-8", errors="replace")
+        # El wizard PSL envuelve los datos en HTML; el bloque <pre> contiene
+        # la tabla ASCII año + 12 valores mensuales separados por espacios.
+        # Filtramos líneas HTML y buscamos filas válidas en todo el contenido.
+        lines = [ln for ln in text.splitlines()
+                 if ln.strip() and not ln.lstrip().startswith("<")
+                 and not ln.lstrip().startswith("#")]
+        if not lines:
+            raise SchemaValidationError(
+                f"{self.source_id}: contenido vacío o sólo HTML"
+            )
+        # Verifica que al menos una fila sea año + 12 valores numéricos.
+        # Buscamos en TODAS las líneas (no sólo las primeras), porque el
+        # wizard PSL inserta >800 líneas de HTML/JS antes del bloque <pre>.
+        ok_rows = 0
+        for ln in lines:
+            parts = re.split(r"[\s,]+", ln.strip())
+            if len(parts) >= 13:
+                try:
+                    int(parts[0])
+                    ok_rows += 1
+                except ValueError:
+                    continue
+        if ok_rows == 0:
+            raise SchemaValidationError(
+                f"{self.source_id}: no se encontraron filas válidas "
+                f"(líneas no HTML: {len(lines)})"
+            )
+
+    def parse(self, result: FetchResult) -> list[MonthlyPoint]:
+        """Parsea el ASCII del wizard PSL y calcula anomalías 1981-2010."""
+        text = result.content.decode("utf-8", errors="replace")
+        # Extrae sólo la tabla: líneas que empiezan con 4 dígitos (año).
+        raw: list[tuple[int, list[Optional[float]]]] = []
+        for ln in text.splitlines():
+            ln = ln.strip()
+            if not ln or ln.startswith("#") or ln.startswith("<"):
+                continue
+            parts = re.split(r"[\s,]+", ln.strip())
+            if len(parts) < 13:
+                continue
+            try:
+                year = int(parts[0])
+            except ValueError:
+                continue
+            months: list[Optional[float]] = []
+            for m in range(12):
+                raw_v = parts[m + 1]
+                try:
+                    v = float(raw_v)
+                    # Centinela de faltante del wizard PSL.
+                    if v <= -999.0 or abs(v) > 1e6:
+                        v = None
+                except ValueError:
+                    v = None
+                months.append(v)
+            raw.append((year, months))
+
+        if not raw:
+            return []
+
+        # Climatología 1981-2010 (12 meses).
+        clim: list[Optional[float]] = [None] * 12
+        for month_idx in range(12):
+            vals = [
+                months[month_idx]
+                for year, months in raw
+                if self.CLIM_START_YEAR <= year <= self.CLIM_END_YEAR
+                and months[month_idx] is not None
+            ]
+            if vals:
+                clim[month_idx] = round(sum(vals) / len(vals), 3)
+
+        # Anomalías
+        points: list[MonthlyPoint] = []
+        now = datetime.now(timezone.utc)
+        for year, months in raw:
+            for m, v in enumerate(months):
+                if v is None or clim[m] is None:
+                    anom = None
+                else:
+                    anom = round(v - clim[m], 2)
+                flag = SeriesFlag.PRELIMINARY if (
+                    year == now.year and m + 1 >= now.month - 1
+                ) else SeriesFlag.FINAL
+                points.append(
+                    MonthlyPoint(
+                        month=f"{year:04d}-{m + 1:02d}",
+                        value=anom,
+                        flag=flag,
+                    )
+                )
+        return points
+
+
+# ----------------------------------------------------------------------------
+# Helpers OPeNDAP/ASCII
+# ----------------------------------------------------------------------------
+def _parse_opendap_grid_area_mean(
+    text: str,
+    var_name: str,
+    lat_count: int,
+    lon_count: int,
+) -> list[Optional[float]]:
+    """Parsea una respuesta OPeNDAP/ASCII de variable Grid 3D (time,lat,lon).
+
+    Devuelve la media areal (ponderada por cos(lat)) para cada paso temporal.
+    Si el contenido es un error OPeNDAP, devuelve lista vacía.
+    """
+    import math
+
+    if not text or "Error {" in text:
+        return []
+
+    # Localiza la sección de datos: '<var_name>.<var_name>[T][L][Lo]'
+    pattern = (
+        rf"{var_name}\.{var_name}"
+        r"\[(\d+)\]\[(\d+)\]\[(\d+)\]"
+    )
+    m = re.search(pattern, text)
+    if not m:
+        return []
+    n_t, n_lat, n_lon = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    if n_lat != lat_count or n_lon != lon_count:
+        # La cuadrícula devuelta no coincide con la esperada.
+        return []
+
+    # Localiza la sección de latitudes (para ponderar por cos(lat)).
+    lat_section_match = re.search(
+        rf"{var_name}\.lat\[\d+\]\s*\n([^\[]*?)(?=\n\n|\Z)",
+        text,
+    )
+    lats: list[float] = []
+    if lat_section_match:
+        for ln in lat_section_match.group(1).splitlines():
+            ln = ln.strip()
+            if not ln or ln.startswith("Dataset"):
+                continue
+            try:
+                lats = [float(v.strip()) for v in ln.split(",") if v.strip()]
+                break
+            except ValueError:
+                continue
+    if len(lats) != n_lat:
+        # Sin latitudes confiables, no se puede ponderar.
+        return []
+
+    # Datos: filas "[t][lat], v1, v2, ..., vN"
+    data: dict[tuple[int, int], list[float]] = {}
+    for ln in text.splitlines():
+        rm = re.match(r"\s*\[(\d+)\]\[(\d+)\],\s*(.*)", ln)
+        if not rm:
+            continue
+        t = int(rm.group(1))
+        lat_idx = int(rm.group(2))
+        vals_str = rm.group(3).strip()
+        try:
+            vals = [float(v.strip()) for v in vals_str.split(",") if v.strip()]
+        except ValueError:
+            continue
+        # Filtra centinelas de faltante típicos (-9.96921E36, etc.)
+        vals = [v if abs(v) < 1e6 else float("nan") for v in vals]
+        data[(t, lat_idx)] = vals
+
+    # Media areal ponderada por cos(lat).
+    results: list[Optional[float]] = []
+    for t in range(n_t):
+        lat_means: list[float] = []
+        lat_weights: list[float] = []
+        for lat_idx in range(n_lat):
+            key = (t, lat_idx)
+            if key not in data:
+                continue
+            vals = data[key]
+            valid = [v for v in vals if not math.isnan(v)]
+            if not valid:
+                continue
+            lat_means.append(sum(valid) / len(valid))
+            lat_weights.append(math.cos(math.radians(lats[lat_idx])))
+        if not lat_means:
+            results.append(None)
+            continue
+        total_w = sum(lat_weights)
+        weighted = sum(m * w for m, w in zip(lat_means, lat_weights))
+        results.append(weighted / total_w if total_w > 0 else None)
+    return results
+
+
+# ----------------------------------------------------------------------------
 # ENFEN ICEN — extracción desde HTML
 # ----------------------------------------------------------------------------
 class EnfenIcenFetcher(CpcHtmlFetcher):
@@ -579,6 +985,8 @@ FETCHERS: dict[str, type[Fetcher]] = {
     "noaa-cpc-reroni": CpcRoniFetcher,
     "noaa-cpc-godas": CpcGodasFetcher,
     "noaa-cpc-u850": CpcU850Fetcher,
+    "noaa-cpc-godas-d20": GodasD20Fetcher,
+    "noaa-cpc-u850-anom": NcepU850Fetcher,
     "enfen-imarpe-icen": EnfenIcenFetcher,
 }
 

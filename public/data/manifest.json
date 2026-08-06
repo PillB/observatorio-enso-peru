@@ -1,7 +1,7 @@
 {
   "name": "Observatorio ENSO Perú",
   "dataVersion": "2.0.0",
-  "generatedAt": "2026-08-06T05:21:56.780118+00:00",
+  "generatedAt": "2026-08-06T07:24:01.829648+00:00",
   "asOf": "2026-08-06",
   "dataSource": "LIVE_OBSERVED",
   "coverage": "Datos reales observados desde NOAA/PSL y NOAA/CPC",
@@ -9,52 +9,79 @@
     "nino12",
     "nino34",
     "soi",
-    "cpc_ersst5"
+    "cpc_ersst5",
+    "d20",
+    "u850",
+    "noaa_enso_advisory",
+    "enfen_status"
   ],
   "files": {
     "combined": "observatorio-enso-todas-las-series.csv",
     "status": "status.json",
-    "quality": "quality.json",
+    "quality": "data-quality.json",
     "sources": "sources.json",
     "indicators": "indicators.json",
-    "allSeries": "all-series.json",
-    "latestGrid": "latest-grid.json"
+    "health": "health.json",
+    "manifest": "manifest.json",
+    "latest": "latest.json",
+    "all-series": "all-series.json"
   },
   "indicators": [
     {
       "id": "nino12",
+      "label": "Niño 1+2",
+      "scope": "coastal",
+      "units": "degC",
       "file": "nino12.csv",
-      "checksum": "fnv1a:9fcb63d5"
-    },
-    {
-      "id": "icen",
-      "file": "icen.csv",
-      "checksum": "fnv1a:81f42829"
+      "checksum": "fnv1a:ea74e1af"
     },
     {
       "id": "nino34",
+      "label": "Niño 3.4",
+      "scope": "basin",
+      "units": "degC",
       "file": "nino34.csv",
-      "checksum": "fnv1a:e0f0ef64"
+      "checksum": "fnv1a:a12e1926"
+    },
+    {
+      "id": "icen",
+      "label": "ICEN",
+      "scope": "coastal",
+      "units": "degC",
+      "file": "icen.csv",
+      "checksum": "fnv1a:cbe1ace9"
     },
     {
       "id": "roni",
+      "label": "RONI",
+      "scope": "basin",
+      "units": "degC",
       "file": "roni.csv",
-      "checksum": "fnv1a:d24e748e"
+      "checksum": "fnv1a:72f8b255"
     },
     {
       "id": "soi",
+      "label": "SOI",
+      "scope": "basin",
+      "units": "dimensionless",
       "file": "soi.csv",
-      "checksum": "fnv1a:4334a0ea"
+      "checksum": "fnv1a:205114d4"
     },
     {
       "id": "d20",
+      "label": "D20",
+      "scope": "basin",
+      "units": "m",
       "file": "d20.csv",
-      "checksum": "fnv1a:a6def260"
+      "checksum": "fnv1a:fbc674eb"
     },
     {
       "id": "u850",
+      "label": "u850",
+      "scope": "basin",
+      "units": "m_per_s",
       "file": "u850.csv",
-      "checksum": "fnv1a:68457f2b"
+      "checksum": "fnv1a:904b22c6"
     }
   ]
 }

@@ -151,6 +151,33 @@ SOURCES: list[SourceRef] = [
         fallbackSourceId="pmel-tao-triton",
     ),
     SourceRef(
+        id="noaa-cpc-godas-d20",
+        institution="NOAA / CPC — GODAS vía PSL THREDDS (OPeNDAP/ASCII)",
+        product="Anomalía mensual de dbss_obil (proxy D20) — Niño 3.4",
+        url="https://psl.noaa.gov/thredds/dodsC/Datasets/godas/dbss_obil",
+        retrievalDate="2026-08-06",
+        format="OPeNDAP/ASCII (THREDDS)",
+        updateFrequency="Mensual",
+        latency="1–2 semanas",
+        license="Dominio público (Gobierno de EE. UU.)",
+        attribution="NOAA / PSL (GODAS dbss_obil)",
+        status=SourceStatus.VERIFIED,
+        notes=(
+            "Variable ``dbss_obil`` (Ocean Isothermal Layer Depth below "
+            "sea surface) del dataset GODAS en PSL THREDDS. Se descarga "
+            "anualmente (1980–presente) subconjuntada a la región Niño "
+            "3.4 (5°S–5°N, 170°O–120°O) y se computa la anomalía vs la "
+            "climatología 1991-2020 publicada por PSL. ``dbss_obil`` es "
+            "el producto derivado más cercano a D20 disponible en PSL; "
+            "ambos se usan operacionalmente como proxies de la "
+            "profundidad de la termoclina en el Pacífico ecuatorial. "
+            "Convención de signos: anomalía positiva ⇒ isoterma/capa "
+            "isotermal más profunda (termoclina profunda, típico de El "
+            "Niño de cuenca); negativa ⇒ más somera (típico de La Niña)."
+        ),
+        fallbackSourceId="pmel-tao-triton",
+    ),
+    SourceRef(
         id="noaa-cpc-u850",
         institution="NOAA / CPC — NCEP/NCAR Reanalysis",
         product="Anomalía del viento zonal a 850 hPa — Pacífico ecuatorial",
@@ -168,6 +195,35 @@ SOURCES: list[SourceRef] = [
             "el oeste (componente del este / easterly). Se distingue valor "
             "observado de anomalía y viento de superficie (10 m) de bajo "
             "nivel (850 hPa)."
+        ),
+        fallbackSourceId="pmel-tao-triton",
+    ),
+    SourceRef(
+        id="noaa-cpc-u850-anom",
+        institution="NOAA / PSL — NCEP/NCAR Reanalysis (Monthly Mean)",
+        product="Anomalía mensual del viento zonal a 850 hPa — Niño 3.4",
+        url=(
+            "https://psl.noaa.gov/cgi-bin/data/timeseries/timeseries.pl"
+            "?ntype=1&var=Zonal+Wind&level=850"
+            "&lat1=-5&lat2=5&lon1=190&lon2=240"
+            "&iseas=0&mon1=0&mon2=11&iarea=1&typeout=1"
+            "&Submit=Create+Timeseries"
+        ),
+        retrievalDate="2026-08-06",
+        format="ASCII (wizard PSL timeseries.pl, media areal)",
+        updateFrequency="Mensual",
+        latency="Días",
+        license="Dominio público (Gobierno de EE. UU.)",
+        attribution="NOAA / PSL (NCEP/NCAR Reanalysis)",
+        status=SourceStatus.VERIFIED,
+        notes=(
+            "Media areal mensual de u a 850 hPa sobre Niño 3.4 "
+            "(5°S–5°N, 170°O–120°O) extraída vía el wizard ``timeseries.pl`` "
+            "de PSL. El wizard devuelve los valores mensuales absolutos en "
+            "m/s desde 1948; la anomalía se computa contra la climatología "
+            "1981-2010 derivada de la propia serie. Convención de signos: "
+            "u > 0 ⇒ componente del oeste (westerly, hacia el este); "
+            "u < 0 ⇒ componente del este (easterly, hacia el oeste)."
         ),
         fallbackSourceId="pmel-tao-triton",
     ),

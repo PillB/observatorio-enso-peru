@@ -674,7 +674,7 @@ function renderAlertBanner(opts) {
     parts.push(`<div class="alert-card alert-${col}" style="flex:1;min-width:0">
       <div class="alert-row"><span class="alert-scope">Costero</span>
         <span class="pill pill-${col}" style="font-weight:700">${e.classification}</span></div>
-      <div class="alert-official"><span class="alert-label">Estado oficial (ENFEN):</span> <span class="alert-value">${STATUS.coastal.alert}</span></div>
+      <div class="alert-official"><span class="alert-label">Estado oficial (ENFEN):</span> <span class="alert-value"><a href="${STATUS.coastal.alertOfficialUrl||'https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen'}" target="_blank" rel="noopener">${STATUS.coastal.alert}</a>${STATUS.coastal.alertDate?' · '+STATUS.coastal.alertDate:''}</span></div>
       <div class="alert-official"><span class="alert-label">Clasificación ICEN (ENFEN):</span> <span class="alert-value">${o.classification}</span></div>
       <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al sistema oficial de alertas de ENFEN.</strong></div>
     </div>`);
@@ -685,7 +685,7 @@ function renderAlertBanner(opts) {
     parts.push(`<div class="alert-card alert-${col}" style="flex:1;min-width:0">
       <div class="alert-row"><span class="alert-scope">Cuenca</span>
         <span class="pill pill-${col}" style="font-weight:700">${e.classification}</span></div>
-      <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value">${STATUS.basin.alert}</span></div>
+      <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value"><a href="${STATUS.basin.alertOfficialUrl||'https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml'}" target="_blank" rel="noopener">${STATUS.basin.alert}</a>${STATUS.basin.alertDate?' · '+STATUS.basin.alertDate:''}</span></div>
       <div class="alert-official"><span class="alert-label">RONI:</span> <span class="alert-value">${fmtValue(STATUS.basin.roni,'degC')} — ${STATUS.basin.roniCategory}</span></div>
       <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al ENSO Advisory de NOAA/CPC.</strong></div>
     </div>`);
@@ -807,7 +807,7 @@ function renderWinds(){
   const liveBanner = `<div class="alert-banner"><div class="alert-card alert-${col}" style="flex:1">
     <div class="alert-row"><span class="alert-scope">Cuenca · Viento 850 hPa</span>
       <span class="pill pill-${col}" style="font-weight:700">${e.classification}</span></div>
-    <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value">${s.basin.alert}</span></div>
+    <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value"><a href="${s.basin.alertOfficialUrl||'https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml'}" target="_blank" rel="noopener">${s.basin.alert}</a>${s.basin.alertDate?' · '+s.basin.alertDate:''}</span></div>
     <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al ENSO Advisory de NOAA/CPC.</strong></div>
   </div></div>`;
   return liveBanner + `<div class="info-note info"><strong>Convención:</strong> u &gt; 0 ⇒ flujo hacia el este (westerly); u &lt; 0 ⇒ flujo hacia el oeste (easterly).</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.winds} Viento zonal a 850 hPa</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:11px;color:var(--muted)">${fmtMonth(s.winds.u850Month)}</p><p class="big-value ${s.winds.u850Anom>0?'value-warm':'value-cool'}">${fmtValue(s.winds.u850Anom,'m_per_s')}</p><p style="font-size:12px;margin-top:4px">${s.winds.direction}</p><div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.u850.points.slice(-120),'m_per_s',200)}</div></div>`;
@@ -831,7 +831,7 @@ function renderThermocline(){
   const liveBanner = `<div class="alert-banner"><div class="alert-card alert-${col}" style="flex:1">
     <div class="alert-row"><span class="alert-scope">Cuenca · Termoclina (D20)</span>
       <span class="pill pill-${col}" style="font-weight:700">${e.classification}</span></div>
-    <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value">${s.basin.alert}</span></div>
+    <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value"><a href="${s.basin.alertOfficialUrl||'https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml'}" target="_blank" rel="noopener">${s.basin.alert}</a>${s.basin.alertDate?' · '+s.basin.alertDate:''}</span></div>
     <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al ENSO Advisory de NOAA/CPC.</strong></div>
   </div></div>`;
   return liveBanner + `<div class="info-note info"><strong>D20:</strong> profundidad de la isoterma de 20 °C como proxy de la termoclina. Anomalía positiva ⇒ más profunda (El Niño); negativa ⇒ más somera (La Niña).</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.thermocline} D20 — Termoclina</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:11px;color:var(--muted)">${fmtMonth(s.thermocline.d20Month)}</p><p class="big-value ${s.thermocline.d20Anom>0?'value-warm':'value-cool'}">${fmtValue(s.thermocline.d20Anom,'m')}</p><p style="font-size:12px;margin-top:4px">${s.thermocline.interpretation}</p><div style="margin-top:8px"><span class="pill pill-${col}">${e.classification}</span></div><div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.d20.points.slice(-120),'m',200)}</div></div>`;

@@ -1,40 +1,44 @@
 {
   "asOf": "2026-08-06",
   "dataVersion": "2.0.0",
-  "generatedAt": "2026-08-06T05:21:56.779648+00:00",
+  "generatedAt": "2026-08-06T07:24:01.829132+00:00",
   "dataSource": "LIVE_OBSERVED",
   "coastal": {
-    "alert": "Consulte ENFEN en siofen.imarpe.gob.pe",
+    "alert": "Alerta de El Niño Costero",
     "alertSource": "ENFEN / IMARPE",
+    "alertOfficialUrl": "https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen",
+    "alertDate": "2026-05",
     "nino12Anom": 1.28,
     "nino12Month": "2026-05",
     "icen": 0.83,
     "icenWindow": "2026-05",
     "icenCategory": "El Niño Costero débil",
-    "freshness": "Dato observado · adquirido 2026-08-06T05:21:56.779648+00:00",
+    "freshness": "Dato observado · adquirido 2026-08-06T07:24:01.829132+00:00",
     "preliminary": false
   },
   "basin": {
-    "alert": "Consulte NOAA/CPC en cpc.ncep.noaa.gov",
+    "alert": "El Niño Advisory",
     "alertSource": "NOAA / CPC",
+    "alertOfficialUrl": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml",
+    "alertDate": "9 July 2026",
     "nino34Anom": 0.8,
     "nino34Month": "2026-05",
     "roni": 1.04,
     "roniWindow": "2026-06",
     "roniCategory": "El Niño (cuenca)",
-    "freshness": "Dato observado · adquirido 2026-08-06T05:21:56.779648+00:00",
+    "freshness": "Dato observado · adquirido 2026-08-06T07:24:01.829132+00:00",
     "preliminary": false
   },
   "winds": {
-    "u850Anom": null,
-    "u850Month": "",
-    "direction": "Datos de viento no disponibles en esta fuente",
+    "u850Anom": -1.562,
+    "u850Month": "2026-02",
+    "direction": "Anomalía de easterlies (reforzada hacia el oeste)",
     "signMeaning": "u > 0 ⇒ este (westerly); u < 0 ⇒ oeste (easterly)"
   },
   "thermocline": {
-    "d20Anom": null,
-    "d20Month": "",
-    "interpretation": "Datos de D20 no disponibles en esta fuente"
+    "d20Anom": 6.972,
+    "d20Month": "2026-06",
+    "interpretation": "Termoclina cerca de la profundidad normal"
   },
   "soi": {
     "value": 0.7,

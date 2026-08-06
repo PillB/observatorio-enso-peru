@@ -1,0 +1,174 @@
+# Validación cross-browser con Playwright (Chromium, Firefox, WebKit).
+#
+# Este workflow ejecuta tests Playwright en tres navegadores para verificar
+# que el sitio funciona correctamente en todos los motores web principales.
+# WebKit requiere dependencias del sistema que se instalan con
+# `playwright install-deps webkit`.
+name: browser-validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # Diario a las 05:17 UTC (después del pipeline de datos)
+    - cron: '17 5 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-validation
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+        viewport:
+          - { w: 1280, h: 900, name: desktop }
+          - { w: 390, h: 844, name: mobile-iphone13 }
+          - { w: 320, h: 568, name: mobile-iphone-se }
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install playwright httpx
+
+      - name: Install Playwright browsers and system dependencies
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
+        run: |
+          # Install the browser binary
+          playwright install ${{ matrix.browser }}
+          # Install system dependencies (critical for WebKit and Firefox)
+          # This requires sudo and installs OS-level libraries.
+          if [ "${{ matrix.browser }}" = "webkit" ]; then
+            sudo playwright install-deps webkit
+          elif [ "${{ matrix.browser }}" = "firefox" ]; then
+            sudo playwright install-deps firefox
+          else
+            sudo playwright install-deps chromium
+          fi
+
+      - name: Start static server
+        run: |
+          cd public
+          python3 -m http.server 8765 &
+          echo $! > /tmp/server.pid
+          sleep 2
+          curl -s -o /dev/null -w "%{http_code}" http://localhost:8765/index.html
+
+      - name: Run Playwright validation
+        env:
+          BROWSER: ${{ matrix.browser }}
+          VIEWPORT_W: ${{ matrix.viewport.w }}
+          VIEWPORT_H: ${{ matrix.viewport.h }}
+          VIEWPORT_NAME: ${{ matrix.viewport.name }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, sys, traceback
+          from playwright.sync_api import sync_playwright
+
+          BROWSER = os.environ["BROWSER"]
+          VW = int(os.environ["VIEWPORT_W"])
+          VH = int(os.environ["VIEWPORT_H"])
+          VNAME = os.environ["VIEWPORT_NAME"]
+          URL = "http://localhost:8765/index.html"
+
+          VIEWS = [
+              "overview", "coastal", "basin", "sst", "winds",
+              "thermocline", "soi", "status", "historical", "maps",
+              "data", "methodology", "sources", "chatbot",
+          ]
+
+          errors = []
+          overflow_views = []
+
+          with sync_playwright() as p:
+              launcher = getattr(p, BROWSER)
+              try:
+                  browser = launcher.launch(headless=True)
+              except Exception as e:
+                  print(f"FAILED to launch {BROWSER}: {e}")
+                  sys.exit(1)
+
+              ctx = browser.new_context(viewport={"width": VW, "height": VH})
+              page = ctx.new_page()
+              page.on("pageerror", lambda e: errors.append(str(e)))
+              page.on("console", lambda m: errors.append(f"console.{m.type}: {m.text}") if m.type == "error" else None)
+
+              try:
+                  page.goto(URL, wait_until="networkidle", timeout=30000)
+              except Exception as e:
+                  print(f"FAILED to load page: {e}")
+                  browser.close()
+                  sys.exit(1)
+
+              tut = page.evaluate("typeof TUTORIAL_STEPS !== 'undefined' ? TUTORIAL_STEPS.length : 0")
+              icen = page.evaluate("typeof STATUS !== 'undefined' ? STATUS.coastal.icen : null")
+              roni = page.evaluate("typeof STATUS !== 'undefined' ? STATUS.basin.roni : null")
+              d20 = page.evaluate("typeof STATUS !== 'undefined' ? STATUS.thermocline.d20Anom : null")
+              u850 = page.evaluate("typeof STATUS !== 'undefined' ? STATUS.winds.u850Anom : null")
+
+              for v in VIEWS:
+                  try:
+                      page.evaluate(f'navigate("{v}")')
+                      of = page.evaluate("document.body.scrollWidth - window.innerWidth")
+                      if of > 0:
+                          overflow_views.append({"view": v, "overflow": of})
+                  except Exception as e:
+                      errors.append(f"navigate({v}): {e}")
+
+              browser.close()
+
+          # Report
+          print(f"Browser: {BROWSER}")
+          print(f"Viewport: {VW}x{VH} ({VNAME})")
+          print(f"Tutorial modules: {tut}")
+          print(f"ICEN: {icen}")
+          print(f"RONI: {roni}")
+          print(f"D20: {d20}")
+          print(f"u850: {u850}")
+          print(f"Errors: {len(errors)}")
+          print(f"Overflow views: {len(overflow_views)}")
+          if errors:
+              for e in errors[:5]:
+                  print(f"  ERR: {e[:200]}")
+          if overflow_views:
+              for o in overflow_views[:5]:
+                  print(f"  OF: {o}")
+
+          # Exit code
+          if errors or overflow_views or tut != 13:
+              sys.exit(1)
+          if icen is None or roni is None:
+              print("WARNING: ICEN or RONI is None — data may not have loaded")
+              sys.exit(1)
+          print("ALL CHECKS PASSED")
+          PYEOF
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-${{ matrix.browser }}-${{ matrix.viewport.name }}
+          path: |
+            /tmp/server.pid
+          retention-days: 7
