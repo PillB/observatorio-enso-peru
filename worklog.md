@@ -640,3 +640,39 @@ Stage Summary:
   8. ✅ Chatbot case mismatch corregido
 - GitHub Pages: https://pillb.github.io/observatorio-enso-peru/ — LIVE con todas las correcciones
 - 408 tests passed, 3 skipped. Lint limpio.
+
+---
+Task ID: 20-mobile-overflow-fix
+Agent: orchestrator (main)
+Task: Corregir overflow X en iPhone 13 Pro, Samsung, Android, iPad; fix tutorial overflow en móvil.
+
+Work Log:
+- Diagnosticado el overflow: el `.header-inner` tenía scrollWidth=488px en viewports de 390px porque los badges de estado + botón de tutorial + logo + título superaban el ancho.
+- Testado en 6 viewports: iPhone 13 Pro (390×844), Samsung Galaxy (360×800), iPhone XR (414×896), iPad (768×1024), iPhone SE (320×568), Pixel 7 (393×873).
+- Causa raíz: falta de CSS responsivo para header en pantallas pequeñas; elementos sin `min-width: 0` ni `max-width: 100%`.
+- Correcciones aplicadas:
+  1. Header responsivo: media queries @media(max-width:640px) y @media(max-width:380px) que reducen gap, padding, font-size, ocultan botón de tutorial, reducen badges.
+  2. `min-width: 0` en `.main`, `.content`, `.header-badges` para permitir flex shrink.
+  3. `max-width: 100vw` y `overflow-x: hidden` en `body` y `.shell`.
+  4. `max-width: 100%` y `overflow: hidden` en `.content`, `.map-grid`, `.mobile-nav`.
+  5. Tutorial box: `max-width: calc(100vw - 32px)` para nunca exceder el viewport.
+  6. Tutorial bar: `max-width: 100vw` y `overflow: hidden`.
+  7. Media query @media(max-width:480px) con flex-direction column en grids, padding reducido, font-size ajustado.
+  8. Charts con `-webkit-overflow-scrolling: touch` para scroll táctil suave.
+- Validación local: 0px overflow en los 6 viewports.
+- Validación en vivo (https://pillb.github.io/observatorio-enso-peru/?v=cache-bust):
+  - iPhone 13 Pro (390×844): X overflow = 0 ✅
+  - Samsung Galaxy (360×800): X overflow = 0 ✅
+  - iPhone XR (414×896): X overflow = 0 ✅
+  - iPad (768×1024): X overflow = 0 ✅
+  - iPhone SE (320×568): X overflow = 0 ✅
+  - Pixel 7 (393×873): X overflow = 0 ✅
+  - Tutorial box en iPhone 13 Pro: left=16, right=374, width=358, overflow=false ✅
+  - Todas las vistas en iPhone 13 Pro: X overflow = 0 ✅
+- Commit: 07bfa0f. Desplegado a GitHub Pages exitosamente.
+
+Stage Summary:
+- Overflow X corregido en 6 dispositivos móviles (iPhone 13 Pro, Samsung, iPhone XR, iPad, iPhone SE, Pixel 7).
+- Tutorial sin overflow en móvil.
+- Todas las 14 vistas sin overflow X en iPhone 13 Pro.
+- Commit: 07bfa0f. Live: https://pillb.github.io/observatorio-enso-peru/
