@@ -217,6 +217,59 @@
     .pill-red { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); border-color: color-mix(in srgb, var(--red) 30%, transparent); }
     .pill-gray { background: color-mix(in srgb, var(--gray) 10%, transparent); color: var(--gray); border-color: var(--border); }
 
+    /* Header GRD pill — small signal indicator next to alert badges */
+    .hdr-grd-pill {
+      display: inline-flex; align-items: center; padding: 1px 6px;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.02em;
+      border-radius: 4px; margin-left: 4px; vertical-align: middle;
+      border: 1px solid transparent;
+    }
+    @media (max-width: 640px) { .hdr-grd-pill { font-size: 8px; padding: 0 4px; } }
+    @media (max-width: 380px) { .hdr-grd-pill { display: none; } }
+
+    /* Alert banner — fronloaded GRD signal + official alert reference */
+    .alert-banner {
+      display: flex; gap: 12px; margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 640px) { .alert-banner { flex-direction: column; gap: 8px; } }
+    .alert-card {
+      background: var(--card-grad);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--muted);
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+    .alert-card.alert-green { border-left-color: var(--green); }
+    .alert-card.alert-yellow { border-left-color: var(--yellow); }
+    .alert-card.alert-red { border-left-color: var(--red); }
+    .alert-card.alert-gray { border-left-color: var(--gray); }
+    .alert-row {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap; margin-bottom: 8px;
+    }
+    .alert-scope {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.04em; color: var(--muted);
+    }
+    .alert-official {
+      font-size: 12px; line-height: 1.5; margin-top: 4px;
+      color: var(--fg);
+    }
+    .alert-label {
+      font-weight: 600; color: var(--muted);
+    }
+    .alert-value {
+      color: var(--fg);
+    }
+    .alert-note {
+      font-size: 11px; line-height: 1.45; margin-top: 8px;
+      color: var(--muted); font-style: italic;
+    }
+    .alert-note strong { font-style: normal; color: var(--fg); }
+
     /* Info note — metallic panel */
     .info-note {
       border-radius: 8px; padding: 12px 14px 12px 16px; font-size: 12px; line-height: 1.5; margin-bottom: 16px;
@@ -596,7 +649,64 @@ async function init() {
     document.getElementById('view-content').innerHTML=`<div class="info-note warn"><strong>Error de carga:</strong> ${e.message}</div>`;
   }
 }
-function renderHeader(){document.getElementById('hdr-coastal').innerHTML=`<span class="pulse-dot"></span> Costero: ${STATUS.coastal.alert}`;document.getElementById('hdr-basin').innerHTML=`<span class="pulse-dot"></span> Cuenca: ${STATUS.basin.alert}`;}
+function renderHeader(){
+  // Compute GRD signals from latest observed values for the header pills
+  const cExp = evalCoastalSST(STATUS.coastal.icen);
+  const bExp = evalBasinSST(STATUS.basin.roni);
+  const cColor = cExp.color==='green'?'green':cExp.color==='yellow'?'yellow':cExp.color==='red'?'red':'gray';
+  const bColor = bExp.color==='green'?'green':bExp.color==='yellow'?'yellow':bExp.color==='red'?'red':'gray';
+  document.getElementById('hdr-coastal').innerHTML=`<span class="pulse-dot"></span> Costero: <span style="opacity:0.85">${STATUS.coastal.alert}</span> <span class="hdr-grd-pill pill-${cColor}" title="Señal operativa del equipo GRD (no oficial)">GRD: ${cExp.classification}</span>`;
+  document.getElementById('hdr-basin').innerHTML=`<span class="pulse-dot"></span> Cuenca: <span style="opacity:0.85">${STATUS.basin.alert}</span> <span class="hdr-grd-pill pill-${bColor}" title="Señal operativa del equipo GRD (no oficial)">GRD: ${bExp.classification}</span>`;
+}
+
+// Shared alert banner: fronloads GRD signal + official alert reference + disclaimer.
+// Used by every view to guarantee consistent homologation.
+function renderAlertBanner(opts) {
+  opts = opts || {};
+  const scope = opts.scope || 'both'; // 'coastal' | 'basin' | 'both'
+  const showCoastal = scope === 'coastal' || scope === 'both';
+  const showBasin = scope === 'basin' || scope === 'both';
+  const parts = [];
+  if (showCoastal) {
+    const e = evalCoastalSST(STATUS.coastal.icen);
+    const o = evalICEN(STATUS.coastal.icen);
+    const col = e.color==='green'?'green':e.color==='yellow'?'yellow':e.color==='red'?'red':'gray';
+    parts.push(`<div class="alert-card alert-${col}" style="flex:1;min-width:0">
+      <div class="alert-row"><span class="alert-scope">Costero</span>
+        <span class="pill pill-${col}" style="font-weight:700">${e.classification}</span></div>
+      <div class="alert-official"><span class="alert-label">Estado oficial (ENFEN):</span> <span class="alert-value">${STATUS.coastal.alert}</span></div>
+      <div class="alert-official"><span class="alert-label">Clasificación ICEN (ENFEN):</span> <span class="alert-value">${o.classification}</span></div>
+      <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al sistema oficial de alertas de ENFEN.</strong></div>
+    </div>`);
+  }
+  if (showBasin) {
+    const e = evalBasinSST(STATUS.basin.roni);
+    const col = e.color==='green'?'green':e.color==='yellow'?'yellow':e.color==='red'?'red':'gray';
+    parts.push(`<div class="alert-card alert-${col}" style="flex:1;min-width:0">
+      <div class="alert-row"><span class="alert-scope">Cuenca</span>
+        <span class="pill pill-${col}" style="font-weight:700">${e.classification}</span></div>
+      <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value">${STATUS.basin.alert}</span></div>
+      <div class="alert-official"><span class="alert-label">RONI:</span> <span class="alert-value">${fmtValue(STATUS.basin.roni,'degC')} — ${STATUS.basin.roniCategory}</span></div>
+      <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al ENSO Advisory de NOAA/CPC.</strong></div>
+    </div>`);
+  }
+  return `<div class="alert-banner">${parts.join('')}</div>`;
+}
+
+// Containment notice for indicators without live acquisition (D20, u850).
+function renderContainmentNotice(indicator) {
+  const map = {
+    d20: { name: 'D20 — Profundidad de la termoclina', source: 'GODAS (NOAA/NCEP)', reason: 'Los datos de D20 no están disponibles en las fuentes PSL/CPC utilizadas por el observatorio. Se requiere GODAS o análisis de reanálisis NCEP.' },
+    u850: { name: 'Viento zonal a 850 hPa', source: 'NCEP/NCAR Reanalysis o GODAS', reason: 'Los datos de viento zonal a 850 hPa no están disponibles en las fuentes PSL/CPC utilizadas por el observatorio. Se requiere NCEP/NCAR Reanalysis o GODAS.' }
+  };
+  const m = map[indicator];
+  if (!m) return '';
+  return `<div class="info-note warn" style="border-left:4px solid var(--yellow)">
+    <strong>Datos actuales en proceso de validación — ${m.name}.</strong>
+    <p style="margin-top:4px;font-size:12px">${m.reason}</p>
+    <p style="margin-top:4px;font-size:12px">Fuente recomendada: <strong>${m.source}</strong>. Mientras tanto, la señal operativa del equipo GRD para este indicador se mantiene <strong>sin clasificar</strong> y <strong>no debe interpretarse como ausencia de condición ENSO</strong>.</p>
+  </div>`;
+}
 function renderNav(){
   const sidebar=document.getElementById('sidebar-nav');
   const mobile=document.getElementById('mobile-nav');
@@ -626,7 +736,8 @@ function renderView(viewId){
 
 function renderOverview(){
   const s=STATUS;const rN12=ALL_SERIES.series.nino12.points.slice(-60);const rN34=ALL_SERIES.series.nino34.points.slice(-60);
-  return `<div class="info-note info"><strong>Estado oficial vs interpretación:</strong> Las alertas oficiales se citan de ENFEN y NOAA/CPC. Las categorías de intensidad son generadas por el observatorio.</div>
+  return `${renderAlertBanner({scope:'both'})}
+  <div class="info-note info"><strong>Estado oficial vs interpretación:</strong> Las alertas oficiales se citan de ENFEN y NOAA/CPC. Las señales operativas del equipo GRD son generadas por el observatorio y <strong>no constituyen alertas oficiales</strong>.</div>
   <div class="grid-2">
     <div class="card"><div class="card-header"><div class="card-title">${ICONS.coastal} El Niño Costero</div><span class="badge badge-coastal">Costero</span></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span class="pill pill-warm">${s.coastal.alert}</span><span style="font-size:11px;color:var(--muted)">desde ${fmtMonth(s.coastal.alertSince)}</span></div>
@@ -675,9 +786,65 @@ function renderBasin(){
 }
 
 function renderSST(){var s=STATUS;var cExp=evalCoastalSST(s.coastal.nino12Anom);var bExp=evalBasinSST(s.basin.nino34Anom);var banner='<div style="display:flex;gap:12px;margin-bottom:16px"><div style="flex:1;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--'+(cExp.color==='green'?'green':cExp.color==='yellow'?'yellow':'gray')+';border-radius:8px;padding:10px 14px"><span class="pill pill-'+(cExp.color==='green'?'green':cExp.color==='yellow'?'yellow':'gray')+'" style="font-size:13px">'+cExp.classification+'</span><span style="font-size:11px;color:var(--muted);margin-left:8px">Costero · Equipo GRD</span></div><div style="flex:1;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--'+(bExp.color==='green'?'green':bExp.color==='yellow'?'yellow':'gray')+';border-radius:8px;padding:10px 14px"><span class="pill pill-'+(bExp.color==='green'?'green':bExp.color==='yellow'?'yellow':'gray')+'" style="font-size:13px">'+bExp.classification+'</span><span style="font-size:11px;color:var(--muted);margin-left:8px">Cuenca · Equipo GRD</span></div></div>';return banner+`<div class="info-note info">Anomalía de TSM costera (Niño 1+2) y de cuenca (Niño 3.4) en °C.</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Comparación costero vs cuenca</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-120),'degC',280)}</div></div><div class="grid-2"><div class="card"><div class="card-header"><div class="card-title">Niño 1+2 (costero)</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-240),'degC',200)}</div></div><div class="card"><div class="card-header"><div class="card-title">Niño 3.4 (cuenca)</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino34.points.slice(-240),'degC',200)}</div></div></div>`;}
-function renderWinds(){const s=STATUS;if(s.winds.u850Anom===null||s.winds.u850Anom===undefined){return '<div class="info-note info"><strong>Convención:</strong> u > 0 ⇒ flujo hacia el este (westerly); u < 0 ⇒ flujo hacia el oeste (easterly).</div><div class="card"><div class="card-header"><div class="card-title">' + ICONS.winds + ' Viento zonal a 850 hPa</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:13px;color:var(--muted);padding:16px 0">Datos de viento zonal a 850 hPa no disponibles en las fuentes PSL/CPC. Se requiere GODAS o NCEP Reanalysis.</p></div>';}return `<div class="info-note info"><strong>Convención:</strong> u &gt; 0 ⇒ flujo hacia el este (westerly); u &lt; 0 ⇒ flujo hacia el oeste (easterly).</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.winds} Viento zonal a 850 hPa</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:11px;color:var(--muted)">${fmtMonth(s.winds.u850Month)}</p><p class="big-value ${s.winds.u850Anom>0?'value-warm':'value-cool'}">${fmtValue(s.winds.u850Anom,'m_per_s')}</p><p style="font-size:12px;margin-top:4px">${s.winds.direction}</p><div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.u850.points.slice(-120),'m_per_s',200)}</div></div>`;}
-function renderThermocline(){const s=STATUS;if(s.thermocline.d20Anom===null||s.thermocline.d20Anom===undefined){return '<div class="info-note info"><strong>D20:</strong> profundidad de la isoterma de 20 °C como proxy de la termoclina.</div><div class="card"><div class="card-header"><div class="card-title">' + ICONS.thermocline + ' D20 — Termoclina</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:13px;color:var(--muted);padding:16px 0">Datos de D20 no disponibles en las fuentes PSL/CPC. Se requiere GODAS.</p></div>';}const e=evalThermocline(s.thermocline.d20Anom);return `<div class="info-note info"><strong>D20:</strong> profundidad de la isoterma de 20 °C como proxy de la termoclina. Anomalía positiva ⇒ más profunda (El Niño); negativa ⇒ más somera (La Niña).</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.thermocline} D20 — Termoclina</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:11px;color:var(--muted)">${fmtMonth(s.thermocline.d20Month)}</p><p class="big-value ${s.thermocline.d20Anom>0?'value-warm':'value-cool'}">${fmtValue(s.thermocline.d20Anom,'m')}</p><p style="font-size:12px;margin-top:4px">${s.thermocline.interpretation}</p><div style="margin-top:8px"><span class="pill pill-${e.color==='green'?'green':e.color==='yellow'?'yellow':e.color==='red'?'red':'gray'}">${e.classification}</span></div><div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.d20.points.slice(-120),'m',200)}</div></div>`;}
-function renderSOI(){const s=STATUS;const e=evalSOI(s.soi.value);return `<div class="info-note warn"><strong>SOI:</strong> índice de escala de cuenca (Tahiti–Darwin). <strong>No existe «SOI costero»</strong>.</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.soi} SOI — Oscilación del Sur</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:11px;color:var(--muted)">${fmtMonth(s.soi.month)}</p><p class="big-value ${s.soi.value<0?'value-warm':'value-cool'}">${fmtValue(s.soi.value,'dimensionless')}</p><p style="font-size:12px;margin-top:4px">${s.soi.interpretation}</p><div style="margin-top:8px"><span class="pill pill-${e.color==='green'?'green':e.color==='red'?'red':'gray'}">${e.classification}</span></div><div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.soi.points.slice(-120),'dimensionless',200)}</div></div>`;}
+function renderWinds(){
+  const s=STATUS;
+  const grdBanner = `<div class="alert-banner"><div class="alert-card alert-gray" style="flex:1">
+    <div class="alert-row"><span class="alert-scope">Cuenca · Viento 850 hPa</span>
+      <span class="pill pill-gray" style="font-weight:700">Sin clasificar</span></div>
+    <div class="alert-official"><span class="alert-label">Señal operativa del equipo GRD:</span> <span class="alert-value">No calculable sin observación</span></div>
+    <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al sistema oficial de alertas.</strong></div>
+  </div></div>`;
+  if(s.winds.u850Anom===null||s.winds.u850Anom===undefined){
+    return grdBanner + renderContainmentNotice('u850') +
+      '<div class="info-note info"><strong>Convención:</strong> u &gt; 0 ⇒ flujo hacia el este (westerly); u &lt; 0 ⇒ flujo hacia el oeste (easterly).</div>'+
+      '<div class="card"><div class="card-header"><div class="card-title">' + ICONS.winds + ' Viento zonal a 850 hPa</div><span class="badge badge-basin">Cuenca</span></div>'+
+      '<p style="font-size:13px;color:var(--muted);padding:16px 0">Datos de viento zonal a 850 hPa no disponibles en las fuentes PSL/CPC utilizadas por el observatorio. Se requiere GODAS o NCEP Reanalysis.</p></div>';
+  }
+  const e = evalThreshold(s.winds.u850Anom, EXPERT_BASIN, 'expert-grd-image-v1', 'Señal operativa del equipo GRD', 'EXPERT_POLICY');
+  const col = e.color==='green'?'green':e.color==='yellow'?'yellow':e.color==='red'?'red':'gray';
+  const liveBanner = `<div class="alert-banner"><div class="alert-card alert-${col}" style="flex:1">
+    <div class="alert-row"><span class="alert-scope">Cuenca · Viento 850 hPa</span>
+      <span class="pill pill-${col}" style="font-weight:700">${e.classification}</span></div>
+    <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value">${s.basin.alert}</span></div>
+    <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al ENSO Advisory de NOAA/CPC.</strong></div>
+  </div></div>`;
+  return liveBanner + `<div class="info-note info"><strong>Convención:</strong> u &gt; 0 ⇒ flujo hacia el este (westerly); u &lt; 0 ⇒ flujo hacia el oeste (easterly).</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.winds} Viento zonal a 850 hPa</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:11px;color:var(--muted)">${fmtMonth(s.winds.u850Month)}</p><p class="big-value ${s.winds.u850Anom>0?'value-warm':'value-cool'}">${fmtValue(s.winds.u850Anom,'m_per_s')}</p><p style="font-size:12px;margin-top:4px">${s.winds.direction}</p><div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.u850.points.slice(-120),'m_per_s',200)}</div></div>`;
+}
+function renderThermocline(){
+  const s=STATUS;
+  const grdBanner = `<div class="alert-banner"><div class="alert-card alert-gray" style="flex:1">
+    <div class="alert-row"><span class="alert-scope">Cuenca · Termoclina (D20)</span>
+      <span class="pill pill-gray" style="font-weight:700">Sin clasificar</span></div>
+    <div class="alert-official"><span class="alert-label">Señal operativa del equipo GRD:</span> <span class="alert-value">No calculable sin observación</span></div>
+    <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al sistema oficial de alertas.</strong></div>
+  </div></div>`;
+  if(s.thermocline.d20Anom===null||s.thermocline.d20Anom===undefined){
+    return grdBanner + renderContainmentNotice('d20') +
+      '<div class="info-note info"><strong>D20:</strong> profundidad de la isoterma de 20 °C como proxy de la termoclina.</div>'+
+      '<div class="card"><div class="card-header"><div class="card-title">' + ICONS.thermocline + ' D20 — Termoclina</div><span class="badge badge-basin">Cuenca</span></div>'+
+      '<p style="font-size:13px;color:var(--muted);padding:16px 0">Datos de D20 no disponibles en las fuentes PSL/CPC utilizadas por el observatorio. Se requiere GODAS.</p></div>';
+  }
+  const e=evalThermocline(s.thermocline.d20Anom);
+  const col = e.color==='green'?'green':e.color==='yellow'?'yellow':e.color==='red'?'red':'gray';
+  const liveBanner = `<div class="alert-banner"><div class="alert-card alert-${col}" style="flex:1">
+    <div class="alert-row"><span class="alert-scope">Cuenca · Termoclina (D20)</span>
+      <span class="pill pill-${col}" style="font-weight:700">${e.classification}</span></div>
+    <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value">${s.basin.alert}</span></div>
+    <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al ENSO Advisory de NOAA/CPC.</strong></div>
+  </div></div>`;
+  return liveBanner + `<div class="info-note info"><strong>D20:</strong> profundidad de la isoterma de 20 °C como proxy de la termoclina. Anomalía positiva ⇒ más profunda (El Niño); negativa ⇒ más somera (La Niña).</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.thermocline} D20 — Termoclina</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:11px;color:var(--muted)">${fmtMonth(s.thermocline.d20Month)}</p><p class="big-value ${s.thermocline.d20Anom>0?'value-warm':'value-cool'}">${fmtValue(s.thermocline.d20Anom,'m')}</p><p style="font-size:12px;margin-top:4px">${s.thermocline.interpretation}</p><div style="margin-top:8px"><span class="pill pill-${col}">${e.classification}</span></div><div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.d20.points.slice(-120),'m',200)}</div></div>`;
+}
+function renderSOI(){
+  const s=STATUS;const e=evalSOI(s.soi.value);
+  const col = e.color==='green'?'green':e.color==='red'?'red':'gray';
+  const grdBanner = `<div class="alert-banner"><div class="alert-card alert-${col}" style="flex:1">
+    <div class="alert-row"><span class="alert-scope">Cuenca · SOI</span>
+      <span class="pill pill-${col}" style="font-weight:700">${e.classification}</span></div>
+    <div class="alert-official"><span class="alert-label">Estado oficial (NOAA/CPC):</span> <span class="alert-value">${s.basin.alert}</span></div>
+    <div class="alert-note">Señal operativa del equipo GRD (GRD v1). <strong>No equivale al ENSO Advisory de NOAA/CPC.</strong></div>
+  </div></div>`;
+  return grdBanner + `<div class="info-note warn"><strong>SOI:</strong> índice de escala de cuenca (Tahiti–Darwin). <strong>No existe «SOI costero»</strong>.</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.soi} SOI — Oscilación del Sur</div><span class="badge badge-basin">Cuenca</span></div><p style="font-size:11px;color:var(--muted)">${fmtMonth(s.soi.month)}</p><p class="big-value ${s.soi.value<0?'value-warm':'value-cool'}">${fmtValue(s.soi.value,'dimensionless')}</p><p style="font-size:12px;margin-top:4px">${s.soi.interpretation}</p><div style="margin-top:8px"><span class="pill pill-${col}">${e.classification}</span></div><div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.soi.points.slice(-120),'dimensionless',200)}</div></div>`;
+}
 
 function renderStatus(){
   const s=STATUS;const inds=[{id:'nino12',label:'Niño 1+2',scope:'coastal',value:s.coastal.nino12Anom,month:s.coastal.nino12Month,units:'degC',expert:evalCoastalSST(s.coastal.nino12Anom),official:null,officialStatus:s.coastal.alert},{id:'icen',label:'ICEN',scope:'coastal',value:s.coastal.icen,month:s.coastal.nino12Month,units:'degC',expert:evalCoastalSST(s.coastal.icen),official:evalICEN(s.coastal.icen),officialStatus:s.coastal.alert},{id:'nino34',label:'Niño 3.4',scope:'basin',value:s.basin.nino34Anom,month:s.basin.nino34Month,units:'degC',expert:evalBasinSST(s.basin.nino34Anom),official:null,officialStatus:s.basin.alert},{id:'roni',label:'RONI',scope:'basin',value:s.basin.roni,month:s.basin.nino34Month,units:'degC',expert:evalBasinSST(s.basin.roni),official:null,officialStatus:s.basin.alert},{id:'d20',label:'D20',scope:'basin',value:s.thermocline.d20Anom,month:s.thermocline.d20Month,units:'m',expert:evalThermocline(s.thermocline.d20Anom),official:null,officialStatus:s.basin.alert},{id:'soi',label:'SOI',scope:'basin',value:s.soi.value,month:s.soi.month,units:'dimensionless',expert:evalSOI(s.soi.value),official:null,officialStatus:s.basin.alert}];
@@ -690,7 +857,12 @@ function renderStatus(){
   </div>`).join('')}</div>`;
 }
 
-function renderHistorical(){return `<div class="info-note info">Eventos ENSO destacados (1990–2026).</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Niño 1+2 (costero) — historia completa</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points,'degC',280)}</div></div><div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Niño 3.4 (cuenca) — historia completa</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino34.points,'degC',280)}</div></div>`;}
+function renderHistorical(){
+  return renderAlertBanner({scope:'both'}) +
+    `<div class="info-note info">Eventos ENSO destacados (1990–2026). Las señales operativas del equipo GRD mostradas arriba se calculan a partir de los valores más recientes observados y <strong>no constituyen alertas oficiales</strong>.</div>`+
+    `<div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Niño 1+2 (costero) — historia completa</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points,'degC',280)}</div></div>`+
+    `<div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Niño 3.4 (cuenca) — historia completa</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino34.points,'degC',280)}</div></div>`;
+}
 function renderMaps(){
   var n34 = STATUS.basin.nino34Anom;
   var n12 = STATUS.coastal.nino12Anom;
@@ -777,7 +949,8 @@ function renderMaps(){
   svg += '<text x="' + (padL + plotW/2) + '" y="' + (svgH - 1) + '" text-anchor="middle" font-size="10" fill="currentColor" fill-opacity="0.5">Longitud (\u00b0O)</text>';
   svg += '</svg>';
   
-  var html = '<div class="info-note info">Esquema ilustrativo de anomal\u00eda de TSM (s\u00edntesis a partir de \u00edndices observados). Mes: ' + fmtMonth(STATUS.coastal.nino12Month) + '. C\u00e1lido = rojo, fr\u00edo = azul. Pase el cursor sobre una celda para ver el valor.</div>';
+  var html = renderAlertBanner({scope:'both'});
+  html += '<div class="info-note info">Esquema ilustrativo de anomal\u00eda de TSM (s\u00edntesis a partir de \u00edndices observados). Mes: ' + fmtMonth(STATUS.coastal.nino12Month) + '. C\u00e1lido = rojo, fr\u00edo = azul. Pase el cursor sobre una celda para ver el valor. <strong>Este mapa es una s\u00edntesis ilustrativa y no equivale a un producto oficial de NOAA.</strong></div>';
   html += '<div class="card"><div class="card-header"><div class="card-title">' + ICONS.maps + ' Mapa de anomal\u00eda de TSM</div></div>';
   html += '<div class="chart-container">' + svg + '</div>';
   html += '<div class="map-legend-bar"><span style="font-size:11px;color:var(--cool)">\u22122.5 \u00b0C</span><div class="gradient"></div><span style="font-size:11px;color:var(--warm)">+2.5 \u00b0C</span></div>';
@@ -816,15 +989,21 @@ function renderData(){
     var x = files[i];
     rows += '<tr data-search="' + x.f + ' ' + x.d + '"><td><a href="' + DATA + '/' + x.f + '" target="_blank" style="font-family:monospace;font-size:11px">' + x.f + '</a></td><td>' + x.d + '</td><td><a href="' + DATA + '/' + x.f + '" target="_blank">Descargar</a></td></tr>';
   }
-  var html = '<div class="info-note info">Descargas de datos normalizados. Use los encabezados para ordenar y el filtro para buscar.</div>';
+  var html = renderAlertBanner({scope:'both'});
+  html += '<div class="info-note info">Descargas de datos normalizados. Use los encabezados para ordenar y el filtro para buscar. Las señales del equipo GRD mostradas arriba <strong>no constituyen alertas oficiales</strong>.</div>';
   html += '<div class="card"><div class="card-header"><div class="card-title">' + ICONS.data + ' Artefactos est\u00e1ticos</div></div>';
   html += '<input class="filter-input" type="text" id="data-filter" placeholder="Filtrar por nombre o descripci\u00f3n\u2026" oninput="filterDataTable()" aria-label="Filtrar archivos">';
   html += '<div class="table-wrap"><table id="data-table"><thead><tr><th class="sortable" onclick="sortTable(\'data-table\',0)">Archivo</th><th class="sortable" onclick="sortTable(\'data-table\',1)">Descripci\u00f3n</th><th>Enlace</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
   return html;
 }
-function renderMethodology(){return `<div class="info-note info">Metodología científica del observatorio.</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.methodology} Principios científicos</div></div><div style="font-size:13px;line-height:1.7"><p><strong>1. No conflatear costero y cuenca.</strong> El Niño Costero (ICEN sobre Niño 1+2) y el ENSO de cuenca (RONI sobre Niño 3.4) son conceptos distintos.</p><p><strong>2. Convención del viento zonal.</strong> u &gt; 0 = flujo hacia el este (westerly); u &lt; 0 = flujo hacia el oeste (easterly).</p><p><strong>3. D20 como proxy de la termoclina.</strong> Anomalía positiva ⇒ más profunda (El Niño); negativa ⇒ más somera (La Niña).</p><p><strong>4. SOI de cuenca; sin «SOI costero».</strong> El SOI convencional (Tahiti–Darwin) es de escala de cuenca.</p><p><strong>5. Índice operacional vigente.</strong> NOAA/CPC emplea el RONI (baseline adaptativa), no el ONI heredado.</p><p><strong>6. Sin valores fabricados.</strong> Los datos faltantes se preservan; los preliminares se marcan.</p></div></div><div class="card"><div class="card-header"><div class="card-title">${ICONS.status} Umbrales del equipo GRD (imagen v1)</div></div><p style="font-size:12px;color:var(--muted);margin-bottom:8px">Transcripción exacta. NO constituye una metodología oficial de NOAA ni de ENFEN.</p><div class="grid-2"><div><p style="font-weight:600;font-size:13px;margin-bottom:4px">SST Costero (Niño 1+2)</p><div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −0.7 a +0.5 °C</div><div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: +1.3 a +2.0 °C</div><div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que +2.1 °C</div></div><div><p style="font-weight:600;font-size:13px;margin-bottom:4px">SST Cuenca (Niño 3.4)</p><div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −0.5 a +0.5 °C</div><div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: mayor que +1.0 a +1.5 °C</div><div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que +1.5 °C</div></div><div><p style="font-weight:600;font-size:13px;margin-bottom:4px">Termoclina (D20)</p><div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −20 a +20 m</div><div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: 30 a 50 m</div><div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que 50 m</div></div><div><p style="font-weight:600;font-size:13px;margin-bottom:4px">SOI</p><div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −7 a +7</div><div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: menor que −7</div></div></div></div>`;}
-function renderSources(){return `<div class="info-note info">Catálogo de fuentes verificadas.</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.sources} Fuentes primarias</div></div><div class="table-wrap"><table><tr><th>Fuente</th><th>Producto</th><th>Endpoint</th><th>Estado</th></tr>${SOURCES.map(s=>`<tr><td>${s.institution}</td><td>${s.product}</td><td><a href="${s.url}" target="_blank" style="font-family:monospace;font-size:10px">${s.url.slice(0,50)}…</a></td><td><span class="pill pill-green">${s.status}</span></td></tr>`).join('')}</table></div></div>`;}
+function renderMethodology(){return renderAlertBanner({scope:'both'}) + `<div class="info-note info">Metodología científica del observatorio. Las señales del equipo GRD mostradas arriba <strong>no constituyen alertas oficiales</strong>.</div><div class="card"><div class="card-header"><div class="card-title">${ICONS.methodology} Principios científicos</div></div><div style="font-size:13px;line-height:1.7"><p><strong>1. No conflatear costero y cuenca.</strong> El Niño Costero (ICEN sobre Niño 1+2) y el ENSO de cuenca (RONI sobre Niño 3.4) son conceptos distintos.</p><p><strong>2. Convención del viento zonal.</strong> u &gt; 0 = flujo hacia el este (westerly); u &lt; 0 = flujo hacia el oeste (easterly).</p><p><strong>3. D20 como proxy de la termoclina.</strong> Anomalía positiva ⇒ más profunda (El Niño); negativa ⇒ más somera (La Niña).</p><p><strong>4. SOI de cuenca; sin «SOI costero».</strong> El SOI convencional (Tahiti–Darwin) es de escala de cuenca.</p><p><strong>5. Índice operacional vigente.</strong> NOAA/CPC emplea el RONI (baseline adaptativa), no el ONI heredado.</p><p><strong>6. Sin valores fabricados.</strong> Los datos faltantes se preservan; los preliminares se marcan.</p></div></div><div class="card"><div class="card-header"><div class="card-title">${ICONS.status} Umbrales del equipo GRD (imagen v1)</div></div><p style="font-size:12px;color:var(--muted);margin-bottom:8px">Transcripción exacta. NO constituye una metodología oficial de NOAA ni de ENFEN.</p><div class="grid-2"><div><p style="font-weight:600;font-size:13px;margin-bottom:4px">SST Costero (Niño 1+2)</p><div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −0.7 a +0.5 °C</div><div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: +1.3 a +2.0 °C</div><div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que +2.1 °C</div></div><div><p style="font-weight:600;font-size:13px;margin-bottom:4px">SST Cuenca (Niño 3.4)</p><div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −0.5 a +0.5 °C</div><div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: mayor que +1.0 a +1.5 °C</div><div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que +1.5 °C</div></div><div><p style="font-weight:600;font-size:13px;margin-bottom:4px">Termoclina (D20)</p><div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −20 a +20 m</div><div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: 30 a 50 m</div><div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que 50 m</div></div><div><p style="font-weight:600;font-size:13px;margin-bottom:4px">SOI</p><div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −7 a +7</div><div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: menor que −7</div></div></div></div>`;}
+function renderSources(){
+  return renderAlertBanner({scope:'both'}) +
+    `<div class="info-note info">Catálogo de fuentes verificadas. El estado oficial se cita de ENFEN y NOAA/CPC; las señales operativas del equipo GRD son generadas por el observatorio y <strong>no constituyen alertas oficiales</strong>.</div>`+
+    `<div class="card"><div class="card-header"><div class="card-title">${ICONS.sources} Fuentes primarias</div></div><div class="table-wrap"><table><tr><th>Fuente</th><th>Producto</th><th>Endpoint</th><th>Estado</th></tr>${SOURCES.map(s=>`<tr><td>${s.institution}</td><td>${s.product}</td><td><a href="${s.url}" target="_blank" style="font-family:monospace;font-size:10px">${s.url.slice(0,50)}…</a></td><td><span class="pill pill-green">${s.status}</span></td></tr>`).join('')}</table></div></div>`;
+}
 function renderChatbot(){
+  var html = renderAlertBanner({scope:'both'});
   var questions = ['\u00bfCu\u00e1l es el estado actual?','\u00bfQu\u00e9 es el ICEN?','\u00bfExiste SOI costero?','\u00bfDiferencia costero vs cuenca?','\u00bfQu\u00e9 es RONI?','\u00bfQu\u00e9 significa D20?'];
   var qButtons = '';
   for (var i = 0; i < questions.length; i++) {
@@ -832,7 +1011,7 @@ function renderChatbot(){
     var escapedQ = q.replace(/'/g, "\\'");
     qButtons += '<button onclick="askChat(\'' + escapedQ + '\')" style="padding:6px 12px;border-radius:20px;border:1px solid var(--border);font-size:12px;cursor:pointer;background:var(--card);color:var(--fg)">' + q + '</button>';
   }
-  var html = '<div class="info-note warn"><strong>Asistente con base determinista.</strong> El modelo nunca es el motor de c\u00e1lculo. Los valores provienen de los datos normalizados del proyecto.</div>';
+  html += '<div class="info-note warn"><strong>Asistente con base determinista.</strong> El modelo nunca es el motor de c\u00e1lculo. Los valores provienen de los datos normalizados del proyecto. Las señales del equipo GRD mostradas arriba <strong>no constituyen alertas oficiales</strong>.</div>';
   html += '<div class="card"><div class="card-header"><div class="card-title">' + ICONS.chatbot + ' Guía determinista de datos</div></div>';
   html += '<p style="font-size:13px;color:var(--muted)">Consulta los datos del observatorio en espa\u00f1ol formal. El asistente usa solo datos normalizados y un corpus curado.</p>';
   html += '<div style="margin-top:12px"><p style="font-size:12px;font-weight:600;margin-bottom:4px">Preguntas frecuentes:</p>';
@@ -874,13 +1053,21 @@ function filterDataTable() {
   });
 }
 
-// Tutorial system
+// Tutorial system — 13 módulos que cubren todas las vistas y conceptos clave
 const TUTORIAL_STEPS = [
-  {target: 'view-title', title: 'Bienvenido al Observatorio ENSO Perú', text: 'Este es el panel principal. Aquí verá el estado actual de los indicadores ENSO costeros y de cuenca. Use la navegación lateral para explorar las 14 secciones del observatorio.'},
-  {target: 'sidebar-nav', title: 'Navegación', text: 'Use estos botones para navegar entre las vistas: Resumen, El Niño Costero, ENSO de cuenca, TSM, Vientos, Termoclina, SOI, Estado y umbrales, Histórico, Mapas, Datos, Metodología, Fuentes y Asistente.'},
-  {target: 'hdr-coastal', title: 'Estado costero oficial', text: 'Este badge muestra el estado oficial de El Niño Costero según ENFEN. La señal operativa del equipo GRD se muestra por separado y NO equivale al sistema oficial de alertas.'},
-  {target: 'hdr-basin', title: 'Estado de cuenca oficial', text: 'Este badge muestra el estado oficial de ENSO de cuenca según NOAA/CPC. El RONI es el índice operacional vigente (no el ONI heredado).'},
-  {target: 'theme-btn', title: 'Tema claro/oscuro', text: 'Use este botón para cambiar entre tema claro (metal pulido) y oscuro (HUD Iron Man). Su preferencia se guarda automáticamente en el navegador.'},
+  {target: 'view-title', title: 'Módulo 1/13 — Bienvenido al Observatorio ENSO Perú', text: 'Este es el panel principal. Aquí verá el estado actual de los indicadores ENSO costeros y de cuenca para Perú. Use la navegación lateral para explorar las 14 secciones del observatorio. Las alertas oficiales se citan de ENFEN y NOAA/CPC; las señales operativas del equipo GRD son generadas por el observatorio y no constituyen alertas oficiales.'},
+  {target: 'sidebar-nav', title: 'Módulo 2/13 — Navegación entre vistas', text: 'Use estos botones para navegar entre las 14 vistas: Resumen, El Niño Costero, ENSO de cuenca, TSM, Vientos, Termoclina, SOI, Estado y umbrales, Histórico, Mapas, Datos, Metodología, Fuentes y Asistente. En móvil, la navegación aparece como barra horizontal debajo del título.'},
+  {target: 'hdr-coastal', title: 'Módulo 3/13 — Estado costero oficial y señal GRD', text: 'Este badge muestra el estado oficial de El Niño Costero según ENFEN (citable como «Consulte ENFEN» cuando el observatorio no haya capturado el comunicado oficial). La pastilla GRD alongside muestra la señal operativa del equipo GRD calculada a partir del ICEN observado, y NO equivale al sistema oficial de alertas.'},
+  {target: 'hdr-basin', title: 'Módulo 4/13 — Estado de cuenca oficial y señal GRD', text: 'Este badge muestra el estado oficial de ENSO de cuenca según NOAA/CPC (El Niño Advisory / La Niña Advisory / Neutral). La pastilla GRD muestra la señal operativa del equipo GRD calculada a partir del RONI observado. El RONI es el índice operacional vigente (no el ONI heredado).'},
+  {target: 'theme-btn', title: 'Módulo 5/13 — Tema claro/oscuro', text: 'Use este botón para cambiar entre tema claro (metal pulido) y oscuro (HUD Iron Man). Su preferencia se guarda automáticamente en el navegador mediante localStorage. El tema no afecta los datos ni las clasificaciones.'},
+  {target: 'sidebar-nav', title: 'Módulo 6/13 — Vista El Niño Costero', text: 'La vista «El Niño Costero» muestra el ICEN (Índice Costero El Niño) calculado como media móvil de 3 meses de TSM en Niño 1+2, junto con la señal operativa del equipo GRD y la clasificación oficial ICEN de ENFEN. La región Niño 1+2 cubre 90–80°O, 10°S–0°.'},
+  {target: 'sidebar-nav', title: 'Módulo 7/13 — Vista ENSO de cuenca', text: 'La vista «ENSO de cuenca» muestra el RONI (Índice Oceánico Relativo del Niño) sobre Niño 3.4 (120–170°O, 5°S–5°N), junto con la señal operativa del equipo GRD. El RONI emplea una baseline adaptativa de 30 días y es el índice operacional vigente de NOAA/CPC.'},
+  {target: 'sidebar-nav', title: 'Módulo 8/13 — Vista TSM (comparación costero vs cuenca)', text: 'La vista «TSM» compara las anomalías de TSM costera (Niño 1+2) y de cuenca (Niño 3.4) en °C. Las anomalías positivas indican aguas más cálidas que la climatología; las negativas, más frías. La línea de referencia es 0 °C; las bandas sombreadas marcan ±0.5 °C.'},
+  {target: 'sidebar-nav', title: 'Módulo 9/13 — Vista Vientos (convención de signo)', text: 'La vista «Vientos» muestra la anomalía del viento zonal a 850 hPa. Convención: u > 0 ⇒ flujo hacia el este (westerly); u < 0 ⇒ flujo hacia el oeste (easterly). Los westerlies reforzados en el Pacífico ecuatorial son característicos de El Niño. Si los datos no están disponibles, se muestra un aviso de contención honesto.'},
+  {target: 'sidebar-nav', title: 'Módulo 10/13 — Vista Termoclina (D20)', text: 'La vista «Termoclina» muestra la anomalía de profundidad de la isoterma de 20 °C (D20), un proxy de la profundidad de la termoclina. Anomalía positiva ⇒ termoclina más profunda (El Niño); negativa ⇒ más somera (La Niña). Cuando los datos de GODAS no están disponibles, se muestra un aviso de contención.'},
+  {target: 'sidebar-nav', title: 'Módulo 11/13 — Vista Estado y umbrales', text: 'La vista «Estado y umbrales» muestra para cada indicador: (1) el valor observado, (2) el estado oficial citado de ENFEN o NOAA/CPC, (3) la señal operativa del equipo GRD (GRD v1, NO oficial), y (4) la calidad del dato (preliminar / final). Los intervalos no cubiertos por la política GRD se marcan como «Sin clasificar».'},
+  {target: 'sidebar-nav', title: 'Módulo 12/13 — Vista Datos y descargas', text: 'La vista «Datos» ofrece 24 artefactos descargables (CSV y JSON) generados desde la fuente única de verdad. Use los encabezados para ordenar y el campo de filtro para buscar. Todos los CSV incluyen metadatos de fuente, unidad y periodo. La paridad CSV ↔ JSON está verificada en CI.'},
+  {target: 'sidebar-nav', title: 'Módulo 13/13 — Vista Asistente', text: 'La vista «Asistente» es una guía determinista de datos: no es un LLM ni un modelo generativo, sino un motor de búsqueda por palabras clave sobre los datos normalizados. Use los botones de preguntas frecuentes o escriba su propia pregunta. Las respuestas citan evidencia [EVID-...] y corrigen conceptos erróneos (p. ej., «no existe SOI costero»).'},
 ];
 let tutorialStep = 0;
 let tutorialActive = false;
