@@ -1,0 +1,96 @@
+# Clasificación científica oficial ICEN (ENFEN) — versión 1
+# ============================================================================
+# Categorías oficiales del Índice Costero El Niño (ICEN) según la metodología
+# ENFEN. Estas son clasificaciones científicas oficiales, NO la señal
+# operativa del experto GRD. Deben mantenerse separadas.
+#
+# Fuente: Comisión Multisectorial ENFEN / IMARPE (siofen.imarpe.gob.pe)
+# Validación: Revalidar contra la última nota técnica de ENFEN antes de
+# su uso en producción.
+#
+# IMPORTANTE: No aplicar estas categorías a una observación semanal de
+# Niño 1+2. El ICEN es una media móvil de 3 meses de anomalías mensuales
+# de TSM en Niño 1+2.
+# ============================================================================
+
+policy_id: "enfen-icen-official-v1"
+policy_name: "Clasificación oficial ICEN (ENFEN)"
+source_type: "VERIFIED"
+source_description: >
+  Clasificación oficial del Índice Costero El Niño (ICEN) según la
+  metodología de la Comisión Multisectorial ENFEN. El ICEN se calcula
+  como la media móvil de 3 meses de las anomalías mensuales de TSM en
+  la región Niño 1+2 (90–80°O, 10°S–0°).
+source_url: "https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen"
+receipt_date: "2026-08-06"
+approval_status: "VERIFIED_PENDING_REVALIDATION"
+version: "v1"
+applies_to: "icen"
+does_not_apply_to:
+  - "nino12_weekly"
+  - "nino12_monthly"
+  - "nino34"
+  - "roni"
+  - "soi"
+  - "d20"
+  - "u850"
+
+rules:
+  - label: "Frío intenso"
+    color: "blue"
+    min: null
+    max: -1.3
+    max_inclusive: false
+    enfen_label: "La Niña Costera fuerte"
+  - label: "Frío moderado"
+    color: "lightblue"
+    min: -1.3
+    max: -1.1
+    min_inclusive: true
+    max_inclusive: false
+    enfen_label: "La Niña Costera moderada"
+  - label: "Frío débil"
+    color: "lightcyan"
+    min: -1.1
+    max: -0.7
+    min_inclusive: true
+    max_inclusive: false
+    enfen_label: "La Niña Costera débil"
+  - label: "Normal"
+    color: "green"
+    min: -0.7
+    max: 0.5
+    min_inclusive: true
+    max_inclusive: true
+    enfen_label: "Normal"
+  - label: "Cálido débil"
+    color: "yellow"
+    min: 0.5
+    max: 1.3
+    min_inclusive: false
+    max_inclusive: true
+    enfen_label: "El Niño Costero débil"
+  - label: "Cálido moderado"
+    color: "orange"
+    min: 1.3
+    max: 2.1
+    min_inclusive: false
+    max_inclusive: true
+    enfen_label: "El Niño Costero moderado"
+  - label: "Cálido fuerte"
+    color: "red"
+    min: 2.1
+    max: 3.5
+    min_inclusive: false
+    max_inclusive: true
+    enfen_label: "El Niño Costero fuerte"
+  - label: "Cálido extraordinario"
+    color: "darkred"
+    min: 3.5
+    max: null
+    min_inclusive: false
+    enfen_label: "El Niño Costero extraordinario"
+
+note: >
+  Antes de la implementación, revalidar estas definiciones contra la última
+  nota técnica de ENFEN. Los umbrales pueden haber sido actualizados.

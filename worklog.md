@@ -404,3 +404,56 @@ Stage Summary:
 - Commits: 17 (incluye 1083 archivos: 31 vistas, pipeline Python, 296 tests, 13 docs, CI/CD)
 - Auth: PillB con scopes repo, workflow, read:org, gist
 - Estado de Pages: requiere configuración de build (Next.js → static export) o activación del workflow deploy-pages.yml
+
+---
+Task ID: 15-threshold-policies
+Agent: orchestrator (main)
+Task: Implementar sistema completo de políticas de umbral experto GRD + oficial ICEN ENFEN con arquitectura de estado de tres capas.
+
+Work Log:
+- Leído el archivo de requisitos detallado (1360 líneas) con especificaciones de umbrales del experto GRD, clasificaciones oficiales ICEN ENFEN, tests parametrizados de fronteras, arquitectura de estado, y separación entre señal experta vs oficial.
+- CREADO `config/threshold-policies/expert-grd-image-v1.yaml`: transcripción exacta de la imagen del experto GRD con:
+  - SST costero Niño 1+2: Normal −0.7 a +0.5, Amarillo +1.3 a +2.0, Rojo >+2.1 (valor demo +2.7 rojo)
+  - SST cuenca Niño 3.4: Normal −0.5 a +0.5, Amarillo >+1.0 a +1.5, Rojo >+1.5 (valor demo +1.2 amarillo)
+  - Vientos: Normal este→oeste, Rojo oeste→este, sin amarillo
+  - Termoclina D20: Normal −20 a +20, Amarillo 30 a 50, Rojo >50 (valores demo 52 rojo, 38 amarillo)
+  - SOI: Normal −7 a +7, Rojo <−7, sin amarillo ni lado positivo (valor demo −14.50 rojo)
+  - Ambigüedades documentadas (intervalos sin clasificar preservados como UNCLASSIFIED_BY_EXPERT_POLICY)
+- CREADO `config/threshold-policies/enfen-icen-official-v1.yaml`: clasificación oficial ICEN ENFEN con 8 categorías:
+  - Frío intenso (<−1.3), Frío moderado (−1.3 a <−1.1), Frío débil (−1.1 a <−0.7)
+  - Normal (−0.7 a +0.5)
+  - Cálido débil (>+0.5 a +1.3), Cálido moderado (>+1.3 a +2.1), Cálido fuerte (>+2.1 a +3.5), Cálido extraordinario (>+3.5)
+  - Nota: solo aplica al ICEN, no a Niño 1+2 semanal
+- CREADO `src/lib/enso/thresholds.ts`: motor de umbrales en TypeScript con:
+  - EXPERT_GRD_POLICY y ENFEN_ICEN_POLICY como constantes
+  - evaluateThreshold() que devuelve UNCLASSIFIED para huecos, gray para datos faltantes
+  - Funciones específicas: evaluateCoastalSSTExpert, evaluateBasinSSTExpert, evaluateThermoclineExpert, evaluateSOIExpert, evaluateICENOfficial
+  - evaluateBothPolicies() que devuelve ambas evaluaciones para un indicador
+  - thresholdColorCSS() para mapear colores a CSS
+- CREADO `python/enso/thresholds.py`: motor de umbrales en Python (espejo del TS) con dataclasses y enum.
+- CREADO `python/tests/test_threshold_boundaries.py`: 85 tests parametrizados de fronteras exactas:
+  - SST costero: −0.7001, −0.7, +0.5, +0.5001, +1.3, +1.3001, +2.0, +2.0001, +2.1, +2.1001
+  - SST cuenca: −0.5001, −0.5, +0.5, +0.5001, +1.0, +1.0001, +1.5, +1.5001
+  - Termoclina: −20.0001, −20, +20, +20.0001, +29.9999, 30, 50, +50.0001
+  - SOI: −7.0001, −7, 0, +7, +7.0001
+  - ICEN ENFEN: todas las fronteras de las 8 categorías
+  - Tests de compatibilidad de métricas, sin solapamiento, huecos no verdes, datos faltantes no verdes
+  - Tests de valores de demostración de la imagen (2.7 rojo, 1.2 amarillo, 52 rojo, 38 amarillo, −14.50 rojo)
+- CREADO `src/components/enso/StatusArchitectureView.tsx`: vista de arquitectura de estado de tres capas:
+  - Capa 1: Estado oficial (NOAA/CPC o ENFEN)
+  - Capa 2: Señal operativa del experto (política expert-grd-image-v1, claramente etiquetada como NO oficial)
+  - Capa 2b: Clasificación oficial ICEN ENFEN (cuando aplica, solo para ICEN)
+  - Capa 3: Calidad y vigencia del dato (preliminar, periodo de validez, fuente)
+  - Toggle para mostrar experto, oficial o ambos
+  - Leyenda de colores con significado de gris (sin clasificar)
+  - Documentación de ambigüedades de la política experta
+- Integrada la nueva vista en la navegación (vista #32: "Estado y umbrales" con icono TrafficCone).
+- Verificación: `bun run lint` limpio; `python -m pytest -q`: **381 passed** (+85), 3 skipped. La vista renderiza correctamente con las tres capas separadas y el toggle funcionando.
+
+Stage Summary:
+- Políticas de umbral: 2 conjuntos separados (experto GRD v1 + oficial ICEN ENFEN v1) en config/threshold-policies/.
+- Motor de umbrales: implementado en TS (src/lib/enso/thresholds.ts) y Python (python/enso/thresholds.py).
+- Tests de fronteras: 85 tests parametrizados que verifican cada valor límite y adyacente, huecos como UNCLASSIFIED, sin solapamientos, sin verde accidental.
+- Arquitectura de estado: vista con 3 capas (oficial / experto / calidad) y toggle para mostrar una u otra o ambas.
+- Integridad: los intervalos no definidos se marcan como gris (UNCLASSIFIED), nunca como verde. Las políticas del experto y oficial están claramente separadas y etiquetadas. El ICEN oficial no se aplica a Niño 1+2 semanal.
+- Total vistas: 32. Total tests: 381 passed, 3 skipped. Lint limpio.

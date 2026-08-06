@@ -28,6 +28,7 @@ import { EventCatalogView } from "@/components/enso/EventCatalogView";
 import { ScopeComparisonView } from "@/components/enso/ScopeComparisonView";
 import { BoxPlotView } from "@/components/enso/BoxPlotView";
 import { RollingCorrelationView } from "@/components/enso/RollingCorrelationView";
+import { StatusArchitectureView } from "@/components/enso/StatusArchitectureView";
 import { DownloadsView } from "@/components/enso/DownloadsView";
 import { ChatView } from "@/components/enso/ChatView";
 import { MethodologyView } from "@/components/enso/MethodologyView";
@@ -40,14 +41,14 @@ import {
   Bot, BookOpen, ShieldCheck, Menu, X, Anchor, Clock, Film, Wind as WindIcon,
   TrendingUp, MapPin, AlertTriangle, GitCompare, BookA, Layers, Calendar, Layers3,
   Activity, Globe, LineChart, FileText, ScatterChart, Timer, Table, Columns2,
-  Box, Grid3x3,
+  Box, Grid3x3, TrafficCone,
 } from "lucide-react";
 
 type ViewId =
   | "overview" | "tsm" | "vientos" | "termoclina" | "soi"
   | "historico" | "mapas" | "viento-mapa" | "animacion" | "pronostico" | "regional"
   | "alertas" | "alertas-historial" | "correlaciones" | "correlacion-movil" | "compuesto" | "eventos-comparar" | "estacionalidad"
-  | "probabilidad" | "teleconexiones" | "tendencias" | "fichas" | "fases" | "catalogo" | "costero-vs-cuenca" | "bigotes"
+  | "probabilidad" | "teleconexiones" | "tendencias" | "fichas" | "fases" | "catalogo" | "costero-vs-cuenca" | "bigotes" | "estado-arquitectura"
   | "datos" | "asistente" | "metodologia" | "glosario" | "fuentes";
 
 const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coastal" | "basin" }[] = [
@@ -71,6 +72,7 @@ const NAV: { id: ViewId; label: string; icon: React.ElementType; scope?: "coasta
   { id: "fases", label: "Diagrama de fases", icon: ScatterChart },
   { id: "regional", label: "Perú regional", icon: MapPin },
   { id: "teleconexiones", label: "Teleconexiones", icon: Globe },
+  { id: "estado-arquitectura", label: "Estado y umbrales", icon: TrafficCone },
   { id: "alertas", label: "Alertas", icon: AlertTriangle },
   { id: "alertas-historial", label: "Historial alertas", icon: Timer },
   { id: "correlaciones", label: "Correlaciones", icon: GitCompare },
@@ -98,6 +100,7 @@ const VIEW_TITLES: Record<ViewId, { title: string; subtitle: string }> = {
   regional: { title: "Impacto regional — Perú", subtitle: "Departamentos costeros: TSM, precipitación y riesgo relativo derivado." },
   alertas: { title: "Alertas y umbrales", subtitle: "Seguimiento de condiciones de activación de evento (derivadas del observatorio)." },
   "alertas-historial": { title: "Historial de alertas", subtitle: "Línea de tiempo de periodos ENSO (reconstrucción derivada del observatorio)." },
+  "estado-arquitectura": { title: "Arquitectura de estado y umbrales", subtitle: "Estado oficial, señal operativa del experto y calidad del dato, separados." },
   correlaciones: { title: "Correlaciones entre indicadores", subtitle: "Coeficientes de Pearson calculados en código sobre la historia completa." },
   "correlacion-movil": { title: "Correlación móvil", subtitle: "Evolución temporal de correlaciones entre pares en ventanas móviles." },
   compuesto: { title: "Índice compuesto ENSO", subtitle: "Síntesis integrada de indicadores oceánicos y atmosféricos (interpretación del observatorio)." },
@@ -265,6 +268,7 @@ export default function Home() {
           {view === "animacion" && <TimelapseView />}
           {view === "pronostico" && <ForecastsView />}
           {view === "regional" && <RegionalView />}
+          {view === "estado-arquitectura" && <StatusArchitectureView />}
           {view === "alertas" && <AlertsView />}
           {view === "alertas-historial" && <AlertHistoryView />}
           {view === "correlaciones" && <CorrelationsView />}
