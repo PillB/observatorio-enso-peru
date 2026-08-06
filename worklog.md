@@ -1212,3 +1212,74 @@ Stage Summary:
 - Three temporal layers: rapid observational / operational index / official authority
 - Watchdog with bounded recovery
 - READY_FOR_CLIENT_ACCEPTANCE
+
+---
+Task ID: 30-defensive-acquisition-fallback-crossval
+Agent: orchestrator (main)
+Task: Implement defensive acquisition hardening, fallback graph, cross-source validation, and generate all 25 audit artifacts.
+
+Work Log:
+- Created python/enso/defensive_acquisition.py:
+  * CircuitBreaker: 5 failures → open, 5 min recovery, half-open with 2 successes
+  * DefensiveHttpClient: connect/read/total timeouts, bounded response (100MB), per-host rate limit
+  * Conditional GET: ETag, Last-Modified, If-None-Match, If-Modified-Since, 304 handling
+  * Retry: Retry-After honoring, exponential backoff with full jitter, max 4 retries
+  * Non-retryable: 4xx (except 408, 425, 429), schema validation failures
+  * MIME validation, file-magic check (HTML error page detection)
+  * Atomic cache writes (tmp → os.replace)
+  * Last-known-valid fallback with STALE labeling
+  * RetrievalEvidence dataclass with full provenance
+  * ContentValidator: ASCII table, CSV, RONI, weekly SST, HTML advisory
+  * Scientific validators: date monotonic, no future dates, plausible bounds, cadence
+
+- Created python/enso/fallback_graph.py:
+  * 5 levels: PRIMARY, EQUIVALENT, LOWER_CADENCE, LAST_VALID, UNAVAILABLE
+  * 9 metric graphs with explicit prohibited substitutions
+  * RONI: prohibits Niño 3.4 rolling mean
+  * ICEN: prohibits weekly Niño 1+2
+  * u850: prohibits surface wind, anomaly for actual
+  * D20: prohibits point for basin
+  * Official status: prohibits operational signal
+
+- Created python/enso/cross_validation.py:
+  * RONI vs Niño 3.4: flags if diff < 0.05 (suspicious)
+  * ICEN vs Niño 1+2: verifies 3-month mean
+  * Official alert vs RONI: coherence check
+  * Weekly vs monthly SST: period comparison
+  * Tolerances scientifically justified per metric
+
+- Created python/tests/test_defensive_and_fallback.py:
+  * 44 new tests covering circuit breaker, validators, fallback graph, cross-validation
+  * Total: 514 passed, 3 skipped, lint clean
+
+- Generated 25 audit artifacts in audit/freshness-and-automation/:
+  * authorization.json, preflight-findings.json, research-ledger.jsonl
+  * source-candidate-matrix.json, source-profile-register.json
+  * source-equivalence-graph.json, source-cadence-register.json
+  * endpoint-probe-results.json, document-source-register.json
+  * parser-evaluation.json, raw-retrieval-ledger.jsonl
+  * source-discrepancies.json, scientific-validation.json
+  * synthetic-data-audit.json, containment-record.json
+  * architecture-decision.md, workflow-design.md
+  * workflow-test-results.json, watchdog-test-results.json
+  * publication-manifest.json, live-deployment-verification.json
+  * live-playwright-results.json, remediation-ledger.json
+  * independent-verification.json, release-decision.json
+  * final-report-es.md
+
+- Commit: 0705a22
+- Live validation (sha=0705a22):
+  * RONI: 0.98 (official, NOT computed) ✅
+  * publicationId: d5f15625f54d ✅
+  * 0 console errors, 0 overflow ✅
+  * All 14 views OK ✅
+  * 514 tests passed ✅
+
+Stage Summary:
+- Defensive acquisition: circuit breaker, conditional GET, MIME validation, atomic cache ✅
+- Fallback graph: 9 metrics, 5 levels, explicit prohibited substitutions ✅
+- Cross-source validation: RONI vs Niño 3.4, ICEN methodology, official coherence ✅
+- 25 audit artifacts generated ✅
+- 514 tests passed, lint clean ✅
+- Live site verified with all real data ✅
+- Veredicto: READY_FOR_CLIENT_ACCEPTANCE
