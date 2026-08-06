@@ -10,5 +10,51 @@
     "nino34",
     "soi",
     "cpc_ersst5"
+  ],
+  "files": {
+    "combined": "observatorio-enso-todas-las-series.csv",
+    "status": "status.json",
+    "quality": "quality.json",
+    "sources": "sources.json",
+    "indicators": "indicators.json",
+    "allSeries": "all-series.json",
+    "latestGrid": "latest-grid.json"
+  },
+  "indicators": [
+    {
+      "id": "nino12",
+      "file": "nino12.csv",
+      "checksum": "fnv1a:9fcb63d5"
+    },
+    {
+      "id": "icen",
+      "file": "icen.csv",
+      "checksum": "fnv1a:81f42829"
+    },
+    {
+      "id": "nino34",
+      "file": "nino34.csv",
+      "checksum": "fnv1a:e0f0ef64"
+    },
+    {
+      "id": "roni",
+      "file": "roni.csv",
+      "checksum": "fnv1a:d24e748e"
+    },
+    {
+      "id": "soi",
+      "file": "soi.csv",
+      "checksum": "fnv1a:4334a0ea"
+    },
+    {
+      "id": "d20",
+      "file": "d20.csv",
+      "checksum": "fnv1a:a6def260"
+    },
+    {
+      "id": "u850",
+      "file": "u850.csv",
+      "checksum": "fnv1a:68457f2b"
+    }
   ]
 }
