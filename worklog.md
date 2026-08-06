@@ -794,3 +794,72 @@ Stage Summary:
 - Clasificación oficial NOAA/CPC añadida en vista de cuenca
 - Mobile: 0px overflow
 - 408 tests passed, 3 skipped. Lint limpio.
+
+---
+Task ID: 24-production-recovery-containment
+Agent: orchestrator (main)
+Task: Auditoría completa de recuperación de producción, contención de datos sintéticos, reparación de CI/CD, y validación live independiente.
+
+Work Log:
+- Fase A — Identidad de despliegue:
+  - SHA desplegado: c171c0f (verificado: hash HTML local = hash live)
+  - Pages: build_type=workflow, status=built
+  - ZIP: BLOCKED_BY_MISSING_ZIP — no se encontró artefacto ZIP en upload/ ni en el entorno
+  - Creados audit/authorization.json, audit/production-baseline.json, audit/production-data-provenance.json, audit/containment-record.json, audit/architecture-decision.md
+
+- Fase B — Contención de datos sintéticos (P0 CRÍTICO):
+  - CONFIRMADO: Todos los valores actuales de producción son SINTÉTICOS
+  - series.ts genera datos con funciones gaussian/hash01 + arrays de episodios hardcodeados
+  - health.json se genera estáticamente desde sources.json, no de adquisición real
+  - ACCIONES DE CONTENCIÓN APLICADAS:
+    1. Banner de aviso de datos de demostración en la parte superior del sitio
+    2. Header badges cambian a "Demostración" en lugar de alertas oficiales
+    3. Todos los big-value displays etiquetados con "Demostración"
+    4. Chat renombrado a "Guía determinista de datos (demostración)"
+    5. Mapas etiquetados como "Esquema ilustrativo — no datos observados"
+    6. health.json etiquetado como "estática — no evidencia de adquisición"
+    7. Footer actualizado con aviso de datos de demostración
+    8. GRD signals etiquetadas como "(datos de demostración)"
+
+- Fase C — Arquitectura canónica:
+  - DECISIÓN: Retener frontend estático (public/index.html) como único frontend de producción
+  - Next.js en src/ se retiene como referencia pero NO se despliega
+  - ADR documentado en audit/architecture-decision.md
+
+- Fase E — Reparación de workflows:
+  - ELIMINADOS todos los `|| true` de daily-data-update.yml, _update-data.yml, pipeline.yml
+  - ELIMINADO `--offline` como modo por defecto
+  - Pipeline ahora falla cuando la adquisición falla (no suprime errores)
+
+- Fase F — Motor de umbrales:
+  - Verificado: un solo motor en public/index.html (inline) + python/enso/thresholds.py
+  - "experto GRD" → "equipo GRD" en todo el sitio (0 ocurrencias de "experto" restantes)
+  - Término correcto: "Señal operativa del equipo GRD"
+
+- Fase H — Veracidad del chat:
+  - Renombrado a "Guía determinista de datos (demostración)"
+  - No se anuncia como LLM ni IA
+  - Descripción actualizada: "Búsqueda por palabras clave (demostración)"
+
+- Fase I — Mapas:
+  - Etiquetados como "Esquema sintético ilustrativo — no son datos observados de NOAA"
+
+- Fase J-L — Validación live:
+  - Ronda 1: 14/14 vistas, 0 errores de consola, 0 overflow en 6 dispositivos ✅
+  - Ronda 2: 14/14 vistas, 0 errores de consola, 0 overflow en 5 dispositivos ✅
+  - Contención verificada: disclaimer presente, chat etiquetado, mapas etiquetados, "equipo GRD" usado
+  - SHA live = SHA merged (c171c0f) ✅
+
+- Commits:
+  - 783da3e: P0 Containment — label all synthetic data
+  - c171c0f: Fix undefined banner reference
+
+Stage Summary:
+- CONTENCIÓN COMPLETA: Todos los datos sintéticos etiquetados como demostración
+- Workflows reparados: sin || true, sin --offline por defecto
+- Chat etiquetado verazmente como guía determinista
+- Mapas etiquetados como esquema ilustrativo
+- Dos rondas de validación live quietas (0 errores, 0 overflow)
+- SHA live = SHA merged verificado
+- 408 tests passed, 3 skipped
+- Veredicto: CONDITIONALLY_READY (datos sintéticos contenidos pero no reemplazados con datos reales)
