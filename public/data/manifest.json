@@ -1,19 +1,24 @@
 {
   "name": "Observatorio ENSO Perú",
-  "dataVersion": "2.0.0",
-  "generatedAt": "2026-08-06T07:24:01.829648+00:00",
+  "dataVersion": "3.0.0",
+  "generatedAt": "2026-08-06T08:26:57.084533+00:00",
   "asOf": "2026-08-06",
   "dataSource": "LIVE_OBSERVED",
-  "coverage": "Datos reales observados desde NOAA/PSL y NOAA/CPC",
+  "publicationId": "d5f15625f54d",
+  "pipelineVersion": "3.0.0",
+  "coverage": "Datos reales observados desde NOAA/PSL, NOAA/CPC, GODAS, ENFEN/IMARPE",
   "sources": [
-    "nino12",
-    "nino34",
-    "soi",
-    "cpc_ersst5",
-    "d20",
-    "u850",
-    "noaa_enso_advisory",
-    "enfen_status"
+    "noaa-cpc-wksst",
+    "noaa-psl-nino12",
+    "noaa-psl-nino34",
+    "noaa-cpc-roni",
+    "noaa-cpc-soi",
+    "noaa-cpc-wpac850",
+    "noaa-cpc-cpac850",
+    "noaa-cpc-epac850",
+    "noaa-cpc-godas-d20",
+    "noaa-cpc-enso-advisory",
+    "enfen-imarpe-status"
   ],
   "files": {
     "combined": "observatorio-enso-todas-las-series.csv",
@@ -22,9 +27,7 @@
     "sources": "sources.json",
     "indicators": "indicators.json",
     "health": "health.json",
-    "manifest": "manifest.json",
-    "latest": "latest.json",
-    "all-series": "all-series.json"
+    "manifest": "manifest.json"
   },
   "indicators": [
     {
@@ -33,7 +36,7 @@
       "scope": "coastal",
       "units": "degC",
       "file": "nino12.csv",
-      "checksum": "fnv1a:ea74e1af"
+      "checksum": "fnv1a:4e55d997"
     },
     {
       "id": "nino34",
@@ -41,7 +44,7 @@
       "scope": "basin",
       "units": "degC",
       "file": "nino34.csv",
-      "checksum": "fnv1a:a12e1926"
+      "checksum": "fnv1a:892bfb8f"
     },
     {
       "id": "icen",
@@ -49,7 +52,7 @@
       "scope": "coastal",
       "units": "degC",
       "file": "icen.csv",
-      "checksum": "fnv1a:cbe1ace9"
+      "checksum": "fnv1a:7e028f08"
     },
     {
       "id": "roni",
@@ -57,7 +60,7 @@
       "scope": "basin",
       "units": "degC",
       "file": "roni.csv",
-      "checksum": "fnv1a:72f8b255"
+      "checksum": "fnv1a:e3da5c30"
     },
     {
       "id": "soi",
@@ -65,7 +68,7 @@
       "scope": "basin",
       "units": "dimensionless",
       "file": "soi.csv",
-      "checksum": "fnv1a:205114d4"
+      "checksum": "fnv1a:e6bcdb2c"
     },
     {
       "id": "d20",
@@ -73,15 +76,31 @@
       "scope": "basin",
       "units": "m",
       "file": "d20.csv",
-      "checksum": "fnv1a:fbc674eb"
+      "checksum": "fnv1a:ef2aedf5"
     },
     {
       "id": "u850",
-      "label": "u850",
+      "label": "u850 (cpac850)",
       "scope": "basin",
-      "units": "m_per_s",
+      "units": "m/s",
       "file": "u850.csv",
-      "checksum": "fnv1a:904b22c6"
+      "checksum": "fnv1a:dda19521"
     }
+  ],
+  "allFiles": [
+    "cpac850.csv",
+    "d20.csv",
+    "epac850.csv",
+    "health.json",
+    "icen.csv",
+    "manifest.json",
+    "nino12.csv",
+    "nino34.csv",
+    "roni.csv",
+    "soi.csv",
+    "status.json",
+    "u850.csv",
+    "weekly-sst.json",
+    "wpac850.csv"
   ]
 }

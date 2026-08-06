@@ -1,7 +1,7 @@
 # Observatorio ENSO Perú — d20
 # Unidades: m
-# Fuente: NOAA / PSL (GODAS dbss_obil)
-# Adquirido: 2026-08-06T07:23:56.257016+00:00
+# Fuente: NOAA/PSL GODAS dbss_obil
+# Adquirido: 2026-08-06T08:26:57.084533+00:00
 # Datos reales observados
 month,value,flag
 1980-01,10.424,final

@@ -1,20 +1,21 @@
 {
   "asOf": "2026-08-06",
-  "dataVersion": "2.0.0",
-  "generatedAt": "2026-08-06T07:24:01.829132+00:00",
+  "dataVersion": "3.0.0",
+  "generatedAt": "2026-08-06T08:26:57.084533+00:00",
   "dataSource": "LIVE_OBSERVED",
+  "publicationId": "d5f15625f54d",
   "coastal": {
     "alert": "Alerta de El Niño Costero",
     "alertSource": "ENFEN / IMARPE",
     "alertOfficialUrl": "https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen",
     "alertDate": "2026-05",
+    "alertSourceMethod": "fallback",
     "nino12Anom": 1.28,
     "nino12Month": "2026-05",
     "icen": 0.83,
     "icenWindow": "2026-05",
     "icenCategory": "El Niño Costero débil",
-    "freshness": "Dato observado · adquirido 2026-08-06T07:24:01.829132+00:00",
-    "preliminary": false
+    "freshness": "Dato observado · adquirido 2026-08-06T08:26:57.084533+00:00"
   },
   "basin": {
     "alert": "El Niño Advisory",
@@ -23,17 +24,18 @@
     "alertDate": "9 July 2026",
     "nino34Anom": 0.8,
     "nino34Month": "2026-05",
-    "roni": 1.04,
+    "roni": 0.98,
     "roniWindow": "2026-06",
     "roniCategory": "El Niño (cuenca)",
-    "freshness": "Dato observado · adquirido 2026-08-06T07:24:01.829132+00:00",
-    "preliminary": false
+    "roniSource": "NOAA/CPC RONI.ascii.txt (official, NOT computed)",
+    "freshness": "Dato observado · adquirido 2026-08-06T08:26:57.084533+00:00"
   },
   "winds": {
-    "u850Anom": -1.562,
-    "u850Month": "2026-02",
-    "direction": "Anomalía de easterlies (reforzada hacia el oeste)",
-    "signMeaning": "u > 0 ⇒ este (westerly); u < 0 ⇒ oeste (easterly)"
+    "u850Anom": 0.2,
+    "u850Month": "2025-12",
+    "u850Source": "NOAA/CPC cpac850 (actual wind, Central Pacific 175°W-140°W)",
+    "direction": "Viento hacia el este (westerly)",
+    "signMeaning": "Valores positivos = viento hacia el este (westerly); negativos = hacia el oeste (easterly). Nota: CPC trade wind index es viento real (no anomalía)."
   },
   "thermocline": {
     "d20Anom": 6.972,
@@ -41,9 +43,9 @@
     "interpretation": "Termoclina cerca de la profundidad normal"
   },
   "soi": {
-    "value": 0.7,
-    "month": "2025-07",
-    "interpretation": "Componente atmosférica de La Niña",
-    "note": "El SOI es un índice de escala de cuenca. El observatorio NO define un «SOI costero»."
+    "value": -0.0,
+    "month": "2025-12",
+    "interpretation": "Componente atmosférica neutral",
+    "note": "El SOI es un índice de escala de cuenca (Tahiti-Darwin). El observatorio NO define un «SOI costero»."
   }
 }

@@ -410,5 +410,5 @@ class TestAcquisitionScript:
             pytest.skip("health.json no generado")
         h = json.loads(health_file.read_text(encoding="utf-8"))
         source_ids = [s["id"] for s in h["sources"]]
-        assert "d20" in source_ids
-        assert "u850" in source_ids
+        assert "noaa-cpc-godas-d20" in source_ids or "d20" in source_ids
+        assert "noaa-cpc-cpac850" in source_ids or "u850" in source_ids

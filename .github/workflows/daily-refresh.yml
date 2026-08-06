@@ -1,0 +1,49 @@
+# Actualización diaria del Observatorio ENSO Perú.
+# Programa: 23:37 America/Lima (04:37 UTC) diariamente.
+# Usa el flujo reutilizable _refresh-build-deploy con concurrency unificado.
+name: daily-refresh
+
+on:
+  schedule:
+    - cron: '37 4 * * *'
+  workflow_dispatch:
+    inputs:
+      force_refresh:
+        description: 'Forzar actualización ignorando caché'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+      dry_run:
+        description: 'Ejecución de prueba (no publica)'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+      source:
+        description: 'Fuente específica (vacío = todas)'
+        required: false
+        default: ''
+        type: string
+      publication_mode:
+        description: 'Modo de publicación'
+        required: false
+        default: 'normal'
+        type: choice
+        options: ['normal', 'staging_only']
+  repository_dispatch:
+    types: [enso-refresh]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  refresh:
+    uses: ./.github/workflows/_refresh-build-deploy.yml
+    with:
+      force_refresh: ${{ github.event.inputs.force_refresh == 'true' }}
+      dry_run: ${{ github.event.inputs.dry_run == 'true' }}
+      source: ${{ github.event.inputs.source || '' }}
+      publication_mode: ${{ github.event.inputs.publication_mode || 'normal' }}

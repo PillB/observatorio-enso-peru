@@ -1,20 +1,22 @@
-# Watchdog de frescura del Observatorio ENSO Perú.
-# Verifica que la actualización diaria se completó, que health.json está vigente,
-# y que cada fuente está dentro de su SLO de frescura.
+# Watchdog de frescura — inspecciona el health.json desplegado en producción.
+# Si detecta datos rancios o fallos, puede dispatchar recuperación (una sola vez).
 name: freshness-watchdog
 
 on:
   schedule:
-    # Cada 6 horas: 05:00, 11:00, 17:00, 23:00 UTC
-    - cron: '0 5,11,17,23 * * *'
+    - cron: '0 6,12,18,23 * * *'
   workflow_dispatch:
 
 permissions:
   contents: read
-  actions: read
+  actions: write
+
+concurrency:
+  group: enso-production-publication
+  cancel-in-progress: false
 
 jobs:
-  check:
+  watchdog:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -23,40 +25,106 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Check health.json freshness
+      - name: Fetch live health manifest
+        id: fetch-health
         run: |
-          if [ ! -f public/data/health.json ]; then
-            echo "::error::health.json no existe"
-            exit 1
-          fi
+          python3 - <<'PYEOF'
+          import urllib.request, json, sys, os
+          from datetime import datetime, timezone, timedelta
 
-          GENERATED_AT=$(python3 -c "import json; print(json.load(open('public/data/health.json'))['generatedAt'])")
-          NOW_EPOCH=$(date -u +%s)
-          GEN_EPOCH=$(date -u -d "$GENERATED_AT" +%s 2>/dev/null || echo 0)
-          AGE_HOURS=$(( (NOW_EPOCH - GEN_EPOCH) / 3600 ))
+          url = "https://pillb.github.io/observatorio-enso-peru/data/health.json"
+          try:
+              resp = urllib.request.urlopen(url, timeout=30)
+              h = json.loads(resp.read())
+          except Exception as e:
+              print(f"❌ No se pudo obtener health.json: {e}")
+              print("dispatch_recovery=true" >> $GITHUB_ENV)
+              sys.exit(0)
 
-          echo "health.json generado: $GENERATED_AT"
-          echo "Antigüedad: $AGE_HOURS horas"
+          now = datetime.now(timezone.utc)
+          gen_at = h.get("generatedAt", "")
+          sources = h.get("sources", [])
 
-          if [ "$AGE_HOURS" -gt 30 ]; then
-            echo "::warning::health.json tiene más de 30 horas ($AGE_HOURS h). Reintentando actualización..."
-            # Trigger daily-data-update workflow
-            gh workflow run daily-data-update.yml --repo ${{ github.repository }} || true
-          else
-            echo "::notice::health.json está vigente ($AGE_HOURS h)"
-          fi
+          print(f"Health manifest fetched:")
+          print(f"  pipelineStatus: {h.get('pipelineStatus')}")
+          print(f"  generatedAt: {gen_at}")
+          print(f"  sources: {len(sources)}")
 
-      - name: Check last workflow run
-        run: |
-          LAST_RUN=$(gh run list --repo ${{ github.repository }} --workflow daily-data-update.yml --limit 1 --json status,conclusion --jq '.[0]')
-          echo "Última ejecución de daily-data-update: $LAST_RUN"
+          # Check overall freshness
+          issues = []
+          if gen_at:
+              try:
+                  gen_dt = datetime.fromisoformat(gen_at.replace("Z", "+00:00"))
+                  age_hours = (now - gen_dt).total_seconds() / 3600
+                  print(f"  Age: {age_hours:.1f} hours")
+                  if age_hours > 30:
+                      issues.append(f"Health manifest is {age_hours:.1f}h old (>30h SLO)")
+              except Exception:
+                  pass
 
-          STATUS=$(echo "$LAST_RUN" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('status','unknown'))" 2>/dev/null || echo "unknown")
-          CONCLUSION=$(echo "$LAST_RUN" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('conclusion','unknown'))" 2>/dev/null || echo "unknown")
+          # Check source-level freshness
+          for src in sources:
+              sid = src.get("id", "")
+              status = src.get("status", "")
+              freshness = src.get("freshnessState", "")
+              if status == "FAILED" or freshness == "STALE":
+                  issues.append(f"Source {sid} is {status}/{freshness}")
 
-          if [ "$STATUS" = "completed" ] && [ "$CONCLUSION" != "success" ]; then
-            echo "::warning::La última actualización falló ($CONCLUSION). Reintentando..."
-            gh workflow run daily-data-update.yml --repo ${{ github.repository }} || true
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          if issues:
+              print("\n⚠ Issues detected:")
+              for i in issues:
+                  print(f"  - {i}")
+              # Only dispatch recovery if last publication is >30h old
+              if age_hours > 30:
+                  print("dispatch_recovery=true" >> $GITHUB_ENV)
+              else:
+                  print("dispatch_recovery=false" >> $GITHUB_ENV)
+          else:
+              print("\n✅ All sources healthy")
+              print("dispatch_recovery=false" >> $GITHUB_ENV)
+          PYEOF
+
+      - name: Dispatch recovery (if needed and authorized)
+        if: env.dispatch_recovery == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Only dispatch if no equivalent run is active
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'daily-refresh.yml',
+              status: 'in_progress',
+              per_page: 1
+            });
+            if (runs.data.workflow_runs.length > 0) {
+              core.info('Recovery skipped: daily-refresh already in progress');
+              return;
+            }
+            // Check recent failures (last 3 runs)
+            const recent = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'daily-refresh.yml',
+              per_page: 3
+            });
+            const recentFailures = recent.data.workflow_runs.filter(r => r.conclusion === 'failure');
+            if (recentFailures.length >= 3) {
+              core.info('Recovery skipped: 3+ consecutive failures — manual intervention required');
+              core.setFailed('3+ consecutive failures — manual intervention required');
+              return;
+            }
+            // Dispatch recovery
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'daily-refresh.yml',
+              ref: 'main',
+              inputs: {
+                force_refresh: 'true',
+                dry_run: 'false',
+                source: '',
+                publication_mode: 'normal'
+              }
+            });
+            core.info('Recovery dispatched: daily-refresh with force_refresh=true');
