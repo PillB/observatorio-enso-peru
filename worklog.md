@@ -496,3 +496,42 @@ Stage Summary:
 - Sin dependencias externas — vanilla JS + SVG inline + CSS compilado
 - Responsive + dark mode + accesible
 - Workflow deploy-pages corregido y funcionando
+
+---
+Task ID: 17-futuristic-redesign
+Agent: orchestrator (main)
+Task: Rediseño completo del dashboard estático con estética futurista metálica — azul/plata, iconos SVG bespoke, HUD Iron Man + art nouveau.
+
+Work Log:
+- Analizada la imagen del experto GRD subida (pasted_image_1785979488111.png, 3.4MB) — tabla de umbrales operativos.
+- Rediseño completo de `public/index.html` con estética futurista metálica:
+  - **Paleta**: Azules (#0284c7, #0369a1, #38bdf8) y plateados (#cbd5e1, #e2e8f0, #94a3b8) reemplazando teal/ámbar. Sin índigo.
+  - **Dark mode**: Tema oscuro estilo HUD de Iron Man (fondo #0a0e1a con degradados radiales, acentos cian #22d3ee).
+  - **Light mode**: Metal pulido con degradados lineales y sombras suaves.
+  - **Iconos SVG bespoke**: 14 iconos diseñados a medida reemplazando todos los emojis. Cada icono sigue el lenguaje de diseño (líneas finas, trazo 1.8, sin relleno).
+  - **Logo arc reactor**: SVG con degradado radial concéntrico estilo reactor arc de Iron Man, animación de pulso.
+  - **HUD scanlines**: Overlay sutil de líneas horizontales en el body (opacidad 0.03) para efecto HUD.
+  - **Art nouveau**: Curvas orgánicas en bordes de tarjetas (::after con degradado diagonal), separadores con degradado de marca.
+  - **Efectos metálicos**: Tarjetas con gradientes card-grad, sombras inset para efecto de profundidad metálica, glow en hover.
+  - **Botones de navegación**: Indicador lateral con glow cian animado, fondo metálico en estado activo.
+  - **Badges y pills**: Estilo metálico con inset shadow, bordes con color de acento.
+  - **Spinner**: Arc reactor animado con núcleo brillante.
+  - **Gráficos SVG**: Líneas con degradado cian→azul y drop-shadow para efecto glow.
+  - **Footer**: Borde superior con degradado de marca glow.
+- Validación en vivo (https://pillb.github.io/observatorio-enso-peru/):
+  - ✅ 14 vistas con iconos SVG bespoke (sin emojis)
+  - ✅ Paleta azul/plata metálica
+  - ✅ Dark mode funcional (HUD Iron Man)
+  - ✅ Gráficos SVG con degradados y glow
+  - ✅ Datos consistentes (Alerta + Advisory + ICEN + RONI)
+  - ✅ Arquitectura de estado de 3 capas
+  - ✅ Motor de umbrales dual (experto GRD + oficial ICEN)
+- Lint limpio, 381 tests passed, 3 skipped.
+- Commit: 1cb0634. Desplegado a GitHub Pages exitosamente.
+
+Stage Summary:
+- Diseño: futurista metálico azul/plata, HUD Iron Man + art nouveau, iconos SVG bespoke
+- GitHub Pages: https://pillb.github.io/observatorio-enso-peru/ — LIVE con nuevo diseño
+- Sin emojis — 14 iconos SVG diseñados a medida
+- Dark mode estilo HUD con acentos cian
+- Tests: 381 passed, 3 skipped. Lint limpio.
