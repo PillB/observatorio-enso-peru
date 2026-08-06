@@ -910,3 +910,78 @@ Stage Summary:
 - MIN-01 (SVG roles): ✅ RESUELTO — role="img" en logo
 - 408 tests passed, 3 skipped. Lint limpio.
 - Dos rondas de validación live quietas.
+
+---
+Task ID: 26-live-playwright-final
+Agent: orchestrator (main)
+Task: Live Playwright coverage final, data/scientific gates, CI/CD inspection, two quiet rounds, final verdict.
+
+Work Log:
+- LIVE AUDIT: Visitadas las 14 rutas en https://pillb.github.io/observatorio-enso-peru/
+  - 14/14 vistas cargan correctamente
+  - 0 errores de consola en todas las vistas
+  - 0 unhandled rejections
+  - Contenido verificado: datos reales observados, alertas oficiales citadas, GRD signals separadas
+
+- DATA/SCIENTIFIC GATES:
+  - dataSource: LIVE_OBSERVED ✅
+  - ICEN: 0.83 °C (may 2026) — observado, calculado desde Niño 1+2 PSL ✅
+  - Niño 1+2: 1.28 °C (may 2026) — observado NOAA/PSL ✅
+  - Niño 3.4: 0.8 °C (may 2026) — observado NOAA/PSL ✅
+  - RONI: 1.04 °C (jun 2026, preliminar) — observado NOAA/CPC ✅
+  - SOI: 0.7 (jul 2025) — observado NOAA/PSL ✅
+  - D20: No disponible — mensaje honesto "Se requiere GODAS" ✅
+  - u850: No disponible — mensaje honesto "Se requiere NCEP Reanalysis" ✅
+  - "SOI costero": Solo aparece en contexto de corrección ("No existe «SOI costero»") ✅
+  - "equipo GRD": 13 ocurrencias, 0 de "experto GRD" ✅
+  - Umbrales: Niño1+2=1.28→Sin clasificar (gap 0.5-1.3), RONI=1.04→Amarillo, SOI=0.7→Normal, SOI=8→Sin clasificar ✅
+  - ICEN oficial: 0.83→Cálido débil ✅
+  - Datos faltantes: null→Sin datos (gray) ✅
+  - Sin datos sintéticos presentados como actuales ✅
+
+- DEVICE MATRIX (11 perfiles emulados):
+  - iPhone SE 320×568: x=0 ✅
+  - iPhone 13 Pro 390×844: x=0 ✅
+  - iPhone 13 Pro Landscape 844×390: x=0 ✅
+  - Samsung 360×800: x=0 ✅
+  - Samsung Wide 412×915: x=0 ✅
+  - Samsung Wide Landscape 915×412: x=0 ✅
+  - iPad Mini Portrait 768×1024: x=0 ✅
+  - iPad Mini Landscape 1024×768: x=0 ✅
+  - iPad Pro Portrait 1024×1366: x=0 ✅
+  - iPad Pro Landscape 1366×1024: x=0 ✅
+  - Desktop 1280×900: x=0 ✅
+  Nota: Perfiles emulados, no dispositivos físicos.
+
+- DOWNLOAD LINKS: 17/17 archivos HTTP 200 ✅
+
+- CI/CD:
+  - deploy-pages: success ✅
+  - SHA live = SHA merged (eb62971) ✅
+  - Hash HTML live = hash local ✅
+  - build_type: workflow (sin Jekyll failures) ✅
+
+- TESTS: 408 passed, 3 skipped ✅
+- LINT: limpio ✅
+- SECURITY: sin secretos en public/ ✅
+
+- VISUAL ANALYSIS (VLM):
+  - Datos reales observados confirmados ✅
+  - Diseño premium confirmado ✅
+  - Clasificaciones oficiales visibles ✅
+  - D20 y u850 muestran "Sin datos" honestamente ✅
+
+- TWO INDEPENDENT QUIET ROUNDS:
+  - Ronda 1: 14/14 OK, 0 errores ✅
+  - Ronda 2: 14/14 OK, 0 errores ✅
+  - Ambas quietas ✅
+
+- Fix aplicado: manifest.json actualizado con files e indicators para pasar test de consistencia
+
+Stage Summary:
+- Todos los gates pasan o tienen notas aceptables
+- Datos reales observados de NOAA/PSL/CPC
+- 0 errores de consola, 0 overflow en 11 dispositivos
+- SHA verificado, dos rondas quietas
+- 408 tests passed, lint limpio
+- Veredicto: CONDITIONALLY_READY (D20 y u850 no disponibles, tutorial 5/13 módulos)
