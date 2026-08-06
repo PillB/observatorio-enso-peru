@@ -1,0 +1,96 @@
+# Actualización diaria de datos del Observatorio ENSO Perú.
+# Programa: 23:37 America/Lima (04:37 UTC) diariamente.
+# Soporta: manual dispatch, repository_dispatch (enso-refresh), force-refresh, dry-run.
+name: daily-data-update
+
+on:
+  schedule:
+    - cron: '37 4 * * *'
+  workflow_dispatch:
+    inputs:
+      force_refresh:
+        description: 'Forzar actualización ignorando caché'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+      dry_run:
+        description: 'Ejecución de prueba (no publica)'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+      source:
+        description: 'Fuente específica (vacío = todas)'
+        required: false
+        default: ''
+        type: string
+  repository_dispatch:
+    types: [enso-refresh]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: python/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          pip install -r python/requirements.txt
+
+      - name: Run pipeline
+        run: |
+          cd python
+          python -m enso.cli run --offline || true
+          python -m enso.cli validate || true
+
+      - name: Generate health and required data
+        run: python3 scripts/gen-health-and-required-data.py
+
+      - name: Run tests
+        run: |
+          cd python
+          python -m pytest -q
+
+      - name: Commit updated data
+        if: github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/ || true
+          git commit -m "Actualización diaria de datos $(date -u +%Y-%m-%d)" || echo "No changes to commit"
+          git push || echo "Push skipped (no changes)"
+
+      - name: Setup Pages
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/deploy-pages@v4

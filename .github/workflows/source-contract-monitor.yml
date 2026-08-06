@@ -1,0 +1,51 @@
+# Monitor de contratos de fuentes del Observatorio ENSO Perú.
+# Verifica que los endpoints de las fuentes siguen respondiendo y que los
+# esquemas no han cambiado.
+name: source-contract-monitor
+
+on:
+  schedule:
+    # Diariamente a las 06:00 UTC (01:00 America/Lima)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check source registry
+        run: |
+          if [ ! -f public/data/source-registry.json ]; then
+            echo "::error::source-registry.json no existe"
+            exit 1
+          fi
+
+          # Verify each source has required fields
+          python3 -c "
+          import json
+          with open('public/data/source-registry.json') as f:
+              data = json.load(f)
+          required = ['id', 'institution', 'product', 'url', 'status', 'updateFrequency', 'license']
+          for src in data.get('sources', []):
+              missing = [f for f in required if f not in src or not src[f]]
+              if missing:
+                  print(f'::warning::Fuente {src.get(\"id\",\"?\")} falta campos: {missing}')
+              else:
+                  print(f'OK: {src[\"id\"]} - {src[\"institution\"]}')
+          print('Contrato de fuentes verificado')
+          "

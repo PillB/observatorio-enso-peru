@@ -1,12 +1,12 @@
 # Pipeline del Observatorio ENSO Perú — adquisición, normalización y tests.
-# Se ejecuta diariamente a las 13:17 UTC (fuera de la hora en punto) y
+# Se ejecuta diariamente a las 23:37 America/Lima (04:37 UTC) y
 # bajo demanda manual (workflow_dispatch). No usa secretos del repositorio.
 name: pipeline
 
 on:
   schedule:
-    # 13:17 UTC diariamente (fuera de la hora en punto para reducir carga).
-    - cron: '17 13 * * *'
+    # 23:37 America/Lima (UTC-5) = 04:37 UTC, fuera de la hora en punto.
+    - cron: '37 4 * * *'
   workflow_dispatch:
   pull_request:
     paths:

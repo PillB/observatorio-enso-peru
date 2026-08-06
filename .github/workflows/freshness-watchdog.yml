@@ -1,0 +1,62 @@
+# Watchdog de frescura del Observatorio ENSO Perú.
+# Verifica que la actualización diaria se completó, que health.json está vigente,
+# y que cada fuente está dentro de su SLO de frescura.
+name: freshness-watchdog
+
+on:
+  schedule:
+    # Cada 6 horas: 05:00, 11:00, 17:00, 23:00 UTC
+    - cron: '0 5,11,17,23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Check health.json freshness
+        run: |
+          if [ ! -f public/data/health.json ]; then
+            echo "::error::health.json no existe"
+            exit 1
+          fi
+
+          GENERATED_AT=$(python3 -c "import json; print(json.load(open('public/data/health.json'))['generatedAt'])")
+          NOW_EPOCH=$(date -u +%s)
+          GEN_EPOCH=$(date -u -d "$GENERATED_AT" +%s 2>/dev/null || echo 0)
+          AGE_HOURS=$(( (NOW_EPOCH - GEN_EPOCH) / 3600 ))
+
+          echo "health.json generado: $GENERATED_AT"
+          echo "Antigüedad: $AGE_HOURS horas"
+
+          if [ "$AGE_HOURS" -gt 30 ]; then
+            echo "::warning::health.json tiene más de 30 horas ($AGE_HOURS h). Reintentando actualización..."
+            # Trigger daily-data-update workflow
+            gh workflow run daily-data-update.yml --repo ${{ github.repository }} || true
+          else
+            echo "::notice::health.json está vigente ($AGE_HOURS h)"
+          fi
+
+      - name: Check last workflow run
+        run: |
+          LAST_RUN=$(gh run list --repo ${{ github.repository }} --workflow daily-data-update.yml --limit 1 --json status,conclusion --jq '.[0]')
+          echo "Última ejecución de daily-data-update: $LAST_RUN"
+
+          STATUS=$(echo "$LAST_RUN" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('status','unknown'))" 2>/dev/null || echo "unknown")
+          CONCLUSION=$(echo "$LAST_RUN" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('conclusion','unknown'))" 2>/dev/null || echo "unknown")
+
+          if [ "$STATUS" = "completed" ] && [ "$CONCLUSION" != "success" ]; then
+            echo "::warning::La última actualización falló ($CONCLUSION). Reintentando..."
+            gh workflow run daily-data-update.yml --repo ${{ github.repository }} || true
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

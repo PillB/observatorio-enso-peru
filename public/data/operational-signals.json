@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-08-06T02:36:51.621422+00:00",
+  "policyId": "expert-grd-image-v1",
+  "policyName": "Señal operativa del experto GRD (imagen v1)",
+  "disclaimer": "Esta señal no equivale al sistema oficial de alertas de NOAA ni de ENFEN.",
+  "signals": [
+    {
+      "indicator": "Niño 1+2 (costero)",
+      "value": 1.58,
+      "classification": "Amarillo",
+      "color": "yellow"
+    },
+    {
+      "indicator": "ICEN (costero)",
+      "value": 1.77,
+      "classification": "Amarillo",
+      "color": "yellow"
+    },
+    {
+      "indicator": "Niño 3.4 (cuenca)",
+      "value": 1.17,
+      "classification": "Amarillo",
+      "color": "yellow"
+    },
+    {
+      "indicator": "D20 (termoclina)",
+      "value": 9.4,
+      "classification": "Normal",
+      "color": "green"
+    },
+    {
+      "indicator": "SOI",
+      "value": -1.77,
+      "classification": "Normal",
+      "color": "green"
+    }
+  ]
+}
