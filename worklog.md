@@ -676,3 +676,43 @@ Stage Summary:
 - Tutorial sin overflow en móvil.
 - Todas las 14 vistas sin overflow X en iPhone 13 Pro.
 - Commit: 07bfa0f. Live: https://pillb.github.io/observatorio-enso-peru/
+
+---
+Task ID: 21-map-underlay-cicd-fix
+Agent: orchestrator (main)
+Task: Añadir mapa mundial de continentes como underlay, corregir CI/CD, comparar local vs live, fix console errors.
+
+Work Log:
+- IMPLEMENTADO mapa mundial SVG con continentes como underlay:
+  - Proyección equirectangular con coordenadas reales (lon -180° a -60°, lat -15° a 15°)
+  - Continentes: Sudamérica, Norteamérica, Australia, Asia/Sudeste Asiático (low-poly, opacidad 0.08-0.12)
+  - 54 celdas de datos con colores divergentes (rojo cálido, azul frío)
+  - Cajas de regiones Niño 1+2 y Niño 3.4 con etiquetas
+  - Ejes con etiquetas de longitud/latitud
+  - `role="img"` y `aria-label` para accesibilidad
+  - Tooltips al pasar el cursor mostrando lat/lon/valor
+  - Leyenda con barra de gradiente
+- CORREGIDO CI/CD: cambiado `build_type` de Pages de `legacy` a `workflow`
+  - Esto elimina el fallo recurrente de `pages-build-deployment` (Jekyll)
+  - El workflow `deploy-pages` ahora es el único builder
+- COMPARACIÓN LOCAL vs LIVE:
+  - Antes del push: local tenía 5 paths de continentes, live tenía 0 (código no desplegado)
+  - Después del push: local y live idénticos (5 paths, 57 rects, 11 texts)
+  - Diferencia de contenido: local 56626 chars, live 51002 chars (debido a diferencias de URLs relativas vs absolutas en datos)
+- CONSOLE ERRORS: 0 errores en las 14 vistas (verificado con window.onerror handler)
+- MOBILE OVERFLOW: 0px en iPhone 13 Pro (390×844)
+- Análisis VLM del mapa: continentes visibles como underlay, datos claramente visibles encima, buen contraste, etiquetas legibles
+- Validación en vivo:
+  - Map SVG: 5 paths (continentes), 57 rects (celdas+regiones), 11 texts (etiquetas), role=img ✅
+  - Mobile: X overflow = 0 ✅
+  - Console: 0 errores en todas las vistas ✅
+  - CI/CD: deploy-pages success, sin fallo de pages-build-deployment ✅
+- Commit: 1eecc4e. Desplegado a GitHub Pages exitosamente.
+
+Stage Summary:
+- Mapa con underlay de continentes: implementado y validado en vivo
+- CI/CD corregido: build_type=workflow, sin más fallos de Jekyll
+- Console errors: 0 en todas las vistas
+- Local vs live: idénticos después del deploy
+- Mobile overflow: 0px en iPhone 13 Pro
+- 408 tests passed, 3 skipped. Lint limpio.
