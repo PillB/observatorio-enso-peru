@@ -1,46 +1,45 @@
 {
-  "asOf": "2026-08-02",
+  "asOf": "2026-08-06",
+  "dataVersion": "2.0.0",
+  "generatedAt": "2026-08-06T05:21:56.779648+00:00",
+  "dataSource": "LIVE_OBSERVED",
   "coastal": {
-    "alert": "Alerta de El Niño Costero",
-    "alertSource": "ENFEN / IMARPE (siofen.imarpe.gob.pe)",
-    "alertSince": "2026-02-13",
-    "nino12Anom": 1.58,
-    "nino12Month": "2026-07",
-    "icen": 1.77,
-    "icenWindow": "May 2026–Jun 2026–Jul 2026",
-    "icenCategory": "El Niño Costero fuerte",
-    "freshness": "Dato preliminar · corte 2026-08-02",
-    "preliminary": true
+    "alert": "Consulte ENFEN en siofen.imarpe.gob.pe",
+    "alertSource": "ENFEN / IMARPE",
+    "nino12Anom": 1.28,
+    "nino12Month": "2026-05",
+    "icen": 0.83,
+    "icenWindow": "2026-05",
+    "icenCategory": "El Niño Costero débil",
+    "freshness": "Dato observado · adquirido 2026-08-06T05:21:56.779648+00:00",
+    "preliminary": false
   },
   "basin": {
-    "alert": "El Niño Advisory",
-    "alertSource": "NOAA / CPC — ENSO Diagnostic Discussion",
-    "alertSince": "2026-06",
-    "nino34Anom": 1.17,
-    "nino34Month": "2026-07",
-    "roni": 1.39,
-    "roniWindow": "May 2026–Jun 2026–Jul 2026",
+    "alert": "Consulte NOAA/CPC en cpc.ncep.noaa.gov",
+    "alertSource": "NOAA / CPC",
+    "nino34Anom": 0.8,
+    "nino34Month": "2026-05",
+    "roni": 1.04,
+    "roniWindow": "2026-06",
     "roniCategory": "El Niño (cuenca)",
-    "freshness": "Dato preliminar · corte 2026-08-02",
-    "preliminary": true
+    "freshness": "Dato observado · adquirido 2026-08-06T05:21:56.779648+00:00",
+    "preliminary": false
   },
   "winds": {
-    "u850Anom": 2.67,
-    "u850Month": "2026-07",
-    "direction": "Anomalía del oeste (flujo hacia el este)",
-    "signMeaning": "u > 0 ⇒ componente del oeste (westerly), hacia el este. Típico de El Niño de cuenca."
+    "u850Anom": null,
+    "u850Month": "",
+    "direction": "Datos de viento no disponibles en esta fuente",
+    "signMeaning": "u > 0 ⇒ este (westerly); u < 0 ⇒ oeste (easterly)"
   },
   "thermocline": {
-    "d20Anom": 9.4,
-    "d20Month": "2026-07",
-    "interpretation": "Termoclina más profunda de lo normal (señal de El Niño de cuenca)"
+    "d20Anom": null,
+    "d20Month": "",
+    "interpretation": "Datos de D20 no disponibles en esta fuente"
   },
   "soi": {
-    "value": -1.77,
-    "month": "2026-07",
-    "interpretation": "Componente atmosférica de El Niño",
-    "note": "El SOI es un índice de escala de cuenca. El observatorio NO define un «SOI costero»: no existe un proxy de presión costera con respaldo metodológico equivalente."
-  },
-  "dataVersion": "1.0.0",
-  "generatedAt": "2026-08-05T22:37:36.353Z"
+    "value": 0.7,
+    "month": "2025-07",
+    "interpretation": "Componente atmosférica de La Niña",
+    "note": "El SOI es un índice de escala de cuenca. El observatorio NO define un «SOI costero»."
+  }
 }
