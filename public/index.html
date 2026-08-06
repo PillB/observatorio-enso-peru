@@ -669,7 +669,7 @@ function renderCoastal(){
 
 function renderBasin(){
   const s=STATUS;const e=evalBasinSST(s.basin.roni);
-  return banner+`<div class="info-note info"><strong>ENSO de cuenca</strong> monitorea el Pacífico ecuatorial mediante RONI (NOAA/CPC) sobre Niño 3.4.</div>
+  return `<div class="info-note info"><strong>ENSO de cuenca</strong> monitorea el Pacífico ecuatorial mediante RONI (NOAA/CPC) sobre Niño 3.4.</div>
   <div class="grid-2">
     <div class="card"><div class="card-header"><div class="card-title">${ICONS.basin} RONI — Índice Oceánico Relativo del Niño</div><span class="badge badge-basin">Cuenca</span></div>
       <p style="font-size:11px;color:var(--muted)">${s.basin.roniWindow}</p><p class="big-value value-warm">${fmtValue(s.basin.roni,'degC')}</p><p style="font-size:10px;color:var(--yellow);font-weight:600">Demostración</p>
