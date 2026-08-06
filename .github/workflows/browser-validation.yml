@@ -51,21 +51,43 @@ jobs:
           pip install --upgrade pip
           pip install playwright httpx
 
-      - name: Install Playwright browsers and system dependencies
+      - name: Install Playwright browsers
         env:
           PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
         run: |
           # Install the browser binary
-          playwright install ${{ matrix.browser }}
-          # Install system dependencies (critical for WebKit and Firefox)
-          # This requires sudo and installs OS-level libraries.
+          python -m playwright install ${{ matrix.browser }}
+
+      - name: Install system dependencies (WebKit/Firefox)
+        if: matrix.browser != 'chromium'
+        run: |
+          # Install OS-level libraries needed by WebKit and Firefox.
+          # This requires sudo and is only needed for non-Chromium browsers.
+          sudo apt-get update -qq
           if [ "${{ matrix.browser }}" = "webkit" ]; then
-            sudo playwright install-deps webkit
+            sudo apt-get install -y -qq \
+              libwoff1 libopus0 libwebp7 libwebpdemux2 libegl1 \
+              libgles2 libevent-2.1-7 libxcomposite1 libxcursor1 \
+              libxdamage1 libxfixes3 libxi6 libxkbcommon0 libxrandr2 \
+              libxrender1 libxtst6 libatk1.0-0 libatk-bridge2.0-0 \
+              libepoxy0 libgl1 libgles2 libegl1 libenchant-2-2 \
+              libsecret-1-0 libmanette-0.2-0 libgstreamer1.0-0 \
+              libgstreamer-plugins-base1.0-0 libgstreamer-plugins-bad1.0-0 \
+              gir1.2-gst-plugins-bad-1.0 libhyphen0 libgudev-1.0-0 \
+              libwoff1 libatk1.0-0 libxkbfile1 2>/dev/null || true
+            # Also try the Playwright deps installer as fallback
+            python -m playwright install-deps webkit 2>/dev/null || true
           elif [ "${{ matrix.browser }}" = "firefox" ]; then
-            sudo playwright install-deps firefox
-          else
-            sudo playwright install-deps chromium
+            sudo apt-get install -y -qq \
+              libdbus-glib-1-2 libxt6 libasound2 2>/dev/null || true
+            python -m playwright install-deps firefox 2>/dev/null || true
           fi
+
+      - name: Install system dependencies (Chromium)
+        if: matrix.browser == 'chromium'
+        run: |
+          sudo apt-get update -qq
+          python -m playwright install-deps chromium 2>/dev/null || true
 
       - name: Start static server
         run: |
