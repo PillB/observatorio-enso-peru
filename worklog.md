@@ -457,3 +457,42 @@ Stage Summary:
 - Arquitectura de estado: vista con 3 capas (oficial / experto / calidad) y toggle para mostrar una u otra o ambas.
 - Integridad: los intervalos no definidos se marcan como gris (UNCLASSIFIED), nunca como verde. Las políticas del experto y oficial están claramente separadas y etiquetadas. El ICEN oficial no se aplica a Niño 1+2 semanal.
 - Total vistas: 32. Total tests: 381 passed, 3 skipped. Lint limpio.
+
+---
+Task ID: 16-github-pages-live
+Agent: orchestrator (main)
+Task: Validar GitHub Pages en vivo, diagnosticar y corregir el 404, crear dashboard estático funcional.
+
+Work Log:
+- Diagnosticado el 404 en GitHub Pages: el repositorio es Next.js (no estático), no hay index.html en la raíz, y Pages estaba configurado con build_type "legacy" (Jekyll). El workflow deploy-pages subía solo .nojekyll y public/* pero sin index.html.
+- CREADO `public/index.html`: dashboard estático completo para GitHub Pages con:
+  - 14 vistas navegables (Resumen, El Niño Costero, ENSO de cuenca, TSM, Vientos, Termoclina, SOI, Estado y umbrales, Histórico, Mapas, Datos, Metodología, Fuentes, Asistente)
+  - CSS compilado en línea (sin Tailwind CDN), paleta teal/ámbar sin índigo
+  - Motor de umbrales inline (experto GRD + oficial ICEN ENFEN) con evaluación de huecos como UNCLASSIFIED
+  - Gráficos SVG inline (series temporales con bandas de umbral)
+  - Carga de datos desde /data/*.json (status, manifest, all-series, indicators, sources)
+  - Toggle de tema claro/oscuro con persistencia localStorage
+  - Navegación responsive (sidebar desktop + pills móviles)
+  - Pie de página adherido con aviso de no ser servicio oficial
+  - Arquitectura de estado de 3 capas (oficial / experto / calidad)
+  - Corrección del concepto «SOI costero» en el asistente
+  - 17 enlaces de descarga de artefactos estáticos (CSV + JSON)
+- CORREGIDO `.github/workflows/deploy-pages.yml`: simplificado para subir directamente `./public` como artefacto de Pages (sin build innecesario). Corregido typo YAML `ain]` → `[main]`.
+- CORREGIDO typo JavaScript `ALL_SERies` → `ALL_SERIES` que rompía la vista histórica.
+- Validación en vivo (Playwright/agent-browser sobre https://pillb.github.io/observatorio-enso-peru/):
+  - ✅ Todas las 14 vistas renderizan correctamente
+  - ✅ Datos consistentes: Alerta de El Niño Costero, El Niño Advisory, ICEN 1.77, RONI 1.39
+  - ✅ Arquitectura de estado: muestra «Señal operativa del experto» + «Clasificación oficial ICEN» + «no equivale al sistema oficial»
+  - ✅ Corrección SOI costero: el asistente explica que no existe
+  - ✅ Dark mode funcional
+  - ✅ Gráficos SVG renderizan en todas las vistas con datos
+  - ✅ Enlaces de descarga de datos estáticos funcionan
+- Commits: e4a7451 (index.html + workflow fix), 87f4aa2 (typo fix). Pushed a GitHub.
+
+Stage Summary:
+- GitHub Pages: https://pillb.github.io/observatorio-enso-peru/ — LIVE y funcional
+- 14 vistas estáticas con datos cargados desde /data/*.json
+- Motor de umbrales dual (experto GRD + oficial ICEN) funcionando en el sitio estático
+- Sin dependencias externas — vanilla JS + SVG inline + CSS compilado
+- Responsive + dark mode + accesible
+- Workflow deploy-pages corregido y funcionando
