@@ -25,20 +25,25 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Fetch live health manifest
+      - name: Fetch live health manifest and decide
         id: fetch-health
         run: |
           python3 - <<'PYEOF'
           import urllib.request, json, sys, os
-          from datetime import datetime, timezone, timedelta
+          from datetime import datetime, timezone
 
           url = "https://pillb.github.io/observatorio-enso-peru/data/health.json"
+          age_hours = 0
+          issues = []
+
           try:
               resp = urllib.request.urlopen(url, timeout=30)
               h = json.loads(resp.read())
           except Exception as e:
-              print(f"❌ No se pudo obtener health.json: {e}")
-              print("dispatch_recovery=true" >> $GITHUB_ENV)
+              print(f"ERROR: No se pudo obtener health.json: {e}")
+              # If we can't even fetch health, dispatch recovery
+              with open(os.environ["GITHUB_ENV"], "a") as f:
+                  f.write("dispatch_recovery=true\n")
               sys.exit(0)
 
           now = datetime.now(timezone.utc)
@@ -49,9 +54,9 @@ jobs:
           print(f"  pipelineStatus: {h.get('pipelineStatus')}")
           print(f"  generatedAt: {gen_at}")
           print(f"  sources: {len(sources)}")
+          print(f"  publicationId: {h.get('publicationId', 'MISSING')}")
 
           # Check overall freshness
-          issues = []
           if gen_at:
               try:
                   gen_dt = datetime.fromisoformat(gen_at.replace("Z", "+00:00"))
@@ -70,18 +75,23 @@ jobs:
               if status == "FAILED" or freshness == "STALE":
                   issues.append(f"Source {sid} is {status}/{freshness}")
 
+          # Decide whether to dispatch recovery
+          dispatch = "false"
           if issues:
               print("\n⚠ Issues detected:")
               for i in issues:
                   print(f"  - {i}")
               # Only dispatch recovery if last publication is >30h old
               if age_hours > 30:
-                  print("dispatch_recovery=true" >> $GITHUB_ENV)
+                  dispatch = "true"
+                  print("→ Dispatching recovery (age > 30h)")
               else:
-                  print("dispatch_recovery=false" >> $GITHUB_ENV)
+                  print("→ Not dispatching (age within SLO)")
           else:
               print("\n✅ All sources healthy")
-              print("dispatch_recovery=false" >> $GITHUB_ENV)
+
+          with open(os.environ["GITHUB_ENV"], "a") as f:
+              f.write(f"dispatch_recovery={dispatch}\n")
           PYEOF
 
       - name: Dispatch recovery (if needed and authorized)
