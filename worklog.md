@@ -762,3 +762,35 @@ Stage Summary:
 - GitHub Pages: LIVE con nuevo diseño
 - CI/CD: limpio, sin fallos
 - Mobile: 0px overflow
+
+---
+Task ID: 23-homologation-pass
+Agent: orchestrator (main)
+Task: Homologación visual/lingüística/estructural + fronload de alertas GRD y oficiales en todas las vistas.
+
+Work Log:
+- Análisis VLM de 4 vistas clave: identificado que las alertas del equipo GRD no estaban fronloaded, faltaba clasificación oficial NOAA en vista de cuenca, y el término "experto GRD" debía ser "equipo GRD".
+- Correcciones aplicadas:
+  1. **Renombrado "experto GRD" → "equipo GRD"** en todo el sitio (8+ ocurrencias)
+  2. **Banners de alerta fronloaded en Resumen**: dos tarjetas con border-left de color mostrando señal GRD + clasificación oficial (ENFEN/NOAA) con pills grandes
+  3. **Banners de alerta en El Niño Costero**: señal equipo GRD (Amarillo/Rojo) + clasificación oficial ENFEN con border-left de color
+  4. **Banners de alerta en ENSO de cuenca**: señal equipo GRD + clasificación oficial NOAA/CPC (antes faltaba)
+  5. **Banners de alerta en TSM, Vientos, Termoclina, SOI**: señal equipo GRD con pill grande y descripción
+  6. **Pills de alerta grandes** (font-weight:700, padding ampliado) en lugar de pequeños cuadrados de color
+  7. **Descripciones claras** junto a cada alerta: "No equivale al sistema oficial", "No existe SOI costero", "No automatizado hasta confirmar región"
+- Validación en vivo (https://pillb.github.io/observatorio-enso-peru/):
+  - 8/8 vistas: hasGRD=true ✅ (equipo GRD presente)
+  - 8/8 vistas: hasOfficial=true ✅ (ENFEN o NOAA visible)
+  - 8/8 vistas: hasAlert=true ✅ (Amarillo/Rojo/Alerta visible)
+  - 8/8 vistas: hasOldName=false ✅ (no queda "experto GRD")
+  - Mobile: 0px overflow ✅
+- CI/CD: deploy-pages success, sin failures
+- Commit: 33c1aff. Desplegado a GitHub Pages exitosamente.
+
+Stage Summary:
+- Homologación completa: todas las vistas fronloadan alertas GRD + oficiales
+- Lenguaje consistente: "equipo GRD" (no "experto GRD")
+- Alertas visibles como pills grandes con descripciones
+- Clasificación oficial NOAA/CPC añadida en vista de cuenca
+- Mobile: 0px overflow
+- 408 tests passed, 3 skipped. Lint limpio.
