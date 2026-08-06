@@ -1185,3 +1185,30 @@ Stage Summary:
 - Lint limpio
 - Live site verificado con datos reales en todos los indicadores
 - Todos los pendientes no bloqueantes previos ahora resueltos
+
+---
+Task ID: 29-autonomous-update-system
+Agent: orchestrator (main)
+Task: Research, architect, implement, test, deploy, and validate autonomous high-frequency data-update system with official RONI, unified publication path, watchdog recovery.
+
+Work Log:
+- Preflight inspection: 10 hypotheses investigated, all resolved or contained
+- CRITICAL FIX (PREFLIGHT-008): RONI was computed as naive 3-month rolling mean of Niño 3.4 — scientifically wrong. Now uses official RONI.ascii.txt (seasonal product). Value changed from 1.04 to 0.98 (MJJ 2026).
+- New source_profiles.py: 11 SourceProfile contracts with authority levels, cadence, freshness SLO
+- New unified_acquisition.py: Single orchestrator replacing fragmented path
+- New _refresh-build-deploy.yml: Reusable workflow with single concurrency group (enso-production-publication)
+- New daily-refresh.yml: Daily trigger at 23:37 America/Lima
+- Updated freshness-watchdog.yml: Watchdog with recovery dispatch (max 1 rerun + 1 retry)
+- Updated deploy-pages.yml: Same concurrency group (no race)
+- Health.json now from retrieval_ledger (real evidence), not static sources.json
+- 470 tests passed, 3 skipped, lint clean
+- Live verified: RONI=0.98 (official), publicationId=d5f15625f54d, 0 errors, 0 overflow
+
+Stage Summary:
+- 10/10 preflight findings resolved
+- RONI methodology corrected (critical scientific fix)
+- Single publication path with atomic deploy
+- 11 sources: weekly SST, monthly Niño 1+2/3.4, official RONI, SOI, 3 wind indices, D20, NOAA advisory, ENFEN
+- Three temporal layers: rapid observational / operational index / official authority
+- Watchdog with bounded recovery
+- READY_FOR_CLIENT_ACCEPTANCE

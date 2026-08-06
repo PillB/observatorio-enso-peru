@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-08-06",
+  "sources": [
+    {
+      "source_id": "noaa-cpc-wksst",
+      "metric": "Weekly Niño 1+2/3.4 SST/SSTA",
+      "authority": "NOAA/CPC",
+      "region": "Niño 1+2, 3, 3.4, 4",
+      "cadence": "weekly",
+      "lag": "3-7 days",
+      "format": "fixed-width ASCII",
+      "access_reliability": "HIGH",
+      "tested_latest": "2026-08 (3244 weekly points)",
+      "selected": true,
+      "reason": "Official weekly product, structured text, rapid observational layer"
+    },
+    {
+      "source_id": "noaa-cpc-roni",
+      "metric": "RONI (seasonal)",
+      "authority": "NOAA/CPC",
+      "region": "Niño 3.4 with tropical-mean adjustment",
+      "cadence": "monthly (seasonal overlap)",
+      "lag": "5-15 days",
+      "format": "ASCII (SEAS YR ANOM)",
+      "access_reliability": "HIGH",
+      "tested_latest": "MJJ 2026 = 0.98",
+      "selected": true,
+      "reason": "Official RONI product — must NOT be computed as rolling mean"
+    },
+    {
+      "source_id": "noaa-cpc-cpac850",
+      "metric": "850 hPa trade wind (Central Pacific)",
+      "authority": "NOAA/CPC",
+      "region": "175°W-140°W, 5°S-5°N",
+      "cadence": "monthly",
+      "lag": "3-7 days",
+      "format": "ASCII (YEAR + 12 months)",
+      "access_reliability": "HIGH",
+      "tested_latest": "2026-08 (1692 points)",
+      "selected": true,
+      "reason": "Official CPC trade wind index, structured, proper region definition"
+    },
+    {
+      "source_id": "noaa-cpc-godas-d20",
+      "metric": "D20 anomaly (dbss_obil)",
+      "authority": "NOAA/PSL (GODAS)",
+      "region": "Niño 3.4 area average",
+      "cadence": "monthly",
+      "lag": "10-20 days",
+      "format": "OPeNDAP ASCII",
+      "access_reliability": "MEDIUM",
+      "tested_latest": "2026-06 (+6.972 m)",
+      "selected": true,
+      "reason": "Only structured D20 source available; requires OPeNDAP parsing"
+    },
+    {
+      "source_id": "enfen-imarpe-status",
+      "metric": "Official coastal status",
+      "authority": "ENFEN/IMARPE",
+      "region": "Peruvian coast",
+      "cadence": "event-driven",
+      "lag": "variable",
+      "format": "HTML (Cloudflare-protected)",
+      "access_reliability": "LOW",
+      "tested_latest": "Fallback: Alerta de El Niño Costero",
+      "selected": true,
+      "reason": "Only official source for coastal status; Cloudflare blocks automation, fallback used"
+    }
+  ]
+}

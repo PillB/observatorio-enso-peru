@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-08-06",
+  "findings": [
+    {
+      "id": "PREFLIGHT-001",
+      "hypothesis": "Synthetic observations and maps in production path",
+      "status": "CONTAINED",
+      "evidence": "src/lib/enso/series.ts contains gaussian/hash01 synthetic generators but is NOT deployed (public/index.html is canonical frontend). public/data/*.csv contains real observed data from NOAA/PSL/CPC. No synthetic data in production path.",
+      "resolution": "Synthetic generators remain in src/ (Next.js reference, not deployed). Production uses real data only."
+    },
+    {
+      "id": "PREFLIGHT-002",
+      "hypothesis": "Python output directory (out/) does not reach deployed public/data/",
+      "status": "RESOLVED",
+      "evidence": "New unified_acquisition.py writes directly to staging/ then copies to public/data/. Old python/out/ directory is decoupled from production. daily-refresh.yml calls _refresh-build-deploy.yml which runs unified_acquisition.",
+      "resolution": "Single publication path: staging/ → public/data/ → Pages artifact."
+    },
+    {
+      "id": "PREFLIGHT-003",
+      "hypothesis": "Workflow force_refresh input not forwarded",
+      "status": "RESOLVED",
+      "evidence": "daily-refresh.yml forwards force_refresh, dry_run, source, publication_mode to _refresh-build-deploy.yml. All inputs map to CLI arguments.",
+      "resolution": "All workflow inputs properly forwarded to CLI."
+    },
+    {
+      "id": "PREFLIGHT-004",
+      "hypothesis": "Reusable workflow uses unsupported CLI flags",
+      "status": "RESOLVED",
+      "evidence": "_refresh-build-deploy.yml passes --staging-dir, --publication-dir, --dry-run to unified_acquisition.py. All flags are tested.",
+      "resolution": "CLI flags validated and tested."
+    },
+    {
+      "id": "PREFLIGHT-005",
+      "hypothesis": "Health manufactured from static files",
+      "status": "RESOLVED",
+      "evidence": "health.json now generated from retrieval_ledger in unified_acquisition.py. Each source has retrievalEvidence, contentHash, pointsRetrieved, retrievedAt from actual HTTP acquisition. gen-health-and-required-data.py no longer used in production path.",
+      "resolution": "Health from real retrieval evidence only."
+    },
+    {
+      "id": "PREFLIGHT-006",
+      "hypothesis": "Multiple publication paths (git commit + artifact)",
+      "status": "RESOLVED",
+      "evidence": "daily-refresh.yml no longer commits to git. _refresh-build-deploy.yml deploys directly from artifact. deploy-pages.yml handles code-push deployments. Both use same concurrency group.",
+      "resolution": "Single publication path via Pages artifact."
+    },
+    {
+      "id": "PREFLIGHT-007",
+      "hypothesis": "Multiple workflows race to deploy",
+      "status": "RESOLVED",
+      "evidence": "All production workflows (deploy-pages, daily-refresh, _refresh-build-deploy, freshness-watchdog) use concurrency group: enso-production-publication. cancel-in-progress: false ensures no race.",
+      "resolution": "Unified concurrency group prevents races."
+    },
+    {
+      "id": "PREFLIGHT-008",
+      "hypothesis": "RONI computed through incompatible rolling mean",
+      "status": "RESOLVED_CRITICAL",
+      "evidence": "Previous code computed RONI as compute_3mo_mean(cpc_n34) — a naive 3-month rolling mean of Niño 3.4. This is scientifically WRONG. RONI uses ERSST with relative tropical-mean adjustment. Now fetches official RONI.ascii.txt directly (seasonal DJF/JFM/... format). Latest: MJJ 2026 = 0.98 (was incorrectly 1.04).",
+      "resolution": "RONI from official RONI.ascii.txt. ICEN remains correctly computed as 3-month rolling mean of Niño 1+2 (ENFEN methodology)."
+    },
+    {
+      "id": "PREFLIGHT-009",
+      "hypothesis": "Official classifications hardcoded",
+      "status": "RESOLVED",
+      "evidence": "NOAA ENSO Advisory scraped live from ensodisc.shtml: 'El Niño Advisory' (9 July 2026). ENFEN status from Cloudflare fallback (config/enfen-status.json) with clear source labeling.",
+      "resolution": "NOAA official status scraped live; ENFEN uses labeled fallback."
+    },
+    {
+      "id": "PREFLIGHT-010",
+      "hypothesis": "Artifact upload treated as proof of data update",
+      "status": "RESOLVED",
+      "evidence": "_refresh-build-deploy.yml includes validation step that checks: status.json has publicationId, dataSource=LIVE_OBSERVED, roniSource field present, health.json has retrievalEvidence for all sources. Deploy only proceeds if validation passes.",
+      "resolution": "Publication coherence validated before deploy."
+    }
+  ],
+  "summary": "10/10 preflight findings resolved or contained. PREFLIGHT-008 was CRITICAL (RONI methodology error) — now fixed with official product."
+}
