@@ -582,3 +582,61 @@ Stage Summary:
 - Sin secretos, sin valores hardcodeados
 - Dos rondas de validación quietas
 - Veredicto: CONDITIONALLY_READY (mobile overflow residual mínimo, tutorial system pendiente)
+
+---
+Task ID: 19-fix-all-pending
+Agent: orchestrator (main)
+Task: Atacar y corregir todos los issues pendientes: tutorial, mapas interactivos, tablas ordenables, chatbot con input, CSP, overflow móvil.
+
+Work Log:
+- Diagnosticados 8 issues pendientes de la auditoría anterior.
+- IMPLEMENTADO sistema de tutorial interactivo:
+  - 5 pasos con overlay, caja de texto, botones (Siguiente/Atrás/Saltar/Finalizar)
+  - Barra de progreso con porcentaje
+  - Persistencia en localStorage
+  - Botón "Tutorial" en el header
+  - Respeta prefers-reduced-motion
+- IMPLEMENTADO mapa interactivo de anomalía de TSM:
+  - Grid de 54 celdas (9 latitudes × 6 longitudes) sobre el Pacífico ecuatorial
+  - Coloreado divergente ciego al color (rojo cálido, azul frío)
+  - Tooltip al pasar el cursor mostrando lat/lon/valor
+  - Leyenda con barra de gradiente
+  - Síntesis coherente con física de ENSO a partir de índices regionales
+- IMPLEMENTADAS tablas ordenables y filtrables:
+  - Encabezados clicables con indicador de orden (▲/▼)
+  - Campo de filtro en tiempo real
+  - Aplicado a la tabla de datos (24 archivos)
+- IMPLEMENTADO chatbot con campo de entrada:
+  - 6 botones de preguntas frecuentes
+  - Campo de texto libre con soporte Enter
+  - Respuestas con formato HTML y citas de evidencia [EVID-...]
+  - Corrige «SOI costero» correctamente
+  - Responde sobre: estado actual, ICEN, SOI, RONI, D20, diferencia costero/cuenca
+- AÑADIDO CSP meta tag (Content-Security-Policy)
+- CORREGIDO overflow móvil con max-width:100% en charts y tables
+- CORREGIDO error de sintaxis JS (comillas sin escapar en renderChatbot)
+- Validación en vivo (https://pillb.github.io/observatorio-enso-peru/):
+  - ✅ 14/14 vistas cargan correctamente
+  - ✅ Tutorial: 5 pasos, overlay visible, barra de progreso
+  - ✅ Mapa: 54 celdas con tooltip
+  - ✅ Tabla: 2 headers ordenables, filtro funcional
+  - ✅ Chatbot: input + 6 botones + respuesta con evidencia
+  - ✅ CSP meta tag presente
+  - ✅ Datos consistentes (ICEN 1.77, RONI 1.39)
+  - ✅ Sin emojis (14 iconos SVG bespoke)
+  - ✅ 7 archivos de datos requeridos HTTP 200
+  - ✅ 408 tests passed, 3 skipped
+- Commit: d56ec00. Desplegado a GitHub Pages exitosamente.
+
+Stage Summary:
+- Todos los issues pendientes corregidos:
+  1. ✅ Tutorial system (5 pasos interactivos)
+  2. ✅ Mapa interactivo (54 celdas con tooltip)
+  3. ✅ Tablas ordenables y filtrables
+  4. ✅ Chatbot con campo de entrada y citas de evidencia
+  5. ✅ CSP meta tag
+  6. ✅ Mobile overflow mejorado
+  7. ✅ SVGs accesibles (role/aria where needed)
+  8. ✅ Chatbot case mismatch corregido
+- GitHub Pages: https://pillb.github.io/observatorio-enso-peru/ — LIVE con todas las correcciones
+- 408 tests passed, 3 skipped. Lint limpio.
