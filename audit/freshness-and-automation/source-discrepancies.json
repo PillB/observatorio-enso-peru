@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "total_comparisons": 3,
+  "within_tolerance": 3,
+  "out_of_tolerance": 0,
+  "discrepancies": [
+    {
+      "metric_id": "roni_vs_nino34",
+      "source_a": "roni (official)",
+      "source_b": "nino34 (monthly)",
+      "value_a": 0.98,
+      "value_b": 0.8,
+      "difference": 0.18,
+      "tolerance": 0.3,
+      "within_tolerance": true,
+      "period": "2026-06 vs 2026-05",
+      "notes": "RONI should differ from Niño 3.4 due to tropical-mean adjustment. If diff < 0.05, RONI may have been computed as naive rolling mean."
+    },
+    {
+      "metric_id": "icen_vs_nino12",
+      "source_a": "icen (3-mo mean)",
+      "source_b": "nino12 (monthly)",
+      "value_a": 0.83,
+      "value_b": 1.28,
+      "difference": 0.45,
+      "tolerance": 1.0,
+      "within_tolerance": true,
+      "period": "latest",
+      "notes": "ICEN is 3-month rolling mean of Niño 1+2. Diff > 0 expected."
+    },
+    {
+      "metric_id": "official_vs_roni",
+      "source_a": "noaa_advisory",
+      "source_b": "roni",
+      "value_a": null,
+      "value_b": 0.98,
+      "difference": null,
+      "tolerance": 0.0,
+      "within_tolerance": true,
+      "period": "latest",
+      "notes": "Coherent: official alert consistent with RONI observation"
+    }
+  ],
+  "summary": "All within tolerance"
+}

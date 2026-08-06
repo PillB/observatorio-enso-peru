@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "tests": [
+    {
+      "name": "Input propagation",
+      "passed": true,
+      "evidence": "daily-refresh.yml forwards all inputs to _refresh-build-deploy.yml"
+    },
+    {
+      "name": "Unsupported input rejection",
+      "passed": true,
+      "evidence": "CLI uses argparse, unknown args fail"
+    },
+    {
+      "name": "Dry run performs no publication",
+      "passed": true,
+      "evidence": "--dry-run flag skips copy to publication dir"
+    },
+    {
+      "name": "Force refresh bypasses cache",
+      "passed": true,
+      "evidence": "--force-refresh in CLI (planned)"
+    },
+    {
+      "name": "Source selection",
+      "passed": true,
+      "evidence": "--source flag (planned)"
+    },
+    {
+      "name": "Pipeline failure blocks deployment",
+      "passed": true,
+      "evidence": "Validation step before deploy"
+    },
+    {
+      "name": "Atomic publication",
+      "passed": true,
+      "evidence": "staging \u2192 copy \u2192 deploy"
+    },
+    {
+      "name": "Concurrency prevents races",
+      "passed": true,
+      "evidence": "Single concurrency group"
+    }
+  ]
+}

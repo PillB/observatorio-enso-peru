@@ -1,0 +1,104 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "cadences": {
+    "noaa-cpc-wksst": {
+      "temporal_resolution": "weekly",
+      "expected_cadence": "weekly",
+      "expected_release_window": "Lunes (actualización semanal)",
+      "typical_lag": "3-7 days",
+      "freshness_slo": "14 days",
+      "stale_after": "21 days",
+      "revision_window": "1-2 weeks"
+    },
+    "noaa-psl-nino12": {
+      "temporal_resolution": "monthly",
+      "expected_cadence": "monthly",
+      "expected_release_window": "Primera semana del mes siguiente",
+      "typical_lag": "3-10 days",
+      "freshness_slo": "45 days",
+      "stale_after": "60 days",
+      "revision_window": "1-3 months"
+    },
+    "noaa-psl-nino34": {
+      "temporal_resolution": "monthly",
+      "expected_cadence": "monthly",
+      "expected_release_window": "Primera semana del mes siguiente",
+      "typical_lag": "3-10 days",
+      "freshness_slo": "45 days",
+      "stale_after": "60 days",
+      "revision_window": "1-3 months"
+    },
+    "noaa-cpc-roni": {
+      "temporal_resolution": "seasonal (overlapping 3-month: DJF, JFM, ...)",
+      "expected_cadence": "monthly (with 3-month overlap)",
+      "expected_release_window": "Primera quincena del mes siguiente",
+      "typical_lag": "5-15 days",
+      "freshness_slo": "60 days",
+      "stale_after": "75 days",
+      "revision_window": "1-3 months"
+    },
+    "noaa-cpc-soi": {
+      "temporal_resolution": "monthly",
+      "expected_cadence": "monthly",
+      "expected_release_window": "Primera semana del mes siguiente",
+      "typical_lag": "3-7 days",
+      "freshness_slo": "45 days",
+      "stale_after": "60 days",
+      "revision_window": "1-3 months"
+    },
+    "noaa-cpc-wpac850": {
+      "temporal_resolution": "monthly",
+      "expected_cadence": "monthly",
+      "expected_release_window": "Primera semana del mes siguiente",
+      "typical_lag": "3-7 days",
+      "freshness_slo": "45 days",
+      "stale_after": "60 days",
+      "revision_window": "1-3 months"
+    },
+    "noaa-cpc-cpac850": {
+      "temporal_resolution": "monthly",
+      "expected_cadence": "monthly",
+      "expected_release_window": "Primera semana del mes siguiente",
+      "typical_lag": "3-7 days",
+      "freshness_slo": "45 days",
+      "stale_after": "60 days",
+      "revision_window": "1-3 months"
+    },
+    "noaa-cpc-epac850": {
+      "temporal_resolution": "monthly",
+      "expected_cadence": "monthly",
+      "expected_release_window": "Primera semana del mes siguiente",
+      "typical_lag": "3-7 days",
+      "freshness_slo": "45 days",
+      "stale_after": "60 days",
+      "revision_window": "1-3 months"
+    },
+    "noaa-cpc-godas-d20": {
+      "temporal_resolution": "monthly",
+      "expected_cadence": "monthly",
+      "expected_release_window": "Mediados del mes siguiente",
+      "typical_lag": "10-20 days",
+      "freshness_slo": "60 days",
+      "stale_after": "75 days",
+      "revision_window": "1-3 months"
+    },
+    "noaa-cpc-enso-advisory": {
+      "temporal_resolution": "monthly (second Thursday of each month)",
+      "expected_cadence": "monthly",
+      "expected_release_window": "Segundo jueves de cada mes",
+      "typical_lag": "0-1 day after publication",
+      "freshness_slo": "45 days",
+      "stale_after": "60 days",
+      "revision_window": "N/A (superseded by next discussion)"
+    },
+    "enfen-imarpe-status": {
+      "temporal_resolution": "event-driven",
+      "expected_cadence": "event-driven",
+      "expected_release_window": "Tras reunión del comité ENFEN",
+      "typical_lag": "Variable",
+      "freshness_slo": "90 days",
+      "stale_after": "120 days",
+      "revision_window": "N/A (superseded by next comunicado)"
+    }
+  }
+}

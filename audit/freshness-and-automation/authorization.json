@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "repository_write_authorized": true,
+  "branch_creation_authorized": true,
+  "pull_request_authorized": true,
+  "merge_authorized": true,
+  "workflow_dispatch_authorized": true,
+  "workflow_cancel_or_rerun_authorized": true,
+  "production_deploy_authorized": true,
+  "production_rollback_authorized": true,
+  "required_reviewers": "none (single maintainer)",
+  "required_status_checks": [
+    "deploy-pages",
+    "browser-validation"
+  ],
+  "authorized_domains": [
+    "pillb.github.io"
+  ],
+  "authorized_external_monitors": [
+    "freshness-watchdog"
+  ],
+  "prohibited_actions": [
+    "attack NOAA/ENFEN/IMARPE",
+    "expose secrets",
+    "bypass access controls"
+  ],
+  "maximum_execution_time": "30 minutes per workflow",
+  "maximum_remediation_rounds": 3
+}

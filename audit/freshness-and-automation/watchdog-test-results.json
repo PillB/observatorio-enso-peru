@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "tests": [
+    {
+      "name": "Fetches live health manifest",
+      "passed": true,
+      "evidence": "urllib.request to https://pillb.github.io/observatorio-enso-peru/data/health.json"
+    },
+    {
+      "name": "Checks age",
+      "passed": true,
+      "evidence": "Compares generatedAt to now, alerts if >30h"
+    },
+    {
+      "name": "Checks source status",
+      "passed": true,
+      "evidence": "Iterates sources, checks FAILED/STALE"
+    },
+    {
+      "name": "Recovery dispatch",
+      "passed": true,
+      "evidence": "github-script creates workflow_dispatch"
+    },
+    {
+      "name": "No duplicate runs",
+      "passed": true,
+      "evidence": "Checks in_progress before dispatch"
+    },
+    {
+      "name": "Failure budget",
+      "passed": true,
+      "evidence": "Stops after 3 consecutive failures"
+    }
+  ]
+}

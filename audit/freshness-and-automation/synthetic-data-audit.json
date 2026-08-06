@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "production_path_scanned": [
+    "public/data/",
+    "public/index.html"
+  ],
+  "synthetic_data_found": false,
+  "details": "No synthetic data in production path. src/lib/enso/series.ts contains gaussian/hash01 generators but is NOT deployed (public/index.html is canonical). All public/data/*.csv contain real observed data.",
+  "synthetic_code_locations": [
+    "src/lib/enso/series.ts (NOT deployed, Next.js reference only)"
+  ],
+  "containment_status": "CLEAN"
+}

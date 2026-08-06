@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "documents": [
+    {
+      "source_id": "noaa-cpc-enso-advisory",
+      "type": "HTML",
+      "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml",
+      "extraction_method": "HTML parse (semantic + regex)",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "enfen-imarpe-status",
+      "type": "HTML",
+      "url": "https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen",
+      "extraction_method": "Fallback manual (Cloudflare)",
+      "confidence": "MEDIUM"
+    }
+  ]
+}

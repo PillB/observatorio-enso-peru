@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "remediations": [
+    {
+      "id": "PREFLIGHT-008",
+      "severity": "CRITICAL",
+      "description": "RONI computed as naive rolling mean",
+      "fix": "Use official RONI.ascii.txt",
+      "commit": "2e5a685",
+      "resolved": true
+    },
+    {
+      "id": "PREFLIGHT-002",
+      "severity": "HIGH",
+      "description": "Python out/ not reaching public/data/",
+      "fix": "Unified acquisition with single path",
+      "commit": "2e5a685",
+      "resolved": true
+    },
+    {
+      "id": "PREFLIGHT-005",
+      "severity": "HIGH",
+      "description": "Health manufactured from static files",
+      "fix": "Health from retrieval ledger",
+      "commit": "2e5a685",
+      "resolved": true
+    },
+    {
+      "id": "PREFLIGHT-006",
+      "severity": "HIGH",
+      "description": "Multiple publication paths",
+      "fix": "Single _refresh-build-deploy workflow",
+      "commit": "2e5a685",
+      "resolved": true
+    },
+    {
+      "id": "PREFLIGHT-007",
+      "severity": "HIGH",
+      "description": "Workflow races",
+      "fix": "Unified concurrency group",
+      "commit": "2e5a685",
+      "resolved": true
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "browser": "Chromium headless",
+  "viewport": "1280x900",
+  "results": {
+    "title": "Observatorio ENSO Perú — Monitoreo costero y de cuenca",
+    "tutorialModules": 13,
+    "icen": 0.83,
+    "roni": 0.98,
+    "d20": 6.972,
+    "u850": 0.2,
+    "overflow": 0,
+    "consoleErrors": 0,
+    "allViewsOK": true
+  }
+}

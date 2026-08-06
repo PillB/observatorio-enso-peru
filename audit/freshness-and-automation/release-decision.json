@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "verdict": "READY_FOR_CLIENT_ACCEPTANCE",
+  "criteria": {
+    "no_synthetic_current_data": true,
+    "real_source_evidence": true,
+    "daily_orchestration": true,
+    "no_suppressed_failures": true,
+    "no_mixed_publication": true,
+    "scientifically_compatible_fallbacks": true,
+    "accurate_freshness": true,
+    "correct_deployment": true,
+    "no_open_critical_defect": true,
+    "two_consecutive_quiet_rounds": true
+  }
+}

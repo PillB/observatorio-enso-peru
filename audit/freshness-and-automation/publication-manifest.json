@@ -1,0 +1,79 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "publicationId": "d5f15625f54d",
+  "pipelineVersion": "3.0.0",
+  "files": [
+    "cpac850.csv",
+    "d20.csv",
+    "epac850.csv",
+    "health.json",
+    "icen.csv",
+    "manifest.json",
+    "nino12.csv",
+    "nino34.csv",
+    "roni.csv",
+    "soi.csv",
+    "status.json",
+    "u850.csv",
+    "weekly-sst.json",
+    "wpac850.csv"
+  ],
+  "indicators": [
+    {
+      "id": "nino12",
+      "label": "Niño 1+2",
+      "scope": "coastal",
+      "units": "degC",
+      "file": "nino12.csv",
+      "checksum": "fnv1a:4e55d997"
+    },
+    {
+      "id": "nino34",
+      "label": "Niño 3.4",
+      "scope": "basin",
+      "units": "degC",
+      "file": "nino34.csv",
+      "checksum": "fnv1a:892bfb8f"
+    },
+    {
+      "id": "icen",
+      "label": "ICEN",
+      "scope": "coastal",
+      "units": "degC",
+      "file": "icen.csv",
+      "checksum": "fnv1a:7e028f08"
+    },
+    {
+      "id": "roni",
+      "label": "RONI",
+      "scope": "basin",
+      "units": "degC",
+      "file": "roni.csv",
+      "checksum": "fnv1a:e3da5c30"
+    },
+    {
+      "id": "soi",
+      "label": "SOI",
+      "scope": "basin",
+      "units": "dimensionless",
+      "file": "soi.csv",
+      "checksum": "fnv1a:e6bcdb2c"
+    },
+    {
+      "id": "d20",
+      "label": "D20",
+      "scope": "basin",
+      "units": "m",
+      "file": "d20.csv",
+      "checksum": "fnv1a:ef2aedf5"
+    },
+    {
+      "id": "u850",
+      "label": "u850 (cpac850)",
+      "scope": "basin",
+      "units": "m/s",
+      "file": "u850.csv",
+      "checksum": "fnv1a:dda19521"
+    }
+  ]
+}

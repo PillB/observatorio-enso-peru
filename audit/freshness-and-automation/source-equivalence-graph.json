@@ -1,0 +1,267 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "graphs": {
+    "roni": {
+      "metric_id": "roni",
+      "nodes": [
+        {
+          "level": "PRIMARY",
+          "source_id": "noaa-cpc-roni",
+          "description": "RONI oficial (RONI.ascii.txt, seasonal)",
+          "scientific_notes": "Producto oficial NOAA/CPC con ajuste de media tropical relativa. NO es rolling mean de Niño 3.4."
+        },
+        {
+          "level": "LAST_VALID",
+          "source_id": "noaa-cpc-roni",
+          "description": "Último RONI oficial válido en caché",
+          "scientific_notes": "Preservado con fecha original. Marcado STALE si excede SLO."
+        },
+        {
+          "level": "UNAVAILABLE",
+          "source_id": "",
+          "description": "RONI no disponible",
+          "scientific_notes": "Mostrar 'Dato actual no disponible'. NO sustituir con Niño 3.4 rolling mean."
+        }
+      ],
+      "prohibited_substitutions": [
+        "Niño 3.4 rolling mean NO sustituye RONI",
+        "ONI NO sustituye RONI (baseline diferente)"
+      ]
+    },
+    "icen": {
+      "metric_id": "icen",
+      "nodes": [
+        {
+          "level": "PRIMARY",
+          "source_id": "enfen-imarpe-icen",
+          "description": "ICEN oficial de ENFEN/IMARPE",
+          "scientific_notes": "Media móvil de 3 meses de anomalías de TSM en Niño 1+2. Metodología ENFEN."
+        },
+        {
+          "level": "EQUIVALENT",
+          "source_id": "noaa-psl-nino12",
+          "description": "ICEN calculado desde Niño 1+2 de PSL (misma metodología)",
+          "scientific_notes": "Aplica la misma fórmula: 3-month rolling mean de Niño 1+2. Científicamente equivalente."
+        },
+        {
+          "level": "LAST_VALID",
+          "source_id": "enfen-imarpe-icen",
+          "description": "Último ICEN válido en caché",
+          "scientific_notes": "Preservado con fecha. Marcado STALE si excede SLO."
+        },
+        {
+          "level": "UNAVAILABLE",
+          "source_id": "",
+          "description": "ICEN no disponible",
+          "scientific_notes": "Mostrar 'Dato actual no disponible'. NO sustituir con weekly Niño 1+2."
+        }
+      ],
+      "prohibited_substitutions": [
+        "Weekly Niño 1+2 NO sustituye ICEN (cadencia incompatible)",
+        "Niño 3.4 NO sustituye ICEN (región diferente)"
+      ]
+    },
+    "nino12": {
+      "metric_id": "nino12",
+      "nodes": [
+        {
+          "level": "PRIMARY",
+          "source_id": "noaa-psl-nino12",
+          "description": "Niño 1+2 mensual (PSL CSV)",
+          "scientific_notes": "Anomalía mensual de TSM en región Niño 1+2 (90°W-80°W, 10°S-0°)."
+        },
+        {
+          "level": "LOWER_CADENCE",
+          "source_id": "noaa-cpc-wksst",
+          "description": "Niño 1+2 semanal (wksst8110.for)",
+          "scientific_notes": "Cadencia semanal, no sustituye mensual directamente pero complementa."
+        },
+        {
+          "level": "LAST_VALID",
+          "source_id": "noaa-psl-nino12",
+          "description": "Último Niño 1+2 válido en caché",
+          "scientific_notes": "Preservado con fecha."
+        },
+        {
+          "level": "UNAVAILABLE",
+          "source_id": "",
+          "description": "Niño 1+2 no disponible",
+          "scientific_notes": "Mostrar 'Dato actual no disponible'."
+        }
+      ],
+      "prohibited_substitutions": []
+    },
+    "nino34": {
+      "metric_id": "nino34",
+      "nodes": [
+        {
+          "level": "PRIMARY",
+          "source_id": "noaa-psl-nino34",
+          "description": "Niño 3.4 mensual (PSL CSV)",
+          "scientific_notes": "Anomalía mensual de TSM en región Niño 3.4 (170°W-120°W, 5°S-5°N)."
+        },
+        {
+          "level": "LOWER_CADENCE",
+          "source_id": "noaa-cpc-wksst",
+          "description": "Niño 3.4 semanal (wksst8110.for)",
+          "scientific_notes": "Cadencia semanal, complementa el mensual."
+        },
+        {
+          "level": "LAST_VALID",
+          "source_id": "noaa-psl-nino34",
+          "description": "Último Niño 3.4 válido en caché",
+          "scientific_notes": "Preservado con fecha."
+        },
+        {
+          "level": "UNAVAILABLE",
+          "source_id": "",
+          "description": "Niño 3.4 no disponible",
+          "scientific_notes": "Mostrar 'Dato actual no disponible'."
+        }
+      ],
+      "prohibited_substitutions": []
+    },
+    "soi": {
+      "metric_id": "soi",
+      "nodes": [
+        {
+          "level": "PRIMARY",
+          "source_id": "noaa-cpc-soi",
+          "description": "SOI mensual (CPC, Tahiti-Darwin standardized)",
+          "scientific_notes": "Índice de escala de cuenca. NO existe 'SOI costero'."
+        },
+        {
+          "level": "LAST_VALID",
+          "source_id": "noaa-cpc-soi",
+          "description": "Último SOI válido en caché",
+          "scientific_notes": "Preservado con fecha."
+        },
+        {
+          "level": "UNAVAILABLE",
+          "source_id": "",
+          "description": "SOI no disponible",
+          "scientific_notes": "Mostrar 'Dato actual no disponible'. NO definir 'SOI costero'."
+        }
+      ],
+      "prohibited_substitutions": [
+        "NO existe 'SOI costero' — no definir proxy de presión costera"
+      ]
+    },
+    "u850": {
+      "metric_id": "u850",
+      "nodes": [
+        {
+          "level": "PRIMARY",
+          "source_id": "noaa-cpc-cpac850",
+          "description": "850 hPa trade wind index — Central Pacific (CPC)",
+          "scientific_notes": "Viento real (no anomalía). Región: 175°W-140°W, 5°S-5°N. Nivel: 850 hPa."
+        },
+        {
+          "level": "EQUIVALENT",
+          "source_id": "noaa-cpc-wpac850",
+          "description": "850 hPa trade wind index — Western Pacific (CPC)",
+          "scientific_notes": "Viento real. Región: 135°E-180°W. Nivel: 850 hPa. Equivalente pero región diferente."
+        },
+        {
+          "level": "LAST_VALID",
+          "source_id": "noaa-cpc-cpac850",
+          "description": "Último cpac850 válido en caché",
+          "scientific_notes": "Preservado con fecha."
+        },
+        {
+          "level": "UNAVAILABLE",
+          "source_id": "",
+          "description": "Viento 850 hPa no disponible",
+          "scientific_notes": "Mostrar 'Dato actual no disponible'. NO sustituir con viento superficial."
+        }
+      ],
+      "prohibited_substitutions": [
+        "Viento superficial NO sustituye viento 850 hPa (nivel diferente)",
+        "Anomalía NO sustituye viento real (tipo diferente)",
+        "Viento de otra región NO sustituye cpac850 sin etiquetar claramente"
+      ]
+    },
+    "d20": {
+      "metric_id": "d20",
+      "nodes": [
+        {
+          "level": "PRIMARY",
+          "source_id": "noaa-cpc-godas-d20",
+          "description": "D20 anomaly (GODAS dbss_obil) — Niño 3.4 area average",
+          "scientific_notes": "Profundidad de isoterma de 20°C. Promedio areal sobre Niño 3.4. Anomalía vs 1991-2020."
+        },
+        {
+          "level": "LAST_VALID",
+          "source_id": "noaa-cpc-godas-d20",
+          "description": "Último D20 válido en caché",
+          "scientific_notes": "Preservado con fecha."
+        },
+        {
+          "level": "UNAVAILABLE",
+          "source_id": "",
+          "description": "D20 no disponible",
+          "scientific_notes": "Mostrar 'Dato actual no disponible'. NO sustituir con D20 puntual."
+        }
+      ],
+      "prohibited_substitutions": [
+        "D20 puntual NO sustituye promedio de cuenca (agregación diferente)",
+        "No inferir D20 de colores de gráfico"
+      ]
+    },
+    "basin_official_status": {
+      "metric_id": "basin_official_status",
+      "nodes": [
+        {
+          "level": "PRIMARY",
+          "source_id": "noaa-cpc-enso-advisory",
+          "description": "NOAA/CPC ENSO Alert System Status (official)",
+          "scientific_notes": "Texto oficial: El Niño Advisory / La Niña Advisory / ENSO-Neutral / Watch. NO inferir de observaciones."
+        },
+        {
+          "level": "LAST_VALID",
+          "source_id": "noaa-cpc-enso-advisory",
+          "description": "Último advisory oficial en caché",
+          "scientific_notes": "Preservado con fecha de publicación."
+        },
+        {
+          "level": "UNAVAILABLE",
+          "source_id": "",
+          "description": "Estado oficial de cuenca no disponible",
+          "scientific_notes": "Mostrar 'Consulte NOAA/CPC'. NO inferir alerta de observaciones rápidas."
+        }
+      ],
+      "prohibited_substitutions": [
+        "Señal operativa del equipo GRD NO sustituye clasificación oficial",
+        "RONI > 0.5 NO implica 'El Niño Advisory' automáticamente",
+        "Observación rápida NO sustituye comunicado oficial"
+      ]
+    },
+    "coastal_official_status": {
+      "metric_id": "coastal_official_status",
+      "nodes": [
+        {
+          "level": "PRIMARY",
+          "source_id": "enfen-imarpe-status",
+          "description": "ENFEN/IMARPE estado oficial El Niño Costero",
+          "scientific_notes": "Texto oficial: Alerta / Vigilancia / Normal. Event-driven."
+        },
+        {
+          "level": "LAST_VALID",
+          "source_id": "enfen-imarpe-status",
+          "description": "Último estado ENFEN válido (fallback manual)",
+          "scientific_notes": "config/enfen-status.json. Cloudflare bloquea automatización. Etiquetar source=fallback."
+        },
+        {
+          "level": "UNAVAILABLE",
+          "source_id": "",
+          "description": "Estado oficial costero no disponible",
+          "scientific_notes": "Mostrar 'Consulte ENFEN'. NO inferir de ICEN."
+        }
+      ],
+      "prohibited_substitutions": [
+        "ICEN NO sustituye clasificación oficial ENFEN",
+        "Niño 1+2 alto NO implica 'Alerta de El Niño Costero' automáticamente"
+      ]
+    }
+  }
+}

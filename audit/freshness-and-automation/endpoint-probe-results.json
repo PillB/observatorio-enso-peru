@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "probes": [
+    {
+      "source_id": "noaa-cpc-wksst",
+      "url": "https://www.cpc.ncep.noaa.gov/data/indices/wksst8110.for",
+      "status": "OK",
+      "http_status": 200,
+      "points": 3244
+    },
+    {
+      "source_id": "noaa-psl-nino12",
+      "url": "https://psl.noaa.gov/data/timeseries/month/data/nino12.long.anom.csv",
+      "status": "OK",
+      "http_status": 200,
+      "points": 1884
+    },
+    {
+      "source_id": "noaa-psl-nino34",
+      "url": "https://psl.noaa.gov/data/timeseries/month/data/nino34.long.anom.csv",
+      "status": "OK",
+      "http_status": 200,
+      "points": 1884
+    },
+    {
+      "source_id": "noaa-cpc-roni",
+      "url": "https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt",
+      "status": "OK",
+      "http_status": 200,
+      "points": 918
+    },
+    {
+      "source_id": "noaa-cpc-soi",
+      "url": "https://www.cpc.ncep.noaa.gov/data/indices/soi",
+      "status": "OK",
+      "http_status": 200,
+      "points": 1800
+    },
+    {
+      "source_id": "noaa-cpc-wpac850",
+      "url": "https://www.cpc.ncep.noaa.gov/data/indices/wpac850",
+      "status": "OK",
+      "http_status": 200,
+      "points": 1692
+    },
+    {
+      "source_id": "noaa-cpc-cpac850",
+      "url": "https://www.cpc.ncep.noaa.gov/data/indices/cpac850",
+      "status": "OK",
+      "http_status": 200,
+      "points": 1692
+    },
+    {
+      "source_id": "noaa-cpc-epac850",
+      "url": "https://www.cpc.ncep.noaa.gov/data/indices/epac850",
+      "status": "OK",
+      "http_status": 200,
+      "points": 1692
+    },
+    {
+      "source_id": "noaa-cpc-godas-d20",
+      "url": "https://psl.noaa.gov/thredds/dodsC/Datasets/godas/",
+      "status": "OK",
+      "method": "OPeNDAP ASCII",
+      "points": 558
+    },
+    {
+      "source_id": "noaa-cpc-enso-advisory",
+      "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml",
+      "status": "OK",
+      "method": "HTML parse",
+      "alert": "El Niño Advisory"
+    },
+    {
+      "source_id": "enfen-imarpe-status",
+      "url": "https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen",
+      "status": "BLOCKED",
+      "method": "Cloudflare fallback"
+    }
+  ]
+}

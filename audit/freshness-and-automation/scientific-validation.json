@@ -1,0 +1,65 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "validations": [
+    {
+      "test": "RONI is not computed as naive Niño 3.4 rolling mean",
+      "passed": true,
+      "evidence": "RONI from official RONI.ascii.txt, roniSource field documented"
+    },
+    {
+      "test": "ICEN computed as 3-month rolling mean of Niño 1+2",
+      "passed": true,
+      "evidence": "ENFEN methodology, _compute_icen() function"
+    },
+    {
+      "test": "Weekly Niño 1+2 does not substitute ICEN",
+      "passed": true,
+      "evidence": "Fallback graph prohibits this substitution"
+    },
+    {
+      "test": "Niño 3.4 does not substitute RONI",
+      "passed": true,
+      "evidence": "Fallback graph prohibits this substitution"
+    },
+    {
+      "test": "D20 is basin average not point value",
+      "passed": true,
+      "evidence": "GODAS area average over Niño 3.4"
+    },
+    {
+      "test": "Wind is 850 hPa not surface",
+      "passed": true,
+      "evidence": "CPC trade wind index at 850 hPa"
+    },
+    {
+      "test": "Wind is actual not anomaly",
+      "passed": true,
+      "evidence": "CPC indices are original data, not anomalies"
+    },
+    {
+      "test": "SOI is basin-scale, no coastal SOI",
+      "passed": true,
+      "evidence": "Tahiti-Darwin, fallback graph prohibits coastal SOI"
+    },
+    {
+      "test": "Official status not inferred from observations",
+      "passed": true,
+      "evidence": "NOAA advisory scraped from official HTML"
+    },
+    {
+      "test": "D20 sign: positive = deeper (El Niño)",
+      "passed": true,
+      "evidence": "d20_interpretation() function"
+    },
+    {
+      "test": "Wind sign: positive = east (westerly)",
+      "passed": true,
+      "evidence": "u850_direction() function"
+    },
+    {
+      "test": "Coastal vs basin separation",
+      "passed": true,
+      "evidence": "Distinct source profiles and status fields"
+    }
+  ]
+}

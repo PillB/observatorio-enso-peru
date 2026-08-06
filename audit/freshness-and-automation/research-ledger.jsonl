@@ -1,0 +1,7 @@
+{"ts": "2026-08-06T08:53:10.610680+00:00", "source": "RONI.ascii.txt", "finding": "VERIFIED", "detail": "Official seasonal RONI product, 918 seasons, MJJ 2026 = 0.98"}
+{"ts": "2026-08-06T08:53:10.610680+00:00", "source": "wksst8110.for", "finding": "VERIFIED", "detail": "Weekly Ni\u00f1o SST, 3244 points, fixed-width format"}
+{"ts": "2026-08-06T08:53:10.610680+00:00", "source": "cpac850", "finding": "VERIFIED", "detail": "CPC 850 hPa trade wind index, 1692 monthly points"}
+{"ts": "2026-08-06T08:53:10.610680+00:00", "source": "GODAS dbss_obil", "finding": "VERIFIED", "detail": "D20 proxy via OPeNDAP, 558 monthly points"}
+{"ts": "2026-08-06T08:53:10.610680+00:00", "source": "ENFEN SIOFEN", "finding": "RESTRICTED", "detail": "Cloudflare blocks automation, fallback used"}
+{"ts": "2026-08-06T08:53:10.610680+00:00", "source": "ERDDAP OISST daily", "finding": "REJECTED", "detail": "Dataset ID ncdcOisst21Agg not found, using weekly instead"}
+{"ts": "2026-08-06T08:53:10.610680+00:00", "source": "RONI as rolling mean", "finding": "REJECTED", "detail": "Scientifically incorrect \u2014 RONI uses tropical-mean adjustment, not naive 3-mo mean"}

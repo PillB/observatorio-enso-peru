@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-08-06T08:53:10.610680+00:00",
+  "liveUrl": "https://pillb.github.io/observatorio-enso-peru/",
+  "verified": true,
+  "roni": 0.98,
+  "roniSource": "NOAA/CPC RONI.ascii.txt (official, NOT computed)",
+  "icen": 0.83,
+  "d20": 6.972,
+  "u850": 0.2,
+  "publicationId": "d5f15625f54d",
+  "basinAlert": "El Niño Advisory",
+  "coastalAlert": "Alerta de El Niño Costero"
+}
