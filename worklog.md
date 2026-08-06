@@ -863,3 +863,50 @@ Stage Summary:
 - SHA live = SHA merged verificado
 - 408 tests passed, 3 skipped
 - Veredicto: CONDITIONALLY_READY (datos sintéticos contenidos pero no reemplazados con datos reales)
+
+---
+Task ID: 25-fix-all-pending
+Agent: orchestrator (main)
+Task: Corregir todos los issues pendientes: datos reales, tutorial móvil, font self-hosted, SVG roles, null safety.
+
+Work Log:
+- IMPLEMENTADA adquisición real de datos desde NOAA/PSL y NOAA/CPC:
+  - Niño 1+2: 1884 puntos desde psl.noaa.gov (último valor real: 1.28 °C, mayo 2026)
+  - Niño 3.4: 1884 puntos desde psl.noaa.gov (último valor real: 0.8 °C, mayo 2026)
+  - SOI: 1920 puntos desde psl.noaa.gov (último valor real: 0.7, julio 2025)
+  - RONI: 918 puntos desde cpc.ncep.noaa.gov (último valor: 1.04 °C, junio 2026, preliminar)
+  - ICEN: calculado como media móvil de 3 meses de Niño 1+2 (último: 0.83 °C, mayo 2026)
+  - D20 y u850: no disponibles en PSL/CPC, se requiere GODAS/NCEP (vista muestra mensaje honesto)
+  - health.json: generado con evidencia real de adquisición (hashes, timestamps, HTTP 200)
+  - status.json: dataSource="LIVE_OBSERVED", valores reales observados
+
+- CORREGIDO tutorial móvil: botón visible como icono "?" en pantallas <640px
+- CORREGIDO font: eliminada dependencia de Google Fonts, usa system font stack
+- CORREGIDO SVG roles: role="img" y aria-label en logo
+- CORREGIDO null safety: fmtMonth, fmtValue, renderWinds, renderThermocline manejan valores null/undefined
+- ELIMINADAS etiquetas "Demostración" — los datos ahora son observados reales
+- Actualizadas etiquetas de chat: "Guía determinista de datos" (sin "demostración")
+- Mapas: "Síntesis ilustrativa a partir de índices observados de NOAA/PSL"
+
+- Validación live (https://pillb.github.io/observatorio-enso-peru/):
+  - Ronda 1: 14/14 vistas OK, 0 console errors ✅
+  - Ronda 2: 14/14 vistas OK, 0 console errors ✅
+  - Datos reales: ICEN=0.83, Niño 1+2=1.28, RONI=1.04, Niño 3.4=0.8, SOI=0.7
+  - dataSource: LIVE_OBSERVED ✅
+  - Mobile: 0 overflow X en 390px y 320px ✅
+  - Tutorial visible en móvil ✅
+  - SHA live = SHA merged (1666d30) ✅
+  - Dos rondas independientes quietas ✅
+
+- Commit: 1666d30. Desplegado a GitHub Pages exitosamente.
+
+Stage Summary:
+- CRIT-01 (datos sintéticos): ✅ RESUELTO — datos reales de NOAA/PSL/CPC
+- CRIT-02 (health.json sintético): ✅ RESUELTO — generado con evidencia de adquisición
+- HIGH-01 (pipeline sin adquisición): ✅ RESUELTO — acquire-live-data.py adquiere datos reales
+- MAJOR-01 (tutorial móvil): ✅ RESUELTO — botón visible como icono "?"
+- MAJOR-02 (13 módulos tutorial): ⚠️ PARCIAL — 5 pasos implementados (no 13 módulos)
+- MOD-01 (font externa): ✅ RESUELTO — system font stack, sin dependencia externa
+- MIN-01 (SVG roles): ✅ RESUELTO — role="img" en logo
+- 408 tests passed, 3 skipped. Lint limpio.
+- Dos rondas de validación live quietas.
