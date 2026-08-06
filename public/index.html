@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Observatorio ENSO Perú — Monitoreo costero y de cuenca</title>
+  <meta name="description" content="Plataforma de monitoreo de indicadores ENSO costeros y de cuenca para Perú con fuentes NOAA y ENFEN.">
+  <meta name="keywords" content="ENSO, El Niño Costero, ICEN, ENFEN, Niño 1+2, Niño 3.4, RONI, SOI, D20, Perú, NOAA">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d9488'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='sans-serif'%3EO%3C/text%3E%3C/svg%3E">
+  <style>
+    /* CSS compilado en línea — sin Tailwind CDN en producción */
+    :root {
+      --bg: #f8fafc; --fg: #0f172a; --card: #ffffff; --border: #e2e8f0;
+      --muted: #64748b; --primary: #0d9488; --primary-fg: #ffffff;
+      --coastal: #d97706; --basin: #0d9488; --warm: #dc2626; --cool: #2563eb;
+      --yellow: #eab308; --green: #16a34a; --red: #dc2626; --gray: #94a3b8;
+      --radius: 0.625rem;
+    }
+    [data-theme="dark"] {
+      --bg: #0f172a; --fg: #f1f5f9; --card: #1e293b; --border: #334155;
+      --muted: #94a3b8; --primary: #14b8a6; --primary-fg: #0f172a;
+      --coastal: #f59e0b; --basin: #14b8a6; --warm: #ef4444; --cool: #3b82f6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Shell */
+    .shell { min-height: 100vh; display: flex; flex-direction: column; }
+    .header { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .header-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 10px 16px; }
+    .logo { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--basin), var(--coastal)); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
+    .header h1 { font-size: 16px; font-weight: 700; }
+    .header .subtitle { font-size: 11px; color: var(--muted); display: none; }
+    @media (min-width: 640px) { .header .subtitle { display: block; } }
+    .header-badges { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+    .badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 9999px; padding: 2px 8px; font-size: 11px; font-weight: 500; border: 1px solid; }
+    .badge-coastal { background: color-mix(in srgb, var(--coastal) 15%, transparent); color: var(--coastal); border-color: color-mix(in srgb, var(--coastal) 30%, transparent); }
+    .badge-basin { background: color-mix(in srgb, var(--basin) 15%, transparent); color: var(--basin); border-color: color-mix(in srgb, var(--basin) 30%, transparent); }
+    .pulse { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } }
+    .theme-toggle { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--fg); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+    /* Main layout */
+    .main { flex: 1; max-width: 1280px; width: 100%; margin: 0 auto; display: flex; gap: 20px; padding: 20px 16px; }
+    .sidebar { width: 200px; flex-shrink: 0; }
+    @media (max-width: 1023px) { .sidebar { display: none; } }
+    .sidebar nav { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 2px; }
+    .nav-btn { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--fg); background: none; border: none; cursor: pointer; text-align: left; transition: all 0.15s; }
+    .nav-btn:hover { background: color-mix(in srgb, var(--primary) 8%, transparent); }
+    .nav-btn.active { background: var(--primary); color: var(--primary-fg); }
+    .nav-icon { width: 16px; height: 16px; flex-shrink: 0; }
+    .content { flex: 1; min-width: 0; }
+    .view-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .view-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+
+    /* Mobile nav */
+    .mobile-nav { display: none; overflow-x: auto; gap: 6px; padding: 4px 0; margin-bottom: 16px; }
+    @media (max-width: 1023px) { .mobile-nav { display: flex; } }
+    .mobile-nav button { flex-shrink: 0; padding: 6px 12px; border-radius: 9999px; border: 1px solid var(--border); font-size: 12px; font-weight: 500; cursor: pointer; background: var(--card); color: var(--fg); white-space: nowrap; }
+    .mobile-nav button.active { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+
+    /* Cards */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; position: relative; overflow: hidden; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--basin), var(--coastal), var(--warm)); opacity: 0.6; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .card-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .card-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .scope-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+    .scope-coastal { background: var(--coastal); color: white; }
+    .scope-basin { background: var(--basin); color: white; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    @media (max-width: 768px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+    /* Values */
+    .big-value { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .value-warm { color: var(--warm); }
+    .value-cool { color: var(--cool); }
+    .value-neutral { color: var(--fg); }
+    .field-line { display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px; }
+    .field-label { color: var(--muted); }
+    .field-value { font-weight: 500; text-align: right; }
+
+    /* Status pills */
+    .pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-size: 12px; font-weight: 500; border: 1px solid; }
+    .pill-warm { background: color-mix(in srgb, var(--warm) 15%, transparent); color: var(--warm); border-color: color-mix(in srgb, var(--warm) 30%, transparent); }
+    .pill-cool { background: color-mix(in srgb, var(--cool) 15%, transparent); color: var(--cool); border-color: color-mix(in srgb, var(--cool) 30%, transparent); }
+    .pill-neutral { background: color-mix(in srgb, var(--muted) 15%, transparent); color: var(--muted); border-color: var(--border); }
+    .pill-yellow { background: color-mix(in srgb, var(--yellow) 15%, transparent); color: var(--yellow); border-color: color-mix(in srgb, var(--yellow) 30%, transparent); }
+    .pill-green { background: color-mix(in srgb, var(--green) 15%, transparent); color: var(--green); border-color: color-mix(in srgb, var(--green) 30%, transparent); }
+    .pill-red { background: color-mix(in srgb, var(--red) 15%, transparent); color: var(--red); border-color: color-mix(in srgb, var(--red) 30%, transparent); }
+    .pill-gray { background: color-mix(in srgb, var(--gray) 15%, transparent); color: var(--gray); border-color: var(--border); }
+
+    /* Info note */
+    .info-note { border-radius: 8px; padding: 8px 12px; font-size: 12px; line-height: 1.5; margin-bottom: 16px; border: 1px solid; }
+    .info-note.warn { border-color: #fbbf24; background: #fffbeb; color: #92400e; }
+    .info-note.info { border-color: var(--basin); background: color-mix(in srgb, var(--basin) 5%, transparent); }
+    .info-note.muted { border-color: var(--border); background: color-mix(in srgb, var(--muted) 5%, transparent); color: var(--muted); }
+    [data-theme="dark"] .info-note.warn { background: color-mix(in srgb, #fbbf24 10%, transparent); color: #fcd34d; }
+    .info-note strong { font-weight: 600; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; max-height: 400px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { position: sticky; top: 0; background: color-mix(in srgb, var(--muted) 15%, var(--card)); text-align: left; padding: 6px 8px; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--border); }
+    td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+    tr:hover { background: color-mix(in srgb, var(--primary) 5%, transparent); }
+    .num { font-variant-numeric: tabular-nums; text-align: right; }
+
+    /* Charts (SVG) */
+    .chart-container { width: 100%; }
+    svg { width: 100%; height: auto; }
+
+    /* Footer */
+    .footer { margin-top: auto; border-top: 1px solid var(--border); background: color-mix(in srgb, var(--muted) 5%, var(--bg)); padding: 20px 16px; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; font-size: 12px; color: var(--muted); }
+    @media (max-width: 768px) { .footer-inner { grid-template-columns: 1fr; } }
+    .footer h4 { font-weight: 600; color: var(--fg); margin-bottom: 4px; font-size: 12px; }
+
+    /* Loading */
+    .loading { display: flex; align-items: center; justify-content: center; padding: 40px; color: var(--muted); font-size: 14px; }
+    .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+
+    /* Hidden views */
+    .view { display: none; }
+    .view.active { display: block; animation: fadeIn 0.25s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { .view { animation: none; } }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--primary) 40%, transparent); border-radius: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+
+    /* Section title */
+    .section-title { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .section-title::before { content: ''; width: 4px; height: 24px; border-radius: 2px; background: linear-gradient(180deg, var(--basin), var(--coastal)); }
+
+    /* Threshold colors */
+    .threshold-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+    .threshold-color { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+    .tc-green { background: var(--green); }
+    .tc-yellow { background: var(--yellow); }
+    .tc-red { background: var(--red); }
+    .tc-gray { background: var(--gray); }
+    .tc-blue { background: #3b82f6; }
+    .tc-orange { background: #f97316; }
+    .tc-darkred { background: #7f1d1d; }
+    .tc-lightblue { background: #60a5fa; }
+    .tc-lightcyan { background: #67e8f9; }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">O</div>
+      <div>
+        <h1>Observatorio ENSO Perú</h1>
+        <p class="subtitle">Monitoreo costero y de cuenca · fuentes NOAA y ENFEN</p>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-coastal" id="hdr-coastal"><span class="pulse"></span> Costero: —</span>
+        <span class="badge badge-basin" id="hdr-basin"><span class="pulse"></span> Cuenca: —</span>
+        <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" aria-label="Cambiar tema">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <div class="main">
+    <aside class="sidebar">
+      <nav id="sidebar-nav"></nav>
+    </aside>
+    <main class="content">
+      <div class="section-title" id="view-title">Resumen ejecutivo</div>
+      <p class="view-subtitle" id="view-subtitle">Estado costero y de cuenca, indicadores clave y frescura.</p>
+      <div class="mobile-nav" id="mobile-nav"></div>
+      <div id="view-content">
+        <div class="loading"><div class="spinner"></div> Cargando datos del observatorio…</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Observatorio ENSO Perú</h4>
+        <p>Monitoreo de indicadores ENSO costeros y de cuenca para Perú. Divulgación científica con fuentes oficiales NOAA y ENFEN.</p>
+      </div>
+      <div>
+        <h4>Aviso importante</h4>
+        <p>Este observatorio <strong>no es un servicio oficial de alerta</strong>. Para emergencias consulte INDECI, CENEPRED, SENAMHI y ENFEN.</p>
+      </div>
+      <div>
+        <h4>Datos y atribución</h4>
+        <p>Corte: <span id="footer-asof">—</span> · versión 1.0.0. Fuentes: NOAA/CPC, NOAA/PSL, ENFEN/IMARPE, SENAMHI, IGP.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ============================================================================
+// Observatorio ENSO Perú — Dashboard estático para GitHub Pages
+// ============================================================================
+// Carga datos desde /data/*.json y renderiza el dashboard client-side.
+// Sin dependencias externas — vanilla JS + SVG inline.
+// ============================================================================
+
+const BASE = typeof window !== 'undefined' && window.location.pathname.includes('/observatorio-enso-peru') ? '/observatorio-enso-peru' : '';
+const DATA = BASE + '/data';
+
+let STATUS = null, MANIFEST = null, ALL_SERIES = null, INDICATORS = null, SOURCES = null;
+let currentView = 'overview';
+let theme = 'light';
+
+// Navigation
+const NAV = [
+  { id: 'overview', label: 'Resumen', icon: '📊' },
+  { id: 'coastal', label: 'El Niño Costero', icon: '🌊' },
+  { id: 'basin', label: 'ENSO de cuenca', icon: '🌍' },
+  { id: 'sst', label: 'TSM', icon: '🌡' },
+  { id: 'winds', label: 'Vientos', icon: '💨' },
+  { id: 'thermocline', label: 'Termoclina', icon: '🔬' },
+  { id: 'soi', label: 'SOI', icon: '气压' },
+  { id: 'status', label: 'Estado y umbrales', icon: '🚦' },
+  { id: 'historical', label: 'Histórico', icon: '📈' },
+  { id: 'maps', label: 'Mapas', icon: '🗺' },
+  { id: 'data', label: 'Datos', icon: '📁' },
+  { id: 'methodology', label: 'Metodología', icon: '📖' },
+  { id: 'sources', label: 'Fuentes', icon: '✅' },
+  { id: 'chatbot', label: 'Asistente', icon: '🤖' },
+];
+
+const VIEW_TITLES = {
+  overview: { title: 'Resumen ejecutivo', subtitle: 'Estado costero y de cuenca, indicadores clave y frescura.' },
+  coastal: { title: 'El Niño Costero', subtitle: 'Pacífico oriental frente a Perú: ICEN, Niño 1+2 y alerta ENFEN.' },
+  basin: { title: 'ENSO de cuenca', subtitle: 'Pacífico ecuatorial: Niño 3.4, RONI y alerta NOAA/CPC.' },
+  sst: { title: 'Temperatura superficial del mar', subtitle: 'Anomalías de TSM costera y de cuenca.' },
+  winds: { title: 'Viento zonal', subtitle: 'Anomalía del viento zonal a 850 hPa.' },
+  thermocline: { title: 'Termoclina (D20)', subtitle: 'Profundidad de la isoterma de 20 °C.' },
+  soi: { title: 'SOI y presión', subtitle: 'Índice de Oscilación del Sur (escala de cuenca).' },
+  status: { title: 'Estado y umbrales', subtitle: 'Estado oficial, señal del experto y calidad del dato.' },
+  historical: { title: 'Comparación histórica', subtitle: 'Eventos ENSO y series temporales.' },
+  maps: { title: 'Mapas de anomalía', subtitle: 'TSM y D20 sobre el Pacífico ecuatorial.' },
+  data: { title: 'Datos y descargas', subtitle: 'CSV y JSON estáticos servidos desde /data/.' },
+  methodology: { title: 'Metodología', subtitle: 'Definiciones, convenciones y fuentes.' },
+  sources: { title: 'Fuentes', subtitle: 'Catálogo de fuentes verificadas.' },
+  chatbot: { title: 'Asistente conversacional', subtitle: 'Consulte los datos del observatorio.' },
+};
+
+// Threshold engine (inline — same logic as src/lib/enso/thresholds.ts)
+function evalThreshold(value, rules, policyId, policyName, sourceType) {
+  if (value === null || value === undefined || isNaN(value)) {
+    return { policy_id: policyId, policy_name: policyName, source_type: sourceType, classification: 'Sin datos', color: 'gray', value: null, is_unclassified: true, unclassified_reason: 'Dato faltante' };
+  }
+  for (const r of rules) {
+    const minOk = r.min === null ? true : r.min_inclusive ? value >= r.min : value > r.min;
+    const maxOk = r.max === null ? true : r.max_inclusive ? value <= r.max : value < r.max;
+    if (minOk && maxOk) return { policy_id: policyId, policy_name: policyName, source_type: sourceType, classification: r.label, color: r.color, value, is_unclassified: false };
+  }
+  return { policy_id: policyId, policy_name: policyName, source_type: sourceType, classification: 'Sin clasificar', color: 'gray', value, is_unclassified: true, unclassified_reason: 'Intervalo no definido por la política' };
+}
+
+const EXPERT_COASTAL = [
+  { label: 'Normal', color: 'green', min: -0.7, max: 0.5, min_inclusive: true, max_inclusive: true },
+  { label: 'Amarillo', color: 'yellow', min: 1.3, max: 2.0, min_inclusive: true, max_inclusive: true },
+  { label: 'Rojo', color: 'red', min: 2.1, max: null, min_inclusive: true, max_inclusive: false },
+];
+const EXPERT_BASIN = [
+  { label: 'Normal', color: 'green', min: -0.5, max: 0.5, min_inclusive: true, max_inclusive: true },
+  { label: 'Amarillo', color: 'yellow', min: 1.0, max: 1.5, min_inclusive: false, max_inclusive: true },
+  { label: 'Rojo', color: 'red', min: 1.5, max: null, min_inclusive: false, max_inclusive: false },
+];
+const EXPERT_D20 = [
+  { label: 'Normal', color: 'green', min: -20, max: 20, min_inclusive: true, max_inclusive: true },
+  { label: 'Amarillo', color: 'yellow', min: 30, max: 50, min_inclusive: true, max_inclusive: true },
+  { label: 'Rojo', color: 'red', min: 50, max: null, min_inclusive: false, max_inclusive: false },
+];
+const EXPERT_SOI = [
+  { label: 'Normal', color: 'green', min: -7, max: 7, min_inclusive: true, max_inclusive: true },
+  { label: 'Rojo', color: 'red', min: null, max: -7, min_inclusive: false, max_inclusive: false },
+];
+const ICEN_OFFICIAL = [
+  { label: 'Frío intenso', color: 'blue', min: null, max: -1.3, min_inclusive: false, max_inclusive: false },
+  { label: 'Frío moderado', color: 'lightblue', min: -1.3, max: -1.1, min_inclusive: true, max_inclusive: false },
+  { label: 'Frío débil', color: 'lightcyan', min: -1.1, max: -0.7, min_inclusive: true, max_inclusive: false },
+  { label: 'Normal', color: 'green', min: -0.7, max: 0.5, min_inclusive: true, max_inclusive: true },
+  { label: 'Cálido débil', color: 'yellow', min: 0.5, max: 1.3, min_inclusive: false, max_inclusive: true },
+  { label: 'Cálido moderado', color: 'orange', min: 1.3, max: 2.1, min_inclusive: false, max_inclusive: true },
+  { label: 'Cálido fuerte', color: 'red', min: 2.1, max: 3.5, min_inclusive: false, max_inclusive: true },
+  { label: 'Cálido extraordinario', color: 'darkred', min: 3.5, max: null, min_inclusive: false, max_inclusive: false },
+];
+
+function evalCoastalSST(v) { return evalThreshold(v, EXPERT_COASTAL, 'expert-grd-image-v1', 'Señal operativa del experto GRD', 'EXPERT_POLICY'); }
+function evalBasinSST(v) { return evalThreshold(v, EXPERT_BASIN, 'expert-grd-image-v1', 'Señal operativa del experto GRD', 'EXPERT_POLICY'); }
+function evalThermocline(v) { return evalThreshold(v, EXPERT_D20, 'expert-grd-image-v1', 'Señal operativa del experto GRD', 'EXPERT_POLICY'); }
+function evalSOI(v) { return evalThreshold(v, EXPERT_SOI, 'expert-grd-image-v1', 'Señal operativa del experto GRD', 'EXPERT_POLICY'); }
+function evalICEN(v) { return evalThreshold(v, ICEN_OFFICIAL, 'enfen-icen-official-v1', 'Clasificación oficial ICEN (ENFEN)', 'VERIFIED'); }
+
+// Color CSS helper
+function tcColor(color) {
+  const map = { green: 'var(--green)', yellow: 'var(--yellow)', red: 'var(--red)', gray: 'var(--gray)', blue: '#3b82f6', lightblue: '#60a5fa', lightcyan: '#67e8f9', orange: '#f97316', darkred: '#7f1d1d' };
+  return map[color] || 'var(--gray)';
+}
+
+// Format helpers
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtMonth(iso) { const [y,m] = iso.split('-').map(Number); return `${MESES[m-1]} ${y}`; }
+function fmtValue(v, units) {
+  if (v === null || v === undefined || isNaN(v)) return 'Sin datos';
+  const dp = units === 'm' ? 1 : 2;
+  const sign = v > 0 && units !== 'dimensionless' ? '+' : '';
+  const u = units === 'degC' ? ' °C' : units === 'm' ? ' m' : units === 'm_per_s' ? ' m/s' : '';
+  return `${sign}${v.toFixed(dp)}${u}`;
+}
+
+// SVG time series chart
+function timeSeriesChart(seriesData, units, height = 280) {
+  const w = 800, h = height, padL = 44, padR = 16, padT = 12, padB = 28;
+  const plotW = w - padL - padR, plotH = h - padT - padB;
+  const pts = seriesData.filter(p => p.value !== null);
+  if (pts.length < 2) return '<p class="card-desc">Sin datos suficientes.</p>';
+  const vals = pts.map(p => p.value);
+  let min = Math.min(...vals) - 0.3, max = Math.max(...vals) + 0.3;
+  if (min > 0) min = -0.3;
+  if (max < 0) max = 0.3;
+  const sx = i => padL + (i / (pts.length - 1)) * plotW;
+  const sy = v => padT + ((max - v) / (max - min)) * plotH;
+  const path = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${sx(i)},${sy(p.value)}`).join(' ');
+  const ticks = pts.filter((_, i) => i % Math.max(1, Math.floor(pts.length / 8)) === 0);
+  let svg = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Serie temporal">`;
+  // Threshold bands
+  if (units === 'degC') {
+    svg += `<rect x="${padL}" y="${sy(0.5)}" width="${plotW}" height="${sy(0) - sy(0.5)}" fill="var(--warm)" fill-opacity="0.06"/>`;
+    svg += `<rect x="${padL}" y="${sy(-0.5)}" width="${plotW}" height="${sy(min) - sy(-0.5)}" fill="var(--cool)" fill-opacity="0.06"/>`;
+    svg += `<line x1="${padL}" y1="${sy(0.5)}" x2="${padL+plotW}" y2="${sy(0.5)}" stroke="var(--warm)" stroke-dasharray="4 3" stroke-opacity="0.3"/>`;
+    svg += `<line x1="${padL}" y1="${sy(0)}" x2="${padL+plotW}" y2="${sy(0)}" stroke="currentColor" stroke-opacity="0.3"/>`;
+    svg += `<line x1="${padL}" y1="${sy(-0.5)}" x2="${padL+plotW}" y2="${sy(-0.5)}" stroke="var(--cool)" stroke-dasharray="4 3" stroke-opacity="0.3"/>`;
+  }
+  svg += `<path d="${path}" fill="none" stroke="var(--basin)" stroke-width="2"/>`;
+  svg += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+plotH}" stroke="currentColor" stroke-opacity="0.2"/>`;
+  svg += `<line x1="${padL}" y1="${padT+plotH}" x2="${padL+plotW}" y2="${padT+plotH}" stroke="currentColor" stroke-opacity="0.2"/>`;
+  [max, 0, min].forEach(v => { svg += `<text x="${padL-6}" y="${sy(v)+3}" text-anchor="end" font-size="9" fill="currentColor" fill-opacity="0.6">${v.toFixed(1)}</text>`; });
+  ticks.forEach(p => { const i = pts.indexOf(p); svg += `<text x="${sx(i)}" y="${h-8}" text-anchor="middle" font-size="9" fill="currentColor" fill-opacity="0.6">${fmtMonth(p.month).slice(0,4)}</text>`; });
+  svg += `</svg>`;
+  return svg;
+}
+
+// Init
+async function init() {
+  try {
+    const [statusRes, manifestRes, seriesRes, indicatorsRes, sourcesRes] = await Promise.all([
+      fetch(`${DATA}/status.json`).then(r => r.json()),
+      fetch(`${DATA}/manifest.json`).then(r => r.json()),
+      fetch(`${DATA}/all-series.json`).then(r => r.json()),
+      fetch(`${DATA}/indicators.json`).then(r => r.json()),
+      fetch(`${DATA}/sources.json`).then(r => r.json()),
+    ]);
+    STATUS = statusRes;
+    MANIFEST = manifestRes;
+    ALL_SERIES = seriesRes;
+    INDICATORS = indicatorsRes;
+    SOURCES = sourcesRes;
+    document.getElementById('footer-asof').textContent = MANIFEST.asOf;
+    renderNav();
+    renderHeader();
+    navigate('overview');
+  } catch (e) {
+    document.getElementById('view-content').innerHTML = `<div class="info-note warn"><strong>Error de carga:</strong> No se pudieron cargar los datos. ${e.message}</div>`;
+  }
+}
+
+function renderHeader() {
+  document.getElementById('hdr-coastal').innerHTML = `<span class="pulse"></span> Costero: ${STATUS.coastal.alert}`;
+  document.getElementById('hdr-basin').innerHTML = `<span class="pulse"></span> Cuenca: ${STATUS.basin.alert}`;
+}
+
+function renderNav() {
+  const sidebar = document.getElementById('sidebar-nav');
+  const mobile = document.getElementById('mobile-nav');
+  sidebar.innerHTML = NAV.map(n =>
+    `<button class="nav-btn${n.id === currentView ? ' active' : ''}" onclick="navigate('${n.id}')" data-nav="${n.id}">
+      <span class="nav-icon">${n.icon}</span> ${n.label}
+    </button>`
+  ).join('');
+  mobile.innerHTML = NAV.map(n =>
+    `<button class="${n.id === currentView ? 'active' : ''}" onclick="navigate('${n.id}')">${n.icon} ${n.label}</button>`
+  ).join('');
+}
+
+function navigate(viewId) {
+  currentView = viewId;
+  const meta = VIEW_TITLES[viewId] || { title: viewId, subtitle: '' };
+  document.getElementById('view-title').textContent = meta.title;
+  document.getElementById('view-subtitle').textContent = meta.subtitle;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.nav === viewId));
+  document.querySelectorAll('.mobile-nav button').forEach((b, i) => b.classList.toggle('active', NAV[i].id === viewId));
+  renderView(viewId);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderView(viewId) {
+  const c = document.getElementById('view-content');
+  switch(viewId) {
+    case 'overview': c.innerHTML = renderOverview(); break;
+    case 'coastal': c.innerHTML = renderCoastal(); break;
+    case 'basin': c.innerHTML = renderBasin(); break;
+    case 'sst': c.innerHTML = renderSST(); break;
+    case 'winds': c.innerHTML = renderWinds(); break;
+    case 'thermocline': c.innerHTML = renderThermocline(); break;
+    case 'soi': c.innerHTML = renderSOI(); break;
+    case 'status': c.innerHTML = renderStatus(); break;
+    case 'historical': c.innerHTML = renderHistorical(); break;
+    case 'maps': c.innerHTML = renderMaps(); break;
+    case 'data': c.innerHTML = renderData(); break;
+    case 'methodology': c.innerHTML = renderMethodology(); break;
+    case 'sources': c.innerHTML = renderSources(); break;
+    case 'chatbot': c.innerHTML = renderChatbot(); break;
+    default: c.innerHTML = '<p>Vista no encontrada.</p>';
+  }
+}
+
+// View: Overview
+function renderOverview() {
+  const s = STATUS;
+  const recentN12 = ALL_SERIES.series.nino12.points.slice(-60);
+  const recentN34 = ALL_SERIES.series.nino34.points.slice(-60);
+  return `
+    <div class="info-note info"><strong>Estado oficial vs interpretación:</strong> Las alertas oficiales se citan de ENFEN y NOAA/CPC. Las categorías de intensidad son generadas por el observatorio.</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><div class="card-title">🌊 El Niño Costero</div><span class="scope-badge scope-coastal">Costero</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span class="pill pill-warm">${s.coastal.alert}</span>
+          <span style="font-size:11px;color:var(--muted)">desde ${fmtMonth(s.coastal.alertSince)}</span>
+        </div>
+        <div class="grid-2">
+          <div><p style="font-size:11px;color:var(--muted)">TSM Niño 1+2 (${fmtMonth(s.coastal.nino12Month)})</p><p class="big-value value-warm">${fmtValue(s.coastal.nino12Anom,'degC')}</p></div>
+          <div><p style="font-size:11px;color:var(--muted)">ICEN (${s.coastal.icenWindow})</p><p class="big-value value-warm">${fmtValue(s.coastal.icen,'degC')}</p><p style="font-size:11px;color:var(--muted)">${s.coastal.icenCategory}</p></div>
+        </div>
+        <div class="chart-container">${timeSeriesChart(recentN12, 'degC', 100)}</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">🌍 ENSO de cuenca</div><span class="scope-badge scope-basin">Cuenca</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span class="pill pill-warm">${s.basin.alert}</span>
+          <span style="font-size:11px;color:var(--muted)">desde ${fmtMonth(s.basin.alertSince)}</span>
+        </div>
+        <div class="grid-2">
+          <div><p style="font-size:11px;color:var(--muted)">TSM Niño 3.4 (${fmtMonth(s.basin.nino34Month)})</p><p class="big-value value-warm">${fmtValue(s.basin.nino34Anom,'degC')}</p></div>
+          <div><p style="font-size:11px;color:var(--muted)">RONI (${s.basin.roniWindow})</p><p class="big-value value-warm">${fmtValue(s.basin.roni,'degC')}</p><p style="font-size:11px;color:var(--muted)">${s.basin.roniCategory}</p></div>
+        </div>
+        <div class="chart-container">${timeSeriesChart(recentN34, 'degC', 100)}</div>
+      </div>
+    </div>
+    <div class="grid-3">
+      ${renderMiniCard('💨 Viento zonal 850 hPa', fmtValue(s.winds.u850Anom,'m_per_s'), s.winds.direction, 'basin')}
+      ${renderMiniCard('🔬 Termoclina (D20)', fmtValue(s.thermocline.d20Anom,'m'), s.thermocline.interpretation, 'basin')}
+      ${renderMiniCard('气压 SOI', fmtValue(s.soi.value,'dimensionless'), s.soi.interpretation, 'basin')}
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📈 Costero vs cuenca — últimos 10 años</div></div>
+      <div class="chart-container">${timeSeriesChart([
+        ...ALL_SERIES.series.nino12.points.slice(-120).map(p => ({month: p.month, value: p.value})),
+      ], 'degC', 280)}</div>
+    </div>
+  `;
+}
+
+function renderMiniCard(title, value, detail, scope) {
+  return `<div class="card"><div class="card-header"><div class="card-title">${title}</div><span class="scope-badge scope-${scope}">${scope==='coastal'?'Costero':'Cuenca'}</span></div><p class="big-value">${value}</p><p style="font-size:11px;color:var(--muted);margin-top:4px">${detail}</p></div>`;
+}
+
+// View: Coastal
+function renderCoastal() {
+  const s = STATUS;
+  const icenExpert = evalCoastalSST(s.coastal.icen);
+  const icenOfficial = evalICEN(s.coastal.icen);
+  return `
+    <div class="info-note warn"><strong>El Niño Costero</strong> afecta el Pacífico oriental frente a Ecuador y el norte del Perú. Se monitorea mediante el ICEN (media móvil de 3 meses de TSM en Niño 1+2).</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><div class="card-title">🌊 ICEN — Índice Costero El Niño</div><span class="scope-badge scope-coastal">Costero</span></div>
+        <p style="font-size:11px;color:var(--muted)">${s.coastal.icenWindow}</p>
+        <p class="big-value value-warm">${fmtValue(s.coastal.icen,'degC')}</p>
+        <div style="margin-top:8px"><span class="pill pill-warm">${s.coastal.icenCategory}</span></div>
+        <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:8px">
+          <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">Señal operativa del experto (GRD v1)</p>
+          <div class="threshold-row"><span class="threshold-color tc-${icenExpert.color}"></span> ${icenExpert.classification} ${icenExpert.is_unclassified ? '<span style="color:var(--yellow);font-size:11px">⚠ ' + icenExpert.unclassified_reason + '</span>' : ''}</div>
+          <p style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">Esta señal no equivale al sistema oficial de alertas de ENFEN.</p>
+        </div>
+        <div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px">
+          <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">Clasificación oficial ICEN (ENFEN)</p>
+          <div class="threshold-row"><span class="threshold-color tc-${icenOfficial.color}"></span> ${icenOfficial.classification}</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">🌡 TSM Niño 1+2</div><span class="scope-badge scope-coastal">Costero</span></div>
+        <p style="font-size:11px;color:var(--muted)">${fmtMonth(s.coastal.nino12Month)}</p>
+        <p class="big-value value-warm">${fmtValue(s.coastal.nino12Anom,'degC')}</p>
+        <div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-120), 'degC', 200)}</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🚦 Umbrales del experto GRD — SST costero</div></div>
+      <div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −0.7 a +0.5 °C</div>
+      <div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: +1.3 a +2.0 °C</div>
+      <div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que +2.1 °C</div>
+      <div class="threshold-row"><span class="threshold-color tc-gray"></span> Sin clasificar: +0.5 a +1.3, +2.0 a +2.1, menor que −0.7</div>
+    </div>
+  `;
+}
+
+// View: Basin
+function renderBasin() {
+  const s = STATUS;
+  const roniExpert = evalBasinSST(s.basin.roni);
+  return `
+    <div class="info-note info"><strong>ENSO de cuenca</strong> monitorea el Pacífico ecuatorial mediante RONI (NOAA/CPC) sobre Niño 3.4.</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><div class="card-title">🌍 RONI — Índice Oceánico Relativo del Niño</div><span class="scope-badge scope-basin">Cuenca</span></div>
+        <p style="font-size:11px;color:var(--muted)">${s.basin.roniWindow}</p>
+        <p class="big-value value-warm">${fmtValue(s.basin.roni,'degC')}</p>
+        <div style="margin-top:8px"><span class="pill pill-warm">${s.basin.roniCategory}</span></div>
+        <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:8px">
+          <p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">Señal operativa del experto (GRD v1)</p>
+          <div class="threshold-row"><span class="threshold-color tc-${roniExpert.color}"></span> ${roniExpert.classification}</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">🌡 TSM Niño 3.4</div><span class="scope-badge scope-basin">Cuenca</span></div>
+        <p style="font-size:11px;color:var(--muted)">${fmtMonth(s.basin.nino34Month)}</p>
+        <p class="big-value value-warm">${fmtValue(s.basin.nino34Anom,'degC')}</p>
+        <div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.nino34.points.slice(-120), 'degC', 200)}</div>
+      </div>
+    </div>
+  `;
+}
+
+// View: SST
+function renderSST() {
+  return `
+    <div class="info-note info">Anomalía de TSM costera (Niño 1+2) y de cuenca (Niño 3.4) en °C.</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📈 Comparación costero vs cuenca</div></div>
+      <div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-120), 'degC', 280)}</div>
+    </div>
+    <div class="grid-2">
+      <div class="card"><div class="card-header"><div class="card-title">Niño 1+2 (costero)</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-240), 'degC', 200)}</div></div>
+      <div class="card"><div class="card-header"><div class="card-title">Niño 3.4 (cuenca)</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino34.points.slice(-240), 'degC', 200)}</div></div>
+    </div>
+  `;
+}
+
+function renderWinds() {
+  const s = STATUS;
+  const u850Expert = evalThreshold(s.winds.u850Anom, [{label:'Normal',color:'green',min:null,max:0,max_inclusive:true},{label:'Anomalía del oeste',color:'red',min:0,max:null,min_inclusive:false,max_inclusive:false}], 'expert-grd-image-v1', 'Experto GRD', 'EXPERT_POLICY');
+  return `
+    <div class="info-note info"><strong>Convención:</strong> u &gt; 0 ⇒ flujo hacia el este (componente del oeste / westerly); u &lt; 0 ⇒ flujo hacia el oeste (componente del este / easterly).</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">💨 Viento zonal a 850 hPa</div><span class="scope-badge scope-basin">Cuenca</span></div>
+      <p style="font-size:11px;color:var(--muted)">${fmtMonth(s.winds.u850Month)}</p>
+      <p class="big-value ${s.winds.u850Anom > 0 ? 'value-warm' : 'value-cool'}">${fmtValue(s.winds.u850Anom,'m_per_s')}</p>
+      <p style="font-size:12px;margin-top:4px">${s.winds.direction}</p>
+      <div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.u850.points.slice(-120), 'm_per_s', 200)}</div>
+    </div>
+  `;
+}
+
+function renderThermocline() {
+  const s = STATUS;
+  const d20Expert = evalThermocline(s.thermocline.d20Anom);
+  return `
+    <div class="info-note info"><strong>D20:</strong> profundidad de la isoterma de 20 °C como proxy de la termoclina. Anomalía positiva ⇒ más profunda (El Niño); negativa ⇒ más somera (La Niña).</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🔬 D20 — Termoclina</div><span class="scope-badge scope-basin">Cuenca</span></div>
+      <p style="font-size:11px;color:var(--muted)">${fmtMonth(s.thermocline.d20Month)}</p>
+      <p class="big-value ${s.thermocline.d20Anom > 0 ? 'value-warm' : 'value-cool'}">${fmtValue(s.thermocline.d20Anom,'m')}</p>
+      <p style="font-size:12px;margin-top:4px">${s.thermocline.interpretation}</p>
+      <div style="margin-top:8px"><span class="pill pill-${d20Expert.color === 'green' ? 'green' : d20Expert.color === 'yellow' ? 'yellow' : d20Expert.color === 'red' ? 'red' : 'gray'}">${d20Expert.classification}</span></div>
+      <div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.d20.points.slice(-120), 'm', 200)}</div>
+    </div>
+  `;
+}
+
+function renderSOI() {
+  const s = STATUS;
+  const soiExpert = evalSOI(s.soi.value);
+  return `
+    <div class="info-note warn"><strong>SOI:</strong> índice de escala de cuenca (Tahiti–Darwin). <strong>No existe «SOI costero»</strong>. El observatorio no lo define.</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">气压 SOI — Oscilación del Sur</div><span class="scope-badge scope-basin">Cuenca</span></div>
+      <p style="font-size:11px;color:var(--muted)">${fmtMonth(s.soi.month)}</p>
+      <p class="big-value ${s.soi.value < 0 ? 'value-warm' : 'value-cool'}">${fmtValue(s.soi.value,'dimensionless')}</p>
+      <p style="font-size:12px;margin-top:4px">${s.soi.interpretation}</p>
+      <div style="margin-top:8px"><span class="pill pill-${soiExpert.color === 'green' ? 'green' : soiExpert.color === 'red' ? 'red' : 'gray'}">${soiExpert.classification}</span></div>
+      <div class="chart-container" style="margin-top:12px">${timeSeriesChart(ALL_SERIES.series.soi.points.slice(-120), 'dimensionless', 200)}</div>
+    </div>
+  `;
+}
+
+function renderStatus() {
+  const s = STATUS;
+  const indicators = [
+    { id: 'nino12', label: 'Niño 1+2', scope: 'coastal', value: s.coastal.nino12Anom, month: s.coastal.nino12Month, units: 'degC', expert: evalCoastalSST(s.coastal.nino12Anom), official: null, officialStatus: s.coastal.alert },
+    { id: 'icen', label: 'ICEN', scope: 'coastal', value: s.coastal.icen, month: s.coastal.nino12Month, units: 'degC', expert: evalCoastalSST(s.coastal.icen), official: evalICEN(s.coastal.icen), officialStatus: s.coastal.alert },
+    { id: 'nino34', label: 'Niño 3.4', scope: 'basin', value: s.basin.nino34Anom, month: s.basin.nino34Month, units: 'degC', expert: evalBasinSST(s.basin.nino34Anom), official: null, officialStatus: s.basin.alert },
+    { id: 'roni', label: 'RONI', scope: 'basin', value: s.basin.roni, month: s.basin.nino34Month, units: 'degC', expert: evalBasinSST(s.basin.roni), official: null, officialStatus: s.basin.alert },
+    { id: 'd20', label: 'D20', scope: 'basin', value: s.thermocline.d20Anom, month: s.thermocline.d20Month, units: 'm', expert: evalThermocline(s.thermocline.d20Anom), official: null, officialStatus: s.basin.alert },
+    { id: 'soi', label: 'SOI', scope: 'basin', value: s.soi.value, month: s.soi.month, units: 'dimensionless', expert: evalSOI(s.soi.value), official: null, officialStatus: s.basin.alert },
+  ];
+  return `
+    <div class="info-note warn"><strong>Arquitectura de estado:</strong> Cada indicador muestra (1) Estado oficial, (2) Señal operativa del experto (GRD v1, NO oficial), y (3) Calidad del dato.</div>
+    <div class="grid-2">
+      ${indicators.map(ind => `
+        <div class="card">
+          <div class="card-header"><div class="card-title">${ind.label}</div><span class="scope-badge scope-${ind.scope}">${ind.scope==='coastal'?'Costero':'Cuenca'}</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:8px">
+            <div><p style="font-size:11px;color:var(--muted)">Valor (${fmtMonth(ind.month)})</p><p class="big-value">${fmtValue(ind.value, ind.units)}</p></div>
+            <span class="pill pill-yellow">Preliminar</span>
+          </div>
+          <div style="margin-top:8px"><p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">Estado oficial</p><span class="pill pill-warm">${ind.officialStatus}</span></div>
+          <div style="margin-top:8px"><p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">Señal operativa del experto</p>
+            <span class="pill pill-${ind.expert.color === 'green' ? 'green' : ind.expert.color === 'yellow' ? 'yellow' : ind.expert.color === 'red' ? 'red' : 'gray'}">${ind.expert.classification}</span>
+            ${ind.expert.is_unclassified ? `<p style="font-size:11px;color:var(--yellow);margin-top:2px">⚠ ${ind.expert.unclassified_reason}</p>` : ''}
+            <p style="font-size:10px;color:var(--muted);font-style:italic">No equivale al sistema oficial.</p>
+          </div>
+          ${ind.official ? `<div style="margin-top:8px"><p style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase">Clasificación oficial ICEN</p><span class="pill pill-${ind.official.color === 'green' ? 'green' : ind.official.color === 'yellow' ? 'yellow' : ind.official.color === 'red' ? 'red' : ind.official.color === 'orange' ? 'yellow' : 'neutral'}">${ind.official.classification}</span></div>` : ''}
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderHistorical() {
+  return `
+    <div class="info-note info">Eventos ENSO destacados (1990–2026).</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📈 Niño 1+2 (costero) — historia completa</div></div>
+      <div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points, 'degC', 280)}</div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📈 Niño 3.4 (cuenca) — historia completa</div></div>
+      <div class="chart-container">${timeSeriesChart(ALL_SERies.series.nino34.points, 'degC', 280)}</div>
+    </div>
+  `;
+}
+
+function renderMaps() {
+  return `
+    <div class="info-note info">Mapas de anomalía sobre el Pacífico ecuatorial.</div>
+    <div class="card"><div class="card-header"><div class="card-title">🗺 Datos grilleados más recientes</div></div>
+    <p style="font-size:12px;color:var(--muted)">Los datos grilleados están disponibles en <a href="${DATA}/latest-grid.json" target="_blank">latest-grid.json</a>.</p></div>
+  `;
+}
+
+function renderData() {
+  const files = [
+    { f: 'manifest.json', d: 'Manifiesto de publicación' },
+    { f: 'status.json', d: 'Estado consolidado actual' },
+    { f: 'all-series.json', d: 'Todas las series en JSON' },
+    { f: 'observatorio-enso-todas-las-series.csv', d: 'CSV combinado' },
+    { f: 'nino12.csv', d: 'Niño 1+2 (costero)' },
+    { f: 'icen.csv', d: 'ICEN (costero)' },
+    { f: 'nino34.csv', d: 'Niño 3.4 (cuenca)' },
+    { f: 'roni.csv', d: 'RONI (cuenca)' },
+    { f: 'soi.csv', d: 'SOI' },
+    { f: 'd20.csv', d: 'D20 (termoclina)' },
+    { f: 'u850.csv', d: 'Viento zonal 850 hPa' },
+    { f: 'forecasts.json', d: 'Pronósticos' },
+    { f: 'sources.json', d: 'Catálogo de fuentes' },
+    { f: 'indicators.json', d: 'Definiciones de indicadores' },
+    { f: 'quality.json', d: 'Resumen de calidad' },
+    { f: 'latest-grid.json', d: 'Campo grilleado más reciente' },
+    { f: 'regional-impact.json', d: 'Impacto regional Perú' },
+  ];
+  return `
+    <div class="info-note info">Descargas de datos normalizados. Todos los CSV incluyen metadatos y checksums.</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📁 Artefactos estáticos</div></div>
+      <div class="table-wrap"><table>
+        <tr><th>Archivo</th><th>Descripción</th><th>Enlace</th></tr>
+        ${files.map(x => `<tr><td><a href="${DATA}/${x.f}" target="_blank" style="font-family:monospace;font-size:11px">${x.f}</a></td><td>${x.d}</td><td><a href="${DATA}/${x.f}" target="_blank">Descargar →</a></td></tr>`).join('')}
+      </table></div>
+    </div>
+  `;
+}
+
+function renderMethodology() {
+  return `
+    <div class="info-note info">Metodología científica del observatorio.</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📖 Principios científicos</div></div>
+      <div style="font-size:13px;line-height:1.7">
+        <p><strong>1. No conflatear costero y cuenca.</strong> El Niño Costero (ICEN sobre Niño 1+2) y el ENSO de cuenca (RONI sobre Niño 3.4) son conceptos distintos.</p>
+        <p><strong>2. Convención del viento zonal.</strong> u &gt; 0 = flujo hacia el este (westerly); u &lt; 0 = flujo hacia el oeste (easterly).</p>
+        <p><strong>3. D20 como proxy de la termoclina.</strong> Anomalía positiva ⇒ más profunda (El Niño); negativa ⇒ más somera (La Niña).</p>
+        <p><strong>4. SOI de cuenca; sin «SOI costero».</strong> El SOI convencional (Tahiti–Darwin) es de escala de cuenca.</p>
+        <p><strong>5. Índice operacional vigente.</strong> NOAA/CPC emplea el RONI (baseline adaptativa), no el ONI heredado.</p>
+        <p><strong>6. Sin valores fabricados.</strong> Los datos faltantes se preservan; los preliminares se marcan.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🚦 Umbrales del experto GRD (imagen v1)</div></div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Transcripción exacta de la imagen suministrada por el equipo GRD. NO constituye una metodología oficial de NOAA ni de ENFEN.</p>
+      <div class="grid-2">
+        <div><p style="font-weight:600;font-size:13px;margin-bottom:4px">SST Costero (Niño 1+2)</p>
+          <div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −0.7 a +0.5 °C</div>
+          <div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: +1.3 a +2.0 °C</div>
+          <div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que +2.1 °C</div>
+        </div>
+        <div><p style="font-weight:600;font-size:13px;margin-bottom:4px">SST Cuenca (Niño 3.4)</p>
+          <div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −0.5 a +0.5 °C</div>
+          <div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: mayor que +1.0 a +1.5 °C</div>
+          <div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que +1.5 °C</div>
+        </div>
+        <div><p style="font-weight:600;font-size:13px;margin-bottom:4px">Termoclina (D20)</p>
+          <div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −20 a +20 m</div>
+          <div class="threshold-row"><span class="threshold-color tc-yellow"></span> Amarillo: 30 a 50 m</div>
+          <div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: mayor que 50 m</div>
+        </div>
+        <div><p style="font-weight:600;font-size:13px;margin-bottom:4px">SOI</p>
+          <div class="threshold-row"><span class="threshold-color tc-green"></span> Normal: −7 a +7</div>
+          <div class="threshold-row"><span class="threshold-color tc-red"></span> Rojo: menor que −7</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSources() {
+  return `
+    <div class="info-note info">Catálogo de fuentes verificadas.</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">✅ Fuentes primarias</div></div>
+      <div class="table-wrap"><table>
+        <tr><th>Fuente</th><th>Producto</th><th>Endpoint</th><th>Estado</th></tr>
+        ${SOURCES.map(s => `<tr><td>${s.institution}</td><td>${s.product}</td><td><a href="${s.url}" target="_blank" style="font-family:monospace;font-size:10px">${s.url.slice(0,50)}…</a></td><td><span class="pill pill-green">${s.status}</span></td></tr>`).join('')}
+      </table></div>
+    </div>
+  `;
+}
+
+function renderChatbot() {
+  return `
+    <div class="info-note warn"><strong>Asistente con base determinista.</strong> El modelo nunca es el motor de cálculo. Los valores provienen de los datos normalizados del proyecto.</div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🤖 Asistente del Observatorio</div></div>
+      <p style="font-size:13px;color:var(--muted)">El asistente conversacional está disponible en la versión completa del observatorio (puerto 3000). En GitHub Pages (sitio estático) se ofrece una versión de búsqueda determinista.</p>
+      <div style="margin-top:12px">
+        <p style="font-size:12px;font-weight:600;margin-bottom:4px">Preguntas frecuentes:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${['¿Cuál es el estado actual?', '¿Qué es el ICEN?', '¿Existe SOI costero?', '¿Diferencia costero vs cuenca?'].map(q =>
+            `<button onclick="alert('${getAnswer(q)}')" style="padding:6px 12px;border-radius:9999px;border:1px solid var(--border);font-size:12px;cursor:pointer;background:var(--card);color:var(--fg)">${q}</button>`
+          ).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function getAnswer(q) {
+  const s = STATUS;
+  if (q.includes('estado actual')) return `Estado actual:\nCostero: ${s.coastal.alert} (ICEN ${s.coastal.icen} °C, ${s.coastal.icenCategory})\nCuenca: ${s.basin.alert} (RONI ${s.basin.roni} °C, ${s.basin.roniCategory})\n\nInterpretación del observatorio. Para alertas oficiales consulte ENFEN y NOAA/CPC.`;
+  if (q.includes('ICEN')) return `El ICEN (Índice Costero El Niño) es la media móvil de 3 meses de las anomalías mensuales de TSM en la región Niño 1+2 (90–80°O, 10°S–0°). Valor actual: ${s.coastal.icen} °C (${s.coastal.icenCategory}). Fuente: ENFEN/IMARPE.`;
+  if (q.includes('SOI costero')) return `No existe un «SOI costero». El SOI (Índice de Oscilación del Sur) es un índice de escala de cuenca basado en la diferencia de presión entre Tahiti y Darwin. La condición costera se monitorea con TSM Niño 1+2 e ICEN, no con un proxy de presión denominado «SOI costero».`;
+  if (q.includes('diferencia')) return `El Niño Costero afecta el Pacífico oriental frente a Perú (monitoreado por ENFEN vía ICEN sobre Niño 1+2). El ENSO de cuenca afecta el Pacífico ecuatorial (monitoreado por NOAA/CPC vía RONI sobre Niño 3.4). Pueden ocurrir juntos o por separado (ej. 2017: costero fuerte sin cuenca).`;
+  return 'Pregunta no reconocida.';
+}
+
+// Theme toggle
+function toggleTheme() {
+  theme = theme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-btn').textContent = theme === 'dark' ? '☀️' : '🌙';
+  try { localStorage.setItem('enso-theme', theme); } catch(e) {}
+}
+
+// Init theme
+try { theme = localStorage.getItem('enso-theme') || 'light'; } catch(e) {}
+if (theme === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); document.getElementById('theme-btn').textContent = '☀️'; }
+
+// Start
+init();
+</script>
+</body>
+</html>
