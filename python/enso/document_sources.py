@@ -36,6 +36,11 @@ MONTHS = {
     "noviembre": 11, "diciembre": 12,
 }
 
+ENGLISH_MONTHS = {
+    "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+    "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12,
+}
+
 
 def _plain_text(fragment: str) -> str:
     fragment = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", " ", fragment,
@@ -101,6 +106,109 @@ def parse_enfen_wordpress_posts(payload: str) -> dict[str, Any]:
     if not candidates:
         raise DocumentQuarantined("no valid official ENFEN communiqué found")
     return max(candidates, key=lambda item: (item["publication_date"], int(item["post_id"] or 0)))
+
+
+def discover_latest_enfen_communique(fragment: str) -> str:
+    """Descubre el comunicado más reciente desde el índice HTML oficial.
+
+    Se usa únicamente como respaldo cuando la API REST oficial no entrega un
+    contrato utilizable. La selección se basa en el número/año del comunicado,
+    no en clases CSS ni en el orden visual de la página.
+    """
+    lower = fragment[:1500].lower()
+    if "cloudflare" in lower or "just a moment" in lower or "bad gateway" in lower:
+        raise DocumentQuarantined("ENFEN access/error page substituted for index")
+    candidates: list[tuple[int, int, str]] = []
+    for raw_url, raw_label in re.findall(
+        r"<a\b[^>]*href=[\"']([^\"']+)[\"'][^>]*>(.*?)</a>",
+        fragment,
+        re.IGNORECASE | re.DOTALL,
+    ):
+        label = _plain_text(raw_label)
+        match = re.search(
+            r"COMUNICADO\s+OFICIAL\s+ENFEN\s+N(?:°|º|&deg;)?\s*(\d+)\s*[-–]\s*(20\d{2})",
+            label,
+            re.IGNORECASE,
+        )
+        if not match:
+            continue
+        url = html.unescape(raw_url)
+        parsed = urlparse(url)
+        if parsed.scheme != "https" or parsed.hostname != "enfen.imarpe.gob.pe":
+            continue
+        if not re.fullmatch(
+            r"/download/comunicado-oficial-enfen-n-\d+-20\d{2}/?", parsed.path,
+            re.IGNORECASE,
+        ):
+            continue
+        candidates.append((int(match.group(2)), int(match.group(1)), url))
+    if not candidates:
+        raise DocumentQuarantined("official ENFEN HTML index exposed no valid communiqué")
+    return max(candidates)[2]
+
+
+def parse_enfen_communique_html(fragment: str, *, source_url: str) -> dict[str, Any]:
+    """Extrae estado, fecha y activo PDF desde la página oficial del comunicado."""
+    parsed_source = urlparse(source_url)
+    if parsed_source.scheme != "https" or parsed_source.hostname != "enfen.imarpe.gob.pe":
+        raise DocumentQuarantined("unexpected ENFEN communiqué domain")
+    if not re.fullmatch(
+        r"/download/comunicado-oficial-enfen-n-\d+-20\d{2}/?", parsed_source.path,
+        re.IGNORECASE,
+    ):
+        raise DocumentQuarantined("unexpected ENFEN communiqué path")
+    text = _plain_text(fragment)
+    title_match = re.search(
+        r"COMUNICADO\s+OFICIAL\s+ENFEN\s+N(?:°|º)?\s*(\d+)\s*[-–]\s*(20\d{2})",
+        text,
+        re.IGNORECASE,
+    )
+    if not title_match:
+        raise DocumentQuarantined("official ENFEN communiqué identity missing")
+    alert, evidence = _extract_alert(text)
+    if not alert:
+        raise DocumentQuarantined("official ENFEN alert classification missing")
+
+    publication_date: str | None = None
+    iso_match = re.search(r"\b(20\d{2}-\d{2}-\d{2})\b", fragment[:5000])
+    if iso_match:
+        try:
+            publication_date = date.fromisoformat(iso_match.group(1)).isoformat()
+        except ValueError:
+            publication_date = None
+    if not publication_date:
+        date_match = re.search(
+            r"\b(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b",
+            text[:500],
+            re.IGNORECASE,
+        )
+        if date_match:
+            publication_date = date(
+                int(title_match.group(2)),
+                ENGLISH_MONTHS[date_match.group(2).lower()[:3]],
+                int(date_match.group(1)),
+            ).isoformat()
+    if not publication_date:
+        raise DocumentQuarantined("official ENFEN publication date missing")
+
+    document_urls = []
+    for raw in re.findall(r"href=[\"']([^\"']+)", fragment, re.IGNORECASE):
+        url = html.unescape(raw)
+        parsed = urlparse(url)
+        if parsed.scheme != "https" or parsed.hostname != "enfen.imarpe.gob.pe":
+            continue
+        if parsed.path.lower().endswith(".pdf") or "wpdmdl=" in parsed.query.lower():
+            document_urls.append(url)
+    return {
+        "post_id": None,
+        "publication_date": publication_date,
+        "modified_at": "",
+        "alert": alert,
+        "source_url": source_url,
+        "document_urls": sorted(set(document_urls)),
+        "evidence_text": evidence,
+        "source_method": "official_html_document_page",
+    }
 
 
 def validate_pdf_payload(

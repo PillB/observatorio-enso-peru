@@ -12,6 +12,8 @@ import pytest
 
 from enso.document_sources import (
     DocumentQuarantined,
+    discover_latest_enfen_communique,
+    parse_enfen_communique_html,
     parse_imarpe_bulletin_pages,
     parse_siofen_bulletin_index,
     parse_enfen_wordpress_posts,
@@ -45,7 +47,8 @@ def test_oisst_query_is_bounded_and_metadata_explicit():
         lon_min=190,
         lon_max=240,
     )
-    assert "[(last)]" in url
+    assert "[last]" in url
+    assert "[(last)]" not in url
     assert "anom" in url
     assert "(-5):(5)" in url
     assert "(190):(240)" in url
@@ -132,6 +135,36 @@ def test_wordpress_discovery_returns_official_post_and_document_assets():
         "https://enfen.imarpe.gob.pe/download/comunicado/?wpdmdl=2128"
     ]
     assert result["evidence_text"]
+
+
+def test_enfen_html_fallback_discovers_and_parses_official_communique():
+    index = '''
+    <a href="https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-12-2026/">
+      Comunicado Oficial ENFEN N° 12-2026
+    </a>
+    <a href="https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-13-2026/">
+      Comunicado Oficial ENFEN N° 13-2026
+    </a>
+    '''
+    detail_url = discover_latest_enfen_communique(index)
+    assert detail_url.endswith("comunicado-oficial-enfen-n-13-2026/")
+
+    detail = '''
+    <article>
+      <h1>17 Jul Comunicado Oficial ENFEN N° 13-2026</h1>
+      <p>Estado de sistema de alerta: Alerta de El Niño Costero.</p>
+      <a href="https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-13-2026/?wpdmdl=2128">
+        Descargar PDF
+      </a>
+    </article>
+    '''
+    result = parse_enfen_communique_html(detail, source_url=detail_url)
+    assert result["publication_date"] == "2026-07-17"
+    assert result["alert"] == "Alerta de El Niño Costero"
+    assert result["source_method"] == "official_html_document_page"
+    assert result["document_urls"] == [
+        "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-13-2026/?wpdmdl=2128"
+    ]
 
 
 def test_official_document_parser_requires_page_period_and_unambiguous_icen():

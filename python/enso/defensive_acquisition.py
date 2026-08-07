@@ -485,7 +485,7 @@ class DefensiveHttpClient:
                 # Non-retryable
                 self._circuit_breaker.record_failure(source_id)
                 raise
-            except (httpx.TimeoutException, httpx.ConnectionError) as e:
+            except httpx.TransportError as e:
                 last_exc = e
                 time.sleep(self._backoff_with_jitter(attempt))
                 continue

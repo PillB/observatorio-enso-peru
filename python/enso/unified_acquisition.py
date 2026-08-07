@@ -119,7 +119,7 @@ class HttpClient:
                     continue
                 # Client error — don't retry
                 raise
-            except (httpx.TimeoutException, httpx.ConnectionError) as e:
+            except httpx.TransportError as e:
                 last_exc = e
                 time.sleep(min(30.0, 2 ** attempt + random.uniform(0, 1)))
                 continue
@@ -180,7 +180,7 @@ class HttpClient:
                             if len(body) > limit:
                                 raise RuntimeError(f"response exceeds {limit} bytes")
                         return bytes(body), dict(resp.headers)
-            except (httpx.TimeoutException, httpx.ConnectionError) as exc:
+            except httpx.TransportError as exc:
                 last_exc = exc
                 time.sleep(min(30.0, 2 ** attempt + random.uniform(0, 1)))
                 continue
@@ -427,10 +427,20 @@ class AcquisitionOrchestrator:
         path = self.publication_dir / "weekly-sst.json"
         if not path.exists():
             return []
+        try:
+            payload = json.loads(path.read_text())
+            return payload.get("points", []) if isinstance(payload, dict) else []
+        except (json.JSONDecodeError, OSError):
+            return []
 
     def _load_existing_rapid(self) -> list[dict]:
         path = self.publication_dir / "rapid-observations.json"
         if not path.exists():
+            return []
+        try:
+            payload = json.loads(path.read_text())
+            return payload.get("points", []) if isinstance(payload, dict) else []
+        except (json.JSONDecodeError, OSError):
             return []
 
     def _load_existing_bulletins(self) -> list[dict]:
@@ -667,11 +677,6 @@ class AcquisitionOrchestrator:
             return [observation]
         except Exception as exc:
             self._record(source_id, False, str(exc))
-            return []
-        try:
-            payload = json.loads(path.read_text())
-            return payload.get("points", []) if isinstance(payload, dict) else []
-        except (json.JSONDecodeError, OSError):
             return []
 
     def acquire_roni(self) -> list[dict]:

@@ -20,6 +20,7 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
+from urllib.parse import urlparse
 
 try:
     import httpx
@@ -121,6 +122,8 @@ def fetch_noaa_enso_advisory() -> dict:
 # ENFEN SIOFEN — estado oficial de El Niño Costero
 # ----------------------------------------------------------------------------
 ENFEN_ICEN_URL = "https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen"
+ENFEN_WP_API = "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts"
+ENFEN_COMMUNIQUES_URL = "https://enfen.imarpe.gob.pe/comunicados/"
 
 #: Patrones de alerta ENFEN en orden de precedencia.
 ENFEN_ALERT_PATTERNS = [
@@ -146,9 +149,10 @@ def fetch_enfen_status() -> dict:
     Estrategia:
       1. Consultar la API de WordPress (JSON, machine-readable).
       2. Extraer el estado de alerta del título del comunicado más reciente.
-      3. Si la API falla, caer al fallback manual (config/enfen-status.json).
+      3. Si la API falla, descubrir y analizar la página HTML oficial.
+      4. Si ambas rutas fallan, conservar el fallback manual fechado.
     """
-    ENFEN_WP_API = "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts"
+    failures: list[str] = []
     try:
         if httpx is None:
             raise RuntimeError("httpx no disponible")
@@ -168,7 +172,7 @@ def fetch_enfen_status() -> dict:
             from enso.document_sources import parse_enfen_wordpress_posts
             discovered = parse_enfen_wordpress_posts(resp.text)
 
-            return {
+            result = {
                 "alert": discovered["alert"],
                 "icen": None,
                 "month": discovered["publication_date"][:7],
@@ -180,8 +184,52 @@ def fetch_enfen_status() -> dict:
                 "evidence_text": discovered["evidence_text"],
                 "fetched_at": datetime.now(timezone.utc).isoformat(),
             }
-    except Exception:
-        return _load_enfen_fallback()
+            return result
+    except Exception as exc:
+        failures.append(f"wordpress_rest_json: {exc}")
+
+    try:
+        if httpx is None:
+            raise RuntimeError("httpx no disponible")
+        from enso.document_sources import (
+            discover_latest_enfen_communique,
+            parse_enfen_communique_html,
+        )
+        headers = {
+            "User-Agent": "Observatorio-ENSO-Peru/3.1 (pipeline; +https://github.com/PillB/observatorio-enso-peru)",
+            "Accept": "text/html",
+        }
+        with httpx.Client(timeout=15.0, follow_redirects=True) as client:
+            index_response = client.get(ENFEN_COMMUNIQUES_URL, headers=headers)
+            index_response.raise_for_status()
+            if (urlparse(str(index_response.url)).hostname or "").lower() != "enfen.imarpe.gob.pe":
+                raise RuntimeError("redirección del índice ENFEN fuera del dominio permitido")
+            detail_url = discover_latest_enfen_communique(index_response.text)
+            detail_response = client.get(detail_url, headers=headers)
+            detail_response.raise_for_status()
+            if (urlparse(str(detail_response.url)).hostname or "").lower() != "enfen.imarpe.gob.pe":
+                raise RuntimeError("redirección del comunicado ENFEN fuera del dominio permitido")
+            discovered = parse_enfen_communique_html(
+                detail_response.text, source_url=detail_url
+            )
+        return {
+            "alert": discovered["alert"],
+            "icen": None,
+            "month": discovered["publication_date"][:7],
+            "publication_date": discovered["publication_date"],
+            "url": discovered["source_url"],
+            "source": discovered["source_method"],
+            "post_id": discovered["post_id"],
+            "document_urls": discovered["document_urls"],
+            "evidence_text": discovered["evidence_text"],
+            "fetched_at": datetime.now(timezone.utc).isoformat(),
+        }
+    except Exception as exc:
+        failures.append(f"official_html_document_page: {exc}")
+
+    fallback = _load_enfen_fallback()
+    fallback["acquisition_errors"] = failures
+    return fallback
 
 def _load_enfen_fallback() -> dict:
     """Carga el estado de ENFEN desde el archivo de fallback manual."""
