@@ -158,6 +158,20 @@ class TestWorkflowConfiguration:
         assert 'args+=(--dry-run)' in content
         assert "enso.unified_acquisition" in content
 
+    def test_pr_pipeline_does_not_run_obsolete_live_cli(self):
+        """PR CI must not depend on retired PSL endpoints or an empty cache."""
+        pipeline = (WORKFLOWS / "pipeline.yml").read_text()
+        validate = (WORKFLOWS / "validate.yml").read_text()
+        assert "enso.cli run" not in pipeline
+        assert "enso.cli run --offline" not in validate
+        assert "enso.publication_validator" in pipeline
+        assert "enso.publication_validator" in validate
+
+    def test_pr_secret_scan_has_truthful_exit_status(self):
+        """An empty secret scan must not fail because the final pipe command exits 0."""
+        content = (WORKFLOWS / "pull-request-validation.yml").read_text()
+        assert "grep -rEq --include" in content
+
     def test_only_canonical_pipeline_has_daily_schedule(self):
         canonical = (WORKFLOWS / "daily-refresh.yml").read_text()
         legacy = (WORKFLOWS / "pipeline.yml").read_text()
