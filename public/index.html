@@ -73,18 +73,28 @@
     }
     .header-inner { max-width: 1320px; margin: 0 auto; display: flex; align-items: center; gap: 14px; padding: 14px 20px; min-width: 0; }
     @media (max-width: 640px) {
-      .header-inner { gap: 8px; padding: 10px 12px; }
-      .header h1 { font-size: 13px; }
-      .logo-mark { width: 28px; height: 28px; }
-      .logo-mark svg { width: 28px; height: 28px; }
-      .tutorial-btn { padding: 4px 8px; font-size: 0; } .tutorial-btn::after { content: '?'; font-size: 14px; }
-      .badge { font-size: 10px; padding: 2px 6px; }
-      .header-badges { gap: 4px; }
-      .pulse-dot { width: 5px; height: 5px; }
+      .header-inner { gap: 6px; padding: 8px 10px; flex-wrap: wrap; }
+      .header h1 { font-size: 12px; }
+      .logo-mark { width: 26px; height: 26px; flex-shrink: 0; }
+      .logo-mark svg { width: 26px; height: 26px; }
+      .tutorial-btn { padding: 3px 7px; font-size: 0; } .tutorial-btn::after { content: '?'; font-size: 13px; }
+      .badge { font-size: 9px; padding: 2px 5px; max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .header-badges { gap: 3px; flex-wrap: wrap; max-width: calc(100vw - 80px); }
+      .pulse-dot { width: 4px; height: 4px; }
+      .hdr-grd-pill { font-size: 8px; padding: 0 4px; }
+      .hdr-alert-level { font-size: 9px; padding: 2px 6px; }
+    }
+    @media (max-width: 480px) {
+      .header h1 { font-size: 11px; }
+      .badge { font-size: 8px; padding: 1px 3px; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .header-badges { max-width: calc(100vw - 60px); }
+      .hdr-grd-pill { display: none !important; }
+      .hdr-alert-level { font-size: 8px; padding: 1px 4px; }
     }
     @media (max-width: 380px) {
-      .header h1 { font-size: 11px; }
-      .badge { font-size: 9px; padding: 1px 4px; }
+      .header h1 { font-size: 10px; }
+      .badge { font-size: 7px; padding: 1px 2px; max-width: 110px; }
+      .hdr-alert-level { font-size: 7px; padding: 0 3px; }
     }
     .logo-mark { width: 36px; height: 36px; position: relative; flex-shrink: 0; }
     .header h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--fg); }
@@ -240,7 +250,7 @@
       border: 1px solid transparent;
     }
     @media (max-width: 640px) { .hdr-grd-pill { font-size: 8px; padding: 0 4px; } }
-    @media (max-width: 380px) { .hdr-grd-pill { display: none; } }
+    @media (max-width: 380px) { .hdr-grd-pill { display: none !important; } }
 
     /* Alert banner — fronloaded GRD signal + official alert reference */
     .alert-banner {
