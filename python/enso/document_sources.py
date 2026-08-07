@@ -178,14 +178,13 @@ def parse_enfen_communique_html(fragment: str, *, source_url: str) -> dict[str, 
             publication_date = None
     if not publication_date:
         date_match = re.search(
-            r"\b(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[, ]+"
-            r"(20\d{2})\b",
-            text,
+            r"\b(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b",
+            text[:500],
             re.IGNORECASE,
         )
         if date_match:
             publication_date = date(
-                int(date_match.group(3)),
+                int(title_match.group(2)),
                 ENGLISH_MONTHS[date_match.group(2).lower()[:3]],
                 int(date_match.group(1)),
             ).isoformat()
