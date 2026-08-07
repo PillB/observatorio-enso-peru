@@ -172,6 +172,12 @@ class TestWorkflowConfiguration:
         content = (WORKFLOWS / "pull-request-validation.yml").read_text()
         assert "grep -rEq --include" in content
 
+    def test_browser_dependency_install_is_bounded_and_fail_visible(self):
+        content = (WORKFLOWS / "browser-validation.yml").read_text()
+        assert "playwright install --with-deps" in content
+        assert "timeout-minutes: 10" in content
+        assert "|| true" not in content
+
     def test_python_and_typescript_source_registries_match(self):
         """Every scientific source must remain traceable in both runtimes."""
         import re
