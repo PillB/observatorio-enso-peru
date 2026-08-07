@@ -137,77 +137,73 @@ ENFEN_FALLBACK_PATH = Path(__file__).resolve().parents[2] / "config" / "enfen-st
 
 
 def fetch_enfen_status() -> dict:
-    """Intenta descargar el estado oficial de ENFEN desde SIOFEN.
+    """Obtiene el estado oficial de ENFEN desde la API de WordPress.
 
-    Si Cloudflare bloquea la petición, cae al archivo manual
-    ``config/enfen-status.json``.
+    ENFEN publica sus comunicados a través de un sitio WordPress en
+    enfen.imarpe.gob.pe. La API REST (wp-json/wp/v2/posts) devuelve
+    JSON estructurado con el título y contenido de cada comunicado.
 
-    Devuelve un dict con:
-      - ``alert``: str — el estado de alerta (ej. "Alerta de El Niño Costero").
-      - ``icen``: float | None — valor ICEN si se puede extraer.
-      - ``month``: str | None — mes de referencia.
-      - ``url``: str — URL fuente.
-      - ``source``: "live" | "fallback" — origen del dato.
-      - ``fetched_at``: str — timestamp ISO-8601 UTC.
+    Estrategia:
+      1. Consultar la API de WordPress (JSON, machine-readable).
+      2. Extraer el estado de alerta del título del comunicado más reciente.
+      3. Si la API falla, caer al fallback manual (config/enfen-status.json).
     """
-    # Intenta la descarga live.
+    ENFEN_WP_API = "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts"
     try:
         if httpx is None:
             raise RuntimeError("httpx no disponible")
         with httpx.Client(timeout=15.0, follow_redirects=True) as client:
             resp = client.get(
-                ENFEN_ICEN_URL,
+                ENFEN_WP_API,
+                params={"per_page": 1, "categories": 28},
                 headers={
-                    "User-Agent": "Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/2.0)",
-                    "Accept": "text/html,application/xhtml+xml",
-                    "Accept-Language": "es-PE,es;q=0.9",
+                    "User-Agent": "Observatorio-ENSO-Peru/3.0 (pipeline; +https://github.com/PillB/observatorio-enso-peru)",
+                    "Accept": "application/json",
                 },
             )
-        # Si Cloudflare bloquea (403 o página de challenge), cae al fallback.
-        if resp.status_code == 403 or "cf-challenge" in resp.text.lower() or "cloudflare" in resp.text.lower():
-            return _load_enfen_fallback()
-        resp.raise_for_status()
-        html = resp.text
-        text = html_mod.unescape(re.sub(r"<[^>]+>", " ", html))
-        text = re.sub(r"\s+", " ", text).strip()
+            resp.raise_for_status()
+            posts = resp.json()
+            if not posts:
+                return _load_enfen_fallback()
 
-        # Busca el estado de alerta.
-        alert = "Sin datos"
-        for pattern, label in ENFEN_ALERT_PATTERNS:
-            if re.search(pattern, text, re.IGNORECASE):
-                alert = label
-                break
+            post = posts[0]
+            title_html = post.get("title", {}).get("rendered", "")
+            title = html_mod.unescape(re.sub(r"<[^>]+>", "", title_html)).strip()
+            date_str = post.get("date", "")[:10]  # YYYY-MM-DD
+            link = post.get("link", "")
 
-        # Busca el valor ICEN.
-        icen_value: Optional[float] = None
-        m = re.search(r"ICEN[^0-9-+]*(-?\d+\.\d+)", text, re.IGNORECASE)
-        if m:
-            try:
-                icen_value = round(float(m.group(1)), 2)
-            except ValueError:
-                pass
+            # Extract alert status from title
+            alert = "Sin datos"
+            for pattern, label in ENFEN_ALERT_PATTERNS:
+                if re.search(pattern, title, re.IGNORECASE):
+                    alert = label
+                    break
 
-        # Busca el mes de referencia.
-        month: Optional[str] = None
-        m = re.search(r"\b(19\d{2}|20\d{2})-(0[1-9]|1[0-2])\b", text)
-        if m:
-            month = f"{m.group(1)}-{m.group(2)}"
+            # If title doesn't have alert, check content
+            if alert == "Sin datos":
+                content_html = post.get("content", {}).get("rendered", "")
+                content_text = html_mod.unescape(re.sub(r"<[^>]+>", " ", content_html))
+                for pattern, label in ENFEN_ALERT_PATTERNS:
+                    if re.search(pattern, content_text, re.IGNORECASE):
+                        alert = label
+                        break
 
-        # Si no se encontró nada útil, cae al fallback.
-        if alert == "Sin datos" and icen_value is None:
-            return _load_enfen_fallback()
+            if alert == "Sin datos":
+                return _load_enfen_fallback()
 
-        return {
-            "alert": alert,
-            "icen": icen_value,
-            "month": month,
-            "url": ENFEN_ICEN_URL,
-            "source": "live",
-            "fetched_at": datetime.now(timezone.utc).isoformat(),
-        }
+            # Convert date to YYYY-MM
+            month = date_str[:7] if date_str else None
+
+            return {
+                "alert": alert,
+                "icen": None,
+                "month": month,
+                "url": link,
+                "source": "live",
+                "fetched_at": datetime.now(timezone.utc).isoformat(),
+            }
     except Exception:
         return _load_enfen_fallback()
-
 
 def _load_enfen_fallback() -> dict:
     """Carga el estado de ENFEN desde el archivo de fallback manual."""
