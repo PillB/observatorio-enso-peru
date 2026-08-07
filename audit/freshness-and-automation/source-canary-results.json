@@ -1,0 +1,170 @@
+{
+  "generatedAt": "2026-08-07T05:51:34.168743+00:00",
+  "total_sources": 9,
+  "passed": 9,
+  "failed": 0,
+  "results": [
+    {
+      "source_id": "noaa-cpc-wksst",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/data/indices/wksst9120.for",
+      "timestamp": "2026-08-07T05:51:17.236026+00:00",
+      "http_status": 200,
+      "content_length": 147849,
+      "content_hash": "fdc6d94a4ffdde13",
+      "mime_type": "",
+      "schema_valid": true,
+      "observation_date": "2026-07-29",
+      "within_cadence": true,
+      "passed": true,
+      "error": "",
+      "notes": {
+        "schema_message": "Valid weekly SST",
+        "cadence_message": "Within SLO (9d old)"
+      }
+    },
+    {
+      "source_id": "noaa-psl-nino12",
+      "endpoint": "https://psl.noaa.gov/data/timeseries/month/data/nino12.long.anom.csv",
+      "timestamp": "2026-08-07T05:51:20.394847+00:00",
+      "http_status": 200,
+      "content_length": 39645,
+      "content_hash": "26a467427171cac0",
+      "mime_type": "text/csv",
+      "schema_valid": true,
+      "observation_date": "2026-12",
+      "within_cadence": true,
+      "passed": true,
+      "error": "",
+      "notes": {
+        "schema_message": "1885 points",
+        "cadence_message": "Within SLO (-116d old)"
+      }
+    },
+    {
+      "source_id": "noaa-psl-nino34",
+      "endpoint": "https://psl.noaa.gov/data/timeseries/month/data/nino34.long.anom.csv",
+      "timestamp": "2026-08-07T05:51:22.025305+00:00",
+      "http_status": 200,
+      "content_length": 39645,
+      "content_hash": "86bb3cbbabcbf4a4",
+      "mime_type": "text/csv",
+      "schema_valid": true,
+      "observation_date": "2026-12",
+      "within_cadence": true,
+      "passed": true,
+      "error": "",
+      "notes": {
+        "schema_message": "1885 points",
+        "cadence_message": "Within SLO (-116d old)"
+      }
+    },
+    {
+      "source_id": "noaa-cpc-roni",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt",
+      "timestamp": "2026-08-07T05:51:23.628494+00:00",
+      "http_status": 200,
+      "content_length": 14704,
+      "content_hash": "3292d9f2597ee6d7",
+      "mime_type": "text/plain; charset=utf-8",
+      "schema_valid": true,
+      "observation_date": "2026-06",
+      "within_cadence": true,
+      "passed": true,
+      "error": "",
+      "notes": {
+        "schema_message": "919 seasons",
+        "cadence_message": "Within SLO (67d old)"
+      }
+    },
+    {
+      "source_id": "noaa-cpc-soi",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/data/indices/soi",
+      "timestamp": "2026-08-07T05:51:25.581380+00:00",
+      "http_status": 200,
+      "content_length": 12968,
+      "content_hash": "db445699d1ba4aca",
+      "mime_type": "",
+      "schema_valid": true,
+      "observation_date": "2026-07",
+      "within_cadence": true,
+      "passed": true,
+      "error": "",
+      "notes": {
+        "schema_message": "160 months (12 values parsed)",
+        "cadence_message": "Within SLO (37d old)"
+      }
+    },
+    {
+      "source_id": "noaa-cpc-wpac850",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/data/indices/wpac850",
+      "timestamp": "2026-08-07T05:51:27.537230+00:00",
+      "http_status": 200,
+      "content_length": 12522,
+      "content_hash": "d78b016264e7b027",
+      "mime_type": "",
+      "schema_valid": true,
+      "observation_date": "2026-07",
+      "within_cadence": true,
+      "passed": true,
+      "error": "",
+      "notes": {
+        "schema_message": "151 months (12 values parsed)",
+        "cadence_message": "Within SLO (37d old)"
+      }
+    },
+    {
+      "source_id": "noaa-cpc-cpac850",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/data/indices/cpac850",
+      "timestamp": "2026-08-07T05:51:29.421914+00:00",
+      "http_status": 200,
+      "content_length": 12522,
+      "content_hash": "ce23794d4ff9db2b",
+      "mime_type": "",
+      "schema_valid": true,
+      "observation_date": "2026-07",
+      "within_cadence": true,
+      "passed": true,
+      "error": "",
+      "notes": {
+        "schema_message": "153 months (12 values parsed)",
+        "cadence_message": "Within SLO (37d old)"
+      }
+    },
+    {
+      "source_id": "noaa-cpc-epac850",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/data/indices/epac850",
+      "timestamp": "2026-08-07T05:51:31.316472+00:00",
+      "http_status": 200,
+      "content_length": 12522,
+      "content_hash": "b08ce1cb008c8ada",
+      "mime_type": "",
+      "schema_valid": true,
+      "observation_date": "2026-07",
+      "within_cadence": true,
+      "passed": true,
+      "error": "",
+      "notes": {
+        "schema_message": "153 months (12 values parsed)",
+        "cadence_message": "Within SLO (37d old)"
+      }
+    },
+    {
+      "source_id": "noaa-cpc-enso-advisory",
+      "endpoint": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml",
+      "timestamp": "2026-08-07T05:51:33.211952+00:00",
+      "http_status": 200,
+      "content_length": 13522,
+      "content_hash": "d0d09cf032959ea4",
+      "mime_type": "text/html; charset=utf-8",
+      "schema_valid": true,
+      "observation_date": "2026-07",
+      "within_cadence": true,
+      "passed": true,
+      "error": "",
+      "notes": {
+        "schema_message": "Valid advisory HTML",
+        "cadence_message": "Within SLO (37d old)"
+      }
+    }
+  ]
+}
