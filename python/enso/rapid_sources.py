@@ -58,7 +58,7 @@ def build_oisst_griddap_url(
         raise ValueError("invalid OISST region")
     return (
         "https://www.ncei.noaa.gov/erddap/griddap/"
-        f"{dataset}.csv?{variable}[({time_selector})][(0.0)]"
+        f"{dataset}.csv?{variable}[{time_selector}][(0.0)]"
         f"[({lat_min:g}):({lat_max:g})][({lon_min:g}):({lon_max:g})]"
     )
 
