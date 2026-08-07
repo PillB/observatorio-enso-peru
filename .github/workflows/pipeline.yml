@@ -1,23 +1,19 @@
 # Pipeline del Observatorio ENSO Perú — adquisición, normalización y tests.
-# Se ejecuta diariamente a las 23:37 America/Lima (04:37 UTC) y
-# bajo demanda manual (workflow_dispatch). No usa secretos del repositorio.
+# Validación del pipeline heredado únicamente en pull requests. La producción
+# diaria pertenece exclusivamente a daily-refresh.yml.
 name: pipeline
 
 on:
-  schedule:
-    # 23:37 America/Lima (UTC-5) = 04:37 UTC, fuera de la hora en punto.
-    - cron: '37 4 * * *'
-  workflow_dispatch:
   pull_request:
     paths:
       - 'python/**'
       - '.github/workflows/pipeline.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: enso-production-publication
+  group: enso-pr-pipeline-${{ github.event.pull_request.number }}
   cancel-in-progress: false
 
 jobs:
@@ -43,20 +39,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run pipeline (acquire + normalize + emit)
-        working-directory: python
-        run: |
-          python -m enso.cli run
-
       - name: Run contract tests
         working-directory: python
         run: |
           python -m pytest -q
 
-      - name: Validate artifacts
+      - name: Validate canonical publication artifacts
         working-directory: python
+        env:
+          ENSO_DATA_DIR: ../public/data
         run: |
-          python -m enso.cli validate
+          python -m enso.publication_validator
 
       - name: Upload pipeline artifacts
         if: always()
@@ -64,19 +57,6 @@ jobs:
         with:
           name: enso-pipeline-out
           path: |
-            python/out/**
-            python/cache/**
+            public/data/**
           if-no-files-found: warn
           retention-days: 30
-
-      - name: Commit outputs to data branch (scheduled only)
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        run: |
-          set -e
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Crea o actualiza la rama 'data' con los artefactos del pipeline.
-          git checkout -B data
-          git add python/out/
-          git commit -m "chore(data): pipeline run $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          git push origin data

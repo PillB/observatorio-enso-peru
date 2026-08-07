@@ -2,7 +2,7 @@
 
 Verifica:
   - RONI se obtiene del producto oficial, NO se calcula como rolling mean.
-  - ICEN se calcula correctamente como 3-month rolling mean de Niño 1+2.
+  - ICEN no se fabrica desde una serie sustituta no verificada.
   - Weekly SST se parsea correctamente.
   - CPC wind indices se parsean correctamente.
   - Source profiles tienen metadatos completos.
@@ -12,6 +12,7 @@ Verifica:
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -80,35 +81,21 @@ MJJ  2026  0.98
 
 
 # ----------------------------------------------------------------------------
-# PREFLIGHT-008: ICEN sí se calcula como 3-month rolling mean (metodología ENFEN)
+# PREFLIGHT-008: ICEN debe provenir de ENFEN con metodología trazable
 # ----------------------------------------------------------------------------
-class TestIcenComputation:
-    """ICEN se calcula correctamente como rolling mean de Niño 1+2."""
+class TestIcenAcquisitionBoundary:
+    """ICEN no se deriva silenciosamente de NOAA/PSL Niño 1+2."""
 
-    def test_icen_uses_3mo_mean(self):
-        """ICEN usa media móvil de 3 meses de Niño 1+2."""
-        orch = AcquisitionOrchestrator.__new__(AcquisitionOrchestrator)
-        n12 = [
-            {"month": "2026-01", "value": 1.0, "flag": "final"},
-            {"month": "2026-02", "value": 2.0, "flag": "final"},
-            {"month": "2026-03", "value": 3.0, "flag": "final"},
-        ]
-        icen = orch._compute_icen(n12)
-        # ICEN for 2026-01: only 1 value → None
-        assert icen[0]["value"] is None
-        # ICEN for 2026-02: only 2 values → None
-        assert icen[1]["value"] is None
-        # ICEN for 2026-03: (1+2+3)/3 = 2.0
-        assert icen[2]["value"] == 2.0
+    def test_no_project_rolling_mean_method_exists(self):
+        assert not hasattr(AcquisitionOrchestrator, "_compute_icen")
 
     def test_icen_not_used_for_roni(self):
-        """El método _compute_icen no se aplica a RONI."""
-        # RONI se obtiene de acquire_roni() que usa el producto oficial
-        # ICEN se obtiene de _compute_icen() que aplica la metodología ENFEN
-        # Verificar que son métodos separados
+        """RONI conserva su adaptador oficial e independiente."""
         assert hasattr(AcquisitionOrchestrator, "acquire_roni")
-        assert hasattr(AcquisitionOrchestrator, "_compute_icen")
-        assert AcquisitionOrchestrator.acquire_roni != AcquisitionOrchestrator._compute_icen
+
+    def test_icen_profile_is_document_authority_not_psl_fallback(self):
+        assert SOURCES["enfen-imarpe-document-assets"].supported_metric_ids[-1] == "icen"
+        assert SOURCES["noaa-cpc-roni"].fallback_source_ids == ()
 
 
 # ----------------------------------------------------------------------------
@@ -172,6 +159,62 @@ YEAR   JAN   FEB   MAR   APR   MAY   JUN   JUL   AUG   SEP   OCT   NOV   DEC
         assert len(pts) == 12
         assert pts[0]["value"] == 0.5
         assert pts[1]["value"] is None  # -999.0 → None
+
+    def test_parse_handles_concatenated_negative_values_from_live_cpc(self):
+        """CPC concatena valores negativos cuando se agota el ancho fijo.
+
+        Ejemplo real observado el 2026-08-07: ``-2.4-999.9``. Un parser
+        basado únicamente en ``split()`` descarta todo el año 2026 y deja
+        SOI/vientos artificialmente detenidos en diciembre de 2025.
+        """
+        text = """YEAR   JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC
+2026   1.1 1.4 1.2 -0.6 -0.9 -1.4 -2.4-999.9-999.9-999.9-999.9-999.9
+"""
+        pts = parse_monthly_ascii(text)
+        assert len(pts) == 12
+        assert pts[6] == {"month": "2026-07", "value": -2.4, "flag": "preliminary"}
+        assert all(p["value"] is None for p in pts[7:])
+
+    def test_soi_parser_selects_standardized_section_without_duplicate_months(self):
+        text = """ANOMALY
+YEAR JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC
+2026 1.8 2.4 2.0 -1.1 -1.5 -2.4 -4.0 -999.9 -999.9 -999.9 -999.9 -999.9
+STANDARDIZED    DATA
+YEAR JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC
+2026 1.1 1.4 1.2 -0.6 -0.9 -1.4 -2.4 -999.9 -999.9 -999.9 -999.9 -999.9
+"""
+        pts = parse_monthly_ascii(text, section_marker="STANDARDIZED")
+        assert len(pts) == 12
+        assert pts[6]["value"] == -2.4
+        assert len({p["month"] for p in pts}) == 12
+
+
+class TestCanonicalCliAndFreshness:
+    def test_cli_exposes_workflow_options(self):
+        proc = subprocess.run(
+            [sys.executable, "-m", "enso.unified_acquisition", "--help"],
+            cwd=REPO / "python", capture_output=True, text=True, check=True,
+        )
+        for option in ("--source", "--force-refresh", "--dry-run",
+                       "--staging-dir", "--publication-dir"):
+            assert option in proc.stdout
+
+    def test_stale_observation_is_suppressed_but_last_known_is_preserved(self, tmp_path):
+        publication = tmp_path / "public"
+        staging = tmp_path / "staging"
+        publication.mkdir()
+        orch = AcquisitionOrchestrator(publication, staging)
+        orch.publication_id = "test-publication"
+        data = {
+            "n12": [{"month": "2020-01", "value": 1.5, "flag": "final"}],
+            "n34": [], "icen": [], "roni": [], "soi": [], "d20": [], "u850": [],
+            "noaa_advisory": None, "enfen_status": None,
+        }
+        orch._write_status_json(staging, data, "2026-08-07T12:00:00+00:00")
+        status = json.loads((staging / "status.json").read_text())
+        assert status["coastal"]["nino12Anom"] is None
+        assert status["coastal"]["nino12LastKnownValue"] == 1.5
+        assert status["coastal"]["nino12FreshnessState"] == "STALE"
 
 
 # ----------------------------------------------------------------------------

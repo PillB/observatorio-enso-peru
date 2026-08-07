@@ -45,7 +45,8 @@ jobs:
 
       - name: Check for secrets
         run: |
-          if grep -rE "sk-[a-zA-Z0-9]{20}|ghp_[a-zA-Z0-9]{30}|AKIA[A-Z0-9]{16}" public/ src/ --include="*.ts" --include="*.tsx" --include="*.html" --include="*.json" | head -5; then
+          if grep -rEq --include="*.ts" --include="*.tsx" --include="*.html" --include="*.json" \
+            "sk-[a-zA-Z0-9]{20}|ghp_[a-zA-Z0-9]{30}|AKIA[A-Z0-9]{16}" public/ src/; then
             echo "::error::Posibles secretos detectados"
             exit 1
           else
