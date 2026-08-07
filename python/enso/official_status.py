@@ -155,51 +155,29 @@ def fetch_enfen_status() -> dict:
         with httpx.Client(timeout=15.0, follow_redirects=True) as client:
             resp = client.get(
                 ENFEN_WP_API,
-                params={"per_page": 1, "categories": 28},
+                # La categoría también ha contenido noticias. Consultar una
+                # ventana acotada y seleccionar semánticamente el comunicado
+                # oficial evita que una noticia posterior reemplace el estado.
+                params={"per_page": 10, "categories": 28},
                 headers={
                     "User-Agent": "Observatorio-ENSO-Peru/3.0 (pipeline; +https://github.com/PillB/observatorio-enso-peru)",
                     "Accept": "application/json",
                 },
             )
             resp.raise_for_status()
-            posts = resp.json()
-            if not posts:
-                return _load_enfen_fallback()
-
-            post = posts[0]
-            title_html = post.get("title", {}).get("rendered", "")
-            title = html_mod.unescape(re.sub(r"<[^>]+>", "", title_html)).strip()
-            date_str = post.get("date", "")[:10]  # YYYY-MM-DD
-            link = post.get("link", "")
-
-            # Extract alert status from title
-            alert = "Sin datos"
-            for pattern, label in ENFEN_ALERT_PATTERNS:
-                if re.search(pattern, title, re.IGNORECASE):
-                    alert = label
-                    break
-
-            # If title doesn't have alert, check content
-            if alert == "Sin datos":
-                content_html = post.get("content", {}).get("rendered", "")
-                content_text = html_mod.unescape(re.sub(r"<[^>]+>", " ", content_html))
-                for pattern, label in ENFEN_ALERT_PATTERNS:
-                    if re.search(pattern, content_text, re.IGNORECASE):
-                        alert = label
-                        break
-
-            if alert == "Sin datos":
-                return _load_enfen_fallback()
-
-            # Convert date to YYYY-MM
-            month = date_str[:7] if date_str else None
+            from enso.document_sources import parse_enfen_wordpress_posts
+            discovered = parse_enfen_wordpress_posts(resp.text)
 
             return {
-                "alert": alert,
+                "alert": discovered["alert"],
                 "icen": None,
-                "month": month,
-                "url": link,
-                "source": "live",
+                "month": discovered["publication_date"][:7],
+                "publication_date": discovered["publication_date"],
+                "url": discovered["source_url"],
+                "source": "wordpress_rest_json",
+                "post_id": discovered["post_id"],
+                "document_urls": discovered["document_urls"],
+                "evidence_text": discovered["evidence_text"],
                 "fetched_at": datetime.now(timezone.utc).isoformat(),
             }
     except Exception:

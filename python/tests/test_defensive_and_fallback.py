@@ -225,13 +225,14 @@ class TestFallbackGraph:
         assert g is not None
         assert any("Niño 3.4" in p or "nino 3.4" in p.lower() for p in g.prohibited_substitutions)
 
-    def test_icen_graph_has_fallback_to_psl(self):
-        """El grafo de ICEN tiene fallback a PSL Niño 1+2."""
+    def test_icen_graph_has_no_unverified_equivalent_fallback(self):
+        """ICEN no usa una media móvil PSL como sustituto silencioso."""
         g = get_fallback_graph("icen")
         assert g is not None
         equivalent = g.get_level(FallbackLevel.EQUIVALENT)
         assert equivalent is not None
-        assert equivalent.source_id == "noaa-psl-nino12"
+        assert equivalent.source_id == ""
+        assert "Sin fallback equivalente" in equivalent.description
 
     def test_icen_graph_prohibits_weekly_substitution(self):
         """El grafo de ICEN prohíbe sustitución con weekly."""

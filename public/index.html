@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Observatorio ENSO Perú — Monitoreo costero y de cuenca</title>
   <meta name="description" content="Plataforma de monitoreo de indicadores ENSO costeros y de cuenca para Perú con fuentes NOAA y ENFEN.">
   <meta name="keywords" content="ENSO, El Niño Costero, ICEN, ENFEN, Niño 1+2, Niño 3.4, RONI, SOI, D20, Perú, NOAA">
@@ -83,6 +83,7 @@
       .pulse-dot { width: 4px; height: 4px; }
       .hdr-grd-pill { font-size: 8px; padding: 0 4px; }
       .hdr-alert-level { font-size: 9px; padding: 2px 6px; }
+      .theme-toggle, .tutorial-btn { min-width: 44px; min-height: 44px; }
     }
     @media (max-width: 480px) {
       .header h1 { font-size: 11px; }
@@ -166,6 +167,7 @@
     @media (max-width: 1023px) { .mobile-nav { display: flex; } }
     .mobile-nav button {
       flex-shrink: 0; padding: 6px 12px; border-radius: 8px;
+      min-height: 44px;
       border: 1px solid var(--border); font-size: 12px; font-weight: 500; cursor: pointer;
       background: var(--card); color: var(--muted); white-space: nowrap; transition: all 0.2s;
       display: flex; align-items: center; gap: 6px;
@@ -578,7 +580,7 @@
 const BASE = typeof window !== 'undefined' && window.location.pathname.includes('/observatorio-enso-peru') ? '/observatorio-enso-peru' : '';
 const DATA = BASE + '/data';
 
-let STATUS = null, MANIFEST = null, ALL_SERIES = null, INDICATORS = null, SOURCES = null;
+let STATUS = null, MANIFEST = null, ALL_SERIES = null, INDICATORS = null, SOURCES = null, LATEST_GRID = null;
 let currentView = 'overview';
 let theme = 'light';
 
@@ -658,7 +660,14 @@ function evalICEN(v){return evalThreshold(v,ICEN_OFFICIAL,'enfen-icen-official-v
 
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 function fmtMonth(iso){if(!iso||typeof iso!=='string')return '—';const parts=iso.split('-');if(parts.length<2)return iso;const y=parts[0],m=parseInt(parts[1]);return`${MESES[m-1]||'??'} ${y}`;}
-function fmtValue(v,units){if(v===null||v===undefined||v===''||isNaN(v))return'Sin datos';const dp=units==='m'?1:2;const sign=v>0&&units!=='dimensionless'?'+':'';const u=units==='degC'?' °C':units==='m'?' m':units==='m_per_s'?' m/s':'';return`${sign}${v.toFixed(dp)}${u}`;}
+function fmtValue(v,units){if(v===null||v===undefined||v===''||isNaN(v))return'Dato actual no disponible';const dp=units==='m'?1:2;const sign=v>0&&units!=='dimensionless'?'+':'';const u=units==='degC'?' °C':units==='m'?' m':units==='m_per_s'?' m/s':'';return`${sign}${v.toFixed(dp)}${u}`;}
+function renderRapidObservation(item,label){
+  item=item||{};
+  const state=item.freshnessState||'UNKNOWN';
+  const badge=state==='PRELIMINARY'?'Preliminar':state==='CURRENT'?'Final':state==='STALE'?'No vigente':'No disponible';
+  const detail=item.validPeriod?`${item.validPeriod} · ${item.pointCount||0} celdas · ${item.sourceId||'fuente no disponible'}`:'Sin observación rápida validada';
+  return `<div class="card"><div class="card-header"><div class="card-title">${ICONS.sst} ${label}</div><span class="pill pill-${state==='STALE'||state==='UNKNOWN'?'gray':'yellow'}">${badge}</span></div><p class="big-value">${fmtValue(item.value,'degC')}</p><p style="font-size:11px;color:var(--muted);margin-top:4px">${detail}</p><p style="font-size:10px;color:var(--muted);margin-top:6px">Contexto observacional OISST diario; no sustituye ICEN, RONI ni una alerta oficial.</p></div>`;
+}
 
 // SVG time series — metallic style
 function timeSeriesChart(seriesData, units, height) {
@@ -687,14 +696,15 @@ function timeSeriesChart(seriesData, units, height) {
 // Init
 async function init() {
   try {
-    const [statusRes, manifestRes, seriesRes, indicatorsRes, sourcesRes] = await Promise.all([
+    const [statusRes, manifestRes, seriesRes, indicatorsRes, sourcesRes, gridRes] = await Promise.all([
       fetch(`${DATA}/status.json`).then(r=>r.json()),
       fetch(`${DATA}/manifest.json`).then(r=>r.json()),
       fetch(`${DATA}/all-series.json`).then(r=>r.json()),
       fetch(`${DATA}/indicators.json`).then(r=>r.json()),
       fetch(`${DATA}/sources.json`).then(r=>r.json()),
+      fetch(`${DATA}/latest-grid.json`).then(r=>r.json()).catch(()=>({status:'UNAVAILABLE'})),
     ]);
-    STATUS=statusRes;MANIFEST=manifestRes;ALL_SERIES=seriesRes;INDICATORS=indicatorsRes;SOURCES=sourcesRes;
+    STATUS=statusRes;MANIFEST=manifestRes;ALL_SERIES=seriesRes;INDICATORS=indicatorsRes;SOURCES=sourcesRes;LATEST_GRID=gridRes;
     document.getElementById('footer-asof').textContent=MANIFEST.asOf;
     renderNav();renderHeader();
   navigate('overview');
@@ -858,6 +868,7 @@ function renderOverview(){
   return `${alertSummary}
   ${renderAlertBanner({scope:'both'})}
   <div class="info-note info"><strong>Estado oficial vs interpretación:</strong> Las alertas oficiales se citan de ENFEN y NOAA/CPC. Las señales operativas del equipo GRD son generadas por el observatorio y <strong>no constituyen alertas oficiales</strong>.</div>
+  <div class="grid-2">${renderRapidObservation((s.rapidObservations||{}).nino12Daily,'Observación diaria Niño 1+2')}${renderRapidObservation((s.rapidObservations||{}).nino34Daily,'Observación diaria Niño 3.4')}</div>
   <div class="grid-2">
     <div class="card"><div class="card-header"><div class="card-title">${ICONS.coastal} El Niño Costero</div><span class="badge badge-coastal">Costero</span></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span class="pill pill-warm">${s.coastal.alert}</span><span style="font-size:11px;color:var(--muted)">desde ${fmtMonth(s.coastal.alertSince)}</span></div>
@@ -986,6 +997,13 @@ function renderHistorical(){
     `<div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Niño 3.4 (cuenca) — historia completa</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino34.points,'degC',280)}</div></div>`;
 }
 function renderMaps(){
+  if(!LATEST_GRID || LATEST_GRID.status==='UNAVAILABLE'){
+    return renderAlertBanner({scope:'both'})+
+      '<div class="info-note warn"><strong>Mapa actual no disponible.</strong> No se publica una grilla sintetizada desde índices regionales. El mapa volverá a mostrarse cuando una subconsulta OISST real, validada y coherente con esta publicación esté disponible.</div>';
+  }
+  if (STATUS.coastal.nino12Anom == null || STATUS.basin.nino34Anom == null) {
+    return renderAlertBanner({scope:'both'}) + '<div class="info-note warn"><strong>Dato actual no disponible.</strong> La grilla ilustrativa se suprime porque uno o más índices de entrada excedieron su SLO de frescura. El último periodo válido permanece disponible en las series históricas.</div>';
+  }
   var n34 = STATUS.basin.nino34Anom;
   var n12 = STATUS.coastal.nino12Anom;
   var lats = [12,9,6,3,0,-3,-6,-9,-12];
@@ -1072,11 +1090,11 @@ function renderMaps(){
   svg += '</svg>';
   
   var html = renderAlertBanner({scope:'both'});
-  html += '<div class="info-note info">Esquema ilustrativo de anomal\u00eda de TSM (s\u00edntesis a partir de \u00edndices observados). Mes: ' + fmtMonth(STATUS.coastal.nino12Month) + '. C\u00e1lido = rojo, fr\u00edo = azul. Pase el cursor sobre una celda para ver el valor. <strong>Este mapa es una s\u00edntesis ilustrativa y no equivale a un producto oficial de NOAA.</strong></div>';
+  html += '<div class="info-note info">Grilla observacional validada. Mes: ' + fmtMonth(STATUS.coastal.nino12Month) + '. C\u00e1lido = rojo, fr\u00edo = azul.</div>';
   html += '<div class="card"><div class="card-header"><div class="card-title">' + ICONS.maps + ' Mapa de anomal\u00eda de TSM</div></div>';
   html += '<div class="chart-container">' + svg + '</div>';
   html += '<div class="map-legend-bar"><span style="font-size:11px;color:var(--cool)">\u22122.5 \u00b0C</span><div class="gradient"></div><span style="font-size:11px;color:var(--warm)">+2.5 \u00b0C</span></div>';
-  html += '<p style="font-size:11px;color:var(--muted);margin-top:8px">S\u00edntesis ilustrativa a partir de \u00edndices observados de NOAA/PSL a partir de \u00edndices regionales. Los continentes se muestran como referencia geogr\u00e1fica (proyecci\u00f3n equirectangular, baja resoluci\u00f3n). Datos grilleados completos: <a href="' + DATA + '/latest-grid.json" target="_blank">latest-grid.json</a>.</p></div>';
+  html += '<p style="font-size:11px;color:var(--muted);margin-top:8px">Los continentes se muestran como referencia geogr\u00e1fica. Evidencia de grilla: <a href="' + DATA + '/latest-grid.json" target="_blank">latest-grid.json</a>.</p></div>';
   return html;
 }
 function renderData(){
@@ -1088,6 +1106,10 @@ function renderData(){
     {f:'official-status.json',d:'Estado oficial'},
     {f:'operational-signals.json',d:'Se\u00f1ales del equipo GRD'},
     {f:'data-quality.json',d:'Calidad de datos'},
+    {f:'rapid-observations.json',d:'Observaciones rápidas OISST/TAO'},
+    {f:'coastal-bulletins.json',d:'Boletines costeros IMARPE validados'},
+    {f:'official-documents.json',d:'Evidencia documental ENFEN'},
+    {f:'acquisition-ledger.json',d:'Ledger de adquisición'},
     {f:'threshold-policies.json',d:'Pol\u00edticas de umbral'},
     {f:'source-registry.json',d:'Registro de fuentes'},
     {f:'all-series.json',d:'Todas las series JSON'},
@@ -1106,6 +1128,8 @@ function renderData(){
     {f:'latest-grid.json',d:'Grilla'},
     {f:'regional-impact.json',d:'Impacto regional'}
   ];
+  var publishedFiles = Array.isArray(MANIFEST.allFiles) ? new Set(MANIFEST.allFiles) : null;
+  if(publishedFiles) files = files.filter(x=>publishedFiles.has(x.f));
   var rows = '';
   for (var i = 0; i < files.length; i++) {
     var x = files[i];
@@ -1328,11 +1352,11 @@ function askChat(q) {
   if (!q || !q.trim()) { resp.innerHTML = '<strong>Por favor escriba una pregunta.</strong>'; resp.classList.add('active'); return; }
   let answer = '', evidence = '';
   if (q.match(/estado|actual/i)) {
-    answer = '<strong>Estado actual del observatorio</strong><br><br><strong>Costero:</strong> '+s.coastal.alert+'<br>ICEN: '+s.coastal.icen+' °C ('+s.coastal.icenCategory+')<br>Niño 1+2: '+s.coastal.nino12Anom+' °C<br><br><strong>Cuenca:</strong> '+s.basin.alert+'<br>RONI: '+s.basin.roni+' °C ('+s.basin.roniCategory+')<br>Niño 3.4: '+s.basin.nino34Anom+' °C';
+    answer = '<strong>Estado actual del observatorio</strong><br><br><strong>Costero:</strong> '+s.coastal.alert+'<br>ICEN: '+fmtValue(s.coastal.icen,'degC')+' ('+s.coastal.icenCategory+')<br>Niño 1+2: '+fmtValue(s.coastal.nino12Anom,'degC')+'<br><br><strong>Cuenca:</strong> '+s.basin.alert+'<br>RONI: '+fmtValue(s.basin.roni,'degC')+' ('+s.basin.roniCategory+')<br>Niño 3.4: '+fmtValue(s.basin.nino34Anom,'degC');
     evidence = '[EVID-status] Estado consolidado · '+s.asOf;
   } else if (q.match(/icen/i)) {
-    answer = '<strong>ICEN — Índice Costero El Niño</strong><br><br>El ICEN es la media móvil de 3 meses de las anomalías mensuales de TSM en la región Niño 1+2 (90–80ºO, 10ºS–0º).<br><br>Valor actual: <strong>'+s.coastal.icen+' °C</strong> ('+s.coastal.icenCategory+')<br>Ventana: '+s.coastal.icenWindow+'<br>Fuente: ENFEN / IMARPE';
-    evidence = '[EVID-icen] ICEN · '+s.coastal.nino12Month+' · '+s.coastal.icen+' °C · Preliminar: '+s.coastal.preliminary;
+    answer = '<strong>ICEN — Índice Costero El Niño</strong><br><br>El observatorio mantiene una estimación de tres meses basada en Niño 1+2; no sustituye la publicación oficial directa de ENFEN.<br><br>Valor actual: <strong>'+fmtValue(s.coastal.icen,'degC')+'</strong> ('+s.coastal.icenCategory+')<br>Ventana: '+s.coastal.icenWindow;
+    if (s.coastal.icen != null) evidence = '[EVID-icen] Estimación ICEN · '+s.coastal.icenWindow+' · '+s.coastal.icen+' °C';
   } else if (q.match(/soi.*costero|costero.*soi/i)) {
     answer = '<strong>No existe un «SOI costero»</strong><br><br>El SOI (Índice de Oscilación del Sur) es un índice de escala de cuenca basado en la diferencia de presión entre Tahiti y Darwin. No existe un proxy de presión costera con respaldo metodológico equivalente.<br><br>La condición costera se monitorea con TSM Niño 1+2 e ICEN.';
     evidence = '[k-no-coastal-soi] Conocimiento curado del observatorio.';
@@ -1340,14 +1364,14 @@ function askChat(q) {
     answer = '<strong>Diferencia entre El Niño Costero y ENSO de cuenca</strong><br><br><strong>El Niño Costero</strong> afecta el Pacífico oriental frente a Perú. Se monitorea con ICEN sobre Niño 1+2 (ENFEN).<br><br><strong>El ENSO de cuenca</strong> afecta el Pacífico ecuatorial. Se monitorea con RONI sobre Niño 3.4 (NOAA/CPC).<br><br>Pueden ocurrir juntos o por separado. Caso paradigmático: 2017, El Niño Costero fuerte sin El Niño de cuenca.';
     evidence = '[k-coastal-vs-basin] Conocimiento curado del observatorio.';
   } else if (q.match(/roni/i)) {
-    answer = '<strong>RONI — Índice Oceánico Relativo del Niño</strong><br><br>El RONI es el índice operacional vigente de NOAA/CPC para ENSO de cuenca. Se calcula con ERSSTv5 como anomalía relativa de Niño 3.4 (sustrayendo la anomalía de media tropical y ajustando varianza), base 1991–2020, con temporadas solapadas de 3 meses (DJF, JFM, …). NO es una media móvil simple de Niño 3.4.<br><br>Valor actual: <strong>'+s.basin.roni+' °C</strong> ('+s.basin.roniCategory+')';
-    evidence = '[EVID-roni] RONI · '+s.basin.nino34Month+' · '+s.basin.roni+' °C';
+    answer = '<strong>RONI — Índice Oceánico Relativo del Niño</strong><br><br>El RONI es el índice operacional vigente de NOAA/CPC para ENSO de cuenca. Se calcula con ERSSTv5 como anomalía relativa de Niño 3.4 (sustrayendo la anomalía de media tropical y ajustando varianza), base 1991–2020, con temporadas solapadas de 3 meses (DJF, JFM, …). NO es una media móvil simple de Niño 3.4.<br><br>Valor actual: <strong>'+fmtValue(s.basin.roni,'degC')+'</strong> ('+s.basin.roniCategory+')';
+    if (s.basin.roni != null) evidence = '[EVID-roni] RONI · '+s.basin.roniWindow+' · '+s.basin.roni+' °C';
   } else if (q.match(/d20|termoclina/i)) {
-    answer = '<strong>D20 — Profundidad de la isoterma de 20 °C</strong><br><br>D20 es un proxy de la profundidad de la termoclina. Anomalía positiva ⇒ más profunda (El Niño); negativa ⇒ más somera (La Niña).<br><br>Valor actual: <strong>'+s.thermocline.d20Anom+' m</strong><br>'+s.thermocline.interpretation;
-    evidence = '[EVID-d20] D20 · '+s.thermocline.d20Month+' · '+s.thermocline.d20Anom+' m';
+    answer = '<strong>D20 — Profundidad de la isoterma de 20 °C</strong><br><br>D20 es un proxy de la profundidad de la termoclina. Anomalía positiva ⇒ más profunda (El Niño); negativa ⇒ más somera (La Niña).<br><br>Valor actual: <strong>'+fmtValue(s.thermocline.d20Anom,'m')+'</strong><br>'+s.thermocline.interpretation;
+    if (s.thermocline.d20Anom != null) evidence = '[EVID-d20] D20 · '+s.thermocline.d20Month+' · '+s.thermocline.d20Anom+' m';
   } else if (q.match(/viento|wind|850/i)) {
-    answer = '<strong>Viento zonal a 850 hPa</strong><br><br>Convención: u &gt; 0 ⇒ flujo hacia el este (westerly); u &lt; 0 ⇒ flujo hacia el oeste (easterly).<br><br>Valor actual: <strong>'+s.winds.u850Anom+' m/s</strong><br>'+s.winds.direction;
-    evidence = '[EVID-u850] u850 · '+s.winds.u850Month+' · '+s.winds.u850Anom+' m/s';
+    answer = '<strong>Viento zonal a 850 hPa</strong><br><br>Convención: u &gt; 0 ⇒ flujo hacia el este (westerly); u &lt; 0 ⇒ flujo hacia el oeste (easterly).<br><br>Valor actual: <strong>'+fmtValue(s.winds.u850Anom,'m_per_s')+'</strong><br>'+s.winds.direction;
+    if (s.winds.u850Anom != null) evidence = '[EVID-u850] u850 · '+s.winds.u850Month+' · '+s.winds.u850Anom+' m/s';
   } else {
     answer = 'Pregunta no reconocida. Pruebe con: «estado actual», «ICEN», «SOI costero», «RONI», «D20», «diferencia costero vs cuenca».';
   }

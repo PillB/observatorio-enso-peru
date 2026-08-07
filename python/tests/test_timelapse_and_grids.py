@@ -66,6 +66,9 @@ def test_grid_field_deterministic():
     if not grid_file.exists():
         pytest.skip("latest-grid.json no generado — ejecutar bun run gen:data")
     data = json.loads(grid_file.read_text(encoding="utf-8"))
+    if data.get("status") == "UNAVAILABLE":
+        assert "Dato actual no disponible" in data["message"]
+        return
     sst = data["sst"]
     assert isinstance(sst, list)
     assert len(sst) > 0
@@ -80,6 +83,8 @@ def test_grid_longitude_in_180_range():
     if not grid_file.exists():
         pytest.skip("latest-grid.json no generado")
     data = json.loads(grid_file.read_text(encoding="utf-8"))
+    if data.get("status") == "UNAVAILABLE":
+        return
     for field in ("sst", "d20", "wind"):
         for c in data[field]:
             assert -180 <= c["lon"] <= 180, f"lon fuera de rango: {c['lon']}"
@@ -92,6 +97,8 @@ def test_wind_vector_convention_in_grid():
     if not grid_file.exists():
         pytest.skip("latest-grid.json no generado")
     data = json.loads(grid_file.read_text(encoding="utf-8"))
+    if data.get("status") == "UNAVAILABLE":
+        return
     wind = data["wind"]
     # Tomar un vector con u>0 y verificar la convención mediante u850_direction
     positives = [v for v in wind if v["u"] > 0.5]
@@ -117,7 +124,7 @@ def test_static_artifacts_manifest_consistency():
         assert (REPO / "public" / "data" / ind["file"]).exists(), (
             f"Falta {ind['file']}"
         )
-        assert ind["checksum"].startswith("fnv1a:")
+        assert ind["checksum"].startswith(("fnv1a:", "sha256:"))
 
 
 def test_static_csv_matches_json_series():

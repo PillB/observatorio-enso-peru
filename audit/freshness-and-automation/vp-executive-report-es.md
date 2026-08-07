@@ -1,144 +1,167 @@
-# Informe ejecutivo — Automatización de adquisición de datos ENSO
+# Evaluación ejecutiva y técnica — automatización ENSO
 
-## Observatorio ENSO Perú
-**Fecha**: 2026-08-07
-**Autor**: Arquitecto principal de adquisición de datos climáticos
-**SHA**: pendiente de despliegue
+**Fecha de corte:** 7 de agosto de 2026
 
----
+**Rama local:** `codex/enso-reliability-round4`
 
-## 1. VP Blurb (80–120 palabras)
+**Producción evaluada:** `https://pillb.github.io/observatorio-enso-peru/`
+**Veredicto:** `PARTIALLY_IMPLEMENTED`
 
-El observatorio puede obtener información más frecuentemente que mensual para varias variables clave. La TSM semanal se adquiere automáticamente desde NOAA/CPC (wksst9120.for, actualizada hasta julio 2026). La TSM diaria está disponible vía ERDDAP de NOAA/NCEI (OISST v2.1 preliminar). Los vientos a 850 hPa y el SOI se obtienen mensualmente de CPC. El estado oficial de ENFEN se extrae ahora en vivo desde su API de WordPress (Comunicado N° 13-2026, julio 2026). La infraestructura de descarga resiliente ya existe (ETag, reintentos, circuit breaker), pero la integración diaria extremo a extremo aún requiere ajustes. El riesgo principal es la dependencia de endpoints externos no controlados.
+## 1. Blurb para la Vicepresidencia
 
----
+Sí, es técnicamente viable obtener información más frecuente que la mensual, pero no para todos los indicadores con la misma cadencia. NOAA/NCEI ofrece TSM diaria OISST; NOAA/CPC publica TSM semanal de Niño 1+2 y Niño 3.4; IMARPE emite boletines costeros diarios y semanales; y TAO/TRITON aporta observaciones diarias de viento superficial y profundidad de la isoterma de 20 °C. La automatización usa ERDDAP, archivos ASCII/CSV, APIs WordPress y, cuando no existe una interfaz estructurada, descubrimiento y extracción defensiva de PDF. La mejora está implementada y probada en una rama local, pero aún no está desplegada. El principal riesgo pendiente es validar la ejecución completa en GitHub Actions y Pages.
 
 ## 2. Informe ejecutivo de una página
 
 ### Conclusión ejecutiva
 
-El observatorio posee infraestructura técnica robusta para adquisición automática de datos climáticos desde fuentes oficiales (NOAA/CPC, NOAA/PSL, NOAA/NCEI, ENFEN). La mayoría de las variables se actualizan mensualmente, pero existen fuentes semanales y diarias verificadas que pueden integrarse. El sistema ya adquiere datos en vivo de 11 fuentes, con 9/9 canaries de contrato pasando, pero la automatización diaria extremo a extremo aún no está completamente implementada para cadencias superiores a mensual.
+El observatorio sí puede incorporar información más reciente que los reportes mensuales. La disponibilidad, sin embargo, depende de la naturaleza de cada variable. La TSM admite observaciones diarias y semanales; D20 y viento cuentan con observaciones diarias de estaciones TAO/TRITON, pero estas no son sustitutos científicos de los índices regionales mensuales; SOI y RONI conservan su cadencia operacional mensual; y los estados oficiales cambian únicamente cuando NOAA/CPC o ENFEN publican un nuevo pronunciamiento.
 
 ### Qué información puede actualizarse con mayor frecuencia
 
-| Variable | Cadencia actual | Cadencia óptima verificada | Fuente preferida | Técnica | Estado del repositorio |
-|----------|----------------|---------------------------|------------------|---------|----------------------|
-| TSM Niño 1+2 | Mensual (PSL) | **Semanal** (CPC wksst9120) | NOAA/CPC | ASCII fijo | IMPLEMENTADO |
-| TSM Niño 3.4 | Mensual (PSL) | **Semanal** (CPC wksst9120) | NOAA/CPC | ASCII fijo | IMPLEMENTADO |
-| TSM diaria | No disponible | **Diaria** (ERDDAP OISST) | NOAA/NCEI | ERDDAP CSV | NO IMPLEMENTADO |
-| RONI | Mensual (oficial) | Mensual (estacional) | NOAA/CPC RONI.ascii.txt | ASCII | IMPLEMENTADO |
-| ICEN | Mensual (calculado) | Mensual | ENFEN/IMARPE | 3-mo mean Niño 1+2 | IMPLEMENTADO |
-| SOI | Mensual (CPC) | Mensual | NOAA/CPC | ASCII | IMPLEMENTADO |
-| Viento 850 hPa | Mensual (CPC) | Mensual | NOAA/CPC cpac850 | ASCII | IMPLEMENTADO |
-| D20 | Mensual (GODAS) | Mensual | NOAA/PSL GODAS | OPeNDAP ASCII | IMPLEMENTADO |
-| Estado ENFEN | Event-driven | Event-driven | ENFEN WordPress API | JSON REST | **IMPLEMENTADO (nuevo)** |
-| Estado NOAA | Mensual | Mensual | NOAA/CPC HTML | HTML parse | IMPLEMENTADO |
+| Variable | Mejor cadencia verificada | Fuente preferida | Técnica | Estado actual del repositorio |
+|---|---:|---|---|---|
+| TSM Niño 1+2 / 3.4 rápida | Diaria, preliminar | NOAA/NCEI OISST v2.1 | ERDDAP `griddap`, subconjunto regional | Implementada localmente; no desplegada |
+| TSM Niño 1+2 / 3.4 publicada | Semanal | NOAA/CPC OISST | ASCII de ancho fijo | Implementada; producción aún usa snapshot anterior |
+| TSM litoral peruano | Diaria / semanal, cuando IMARPE publica | BDO / BS‑TLP de IMARPE | Índice oficial → PDF → texto nativo | Adaptador local; acceso SIOFEN bloqueado desde este entorno |
+| D20 | Diaria por estación; mensual regional | PMEL TAO / GODAS | ERDDAP / OPeNDAP | PMEL local; GODAS existente |
+| Viento | Diario superficial por estación; mensual a 850 hPa | PMEL TAO / CPC | ERDDAP / ASCII | PMEL local; CPC existente |
+| SOI | Mensual | NOAA/CPC | ASCII, sección estandarizada | Corregido localmente |
+| RONI | Mensual, media móvil trimestral oficial | NOAA/CPC | ASCII directo | Implementado |
+| ICEN | Según publicación ENFEN | ENFEN/IMARPE | WordPress → informe PDF con evidencia | Derivación local incorrecta retirada; extracción directa aún puede quedar sin valor |
+| Estado oficial costero | Por comunicado | ENFEN | API WordPress; PDF como respaldo | Implementado localmente |
+| Estado oficial de cuenca | Mensual | NOAA/CPC | HTML oficial | Implementado |
 
 ### Cómo se automatiza
 
-- **GitHub Actions**: workflow `daily-refresh.yml` ejecuta a las 23:37 hora de Lima
-- **Adquisición defensiva**: ETag, Last-Modified, reintentos con backoff+jitter, circuit breaker, MIME validation
-- **Validación**: schema fingerprint, fechas monótonas, límites plausibles, coherencia de publicación
-- **Despliegue atómico**: staging → public/data → Pages artifact → deploy → verify
-- **Watchdog**: monitora health.json desplegado y dispatcha recuperación limitada
+La arquitectura separa tres capas: observaciones rápidas para conciencia situacional; índices operacionales con su metodología propia; y clasificaciones oficiales. Cada adquisición valida HTTPS, dominio final, tamaño, MIME, firma de archivo, esquema, unidades, fecha, región y checksum. Los reintentos son finitos, con backoff y `Retry-After`; un fallo conserva el último registro histórico, pero suprime cualquier afirmación de actualidad. Para documentos, la ruta es texto nativo, extracción determinista, OCR bajo revisión y LLM solo como último recurso sin publicación automática de cifras críticas.
 
 ### Situación actual del repositorio
 
-- 11 fuentes registradas con perfiles completos (cadencia, SLO, climatología)
-- 9/9 canaries de contrato de fuente pasan (endpoints reales, schema, cadencia)
-- 535 tests pasan, 3 skipped
-- Coherencia de publicación validada (todos los artefactos comparten publicationId)
-- ENFEN ahora se obtiene en vivo desde WordPress API (no más fallback)
-- RONI usa producto oficial (no rolling mean)
-- D20 documentado con variable fuente (dbss_obil), agregación espacial, climatología
+La rama local incorpora OISST diario, PMEL diario, descubrimiento WordPress ENFEN, validación PDF, BDO/BS‑TLP, frescura por fuente, ledger de adquisición, publicación coherente y supresión del ICEN fabricado. Pasan **558 pruebas; 2 se omiten por dependencias opcionales**. El sitio público, en cambio, continúa en el snapshot anterior: muestra ENFEN como fallback de mayo de 2026, ICEN estimado `+0,83 °C`, TSM mensual de mayo y no muestra OISST diario.
 
 ### Principales brechas
 
-1. **TSM diaria via ERDDAP**: verificada accesible pero no integrada al pipeline
-2. **IMARPE boletines diarios/semanales**: SIOFEN bloquea automatización (Cloudflare); ENFEN API sí accesible
-3. **Freshness específica por fuente**: el frontend no muestra separación entre fecha de observación, recuperación y publicación
-4. **Supresión de datos rancios**: no se muestra "Dato actual no disponible" cuando un valor excede su SLO
+Faltan ejecutar GitHub Actions con acceso real, revisar el PDF ENFEN actual, validar el despliegue y confirmar navegación móvil real. SIOFEN presentó 403/Cloudflare y DSpace devolvió una página HTML de error con estado aparente 200 en este entorno; ambos casos quedan detectados, no eludidos. Las grillas OISST todavía no alimentan un mapa real: el código local retira el mapa sintético hasta disponer de una grilla coherente.
 
 ### Arquitectura recomendada
 
-Mantener tres capas temporales independientes:
-- **Capa A (observacional rápida)**: TSM semanal/diaria para conciencia situacional
-- **Capa B (índices operacionales)**: ICEN, RONI, SOI, vientos, D20 con metodología oficial
-- **Capa C (autoridad oficial)**: ENFEN y NOAA/CPC alertas, independientes de observaciones rápidas
+Usar GitHub Actions y Pages para artefactos compactos, conservar historia normalizada y evidencia en artefactos/ramas de datos, y reservar almacenamiento externo para grillas grandes. Una sola promoción atómica debe generar `publicationId`, `sourceSnapshotId`, versión de esquema, SHA y políticas en todos los JSON.
 
-### Nivel de confianza
+### Nivel de confianza y siguientes pasos
 
-**Alto** para adquisición mensual y semanal. **Medio** para integración diaria (ERDDAP accesible pero no conectado). **Alto** para estados oficiales (ENFEN WordPress API + NOAA HTML parser funcionan en vivo).
+Confianza alta en NOAA OISST/CPC y WordPress ENFEN; media en PMEL por latencia variable; media-baja en SIOFEN por bloqueo operacional. Siguiente paso: ejecutar la rama en CI, revisar hallazgos, desplegar mediante PR autorizado y validar SHA/publicación, móvil, descargas, consola y red. Hasta entonces no corresponde afirmar automatización completa.
 
-### Siguientes pasos
+## 3. Matriz de fuentes y cadencias
 
-1. Integrar TSM diaria via ERDDAP OISST (bounded queries)
-2. Implementar separación visual de fechas (observación vs recuperación vs publicación) en frontend
-3. Implementar supresión de datos rancios ("Dato actual no disponible")
-4. Añadir PMEL TAO/TRITON como fuente de corrobación diaria
-
----
-
-## 3. Matriz de cadencia de fuentes
-
-| source_id | Institución | Producto | Cadencia | Latencia | Último periodo verificado | Método | Estado |
-|-----------|------------|----------|----------|----------|--------------------------|--------|--------|
-| noaa-cpc-wksst | NOAA/CPC | Weekly OISST Niño regions | Semanal | 3-7 días | 2026-07-29 | ASCII fijo | ✅ PRIMARY |
-| noaa-ncei-oisst-daily | NOAA/NCEI | Daily OISST v2.1 | Diaria | 1-2 días | 2026-08-01 (prelim) | ERDDAP CSV | ⚠ NO IMPLEMENTADO |
-| noaa-psl-nino12 | NOAA/PSL | Niño 1+2 mensual | Mensual | 3-10 días | 2026-05 | CSV | ✅ PRIMARY |
-| noaa-psl-nino34 | NOAA/PSL | Niño 3.4 mensual | Mensual | 3-10 días | 2026-05 | CSV | ✅ PRIMARY |
-| noaa-cpc-roni | NOAA/CPC | RONI oficial (estacional) | Mensual | 5-15 días | MJJ 2026 | ASCII | ✅ PRIMARY |
-| noaa-cpc-soi | NOAA/CPC | SOI mensual | Mensual | 3-7 días | 2026-07 | ASCII | ✅ PRIMARY |
-| noaa-cpc-cpac850 | NOAA/CPC | 850 hPa trade wind Central Pacific | Mensual | 3-7 días | 2026-07 | ASCII | ✅ PRIMARY |
-| noaa-cpc-godas-d20 | NOAA/PSL | D20 anomaly (dbss_obil) | Mensual | 10-20 días | 2026-06 | OPeNDAP | ✅ PRIMARY |
-| noaa-cpc-enso-advisory | NOAA/CPC | ENSO Alert System Status | Mensual | 0-1 día | 9 July 2026 | HTML parse | ✅ PRIMARY |
-| enfen-imarpe-status | ENFEN/IMARPE | Estado oficial El Niño Costero | Event-driven | Variable | 2026-07-17 | WordPress API JSON | ✅ PRIMARY (nuevo) |
+| Fuente | Producto / rol | Último período probado | Acceso | Selección | Limitación |
+|---|---|---|---|---|---|
+| NOAA/NCEI OISST preliminar | TSM/anomalía diaria, 0,25° | 2026-08-06 | ERDDAP CSV | PRIMARY rápida | Preliminar; climatología 1971–2000 |
+| NOAA/NCEI OISST final | TSM/anomalía diaria, 0,25° | 2026-07-22 | ERDDAP CSV | EQUIVALENT_FALLBACK | Rezago de control de calidad |
+| NOAA/CPC `wksst9120.for` | Niño 1+2 y 3.4 semanal | 2026-07-29 | ASCII | LOWER_CADENCE_FALLBACK | No sustituye ICEN/RONI |
+| IMARPE BDO | Rango TSM de estaciones costeras | válido 2026-07-07 | PDF oficial | DOCUMENT_FALLBACK | Índice bloqueado por Cloudflare aquí |
+| IMARPE BS‑TLP | TSM litoral semanal | edición 23, 2026-06-10 | PDF oficial | DOCUMENT_FALLBACK | Descubrimiento menos estable |
+| PMEL `pmelTaoDyIso` | D20 diario por estación | 2026-07-02/03 | ERDDAP CSV | CORROBORATION_ONLY | Cobertura cambiante; no es promedio GODAS |
+| PMEL `pmelTaoDyW` | Viento superficial diario | catálogo hasta 2026-07-03 | ERDDAP CSV | CORROBORATION_ONLY | No equivale a 850 hPa |
+| CPC RONI | Índice relativo oficial | MJJ 2026: 0,98 °C | ASCII | PRIMARY | Cadencia mensual; revisable |
+| CPC SOI | SOI estandarizado | 2026-07: −2,4 | ASCII | PRIMARY | Archivo contiene dos secciones; ya se selecciona la estandarizada |
+| CPC `cpac850` | Viento real 850 hPa | 2026-07: −2,4 m/s | ASCII | PRIMARY | No es anomalía |
+| ENFEN WordPress | Estado oficial costero | 2026-07-17, comunicado 13 | JSON REST | PRIMARY | Filtrar noticias de la categoría |
+| ENFEN PDF | ICEN/estado con página | según informe | PDF | DOCUMENT_FALLBACK | Publicar ICEN solo si valor, unidad y período son explícitos |
+| NOAA ENSO Discussion | Estado oficial de cuenca | 2026-07-09 | HTML | PRIMARY | Próxima emisión programada por la autoridad |
 
 ## 4. Matriz de implementación actual
 
 | Capacidad | Estado | Evidencia |
-|-----------|--------|-----------|
-| Adquisición semanal SST | IMPLEMENTED_AND_LIVE_VERIFIED | wksst9120.for, 9/9 canaries pass |
-| Adquisición mensual Niño 1+2/3.4 | IMPLEMENTED_AND_LIVE_VERIFIED | PSL CSV, canary pass |
-| RONI oficial (no computado) | IMPLEMENTED_AND_LIVE_VERIFIED | RONI.ascii.txt, roniSource label |
-| SOI mensual | IMPLEMENTED_AND_LIVE_VERIFIED | CPC soi, canary pass |
-| Viento 850 hPa | IMPLEMENTED_AND_LIVE_VERIFIED | CPC cpac850, actual wind labeled |
-| D20 (GODAS) | IMPLEMENTED_AND_LIVE_VERIFIED | OPeNDAP, dbss_obil documented |
-| Estado NOAA | IMPLEMENTED_AND_LIVE_VERIFIED | HTML parse, "El Niño Advisory" |
-| Estado ENFEN | IMPLEMENTED_AND_LIVE_VERIFIED | WordPress API, "Alerta de El Niño Costero" (source=live) |
-| TSM diaria (ERDDAP) | NOT_IMPLEMENTED | Endpoint accesible, no integrado |
-| IMARPE boletín diario | NOT_IMPLEMENTED | SIOFEN bloquea, no API alternativa |
-| IMARPE boletín semanal | NOT_IMPLEMENTED | SIOFEN bloquea |
-| HTTP condicional (ETag) | IMPLEMENTED_AND_LIVE_VERIFIED | DefensiveHttpClient |
-| Circuit breaker | IMPLEMENTED | defensive_acquisition.py |
-| Retry con backoff+jitter | IMPLEMENTED_AND_LIVE_VERIFIED | DefensiveHttpClient |
-| Validación de schema | IMPLEMENTED_AND_LIVE_VERIFIED | ContentValidator, source canaries |
-| Freshness específica por fuente | PARTIALLY_IMPLEMENTED | Source profiles defined, frontend no muestra separación |
-| Watchdog | IMPLEMENTED | freshness-watchdog.yml |
-| Source-contract canaries | IMPLEMENTED_AND_LIVE_VERIFIED | 9/9 pass |
-| Coherencia de publicación | IMPLEMENTED_AND_LIVE_VERIFIED | publication_validator.py |
-| Despliegue atómico | IMPLEMENTED_AND_LIVE_VERIFIED | _refresh-build-deploy.yml |
-| Tutorial con pause/resume | IMPLEMENTED_AND_LIVE_VERIFIED | pauseTutorial, resumeTutorial, restartTutorial |
-| Frontend hydration | IMPLEMENTED_AND_LIVE_VERIFIED | STATUS object from status.json |
-| Supresión de datos rancios | NOT_IMPLEMENTED | No "Dato actual no disponible" en UI |
+|---|---|---|
+| OISST diario | `IMPLEMENTED_NOT_LIVE_VERIFIED` | `python/enso/rapid_sources.py`; pruebas y respuesta real analizada |
+| Niño semanal | `IMPLEMENTED_AND_LIVE_VERIFIED` | parser CPC; producción tiene artefacto semanal |
+| BDO / BS‑TLP | `PARTIALLY_IMPLEMENTED` | `document_sources.py`; descubrimiento/PDF probado con fixtures; red SIOFEN bloqueada |
+| ENFEN directo | `IMPLEMENTED_NOT_LIVE_VERIFIED` | selección semántica entre 10 posts y evidencia de comunicado 13 |
+| RONI | `IMPLEMENTED_AND_LIVE_VERIFIED` | producto directo; MJJ 0,98 |
+| SOI | `IMPLEMENTED_NOT_LIVE_VERIFIED` | parser de sección estandarizada y negativos concatenados |
+| Viento CPC / PMEL | `PARTIALLY_IMPLEMENTED` | CPC operacional; PMEL de corroboración local |
+| D20 GODAS / PMEL | `PARTIALLY_IMPLEMENTED` | GODAS mensual; PMEL estación local |
+| ICEN | `PARTIALLY_IMPLEMENTED` | derivación incorrecta retirada; publicación directa puede quedar no disponible |
+| Reintentos, tamaño, MIME, dominio | `IMPLEMENTED_NOT_LIVE_VERIFIED` | clientes y pruebas de fallos |
+| Frescura por fuente / supresión stale | `IMPLEMENTED_NOT_LIVE_VERIFIED` | perfiles, `health.json`, frontend `Dato actual no disponible` |
+| Ledger y coherencia de publicación | `IMPLEMENTED_NOT_LIVE_VERIFIED` | `acquisition-ledger.json`, IDs/hash comunes, validador |
+| Watchdog / Pages atómico | `IMPLEMENTED_NOT_LIVE_VERIFIED` | workflows locales; no se ejecutaron remotamente |
+| Mapas reales OISST | `NOT_IMPLEMENTED` | mapa sintético retirado; falta publicar celdas reales |
+| CSV / chat / tarjetas | `PARTIALLY_IMPLEMENTED` | consumo canónico mejorado; falta despliegue y prueba live |
 
-## 5. Hipótesis verificadas
+## 5. Brechas confirmadas e hipótesis H1–H10
 
-| Hipótesis | Estado | Evidencia |
-|-----------|--------|-----------|
-| H1: Fetcher con ETag, backoff, cache, validación | CONFIRMED | fetchers.py + defensive_acquisition.py |
-| H2: Workflow inputs no reenviados | REJECTED | _refresh-build-deploy.yml reenvía force_refresh, dry_run, source |
-| H3: CLI sin source-specific/force-refresh | PARTIALLY_CONFIRMED | CLI tiene --dry-run, --staging-dir, --publication-dir pero no --force-refresh |
-| H4: Pipeline output ≠ deployed dir | REJECTED | unified_acquisition.py escribe a staging → public/data |
-| H5: ICEN como rolling mean | CONFIRMED | _compute_icen() usa 3-mo mean (metodología ENFEN correcta) |
-| H6: RONI como rolling mean | REJECTED | RONI se obtiene de RONI.ascii.txt (oficial) |
-| H7: Alertas oficiales hardcodeadas | REJECTED | NOAA scrapeado en vivo, ENFEN via WordPress API |
-| H8: Watchdog solo evalúa edad | PARTIALLY_CONFIRMED | Evalúa edad + source status, no source-specific valid-period |
-| H9: Watchdog suprime fallos | REJECTED | freshness-watchdog.yml no usa \|\| true |
-| H10: Source monitor solo registry | REJECTED | source_canaries.py hace probes reales (9/9 pass) |
+| Hipótesis | Resultado | Evidencia |
+|---|---|---|
+| H1 Fetcher resiliente | `PARTIALLY_CONFIRMED` | `fetchers.py` y `defensive_acquisition.py` contienen ETag, cache, backoff, jitter, hash y fallback; el orquestador unificado aún no reutiliza toda la cache condicional |
+| H2 inputs no llegan | `REJECTED` | `_refresh-build-deploy.yml` mapea inputs |
+| H3 CLI sin opciones | `REJECTED` | CLI soporta source, force, dry-run y directorios; `force` aún no cambia toda la estrategia de cache |
+| H4 salida distinta de Pages | `REJECTED` | staging se promueve a `public/data` |
+| H5 ICEN rolling simple | `CONFIRMED` en producción; corregido localmente | `_compute_icen` eliminado; `icen.csv` obsoleto se retira |
+| H6 RONI rolling simple | `REJECTED` | descarga directa `RONI.ascii.txt` |
+| H7 alerta costera hardcodeada | `PARTIALLY_CONFIRMED` en producción | producción usa fallback; rama usa WordPress estructurado |
+| H8 watchdog solo edad global | `PARTIALLY_CONFIRMED` | workflow mejorado, pendiente ejecución remota |
+| H9 recuperación suprimida | `REJECTED` localmente | fallos críticos ya no usan supresión |
+| H10 monitor solo registry | `REJECTED` localmente | canarios OISST, CPC, PMEL, ENFEN y SIOFEN hacen probes acotados |
 
-## 6. Veredicto final
+## 6. Recomendación de arquitectura
 
-**PARTIALLY_IMPLEMENTED**
+Opción A — construir todo el artefacto Pages desde fuentes vivas: simple, pero reproduce menos historia y puede agotar tiempo de ejecución. Opción B — persistir historia compacta y evidencia, luego construir Pages: mejor rollback y reproducibilidad. Opción C — grillas grandes en almacenamiento externo y resúmenes en Pages: evita crecimiento del repositorio. Se recomienda **B+C**: índices, salud y evidencia compactos en Git/artefactos; grillas inmutables fuera del repositorio; un único build de Pages.
 
-La adquisición automática funciona para 11 fuentes con cadencia mensual, semanal y event-driven. Los estados oficiales (ENFEN via WordPress API, NOAA via HTML) se obtienen en vivo. La TSM diaria via ERDDAP está verificada como accesible pero no integrada. La infraestructura defiensive (ETag, circuit breaker, canaries, coherencia de publicación) está implementada y verificada. Las brechas principales son: integración de TSM diaria, separación visual de fechas en el frontend, y supresión de datos rancios.
+## 7. Capacidades que se preservan
+
+Se conservan los perfiles de fuente, reintentos acotados, backoff/jitter, `Retry-After`, circuit breaker, ETag/Last‑Modified, cache atómica, SHA‑256, validación de contenido y último válido. Las correcciones son incrementales: selección SOI, límites de documentos, fuentes rápidas y coherencia de publicación.
+
+## 8. Adaptadores y fallbacks
+
+Cada métrica sigue `PRIMARY → equivalente autoritativo → misma métrica de menor cadencia → último válido fechado → UNAVAILABLE`. OISST preliminar reconcilia con OISST final y CPC semanal. RONI no cae a Niño 3.4; ICEN no cae a una media móvil del proyecto; PMEL no reemplaza GODAS/CPC; BDO/BS‑TLP permanecen contexto costero documental.
+
+## 9. Frescura y datos vencidos
+
+Se almacenan `retrievedAt`, `sourcePublishedAt`, `validPeriodEnd`, cadencia, latencia, SLO, umbral y revisión. `STALE` conserva el valor histórico, pero entrega `value=null` al estado actual. OISST preliminar puede mostrarse como `PRELIMINARY`; un comunicado mensual no vence por una corrida diaria sin cambios.
+
+## 10. GitHub Actions y Pages
+
+Flujo canónico: adquirir → validar → staging → IDs coherentes → pruebas → validador → artefacto Pages → despliegue → lectura live de `health.json`. Sigue pendiente reutilizar plenamente la cache condicional en el orquestador y emitir `NO_NEW_SOURCE_RELEASE` sin despliegue innecesario.
+
+## 11. Parsing y sanitización
+
+Los PDF requieren dominio permitido, HTTPS, MIME, `%PDF`, EOF, tamaño máximo, apertura completa y texto por página. HTML elimina `script/style`; JSON se valida estructuralmente; CSV verifica encabezados/unidades/duplicados/fechas; fórmulas no llegan a CSV públicos. OCR y LLM quedan en cuarentena y requieren corroboración humana/determinista.
+
+## 12. Pruebas y puertas de fiabilidad
+
+Resultado: **558 passed, 2 skipped**. Incluye 304, 429, `Retry‑After`, 4xx/5xx, timeout, MIME, tamaño, deriva, unidades, fechas futuras, duplicados, fallback, stale, coherencia, CLI, workflows, OISST, PMEL, WordPress, PDF, BDO y móvil estático. La prueba visual live de escritorio confirmó ausencia de overflow horizontal a 1363 px. La ejecución real a 390/320 px quedó bloqueada por falta de control de viewport en el navegador disponible; se añadieron `viewport-fit=cover` y objetivos táctiles de 44 px, pero requieren verificación posterior.
+
+## 13. Correcciones implementadas
+
+- OISST diario final/preliminar con promedio coseno-latitudinal y hash de esquema.
+- PMEL D20/viento diario como corroboración con estaciones y calidad explícitas.
+- ENFEN: selección del último **comunicado oficial**, no del último post genérico.
+- PDF ENFEN y boletines IMARPE con evidencia por página y cuarentena.
+- ICEN derivado retirado; SOI estandarizado sin duplicados; negativos CPC reparados.
+- Ledger, snapshot hash, versiones y SHA en los artefactos.
+- Descargas filtradas por manifiesto; mapa sintético suprimido.
+- Ajustes móviles de safe area y objetivos táctiles.
+
+## 14. Commits, PR y despliegue
+
+No se creó commit, PR ni despliegue. `gh` no está disponible y no se pudo establecer autorización para push, revisión, merge, workflow dispatch, producción o rollback. El trabajo permanece sin commit en `codex/enso-reliability-round4` sobre `818a4706`.
+
+## 15. Validación live
+
+La producción carga sin error de aplicación ni overflow horizontal en escritorio. Sigue mostrando snapshot 3.0: ENFEN fallback 2026‑05, ICEN estimado `+0,83 °C`, Niño 1+2/3.4 de mayo, RONI 0,98 y sin observaciones rápidas. El único error de consola observado provino de una extensión del navegador, no del sitio. Por tanto, las correcciones locales **no están live**.
+
+## 16. Riesgos restantes
+
+1. Ejecutar adquisición completa dentro del presupuesto de 30 minutos.
+2. Persistir cache condicional entre corridas y evitar publicaciones sin novedad.
+3. Resolver acceso lícito/estable a SIOFEN sin eludir Cloudflare.
+4. Validar el PDF ENFEN actual y la metodología/climatología ICEN exacta.
+5. Publicar una grilla OISST real para mapas.
+6. Validar iPhone 13 e iPod touch con navegador real, incluida cache de usuario recurrente.
+7. Completar revisión, merge, despliegue y rollback autorizado.
+
+## 17. Veredicto final
+
+**PARTIALLY_IMPLEMENTED** — la arquitectura y los adaptadores principales están implementados y probados localmente, pero no existe evidencia de CI/CD ni despliegue live de esta rama. No se cumple `FULLY_IMPLEMENTED_AND_LIVE_VERIFIED`.

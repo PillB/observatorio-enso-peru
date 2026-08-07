@@ -10,6 +10,7 @@ on:
 permissions:
   contents: read
   actions: write
+  issues: write
 
 concurrency:
   group: enso-production-publication
@@ -72,7 +73,7 @@ jobs:
               sid = src.get("id", "")
               status = src.get("status", "")
               freshness = src.get("freshnessState", "")
-              if status == "FAILED" or freshness == "STALE":
+              if status == "FAILED" or freshness in {"PUBLICATION_EXPECTED", "DELAYED", "STALE", "FAILED", "QUARANTINED"}:
                   issues.append(f"Source {sid} is {status}/{freshness}")
 
           # Decide whether to dispatch recovery
@@ -81,12 +82,8 @@ jobs:
               print("\n⚠ Issues detected:")
               for i in issues:
                   print(f"  - {i}")
-              # Only dispatch recovery if last publication is >30h old
-              if age_hours > 30:
-                  dispatch = "true"
-                  print("→ Dispatching recovery (age > 30h)")
-              else:
-                  print("→ Not dispatching (age within SLO)")
+              dispatch = "true"
+              print("→ Dispatching one bounded recovery attempt")
           else:
               print("\n✅ All sources healthy")
 
@@ -120,7 +117,23 @@ jobs:
             });
             const recentFailures = recent.data.workflow_runs.filter(r => r.conclusion === 'failure');
             if (recentFailures.length >= 3) {
-              core.info('Recovery skipped: 3+ consecutive failures — manual intervention required');
+              const title = 'ENSO production recovery budget exhausted';
+              const body = `Three or more recent daily-refresh runs failed. Manual intervention is required.\n\nWatchdog run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+              const issues = await github.rest.issues.listForRepo({
+                owner: context.repo.owner, repo: context.repo.repo,
+                state: 'open', per_page: 100
+              });
+              const existing = issues.data.find(issue => issue.title === title);
+              if (existing) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: existing.number, body
+                });
+              } else {
+                await github.rest.issues.create({
+                  owner: context.repo.owner, repo: context.repo.repo, title, body
+                });
+              }
               core.setFailed('3+ consecutive failures — manual intervention required');
               return;
             }

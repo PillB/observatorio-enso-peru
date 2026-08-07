@@ -112,7 +112,7 @@ class TestWorkflowConfiguration:
             "daily-data-update.yml schedule should be disabled (archived)"
 
     def test_daily_data_update_has_repository_dispatch(self):
-        content = (WORKFLOWS / "daily-data-update.yml").read_text()
+        content = (WORKFLOWS / "daily-refresh.yml").read_text()
         assert "repository_dispatch" in content
         assert "enso-refresh" in content
 
@@ -133,6 +133,11 @@ class TestWorkflowConfiguration:
     def test_source_contract_monitor_exists(self):
         assert (WORKFLOWS / "source-contract-monitor.yml").exists()
 
+    def test_source_contract_monitor_runs_live_bounded_canaries(self):
+        content = (WORKFLOWS / "source-contract-monitor.yml").read_text()
+        assert "python -m enso.source_canaries" in content
+        assert "source-canary-results.json" in content
+
     def test_update_data_reusable_exists(self):
         assert (WORKFLOWS / "_update-data.yml").exists()
 
@@ -140,12 +145,27 @@ class TestWorkflowConfiguration:
         content = (WORKFLOWS / "deploy-pages.yml").read_text()
         assert "[main]" in content or "main" in content
 
-    def test_pipeline_schedule_is_2337_lima(self):
-        content = (WORKFLOWS / "pipeline.yml").read_text()
-        assert "37 4" in content, "Pipeline debe ejecutarse a 23:37 Lima (04:37 UTC)"
+    def test_code_push_uses_same_acquire_build_deploy_path(self):
+        """Un push no debe volver a publicar el snapshot estático del repo."""
+        content = (WORKFLOWS / "deploy-pages.yml").read_text()
+        assert "./.github/workflows/_refresh-build-deploy.yml" in content
+        assert "actions/upload-pages-artifact" not in content
+
+    def test_workflow_inputs_reach_supported_cli_options(self):
+        content = (WORKFLOWS / "_refresh-build-deploy.yml").read_text()
+        assert 'args+=(--force-refresh)' in content
+        assert 'args+=(--source "$ENSO_SOURCE")' in content
+        assert 'args+=(--dry-run)' in content
+        assert "enso.unified_acquisition" in content
+
+    def test_only_canonical_pipeline_has_daily_schedule(self):
+        canonical = (WORKFLOWS / "daily-refresh.yml").read_text()
+        legacy = (WORKFLOWS / "pipeline.yml").read_text()
+        assert "37 4 * * *" in canonical
+        assert "schedule:" not in legacy
 
     def test_concurrency_group_prevents_overlap(self):
-        for wf in ["daily-data-update.yml", "deploy-pages.yml"]:
+        for wf in ["daily-refresh.yml", "_refresh-build-deploy.yml"]:
             content = (WORKFLOWS / wf).read_text()
             assert "concurrency" in content, f"{wf} debe tener grupo de concurrencia"
 
@@ -174,3 +194,14 @@ class TestSecurityScan:
         # Check that current values come from STATUS object, not literals
         assert "STATUS.coastal.icen" in html or "s.coastal.icen" in html
         assert "STATUS.basin.roni" in html or "s.basin.roni" in html
+
+    def test_frontend_does_not_render_synthetic_grid_as_current_map(self):
+        html = (REPO / "public" / "index.html").read_text()
+        assert "síntesis ilustrativa a partir de índices" not in html.lower()
+        assert "LATEST_GRID.status==='UNAVAILABLE'" in html
+
+    def test_download_table_filters_against_canonical_manifest(self):
+        html = (REPO / "public" / "index.html").read_text()
+        assert "MANIFEST.allFiles" in html
+        assert "rapid-observations.json" in html
+        assert "acquisition-ledger.json" in html

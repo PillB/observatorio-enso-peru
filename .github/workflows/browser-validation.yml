@@ -122,6 +122,8 @@ jobs:
 
           errors = []
           overflow_views = []
+          screenshots = "/tmp/enso-browser-evidence"
+          os.makedirs(screenshots, exist_ok=True)
 
           with sync_playwright() as p:
               launcher = getattr(p, BROWSER)
@@ -155,10 +157,25 @@ jobs:
                       of = page.evaluate("document.body.scrollWidth - window.innerWidth")
                       if of > 0:
                           overflow_views.append({"view": v, "overflow": of})
+                      if v in ("overview", "maps", "data", "chatbot"):
+                          page.screenshot(
+                              path=f"{screenshots}/{BROWSER}-{VNAME}-{v}.png",
+                              full_page=True,
+                          )
                   except Exception as e:
                       errors.append(f"navigate({v}): {e}")
 
+              publication_id = page.evaluate("MANIFEST.publicationId")
               browser.close()
+
+          report = {
+              "browser": BROWSER, "viewport": {"width": VW, "height": VH, "name": VNAME},
+              "publicationId": publication_id, "errors": errors,
+              "overflowViews": overflow_views, "tutorialModules": tut,
+              "currentValues": {"icen": icen, "roni": roni, "d20": d20, "u850": u850},
+          }
+          with open(f"{screenshots}/{BROWSER}-{VNAME}-results.json", "w") as fh:
+              json.dump(report, fh, indent=2)
 
           # Report
           print(f"Browser: {BROWSER}")
@@ -193,4 +210,5 @@ jobs:
           name: browser-${{ matrix.browser }}-${{ matrix.viewport.name }}
           path: |
             /tmp/server.pid
+            /tmp/enso-browser-evidence/**
           retention-days: 7

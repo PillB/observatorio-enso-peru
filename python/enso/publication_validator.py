@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -75,7 +76,10 @@ def validate_status_series_agreement(data_dir: Path) -> list[str]:
     for csv_name, status_value, label in checks:
         csv_path = data_dir / csv_name
         if not csv_path.exists():
-            errors.append(f"{csv_name}: file not found")
+            # Un producto explícitamente no disponible no debe conservar una
+            # serie vieja solo para satisfacer la forma del snapshot.
+            if status_value is not None:
+                errors.append(f"{csv_name}: file not found")
             continue
 
         # Read last non-empty value from CSV
@@ -110,15 +114,28 @@ def validate_health_evidence(data_dir: Path) -> list[str]:
         return [f"health.json not found"]
 
     health = json.loads(health_path.read_text())
+    legacy_v3 = str(health.get("dataVersion", "")).startswith("3.0.")
     for src in health.get("sources", []):
         sid = src.get("id", "")
         evidence = src.get("retrievalEvidence", "")
         if not evidence:
             errors.append(f"health.json source {sid}: no retrievalEvidence")
-        if src.get("status") not in ("HEALTHY", "FAILED"):
+        if src.get("status") not in ("HEALTHY", "FAILED", "QUARANTINED"):
             errors.append(f"health.json source {sid}: invalid status '{src.get('status')}'")
-        if src.get("freshnessState") not in ("FRESH", "STALE"):
+        allowed_freshness = {
+            "CURRENT", "WITHIN_EXPECTED_CADENCE", "NOT_DUE",
+            "PUBLICATION_EXPECTED", "DELAYED", "PRELIMINARY", "STALE",
+            "FAILED", "QUARANTINED", "UNKNOWN",
+        }
+        # Compatibilidad de lectura para el snapshot 3.0 ya publicado. Todo
+        # snapshot 3.1 nuevo debe usar los estados específicos de cadencia.
+        if legacy_v3:
+            allowed_freshness.add("FRESH")
+        if src.get("freshnessState") not in allowed_freshness:
             errors.append(f"health.json source {sid}: invalid freshnessState '{src.get('freshnessState')}'")
+        if (not legacy_v3 and not src.get("validPeriodEnd")
+                and src.get("status") == "HEALTHY"):
+            errors.append(f"health.json source {sid}: missing validPeriodEnd")
 
     return errors
 
@@ -165,7 +182,7 @@ def validate_no_synthetic_data(data_dir: Path) -> list[str]:
 
 def run_all_validations() -> dict:
     """Run all publication coherence validations."""
-    data_dir = REPO / "public" / "data"
+    data_dir = Path(os.environ.get("ENSO_DATA_DIR", REPO / "public" / "data"))
 
     all_errors = []
     all_errors.extend(validate_publication_id_coherence(data_dir))
