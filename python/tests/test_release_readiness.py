@@ -172,6 +172,16 @@ class TestWorkflowConfiguration:
         content = (WORKFLOWS / "pull-request-validation.yml").read_text()
         assert "grep -rEq --include" in content
 
+    def test_python_and_typescript_source_registries_match(self):
+        """Every scientific source must remain traceable in both runtimes."""
+        import re
+        from enso.sources import SOURCES
+
+        python_ids = {source.id for source in SOURCES}
+        typescript = (REPO / "src/lib/enso/sources.ts").read_text()
+        typescript_ids = set(re.findall(r'id:\s*"([^"]+)"', typescript))
+        assert python_ids == typescript_ids
+
     def test_only_canonical_pipeline_has_daily_schedule(self):
         canonical = (WORKFLOWS / "daily-refresh.yml").read_text()
         legacy = (WORKFLOWS / "pipeline.yml").read_text()
