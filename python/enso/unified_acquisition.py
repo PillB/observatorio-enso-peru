@@ -202,22 +202,48 @@ def parse_monthly_ascii(text: str, fill_value: float = -999.0) -> list[dict]:
     """Parsea formato mensual CPC: YEAR + 12 valores mensuales.
 
     Usado para SOI, wpac850, cpac850, epac850.
+    Maneja el formato CPC donde valores negativos pueden estar concatenados
+    sin espacios (ej: "-2.4-999.9-999.9").
+    Solo parsea la primera sección (ORIGINAL DATA), no ANOMALY ni STANDARDIZED.
     """
+    import re as _re
     points = []
-    for line in text.strip().split("\n"):
+    # Only parse the first data section.
+    # Some CPC files (wpac850, cpac850, epac850) have multiple sections:
+    #   ORIGINAL DATA → ANOMALY → STANDARDIZED
+    # Others (SOI) have only one section with ANOMALY as the file title.
+    # Strategy: Cut at "ANOMALY" or "STANDARDIZED" ONLY if data lines exist before it.
+    section_text = text
+    for marker in ["ANOMALY", "STANDARDIZED"]:
+        lines = section_text.split("\n")
+        for i, line in enumerate(lines):
+            stripped = line.strip()
+            if stripped == marker or (stripped == marker + " DATA"):
+                # Check if there are data lines (starting with digit) before this marker
+                has_data_before = any(l.strip() and l.strip()[0].isdigit() for l in lines[:i])
+                if has_data_before:
+                    section_text = "\n".join(lines[:i])
+                break
+    for line in section_text.strip().split("\n"):
         line = line.strip()
         if not line or line.startswith("#") or line.startswith("YEAR") or not line[0].isdigit():
             continue
-        parts = line.split()
-        if len(parts) < 13:
+        # Extract year
+        year_match = _re.match(r"(\d{4})\s*(.*)", line)
+        if not year_match:
             continue
         try:
-            year = int(parts[0])
+            year = int(year_match.group(1))
         except ValueError:
+            continue
+        rest = year_match.group(2).strip()
+        # Use regex to extract all numeric values (handles concatenated negatives)
+        values = _re.findall(r"-?\d+\.\d+", rest)
+        if len(values) < 12:
             continue
         for m_idx in range(12):
             try:
-                val = float(parts[m_idx + 1])
+                val = float(values[m_idx])
                 if val <= fill_value or abs(val) > 1e6:
                     val = None
             except (ValueError, IndexError):

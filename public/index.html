@@ -563,7 +563,7 @@
       </div>
       <div>
         <h4>Datos y atribución</h4>
-        <p>Datos observados · Corte: <span id="footer-asof">—</span> Fuentes: NOAA/CPC, NOAA/PSL, ENFEN/IMARPE, SENAMHI, IGP.</p>
+        <p>Datos observados · Corte: <span id="footer-asof">—</span> · Publicación: <span id="footer-pubid">—</span> · Fuentes: NOAA/CPC, NOAA/PSL, ENFEN/IMARPE, SENAMHI, IGP.</p>
       </div>
     </div>
   </footer>
@@ -706,6 +706,8 @@ async function init() {
     ]);
     STATUS=statusRes;MANIFEST=manifestRes;ALL_SERIES=seriesRes;INDICATORS=indicatorsRes;SOURCES=sourcesRes;LATEST_GRID=gridRes;
     document.getElementById('footer-asof').textContent=MANIFEST.asOf;
+    var pubIdEl=document.getElementById('footer-pubid');
+    if(pubIdEl) pubIdEl.textContent=STATUS.publicationId||MANIFEST.publicationId||'—';
     renderNav();renderHeader();
     navigate('overview');
     restoreTutorialState();

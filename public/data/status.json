@@ -1,21 +1,21 @@
 {
   "asOf": "2026-08-09",
   "dataVersion": "3.0.0",
-  "generatedAt": "2026-08-09T04:09:36.771914+00:00",
+  "generatedAt": "2026-08-09T04:30:49.527822+00:00",
   "dataSource": "LIVE_OBSERVED",
-  "publicationId": "87f5071ace0a",
+  "publicationId": "68d8d2ccbc75",
   "coastal": {
     "alert": "Alerta de El Niño Costero",
     "alertSource": "ENFEN / IMARPE",
     "alertOfficialUrl": "https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen",
     "alertDate": "2026-07",
-    "alertSourceMethod": "live",
+    "alertSourceMethod": "wordpress_rest_json",
     "nino12Anom": 2.1,
     "nino12Month": "2026-06",
     "icen": 1.37,
     "icenWindow": "2026-06",
     "icenCategory": "El Niño Costero moderado",
-    "freshness": "Dato observado · adquirido 2026-08-09T04:09:36.771914+00:00"
+    "freshness": "Dato observado · adquirido 2026-08-09T04:30:49.527822+00:00"
   },
   "basin": {
     "alert": "El Niño Advisory",
@@ -28,11 +28,11 @@
     "roniWindow": "2026-06",
     "roniCategory": "El Niño (cuenca)",
     "roniSource": "NOAA/CPC RONI.ascii.txt (official, NOT computed)",
-    "freshness": "Dato observado · adquirido 2026-08-09T04:09:36.771914+00:00"
+    "freshness": "Dato observado · adquirido 2026-08-09T04:30:49.527822+00:00"
   },
   "winds": {
-    "u850Anom": 0.2,
-    "u850Month": "2025-12",
+    "u850Anom": 2.3,
+    "u850Month": "2026-07",
     "u850Source": "NOAA/CPC cpac850 (actual wind, Central Pacific 175°W-140°W)",
     "direction": "Viento hacia el este (westerly)",
     "signMeaning": "Valores positivos = viento hacia el este (westerly); negativos = hacia el oeste (easterly). Nota: CPC trade wind index es viento real (no anomalía)."
@@ -43,9 +43,9 @@
     "interpretation": "Termoclina cerca de la profundidad normal"
   },
   "soi": {
-    "value": -0.0,
-    "month": "2025-12",
-    "interpretation": "Componente atmosférica neutral",
+    "value": -2.4,
+    "month": "2026-07",
+    "interpretation": "Componente atmosférica de El Niño",
     "note": "El SOI es un índice de escala de cuenca (Tahiti-Darwin). El observatorio NO define un «SOI costero»."
   }
 }

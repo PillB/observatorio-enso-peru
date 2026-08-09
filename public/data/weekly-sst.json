@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T04:09:36.771914+00:00",
+  "generatedAt": "2026-08-09T04:30:49.527822+00:00",
   "source": "NOAA/CPC wksst8110.for",
   "points": [
     {
@@ -32819,5 +32819,5 @@
       "type": "weekly"
     }
   ],
-  "publicationId": "87f5071ace0a"
+  "publicationId": "68d8d2ccbc75"
 }
