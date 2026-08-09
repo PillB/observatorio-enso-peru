@@ -136,6 +136,25 @@ export const SOURCES: SourceRef[] = [
     fallbackSourceId: "pmel-tao-triton",
   },
   {
+    id: "noaa-cpc-godas-d20",
+    institution: "NOAA / CPC — GODAS vía PSL THREDDS",
+    product: "Anomalía mensual de dbss_obil (proxy D20) — Niño 3.4",
+    url: "https://psl.noaa.gov/thredds/dodsC/Datasets/godas/dbss_obil",
+    retrievalDate: "2026-08-06",
+    format: "OPeNDAP/ASCII (THREDDS)",
+    updateFrequency: "Mensual",
+    latency: "1–2 semanas",
+    license: "Dominio público (Gobierno de EE. UU.)",
+    attribution: "NOAA / PSL (GODAS dbss_obil)",
+    status: "VERIFIED",
+    notes:
+      "Media areal mensual de dbss_obil en Niño 3.4, validada con su " +
+      "definición, unidades, coordenadas y climatología 1991–2020. Se " +
+      "publica como proxy explícito; no se equipara silenciosamente con " +
+      "otra métrica de termoclina.",
+    fallbackSourceId: "pmel-tao-triton",
+  },
+  {
     id: "noaa-cpc-u850",
     institution: "NOAA / CPC — NCEP/NCAR Reanalysis",
     product: "Anomalía del viento zonal a 850 hPa — Pacífico ecuatorial",
@@ -152,6 +171,27 @@ export const SOURCES: SourceRef[] = [
       "este (componente del oeste / westerly); u < 0 ⇒ flujo hacia el " +
       "oeste (componente del este / easterly). Se distingue valor observado " +
       "de anomalía y viento de superficie (10 m) de bajo nivel (850 hPa).",
+    fallbackSourceId: "pmel-tao-triton",
+  },
+  {
+    id: "noaa-cpc-u850-anom",
+    institution: "NOAA / PSL — NCEP/NCAR Reanalysis",
+    product: "Anomalía mensual del viento zonal a 850 hPa — Niño 3.4",
+    url:
+      "https://psl.noaa.gov/cgi-bin/data/timeseries/timeseries.pl" +
+      "?ntype=1&var=Zonal+Wind&level=850&lat1=-5&lat2=5" +
+      "&lon1=190&lon2=240&iseas=0&mon1=0&mon2=11&iarea=1&typeout=1",
+    retrievalDate: "2026-08-06",
+    format: "ASCII (media areal PSL)",
+    updateFrequency: "Mensual",
+    latency: "Días",
+    license: "Dominio público (Gobierno de EE. UU.)",
+    attribution: "NOAA / PSL (NCEP/NCAR Reanalysis)",
+    status: "VERIFIED",
+    notes:
+      "Componente zonal u a 850 hPa promediada en Niño 3.4. La anomalía " +
+      "usa la climatología 1981–2010; u positiva representa flujo hacia " +
+      "el este y u negativa flujo hacia el oeste.",
     fallbackSourceId: "pmel-tao-triton",
   },
   {

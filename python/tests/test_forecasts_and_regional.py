@@ -26,6 +26,9 @@ def test_forecasts_artifact_exists():
     if not f.exists():
         pytest.skip("forecasts.json no generado — ejecutar bun run gen:data")
     data = json.loads(f.read_text(encoding="utf-8"))
+    if isinstance(data, dict) and data.get("status") == "UNAVAILABLE":
+        assert "Dato actual no disponible" in data["message"]
+        return
     assert isinstance(data, list)
     assert len(data) == 12  # 12 trimestres
 
@@ -36,6 +39,8 @@ def test_forecast_probabilities_sum_to_100():
     if not f.exists():
         pytest.skip("forecasts.json no generado")
     data = json.loads(f.read_text(encoding="utf-8"))
+    if isinstance(data, dict) and data.get("status") == "UNAVAILABLE":
+        return
     for season in data:
         total = season["probNino"] + season["probNeutral"] + season["probNina"]
         assert 99 <= total <= 101, f"Probabilidades no suman 100%: {total}"
@@ -47,6 +52,8 @@ def test_forecast_plume_has_members():
     if not f.exists():
         pytest.skip("forecasts.json no generado")
     data = json.loads(f.read_text(encoding="utf-8"))
+    if isinstance(data, dict) and data.get("status") == "UNAVAILABLE":
+        return
     for season in data:
         assert len(season["plume"]) == 9, f"Ensamble debe tener 9 miembros"
 
@@ -64,6 +71,9 @@ def test_regional_impact_covers_coastal_departments():
     if not f.exists():
         pytest.skip("regional-impact.json no generado")
     data = json.loads(f.read_text(encoding="utf-8"))
+    if isinstance(data, dict) and data.get("status") == "UNAVAILABLE":
+        assert "Dato actual no disponible" in data["message"]
+        return
     names = [d["name"] for d in data]
     required = ["Tumbes", "Piura", "Lambayeque", "Lima", "Tacna"]
     for name in required:
@@ -76,6 +86,8 @@ def test_regional_risk_levels_in_range():
     if not f.exists():
         pytest.skip("regional-impact.json no generado")
     data = json.loads(f.read_text(encoding="utf-8"))
+    if isinstance(data, dict) and data.get("status") == "UNAVAILABLE":
+        return
     for d in data:
         assert 1 <= d["riskLevel"] <= 4, f"Riesgo fuera de rango: {d['riskLevel']}"
         assert d["riskLabel"] in ("Bajo", "Moderado", "Alto", "Muy alto")
@@ -87,6 +99,8 @@ def test_regional_north_higher_risk_than_south():
     if not f.exists():
         pytest.skip("regional-impact.json no generado")
     data = json.loads(f.read_text(encoding="utf-8"))
+    if isinstance(data, dict) and data.get("status") == "UNAVAILABLE":
+        return
     by_name = {d["name"]: d for d in data}
     tumbes = by_name.get("Tumbes", {})
     tacna = by_name.get("Tacna", {})

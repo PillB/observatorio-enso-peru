@@ -1,49 +1,23 @@
-# Despliegue del frontend estático del Observatorio ENSO Perú en GitHub Pages.
-#
-# El frontend estático (public/index.html) carga datos desde /data/*.json
-# y renderiza el dashboard client-side con vanilla JS. No requiere build.
+# Despliegue por cambios de código. Usa exactamente la misma adquisición,
+# validación, construcción y publicación atómica que la actualización diaria.
+# Nunca vuelve a publicar el snapshot de public/data/ incluido en el checkout.
 name: deploy-pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: '11 4 * * 1'
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-concurrency:
-  group: enso-production-publication
-  cancel-in-progress: false
-
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./public
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+  refresh-build-deploy:
+    uses: ./.github/workflows/_refresh-build-deploy.yml
+    with:
+      force_refresh: false
+      dry_run: false
+      source: ''
+      publication_mode: normal

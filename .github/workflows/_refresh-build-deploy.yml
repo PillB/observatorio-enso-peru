@@ -64,19 +64,23 @@ jobs:
 
       - name: Run unified acquisition
         id: acquire
+        env:
+          ENSO_FORCE_REFRESH: ${{ inputs.force_refresh }}
+          ENSO_DRY_RUN: ${{ inputs.dry_run }}
+          ENSO_SOURCE: ${{ inputs.source }}
         run: |
           cd python
-          ARGS=""
-          if [ "${{ inputs.force_refresh }}" = "true" ]; then
-            ARGS="$ARGS --force-refresh"
+          args=(--staging-dir ../staging --publication-dir ../public/data)
+          if [ "$ENSO_FORCE_REFRESH" = "true" ]; then
+            args+=(--force-refresh)
           fi
-          if [ -n "${{ inputs.source }}" ]; then
-            ARGS="$ARGS --source ${{ inputs.source }}"
+          if [ -n "$ENSO_SOURCE" ]; then
+            args+=(--source "$ENSO_SOURCE")
           fi
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            ARGS="$ARGS --dry-run"
+          if [ "$ENSO_DRY_RUN" = "true" ]; then
+            args+=(--dry-run)
           fi
-          python -m enso.unified_acquisition --staging-dir ../staging --publication-dir ../public/data $ARGS
+          python -m enso.unified_acquisition "${args[@]}"
           echo "acquisition_exit=$?" >> $GITHUB_OUTPUT
 
       - name: Run scientific tests
@@ -85,57 +89,10 @@ jobs:
           python -m pytest -q --tb=short
 
       - name: Validate publication coherence
-        run: |
-          python3 - <<'PYEOF'
-          import json, sys
-          from pathlib import Path
-          pub = Path("public/data")
-          errors = []
-
-          # Check all required files exist
-          required = ["status.json", "health.json", "manifest.json", "nino12.csv", "nino34.csv", "roni.csv", "soi.csv", "d20.csv", "u850.csv"]
-          for f in required:
-              if not (pub / f).exists():
-                  errors.append(f"Missing required file: {f}")
-
-          # Check status.json has publication ID
-          if (pub / "status.json").exists():
-              s = json.loads((pub / "status.json").read_text())
-              if not s.get("publicationId"):
-                  errors.append("status.json missing publicationId")
-              if s.get("dataSource") != "LIVE_OBSERVED":
-                  errors.append(f"status.json dataSource is {s.get('dataSource')}, expected LIVE_OBSERVED")
-              # RONI must NOT be computed as rolling mean
-              if "roniSource" not in s.get("basin", {}):
-                  errors.append("status.json missing roniSource field")
-              elif "computed" in s["basin"]["roniSource"].lower() and "NOT computed" not in s["basin"]["roniSource"]:
-                  errors.append("RONI appears to be computed, not official")
-
-          # Check health.json has real evidence
-          if (pub / "health.json").exists():
-              h = json.loads((pub / "health.json").read_text())
-              if not h.get("sources"):
-                  errors.append("health.json has no sources")
-              for src in h.get("sources", []):
-                  if not src.get("retrievalEvidence"):
-                      errors.append(f"health.json source {src['id']} has no retrievalEvidence")
-
-          # Check manifest.json
-          if (pub / "manifest.json").exists():
-              m = json.loads((pub / "manifest.json").read_text())
-              if not m.get("publicationId"):
-                  errors.append("manifest.json missing publicationId")
-              if m.get("dataVersion") != "3.0.0":
-                  errors.append(f"manifest.json dataVersion is {m.get('dataVersion')}, expected 3.0.0")
-
-          if errors:
-              print("VALIDATION FAILED:")
-              for e in errors:
-                  print(f"  ❌ {e}")
-              sys.exit(1)
-          else:
-              print("✅ Publication coherence validated")
-          PYEOF
+        working-directory: python
+        env:
+          ENSO_DATA_DIR: ${{ inputs.dry_run && '../staging' || '../public/data' }}
+        run: python -m enso.publication_validator
 
       - name: Setup Pages
         if: inputs.dry_run != true && inputs.publication_mode != 'staging_only'
@@ -154,22 +111,25 @@ jobs:
 
       - name: Verify live deployment
         if: inputs.dry_run != true && inputs.publication_mode != 'staging_only'
+        env:
+          EXPECTED_PUBLICATION_ID: ${{ steps.acquire.outputs.publication_id }}
         run: |
-          sleep 15
           python3 - <<'PYEOF'
-          import urllib.request, json, sys
+          import urllib.request, json, sys, time
+          expected = json.load(open("public/data/health.json"))["publicationId"]
           url = "https://pillb.github.io/observatorio-enso-peru/data/health.json"
-          try:
-              resp = urllib.request.urlopen(url, timeout=30)
-              h = json.loads(resp.read())
-              print(f"Live health.json: pipelineStatus={h.get('pipelineStatus')}")
-              print(f"  Sources: {len(h.get('sources', []))}")
-              print(f"  Publication ID: {h.get('publicationId', 'MISSING')}")
-              if h.get("pipelineStatus") != "UPDATED":
-                  print("WARNING: pipelineStatus is not UPDATED")
-                  sys.exit(1)
-              print("✅ Live deployment verified")
-          except Exception as e:
-              print(f"❌ Live verification failed: {e}")
-              sys.exit(1)
+          last = None
+          for attempt in range(12):
+              try:
+                  req = urllib.request.Request(url + f"?verify={time.time_ns()}", headers={"Cache-Control":"no-cache"})
+                  h = json.loads(urllib.request.urlopen(req, timeout=30).read())
+                  last = h.get("publicationId")
+                  if last == expected:
+                      print(f"✅ Live publication verified: {expected}")
+                      sys.exit(0)
+              except Exception as exc:
+                  print(f"Attempt {attempt + 1}: {exc}")
+              time.sleep(10)
+          print(f"❌ Live publication mismatch: expected={expected}, observed={last}")
+          sys.exit(1)
           PYEOF

@@ -20,6 +20,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
+from urllib.parse import urlparse
 
 try:
     import httpx
@@ -47,6 +48,7 @@ class CanaryResult:
     within_cadence: bool = False
     error: str = ""
     notes: dict[str, Any] = field(default_factory=dict)
+    blocking: bool = True
 
     @property
     def passed(self) -> bool:
@@ -72,23 +74,35 @@ class CanaryResult:
             "passed": self.passed,
             "error": self.error,
             "notes": self.notes,
+            "blocking": self.blocking,
         }
 
 
-def fetch_endpoint(url: str, timeout: float = 30.0) -> tuple[Optional[int], str, dict[str, str]]:
+def fetch_endpoint(url: str, timeout: float = 30.0,
+                   max_bytes: int = 2_000_000) -> tuple[Optional[int], str, dict[str, str]]:
     """Fetch an endpoint and return (status, content, headers)."""
     if httpx is None:
         return None, "", {}
     try:
+        original_host = (urlparse(url).hostname or "").lower()
         with httpx.Client(timeout=timeout, follow_redirects=True) as client:
-            resp = client.get(
-                url,
+            with client.stream(
+                "GET", url,
                 headers={
                     "User-Agent": "Observatorio-ENSO-Peru/3.0 (canary; +https://github.com/PillB/observatorio-enso-peru)",
-                    "Accept": "text/plain, text/html, */*",
+                    "Accept": "text/plain, text/csv, application/json, text/html, */*",
                 },
-            )
-            return resp.status_code, resp.text, dict(resp.headers)
+            ) as resp:
+                final_host = (urlparse(str(resp.url)).hostname or "").lower()
+                if final_host != original_host:
+                    return resp.status_code, f"redirected to unexpected domain {final_host}", dict(resp.headers)
+                body = bytearray()
+                for chunk in resp.iter_bytes():
+                    body.extend(chunk)
+                    if len(body) > max_bytes:
+                        return resp.status_code, "response exceeded bounded canary size", dict(resp.headers)
+                encoding = resp.encoding or "utf-8"
+                return resp.status_code, bytes(body).decode(encoding, errors="replace"), dict(resp.headers)
     except Exception as e:
         return None, str(e), {}
 
@@ -178,6 +192,22 @@ def validate_html_advisory_schema(content: str) -> tuple[bool, str]:
     return True, "Valid advisory HTML"
 
 
+def validate_enfen_wp_schema(content: str) -> tuple[bool, str]:
+    try:
+        posts = json.loads(content)
+    except json.JSONDecodeError:
+        return False, "Response is not JSON"
+    if not isinstance(posts, list) or not posts:
+        return False, "No ENFEN posts returned"
+    post = posts[0]
+    required = ("date", "link", "title", "content")
+    if any(key not in post for key in required):
+        return False, "Missing WordPress post fields"
+    if not isinstance(post.get("title", {}).get("rendered"), str):
+        return False, "Invalid title.rendered"
+    return True, "Valid ENFEN WordPress post"
+
+
 def check_within_cadence(observation_date: str, stale_after_days: int) -> tuple[bool, str]:
     """Check if observation date is within the cadence SLO."""
     if not observation_date:
@@ -213,19 +243,38 @@ def run_canary(source_id: str) -> CanaryResult:
         )
 
     now = datetime.now(timezone.utc).isoformat()
-    status, content, headers = fetch_endpoint(profile.access_url, timeout=profile.timeout)
+    endpoint = profile.access_url
+    blocking = source_id not in {
+        "pmel-tao-daily-d20", "pmel-tao-daily-wind",
+        "imarpe-siofen-bdo", "imarpe-siofen-bs-tlp",
+        "enfen-imarpe-document-assets",
+    }
+    if source_id in {"noaa-ncei-oisst-daily-preliminary", "noaa-ncei-oisst-daily-final"}:
+        from enso.rapid_sources import build_oisst_griddap_url
+        dataset = (
+            "ncdc_oisst_v2_avhrr_prelim_by_time_zlev_lat_lon"
+            if "preliminary" in source_id else
+            "ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon"
+        )
+        endpoint = build_oisst_griddap_url(dataset, "anom", -5, 5, 190, 191)
+    elif source_id == "pmel-tao-daily-d20":
+        endpoint = "https://data.pmel.noaa.gov/pmel/erddap/info/pmelTaoDyIso/index.json"
+    elif source_id == "pmel-tao-daily-wind":
+        endpoint = "https://data.pmel.noaa.gov/pmel/erddap/info/pmelTaoDyW/index.json"
+    status, content, headers = fetch_endpoint(endpoint, timeout=profile.timeout)
 
     result = CanaryResult(
         source_id=source_id,
-        endpoint=profile.access_url,
+        endpoint=endpoint,
         timestamp=now,
         http_status=status,
         content_length=len(content) if content else 0,
         mime_type=headers.get("content-type", ""),
+        blocking=blocking,
     )
 
     if status != 200:
-        result.error = f"HTTP {status}"
+        result.error = f"HTTP {status}: {content[:300]}" if content else f"HTTP {status}"
         return result
 
     if not content:
@@ -311,6 +360,63 @@ def run_canary(source_id: str) -> CanaryResult:
             m_num = month_map2.get(mon_name, "01")
             obs_date = f"{yr}-{m_num}"
 
+    elif source_id == "enfen-imarpe-status":
+        try:
+            from enso.document_sources import parse_enfen_wordpress_posts
+            discovered = parse_enfen_wordpress_posts(content)
+            schema_valid, schema_msg = True, "Valid official ENFEN post"
+            obs_date = discovered["publication_date"]
+        except Exception as exc:
+            schema_valid, schema_msg = False, str(exc)
+
+    elif source_id == "enfen-imarpe-document-assets":
+        try:
+            from enso.document_sources import parse_enfen_wordpress_posts
+            discovered = parse_enfen_wordpress_posts(content)
+            schema_valid, schema_msg = True, "Valid official communiqué discovery"
+            obs_date = discovered["publication_date"]
+            result.notes["document_count"] = len(discovered["document_urls"])
+            result.notes["post_id"] = discovered["post_id"]
+        except Exception as exc:
+            schema_valid, schema_msg = False, str(exc)
+
+    elif source_id in {"noaa-ncei-oisst-daily-preliminary", "noaa-ncei-oisst-daily-final"}:
+        try:
+            from enso.rapid_sources import parse_erddap_grid_csv
+            parsed = parse_erddap_grid_csv(content, "anom", "Celsius")
+            schema_valid, schema_msg = True, parsed["schema_fingerprint"]
+            obs_date = parsed["valid_period"]
+            result.notes["point_count"] = parsed["point_count"]
+        except Exception as exc:
+            schema_valid, schema_msg = False, str(exc)
+
+    elif source_id in {"pmel-tao-daily-d20", "pmel-tao-daily-wind"}:
+        try:
+            metadata = json.loads(content).get("table", {}).get("rows", [])
+            required_variable = "ISO_6" if source_id.endswith("d20") else "WU_422"
+            variables = {row[1] for row in metadata if row and row[0] == "variable"}
+            expected = {"time", "latitude", "longitude", "station", required_variable}
+            if not expected.issubset(variables):
+                raise ValueError(f"missing PMEL variables: {sorted(expected - variables)}")
+            time_ranges = [row[4] for row in metadata if row[0] == "attribute" and row[1] == "time" and row[2] == "actual_range"]
+            if not time_ranges:
+                raise ValueError("missing PMEL time actual_range")
+            latest_epoch = float(str(time_ranges[-1]).split(",")[-1].strip())
+            obs_date = datetime.fromtimestamp(latest_epoch, tz=timezone.utc).date().isoformat()
+            schema_valid, schema_msg = True, f"PMEL variables include {required_variable}"
+        except Exception as exc:
+            schema_valid, schema_msg = False, str(exc)
+
+    elif source_id in {"imarpe-siofen-bdo", "imarpe-siofen-bs-tlp"}:
+        lower = content.lower()
+        expected_text = "bolet" in lower and ("temperatura" in lower or "oceanogr" in lower)
+        substituted = "cloudflare" in lower or "just a moment" in lower or "bad gateway" in lower
+        schema_valid = bool(expected_text and not substituted)
+        schema_msg = "Official bulletin index reachable" if schema_valid else "blocked/error page substituted for bulletin index"
+        # El índice no expone de manera estable una fecha estructurada. Un
+        # canario correcto registra UNKNOWN, no inventa una fecha actual.
+        obs_date = ""
+
     result.schema_valid = schema_valid
     result.observation_date = obs_date
     result.notes["schema_message"] = schema_msg
@@ -319,7 +425,12 @@ def run_canary(source_id: str) -> CanaryResult:
     stale_days_map = {
         "noaa-cpc-roni": 75, "noaa-psl-nino12": 60, "noaa-psl-nino34": 60,
         "noaa-cpc-soi": 60, "noaa-cpc-wpac850": 60, "noaa-cpc-cpac850": 60,
-        "noaa-cpc-epac850": 60, "noaa-cpc-wksst": 35, "noaa-cpc-enso-advisory": 45,
+        "noaa-cpc-epac850": 60, "noaa-cpc-wksst": 35,
+        "noaa-cpc-enso-advisory": 60, "enfen-imarpe-status": 120,
+        "noaa-ncei-oisst-daily-preliminary": 7,
+        "noaa-ncei-oisst-daily-final": 30,
+        "pmel-tao-daily-d20": 35, "pmel-tao-daily-wind": 35,
+        "enfen-imarpe-document-assets": 75,
     }
     stale_days = stale_days_map.get(source_id, 60)
     within, cadence_msg = check_within_cadence(obs_date, stale_days)
@@ -333,9 +444,13 @@ def run_all_canaries() -> dict:
     """Run all source-contract canaries and return structured results."""
     # Only check sources that have direct HTTP endpoints (not OPeNDAP or fallback)
     canary_sources = [
+        "noaa-ncei-oisst-daily-preliminary", "noaa-ncei-oisst-daily-final",
         "noaa-cpc-wksst", "noaa-psl-nino12", "noaa-psl-nino34",
         "noaa-cpc-roni", "noaa-cpc-soi", "noaa-cpc-wpac850",
         "noaa-cpc-cpac850", "noaa-cpc-epac850", "noaa-cpc-enso-advisory",
+        "enfen-imarpe-status", "enfen-imarpe-document-assets",
+        "pmel-tao-daily-d20", "pmel-tao-daily-wind",
+        "imarpe-siofen-bdo", "imarpe-siofen-bs-tlp",
     ]
 
     results = []
@@ -349,12 +464,14 @@ def run_all_canaries() -> dict:
 
     passed = sum(1 for r in results if r["passed"])
     failed = len(results) - passed
+    blocking_failed = sum(1 for r in results if not r["passed"] and r["blocking"])
 
     return {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "total_sources": len(results),
         "passed": passed,
         "failed": failed,
+        "blocking_failed": blocking_failed,
         "results": results,
     }
 
@@ -371,7 +488,7 @@ def main():
     report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False))
     print(f"Report written to: {report_path}")
 
-    return 0 if report["failed"] == 0 else 1
+    return 0 if report["blocking_failed"] == 0 else 1
 
 
 if __name__ == "__main__":

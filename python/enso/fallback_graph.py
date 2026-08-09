@@ -103,9 +103,9 @@ FALLBACK_GRAPHS: dict[str, MetricFallbackGraph] = {
             ),
             FallbackNode(
                 level=FallbackLevel.EQUIVALENT,
-                source_id="noaa-psl-nino12",
-                description="ICEN calculado desde Niño 1+2 de PSL (misma metodología)",
-                scientific_notes="Aplica la misma fórmula: 3-month rolling mean de Niño 1+2. Científicamente equivalente.",
+                source_id="",
+                description="Sin fallback equivalente validado",
+                scientific_notes="No derivar ICEN desde una serie Niño 1+2 con climatología o revisión no verificadas como equivalentes a ENFEN.",
             ),
             FallbackNode(
                 level=FallbackLevel.LAST_VALID,
@@ -121,6 +121,7 @@ FALLBACK_GRAPHS: dict[str, MetricFallbackGraph] = {
             ),
         ),
         prohibited_substitutions=(
+            "Media móvil del Niño 1+2 del proyecto NO sustituye el ICEN oficial",
             "Weekly Niño 1+2 NO sustituye ICEN (cadencia incompatible)",
             "Niño 3.4 NO sustituye ICEN (región diferente)",
         ),

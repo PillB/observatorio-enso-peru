@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import pytest
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[2]
 
 
 MOBILE_CONFIG = {
@@ -43,3 +46,10 @@ def test_pipeline_artifacts_are_not_mobile_specific():
     pipe = Pipeline(allow_network=False)
     # El pipeline produce archivos portable-agnoóstico.
     assert str(pipe.out_dir).endswith("out") or "out" in str(pipe.out_dir)
+
+
+def test_deployed_html_requests_safe_area_viewport_and_real_touch_targets():
+    html = (REPO / "public" / "index.html").read_text()
+    assert "viewport-fit=cover" in html
+    assert ".mobile-nav button" in html and "min-height: 44px" in html
+    assert ".theme-toggle, .tutorial-btn" in html and "min-width: 44px" in html
