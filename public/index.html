@@ -697,11 +697,45 @@ async function init() {
     STATUS=statusRes;MANIFEST=manifestRes;ALL_SERIES=seriesRes;INDICATORS=indicatorsRes;SOURCES=sourcesRes;
     document.getElementById('footer-asof').textContent=MANIFEST.asOf;
     renderNav();renderHeader();
-  navigate('overview');
-  restoreTutorialState();
+    navigate('overview');
+    restoreTutorialState();
   } catch(e) {
     document.getElementById('view-content').innerHTML=`<div class="info-note warn"><strong>Error de carga:</strong> ${e.message}</div>`;
   }
+}
+
+// G2: Freshness check — determines if an observation is stale
+function isObservationStale(obsMonth, staleAfterDays) {
+  if (!obsMonth || typeof obsMonth !== 'string') return true;
+  try {
+    var parts = obsMonth.split('-');
+    if (parts.length < 2) return true;
+    var y = parseInt(parts[0]), m = parseInt(parts[1]);
+    var obsDate = new Date(y, m - 1, 1);
+    var ageDays = Math.floor((Date.now() - obsDate.getTime()) / 86400000);
+    return ageDays > staleAfterDays;
+  } catch(e) { return true; }
+}
+
+// G2: Returns stale message or empty string
+function staleMessage(obsMonth, staleAfterDays, label) {
+  if (isObservationStale(obsMonth, staleAfterDays)) {
+    return '<span style="font-size:10px;color:var(--yellow);font-weight:600">Dato actual no disponible</span>';
+  }
+  return '';
+}
+
+// G3: Format observation period for display
+function fmtObservationPeriod(monthStr) {
+  if (!monthStr || typeof monthStr !== 'string') return '—';
+  return fmtMonth(monthStr);
+}
+
+// G3: Get freshness state for a source
+function getFreshnessState(obsMonth, staleAfterDays) {
+  if (!obsMonth) return 'UNKNOWN';
+  if (isObservationStale(obsMonth, staleAfterDays)) return 'STALE';
+  return 'CURRENT';
 }
 function renderHeader(){
   // Compute GRD signals from latest observed values for the header pills
@@ -861,17 +895,22 @@ function renderOverview(){
   <div class="grid-2">
     <div class="card"><div class="card-header"><div class="card-title">${ICONS.coastal} El Niño Costero</div><span class="badge badge-coastal">Costero</span></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span class="pill pill-warm">${s.coastal.alert}</span><span style="font-size:11px;color:var(--muted)">desde ${fmtMonth(s.coastal.alertSince)}</span></div>
-      <div class="grid-2"><div><p style="font-size:11px;color:var(--muted)">TSM Niño 1+2 (${fmtMonth(s.coastal.nino12Month)})</p><p class="big-value value-warm">${fmtValue(s.coastal.nino12Anom,'degC')}</p></div><div><p style="font-size:11px;color:var(--muted)">ICEN (${s.coastal.icenWindow})</p><p class="big-value value-warm">${fmtValue(s.coastal.icen,'degC')}</p><p style="font-size:11px;color:var(--muted)">${s.coastal.icenCategory}</p></div></div>
+      <div class="grid-2"><div><p style="font-size:11px;color:var(--muted)">TSM Niño 1+2</p><p style="font-size:9px;color:var(--muted)">Observación: ${fmtObservationPeriod(s.coastal.nino12Month)}</p><p class="big-value value-warm">${fmtValue(s.coastal.nino12Anom,'degC')}</p></div><div><p style="font-size:11px;color:var(--muted)">ICEN</p><p style="font-size:9px;color:var(--muted)">Ventana: ${s.coastal.icenWindow}</p><p class="big-value value-warm">${fmtValue(s.coastal.icen,'degC')}</p><p style="font-size:11px;color:var(--muted)">${s.coastal.icenCategory}</p></div></div>
       <div class="chart-container">${timeSeriesChart(rN12,'degC',100)}</div></div>
     <div class="card"><div class="card-header"><div class="card-title">${ICONS.basin} ENSO de cuenca</div><span class="badge badge-basin">Cuenca</span></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span class="pill pill-warm">${s.basin.alert}</span><span style="font-size:11px;color:var(--muted)">desde ${fmtMonth(s.basin.alertSince)}</span></div>
-      <div class="grid-2"><div><p style="font-size:11px;color:var(--muted)">TSM Niño 3.4 (${fmtMonth(s.basin.nino34Month)})</p><p class="big-value value-warm">${fmtValue(s.basin.nino34Anom,'degC')}</p></div><div><p style="font-size:11px;color:var(--muted)">RONI (${s.basin.roniWindow})</p><p class="big-value value-warm">${fmtValue(s.basin.roni,'degC')}</p><p style="font-size:11px;color:var(--muted)">${s.basin.roniCategory}</p></div></div>
+      <div class="grid-2"><div><p style="font-size:11px;color:var(--muted)">TSM Niño 3.4</p><p style="font-size:9px;color:var(--muted)">Observación: ${fmtObservationPeriod(s.basin.nino34Month)}</p><p class="big-value value-warm">${fmtValue(s.basin.nino34Anom,'degC')}</p></div><div><p style="font-size:11px;color:var(--muted)">RONI</p><p style="font-size:9px;color:var(--muted)">Ventana: ${s.basin.roniWindow}</p><p class="big-value value-warm">${fmtValue(s.basin.roni,'degC')}</p><p style="font-size:11px;color:var(--muted)">${s.basin.roniCategory}</p></div></div>
       <div class="chart-container">${timeSeriesChart(rN34,'degC',100)}</div></div>
   </div>
-  <div class="grid-3">${renderMiniCard(ICONS.winds,'Viento real 850 hPa',fmtValue(s.winds.u850Anom,'m_per_s'),s.winds.direction,'basin')}${renderMiniCard(ICONS.thermocline,'Termoclina (D20)',fmtValue(s.thermocline.d20Anom,'m'),s.thermocline.interpretation,'basin')}${renderMiniCard(ICONS.soi,'SOI',fmtValue(s.soi.value,'dimensionless'),s.soi.interpretation,'basin')}</div>
+  <div class="grid-3">${renderMiniCard(ICONS.winds,'Viento real 850 hPa',fmtValue(s.winds.u850Anom,'m_per_s'),s.winds.direction,'basin',s.winds.u850Month,60)}${renderMiniCard(ICONS.thermocline,'Termoclina (D20)',fmtValue(s.thermocline.d20Anom,'m'),s.thermocline.interpretation,'basin',s.thermocline.d20Month,75)}${renderMiniCard(ICONS.soi,'SOI',fmtValue(s.soi.value,'dimensionless'),s.soi.interpretation,'basin',s.soi.month,60)}</div>
   <div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Costero vs cuenca — últimos 10 años</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-120),'degC',280)}</div></div>`;
 }
-function renderMiniCard(icon,title,value,detail,scope){return`<div class="card"><div class="card-header"><div class="card-title">${icon} ${title}</div><span class="badge badge-${scope}">${scope==='coastal'?'Costero':'Cuenca'}</span></div><p class="big-value">${value}</p><p style="font-size:11px;color:var(--muted);margin-top:4px">${detail}</p></div>`;}
+function renderMiniCard(icon,title,value,detail,scope,obsMonth,staleDays){
+  var stale = obsMonth && staleDays ? isObservationStale(obsMonth, staleDays) : false;
+  var valueDisplay = stale ? '<span style="color:var(--yellow)">Dato actual no disponible</span>' : value;
+  var periodLabel = obsMonth ? '<p style="font-size:10px;color:var(--muted)">Periodo: '+fmtObservationPeriod(obsMonth)+(stale?' (stale)':'')+'</p>' : '';
+  return`<div class="card"><div class="card-header"><div class="card-title">${icon} ${title}</div><span class="badge badge-${scope}">${scope==='coastal'?'Costero':'Cuenca'}</span></div><p class="big-value">${valueDisplay}</p><p style="font-size:11px;color:var(--muted);margin-top:4px">${detail}</p>${periodLabel}</div>`;
+}
 
 function renderCoastal(){
   const s=STATUS;const e=evalCoastalSST(s.coastal.icen);const o=evalICEN(s.coastal.icen);

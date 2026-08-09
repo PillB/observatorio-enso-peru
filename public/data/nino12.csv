@@ -1,7 +1,7 @@
 # Observatorio ENSO Perú — nino12
 # Unidades: degC
 # Fuente: NOAA/PSL
-# Adquirido: 2026-08-06T08:26:57.084533+00:00
+# Adquirido: 2026-08-09T04:09:36.771914+00:00
 # Datos reales observados
 month,value,flag
 1870-01,-1.5,final
@@ -1881,7 +1881,7 @@ month,value,flag
 2026-03,0.46,final
 2026-04,0.74,final
 2026-05,1.28,final
-2026-06,,final
+2026-06,2.1,final
 2026-07,,final
 2026-08,,final
 2026-09,,final

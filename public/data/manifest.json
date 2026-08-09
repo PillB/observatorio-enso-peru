@@ -1,10 +1,10 @@
 {
   "name": "Observatorio ENSO Perú",
   "dataVersion": "3.0.0",
-  "generatedAt": "2026-08-06T08:26:57.084533+00:00",
-  "asOf": "2026-08-06",
+  "generatedAt": "2026-08-09T04:09:36.771914+00:00",
+  "asOf": "2026-08-09",
   "dataSource": "LIVE_OBSERVED",
-  "publicationId": "d5f15625f54d",
+  "publicationId": "87f5071ace0a",
   "pipelineVersion": "3.0.0",
   "coverage": "Datos reales observados desde NOAA/PSL, NOAA/CPC, GODAS, ENFEN/IMARPE",
   "sources": [
@@ -36,7 +36,7 @@
       "scope": "coastal",
       "units": "degC",
       "file": "nino12.csv",
-      "checksum": "fnv1a:4e55d997"
+      "checksum": "fnv1a:adac7aad"
     },
     {
       "id": "nino34",
@@ -44,7 +44,7 @@
       "scope": "basin",
       "units": "degC",
       "file": "nino34.csv",
-      "checksum": "fnv1a:892bfb8f"
+      "checksum": "fnv1a:7909bc1d"
     },
     {
       "id": "icen",
@@ -52,7 +52,7 @@
       "scope": "coastal",
       "units": "degC",
       "file": "icen.csv",
-      "checksum": "fnv1a:7e028f08"
+      "checksum": "fnv1a:7f36ee16"
     },
     {
       "id": "roni",
@@ -60,7 +60,7 @@
       "scope": "basin",
       "units": "degC",
       "file": "roni.csv",
-      "checksum": "fnv1a:e3da5c30"
+      "checksum": "fnv1a:741a0eab"
     },
     {
       "id": "soi",
@@ -68,7 +68,7 @@
       "scope": "basin",
       "units": "dimensionless",
       "file": "soi.csv",
-      "checksum": "fnv1a:e6bcdb2c"
+      "checksum": "fnv1a:812d8eaf"
     },
     {
       "id": "d20",
@@ -76,7 +76,7 @@
       "scope": "basin",
       "units": "m",
       "file": "d20.csv",
-      "checksum": "fnv1a:ef2aedf5"
+      "checksum": "fnv1a:5a4d7018"
     },
     {
       "id": "u850",
@@ -84,7 +84,7 @@
       "scope": "basin",
       "units": "m/s",
       "file": "u850.csv",
-      "checksum": "fnv1a:dda19521"
+      "checksum": "fnv1a:7da2f31e"
     }
   ],
   "allFiles": [

@@ -1,7 +1,7 @@
 # Observatorio ENSO Perú — icen
 # Unidades: degC
 # Fuente: ENFEN/IMARPE (calculado desde Niño 1+2 PSL)
-# Adquirido: 2026-08-06T08:26:57.084533+00:00
+# Adquirido: 2026-08-09T04:09:36.771914+00:00
 # Datos reales observados
 month,value,flag
 1870-01,,final
@@ -1881,7 +1881,7 @@ month,value,flag
 2026-03,0.2,final
 2026-04,0.56,final
 2026-05,0.83,final
-2026-06,,final
+2026-06,1.37,final
 2026-07,,final
 2026-08,,final
 2026-09,,final

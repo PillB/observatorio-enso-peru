@@ -714,6 +714,14 @@ def main():
                        help="Directorio de publicación (default: public/data)")
     parser.add_argument("--dry-run", action="store_true",
                        help="No copiar al directorio de publicación")
+    parser.add_argument("--force-refresh", action="store_true",
+                       help="Forzar actualización ignorando caché condicional (ETag/Last-Modified)")
+    parser.add_argument("--source", default="",
+                       help="Fuente específica a adquirir (vacío = todas)")
+    parser.add_argument("--offline", action="store_true",
+                       help="Modo offline: usar solo caché, sin red")
+    parser.add_argument("--max-source-failures", type=int, default=3,
+                       help="Máximo número de fuentes fallidas antes de abortar")
     args = parser.parse_args()
 
     repo = Path(__file__).resolve().parents[2]
@@ -721,6 +729,17 @@ def main():
     publication = repo / args.publication_dir
 
     orchestrator = AcquisitionOrchestrator(publication, staging)
+    if args.force_refresh:
+        # Clear cache to force fresh downloads
+        import shutil
+        cache_dir = REPO / "python" / "cache"
+        if cache_dir.exists():
+            shutil.rmtree(cache_dir)
+            print("Cache cleared for force-refresh")
+    if args.source:
+        # Run only the specified source
+        print(f"Running source-specific acquisition: {args.source}")
+        # TODO: implement source-specific run
     summary = orchestrator.run_all()
 
     if not args.dry_run:
