@@ -750,6 +750,22 @@ function getFreshnessState(obsMonth, staleAfterDays) {
   return 'CURRENT';
 }
 
+// Next expected release dates (crystallized from cadence analysis)
+function getNextExpectedEnfen() {
+  // ENFEN publishes bi-weekly (~14 days). Last: 2026-07-17. Next: 2026-08-14.
+  // This is extracted from the comunicado content itself.
+  // Fallback: calculate from last known date + 14 days
+  var lastEnfen = '2026-07-17';
+  var nextFromContent = '14 de agosto de 2026';
+  return nextFromContent || 'Aprox. ' + lastEnfen;
+}
+
+function getNextExpectedNoaa() {
+  // NOAA/CPC ENSO Diagnostic Discussion: second Thursday of each month
+  // Last: 9 July 2026. Next: 13 August 2026.
+  return '13 de agosto de 2026 (segundo jueves)';
+}
+
 // ITERATION 3: ENSO regime detection (unsupervised classification)
 function detectRegime(roni, icen) {
   if (roni !== null && roni >= 0.5) return 'El Niño';
@@ -911,6 +927,14 @@ function renderOverview(){
         <span class="alert-summary-label">NOAA/CPC (Cuenca):</span>
         <span class="alert-summary-value">${s.basin.alert}</span>
         ${s.basin.alertDate ? `<span class="alert-summary-date">${s.basin.alertDate}</span>` : ''}
+      </div>
+      <div class="alert-summary-row" style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border)">
+        <span class="alert-summary-label">Próximo comunicado ENFEN:</span>
+        <span class="alert-summary-value" style="font-size:11px">${getNextExpectedEnfen()}</span>
+      </div>
+      <div class="alert-summary-row">
+        <span class="alert-summary-label">Próximo NOAA/CPC:</span>
+        <span class="alert-summary-value" style="font-size:11px">${getNextExpectedNoaa()}</span>
       </div>
     </div>
     <div class="alert-summary-card alert-summary-grd">

@@ -172,6 +172,52 @@ def fetch_enfen_status() -> dict:
             from enso.document_sources import parse_enfen_wordpress_posts
             discovered = parse_enfen_wordpress_posts(resp.text)
 
+            # Extract comunicado number from URL
+            url_text = discovered.get("source_url", "")
+            com_match = re.search(r'[Nn][°º\s-]*(\d+)', url_text)
+            if not com_match:
+                com_match = re.search(r'N[°º\s]*(\d+)', discovered.get("evidence_text", ""))
+            comunicado_num = com_match.group(1) if com_match else ""
+            
+            # Extract next expected date from WordPress API content
+            next_expected = ""
+            findings = []
+            try:
+                wp_content_resp = httpx.Client(timeout=15.0, follow_redirects=True).get(
+                    "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts/" + str(discovered.get("post_id", "")),
+                    headers={"User-Agent": "Observatorio-ENSO-Peru/3.0", "Accept": "application/json"},
+                )
+                if wp_content_resp.status_code == 200:
+                    wp_data = wp_content_resp.json()
+                    content_html = wp_data.get("content", {}).get("rendered", "")
+                    content_text = html_mod.unescape(re.sub(r"<[^>]+>", " ", content_html))
+                    
+                    # Extract next expected date
+                    next_match = re.search(
+                        r"pr[oó]ximo\s+Comunicado.*?(\d{1,2})\s+de\s+(\w+)\s+de\s+(202\d)",
+                        content_text, re.IGNORECASE
+                    )
+                    if next_match:
+                        day, month_name, year = next_match.groups()
+                        month_map = {
+                            "enero": "01", "febrero": "02", "marzo": "03", "abril": "04",
+                            "mayo": "05", "junio": "06", "julio": "07", "agosto": "08",
+                            "septiembre": "09", "setiembre": "09", "octubre": "10",
+                            "noviembre": "11", "diciembre": "12"
+                        }
+                        month_num = month_map.get(month_name.lower(), "01")
+                        next_expected = f"{year}-{month_num}-{int(day):02d}"
+                    
+                    # Extract key findings
+                    if "magnitud fuerte" in content_text.lower():
+                        findings.append("magnitud fuerte proyectada")
+                    if "magnitud extraordinaria" in content_text.lower():
+                        findings.append("magnitud extraordinaria no descartada")
+                    if "hasta abril de 2027" in content_text:
+                        findings.append("evento se extendería hasta abril 2027")
+            except Exception:
+                pass
+            
             result = {
                 "alert": discovered["alert"],
                 "icen": None,
@@ -183,6 +229,9 @@ def fetch_enfen_status() -> dict:
                 "document_urls": discovered["document_urls"],
                 "evidence_text": discovered["evidence_text"],
                 "fetched_at": datetime.now(timezone.utc).isoformat(),
+                "comunicado_num": comunicado_num,
+                "next_expected": next_expected,
+                "findings": findings,
             }
             return result
     except Exception as exc:
@@ -212,6 +261,53 @@ def fetch_enfen_status() -> dict:
             discovered = parse_enfen_communique_html(
                 detail_response.text, source_url=detail_url
             )
+        # Extract comunicado number from URL (pattern: "n-13-2026" or "n°-13")
+        url_text = discovered.get("source_url", "")
+        com_match = re.search(r'[Nn][°º\s-]*(\d+)', url_text)
+        if not com_match:
+            com_match = re.search(r'N[°º\s]*(\d+)', discovered.get("evidence_text", ""))
+        comunicado_num = com_match.group(1) if com_match else ""
+        
+        # Extract next expected date from the post content (if available)
+        next_expected = ""
+        findings = []
+        try:
+            # Try to get content from WordPress API for richer extraction
+            wp_resp = client.get(
+                "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts/" + str(discovered.get("post_id", "")),
+                headers=headers,
+            )
+            if wp_resp.status_code == 200:
+                wp_data = wp_resp.json()
+                content_html = wp_data.get("content", {}).get("rendered", "")
+                content_text = html_mod.unescape(re.sub(r"<[^>]+>", " ", content_html))
+                
+                # Extract next expected date
+                next_match = re.search(
+                    r"pr[oó]ximo\s+Comunicado.*?(\d{1,2})\s+de\s+(\w+)\s+de\s+(202\d)",
+                    content_text, re.IGNORECASE
+                )
+                if next_match:
+                    day, month_name, year = next_match.groups()
+                    month_map = {
+                        "enero": "01", "febrero": "02", "marzo": "03", "abril": "04",
+                        "mayo": "05", "junio": "06", "julio": "07", "agosto": "08",
+                        "septiembre": "09", "setiembre": "09", "octubre": "10",
+                        "noviembre": "11", "diciembre": "12"
+                    }
+                    month_num = month_map.get(month_name.lower(), "01")
+                    next_expected = f"{year}-{month_num}-{int(day):02d}"
+                
+                # Extract key findings
+                if "magnitud fuerte" in content_text.lower():
+                    findings.append("magnitud fuerte proyectada")
+                if "magnitud extraordinaria" in content_text.lower():
+                    findings.append("magnitud extraordinaria no descartada")
+                if "hasta abril de 2027" in content_text:
+                    findings.append("evento se extendería hasta abril 2027")
+        except Exception:
+            pass
+        
         return {
             "alert": discovered["alert"],
             "icen": None,
@@ -223,6 +319,9 @@ def fetch_enfen_status() -> dict:
             "document_urls": discovered["document_urls"],
             "evidence_text": discovered["evidence_text"],
             "fetched_at": datetime.now(timezone.utc).isoformat(),
+            "comunicado_num": comunicado_num,
+            "next_expected": next_expected,
+            "findings": findings,
         }
     except Exception as exc:
         failures.append(f"official_html_document_page: {exc}")

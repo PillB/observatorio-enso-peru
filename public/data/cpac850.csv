@@ -1,7 +1,7 @@
 # Observatorio ENSO Perú — cpac850
 # Unidades: m/s
 # Fuente: NOAA/CPC cpac850 (actual wind)
-# Adquirido: 2026-08-09T04:30:49.527822+00:00
+# Adquirido: 2026-08-09T06:04:07.664020+00:00
 # Datos reales observados
 month,value,flag
 1979-01,6.3,final

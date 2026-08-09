@@ -1,9 +1,9 @@
 {
   "asOf": "2026-08-09",
   "dataVersion": "3.0.0",
-  "generatedAt": "2026-08-09T04:30:49.527822+00:00",
+  "generatedAt": "2026-08-09T06:04:07.664020+00:00",
   "dataSource": "LIVE_OBSERVED",
-  "publicationId": "68d8d2ccbc75",
+  "publicationId": "11f75a1c4ce0",
   "coastal": {
     "alert": "Alerta de El Niño Costero",
     "alertSource": "ENFEN / IMARPE",
@@ -15,7 +15,7 @@
     "icen": 1.37,
     "icenWindow": "2026-06",
     "icenCategory": "El Niño Costero moderado",
-    "freshness": "Dato observado · adquirido 2026-08-09T04:30:49.527822+00:00"
+    "freshness": "Dato observado · adquirido 2026-08-09T06:04:07.664020+00:00"
   },
   "basin": {
     "alert": "El Niño Advisory",
@@ -28,7 +28,7 @@
     "roniWindow": "2026-06",
     "roniCategory": "El Niño (cuenca)",
     "roniSource": "NOAA/CPC RONI.ascii.txt (official, NOT computed)",
-    "freshness": "Dato observado · adquirido 2026-08-09T04:30:49.527822+00:00"
+    "freshness": "Dato observado · adquirido 2026-08-09T06:04:07.664020+00:00"
   },
   "winds": {
     "u850Anom": 2.3,
