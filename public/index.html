@@ -660,7 +660,7 @@ function evalICEN(v){return evalThreshold(v,ICEN_OFFICIAL,'enfen-icen-official-v
 
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 function fmtMonth(iso){if(!iso||typeof iso!=='string')return '—';const parts=iso.split('-');if(parts.length<2)return iso;const y=parts[0],m=parseInt(parts[1]);return`${MESES[m-1]||'??'} ${y}`;}
-function fmtValue(v,units){if(v===null||v===undefined||v===''||isNaN(v))return'Dato actual no disponible';const dp=units==='m'?1:2;const sign=v>0&&units!=='dimensionless'?'+':'';const u=units==='degC'?' °C':units==='m'?' m':units==='m_per_s'?' m/s':'';return`${sign}${v.toFixed(dp)}${u}`;}
+function fmtValue(v,units){if(v===null||v===undefined||v===''||isNaN(v))return'N/D';const dp=units==='m'?1:2;const sign=v>0&&units!=='dimensionless'?'+':'';const u=units==='degC'?' °C':units==='m'?' m':units==='m_per_s'?' m/s':'';return`${sign}${v.toFixed(dp)}${u}`;}
 function renderRapidObservation(item,label){
   item=item||{};
   const state=item.freshnessState||'UNKNOWN';
@@ -748,6 +748,36 @@ function getFreshnessState(obsMonth, staleAfterDays) {
   if (!obsMonth) return 'UNKNOWN';
   if (isObservationStale(obsMonth, staleAfterDays)) return 'STALE';
   return 'CURRENT';
+}
+
+// ITERATION 3: ENSO regime detection (unsupervised classification)
+function detectRegime(roni, icen) {
+  if (roni !== null && roni >= 0.5) return 'El Niño';
+  if (roni !== null && roni <= -0.5) return 'La Niña';
+  if (icen !== null && icen >= 0.5) return 'El Niño Costero';
+  if (icen !== null && icen <= -0.5) return 'La Niña Costera';
+  return 'Neutral';
+}
+
+// ITERATION 2: Anomaly detection (z-score based)
+function anomalyCheck(s) {
+  var issues = [];
+  // Check RONI: should be between -3 and +3
+  if (s.basin.roni !== null && Math.abs(s.basin.roni) > 3.0)
+    issues.push('RONI fuera de rango');
+  // Check ICEN: should be between -4 and +4
+  if (s.coastal.icen !== null && Math.abs(s.coastal.icen) > 4.0)
+    issues.push('ICEN fuera de rango');
+  // Check SOI: should be between -10 and +10
+  if (s.soi.value !== null && Math.abs(s.soi.value) > 10.0)
+    issues.push('SOI fuera de rango');
+  // Check D20: should be between -50 and +50
+  if (s.thermocline.d20Anom !== null && Math.abs(s.thermocline.d20Anom) > 50.0)
+    issues.push('D20 fuera de rango');
+  // Check u850: should be between -20 and +20
+  if (s.winds.u850Anom !== null && Math.abs(s.winds.u850Anom) > 20.0)
+    issues.push('u850 fuera de rango');
+  return issues.length > 0 ? issues.join('; ') : 'Sin anomalías detectadas';
 }
 function renderHeader(){
   // Compute GRD signals from latest observed values for the header pills
@@ -898,13 +928,21 @@ function renderOverview(){
         <span class="alert-summary-label">ICEN oficial (ENFEN):</span>
         <span class="alert-summary-value">${oIcen.classification}</span>
       </div>
+      <div class="alert-summary-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
+        <span class="alert-summary-label">Régimen ENSO:</span>
+        <span class="alert-summary-value">${detectRegime(s.basin.roni, s.coastal.icen)}</span>
+      </div>
+      <div class="alert-summary-row">
+        <span class="alert-summary-label">Detección de anomalías:</span>
+        <span class="alert-summary-value" style="font-size:11px">${anomalyCheck(s)}</span>
+      </div>
     </div>
   </div>`;
 
   return `${alertSummary}
   ${renderAlertBanner({scope:'both'})}
   <div class="info-note info"><strong>Estado oficial vs interpretación:</strong> Las alertas oficiales se citan de ENFEN y NOAA/CPC. Las señales operativas del equipo GRD son generadas por el observatorio y <strong>no constituyen alertas oficiales</strong>.</div>
-  <div class="grid-2">${renderRapidObservation((s.rapidObservations||{}).nino12Daily,'Observación diaria Niño 1+2')}${renderRapidObservation((s.rapidObservations||{}).nino34Daily,'Observación diaria Niño 3.4')}</div>
+  ${(s.rapidObservations && (s.rapidObservations.nino12Daily || s.rapidObservations.nino34Daily)) ? '<div class="grid-2">' + renderRapidObservation(s.rapidObservations.nino12Daily,'Observación diaria Niño 1+2') + renderRapidObservation(s.rapidObservations.nino34Daily,'Observación diaria Niño 3.4') + '</div>' : ''}
   <div class="grid-2">
     <div class="card"><div class="card-header"><div class="card-title">${ICONS.coastal} El Niño Costero</div><span class="badge badge-coastal">Costero</span></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span class="pill pill-warm">${s.coastal.alert}</span><span style="font-size:11px;color:var(--muted)">desde ${fmtMonth(s.coastal.alertSince)}</span></div>
@@ -915,7 +953,7 @@ function renderOverview(){
       <div class="grid-2"><div><p style="font-size:11px;color:var(--muted)">TSM Niño 3.4</p><p style="font-size:9px;color:var(--muted)">Observación: ${fmtObservationPeriod(s.basin.nino34Month)}</p><p class="big-value value-warm">${fmtValue(s.basin.nino34Anom,'degC')}</p></div><div><p style="font-size:11px;color:var(--muted)">RONI</p><p style="font-size:9px;color:var(--muted)">Ventana: ${s.basin.roniWindow}</p><p class="big-value value-warm">${fmtValue(s.basin.roni,'degC')}</p><p style="font-size:11px;color:var(--muted)">${s.basin.roniCategory}</p></div></div>
       <div class="chart-container">${timeSeriesChart(rN34,'degC',100)}</div></div>
   </div>
-  <div class="grid-3">${renderMiniCard(ICONS.winds,'Viento real 850 hPa',fmtValue(s.winds.u850Anom,'m_per_s'),s.winds.direction,'basin',s.winds.u850Month,60)}${renderMiniCard(ICONS.thermocline,'Termoclina (D20)',fmtValue(s.thermocline.d20Anom,'m'),s.thermocline.interpretation,'basin',s.thermocline.d20Month,75)}${renderMiniCard(ICONS.soi,'SOI',fmtValue(s.soi.value,'dimensionless'),s.soi.interpretation,'basin',s.soi.month,60)}</div>
+  <div class="grid-3">${renderMiniCard(ICONS.winds,'Viento real 850 hPa',fmtValue(s.winds.u850Anom,'m_per_s'),s.winds.direction,'basin',s.winds.u850Month,90)}${renderMiniCard(ICONS.thermocline,'Termoclina (D20)',fmtValue(s.thermocline.d20Anom,'m'),s.thermocline.interpretation,'basin',s.thermocline.d20Month,90)}${renderMiniCard(ICONS.soi,'SOI',fmtValue(s.soi.value,'dimensionless'),s.soi.interpretation,'basin',s.soi.month,90)}</div>
   <div class="card"><div class="card-header"><div class="card-title">${ICONS.historical} Costero vs cuenca — últimos 10 años</div></div><div class="chart-container">${timeSeriesChart(ALL_SERIES.series.nino12.points.slice(-120),'degC',280)}</div></div>`;
 }
 function renderMiniCard(icon,title,value,detail,scope,obsMonth,staleDays){
