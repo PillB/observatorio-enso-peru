@@ -1,0 +1,47 @@
+# Captura respuestas crudas de las fuentes (actuales e históricas vía
+# Wayback Machine) y las guarda como fixtures de prueba en la propia rama.
+# Se usa para construir y hacer backtesting de los parsers contra formatos
+# reales. Manual, o al cambiar la herramienta de captura en una rama claude/**.
+name: capture-fixtures
+
+on:
+  workflow_dispatch:
+    inputs:
+      history:
+        description: 'Incluir versiones históricas de Wayback'
+        type: boolean
+        default: true
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'python/tools/capture_sources.py'
+      - '.github/workflows/capture-fixtures.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: capture-fixtures-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install httpx
+      - name: Capture
+        working-directory: python
+        run: python -m tools.capture_sources --out tests/fixtures/sources ${{ (github.event_name == 'push' || inputs.history) && '--history' || '' }}
+      - name: Commit fixtures
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add python/tests/fixtures/sources
+          git diff --cached --quiet && exit 0
+          git commit -m "chore(fixtures): capture raw source snapshots"
+          git push
