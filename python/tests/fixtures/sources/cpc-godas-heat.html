@@ -1,0 +1,637 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head> <title>Climate Prediction Center - NCEP Global Ocean Data Assimilation System</title> <meta http-equiv=Content-Type content="text/html; charset=windows-1252"> <meta content="NCEP Web Team" name="GENERATOR"> <link href="/nwscwi/main.css" type="text/css" rel="STYLESHEET"></head><body leftmargin="0" background="/nwscwi/background.gif"  topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<table cellspacing="0" cellpadding="0" width="100%" border="0" background="/nwscwi/topbanner.jpg" >
+	<tbody>
+		<tr>
+			<td align="right" height="19">
+				<a href="#contents"><img height="1" alt="Skip Navigation Links" src="/nwscwi/skipgraphic.gif" width="1" border="0"></a>
+				<a href="https://www.weather.gov/" class="homepagelinks"><SPAN class="nwslink">www.weather.gov</span></a>&nbsp;
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- -->
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
+	<tbody>
+		<tr>
+			<td rowSpan="2"><A href="https://www.noaa.gov/">
+			<img height="78" alt="NOAA logo - Click to go to the NOAA home page" src="/nwscwi/noaaleft.jpg" width="85" border="0"></a></td>
+			<td align="left"><img height="20" alt="National Weather Service" src="/nwscwi/nws_title.jpg" width="500" border="0"></td>
+			<td rowspan="2" width="100%" background="/nwscwi/ncep_bkgrnd.jpg">&nbsp;</td>
+			<td rowspan="2" align="right"><a href="https://www.weather.gov/">
+			<img height="78" alt="NWS logo - Click to go to the NWS home page" src="/nwscwi/nwsright.jpg" width="85" border="0"></a></td>
+		</tr>
+		<tr>
+			<td><img height="58" alt="Climate Prediction Center" src="/nwscwi/cpc.jpg" width="500" border="0"></td>
+		</tr>
+	</tbody>
+</table>
+<!-- -->
+<table cellspacing="0" cellpadding="0" width="100%" background="/nwscwi/navbkgrnd.gif" border="0">
+	<tbody>
+		<tr>
+			<td align="left" width="135"><img height="23" alt="" src="/nwscwi/navbarleft.jpg" width="94" border="0"></td>
+			<td class="nav" align="center" width="10%">
+				<a href="/" class="menu" title="to the climate prediction center home page">home</a>
+			</td>
+			<td class="nav" align="center" width="10%">
+				<a href="/products/site_index.shtml" class="menu" title="to Climate Prediction Center site map">Site Map</a>
+			</td>
+			<td class="nav" align="right" width="10%">
+				<a href="https://www.weather.gov/news/" class="menu" title="to National Weather Service news page">News</a>
+			</td>
+			<td class="nav" align="right" width="19%">
+				<a href="https://www.weather.gov/organization/" class="menu">Organization</a>
+			</td>
+			<td class="searchinput" align="right" width="30%">
+				<form method="get" action="https://search.usa.gov/search" style="margin-bottom:0; margin-top:0;">
+				<label for="Search"><span class="yellow">Search</span>&nbsp;&nbsp;</label>
+				<input type="hidden" name="affiliate" value="weather.gov" />
+				<input type="hidden" name="v:project" value="firstgov" />
+				<input name="query" type="text" value="" size="20" maxlength="256" id="Search" />
+				<input type="submit" value="Go" />
+				</form>
+			</td>
+			<td align="right"><img height="23" alt="" src="/nwscwi/navbarendcap.jpg" width="24" border="0"></td>
+		</tr>
+	</tbody>
+</table> <!-- Use virtual include, because this should be in a common place within your DocumentRoot. --><table cellspacing="0" cellpadding="0" width="770" border="0"> <tr valign="top"> <td width="137"><br>  <table cellspacing="0" cellpadding="2" width="130" border="0"> <!-- Do not remove this section. You will need this when the City,St/zip search is implemented nationwide.--> <!-- <tr align="left" valign="top"> <td class="searchinput"> <div id="Layer2" style="position:absolute; width:200px; height:115px; z-index:2; visibility: hidden">Search by city or zip code. Press enter or select the go button to submit request</div> <form method="POST" action="http://www.srh.noaa.gov/zipcity.php"> <span class="yellow">Local forecast by<br>&quot;City, St&quot; or Zip Code</span><br> <input type="text" name="inputstring" size="9" value="City, St"> <input type="submit" name="Go2" value="Go"></form></td> </tr> --> <tr> <td class="searchinput" align="left"> <form method="get" action="http://firstgovsearch.gov/search" style="margin-bottom:0; margin-top:0;"> <label for="Search"> <span class="yellow">Search&nbsp;the CPC</span></label> <input type="hidden" name="affiliate" value="ncep.noaa.gov" /> <input type="hidden" name="v:sources" value="firstgov-affiliates-search" /> <input type="hidden" name="v:project" value="firstgov" /> <input type="hidden" name="query" value="site:www.cpc.ncep.noaa.gov" /> <input name="query" type="text" value="All CPC" size="10" maxlength="256" id="Search"/> <input type="submit" value="Go" /> </form> </td> </tr> <tr><td>&nbsp;</td></tr> <TR> <TD class="white" colSpan="2"> <a href="index.shtml" class="menu"><font color="#F0E68C">GODAS Home</font></a><BR> </TD> </TR> <tr><td>&nbsp;</td></tr> <TR> <TD class="white" colSpan="2"> <a href="background.shtml" class="menu"><font color="#F0E68C">Introduction</font></a><BR> </TD> </TR> <tr><td>&nbsp;</td></tr> <TR> <td class="white" id="menuitem"> <span class="white">Climatology</span><br> &nbsp;&nbsp;&nbsp;<a href="climatology.shtml" class="menu"><font color="#F0E68C">Plots</font></a><BR> &nbsp;&nbsp;&nbsp;<a href="clim_movie.shtml" class="menu"><font color="#F0E68C">Animations</font></a><BR> </td> </TR> <tr><td>&nbsp;</td></tr> <TR> <td class="white" id="menuitem"> <span class="white">Monthly Products</span><br> &nbsp;&nbsp;&nbsp;<a href="monthly.shtml" class="menu"><font color="#F0E68C">Plots</font></a><BR> &nbsp;&nbsp;&nbsp;<a href="mnth_movie.shtml" class="menu"><font color="#F0E68C">Animations</font></a><BR>  </td> </TR> <tr><td>&nbsp;</td></tr> <TR> <td class="white" id="menuitem"> <span class="white">Pentad Products</span><br> &nbsp;&nbsp;&nbsp;<a href="pentad.shtml" class="menu"><font color="#F0E68C">Plots</font></a><BR> &nbsp;&nbsp;&nbsp;<a href="pentad_movie.shtml" class="menu"><font color="#F0E68C">Animations</font></a><BR> </TD> </TR> <tr><td>&nbsp;</td></tr> <TR> <td class="white" id="menuitem"> <span class="white">Coastal Upwelling</span><br> &nbsp;&nbsp;&nbsp;<a href="coastal_upwelling.shtml" class="menu"><font color="#F0E68C">Coastal upwelling</font></a><BR> </TD> </TR> <tr><td>&nbsp;<!-- /td></tr> <TR> <td class="white" id="menuitem"> <span class="white">Data Distribution</span><br> &nbsp;&nbsp;&nbsp;<a href="data_distribution.shtml" class="menu"><font color="#F0E68C">Plots</font></a><BR> &nbsp;&nbsp;&nbsp;<a href="data_distribution_movie.shtml" class="menu"><font color="#F0E68C">Animations</font></a><BR>  </td> </TR> <tr><td>&nbsp;--> </td></tr> <TR> <td class="white" id="menuitem"> <span class="white">Binary Data</span><br> &nbsp;&nbsp;&nbsp;<a href="http://cfs.ncep.noaa.gov/cfs/godas/monthly" class="menu"><font color="#F0E68C">Monthly in GRB</font></a><BR> &nbsp;&nbsp;&nbsp;<a href="http://cfs.ncep.noaa.gov/cfs/godas/pentad" class="menu"><font color="#F0E68C">Pentad in GRB</font></a><BR> &nbsp;&nbsp;&nbsp;<a href="https://www.psl.noaa.gov/data/gridded/data.godas.html" class="menu"><font color="#F0E68C">Monthly in NetCDF</font></a><BR> &nbsp;&nbsp;&nbsp;<a href="http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.EMC/.CMB/.GODAS/" class="menu"><font color="#F0E68C">Other formats</font></a><BR> </TD> </TR> <tr><td>&nbsp;</td></tr> <TR> <td class="white" id="menuitem"> <span class="white">Links</span><br> &nbsp;&nbsp;&nbsp;<a href="https://cpo.noaa.gov/Meet-the-Divisions/Ocean-Observing-and-Monitoring" class="menu"><font color="#F0E68C">NOAA Ocean Observation and M
+onitoring Division (OOMD)</font></a> &nbsp;&nbsp;&nbsp;<a href="http://www.cpc.ncep.noaa.gov/products/ctb/ctb-home.shtml" class="menu"><font color="#F0E68C">Climate Test Bed</font></a> </TD> </TR> <tr><td>&nbsp;</td></tr><!-- <TR> <TD class="white" colSpan="2"> <a href="skill_assess.shtml" class="menu"><font color="#F0E68C">Skill Assessment</font></a><BR> </TD> </TR> <tr><td>&nbsp;</td></tr> <TR> <TD class="white" colSpan="2"> <a href="" class="menu"><font color="#F0E68C">References</font></a><BR> </TD> </TR> <tr><td>&nbsp;</td></tr>--> <tr> <td class="yellow" id="menuitem"> <span class="white">About Us</span><br> &nbsp;&nbsp;&nbsp;<a href="/information/who_we_are/mission.shtml"><font color="#F0E68C">Our Mission</a><br> &nbsp;&nbsp;&nbsp;<a href="/information/who_we_are/"><font color="#F0E68C">Who We Are</a><br><br> <span class="white">Contact Us</span><br> &nbsp;&nbsp;&nbsp;<a href="/information/personnel/contacts.shtml"><font color="#F0E68C">CPC Information</a><br> &nbsp;&nbsp;&nbsp;<a href="/comment-form.html"><font color="#F0E68C">CPC Web Team</a><br><br> </td> </tr> <TR> <TD class="white" id="menuitem"><a href="http://www.firstgov.gov/"><img src="/nwscwi/firstgov_logo_color_110w.gif" alt="FirstGov.gov is the U.S. Government's official Web portal to all Federal, state and local government Web resources and services." width="110" height="30" border="0"></a></TD> </TR> </table><table><!-- <tr> <td> <table align="left" width="100"> <tr> <td width="100%"><font color=white size=2> <b> You are visitor </font> </td> </tr> </table> </td></tr> <tr> <td><a href="http://freelogs.com/stats/h/huangboyin/" target="_top"><img border="0" alt="Free Web Counter" src="http://xyz.freelogs.com/counter/index.php?u=huangboyin&s=7seg" ALIGN="middle" HSPACE="4" VSPACE="2"></a><script src=http://xyz.freelogs.com/counter/script.php?u=huangboyin></script><br><a style="font-size:12" href="http://www.freelogs.com/create.php" target="_top"><font style="font-size:12" color="#666666">Free Hit Counter</font></a> <table align="center" width="80" border="2"> <tr> <td width="100%" align="right" bgcolor="black"> <font color="pink" size=2>  <b></b>--> </td> </tr> <tr> <td></table>
+
+ <!-- Use virtual include, because this should be in a common place within your DocumentRoot. --> </td> <td align="center" width="600"><a name="contents"></a> Climate Observation Division (COD)<table border="0" cellPadding="2" cellSpacing="0" width="533" align="center">
+ <tr><td>&nbsp;</td></tr>
+<!--
+ <tr>
+  <td>
+   <font face="verdana,arial,serif" size="1" color="#000000"><a href="/index.shtml" class="homepagelinks"><strong>HOME</strong></a> &gt; <a href="" class="homepagelinks">Appropriate Navigation</a></font>
+  </td>
+ </tr>
+-->
+ <tr>
+  <td align="center">
+   <font face="verdana,arial,serif" size=5" color="#000000"><strong>NCEP Global Ocean <br>Data Assimilation System (GODAS)</strong></font>
+  </td>
+ </tr>
+ <tr><td>&nbsp;</td></tr>
+
+ <tr>
+  <td align="left">
+   <font face="verdana,arial,serif" size=2" color="#000000"><strong>GODAS depends on continuous real-time data from the Global Ocean Observing System. This project is to deliver routine ocean monitoring products, and is being implemented by CPC in cooperation with <a href="https://globalocean.noaa.gov"> NOAA Global Ocean Monitoring and Observing (GOMO)</a>
+ </strong></font>
+  </td>
+ </tr>
+
+
+ <tr>
+ <td>
+ <table width="523" align="center">
+  <tr> 
+   <td><li type="square">
+    <font face="verdana,arial,serif" size="2" color="#000000"> <a href="background.shtml"> <strong>Introduction</strong></a> </font> <br> 
+   </td>
+  </tr>
+
+  <tr> 
+   <td><li type="square">
+    <font face="verdana,arial,serif" size="2" color="#000000"><strong>Climatology (1982-2004): </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="climatology.shtml"><strong>Plots</a> </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="clim_movie.shtml"><strong>Animations</a></strong></font> </td>
+  </tr> 
+
+  <tr> 
+   <td><li type="square">
+    <font face="verdana,arial,serif" size="2" color="#000000"><strong>Monthly products (1979-present): </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="monthly.shtml"><strong>Plots</a> </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="mnth_movie.shtml"><strong>Animations</a></strong></font> </td>
+  </tr>
+
+  <tr> 
+   <td><li type="square">
+    <font face="verdana,arial,serif" size="2" color="#000000"><strong>Pentad products (past 3 months): </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="pentad.shtml"><strong>Plots</a> </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="pentad_movie.shtml"><strong>Animations</a></strong></font> </td>
+  </tr>
+
+  <tr>
+   <td><li type="square">
+    <font face="verdana,arial,serif" size="2" color="#000000"><strong>Coastal upwelling: </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="coastal_upwelling.shtml"><strong>Plot</a> </td>
+  </tr>
+<!--
+  <tr> 
+   <td><li type="square">
+    <font face="verdana,arial,serif" size="2" color="#000000"><strong>Input data distributions (1979-present): </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="data_distribution.shtml"><strong>Plots</a> </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="data_distribution_movie.shtml"><strong>Animations</a></strong></font> </td>
+  </tr>
+-->
+
+  <tr> 
+   <td><li type="square">
+    <font face="verdana,arial,serif" size="2" color="#000000"><strong>Ocean reanalysis for downloading: </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="http://cfs.ncep.noaa.gov/cfs/godas/monthly"><strong>Monthly</a> &nbsp </td>
+   <td> <font face="verdana,arial,serif" size="2" color="#000000">
+    <a href="http://cfs.ncep.noaa.gov/cfs/godas/pentad"><strong>Pentad</a></strong></font> </td>
+  </tr>
+
+  <tr> 
+   <td><li type="square">
+    <font face="verdana,arial,serif" size="2" color="#000000"><a href="validation.shtml"> <strong>Validations against observations </td>
+  </tr>
+
+  <tr>
+   <td><li type="square">
+    <font face="verdana,arial,serif" size="2" color="#000000"> <a href="data_link.shtml"> <strong>Links to other ocean analysis data </a></td> 
+  </tr> <tr> &nbsp;</tr>
+
+ </table>
+</td>
+</tr>
+
+</table>
+ <!-- This is the body content file of the current sub-directory. -->   <script language="Javascript" type="text/javascript">
+
+  MAX_FILES = 6;
+  MAX_FRAMES=18;
+  var N     = 0;
+  var frame = 0;
+  var timeout_id = null;
+
+  var head   = new Array(MAX_FILES);
+  head[0] = "/products/GODAS/pent_gif/xy/pent.anom.xy.oisst.";
+  head[1] = "/products/GODAS/pent_gif/xy/pent.anom.xy.sl.";
+  head[2] = "/products/GODAS/pent_gif/xy/pent.anom.xy.h300.";
+  head[3] = "/products/GODAS/pent_gif/xy/pent.anom.xy.tchp.";
+  head[4] = "/products/GODAS/pent_gif/xy/pent.anom.xy.d20.";
+  head[5] = "/products/GODAS/pent_gif/xz/pent.anom.xz.temp.0n.";
+
+  var images = new Array(MAX_FRAMES);
+  for (var i = 0; i < MAX_FRAMES; i++) {
+    images[i]= new Array(MAX_FILES);
+    }
+
+  for (var i = 0; i < MAX_FRAMES; i++) {
+  for (var j = 0; j < MAX_FILES; j++) {
+  images[i][j] = new Image();
+  N = MAX_FRAMES - i;
+  images[i][j].src = head[j] + N + ".gif";
+  var m = 0;
+  }
+  }
+
+  function setFile(num) {
+  m = num;
+  }
+  function animate_ff() {
+  if (m==0) {document.animation0.src = images[frame][m].src;}
+  if (m==1) {document.animation1.src = images[frame][m].src;}
+  if (m==2) {document.animation2.src = images[frame][m].src;}
+  if (m==3) {document.animation3.src = images[frame][m].src;}
+  if (m==4) {document.animation4.src = images[frame][m].src;}
+  if (m==5) {document.animation5.src = images[frame][m].src;}
+  frame = (frame + 1) % MAX_FRAMES;
+  if (frame==0) {
+    if (timeout_id) clearTimeout(timeout_id);
+    timeout_id = setTimeout("animate_ff()", 3000);
+  }
+  else{
+    if (timeout_id) clearTimeout(timeout_id);
+      timeout_id = setTimeout("animate_ff()", 150);
+  }
+  }
+
+  function animate_f() {
+  if (m==0) {document.animation0.src = images[frame][m].src;}
+  if (m==1) {document.animation1.src = images[frame][m].src;}
+  if (m==2) {document.animation2.src = images[frame][m].src;}
+  if (m==3) {document.animation3.src = images[frame][m].src;}
+  if (m==4) {document.animation4.src = images[frame][m].src;}
+  if (m==5) {document.animation5.src = images[frame][m].src;}
+  frame = (frame + 1) % MAX_FRAMES;
+  if (frame==0) {
+    if (timeout_id) clearTimeout(timeout_id);
+    timeout_id = setTimeout("animate_f()", 3000);
+   }
+  else{
+    if (timeout_id) clearTimeout(timeout_id);
+      timeout_id = setTimeout("animate_f()", 700);
+   }
+  }
+
+  function animate_fb() {
+  frame = (frame - 1) % MAX_FRAMES;
+  if (frame < 0) frame += MAX_FRAMES;
+  if (m==0) {document.animation0.src = images[frame][m].src;}
+  if (m==1) {document.animation1.src = images[frame][m].src;}
+  if (m==2) {document.animation2.src = images[frame][m].src;}
+  if (m==3) {document.animation3.src = images[frame][m].src;}
+  if (m==4) {document.animation4.src = images[frame][m].src;}
+  if (m==5) {document.animation5.src = images[frame][m].src;}
+  if (frame==0) {
+    if (timeout_id) clearTimeout(timeout_id);
+    timeout_id = setTimeout("animate_fb()", 3000);
+   }
+  else{
+    if (timeout_id) clearTimeout(timeout_id);
+      timeout_id = setTimeout("animate_fb()", 150);
+  }
+ }
+
+  function animate_b() {
+  frame = (frame - 1) % MAX_FRAMES;
+  if (frame < 0) frame += MAX_FRAMES;
+  if (m==0) {document.animation0.src = images[frame][m].src;}
+  if (m==1) {document.animation1.src = images[frame][m].src;}
+  if (m==2) {document.animation2.src = images[frame][m].src;}
+  if (m==3) {document.animation3.src = images[frame][m].src;}
+  if (m==4) {document.animation4.src = images[frame][m].src;}
+  if (m==5) {document.animation5.src = images[frame][m].src;}
+  if (frame==0) {
+    if (timeout_id) clearTimeout(timeout_id);
+    timeout_id = setTimeout("animate_b()", 3000);
+  }
+ else{
+    if (timeout_id) clearTimeout(timeout_id);
+      timeout_id = setTimeout("animate_b()", 350);
+  }
+ }
+
+  function step(size) {
+   frame = (frame + size) % MAX_FRAMES;
+   if (frame < 0) frame += MAX_FRAMES;
+  if (m==0) {document.animation0.src = images[frame][m].src;}
+  if (m==1) {document.animation1.src = images[frame][m].src;}
+  if (m==2) {document.animation2.src = images[frame][m].src;}
+  if (m==3) {document.animation3.src = images[frame][m].src;}
+  if (m==4) {document.animation4.src = images[frame][m].src;}
+  if (m==5) {document.animation5.src = images[frame][m].src;}
+  }
+
+  function current(){
+  frame = MAX_FRAMES-1;
+  if (m==0) {document.animation0.src = images[frame][m].src;}
+  if (m==1) {document.animation1.src = images[frame][m].src;}
+  if (m==2) {document.animation2.src = images[frame][m].src;}
+  if (m==3) {document.animation3.src = images[frame][m].src;}
+  if (m==4) {document.animation4.src = images[frame][m].src;}
+  if (m==5) {document.animation5.src = images[frame][m].src;}
+  }
+
+   function show_tab(nam)
+   {
+    document.getElementById("OISST").style.display= "none";
+    document.getElementById("SL").style.display= "none";
+    document.getElementById("H300").style.display= "none";
+    document.getElementById("TCHP").style.display= "none";
+    document.getElementById("D20").style.display= "none";
+    document.getElementById("TXZ").style.display= "none";
+    document.getElementById("txSSTd20").style.display= "none";
+    document.getElementById("txaSSTAd20a").style.display= "none";
+    document.getElementById("OISST_30d").style.display= "none";
+    document.getElementById("SL_30d").style.display= "none";
+    document.getElementById("H300_30d").style.display= "none";
+    document.getElementById("TCHP_30d").style.display= "none";
+    document.getElementById("D20_30d").style.display= "none";
+    document.getElementById("TXZ_30d").style.display= "none";
+    document.getElementById("TAUXY_30d").style.display= "none";
+    document.getElementById("UV15M_30d").style.display= "none";
+    document.getElementById("UXZ_30d").style.display= "none";
+    document.getElementById(nam).style.display = "block";
+   }
+  </script>
+
+
+<table border="0" cellPadding="2" cellSpacing="0" width="500" align="center">  <!-- 11111 -->
+
+<!-- Monthly Ocean Briefing -->
+ <tr><td> <hr> </td></tr>
+ <tr><td align="left" width="600"> 
+   <p style="margin-left: 3em;">
+     <font size="5" face="verdana,arial,serif" color=red> <b> <p align=center>Monthly Ocean Briefing</p></b></font>
+     <font size="2"><b>Around the 8-12th day of each month, the CPC makes a monthly assessment of how the state of the global ocean evolved recently; what was the interaction with the atmosphere; and how model predictions verified.  This assessment is disseminated using a PPT presentation and conference call. Contact <a href="mailto:Zeng-Zhen.Hu@noaa.gov"> Zeng-Zhen Hu</a> for details on conference call or if you wish to be added to the Monthly Ocean Briefing listserv. If you use the materials in the ocean briefing PPT, please acknowlege the web site at https://www.cpc.ncep.noaa.gov/products/GODAS.</b></font><br><br>
+
+   <table> <tr> <td> <font size="2"> <b>Current: <a href="/products/GODAS/ocean_briefing_gif/global_ocean_monitoring_current.ppt"> PPT</a> 
+                     <a href="http://www.nws.noaa.gov/cgi-bin/nwsexit.pl?url=http://www.microsoft.com/downloads/details.aspx?FamilyId=428D5727-43AB-4F24-90B7-A94784AF71A4&displaylang=en"><img src="/www_images/PP.gif" alt="Powerpoint Viewer 2003" align="middle" width="8%"></a>
+                     ,</b></font> </td>
+                <td> <font size="2"> <b><a href="/products/GODAS/ocean_briefing_gif/global_ocean_monitoring_current.pdf"> PDF</a> 
+                     <a href="http://www.nws.noaa.gov/cgi-bin/nwsexit.pl?url=http://www.adobe.com/products/acrobat/readstep2.html"><img src="/www_images/pdf.gif" alt="Adobe PDF Reader" align="middle" width="20%"></a>
+                      </b></font> </td></tr></table>
+
+   <table> <tr> <td> <font size="2"> <b>Archive: <a href="ocean_briefing_archive_ppt.shtml"> PPT</a> 
+                     <a href="http://www.nws.noaa.gov/cgi-bin/nwsexit.pl?url=http://www.microsoft.com/downloads/details.aspx?FamilyId=428D5727-43AB-4F24-90B7-A94784AF71A4&displaylang=en"><img src="/www_images/PP.gif" alt="Powerpoint Viewer 2003" align="middle" width="8%"></a>
+                     ,</b></font></td>
+                <td> <font size="2"> <b><a href="ocean_briefing_archive_pdf.shtml"> PDF</a> 
+                     <a href="http://www.nws.noaa.gov/cgi-bin/nwsexit.pl?url=http://www.adobe.com/products/acrobat/readstep2.html"><img src="/www_images/pdf.gif" alt="Adobe PDF Reader" align="middle" width="20%"></a>
+                     </b></font></td></tr></table>
+
+   <table> <tr> <td> <font size="2"> <a href="/products/GODAS/ocean_briefing.shtml"><B>Ocean briefing sequence web page (<font size="2" color=red> 1991-2020 Climatology </font>)</a></font> </td></tr></table>
+
+<!----
+   <table> <tr> <td> <font size="2"> <b>Briefing schedule and note: 
+                                        <a href="/products/GODAS/ocean_briefing_gif/CPC_ocean_briefing_schedule_2008.pdf">2008</a>&nbsp &nbsp </b></font></td>
+                <td> <font size="2"> <b><a href="/products/GODAS/ocean_briefing_gif/CPC_ocean_briefing_schedule_2009.pdf">2009</a>&nbsp &nbsp </b></font></td>
+                <td> <font size="2"> <b><a href="/products/GODAS/ocean_briefing_gif/CPC_ocean_briefing_schedule_2010.pdf">2010</a>&nbsp &nbsp </b></font></td>
+                <td> <font size="2"> <b><a href="/products/GODAS/ocean_briefing_gif/CPC_ocean_briefing_schedule_2011.pdf">2011</a>&nbsp &nbsp </b></font></td>
+                <td> <font size="2"> <b><a href="/products/GODAS/ocean_briefing_gif/CPC_ocean_briefing_schedule_2012.pdf">2012</a>&nbsp &nbsp </b></font></td>
+          </tr></table>
+!-- 33333 -->
+<!--
+   <table> <tr> <td> <font size="2"> <a href="/products/GODAS/ocean_briefing_gif/GODAS_hit.pdf"><B>GODAS Web Hits </a></font> </td></tr></table>
+
+
+   </p>
+ </td></tr>
+ <tr><td> <hr> </td></tr>
+-->
+<!-- Current Conditions -->
+ <tr>
+  <td align="center"> <font face="verdana,arial,serif" size="5" color="red"><strong>Current Conditions <br> </strong></font>
+   <table> <tr> <td> <font size="3"> (Click <a href="http://www.cpc.ncep.noaa.gov/products/precip/CWlink/MJO/enso.shtml"> <Stong> ENSO </a> for NOAA/CPC current ENSO activity)</font></td></tr></table>
+
+   <table style="border-color: black; border-style: solid; border-width: thin;" align="center" width="500">  <!-- 22222 -->
+    <tr>
+     <td align="center">
+     <font face="verdana,arial,serif" size="2"><strong>Note:</strong> Move cursor over product name to display the graph. </font>
+     </td>
+    </tr>
+    <tr>
+     <td>
+     <table border="1" cellPadding="0" cellSpacing="0" width="500">  <!-- 33333 -->
+      <tr>
+       <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" colspan="4"><font color="#F0E68C">Animations</font>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <table cellspacing="1" cellpadding="0" width="600" border="0" align="center" name="Tabs">   <!-- 44444 -->
+         <tr>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/movie.oisst.gif" OnMouseOver="show_tab('OISST')" title="OISST" class="homepagelinks">Sea Surface Temp Anomaly</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/movie.sl.gif" OnMouseOver="show_tab('SL')" title="Sea Level Anomaly" class="homepagelinks">Sea Level Anomaly</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/movie.h300.gif" OnMouseOver="show_tab('H300')" title="H300" class="homepagelinks">Heat Content Anomaly</a>
+          </td>
+         </tr>
+         <tr>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/movie.tchp.gif" OnMouseOver="show_tab('TCHP')" title="TCHP" class="homepagelinks">Tropical Cyclone Heat Potential</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/movie.d20.gif" OnMouseOver="show_tab('D20')" title="D20" class="homepagelinks">Depth of 20C Isotherm</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xz/movie.temp.0n.gif" OnMouseOver="show_tab('TXZ')" title="Equatorial Temperature" class="homepagelinks">Temp Anomaly near Equator</a>
+         </tr>
+        </table>  <!-- 44444 -->
+       </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+     </table>  <!-- 33333 -->
+
+     <table border="1" cellPadding="0" cellSpacing="0" width="500">  <!-- 33333 -->
+      <tr>
+       <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" colspan="4"><font color="#F0E68C">Plots for Averages in the Past 30 Days</font>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <table cellspacing="1" cellpadding="0" width="600" border="0" align="center" name="Tabs">   <!-- 44444 -->
+         <tr>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/pent.anom.xy.oisst.30d.gif" OnMouseOver="show_tab('OISST_30d')" title="OISST_30d" class="homepagelinks">SST Anomaly</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/pent.anom.xy.sl.30d.gif" OnMouseOver="show_tab('SL_30d')" title="Sea Level Anomaly_30d" class="homepagelinks">Sea Level Anomaly</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/pent.anom.xy.h300.30d.gif" OnMouseOver="show_tab('H300_30d')" title="H300_30d" class="homepagelinks">Heat Content Anomaly</a>
+          </td>
+         </tr>
+         <tr>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/pent.anom.xy.tchp.30d.gif" OnMouseOver="show_tab('TCHP_30d')" title="TCHP_30d" class="homepagelinks">Tropical Cyclone Heat Potential</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/pent.anom.xy.d20.30d.gif" OnMouseOver="show_tab('D20_30d')" title="D20_30d" class="homepagelinks">Depth of 20C Isotherm</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xz/pent.anom.xz.temp.0n.30d.gif" OnMouseOver="show_tab('TXZ_30d')" title="Equatorial Temperature_30d" class="homepagelinks">Temp Anomaly near Equator</a>
+         </tr>
+         <tr>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/pent.anom.xy.tauxy.30d.gif" OnMouseOver="show_tab('TAUXY_30d')" title="TAUXY_30d" class="homepagelinks">Surface Wind Stress</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xy/pent.anom.xy.uv15m.30d.gif" OnMouseOver="show_tab('UV15M_30d')" title="UV15M_30d" class="homepagelinks">Surface Current at 15m</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xz/pent.anom.xz.u.0n.30d.gif" OnMouseOver="show_tab('UXZ_30d')" title="Equatorial Current_30d" class="homepagelinks">U-current Anomaly near Equator</a>
+         </tr>
+        </table>  <!-- 44444 -->
+       </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+     </table>  <!-- 33333 -->
+
+     <table border="1" cellPadding="0" cellSpacing="0" width="500">  <!-- 33333 -->
+      <tr>
+       <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" colspan="4"><font color="#F0E68C">Time-Longitude Plots for the Past 12 Months</font>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <table cellspacing="1" cellpadding="0" width="600" border="0" align="center" name="Tabs">   <!-- 44444 -->
+         <tr>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xt/pent.anom.xt.txSSTd20.0n.current.gif" OnMouseOver="show_tab('txSSTd20')" title="txSSTd20" class="homepagelinks">Equatorial Zonal Wind, OI SST, 20C Isotherm Depth - Total (Pacific)</a>
+          </td>
+          <td class="nav" id="menuitem" align="center" bgcolor="#0A2390" width="33%">
+          <a href="/products/GODAS/pent_gif/xt/pent.anom.xt.txaSSTAd20a.0n.current.gif" OnMouseOver="show_tab('txaSSTAd20a')" title="txaSSTAd20a" class="homepagelinks">Equatorial Zonal Wind, OI SST, 20C Isotherm Depth - Anomalies (Pacific)</a>
+          </td>
+         </tr>
+        </table>  <!-- 44444 -->
+       </td>
+      </tr>
+     </table>  <!-- 33333 -->
+
+     <table width="600" cellpadding="0" cellspacing="0" align="center"> 	<!--  33333  -->
+      <tr>
+       <td align="center">
+       <div id="OISST" style="display:block;">
+        <img src="/products/GODAS/pent_gif/xy/movie.oisst.gif" alt="OISST Animation" width="522" name=animation0>
+         <FORM>
+         <INPUT TYPE=button VALUE="Current" onClick="setFile(0); current()" title="Most recent image">
+         <INPUT TYPE=button VALUE=" >> "    onClick="setFile(0); animate_ff()" title="Loop forward quickly">
+         <INPUT TYPE=button VALUE=" > "     onClick="setFile(0); animate_f()" title="Loop forward slowly">
+         <INPUT TYPE=button VALUE=" << "    onClick="setFile(0); animate_fb()" title="Loop backward quickly">
+         <INPUT TYPE=button VALUE=" < "     onClick="setFile(0); animate_b()" title="Loop backward slowly">
+         <INPUT TYPE=button VALUE="Step >"  onClick="setFile(0); step(1)" title="Advance forward one frame">
+         <INPUT TYPE=button VALUE="Step <"  onClick="setFile(0); step(-1)" title="Back up one frame">
+         <INPUT TYPE=button VALUE="Stop"    onClick="if (timeout_id) clearTimeout(timeout_id);timeout_id=null;">
+         </FORM>
+       </div>
+       <div id="SL" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/movie.sl.gif" alt="Sea Level animation" width="522" name=animation1>
+         <FORM>
+         <INPUT TYPE=button VALUE="Current" onClick="setFile(1); current()" title="Most recent image">
+         <INPUT TYPE=button VALUE=" >> "    onClick="setFile(1); animate_ff()" title="Loop forward quickly">
+         <INPUT TYPE=button VALUE=" > "     onClick="setFile(1); animate_f()" title="Loop forward slowly">
+         <INPUT TYPE=button VALUE=" << "    onClick="setFile(1); animate_fb()" title="Loop backward quickly">
+         <INPUT TYPE=button VALUE=" < "     onClick="setFile(1); animate_b()" title="Loop backward slowly">
+         <INPUT TYPE=button VALUE="Step >"  onClick="setFile(1); step(1)" title="Advance forward one frame">
+         <INPUT TYPE=button VALUE="Step <"  onClick="setFile(1); step(-1)" title="Back up one frame">
+         <INPUT TYPE=button VALUE="Stop"    onClick="if (timeout_id) clearTimeout(timeout_id);timeout_id=null;">
+         </FORM>
+       </div>
+       <div id="H300" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/movie.h300.gif" alt="Heat Content Animation" width="522" name=animation2>
+         <FORM>
+         <INPUT TYPE=button VALUE="Current" onClick="setFile(2); current()" title="Most recent image">
+         <INPUT TYPE=button VALUE=" >> "    onClick="setFile(2); animate_ff()" title="Loop forward quickly">
+         <INPUT TYPE=button VALUE=" > "     onClick="setFile(2); animate_f()" title="Loop forward slowly">
+         <INPUT TYPE=button VALUE=" << "    onClick="setFile(2); animate_fb()" title="Loop backward quickly">
+         <INPUT TYPE=button VALUE=" < "     onClick="setFile(2); animate_b()" title="Loop backward slowly">
+         <INPUT TYPE=button VALUE="Step >"  onClick="setFile(2); step(1)" title="Advance forward one frame">
+         <INPUT TYPE=button VALUE="Step <"  onClick="setFile(2); step(-1)" title="Back up one frame">
+         <INPUT TYPE=button VALUE="Stop"    onClick="if (timeout_id) clearTimeout(timeout_id);timeout_id=null;">
+         </FORM>
+       </div>
+       <div id="TCHP" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/movie.tchp.gif" alt="Tropical Cyclone Heat Potential" width="522" name=animation3>
+         <FORM>
+         <INPUT TYPE=button VALUE="Current" onClick="setFile(3); current()" title="Most recent image">
+         <INPUT TYPE=button VALUE=" >> "    onClick="setFile(3); animate_ff()" title="Loop forward quickly">
+         <INPUT TYPE=button VALUE=" > "     onClick="setFile(3); animate_f()" title="Loop forward slowly">
+         <INPUT TYPE=button VALUE=" << "    onClick="setFile(3); animate_fb()" title="Loop backward quickly">
+         <INPUT TYPE=button VALUE=" < "     onClick="setFile(3); animate_b()" title="Loop backward slowly">
+         <INPUT TYPE=button VALUE="Step >"  onClick="setFile(3); step(1)" title="Advance forward one frame">
+         <INPUT TYPE=button VALUE="Step <"  onClick="setFile(3); step(-1)" title="Back up one frame">
+         <INPUT TYPE=button VALUE="Stop"    onClick="if (timeout_id) clearTimeout(timeout_id);timeout_id=null;">
+         </FORM>
+       </div>
+       <div id="D20" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/movie.d20.gif" alt="Depth of 20C Isotherm" width="522" name=animation4>
+         <FORM>
+         <INPUT TYPE=button VALUE="Current" onClick="setFile(4); current()" title="Most recent image">
+         <INPUT TYPE=button VALUE=" >> "    onClick="setFile(4); animate_ff()" title="Loop forward quickly">
+         <INPUT TYPE=button VALUE=" > "     onClick="setFile(4); animate_f()" title="Loop forward slowly">
+         <INPUT TYPE=button VALUE=" << "    onClick="setFile(4); animate_fb()" title="Loop backward quickly">
+         <INPUT TYPE=button VALUE=" < "     onClick="setFile(4); animate_b()" title="Loop backward slowly">
+         <INPUT TYPE=button VALUE="Step >"  onClick="setFile(4); step(1)" title="Advance forward one frame">
+         <INPUT TYPE=button VALUE="Step <"  onClick="setFile(4); step(-1)" title="Back up one frame">
+         <INPUT TYPE=button VALUE="Stop"    onClick="if (timeout_id) clearTimeout(timeout_id);timeout_id=null;">
+         </FORM>
+       </div>
+       <div id="TXZ" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xz/movie.temp.0n.gif" alt="Longitude-Depth Temperature Near Equator" width="526" name=animation5>
+         <FORM>
+         <INPUT TYPE=button VALUE="Current" onClick="setFile(5); current()" title="Most recent image">
+         <INPUT TYPE=button VALUE=" >> "    onClick="setFile(5); animate_ff()" title="Loop forward quickly">
+         <INPUT TYPE=button VALUE=" > "     onClick="setFile(5); animate_f()" title="Loop forward slowly">
+         <INPUT TYPE=button VALUE=" << "    onClick="setFile(5); animate_fb()" title="Loop backward quickly">
+         <INPUT TYPE=button VALUE=" < "     onClick="setFile(5); animate_b()" title="Loop backward slowly">
+         <INPUT TYPE=button VALUE="Step >"  onClick="setFile(5); step(1)" title="Advance forward one frame">
+         <INPUT TYPE=button VALUE="Step <"  onClick="setFile(5); step(-1)" title="Back up one frame">
+         <INPUT TYPE=button VALUE="Stop"    onClick="if (timeout_id) clearTimeout(timeout_id);timeout_id=null;">
+         </FORM>
+       </div>
+
+       </div>
+       <div id="OISST_30d" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/pent.anom.xy.oisst.30d.gif" alt="OISST_30d" width="522">
+       </div>
+       <div id="SL_30d" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/pent.anom.xy.sl.30d.gif" alt="SL_30d" width="522">
+       </div>
+       <div id="H300_30d" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/pent.anom.xy.h300.30d.gif" alt="H300_30d" width="522">
+       </div>
+       <div id="TCHP_30d" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/pent.anom.xy.tchp.30d.gif" alt="TCHP_30d" width="522">
+       </div>
+       <div id="D20_30d" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/pent.anom.xy.d20.30d.gif" alt="D20_30d" width="522">
+       </div>
+       <div id="TXZ_30d" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xz/pent.anom.xz.temp.0n.30d.gif" alt="TXZ_30d" width="526">
+       </div>
+       <div id="TAUXY_30d" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/pent.anom.xy.tauxy.30d.gif" alt="TAUXY_30d" width="522">
+       </div>
+       <div id="UV15M_30d" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xy/pent.anom.xy.uv15m.30d.gif" alt="UV15M_30d" width="522">
+       </div>
+       <div id="UXZ_30d" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xz/pent.anom.xz.u.0n.30d.gif" alt="UXZ_30d" width="526">
+       </div>
+
+       <div id="txSSTd20" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xt/pent.anom.xt.txSSTd20.0n.current.gif" alt="txSSTd20" width="538">
+       </div>
+       <div id="txaSSTAd20a" style="display:none;">
+        <img src="/products/GODAS/pent_gif/xt/pent.anom.xt.txaSSTAd20a.0n.current.gif" alt="txaSSTAd20a" width="538">
+       </div>
+       </td>
+      </tr>
+     </table> 	<!--  33333  -->
+    </td>
+   </tr>
+  </table>  <!-- 22222 -->
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+   <br> <br>
+   <p align="justify"> <font face="verdana,arial,serif" size="2" color="#000000">
+&nbsp We appreciate your comments, suggestions and feedbacks to our web page.
+&nbsp Please write to: <a href="mailto:Caihong.Wen@noaa.gov"> Caihong Wen</a>.
+We will respond to your emails promptly. </font><br><br>
+  </td>
+ </tr>
+
+</table>  <!-- 11111 -->
+
+ <!-- This is the body content file of the current sub-directory. --> <table cellspacing="0" cellpadding="0" width="99%" border="0">
+	<tbody>
+		<tr>
+			<td colspan="3"><hr></td>
+		</tr>
+		<tr valign="top">
+			<td class="gray">
+				<a href="http://www.noaa.gov/" class="homepagelinks"><span class="gray">NOAA/</span></a>
+				<a href="http://www.nws.noaa.gov/" class="homepagelinks"><span class="gray">National Weather Service</span></a><br>
+				<a href="http://www.ncep.noaa.gov/" class="homepagelinks"><span class="gray">NOAA Center for Weather and Climate Prediction </span></a><br>
+				Climate Prediction Center<br>
+				5830 University Research Court <br>
+				Riverdale Park, MD 20737 <br>
+				Page Author:<a href="/comment-form.html" class="homepagelinks"><span class="gray"> Climate Prediction Center Internet Team</span></a><br>
+ <!-- Use virtual include, because this should be in a common place within your DocumentRoot. --> Page last modified: July 30, 2019 			</td>
+			<td>
+				<a href="http://www.weather.gov/disclaimer.php" class="homepagelinks"><span class="gray">Disclaimer</span></a><br>
+				<a href="http://www.cio.noaa.gov/Policy_Programs/info_quality.html" class="homepagelinks"><span class="gray">Information Quality</span></a><br>
+				<a href="http://www.nws.noaa.gov/credits.php" class="homepagelinks"><span class="gray">Credits</span></a><br>
+				<a href="http://www.nws.noaa.gov/glossary/" class="homepagelinks"><span class="gray">Glossary</span></a><br>
+			</td>
+			<td align="right">
+				<a href="http://www.weather.gov/privacy.php" class="homepagelinks"><span class="gray">Privacy Policy</span></a><br>
+				<a href="http://www.rdc.noaa.gov/%7Efoia/" class="homepagelinks"><span class="gray">Freedom of Information Act (FOIA)</span></a><br>
+				<a href="http://www.nws.noaa.gov/admin.php" class="homepagelinks"><span class="gray">About Us</span></a><br>
+				<a href="http://www.nws.noaa.gov/careers.php" class="homepagelinks"><span class="gray">Career Opportunities</span></a><br>
+			</td>
+		</tr>
+	</tbody>
+</table>
+ <!-- Use virtual include, because this should be in a common place within your DocumentRoot. --> </td> </tr> </table></body></html>
