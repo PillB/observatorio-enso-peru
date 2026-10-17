@@ -50,8 +50,13 @@ CURRENT = {
     "enfen-home.html": "https://enfen.imarpe.gob.pe/",
     "enfen-gob-home.html": "https://www.enfen.gob.pe/",
     "siofen-icen.html": "https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen",
-    "igp-icen.txt": "http://met.igp.gob.pe/datos/icen.txt",
-    "igp-icen-https.txt": "https://www.met.igp.gob.pe/datos/icen.txt",
+    "igp-icen.txt": "http://met.igp.gob.pe/datos/ICEN.txt",
+    "igp-icen-https.txt": "https://met.igp.gob.pe/datos/ICEN.txt",
+    "cpc-tahiti.txt": "https://www.cpc.ncep.noaa.gov/data/indices/tahiti",
+    "cpc-darwin.txt": "https://www.cpc.ncep.noaa.gov/data/indices/darwin",
+    "cpc-weekly-ppt.html": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/lanina/enso_evolution-status-fcsts-web.pdf",
+    "cpc-heat-content.txt": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ocean/index/heat_content_index.txt",
+    "enfen-gobpe.html": "https://www.gob.pe/enfen",
     "bom-soi30.txt": "https://www.bom.gov.au/climate/enso/soi.txt",
     "bom-enso-outlook.html": "https://www.bom.gov.au/climate/enso/outlook/",
 }
@@ -68,6 +73,9 @@ HISTORY = [
     ("enfen-comunicados", "enfen.imarpe.gob.pe/comunicados/", 6),
     ("enfen-gob-comunicado", "www.enfen.gob.pe/", 6),
     ("igp-icen", "met.igp.gob.pe/datos/icen.txt", 4),
+    ("igp-ICEN", "met.igp.gob.pe/datos/ICEN.txt", 6),
+    ("bom-soi", "www.bom.gov.au/climate/enso/soi.txt", 6),
+    ("enfen-wp-posts", "enfen.imarpe.gob.pe/wp-json/wp/v2/posts", 6, "prefix"),
     ("siofen-icen", "siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen", 6),
     # Comunicados oficiales en PDF (el formato y la URL cambian con los años).
     ("enfen-pdf-gob", "www.enfen.gob.pe/download/comunicado-oficial-enfen", 6, "prefix"),
@@ -80,7 +88,14 @@ MAX_BYTES = 2_000_000
 def _get(client: httpx.Client, url: str) -> dict:
     started = time.monotonic()
     try:
-        r = client.get(url)
+        for attempt in range(3):
+            try:
+                r = client.get(url)
+                break
+            except httpx.ConnectError:
+                if attempt == 2:
+                    raise
+                time.sleep(5 * (attempt + 1))
         body = r.content[:MAX_BYTES]
         return {
             "url": url,
