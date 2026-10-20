@@ -354,7 +354,9 @@ def _get_communique(fetcher, item: dict):
         if got is not None:
             got.attempts = exc.attempts + tried
             return got
-        note = next((a["note"] for a in tried if a.get("channel") == "archive-prefix"), "consulta sin respuesta")
+        last = tried[-1] if tried else {}
+        note = next((a["note"] for a in tried if a.get("channel") == "archive-prefix"),
+                    f"consulta sin respuesta: {last.get('status') or last.get('error') or 'sin intento'}")
         raise FetchError(f"{exc} (archivo por prefijo: {note})", exc.attempts + tried) from exc
 
 
