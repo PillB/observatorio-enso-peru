@@ -67,6 +67,18 @@ CURRENT = {
     # Réplica oficial: la Dirección de Hidrografía y Navegación (miembro del ENFEN)
     # republica los comunicados; útil cuando enfen.imarpe.gob.pe no responde.
     "dhn-comunicados-enfen.html": "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen",
+    # Sondeo de acceso: lluvia, estaciones y productos satelitales.
+    "senamhi-fen.html": "https://www.senamhi.gob.pe/?p=fenomeno-el-nino",
+    "senamhi-avisos.html": "https://www.senamhi.gob.pe/?p=aviso-meteorologico",
+    "senamhi-estaciones.html": "https://www.senamhi.gob.pe/mapas/mapa-estaciones-2/",
+    "senamhi-descarga.html": "https://www.senamhi.gob.pe/site/descarga-datos/",
+    "chirps-monthly-dir.html": "https://data.chc.ucsb.edu/products/CHIRPS-2.0/global_monthly/tifs/",
+    "chirps-prelim-dir.html": "https://data.chc.ucsb.edu/products/CHIRPS-2.0/prelim/global_daily/tifs/p05/",
+    "ncei-oisst-dir.html": "https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/",
+    "erddap-tao-sst.csv": "https://coastwatch.pfeg.noaa.gov/erddap/tabledap/pmelTaoDySst.csv?station,time,T_25&time>=now-10days&station=%220n110w%22",
+    "erddap-oisst-peru.csv": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg_LonPM180.csv?anom[(last)][(0.0)][(-10):4:(0)][(-90):4:(-80)]",
+    "gpm-imerg-dir.html": "https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGM.07/",
+    "inocar-home.html": "https://www.inocar.mil.ec/web/",
 }
 
 #: Consultas históricas en Wayback: (prefijo de nombre, URL, granularidad CDX).
