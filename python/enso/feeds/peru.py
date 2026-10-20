@@ -73,6 +73,8 @@ def _headline_summary(text: str, nm: re.Match) -> str:
             rest = re.sub(r"\s+", " ", " ".join(lines[k + 1: k + 12]))
             rest = re.sub(r"(?<=[a-záéíóúñ)])\d+(?=[\s(.,]|$)", "", rest)
             rest = re.sub(r"\b(20\d\d)\d{1,2}(?=[\s(.,]|$)", r"\1", rest)
+            # El texto del PDF a veces parte «del» y «al» («de l Mar»).
+            rest = re.sub(r"\b([Dd]e|[Aa]) l (?=[A-Za-záéíóúñÁÉÍÓÚÑ])", r"\1l ", rest)
             sentences = re.findall(r".+?\.(?=\s|$)", rest)
             para = " ".join(x.strip() for x in sentences[:2])
             return re.sub(r"\s+([,.])", r"\1", f"{head}. {para}")[:700]

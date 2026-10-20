@@ -240,6 +240,14 @@ def test_enfen_communique_2026_headline_layout():
     assert "20272" not in c["summary"]
 
 
+def test_enfen_communique_18_2026():
+    """Comunicado 18-2026 (copia del Internet Archive leída en vivo el 20 de octubre de 2026)."""
+    c = peru.parse_enfen_communique(peru.pdf_text((HIST / "enfen-pdf-imarpe-20261017014841.txt").read_bytes())).data
+    assert (c["id"], c["issued"], c["status_code"], c["next_issue"]) == ("18-2026", "2026-10-16", "alerta_nino", "2026-10-30")
+    assert c["summary"].startswith("El Niño Costero se extendería hasta el otoño de 2027.")
+    assert "Superficial del Mar" in c["summary"] and "de l " not in c["summary"]
+
+
 @pytest.mark.parametrize("path", [FIX / "dhn-comunicados-enfen.html"] + history("dhn-comunicados"), ids=lambda p: p.stem)
 def test_dhn_mirror_listing(path):
     """Réplica de la DHN: enlaces directos a los PDF, estables desde 2022."""
