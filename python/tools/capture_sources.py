@@ -64,6 +64,9 @@ CURRENT = {
     "psl-nina1.anom.data": "https://psl.noaa.gov/data/correlation/nina1.anom.data",
     "psl-nina34.anom.data": "https://psl.noaa.gov/data/correlation/nina34.anom.data",
     "bom-enso-outlook.html": "https://www.bom.gov.au/climate/enso/outlook/",
+    # Réplica oficial: la Dirección de Hidrografía y Navegación (miembro del ENFEN)
+    # republica los comunicados; útil cuando enfen.imarpe.gob.pe no responde.
+    "dhn-comunicados-enfen.html": "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen",
 }
 
 #: Consultas históricas en Wayback: (prefijo de nombre, URL, granularidad CDX).
@@ -85,6 +88,7 @@ HISTORY = [
     # Comunicados oficiales en PDF (el formato y la URL cambian con los años).
     ("enfen-pdf-gob", "www.enfen.gob.pe/download/comunicado-oficial-enfen", 6, "prefix"),
     ("enfen-pdf-imarpe", "enfen.imarpe.gob.pe/download/comunicado-oficial-enfen", 6, "prefix"),
+    ("dhn-comunicados", "www.dhn.mil.pe/portal/comunicados-oficiales-enfen", 6),
 ]
 
 MAX_BYTES = 2_000_000
