@@ -79,6 +79,24 @@ CURRENT = {
     "erddap-oisst-peru.csv": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg_LonPM180.csv?anom[(last)][(0.0)][(-10):4:(0)][(-90):4:(-80)]",
     "gpm-imerg-dir.html": "https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGM.07/",
     "inocar-home.html": "https://www.inocar.mil.ec/web/",
+    # Autoridades del Perú
+    "imarpe-home.html": "https://www.imarpe.gob.pe/",
+    "imarpe-tsm-costera.html": "https://www.imarpe.gob.pe/imarpe/index.php?id_seccion=I0178070000000000000000",
+    "igp-enso.html": "https://www.gob.pe/igp",
+    "ana-snirh.html": "https://snirh.ana.gob.pe/",
+    "ana-caudales.html": "https://snirh.ana.gob.pe/onrh/",
+    "indeci-home.html": "https://www.gob.pe/indeci",
+    "indeci-visor.html": "https://geo.indeci.gob.pe/visorindeci/",
+    "cenepred-sigrid.html": "https://sigrid.cenepred.gob.pe/sigridv3/",
+    "senamhi-home.html": "https://www.senamhi.gob.pe/",
+    "senamhi-boletines.html": "https://www.senamhi.gob.pe/?p=boletines",
+    # Autoridades regionales
+    "ciifen-home.html": "https://ciifen.org/",
+    "cpps-erfen.html": "https://cpps-int.org/index.php/boletin-alerta-climatico",
+    "inamhi-home.html": "https://www.inamhi.gob.ec/",
+    "ideam-home.html": "https://www.ideam.gov.co/",
+    "dmc-chile-enso.html": "https://climatologia.meteochile.gob.cl/application/informacion/fenomenoElNino",
+    "shoa-erfen.html": "https://www.shoa.cl/php/erfen.php",
 }
 
 #: Consultas históricas en Wayback: (prefijo de nombre, URL, granularidad CDX).
