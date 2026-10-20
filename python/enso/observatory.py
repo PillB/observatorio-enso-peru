@@ -199,6 +199,7 @@ class Acquired:
     warnings: list = field(default_factory=list)
     error: str = ""
     attempts: list = field(default_factory=list)
+    raw: bytes = b""
 
 
 class PreviousPublication:
@@ -246,6 +247,7 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         else:
             resp = fetcher.get(src.urls, archive=src.archive, save=src.save, accept=src.accept)
         acq.attempts = resp.attempts
+        acq.raw = resp.body
         parsed = src.parse(resp)
         acq.data = parsed.data
         acq.ok = True
@@ -881,8 +883,24 @@ def _git_sha() -> str:
         return ""
 
 
+def archive_raw(raw_dir: Path, acquired: dict[str, "Acquired"], today: date) -> int:
+    """Guarda cada respuesta original nueva (por sha256) para backtesting futuro."""
+    n = 0
+    for sid, a in acquired.items():
+        if not a.raw or a.channel in ("fixture", "previous-publication"):
+            continue
+        d = raw_dir / sid
+        d.mkdir(parents=True, exist_ok=True)
+        if any(p.name.endswith(f"-{a.sha256[:12]}" + p.suffix) for p in d.iterdir()):
+            continue
+        ext = ".pdf" if a.raw[:5] == b"%PDF-" else ".html" if b"<html" in a.raw[:2000].lower() else ".txt"
+        (d / f"{today.isoformat()}-{a.sha256[:12]}{ext}").write_bytes(a.raw)
+        n += 1
+    return n
+
+
 def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, offline: bool = False,
-        today: Optional[date] = None, only: Optional[list[str]] = None) -> dict:
+        today: Optional[date] = None, only: Optional[list[str]] = None, raw_dir: Optional[Path] = None) -> dict:
     from .fetch import Fetcher
 
     started = datetime.now(timezone.utc)
@@ -909,6 +927,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
             log.add("critical" if s.critical else "error", s.id, "publish", "no-data",
                     "La fuente falló y no hay un dato anterior que conservar.")
     res = write_publication(out, acquired, b, official, weekly, grd, log, started)
+    if raw_dir is not None:
+        res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
     res.update({"worst": log.worst(), "events": len(log.events)})
     return res
@@ -930,10 +950,12 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--fixtures", default=None, help="Leer respuestas capturadas en lugar de la red")
     ap.add_argument("--offline", action="store_true")
     ap.add_argument("--only", nargs="*")
+    ap.add_argument("--raw-dir", default=None, help="Carpeta donde archivar las respuestas originales nuevas")
     ap.add_argument("--fail-on", default="critical", choices=["error", "critical", "never"])
     args = ap.parse_args(argv)
     out = Path(args.out).resolve()
-    res = run(out, args.previous or None, Path(args.fixtures).resolve() if args.fixtures else None, args.offline, only=args.only)
+    res = run(out, args.previous or None, Path(args.fixtures).resolve() if args.fixtures else None, args.offline, only=args.only,
+              raw_dir=Path(args.raw_dir).resolve() if args.raw_dir else None)
     print(json.dumps(res, ensure_ascii=False))
     gh = os.environ.get("GITHUB_OUTPUT")
     if gh:

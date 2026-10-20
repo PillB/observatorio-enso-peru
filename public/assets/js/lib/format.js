@@ -1,4 +1,7 @@
 // Formato de números, fechas y periodos en español (Perú).
+// Los números usan coma decimal (como los comunicados de ENFEN); «es-PE»
+// en los navegadores usa punto, por eso los números se formatean con «es».
+const NUM_LOCALE = 'es';
 
 export const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'setiembre', 'octubre', 'noviembre', 'diciembre'];
 export const MES_CORTO = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'set', 'oct', 'nov', 'dic'];
@@ -16,14 +19,14 @@ export function decimalsFor(units) { return units === 'm' ? 1 : units === 'dimen
 export function fmtValue(v, units, { sign = true, unit = true, digits } = {}) {
   if (!isNum(v)) return 'N/D';
   const d = digits ?? decimalsFor(units);
-  const n = Math.abs(v).toLocaleString('es-PE', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const n = Math.abs(v).toLocaleString(NUM_LOCALE, { minimumFractionDigits: d, maximumFractionDigits: d });
   const s = v > 0 && sign ? '+' : v < 0 ? '−' : '';
   const u = unit && unitLabel(units) ? ` ${unitLabel(units)}` : '';
   return `${s}${n}${u}`;
 }
 
 export function fmtNumber(v, digits = 0) {
-  return isNum(v) ? v.toLocaleString('es-PE', { maximumFractionDigits: digits }) : 'N/D';
+  return isNum(v) ? v.toLocaleString(NUM_LOCALE, { maximumFractionDigits: digits }) : 'N/D';
 }
 
 /** «2026-06» → «junio 2026». */

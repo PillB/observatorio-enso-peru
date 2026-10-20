@@ -121,6 +121,7 @@ function render(el, spec, id, state) {
   const y0 = sy(Math.max(v0, Math.min(v1, 0)));
 
   let svg = `<svg class="chart" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-labelledby="${id}-t" tabindex="0" focusable="true">`;
+  describe.pl = spec.periodLabel;
   svg += `<title id="${id}-t">${esc(spec.title || 'Serie temporal')}. ${esc(describe(series, spec.units))} Use las flechas para recorrer los valores.</title>`;
   svg += `<defs><clipPath id="${id}-plot"><rect x="${m.l}" y="${m.t}" width="${pw}" height="${ph}"/></clipPath>`;
   svg += `<clipPath id="${id}-pos"><rect x="${m.l}" y="${m.t}" width="${pw}" height="${Math.max(0, y0 - m.t)}"/></clipPath>`;
@@ -141,7 +142,8 @@ function render(el, spec, id, state) {
   svg += `</g><g class="axis axis-y">`;
   for (const v of yt) svg += `<text x="${m.l - 6}" y="${sy(v) + 4}" text-anchor="end">${esc(fmtValue(v, spec.units, { unit: false, digits: Math.abs(yt[1] - yt[0]) < 1 ? 1 : 0 }))}</text>`;
   svg += `</g><g class="axis axis-x">`;
-  for (const tk of timeTicks(t0, t1, pw)) svg += `<line x1="${sx(tk.t)}" x2="${sx(tk.t)}" y1="${m.t + ph}" y2="${m.t + ph + 4}"/><text x="${sx(tk.t)}" y="${height - 8}" text-anchor="middle">${esc(tk.label)}</text>`;
+  const ticks = spec.xLabel ? niceTimeTicks(t0, t1, pw, spec.xLabel) : timeTicks(t0, t1, pw);
+  for (const tk of ticks) svg += `<line x1="${sx(tk.t)}" x2="${sx(tk.t)}" y1="${m.t + ph}" y2="${m.t + ph + 4}"/><text x="${sx(tk.t)}" y="${height - 8}" text-anchor="middle">${esc(tk.label)}</text>`;
   svg += `</g>`;
   if (v0 < 0 && v1 > 0) svg += `<line class="zero" x1="${m.l}" x2="${m.l + pw}" y1="${y0}" y2="${y0}"/>`;
   for (const r of spec.refLines || []) svg += `<g class="ref ref-${esc(r.tone || 'neutral')}"><line x1="${m.l}" x2="${m.l + pw}" y1="${sy(r.v)}" y2="${sy(r.v)}"/>${compact ? '' : `<text x="${m.l + pw - 4}" y="${sy(r.v) - 4}" text-anchor="end">${esc(r.label || '')}</text>`}</g>`;
@@ -151,12 +153,13 @@ function render(el, spec, id, state) {
   series.forEach((s, si) => {
     const segs = segments(s.points);
     const line = segs.map((seg) => seg.map((p, i) => `${i ? 'L' : 'M'}${sx(p.t).toFixed(1)},${sy(p.v).toFixed(1)}`).join('')).join('');
-    if (s.fill === 'anomaly') {
+    if (s.fill === 'anomaly' || (spec.fill && si === 0)) {
       const area = segs.map((seg) => `M${sx(seg[0].t).toFixed(1)},${y0}` + seg.map((p) => `L${sx(p.t).toFixed(1)},${sy(p.v).toFixed(1)}`).join('') + `L${sx(seg[seg.length - 1].t).toFixed(1)},${y0}Z`).join('');
-      svg += `<path class="area-warm" clip-path="url(#${id}-pos)" d="${area}"/><path class="area-cool" clip-path="url(#${id}-neg)" d="${area}"/>`;
+      const [up, down] = spec.invertFill ? ['area-cool', 'area-warm'] : ['area-warm', 'area-cool'];
+      svg += `<path class="${up}" clip-path="url(#${id}-pos)" d="${area}"/><path class="${down}" clip-path="url(#${id}-neg)" d="${area}"/>`;
     }
     const prelim = s.points.filter((p) => p.flag === 'preliminary' && p.v !== null);
-    svg += `<path class="line s${si} ${s.dashed ? 'dashed' : ''}" style="${s.color ? `stroke:${esc(s.color)}` : ''}" d="${line}"/>`;
+    svg += `<path class="line s${si} ${s.dashed ? 'dashed' : ''}" d="${line}"/>`;
     if (prelim.length && prelim.length < 30) for (const p of prelim) svg += `<circle class="prelim" cx="${sx(p.t)}" cy="${sy(p.v)}" r="2.6"><title>Preliminar</title></circle>`;
   });
   svg += `</g>`;
@@ -172,9 +175,15 @@ function render(el, spec, id, state) {
 
   el.innerHTML = `<div class="chart-wrap">${svg}<div class="tooltip" role="status" aria-live="polite" hidden></div></div>`;
   if (spec.legend !== false && series.length > 1) {
-    el.insertAdjacentHTML('beforeend', `<ul class="legend">${series.map((s, si) => `<li><span class="sw s${si} ${s.dashed ? 'dashed' : ''}" style="${s.color ? `background:${esc(s.color)}` : ''}"></span>${esc(s.label)}</li>`).join('')}</ul>`);
+    el.insertAdjacentHTML('beforeend', `<ul class="legend">${series.map((s, si) => `<li><span class="sw s${si} ${s.dashed ? 'dashed' : ''}"></span>${esc(s.label)}</li>`).join('')}</ul>`);
   }
   interact(el, series, spec, { sx, sy, m, pw, state });
+}
+
+function niceTimeTicks(t0, t1, width, fmt) {
+  const n = Math.max(2, Math.floor(width / 70));
+  const step = (t1 - t0) / n;
+  return Array.from({ length: n + 1 }, (_, i) => ({ t: t0 + i * step, label: fmt(t0 + i * step) }));
 }
 
 function segments(points) {
@@ -205,7 +214,8 @@ function describe(series, units) {
   const last = vals[vals.length - 1];
   const max = vals.reduce((a, b) => (b.v > a.v ? b : a));
   const min = vals.reduce((a, b) => (b.v < a.v ? b : a));
-  return `${s.label}: último valor ${fmtValue(last.v, units)} (${label(last)}); máximo ${fmtValue(max.v, units)} (${label(max)}); mínimo ${fmtValue(min.v, units)} (${label(min)}).`;
+  const lb = (p) => (describe.pl ? describe.pl(p.label) : label(p));
+  return `${s.label}: último valor ${fmtValue(last.v, units)} (${lb(last)}); máximo ${fmtValue(max.v, units)} (${lb(max)}); mínimo ${fmtValue(min.v, units)} (${lb(min)}).`;
 }
 
 function label(p) {
@@ -230,7 +240,7 @@ function interact(el, series, spec, { sx, sy, pw, m, state }) {
       const dot = cursor.querySelectorAll('.cursor-dot')[si];
       if (q && q.v !== null) { dot.setAttribute('cx', sx(q.t)); dot.setAttribute('cy', sy(q.v)); dot.style.display = ''; }
       else dot.style.display = 'none';
-      return `<div class="tt-row"><span class="sw s${si}" style="${s.color ? `background:${esc(s.color)}` : ''}"></span><span>${esc(s.label)}</span><strong>${q ? esc(fmtValue(q.v, spec.units)) : 'N/D'}</strong></div>`;
+      return `<div class="tt-row"><span class="sw s${si}"></span><span>${esc(s.label)}</span><strong>${q ? esc(fmtValue(q.v, spec.units)) : 'N/D'}</strong></div>`;
     }).join('');
     const flag = p.flag === 'preliminary' ? ' · preliminar' : '';
     tip.innerHTML = `<div class="tt-date">${esc(spec.periodLabel ? spec.periodLabel(p.label) : label(p))}${flag}</div>${rows}`;

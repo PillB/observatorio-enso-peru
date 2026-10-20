@@ -1,0 +1,222 @@
+"""Clasificaciones, señal GRD, eventos, SOI Troup y publicación completa."""
+
+from __future__ import annotations
+
+import json
+import shutil
+from datetime import date
+from pathlib import Path
+
+import pytest
+import yaml
+
+from conftest import FIX, ROOT, history, read
+from enso import observatory as obs
+from enso import signals as sig
+from enso.feeds import cpc, peru
+
+
+# ---------------------------------------------------------------------------
+# ICEN (Nota Técnica ENFEN 01-2024)
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("v,expected", [
+    (-1.31, "Fría fuerte"), (-1.3, "Fría moderada"), (-1.11, "Fría moderada"), (-1.1, "Fría débil"),
+    (-0.71, "Fría débil"), (-0.7, "Neutra"), (0.0, "Neutra"), (0.5, "Neutra"), (0.51, "Cálida débil"),
+    (1.3, "Cálida débil"), (1.31, "Cálida moderada"), (2.1, "Cálida moderada"), (2.11, "Cálida fuerte"),
+    (3.5, "Cálida fuerte"), (3.51, "Cálida extraordinaria"),
+])
+def test_icen_category_edges(v, expected):
+    assert sig.icen_category(v)["short"] == expected
+
+
+def test_icen_policy_document_matches_code():
+    doc = yaml.safe_load((ROOT.parent / "config" / "threshold-policies" / "enfen-icen-2024.yaml").read_text(encoding="utf-8"))
+    for c in doc["categories"]:
+        for v in c["examples"]:
+            assert sig.icen_category(v)["short"] == c["label"], (c["label"], v)
+
+
+def test_events_match_enfen_record():
+    """Backtest contra la lista oficial de eventos del IGP/ENFEN."""
+    pts = peru.parse_icen_txt(read(FIX / "igp-icen.txt")).data
+    ev = {e["start"][:4]: e for e in sig.icen_events(pts) if e["phase"] == "warm"}
+    assert ev["1982"]["magnitude"] == "extraordinaria"
+    assert ev["1997"]["magnitude"] == "extraordinaria" and ev["1997"]["months"] >= 15
+    assert ev["2015"]["magnitude"] == "fuerte"
+    assert ev["2017"]["magnitude"] == "moderada"
+    assert ev["2023"]["magnitude"] == "fuerte"
+    assert sum(e["ongoing"] for e in sig.icen_events(pts)) <= 1
+
+
+def test_events_need_three_consecutive_months():
+    pts = [{"period": f"2020-{m:02d}", "value": v} for m, v in zip(range(1, 7), [0.9, 0.9, 0.2, 0.9, 0.9, 0.9])]
+    ev = sig.icen_events(pts)
+    assert len(ev) == 1 and ev[0]["start"] == "2020-04" and ev[0]["months"] == 3
+
+
+# ---------------------------------------------------------------------------
+# Señal GRD
+# ---------------------------------------------------------------------------
+def grd(**inputs):
+    return {s["id"]: s for s in sig.grd_signals({k: {"value": v, "period": "2026-09", "source": "t"} for k, v in inputs.items()})["signals"]}
+
+
+def test_grd_transcription():
+    s = grd(coastal_sst=0.0, basin_sst=1.2, soi_troup=-14.5)
+    assert s["coastal_sst"]["level"] == "ok"
+    assert s["basin_sst"]["level"] == "watch"
+    assert s["soi_troup"]["level"] == "alert"
+    assert grd(coastal_sst=2.7)["coastal_sst"]["level"] == "alert"
+    assert grd(coastal_sst=1.3)["coastal_sst"]["level"] == "watch"
+
+
+@pytest.mark.parametrize("key,v", [("coastal_sst", 1.0), ("coastal_sst", 2.05), ("coastal_sst", -0.9),
+                                   ("basin_sst", 0.8), ("basin_sst", -0.6), ("soi_troup", 9.0)])
+def test_grd_gaps_are_never_green(key, v):
+    s = grd(**{key: v})[key]
+    assert s["level"] == "unclassified" and s["reason"]
+
+
+def test_grd_stale_and_missing_have_no_colour():
+    out = {s["id"]: s for s in sig.grd_signals({"coastal_sst": {"value": 3.0, "period": "2025-01", "stale": True}})["signals"]}
+    assert out["coastal_sst"]["level"] == "na"
+    assert out["d20_coastal"]["level"] == "na" and "D20" in out["d20_coastal"]["reason"]
+
+
+def test_grd_wind_direction_uses_cpc_sign():
+    s = grd(wind_coastal=3.8, wind_global=-0.4)
+    assert s["wind_coastal"]["level"] == "ok" and s["wind_coastal"]["direction"] == "Este a oeste"
+    assert s["wind_global"]["level"] == "alert" and s["wind_global"]["direction"] == "Oeste a este"
+
+
+# ---------------------------------------------------------------------------
+# SOI en escala Troup frente a la Oficina de Meteorología de Australia
+# ---------------------------------------------------------------------------
+def _bom(text):
+    """SOI de 30 días de BoM (``inicio,fin,valor``): se toman las ventanas que
+    cubren exactamente un mes calendario, equivalentes al SOI mensual."""
+    import calendar
+
+    out = {}
+    for line in text.splitlines():
+        x = line.strip().split(",")
+        if len(x) != 3 or not x[0].isdigit():
+            continue
+        s, e, v = x
+        if s[6:] == "01" and s[:6] == e[:6] and int(e[6:]) == calendar.monthrange(int(e[:4]), int(e[4:6]))[1]:
+            out[f"{e[:4]}-{e[4:6]}"] = float(v)
+    return out
+
+
+def test_troup_soi_agrees_with_bom_archive():
+    t = cpc.parse_year_matrix(read(FIX / "cpc-tahiti.txt"), lo=-50, hi=1100, name="tahiti").data
+    d = cpc.parse_year_matrix(read(FIX / "cpc-darwin.txt"), lo=-50, hi=1100, name="darwin").data
+    tp = t.get("original") or next(iter(t.values()))
+    dp = d.get("original") or next(iter(d.values()))
+    ours = {p["period"]: p["value"] for p in obs.troup_soi(tp, dp)}
+    bom = {}
+    for path in history("bom-soi"):
+        bom.update(_bom(read(path)))
+    common = sorted(set(ours) & set(bom))
+    assert len(common) >= 40
+    diffs = [abs(ours[k] - bom[k]) for k in common]
+    same_sign = sum((ours[k] < 0) == (bom[k] < 0) for k in common if abs(bom[k]) > 7) / max(1, sum(abs(bom[k]) > 7 for k in common))
+    assert sum(diffs) / len(diffs) < 1.2, "SOI Troup difiere demasiado del de BoM"
+    assert same_sign > 0.95, "las fases ±7 deben coincidir con BoM"
+
+
+# ---------------------------------------------------------------------------
+# Publicación completa sin red
+# ---------------------------------------------------------------------------
+@pytest.fixture(scope="module")
+def pub(tmp_path_factory):
+    out = tmp_path_factory.mktemp("pub") / "data"
+    res = obs.run(out, None, fixtures=FIX)
+    return out, res
+
+
+def test_publication_is_coherent(pub):
+    out, res = pub
+    ids = {json.loads(p.read_text(encoding="utf-8"))["publicationId"] for p in out.rglob("*.json")}
+    assert ids == {res["publicationId"]}
+    man = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
+    for f in man["files"]:
+        assert (out / f).exists(), f
+
+
+def test_publication_contents(pub):
+    out, _ = pub
+    d = json.loads((out / "dashboard.json").read_text(encoding="utf-8"))
+    assert d["official"]["noaa"]["status"]
+    for k in ("icen", "roni", "nino12_oisst", "nino34_oisst", "soi_troup", "cpac850", "heat_180w100w"):
+        assert d["series"][k]["latest"]["value"] is not None, k
+    assert d["series"]["icen"]["latest"]["category"]["short"] == sig.icen_category(d["series"]["icen"]["latest"]["value"])["short"]
+    assert len(d["grd"]["signals"]) == 7
+    assert any(e["ongoing"] for e in d["events"])
+    assert d["weekly"]["nino12"]["latest"]["date"] >= "2026-10-01"
+    # No hay campos inventados ni archivos sintéticos del prototipo.
+    for legacy in ("all-series.json", "latest-grid.json", "forecasts.json", "regional-impact.json"):
+        assert not (out / legacy).exists()
+
+
+def test_stale_official_status_is_flagged(pub):
+    """El último PDF disponible en fixtures es anterior al listado: no puede mostrarse como vigente."""
+    out, _ = pub
+    e = json.loads((out / "dashboard.json").read_text(encoding="utf-8"))["official"]["enfen"]
+    assert e["stale"] is True
+
+
+def test_csv_formula_injection():
+    assert obs.csv_safe("=HYPERLINK(1)") == "'=HYPERLINK(1)"
+    assert obs.csv_safe("@SUM(A1)") == "'@SUM(A1)"
+    assert obs.csv_safe(-1.5) == "-1.5"
+    assert obs.csv_safe("+2.3") == "+2.3"
+
+
+def test_csv_outputs(pub):
+    out, _ = pub
+    head = (out / "csv" / "icen.csv").read_text(encoding="utf-8").splitlines()[0]
+    assert head == "periodo,valor,unidad,serie,fuente,publicacion"
+    assert (out / "csv" / "semanal-regiones-nino.csv").exists()
+
+
+def test_failed_source_keeps_last_valid_value(pub, tmp_path):
+    """Si una fuente falla, se conserva el último dato de la publicación anterior y se registra."""
+    prev, _ = pub
+    fx = tmp_path / "fx"
+    shutil.copytree(FIX, fx, ignore=shutil.ignore_patterns("history"))
+    (fx / "igp-icen.txt").unlink()
+    idx = json.loads((fx / "index.json").read_text(encoding="utf-8"))
+    idx["entries"] = [e for e in idx["entries"] if e.get("file") != "igp-icen.txt"]
+    (fx / "index.json").write_text(json.dumps(idx), encoding="utf-8")
+    out = tmp_path / "data"
+    obs.run(out, str(prev), fixtures=fx)
+    d = json.loads((out / "dashboard.json").read_text(encoding="utf-8"))
+    assert d["series"]["icen"]["latest"]["carried"] is True
+    rep = json.loads((out / "run-report.json").read_text(encoding="utf-8"))
+    codes = {(e["source"], e["code"]) for e in rep["events"]}
+    assert ("igp-icen", "unreachable") in codes and ("igp-icen", "carried-forward") in codes
+
+
+def test_format_drift_is_detected(pub, tmp_path):
+    prev, _ = pub
+    s = json.loads((prev / "sources" / "cpc-roni.json").read_text(encoding="utf-8"))
+    s["fingerprint"] = "otra-huella"
+    p2 = tmp_path / "prev"
+    shutil.copytree(prev, p2)
+    (p2 / "sources" / "cpc-roni.json").write_text(json.dumps(s), encoding="utf-8")
+    out = tmp_path / "data"
+    obs.run(out, str(p2), fixtures=FIX)
+    rep = json.loads((out / "run-report.json").read_text(encoding="utf-8"))
+    assert any(e["source"] == "cpc-roni" and e["code"] == "format-drift" for e in rep["events"])
+
+
+def test_raw_archive_skips_fixtures(tmp_path):
+    a = obs.Acquired(obs.SOURCE_BY_ID["cpc-roni"], raw=b"datos", channel="direct", sha256="ab" * 32)
+    b = obs.Acquired(obs.SOURCE_BY_ID["cpc-oni"], raw=b"datos", channel="fixture", sha256="cd" * 32)
+    assert obs.archive_raw(tmp_path, {"cpc-roni": a, "cpc-oni": b}, date(2026, 10, 20)) == 1
+    assert obs.archive_raw(tmp_path, {"cpc-roni": a}, date(2026, 10, 21)) == 0
+
+
+def test_second_thursday():
+    assert obs.second_thursday_after("2026-10-08", date(2026, 10, 20)) == "2026-11-12"
