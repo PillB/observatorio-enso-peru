@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>DIHIDRONAV | Comunicado Oficial Enfen</title>
+    <meta name="description" content="La Dirección de Hidrografía y Navegación de la Marina de Guerra del Perú, dentro de su rol institucional , gestiona e investiga las actividades relacionadas con las ciencias del ambiente en el ámbito marítimo, fluvial,  lacustre y Antártico, con el fin de brindar apoyo y seguridad en la navegación a las Fuerzas Navales y a los navegantes en general."/>
+    <meta name="robots" content="index,follow"/>
+    <meta name="googlebot" content="index, follow" />
+    <meta name="organization" content="Marina de Guerra del Perú" />
+    <link rel="apple-touch-icon" sizes="57x57" href="https://www.dhn.mil.pe/portal/img/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="https://www.dhn.mil.pe/portal/img/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="https://www.dhn.mil.pe/portal/img/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="https://www.dhn.mil.pe/portal/img/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="https://www.dhn.mil.pe/portal/img/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://www.dhn.mil.pe/portal/img/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="https://www.dhn.mil.pe/portal/img/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://www.dhn.mil.pe/portal/img/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.dhn.mil.pe/portal/img/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="https://www.dhn.mil.pe/portal/img/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.dhn.mil.pe/portal/img/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="https://www.dhn.mil.pe/portal/img/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.dhn.mil.pe/portal/img/favicon/favicon-16x16.png">
+<link rel="manifest" href="https://www.dhn.mil.pe/portal/img/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+<meta content="DIHIDRONAV | Comunicado Oficial Enfen" property="og:title"/>
+<meta content="https://www.dhn.mil.pe/portal/img/logo/dihidronav-facebook.jpg" property="og:image"/>
+<meta content="La Dirección de Hidrografía y Navegación de la Marina de Guerra del Perú, dentro de su rol institucional , gestiona e investiga las actividades relacionadas con las ciencias del ambiente en el ámbito marítimo, fluvial,  lacustre y Antártico, con el fin de brindar apoyo y seguridad en la navegación a las Fuerzas Navales y a los navegantes en general." property="og:description"/>
+<link itemprop="thumbnailUrl" href="https://www.dhn.mil.pe/portal/img/logo/dihidronav-facebook-thumbnail.png"> 
+<meta property="og:image:type" content="image/jpeg">
+
+<meta name="twitter:title" content="DIHIDRONAV | Comunicado Oficial Enfen">
+<meta name="twitter:description" content="https://www.dhn.mil.pe/portal/img/logo/dihidronav-twitter.jpg">
+<meta name="twitter:image" content="La Dirección de Hidrografía y Navegación de la Marina de Guerra del Perú, dentro de su rol institucional , gestiona e investiga las actividades relacionadas con las ciencias del ambiente en el ámbito marítimo, fluvial,  lacustre y Antártico, con el fin de brindar apoyo y seguridad en la navegación a las Fuerzas Navales y a los navegantes en general.">
+
+<!-- Stylesheets
+============================================= -->
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Poppins:300,400,500,600,700|PT+Serif:400,400i&display=swap" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://www.dhn.mil.pe/portal/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="https://www.dhn.mil.pe/portal/style.css" type="text/css" />
+<link rel="stylesheet" href="https://www.dhn.mil.pe/portal/css/swiper.css" type="text/css" />
+<link rel="stylesheet" href="https://www.dhn.mil.pe/portal/css/dark.css" type="text/css" />
+<link rel="stylesheet" href="https://www.dhn.mil.pe/portal/css/font-icons.css" type="text/css" />
+<link rel="stylesheet" href="https://www.dhn.mil.pe/portal/css/animate.css" type="text/css" />
+<link rel="stylesheet" href="https://www.dhn.mil.pe/portal/css/magnific-popup.css" type="text/css" />
+
+<link rel="stylesheet" href="https://www.dhn.mil.pe/portal/css/custom.css" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Custom icons -->
+<link rel="stylesheet" type="text/css" href="https://www.dhn.mil.pe/portal/css/icons/style.css">
+
+<!-- Date & Time Picker CSS -->
+<link rel="stylesheet" href="https://www.dhn.mil.pe/portal/css/components/datepicker.css" type="text/css" />
+
+<!-- SLIDER REVOLUTION 5.x CSS SETTINGS -->
+<link rel="stylesheet" type="text/css" href="https://www.dhn.mil.pe/portal/include/rs-plugin/css/settings.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="https://www.dhn.mil.pe/portal/include/rs-plugin/css/layers.css" />
+<link rel="stylesheet" type="text/css" href="https://www.dhn.mil.pe/portal/include/rs-plugin/css/navigation.css" />
+
+<!-- Here goes your colors.css
+============================================= -->
+<!-- <link rel="stylesheet" href="css/colors.css" type="text/css" /> -->
+
+</head>
+
+<body class="stretched">
+    
+    <span itemprop="image" itemscope itemtype="image/jpeg"> 
+        <link itemprop="url" href="https://www.dhn.mil.pe/portal/img/logo/dihidronav-facebook-thumbnail.png"> 
+    </span>
+
+    
+	<div id="splash">
+		<div class="logo"></div>
+		<div class="loader"></div>
+	</div>
+
+    
+    
+    <div id="wrapper" class="clearfix">
+
+        <!-- Header
+============================================= -->
+
+<header
+  id="header"
+  class="full-header"
+  data-sticky-class="not-dark"
+  data-mobile-sticky="true"
+>
+  <div id="header-wrap">
+    <div class="container">
+      <div class="header-row">
+
+        <!-- Logo
+        ============================================= -->
+        <div id="logo">
+          <a href="https://www.dhn.mil.pe/portal" class="standard-logo" data-dark-logo="https://www.dhn.mil.pe/portal/img/logo/logo_name_dark.svg">
+            <img src="https://www.dhn.mil.pe/portal/img/logo/logo_name.svg" id="standard-logo" alt="DHN Logo">
+          </a>
+          <a href="https://www.dhn.mil.pe/portal" class="retina-logo" data-dark-logo="https://www.dhn.mil.pe/portal/img/logo/logo_name_dark.svg">
+            <img src="https://www.dhn.mil.pe/portal/img/logo/logo_name.svg" id="retina-logo" alt="DHN Logo">
+          </a>
+        </div><!-- #logo end -->
+
+        <div class="header-misc">
+
+          <!-- Top Search
+          ============================================= -->
+          <div id="top-search" class="header-misc-icon" data-bs-toggle="tooltip" data-bs-placement="left" title="Buscar" data-bs-trigger="hover">
+            <a href="#" data-bs-toggle="modal" data-bs-target=".bs-example-modal-centered"><i class="icon-line-search"></i><i class="icon-line-cross"></i></a>
+          </div>
+
+          <!-- Top Dark mode
+          ============================================= -->
+          <div id="light" class="header-misc-icon" data-bs-toggle="tooltip" data-bs-placement="left" title="Modo ecológico" data-bs-trigger="hover">
+            <a href="javascript:void(0)"><i class="icon-lightbulb1"></i></a>
+          </div>
+
+        </div>
+
+        <div id="primary-menu-trigger">
+          <svg class="svg-trigger" viewBox="0 0 100 100"><path d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20"></path><path d="m 30,50 h 40"></path><path d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20"></path></svg>
+        </div>
+
+        <!-- Primary Navigation
+        ============================================= -->
+        <nav class="primary-menu style-6">
+
+          <ul class="menu-container">
+                        <li class="menu-item">
+              <a class="menu-link" href="#">
+                <div class="d-flex align-items-center"><i class="ic-captain-4"></i>Nosotros</div>
+              </a>
+                            <ul class="sub-menu-container">
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/mision-vision" target=""><div>Misión y Visión</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/historia" target=""><div>Historia</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/infraestructura" target=""><div>Infraestructura</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/directorio" target=""><div>Directorio</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="/files/pdf/otros/organigrama.pdf" target="_blank"><div>Organigrama</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/galeria-directores" target=""><div>Galería de Directores</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/museo" target=""><div>Museo</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/unidades-hidrograficas" target=""><div>Unidades Hidrograficas</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/hidronoticias" target=""><div>Hidronoticias</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/normas-legales" target=""><div>Normas Legales</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="/files/pdf/sgi/POLITICA_GESTION_INTEGRADA.pdf" target="_blank"><div>Política Gestión Integrada</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="/files/pdf/sgi/DHNWEB_ISO9001.pdf" target="_blank"><div>Certificación ISO 9001</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="/files/pdf/sgi/DHNWEB_ISO14001.pdf" target="_blank"><div>Certificación ISO  14001</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="/files/pdf/sgi/DHNWEB_ISO37001.pdf" target="_blank"><div>Certificación ISO  37001</div></a>
+                </li>
+                              </ul>
+                          </li>
+                        <li class="menu-item">
+              <a class="menu-link" href="#">
+                <div class="d-flex align-items-center"><i class="ic-boat-2"></i>Servicios</div>
+              </a>
+                            <ul class="sub-menu-container">
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/hidrografia" target=""><div>Hidrografía</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/oceanografia" target=""><div>Oceanografía</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/cartografia" target=""><div>Cartografía</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/geomatica" target=""><div>Geomática</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/navegacion" target=""><div>Navegación</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/senalizacion-nautica" target=""><div>Señalización Náutica</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/separacion-trafico-maritimo" target=""><div>Separación de tráfico marítimo</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="/cnat" target="_blank"><div>Centro Nacional de Alerta de Tsunamis</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="/shnaNEW" target="_blank"><div>Servicio de Hidrografía y Navegación de la Amazonía</div></a>
+                </li>
+                              </ul>
+                          </li>
+                        <li class="menu-item">
+              <a class="menu-link" href="#">
+                <div class="d-flex align-items-center"><i class="ic-megaphone-2"></i>Boletines</div>
+              </a>
+                            <ul class="sub-menu-container">
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/avisos-especiales" target=""><div>Avisos Especiales</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/boletin-sismo-tsunami" target=""><div>Boletín de sismo tsunami</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/boletin-diario-condiciones-oceanograficas" target=""><div>Boletín diario de las Condiciones Oceanográficas</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/boletin-oceanografico-mensual" target=""><div>Boletín Oceanográfico mensual</div></a>
+                </li>
+                              </ul>
+                          </li>
+                        <li class="menu-item">
+              <a class="menu-link" href="#">
+                <div class="d-flex align-items-center"><i class="ic-hot"></i>Fenómeno el niño</div>
+              </a>
+                            <ul class="sub-menu-container">
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen" target=""><div>Comunicados Oficiales ENFEN</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/informe-tecnico-enfen" target=""><div>Informes Técnicos ENFEN</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/nota-prensa-enfen" target=""><div>Nota Prensa ENFEN</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/nota-tecnica-enfen" target=""><div>Nota Técnica anual ENFEN</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/boletin-alerta-climatico-erfen" target=""><div>Boletín alerta climático ERFEN</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/nota-prensa-erfen" target=""><div>Nota Prensa ERFEN</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/articulos-interes" target=""><div>Artículos de Interés</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.dhn.mil.pe/portal/boyas-argo" target=""><div>Información Boyas ARGO</div></a>
+                </li>
+                              </ul>
+                          </li>
+                        <li class="menu-item">
+              <a class="menu-link" href="#">
+                <div class="d-flex align-items-center"><i class="ic-rain"></i>Pronósticos</div>
+              </a>
+                            <ul class="sub-menu-container">
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/pronosticosolas/Global_Olas.php" target="_blank"><div>Global</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/pronosticosolas/Pacifico_Olas.php" target="_blank"><div>Pacífico</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/pronosticosolas/Peru_Olas.php" target="_blank"><div>Perú</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/pronosticosolas/PeruNorte_Olas.php" target="_blank"><div>Perú Norte</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/pronosticosolas/PeruCentro_Olas.php" target="_blank"><div>Perú Centro</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/pronosticosolas/PeruSur_Olas.php" target="_blank"><div>Perú Sur</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/costeroprobayovar.php" target="_blank"><div>Bayobar</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/costeroprosalaverry.php" target="_blank"><div>Salaverry</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/costeroprochimbote.php" target="_blank"><div>Chimbote</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/costeroprochancay.php" target="_blank"><div>Chancay</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/costeroproancon.php" target="_blank"><div>Ancon</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/costeroprocallao.php" target="_blank"><div>Bahía Callao y Miraflores</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/costeropropisco.php" target="_blank"><div>Pisco</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/costeropromollendo.php" target="_blank"><div>Mollendo</div></a>
+                </li>
+                                <li class="menu-item">
+                  <a class="menu-link" href="https://www.naylamp.dhn.mil.pe/dhn2/secciones/Pronosticos/costeroproilo.php" target="_blank"><div>Ilo</div></a>
+                </li>
+                              </ul>
+                          </li>
+                        <li class="menu-item">
+              <a class="menu-link" href="https://www.dhn.mil.pe/portal/videos-institucionales">
+                <div class="d-flex align-items-center"><i class="ic-video-camera"></i>Videos</div>
+              </a>
+                          </li>
+                      </ul>
+
+        </nav><!-- #primary-menu end -->
+
+      </div>
+    </div>
+  </div>
+  <div class="header-wrap-clone"></div>
+</header><!-- #header end -->
+
+
+
+
+        
+    
+    <div id="page-menu" data-mobile-sticky="true">
+    <div id="page-menu-wrap">
+        <div class="container">
+            <div class="page-menu-row flex-nowrap" style="min-height: 44px">
+                
+                <div class="page-menu-title d-flex text-truncate align-items-center">
+                     <span class="text-truncate text-uppercase">Comunicado Oficial Enfen</span>                 </div>
+                
+                <nav class="page-menu-nav">
+                    <ul class="page-menu-container">
+                                            </ul>
+                </nav>
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    <section id="content">
+        <div class="content-wrap">
+            <div class="container clearfix">
+
+                <section data-animate="fadeIn">
+                    <div class="accordion accordion-bg mb-0" data-collapsible="true">
+
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2022</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2022</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2022.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2022</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2022.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2022</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2022.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2022</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2022.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2022</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2022.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2022</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2022.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2022</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2022.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2022</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2022.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2022</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2022.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2021</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2021</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2021.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2020</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2020</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2020.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2019</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2019</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2019.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2018</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2018</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2018.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2017</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2017</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2017.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2016</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2016</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2016.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2015</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2015</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2015.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2014</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2014</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2014.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2013</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2013</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2013.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2012</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2012</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2012.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2011</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2011</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2011.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                                                <div class="accordion-header align-items-center">
+                            <div class="accordion-icon">
+                                <i class="accordion-closed icon-ok-circle"></i>
+                                <i class="accordion-open icon-remove-circle"></i>
+                            </div>
+                            <div class="accordion-title text-uppercase">Comunicados Oficiales 2010</div>
+                        </div>
+                        <div class="accordion-content">
+                            <ul class="list-group">
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 12 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 11 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/11-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 10 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/10-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 09 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/09-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 08 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/08-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 07 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/07-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 06 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/06-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 05 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/05-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 04 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/04-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 03 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/03-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 02 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/02-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                                <li class="list-group-item fz-14">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Comunicado Oficial N° 01 - 2010</div>
+                                        <a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2010.pdf" target="_blank" class="cs-link"><i class="ic-printer"></i><span class="d-none d-sm-block">Descargar PDF</span></a>
+                                    </div>
+                                </li>
+                                                            </ul>
+                        </div>
+                        
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </section>
+
+
+        <!-- Footer
+============================================= -->
+<footer id="footer" class="dark">
+    <!-- Contact
+    ============================================= -->
+    <div id="top-bar" class="dark" style="background: var(--primary-color-dark) !important">
+        <div class="container clearfix">
+
+            <div class="row justify-content-between">
+                <div class="col-12 col-md-auto">
+
+                    <!-- Top Links
+                    ============================================= -->
+                    <div class="top-links">
+                        <ul class="top-links-container">
+                            <li class="top-links-item" style="background: transparent;"><a href="javascript:void(0)" class="text-white">Contactanos</a></li>
+                        </ul>
+                    </div><!-- .top-links end -->
+
+                </div>
+
+                <div class="col-12 col-md-auto">
+
+                    <!-- Top Social
+                    ============================================= -->
+                    <ul id="top-social">
+                        <li><a href="https://www.youtube.com/channel/UCG4JCanwRBTY3TMk1fL7kQg" class="si-youtube"><span class="ts-icon"><i class="icon-youtube text-white"></i></span><span class="ts-text">Youtube</span></a></li>
+                        <li><a href="https://www.facebook.com/DHN.Peru" class="si-facebook"><span class="ts-icon"><i class="icon-facebook text-white"></i></span><span class="ts-text">Facebook</span></a></li>
+                        <li><a href="https://twitter.com/DHN_PERU" class="si-twitter"><span class="ts-icon"><i class="icon-twitter text-white"></i></span><span class="ts-text">Twitter</span></a></li>
+                        <li><a href="tel:2078160" class="si-call"><span class="ts-icon"><i class="icon-call text-white"></i></span><span class="ts-text">0511 - 207 8160</span></a></li>
+                        <li><a href="mailto:dihidronav@dhn.mil.pe" class="si-email3"><span class="ts-icon"><i class="icon-email3 text-white"></i></span><span class="ts-text">dihidronav@dhn.mil.pe</span></a></li>
+                    </ul><!-- #top-social end -->
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="container my-5 cs-footer">
+        <div class="row col-mb-30">
+            <div class="col-sm-12 col-lg-3 text-center" data-animate="fadeIn" data-delay="100">
+                <div class="cs-column">
+                    <a href="https://www.dhn.mil.pe/">
+                        <img src="https://www.dhn.mil.pe/portal/img/footer/logo_black_dhn.png" alt="Image" class="logo_black">
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-lg-3" data-animate="fadeIn" data-delay="200">
+                <div class="cs-column">
+                    <div class="cs-title">Contactanos</div>
+                    <div class="cs-list">
+                        <div class="cs-item">
+                            <div class="cs-ic ic-mail-1"></div>
+                            <div class="cs-desc"><a href="mailto:dihidronav@dhn.mil.pe">dihidronav@dhn.mil.pe</a></div>
+                        </div>
+                        <div class="cs-item">
+                            <div class="cs-ic ic-telephone-1"></div>
+                            <div class="cs-desc"><a href="tel:2078160">0511 - 207 8160</a></div>
+                        </div>
+                        <div class="cs-item">
+                            <div class="cs-ic ic-calendar-2"></div>
+                            <div class="cs-desc">
+                                <a href="https://goo.gl/maps/5xhxxqdTMVNEpPGq9" target="_blank">Calle Roca N° 118. Chucuito - Callao</a><br>
+                                <span class="fz-12">Lun. a Vie. 8:30 a.m. a 5:00 p.m.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-lg-3" data-animate="fadeIn" data-delay="300">
+                <div class="cs-column">
+                    <div class="cs-title">Suscríbete</div>
+                    <div class="fz-12 mb-1">Recibe Avisos Especiales y Boletines de Sismo-Tsunami</div>
+                    <div class="widget-subscribe-form-result"></div>
+
+                    <div class="widget subscribe-widget clearfix mt-2">
+                        <div class="widget-subscribe-form-result"></div>
+                        <form id="widget-subscribe-form" action="include/subscribe.php" method="post" class="mb-0" autocomplete="off">
+                            <div class="input-group mx-auto">
+                                <div class="input-group-text"><i class="icon-email2"></i></div>
+                                <input type="email" id="widget-subscribe-form-email" name="widget-subscribe-form-email" class="form-control required email" placeholder="Ingresa tu correo" autocomplete="off">
+                                <button class="btn btn-success" type="submit">Suscribirse</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="s-msg-error" data-notify-position="bottom-right" data-notify-type="error" data-notify-msg='<i class="icon-remove-sign"></i> Ingrese un correo electrónico'></div>
+                    <div class="cs-title">Correo institucional</div>
+                    <a href="https://mail.dhn.mil.pe/owa" target="_blank">
+                        <img src="https://www.dhn.mil.pe/portal/img/footer/outlook.jpg" class="owa">
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-lg-3 text-center" data-animate="fadeIn" data-delay="400">
+                <div class="cs-column">
+                    <a href="https://www.marina.mil.pe/es/" target="_blank">
+                        <img src="https://www.dhn.mil.pe/portal/img/footer/logo_black_mgp.png" alt="Image" class="logo_black" data-animate="fadeIn" data-delay="200">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyrights
+    ============================================= -->
+    <div id="copyrights">
+        <div class="d-flex justify-content-center" data-animate="fadeIn" data-delay="100">
+            <a href="https://www.youtube.com/channel/UCG4JCanwRBTY3TMk1fL7kQg" target="_blank" class="social-icon si-small si-borderless si-youtube">
+                <i class="icon-youtube"></i>
+                <i class="icon-youtube"></i>
+            </a>
+
+            <a href="https://www.facebook.com/DHN.Peru" target="_blank" class="social-icon si-small si-borderless si-facebook">
+                <i class="icon-facebook"></i>
+                <i class="icon-facebook"></i>
+            </a>
+
+            <a href="https://twitter.com/DHN_PERU" target="_blank" class="social-icon si-small si-borderless si-twitter">
+                <i class="icon-twitter"></i>
+                <i class="icon-twitter"></i>
+            </a>
+        </div>
+        <div class="text-center fz-12" data-animate="fadeIn" data-delay="100">
+            MGP - DIHIDRONAV - 2022
+        </div>
+    </div><!-- #copyrights end -->
+    
+</footer><!-- #footer end -->
+    </div>
+
+    
+    <div id="gotoTop" class="icon-angle-up"></div>
+
+    
+    <div class="modal fade bs-example-modal-centered" tabindex="-1" role="dialog" aria-labelledby="centerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            
+            <div class="modal-content cs-search">
+            <div class="modal-header border-0 p-0">
+                <div class="cs-btn-close" data-bs-dismiss="modal" aria-hidden="true"><i class="ic-close"></i></div>
+            </div>
+            <div class="modal-body">
+                <form method="GET" action="https://www.dhn.mil.pe/portal/buscar" class="mb-0">
+                <input type="text" name="q" placeholder="Buscar..." id="cs-search-input" autocomplete="off">
+                <button style="display: none">Enviar</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                Escriba y luego presione <i class="ic-enter ps-1"></i> "Enter" para iniciar la búsqueda
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScripts
+============================================= -->
+<script>
+    function load () {
+        setTimeout(() => {
+            document.getElementById('splash').classList.add('fadeOut')
+            setTimeout(() => { document.getElementById('splash').style.display = 'none' }, 2000)
+        }, 800)
+    }
+    window.onload = load
+</script>
+
+<script src="https://www.dhn.mil.pe/portal/js/jquery.js"></script>
+<script src="https://www.dhn.mil.pe/portal/js/plugins.min.js"></script>
+
+<!-- Date & Time Picker JS -->
+<script src="https://www.dhn.mil.pe/portal/js/components/moment.js"></script>
+<script src="https://www.dhn.mil.pe/portal/js/components/timepicker.js"></script>
+<script src="https://www.dhn.mil.pe/portal/js/components/datepicker.js"></script>
+
+<!-- Footer Scripts
+============================================= -->
+<script src="https://www.dhn.mil.pe/portal/js/functions.js"></script>
+
+<!-- SLIDER REVOLUTION 5.x SCRIPTS  -->
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/extensions/revolution.extension.video.min.js"></script>
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js"></script>
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/extensions/revolution.extension.actions.min.js"></script>
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js"></script>
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js"></script>
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script>
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/extensions/revolution.extension.migration.min.js"></script>
+<script src="https://www.dhn.mil.pe/portal/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js"></script>
+
+
+<script>
+
+    var tpj = jQuery;
+    var revapi202;
+    var $ = jQuery.noConflict();
+
+    tpj(document).ready(function() {
+        if (tpj("#rev_slider_579_1").revolution == undefined) {
+            revslider_showDoubleJqueryError("#rev_slider_579_1");
+        } else {
+            revapi202 = tpj("#rev_slider_579_1").show().revolution({
+                sliderType: "standard",
+                jsFileLocation: "include/rs-plugin/js/",
+                sliderLayout: "fullscreen",
+                dottedOverlay: "none",
+                delay: 12000,
+                responsiveLevels: [1140, 1024, 778, 480],
+                visibilityLevels: [1140, 1024, 778, 480],
+                gridwidth: [1140, 1024, 778, 480],
+                gridheight: [728, 768, 960, 720],
+                lazyType: "none",
+                shadow: 0,
+                spinner: "off",
+                stopLoop: "off",
+                stopAfterLoops: -1,
+                stopAtSlide: -1,
+                shuffle: "off",
+                autoHeight: "off",
+                fullScreenAutoWidth: "off",
+                fullScreenAlignForce: "off",
+                fullScreenOffsetContainer: "",
+                fullScreenOffset: "",
+                disableProgressBar: "on",
+                hideThumbsOnMobile: "off",
+                hideSliderAtLimit: 0,
+                hideCaptionAtLimit: 0,
+                hideAllCaptionAtLilmit: 0,
+                debugMode: false,
+                fallbacks: {
+                    simplifyAll:"off",
+                    disableFocusListener:false,
+                },
+                parallax: {
+                    type:"mouse",
+                    origo:"slidercenter",
+                    speed:300,
+                    levels:[2,4,6,8,10,12,14,16,18,20,22,24,49,50,51,55],
+                },
+                navigation: {
+                    keyboardNavigation:"off",
+                    keyboard_direction: "horizontal",
+                    mouseScrollNavigation:"off",
+                    onHoverStop:"off",
+                    touch:{
+                        touchenabled:"on",
+                        swipe_threshold: 75,
+                        swipe_min_touches: 1,
+                        swipe_direction: "horizontal",
+                        drag_block_vertical: false
+                    },
+                    arrows: {
+                        style: "hermes",
+                        enable: true,
+                        hide_onmobile: true,
+                        hide_onleave: true,
+                        tmp: '<div class="tp-arr-allwrapper">	<div class="tp-arr-imgholder"></div><div class="tp-arr-titleholder">{{title}}</div>	</div>',
+                        left: {
+                            h_align: "left",
+                            v_align: "center",
+                            h_offset: 10,
+                            v_offset: 0
+                        },
+                        right: {
+                            h_align: "right",
+                            v_align: "center",
+                            h_offset: 10,
+                            v_offset: 0
+                        }
+                    }
+                }
+            });
+            revapi202.on("revolution.slide.onloaded",function (e) {
+                setTimeout( function(){ SEMICOLON.slider.sliderDimensions(); }, 200 );
+            });
+
+            revapi202.on("revolution.slide.onchange",function (e,data) {
+                SEMICOLON.slider.revolutionSliderMenu();
+            });
+        }
+    });
+
+    $(function() {
+        $("#light").click(function() {
+            $('body').toggleClass(function(index, currentClass)
+                {
+                    if (currentClass.indexOf('dark') > -1) {
+                        localStorage.removeItem('isDark')
+                        $('#retina-logo').attr('src', "https://www.dhn.mil.pe/portal/img/logo/logo_name.svg")
+                        $('#standard-logo').attr('src', "https://www.dhn.mil.pe/portal/img/logo/logo_name.svg")
+                        $(":root").get(0).style.setProperty("--primary-color", "#0a3878");
+                    } else {
+                        localStorage.setItem('isDark', '1')
+                        $('#retina-logo').attr('src', "https://www.dhn.mil.pe/portal/img/logo/logo_name_dark.svg")
+                        $('#standard-logo').attr('src', "https://www.dhn.mil.pe/portal/img/logo/logo_name_dark.svg")
+                        $(":root").get(0).style.setProperty("--primary-color", "#c88800");
+                    }
+                    return "dark";
+                }
+            );
+            
+        });
+
+        if (localStorage.getItem('isDark')) {
+            $('body').addClass('dark')
+            $(":root").get(0).style.setProperty("--primary-color", "#c88800");
+        }
+
+        $.fn.datepicker.dates['es'] = {
+            days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+            daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+            daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+            months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"],
+            monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+            today: "Hoy",
+            monthsTitle: "Meses",
+            clear: "Borrar",
+            weekStart: 1,
+            format: "dd/mm/yyyy"
+        };
+
+        $('#t-mareas, #t-ortos-ocasos').datepicker({
+            language: "es",
+            todayHighlight: true,
+            // endDate: '+0m'
+        }).on('changeDate', function(e) {
+            console.log(e.currentTarget.id)
+            console.log(moment(e.date).format('YYYY-MM-DD'))
+
+            let url = ""
+            let openPopupCentered = (url,width,height) => {
+                var x=(window.screen.width/2)-(width/2);
+                var y=(window.screen.height/2)-(height/2);
+                window.open(url, 'popup', 'width=' + width + ', height=' + height + ', left=' + x + ', top=' + y +'');
+            }
+            
+            if (e.currentTarget.id === 't-mareas') url = 'https://www.dhn.mil.pe/secciones/mareas/index.php?f=' + moment(e.date).format('YYYY-MM-DD')
+            else url = 'https://www.dhn.mil.pe/secciones/ortos_ocasos/index.php?f=' + moment(e.date).format('YYYY-MM-DD')
+            openPopupCentered(url, 800, 700)
+        });
+    });
+
+
+    if ($('#page-menu') && $('#page-menu li').length > 0) {
+        let currentSection = null
+        let sections = $('section');
+        let sec = []
+        // console.log(sections.length)
+        if(sections && sections.length > 0) {
+            $.each(sections, function( i, s ) {
+                if(s.id.indexOf('sec-') > -1) {
+                    sec.push(s)
+                }
+            });
+            
+            $(window).scroll(function() {
+                let scrollTop = $(window).scrollTop();
+                // console.log(scrollTop)
+                $.each(sec, function( i, s ) {
+                    const sectionTop = s.offsetTop;
+                    const sectionHeight = s.clientHeight;
+                    // console.log(sectionTop, sectionHeight, scrollTop)
+                    if (scrollTop > sectionTop && scrollTop < sectionTop + sectionHeight) {
+                        currentSection = s.id;
+                        // console.log(currentSection)
+                    }
+                });
+
+                $.each($('.page-menu-item'), function( i, s ) {
+                    const scrollto = s.children[0].getAttribute('data-scrollto')
+                    // console.log(scrollto)
+                    if (scrollto.replace('#', '') === currentSection) s.classList.add('current')
+                    else s.classList.remove('current')
+                });
+            });
+        }
+    }
+
+</script>
+
+<!--google analytics-->     
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-1734187-1', 'auto');
+    ga('send', 'pageview');
+</script>
+</body>
+
+</html>
