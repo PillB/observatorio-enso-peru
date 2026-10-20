@@ -220,3 +220,29 @@ def test_dhn_pdf_from_relay_is_read(tmp_path):
     obs.enfen_latest(acq, f, None, _Prev(None), obs.EventLog(), date(2026, 10, 20))
     latest = acq.data["latest"]
     assert latest["channel"] == "relay-peru" and latest["status_code"] == "alerta_nino"
+
+
+def test_communique_found_by_archive_prefix_when_dhn_and_enfen_fail():
+    """Primera corrida sin publicación anterior: el PDF del ENFEN guardado en
+    el Internet Archive (con su parámetro de descarga) evita quedarse sin estado."""
+    from datetime import date
+
+    base = _actions_view()
+
+    def handler(req):
+        u = str(req.url)
+        if "/cdx/" in u and "matchType=prefix" in u and "n-18-2026" not in u:
+            return httpx.Response(200, json=[["urlkey", "timestamp", "original"],
+                                             ["x", "20261001000000", "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-17-2026/?wpdmdl=2161"]])
+        if "/web/20261001000000id_/" in u:
+            return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
+        return base(req)
+
+    acq = _dhn_acquired()
+    f = Fetcher(retries=1, polite_delay=0)
+    f.client = httpx.Client(transport=httpx.MockTransport(handler))
+    log = obs.EventLog()
+    obs.enfen_latest(acq, f, None, _Prev(None), log, date(2026, 10, 20))
+    latest = acq.data["latest"]
+    assert latest["id"] == "17-2026" and latest["channel"] == "archive"
+    assert any(e.code == "communique-unread" and "18-2026" in e.message for e in log.events)

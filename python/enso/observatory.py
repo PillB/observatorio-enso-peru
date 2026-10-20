@@ -339,6 +339,23 @@ def _communique_urls(item: dict) -> list[str]:
     return list(dict.fromkeys(urls))
 
 
+def _get_communique(fetcher, item: dict):
+    """PDF de un comunicado: sus URL conocidas y, si ninguna sirve, cualquier
+    copia en PDF que el Internet Archive tenga de su página de descarga en el
+    portal del ENFEN."""
+    from .fetch import FetchError, archive_prefix
+
+    try:
+        return fetcher.get(_communique_urls(item), archive=True, save=True, accept=("pdf", "octet-stream"))
+    except FetchError as exc:
+        page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{item['number']:02d}-{item['year']}/"
+        got = archive_prefix(fetcher, page)
+        if got is not None and got.body[:5] == b"%PDF-":
+            got.attempts = exc.attempts + got.attempts
+            return got
+        raise
+
+
 def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
                  log: EventLog, today: date) -> None:
     """Completa el listado ENFEN con el comunicado más reciente (PDF).
@@ -418,8 +435,7 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
             data["latest"] = prev_latest
             break
         try:
-            resp = canned[0] if canned else fetcher.get(_communique_urls(item), archive=True, save=True,
-                                                         accept=("pdf", "octet-stream"))
+            resp = canned[0] if canned else _get_communique(fetcher, item)
             if fixtures is None:
                 acq.documents.append(resp.body)
             if resp.body[:5] != b"%PDF-":

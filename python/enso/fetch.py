@@ -221,6 +221,30 @@ class Fetcher:
         return snap
 
 
+def archive_prefix(fetcher: "Fetcher", prefix: str, mimetype: str = "application/pdf") -> Optional[Response]:
+    """Copia más reciente en el Internet Archive de cualquier URL que empiece
+    con ``prefix`` y tenga ese tipo (p. ej. un PDF de WordPress cuyo
+    parámetro de descarga no se conoce)."""
+    attempts: list = []
+    if fetcher.offline or not fetcher.allow_archive:
+        return None
+    cdx = ("https://web.archive.org/cdx/search/cdx?output=json&limit=-5&matchType=prefix"
+           f"&filter=statuscode:200&filter=mimetype:{quote(mimetype, safe='')}&url={quote(prefix, safe='')}")
+    r = fetcher._get(cdx, attempts)
+    if r is None or r.status_code != 200:
+        return None
+    try:
+        rows = json.loads(r.text or "[]")[1:]
+    except ValueError:
+        return None
+    for ts, original in sorted(((row[1], row[2]) for row in rows), reverse=True):
+        got = fetcher._get(f"https://web.archive.org/web/{ts}id_/{original}", attempts)
+        if got is not None and got.status_code == 200 and got.content:
+            return Response(original, got.content, "archive", 200, got.headers.get("content-type", ""),
+                            archived_at=_ts_iso(ts), attempts=attempts)
+    return None
+
+
 def _age_hours(iso: Optional[str]) -> float:
     try:
         return (datetime.now(timezone.utc) - datetime.fromisoformat(iso)).total_seconds() / 3600
