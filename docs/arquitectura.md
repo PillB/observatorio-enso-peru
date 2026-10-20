@@ -1,180 +1,89 @@
-# Arquitectura — Observatorio ENSO Perú
+# Arquitectura y contrato de datos
 
-> Documento de arquitectura del sistema. Formal Spanish. Pública para
-> colaboradores y revisores.
-
-## 1. Visión general
-
-El Observatorio ENSO Perú es una plataforma de monitoreo de los
-indicadores ENSO **costero** y **de cuenca** relevantes para Perú. Está
-compuesta por:
-
-1. **Frontend** Next.js 16 (App Router), ruta única `/`, multivista por
-   estado. Servido en puerto 3000 en desarrollo.
-2. **Capa de datos normalizada** en TypeScript (`src/lib/enso/`): fuente
-   única de verdad para todas las vistas, descargas CSV y el asistente.
-3. **Pipeline Python** (`python/enso/`): adquisición, normalización y
-   emisión de artefactos CSV/JSON espejo de la capa TS. No renderiza en
-   el navegador; se ejecuta en CI.
-4. **Asistente conversacional** con grounding determinista: sólo usa
-   datos del proyecto y un corpus curado; nunca memoria del modelo.
-5. **CI/CD** GitHub Actions: pipeline diario, validación en PR, deploy
-   Pages.
-6. **Documentación** formal en `docs/`.
-
-## 2. Principios arquitectónicos
-
-### 2.1 Fuente única de verdad
-
-Toda visualización, tabla, descarga y respuesta del asistente se deriva
-de la capa de datos normalizada en `src/lib/enso/series.ts`. El pipeline
-Python espeja esta capa (`python/enso/`) con los mismos identificadores
-de fuente e indicadores, garantizando consistencia entre ambos stacks.
-
-### 2.2 Separación costero vs cuenca
-
-El observatorio mantiene los conceptos **El Niño Costero** (frente a
-Ecuador y norte del Perú, monitoreado con ICEN sobre Niño 1+2) y **El
-Niño de cuenca** (Pacífico central, monitoreado con RONI sobre Niño 3.4)
-como entidades independientes. Un evento puede ocurrir sin el otro (caso
-paradigmático: 2017, costero fuerte sin cuenca). **Nunca se infiere uno
-del otro.**
-
-### 2.3 No fabricación de valores
-
-Cuando un dato no está disponible, el observatorio muestra «Sin datos» y
-**nunca** sustituye el valor por uno fabricado. Los datos preliminares
-se marcan explícitamente y pueden revisarse en publicaciones posteriores.
-
-### 2.4 Grounding determinista
-
-El asistente no usa memoria del modelo como fuente factual. Todo valor
-citable tiene un identificador de evidencia (`EVID-<indicator>`), un mes
-de validez y una URL de fuente. La misma pregunta produce la misma
-evidencia.
-
-### 2.5 Defensa contra prompt injection
-
-Las instrucciones incrustadas en informes, CSV, metadatos o preguntas
-del usuario se ignoran. El motor de grounding no añade indicadores a
-partir de texto inyectado, no revela instrucciones ocultas y no ejecuta
-comandos.
-
-### 2.6 Degradación graceful
-
-El pipeline Python está diseñado para funcionar sin red (sandbox
-restringido, CI cortés): usa caché local, preserva el último conjunto
-válido y marca los datos como obsoletos (`stale`). Nunca interrumpe la
-publicación por un fallo transitorio de una fuente.
-
-## 3. Capas
-
-### 3.1 Frontend (`src/`)
-
-- `src/app/page.tsx` — dashboard SPA, multivista por estado.
-- `src/components/enso/` — vistas: Overview, SstView, WindsView,
-  ThermoclineView, SoiView, HistoricalView, MapsView, DownloadsView,
-  MethodologyView, SourcesView, ChatView.
-- `src/app/api/` — rutas API: `/api/data`, `/api/status`, `/api/chat`.
-
-### 3.2 Capa de datos (`src/lib/enso/`)
-
-- `sources.ts` — registro de fuentes (URLs, licencia, estado de
-  verificación).
-- `methodology.ts` — definiciones científicas de indicadores (región,
-  nivel, climatología, umbrales, signos).
-- `series.ts` — generador determinista de series normalizadas.
-- `derived.ts` — categorías (ICEN, RONI, SOI, D20, viento), percentiles,
-  estado consolidado.
-- `grounding.ts` — motor de grounding del asistente.
-- `knowledge.ts` — corpus curado de conocimiento autorizado.
-- `ui.ts` — utilidades de presentación (formateadores, paleta).
-
-### 3.3 Pipeline Python (`python/enso/`)
-
-- `models.py` — modelos pydantic (espejo de los tipos TS).
-- `sources.py` / `methodology.py` — registros espejo.
-- `fetchers.py` — descargadores con reintentos, HTTP condicional,
-  validación, caché, checksum SHA-256.
-- `normalize.py` — conversiones de longitud/tiempo, verificación de
-  signos.
-- `derived.py` — ICEN, RONI, categorías, percentiles.
-- `pipeline.py` — orquestador idempotente, manifiesto, estado
-  consolidado, helper `asset_url` para subpath Pages.
-- `cli.py` — CLI: `fetch`, `run`, `validate`.
-
-### 3.4 CI/CD (`.github/workflows/`)
-
-- `pipeline.yml` — cron diario 13:17 UTC + `workflow_dispatch`: corre
-  el pipeline, sube artefactos, commitea a rama `data` en schedule.
-- `deploy-pages.yml` — build estático + deploy a GitHub Pages.
-- `validate.yml` — en PR: lint + pytest + paridad Python↔TS.
-
-### 3.5 Documentación (`docs/`)
-
-Formal Spanish, comprensiva. Incluye arquitectura, metodología,
-catálogo de fuentes, diccionario de datos, definiciones de indicadores,
-climatología y umbrales, comparativa gratuitas vs pagadas, evaluación
-LLM, despliegue, operaciones y recuperación, limitaciones, atribución y
-registro de decisiones.
-
-## 4. Flujo de datos
+## Vista general
 
 ```
-NOAA/PSL ──┐
-NOAA/CPC ──┤
-ENFEN ─────┼──▶ Pipeline Python (fetchers, normalize, derived)
-SENAMHI ───┤           │
-IGP ───────┘           ▼
-              python/out/{manifest,status,sources,*.csv}
-                       │
-                       ▼
-              Frontend Next.js (src/lib/enso/series.ts)
-                       │
-                       ├──▶ Vistas (Overview, SstView, …)
-                       ├──▶ Descargas CSV (cliente, desde la capa)
-                       └──▶ Asistente (grounding.ts → /api/chat)
+fuentes oficiales ──► python/enso (pipeline) ──► public/data/*.json, csv/ ──► sitio estático (public/)
+   NOAA/CPC, IGP,        descarga, valida,         una publicación atómica      lee solo la publicación
+   ENFEN                 clasifica, registra       con un publicationId         y rechaza mezclas
 ```
 
-## 5. Modelos de despliegue
+No hay servidor ni base de datos. Una corrida de GitHub Actions genera la
+publicación y GitHub Pages la sirve junto con el sitio. Si algo falla
+antes del despliegue, sigue publicado el sitio anterior.
 
-- **Desarrollo**: `bun run dev` en puerto 3000, ruta `/`.
-- **Producción (GitHub Pages)**: export estático con `basePath` al
-  repositorio. Datos del pipeline servidos desde `public/data/` o desde
-  la rama `data`.
-- **Inferencia LLM**: el asistente usa el SDK `z-ai-web-dev-sdk` vía
-  API route. Para Pages-only, se prefiere inferencia local en el
-  navegador cuando pasa la evaluación (ver `docs/evaluacion-llm.md`),
-  con fallback determinista cuando WebGPU no está disponible.
+## Pipeline (`python/enso/`)
 
-## 6. Trazabilidad
+| Módulo | Función |
+|---|---|
+| `fetch.py` | Descarga con reintentos, límites de tamaño y respaldo en el Internet Archive (CDX y, si se activa con `ENSO_ARCHIVE_SAVE=1`, Save Page Now) |
+| `feeds/cpc.py` | Lectores de los archivos de texto de NOAA/CPC: semanal OISST, mensual por región, RONI/ONI, matrices año×mes (SOI, presiones, vientos), contenido de calor y la ENSO Diagnostic Discussion |
+| `feeds/peru.py` | Lectores del ICEN del IGP, del listado de comunicados del ENFEN (HTML y WordPress JSON) y del texto de cada comunicado (PDF) |
+| `signals.py` | Categorías ICEN 2024, eventos ICEN, categorías ONI/RONI y la señal del equipo GRD |
+| `observatory.py` | Catálogo de fuentes, adquisición con respaldo, armado de la publicación, registro de incidencias y CLI |
 
-Cada artefacto del pipeline registra:
+Cada lector devuelve los datos junto con una **huella del formato**
+(cabeceras, columnas y patrón de filas). Si la huella cambia respecto de
+la publicación anterior se registra `format-drift`; si el formato ya no
+se puede leer se lanza `FormatChanged` y el dato no se publica.
 
-- `data_version` (semver).
-- `as_of_month` y `as_of_date` (mes y fecha de corte).
-- `checksum` FNV-1a por serie (igual que `series.ts`).
-- `file_sha256` por CSV.
-- `fetched_at`, `etag`, `last_modified`, `preliminary`, `from_cache`.
+### Orden de respaldo por fuente
 
-El manifiesto y el estado consolidado permiten auditoría y rollback
-(ver `docs/operaciones-recuperacion.md`).
+1. URL oficial (y espejos oficiales cuando existen).
+2. Copia más reciente del Internet Archive.
+3. Copia nueva pedida al Internet Archive (solo en la corrida programada).
+4. Último dato válido de la publicación anterior, marcado `carried: true`.
 
-## 7. Restricciones y convenciones
+Cuando todo falla para una fuente crítica, la corrida termina en
+`critical` y no se despliega.
 
-- No modificar `src/` desde el pipeline: el frontend es la capa de
-  presentación; el pipeline produce artefactos.
-- Longitudes 0..360 ↔ -180..180 idempotentes; 270°E ≡ 90°O.
-- Viento zonal u a 850 hPa: u > 0 ⇒ hacia el este (westerly); u < 0 ⇒
-  hacia el oeste (easterly). Distinto de superficie (10 m).
-- D20: anomalía positiva ⇒ termoclina más profunda.
-- NaN se preserva; no se rellena.
-- SOI es de cuenca; **no existe «SOI costero»**.
+## Contrato de la publicación (`public/data/`)
 
-## 8. Referencias cruzadas
+Todos los JSON llevan el mismo `publicationId` (`AAAAMMDDTHHMMZ-hash8`).
+El navegador compara el de cada archivo con el de `dashboard.json` y,
+si no coinciden, muestra un aviso en lugar de mezclar datos.
 
-- Metodología científica: `docs/metodologia.md`.
-- Catálogo de fuentes: `docs/catalogo-fuentes.md`.
-- Diccionario de datos: `docs/diccionario-datos.md`.
-- Operaciones y recuperación: `docs/operaciones-recuperacion.md`.
-- Limitaciones: `docs/limitaciones.md`.
+| Archivo | Contenido |
+|---|---|
+| `dashboard.json` | Estado oficial (ENFEN, NOAA), último valor de cada serie con su categoría y antigüedad, señal GRD, eventos ICEN y salud de la corrida |
+| `series.json` | Series mensuales completas |
+| `weekly.json` | Anomalías semanales por región Niño (últimas semanas) |
+| `sources.json`, `sources/*.json` | Por fuente: URL usada, canal (directo, archivo, anterior), fecha de descarga, SHA-256, huella del formato y datos leídos |
+| `run-report.json` | Todas las incidencias de la corrida con severidad, etapa, código y huella |
+| `health.json` | Resumen para monitoreo externo |
+| `manifest.json` | Lista de archivos de la publicación |
+| `csv/*.csv` | Descargas con cabecera `periodo,valor,unidad,serie,fuente,publicacion`; los textos que empiezan con `=`, `@`, `+` o `-` no numéricos se neutralizan contra inyección de fórmulas |
+
+Cada último valor publicado incluye `period`, `value`, `ageDays`,
+`stale` y `carried`. Un valor vencido se muestra como «Dato actual no
+disponible», nunca como vigente.
+
+## Sitio (`public/`)
+
+- HTML, CSS y módulos ES sin dependencias ni paso de compilación.
+- Política de seguridad de contenido estricta (`script-src 'self'`), sin
+  scripts en línea; las respuestas del asistente escapan todo el texto.
+- Rutas por hash: Resumen, Costa peruana, Pacífico, Océano, Mapa,
+  Historia, Datos, Metodología y Asistente.
+- Español del Perú, coma decimal, tema claro y oscuro, navegación por
+  teclado, enlace para saltar al contenido, tablas alternativas a cada
+  gráfico y al mapa.
+- `assets/js/assistant.js` responde con reglas deterministas a partir de
+  la publicación y cita la evidencia de cada respuesta; no usa un modelo
+  de lenguaje ni inventa valores.
+- `assets/js/geo.js` contiene la costa de Natural Earth ya proyectada; se
+  regenera con `scripts/geo/gen.mjs`.
+
+## Pruebas (`python/tests/`)
+
+- `test_feeds_backtest.py`: cada lector contra respuestas reales actuales
+  y contra versiones históricas del Internet Archive (2009–2026), para
+  detectar a tiempo los cambios de formato de las instituciones.
+- `test_signals_and_pipeline.py`: bordes de las categorías, coincidencia
+  entre los YAML de umbrales y el código, eventos ICEN frente al registro
+  oficial, SOI Troup frente a los valores archivados de BoM, publicación
+  completa sin red, respaldo cuando falla una fuente y detección de
+  cambios de formato.
+- `test_browser.py`: recorridos en Chromium a 320, 390, 820 y 1366 px
+  (errores, desbordes, paridad de valores, teclado, tema, tutorial, mapa,
+  descargas, publicación mezclada y caída de datos).

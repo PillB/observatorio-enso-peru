@@ -1,85 +1,59 @@
-# Catálogo de fuentes — Observatorio ENSO Perú
+# Catálogo de fuentes
 
-> Formal Spanish. Catálogo de fuentes verificadas con endpoint,
-> frecuencia, licencia y estado de verificación.
+El catálogo ejecutable está en `SOURCES` (`python/enso/observatory.py`);
+esta tabla lo resume. «Antigüedad máxima» es la edad máxima, en días, del
+último periodo observado antes de marcar el dato como vencido.
 
-## Resumen de estados
+| ID | Institución | Producto | Archivo | Antigüedad máxima | Crítica |
+|---|---|---|---|---|---|
+| `enfen-comunicados` | ENFEN | Comunicados oficiales: listado y PDF del más reciente | `enfen.imarpe.gob.pe` (WordPress JSON y página de comunicados) | 30 | — |
+| `igp-icen` | ENFEN / IGP | ICEN | `met.igp.gob.pe/datos/ICEN.txt` | 100 | — |
+| `cpc-ensodisc` | NOAA / CPC | ENSO Diagnostic Discussion | `ensodisc.shtml` | 40 | Sí |
+| `cpc-wksst` | NOAA / CPC | TSM semanal por región Niño (OISST v2.1) | `wksst9120.for` | 16 | Sí |
+| `cpc-sstoi` | NOAA / CPC | TSM mensual por región (OISST v2.1) | `sstoi.indices` | 50 | — |
+| `cpc-ersst` | NOAA / CPC | TSM mensual por región (ERSSTv5) | `ersst5.nino.mth.91-20.ascii` | 80 | Sí |
+| `cpc-roni` | NOAA / CPC | RONI (oficial) | `RONI.ascii.txt` | 80 | Sí |
+| `cpc-oni` | NOAA / CPC | ONI (referencia) | `oni.ascii.txt` | 80 | — |
+| `cpc-soi` | NOAA / CPC | SOI estandarizado | `soi` | 50 | — |
+| `cpc-tahiti`, `cpc-darwin` | NOAA / CPC | Presión a nivel del mar (para el SOI Troup) | `tahiti`, `darwin` | 50 | — |
+| `cpc-wpac850`, `cpc-cpac850`, `cpc-epac850` | NOAA / CPC | Vientos alisios a 850 hPa | `wpac850`, `cpac850`, `epac850` | 50 | — |
+| `cpc-heat` | NOAA / CPC | Contenido de calor 0–300 m (GODAS) | `heat_content_index.txt` | 50 | — |
 
-| Estado      | Significado |
-|-------------|-------------|
-| VERIFIED    | Fuente verificada por investigación directa; endpoint responde y el esquema es estable. |
-| ASSUMED     | Se asume correcta pero no se ha verificado completamente. |
-| UNRESOLVED  | Hay dudas sobre la disponibilidad o el esquema; en investigación. |
-| REJECTED    | Fuente rechazada por inviable o no autoritativa. |
+Una fuente «crítica» sin ningún dato (ni directo, ni de archivo, ni de la
+publicación anterior) detiene el despliegue.
 
-Todas las fuentes del observatorio están en estado **VERIFIED** a fecha
-de corte 2026-08-02.
+## Cómo se obtiene lo más reciente del ENFEN
 
-## Catálogo
+El ENFEN publica sus comunicados como PDF en un sitio WordPress cuyo
+formato ha cambiado varias veces (2018, 2021, 2024). Para no depender de
+una sola página:
 
-| ID | Institución | Producto | Endpoint | Formato | Frecuencia | Latencia | Licencia | Estado | Respaldo |
-|----|-------------|----------|----------|---------|------------|----------|----------|--------|----------|
-| `noaa-cpc-enso-discussion` | NOAA / CPC | ENSO Diagnostic Discussion — ENSO Alert System | https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml | HTML | Mensual (2.º jueves) | Días | Dominio público (EE. UU.) | VERIFIED | `noaa-cpc-enso-evolution-pdf` |
-| `noaa-cpc-reroni` | NOAA / CPC | Relative Oceanic Niño Index (RONI) / ONI v5 | https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso/roni/ | HTML + tablas | Mensual | Semanas | Dominio público (EE. UU.) | VERIFIED | `noaa-psl-nino34-ersst` |
-| `noaa-cpc-enso-evolution-pdf` | NOAA / CPC | ENSO: Recent Evolution, Current Status and Predictions (PDF) | https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/lanina/enso_evolution-status-fcsts-web.pdf | PDF | Semanal (lunes) | 1–2 días | Dominio público (EE. UU.) | VERIFIED | `noaa-cpc-enso-discussion` |
-| `noaa-psl-nino34-ersst` | NOAA / PSL | Niño 3.4 SST Index — ERSST v5 | https://psl.noaa.gov/data/timeseries/month/Nino34_CPC | CSV / texto / NetCDF | Mensual | Semanas | Dominio público (EE. UU.) | VERIFIED | `noaa-psl-nino12-anom` |
-| `noaa-psl-nino12-anom` | NOAA / PSL | Niño 1+2 SST Anomaly (long record) | https://psl.noaa.gov/data/timeseries/month/data/nino12.long.anom.csv | CSV | Mensual | Semanas | Dominio público (EE. Uu.) | VERIFIED | `noaa-psl-nino34-ersst` |
-| `noaa-psl-soi` | NOAA / PSL | Southern Oscillation Index (Tahiti – Darwin) | https://psl.noaa.gov/data/timeseries/month/data/soi.long.data | Texto | Mensual | Semanas | Dominio público (EE. Uu.) | VERIFIED | `noaa-cpc-enso-discussion` |
-| `noaa-cpc-godas` | NOAA / CPC — GODAS | D20 (isoterma 20 °C) — Pacífico ecuatorial | https://www.cpc.ncep.noaa.gov/products/GODAS/ | NetCDF / gráficos | Semanal | 1–2 semanas | Dominio público (EE. UU.) | VERIFIED | `pmel-tao-triton` |
-| `noaa-cpc-u850` | NOAA / CPC — NCEP/NCAR Reanalysis | Anomalía del viento zonal a 850 hPa | https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_update/usswanim.shtml | HTML / derivados | Semanal | Días | Dominio público (EE. UU.) | VERIFIED | `pmel-tao-triton` |
-| `pmel-tao-triton` | NOAA / PMEL — TAO/TRITON | Array de boyas ecuatoriales | https://www.pmel.noaa.gov/tao/drupal/disdel/ | NetCDF / boya | Diaria (con vacíos) | Variable | Dominio público (EE. UU.) | VERIFIED | `noaa-cpc-godas` |
-| `enfen-imarpe-icen` | ENFEN / IMARPE (SIOFEN) | ICEN y estado de alerta costera | https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen | HTML / panel | Mensual | Semanas | Datos abiertos institucionales (atribución) | VERIFIED | `senamhi-fenomeno-el-nino` |
-| `senamhi-fenomeno-el-nino` | SENAMHI Perú | Seguimiento del Fenómeno El Niño | https://www.senamhi.gob.pe/?p=fenomeno-el-nino | HTML | Variable | Días–semanas | Datos abiertos institucionales (atribución) | VERIFIED | `enfen-imarpe-icen` |
-| `igp-indices-clim` | IGP | Índices climáticos (ENFEN, IGP) | http://met.igp.gob.pe/variabclim/indices.html | HTML | Variable | Variable | Datos abiertos institucionales (atribución) | VERIFIED | `enfen-imarpe-icen` |
+1. Se lee el listado (WordPress JSON o HTML) y se toma el número más alto.
+2. Se sondean los dos números siguientes por su página de descarga
+   (`/download/comunicado-oficial-enfen-n-NN-AAAA/`), y en enero el n.º 01
+   del año nuevo. Así se detecta un comunicado nuevo aunque el listado
+   todavía no lo muestre.
+3. Se descarga el PDF y se extrae el tipo de alerta, el número, la fecha
+   y la fecha del siguiente comunicado.
+4. Si el listado muestra un número más nuevo que el que se pudo leer, el
+   estado se marca vencido y se registra la incidencia.
 
-## Notas por fuente
+Los servidores del ENFEN no siempre resuelven desde GitHub Actions; en
+ese caso se usan las copias del Internet Archive (y se pide una nueva).
 
-### NOAA / CPC — ENSO Diagnostic Discussion
-Fuente oficial del estado de alerta ENSO de cuenca. La discusión de
-julio 2026 indica «El Niño Advisory» vigente. Se extrae el estado de
-alerta textual; los valores numéricos provienen de RONI/Niño 3.4.
+## Backtesting de formatos
 
-### NOAA / CPC — RONI
-Índice operacional actual de NOAA/CPC para ENSO de cuenca. Adapta la
-línea base para reducir el sesgo por el calentamiento secular de la TSM.
-Región Niño 3.4 (5°S–5°N, 120–170°O). No confundir con el ONI heredado
-basado en ERSST.v5 con base 1971–2000.
+`python/tools/capture_sources.py` (flujo `capture-fixtures`) descarga la
+versión actual de cada fuente y versiones históricas del Internet Archive,
+y las guarda en `python/tests/fixtures/`. Las pruebas pasan cada lector
+por todas esas versiones. El flujo diario además guarda cada respuesta
+nueva en la rama `data-archive`, de modo que el corpus crece solo.
 
-### NOAA / PSL — Niño 1+2 / 3.4 / SOI
-Series mensuales públicas en formato CSV/texto. La climatología PSL
-publicada es 1981–2010. El SOI usa estaciones Tahiti y Darwin; **no
-existe variante costera autorizada**.
+## Fuentes evaluadas y no usadas
 
-### NOAA / CPC — GODAS
-D20 como proxy de la profundidad de la termoclina. Anomalía positiva ⇒
-termoclina más profunda (típica de El Niño de cuenca).
-
-### NOAA / CPC — u850 (NCEP/NCAR Reanalysis)
-Componente zonal u a 850 hPa. Convención: u > 0 ⇒ flujo hacia el este
-(westerly); u < 0 ⇒ flujo hacia el oeste (easterly). Distinto de
-superficie (10 m) y del valor observado.
-
-### ENFEN / IMARPE — ICEN
-ICEN = media móvil de 3 meses de las anomalías mensuales de TSM en
-Niño 1+2 (90–80°O, 10°S–0°). Estado «Alerta de El Niño Costero» activo
-desde el 13 de febrero de 2026.
-
-### SENAMHI / IGP
-Divulgación oficial peruana y validación cruzada de índices costeros y
-pronósticos estacionales para Perú.
-
-## Estrategia de respaldo
-
-Cada fuente declara un `fallbackSourceId`. Ante fallo persistente:
-
-1. Reintentos con backoff exponencial + jitter.
-2. Caché local marcado `from_cache=True`.
-3. Último conjunto válido preservado y marcado `stale=True`.
-4. Si la fuente principal cae definitivamente, se puede usar el
-   respaldo declarado manteniendo la trazabilidad.
-
-## Verificación periódica
-
-- El pipeline corre diariamente (cron 13:17 UTC).
-- Cada corrida produce `manifest.json` con el estado de cada indicador.
-- En PR se valida la paridad Python ↔ TS de identificadores.
+| Producto | Motivo |
+|---|---|
+| D20 de GODAS (`dbss_obil`) | Es la profundidad de la capa isotérmica, no la isoterma de 20 °C |
+| ERSSTv6 | NOAA lo está adoptando; el flujo de captura lo vigila y se incorporará cuando haya archivos de índices estables |
+| Estado de alerta en la portada del ENFEN | Se toma del comunicado, que es el documento oficial |
+| BoM SOI | Se usa solo para validar el SOI Troup calculado |
