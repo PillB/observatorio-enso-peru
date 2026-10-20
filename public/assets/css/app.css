@@ -411,3 +411,22 @@ table.grd .chip { white-space: normal; }
   .map .country-label { font-size: 24px; }
   .map svg { min-height: 160px; }
 }
+
+/* Noticias y novedades */
+.news-body { display: grid; gap: 16px; margin: 16px 0; }
+.feed { list-style: none; margin: 0; padding: 0; }
+.feed-item { padding: 14px 0; border-top: 1px solid var(--line-2); }
+.feed-item:first-child { border-top: 0; padding-top: 4px; }
+.feed-meta { font-size: 0.82rem; color: var(--fg-3); }
+.feed-inst { font-weight: 700; color: var(--fg-2); }
+.feed-title { font-size: 1.02rem; margin: 4px 0 6px; line-height: 1.35; }
+.feed-title a { color: var(--fg); text-decoration: none; }
+.feed-title a:hover { text-decoration: underline; }
+.feed-value { margin: 0 0 6px; }
+.feed-text { margin: 0 0 8px; color: var(--fg-2); max-width: 75ch; }
+.feed-tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.feed-more { margin-top: 8px; font-size: 0.9rem; }
+.feed-more ul { margin: 6px 0 0; padding-left: 1.1em; }
+.feed-more li { margin-bottom: 4px; }
+.arch-figure { margin: 0; overflow-x: auto; }
+.arch-figure svg { width: 100%; min-width: 640px; height: auto; display: block; }

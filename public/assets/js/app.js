@@ -505,10 +505,16 @@ VIEWS.metodologia = {
         <h3>RONI y ONI (NOAA)</h3><p>±0,5 °C. Para episodios históricos NOAA exige cinco trimestres móviles consecutivos. Las etiquetas de intensidad (débil, moderado, fuerte, muy fuerte cada 0,5 °C) son una convención de uso común, no una categoría oficial.</p>
         <h3>Señal operativa del equipo GRD</h3><p>Transcripción de la tabla del equipo GRD (política expert-grd-image-v1, en borrador). TSM costera: normal −0,7 a +0,5; amarillo +1,3 a +2,0; rojo &gt; +2,1 °C. TSM de cuenca: normal −0,5 a +0,5; amarillo &gt; +1,0 a +1,5; rojo &gt; +1,5 °C. Vientos: rojo si el flujo es de oeste a este. Termoclina: normal ±20 m; amarillo 30 a 50 m; rojo &gt; 50 m. SOI: normal −7 a +7; rojo &lt; −7. Los intervalos no definidos quedan «Sin clasificación».</p>
       </section>
+      <section class="card" aria-labelledby="arch-h" data-tour-id="architecture">
+        <h2 id="arch-h">Arquitectura</h2>
+        <p class="muted">De las fuentes al sitio: canales de obtención, pipeline en Python, publicación atómica y operación diaria.</p>
+        <figure class="arch-figure" id="arch-fig"><a href="assets/arquitectura.svg" rel="noopener" target="_blank">Ver el diagrama de arquitectura</a></figure>
+      </section>
       <section class="card prose" aria-labelledby="met-h">
         <h2 id="met-h">Cómo funciona</h2>
         <ol>
-          <li><strong>Cada noche (23:37, hora de Lima)</strong> el pipeline descarga cada fuente directamente de la institución. Si la institución no responde, usa la copia más reciente del Internet Archive y lo indica; si tampoco existe, conserva el último dato válido con su fecha real.</li>
+          <li><strong>Cada noche (23:37, hora de Lima)</strong> el pipeline descarga cada fuente directamente de la institución. Si la institución no responde, usa la copia que bajó el recolector en el Perú a las 21:00 o la copia más reciente del Internet Archive, y lo indica; si tampoco existe, conserva el último dato válido con su fecha real.</li>
+          <li><strong>Noticias.</strong> Se leen los feeds RSS de medios del Perú y del mundo, se conservan las notas sobre El Niño o sus impactos, se agrupan las que cuentan lo mismo y se agregan a un histórico que solo crece. Solo se guarda lo que cada medio publica en su feed.</li>
           <li><strong>Lectura tolerante a cambios de formato.</strong> Los archivos se leen por sus encabezados y etiquetas, no por posiciones fijas, y se comprueban rangos plausibles, duplicados y orden. Si el formato cambia, se registra una incidencia y el dato queda en validación. Los lectores se prueban contra copias históricas de cada fuente (2004–2026).</li>
           <li><strong>Vigencia por fuente.</strong> Cada serie tiene su propia antigüedad máxima según la frecuencia con que publica la institución. Un dato vencido nunca se presenta como actual: se muestra «Dato actual no disponible».</li>
           <li><strong>Publicación atómica.</strong> Todos los archivos de una corrida comparten un identificador de publicación. El sitio verifica que coincidan antes de mostrarlos.</li>
@@ -528,6 +534,9 @@ VIEWS.metodologia = {
       <section class="card prose" aria-labelledby="gl-h"><h2 id="gl-h">Glosario</h2><dl class="glossary">${GLOSSARY.map(([t, d]) => html`<dt>${t}</dt><dd>${d}</dd>`)}</dl></section>`;
   },
   async after() {
+    fetch('assets/arquitectura.svg').then((r) => (r.ok ? r.text() : null)).then((svg) => {
+      if (svg && svg.trimStart().startsWith('<svg')) $('#arch-fig').innerHTML = svg;
+    }).catch(() => {});
     const src = await load('sources.json');
     const rep = await load('run-report.json');
     const ST = { ok: ['ok', 'Directa'], archive: ['watch', 'Copia de archivo'], carried: ['watch', 'Último dato válido'], failed: ['alert', 'Falló'] };
@@ -547,12 +556,102 @@ VIEWS.metodologia = {
   },
 };
 
+// ---------------------------------------------------------------------------
+// Noticias: novedades de cada fuente oficial y noticias de medios agrupadas
+// ---------------------------------------------------------------------------
+const NEWS_TABS = [['oficial', 'Fuentes oficiales'], ['peru', 'Perú'], ['mundo', 'Mundo']];
+
+function feedValue(it) {
+  if (it.value === undefined || it.value === null) return '';
+  const per = it.periodKind === 'season' ? seasonLabel(it.period) : it.periodKind === 'date' ? `semana del ${F.fmtDate(it.period)}` : F.fmtMonth(it.period);
+  const ch = F.isNum(it.change) ? ` · ${F.fmtValue(it.change, it.units)} respecto del periodo anterior` : '';
+  return html`<p class="feed-value"><strong>${F.fmtValue(it.value, it.units)}</strong> <span class="muted">${per}${ch}</span> ${toneChip(it.tone, it.category)}</p>`;
+}
+
+function officialItem(it) {
+  const when = it.date ? html`<time datetime="${it.date}">${F.fmtDate(it.date)}</time>` : '';
+  return html`<li class="feed-item">
+    <div class="feed-meta"><span class="feed-inst">${it.institution}</span>${when ? html` · ${when}` : ''}${it.kind ? html` · <span class="muted">${it.kind}</span>` : ''}</div>
+    <h3 class="feed-title">${it.url ? html`<a href="${safeUrl(it.url)}" rel="noopener" target="_blank">${it.title}</a>` : it.title}</h3>
+    ${feedValue(it)}
+    ${it.text ? html`<p class="feed-text">${it.text}</p>` : ''}
+    <div class="feed-tags">
+      ${it.level ? chip(it.level, LEVEL_TXT[it.level] && it.level !== 'ok' ? `Alerta ${LEVEL_TXT[it.level].toLowerCase()}` : undefined) : ''}
+      ${it.stale ? html`<span class="tag tag-prelim">vencido</span>` : ''}
+      ${it.newerListed ? html`<span class="tag tag-prelim">hay un comunicado más reciente (${it.newerListed}) sin leer</span>` : ''}
+      ${it.next ? html`<span class="tag">próximo: ${F.fmtDate(it.next)}</span>` : ''}
+      ${String(it.channel || '').startsWith('archive') ? html`<span class="tag">vía Internet Archive</span>` : it.channel === 'relay-peru' ? html`<span class="tag">vía recolector en el Perú</span>` : ''}
+    </div></li>`;
+}
+
+function clusterItem(c) {
+  const more = c.links.length > 1;
+  return html`<li class="feed-item">
+    <div class="feed-meta"><time datetime="${c.first}">${F.fmtDateTime(c.first).replace(' (hora de Lima)', '')}</time> · <span class="feed-inst">${c.outlets.slice(0, 3).join(', ')}${c.outlets.length > 3 ? ` y ${c.outlets.length - 3} más` : ''}</span></div>
+    <h3 class="feed-title"><a href="${safeUrl(c.links[0].url)}" rel="noopener" target="_blank">${c.title}</a></h3>
+    ${c.summary ? html`<p class="feed-text">${c.summary}</p>` : ''}
+    <div class="feed-tags"><span class="tag">${c.relevance === 'enso' ? 'El Niño / La Niña' : 'Impactos y peligros'}</span>${c.count > 1 ? html` <span class="tag">${c.count} notas similares</span>` : ''}</div>
+    ${more ? html`<details class="feed-more"><summary>Ver las ${c.links.length} notas</summary><ul>${c.links.map((l) => html`<li><a href="${safeUrl(l.url)}" rel="noopener" target="_blank">${l.title}</a> <span class="muted small">${l.outlet}${l.published ? ` · ${F.fmtDate(l.published.slice(0, 10))}` : ''}</span></li>`)}</ul></details>` : ''}
+  </li>`;
+}
+
+VIEWS.noticias = {
+  title: 'Noticias',
+  render() {
+    const tab = new URLSearchParams(location.hash.split('?')[1] || '').get('tab') || 'oficial';
+    const cur = NEWS_TABS.some(([k]) => k === tab) ? tab : 'oficial';
+    return html`
+      <div class="page-head"><div class="eyebrow">Novedades</div><h1>Noticias y novedades</h1>
+        <p>Lo último que publicó cada fuente oficial y las noticias sobre El Niño en el Perú y el mundo. Cuando varios medios cuentan lo mismo se agrupan en una sola entrada con el enlace a cada uno.</p></div>
+      <div class="seg" role="tablist" aria-label="Tipo de novedades" data-tour-id="news-tabs">${NEWS_TABS.map(([k, l]) => html`<button type="button" role="tab" data-tab="${k}" aria-selected="${String(k === cur)}" aria-pressed="${String(k === cur)}">${l}</button>`)}</div>
+      <div id="news-body" class="news-body"><div class="skeleton"></div></div>
+      <section class="card" aria-labelledby="nd-h" data-tour-id="news-downloads"><h2 id="nd-h">Descargas y estado de los feeds</h2>
+        <p class="muted small">El histórico de noticias solo crece: cada corrida agrega las notas nuevas y nunca reescribe las anteriores. Solo se guarda lo que cada medio publica en su feed (titular, resumen, fecha y enlace).</p>
+        <ul class="link-list cols">
+          <li><a href="${DATA}news/items.csv" download>Histórico de noticias (CSV)</a></li>
+          <li><a href="${DATA}news/items.jsonl" download>Histórico de noticias (JSON Lines, solo anexar)</a></li>
+          <li><a href="${DATA}news/clusters.json">Noticias agrupadas de los últimos 14 días (JSON)</a></li>
+          <li><a href="${DATA}feed.json">Novedades de las fuentes oficiales (JSON)</a></li>
+          <li><a href="${DATA}news/feeds.json">Estado de cada feed (JSON)</a></li>
+        </ul>
+        <details id="feeds-status"><summary>Estado de los feeds en esta publicación</summary><div class="feeds-table"></div></details>
+      </section>`;
+  },
+  async after() {
+    const body = $('#news-body');
+    const hasNews = Boolean(S.dash.news);
+    const [feed, clusters, feeds] = await Promise.all([load('feed.json'), hasNews ? load('news/clusters.json') : null, hasNews ? load('news/feeds.json') : null]);
+    const show = (tab) => {
+      $$('[data-tab]').forEach((b) => { const on = b.dataset.tab === tab; b.setAttribute('aria-selected', String(on)); b.setAttribute('aria-pressed', String(on)); });
+      if (tab === 'oficial') {
+        body.innerHTML = feed ? String(html`${feed.groups.map((g) => html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2><ul class="feed">${g.items.map(officialItem)}</ul></section>`)}`) : '<p class="card">No disponible en esta publicación.</p>';
+        return;
+      }
+      const list = (clusters?.clusters || []).filter((c) => c.region === tab);
+      body.innerHTML = clusters
+        ? String(html`<section class="card" aria-label="Noticias ${tab === 'peru' ? 'del Perú' : 'del mundo'}">${list.length ? html`<ul class="feed">${list.map(clusterItem)}</ul>` : html`<p class="muted">No hay noticias sobre El Niño en los feeds de los últimos ${clusters.days} días.</p>`}</section>`)
+        : '<p class="card">Las noticias no están disponibles en esta publicación.</p>';
+    };
+    $$('[data-tab]').forEach((b) => b.addEventListener('click', () => {
+      history.replaceState(null, '', `#/noticias?tab=${b.dataset.tab}`);
+      show(b.dataset.tab);
+    }));
+    show(new URLSearchParams(location.hash.split('?')[1] || '').get('tab') || 'oficial');
+    const box = $('#feeds-status .feeds-table');
+    box.innerHTML = feeds ? String(html`<div class="table-wrap"><table><thead><tr><th scope="col">Feed</th><th scope="col">Estado</th><th scope="col">Entradas</th><th scope="col">Más reciente</th></tr></thead><tbody>
+      ${feeds.feeds.map((f) => html`<tr><th scope="row"><a href="${safeUrl(f.url)}" rel="noopener" target="_blank">${f.name}</a><div class="muted small">${f.region === 'peru' ? 'Perú' : 'Mundo'}</div></th>
+      <td>${f.ok ? (f.active ? chip('ok', 'Activo') : chip('watch', 'Sin novedades')) : chip('alert', 'No responde')}${f.error ? html`<div class="muted small">${f.error}</div>` : ''}</td>
+      <td>${f.items} (${f.relevant} sobre El Niño)</td><td>${f.latest ? F.fmtDate(f.latest.slice(0, 10)) : '—'}</td></tr>`)}</tbody></table></div>
+      <p class="muted small">${feeds.history.items} notas guardadas desde ${feeds.history.since ? F.fmtDate(feeds.history.since.slice(0, 10)) : '—'}; ${feeds.history.added} nuevas en esta corrida.</p>`) : 'No disponible.';
+  },
+};
+
 VIEWS.asistente = { title: 'Asistente', render: () => assistantView.render(), after: () => assistantView.after(S, load) };
 
 // ---------------------------------------------------------------------------
 // Estructura, navegación y arranque
 // ---------------------------------------------------------------------------
-const NAV = [['', 'Resumen', 'home'], ['costero', 'El Niño Costero', 'wave'], ['pacifico', 'Pacífico', 'globe'], ['oceano', 'Océano y atmósfera', 'layers'], ['mapa', 'Mapa', 'map'], ['historia', 'Historia', 'clock'], ['datos', 'Datos', 'table'], ['metodologia', 'Metodología', 'book'], ['asistente', 'Asistente', 'chat']];
+const NAV = [['', 'Resumen', 'home'], ['costero', 'El Niño Costero', 'wave'], ['pacifico', 'Pacífico', 'globe'], ['oceano', 'Océano y atmósfera', 'layers'], ['mapa', 'Mapa', 'map'], ['historia', 'Historia', 'clock'], ['noticias', 'Noticias', 'news'], ['datos', 'Datos', 'table'], ['metodologia', 'Metodología', 'book'], ['asistente', 'Asistente', 'chat']];
 
 function routeName() {
   const h = location.hash.replace(/^#\/?/, '').split('?')[0];

@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="arch-t arch-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="arch-t">Arquitectura del Observatorio ENSO Perú</title>
+  <desc id="arch-d">Las fuentes oficiales y los feeds de noticias se obtienen por canal directo, recolector en el Perú, Internet Archive o la publicación anterior; el pipeline en Python las lee, valida y publica de forma atómica en public/data; el sitio estático las muestra. GitHub Actions corre la actualización diaria, el vigilante, la integración continua y la captura de fuentes para backtesting.</desc>
+  <style>
+    .arch-bg { fill: var(--bg-elev, #ffffff); }
+    .arch-col { fill: var(--bg-sunk, #eef2f6); }
+    .arch-box { fill: var(--bg-elev, #ffffff); stroke: var(--line, #c9d3de); stroke-width: 1.2; }
+    .arch-key { fill: var(--bg-elev, #ffffff); stroke: var(--brand, #0b4f71); stroke-width: 1.6; }
+    .arch-warn { fill: var(--bg-elev, #ffffff); stroke: var(--watch, #8a5a00); stroke-width: 1.4; stroke-dasharray: 5 3; }
+    .arch-h { fill: var(--fg, #0d1b2a); font-size: 15px; font-weight: 700; }
+    .arch-t { fill: var(--fg, #0d1b2a); font-size: 12.5px; font-weight: 700; }
+    .arch-s { fill: var(--fg-3, #5d6e82); font-size: 11px; }
+    .arch-n { fill: var(--brand, #0b4f71); font-size: 11px; font-weight: 700; }
+    .arch-line { stroke: var(--fg-3, #5d6e82); stroke-width: 1.4; fill: none; }
+    .arch-dash { stroke: var(--fg-3, #5d6e82); stroke-width: 1.2; fill: none; stroke-dasharray: 4 3; }
+    .arch-head { fill: var(--fg-3, #5d6e82); }
+    @media (prefers-color-scheme: dark) {
+      .arch-bg { fill: var(--bg-elev, #0f1c2b); } .arch-col { fill: var(--bg-sunk, #0b1622); }
+      .arch-box, .arch-key, .arch-warn { fill: var(--bg-elev, #0f1c2b); }
+      .arch-h, .arch-t { fill: var(--fg, #e3ebf3); } .arch-s { fill: var(--fg-3, #8d9db0); }
+      .arch-n { fill: var(--brand, #5cc3e6); } .arch-line, .arch-dash { stroke: var(--fg-3, #8d9db0); }
+      .arch-head { fill: var(--fg-3, #8d9db0); }
+    }
+  </style>
+  <defs>
+    <marker id="arch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="arch-head" d="M0 0L10 5L0 10z"/>
+    </marker>
+  </defs>
+  <rect class="arch-bg" x="0" y="0" width="1200" height="760" rx="14"/>
+
+  <!-- Columnas -->
+  <rect class="arch-col" x="16" y="16" width="220" height="548" rx="10"/>
+  <rect class="arch-col" x="254" y="16" width="210" height="548" rx="10"/>
+  <rect class="arch-col" x="482" y="16" width="236" height="548" rx="10"/>
+  <rect class="arch-col" x="736" y="16" width="210" height="548" rx="10"/>
+  <rect class="arch-col" x="964" y="16" width="220" height="548" rx="10"/>
+  <text class="arch-h" x="30" y="42">1 · Fuentes</text>
+  <text class="arch-h" x="268" y="42">2 · Canales</text>
+  <text class="arch-h" x="496" y="42">3 · Pipeline (python/enso)</text>
+  <text class="arch-h" x="750" y="42">4 · Publicación</text>
+  <text class="arch-h" x="978" y="42">5 · Sitio</text>
+
+  <!-- 1 Fuentes -->
+  <rect class="arch-box" x="28" y="58" width="196" height="96" rx="8"/>
+  <text class="arch-t" x="40" y="78">Oficiales del Perú</text>
+  <text class="arch-s" x="40" y="96">ENFEN: comunicados (PDF)</text>
+  <text class="arch-s" x="40" y="111">  vía portal y réplica DHN</text>
+  <text class="arch-s" x="40" y="126">IGP: ICEN oficial</text>
+  <text class="arch-s" x="40" y="141">ENFEN también publica en gob.pe</text>
+  <rect class="arch-warn" x="28" y="164" width="196" height="66" rx="8"/>
+  <text class="arch-t" x="40" y="184">Solo desde el Perú</text>
+  <text class="arch-s" x="40" y="202">SENAMHI · ANA · IMARPE</text>
+  <text class="arch-s" x="40" y="217">bloquean servidores extranjeros</text>
+  <rect class="arch-box" x="28" y="240" width="196" height="112" rx="8"/>
+  <text class="arch-t" x="40" y="260">NOAA</text>
+  <text class="arch-s" x="40" y="278">CPC: ENSO Discussion, RONI, ONI,</text>
+  <text class="arch-s" x="40" y="293">  OISST semanal y mensual, SOI,</text>
+  <text class="arch-s" x="40" y="308">  alisios 850 hPa, calor 0–300 m</text>
+  <text class="arch-s" x="40" y="323">PSL: ERSSTv6 Niño 1+2 y 3.4</text>
+  <text class="arch-s" x="40" y="338">  (ERSSTv5 descontinuado)</text>
+  <rect class="arch-box" x="28" y="362" width="196" height="96" rx="8"/>
+  <text class="arch-t" x="40" y="382">Noticias (RSS / Atom)</text>
+  <text class="arch-s" x="40" y="400">Perú: Andina, El Comercio, RPP,</text>
+  <text class="arch-s" x="40" y="415">  Gestión, Correo, ReliefWeb…</text>
+  <text class="arch-s" x="40" y="430">Mundo: BBC Mundo, ONU, GDACS,</text>
+  <text class="arch-s" x="40" y="445">  NASA, Carbon Brief, CIIFEN…</text>
+  <rect class="arch-box" x="28" y="468" width="196" height="82" rx="8"/>
+  <text class="arch-t" x="40" y="488">Referencia y política</text>
+  <text class="arch-s" x="40" y="506">Tabla del equipo GRD (YAML)</text>
+  <text class="arch-s" x="40" y="521">Umbrales ICEN 2024 (ENFEN)</text>
+  <text class="arch-s" x="40" y="536">Costa: Natural Earth</text>
+
+  <!-- 2 Canales -->
+  <rect class="arch-key" x="266" y="58" width="186" height="64" rx="8"/>
+  <text class="arch-n" x="278" y="76">1</text><text class="arch-t" x="292" y="76">Directo</text>
+  <text class="arch-s" x="278" y="94">URL oficial y réplicas,</text>
+  <text class="arch-s" x="278" y="109">reintentos con espera</text>
+  <rect class="arch-warn" x="266" y="132" width="186" height="96" rx="8"/>
+  <text class="arch-n" x="278" y="150">2</text><text class="arch-t" x="292" y="150">Recolector en el Perú</text>
+  <text class="arch-s" x="278" y="168">tools/peru_collector.py</text>
+  <text class="arch-s" x="278" y="183">21:00 Lima → rama data-peru</text>
+  <text class="arch-s" x="278" y="198">copia verificada (sha256,</text>
+  <text class="arch-s" x="278" y="213">máx. 7 días)</text>
+  <rect class="arch-box" x="266" y="238" width="186" height="96" rx="8"/>
+  <text class="arch-n" x="278" y="256">3</text><text class="arch-t" x="292" y="256">Internet Archive</text>
+  <text class="arch-s" x="278" y="274">copia exacta (CDX), búsqueda</text>
+  <text class="arch-s" x="278" y="289">por prefijo del PDF, copia</text>
+  <text class="arch-s" x="278" y="304">nueva si la existente tiene</text>
+  <text class="arch-s" x="278" y="319">más de 24 h</text>
+  <rect class="arch-box" x="266" y="344" width="186" height="64" rx="8"/>
+  <text class="arch-n" x="278" y="362">4</text><text class="arch-t" x="292" y="362">Publicación anterior</text>
+  <text class="arch-s" x="278" y="380">último dato válido, con su</text>
+  <text class="arch-s" x="278" y="395">fecha real</text>
+  <text class="arch-s" x="266" y="432">Cada respuesta lleva su canal,</text>
+  <text class="arch-s" x="266" y="447">URL, fecha y sha256; el sitio</text>
+  <text class="arch-s" x="266" y="462">indica «vía archivo» o «vía</text>
+  <text class="arch-s" x="266" y="477">recolector en el Perú».</text>
+
+  <!-- 3 Pipeline -->
+  <rect class="arch-box" x="494" y="58" width="212" height="50" rx="8"/>
+  <text class="arch-t" x="506" y="78">fetch.py</text>
+  <text class="arch-s" x="506" y="96">descarga con procedencia</text>
+  <rect class="arch-box" x="494" y="116" width="212" height="66" rx="8"/>
+  <text class="arch-t" x="506" y="136">feeds/ (cpc.py, peru.py)</text>
+  <text class="arch-s" x="506" y="154">lectores por encabezados; se</text>
+  <text class="arch-s" x="506" y="169">prueban con copias 2004–2026</text>
+  <rect class="arch-key" x="494" y="190" width="212" height="96" rx="8"/>
+  <text class="arch-t" x="506" y="210">observatory.py</text>
+  <text class="arch-s" x="506" y="228">valida rangos y orden, arma</text>
+  <text class="arch-s" x="506" y="243">series, frescura por fuente,</text>
+  <text class="arch-s" x="506" y="258">estado ENFEN y NOAA, eventos,</text>
+  <text class="arch-s" x="506" y="273">incidencias</text>
+  <rect class="arch-box" x="494" y="294" width="212" height="50" rx="8"/>
+  <text class="arch-t" x="506" y="314">signals.py</text>
+  <text class="arch-s" x="506" y="332">señal operativa del equipo GRD</text>
+  <rect class="arch-box" x="494" y="352" width="212" height="80" rx="8"/>
+  <text class="arch-t" x="506" y="372">news.py</text>
+  <text class="arch-s" x="506" y="390">filtro ENSO / impactos, agrupa</text>
+  <text class="arch-s" x="506" y="405">notas similares, resumen y</text>
+  <text class="arch-s" x="506" y="420">enlaces; histórico solo anexar</text>
+  <rect class="arch-box" x="494" y="440" width="212" height="50" rx="8"/>
+  <text class="arch-t" x="506" y="460">sourcefeed.py</text>
+  <text class="arch-s" x="506" y="478">última novedad de cada fuente</text>
+  <text class="arch-s" x="494" y="514">Un lector que falla registra la</text>
+  <text class="arch-s" x="494" y="529">incidencia y deja el dato «en</text>
+  <text class="arch-s" x="494" y="544">validación»; no tumba la corrida.</text>
+
+  <!-- 4 Publicación -->
+  <rect class="arch-key" x="748" y="58" width="186" height="80" rx="8"/>
+  <text class="arch-t" x="760" y="78">Escritura atómica</text>
+  <text class="arch-s" x="760" y="96">un publicationId común;</text>
+  <text class="arch-s" x="760" y="111">se valida y se reemplaza</text>
+  <text class="arch-s" x="760" y="126">la carpeta entera</text>
+  <rect class="arch-box" x="748" y="146" width="186" height="80" rx="8"/>
+  <text class="arch-t" x="760" y="166">Datos</text>
+  <text class="arch-s" x="760" y="184">dashboard.json, series.json,</text>
+  <text class="arch-s" x="760" y="199">weekly.json, csv/*.csv</text>
+  <text class="arch-s" x="760" y="214">sources/*.json (arrastre)</text>
+  <rect class="arch-box" x="748" y="234" width="186" height="66" rx="8"/>
+  <text class="arch-t" x="760" y="254">Transparencia</text>
+  <text class="arch-s" x="760" y="272">sources.json, run-report.json,</text>
+  <text class="arch-s" x="760" y="287">health.json, manifest.json</text>
+  <rect class="arch-box" x="748" y="308" width="186" height="96" rx="8"/>
+  <text class="arch-t" x="760" y="328">Novedades</text>
+  <text class="arch-s" x="760" y="346">feed.json (fuentes oficiales)</text>
+  <text class="arch-s" x="760" y="361">news/clusters.json, feeds.json</text>
+  <text class="arch-s" x="760" y="376">news/items.jsonl (solo anexar)</text>
+  <text class="arch-s" x="760" y="391">news/items.csv</text>
+  <rect class="arch-box" x="748" y="412" width="186" height="66" rx="8"/>
+  <text class="arch-t" x="760" y="432">Rama data-archive</text>
+  <text class="arch-s" x="760" y="450">cada respuesta original nueva</text>
+  <text class="arch-s" x="760" y="465">y las notas de cada día</text>
+
+  <!-- 5 Sitio -->
+  <rect class="arch-key" x="976" y="58" width="196" height="64" rx="8"/>
+  <text class="arch-t" x="988" y="78">GitHub Pages</text>
+  <text class="arch-s" x="988" y="96">HTML, CSS y JS propios;</text>
+  <text class="arch-s" x="988" y="111">verifica el publicationId</text>
+  <rect class="arch-box" x="976" y="130" width="196" height="96" rx="8"/>
+  <text class="arch-t" x="988" y="150">Paneles</text>
+  <text class="arch-s" x="988" y="168">Resumen · El Niño Costero</text>
+  <text class="arch-s" x="988" y="183">Pacífico · Océano y atmósfera</text>
+  <text class="arch-s" x="988" y="198">Mapa · Historia</text>
+  <text class="arch-s" x="988" y="213">Señal GRD</text>
+  <rect class="arch-box" x="976" y="234" width="196" height="66" rx="8"/>
+  <text class="arch-t" x="988" y="254">Noticias</text>
+  <text class="arch-s" x="988" y="272">Fuentes oficiales · Perú · Mundo</text>
+  <text class="arch-s" x="988" y="287">agrupadas, con enlace a cada nota</text>
+  <rect class="arch-box" x="976" y="308" width="196" height="66" rx="8"/>
+  <text class="arch-t" x="988" y="328">Datos y Metodología</text>
+  <text class="arch-s" x="988" y="346">explorador, descargas CSV,</text>
+  <text class="arch-s" x="988" y="361">estado de fuentes, incidencias</text>
+  <rect class="arch-box" x="976" y="382" width="196" height="50" rx="8"/>
+  <text class="arch-t" x="988" y="402">Asistente y tutorial</text>
+  <text class="arch-s" x="988" y="420">responde con los datos publicados</text>
+
+  <!-- Flechas entre columnas -->
+  <path class="arch-line" d="M224 106 H266" marker-end="url(#arch-arrow)"/>
+  <path class="arch-dash" d="M224 197 H266" marker-end="url(#arch-arrow)"/>
+  <path class="arch-line" d="M224 296 C245 296 245 90 266 90" marker-end="url(#arch-arrow)"/>
+  <path class="arch-line" d="M224 410 C245 410 245 96 266 96" marker-end="url(#arch-arrow)"/>
+  <path class="arch-line" d="M452 90 H494" marker-end="url(#arch-arrow)"/>
+  <path class="arch-dash" d="M452 180 C473 180 473 92 494 92" marker-end="url(#arch-arrow)"/>
+  <path class="arch-dash" d="M452 286 C473 286 473 94 494 94" marker-end="url(#arch-arrow)"/>
+  <path class="arch-dash" d="M452 376 C473 376 473 96 494 96" marker-end="url(#arch-arrow)"/>
+  <path class="arch-line" d="M706 238 H727 V98 H748" marker-end="url(#arch-arrow)"/>
+  <path class="arch-line" d="M706 392 H727 V238"/>
+  <path class="arch-line" d="M706 465 H727 V392"/>
+  <path class="arch-line" d="M934 90 H976" marker-end="url(#arch-arrow)"/>
+
+  <!-- Operación -->
+  <rect class="arch-col" x="16" y="580" width="1168" height="164" rx="10"/>
+  <text class="arch-h" x="30" y="606">Operación en GitHub Actions</text>
+  <rect class="arch-key" x="28" y="620" width="274" height="110" rx="8"/>
+  <text class="arch-t" x="40" y="640">observatory · diario 23:37 Lima</text>
+  <text class="arch-s" x="40" y="658">pruebas → pipeline → pruebas de</text>
+  <text class="arch-s" x="40" y="673">navegador → despliegue → verifica</text>
+  <text class="arch-s" x="40" y="688">el sitio en vivo; también al recibir</text>
+  <text class="arch-s" x="40" y="703">el aviso del recolector (21:00)</text>
+  <text class="arch-s" x="40" y="718">Si algo falla, queda el sitio anterior.</text>
+  <rect class="arch-box" x="314" y="620" width="206" height="110" rx="8"/>
+  <text class="arch-t" x="326" y="640">watchdog · cada 6 h</text>
+  <text class="arch-s" x="326" y="658">comprueba que la publicación</text>
+  <text class="arch-s" x="326" y="673">esté al día y relanza la</text>
+  <text class="arch-s" x="326" y="688">actualización si hace falta</text>
+  <rect class="arch-box" x="532" y="620" width="206" height="110" rx="8"/>
+  <text class="arch-t" x="544" y="640">Incidencias → issues</text>
+  <text class="arch-s" x="544" y="658">cada aviso o error abre un</text>
+  <text class="arch-s" x="544" y="673">issue que se cierra solo</text>
+  <text class="arch-s" x="544" y="688">cuando deja de ocurrir</text>
+  <rect class="arch-box" x="750" y="620" width="206" height="110" rx="8"/>
+  <text class="arch-t" x="762" y="640">capture-fixtures</text>
+  <text class="arch-s" x="762" y="658">guarda respuestas reales y</text>
+  <text class="arch-s" x="762" y="673">copias históricas; corre el</text>
+  <text class="arch-s" x="762" y="688">pipeline en vivo para validar</text>
+  <text class="arch-s" x="762" y="703">fuentes y feeds</text>
+  <rect class="arch-box" x="968" y="620" width="204" height="110" rx="8"/>
+  <text class="arch-t" x="980" y="640">ci</text>
+  <text class="arch-s" x="980" y="658">pruebas unitarias, backtesting</text>
+  <text class="arch-s" x="980" y="673">de formatos y recorridos de</text>
+  <text class="arch-s" x="980" y="688">navegador en cada cambio</text>
+</svg>

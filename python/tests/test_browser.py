@@ -22,7 +22,7 @@ pytestmark = pytest.mark.browser
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
-ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "datos", "metodologia", "asistente"]
+ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "noticias", "datos", "metodologia", "asistente"]
 VIEWPORTS = {"telefono-320": (320, 640), "telefono-390": (390, 844), "tableta": (820, 1180), "escritorio": (1366, 900)}
 
 
@@ -218,6 +218,27 @@ def test_map_animation_and_table(site, page):
     page.get_by_role("button", name="Pausar animación").click()
     page.get_by_text("Ver los valores de esta semana en una tabla").click()
     assert page.locator("#map-table tbody tr").count() == 4
+
+
+def test_news_view_shows_official_feed_and_news(site, page):
+    base, root = site
+    feed = json.loads((root / "data" / "feed.json").read_text(encoding="utf-8"))
+    go(page, base, "noticias")
+    expect(page.locator("[data-tab]")).to_have_count(3)
+    expect(page.locator("#news-body section.card")).to_have_count(len(feed["groups"]), timeout=10000)
+    first = feed["groups"][0]["items"][0]
+    expect(page.locator("#news-body .feed-title").first).to_contain_text(first["title"][:30])
+    page.locator("[data-tab=peru]").click()
+    expect(page.locator("[data-tab=peru]")).to_have_attribute("aria-selected", "true")
+    assert "tab=peru" in page.url
+    clusters = root / "data" / "news" / "clusters.json"
+    if clusters.exists():
+        peru = [c for c in json.loads(clusters.read_text(encoding="utf-8"))["clusters"] if c["region"] == "peru"]
+        expect(page.locator("#news-body .feed-item")).to_have_count(len(peru))
+    page.locator("#feeds-status summary").click()
+    expect(page.locator("#feeds-status")).to_have_attribute("open", "")
+    go(page, base, "metodologia")
+    expect(page.locator("#arch-fig svg")).to_have_count(1, timeout=10000)
 
 
 def test_downloads_exist_and_csv_is_safe(site, page):

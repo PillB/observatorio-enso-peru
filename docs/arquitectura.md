@@ -2,11 +2,21 @@
 
 ## Vista general
 
-```
-fuentes oficiales ──► python/enso (pipeline) ──► public/data/*.json, csv/ ──► sitio estático (public/)
-   NOAA/CPC, IGP,        descarga, valida,         una publicación atómica      lee solo la publicación
-   ENFEN                 clasifica, registra       con un publicationId         y rechaza mezclas
-```
+![Arquitectura: fuentes, canales, pipeline, publicación, sitio y operación](arquitectura.svg)
+
+El diagrama (`docs/arquitectura.svg`, copiado en `public/assets/` para la
+sección Metodología del sitio) se lee de izquierda a derecha:
+
+1. **Fuentes:** oficiales del Perú (ENFEN, IGP; SENAMHI, ANA e IMARPE solo
+   desde el Perú), NOAA (CPC y PSL), 21 feeds de noticias y la política de
+   umbrales.
+2. **Canales**, en orden: directo, recolector en el Perú (rama
+   `data-peru`), Internet Archive y publicación anterior.
+3. **Pipeline** en Python: descarga con procedencia, lectores con
+   backtesting, validación y armado, señal GRD, noticias y feed de fuentes.
+4. **Publicación** atómica en `public/data/` y archivo de respuestas
+   originales en la rama `data-archive`.
+5. **Sitio** estático en GitHub Pages.
 
 No hay servidor ni base de datos. Una corrida de GitHub Actions genera la
 publicación y GitHub Pages la sirve junto con el sitio. Si algo falla
@@ -21,6 +31,8 @@ antes del despliegue, sigue publicado el sitio anterior.
 | `feeds/peru.py` | Lectores del ICEN del IGP, del listado de comunicados del ENFEN (HTML y WordPress JSON) y del texto de cada comunicado (PDF) |
 | `signals.py` | Categorías ICEN 2024, eventos ICEN, categorías ONI/RONI y la señal del equipo GRD |
 | `observatory.py` | Catálogo de fuentes, adquisición con respaldo, armado de la publicación, registro de incidencias y CLI |
+| `news.py` | Feeds RSS/Atom de noticias: estado de cada feed, filtro de relevancia, agrupación de notas similares, histórico de solo anexar y CSV |
+| `sourcefeed.py` | Última novedad de cada fuente oficial, agrupada por tipo (comunicados, índices, mar, atmósfera, subsuperficie) |
 
 Cada lector devuelve los datos junto con una **huella del formato**
 (cabeceras, columnas y patrón de filas). Si la huella cambia respecto de
@@ -52,6 +64,11 @@ si no coinciden, muestra un aviso en lugar de mezclar datos.
 | `run-report.json` | Todas las incidencias de la corrida con severidad, etapa, código y huella |
 | `health.json` | Resumen para monitoreo externo |
 | `manifest.json` | Lista de archivos de la publicación |
+| `feed.json` | Novedades de las fuentes oficiales agrupadas por tipo: título, fecha, valor, categoría, cambio y enlace al documento |
+| `news/feeds.json` | Estado de cada feed de noticias en esta corrida: responde, entradas, relevantes, fecha de la más reciente, activo |
+| `news/clusters.json` | Notas de los últimos 14 días agrupadas por similitud del titular: titular más temprano, medios, resumen y enlaces |
+| `news/items.jsonl` | Histórico de noticias de solo anexar: cada corrida agrega las notas nuevas al final y nunca reescribe las anteriores |
+| `news/items.csv` | El mismo histórico en CSV, protegido contra fórmulas |
 | `csv/*.csv` | Descargas con cabecera `periodo,valor,unidad,serie,fuente,publicacion`; los textos que empiezan con `=`, `@`, `+` o `-` no numéricos se neutralizan contra inyección de fórmulas |
 
 Cada último valor publicado incluye `period`, `value`, `ageDays`,
@@ -64,7 +81,7 @@ disponible», nunca como vigente.
 - Política de seguridad de contenido estricta (`script-src 'self'`), sin
   scripts en línea; las respuestas del asistente escapan todo el texto.
 - Rutas por hash: Resumen, Costa peruana, Pacífico, Océano, Mapa,
-  Historia, Datos, Metodología y Asistente.
+  Historia, Noticias, Datos, Metodología y Asistente.
 - Español del Perú, coma decimal, tema claro y oscuro, navegación por
   teclado, enlace para saltar al contenido, tablas alternativas a cada
   gráfico y al mapa.
@@ -73,6 +90,26 @@ disponible», nunca como vigente.
   de lenguaje ni inventa valores.
 - `assets/js/geo.js` contiene la costa de Natural Earth ya proyectada; se
   regenera con `scripts/geo/gen.mjs`.
+
+## Noticias
+
+- **Relevancia:** en medios generales se exige un término del ENSO
+  («El Niño», «La Niña», «Niño costero», ENFEN, ICEN, temperatura del
+  mar…). En feeds de emergencias o clima (ReliefWeb, GDACS, ONU, búsquedas
+  de Google Noticias) basta un peligro asociado (lluvias intensas,
+  huaicos, inundaciones, sequía…) si la nota es del Perú.
+- **Agrupación:** dos titulares se agrupan si comparten al menos tres
+  palabras significativas y el 60 % de las del más corto, dentro de la
+  misma región (Perú o mundo). El titular del grupo es el de la nota más
+  temprana; el resumen es la primera oración del resumen más largo.
+- **Histórico:** `news/items.jsonl` se lee de la publicación anterior y
+  se le agregan las notas nuevas (por `id` = hash de enlace y titular).
+  Las notas de cada día se guardan también en `data-archive/news/`, de
+  modo que el histórico puede reconstruirse si la publicación anterior no
+  se pudo leer (incidencia `news-history-missing`).
+- **Derechos:** solo se guarda lo que el medio publica en su feed
+  (titular, resumen, fecha y enlace). El sitio enlaza siempre a la nota
+  original.
 
 ## Pruebas (`python/tests/`)
 

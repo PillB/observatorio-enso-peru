@@ -92,3 +92,12 @@ def test_history_is_append_only_and_csv_is_safe():
     rows = list(csv.DictReader(io.StringIO(N.to_csv(hist + added + [evil]))))
     assert len(rows) == 3 and rows[0]["link"]
     assert all(not r["title"].startswith("=") for r in rows)
+
+
+def test_architecture_diagram_copies_match():
+    """El diagrama del sitio es el mismo que el de docs/."""
+    from conftest import ROOT
+
+    docs = (ROOT.parent / "docs" / "arquitectura.svg").read_bytes()
+    assert docs == (ROOT.parent / "public" / "assets" / "arquitectura.svg").read_bytes()
+    assert docs.lstrip().startswith(b"<svg") and b"<script" not in docs
