@@ -3,11 +3,15 @@
 Orden de intento para cada fuente:
   1. URL oficial (y sus espejos declarados), con reintentos y espera
      exponencial ante errores transitorios (DNS, 5xx, 429, timeouts).
-  2. Copia más reciente en el Internet Archive (Wayback Machine), solo si
+  2. Si una URL no responde, la copia que el recolector del Perú
+     (``tools/peru_collector.py``) bajó de esa misma URL y subió a la rama
+     ``data-peru`` (canal «relay-peru»). Las fuentes peruanas que bloquean
+     a servidores extranjeros se leen así con horas de antigüedad.
+  3. Copia más reciente en el Internet Archive (Wayback Machine), solo si
      la fuente lo permite. Útil cuando el sitio oficial bloquea a robots
      (Cloudflare) o tiene caídas: el dato sigue siendo el publicado por la
      institución, pero se marca con canal «archivo» y la fecha de la copia.
-  3. «Save Page Now» del Internet Archive cuando la copia existente tiene
+  4. «Save Page Now» del Internet Archive cuando la copia existente tiene
      más de un día (o no hay ninguna) y se habilita; si falla, se usa la
      copia existente.
 
@@ -19,9 +23,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Optional
 from urllib.parse import quote
 
@@ -35,7 +41,7 @@ TRANSIENT = (httpx.TimeoutException, httpx.ConnectError, httpx.RemoteProtocolErr
 class Response:
     url: str
     body: bytes
-    channel: str  # "direct" | "mirror" | "archive" | "archive-fresh"
+    channel: str  # "direct" | "mirror" | "relay-peru" | "archive" | "archive-fresh"
     status: int
     content_type: str = ""
     last_modified: str = ""
@@ -63,15 +69,62 @@ class FetchError(RuntimeError):
         self.attempts = attempts
 
 
+class Relay:
+    """Copias recolectadas desde el Perú (rama ``data-peru``).
+
+    ``index.json`` lista cada URL descargada, su estado y el archivo con el
+    cuerpo. Solo se usan copias con estado 200, cuyo sha256 coincide y que
+    no superan ``max_age_hours``.
+    """
+
+    FILE_RE = re.compile(r"^files/[0-9a-f]{16}\.(pdf|html|json)$")
+
+    def __init__(self, root: Path, max_age_hours: float = 7 * 24):
+        self.root = Path(root)
+        idx = json.loads((self.root / "index.json").read_text(encoding="utf-8"))
+        if idx.get("schema") != "enso-relay/1":
+            raise ValueError(f"esquema de relay desconocido: {idx.get('schema')!r}")
+        self.collected_at: str = idx.get("collected_at", "")
+        self.host: str = (idx.get("collector") or {}).get("host", "")
+        self.summary: dict = idx.get("summary") or {}
+        self.max_age_hours = max_age_hours
+        self._by_url: dict[str, list[dict]] = {}
+        for e in idx.get("entries") or []:
+            if e.get("status") != 200 or not self.FILE_RE.match(e.get("file") or ""):
+                continue
+            for u in [e.get("url"), *(e.get("aliases") or [])]:
+                if u:
+                    self._by_url.setdefault(u, []).append(e)
+
+    @property
+    def age_hours(self) -> float:
+        return _age_hours(self.collected_at)
+
+    def get(self, url: str, accept: tuple[str, ...] = ()) -> Optional[Response]:
+        if self.age_hours > self.max_age_hours:
+            return None
+        for e in self._by_url.get(url, []):
+            ct = (e.get("content_type") or "").lower()
+            if accept and not any(a in ct for a in accept):
+                continue
+            body = (self.root / e["file"]).read_bytes() if (self.root / e["file"]).is_file() else b""
+            if not body or hashlib.sha256(body).hexdigest() != e.get("sha256"):
+                continue
+            return Response(url, body, "relay-peru", 200, ct, archived_at=e.get("fetched_at") or self.collected_at)
+        return None
+
+
 class Fetcher:
     def __init__(self, timeout: float = 45.0, retries: int = 3, polite_delay: float = 0.8,
-                 allow_archive: bool = True, allow_save: bool = False, offline: bool = False):
+                 allow_archive: bool = True, allow_save: bool = False, offline: bool = False,
+                 relay: Optional[Relay] = None):
         self.client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
         self.retries = retries
         self.polite_delay = polite_delay
         self.allow_archive = allow_archive
         self.allow_save = allow_save
         self.offline = offline
+        self.relay = relay
         self._last: dict[str, float] = {}
 
     def close(self) -> None:
@@ -115,6 +168,12 @@ class Fetcher:
                                 attempts=attempts)
             if r is not None and r.status_code == 200:
                 attempts[-1]["note"] = "contenido vacío o tipo inesperado"
+            if self.relay is not None:
+                got = self.relay.get(url, accept)
+                if got is not None:
+                    attempts.append({"url": url, "channel": "relay-peru", "collected_at": self.relay.collected_at})
+                    got.attempts = attempts
+                    return got
         if archive and self.allow_archive:
             for url in urls:
                 got = self._from_archive(url, attempts, fresh=save and self.allow_save)
@@ -174,7 +233,5 @@ def _ts_iso(ts: str) -> str:
 
 
 def _wayback_ts(url: str) -> Optional[str]:
-    import re
-
     m = re.search(r"/web/(\d{14})", url)
     return _ts_iso(m.group(1)) if m else None

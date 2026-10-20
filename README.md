@@ -24,6 +24,7 @@ del riesgo de desastres.
 | `python/tools/` | Captura de fuentes, verificación del sitio en vivo, sincronización de incidencias |
 | `public/` | Sitio estático (HTML, CSS y JavaScript sin dependencias) |
 | `config/threshold-policies/` | Umbrales ICEN 2024 y la tabla del equipo GRD, con su imagen original |
+| `collector/` | Docker, systemd y tarea de Windows para el recolector desde el Perú |
 | `.github/workflows/` | Actualización diaria, vigilante, CI y captura de fuentes |
 | `docs/` | Documentación (ver abajo) |
 
@@ -60,6 +61,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Metodología e indicadores](docs/metodologia.md)
 - [Catálogo de fuentes](docs/catalogo-fuentes.md)
 - [Operación diaria, incidencias y recuperación](docs/operaciones.md)
+- [Recolector desde el Perú (mini servidor)](docs/servidor-peru.md)
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)

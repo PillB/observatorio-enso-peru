@@ -53,16 +53,32 @@ jobs:
         working-directory: python
         run: python -m pytest -q -m "not browser"
 
+      # Copias que el recolector del Perú (python/tools/peru_collector.py)
+      # sube a la rama data-peru. Si la rama no existe todavía, se sigue sin ellas.
+      - name: Fetch the Peru relay copies
+        id: relay
+        continue-on-error: true
+        run: |
+          if git ls-remote --exit-code --heads origin data-peru >/dev/null; then
+            git fetch --depth 1 origin data-peru
+            git worktree add --detach "$RUNNER_TEMP/relay" FETCH_HEAD
+            echo "dir=$RUNNER_TEMP/relay" >> "$GITHUB_OUTPUT"
+          else
+            echo "La rama data-peru no existe: sin copias desde el Perú."
+          fi
+
       - name: Fetch, validate and build the publication
         id: pipeline
         working-directory: python
         env:
           ENSO_ARCHIVE_SAVE: ${{ (github.event_name != 'workflow_dispatch' || inputs.archive_save) && '1' || '0' }}
+          RELAY_DIR: ${{ steps.relay.outputs.dir }}
         run: |
           python -m enso.observatory \
             --out ../public/data \
             --previous "${SITE_URL}data" \
             --raw-dir "$RUNNER_TEMP/raw" \
+            ${RELAY_DIR:+--relay-dir "$RELAY_DIR"} \
             --fail-on critical
 
       - name: Browser checks against the built site

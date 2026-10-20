@@ -122,6 +122,7 @@ function statusCard(kind) {
     <div class="meta">
       ${o.nextIssue ? html`<span>Próximo: <strong>${F.fmtDate(o.nextIssue)}</strong>${o.nextIssueEstimated ? ' (estimado)' : ''}</span>` : ''}
       ${o.channel === 'archive' || o.channel === 'archive-fresh' ? html`<span class="tag">vía copia del Internet Archive</span>` : ''}
+      ${o.channel === 'relay-peru' ? html`<span class="tag">vía recolector en el Perú</span>` : ''}
       ${o.carried ? html`<span class="tag">último dato válido</span>` : ''}
       <a href="${safeUrl(o.documentUrl || o.url)}" rel="noopener" target="_blank">Documento oficial</a>
     </div>

@@ -44,8 +44,9 @@ el listado se lee también de la réplica de la Dirección de Hidrografía y
 Navegación (DHN), miembro del ENFEN, que publica cada comunicado como PDF
 directo (`/Archivos/oceanografia/enfen/comunicado-oficial/NN-AAAA.pdf`,
 formato estable desde 2022). Los sondeos de números nuevos prueban
-primero ese PDF. Si nada responde, se usa la copia más reciente del
-Internet Archive. El listado también reconoce los comunicados
+primero ese PDF. Si una URL del ENFEN no responde, se usa la copia que
+bajó el [recolector desde el Perú](servidor-peru.md) a las 21:00; si
+tampoco la hay, la copia más reciente del Internet Archive. El listado también reconoce los comunicados
 extraordinarios, que el ENFEN emite durante los eventos con numeración
 propia.
 

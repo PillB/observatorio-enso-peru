@@ -269,6 +269,9 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
             log.add("warning", src.id, "parse", "format-drift",
                     f"Se detectó un cambio en el formato de la fuente (huella {acq.previous_fingerprint} → {parsed.fingerprint}). "
                     "El parseo siguió siendo válido; revisar que los valores sean coherentes.")
+        if resp.channel == "relay-peru":
+            log.add("info", src.id, "fetch", "relay-channel",
+                    f"Fuente oficial no accesible desde el servidor; se usó la copia recolectada desde el Perú el {resp.archived_at}.")
         if resp.channel.startswith("archive"):
             log.add("warning", src.id, "fetch", "archive-channel",
                     f"Fuente oficial no accesible; se usó la copia del Internet Archive del {resp.archived_at}.")
@@ -319,9 +322,10 @@ ENFEN_BASE = "https://enfen.imarpe.gob.pe"
 
 def _clean_wpdm(url: str) -> str:
     """Quita el parámetro «refresh» (token por visita) de los enlaces de descarga."""
+    import html as _html
     import re as _re
 
-    return _re.sub(r"[&?]refresh=[^&]*", "", url).replace("&#038;", "&")
+    return _re.sub(r"[&?]refresh=[^&]*", "", _html.unescape(url))
 
 
 def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
@@ -930,12 +934,14 @@ def archive_raw(raw_dir: Path, acquired: dict[str, "Acquired"], today: date) -> 
 
 
 def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, offline: bool = False,
-        today: Optional[date] = None, only: Optional[list[str]] = None, raw_dir: Optional[Path] = None) -> dict:
+        today: Optional[date] = None, only: Optional[list[str]] = None, raw_dir: Optional[Path] = None,
+        relay_dir: Optional[Path] = None) -> dict:
     from .fetch import Fetcher
 
     started = datetime.now(timezone.utc)
     log = EventLog()
-    fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1")
+    relay = load_relay(relay_dir, log) if relay_dir is not None and fixtures is None else None
+    fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=relay)
     prev = PreviousPublication(previous, fetcher)
     acquired: dict[str, Acquired] = {}
     for src in SOURCES:
@@ -964,6 +970,31 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     return res
 
 
+RELAY_STALE_HOURS = 36
+
+
+def load_relay(relay_dir: Path, log: EventLog):
+    """Abre las copias del recolector del Perú y registra si faltan o están viejas."""
+    from .fetch import Relay
+
+    try:
+        relay = Relay(relay_dir)
+    except (OSError, ValueError, KeyError) as exc:
+        log.add("warning", "relay-peru", "fetch", "relay-missing",
+                f"No hay copias del recolector del Perú en {relay_dir.name} ({type(exc).__name__}: {exc}). "
+                "SENAMHI, ANA, IMARPE y el portal del ENFEN se leen solo por réplicas y archivo.")
+        return None
+    age = relay.age_hours
+    if age > RELAY_STALE_HOURS:
+        log.add("warning", "relay-peru", "fetch", "relay-stale",
+                f"La última recolección desde el Perú es del {relay.collected_at} (hace {age:.0f} h); "
+                f"revisar el recolector{f' en {relay.host}' if relay.host else ''}.")
+    else:
+        log.add("info", "relay-peru", "fetch", "relay-ok",
+                f"Recolección desde el Perú del {relay.collected_at}: {relay.summary}.")
+    return relay
+
+
 def _fixture_date(fixtures: Path) -> Optional[date]:
     idx = fixtures / "index.json"
     if idx.exists():
@@ -981,11 +1012,13 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--offline", action="store_true")
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--raw-dir", default=None, help="Carpeta donde archivar las respuestas originales nuevas")
+    ap.add_argument("--relay-dir", default=None, help="Copia de la rama data-peru (recolector del Perú)")
     ap.add_argument("--fail-on", default="critical", choices=["error", "critical", "never"])
     args = ap.parse_args(argv)
     out = Path(args.out).resolve()
     res = run(out, args.previous or None, Path(args.fixtures).resolve() if args.fixtures else None, args.offline, only=args.only,
-              raw_dir=Path(args.raw_dir).resolve() if args.raw_dir else None)
+              raw_dir=Path(args.raw_dir).resolve() if args.raw_dir else None,
+              relay_dir=Path(args.relay_dir).resolve() if args.relay_dir else None)
     print(json.dumps(res, ensure_ascii=False))
     gh = os.environ.get("GITHUB_OUTPUT")
     if gh:
