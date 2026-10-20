@@ -218,6 +218,21 @@ class PreviousPublication:
         self.fetcher = fetcher
         self._cache: dict[str, Any] = {}
 
+    def get_text(self, name: str) -> Optional[str]:
+        """Archivo de texto de la publicación anterior (p. ej. el histórico de noticias)."""
+        if not self.base:
+            return None
+        try:
+            if self.base.startswith("http"):
+                if self.fetcher is None:
+                    return None
+                r = self.fetcher.client.get(f"{self.base}/{name}", params={"t": int(time.time())})
+                return r.text if r.status_code == 200 else None
+            p = Path(self.base) / name
+            return p.read_text(encoding="utf-8") if p.exists() else None
+        except Exception:
+            return None
+
     def get(self, name: str) -> Optional[Any]:
         if not self.base:
             return None
@@ -835,7 +850,8 @@ def _is_number(s: str) -> bool:
 
 
 def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, official: dict, weekly, grd: dict,
-                      log: EventLog, started: datetime) -> dict:
+                      log: EventLog, started: datetime, news: Optional[dict] = None,
+                      feed: Optional[dict] = None) -> dict:
     now = datetime.now(timezone.utc)
     content_hash = hashlib.sha256(json.dumps(
         {k: v["points"][-24:] for k, v in sorted(b.series.items())} | {"official": official}, sort_keys=True, default=str
@@ -883,6 +899,17 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                    "degraded": [h["id"] for h in health if h["status"] != "ok"], "worst": log.worst()},
         "pipeline": {"version": PIPELINE_VERSION, "gitSha": git_sha, "startedAt": started.isoformat(timespec="seconds")},
     }
+    if feed is not None:
+        dump("feed.json", feed)
+    if news is not None:
+        (tmp / "news").mkdir()
+        dump("news/feeds.json", news["feeds"])
+        dump("news/clusters.json", news["clusters"])
+        (tmp / "news" / "items.jsonl").write_text(news["jsonl"], encoding="utf-8")
+        (tmp / "news" / "items.csv").write_text(news["csv"], encoding="utf-8")
+        dashboard["news"] = {"clusters": len(news["clusters"]["clusters"]), "items": news["feeds"]["history"]["items"],
+                             "feedsActive": sum(1 for f in news["feeds"]["feeds"] if f["active"]),
+                             "feedsTotal": len(news["feeds"]["feeds"])}
     dump("dashboard.json", dashboard)
     dump("series.json", {"series": b.series})
     if weekly:
@@ -1008,12 +1035,24 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     weekly = b.weekly()
     official = b.official()
     grd = b.grd()
+    news = None
+    if not offline and not only:
+        try:
+            news = acquire_news(fetcher, fixtures, prev, log, started if fixtures is None else
+                                datetime.combine(today, datetime.min.time(), timezone.utc), raw_dir)
+        except Exception as exc:  # las noticias nunca deben detener la publicación
+            log.add("warning", "news", "parse", "exception", f"{type(exc).__name__}: {exc}")
+    from . import sourcefeed
+    meta = {s.id: {"institution": s.institution, "docs": s.docs or s.urls[0],
+                   "retrievedAt": acquired[s.id].retrieved_at if s.id in acquired else None,
+                   "channel": acquired[s.id].channel if s.id in acquired else None} for s in SOURCES}
+    feed = sourcefeed.build(official, b.series, weekly, meta, relay)
     for s in SOURCES:
         a = acquired.get(s.id)
         if a and not a.ok and not a.carried:
             log.add("critical" if s.critical else "error", s.id, "publish", "no-data",
                     "La fuente falló y no hay un dato anterior que conservar.")
-    res = write_publication(out, acquired, b, official, weekly, grd, log, started)
+    res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed)
     if raw_dir is not None:
         res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
@@ -1022,6 +1061,73 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
 
 
 RELAY_STALE_HOURS = 36
+
+
+def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublication, log: EventLog,
+                 now: datetime, raw_dir: Optional[Path]) -> Optional[dict]:
+    """Feeds de noticias → histórico de solo anexar, CSV, estado de feeds y grupos."""
+    from . import news as N
+    from .fetch import FetchError
+
+    by_url = {f.url: f for f in N.FEEDS}
+    if fixtures is not None and not any(fixtures.glob("news-*.xml")):
+        return None
+    if fixtures is not None:
+        def fetch(url):
+            p = fixtures / f"news-{by_url[url].id}.xml"
+            return (200, p.read_bytes(), "", "") if p.exists() else (None, b"", "", "sin captura")
+    else:
+        def fetch(url):
+            try:
+                r = fetcher.get([url], archive=False)
+                return 200, r.body, r.content_type, ""
+            except FetchError as exc:
+                last = exc.attempts[-1] if exc.attempts else {}
+                return last.get("status"), b"", "", last.get("error") or f"HTTP {last.get('status')}"
+
+    found, status, raw = N.collect(fetch, now)
+    prev_text = previous.get_text("news/items.jsonl") or ""
+    prev_feeds = previous.get("news/feeds.json") or {}
+    if not prev_text and (prev_feeds.get("history") or {}).get("items"):
+        log.add("warning", "news", "fetch", "news-history-missing",
+                "No se pudo leer el histórico de noticias de la publicación anterior; se reconstruye desde la rama data-archive.")
+    history = N.read_jsonl(prev_text)
+    added = N.new_lines(history, found)
+    if prev_text and not prev_text.endswith("\n"):
+        prev_text += "\n"
+    jsonl = prev_text + "".join(json.dumps(i, ensure_ascii=False, separators=(",", ":")) + "\n" for i in added)
+    items = history + added
+
+    for st in status:
+        if not st["ok"]:
+            log.add("info", "news", "fetch", "feed-down", f"{st['name']}: {st['error']}")
+        elif not st["active"]:
+            log.add("info", "news", "fetch", "feed-inactive",
+                    f"{st['name']}: la entrada más reciente es del {st['latest'] or '¿?'}.")
+    active = sum(1 for st in status if st["active"])
+    if active < len(status) / 2:
+        log.add("warning", "news", "fetch", "news-degraded",
+                f"Solo {active} de {len(status)} feeds de noticias están activos.")
+
+    if raw_dir is not None and fixtures is None:
+        day = now.date().isoformat()
+        for fid, body in raw.items():
+            d = raw_dir / f"news-{fid}"
+            d.mkdir(parents=True, exist_ok=True)
+            sha = hashlib.sha256(body).hexdigest()[:12]
+            if not any(p.name.endswith(f"-{sha}.xml") for p in d.iterdir()):
+                (d / f"{day}-{sha}.xml").write_bytes(body)
+        if added:
+            (raw_dir / "news").mkdir(parents=True, exist_ok=True)
+            with open(raw_dir / "news" / f"{day}.jsonl", "a", encoding="utf-8") as fh:
+                fh.write("".join(json.dumps(i, ensure_ascii=False) + "\n" for i in added))
+
+    return {
+        "jsonl": jsonl, "csv": N.to_csv(items),
+        "feeds": {"feeds": status, "history": {"items": len(items), "added": len(added),
+                                               "since": min((i["first_seen"] for i in items), default=None)}},
+        "clusters": {"days": 14, "clusters": N.cluster(items, now)},
+    }
 
 
 def load_relay(relay_dir: Path, log: EventLog):

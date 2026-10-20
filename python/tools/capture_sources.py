@@ -162,8 +162,16 @@ def _save(out: Path, name: str, res: dict, index: list) -> None:
     print(f"{res.get('status')}\t{len(body)}\t{name}\t{res.get('error', '')}")
 
 
+def _with_news() -> dict:
+    """Las fuentes más los feeds de noticias del catálogo del pipeline."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from enso.news import FEEDS
+
+    return CURRENT | {f"news-{f.id}.xml": f.url for f in FEEDS}
+
+
 def capture_current(client: httpx.Client, out: Path, index: list) -> None:
-    for name, url in CURRENT.items():
+    for name, url in _with_news().items():
         _save(out, name, _get(client, url), index)
 
 

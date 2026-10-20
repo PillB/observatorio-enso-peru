@@ -45,8 +45,9 @@ jobs:
         run: |
           python -m enso.observatory --out "$RUNNER_TEMP/pub/data" --previous '' --raw-dir tests/fixtures/live-run/raw --fail-on never || true
           mkdir -p tests/fixtures/live-run
-          for f in dashboard.json run-report.json sources.json; do
-            [ -f "$RUNNER_TEMP/pub/data/$f" ] && cp "$RUNNER_TEMP/pub/data/$f" tests/fixtures/live-run/
+          mkdir -p tests/fixtures/live-run/news
+          for f in dashboard.json run-report.json sources.json feed.json news/feeds.json news/clusters.json news/items.csv; do
+            [ -f "$RUNNER_TEMP/pub/data/$f" ] && cp "$RUNNER_TEMP/pub/data/$f" "tests/fixtures/live-run/$f"
           done
       - name: Commit fixtures
         run: |
