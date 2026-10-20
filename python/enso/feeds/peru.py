@@ -21,7 +21,7 @@ ENFEN_STATUSES = [
 ]
 
 DATE_ES = re.compile(
-    r"\b(\d{1,2})\s+de\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto|se?tiembre|octubre|noviembre|diciembre)(?:\s+del?)?\s+(\d{4})\b",
+    r"\b(\d{1,2})\s+(?:de\s+)?(enero|febrero|marzo|abril|mayo|junio|julio|agosto|se?tiembre|octubre|noviembre|diciembre)(?:\s+del?)?\s+(\d{4})\b",
     re.I,
 )
 NUMBER_RE = re.compile(r"COMUNICADO\s+OFICIAL\s+(?:DEL?\s+)?ENFEN\s+N\s*[°ºo.]*\s*(\d{1,2})\s*[-–]\s*(\d{4})", re.I)
@@ -53,6 +53,32 @@ def pdf_text(data: bytes) -> str:
     return "\n".join((p.extract_text() or "") for p in reader.pages)
 
 
+def _headline_summary(text: str, nm: re.Match) -> str:
+    """Formato 2026: titular en mayúsculas seguido del párrafo principal.
+
+    Se toma la primera línea en mayúsculas (cuatro o más palabras) después
+    del número del comunicado y el texto que le sigue hasta completar dos
+    oraciones; se quitan las llamadas de nota pegadas a las palabras.
+    """
+    lines = [l.strip() for l in text.splitlines()]
+    flat_pos, start = 0, None
+    for k, l in enumerate(lines):
+        if start is None and NUMBER_RE.search(re.sub(r"\s+", " ", l)):
+            start = k
+            continue
+        if start is not None and len(l.split()) >= 4 and l == l.upper() and re.search(r"[A-ZÁÉÍÓÚÑ]{3}", l):
+            head = l.rstrip(" .").capitalize()
+            for x in ("el niño", "la niña", "niño costero", "niña costera", "perú"):
+                head = head.replace(x, x.title()).replace(x.capitalize(), x.title())
+            rest = re.sub(r"\s+", " ", " ".join(lines[k + 1: k + 12]))
+            rest = re.sub(r"(?<=[a-záéíóúñ)])\d+(?=[\s(.,]|$)", "", rest)
+            rest = re.sub(r"\b(20\d\d)\d{1,2}(?=[\s(.,]|$)", r"\1", rest)
+            sentences = re.findall(r".+?\.(?=\s|$)", rest)
+            para = " ".join(x.strip() for x in sentences[:2])
+            return re.sub(r"\s+([,.])", r"\1", f"{head}. {para}")[:700]
+    return ""
+
+
 def parse_enfen_communique(text: str, *, source: str = "") -> Parsed:
     """Extrae los campos de un comunicado oficial (texto de PDF o de HTML).
 
@@ -82,6 +108,11 @@ def parse_enfen_communique(text: str, *, source: str = "") -> Parsed:
         if status:
             break
     if not status:
+        # Desde la Nota Técnica ENFEN 02-2026 el estado va como titular, sin
+        # etiqueta, justo después del número y la fecha («Alerta de El Niño
+        # Costero¹»).
+        status = normalize_status(flat[nm.end(): nm.end() + 160])
+    if not status:
         for sm in re.finditer(r"(?:mantiene|cambia|activa|desactiva|modifica)[^.]{0,160}?(?:estado|sistema)[^.]{0,160}", flat, re.I):
             status = normalize_status(sm.group(0))
             if status:
@@ -103,6 +134,8 @@ def parse_enfen_communique(text: str, *, source: str = "") -> Parsed:
         body = flat[nm.end():]
         bm = re.search(r"(La\s+Comisi[oó]n\s+Multisectorial.+?\.)\s", body)
         summary = bm.group(1)[:500] if bm else ""
+        if not summary:
+            summary = _headline_summary(text, nm)
 
     warnings = []
     if not issued:

@@ -12,7 +12,7 @@ import re
 
 import pytest
 
-from conftest import FIX, history, read
+from conftest import FIX, HIST, history, read
 from enso.feeds import FormatChanged, cpc, peru
 
 
@@ -229,3 +229,12 @@ def test_fixture_index_matches_files():
     for e in idx["entries"]:
         if e.get("status") == 200 and e.get("file"):
             assert (FIX / e["file"]).exists(), e["file"]
+
+
+def test_enfen_communique_2026_headline_layout():
+    """Comunicado 17-2026: el estado va como titular, sin la etiqueta
+    «Estado del sistema de alerta», y la fecha no lleva «de»."""
+    c = peru.parse_enfen_communique(peru.pdf_text((HIST / "enfen-pdf-imarpe-20261020175050.txt").read_bytes())).data
+    assert (c["id"], c["issued"], c["status_code"], c["next_issue"]) == ("17-2026", "2026-09-28", "alerta_nino", "2026-10-15")
+    assert c["summary"].startswith("El Niño Costero se prolongaría hasta el otoño de 2027.")
+    assert "20272" not in c["summary"]

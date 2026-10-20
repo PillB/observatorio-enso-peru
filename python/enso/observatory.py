@@ -356,7 +356,7 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
         for py, pn in probes:
             page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{pn:02d}-{py}/"
             try:
-                r = fetcher.get([page], archive=True, save=False, accept=("html",))
+                r = fetcher.get([page], archive=True, save=True, accept=("html",))
             except FetchError:
                 continue
             got = peru.LISTING_RE.search(r.text) or re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
@@ -798,7 +798,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
             "status": "ok" if a.ok and not a.channel.startswith("archive") else "archive" if a.ok else "carried" if a.carried else "failed",
             "channel": a.channel, "retrievedAt": a.retrieved_at, "archivedAt": a.archived_at,
             "fingerprint": a.fingerprint, "formatDrift": bool(a.ok and a.previous_fingerprint and a.previous_fingerprint != a.fingerprint),
-            "error": a.error, "warnings": a.warnings[:5],
+            "error": a.error, "warnings": a.warnings[:5], "attempts": a.attempts[-12:],
         })
 
     series_light = {k: {kk: vv for kk, vv in v.items() if kk != "points"} for k, v in b.series.items()}
