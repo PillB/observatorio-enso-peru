@@ -52,7 +52,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
-          git add python/tests/fixtures/sources
+          git add python/tests/fixtures/sources python/tests/fixtures/live-run
           git diff --cached --quiet && exit 0
           git commit -m "chore(fixtures): capture raw source snapshots"
-          git push
+          # La rama puede haber avanzado durante la captura.
+          for i in 1 2 3; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+            sleep $((i * 5))
+          done
+          exit 1

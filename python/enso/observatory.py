@@ -70,7 +70,7 @@ class EventLog:
         self.events: list[Event] = []
 
     def add(self, severity: str, source: str, stage: str, code: str, message: str) -> None:
-        ev = Event(severity, source, stage, code, message[:600])
+        ev = Event(severity, source, stage, code, message[:2000])
         self.events.append(ev)
         print(f"[{severity.upper():8}] {source}/{stage}/{code}: {message[:300]}", file=sys.stderr)
 
@@ -268,7 +268,7 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         acq.error = str(exc)
         acq.attempts = exc.attempts
         log.add("error" if src.critical else "warning", src.id, "fetch", "unreachable",
-                f"{exc}. Intentos: {json.dumps(exc.attempts, ensure_ascii=False)[:400]}")
+                f"{exc}. Intentos: {json.dumps(exc.attempts, ensure_ascii=False)[:1600]}")
     except FormatChanged as exc:
         acq.error = str(exc)
         log.add("error", src.id, "parse", "format-changed",

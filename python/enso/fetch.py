@@ -7,8 +7,9 @@ Orden de intento para cada fuente:
      la fuente lo permite. Útil cuando el sitio oficial bloquea a robots
      (Cloudflare) o tiene caídas: el dato sigue siendo el publicado por la
      institución, pero se marca con canal «archivo» y la fecha de la copia.
-  3. «Save Page Now» del Internet Archive para obtener una copia nueva de
-     páginas HTML de bajo volumen (comunicados), cuando se habilita.
+  3. «Save Page Now» del Internet Archive cuando la copia existente tiene
+     más de un día (o no hay ninguna) y se habilita; si falla, se usa la
+     copia existente.
 
 Cada respuesta lleva su procedencia (canal, URL efectiva, fecha de copia,
 sha256), que se publica en el registro de fuentes.
@@ -22,6 +23,7 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Optional
+from urllib.parse import quote
 
 import httpx
 
@@ -128,30 +130,40 @@ class Fetcher:
         return any(a in ct for a in accept)
 
     def _from_archive(self, url: str, attempts: list, fresh: bool) -> Optional[Response]:
-        if fresh:
-            save = f"https://web.archive.org/save/{url}"
-            r = self._get(save, attempts)
-            if r is not None and r.status_code == 200 and r.content:
-                ts = _wayback_ts(str(r.url))
-                return Response(url, r.content, "archive-fresh", 200, r.headers.get("content-type", ""),
-                                archived_at=ts, attempts=attempts)
+        """Copia más reciente del Internet Archive; si tiene más de un día y
+        se permite, pide una nueva (Save Page Now) y, si esa falla, devuelve
+        la existente."""
         cdx = ("https://web.archive.org/cdx/search/cdx?output=json&limit=-1&filter=statuscode:200"
-               f"&url={url}")
+               f"&url={quote(url, safe='')}")
+        snap = None
         r = self._get(cdx, attempts)
-        if r is None or r.status_code != 200:
-            return None
-        try:
-            rows = json.loads(r.text or "[]")[1:]
-        except ValueError:
-            return None
-        if not rows:
-            return None
-        ts, original = rows[-1][1], rows[-1][2]
-        snap = self._get(f"https://web.archive.org/web/{ts}id_/{original}", attempts)
-        if snap is None or snap.status_code != 200 or not snap.content:
-            return None
-        return Response(url, snap.content, "archive", 200, snap.headers.get("content-type", ""),
-                        archived_at=_ts_iso(ts), attempts=attempts)
+        if r is not None and r.status_code == 200:
+            try:
+                rows = json.loads(r.text or "[]")[1:]
+            except ValueError:
+                rows = []
+                attempts[-1]["note"] = "respuesta CDX no es JSON"
+            if rows:
+                ts, original = rows[-1][1], rows[-1][2]
+                got = self._get(f"https://web.archive.org/web/{ts}id_/{original}", attempts)
+                if got is not None and got.status_code == 200 and got.content:
+                    snap = Response(url, got.content, "archive", 200, got.headers.get("content-type", ""),
+                                    archived_at=_ts_iso(ts), attempts=attempts)
+            else:
+                attempts[-1]["note"] = attempts[-1].get("note", "sin copias en el archivo")
+        if fresh and (snap is None or _age_hours(snap.archived_at) > 24):
+            r = self._get(f"https://web.archive.org/save/{url}", attempts)
+            if r is not None and r.status_code == 200 and r.content:
+                return Response(url, r.content, "archive-fresh", 200, r.headers.get("content-type", ""),
+                                archived_at=_wayback_ts(str(r.url)), attempts=attempts)
+        return snap
+
+
+def _age_hours(iso: Optional[str]) -> float:
+    try:
+        return (datetime.now(timezone.utc) - datetime.fromisoformat(iso)).total_seconds() / 3600
+    except (TypeError, ValueError):
+        return float("inf")
 
 
 def _ts_iso(ts: str) -> str:

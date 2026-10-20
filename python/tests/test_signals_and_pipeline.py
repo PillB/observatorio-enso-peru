@@ -220,3 +220,32 @@ def test_raw_archive_skips_fixtures(tmp_path):
 
 def test_second_thursday():
     assert obs.second_thursday_after("2026-10-08", date(2026, 10, 20)) == "2026-11-12"
+
+
+def test_archive_fallback_uses_existing_copy_when_save_fails():
+    """Sin DNS hacia la fuente: se usa la copia del archivo (consulta CDX
+    codificada) y, si pedir una copia nueva falla, se conserva la existente."""
+    import httpx
+
+    from enso.fetch import Fetcher
+
+    seen = []
+
+    def handler(req):
+        u = str(req.url)
+        seen.append(u)
+        if "enfen.imarpe.gob.pe" in req.url.host:
+            raise httpx.ConnectError("Temporary failure in name resolution")
+        if "/cdx/" in u:
+            return httpx.Response(200, json=[["urlkey", "timestamp", "original"],
+                                             ["x", "20261014125242", "https://enfen.imarpe.gob.pe/comunicados/"]])
+        if "/save/" in u:
+            return httpx.Response(523)
+        return httpx.Response(200, text="<html>listado</html>")
+
+    f = Fetcher(retries=1, polite_delay=0, allow_save=True)
+    f.client = httpx.Client(transport=httpx.MockTransport(handler))
+    r = f.get(["https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado"], save=True)
+    assert r.channel == "archive" and r.archived_at.startswith("2026-10-14")
+    assert any("url=https%3A%2F%2Fenfen.imarpe.gob.pe%2Fwp-json%2Fwp%2Fv2%2Fposts%3Fper_page%3D10%26search%3Dcomunicado" in u for u in seen)
+    assert any("/save/" in u for u in seen)
