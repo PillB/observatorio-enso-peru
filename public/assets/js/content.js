@@ -52,7 +52,7 @@ export const PAST_IMPACTS = [
 export const GLOSSARY = [
   ['ENSO', 'El Niño–Oscilación del Sur: ciclo natural de calentamiento (El Niño) y enfriamiento (La Niña) del Pacífico ecuatorial, acoplado con la atmósfera.'],
   ['El Niño Costero', 'Calentamiento anómalo del mar frente a Ecuador y el Perú (región Niño 1+2). ENFEN lo identifica con el ICEN. Puede ocurrir sin El Niño en el Pacífico central, como en 2017.'],
-  ['ICEN', 'Índice Costero El Niño: media móvil de tres meses de la anomalía de temperatura del mar en Niño 1+2 (ERSSTv5). Lo calcula y publica ENFEN.'],
+  ['ICEN', 'Índice Costero El Niño: media móvil de tres meses de la anomalía de temperatura del mar en Niño 1+2. Lo calcula y publica ENFEN.'],
   ['RONI', 'Índice Oceánico Relativo de El Niño: índice oficial de NOAA desde febrero de 2026. Resta al Niño 3.4 el calentamiento promedio de todo el trópico para aislar la señal ENSO.'],
   ['ONI', 'Índice Oceánico de El Niño: media de tres meses de la anomalía de Niño 3.4. Fue el índice principal de NOAA hasta 2026.'],
   ['Anomalía', 'Diferencia entre el valor observado y el promedio de un periodo de referencia (climatología), por ejemplo 1991–2020.'],
@@ -112,7 +112,7 @@ export const TOUR_MODES = [
   },
   { id: 'tsm', title: 'Temperatura superficial del mar', desc: 'Datos semanales y mensuales.', steps: [
     { route: '#/oceano', target: 'ocean-weekly', title: 'TSM semanal', text: 'Valores semanales de NOAA (OISST v2.1), centrados en el miércoles y publicados los lunes.' },
-    { route: '#/oceano', target: 'ocean-monthly', title: 'TSM mensual', text: 'Las series mensuales ERSSTv5 son las que usan los índices oficiales; OISST llega antes.' },
+    { route: '#/oceano', target: 'ocean-monthly', title: 'TSM mensual', text: 'ERSSTv6 es la reconstrucción que NOAA usa para el RONI; OISST llega unas semanas antes.' },
   ] },
   { id: 'vientos', title: 'Vientos', desc: 'Alisios a 850 hPa.', steps: [
     { route: '#/oceano', target: 'ocean-winds', title: 'Vientos alisios', text: 'Índices de NOAA en tres franjas del Pacífico. Positivo = viento del este (normal); negativo = flujo de oeste a este, típico de El Niño.' },

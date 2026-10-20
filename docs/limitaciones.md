@@ -40,8 +40,9 @@ Los servidores del ENFEN no siempre son accesibles desde GitHub Actions.
 Entonces se usan copias del Internet Archive, que pueden llegar con horas
 de retraso. Si ninguna vía funciona, el estado se muestra como vencido.
 
-## Transición a ERSSTv6
+## ERSSTv6
 
-NOAA está pasando de ERSSTv5 a ERSSTv6. El archivo ERSSTv5 del CPC puede
-dejar de actualizarse; en ese caso la incidencia `stale-*` lo avisará y
-habrá que incorporar el archivo v6.
+NOAA dejó de actualizar ERSSTv5 en 2026. Las series mensuales largas de
+Niño 1+2 y 3.4 usan ERSSTv6 de PSL llevado a la base 1991–2020, que no es
+idéntico a lo que usa ENFEN para el ICEN; por eso no se publica un ICEN
+propio.

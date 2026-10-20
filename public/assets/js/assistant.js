@@ -23,9 +23,9 @@ const SUGGEST = [
 
 // Series que el asistente sabe nombrar (clave → patrones).
 const SERIES = [
-  ['icen', /\bicen\b(?! estimado)/], ['icen_calc', /icen (estimado|calculado)/],
+  ['icen', /\bicen\b/],
   ['nino12_oisst', /nino ?1 ?\+? ?2|nino 12|niño costero|costa/], ['nino34_oisst', /nino ?3[ .]?4|nino 34/],
-  ['nino3', /nino ?3\b(?![ .]?4)/], ['nino4', /nino ?4\b/], ['roni', /\broni\b/], ['oni', /\boni\b/],
+  ['nino3_oisst', /nino ?3\b(?![ .]?4)/], ['nino4_oisst', /nino ?4\b/], ['roni', /\broni\b/], ['oni', /\boni\b/],
   ['soi_troup', /\bsoi\b|oscilacion del sur|presion/], ['cpac850_anom', /viento|alisio/],
   ['heat_180w100w', /calor|termoclina|subsuperfic/],
 ];

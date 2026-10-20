@@ -55,8 +55,19 @@ la prueba de backtesting confirma que coincide con el registro oficial
 | Serie | Producto | Uso |
 |---|---|---|
 | Semanal Niño 1+2, 3, 3.4 y 4 | NOAA OISST v2.1, base 1991–2020 | Lo más reciente disponible (días de retraso); alimenta el mapa |
-| Mensual por región | OISST v2.1 | Seguimiento mensual |
-| Mensual por región | ERSSTv5 | La misma base que usa el ICEN |
+| Mensual por región | OISST v2.1 | Seguimiento mensual de las cuatro regiones y señal GRD |
+| Mensual Niño 1+2 y 3.4 | NOAA ERSSTv6 (PSL), llevada de la base 1981–2010 a 1991–2020 | Serie larga desde 1950, la reconstrucción que NOAA usa para el RONI |
+
+NOAA dejó de actualizar ERSSTv5 en 2026 (el último mes disponible es
+junio). El cambio de base se hace restando, para cada mes del año, la
+media de 1991–2020; frente a ERSSTv5 la diferencia media es de 0,2 °C en
+Niño 1+2 y 0,14 °C en Niño 3.4.
+
+**Por qué no hay un «ICEN estimado»:** una media de tres meses de
+ERSSTv6 difiere del ICEN oficial hasta 0,7 °C (en agosto de 2026, 3,28
+frente a 3,98) y coincide en la categoría solo el 71 % de los meses desde
+1991. Mostrarlo confundiría la magnitud del evento, así que solo se
+publica el ICEN oficial.
 
 ## 4. RONI y ONI
 

@@ -119,26 +119,31 @@ def parse_enfen_communique(text: str, *, source: str = "") -> Parsed:
 
 
 LISTING_RE = re.compile(
-    r"href=[\"']([^\"']*comunicado-oficial-enfen-n-?(\d{1,2})-(\d{4})[^\"']*)[\"']", re.I
+    r"href=[\"']([^\"']*comunicado-(oficial|extraordinario)-enfen-n-?(\d{1,2})-(\d{4})[^\"']*)[\"']", re.I
 )
 
 
 def parse_enfen_listing(doc: str) -> Parsed:
     """Lista de comunicados en páginas de ENFEN (portal actual o antiguo).
 
-    Reconoce los enlaces de descarga «comunicado-oficial-enfen-n-12-2026»
-    sin depender del maquetado. Devuelve la lista ordenada del más reciente
-    al más antiguo.
+    Reconoce los enlaces de descarga «comunicado-oficial-enfen-n-12-2026» y
+    «comunicado-extraordinario-enfen-n-02-2025» sin depender del maquetado.
+    Los oficiales van primero, del más reciente al más antiguo; los
+    extraordinarios (numeración propia) van después, marcados con ``kind``.
     """
     seen = {}
     for m in LISTING_RE.finditer(doc):
         url = m.group(1).replace("&#038;", "&").replace("&amp;", "&")
-        key = (int(m.group(3)), int(m.group(2)))
+        key = (m.group(2).lower(), int(m.group(4)), int(m.group(3)))
         seen.setdefault(key, url)
     if not seen:
-        raise FormatChanged("enfen-listado: no hay enlaces a comunicados oficiales")
-    items = [{"year": y, "number": n, "id": f"{n:02d}-{y}", "url": u} for (y, n), u in sorted(seen.items(), reverse=True)]
-    return Parsed(items, fingerprint("enfen-listado", "comunicado-oficial-enfen-n"))
+        raise FormatChanged("enfen-listado: no hay enlaces a comunicados oficiales ni extraordinarios")
+    items = []
+    for kind in ("oficial", "extraordinario"):
+        for (k, y, n), u in sorted(((k, v) for k, v in seen.items() if k[0] == kind), reverse=True):
+            items.append({"year": y, "number": n, "kind": kind,
+                          "id": f"{n:02d}-{y}" if kind == "oficial" else f"extraordinario {n:02d}-{y}", "url": u})
+    return Parsed(items, fingerprint("enfen-listado", "comunicado-oficial-enfen-n", "comunicado-extraordinario-enfen-n"))
 
 
 def parse_enfen_wp_posts(json_text: str) -> Parsed:

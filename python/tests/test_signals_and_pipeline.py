@@ -155,6 +155,10 @@ def test_publication_contents(pub):
     assert any(e["ongoing"] for e in d["events"])
     assert d["weekly"]["nino12"]["latest"]["date"] >= "2026-10-01"
     # No hay campos inventados ni archivos sintéticos del prototipo.
+    # ERSSTv6 alimenta Niño 1+2 y 3.4 mensuales; no se publica un ICEN estimado
+    # con él porque difiere del oficial hasta 0,7 °C.
+    assert d["series"]["nino12"]["source"] == "psl-ersst6-nino12"
+    assert "icen_calc" not in d["series"]
     for legacy in ("all-series.json", "latest-grid.json", "forecasts.json", "regional-impact.json"):
         assert not (out / legacy).exists()
 

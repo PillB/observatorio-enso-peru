@@ -49,6 +49,27 @@ def test_monthly_oisst_and_ersst_columns_by_name():
         assert all(abs(x["value"]) < 8 for x in p.data["anom"]["nino34"])
 
 
+def test_psl_ersst6_rebased_agrees_with_ersst5():
+    """ERSSTv6 de PSL (base 1981–2010) llevado a 1991–2020 frente a ERSSTv5
+    del CPC: mismo signo y diferencias propias de un cambio de versión."""
+    v5 = cpc.parse_nino_monthly(read(FIX / "cpc-ersst5.nino.mth.91-20.ascii"), name="v5").data["anom"]
+    for f, reg in (("psl-nina1.anom.data", "nino12"), ("psl-nina34.anom.data", "nino34")):
+        p = cpc.parse_psl_matrix(read(FIX / f), name=f)
+        assert p.meta == {"product": "ERSSTv6", "base": (1981, 2010)}
+        v6 = {x["period"]: x["value"] for x in cpc.rebase_anomalies(p.data, (1991, 2020))}
+        a = {x["period"]: x["value"] for x in v5[reg]}
+        common = [k for k in a if k >= "1991" and a[k] is not None and v6.get(k) is not None]
+        assert len(common) > 400
+        assert sum(abs(a[k] - v6[k]) for k in common) / len(common) < 0.3
+        assert p.data[-1]["period"] >= "2026-09"
+
+
+def test_psl_matrix_without_footer_is_rejected():
+    body = read(FIX / "psl-nina1.anom.data").split("ERSST")[0]
+    with pytest.raises(FormatChanged):
+        cpc.parse_psl_matrix(body, name="x")
+
+
 def test_roni_and_oni_map_season_to_centre_month():
     roni = cpc.parse_seasonal(read(FIX / "cpc-roni.txt"), name="roni").data
     oni = cpc.parse_seasonal(read(FIX / "cpc-oni.txt"), name="oni").data

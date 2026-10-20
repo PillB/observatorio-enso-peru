@@ -157,7 +157,7 @@ function grdPanel() {
 }
 
 function sourceName(id) {
-  const m = { 'cpc-sstoi': 'NOAA OISST mensual', 'cpc-ersst': 'NOAA ERSSTv5', 'cpc-epac850': 'NOAA/CPC 850 hPa', 'cpc-cpac850': 'NOAA/CPC 850 hPa', 'cpc-tahiti': 'Calculado con NOAA/CPC', 'igp-icen': 'ENFEN / IGP', 'cpc-roni': 'NOAA/CPC', 'cpc-wksst': 'NOAA OISST semanal' };
+  const m = { 'cpc-sstoi': 'NOAA OISST mensual', 'psl-ersst6-nino12': 'NOAA ERSSTv6', 'psl-ersst6-nino34': 'NOAA ERSSTv6', 'cpc-epac850': 'NOAA/CPC 850 hPa', 'cpc-cpac850': 'NOAA/CPC 850 hPa', 'cpc-tahiti': 'Calculado con NOAA/CPC', 'igp-icen': 'ENFEN / IGP', 'cpc-roni': 'NOAA/CPC', 'cpc-wksst': 'NOAA OISST semanal' };
   return m[id] || id || '';
 }
 
@@ -268,7 +268,7 @@ VIEWS[''] = {
           ${metricCard('cpac850_anom', { title: 'Vientos alisios', scope: 'Pacífico central, 850 hPa · anomalía', href: '#/oceano', note: 'Negativo: alisios debilitados o viento del oeste.' })}
           ${metricCard('heat_180w100w', { title: 'Calor bajo la superficie', scope: '0–300 m, 180°–100°O · NOAA GODAS', href: '#/oceano' })}
           ${metricCard('soi_troup', { title: 'SOI', scope: 'Tahití − Darwin · escala Troup', href: '#/oceano', note: 'Negativo sostenido: favorece El Niño.' })}
-          ${metricCard('icen_calc', { title: 'ICEN estimado', scope: 'Cálculo del observatorio (no oficial)', href: '#/costero' })}
+          ${metricCard('epac850_anom', { title: 'Alisios hacia la costa', scope: 'Pacífico oriental, 850 hPa · anomalía', href: '#/oceano', note: 'Negativo: alisios debilitados o viento del oeste.' })}
         </div>
       </section>
       <section class="card explainer" aria-labelledby="peru-h">
@@ -314,7 +314,7 @@ VIEWS.costero = {
           </dl>
         </div>
       </div>
-      ${chartCard('ch-icen', { title: 'ICEN oficial y estimado', tour: 'coastal-icen', range: '15', desc: 'Media móvil de tres meses centrada de la anomalía de Niño 1+2. Las bandas marcan las categorías de ENFEN.', foot: 'Fuente: ENFEN (archivo del IGP) y cálculo del observatorio con NOAA ERSSTv5, base 1991–2020. El valor de un mes necesita el mes siguiente, por eso el ICEN va unos dos meses detrás.' })}
+      ${chartCard('ch-icen', { title: 'ICEN oficial', tour: 'coastal-icen', range: '15', desc: 'Media móvil de tres meses centrada de la anomalía de Niño 1+2. Las bandas marcan las categorías de ENFEN.', foot: 'Fuente: ENFEN (archivo del IGP), base 1991–2020. El valor de un mes necesita el mes siguiente, por eso el ICEN va unos dos meses detrás.' })}
       <div class="grid g2">
         <section class="card" data-tour-id="coastal-scale" aria-labelledby="scale-h"><h2 id="scale-h">Categorías del ICEN</h2>
           <div class="scale" role="list">${scale.map(([n, r, t]) => html`<div role="listitem" class="scale-row ${n === cur ? 'current' : ''}"><span class="scale-dot dot-${t}"></span><span>${n}${n === cur ? html` <strong>· actual</strong>` : ''}</span><span class="mono">${r} °C</span></div>`)}</div>
@@ -325,7 +325,7 @@ VIEWS.costero = {
   },
   async after() {
     const refs = [{ v: 0.5, label: '+0,5', tone: 'warm' }, { v: 1.3, label: '+1,3', tone: 'warm' }, { v: 2.1, label: '+2,1', tone: 'warm' }, { v: 3.5, label: '+3,5', tone: 'warm' }, { v: -0.7, label: '−0,7', tone: 'cool' }];
-    await mountChart($('#ch-icen'), { title: 'ICEN', units: 'degC', refLines: refs, series: [{ key: 'icen', label: 'ICEN oficial' }, { key: 'icen_calc', label: 'ICEN estimado (observatorio)', dashed: true }], fill: true }, { range: '15' });
+    await mountChart($('#ch-icen'), { title: 'ICEN', units: 'degC', refLines: refs, series: [{ key: 'icen', label: 'ICEN oficial' }], fill: true }, { range: '15' });
     await mountChart($('#ch-n12w'), { title: 'Niño 1+2 semanal', units: 'degC', series: [{ weekly: 'nino12', label: 'Niño 1+2 semanal' }], fill: true, periodLabel: monthLabel }, { range: '2' });
   },
 };
@@ -342,12 +342,12 @@ VIEWS.pacifico = {
         ${n?.synopsis ? html`<div class="card"><h3>Síntesis de NOAA</h3><blockquote lang="en">${n.synopsis}</blockquote><p class="muted small">Texto original de la discusión diagnóstica de NOAA/CPC del ${F.fmtDate(n.issued)} (en inglés).</p></div>` : ''}
       </div>
       ${chartCard('ch-roni', { title: 'RONI y ONI', tour: 'basin-roni', range: '15', desc: 'Trimestres móviles. Umbral de El Niño: +0,5 °C; de La Niña: −0,5 °C. Desde febrero de 2026 el RONI es el índice oficial de NOAA.', foot: 'Fuente: NOAA/CPC. RONI: Niño 3.4 menos el promedio tropical (20°N–20°S), reescalado; base 1991–2020. ONI: bases de 30 años actualizadas cada 5 años.' })}
-      ${chartCard('ch-regions', { title: 'Regiones Niño (mensual)', tour: 'basin-regions', range: '5', desc: 'Anomalía mensual de TSM por región (ERSSTv5, base 1991–2020).' })}
+      ${chartCard('ch-regions', { title: 'Regiones Niño (mensual)', tour: 'basin-regions', range: '5', desc: 'Anomalía mensual de TSM por región (NOAA OISST v2.1, base 1991–2020).' })}
       ${chartCard('ch-cvb', { title: 'Costa frente a cuenca', range: '5', desc: 'Niño 1+2 (costa) y Niño 3.4 (centro) con OISST mensual. Que la costa se caliente más que el centro es típico de El Niño Costero.' })}`;
   },
   async after() {
     await mountChart($('#ch-roni'), { title: 'RONI y ONI', units: 'degC', periodLabel: seasonLabel, refLines: [{ v: 0.5, label: '+0,5', tone: 'warm' }, { v: -0.5, label: '−0,5', tone: 'cool' }], series: [{ key: 'roni', label: 'RONI' }, { key: 'oni', label: 'ONI', dashed: true }], fill: true }, { range: '15' });
-    await mountChart($('#ch-regions'), { title: 'Regiones Niño', units: 'degC', series: [{ key: 'nino3', label: 'Niño 3' }, { key: 'nino34', label: 'Niño 3.4' }, { key: 'nino4', label: 'Niño 4' }] });
+    await mountChart($('#ch-regions'), { title: 'Regiones Niño', units: 'degC', series: [{ key: 'nino3_oisst', label: 'Niño 3' }, { key: 'nino34_oisst', label: 'Niño 3.4' }, { key: 'nino4_oisst', label: 'Niño 4' }] });
     await mountChart($('#ch-cvb'), { title: 'Costa frente a cuenca', units: 'degC', series: [{ key: 'nino12_oisst', label: 'Niño 1+2' }, { key: 'nino34_oisst', label: 'Niño 3.4' }] });
   },
 };
@@ -366,7 +366,7 @@ VIEWS.oceano = {
       <div class="page-head"><div class="eyebrow">Indicadores</div><h1>Océano y atmósfera</h1>
         <p>Las cuatro familias de indicadores que se vigilan para El Niño: temperatura del mar, vientos, termoclina y presión atmosférica.</p></div>
       ${chartCard('ch-weekly', { title: 'Temperatura del mar semanal', tour: 'ocean-weekly', range: '2', desc: 'Anomalía semanal por región Niño (NOAA OISST v2.1, base 1991–2020). Semanas centradas en el miércoles.' })}
-      ${chartCard('ch-monthly', { title: 'Temperatura del mar mensual', tour: 'ocean-monthly', range: '15', desc: 'ERSSTv5 (la base de los índices oficiales) y OISST (llega unas semanas antes).' })}
+      ${chartCard('ch-monthly', { title: 'Temperatura del mar mensual', tour: 'ocean-monthly', range: '15', desc: 'NOAA ERSSTv6 (la reconstrucción que NOAA usa para el RONI) y OISST (llega unas semanas antes), ambas con base 1991–2020.' })}
       <section data-tour-id="ocean-winds" aria-labelledby="wind-h">
         <div class="section-head"><h2 id="wind-h">Vientos alisios a 850 hPa</h2></div>
         <div class="grid g3">${winds}</div>
@@ -377,7 +377,7 @@ VIEWS.oceano = {
   },
   async after() {
     await mountChart($('#ch-weekly'), { title: 'TSM semanal', units: 'degC', periodLabel: monthLabel, series: [{ weekly: 'nino12', label: 'Niño 1+2' }, { weekly: 'nino3', label: 'Niño 3' }, { weekly: 'nino34', label: 'Niño 3.4' }, { weekly: 'nino4', label: 'Niño 4' }] }, { range: '2' });
-    await mountChart($('#ch-monthly'), { title: 'TSM mensual', units: 'degC', series: [{ key: 'nino12', label: 'Niño 1+2 ERSSTv5' }, { key: 'nino12_oisst', label: 'Niño 1+2 OISST', dashed: true }, { key: 'nino34', label: 'Niño 3.4 ERSSTv5' }, { key: 'nino34_oisst', label: 'Niño 3.4 OISST', dashed: true }] }, { range: '15' });
+    await mountChart($('#ch-monthly'), { title: 'TSM mensual', units: 'degC', series: [{ key: 'nino12', label: 'Niño 1+2 ERSSTv6' }, { key: 'nino12_oisst', label: 'Niño 1+2 OISST', dashed: true }, { key: 'nino34', label: 'Niño 3.4 ERSSTv6' }, { key: 'nino34_oisst', label: 'Niño 3.4 OISST', dashed: true }] }, { range: '15' });
     await mountChart($('#ch-wind'), { title: 'Anomalía de vientos', units: 'm_per_s', series: [{ key: 'wpac850_anom', label: 'Occidental' }, { key: 'cpac850_anom', label: 'Central' }, { key: 'epac850_anom', label: 'Oriental' }] });
     await mountChart($('#ch-heat'), { title: 'Contenido de calor', units: 'degC', fill: true, series: [{ key: 'heat_180w100w', label: '180°–100°O' }, { key: 'heat_160e80w', label: '160°E–80°O', dashed: true }] });
     await mountChart($('#ch-soi'), { title: 'SOI', units: 'dimensionless', refLines: [{ v: 7, label: '+7', tone: 'cool' }, { v: -7, label: '−7', tone: 'warm' }], series: [{ key: 'soi_troup', label: 'SOI (Troup)' }], fill: true, invertFill: true });
@@ -515,9 +515,9 @@ VIEWS.metodologia = {
         </ol>
         <h3>Decisiones y limitaciones</h3>
         <ul>
-          <li>El ICEN oficial se toma del archivo que publica el IGP para ENFEN. El observatorio calcula además un ICEN estimado con ERSSTv5 de NOAA para anticipar su tendencia; se rotula siempre como no oficial.</li>
+          <li>El ICEN oficial se toma del archivo que publica el IGP para ENFEN. El observatorio no publica un ICEN propio: con ERSSTv6 el cálculo difiere del oficial hasta 0,7 °C.</li>
           <li>El RONI se usa tal como lo publica NOAA (ahora con ERSSTv6); no se recalcula.</li>
-          <li>La señal GRD de TSM usa las anomalías mensuales OISST de Niño 1+2 y Niño 3.4, que llegan antes que ERSSTv5. No se aplica al ICEN ni al RONI.</li>
+          <li>La señal GRD de TSM usa las anomalías mensuales OISST de Niño 1+2 y Niño 3.4, que llegan antes que ERSST. No se aplica al ICEN ni al RONI.</li>
           <li>D20 (profundidad de la isoterma de 20 °C) no se publica: la variable de GODAS disponible por OPeNDAP («dbss_obil») es la profundidad de la capa isotérmica, no D20. Se muestra en su lugar el contenido de calor de 0–300 m de NOAA, sin aplicarle los umbrales de D20.</li>
           <li>El SOI de la tabla GRD (±7) corresponde a la escala Troup (×10) de la Oficina de Meteorología de Australia. El observatorio la calcula con las presiones de Tahití y Darwin de NOAA porque el servidor australiano no permite descargas automáticas.</li>
           <li>Los comunicados de ENFEN se leen del PDF oficial. Cuando el portal de ENFEN no responde a los servidores de GitHub, se usa la copia del Internet Archive y se indica en el estado.</li>

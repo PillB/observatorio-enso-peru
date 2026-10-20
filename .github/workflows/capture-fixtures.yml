@@ -43,7 +43,7 @@ jobs:
         env:
           ENSO_ARCHIVE_SAVE: '1'
         run: |
-          python -m enso.observatory --out "$RUNNER_TEMP/pub/data" --previous '' --fail-on never || true
+          python -m enso.observatory --out "$RUNNER_TEMP/pub/data" --previous '' --raw-dir tests/fixtures/live-run/raw --fail-on never || true
           mkdir -p tests/fixtures/live-run
           for f in dashboard.json run-report.json sources.json; do
             [ -f "$RUNNER_TEMP/pub/data/$f" ] && cp "$RUNNER_TEMP/pub/data/$f" tests/fixtures/live-run/

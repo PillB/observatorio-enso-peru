@@ -25,6 +25,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -129,10 +130,14 @@ SOURCES: list[Source] = [
     Source("cpc-sstoi", "NOAA / CPC", "Índices mensuales de TSM en regiones Niño (OISST v2.1, base 1991–2020)",
            ["https://www.cpc.ncep.noaa.gov/data/indices/sstoi.indices"], _txt(lambda t: cpc.parse_nino_monthly(t, name="sstoi")),
            31, 50, "index", "cpc-sstoi.indices", docs="https://www.cpc.ncep.noaa.gov/data/indices/"),
-    Source("cpc-ersst", "NOAA / CPC", "Índices mensuales de TSM en regiones Niño (ERSSTv5, base 1991–2020)",
-           ["https://www.cpc.ncep.noaa.gov/data/indices/ersst5.nino.mth.91-20.ascii"],
-           _txt(lambda t: cpc.parse_nino_monthly(t, name="ersst5")), 31, 80, "index",
-           "cpc-ersst5.nino.mth.91-20.ascii", critical=True, docs="https://www.cpc.ncep.noaa.gov/data/indices/"),
+    Source("psl-ersst6-nino12", "NOAA / PSL", "Anomalía mensual de TSM Niño 1+2 (ERSSTv6)",
+           ["https://psl.noaa.gov/data/correlation/nina1.anom.data"],
+           _txt(lambda t: cpc.parse_psl_matrix(t, name="ersst6-nino12")), 31, 50, "index", "psl-nina1.anom.data",
+           docs="https://psl.noaa.gov/data/timeseries/month/DS/NINO12/"),
+    Source("psl-ersst6-nino34", "NOAA / PSL", "Anomalía mensual de TSM Niño 3.4 (ERSSTv6)",
+           ["https://psl.noaa.gov/data/correlation/nina34.anom.data"],
+           _txt(lambda t: cpc.parse_psl_matrix(t, name="ersst6-nino34")), 31, 50, "index", "psl-nina34.anom.data",
+           docs="https://psl.noaa.gov/data/timeseries/month/DS/NINO34/"),
     Source("cpc-roni", "NOAA / CPC", "RONI — Índice Oceánico Relativo de El Niño (oficial)",
            ["https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt"], _txt(lambda t: cpc.parse_seasonal(t, name="roni")),
            31, 80, "index", "cpc-roni.txt", critical=True,
@@ -200,6 +205,7 @@ class Acquired:
     error: str = ""
     attempts: list = field(default_factory=list)
     raw: bytes = b""
+    documents: list = field(default_factory=list)  # otros archivos leídos (p. ej. el PDF del comunicado)
 
 
 class PreviousPublication:
@@ -336,7 +342,7 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
     prev_latest = (prev_src.get("data") or {}).get("latest")
     if data.get("latest"):
         return
-    known = [(i["year"], i["number"]) for i in listing]
+    known = [(i["year"], i["number"]) for i in listing if i.get("kind", "oficial") == "oficial"]
     if prev_latest:
         known.append((prev_latest["year"], prev_latest["number"]))
     if not known and fixtures is None:
@@ -353,13 +359,13 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
                 r = fetcher.get([page], archive=True, save=False, accept=("html",))
             except FetchError:
                 continue
-            got = peru.LISTING_RE.search(r.text) or __import__("re").search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
+            got = peru.LISTING_RE.search(r.text) or re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
             url = got.group(1) if got else f"{page}?wpdmdl="
             if "wpdmdl=" in url and not url.endswith("="):
                 listing.insert(0, {"year": py, "number": pn, "id": f"{pn:02d}-{py}", "url": url})
                 log.add("info", "enfen-comunicados", "fetch", "probe-found",
                         f"Se detectó el comunicado {pn:02d}-{py} antes de que apareciera en el listado.")
-        listing.sort(key=lambda i: (i["year"], i["number"]), reverse=True)
+        listing.sort(key=lambda i: (i.get("kind", "oficial") == "oficial", i["year"], i["number"]), reverse=True)
 
     top = listing[0] if listing else None
     if prev_latest and (not top or (prev_latest["year"], prev_latest["number"]) >= (top["year"], top["number"])):
@@ -379,6 +385,8 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
         else:
             url = _clean_wpdm(top["url"])
             resp = fetcher.get([url, top["url"]], archive=True, save=True, accept=("pdf", "octet-stream"))
+        if fixtures is None:
+            acq.documents.append(resp.body)
         if resp.body[:5] != b"%PDF-":
             raise FormatChanged("enfen: la descarga no es un PDF")
         c = peru.parse_enfen_communique(peru.pdf_text(resp.body), source=_clean_wpdm(top["url"]) if top else "")
@@ -527,40 +535,46 @@ class Builder:
         }
 
     def build_series(self) -> None:
-        ersst = self.data("cpc-ersst")
-        if ersst:
-            an = ersst["anom"]
-            meta = dict(units="degC", source="cpc-ersst", frequency="mensual", slo_days=80,
-                        climatology="1991–2020", category=lambda v: {"tone": sig.anomaly_tone(v)})
-            self.add_series("nino12", an["nino12"], label="Niño 1+2", scope="coastal",
-                            description="Anomalía mensual de TSM en la región Niño 1+2 (0°–10°S, 90°–80°O), frente a Ecuador y el norte del Perú. ERSSTv5.", **meta)
-            self.add_series("nino34", an["nino34"], label="Niño 3.4", scope="basin",
-                            description="Anomalía mensual de TSM en la región Niño 3.4 (5°N–5°S, 170°–120°O), Pacífico central. ERSSTv5.", **meta)
-            self.add_series("nino3", an["nino3"], label="Niño 3", scope="basin",
-                            description="Anomalía mensual de TSM en la región Niño 3 (5°N–5°S, 150°–90°O). ERSSTv5.", **meta)
-            self.add_series("nino4", an["nino4"], label="Niño 4", scope="basin",
-                            description="Anomalía mensual de TSM en la región Niño 4 (5°N–5°S, 160°E–150°O). ERSSTv5.", **meta)
-            icen = centered_mean3(an["nino12"])
-            self.add_series("icen_calc", icen, label="ICEN (cálculo del observatorio)", units="degC", scope="coastal",
-                            source="cpc-ersst", frequency="mensual", slo_days=110, climatology="1991–2020",
-                            category=sig.icen_category,
-                            description="Media móvil de tres meses centrada de la anomalía de TSM Niño 1+2 (ERSSTv5, base 1991–2020), siguiendo la Nota Técnica ENFEN 01-2024. Es un cálculo del observatorio para anticipar el valor oficial; el ICEN oficial lo publica ENFEN.")
+        # ERSSTv6 (NOAA dejó de actualizar ERSSTv5 en 2026). PSL publica la
+        # anomalía con base 1981–2010; se lleva a 1991–2020 restando la media
+        # de cada mes en ese periodo. No se usa para estimar el ICEN: frente
+        # al ICEN oficial difiere hasta 0,7 °C (ver docs/metodologia.md).
+        for sid, key, label, region in (
+            ("psl-ersst6-nino12", "nino12", "Niño 1+2", "Niño 1+2 (0°–10°S, 90°–80°O), frente a Ecuador y el norte del Perú"),
+            ("psl-ersst6-nino34", "nino34", "Niño 3.4", "Niño 3.4 (5°N–5°S, 170°–120°O), Pacífico central"),
+        ):
+            pts = self.data(sid)
+            if not pts:
+                continue
+            try:
+                pts = cpc.rebase_anomalies(pts, (1991, 2020))
+            except FormatChanged as exc:
+                self.log.add("error", sid, "derive", "rebase-failed", str(exc))
+                continue
+            self.add_series(key, pts, label=f"{label} (ERSSTv6)", units="degC", scope="coastal" if key == "nino12" else "basin",
+                            source=sid, frequency="mensual", slo_days=50, climatology="1991–2020",
+                            category=lambda v: {"tone": sig.anomaly_tone(v)},
+                            description=f"Anomalía mensual de TSM en la región {region}. NOAA ERSSTv6, llevada a la base 1991–2020.")
         oi = self.data("cpc-sstoi")
         if oi:
             meta = dict(units="degC", source="cpc-sstoi", frequency="mensual", slo_days=50, climatology="1991–2020",
                         category=lambda v: {"tone": sig.anomaly_tone(v)}, history_from="1982-01")
             self.add_series("nino12_oisst", oi["anom"]["nino12"], label="Niño 1+2 (OISST)", scope="coastal",
-                            description="Anomalía mensual de TSM Niño 1+2 del análisis OISST v2.1. Disponible antes que ERSSTv5.", **meta)
+                            description="Anomalía mensual de TSM Niño 1+2 del análisis OISST v2.1. Disponible antes que ERSST.", **meta)
             self.add_series("nino34_oisst", oi["anom"]["nino34"], label="Niño 3.4 (OISST)", scope="basin",
-                            description="Anomalía mensual de TSM Niño 3.4 del análisis OISST v2.1. Disponible antes que ERSSTv5.", **meta)
+                            description="Anomalía mensual de TSM Niño 3.4 del análisis OISST v2.1. Disponible antes que ERSST.", **meta)
+            self.add_series("nino3_oisst", oi["anom"]["nino3"], label="Niño 3 (OISST)", scope="basin",
+                            description="Anomalía mensual de TSM en la región Niño 3 (5°N–5°S, 150°–90°O), OISST v2.1.", **meta)
+            self.add_series("nino4_oisst", oi["anom"]["nino4"], label="Niño 4 (OISST)", scope="basin",
+                            description="Anomalía mensual de TSM en la región Niño 4 (5°N–5°S, 160°E–150°O), OISST v2.1.", **meta)
         icen = self.data("igp-icen")
         if icen:
             self.add_series("icen", icen, label="ICEN oficial", units="degC", scope="coastal", source="igp-icen",
                             frequency="mensual", slo_days=110, climatology="1991–2020", category=sig.icen_category,
-                            description="Índice Costero El Niño oficial publicado por ENFEN (archivo del IGP). Media de 3 meses centrada de la anomalía Niño 1+2 ERSSTv5.")
+                            description="Índice Costero El Niño oficial publicado por ENFEN (archivo del IGP). Media de 3 meses centrada de la anomalía de TSM Niño 1+2, según la Nota Técnica ENFEN 01-2024.")
         for sid, key, label, desc in (
-            ("cpc-roni", "roni", "RONI", "Índice Oceánico Relativo de El Niño de NOAA/CPC: anomalía de Niño 3.4 menos la anomalía media tropical (20°N–20°S), reescalada. Trimestres móviles (ERSSTv5, base 1991–2020). Es el índice principal de NOAA desde 2025."),
-            ("cpc-oni", "oni", "ONI", "Índice Oceánico de El Niño tradicional de NOAA/CPC: media de 3 meses de la anomalía Niño 3.4 (ERSSTv5, bases de 30 años actualizadas cada 5 años)."),
+            ("cpc-roni", "roni", "RONI", "Índice Oceánico Relativo de El Niño de NOAA/CPC: anomalía de Niño 3.4 menos la anomalía media tropical (20°N–20°S), reescalada. Trimestres móviles (ERSSTv6, base 1991–2020). Es el índice oficial de NOAA desde febrero de 2026."),
+            ("cpc-oni", "oni", "ONI", "Índice Oceánico de El Niño tradicional de NOAA/CPC: media de 3 meses de la anomalía Niño 3.4 (ERSST, bases de 30 años actualizadas cada 5 años)."),
         ):
             d = self.data(sid)
             if d:
@@ -674,7 +688,8 @@ class Builder:
                     "summary": latest.get("summary"), "documentUrl": latest.get("source") or (listing[0]["url"] if listing else ""),
                     "stale": stale,
                 })
-                if listing and (listing[0]["year"], listing[0]["number"]) > (latest["year"], latest["number"]):
+                if (listing and listing[0].get("kind", "oficial") == "oficial"
+                        and (listing[0]["year"], listing[0]["number"]) > (latest["year"], latest["number"])):
                     # Un comunicado más reciente existe pero no se pudo leer: el estado
                     # anterior ya no es vigente y no debe mostrarse como actual.
                     res["enfen"]["newerListed"] = listing[0]["id"]
@@ -887,15 +902,17 @@ def archive_raw(raw_dir: Path, acquired: dict[str, "Acquired"], today: date) -> 
     """Guarda cada respuesta original nueva (por sha256) para backtesting futuro."""
     n = 0
     for sid, a in acquired.items():
-        if not a.raw or a.channel in ("fixture", "previous-publication"):
+        if a.channel in ("fixture", "previous-publication"):
             continue
         d = raw_dir / sid
-        d.mkdir(parents=True, exist_ok=True)
-        if any(p.name.endswith(f"-{a.sha256[:12]}" + p.suffix) for p in d.iterdir()):
-            continue
-        ext = ".pdf" if a.raw[:5] == b"%PDF-" else ".html" if b"<html" in a.raw[:2000].lower() else ".txt"
-        (d / f"{today.isoformat()}-{a.sha256[:12]}{ext}").write_bytes(a.raw)
-        n += 1
+        for body in ([a.raw] if a.raw else []) + list(a.documents):
+            sha = hashlib.sha256(body).hexdigest()[:12]
+            d.mkdir(parents=True, exist_ok=True)
+            if any(p.stem.endswith(f"-{sha}") for p in d.iterdir()):
+                continue
+            ext = ".pdf" if body[:5] == b"%PDF-" else ".html" if b"<html" in body[:2000].lower() else ".txt"
+            (d / f"{today.isoformat()}-{sha}{ext}").write_bytes(body)
+            n += 1
     return n
 
 

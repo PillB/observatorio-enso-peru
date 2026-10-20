@@ -253,6 +253,52 @@ def parse_psl_csv(text: str, *, name: str) -> Parsed:
     return Parsed(pts, fingerprint(name, header.split("missing")[0].strip()), warnings, {"header": header})
 
 
+def parse_psl_matrix(text: str, *, name: str) -> Parsed:
+    """Formato «correlation» de PSL (``nina1.anom.data``): una línea con el
+    primer y el último año, filas «año + 12 valores» (-99.99 = sin dato) y un
+    pie con el producto y la base de la anomalía («Anomaly from 1981-2010»).
+    """
+    lines = [l.strip() for l in text.splitlines() if l.strip()]
+    if not lines or not re.fullmatch(r"\d{4}\s+\d{4}", lines[0]):
+        raise FormatChanged(f"{name}: falta la línea de años inicial")
+    y0, y1 = (int(x) for x in lines[0].split())
+    pts: list[dict] = []
+    footer: list[str] = []
+    for line in lines[1:]:
+        parts = line.split()
+        if re.fullmatch(r"\d{4}", parts[0]) and len(parts) == 13:
+            y = int(parts[0])
+            for m, v in enumerate(parts[1:], start=1):
+                pts.append({"period": period(y, m), "value": norm_missing(float(v), -99.0)})
+        else:
+            footer.append(line)
+    tail = " ".join(footer)
+    base = re.search(r"Anomaly from (\d{4})\s*-\s*(\d{4})", tail, re.I)
+    product = re.search(r"ERSST\s*V(\d+)", tail, re.I)
+    if not base or not product:
+        raise FormatChanged(f"{name}: el pie no indica el producto o la base de la anomalía")
+    pts = trim_missing(pts)
+    if not pts or pts[0]["period"][:4] != str(y0) or int(pts[-1]["period"][:4]) != y1:
+        raise FormatChanged(f"{name}: los años de las filas no coinciden con la cabecera {y0}-{y1}")
+    warnings = check_series(pts, lo=-6, hi=8, name=name)
+    meta = {"product": f"ERSSTv{product.group(1)}", "base": (int(base.group(1)), int(base.group(2)))}
+    return Parsed(pts, fingerprint(name, "psl-matrix", meta["product"]), warnings, meta)
+
+
+def rebase_anomalies(points: list[dict], base: tuple[int, int]) -> list[dict]:
+    """Cambia la base de una anomalía mensual restando, para cada mes del
+    año, su media en el nuevo periodo base (exacto para anomalías lineales)."""
+    by_m: dict[int, list[float]] = {}
+    for p in points:
+        if p["value"] is not None and base[0] <= int(p["period"][:4]) <= base[1]:
+            by_m.setdefault(int(p["period"][5:7]), []).append(p["value"])
+    if len(by_m) < 12 or any(len(v) < (base[1] - base[0] + 1) for v in by_m.values()):
+        raise FormatChanged(f"faltan datos para la base {base[0]}–{base[1]}")
+    mu = {m: sum(v) / len(v) for m, v in by_m.items()}
+    return [{"period": p["period"], "value": None if p["value"] is None else round(p["value"] - mu[int(p["period"][5:7])], 2)}
+            for p in points]
+
+
 # ---------------------------------------------------------------------------
 # ENSO Diagnostic Discussion (HTML)
 # ---------------------------------------------------------------------------

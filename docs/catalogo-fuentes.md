@@ -11,7 +11,7 @@ esta tabla lo resume. «Antigüedad máxima» es la edad máxima, en días, del
 | `cpc-ensodisc` | NOAA / CPC | ENSO Diagnostic Discussion | `ensodisc.shtml` | 40 | Sí |
 | `cpc-wksst` | NOAA / CPC | TSM semanal por región Niño (OISST v2.1) | `wksst9120.for` | 16 | Sí |
 | `cpc-sstoi` | NOAA / CPC | TSM mensual por región (OISST v2.1) | `sstoi.indices` | 50 | — |
-| `cpc-ersst` | NOAA / CPC | TSM mensual por región (ERSSTv5) | `ersst5.nino.mth.91-20.ascii` | 80 | Sí |
+| `psl-ersst6-nino12`, `psl-ersst6-nino34` | NOAA / PSL | TSM mensual Niño 1+2 y 3.4 (ERSSTv6) | `nina1.anom.data`, `nina34.anom.data` | 50 | — |
 | `cpc-roni` | NOAA / CPC | RONI (oficial) | `RONI.ascii.txt` | 80 | Sí |
 | `cpc-oni` | NOAA / CPC | ONI (referencia) | `oni.ascii.txt` | 80 | — |
 | `cpc-soi` | NOAA / CPC | SOI estandarizado | `soi` | 50 | — |
@@ -38,8 +38,11 @@ una sola página:
 4. Si el listado muestra un número más nuevo que el que se pudo leer, el
    estado se marca vencido y se registra la incidencia.
 
-Los servidores del ENFEN no siempre resuelven desde GitHub Actions; en
-ese caso se usan las copias del Internet Archive (y se pide una nueva).
+Los servidores del ENFEN no resuelven desde GitHub Actions; en ese caso
+se usa la copia más reciente del Internet Archive y, si tiene más de un
+día, se pide una nueva. El listado también reconoce los comunicados
+extraordinarios, que el ENFEN emite durante los eventos con numeración
+propia.
 
 ## Backtesting de formatos
 
@@ -54,6 +57,7 @@ nueva en la rama `data-archive`, de modo que el corpus crece solo.
 | Producto | Motivo |
 |---|---|
 | D20 de GODAS (`dbss_obil`) | Es la profundidad de la capa isotérmica, no la isoterma de 20 °C |
-| ERSSTv6 | NOAA lo está adoptando; el flujo de captura lo vigila y se incorporará cuando haya archivos de índices estables |
+| ERSSTv5 (`ersst5.nino.mth.91-20.ascii`) | NOAA dejó de actualizarlo en junio de 2026; se conserva solo en las pruebas |
+| ERSSTv6 Niño 1+2 en el CPC | El CPC solo publica Niño 3.4 en v6; Niño 1+2 se toma de PSL |
 | Estado de alerta en la portada del ENFEN | Se toma del comunicado, que es el documento oficial |
 | BoM SOI | Se usa solo para validar el SOI Troup calculado |
