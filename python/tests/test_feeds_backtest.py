@@ -238,3 +238,18 @@ def test_enfen_communique_2026_headline_layout():
     assert (c["id"], c["issued"], c["status_code"], c["next_issue"]) == ("17-2026", "2026-09-28", "alerta_nino", "2026-10-15")
     assert c["summary"].startswith("El Niño Costero se prolongaría hasta el otoño de 2027.")
     assert "20272" not in c["summary"]
+
+
+@pytest.mark.parametrize("path", [FIX / "dhn-comunicados-enfen.html"] + history("dhn-comunicados"), ids=lambda p: p.stem)
+def test_dhn_mirror_listing(path):
+    """Réplica de la DHN: enlaces directos a los PDF, estables desde 2022."""
+    items = peru.parse_enfen_listing(read(path)).data
+    top = items[0]
+    assert top["kind"] == "oficial"
+    assert top["url"].startswith("https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/")
+    assert top["url"].endswith(f"{top['number']:02d}-{top['year']}.pdf")
+    if path.name == "dhn-comunicados-enfen.html":
+        assert top["id"] == "18-2026"
+    else:
+        year = int(path.stem.rsplit("-", 1)[1][:4])
+        assert top["year"] in (year, year - 1)

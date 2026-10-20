@@ -6,7 +6,7 @@ esta tabla lo resume. «Antigüedad máxima» es la edad máxima, en días, del
 
 | ID | Institución | Producto | Archivo | Antigüedad máxima | Crítica |
 |---|---|---|---|---|---|
-| `enfen-comunicados` | ENFEN | Comunicados oficiales: listado y PDF del más reciente | `enfen.imarpe.gob.pe` (WordPress JSON y página de comunicados) | 30 | — |
+| `enfen-comunicados` | ENFEN | Comunicados oficiales: listado y PDF del más reciente | `enfen.imarpe.gob.pe` (WordPress JSON y página de comunicados); réplica de la DHN `dhn.mil.pe/portal/comunicados-oficiales-enfen` | 30 | — |
 | `igp-icen` | ENFEN / IGP | ICEN | `met.igp.gob.pe/datos/ICEN.txt` | 100 | — |
 | `cpc-ensodisc` | NOAA / CPC | ENSO Diagnostic Discussion | `ensodisc.shtml` | 40 | Sí |
 | `cpc-wksst` | NOAA / CPC | TSM semanal por región Niño (OISST v2.1) | `wksst9120.for` | 16 | Sí |
@@ -38,9 +38,14 @@ una sola página:
 4. Si el listado muestra un número más nuevo que el que se pudo leer, el
    estado se marca vencido y se registra la incidencia.
 
-Los servidores del ENFEN no resuelven desde GitHub Actions; en ese caso
-se usa la copia más reciente del Internet Archive y, si tiene más de un
-día, se pide una nueva. El listado también reconoce los comunicados
+Los servidores del ENFEN no resuelven desde GitHub Actions y tampoco
+responden al Internet Archive (HTTP 523 al pedir una copia nueva). Por eso
+el listado se lee también de la réplica de la Dirección de Hidrografía y
+Navegación (DHN), miembro del ENFEN, que publica cada comunicado como PDF
+directo (`/Archivos/oceanografia/enfen/comunicado-oficial/NN-AAAA.pdf`,
+formato estable desde 2022). Los sondeos de números nuevos prueban
+primero ese PDF. Si nada responde, se usa la copia más reciente del
+Internet Archive. El listado también reconoce los comunicados
 extraordinarios, que el ENFEN emite durante los eventos con numeración
 propia.
 
@@ -51,6 +56,23 @@ versión actual de cada fuente y versiones históricas del Internet Archive,
 y las guarda en `python/tests/fixtures/`. Las pruebas pasan cada lector
 por todas esas versiones. El flujo diario además guarda cada respuesta
 nueva en la rama `data-archive`, de modo que el corpus crece solo.
+
+## Acceso verificado desde GitHub Actions (20 de octubre de 2026)
+
+| Institución | Resultado | Uso |
+|---|---|---|
+| NOAA CPC, PSL, NCEI, ERDDAP | Responden | En uso (CPC, PSL); NCEI y ERDDAP disponibles para mapas |
+| IGP (`met.igp.gob.pe`) | Responde | En uso (ICEN) |
+| DHN (comunicados ENFEN) | Responde | En uso como réplica |
+| ENFEN (`enfen.imarpe.gob.pe`) | No resuelve el nombre | Réplica DHN e Internet Archive |
+| IMARPE | HTTP 403 (bloqueo) | No disponible |
+| SENAMHI (avisos, estaciones, boletines) | Tiempo de espera agotado | No disponible desde Actions |
+| ANA (caudales, SNIRH) | Tiempo de espera agotado | No disponible desde Actions |
+| INDECI, CENEPRED (SIGRID) | Responden | Candidatos |
+| CHIRPS (lluvia satelital) | Responde | Candidato |
+| NASA GPM IMERG | El índice responde; los datos piden cuenta Earthdata | Requiere credencial |
+| CIIFEN, INAMHI, INOCAR, IDEAM | Responden | Candidatos regionales |
+| CPPS (ERFEN), SHOA, DMC Chile | URL probada no válida (404/405) | Por revisar |
 
 ## Fuentes evaluadas y no usadas
 

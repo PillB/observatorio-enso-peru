@@ -177,7 +177,9 @@ SOURCES: list[Source] = [
            docs="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml"),
     Source("enfen-comunicados", "ENFEN", "Comunicados oficiales del ENFEN (listado)",
            ["https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado",
-            "https://enfen.imarpe.gob.pe/comunicados/"],
+            "https://enfen.imarpe.gob.pe/comunicados/",
+            # Réplica oficial de la DHN (Marina de Guerra, miembro del ENFEN).
+            "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen"],
            _parse_enfen, 14, 30, "official", "enfen-comunicados.html", save=True,
            docs="https://enfen.imarpe.gob.pe/comunicados/"),
 ]
@@ -354,6 +356,17 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
         if today.month == 1 and y < today.year:
             probes.insert(0, (today.year, 1))
         for py, pn in probes:
+            # Primero el PDF directo en la réplica de la DHN (rápido y sin archivo).
+            dhn = f"{peru.DHN_BASE}/Archivos/oceanografia/enfen/comunicado-oficial/{pn:02d}-{py}.pdf"
+            try:
+                r = fetcher.get([dhn], archive=False, accept=("pdf", "octet-stream"))
+                if r.body[:5] == b"%PDF-":
+                    listing.insert(0, {"year": py, "number": pn, "kind": "oficial", "id": f"{pn:02d}-{py}", "url": dhn})
+                    log.add("info", "enfen-comunicados", "fetch", "probe-found",
+                            f"Se detectó el comunicado {pn:02d}-{py} en la réplica de la DHN antes de que apareciera en el listado.")
+                    continue
+            except FetchError:
+                pass
             page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{pn:02d}-{py}/"
             try:
                 r = fetcher.get([page], archive=True, save=True, accept=("html",))
@@ -362,7 +375,7 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
             got = peru.LISTING_RE.search(r.text) or re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
             url = got.group(1) if got else f"{page}?wpdmdl="
             if "wpdmdl=" in url and not url.endswith("="):
-                listing.insert(0, {"year": py, "number": pn, "id": f"{pn:02d}-{py}", "url": url})
+                listing.insert(0, {"year": py, "number": pn, "kind": "oficial", "id": f"{pn:02d}-{py}", "url": url})
                 log.add("info", "enfen-comunicados", "fetch", "probe-found",
                         f"Se detectó el comunicado {pn:02d}-{py} antes de que apareciera en el listado.")
         listing.sort(key=lambda i: (i.get("kind", "oficial") == "oficial", i["year"], i["number"]), reverse=True)

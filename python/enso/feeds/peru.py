@@ -156,19 +156,30 @@ LISTING_RE = re.compile(
 )
 
 
+# Réplica de la Dirección de Hidrografía y Navegación (DHN), miembro del ENFEN:
+# enlaces directos «/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf»
+# (formato estable desde al menos 2022).
+DHN_RE = re.compile(r"href=[\"']([^\"']*/comunicado-(oficial|extraordinario)/(\d{1,2})-(\d{4})\.pdf)[\"']", re.I)
+DHN_BASE = "https://www.dhn.mil.pe"
+
+
 def parse_enfen_listing(doc: str) -> Parsed:
     """Lista de comunicados en páginas de ENFEN (portal actual o antiguo).
 
     Reconoce los enlaces de descarga «comunicado-oficial-enfen-n-12-2026» y
-    «comunicado-extraordinario-enfen-n-02-2025» sin depender del maquetado.
+    «comunicado-extraordinario-enfen-n-02-2025» del portal del ENFEN, y los
+    PDF directos de la réplica de la DHN, sin depender del maquetado.
     Los oficiales van primero, del más reciente al más antiguo; los
     extraordinarios (numeración propia) van después, marcados con ``kind``.
     """
     seen = {}
-    for m in LISTING_RE.finditer(doc):
-        url = m.group(1).replace("&#038;", "&").replace("&amp;", "&")
-        key = (m.group(2).lower(), int(m.group(4)), int(m.group(3)))
-        seen.setdefault(key, url)
+    for rx in (LISTING_RE, DHN_RE):
+        for m in rx.finditer(doc):
+            url = m.group(1).replace("&#038;", "&").replace("&amp;", "&")
+            if url.startswith("/"):
+                url = DHN_BASE + url
+            key = (m.group(2).lower(), int(m.group(4)), int(m.group(3)))
+            seen.setdefault(key, url)
     if not seen:
         raise FormatChanged("enfen-listado: no hay enlaces a comunicados oficiales ni extraordinarios")
     items = []

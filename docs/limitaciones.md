@@ -36,9 +36,11 @@ Se calcula con la base 1951–1992 de las presiones del CPC; BoM usa
 
 ## Acceso a las fuentes
 
-Los servidores del ENFEN no siempre son accesibles desde GitHub Actions.
-Entonces se usan copias del Internet Archive, que pueden llegar con horas
-de retraso. Si ninguna vía funciona, el estado se muestra como vencido.
+El portal del ENFEN no es accesible desde GitHub Actions; los comunicados
+se leen de la réplica de la DHN y, si falla, del Internet Archive. SENAMHI,
+ANA e IMARPE no responden a servidores fuera del Perú, por lo que sus
+estaciones, avisos y caudales no pueden actualizarse automáticamente desde
+GitHub. Si ninguna vía funciona, el estado se muestra como vencido.
 
 ## ERSSTv6
 
