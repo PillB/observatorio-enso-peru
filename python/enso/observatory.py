@@ -349,11 +349,13 @@ def _get_communique(fetcher, item: dict):
         return fetcher.get(_communique_urls(item), archive=True, save=True, accept=("pdf", "octet-stream"))
     except FetchError as exc:
         page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{item['number']:02d}-{item['year']}/"
-        got = archive_prefix(fetcher, page)
-        if got is not None and got.body[:5] == b"%PDF-":
-            got.attempts = exc.attempts + got.attempts
+        tried: list = []
+        got = archive_prefix(fetcher, page, attempts=tried)
+        if got is not None:
+            got.attempts = exc.attempts + tried
             return got
-        raise
+        note = next((a["note"] for a in tried if a.get("channel") == "archive-prefix"), "consulta sin respuesta")
+        raise FetchError(f"{exc} (archivo por prefijo: {note})", exc.attempts + tried) from exc
 
 
 def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,

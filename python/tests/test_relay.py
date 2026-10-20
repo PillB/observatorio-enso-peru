@@ -232,8 +232,9 @@ def test_communique_found_by_archive_prefix_when_dhn_and_enfen_fail():
     def handler(req):
         u = str(req.url)
         if "/cdx/" in u and "matchType=prefix" in u and "n-18-2026" not in u:
-            return httpx.Response(200, json=[["urlkey", "timestamp", "original"],
-                                             ["x", "20261001000000", "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-17-2026/?wpdmdl=2161"]])
+            return httpx.Response(200, json=[["urlkey", "timestamp", "original", "mimetype"],
+                                             ["x", "20261001000000", "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-17-2026/?wpdmdl=2161", "application/force-download"],
+                                             ["x", "20261002000000", "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-17-2026/", "text/html"]])
         if "/web/20261001000000id_/" in u:
             return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
         return base(req)
