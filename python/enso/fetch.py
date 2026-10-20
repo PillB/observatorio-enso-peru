@@ -177,8 +177,11 @@ class Fetcher:
         if archive and self.allow_archive:
             for url in urls:
                 got = self._from_archive(url, attempts, fresh=save and self.allow_save)
-                if got:
+                if got and (not accept or any(a in got.content_type.lower() for a in accept)):
                     return got
+                if got:
+                    attempts.append({"url": url, "channel": got.channel,
+                                     "note": f"copia de archivo con tipo inesperado ({got.content_type[:60]})"})
         raise FetchError(f"sin respuesta válida para {urls[0]}", attempts)
 
     @staticmethod

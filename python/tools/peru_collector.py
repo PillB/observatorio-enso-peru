@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from enso.feeds import FormatChanged, peru  # noqa: E402
 from enso.fetch import UA  # noqa: E402
-from enso.observatory import ENFEN_BASE, _clean_wpdm  # noqa: E402
+from enso.observatory import ENFEN_BASE, _clean_wpdm, _communique_urls  # noqa: E402
 
 LIMA = ZoneInfo("America/Lima")
 REPO = os.environ.get("ENSO_REPO", "PillB/observatorio-enso-peru")
@@ -55,6 +55,9 @@ SOURCES: dict[str, list[str]] = {
     "enfen": [
         "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado",
         "https://enfen.imarpe.gob.pe/comunicados/",
+        # Réplica de la DHN: responde desde fuera, pero sus PDF piden una
+        # verificación humana a servidores en la nube.
+        "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen",
     ],
     "senamhi": [
         "https://www.senamhi.gob.pe/?p=fenomeno-el-nino",
@@ -121,10 +124,13 @@ def enfen_documents(client: httpx.Client, pages: list[dict]) -> list[dict]:
             if listing:
                 break
     oficial = [i for i in listing if i.get("kind", "oficial") == "oficial"]
-    targets = [_clean_wpdm(i["url"]) for i in oficial[:2]]
+    targets = [_clean_wpdm(u) for i in oficial[:2] for u in _communique_urls(i)]
     if oficial:
         y, n = oficial[0]["year"], oficial[0]["number"]
-        targets += [f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{n + k:02d}-{y}/" for k in (1, 2)]
+        for k in (1, 2):
+            targets += [f"{peru.DHN_BASE}/Archivos/oceanografia/enfen/comunicado-oficial/{n + k:02d}-{y}.pdf",
+                        f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{n + k:02d}-{y}/"]
+    targets = list(dict.fromkeys(targets))
     out = []
     for url in targets:
         r = fetch(client, url)

@@ -44,7 +44,12 @@ el listado se lee también de la réplica de la Dirección de Hidrografía y
 Navegación (DHN), miembro del ENFEN, que publica cada comunicado como PDF
 directo (`/Archivos/oceanografia/enfen/comunicado-oficial/NN-AAAA.pdf`,
 formato estable desde 2022). Los sondeos de números nuevos prueban
-primero ese PDF. Si una URL del ENFEN no responde, se usa la copia que
+primero ese PDF. Desde el 20 de octubre de 2026 la DHN responde a los PDF
+pedidos desde GitHub Actions con una página de «Verificación de seguridad»;
+esa página se descarta (no es un PDF) y el número nuevo queda registrado
+como publicado pero no leído, de modo que el estado anterior se muestra
+vencido en lugar de vigente. El recolector desde el Perú también descarga
+esos PDF. Si una URL del ENFEN no responde, se usa la copia que
 bajó el [recolector desde el Perú](servidor-peru.md) a las 21:00; si
 tampoco la hay, la copia más reciente del Internet Archive. El listado también reconoce los comunicados
 extraordinarios, que el ENFEN emite durante los eventos con numeración
@@ -64,7 +69,7 @@ nueva en la rama `data-archive`, de modo que el corpus crece solo.
 |---|---|---|
 | NOAA CPC, PSL, NCEI, ERDDAP | Responden | En uso (CPC, PSL); NCEI y ERDDAP disponibles para mapas |
 | IGP (`met.igp.gob.pe`) | Responde | En uso (ICEN) |
-| DHN (comunicados ENFEN) | Responde | En uso como réplica |
+| DHN (comunicados ENFEN) | El listado responde; los PDF piden verificación humana | Listado en uso; PDF por el recolector del Perú |
 | ENFEN (`enfen.imarpe.gob.pe`) | No resuelve el nombre | Réplica DHN e Internet Archive |
 | IMARPE | HTTP 403 (bloqueo) | No disponible |
 | SENAMHI (avisos, estaciones, boletines) | Tiempo de espera agotado | No disponible desde Actions |

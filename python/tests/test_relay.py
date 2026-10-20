@@ -36,6 +36,13 @@ def _peru_only(req: httpx.Request) -> httpx.Response:
     return httpx.Response(200, text="<html>" + "x" * 600 + "</html>", headers={"content-type": "text/html"})
 
 
+@pytest.fixture(autouse=True)
+def _no_backoff(monkeypatch):
+    import enso.fetch
+
+    monkeypatch.setattr(enso.fetch.time, "sleep", lambda s: None)
+
+
 @pytest.fixture
 def snapshot(tmp_path, monkeypatch):
     real = httpx.Client
@@ -56,7 +63,7 @@ def test_collector_writes_index_and_bodies(snapshot):
     assert any(e["url"].endswith("/comunicado-oficial-enfen-n-18-2026/") and e["status"] == 200 for e in docs)
     pdf18 = [e for e in docs if e.get("aliases")]
     assert pdf18 and "refresh" not in pdf18[0]["url"] and pdf18[0]["file"].endswith(".pdf")
-    assert idx["summary"]["enfen"] == "1/2"
+    assert idx["summary"]["enfen"] == "2/3"
 
 
 def test_fetcher_uses_relay_when_source_is_unreachable(snapshot):
@@ -135,3 +142,81 @@ def test_push_creates_then_updates_branch(snapshot, tmp_path, monkeypatch):
     files = subprocess.run(["git", "--git-dir", str(bare), "ls-tree", "-r", "--name-only", pc.BRANCH],
                            capture_output=True, text=True, check=True).stdout.split()
     assert "index.json" in files and any(f.endswith(".pdf") for f in files)
+
+
+HUMAN_CHECK = "<html><title>Verificación de seguridad</title>Complete la verificación para acceder</html>"
+
+
+def _actions_view(relay_pdf: bytes | None = None):
+    """Como desde GitHub Actions: el ENFEN no resuelve y los PDF de la DHN
+    redirigen a una verificación humana (visto el 20 de octubre de 2026)."""
+    def handler(req):
+        u = str(req.url)
+        if "enfen.imarpe.gob.pe" in req.url.host:
+            raise httpx.ConnectError("Temporary failure in name resolution")
+        if "/cdx/" in u:
+            return httpx.Response(200, json=[])
+        if "dhn.mil.pe" in req.url.host and u.endswith(".pdf"):
+            return httpx.Response(200, text=HUMAN_CHECK, headers={"content-type": "text/html; charset=UTF-8"})
+        return httpx.Response(404)
+    return handler
+
+
+class _Prev:
+    def __init__(self, latest):
+        self.latest = latest
+
+    def get(self, name):
+        return {"data": {"latest": self.latest}} if self.latest else None
+
+
+def _dhn_acquired():
+    from enso.fetch import Response
+
+    body = (FIX / "dhn-comunicados-enfen.html").read_bytes()
+    acq = obs.Acquired(obs.SOURCE_BY_ID["enfen-comunicados"])
+    acq.data = obs._parse_enfen(Response("https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen", body, "mirror", 200)).data
+    acq.ok = True
+    return acq
+
+
+def test_dhn_human_check_is_not_taken_for_a_pdf():
+    """La verificación humana no se toma por un comunicado: se conserva el
+    último estado leído y la incidencia queda registrada."""
+    from datetime import date
+
+    acq = _dhn_acquired()
+    top = acq.data["listing"][0]
+    prev = {"year": top["year"], "number": top["number"] - 1, "id": f"{top['number'] - 1:02d}-{top['year']}",
+            "status": "Alerta de El Niño Costero"}
+    f = Fetcher(retries=1, polite_delay=0)
+    f.client = httpx.Client(transport=httpx.MockTransport(_actions_view()))
+    log = obs.EventLog()
+    obs.enfen_latest(acq, f, None, _Prev(prev), log, date(2026, 10, 20))
+    assert acq.data["latest"] == prev
+    unread = [e for e in log.events if e.code == "communique-unread"]
+    assert unread and top["id"] in unread[0].message
+    assert not acq.documents or all(not d.startswith(b"%PDF") for d in acq.documents)
+
+
+def test_dhn_pdf_from_relay_is_read(tmp_path):
+    """Con la copia del recolector del Perú, el PDF se lee aunque la DHN pida verificación."""
+    from datetime import date
+
+    acq = _dhn_acquired()
+    top = acq.data["listing"][0]
+    url = obs._communique_urls(top)[0]
+    root = tmp_path / "relay"
+    (root / "files").mkdir(parents=True)
+    import hashlib
+    sha = hashlib.sha256(PDF).hexdigest()
+    (root / "files" / f"{sha[:16]}.pdf").write_bytes(PDF)
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    (root / "index.json").write_text(json.dumps({"schema": "enso-relay/1", "collected_at": now, "entries": [
+        {"url": url, "status": 200, "content_type": "application/pdf", "file": f"files/{sha[:16]}.pdf",
+         "sha256": sha, "fetched_at": now}]}), encoding="utf-8")
+    f = Fetcher(retries=1, polite_delay=0, relay=Relay(root))
+    f.client = httpx.Client(transport=httpx.MockTransport(_actions_view()))
+    obs.enfen_latest(acq, f, None, _Prev(None), obs.EventLog(), date(2026, 10, 20))
+    latest = acq.data["latest"]
+    assert latest["channel"] == "relay-peru" and latest["status_code"] == "alerta_nino"

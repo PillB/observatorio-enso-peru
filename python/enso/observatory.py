@@ -328,6 +328,17 @@ def _clean_wpdm(url: str) -> str:
     return _re.sub(r"[&?]refresh=[^&]*", "", _html.unescape(url))
 
 
+def _communique_urls(item: dict) -> list[str]:
+    """URL donde puede estar el PDF de un comunicado: la del listado y su
+    PDF directo en la réplica de la DHN. La DHN pide una verificación humana
+    a algunos clientes (como GitHub Actions) y entonces responde HTML, que se
+    descarta; si falla también el anterior, se intenta el comunicado previo."""
+    n, y = item["number"], item["year"]
+    urls = [_clean_wpdm(item["url"]), item["url"],
+            f"{peru.DHN_BASE}/Archivos/oceanografia/enfen/comunicado-oficial/{n:02d}-{y}.pdf"]
+    return list(dict.fromkeys(urls))
+
+
 def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
                  log: EventLog, today: date) -> None:
     """Completa el listado ENFEN con el comunicado más reciente (PDF).
@@ -391,22 +402,38 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
         acq.data = data
         return
 
-    resp = None
-    try:
-        if fixtures is not None:
-            pdfs = sorted((fixtures / "history").glob("enfen-pdf-imarpe-*.txt"))
-            pdfs = [p for p in pdfs if p.read_bytes()[:5] == b"%PDF-"]
-            if not pdfs:
-                raise FetchError("sin fixture de PDF ENFEN", [])
-            resp = Response(top["url"] if top else "", pdfs[-1].read_bytes(), "archive", 200)
-        else:
-            url = _clean_wpdm(top["url"])
-            resp = fetcher.get([url, top["url"]], archive=True, save=True, accept=("pdf", "octet-stream"))
-        if fixtures is None:
-            acq.documents.append(resp.body)
-        if resp.body[:5] != b"%PDF-":
-            raise FormatChanged("enfen: la descarga no es un PDF")
-        c = peru.parse_enfen_communique(peru.pdf_text(resp.body), source=_clean_wpdm(top["url"]) if top else "")
+    if fixtures is not None:
+        pdfs = sorted((fixtures / "history").glob("enfen-pdf-imarpe-*.txt"))
+        pdfs = [p for p in pdfs if p.read_bytes()[:5] == b"%PDF-"]
+        item = top or {"id": "", "year": 0, "number": 0, "url": ""}
+        candidates = [(item, [Response(item["url"], pdfs[-1].read_bytes(), "archive", 200)])] if pdfs else []
+    else:
+        # El más reciente y, si no se puede leer, los anteriores: un estado
+        # anterior marcado como vencido es mejor que ninguno.
+        oficial = [i for i in listing if i.get("kind", "oficial") == "oficial"][:3]
+        candidates = [(i, None) for i in oficial]
+    failures = []
+    for item, canned in candidates:
+        if prev_latest and (prev_latest["year"], prev_latest["number"]) >= (item["year"], item["number"]):
+            data["latest"] = prev_latest
+            break
+        try:
+            resp = canned[0] if canned else fetcher.get(_communique_urls(item), archive=True, save=True,
+                                                         accept=("pdf", "octet-stream"))
+            if fixtures is None:
+                acq.documents.append(resp.body)
+            if resp.body[:5] != b"%PDF-":
+                raise FormatChanged("enfen: la descarga no es un PDF")
+            c = peru.parse_enfen_communique(peru.pdf_text(resp.body), source=_clean_wpdm(item["url"]))
+        except FetchError as exc:
+            failures.append(f"{item['id']}: {exc}")
+            continue
+        except FormatChanged as exc:
+            failures.append(f"{item['id']}: {exc}")
+            continue
+        except Exception as exc:  # pypdf u otro error inesperado
+            failures.append(f"{item['id']}: {type(exc).__name__}: {exc}")
+            continue
         for w in c.warnings:
             log.add("warning", "enfen-comunicados", "parse", "communique-warning", w)
         c.data["channel"] = resp.channel
@@ -414,16 +441,13 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
         data["latest"] = c.data
         if resp.channel.startswith("archive") and fixtures is None:
             log.add("warning", "enfen-comunicados", "fetch", "archive-channel",
-                    f"El PDF del comunicado se obtuvo del Internet Archive ({resp.archived_at}).")
-    except (FetchError, FormatChanged) as exc:
-        log.add("error", "enfen-comunicados", "parse" if isinstance(exc, FormatChanged) else "fetch",
-                "communique-unread", f"No se pudo leer el PDF del comunicado {top['id'] if top else ''}: {exc}")
-        if prev_latest:
-            data["latest"] = prev_latest
-    except Exception as exc:  # pypdf u otro error inesperado
-        log.add("error", "enfen-comunicados", "parse", "exception", f"{type(exc).__name__}: {exc}")
-        if prev_latest:
-            data["latest"] = prev_latest
+                    f"El PDF del comunicado {item['id']} se obtuvo del Internet Archive ({resp.archived_at}).")
+        break
+    if failures:
+        log.add("error", "enfen-comunicados", "fetch", "communique-unread",
+                "No se pudo leer el PDF del comunicado " + "; ".join(failures)[:1500])
+    if not data.get("latest") and prev_latest:
+        data["latest"] = prev_latest
     data["listing"] = listing[:6]
     acq.data = data
     if not acq.ok and data.get("latest"):
