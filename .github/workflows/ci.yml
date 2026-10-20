@@ -38,7 +38,7 @@ jobs:
         working-directory: python
         run: |
           python -m playwright install --with-deps chromium
-          python -m pytest -q -m browser --site-dir ../public
+          python -m pytest -q -m browser --site-dir=../public
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

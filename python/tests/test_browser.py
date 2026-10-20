@@ -1,6 +1,6 @@
 """Recorridos de usuario en Chromium sobre el sitio construido.
 
-Se ejecutan con ``pytest -m browser --site-dir ../public`` después de
+Se ejecutan con ``pytest -m browser --site-dir=../public`` después de
 generar ``public/data`` (en CI, con las fuentes capturadas). Se usan
 roles y textos visibles, no funciones internas de la aplicación.
 """

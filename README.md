@@ -36,7 +36,7 @@ cd python
 pip install -r requirements-dev.txt
 
 # Publicación sin red, a partir de las respuestas capturadas
-python -m enso.observatory --out ../public/data --previous '' --fixtures tests/fixtures
+python -m enso.observatory --out ../public/data --previous '' --fixtures tests/fixtures/sources
 
 # Publicación con datos en vivo
 python -m enso.observatory --out ../public/data
@@ -51,7 +51,7 @@ Pruebas:
 cd python
 pytest -q                                   # unitarias y backtesting
 python -m playwright install chromium
-pytest -q -m browser --site-dir ../public   # recorridos de navegador
+pytest -q -m browser --site-dir=../public   # recorridos de navegador
 ```
 
 ## Documentación
