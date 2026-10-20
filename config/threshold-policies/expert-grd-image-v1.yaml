@@ -111,6 +111,13 @@ winds:
   actual_vs_anomaly: "PENDIENTE_DE_CONFIRMAR"
   demonstration_status: "west-to-east"
   demonstration_classification: "red"
+  # Aplicación por el observatorio (pendiente de validación del equipo GRD):
+  # índice de viento a 850 hPa de NOAA/CPC (valor observado, no anomalía),
+  # media mensual en 5°N–5°S. Positivo = viento del este (alisios).
+  observatory_application:
+    coastal: "CPC epac850 (135°O–120°O), valor mensual observado"
+    global: "CPC cpac850 (175°O–140°O), valor mensual observado"
+    direction_rule: "valor < 0 → flujo de oeste a este (rojo); valor ≥ 0 → este a oeste (normal)"
   rules:
     - label: "Normal"
       color: "green"

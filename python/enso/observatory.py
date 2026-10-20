@@ -158,6 +158,10 @@ SOURCES: list[Source] = [
     Source("cpc-epac850", "NOAA / CPC", "Índice de vientos alisios a 850 hPa, Pacífico oriental (135°O–120°O)",
            ["https://www.cpc.ncep.noaa.gov/data/indices/epac850"],
            _txt(lambda t: cpc.parse_year_matrix(t, lo=-30, hi=30, name="epac850")), 31, 50, "index", "cpc-epac850.txt"),
+    Source("cpc-heat", "NOAA / CPC", "Contenido de calor de los 300 m superiores en el Pacífico ecuatorial (GODAS)",
+           ["https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ocean/index/heat_content_index.txt"],
+           _txt(cpc.parse_heat_content), 31, 50, "index", "cpc-heat-content.txt",
+           docs="https://www.cpc.ncep.noaa.gov/products/GODAS/"),
     Source("igp-icen", "ENFEN / IGP", "ICEN oficial (Nota Técnica ENFEN 01-2024)",
            ["http://met.igp.gob.pe/datos/ICEN.txt", "https://met.igp.gob.pe/datos/ICEN.txt"],
            _txt(peru.parse_icen_txt), 31, 100, "index", "igp-icen.txt",
@@ -595,6 +599,20 @@ class Builder:
                                 frequency="mensual", slo_days=50, history_from="1979-01",
                                 description=f"Índice de vientos alisios a 850 hPa ({region}, 5°N–5°S) de NOAA/CPC, en m/s con signo invertido: positivo = viento del este (alisios normales); negativo = flujo de oeste a este.")
 
+        heat = self.data("cpc-heat")
+        if heat:
+            for key, region, scope in (("heat_160e80w", "160°E–80°O", "basin"), ("heat_180w100w", "180°–100°O", "basin"),
+                                       ("heat_130e80w", "130°E–80°O", "basin")):
+                if heat.get(key):
+                    self.add_series(key, heat[key], label=f"Contenido de calor 0–300 m ({region})", units="degC", scope=scope,
+                                    source="cpc-heat", frequency="mensual", slo_days=50, climatology="1981–2010",
+                                    history_from="1979-01", category=lambda v: {"tone": sig.anomaly_tone(v)},
+                                    description=f"Anomalía de la temperatura media de los 300 m superiores del océano en el Pacífico ecuatorial ({region}, GODAS). Valores positivos indican una termoclina más profunda y calor acumulado bajo la superficie, que suele anticipar el calentamiento superficial.")
+
+    def events(self) -> list[dict]:
+        s = self.series.get("icen")
+        return sig.icen_events(s["points"]) if s else []
+
     def weekly(self) -> Optional[dict]:
         w = self.data("cpc-wksst")
         if not w:
@@ -775,7 +793,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     ok = sum(1 for h in health if h["status"] == "ok")
     events = [e.as_dict() for e in log.events]
     dashboard = {
-        "official": official, "series": series_light, "spark": spark, "weekly": weekly_light, "grd": grd,
+        "official": official, "events": b.events(), "series": series_light, "spark": spark, "weekly": weekly_light, "grd": grd,
         "health": {"sourcesOk": ok, "sourcesTotal": len(health),
                    "degraded": [h["id"] for h in health if h["status"] != "ok"], "worst": log.worst()},
         "pipeline": {"version": PIPELINE_VERSION, "gitSha": git_sha, "startedAt": started.isoformat(timespec="seconds")},

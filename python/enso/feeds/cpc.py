@@ -333,3 +333,38 @@ def parse_enso_discussion(doc: str) -> Parsed:
         "weekly_values_in_text": values,
     }
     return Parsed(data, fingerprint("ensodisc", "Alert System Status", "Synopsis"), warnings)
+
+
+def parse_heat_content(text: str) -> Parsed:
+    """Índice de contenido de calor de los 300 m superiores (CPC/GODAS).
+
+    Formato: «YR MON 130E-80W 160E-80W 180W-100W» con anomalías en °C
+    (climatología 1981–2010). Las columnas se asignan por el encabezado.
+    """
+    lines = [l for l in text.splitlines() if l.strip()]
+    head_i = next((i for i, l in enumerate(lines) if re.match(r"\s*YR\s+MON", l, re.I)), None)
+    if head_i is None:
+        raise FormatChanged("heat-content: no se encontró el encabezado «YR MON»")
+    cols = lines[head_i].split()[2:]
+    keys = {c: "heat_" + re.sub(r"[^0-9a-z]", "", c.lower()) for c in cols}
+    out: dict[str, list] = {k: [] for k in keys.values()}
+    for l in lines[head_i + 1:]:
+        parts = l.split()
+        if len(parts) < 2 + len(cols) or not parts[0].isdigit():
+            continue
+        y, m = int(parts[0]), int(parts[1])
+        for c, v in zip(cols, parts[2:]):
+            try:
+                val = float(v)
+            except ValueError:
+                val = None
+            out[keys[c]].append({"period": period(y, m), "value": None if val is not None and val <= -99 else val})
+    warnings = []
+    for k, pts in out.items():
+        out[k] = trim_missing(pts)
+        warnings += check_series(out[k], lo=-6, hi=6, name=k)
+    if not any(out.values()):
+        raise FormatChanged("heat-content: sin filas de datos")
+    climo = re.search(r"(\d{4})-(\d{4})\s+Climatology", lines[0], re.I)
+    return Parsed(out, fingerprint("heat-content", *cols), warnings,
+                  {"climatology": f"{climo.group(1)}–{climo.group(2)}" if climo else ""})

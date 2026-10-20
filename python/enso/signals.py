@@ -54,14 +54,18 @@ def classify(rules: list[dict], v: Optional[float]) -> tuple[str, str]:
 
 
 def _signal(key: str, name: str, region: str, metric: str, value, units: str, period: str,
-            source: str, level: str, label: str, basis: str, stale: bool) -> dict:
+            source: str, level: str, label: str, basis: str, stale: bool, reason: str = "") -> dict:
     if stale and level not in ("na",):
         level, label = "na", LABEL["na"]
+        reason = "El último dato supera su vigencia; no se usa para la señal actual."
     return {
-        "id": key, "name": name, "region": region, "metric": metric, "value": value,
+        "reason": reason, "id": key, "name": name, "region": region, "metric": metric, "value": value,
         "units": units, "period": period, "source": source, "level": level, "label": label,
         "basis": basis, "stale": stale,
     }
+
+
+NO_D20 = "No hay una fuente pública verificada de anomalía de D20 para esta región. El índice de contenido de calor (0–300 m) se muestra aparte como referencia, sin aplicarle estos umbrales."
 
 
 def grd_signals(inputs: dict, policy: Optional[dict] = None) -> dict:
@@ -74,11 +78,14 @@ def grd_signals(inputs: dict, policy: Optional[dict] = None) -> dict:
     p = policy or load_policy()
     out = []
 
-    def add(key, name, region, metric, units, rules, basis):
+    def add(key, name, region, metric, units, rules, basis, missing=""):
         x = inputs.get(key) or {}
         lvl, lab = classify(rules, x.get("value"))
+        reason = missing if x.get("value") is None else ""
+        if lvl == "unclassified":
+            reason = "El valor cae en un intervalo que la tabla del equipo GRD no define; no se asume normalidad."
         out.append(_signal(key, name, region, metric, x.get("value"), units, x.get("period"),
-                           x.get("source"), lvl, lab, basis, bool(x.get("stale"))))
+                           x.get("source"), lvl, lab, basis, bool(x.get("stale")), reason))
 
     add("coastal_sst", "Anomalía de TSM", "Niño Costero 1+2", "Anomalía mensual de TSM Niño 1+2", "degC",
         p["coastal_sst"]["rules"], "Normal −0,7 a +0,5 °C; amarillo +1,3 a +2,0 °C; rojo > +2,1 °C")
@@ -101,9 +108,9 @@ def grd_signals(inputs: dict, policy: Optional[dict] = None) -> dict:
         out.append(sig)
 
     add("d20_coastal", "Profundidad de la termoclina (20 °C)", "Niño Costero", "Anomalía de D20", "m",
-        p["thermocline"]["rules"], "Normal −20 a +20 m; amarillo 30 a 50 m; rojo > 50 m")
+        p["thermocline"]["rules"], "Normal −20 a +20 m; amarillo 30 a 50 m; rojo > 50 m", missing=NO_D20)
     add("d20_global", "Profundidad de la termoclina (20 °C)", "Niño Global", "Anomalía de D20", "m",
-        p["thermocline"]["rules"], "Normal −20 a +20 m; amarillo 30 a 50 m; rojo > 50 m")
+        p["thermocline"]["rules"], "Normal −20 a +20 m; amarillo 30 a 50 m; rojo > 50 m", missing=NO_D20)
     add("soi_troup", "Índice de Oscilación del Sur", "Niño Costero y Niño Global", "SOI escala Troup (×10)", "dimensionless",
         p["soi"]["rules"], "Normal −7 a +7; rojo < −7")
 
@@ -167,3 +174,43 @@ def anomaly_tone(v: Optional[float], neutral: float = 0.5) -> str:
     if v is None:
         return "na"
     return "warm" if v >= neutral else "cool" if v <= -neutral else "neutral"
+
+
+def icen_events(points: list[dict], min_months: int = 3) -> list[dict]:
+    """Eventos El Niño Costero / La Niña Costera según la definición operacional.
+
+    Nota Técnica ENFEN 01-2024: un evento ocurre cuando el ICEN permanece en
+    condición cálida (> +0,5 °C) o fría (< −0,7 °C) al menos tres meses
+    consecutivos; su magnitud es la máxima categoría alcanzada. Un evento
+    que sigue abierto en el último dato se marca ``ongoing``.
+    """
+    events: list[dict] = []
+    run: list[dict] = []
+    phase = None
+
+    def close(ongoing: bool) -> None:
+        if phase and len(run) >= min_months:
+            vals = [p["value"] for p in run]
+            peak = max(vals) if phase == "warm" else min(vals)
+            cat = icen_category(peak)
+            events.append({
+                "phase": phase, "name": "El Niño Costero" if phase == "warm" else "La Niña Costera",
+                "start": run[0]["period"], "end": run[-1]["period"], "months": len(run),
+                "peak": peak, "peakPeriod": run[vals.index(peak)]["period"],
+                "magnitude": cat["short"].split()[-1] if cat else "", "ongoing": ongoing,
+            })
+
+    prev_idx = None
+    for p in points:
+        v = p.get("value")
+        idx = int(p["period"][:4]) * 12 + int(p["period"][5:7])
+        ph = None if v is None else "warm" if round(v, 2) > 0.5 else "cool" if round(v, 2) < -0.7 else None
+        gap = prev_idx is not None and idx - prev_idx != 1
+        if ph != phase or gap:
+            close(False)
+            run, phase = [], ph
+        if ph:
+            run.append(p)
+        prev_idx = idx
+    close(True)
+    return events
