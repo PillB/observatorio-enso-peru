@@ -425,7 +425,14 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
         pdfs = sorted((fixtures / "history").glob("enfen-pdf-imarpe-*.txt"))
         pdfs = [p for p in pdfs if p.read_bytes()[:5] == b"%PDF-"]
         item = top or {"id": "", "year": 0, "number": 0, "url": ""}
-        candidates = [(item, [Response(item["url"], pdfs[-1].read_bytes(), "archive", 200)])] if pdfs else []
+        # El PDF capturado del comunicado más reciente del listado, si está.
+        def _number(p: Path):
+            m = peru.NUMBER_RE.search(peru.pdf_text(p.read_bytes())[:3000])
+            return (int(m.group(2)), int(m.group(1))) if m else None
+
+        chosen = next((p for p in reversed(pdfs) if item["id"] and _number(p) == (item["year"], item["number"])), None)
+        chosen = chosen or (pdfs[-1] if pdfs else None)
+        candidates = [(item, [Response(item["url"], chosen.read_bytes(), "archive", 200)])] if chosen else []
     else:
         # El más reciente y, si no se puede leer, los anteriores: un estado
         # anterior marcado como vencido es mejor que ninguno.
