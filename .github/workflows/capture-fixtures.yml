@@ -15,6 +15,7 @@ on:
     branches: ['claude/**']
     paths:
       - 'python/tools/capture_sources.py'
+      - 'python/enso/observatory.py'
       - '.github/workflows/capture-fixtures.yml'
 
 permissions:
@@ -33,10 +34,20 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - run: pip install httpx
+      - run: pip install -r python/requirements.txt
       - name: Capture
         working-directory: python
         run: python -m tools.capture_sources --out tests/fixtures/sources ${{ (github.event_name == 'push' || inputs.history) && '--history' || '' }}
+      - name: Live pipeline probe
+        working-directory: python
+        env:
+          ENSO_ARCHIVE_SAVE: '1'
+        run: |
+          python -m enso.observatory --out "$RUNNER_TEMP/pub/data" --previous '' --fail-on never || true
+          mkdir -p tests/fixtures/live-run
+          for f in dashboard.json run-report.json sources.json; do
+            [ -f "$RUNNER_TEMP/pub/data/$f" ] && cp "$RUNNER_TEMP/pub/data/$f" tests/fixtures/live-run/
+          done
       - name: Commit fixtures
         run: |
           git config user.name "github-actions[bot]"

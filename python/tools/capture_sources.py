@@ -58,6 +58,11 @@ CURRENT = {
     "cpc-heat-content.txt": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ocean/index/heat_content_index.txt",
     "enfen-gobpe.html": "https://www.gob.pe/enfen",
     "bom-soi30.txt": "https://www.bom.gov.au/climate/enso/soi.txt",
+    # Candidatos ERSSTv6 (NCEI retira ERSSTv5 en 2026; RONI ya usa v6)
+    "cpc-ersst6.nino.mth.91-20.ascii": "https://www.cpc.ncep.noaa.gov/data/indices/ersst6.nino.mth.91-20.ascii",
+    "cpc-indices-dir.html": "https://www.cpc.ncep.noaa.gov/data/indices/",
+    "psl-nina1.anom.data": "https://psl.noaa.gov/data/correlation/nina1.anom.data",
+    "psl-nina34.anom.data": "https://psl.noaa.gov/data/correlation/nina34.anom.data",
     "bom-enso-outlook.html": "https://www.bom.gov.au/climate/enso/outlook/",
 }
 

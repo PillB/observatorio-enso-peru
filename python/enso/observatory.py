@@ -238,14 +238,7 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
     resp = None
     try:
         if fixtures is not None:
-            p = fixtures / src.fixture
-            if not p.exists():
-                raise FetchError(f"sin fixture {src.fixture}", [])
-            body = p.read_bytes()
-            meta = _fixture_meta(fixtures, src.fixture)
-            if meta.get("status") not in (None, 200):
-                raise FetchError(f"fixture con estado HTTP {meta.get('status')}", [])
-            resp = Response(src.urls[0], body, "fixture", 200, retrieved_at=meta.get("captured_at") or "")
+            resp = _fixture_response(src, fixtures)
         else:
             resp = fetcher.get(src.urls, archive=src.archive, save=src.save, accept=src.accept)
         acq.attempts = resp.attempts
@@ -287,6 +280,123 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         log.add("info", src.id, "fetch", "carried-forward",
                 f"Se mantiene el último dato válido obtenido el {acq.retrieved_at}.")
     return acq
+
+
+def _fixture_response(src: Source, fixtures: Path):
+    """Respuesta capturada; si la captura directa falló, la copia de archivo más reciente."""
+    from .fetch import FetchError, Response
+
+    p = fixtures / src.fixture
+    meta = _fixture_meta(fixtures, src.fixture)
+    if p.exists() and meta.get("status") in (None, 200):
+        return Response(src.urls[0], p.read_bytes(), "fixture", 200, retrieved_at=meta.get("captured_at") or "")
+    stem = src.fixture.rsplit(".", 1)[0]
+    hist = sorted((fixtures / "history").glob(f"{stem}-[0-9]*")) if (fixtures / "history").exists() else []
+    if hist:
+        ts = hist[-1].stem.rsplit("-", 1)[1]
+        from .fetch import _ts_iso
+        return Response(src.urls[0], hist[-1].read_bytes(), "archive", 200, archived_at=_ts_iso(ts),
+                        retrieved_at=meta.get("captured_at") or "")
+    raise FetchError(f"sin fixture {src.fixture}", [])
+
+
+ENFEN_BASE = "https://enfen.imarpe.gob.pe"
+
+
+def _clean_wpdm(url: str) -> str:
+    """Quita el parámetro «refresh» (token por visita) de los enlaces de descarga."""
+    import re as _re
+
+    return _re.sub(r"[&?]refresh=[^&]*", "", url).replace("&#038;", "&")
+
+
+def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
+                 log: EventLog, today: date) -> None:
+    """Completa el listado ENFEN con el comunicado más reciente (PDF).
+
+    1. Toma el número más alto entre el listado y la publicación anterior.
+    2. Sondea los dos números siguientes por su página de descarga
+       (``/download/comunicado-oficial-enfen-n-NN-AAAA/``): así un
+       comunicado nuevo se detecta aunque el listado o su copia de archivo
+       estén desactualizados.
+    3. Descarga el PDF (directo, archivo o copia nueva del archivo) y lo
+       parsea. Si el PDF ya fue leído en la corrida anterior, se reutiliza.
+    """
+    from .fetch import FetchError, Response
+
+    data = acq.data if isinstance(acq.data, dict) else {}
+    listing = list(data.get("listing") or [])
+    prev_src = previous.get("sources/enfen-comunicados.json") or {}
+    prev_latest = (prev_src.get("data") or {}).get("latest")
+    if data.get("latest"):
+        return
+    known = [(i["year"], i["number"]) for i in listing]
+    if prev_latest:
+        known.append((prev_latest["year"], prev_latest["number"]))
+    if not known and fixtures is None:
+        return
+
+    if fixtures is None and known:
+        y, n = max(known)
+        probes = [(y, n + 1), (y, n + 2)]
+        if today.month == 1 and y < today.year:
+            probes.insert(0, (today.year, 1))
+        for py, pn in probes:
+            page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{pn:02d}-{py}/"
+            try:
+                r = fetcher.get([page], archive=True, save=False, accept=("html",))
+            except FetchError:
+                continue
+            got = peru.LISTING_RE.search(r.text) or __import__("re").search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
+            url = got.group(1) if got else f"{page}?wpdmdl="
+            if "wpdmdl=" in url and not url.endswith("="):
+                listing.insert(0, {"year": py, "number": pn, "id": f"{pn:02d}-{py}", "url": url})
+                log.add("info", "enfen-comunicados", "fetch", "probe-found",
+                        f"Se detectó el comunicado {pn:02d}-{py} antes de que apareciera en el listado.")
+        listing.sort(key=lambda i: (i["year"], i["number"]), reverse=True)
+
+    top = listing[0] if listing else None
+    if prev_latest and (not top or (prev_latest["year"], prev_latest["number"]) >= (top["year"], top["number"])):
+        data["latest"] = prev_latest
+        data["listing"] = listing[:6]
+        acq.data = data
+        return
+
+    resp = None
+    try:
+        if fixtures is not None:
+            pdfs = sorted((fixtures / "history").glob("enfen-pdf-imarpe-*.txt"))
+            pdfs = [p for p in pdfs if p.read_bytes()[:5] == b"%PDF-"]
+            if not pdfs:
+                raise FetchError("sin fixture de PDF ENFEN", [])
+            resp = Response(top["url"] if top else "", pdfs[-1].read_bytes(), "archive", 200)
+        else:
+            url = _clean_wpdm(top["url"])
+            resp = fetcher.get([url, top["url"]], archive=True, save=True, accept=("pdf", "octet-stream"))
+        if resp.body[:5] != b"%PDF-":
+            raise FormatChanged("enfen: la descarga no es un PDF")
+        c = peru.parse_enfen_communique(peru.pdf_text(resp.body), source=_clean_wpdm(top["url"]) if top else "")
+        for w in c.warnings:
+            log.add("warning", "enfen-comunicados", "parse", "communique-warning", w)
+        c.data["channel"] = resp.channel
+        c.data["archived_at"] = resp.archived_at
+        data["latest"] = c.data
+        if resp.channel.startswith("archive") and fixtures is None:
+            log.add("warning", "enfen-comunicados", "fetch", "archive-channel",
+                    f"El PDF del comunicado se obtuvo del Internet Archive ({resp.archived_at}).")
+    except (FetchError, FormatChanged) as exc:
+        log.add("error", "enfen-comunicados", "parse" if isinstance(exc, FormatChanged) else "fetch",
+                "communique-unread", f"No se pudo leer el PDF del comunicado {top['id'] if top else ''}: {exc}")
+        if prev_latest:
+            data["latest"] = prev_latest
+    except Exception as exc:  # pypdf u otro error inesperado
+        log.add("error", "enfen-comunicados", "parse", "exception", f"{type(exc).__name__}: {exc}")
+        if prev_latest:
+            data["latest"] = prev_latest
+    data["listing"] = listing[:6]
+    acq.data = data
+    if not acq.ok and data.get("latest"):
+        acq.ok = True
 
 
 def _fixture_meta(fixtures: Path, name: str) -> dict:
@@ -545,7 +655,10 @@ class Builder:
                     "stale": stale,
                 })
                 if listing and (listing[0]["year"], listing[0]["number"]) > (latest["year"], latest["number"]):
+                    # Un comunicado más reciente existe pero no se pudo leer: el estado
+                    # anterior ya no es vigente y no debe mostrarse como actual.
                     res["enfen"]["newerListed"] = listing[0]["id"]
+                    res["enfen"]["stale"] = stale = True
                     self.log.add("warning", "enfen-comunicados", "parse", "newer-communique-unparsed",
                                  f"El listado muestra el comunicado {listing[0]['id']} pero solo se pudo leer el {latest['id']}.")
                 if stale:
@@ -765,6 +878,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         acquired[src.id] = acquire(src, fetcher, fixtures, prev, log)
     if today is None:
         today = (started.date() if fixtures is None else _fixture_date(fixtures)) or started.date()
+    if "enfen-comunicados" in acquired:
+        enfen_latest(acquired["enfen-comunicados"], fetcher, fixtures, prev, log, today)
     b = Builder(acquired, log, today)
     b.build_series()
     weekly = b.weekly()
