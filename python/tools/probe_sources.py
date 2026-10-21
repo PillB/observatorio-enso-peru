@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import sys
 import threading
@@ -31,11 +30,10 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso import registry  # noqa: E402
+# El User-Agent del pipeline: hay servidores que deciden por él (GDACS respondió 403 a «Mozilla/5.0
+# (compatible; …)» y 200 a curl desde el mismo ejecutor), y la sonda mide lo que verá el pipeline.
+from enso.fetch import UA  # noqa: E402
 from enso.reach import Robots, classify  # noqa: E402
-
-#: El contacto que ven las fuentes (como en enso.fetch): el sitio publicado o el repositorio.
-CONTACT = os.environ.get("ENSO_CONTACT_URL") or "https://github.com/PillB/observatorio-enso-peru"
-UA = f"Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; source-probe; +{CONTACT})"
 
 
 def probe(urls: list[str], vantage: str, timeout: float = 25.0) -> dict[str, dict]:

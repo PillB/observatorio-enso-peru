@@ -7,11 +7,18 @@
 | `observatory.yml` | Todos los días a las 04:37 UTC (23:37 en Lima), al fusionar en `main`, a pedido del vigilante o a mano | Pruebas → pipeline con datos en vivo → recorridos de navegador → despliegue en GitHub Pages o Cloudflare Pages ([despliegue-cloudflare](despliegue-cloudflare.md)) → verificación del sitio en vivo → sincronización de incidencias → archivo de respuestas originales |
 | `watchdog.yml` | Cada 6 horas (minuto 17) | Lee el sitio en vivo; si la publicación tiene más de 30 horas, reactiva y relanza el flujo diario y abre un issue |
 | `ci.yml` | En cada PR y en ramas `claude/**` | Pruebas, publicación sin red con las respuestas capturadas y recorridos de navegador |
-| `probe-sources.yml` | Lunes 09:17 UTC y a mano | Mide desde EE. UU. qué fuentes del registro responden, suma lo que bajó el recolector del Perú y regenera `registry/sources.json` (en `main`; en otras ramas, en `bot/registry/<rama>`) |
+| `probe-sources.yml` | Lunes 09:17 UTC, a mano y al cambiar el medidor en ramas `claude/**` | Mide desde GitHub Actions qué URL del registro responden, suma lo que bajaron el recolector del Perú (`data-peru`) y n8n (`data-n8n`) y regenera `registry/sources.json` con los canales de cada URL (en `main`; en otras ramas, en `bot/registry/<rama>`). Las mediciones del flujo de validación de n8n se suman con `python -m tools.probe_sources --no-probe --import <archivo>` |
 | `capture-fixtures.yml` | A mano o al cambiar la herramienta de captura | Captura las respuestas reales usadas en el backtesting, en la rama `bot/fixtures/<rama>` y como artefacto |
 | `probe-feeds.yml` | A mano o al cambiar el sondeo o la lista de feeds candidatos | Sondea feeds candidatos; informe en `bot/news-probe/<rama>` y como artefacto |
 | `scrape-ladder.yml` | A mano o al cambiar la escalera o sus candidatos | Para fuentes sin API ni feed: prueba `robots.txt`, una petición simple, cabeceras de navegador, Chromium y (si hay clave) Firecrawl, en ese orden, y se detiene en el primer paso que funciona o ante una verificación anti-robots; informe en `bot/scrape-ladder/<rama>` y como artefacto |
 | `device-screens.yml` | A mano o al cambiar la herramienta de capturas | Capturas de Noticias en los dispositivos de referencia, en `bot/screens/<rama>` y como artefacto |
+
+Las corridas que publican no se cruzan: la diaria, la que pide el vigilante y
+las que piden el recolector del Perú (al subir su copia, entre las 21:00 y las
+23:30 de Lima) o n8n (22:50, si se activa su aviso) comparten el grupo de
+concurrencia `enso-production-publication` sin cancelar la que está en curso.
+Una copia que llega tarde espera a que termine la publicación y la siguiente
+corrida la usa.
 
 Los flujos de desarrollo nunca escriben en la rama de trabajo: sus commits
 dejaban las comprobaciones del PR en «action_required» y llenaban el diff.
@@ -65,7 +72,12 @@ Códigos frecuentes:
 | `archive-channel` | Se usó la copia del Internet Archive | Nada, salvo que sea permanente |
 | `relay-stale` | La última copia del recolector desde el Perú y su último latido tienen más de 36 h: el equipo no está corriendo | Pedir en el equipo del recolector que ejecuten VERIFICAR y envíen el informe ([servidor-peru](servidor-peru.md#si-algo-falla)) |
 | `relay-sources-down` | El recolector sigue subiendo su latido, pero hace más de 36 h que ninguna fuente peruana le responde | Nada en el equipo: son las instituciones. `heartbeat.json` en `data-peru` dice qué respondió cada una |
-| `relay-missing` | La rama `data-peru` existe pero su `index.json` no se pudo leer | Revisar la última subida del recolector |
+| `relay-missing` | La rama `data-peru` no existe, o existe pero su `index.json` no se pudo leer. Dice cuántas URL del registro solo responden desde el Perú | Instalar el recolector ([servidor-peru](servidor-peru.md)) o revisar su última subida |
+| `relay-n8n-missing` | La rama `data-n8n` no existe o no se pudo leer: no hay segundo canal si Actions no alcanza una fuente | Revisar el flujo «ENSO · Recolector n8n» ([n8n](n8n.md)) |
+| `relay-n8n-stale` | La última corrida de n8n tiene más de 36 h | Revisar que el flujo siga activo en n8n |
+| `relay-n8n-sources-down` | n8n corrió hoy, pero ninguna fuente le respondió | Nada en n8n: son las fuentes o la red de su nube; se usan copias de hasta 72 h |
+| `news-history-missing` | La publicación anterior no trajo el histórico de noticias tras tres intentos. Advertencia si se rehízo con la copia de `data-archive` (`sources/news/items.jsonl`); error si tampoco había copia: se publican solo las notas de hoy y el histórico queda marcado `restarted` | Revisar el sitio publicado y la rama `data-archive` |
+| `news-history-restored` | Una corrida anterior publicó el histórico incompleto (`restarted`); esta le agregó al final las notas de la copia de `data-archive` | Ninguna: se resolvió sola |
 | `relay-token-expiring` | El token de GitHub del recolector vence en menos de 21 días | Crear un token nuevo y ejecutar INSTALAR en el equipo del recolector con ese token ([servidor-peru](servidor-peru.md#1-token-de-github)) |
 | `carried-forward` | Se conservó el dato de la publicación anterior | Revisar la fuente si persiste |
 | `format-drift` | Cambió la huella del formato pero se pudo leer | Revisar que los valores sigan siendo correctos y actualizar las pruebas |
