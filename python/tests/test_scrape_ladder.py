@@ -24,10 +24,15 @@ PAGES = {
     "https://c.pe/avisos": (403, b"<html><title>Just a moment...</title><div class='cf-turnstile'></div></html>"),
     "https://d.pe/app": (200, b"<html><body><div id='app'>Este sitio necesita JavaScript</div></body></html>"),
 }
+REDIRECTS = {"https://a.pe/viejo": "https://a.pe/api/x", "https://b.pe/movido": "/boletines"}
+REQUESTED: list[str] = []
 
 
 def _handler(request: httpx.Request) -> httpx.Response:
     host = request.url.host
+    REQUESTED.append(str(request.url))
+    if str(request.url) in REDIRECTS:
+        return httpx.Response(302, headers={"location": REDIRECTS[str(request.url)]})
     if host == "e.pe":
         raise httpx.ConnectTimeout("timed out", request=request)
     if request.url.path == "/robots.txt":
@@ -72,6 +77,18 @@ def test_robots_and_challenges_stop_the_ladder(ladder):
     assert got["unk"]["answer"] == "http-5xx" and got["unk"]["robots"] == "unreachable"
 
 
+def test_redirects_are_checked_against_robots_hop_by_hop(ladder):
+    """Una redirección hacia una ruta que robots.txt prohíbe no se sigue; una permitida, sí."""
+    REQUESTED.clear()
+    got = ladder([
+        {"id": "viejo", "url": "https://a.pe/viejo", "expect": "x"},
+        {"id": "movido", "url": "https://b.pe/movido", "expect": "IGP/CENVUL"},
+    ])
+    assert got["viejo"]["answer"] == "robots" and got["viejo"]["steps"][0]["finalUrl"] == "https://a.pe/api/x"
+    assert "https://a.pe/api/x" not in REQUESTED
+    assert got["movido"]["answer"] == "http" and got["movido"]["steps"][0]["finalUrl"] == "https://b.pe/boletines"
+
+
 def test_shell_pages_escalate_past_plain_requests(ladder):
     r = ladder([{"id": "spa", "url": "https://d.pe/app", "expect": "Nivel naranja"}])["spa"]
     assert [s["step"] for s in r["steps"]] == ["http", "http-headers"]
@@ -91,17 +108,25 @@ def test_candidates_file_is_valid():
 class _Site(http.server.BaseHTTPRequestHandler):
     FILES = {
         "/robots.txt": ("text/plain", b"User-agent: *\nDisallow: /private/\n"),
-        "/app": ("text/html", b"<html><body><div id=app>cargando</div><script>"
+        "/app": ("text/html", b"<html><body><div id=app>cargando</div><img src='/foto.png'><script>"
                  b"fetch('/private/secret.json').catch(()=>{});"
-                 b"fetch('/data.json').then(r=>r.json()).then(d=>{document.getElementById('app').textContent='Nivel '+d.nivel})"
+                 b"fetch('/atajo').catch(()=>{});"
+                 b"fetch('/go').then(r=>r.json()).then(d=>{document.getElementById('app').textContent='Nivel '+d.nivel})"
                  b"</script></body></html>"),
         "/data.json": ("application/json", b'{"nivel": "naranja", "aviso": 123}'),
         "/private/secret.json": ("application/json", b'{"nivel": "naranja"}'),
     }
+    #: Redirecciones: a una ruta prohibida (no se sigue) y a los datos (se sigue).
+    REDIRECTS = {"/atajo": "/private/secret.json", "/go": "/data.json"}
     hits: list[str] = []
 
     def do_GET(self):  # noqa: N802
         type(self).hits.append(self.path)
+        if self.path in self.REDIRECTS:
+            self.send_response(302)
+            self.send_header("location", self.REDIRECTS[self.path])
+            self.end_headers()
+            return
         ct, body = self.FILES.get(self.path, ("text/plain", b"no"))
         self.send_response(200 if self.path in self.FILES else 404)
         self.send_header("content-type", ct)
@@ -135,7 +160,12 @@ def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypat
     threading.Thread(target=down.serve_forever, daemon=True).start()
     other = f"http://127.0.0.1:{down.server_address[1]}/lib.json"
     ct, app = _Site.FILES["/app"]
-    monkeypatch.setitem(_Site.FILES, "/app", (ct, app.replace(b"<script>", f"<script>fetch('{other}').catch(()=>{{}});".encode())))
+    monkeypatch.setitem(_Site.FILES, "/app", (ct, app.replace(b"<script>", f"<script>fetch('{other}').catch(()=>{{}});"
+                                                               f"fetch('/salto').catch(()=>{{}});".encode())))
+    monkeypatch.setitem(_Site.REDIRECTS, "/salto", other.replace("lib.json", "salto.json"))
+    monkeypatch.setitem(_Site.REDIRECTS, "/inicio", "/app")  # la página misma llega por una redirección permitida
+    _Site.hits.clear()
+    _Down.hits.clear()
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), _Site)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{srv.server_address[1]}"
@@ -144,7 +174,8 @@ def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypat
     def ladder():  # en otro hilo: las pruebas del sitio ya tienen Playwright abierto en este
         try:
             client = httpx.Client(trust_env=False, timeout=10)
-            got["rep"] = L.run([{"id": "spa", "url": f"{base}/app", "expect": "naranja"}], tmp_path,
+            got["rep"] = L.run([{"id": "spa", "url": f"{base}/app", "expect": "naranja"},
+                                {"id": "inicio", "url": f"{base}/inicio", "expect": "naranja"}], tmp_path,
                                browser_ok=True, client=client)
         except Exception as exc:  # noqa: BLE001 — se vuelve a lanzar abajo
             got["exc"] = exc
@@ -162,10 +193,15 @@ def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypat
     assert [s["step"] for s in r["steps"]] == ["http", "http-headers", "browser"]
     assert r["answer"] == "hidden-api" and r["dataUrl"] == f"{base}/data.json"
     browser = r["steps"][-1]
-    assert browser["blockedByRobots"] == sorted([f"{base}/private/secret.json", other])
-    assert "/private/secret.json" not in _Site.hits  # el navegador tampoco pide lo que robots.txt prohíbe
-    assert "/lib.json" not in _Down.hits  # ni lo de un servidor cuyo robots.txt no respondió
+    salto = other.replace("lib.json", "salto.json")
+    assert browser["blockedByRobots"] == sorted([f"{base}/private/secret.json", other, salto])
+    assert "/private/secret.json" not in _Site.hits  # el navegador tampoco pide lo que robots.txt prohíbe,
+    assert "/atajo" in _Site.hits  # ni siquiera si llega por una redirección,
+    assert _Down.hits == ["/robots.txt"]  # ni nada de un servidor cuyo robots.txt no respondió
+    assert "/foto.png" not in _Site.hits  # y las imágenes no se piden
     assert os.path.exists(tmp_path / next(c["file"] for c in browser["calls"] if c.get("file")))
+    moved = got["rep"]["results"][1]
+    assert moved["answer"] == "hidden-api" and moved["dataUrl"] == f"{base}/data.json"
 
 
 def test_expect_patterns_match_text_not_bytes():
