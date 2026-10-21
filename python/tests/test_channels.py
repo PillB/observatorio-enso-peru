@@ -63,6 +63,30 @@ def test_validate_requires_channels_to_be_the_union_of_its_urls():
     assert any("si y solo si" in e for e in registry.validate(reg))
 
 
+def test_n8n_aborted_is_not_a_measurement():
+    """«aborted» lo corta el nodo HTTP de n8n: desde el mismo ejecutor curl y Node reciben 200 en segundos."""
+    url = "https://elcomercio.pe/arcio/rss/"
+    aborted = {"class": "timeout", "detail": "aborted", "at": "2026-10-21T03:24:51+00:00"}
+    reach = {url: {"actions": {"github-actions": _rec("ok", "github-actions"),
+                               "n8n-actions-azure": {**aborted, "vantage": "n8n-actions-azure"}},
+                   "n8n": {"n8n-aws": {**aborted, "vantage": "n8n-aws"}}}}
+    g = registry.geoblock(url, reach)
+    assert g["status"] == "open" and g["n8n"] is None and "n8n-aws" not in g["from"]
+    assert registry.channels_for(g["status"], g["open_from"], [k for k in ("actions", "n8n") if g.get(k)]) == [
+        "actions", "n8n"]
+    # Solo «aborted» de n8n: un timeout del pipeline sigue contando.
+    assert not registry.unmeasured({**aborted, "vantage": "github-actions"})
+    assert not registry.unmeasured({"class": "timeout", "detail": "ReadTimeout", "vantage": "n8n-aws"})
+
+
+def test_probe_measures_with_the_pipeline_user_agent():
+    """Un WAF que decide por User-Agent (GDACS respondió 403 a la sonda y 200 a curl desde el mismo Azure)
+    debe ver lo mismo que verá el pipeline."""
+    import enso.fetch
+
+    assert probe_sources.UA == enso.fetch.UA
+
+
 def test_registry_file_routes_measured_peru_only_sources():
     """El registro publicado: lo que no responde desde ninguna red de EE. UU. lo pide solo el servidor del Perú."""
     reg = json.loads(registry.REGISTRY.read_text(encoding="utf-8"))
