@@ -258,11 +258,13 @@ def test_llm_output_is_schema_checked(monkeypatch):
         sent.update(json.loads(req.content))
         bad = {"number": 18, "indices": {"official": [{"period": "2026-08", "icen": 12.0}], "provisional": []},
                "probabilities": []}
-        return httpx.Response(200, json={"data": bad, "model": "modelo-x"})
+        return httpx.Response(200, json={"data": bad, "model": "modelo-x",
+                                              "evidence": {"indices.official.0.icen": "ICEN 12,0"}})
 
     res = R.llm_extract(httpx.Client(transport=httpx.MockTransport(handler)), "enfen-informe", "texto", url="u")
     assert sent["schema"] == R.SCHEMAS["enfen-informe"] and sent["kind"] == "enfen-informe"
     assert res["ok"] and res["model"] == "modelo-x" and any("icen" in e for e in res["schemaErrors"])
+    assert res["evidence"] == {"indices.official.0.icen": "ICEN 12,0"}
 
 
 def test_llm_failure_never_raises(monkeypatch):

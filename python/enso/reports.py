@@ -523,7 +523,7 @@ def llm_extract(client, kind: str, text: str, *, url: str, published: Optional[s
     """Pide la extracción a un servicio externo (p. ej. un flujo de n8n con un nodo AI Agent) y la valida.
 
     El servicio recibe ``{"kind", "schema", "text", "url", "published"}`` y devuelve ``{"data": …,
-    "model": …}``. Solo se llama si ``ENSO_LLM_EXTRACT_URL`` está definida. El resultado nunca se publica
+    "model": …, "evidence": {ruta: cita}}``. Solo se llama si ``ENSO_LLM_EXTRACT_URL`` está definida. El resultado nunca se publica
     directamente: vuelve como propuesta para revisión, con los errores de esquema que tenga."""
     endpoint = os.environ.get(LLM_URL_ENV)
     if not endpoint or client is None:
@@ -541,6 +541,7 @@ def llm_extract(client, kind: str, text: str, *, url: str, published: Optional[s
         return {"ok": False, "error": f"{type(exc).__name__}: {exc}"[:300]}
     data = reply.get("data") if isinstance(reply, dict) else None
     return {"ok": data is not None, "data": data, "model": (reply or {}).get("model"),
+            "evidence": (reply or {}).get("evidence") if isinstance((reply or {}).get("evidence"), dict) else None,
             "schemaErrors": check(SCHEMAS[kind], data) if data is not None else ["sin «data»"]}
 
 
