@@ -57,6 +57,24 @@ Cada lector devuelve los datos junto con una **huella del formato**
 la publicación anterior se registra `format-drift`; si el formato ya no
 se puede leer se lanza `FormatChanged` y el dato no se publica.
 
+### Canales por URL
+
+`registry/sources.json` dice, para cada URL de cada fuente (la principal y sus
+réplicas, campo `by_url`), qué recolector la pide: `actions`, `n8n` o
+`peru-server`. Una URL va al servidor del Perú si y solo si no responde desde
+ninguna red de EE. UU. (GitHub Actions en Azure, n8n en AWS); los canales de
+la fuente son la unión. El pipeline lee el registro en cada corrida:
+
+- una URL que Actions no alcanza se lee primero de la copia del Perú o de n8n
+  y se pide directo una sola vez, por si volvió a responder;
+- una URL cuyo `robots.txt` lo prohíbe no se pide (sin canales);
+- si hay varias copias de una URL (Perú y n8n), gana la más reciente, también
+  para las noticias y las alertas.
+
+El recolector del Perú baja las fuentes `peru-server` y n8n las `n8n`, así que
+los tres canales leen la misma lista. `probe-sources.yml` mide cada semana
+desde Actions y suma lo que bajaron el Perú y n8n.
+
 ### Orden de respaldo por fuente
 
 1. URL oficial (y espejos oficiales cuando existen).
@@ -122,9 +140,10 @@ disponible», nunca como vigente.
   temprana; el resumen es la primera oración del resumen más largo.
 - **Histórico:** `news/items.jsonl` se lee de la publicación anterior y
   se le agregan las notas nuevas (por `id` = hash de enlace y titular).
-  Las notas de cada día se guardan también en `data-archive/news/`, de
-  modo que el histórico puede reconstruirse si la publicación anterior no
-  se pudo leer (incidencia `news-history-missing`).
+  Las notas de cada día se guardan también en la rama `data-archive`
+  (`sources/news/<día>.jsonl`). Si el histórico publicado no responde, la
+  corrida diaria baja esa rama y lo rehace con esas notas (incidencia
+  `news-history-missing`).
 - **Derechos:** solo se guarda lo que el medio publica en su feed
   (titular, resumen, fecha y enlace). El sitio enlaza siempre a la nota
   original.

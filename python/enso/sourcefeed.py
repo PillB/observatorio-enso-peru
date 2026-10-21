@@ -91,15 +91,19 @@ def alerts(news_items: list[dict], now: datetime) -> list[dict]:
 
 def alert_sources(feed_status: Optional[list[dict]]) -> list[dict]:
     """Si cada fuente de alertas respondió en esta corrida. Sin avisos no quiere decir sin peligro:
-    el sitio dice cuáles no respondieron, para que nadie lea su silencio como calma."""
+    el sitio dice cuáles no respondieron, para que nadie lea su silencio como calma, y cuáles se leyeron
+    de una copia de otro recolector (``channel``) y de cuándo es (``copyAt``)."""
     from .news import FEED_BY_ID
 
     out = []
     for st in feed_status or []:
         f = FEED_BY_ID.get(st.get("id") or "")
         if f and f.covers:
-            out.append({"id": f.id, "name": f.name, "url": f.url, "ok": bool(st.get("ok")),
-                        "latest": st.get("latest"), "error": st.get("error") or ""})
+            row = {"id": f.id, "name": f.name, "url": f.url, "ok": bool(st.get("ok")),
+                   "latest": st.get("latest"), "error": st.get("error") or ""}
+            if st.get("channel"):  # respondió una copia (Perú, n8n), no la fuente: de cuándo es
+                row.update({"channel": st["channel"], "copyAt": st.get("copyAt")})
+            out.append(row)
     return out
 
 

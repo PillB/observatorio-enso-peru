@@ -1,0 +1,19 @@
+Allow: /
+User-agent: facebookexternalhit
+User-agent: Facebot
+User-agent: Googlebot
+User-agent: meta-externalagent
+Allow: /
+
+Disallow: /frame/welcome/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Sitemap: https://sinrodeoscajamarca.com/sitemap.xml
+
+# Bloquea a todos los demás bots
+User-agent: *
+Disallow: /
+
+
+
+
