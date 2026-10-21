@@ -296,6 +296,9 @@ test('Fuentes: una alternativa con otra terminación no hereda el tipo esperado'
   ] };
   const out = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
   assert.deepEqual(out.map((i) => i.json.expect), ['text', 'text', 'json', 'any']);
+  reg.sources[1].alt_expect = ['html'];
+  const withAlt = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
+  assert.equal(withAlt[3].json.expect, 'html');
 });
 
 test('Vigilante: falla si el sitio está viejo o no responde', async () => {

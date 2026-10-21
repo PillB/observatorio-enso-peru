@@ -45,7 +45,10 @@ for (const s of registry.sources) {
     // Una alternativa es a veces otra cosa (el listado HTML de una API JSON):
     // conserva el tipo esperado solo si la URL termina igual que la principal
     // (misma extensión o, sin extensión, la misma dirección).
-    const expect = !k || ext(url) === ext(s.url) ? s.expect || 'any' : 'any';
+    // El registro trae «alt_expect» (alineado con alt_urls); en registros
+    // anteriores se deduce por la terminación.
+    const altExpect = k && Array.isArray(s.alt_expect) ? s.alt_expect[k - 1] : null;
+    const expect = altExpect || (!k || ext(url) === ext(s.url) ? s.expect || 'any' : 'any');
     if (seen.has(url)) return;
     seen.add(url);
     out.push({ json: {
