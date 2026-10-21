@@ -25,18 +25,31 @@ if (!registry) registry = EMBEDDED;
 const year = new Intl.DateTimeFormat('en', { timeZone: 'America/Lima', year: 'numeric' }).format(new Date());
 const only = String(cfg.only || '').trim();
 const scope = String(cfg.scope || 'todas');
+// Terminación de la URL (extensión), o la ruta completa si no tiene extensión.
+const ext = (u) => {
+  const path = String(u).split(/[?#]/)[0].replace(/^https?:\/\//i, '');
+  return ((path.match(/\.([a-z0-9]{2,5})$/i) || [])[1] || path).toLowerCase();
+};
 const seen = new Set();
 const out = [];
 for (const s of registry.sources) {
   if (only && !s.id.includes(only) && s.group !== only) continue;
-  if (scope === 'n8n' && !(s.channels || []).includes('n8n')) continue;
+  const channels = s.channels || [];
+  // robots.txt lo prohíbe: el registro deja la fuente sin canales y nadie la pide.
+  if (!channels.length || (s.geoblock && s.geoblock.status === 'robots-disallowed')) continue;
+  // «n8n»: solo lo que el registro asigna a n8n. «todas»: también mide las del Perú.
+  if (scope === 'n8n' && !channels.includes('n8n')) continue;
   const urls = [s.url, ...(s.alt_urls || [])];
   urls.forEach((raw, k) => {
     const url = String(raw).replace('{year}', year);
+    // Una alternativa es a veces otra cosa (el listado HTML de una API JSON):
+    // conserva el tipo esperado solo si la URL termina igual que la principal
+    // (misma extensión o, sin extensión, la misma dirección).
+    const expect = !k || ext(url) === ext(s.url) ? s.expect || 'any' : 'any';
     if (seen.has(url)) return;
     seen.add(url);
     out.push({ json: {
-      id: k ? `${s.id}#${k + 1}` : s.id, group: s.group, name: s.name, url, expect: s.expect || 'any',
+      id: k ? `${s.id}#${k + 1}` : s.id, group: s.group, name: s.name, url, expect,
       follow: k === 0 && s.follow ? s.follow : null, channels: s.channels || [], pass: 1, registry: origin,
     } });
   });

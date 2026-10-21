@@ -33,6 +33,7 @@ const NODE_LIBS = {
   'commit': [],
   'rama': [],
   'resumen': [],
+  'vigilante': [],
 };
 
 /** Código final de un nodo Code: bibliotecas + cuerpo, con los marcadores reemplazados. */
@@ -166,7 +167,7 @@ function workflow(id, name, nodes, connections, settings = {}) {
 nextX = -240;
 const validation = workflow('EnsoValidacion01', 'ENSO · Validación de fuentes desde n8n', [
   node('Ejecutar a mano', 'n8n-nodes-base.manualTrigger', 1, {}),
-  setNode('Configuración', CONFIG_COMMON),
+  setNode('Configuración', [['scope', 'todas'], ...CONFIG_COMMON]),
   code('Fuentes', 'fuentes', { REGISTRY: JSON.stringify(registry) }),
   ...passes('Fuentes'),
   code('Informe', 'informe', {}),
@@ -192,7 +193,7 @@ const collector = workflow('EnsoRecolector01', 'ENSO · Recolector n8n (fuentes 
     ['data_branch', 'data-n8n'],
     ['registry_ref', 'main'],
     ['registry_path', 'registry/sources.json'],
-    ['scope', 'todas'],
+    ['scope', 'n8n'],
     ['host_label', 'n8n-aws'],
     ['egress', 'aws-us-east-1'],
     ['carry_hours', 72, 'number'],
@@ -223,9 +224,37 @@ const collector = workflow('EnsoRecolector01', 'ENSO · Recolector n8n (fuentes 
   return c;
 })());
 
+// ---------------------------------------------------------------- vigilante
+// Revisa el sitio publicado cada 6 horas, sin depender de GitHub: si
+// data/manifest.json no responde o es de hace más de 30 horas, la ejecución
+// falla y el «Error workflow» de n8n avisa (GitHub ya desactivó una vez los
+// flujos programados por inactividad sin que nadie lo notara).
+nextX = -240;
+const watcher = workflow('EnsoVigilante001', 'ENSO · Vigilante del sitio publicado', [
+  node('Cada 6 horas', 'n8n-nodes-base.scheduleTrigger', 1.2, { rule: { interval: [{ field: 'hours', hoursInterval: 6 }] } }, { y: -120 }),
+  node('Ejecutar a mano', 'n8n-nodes-base.manualTrigger', 1, {}, { x: 0, y: 120 }),
+  setNode('Configuración', [
+    ['site', 'https://pillb.github.io/observatorio-enso-peru/'],
+    ['max_age_hours', 30, 'number'],
+    ...CONFIG_COMMON.filter(([k]) => k === 'contact'),
+  ]),
+  node('Leer manifest.json', 'n8n-nodes-base.httpRequest', 4.2, {
+    url: "={{ $('Configuración').first().json.site.replace(/\\/?$/, '/') + 'data/manifest.json?t=' + Date.now() }}",
+    sendHeaders: true,
+    headerParameters: { parameters: [{ name: 'User-Agent', value: UA }, { name: 'Cache-Control', value: 'no-cache' }] },
+    options: { timeout: 30000, response: { response: { fullResponse: true, neverError: true, responseFormat: 'text' } } },
+  }, { onError: 'continueRegularOutput', retryOnFail: true, maxTries: 3, waitBetweenTries: 5000 }),
+  code('Revisar frescura', 'vigilante', {}),
+], (() => {
+  const c = chain(['Cada 6 horas', 'Configuración', 'Leer manifest.json', 'Revisar frescura']);
+  chain(['Ejecutar a mano', 'Configuración'], c);
+  return c;
+})());
+
 export const WORKFLOWS = {
   'enso-n8n-validacion.json': validation,
   'enso-n8n-recolector.json': collector,
+  'enso-n8n-vigilante.json': watcher,
 };
 
 if (import.meta.url === `file://${process.argv[1]}`) {

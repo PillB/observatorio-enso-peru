@@ -8,7 +8,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { libSource } from '../build.mjs';
+import { libSource, nodeCode } from '../build.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const FIX = join(HERE, '..', '..', 'python', 'tests', 'fixtures');
@@ -250,4 +250,47 @@ test('si el registro espera HTML y llega texto, se guarda con una nota', () => {
   const c = classify({ url: 'u', expect: 'html', status: 200, headers: { 'content-type': 'text/plain' }, body: txt });
   assert.equal(c.verdict, 'ok');
   assert.match(c.note, /esperaba HTML/);
+});
+
+async function runCode(name, vars, nodes, input = []) {
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const $ = (n) => { if (!(n in nodes)) throw new Error(`nodo sin ejecutar: ${n}`); return { first: () => nodes[n][0], all: () => nodes[n] }; };
+  const fn = new AsyncFunction('$', '$input', nodeCode(name, { VERSION: 'test', ...vars }));
+  return fn.call({ helpers: {} }, $, { all: () => input, first: () => input[0] });
+}
+
+test('Fuentes: respeta robots.txt y el alcance «n8n»', async () => {
+  const reg = { schema: 'enso-source-registry/1', sources: [
+    { id: 'a', group: 'g', url: 'https://a/', alt_urls: ['https://a2/'], expect: 'rss', channels: ['actions', 'n8n'] },
+    { id: 'p', group: 'g', url: 'https://p/', expect: 'html', channels: ['peru-server'] },
+    { id: 'r', group: 'g', url: 'https://r/', expect: 'json', channels: [], geoblock: { status: 'robots-disallowed' } },
+  ] };
+  const cfg = (scope) => ({ 'Configuración': [{ json: { scope, only: '' } }] });
+  const n8n = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg('n8n'));
+  assert.deepEqual(n8n.map((i) => i.json.url), ['https://a/', 'https://a2/']);
+  const todas = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg('todas'));
+  assert.deepEqual(todas.map((i) => i.json.id), ['a', 'a#2', 'p']);
+  // El registro leído de GitHub (cuerpo en «data») gana sobre el incluido.
+  const fromGh = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, {
+    ...cfg('n8n'), 'Leer registro': [{ json: { statusCode: 200, data: JSON.stringify({ ...reg, sources: [reg.sources[0]] }).replace('https://a2/', 'https://b/') } }],
+  });
+  assert.deepEqual(fromGh.map((i) => i.json.url), ['https://a/', 'https://b/']);
+  assert.match(fromGh[0].json.registry, /^GitHub/);
+});
+
+test('Fuentes: una alternativa con otra terminación no hereda el tipo esperado', async () => {
+  const reg = { schema: 'enso-source-registry/1', sources: [
+    { id: 'icen', group: 'g', url: 'http://x/ICEN.txt', alt_urls: ['https://x/ICEN.txt'], expect: 'text', channels: ['n8n'] },
+    { id: 'wp', group: 'g', url: 'https://e/wp-json/wp/v2/posts?search=c', alt_urls: ['https://e/comunicados/'], expect: 'json', channels: ['n8n'] },
+  ] };
+  const out = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
+  assert.deepEqual(out.map((i) => i.json.expect), ['text', 'text', 'json', 'any']);
+});
+
+test('Vigilante: falla si el sitio está viejo o no responde', async () => {
+  const cfg = { 'Configuración': [{ json: { site: 'https://s/', max_age_hours: 30 } }] };
+  const ok = await runCode('vigilante', {}, cfg, [{ json: { statusCode: 200, data: JSON.stringify({ generatedAt: new Date().toISOString(), publicationId: 'x' }) } }]);
+  assert.equal(ok[0].json.resultado, 'Sitio al día');
+  await assert.rejects(runCode('vigilante', {}, cfg, [{ json: { statusCode: 200, data: '{"generatedAt":"2026-08-09T06:04:07+00:00"}' } }]), /desactualizado/);
+  await assert.rejects(runCode('vigilante', {}, cfg, [{ json: { statusCode: 404, data: '' } }]), /no responde/);
 });

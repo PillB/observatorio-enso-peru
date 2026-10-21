@@ -35,6 +35,8 @@ for (let i = 0; i < items.length; i++) {
   }
 }
 for (const url of deriveEnfenTargets(pages)) {
-  add({ id: 'enfen-pdf', group: 'enfen', name: 'Comunicado oficial del ENFEN (PDF)', url, expect: 'pdf' });
+  // Desde la API de WordPress llega la página de la entrada (HTML), no el PDF.
+  const pdf = /\.pdf(?:[?#]|$)|wpdmdl=/i.test(url);
+  add({ id: 'enfen-pdf', group: 'enfen', name: `Comunicado oficial del ENFEN (${pdf ? 'PDF' : 'página'})`, url, expect: pdf ? 'pdf' : 'any' });
 }
 return out;

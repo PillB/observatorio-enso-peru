@@ -19,6 +19,7 @@ Hay dos flujos, en `n8n/dist/`:
 |---|---|---|
 | `enso-n8n-validacion.json` | Comprobar qué fuentes responden **desde ese n8n**. Descarga cada fuente del registro una vez y devuelve un informe (también en CSV) | Ninguna |
 | `enso-n8n-recolector.json` | Recolectar todos los días a las 22:50 (Lima) y publicar en `data-n8n` | Token de GitHub |
+| `enso-n8n-vigilante.json` | Cada 6 horas, revisar que el sitio publicado esté al día (`data/manifest.json`, `generatedAt` de menos de 30 h); si no, la ejecución falla y avisa | Ninguna |
 
 Probados de punta a punta con n8n **2.44** y **1.123** (CI: `.github/workflows/n8n.yml`).
 
@@ -92,7 +93,7 @@ sigue funcionando (todo va por la API, nada por `raw.githubusercontent.com`).
    | `api` | `https://api.github.com` | API de GitHub |
    | `data_branch` | `data-n8n` | Rama donde se publican las copias (se crea sola) |
    | `registry_ref`, `registry_path` | `main`, `registry/sources.json` | De dónde se lee el registro. Si no se puede leer, se usa la copia incluida en el flujo |
-   | `scope` | `todas` | `todas`: todas las fuentes del registro (también mide las del Perú); `n8n`: solo las que tienen el canal `n8n` |
+   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. Las que `robots.txt` prohíbe (sin canales en el registro) no se piden nunca |
    | `host_label`, `egress` | `n8n-aws`, `aws-us-east-1` | Se anotan en cada copia |
    | `carry_hours` | `72` | Si una URL falla, se conserva su última copia válida hasta estas horas |
    | `max_file_mb` | `8` | Respuestas más grandes no se guardan |
@@ -115,6 +116,15 @@ la copia de esa noche.
 Recomendado en n8n: **Settings → Error workflow** con un flujo que avise por
 correo, para enterarse si el recolector falla. Además, la actualización diaria
 registra `relay-n8n-stale` si la última corrida tiene más de 36 horas.
+
+## Vigilante del sitio (opcional, recomendado)
+
+GitHub desactiva los flujos programados de un repositorio sin actividad, y
+ya pasó sin que nadie lo notara. El vigilante no depende de GitHub: importar
+`enso-n8n-vigilante.json`, poner en **Configuración → site** la dirección
+del sitio (hoy `https://pillb.github.io/observatorio-enso-peru/`; cambiarla
+si se muda a Cloudflare), y activarlo. Cuando falla, avisa el «Error
+workflow» de n8n (paso 5).
 
 ## Qué publica
 

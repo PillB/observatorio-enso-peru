@@ -1,0 +1,183 @@
+{
+  "id": "EnsoVigilante001",
+  "name": "ENSO · Vigilante del sitio publicado",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "156519de-d1ef-46b7-85e4-2594ca4a8106",
+      "name": "Cada 6 horas",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -120
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "031472b2-a157-4c4a-8475-5cf7202f6d7b",
+      "name": "Ejecutar a mano",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fbae041b",
+              "name": "site",
+              "value": "https://pillb.github.io/observatorio-enso-peru/",
+              "type": "string"
+            },
+            {
+              "id": "34e0a3fb",
+              "name": "max_age_hours",
+              "value": 30,
+              "type": "number"
+            },
+            {
+              "id": "093e7d5f",
+              "name": "contact",
+              "value": "https://github.com/PillB/observatorio-enso-peru",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "87c527c9-b1a1-45be-8064-410f485441b9",
+      "name": "Configuración",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Configuración').first().json.site.replace(/\\/?$/, '/') + 'data/manifest.json?t=' + Date.now() }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "=Observatorio-ENSO-Peru/4.0 (+{{ $('Configuración').first().json.contact }}; datos abiertos; n8n)"
+            },
+            {
+              "name": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "5593839e-da37-4a80-8285-b3395c77e18e",
+      "name": "Leer manifest.json",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generado por n8n/build.mjs desde n8n/nodes/vigilante.js. No editar en n8n.\n// ¿El sitio publicado está al día? Falla (y el «Error workflow» de n8n avisa)\n// si data/manifest.json (lo publica cada actualización, con «generatedAt») no responde, no se puede leer o su «generatedAt» es más\n// viejo que max_age_hours.\nconst cfg = $('Configuración').first().json;\nconst r = $input.first().json;\nconst maxAge = Number(cfg.max_age_hours) || 30;\nconst where = `${cfg.site} (data/manifest.json)`;\nif (r.error || r.statusCode !== 200) {\n  const why = r.error ? (r.error.message || JSON.stringify(r.error)).slice(0, 200) : `HTTP ${r.statusCode}`;\n  throw new Error(`El sitio no responde: ${where}: ${why}`);\n}\nlet d;\ntry {\n  const body = r.data !== undefined ? r.data : r.body;\n  d = typeof body === 'string' ? JSON.parse(body) : body;\n} catch (e) {\n  throw new Error(`manifest.json no es JSON válido en ${where}`);\n}\nconst t = Date.parse(d && d.generatedAt);\nif (Number.isNaN(t)) throw new Error(`manifest.json no tiene «generatedAt» en ${where}`);\nconst age = (Date.now() - t) / 3600000;\nif (age > maxAge) {\n  throw new Error(`El sitio está desactualizado: la publicación ${d.publicationId || '?'} es del ${d.generatedAt} (hace ${age.toFixed(0)} h, máximo ${maxAge} h). Revisar la actualización diaria en GitHub Actions (puede estar desactivada).`);\n}\nreturn [{ json: { resultado: 'Sitio al día', publicacion: d.publicationId || '', generado: d.generatedAt, horas: Math.round(age * 10) / 10 } }];\n"
+      },
+      "id": "fc2e6f0e-37cb-4d5a-879b-997044af29f0",
+      "name": "Revisar frescura",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Cada 6 horas": {
+      "main": [
+        [
+          {
+            "node": "Configuración",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuración": {
+      "main": [
+        [
+          {
+            "node": "Leer manifest.json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer manifest.json": {
+      "main": [
+        [
+          {
+            "node": "Revisar frescura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ejecutar a mano": {
+      "main": [
+        [
+          {
+            "node": "Configuración",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Lima",
+    "saveManualExecutions": true
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "ensoVersion": "6b108b09d4"
+  },
+  "tags": []
+}
