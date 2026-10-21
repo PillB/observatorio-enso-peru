@@ -14,7 +14,11 @@
 // Cada corrección es una fila nueva (nunca se borra ni se edita): el historial completo queda en D1.
 // Una corrección «clear» deshace la anterior y la nota vuelve a la ubicación automática.
 
-export const ITERATIONS = 100000; // máximo que admite PBKDF2 en Workers
+// El plan gratuito de Workers da 10 ms de CPU por solicitud y 100 000 iteraciones de PBKDF2 toman unos 50 ms.
+// Las contraseñas son aleatorias de 16 caracteres (~93 bits): ni con un hash simple se pueden adivinar, así que
+// 5 000 iteraciones (~4 ms) bastan. Se aceptan hashes de hasta 20 000.
+export const ITERATIONS = 5000;
+const MAX_ITERATIONS = 20000;
 export const SESSION_HOURS = 12;
 export const COOKIE = '__Host-geo_session';
 export const ACTIONS = ['set', 'confirm', 'none', 'foreign', 'clear'];
@@ -84,7 +88,7 @@ function sameBytes(a, b) {
   return diff === 0;
 }
 
-/** «pbkdf2-sha256$100000$<sal base64>$<hash base64>», como lo escribe python/tools/geo_users.py. */
+/** «pbkdf2-sha256$5000$<sal base64>$<hash base64>», como lo escribe python/tools/geo_users.py. */
 export async function hashPassword(password, salt = crypto.getRandomValues(new Uint8Array(16)), iterations = ITERATIONS) {
   return `pbkdf2-sha256$${iterations}$${b64(salt)}$${b64(await pbkdf2(password, salt, iterations))}`;
 }
@@ -93,7 +97,7 @@ export async function verifyPassword(password, stored) {
   const parts = String(stored || '').split('$');
   if (parts.length !== 4 || parts[0] !== 'pbkdf2-sha256') return false;
   const iterations = Number(parts[1]);
-  if (!Number.isInteger(iterations) || iterations < 10000 || iterations > ITERATIONS) return false;
+  if (!Number.isInteger(iterations) || iterations < 1000 || iterations > MAX_ITERATIONS) return false;
   try {
     return sameBytes(await pbkdf2(password, unb64(parts[2]), iterations), unb64(parts[3]));
   } catch {
@@ -102,7 +106,7 @@ export async function verifyPassword(password, stored) {
 }
 
 // Hash de relleno: un usuario inexistente tarda lo mismo que una contraseña equivocada.
-const DUMMY = 'pbkdf2-sha256$100000$AAAAAAAAAAAAAAAAAAAAAA==$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
+const DUMMY = 'pbkdf2-sha256$5000$AAAAAAAAAAAAAAAAAAAAAA==$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
 
 /** Usuarios del secreto GEO_USERS: {"usuario": {"hash": "...", "role": "tester" | "admin"}} o {"usuario": "hash"}. */
 export function users(env) {

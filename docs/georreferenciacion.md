@@ -193,7 +193,7 @@ python -m tools.geo_users --out ~/consola-claves --keep ~/consola-claves/GEO_USE
 ```
 
 Escribe `GEO_USERS.json` (para el secreto, solo hashes PBKDF2-SHA256 con
-100 000 iteraciones) y `contrasenas-consola-PRIVADO.csv` (para repartir;
+5 000 iteraciones; ver Seguridad) y `contrasenas-consola-PRIVADO.csv` (para repartir;
 no se guarda en ningún otro lado). Se niega a escribir dentro del
 repositorio. Para **dar de baja** una cuenta, quitarla de
 `GEO_USERS.json` y volver a cargar el secreto: sus sesiones dejan de
@@ -201,8 +201,12 @@ valer de inmediato.
 
 ### Seguridad
 
-- Contraseñas aleatorias de 16 caracteres; en Cloudflare solo hay hashes
-  con sal. Un usuario inexistente tarda lo mismo que una clave
+- Contraseñas aleatorias de 16 caracteres (~93 bits); en Cloudflare solo
+  hay hashes con sal. Se usan 5 000 iteraciones de PBKDF2 y no 100 000
+  porque el plan gratuito de Workers da 10 ms de CPU por solicitud (100 000
+  iteraciones toman unos 50 ms y el ingreso fallaría); con contraseñas
+  aleatorias de ese largo, el estiramiento no es lo que las protege. El
+  secreto admite 5 KB: unas 35 cuentas. Un usuario inexistente tarda lo mismo que una clave
   equivocada y recibe el mismo mensaje.
 - Sesión de 12 horas en una cookie `__Host-` `HttpOnly`, `Secure`,
   `SameSite=Strict`; en D1 se guarda el SHA-256 del token, no el token.

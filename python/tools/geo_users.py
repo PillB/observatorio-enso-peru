@@ -1,7 +1,7 @@
 """Genera las cuentas de la consola de lugares: contraseñas al azar y el secreto ``GEO_USERS`` con sus hashes.
 
 Las contraseñas se escriben solo en ``--out`` (fuera del repositorio) para repartirlas a cada revisor; el
-secreto lleva únicamente hashes PBKDF2-SHA256 (100 000 iteraciones, sal de 16 bytes), el formato que
+secreto lleva únicamente hashes PBKDF2-SHA256 (5 000 iteraciones, sal de 16 bytes), el formato que
 verifica ``functions/_lib/geo-console.js``. Para cargarlo en Cloudflare:
 
     npx wrangler pages secret put GEO_USERS --project-name enso-peru < DIR/GEO_USERS.json
@@ -27,7 +27,9 @@ import secrets
 import sys
 from pathlib import Path
 
-ITERATIONS = 100_000
+#: Ver ``functions/_lib/geo-console.js``: cabe en los 10 ms de CPU del plan gratuito; las contraseñas son
+#: aleatorias de 16 caracteres (~93 bits), así que el estiramiento no es lo que las protege.
+ITERATIONS = 5_000
 #: Sin caracteres que se confunden al dictarlos o copiarlos (0/O, 1/l/I).
 ALPHABET = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 
@@ -84,7 +86,11 @@ def main(argv=None) -> int:
     users, issued = build(a.testers, a.admin or None, keep, tuple(a.renew))
     a.out.mkdir(parents=True, exist_ok=True)
     secret = a.out / "GEO_USERS.json"
-    secret.write_text(json.dumps(users, indent=1, sort_keys=True), encoding="utf-8")
+    size = len(json.dumps(users, separators=(",", ":")).encode())
+    if size > 5 * 1024:
+        print(f"ERROR: el secreto ocupa {size} bytes y Cloudflare admite 5 KB por variable (unas 35 cuentas).", file=sys.stderr)
+        return 3
+    secret.write_text(json.dumps(users, separators=(",", ":"), sort_keys=True), encoding="utf-8")
     pw_file = a.out / "contrasenas-consola-PRIVADO.csv"
     with open(pw_file, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
