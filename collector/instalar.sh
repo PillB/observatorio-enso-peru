@@ -165,22 +165,28 @@ copy_kit() {
   require_free_dest
   printf '%s\n' "Carpeta del recolector del Observatorio ENSO. DESINSTALAR la borra entera: no guardar aquí otros archivos." \
     > "$DEST/$MARKER"
-  rm -rf "$DEST/python/enso" "$DEST/python/tools" "$DEST/config" "$DEST/registry" "$DEST/collector" "$DEST/otras-acciones"
-  mkdir -p "$DEST/python" "$DEST/docs"
-  cp "$src/python/requirements.txt" "$DEST/python/"
-  cp -R "$src/python/enso" "$src/python/tools" "$DEST/python/"
-  cp -R "$src/config" "$src/collector" "$DEST/"
+  # Sin «set -e»: cada paso anota si falló, y una copia a medias (disco lleno,
+  # error de E/S) no sigue a registrar la tarea.
+  local ok=1
+  rm -rf "$DEST/python/enso" "$DEST/python/tools" "$DEST/config" "$DEST/registry" "$DEST/collector" \
+    "$DEST/otras-acciones" || ok=0
+  mkdir -p "$DEST/python" "$DEST/docs" || ok=0
+  cp "$src/python/requirements.txt" "$DEST/python/" || ok=0
+  cp -R "$src/python/enso" "$src/python/tools" "$DEST/python/" || ok=0
+  cp -R "$src/config" "$src/collector" "$DEST/" || ok=0
   # Los lanzadores van en la raíz: en el kit ya están ahí; en una copia del
   # repositorio, en collector/lanzadores (y el LEEME, en collector/).
   launchers="$src"
   [ -d "$src/otras-acciones" ] || launchers="$src/collector/lanzadores"
-  [ -d "$launchers/otras-acciones" ] && cp -R "$launchers/otras-acciones" "$DEST/"
-  [ -d "$src/registry" ] && cp -R "$src/registry" "$DEST/"
-  cp "$src/docs/servidor-peru.md" "$DEST/docs/"
-  [ -f "$src/LEEME.txt" ] || cp "$src/collector/LEEME.txt" "$DEST/" 2>/dev/null
+  if [ -d "$launchers/otras-acciones" ]; then cp -R "$launchers/otras-acciones" "$DEST/" || ok=0; fi
+  if [ -d "$src/registry" ]; then cp -R "$src/registry" "$DEST/" || ok=0; fi
+  cp "$src/docs/servidor-peru.md" "$DEST/docs/" || ok=0
+  if [ ! -f "$src/LEEME.txt" ] && [ -f "$src/collector/LEEME.txt" ]; then cp "$src/collector/LEEME.txt" "$DEST/" || ok=0; fi
   for f in "$src/LEEME.txt" "$src/LICENSE" "$src/kit.json" "$launchers"/*.command "$launchers"/*.cmd; do
-    [ -f "$f" ] && cp "$f" "$DEST/"
+    if [ -f "$f" ]; then cp "$f" "$DEST/" || ok=0; fi
   done
+  [ "$ok" = 1 ] || die "No se pudieron copiar todos los archivos a $DEST." \
+    "Revisar el espacio libre y los permisos de la carpeta y volver a ejecutar INSTALAR."
   find "$DEST" -name __pycache__ -type d -prune -exec rm -rf {} + 2>/dev/null
   # Un zip abierto con «python -m zipfile» (ACTUALIZAR), una memoria USB o una
   # carpeta en la nube pierden el permiso de ejecución de los lanzadores.
@@ -251,7 +257,10 @@ save_env() {  # token hora
       fi
     } >"$tmp"
   ) || die "No se pudo escribir $ENV_FILE"
-  mv "$tmp" "$ENV_FILE" && chmod 600 "$ENV_FILE"
+  # Con el disco lleno el archivo queda cortado: sin su última línea fija no se usa.
+  grep -q '^ENSO_COLLECT_AT=' "$tmp" 2>/dev/null || die "No se pudo escribir $ENV_FILE completo." \
+    "Revisar el espacio libre y volver a ejecutar INSTALAR."
+  { mv "$tmp" "$ENV_FILE" && chmod 600 "$ENV_FILE"; } || die "No se pudo guardar $ENV_FILE"
 }
 
 in_python() { (cd "$DEST/python" && ENSO_HOME="$DEST" "$VPY" "$@"); }

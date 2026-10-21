@@ -635,6 +635,26 @@ def test_install_from_a_repository_checkout_brings_the_launchers(tmp_path):
 
 
 @pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
+def test_installer_stops_when_the_kit_cannot_be_copied(tmp_path):
+    """Instalar no tiene «set -e»: una copia que falla (disco lleno) debe parar
+    antes del entorno de Python y de la tarea, no seguir con una instalación a medias."""
+    real_cp = shutil.which("cp")
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    (bin_dir / "cp").write_text(
+        f"#!/bin/sh\nfor a in \"$@\"; do case \"$a\" in */config) echo 'cp: No space left on device' >&2; exit 1 ;; esac; done\n"
+        f"exec '{real_cp}' \"$@\"\n", encoding="utf-8")
+    (bin_dir / "cp").chmod(0o755)
+    dest = tmp_path / "recolector"
+    env = {**os.environ, "HOME": str(tmp_path), "ENSO_SIN_PAUSA": "1", "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}"}
+    r = subprocess.run(["bash", str(REPO_ROOT / "collector" / "instalar.sh"), "--no-interactivo", "--sin-tarea",
+                        "--sin-verificar", "--destino", str(dest)], capture_output=True, text=True, env=env, timeout=120)
+    out = r.stdout + r.stderr
+    assert r.returncode != 0 and "No se pudieron copiar" in out, out
+    assert not (dest / ".venv").exists()
+
+
+@pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
 def test_installer_never_takes_over_or_deletes_someone_elses_folder(tmp_path):
     """Con --destino en una carpeta ajena (un proyecto con su .venv), instalar
     se niega antes de tocar nada y desinstalar no la borra."""
