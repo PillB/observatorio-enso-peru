@@ -14,25 +14,29 @@ on:
     paths:
       - 'collector/**'
       - 'python/tools/peru_collector.py'
+      - 'python/tools/__init__.py'
       - 'python/tools/collector_*.py'
       - 'python/enso/**'
       - 'python/requirements.txt'
       - 'python/tests/test_collector_service.py'
-      - 'config/threshold-policies/*.yaml'
+      - 'config/**/*.yaml'
       - 'registry/**'
       - 'docs/servidor-peru.md'
+      - 'LICENSE'
       - '.github/workflows/recolector-kit.yml'
   pull_request:
     paths:
       - 'collector/**'
       - 'python/tools/peru_collector.py'
+      - 'python/tools/__init__.py'
       - 'python/tools/collector_*.py'
       - 'python/enso/**'
       - 'python/requirements.txt'
       - 'python/tests/test_collector_service.py'
-      - 'config/threshold-policies/*.yaml'
+      - 'config/**/*.yaml'
       - 'registry/**'
       - 'docs/servidor-peru.md'
+      - 'LICENSE'
       - '.github/workflows/recolector-kit.yml'
   workflow_dispatch:
 

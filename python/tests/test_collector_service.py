@@ -477,6 +477,27 @@ def test_kit_is_complete_reproducible_and_runs_alone(tmp_path):
     assert r.returncode == 0, r.stderr
 
 
+def _github_glob(pattern: str) -> re.Pattern:
+    """Filtro de rutas de GitHub Actions: ``*`` no cruza «/», ``**`` sí (también ninguna carpeta)."""
+    rx = re.escape(pattern).replace(r"\*\*/", "(?:.*/)?").replace(r"\*\*", ".*").replace(r"\*", "[^/]*")
+    return re.compile(rx + r"\Z")
+
+
+def test_every_kit_file_rebuilds_the_kit():
+    """Un cambio en cualquier archivo del kit tiene que volver a probarlo y publicarlo."""
+    import yaml
+
+    wf = yaml.safe_load((REPO_ROOT / ".github" / "workflows" / "recolector-kit.yml").read_text(encoding="utf-8"))
+    on = wf.get("on", wf.get(True))  # YAML 1.1 lee «on» como True
+    push, pr = on["push"]["paths"], on["pull_request"]["paths"]
+    assert push == pr
+    globs = [_github_glob(g) for g in pr]
+    missing = [rel for rel in (src.relative_to(REPO_ROOT).as_posix() for src in kit.kit_files(REPO_ROOT).values())
+               if not any(g.match(rel) for g in globs)]
+    assert missing == []
+    assert not _github_glob("python/tools/collector_*.py").match("python/tools/sub/collector_x.py")
+
+
 def test_kit_carries_the_site_contact_and_env_file_wins(tmp_path, home, monkeypatch):
     monkeypatch.setenv("ENSO_CONTACT_URL", "https://observatorio.example.pe/")
     zpath, _ = kit.build(tmp_path / "k")
