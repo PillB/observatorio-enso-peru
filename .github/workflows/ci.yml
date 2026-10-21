@@ -29,7 +29,7 @@ jobs:
           cache-dependency-path: python/requirements*.txt
       - run: pip install -r python/requirements-dev.txt
       # Node 22 (node:sqlite) para las pruebas de la consola de lugares (functions/).
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Parsers, backtests and pipeline
