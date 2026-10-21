@@ -287,6 +287,18 @@ test('Fuentes: respeta robots.txt y el alcance «n8n»', async () => {
   });
   assert.deepEqual(fromGh.map((i) => i.json.url), ['https://a/', 'https://b/']);
   assert.match(fromGh[0].json.registry, /^GitHub/);
+  // Sin fuentes seleccionadas la corrida falla en vez de terminar sin hacer nada.
+  await assert.rejects(runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: 'no-existe' } }] }), /Ninguna fuente/);
+});
+
+test('Preparar copia: no publica si no pudo leer la copia anterior', async () => {
+  const nodes = (prev) => ({ 'Configuración': [{ json: { data_branch: 'data-n8n', carry_hours: 72, max_file_mb: 8 } }], 'Leer copia anterior': [{ json: prev }], Fuentes: [{ json: { registry: 'GitHub x@main (2026-10-21)' } }] });
+  await assert.rejects(runCode('preparar', {}, nodes({ statusCode: 500, data: '' })), /no se publica/);
+  await assert.rejects(runCode('preparar', {}, nodes({ error: { message: 'ECONNRESET' } })), /ECONNRESET/);
+  const first = await runCode('preparar', {}, nodes({ statusCode: 404, data: '' }));
+  const idx = first.find((i) => i.json.path === 'index.json');
+  assert.ok(idx);
+  assert.match(Buffer.from(idx.json.content, 'base64').toString(), /"registry": "GitHub x@main/);
 });
 
 test('Fuentes: una alternativa con otra terminación no hereda el tipo esperado', async () => {

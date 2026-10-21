@@ -7,7 +7,7 @@ const cfg = $('Configuración').first().json;
 const EMBEDDED = __REGISTRY__;
 const SCHEMA = 'enso-source-registry/1';
 let registry = null;
-let origin = 'incluido en el flujo (versión __VERSION__)';
+let origin = '';
 let prev = {};
 try { prev = $('Leer registro').first().json; } catch (e) { /* el flujo de validación no lee el registro */ }
 // Con «Response Format: Text» n8n deja el cuerpo en «data» (en algunas versiones, en «body»).
@@ -17,11 +17,14 @@ if (prev.statusCode === 200 && prevBody) {
     const j = typeof prevBody === 'string' ? JSON.parse(prevBody) : prevBody;
     if (j && j.schema === SCHEMA && Array.isArray(j.sources) && j.sources.length) {
       registry = j;
-      origin = `GitHub ${cfg.repo}@${cfg.registry_ref}:${cfg.registry_path}`;
+      origin = `GitHub ${cfg.repo}@${cfg.registry_ref}:${cfg.registry_path} (${j.generated_at || 'sin fecha'})`;
     }
   } catch (e) { /* se usa la copia incluida */ }
 }
-if (!registry) registry = EMBEDDED;
+if (!registry) {
+  registry = EMBEDDED;
+  origin = `incluido en el flujo (versión __VERSION__, registro del ${EMBEDDED.generated_at || 'sin fecha'})`;
+}
 const year = new Intl.DateTimeFormat('en', { timeZone: 'America/Lima', year: 'numeric' }).format(new Date());
 const only = String(cfg.only || '').trim();
 const scope = String(cfg.scope || 'todas');
@@ -56,5 +59,10 @@ for (const s of registry.sources) {
       follow: k === 0 && s.follow ? s.follow : null, channels: s.channels || [], pass: 1, registry: origin,
     } });
   });
+}
+// Un registro que cambió de forma podría dejar la corrida sin fuentes y
+// terminar «bien» sin descargar nada: mejor fallar y que avise n8n.
+if (!out.length) {
+  throw new Error(`Ninguna fuente para descargar (alcance «${scope}»${only ? `, filtro «${only}»` : ''}; registro: ${origin}). Revisar registry/sources.json o la configuración.`);
 }
 return out;

@@ -115,6 +115,9 @@ jobs:
             echo; echo "### Fallas de n8n repetidas con curl y con Node (fetch)"
             echo; echo "| URL | curl: HTTP, bytes, s (IPv4) | curl IPv6 | Node fetch |"; echo "|---|---|---|---|"
           } >> "$GITHUB_STEP_SUMMARY"
+          for h in enfen.imarpe.gob.pe www.gob.pe www.senamhi.gob.pe; do
+            echo "DNS $h: sistema=$(getent ahostsv4 "$h" | head -1 | cut -d' ' -f1) 1.1.1.1=$(dig +short @1.1.1.1 "$h" | tail -1) 8.8.8.8=$(dig +short @8.8.8.8 "$h" | tail -1)" | tee -a "$GITHUB_STEP_SUMMARY"
+          done
           jq -r '.[1:][] | select(.resultado != "OK") | .url' validacion-actions.json | sort -u | head -40 | while read -r u; do
             c4=$(curl -4 -sg -o /dev/null -A "$UA" -H 'Accept: */*' --compressed -w '%{http_code} %{size_download} %{time_total}' --max-time 60 "$u" 2>&1 || true)
             c6=$(curl -6 -sg -o /dev/null -A "$UA" --max-time 20 -w '%{http_code} %{time_total}' "$u" 2>&1 || true)
@@ -124,7 +127,7 @@ jobs:
                 .then(async (r) => { const b = await r.arrayBuffer(); console.log(r.status, b.byteLength, ((Date.now() - t0) / 1000).toFixed(1)); })
                 .catch((e) => console.log("error", (e.cause && e.cause.code) || e.name, ((Date.now() - t0) / 1000).toFixed(1)));
             ' "$u" "$UA")
-            echo "| ${u:0:90} | $c4 | $c6 | $nf |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| ${u:0:90} | $c4 | $c6 | $nf |" | tee -a "$GITHUB_STEP_SUMMARY"
           done
       - uses: actions/upload-artifact@v4
         with:

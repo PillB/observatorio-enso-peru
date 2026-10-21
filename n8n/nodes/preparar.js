@@ -14,8 +14,11 @@ if (prevResp.statusCode === 200 && prevBody) {
     const j = typeof prevBody === 'string' ? JSON.parse(prevBody) : prevBody;
     if (j.schema === 'enso-relay/1') { previous = j; previousNote = `copia anterior del ${j.collected_at}`; }
   } catch (e) { previousNote = 'index.json anterior ilegible'; }
-} else if (prevResp.statusCode && prevResp.statusCode !== 404) {
-  previousNote = `no se pudo leer la copia anterior (HTTP ${prevResp.statusCode})`;
+} else if (prevResp.statusCode !== 404) {
+  // Sin la copia anterior se perderían las copias que se arrastran y la rama
+  // se reemplazaría: mejor no publicar y que avise el «Error workflow».
+  const why = prevResp.statusCode ? `HTTP ${prevResp.statusCode}` : String((prevResp.error && prevResp.error.message) || prevResp.error || 'sin respuesta');
+  throw new Error(`No se pudo leer la copia anterior en ${cfg.data_branch} (${why}); no se publica para no reemplazarla. Revisar la credencial de GitHub y volver a correr.`);
 }
 const results = [];
 for (let i = 0; i < items.length; i++) {
@@ -42,6 +45,7 @@ const { index, files } = buildSnapshot({
     version: '__VERSION__',
     execution: typeof $execution !== 'undefined' ? String($execution.id) : '',
     previous: previousNote,
+    registry: String($('Fuentes').first().json.registry || ''),
   },
 });
 const indexBytes = utf8Encode(JSON.stringify(index, null, 1) + '\n');
