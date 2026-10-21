@@ -17,3 +17,11 @@ node_modules/
 .env*
 *.log
 .claude
+
+# Recolector instalado desde el repositorio (ver docs/servidor-peru.md)
+/logs/
+/estado.json
+/estado.tmp
+/.recolector.lock
+/forzar-proxima.json
+/dist/

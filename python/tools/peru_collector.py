@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import os
 import re
@@ -34,6 +35,7 @@ import tempfile
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from urllib.parse import urljoin
 from zoneinfo import ZoneInfo
 
 import httpx
@@ -48,6 +50,13 @@ LIMA = ZoneInfo("America/Lima")
 REPO = os.environ.get("ENSO_REPO", "PillB/observatorio-enso-peru")
 BRANCH = os.environ.get("ENSO_RELAY_BRANCH", "data-peru")
 MAX_BYTES = 8_000_000
+HEARTBEAT = "heartbeat.json"
+#: Registro de fuentes (rama principal del repositorio; copia en el kit).
+REGISTRY_PATH = "registry/sources.json"
+REGISTRY_SCHEMA = "enso-source-registry/1"
+PERU_CHANNEL = "peru-server"
+MAX_REGISTRY_SOURCES = 200
+MAX_FOLLOW = 20
 
 #: Fuentes que se recolectan desde el Perú. Las URL deben coincidir con las
 #: del catálogo del pipeline para que la actualización diaria las encuentre.
@@ -80,6 +89,118 @@ def log(msg: str) -> None:
     print(f"{datetime.now(LIMA):%Y-%m-%d %H:%M:%S} {msg}", flush=True)
 
 
+# --- Registro de fuentes ---------------------------------------------------------
+
+def _valid_registry(data: object) -> dict:
+    return data if isinstance(data, dict) and data.get("schema") == REGISTRY_SCHEMA else {}
+
+
+def load_registry(token: str = "") -> tuple[dict, str]:
+    """El registro de fuentes y de dónde salió. Primero el del repositorio en
+    GitHub (con el token, así el equipo sigue los cambios sin reinstalar y
+    funciona aunque el repositorio sea privado); si no, la copia del kit o del
+    repositorio local. Sin registro, se recolecta solo ``SOURCES``."""
+    override = os.environ.get("ENSO_REGISTRY_FILE", "").strip()
+    if token and not override and not os.environ.get("ENSO_RELAY_REMOTE"):
+        ref = os.environ.get("ENSO_REGISTRY_REF", "").strip()
+        try:
+            r = httpx.get(f"https://api.github.com/repos/{REPO}/contents/{REGISTRY_PATH}",
+                          params={"ref": ref} if ref else None, timeout=30, follow_redirects=True,
+                          headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github.raw+json",
+                                   "User-Agent": UA})
+            data = _valid_registry(r.json()) if r.status_code == 200 else {}
+            if data:
+                return data, "github"
+        except (httpx.HTTPError, ValueError):
+            pass
+    # ENSO_REGISTRY_FILE fija el archivo (pruebas, o para no consultar GitHub).
+    path, origin = ((Path(override), "archivo") if override else
+                    (Path(__file__).resolve().parents[2] / REGISTRY_PATH, "kit"))  # la instalación o el repo
+    try:
+        data = _valid_registry(json.loads(path.read_text(encoding="utf-8")))
+    except (OSError, ValueError):
+        data = {}
+    return (data, origin) if data else ({}, "")
+
+
+def peru_sources(registry: dict) -> list[dict]:
+    """Entradas del registro para este equipo: canal «peru-server» (las geobloqueadas)."""
+    out = []
+    for src in registry.get("sources") or []:
+        if not isinstance(src, dict) or PERU_CHANNEL not in (src.get("channels") or []):
+            continue
+        if str(src.get("url") or "").startswith(("https://", "http://")):
+            out.append(src)
+    return out[:MAX_REGISTRY_SOURCES]
+
+
+def robots_disallowed(registry: dict) -> set[str]:
+    """URL que el registro marca «robots-disallowed»: el robots.txt del servidor
+    pide no automatizarlas y no las pide nadie, tampoco este equipo."""
+    out: set[str] = set()
+    for src in registry.get("sources") or []:
+        geo = src.get("geoblock") if isinstance(src, dict) else None
+        if isinstance(geo, dict) and geo.get("status") == "robots-disallowed":
+            out.update(u for u in [src.get("url"), *(src.get("alt_urls") or [])] if isinstance(u, str))
+    return out
+
+
+def plan(registry: dict) -> tuple[dict[str, list[str]], dict[str, dict]]:
+    """Qué descargar: ``SOURCES`` (menos lo que robots.txt no permite) más las
+    fuentes «peru-server» del registro (por grupo, sin repetir URL), y las
+    reglas ``follow`` de cada URL."""
+    blocked = robots_disallowed(registry)
+    groups = {g: [u for u in urls if u not in blocked] for g, urls in SOURCES.items()}
+    known = {u for urls in groups.values() for u in urls}
+    follow: dict[str, dict] = {}
+    for src in peru_sources(registry):
+        url = src["url"]
+        if isinstance(src.get("follow"), dict):
+            follow[url] = src["follow"]
+        if url in known:
+            continue
+        group = re.sub(r"[^a-z0-9-]+", "-", str(src.get("group") or src.get("id") or "registro").lower()).strip("-")
+        groups.setdefault(group[:40] or "registro", []).append(url)
+        known.add(url)
+    return groups, follow
+
+
+def follow_links(client: httpx.Client, page: dict, rule: dict, seen: set[str]) -> list[dict]:
+    """Regla ``follow`` del registro: baja hasta ``max`` enlaces de la página
+    que coinciden con ``pattern`` (p. ej. los PDF de un listado)."""
+    body = page.get("body") or b""
+    if page.get("status") != 200 or not body:
+        return []
+    try:
+        pattern = re.compile(str(rule.get("pattern") or ""))
+        limit = max(0, min(int(rule.get("max") or 4), MAX_FOLLOW))
+    except (re.error, TypeError, ValueError):
+        return []
+    if not pattern.pattern:
+        return []
+    text = body.decode("utf-8", "replace").replace("\\/", "/")  # JSON escapa las barras
+    links: list[str] = []
+    for m in pattern.finditer(text):
+        if len(links) >= limit:
+            break
+        url = urljoin(page["url"], html.unescape(m.group(1) if m.groups() else m.group(0)))
+        if url.startswith(("https://", "http://")) and url not in seen:
+            seen.add(url)
+            links.append(url)
+    out = []
+    for url in links:
+        r = fetch(client, url)
+        r["parent"] = page["url"]
+        out.append(r)
+    return out
+
+
+def usable(entry: dict) -> bool:
+    """Una entrada sirve si quedó guardada en files/: el sitio (enso.fetch.Relay)
+    ignora las demás, aunque hayan respondido 200 (vacías o demasiado grandes)."""
+    return entry.get("status") == 200 and bool(entry.get("file"))
+
+
 def fetch(client: httpx.Client, url: str) -> dict:
     started = time.monotonic()
     err = ""
@@ -87,10 +208,13 @@ def fetch(client: httpx.Client, url: str) -> dict:
         try:
             r = client.get(url)
             body = r.content
-            return {"url": url, "status": r.status_code, "content_type": r.headers.get("content-type", ""),
-                    "bytes": len(body), "elapsed_s": round(time.monotonic() - started, 1),
-                    "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                    "body": body if len(body) <= MAX_BYTES else b""}
+            out = {"url": url, "status": r.status_code, "content_type": r.headers.get("content-type", ""),
+                   "bytes": len(body), "elapsed_s": round(time.monotonic() - started, 1),
+                   "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                   "body": body if len(body) <= MAX_BYTES else b""}
+            if len(body) > MAX_BYTES:
+                out["error"] = f"más de {MAX_BYTES // 1_000_000} MB: no se guarda"
+            return out
         except httpx.HTTPError as exc:
             err = f"{type(exc).__name__}: {exc}"[:200]
             time.sleep(3 * (attempt + 1))
@@ -145,21 +269,38 @@ def enfen_documents(client: httpx.Client, pages: list[dict]) -> list[dict]:
     return out
 
 
+def _log_fetch(r: dict) -> None:
+    log(f"{r.get('status')!s:>4} {r.get('bytes', 0):>9} B {r['elapsed_s']:>5}s {r['url']} {r.get('error', '')}")
+
+
 def collect(out: Path) -> dict:
     """Descarga todo en ``out`` (index.json + files/). Devuelve el índice."""
     files = out / "files"
     files.mkdir(parents=True, exist_ok=True)
     entries = []
+    registry, origin = load_registry(os.environ.get("GITHUB_TOKEN", "").strip())
+    groups, follow = plan(registry)
+    if registry:
+        log(f"registro de fuentes ({origin}): {len(peru_sources(registry))} para este equipo")
+    for url in sorted(robots_disallowed(registry) & {u for urls in SOURCES.values() for u in urls}):
+        log(f"no se pide {url}: su robots.txt no lo permite (registro)")
     with httpx.Client(timeout=40.0, follow_redirects=True, headers={"User-Agent": UA}) as client:
         results = {}
-        for group, urls in SOURCES.items():
+        for group, urls in groups.items():
             results[group] = [fetch(client, u) for u in urls]
             for r in results[group]:
-                log(f"{r.get('status')!s:>4} {r.get('bytes', 0):>9} B {r['elapsed_s']:>5}s {r['url']} {r.get('error', '')}")
+                _log_fetch(r)
         docs = enfen_documents(client, results["enfen"])
         for r in docs:
-            log(f"{r.get('status')!s:>4} {r.get('bytes', 0):>9} B {r['elapsed_s']:>5}s {r['url']} {r.get('error', '')}")
+            _log_fetch(r)
         results["enfen-docs"] = docs
+        seen = {r["url"] for rs in results.values() for r in rs}
+        linked = [d for rs in list(results.values()) for r in rs if r["url"] in follow
+                  for d in follow_links(client, r, follow[r["url"]], seen)]
+        for r in linked:
+            _log_fetch(r)
+        if linked:
+            results["enlaces"] = linked
     for group, rs in results.items():
         for r in rs:
             body = r.pop("body", b"")
@@ -169,37 +310,79 @@ def collect(out: Path) -> dict:
                 name = f"files/{sha[:16]}{ext}"
                 (out / name).write_bytes(body)
                 r.update({"file": name, "sha256": sha})
+            elif r.get("status") == 200 and not r.get("error"):
+                r["error"] = "respuesta vacía"
             r["group"] = group
             entries.append(r)
     index = {
         "schema": "enso-relay/1",
         "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "collector": {"host": socket.gethostname(), "tz": "America/Lima"},
+        "registry": {"origin": origin or "ninguno", "generated_at": registry.get("generated_at"),
+                     "peru_server": len(peru_sources(registry))},
         "entries": entries,
-        "summary": {g: f"{sum(1 for e in entries if e['group'] == g and e.get('status') == 200)}/"
+        "summary": {g: f"{sum(1 for e in entries if e['group'] == g and usable(e))}/"
                        f"{sum(1 for e in entries if e['group'] == g)}" for g in results},
     }
     (out / "index.json").write_text(json.dumps(index, indent=1, ensure_ascii=False), encoding="utf-8")
     return index
 
 
-def push(snapshot: Path, token: str) -> None:
+def heartbeat(idx: dict, result: str) -> dict:
+    """Latido de una corrida. Se sube siempre que GitHub responde, aunque
+    ninguna fuente lo haga: así el sitio distingue «el recolector no corre»
+    (latido viejo) de «las instituciones no responden ni desde el Perú»
+    (latido reciente con ``result`` = ``sin-fuentes``)."""
+    entries = idx.get("entries") or []
+    ok = sum(1 for e in entries if usable(e))
+    return {
+        "schema": "enso-relay-heartbeat/1",
+        "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "result": result,
+        "reachable": f"{ok}/{len(entries)}",
+        "summary": idx.get("summary") or {},
+        "failures": [{k: e[k] for k in ("url", "status", "error") if e.get(k) is not None}
+                     for e in entries if not usable(e)][:40],
+        "collector": idx.get("collector") or {},
+    }
+
+
+def push_heartbeat(hb: dict, token: str) -> None:
+    """Sube solo el latido y deja intacta la última copia buena."""
+    with tempfile.TemporaryDirectory() as tmp:
+        (Path(tmp) / HEARTBEAT).write_text(json.dumps(hb, indent=1, ensure_ascii=False), encoding="utf-8")
+        push(Path(tmp), token, replace=False,
+             message=f"relay: latido {hb['at']} ({hb['result']}, {hb['reachable']} fuentes)")
+
+
+def push(snapshot: Path, token: str, *, replace: bool = True, message: str = "") -> None:
     """Reemplaza el contenido de la rama ``data-peru`` con la nueva copia
-    (el historial de git conserva las anteriores)."""
+    (el historial de git conserva las anteriores). Con ``replace=False``
+    solo agrega o reemplaza los archivos de ``snapshot`` (el latido)."""
     remote = os.environ.get("ENSO_RELAY_REMOTE") or f"https://x-access-token:{token}@github.com/{REPO}.git"
+    # Sin ayudantes de credenciales (guardarían el token en el llavero o en el
+    # administrador de credenciales de Windows) ni ventanas que pidan clave:
+    # en una tarea programada nadie las contestaría. Una subida trabada se corta.
+    base = ["git", "-c", "credential.helper=", "-c", "http.lowSpeedLimit=1000", "-c", "http.lowSpeedTime=60"]
+    env = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GCM_INTERACTIVE": "never"}
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp) / "repo"
 
         def git(*args: str, check: bool = True) -> subprocess.CompletedProcess:
-            res = subprocess.run(["git", *args], cwd=work if work.exists() else tmp,
-                                 capture_output=True, text=True)
+            try:
+                res = subprocess.run([*base, *args], cwd=work if work.exists() else tmp,
+                                     capture_output=True, text=True, env=env, timeout=900)
+            except subprocess.TimeoutExpired:
+                raise RuntimeError(f"git {args[0]} falló: sin respuesta en 15 minutos") from None
             if check and res.returncode != 0:
                 # No mostrar el token en los mensajes de error.
                 raise RuntimeError(f"git {args[0]} falló: {res.stderr.replace(token, '***')[:400]}")
             return res
 
-        exists = subprocess.run(["git", "ls-remote", "--exit-code", "--heads", remote, BRANCH],
-                                capture_output=True, text=True).returncode == 0
+        ls = git("ls-remote", "--exit-code", "--heads", remote, BRANCH, check=False)
+        if ls.returncode not in (0, 2):  # 2: la rama no existe todavía; otro código: red o permisos
+            raise RuntimeError(f"git ls-remote falló: {ls.stderr.replace(token, '***')[:400]}")
+        exists = ls.returncode == 0
         if exists:
             git("clone", "--depth", "1", "--branch", BRANCH, remote, str(work))
         else:
@@ -208,7 +391,7 @@ def push(snapshot: Path, token: str) -> None:
             git("remote", "add", "origin", remote)
         git("config", "user.name", "enso-peru-collector")
         git("config", "user.email", "enso-peru-collector@users.noreply.github.com")
-        for p in work.iterdir():
+        for p in work.iterdir() if replace else ():
             if p.name != ".git":
                 shutil.rmtree(p) if p.is_dir() else p.unlink()
         shutil.copytree(snapshot, work, dirs_exist_ok=True)
@@ -216,8 +399,10 @@ def push(snapshot: Path, token: str) -> None:
         if git("diff", "--cached", "--quiet", check=False).returncode == 0:
             log("sin cambios respecto de la copia anterior")
             return
-        idx = json.loads((snapshot / "index.json").read_text(encoding="utf-8"))
-        git("commit", "-q", "-m", f"relay: fuentes peruanas {idx['collected_at']} ({idx['summary']})")
+        if not message:
+            idx = json.loads((snapshot / "index.json").read_text(encoding="utf-8"))
+            message = f"relay: fuentes peruanas {idx['collected_at']} ({idx['summary']})"
+        git("commit", "-q", "-m", message)
         git("push", "-q", "origin", f"HEAD:{BRANCH}")
         log(f"subido a {REPO}@{BRANCH}")
 
@@ -239,15 +424,25 @@ def run_once(do_push: bool, keep: Path | None, do_dispatch: bool = False) -> int
         log(f"resumen: {idx['summary']}")
         if keep:
             shutil.copytree(snap, keep, dirs_exist_ok=True)
+        ok = sum(1 for e in idx["entries"] if usable(e))
+        token = os.environ.get("GITHUB_TOKEN", "").strip()
+        if do_push and not token:
+            log("falta GITHUB_TOKEN: no se sube nada")
+            return 2
+        if do_push and not ok:
+            # Una copia vacía reemplazaría a la última buena en data-peru: solo el latido.
+            log("ninguna fuente respondió: solo se sube el latido")
+            try:
+                push_heartbeat(heartbeat(idx, "sin-fuentes"), token)
+            except (RuntimeError, OSError, subprocess.SubprocessError) as exc:
+                log(f"tampoco se pudo subir el latido: {exc}")
+            return 1
         if do_push:
-            token = os.environ.get("GITHUB_TOKEN", "").strip()
-            if not token:
-                log("falta GITHUB_TOKEN: no se sube nada")
-                return 2
+            (snap / HEARTBEAT).write_text(json.dumps(heartbeat(idx, "ok"), indent=1, ensure_ascii=False),
+                                          encoding="utf-8")
             push(snap, token)
             if do_dispatch:
                 dispatch(token)
-    ok = sum(1 for e in idx["entries"] if e.get("status") == 200)
     return 0 if ok else 1
 
 
@@ -260,16 +455,17 @@ def next_run(at: str, now: datetime | None = None) -> datetime:
 
 def probe() -> int:
     """Muestra qué fuentes responden desde esta máquina, sin subir nada."""
+    groups, _ = plan(load_registry(os.environ.get("GITHUB_TOKEN", "").strip())[0])
     with httpx.Client(timeout=25.0, follow_redirects=True, headers={"User-Agent": UA}) as client:
         ok = 0
-        for group, urls in SOURCES.items():
+        for group, urls in groups.items():
             for u in urls:
                 r = fetch(client, u)
                 good = r.get("status") == 200 and r.get("bytes", 0) > 500
                 ok += good
                 print(f"{'OK ' if good else 'NO '} {group:8} {r.get('status')!s:>4} {r.get('bytes', 0):>9} B "
                       f"{r['elapsed_s']:>5}s {u} {r.get('error', '')}", flush=True)
-    total = sum(len(v) for v in SOURCES.values())
+    total = sum(len(v) for v in groups.values())
     print(f"\n{ok}/{total} fuentes responden desde esta máquina.")
     return 0 if ok else 1
 

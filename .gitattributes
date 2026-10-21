@@ -1,0 +1,5 @@
+# Finales de línea de los scripts del recolector (ver python/tools/collector_kit.py).
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+*.sh text eol=lf
+*.command text eol=lf

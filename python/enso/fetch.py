@@ -69,6 +69,15 @@ class FetchError(RuntimeError):
         self.attempts = attempts
 
 
+def read_heartbeat(root: Path) -> dict:
+    """Latido de la última corrida del recolector (``heartbeat.json``), o ``{}``."""
+    try:
+        hb = json.loads((Path(root) / "heartbeat.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return hb if isinstance(hb, dict) and hb.get("schema") == "enso-relay-heartbeat/1" else {}
+
+
 class Relay:
     """Copias recolectadas desde el Perú (rama ``data-peru``).
 
@@ -85,8 +94,10 @@ class Relay:
         if idx.get("schema") != "enso-relay/1":
             raise ValueError(f"esquema de relay desconocido: {idx.get('schema')!r}")
         self.collected_at: str = idx.get("collected_at", "")
-        self.host: str = (idx.get("collector") or {}).get("host", "")
+        self.collector: dict = idx.get("collector") or {}
+        self.host: str = self.collector.get("host", "")
         self.summary: dict = idx.get("summary") or {}
+        self.heartbeat: dict = read_heartbeat(self.root)
         self.max_age_hours = max_age_hours
         self._by_url: dict[str, list[dict]] = {}
         for e in idx.get("entries") or []:
