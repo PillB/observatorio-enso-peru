@@ -188,7 +188,7 @@ Los lanzadores llaman a `collector/instalar.ps1` (Windows) o
 | `-Actualizar` | `--actualizar` | Descargar la última versión del kit, comprobar su sha256 e instalarla conservando el token |
 | `-Desinstalar` | `--desinstalar` | Quitar la tarea y la carpeta de instalación |
 | `-Token github_pat_...` | `--token github_pat_...` | Dar el token sin preguntarlo (queda en el historial de la terminal: preferir que lo pida) |
-| `-Destino CARPETA` | `--destino CARPETA` | Otra carpeta de instalación |
+| `-Destino CARPETA` | `--destino CARPETA` | Otra carpeta de instalación: nueva o vacía, porque `DESINSTALAR` la borra entera (una carpeta con otros archivos se rechaza) |
 | `-Hora 21:00` | `--hora 21:00` | Otra hora de Lima para la recolección |
 | `-SinTarea`, `-SinVerificar`, `-NoInteractivo` | `--sin-tarea`, `--sin-verificar`, `--no-interactivo` | Para instalaciones automáticas |
 | `-Solo a,b`, `-Omitir a,b` | `--solo a,b`, `--omitir a,b` | Elegir comprobaciones de la verificación |

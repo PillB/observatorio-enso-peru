@@ -499,6 +499,39 @@ def test_internet_check_with_a_private_repo_or_a_captive_portal(home, monkeypatc
     assert results[0].level == getattr(chk, level), results
 
 
+def test_internet_check_dates_the_copy_from_its_index_not_the_heartbeat_commit(home, monkeypatch):
+    """Una corrida sin fuentes sube solo el latido: el último commit es reciente,
+    pero la copia que usa el sitio sigue siendo la de hace dos días."""
+    monkeypatch.setenv("GITHUB_TOKEN", TOKEN)
+    now = datetime.now(timezone.utc)
+    iso = lambda h: (now - timedelta(hours=h)).isoformat(timespec="seconds")  # noqa: E731
+    files = {"index.json": {"schema": "enso-relay/1", "collected_at": iso(50), "entries": []},
+             "heartbeat.json": {"schema": "enso-relay-heartbeat/1", "at": iso(1), "result": "sin-fuentes",
+                                "reachable": "0/11"}}
+
+    def reply(req: httpx.Request) -> httpx.Response:
+        path = req.url.path
+        if path.endswith("/branches/data-peru"):
+            return httpx.Response(200, json={"commit": {"commit": {"committer": {"date": iso(1)},
+                                                                   "message": "latido: sin fuentes"}}})
+        if "/contents/" in path:
+            assert req.url.params["ref"] == "data-peru" and "raw" in req.headers["accept"]
+            name = path.rsplit("/", 1)[-1]
+            return httpx.Response(200, json=files[name]) if name in files else httpx.Response(404)
+        return httpx.Response(200, json={"full_name": chk.repo()}, headers={"date": now.strftime("%a, %d %b %Y %H:%M:%S GMT")})
+
+    monkeypatch.setattr(chk, "_client", lambda timeout=20.0: httpx.Client(transport=httpx.MockTransport(reply)))
+    results = chk.check_internet({"root": home})
+    copy = next(r for r in results if r.title.startswith("última copia"))
+    assert copy.level == chk.WARN and "hace 50 h" in copy.title and "index.json" in copy.detail
+    beat = next(r for r in results if r.title.startswith("último latido"))
+    assert "ninguna fuente respondió" in beat.title and "relay-sources-down" in beat.hint
+    # Sin index.json legible (rama de una versión anterior) se usa la fecha del commit.
+    files.pop("index.json")
+    copy = next(r for r in chk.check_internet({"root": home}) if r.title.startswith("última copia"))
+    assert copy.level == chk.INFO and "hace 1 h" in copy.title and "commit" in copy.detail
+
+
 def test_launchers_only_use_options_the_installers_know():
     ps1 = (REPO_ROOT / "collector" / "instalar.ps1").read_text(encoding="utf-8-sig")
     sh = (REPO_ROOT / "collector" / "instalar.sh").read_text(encoding="utf-8")
@@ -549,6 +582,31 @@ def test_uninstall_keeps_the_folder_when_the_task_cannot_be_removed(tmp_path, mo
     assert "no se borró" in r.stdout + r.stderr
 
 
+@pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
+def test_installer_never_takes_over_or_deletes_someone_elses_folder(tmp_path):
+    """Con --destino en una carpeta ajena (un proyecto con su .venv), instalar
+    se niega antes de tocar nada y desinstalar no la borra."""
+    dest = tmp_path / "mi-proyecto"
+    (dest / "config").mkdir(parents=True)
+    (dest / "config" / "ajustes.yaml").write_text("mio: 1\n", encoding="utf-8")
+    (dest / "python").mkdir()
+    (dest / "kit.json").write_text("{}", encoding="utf-8")
+    fake = dest / ".venv" / "bin" / "python"
+    fake.parent.mkdir(parents=True)
+    fake.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")  # quitar la tarea «funciona»
+    fake.chmod(0o755)
+    before = sorted(p.relative_to(dest) for p in dest.rglob("*"))
+    env = {**os.environ, "HOME": str(tmp_path), "ENSO_SIN_PAUSA": "1"}
+    script = str(REPO_ROOT / "collector" / "instalar.sh")
+    r = subprocess.run(["bash", script, "--no-interactivo", "--sin-verificar", "--sin-tarea", "--destino", str(dest)],
+                       capture_output=True, text=True, env=env, timeout=60)
+    assert r.returncode != 0 and "no es una instalación del recolector" in r.stdout + r.stderr, r.stdout + r.stderr
+    r = subprocess.run(["bash", script, "--desinstalar", "--no-interactivo", "--destino", str(dest)],
+                       capture_output=True, text=True, env=env, timeout=60)
+    assert "no parece una instalación" in r.stdout + r.stderr, r.stdout + r.stderr
+    assert sorted(p.relative_to(dest) for p in dest.rglob("*")) == before
+
+
 @pytest.mark.skipif(sys.platform != "linux", reason="el respaldo sin Python usa cron (Linux)")
 @pytest.mark.parametrize("message, deleted", [("no crontab for pablo", True),
                                                ("You (pablo) are not allowed to use this program", False)])
@@ -557,7 +615,7 @@ def test_uninstall_without_python_reads_the_crontab_before_rewriting_it(tmp_path
     crontab ilegible no se reescribe vacío ni se da por quitado."""
     dest = tmp_path / "instalacion"
     dest.mkdir()
-    (dest / "kit.json").write_text("{}", encoding="utf-8")
+    (dest / ".instalacion-recolector").write_text("recolector\n", encoding="utf-8")
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
     log = tmp_path / "crontab.log"

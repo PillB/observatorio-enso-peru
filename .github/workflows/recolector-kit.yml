@@ -141,6 +141,15 @@ jobs:
           if (Get-ScheduledTask -TaskName 'Observatorio ENSO - recolector Peru' -ErrorAction SilentlyContinue) { throw 'La tarea sigue registrada' }
           if (Test-Path $dest) { throw 'La carpeta sigue ahí' }
 
+          # Una carpeta ajena (un proyecto con su .venv) no se toma ni se borra.
+          $foreign = Join-Path $env:RUNNER_TEMP 'mi proyecto'
+          New-Item -ItemType Directory -Force -Path "$foreign\.venv" | Out-Null
+          Set-Content "$foreign\notas.txt" 'mio'
+          & "kit\recolector-peru\INSTALAR-Windows.cmd" -NoInteractivo -SinVerificar -SinTarea -Destino $foreign
+          if ($LASTEXITCODE -eq 0) { throw 'INSTALAR aceptó una carpeta ajena' }
+          & "kit\recolector-peru\otras-acciones\DESINSTALAR-Windows.cmd" -NoInteractivo -Destino $foreign
+          if (-not (Test-Path "$foreign\notas.txt") -or (Test-Path "$foreign\logs")) { throw 'Se tocó una carpeta ajena' }
+
       - name: Install, verify, fire the task and uninstall (macOS)
         if: runner.os == 'macOS'
         run: |

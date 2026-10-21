@@ -100,6 +100,7 @@ case "$HORA" in
   *) die "--hora debe ser HH:MM (por ejemplo 21:00)" ;;
 esac
 VPY="$DEST/.venv/bin/python"
+MARKER=".instalacion-recolector"
 ENV_FILE="$DEST/.env"
 
 py_ok() { "$1" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1; }
@@ -157,6 +158,9 @@ copy_kit() {
   if [ "$src" = "$dst" ]; then say "Se usa la carpeta actual."; return; fi
   [ -f "$src/python/tools/peru_collector.py" ] || die "No se encuentra el código del recolector junto a este instalador ($src)." \
       "Descomprimir el kit completo y ejecutar INSTALAR desde esa carpeta."
+  require_free_dest
+  printf '%s\n' "Carpeta del recolector del Observatorio ENSO. DESINSTALAR la borra entera: no guardar aquí otros archivos." \
+    > "$DEST/$MARKER"
   rm -rf "$DEST/python/enso" "$DEST/python/tools" "$DEST/config" "$DEST/registry" "$DEST/collector" "$DEST/otras-acciones"
   mkdir -p "$DEST/python" "$DEST/docs"
   cp "$src/python/requirements.txt" "$DEST/python/"
@@ -316,9 +320,29 @@ sha256_check() {  # carpeta archivo.sha256
 }
 
 # Solo se borra una carpeta que es claramente una instalación del recolector.
+# Una carpeta es del recolector si la instalación la marcó, o si tiene el kit
+# completo (kit.json y el código). Un .venv o un kit.json sueltos no bastan:
+# DESINSTALAR la borra entera.
 looks_like_install() {
   case "$DEST" in ""|/|"$HOME"|"$HOME/") return 1 ;; esac
-  [ -f "$DEST/python/tools/collector_service.py" ] || [ -d "$DEST/.venv" ] || [ -f "$DEST/kit.json" ]
+  [ -f "$DEST/$MARKER" ] || { [ -f "$DEST/kit.json" ] && [ -f "$DEST/python/tools/collector_service.py" ]; }
+}
+
+# Instalar solo en una carpeta nueva, vacía (o con solo logs/) o que ya es del recolector.
+dest_is_free() {
+  [ -d "$DEST" ] || return 0
+  looks_like_install && return 0
+  case "$DEST" in ""|/|"$HOME"|"$HOME/") return 1 ;; esac
+  local f
+  for f in "$DEST"/* "$DEST"/.[!.]* "$DEST"/..?*; do
+    [ -e "$f" ] || [ -L "$f" ] || continue
+    [ "$f" = "$DEST/logs" ] || return 1
+  done
+}
+
+require_free_dest() {
+  dest_is_free || die "La carpeta $DEST ya tiene otros archivos y no es una instalación del recolector." \
+    "Elegir una carpeta nueva o vacía con --destino: DESINSTALAR borra la carpeta entera."
 }
 
 # Con el repositorio privado la descarga pública da 404: se pide con el token, por la API.
@@ -396,6 +420,7 @@ do_uninstall() {
 
 case "$MODE" in
   instalar)
+    require_free_dest
     mkdir -p "$DEST/logs" 2>/dev/null
     LOGF="$DEST/logs/instalacion-$(date +%Y%m%d-%H%M%S).txt"
     # Registro de la instalación sin perder la terminal interactiva.

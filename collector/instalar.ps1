@@ -67,6 +67,7 @@ $VenvPy = Join-Path $Destino '.venv\Scripts\python.exe'
 $VenvPyw = Join-Path $Destino '.venv\Scripts\pythonw.exe'
 $EnvFile = Join-Path $Destino '.env'
 $StartMenu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Observatorio ENSO'
+$Marker = '.instalacion-recolector'
 
 function Write-Step([string]$Message) { Write-Host ''; Write-Host "== $Message" -ForegroundColor Cyan }
 function Write-Info([string]$Message) { Write-Host "   $Message" }
@@ -236,6 +237,9 @@ function Copy-Kit {
     if (-not (Test-Path (Join-Path $KitRoot 'python\tools\peru_collector.py'))) {
         Exit-WithError "No se encuentra el código del recolector junto a este instalador ($KitRoot)." 'Descomprimir el kit completo y ejecutar INSTALAR desde esa carpeta.'
     }
+    Assert-DestinoFree
+    New-Item -ItemType Directory -Force -Path $Destino | Out-Null
+    Set-Content -LiteralPath (Join-Path $Destino $Marker) -Encoding UTF8 -Value 'Carpeta del recolector del Observatorio ENSO. DESINSTALAR la borra entera: no guardar aquí otros archivos.'
     New-Item -ItemType Directory -Force -Path (Join-Path $Destino 'python'), (Join-Path $Destino 'docs') | Out-Null
     foreach ($d in 'python\enso', 'python\tools', 'config', 'registry', 'collector', 'otras-acciones') {
         $target = Join-Path $Destino $d
@@ -403,6 +407,24 @@ function Invoke-Update {
     }
 }
 
+# Una carpeta es del recolector si la instalación la marcó, o si tiene el kit
+# completo (kit.json y el código). Un .venv o un kit.json sueltos no bastan:
+# DESINSTALAR la borra entera.
+function Test-OurInstall {
+    (Test-Path -LiteralPath (Join-Path $Destino $Marker)) -or
+        ((Test-Path -LiteralPath (Join-Path $Destino 'kit.json')) -and
+         (Test-Path -LiteralPath (Join-Path $Destino 'python\tools\collector_service.py')))
+}
+
+# Instalar solo en una carpeta nueva, vacía (o con solo logs) o que ya es del recolector.
+function Assert-DestinoFree {
+    if (-not (Test-Path -LiteralPath $Destino) -or (Test-OurInstall)) { return }
+    $other = @(Get-ChildItem -LiteralPath $Destino -Force -ErrorAction SilentlyContinue | Where-Object { $_.Name -ne 'logs' })
+    if ($other.Count -gt 0) {
+        Exit-WithError "La carpeta $Destino ya tiene otros archivos y no es una instalación del recolector." 'Elegir una carpeta nueva o vacía con -Destino: DESINSTALAR borra la carpeta entera.'
+    }
+}
+
 function Invoke-Uninstall {
     Write-Step 'Desinstalar el recolector'
     if (-not (Read-YesNo "Se quitará la tarea programada y la carpeta $Destino (con el token). ¿Continuar?" $true)) { return 0 }
@@ -421,8 +443,7 @@ function Invoke-Uninstall {
         }
     }
     # Solo se borra una carpeta que es claramente una instalación del recolector.
-    $ours = (Test-Path (Join-Path $Destino 'python\tools\collector_service.py')) -or (Test-Path (Join-Path $Destino '.venv')) -or
-        (Test-Path (Join-Path $Destino 'kit.json'))
+    $ours = Test-OurInstall
     $root = [IO.Path]::GetPathRoot($Destino).TrimEnd('\')
     $protected = @($root, $env:USERPROFILE, $env:LOCALAPPDATA, $env:APPDATA, $env:ProgramFiles) | ForEach-Object { "$_".TrimEnd('\') }
     if ($ours -and ($protected -notcontains $Destino.TrimEnd('\'))) {
@@ -551,6 +572,7 @@ try {
         Write-Host 'Recolectando y subiendo la copia ahora (1 a 5 minutos)...' -ForegroundColor Green
         $code = Invoke-Live $VenvPy @('-m', 'tools.collector_service')
     } else {
+        Assert-DestinoFree
         New-Item -ItemType Directory -Force -Path (Join-Path $Destino 'logs') | Out-Null
         try {
             Start-Transcript -Path (Join-Path $Destino ("logs\instalacion-{0:yyyyMMdd-HHmmss}.txt" -f (Get-Date))) | Out-Null
