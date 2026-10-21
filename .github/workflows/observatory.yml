@@ -178,6 +178,7 @@ jobs:
           python-version: '3.12'
       - run: pip install httpx
       - name: Make sure the Cloudflare Pages project exists
+        id: cf
         if: env.DEPLOY_TARGET == 'cloudflare'
         working-directory: python
         env:
@@ -190,14 +191,15 @@ jobs:
           name: site
           path: ${{ runner.temp }}/site
       # Sin gitHubToken: no se crean «deployments» de GitHub que enlacen el
-      # repositorio con el sitio.
+      # repositorio con el sitio. Se despliega a la rama de producción del
+      # proyecto: otra rama quedaría como vista previa.
       - name: Deploy to Cloudflare Pages
         if: env.DEPLOY_TARGET == 'cloudflare'
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy "${{ runner.temp }}/site" --project-name=${{ env.CF_PROJECT }} --branch=main --commit-message="publicación ${{ needs.build.outputs.publication_id }}" --commit-dirty=true
+          command: pages deploy "${{ runner.temp }}/site" --project-name=${{ env.CF_PROJECT }} --branch=${{ steps.cf.outputs.branch }} --commit-message="publicación ${{ needs.build.outputs.publication_id }}" --commit-dirty=true
       - name: Verify the live site serves this publication
         working-directory: python
         run: python -m tools.verify_live --base "$SITE_URL" --expect "${{ needs.build.outputs.publication_id }}"

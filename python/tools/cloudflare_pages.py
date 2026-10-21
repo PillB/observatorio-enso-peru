@@ -1,5 +1,8 @@
 """Crea, si falta, el proyecto de Cloudflare Pages del observatorio e imprime
-su dirección pública (``https://<subdominio>.pages.dev/``).
+su dirección pública (``https://<subdominio>.pages.dev/``). En GitHub Actions
+escribe además ``url`` y ``branch`` (la rama de producción del proyecto, a la
+que hay que desplegar para que no quede como vista previa) en
+``$GITHUB_OUTPUT``.
 
 Lee ``CLOUDFLARE_API_TOKEN`` (permiso «Cloudflare Pages: Edit» de la cuenta)
 y ``CLOUDFLARE_ACCOUNT_ID`` del entorno. El despliegue en sí lo hace
@@ -22,7 +25,8 @@ import httpx
 API = "https://api.cloudflare.com/client/v4/accounts/{account}/pages/projects"
 
 
-def ensure_project(client: httpx.Client, account: str, project: str, branch: str) -> str:
+def ensure_project(client: httpx.Client, account: str, project: str, branch: str) -> tuple[str, str]:
+    """Devuelve la dirección pública y la rama de producción del proyecto."""
     base = API.format(account=account)
     r = client.get(f"{base}/{project}")
     if r.status_code == 404:
@@ -39,10 +43,10 @@ def ensure_project(client: httpx.Client, account: str, project: str, branch: str
     subdomain = result.get("subdomain")
     if not subdomain:
         raise RuntimeError("Cloudflare no devolvió el subdominio del proyecto")
-    if result.get("production_branch") not in (None, branch):
-        print(f"aviso: la rama de producción del proyecto es «{result['production_branch']}», "
-              f"se despliega con --branch={result['production_branch']}", file=sys.stderr)
-    return f"https://{subdomain}/"
+    production = result.get("production_branch") or branch
+    if production != branch:
+        print(f"aviso: la rama de producción del proyecto es «{production}»; se despliega a esa rama", file=sys.stderr)
+    return f"https://{subdomain}/", production
 
 
 def _errors(r: httpx.Response) -> str:
@@ -63,10 +67,14 @@ def main(argv=None) -> int:
         return 1
     try:
         with httpx.Client(timeout=30, headers={"Authorization": f"Bearer {token}"}) as c:
-            print(ensure_project(c, account, args.project, args.production_branch))
+            url, branch = ensure_project(c, account, args.project, args.production_branch)
     except (RuntimeError, httpx.HTTPError) as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 1
+    print(url)
+    if os.environ.get("GITHUB_OUTPUT"):
+        with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+            f.write(f"url={url}\nbranch={branch}\n")
     return 0
 
 

@@ -19,7 +19,7 @@ def test_existing_project_returns_its_subdomain():
         calls.append(req.method)
         return httpx.Response(200, json={"result": {"subdomain": "observatorio-enso-2x9.pages.dev", "production_branch": "main"}})
 
-    assert ensure_project(client(h), "acc", "observatorio-enso", "main") == "https://observatorio-enso-2x9.pages.dev/"
+    assert ensure_project(client(h), "acc", "observatorio-enso", "main") == ("https://observatorio-enso-2x9.pages.dev/", "main")
     assert calls == ["GET"]
 
 
@@ -31,10 +31,15 @@ def test_missing_project_is_created():
         assert body == {"name": "observatorio-enso", "production_branch": "main"}
         return httpx.Response(200, json={"result": {"subdomain": "observatorio-enso.pages.dev"}})
 
-    assert ensure_project(client(h), "acc", "observatorio-enso", "main") == "https://observatorio-enso.pages.dev/"
+    assert ensure_project(client(h), "acc", "observatorio-enso", "main") == ("https://observatorio-enso.pages.dev/", "main")
 
 
 def test_bad_token_explains_the_permission():
     h = lambda req: httpx.Response(403, json={"errors": [{"message": "Authentication error"}]})
     with pytest.raises(RuntimeError, match="Cloudflare Pages · Edit"):
         ensure_project(client(h), "acc", "observatorio-enso", "main")
+
+
+def test_existing_project_keeps_its_production_branch():
+    h = lambda req: httpx.Response(200, json={"result": {"subdomain": "x.pages.dev", "production_branch": "production"}})
+    assert ensure_project(client(h), "acc", "x", "main") == ("https://x.pages.dev/", "production")
