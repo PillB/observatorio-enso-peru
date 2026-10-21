@@ -122,6 +122,28 @@ desarrollo activo (el sitio igual queda sin enlace hacia él) y hacerlo
 privado cuando se estabilice, tras limitar esos flujos a `workflow_dispatch`
 o a cambios en sus propias carpetas.
 
+## Pages Functions (consola de administración u otras rutas dinámicas)
+
+El despliegue lleva, además del sitio, la carpeta `functions/` y el archivo
+`wrangler.toml` de la raíz del repositorio si existen: `wrangler pages deploy`
+los toma del directorio de trabajo, compila las Functions y aplica los
+vínculos declarados. Para usarlos:
+
+- `wrangler.toml` en la raíz, con `name` igual al proyecto
+  (`CLOUDFLARE_PROJECT`) y `pages_build_output_dir = "./public"`; los
+  vínculos van en `[[d1_databases]]` o `[[kv_namespaces]]`. Con ese archivo,
+  la configuración del panel de Cloudflare deja de ser editable: el archivo
+  manda.
+- Las respuestas de las Functions no reciben las cabeceras de `_headers`
+  (solo los archivos estáticos); cada Function debe poner las suyas.
+- Desplegar Functions y vínculos solo necesita el permiso
+  **Cloudflare Pages · Edit**. Crear la base D1 o el espacio KV (una vez,
+  con `wrangler d1 create` o desde el panel) necesita **D1 · Edit** o
+  **Workers KV Storage · Edit**; conviene hacerlo a mano y no ampliar el
+  token del flujo diario.
+- Las solicitudes a Functions cuentan contra el plan gratuito de Workers
+  (100 000 al día); los archivos estáticos no.
+
 ## Referencias en el código
 
 | Archivo | Qué usa |

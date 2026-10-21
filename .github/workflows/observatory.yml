@@ -170,9 +170,14 @@ jobs:
       - id: deploy
         if: env.DEPLOY_TARGET == 'github-pages'
         uses: actions/deploy-pages@v4
+      # functions/ y wrangler.toml (si existen) viajan con la subida directa:
+      # wrangler los toma del directorio de trabajo (Pages Functions y sus
+      # vínculos D1/KV). El modo cono incluye siempre los archivos de la raíz.
       - uses: actions/checkout@v5
         with:
-          sparse-checkout: python
+          sparse-checkout: |
+            python
+            functions
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -189,7 +194,7 @@ jobs:
         if: env.DEPLOY_TARGET == 'cloudflare'
         with:
           name: site
-          path: ${{ runner.temp }}/site
+          path: public
       # Sin gitHubToken: no se crean «deployments» de GitHub que enlacen el
       # repositorio con el sitio. Se despliega a la rama de producción del
       # proyecto: otra rama quedaría como vista previa.
@@ -199,7 +204,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy "${{ runner.temp }}/site" --project-name=${{ env.CF_PROJECT }} --branch=${{ steps.cf.outputs.branch }} --commit-message="publicación ${{ needs.build.outputs.publication_id }}" --commit-dirty=true
+          command: pages deploy public --project-name=${{ env.CF_PROJECT }} --branch=${{ steps.cf.outputs.branch }} --commit-message="publicación ${{ needs.build.outputs.publication_id }}" --commit-dirty=true
       - name: Verify the live site serves this publication
         working-directory: python
         run: python -m tools.verify_live --base "$SITE_URL" --expect "${{ needs.build.outputs.publication_id }}"
