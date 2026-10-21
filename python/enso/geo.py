@@ -850,6 +850,7 @@ def locate_item(entry: dict, feed=None, region: str = "peru") -> Optional[dict]:
     dep = getattr(feed, "department", None)
     kind = getattr(feed, "kind", None)
     places: list[dict] = []
+    suggested: list[dict] = []
     for c in entry.get("ubigeo") or []:
         c = str(c).strip()
         if gz.valid(c):
@@ -861,10 +862,10 @@ def locate_item(entry: dict, feed=None, region: str = "peru") -> Optional[dict]:
             continue
         from .limites import locate as locate_point
 
-        hit = locate_point(lat, lon)
+        hit = locate_point(lat, lon, accuracy_km=float(pt[2]) if len(pt) > 2 and pt[2] else 0.0)
         if hit:
-            places.append(_place(gz, hit["code"], hit["confidence"], "coordenadas",
-                                 f"{lat:.3f}, {lon:.3f}" + (f" ({hit['note']})" if hit.get("note") else "")))
+            ev = f"{lat:.3f}, {lon:.3f}" + (f" ({hit['note']})" if hit.get("note") else "")
+            places.append(_place(gz, hit["code"], hit["confidence"], "coordenadas", ev))
     texts = [entry.get("title") or "", entry.get("summary") or ""]
     outlet = (entry.get("outlet") or "").strip()
     if len(outlet) >= 4:  # Google Noticias pega el nombre del medio al resumen («… Tumbes de Miércoles»)
@@ -872,7 +873,7 @@ def locate_item(entry: dict, feed=None, region: str = "peru") -> Optional[dict]:
     if entry.get("categories") and not dep:
         texts.append(" · ".join(entry["categories"]))
     if places:
-        return _finish(gz, places, [], "PE", None)
+        return _finish(gz, places, suggested, "PE", None)
     if entry.get("geo"):
         admin = gz.admin_codes(entry["geo"])
         if admin:
