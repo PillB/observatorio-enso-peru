@@ -62,6 +62,7 @@ def alerts(news_items: list[dict], now: datetime) -> list[dict]:
     from .geo import department_names
     from .hazardparse import TG_KINDS
     from .news import FEED_BY_ID
+    from .severity import assess
 
     since = (now - timedelta(days=ALERTS_DAYS)).isoformat()
     deps = department_names()
@@ -83,7 +84,8 @@ def alerts(news_items: list[dict], now: datetime) -> list[dict]:
                     "institution": f.name.split("·")[0].strip(), "kind": f.name.split("·", 1)[-1].strip(),
                     "title": i["title"], "text": i.get("summary") or "", "date": when, "url": i["link"],
                     "archive": news_page(i), "hazards": hz[:3],
-                    "where": where, "geo": _geo_brief(i.get("geo")), "stale": False})
+                    "where": where, "geo": _geo_brief(i.get("geo")), "stale": False,
+                    **assess(f.id, i["title"], i.get("summary") or "", when, now)})
         if len(out) >= ALERTS_MAX:
             break
     return out
