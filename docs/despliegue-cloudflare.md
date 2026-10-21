@@ -144,6 +144,10 @@ vínculos declarados. Para usarlos:
 - Las solicitudes a Functions cuentan contra el plan gratuito de Workers
   (100 000 al día); los archivos estáticos no.
 
+La consola de lugares (`/admin/`) es la primera Function: necesita la
+base D1 `GEO_DB` y el secreto `GEO_USERS`. Los pasos están en
+[georreferenciacion.md](georreferenciacion.md#puesta-en-marcha-en-cloudflare-una-sola-vez).
+
 ## Referencias en el código
 
 | Archivo | Qué usa |

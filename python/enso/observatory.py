@@ -1229,7 +1229,8 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
                                                "since": min((i["first_seen"] for i in items), default=None)}},
         "clusters": {"days": 14, "clusters": N.cluster(items, now), "departmentNames": department_names()},
         "geo": {"items": {"generatedAt": now.isoformat(timespec="seconds"), "items": GO.console_items(items, now)},
-                "overrides": {"source": ov_source, "overrides": overrides}, "quality": geo_quality},
+                "overrides": {"source": ov_source, "overrides": overrides}, "quality": geo_quality,
+                "ubigeo": GO.console_gazetteer()},
     }
 
 

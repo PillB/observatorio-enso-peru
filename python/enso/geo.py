@@ -119,7 +119,8 @@ CUE_RE = re.compile(
 RELATIVE_RE = re.compile(
     r"(?:\b(?P<km>\d+(?:[.,]\d+)?)\s*(?:km|kil[oó]metros?)\s+(?:al?\s+)?"
     r"(?:(?:[NSEO]{1,3}|norte|sur|este|oeste|noreste|noroeste|sureste|suroeste|sudeste|sudoeste|nor-?oeste|nor-?este)\s+)?"
-    r"(?:de|del)\s+(?:la\s+|el\s+)?|\bfrente\s+a\s+(?:las?\s+costas?\s+de\s+)?)$", re.I)
+    r"(?:de|del)\s+(?:la\s+|el\s+)?|\bfrente\s+a\s+(?:las?\s+costas?\s+de\s+)?|"
+    r"\bal\s+(?:norte|sur|este|oeste|noreste|noroeste|sureste|suroeste|sudeste|sudoeste)\s+(?:de|del)\s+)$", re.I)
 #: Palabra de nivel antes del nombre; el grupo indica el nivel.
 LEVEL_RE = re.compile(
     r"\b(?:(?P<dep>regi[oó]n(?:es)?|departamentos?|gobierno regional|gore|diresa|geresa|coer)|"
@@ -145,7 +146,8 @@ _ANTI_WORDS = (
     r"emporio|galer[ií]as?|instituci[oó]n educativa|i\.?e\.?|consorcio|empresa|eps|emapa|sedapal|"
     r"facultad|escuela profesional|parque nacional|reserva nacional|santuario nacional|"
     r"plaza|parque|malec[oó]n|estadio|coliseo|mercados?|hospital|colegio|aeropuerto|terminal|universidad|"
-    r"valles?|bah[ií]a|comunidad(?:es)?(?: campesinas?| nativas?)?")
+    r"valles?|bah[ií]a|comunidad(?:es)?(?: campesinas?| nativas?)?|"
+    r"fuera|lejos|excepto|salvo")  # «almacenar GLP fuera de Lima»: justamente no es Lima
 ANTI_RE = re.compile(
     r"\b(?P<w>" + _ANTI_WORDS + r")"
     r"\)?\.?\s+(?:(?:de|del|la|el|los|las|a|usuarios de|campesina de|nativa de|nacional de|regional de|"
@@ -239,7 +241,7 @@ PERU_INSTITUTION_RE = re.compile(
 NOTABLE_CAPITALS = {"chosica", "huaycan", "tingo maria", "quillabamba", "la oroya", "cerro de pasco",
                     "puerto maldonado", "tarapoto", "juliaca", "chimbote", "mollendo", "pichanaki"}
 #: Nombres de uso común que el INEI escribe de otra forma, o que la prensa usa para otro distrito.
-ALIASES = {"surco": {"150140"}, "tambogrande": {"200114"}, "pichanaki": {"120303"},
+ALIASES = {"surco": {"150140"}, "ccatcca": {"081205"}, "tambogrande": {"200114"}, "pichanaki": {"120303"},
            "carmen de la legua": {"070103"}, "nasca": {"1103", "110301"}, "nazca": {"1103", "110301"},
            "banos del inca": {"060108"}, "cuzco": {"08"}, "ciudad imperial": {"0801"}, "lima metropolitana": {"1501"},
            "lima provincias": {"15"}, "lima region": {"15"}, "region lima": {"15"},
@@ -501,8 +503,14 @@ class Gazetteer:
             out.append(mm)
             prev, prev_end, prev_state = mm, end, None
             # «Pampas y Caja (Huancavelica)»: el departamento entre paréntesis respalda a toda la enumeración.
-            pm = self.paren_re.match(folded[end:end + 40])
-            if pm and folded[end:end + 40].lstrip().startswith("("):
+            tail = folded[end:end + 60]
+            # «Pallpata, Pampamarca y Ccatcca (Cusco)»: un último nombre que no está en el nomenclátor no corta
+            # la enumeración antes del paréntesis.
+            unk = re.match(r"^\s*(?:,|y|e)\s+[A-ZÁÉÍÓÚÑ][\w'’]+(?:\s+[A-ZÁÉÍÓÚÑ][\w'’]+)?(?=\s*\()", text[end:end + 60])
+            if unk and key(unk.group(0).strip(" ,").removeprefix("y ").removeprefix("e ")) not in self.names:
+                tail = folded[end + unk.end():end + unk.end() + 40]
+            pm = self.paren_re.match(tail[:40])
+            if pm and tail.lstrip().startswith("("):
                 dep = self.dep_by_key.get(key(pm.group(1)))
                 if dep:
                     for x in out:
@@ -666,6 +674,10 @@ class Gazetteer:
                 return [next(iter(p4))]
             return cs
 
+        # Un nombre que el texto ya ubicó con su departamento entre paréntesis es el mismo lugar cuando
+        # se repite sin él («Pampamarca (Cusco)… en los distritos de Pallpata, Pampamarca y Ccatcca»).
+        settled = {m.name: m.paren_dep for m in found if m.paren_dep}
+
         # 2) distritos y nombres repetidos, con el respaldo del resto del texto
         for m in found:
             if foreign or m.landmark or m.qualifier:
@@ -674,6 +686,8 @@ class Gazetteer:
             if len(cands) == 1 and len(cands[0]) <= 4:
                 continue  # ya considerado arriba
             weak = m.name in WEAK
+            if not m.paren_dep and len({c[:2] for c in cands}) > 1 and settled.get(m.name):
+                m.paren_dep = settled[m.name]
             if m.paren_dep:
                 local = [c for c in m.codes if c[:2] == m.paren_dep and len(c) > 2]
                 local = [c for c in local if len(c) == 6] or local

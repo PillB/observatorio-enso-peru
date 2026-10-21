@@ -57,6 +57,10 @@ jobs:
           cache: pip
           cache-dependency-path: python/requirements*.txt
       - run: pip install -r python/requirements-dev.txt
+      # Node 22 (node:sqlite) para las pruebas de la consola de lugares (functions/).
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       # Con Cloudflare, la dirección sale del proyecto (se crea si falta),
       # salvo que la variable SITE_URL fije otra (p. ej. un dominio propio).
@@ -65,6 +69,7 @@ jobs:
         working-directory: python
         env:
           SITE_URL_VAR: ${{ vars.SITE_URL }}
+          GEO_OVERRIDES_URL_VAR: ${{ vars.GEO_OVERRIDES_URL }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
@@ -76,6 +81,8 @@ jobs:
             fi
             # Las fuentes ven la dirección del sitio como contacto, no el repositorio.
             echo "ENSO_CONTACT_URL=${url%/}/" >> "$GITHUB_ENV"
+            # Correcciones de la consola de lugares (Pages Function); si no responde, se usan las anteriores.
+            echo "GEO_OVERRIDES_URL=${GEO_OVERRIDES_URL_VAR:-${url%/}/api/geo/overrides}" >> "$GITHUB_ENV"
           elif [ "$DEPLOY_TARGET" != github-pages ]; then
             echo "::error::DEPLOY_TARGET debe ser github-pages o cloudflare (es «$DEPLOY_TARGET»)"; exit 1
           fi

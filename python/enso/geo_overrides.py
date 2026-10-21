@@ -190,6 +190,15 @@ def console_items(items: list[dict], now: datetime) -> list[dict]:
     for i in recent[:CONSOLE_MAX]:
         out.append({"id": i["id"], "title": i.get("title") or "", "summary": (i.get("summary") or "")[:400],
                     "link": i.get("link") or "", "outlet": i.get("outlet") or "", "feed": i.get("feed") or "",
-                    "kind": i.get("kind") or "", "region": i.get("region") or "",
+                    "kind": i.get("kind") or "", "region": i.get("region") or "", "relevance": i.get("relevance") or "",
                     "published": i.get("published") or i.get("first_seen"), "geo": i.get("geo")})
     return out
+
+
+def console_gazetteer() -> dict:
+    """Departamentos, provincias y distritos con sus nombres, para los selectores de la consola (``geo/ubigeo.json``)."""
+    gz = gazetteer()
+    return {"source": "INEI (UBIGEO)", "departments": {c: d["name"] for c, d in sorted(gz.deps.items())},
+            "provinces": {c: d["name"] for c, d in sorted(gz.provs.items())},
+            "districts": {c: d["name"] for c, d in sorted(gz.dists.items())}}
+
