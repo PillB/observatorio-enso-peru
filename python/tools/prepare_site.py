@@ -39,6 +39,9 @@ HEADERS = """\
 /data/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=0, must-revalidate
+
+/data/archive/*
+  Content-Security-Policy: sandbox; default-src 'none'; style-src 'unsafe-inline'
 """
 
 

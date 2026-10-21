@@ -29,7 +29,10 @@ def test_rewrites_address_and_hides_repo(site):
     assert 'content="https://observatorio-enso.pages.dev/og-image.png"' in index
     assert 'href="/assets/css/app.css"' in (site / "404.html").read_text(encoding="utf-8")
     assert "Sitemap: https://observatorio-enso.pages.dev/sitemap.xml" in (site / "robots.txt").read_text()
-    assert "Access-Control-Allow-Origin: *" in (site / "_headers").read_text()
+    headers = (site / "_headers").read_text()
+    assert "Access-Control-Allow-Origin: *" in headers
+    # Las copias de páginas de terceros nunca ejecutan nada en el dominio del sitio.
+    assert "/data/archive/*\n  Content-Security-Policy: sandbox; default-src 'none'" in headers
 
 
 def test_subpath_and_repo_kept_by_default(site):
