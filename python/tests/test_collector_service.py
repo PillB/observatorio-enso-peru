@@ -532,6 +532,29 @@ def test_install_script_is_valid_bash():
     assert r.returncode == 0, r.stderr
 
 
+@pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
+def test_uninstall_keeps_the_folder_when_the_task_cannot_be_removed(tmp_path, monkeypatch):
+    """Borrar la carpeta con la tarea todavía puesta dejaría una tarea que falla cada noche."""
+    dest = tmp_path / "instalacion"
+    (dest / "python").mkdir(parents=True)
+    (dest / "kit.json").write_text("{}", encoding="utf-8")
+    fake = dest / ".venv" / "bin" / "python"
+    fake.parent.mkdir(parents=True)
+    fake.write_text("#!/bin/sh\necho 'ERROR: crontab no aceptó los cambios' >&2\nexit 1\n", encoding="utf-8")
+    fake.chmod(0o755)
+    env = {**os.environ, "HOME": str(tmp_path), "ENSO_SIN_PAUSA": "1"}
+    r = subprocess.run(["bash", str(REPO_ROOT / "collector" / "instalar.sh"), "--desinstalar", "--no-interactivo",
+                        "--destino", str(dest)], capture_output=True, text=True, env=env, timeout=60)
+    assert r.returncode != 0 and dest.is_dir(), r.stdout + r.stderr
+    assert "no se borró" in r.stdout + r.stderr
+
+
+def test_schedule_cli_reports_a_failed_removal(monkeypatch, capsys):
+    monkeypatch.setattr(sched, "remove", lambda: (_ for _ in ()).throw(RuntimeError("crontab no aceptó los cambios")))
+    assert sched.main(["quitar"]) == 1
+    assert "crontab no aceptó" in capsys.readouterr().err
+
+
 def test_launchers_that_replace_their_folder_run_from_a_temp_copy():
     """cmd relee el .cmd mientras corre y no deja borrar su carpeta actual."""
     for name in ("DESINSTALAR-Windows.cmd", "ACTUALIZAR-Windows.cmd"):

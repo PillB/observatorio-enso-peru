@@ -356,14 +356,18 @@ do_update() {
 do_uninstall() {
   step "Desinstalar el recolector"
   ask_yes_no "Se quitará la tarea programada y la carpeta $DEST (con el token). ¿Continuar?" s || return 0
+  local removed=1
   if [ -x "$VPY" ]; then
-    in_python -m tools.collector_schedule quitar
+    in_python -m tools.collector_schedule quitar || removed=0
   elif [ "$OS" = "Darwin" ]; then
     launchctl bootout "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" 2>/dev/null
-    rm -f "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist"
+    rm -f "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist" || removed=0
   elif command -v crontab >/dev/null 2>&1; then
-    crontab -l 2>/dev/null | grep -v 'observatorio-enso-recolector' | crontab -
+    { crontab -l 2>/dev/null | grep -v 'observatorio-enso-recolector' | crontab -; } || removed=0
   fi
+  # Sin la tarea quitada, borrar la carpeta dejaría una tarea que falla cada noche.
+  [ "$removed" = 1 ] || die "No se pudo quitar la tarea programada; la carpeta $DEST no se borró." \
+    "Repetir DESINSTALAR. Si sigue, quitarla a mano (crontab -e en Linux) y luego borrar la carpeta."
   cd "$HOME" || true
   if looks_like_install; then
     rm -rf "$DEST" && say "Carpeta $DEST borrada."

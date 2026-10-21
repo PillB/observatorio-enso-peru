@@ -19,6 +19,7 @@ on:
       - 'python/requirements.txt'
       - 'python/tests/test_collector_service.py'
       - 'config/threshold-policies/*.yaml'
+      - 'registry/**'
       - 'docs/servidor-peru.md'
       - '.github/workflows/recolector-kit.yml'
   pull_request:
@@ -30,6 +31,7 @@ on:
       - 'python/requirements.txt'
       - 'python/tests/test_collector_service.py'
       - 'config/threshold-policies/*.yaml'
+      - 'registry/**'
       - 'docs/servidor-peru.md'
       - '.github/workflows/recolector-kit.yml'
   workflow_dispatch:

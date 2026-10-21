@@ -290,15 +290,20 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--hora", default=os.environ.get("ENSO_COLLECT_AT", "21:00"), help="hora de Lima, HH:MM")
     ap.add_argument("--python", default=sys.executable, help="intérprete del entorno virtual")
     args = ap.parse_args(argv)
-    if args.accion == "horas":
-        print("\n".join(local_times(args.hora)))
-    elif args.accion == "instalar":
-        print(f"Tarea programada: {install(args.python, ROOT, args.hora)}")
-        print(f"Disparos (hora local): {', '.join(local_times(args.hora))} y al iniciar sesión o encender")
-    elif args.accion == "quitar":
-        print("Tarea programada quitada." if remove() else "No había tarea programada.")
-    else:
-        print(json.dumps(status(), ensure_ascii=False, indent=1))
+    try:
+        if args.accion == "horas":
+            print("\n".join(local_times(args.hora)))
+        elif args.accion == "instalar":
+            print(f"Tarea programada: {install(args.python, ROOT, args.hora)}")
+            print(f"Disparos (hora local): {', '.join(local_times(args.hora))} y al iniciar sesión o encender")
+        elif args.accion == "quitar":
+            print("Tarea programada quitada." if remove() else "No había tarea programada.")
+        else:
+            print(json.dumps(status(), ensure_ascii=False, indent=1))
+    except (RuntimeError, OSError, subprocess.SubprocessError) as exc:
+        # El instalador depende de este código: si la tarea no se quitó, no borra la carpeta.
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
     return 0
 
 
