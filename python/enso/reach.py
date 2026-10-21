@@ -162,6 +162,12 @@ class Robots:
             self._cache[base] = entry
         return entry
 
+    def known(self, url: str) -> bool:
+        """Si ya se leyó (o se intentó leer) el robots.txt del servidor de ``url``."""
+        p = urlparse(url)
+        with self._lock:
+            return f"{p.scheme}://{p.netloc}" in self._cache
+
     def allowed(self, url: str) -> Optional[bool]:
         rp = self._entry(url)[0]
         return None if rp is None else rp.allowed(url)

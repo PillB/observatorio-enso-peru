@@ -108,15 +108,26 @@ def test_candidates_file_is_valid():
 class _Site(http.server.BaseHTTPRequestHandler):
     FILES = {
         "/robots.txt": ("text/plain", b"User-agent: *\nDisallow: /private/\n"),
-        "/app": ("text/html", b"<html><body><div id=app>cargando</div><img src='/foto.png'><script>"
+        "/app": ("text/html", b"<html><body><div id=app>cargando</div><img src='/foto.png'>"
+                 b"<script type=speculationrules>{\"prefetch\":[{\"source\":\"list\",\"urls\":[\"/private/precarga\"]}]}</script>"
+                 b"<div><template shadowrootmode=open><script type=speculationrules>"
+                 b"{\"prefetch\":[{\"source\":\"list\",\"urls\":[\"/private/sombra\"]}]}</script></template></div>"
+                 b"<script>"
                  b"fetch('/private/secret.json').catch(()=>{});"
+                 b"setTimeout(()=>window.open('/private/ventana'),500);"  # después: una ventana nueva oculta esta y frena la precarga
+                 b"try{new WebSocket('ws://'+location.host+'/private/ws')}catch(e){};"
+                 b"addEventListener('pagehide',()=>navigator.sendBeacon('/private/adios'));"
                  b"fetch('/atajo').catch(()=>{});"
                  b"fetch('/go').then(r=>r.json()).then(d=>{document.getElementById('app').textContent='Nivel '+d.nivel})"
                  b"</script></body></html>"),
         "/data.json": ("application/json", b'{"nivel": "naranja", "aviso": 123}'),
         "/marco": ("text/html", b"<html><body><script>fetch('/private/marco.json').catch(()=>{})</script></body></html>"),
         "/private/secret.json": ("application/json", b'{"nivel": "naranja"}'),
+        "/reglas.json": ("application/speculationrules+json",
+                         b'{"prefetch":[{"source":"list","urls":["/private/regla"]}]}'),
     }
+    #: Reglas de precarga también por cabecera: se quita, así que ni se piden las reglas.
+    HEADERS = {"/app": [("Speculation-Rules", '"/reglas.json"')]}
     #: Redirecciones: a una ruta prohibida (no se sigue) y a los datos (se sigue).
     REDIRECTS = {"/atajo": "/private/secret.json", "/go": "/data.json"}
     hits: list[str] = []
@@ -131,8 +142,12 @@ class _Site(http.server.BaseHTTPRequestHandler):
         ct, body = self.FILES.get(self.path, ("text/plain", b"no"))
         self.send_response(200 if self.path in self.FILES else 404)
         self.send_header("content-type", ct)
+        for k, v in self.HEADERS.get(self.path, []):
+            self.send_header(k, v)
         self.end_headers()
         self.wfile.write(body)
+
+    do_POST = do_GET  # navigator.sendBeacon
 
     def log_message(self, *a):
         pass
@@ -199,12 +214,16 @@ def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypat
     browser = r["steps"][-1]
     salto = other.replace("lib.json", "salto.json")
     marco_privado = f"http://localhost:{base.rsplit(':', 1)[1]}/private/marco.json"
-    assert browser["blockedByRobots"] == sorted([f"{base}/private/secret.json", other, salto, marco_privado])
+    ws = base.replace("http://", "ws://") + "/private/ws"
+    assert browser["blockedByRobots"] == sorted([f"{base}/private/secret.json", other, salto, marco_privado,
+                                                 f"{base}/private/ventana", f"{base}/private/adios", ws])
     assert "/private/secret.json" not in _Site.hits  # el navegador tampoco pide lo que robots.txt prohíbe,
     assert "/atajo" in _Site.hits  # ni siquiera si llega por una redirección,
     assert _Down.hits == ["/robots.txt"]  # ni nada de un servidor cuyo robots.txt no respondió
     assert "/foto.png" not in _Site.hits  # y las imágenes no se piden
-    assert "/marco" in _Site.hits and "/private/marco.json" not in _Site.hits  # también dentro de un iframe ajeno
+    assert "/marco" in _Site.hits and "/private/marco.json" not in _Site.hits  # también dentro de un iframe ajeno,
+    assert not [h for h in _Site.hits if h.startswith("/private/")]  # ventanas, WebSocket, precarga y avisos al salir
+    assert "/reglas.json" not in _Site.hits
     assert "unchecked" not in browser  # todo pedido pasó por la revisión
     assert os.path.exists(tmp_path / next(c["file"] for c in browser["calls"] if c.get("file")))
     moved = got["rep"]["results"][1]
