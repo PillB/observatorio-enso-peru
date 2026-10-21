@@ -434,6 +434,7 @@ def test_check_explains_missing_token(home):
 
 
 def test_check_sources_verdicts(monkeypatch):
+    monkeypatch.setattr(chk, "_robots_verdicts", lambda urls: {})
     monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": False, "why": "ConnectError", "bytes": 0, "s": 1.0})
     assert chk.check_sources({}).level == chk.FAIL
     monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": "senamhi" in url or "ana" in url,
@@ -441,6 +442,27 @@ def test_check_sources_verdicts(monkeypatch):
     assert chk.check_sources({}).level == chk.WARN  # el ENFEN no responde
     monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": True, "why": "HTTP 200", "bytes": 900, "s": 1.0})
     assert chk.check_sources({}).level == chk.OK
+    # Lo que robots.txt no permite, o un robots.txt que no responde, no se pide (como en la recolección).
+    monkeypatch.setattr(chk, "_robots_verdicts",
+                        lambda urls: {u: "robots.txt sin respuesta (timeout)" for u in urls if "enfen" in u or "ICEN" in u})
+    r = chk.check_sources({})
+    assert r.level == chk.WARN and any(ln.startswith("NO") and "robots.txt sin respuesta" in ln for ln in r.lines)
+
+
+def test_robots_verdicts_follow_rfc_9309(monkeypatch):
+    import httpx
+
+    def handler(req):
+        if req.url.host == "a.pe":
+            return httpx.Response(200, text="User-agent: *\nDisallow: /x\n")
+        if req.url.host == "b.pe":
+            raise httpx.ConnectTimeout("timed out")
+        return httpx.Response(200, text="<html>no encontrado</html>")  # sin reglas: se permite todo
+
+    real = httpx.Client
+    monkeypatch.setattr(chk, "_client", lambda timeout=20.0: real(transport=httpx.MockTransport(handler)))
+    got = chk._robots_verdicts(["https://a.pe/x/1", "https://a.pe/y", "https://b.pe/z", "https://c.pe/feed/"])
+    assert got == {"https://a.pe/x/1": "robots.txt no lo permite", "https://b.pe/z": "robots.txt sin respuesta (timeout)"}
 
 
 def test_check_flags_tampered_or_missing_kit_files(home):

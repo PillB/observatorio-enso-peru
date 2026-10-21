@@ -609,11 +609,30 @@ def test_dead_servers_and_the_time_budget_end_the_run_early(tmp_path, monkeypatc
 
     idx = _collect(tmp_path, monkeypatch, peru)
     www = [e for e in idx["entries"] if e["url"].startswith("https://www.senamhi.gob.pe")]
-    # robots.txt sin respuesta y la primera URL tampoco (un solo intento): se omite el resto del servidor.
-    assert [e.get("skipped") for e in www] == [None, "servidor", "servidor", "servidor"]
-    assert len([c for c in calls if "www.senamhi" in c]) == 2 and www[0]["class"] == "timeout"
+    # robots.txt no responde: no se pide nada más a ese servidor (RFC 9309 §2.3.1.4), y cada URL
+    # queda medida desde el Perú con la clase de ese intento, como en tools.probe_sources.
+    assert len(www) == 4 and {e.get("skipped") for e in www} == {"robots-sin-respuesta"}
+    assert {e["class"] for e in www} == {"timeout"} and "robots.txt sin respuesta" in www[0]["error"]
+    assert [c for c in calls if "www.senamhi" in c] == ["https://www.senamhi.gob.pe/robots.txt"]
+    assert {e["url"] for e in www} <= probe_sources_urls(idx)
+    assert any(f["class"] == "timeout" and "robots.txt" in f["error"] for f in pc.heartbeat(idx, "ok")["failures"])
+
+    calls.clear()
+
+    def pages_dead(req):
+        if req.url.host == "www.senamhi.gob.pe":
+            if req.url.path == "/robots.txt":
+                return httpx.Response(404)
+            calls.append(str(req.url))
+            raise httpx.ConnectTimeout("timed out")
+        return _peru_only(req)
+
+    idx = _collect(tmp_path, monkeypatch, pages_dead, name="paginas")
+    www = [e for e in idx["entries"] if e["url"].startswith("https://www.senamhi.gob.pe")]
+    # Tres intentos a la primera URL, uno a la segunda y se omite el resto del servidor.
+    assert [e.get("skipped") for e in www] == [None, None, "servidor", "servidor"] and len(calls) == 4
     measured = probe_sources_urls(idx)  # lo omitido no es una medición
-    assert www[0]["url"] in measured and not any(e["url"] in measured for e in www[1:])
+    assert {e["url"] for e in www[:2]} <= measured and not any(e["url"] in measured for e in www[2:])
     idx = _collect(tmp_path, monkeypatch, _peru_only, name="sin-plazo", budget_min=0)
     assert idx["entries"] and all(e.get("skipped") == "plazo" for e in idx["entries"] if e["group"] != "enfen-docs")
     assert not any(pc.usable(e) for e in idx["entries"])

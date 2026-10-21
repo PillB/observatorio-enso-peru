@@ -258,15 +258,28 @@ nadie está mirando.
   `carried: true`, con su fecha original y lo que pasó esta noche en
   `last_attempt`. Es la misma regla que n8n. El sitio la usa con esa
   fecha. No se conserva si otra URL de la misma fuente respondió esta
-  noche, ni si robots.txt ya no la permite.
+  noche, ni si robots.txt ya no la permite. Las 72 horas rigen cuando la
+  corrida sube una copia nueva (respondió al menos una fuente). Si no
+  respondió ninguna, la corrida no toca la copia anterior: sube solo el
+  latido, la copia queda con su fecha y el sitio la usa hasta 7 días;
+  así `collected_at` no se renueva y, tras 36 horas sin respuestas, se
+  abre el aviso `relay-sources-down`.
 - **Plazo:** un servidor que no contesta recibe un solo intento por URL
   desde su primer fallo y se deja para la noche siguiente tras el
   segundo. Pasados 25 minutos (`ENSO_COLLECT_BUDGET_MIN` en `.env`) no
   se pide nada más. Así, aunque todas las fuentes estén caídas, la
   corrida termina y sube el latido antes del corte de los 45 minutos.
 - **robots.txt:** el equipo lee el robots.txt de cada servidor una vez
-  por corrida y no pide una ruta que prohíba (queda anotada con la clase
-  `robots`; el registro la marca `robots-disallowed` y nadie la pide).
+  por corrida (RFC 9309) y no pide una ruta que prohíba (queda anotada
+  con la clase `robots`; el registro la marca `robots-disallowed` y nadie
+  la pide). Si robots.txt no responde (sin conexión, error 5xx o una
+  verificación antirobots en su lugar), esa noche no se pide nada a ese
+  servidor: cada URL queda anotada como `robots-sin-respuesta` con la
+  clase del intento (`timeout`, `challenge`…), que cuenta como medición
+  desde el Perú, y se conserva su última copia buena. Un robots.txt que
+  no existe (4xx) o que es una página HTML (un «no encontrado» servido
+  con 200, o una redirección a la portada, como el de INDECI) no tiene
+  reglas: se permite todo. `VERIFICAR` aplica la misma regla.
 - **Lo que sube:** `index.json` (cada URL con su estado, clase, formato,
   tamaño, hora y sha256; qué registro de fuentes usó, de dónde y de qué
   fecha; las mediciones de las URL del registro en `probes`; y un

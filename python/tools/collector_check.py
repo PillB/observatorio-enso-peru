@@ -52,6 +52,7 @@ from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Callable, Optional
+from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -418,6 +419,31 @@ def _probe(url: str, expect: Optional[str] = None) -> dict:
         return {"url": url, "ok": False, "why": f"{type(exc).__name__}: {exc}"[:120], "bytes": 0, "s": time.time() - t0}
 
 
+def _robots_verdicts(urls: list[str]) -> dict[str, str]:
+    """Las URL que la recolección no pediría por robots.txt (``enso.reach.Robots``,
+    RFC 9309), con el motivo. Un robots.txt por servidor, los servidores en paralelo."""
+    from enso.reach import Robots
+
+    hosts: dict[str, list[str]] = {}
+    for u in urls:
+        hosts.setdefault(urlparse(u).netloc.lower(), []).append(u)
+    out: dict[str, str] = {}
+    with _client(20.0) as c:
+        robots = Robots(c)
+
+        def one(host_urls: list[str]) -> None:
+            for u in host_urls:
+                allowed = robots.allowed(u)
+                if allowed is False:
+                    out[u] = "robots.txt no lo permite"
+                elif allowed is None:
+                    out[u] = f"robots.txt sin respuesta ({robots.failure(u) or 'connect'})"
+
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            list(pool.map(one, hosts.values()))
+    return out
+
+
 def check_sources(ctx: dict) -> Result:
     try:
         import httpx  # noqa: F401
@@ -429,9 +455,17 @@ def check_sources(ctx: dict) -> Result:
     groups, _ = pc.plan(registry)
     meta = pc.url_info(registry)
     jobs = [(g, u) for g, urls in groups.items() for u in urls]
+    # Lo que robots.txt no permite (o un robots.txt que no responde) no se pide, como en la recolección.
+    refused = _robots_verdicts([u for _, u in jobs])
+
+    def one(gu: tuple[str, str]) -> tuple[str, dict]:
+        g, u = gu
+        if u in refused:
+            return g, {"url": u, "ok": False, "why": refused[u], "bytes": 0, "s": 0.0}
+        return g, _probe(u, meta.get(u, {}).get("expect") or pc.guess_expect(u))
+
     with ThreadPoolExecutor(max_workers=6) as pool:
-        res = list(pool.map(lambda gu: (gu[0], _probe(gu[1], meta.get(gu[1], {}).get("expect") or pc.guess_expect(gu[1]))),
-                            jobs))
+        res = list(pool.map(one, jobs))
     lines = [f"{'OK' if r['ok'] else 'NO'}  {g:8} {r['why']:>9} {r['bytes']:>9} B {r['s']:5.1f}s  {r['url']}" for g, r in res]
     by_group = {g: (sum(1 for gg, r in res if gg == g and r["ok"]), sum(1 for gg, _ in res if gg == g)) for g in groups}
     summary = ", ".join(f"{g} {a}/{b}" for g, (a, b) in by_group.items())

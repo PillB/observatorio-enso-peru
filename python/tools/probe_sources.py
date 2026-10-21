@@ -78,8 +78,10 @@ def from_peru_index(index: dict) -> dict[str, dict]:
     pidió, con la clase que le dio (antirobots o formato inesperado no cuentan
     como respuesta), y en ``probes`` las URL del registro que solo midió. Una
     copia conservada de otra noche (``carried``) cuenta por lo que pasó esta
-    noche (``last_attempt``), y una URL que no se pidió (``skipped``: plazo o
-    servidor caído) no es una medición, salvo que robots.txt la prohíba."""
+    noche (``last_attempt``), y una URL que no se pidió no es una medición
+    salvo que traiga su clase: la de robots.txt cuando la prohíbe (``robots``)
+    o cuando no responde (``timeout``…, como en ``probe``); el plazo o un
+    servidor caído no la traen."""
     out = {}
     at = index.get("collected_at") or index.get("at")
     for url, rec in (index.get("probes") or {}).items():
@@ -92,7 +94,7 @@ def from_peru_index(index: dict) -> dict[str, dict]:
                 continue
             e = {"status": last.get("status"), "bytes": 0, "fetched_at": last.get("at"), "class": last["class"],
                  "error": last.get("error", ""), "url": e.get("url")}
-        elif e.get("skipped") and e.get("class") != "robots":
+        elif e.get("skipped") and e.get("class") not in registry.CLASSES:
             continue
         cls = e.get("class") if e.get("class") in registry.CLASSES else \
             classify(e.get("status"), b"x" * int(e.get("bytes") or 0), e.get("error", ""))

@@ -364,7 +364,6 @@ FEEDS = {"rss", "atom", "rdf", "jsonfeed"}
 #: Extensión del archivo guardado según el formato detectado (las que acepta enso.fetch.Relay).
 EXT = {"pdf": ".pdf", "json": ".json", "jsonfeed": ".json", "rss": ".xml", "atom": ".xml", "rdf": ".xml",
        "xml": ".xml", "text": ".txt"}
-NETWORK_CLASSES = {"timeout", "connect", "dns", "tls"}
 
 
 def detect(body: bytes, content_type: str = "") -> str:
@@ -442,11 +441,12 @@ class Session:
     """Una corrida: el cliente HTTP, el plazo y los servidores que no responden.
 
     Un servidor que no contesta (tiempo de espera, conexión, DNS, TLS) recibe
-    un solo intento por URL desde su primer fallo (también el de robots.txt)
-    y se omite tras el segundo. Pasado el plazo no se pide nada más. Así,
-    con todas las fuentes caídas, la corrida termina y sube el latido antes
-    del vigilante de 45 minutos. robots.txt se respeta: una ruta que
-    prohíbe no se pide."""
+    un solo intento por URL desde su primer fallo y se omite tras el segundo.
+    Pasado el plazo no se pide nada más. Así, con todas las fuentes caídas,
+    la corrida termina y sube el latido antes del vigilante de 45 minutos.
+    robots.txt se respeta (RFC 9309, ``enso.reach.Robots``): una ruta que
+    prohíbe no se pide, y si robots.txt no responde (sin conexión, 5xx o una
+    verificación antirobots en su lugar) no se pide nada a ese servidor."""
 
     def __init__(self, client: httpx.Client, budget_s: float | None = None, robots: bool = True):
         self.client = client
@@ -454,7 +454,6 @@ class Session:
         self.budget_s = budget_s
         self.down: Counter = Counter()
         self.robots = Robots(client) if robots else None
-        self.robots_seen: set[str] = set()
 
     def left(self) -> float:
         return float("inf") if self.deadline is None else self.deadline - time.monotonic()
@@ -482,9 +481,13 @@ def fetch(client: httpx.Client | Session, url: str, expect: str | None = None) -
         if allowed is False:
             return {**out, "elapsed_s": round(time.monotonic() - started, 1), "skipped": "robots",
                     "class": "robots", "error": "robots.txt no permite la ruta: no se pide"}
-        if allowed is None and host not in s.robots_seen and s.robots.failure(url) in NETWORK_CLASSES:
-            s.down[host] = max(s.down[host], 1)  # ni robots.txt responde: un solo intento
-        s.robots_seen.add(host)
+        if allowed is None:
+            # RFC 9309 §2.3.1.4: robots.txt inalcanzable (sin conexión, 5xx o una verificación
+            # antirobots en su lugar) equivale a «todo prohibido»: esta noche no se pide nada a
+            # ese servidor. La clase del intento queda como medición desde el Perú.
+            cls = s.robots.failure(url) or "connect"
+            return {**out, "elapsed_s": round(time.monotonic() - started, 1), "skipped": "robots-sin-respuesta",
+                    "class": cls, "error": f"robots.txt sin respuesta ({cls}): no se pide nada a este servidor"}
     err = ""
     attempts = 1 if s.down[host] else 3
     for attempt in range(attempts):
@@ -666,9 +669,12 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
             r["group"] = group
             entries.append(r)
     skipped = Counter(e["skipped"] for e in entries if e.get("skipped"))
-    if skipped.get("plazo") or skipped.get("servidor"):
-        log(f"AVISO no se pidieron {skipped['plazo'] + skipped['servidor']} URL: "
-            f"{skipped['servidor']} de servidores que no respondían y {skipped['plazo']} por el plazo de {budget:.0f} min")
+    if skipped.get("plazo") or skipped.get("servidor") or skipped.get("robots-sin-respuesta"):
+        down = sorted({urlparse(e["url"]).netloc for e in entries if e.get("skipped") == "robots-sin-respuesta"})
+        log(f"AVISO no se pidieron {skipped['plazo'] + skipped['servidor'] + skipped['robots-sin-respuesta']} URL: "
+            f"{skipped['servidor']} de servidores que no respondían, {skipped['robots-sin-respuesta']} de servidores "
+            f"cuyo robots.txt no respondió ({', '.join(down) or 'ninguno'}) y {skipped['plazo']} por el plazo "
+            f"de {budget:.0f} min")
     index = {
         "schema": "enso-relay/1",
         "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -736,7 +742,12 @@ def carry_forward(snapshot: Path, previous: Path, now: datetime | None = None) -
     en ``last_attempt``, como en n8n. No se conservan las URL que robots.txt
     no permite, ni las de una fuente que esta noche respondió por otra URL (el
     sitio pide primero la principal y tomaría la copia vieja). Actualiza
-    index.json y el latido de ``snapshot`` y devuelve cuántas conservó."""
+    index.json y el latido de ``snapshot`` y devuelve cuántas conservó.
+
+    Solo corre cuando se sube una copia nueva. Si no respondió ninguna fuente,
+    ``push_heartbeat`` deja la copia anterior intacta, con su ``collected_at``:
+    el sitio la usa hasta 7 días y, pasadas 36 horas, abre el aviso
+    «relay-sources-down» (con una copia nueva cada noche no se abriría nunca)."""
     try:
         old = json.loads((previous / "index.json").read_text(encoding="utf-8"))
         idx = json.loads((snapshot / "index.json").read_text(encoding="utf-8"))
