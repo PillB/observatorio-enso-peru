@@ -231,3 +231,66 @@ def test_publication_runs_are_serialized():
     # Las carpetas de copias se pasan siempre: si falta una rama, el pipeline lo registra como incidencia.
     for sid in ("relay", "n8n"):
         assert 'echo "dir=' in steps[sid]["run"].split("if ")[0]
+
+
+ROBOTS = Path(__file__).parent / "fixtures" / "scrape-ladder"
+
+
+def _rules(name: str):
+    from enso.reach import RobotRules
+
+    return RobotRules((ROBOTS / f"robots-{name}.http.txt").read_text(encoding="utf-8"), agent="Observatorio-ENSO-Peru")
+
+
+def test_gobpe_feeds_respect_its_robots_txt():
+    """gob.pe prohíbe «?sheet=» y «&sheet=» (la paginación de sus búsquedas), no sus RSS: los feeds van sin «sheet»."""
+    from enso import news as N
+
+    rules = _rules("gob-pe")
+    gobpe = [f for f in N.FEEDS if "gob.pe/busquedas.rss" in f.url]
+    assert len(gobpe) > 25
+    assert all(rules.allowed(f.url) for f in gobpe), [f.id for f in gobpe if not rules.allowed(f.url)]
+    assert not rules.allowed("https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sheet=1&sort_by=recent")
+
+
+def test_google_news_and_un_news_disallow_their_rss_to_generic_agents():
+    """Lo que dicen hoy sus robots.txt (21 de octubre de 2026): por eso el registro deja esos feeds sin canales."""
+    from enso import news as N
+
+    gn = _rules("google-news")
+    assert not gn.allowed("https://news.google.com/rss/search?q=huaico&hl=es-419&gl=PE&ceid=PE:es-419")
+    assert gn.allowed("https://news.google.com/home?hl=es-419")
+    un = _rules("un-news")
+    assert not un.allowed("https://news.un.org/feed/subscribe/es/news/topic/climate-change/feed/rss.xml")
+    assert not _rules("sinrodeos").allowed("https://sinrodeoscajamarca.com/feed/")
+    barred = {f.id for f in N.FEEDS if "news.google.com" in f.url and not gn.allowed(f.url)}
+    assert len(barred) > 25
+    reg = {s["id"]: s for s in json.loads(registry.REGISTRY.read_text(encoding="utf-8"))["sources"]}
+    for fid in barred:
+        assert reg[f"news-{fid}"]["channels"] == [], fid
+
+
+def test_feeds_barred_by_robots_are_not_requested_and_not_counted_as_down(tmp_path, monkeypatch):
+    from enso import news as N
+
+    one = next(f for f in N.FEEDS if f.id == "usgs-sismos")
+    two = next(f for f in N.FEEDS if f.id == "andina")
+    monkeypatch.setattr(N, "FEEDS", [one, two])
+    body = (Path(__file__).parent / "fixtures" / "sources" / one.fixture).read_bytes()
+    asked = []
+
+    def net(req):
+        asked.append(str(req.url))
+        return httpx.Response(200, content=body, headers={"content-type": "application/json"})
+
+    real = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
+    fetcher = Fetcher(polite_delay=0, plan={two.url: []})
+    log = obs.EventLog()
+    prev = obs.PreviousPublication(None, fetcher)
+    got = obs.acquire_news(fetcher, None, prev, log, NOW, None)
+    st = {s["id"]: s for s in got["feeds"]["feeds"]}
+    assert asked == [one.url]
+    assert st["andina"]["skipped"] == "robots" and "robots.txt" in st["andina"]["error"]
+    codes = [e.code for e in log.events]
+    assert "feeds-robots" in codes and not any(e.code == "feed-down" and "Andina" in e.message for e in log.events)

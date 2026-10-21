@@ -1187,11 +1187,23 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             except httpx.HTTPError as exc:  # redirecciones infinitas, gzip roto, URL inválida…
                 return None, b"", "", f"{type(exc).__name__}: {exc}"[:200]
 
+    # Feeds cuyo robots.txt no permite pedirlos (el registro los deja sin canales): no se piden y
+    # quedan en el estado como omitidos, no como caídos.
+    plan = getattr(fetcher, "plan", None) or {}
+    barred = {f.id for f in N.FEEDS if plan.get(f.url) == []}
     try:
-        found, status, raw = N.collect(fetch, now, deadline=None if fixtures is not None else NEWS_DEADLINE_S)
+        found, status, raw = N.collect(fetch, now, feeds=[f for f in N.FEEDS if f.id not in barred],
+                                       deadline=None if fixtures is not None else NEWS_DEADLINE_S)
     finally:
         if fixtures is None:
             news_fetcher.close()
+    if barred:
+        by_id = {st["id"]: st for st in status}
+        by_id.update({f.id: {**N._status(f, now, "omitido: su robots.txt no permite pedir este feed"), "skipped": "robots"}
+                      for f in N.FEEDS if f.id in barred})
+        status = [by_id[f.id] for f in N.FEEDS]
+        log.add("info", "news", "fetch", "feeds-robots",
+                f"{len(barred)} feeds no se piden porque su robots.txt no lo permite (registro de fuentes).")
     prev_text = previous.get_text("news/items.jsonl") or ""
     prev_feeds = previous.get("news/feeds.json") or {}
     had = (prev_feeds.get("history") or {}).get("items")
@@ -1215,15 +1227,18 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     items = history + added
 
     for st in status:
+        if st.get("skipped"):
+            continue
         if not st["ok"]:
             log.add("info", "news", "fetch", "feed-down", f"{st['name']}: {st['error']}")
         elif not st["active"]:
             log.add("info", "news", "fetch", "feed-inactive",
                     f"{st['name']}: la entrada más reciente es del {st['latest'] or '¿?'}.")
     active = sum(1 for st in status if st["active"])
-    if active < len(status) / 2:
+    asked = sum(1 for st in status if not st.get("skipped"))
+    if active < asked / 2:
         log.add("warning", "news", "fetch", "news-degraded",
-                f"Solo {active} de {len(status)} feeds de noticias están activos.")
+                f"Solo {active} de {asked} feeds de noticias están activos.")
 
     if raw_dir is not None and fixtures is None:
         day = now.date().isoformat()

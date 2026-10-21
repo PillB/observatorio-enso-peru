@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T04:29:39+00:00",
+ "generated_at": "2026-10-21T04:36:33+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "tiers": {
@@ -849,7 +849,7 @@
    "group": "autoridad-nacional-del-agua",
    "name": "Autoridad Nacional del Agua · gob.pe",
    "institution": "Autoridad Nacional del Agua",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=ana&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=ana&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -863,51 +863,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=ana&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=ana&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -916,7 +892,7 @@
    "group": "gob-pe",
    "name": "gob.pe · búsqueda de noticias por peligro",
    "institution": "gob.pe",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=huaico",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sort_by=recent&term=huaico",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -930,51 +906,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=huaico": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sort_by=recent&term=huaico": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -983,7 +935,7 @@
    "group": "cenepred",
    "name": "CENEPRED · gob.pe",
    "institution": "CENEPRED",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=cenepred&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=cenepred&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -997,50 +949,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:42+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69046,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69046,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69046,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=cenepred&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=cenepred&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -1049,7 +978,7 @@
    "group": "instituto-geofisico-del-peru",
    "name": "Instituto Geofísico del Perú · gob.pe",
    "institution": "Instituto Geofísico del Perú",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=igp&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=igp&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -1063,51 +992,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=igp&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=igp&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -1116,7 +1021,7 @@
    "group": "indeci-incl-coen",
    "name": "INDECI (incl. COEN) · gob.pe",
    "institution": "INDECI (incl. COEN)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -1130,49 +1035,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 77453,
-     "detail": "",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 77453,
-     "detail": "",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -1181,7 +1064,7 @@
    "group": "midagri-sequia-heladas-agro",
    "name": "MIDAGRI (sequía, heladas, agro) · gob.pe",
    "institution": "MIDAGRI (sequía, heladas, agro)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=midagri&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=midagri&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -1195,51 +1078,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=midagri&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=midagri&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -1248,7 +1107,7 @@
    "group": "ministerio-del-ambiente",
    "name": "Ministerio del Ambiente · gob.pe",
    "institution": "Ministerio del Ambiente",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=minam&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=minam&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -1262,51 +1121,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=minam&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=minam&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -1315,7 +1150,7 @@
    "group": "pcm-declaratorias-de-emergencia",
    "name": "PCM (declaratorias de emergencia) · gob.pe",
    "institution": "PCM (declaratorias de emergencia)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=pcm&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=pcm&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -1329,50 +1164,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73823,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73823,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73823,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=pcm&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=pcm&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -1381,7 +1193,7 @@
    "group": "presidencia-de-la-republica",
    "name": "Presidencia de la República · gob.pe",
    "institution": "Presidencia de la República",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=presidencia&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=presidencia&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -1395,51 +1207,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=presidencia&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=presidencia&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -1448,7 +1236,7 @@
    "group": "senamhi",
    "name": "SENAMHI · gob.pe",
    "institution": "SENAMHI",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=senamhi&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=senamhi&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -1462,51 +1250,27 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=senamhi&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=senamhi&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -2639,7 +2403,7 @@
    "group": "gobierno-regional-de-amazonas-gob-pe",
    "name": "Gobierno Regional de Amazonas (gob.pe)",
    "institution": "Gobierno Regional de Amazonas (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -2654,50 +2418,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41956,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41956,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41956,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -3282,7 +3023,7 @@
    "group": "gobierno-regional-de-apurimac-gob-pe",
    "name": "Gobierno Regional de Apurímac (gob.pe)",
    "institution": "Gobierno Regional de Apurímac (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionapurimac&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionapurimac&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -3297,50 +3038,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 51080,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 51080,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 51080,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionapurimac&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionapurimac&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -3704,7 +3422,7 @@
    "group": "gobierno-regional-de-arequipa-gob-pe",
    "name": "Gobierno Regional de Arequipa (gob.pe)",
    "institution": "Gobierno Regional de Arequipa (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionarequipa&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionarequipa&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -3719,50 +3437,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 71028,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 71028,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 71028,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionarequipa&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionarequipa&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -4146,7 +3841,7 @@
    "group": "gobierno-regional-de-ayacucho-gob-pe",
    "name": "Gobierno Regional de Ayacucho (gob.pe)",
    "institution": "Gobierno Regional de Ayacucho (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionayacucho&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionayacucho&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -4161,50 +3856,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 53338,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 53338,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 53338,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionayacucho&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionayacucho&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -4722,7 +4394,7 @@
    "group": "gobierno-regional-de-callao-gob-pe",
    "name": "Gobierno Regional de Callao (gob.pe)",
    "institution": "Gobierno Regional de Callao (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncallao&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncallao&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -4737,50 +4409,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73006,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73006,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73006,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncallao&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncallao&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -5087,7 +4736,7 @@
    "group": "gobierno-regional-de-cusco-gob-pe",
    "name": "Gobierno Regional de Cusco (gob.pe)",
    "institution": "Gobierno Regional de Cusco (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncusco&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncusco&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -5102,50 +4751,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73852,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73852,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73852,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncusco&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncusco&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -5452,7 +5078,7 @@
    "group": "gobierno-regional-de-huancavelica-gob-pe",
    "name": "Gobierno Regional de Huancavelica (gob.pe)",
    "institution": "Gobierno Regional de Huancavelica (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuancavelica&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuancavelica&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -5467,51 +5093,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuancavelica&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuancavelica&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -5741,7 +5343,7 @@
    "group": "gobierno-regional-de-huanuco-gob-pe",
    "name": "Gobierno Regional de Huánuco (gob.pe)",
    "institution": "Gobierno Regional de Huánuco (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuanuco&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuanuco&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -5756,50 +5358,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73857,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73857,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73857,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuanuco&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuanuco&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -6471,7 +6050,7 @@
    "group": "gobierno-regional-de-la-libertad-gob-pe",
    "name": "Gobierno Regional de La Libertad (gob.pe)",
    "institution": "Gobierno Regional de La Libertad (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -6486,51 +6065,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -6760,7 +6315,7 @@
    "group": "gobierno-regional-de-lambayeque-gob-pe",
    "name": "Gobierno Regional de Lambayeque (gob.pe)",
    "institution": "Gobierno Regional de Lambayeque (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -6775,51 +6330,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -7049,7 +6580,7 @@
    "group": "gobierno-regional-de-lima-gob-pe",
    "name": "Gobierno Regional de Lima (gob.pe)",
    "institution": "Gobierno Regional de Lima (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlima&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlima&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -7064,50 +6595,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63709,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63709,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63709,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlima&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlima&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -7260,7 +6768,7 @@
    "group": "gobierno-regional-de-loreto-gob-pe",
    "name": "Gobierno Regional de Loreto (gob.pe)",
    "institution": "Gobierno Regional de Loreto (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionloreto&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionloreto&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -7275,50 +6783,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 49809,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 49809,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 49809,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionloreto&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionloreto&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -7622,7 +7107,7 @@
    "group": "gobierno-regional-de-madre-de-dios-gob-p",
    "name": "Gobierno Regional de Madre de Dios (gob.pe)",
    "institution": "Gobierno Regional de Madre de Dios (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmadrededios&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmadrededios&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -7637,50 +7122,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63834,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63834,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63834,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmadrededios&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmadrededios&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -7910,7 +7372,7 @@
    "group": "gobierno-regional-de-moquegua-gob-pe",
    "name": "Gobierno Regional de Moquegua (gob.pe)",
    "institution": "Gobierno Regional de Moquegua (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -7925,51 +7387,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 76299,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 76299,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -8199,7 +7637,7 @@
    "group": "gobierno-regional-de-pasco-gob-pe",
    "name": "Gobierno Regional de Pasco (gob.pe)",
    "institution": "Gobierno Regional de Pasco (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpasco&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpasco&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -8214,50 +7652,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 23903,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 23903,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 23903,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpasco&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpasco&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -8487,7 +7902,7 @@
    "group": "gobierno-regional-de-piura-gob-pe",
    "name": "Gobierno Regional de Piura (gob.pe)",
    "institution": "Gobierno Regional de Piura (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -8502,50 +7917,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69039,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69039,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69039,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -8929,7 +8321,7 @@
    "group": "gobierno-regional-de-puno-gob-pe",
    "name": "Gobierno Regional de Puno (gob.pe)",
    "institution": "Gobierno Regional de Puno (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpuno&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpuno&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -8944,50 +8336,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 64096,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 64096,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 64096,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpuno&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpuno&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -9444,7 +8813,7 @@
    "group": "gobierno-regional-de-san-martin-gob-pe",
    "name": "Gobierno Regional de San Martín (gob.pe)",
    "institution": "Gobierno Regional de San Martín (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionsanmartin&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionsanmartin&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -9459,50 +8828,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63952,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63952,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63952,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionsanmartin&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionsanmartin&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -10097,7 +9443,7 @@
    "group": "gobierno-regional-de-tumbes-gob-pe",
    "name": "Gobierno Regional de Tumbes (gob.pe)",
    "institution": "Gobierno Regional de Tumbes (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontumbes&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontumbes&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -10112,50 +9458,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41353,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41353,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41353,
-     "at": "2026-10-21T03:32:52+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontumbes&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontumbes&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
@@ -10375,7 +9698,7 @@
    "group": "gobierno-regional-de-ucayali-gob-pe",
    "name": "Gobierno Regional de Ucayali (gob.pe)",
    "institution": "Gobierno Regional de Ucayali (gob.pe)",
-   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionucayali&sheet=1&sort_by=recent",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionucayali&sort_by=recent",
    "expect": "rss",
    "method": "feed",
    "kind": "feed",
@@ -10390,50 +9713,27 @@
    "notes": "tipo de medio: gobierno; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:24:41+00:00",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73176,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    },
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
     "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73176,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73176,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "actions": null,
+    "n8n": null
    },
-   "channels": [],
+   "channels": [
+    "actions",
+    "n8n"
+   ],
    "geoblocked": null,
    "by_url": {
-    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionucayali&sheet=1&sort_by=recent": {
-     "status": "robots-disallowed",
-     "channels": []
+    "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionucayali&sort_by=recent": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
     }
    }
   },
