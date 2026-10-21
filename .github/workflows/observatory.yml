@@ -190,6 +190,9 @@ jobs:
         timeout-minutes: 26
         env:
           ENSO_ARCHIVE_SAVE: ${{ (github.event_name != 'workflow_dispatch' || inputs.archive_save) && '1' || '0' }}
+          # Respaldo opcional con un modelo de lenguaje (flujo de n8n): solo deja propuestas para revisión.
+          ENSO_LLM_EXTRACT_URL: ${{ secrets.ENSO_LLM_EXTRACT_URL }}
+          ENSO_LLM_EXTRACT_TOKEN: ${{ secrets.ENSO_LLM_EXTRACT_TOKEN }}
           RELAY_DIR: ${{ steps.relay.outputs.dir }}
           N8N_DIR: ${{ steps.n8n.outputs.dir }}
           HISTORY_DIR: ${{ steps.history.outputs.dir }}

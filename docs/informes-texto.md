@@ -46,6 +46,11 @@ en `informe.review` para que una persona la revise.
   `enfen-perspectiva`, `schema` es el esquema JSON esperado y `text` el texto extraído del PDF.
 - Respuesta: `{data, model}`. `data` se valida con el mismo esquema; los errores quedan en `schemaErrors`.
 - Si el servicio no responde, devuelve algo inválido o no está configurado, el pipeline sigue igual.
+- En GitHub Actions se configuran como *secrets* del repositorio con esos mismos nombres
+  (`observatory.yml` los pasa al pipeline). Sin ellos el respaldo queda apagado.
+- El flujo de n8n usa la credencial de OpenAI del colega: recibe la petición en un Webhook con autenticación
+  por cabecera, pide al modelo un JSON (temperatura 0) que siga el esquema y cite el texto de origen, y
+  responde `{data, model}`. El pipeline vuelve a validar todo; el modelo nunca decide qué se publica.
 
 ## Vigencia por vista (`python/enso/freshness.py`)
 
