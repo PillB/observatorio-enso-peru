@@ -246,6 +246,41 @@ def test_news_view_shows_official_feed_and_news(site, page):
     expect(page.locator("#arch-fig svg")).to_have_count(1, timeout=10000)
 
 
+def test_items_link_to_live_source_and_archived_copy(site, page):
+    """Cada noticia y cada dato oficial enlaza a su fuente en vivo y a una copia servida por el sitio."""
+    base, root = site
+    go(page, base, "noticias?tab=peru")
+    item = page.locator("#news-body .feed-item").first
+    expect(item).to_be_visible(timeout=10000)
+    live = item.get_by_role("link", name="Nota original")
+    arch = item.get_by_role("link", name="Copia archivada")
+    assert live.get_attribute("href").startswith("http")
+    href = arch.get_attribute("href")
+    assert href.startswith("data/archive/news/") and "#" in href, href
+    page_file, anchor = href.split("#")
+    assert f'id="{anchor}"' in (root / page_file).read_text(encoding="utf-8")
+    # Filtro por peligro: la cuenta del filtro coincide con la lista.
+    sel = page.locator("#news-haz")
+    opt = sel.locator("option").nth(1)
+    value, label = opt.get_attribute("value"), opt.inner_text()
+    sel.select_option(value)
+    expect(page).to_have_url(re.compile(rf"peligro={value}"))
+    n = int(re.search(r"\((\d+)\)", label).group(1))
+    expect(page.locator("#news-body .feed-item")).to_have_count(n)
+    expect(page.locator("#news-live")).to_contain_text(str(n))
+    go(page, base, "noticias?tab=oficial")
+    off = page.locator("#news-body .feed-item").first
+    expect(off.get_by_role("link", name="Copia archivada")).to_have_count(1, timeout=10000)
+    a = off.get_by_role("link", name="Copia archivada").get_attribute("href")
+    assert (root / a.split("#")[0]).exists(), a  # las alertas enlazan a su entrada en la página del día
+    snap = off.get_by_role("link", name="Respuesta original bajada")
+    if snap.count():  # la respuesta de la fuente tal como se bajó en esta corrida
+        assert (root / snap.get_attribute("href")).exists()
+    go(page, base, "")
+    doc = page.locator(".status-card").get_by_role("link", name="Copia archivada").first
+    assert (root / doc.get_attribute("href")).exists()
+
+
 def test_downloads_exist_and_csv_is_safe(site, page):
     base, root = site
     go(page, base, "datos")
@@ -295,6 +330,8 @@ def engine(request, playwright, browser):
     try:
         b = getattr(playwright, name).launch(executable_path=exe) if exe else getattr(playwright, name).launch()
     except Exception as exc:  # motor no instalado en este equipo
+        if os.environ.get("CI"):  # en CI se instalan los tres motores: si uno no arranca, es una falla
+            raise
         pytest.skip(f"{name} no está instalado: {str(exc).splitlines()[0]}")
     yield playwright, b
     b.close()
@@ -317,7 +354,8 @@ def test_news_fits_every_reference_device(site, engine):
         pg.on("pageerror", lambda e: errors.append(str(e)))
         pg.goto(f"{base}#/noticias?tab=peru")
         expect(pg.locator(".news-filters")).to_be_visible(timeout=15000)
-        dims = pg.evaluate("() => [document.scrollingElement.scrollWidth, innerWidth]")
+        # clientWidth, no innerWidth: con la emulación móvil innerWidth crece con el desborde.
+        dims = pg.evaluate("() => [document.scrollingElement.scrollWidth, document.documentElement.clientWidth]")
         assert dims[0] <= dims[1] + 1, f"{label}: la página mide {dims[0]} px en una pantalla de {dims[1]} px"
         assert not errors, f"{label}: {errors}"
         if dev_id not in ("kaios-flip",):

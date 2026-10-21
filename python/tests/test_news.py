@@ -118,6 +118,31 @@ def test_collect_status_and_clusters():
     assert [l["url"] for l in g["links"]] == ["https://otro.pe/x", "https://medio.pe/a"]
 
 
+def test_collect_isolates_bad_feeds_and_slow_hosts():
+    """Un feed que explota no tumba a los demás; un servidor caído no se reintenta feed por feed."""
+    feeds = [N.Feed("a1", "A1", "peru", "https://a.pe/1"), N.Feed("a2", "A2", "peru", "https://a.pe/2"),
+             N.Feed("a3", "A3", "peru", "https://a.pe/3"), N.Feed("b1", "B1", "peru", "https://b.pe/1"),
+             N.Feed("c1", "C1", "peru", "https://c.pe/1")]
+    calls = []
+
+    def fetch(url):
+        calls.append(url)
+        if url.startswith("https://a.pe"):
+            return None, b"", "", "ConnectTimeout: timed out"
+        if url == "https://b.pe/1":
+            raise RuntimeError("redirecciones infinitas")
+        return 200, RSS, "", ""
+
+    found, status, raw = N.collect(fetch, NOW, feeds=feeds)
+    st = {s["id"]: s for s in status}
+    assert calls.count("https://a.pe/3") == 0, "tras dos fallos de red seguidos se omite el resto del servidor"
+    assert st["a3"]["error"].startswith("omitido") and not st["a3"]["ok"]
+    assert "RuntimeError" in st["b1"]["error"]
+    assert st["c1"]["ok"] and len(found) == 1 and set(raw) == {"c1"}
+    found, status, _ = N.collect(lambda u: (200, RSS, "", ""), NOW, feeds=feeds, deadline=-1)
+    assert not found and all("tiempo" in s["error"] for s in status)
+
+
 def test_history_is_append_only_and_csv_is_safe():
     found, _, _ = _collect({"elcomercio": RSS})
     hist = N.read_jsonl(json.dumps(found[0]) + "\n{roto\n")
@@ -182,3 +207,34 @@ def test_live_capture_clusters_are_coherent():
 ])
 def test_relevance_edges(title, expected):
     assert N.relevance(LOCAL, title, "") == expected
+
+
+def test_equivalent_links_and_url_outlets():
+    """Revisión: «?outputType=» y «utm_» no separan la misma nota; « - https://medio.pe/» sale del titular."""
+    assert N._norm_link("https://elcomercio.pe/peru/nota/?outputType=amp") == N._norm_link("https://elcomercio.pe/peru/nota")
+    assert N._norm_link("https://x.pe/n?utm_source=a&id=3") == N._norm_link("http://www.x.pe/n?id=3") == "x.pe/n?id=3"
+    assert N._norm_link("https://x.pe/n?preference=1") == "x.pe/n?preference=1"
+    assert N._strip_outlet("Lluvias en Huánuco - https://hbanoticias.pe/", "hbanoticias.pe") == "Lluvias en Huánuco"
+    assert N._strip_outlet("Lluvias - https://otro.pe/", "hbanoticias.pe") == "Lluvias - https://otro.pe/"
+
+
+def test_probe_feeds_only_replaces_what_it_probes(tmp_path, monkeypatch):
+    """Revisión: ``--only`` no borra las demás capturas ni el informe, y una corrida sin red falla."""
+    import json as _json
+
+    from tools import probe_feeds as P
+
+    cands = tmp_path / "c.json"
+    cands.write_text(_json.dumps([{"id": "a", "name": "A"}, {"id": "b", "name": "B"}]), encoding="utf-8")
+    out = tmp_path / "out"
+    out.mkdir()
+    (out / "a.xml").write_text("<rss/>")
+    (out / "b.xml").write_text("<rss/>")
+    (out / "report.json").write_text(_json.dumps({"results": [{"id": "a", "ok": True}, {"id": "b", "ok": True}]}))
+    monkeypatch.setattr(P, "Probe", lambda: None)
+    monkeypatch.setattr(P, "safe_probe", lambda pr, c, now, o: {"id": c["id"], "ok": False, "tried": []})
+    assert P.main(["--out", str(out), "--candidates", str(cands), "--only", "b"]) == 0  # «a» sigue bien
+    assert (out / "a.xml").exists() and not (out / "b.xml").exists()
+    rep = _json.loads((out / "report.json").read_text())
+    assert [r["id"] for r in rep["results"]] == ["a", "b"] and rep["ok"] == 1
+    assert P.main(["--out", str(out), "--candidates", str(cands)]) == 1  # ninguno respondió

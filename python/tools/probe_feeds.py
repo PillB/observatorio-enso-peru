@@ -177,27 +177,32 @@ def main(argv=None) -> int:
     ap.add_argument("--candidates", type=Path, default=CANDIDATES)
     ap.add_argument("--only", nargs="*")
     a = ap.parse_args(argv)
-    a.out.mkdir(parents=True, exist_ok=True)
-    for old in a.out.glob("*.xml"):
-        old.unlink()
-    cands = json.loads(a.candidates.read_text(encoding="utf-8"))
+    cands = json.loads(a.candidates.read_text(encoding="utf-8"))  # antes de borrar nada
     if a.only:
         cands = [c for c in cands if c["id"] in a.only]
+    a.out.mkdir(parents=True, exist_ok=True)
+    # Con --only se reemplazan solo las capturas de esos candidatos.
+    for old in ([a.out / f"{c['id']}.xml" for c in cands] if a.only else list(a.out.glob("*.xml"))):
+        old.unlink(missing_ok=True)
     now = datetime.now(timezone.utc)
     pr = Probe()
     with ThreadPoolExecutor(max_workers=12) as ex:
-        results = list(ex.map(lambda c: safe_probe(pr, c, now, a.out), cands))
+        results = probed = list(ex.map(lambda c: safe_probe(pr, c, now, a.out), cands))
+    rp = a.out / "report.json"
+    if a.only and rp.exists():  # se suman al informe anterior en lugar de reemplazarlo
+        done = {r["id"] for r in results}
+        results = [r for r in json.loads(rp.read_text(encoding="utf-8")).get("results", []) if r["id"] not in done] + results
     report = {"checkedAt": now.isoformat(timespec="seconds"), "total": len(results),
               "ok": sum(r["ok"] for r in results), "results": results}
-    (a.out / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    for r in results:
+    rp.write_text(json.dumps(report, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    for r in probed:
         state = "OK " if r["ok"] else "-- "
         extra = (f"{r['format']} {r['items']} entradas, última {r['latest']}, relevantes {r['relevant']}, "
                  f"reparaciones {r['repairs']}") if r["ok"] else "; ".join(
             f"{t['status']} {t['error']}"[:60] for t in r["tried"][-2:])
         print(f"{state}{r['id']:28} {extra}")
     print(f"{report['ok']} de {report['total']} candidatos responden con un feed válido")
-    return 0
+    return 1 if results and not report["ok"] else 0  # ninguno respondió: sin red, no un informe que guardar
 
 
 if __name__ == "__main__":

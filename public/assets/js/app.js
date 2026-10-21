@@ -125,6 +125,7 @@ function statusCard(kind) {
       ${o.channel === 'relay-peru' ? html`<span class="tag">vía recolector en el Perú</span>` : ''}
       ${o.carried ? html`<span class="tag">último dato válido</span>` : ''}
       <a href="${safeUrl(o.documentUrl || o.url)}" rel="noopener" target="_blank">Documento oficial</a>
+      ${archiveHref(o.archive) ? html`<a href="${archiveHref(o.archive)}" rel="noopener" target="_blank" title="Copia que bajó el observatorio${o.retrievedAt ? ` el ${F.fmtDateTime(o.retrievedAt)}` : ''}">Copia archivada</a>` : ''}
     </div>
   </article>`;
 }
@@ -205,6 +206,7 @@ async function mountChart(el, spec, { range = '5', weeklyKeys } = {}) {
     loaded.push({ ...s, all: toXY(pts, 'period') });
   }
   const box = el.querySelector('.chart-box') || el;
+  chartSources(el, spec.series);
   const draw = (r) => {
     const cut = r === 'all' ? -Infinity : Date.now() - Number(r) * 365.25 * 864e5;
     timeChart(box, { ...spec, series: loaded.map((s) => ({ ...s, points: s.all.filter((p) => p.t >= cut) })) });
@@ -242,6 +244,30 @@ const monthLabel = (s) => (/^\d{4}-\d{2}-\d{2}/.test(s) ? F.fmtDateShort(s) : F.
 function sourceFoot(keys) {
   const out = keys.map((k) => series(k)).filter(Boolean).map((s) => `${s.label}: ${s.description.split('.')[0]}. Base ${s.climatology || '—'}.`);
   return out.join(' ');
+}
+
+// Cada dato y cada noticia enlaza a su origen en vivo y a la copia que bajó
+// el observatorio, servida por este mismo sitio (data/archive/…).
+const ARCHIVE_RE = /^archive\/[\w.\/-]+(?:#[\w-]+)?$/;
+const archiveHref = (p) => (p && ARCHIVE_RE.test(p) ? DATA + p : '');
+
+function sourceLinks(live, arch, { liveLabel = 'Fuente en vivo', archLabel = 'Copia archivada', when, prefix, snapshot } = {}) {
+  const a = archiveHref(arch);
+  const snap = archiveHref(snapshot);
+  const parts = [
+    live ? html`<a href="${safeUrl(live)}" rel="noopener" target="_blank">${liveLabel}</a>` : '',
+    a ? html`<a href="${a}" target="_blank" rel="noopener" title="${when ? `Copia bajada el ${F.fmtDateTime(when)}` : 'Copia que bajó el observatorio'}">${archLabel}</a>` : '',
+    snap ? html`<a href="${snap}" target="_blank" rel="noopener" title="La respuesta de la fuente tal como la bajó el observatorio hoy">Respuesta original bajada</a>` : '',
+  ].filter(Boolean);
+  if (!parts.length) return '';
+  return html`<p class="src-links">${prefix ? html`<span>${prefix}:</span> ` : ''}${parts.map((x, i) => html`${i ? ' · ' : ''}${x}`)}</p>`;
+}
+
+function chartSources(el, specSeries) {
+  const ids = [...new Set(specSeries.map((s) => (s.weekly ? 'cpc-wksst' : series(s.key)?.source)).filter(Boolean))];
+  const rows = ids.map((id) => [id, S.dash.sources?.[id]]).filter(([, m]) => m && (m.live || m.archive));
+  if (!rows.length || el.querySelector('.src-links')) return;
+  el.insertAdjacentHTML('beforeend', String(html`<div class="card-foot card-src">${rows.map(([, m]) => sourceLinks(m.live, m.archive, { when: m.retrievedAt, prefix: `${m.institution} · ${m.product}` }))}</div>`));
 }
 
 // ---------------------------------------------------------------------------
@@ -544,7 +570,7 @@ VIEWS.metodologia = {
       $('#sources-table').innerHTML = String(html`<div class="table-wrap"><table><thead><tr><th scope="col">Fuente</th><th scope="col">Estado</th><th scope="col">Obtenido</th><th scope="col">Frecuencia</th></tr></thead><tbody>
         ${src.sources.map((s) => html`<tr><th scope="row"><a href="${safeUrl(s.docs)}" rel="noopener" target="_blank">${s.product}</a><div class="muted small">${s.institution}</div></th>
         <td>${chip(ST[s.status]?.[0] || 'na', ST[s.status]?.[1] || s.status)}${s.formatDrift ? html` <span class="tag tag-prelim">formato cambió</span>` : ''}${s.archivedAt ? html`<div class="muted small">copia del ${F.fmtDate(s.archivedAt.slice(0, 10))}</div>` : ''}</td>
-        <td>${s.retrievedAt ? F.fmtDateTime(s.retrievedAt) : '—'}</td><td>cada ~${s.cadenceDays} días</td></tr>`)}</tbody></table></div>`);
+        <td>${s.retrievedAt ? F.fmtDateTime(s.retrievedAt) : '—'}${archiveHref(s.archive) ? html`<div class="small"><a href="${archiveHref(s.archive)}" rel="noopener" target="_blank">copia archivada</a></div>` : ''}</td><td>cada ~${s.cadenceDays} días</td></tr>`)}</tbody></table></div>`);
     } else $('#sources-table').textContent = 'No disponible.';
     if (rep) {
       const ev = rep.events.filter((e) => e.severity !== 'info');
@@ -564,10 +590,12 @@ const NEWS_TABS = [['oficial', 'Fuentes oficiales'], ['peru', 'Perú'], ['mundo'
 const NEWS_KINDS = [['', 'Todas'], ['estado', 'Autoridades y Estado'], ['diario', 'Diarios'], ['radiotv', 'Radio y TV'], ['digital', 'Medios digitales'], ['agregador', 'Agregadores']];
 const KIND_GROUP = { gobierno: 'estado', organismo: 'estado', diario: 'diario', radio: 'radiotv', tv: 'radiotv', digital: 'digital', agregador: 'agregador' };
 const KIND_LABEL = { gobierno: 'Estado', organismo: 'Organismo', diario: 'Diario', radio: 'Radio', tv: 'TV', digital: 'Digital', agregador: 'Agregador' };
+// Tipos de peligro (enso/news.py HAZARDS).
+const HAZARD_LABEL = { lluvias: 'Lluvias', inundacion: 'Inundaciones', huaico: 'Huaicos y deslizamientos', sequia: 'Sequía', calor: 'Calor', frio: 'Frío, friaje y heladas', viento: 'Vientos', oleaje: 'Oleaje', sismo: 'Sismos y tsunamis', volcan: 'Volcanes', incendio: 'Incendios', emergencia: 'Emergencias', salud: 'Salud' };
 
 function newsParams() {
   const q = new URLSearchParams(location.hash.split('?')[1] || '');
-  return { tab: q.get('tab') || 'oficial', tipo: q.get('tipo') || '', dep: q.get('dep') || '' };
+  return { tab: q.get('tab') || 'oficial', tipo: q.get('tipo') || '', dep: q.get('dep') || '', peligro: q.get('peligro') || '' };
 }
 
 function placeLabel(p, deps) {
@@ -583,30 +611,47 @@ function feedValue(it) {
 }
 
 function officialItem(it) {
-  const when = it.date ? html`<time datetime="${it.date}">${F.fmtDate(it.date)}</time>` : '';
+  const when = it.date ? html`<time datetime="${it.date}">${it.date.length > 10 ? F.fmtDateTime(it.date).replace(' (hora de Lima)', '') : F.fmtDate(it.date)}</time>` : '';
   return html`<li class="feed-item">
     <div class="feed-meta"><span class="feed-inst">${it.institution}</span>${when ? html` · ${when}` : ''}${it.kind ? html` · <span class="muted">${it.kind}</span>` : ''}</div>
     <h3 class="feed-title">${it.url ? html`<a href="${safeUrl(it.url)}" rel="noopener" target="_blank">${it.title}</a>` : it.title}</h3>
     ${feedValue(it)}
     ${it.text ? html`<p class="feed-text">${it.text}</p>` : ''}
     <div class="feed-tags">
+      ${(it.hazards || []).filter((h) => HAZARD_LABEL[h]).map((h) => html`<span class="tag tag-hazard">${HAZARD_LABEL[h]}</span> `)}${(it.where || []).map((w) => html`<span class="tag tag-place">${raw(ICON.pin)}${w}</span> `)}
       ${it.level ? chip(it.level, LEVEL_TXT[it.level] && it.level !== 'ok' ? `Alerta ${LEVEL_TXT[it.level].toLowerCase()}` : undefined) : ''}
       ${it.stale ? html`<span class="tag tag-prelim">vencido</span>` : ''}
       ${it.newerListed ? html`<span class="tag tag-prelim">hay un comunicado más reciente (${it.newerListed}) sin leer</span>` : ''}
       ${it.next ? html`<span class="tag">próximo: ${F.fmtDate(it.next)}</span>` : ''}
       ${String(it.channel || '').startsWith('archive') ? html`<span class="tag">vía Internet Archive</span>` : it.channel === 'relay-peru' ? html`<span class="tag">vía recolector en el Perú</span>` : ''}
-    </div></li>`;
+    </div>
+    ${sourceLinks(it.url, it.archive, { when: it.retrievedAt, snapshot: it.snapshot })}</li>`;
 }
 
-function clusterItem(c, deps = {}) {
+// Sin avisos no quiere decir sin peligro: se dice qué fuentes de alertas no respondieron.
+function alertSources(g) {
+  const src = g.sources || [];
+  if (!src.length) return '';
+  const down = src.filter((s) => !s.ok);
+  const links = (list) => list.map((s, i) => html`${i ? ', ' : ''}<a href="${safeUrl(s.url)}" rel="noopener" target="_blank">${s.name}</a>`);
+  const empty = g.items.length ? '' : down.length === src.length
+    ? html`<p class="notice notice-alert">Ninguna fuente de alertas respondió en esta actualización: consulte directamente a las instituciones.</p>`
+    : html`<p>Las fuentes consultadas no publicaron avisos en los últimos 7 días.</p>`;
+  return html`${empty}<p class="alert-sources muted small">${src.length - down.length} de ${src.length} fuentes de alertas respondieron en esta actualización.${down.length && down.length < src.length ? html` <strong>Sin respuesta:</strong> ${links(down)}. Sus avisos pueden faltar aquí; consulte la fuente.` : ''}</p>`;
+}
+
+function clusterItem(c, deps = {}, dep = '') {
   const more = c.links.length > 1;
-  const places = (c.places || []).slice(0, 3);
+  // Con un departamento elegido, sus lugares van primero: la tarjeta muestra por qué está en la lista.
+  const all = c.places || [];
+  const places = (dep ? [...all.filter((p) => p.code.startsWith(dep)), ...all.filter((p) => !p.code.startsWith(dep))] : all).slice(0, 3);
   return html`<li class="feed-item">
     <div class="feed-meta"><time datetime="${c.first}">${F.fmtDateTime(c.first).replace(' (hora de Lima)', '')}</time> · <span class="feed-inst">${c.outlets.slice(0, 3).join(', ')}${c.outlets.length > 3 ? ` y ${c.outlets.length - 3} más` : ''}</span></div>
     <h3 class="feed-title"><a href="${safeUrl(c.links[0].url)}" rel="noopener" target="_blank">${c.title}</a></h3>
     ${c.summary ? html`<p class="feed-text">${c.summary}</p>` : ''}
-    <div class="feed-tags"><span class="tag">${c.relevance === 'enso' ? 'El Niño / La Niña' : 'Impactos y peligros'}</span>${c.count > 1 ? html` <span class="tag">${c.count} notas similares</span>` : ''}${(c.kinds || []).map((k) => html` <span class="tag tag-kind tag-${KIND_GROUP[k] || 'diario'}">${KIND_LABEL[k] || k}</span>`)}${places.map((p) => html` <span class="tag tag-place">${raw(ICON.pin)}${placeLabel(p, deps)}</span>`)}</div>
-    ${more ? html`<details class="feed-more"><summary>Ver las ${c.links.length} notas</summary><ul>${c.links.map((l) => html`<li><a href="${safeUrl(l.url)}" rel="noopener" target="_blank">${l.title}</a> <span class="muted small">${l.outlet}${l.kind ? ` (${(KIND_LABEL[l.kind] || l.kind).toLowerCase()})` : ''}${l.published ? ` · ${F.fmtDate(l.published.slice(0, 10))}` : ''}</span></li>`)}</ul></details>` : ''}
+    <div class="feed-tags"><span class="tag">${c.relevance === 'enso' ? 'El Niño / La Niña' : 'Impactos y peligros'}</span>${(c.hazards || []).filter((h) => h !== 'enso' && HAZARD_LABEL[h]).slice(0, 3).map((h) => html` <span class="tag tag-hazard">${HAZARD_LABEL[h]}</span>`)}${c.count > 1 ? html` <span class="tag">${c.count} notas similares</span>` : ''}${(c.kinds || []).map((k) => html` <span class="tag tag-kind tag-${KIND_GROUP[k] || 'diario'}">${KIND_LABEL[k] || k}</span>`)}${places.map((p) => html` <span class="tag tag-place">${raw(ICON.pin)}${placeLabel(p, deps)}</span>`)}</div>
+    ${sourceLinks(c.links[0].url, c.links[0].archive, { liveLabel: 'Nota original', snapshot: c.links[0].snapshot })}
+    ${more ? html`<details class="feed-more"><summary>Ver las ${c.links.length} notas</summary><ul>${c.links.map((l) => html`<li><a href="${safeUrl(l.url)}" rel="noopener" target="_blank">${l.title}</a> <span class="muted small">${l.outlet}${l.kind ? ` (${(KIND_LABEL[l.kind] || l.kind).toLowerCase()})` : ''}${l.published ? ` · ${F.fmtDate(l.published.slice(0, 10))}` : ''}</span>${archiveHref(l.archive) ? html` <a class="small" href="${archiveHref(l.archive)}" rel="noopener" target="_blank">copia</a>` : ''}</li>`)}</ul></details>` : ''}
   </li>`;
 }
 
@@ -619,6 +664,7 @@ VIEWS.noticias = {
       <div class="page-head"><div class="eyebrow">Novedades</div><h1>Noticias y novedades</h1>
         <p>Lo último que publicó cada fuente oficial y las noticias sobre El Niño y sus impactos en el Perú y el mundo: autoridades, diarios, radios y medios regionales. Cuando varios medios cuentan lo mismo se agrupan en una sola entrada con el enlace a cada uno, y cada noticia se ubica en su departamento, provincia o distrito.</p></div>
       <div class="seg" role="tablist" aria-label="Tipo de novedades" data-tour-id="news-tabs">${NEWS_TABS.map(([k, l]) => html`<button type="button" role="tab" data-tab="${k}" aria-selected="${String(k === cur)}" aria-pressed="${String(k === cur)}">${l}</button>`)}</div>
+      <p id="news-live" class="visually-hidden" aria-live="polite"></p>
       <div id="news-body" class="news-body"><div class="skeleton"></div></div>
       <section class="card" aria-labelledby="nd-h" data-tour-id="news-downloads"><h2 id="nd-h">Descargas y estado de los feeds</h2>
         <p class="muted small">El histórico de noticias solo crece: cada corrida agrega las notas nuevas y nunca reescribe las anteriores. Solo se guarda lo que cada medio publica en su feed (titular, resumen, fecha y enlace).</p>
@@ -639,29 +685,48 @@ VIEWS.noticias = {
     const deps = clusters?.departmentNames || {};
     const setUrl = (p) => history.replaceState(null, '', `#/noticias?${new URLSearchParams(Object.entries(p).filter(([, v]) => v)).toString()}`);
     const show = (p) => {
+      // Parámetros de la URL validados: un valor desconocido no deja la lista vacía sin explicación.
+      p = { ...p };
+      if (!NEWS_TABS.some(([k]) => k === p.tab)) p.tab = 'oficial';
+      if (!NEWS_KINDS.some(([k]) => k === p.tipo)) p.tipo = '';
+      if (p.tab !== 'peru' || !deps[p.dep]) p.dep = '';
+      if (p.peligro && p.peligro !== 'enso' && !HAZARD_LABEL[p.peligro]) p.peligro = '';
       const { tab } = p;
       $$('[data-tab]').forEach((b) => { const on = b.dataset.tab === tab; b.setAttribute('aria-selected', String(on)); b.setAttribute('aria-pressed', String(on)); });
       if (tab === 'oficial') {
-        body.innerHTML = feed ? String(html`${feed.groups.map((g) => html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2><ul class="feed">${g.items.map(officialItem)}</ul></section>`)}`) : '<p class="card">No disponible en esta publicación.</p>';
+        body.innerHTML = feed ? String(html`${feed.groups.map((g) => html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2>${alertSources(g)}<ul class="feed">${g.items.map(officialItem)}</ul></section>`)}`) : '<p class="card">No disponible en esta publicación.</p>';
         return;
       }
       if (!clusters) { body.innerHTML = '<p class="card">Las noticias no están disponibles en esta publicación.</p>'; return; }
       const region = (clusters.clusters || []).filter((c) => c.region === tab);
       const byKind = (c) => !p.tipo || (c.kinds || ['diario']).some((k) => KIND_GROUP[k] === p.tipo);
       const byDep = (c) => !p.dep || (c.departments || []).includes(p.dep);
-      const list = region.filter((c) => byKind(c) && byDep(c));
-      const kindCount = (k) => region.filter((c) => byDep(c) && (!k || (c.kinds || ['diario']).some((x) => KIND_GROUP[x] === k))).length;
+      const hasHaz = (c, h) => (h === 'enso' ? c.relevance === 'enso' || (c.hazards || []).includes('enso') : (c.hazards || []).includes(h));
+      const byHaz = (c) => !p.peligro || hasHaz(c, p.peligro);
+      const list = region.filter((c) => byKind(c) && byDep(c) && byHaz(c));
+      const kindCount = (k) => region.filter((c) => byDep(c) && byHaz(c) && (!k || (c.kinds || ['diario']).some((x) => KIND_GROUP[x] === k))).length;
       const depCount = {};
-      region.filter(byKind).forEach((c) => (c.departments || []).forEach((d) => { depCount[d] = (depCount[d] || 0) + 1; }));
+      region.filter((c) => byKind(c) && byHaz(c)).forEach((c) => (c.departments || []).forEach((d) => { depCount[d] = (depCount[d] || 0) + 1; }));
+      const hazBase = region.filter((c) => byKind(c) && byDep(c));
+      const hazOpts = [['enso', 'El Niño / La Niña'], ...Object.entries(HAZARD_LABEL)].map(([h, l]) => [h, l, hazBase.filter((c) => hasHaz(c, h)).length]).filter(([h, , n]) => n || h === p.peligro);
       const depOpts = Object.keys(deps).sort((a, b) => deps[a].localeCompare(deps[b], 'es'));
       const filters = html`<div class="news-filters">
         <div class="kind-chips" role="group" aria-label="Tipo de fuente">${NEWS_KINDS.map(([k, l]) => html`<button type="button" class="kind-chip" data-kind="${k}" aria-pressed="${String(k === p.tipo)}">${l} <span class="muted">${kindCount(k)}</span></button>`)}</div>
-        ${tab === 'peru' ? html`<label class="dep-select"><span>Departamento</span><select id="news-dep"><option value="">Todo el Perú (${region.filter(byKind).length})</option>${depOpts.map((d) => html`<option value="${d}" ${d === p.dep ? 'selected' : ''}>${deps[d]} (${depCount[d] || 0})</option>`)}</select></label>` : ''}
+        ${tab === 'peru' ? html`<label class="dep-select"><span>Departamento</span><select id="news-dep"><option value="">Todo el Perú (${region.filter((c) => byKind(c) && byHaz(c)).length})</option>${depOpts.map((d) => html`<option value="${d}" ${d === p.dep ? 'selected' : ''}>${deps[d]} (${depCount[d] || 0})</option>`)}</select></label>` : ''}
+        <label class="dep-select"><span>Peligro</span><select id="news-haz"><option value="">Todos (${hazBase.length})</option>${hazOpts.map(([h, l, n]) => html`<option value="${h}" ${h === p.peligro ? 'selected' : ''}>${l} (${n})</option>`)}</select></label>
       </div>`;
-      const what = `${tab === 'peru' ? 'del Perú' : 'del mundo'}${p.dep && deps[p.dep] ? ` en ${deps[p.dep]}` : ''}`;
-      body.innerHTML = String(html`${filters}<section class="card" aria-label="Noticias ${what}">${list.length ? html`<p class="muted small news-count" aria-live="polite">${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what} en los últimos ${clusters.days} días</p><ul class="feed">${list.map((c) => clusterItem(c, deps))}</ul>` : html`<p class="muted">No hay noticias ${what} con este filtro en los últimos ${clusters.days} días.</p>`}</section>`);
-      $$('.kind-chip', body).forEach((b) => b.addEventListener('click', () => { const n = { ...p, tipo: b.dataset.kind }; setUrl(n); show(n); }));
+      const hazWhat = p.peligro ? ` sobre ${(p.peligro === 'enso' ? 'El Niño / La Niña' : HAZARD_LABEL[p.peligro] || p.peligro).toLowerCase()}` : '';
+      const what = `${tab === 'peru' ? 'del Perú' : 'del mundo'}${p.dep && deps[p.dep] ? ` en ${deps[p.dep]}` : ''}${hazWhat}`;
+      $('#news-live').textContent = `${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what}`;
+      body.innerHTML = String(html`${filters}<section class="card" aria-label="Noticias ${what}">${list.length ? html`<p class="muted small news-count">${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what} en los últimos ${clusters.days} días</p><ul class="feed">${list.map((c) => clusterItem(c, deps, p.dep))}</ul>` : html`<p class="muted">No hay noticias ${what} con este filtro en los últimos ${clusters.days} días.</p>`}</section>`);
+      $$('.kind-chip', body).forEach((b) => b.addEventListener('click', () => {
+        const n = { ...p, tipo: b.dataset.kind };
+        setUrl(n);
+        show(n);
+        $(`.kind-chip[data-kind="${n.tipo}"]`, body)?.focus();  // la lista se redibuja: el foco vuelve al filtro
+      }));
       $('#news-dep', body)?.addEventListener('change', (e) => { const n = { ...p, dep: e.target.value }; setUrl(n); show(n); $('#news-dep', body)?.focus(); });
+      $('#news-haz', body)?.addEventListener('change', (e) => { const n = { ...p, peligro: e.target.value }; setUrl(n); show(n); $('#news-haz', body)?.focus(); });
     };
     $$('[data-tab]').forEach((b) => b.addEventListener('click', () => {
       const n = { ...newsParams(), tab: b.dataset.tab };

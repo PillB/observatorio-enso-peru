@@ -30,8 +30,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.devices import DEVICES, context_options  # noqa: E402
 
+# El ancho de la pantalla es el del viewport de diseño (clientWidth). Con la
+# emulación móvil, innerWidth crece hasta el ancho del contenido cuando la
+# página desborda, así que compararlo consigo mismo nunca detecta nada.
 CHECK_JS = """() => {
   const doc = document.scrollingElement || document.documentElement;
+  const innerWidth = document.documentElement.clientWidth;
   const wide = [...document.querySelectorAll('main *')].filter((e) => {
     const r = e.getBoundingClientRect();
     return r.width > 0 && r.right > innerWidth + 1 && getComputedStyle(e).position !== 'fixed'
@@ -57,6 +61,8 @@ def serve(root: Path) -> tuple[http.server.ThreadingHTTPServer, str]:
 
 
 def contact_sheet(shots: list[tuple[str, Path]], out: Path, height: int = 640) -> bool:
+    if not shots:
+        return False
     try:
         from PIL import Image, ImageDraw
     except ImportError:
@@ -117,7 +123,7 @@ def main(argv=None) -> int:
                 exe = os.environ.get(f"PW_{engine.upper()}")
                 try:
                     browsers[engine] = (getattr(p, engine).launch(executable_path=exe) if exe else
-                                        getattr(p, engine).launch()) if engine in a.engines else None
+                                        getattr(p, engine).launch())
                 except Exception as exc:  # motor no instalado
                     print(f"[aviso] {engine} no disponible: {str(exc).splitlines()[0]}")
                     browsers[engine] = None
@@ -126,6 +132,8 @@ def main(argv=None) -> int:
         for dev_id, name, engine, desc, extra in DEVICES:
             if a.only and dev_id not in a.only:
                 continue
+            if engine not in a.engines:
+                continue  # motor no pedido: sus dispositivos no se capturan
             used = engine
             b = browser(engine)
             if b is None:
@@ -150,6 +158,8 @@ def main(argv=None) -> int:
                               "?.offsetHeight || 0) - 8); }", a.anchor)
                 page.wait_for_timeout(250)
             problems = []
+            if used != engine and os.environ.get("CI"):
+                problems.append(f"{engine} no arrancó: capturado con {used}")  # en CI se instalan los tres motores
             if m["scrollWidth"] > m["innerWidth"] + 1 or m["wide"]:
                 problems.append(f"desborde horizontal ({m['scrollWidth']} > {m['innerWidth']} px: {', '.join(m['wide'])})")
             if errors:

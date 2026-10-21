@@ -119,6 +119,49 @@ Descartados en la verificación:
 Las publicaciones de redes sociales que aparecen en Google Noticias
 (Facebook, X, Instagram, TikTok, YouTube) se descartan.
 
+## Alertas oficiales de peligros
+
+Además del ENSO, el sitio reúne los avisos y reportes oficiales de los
+peligros que causan emergencias en el Perú. Catálogo ejecutable: las
+entradas de `FEEDS` con `covers` en `python/enso/news.py`; los lectores
+están en `python/enso/hazardparse.py`. Ninguna de estas fuentes tiene un
+RSS útil salvo el INDECI y el PTWC, así que se lee lo que publican (HTML,
+GeoJSON, consultas ArcGIS o texto) y se homologa al mismo formato de las
+noticias: titular en español, resumen, fecha, enlace en vivo y lugares
+(distrito, provincia y departamento). Todas responden a una petición
+simple desde GitHub Actions (escalera de extracción del 21 de octubre de
+2026); ninguna necesita navegador.
+
+| Feed | Peligros | Qué se lee | Notas |
+|---|---|---|---|
+| `indeci-coen` | Incendios forestales, vientos fuertes, heladas y descenso de temperatura, lluvias intensas, erosión, huaicos, inundaciones, oleaje | RSS de reportes del COEN (`portal.indeci.gob.pe/emergencias/feed/`) | Los titulares en mayúsculas se reescriben («Incendio forestal en el distrito de Curahuasi (Apurímac)»); los eventos de origen humano (incendio urbano, derrame, accidente…) se descartan. Los boletines de aviso meteorológico del SENAMHI que difunde el COEN se publican con su número y vigencia |
+| `senamhi-quebradas` | Huaicos (activación de quebradas por lluvias) | Capa 2 del servicio SENAMHI en GEOSINPAD (INDECI), agrupada por nivel y fecha | El servidor del SENAMHI no responde fuera del Perú; el INDECI publica una copia. Cada aviso enlaza a la consulta en vivo en HTML |
+| `senamhi-hidrologicos` | Inundaciones y vaciantes (nivel de los ríos) | Capa 4 del mismo servicio: avisos hidrológicos por estación | Un aviso por número, con la estación, el distrito, la provincia y el departamento |
+| `senamhi-telegram` | Lluvias, nevadas y granizo, viento, temperatura | Vista pública del canal oficial (`t.me/s/Senamhi_Peru`) | Los mensajes con #Aviso y #Ahora son avisos; las notas de prensa del canal no entran en las alertas |
+| `usgs-sismos` | Sismos de magnitud 4 o más | GeoJSON del USGS para el Perú y alrededores | Solo los ubicados en el Perú o frente a su costa; la hora va en UTC−5 |
+| `dhn-tsunamis` | Sismos y tsunamis | Boletines de la DHN | Se omiten los simulacros |
+| `ptwc-mensajes`, `ptwc-wepa40` | Tsunamis | Atom y texto del Centro de Alerta de Tsunamis del Pacífico | Solo cuentan si el mensaje menciona al Perú; la alerta nacional la emite la DHN |
+| `dhn-avisos` | Oleaje anómalo y vientos en el litoral | Listado de avisos especiales de la DHN (`dhn.mil.pe/portal/avisos-especiales`) | Lee los títulos de todos los formatos desde 2020; el titular dice el oleaje más fuerte y en qué tramo del litoral (norte, centro, sur, con sus departamentos), o la velocidad del viento en nudos y entre qué localidades |
+| `igp-cenvul-boletines`, `igp-cenvul-alertas` | Volcanes | Tarjetas de boletines y alertas del CENVUL (IGP) | Se omiten los volcanes en alerta verde; cada volcán lleva su provincia y departamento |
+
+En el sitio, la pestaña Oficial de Noticias empieza por «Alertas y
+reportes de peligros (últimos 7 días)». Cada aviso tiene tres enlaces: la
+fuente en vivo, su entrada en la página del archivo del día en que se vio
+(`data/archive/news/AAAA-MM-DD.html#id`) y la respuesta original que bajó
+esa corrida (`data/archive/feeds/...`).
+
+Evaluadas y pendientes:
+
+| Fuente | Estado |
+|---|---|
+| NASA FIRMS (focos de calor VIIRS y MODIS, Sudamérica, 24 h) | Responde (CSV); falta ubicar cada foco por departamento |
+| Riesgo de incendios forestales del SENAMHI (FWI, capa 3 de GEOSINPAD) | Responde (polígonos sin nombres de lugar); falta ubicarlos por departamento |
+| Focos de calor del INPE (Brasil), con país y departamento | En la escalera de extracción |
+| Global Volcanism Program (Smithsonian) | Verificación anti-robots; no se intenta saltarla |
+| API del IGP (`api.igp.gob.pe`) | `robots.txt` la excluye |
+| SENAMHI (`senamhi.gob.pe`, observatorio), IDESEP, SIG del CENEPRED | Tiempo de espera agotado fuera del Perú; quedan para el recolector del Perú |
+| Normas legales de El Peruano (declaratorias de emergencia) | Su API exige fechas y páginas; candidata para un flujo de n8n |
+
 ## Fuentes evaluadas y no usadas
 
 | Producto | Motivo |

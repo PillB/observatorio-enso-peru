@@ -311,7 +311,7 @@ jobs:
       - uses: actions/github-script@v8
         with:
           script: |
-            for (const id of ['observatory.yml', 'watchdog.yml']) {
+            for (const id of ['observatory.yml', 'watchdog.yml', 'probe-sources.yml']) {
               try { await github.rest.actions.enableWorkflow({ ...context.repo, workflow_id: id }); core.info(`enabled ${id}`); }
               catch (e) { core.warning(`${id}: ${e.message}`); }
             }

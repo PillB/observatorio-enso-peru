@@ -137,7 +137,8 @@ def pub(tmp_path_factory):
 
 def test_publication_is_coherent(pub):
     out, res = pub
-    ids = {json.loads(p.read_text(encoding="utf-8"))["publicationId"] for p in out.rglob("*.json")}
+    ids = {json.loads(p.read_text(encoding="utf-8"))["publicationId"] for p in out.rglob("*.json")
+           if "archive/sources" not in p.as_posix()}  # copias de terceros, tal como se bajaron
     assert ids == {res["publicationId"]}
     man = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     for f in man["files"]:
@@ -253,3 +254,45 @@ def test_archive_fallback_uses_existing_copy_when_save_fails():
     assert r.channel == "archive" and r.archived_at.startswith("2026-10-14")
     assert any("url=https%3A%2F%2Fenfen.imarpe.gob.pe%2Fwp-json%2Fwp%2Fv2%2Fposts%3Fper_page%3D10%26search%3Dcomunicado" in u for u in seen)
     assert any("/save/" in u for u in seen)
+
+
+def test_every_link_has_an_archived_copy_on_the_site(pub):
+    """Cada dato y noticia enlaza a una copia servida por el propio sitio, que existe."""
+    out, _ = pub
+    idx = json.loads((out / "archive" / "index.json").read_text(encoding="utf-8"))
+    listed = {f["path"] for f in idx["files"]}
+    for f in idx["files"]:
+        assert (out / f["path"]).exists(), f
+        assert f["path"].rsplit(".", 1)[-1] in {"pdf", "json", "csv", "txt", "html"}, f
+    d = json.loads((out / "dashboard.json").read_text(encoding="utf-8"))
+    assert d["official"]["enfen"]["archive"].endswith(".pdf")
+    assert (out / d["official"]["enfen"]["archive"]).read_bytes()[:5] == b"%PDF-"
+    assert d["official"]["noaa"]["archive"] in listed
+    for sid, m in d["sources"].items():
+        assert m["live"].startswith("http"), sid
+        assert m["archive"] in listed, sid
+    feed = json.loads((out / "feed.json").read_text(encoding="utf-8"))
+    for g in feed["groups"]:
+        for it in g["items"]:
+            if it.get("url"):
+                page, _, anchor = it.get("archive", "").partition("#")
+                assert page in listed, it["id"]
+                if anchor:  # las alertas enlazan a su entrada en la página del día del archivo de noticias
+                    assert f'id="{anchor}"' in (out / page).read_text(encoding="utf-8")
+                if it.get("snapshot"):
+                    assert it["snapshot"] in listed
+    alerts = next(g for g in feed["groups"] if g["id"] == "alertas")["items"]
+    assert alerts and feed["groups"][0]["id"] == "alertas"
+    assert any(it.get("snapshot") for it in alerts)
+    clusters = json.loads((out / "news" / "clusters.json").read_text(encoding="utf-8"))["clusters"]
+    assert clusters
+    for c in clusters:
+        for link in c["links"]:
+            page, anchor = link["archive"].split("#")
+            assert page in listed
+            assert f'id="{anchor}"' in (out / page).read_text(encoding="utf-8")
+            if link.get("snapshot"):
+                assert link["snapshot"] in listed
+    assert all("raw.githubusercontent" not in p and "data-archive" not in p for p in listed)
+    # La validación de la publicación ignora las copias de terceros, pero no el índice.
+    assert idx["publicationId"] == d["publicationId"]

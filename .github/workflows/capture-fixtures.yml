@@ -2,6 +2,8 @@
 # Wayback Machine) y las guarda como fixtures de prueba en la propia rama.
 # Se usa para construir y hacer backtesting de los parsers contra formatos
 # reales. Manual, o al cambiar la herramienta de captura en una rama claude/**.
+# El resultado va a la rama bot/fixtures/<rama> y como artefacto, nunca a la
+# rama de trabajo.
 name: capture-fixtures
 
 on:
@@ -15,8 +17,6 @@ on:
     branches: ['claude/**']
     paths:
       - 'python/tools/capture_sources.py'
-      - 'python/enso/observatory.py'
-      - 'python/enso/news.py'
       - '.github/workflows/capture-fixtures.yml'
 
 permissions:
@@ -38,7 +38,7 @@ jobs:
       - run: pip install -r python/requirements.txt
       - name: Capture
         working-directory: python
-        run: python -m tools.capture_sources --out tests/fixtures/sources ${{ (github.event_name == 'push' || inputs.history) && '--history' || '' }}
+        run: python -m tools.capture_sources --out tests/fixtures/sources ${{ inputs.history && '--history' || '' }}
       - name: Live pipeline probe
         working-directory: python
         env:
@@ -56,10 +56,19 @@ jobs:
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           git add python/tests/fixtures/sources python/tests/fixtures/live-run
           git diff --cached --quiet && exit 0
+          # Nunca en la rama de trabajo: los commits del bot dejan las
+          # comprobaciones del PR en «action_required» y engordan el diff.
+          # Se publican en una rama aparte que se trae a mano cuando sirve:
+          #   git fetch origin bot/fixtures/$GITHUB_REF_NAME && git checkout FETCH_HEAD -- python/tests/fixtures/sources python/tests/fixtures/live-run
           git commit -m "chore(fixtures): capture raw source snapshots"
-          # La rama puede haber avanzado durante la captura.
-          for i in 1 2 3; do
-            git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
-            sleep $((i * 5))
-          done
-          exit 1
+          git push --force origin "HEAD:refs/heads/bot/fixtures/$GITHUB_REF_NAME"
+          echo "::notice::Resultado en la rama bot/fixtures/$GITHUB_REF_NAME"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fixtures
+          path: |
+            python/tests/fixtures/sources
+            python/tests/fixtures/live-run
+          if-no-files-found: ignore
+          retention-days: 14
