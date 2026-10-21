@@ -29,9 +29,13 @@ muestra cada vista.
    portal, el de la réplica de la DHN (el número más alto del año), que la validación descarta si es de otro
    periodo. Un informe ya leído no se vuelve a bajar mientras siga el mismo comunicado.
 3. **De dónde se baja.** El portal del ENFEN no responde desde GitHub Actions ni desde n8n (DNS). Se prueba,
-   en orden: el portal, la réplica de la DHN (`informe-tecnico/NN-AAAA.pdf`, que responde fuera del Perú pero
-   publica con unos días de atraso), las copias de los recolectores si las hay y el Internet Archive. El
-   recolector del Perú todavía no baja el informe: su límite es de 8 MB por archivo y el PDF pesa 10–17 MB. La copia del PDF se publica en `data/archive` (enlace «Copia archivada»). Si
+   en orden: el portal, la réplica de la DHN (`informe-tecnico/NN-AAAA.pdf`), las copias del recolector del
+   Perú y el Internet Archive. La DHN hoy responde a GitHub Actions y a n8n con una página de verificación
+   humana: solo vale un cuerpo que empiece con `%PDF-`, así que esa página no se lee y la búsqueda sigue en
+   las copias (nunca se intenta pasar la verificación). El recolector del Perú baja el listado de informes y
+   los PDF de los dos más recientes (hasta 20 MB) con la misma URL que cita el comunicado. Mientras no haya
+   copia del Perú, el sitio conserva el último informe leído marcado como atrasado o, si nunca se leyó uno,
+   muestra «sin dato». La copia del PDF se publica en `data/archive` (enlace «Copia archivada»). Si
    ninguna ruta responde queda una advertencia, no un error: la publicación no se marca degradada.
 4. **Validación.** Cada extracción pasa por un esquema (`SCHEMAS`) y por reglas de plausibilidad:
    - meses consecutivos en la tabla de índices;

@@ -60,6 +60,8 @@ LIMA = ZoneInfo("America/Lima")
 REPO = os.environ.get("ENSO_REPO", "PillB/observatorio-enso-peru")
 BRANCH = os.environ.get("ENSO_RELAY_BRANCH", "data-peru")
 MAX_BYTES = 8_000_000
+#: El informe técnico del ENFEN pesa 10–17 MB; solo se guarda el de los dos últimos comunicados.
+MAX_INFORME_BYTES = 20_000_000
 HEARTBEAT = "heartbeat.json"
 #: Registro de fuentes (rama principal del repositorio; copia en el kit).
 REGISTRY_PATH = "registry/sources.json"
@@ -463,7 +465,7 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def fetch(client: httpx.Client | Session, url: str, expect: str | None = None) -> dict:
+def fetch(client: httpx.Client | Session, url: str, expect: str | None = None, max_bytes: int = MAX_BYTES) -> dict:
     s = client if isinstance(client, Session) else Session(client, robots=False)
     started = time.monotonic()
     host = urlparse(url).netloc.lower()
@@ -507,8 +509,8 @@ def fetch(client: httpx.Client | Session, url: str, expect: str | None = None) -
                     "elapsed_s": round(time.monotonic() - started, 1), "fetched_at": _now_iso()})
         if detected != "empty":
             out["detected"] = detected
-        if len(body) > MAX_BYTES:
-            out["error"] = f"más de {MAX_BYTES // 1_000_000} MB: no se guarda"
+        if len(body) > max_bytes:
+            out["error"] = f"más de {max_bytes // 1_000_000} MB: no se guarda"
         elif cls == "ok":
             out["body"] = body
         elif why:
@@ -562,6 +564,29 @@ def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[d
             if link and _clean_wpdm(link) != url:
                 pdf = fetch(client, _clean_wpdm(link), "pdf")
                 pdf["aliases"] = [url]
+                out.append(pdf)
+    out += enfen_informes(client)
+    return out
+
+
+def enfen_informes(client: httpx.Client | Session, keep: int = 2) -> list[dict]:
+    """Listado de informes técnicos del ENFEN y los PDF de los ``keep`` más recientes, con la URL que cita el
+    comunicado: el portal no responde fuera del Perú y la réplica de la DHN pide verificación humana."""
+    from enso import reports
+
+    listing = fetch(client, reports.INFORMES_PAGE, "html")
+    out = [listing]
+    if listing.get("status") != 200 or not listing["body"]:
+        return out
+    entries = reports.informe_entries(listing["body"].decode("utf-8", "replace"))
+    for e in sorted(entries, key=lambda e: e.get("dataTo") or "", reverse=True)[:keep]:
+        r = fetch(client, e["url"], "pdf", max_bytes=MAX_INFORME_BYTES)
+        out.append(r)
+        if r.get("status") == 200 and r["body"] and r["body"][:5] != b"%PDF-":
+            link = _pdf_link(r["body"].decode("utf-8", "replace"))
+            if link and _clean_wpdm(link) != e["url"]:
+                pdf = fetch(client, _clean_wpdm(link), "pdf", max_bytes=MAX_INFORME_BYTES)
+                pdf["aliases"] = [e["url"]]
                 out.append(pdf)
     return out
 

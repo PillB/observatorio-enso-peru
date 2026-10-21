@@ -682,12 +682,42 @@ def informe_summary(ext: Extraction) -> dict:
 # ---------------------------------------------------------------------------
 # Adquisición dentro de la corrida diaria
 # ---------------------------------------------------------------------------
+def _informe_pdf(fetcher, url: str, FetchError, archive_prefix):
+    """El PDF del informe o ``None``. Solo vale un cuerpo que empiece con ``%PDF-``: una página de verificación
+    humana (la DHN la sirve a GitHub Actions y a n8n) o de error no se lee y no corta la búsqueda en las
+    copias de los recolectores ni en el Internet Archive."""
+    def pdf(r):
+        return r if r is not None and r.body[:5] == b"%PDF-" else None
+
+    try:
+        got = pdf(fetcher.get(mirrors(url), archive=True, accept=("pdf", "octet-stream")))
+        if got:
+            return got
+    except FetchError:
+        pass
+    if "/download/" in url:
+        # El Internet Archive guarda la descarga con el parámetro wpdmdl, que no se conoce de antemano.
+        got = pdf(archive_prefix(fetcher, url.split("?")[0]))
+        if got:
+            return got
+        # La URL puede ser la página de descarga del portal (HTML) que enlaza el PDF.
+        try:
+            page = fetcher.get([url], archive=True, accept=("html",))
+            m = re.search(r"href=[\"']([^\"']*wpdmdl=\d+[^\"']*)[\"']", page.text)
+            if m:
+                return pdf(fetcher.get([m.group(1).replace("&#038;", "&").replace("&amp;", "&")], archive=True,
+                                       accept=("pdf", "octet-stream")))
+        except FetchError:
+            pass
+    return None
+
+
 def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[dict], log, today: date,
                     icen_points: Optional[list[dict]] = None, documents: Optional[list] = None) -> Optional[dict]:
     """Informe técnico del comunicado vigente: se baja una vez por comunicado (pesa 10–20 MB) y se lee.
 
     Rutas, en orden: el portal del ENFEN (no responde desde GitHub Actions ni desde n8n), la réplica de la DHN,
-    las copias de los recolectores (si alguno lo bajó) y el Internet Archive. Devuelve el resumen publicable
+    las copias del recolector del Perú y el Internet Archive. Devuelve el resumen publicable
     (``informe_summary``) con ``retrievedAt``, ``channel`` y ``archive`` (la copia del PDF, que se agrega a
     ``documents``). Si no se puede bajar o leer, o nada de lo leído pasa las reglas, se conserva el resumen
     anterior marcado ``carried`` y queda la incidencia. Si solo falla una parte (una región, el ICEN
@@ -738,21 +768,11 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
     if previous_informe and previous_informe.get("url") == url and not previous_informe.get("carried"):
         return {**previous_informe, "communique": cid}  # el comunicado nuevo cita el mismo informe
     try:
-        try:
-            r = fetcher.get(mirrors(url), archive=True, accept=("pdf", "octet-stream", "html"))
-        except FetchError as exc:
-            # El Internet Archive guarda la descarga con el parámetro wpdmdl, que no se conoce de antemano.
-            r = archive_prefix(fetcher, url.split("?")[0]) if "/download/" in url else None
-            if r is None:
-                raise exc
-        if r.body[:5] != b"%PDF-":
-            m = re.search(r"href=[\"']([^\"']*wpdmdl=\d+[^\"']*)[\"']", r.text)
-            if not m:
-                return keep(f"La descarga del informe técnico no es un PDF ({url}).", "warning", "fetch")
-            r = fetcher.get([m.group(1).replace("&#038;", "&").replace("&amp;", "&")], archive=True,
-                            accept=("pdf", "octet-stream"))
-            if r.body[:5] != b"%PDF-":
-                return keep(f"La descarga del informe técnico no es un PDF ({url}).", "warning", "fetch")
+        r = _informe_pdf(fetcher, url, FetchError, archive_prefix)
+        if r is None:
+            return keep(f"No se pudo bajar el informe técnico {url}: el portal, la réplica de la DHN (que puede "
+                        "pedir verificación humana), las copias de los recolectores y el Internet Archive no "
+                        "dieron el PDF.", "warning", "fetch")
         pages = pdf_pages(r.body)
     except FetchError as exc:
         return keep(f"No se pudo bajar el informe técnico {url} (portal, réplica de la DHN, copias y archivo): {exc}",

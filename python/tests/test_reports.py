@@ -306,7 +306,7 @@ def test_acquire_keeps_last_good_value_when_download_fails():
     f = _Fetcher({})
     res = R.acquire_informe(LATEST, f, PREV, log, date(2026, 10, 21))
     assert res["carried"] and res["icenProvisional"]["icen"] == 3.97 and res["number"] == 17
-    assert f.asked == [U18, DHN18]  # portal y réplica de la DHN
+    assert f.asked[:2] == [U18, DHN18]  # portal y réplica de la DHN
     # Un documento auxiliar que no responde no marca la publicación como degradada.
     assert [(s, c) for s, c, _ in log.events] == [("warning", "informe-unread")]
 

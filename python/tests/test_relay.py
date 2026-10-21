@@ -12,7 +12,10 @@ import pytest
 from conftest import FIX
 from enso import observatory as obs
 from enso.fetch import Fetcher, Relay
+from enso.reports import INFORMES_PAGE
 from tools import peru_collector as pc
+
+INFORME18 = "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166"
 
 LISTING = (FIX / "history" / "enfen-comunicados-20261014125242.html").read_text(encoding="utf-8")
 PDF = next((FIX.parent / "live-run" / "raw" / "enfen-comunicados").glob("*.pdf")).read_bytes()
@@ -25,6 +28,11 @@ def _peru_only(req: httpx.Request) -> httpx.Response:
         return httpx.Response(404)
     if u.rstrip("/").endswith("/comunicados"):
         return httpx.Response(200, text=LISTING, headers={"content-type": "text/html"})
+    if u == INFORMES_PAGE:
+        return httpx.Response(200, headers={"content-type": "text/html"}, text="<html>" + "x" * 600 + (
+            f'<a href="{INFORME18}&#038;refresh=1">Descargar</a></html>'))
+    if "/download/informe-tecnico-enfen-" in u:
+        return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
     if "wpdmdl=" in u:
         return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
     if "/download/comunicado-oficial-enfen-n-18-2026/" in u:
@@ -721,3 +729,58 @@ def test_registry_sources_are_fetched_once_and_enfen_pdfs_are_followed(tmp_path,
     assert [e["url"] for e in linked] == [pdf_up] and pc.usable(linked[0])
     assert linked[0]["parent"] == "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado"
     assert any(e["url"] == dhn17 and pc.usable(e) for e in idx["entries"])
+
+
+def _offshore_with_dhn_challenge(req):
+    """GitHub Actions o n8n: el ENFEN no resuelve y la DHN responde con su verificación humana."""
+    if "enfen.imarpe.gob.pe" in req.url.host:
+        raise httpx.ConnectError("Temporary failure in name resolution")
+    if "dhn.mil.pe" in req.url.host:
+        return httpx.Response(200, text="<html><title>Verificación</title>human-check</html>",
+                              headers={"content-type": "text/html"})
+    return httpx.Response(404)
+
+
+class _Log:
+    def __init__(self):
+        self.events = []
+
+    def add(self, *a):
+        self.events.append(a)
+
+
+def test_informe_comes_from_the_peru_copy_when_portal_and_dhn_fail(snapshot, monkeypatch):
+    import gzip
+
+    from enso import reports
+
+    out, idx = snapshot
+    assert any(e["url"] == INFORME18 and pc.usable(e) for e in idx["entries"])
+    pages = json.loads(gzip.open(Path(__file__).parent / "fixtures" / "reports" /
+                                 "informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026.pages.json.gz", "rt").read())
+    monkeypatch.setattr(reports, "pdf_pages", lambda b: pages["pages"])
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False, relay=Relay(out))
+    f.client = httpx.Client(transport=httpx.MockTransport(_offshore_with_dhn_challenge))
+    latest = {"id": "18-2026", "number": 18, "year": 2026, "issued": "2026-10-16", "informe_url": INFORME18}
+    res = reports.acquire_informe(latest, f, None, _Log(), datetime(2026, 10, 21).date())
+    assert res["channel"] == "relay-peru" and res["icenProvisional"]["icen"] == 4.15
+    # Sin enlace en el comunicado: el listado también sale de la copia del Perú.
+    res = reports.acquire_informe({**latest, "informe_url": None}, f, None, _Log(), datetime(2026, 10, 21).date())
+    assert res["number"] == 18 and res["url"] == INFORME18
+
+
+def test_dhn_challenge_is_not_read_and_the_last_informe_is_kept(monkeypatch):
+    from enso import reports
+
+    read = []
+    monkeypatch.setattr(reports, "pdf_pages", lambda b: read.append(b) or [])
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False)
+    f.client = httpx.Client(transport=httpx.MockTransport(_offshore_with_dhn_challenge))
+    prev = {"number": 17, "communique": "17-2026", "url": "u17", "icenProvisional": {"period": "2026-08", "icen": 3.97}}
+    log = _Log()
+    latest = {"id": "18-2026", "number": 18, "year": 2026, "issued": "2026-10-16", "informe_url": INFORME18}
+    res = reports.acquire_informe(latest, f, prev, log, datetime(2026, 10, 21).date())
+    assert read == [] and res["carried"] and res["icenProvisional"]["icen"] == 3.97
+    assert [(e[0], e[3]) for e in log.events] == [("warning", "informe-unread")]
+    # Sin informe anterior (primera corrida): no hay dato, solo la advertencia.
+    assert reports.acquire_informe(latest, f, None, _Log(), datetime(2026, 10, 21).date()) is None
