@@ -237,11 +237,11 @@ function Copy-Kit {
         Exit-WithError "No se encuentra el código del recolector junto a este instalador ($KitRoot)." 'Descomprimir el kit completo y ejecutar INSTALAR desde esa carpeta.'
     }
     New-Item -ItemType Directory -Force -Path (Join-Path $Destino 'python'), (Join-Path $Destino 'docs') | Out-Null
-    foreach ($d in 'python\enso', 'python\tools', 'config', 'collector', 'otras-acciones') {
+    foreach ($d in 'python\enso', 'python\tools', 'config', 'registry', 'collector', 'otras-acciones') {
         $target = Join-Path $Destino $d
         if (Test-Path $target) { Remove-Item -Recurse -Force $target }
     }
-    $items = @('python\requirements.txt', 'python\enso', 'python\tools', 'config', 'collector', 'otras-acciones',
+    $items = @('python\requirements.txt', 'python\enso', 'python\tools', 'config', 'registry', 'collector', 'otras-acciones',
         'docs\servidor-peru.md', 'LEEME.txt', 'LICENSE', 'kit.json')
     foreach ($rel in $items) {
         $src = Join-Path $KitRoot $rel

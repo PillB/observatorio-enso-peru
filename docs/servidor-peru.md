@@ -305,10 +305,17 @@ Si sigue sin funcionar, enviar a quien mantiene el sitio el último
 - **Renovar el token:** ver [Token de GitHub](#1-token-de-github).
 - **Cambiar de computadora:** `DESINSTALAR` en la vieja (quita la tarea y
   el token) e `INSTALAR` en la nueva.
-- **Fuentes:** si una cambia de dirección, se edita `SOURCES` en
-  `peru_collector.py` y en `observatory.py`, y se publica un kit nuevo.
-  Las URL del recolector deben coincidir con las del catálogo del
-  pipeline; una prueba lo verifica.
+- **Fuentes:** el equipo baja la lista base (`SOURCES` en
+  `peru_collector.py`) más las fuentes del registro
+  (`registry/sources.json`) con el canal `peru-server`, que son las
+  geobloqueadas: solo las que no responden desde fuera del Perú pasan por
+  este equipo. Lee el registro de GitHub en cada corrida (con el token),
+  así que un cambio en el registro llega sin reinstalar; si GitHub no
+  responde, usa la copia del kit. Una regla `follow` baja además los
+  documentos enlazados (por ejemplo, los PDF de un listado), hasta `max`.
+  Todo se guarda tal cual: el análisis se hace en GitHub Actions, así que
+  corregir un lector nunca exige actualizar este equipo. Las URL deben
+  coincidir con las que pide el pipeline (se buscan por URL y alias).
 - **Historial:** la rama `data-peru` guarda solo la última copia; el
   historial de git conserva las anteriores y la rama `data-archive`
   archiva lo que se usó.

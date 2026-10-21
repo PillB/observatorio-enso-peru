@@ -38,6 +38,7 @@ def home(tmp_path, monkeypatch):
     """Una instalación vacía en una carpeta temporal, sin variables del equipo."""
     for v in ("GITHUB_TOKEN", "ENSO_RELAY_REMOTE", "ENSO_COLLECT_AT", "ENSO_DISPATCH"):
         monkeypatch.delenv(v, raising=False)
+    monkeypatch.setenv("ENSO_REGISTRY_FILE", str(tmp_path / "sin-registro.json"))
     monkeypatch.setattr(svc, "notify", lambda title, text: True)
     monkeypatch.setattr(pc.time, "sleep", lambda s: None)
     return tmp_path

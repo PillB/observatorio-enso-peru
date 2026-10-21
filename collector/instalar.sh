@@ -157,12 +157,13 @@ copy_kit() {
   if [ "$src" = "$dst" ]; then say "Se usa la carpeta actual."; return; fi
   [ -f "$src/python/tools/peru_collector.py" ] || die "No se encuentra el código del recolector junto a este instalador ($src)." \
       "Descomprimir el kit completo y ejecutar INSTALAR desde esa carpeta."
-  rm -rf "$DEST/python/enso" "$DEST/python/tools" "$DEST/config" "$DEST/collector" "$DEST/otras-acciones"
+  rm -rf "$DEST/python/enso" "$DEST/python/tools" "$DEST/config" "$DEST/registry" "$DEST/collector" "$DEST/otras-acciones"
   mkdir -p "$DEST/python" "$DEST/docs"
   cp "$src/python/requirements.txt" "$DEST/python/"
   cp -R "$src/python/enso" "$src/python/tools" "$DEST/python/"
   cp -R "$src/config" "$src/collector" "$DEST/"
   [ -d "$src/otras-acciones" ] && cp -R "$src/otras-acciones" "$DEST/"
+  [ -d "$src/registry" ] && cp -R "$src/registry" "$DEST/"
   cp "$src/docs/servidor-peru.md" "$DEST/docs/"
   for f in LEEME.txt LICENSE kit.json "$src"/*.command "$src"/*.cmd; do
     f="$(basename "$f")"

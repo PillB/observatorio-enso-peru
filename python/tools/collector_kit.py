@@ -56,6 +56,9 @@ def kit_files(repo: Path = REPO) -> dict[str, Path]:
     files["LEEME.txt"] = repo / "collector" / "LEEME.txt"
     files["docs/servidor-peru.md"] = repo / "docs" / "servidor-peru.md"
     files["LICENSE"] = repo / "LICENSE"
+    # Registro de fuentes: copia de respaldo (el recolector lee primero el de GitHub).
+    if (repo / "registry" / "sources.json").is_file():
+        files["registry/sources.json"] = repo / "registry" / "sources.json"
     missing = [str(p) for p in files.values() if not p.is_file()]
     if missing:
         raise FileNotFoundError(f"faltan archivos para el kit: {missing}")

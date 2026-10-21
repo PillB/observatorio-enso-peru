@@ -149,8 +149,11 @@ def check_code(ctx: dict) -> Result:
     except Exception as exc:
         return Result("codigo", FAIL, "el recolector no carga", f"{type(exc).__name__}: {exc}",
                       "Volver a ejecutar el instalador; si sigue, descargar el kit de nuevo.")
-    n = sum(len(v) for v in pc.SOURCES.values())
-    detail = f"{n} URL en {len(pc.SOURCES)} grupos · kit {svc.kit_version(root)} · carpeta {root}"
+    registry, origin = pc.load_registry(os.environ.get("GITHUB_TOKEN", "").strip())
+    groups, _ = pc.plan(registry)
+    n = sum(len(v) for v in groups.values())
+    detail = (f"{n} URL en {len(groups)} grupos (registro: {origin or 'ninguno'}) · kit {svc.kit_version(root)}"
+              f" · carpeta {root}")
     policy = root / "config" / "threshold-policies" / "expert-grd-image-v1.yaml"
     if not policy.exists():
         return Result("codigo", FAIL, "falta la carpeta config/", detail, "Volver a ejecutar el instalador.")
@@ -364,11 +367,12 @@ def check_sources(ctx: dict) -> Result:
         from tools import peru_collector as pc
     except Exception as exc:
         return Result("fuentes", FAIL, "no se puede comprobar", f"{type(exc).__name__}: {exc}", "Ver «codigo».")
-    jobs = [(g, u) for g, urls in pc.SOURCES.items() for u in urls]
+    groups, _ = pc.plan(pc.load_registry(os.environ.get("GITHUB_TOKEN", "").strip())[0])
+    jobs = [(g, u) for g, urls in groups.items() for u in urls]
     with ThreadPoolExecutor(max_workers=6) as pool:
         res = list(pool.map(lambda gu: (gu[0], _probe(gu[1])), jobs))
     lines = [f"{'OK' if r['ok'] else 'NO'}  {g:8} {r['why']:>9} {r['bytes']:>9} B {r['s']:5.1f}s  {r['url']}" for g, r in res]
-    by_group = {g: (sum(1 for gg, r in res if gg == g and r["ok"]), sum(1 for gg, _ in res if gg == g)) for g in pc.SOURCES}
+    by_group = {g: (sum(1 for gg, r in res if gg == g and r["ok"]), sum(1 for gg, _ in res if gg == g)) for g in groups}
     summary = ", ".join(f"{g} {a}/{b}" for g, (a, b) in by_group.items())
     ok = sum(a for a, _ in by_group.values())
     if ok == 0:
