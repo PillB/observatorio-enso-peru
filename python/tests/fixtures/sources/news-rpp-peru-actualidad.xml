@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:02:19 -0500</lastBuildDate>
+  <lastBuildDate>Tue, 20 Oct 2026 20:24:59 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Minsa emite alerta epidemiológica por riesgo de incremento de enfermedades ante el fenómeno El Niño]]></title>
+        <description><![CDATA[El sector indicó que refuerza la vigilancia y preparación de los establecimientos de salud e invita a la población a vacunarse, eliminar criaderos de zancudos y adoptar medidas de prevención.]]></description>
+        <pubDate>Tue, 20 Oct 2026 19:58:26 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/fenomeno-el-nino-minsa-emite-alerta-epidemiologica-por-riesgo-de-incremento-de-enfermedades-noticia-1713634</link>
+        <guid>1713634</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/20/270527_1920815.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Fenómeno El Niño, Minsa, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Médicos del hospital Rebagliati extirpan con éxito un tumor de páncreas a paciente que nació con órganos invertidos]]></title>
         <description><![CDATA[El equipo médico realizó una <strong>pancreatoduodenectomía</strong>, conocida como cirugía de <em>Whipple</em>, procedimiento que permitió retirar la zona afectada.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/10/15/deo-sobre-bealunde-1919074mp4_1919075.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Fuerzas Armadas, Ministerio de Defensa, facultades legislativas, Rafael Belaúnde, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Cusco: adulto mayor fallece y se convierte en la séptima víctima mortal de los incendios forestales]]></title>
-        <description><![CDATA[El hombre participaba junto a otros pobladores en las labores para sofocar las llamas cuando fue alcanzado por el fuego en la comunidad de Santo Domingo.]]></description>
-        <pubDate>Thu, 15 Oct 2026 20:13:46 -0500</pubDate>
-        <link>https://rpp.pe/peru/actualidad/cusco-adulto-mayor-fallece-y-se-convierte-en-la-septima-victima-mortal-de-los-incendios-forestales-noticia-1712862</link>
-        <guid>1712862</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/10/15/h16m-mp3cutnet-1919061mp3_1919062.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Cusco, Incendios forestales en Cusco, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>

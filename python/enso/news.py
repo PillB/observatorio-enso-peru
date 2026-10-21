@@ -31,6 +31,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from .feedparse import LIMA, FeedError, parse as parse_any
+from .geo import FOREIGN_RE, PERU_RE as PERU_WORD_RE
 
 
 @dataclass(frozen=True)
@@ -398,35 +399,116 @@ FEEDS: list[Feed] = [
 
 FEED_BY_ID = {f.id: f for f in FEEDS}
 
-# --- Relevancia --------------------------------------------------------------
+# --- Relevancia ---------------------------------------------------------------
+# Una entrada es relevante si trata del ENSO o de un peligro que el observatorio
+# debe alertar: lluvias, inundaciones, huaicos, sequía, calor, frío (friaje,
+# heladas), vientos, oleaje, sismos, tsunamis, volcanes, incendios y
+# emergencias. ``hazards`` dice cuáles; ``relevance`` decide si se guarda.
 
-ENSO_RE = re.compile(
-    r"\b(el ni[nñ]o|la ni[nñ]a|enso|ni[nñ]o costero|ni[nñ]a costera|enfen|icen|oscilaci[oó]n del sur|"
-    r"fen[oó]meno del ni[nñ]o|anomal[ií]as? de (la )?temperatura del mar|calentamiento del mar|"
-    r"temperatura superficial del mar|mar peruano|corriente de humboldt|niño 1\+2|niño 3\.4)\b", re.I)
-HAZARD_RE = re.compile(
-    r"\b(lluvias? (intensas?|fuertes?)|huaicos?|inundaci[oó]n(es)?|desbordes?|sequ[ií]as?|friaje|heladas?|"
-    r"oleajes?|deslizamientos?|emergencia|senamhi|indeci|cenepred|imarpe|igp|aviso meteorol[oó]gico|"
-    r"flood(s|ing)?|drought|heavy rain|landslides?|cyclone|tropical storm|climate|clima)\b", re.I)
-#: Peligros concretos para medios regionales (sin «emergencia» ni «clima», demasiado amplios).
-LOCAL_RE = re.compile(
-    r"\b(lluvias?|precipitaci[oó]n(es)?|huaicos?|inundaci[oó]n(es)?|inundad[oa]s?|desbordes?|desbord[oó]|"
-    r"crecida|caudal|sequ[ií]as?|d[eé]ficit h[ií]drico|friaje|heladas?|nevadas?|granizadas?|oleajes?|"
-    r"deslizamientos?|derrumbes?|aluvi[oó]n|activaci[oó]n de quebradas?|quebradas? activad|damnificad[oa]s?|"
-    r"estado de emergencia|alerta (roja|naranja|amarilla)|senamhi|indeci|coer|coen|cenepred|"
-    r"temperatura del mar|anchoveta|pesca artesanal|dengue)\b", re.I)
-PERU_RE = re.compile(r"\b(per[uú]|peruan[oa]s?|lima|piura|tumbes|lambayeque|la libertad|ica|arequipa|"
+def _rx(pattern: str, flags: int = re.I) -> re.Pattern:
+    return re.compile(r"\b(?:" + pattern + r")\b", flags)
+
+
+#: «El Niño» y «La Niña» con mayúscula (en minúscula son un niño o una niña), o en MAYÚSCULAS.
+_ENSO_CASED = re.compile(r"\b(?:[Ee]l|EL) (?:Ni[ñn]o|NI[ÑN]O)\b|\b(?:[Ll]a|LA) (?:Ni[ñn]a|NI[ÑN]A)\b|\bFEN\b|\bENSO\b|\bENFEN\b|\bICEN\b")
+ENSO_RE = _rx(r"fen[oó]meno (?:del?|de el|de la) ni[nñ][oa]|ni[nñ]o costero|ni[nñ]a costera|enfen|icen|enso|"
+              r"oscilaci[oó]n del sur|anomal[ií]as? de (?:la )?temperatura (?:superficial )?del mar|"
+              r"calentamiento (?:anómalo )?del mar|temperatura superficial del mar|niño 1\+2|niño 3\.4")
+
+#: Peligros concretos (cuentan aunque estén solo en el resumen).
+HAZARDS: dict[str, tuple[str, re.Pattern]] = {
+    "lluvias": ("Lluvias", _rx(r"lluvias? (?:intensas?|fuertes?|torrenciales?|extremas?)|(?:intensas?|fuertes?|torrenciales?) lluvias?|"
+                               r"precipitaciones (?:intensas|fuertes|extremas)|tormentas? el[eé]ctricas?|aguaceros?|heavy rain(?:s|fall)?")),
+    "inundacion": ("Inundaciones", _rx(r"inundaci[oó]n(?:es)?|inundad[oa]s?|inunda(?:n|ron)?|inund[oó]|desbordes?|desbord(?:a|an|[oó]|aron)|"
+                                       r"crecidas?|aniegos?|anegad[oa]s?|floods?|flooding")),
+    "huaico": ("Huaicos y deslizamientos", _rx(r"huaicos?|aluvi[oó]n(?:es)?|activaci[oó]n de (?:las )?quebradas?|quebradas? activad\w*|"
+                                               r"deslizamientos?|derrumbes?|landslides?|mudslides?")),
+    "sequia": ("Sequía", _rx(r"sequ[ií]as?|d[eé]ficit h[ií]drico|estr[eé]s h[ií]drico|escasez (?:de|del) agua|condiciones secas|"
+                             r"d[eé]ficit de lluvias|lluvias deficitarias|drought")),
+    "calor": ("Calor", _rx(r"olas? de calor|altas temperaturas|temperaturas? (?:extremas|r[eé]cord)|calor (?:extremo|intenso)|"
+                           r"intenso calor|incremento de (?:la )?temperatura|radiaci[oó]n (?:uv|ultravioleta)(?: (?:extrema|muy alta))?|"
+                           r"alta radiaci[oó]n|heat ?waves?")),
+    "frio": ("Frío, friaje y heladas", _rx(r"friajes?|heladas?|nevadas?|granizadas?|olas? de fr[ií]o|bajas temperaturas|"
+                                           r"descenso de (?:la )?temperatura|temperaturas? bajo cero|cold waves?")),
+    "viento": ("Vientos", _rx(r"vientos? (?:fuertes|intensos|paracas)|(?:fuertes|intensos) vientos|r[aá]fagas(?: de viento)?|"
+                              r"vientos? de hasta \d+|incremento de (?:la )?(?:velocidad del )?vientos?")),
+    "oleaje": ("Oleaje", _rx(r"oleajes?|maretazos?|bravezas? (?:del? )?mar|cierre de puertos|swells?")),
+    "sismo": ("Sismos y tsunamis", _rx(r"sismos?|terremotos?|temblor(?:es)?|r[eé]plicas? s[ií]smicas?|tsunamis?|maremotos?|earthquakes?")),
+    "volcan": ("Volcanes", _rx(r"volc[aá]n(?:es)?|erupci[oó]n(?:es)?|ceniza volc[aá]nica|ubinas|sabancaya|volcano(?:es)?")),
+    "incendio": ("Incendios", _rx(r"incen[dc]ios?|quemas? agr[ií]colas?|wildfires?|forest fires?")),
+    "emergencia": ("Emergencias", _rx(r"estado de emergencia|damnificad[oa]s?|alerta (?:roja|naranja)|aviso meteorol[oó]gico|"
+                                      r"peligro inminente|zona de desastre|declaratoria de emergencia|evacuad[oa]s?|evacuaci[oó]n")),
+    "salud": ("Salud", _rx(r"dengue|leptospirosis|zancudos?|fiebre amarilla|infecciones respiratorias|neumon[ií]as?")),
+}
+HAZARD_LABELS = {k: v[0] for k, v in HAZARDS.items()} | {"enso": "El Niño / La Niña"}
+#: Palabras de peligro que solo cuentan en el titular (en el resumen suelen ser de paso: «durante las lluvias»).
+WEAK_RE = _rx(r"lluvias?|precipitaci[oó]n(?:es)?|caudal|alerta amarilla|"
+              r"defensas? ribere[ñn]as?|descolmataci[oó]n|limpieza de (?:la )?(?:quebrada|cauces?|drenes?)|temporada de lluvias")
+#: Peligros hidrometeorológicos (los que salvan a una nota de salud, de un accidente o de una emergencia policial).
+HYDRO = ("lluvias", "inundacion", "huaico", "sequia", "calor", "frio", "oleaje")
+#: Temas que no son peligros aunque usen sus palabras.
+OFFTOPIC_RE = {
+    "accidente": _rx(r"accidentes? (?:de tr[aá]nsito|vehicular(?:es)?|de carretera)|despist[eóa]\w*|volcadura|"
+                     r"choque (?:frontal|vehicular)|conducir con precauci[oó]n|cay[oó] a un abismo"),
+    "seguridad": _rx(r"criminalidad|crimen organizado|delincuencia|inseguridad ciudadana|extorsi[oó]n|sicari\w+|"
+                     r"miner[ií]a ilegal|contra la miner[ií]a|toque de queda|narcotr[aá]fico"),
+    "empleo": _rx(r"convocatoria (?:para|de) (?:la )?contrataci[oó]n|contrataci[oó]n de (?:un|una|personal)|"
+                  r"ofertas? laboral(?:es)?|bolsa de trabajo|convocatoria cas"),
+    "rutina": _rx(r"(?:pron[oó]stico del )?(?:clima|tiempo)(?: para)?(?: en [\w ]{2,30})? (?:de )?hoy"),
+}
+#: Comunicado de una entidad de alerta («Senamhi advierte…», «Indeci alerta…»): cuenta aunque no nombre el peligro.
+OFFICIAL_ALERT_RE = _rx(r"(?:senamhi|indeci|igp|dhn|enfen|cenepred|coen|coer|ana)\W+(?:\w+\W+){0,3}?"
+                        r"(?:alerta|alertan|advierte|advierten|emite|activa|declara|pronostica|prev[eé])")
+#: «sismo de magnitud 3.5»: los sismos leves que el IGP reporta a diario no son una alerta.
+MAGNITUDE_RE = re.compile(r"magnitud (?:de )?(\d+(?:[.,]\d)?)", re.I)
+#: Incendios que no son forestales: solo cuentan en feeds de emergencias o regionales.
+FOREST_FIRE_RE = _rx(r"incen[dc]ios? forestal(?:es)?|quemas? agr[ií]colas?|wildfires?|forest fires?")
+PERU_RE = re.compile(r"\b(per[uú]|peruan[oa]s?|peruvian|lima|piura|tumbes|lambayeque|la libertad|ica|arequipa|"
                      r"ancash|[aá]ncash|loreto|cusco|puno|cajamarca|jun[ií]n)\b", re.I)
 
 
-def relevance(feed: Feed, title: str, summary: str) -> Optional[str]:
-    """Motivo por el que una entrada es relevante, o None."""
+def hazards(title: str, summary: str = "") -> list[str]:
+    """Tipos de peligro de una entrada (claves de ``HAZARDS`` y «enso»)."""
     text = f"{title} {summary}"
-    if ENSO_RE.search(text):
+    out = ["enso"] if _ENSO_CASED.search(text) or ENSO_RE.search(text) else []
+    out += [k for k, (_, rx) in HAZARDS.items() if rx.search(text)]
+    if "salud" in out and not any(h in out for h in ("enso", *HYDRO)) and not WEAK_RE.search(text):
+        out.remove("salud")  # dengue sin lluvias ni El Niño: tema de salud, no de clima
+    return out
+
+
+def relevance(feed: Feed, title: str, summary: str) -> Optional[str]:
+    """Motivo por el que una entrada es relevante («enso» o «impacto»), o None."""
+    text = f"{title} {summary}"
+    found = hazards(title, summary)
+    if OFFTOPIC_RE["empleo"].search(title):
+        return None
+    if "enso" in found:
         return "enso"
-    if feed.scope == "hazard" and HAZARD_RE.search(text) and (feed.region == "peru" or PERU_RE.search(text)):
-        return "impacto"
-    if feed.scope == "local" and LOCAL_RE.search(text):
+    if OFFTOPIC_RE["rutina"].search(title) and not any(rx.search(title) for k, (_, rx) in HAZARDS.items()
+                                                        if k not in ("lluvias", "emergencia")):
+        return None  # la página diaria «Pronóstico del clima hoy» no es una alerta
+    hydro = [h for h in found if h in HYDRO]
+    if OFFTOPIC_RE["accidente"].search(text) and "huaico" not in found and "inundacion" not in found:
+        return None
+    if OFFTOPIC_RE["seguridad"].search(text) and not hydro:
+        return None
+    strong = [h for h in found if h != "salud" or hydro]
+    if strong == ["sismo"] or strong == ["sismo", "emergencia"]:
+        mags = [float(m.replace(",", ".")) for m in MAGNITUDE_RE.findall(text)]
+        if mags and max(mags) < 4.0:
+            return None
+    if OFFICIAL_ALERT_RE.search(title):
+        strong = strong or ["aviso"]
+    if feed.scope == "general":
+        # Medios generales: el peligro debe estar en el titular (y un incendio, ser forestal).
+        in_title = [h for h in hazards(title) if h not in ("emergencia", "salud")]
+        if "incendio" in in_title and not FOREST_FIRE_RE.search(title):
+            in_title.remove("incendio")
+        return "impacto" if in_title else None
+    if feed.scope == "hazard" and feed.region != "peru" and not PERU_RE.search(text):
+        return None
+    if strong or WEAK_RE.search(title):
         return "impacto"
     return None
 
@@ -442,12 +524,39 @@ def parse_feed(body: bytes, base_url: str = "", adapter: str = "feed") -> list[d
 SOCIAL_RE = re.compile(r"(facebook|instagram|tiktok|twitter|youtube)\.com|//(www\.)?x\.com/|^(Facebook|Instagram|TikTok|X|YouTube)$", re.I)
 
 
+def _fold(s: str) -> str:
+    return "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c)).lower().strip()
+
+
 def _strip_outlet(title: str, outlet: str) -> str:
-    """Google Noticias termina los titulares con « - Medio»."""
+    """Google Noticias (y algunos medios) terminan los titulares con « - Medio»."""
     for sep in (" - ", " – ", " | "):
         if outlet and title.endswith(sep + outlet):
             return title[: -len(sep + outlet)].rstrip()
+    for sep in (" - ", " – ", " | "):
+        if outlet and sep in title and _fold(title.rsplit(sep, 1)[1]) in (_fold(outlet), _fold(outlet).replace(" ", "")):
+            return title.rsplit(sep, 1)[0].rstrip()
     return title
+
+
+def _strip_summary(summary: str, raw_title: str, title: str, outlet: str) -> str:
+    """El resumen de Google Noticias repite el titular y el nombre del medio: no aporta y confunde la ubicación."""
+    s = summary.strip()
+    for t in (raw_title, title):
+        if t and s.startswith(t):
+            s = s[len(t):].strip(" -–|·")
+            break
+    suffix = raw_title.rsplit(" - ", 1)[1] if " - " in raw_title else ""
+    if _fold(s) in {_fold(outlet), _fold(suffix), ""} or (suffix and _fold(s).endswith(_fold(suffix)) and len(s) <= len(suffix) + 3):
+        return ""
+    for name in (outlet, suffix):
+        if name and _fold(s).endswith(" " + _fold(name)):
+            s = s[: -len(name)].rstrip(" -–|·")
+    return s
+
+
+#: Dominios de otros países (Google Noticias mezcla el Junín de Argentina con el del Perú).
+FOREIGN_TLD_RE = re.compile(r"\.(ar|bo|br|cl|co|cr|cu|do|ec|es|gt|hn|mx|ni|pa|py|sv|uy|ve|us|uk|it|fr|de)(?:/|$)", re.I)
 
 
 def item_id(link: str, title: str) -> str:
@@ -545,6 +654,7 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
             "relevance": "enso" if any(i["relevance"] == "enso" for i in its) else "impacto",
             "count": len(its), "outlets": outlets,
             "kinds": list(dict.fromkeys(i.get("kind") or _kind(i) for i in its)),
+            "hazards": list(dict.fromkeys(h for i in its for h in (i.get("hazards") or hazards(i["title"], i.get("summary", ""))))),
             "departments": list(dict.fromkeys(d for i in its for d in (i.get("departments") or []))),
             "places": places[:6],
             "links": [{"title": i["title"], "url": i["link"], "outlet": _outlet(i), "published": i.get("published"),
@@ -557,8 +667,8 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
 
 # --- Histórico de solo anexar y CSV -------------------------------------------
 
-CSV_FIELDS = ["first_seen", "published", "region", "kind", "feed", "outlet", "relevance", "departments", "places",
-              "title", "summary", "link", "id"]
+CSV_FIELDS = ["first_seen", "published", "region", "kind", "feed", "outlet", "relevance", "hazards", "departments",
+              "places", "title", "summary", "link", "id"]
 
 
 def _csv_value(i: dict, k: str) -> str:
@@ -568,6 +678,8 @@ def _csv_value(i: dict, k: str) -> str:
         return "; ".join(names.get(c, c) for c in i.get("departments") or [])
     if k == "places":
         return "; ".join(p["name"] for p in i.get("places") or [])
+    if k == "hazards":
+        return "; ".join(HAZARD_LABELS.get(h, h) for h in i.get("hazards") or [])
     return i.get(k) or ""
 
 
@@ -640,6 +752,9 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
     except FeedError as exc:
         st["error"] = str(exc)
         return st, [], body
+    except Exception as exc:  # noqa: BLE001 — un feed raro no debe detener la recolección de los demás
+        st["error"] = f"error inesperado al leer el feed: {type(exc).__name__}: {exc}"[:300]
+        return st, [], body
     entries = parsed.items
     dates = [e["published"] for e in entries if e["published"]]
     st.update({"ok": True, "items": len(entries), "latest": max(dates) if dates else None,
@@ -655,20 +770,31 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
         if SOCIAL_RE.search(e["link"]) or SOCIAL_RE.search(outlet):
             continue  # publicaciones en redes sociales, no notas de prensa
         title = _strip_outlet(e["title"], outlet)
-        why = relevance(f, title, e["summary"])
+        summary = _strip_summary(e["summary"], e["title"], title, outlet)
+        why = relevance(f, title, summary)
         if not why:
             continue
+        text = f"{title} {summary}"
+        named_peru = bool(PERU_WORD_RE.search(text))
+        if f.region == "peru" and not named_peru and FOREIGN_TLD_RE.search(e.get("outletUrl") or ""):
+            continue  # medio de otro país en una búsqueda de Google Noticias (Junín de Argentina, Jaén de España…)
+        try:
+            # Las categorías de un medio regional son sus secciones («Trujillo», «Edición Impresa»): no ubican la nota.
+            texts = [title, summary] + ([" · ".join(e.get("categories") or [])] if not f.department else [])
+            tag = gz.tag(texts, peru_context=f.region == "peru", default_dep=f.department)
+        except Exception:  # noqa: BLE001 — una nota con texto raro queda sin lugar, no sin noticias
+            tag = None
+        if why == "impacto" and not named_peru and FOREIGN_RE.search(text) and not (tag and tag["source"] == "texto"):
+            continue  # inundaciones en España publicadas por un medio regional: no es una alerta para el Perú
         st["relevant"] += 1
         published = e["published"]
         if published and published > future:
             # Algunos medios publican la hora local marcada como UTC.
             st["futureDates"] = st.get("futureDates", 0) + 1
             published = seen_at
-        tag = gz.tag([title, e["summary"], " · ".join(e.get("categories") or [])],
-                     peru_context=f.region == "peru", default_dep=f.department)
         item = {"id": item_id(e["link"], e["title"]), "first_seen": seen_at, "published": published,
                 "region": f.region, "feed": f.id, "kind": f.kind, "outlet": outlet, "relevance": why,
-                "title": title, "summary": e["summary"], "link": e["link"]}
+                "hazards": hazards(title, summary), "title": title, "summary": summary, "link": e["link"]}
         if tag:
             item["departments"] = tag["departments"]
             item["places"] = [{k: p[k] for k in ("code", "level", "name")} for p in tag["places"]]
@@ -694,11 +820,12 @@ def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None,
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         list(ex.map(run_group, _by_host(feeds)))
-    found, status, raw = [], [], {}
+    found, status, raw, seen = [], [], {}, set()
     for f in feeds:
         st, items, body = results[f.id]
         status.append(st)
-        found.extend(items)
+        # La misma nota puede llegar por dos feeds del mismo medio (Correo y sus ediciones regionales).
+        found.extend(i for i in items if not (i["id"] in seen or seen.add(i["id"])))
         if body is not None:
             raw[f.id] = body
     return found, status, raw
