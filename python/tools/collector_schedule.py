@@ -27,6 +27,7 @@ import plistlib
 import shlex
 import subprocess
 import sys
+import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Optional
@@ -111,14 +112,31 @@ def install_launchd(python: str, root: Path, times: list[str]) -> str:
     return f"agente de launchd {LAUNCHD_LABEL} ({plist})"
 
 
-def remove_launchd() -> bool:
-    plist = launchd_path()
-    _launchctl("bootout", f"gui/{os.getuid()}/{LAUNCHD_LABEL}")
-    if plist.exists():
-        _launchctl("unload", str(plist))
-        plist.unlink()
+def _launchd_loaded() -> bool:
+    if _launchctl("print", f"gui/{os.getuid()}/{LAUNCHD_LABEL}").returncode == 0:
         return True
-    return False
+    # Sin sesión gráfica (por SSH) el agente se cargó con «load»: se ve en «list».
+    return any(line.split()[-1:] == [LAUNCHD_LABEL] for line in _launchctl("list").stdout.splitlines())
+
+
+def remove_launchd() -> bool:
+    """Descarga el agente y borra su plist. Si launchd lo sigue teniendo
+    cargado es un error: borrar la carpeta dejaría un agente que falla cada noche."""
+    plist = launchd_path()
+    existed = plist.exists()
+    r = _launchctl("bootout", f"gui/{os.getuid()}/{LAUNCHD_LABEL}")
+    if existed:
+        r = _launchctl("unload", str(plist)) if r.returncode != 0 else r
+    for _ in range(20):  # el bootout de un agente en marcha termina al detenerlo
+        if not _launchd_loaded():
+            break
+        time.sleep(0.5)
+    else:
+        detail = (r.stderr or r.stdout or "").strip()
+        raise RuntimeError(f"launchd sigue con el agente {LAUNCHD_LABEL} cargado{': ' + detail if detail else ''}")
+    if existed:
+        plist.unlink(missing_ok=True)
+    return existed or r.returncode == 0
 
 
 def status_launchd() -> dict:

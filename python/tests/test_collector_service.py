@@ -599,6 +599,42 @@ def test_unreadable_crontab_is_not_read_as_empty(monkeypatch, stderr, lines):
     assert sched.main(["quitar"]) == 1
 
 
+@pytest.mark.parametrize("refuses", [False, True])
+def test_launchd_agent_is_gone_before_reporting_it_removed(tmp_path, monkeypatch, refuses):
+    """Si launchd no suelta el agente, el plist se queda y quitar falla:
+    borrar la carpeta dejaría un agente que falla cada noche."""
+    plist = tmp_path / "LaunchAgents" / f"{sched.LAUNCHD_LABEL}.plist"
+    plist.parent.mkdir()
+    plist.write_bytes(b"<plist/>")
+    loaded = [True]
+    calls = []
+
+    def launchctl(*args):
+        calls.append(args[0])
+        if args[0] == "print":
+            return subprocess.CompletedProcess(args, 0 if loaded[0] else 113, "", "")
+        if args[0] == "list":
+            return subprocess.CompletedProcess(args, 0, "PID\tStatus\tLabel\n-\t0\tcom.apple.otro\n", "")
+        if refuses:
+            return subprocess.CompletedProcess(args, 5, "", "Boot-out failed: 5: Input/output error")
+        if not loaded[0]:
+            return subprocess.CompletedProcess(args, 3, "", "Boot-out failed: 3: No such process")
+        loaded[0] = False
+        return subprocess.CompletedProcess(args, 0, "", "")
+
+    monkeypatch.setattr(sched, "launchd_path", lambda: plist)
+    monkeypatch.setattr(sched, "_launchctl", launchctl)
+    monkeypatch.setattr(sched.os, "getuid", lambda: 501, raising=False)
+    monkeypatch.setattr(sched.time, "sleep", lambda s: None)
+    if refuses:
+        with pytest.raises(RuntimeError, match="sigue con el agente.*Input/output"):
+            sched.remove_launchd()
+        assert plist.exists() and calls[:2] == ["bootout", "unload"]
+    else:
+        assert sched.remove_launchd() and not plist.exists()
+        assert sched.remove_launchd() is False  # ya no estaba: nada que quitar
+
+
 def test_schedule_cli_reports_a_failed_removal(monkeypatch, capsys):
     monkeypatch.setattr(sched, "remove", lambda: (_ for _ in ()).throw(RuntimeError("crontab no aceptó los cambios")))
     assert sched.main(["quitar"]) == 1

@@ -361,7 +361,12 @@ do_uninstall() {
     in_python -m tools.collector_schedule quitar || removed=0
   elif [ "$OS" = "Darwin" ]; then
     launchctl bootout "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" 2>/dev/null
-    rm -f "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist" || removed=0
+    sleep 2
+    if launchctl print "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" >/dev/null 2>&1; then
+      removed=0
+    else
+      rm -f "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist" || removed=0
+    fi
   elif command -v crontab >/dev/null 2>&1; then
     # Sin crontab no hay nada que quitar; si no se puede leer, no se reescribe a ciegas.
     local cur
