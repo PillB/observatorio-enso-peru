@@ -218,9 +218,17 @@ def _best(recs: dict[str, dict]) -> Optional[dict]:
     return max(ok or rs, key=lambda r: r.get("at") or "") if rs else None
 
 
+def unmeasured(rec: dict) -> bool:
+    """«aborted» de n8n es su nodo HTTP cortando la petición, no la red: desde el mismo ejecutor curl y Node
+    reciben 200 en segundos. No cuenta como medición (ni a favor ni en contra)."""
+    return (rec.get("class") == "timeout" and rec.get("detail") == "aborted"
+            and str(rec.get("vantage") or "").lower().startswith("n8n"))
+
+
 def geoblock(url: str, reach: dict) -> dict:
     """Estado de geobloqueo de una URL a partir de lo medido desde cada red (EE. UU.: Actions y n8n; Perú)."""
-    groups = _groups(reach.get(url) or {})
+    groups = {g: kept for g, rs in _groups(reach.get(url) or {}).items()
+              if (kept := {v: r for v, r in rs.items() if not unmeasured(r)})}
     act, n8n, pe = (_best(groups.get(g)) for g in VANTAGE_GROUPS)
     us_recs = [r for r in (act, n8n) if r]
     us = max([r for r in us_recs if r.get("class") == "ok"] or us_recs, key=lambda r: r.get("at") or "") if us_recs else None

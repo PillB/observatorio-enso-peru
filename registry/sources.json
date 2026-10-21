@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T04:39:16+00:00",
+ "generated_at": "2026-10-21T04:45:49+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "tiers": {
@@ -121,10 +121,7 @@
     "status": "open",
     "measured_at": "2026-10-21T04:23:56+00:00",
     "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
+     "github-actions"
     ],
     "open_from": [
      "actions"
@@ -150,24 +147,19 @@
      "at": "2026-10-21T04:23:56+00:00",
      "vantage": "github-actions"
     },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "n8n": null
    },
    "channels": [
-    "actions"
+    "actions",
+    "n8n"
    ],
    "geoblocked": false,
    "by_url": {
     "https://elcomercio.pe/arcio/rss/": {
      "status": "open",
      "channels": [
-      "actions"
+      "actions",
+      "n8n"
      ]
     }
    }
@@ -196,10 +188,7 @@
     "status": "open",
     "measured_at": "2026-10-21T04:23:57+00:00",
     "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
+     "github-actions"
     ],
     "open_from": [
      "actions"
@@ -225,24 +214,19 @@
      "at": "2026-10-21T04:23:57+00:00",
      "vantage": "github-actions"
     },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "n8n": null
    },
    "channels": [
-    "actions"
+    "actions",
+    "n8n"
    ],
    "geoblocked": false,
    "by_url": {
     "https://gestion.pe/arcio/rss/": {
      "status": "open",
      "channels": [
-      "actions"
+      "actions",
+      "n8n"
      ]
     }
    }
@@ -505,10 +489,7 @@
     "status": "open",
     "measured_at": "2026-10-21T04:24:42+00:00",
     "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
+     "github-actions"
     ],
     "open_from": [
      "actions"
@@ -534,24 +515,19 @@
      "at": "2026-10-21T04:24:42+00:00",
      "vantage": "github-actions"
     },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "n8n": null
    },
    "channels": [
-    "actions"
+    "actions",
+    "n8n"
    ],
    "geoblocked": false,
    "by_url": {
     "https://www.infobae.com/arc/outboundfeeds/rss/category/peru/": {
      "status": "open",
      "channels": [
-      "actions"
+      "actions",
+      "n8n"
      ]
     }
    }
@@ -7051,10 +7027,7 @@
     "status": "open",
     "measured_at": "2026-10-21T04:24:43+00:00",
     "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
+     "github-actions"
     ],
     "open_from": [
      "actions"
@@ -7080,24 +7053,19 @@
      "at": "2026-10-21T04:24:43+00:00",
      "vantage": "github-actions"
     },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "n8n": null
    },
    "channels": [
-    "actions"
+    "actions",
+    "n8n"
    ],
    "geoblocked": false,
    "by_url": {
     "https://www.proycontra.com.pe/rss.xml": {
      "status": "open",
      "channels": [
-      "actions"
+      "actions",
+      "n8n"
      ]
     }
    }
@@ -11156,10 +11124,7 @@
     "status": "suspected-geoblock",
     "measured_at": "2026-10-21T04:24:41+00:00",
     "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
+     "github-actions"
     ],
     "open_from": [],
     "us": {
@@ -11183,14 +11148,7 @@
      "at": "2026-10-21T04:24:41+00:00",
      "vantage": "github-actions"
     },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "n8n": null
    },
    "channels": [
     "peru-server"
@@ -11382,10 +11340,7 @@
     "status": "open",
     "measured_at": "2026-10-21T04:24:44+00:00",
     "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
+     "github-actions"
     ],
     "open_from": [
      "actions"
@@ -11411,24 +11366,19 @@
      "at": "2026-10-21T04:24:44+00:00",
      "vantage": "github-actions"
     },
-    "n8n": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
-    }
+    "n8n": null
    },
    "channels": [
-    "actions"
+    "actions",
+    "n8n"
    ],
    "geoblocked": false,
    "by_url": {
     "https://www.cpc.ncep.noaa.gov/data/indices/wksst9120.for": {
      "status": "open",
      "channels": [
-      "actions"
+      "actions",
+      "n8n"
      ]
     }
    }
