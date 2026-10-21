@@ -4,7 +4,7 @@
 
 | Flujo | Cuándo | Qué hace |
 |---|---|---|
-| `observatory.yml` | Todos los días a las 04:37 UTC (23:37 en Lima), al fusionar en `main`, a pedido del vigilante o a mano | Pruebas → pipeline con datos en vivo → recorridos de navegador → despliegue en Pages → verificación del sitio en vivo → sincronización de incidencias → archivo de respuestas originales |
+| `observatory.yml` | Todos los días a las 04:37 UTC (23:37 en Lima), al fusionar en `main`, a pedido del vigilante o a mano | Pruebas → pipeline con datos en vivo → recorridos de navegador → despliegue en GitHub Pages o Cloudflare Pages ([despliegue-cloudflare](despliegue-cloudflare.md)) → verificación del sitio en vivo → sincronización de incidencias → archivo de respuestas originales |
 | `watchdog.yml` | Cada 6 horas (minuto 17) | Lee el sitio en vivo; si la publicación tiene más de 30 horas, reactiva y relanza el flujo diario y abre un issue |
 | `ci.yml` | En cada PR y en ramas `claude/**` | Pruebas, publicación sin red con las respuestas capturadas y recorridos de navegador |
 | `capture-fixtures.yml` | A mano o al cambiar la herramienta de captura | Actualiza las respuestas reales usadas en el backtesting |

@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import time
 from dataclasses import dataclass, field
@@ -33,7 +34,10 @@ from urllib.parse import quote
 
 import httpx
 
-UA = "Observatorio-ENSO-Peru/4.0 (+https://github.com/PillB/observatorio-enso-peru; datos abiertos; contacto via issues)"
+#: El contacto que ven las fuentes: el sitio publicado cuando el flujo lo
+#: define (ENSO_CONTACT_URL), o el repositorio.
+CONTACT = os.environ.get("ENSO_CONTACT_URL") or "https://github.com/PillB/observatorio-enso-peru"
+UA = f"Observatorio-ENSO-Peru/4.0 (+{CONTACT}; datos abiertos)"
 TRANSIENT = (httpx.TimeoutException, httpx.ConnectError, httpx.RemoteProtocolError, httpx.ReadError)
 
 

@@ -6,6 +6,12 @@
 # el sitio anterior sigue publicado. Después de desplegar, comprueba que
 # el sitio en vivo sirve la nueva publicación y sincroniza las incidencias
 # con issues de GitHub.
+#
+# Destino del sitio (variables del repositorio, ver docs/despliegue-cloudflare.md):
+#   DEPLOY_TARGET       github-pages (por omisión) o cloudflare
+#   CLOUDFLARE_PROJECT  nombre del proyecto de Cloudflare Pages (observatorio-enso)
+#   SITE_URL            dirección pública; con Cloudflare se deduce del proyecto
+# Con Cloudflare, el sitio publicado no enlaza al repositorio de GitHub.
 name: observatory
 
 on:
@@ -31,7 +37,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  SITE_URL: https://pillb.github.io/observatorio-enso-peru/
+  DEPLOY_TARGET: ${{ vars.DEPLOY_TARGET || 'github-pages' }}
+  CF_PROJECT: ${{ vars.CLOUDFLARE_PROJECT || 'observatorio-enso' }}
+  SITE_URL: ${{ vars.SITE_URL || 'https://pillb.github.io/observatorio-enso-peru/' }}
 
 jobs:
   build:
@@ -40,6 +48,7 @@ jobs:
     outputs:
       publication_id: ${{ steps.pipeline.outputs.publication_id }}
       worst: ${{ steps.pipeline.outputs.worst }}
+      site_url: ${{ steps.site.outputs.url }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -48,6 +57,31 @@ jobs:
           cache: pip
           cache-dependency-path: python/requirements*.txt
       - run: pip install -r python/requirements-dev.txt
+
+      # Con Cloudflare, la dirección sale del proyecto (se crea si falta),
+      # salvo que la variable SITE_URL fije otra (p. ej. un dominio propio).
+      - name: Resolve the public address
+        id: site
+        working-directory: python
+        env:
+          SITE_URL_VAR: ${{ vars.SITE_URL }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          url="$SITE_URL"
+          if [ "$DEPLOY_TARGET" = cloudflare ]; then
+            if [ -z "$SITE_URL_VAR" ]; then
+              url=$(python -m tools.cloudflare_pages --project "$CF_PROJECT")
+              echo "::notice::Sitio en $url. Guarde esa dirección en la variable SITE_URL para que el vigilante la revise."
+            fi
+            # Las fuentes ven la dirección del sitio como contacto, no el repositorio.
+            echo "ENSO_CONTACT_URL=${url%/}/" >> "$GITHUB_ENV"
+          elif [ "$DEPLOY_TARGET" != github-pages ]; then
+            echo "::error::DEPLOY_TARGET debe ser github-pages o cloudflare (es «$DEPLOY_TARGET»)"; exit 1
+          fi
+          url="${url%/}/"
+          echo "SITE_URL=$url" >> "$GITHUB_ENV"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Unit and backtest suite
         working-directory: python
@@ -81,6 +115,10 @@ jobs:
             ${RELAY_DIR:+--relay-dir "$RELAY_DIR"} \
             --fail-on critical
 
+      - name: Adapt the site to its public address
+        working-directory: python
+        run: python -m tools.prepare_site --site-dir ../public --site-url "$SITE_URL" ${{ env.DEPLOY_TARGET == 'cloudflare' && '--hide-repo --cloudflare' || '' }}
+
       - name: Browser checks against the built site
         working-directory: python
         run: |
@@ -103,22 +141,34 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
       - uses: actions/configure-pages@v5
+        if: env.DEPLOY_TARGET == 'github-pages'
       - uses: actions/upload-pages-artifact@v3
+        if: env.DEPLOY_TARGET == 'github-pages'
         with:
           path: public
+      - uses: actions/upload-artifact@v4
+        if: env.DEPLOY_TARGET == 'cloudflare'
+        with:
+          name: site
+          path: public
+          retention-days: 3
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
+      contents: read
       pages: write
       id-token: write
     environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+      name: ${{ vars.DEPLOY_TARGET == 'cloudflare' && 'cloudflare-pages' || 'github-pages' }}
+      url: ${{ needs.build.outputs.site_url }}
+    env:
+      SITE_URL: ${{ needs.build.outputs.site_url }}
     steps:
       - id: deploy
+        if: env.DEPLOY_TARGET == 'github-pages'
         uses: actions/deploy-pages@v4
       - uses: actions/checkout@v5
         with:
@@ -127,6 +177,27 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install httpx
+      - name: Make sure the Cloudflare Pages project exists
+        if: env.DEPLOY_TARGET == 'cloudflare'
+        working-directory: python
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python -m tools.cloudflare_pages --project "$CF_PROJECT"
+      - uses: actions/download-artifact@v4
+        if: env.DEPLOY_TARGET == 'cloudflare'
+        with:
+          name: site
+          path: ${{ runner.temp }}/site
+      # Sin gitHubToken: no se crean «deployments» de GitHub que enlacen el
+      # repositorio con el sitio.
+      - name: Deploy to Cloudflare Pages
+        if: env.DEPLOY_TARGET == 'cloudflare'
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy "${{ runner.temp }}/site" --project-name=${{ env.CF_PROJECT }} --branch=main --commit-message="publicación ${{ needs.build.outputs.publication_id }}" --commit-dirty=true
       - name: Verify the live site serves this publication
         working-directory: python
         run: python -m tools.verify_live --base "$SITE_URL" --expect "${{ needs.build.outputs.publication_id }}"

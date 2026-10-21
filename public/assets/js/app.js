@@ -498,7 +498,7 @@ VIEWS.metodologia = {
         <p>Cómo se obtienen, validan y publican los datos, y qué tan recientes son en esta publicación.</p></div>
       <section class="card" data-tour-id="sources-health" aria-labelledby="sh-h"><div class="section-head"><h2 id="sh-h">Estado de las fuentes</h2><span class="muted small">Publicación ${S.pub} · ${F.fmtDateTime(S.dash.generatedAt)}</span></div><div id="sources-table"><div class="skeleton"></div></div></section>
       <section class="card" data-tour-id="incidents" aria-labelledby="inc-h"><h2 id="inc-h">Incidencias de la última corrida</h2><div id="incidents"><div class="skeleton"></div></div>
-        <p class="muted small">Cada incidencia se registra también como issue en <a href="${SITE.issues}" rel="noopener" target="_blank">GitHub</a> para su seguimiento y se cierra sola cuando deja de ocurrir.</p></section>
+        <p class="muted small">${SITE.issues ? html`Cada incidencia se registra también como issue en <a href="${SITE.issues}" rel="noopener" target="_blank">GitHub</a> para su seguimiento y se cierra sola cuando deja de ocurrir.` : 'Cada incidencia se registra también para su seguimiento y se cierra sola cuando deja de ocurrir.'}</p></section>
       <section class="card prose" data-tour-id="thresholds" aria-labelledby="th-h">
         <h2 id="th-h">Umbrales y clasificaciones</h2>
         <h3>ICEN (ENFEN)</h3><p>Nota Técnica ENFEN 01-2024: fría fuerte &lt; −1,3; fría moderada −1,3 a &lt; −1,1; fría débil −1,1 a &lt; −0,7; neutra −0,7 a +0,5; cálida débil &gt; +0,5 a +1,3; moderada &gt; +1,3 a +2,1; fuerte &gt; +2,1 a +3,5; extraordinaria &gt; +3,5 °C. Un evento requiere al menos tres meses consecutivos.</p>
@@ -529,7 +529,7 @@ VIEWS.metodologia = {
           <li>El SOI de la tabla GRD (±7) corresponde a la escala Troup (×10) de la Oficina de Meteorología de Australia. El observatorio la calcula con las presiones de Tahití y Darwin de NOAA porque el servidor australiano no permite descargas automáticas.</li>
           <li>Los comunicados de ENFEN se leen del PDF oficial. Cuando el portal de ENFEN no responde a los servidores de GitHub, se usa la copia del Internet Archive y se indica en el estado.</li>
         </ul>
-        <p>Código, datos y registro de cambios: <a href="${SITE.repo}" rel="noopener" target="_blank">github.com/PillB/observatorio-enso-peru</a>.</p>
+        ${SITE.repo ? html`<p>Código, datos y registro de cambios: <a href="${SITE.repo}" rel="noopener" target="_blank">${SITE.repo.replace(/^https:\/\//, '')}</a>.</p>` : ''}
       </section>
       <section class="card prose" aria-labelledby="gl-h"><h2 id="gl-h">Glosario</h2><dl class="glossary">${GLOSSARY.map(([t, d]) => html`<dt>${t}</dt><dd>${d}</dd>`)}</dl></section>`;
   },

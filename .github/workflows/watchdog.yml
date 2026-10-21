@@ -26,15 +26,19 @@ jobs:
     steps:
       - uses: actions/github-script@v8
         env:
-          SITE_URL: https://pillb.github.io/observatorio-enso-peru/
+          SITE_URL: ${{ vars.SITE_URL || (vars.DEPLOY_TARGET != 'cloudflare' && 'https://pillb.github.io/observatorio-enso-peru/' || '') }}
           MAX_AGE_HOURS: '30'
         with:
           script: |
+            if (!process.env.SITE_URL) {
+              core.setFailed('Con DEPLOY_TARGET=cloudflare hay que guardar la dirección del sitio en la variable SITE_URL (ver docs/despliegue-cloudflare.md).');
+              return;
+            }
             const wf = 'observatory.yml';
             try { await github.rest.actions.enableWorkflow({ ...context.repo, workflow_id: wf }); } catch (e) { core.warning(e.message); }
             let gen = null, pub = null, worst = null, err = null;
             try {
-              const r = await fetch(`${process.env.SITE_URL}data/dashboard.json?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache' } });
+              const r = await fetch(`${process.env.SITE_URL.replace(/\/?$/, '/')}data/dashboard.json?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache' } });
               if (!r.ok) throw new Error(`HTTP ${r.status}`);
               const d = await r.json();
               gen = d.generatedAt; pub = d.publicationId; worst = d.health?.worst;
