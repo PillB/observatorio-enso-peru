@@ -179,6 +179,7 @@ class Gazetteer:
         codes = list(dict.fromkeys(picked + deps))
         # Lo implícito en algo más específico sobra (Piura si ya está Sullana).
         specific = [c for c in codes if not any(o != c and o.startswith(c) for o in codes)]
+        specific = [c for c in specific if c in self.deps or c in self.provs or c in self.dists]
         return {"places": [self.label(c) for c in specific[:6]],
                 "departments": list(dict.fromkeys(c[:2] for c in codes)), "source": "texto"}
 

@@ -176,6 +176,11 @@ def test_no_false_places(text, peru):
 def test_gazetteer_covers_every_level():
     g = gazetteer()
     assert len(g.deps) == 25 and len(g.provs) == 196 and len(g.dists) >= 1890
+    # Todos los códigos son UBIGEO válidos y cada uno se puede rotular (los distritos nuevos sin código
+    # INEI en la fuente reciben el siguiente número libre de su provincia).
+    for code in [*g.deps, *g.provs, *g.dists]:
+        assert code.isdigit() and len(code) in (2, 4, 6) and g.label(code)["name"]
+    assert g.label("180107")["name"] == "San Antonio" and g.label("180107")["province"] == "Mariscal Nieto"
     assert g.label("200601")["province"] == "Sullana"
 
 

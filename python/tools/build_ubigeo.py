@@ -51,8 +51,24 @@ def display(name: str, capital: str) -> str:
     return capital if capital and _norm(capital) == _norm(name) else title(name)
 
 
+def _fill_codes(rows: list[dict], provs: list[dict]) -> None:
+    """Distritos recientes sin código INEI en la fuente ("NA"): provincia por nombre y siguiente número libre."""
+    prov_code = {(r["departamento"], r["provincia"]): r["inei"][:4] for r in provs}
+    used = {r["inei"] for r in rows}
+    for r in rows:
+        if not r["inei"].isdigit():
+            p4 = prov_code[(r["departamento"], r["provincia"])]
+            n = 1 + max(int(c[4:]) for c in used if c.startswith(p4))
+            r["inei"] = f"{p4}{n:02d}"
+            used.add(r["inei"])
+        for k in ("capital", "latitude", "longitude"):
+            if r.get(k) == "NA":
+                r[k] = ""
+
+
 def build(src: dict[str, str]) -> dict:
     rows = {k: list(csv.DictReader(io.StringIO(v))) for k, v in src.items()}
+    _fill_codes(rows["dist"], rows["prov"])
     deps = [{"ubigeo": r["inei"][:2], "name": DEP_NAMES[r["departamento"]], "capital": r["capital"],
              "iso": r["iso_3166_2"], "lat": round(float(r["latitude"]), 4), "lon": round(float(r["longitude"]), 4)}
             for r in rows["dep"]]

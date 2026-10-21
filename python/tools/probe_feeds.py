@@ -162,6 +162,15 @@ def probe_one(pr: Probe, cand: dict, now: datetime, out: Path) -> dict:
     return res
 
 
+def safe_probe(pr: Probe, cand: dict, now: datetime, out: Path) -> dict:
+    """Un candidato que falla de forma inesperada queda registrado; no detiene el sondeo."""
+    try:
+        return probe_one(pr, cand, now, out)
+    except Exception as exc:  # noqa: BLE001
+        return {"id": cand["id"], "name": cand["name"], "department": cand.get("department"),
+                "kind": cand.get("kind"), "tried": [], "ok": False, "crash": f"{type(exc).__name__}: {exc}"[:300]}
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", type=Path, required=True)
@@ -177,7 +186,7 @@ def main(argv=None) -> int:
     now = datetime.now(timezone.utc)
     pr = Probe()
     with ThreadPoolExecutor(max_workers=12) as ex:
-        results = list(ex.map(lambda c: probe_one(pr, c, now, a.out), cands))
+        results = list(ex.map(lambda c: safe_probe(pr, c, now, a.out), cands))
     report = {"checkedAt": now.isoformat(timespec="seconds"), "total": len(results),
               "ok": sum(r["ok"] for r in results), "results": results}
     (a.out / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
