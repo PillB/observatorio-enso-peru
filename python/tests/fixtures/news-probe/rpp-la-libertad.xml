@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:06:09 -0500</lastBuildDate>
+  <lastBuildDate>Wed, 21 Oct 2026 16:29:42 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Gobierno Regional de La Libertad realizará 16 nuevas intervenciones en el río Chicama ante posibles lluvias por Fenómeno El Niño]]></title>
+        <description><![CDATA[Se realizarán labores de limpieza y descolmatación en coordinación con el <strong>Ministerio de Vivienda y la Autoridad Nacional del Agua (ANA). </strong>]]></description>
+        <pubDate>Wed, 21 Oct 2026 15:30:45 -0500</pubDate>
+        <link>https://rpp.pe/peru/la-libertad/gobierno-regional-de-la-libertad-realizara-16-nuevas-intervenciones-en-el-rio-chicama-ante-posibles-lluvias-por-fenomeno-el-nino-noticia-1713773</link>
+        <guid>1713773</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/21/412141_1921086.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ La Libertad, Fenómeno El Niño, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[La Libertad: PNP incautó más de 300 explosivos durante operativo en el sector de Quesquenda]]></title>
         <description><![CDATA[El material explosivo estaría destinado para actividades de la minería ilegal y extorsión.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/07/28/420942_1891176.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ La Libertad, minería ilegal, inseguridad ciudadana, criminalidad, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Violencia no cesa en Trujillo: delincuentes atacan a balazos bus de transporte público con pasajeros a bordo]]></title>
-        <description><![CDATA[No se registraron personas heridas tras el atentado en la urbanización La Alameda. Los choferes esperan decisión de dirigentes de la empresa para seguir circulando.]]></description>
-        <pubDate>Thu, 10 Sep 2026 13:01:10 -0500</pubDate>
-        <link>https://rpp.pe/peru/la-libertad/violencia-no-cesa-en-trujillo-delincuentes-atacan-a-balazos-bus-de-transporte-publico-con-pasajeros-a-bordo-noticia-1706674</link>
-        <guid>1706674</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/09/10/26-09-10-12-12-07-31540-1906122mp4_1906123.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Trujillo, La Libertad, inseguridad ciudadana, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>

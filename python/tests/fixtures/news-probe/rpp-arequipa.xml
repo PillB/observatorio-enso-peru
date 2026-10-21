@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:03:32 -0500</lastBuildDate>
+  <lastBuildDate>Wed, 21 Oct 2026 16:32:54 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Arequipa: Policía investiga robo de 12.5 toneladas de explosivos en la Panamericana Sur]]></title>
+        <description><![CDATA[Los explosivos eran trasladados en un <strong>camión proveniente de Lima.</strong> Según información policial, tres sujetos armados atacaron el vehículo para apropiarse de los productos.]]></description>
+        <pubDate>Tue, 20 Oct 2026 23:43:55 -0500</pubDate>
+        <link>https://rpp.pe/peru/arequipa/arequipa-policia-investiga-robo-de-125-toneladas-de-explosivos-en-la-panamericana-sur-noticia-1713654</link>
+        <guid>1713654</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/20/343234_1920859.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Arequipa, Panamericana Sur, Inseguridad ciudadana, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Arequipa: rocas se desprendieron de acantilado y cayeron sobre bus interprovincial en la Panamericana Sur [VIDEO]]]></title>
         <description><![CDATA[<strong>Cuatro pasajeros resultaron heridos</strong> y tuvieron que ser evacuados a distintos centros de salud. Debido al <a data-mce-href="https://rpp.pe/noticias/accidente-de-transito" href="https://rpp.pe/noticias/accidente-de-transito">accidente</a>, se registró gran congestión en la carretera.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/08/21/302430_1898621.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Arequipa, Martina Anco, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Un sismo de magnitud 3.6 se sintió esta mañana en Arequipa]]></title>
-        <description><![CDATA[El epicentro del <strong>sismo</strong> se ubicó en el mar, a 38 kilómetros al oeste de Ocoña, en la provincia de Camaná; reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
-        <pubDate>Thu, 20 Aug 2026 09:20:36 -0500</pubDate>
-        <link>https://rpp.pe/peru/arequipa/arequipa-sismo-de-magnitud-36-remecio-la-region-noticia-1702642</link>
-        <guid>1702642</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/20/071907_1898313.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Instituto Geofísico del Perú, Sismo, IGP, Arequipa, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
