@@ -1,0 +1,51 @@
+#EventID|Time|Latitude|Longitude|Depth/km|Author|Catalog|Contributor|ContributorID|MagType|Magnitude|MagAuthor|EventLocationName|EventType
+gfz2026udhe|2026-10-14T09:45:42.43|-15.443|-72.058|163.0|||GFZ|gfz2026udhe|mb|4.37||Southern Peru|earthquake
+gfz2026tycn|2026-10-11T13:43:01.62|-16.668|-72.423|50.2|||GFZ|gfz2026tycn|mb|5.38||Near Coast of Peru|earthquake
+gfz2026tufz|2026-10-09T10:55:28.27|-16.168|-72.05|109.1|||GFZ|gfz2026tufz|mb|4.49||Near Coast of Peru|earthquake
+gfz2026tuex|2026-10-09T10:22:15.55|-19.981|-68.788|126.6|||GFZ|gfz2026tuex|Mw|5.02||Chile-Bolivia Border Region|earthquake
+gfz2026tqzf|2026-10-07T16:06:06.21|-1.769|-77.94|155.7|||GFZ|gfz2026tqzf|mb|4.73||Ecuador|earthquake
+gfz2026tnzf|2026-10-06T00:41:28.7|-19.831|-69.25|103.0|||GFZ|gfz2026tnzf|ML|4.18||Northern Chile|earthquake
+gfz2026tkyo|2026-10-04T08:57:24.02|-2.982|-80.159|56.7|||GFZ|gfz2026tkyo|mb|4.72||Near Coast of Ecuador|earthquake
+gfz2026suec|2026-09-25T04:26:30.01|-11.217|-77.68|39.3|||GFZ|gfz2026suec|mb|4.62||Near Coast of Peru|earthquake
+gfz2026smve|2026-09-21T03:58:26.07|-8.211|-78.782|80.1|||GFZ|gfz2026smve|mb|4.69||Near Coast of Northern Peru|earthquake
+gfz2026smpm|2026-09-21T01:07:37.29|-13.463|-71.904|260.4|||GFZ|gfz2026smpm|mb|4.33||Central Peru|earthquake
+gfz2026sjko|2026-09-19T07:12:29.83|-3.834|-77.464|10.0|||GFZ|gfz2026sjko|mb|4.91||Peru-Ecuador Border Region|earthquake
+gfz2026sdjh|2026-09-15T23:45:08.52|-1.579|-77.946|169.5|||GFZ|gfz2026sdjh|mb|4.61||Ecuador|earthquake
+gfz2026sbey|2026-09-14T19:16:39.26|-3.48|-77.264|10.0|||GFZ|gfz2026sbey|mb|5.1||Peru-Ecuador Border Region|earthquake
+gfz2026rwtd|2026-09-12T08:46:36.74|-14.368|-76.15|10.0|||GFZ|gfz2026rwtd|mb|4.95||Near Coast of Peru|earthquake
+gfz2026rtfw|2026-09-10T10:39:35.66|-3.823|-77.513|10.0|||GFZ|gfz2026rtfw|mb|4.75||Peru-Ecuador Border Region|earthquake
+gfz2026rsyb|2026-09-10T06:42:41.37|-3.888|-77.561|10.0|||GFZ|gfz2026rsyb|Mw|5.29||Peru-Ecuador Border Region|earthquake
+gfz2026rflc|2026-09-02T21:25:02.63|-15.955|-73.574|156.8|||GFZ|gfz2026rflc|mb|4.42||Southern Peru|earthquake
+gfz2026rbfs|2026-08-31T14:07:44.72|-16.104|-72.75|136.1|||GFZ|gfz2026rbfs|mb|4.4||Near Coast of Peru|earthquake
+gfz2026rbbh|2026-08-31T11:53:26.61|-12.157|-75.403|10.0|||GFZ|gfz2026rbbh|mb|4.52||Central Peru|earthquake
+gfz2026rafz|2026-08-31T01:08:04.27|-9.852|-79.373|52.6|||GFZ|gfz2026rafz|mb|4.67||Off Coast of Northern Peru|earthquake
+gfz2026qzob|2026-08-30T16:04:08.21|-18.266|-69.653|111.9|||GFZ|gfz2026qzob|Mw|4.79||Northern Chile|earthquake
+gfz2026ques|2026-08-27T17:40:42.05|-17.644|-69.539|147.7|||GFZ|gfz2026ques|mb|4.62||Peru-Bolivia Border Region|earthquake
+gfz2026qpap|2026-08-24T21:55:04.46|-15.717|-72.273|92.8|||GFZ|gfz2026qpap|mb|4.42||Southern Peru|earthquake
+gfz2026qhkw|2026-08-20T18:00:19.11|-14.654|-73.555|101.2|||GFZ|gfz2026qhkw|Mw|6.63||Central Peru|earthquake
+gfz2026pqfo|2026-08-11T08:00:40.51|-5.841|-80.861|85.7|||GFZ|gfz2026pqfo|mb|4.73||Near Coast of Northern Peru|earthquake
+gfz2026pkbo|2026-08-07T23:11:23.68|-12.101|-75.493|10.0|||GFZ|gfz2026pkbo|mb|4.77||Central Peru|earthquake
+gfz2026phxr|2026-08-06T18:57:22.33|-12.13|-75.334|10.0|||GFZ|gfz2026phxr|Mw|5.27||Central Peru|earthquake
+gfz2026pbda|2026-08-03T01:42:25.94|-8.582|-75.751|136.4|||GFZ|gfz2026pbda|Mw|5.17||Central Peru|earthquake
+gfz2026ovpc|2026-07-31T00:58:43.78|-8.235|-74.112|144.0|||GFZ|gfz2026ovpc|Mw|5.59||Peru-Brazil Border Region|earthquake
+gfz2026orbe|2026-07-28T13:24:35.91|-9.682|-79.737|20.0|||GFZ|gfz2026orbe|Mw|5.27||Off Coast of Northern Peru|earthquake
+gfz2026oooi|2026-07-27T04:38:55.92|-2.251|-79.633|80.0|||GFZ|gfz2026oooi|mb|4.52||Near Coast of Ecuador|earthquake
+gfz2026ohcx|2026-07-23T02:55:39.92|-9.668|-79.122|53.1|||GFZ|gfz2026ohcx|mb|4.72||Off Coast of Northern Peru|earthquake
+gfz2026ohci|2026-07-23T02:38:26.17|-16.122|-72.496|93.2|||GFZ|gfz2026ohci|mb|4.85||Near Coast of Peru|earthquake
+gfz2026offs|2026-07-22T02:03:50.13|-19.254|-70.065|54.8|||GFZ|gfz2026offs|Mw|4.76||Near Coast of Northern Chile|earthquake
+gfz2026oepe|2026-07-21T17:43:02.83|-9.011|-79.72|40.0|||GFZ|gfz2026oepe|mb|4.76||Off Coast of Northern Peru|earthquake
+gfz2026ocib|2026-07-20T11:51:16.75|-14.646|-75.951|73.1|||GFZ|gfz2026ocib|mb|4.29||Near Coast of Peru|earthquake
+gfz2026nztw|2026-07-19T02:24:36.38|-12.083|-75.321|10.0|||GFZ|gfz2026nztw|Mw|5.49||Central Peru|earthquake
+gfz2026nsmk|2026-07-15T02:40:29.7|-14.759|-76.287|25.0|||GFZ|gfz2026nsmk|mb|4.76||Near Coast of Peru|earthquake
+gfz2026nrcb|2026-07-14T08:21:04.99|-14.582|-71.331|120.7|||GFZ|gfz2026nrcb|Mw|5.44||Central Peru|earthquake
+gfz2026nlow|2026-07-11T07:58:27.8|-10.727|-78.901|10.0|||GFZ|gfz2026nlow|Mw|5.08||Near Coast of Peru|earthquake
+gfz2026njda|2026-07-09T23:42:58.06|-2.663|-80.924|23.9|||GFZ|gfz2026njda|mb|4.78||Near Coast of Ecuador|earthquake
+gfz2026nfwm|2026-07-08T05:00:32.79|-10.707|-74.853|10.0|||GFZ|gfz2026nfwm|mb|4.74||Central Peru|earthquake
+gfz2026nfur|2026-07-08T04:05:57.62|-18.726|-69.938|77.0|||GFZ|gfz2026nfur|ML|3.54||Northern Chile|earthquake
+gfz2026mzsz|2026-07-04T20:24:52.19|-16.439|-73.142|38.0|||GFZ|gfz2026mzsz|mb|4.9||Near Coast of Peru|earthquake
+gfz2026muqu|2026-07-02T01:39:24.33|-14.047|-72.667|47.5|||GFZ|gfz2026muqu|mb|4.87||Central Peru|earthquake
+gfz2026mswa|2026-07-01T02:00:39.37|-8.796|-74.795|132.3|||GFZ|gfz2026mswa|Mw|4.89||Peru-Brazil Border Region|earthquake
+gfz2026mheb|2026-06-24T16:25:59.25|-8.099|-74.221|152.6|||GFZ|gfz2026mheb|mb|4.88||Peru-Brazil Border Region|earthquake
+gfz2026mbcn|2026-06-21T08:50:14.04|-17.126|-70.593|119.0|||GFZ|gfz2026mbcn|mb|4.86||Near Coast of Peru|earthquake
+gfz2026lxgi|2026-06-19T06:13:06.57|-19.347|-70.329|57.5|||GFZ|gfz2026lxgi|ML|4.21||Near Coast of Northern Chile|earthquake
+gfz2026lviv|2026-06-18T05:12:45.3|-8.248|-74.198|139.8|||GFZ|gfz2026lviv|mb|4.47||Peru-Brazil Border Region|earthquake
