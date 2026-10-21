@@ -183,11 +183,18 @@ def hide_console_windows() -> None:
     subprocess.Popen.__init__ = init  # type: ignore[method-assign]
 
 
-def kit_version(root: Optional[Path] = None) -> str:
+def kit_manifest(root: Optional[Path] = None) -> dict:
     try:
-        return json.loads(paths(root)["kit"].read_text(encoding="utf-8")).get("version", "?")
+        data = json.loads(paths(root)["kit"].read_text(encoding="utf-8"))
     except (OSError, ValueError):
-        pass
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def kit_version(root: Optional[Path] = None) -> str:
+    manifest = kit_manifest(root)
+    if manifest:
+        return manifest.get("version", "?")
     try:
         sha = subprocess.run(["git", "-C", str(paths(root)["root"]), "rev-parse", "--short", "HEAD"],
                              capture_output=True, text=True, timeout=10).stdout.strip()
@@ -504,16 +511,30 @@ def collect_and_push(*, do_push: bool, do_dispatch: bool, state: dict, root: Opt
         ok = sum(1 for e in idx["entries"] if e.get("status") == 200)
         info.update(summary=idx["summary"], ok=ok, total=len(idx["entries"]))
         log(f"resumen: {idx['summary']}")
-        if not ok:
-            raise Problem(EXIT_NO_SOURCES, "ninguna fuente respondió: no se sube nada (se conserva la copia anterior)",
-                          "Si se repite, ejecutar la verificación: puede ser la conexión o un bloqueo de las fuentes.")
         idx["collector"].update({
             "runner": "collector_service/1", "kit": kit_version(root),
             "os": platform.platform(terse=True), "python": platform.python_version(), "git": git_version(),
             "consecutive_failures": state.get("consecutive_failures", 0),
             "token_expires_at": info["token_expires_at"],
         })
+        if not ok:
+            hint = "Si se repite, ejecutar la verificación: puede ser la conexión o un bloqueo de las fuentes."
+            if not do_push:
+                raise Problem(EXIT_NO_SOURCES, "ninguna fuente respondió", hint)
+            # Una copia vacía reemplazaría a la última buena: solo se sube el latido, para que
+            # el sitio sepa que el equipo funciona y que son las fuentes las que no responden.
+            try:
+                pc.push_heartbeat(pc.heartbeat(idx, "sin-fuentes"), token)
+            except (RuntimeError, OSError, subprocess.SubprocessError) as exc:
+                msg = str(exc).replace(token, "***")[:300]
+                log(f"tampoco se pudo subir el latido: {msg}")
+                raise Problem(EXIT_NO_SOURCES, f"ninguna fuente respondió y tampoco se pudo subir el latido: {msg}",
+                              push_hint(msg)) from exc
+            raise Problem(EXIT_NO_SOURCES, "ninguna fuente respondió: se subió solo el latido "
+                          "(se conserva la copia anterior)", hint)
         (snap / "index.json").write_text(json.dumps(idx, indent=1, ensure_ascii=False), encoding="utf-8")
+        (snap / pc.HEARTBEAT).write_text(json.dumps(pc.heartbeat(idx, "ok"), indent=1, ensure_ascii=False),
+                                         encoding="utf-8")
         if do_push:
             try:
                 pc.push(snap, token)
@@ -608,9 +629,18 @@ def status_text(root: Optional[Path] = None) -> str:
     return "\n".join(lines)
 
 
+def use_kit_defaults(root: Optional[Path] = None) -> None:
+    """Contacto que las fuentes ven en el User-Agent: el sitio publicado, si el
+    kit lo trae (ENSO_CONTACT_URL en .env manda); si no, el de enso.fetch."""
+    contact = kit_manifest(root).get("contact_url")
+    if contact:
+        os.environ.setdefault("ENSO_CONTACT_URL", contact)
+
+
 def prepare(root: Optional[Path] = None) -> dict[str, str]:
     """Entorno común de la corrida y de la verificación."""
     origin = load_env(root)
+    use_kit_defaults(root)
     add_git_to_path()
     use_system_proxy()
     use_system_certificates()

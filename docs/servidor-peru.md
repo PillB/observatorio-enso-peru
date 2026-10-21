@@ -80,7 +80,10 @@ instaladores, los lanzadores de doble clic, la verificación y este manual.
 - **Última versión:** [recolector-peru.zip](https://github.com/PillB/observatorio-enso-peru/releases/download/recolector-kit/recolector-peru.zip)
   ([sha256](https://github.com/PillB/observatorio-enso-peru/releases/download/recolector-kit/recolector-peru.zip.sha256)).
   Lo publica el flujo `recolector-kit` en cada cambio de `main` que toca
-  el recolector, después de probarlo en Windows, macOS y Linux.
+  el recolector, después de probarlo en Windows, macOS y Linux. Si el
+  repositorio pasa a ser privado, este enlace pide iniciar sesión en
+  GitHub: compartir el .zip directamente (`ACTUALIZAR` sigue funcionando,
+  porque descarga con el token).
 - **Antes de que exista esa versión** (o para una rama): en GitHub →
   Actions → `recolector-kit` → la corrida → *Artifacts* →
   `recolector-peru`; o armarlo desde el repositorio:
@@ -232,12 +235,18 @@ nadie está mirando.
   zona). Si la hay, termina sin hacer nada; si no, recolecta. Así los
   reintentos y la recuperación al encender no repiten trabajo.
 - **Antes de recolectar** comprueba el token con GitHub y anota su
-  vencimiento. **Después**, si ninguna fuente respondió, no sube nada: la
-  última copia buena se conserva en `data-peru`.
+  vencimiento. **Después**, si ninguna fuente respondió, sube solo el
+  latido (abajo): la última copia buena se conserva en `data-peru`.
 - **Lo que sube:** `index.json` (cada URL con su estado, tamaño, hora y
   sha256, más un diagnóstico del equipo: versión del kit, sistema, Python,
-  Git, fallas previas, vencimiento del token) y los archivos originales en
-  `files/`. Se puede ver en GitHub, rama `data-peru`.
+  Git, fallas previas, vencimiento del token), los archivos originales en
+  `files/` y `heartbeat.json`. Se puede ver en GitHub, rama `data-peru`.
+- **El latido** (`heartbeat.json`) se sube en cada corrida que llega a
+  GitHub, aunque ninguna fuente responda: hora, resultado (`ok` o
+  `sin-fuentes`), cuántas fuentes respondieron, cuáles fallaron y por qué.
+  Con él el sitio distingue «el equipo no corre» (latido viejo:
+  `relay-stale`) de «las instituciones no responden ni desde el Perú»
+  (latido reciente: `relay-sources-down`).
 - **Protecciones:** un candado impide dos corridas a la vez; una corrida
   colgada se corta a los 45 minutos; git corre sin ventanas de contraseña
   ni ayudantes de credenciales (el token no termina en el Llavero ni en el
@@ -253,7 +262,8 @@ nadie está mirando.
 |---|---|---|
 | Escritorio de la computadora | Dos fallas seguidas (un aviso por día) | Abrir `VERIFICAR` y seguir las indicaciones |
 | Escritorio de la computadora | El token vence en menos de 21 días | [Renovar el token](#1-token-de-github) |
-| Issue `relay-stale` en GitHub | La última copia tiene más de 36 horas | Pedir que ejecuten `VERIFICAR` y envíen el informe |
+| Issue `relay-stale` en GitHub | La última copia y el último latido tienen más de 36 horas: el equipo no está corriendo | Pedir que ejecuten `VERIFICAR` y envíen el informe |
+| Issue `relay-sources-down` en GitHub | El equipo funciona, pero hace más de 36 horas que ninguna fuente peruana le responde | Nada en el equipo: son SENAMHI, ANA, IMARPE o el ENFEN. `heartbeat.json` dice qué respondió cada una. El sitio usa la última copia buena hasta 7 días |
 | Issue `relay-token-expiring` en GitHub | El token vence en menos de 21 días | Renovarlo y ejecutar `INSTALAR` con el nuevo |
 | Issue `relay-missing` en GitHub | `data-peru` existe pero su `index.json` no se puede leer | Ver la última subida del recolector |
 
@@ -312,6 +322,10 @@ Si sigue sin funcionar, enviar a quien mantiene el sitio el último
   informes, ni en los gestores de credenciales del sistema.
 - La computadora no abre puertos ni recibe conexiones: solo descarga de
   las fuentes y sube a GitHub.
+- Las fuentes ven en el User-Agent la dirección del sitio publicado si el
+  kit la trae (`contact_url` en `kit.json`, cuando el sitio no está en
+  GitHub Pages), o la del repositorio. Una línea `ENSO_CONTACT_URL=...` en
+  `.env` la reemplaza.
 - `kit.json` permite detectar archivos del programa modificados; la
   actualización comprueba el sha256 del kit antes de instalarlo.
 - Si la computadora se pierde o se comparte, revocar el token en GitHub

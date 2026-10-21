@@ -202,12 +202,19 @@ def check_internet(ctx: dict) -> list[Result]:
     except ImportError:
         return [Result("internet", FAIL, "no se puede comprobar (falta httpx)", "", "Volver a ejecutar el instalador.")]
     url = f"https://api.github.com/repos/{repo()}"
+    # Con el token, si lo hay: el repositorio puede ser privado (se ve como 404 sin él).
+    headers = {"Accept": "application/vnd.github+json"}
+    token = os.environ.get("GITHUB_TOKEN", "").strip()
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     t0 = time.time()
     try:
         with _client() as c:
-            r = c.get(url, headers={"Accept": "application/vnd.github+json"})
-            branch = c.get(f"{url}/branches/{os.environ.get('ENSO_RELAY_BRANCH', 'data-peru')}",
-                           headers={"Accept": "application/vnd.github+json"})
+            r = c.get(url, headers=headers)
+            if r.status_code == 401 and token:  # token malo: lo explica «token»; aquí importa la conexión
+                headers.pop("Authorization")
+                r = c.get(url, headers=headers)
+            branch = c.get(f"{url}/branches/{os.environ.get('ENSO_RELAY_BRANCH', 'data-peru')}", headers=headers)
     except httpx.HTTPError as exc:
         return [Result("internet", FAIL, "no hay conexión con GitHub", _scrub(f"{type(exc).__name__}: {exc}")[:300],
                        svc.network_hint(exc))]
@@ -219,6 +226,9 @@ def check_internet(ctx: dict) -> list[Result]:
     if r.status_code == 403 and r.headers.get("x-ratelimit-remaining") == "0":
         out.append(Result("internet", WARN, "GitHub responde, pero limitó las consultas de esta red", "",
                           "Esperar una hora y repetir la verificación."))
+    elif not ok and r.status_code in (401, 404) and "x-github-request-id" in r.headers:
+        out.append(Result("internet", OK, "GitHub responde", f"{(time.time() - t0) * 1000:.0f} ms · el repositorio "
+                          "no se ve sin un token válido (ver «token»)"))
     elif not ok:
         out.append(Result("internet", FAIL, "la respuesta de GitHub no es la esperada",
                           f"HTTP {r.status_code}, {r.headers.get('content-type', '')}",

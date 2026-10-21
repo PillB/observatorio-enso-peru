@@ -52,7 +52,8 @@ catch { Write-Verbose "Sin consola: la salida queda con su codificación ($($_.E
 
 $TaskName = 'Observatorio ENSO - recolector Peru'
 $OldTaskName = 'ENSO recolector Peru'
-$KitUrl = 'https://github.com/PillB/observatorio-enso-peru/releases/download/recolector-kit/recolector-peru.zip'
+$Repo = 'PillB/observatorio-enso-peru'
+$KitUrl = "https://github.com/$Repo/releases/download/recolector-kit/recolector-peru.zip"
 $KitRoot = Split-Path -Parent $PSScriptRoot
 if (-not $Destino) { $Destino = Join-Path $env:LOCALAPPDATA 'ObservatorioENSO\recolector' }
 $Destino = [IO.Path]::GetFullPath($Destino)
@@ -210,8 +211,8 @@ function Save-EnvFile([string]$TokenValue, [string]$At) {
     $lines = @('# Recolector ENSO Peru: configuracion local. No compartir este archivo.')
     if ($TokenValue) { $lines += "GITHUB_TOKEN=$TokenValue" }
     $lines += "ENSO_COLLECT_AT=$At"
-    # Proxy y certificados de esta consola: la tarea programada no los hereda.
-    foreach ($v in 'HTTPS_PROXY', 'HTTP_PROXY', 'NO_PROXY', 'SSL_CERT_FILE') {
+    # Proxy, certificados y contacto de esta consola: la tarea programada no los hereda.
+    foreach ($v in 'HTTPS_PROXY', 'HTTP_PROXY', 'NO_PROXY', 'SSL_CERT_FILE', 'ENSO_CONTACT_URL') {
         $val = [Environment]::GetEnvironmentVariable($v)
         if ($val -and -not ($keep | Where-Object { $_ -match "^\s*$v\s*=" })) { $lines += "$v=$val" }
     }
@@ -365,8 +366,23 @@ function Invoke-Update {
         $zip = Join-Path $tmp 'recolector-peru.zip'
         Write-Info "Descargando $KitUrl"
         $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri $KitUrl -OutFile $zip -UseBasicParsing
-        Invoke-WebRequest -Uri "$KitUrl.sha256" -OutFile "$zip.sha256" -UseBasicParsing
+        try {
+            Invoke-WebRequest -Uri $KitUrl -OutFile $zip -UseBasicParsing
+            Invoke-WebRequest -Uri "$KitUrl.sha256" -OutFile "$zip.sha256" -UseBasicParsing
+        } catch {
+            # Con el repositorio privado la descarga pública da 404: se pide con el token, por la API.
+            $token = Get-EnvValue (Read-EnvFile) 'GITHUB_TOKEN'
+            if (-not $token) { throw }
+            Write-Info 'Descarga pública no disponible; se usa el token.'
+            $headers = @{ Authorization = "Bearer $token"; Accept = 'application/vnd.github+json'; 'User-Agent' = 'observatorio-enso-recolector' }
+            $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/tags/recolector-kit" -Headers $headers -UseBasicParsing
+            $headers.Accept = 'application/octet-stream'
+            foreach ($pair in @(@('recolector-peru.zip', $zip), @('recolector-peru.zip.sha256', "$zip.sha256"))) {
+                $asset = @($release.assets | Where-Object { $_.name -eq $pair[0] })[0]
+                if (-not $asset) { Exit-WithError "La versión recolector-kit no tiene $($pair[0])." 'Avisar a quien mantiene el sitio.' }
+                Invoke-WebRequest -Uri $asset.url -Headers $headers -OutFile $pair[1] -UseBasicParsing
+            }
+        }
         $expected = ((Get-Content "$zip.sha256" -Raw).Trim() -split '\s+')[0].ToLower()
         $actual = (Get-FileHash -Algorithm SHA256 $zip).Hash.ToLower()
         if ($expected -ne $actual) { Exit-WithError 'El kit descargado no coincide con su sha256.' 'Repetir más tarde.' }

@@ -1135,25 +1135,43 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
 
 def load_relay(relay_dir: Path, log: EventLog):
     """Abre las copias del recolector del Perú y registra si faltan o están viejas."""
-    from .fetch import Relay
+    from .fetch import Relay, _age_hours, read_heartbeat
+
+    def sources_down(hb: dict, last_copy: str) -> None:
+        log.add("warning", "relay-peru", "fetch", "relay-sources-down",
+                f"El recolector del Perú funciona (último intento {hb.get('at')}), pero ninguna fuente peruana "
+                f"le respondió ({hb.get('reachable')}): son SENAMHI, ANA, IMARPE o el ENFEN, no el equipo. "
+                f"{last_copy}")
 
     try:
         relay = Relay(relay_dir)
     except (OSError, ValueError, KeyError) as exc:
-        log.add("warning", "relay-peru", "fetch", "relay-missing",
-                f"No hay copias del recolector del Perú en {relay_dir.name} ({type(exc).__name__}: {exc}). "
-                "SENAMHI, ANA, IMARPE y el portal del ENFEN se leen solo por réplicas y archivo.")
+        hb = read_heartbeat(relay_dir)
+        if hb.get("result") == "sin-fuentes" and _age_hours(hb.get("at")) <= RELAY_STALE_HOURS:
+            sources_down(hb, "Todavía no hay ninguna copia buena.")
+        else:
+            log.add("warning", "relay-peru", "fetch", "relay-missing",
+                    f"No hay copias del recolector del Perú en {relay_dir.name} ({type(exc).__name__}: {exc}). "
+                    "SENAMHI, ANA, IMARPE y el portal del ENFEN se leen solo por réplicas y archivo.")
         return None
     age = relay.age_hours
-    if age > RELAY_STALE_HOURS:
+    # El latido se sube en cada corrida, aunque ninguna fuente responda: si es
+    # reciente, el equipo funciona y son las fuentes las que no responden.
+    hb = relay.heartbeat
+    hb_age = _age_hours(hb.get("at")) if hb else float("inf")
+    if age > RELAY_STALE_HOURS and hb.get("result") == "sin-fuentes" and hb_age <= RELAY_STALE_HOURS:
+        sources_down(hb, f"Se usa la última copia buena, del {relay.collected_at} (hace {age:.0f} h).")
+    elif age > RELAY_STALE_HOURS:
+        beat = f" (último latido: {hb['at']})" if hb.get("at") else ""
         log.add("warning", "relay-peru", "fetch", "relay-stale",
                 f"La última recolección desde el Perú es del {relay.collected_at} (hace {age:.0f} h); "
-                f"revisar el recolector{f' en {relay.host}' if relay.host else ''}.")
+                f"revisar el recolector{f' en {relay.host}' if relay.host else ''}{beat}.")
     else:
         log.add("info", "relay-peru", "fetch", "relay-ok",
                 f"Recolección desde el Perú del {relay.collected_at}: {relay.summary}.")
     # El recolector anota cuándo vence su token: avisar antes de que deje de subir.
-    expires = str(relay.collector.get("token_expires_at") or "")
+    collector = (hb.get("collector") if hb_age < age else None) or relay.collector
+    expires = str(collector.get("token_expires_at") or "")
     try:
         left = (datetime.fromisoformat(expires) - datetime.now(timezone.utc)).total_seconds() / 86400
     except (TypeError, ValueError):  # vacío, ilegible o sin zona horaria

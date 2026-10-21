@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import zipfile
@@ -104,6 +105,10 @@ def build(out: Path, repo: Path = REPO) -> tuple[Path, str]:
         "repository": "https://github.com/PillB/observatorio-enso-peru",
         "files": {rel: hashlib.sha256(b).hexdigest() for rel, b in sorted(blobs.items())},
     }
+    # El sitio publicado, para el User-Agent del recolector (lo fija el flujo
+    # cuando el sitio no está en GitHub Pages; ver collector_service.prepare).
+    if os.environ.get("ENSO_CONTACT_URL", "").strip():
+        manifest["contact_url"] = os.environ["ENSO_CONTACT_URL"].strip()
     blobs["kit.json"] = (json.dumps(manifest, indent=1, ensure_ascii=False) + "\n").encode("utf-8")
     stamp = info["date"].timetuple()[:6]
     out.mkdir(parents=True, exist_ok=True)

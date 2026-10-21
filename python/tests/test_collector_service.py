@@ -178,28 +178,50 @@ def test_scheduled_run_collects_pushes_and_then_skips(home, peru_network, remote
     assert not calls and svc.read_state(home)["last_check"]
 
 
-def test_nothing_answered_keeps_the_previous_copy(home, remote, monkeypatch):
+def remote_file(bare: Path, name: str) -> dict:
+    out = subprocess.run(["git", "--git-dir", str(bare), "show", f"{pc.BRANCH}:{name}"],
+                         capture_output=True, text=True, check=True).stdout
+    return json.loads(out)
+
+
+def _all_sources_down(monkeypatch):
     def down(req):
         raise httpx.ConnectError("Temporary failure in name resolution")
 
     real = httpx.Client
     monkeypatch.setattr(pc.httpx, "Client", lambda **kw: real(**{"transport": httpx.MockTransport(down), **kw}))
+
+
+def test_nothing_answered_keeps_the_copy_and_pushes_a_heartbeat(home, peru_network, remote, monkeypatch):
+    assert svc.run(root=home) == svc.EXIT_OK
+    good = remote_index(remote)
+    assert remote_file(remote, pc.HEARTBEAT)["result"] == "ok"
+    _all_sources_down(monkeypatch)
     assert svc.run(root=home) == svc.EXIT_NO_SOURCES
-    assert "no se sube nada" in svc.read_state(home)["detail"]
+    assert "solo el latido" in svc.read_state(home)["detail"]
+    assert remote_index(remote) == good  # la última copia buena sigue ahí
+    hb = remote_file(remote, pc.HEARTBEAT)
+    assert hb["schema"] == "enso-relay-heartbeat/1" and hb["result"] == "sin-fuentes"
+    assert hb["reachable"].startswith("0/") and hb["failures"] and hb["collector"]["runner"]
+
+
+def test_nothing_answered_and_no_github_either(home, remote, monkeypatch):
+    _all_sources_down(monkeypatch)
+    monkeypatch.setenv("ENSO_RELAY_REMOTE", str(remote.parent / "no-existe.git"))
+    assert svc.run(root=home) == svc.EXIT_NO_SOURCES
+    assert "tampoco se pudo subir el latido" in svc.read_state(home)["detail"]
     branches = subprocess.run(["git", "--git-dir", str(remote), "branch"], capture_output=True, text=True).stdout
     assert pc.BRANCH not in branches
 
 
 def test_run_once_does_not_push_an_empty_copy(home, remote, monkeypatch):
-    """La misma protección en la corrida de Docker y systemd."""
-    def down(req):
-        raise httpx.ConnectError("Temporary failure in name resolution")
-
-    real = httpx.Client
-    monkeypatch.setattr(pc.httpx, "Client", lambda **kw: real(**{"transport": httpx.MockTransport(down), **kw}))
-    pushed = []
-    monkeypatch.setattr(pc, "push", lambda snap, token: pushed.append(snap))
+    """La misma protección en la corrida de Docker y systemd: solo el latido."""
+    _all_sources_down(monkeypatch)
+    pushed, beats = [], []
+    monkeypatch.setattr(pc, "push", lambda snap, token, **kw: pushed.append(snap))
+    monkeypatch.setattr(pc, "push_heartbeat", lambda hb, token: beats.append(hb))
     assert pc.run_once(True, None) == 1 and not pushed
+    assert beats and beats[0]["result"] == "sin-fuentes"
 
 
 def test_force_flag_from_the_check_runs_once_without_dispatch(home, peru_network, remote, monkeypatch):
@@ -427,6 +449,35 @@ def test_kit_is_complete_reproducible_and_runs_alone(tmp_path):
     r = subprocess.run([sys.executable, "-I", "-c", code, str(tmp_path / "x" / "recolector-peru" / "python")],
                        capture_output=True, text=True, cwd=tmp_path)
     assert r.returncode == 0, r.stderr
+
+
+def test_kit_carries_the_site_contact_and_env_file_wins(tmp_path, home, monkeypatch):
+    monkeypatch.setenv("ENSO_CONTACT_URL", "https://observatorio.example.pe/")
+    zpath, _ = kit.build(tmp_path / "k")
+    with zipfile.ZipFile(zpath) as z:
+        manifest = json.loads(z.read("recolector-peru/kit.json"))
+    assert manifest["contact_url"] == "https://observatorio.example.pe/"
+    (home / "kit.json").write_text(json.dumps(manifest), encoding="utf-8")
+    monkeypatch.delenv("ENSO_CONTACT_URL")
+    svc.use_kit_defaults(home)
+    assert svc.os.environ["ENSO_CONTACT_URL"] == "https://observatorio.example.pe/"
+    monkeypatch.setenv("ENSO_CONTACT_URL", "https://otro.example/")  # puesto en .env por quien instala
+    svc.use_kit_defaults(home)
+    assert svc.os.environ["ENSO_CONTACT_URL"] == "https://otro.example/"
+
+
+@pytest.mark.parametrize("reply,level", [
+    # Repositorio privado y token vencido: GitHub contesta, la conexión está bien.
+    (lambda req: httpx.Response(401 if "authorization" in req.headers else 404,
+                                headers={"x-github-request-id": "AB12:3"}, json={"message": "Not Found"}), "OK"),
+    # Un portal de wifi contesta cualquier cosa con su página.
+    (lambda req: httpx.Response(200, text="<html>Acepte las condiciones</html>"), "FAIL"),
+])
+def test_internet_check_with_a_private_repo_or_a_captive_portal(home, monkeypatch, reply, level):
+    monkeypatch.setenv("GITHUB_TOKEN", TOKEN)
+    monkeypatch.setattr(chk, "_client", lambda timeout=20.0: httpx.Client(transport=httpx.MockTransport(reply)))
+    results = chk.check_internet({"root": home})
+    assert results[0].level == getattr(chk, level), results
 
 
 def test_launchers_only_use_options_the_installers_know():

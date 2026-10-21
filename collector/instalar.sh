@@ -29,7 +29,8 @@
 
 set -u
 
-KIT_URL="https://github.com/PillB/observatorio-enso-peru/releases/download/recolector-kit/recolector-peru.zip"
+REPO="PillB/observatorio-enso-peru"
+KIT_URL="https://github.com/$REPO/releases/download/recolector-kit/recolector-peru.zip"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 KIT_ROOT="$(cd "$HERE/.." && pwd -P)"
 OS="$(uname -s)"
@@ -222,8 +223,8 @@ save_env() {  # token hora
       echo "# Recolector ENSO Peru: configuracion local. No compartir este archivo."
       [ -n "$1" ] && echo "GITHUB_TOKEN=$1"
       echo "ENSO_COLLECT_AT=$2"
-      # Proxy y certificados de esta terminal: la tarea programada no los hereda.
-      for v in HTTPS_PROXY HTTP_PROXY NO_PROXY https_proxy http_proxy no_proxy SSL_CERT_FILE; do
+      # Proxy, certificados y contacto de esta terminal: la tarea programada no los hereda.
+      for v in HTTPS_PROXY HTTP_PROXY NO_PROXY https_proxy http_proxy no_proxy SSL_CERT_FILE ENSO_CONTACT_URL; do
         eval "val=\${$v:-}"
         # shellcheck disable=SC2154
         if [ -n "$val" ] && ! grep -q "^$v=" "$ENV_FILE" 2>/dev/null; then echo "$v=$val"; fi
@@ -315,11 +316,27 @@ looks_like_install() {
   [ -f "$DEST/python/tools/collector_service.py" ] || [ -d "$DEST/.venv" ] || [ -f "$DEST/kit.json" ]
 }
 
+# Con el repositorio privado la descarga pública da 404: se pide con el token, por la API.
+download_with_token() {  # carpeta
+  local token api name url py=python3
+  [ -x "$VPY" ] && py="$VPY"
+  token="$(sed -n 's/^[[:space:]]*GITHUB_TOKEN[[:space:]]*=[[:space:]]*//p' "$ENV_FILE" 2>/dev/null | head -1 | tr -d '"'"'"'\r')"
+  [ -n "$token" ] || return 1
+  say "Descarga pública no disponible; se usa el token."
+  api="$(curl -fsSL -H "Authorization: Bearer $token" -H "Accept: application/vnd.github+json" \
+    "https://api.github.com/repos/$REPO/releases/tags/recolector-kit")" || return 1
+  for name in recolector-peru.zip recolector-peru.zip.sha256; do
+    url="$(printf '%s' "$api" | "$py" -c 'import json,sys; n=sys.argv[1]; print(next(a["url"] for a in json.load(sys.stdin)["assets"] if a["name"]==n))' "$name" 2>/dev/null)" || return 1
+    curl -fsSL -H "Authorization: Bearer $token" -H "Accept: application/octet-stream" -o "$1/$name" "$url" || return 1
+  done
+}
+
 do_update() {
   local tmp code
   tmp="$(mktemp -d)" || die "No se pudo crear una carpeta temporal."
   say "Descargando $KIT_URL"
-  if ! { curl -fsSL -o "$tmp/recolector-peru.zip" "$KIT_URL" && curl -fsSL -o "$tmp/recolector-peru.zip.sha256" "$KIT_URL.sha256"; }; then
+  if ! { curl -fsSL -o "$tmp/recolector-peru.zip" "$KIT_URL" && curl -fsSL -o "$tmp/recolector-peru.zip.sha256" "$KIT_URL.sha256"; } &&
+     ! download_with_token "$tmp"; then
     rm -rf "$tmp"; die "No se pudo descargar el kit." "Revisar la conexión y repetir."
   fi
   sha256_check "$tmp" recolector-peru.zip.sha256 || { rm -rf "$tmp"; die "El kit descargado no coincide con su sha256."; }

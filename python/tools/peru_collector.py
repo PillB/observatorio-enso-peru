@@ -48,6 +48,7 @@ LIMA = ZoneInfo("America/Lima")
 REPO = os.environ.get("ENSO_REPO", "PillB/observatorio-enso-peru")
 BRANCH = os.environ.get("ENSO_RELAY_BRANCH", "data-peru")
 MAX_BYTES = 8_000_000
+HEARTBEAT = "heartbeat.json"
 
 #: Fuentes que se recolectan desde el Perú. Las URL deben coincidir con las
 #: del catálogo del pipeline para que la actualización diaria las encuentre.
@@ -183,9 +184,37 @@ def collect(out: Path) -> dict:
     return index
 
 
-def push(snapshot: Path, token: str) -> None:
+def heartbeat(idx: dict, result: str) -> dict:
+    """Latido de una corrida. Se sube siempre que GitHub responde, aunque
+    ninguna fuente lo haga: así el sitio distingue «el recolector no corre»
+    (latido viejo) de «las instituciones no responden ni desde el Perú»
+    (latido reciente con ``result`` = ``sin-fuentes``)."""
+    entries = idx.get("entries") or []
+    ok = sum(1 for e in entries if e.get("status") == 200)
+    return {
+        "schema": "enso-relay-heartbeat/1",
+        "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "result": result,
+        "reachable": f"{ok}/{len(entries)}",
+        "summary": idx.get("summary") or {},
+        "failures": [{k: e[k] for k in ("url", "status", "error") if e.get(k) is not None}
+                     for e in entries if e.get("status") != 200][:40],
+        "collector": idx.get("collector") or {},
+    }
+
+
+def push_heartbeat(hb: dict, token: str) -> None:
+    """Sube solo el latido y deja intacta la última copia buena."""
+    with tempfile.TemporaryDirectory() as tmp:
+        (Path(tmp) / HEARTBEAT).write_text(json.dumps(hb, indent=1, ensure_ascii=False), encoding="utf-8")
+        push(Path(tmp), token, replace=False,
+             message=f"relay: latido {hb['at']} ({hb['result']}, {hb['reachable']} fuentes)")
+
+
+def push(snapshot: Path, token: str, *, replace: bool = True, message: str = "") -> None:
     """Reemplaza el contenido de la rama ``data-peru`` con la nueva copia
-    (el historial de git conserva las anteriores)."""
+    (el historial de git conserva las anteriores). Con ``replace=False``
+    solo agrega o reemplaza los archivos de ``snapshot`` (el latido)."""
     remote = os.environ.get("ENSO_RELAY_REMOTE") or f"https://x-access-token:{token}@github.com/{REPO}.git"
     # Sin ayudantes de credenciales (guardarían el token en el llavero o en el
     # administrador de credenciales de Windows) ni ventanas que pidan clave:
@@ -218,7 +247,7 @@ def push(snapshot: Path, token: str) -> None:
             git("remote", "add", "origin", remote)
         git("config", "user.name", "enso-peru-collector")
         git("config", "user.email", "enso-peru-collector@users.noreply.github.com")
-        for p in work.iterdir():
+        for p in work.iterdir() if replace else ():
             if p.name != ".git":
                 shutil.rmtree(p) if p.is_dir() else p.unlink()
         shutil.copytree(snapshot, work, dirs_exist_ok=True)
@@ -226,8 +255,10 @@ def push(snapshot: Path, token: str) -> None:
         if git("diff", "--cached", "--quiet", check=False).returncode == 0:
             log("sin cambios respecto de la copia anterior")
             return
-        idx = json.loads((snapshot / "index.json").read_text(encoding="utf-8"))
-        git("commit", "-q", "-m", f"relay: fuentes peruanas {idx['collected_at']} ({idx['summary']})")
+        if not message:
+            idx = json.loads((snapshot / "index.json").read_text(encoding="utf-8"))
+            message = f"relay: fuentes peruanas {idx['collected_at']} ({idx['summary']})"
+        git("commit", "-q", "-m", message)
         git("push", "-q", "origin", f"HEAD:{BRANCH}")
         log(f"subido a {REPO}@{BRANCH}")
 
@@ -250,15 +281,21 @@ def run_once(do_push: bool, keep: Path | None, do_dispatch: bool = False) -> int
         if keep:
             shutil.copytree(snap, keep, dirs_exist_ok=True)
         ok = sum(1 for e in idx["entries"] if e.get("status") == 200)
+        token = os.environ.get("GITHUB_TOKEN", "").strip()
+        if do_push and not token:
+            log("falta GITHUB_TOKEN: no se sube nada")
+            return 2
         if do_push and not ok:
-            # Una copia vacía reemplazaría a la última buena en data-peru.
-            log("ninguna fuente respondió: no se sube nada")
+            # Una copia vacía reemplazaría a la última buena en data-peru: solo el latido.
+            log("ninguna fuente respondió: solo se sube el latido")
+            try:
+                push_heartbeat(heartbeat(idx, "sin-fuentes"), token)
+            except (RuntimeError, OSError, subprocess.SubprocessError) as exc:
+                log(f"tampoco se pudo subir el latido: {exc}")
             return 1
         if do_push:
-            token = os.environ.get("GITHUB_TOKEN", "").strip()
-            if not token:
-                log("falta GITHUB_TOKEN: no se sube nada")
-                return 2
+            (snap / HEARTBEAT).write_text(json.dumps(heartbeat(idx, "ok"), indent=1, ensure_ascii=False),
+                                          encoding="utf-8")
             push(snap, token)
             if do_dispatch:
                 dispatch(token)

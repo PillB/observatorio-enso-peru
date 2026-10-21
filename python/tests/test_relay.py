@@ -114,6 +114,37 @@ def test_stale_or_missing_relay_is_logged(tmp_path, snapshot):
     assert log.events[-1].code == "relay-stale" and log.events[-1].severity == "warning"
 
 
+def _beat(out: Path, hours_ago: float, result: str = "sin-fuentes") -> None:
+    at = (datetime.now(timezone.utc) - timedelta(hours=hours_ago)).isoformat(timespec="seconds")
+    (out / "heartbeat.json").write_text(json.dumps({
+        "schema": "enso-relay-heartbeat/1", "at": at, "result": result, "reachable": "0/11",
+        "collector": {"token_expires_at": "2099-01-01T00:00:00+00:00"}}), encoding="utf-8")
+
+
+def test_heartbeat_tells_sources_down_from_collector_down(tmp_path, snapshot):
+    out, idx = snapshot
+    idx["collected_at"] = (datetime.now(timezone.utc) - timedelta(hours=50)).isoformat(timespec="seconds")
+    (out / "index.json").write_text(json.dumps(idx), encoding="utf-8")
+    # Latido reciente sin fuentes: el equipo funciona, las instituciones no responden.
+    _beat(out, 2)
+    log = obs.EventLog()
+    assert obs.load_relay(out, log) is not None
+    codes = [e.code for e in log.events]
+    assert "relay-sources-down" in codes and "relay-stale" not in codes
+    # Latido viejo también: el recolector no está corriendo.
+    _beat(out, 48)
+    log = obs.EventLog()
+    obs.load_relay(out, log)
+    stale = [e for e in log.events if e.code == "relay-stale"]
+    assert stale and "último latido" in stale[0].message
+    # Sin copia buena todavía, pero con latido: tampoco es «relay-missing».
+    empty = tmp_path / "solo-latido"
+    empty.mkdir()
+    _beat(empty, 1)
+    log = obs.EventLog()
+    assert obs.load_relay(empty, log) is None and log.events[-1].code == "relay-sources-down"
+
+
 def test_next_run_is_9pm_lima():
     lima = pc.LIMA
     assert pc.next_run("21:00", datetime(2026, 10, 20, 15, 0, tzinfo=lima)) == datetime(2026, 10, 20, 21, 0, tzinfo=lima)

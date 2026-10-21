@@ -68,6 +68,9 @@ jobs:
           if ($issues) { exit 1 }
       - name: Build the kit
         working-directory: python
+        env:
+          # Con el sitio fuera de GitHub Pages, el recolector se presenta con su dirección.
+          ENSO_CONTACT_URL: ${{ vars.DEPLOY_TARGET == 'cloudflare' && vars.SITE_URL || '' }}
         run: python -m tools.collector_kit --out ../dist
       - uses: actions/upload-artifact@v4
         with:
