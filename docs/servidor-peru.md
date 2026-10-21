@@ -32,9 +32,11 @@ usan. Si la rama `data-peru` no existe, el sitio funciona igual que antes.
 Las páginas de SENAMHI, ANA, IMARPE y CENEPRED quedan guardadas para
 construir y probar sus lectores; todavía no alimentan indicadores del sitio.
 El nivel oficial de cada aviso del SENAMHI (amarillo, naranja o rojo) y su
-inicio y fin están en la tabla de `?p=aviso-meteorologico`; la capa de
-IDESEP se guarda con su esquema (`DescribeFeatureType`) para saber qué
-campos trae. Un documento que pide verificación antirobots también desde
+inicio y fin están en la tabla de `?p=aviso-meteorologico`: el sitio la lee
+de esta copia para dar su nivel a los avisos que llegan por Telegram y por
+el COEN (`enso/senamhi_avisos.py`); sin el recolector, un aviso nuevo queda
+«sin nivel» en el mapa. La capa de IDESEP se guarda con su esquema
+(`DescribeFeatureType`) para saber qué campos trae. Un documento que pide verificación antirobots también desde
 el Perú (como los PDF de la DHN) no lo baja el recolector, que no evade
 esas verificaciones: se sube a mano en la consola de documentos del sitio.
 
