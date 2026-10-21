@@ -72,5 +72,5 @@ label { font-size: 0.9rem; color: var(--fg-2); }
 @media (max-width: 560px) {
   .site-header .header-inner { flex-wrap: wrap; }
   .site-header .header-actions { margin-left: 0; flex: 1 1 100%; justify-content: flex-end; }
-  #who { display: none; }
+  #who { max-width: 45vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }
