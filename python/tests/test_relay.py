@@ -784,3 +784,27 @@ def test_dhn_challenge_is_not_read_and_the_last_informe_is_kept(monkeypatch):
     assert [(e[0], e[3]) for e in log.events] == [("warning", "informe-unread")]
     # Sin informe anterior (primera corrida): no hay dato, solo la advertencia.
     assert reports.acquire_informe(latest, f, None, _Log(), datetime(2026, 10, 21).date()) is None
+
+
+def test_download_page_link_is_the_pdf_button_not_the_page_itself():
+    page = ('<link rel="canonical" href="https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/">'
+            "<a rel='nofollow' class='inddl btn' href='https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-"
+            "n-18-2026/?wpdmdl=2165&ind=1792527447290'>Descargar</a>")
+    assert "wpdmdl=2165" in pc._pdf_link(page)
+
+
+def test_collector_follows_the_newest_listing_not_the_stale_wordpress_api():
+    rep = Path(__file__).parent / "fixtures" / "reports"
+    wp = (rep / "enfen-wp-posts-20261021.json").read_bytes()  # se quedó en el N° 13-2026
+    portal = (rep / "enfen-comunicados-20261021.html").read_bytes()  # ya trae el N° 18-2026
+    pages = [{"status": 200, "body": wp}, {"status": 200, "body": portal}]
+    asked = []
+
+    def handler(req):
+        asked.append(str(req.url))
+        return httpx.Response(404)
+
+    pc.enfen_documents(httpx.Client(transport=httpx.MockTransport(handler)), pages)
+    assert any("comunicado-oficial-enfen-n-18-2026" in u for u in asked)
+    assert any("comunicado-oficial-enfen-n-19-2026" in u for u in asked)  # sondeo del siguiente
+    assert not any("-14-2026" in u for u in asked)

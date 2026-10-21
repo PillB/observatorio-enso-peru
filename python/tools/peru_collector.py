@@ -53,7 +53,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from enso.feeds import FormatChanged, peru  # noqa: E402
 from enso.fetch import UA, Relay  # noqa: E402
-from enso.observatory import ENFEN_BASE, _clean_wpdm, _communique_urls  # noqa: E402
+from enso.observatory import ENFEN_BASE, _clean_wpdm, _communique_urls, merge_enfen_listings  # noqa: E402
 from enso.reach import Robots, classify  # noqa: E402
 
 LIMA = ZoneInfo("America/Lima")
@@ -522,7 +522,9 @@ def fetch(client: httpx.Client | Session, url: str, expect: str | None = None, m
 
 
 def _pdf_link(html: str) -> str | None:
-    got = peru.LISTING_RE.search(html) or re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", html)
+    """Enlace al PDF en una página de descarga del portal. Primero el botón con ``wpdmdl``: el patrón del
+    listado también encuentra el enlace de la página a sí misma, y con él nunca se bajaba el PDF."""
+    got = re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", html) or peru.LISTING_RE.search(html)
     return got.group(1) if got else None
 
 
@@ -533,19 +535,20 @@ def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[d
     página de descarga, también baja el PDF que enlaza y lo registra con la
     URL de la página como alias, para que la actualización diaria lo
     encuentre con la misma URL que pide."""
-    listing = []
+    # Todos los listados, no el primero que responde: la API de WordPress se quedó en el N° 13-2026 mientras
+    # el listado del portal ya trae el 18 (el mismo cruce que hace la actualización diaria).
+    listings = []
     for p in pages:
         if p.get("status") == 200 and p["body"]:
             try:
                 text = p["body"].decode("utf-8", errors="replace")
                 if text.lstrip().startswith("["):
-                    listing = [i for i in peru.parse_enfen_wp_posts(text).data if i.get("url")]
+                    listings.append([i for i in peru.parse_enfen_wp_posts(text).data if i.get("url")])
                 else:
-                    listing = peru.parse_enfen_listing(text).data
+                    listings.append(peru.parse_enfen_listing(text).data)
             except (FormatChanged, ValueError):
                 continue
-            if listing:
-                break
+    listing = merge_enfen_listings(*listings)
     oficial = [i for i in listing if i.get("kind", "oficial") == "oficial"]
     targets = [_clean_wpdm(u) for i in oficial[:2] for u in _communique_urls(i)]
     if oficial:
