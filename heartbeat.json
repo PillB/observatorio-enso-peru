@@ -1,0 +1,75 @@
+{
+ "schema": "enso-relay-heartbeat/1",
+ "at": "2026-10-21T20:27:41+00:00",
+ "result": "ok",
+ "reachable": "17/24",
+ "summary": {
+  "enfen": "3/4",
+  "senamhi": "7/7",
+  "ana": "0/2",
+  "imarpe": "2/2",
+  "cenepred": "1/1",
+  "enfen-docs": "4/8"
+ },
+ "failures": [
+  {
+   "url": "https://met.igp.gob.pe/datos/ICEN.txt",
+   "class": "timeout",
+   "error": "robots.txt sin respuesta (timeout): no se pide nada a este servidor"
+  },
+  {
+   "url": "https://snirh.ana.gob.pe/",
+   "class": "robots",
+   "error": "robots.txt no permite la ruta: no se pide"
+  },
+  {
+   "url": "https://snirh.ana.gob.pe/onrh/",
+   "class": "robots",
+   "error": "robots.txt no permite la ruta: no se pide"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/13-2026.pdf",
+   "status": 200,
+   "class": "challenge",
+   "error": "página de verificación antirobots: no se guarda (no se evade)"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2026.pdf",
+   "status": 200,
+   "class": "challenge",
+   "error": "página de verificación antirobots: no se guarda (no se evade)"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/14-2026.pdf",
+   "status": 200,
+   "class": "challenge",
+   "error": "página de verificación antirobots: no se guarda (no se evade)"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/15-2026.pdf",
+   "status": 200,
+   "class": "challenge",
+   "error": "página de verificación antirobots: no se guarda (no se evade)"
+  }
+ ],
+ "collector": {
+  "host": "Pablos-MacBook-Pro.local",
+  "tz": "America/Lima",
+  "runner": "collector_service/1",
+  "kit": "2026.10.21-07fa322",
+  "os": "macOS-26.6.2",
+  "python": "3.12.15",
+  "git": "2.50.1 (Apple Git-155)",
+  "consecutive_failures": 0,
+  "token_expires_at": "2027-05-10T05:00:00+00:00"
+ },
+ "registry": {
+  "origin": "github",
+  "generated_at": "2026-10-21T05:15:09+00:00",
+  "sources": 195,
+  "peru_server": 8
+ },
+ "probes": {
+  "ok": 1
+ }
+}
