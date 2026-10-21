@@ -160,7 +160,7 @@ function grdPanel() {
 }
 
 function sourceName(id) {
-  const m = { 'cpc-sstoi': 'NOAA OISST mensual', 'psl-ersst6-nino12': 'NOAA ERSSTv6', 'psl-ersst6-nino34': 'NOAA ERSSTv6', 'cpc-epac850': 'NOAA/CPC 850 hPa', 'cpc-cpac850': 'NOAA/CPC 850 hPa', 'cpc-tahiti': 'Calculado con NOAA/CPC', 'igp-icen': 'ENFEN / IGP', 'cpc-roni': 'NOAA/CPC', 'cpc-wksst': 'NOAA OISST semanal' };
+  const m = { 'cpc-sstoi': 'NOAA OISST mensual', 'psl-ersst6-nino12': 'NOAA ERSSTv6', 'psl-ersst6-nino34': 'NOAA ERSSTv6', 'cpc-epac850': 'NOAA/CPC 850 hPa', 'cpc-cpac850': 'NOAA/CPC 850 hPa', 'cpc-tahiti': 'Calculado con NOAA/CPC', 'igp-icen': 'ENFEN / IGP', 'cpc-roni': 'NOAA/CPC', 'cpc-wksst': 'NOAA OISST semanal', 'cpc-godas-d20': 'NOAA GODAS (D20 calculado)' };
   return m[id] || id || '';
 }
 
@@ -404,7 +404,8 @@ VIEWS.oceano = {
         <div class="grid g3">${winds}</div>
       </section>
       ${chartCard('ch-wind', { title: 'Anomalía de los vientos alisios', range: '5', desc: 'Negativo: alisios más débiles o viento del oeste (favorece El Niño). Positivo: alisios más fuertes. Fuente: NOAA/CPC, 5°N–5°S.' })}
-      ${chartCard('ch-heat', { title: 'Calor bajo la superficie (0–300 m)', tour: 'ocean-heat', range: '5', desc: 'Anomalía de la temperatura media de los 300 m superiores del Pacífico ecuatorial (NOAA GODAS, base 1981–2010). Su aumento suele anticipar el calentamiento en superficie.', foot: 'Profundidad de la isoterma de 20 °C (D20): no se publica en el observatorio porque no hay una fuente pública verificada. La variable «dbss_obil» de GODAS es la profundidad de la capa isotérmica, no D20. Ver Metodología.' })}
+      ${chartCard('ch-heat', { title: 'Calor bajo la superficie (0–300 m)', tour: 'ocean-heat', range: '5', desc: 'Anomalía de la temperatura media de los 300 m superiores del Pacífico ecuatorial (NOAA GODAS, base 1981–2010). Su aumento suele anticipar el calentamiento en superficie.', foot: 'La profundidad de la termoclina (isoterma de 20 °C) se muestra en el gráfico siguiente.' })}
+      ${chartCard('ch-d20', { title: 'Profundidad de la termoclina (isoterma de 20 °C)', tour: 'ocean-d20', range: '5', desc: 'Anomalía mensual de la profundidad de la isoterma de 20 °C (D20), en metros, frente a su media 1991–2020. Positiva: termoclina más profunda y capa cálida más gruesa, lo que frente al Perú reduce el afloramiento de agua fría.', foot: 'Calculado por el observatorio con la temperatura del modelo de asimilación GODAS de NOAA/CPC (promedio de cada región). Validado contra las boyas TAO del ecuador: diferencias de 0 a 10 m. Ver Metodología.' })}
       ${chartCard('ch-soi', { title: 'Índice de Oscilación del Sur (SOI)', tour: 'ocean-soi', range: '5', desc: 'Diferencia de presión Tahití − Darwin. Negativo sostenido: favorece El Niño. Se muestra en escala Troup (×10, umbrales ±7).', foot: 'SOI en escala Troup calculado por el observatorio con las presiones de NOAA/CPC (climatología 1951–1992) y validado contra valores históricos de la Oficina de Meteorología de Australia. NOAA publica además un SOI estandarizado (±3).' })}`;
   },
   async after() {
@@ -412,6 +413,7 @@ VIEWS.oceano = {
     await mountChart($('#ch-monthly'), { title: 'TSM mensual', units: 'degC', series: [{ key: 'nino12', label: 'Niño 1+2 ERSSTv6' }, { key: 'nino12_oisst', label: 'Niño 1+2 OISST', dashed: true }, { key: 'nino34', label: 'Niño 3.4 ERSSTv6' }, { key: 'nino34_oisst', label: 'Niño 3.4 OISST', dashed: true }] }, { range: '15' });
     await mountChart($('#ch-wind'), { title: 'Anomalía de vientos', units: 'm_per_s', series: [{ key: 'wpac850_anom', label: 'Occidental' }, { key: 'cpac850_anom', label: 'Central' }, { key: 'epac850_anom', label: 'Oriental' }] });
     await mountChart($('#ch-heat'), { title: 'Contenido de calor', units: 'degC', fill: true, series: [{ key: 'heat_180w100w', label: '180°–100°O' }, { key: 'heat_160e80w', label: '160°E–80°O', dashed: true }] });
+    await mountChart($('#ch-d20'), { title: 'Anomalía de D20', units: 'm', fill: true, refLines: [{ v: 20, label: '+20 m' }, { v: 50, label: '+50 m', tone: 'warm' }], series: [{ key: 'd20_coastal', label: 'Niño 1+2' }, { key: 'd20_global', label: 'Niño 3.4' }, { key: 'd20_180w100w', label: '180°–100°O', dashed: true }] });
     await mountChart($('#ch-soi'), { title: 'SOI', units: 'dimensionless', refLines: [{ v: 7, label: '+7', tone: 'cool' }, { v: -7, label: '−7', tone: 'warm' }], series: [{ key: 'soi_troup', label: 'SOI (Troup)' }], fill: true, invertFill: true });
   },
 };
@@ -534,7 +536,7 @@ VIEWS.metodologia = {
         <h2 id="th-h">Umbrales y clasificaciones</h2>
         <h3>ICEN (ENFEN)</h3><p>Nota Técnica ENFEN 01-2024: fría fuerte &lt; −1,3; fría moderada −1,3 a &lt; −1,1; fría débil −1,1 a &lt; −0,7; neutra −0,7 a +0,5; cálida débil &gt; +0,5 a +1,3; moderada &gt; +1,3 a +2,1; fuerte &gt; +2,1 a +3,5; extraordinaria &gt; +3,5 °C. Un evento requiere al menos tres meses consecutivos.</p>
         <h3>RONI y ONI (NOAA)</h3><p>±0,5 °C. Para episodios históricos NOAA exige cinco trimestres móviles consecutivos. Las etiquetas de intensidad (débil, moderado, fuerte, muy fuerte cada 0,5 °C) son una convención de uso común, no una categoría oficial.</p>
-        <h3>Señal operativa del equipo GRD</h3><p>Transcripción de la tabla del equipo GRD (política expert-grd-image-v1, en borrador). TSM costera: normal −0,7 a +0,5; amarillo +1,3 a +2,0; rojo &gt; +2,1 °C. TSM de cuenca: normal −0,5 a +0,5; amarillo &gt; +1,0 a +1,5; rojo &gt; +1,5 °C. Vientos: rojo si el flujo es de oeste a este. Termoclina: normal ±20 m; amarillo 30 a 50 m; rojo &gt; 50 m. SOI: normal −7 a +7; rojo &lt; −7. Los intervalos no definidos quedan «Sin clasificación».</p>
+        <h3>Señal operativa del equipo GRD</h3><p>Transcripción de la tabla del equipo GRD (política expert-grd-image-v1, en borrador). TSM costera: normal −0,7 a +0,5; amarillo +1,3 a +2,0; rojo &gt; +2,1 °C. TSM de cuenca: normal −0,5 a +0,5; amarillo &gt; +1,0 a +1,5; rojo &gt; +1,5 °C. Vientos: rojo si el flujo es de oeste a este. Termoclina (anomalía mensual de D20 de GODAS en Niño 1+2 y Niño 3.4): normal ±20 m; amarillo 30 a 50 m; rojo &gt; 50 m. SOI: normal −7 a +7; rojo &lt; −7. Los intervalos no definidos quedan «Sin clasificación».</p>
       </section>
       <section class="card" aria-labelledby="arch-h" data-tour-id="architecture">
         <div class="section-head"><h2 id="arch-h">Arquitectura</h2>
@@ -559,7 +561,7 @@ VIEWS.metodologia = {
           <li>El ICEN oficial se toma del archivo que publica el IGP para ENFEN. El observatorio no publica un ICEN propio: con ERSSTv6 el cálculo difiere del oficial hasta 0,7 °C.</li>
           <li>El RONI se usa tal como lo publica NOAA (ahora con ERSSTv6); no se recalcula.</li>
           <li>La señal GRD de TSM usa las anomalías mensuales OISST de Niño 1+2 y Niño 3.4, que llegan antes que ERSST. No se aplica al ICEN ni al RONI.</li>
-          <li>D20 (profundidad de la isoterma de 20 °C) no se publica: la variable de GODAS disponible por OPeNDAP («dbss_obil») es la profundidad de la capa isotérmica, no D20. Se muestra en su lugar el contenido de calor de 0–300 m de NOAA, sin aplicarle los umbrales de D20.</li>
+          <li>D20 (profundidad de la isoterma de 20 °C): ninguna institución publica una serie de D20 por región. El observatorio la calcula con los archivos mensuales de GODAS de NOAA/CPC: en cada punto de la región busca la profundidad donde el agua cruza 20 °C (0 m si el agua de superficie ya está más fría), promedia la región y resta la media 1991–2020 del mismo mes. La tabla GRD no dice qué producto usar; Niño 1+2 y Niño 3.4 son una elección del observatorio pendiente de confirmación. GODAS tarda unas dos semanas en publicar cada mes.</li>
           <li>El SOI de la tabla GRD (±7) corresponde a la escala Troup (×10) de la Oficina de Meteorología de Australia. El observatorio la calcula con las presiones de Tahití y Darwin de NOAA porque el servidor australiano no permite descargas automáticas.</li>
           <li>Los comunicados de ENFEN se leen del PDF oficial. Cuando el portal de ENFEN no responde a los servidores de GitHub, se usa la copia del Internet Archive y se indica en el estado.</li>
         </ul>

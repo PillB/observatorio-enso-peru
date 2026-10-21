@@ -150,6 +150,17 @@ thermocline:
     basin:
       region: "PENDIENTE_DE_CONFIRMAR (promedio ecuatorial)"
       product: "PENDIENTE_DE_CONFIRMAR (GODAS / otro)"
+  # Aplicación por el observatorio (pendiente de validación del equipo GRD):
+  # D20 calculado de NOAA/CPC GODAS (GRIB mensual, temperatura potencial de
+  # 5 a 303 m), primer cruce de 20 °C desde la superficie en cada punto,
+  # promedio de área de la región y anomalía frente a la media 1991–2020 del
+  # mismo mes. Código: python/enso/feeds/godas.py; climatología:
+  # python/enso/data/godas-d20.json (python -m tools.godas_d20_climatology).
+  observatory_application:
+    coastal: "GODAS, promedio Niño 1+2 (0°–10°S, 90°O–80°O), anomalía mensual (m)"
+    global: "GODAS, promedio Niño 3.4 (5°N–5°S, 170°O–120°O), anomalía mensual (m)"
+    reference: "GODAS, franja 5°N–5°S, 180°–100°O (región del índice subsuperficial de CPC); se publica sin color"
+    validation: "D20 de GODAS frente a las boyas TAO del ecuador, setiembre de 2026: diferencias de 0 a 10 m"
   rules:
     - label: "Normal"
       color: "green"
