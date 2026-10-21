@@ -114,6 +114,7 @@ class _Site(http.server.BaseHTTPRequestHandler):
                  b"fetch('/go').then(r=>r.json()).then(d=>{document.getElementById('app').textContent='Nivel '+d.nivel})"
                  b"</script></body></html>"),
         "/data.json": ("application/json", b'{"nivel": "naranja", "aviso": 123}'),
+        "/marco": ("text/html", b"<html><body><script>fetch('/private/marco.json').catch(()=>{})</script></body></html>"),
         "/private/secret.json": ("application/json", b'{"nivel": "naranja"}'),
     }
     #: Redirecciones: a una ruta prohibida (no se sigue) y a los datos (se sigue).
@@ -169,6 +170,9 @@ def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypat
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), _Site)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{srv.server_address[1]}"
+    # Un iframe de otro sitio (localhost no es 127.0.0.1): con aislamiento por sitio iría en otro proceso.
+    marco = f"<iframe src='http://localhost:{srv.server_address[1]}/marco'></iframe>".encode()
+    monkeypatch.setitem(_Site.FILES, "/app", (ct, _Site.FILES["/app"][1].replace(b"<script>", marco + b"<script>", 1)))
     got: dict = {}
 
     def ladder():  # en otro hilo: las pruebas del sitio ya tienen Playwright abierto en este
@@ -194,11 +198,14 @@ def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypat
     assert r["answer"] == "hidden-api" and r["dataUrl"] == f"{base}/data.json"
     browser = r["steps"][-1]
     salto = other.replace("lib.json", "salto.json")
-    assert browser["blockedByRobots"] == sorted([f"{base}/private/secret.json", other, salto])
+    marco_privado = f"http://localhost:{base.rsplit(':', 1)[1]}/private/marco.json"
+    assert browser["blockedByRobots"] == sorted([f"{base}/private/secret.json", other, salto, marco_privado])
     assert "/private/secret.json" not in _Site.hits  # el navegador tampoco pide lo que robots.txt prohíbe,
     assert "/atajo" in _Site.hits  # ni siquiera si llega por una redirección,
     assert _Down.hits == ["/robots.txt"]  # ni nada de un servidor cuyo robots.txt no respondió
     assert "/foto.png" not in _Site.hits  # y las imágenes no se piden
+    assert "/marco" in _Site.hits and "/private/marco.json" not in _Site.hits  # también dentro de un iframe ajeno
+    assert "unchecked" not in browser  # todo pedido pasó por la revisión
     assert os.path.exists(tmp_path / next(c["file"] for c in browser["calls"] if c.get("file")))
     moved = got["rep"]["results"][1]
     assert moved["answer"] == "hidden-api" and moved["dataUrl"] == f"{base}/data.json"
