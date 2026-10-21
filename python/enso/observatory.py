@@ -1087,9 +1087,11 @@ def archive_raw(raw_dir: Path, acquired: dict[str, "Acquired"], today: date) -> 
 def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, offline: bool = False,
         today: Optional[date] = None, only: Optional[list[str]] = None, raw_dir: Optional[Path] = None,
         relay_dir: Optional[Path] = None, n8n_dir: Optional[Path] = None,
-        plan: Optional[dict[str, list[str]]] = None, history_dir: Optional[Path] = None) -> dict:
+        plan: Optional[dict[str, list[str]]] = None, history_dir: Optional[Path] = None,
+        reader: Optional[set[str]] = None) -> dict:
     """``plan``: canales de cada URL según el registro (``registry.url_channels``); la línea de comandos
-    lo lee de ``registry/sources.json`` para no insistir con lo que solo responde desde el Perú."""
+    lo lee de ``registry/sources.json`` para no insistir con lo que solo responde desde el Perú.
+    ``reader``: feeds que robots.txt no permite y se leen como un lector de feeds (``registry.reader_urls``)."""
     from .fetch import Fetcher
 
     started = datetime.now(timezone.utc)
@@ -1117,7 +1119,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     if not offline and not only:
         try:
             news = acquire_news(fetcher, fixtures, prev, log, started if fixtures is None else
-                                datetime.combine(today, datetime.min.time(), timezone.utc), raw_dir, history_dir)
+                                datetime.combine(today, datetime.min.time(), timezone.utc), raw_dir, history_dir,
+                                reader if fixtures is None else None)
         except Exception as exc:  # las noticias nunca deben detener la publicación
             log.add("warning", "news", "parse", "exception", f"{type(exc).__name__}: {exc}")
     from . import sourcefeed
@@ -1146,6 +1149,14 @@ RELAY_TOKEN_WARN_DAYS = 21
 NEWS_DEADLINE_S = 600
 
 
+def _hours_since(iso: Optional[str], now: datetime) -> float:
+    """Horas desde una fecha ISO con zona horaria (infinito si falta o no se entiende)."""
+    try:
+        return (now - datetime.fromisoformat(str(iso))).total_seconds() / 3600
+    except (TypeError, ValueError):
+        return float("inf")
+
+
 def read_history_backup(history_dir: Optional[Path]) -> str:
     """El histórico de noticias según la rama ``data-archive``: primero la copia completa de la última
     corrida archivada (``items.jsonl``), luego las notas de cada día (``<día>.jsonl``) que no estén en ella."""
@@ -1166,8 +1177,12 @@ def read_history_backup(history_dir: Optional[Path]) -> str:
 
 
 def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublication, log: EventLog,
-                 now: datetime, raw_dir: Optional[Path], history_dir: Optional[Path] = None) -> Optional[dict]:
-    """Feeds de noticias → histórico de solo anexar, CSV, estado de feeds y grupos."""
+                 now: datetime, raw_dir: Optional[Path], history_dir: Optional[Path] = None,
+                 reader: Optional[set[str]] = None) -> Optional[dict]:
+    """Feeds de noticias → histórico de solo anexar, CSV, estado de feeds y grupos.
+
+    ``reader``: URL de feeds que robots.txt no permite y se leen como un lector de feeds
+    (``registry.reader_urls``): como mucho una vez cada ``registry.READER_MIN_HOURS``."""
     from . import news as N
     from .fetch import FetchError
     from .geo import department_names
@@ -1202,21 +1217,39 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     # quedan en el estado como omitidos, no como caídos.
     plan = getattr(fetcher, "plan", None) or {}
     barred = {f.id for f in N.FEEDS if plan.get(f.url) == []}
+    # Los que se leen como un lector de feeds y tuvieron una lectura buena hace menos de READER_MIN_HOURS
+    # no se vuelven a pedir: queda el estado de esa lectura (sus notas ya están en el histórico).
+    from .registry import READER_MIN_HOURS
+
+    prev_feeds = previous.get("news/feeds.json") or {}
+    prev_status = {st.get("id"): st for st in prev_feeds.get("feeds") or [] if isinstance(st, dict)}
+    recent = {}
+    for f in N.FEEDS:
+        st = prev_status.get(f.id) or {}
+        if (f.url in (reader or ()) and f.id not in barred and st.get("ok") and not st.get("skipped")
+                and 0 <= _hours_since(st.get("checkedAt"), now) < READER_MIN_HOURS):
+            recent[f.id] = {**st, "carried": True}
     try:
-        found, status, raw = N.collect(fetch, now, feeds=[f for f in N.FEEDS if f.id not in barred],
+        found, status, raw = N.collect(fetch, now, feeds=[f for f in N.FEEDS if f.id not in barred | set(recent)],
                                        deadline=None if fixtures is not None else NEWS_DEADLINE_S)
     finally:
         if fixtures is None:
             news_fetcher.close()
-    if barred:
+    if barred or recent:
         by_id = {st["id"]: st for st in status}
         by_id.update({f.id: {**N._status(f, now, "omitido: su robots.txt no permite pedir este feed"), "skipped": "robots"}
                       for f in N.FEEDS if f.id in barred})
+        by_id.update(recent)
         status = [by_id[f.id] for f in N.FEEDS]
+    if barred:
         log.add("info", "news", "fetch", "feeds-robots",
                 f"{len(barred)} feeds no se piden porque su robots.txt no lo permite (registro de fuentes).")
+    asked_reader = sum(1 for f in N.FEEDS if f.url in (reader or ()) and f.id not in recent and f.id not in barred)
+    if reader and (recent or asked_reader):
+        log.add("info", "news", "fetch", "feeds-reader",
+                f"Feeds que su robots.txt no permite, leídos como un lector de feeds (una vez cada {READER_MIN_HOURS} h): "
+                f"{asked_reader} pedidos en esta corrida, {len(recent)} con la lectura anterior.")
     prev_text = previous.get_text("news/items.jsonl", tries=3) or ""
-    prev_feeds = previous.get("news/feeds.json") or {}
     had = (prev_feeds.get("history") or {}).get("items")
     # «restarted»: una corrida anterior publicó un histórico incompleto (no leyó ni el publicado ni la copia).
     incomplete = bool((prev_feeds.get("history") or {}).get("restarted"))
@@ -1255,7 +1288,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     items = history + added
 
     for st in status:
-        if st.get("skipped"):
+        if st.get("skipped") or st.get("carried"):
             continue
         if not st["ok"]:
             log.add("info", "news", "fetch", "feed-down", f"{st['name']}: {st['error']}")
@@ -1425,7 +1458,8 @@ def main(argv: Optional[list[str]] = None) -> int:
               relay_dir=Path(args.relay_dir).resolve() if args.relay_dir else None,
               n8n_dir=Path(args.n8n_dir).resolve() if args.n8n_dir else None,
               history_dir=Path(args.history_dir).resolve() if args.history_dir else None,
-              plan=None if args.fixtures or args.offline else registry.url_channels())
+              plan=None if args.fixtures or args.offline else registry.url_channels(),
+              reader=None if args.fixtures or args.offline else registry.reader_urls())
     print(json.dumps(res, ensure_ascii=False))
     gh = os.environ.get("GITHUB_OUTPUT")
     if gh:

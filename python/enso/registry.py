@@ -32,6 +32,10 @@ Nunca se evaden CAPTCHAs ni verificaciones antirobots: una fuente así se
 marca ``challenge`` y se lee desde el Perú, si allí responde, o de otra fuente.
 Si el robots.txt del servidor prohíbe la ruta, la fuente queda sin canales
 (``robots-disallowed``) hasta que la institución lo permita o publique otra vía.
+Excepción, decidida el 21 de octubre de 2026: los feeds de noticias (Google
+Noticias, Noticias ONU, Sin Rodeos) se leen como lo hace un lector de feeds,
+solo desde Actions y como mucho una vez al día (``by_url[url]["reader"]``,
+``READER_MIN_HOURS``); robots.txt sigue rigiendo todo lo demás y el rastreo.
 """
 
 from __future__ import annotations
@@ -57,6 +61,10 @@ CHANNELS = ("actions", "n8n", "peru-server")
 CLASSES = {"ok", "http-403", "http-4xx", "http-5xx", "timeout", "connect", "dns", "tls", "challenge", "empty", "robots"}
 #: Clases que, desde EE. UU., indican bloqueo y no caída (el servidor existe pero no atiende a la nube).
 BLOCK_CLASSES = {"http-403", "timeout", "connect", "challenge", "dns"}
+#: Un feed de noticias que su robots.txt no permite se pide como un lector de feeds: solo desde Actions y
+#: no antes de estas horas desde la última lectura buena (decisión del 21 de octubre de 2026).
+READER_MIN_HOURS = 20
+READER_CHANNELS = ["actions"]
 
 
 @dataclass
@@ -81,6 +89,7 @@ class Entry:
     department: Optional[str] = None
     archive: bool = True  # se publica la copia descargada como respaldo
     notes: str = ""
+    reader: bool = False  # feed de noticias: si robots.txt lo prohíbe, se lee como un lector de feeds
 
 
 def _slug(text: str) -> str:
@@ -104,7 +113,7 @@ def _feed_entries() -> list[Entry]:
             method=method, kind="feed", home=f"https://{host}/",
             hazards=list(f.covers) or (["enso"] if f.scope == "general" else []), interval_minutes=1440,
             parser=parser + (f" (adapter={f.adapter})" if f.adapter != "feed" else ""), department=f.department,
-            notes=f"tipo de medio: {f.kind}; alcance: {f.scope}"))
+            notes=f"tipo de medio: {f.kind}; alcance: {f.scope}", reader=f.adapter == "feed" and not f.covers))
     return out
 
 
@@ -274,7 +283,10 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
             g = geoblock(u, reach)
             by_url[u] = {"status": g["status"], "channels": channels_for(
                 g["status"], g["open_from"], [k for k in ("actions", "n8n") if g.get(k)])}
-        d = {k: v for k, v in e.__dict__.items() if v not in (None, [], "") or k in ("hazards", "alt_urls")}
+            if e.reader and g["status"] == "robots-disallowed":
+                by_url[u].update(channels=list(READER_CHANNELS), reader=True)
+        d = {k: v for k, v in e.__dict__.items()
+             if (v not in (None, [], "") or k in ("hazards", "alt_urls")) and k != "reader"}
         d["tier"] = METHODS[e.method]
         d["geoblock"] = geoblock(e.url, reach)  # la URL principal
         d["channels"] = [c for c in CHANNELS if any(c in r["channels"] for r in by_url.values())]
@@ -285,6 +297,8 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
     now = now or datetime.now(timezone.utc)
     return {"schema": SCHEMA, "generated_at": now.isoformat(timespec="seconds"),
             "rules": {"peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
+                      "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con "
+                                f"reader: solo {'+'.join(READER_CHANNELS)}, como mucho cada {READER_MIN_HOURS} h",
                       "tiers": METHODS, "channels": list(CHANNELS)},
             "sources": sources}
 
@@ -308,6 +322,19 @@ def url_channels(reg: Optional[dict] = None) -> dict[str, list[str]]:
             if isinstance(u, str) and isinstance(r, dict):
                 out[u] = list(r.get("channels") or [])
     return out
+
+
+def reader_urls(reg: Optional[dict] = None) -> set[str]:
+    """Feeds que robots.txt no permite y se leen como un lector de feeds (como mucho cada READER_MIN_HOURS)."""
+    if reg is None:
+        try:
+            reg = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return set()
+    if not isinstance(reg, dict) or reg.get("schema") != SCHEMA:
+        return set()
+    return {u for s in reg.get("sources") or [] for u, r in (s.get("by_url") or {}).items()
+            if isinstance(r, dict) and r.get("reader")}
 
 
 def validate(reg: dict) -> list[str]:
@@ -335,7 +362,10 @@ def validate(reg: dict) -> list[str]:
                                                    "channels": s.get("channels", [])}}
         for u, r in by_url.items():
             robots = r.get("status") == "robots-disallowed"
-            if not set(r.get("channels", [])) <= set(CHANNELS) or (not r.get("channels")) != robots:
+            reader = bool(r.get("reader"))
+            if reader and not (robots and s.get("kind") == "feed" and r.get("channels") == READER_CHANNELS):
+                errs.append(f"{sid}: «reader» solo para un feed que robots.txt prohíbe, y solo por {READER_CHANNELS}")
+            elif not set(r.get("channels", [])) <= set(CHANNELS) or (not r.get("channels")) != (robots and not reader):
                 errs.append(f"{sid}: canales no válidos para {u} (vacíos solo si robots.txt prohíbe la ruta)")
             if ("peru-server" in r.get("channels", [])) != (r.get("status") in ("geoblocked", "suspected-geoblock")):
                 errs.append(f"{sid}: peru-server debe usarse si y solo si {u} está geobloqueada")
