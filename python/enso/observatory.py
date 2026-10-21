@@ -113,13 +113,21 @@ def _parse_enfen(resp) -> Parsed:
     body = resp.text
     if body.lstrip().startswith("["):
         lst = peru.parse_enfen_wp_posts(body)
+        listing = [{k: v for k, v in i.items() if k != "text"} for i in lst.data[:6]]
         if lst.data and "comunicado oficial" in lst.data[0]["text"].lower():
             try:
                 c = peru.parse_enfen_communique(lst.data[0]["text"], source=lst.data[0]["url"])
-                return Parsed({"listing": lst.data[:6], "latest": c.data}, lst.fingerprint, c.warnings)
             except FormatChanged:
-                pass
-        return Parsed({"listing": [{k: v for k, v in i.items() if k != "text"} for i in lst.data[:6]]}, lst.fingerprint)
+                return Parsed({"listing": listing}, lst.fingerprint)
+            warnings = c.warnings
+            if not c.data.get("issued") and lst.data[0].get("date"):
+                # La entrada de WordPress no repite la fecha en el texto: vale la de la entrada.
+                c.data["issued"] = lst.data[0]["date"]
+                warnings = [w for w in warnings if "fecha de emisión no encontrada" not in w]
+            # «latest» es solo un candidato: enfen_latest lo compara con el listado del portal, que sigue
+            # al día cuando el ENFEN deja de publicar el comunicado como entrada (2026: desde el N° 14).
+            return Parsed({"listing": listing, "latest": c.data}, lst.fingerprint, warnings)
+        return Parsed({"listing": listing}, lst.fingerprint)
     lst = peru.parse_enfen_listing(body)
     return Parsed({"listing": lst.data[:6]}, lst.fingerprint)
 
@@ -418,6 +426,69 @@ def _get_communique(fetcher, item: dict):
         raise FetchError(f"{exc} (archivo por prefijo: {note})", exc.attempts + tried) from exc
 
 
+def _probe_communique(fetcher, py: int, pn: int, log: EventLog) -> Optional[dict]:
+    """Busca el comunicado N° ``pn``-``py`` antes de que aparezca en el listado: su PDF en la réplica de la DHN o
+    su página de descarga en el portal del ENFEN."""
+    from .fetch import FetchError
+
+    # Primero el PDF directo en la réplica de la DHN (rápido y sin archivo).
+    dhn = f"{peru.DHN_BASE}/Archivos/oceanografia/enfen/comunicado-oficial/{pn:02d}-{py}.pdf"
+    try:
+        r = fetcher.get([dhn], archive=False, accept=("pdf", "octet-stream"))
+        if r.body[:5] == b"%PDF-":
+            log.add("info", "enfen-comunicados", "fetch", "probe-found",
+                    f"Se detectó el comunicado {pn:02d}-{py} en la réplica de la DHN antes de que apareciera en el listado.")
+            return {"year": py, "number": pn, "kind": "oficial", "id": f"{pn:02d}-{py}", "url": dhn}
+    except FetchError:
+        pass
+    page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{pn:02d}-{py}/"
+    try:
+        # Sin Save Page Now: el servidor del ENFEN no le responde al Internet Archive (HTTP 523) y la página
+        # casi nunca existe todavía; cada captura fallida costaba hasta un minuto del tiempo de las fuentes
+        # oficiales y contaba como fallo de Save Page Now para el comunicado que sí hay que capturar.
+        r = fetcher.get([page], archive=True, save=False, accept=("html",))
+    except FetchError:
+        return None
+    got = peru.LISTING_RE.search(r.text) or re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
+    url = got.group(1) if got else f"{page}?wpdmdl="
+    if "wpdmdl=" in url and not url.endswith("="):
+        log.add("info", "enfen-comunicados", "fetch", "probe-found",
+                f"Se detectó el comunicado {pn:02d}-{py} antes de que apareciera en el listado.")
+        return {"year": py, "number": pn, "kind": "oficial", "id": f"{pn:02d}-{py}", "url": url}
+    return None
+
+
+def portal_enfen_listing(fetcher, log: EventLog) -> list[dict]:
+    """Listado de comunicados de las páginas del portal del ENFEN y de la réplica de la DHN (las otras URL de
+    la fuente), para contrastar la API de WordPress, que puede quedarse atrás."""
+    from .fetch import FetchError
+
+    for url in SOURCE_BY_ID["enfen-comunicados"].urls[1:]:
+        try:
+            r = fetcher.get([url], archive=False, accept=("html",))
+            return peru.parse_enfen_listing(r.text).data
+        except (FetchError, FormatChanged) as exc:
+            log.add("info", "enfen-comunicados", "fetch", "listing-unread",
+                    f"No se pudo contrastar la API con el listado {url}: {exc}"[:400])
+    return []
+
+
+def merge_enfen_listings(*listings: list[dict]) -> list[dict]:
+    """Une listados de comunicados sin repetir números. Para un mismo comunicado vale el primero que trae un
+    enlace de descarga del PDF (portal o DHN) y si no, el primero que aparece."""
+    merged: dict[tuple, dict] = {}
+    for lst in listings:
+        for item in lst or []:
+            key = (item.get("kind", "oficial"), item["year"], item["number"])
+            pdf = "wpdmdl=" in item.get("url", "") or item.get("url", "").endswith(".pdf")
+            if key not in merged or (pdf and not ("wpdmdl=" in merged[key].get("url", "")
+                                                   or merged[key].get("url", "").endswith(".pdf"))):
+                merged[key] = {**merged.get(key, {}), **item} if key in merged else dict(item)
+    out = list(merged.values())
+    out.sort(key=lambda i: (i.get("kind", "oficial") == "oficial", i["year"], i["number"]), reverse=True)
+    return out
+
+
 def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
                  log: EventLog, today: date) -> None:
     """Completa el listado ENFEN con el comunicado más reciente (PDF).
@@ -436,53 +507,48 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
     listing = list(data.get("listing") or [])
     prev_src = previous.get("sources/enfen-comunicados.json") or {}
     prev_latest = (prev_src.get("data") or {}).get("latest")
-    if data.get("latest"):
-        return
+    # Comunicado leído de la entrada de WordPress: es un candidato, no el último. Desde el N° 14-2026 el ENFEN
+    # publica los comunicados solo como PDF en el listado del portal y la API se quedó en el N° 13 (julio), así
+    # que se compara con el listado del portal y con la publicación anterior antes de darlo por vigente.
+    candidate = data.pop("latest", None)
+    if fixtures is None and acq.ok and not acq.carried and "wp-json" in (acq.url or ""):
+        listing = merge_enfen_listings(listing, portal_enfen_listing(fetcher, log))
     known = [(i["year"], i["number"]) for i in listing if i.get("kind", "oficial") == "oficial"]
-    if prev_latest:
-        known.append((prev_latest["year"], prev_latest["number"]))
+    for c in (prev_latest, candidate):
+        if c:
+            known.append((c["year"], c["number"]))
     if not known and fixtures is None:
         return
 
     if fixtures is None and known:
         y, n = max(known)
-        probes = [(y, n + 1), (y, n + 2)]
-        if today.month == 1 and y < today.year:
-            probes.insert(0, (today.year, 1))
+        probes = [(today.year, 1)] if today.month == 1 and y < today.year else []
+        # Se sigue sondeando mientras aparezcan comunicados (hasta 6 números): si el listado se atrasó varios
+        # números, el más reciente se encuentra igual. Dos números seguidos sin comunicado cierran la búsqueda.
+        probes += [(y, n + k) for k in range(1, 7)]
+        misses = 0
         for py, pn in probes:
-            # Primero el PDF directo en la réplica de la DHN (rápido y sin archivo).
-            dhn = f"{peru.DHN_BASE}/Archivos/oceanografia/enfen/comunicado-oficial/{pn:02d}-{py}.pdf"
-            try:
-                r = fetcher.get([dhn], archive=False, accept=("pdf", "octet-stream"))
-                if r.body[:5] == b"%PDF-":
-                    listing.insert(0, {"year": py, "number": pn, "kind": "oficial", "id": f"{pn:02d}-{py}", "url": dhn})
-                    log.add("info", "enfen-comunicados", "fetch", "probe-found",
-                            f"Se detectó el comunicado {pn:02d}-{py} en la réplica de la DHN antes de que apareciera en el listado.")
-                    continue
-            except FetchError:
-                pass
-            page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{pn:02d}-{py}/"
-            try:
-                # Sin Save Page Now: el servidor del ENFEN no le responde al Internet Archive (HTTP 523) y la página
-                # casi nunca existe todavía; cada captura fallida costaba hasta un minuto del tiempo de las fuentes
-                # oficiales y contaba como fallo de Save Page Now para el comunicado que sí hay que capturar.
-                r = fetcher.get([page], archive=True, save=False, accept=("html",))
-            except FetchError:
-                continue
-            got = peru.LISTING_RE.search(r.text) or re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
-            url = got.group(1) if got else f"{page}?wpdmdl="
-            if "wpdmdl=" in url and not url.endswith("="):
-                listing.insert(0, {"year": py, "number": pn, "kind": "oficial", "id": f"{pn:02d}-{py}", "url": url})
-                log.add("info", "enfen-comunicados", "fetch", "probe-found",
-                        f"Se detectó el comunicado {pn:02d}-{py} antes de que apareciera en el listado.")
+            if misses >= 2:
+                break
+            found = _probe_communique(fetcher, py, pn, log)
+            if found:
+                listing.insert(0, found)
+                misses = 0
+            else:
+                misses += 1
         listing.sort(key=lambda i: (i.get("kind", "oficial") == "oficial", i["year"], i["number"]), reverse=True)
 
     top = listing[0] if listing else None
-    if prev_latest and (not top or (prev_latest["year"], prev_latest["number"]) >= (top["year"], top["number"])):
-        data["latest"] = prev_latest
+    # Lo más reciente que ya se leyó: la entrada de WordPress o la publicación anterior (a igual número, la
+    # lectura de hoy).
+    read = [c for c in (candidate, prev_latest) if c]
+    best = max(read, key=lambda c: (c["year"], c["number"])) if read else None  # a igual número, la de hoy
+    if best and (not top or (best["year"], best["number"]) >= (top["year"], top["number"])):
+        data["latest"] = best
         data["listing"] = listing[:6]
         acq.data = data
         return
+    prev_latest = best
 
     if fixtures is not None:
         pdfs = sorted((fixtures / "history").glob("enfen-pdf-imarpe-*.txt"))

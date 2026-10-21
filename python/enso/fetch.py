@@ -204,8 +204,10 @@ class Fetcher:
                     raise TooSlow("la respuesta no terminó de llegar a tiempo"
                                   + (f" ({self.max_seconds:g} s por pedido)" if self.max_seconds else ""), request=r.request)
             # El cuerpo ya viene descomprimido: sin Content-Encoding, la respuesta no lo descomprime otra vez.
-            headers = [(k, v) for k, v in r.headers.multi_items()
-                       if k.lower() not in ("content-encoding", "content-length", "transfer-encoding")]
+            # Las cabeceras van en bytes, tal como llegaron: decodificadas no se pueden volver a armar si traen
+            # caracteres fuera de ASCII (el ENFEN manda «filename="Comunicado Oficial N°18…"»).
+            headers = [(k, v) for k, v in r.headers.raw
+                       if k.lower() not in (b"content-encoding", b"content-length", b"transfer-encoding")]
         return httpx.Response(r.status_code, headers=headers, content=b"".join(chunks), request=r.request)
 
     @staticmethod
