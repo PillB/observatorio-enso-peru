@@ -3,3 +3,4 @@ httpx>=0.27,<1
 PyYAML>=6.0
 pypdf>=4.0
 tzdata>=2024.1; sys_platform == "win32"  # zona America/Lima en Windows (recolector)
+truststore>=0.9; sys_platform == "win32" or sys_platform == "darwin"  # certificados del sistema (antivirus o proxy con HTTPS inspeccionado)

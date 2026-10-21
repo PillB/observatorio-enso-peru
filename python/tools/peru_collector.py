@@ -187,19 +187,29 @@ def push(snapshot: Path, token: str) -> None:
     """Reemplaza el contenido de la rama ``data-peru`` con la nueva copia
     (el historial de git conserva las anteriores)."""
     remote = os.environ.get("ENSO_RELAY_REMOTE") or f"https://x-access-token:{token}@github.com/{REPO}.git"
+    # Sin ayudantes de credenciales (guardarían el token en el llavero o en el
+    # administrador de credenciales de Windows) ni ventanas que pidan clave:
+    # en una tarea programada nadie las contestaría. Una subida trabada se corta.
+    base = ["git", "-c", "credential.helper=", "-c", "http.lowSpeedLimit=1000", "-c", "http.lowSpeedTime=60"]
+    env = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GCM_INTERACTIVE": "never"}
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp) / "repo"
 
         def git(*args: str, check: bool = True) -> subprocess.CompletedProcess:
-            res = subprocess.run(["git", *args], cwd=work if work.exists() else tmp,
-                                 capture_output=True, text=True)
+            try:
+                res = subprocess.run([*base, *args], cwd=work if work.exists() else tmp,
+                                     capture_output=True, text=True, env=env, timeout=900)
+            except subprocess.TimeoutExpired:
+                raise RuntimeError(f"git {args[0]} falló: sin respuesta en 15 minutos") from None
             if check and res.returncode != 0:
                 # No mostrar el token en los mensajes de error.
                 raise RuntimeError(f"git {args[0]} falló: {res.stderr.replace(token, '***')[:400]}")
             return res
 
-        exists = subprocess.run(["git", "ls-remote", "--exit-code", "--heads", remote, BRANCH],
-                                capture_output=True, text=True).returncode == 0
+        ls = git("ls-remote", "--exit-code", "--heads", remote, BRANCH, check=False)
+        if ls.returncode not in (0, 2):  # 2: la rama no existe todavía; otro código: red o permisos
+            raise RuntimeError(f"git ls-remote falló: {ls.stderr.replace(token, '***')[:400]}")
+        exists = ls.returncode == 0
         if exists:
             git("clone", "--depth", "1", "--branch", BRANCH, remote, str(work))
         else:
@@ -239,6 +249,11 @@ def run_once(do_push: bool, keep: Path | None, do_dispatch: bool = False) -> int
         log(f"resumen: {idx['summary']}")
         if keep:
             shutil.copytree(snap, keep, dirs_exist_ok=True)
+        ok = sum(1 for e in idx["entries"] if e.get("status") == 200)
+        if do_push and not ok:
+            # Una copia vacía reemplazaría a la última buena en data-peru.
+            log("ninguna fuente respondió: no se sube nada")
+            return 1
         if do_push:
             token = os.environ.get("GITHUB_TOKEN", "").strip()
             if not token:
@@ -247,7 +262,6 @@ def run_once(do_push: bool, keep: Path | None, do_dispatch: bool = False) -> int
             push(snap, token)
             if do_dispatch:
                 dispatch(token)
-    ok = sum(1 for e in idx["entries"] if e.get("status") == 200)
     return 0 if ok else 1
 
 
