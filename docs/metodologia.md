@@ -107,11 +107,54 @@ superiores en tres franjas ecuatoriales (130°E–80°O, 160°E–80°O y
 180°–100°O), base 1981–2010. Un aumento suele anticipar el calentamiento
 en superficie.
 
-**Por qué no se muestra la profundidad de la isoterma de 20 °C (D20):**
-no hay una fuente pública que la publique como serie lista para usar. El
-campo `dbss_obil` de GODAS es la profundidad de la capa isotérmica, no
-D20, y usarlo como si lo fuera daría valores erróneos. Por eso la señal
-GRD de termoclina figura como «sin dato» y se explica el motivo.
+## 7b. Profundidad de la termoclina (isoterma de 20 °C, D20)
+
+Ninguna institución publica una serie de D20 por región lista para usar
+(se revisaron NOAA/CPC, NOAA/PMEL, PSL, IRI, Copernicus Marine, Argo,
+ENFEN, IMARPE e IGP; ver el catálogo de fuentes). El observatorio la
+calcula con los datos de los que derivan los mapas de D20 de NOAA/CPC:
+
+1. **Dato:** archivo mensual de GODAS en
+   `ftp.cpc.ncep.noaa.gov/godas/monthly/godas.M.AAAAMM.grb` (NCEP, dominio
+   público). Se pide por rango HTTP solo la temperatura potencial de 5 a
+   303 m (≈6 MB por mes). CPC publica cada mes unas dos semanas después
+   de terminado (setiembre de 2026 salió el 16 de octubre).
+2. **D20 en cada punto de grilla (1° × 1/3°):** profundidad del primer
+   cruce de 20 °C desde la superficie, interpolando entre niveles. Si el
+   agua ya está bajo 20 °C a 5 m (la isoterma aflora, como en el
+   afloramiento costero en invierno), D20 = 0 m. La fracción de puntos
+   que afloran se guarda con cada mes.
+3. **Región:** promedio de área (peso cos(lat)) de los puntos de mar en
+   Niño 1+2 (0°–10°S, 90°–80°O) para el «Niño Costero» y en Niño 3.4
+   (5°N–5°S, 170°–120°O) para el «Niño Global». Como referencia, sin
+   color, también la franja 5°N–5°S, 180°–100°O del índice subsuperficial
+   de CPC.
+4. **Anomalía:** D20 regional del mes menos la media 1991–2020 de ese mes,
+   calculada con el mismo código (`python/enso/data/godas-d20.json`,
+   generado por `python -m tools.godas_d20_climatology`). Positiva =
+   termoclina más profunda.
+
+**Validación.** El decodificador GRIB reproduce exactamente los valores
+de ecCodes (2000 puntos al azar, diferencia 0). El D20 de GODAS de
+setiembre de 2026 frente a la media mensual de las boyas TAO del ecuador
+(PMEL, `pmelTaoDyIso`): 165°E 149,8 / 149,8 m; 180° 148,8 / 153,5 m;
+140°O 163,7 / 163,8 m; 125°O 149,7 / 153,1 m; 110°O 142,4 / 132,9 m;
+95°O 115,9 / 120,4 m (GODAS / TAO). La anomalía de D20 en 180°–100°O
+tiene una correlación de 0,93 con el índice de contenido de calor que
+publica CPC para la misma franja (561 meses, 1980–2026). La serie reproduce los eventos
+conocidos: +93 m en Niño 1+2 en diciembre de 1997 y −38 m en Niño 3.4 en
+junio de 1998, al pasar a La Niña.
+
+**Límites.** GODAS es un análisis (modelo más observaciones): frente a la
+costa peruana hay pocas mediciones que asimilar (las boyas TAO terminan
+en 95°O y los flotadores Argo casi no entran a la plataforma), así que el
+valor de Niño 1+2 es una estimación regional, no una medición costera.
+IMARPE describe la termoclina costera con la isoterma de 15 °C en sus
+secciones (Paita, Chicama, Callao); esas mediciones no se publican como
+serie y no son comparables con D20. La tabla GRD no dice qué producto ni
+qué región usar: Niño 1+2 y Niño 3.4 de GODAS son una elección del
+observatorio, pendiente de confirmación del equipo GRD (ver
+`observatory_application` en la política).
 
 ## 8. Señal del equipo GRD
 
@@ -125,7 +168,7 @@ del ENFEN ni el de NOAA, y el sitio lo dice junto a la señal.
 | TSM costera | Anomalía mensual Niño 1+2 | −0,7 a +0,5 °C | +1,3 a +2,0 °C | > +2,1 °C |
 | TSM de cuenca | Anomalía mensual Niño 3.4 | −0,5 a +0,5 °C | > +1,0 a +1,5 °C | > +1,5 °C |
 | Vientos (costero y global) | Índice CPC 850 hPa oriental y central | Del este | — | Del oeste |
-| Termoclina | D20 | −20 a +20 m | 30 a 50 m | > 50 m |
+| Termoclina | Anomalía mensual de D20 de GODAS en Niño 1+2 y Niño 3.4 (§7b) | −20 a +20 m | 30 a 50 m | > 50 m |
 | SOI | Troup | −7 a +7 | — | < −7 |
 
 Reglas:

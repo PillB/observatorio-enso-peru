@@ -15,9 +15,16 @@ emite los avisos meteorológicos.
   tres meses centrada.
 - El estado oficial cambia solo cuando el ENFEN o NOAA publican.
 
+## Profundidad de la termoclina (D20)
+
+- Se calcula con GODAS (ver Metodología §7b) y llega unas dos semanas
+  después de cerrado cada mes. Frente a la costa GODAS tiene pocas
+  observaciones: el valor de Niño 1+2 es una estimación regional.
+- La tabla GRD no dice qué producto usar; la elección del observatorio
+  está pendiente de confirmación.
+
 ## Datos que no se muestran
 
-- **D20:** no hay una fuente pública verificada (ver Metodología).
 - **Pronósticos:** no se reproducen los modelos; se enlaza a los
   pronósticos oficiales del ENFEN y de NOAA.
 - **Mapa:** muestra el promedio medido de cada región Niño, no un campo

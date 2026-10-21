@@ -65,7 +65,9 @@ def _signal(key: str, name: str, region: str, metric: str, value, units: str, pe
     }
 
 
-NO_D20 = "No hay una fuente pública verificada de anomalía de D20 para esta región. El índice de contenido de calor (0–300 m) se muestra aparte como referencia, sin aplicarle estos umbrales."
+NO_D20 = "No se pudo calcular el D20 de NOAA GODAS en esta corrida y no hay un dato anterior vigente."
+D20_NOTE = ("La tabla GRD no indica el producto: el observatorio usa la anomalía mensual de D20 de NOAA GODAS "
+            "(promedio de la región, base 1991–2020), pendiente de confirmación del equipo GRD.")
 
 
 def grd_signals(inputs: dict, policy: Optional[dict] = None) -> dict:
@@ -78,12 +80,13 @@ def grd_signals(inputs: dict, policy: Optional[dict] = None) -> dict:
     p = policy or load_policy()
     out = []
 
-    def add(key, name, region, metric, units, rules, basis, missing=""):
+    def add(key, name, region, metric, units, rules, basis, missing="", note=""):
         x = inputs.get(key) or {}
         lvl, lab = classify(rules, x.get("value"))
-        reason = missing if x.get("value") is None else ""
+        reason = missing if x.get("value") is None else note
         if lvl == "unclassified":
-            reason = "El valor cae en un intervalo que la tabla del equipo GRD no define; no se asume normalidad."
+            reason = " ".join(filter(None, ["El valor cae en un intervalo que la tabla del equipo GRD no define; "
+                                            "no se asume normalidad.", note]))
         out.append(_signal(key, name, region, metric, x.get("value"), units, x.get("period"),
                            x.get("source"), lvl, lab, basis, bool(x.get("stale")), reason))
 
@@ -107,10 +110,10 @@ def grd_signals(inputs: dict, policy: Optional[dict] = None) -> dict:
         sig["direction"] = direction
         out.append(sig)
 
-    add("d20_coastal", "Profundidad de la termoclina (20 °C)", "Niño Costero", "Anomalía de D20", "m",
-        p["thermocline"]["rules"], "Normal −20 a +20 m; amarillo 30 a 50 m; rojo > 50 m", missing=NO_D20)
-    add("d20_global", "Profundidad de la termoclina (20 °C)", "Niño Global", "Anomalía de D20", "m",
-        p["thermocline"]["rules"], "Normal −20 a +20 m; amarillo 30 a 50 m; rojo > 50 m", missing=NO_D20)
+    add("d20_coastal", "Profundidad de la termoclina (20 °C)", "Niño Costero 1+2", "Anomalía mensual de D20 en Niño 1+2 (GODAS)",
+        "m", p["thermocline"]["rules"], "Normal −20 a +20 m; amarillo 30 a 50 m; rojo > 50 m", missing=NO_D20, note=D20_NOTE)
+    add("d20_global", "Profundidad de la termoclina (20 °C)", "Niño Global 3.4", "Anomalía mensual de D20 en Niño 3.4 (GODAS)",
+        "m", p["thermocline"]["rules"], "Normal −20 a +20 m; amarillo 30 a 50 m; rojo > 50 m", missing=NO_D20, note=D20_NOTE)
     add("soi_troup", "Índice de Oscilación del Sur", "Niño Costero y Niño Global", "SOI escala Troup (×10)", "dimensionless",
         p["soi"]["rules"], "Normal −7 a +7; rojo < −7")
 
