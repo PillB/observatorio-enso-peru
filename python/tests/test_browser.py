@@ -317,7 +317,8 @@ def test_news_fits_every_reference_device(site, engine):
         pg.on("pageerror", lambda e: errors.append(str(e)))
         pg.goto(f"{base}#/noticias?tab=peru")
         expect(pg.locator(".news-filters")).to_be_visible(timeout=15000)
-        dims = pg.evaluate("() => [document.scrollingElement.scrollWidth, innerWidth]")
+        # clientWidth, no innerWidth: con la emulación móvil innerWidth crece con el desborde.
+        dims = pg.evaluate("() => [document.scrollingElement.scrollWidth, document.documentElement.clientWidth]")
         assert dims[0] <= dims[1] + 1, f"{label}: la página mide {dims[0]} px en una pantalla de {dims[1]} px"
         assert not errors, f"{label}: {errors}"
         if dev_id not in ("kaios-flip",):
