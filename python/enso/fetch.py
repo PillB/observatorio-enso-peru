@@ -41,7 +41,7 @@ TRANSIENT = (httpx.TimeoutException, httpx.ConnectError, httpx.RemoteProtocolErr
 class Response:
     url: str
     body: bytes
-    channel: str  # "direct" | "mirror" | "relay-peru" | "archive" | "archive-fresh"
+    channel: str  # "direct" | "mirror" | "relay-peru" | "relay-n8n" | "archive" | "archive-fresh"
     status: int
     content_type: str = ""
     last_modified: str = ""
@@ -70,14 +70,17 @@ class FetchError(RuntimeError):
 
 
 class Relay:
-    """Copias recolectadas desde el Perú (rama ``data-peru``).
+    """Copias recolectadas fuera de GitHub Actions: desde el Perú (rama
+    ``data-peru``) o por el flujo de n8n (rama ``data-n8n``), con el mismo
+    formato «enso-relay/1».
 
     ``index.json`` lista cada URL descargada, su estado y el archivo con el
     cuerpo. Solo se usan copias con estado 200, cuyo sha256 coincide y que
-    no superan ``max_age_hours``.
+    no superan ``max_age_hours`` (la recolección y cada copia: n8n conserva
+    unas horas la última copia válida de una URL que dejó de responder).
     """
 
-    FILE_RE = re.compile(r"^files/[0-9a-f]{16}\.(pdf|html|json)$")
+    FILE_RE = re.compile(r"^files/[0-9a-f]{16}\.(pdf|html|json|xml|txt)$")
 
     def __init__(self, root: Path, max_age_hours: float = 7 * 24):
         self.root = Path(root)
@@ -88,6 +91,8 @@ class Relay:
         self.host: str = (idx.get("collector") or {}).get("host", "")
         self.summary: dict = idx.get("summary") or {}
         self.max_age_hours = max_age_hours
+        #: Canal con que se marcan las respuestas: «relay-n8n» o «relay-peru».
+        self.channel = "relay-n8n" if (idx.get("collector") or {}).get("kind") == "n8n" else "relay-peru"
         self._by_url: dict[str, list[dict]] = {}
         for e in idx.get("entries") or []:
             if e.get("status") != 200 or not self.FILE_RE.match(e.get("file") or ""):
@@ -104,27 +109,32 @@ class Relay:
         if self.age_hours > self.max_age_hours:
             return None
         for e in self._by_url.get(url, []):
+            if e.get("fetched_at") and _age_hours(e["fetched_at"]) > self.max_age_hours:
+                continue
             ct = (e.get("content_type") or "").lower()
             if accept and not any(a in ct for a in accept):
                 continue
             body = (self.root / e["file"]).read_bytes() if (self.root / e["file"]).is_file() else b""
             if not body or hashlib.sha256(body).hexdigest() != e.get("sha256"):
                 continue
-            return Response(url, body, "relay-peru", 200, ct, archived_at=e.get("fetched_at") or self.collected_at)
+            return Response(url, body, self.channel, 200, ct, archived_at=e.get("fetched_at") or self.collected_at)
         return None
 
 
 class Fetcher:
     def __init__(self, timeout: float = 45.0, retries: int = 3, polite_delay: float = 0.8,
                  allow_archive: bool = True, allow_save: bool = False, offline: bool = False,
-                 relay: Optional[Relay] = None):
+                 relay: Optional["Relay | list[Relay]"] = None):
         self.client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
         self.retries = retries
         self.polite_delay = polite_delay
         self.allow_archive = allow_archive
         self.allow_save = allow_save
         self.offline = offline
-        self.relay = relay
+        #: Copias de otros recolectores, en orden de preferencia; si varias
+        #: tienen la URL, se usa la más reciente.
+        self.relays: list[Relay] = [r for r in (relay if isinstance(relay, list) else [relay]) if r is not None]
+        self.relay = self.relays[0] if self.relays else None
         self._last: dict[str, float] = {}
 
     def close(self) -> None:
@@ -168,12 +178,11 @@ class Fetcher:
                                 attempts=attempts)
             if r is not None and r.status_code == 200:
                 attempts[-1]["note"] = "contenido vacío o tipo inesperado"
-            if self.relay is not None:
-                got = self.relay.get(url, accept)
-                if got is not None:
-                    attempts.append({"url": url, "channel": "relay-peru", "collected_at": self.relay.collected_at})
-                    got.attempts = attempts
-                    return got
+            got = self._from_relays(url, accept)
+            if got is not None:
+                attempts.append({"url": url, "channel": got.channel, "collected_at": got.archived_at})
+                got.attempts = attempts
+                return got
         if archive and self.allow_archive:
             for url in urls:
                 got = self._from_archive(url, attempts, fresh=save and self.allow_save)
@@ -183,6 +192,10 @@ class Fetcher:
                     attempts.append({"url": url, "channel": got.channel,
                                      "note": f"copia de archivo con tipo inesperado ({got.content_type[:60]})"})
         raise FetchError(f"sin respuesta válida para {urls[0]}", attempts)
+
+    def _from_relays(self, url: str, accept: tuple[str, ...]) -> Optional[Response]:
+        hits = [got for got in (r.get(url, accept) for r in self.relays) if got is not None]
+        return max(hits, key=lambda g: -_age_hours(g.archived_at)) if hits else None
 
     @staticmethod
     def _acceptable(r: httpx.Response, accept: tuple[str, ...]) -> bool:

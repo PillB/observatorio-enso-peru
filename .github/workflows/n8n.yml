@@ -1,0 +1,115 @@
+# Flujos de n8n (n8n/): pruebas del código de los nodos, que dist/ esté al
+# día, prueba de punta a punta con n8n de verdad (versiones 2.x y 1.x) contra
+# una API de GitHub falsa, y la validación de fuentes corrida en n8n desde un
+# servidor de GitHub (Azure, EE. UU.), como referencia para el n8n en AWS.
+name: n8n
+
+on:
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'n8n/**'
+      - 'registry/sources.json'
+      - 'python/enso/fetch.py'
+      - '.github/workflows/n8n.yml'
+  pull_request:
+    paths:
+      - 'n8n/**'
+      - 'registry/sources.json'
+      - 'python/enso/fetch.py'
+      - '.github/workflows/n8n.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '17 13 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: n8n-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r python/requirements-dev.txt
+      - name: Node tests (code that runs inside the n8n Code nodes)
+        run: node --test n8n/test/*.test.mjs
+      - name: dist/ matches the source
+        run: node n8n/build.mjs --check
+      - name: The pipeline reads n8n copies
+        working-directory: python
+        run: python -m pytest -q tests/test_relay_n8n.py tests/test_relay.py
+
+  n8n-real:
+    needs: pruebas
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ['n8nio/n8n:2.44.4', 'n8nio/n8n:1.123.85']
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r python/requirements.txt
+      - name: Node types and versions used by the workflows exist in this n8n
+        run: |
+          docker run --rm -u root -v "$PWD:/w" --entrypoint sh "${{ matrix.image }}" -c \
+            "n8n export:nodes --output=/w/nodes.json >/dev/null 2>&1"
+          node n8n/test/check-node-types.mjs nodes.json n8n/dist/*.json
+      - name: Collector end to end (ENFEN sources, two runs, fake GitHub API)
+        run: n8n/test/e2e.sh "${{ matrix.image }}" "$RUNNER_TEMP/e2e" enfen
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: n8n-e2e-${{ strategy.job-index }}
+          path: |
+            ${{ runner.temp }}/e2e/*.log
+            ${{ runner.temp }}/e2e/copia/index.json
+            ${{ runner.temp }}/e2e/copia/heartbeat.json
+          retention-days: 14
+
+  alcance:
+    needs: pruebas
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validation workflow in n8n against every registry source
+        run: |
+          mkdir -p "$RUNNER_TEMP/v" && chmod 777 "$RUNNER_TEMP/v"
+          cp n8n/dist/enso-n8n-validacion.json "$RUNNER_TEMP/v/"
+          docker run --rm --network host -u root -v "$RUNNER_TEMP/v:/w" -e N8N_USER_FOLDER=/w/home \
+            --entrypoint sh n8nio/n8n:2.44.4 -c \
+            "n8n import:workflow --input=/w/enso-n8n-validacion.json && n8n execute --id=EnsoValidacion01 --rawOutput" \
+            > "$RUNNER_TEMP/v/run.log" 2>&1 || { tail -50 "$RUNNER_TEMP/v/run.log"; exit 1; }
+          sed -n '/^{/,$p' "$RUNNER_TEMP/v/run.log" \
+            | jq '[.data.resultData.runData.Informe[0].data.main[0][].json]' > validacion-actions.json
+          {
+            echo "### n8n desde GitHub Actions (Azure, EE. UU.)"
+            jq -r '.[0].resultado + "  \n" + .[0].veredicto + "  \n" + .[0].grupo' validacion-actions.json
+            echo
+            echo "| resultado | alcance | bloqueo | HTTP | id | URL | nota |"
+            echo "|---|---|---|---|---|---|---|"
+            jq -r '.[1:][] | select(.resultado != "OK") | "| \(.veredicto) | \(.alcance) | \(.bloqueo) | \(.http) | \(.id) | \(.url) | \(.nota | gsub("\\|"; "/") | .[0:80]) |"' validacion-actions.json
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: n8n-validacion-actions
+          path: validacion-actions.json
+          retention-days: 30

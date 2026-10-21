@@ -287,6 +287,9 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         if resp.channel == "relay-peru":
             log.add("info", src.id, "fetch", "relay-channel",
                     f"Fuente oficial no accesible desde el servidor; se usó la copia recolectada desde el Perú el {resp.archived_at}.")
+        elif resp.channel == "relay-n8n":
+            log.add("info", src.id, "fetch", "relay-channel",
+                    f"Fuente oficial no accesible desde el servidor; se usó la copia que bajó n8n el {resp.archived_at}.")
         if resp.channel.startswith("archive"):
             log.add("warning", src.id, "fetch", "archive-channel",
                     f"Fuente oficial no accesible; se usó la copia del Internet Archive del {resp.archived_at}.")
@@ -1013,13 +1016,14 @@ def archive_raw(raw_dir: Path, acquired: dict[str, "Acquired"], today: date) -> 
 
 def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, offline: bool = False,
         today: Optional[date] = None, only: Optional[list[str]] = None, raw_dir: Optional[Path] = None,
-        relay_dir: Optional[Path] = None) -> dict:
+        relay_dir: Optional[Path] = None, n8n_dir: Optional[Path] = None) -> dict:
     from .fetch import Fetcher
 
     started = datetime.now(timezone.utc)
     log = EventLog()
     relay = load_relay(relay_dir, log) if relay_dir is not None and fixtures is None else None
-    fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=relay)
+    n8n = load_n8n_relay(n8n_dir, log) if n8n_dir is not None and fixtures is None else None
+    fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=[relay, n8n])
     prev = PreviousPublication(previous, fetcher)
     acquired: dict[str, Acquired] = {}
     for src in SOURCES:
@@ -1154,6 +1158,27 @@ def load_relay(relay_dir: Path, log: EventLog):
     return relay
 
 
+def load_n8n_relay(n8n_dir: Path, log: EventLog):
+    """Copias del flujo de n8n (rama ``data-n8n``): un segundo canal fuera de
+    GitHub Actions para las fuentes que no están geobloqueadas."""
+    from .fetch import Relay
+
+    try:
+        relay = Relay(n8n_dir, max_age_hours=RELAY_STALE_HOURS * 2)
+    except (OSError, ValueError, KeyError) as exc:
+        log.add("warning", "relay-n8n", "fetch", "relay-n8n-missing",
+                f"No hay copias de n8n en {n8n_dir.name} ({type(exc).__name__}: {exc}).")
+        return None
+    if relay.age_hours > RELAY_STALE_HOURS:
+        log.add("warning", "relay-n8n", "fetch", "relay-n8n-stale",
+                f"La última corrida de n8n es del {relay.collected_at} (hace {relay.age_hours:.0f} h); "
+                "revisar el flujo «ENSO · Recolector n8n» en n8n.")
+    else:
+        log.add("info", "relay-n8n", "fetch", "relay-n8n-ok",
+                f"Copias de n8n del {relay.collected_at}: {relay.summary}.")
+    return relay
+
+
 def _fixture_date(fixtures: Path) -> Optional[date]:
     idx = fixtures / "index.json"
     if idx.exists():
@@ -1172,12 +1197,14 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--raw-dir", default=None, help="Carpeta donde archivar las respuestas originales nuevas")
     ap.add_argument("--relay-dir", default=None, help="Copia de la rama data-peru (recolector del Perú)")
+    ap.add_argument("--n8n-dir", default=None, help="Copia de la rama data-n8n (flujo de n8n)")
     ap.add_argument("--fail-on", default="critical", choices=["error", "critical", "never"])
     args = ap.parse_args(argv)
     out = Path(args.out).resolve()
     res = run(out, args.previous or None, Path(args.fixtures).resolve() if args.fixtures else None, args.offline, only=args.only,
               raw_dir=Path(args.raw_dir).resolve() if args.raw_dir else None,
-              relay_dir=Path(args.relay_dir).resolve() if args.relay_dir else None)
+              relay_dir=Path(args.relay_dir).resolve() if args.relay_dir else None,
+              n8n_dir=Path(args.n8n_dir).resolve() if args.n8n_dir else None)
     print(json.dumps(res, ensure_ascii=False))
     gh = os.environ.get("GITHUB_OUTPUT")
     if gh:
