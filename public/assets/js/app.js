@@ -78,7 +78,7 @@ function periodText(s, period) {
 }
 
 /** Tarjeta de indicador. Un dato vencido no se muestra como actual. */
-function metricCard(k, { title, scope, note, href } = {}) {
+function metricCard(k, { title, scope, note, href, extra } = {}) {
   const s = series(k);
   if (!s) return html`<div class="card metric"><div class="metric-name">${title || k}</div><p class="metric-value na">Dato actual no disponible</p><p class="metric-desc">La fuente no está disponible en esta publicación.</p></div>`;
   const l = s.latest;
@@ -96,6 +96,7 @@ function metricCard(k, { title, scope, note, href } = {}) {
     <div class="metric-period">${l.stale ? '' : html`Periodo: <strong>${periodText(s, l.period)}</strong> · `}${s.frequency}${l.carried ? ' · último dato válido conservado' : ''}</div>
     ${delta}
     ${note ? html`<p class="metric-desc">${note}</p>` : ''}
+    ${extra || ''}
   </${raw(tag)}>`;
 }
 
@@ -155,6 +156,97 @@ function grdPanel() {
     <p class="notice notice-info">${raw(ICON.info)}<span>${g.disclaimer}</span></p>
     <div class="table-wrap"><table class="grd"><thead><tr><th scope="col">Indicador</th><th scope="col">Señal</th><th scope="col">Valor</th><th scope="col">Periodo y fuente</th><th scope="col">Umbrales de la tabla GRD</th></tr></thead><tbody>${rows}</tbody></table></div>
   </section>`;
+}
+
+// ---------------------------------------------------------------------------
+// Vigencia de los datos de cada vista (dashboard.freshness, calculada por el pipeline)
+// ---------------------------------------------------------------------------
+const FRESH = {
+  'al-dia': ['ok', 'Al día'], atrasado: ['watch', 'Atrasado'], vencido: ['alert', 'Vencido'], 'sin-dato': ['na', 'Sin dato'],
+};
+
+function freshObserved(it) {
+  if (!it.observed) return '—';
+  if (it.observedKind === 'season') return F.fmtSeason(it.observed);
+  if (it.observedKind === 'month') return F.fmtMonth(it.observed);
+  if (it.observedKind === 'week') return `semana del ${F.fmtDate(it.observed)}`;
+  if (it.observedKind === 'datetime') return F.fmtDateTime(it.observed).replace(' (hora de Lima)', '');
+  return F.fmtDate(it.observed.slice(0, 10));
+}
+
+function freshWhy(it) {
+  if (it.state === 'sin-dato') return it.note || 'La fuente no dio este dato en esta publicación.';
+  if (it.kind === 'alertas' || it.kind === 'noticias') return `${it.sourcesOk} de ${it.sourcesTotal} fuentes respondieron en esta actualización.`;
+  const parts = [];
+  if (it.state === 'vencido') parts.push('Supera la antigüedad máxima de su fuente: no se usa como dato actual.');
+  else if (it.state === 'atrasado') parts.push(it.carried ? 'Se conserva el último dato válido: la fuente no respondió.' : it.channel && it.channel.startsWith('archive') ? 'Se leyó de una copia del Internet Archive.' : 'La institución ya debió publicar uno más reciente.');
+  if (it.expectedNext) parts.push(`Siguiente esperado: ${F.fmtDate(it.expectedNext)}${it.expectedNextEstimated ? ' (estimado)' : ''}.`);
+  return parts.join(' ');
+}
+
+/** Qué tan recientes son los datos de esta vista: un resumen y, al abrirlo, cada dato con su fecha y estado. */
+function freshnessPanel(view) {
+  const f = S.dash.freshness;
+  const v = f?.views?.[view];
+  if (!v || !v.items.length) return '';
+  const rows = v.items.map((id) => f.items[id]).filter(Boolean);
+  const late = rows.filter((r) => r.state === 'atrasado' || r.state === 'vencido');
+  const [lv, txt] = FRESH[v.worst] || FRESH['sin-dato'];
+  const head = late.length
+    ? `${late.length} de ${rows.length} datos de esta vista no están al día: ${late.map((r) => r.label).join(', ')}.`
+    : `Los ${rows.length} datos de esta vista son los más recientes que publicaron sus fuentes.`;
+  return html`<details class="card fresh-panel" data-tour-id="freshness" data-state="${v.worst}">
+    <summary><span class="fresh-sum">${chip(lv, txt)} <span>¿Qué tan recientes son estos datos?</span></span><span class="muted small">${head}</span></summary>
+    <div class="table-wrap"><table class="grd fresh-table"><thead><tr><th scope="col">Dato</th><th scope="col">Estado</th><th scope="col">Fecha del dato</th><th scope="col">Bajado por el observatorio</th><th scope="col">Detalle</th></tr></thead><tbody>
+    ${rows.map((r) => html`<tr data-fresh="${r.id}"><th scope="row">${r.label}${r.document ? html`<div class="muted small">${r.document}</div>` : ''}</th>
+      <td data-label="Estado">${chip(FRESH[r.state]?.[0] || 'na', FRESH[r.state]?.[1] || r.state)}</td>
+      <td data-label="Fecha del dato">${freshObserved(r)}</td>
+      <td data-label="Bajado">${r.retrievedAt ? F.fmtDateTime(r.retrievedAt).replace(' (hora de Lima)', '') : '—'}${CHANNEL_SHORT[r.channel] ? html`<div class="muted small">vía ${CHANNEL_SHORT[r.channel]}</div>` : ''}</td>
+      <td class="small">${freshWhy(r)}</td></tr>`)}</tbody></table></div>
+    <p class="muted small">«Fecha del dato» es el periodo que mide o el día en que la institución lo emitió. El estado compara esa fecha con el calendario de publicación de cada institución. <a href="#/metodologia">Cómo se calcula</a></p>
+  </details>`;
+}
+
+// ---------------------------------------------------------------------------
+// Informe técnico y perspectiva del ENFEN (leídos del PDF, con su procedencia)
+// ---------------------------------------------------------------------------
+const MAG_ES = { debil: 'débil', moderada: 'moderada', fuerte: 'fuerte', muy_fuerte: 'muy fuerte', extraordinaria: 'extraordinaria' };
+const REGION_ES = { nino12: 'Niño 1+2 (costa del Perú)', nino34: 'Niño 3.4 (Pacífico central)' };
+const CAT_ES = { fria_fuerte: 'Fría fuerte', fria_moderada: 'Fría moderada', fria_debil: 'Fría débil', neutro: 'Neutro', calida_debil: 'Cálida débil', calida_moderada: 'Cálida moderada', calida_fuerte: 'Cálida fuerte', calida_muy_fuerte: 'Cálida muy fuerte', calida_extraordinaria: 'Cálida extraordinaria' };
+
+function provenance(url, page, quote, when) {
+  return html`<p class="src-links small">${url ? html`<a href="${safeUrl(url)}" rel="noopener" target="_blank">Documento oficial${page ? `, página ${page}` : ''}</a>` : ''}${when ? html` · ${when}` : ''}${quote ? html`<span class="quote"> · Texto: «${quote}»</span>` : ''}</p>`;
+}
+
+function outlookCard() {
+  const e = S.dash.official?.enfen;
+  if (!e?.outlook?.length || e.stale) return '';
+  return html`<section class="card" aria-labelledby="ol-h" data-tour-id="enfen-outlook"><h2 id="ol-h">Perspectiva del ENFEN</h2>
+    <ul class="outlook">${e.outlook.map((o) => html`<li><strong>${REGION_ES[o.region] || o.region}:</strong> ${o.phase === 'fria' ? 'La Niña' : 'El Niño'} de magnitud <strong>${MAG_ES[o.magnitude] || o.magnitude}</strong>${o.until ? html` hasta ${F.fmtMonth(o.until)}` : ''}${o.then ? html`, luego ${MAG_ES[o.then] || o.then}` : ''}.
+      <blockquote class="small">${o.quote}</blockquote></li>`)}</ul>
+    <p class="muted small">Leído del comunicado oficial N° ${e.number} (${F.fmtDate(e.issued)}). La cita es el texto exacto del documento.</p></section>`;
+}
+
+function probabilityCard() {
+  const inf = S.dash.official?.enfen?.informe;
+  const tables = inf?.probabilities || [];
+  if (!tables.length) return '';
+  const card = (t) => {
+    const cats = Object.keys(CAT_ES).filter((c) => t.categories[c]);
+    return html`<div class="prob"><h3>${REGION_ES[t.region] || t.region}</h3><div class="table-wrap"><table class="data prob-table"><caption class="visually-hidden">Probabilidad (%) de cada categoría por mes, ${REGION_ES[t.region]}</caption>
+      <thead><tr><th scope="col">Categoría</th>${t.months.map((m) => html`<th scope="col">${F.fmtMonth(m, { short: true })}</th>`)}${t.summer ? html`<th scope="col">Verano</th>` : ''}</tr></thead>
+      <tbody>${cats.map((c) => html`<tr><th scope="row">${CAT_ES[c]}</th>${t.categories[c].map((v) => html`<td class="${v >= 50 ? 'hi' : v >= 20 ? 'mid' : ''}">${v}</td>`)}${t.summer ? html`<td>${t.summer[c] ?? '—'}</td>` : ''}</tr>`)}</tbody></table></div>
+      ${provenance(inf.url, t.evidence?.page, t.evidence?.quote)}${t.review ? html`<p class="muted small">El ENFEN marcó esta tabla con «revisar los valores».</p>` : ''}</div>`;
+  };
+  return html`<section class="card" aria-labelledby="pr-h" data-tour-id="enfen-probabilities"><div class="section-head"><h2 id="pr-h">Probabilidades del ENFEN por mes (%)</h2>${inf.carried ? html`<span class="tag tag-prelim">último informe leído</span>` : ''}</div>
+    <p class="muted">Probabilidad que el ENFEN estima para cada categoría del ICEN (costa) y del RONI (Pacífico central). Informe técnico N° ${inf.number}${inf.dataTo ? `, con datos al ${F.fmtDate(inf.dataTo)}` : ''}.</p>
+    ${tables.map(card)}</section>`;
+}
+
+function icenProvisional() {
+  const p = latest('icen')?.provisional;
+  if (!p) return '';
+  return html`<p class="metric-desc">ICEN temporal de ${F.fmtMonth(p.period)}: <strong>${F.fmtValue(p.value, 'degC')}</strong>${p.category?.short ? ` (${p.category.short})` : ''}, estimado por el ENFEN en su informe técnico N° ${p.informe}. El valor oficial llega el mes siguiente.</p>`;
 }
 
 function sourceName(id) {
@@ -286,12 +378,13 @@ VIEWS[''] = {
     return html`
       <div class="page-head"><div class="eyebrow">Resumen</div><h1>¿Cómo está El Niño hoy?</h1>
         <p>Estados oficiales, mediciones más recientes y la señal operativa del equipo GRD, actualizados cada día con fuentes públicas.</p></div>
+      ${freshnessPanel('')}
       <div class="hero" data-tour-id="official-status">${statusCard('enfen')}${statusCard('noaa')}</div>
       ${freshestStrip()}
       <section aria-labelledby="ind-h" data-tour-id="indicators">
         <div class="section-head"><h2 id="ind-h">Indicadores clave</h2><a href="#/oceano">Ver todos</a></div>
         <div class="grid g4">
-          ${metricCard('icen', { title: 'ICEN oficial', scope: 'Costa norte del Perú · ENFEN', href: '#/costero' })}
+          ${metricCard('icen', { title: 'ICEN oficial', scope: 'Costa norte del Perú · ENFEN', href: '#/costero', extra: icenProvisional() })}
           ${metricCard('nino12_oisst', { title: 'Niño 1+2 mensual', scope: 'Costa de Ecuador y Perú · NOAA OISST', href: '#/costero' })}
           ${metricCard('roni', { title: 'RONI', scope: 'Pacífico central · índice oficial de NOAA', href: '#/pacifico' })}
           ${metricCard('nino34_oisst', { title: 'Niño 3.4 mensual', scope: 'Pacífico central · NOAA OISST', href: '#/pacifico' })}
@@ -329,6 +422,7 @@ VIEWS.costero = {
     return html`
       <div class="page-head"><div class="eyebrow">Perú y Ecuador</div><h1>El Niño Costero</h1>
         <p>Calentamiento del mar frente a la costa norte del Perú (región Niño 1+2). Es el fenómeno que más afecta directamente al país, y puede ocurrir aunque el Pacífico central esté neutral.</p></div>
+      ${freshnessPanel('costero')}
       <div class="grid g2">
         <div data-tour-id="coastal-status">${statusCard('enfen')}
           ${e?.summary ? html`<div class="card"><h3>Resumen del comunicado</h3><p>${e.summary}</p><p class="muted small">Texto del comunicado oficial N° ${e.number} de ENFEN.</p></div>` : ''}
@@ -341,9 +435,13 @@ VIEWS.costero = {
           <dl class="kv">
             <dt>ICEN oficial</dt><dd>${ic ? (ic.stale ? 'Dato actual no disponible' : html`${F.fmtValue(ic.value, 'degC')} (${F.fmtMonth(ic.period)})`) : 'N/D'}</dd>
             <dt>Clasificación</dt><dd>${cur || '—'}</dd>
+            ${ic?.provisional ? html`<dt>ICEN temporal</dt><dd>${F.fmtValue(ic.provisional.value, 'degC')} (${F.fmtMonth(ic.provisional.period)}${ic.provisional.category?.short ? `, ${ic.provisional.category.short.toLowerCase()}` : ''})</dd>` : ''}
           </dl>
+          ${ic?.provisional ? html`<p class="muted small">El ICEN temporal lo estima el ENFEN antes de que exista el oficial; el oficial lo reemplaza el mes siguiente.</p>${provenance(ic.provisional.url, ic.provisional.page, ic.provisional.quote, ic.provisional.informe ? `Informe técnico N° ${ic.provisional.informe}` : '')}` : ''}
         </div>
       </div>
+      ${outlookCard()}
+      ${probabilityCard()}
       ${chartCard('ch-icen', { title: 'ICEN oficial', tour: 'coastal-icen', range: '15', desc: 'Media móvil de tres meses centrada de la anomalía de Niño 1+2. Las bandas marcan las categorías de ENFEN.', foot: 'Fuente: ENFEN (archivo del IGP), base 1991–2020. El valor de un mes necesita el mes siguiente, por eso el ICEN va unos dos meses detrás.' })}
       <div class="grid g2">
         <section class="card" data-tour-id="coastal-scale" aria-labelledby="scale-h"><h2 id="scale-h">Categorías del ICEN</h2>
@@ -367,6 +465,7 @@ VIEWS.pacifico = {
     return html`
       <div class="page-head"><div class="eyebrow">Escala cuenca</div><h1>ENSO en el Pacífico ecuatorial</h1>
         <p>El Niño y La Niña de escala cuenca se miden en el Pacífico central (región Niño 3.4). Influyen en el clima de todo el planeta y en las lluvias de los Andes.</p></div>
+      ${freshnessPanel('pacifico')}
       <div class="grid g2">
         <div data-tour-id="basin-status">${statusCard('noaa')}</div>
         ${n?.synopsis ? html`<div class="card"><h3>Síntesis de NOAA</h3><blockquote lang="en">${n.synopsis}</blockquote><p class="muted small">Texto original de la discusión diagnóstica de NOAA/CPC del ${F.fmtDate(n.issued)} (en inglés).</p></div>` : ''}
@@ -395,6 +494,7 @@ VIEWS.oceano = {
     return html`
       <div class="page-head"><div class="eyebrow">Indicadores</div><h1>Océano y atmósfera</h1>
         <p>Las cuatro familias de indicadores que se vigilan para El Niño: temperatura del mar, vientos, termoclina y presión atmosférica.</p></div>
+      ${freshnessPanel('oceano')}
       ${chartCard('ch-weekly', { title: 'Temperatura del mar semanal', tour: 'ocean-weekly', range: '2', desc: 'Anomalía semanal por región Niño (NOAA OISST v2.1, base 1991–2020). Semanas centradas en el miércoles.' })}
       ${chartCard('ch-monthly', { title: 'Temperatura del mar mensual', tour: 'ocean-monthly', range: '15', desc: 'NOAA ERSSTv6 (la reconstrucción que NOAA usa para el RONI) y OISST (llega unas semanas antes), ambas con base 1991–2020.' })}
       <section data-tour-id="ocean-winds" aria-labelledby="wind-h">
@@ -414,7 +514,7 @@ VIEWS.oceano = {
   },
 };
 
-VIEWS.mapa = { title: 'Mapa', render: () => mapView.render(), after: () => mapView.after(load) };
+VIEWS.mapa = { title: 'Mapa', render: () => html`${raw(String(mapView.render()))}${freshnessPanel('mapa')}`, after: () => mapView.after(load) };
 
 VIEWS.historia = {
   title: 'Historia',
@@ -427,6 +527,7 @@ VIEWS.historia = {
     return html`
       <div class="page-head"><div class="eyebrow">Desde 1950</div><h1>Historia de El Niño y La Niña costeros</h1>
         <p>Eventos identificados con la definición operacional de ENFEN (Nota Técnica 01-2024) aplicada al ICEN oficial: al menos tres meses consecutivos en condición cálida (> +0,5 °C) o fría (< −0,7 °C).</p></div>
+      ${freshnessPanel('historia')}
       ${chartCard('ch-compare', { title: 'El evento actual frente a los grandes eventos', range: 'all', desc: 'ICEN oficial alineado por el mes de inicio de cada evento.' })}
       <section class="card" data-tour-id="events" aria-labelledby="ev-h">
         <div class="section-head"><h2 id="ev-h">Eventos (${evs.length})</h2>
@@ -474,6 +575,7 @@ VIEWS.datos = {
     return html`
       <div class="page-head"><div class="eyebrow">Datos abiertos</div><h1>Datos y descargas</h1>
         <p>Todas las series publicadas, con su periodo, unidad y fuente. Los archivos CSV llevan el identificador de la publicación (${S.pub}).</p></div>
+      ${freshnessPanel('datos')}
       <section class="card" data-tour-id="explorer" aria-labelledby="ex-h">
         <h2 id="ex-h">Explorador de series</h2>
         <div class="row"><label for="ex-sel">Serie</label><select id="ex-sel" class="input">${opts}</select>
@@ -549,6 +651,8 @@ VIEWS.metodologia = {
           <li><strong>Noticias.</strong> Se leen los feeds RSS de medios del Perú y del mundo, se conservan las notas sobre El Niño o sus impactos, se agrupan las que cuentan lo mismo y se agregan a un histórico que solo crece. Solo se guarda lo que cada medio publica en su feed.</li>
           <li><strong>Lectura tolerante a cambios de formato.</strong> Los archivos se leen por sus encabezados y etiquetas, no por posiciones fijas, y se comprueban rangos plausibles, duplicados y orden. Si el formato cambia, se registra una incidencia y el dato queda en validación. Los lectores se prueban contra copias históricas de cada fuente (2004–2026).</li>
           <li><strong>Vigencia por fuente.</strong> Cada serie tiene su propia antigüedad máxima según la frecuencia con que publica la institución. Un dato vencido nunca se presenta como actual: se muestra «Dato actual no disponible».</li>
+          <li><strong>¿Qué tan reciente es cada dato?</strong> Cada vista tiene un recuadro que dice, para cada dato, de qué fecha es, cuándo lo bajó el observatorio y si está <em>al día</em>, <em>atrasado</em> (ya debió llegar uno más reciente según el calendario de la institución, o se usó una copia o el último dato conservado) o <em>vencido</em> (supera la antigüedad máxima y no se usa como actual). NOAA publica los índices mensuales hacia el día 10 del mes siguiente; el ICEN del IGP va unos dos meses detrás; el ENFEN y NOAA anuncian la fecha de su próximo comunicado.</li>
+          <li><strong>Informes en texto.</strong> Del comunicado del ENFEN se lee el estado y la perspectiva (magnitud esperada por región), y de su informe técnico el ICEN temporal y las probabilidades por mes, que no se publican en ningún archivo de datos. Cada valor se muestra con el enlace al PDF, la página y el texto exacto de donde se leyó. Antes de publicarse se comprueban rangos, meses, que cada mes de probabilidades sume 100 % y que el ICEN coincida con el del IGP; lo que no cuadra no se publica, se conserva el último valor bueno y queda una incidencia.</li>
           <li><strong>Publicación atómica.</strong> Todos los archivos de una corrida comparten un identificador de publicación. El sitio verifica que coincidan antes de mostrarlos.</li>
           <li><strong>Vigilancia.</strong> Un vigilante revisa cada 6 horas que el sitio publicado esté al día y relanza la actualización si hace falta.</li>
         </ol>
@@ -709,6 +813,7 @@ VIEWS.noticias = {
     return html`
       <div class="page-head"><div class="eyebrow">Novedades</div><h1>Noticias y novedades</h1>
         <p>Lo último que publicó cada fuente oficial y las noticias sobre El Niño y sus impactos en el Perú y el mundo: autoridades, diarios, radios y medios regionales. Cuando varios medios cuentan lo mismo se agrupan en una sola entrada con el enlace a cada uno, y cada noticia se ubica en su departamento, provincia o distrito.</p></div>
+      ${freshnessPanel('noticias')}
       <div class="seg" role="tablist" aria-label="Tipo de novedades" data-tour-id="news-tabs">${NEWS_TABS.map(([k, l]) => html`<button type="button" role="tab" data-tab="${k}" aria-selected="${String(k === cur)}" aria-pressed="${String(k === cur)}">${l}</button>`)}</div>
       <p id="news-live" class="visually-hidden" aria-live="polite"></p>
       <div id="news-body" class="news-body"><div class="skeleton"></div></div>

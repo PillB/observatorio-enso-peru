@@ -483,3 +483,21 @@ table.grd .chip { white-space: normal; }
 }
 /* Nombres de medios o enlaces largos sin espacios no deben ensanchar la página */
 .feed-meta, .feed-title, .feed-text, .feed-more li, #feeds-status th { overflow-wrap: anywhere; }
+/* Vigencia de los datos de cada vista */
+.fresh-panel > summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; min-height: 40px; list-style: none; }
+.fresh-panel > summary::-webkit-details-marker { display: none; }
+.fresh-panel > summary::after { content: '▾'; margin-left: auto; color: var(--fg-3); }
+.fresh-panel[open] > summary::after { content: '▴'; }
+.fresh-sum { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+.fresh-panel .table-wrap { margin-top: 12px; }
+.fresh-panel[data-state="al-dia"] { border-color: var(--line); }
+/* Informe técnico y perspectiva del ENFEN */
+.outlook { padding-left: 1.1rem; }
+.outlook li + li { margin-top: 10px; }
+.outlook blockquote { margin: 6px 0 0; padding-left: 10px; border-left: 3px solid var(--line); color: var(--fg-2); }
+.src-links .quote { color: var(--fg-3); }
+.prob h3 { margin: 0 0 8px; font-size: 1rem; }
+.prob-table td.mid { background: var(--warm-soft); }
+.prob-table td.hi { background: var(--warm-soft); font-weight: 700; color: var(--warm); }
+.fresh-table .chip { white-space: nowrap; }
+.prob + .prob { margin-top: 18px; }

@@ -40,6 +40,7 @@ from typing import Any, Callable, Optional
 from .feeds import FormatChanged, Parsed
 from .feeds import cpc, peru
 from . import archive
+from . import reports
 from . import signals as sig
 
 SCHEMA = "observatorio-enso/4"
@@ -577,7 +578,11 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
             acq.documents.append(resp.body)
             if resp.body[:5] != b"%PDF-":
                 raise FormatChanged("enfen: la descarga no es un PDF")
-            c = peru.parse_enfen_communique(peru.pdf_text(resp.body), source=_clean_wpdm(item["url"]))
+            text = peru.pdf_text(resp.body)
+            c = peru.parse_enfen_communique(text, source=_clean_wpdm(item["url"]))
+            # Perspectiva (magnitud esperada por región, con su oración) y enlace al informe técnico.
+            c.data["outlook"] = reports.communique_outlook(text)
+            c.data["informe_url"] = reports.informe_link(text)
         except FetchError as exc:
             failures.append(f"{item['id']}: {exc}")
             continue
@@ -881,7 +886,7 @@ class Builder:
                     "status": latest["status"], "statusCode": latest["status_code"], "level": level,
                     "number": latest["id"], "issued": latest.get("issued"), "nextIssue": latest.get("next_issue"),
                     "summary": latest.get("summary"), "documentUrl": latest.get("source") or (listing[0]["url"] if listing else ""),
-                    "archive": latest.get("archive"), "stale": stale,
+                    "archive": latest.get("archive"), "stale": stale, "outlook": latest.get("outlook") or [],
                 })
                 if (listing and listing[0].get("kind", "oficial") == "oficial"
                         and (listing[0]["year"], listing[0]["number"]) > (latest["year"], latest["number"])):
@@ -894,10 +899,33 @@ class Builder:
                 if stale:
                     self.log.add("warning", "enfen-comunicados", "validate", "official-overdue",
                                  f"El siguiente comunicado ENFEN estaba previsto para {latest.get('next_issue')} y no se ha capturado.")
+        if enfen and enfen.get("informe"):
+            res["enfen"]["informe"] = self.informe(enfen["informe"])
         if "enfen" not in res or "status" not in res.get("enfen", {}):
             self.log.add("error", "enfen-comunicados", "derive", "status-unknown",
                          "No se pudo determinar el estado del sistema de alerta de ENFEN en esta corrida.")
         return res
+
+    def informe(self, inf: dict) -> dict:
+        """Contrasta el informe técnico con el ICEN oficial del IGP y suma el ICEN temporal a la serie ICEN."""
+        inf = dict(inf)
+        icen = self.series.get("icen")
+        tmp, last = inf.get("icenProvisional"), inf.get("lastOfficial")
+        if icen:
+            igp = {p["period"]: p["value"] for p in icen["points"] if p["value"] is not None}
+            if last and last["period"] in igp and abs(last["icen"] - igp[last["period"]]) > 0.05:
+                self.log.add("warning", "enfen-informe", "validate", "informe-icen-mismatch",
+                             f"El ICEN de {last['period']} del informe técnico ({last['icen']:+.2f}) difiere del archivo "
+                             f"del IGP ({igp[last['period']]:+.2f}).")
+            if tmp and icen["latest"]["period"] and tmp["period"] <= icen["latest"]["period"]:
+                tmp = inf["icenProvisional"] = None  # el IGP ya publicó el oficial de ese mes
+            if tmp:
+                icen["latest"]["provisional"] = {
+                    "period": tmp["period"], "value": tmp["icen"], "category": sig.icen_category(tmp["icen"]),
+                    "source": "enfen-informe", "url": inf.get("url"), "page": (tmp.get("evidence") or {}).get("page"),
+                    "quote": (tmp.get("evidence") or {}).get("quote"), "dataTo": inf.get("dataTo"),
+                    "informe": inf.get("number")}
+        return inf
 
     def grd(self) -> dict:
         def pick(key, stale_days=None):
@@ -963,7 +991,8 @@ def _is_number(s: str) -> bool:
 
 def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, official: dict, weekly, grd: dict,
                       log: EventLog, started: datetime, news: Optional[dict] = None,
-                      feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None) -> dict:
+                      feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None,
+                      freshness: Optional[dict] = None) -> dict:
     now = datetime.now(timezone.utc)
     content_hash = hashlib.sha256(json.dumps(
         {k: v["points"][-24:] for k, v in sorted(b.series.items())} | {"official": official}, sort_keys=True, default=str
@@ -1032,6 +1061,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                    "degraded": [h["id"] for h in health if h["status"] != "ok"], "worst": log.worst()},
         "pipeline": {"version": PIPELINE_VERSION, "gitSha": git_sha, "startedAt": started.isoformat(timespec="seconds")},
     }
+    if freshness is not None:
+        dashboard["freshness"] = freshness
     if news is not None:
         from .news import FEED_BY_ID
         snapshots = archive.write_feeds(aw, news.get("raw") or {}, FEED_BY_ID, now.isoformat(timespec="seconds"))
@@ -1251,6 +1282,16 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
             except Exception as exc:  # noqa: BLE001 — el último comunicado no debe detener la publicación
                 log.add("error", "enfen-comunicados", "parse", "latest-exception",
                         f"No se pudo buscar el último comunicado: {type(exc).__name__}: {exc}"[:300])
+            if fixtures is None and isinstance(acquired[src.id].data, dict):
+                # Informe técnico del comunicado vigente: ICEN temporal y probabilidades del ENFEN.
+                a = acquired[src.id]
+                prev_inf = ((prev.get("sources/enfen-comunicados.json") or {}).get("data") or {}).get("informe")
+                try:
+                    a.data["informe"] = reports.acquire_informe(a.data.get("latest"), fetcher, prev_inf, log, today)
+                except Exception as exc:  # noqa: BLE001 — el informe nunca detiene la publicación
+                    a.data["informe"] = prev_inf
+                    log.add("error", "enfen-informe", "parse", "informe-exception",
+                            f"{type(exc).__name__}: {exc}"[:300])
     acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
     b = Builder(acquired, log, today)
     b.build_series()
@@ -1293,12 +1334,17 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     feed = sourcefeed.build(official, b.series, weekly, meta, relay, news_items=news_items,
                             now=started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc),
                             feed_status=feed_status)
+    from . import freshness
+    fresh = freshness.build(b.series, weekly, official, meta, feed, feed_status, today,
+                            started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc))
+    freshness.log_late(fresh, log)
     for s in SOURCES:
         a = acquired.get(s.id)
         if a and not a.ok and not a.carried:
             log.add("critical" if s.critical else "error", s.id, "publish", "no-data",
                     "La fuente falló y no hay un dato anterior que conservar.")
-    res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev)
+    res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev,
+                            freshness=fresh)
     if raw_dir is not None:
         res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
