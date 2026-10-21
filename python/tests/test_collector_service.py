@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -392,6 +393,29 @@ def test_cron_lines_quote_paths_and_replace_old_ones(tmp_path, monkeypatch):
     assert sched.remove_cron() and store == ["0 5 * * * otra-cosa"]
 
 
+@pytest.mark.skipif(os.name == "nt", reason="PATH de cron y launchd (macOS y Linux)")
+def test_the_task_finds_the_git_the_installer_used(tmp_path, monkeypatch):
+    """cron corre con PATH=/usr/bin:/bin: un git en otra carpeta (linuxbrew,
+    /opt/local) no se encontraría al subir la copia."""
+    import plistlib
+
+    git_dir = tmp_path / "otro git" / "bin"
+    git_dir.mkdir(parents=True)
+    (git_dir / "git").write_text("#!/bin/sh\necho 'git version 9'\n", encoding="utf-8")
+    (git_dir / "git").chmod(0o755)
+    monkeypatch.setattr(sched.shutil, "which", lambda name: str(git_dir / name) if name == "git" else None)
+    root = tmp_path / "recolector"
+    assert sched.task_path().split(":")[0] == str(git_dir) and "/usr/bin" in sched.task_path().split(":")
+    data = plistlib.loads(sched.launchd_plist("/x/.venv/bin/python", root, ["21:00"]))
+    assert data["EnvironmentVariables"]["PATH"] == sched.task_path()
+    cmd = sched.cron_command(sys.executable, root)
+    assert f"PATH={shlex.quote(sched.task_path())} ENSO_HOME=" in cmd
+    # El mismo «PATH=…» que va en la línea de cron, con el entorno mínimo de cron.
+    r = subprocess.run(["/bin/sh", "-c", f"PATH={shlex.quote(sched.task_path())} sh -c 'git --version'"],
+                       env={"PATH": "/usr/bin:/bin"}, capture_output=True, text=True)
+    assert r.stdout.strip() == "git version 9", r.stderr
+
+
 # --- Verificación ------------------------------------------------------------------
 
 def test_check_reports_and_saves(home, monkeypatch, capsys):
@@ -637,7 +661,7 @@ def test_install_from_a_repository_checkout_brings_the_launchers(tmp_path):
 @pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
 def test_installer_stops_when_the_kit_cannot_be_copied(tmp_path):
     """Instalar no tiene «set -e»: una copia que falla (disco lleno) debe parar
-    antes del entorno de Python y de la tarea, no seguir con una instalación a medias."""
+    antes del entorno de Python y de la tarea, y dejar la instalación en uso intacta."""
     real_cp = shutil.which("cp")
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
@@ -645,13 +669,22 @@ def test_installer_stops_when_the_kit_cannot_be_copied(tmp_path):
         f"#!/bin/sh\nfor a in \"$@\"; do case \"$a\" in */config) echo 'cp: No space left on device' >&2; exit 1 ;; esac; done\n"
         f"exec '{real_cp}' \"$@\"\n", encoding="utf-8")
     (bin_dir / "cp").chmod(0o755)
-    dest = tmp_path / "recolector"
+    # Una instalación en uso: la tarea programada la sigue corriendo si la copia nueva falla.
+    dest = _install(tmp_path / "recolector")
+    for rel in ("python/tools/collector_service.py", "config/threshold-policies/a.yaml", "collector/instalar.sh"):
+        (dest / rel).parent.mkdir(parents=True, exist_ok=True)
+        (dest / rel).write_text("anterior\n", encoding="utf-8")
+    def code():  # sin la marca (se reescribe) ni el registro de la instalación
+        return {p.relative_to(dest): p.read_bytes() for p in dest.rglob("*")
+                if p.is_file() and p.name != sched.MARKER and "logs" not in p.relative_to(dest).parts}
+    before = code()
     env = {**os.environ, "HOME": str(tmp_path), "ENSO_SIN_PAUSA": "1", "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}"}
     r = subprocess.run(["bash", str(REPO_ROOT / "collector" / "instalar.sh"), "--no-interactivo", "--sin-tarea",
                         "--sin-verificar", "--destino", str(dest)], capture_output=True, text=True, env=env, timeout=120)
     out = r.stdout + r.stderr
-    assert r.returncode != 0 and "No se pudieron copiar" in out, out
-    assert not (dest / ".venv").exists()
+    assert r.returncode != 0 and "No se pudieron copiar" in out and "quedó como estaba" in out, out
+    assert not (dest / ".venv").exists() and not (dest / ".instalando").exists()
+    assert code() == before
 
 
 @pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")

@@ -155,7 +155,7 @@ ensure_python() {
 }
 
 copy_kit() {
-  local src dst f launchers
+  local src dst f name launchers stage
   mkdir -p "$DEST" || die "No se puede crear $DEST"
   src="$KIT_ROOT"
   dst="$(cd "$DEST" && pwd -P)"
@@ -165,28 +165,46 @@ copy_kit() {
   require_free_dest
   printf '%s\n' "Carpeta del recolector del Observatorio ENSO. DESINSTALAR la borra entera: no guardar aquí otros archivos." \
     > "$DEST/$MARKER"
-  # Sin «set -e»: cada paso anota si falló, y una copia a medias (disco lleno,
-  # error de E/S) no sigue a registrar la tarea.
+  # Primero se copia todo a una carpeta aparte, y solo si la copia salió
+  # completa reemplaza a la instalación en uso (mover dentro del mismo disco
+  # no ocupa espacio). Sin «set -e», cada paso anota si falló: una copia a
+  # medias (disco lleno, error de E/S) deja la instalación anterior como estaba.
+  stage="$DEST/.instalando"
   local ok=1
-  rm -rf "$DEST/python/enso" "$DEST/python/tools" "$DEST/config" "$DEST/registry" "$DEST/collector" \
-    "$DEST/otras-acciones" || ok=0
-  mkdir -p "$DEST/python" "$DEST/docs" || ok=0
-  cp "$src/python/requirements.txt" "$DEST/python/" || ok=0
-  cp -R "$src/python/enso" "$src/python/tools" "$DEST/python/" || ok=0
-  cp -R "$src/config" "$src/collector" "$DEST/" || ok=0
+  rm -rf "$stage"
+  mkdir -p "$stage/python" "$stage/docs" || ok=0
+  cp "$src/python/requirements.txt" "$stage/python/" || ok=0
+  cp -R "$src/python/enso" "$src/python/tools" "$stage/python/" || ok=0
+  cp -R "$src/config" "$src/collector" "$stage/" || ok=0
   # Los lanzadores van en la raíz: en el kit ya están ahí; en una copia del
   # repositorio, en collector/lanzadores (y el LEEME, en collector/).
   launchers="$src"
   [ -d "$src/otras-acciones" ] || launchers="$src/collector/lanzadores"
-  if [ -d "$launchers/otras-acciones" ]; then cp -R "$launchers/otras-acciones" "$DEST/" || ok=0; fi
-  if [ -d "$src/registry" ]; then cp -R "$src/registry" "$DEST/" || ok=0; fi
-  cp "$src/docs/servidor-peru.md" "$DEST/docs/" || ok=0
-  if [ ! -f "$src/LEEME.txt" ] && [ -f "$src/collector/LEEME.txt" ]; then cp "$src/collector/LEEME.txt" "$DEST/" || ok=0; fi
+  if [ -d "$launchers/otras-acciones" ]; then cp -R "$launchers/otras-acciones" "$stage/" || ok=0; fi
+  if [ -d "$src/registry" ]; then cp -R "$src/registry" "$stage/" || ok=0; fi
+  cp "$src/docs/servidor-peru.md" "$stage/docs/" || ok=0
+  if [ ! -f "$src/LEEME.txt" ] && [ -f "$src/collector/LEEME.txt" ]; then cp "$src/collector/LEEME.txt" "$stage/" || ok=0; fi
   for f in "$src/LEEME.txt" "$src/LICENSE" "$src/kit.json" "$launchers"/*.command "$launchers"/*.cmd; do
-    if [ -f "$f" ]; then cp "$f" "$DEST/" || ok=0; fi
+    if [ -f "$f" ]; then cp "$f" "$stage/" || ok=0; fi
   done
-  [ "$ok" = 1 ] || die "No se pudieron copiar todos los archivos a $DEST." \
-    "Revisar el espacio libre y los permisos de la carpeta y volver a ejecutar INSTALAR."
+  if [ "$ok" != 1 ]; then
+    rm -rf "$stage"
+    die "No se pudieron copiar todos los archivos a $DEST; la instalación anterior quedó como estaba." \
+      "Revisar el espacio libre y los permisos de la carpeta y volver a ejecutar INSTALAR."
+  fi
+  find "$stage" -name __pycache__ -type d -prune -exec rm -rf {} + 2>/dev/null
+  mkdir -p "$DEST/python" "$DEST/docs" || ok=0
+  for name in python/requirements.txt python/enso python/tools config registry collector otras-acciones \
+      docs/servidor-peru.md; do
+    [ -e "$stage/$name" ] || continue
+    if ! { rm -rf "${DEST:?}/$name" && mv "$stage/$name" "$DEST/$name"; }; then ok=0; fi
+  done
+  for f in "$stage"/*; do
+    if [ -f "$f" ] && ! mv -f "$f" "$DEST/"; then ok=0; fi
+  done
+  rm -rf "$stage"
+  [ "$ok" = 1 ] || die "No se pudieron poner los archivos nuevos en $DEST." \
+    "Revisar los permisos de la carpeta y volver a ejecutar INSTALAR."
   find "$DEST" -name __pycache__ -type d -prune -exec rm -rf {} + 2>/dev/null
   # Un zip abierto con «python -m zipfile» (ACTUALIZAR), una memoria USB o una
   # carpeta en la nube pierden el permiso de ejecución de los lanzadores.

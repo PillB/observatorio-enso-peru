@@ -46,6 +46,8 @@ MARKER = ".instalacion-recolector"
 RETRY_EVERY_MIN = 30
 RETRY_SPAN_H = 3
 COMMAND = ["-m", "tools.collector_service", "--programado"]
+#: PATH de la tarea en macOS y Linux: cron da solo /usr/bin:/bin y launchd poco más.
+BASE_PATH = ["/opt/homebrew/bin", "/usr/local/bin", "/usr/bin", "/bin", "/usr/sbin", "/sbin"]
 
 
 def lima_slots(at: str = "21:00") -> list[tuple[int, int]]:
@@ -75,6 +77,14 @@ def lima_offset_matches() -> bool:
 
 # --- macOS ---------------------------------------------------------------------
 
+def task_path() -> str:
+    """PATH de la tarea programada: la carpeta del git que usó el instalador
+    (puede estar fuera de las habituales, como /home/linuxbrew o /opt/local)
+    y las de siempre. Sin git en el PATH la corrida llega a subir y falla."""
+    git = shutil.which("git")
+    return ":".join(dict.fromkeys(([str(Path(git).parent)] if git else []) + BASE_PATH))
+
+
 def launchd_path() -> Path:
     return Path.home() / "Library" / "LaunchAgents" / f"{LAUNCHD_LABEL}.plist"
 
@@ -90,8 +100,7 @@ def launchd_plist(python: str, root: Path, times: list[str]) -> bytes:
         "ProcessType": "Background",
         "StandardOutPath": "/dev/null",
         "StandardErrorPath": str(root / "logs" / "launchd.log"),
-        "EnvironmentVariables": {"PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
-                                 "ENSO_HOME": str(root), "PYTHONUTF8": "1"},
+        "EnvironmentVariables": {"PATH": task_path(), "ENSO_HOME": str(root), "PYTHONUTF8": "1"},
     })
 
 
@@ -176,7 +185,7 @@ def kick_launchd() -> bool:
 
 def cron_command(python: str, root: Path) -> str:
     q = shlex.quote
-    return (f"cd {q(str(root / 'python'))} && ENSO_HOME={q(str(root))} {q(python)} {' '.join(COMMAND)}"
+    return (f"cd {q(str(root / 'python'))} && PATH={q(task_path())} ENSO_HOME={q(str(root))} {q(python)} {' '.join(COMMAND)}"
             f" >/dev/null 2>>{q(str(root / 'logs' / 'cron.log'))}")
 
 

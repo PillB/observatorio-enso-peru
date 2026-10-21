@@ -240,30 +240,51 @@ function Copy-Kit {
     Assert-DestinoFree
     New-Item -ItemType Directory -Force -Path $Destino | Out-Null
     Set-Content -LiteralPath (Join-Path $Destino $Marker) -Encoding UTF8 -Value 'Carpeta del recolector del Observatorio ENSO. DESINSTALAR la borra entera: no guardar aquí otros archivos.'
+    # Primero se copia todo a una carpeta aparte, y solo si la copia salió
+    # completa reemplaza a la instalación en uso: una copia a medias (disco
+    # lleno, error de E/S) deja la instalación anterior como estaba.
+    $stage = Join-Path $Destino '.instalando'
+    if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
+    $dirs = @('python\enso', 'python\tools', 'config', 'registry', 'collector', 'otras-acciones')
+    try {
+        New-Item -ItemType Directory -Force -Path (Join-Path $stage 'python'), (Join-Path $stage 'docs') | Out-Null
+        $items = @('python\requirements.txt', 'python\enso', 'python\tools', 'config', 'registry', 'collector',
+            'docs\servidor-peru.md', 'LEEME.txt', 'LICENSE', 'kit.json')
+        foreach ($rel in $items) {
+            $src = Join-Path $KitRoot $rel
+            if (Test-Path $src) { Copy-Item -Path $src -Destination (Join-Path $stage $rel) -Recurse -Force }
+        }
+        # Los lanzadores van en la raíz: en el kit ya están ahí; en una copia del
+        # repositorio, en collector\lanzadores (y el LEEME, en collector\).
+        $launchers = $KitRoot
+        if (-not (Test-Path (Join-Path $KitRoot 'otras-acciones'))) { $launchers = Join-Path $KitRoot 'collector\lanzadores' }
+        if (Test-Path (Join-Path $launchers 'otras-acciones')) {
+            Copy-Item -Path (Join-Path $launchers 'otras-acciones') -Destination (Join-Path $stage 'otras-acciones') -Recurse -Force
+        }
+        if (-not (Test-Path (Join-Path $KitRoot 'LEEME.txt')) -and (Test-Path (Join-Path $KitRoot 'collector\LEEME.txt'))) {
+            Copy-Item -Path (Join-Path $KitRoot 'collector\LEEME.txt') -Destination $stage -Force
+        }
+        Get-ChildItem -Path $launchers -File | Where-Object { $_.Extension -in '.cmd', '.command' } |
+            Copy-Item -Destination $stage -Force
+        Get-ChildItem -Path $stage -Recurse -Directory -Filter '__pycache__' | Remove-Item -Recurse -Force
+    } catch {
+        Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
+        Exit-WithError "No se pudieron copiar todos los archivos a $Destino; la instalación anterior quedó como estaba ($($_.Exception.Message))." `
+            'Revisar el espacio libre y los permisos de la carpeta y volver a ejecutar INSTALAR.'
+    }
+    # Reemplazo: mover dentro del mismo disco no ocupa espacio. Se reemplazan
+    # las subcarpetas (no python\ entera): la tarea corre dentro de python\.
     New-Item -ItemType Directory -Force -Path (Join-Path $Destino 'python'), (Join-Path $Destino 'docs') | Out-Null
-    foreach ($d in 'python\enso', 'python\tools', 'config', 'registry', 'collector', 'otras-acciones') {
-        $target = Join-Path $Destino $d
-        if (Test-Path $target) { Remove-Item -Recurse -Force $target }
+    $swap = @($dirs + 'python\requirements.txt', 'docs\servidor-peru.md') +
+        @(Get-ChildItem -LiteralPath $stage -File | ForEach-Object { $_.Name })
+    foreach ($rel in $swap) {
+        $new = Join-Path $stage $rel
+        if (-not (Test-Path -LiteralPath $new)) { continue }
+        $target = Join-Path $Destino $rel
+        if (Test-Path -LiteralPath $target) { Remove-Item -LiteralPath $target -Recurse -Force }
+        Move-Item -LiteralPath $new -Destination $target -Force
     }
-    $items = @('python\requirements.txt', 'python\enso', 'python\tools', 'config', 'registry', 'collector',
-        'docs\servidor-peru.md', 'LEEME.txt', 'LICENSE', 'kit.json')
-    foreach ($rel in $items) {
-        $src = Join-Path $KitRoot $rel
-        if (Test-Path $src) { Copy-Item -Path $src -Destination (Join-Path $Destino $rel) -Recurse -Force }
-    }
-    # Los lanzadores van en la raíz: en el kit ya están ahí; en una copia del
-    # repositorio, en collector\lanzadores (y el LEEME, en collector\).
-    $launchers = $KitRoot
-    if (-not (Test-Path (Join-Path $KitRoot 'otras-acciones'))) { $launchers = Join-Path $KitRoot 'collector\lanzadores' }
-    if (Test-Path (Join-Path $launchers 'otras-acciones')) {
-        Copy-Item -Path (Join-Path $launchers 'otras-acciones') -Destination (Join-Path $Destino 'otras-acciones') -Recurse -Force
-    }
-    if (-not (Test-Path (Join-Path $KitRoot 'LEEME.txt')) -and (Test-Path (Join-Path $KitRoot 'collector\LEEME.txt'))) {
-        Copy-Item -Path (Join-Path $KitRoot 'collector\LEEME.txt') -Destination $Destino -Force
-    }
-    Get-ChildItem -Path $launchers -File | Where-Object { $_.Extension -in '.cmd', '.command' } |
-        Copy-Item -Destination $Destino -Force
-    Get-ChildItem -Path $Destino -Recurse -Directory -Filter '__pycache__' | Remove-Item -Recurse -Force
+    Remove-Item -LiteralPath $stage -Recurse -Force
     # Quita la marca «descargado de internet» para que Windows no bloquee los scripts.
     Get-ChildItem -Path $Destino -Recurse -File | Unblock-File -ErrorAction SilentlyContinue
     Write-Info "Archivos copiados a $Destino"

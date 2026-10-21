@@ -126,6 +126,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "INSTALAR terminó con $LASTEXITCODE" }
           Get-ScheduledTask -TaskName 'Observatorio ENSO - recolector Peru' | Format-List TaskName, State, Principal
           if ((Get-Content "$dest\.env" -Raw) -notmatch 'GITHUB_TOKEN=github_pat_') { throw '.env sin token' }
+          # Reinstalar encima (como ACTUALIZAR): reemplaza el código y conserva el token.
+          & "kit\recolector-peru\INSTALAR-Windows.cmd" -NoInteractivo -SinVerificar
+          if ($LASTEXITCODE -ne 0) { throw "Reinstalar terminó con $LASTEXITCODE" }
+          if ((Get-Content "$dest\.env" -Raw) -notmatch 'GITHUB_TOKEN=github_pat_') { throw 'Reinstalar perdió el token' }
+          if ((Test-Path "$dest\.instalando") -or -not (Test-Path "$dest\python\tools\collector_service.py")) { throw 'Reinstalar dejó la copia a medias' }
 
           & "$dest\VERIFICAR-Windows.cmd" -Omitir token,escritura,fuentes,ultima-corrida
           if ($LASTEXITCODE -ne 0) { throw "VERIFICAR terminó con $LASTEXITCODE" }
@@ -169,6 +174,9 @@ jobs:
           ./kit/recolector-peru/INSTALAR-Mac.command --no-interactivo --sin-verificar --token "$FAKE_TOKEN"
           launchctl print "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" | head -20
           test "$(stat -f %Lp "$dest/.env")" = 600
+          # Reinstalar encima (como ACTUALIZAR): reemplaza el código y conserva el token.
+          ./kit/recolector-peru/INSTALAR-Mac.command --no-interactivo --sin-verificar
+          grep -q '^GITHUB_TOKEN=github_pat_' "$dest/.env" && test ! -e "$dest/.instalando" && test -f "$dest/python/tools/collector_service.py"
           "$dest/VERIFICAR-Mac.command" --omitir token,escritura,fuentes,ultima-corrida
           "$dest/otras-acciones/PROBAR-TAREA-Mac.command" --solo tarea || true
           cat "$dest/estado.json"; tail -20 "$dest/logs/recolector.log"
@@ -192,6 +200,10 @@ jobs:
           bash kit/recolector-peru/collector/instalar.sh --no-interactivo --sin-verificar --token "$FAKE_TOKEN" --destino "$dest"
           crontab -l
           test "$(stat -c %a "$dest/.env")" = 600
+          # Reinstalar encima (como ACTUALIZAR): reemplaza el código y conserva el token.
+          bash kit/recolector-peru/collector/instalar.sh --no-interactivo --sin-verificar --destino "$dest"
+          grep -q '^GITHUB_TOKEN=github_pat_' "$dest/.env" && test ! -e "$dest/.instalando" && test -f "$dest/python/tools/collector_service.py"
+          test "$(crontab -l | grep -c observatorio-enso-recolector)" -ge 2 && crontab -l | grep -q 'PATH='
           bash "$dest/VERIFICAR-Mac.command" --omitir token,escritura,fuentes,ultima-corrida
           bash "$dest/otras-acciones/PROBAR-TAREA-Mac.command" --solo tarea || true
           cat "$dest/estado.json"; tail -20 "$dest/logs/recolector.log"

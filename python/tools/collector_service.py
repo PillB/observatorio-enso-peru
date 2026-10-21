@@ -64,6 +64,7 @@ TOKEN_WARN_DAYS = 21
 GIT_DIRS = {
     "win32": [r"C:\Program Files\Git\cmd", os.path.expandvars(r"%LOCALAPPDATA%\Programs\Git\cmd")],
     "darwin": ["/opt/homebrew/bin", "/usr/local/bin", "/usr/bin"],
+    "linux": ["/usr/local/bin", "/usr/bin", "/home/linuxbrew/.linuxbrew/bin", "/snap/bin"],
 }
 
 EXIT_OK, EXIT_NO_SOURCES, EXIT_CONFIG, EXIT_GITHUB, EXIT_PUSH, EXIT_BUSY, EXIT_HUNG, EXIT_BUG = 0, 1, 2, 3, 4, 5, 6, 9
