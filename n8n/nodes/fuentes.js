@@ -53,6 +53,11 @@ for (const s of registry.sources) {
     const altExpect = k && Array.isArray(s.alt_expect) ? s.alt_expect[k - 1] : null;
     const expect = altExpect || (!k || ext(url) === ext(s.url) ? s.expect || 'any' : 'any');
     if (seen.has(url)) return;
+    // Canales por URL (registro «by_url»): con alcance «n8n», una URL que el
+    // registro asigna solo a otros canales (p. ej. el portal del ENFEN, que
+    // solo responde desde el Perú) no se pide, aunque la fuente sí vaya por n8n.
+    const perUrl = s.by_url && s.by_url[raw] && Array.isArray(s.by_url[raw].channels) ? s.by_url[raw].channels : null;
+    if (scope === 'n8n' && perUrl && !perUrl.includes('n8n')) return;
     seen.add(url);
     out.push({ json: {
       id: k ? `${s.id}#${k + 1}` : s.id, group: s.group, name: s.name, url, expect,

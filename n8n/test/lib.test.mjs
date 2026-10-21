@@ -291,6 +291,16 @@ test('Fuentes: respeta robots.txt y el alcance «n8n»', async () => {
   await assert.rejects(runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: 'no-existe' } }] }), /Ninguna fuente/);
 });
 
+test('Fuentes: con alcance «n8n» omite las URL que el registro asigna a otros canales', async () => {
+  const reg = { schema: 'enso-source-registry/1', sources: [
+    { id: 'e', group: 'enfen', url: 'https://portal/api', alt_urls: ['https://dhn/listado'], alt_expect: ['html'], expect: 'json', channels: ['n8n', 'peru-server'],
+      by_url: { 'https://portal/api': { status: 'suspected-geoblock', channels: ['peru-server'] }, 'https://dhn/listado': { status: 'open', channels: ['n8n'] } } },
+  ] };
+  const cfg = (scope) => ({ 'Configuración': [{ json: { scope, only: '' } }] });
+  assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg('n8n'))).map((i) => i.json.url), ['https://dhn/listado']);
+  assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg('todas'))).map((i) => i.json.url), ['https://portal/api', 'https://dhn/listado']);
+});
+
 test('Preparar copia: no publica si no pudo leer la copia anterior', async () => {
   const nodes = (prev) => ({ 'Configuración': [{ json: { data_branch: 'data-n8n', carry_hours: 72, max_file_mb: 8 } }], 'Leer copia anterior': [{ json: prev }], Fuentes: [{ json: { registry: 'GitHub x@main (2026-10-21)' } }] });
   await assert.rejects(runCode('preparar', {}, nodes({ statusCode: 500, data: '' })), /no se publica/);
