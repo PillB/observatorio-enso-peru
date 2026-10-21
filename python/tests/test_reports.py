@@ -424,3 +424,82 @@ def test_llm_failure_never_raises(monkeypatch):
     monkeypatch.setenv(R.LLM_URL_ENV, "https://n8n.example/webhook/extract")
     client = httpx.Client(transport=httpx.MockTransport(lambda req: httpx.Response(500)))
     assert R.llm_extract(client, "enfen-informe", "texto", url="u")["ok"] is False
+
+
+# --- Documentos que hay que bajar a mano (enso.manual) ----------------------------------------------------
+
+
+class _ManualFetcher(_Fetcher):
+    """Las URL de ``manual`` llegan como copias subidas en la consola (canal «relay-manual»)."""
+
+    def __init__(self, responses: dict, manual: dict):
+        super().__init__(responses)
+        self.manual = manual
+
+    def get(self, urls, **kw):
+        from enso.fetch import Response
+
+        for u in urls:
+            if u in self.manual:
+                self.asked.append(u)
+                return Response(u, self.manual[u], "relay-manual", 200, archived_at="2026-10-21T21:00:00+00:00")
+        return super().get(urls, **kw)
+
+    def copy(self, url, accept=()):
+        from enso.fetch import Response
+
+        body = self.manual.get(url)
+        return Response(url, body, "relay-manual", 200, archived_at="2026-10-21T21:00:00+00:00") if body else None
+
+
+def test_informe_that_no_route_brings_is_listed_for_manual_download():
+    from enso import manual
+
+    needs = manual.ManualNeeds()
+    R.acquire_informe(LATEST, _Fetcher({}), PREV, _Log(), date(2026, 10, 21), needs=needs)
+    item = needs.items["informe-18-2026"]
+    assert item["kind"] == "informe" and U18 in item["urls"] and DHN18 in item["urls"]
+    assert manual.key("enfen-informe", "18-2026") in item["urls"]
+    assert item["open"][0] == U18 and R.INFORMES_PAGE in item["open"]
+    assert not any(u.startswith("manual://") for u in item["open"])
+    assert "verificación humana" in item["reason"]
+
+
+def test_informe_uploaded_by_hand_is_read_and_reported(monkeypatch):
+    from enso import manual
+
+    pages, _ = _pages(N18)
+    monkeypatch.setattr(R, "pdf_pages", lambda b: pages)
+    needs = manual.ManualNeeds()
+    res = R.acquire_informe(LATEST, _ManualFetcher({}, {U18: b"%PDF-1.7 a mano"}), PREV, _Log(), date(2026, 10, 21),
+                            needs=needs)
+    assert res["channel"] == "relay-manual" and res["number"] == 18 and not res.get("carried")
+    assert not needs.items and [u["id"] for u in needs.used] == ["informe-18-2026"]
+
+
+def test_informe_uploaded_by_hand_of_another_period_is_not_published(monkeypatch):
+    from enso import manual
+
+    pages, _ = _pages(N17)
+    monkeypatch.setattr(R, "pdf_pages", lambda b: pages)
+    needs = manual.ManualNeeds()
+    res = R.acquire_informe(LATEST, _ManualFetcher({}, {U18: b"%PDF-1.7 otro"}), PREV, _Log(), date(2026, 10, 21),
+                            needs=needs)
+    assert res["carried"] and not needs.used
+    assert "N° 17" in needs.items["informe-18-2026"]["problem"]
+
+
+def test_informe_without_a_known_url_is_read_from_the_upload_key(monkeypatch):
+    from enso import manual
+
+    pages, _ = _pages(N18)
+    monkeypatch.setattr(R, "pdf_pages", lambda b: pages)
+    needs = manual.ManualNeeds()
+    f = _ManualFetcher({}, {manual.key("enfen-informe", "18-2026"): b"%PDF-1.7 a mano"})
+    res = R.acquire_informe({**LATEST, "informe_url": None}, f, None, _Log(), date(2026, 10, 21), needs=needs)
+    assert res["number"] == 18 and res["url"] == f"{R.INFORMES_PAGE}#comunicado-18-2026"
+    # Sin copia: queda pendiente con la clave y los listados para abrir.
+    needs = manual.ManualNeeds()
+    R.acquire_informe({**LATEST, "informe_url": None}, _ManualFetcher({}, {}), None, _Log(), date(2026, 10, 21), needs=needs)
+    assert needs.items["informe-18-2026"]["urls"] == [manual.key("enfen-informe", "18-2026")]
+    assert needs.items["informe-18-2026"]["open"] == [R.INFORMES_PAGE, R.DHN_INFORMES_PAGE]

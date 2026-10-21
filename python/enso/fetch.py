@@ -119,8 +119,9 @@ class Relay:
         self.goals: dict = idx.get("goals") or {}
         self.heartbeat: dict = read_heartbeat(self.root)
         self.max_age_hours = max_age_hours
-        #: Canal con que se marcan las respuestas: «relay-n8n» o «relay-peru».
-        self.channel = "relay-n8n" if (idx.get("collector") or {}).get("kind") == "n8n" else "relay-peru"
+        #: Canal con que se marcan las respuestas: «relay-n8n», «relay-manual» (consola de documentos) o «relay-peru».
+        kind = (idx.get("collector") or {}).get("kind")
+        self.channel = {"n8n": "relay-n8n", "manual": "relay-manual"}.get(kind, "relay-peru")
         self._by_url: dict[str, list[dict]] = {}
         for e in idx.get("entries") or []:
             if e.get("status") != 200 or not self.FILE_RE.match(e.get("file") or ""):
@@ -314,6 +315,10 @@ class Fetcher:
                     attempts.append({"url": url, "channel": got.channel,
                                      "note": f"copia de archivo con tipo inesperado ({got.content_type[:60]})"})
         raise FetchError(f"sin respuesta válida para {urls[0]}", attempts)
+
+    def copy(self, url: str, accept: tuple[str, ...] = ()) -> Optional[Response]:
+        """Solo las copias de los recolectores (sin pedir nada): para las URL sintéticas ``manual://``."""
+        return self._from_relays(url, accept)
 
     def _from_relays(self, url: str, accept: tuple[str, ...]) -> Optional[Response]:
         hits = [got for got in (r.get(url, accept) for r in self.relays) if got is not None]

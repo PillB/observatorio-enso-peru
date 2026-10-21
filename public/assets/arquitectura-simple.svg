@@ -173,17 +173,18 @@
     <text class="ar-t" x="372" y="663.8" font-size="10.5" text-anchor="middle">I</text>
   </g>
   <g class="ar-edge" id="as-e-J" data-edge="J" data-from="s-publicacion" data-to="s-consola" tabindex="0">
-    <title>J. Publicación → Consola de lugares: Notas por revisar. La consola trae las noticias de los últimos 120 días y abre con las de lugar dudoso, para que una persona lo confirme o lo corrija.</title>
-    <path class="ar-e ar-e-data" d="M420 888 L330 888 Q324 888 324 894 L324 912 Q324 918 318 918 L300 918" marker-end="url(#as-m-data)"/>
+    <title>J. Publicación → Consola de lugares y documentos: Notas por revisar. La consola trae las noticias de los últimos 120 días y abre con las de lugar dudoso, para que una persona lo confirme o lo corrija.</title>
+    <path class="ar-e ar-e-data" d="M420 888 L330 888 Q324 888 324 894 L324 966 Q324 972 318 972 L300 972" marker-end="url(#as-m-data)"/>
+    <text class="ar-s ar-halo" x="344" y="857.6" font-size="11.5">Notas por</text>
+    <text class="ar-s ar-halo" x="344" y="872.6" font-size="11.5">revisar</text>
     <circle class="ar-badge ar-e-data" cx="372" cy="888" r="9"/>
     <text class="ar-t" x="372" y="891.8" font-size="10.5" text-anchor="middle">J</text>
   </g>
   <g class="ar-edge" id="as-e-K" data-edge="K" data-from="s-consola" data-to="s-pipeline" tabindex="0">
-    <title>K. Consola de lugares → Pipeline diario: Correcciones de lugar. Las correcciones se aplican en la corrida siguiente y tienen la última palabra. Si la consola no responde, se usan las ya publicadas.</title>
-    <path class="ar-e ar-e-data" d="M300 876 L396 876 Q402 876 402 870 L402 720 Q402 714 408 714 L510 714 Q516 714 516 708 L516 691.4" marker-end="url(#as-m-data)"/>
-    <text class="ar-s ar-halo" x="418" y="798" font-size="11.5">Correcciones de lugar</text>
-    <circle class="ar-badge ar-e-data" cx="402" cy="795" r="9"/>
-    <text class="ar-t" x="402" y="798.8" font-size="10.5" text-anchor="middle">K</text>
+    <title>K. Consola de lugares y documentos → Pipeline diario: Correcciones de lugar. Las correcciones se aplican en la corrida siguiente y tienen la última palabra. Si la consola no responde, se usan las ya publicadas.</title>
+    <path class="ar-e ar-e-data" d="M300 888 L318 888 Q324 888 324 882 L324 720 Q324 714 330 714 L510 714 Q516 714 516 708 L516 691.4" marker-end="url(#as-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="420" cy="714" r="9"/>
+    <text class="ar-t" x="420" y="717.8" font-size="10.5" text-anchor="middle">K</text>
   </g>
   <g class="ar-edge" id="as-e-L" data-edge="L" data-from="s-operacion" data-to="s-recolectores" tabindex="0">
     <title>L. Operación y vigilancia → Recolectores (Actions, n8n, Perú): Ajusta quién baja qué. Cada lunes se mide qué fuentes responden desde cada lugar y se actualiza el registro que siguen los tres recolectores.</title>
@@ -310,16 +311,20 @@
     <text class="ar-s" x="912" y="453.8" font-size="12">las personas que mantienen el sistema.</text>
   </g>
   <g class="ar-node-g" id="as-n-s-consola" data-node="s-consola">
-    <title>Consola de lugares. Página donde revisores, con usuario y clave, corrigen a mano el lugar de una noticia cuando el sistema duda. Solo funciona con el sitio en Cloudflare.</title>
-    <rect class="ar-node ar-g-people" x="20" y="841" width="280" height="110.4" rx="8"/>
-    <rect class="ar-f-people" x="20" y="849" width="4" height="94.4" rx="2"/>
+    <title>Consola de lugares y documentos. Página donde revisores, con usuario y clave, corrigen a mano el lugar de una noticia cuando el sistema duda, y donde un administrador sube el PDF de un documento oficial que pide verificación humana. Solo funciona con el sitio en Cloudflare.</title>
+    <rect class="ar-node ar-g-people" x="20" y="841" width="280" height="178.3" rx="8"/>
+    <rect class="ar-f-people" x="20" y="849" width="4" height="162.3" rx="2"/>
     <circle class="ar-step" cx="41" cy="862" r="10"/>
     <text class="ar-step-n" x="41" y="866.2" font-size="12" text-anchor="middle">6</text>
-    <text class="ar-t" x="58" y="867" font-size="14">Consola de lugares</text>
-    <text class="ar-s" x="32" y="887.6" font-size="12">Página donde revisores, con usuario y</text>
-    <text class="ar-s" x="32" y="904.1" font-size="12">clave, corrigen a mano el lugar de una</text>
-    <text class="ar-s" x="32" y="920.7" font-size="12">noticia cuando el sistema duda. Solo</text>
-    <text class="ar-s" x="32" y="937.2" font-size="12">funciona con el sitio en Cloudflare.</text>
+    <text class="ar-t" x="58" y="867" font-size="14">Consola de lugares y</text>
+    <text class="ar-t" x="58" y="885.2" font-size="14">documentos</text>
+    <text class="ar-s" x="32" y="905.8" font-size="12">Página donde revisores, con usuario y</text>
+    <text class="ar-s" x="32" y="922.3" font-size="12">clave, corrigen a mano el lugar de una</text>
+    <text class="ar-s" x="32" y="938.9" font-size="12">noticia cuando el sistema duda, y donde</text>
+    <text class="ar-s" x="32" y="955.4" font-size="12">un administrador sube el PDF de un</text>
+    <text class="ar-s" x="32" y="972" font-size="12">documento oficial que pide verificación</text>
+    <text class="ar-s" x="32" y="988.6" font-size="12">humana. Solo funciona con el sitio en</text>
+    <text class="ar-s" x="32" y="1005.1" font-size="12">Cloudflare.</text>
   </g>
   <line class="ar-rule" x1="20" y1="1210.9" x2="1180" y2="1210.9"/>
   <text class="ar-h" x="20" y="1240.9" font-size="15">Recorrido</text>
@@ -429,13 +434,13 @@
   <circle class="ar-badge ar-e-data" cx="626" cy="1905.9" r="9"/>
   <text class="ar-t" x="626" y="1909.7" font-size="10.5" text-anchor="middle">J</text>
   <text class="ar-t" x="646" y="1909.9" font-size="11.5">Notas por revisar</text>
-  <text class="ar-m" x="646" y="1923.9" font-size="10.5">Publicación → Consola de lugares</text>
+  <text class="ar-m" x="646" y="1923.9" font-size="10.5">Publicación → Consola de lugares y documentos</text>
   <text class="ar-s" x="646" y="1938.9" font-size="11">La consola trae las noticias de los últimos 120 días y abre con las de lugar dudoso, para que</text>
   <text class="ar-s" x="646" y="1953.9" font-size="11">una persona lo confirme o lo corrija.</text>
   <circle class="ar-badge ar-e-data" cx="626" cy="1976.9" r="9"/>
   <text class="ar-t" x="626" y="1980.7" font-size="10.5" text-anchor="middle">K</text>
   <text class="ar-t" x="646" y="1980.9" font-size="11.5">Correcciones de lugar</text>
-  <text class="ar-m" x="646" y="1994.9" font-size="10.5">Consola de lugares → Pipeline diario</text>
+  <text class="ar-m" x="646" y="1994.9" font-size="10.5">Consola de lugares y documentos → Pipeline diario</text>
   <text class="ar-s" x="646" y="2009.9" font-size="11">Las correcciones se aplican en la corrida siguiente y tienen la última palabra. Si la consola no</text>
   <text class="ar-s" x="646" y="2024.9" font-size="11">responde, se usan las ya publicadas.</text>
   <circle class="ar-badge ar-e-control" cx="626" cy="2047.9" r="9"/>

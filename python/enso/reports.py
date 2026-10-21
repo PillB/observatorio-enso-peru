@@ -712,7 +712,8 @@ def _informe_pdf(fetcher, url: str, FetchError, archive_prefix):
 
 
 def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[dict], log, today: date,
-                    icen_points: Optional[list[dict]] = None, documents: Optional[list] = None) -> Optional[dict]:
+                    icen_points: Optional[list[dict]] = None, documents: Optional[list] = None,
+                    needs=None) -> Optional[dict]:
     """Informe técnico del comunicado vigente: se baja una vez por comunicado (pesa 10–20 MB) y se lee.
 
     Rutas, en orden: el portal del ENFEN (no responde desde GitHub Actions ni desde n8n), la réplica de la DHN,
@@ -721,11 +722,22 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
     ``documents``). Si no se puede bajar o leer, o nada de lo leído pasa las reglas, se conserva el resumen
     anterior marcado ``carried`` y queda la incidencia. Si solo falla una parte (una región, el ICEN
     temporal), esa parte no se publica y queda su incidencia. Nunca se publica un valor que no pasó la
-    validación."""
+    validación.
+
+    ``needs`` (``manual.ManualNeeds``): si ninguna ruta da el PDF, el informe queda pendiente de subirse a mano en
+    la consola de documentos; la copia subida se busca con la misma URL (o con ``manual://enfen-informe/<id>``
+    si no se conoce la URL) y se valida igual que cualquier otra."""
     from datetime import datetime, timezone
 
-    from . import archive
+    from . import archive, manual
     from .fetch import FetchError, archive_prefix
+
+    def need(urls: list[str], reason: str, problem: Optional[str] = None) -> None:
+        if needs is not None:
+            needs.add(f"informe-{cid}", "informe", f"Informe técnico del ENFEN del comunicado N° {cid}",
+                      urls + [manual.key("enfen-informe", cid)], [u for u in urls if "/download/" in u] + urls
+                      + [INFORMES_PAGE, DHN_INFORMES_PAGE], reason,
+                      expect={"communique": cid, "issued": latest.get("issued")}, problem=problem)
 
     if not latest:
         return previous_informe
@@ -748,6 +760,7 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
                 "carriedReason": f"No se pudo leer el informe del comunicado {cid}.", **({"review": review} if review else {})}
 
     url = latest.get("informe_url")
+    hit, r = None, None
     if not url:
         try:
             r = fetcher.get([INFORMES_PAGE], archive=True, accept=("html",))
@@ -761,28 +774,44 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
             except FetchError:
                 hit = None
         if hit is None:
-            return keep(f"El comunicado {cid} no enlaza su informe técnico y los listados del portal y de la DHN "
-                        "no lo traen (o no respondieron).", "warning", "fetch")
+            # Sin la URL del informe solo sirve una copia subida a mano con la clave del comunicado.
+            r = fetcher.copy(manual.key("enfen-informe", cid), ("pdf",)) if hasattr(fetcher, "copy") else None
+            if r is None or r.body[:5] != b"%PDF-":
+                need([], "Ningún listado de informes respondió (el portal del ENFEN no responde fuera del Perú).")
+                return keep(f"El comunicado {cid} no enlaza su informe técnico y los listados del portal y de la DHN "
+                            "no lo traen (o no respondieron).", "warning", "fetch")
+            # La procedencia publicada es el listado oficial, no la clave interna; el ancla la hace única por
+            # comunicado, para que el informe de este no se reutilice para el siguiente.
+            url = f"{INFORMES_PAGE}#comunicado-{cid}"
+            hit = {"url": url, "copy": r}
         url = hit["url"]
     if previous_informe and previous_informe.get("url") == url and not previous_informe.get("carried"):
         return {**previous_informe, "communique": cid}  # el comunicado nuevo cita el mismo informe
     try:
-        r = _informe_pdf(fetcher, url, FetchError, archive_prefix)
+        r = (hit or {}).get("copy") or _informe_pdf(fetcher, url, FetchError, archive_prefix)
         if r is None:
+            need(mirrors(url) + [url], "La réplica de la DHN pide verificación humana a los servidores automáticos "
+                 "y las demás rutas no dieron el PDF." if any("dhn.mil.pe" in m for m in mirrors(url))
+                 else "Ninguna ruta automática dio el PDF.")
             return keep(f"No se pudo bajar el informe técnico {url}: el portal, la réplica de la DHN (que puede "
                         "pedir verificación humana), las copias de los recolectores y el Internet Archive no "
                         "dieron el PDF.", "warning", "fetch")
         pages = pdf_pages(r.body)
     except FetchError as exc:
+        need(mirrors(url) + [url], manual.reason_from(exc.attempts, "Ninguna ruta automática dio el PDF."))
         return keep(f"No se pudo bajar el informe técnico {url} (portal, réplica de la DHN, copias y archivo): {exc}",
                     "warning", "fetch")
     except Exception as exc:  # noqa: BLE001 — un PDF dañado no detiene la corrida
+        need(mirrors(url) + [url], "El PDF que se obtuvo no se pudo leer.",
+             f"{type(exc).__name__}: {exc}" if r is not None and r.channel == "relay-manual" else None)
         return keep(f"No se pudo leer el PDF del informe técnico {url}: {type(exc).__name__}: {exc}")
     if documents is not None:
         documents.append(r.body)
     try:
         ext = parse_informe(pages, url)
     except FormatChanged as exc:
+        if r.channel == "relay-manual":
+            need(mirrors(url) + [url], "La copia subida no se pudo leer.", f"Formato no reconocido: {exc}")
         prior = (previous_informe or {}).get("review") or {}
         if prior.get("url") == url:
             review = prior  # el mismo PDF ya se le pasó al modelo: no se repite la consulta
@@ -797,7 +826,15 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
     summary.update({"retrievedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"), "channel": r.channel,
                     "communique": cid, "pages": len(pages),
                     "archive": archive.source_path("enfen-comunicados", r.body)})
+    manual_copy = r.channel == "relay-manual"
+    if manual_copy and needs is not None:
+        needs.mark_used(f"informe-{cid}", f"Informe técnico del ENFEN del comunicado N° {cid}", url, r.archived_at)
     if any(i.code == "informe-other-communique" for i in ext.issues):
+        if manual_copy:
+            if needs is not None:
+                needs.used.pop()
+            need(mirrors(url) + [url], "La copia subida es de otro periodo.",
+                 f"El PDF subido es el informe N° {ext.data.get('number')}, no el del comunicado {cid}.")
         return keep(f"El informe N° {ext.data.get('number')} no es el del comunicado {cid}.", "warning", "validate")
     if not summary["icenProvisional"] and not summary["probabilities"] and previous_informe:
         return keep("El informe técnico se leyó pero ninguno de sus valores pasó la validación.")

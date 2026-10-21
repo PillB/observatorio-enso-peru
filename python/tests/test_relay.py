@@ -324,6 +324,9 @@ def test_dhn_pdf_from_relay_is_read(tmp_path):
     from datetime import date
 
     acq = _dhn_acquired()
+    # La copia es el PDF real del comunicado 17-2026: el listado empieza en él (un PDF de otro número no se
+    # publica como el buscado).
+    acq.data["listing"] = [i for i in acq.data["listing"] if (i["year"], i["number"]) <= (2026, 17)]
     top = acq.data["listing"][0]
     url = obs._communique_urls(top)[0]
     root = tmp_path / "relay"
@@ -850,3 +853,100 @@ def test_site_run_warns_when_the_collector_missed_a_goal(tmp_path):
     ev = [e for e in log.events if e.code == "relay-goal-missed"]
     assert len(ev) == 1 and ev[0].severity == "warning" and "informe técnico 18-2026" in ev[0].message
     assert "comunicado" not in ev[0].message
+
+
+# --- Documentos que hay que bajar a mano (consola de documentos, enso.manual) -------------------------------
+
+
+def _manual_relay(root: Path, url: str, body: bytes, aliases=()) -> "Relay":
+    import hashlib
+
+    (root / "files").mkdir(parents=True)
+    sha = hashlib.sha256(body).hexdigest()
+    (root / "files" / f"{sha[:16]}.pdf").write_bytes(body)
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    (root / "index.json").write_text(json.dumps({
+        "schema": "enso-relay/1", "collected_at": now, "collector": {"kind": "manual", "host": "consola de documentos"},
+        "entries": [{"url": url, "aliases": list(aliases), "status": 200, "content_type": "application/pdf",
+                     "detected": "pdf", "file": f"files/{sha[:16]}.pdf", "sha256": sha, "fetched_at": now,
+                     "doc": "comunicado-17-2026", "uploaded_by": "pablo"}]}), encoding="utf-8")
+    return obs.load_manual_relay(root, obs.EventLog())
+
+
+def test_communique_behind_the_human_check_is_listed_for_manual_download():
+    from datetime import date
+
+    from enso import manual
+
+    acq = _dhn_acquired()
+    top = acq.data["listing"][0]
+    f = Fetcher(retries=1, polite_delay=0)
+    f.client = httpx.Client(transport=httpx.MockTransport(_actions_view()))
+    needs = manual.ManualNeeds()
+    log = obs.EventLog()
+    obs.enfen_latest(acq, f, None, _Prev(None), log, date(2026, 10, 20), needs)
+    item = needs.items[f"comunicado-{top['id']}"]
+    assert "verificación humana" in item["reason"] and item["expect"] == {"year": top["year"], "number": top["number"]}
+    page = f"https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-{top['number']:02d}-{top['year']}/"
+    assert item["open"][0] == page and any(u.endswith(f"/{top['number']:02d}-{top['year']}.pdf") for u in item["open"])
+    # Solo el más reciente: los anteriores ya no son el vigente.
+    assert len(needs.items) == 1
+    needs.log(log)
+    ev = [e for e in log.events if e.code == "manual-download-needed"]
+    assert len(ev) == 1 and ev[0].severity == "warning" and page in ev[0].message
+
+
+def test_communique_uploaded_by_hand_is_published_from_the_upload(tmp_path):
+    from datetime import date
+
+    from enso import manual
+
+    acq = _dhn_acquired()
+    acq.data["listing"] = [i for i in acq.data["listing"] if (i["year"], i["number"]) <= (2026, 17)]
+    top = acq.data["listing"][0]
+    dhn = obs._communique_urls(top)[-1]
+    relay = _manual_relay(tmp_path / "manual", obs._communique_urls(top)[0], PDF, aliases=[dhn])
+    assert relay.channel == "relay-manual"
+    f = Fetcher(retries=1, polite_delay=0, relay=[None, None, relay])
+    f.client = httpx.Client(transport=httpx.MockTransport(_actions_view()))
+    needs = manual.ManualNeeds()
+    obs.enfen_latest(acq, f, None, _Prev(None), obs.EventLog(), date(2026, 10, 20), needs)
+    assert acq.data["latest"]["channel"] == "relay-manual" and acq.data["latest"]["id"] == "17-2026"
+    assert not needs.items and needs.used[0]["id"] == "comunicado-17-2026"
+
+
+def test_wrong_pdf_uploaded_by_hand_is_not_published(tmp_path):
+    """El PDF del comunicado 17 subido como el 18: no se publica y el 18 sigue pendiente, con el motivo."""
+    from datetime import date
+
+    from enso import manual
+
+    acq = _dhn_acquired()
+    acq.data["listing"] = [i for i in acq.data["listing"] if (i["year"], i["number"]) <= (2026, 18)]
+    top = acq.data["listing"][0]
+    assert top["id"] == "18-2026"
+    relay = _manual_relay(tmp_path / "manual", obs._communique_urls(top)[0], PDF)
+    f = Fetcher(retries=1, polite_delay=0, relay=[relay])
+    f.client = httpx.Client(transport=httpx.MockTransport(_actions_view()))
+    needs = manual.ManualNeeds()
+    obs.enfen_latest(acq, f, None, _Prev(None), obs.EventLog(), date(2026, 10, 20), needs)
+    assert (acq.data.get("latest") or {}).get("id") != "18-2026"
+    assert "17-2026" in needs.items["comunicado-18-2026"]["problem"]
+
+
+def test_manual_needed_keeps_the_first_day_it_was_pending():
+    from datetime import date
+
+    from enso import manual
+
+    needs = manual.ManualNeeds()
+    needs.add("comunicado-18-2026", "comunicado", "Comunicado 18-2026", ["https://a/x.pdf"], ["https://a/"], "motivo")
+    prev = {"pending": [{"id": "comunicado-18-2026", "since": "2026-10-19"}]}
+    out = needs.as_json(prev, date(2026, 10, 21))
+    assert out["pending"][0]["since"] == "2026-10-19"
+    assert manual.ManualNeeds().as_json(prev, date(2026, 10, 21))["pending"] == []
+
+
+def test_missing_manual_branch_is_normal(tmp_path):
+    log = obs.EventLog()
+    assert obs.load_manual_relay(tmp_path / "no-existe", log) is None and log.events == []

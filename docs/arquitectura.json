@@ -234,6 +234,20 @@
     "evidence": "n8n/nodes/commit.js:1-5; n8n/nodes/rama.js:1-10; python/enso/fetch.py:119-121; python/enso/observatory.py:1722-1755"
    },
    {
+    "id": "data-manual-branch",
+    "group": "stores",
+    "col": "copies",
+    "name_es": "Rama data-manual",
+    "name_en": "data-manual branch",
+    "what_es": "PDF subidos a mano en la consola de documentos, en el mismo formato enso-relay/1 (canal relay-manual). Una entrada por documento; la subida nueva reemplaza la anterior.",
+    "what_en": "PDFs uploaded by hand in the documents console, in the same enso-relay/1 format (relay-manual channel). One entry per document; a new upload replaces the previous one.",
+    "meta_es": "vale 120 días",
+    "meta_en": "valid for 120 days",
+    "details_es": "La crea la primera subida. Cada entrada lleva las URL con que el pipeline busca el documento (la principal y sus alias), el sha256 y quién la subió. Que la rama no exista es lo normal.",
+    "details_en": "Created by the first upload. Each entry carries the URLs the pipeline looks the document up by (main and aliases), the sha256 and who uploaded it. A missing branch is normal.",
+    "evidence": "functions/_lib/doc-uploads.js:211-275; python/enso/manual.py:1-40; python/enso/observatory.py:1900-1918"
+   },
+   {
     "id": "internet-archive",
     "group": "channels",
     "col": "copies",
@@ -446,6 +460,18 @@
     "details_es": "/api/geo/*: login, corrections, audit y overrides (pública, sin usuarios ni comentarios). Base D1 GEO_DB (nunca borra correcciones) y secreto GEO_USERS con hashes PBKDF2; tools.geo_users crea un admin y revisor01 a revisor10, y el propietario carga el secreto en el panel. Solo funciona con Cloudflare; en GitHub Pages la página existe pero no tiene API.",
     "details_en": "/api/geo/*: login, corrections, audit and overrides (public, with no users or reviewer notes). D1 database GEO_DB (never deletes corrections) and secret GEO_USERS with PBKDF2 hashes; tools.geo_users creates an admin and revisor01 to revisor10, and the owner loads the secret in the dashboard. Works only with Cloudflare; on GitHub Pages the page exists but has no API.",
     "evidence": "public/admin/index.html:1-60; public/admin/admin.js:1-12, 300-354; functions/api/geo/[[path]].js:1-4; functions/_lib/geo-console.js:1-56, 103-137, 374-435; python/tools/geo_users.py:1-106"
+   },
+   {
+    "id": "doc-console",
+    "group": "site",
+    "col": "site",
+    "name_es": "Consola de documentos (/admin/documentos.html)",
+    "name_en": "Documents console (/admin/documentos.html)",
+    "what_es": "Página de la consola donde un administrador sube el PDF de un documento que ninguna ruta automática trae (la DHN pide verificación humana). Usa la sesión y el registro de la consola de lugares.",
+    "what_en": "Console page where an administrator uploads the PDF of a document no automatic route brings (DHN asks for a human check). It uses the places console's session and audit log.",
+    "details_es": "/api/docs/status y /api/docs/upload. Solo acepta documentos de data/manual-needed.json, PDF que empiezan con %PDF- y terminan con %%EOF, hasta 25 MB y 10 por hora; por omisión solo el rol admin (DOCS_UPLOAD_ROLES). El PDF pasa en flujo a GitHub sin decodificarse (10 ms de CPU del plan gratuito). Secreto DOCS_GITHUB_TOKEN (Contents: Read and write solo en este repositorio).",
+    "details_en": "/api/docs/status and /api/docs/upload. It only accepts documents listed in data/manual-needed.json, PDFs that start with %PDF- and end with %%EOF, up to 25 MB and 10 an hour; by default only the admin role (DOCS_UPLOAD_ROLES). The PDF streams to GitHub without being decoded (the free plan's 10 ms of CPU). Secret DOCS_GITHUB_TOKEN (Contents: Read and write on this repository only).",
+    "evidence": "public/admin/documentos.html:1-57; public/admin/documentos.js:1-120; functions/api/docs/[[path]].js:1-4; functions/_lib/doc-uploads.js:1-40, 124-210, 278-330"
    },
    {
     "id": "reviewers",
@@ -1225,8 +1251,8 @@
     "kind": "control",
     "label_es": "fallos, arrastres y formato",
     "label_en": "failures, carries, format",
-    "explain_es": "Se anotan unreachable (error si la fuente es crítica), format-drift, format-changed, carried-forward y communique-unread, outlook-unread (la perspectiva del comunicado no se pudo leer) e informe-* (el informe técnico no se bajó, no se pudo leer o una parte no pasó la validación; si no responde ninguna ruta es solo una advertencia).",
-    "explain_en": "It logs unreachable (error for critical sources), format-drift, format-changed, carried-forward and communique-unread, outlook-unread (the communiqué outlook could not be read) and informe-* (the technical report was not downloaded, could not be read or part of it failed validation; when no route answers it is only a warning).",
+    "explain_es": "Se anotan unreachable (error si la fuente es crítica), format-drift, format-changed, carried-forward y communique-unread, outlook-unread (la perspectiva del comunicado no se pudo leer) e informe-* (el informe técnico no se bajó, no se pudo leer o una parte no pasó la validación; si no responde ninguna ruta es solo una advertencia). Si el comunicado más reciente o su informe no se pueden bajar por ninguna ruta, manual-download-needed (advertencia) los lista para la consola de documentos.",
+    "explain_en": "It logs unreachable (error for critical sources), format-drift, format-changed, carried-forward and communique-unread, outlook-unread (the communiqué outlook could not be read) and informe-* (the technical report was not downloaded, could not be read or part of it failed validation; when no route answers it is only a warning). When the newest communiqué or its report cannot be downloaded by any route, manual-download-needed (warning) lists them for the documents console.",
     "evidence": "python/enso/observatory.py:321-356, 531-535, 1658-1755; python/enso/reports.py:480, 685; python/enso/observatory.py:594"
    },
    {
@@ -1524,6 +1550,64 @@
     "explain_es": "ci.yml corre en cada PR y push a claude/**; n8n.yml, cuando cambia n8n/. Sondeos y capturas: a mano o al cambiar su herramienta en claude/**. Sus resultados se traen a mano de las ramas bot/.",
     "explain_en": "ci.yml runs on every PR and claude/** push; n8n.yml when n8n/ changes. Probes and captures: by hand or when their tool changes on claude/**. Their results are pulled by hand from the bot/ branches.",
     "evidence": ".github/workflows/ci.yml:6-10; .github/workflows/probe-feeds.yml:7-14; .github/workflows/capture-fixtures.yml:53-65"
+   },
+   {
+    "from": "publication-data",
+    "to": "doc-console",
+    "kind": "data",
+    "label_es": "documentos pendientes",
+    "label_en": "pending documents",
+    "explain_es": "La consola muestra data/manual-needed.json: cada documento que la corrida no pudo bajar, con los enlaces para abrirlo en un navegador, el motivo y, si una copia subida no sirvió, por qué.",
+    "explain_en": "The console shows data/manual-needed.json: each document the run could not download, with links to open it in a browser, the reason and, if an uploaded copy failed, why.",
+    "when_es": "al abrir la consola",
+    "when_en": "when the console opens",
+    "evidence": "python/enso/manual.py:44-98; python/enso/observatory.py:1198-1201; functions/_lib/doc-uploads.js:52-63"
+   },
+   {
+    "from": "maintainers",
+    "to": "doc-console",
+    "kind": "human",
+    "label_es": "bajan y suben el PDF",
+    "label_en": "download and upload the PDF",
+    "explain_es": "Con el issue manual-download-needed, un administrador abre el documento en su navegador, pasa la verificación humana él mismo (el sistema nunca la evade), guarda el PDF y lo sube.",
+    "explain_en": "Prompted by the manual-download-needed issue, an administrator opens the document in their browser, passes the human check themselves (the system never evades it), saves the PDF and uploads it.",
+    "evidence": "public/admin/documentos.js:60-120; python/enso/manual.py:60-75"
+   },
+   {
+    "from": "doc-console",
+    "to": "data-manual-branch",
+    "kind": "data",
+    "label_es": "commit con el PDF",
+    "label_en": "commit with the PDF",
+    "explain_es": "Blob del PDF en flujo, árbol con index.json nuevo, commit y avance de la rama sin forzar; si otra subida la movió, se rehace una vez.",
+    "explain_en": "Streams the PDF blob, builds a tree with the new index.json, commits and fast-forwards the branch; if another upload moved it, it retries once.",
+    "when_es": "en cada subida",
+    "when_en": "on each upload",
+    "evidence": "functions/_lib/doc-uploads.js:124-275"
+   },
+   {
+    "from": "doc-console",
+    "to": "observatory-workflow",
+    "kind": "control",
+    "label_es": "pide actualizar (enso-refresh)",
+    "label_en": "asks to refresh (enso-refresh)",
+    "explain_es": "Tras guardar el PDF, la API manda repository_dispatch enso-refresh: la actualización empieza al momento en vez de esperar a las 23:37.",
+    "explain_en": "After saving the PDF, the API sends repository_dispatch enso-refresh: the refresh starts right away instead of waiting for 23:37.",
+    "when_es": "en cada subida",
+    "when_en": "on each upload",
+    "evidence": "functions/_lib/doc-uploads.js:300-310; .github/workflows/observatory.yml:29-30"
+   },
+   {
+    "from": "data-manual-branch",
+    "to": "fetch",
+    "kind": "fallback",
+    "label_es": "copia subida (relay-manual)",
+    "label_en": "uploaded copy (relay-manual)",
+    "explain_es": "El pipeline la busca con la misma URL que el documento (o manual://enfen-informe/<id> si no se conoce). Se valida como cualquier otra copia: otro número u otro periodo no se publica y el documento sigue pendiente con el motivo.",
+    "explain_en": "The pipeline finds it by the document's own URL (or manual://enfen-informe/<id> when unknown). It is validated like any other copy: another number or period is not published and the document stays pending with the reason.",
+    "when_es": "cada corrida de observatory.yml",
+    "when_en": "every observatory.yml run",
+    "evidence": ".github/workflows/observatory.yml:136-147; python/enso/observatory.py:1900-1918; python/enso/reports.py:714-734"
    }
   ]
  },
@@ -1586,7 +1670,8 @@
      "data-peru-branch",
      "data-n8n-branch",
      "registry",
-     "registry-builder"
+     "registry-builder",
+     "data-manual-branch"
     ]
    },
    {
@@ -1688,13 +1773,14 @@
     "x": 20,
     "y": 730,
     "w": 280,
-    "name_es": "Consola de lugares",
-    "name_en": "Places console",
-    "what_es": "Página donde revisores, con usuario y clave, corrigen a mano el lugar de una noticia cuando el sistema duda. Solo funciona con el sitio en Cloudflare.",
-    "what_en": "A page where reviewers, with a username and password, fix by hand the place of a news item when the system is unsure. It only works with the site on Cloudflare.",
+    "name_es": "Consola de lugares y documentos",
+    "name_en": "Places and documents console",
+    "what_es": "Página donde revisores, con usuario y clave, corrigen a mano el lugar de una noticia cuando el sistema duda, y donde un administrador sube el PDF de un documento oficial que pide verificación humana. Solo funciona con el sitio en Cloudflare.",
+    "what_en": "A page where reviewers, with a username and password, fix by hand the place of a news item when the system is unsure, and where an administrator uploads the PDF of an official document behind a human check. It only works with the site on Cloudflare.",
     "covers": [
      "geo-console",
-     "reviewers"
+     "reviewers",
+     "doc-console"
     ]
    }
   ],

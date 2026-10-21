@@ -15,7 +15,7 @@ falla si el modelo, los SVG o este texto no coinciden.
   sistema a cualquier persona, de arriba abajo. Las cajas llevan el número
   del paso del recorrido que las presenta y las líneas una letra con lo que
   viaja por ellas.
-- **Completo** (`arquitectura.svg`): 44 cajas y 81 conexiones numeradas,
+- **Completo** (`arquitectura.svg`): 46 cajas y 86 conexiones numeradas,
   en seis bloques (fuentes, recolectores, copias y respaldo, pipeline,
   publicación y sitio, y debajo operación, vigilancia y personas). Debajo
   del dibujo, cada número dice qué viaja, cuándo y por qué.
@@ -32,7 +32,7 @@ muestra su explicación completa.
 
 ### Diagrama completo
 
-![Arquitectura completa: 44 partes y 81 conexiones numeradas](arquitectura.svg)
+![Arquitectura completa: 46 partes y 86 conexiones numeradas](arquitectura.svg)
 
 ### Cómo se recorre
 
@@ -45,7 +45,7 @@ muestra su explicación completa.
 3. **Un registro dice quién baja qué.** Algunas páginas del Estado no responden fuera del Perú. Cada lunes se mide qué responde desde dónde y se actualiza un registro que asigna cada dirección a un recolector. _Cajas: Recolectores (Actions, n8n, Perú) (2), Operación y vigilancia (9)._
 4. **Cuando algo falla.** Si una fuente no responde, se usa la copia del Perú o de n8n, una copia del Internet Archive o el último dato bueno ya publicado. Cada dato muestra su fecha real, así nada viejo se hace pasar por nuevo. _Cajas: Respaldo (4), Pipeline diario (5), Recolectores (Actions, n8n, Perú) (2)._
 5. **El pipeline diario.** Lee y revisa cada dato, arma las series, lee el estado oficial del ENFEN, calcula la señal GRD, filtra las noticias por peligro y las ubica por departamento. Anota cada problema. _Cajas: Pipeline diario (5)._
-6. **La consola de lugares.** Con el sitio en Cloudflare, cuando el sistema duda dónde ocurrió una noticia, un revisor la corrige en la consola. La corrección se aplica desde la corrida siguiente y queda guardada. _Cajas: Consola de lugares (6), Publicación (7), Pipeline diario (5)._
+6. **La consola de lugares.** Con el sitio en Cloudflare, cuando el sistema duda dónde ocurrió una noticia, un revisor la corrige en la consola. La corrección se aplica desde la corrida siguiente y queda guardada. _Cajas: Consola de lugares y documentos (6), Publicación (7), Pipeline diario (5)._
 7. **Publicar sin romper nada.** Todos los archivos se arman y validan juntos, el sitio se prueba en un navegador y se sube completo. Si hay un problema grave, se queda el sitio de ayer. _Cajas: Publicación (7), Sitio (8)._
 8. **Lo que ve la gente.** El sitio muestra 10 vistas y descargas abiertas, con el enlace a la fuente original y a la copia archivada junto a cada dato. Lo de hoy será el respaldo de mañana. _Cajas: Sitio (8), Respaldo (4)._
 9. **Vigilancia y avisos.** Dos vigilantes revisan el sitio cada 6 horas; el de GitHub relanza la actualización si se atrasa. Cada problema se vuelve un aviso en GitHub que se cierra solo al resolverse. _Cajas: Operación y vigilancia (9), Sitio (8), Pipeline diario (5)._
@@ -63,8 +63,8 @@ muestra su explicación completa.
 | G | Publicación → Sitio | **Se publica y se comprueba.** El sitio se sube completo de una vez y luego se comprueba que la página en vivo muestre la versión nueva. Si algo grave falló, se queda la de ayer. |
 | H | Sitio → Respaldo | **Hoy es el respaldo de mañana.** Lo que el sitio muestra hoy es lo que la corrida de mañana usa como último dato bueno si una fuente falla. |
 | I | Pipeline diario → Respaldo | **Copia permanente.** Después de cada corrida buena, las respuestas originales nuevas y el histórico de noticias se guardan en un archivo que nunca borra nada. |
-| J | Publicación → Consola de lugares | **Notas por revisar.** La consola trae las noticias de los últimos 120 días y abre con las de lugar dudoso, para que una persona lo confirme o lo corrija. |
-| K | Consola de lugares → Pipeline diario | **Correcciones de lugar.** Las correcciones se aplican en la corrida siguiente y tienen la última palabra. Si la consola no responde, se usan las ya publicadas. |
+| J | Publicación → Consola de lugares y documentos | **Notas por revisar.** La consola trae las noticias de los últimos 120 días y abre con las de lugar dudoso, para que una persona lo confirme o lo corrija. |
+| K | Consola de lugares y documentos → Pipeline diario | **Correcciones de lugar.** Las correcciones se aplican en la corrida siguiente y tienen la última palabra. Si la consola no responde, se usan las ya publicadas. |
 | L | Operación y vigilancia → Recolectores (Actions, n8n, Perú) | **Ajusta quién baja qué.** Cada lunes se mide qué fuentes responden desde cada lugar y se actualiza el registro que siguen los tres recolectores. |
 | M | Sitio → Operación y vigilancia | **Vigilancia cada 6 horas.** Dos vigilantes, uno en GitHub y otro en n8n, revisan cada 6 horas que el sitio tenga menos de 30 horas. |
 | N | Operación y vigilancia → Pipeline diario | **Relanza o corre a mano.** Si el sitio está atrasado, el vigilante relanza la actualización. Las personas también la lanzan al aprobar cambios o a mano. |
@@ -74,15 +74,15 @@ muestra su explicación completa.
 
 - **Fuentes oficiales y alertas:** ENFEN e IGP: fuentes oficiales del Perú, NOAA (CPC y PSL), Alertas oficiales de peligros (13 fuentes), Páginas del Estado solo para archivo, robots.txt de cada servidor.
 - **Noticias:** Medios y Estado: 116 feeds de noticias, Google Noticias: 38 búsquedas.
-- **Recolectores (Actions, n8n, Perú):** Descarga en GitHub Actions (Fetcher), Recolector en el Perú, Recolector n8n (nube AWS), Rama data-peru, Rama data-n8n, Registro de fuentes (registry/), Armado del registro.
+- **Recolectores (Actions, n8n, Perú):** Descarga en GitHub Actions (Fetcher), Recolector en el Perú, Recolector n8n (nube AWS), Rama data-peru, Rama data-n8n, Registro de fuentes (registry/), Armado del registro, Rama data-manual.
 - **Respaldo:** Internet Archive (Wayback), Publicación anterior (data/ en vivo), Rama data-archive, Job archive.
 - **Pipeline diario:** Actualización diaria (observatory.yml), Lectura de fuentes oficiales, Series, estados y señal GRD, Noticias y alertas: lectura y filtro, Histórico de noticias (solo anexar), Ubicación y correcciones de lugar, Registro de incidencias, Datos de referencia: lugares y umbrales, Caché de Actions: feeds reader.
 - **Publicación:** Escritura y validación de la publicación, Archivos publicados (data/), Despliegue y verificación.
 - **Sitio:** Sitio en vivo (SITE_URL), Sitio web (10 vistas), Público.
 - **Operación y vigilancia:** Vigilante de GitHub (watchdog.yml), Vigilante n8n (fuera de GitHub), Issues de incidencias (incidente-datos), Sondeo semanal de alcance, Herramientas de desarrollo, Kit y verificación del recolector, Mantenedores y propietario, Responsable del equipo en el Perú, Colega que opera n8n.
-- **Consola de lugares:** Consola de lugares (/admin/), Revisores de lugares.
+- **Consola de lugares y documentos:** Consola de lugares (/admin/), Revisores de lugares, Consola de documentos (/admin/documentos.html).
 
-<details><summary>Las 81 conexiones del diagrama completo, en texto</summary>
+<details><summary>Las 86 conexiones del diagrama completo, en texto</summary>
 
 | N.º | De → a | Cuándo | Qué viaja y por qué |
 |---|---|---|---|
@@ -139,7 +139,7 @@ muestra su explicación completa.
 | 51 | Publicación anterior (data/ en vivo) → Ubicación y correcciones de lugar |  | **correcciones anteriores.** Si la consola no está o no responde, se usan las de geo/overrides.json de la publicación anterior; si tampoco se lee, no se aplica ninguna (siguen guardadas en D1). |
 | 52 | Ubicación y correcciones de lugar → Escritura y validación de la publicación |  | **notas, grupos y alertas.** Pasan el histórico tal como se guardó y, con los lugares corregidos, items.csv, los grupos de 14 días, los avisos de 7 días para feed.json y los archivos geo/ para la consola. |
 | 53 | Publicación anterior (data/ en vivo) → Escritura y validación de la publicación |  | **copias y noticias anteriores.** Si una fuente no respondió, se vuelve a publicar la copia archivada que tenía la publicación anterior. Si la lectura de noticias falló, se reusan sus news/ y geo/ con carriedFrom. |
-| 54 | Lectura de fuentes oficiales → Registro de incidencias |  | **fallos, arrastres y formato.** Se anotan unreachable (error si la fuente es crítica), format-drift, format-changed, carried-forward y communique-unread, outlook-unread (la perspectiva del comunicado no se pudo leer) e informe-* (el informe técnico no se bajó, no se pudo leer o una parte no pasó la validación; si no responde ninguna ruta es solo una advertencia). |
+| 54 | Lectura de fuentes oficiales → Registro de incidencias |  | **fallos, arrastres y formato.** Se anotan unreachable (error si la fuente es crítica), format-drift, format-changed, carried-forward y communique-unread, outlook-unread (la perspectiva del comunicado no se pudo leer) e informe-* (el informe técnico no se bajó, no se pudo leer o una parte no pasó la validación; si no responde ninguna ruta es solo una advertencia). Si el comunicado más reciente o su informe no se pueden bajar por ninguna ruta, manual-download-needed (advertencia) los lista para la consola de documentos. |
 | 55 | Series, estados y señal GRD → Registro de incidencias |  | **datos vencidos y estados.** Se anotan stale-&lt;serie> y stale-weekly (dato fuera de plazo), official-overdue (no llegó el boletín previsto de NOAA o del ENFEN), newer-communique-unparsed (hay un comunicado más nuevo que no se pudo leer), status-unknown (error: no hay estado del ENFEN), informe-icen-mismatch (el ICEN del informe técnico difiere del IGP) y late-&lt;dato> (pasó la fecha en que debía llegar el siguiente). |
 | 56 | Rama data-peru → Registro de incidencias | cada corrida de observatory.yml | **salud de la copia del Perú.** Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed o relay-token-expiring. Así un equipo apagado se vuelve issue. |
 | 57 | Rama data-n8n → Registro de incidencias | cada corrida de observatory.yml | **salud de la copia de n8n.** Lo mismo con data-n8n: relay-n8n-missing, relay-n8n-stale (más de 36 h) o relay-n8n-sources-down. Así un flujo de n8n detenido se vuelve issue. |
@@ -167,10 +167,15 @@ muestra su explicación completa.
 | 79 | Revisores de lugares → Consola de lugares (/admin/) |  | **corrigen lugares.** Con su usuario fijan, confirman o marcan como nacional o «no es del Perú» cada nota. Cada cambio es una fila nueva en la base D1 y se aplica en la siguiente corrida (la de 23:37 u otra antes). |
 | 80 | Mantenedores y propietario → Actualización diaria (observatory.yml) | al fusionar o a mano | **fusión en main o a mano.** Cada push a main publica enseguida (salvo cambios solo en .md o docs/). También se puede lanzar a mano y elegir si se piden copias nuevas al Internet Archive. |
 | 81 | Mantenedores y propietario → Herramientas de desarrollo |  | **PR, ramas claude/** o a mano.** ci.yml corre en cada PR y push a claude/**; n8n.yml, cuando cambia n8n/. Sondeos y capturas: a mano o al cambiar su herramienta en claude/**. Sus resultados se traen a mano de las ramas bot/. |
+| 82 | Archivos publicados (data/) → Consola de documentos (/admin/documentos.html) | al abrir la consola | **documentos pendientes.** La consola muestra data/manual-needed.json: cada documento que la corrida no pudo bajar, con los enlaces para abrirlo en un navegador, el motivo y, si una copia subida no sirvió, por qué. |
+| 83 | Mantenedores y propietario → Consola de documentos (/admin/documentos.html) |  | **bajan y suben el PDF.** Con el issue manual-download-needed, un administrador abre el documento en su navegador, pasa la verificación humana él mismo (el sistema nunca la evade), guarda el PDF y lo sube. |
+| 84 | Consola de documentos (/admin/documentos.html) → Rama data-manual | en cada subida | **commit con el PDF.** Blob del PDF en flujo, árbol con index.json nuevo, commit y avance de la rama sin forzar; si otra subida la movió, se rehace una vez. |
+| 85 | Consola de documentos (/admin/documentos.html) → Actualización diaria (observatory.yml) | en cada subida | **pide actualizar (enso-refresh).** Tras guardar el PDF, la API manda repository_dispatch enso-refresh: la actualización empieza al momento en vez de esperar a las 23:37. |
+| 86 | Rama data-manual → Descarga en GitHub Actions (Fetcher) | cada corrida de observatory.yml | **copia subida (relay-manual).** El pipeline la busca con la misma URL que el documento (o manual://enfen-informe/&lt;id> si no se conoce). Se valida como cualquier otra copia: otro número u otro periodo no se publica y el documento sigue pendiente con el motivo. |
 
 </details>
 
-<details><summary>Las 44 cajas del diagrama completo, en texto</summary>
+<details><summary>Las 46 cajas del diagrama completo, en texto</summary>
 
 **1 · Fuentes**
 
@@ -200,6 +205,7 @@ muestra su explicación completa.
 |---|---|---|
 | **Rama data-peru** | Copias que sube el recolector del Perú: index.json, files/ y heartbeat.json, que distingue un equipo apagado de unas fuentes caídas. _vale hasta 7 días; aviso a las 36 h._ | Formato enso-relay/1. Cada subida reemplaza el contenido y el historial de git guarda las anteriores. El pipeline usa copias de hasta 7 días con estado 200 y sha256 verificado, y avisa a las 36 h. Si nada respondió, solo se sube el latido «sin-fuentes». |
 | **Rama data-n8n** | Copias de n8n en el mismo formato enso-relay/1. Cada corrida es un commit sin padre que reemplaza la rama: solo guarda la última. _vale hasta 72 h; aviso a las 36 h._ | index.json y heartbeat.json se publican siempre, aunque nada responda. El pipeline acepta copias de hasta 72 h (canal relay-n8n) y avisa a las 36 h. |
+| **Rama data-manual** | PDF subidos a mano en la consola de documentos, en el mismo formato enso-relay/1 (canal relay-manual). Una entrada por documento; la subida nueva reemplaza la anterior. _vale 120 días._ | La crea la primera subida. Cada entrada lleva las URL con que el pipeline busca el documento (la principal y sus alias), el sha256 y quién la subió. Que la rama no exista es lo normal. |
 | **Internet Archive (Wayback)** | Último respaldo de red: la copia archivada más reciente de una URL oficial. Para el comunicado del ENFEN también pide una copia nueva (Save Page Now) si la existente tiene más de un día. | Consulta CDX y baja la copia con estado 200 sin cambios (id_). Busca los PDF del ENFEN por prefijo (hasta 4 copias). Save Page Now solo con ENSO_ARCHIVE_SAVE=1, que vale en todas las corridas salvo una manual con archive_save desmarcado. Las noticias nunca lo usan. Pasados los 8 min de las fuentes oficiales ya no se consulta. |
 | **Caché de Actions: feeds reader** | Archivo reader-state.json en la caché de GitHub Actions con la última vez que se pidió cada uno de los 40 feeds reader y sus notas todavía no publicadas. | Solo en main: se restaura la clave enso-reader-state-* más reciente y se guarda al final aunque la corrida falle. Mínimo 20 h entre pedidos; notas guardadas hasta 14 días. Fuera de main esos feeds no se piden. |
 | **Publicación anterior (data/ en vivo)** | Lo que publicó la corrida anterior, leído por HTTP desde el sitio en vivo. Da el último dato válido de cada fuente, el histórico de noticias, el estado de los feeds y las correcciones de lugar. | --previous ${SITE_URL}data. Lee sources/&lt;id>.json, news/items.jsonl y news/feeds.json (3 intentos), geo/overrides.json y archive/sources/. Distingue ok, missing (404/410) y unreachable. El tope de 8 min de las fuentes oficiales no las corta, pero las de sources/ consumen ese tiempo. |
@@ -228,6 +234,7 @@ muestra su explicación completa.
 | **Sitio web (10 vistas)** | Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias, Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada. | Carga primero dashboard.json; su publicationId es la referencia y no muestra archivos de otra publicación. Avisa si la publicación tiene más de 36 h o si worst es error o critical. El Asistente usa reglas fijas, no un modelo de lenguaje. Metodología muestra el diagrama simplificado y, con un botón, el completo (copias de docs/). |
 | **Público** | Personas, equipos de gestión del riesgo y usuarios de datos abiertos que abren el sitio o descargan los CSV y JSON de data/. |  |
 | **Consola de lugares (/admin/)** | Página para revisores con su API en Cloudflare (Pages Function) y una base D1, donde se confirma o corrige el lugar de cada nota. Cada cambio queda con usuario y hora. | /api/geo/*: login, corrections, audit y overrides (pública, sin usuarios ni comentarios). Base D1 GEO_DB (nunca borra correcciones) y secreto GEO_USERS con hashes PBKDF2; tools.geo_users crea un admin y revisor01 a revisor10, y el propietario carga el secreto en el panel. Solo funciona con Cloudflare; en GitHub Pages la página existe pero no tiene API. |
+| **Consola de documentos (/admin/documentos.html)** | Página de la consola donde un administrador sube el PDF de un documento que ninguna ruta automática trae (la DHN pide verificación humana). Usa la sesión y el registro de la consola de lugares. | /api/docs/status y /api/docs/upload. Solo acepta documentos de data/manual-needed.json, PDF que empiezan con %PDF- y terminan con %%EOF, hasta 25 MB y 10 por hora; por omisión solo el rol admin (DOCS_UPLOAD_ROLES). El PDF pasa en flujo a GitHub sin decodificarse (10 ms de CPU del plan gratuito). Secreto DOCS_GITHUB_TOKEN (Contents: Read and write solo en este repositorio). |
 | **Revisores de lugares** | Personas autorizadas que en la consola revisan las notas dudosas (p. ej. confianza menor a 0,8) y fijan, confirman o descartan su lugar. |  |
 
 **6 · Operación, vigilancia y personas**

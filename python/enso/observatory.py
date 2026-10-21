@@ -40,6 +40,7 @@ from typing import Any, Callable, Optional
 from .feeds import FormatChanged, Parsed
 from .feeds import cpc, peru
 from . import archive
+from . import manual
 from . import reports
 from . import signals as sig
 
@@ -406,6 +407,20 @@ def _communique_urls(item: dict) -> list[str]:
     return list(dict.fromkeys(urls))
 
 
+def _need_communique(needs: Optional["manual.ManualNeeds"], item: dict, reason: str,
+                     problem: Optional[str] = None) -> None:
+    """Anota el comunicado para bajarlo a mano: sus URL de búsqueda y las que una persona abre en el navegador
+    (la página de descarga del portal y el PDF de la DHN, que a un navegador le pide la verificación)."""
+    if needs is None:
+        return
+    n, y = item["number"], item["year"]
+    page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{n:02d}-{y}/"
+    dhn = f"{peru.DHN_BASE}/Archivos/oceanografia/enfen/comunicado-oficial/{n:02d}-{y}.pdf"
+    urls = _communique_urls(item)
+    needs.add(f"comunicado-{item['id']}", "comunicado", f"Comunicado oficial ENFEN N° {item['id']}", urls + [page],
+              [page, dhn], reason, expect={"year": y, "number": n}, problem=problem)
+
+
 def _get_communique(fetcher, item: dict):
     """PDF de un comunicado: sus URL conocidas y, si ninguna sirve, cualquier
     copia en PDF que el Internet Archive tenga de su página de descarga en el
@@ -490,7 +505,7 @@ def merge_enfen_listings(*listings: list[dict]) -> list[dict]:
 
 
 def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
-                 log: EventLog, today: date) -> None:
+                 log: EventLog, today: date, needs: Optional["manual.ManualNeeds"] = None) -> None:
     """Completa el listado ENFEN con el comunicado más reciente (PDF).
 
     1. Toma el número más alto entre el listado y la publicación anterior.
@@ -568,7 +583,10 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
         oficial = [i for i in listing if i.get("kind", "oficial") == "oficial"][:3]
         candidates = [(i, None) for i in oficial]
     failures = []
-    for item, canned in candidates:
+    for k, (item, canned) in enumerate(candidates):
+        resp = None
+        # Solo el más reciente se pide a mano: los anteriores ya no son el vigente.
+        need = needs if k == 0 and fixtures is None else None
         if prev_latest and (prev_latest["year"], prev_latest["number"]) >= (item["year"], item["number"]):
             data["latest"] = prev_latest
             break
@@ -579,6 +597,12 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
                 raise FormatChanged("enfen: la descarga no es un PDF")
             text = peru.pdf_text(resp.body)
             c = peru.parse_enfen_communique(text, source=_clean_wpdm(item["url"]))
+            got_id = (c.data.get("year"), c.data.get("number"))
+            if fixtures is None and None not in got_id and got_id != (item["year"], item["number"]):
+                # Otro comunicado detrás de la URL de este (una copia subida a mano equivocada, un enlace del
+                # portal mal puesto): no se publica como si fuera el buscado.
+                raise FormatChanged(f"el PDF es el comunicado {got_id[1]:02d}-{got_id[0]}, no el {item['id']} "
+                                    f"(canal {resp.channel})")
             # Perspectiva (magnitud esperada por región, con su oración) y enlace al informe técnico.
             c.data["outlook"] = reports.communique_outlook(text, c.data.get("status"))
             if not c.data["outlook"] and re.search(r"\b(?:magnitud|categor[ií]a)\b\W+(?:\w+\W+){0,3}?(?:extraordinari|muy\s+fuerte|"
@@ -597,17 +621,25 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
             c.data["informe_url"] = reports.informe_link(text)
         except FetchError as exc:
             failures.append(f"{item['id']}: {exc}")
+            _need_communique(need, item, manual.reason_from(exc.attempts, "Ninguna ruta automática dio el PDF."))
             continue
         except FormatChanged as exc:
             failures.append(f"{item['id']}: {exc}")
+            _need_communique(need, item, "La descarga automática no dio un PDF legible del comunicado.",
+                             str(exc) if resp is not None and resp.channel == "relay-manual" else None)
             continue
         except Exception as exc:  # pypdf u otro error inesperado
             failures.append(f"{item['id']}: {type(exc).__name__}: {exc}")
+            _need_communique(need, item, "La descarga automática no dio un PDF legible del comunicado.",
+                             f"{type(exc).__name__}: {exc}" if resp is not None and resp.channel == "relay-manual" else None)
             continue
         for w in c.warnings:
             log.add("warning", "enfen-comunicados", "parse", "communique-warning", w)
         c.data["channel"] = resp.channel
         c.data["archived_at"] = resp.archived_at
+        if resp.channel == "relay-manual" and needs is not None:
+            needs.mark_used(f"comunicado-{item['id']}", f"Comunicado oficial ENFEN N° {item['id']}", resp.url,
+                            resp.archived_at)
         c.data["archive"] = archive.source_path("enfen-comunicados", resp.body)
         data["latest"] = c.data
         if resp.channel.startswith("archive") and fixtures is None:
@@ -1009,7 +1041,7 @@ def _is_number(s: str) -> bool:
 def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, official: dict, weekly, grd: dict,
                       log: EventLog, started: datetime, news: Optional[dict] = None,
                       feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None,
-                      freshness: Optional[dict] = None) -> dict:
+                      freshness: Optional[dict] = None, manual_needed: Optional[dict] = None) -> dict:
     now = datetime.now(timezone.utc)
     content_hash = hashlib.sha256(json.dumps(
         {k: v["points"][-24:] for k, v in sorted(b.series.items())} | {"official": official}, sort_keys=True, default=str
@@ -1164,6 +1196,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     if weekly:
         dump("weekly.json", {"source": "cpc-wksst", "regions": weekly})
     dump("sources.json", {"sources": health})
+    # Documentos que hay que bajar a mano (consola de documentos): siempre, vacío si no falta nada.
+    dump("manual-needed.json", manual_needed or {"version": 1, "pending": [], "used": []})
     dump("run-report.json", {"events": events, "worst": log.worst(),
                              "counts": {s: sum(1 for e in events if e["severity"] == s) for s in ("info", "warning", "error", "critical")}})
     dump("health.json", {"pipelineStatus": "degraded" if log.worst() in ("error", "critical") else "ok",
@@ -1272,18 +1306,21 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         relay_dir: Optional[Path] = None, n8n_dir: Optional[Path] = None,
         plan: Optional[dict[str, list[str]]] = None, history_dir: Optional[Path] = None,
         reader: Optional[set[str]] = None, history_absent: bool = False,
-        reader_state: Optional[Path] = None) -> dict:
+        reader_state: Optional[Path] = None, manual_dir: Optional[Path] = None) -> dict:
     """``plan``: canales de cada URL según el registro (``registry.url_channels``); la línea de comandos
     lo lee de ``registry/sources.json`` para no insistir con lo que solo responde desde el Perú.
     ``reader``: feeds que robots.txt no permite y se leen como un lector de feeds (``registry.reader_urls``).
-    ``history_dir``, ``history_absent`` y ``reader_state``: ver ``acquire_news``."""
+    ``history_dir``, ``history_absent`` y ``reader_state``: ver ``acquire_news``. ``manual_dir``: copia de la rama
+    ``data-manual`` (documentos subidos en la consola, ``enso.manual``)."""
     from .fetch import Fetcher
 
     started = datetime.now(timezone.utc)
     log = EventLog()
     relay = load_relay(relay_dir, log, plan) if relay_dir is not None and fixtures is None else None
     n8n = load_n8n_relay(n8n_dir, log) if n8n_dir is not None and fixtures is None else None
-    fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=[relay, n8n],
+    uploads = load_manual_relay(manual_dir, log) if manual_dir is not None and fixtures is None else None
+    needs = manual.ManualNeeds()
+    fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=[relay, n8n, uploads],
                       plan=plan if fixtures is None else None, max_seconds=OFFICIAL_REQUEST_MAX_S,
                       budget_s=OFFICIAL_BUDGET_S if fixtures is None else None)
     prev = PreviousPublication(previous, fetcher)
@@ -1299,7 +1336,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         acquired[src.id] = acquire(src, fetcher, fixtures, prev, log)
         if src.id == "enfen-comunicados":
             try:
-                enfen_latest(acquired[src.id], fetcher, fixtures, prev, log, today)
+                enfen_latest(acquired[src.id], fetcher, fixtures, prev, log, today, needs)
             except Exception as exc:  # noqa: BLE001 — el último comunicado no debe detener la publicación
                 log.add("error", "enfen-comunicados", "parse", "latest-exception",
                         f"No se pudo buscar el último comunicado: {type(exc).__name__}: {exc}"[:300])
@@ -1309,11 +1346,12 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                 prev_inf = ((prev.get("sources/enfen-comunicados.json") or {}).get("data") or {}).get("informe")
                 try:
                     a.data["informe"] = reports.acquire_informe(a.data.get("latest"), fetcher, prev_inf, log, today,
-                                                                documents=a.documents)
+                                                                documents=a.documents, needs=needs)
                 except Exception as exc:  # noqa: BLE001 — el informe nunca detiene la publicación
                     a.data["informe"] = prev_inf
                     log.add("error", "enfen-informe", "parse", "informe-exception",
                             f"{type(exc).__name__}: {exc}"[:300])
+    needs.log(log)
     acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
     b = Builder(acquired, log, today)
     b.build_series()
@@ -1366,7 +1404,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
             log.add("critical" if s.critical else "error", s.id, "publish", "no-data",
                     "La fuente falló y no hay un dato anterior que conservar.")
     res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev,
-                            freshness=fresh)
+                            freshness=fresh, manual_needed=needs.as_json(prev.get("manual-needed.json"), today))
     if raw_dir is not None:
         res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
@@ -1859,6 +1897,24 @@ def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str
     return relay
 
 
+def load_manual_relay(manual_dir: Path, log: EventLog):
+    """Documentos subidos a mano en la consola (rama ``data-manual``, ``enso.manual``). Que no exista es lo normal:
+    solo se crea la primera vez que alguien sube un documento."""
+    from .fetch import Relay
+
+    if not (manual_dir / "index.json").exists():
+        return None
+    try:
+        relay = Relay(manual_dir, max_age_hours=manual.MAX_AGE_DAYS * 24)
+    except (OSError, ValueError, KeyError) as exc:
+        log.add("warning", "manual", "fetch", "manual-unreadable",
+                f"No se pudo leer la rama data-manual ({type(exc).__name__}: {exc}); los documentos subidos a mano "
+                "no se usan en esta corrida.")
+        return None
+    log.add("info", "manual", "fetch", "manual-ok", f"Documentos subidos a mano: último del {relay.collected_at}.")
+    return relay
+
+
 def load_n8n_relay(n8n_dir: Path, log: EventLog):
     """Copias del flujo de n8n (rama ``data-n8n``): un segundo canal fuera de
     GitHub Actions para las fuentes que no están geobloqueadas."""
@@ -1914,6 +1970,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--raw-dir", default=None, help="Carpeta donde archivar las respuestas originales nuevas")
     ap.add_argument("--relay-dir", default=None, help="Copia de la rama data-peru (recolector del Perú)")
     ap.add_argument("--n8n-dir", default=None, help="Copia de la rama data-n8n (flujo de n8n)")
+    ap.add_argument("--manual-dir", default=None, help="Copia de la rama data-manual (documentos subidos en la consola)")
     ap.add_argument("--history-dir", default=None,
                     help="Copia del histórico de noticias de la rama data-archive (sources/news/items.jsonl.gz y "
                          "las notas de cada día), para rehacerlo si la publicación anterior no lo trae")
@@ -1938,6 +1995,7 @@ def main(argv: Optional[list[str]] = None) -> int:
               raw_dir=Path(args.raw_dir).resolve() if args.raw_dir else None,
               relay_dir=Path(args.relay_dir).resolve() if args.relay_dir else None,
               n8n_dir=Path(args.n8n_dir).resolve() if args.n8n_dir else None,
+              manual_dir=Path(args.manual_dir).resolve() if args.manual_dir else None,
               history_dir=Path(args.history_dir).resolve() if args.history_dir else None,
               history_absent=args.history_absent,
               reader_state=Path(args.reader_state).resolve() if args.reader_state else None,

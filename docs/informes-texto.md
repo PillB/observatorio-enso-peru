@@ -37,6 +37,8 @@ muestra cada vista.
    copia del Perú, el sitio conserva el último informe leído marcado como atrasado o, si nunca se leyó uno,
    muestra «sin dato». La copia del PDF se publica en `data/archive` (enlace «Copia archivada»). Si
    ninguna ruta responde queda una advertencia, no un error: la publicación no se marca degradada.
+   Entonces el documento queda pendiente en la consola de documentos para que una persona lo baje en su
+   navegador y lo suba ([documentos-manuales.md](documentos-manuales.md)); lo mismo con el comunicado.
 4. **Validación.** Cada extracción pasa por un esquema (`SCHEMAS`) y por reglas de plausibilidad:
    - meses consecutivos en la tabla de índices;
    - el ICEN temporal es de 0 a 2 meses antes del corte de datos y la primera columna de probabilidades, de
