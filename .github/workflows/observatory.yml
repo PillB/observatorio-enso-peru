@@ -248,7 +248,7 @@ jobs:
           retention-days: 7
       - uses: actions/configure-pages@v5
         if: env.DEPLOY_TARGET == 'github-pages'
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         if: env.DEPLOY_TARGET == 'github-pages'
         with:
           path: public
