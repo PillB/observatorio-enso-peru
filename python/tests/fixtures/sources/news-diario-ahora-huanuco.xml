@@ -5,7 +5,7 @@
     <link>https://ahora.com.pe</link>
     <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
     <language>es</language>
-    <lastBuildDate>Wed, 21 Oct 2026 01:26:29 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 21 Oct 2026 02:24:24 GMT</lastBuildDate>
     <pubDate>Tue, 20 Oct 2026 21:58:24 GMT</pubDate>
     <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
     <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
@@ -37,6 +37,24 @@
     <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/cf433eb72319.jpg" medium="image" type="image/jpeg"/>
     <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/cf433eb72319.jpg"/>
     <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>El PSG pierde a Dembélé, Marquinhos y Kvaratskhelia ante el Barça por lesión</title>
+    <link>https://ahora.com.pe/deportes/psg-tres-lesionados-ante-barca-champions</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/psg-tres-lesionados-ante-barca-champions</guid>
+    <pubDate>Wed, 21 Oct 2026 01:38:29 GMT</pubDate>
+    <description><![CDATA[El PSG sufrió tres lesiones ante el Barça en la tercera jornada de la liguilla de Champions: Dembélé, Marquinhos y Kvaratskhelia, según Mundo Deportivo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[PSG]]></category>
+    <category><![CDATA[Dembélé]]></category>
+    <category><![CDATA[Marquinhos]]></category>
+    <category><![CDATA[Kvaratskhelia]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/6b06bf52ab97.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/6b06bf52ab97.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/6b06bf52ab97.webp"/>
+    <media:description type="plain"><![CDATA[La factura para el PSG de la tercera jornada de la liguilla de <a href="https://www.mundodeportivo.com/futbol/fc-barcelona/20261020/1004241242/asi-queda-clasificacion-champions-primera-derrota-barca.html">Champions League</a> ante el Barça está resultado muy alta. Más que por el partido o por el mar — Foto: Mundo Deportivo]]></media:description>
   </item>
   <item>
     <title>Palmeiras recibe a Fluminense con ventaja de 1-2 en la semifinal de la Libertadores</title>
@@ -817,20 +835,6 @@
     <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/6ccb34dea321.jpg" medium="image" type="image/jpeg"/>
     <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/6ccb34dea321.jpg"/>
     <media:description type="plain"><![CDATA[Roosevelt School inaugura sus olimpiadas 2026 en Huánuco con antorcha, pasacalle y baile urbano — Licencia: propia]]></media:description>
-  </item>
-  <item>
-    <title>Seda Huánuco reporta limpieza de más de 6 kilómetros de redes antes de temporada de lluvias</title>
-    <link>https://ahora.com.pe/regional/seda-huanuco-reporta-limpieza-de-mas-de-6-kilometros-de-redes-antes-de-temporada</link>
-    <guid isPermaLink="true">https://ahora.com.pe/regional/seda-huanuco-reporta-limpieza-de-mas-de-6-kilometros-de-redes-antes-de-temporada</guid>
-    <pubDate>Tue, 20 Oct 2026 09:09:09 GMT</pubDate>
-    <description><![CDATA[La empresa informó que realizó trabajos preventivos y correctivos en Huánuco, Amarilis y Pillco Marca; también atribuyó parte de los colapsos del alcantarillado a malas prácticas domiciliarias]]></description>
-    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
-    <category><![CDATA[Regional]]></category>
-    <category><![CDATA[Seda Huánuco]]></category>
-    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/e1f2c1c71a73.jpg" length="0" type="image/jpeg"/>
-    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/e1f2c1c71a73.jpg" medium="image" type="image/jpeg"/>
-    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/e1f2c1c71a73.jpg"/>
-    <media:description type="plain"><![CDATA[Seda Huánuco reporta limpieza de más de 6 kilómetros de redes antes de temporada de lluvias — Licencia: propia]]></media:description>
   </item>
   </channel>
 </rss>

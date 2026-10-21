@@ -1,8 +1,4 @@
 Error {
-    code=403;
-    message="Forbidden: Access Forbidden -- Your IP address is on this ERDDAP's request blacklist.
-Did you often submit more than one request at a time?
-Did you often submit identical requests in a short period of time?
-Did you submit a large number of invalid requests?
-If you are ready to avoid these problems, please email erd.data@noaa.gov to request to be taken off of the blacklist.";
+    code=404;
+    message="Not Found: Your query produced no matching results. (time>=2026-10-11T02:19:23Z is outside of the variable's actual_range: 1977-11-03T12:00:00Z to 2026-09-28T12:00:00Z)";
 }

@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:24:59 -0500</lastBuildDate>
+  <lastBuildDate>Tue, 20 Oct 2026 21:20:24 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Visita del papa León XIV al Perú sigue en pie, afirmó vocero del Arzobispado de Lima]]></title>
+        <description><![CDATA[El padre <strong>Juan Bytton</strong> aseguró en RPP que no existe una comunicación oficial sobre cambios o cancelaciones del viaje y señaló que una delegación del <a data-mce-href="https://rpp.pe/noticias/vaticano" href="https://rpp.pe/noticias/vaticano" target="_blank" rel="noopener">Vaticano</a> llegará a fin de mes para revisar los preparativos y las medidas de seguridad.]]></description>
+        <pubDate>Tue, 20 Oct 2026 20:55:16 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/visita-del-papa-leon-xiv-al-peru-sigue-en-pie-afirmo-vocero-del-arzobispado-de-lima-noticia-1713635</link>
+        <guid>1713635</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/20/494149_1920819.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ papa León XIV, León XIV, Perú, Vaticano, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Minsa emite alerta epidemiológica por riesgo de incremento de enfermedades ante el fenómeno El Niño]]></title>
         <description><![CDATA[El sector indicó que refuerza la vigilancia y preparación de los establecimientos de salud e invita a la población a vacunarse, eliminar criaderos de zancudos y adoptar medidas de prevención.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/10/15/nistrofacultades-1919081mp4_1919082.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Comisión de Constitución, Rafael Belaúnde, facultades legislativas, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Rafael Belaúnde plantea que FF. AA. asuman la conducción de operaciones contra el crimen: "La policía ha sido rebasada"]]></title>
-        <description><![CDATA[Rafael Belaúnde Llosa defendió la participación de las Fuerzas Armadas en operaciones contra organizaciones criminales que utilizan armamento de guerra y explosivos. Señaló que el Ejecutivo necesita facultades legislativas para catalogarlas como grupos hostiles y considerarlas objetivos militares.]]></description>
-        <pubDate>Thu, 15 Oct 2026 20:28:46 -0500</pubDate>
-        <link>https://rpp.pe/politica/gobierno/ministro-de-defensa-pide-facultades-legislativas-para-que-ff-aa-asuman-operaciones-contra-el-crimen-organizado-noticia-1712866</link>
-        <guid>1712866</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/10/15/deo-sobre-bealunde-1919074mp4_1919075.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Fuerzas Armadas, Ministerio de Defensa, facultades legislativas, Rafael Belaúnde, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
