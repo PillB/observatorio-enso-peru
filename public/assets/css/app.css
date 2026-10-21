@@ -663,3 +663,13 @@ table.grd .chip { white-space: normal; }
   .amap-grid-c .amap-svg, .amap-grid-d .amap-svg { max-height: 42vh; }
   .tl-axis span { font-size: 0.66rem; }
 }
+/* La matriz cabe en 320 px con cualquier tipografía; si aun así no cupiera, se desplaza dentro de su caja. */
+.amap-matrix-wrap { max-width: 100%; overflow-x: auto; }
+@media (max-width: 480px) {
+  .amap-matrix { border-spacing: 3px; }
+  .amap-matrix th { font-size: 0.72rem; padding: 2px; }
+  .amap-matrix th .sw { margin-right: 3px; }
+}
+/* Los nombres y títulos vienen de las fuentes: un texto largo sin espacios nunca ensancha la página. */
+.amap { overflow-wrap: anywhere; }
+.amap :is(.kind-chip, .cell, .sw-badge, select, .amap-matrix th) { overflow-wrap: normal; }

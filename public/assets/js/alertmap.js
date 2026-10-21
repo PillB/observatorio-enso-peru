@@ -273,13 +273,13 @@ function matrix(alerts, f) {
   const cols = FASES.slice(1);
   const base = alerts.filter((a) => matches(a, f, { ignore: ['fase', 'nivel'] }));
   const cnt = (r, c) => base.filter((a) => matches(a, { fase: c, nivel: r })).length;
-  return html`<table class="amap-matrix"><caption>Avisos por nivel y momento</caption>
+  return html`<div class="amap-matrix-wrap"><table class="amap-matrix"><caption>Avisos por nivel y momento</caption>
     <thead><tr><th scope="col"><span class="visually-hidden">Nivel</span></th>${cols.map(([, l]) => html`<th scope="col">${l}</th>`)}</tr></thead>
     <tbody>${rows.map(([r, l]) => html`<tr><th scope="row"><span class="sw sw-${r === 'sin' ? 'un' : `r${r}`}"></span>${l}</th>${cols.map(([c, cl]) => {
       const n = cnt(r, c);
       const on = f.fase === c && f.nivel === r;
       return html`<td><button type="button" class="cell c-${r === 'sin' ? 'un' : `r${r}`}${on ? ' on' : ''}" data-fase="${c}" data-nivel="${r}" aria-pressed="${String(on)}" style="--a:${n ? (r === 'sin' ? 0.45 : r === '1' ? 0.75 : 0.9) : 0}" aria-label="${l}, ${cl.toLowerCase()}: ${n}" ${raw(n ? '' : 'disabled')}>${n}</button></td>`;
-    })}</tr>`)}</tbody></table>`;
+    })}</tr>`)}</tbody></table></div>`;
 }
 
 function depRanking(alerts, f, limit = 10) {
