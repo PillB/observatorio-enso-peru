@@ -361,8 +361,8 @@
     "name_en": "Incident log",
     "what_es": "Cada etapa anota sus problemas con severidad (info, warning, error, critical), fuente, código y una huella. Si una fuente crítica no tiene dato ni anterior, la corrida es critical y no se despliega.",
     "what_en": "Every stage logs its problems with severity (info, warning, error, critical), source, code and a fingerprint. If a critical source has neither fresh nor previous data, the run is critical and nothing is deployed.",
-    "details_es": "Incluye la salud de las copias: relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-token-expiring (menos de 21 días) y relay-n8n-missing, -stale y -sources-down. Huella: sha1 de fuente|etapa|código.",
-    "details_en": "Includes copy health: relay-missing, relay-stale (over 36 h), relay-sources-down, relay-token-expiring (under 21 days) and relay-n8n-missing, -stale and -sources-down. Fingerprint: sha1 of source|stage|code.",
+    "details_es": "Incluye la salud de las copias: relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed (falta el PDF del comunicado o del informe más reciente), relay-token-expiring (menos de 21 días) y relay-n8n-missing, -stale y -sources-down. Huella: sha1 de fuente|etapa|código.",
+    "details_en": "Includes copy health: relay-missing, relay-stale (over 36 h), relay-sources-down, relay-goal-missed (the newest comunicado or informe PDF is missing), relay-token-expiring (under 21 days) and relay-n8n-missing, -stale and -sources-down. Fingerprint: sha1 of source|stage|code.",
     "evidence": "python/enso/observatory.py:55-87, 1230-1235, 1658-1755, 1810-1813"
    },
    {
@@ -1245,8 +1245,8 @@
     "kind": "control",
     "label_es": "salud de la copia del Perú",
     "label_en": "Peru copy health",
-    "explain_es": "Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing, relay-stale (más de 36 h), relay-sources-down o relay-token-expiring. Así un equipo apagado se vuelve issue.",
-    "explain_en": "At start the pipeline reads data-peru's index.json and heartbeat.json and logs relay-missing, relay-stale (over 36 h), relay-sources-down or relay-token-expiring. That is how a machine that is off becomes an issue.",
+    "explain_es": "Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed o relay-token-expiring. Así un equipo apagado se vuelve issue.",
+    "explain_en": "At start the pipeline reads data-peru's index.json and heartbeat.json and logs relay-missing, relay-stale (over 36 h), relay-sources-down, relay-goal-missed or relay-token-expiring. That is how a machine that is off becomes an issue.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
     "evidence": "python/enso/observatory.py:1166-1167, 1658-1720"

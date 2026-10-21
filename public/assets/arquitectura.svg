@@ -453,7 +453,7 @@
     <text class="ar-t" x="1362" y="711.8" font-size="10.5" text-anchor="middle">55</text>
   </g>
   <g class="ar-edge" id="af-e-56" data-edge="56" data-from="data-peru-branch" data-to="event-log" tabindex="0">
-    <title>56. Rama data-peru → Registro de incidencias: salud de la copia del Perú. Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing, relay-stale (más de 36 h), relay-sources-down o relay-token-expiring. Así un equipo apagado se vuelve issue.</title>
+    <title>56. Rama data-peru → Registro de incidencias: salud de la copia del Perú. Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed o relay-token-expiring. Así un equipo apagado se vuelve issue.</title>
     <path class="ar-e ar-e-control" d="M976 216 L1014 216 Q1020 216 1020 222 L1020 1008 Q1020 1014 1026 1014 L1089 1014" stroke-dasharray="2 3" marker-end="url(#af-m-control)"/>
     <circle class="ar-badge ar-e-control" cx="1020" cy="615" r="9"/>
     <text class="ar-t" x="1020" y="618.8" font-size="10.5" text-anchor="middle">56</text>
@@ -1510,8 +1510,8 @@
   <text class="ar-t" x="1188.7" y="2351.8" font-size="11.5">salud de la copia del Perú</text>
   <text class="ar-m" x="1188.7" y="2365.8" font-size="10.5">Rama data-peru → Registro de incidencias · cada corrida de observatory.yml</text>
   <text class="ar-s" x="1188.7" y="2380.8" font-size="11">Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing,</text>
-  <text class="ar-s" x="1188.7" y="2395.8" font-size="11">relay-stale (más de 36 h), relay-sources-down o relay-token-expiring. Así un equipo</text>
-  <text class="ar-s" x="1188.7" y="2410.8" font-size="11">apagado se vuelve issue.</text>
+  <text class="ar-s" x="1188.7" y="2395.8" font-size="11">relay-stale (más de 36 h), relay-sources-down, relay-goal-missed o relay-token-expiring. Así</text>
+  <text class="ar-s" x="1188.7" y="2410.8" font-size="11">un equipo apagado se vuelve issue.</text>
   <circle class="ar-badge ar-e-control" cx="1168.7" cy="2433.8" r="9"/>
   <text class="ar-t" x="1168.7" y="2437.6" font-size="10.5" text-anchor="middle">57</text>
   <text class="ar-t" x="1188.7" y="2437.8" font-size="11.5">salud de la copia de n8n</text>

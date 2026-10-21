@@ -35,7 +35,7 @@ from datetime import date
 from typing import Any, Optional
 
 from .feeds import MONTHS_ES, FormatChanged
-from .feeds.peru import DATE_ES, _date_es
+from .feeds.peru import DATE_ES, _date_es, download_button
 
 # ---------------------------------------------------------------------------
 # Esquemas (subconjunto de JSON Schema: type, enum, minimum, maximum, required, properties, items,
@@ -703,10 +703,9 @@ def _informe_pdf(fetcher, url: str, FetchError, archive_prefix):
         # La URL puede ser la página de descarga del portal (HTML) que enlaza el PDF.
         try:
             page = fetcher.get([url], archive=True, accept=("html",))
-            m = re.search(r"href=[\"']([^\"']*wpdmdl=\d+[^\"']*)[\"']", page.text)
-            if m:
-                return pdf(fetcher.get([m.group(1).replace("&#038;", "&").replace("&amp;", "&")], archive=True,
-                                       accept=("pdf", "octet-stream")))
+            link = download_button(page.text, url)
+            if link:
+                return pdf(fetcher.get([link], archive=True, accept=("pdf", "octet-stream")))
         except FetchError:
             pass
     return None

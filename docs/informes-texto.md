@@ -108,3 +108,15 @@ fecha, fuente y próxima publicación esperada. El mapa reporta el OISST semanal
 del informe que el panel da por vencido no se muestra como actual. Los datos atrasados quedan como
 incidencia `late-<id>`. Las noticias cuentan como fallidas las fuentes omitidas por servidor caído o por
 tiempo; solo no cuentan las que `robots.txt` no permite.
+
+## Causas raíz y prevención (octubre de 2026)
+
+Los fallos del 21 de octubre de 2026 (comunicado 18-2026 sin leer, informe técnico sin bajar) tuvieron cuatro causas
+de fondo. Cada una tiene ahora un resguardo que falla de forma visible si vuelve a ocurrir:
+
+| Causa | Qué pasó | Resguardo |
+| --- | --- | --- |
+| Lógica duplicada que se separó | La actualización diaria, el informe técnico y el recolector del Perú leían las páginas de descarga del portal cada uno a su manera; uno tomaba el enlace canónico (la propia página) en vez del botón «Descargar», otro se quedaba con la API de WordPress atrasada. | Un único lector: `peru.download_button` (solo el `?wpdmdl=` del mismo slug) y `merge_enfen_listings` (todos los listados, no el primero que responde). |
+| Pruebas con páginas inventadas | Las páginas de prueba no traían el enlace canónico ni la barra lateral, así que el error no aparecía en las pruebas. | Pruebas con capturas reales del portal (`tests/fixtures/reports/enfen-download-n14-2026-20261021.html`, listados del 21-10-2026) y con la página de verificación de la DHN. |
+| Supuestos de acceso sin comprobar | Se suponía que la réplica de la DHN servía PDF; sirve una verificación humana, que se aceptaba como HTML y cortaba la búsqueda. | Solo cuenta un cuerpo que empiece con `%PDF-`; el resto sigue a la ruta siguiente (nunca se intenta pasar la verificación). |
+| Fallos parciales silenciosos | La recolección decía «ok» con `enfen-docs 4/8`, sin decir que faltaba justo el comunicado más reciente. | Metas de la recolección (`goals` en `index.json`): el PDF del comunicado y del informe más recientes. Si falta uno, el recolector anota un AVISO y la actualización diaria abre la incidencia `relay-goal-missed`. |

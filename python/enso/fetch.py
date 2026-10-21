@@ -115,6 +115,8 @@ class Relay:
         self.collector: dict = idx.get("collector") or {}
         self.host: str = self.collector.get("host", "")
         self.summary: dict = idx.get("summary") or {}
+        #: Metas de la recolección (``tools.peru_collector.goals``): documento → si se guardó su PDF.
+        self.goals: dict = idx.get("goals") or {}
         self.heartbeat: dict = read_heartbeat(self.root)
         self.max_age_hours = max_age_hours
         #: Canal con que se marcan las respuestas: «relay-n8n» o «relay-peru».

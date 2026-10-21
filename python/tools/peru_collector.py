@@ -521,11 +521,9 @@ def fetch(client: httpx.Client | Session, url: str, expect: str | None = None, m
             "elapsed_s": round(time.monotonic() - started, 1)}
 
 
-def _pdf_link(html: str) -> str | None:
-    """Enlace al PDF en una página de descarga del portal. Primero el botón con ``wpdmdl``: el patrón del
-    listado también encuentra el enlace de la página a sí misma, y con él nunca se bajaba el PDF."""
-    got = re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", html) or peru.LISTING_RE.search(html)
-    return got.group(1) if got else None
+def _pdf_link(html: str, page_url: str) -> str | None:
+    """Enlace al PDF en una página de descarga del portal: el mismo lector que la actualización diaria."""
+    return peru.download_button(html, page_url)
 
 
 def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[dict]:
@@ -551,6 +549,8 @@ def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[d
     listing = merge_enfen_listings(*listings)
     oficial = [i for i in listing if i.get("kind", "oficial") == "oficial"]
     targets = [_clean_wpdm(u) for i in oficial[:2] for u in _communique_urls(i)]
+    newest = {_clean_wpdm(u) for u in _communique_urls(oficial[0])} if oficial else set()
+    goal = f"comunicado {oficial[0]['number']:02d}-{oficial[0]['year']}" if oficial else None
     if oficial:
         y, n = oficial[0]["year"], oficial[0]["number"]
         for k in (1, 2):
@@ -561,13 +561,20 @@ def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[d
     for url in targets:
         r = fetch(client, url, guess_expect(url))
         out.append(r)
+        if url in newest:
+            r["goal"] = goal
         body = r["body"]
         if r.get("status") == 200 and body and body[:5] != b"%PDF-":
-            link = _pdf_link(body.decode("utf-8", "replace"))
+            link = _pdf_link(body.decode("utf-8", "replace"), url)
             if link and _clean_wpdm(link) != url:
                 pdf = fetch(client, _clean_wpdm(link), "pdf")
                 pdf["aliases"] = [url]
+                if url in newest:
+                    pdf["goal"] = goal
                 out.append(pdf)
+    if goal and not any(r.get("goal") == goal for r in out):  # el comunicado no trae URL que bajar
+        out.append({"url": oficial[0].get("url") or "", "goal": goal, "status": None, "body": b"",
+                    "error": "sin URL del PDF", "class": "empty", "elapsed_s": 0.0})
     out += enfen_informes(client)
     return out
 
@@ -582,15 +589,32 @@ def enfen_informes(client: httpx.Client | Session, keep: int = 2) -> list[dict]:
     if listing.get("status") != 200 or not listing["body"]:
         return out
     entries = reports.informe_entries(listing["body"].decode("utf-8", "replace"))
-    for e in sorted(entries, key=lambda e: e.get("dataTo") or "", reverse=True)[:keep]:
+    for k, e in enumerate(sorted(entries, key=lambda e: e.get("dataTo") or "", reverse=True)[:keep]):
+        goal = f"informe técnico {e['n']:02d}-{e['year']}" if k == 0 else None
         r = fetch(client, e["url"], "pdf", max_bytes=MAX_INFORME_BYTES)
+        r["goal"] = goal
         out.append(r)
         if r.get("status") == 200 and r["body"] and r["body"][:5] != b"%PDF-":
-            link = _pdf_link(r["body"].decode("utf-8", "replace"))
+            link = _pdf_link(r["body"].decode("utf-8", "replace"), e["url"])
             if link and _clean_wpdm(link) != e["url"]:
                 pdf = fetch(client, _clean_wpdm(link), "pdf", max_bytes=MAX_INFORME_BYTES)
                 pdf["aliases"] = [e["url"]]
+                pdf["goal"] = goal
                 out.append(pdf)
+    if not entries:
+        out.append({"url": reports.INFORMES_PAGE, "goal": "informe técnico", "status": None, "body": b"",
+                    "error": "el listado no trae informes", "class": "empty", "elapsed_s": 0.0})
+    return out
+
+
+def goals(entries: list[dict]) -> dict[str, bool]:
+    """Lo que la recolección debe lograr, más allá de cuántas URL respondieron: el PDF del comunicado más
+    reciente y el del informe técnico más reciente. «enfen-docs 4/8» no dice si faltó justo uno de esos dos;
+    esto sí, y la actualización diaria lo convierte en advertencia."""
+    out: dict[str, bool] = {}
+    for e in entries:
+        if e.get("goal"):
+            out[e["goal"]] = out.get(e["goal"], False) or (e.get("detected") == "pdf" and bool(e.get("file")))
     return out
 
 
@@ -703,6 +727,10 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
             f"{skipped['servidor']} de servidores que no respondían, {skipped['robots-sin-respuesta']} de servidores "
             f"cuyo robots.txt no respondió ({', '.join(down) or 'ninguno'}) y {skipped['plazo']} por el plazo "
             f"de {budget:.0f} min")
+    met = goals(entries)
+    for g, ok in met.items():
+        if not ok:
+            log(f"AVISO no se pudo guardar el PDF del {g}: revisar las líneas de enfen-docs de arriba")
     index = {
         "schema": "enso-relay/1",
         "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -712,6 +740,8 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
         "summary": {g: f"{sum(1 for e in entries if e['group'] == g and usable(e))}/"
                        f"{sum(1 for e in entries if e['group'] == g)}" for g in results},
     }
+    if met:
+        index["goals"] = met
     if not_requested:
         index["not_requested"] = not_requested
     if probes:

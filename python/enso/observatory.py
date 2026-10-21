@@ -450,10 +450,7 @@ def _probe_communique(fetcher, py: int, pn: int, log: EventLog) -> Optional[dict
         r = fetcher.get([page], archive=True, save=False, accept=("html",))
     except FetchError:
         return None
-    # El botón de descarga (``?wpdmdl=``) de este mismo número: el primer enlace de la página es el canónico a
-    # sí misma, sin ``wpdmdl``, y la barra lateral enlaza otros comunicados.
-    got = re.search(rf"href=[\"']([^\"']*comunicado-oficial-enfen-n-?{pn:02d}-{py}/?\?wpdmdl=\d+[^\"']*)", r.text)
-    url = _clean_wpdm(got.group(1)) if got else ""
+    url = peru.download_button(r.text, page)
     if url:
         log.add("info", "enfen-comunicados", "fetch", "probe-found",
                 f"Se detectó el comunicado {pn:02d}-{py} antes de que apareciera en el listado.")
@@ -1842,6 +1839,12 @@ def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str
     else:
         log.add("info", "relay-peru", "fetch", "relay-ok",
                 f"Recolección desde el Perú del {relay.collected_at}: {relay.summary}.")
+    missed = [g for g, ok in relay.goals.items() if not ok]
+    if missed and age <= RELAY_STALE_HOURS:
+        # Una recolección «ok» con un 4/8 en enfen-docs puede haber perdido justo el documento que falta aquí.
+        log.add("warning", "relay-peru", "fetch", "relay-goal-missed",
+                f"La recolección desde el Perú del {relay.collected_at} no guardó el PDF de: {', '.join(missed)}; "
+                f"revisar su registro en {relay.host or 'el equipo del Perú'}.")
     # El recolector anota cuándo vence su token: avisar antes de que deje de subir.
     collector = (hb.get("collector") if hb_age < age else None) or relay.collector
     expires = str(collector.get("token_expires_at") or "")

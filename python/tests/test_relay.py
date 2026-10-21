@@ -790,7 +790,20 @@ def test_download_page_link_is_the_pdf_button_not_the_page_itself():
     page = ('<link rel="canonical" href="https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/">'
             "<a rel='nofollow' class='inddl btn' href='https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-"
             "n-18-2026/?wpdmdl=2165&ind=1792527447290'>Descargar</a>")
-    assert "wpdmdl=2165" in pc._pdf_link(page)
+    assert "wpdmdl=2165" in pc._pdf_link(page, "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/")
+
+
+def test_download_button_reads_the_real_portal_page_and_ignores_other_slugs():
+    from enso.feeds import peru
+
+    page = (Path(__file__).parent / "fixtures" / "reports" / "enfen-download-n14-2026-20261021.html").read_text()
+    url = "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-14-2026/"
+    link = peru.download_button(page, url)
+    assert link and "wpdmdl=2141" in link and "comunicado-oficial-enfen-n-14-2026" in link and "refresh" not in link
+    # La barra lateral y el enlace canónico no cuentan: con otro slug no hay botón.
+    assert peru.download_button(page, url.replace("n-14", "n-15")) is None
+    sidebar = "<a href='https://enfen.imarpe.gob.pe/download/otro-documento/?wpdmdl=9&amp;ind=1'>x</a>"
+    assert peru.download_button(sidebar, url) is None
 
 
 def test_collector_follows_the_newest_listing_not_the_stale_wordpress_api():
@@ -808,3 +821,32 @@ def test_collector_follows_the_newest_listing_not_the_stale_wordpress_api():
     assert any("comunicado-oficial-enfen-n-18-2026" in u for u in asked)
     assert any("comunicado-oficial-enfen-n-19-2026" in u for u in asked)  # sondeo del siguiente
     assert not any("-14-2026" in u for u in asked)
+
+
+def test_collector_goals_flag_the_newest_documents(tmp_path, monkeypatch):
+    """La recolección anota si guardó el PDF del comunicado y del informe más recientes, no solo cuántas URL."""
+    idx = _collect(tmp_path, monkeypatch, _peru_only)
+    assert idx["goals"] == {"comunicado 17-2026": True, "informe técnico 18-2026": True}
+
+    def no_informe(req):
+        return httpx.Response(404) if "/download/informe-tecnico-enfen-" in str(req.url) else _peru_only(req)
+
+    idx = _collect(tmp_path, monkeypatch, no_informe, None, name="sin-informe")
+    assert idx["goals"]["informe técnico 18-2026"] is False
+    assert idx["goals"]["comunicado 17-2026"] is True
+
+
+def test_site_run_warns_when_the_collector_missed_a_goal(tmp_path):
+    from enso import observatory as obs
+
+    root = tmp_path / "relay"
+    root.mkdir()
+    (root / "index.json").write_text(json.dumps({
+        "schema": "enso-relay/1", "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "collector": {"host": "pc-lima"}, "entries": [],
+        "goals": {"comunicado 18-2026": True, "informe técnico 18-2026": False}}), encoding="utf-8")
+    log = obs.EventLog()
+    obs.load_relay(root, log)
+    ev = [e for e in log.events if e.code == "relay-goal-missed"]
+    assert len(ev) == 1 and ev[0].severity == "warning" and "informe técnico 18-2026" in ev[0].message
+    assert "comunicado" not in ev[0].message
