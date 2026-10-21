@@ -45,6 +45,19 @@ def test_distance_from_a_town_is_a_reference_not_the_place(title, code, max_conf
     assert "referencia" in g["places"][0]["rule"]
 
 
+@pytest.mark.parametrize("title,codes", [
+    ("Sismo de magnitud 4.0. 20/10/2026 10:00 hora de Lima", []),
+    ("Huaico en Kimbiri afecta viviendas", ["080907"]),
+    ("Estación Lagarto (distrito de Raimondi, provincia de Atalaya, departamento de Ucayali)", ["250201"]),
+    ("Perú busca esferas para almacenar GLP fuera de Lima", []),
+    ("Extinguen incendios en los distritos de Uñón (Arequipa), Pallpata, Pampamarca y Ccatcca (Cusco). "
+     "En los distritos de Pallpata, Pampamarca y Ccatcca, los comuneros", ["040412", "080805", "080506", "081205"]),
+])
+def test_reported_misplacements(title, codes):
+    g = locate_item({"title": title}) or {}
+    assert [p["code"] for p in g.get("places") or []] == codes
+
+
 def test_item_carries_confidence_method_and_evidence():
     g = locate_item({"title": "Huaico afecta viviendas en el distrito de Chaclacayo"})
     p = g["places"][0]

@@ -147,7 +147,7 @@ _ANTI_WORDS = (
     r"facultad|escuela profesional|parque nacional|reserva nacional|santuario nacional|"
     r"plaza|parque|malec[oó]n|estadio|coliseo|mercados?|hospital|colegio|aeropuerto|terminal|universidad|"
     r"valles?|bah[ií]a|comunidad(?:es)?(?: campesinas?| nativas?)?|"
-    r"fuera|lejos|excepto|salvo")  # «almacenar GLP fuera de Lima»: justamente no es Lima
+    r"fuera|lejos|excepto|salvo|hora")  # «almacenar GLP fuera de Lima»: justamente no es Lima
 ANTI_RE = re.compile(
     r"\b(?P<w>" + _ANTI_WORDS + r")"
     r"\)?\.?\s+(?:(?:de|del|la|el|los|las|a|usuarios de|campesina de|nativa de|nacional de|regional de|"
@@ -241,7 +241,7 @@ PERU_INSTITUTION_RE = re.compile(
 NOTABLE_CAPITALS = {"chosica", "huaycan", "tingo maria", "quillabamba", "la oroya", "cerro de pasco",
                     "puerto maldonado", "tarapoto", "juliaca", "chimbote", "mollendo", "pichanaki"}
 #: Nombres de uso común que el INEI escribe de otra forma, o que la prensa usa para otro distrito.
-ALIASES = {"surco": {"150140"}, "ccatcca": {"081205"}, "tambogrande": {"200114"}, "pichanaki": {"120303"},
+ALIASES = {"surco": {"150140"}, "ccatcca": {"081205"}, "kimbiri": {"080907"}, "raimondi": {"250201"}, "tambogrande": {"200114"}, "pichanaki": {"120303"},
            "carmen de la legua": {"070103"}, "nasca": {"1103", "110301"}, "nazca": {"1103", "110301"},
            "banos del inca": {"060108"}, "cuzco": {"08"}, "ciudad imperial": {"0801"}, "lima metropolitana": {"1501"},
            "lima provincias": {"15"}, "lima region": {"15"}, "region lima": {"15"},
