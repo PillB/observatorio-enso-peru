@@ -101,18 +101,34 @@ jobs:
             echo "La rama data-peru no existe: sin copias desde el Perú."
           fi
 
+      # Copias que el flujo de n8n (n8n/, docs/n8n.md) sube a la rama data-n8n:
+      # un segundo canal fuera de Actions para las fuentes no geobloqueadas.
+      - name: Fetch the n8n relay copies
+        id: n8n
+        continue-on-error: true
+        run: |
+          if git ls-remote --exit-code --heads origin data-n8n >/dev/null; then
+            git fetch --depth 1 origin data-n8n
+            git worktree add --detach "$RUNNER_TEMP/n8n" FETCH_HEAD
+            echo "dir=$RUNNER_TEMP/n8n" >> "$GITHUB_OUTPUT"
+          else
+            echo "La rama data-n8n no existe: sin copias de n8n."
+          fi
+
       - name: Fetch, validate and build the publication
         id: pipeline
         working-directory: python
         env:
           ENSO_ARCHIVE_SAVE: ${{ (github.event_name != 'workflow_dispatch' || inputs.archive_save) && '1' || '0' }}
           RELAY_DIR: ${{ steps.relay.outputs.dir }}
+          N8N_DIR: ${{ steps.n8n.outputs.dir }}
         run: |
           python -m enso.observatory \
             --out ../public/data \
             --previous "${SITE_URL}data" \
             --raw-dir "$RUNNER_TEMP/raw" \
             ${RELAY_DIR:+--relay-dir "$RELAY_DIR"} \
+            ${N8N_DIR:+--n8n-dir "$N8N_DIR"} \
             --fail-on critical
 
       - name: Adapt the site to its public address
