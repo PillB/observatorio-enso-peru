@@ -167,7 +167,7 @@ def _with_news() -> dict:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     from enso.news import FEEDS
 
-    return CURRENT | {f"news-{f.id}.xml": f.url for f in FEEDS}
+    return CURRENT | {f.fixture: f.url for f in FEEDS}
 
 
 def capture_current(client: httpx.Client, out: Path, index: list) -> None:

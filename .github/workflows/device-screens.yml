@@ -42,7 +42,7 @@ jobs:
         run: |
           rc=0
           python -m tools.screenshots --site-dir ../public --out ../docs/capturas/noticias-peru --route "noticias?tab=peru" || rc=1
-          python -m tools.screenshots --site-dir ../public --out ../docs/capturas/noticias-oficial --route "noticias?tab=oficial" --anchor ".news-body" || rc=1
+          python -m tools.screenshots --site-dir ../public --out ../docs/capturas/noticias-oficial --route "noticias?tab=oficial" || rc=1
           exit $rc
       - name: Commit screenshots
         if: always()

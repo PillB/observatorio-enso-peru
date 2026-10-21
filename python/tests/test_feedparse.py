@@ -177,3 +177,18 @@ def test_gazetteer_covers_every_level():
     g = gazetteer()
     assert len(g.deps) == 25 and len(g.provs) == 196 and len(g.dists) >= 1890
     assert g.label("200601")["province"] == "Sullana"
+
+
+def test_gobpe_listing_adapter():
+    """Las notas de gob.pe (sin RSS) se leen del listado HTML con el mismo formato que un feed."""
+    from conftest import FIX
+
+    body = (FIX.parent / "news-probe" / "gobpe-indeci.html").read_bytes()
+    p = F.parse(body, "https://www.gob.pe/institucion/indeci/noticias", adapter="gobpe", now=NOW)
+    assert p.format == "gobpe-html" and len(p.items) >= 20
+    assert all(i["link"].startswith("https://www.gob.pe/institucion/") for i in p.items)
+    assert sum("/indeci/" in i["link"] for i in p.items) >= len(p.items) - 2  # gob.pe intercala notas afines
+    assert all(i["published"] and i["published"] <= "2026-10-21" for i in p.items)
+    assert p.items == sorted(p.items, key=lambda i: i["published"], reverse=True)
+    with pytest.raises(F.FeedError):
+        F.parse(b"<html><body>Mantenimiento gob.pe</body></html>", adapter="gobpe", now=NOW)

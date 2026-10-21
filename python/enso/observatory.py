@@ -1071,11 +1071,11 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     from .geo import department_names
 
     by_url = {f.url: f for f in N.FEEDS}
-    if fixtures is not None and not any(fixtures.glob("news-*.xml")):
+    if fixtures is not None and not any(fixtures.glob("news-*.*")):
         return None
     if fixtures is not None:
         def fetch(url):
-            p = fixtures / f"news-{by_url[url].id}.xml"
+            p = fixtures / by_url[url].fixture
             return (200, p.read_bytes(), "", "") if p.exists() else (None, b"", "", "sin captura")
     else:
         def fetch(url):
@@ -1116,8 +1116,9 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             d = raw_dir / f"news-{fid}"
             d.mkdir(parents=True, exist_ok=True)
             sha = hashlib.sha256(body).hexdigest()[:12]
-            if not any(p.name.endswith(f"-{sha}.xml") for p in d.iterdir()):
-                (d / f"{day}-{sha}.xml").write_bytes(body)
+            ext = N.FEED_BY_ID[fid].fixture.rsplit(".", 1)[-1] if fid in N.FEED_BY_ID else "xml"
+            if not any(p.stem.endswith(f"-{sha}") for p in d.iterdir()):
+                (d / f"{day}-{sha}.{ext}").write_bytes(body)
         if added:
             (raw_dir / "news").mkdir(parents=True, exist_ok=True)
             with open(raw_dir / "news" / f"{day}.jsonl", "a", encoding="utf-8") as fh:

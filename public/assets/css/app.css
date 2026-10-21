@@ -453,7 +453,8 @@ table.grd .chip { white-space: normal; }
 }
 /* Pantallas muy pequeñas (teléfonos de tapa, pantalla externa de plegables) */
 @media (max-width: 300px) {
-  .brand-name { white-space: normal; font-size: 0.9rem; line-height: 1.15; }
+  .brand-name { white-space: normal; font-size: 0.82rem; line-height: 1.1; }
+  .icon-btn { min-width: 36px; min-height: 36px; padding: 6px; }
   .brand > span { min-width: 0; }
   .header-inner { padding: 6px 8px; gap: 6px; }
   .brand svg { width: 24px; height: 24px; }

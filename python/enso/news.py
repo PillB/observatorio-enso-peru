@@ -49,6 +49,13 @@ class Feed:
     kind: str = "diario"
     #: Código UBIGEO de 2 dígitos del departamento que cubre el medio, si es regional.
     department: Optional[str] = None
+    #: "feed" (RSS/Atom/JSON Feed) o "gobpe" (listado de noticias de gob.pe, sin RSS).
+    adapter: str = "feed"
+
+    @property
+    def fixture(self) -> str:
+        """Nombre del archivo capturado (fixtures y archivo crudo)."""
+        return f"news-{self.id}.{'html' if self.adapter == 'gobpe' else 'xml'}"
 
 
 _GN = "https://news.google.com/rss/search?q="
@@ -123,9 +130,9 @@ def relevance(feed: Feed, title: str, summary: str) -> Optional[str]:
 # --- Lectura de RSS/Atom -----------------------------------------------------
 # El lector tolerante (reparaciones, formatos, fechas) está en ``feedparse``.
 
-def parse_feed(body: bytes, base_url: str = "") -> list[dict]:
-    """Entradas homologadas de un feed (RSS 2.0/1.0, Atom o JSON Feed)."""
-    return parse_any(body, base_url=base_url).items
+def parse_feed(body: bytes, base_url: str = "", adapter: str = "feed") -> list[dict]:
+    """Entradas homologadas de un feed (RSS 2.0/1.0, Atom, JSON Feed o listado de gob.pe)."""
+    return parse_any(body, base_url=base_url, adapter=adapter).items
 
 
 SOCIAL_RE = re.compile(r"(facebook|instagram|tiktok|twitter|youtube)\.com|//(www\.)?x\.com/|^(Facebook|Instagram|TikTok|X|YouTube)$", re.I)
@@ -312,7 +319,8 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
         st["error"] = err or f"HTTP {code}"
         return st, [], None
     try:
-        parsed = parse_any(body, base_url=f.url, default_tz=LIMA if f.region == "peru" else timezone.utc, now=now)
+        parsed = parse_any(body, base_url=f.url, default_tz=LIMA if f.region == "peru" else timezone.utc, now=now,
+                           adapter=f.adapter)
     except FeedError as exc:
         st["error"] = str(exc)
         return st, [], body

@@ -100,7 +100,7 @@ def main(argv=None) -> int:
     ap.add_argument("--fallback-engine", default="chromium",
                     help="motor para los dispositivos cuyo motor no está instalado (se anota en el informe)")
     ap.add_argument("--full-page", action="store_true")
-    ap.add_argument("--anchor", default=".news-filters",
+    ap.add_argument("--anchor", default="[data-tour-id=news-tabs]",
                     help="elemento que se lleva al borde superior antes de capturar (vacío: el comienzo de la página)")
     ap.add_argument("--only", nargs="*")
     a = ap.parse_args(argv)

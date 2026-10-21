@@ -322,10 +322,44 @@ def _json_feed(body: bytes, base: str, tz: timezone, now: datetime) -> Parsed:
                   link=str(data.get("home_page_url") or ""))
 
 
-def parse(body: bytes, base_url: str = "", default_tz: timezone = timezone.utc,
-          now: Optional[datetime] = None) -> Parsed:
-    """Lee un feed en cualquiera de los formatos admitidos, reparando lo reparable."""
+# --- Listados HTML de gob.pe ----------------------------------------------------
+# Las entidades del Estado (INDECI, SENAMHI, ANA, gobiernos regionales…) publican
+# sus notas en https://www.gob.pe/institucion/<entidad>/noticias, sin RSS. Cada
+# nota es una tarjeta con <h3><a href>, una descripción y <time datetime> en hora
+# de Lima. El adaptador la convierte al mismo formato que las entradas de un feed.
+
+_GOBPE_CARD_RE = re.compile(
+    r'<h3\b[^>]*>\s*<a\b[^>]*href="(?P<href>/institucion/[^"]+/noticias/\d+[^"]*)"[^>]*>(?P<title>.*?)</a>'
+    r'(?P<rest>.*?)<time\b[^>]*datetime="(?P<dt>[^"]+)"', re.S)
+_GOBPE_DESC_RE = re.compile(r'id="[^"]*-description"[^>]*>(.*?)</div>\s*</div>', re.S)
+
+
+def parse_gobpe(body: bytes, base_url: str = "https://www.gob.pe/", now: Optional[datetime] = None) -> Parsed:
     now = now or datetime.now(timezone.utc)
+    text = body.decode("utf-8", errors="replace")
+    if "gob.pe" not in text[:5000] and "gob.pe" not in base_url:
+        raise FeedError("no es una página de gob.pe")
+    items = []
+    for m in _GOBPE_CARD_RE.finditer(text):
+        desc = _GOBPE_DESC_RE.search(m.group("rest"))
+        items.append({"title": clean_text(m.group("title"), 300), "link": urljoin("https://www.gob.pe/", m.group("href")),
+                      "published": parse_date(m.group("dt").split(".")[0], LIMA, now),
+                      "summary": clean_text(desc.group(1) if desc else ""), "categories": []})
+    if not items:
+        raise FeedError("la página de gob.pe no tiene notas con el formato esperado")
+    p = _finish(Parsed("gobpe-html", items))
+    p.items.sort(key=lambda i: i["published"] or "", reverse=True)
+    return p
+
+
+def parse(body: bytes, base_url: str = "", default_tz: timezone = timezone.utc,
+          now: Optional[datetime] = None, adapter: str = "feed") -> Parsed:
+    """Lee un feed en cualquiera de los formatos admitidos, reparando lo reparable.
+
+    ``adapter="gobpe"`` lee en cambio un listado de noticias de gob.pe."""
+    now = now or datetime.now(timezone.utc)
+    if adapter == "gobpe":
+        return parse_gobpe(body, base_url, now)
     if len(body) > MAX_FEED_BYTES:
         raise FeedError("feed demasiado grande")
     if not body.strip():
