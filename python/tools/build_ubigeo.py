@@ -95,8 +95,16 @@ def _keep_case(word: str, accented: str | None) -> str:
     return accented[:1].upper() + accented[1:] if word[:1].isupper() else accented
 
 
+#: Filas con el código antiguo de un distrito que pasó a otra provincia: Putumayo y Teniente Manuel Clavero
+#: eran de Maynas hasta que en 2014 se creó la provincia de Putumayo (160801 y 160803 en la misma fuente).
+LEGACY = {"160109", "160114"}
+
+
 def _fill_codes(rows: list[dict], provs: list[dict]) -> None:
-    """Distritos recientes sin código INEI en la fuente ("NA"): provincia por nombre y siguiente número libre."""
+    """Distritos recientes sin código INEI en la fuente ("NA"): provincia por nombre y siguiente número libre.
+
+    Esos códigos no son oficiales: se marcan con ``provisional`` para que nadie los tome por un UBIGEO del INEI."""
+    rows[:] = [r for r in rows if r["inei"] not in LEGACY]
     prov_code = {(r["departamento"], r["provincia"]): r["inei"][:4] for r in provs}
     used = {r["inei"] for r in rows}
     for r in rows:
@@ -104,6 +112,7 @@ def _fill_codes(rows: list[dict], provs: list[dict]) -> None:
             p4 = prov_code[(r["departamento"], r["provincia"])]
             n = 1 + max(int(c[4:]) for c in used if c.startswith(p4))
             r["inei"] = f"{p4}{n:02d}"
+            r["provisional"] = True
             used.add(r["inei"])
         for k in ("capital", "latitude", "longitude"):
             if r.get(k) == "NA":
@@ -122,7 +131,8 @@ def build(src: dict[str, str]) -> dict:
              for r in rows["prov"]]
     dists = [{"ubigeo": r["inei"], "name": display(r["distrito"], r["capital"], accents), "capital": r["capital"],
               "lat": round(float(r["latitude"]), 4) if r["latitude"] not in ("", "NA") else None,
-              "lon": round(float(r["longitude"]), 4) if r["longitude"] not in ("", "NA") else None}
+              "lon": round(float(r["longitude"]), 4) if r["longitude"] not in ("", "NA") else None,
+              **({"provisional": True} if r.get("provisional") else {})}
              for r in rows["dist"]]
     return {"source": "INEI vía github.com/jmcastagnetto/ubigeo-peru-aumentado (MIT)",
             "departments": deps, "provinces": provs, "districts": dists}
