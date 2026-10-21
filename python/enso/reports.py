@@ -34,7 +34,7 @@ from dataclasses import dataclass, field
 from datetime import date
 from typing import Any, Optional
 
-from .feeds import MONTHS_ES, FormatChanged
+from .feeds import MONTHS_ES, FormatChanged, imarpe_repo
 from .feeds.peru import DATE_ES, _date_es, download_button
 
 # ---------------------------------------------------------------------------
@@ -207,6 +207,12 @@ _SLUG = re.compile(r"informe-tecnico-enfen-ano-(\d+)-n-?(\d{1,2})(?:-al-(\d{1,2}
 #: salen cada dos semanas, así que el informe del comunicado anterior queda fuera.
 INFORME_LAG_DAYS = 10
 _DHN_HREF = re.compile(r"/informe-tecnico/(\d{1,2})-(\d{4})\.pdf", re.I)
+
+
+def _dhn_ref(url: str) -> Optional[dict]:
+    """Año y número de un PDF de la réplica de la DHN (``informe-tecnico/18-2026.pdf``)."""
+    m = re.search(r"/informe-tecnico/(\d{1,2})-(\d{4})\.pdf$", url or "")
+    return {"year": int(m.group(2)), "n": int(m.group(1))} if m else None
 
 
 def informe_ref(url: str) -> Optional[dict]:
@@ -758,6 +764,12 @@ def _informe_pdf(fetcher, url: str, FetchError, archive_prefix):
             return got
     except FetchError:
         pass
+    ref = informe_ref(url) or _dhn_ref(url)
+    if ref and "repositorio.imarpe.gob.pe" not in url:
+        # El mismo informe (número y año) en el repositorio del IMARPE, alcanzable desde Actions.
+        got = pdf(imarpe_repo.informe_pdf(fetcher, ref["year"], ref["n"]))
+        if got:
+            return got
     if "/download/" in url:
         # El Internet Archive guarda la descarga con el parámetro wpdmdl, que no se conoce de antemano.
         got = pdf(archive_prefix(fetcher, url.split("?")[0]))
@@ -833,6 +845,12 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
             hit = pick_informe(informe_entries(r.text), latest)
         except FetchError:
             hit = None
+        if hit is None:
+            # El repositorio del IMARPE: responde a GitHub Actions y el nombre del PDF trae la fecha de corte.
+            try:
+                hit = pick_informe(imarpe_repo.informes(fetcher), latest)
+            except Exception:  # noqa: BLE001 — una ruta más nunca detiene la corrida
+                hit = None
         if hit is None:
             try:
                 r = fetcher.get([DHN_INFORMES_PAGE], archive=False, accept=("html",))

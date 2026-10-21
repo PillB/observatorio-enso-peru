@@ -38,7 +38,7 @@ from pathlib import Path
 from typing import Any, Callable, Optional
 
 from .feeds import FormatChanged, Parsed
-from .feeds import cpc, peru
+from .feeds import cpc, imarpe_repo, peru
 from . import archive
 from . import manual
 from . import reports
@@ -430,6 +430,11 @@ def _get_communique(fetcher, item: dict):
     try:
         return fetcher.get(_communique_urls(item), archive=True, save=True, accept=("pdf", "octet-stream"))
     except FetchError as exc:
+        # El repositorio institucional del IMARPE: oficial, sin verificación humana y alcanzable desde Actions.
+        got = imarpe_repo.communique_pdf(fetcher, item["year"], item["number"])
+        if got is not None:
+            got.attempts = exc.attempts + [{"url": got.url, "channel": "repositorio IMARPE"}]
+            return got
         page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{item['number']:02d}-{item['year']}/"
         tried: list = []
         got = archive_prefix(fetcher, page, attempts=tried)
@@ -528,6 +533,14 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
     candidate = data.pop("latest", None)
     if fixtures is None and acq.ok and not acq.carried and "wp-json" in (acq.url or ""):
         listing = merge_enfen_listings(listing, portal_enfen_listing(fetcher, log))
+    if fixtures is None:
+        # El repositorio del IMARPE responde a GitHub Actions y deposita cada comunicado unos días después: va
+        # último, así una entrada del portal o de la DHN (con enlace al PDF) gana para el mismo número.
+        try:
+            listing = merge_enfen_listings(listing, imarpe_repo.communiques(fetcher))
+        except Exception as exc:  # noqa: BLE001 — una ruta más nunca detiene la corrida
+            log.add("info", "enfen-comunicados", "fetch", "repository-unavailable",
+                    f"No se pudo consultar el repositorio del IMARPE: {type(exc).__name__}")
     known = [(i["year"], i["number"]) for i in listing if i.get("kind", "oficial") == "oficial"]
     for c in (prev_latest, candidate):
         if c:

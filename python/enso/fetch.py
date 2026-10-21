@@ -93,6 +93,24 @@ def read_heartbeat(root: Path) -> dict:
     return hb if isinstance(hb, dict) and hb.get("schema") == "enso-relay-heartbeat/1" else {}
 
 
+#: Intermedios públicos que algunos servidores oficiales no envían (ver el encabezado del archivo).
+INTERMEDIATES = Path(__file__).parent / "data" / "ca-intermedios.pem"
+
+
+def ssl_context():
+    """El contexto TLS de siempre (certifi o ``SSL_CERT_FILE``) más los intermedios de ``INTERMEDIATES``: así un
+    servidor que manda solo su certificado (repositorio.imarpe.gob.pe) se verifica igual que en un navegador, sin
+    apagar la verificación. Las raíces siguen siendo las de siempre."""
+    import ssl
+
+    ctx = httpx.create_ssl_context()
+    try:
+        ctx.load_verify_locations(cafile=str(INTERMEDIATES))
+    except (OSError, ssl.SSLError):
+        pass  # sin el archivo, la verificación normal
+    return ctx
+
+
 class Relay:
     """Copias recolectadas fuera de GitHub Actions: desde el Perú (rama
     ``data-peru``) o por el flujo de n8n (rama ``data-n8n``), con el mismo
@@ -161,7 +179,7 @@ class Fetcher:
         # Conectar no lleva más de unos segundos aunque el servidor sea lento: un servidor que no acepta la
         # conexión no retiene cada pedido el plazo entero.
         self.client = httpx.Client(timeout=httpx.Timeout(timeout, connect=min(timeout, 15.0)), follow_redirects=True,
-                                   headers={"User-Agent": UA})
+                                   headers={"User-Agent": UA}, verify=ssl_context())
         self.retries = retries
         #: Tiempo total de cada pedido. ``timeout`` vale por lectura: un servidor que manda la respuesta de a
         #: pocos bytes nunca lo agota y, sin este límite, retendría la corrida hasta el límite del build.

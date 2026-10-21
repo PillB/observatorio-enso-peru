@@ -26,11 +26,16 @@ muestra cada vista.
    atrás; 2025, uno adelante: el comunicado 05-2025 cita el informe N° 06). Se usa el enlace que trae el
    comunicado y, si no lo trae, el listado del portal, eligiendo por la fecha de corte de datos (de 3 días
    después a `INFORME_LAG_DAYS` = 10 días antes de la emisión; en 2024–2026 fue de 0 a 5). Sin listado del
-   portal, el de la réplica de la DHN (el número más alto del año), que la validación descarta si es de otro
-   periodo. Un informe ya leído no se vuelve a bajar mientras siga el mismo comunicado.
+   portal, el del repositorio del IMARPE (con la fecha de corte del nombre del archivo) y, sin él, el de la
+   réplica de la DHN (el número más alto del año), que la validación descarta si es de otro periodo. Un informe ya leído no se vuelve a bajar mientras siga el mismo comunicado.
 3. **De dónde se baja.** El portal del ENFEN no responde desde GitHub Actions ni desde n8n (DNS). Se prueba,
-   en orden: el portal, la réplica de la DHN (`informe-tecnico/NN-AAAA.pdf`), las copias del recolector del
-   Perú y el Internet Archive. La DHN hoy responde a GitHub Actions y a n8n con una página de verificación
+   en orden: el portal, la réplica de la DHN (`informe-tecnico/NN-AAAA.pdf`), el repositorio del IMARPE, las
+   copias del recolector del Perú y de la consola, y el Internet Archive. El repositorio institucional del
+   IMARPE (`repositorio.imarpe.gob.pe`, DSpace; cliente único en `python/enso/feeds/imarpe_repo.py`) recibe cada
+   comunicado e informe unos 3 días después de su publicación y su API (`/server/api`, que robots.txt no
+   prohíbe) responde a GitHub Actions; solo se acepta el ítem cuyo título tiene el número y año exactos. El
+   servidor no envía el certificado intermedio de Sectigo: va en `python/enso/data/ca-intermedios.pem` (público,
+   vence en 2036) y la verificación TLS sigue activa. El comunicado usa la misma ruta después de sus URL. La DHN hoy responde a GitHub Actions y a n8n con una página de verificación
    humana: solo vale un cuerpo que empiece con `%PDF-`, así que esa página no se lee y la búsqueda sigue en
    las copias (nunca se intenta pasar la verificación). El recolector del Perú baja el listado de informes y
    los PDF de los dos más recientes (hasta 20 MB) con la misma URL que cita el comunicado. Mientras no haya
