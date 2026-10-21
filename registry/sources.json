@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T03:43:10+00:00",
+ "generated_at": "2026-10-21T04:00:15+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true",
   "tiers": {
@@ -7499,6 +7499,78 @@
    "needs_browser": false,
    "archive": true,
    "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-senamhi-incendios",
+   "group": "senamhi",
+   "name": "SENAMHI · peligro de incendios forestales, índice FWI (servidor GEOSINPAD del INDECI)",
+   "institution": "SENAMHI",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+   "expect": "json",
+   "method": "api",
+   "kind": "feed",
+   "home": "https://geosinpad.indeci.gob.pe/",
+   "alt_urls": [],
+   "hazards": [
+    "incendio"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=arcgis)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-firms-focos",
+   "group": "nasa-firms",
+   "name": "NASA FIRMS · focos de calor (VIIRS, NOAA-20)",
+   "institution": "NASA FIRMS",
+   "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
+   "expect": "csv",
+   "method": "download",
+   "kind": "feed",
+   "home": "https://firms.modaps.eosdis.nasa.gov/",
+   "alt_urls": [],
+   "hazards": [
+    "incendio"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=firms)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: organismo; alcance: hazard",
    "tier": 1,
    "geoblock": {
     "status": "unknown",

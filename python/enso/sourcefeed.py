@@ -40,7 +40,7 @@ def _period_date(period: str) -> str:
 
 
 #: Avisos y reportes de las fuentes oficiales de peligros que se muestran como máximo.
-ALERTS_MAX = 40
+ALERTS_MAX = 60
 ALERTS_DAYS = 7
 
 

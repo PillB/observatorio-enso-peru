@@ -183,3 +183,28 @@ def test_alerts_group_lists_sources_that_did_not_answer():
     g = feed["groups"][0]
     assert g["id"] == "alertas" and g["items"] == []  # el grupo aparece aunque no haya avisos
     assert [(s["id"], s["ok"]) for s in g["sources"]] == [("senamhi-telegram", False), ("indeci-coen", True)]
+
+
+def test_firms_hotspots_are_counted_by_department_in_peru_only():
+    found, status = _collect("firms-focos")
+    assert status["firms-focos"]["ok"] and len(found) == 1
+    f = found[0]
+    assert f["title"].startswith("NASA FIRMS · 259 focos de calor en el Perú (19 y 20 de octubre): Huánuco (47), Ucayali (38)")
+    assert "incendio" in f["hazards"] and {"10", "25", "03"} <= set(f["departments"])
+    assert "quema agrícola" in f["summary"]  # un foco de calor no siempre es un incendio forestal
+    head = b"latitude,longitude,bright_ti4,scan,track,acq_date,acq_time,satellite,confidence,version,bright_ti5,frp,daynight\n"
+    bolivia = head + b"-16.5,-68.15,330,0.4,0.4,2026-10-20,1800,N20,nominal,2.0NRT,290,5,D\n"
+    p = H.parse(bolivia, "x", "firms")
+    assert p.items == [] and "sin focos de calor en el Perú" in p.repairs[-1]
+    feed = N.FEED_BY_ID["firms-focos"]
+    st, items, _ = N._read_feed(feed, lambda url: (200, bolivia, "", ""), NOW)
+    assert st["ok"] and not st["error"] and not items  # sin focos no es una falla
+
+
+def test_fire_risk_polygons_are_named_by_department():
+    found, status = _collect("senamhi-incendios")
+    assert status["senamhi-incendios"]["ok"] and len(found) == 1
+    f = found[0]
+    assert f["title"].startswith("SENAMHI · peligro extremo de incendios forestales (índice FWI > 97): ")
+    assert {"15", "11", "04", "23"} <= set(f["departments"])  # Lima, Ica, Arequipa, Tacna
+    assert "INTENSIDAD%3D%27EXTREMO%27" in f["link"] and "f=html" in f["link"]

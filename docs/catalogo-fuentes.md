@@ -142,6 +142,8 @@ simple desde GitHub Actions (escalera de extracción del 21 de octubre de
 | `dhn-tsunamis` | Sismos y tsunamis | Boletines de la DHN | Se omiten los simulacros |
 | `ptwc-mensajes`, `ptwc-wepa40` | Tsunamis | Atom y texto del Centro de Alerta de Tsunamis del Pacífico | Solo cuentan si el mensaje menciona al Perú; la alerta nacional la emite la DHN |
 | `dhn-avisos` | Oleaje anómalo y vientos en el litoral | Listado de avisos especiales de la DHN (`dhn.mil.pe/portal/avisos-especiales`) | Lee los títulos de todos los formatos desde 2020; el titular dice el oleaje más fuerte y en qué tramo del litoral (norte, centro, sur, con sus departamentos), o la velocidad del viento en nudos y entre qué localidades |
+| `firms-focos` | Incendios forestales y quemas | CSV de focos de calor de las últimas 24 horas del satélite NOAA-20 (VIIRS) de NASA FIRMS para Sudamérica | Cada foco se ubica por departamento con los límites oficiales del INDECI (`enso.geopoly`); se publica un resumen por corrida («259 focos de calor en el Perú: Huánuco (47), Ucayali (38)…»). Frente a los departamentos que asigna el INPE de Brasil coincide en 399 de 401 focos y no cuenta ninguno de los países vecinos. No se cuentan las detecciones de baja confianza |
+| `senamhi-incendios` | Peligro de incendios forestales | Capa 3 del servicio SENAMHI en GEOSINPAD: polígonos del índice FWI (aviso de 24 horas) | Los polígonos no traen lugares: se nombran los departamentos que cubren (de mayor a menor área) |
 | `igp-cenvul-boletines`, `igp-cenvul-alertas` | Volcanes | Tarjetas de boletines y alertas del CENVUL (IGP) | Se omiten los volcanes en alerta verde; cada volcán lleva su provincia y departamento |
 
 En el sitio, la pestaña Oficial de Noticias empieza por «Alertas y
@@ -154,9 +156,8 @@ Evaluadas y pendientes:
 
 | Fuente | Estado |
 |---|---|
-| NASA FIRMS (focos de calor VIIRS y MODIS, Sudamérica, 24 h) | Responde (CSV); falta ubicar cada foco por departamento |
-| Riesgo de incendios forestales del SENAMHI (FWI, capa 3 de GEOSINPAD) | Responde (polígonos sin nombres de lugar); falta ubicarlos por departamento |
-| Focos de calor del INPE (Brasil), con país y departamento | En la escalera de extracción |
+| Focos de calor del INPE (Brasil) | Trae país y departamento de cada foco, pero el archivo diario pesa de 3 a 8 MB y llega con un día de atraso; se usa como referencia en las pruebas |
+| Avisos de lluvia de 24 horas del SENAMHI (capa 5 de GEOSINPAD) | Repite como polígonos lo que la capa 2 ya da por distrito |
 | Global Volcanism Program (Smithsonian) | Verificación anti-robots; no se intenta saltarla |
 | API del IGP (`api.igp.gob.pe`) | `robots.txt` la excluye |
 | SENAMHI (`senamhi.gob.pe`, observatorio), IDESEP, SIG del CENEPRED | Tiempo de espera agotado fuera del Perú; quedan para el recolector del Perú |
