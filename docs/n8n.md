@@ -41,19 +41,23 @@ n8n, en GitHub Actions y en `n8n/tools/probe.mjs`:
 `connect`, `dns`…), para comparar con las mediciones desde Actions y desde
 el Perú.
 
+Cada URL pasa sola por el nodo HTTP (bucle «Una por una»): si n8n recibe
+muchas a la vez, lanza todas las peticiones y lee los cuerpos al final, y
+las respuestas grandes se cortan por inactividad («aborted»).
+
 Las fallas pasajeras (tiempo agotado, conexión cortada, 5xx, 429) se
 reintentan una vez a los 30 s. En la misma segunda pasada se bajan los
 documentos que el registro indica seguir (`follow`) y los PDF de los
 comunicados del ENFEN deducidos de sus listados (los dos últimos y los dos
 números siguientes), con el mismo criterio que el pipeline.
 
-## Paso 1 — Validar (5 minutos, sin credenciales)
+## Paso 1 — Validar (unos 15 minutos, sin credenciales)
 
 Lo hace el colega que administra el n8n:
 
 1. Descargar `n8n/dist/enso-n8n-validacion.json` del repositorio (o pedírselo a Pablo).
 2. En n8n: **Workflows → Create Workflow → ⋯ (arriba a la derecha) → Import from File** y elegir el archivo.
-3. Pulsar **Execute workflow** (o **Test workflow**). Tarda 2 a 4 minutos.
+3. Pulsar **Execute workflow** (o **Test workflow**). Tarda unos 15 minutos: baja las URL de a una y las del Perú (SENAMHI, ANA) esperan 40 s y 60 s antes de darse por perdidas.
 4. Abrir el nodo **Informe**: la primera fila es el resumen (`RESUMEN: N/M fuentes responden desde este n8n`), luego una fila por URL, primero las que fallaron.
 5. Abrir el nodo **Informe CSV** y descargar `validacion-fuentes-n8n.csv`. Enviárselo a Pablo.
 
@@ -105,7 +109,7 @@ sigue funcionando (todo va por la API, nada por `raw.githubusercontent.com`).
    | `contact` | URL del repositorio | Contacto en el User-Agent. Cambiar por la URL del sitio cuando esté en su dominio |
    | `only` | vacío | Para pruebas: solo las fuentes cuyo id contiene este texto o cuyo grupo es este |
 
-4. Pulsar **Execute workflow**. Tarda 3 a 6 minutos. El nodo **Resumen** debe decir `Copia publicada en PillB/observatorio-enso-peru@data-n8n`.
+4. Pulsar **Execute workflow**. Tarda 8 a 12 minutos (las URL se bajan de a una). El nodo **Resumen** debe decir `Copia publicada en PillB/observatorio-enso-peru@data-n8n`.
 5. Comprobar en GitHub que existe la rama `data-n8n` con `index.json`, `heartbeat.json` y `files/`.
 
 ## Paso 5 — Activar (colega)
@@ -172,5 +176,7 @@ punta con n8n real es `n8n/test/e2e.sh n8nio/n8n:2.44.4 /tmp/e2e noaa`
 | `Crear blobs` falla con 403 «secondary rate limit» | Demasiadas escrituras seguidas en GitHub. El nodo reintenta 3 veces; si persiste, correr de nuevo una hora después |
 | `Publicar` falla con 422 | La rama cambió mientras corría (otra corrida a la vez). Volver a correr |
 | Muchas fuentes `timeout` o `connection` | La salida a internet del servidor de n8n (proxy, firewall, NAT) |
+| Muchas fuentes grandes con `timeout` y nota `aborted` | Flujo anterior a esta versión: n8n lanzaba todas las descargas y leía los cuerpos al final, y las respuestas grandes se cortaban. Reimportar los flujos actuales (bajan las URL de a una) |
+| `enfen.imarpe.gob.pe` con `dns` (`EAI_AGAIN`) | Los servidores de nombres propios del IMARPE responden mal a los resolvedores de AWS y Azure (sí a 1.1.1.1 y 8.8.8.8). El registro deja ese portal al servidor del Perú; n8n ya no lo pide |
 | Una fuente `blocked` con `challenge` | Esa institución bloquea a los servidores en la nube. No se evade: si responde desde el Perú, va por el servidor del Perú |
 | El informe dice `incluido en el flujo` en `registry` | No se pudo leer el registro desde GitHub (validación: siempre; recolector: revisar credencial y `registry_ref`). Se usó la copia incluida al construir el flujo |

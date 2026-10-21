@@ -305,6 +305,15 @@ test('Fuentes: con alcance «n8n» omite las URL que el registro asigna a otros 
       by_url: { 'https://x/api/': { status: 'robots-disallowed', channels: [] }, 'https://x/listado': { status: 'open', channels: ['actions', 'n8n'] } } },
   ] };
   assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(robots) }, cfg('todas'))).map((i) => i.json.url), ['https://x/listado']);
+  // Feeds que el pipeline lee como lector (robots.txt en contra): nunca desde n8n.
+  const reader = { schema: 'enso-source-registry/1', sources: [
+    { id: 'gn', group: 'g', url: 'https://news.google/rss', alt_urls: ['https://feed/ok'], expect: 'rss', channels: ['actions', 'n8n'],
+      by_url: { 'https://news.google/rss': { status: 'robots-disallowed', channels: ['actions'], reader: true }, 'https://feed/ok': { status: 'open', channels: ['actions', 'n8n'] } } },
+    { id: 'r2', group: 'g', url: 'https://reader-only/rss', expect: 'rss', channels: ['actions'], by_url: { 'https://reader-only/rss': { status: 'open', channels: ['actions', 'n8n'], reader: true } } },
+  ] };
+  for (const scope of ['n8n', 'todas']) {
+    assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(reader) }, cfg(scope))).map((i) => i.json.url), ['https://feed/ok'], scope);
+  }
 });
 
 test('Preparar copia: no publica si no pudo leer la copia anterior', async () => {
