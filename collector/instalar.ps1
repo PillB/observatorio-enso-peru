@@ -420,10 +420,10 @@ function Invoke-Update {
 # Una carpeta es del recolector si la instalación la marcó, o si tiene el kit
 # completo (kit.json y el código). Un .venv o un kit.json sueltos no bastan:
 # DESINSTALAR la borra entera.
-function Test-OurInstall {
-    (Test-Path -LiteralPath (Join-Path $Destino $Marker)) -or
-        ((Test-Path -LiteralPath (Join-Path $Destino 'kit.json')) -and
-         (Test-Path -LiteralPath (Join-Path $Destino 'python\tools\collector_service.py')))
+function Test-OurInstall([string]$Path = $Destino) {
+    (Test-Path -LiteralPath (Join-Path $Path $Marker)) -or
+        ((Test-Path -LiteralPath (Join-Path $Path 'kit.json')) -and
+         (Test-Path -LiteralPath (Join-Path $Path 'python\tools\collector_service.py')))
 }
 
 # Instalar solo en una carpeta nueva, vacía (o con solo logs) o que ya es del recolector.
@@ -435,25 +435,56 @@ function Assert-DestinoFree {
     }
 }
 
+function Test-SameFolder([string]$A, [string]$B) {
+    try { [IO.Path]::GetFullPath($A).TrimEnd('\') -eq [IO.Path]::GetFullPath($B).TrimEnd('\') } catch { $false }
+}
+
+# La tarea y los accesos del menú Inicio son uno por usuario y los toma la
+# última instalación. Se quitan si son de esta carpeta o si la suya ya no está;
+# los de otra instalación en uso, nunca (un -Destino equivocado no la deja sin
+# tarea). Si no se sabe de quién son, solo al desinstalar una instalación.
+function Test-RemovableFor([string]$Owner, [bool]$Ours) {
+    if (-not $Owner) { return $Ours }
+    if (Test-SameFolder $Owner $Destino) { return $true }
+    return -not (Test-OurInstall $Owner)
+}
+
+function Get-TaskOwner($Task) {
+    $wd = "$($Task.Actions[0].WorkingDirectory)".TrimEnd('\')
+    if (-not $wd) { return $null }
+    if ((Split-Path -Leaf $wd) -eq 'python') { return Split-Path -Parent $wd }
+    return $wd
+}
+
+function Get-StartMenuOwner {
+    $lnk = Join-Path $StartMenu 'Verificar el recolector.lnk'
+    if (-not (Test-Path -LiteralPath $lnk)) { return $null }
+    try { return (New-Object -ComObject WScript.Shell).CreateShortcut($lnk).WorkingDirectory } catch { return $null }
+}
+
 function Invoke-Uninstall {
     Write-Step 'Desinstalar el recolector'
     if (-not (Read-YesNo "Se quitará la tarea programada y la carpeta $Destino (con el token). ¿Continuar?" $true)) { return 0 }
+    # Solo se borra una carpeta que es claramente una instalación del recolector.
+    $ours = Test-OurInstall
     foreach ($name in $TaskName, $OldTaskName) {
         $t = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
-        if ($t) {
-            $t | Stop-ScheduledTask -ErrorAction SilentlyContinue
-            $t | Unregister-ScheduledTask -Confirm:$false
-            Write-Info "Tarea «$name» quitada."
+        if (-not $t) { continue }
+        $owner = Get-TaskOwner $t
+        if (-not (Test-RemovableFor $owner $ours)) {
+            Write-Warn "La tarea «$name» es de $(if ($owner) { "la instalación en $owner" } else { 'otra instalación' }): no se tocó."
+            continue
         }
+        $t | Stop-ScheduledTask -ErrorAction SilentlyContinue
+        $t | Unregister-ScheduledTask -Confirm:$false
+        Write-Info "Tarea «$name» quitada."
     }
-    if (Test-Path $StartMenu) { Remove-Item -Recurse -Force $StartMenu }
-    if ([Environment]::GetEnvironmentVariable('GITHUB_TOKEN', 'User')) {
+    if ((Test-Path $StartMenu) -and (Test-RemovableFor (Get-StartMenuOwner) $ours)) { Remove-Item -Recurse -Force $StartMenu }
+    if ($ours -and [Environment]::GetEnvironmentVariable('GITHUB_TOKEN', 'User')) {
         if (Read-YesNo 'Hay una variable GITHUB_TOKEN de una instalación anterior. ¿Borrarla?' $true) {
             [Environment]::SetEnvironmentVariable('GITHUB_TOKEN', $null, 'User')
         }
     }
-    # Solo se borra una carpeta que es claramente una instalación del recolector.
-    $ours = Test-OurInstall
     $root = [IO.Path]::GetPathRoot($Destino).TrimEnd('\')
     $protected = @($root, $env:USERPROFILE, $env:LOCALAPPDATA, $env:APPDATA, $env:ProgramFiles) | ForEach-Object { "$_".TrimEnd('\') }
     if ($ours -and ($protected -notcontains $Destino.TrimEnd('\'))) {

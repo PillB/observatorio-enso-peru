@@ -41,6 +41,8 @@ WINDOWS_TASK = "Observatorio ENSO - recolector Peru"
 OLD_WINDOWS_TASK = "ENSO recolector Peru"
 LAUNCHD_LABEL = "io.github.pillb.observatorio-enso.recolector"
 CRON_TAG = "# observatorio-enso-recolector"
+#: Archivo que deja cada instalación en su carpeta (lo escriben los instaladores).
+MARKER = ".instalacion-recolector"
 RETRY_EVERY_MIN = 30
 RETRY_SPAN_H = 3
 COMMAND = ["-m", "tools.collector_service", "--programado"]
@@ -163,7 +165,11 @@ def status_launchd() -> dict:
 
 
 def kick_launchd() -> bool:
-    return _launchctl("kickstart", f"gui/{os.getuid()}/{LAUNCHD_LABEL}").returncode == 0
+    if _launchctl("kickstart", f"gui/{os.getuid()}/{LAUNCHD_LABEL}").returncode == 0:
+        return True
+    # Cargado con «load» (sin sesión gráfica, por SSH): no está en gui/<uid>
+    # y se arranca con el «start» de siempre.
+    return _launchctl("start", LAUNCHD_LABEL).returncode == 0
 
 
 # --- Linux (cron) --------------------------------------------------------------
@@ -287,6 +293,66 @@ def kick_windows() -> bool:
 
 # --- Comunes -------------------------------------------------------------------
 
+def is_install(root: Path) -> bool:
+    """Una carpeta es una instalación del recolector si tiene la marca, o el
+    kit.json junto con el código (instalaciones anteriores a la marca)."""
+    return (root / MARKER).is_file() or (
+        (root / "kit.json").is_file() and (root / "python" / "tools" / "collector_service.py").is_file())
+
+
+def _launchd_root() -> Optional[Path]:
+    data = plistlib.loads(launchd_path().read_bytes())
+    if not isinstance(data, dict):
+        return None
+    home = (data.get("EnvironmentVariables") or {}).get("ENSO_HOME")
+    wd = data.get("WorkingDirectory")
+    return Path(home) if home else (Path(wd).parent if wd else None)
+
+
+def _cron_root() -> Optional[Path]:
+    if not shutil.which("crontab"):
+        return None
+    for line in _crontab_read():
+        if CRON_TAG in line:
+            home = next((t[len("ENSO_HOME="):] for t in shlex.split(line) if t.startswith("ENSO_HOME=")), "")
+            if home:
+                return Path(home)
+    return None
+
+
+def _windows_root() -> Optional[Path]:
+    wd = status_windows().get("workdir")
+    return (Path(wd).parent if Path(wd).name.lower() == "python" else Path(wd)) if wd else None
+
+
+def task_root() -> Optional[Path]:
+    """Carpeta de la instalación a la que apunta la tarea programada; None si
+    no hay tarea o no se sabe."""
+    try:
+        if os.name == "nt":
+            return _windows_root()
+        return _launchd_root() if sys.platform == "darwin" else _cron_root()
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError):
+        return None
+
+
+def same_dir(a: Path, b: Path) -> bool:
+    try:
+        return a.resolve() == b.resolve()
+    except OSError:
+        return a == b
+
+
+def owner_elsewhere(root: Path = ROOT) -> Optional[Path]:
+    """La otra instalación, todavía en el equipo, a la que apunta la tarea
+    programada (es una por usuario: la última instalación la toma). None si
+    es de ``root``, si apunta a una carpeta que ya no está, o si no se sabe."""
+    other = task_root()
+    if other is None or same_dir(other, root) or not is_install(other):
+        return None
+    return other
+
+
 def status() -> dict:
     if os.name == "nt":
         return status_windows()
@@ -333,7 +399,12 @@ def main(argv: Optional[list[str]] = None) -> int:
             print(f"Tarea programada: {install(args.python, ROOT, args.hora)}")
             print(f"Disparos (hora local): {', '.join(local_times(args.hora))} y al iniciar sesión o encender")
         elif args.accion == "quitar":
-            print("Tarea programada quitada." if remove() else "No había tarea programada.")
+            # La tarea es una por usuario: si es de otra instalación que sigue en el equipo, no se toca.
+            other = owner_elsewhere(ROOT)
+            if other:
+                print(f"La tarea programada es de la instalación en {other}: no se tocó.")
+            else:
+                print("Tarea programada quitada." if remove() else "No había tarea programada.")
         else:
             print(json.dumps(status(), ensure_ascii=False, indent=1))
     except (RuntimeError, OSError, subprocess.SubprocessError) as exc:

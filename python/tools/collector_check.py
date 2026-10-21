@@ -440,6 +440,10 @@ def check_schedule(ctx: dict) -> Result:
     if program and not Path(program).exists():
         return Result("tarea", FAIL, "la tarea apunta a una carpeta que ya no existe", detail,
                       "Volver a ejecutar el instalador desde el kit.")
+    other = sched.owner_elsewhere(ctx["root"])
+    if other:
+        return Result("tarea", WARN, f"la tarea programada es de otra instalación ({other})", detail,
+                      "Esta carpeta no recolecta. Para usarla, ejecutar INSTALAR desde aquí; si sobra, desinstalarla.")
     if st.get("times"):
         detail += f" · horas locales {', '.join(st['times'])}"
     if st["kind"] == "schtasks":

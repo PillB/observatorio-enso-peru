@@ -575,9 +575,8 @@ def test_install_script_is_valid_bash():
 @pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
 def test_uninstall_keeps_the_folder_when_the_task_cannot_be_removed(tmp_path, monkeypatch):
     """Borrar la carpeta con la tarea todavía puesta dejaría una tarea que falla cada noche."""
-    dest = tmp_path / "instalacion"
-    (dest / "python").mkdir(parents=True)
-    (dest / "kit.json").write_text("{}", encoding="utf-8")
+    dest = _install(tmp_path / "instalacion")
+    (dest / "python").mkdir()
     fake = dest / ".venv" / "bin" / "python"
     fake.parent.mkdir(parents=True)
     fake.write_text("#!/bin/sh\necho 'ERROR: crontab no aceptó los cambios' >&2\nexit 1\n", encoding="utf-8")
@@ -754,6 +753,108 @@ def test_uninstall_where_cron_was_never_available(monkeypatch, capsys):
     monkeypatch.setattr(sched.subprocess, "run", lambda *a, **k: (_ for _ in ()).throw(FileNotFoundError("crontab")))
     monkeypatch.setattr(sched, "remove", sched.remove_cron)
     assert sched.main(["quitar"]) == 0 and "No había tarea" in capsys.readouterr().out
+
+
+def _install(root: Path) -> Path:
+    root.mkdir(parents=True, exist_ok=True)
+    (root / sched.MARKER).write_text("recolector\n", encoding="utf-8")
+    return root
+
+
+@pytest.mark.parametrize("owner, removed", [("otra", False), ("borrada", True), ("esta", True), (None, True)])
+def test_removing_the_task_leaves_another_install_running(tmp_path, monkeypatch, capsys, owner, removed):
+    """La tarea es una por usuario y la toma la última instalación: desinstalar
+    otra carpeta no la quita mientras la instalación a la que apunta siga ahí."""
+    here = _install(tmp_path / "esta")
+    roots = {"otra": _install(tmp_path / "otra"), "borrada": tmp_path / "borrada", "esta": here, None: None}
+    calls = []
+    monkeypatch.setattr(sched, "ROOT", here)
+    monkeypatch.setattr(sched, "task_root", lambda: roots[owner])
+    monkeypatch.setattr(sched, "remove", lambda: calls.append("remove") or True)
+    assert sched.main(["quitar"]) == 0
+    assert bool(calls) is removed
+    assert ("no se tocó" in capsys.readouterr().out) is not removed
+
+
+def test_task_root_reads_the_install_folder_from_cron_and_launchd(tmp_path, monkeypatch):
+    root = tmp_path / "mi recolector"
+    py = str(root / ".venv" / "bin" / "python")
+    monkeypatch.setattr(sched.shutil, "which", lambda name: f"/usr/bin/{name}")
+    monkeypatch.setattr(sched, "_crontab_read", lambda: ["0 7 * * * otra cosa", *sched.cron_lines(py, root, ["21:00"])])
+    assert sched._cron_root() == root
+    monkeypatch.setattr(sched, "_crontab_read", lambda: ["0 7 * * * otra cosa"])
+    assert sched._cron_root() is None
+    plist = tmp_path / "agente.plist"
+    plist.write_bytes(sched.launchd_plist(py, root, ["21:00"]))
+    monkeypatch.setattr(sched, "launchd_path", lambda: plist)
+    assert sched._launchd_root() == root
+
+
+def test_task_test_starts_an_agent_loaded_without_a_gui_session(monkeypatch):
+    """Un agente cargado con «load» (por SSH) no está en gui/<uid>: kickstart falla y se usa «start»."""
+    calls = []
+    monkeypatch.setattr(sched, "_launchctl", lambda *a: calls.append(a[0]) or subprocess.CompletedProcess(
+        a, 113 if a[0] == "kickstart" else 0, "", ""))
+    monkeypatch.setattr(sched.os, "getuid", lambda: 501, raising=False)
+    assert sched.kick_launchd() and calls == ["kickstart", "start"]
+
+
+def test_check_warns_when_the_task_runs_another_install(home, monkeypatch):
+    other = home / "otra"
+    monkeypatch.setattr(sched, "status", lambda: {"kind": "cron", "installed": True, "program": sys.executable})
+    monkeypatch.setattr(sched, "owner_elsewhere", lambda root: other)
+    r = chk.check_schedule({"root": home})
+    assert r.level == chk.WARN and str(other) in r.title
+
+
+@pytest.mark.skipif(sys.platform != "linux", reason="el respaldo sin Python usa cron (Linux)")
+@pytest.mark.parametrize("case", ["otra", "ajena", "borrada", "esta"])
+def test_uninstall_never_takes_the_task_from_the_install_in_use(tmp_path, case):
+    """Con un --destino equivocado (otra instalación, una carpeta ajena), las
+    líneas del crontab de la instalación en uso se quedan; las de esta carpeta,
+    o las de una carpeta ya borrada, se quitan."""
+    here, other, foreign = _install(tmp_path / "esta"), _install(tmp_path / "otra"), tmp_path / "mi-proyecto"
+    foreign.mkdir()
+    (foreign / "notas.txt").write_text("mio\n", encoding="utf-8")
+    owner = {"otra": other, "ajena": other, "borrada": tmp_path / "borrada", "esta": here}[case]
+    dest = {"ajena": foreign, "borrada": tmp_path / "borrada"}.get(case, here)
+    tab, log = tmp_path / "crontab.txt", tmp_path / "crontab.log"
+    mine = sched.cron_lines(str(owner / ".venv" / "bin" / "python"), owner, ["21:00"])
+    tab.write_text("\n".join(["0 7 * * * otra cosa", *mine]) + "\n", encoding="utf-8")
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    (bin_dir / "crontab").write_text(
+        f"#!/bin/sh\ncase \"$1\" in\n  -l) cat '{tab}' ;;\n  -) cat > '{tab}'; echo escrito >> '{log}' ;;\nesac\n",
+        encoding="utf-8")
+    (bin_dir / "crontab").chmod(0o755)
+    env = {**os.environ, "HOME": str(tmp_path), "ENSO_SIN_PAUSA": "1", "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}"}
+    r = subprocess.run(["bash", str(REPO_ROOT / "collector" / "instalar.sh"), "--desinstalar", "--no-interactivo",
+                        "--destino", str(dest)], capture_output=True, text=True, env=env, timeout=60)
+    out = r.stdout + r.stderr
+    assert r.returncode == 0, out
+    kept = case in ("otra", "ajena")
+    assert (tab.read_text(encoding="utf-8").count("observatorio-enso-recolector") == len(mine)) is kept, out
+    assert log.exists() is not kept and "otra cosa" in tab.read_text(encoding="utf-8")
+    assert ("es de la instalación en" in out) is kept, out
+    assert other.is_dir() and foreign.joinpath("notas.txt").is_file()
+    assert here.exists() is (case in ("ajena", "borrada"))
+
+
+@pytest.mark.skipif(sys.platform != "darwin", reason="lee el agente con PlistBuddy (macOS)")
+def test_uninstall_on_macos_leaves_the_agent_of_the_install_in_use(tmp_path):
+    here, other = _install(tmp_path / "esta"), _install(tmp_path / "otra")
+    plist = tmp_path / "Library" / "LaunchAgents" / f"{sched.LAUNCHD_LABEL}.plist"
+    plist.parent.mkdir(parents=True)
+    plist.write_bytes(sched.launchd_plist(str(other / ".venv" / "bin" / "python"), other, ["21:00"]))
+    bin_dir, log = tmp_path / "bin", tmp_path / "launchctl.log"
+    bin_dir.mkdir()
+    (bin_dir / "launchctl").write_text(f"#!/bin/sh\necho \"$1\" >> '{log}'\n", encoding="utf-8")
+    (bin_dir / "launchctl").chmod(0o755)
+    env = {**os.environ, "HOME": str(tmp_path), "ENSO_SIN_PAUSA": "1", "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}"}
+    r = subprocess.run(["bash", str(REPO_ROOT / "collector" / "instalar.sh"), "--desinstalar", "--no-interactivo",
+                        "--destino", str(here)], capture_output=True, text=True, env=env, timeout=60)
+    assert r.returncode == 0 and "es de la instalación en" in r.stdout + r.stderr, r.stdout + r.stderr
+    assert not here.exists() and other.is_dir() and plist.exists() and not log.exists()
 
 
 @pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")

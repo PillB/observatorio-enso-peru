@@ -35,6 +35,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 KIT_ROOT="$(cd "$HERE/.." && pwd -P)"
 OS="$(uname -s)"
 MARKER=".instalacion-recolector"
+LAUNCHD_LABEL="io.github.pillb.observatorio-enso.recolector"
 if [ -f "$KIT_ROOT/$MARKER" ] || { [ -f "$KIT_ROOT/kit.json" ] && { [ -d "$KIT_ROOT/.venv" ] || [ -f "$KIT_ROOT/.env" ]; }; }; then
   # Corre desde una instalación (sus lanzadores): esa es la carpeta, aunque
   # se haya instalado con --destino en otro lugar.
@@ -330,9 +331,30 @@ sha256_check() {  # carpeta archivo.sha256
 # Una carpeta es del recolector si la instalación la marcó, o si tiene el kit
 # completo (kit.json y el código). Un .venv o un kit.json sueltos no bastan:
 # DESINSTALAR la borra entera.
-looks_like_install() {
-  case "$DEST" in ""|/|"$HOME"|"$HOME/") return 1 ;; esac
-  [ -f "$DEST/$MARKER" ] || { [ -f "$DEST/kit.json" ] && [ -f "$DEST/python/tools/collector_service.py" ]; }
+is_install() {
+  case "$1" in ""|/|"$HOME"|"$HOME/") return 1 ;; esac
+  [ -f "$1/$MARKER" ] || { [ -f "$1/kit.json" ] && [ -f "$1/python/tools/collector_service.py" ]; }
+}
+
+looks_like_install() { is_install "$DEST"; }
+
+same_dir() {
+  local a b
+  a=$(cd "$1" 2>/dev/null && pwd -P) && b=$(cd "$2" 2>/dev/null && pwd -P) && [ "$a" = "$b" ]
+}
+
+# Carpeta de la instalación a la que apunta la tarea programada (nada si no hay
+# tarea o no se sabe): ENSO_HOME en el agente de launchd o en la línea del crontab.
+task_root() {
+  local v=""
+  if [ "$OS" = "Darwin" ]; then
+    local plist="$HOME/Library/LaunchAgents/$LAUNCHD_LABEL.plist"
+    [ -f "$plist" ] && v=$(/usr/libexec/PlistBuddy -c 'Print :EnvironmentVariables:ENSO_HOME' "$plist" 2>/dev/null)
+  elif command -v crontab >/dev/null 2>&1; then
+    v=$(crontab -l 2>/dev/null | grep 'observatorio-enso-recolector' \
+      | sed -nE "s/.*ENSO_HOME=('[^']*'|[^ ']+) .*/\1/p" | head -n 1 | tr -d "'")
+  fi
+  case "$v" in /*) printf '%s\n' "$v" ;; esac
 }
 
 # Instalar solo en una carpeta nueva, vacía (o con solo logs/) o que ya es del recolector.
@@ -387,19 +409,27 @@ do_update() {
 do_uninstall() {
   step "Desinstalar el recolector"
   ask_yes_no "Se quitará la tarea programada y la carpeta $DEST (con el token). ¿Continuar?" s || return 0
-  local removed=1
-  if [ -x "$VPY" ]; then
+  # La tarea es una por usuario y la toma la última instalación. Se quita si es
+  # de esta carpeta o si la suya ya no está; la de otra instalación en uso,
+  # nunca (un --destino equivocado no la deja sin tarea). Si no se sabe de
+  # quién es, solo al desinstalar una instalación.
+  local removed=1 other
+  other=$(task_root)
+  if [ -n "$other" ] && is_install "$other" && ! same_dir "$other" "$DEST"; then
+    warn "La tarea programada es de la instalación en $other: no se tocó."
+  elif [ -z "$other" ] && ! looks_like_install; then
+    :
+  elif [ -x "$VPY" ] && looks_like_install; then
     in_python -m tools.collector_schedule quitar || removed=0
   elif [ "$OS" = "Darwin" ]; then
     # Como remove_launchd: bootout y, para un agente cargado sin sesión gráfica
     # (con «load»), unload; si launchd lo sigue viendo, no se borra nada.
-    local label="io.github.pillb.observatorio-enso.recolector"
-    local plist="$HOME/Library/LaunchAgents/$label.plist"
-    launchctl bootout "gui/$(id -u)/$label" 2>/dev/null
+    local plist="$HOME/Library/LaunchAgents/$LAUNCHD_LABEL.plist"
+    launchctl bootout "gui/$(id -u)/$LAUNCHD_LABEL" 2>/dev/null
     [ -f "$plist" ] && launchctl unload "$plist" 2>/dev/null
     sleep 2
-    if launchctl print "gui/$(id -u)/$label" >/dev/null 2>&1 \
-        || launchctl list 2>/dev/null | awk -v l="$label" '$NF == l { found = 1 } END { exit !found }'; then
+    if launchctl print "gui/$(id -u)/$LAUNCHD_LABEL" >/dev/null 2>&1 \
+        || launchctl list 2>/dev/null | awk -v l="$LAUNCHD_LABEL" '$NF == l { found = 1 } END { exit !found }'; then
       removed=0
     else
       rm -f "$plist" || removed=0

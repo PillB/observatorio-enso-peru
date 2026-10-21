@@ -132,6 +132,20 @@ jobs:
           Get-Content "$dest\logs\recolector.log" -Tail 20
           if ($state.trigger -ne 'prueba' -or $state.exit_code -ne 3) { throw 'La tarea programada no corrió como se esperaba' }
 
+          # Una carpeta ajena (un proyecto con su .venv) no se toma ni se borra,
+          # y desinstalarla no le quita la tarea ni el menú Inicio a la instalación en uso.
+          $menu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Observatorio ENSO'
+          $hadMenu = Test-Path $menu
+          $foreign = Join-Path $env:RUNNER_TEMP 'mi proyecto'
+          New-Item -ItemType Directory -Force -Path "$foreign\.venv" | Out-Null
+          Set-Content "$foreign\notas.txt" 'mio'
+          & "kit\recolector-peru\INSTALAR-Windows.cmd" -NoInteractivo -SinVerificar -SinTarea -Destino $foreign
+          if ($LASTEXITCODE -eq 0) { throw 'INSTALAR aceptó una carpeta ajena' }
+          & "kit\recolector-peru\otras-acciones\DESINSTALAR-Windows.cmd" -NoInteractivo -Destino $foreign
+          if (-not (Test-Path "$foreign\notas.txt") -or (Test-Path "$foreign\logs")) { throw 'Se tocó una carpeta ajena' }
+          if (-not (Get-ScheduledTask -TaskName 'Observatorio ENSO - recolector Peru' -ErrorAction SilentlyContinue)) { throw 'Desinstalar una carpeta ajena quitó la tarea' }
+          if ($hadMenu -and -not (Test-Path $menu)) { throw 'Desinstalar una carpeta ajena quitó el menú Inicio' }
+
           # Como un doble clic: la consola arranca dentro de la carpeta que se borra.
           Push-Location "$dest\otras-acciones"
           & .\DESINSTALAR-Windows.cmd -NoInteractivo
@@ -140,15 +154,7 @@ jobs:
           if ($code -ne 0) { throw "DESINSTALAR terminó con $code" }
           if (Get-ScheduledTask -TaskName 'Observatorio ENSO - recolector Peru' -ErrorAction SilentlyContinue) { throw 'La tarea sigue registrada' }
           if (Test-Path $dest) { throw 'La carpeta sigue ahí' }
-
-          # Una carpeta ajena (un proyecto con su .venv) no se toma ni se borra.
-          $foreign = Join-Path $env:RUNNER_TEMP 'mi proyecto'
-          New-Item -ItemType Directory -Force -Path "$foreign\.venv" | Out-Null
-          Set-Content "$foreign\notas.txt" 'mio'
-          & "kit\recolector-peru\INSTALAR-Windows.cmd" -NoInteractivo -SinVerificar -SinTarea -Destino $foreign
-          if ($LASTEXITCODE -eq 0) { throw 'INSTALAR aceptó una carpeta ajena' }
-          & "kit\recolector-peru\otras-acciones\DESINSTALAR-Windows.cmd" -NoInteractivo -Destino $foreign
-          if (-not (Test-Path "$foreign\notas.txt") -or (Test-Path "$foreign\logs")) { throw 'Se tocó una carpeta ajena' }
+          if (Test-Path $menu) { throw 'El menú Inicio sigue ahí' }
 
       - name: Install, verify, fire the task and uninstall (macOS)
         if: runner.os == 'macOS'
@@ -163,6 +169,11 @@ jobs:
           "$dest/otras-acciones/PROBAR-TAREA-Mac.command" --solo tarea || true
           cat "$dest/estado.json"; tail -20 "$dest/logs/recolector.log"
           python3 -c 'import json,sys; s=json.load(open(sys.argv[1])); assert s["trigger"]=="prueba" and s["exit_code"]==3, s' "$dest/estado.json"
+          # Desinstalar una carpeta ajena no le quita el agente a la instalación en uso.
+          mkdir -p "$RUNNER_TEMP/ajena" && echo mio > "$RUNNER_TEMP/ajena/notas.txt"
+          "$dest/otras-acciones/DESINSTALAR-Mac.command" --no-interactivo --destino "$RUNNER_TEMP/ajena"
+          test -f "$RUNNER_TEMP/ajena/notas.txt" && test -f "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist"
+          launchctl print "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" >/dev/null
           "$dest/otras-acciones/DESINSTALAR-Mac.command" --no-interactivo
           test ! -e "$dest" && test ! -e "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist"
 
@@ -181,6 +192,10 @@ jobs:
           bash "$dest/otras-acciones/PROBAR-TAREA-Mac.command" --solo tarea || true
           cat "$dest/estado.json"; tail -20 "$dest/logs/recolector.log"
           python3 -c 'import json,sys; s=json.load(open(sys.argv[1])); assert s["trigger"]=="prueba" and s["exit_code"]==3, s' "$dest/estado.json"
+          # Desinstalar una carpeta ajena no le quita las líneas del crontab a la instalación en uso.
+          mkdir -p "$RUNNER_TEMP/ajena" && echo mio > "$RUNNER_TEMP/ajena/notas.txt"
+          bash "$dest/otras-acciones/DESINSTALAR-Mac.command" --no-interactivo --destino "$RUNNER_TEMP/ajena"
+          test -f "$RUNNER_TEMP/ajena/notas.txt" && crontab -l | grep -q observatorio-enso-recolector
           bash "$dest/otras-acciones/DESINSTALAR-Mac.command" --no-interactivo
           test ! -e "$dest" && ! crontab -l 2>/dev/null | grep -q observatorio-enso-recolector
 
