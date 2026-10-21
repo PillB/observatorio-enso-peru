@@ -982,14 +982,20 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         (tmp / "news").mkdir()
         dump("news/feeds.json", news["feeds"])
         dump("news/clusters.json", news["clusters"])
+        if news.get("geo"):
+            (tmp / "geo").mkdir(exist_ok=True)
+            for name, val in news["geo"].items():
+                dump(f"geo/{name}.json", val)
         (tmp / "news" / "items.jsonl").write_text(news["jsonl"], encoding="utf-8")
         (tmp / "news" / "items.csv").write_text(news["csv"], encoding="utf-8")
         news_dash = (news["feeds"], news["clusters"])
     elif previous is not None:
         # Corrida sin noticias (su lectura falló, o --offline/--only): se sirven las de la publicación
-        # anterior, para que la siguiente encuentre el histórico y no lo dé por perdido.
+        # anterior, para que la siguiente encuentre el histórico (y las correcciones de lugar de la consola,
+        # geo/overrides.json, que se usan si la consola no responde) y no los dé por perdidos.
         carried: dict[str, dict] = {}
-        for name in ("news/feeds.json", "news/clusters.json", "news/items.jsonl", "news/items.csv"):
+        for name in ("news/feeds.json", "news/clusters.json", "news/items.jsonl", "news/items.csv",
+                     "geo/items.json", "geo/overrides.json", "geo/quality.json", "geo/ubigeo.json"):
             body = previous.get_bytes(name)
             if not body:
                 continue
@@ -1001,7 +1007,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                 if not isinstance(obj, dict):
                     continue
                 carried[name] = {k: v for k, v in obj.items() if k not in common}
-            (tmp / "news").mkdir(exist_ok=True)
+            (tmp / name).parent.mkdir(exist_ok=True)
             if name in carried:
                 dump(name, carried[name])  # con el publicationId de esta publicación
             else:
@@ -1401,6 +1407,19 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         log.add("warning", "news", "publish", "news-history-large",
                 f"El histórico de noticias publicado pesa {size / 2**20:.1f} MiB; Cloudflare Pages no sirve archivos "
                 f"de más de 25 MiB: hay que dividirlo (docs/operaciones.md).")
+    # Todo el histórico se ubica de nuevo y recibe las correcciones de la consola (el JSONL queda como se guardó).
+    from . import geo_overrides as GO
+    ov_fixture = fixtures / "geo-overrides.json" if fixtures is not None else None
+    if ov_fixture is not None:
+        overrides = GO.valid_overrides(json.loads(ov_fixture.read_text(encoding="utf-8"))) if ov_fixture.exists() else []
+        ov_source = "fixture" if overrides else "ninguna"
+    else:
+        overrides, ov_source = GO.fetch_overrides(getattr(fetcher, "client", None), previous, log)
+    geo_quality = GO.apply_all(items, overrides, N.FEED_BY_ID)
+    geo_quality["overridesSource"] = ov_source
+    if geo_quality["overrides"]["rejected"]:
+        log.add("warning", "geo", "parse", "overrides-rejected",
+                f"{geo_quality['overrides']['rejected']} correcciones de lugar no se pudieron aplicar (códigos inválidos).")
 
     for st in status:
         if st.get("skipped") or st.get("carried"):
@@ -1441,6 +1460,9 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
                                                "since": min((i["first_seen"] for i in items), default=None),
                                                **({"restarted": True} if not complete else {})}},
         "clusters": {"days": 14, "clusters": N.cluster(items, now), "departmentNames": department_names()},
+        "geo": {"items": {"generatedAt": now.isoformat(timespec="seconds"), "items": GO.console_items(items, now)},
+                "overrides": {"source": ov_source, "overrides": overrides}, "quality": geo_quality,
+                "ubigeo": GO.console_gazetteer()},
     }
 
 

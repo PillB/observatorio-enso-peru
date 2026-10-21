@@ -65,6 +65,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Operación diaria, incidencias y recuperación](docs/operaciones.md)
 - [Recolector desde el Perú (mini servidor)](docs/servidor-peru.md): kit descargable, instalación en Windows y macOS, verificación y alarmas
 - [Publicar en Cloudflare Pages sin enlace al repositorio](docs/despliegue-cloudflare.md)
+- [Georreferenciación y consola de lugares](docs/georreferenciacion.md): dónde ocurre cada noticia, con qué confianza, y cómo corregirlo
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)

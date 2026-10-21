@@ -815,7 +815,7 @@ def _status(f: Feed, now: datetime, error: str = "") -> dict:
 
 
 def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optional[bytes]]:
-    from .geo import gazetteer
+    from .geo import legacy_fields, locate_item
 
     seen_at = now.isoformat(timespec="seconds")
     st = _status(f, now)
@@ -848,7 +848,6 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
         st["error"] = "feed sin entradas"
     future = (now + timedelta(hours=2)).isoformat()
     oldest = (now - timedelta(days=f.max_age_days)).isoformat() if f.max_age_days else ""
-    gz = gazetteer()
     found = []
     for e in entries:
         if oldest and (not e["published"] or e["published"] < oldest):
@@ -865,14 +864,17 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
         named_peru = bool(PERU_WORD_RE.search(text))
         if f.region == "peru" and not named_peru and FOREIGN_TLD_RE.search(e.get("outletUrl") or ""):
             continue  # medio de otro país en una búsqueda de Google Noticias (Junín de Argentina, Jaén de España…)
+        # Lo que ubica la nota además del texto: códigos, coordenadas, lugares en campos propios y, en medios
+        # nacionales, las categorías (las de un medio regional son sus secciones: «Trujillo», «Edición Impresa»).
+        hint = {k: e[k] for k in ("ubigeo", "coords", "geo") if e.get(k)}
+        if e.get("categories") and not f.department:
+            hint["categories"] = e["categories"]
         try:
-            # Las categorías de un medio regional son sus secciones («Trujillo», «Edición Impresa»): no ubican la nota.
-            # Las fuentes con lugares en campos propios (``geo``) se ubican solo con ellos.
-            texts = e.get("geo") or [title, summary] + ([" · ".join(e.get("categories") or [])] if not f.department else [])
-            tag = gz.tag(texts, peru_context=f.region == "peru", default_dep=f.department)
+            g = locate_item({"title": title, "summary": summary, "outlet": outlet, **hint}, f, f.region)
         except Exception:  # noqa: BLE001 — una nota con texto raro queda sin lugar, no sin noticias
-            tag = None
-        if why == "impacto" and not named_peru and FOREIGN_RE.search(text) and not (tag and tag["source"] == "texto"):
+            g = None
+        located = bool(g and g["places"] and g["method"] != "medio")
+        if why == "impacto" and not named_peru and FOREIGN_RE.search(text) and not located:
             continue  # inundaciones en España publicadas por un medio regional: no es una alerta para el Perú
         st["relevant"] += 1
         published = e["published"]
@@ -883,10 +885,11 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
         item = {"id": item_id(e["link"], e["title"]), "first_seen": seen_at, "published": published,
                 "region": f.region, "feed": f.id, "kind": f.kind, "outlet": outlet, "relevance": why,
                 "hazards": hazards(title, summary), "title": title, "summary": summary, "link": e["link"]}
-        if tag:
-            item["departments"] = tag["departments"]
-            item["places"] = [{k: p[k] for k in ("code", "level", "name")} for p in tag["places"]]
-            item["geoSource"] = tag["source"]
+        if hint:
+            item["geoHint"] = hint  # para volver a ubicar la nota cuando mejore el nomenclátor
+        if g:
+            item["geo"] = g
+            item.update(legacy_fields(g))
         found.append(item)
     return st, found, body
 

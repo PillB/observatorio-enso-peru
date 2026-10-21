@@ -25,3 +25,7 @@ node_modules/
 /.recolector.lock
 /forzar-proxima.json
 /dist/
+
+# Cloudflare (pruebas locales de Functions): secretos y estado local
+.dev.vars
+.wrangler/

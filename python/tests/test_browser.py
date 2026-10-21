@@ -42,18 +42,7 @@ def site(request):
     srv.shutdown()
 
 
-@pytest.fixture(scope="session")
-def playwright():
-    with pw.sync_playwright() as p:
-        yield p
-
-
-@pytest.fixture(scope="session")
-def browser(playwright):
-    exe = os.environ.get("PW_CHROMIUM")
-    b = playwright.chromium.launch(executable_path=exe) if exe else playwright.chromium.launch()
-    yield b
-    b.close()
+# ``playwright`` y ``browser`` están en conftest.py (los comparte la consola de lugares).
 
 
 @pytest.fixture

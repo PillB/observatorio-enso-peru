@@ -225,8 +225,8 @@ def test_a_run_without_news_serves_the_previous_news(pub, tmp_path):
     for name in ("items.jsonl", "items.csv"):
         assert (out / "news" / name).read_bytes() == (prev / "news" / name).read_bytes(), name
     stamp = ("schema", "publicationId", "generatedAt")
-    for name in ("feeds.json", "clusters.json"):
-        a, b = (json.loads((d / "news" / name).read_text(encoding="utf-8")) for d in (out, prev))
+    for name in ("news/feeds.json", "news/clusters.json", "geo/overrides.json", "geo/items.json"):
+        a, b = (json.loads((d / name).read_text(encoding="utf-8")) for d in (out, prev))
         assert {k: v for k, v in a.items() if k not in stamp} == {k: v for k, v in b.items() if k not in stamp}, name
     d = json.loads((out / "dashboard.json").read_text(encoding="utf-8"))
     assert d["news"]["items"] == json.loads((prev / "dashboard.json").read_text(encoding="utf-8"))["news"]["items"]

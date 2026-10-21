@@ -45,3 +45,24 @@ def read(p: Path) -> str:
 @pytest.fixture(scope="session")
 def fix() -> Path:
     return FIX
+
+
+# --- Navegador (pruebas marcadas «browser») -------------------------------------------------
+# Una sola instancia de Playwright por sesión: la API síncrona no admite dos a la vez.
+
+@pytest.fixture(scope="session")
+def playwright():
+    sync_api = pytest.importorskip("playwright.sync_api")
+    with sync_api.sync_playwright() as p:
+        yield p
+
+
+@pytest.fixture(scope="session")
+def browser(playwright):
+    import os
+
+    exe = os.environ.get("PW_CHROMIUM")
+    b = playwright.chromium.launch(executable_path=exe) if exe else playwright.chromium.launch()
+    yield b
+    b.close()
+
