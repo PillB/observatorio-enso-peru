@@ -450,9 +450,11 @@ def _probe_communique(fetcher, py: int, pn: int, log: EventLog) -> Optional[dict
         r = fetcher.get([page], archive=True, save=False, accept=("html",))
     except FetchError:
         return None
-    got = peru.LISTING_RE.search(r.text) or re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
-    url = got.group(1) if got else f"{page}?wpdmdl="
-    if "wpdmdl=" in url and not url.endswith("="):
+    # El botón de descarga (``?wpdmdl=``) de este mismo número: el primer enlace de la página es el canónico a
+    # sí misma, sin ``wpdmdl``, y la barra lateral enlaza otros comunicados.
+    got = re.search(rf"href=[\"']([^\"']*comunicado-oficial-enfen-n-?{pn:02d}-{py}/?\?wpdmdl=\d+[^\"']*)", r.text)
+    url = _clean_wpdm(got.group(1)) if got else ""
+    if url:
         log.add("info", "enfen-comunicados", "fetch", "probe-found",
                 f"Se detectó el comunicado {pn:02d}-{py} antes de que apareciera en el listado.")
         return {"year": py, "number": pn, "kind": "oficial", "id": f"{pn:02d}-{py}", "url": url}
