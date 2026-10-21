@@ -38,6 +38,7 @@ from typing import Any, Callable, Optional
 
 from .feeds import FormatChanged, Parsed
 from .feeds import cpc, peru
+from . import archive
 from . import signals as sig
 
 SCHEMA = "observatorio-enso/4"
@@ -230,6 +231,21 @@ class PreviousPublication:
                 return r.text if r.status_code == 200 else None
             p = Path(self.base) / name
             return p.read_text(encoding="utf-8") if p.exists() else None
+        except Exception:
+            return None
+
+    def get_bytes(self, name: str) -> Optional[bytes]:
+        """Archivo binario de la publicación anterior (p. ej. una copia archivada)."""
+        if not self.base:
+            return None
+        try:
+            if self.base.startswith("http"):
+                if self.fetcher is None:
+                    return None
+                r = self.fetcher.client.get(f"{self.base}/{name}")
+                return r.content if r.status_code == 200 else None
+            p = Path(self.base) / name
+            return p.read_bytes() if p.exists() else None
         except Exception:
             return None
 
@@ -462,8 +478,7 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
             break
         try:
             resp = canned[0] if canned else _get_communique(fetcher, item)
-            if fixtures is None:
-                acq.documents.append(resp.body)
+            acq.documents.append(resp.body)
             if resp.body[:5] != b"%PDF-":
                 raise FormatChanged("enfen: la descarga no es un PDF")
             c = peru.parse_enfen_communique(peru.pdf_text(resp.body), source=_clean_wpdm(item["url"]))
@@ -480,6 +495,7 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
             log.add("warning", "enfen-comunicados", "parse", "communique-warning", w)
         c.data["channel"] = resp.channel
         c.data["archived_at"] = resp.archived_at
+        c.data["archive"] = archive.source_path("enfen-comunicados", resp.body)
         data["latest"] = c.data
         if resp.channel.startswith("archive") and fixtures is None:
             log.add("warning", "enfen-comunicados", "fetch", "archive-channel",
@@ -769,7 +785,7 @@ class Builder:
                     "status": latest["status"], "statusCode": latest["status_code"], "level": level,
                     "number": latest["id"], "issued": latest.get("issued"), "nextIssue": latest.get("next_issue"),
                     "summary": latest.get("summary"), "documentUrl": latest.get("source") or (listing[0]["url"] if listing else ""),
-                    "stale": stale,
+                    "archive": latest.get("archive"), "stale": stale,
                 })
                 if (listing and listing[0].get("kind", "oficial") == "oficial"
                         and (listing[0]["year"], listing[0]["number"]) > (latest["year"], latest["number"])):
@@ -851,7 +867,7 @@ def _is_number(s: str) -> bool:
 
 def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, official: dict, weekly, grd: dict,
                       log: EventLog, started: datetime, news: Optional[dict] = None,
-                      feed: Optional[dict] = None) -> dict:
+                      feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None) -> dict:
     now = datetime.now(timezone.utc)
     content_hash = hashlib.sha256(json.dumps(
         {k: v["points"][-24:] for k, v in sorted(b.series.items())} | {"official": official}, sort_keys=True, default=str
@@ -867,6 +883,22 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     def dump(name: str, obj: dict) -> None:
         (tmp / name).write_text(json.dumps(common | obj, ensure_ascii=False, separators=(",", ":"), default=str), encoding="utf-8")
 
+    # Copias archivadas servidas por el propio sitio (enlace «copia archivada»)
+    aw = archive.Writer(tmp)
+    prev_bytes = previous.get_bytes if previous is not None else None
+    arch = archive.write_sources(aw, acquired, prev_bytes,
+                                 (lambda sid: previous.get(f"sources/{sid}.json")) if previous is not None else None)
+    if official.get("enfen", {}).get("archive"):
+        official["enfen"]["archive"] = archive.carry(aw, official["enfen"]["archive"], prev_bytes,
+                                                     source="enfen-comunicados", document=True)
+    if official.get("noaa") is not None:
+        official["noaa"]["archive"] = (arch.get("cpc-ensodisc") or {}).get("file")
+    if feed is not None:
+        for g in feed.get("groups", []):
+            for it in g["items"]:
+                it["archive"] = (official.get("enfen", {}).get("archive") if it.get("id") == "enfen"
+                                 else (arch.get(it.get("source") or "") or {}).get("file"))
+
     # Por fuente (base para el arrastre en la siguiente corrida)
     health = []
     for sid, a in acquired.items():
@@ -874,7 +906,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         dump(f"sources/{sid}.json", {
             "id": sid, "ok": a.ok, "carried": a.carried, "channel": a.channel, "url": a.url,
             "retrievedAt": a.retrieved_at, "archivedAt": a.archived_at, "sha256": a.sha256,
-            "fingerprint": a.fingerprint, "data": a.data,
+            "fingerprint": a.fingerprint, "archive": arch.get(sid), "data": a.data,
         })
         health.append({
             "id": sid, "institution": s.institution, "product": s.product, "layer": s.layer,
@@ -883,6 +915,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
             "channel": a.channel, "retrievedAt": a.retrieved_at, "archivedAt": a.archived_at,
             "fingerprint": a.fingerprint, "formatDrift": bool(a.ok and a.previous_fingerprint and a.previous_fingerprint != a.fingerprint),
             "error": a.error, "warnings": a.warnings[:5], "attempts": a.attempts[-12:],
+            "archive": (arch.get(sid) or {}).get("file"), "archiveRetrievedAt": (arch.get(sid) or {}).get("retrievedAt"),
         })
 
     series_light = {k: {kk: vv for kk, vv in v.items() if kk != "points"} for k, v in b.series.items()}
@@ -895,6 +928,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     events = [e.as_dict() for e in log.events]
     dashboard = {
         "official": official, "events": b.events(), "series": series_light, "spark": spark, "weekly": weekly_light, "grd": grd,
+        "sources": {h["id"]: {"institution": h["institution"], "product": h["product"], "live": h["docs"],
+                              "archive": h["archive"], "retrievedAt": h["archiveRetrievedAt"]} for h in health},
         "health": {"sourcesOk": ok, "sourcesTotal": len(health),
                    "degraded": [h["id"] for h in health if h["status"] != "ok"], "worst": log.worst()},
         "pipeline": {"version": PIPELINE_VERSION, "gitSha": git_sha, "startedAt": started.isoformat(timespec="seconds")},
@@ -902,6 +937,15 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     if feed is not None:
         dump("feed.json", feed)
     if news is not None:
+        from .news import FEED_BY_ID
+        snapshots = archive.write_feeds(aw, news.get("raw") or {}, FEED_BY_ID, now.isoformat(timespec="seconds"))
+        archive.write_news_days(aw, news.get("items") or [], FEED_BY_ID, snapshots, set(news.get("live") or {}),
+                                now.date())
+        for c in news["clusters"]["clusters"]:
+            for link in c["links"]:
+                fid = (news.get("live") or {}).get(link.get("id"))
+                if fid in snapshots:
+                    link["snapshot"] = snapshots[fid]
         (tmp / "news").mkdir()
         dump("news/feeds.json", news["feeds"])
         dump("news/clusters.json", news["clusters"])
@@ -911,6 +955,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                              "feedsActive": sum(1 for f in news["feeds"]["feeds"] if f["active"]),
                              "feedsTotal": len(news["feeds"]["feeds"])}
     dump("dashboard.json", dashboard)
+    (tmp / archive.ROOT).mkdir(exist_ok=True)
+    dump(f"{archive.ROOT}/index.json", aw.index(now.isoformat(timespec="seconds")))
     dump("series.json", {"series": b.series})
     if weekly:
         dump("weekly.json", {"source": "cpc-wksst", "regions": weekly})
@@ -949,7 +995,9 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         w.writerow([per] + [csv_safe(idx[k].get(per)) for k in keys])
     (tmp / "csv" / "todas-las-series.csv").write_text(buf.getvalue(), encoding="utf-8")
 
-    files = sorted(str(p.relative_to(tmp)) for p in tmp.rglob("*") if p.is_file())
+    # Las copias archivadas se listan en archive/index.json, no en el manifiesto.
+    files = sorted(str(p.relative_to(tmp)) for p in tmp.rglob("*")
+                   if p.is_file() and not _third_party(p.relative_to(tmp)))
     dump("manifest.json", {"pipelineVersion": PIPELINE_VERSION, "gitSha": git_sha, "files": files + ["manifest.json"],
                            "series": sorted(b.series), "contentHash": content_hash})
     validate_publication(tmp, pub_id)
@@ -967,10 +1015,15 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     return {"publicationId": pub_id, "files": len(files) + 1}
 
 
+def _third_party(rel: Path) -> bool:
+    """Copias de terceros dentro de ``archive/`` (todo salvo su índice)."""
+    return rel.parts[0] == archive.ROOT and rel.as_posix() != f"{archive.ROOT}/index.json"
+
+
 def validate_publication(d: Path, pub_id: str) -> None:
     """Coherencia: todos los JSON comparten publicationId; series sin duplicados."""
     for p in d.rglob("*.json"):
-        if p.name == "manifest.json":
+        if p.name == "manifest.json" or _third_party(p.relative_to(d)):
             continue
         obj = json.loads(p.read_text(encoding="utf-8"))
         if obj.get("publicationId") != pub_id:
@@ -1052,7 +1105,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         if a and not a.ok and not a.carried:
             log.add("critical" if s.critical else "error", s.id, "publish", "no-data",
                     "La fuente falló y no hay un dato anterior que conservar.")
-    res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed)
+    res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev)
     if raw_dir is not None:
         res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
@@ -1125,7 +1178,8 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
                 fh.write("".join(json.dumps(i, ensure_ascii=False) + "\n" for i in added))
 
     return {
-        "jsonl": jsonl, "csv": N.to_csv(items),
+        "jsonl": jsonl, "csv": N.to_csv(items), "items": items, "raw": raw,
+        "live": {i["id"]: i["feed"] for i in found},
         "feeds": {"feeds": status, "history": {"items": len(items), "added": len(added),
                                                "since": min((i["first_seen"] for i in items), default=None)}},
         "clusters": {"days": 14, "clusters": N.cluster(items, now), "departmentNames": department_names()},

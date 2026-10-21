@@ -30,6 +30,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
+from .archive import news_page
 from .feedparse import LIMA, FeedError, parse as parse_any
 from .geo import FOREIGN_RE, PERU_RE as PERU_WORD_RE
 
@@ -657,8 +658,9 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
             "hazards": list(dict.fromkeys(h for i in its for h in (i.get("hazards") or hazards(i["title"], i.get("summary", ""))))),
             "departments": list(dict.fromkeys(d for i in its for d in (i.get("departments") or []))),
             "places": places[:6],
-            "links": [{"title": i["title"], "url": i["link"], "outlet": _outlet(i), "published": i.get("published"),
-                       "kind": i.get("kind") or _kind(i)}
+            "links": [{"id": i["id"], "title": i["title"], "url": i["link"], "outlet": _outlet(i),
+                       "published": i.get("published"), "kind": i.get("kind") or _kind(i),
+                       "archive": news_page(i)}
                       for i in its][:8],
         })
     out.sort(key=lambda g: (g["last"], g["count"]), reverse=True)

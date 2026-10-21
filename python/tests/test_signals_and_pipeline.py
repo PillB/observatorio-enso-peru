@@ -137,7 +137,8 @@ def pub(tmp_path_factory):
 
 def test_publication_is_coherent(pub):
     out, res = pub
-    ids = {json.loads(p.read_text(encoding="utf-8"))["publicationId"] for p in out.rglob("*.json")}
+    ids = {json.loads(p.read_text(encoding="utf-8"))["publicationId"] for p in out.rglob("*.json")
+           if "archive/sources" not in p.as_posix()}  # copias de terceros, tal como se bajaron
     assert ids == {res["publicationId"]}
     man = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     for f in man["files"]:

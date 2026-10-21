@@ -444,6 +444,11 @@ table.grd .chip { white-space: normal; }
 .tag-place { display: inline-flex; align-items: center; gap: 3px; }
 .tag-place svg { width: 13px; height: 13px; flex: none; }
 .tag-kind { font-weight: 600; }
+.tag-hazard { background: var(--watch-bg); color: var(--watch); font-weight: 600; }
+.src-links { margin: 6px 0 0; font-size: 0.84rem; color: var(--fg-3); overflow-wrap: anywhere; }
+.src-links a { color: inherit; text-decoration-color: var(--line); }
+.card-src { flex-direction: column; gap: 2px; }
+.card-src .src-links { margin: 0; }
 @media (max-width: 560px) {
   .news-filters { flex-direction: column; align-items: stretch; }
   .kind-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
