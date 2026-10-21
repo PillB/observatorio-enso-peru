@@ -589,6 +589,21 @@ def test_uninstall_keeps_the_folder_when_the_task_cannot_be_removed(tmp_path, mo
 
 
 @pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
+def test_install_from_a_repository_checkout_brings_the_launchers(tmp_path):
+    """En el repositorio los lanzadores están en collector/lanzadores; instalados van en la raíz."""
+    dest = tmp_path / "desde el repo"
+    env = {**os.environ, "ENSO_SIN_PAUSA": "1"}  # --sin-tarea: no toca nada fuera de dest (y usa la caché de pip)
+    r = subprocess.run(["bash", str(REPO_ROOT / "collector" / "instalar.sh"), "--no-interactivo", "--sin-tarea",
+                        "--sin-verificar", "--destino", str(dest)], capture_output=True, text=True, env=env, timeout=600)
+    assert r.returncode == 0, r.stdout[-2000:] + r.stderr[-2000:]
+    for name in ("VERIFICAR-Mac.command", "VERIFICAR-Windows.cmd", "INSTALAR-Mac.command", "LEEME.txt",
+                 "otras-acciones/DESINSTALAR-Mac.command", "otras-acciones/ACTUALIZAR-Windows.cmd"):
+        assert (dest / name).is_file(), name
+    assert os.access(dest / "otras-acciones" / "DESINSTALAR-Mac.command", os.X_OK)
+    assert (dest / ".instalacion-recolector").is_file()
+
+
+@pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
 def test_installer_never_takes_over_or_deletes_someone_elses_folder(tmp_path):
     """Con --destino en una carpeta ajena (un proyecto con su .venv), instalar
     se niega antes de tocar nada y desinstalar no la borra."""

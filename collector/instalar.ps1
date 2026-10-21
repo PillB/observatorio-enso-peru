@@ -245,13 +245,23 @@ function Copy-Kit {
         $target = Join-Path $Destino $d
         if (Test-Path $target) { Remove-Item -Recurse -Force $target }
     }
-    $items = @('python\requirements.txt', 'python\enso', 'python\tools', 'config', 'registry', 'collector', 'otras-acciones',
+    $items = @('python\requirements.txt', 'python\enso', 'python\tools', 'config', 'registry', 'collector',
         'docs\servidor-peru.md', 'LEEME.txt', 'LICENSE', 'kit.json')
     foreach ($rel in $items) {
         $src = Join-Path $KitRoot $rel
         if (Test-Path $src) { Copy-Item -Path $src -Destination (Join-Path $Destino $rel) -Recurse -Force }
     }
-    Get-ChildItem -Path $KitRoot -File | Where-Object { $_.Extension -in '.cmd', '.command' } |
+    # Los lanzadores van en la raíz: en el kit ya están ahí; en una copia del
+    # repositorio, en collector\lanzadores (y el LEEME, en collector\).
+    $launchers = $KitRoot
+    if (-not (Test-Path (Join-Path $KitRoot 'otras-acciones'))) { $launchers = Join-Path $KitRoot 'collector\lanzadores' }
+    if (Test-Path (Join-Path $launchers 'otras-acciones')) {
+        Copy-Item -Path (Join-Path $launchers 'otras-acciones') -Destination (Join-Path $Destino 'otras-acciones') -Recurse -Force
+    }
+    if (-not (Test-Path (Join-Path $KitRoot 'LEEME.txt')) -and (Test-Path (Join-Path $KitRoot 'collector\LEEME.txt'))) {
+        Copy-Item -Path (Join-Path $KitRoot 'collector\LEEME.txt') -Destination $Destino -Force
+    }
+    Get-ChildItem -Path $launchers -File | Where-Object { $_.Extension -in '.cmd', '.command' } |
         Copy-Item -Destination $Destino -Force
     Get-ChildItem -Path $Destino -Recurse -Directory -Filter '__pycache__' | Remove-Item -Recurse -Force
     # Quita la marca «descargado de internet» para que Windows no bloquee los scripts.

@@ -151,7 +151,7 @@ ensure_python() {
 }
 
 copy_kit() {
-  local src dst f
+  local src dst f launchers
   mkdir -p "$DEST" || die "No se puede crear $DEST"
   src="$KIT_ROOT"
   dst="$(cd "$DEST" && pwd -P)"
@@ -166,12 +166,16 @@ copy_kit() {
   cp "$src/python/requirements.txt" "$DEST/python/"
   cp -R "$src/python/enso" "$src/python/tools" "$DEST/python/"
   cp -R "$src/config" "$src/collector" "$DEST/"
-  [ -d "$src/otras-acciones" ] && cp -R "$src/otras-acciones" "$DEST/"
+  # Los lanzadores van en la raíz: en el kit ya están ahí; en una copia del
+  # repositorio, en collector/lanzadores (y el LEEME, en collector/).
+  launchers="$src"
+  [ -d "$src/otras-acciones" ] || launchers="$src/collector/lanzadores"
+  [ -d "$launchers/otras-acciones" ] && cp -R "$launchers/otras-acciones" "$DEST/"
   [ -d "$src/registry" ] && cp -R "$src/registry" "$DEST/"
   cp "$src/docs/servidor-peru.md" "$DEST/docs/"
-  for f in LEEME.txt LICENSE kit.json "$src"/*.command "$src"/*.cmd; do
-    f="$(basename "$f")"
-    [ -f "$src/$f" ] && cp "$src/$f" "$DEST/"
+  [ -f "$src/LEEME.txt" ] || cp "$src/collector/LEEME.txt" "$DEST/" 2>/dev/null
+  for f in "$src/LEEME.txt" "$src/LICENSE" "$src/kit.json" "$launchers"/*.command "$launchers"/*.cmd; do
+    [ -f "$f" ] && cp "$f" "$DEST/"
   done
   find "$DEST" -name __pycache__ -type d -prune -exec rm -rf {} + 2>/dev/null
   # Un zip abierto con «python -m zipfile» (ACTUALIZAR), una memoria USB o una
