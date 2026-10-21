@@ -275,7 +275,15 @@ def test_every_link_has_an_archived_copy_on_the_site(pub):
     for g in feed["groups"]:
         for it in g["items"]:
             if it.get("url"):
-                assert it.get("archive") in listed, it["id"]
+                page, _, anchor = it.get("archive", "").partition("#")
+                assert page in listed, it["id"]
+                if anchor:  # las alertas enlazan a su entrada en la página del día del archivo de noticias
+                    assert f'id="{anchor}"' in (out / page).read_text(encoding="utf-8")
+                if it.get("snapshot"):
+                    assert it["snapshot"] in listed
+    alerts = next(g for g in feed["groups"] if g["id"] == "alertas")["items"]
+    assert alerts and feed["groups"][0]["id"] == "alertas"
+    assert any(it.get("snapshot") for it in alerts)
     clusters = json.loads((out / "news" / "clusters.json").read_text(encoding="utf-8"))["clusters"]
     assert clusters
     for c in clusters:

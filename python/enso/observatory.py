@@ -896,6 +896,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     if feed is not None:
         for g in feed.get("groups", []):
             for it in g["items"]:
+                if g["id"] == "alertas":
+                    continue  # ya enlazan a la página del archivo de noticias
                 it["archive"] = (official.get("enfen", {}).get("archive") if it.get("id") == "enfen"
                                  else (arch.get(it.get("source") or "") or {}).get("file"))
 
@@ -934,8 +936,6 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                    "degraded": [h["id"] for h in health if h["status"] != "ok"], "worst": log.worst()},
         "pipeline": {"version": PIPELINE_VERSION, "gitSha": git_sha, "startedAt": started.isoformat(timespec="seconds")},
     }
-    if feed is not None:
-        dump("feed.json", feed)
     if news is not None:
         from .news import FEED_BY_ID
         snapshots = archive.write_feeds(aw, news.get("raw") or {}, FEED_BY_ID, now.isoformat(timespec="seconds"))
@@ -946,6 +946,13 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                 fid = (news.get("live") or {}).get(link.get("id"))
                 if fid in snapshots:
                     link["snapshot"] = snapshots[fid]
+        for g in (feed or {}).get("groups", []):
+            for it in g["items"] if g["id"] == "alertas" else []:
+                fid = (news.get("live") or {}).get(it["id"].removeprefix("alert-"))
+                if fid in snapshots:
+                    it["snapshot"] = snapshots[fid]  # la respuesta de la fuente tal como se bajó hoy
+    if feed is not None:
+        dump("feed.json", feed)
         (tmp / "news").mkdir()
         dump("news/feeds.json", news["feeds"])
         dump("news/clusters.json", news["clusters"])
@@ -1099,7 +1106,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     meta = {s.id: {"institution": s.institution, "docs": s.docs or s.urls[0],
                    "retrievedAt": acquired[s.id].retrieved_at if s.id in acquired else None,
                    "channel": acquired[s.id].channel if s.id in acquired else None} for s in SOURCES}
-    feed = sourcefeed.build(official, b.series, weekly, meta, relay)
+    feed = sourcefeed.build(official, b.series, weekly, meta, relay, news_items=(news or {}).get("items"),
+                            now=started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc))
     for s in SOURCES:
         a = acquired.get(s.id)
         if a and not a.ok and not a.carried:

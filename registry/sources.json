@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T02:48:53+00:00",
+ "generated_at": "2026-10-21T03:14:52+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true",
   "tiers": {
@@ -7376,6 +7376,386 @@
    "hazards": [],
    "interval_minutes": 1440,
    "parser": "enso.feedparse:parse (adapter=gobpe)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-indeci-coen",
+   "group": "indeci",
+   "name": "INDECI · COEN, reportes de emergencias",
+   "institution": "INDECI",
+   "url": "https://portal.indeci.gob.pe/emergencias/feed/?paged=1",
+   "expect": "rss",
+   "method": "feed",
+   "kind": "feed",
+   "home": "https://portal.indeci.gob.pe/",
+   "alt_urls": [],
+   "hazards": [
+    "lluvias",
+    "inundacion",
+    "huaico",
+    "frio",
+    "calor",
+    "viento",
+    "incendio",
+    "oleaje",
+    "sismo",
+    "volcan",
+    "emergencia"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=indeci-coen)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-senamhi-quebradas",
+   "group": "senamhi",
+   "name": "SENAMHI · avisos de activación de quebradas (servidor GEOSINPAD del INDECI)",
+   "institution": "SENAMHI",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json",
+   "expect": "json",
+   "method": "api",
+   "kind": "feed",
+   "home": "https://geosinpad.indeci.gob.pe/",
+   "alt_urls": [],
+   "hazards": [
+    "huaico",
+    "lluvias"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=arcgis)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-senamhi-hidrologicos",
+   "group": "senamhi",
+   "name": "SENAMHI · avisos hidrológicos (servidor GEOSINPAD del INDECI)",
+   "institution": "SENAMHI",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/4/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
+   "expect": "json",
+   "method": "api",
+   "kind": "feed",
+   "home": "https://geosinpad.indeci.gob.pe/",
+   "alt_urls": [],
+   "hazards": [
+    "inundacion",
+    "sequia"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=arcgis)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-usgs-sismos",
+   "group": "usgs",
+   "name": "USGS · sismos de magnitud 4 o más (Perú y alrededores)",
+   "institution": "USGS",
+   "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minlatitude=-20&maxlatitude=1&minlongitude=-84&maxlongitude=-68&minmagnitude=4&orderby=time&limit=100",
+   "expect": "json",
+   "method": "api",
+   "kind": "feed",
+   "home": "https://earthquake.usgs.gov/",
+   "alt_urls": [],
+   "hazards": [
+    "sismo",
+    "tsunami"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=geojson)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: organismo; alcance: hazard",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-dhn-tsunamis",
+   "group": "dhn",
+   "name": "DHN · boletines de sismo y tsunami",
+   "institution": "DHN",
+   "url": "https://www.dhn.mil.pe/portal/boletin-sismo-tsunami",
+   "expect": "html",
+   "method": "html",
+   "kind": "feed",
+   "home": "https://www.dhn.mil.pe/",
+   "alt_urls": [],
+   "hazards": [
+    "sismo",
+    "tsunami"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=dhn)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-ptwc-mensajes",
+   "group": "ptwc",
+   "name": "PTWC · mensajes de tsunami del Pacífico",
+   "institution": "PTWC",
+   "url": "https://www.tsunami.gov/events/xml/PHEBAtom.xml",
+   "expect": "rss",
+   "method": "feed",
+   "kind": "feed",
+   "home": "https://www.tsunami.gov/",
+   "alt_urls": [],
+   "hazards": [
+    "tsunami"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.feedparse:parse",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: organismo; alcance: hazard",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-ptwc-wepa40",
+   "group": "ptwc",
+   "name": "PTWC · último mensaje de tsunami (texto)",
+   "institution": "PTWC",
+   "url": "https://tgftp.nws.noaa.gov/data/raw/we/wepa40.pheb.tsu.pac.txt",
+   "expect": "text",
+   "method": "download",
+   "kind": "feed",
+   "home": "https://tgftp.nws.noaa.gov/",
+   "alt_urls": [],
+   "hazards": [
+    "tsunami"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=ptwc-text)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: organismo; alcance: hazard",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-igp-cenvul-boletines",
+   "group": "igp",
+   "name": "IGP · boletines vulcanológicos (CENVUL)",
+   "institution": "IGP",
+   "url": "https://cenvul.igp.gob.pe/productos/boletines-vulcanologicos",
+   "expect": "html",
+   "method": "html",
+   "kind": "feed",
+   "home": "https://cenvul.igp.gob.pe/",
+   "alt_urls": [],
+   "hazards": [
+    "volcan"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=cenvul)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-igp-cenvul-alertas",
+   "group": "igp",
+   "name": "IGP · alertas vulcanológicas (CENVUL)",
+   "institution": "IGP",
+   "url": "https://cenvul.igp.gob.pe/productos/alertas-vulcanologicas",
+   "expect": "html",
+   "method": "html",
+   "kind": "feed",
+   "home": "https://cenvul.igp.gob.pe/",
+   "alt_urls": [],
+   "hazards": [
+    "volcan"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=cenvul)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-senamhi-telegram",
+   "group": "senamhi",
+   "name": "SENAMHI · canal oficial de Telegram (avisos)",
+   "institution": "SENAMHI",
+   "url": "https://t.me/s/Senamhi_Peru",
+   "expect": "html",
+   "method": "html",
+   "kind": "feed",
+   "home": "https://t.me/",
+   "alt_urls": [],
+   "hazards": [
+    "lluvias",
+    "frio",
+    "calor",
+    "viento",
+    "incendio",
+    "sequia",
+    "enso"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=telegram)",
    "needs_browser": false,
    "archive": true,
    "notes": "tipo de medio: gobierno; alcance: hazard",

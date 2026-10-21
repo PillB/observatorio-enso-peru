@@ -475,10 +475,17 @@ def parse(body: bytes, base_url: str = "", default_tz: timezone = timezone.utc,
           now: Optional[datetime] = None, adapter: str = "feed") -> Parsed:
     """Lee un feed en cualquiera de los formatos admitidos, reparando lo reparable.
 
-    ``adapter="gobpe"`` lee en cambio un listado de noticias de gob.pe."""
+    ``adapter="gobpe"`` lee en cambio un listado de noticias de gob.pe, y los de
+    ``hazardparse.ADAPTERS`` (más ``geojson``) las fuentes de peligros sin RSS."""
     now = now or datetime.now(timezone.utc)
     if adapter == "gobpe":
         return parse_gobpe(body, base_url, now)
+    if adapter != "feed":
+        from . import hazardparse  # sismos, tsunamis, volcanes y avisos sin RSS
+
+        if len(body) > MAX_FEED_BYTES:
+            raise FeedError("respuesta demasiado grande")
+        return hazardparse.parse(body, base_url, adapter)
     if len(body) > MAX_FEED_BYTES:
         raise FeedError("feed demasiado grande")
     if not body.strip():
