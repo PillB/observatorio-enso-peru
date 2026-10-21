@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T21:28:10+00:00",
+ "generated_at": "2026-10-21T22:27:21+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h",
@@ -13165,6 +13165,50 @@
    "by_url": {
     "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ocean/index/heat_content_index.txt": {
      "status": "open",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
+    }
+   }
+  },
+  {
+   "id": "cpc-godas-d20",
+   "group": "noaa",
+   "name": "Profundidad de la isoterma de 20 °C (D20) en Niño 1+2 y Niño 3.4, calculada de GODAS",
+   "institution": "NOAA / CPC",
+   "url": "https://ftp.cpc.ncep.noaa.gov/godas/monthly/",
+   "expect": "html",
+   "method": "html",
+   "kind": "dataset",
+   "home": "https://www.cpc.ncep.noaa.gov/products/GODAS/",
+   "alt_urls": [],
+   "hazards": [
+    "enso"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.observatory:cpc-godas-d20",
+   "needs_browser": false,
+   "archive": true,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions",
+    "n8n"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://ftp.cpc.ncep.noaa.gov/godas/monthly/": {
+     "status": "unknown",
      "channels": [
       "actions",
       "n8n"

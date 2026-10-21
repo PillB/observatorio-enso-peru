@@ -100,6 +100,22 @@ Códigos frecuentes:
 | `newer-communique-unparsed` | Hay un comunicado del ENFEN más nuevo que no se pudo leer | Revisar el PDF y el lector de comunicados |
 | `no-data` | Una serie quedó vacía | Si la fuente es crítica, no se despliega |
 
+## Histórico de D20 (GODAS)
+
+`python/enso/data/godas-d20.json` guarda el D20 mensual de 1980 en
+adelante y su climatología 1991–2020. Cada corrida lee de CPC solo los
+meses posteriores al último guardado (≈6,5 MB por mes, hasta 24 meses).
+Una vez al año, o si CPC reprocesa GODAS, conviene regenerarlo:
+
+```bash
+cd python
+python -m tools.godas_d20_climatology --cache /tmp/godas-cache   # ≈5 min, ≈3,6 GB descargados
+```
+
+y revisar en el diff que la climatología no haya cambiado más de 1–2 m.
+CPC responde 403 a algunos índices `.grb.inv` (2024-09, 2024-10); por eso
+el código no los usa y recorre los mensajes del propio GRIB.
+
 ## Recuperación
 
 - **Relanzar a mano:** Actions → `observatory` → Run workflow. La opción
