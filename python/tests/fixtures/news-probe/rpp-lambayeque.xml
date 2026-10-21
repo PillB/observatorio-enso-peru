@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:04:32 -0500</lastBuildDate>
+  <lastBuildDate>Wed, 21 Oct 2026 14:36:35 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Hallan granada cerca del bus de la agrupación Amor Rebelde durante presentación en Chiclayo [VIDEO]]]></title>
+        <description><![CDATA[La <strong>Policía</strong> investiga si el hallazgo del explosivo está relacionado con un caso de extorsión o con una disputa entre promotores por las presentaciones de agrupaciones musicales en <a data-mce-href="https://rpp.pe/noticias/chiclayo" href="https://rpp.pe/noticias/chiclayo" rel="follow noopener" target="_blank">Chiclayo</a>.]]></description>
+        <pubDate>Wed, 21 Oct 2026 14:33:24 -0500</pubDate>
+        <link>https://rpp.pe/peru/lambayeque/chiclayo-encuentran-artefacto-explosivo-junto-al-bus-de-una-orquesta-de-cumbia-video-noticia-1713765</link>
+        <guid>1713765</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/21/101510_1921052.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Amor Rebelde, Inseguridad ciudadana, Chiclayo, Lambayeque, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Chiclayo: autoridades realizan simulacro de lluvias e inundaciones ante posible efectos del fenómeno El Niño]]></title>
         <description><![CDATA[Los funcionarios visitaron los seis Sistemas Alternativos de Recolección y Evacuación de agua de lluvia (SARE) que hay en la ciudad para comprobar la operatividad ante cualquier eventualidad.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/08/19/cialvideo-1787104199783-20260818214836-1897783mp4_1897784.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Lambayeque, Chiclayo, Fuertes vientos, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Chiclayo: dictan prisión preventiva contra presunto asesino de adulta mayor que había salido a comprar pan]]></title>
-        <description><![CDATA[Se trata de <strong>Eleuterio González</strong>, quien fue trasladado al penal de Chiclayo para afrontar las investigaciones.]]></description>
-        <pubDate>Sun, 16 Aug 2026 12:47:50 -0500</pubDate>
-        <link>https://rpp.pe/peru/lambayeque/chiclayo-dictan-prision-preventiva-contra-presunto-asesino-de-adulta-mayor-que-habia-salido-a-comprar-pan-noticia-1701873</link>
-        <guid>1701873</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/16/562056_1896867.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Chiclayo, Lambayeque, prisión preventiva, Poder Judicial, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>

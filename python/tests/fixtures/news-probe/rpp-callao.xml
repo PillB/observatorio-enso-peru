@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:02:35 -0500</lastBuildDate>
+  <lastBuildDate>Wed, 21 Oct 2026 14:40:29 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Pánico en pollería de la avenida La Marina: delincuente dejó nota extorsiva y baleó el negocio [VIDEO]]]></title>
+        <description><![CDATA[Las cámaras de seguridad del negocio captaron al <a data-mce-href="https://rpp.pe/noticias/inseguridad-ciudadana" href="https://rpp.pe/noticias/inseguridad-ciudadana">delincuente</a> ingresar en el restaurante, tras lo cual amenazó a los trabajadores y <strong>dejó la carta extorsiva</strong>. Antes de huir, <strong>realizó disparos </strong>contra el negocio.]]></description>
+        <pubDate>Wed, 21 Oct 2026 08:10:30 -0500</pubDate>
+        <link>https://rpp.pe/peru/callao/callao-extorsionador-dejo-nota-extorsiva-y-baleo-polleria-de-la-avenida-la-marina-video-noticia-1713692</link>
+        <guid>1713692</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/21/235423_1920915.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Callao, La Perla, Inseguridad ciudadana, PNP, Policía Nacional, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Carmen de la Legua: hombre fue asesinado a balazos luego de participar de una fiesta]]></title>
         <description><![CDATA[Un hombre todavía no identificado fue <a data-mce-href="https://rpp.pe/lima/policiales/cercado-taxista-es-asesinado-cuando-iba-a-trasladar-a-unos-pasajeros-en-la-avenida-colonial-noticia-1713062" href="https://rpp.pe/lima/policiales/cercado-taxista-es-asesinado-cuando-iba-a-trasladar-a-unos-pasajeros-en-la-avenida-colonial-noticia-1713062">acribillado por dos sujetos que descendieron de un auto rojo</a>. Peritos de criminalística hallaron <strong>17 casquillos de bala </strong>en la escena del crimen.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/08/26/llao-2026-08-26-15-43-11-30457-1900725mp4_1900726.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Callao, PNP, Policía Nacional, Ventanilla, Inseguridad ciudadana, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Ventanilla: niño de seis años murió atropellado por miniván cerca de un colegio]]></title>
-        <description><![CDATA[El <strong>accidente </strong>ocurrió en el cruce de la calle 3 con la <a href="https://rpp.pe/noticias/callao" data-mce-href="https://rpp.pe/noticias/callao"><strong>avenida Arquitectos</strong></a>, en circunstancias que son motivo de investigación.]]></description>
-        <pubDate>Wed, 26 Aug 2026 06:40:49 -0500</pubDate>
-        <link>https://rpp.pe/peru/callao/ventanilla-nino-de-seis-anos-murio-atropellado-por-minivan-cerca-de-un-colegio-noticia-1703703</link>
-        <guid>1703703</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/26/154315_1900435.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Ventanilla, Policiales, Accidente de tránsito, Callao, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
