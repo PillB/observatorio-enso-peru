@@ -57,7 +57,7 @@ jobs:
           git commit -m "chore(fixtures): scrape ladder report"
           git push --force origin "HEAD:refs/heads/bot/scrape-ladder/$GITHUB_REF_NAME"
           echo "::notice::Resultado en la rama bot/scrape-ladder/$GITHUB_REF_NAME"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: scrape-ladder

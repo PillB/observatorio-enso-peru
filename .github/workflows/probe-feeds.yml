@@ -46,7 +46,7 @@ jobs:
           git commit -m "chore(fixtures): probe candidate news feeds"
           git push --force origin "HEAD:refs/heads/bot/news-probe/$GITHUB_REF_NAME"
           echo "::notice::Resultado en la rama bot/news-probe/$GITHUB_REF_NAME"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: news-probe
