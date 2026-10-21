@@ -216,11 +216,21 @@ class Acquired:
     sha256: str = ""
     fingerprint: str = ""
     previous_fingerprint: str = ""
+    previous_url: str = ""  # URL que dio la huella anterior
     warnings: list = field(default_factory=list)
     error: str = ""
     attempts: list = field(default_factory=list)
     raw: bytes = b""
     documents: list = field(default_factory=list)  # otros archivos leídos (p. ej. el PDF del comunicado)
+
+    @property
+    def format_drift(self) -> bool:
+        """Cambió la huella del formato respecto de la publicación anterior. Solo cuenta si la dio la misma URL:
+        una fuente con varias URL (la API de WordPress del ENFEN y su listado del portal, por ejemplo) tiene
+        una huella por formato, y que hoy responda otra de ellas no es un cambio de formato."""
+        if not (self.ok and self.previous_fingerprint and self.previous_fingerprint != self.fingerprint):
+            return False
+        return not self.previous_url or self.previous_url == self.url
 
 
 class PreviousPublication:
@@ -311,6 +321,7 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
     prev = previous.get(f"sources/{src.id}.json")
     if prev:
         acq.previous_fingerprint = prev.get("fingerprint", "")
+        acq.previous_url = prev.get("url") or ""
     resp = None
     try:
         if fixtures is not None:
@@ -328,7 +339,7 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         acq.warnings = parsed.warnings
         for w in parsed.warnings:
             log.add("warning", src.id, "validate", "implausible-value", w)
-        if acq.previous_fingerprint and acq.previous_fingerprint != parsed.fingerprint:
+        if acq.format_drift:
             log.add("warning", src.id, "parse", "format-drift",
                     f"Se detectó un cambio en el formato de la fuente (huella {acq.previous_fingerprint} → {parsed.fingerprint}). "
                     "El parseo siguió siendo válido; revisar que los valores sean coherentes.")
@@ -1011,7 +1022,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
             "url": s.urls[0], "docs": s.docs or s.urls[0], "cadenceDays": s.cadence_days, "sloDays": s.slo_days,
             "status": "ok" if a.ok and not a.channel.startswith("archive") else "archive" if a.ok else "carried" if a.carried else "failed",
             "channel": a.channel, "retrievedAt": a.retrieved_at, "archivedAt": a.archived_at,
-            "fingerprint": a.fingerprint, "formatDrift": bool(a.ok and a.previous_fingerprint and a.previous_fingerprint != a.fingerprint),
+            "fingerprint": a.fingerprint, "formatDrift": a.format_drift,
             "error": a.error, "warnings": a.warnings[:5], "attempts": a.attempts[-12:],
             "archive": (arch.get(sid) or {}).get("file"), "archiveRetrievedAt": (arch.get(sid) or {}).get("retrievedAt"),
         })
