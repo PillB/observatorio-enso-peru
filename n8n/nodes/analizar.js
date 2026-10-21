@@ -6,9 +6,11 @@ const now = new Date().toISOString().replace(/\.\d{3}Z$/, '+00:00');
 const out = [];
 for (let i = 0; i < items.length; i++) {
   const it = items[i];
-  const pi = Array.isArray(it.pairedItem) ? it.pairedItem[0] : it.pairedItem;
-  const idx = typeof pi === 'number' ? pi : (pi && typeof pi.item === 'number' ? pi.item : i);
-  const t = (targets[idx] || targets[i] || { json: {} }).json;
+  // Las descargas llegan del bucle «una por una», en el mismo orden y en la
+  // misma cantidad que las URL; el índice dentro de cada vuelta (pairedItem)
+  // ya no sirve para emparejarlas.
+  if (items.length !== targets.length) throw new Error(`Llegaron ${items.length} respuestas para ${targets.length} URL`);
+  const t = targets[i].json;
   const j = it.json || {};
   let body = null;
   let error = null;

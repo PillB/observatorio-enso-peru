@@ -287,6 +287,43 @@ test('Fuentes: respeta robots.txt y el alcance «n8n»', async () => {
   });
   assert.deepEqual(fromGh.map((i) => i.json.url), ['https://a/', 'https://b/']);
   assert.match(fromGh[0].json.registry, /^GitHub/);
+  // Sin fuentes seleccionadas la corrida falla en vez de terminar sin hacer nada.
+  await assert.rejects(runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: 'no-existe' } }] }), /Ninguna fuente/);
+});
+
+test('Fuentes: con alcance «n8n» omite las URL que el registro asigna a otros canales', async () => {
+  const reg = { schema: 'enso-source-registry/1', sources: [
+    { id: 'e', group: 'enfen', url: 'https://portal/api', alt_urls: ['https://dhn/listado'], alt_expect: ['html'], expect: 'json', channels: ['n8n', 'peru-server'],
+      by_url: { 'https://portal/api': { status: 'suspected-geoblock', channels: ['peru-server'] }, 'https://dhn/listado': { status: 'open', channels: ['n8n'] } } },
+  ] };
+  const cfg = (scope) => ({ 'Configuración': [{ json: { scope, only: '' } }] });
+  assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg('n8n'))).map((i) => i.json.url), ['https://dhn/listado']);
+  assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg('todas'))).map((i) => i.json.url), ['https://portal/api', 'https://dhn/listado']);
+  // robots.txt por URL: se salta la URL prohibida, no las demás de la fuente.
+  const robots = { schema: 'enso-source-registry/1', sources: [
+    { id: 'r', group: 'g', url: 'https://x/api/', alt_urls: ['https://x/listado'], expect: 'json', channels: [], geoblock: { status: 'robots-disallowed' },
+      by_url: { 'https://x/api/': { status: 'robots-disallowed', channels: [] }, 'https://x/listado': { status: 'open', channels: ['actions', 'n8n'] } } },
+  ] };
+  assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(robots) }, cfg('todas'))).map((i) => i.json.url), ['https://x/listado']);
+  // Feeds que el pipeline lee como lector (robots.txt en contra): nunca desde n8n.
+  const reader = { schema: 'enso-source-registry/1', sources: [
+    { id: 'gn', group: 'g', url: 'https://news.google/rss', alt_urls: ['https://feed/ok'], expect: 'rss', channels: ['actions', 'n8n'],
+      by_url: { 'https://news.google/rss': { status: 'robots-disallowed', channels: ['actions'], reader: true }, 'https://feed/ok': { status: 'open', channels: ['actions', 'n8n'] } } },
+    { id: 'r2', group: 'g', url: 'https://reader-only/rss', expect: 'rss', channels: ['actions'], by_url: { 'https://reader-only/rss': { status: 'open', channels: ['actions', 'n8n'], reader: true } } },
+  ] };
+  for (const scope of ['n8n', 'todas']) {
+    assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(reader) }, cfg(scope))).map((i) => i.json.url), ['https://feed/ok'], scope);
+  }
+});
+
+test('Preparar copia: no publica si no pudo leer la copia anterior', async () => {
+  const nodes = (prev) => ({ 'Configuración': [{ json: { data_branch: 'data-n8n', carry_hours: 72, max_file_mb: 8 } }], 'Leer copia anterior': [{ json: prev }], Fuentes: [{ json: { registry: 'GitHub x@main (2026-10-21)' } }] });
+  await assert.rejects(runCode('preparar', {}, nodes({ statusCode: 500, data: '' })), /no se publica/);
+  await assert.rejects(runCode('preparar', {}, nodes({ error: { message: 'ECONNRESET' } })), /ECONNRESET/);
+  const first = await runCode('preparar', {}, nodes({ statusCode: 404, data: '' }));
+  const idx = first.find((i) => i.json.path === 'index.json');
+  assert.ok(idx);
+  assert.match(Buffer.from(idx.json.content, 'base64').toString(), /"registry": "GitHub x@main/);
 });
 
 test('Fuentes: una alternativa con otra terminación no hereda el tipo esperado', async () => {
