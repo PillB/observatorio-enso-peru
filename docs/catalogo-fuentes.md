@@ -85,7 +85,9 @@ nueva en la rama `data-archive`, de modo que el corpus crece solo.
 Catálogo ejecutable: `FEEDS` en `python/enso/news.py`. Verificado en vivo
 desde GitHub Actions el 21 de octubre de 2026 (entradas en el feed /
 relevantes sobre El Niño en ese momento). Cada corrida vuelve a comprobar
-cada feed y publica el resultado en `news/feeds.json`.
+cada feed y publica el resultado en `news/feeds.json`, salvo los que se leen
+una vez al día (ver «Feeds que su robots.txt no permite»): esos repiten el
+estado de su última lectura hasta que toque la siguiente.
 
 | Feed | Región | Resultado | Entradas / relevantes |
 |---|---|---|---|
@@ -121,9 +123,21 @@ Las publicaciones de redes sociales que aparecen en Google Noticias
 
 ### Feeds que su robots.txt no permite
 
-Decisión del 21 de octubre de 2026: estos 40 feeds de noticias se leen
-como lo hace un lector de feeds, solo desde GitHub Actions y como mucho una
-vez cada 20 horas (`READER_MIN_HOURS` en `python/enso/registry.py`). En el
+Decisión del 21 de octubre de 2026: 40 feeds de noticias cuyo robots.txt
+no permite pedirlos se leen como lo hace un lector de feeds, solo desde
+GitHub Actions y como mucho una vez cada 20 horas (`READER_MIN_HOURS` en
+`python/enso/registry.py`). Son 38 búsquedas de Google Noticias (las 25 por
+departamento, las de El Niño en el Perú y en el mundo, la de peligros en el
+Perú y las de medios sin feed propio con `site:`: El Peruano, Radio Nacional,
+Panamericana, TV Perú, Esfera Radio, Chachapoyas Online, Radio Titanka,
+Diario Chaski, Diario HOY y Tumbes de Miércoles), Noticias ONU · Clima y Sin
+Rodeos Cajamarca. La lista sale del registro: `registry.reader_urls()`. Solo
+los pide la corrida diaria (`observatory.yml`, con `--reader-state`); las
+demás (la prueba de `capture-fixtures.yml`, una corrida a mano) los omiten.
+La hora de la última lectura buena de cada uno y sus notas se guardan
+también en la caché de Actions, así que una corrida que los leyó y no llegó
+a publicar no hace que la siguiente los pida de nuevo antes de tiempo ni se
+pierden sus notas. En el
 registro (`registry/sources.json`) su URL queda `robots-disallowed` con
 canales `["actions"]` y `"reader": true`; n8n y el recolector del Perú no
 los piden. Entre dos lecturas, `news/feeds.json` repite el estado de la

@@ -57,6 +57,10 @@ jobs:
           cache: pip
           cache-dependency-path: python/requirements*.txt
       - run: pip install -r python/requirements-dev.txt
+      # Node 22 (node:sqlite) para las pruebas de la consola de lugares (functions/).
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       # Con Cloudflare, la dirección sale del proyecto (se crea si falta),
       # salvo que la variable SITE_URL fije otra (p. ej. un dominio propio).
@@ -65,6 +69,7 @@ jobs:
         working-directory: python
         env:
           SITE_URL_VAR: ${{ vars.SITE_URL }}
+          GEO_OVERRIDES_URL_VAR: ${{ vars.GEO_OVERRIDES_URL }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
@@ -76,6 +81,8 @@ jobs:
             fi
             # Las fuentes ven la dirección del sitio como contacto, no el repositorio.
             echo "ENSO_CONTACT_URL=${url%/}/" >> "$GITHUB_ENV"
+            # Correcciones de la consola de lugares (Pages Function); si no responde, se usan las anteriores.
+            echo "GEO_OVERRIDES_URL=${GEO_OVERRIDES_URL_VAR:-${url%/}/api/geo/overrides}" >> "$GITHUB_ENV"
           elif [ "$DEPLOY_TARGET" != github-pages ]; then
             echo "::error::DEPLOY_TARGET debe ser github-pages o cloudflare (es «$DEPLOY_TARGET»)"; exit 1
           fi
@@ -126,10 +133,12 @@ jobs:
           fi
 
       # Copia del histórico de noticias que el job «archive» guarda en la rama
-      # data-archive (sources/news/items.jsonl). Se baja siempre (un solo
-      # archivo, por la API): el pipeline la usa si no puede leer el histórico
-      # publicado (sitio caído, otro hosting) o si la corrida anterior tuvo que
-      # empezarlo de nuevo, y decide él, en el momento en que lo lee.
+      # data-archive (sources/news/items.jsonl.gz, unión de todo lo publicado).
+      # Se baja siempre (un solo archivo, por la API): el pipeline le suma al
+      # histórico publicado las notas que le falten y lo rehace con ella si no
+      # puede leerlo (sitio caído, otro hosting). La carpeta va aunque la
+      # descarga falle: vacía, el pipeline sabe que la copia no se pudo bajar;
+      # «absent» (HTTP 404) es que todavía no hay ninguna.
       - name: News history backup
         id: history
         continue-on-error: true
@@ -137,14 +146,37 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p "$RUNNER_TEMP/history"
-          if gh api -H "Accept: application/vnd.github.raw+json" \
-              "repos/$GITHUB_REPOSITORY/contents/sources/news/items.jsonl?ref=data-archive" \
-              > "$RUNNER_TEMP/history/items.jsonl"; then
-            echo "dir=$RUNNER_TEMP/history" >> "$GITHUB_OUTPUT"
-            echo "Copia del histórico: $(wc -l < "$RUNNER_TEMP/history/items.jsonl") notas."
+          echo "dir=$RUNNER_TEMP/history" >> "$GITHUB_OUTPUT"
+          f="$RUNNER_TEMP/history/items.jsonl.gz"
+          # «raw», no «raw+json»: con este gh lo trata como JSON y daña cualquier archivo binario.
+          if gh api -H "Accept: application/vnd.github.raw" \
+              "repos/$GITHUB_REPOSITORY/contents/sources/news/items.jsonl.gz?ref=data-archive" \
+              > "$f" 2> "$RUNNER_TEMP/history.err"; then
+            if gzip -t "$f"; then
+              echo "Copia del histórico: $(gzip -dc "$f" | wc -l) notas."
+            else
+              rm -f "$f"
+              echo "::warning::La copia del histórico de noticias de data-archive llegó rota; no se usa en esta corrida."
+            fi
+          elif grep -q "(HTTP 404)" "$RUNNER_TEMP/history.err"; then
+            rm -f "$f"
+            echo "absent=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::data-archive todavía no tiene copia del histórico de noticias."
           else
-            echo "::notice::Sin copia del histórico de noticias en data-archive (todavía no hay una corrida archivada)."
+            rm -f "$f"
+            echo "::warning::No se pudo bajar la copia del histórico de noticias: $(head -c 300 "$RUNNER_TEMP/history.err")"
           fi
+
+      # Última lectura buena de los feeds que robots.txt no permite y se leen
+      # como un lector de feeds (una vez al día): sobrevive a una corrida que
+      # los leyó y no llegó a publicar, para no volver a pedirlos antes de tiempo.
+      - name: Restore the reader-feed state
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/reader-state.json
+          key: enso-reader-state-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: enso-reader-state-
 
       - name: Fetch, validate and build the publication
         id: pipeline
@@ -154,6 +186,7 @@ jobs:
           RELAY_DIR: ${{ steps.relay.outputs.dir }}
           N8N_DIR: ${{ steps.n8n.outputs.dir }}
           HISTORY_DIR: ${{ steps.history.outputs.dir }}
+          HISTORY_ABSENT: ${{ steps.history.outputs.absent }}
         run: |
           python -m enso.observatory \
             --out ../public/data \
@@ -162,7 +195,17 @@ jobs:
             ${RELAY_DIR:+--relay-dir "$RELAY_DIR"} \
             ${N8N_DIR:+--n8n-dir "$N8N_DIR"} \
             ${HISTORY_DIR:+--history-dir "$HISTORY_DIR"} \
+            ${HISTORY_ABSENT:+--history-absent} \
+            --reader-state "$RUNNER_TEMP/reader-state.json" \
             --fail-on critical
+
+      - name: Save the reader-feed state
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/reader-state.json
+          key: enso-reader-state-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Adapt the site to its public address
         working-directory: python
@@ -314,8 +357,9 @@ jobs:
 
   archive:
     # Corpus de respuestas originales para backtesting de los lectores.
+    # También al fusionar en main: esa corrida publica notas y su copia del histórico.
     needs: build
-    if: success() && github.event_name != 'push'
+    if: success()
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -347,8 +391,11 @@ jobs:
             t="../archive/sources/news/$(basename "$f")"
             touch "$t"; cat "$t" "$f" | awk '!seen[$0]++' > "$t.tmp" && mv "$t.tmp" "$t"
           done
-          # El histórico completo de esta publicación reemplaza al anterior (solo si la corrida lo tuvo entero).
-          [ -f raw/news/items.jsonl ] && cp raw/news/items.jsonl ../archive/sources/news/items.jsonl
+          # El histórico de esta corrida se une a la copia: la copia nunca pierde notas, aunque la corrida
+          # no haya podido leerla o haya publicado un histórico incompleto (python/tools/merge_history.py).
+          if [ -f raw/news/items.jsonl.gz ]; then
+            python3 python/tools/merge_history.py raw/news/items.jsonl.gz ../archive/sources/news/items.jsonl.gz
+          fi
           rm -rf raw/news
           cp -rn raw/. ../archive/sources/
           cd ../archive

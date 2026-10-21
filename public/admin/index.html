@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Consola de lugares</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="admin.css">
+  <script type="module" src="admin.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="brand"><img src="../favicon.svg" width="32" height="32" alt=""><span><span class="brand-name">Consola de lugares</span><span class="brand-tag">Observatorio ENSO Perú · revisión de ubicaciones</span></span></span>
+      <div class="header-actions" id="session" hidden>
+        <span class="muted small" id="who"></span>
+        <button type="button" class="btn" id="logout">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="gc-main">
+    <p id="status" class="gc-status" role="status" aria-live="polite"></p>
+
+    <section id="login-view" class="gc-card gc-login" hidden>
+      <h1>Ingresar</h1>
+      <p class="muted">Acceso solo para revisores autorizados. Cada cambio queda registrado con su usuario y la hora.</p>
+      <form id="login-form" autocomplete="on" novalidate>
+        <label for="username">Usuario</label>
+        <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required maxlength="40">
+        <label for="password">Contraseña</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="200">
+        <p id="login-error" class="gc-error" role="alert"></p>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+      </form>
+    </section>
+
+    <section id="app-view" hidden>
+      <div class="gc-intro">
+        <p>Revise dónde ocurre cada noticia o aviso. Las correcciones se guardan al instante y se aplican al sitio en la siguiente actualización diaria (23:37, hora de Lima).</p>
+      </div>
+      <nav class="gc-tabs" role="tablist" aria-label="Vistas">
+        <button type="button" role="tab" id="tab-review" data-tab="review" aria-selected="true">Por revisar <span class="gc-count" id="count-review"></span></button>
+        <button type="button" role="tab" id="tab-all" data-tab="all" aria-selected="false">Todas <span class="gc-count" id="count-all"></span></button>
+        <button type="button" role="tab" id="tab-done" data-tab="done" aria-selected="false">Corregidas <span class="gc-count" id="count-done"></span></button>
+        <button type="button" role="tab" id="tab-audit" data-tab="audit" aria-selected="false">Registro de cambios</button>
+      </nav>
+      <div class="gc-filters" id="filters">
+        <label class="gc-search"><span class="visually-hidden">Buscar</span><input id="q" type="search" placeholder="Buscar en títulos, medios o lugares" autocomplete="off"></label>
+        <label><span class="visually-hidden">Departamento</span><select id="dep-filter"><option value="">Todos los departamentos</option><option value="none">Sin lugar</option></select></label>
+      </div>
+      <p class="muted small" id="list-info"></p>
+      <ol class="gc-list" id="list"></ol>
+      <button type="button" class="btn" id="more" hidden>Ver más</button>
+      <ol class="gc-list" id="audit" hidden></ol>
+    </section>
+
+    <template id="editor-tpl">
+      <form class="gc-editor">
+        <fieldset>
+          <legend>Lugares correctos</legend>
+          <ul class="gc-chosen" aria-live="polite"></ul>
+          <div class="gc-pick">
+            <label>Departamento <select class="dep" aria-label="Departamento"><option value="">—</option></select></label>
+            <label>Provincia <select class="prov" aria-label="Provincia" disabled><option value="">(toda la región)</option></select></label>
+            <label>Distrito <select class="dist" aria-label="Distrito" disabled><option value="">(toda la provincia)</option></select></label>
+            <button type="button" class="btn add">Agregar</button>
+          </div>
+          <label class="gc-find">o busque por nombre <input class="find" list="gc-names" placeholder="p. ej. Miraflores" autocomplete="off"></label>
+        </fieldset>
+        <label>Nota (opcional) <textarea class="note" maxlength="500" rows="2" placeholder="Por qué se corrige"></textarea></label>
+        <p class="gc-error" role="alert"></p>
+        <div class="gc-actions">
+          <button type="submit" class="btn btn-primary">Guardar corrección</button>
+          <button type="button" class="btn cancel">Cancelar</button>
+        </div>
+      </form>
+    </template>
+    <datalist id="gc-names"></datalist>
+  </main>
+</body>
+</html>

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -341,6 +342,15 @@ def test_history_backup_reads_the_full_copy_first(tmp_path):
     (d / "2026-10-20.jsonl").write_text(json.dumps(c) + "\n", encoding="utf-8")
     (d / "items.jsonl").write_text(json.dumps(a) + "\n" + json.dumps(b) + "\n", encoding="utf-8")
     assert [json.loads(x)["id"] for x in obs.read_history_backup(d).splitlines()] == ["a1", "b2", "c3"]
+    # La copia actual va comprimida; una cortada no se usa (reemplazaría al histórico entero con una parte).
+    (d / "items.jsonl").unlink()
+    (d / "items.jsonl.gz").write_bytes(gzip.compress((json.dumps(b) + "\n" + json.dumps(a) + "\n").encode()))
+    assert [json.loads(x)["id"] for x in obs.read_history_backup(d).splitlines()] == ["b2", "a1", "c3"]
+    (d / "items.jsonl.gz").write_bytes(gzip.compress(("".join(json.dumps({**a, "id": f"n{i}"}) + "\n"
+                                                              for i in range(500))).encode())[:-40])
+    assert obs.read_history_backup(d) == ""
+    (d / "items.jsonl.gz").write_bytes(b"no es gzip")
+    assert obs.read_history_backup(d) == ""
 
 
 def _one_feed(monkeypatch):
@@ -368,21 +378,106 @@ def test_a_restarted_history_is_flagged_and_completed_from_the_copy(tmp_path, mo
     got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, NOW, raw)
     assert got["feeds"]["history"]["restarted"] is True
     assert any(e.code == "news-history-missing" and e.severity == "error" for e in log.events)
-    assert not (raw / "news" / "items.jsonl").exists()  # la copia buena de data-archive queda como estaba
+    # Se deja para el job «archive», que lo une a la copia de data-archive sin quitarle notas.
+    assert gzip.decompress((raw / "news" / "items.jsonl.gz").read_bytes()).decode() == got["jsonl"]
     today = got["jsonl"]
 
     (site / "news" / "items.jsonl").write_text(today, encoding="utf-8")
     (site / "news" / "feeds.json").write_text(json.dumps(got["feeds"]), encoding="utf-8")
     backup = tmp_path / "history"
     backup.mkdir()
-    (backup / "items.jsonl").write_text("".join(json.dumps(i) + "\n" for i in old), encoding="utf-8")
+    (backup / "items.jsonl.gz").write_bytes(gzip.compress("".join(json.dumps(i) + "\n" for i in old).encode()))
     raw2, log2 = tmp_path / "raw2", obs.EventLog()
     got2 = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log2, NOW, raw2, backup)
     assert got2["jsonl"].startswith(today)  # solo se agrega al final
     assert {"old0", "old1", "old2"} <= {i["id"] for i in got2["items"]}
     assert "restarted" not in got2["feeds"]["history"]
     assert any(e.code == "news-history-restored" for e in log2.events)
-    assert (raw2 / "news" / "items.jsonl").read_text(encoding="utf-8") == got2["jsonl"]
+    assert gzip.decompress((raw2 / "news" / "items.jsonl.gz").read_bytes()).decode() == got2["jsonl"]
+
+
+def _history_site(tmp_path, items, feeds=None):
+    site = tmp_path / "site"
+    (site / "news").mkdir(parents=True, exist_ok=True)
+    (site / "news" / "items.jsonl").write_text("".join(json.dumps(i) + "\n" for i in items), encoding="utf-8")
+    (site / "news" / "feeds.json").write_text(json.dumps(feeds or {"history": {"items": len(items)}}), encoding="utf-8")
+    return site
+
+
+def _notes(prefix, n):
+    return [{"id": f"{prefix}{i}", "first_seen": "2026-10-01T05:00:00+00:00", "title": f"Nota {i}",
+             "link": f"https://andina.pe/{prefix}-{i}"} for i in range(n)]
+
+
+def test_a_site_that_does_not_answer_is_not_a_first_publication(tmp_path, monkeypatch):
+    """Con el sitio caído (503) y sin poder bajar la copia, el histórico no se da por vacío: se marca
+    «restarted», es un error y la copia de data-archive no se reemplaza."""
+    real = httpx.Client
+    fetcher = _one_feed(monkeypatch)
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    down = Fetcher(polite_delay=0)
+    down.client = real(transport=httpx.MockTransport(lambda req: httpx.Response(503)))
+    raw, log = tmp_path / "raw", obs.EventLog()
+    unavailable = tmp_path / "history"
+    unavailable.mkdir()  # el flujo deja la carpeta vacía si la descarga falló
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication("https://sitio.example/data", down), log, NOW, raw,
+                           unavailable)
+    assert got["feeds"]["history"]["restarted"] is True
+    err = next(e for e in log.events if e.code == "news-history-missing")
+    assert err.severity == "error" and "no respondió" in err.message and "no se pudo bajar" in err.message
+    # Sin copia en data-archive (404) y sin histórico publicado (404): primera publicación, sin incidencias.
+    gone = Fetcher(polite_delay=0)
+    gone.client = real(transport=httpx.MockTransport(lambda req: httpx.Response(404)))
+    raw2, log2 = tmp_path / "raw2", obs.EventLog()
+    got2 = obs.acquire_news(fetcher, None, obs.PreviousPublication("https://sitio.example/data", gone), log2, NOW,
+                            raw2, tmp_path / "vacia", history_absent=True)
+    assert "restarted" not in got2["feeds"]["history"]
+    assert not any(e.code.startswith("news-history") for e in log2.events)
+    assert gzip.decompress((raw2 / "news" / "items.jsonl.gz").read_bytes()).decode() == got2["jsonl"]
+
+
+def test_history_takes_the_notes_of_a_run_that_did_not_publish(tmp_path, monkeypatch):
+    """La copia de data-archive puede tener notas que el sitio no (la corrida que las leyó no llegó a
+    desplegar): se agregan al final. Si una corrida marcó «restarted» y data-archive no tiene copia (404),
+    se acepta lo publicado: no hay con qué completarlo."""
+    fetcher = _one_feed(monkeypatch)
+    site = _history_site(tmp_path, _notes("pub", 2))
+    backup = tmp_path / "history"
+    backup.mkdir()
+    (backup / "items.jsonl.gz").write_bytes(gzip.compress(
+        "".join(json.dumps(i) + "\n" for i in _notes("pub", 2) + _notes("lost", 2)).encode()))
+    log = obs.EventLog()
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, NOW, tmp_path / "raw",
+                           backup)
+    ids = [i["id"] for i in got["items"]]
+    assert ids[:4] == ["pub0", "pub1", "lost0", "lost1"]
+    assert any(e.code == "news-history-restored" and "2 notas" in e.message for e in log.events)
+
+    site = _history_site(tmp_path, _notes("pub", 2), {"history": {"items": 2, "restarted": True}})
+    log = obs.EventLog()
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, NOW, tmp_path / "raw3",
+                           tmp_path / "vacia", history_absent=True)
+    assert "restarted" not in got["feeds"]["history"]
+    assert any(e.code == "news-history-restored" and e.severity == "warning" for e in log.events)
+    # Copia que no se pudo bajar: el «restarted» sigue hasta que se lea.
+    log = obs.EventLog()
+    empty = tmp_path / "vacia2"
+    empty.mkdir()
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, NOW, tmp_path / "raw4",
+                           empty)
+    assert got["feeds"]["history"]["restarted"] is True
+    # Con un error, para que la incidencia siga abierta mientras el histórico esté incompleto.
+    assert any(e.code == "news-history-missing" and e.severity == "error" and "sigue incompleto" in e.message
+               for e in log.events)
+
+
+def test_large_history_warns_before_the_hosting_limit(tmp_path, monkeypatch):
+    fetcher = _one_feed(monkeypatch)
+    monkeypatch.setattr(obs, "NEWS_HISTORY_WARN_BYTES", 500)
+    site = _history_site(tmp_path, _notes("pub", 10))
+    log = obs.EventLog()
+    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, NOW, None)
+    assert any(e.code == "news-history-large" and "25 MiB" in e.message for e in log.events)
 
 
 def test_previous_history_is_retried_on_server_errors(monkeypatch):
@@ -409,29 +504,65 @@ def _archive_news_script() -> str:
     wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
     run = next(s["run"] for s in wf["jobs"]["archive"]["steps"] if "data-archive" in s.get("name", ""))
     start, end = run.index("mkdir -p ../archive/sources/news"), run.index("cp -rn raw/. ../archive/sources/")
-    return run[start:end] + "cp -rn raw/. ../archive/sources/\n"
+    tool = str(obs.REPO / "python" / "tools" / "merge_history.py")
+    return run[start:end].replace("python/tools/merge_history.py", tool) + "cp -rn raw/. ../archive/sources/\n"
 
 
-def test_archive_adds_each_runs_notes_and_replaces_the_full_copy(tmp_path):
-    """Dos corridas el mismo día suman sus notas (antes «cp -rn» dejaba solo las de la primera) y la copia
-    completa del histórico se reemplaza; las respuestas crudas siguen sin pisarse."""
+def test_archive_adds_each_runs_notes_and_never_shrinks_the_full_copy(tmp_path):
+    """Dos corridas el mismo día suman sus notas (antes «cp -rn» dejaba solo las de la primera) y el
+    histórico de cada corrida se une a la copia sin quitarle notas; las respuestas crudas no se pisan."""
     import subprocess
 
     work, arch = tmp_path / "work", tmp_path / "archive" / "sources"
     (work / "raw" / "news").mkdir(parents=True)
     (arch / "news").mkdir(parents=True)
     (arch / "news" / "2026-10-21.jsonl").write_text('{"id":"a"}\n', encoding="utf-8")
-    (arch / "news" / "items.jsonl").write_text('{"id":"a"}\n', encoding="utf-8")
+    (arch / "news" / "items.jsonl.gz").write_bytes(gzip.compress(b'{"id":"a"}\n'))
     (arch / "usgs").mkdir()
     (arch / "usgs" / "x.json").write_text("viejo", encoding="utf-8")
     (work / "raw" / "news" / "2026-10-21.jsonl").write_text('{"id":"a"}\n{"id":"b"}\n', encoding="utf-8")
-    (work / "raw" / "news" / "items.jsonl").write_text('{"id":"a"}\n{"id":"b"}\n', encoding="utf-8")
+    (work / "raw" / "news" / "items.jsonl.gz").write_bytes(gzip.compress(b'{"id":"a"}\n{"id":"b"}\n'))
     (work / "raw" / "usgs").mkdir()
     (work / "raw" / "usgs" / "x.json").write_text("nuevo", encoding="utf-8")
     subprocess.run(["bash", "-e", "-c", _archive_news_script()], cwd=work, check=True)
     assert (arch / "news" / "2026-10-21.jsonl").read_text(encoding="utf-8") == '{"id":"a"}\n{"id":"b"}\n'
-    assert (arch / "news" / "items.jsonl").read_text(encoding="utf-8") == '{"id":"a"}\n{"id":"b"}\n'
+    assert gzip.decompress((arch / "news" / "items.jsonl.gz").read_bytes()) == b'{"id":"a"}\n{"id":"b"}\n'
     assert (arch / "usgs" / "x.json").read_text(encoding="utf-8") == "viejo"
+    # Una corrida sin histórico no toca la copia; una con un histórico incompleto («restarted», o que no pudo
+    # bajar la copia) solo le agrega lo que le falte.
+    (work / "raw" / "news").mkdir()
+    (work / "raw" / "news" / "2026-10-22.jsonl").write_text('{"id":"c"}\n', encoding="utf-8")
+    subprocess.run(["bash", "-e", "-c", _archive_news_script()], cwd=work, check=True)
+    assert gzip.decompress((arch / "news" / "items.jsonl.gz").read_bytes()) == b'{"id":"a"}\n{"id":"b"}\n'
+    (work / "raw" / "news").mkdir()
+    (work / "raw" / "news" / "items.jsonl.gz").write_bytes(gzip.compress(b'{"id":"c"}\n{"id":"b"}\n'))
+    out = subprocess.run(["bash", "-e", "-c", _archive_news_script()], cwd=work, check=True, capture_output=True,
+                         text=True).stdout
+    assert gzip.decompress((arch / "news" / "items.jsonl.gz").read_bytes()) == b'{"id":"a"}\n{"id":"b"}\n{"id":"c"}\n'
+    assert "3 notas (1 nuevas)" in out
+
+
+def test_merge_history_keeps_every_note_and_its_order(tmp_path):
+    from tools import merge_history as M
+
+    old, new = tmp_path / "old.jsonl.gz", tmp_path / "new.jsonl.gz"
+    new.write_bytes(gzip.compress(b'{"id":"b"}\n{"id":"c"}\nroto\n[1]\n{"id":7}\n'))
+    assert "2 notas (2 nuevas)" in M.merge(new, old)  # sin copia todavía
+    first = old.read_bytes()
+    assert M.merge(new, old) and old.read_bytes() == first  # mismos datos, mismos bytes: sin commit vacío
+    old.write_bytes(gzip.compress(b'{"id":"a"}\n{"id":"b"}\n'))
+    M.merge(new, old)
+    assert gzip.decompress(old.read_bytes()) == b'{"id":"a"}\n{"id":"b"}\n{"id":"c"}\n'
+    # Copia rota: se reemplaza, con aviso. Histórico de la corrida roto: la copia queda como estaba.
+    old.write_bytes(b"no es gzip")
+    assert M.merge(new, old).startswith("::warning::") and gzip.decompress(old.read_bytes()) == b'{"id":"b"}\n{"id":"c"}\n'
+    keep = old.read_bytes()
+    new.write_bytes(gzip.compress(b'{"id":"x"}\n')[:-6])
+    assert M.merge(new, old).startswith("::warning::") and old.read_bytes() == keep
+    # Por encima del límite queda la copia anterior.
+    new.write_bytes(gzip.compress(b'{"id":"y"}\n'))
+    assert "no cabe" in M.merge(new, old, limit=10) and old.read_bytes() == keep
+    assert M.main(["solo-uno"]) == 2
 
 
 def test_history_backup_is_fetched_every_run():
@@ -439,8 +570,21 @@ def test_history_backup_is_fetched_every_run():
     import yaml
 
     wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
-    step = next(s for s in wf["jobs"]["build"]["steps"] if s.get("id") == "history")
-    assert "curl" not in step["run"] and "sources/news/items.jsonl?ref=data-archive" in step["run"]
+    steps = wf["jobs"]["build"]["steps"]
+    step = next(s for s in steps if s.get("id") == "history")
+    assert "curl" not in step["run"] and "sources/news/items.jsonl.gz?ref=data-archive" in step["run"]
+    # Con «raw+json», gh trata la respuesta como JSON y daña el gzip.
+    assert 'Accept: application/vnd.github.raw"' in step["run"]
+    assert not any("raw+json" in line for line in step["run"].splitlines() if not line.strip().startswith("#"))
+    # 404 (no hay copia) no es lo mismo que una descarga fallida (carpeta vacía).
+    assert "(HTTP 404)" in step["run"] and "absent=true" in step["run"] and "gzip -t" in step["run"]
+    pipeline = next(s for s in steps if s.get("id") == "pipeline")
+    assert "--history-absent" in pipeline["run"] and "--reader-state" in pipeline["run"]
+    # El estado de los feeds «reader» se guarda aunque la corrida falle después de leerlos.
+    names = [s.get("uses", "") for s in steps]
+    restore, save = names.index("actions/cache/restore@v4"), names.index("actions/cache/save@v4")
+    assert restore < steps.index(pipeline) < save and steps[save]["if"] == "always()"
+    assert wf["jobs"]["archive"]["if"] == "success()"  # también al fusionar en main
 
 
 def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, monkeypatch):
@@ -484,3 +628,74 @@ def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, mo
     asked.clear()
     obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(), NOW, None)
     assert len(asked) == 4
+
+
+def test_reader_feeds_are_not_asked_again_after_a_run_that_did_not_publish(tmp_path, monkeypatch):
+    """La corrida que los leyó y no llegó a desplegar deja anotada la lectura (--reader-state): la siguiente,
+    con la misma publicación anterior, no los vuelve a pedir antes de 20 h."""
+    from enso import news as N
+
+    feeds = [f for f in N.FEEDS if "news.google.com" in f.url][:2]
+    monkeypatch.setattr(N, "FEEDS", feeds)
+    body = (Path(__file__).parent / "fixtures" / "sources" / feeds[0].fixture).read_bytes()
+    asked = []
+
+    def net(req):
+        asked.append(str(req.url))
+        return httpx.Response(200, content=body, headers={"content-type": "application/rss+xml"})
+
+    real = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
+    site = _history_site(tmp_path, [])
+    fetcher = Fetcher(polite_delay=0, plan={f.url: ["actions"] for f in feeds})
+    state = tmp_path / "cache" / "reader-state.json"
+    reader = {f.url for f in feeds}
+    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(), NOW, None,
+                     reader=reader, reader_state=state)
+    assert len(asked) == 2 and json.loads(state.read_text())["schema"] == "enso-reader-state/1"
+    asked.clear()
+    log = obs.EventLog()
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log,
+                           NOW + timedelta(hours=5), None, reader=reader, reader_state=state)
+    assert asked == [] and all(s["carried"] for s in got["feeds"]["feeds"])
+    # Las notas de aquella lectura, que no llegó a publicarse, salen del estado: no se pierden.
+    kept = json.loads(state.read_text())["feeds"]
+    assert got["items"] and len(got["items"]) == sum(len(v["items"]) for v in kept.values())
+    assert any(e.code == "news-reader-restored" for e in log.events)
+    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(),
+                     NOW + timedelta(hours=21), None, reader=reader, reader_state=state)
+    assert len(asked) == 2
+    # Un estado ilegible no detiene nada: se vuelve a la publicación anterior.
+    state.write_text("{roto", encoding="utf-8")
+    assert obs.read_reader_state(state) == {}
+    # Una lectura que se arrastra de la publicación anterior también queda en el estado, con su hora: si
+    # después esa publicación no se puede leer, el plazo se sigue respetando.
+    st = {**N._status(feeds[0], NOW), "checkedAt": (NOW - timedelta(hours=2)).isoformat(timespec="seconds"),
+          "ok": True, "active": True, "items": 3, "httpStatus": 200}
+    site = _history_site(tmp_path, [], {"feeds": [st], "history": {"items": 0}})
+    asked.clear()
+    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(), NOW, None,
+                     reader=reader, reader_state=state)
+    saved = json.loads(state.read_text())["feeds"][feeds[0].url]
+    assert asked == [feeds[1].url] and saved["status"]["checkedAt"] == st["checkedAt"] and saved["items"] == []
+    asked.clear()
+    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(tmp_path / "no-hay"), fetcher), obs.EventLog(),
+                     NOW + timedelta(hours=3), None, reader=reader, reader_state=state)
+    assert asked == []
+
+
+def test_reader_feeds_are_only_read_by_the_daily_run(monkeypatch, tmp_path):
+    """Sin --reader-state (pruebas de captura, una corrida a mano en otro equipo) no se sabe cuándo se leyeron:
+    no se piden, como cualquier feed que robots.txt no permite."""
+    seen = {}
+    monkeypatch.setattr(obs, "run", lambda *a, **kw: seen.update(kw) or {"publicationId": "x", "worst": "info"})
+    obs.main(["--out", str(tmp_path / "out"), "--previous", "", "--fail-on", "never"])
+    reader = registry.reader_urls()
+    assert seen["reader"] is None and all(seen["plan"][u] == [] for u in reader)
+    assert sum(1 for ch in seen["plan"].values() if ch == []) == len(reader) + sum(
+        1 for u, ch in registry.url_channels().items() if ch == [])
+    obs.main(["--out", str(tmp_path / "out"), "--previous", "", "--fail-on", "never",
+              "--reader-state", str(tmp_path / "state.json")])
+    assert seen["reader"] == reader and seen["plan"] == registry.url_channels()
+    obs.main(["--out", str(tmp_path / "out"), "--previous", "", "--fail-on", "never", "--offline"])
+    assert seen["reader"] is None and seen["plan"] is None

@@ -108,24 +108,6 @@ jobs:
             echo "|---|---|---|---|---|---|---|"
             jq -r '.[1:][] | select(.resultado != "OK") | "| \(.veredicto) | \(.alcance) | \(.bloqueo) | \(.http) | \(.id) | \(.url) | \(.nota | gsub("\\|"; "/") | .[0:80]) |"' validacion-actions.json
           } >> "$GITHUB_STEP_SUMMARY"
-      - name: Same failed URLs with curl and with Node fetch (is it the network or n8n?)
-        run: |
-          UA="Observatorio-ENSO-Peru/4.0 (+https://github.com/PillB/observatorio-enso-peru; datos abiertos; n8n)"
-          {
-            echo; echo "### Fallas de n8n repetidas con curl y con Node (fetch)"
-            echo; echo "| URL | curl: HTTP, bytes, s (IPv4) | curl IPv6 | Node fetch |"; echo "|---|---|---|---|"
-          } >> "$GITHUB_STEP_SUMMARY"
-          jq -r '.[1:][] | select(.resultado != "OK") | .url' validacion-actions.json | sort -u | head -40 | while read -r u; do
-            c4=$(curl -4 -sg -o /dev/null -A "$UA" -H 'Accept: */*' --compressed -w '%{http_code} %{size_download} %{time_total}' --max-time 60 "$u" 2>&1 || true)
-            c6=$(curl -6 -sg -o /dev/null -A "$UA" --max-time 20 -w '%{http_code} %{time_total}' "$u" 2>&1 || true)
-            nf=$(node -e '
-              const t0 = Date.now();
-              fetch(process.argv[1], { headers: { "user-agent": process.argv[2], accept: "*/*" }, signal: AbortSignal.timeout(60000) })
-                .then(async (r) => { const b = await r.arrayBuffer(); console.log(r.status, b.byteLength, ((Date.now() - t0) / 1000).toFixed(1)); })
-                .catch((e) => console.log("error", (e.cause && e.cause.code) || e.name, ((Date.now() - t0) / 1000).toFixed(1)));
-            ' "$u" "$UA")
-            echo "| ${u:0:90} | $c4 | $c6 | $nf |" >> "$GITHUB_STEP_SUMMARY"
-          done
       - uses: actions/upload-artifact@v4
         with:
           name: n8n-validacion-actions

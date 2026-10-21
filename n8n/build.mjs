@@ -95,7 +95,6 @@ function download(name, timeoutMs, extra = {}) {
     sendHeaders: true,
     headerParameters: { parameters: [{ name: 'User-Agent', value: UA }, { name: 'Accept', value: '*/*' }] },
     options: {
-      batching: { batch: { batchSize: 4, batchInterval: 1000 } },
       redirect: { redirect: { maxRedirects: 10 } },
       response: { response: { fullResponse: true, neverError: true, responseFormat: 'file', outputPropertyName: 'data' } },
       timeout: timeoutMs,
@@ -126,12 +125,23 @@ const CONFIG_COMMON = [
   ['only', ''],
 ];
 
+// El nodo HTTP lanza todas las peticiones de su entrada y recién al final lee
+// los cuerpos (Promise.allSettled): con ~150 URL, las respuestas grandes de las
+// primeras quedan sin leer hasta que el socket se corta por inactividad
+// («aborted»), aunque el servidor respondió en un segundo. Por eso cada URL
+// pasa sola por el nodo HTTP, dentro de un bucle «Loop Over Items».
+function loop(name, extra = {}) {
+  return node(name, 'n8n-nodes-base.splitInBatches', 3, { batchSize: 1, options: {} }, extra);
+}
+
 function passes(sourceNode) {
   return [
+    loop('Una por una'),
     download('Descargar', 40000),
     code('Analizar', 'analizar', { SOURCE_NODE: sourceNode }),
     code('Segunda pasada', 'segunda', {}, { y: 200 }),
     node('Esperar 30 s', 'n8n-nodes-base.wait', 1.1, { resume: 'timeInterval', amount: 30, unit: 'seconds' }, { y: 200, webhookId: 'enso-espera-30s' }),
+    loop('Una por una (2.ª pasada)', { y: 200 }),
     download('Descargar (2.ª pasada)', 60000, { y: 200 }),
     code('Analizar (2.ª pasada)', 'analizar', { SOURCE_NODE: 'Segunda pasada' }, { y: 200 }),
     node('Unir pasadas', 'n8n-nodes-base.merge', 3, {}),
@@ -148,8 +158,17 @@ function chain(names, connections = {}) {
   return connections;
 }
 
+/** Bucle: salida 1 («loop») → descarga → vuelve al bucle; salida 0 («done») → sigue. */
+function loopConnections(c, loopName, body, next) {
+  c[loopName] = { main: [[{ node: next, type: 'main', index: 0 }], [{ node: body, type: 'main', index: 0 }]] };
+  c[body] = { main: [[{ node: loopName, type: 'main', index: 0 }]] };
+}
+
 const PASS_CONNECTIONS = (c) => {
-  chain(['Descargar', 'Analizar', 'Segunda pasada', 'Esperar 30 s', 'Descargar (2.ª pasada)', 'Analizar (2.ª pasada)', ['Unir pasadas', 1]], c);
+  loopConnections(c, 'Una por una', 'Descargar', 'Analizar');
+  chain(['Analizar', 'Segunda pasada', 'Esperar 30 s', 'Una por una (2.ª pasada)'], c);
+  loopConnections(c, 'Una por una (2.ª pasada)', 'Descargar (2.ª pasada)', 'Analizar (2.ª pasada)');
+  chain(['Analizar (2.ª pasada)', ['Unir pasadas', 1]], c);
   chain(['Analizar', 'Unir pasadas'], c);
   return c;
 };
@@ -173,7 +192,7 @@ const validation = workflow('EnsoValidacion01', 'ENSO · Validación de fuentes 
   code('Informe', 'informe', {}),
   node('Informe CSV', 'n8n-nodes-base.convertToFile', 1.1, { options: { fileName: 'validacion-fuentes-n8n.csv' } }),
 ], (() => {
-  const c = chain(['Ejecutar a mano', 'Configuración', 'Fuentes', 'Descargar']);
+  const c = chain(['Ejecutar a mano', 'Configuración', 'Fuentes', 'Una por una']);
   PASS_CONNECTIONS(c);
   chain(['Unir pasadas', 'Informe', 'Informe CSV'], c);
   return c;
@@ -200,8 +219,8 @@ const collector = workflow('EnsoRecolector01', 'ENSO · Recolector n8n (fuentes 
     ['max_file_mb', 8, 'number'],
     ...CONFIG_COMMON,
   ]),
-  github('Leer registro', 'GET', contents("{{ $('Configuración').first().json.registry_path }}", 'registry_ref'), null, { full: true, text: true, headers: RAW, extra: { onError: 'continueRegularOutput' } }),
-  github('Leer copia anterior', 'GET', contents('index.json', 'data_branch'), null, { full: true, text: true, headers: RAW, extra: { onError: 'continueRegularOutput', executeOnce: true } }),
+  github('Leer registro', 'GET', contents("{{ $('Configuración').first().json.registry_path }}", 'registry_ref'), null, { full: true, text: true, headers: RAW, retry: true, extra: { onError: 'continueRegularOutput' } }),
+  github('Leer copia anterior', 'GET', contents('index.json', 'data_branch'), null, { full: true, text: true, headers: RAW, retry: true, extra: { onError: 'continueRegularOutput', executeOnce: true } }),
   code('Fuentes', 'fuentes', { REGISTRY: JSON.stringify(registry) }),
   ...passes('Fuentes'),
   code('Preparar copia', 'preparar', {}),
@@ -217,7 +236,7 @@ const collector = workflow('EnsoRecolector01', 'ENSO · Recolector n8n (fuentes 
   github('Avisar al sitio', 'POST', `=${GH}/dispatches`, "={{ JSON.stringify({ event_type: 'enso-refresh', client_payload: { from: 'n8n' } }) }}",
     { extra: { disabled: true, notes: 'Opcional: pide la actualización del sitio en el momento. Activar solo si el token tiene permiso para repository_dispatch.' } }),
 ], (() => {
-  const c = chain(['Cada día 22:50 (Lima)', 'Configuración', 'Leer registro', 'Leer copia anterior', 'Fuentes', 'Descargar']);
+  const c = chain(['Cada día 22:50 (Lima)', 'Configuración', 'Leer registro', 'Leer copia anterior', 'Fuentes', 'Una por una']);
   chain(['Ejecutar a mano', 'Configuración'], c);
   PASS_CONNECTIONS(c);
   chain(['Unir pasadas', 'Preparar copia', 'Crear blobs', 'Armar árbol', 'Crear árbol', 'Preparar commit', 'Crear commit', 'Leer rama', 'Preparar rama', 'Publicar', 'Resumen', 'Avisar al sitio'], c);

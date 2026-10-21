@@ -44,6 +44,16 @@ ALERTS_MAX = 60
 ALERTS_DAYS = 7
 
 
+def _geo_brief(g: Optional[dict]) -> Optional[dict]:
+    """Lo que el sitio necesita de la ubicación de un aviso: lugares con su confianza y cómo se obtuvieron."""
+    if not g:
+        return None
+    keep = ("code", "level", "name", "department", "confidence", "method")
+    return {"scope": g.get("scope"), "confidence": g.get("confidence"), "method": g.get("method"),
+            "places": [{k: p[k] for k in keep if k in p} for p in g.get("places") or []],
+            "reviewed": bool(g.get("review"))}
+
+
 def alerts(news_items: list[dict], now: datetime) -> list[dict]:
     """Lo último de las fuentes oficiales de peligros (INDECI, SENAMHI, IGP, DHN, USGS…), sin agrupar.
 
@@ -73,7 +83,7 @@ def alerts(news_items: list[dict], now: datetime) -> list[dict]:
                     "institution": f.name.split("·")[0].strip(), "kind": f.name.split("·", 1)[-1].strip(),
                     "title": i["title"], "text": i.get("summary") or "", "date": when, "url": i["link"],
                     "archive": news_page(i), "hazards": hz[:3],
-                    "where": where, "stale": False})
+                    "where": where, "geo": _geo_brief(i.get("geo")), "stale": False})
         if len(out) >= ALERTS_MAX:
             break
     return out

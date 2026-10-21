@@ -42,6 +42,12 @@ HEADERS = """\
 
 /data/archive/*
   Content-Security-Policy: sandbox; default-src 'none'; style-src 'unsafe-inline'
+
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+  Referrer-Policy: no-referrer
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'
 """
 
 

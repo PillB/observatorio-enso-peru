@@ -41,7 +41,8 @@ pip install -r requirements-dev.txt
 # Publicación sin red, a partir de las respuestas capturadas
 python -m enso.observatory --out ../public/data --previous '' --fixtures tests/fixtures/sources
 
-# Publicación con datos en vivo
+# Publicación con datos en vivo (los 40 feeds que robots.txt no permite y se
+# leen una vez al día no se piden: solo los lee la corrida diaria, con --reader-state)
 python -m enso.observatory --out ../public/data
 
 # Servir el sitio
@@ -65,6 +66,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Operación diaria, incidencias y recuperación](docs/operaciones.md)
 - [Recolector desde el Perú (mini servidor)](docs/servidor-peru.md): kit descargable, instalación en Windows y macOS, verificación y alarmas
 - [Publicar en Cloudflare Pages sin enlace al repositorio](docs/despliegue-cloudflare.md)
+- [Georreferenciación y consola de lugares](docs/georreferenciacion.md): dónde ocurre cada noticia, con qué confianza, y cómo corregirlo
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)
