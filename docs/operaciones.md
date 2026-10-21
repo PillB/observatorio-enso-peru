@@ -7,12 +7,38 @@
 | `observatory.yml` | Todos los días a las 04:37 UTC (23:37 en Lima), al fusionar en `main`, a pedido del vigilante o a mano | Pruebas → pipeline con datos en vivo → recorridos de navegador → despliegue en Pages → verificación del sitio en vivo → sincronización de incidencias → archivo de respuestas originales |
 | `watchdog.yml` | Cada 6 horas (minuto 17) | Lee el sitio en vivo; si la publicación tiene más de 30 horas, reactiva y relanza el flujo diario y abre un issue |
 | `ci.yml` | En cada PR y en ramas `claude/**` | Pruebas, publicación sin red con las respuestas capturadas y recorridos de navegador |
-| `capture-fixtures.yml` | A mano o al cambiar la herramienta de captura | Actualiza las respuestas reales usadas en el backtesting |
+| `probe-sources.yml` | Lunes 09:17 UTC y a mano | Mide desde EE. UU. qué fuentes del registro responden, suma lo que bajó el recolector del Perú y regenera `registry/sources.json` (en `main`; en otras ramas, en `bot/registry/<rama>`) |
+| `capture-fixtures.yml` | A mano o al cambiar la herramienta de captura | Captura las respuestas reales usadas en el backtesting, en la rama `bot/fixtures/<rama>` y como artefacto |
+| `probe-feeds.yml` | A mano o al cambiar el sondeo o la lista de feeds candidatos | Sondea feeds candidatos; informe en `bot/news-probe/<rama>` y como artefacto |
+| `device-screens.yml` | A mano o al cambiar la herramienta de capturas | Capturas de Noticias en los dispositivos de referencia, en `bot/screens/<rama>` y como artefacto |
+
+Los flujos de desarrollo nunca escriben en la rama de trabajo: sus commits
+dejaban las comprobaciones del PR en «action_required» y llenaban el diff.
+Para traer un resultado: `git fetch origin bot/fixtures/<rama> && git
+checkout FETCH_HEAD -- python/tests/fixtures/sources` (igual con las otras
+ramas `bot/...`), revisar y hacer commit.
 
 Si las pruebas, el pipeline o los recorridos fallan, **no se despliega** y
-el sitio sigue mostrando la publicación anterior. GitHub desactiva los
-flujos programados tras 60 días sin actividad en el repositorio; el
-trabajo `keepalive` y el vigilante los reactivan.
+el sitio sigue mostrando la publicación anterior.
+
+### Que GitHub no apague los flujos programados
+
+GitHub desactiva los flujos programados de un repositorio público tras 60
+días sin actividad, y un flujo desactivado no corre ni a mano ni por
+`repository_dispatch`. Así le pasó en `main` a la versión
+anterior (sin corridas desde el 2026-10-08). Defensas:
+
+- El trabajo `keepalive` del flujo diario reactiva por API `observatory.yml`,
+  `watchdog.yml` y `probe-sources.yml` en cada corrida programada; reactivar
+  reinicia el plazo.
+- El vigilante (cada 6 horas) reactiva los mismos tres, incluido él mismo.
+  Basta con que uno de los dos siga corriendo para que el otro vuelva.
+- Fuera de GitHub, el recolector del Perú deja de ver la actualización de
+  las 23:37 y el sitio envejece: el vigilante externo (n8n, si está activo)
+  revisa `data/dashboard.json` y avisa si la publicación tiene más de 30 horas.
+- Revisión manual mensual: en *Actions*, ningún flujo debe aparecer como
+  *disabled*; si alguno lo está, *Enable workflow* y luego *Run workflow*
+  en `observatory.yml`.
 
 ## Registro de incidencias
 

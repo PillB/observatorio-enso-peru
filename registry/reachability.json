@@ -1,0 +1,1986 @@
+{
+ "schema": "enso-reachability/1",
+ "updated_at": "2026-10-21T01:06:51+00:00",
+ "urls": {
+  "http://www.pascolibre.com/feeds/posts/default?alt=rss": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://ahora.com.pe/feed.xml": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://ahora.com.pe/rss.xml": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://altavoz.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://altavoz.pe/temas/huancavelica/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/?feed=rss2": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "la respuesta es una página HTML, no un feed"
+   }
+  },
+  "https://andina.pe/agencia/rss": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/arcio/rss/": {
+   "us": {
+    "class": "http-5xx",
+    "http": 500,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/feed": {
+   "us": {
+    "class": "http-5xx",
+    "http": 500,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/feed.xml": {
+   "us": {
+    "class": "http-5xx",
+    "http": 500,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/feed/": {
+   "us": {
+    "class": "http-5xx",
+    "http": 500,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/feeds/posts/default?alt=rss": {
+   "us": {
+    "class": "http-5xx",
+    "http": 500,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/index.xml": {
+   "us": {
+    "class": "http-5xx",
+    "http": 500,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/noticias/feed/": {
+   "us": {
+    "class": "http-5xx",
+    "http": 500,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/rss": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/rss.xml": {
+   "us": {
+    "class": "http-5xx",
+    "http": 500,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andina.pe/rss/": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://andinaradio.net/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://canaln.pe/feed": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://chachapoyasonline.com/sitemap-news.xml": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "raíz XML inesperada: {http://www.sitemaps.org/schemas/sitemap/0.9}urlset"
+   }
+  },
+  "https://convoca.pe/rss.xml": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://cuscopost.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diarioamanecer.net/feed/": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diariocorreo.pe/arc/outboundfeeds/rss/category/edicion/?outputType=xml": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diariocorreo.pe/arcio/rss/category/edicion/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diariodechimbote.com/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diariodelcusco.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diarioimpetu.com.pe/feed/": {
+   "us": {
+    "class": "dns",
+    "http": null,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "ConnectError: [Errno -2] Name or service not known"
+   }
+  },
+  "https://diariolaregion.com/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diariosinfronteras.com.pe/category/arequipa/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diariosinfronteras.com.pe/category/moquegua/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diariosinfronteras.com.pe/category/puno/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diariosinfronteras.com.pe/category/tacna/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://diariovoces.com.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://elbuho.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://elcomercio.pe/arc/outboundfeeds/rss/category/peru/?outputType=xml": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://elcomercio.pe/arcio/rss/category/peru/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://elperuano.pe/rss": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://eltiempo.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://enfen.imarpe.gob.pe/feed/": {
+   "us": {
+    "class": "dns",
+    "http": null,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "ConnectError: [Errno -3] Temporary failure in name resolution"
+   }
+  },
+  "https://enfen.imarpe.gob.pe/feed/?post_type=wpdmpro": {
+   "us": {
+    "class": "dns",
+    "http": null,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "ConnectError: [Errno -3] Temporary failure in name resolution"
+   }
+  },
+  "https://es.mongabay.com/feed/?location=peru": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://etphuacho.com/feed/": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://exitosanoticias.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://huaralenlinea.com/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://jornada.com.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://lalupa.pe/feed/": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://laopinion.pe/feed/": {
+   "us": {
+    "class": "dns",
+    "http": null,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "ConnectError: [Errno -2] Name or service not known"
+   }
+  },
+  "https://losandes.com.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://nacionalcallaotv.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28%22La%20Libertad%22%20OR%20Trujillo%20OR%20Pacasmayo%20OR%20Chep%C3%A9n%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28%22Lima%20Metropolitana%22%20OR%20Huaura%20OR%20Huacho%20OR%20Ca%C3%B1ete%20OR%20Huaral%20OR%20Barranca%20OR%20Chosica%20OR%20Huarochir%C3%AD%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28%22Madre%20de%20Dios%22%20OR%20%22Puerto%20Maldonado%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28%22regi%C3%B3n%20Ica%22%20OR%20Ica%20OR%20Pisco%20OR%20Chincha%20OR%20Nasca%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28%22regi%C3%B3n%20San%20Mart%C3%ADn%22%20OR%20Tarapoto%20OR%20Moyobamba%20OR%20Tocache%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28%C3%81ncash%20OR%20Ancash%20OR%20Huaraz%20OR%20Chimbote%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Apur%C3%ADmac%20OR%20Abancay%20OR%20Andahuaylas%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Arequipa%20OR%20Caman%C3%A1%20OR%20Caylloma%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Ayacucho%20OR%20Huamanga%20OR%20Huanta%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Cajamarca%20OR%20Ja%C3%A9n%20OR%20Chota%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Callao%20OR%20Ventanilla%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Chachapoyas%20OR%20Bagua%20OR%20Utcubamba%20OR%20%22regi%C3%B3n%20Amazonas%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Cusco%20OR%20Quillabamba%20OR%20%22La%20Convenci%C3%B3n%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Hu%C3%A1nuco%20OR%20%22Tingo%20Mar%C3%ADa%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Huancavelica%20OR%20Tayacaja%20OR%20Angaraes%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Jun%C3%ADn%20OR%20Huancayo%20OR%20Satipo%20OR%20Chanchamayo%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Lambayeque%20OR%20Chiclayo%20OR%20Ferre%C3%B1afe%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Loreto%20OR%20Iquitos%20OR%20Yurimaguas%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Moquegua%20OR%20Ilo%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Pasco%20OR%20Oxapampa%20OR%20%22Cerro%20de%20Pasco%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Piura%20OR%20Sullana%20OR%20Talara%20OR%20Chulucanas%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Puno%20OR%20Juliaca%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Tacna%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Tumbes%20OR%20Zarumilla%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28Ucayali%20OR%20Pucallpa%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=%28huaico%20OR%20huaicos%20OR%20%22activaci%C3%B3n%20de%20quebrada%22%20OR%20inundaci%C3%B3n%20OR%20desborde%29%20Per%C3%BA%20when%3A3d&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Achachapoyasonline.com&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Achaski.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Adiario-hoy.com.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Adiarioamanecer.net&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Adiarioimpetu.com.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "empty",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "sin entradas"
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Aelperuano.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Aesferaradio.net&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Alaindustria.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "empty",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "sin entradas"
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Alaopinion.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "empty",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "sin entradas"
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Aojo-publico.com&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Apanamericana.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Apanoramacajamarquino.com&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "empty",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "sin entradas"
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Aprimicia.com.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "empty",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "sin entradas"
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Aradioanqara.com&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Aradionacional.gob.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Aradiotitanka.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Atumbesdemiercoles.com.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://news.google.com/rss/search?q=site%3Atvperu.gob.pe/noticias&hl=es-419&gl=PE&ceid=PE:es-419": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://noticias.madrededios.com/rss/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://ojo-publico.com/feed": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://ojo-publico.com/rss.xml": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://pachamamaradio.org/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://panamericana.pe/rss": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://panoramacajamarquino.com/feed/": {
+   "us": {
+    "class": "timeout",
+    "http": null,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "ConnectTimeout: timed out"
+   }
+  },
+  "https://pregon.com.pe/index.php/regionales?format=feed&type=rss": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://prensachalaca.com/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://prensaregional.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://primicia.com.pe/feed/": {
+   "us": {
+    "class": "dns",
+    "http": null,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "ConnectError: [Errno -2] Name or service not known"
+   }
+  },
+  "https://radioandahuaylas.com/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://radiohuancayo.com.pe/wp54/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://radioondaazul.com/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://radiorsd.pe/rss.xml": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://radiosantarosa.com.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://radiouno.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://radioyaravi.org.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://reinadelaselva.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/lima/actualidad": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/actualidad": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/amazonas": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/ancash": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/apurimac": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/arequipa": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/ayacucho": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/cajamarca": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/callao": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/cusco": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/huancavelica": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/huanuco": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/ica": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/junin": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/la-libertad": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/lambayeque": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/loreto": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/madre-de-dios": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/moquegua": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/pasco": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/piura": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/puno": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/san-martin": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/tacna": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/tumbes": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://rpp.pe/feed/peru/ucayali": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://sinrodeoscajamarca.com/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://soltvperu.com/category/regiones/ancash-noticias/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://soltvperu.com/category/regiones/cajamarca-noticias/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://soltvperu.com/category/regiones/la-libertad-noticias/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://soltvperu.com/category/regiones/lambayeque-noticias/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://soltvperu.com/category/regiones/piura-noticias/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://tudiariohuanuco.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://tumbesdemiercoles.com.pe/feed/": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://tumbesdemiercoles.com.pe/rss.xml": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://willax.pe/feed/": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.actualidadambiental.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.atv.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.cutivalu.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/?feed=rss2": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "la respuesta es una página HTML, no un feed"
+   }
+  },
+  "https://www.dhn.mil.pe/arcio/rss/": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/feed": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/feed.xml": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/feed/": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/feeds/posts/default?alt=rss": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/index.xml": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/noticias/feed/": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/rss": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/rss.xml": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.dhn.mil.pe/rss/": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.diario-hoy.com.pe/feed/": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.diariodechimbote.com/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.esferaradio.net/rss": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.exitosanoticias.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.exitosanoticias.pe/rss": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gacetaucayalina.com/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=munlima&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=ana&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=cenepred&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=igp&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=midagri&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=minam&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=munlima&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "http-4xx",
+    "http": 404,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=pcm&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=presidencia&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionancash&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionapurimac&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionarequipa&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionayacucho&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncajamarca&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncallao&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncusco&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuancavelica&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuanuco&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionica&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionjunin&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlima&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionloreto&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmadrededios&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpasco&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpuno&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionsanmartin&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontacna&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontumbes&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionucayali&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=senamhi&sheet=1&sort_by=recent": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=huaico": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.imarpe.gob.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.inforegion.pe/feed/": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.laindustria.pe/feed/": {
+   "us": {
+    "class": "tls",
+    "http": null,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.laindustria.pe'. (_ssl.c:1010)"
+   }
+  },
+  "https://www.laindustria.pe/rss": {
+   "us": {
+    "class": "tls",
+    "http": null,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.laindustria.pe'. (_ssl.c:1010)"
+   }
+  },
+  "https://www.noticiasser.pe/feed": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.noticiasser.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.noticiasser.pe/rss.xml": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": "la respuesta es una página HTML, no un feed"
+   }
+  },
+  "https://www.proycontra.com.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.proycontra.com.pe/rss.xml": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.radionacional.gob.pe/feed": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.radionacional.gob.pe/rss.xml": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.radiosantarosa.com.pe/feed/": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.servindi.org/rss.xml": {
+   "us": {
+    "class": "ok",
+    "http": 200,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.tvperu.gob.pe/feed": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  },
+  "https://www.tvperu.gob.pe/rss.xml": {
+   "us": {
+    "class": "http-403",
+    "http": 403,
+    "at": "2026-10-21T01:06:51+00:00",
+    "vantage": "github-actions",
+    "detail": ""
+   }
+  }
+ }
+}

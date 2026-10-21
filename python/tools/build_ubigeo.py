@@ -14,6 +14,7 @@ import argparse
 import csv
 import io
 import json
+import re
 from pathlib import Path
 
 import httpx
@@ -46,9 +47,52 @@ def _norm(s: str) -> str:
     return "".join(c for c in s if not unicodedata.combining(c))
 
 
-def display(name: str, capital: str) -> str:
-    """Usa la capital (que trae tildes) cuando coincide con el nombre."""
-    return capital if capital and _norm(capital) == _norm(name) else title(name)
+#: Palabras que ninguna capital trae con tilde (apellidos de próceres, ríos).
+ACCENT_SUPPLEMENT = {
+    "convencion": "convención", "sanchez": "sánchez", "carrion": "carrión", "roman": "román", "purus": "purús",
+    "maranon": "marañón", "pierola": "piérola", "valcarcel": "valcárcel", "galvez": "gálvez", "belaunde": "belaúnde",
+    "huanuco": "huánuco", "junin": "junín", "rimac": "rímac", "apurimac": "apurímac", "peru": "perú", "simon": "simón",
+    "bolivar": "bolívar", "mendez": "méndez", "ramirez": "ramírez", "perez": "pérez", "gonzalez": "gonzález",
+    "lopez": "lópez", "jimenez": "jiménez", "fernandez": "fernández", "rodriguez": "rodríguez", "martinez": "martínez",
+}
+
+
+def accent_map(capitals: list[str]) -> dict[str, str]:
+    """Forma con tildes de cada palabra, tomada de las capitales (que la fuente sí trae con tildes):
+    «MORROPON» → «Morropón», «HUAROCHIRI» → «Huarochirí», «MARTIN» → «Martín»."""
+    from collections import Counter
+
+    forms: dict[str, Counter] = {}
+    for cap in capitals:
+        for w in re.findall(r"[^\W\d_]+", cap or ""):
+            forms.setdefault(_norm(w), Counter())[w.lower()] += 1
+    out = {}
+    for k, c in forms.items():
+        accented = [(n, f) for f, n in c.items() if _norm(f) == k and f != k]
+        plain = c.get(k, 0)
+        if accented:
+            n, f = max(accented)
+            if n >= plain:
+                out[k] = f
+    for k, f in ACCENT_SUPPLEMENT.items():
+        out.setdefault(k, f)
+    return out
+
+
+def display(name: str, capital: str, accents: dict[str, str] | None = None) -> str:
+    """Usa la capital (que trae tildes) cuando coincide con el nombre; si no, pone las tildes palabra por palabra."""
+    if capital and _norm(capital) == _norm(name):
+        return capital
+    out = title(name)
+    if accents:
+        out = re.sub(r"[^\W\d_]+", lambda m: _keep_case(m.group(0), accents.get(_norm(m.group(0)))), out)
+    return out
+
+
+def _keep_case(word: str, accented: str | None) -> str:
+    if not accented:
+        return word
+    return accented[:1].upper() + accented[1:] if word[:1].isupper() else accented
 
 
 def _fill_codes(rows: list[dict], provs: list[dict]) -> None:
@@ -69,13 +113,14 @@ def _fill_codes(rows: list[dict], provs: list[dict]) -> None:
 def build(src: dict[str, str]) -> dict:
     rows = {k: list(csv.DictReader(io.StringIO(v))) for k, v in src.items()}
     _fill_codes(rows["dist"], rows["prov"])
+    accents = accent_map([r["capital"] for k in ("dep", "prov", "dist") for r in rows[k]])
     deps = [{"ubigeo": r["inei"][:2], "name": DEP_NAMES[r["departamento"]], "capital": r["capital"],
              "iso": r["iso_3166_2"], "lat": round(float(r["latitude"]), 4), "lon": round(float(r["longitude"]), 4)}
             for r in rows["dep"]]
-    provs = [{"ubigeo": r["inei"][:4], "name": display(r["provincia"], r["capital"]), "capital": r["capital"],
+    provs = [{"ubigeo": r["inei"][:4], "name": display(r["provincia"], r["capital"], accents), "capital": r["capital"],
               "lat": round(float(r["latitude"]), 4), "lon": round(float(r["longitude"]), 4)}
              for r in rows["prov"]]
-    dists = [{"ubigeo": r["inei"], "name": display(r["distrito"], r["capital"]), "capital": r["capital"],
+    dists = [{"ubigeo": r["inei"], "name": display(r["distrito"], r["capital"], accents), "capital": r["capital"],
               "lat": round(float(r["latitude"]), 4) if r["latitude"] not in ("", "NA") else None,
               "lon": round(float(r["longitude"]), 4) if r["longitude"] not in ("", "NA") else None}
              for r in rows["dist"]]

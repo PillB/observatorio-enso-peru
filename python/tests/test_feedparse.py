@@ -202,3 +202,105 @@ def test_gobpe_listing_adapter():
     assert p.items == sorted(p.items, key=lambda i: i["published"], reverse=True)
     with pytest.raises(F.FeedError):
         F.parse(b"<html><body>Mantenimiento gob.pe</body></html>", adapter="gobpe", now=NOW)
+
+
+# --- Casos de la revisión del lector ------------------------------------------
+
+def test_utf8_feed_declared_latin1_is_read_as_utf8():
+    body = rss(one(title="Huánuco: crecida del río")).replace(b'encoding="UTF-8"', b'encoding="ISO-8859-1"')
+    p = F.parse(body, now=NOW)
+    assert p.items[0]["title"] == "Huánuco: crecida del río" and any("UTF-8" in r for r in p.repairs)
+
+
+def test_cp1252_declared_latin1_keeps_curly_quotes():
+    body = rss(one(title="“Lluvias” en Piura — reporte")).decode().replace('encoding="UTF-8"', 'encoding="ISO-8859-1"')
+    assert F.parse(body.encode("cp1252"), now=NOW).items[0]["title"] == "“Lluvias” en Piura — reporte"
+
+
+def test_one_stray_cp1252_byte_does_not_garble_the_rest():
+    body = rss(one(title="Huánuco: crecida del río", link="https://d.pe/1"),
+               one(title="Piura: lluvias X hoy", link="https://d.pe/2")).replace(b"X", b"\x96")
+    titles = [i["title"] for i in F.parse(body, now=NOW).items]
+    assert titles == ["Huánuco: crecida del río", "Piura: lluvias – hoy"]
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("9999-12-31T23:59:59", None),
+    ("Fri, 31 Dec 9999 23:59:59 -0500", None),
+    ("0001-01-01T00:00:00+01:00", None),
+    ("Tue, 20 Oct 2026 10:00:00 -0000", "2026-10-20T10:00:00+00:00"),
+    ("Tue, 20 Oct 2026 10:00:00 GMT", "2026-10-20T10:00:00+00:00"),
+    ("Sun, 31 Dec 2026 23:00:00 +0000", None),             # dos meses en el futuro
+    ("20 de octubre de 2026 12:30 a.m.", "2026-10-20T05:30:00+00:00"),
+    ("Mié., 21 Oct. 2026 08:00:00 -0500", "2026-10-21T13:00:00+00:00"),
+    ("21 sept. 2026 08:00:00 -0500", "2026-09-21T13:00:00+00:00"),
+    ("Oct 20, 2026 3:00 PM", "2026-10-20T20:00:00+00:00"),
+    ("Tue, 20 Oct 2026 10:00 AM -0500", "2026-10-20T15:00:00+00:00"),
+    ("20 Oct 2026", "2026-10-20T05:00:00+00:00"),
+    ("Oct 20, 2026", "2026-10-20T05:00:00+00:00"),
+    ("20 octubre 2026", "2026-10-20T05:00:00+00:00"),
+])
+def test_dates_from_review(text, expected):
+    assert F.parse_date(text, F.LIMA, NOW) == expected
+
+
+def test_entity_declaration_rejected_in_utf16_and_after_long_prolog():
+    doc = ('<?xml version="1.0" encoding="UTF-16"?><!DOCTYPE rss [<!ENTITY a "EXPANDIDA">]>'
+           '<rss><channel><item><title>&a;</title><link>https://d.pe/1</link></item></channel></rss>')
+    with pytest.raises(F.FeedError, match="entidades"):
+        F.parse(doc.encode("utf-16"), now=NOW)
+    padded = b'<?xml version="1.0"?><!--' + b"x" * 30000 + b'--><!DOCTYPE rss [<!ENTITY a "b">]><rss></rss>'
+    with pytest.raises(F.FeedError, match="entidades"):
+        F.parse(padded, now=NOW)
+
+
+def test_salvage_ignores_item_tags_inside_cdata_and_keeps_channel_link():
+    body = ("<rss version=\"2.0\"><channel><title>Diario</title><link>https://diario.pe/</link>"
+            "<description><![CDATA[usa <item> para]]></description>"
+            "<item><title>Uno & dos</title><link>noticias/1</link></item>"
+            "<item><title>Dos</title><link>/n/2</link><description><![CDATA[a </item> b]]></description></item>"
+            "<item><title>Tres</title><link>https://diario.pe/3</link></item>").encode()
+    p = F.parse(body, "https://feeds.feedburner.com/diario", now=NOW)
+    assert [i["title"] for i in p.items] == ["Uno & dos", "Dos", "Tres"]
+    assert p.items[0]["link"] == "https://diario.pe/noticias/1" and p.title == "Diario"
+
+
+def test_salvaged_rdf_stays_rss1():
+    body = (b'<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/">'
+            b"<channel><title>R</title><link>https://r.pe/</link></channel>"
+            b"<item><title>Oleaje</title><link>/1</link></item><item><title>Roto <b></title></item>")
+    p = F.parse(body, "https://feeds.r.pe/rdf", now=NOW)
+    assert p.format == "rss1" and p.items[0]["link"] == "https://r.pe/1"
+
+
+def test_atom_with_literal_rss_close_in_cdata_survives_repair():
+    atom = ('<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom"><title>A</title>'
+            '<entry><title>Agua & luz</title><link href="https://a.pe/1"/></entry>'
+            '<entry><title>Dos</title><link href="https://a.pe/2"/><content><![CDATA[ejemplo </rss> fin]]></content></entry>'
+            "</feed>").encode()
+    assert [i["title"] for i in F.parse(atom, now=NOW).items] == ["Agua & luz", "Dos"]
+
+
+def test_illegal_numeric_references_are_removed():
+    p = F.parse(rss(one(title="Friaje&#11; en Puno")), now=NOW)
+    assert p.items[0]["title"] == "Friaje en Puno" and "caracteres de control" in p.repairs
+
+
+@pytest.mark.parametrize("tags,expected", [(5, []), ("Tacna", []), (["Tacna", None, {"x": 1}], ["Tacna"])])
+def test_jsonfeed_tags_of_any_type(tags, expected):
+    import json as _json
+
+    body = _json.dumps({"items": [{"url": "https://j.pe/1", "title": "x", "tags": tags}]}).encode()
+    assert F.parse(body, now=NOW).items[0]["categories"] == expected
+
+
+def test_deeply_nested_json_is_a_feed_error():
+    with pytest.raises(F.FeedError):
+        F.parse(b"[" * 100000, now=NOW)
+
+
+def test_wordpress_footer_is_dropped_from_summary():
+    s = ("<p>Lluvias en Cusco.</p><p>La entrada <a href='x'>Edición Impresa | Lunes</a> se publicó primero en "
+         "<a href='y'>El Diario del Cusco</a>.</p>")
+    item = ITEM.format(t="T", l="https://d.pe/1", d="", s=f"<![CDATA[{s}]]>")
+    assert F.parse(rss(item), now=NOW).items[0]["summary"] == "Lluvias en Cusco."

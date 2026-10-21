@@ -51,9 +51,18 @@ jobs:
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           git add -A docs/capturas
           git diff --cached --quiet && exit 0
+          # Nunca en la rama de trabajo: los commits del bot dejan las
+          # comprobaciones del PR en «action_required» y engordan el diff.
+          # Se publican en una rama aparte que se trae a mano cuando sirve:
+          #   git fetch origin bot/screens/$GITHUB_REF_NAME && git checkout FETCH_HEAD -- docs/capturas
           git commit -m "chore(docs): device screenshots of the news page"
-          for i in 1 2 3; do
-            git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
-            sleep $((i * 5))
-          done
-          exit 1
+          git push --force origin "HEAD:refs/heads/bot/screens/$GITHUB_REF_NAME"
+          echo "::notice::Resultado en la rama bot/screens/$GITHUB_REF_NAME"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: device-screens
+          path: |
+            docs/capturas
+          if-no-files-found: ignore
+          retention-days: 14
