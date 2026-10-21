@@ -14,6 +14,8 @@ import { mapView } from './map.js';
 import { Tour } from './tour.js';
 import { assistantView } from './assistant.js';
 import { ICON } from './icons.js';
+import * as AM from './alertmap.js';
+import { stats as abStats } from './ab.js';
 
 const DATA = 'data/';
 export const S = { dash: null, files: {}, pub: null, mismatch: [] };
@@ -619,7 +621,8 @@ const HAZARD_LABEL = { lluvias: 'Lluvias', inundacion: 'Inundaciones', huaico: '
 
 function newsParams() {
   const q = new URLSearchParams(location.hash.split('?')[1] || '');
-  return { tab: q.get('tab') || 'oficial', tipo: q.get('tipo') || '', dep: q.get('dep') || '', peligro: q.get('peligro') || '' };
+  return { tab: q.get('tab') || 'oficial', tipo: q.get('tipo') || '', dep: q.get('dep') || '', peligro: q.get('peligro') || '',
+    fase: q.get('fase') || '', nivel: q.get('nivel') || '', edad: q.get('edad') || '' };
 }
 
 function placeLabel(p, deps) {
@@ -650,6 +653,7 @@ function officialItem(it) {
   return html`<li class="feed-item">
     <div class="feed-meta"><span class="feed-inst">${it.institution}</span>${when ? html` · ${when}` : ''}${it.kind ? html` · <span class="muted">${it.kind}</span>` : ''}</div>
     <h3 class="feed-title">${it.url ? html`<a href="${safeUrl(it.url)}" rel="noopener" target="_blank">${it.title}</a>` : it.title}</h3>
+    ${it.group === 'alertas' ? html`<p class="feed-level">${AM.itemBadges(it)}</p>` : ''}
     ${feedValue(it)}
     ${it.text ? html`<p class="feed-text">${it.text}</p>` : ''}
     <div class="feed-tags">
@@ -711,6 +715,7 @@ VIEWS.noticias = {
     return html`
       <div class="page-head"><div class="eyebrow">Novedades</div><h1>Noticias y novedades</h1>
         <p>Lo último que publicó cada fuente oficial y las noticias sobre El Niño y sus impactos en el Perú y el mundo: autoridades, diarios, radios y medios regionales. Cuando varios medios cuentan lo mismo se agrupan en una sola entrada con el enlace a cada uno, y cada noticia se ubica en su departamento, provincia o distrito.</p></div>
+      <div id="alert-map" class="amap-slot"></div>
       <div class="seg" role="tablist" aria-label="Tipo de novedades" data-tour-id="news-tabs">${NEWS_TABS.map(([k, l]) => html`<button type="button" role="tab" data-tab="${k}" aria-selected="${String(k === cur)}" aria-pressed="${String(k === cur)}">${l}</button>`)}</div>
       <p id="news-live" class="visually-hidden" aria-live="polite"></p>
       <div id="news-body" class="news-body"><div class="skeleton"></div></div>
@@ -730,25 +735,40 @@ VIEWS.noticias = {
     const body = $('#news-body');
     const hasNews = Boolean(S.dash.news);
     const [feed, clusters, feeds] = await Promise.all([load('feed.json'), hasNews ? load('news/clusters.json') : null, hasNews ? load('news/feeds.json') : null]);
-    const deps = clusters?.departmentNames || {};
+    const deps = clusters?.departmentNames || AM.DEP_NAMES;
+    let cur = newsParams();
+    let map = null;
     const setUrl = (p) => history.replaceState(null, '', `#/noticias?${new URLSearchParams(Object.entries(p).filter(([, v]) => v)).toString()}`);
     const show = (p) => {
       // Parámetros de la URL validados: un valor desconocido no deja la lista vacía sin explicación.
       p = { ...p };
       if (!NEWS_TABS.some(([k]) => k === p.tab)) p.tab = 'oficial';
       if (!NEWS_KINDS.some(([k]) => k === p.tipo)) p.tipo = '';
-      if (p.tab !== 'peru' || !deps[p.dep]) p.dep = '';
+      if (p.tab === 'mundo' || !AM.DEP_NAMES[p.dep]) p.dep = '';
       if (p.peligro && p.peligro !== 'enso' && !HAZARD_LABEL[p.peligro]) p.peligro = '';
+      Object.assign(p, AM.readFilter(p));
+      cur = p;
+      map?.update();
       const { tab } = p;
       $$('[data-tab]').forEach((b) => { const on = b.dataset.tab === tab; b.setAttribute('aria-selected', String(on)); b.setAttribute('aria-pressed', String(on)); });
       if (tab === 'oficial') {
-        body.innerHTML = feed ? String(html`${feed.groups.map((g) => html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2>${alertSources(g)}<ul class="feed">${g.items.map(officialItem)}</ul></section>`)}`) : '<p class="card">No disponible en esta publicación.</p>';
+        const f = AM.readFilter(p);
+        const group = (g) => {
+          if (g.id !== 'alertas' || !AM.isFiltered(f)) return html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2>${alertSources(g)}<ul class="feed">${g.items.map(officialItem)}</ul></section>`;
+          const items = AM.filterItems(g.items, f);
+          return html`<section class="card" id="fg-alertas-list" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2>${alertSources(g)}
+            <p class="notice notice-info amap-filtered">${raw(ICON.pin)}<span>Se muestran <strong>${items.length}</strong> de ${g.items.length} avisos según el filtro del mapa. <button type="button" class="linkish" data-clear-map>Quitar filtros</button></span></p>
+            ${items.length ? html`<ul class="feed">${items.map(officialItem)}</ul>` : html`<p class="muted">Ningún aviso con este filtro.</p>`}</section>`;
+        };
+        body.innerHTML = feed ? String(html`${feed.groups.map(group)}`) : '<p class="card">No disponible en esta publicación.</p>';
+        $('[data-clear-map]', body)?.addEventListener('click', () => { const n = { ...p, dep: '', fase: '', nivel: '', edad: '' }; setUrl(n); show(n); });
+        $$('.feed a', body).forEach((a) => a.addEventListener('click', () => map?.markDetail()));
         return;
       }
       if (!clusters) { body.innerHTML = '<p class="card">Las noticias no están disponibles en esta publicación.</p>'; return; }
       const region = (clusters.clusters || []).filter((c) => c.region === tab);
       const byKind = (c) => !p.tipo || (c.kinds || ['diario']).some((k) => KIND_GROUP[k] === p.tipo);
-      const byDep = (c) => !p.dep || (c.departments || []).includes(p.dep);
+      const byDep = (c) => (!p.dep || (c.departments || []).includes(p.dep)) && (!p.edad || Date.now() - Date.parse(c.last || c.first) <= Number(p.edad) * 36e5);
       const hasHaz = (c, h) => (h === 'enso' ? c.relevance === 'enso' || (c.hazards || []).includes('enso') : (c.hazards || []).includes(h));
       const byHaz = (c) => !p.peligro || hasHaz(c, p.peligro);
       const list = region.filter((c) => byKind(c) && byDep(c) && byHaz(c));
@@ -778,10 +798,22 @@ VIEWS.noticias = {
     };
     $$('[data-tab]').forEach((b) => b.addEventListener('click', () => {
       const n = { ...newsParams(), tab: b.dataset.tab };
-      if (n.tab !== 'peru') n.dep = '';
+      if (n.tab === 'mundo') n.dep = '';
       setUrl(n);
       show(n);
     }));
+    if (feed) {
+      map = await AM.mountAlertMap($('#alert-map'), {
+        feed,
+        getFilter: () => cur,
+        onFilter: (partial) => {
+          const n = { ...cur, ...partial };
+          if (n.tab === 'mundo') n.tab = 'oficial';
+          setUrl(n);
+          show(n);
+        },
+      });
+    }
     show(newsParams());
     const box = $('#feeds-status .feeds-table');
     box.innerHTML = feeds ? String(html`<div class="table-wrap"><table><thead><tr><th scope="col">Feed</th><th scope="col">Estado</th><th scope="col">Entradas</th><th scope="col">Más reciente</th></tr></thead><tbody>
@@ -790,6 +822,24 @@ VIEWS.noticias = {
       <td>${f.items} (${f.relevant} sobre El Niño)</td><td>${f.latest ? F.fmtDate(f.latest.slice(0, 10)) : '—'}</td></tr>`)}</tbody></table></div>
       <p class="muted small">${feeds.history.items} notas guardadas desde ${feeds.history.since ? F.fmtDate(feeds.history.since.slice(0, 10)) : '—'}; ${feeds.history.added} nuevas en esta corrida.</p>
       ${feeds.carriedFrom ? html`<p class="muted small">Esta corrida no pudo leer los feeds: el estado y las noticias son los de la publicación del ${F.fmtDateTime(feeds.carriedFrom)}.</p>` : ''}`) : 'No disponible.';
+  },
+};
+
+// Resultados de las versiones del mapa de alertas (no está en el menú: es para el equipo).
+VIEWS.variantes = {
+  title: 'Versiones del mapa',
+  render: () => html`<div class="page-head"><div class="eyebrow">Analítica anónima</div><h1>Versiones del mapa de alertas</h1>
+    <p>Qué versión del mapa de Noticias ve la gente, cuál usa y cuál deja como predeterminada.</p></div>
+    <section class="card" aria-labelledby="ab-h"><div class="section-head"><h2 id="ab-h">Resultados</h2>
+      <div class="seg" role="group" aria-label="Periodo">${[['7', '7 días'], ['30', '30 días'], ['90', '90 días']].map(([k, l]) => html`<button type="button" data-days="${k}" aria-pressed="${String(k === '30')}">${l}</button>`)}</div></div>
+      <div id="ab-stats"><div class="skeleton"></div></div></section>`,
+  async after() {
+    const load = async (d) => {
+      $$('[data-days]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.days === d)));
+      $('#ab-stats').innerHTML = String(AM.statsHtml(await abStats(Number(d))));
+    };
+    $$('[data-days]').forEach((b) => b.addEventListener('click', () => load(b.dataset.days)));
+    await load('30');
   },
 };
 

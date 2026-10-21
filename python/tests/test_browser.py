@@ -487,3 +487,51 @@ def test_news_fits_every_reference_device(site, engine):
         checked += 1
     if not checked:
         pytest.skip(f"ningún dispositivo de referencia usa {name}")
+
+
+@pytest.mark.parametrize("variant", ["A", "B", "C", "D"])
+def test_alert_map_filters_the_news_and_remembers_the_version(site, browser, variant):
+    """Mapa de alertas sobre las noticias: cada versión se dibuja sin errores ni desbordes en un teléfono, un
+    departamento filtra los avisos (y queda en la URL), y la versión elegida se recuerda al volver."""
+    base, root = site
+    feed = json.loads((root / "data" / "feed.json").read_text(encoding="utf-8"))
+    alerts = next((g["items"] for g in feed["groups"] if g["id"] == "alertas"), [])
+    with_dep = [a for a in alerts if (a.get("geo") or {}).get("places")]
+    for w in (320, 1366):
+        ctx = browser.new_context(viewport={"width": w, "height": 900}, locale="es-PE")
+        ctx.add_init_script(f"if (!sessionStorage.getItem('t')) {{ sessionStorage.setItem('t', 1); localStorage.setItem('enso-mapa-version', JSON.stringify({{v: '{variant}', chosen: false, at: '2000-01-01'}})); }}")
+        pg = ctx.new_page()
+        errors = []
+        pg.on("pageerror", lambda e: errors.append(str(e)))
+        pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+        try:
+            pg.goto(f"{base}#/noticias")
+            expect(pg.locator(f".amap.amap-v{variant}")).to_be_visible()
+            expect(pg.locator("#amap-ver")).to_have_value(variant)
+            assert pg.locator(".amap-svg path.dep").count() == 25
+            overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            assert overflow <= 1, f"desbordamiento de {overflow}px a {w}px"
+            if with_dep and w == 1366:
+                dep = with_dep[0]["geo"]["places"][0]["code"][:2]
+                pg.locator(f'path.dep[data-dep="{dep}"]').focus()
+                expect(pg.locator(".amap-tip")).to_be_visible()
+                pg.keyboard.press("Enter")
+                expect(pg).to_have_url(re.compile(rf"dep={dep}"))
+                expect(pg.locator(".amap-filtered")).to_contain_text("según el filtro del mapa")
+                n = pg.locator("#fg-alertas-list .feed-item").count()
+                assert 1 <= n <= len(alerts)
+                pg.locator(".amap-filtered [data-clear-map]").click()
+                expect(pg.locator(".amap-filtered")).to_have_count(0)
+                pg.select_option("#amap-ver", "C" if variant != "C" else "A")
+                pg.reload()
+                expect(pg.locator("#amap-ver")).to_have_value("C" if variant != "C" else "A")
+            assert not errors, errors
+        finally:
+            ctx.close()
+
+
+def test_variant_results_view_without_backend(page, site):
+    """#/variantes en un sitio sin Functions (GitHub Pages, servidor local) dice que no hay datos, sin romperse."""
+    base, _ = site
+    page.goto(f"{base}#/variantes")
+    expect(page.locator("#ab-stats")).to_contain_text("No se pudo leer la analítica")
