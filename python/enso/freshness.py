@@ -131,21 +131,33 @@ def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed
     items["noaa"] = _official_item("noaa", official.get("noaa"), today, "Discusión diagnóstica de NOAA",
                                    "cpc-ensodisc")
     base = items["enfen"]
+    names = {"nino12": "Niño 1+2", "nino34": "Niño 3.4"}
+    unread = [names[r] for r in e.get("outlookUnreadRegions") or [] if r in names]
     if e.get("outlook"):
         items["enfen-outlook"] = {**base, "id": "enfen-outlook", "label": "Perspectiva del ENFEN (magnitud esperada)"}
+        if unread:
+            # Una región se leyó y la otra no: el panel no la da por completa.
+            items["enfen-outlook"]["note"] = (f"No se pudo leer la perspectiva de {' ni de '.join(unread)} (queda una "
+                                              "incidencia); se muestra solo la otra región.")
     else:
         items["enfen-outlook"] = {"id": "enfen-outlook", "label": "Perspectiva del ENFEN (magnitud esperada)",
                                   "state": "sin-dato", "source": "enfen-comunicados"}
-        if e.get("status") and not e.get("outlookUnread"):
-            # Un comunicado sin perspectiva de magnitud (p. ej. «No activo») no deja un dato faltante.
+        if e.get("outlookUnread"):
+            items["enfen-outlook"]["note"] = "El comunicado trae una perspectiva que no se pudo leer (queda una incidencia)."
+        elif e.get("statusCode") == "no_activo":
+            # Un comunicado «No activo» sin perspectiva de magnitud no deja un dato faltante.
             items["enfen-outlook"].update(optional=True, note="El comunicado vigente no trae una perspectiva de "
                                                               "magnitud por región.")
-        elif e.get("outlookUnread"):
-            items["enfen-outlook"]["note"] = "El comunicado trae una perspectiva que no se pudo leer (queda una incidencia)."
+        elif e.get("status"):
+            # En alerta o vigilancia el comunicado suele traerla: si no se leyó nada, falta (no «no aplica»).
+            items["enfen-outlook"]["note"] = ("No se encontró una perspectiva de magnitud por región en el comunicado "
+                                              "vigente.")
     inf = e.get("informe") or {}
     if inf.get("probabilities") or inf.get("icenProvisional") or inf.get("lastOfficial"):
         inf_state = "atrasado" if inf.get("carried") or (inf.get("communique") and e.get("number")
                                                           and inf["communique"] != e["number"]) else base["state"]
+        if base["state"] == "vencido":
+            inf_state = "vencido"  # el informe de un comunicado vencido tampoco es actual (el sitio lo oculta)
         withheld = sorted({i["message"] for i in inf.get("issues") or [] if i.get("severity") == "error"})
         common = {"kind": "informe", "observedKind": "date", "observed": inf.get("dataTo"),
                   "document": f"Informe técnico N° {inf.get('number')}", "expectedNext": e.get("nextIssue"),

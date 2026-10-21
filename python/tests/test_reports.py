@@ -338,7 +338,10 @@ def test_acquire_rejects_the_informe_of_another_communique(monkeypatch):
     late = {**LATEST, "id": "18-2026", "issued": "2026-10-16"}
     res = R.acquire_informe(late, _Fetcher({U18: b"%PDF-1.7 x"}), PREV, log, date(2026, 10, 31))
     assert res["carried"] and res["number"] == 17
-    assert any(c == "informe-other-communique" for _, c, _ in log.events)
+    # Lo esperable mientras la réplica se atrasa: solo una advertencia (la publicación no queda degradada) y el
+    # PDF de otro periodo no se archiva.
+    assert [(sev, c) for sev, c, _ in log.events] == [("warning", "informe-unread")]
+    assert "no es el del comunicado 18-2026" in log.events[0][2]
 
 
 def test_acquire_keeps_last_good_value_when_format_changes(monkeypatch):
@@ -374,7 +377,7 @@ def test_informe_periods_must_fit_its_date():
     pages, url = _pages(N18)
     ext = R.parse_informe([p.replace("de 2026 y", "de 2016 y").replace("de 2027", "de 2017") for p in pages], url)
     R.validate_informe(ext, today=date(2026, 10, 21))
-    assert any(i.code == "informe-period" for i in ext.issues) and not R.informe_summary(ext)["probabilities"]
+    assert any(i.code.startswith("informe-period") for i in ext.issues) and not R.informe_summary(ext)["probabilities"]
 
 
 def test_seasonal_label_variants_do_not_block_other_values():
@@ -503,3 +506,99 @@ def test_informe_without_a_known_url_is_read_from_the_upload_key(monkeypatch):
     R.acquire_informe({**LATEST, "informe_url": None}, _ManualFetcher({}, {}), None, _Log(), date(2026, 10, 21), needs=needs)
     assert needs.items["informe-18-2026"]["urls"] == [manual.key("enfen-informe", "18-2026")]
     assert needs.items["informe-18-2026"]["open"] == [R.INFORMES_PAGE, R.DHN_INFORMES_PAGE]
+
+
+def test_one_tables_period_does_not_withhold_the_provisional_icen():
+    pages, url = _pages(N18)
+    ext = R.parse_informe(pages, url)
+    t34 = next(t for t in ext.data["probabilities"] if t["region"] == "nino34")
+    t34["months"] = [m.replace("2026", "2016").replace("2027", "2017") for m in t34["months"]]
+    R.validate_informe(ext, today=date(2026, 10, 21))
+    s = R.informe_summary(ext)
+    assert s["icenProvisional"]["icen"] == 4.15
+    assert [t["region"] for t in s["probabilities"]] == ["nino12"]
+    assert {i.code for i in ext.issues} >= {"informe-period-probabilities"}
+
+
+# --- Segunda revisión de PR #11 ----------------------------------------------------------------------------
+
+
+def test_llm_error_never_publishes_the_secret_webhook_url(monkeypatch):
+    secret = "https://n8n.example/webhook/s3cr3t-token-path"
+    monkeypatch.setenv(R.LLM_URL_ENV, secret)
+    for reply in (lambda req: httpx.Response(500), lambda req: httpx.Response(403, text=f"denied {secret}")):
+        res = R.llm_extract(httpx.Client(transport=httpx.MockTransport(reply)), "enfen-informe", "t", url="u")
+        assert res["ok"] is False and res["transport"] and "HTTP" in res["error"]
+        assert "s3cr3t" not in json.dumps(res)
+
+    def boom(req):
+        raise httpx.ConnectError(f"no route to {secret}")
+
+    res = R.llm_extract(httpx.Client(transport=httpx.MockTransport(boom)), "enfen-informe", "t", url="u")
+    assert "s3cr3t" not in json.dumps(res) and res["error"] == "no se pudo conectar con el servicio"
+
+
+def test_llm_transport_failure_is_retried_next_run_and_a_reply_is_not(monkeypatch):
+    monkeypatch.setattr(R, "pdf_pages", lambda b: ["Documento sin tablas"])
+    replies = [{"ok": False, "transport": True, "error": "el servicio respondió HTTP 503"},
+               {"ok": True, "data": {"number": 18}}]
+    calls = []
+    monkeypatch.setattr(R, "llm_extract", lambda *a, **k: calls.append(1) or replies[len(calls) - 1])
+    day1 = R.acquire_informe(LATEST, _Fetcher({U18: b"%PDF-1.7 x"}), None, _Log(), date(2026, 10, 21))
+    day2 = R.acquire_informe(LATEST, _Fetcher({U18: b"%PDF-1.7 x"}), day1, _Log(), date(2026, 10, 22))
+    day3 = R.acquire_informe(LATEST, _Fetcher({U18: b"%PDF-1.7 x"}), day2, _Log(), date(2026, 10, 23))
+    assert len(calls) == 2 and day2["review"]["proposal"]["ok"] and day3["review"] == day2["review"]
+
+
+def test_a_later_download_failure_keeps_the_review(monkeypatch):
+    monkeypatch.setattr(R, "pdf_pages", lambda b: ["Documento sin tablas"])
+    calls = []
+    monkeypatch.setattr(R, "llm_extract", lambda *a, **k: calls.append(1) or {"ok": True, "data": {"number": 18}})
+    day1 = R.acquire_informe(LATEST, _Fetcher({U18: b"%PDF-1.7 x"}), PREV, _Log(), date(2026, 10, 21))
+    day2 = R.acquire_informe(LATEST, _Fetcher({}), day1, _Log(), date(2026, 10, 22))  # portal y DHN caídos
+    assert day2["review"] == day1["review"]
+    R.acquire_informe(LATEST, _Fetcher({U18: b"%PDF-1.7 x"}), day2, _Log(), date(2026, 10, 23))
+    assert len(calls) == 1
+
+
+def test_undated_dhn_pick_is_downloaded_and_validated_not_reused(monkeypatch):
+    """Comunicado 18 sin enlace, portal caído y la DHN todavía solo con el informe 17: no se publica el 17 como
+    el del 18, y cuando la DHN trae el 18 se lee."""
+    dhn17 = R.DHN_INFORME.format(n=17, year=2026)
+    prev = {"number": 17, "communique": "17-2026", "url": dhn17, "dataTo": "2026-09-25",
+            "icenProvisional": {"period": "2026-08", "icen": 3.97}}
+    latest = {**LATEST, "informe_url": None}
+    listing17 = f'<a href="/Archivos/oceanografia/enfen/informe-tecnico/17-2026.pdf">17</a>'.encode()
+    p17, _ = _pages(N17)
+    monkeypatch.setattr(R, "pdf_pages", lambda b: p17)
+    log = _Log()
+    res = R.acquire_informe(latest, _Fetcher({R.DHN_INFORMES_PAGE: listing17, dhn17: b"%PDF-1.7 17"}), prev, log,
+                            date(2026, 10, 21))
+    assert res["carried"] and res["communique"] == "17-2026"  # no se presenta como el del comunicado 18
+    assert [s for s, _, _ in log.events] == ["warning"]
+    p18, _ = _pages(N18)
+    monkeypatch.setattr(R, "pdf_pages", lambda b: p18)
+    dhn18 = R.DHN_INFORME.format(n=18, year=2026)
+    listing18 = listing17 + b'<a href="/Archivos/oceanografia/enfen/informe-tecnico/18-2026.pdf">18</a>'
+    res = R.acquire_informe(latest, _Fetcher({R.DHN_INFORMES_PAGE: listing18, dhn18: b"%PDF-1.7 18"}), res, _Log(),
+                            date(2026, 10, 22))
+    assert res["number"] == 18 and res["communique"] == "18-2026" and not res.get("carried")
+
+
+def test_outlook_subject_before_the_region():
+    t = "Para el Pacífico central, La Niña (región Niño 3.4 - Figura 1) se mantendría con una magnitud débil hasta enero de 2027."
+    assert [(o["region"], o["phase"]) for o in R.communique_outlook(t, "No activo")] == [("nino34", "fria")]
+    assert [(o["region"], o["phase"]) for o in R.communique_outlook(t, "Alerta de El Niño Costero")] == [("nino34", "fria")]
+
+
+def test_outlook_unread_detects_one_reworded_region_and_other_wordings():
+    from enso.feeds import peru
+
+    pdf = next((Path(__file__).parent / "fixtures" / "live-run" / "raw" / "enfen-comunicados").glob("*.pdf")).read_bytes()
+    text = peru.pdf_text(pdf)
+    assert R.outlook_unread(text, R.communique_outlook(text, "x")) == []
+    reworded = text.replace("magnitud de extraordinaria", "categoría extraordinaria").replace(
+        "magnitud extraordinaria", "categoría extraordinaria")
+    assert R.outlook_unread(reworded, R.communique_outlook(reworded, "x")) == ["nino12"]
+    assert R.outlook_unread("Se prevé un evento extraordinario en la región Niño 1+2.", []) == ["nino12"]
+    assert R.outlook_unread("Son más probables las condiciones cálidas moderadas en febrero.", []) == ["general"]

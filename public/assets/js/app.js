@@ -181,6 +181,7 @@ function freshWhy(it) {
   if (it.state === 'vencido') parts.push('Supera la antigüedad máxima de su fuente: no se usa como dato actual.');
   else if (it.state === 'atrasado') parts.push(it.carried ? 'Se conserva el último dato válido: la fuente no respondió.' : it.channel && it.channel.startsWith('archive') ? 'Se leyó de una copia del Internet Archive.' : 'La institución ya debió publicar uno más reciente.');
   if (it.expectedNext) parts.push(`Siguiente esperado: ${F.fmtDate(it.expectedNext)}${it.expectedNextEstimated ? ' (estimado)' : ''}.`);
+  if (it.note) parts.push(it.note); // p. ej. una tabla del informe que no pasó la validación
   return parts.join(' ');
 }
 
@@ -244,6 +245,7 @@ function probabilityCard() {
   const inf = S.dash.official?.enfen?.informe;
   const tables = inf?.probabilities || [];
   if (!tables.length) return '';
+  const withheld = ['nino12', 'nino34'].filter((r) => !tables.some((t) => t.region === r));
   if (informeExpired('enfen-probabilities')) {
     return html`<section class="card" aria-labelledby="pr-h" data-tour-id="enfen-probabilities"><h2 id="pr-h">Probabilidades del ENFEN por mes (%)</h2>
       <p>Dato actual no disponible: el último informe leído (N° ${inf.number}${inf.dataTo ? `, datos al ${F.fmtDate(inf.dataTo)}` : ''}) corresponde a un comunicado que ya venció.</p></section>`;
@@ -257,7 +259,7 @@ function probabilityCard() {
   };
   return html`<section class="card" aria-labelledby="pr-h" data-tour-id="enfen-probabilities"><div class="section-head"><h2 id="pr-h">Probabilidades del ENFEN por mes (%)</h2>${inf.carried ? html`<span class="tag tag-prelim">último informe leído</span>` : ''}</div>
     <p class="muted">Probabilidad que el ENFEN estima para cada categoría del ICEN (costa) y del RONI (Pacífico central). Informe técnico N° ${inf.number}${inf.dataTo ? `, con datos al ${F.fmtDate(inf.dataTo)}` : ''}.</p>
-    ${tables.map(card)}</section>`;
+    ${tables.map(card)}${withheld.length ? html`<p class="muted small">No se muestra la tabla de ${withheld.map((r) => REGION_ES[r] || r).join(' ni la de ')}: no pasó la validación de esta publicación.</p>` : ''}</section>`;
 }
 
 function icenProvisional() {

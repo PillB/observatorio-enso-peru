@@ -530,11 +530,11 @@ def validate_informe(ext: Extraction, *, icen_official: Optional[list[dict]] = N
     if d.get("dataTo"):
         ref = _mindex(d["dataTo"][:7])
         if tmp and not 0 <= ref - _mindex(tmp[0]["period"]) <= 2:
-            add(Issue("error", "informe-period", f"el ICEN temporal es de {tmp[0]['period']} y el informe tiene "
+            add(Issue("error", "informe-period-provisional", f"el ICEN temporal es de {tmp[0]['period']} y el informe tiene "
                       f"datos al {d['dataTo']}: el periodo no encaja"))
         for t in d.get("probabilities") or []:
             if not -1 <= _mindex(t["months"][0]) - ref <= 3:
-                add(Issue("error", "informe-period", f"las probabilidades de {t['region']} empiezan en "
+                add(Issue("error", "informe-period-probabilities", f"las probabilidades de {t['region']} empiezan en "
                           f"{t['months'][0]} y el informe tiene datos al {d['dataTo']}: el periodo no encaja"))
                 t["invalid"] = True
         # El número del informe no sigue al del comunicado (2025: comunicado 05 → informe N° 06): se compara la
@@ -568,10 +568,19 @@ def _mag(s: str) -> str:
     return {"extraordinario": "extraordinaria", "moderado": "moderada", "muy fuerte": "muy_fuerte"}.get(m, m)
 
 
-def _phase(clause: str, status: Optional[str]) -> str:
-    """Fase de la perspectiva según el sujeto de la oración (entre la región y «magnitud»), no según cualquier
-    mención de La Niña en el texto: el nombre del sistema de alerta («… El Niño costero y La Niña costera») y
-    las transiciones («para luego … condiciones frías») no cuentan. Sin sujeto, decide el estado de alerta."""
+def _phase(clause: str, status: Optional[str], before: str = "") -> str:
+    """Fase de la perspectiva según el sujeto de la oración (entre la región y «magnitud» o, si ahí no hay, justo
+    antes de la región: «La Niña (región Niño 3.4) se mantendría…»), no según cualquier mención de La Niña en el
+    texto: el nombre del sistema de alerta («… El Niño costero y La Niña costera») y las transiciones («para
+    luego … condiciones frías») no cuentan. Sin sujeto, decide el estado de alerta."""
+    for part in (clause, before):
+        got = _subject_phase(part)
+        if got:
+            return got
+    return "fria" if "la nina" in _plain(status or "") else "calida"
+
+
+def _subject_phase(clause: str) -> Optional[str]:
     c = _plain(clause)
     cold = re.search(r"la nina|\bfri[ao]s?\b|enfriamiento|anomalias negativas", c)
     warm = re.search(r"el nino|\bcalid[ao]s?\b|calentamiento|anomalias positivas", c)
@@ -581,7 +590,7 @@ def _phase(clause: str, status: Optional[str]) -> str:
         return "calida"
     if cold and warm:
         return "fria" if cold.start() > warm.start() else "calida"  # el sujeto más cercano a «magnitud»
-    return "fria" if "la nina" in _plain(status or "") else "calida"
+    return None
 
 
 def communique_outlook(text: str, status: Optional[str] = None) -> list[dict]:
@@ -601,9 +610,14 @@ def communique_outlook(text: str, status: Optional[str] = None) -> list[dict]:
         if um:
             until = f"{int(um.group(2)):04d}-{MONTHS_ES[_plain(um.group(1))]:02d}"
         then = re.search(rf"(?:disminuir|reducir|bajar)\w*\s+a\s+{_MAG_RE}", rest, re.I)
-        start = flat.rfind(". ", 0, m.start()) + 2 if flat.rfind(". ", 0, m.start()) >= 0 else m.start()
+        dot = flat.rfind(". ", 0, m.start())
+        start = dot + 2 if dot >= 0 else 0  # desde el principio de la oración (o del texto)
         clause = flat[m.start(): m.start(2)]
-        phase = _phase(clause, status)
+        # Lo que va antes de la región en la misma oración, desde la última coma o «mientras que» (que separa la
+        # otra región): ahí puede estar el sujeto.
+        before = flat[max(start, m.start() - 120): m.start()]
+        before = re.split(r"[,;:]|mientras\s+que", before)[-1]
+        phase = _phase(clause, status, before)
         out[region] = {"region": region, "phase": phase, "magnitude": _mag(m.group(2)), "until": until,
                        "then": _mag(then.group(1)) if then else None,
                        # Sin las llamadas de nota pegadas a las palabras («extraordinaria2»).
@@ -612,6 +626,31 @@ def communique_outlook(text: str, status: Optional[str] = None) -> list[dict]:
     if check(SCHEMAS["enfen-perspectiva"], res):
         return []
     return res
+
+
+_MAG_WORDING_RE = re.compile(
+    r"\b(?:magnitud|categor[ií]a|evento|condiciones\s+(?:c[aá]lidas|fr[ií]as))\b\W+(?:\w+\W+){0,3}?"
+    r"(?:extraordinari|muy\s+fuerte|fuerte|moderad|d[eé]bil)", re.I)
+_REGION_RE = re.compile(r"Ni[ñn]o\s*(1\s*\+\s*2|3[.,]4)", re.I)
+
+
+def outlook_unread(text: str, outlook: list[dict]) -> list[str]:
+    """Regiones de las que el comunicado habla con una magnitud esperada y que ``communique_outlook`` no leyó.
+
+    Cada oración con una magnitud («magnitud fuerte», «categoría extraordinaria», «evento muy fuerte»,
+    «condiciones cálidas moderadas») cuenta para las regiones que nombra; si no nombra ninguna, cuenta como
+    «general» y solo falta si no se leyó ninguna región. Así una región reformulada no pasa sin aviso."""
+    read = {o["region"] for o in outlook or []}
+    want: set[str] = set()
+    for sentence in re.split(r"(?<=\.)\s+", _flat(text)):
+        if not _MAG_WORDING_RE.search(sentence):
+            continue
+        regions = {"nino12" if "+" in m.group(1) else "nino34" for m in _REGION_RE.finditer(sentence)}
+        want |= regions or {"general"}
+    missing = sorted(want - read - {"general"})
+    if "general" in want and not read and not missing:
+        missing = ["general"]
+    return missing
 
 
 # ---------------------------------------------------------------------------
@@ -641,12 +680,36 @@ def llm_extract(client, kind: str, text: str, *, url: str, published: Optional[s
         r.raise_for_status()
         reply = r.json()
     except Exception as exc:  # noqa: BLE001 — el respaldo nunca detiene la corrida
-        return {"ok": False, "error": f"{type(exc).__name__}: {exc}"[:300]}
+        # Nunca el texto de la excepción: el de httpx lleva la URL del webhook, que es secreta y esto se publica.
+        return {"ok": False, "transport": True, "error": _llm_error(exc)}
     reply = reply if isinstance(reply, dict) else {}
     data = reply.get("data")
     return {"ok": data is not None, "data": data, "model": reply.get("model"),
             "evidence": reply.get("evidence") if isinstance(reply.get("evidence"), dict) else None,
             "schemaErrors": check(SCHEMAS[kind], data) if data is not None else ["sin «data»"]}
+
+
+def _llm_error(exc: Exception) -> str:
+    """Motivo publicable de una falla del servicio: tipo y código HTTP, sin URL ni texto de la respuesta."""
+    import httpx
+
+    if isinstance(exc, httpx.HTTPStatusError):
+        return f"el servicio respondió HTTP {exc.response.status_code}"
+    if isinstance(exc, httpx.TimeoutException):
+        return "el servicio no respondió a tiempo"
+    if isinstance(exc, httpx.TransportError):
+        return "no se pudo conectar con el servicio"
+    if isinstance(exc, ValueError):
+        return "el servicio no respondió JSON"
+    return f"falla del servicio ({type(exc).__name__})"
+
+
+def reusable_review(prior: Optional[dict], url: str) -> Optional[dict]:
+    """La propuesta guardada para ese mismo PDF, si sirve: una falla de transporte (503, plazo) se reintenta en la
+    corrida siguiente; una respuesta del modelo (válida o con errores de esquema) no se vuelve a pedir."""
+    if not prior or prior.get("url") != url:
+        return None
+    return None if (prior.get("proposal") or {}).get("transport") else prior
 
 
 def compare(det: Optional[dict], llm: Optional[dict], keys: list[str]) -> list[str]:
@@ -666,7 +729,7 @@ def informe_summary(ext: Extraction) -> dict:
     blocked = {i.code for i in ext.issues if i.severity == "error"}
     tmp = None
     if ind.get("provisional") and not blocked & {"informe-icen-jump", "informe-index-months", "informe-schema",
-                                                  "informe-period", "informe-other-communique"}:
+                                                  "informe-period-provisional", "informe-other-communique"}:
         if not any(i.code == "informe-provisional-superseded" for i in ext.issues):
             tmp = ind["provisional"][0]
     probs = [t for t in d.get("probabilities") or [] if not t.get("invalid")]
@@ -753,6 +816,9 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
             note += (" La lectura con el modelo de lenguaje queda para revisión." if review["proposal"].get("ok")
                      else " El modelo de lenguaje tampoco dio una lectura válida.")
         log.add(severity, "enfen-informe", stage, "informe-unread", (reason + note)[:1500])
+        prior = (previous_informe or {}).get("review")
+        if review is None and prior and prior.get("communique") == cid:
+            review = prior  # una falla de descarga posterior no borra la propuesta ya hecha para este comunicado
         base = {k: v for k, v in (previous_informe or {}).items() if k not in ("review", "carriedReason")}
         if not base and not review:
             return None
@@ -785,8 +851,12 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
             url = f"{INFORMES_PAGE}#comunicado-{cid}"
             hit = {"url": url, "copy": r}
         url = hit["url"]
-    if previous_informe and previous_informe.get("url") == url and not previous_informe.get("carried"):
-        return {**previous_informe, "communique": cid}  # el comunicado nuevo cita el mismo informe
+    # El comunicado nuevo cita el mismo informe: se reutiliza sin bajarlo. Solo si la URL es segura: la cita el
+    # comunicado o el listado la eligió por su fecha de corte. Un número tomado de la réplica de la DHN sin fecha
+    # puede ser el informe anterior (la DHN se atrasa): ese se baja y se valida.
+    trusted = latest.get("informe_url") == url or bool((hit or {}).get("dataTo"))
+    if trusted and previous_informe and previous_informe.get("url") == url and not previous_informe.get("carried"):
+        return {**previous_informe, "communique": cid}
     try:
         r = (hit or {}).get("copy") or _informe_pdf(fetcher, url, FetchError, archive_prefix)
         if r is None:
@@ -805,23 +875,21 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
         need(mirrors(url) + [url], "El PDF que se obtuvo no se pudo leer.",
              f"{type(exc).__name__}: {exc}" if r is not None and r.channel == "relay-manual" else None)
         return keep(f"No se pudo leer el PDF del informe técnico {url}: {type(exc).__name__}: {exc}")
-    if documents is not None:
-        documents.append(r.body)
     try:
         ext = parse_informe(pages, url)
     except FormatChanged as exc:
         if r.channel == "relay-manual":
             need(mirrors(url) + [url], "La copia subida no se pudo leer.", f"Formato no reconocido: {exc}")
-        prior = (previous_informe or {}).get("review") or {}
-        if prior.get("url") == url:
-            review = prior  # el mismo PDF ya se le pasó al modelo: no se repite la consulta
-        else:
+        review = reusable_review((previous_informe or {}).get("review"), url)  # mismo PDF: no se repite la consulta
+        if review is None:
             proposal = llm_extract(getattr(fetcher, "client", None), "enfen-informe", "\n\f".join(pages), url=url)
-            review = {"proposal": proposal, "reason": str(exc)[:300], "url": url} if proposal else None
+            review = {"proposal": proposal, "reason": str(exc)[:300], "url": url, "communique": cid} if proposal else None
         return keep(f"Cambió el formato del informe técnico ({exc}).", review=review)
     validate_informe(ext, icen_official=icen_points, today=today, communique=latest)
-    for i in ext.issues:
-        log.add(i.severity, "enfen-informe", "validate", i.code, i.message)
+    other = next((i for i in ext.issues if i.code == "informe-other-communique"), None)
+    if other is None:
+        for i in ext.issues:
+            log.add(i.severity, "enfen-informe", "validate", i.code, i.message)
     summary = informe_summary(ext)
     summary.update({"retrievedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"), "channel": r.channel,
                     "communique": cid, "pages": len(pages),
@@ -829,13 +897,18 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
     manual_copy = r.channel == "relay-manual"
     if manual_copy and needs is not None:
         needs.mark_used(f"informe-{cid}", f"Informe técnico del ENFEN del comunicado N° {cid}", url, r.archived_at)
-    if any(i.code == "informe-other-communique" for i in ext.issues):
+    if other is not None:
+        # Lo esperable mientras la réplica se atrasa: una advertencia (no degrada la publicación), sin archivar el
+        # PDF de otro periodo en cada corrida.
         if manual_copy:
             if needs is not None:
                 needs.used.pop()
             need(mirrors(url) + [url], "La copia subida es de otro periodo.",
                  f"El PDF subido es el informe N° {ext.data.get('number')}, no el del comunicado {cid}.")
-        return keep(f"El informe N° {ext.data.get('number')} no es el del comunicado {cid}.", "warning", "validate")
+        return keep(f"El informe N° {ext.data.get('number')} no es el del comunicado {cid}: {other.message}",
+                    "warning", "validate")
     if not summary["icenProvisional"] and not summary["probabilities"] and previous_informe:
         return keep("El informe técnico se leyó pero ninguno de sus valores pasó la validación.")
+    if documents is not None:
+        documents.append(r.body)  # solo el PDF aceptado se archiva
     return summary

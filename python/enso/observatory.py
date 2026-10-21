@@ -605,19 +605,16 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
                                     f"(canal {resp.channel})")
             # Perspectiva (magnitud esperada por región, con su oración) y enlace al informe técnico.
             c.data["outlook"] = reports.communique_outlook(text, c.data.get("status"))
-            if not c.data["outlook"] and re.search(r"\b(?:magnitud|categor[ií]a)\b\W+(?:\w+\W+){0,3}?(?:extraordinari|muy\s+fuerte|"
-                                                   r"fuerte|moderad|d[eé]bil)", text, re.I):
-                # El comunicado trae perspectiva con magnitud y no se pudo leer: incidencia y, si hay modelo de
-                # lenguaje configurado, una propuesta para revisión (nunca se publica sola).
+            unread = reports.outlook_unread(text, c.data["outlook"])
+            if unread:
+                # El comunicado trae una perspectiva con magnitud que no se pudo leer (toda o una región): queda
+                # marcado (la incidencia la anota Builder.official en cada corrida) y, si hay modelo de lenguaje
+                # configurado, una propuesta para revisión (nunca se publica sola).
+                c.data["outlookUnread"] = unread
                 proposal = reports.llm_extract(getattr(fetcher, "client", None), "enfen-perspectiva", text,
                                                url=_clean_wpdm(item["url"]), published=c.data.get("issued"))
-                c.data["outlookUnread"] = True
                 if proposal:
                     c.data["outlookReview"] = proposal
-                log.add("warning", "enfen-comunicados", "parse", "outlook-unread",
-                        f"El comunicado {item['id']} trae una perspectiva con magnitudes que no se pudo leer; la "
-                        "vista El Niño costero no la muestra." + (" La lectura del modelo de lenguaje queda para revisión."
-                                                                  if proposal and proposal.get("ok") else ""))
             c.data["informe_url"] = reports.informe_link(text)
         except FetchError as exc:
             failures.append(f"{item['id']}: {exc}")
@@ -932,8 +929,19 @@ class Builder:
                     "summary": latest.get("summary"), "documentUrl": latest.get("source") or (listing[0]["url"] if listing else ""),
                     "archive": latest.get("archive"), "stale": stale, "outlook": latest.get("outlook") or [],
                     "outlookUnread": bool(latest.get("outlookUnread")),
+                    **({"outlookUnreadRegions": latest["outlookUnread"]} if isinstance(latest.get("outlookUnread"), list) else {}),
                     **({"outlookReview": latest["outlookReview"]} if latest.get("outlookReview") else {}),
                 })
+                if latest.get("outlookUnread"):
+                    # En cada corrida mientras siga el mismo comunicado: si no, el issue se cerraría solo.
+                    regions = latest["outlookUnread"] if isinstance(latest["outlookUnread"], list) else []
+                    names = {"nino12": "Niño 1+2", "nino34": "Niño 3.4", "general": "sin región"}
+                    review = latest.get("outlookReview") or {}
+                    self.log.add("warning", "enfen-comunicados", "parse", "outlook-unread",
+                                 f"El comunicado {latest['id']} trae una perspectiva con magnitudes que no se pudo leer"
+                                 + (f" ({', '.join(names.get(r, r) for r in regions)})" if regions else "")
+                                 + "; la vista El Niño costero no la muestra."
+                                 + (" La lectura del modelo de lenguaje queda para revisión." if review.get("ok") else ""))
                 if (listing and listing[0].get("kind", "oficial") == "oficial"
                         and (listing[0]["year"], listing[0]["number"]) > (latest["year"], latest["number"])):
                     # Un comunicado más reciente existe pero no se pudo leer: el estado

@@ -950,3 +950,20 @@ def test_manual_needed_keeps_the_first_day_it_was_pending():
 def test_missing_manual_branch_is_normal(tmp_path):
     log = obs.EventLog()
     assert obs.load_manual_relay(tmp_path / "no-existe", log) is None and log.events == []
+
+
+def test_outlook_unread_is_logged_on_every_run_while_the_communique_stays():
+    """La incidencia se anota en cada corrida (no solo cuando se lee el PDF): si no, el issue se cerraría solo."""
+    from datetime import date
+
+    latest = {"id": "18-2026", "year": 2026, "number": 18, "status": "Alerta de El Niño Costero",
+              "status_code": "alerta_nino", "issued": "2026-10-16", "next_issue": "2026-10-30", "outlook": [],
+              "outlookUnread": ["nino12"], "outlookReview": {"ok": False, "transport": True, "error": "el servicio respondió HTTP 500"}}
+    acq = obs.Acquired(obs.SOURCE_BY_ID["enfen-comunicados"])
+    acq.data, acq.ok = {"latest": latest, "listing": []}, True
+    for _ in range(2):  # el día de la lectura y el siguiente
+        log = obs.EventLog()
+        off = obs.Builder({"enfen-comunicados": acq}, log, date(2026, 10, 21)).official()
+        ev = [e for e in log.events if e.code == "outlook-unread"]
+        assert len(ev) == 1 and "Niño 1+2" in ev[0].message
+    assert off["enfen"]["outlookUnread"] and off["enfen"]["outlookUnreadRegions"] == ["nino12"]
