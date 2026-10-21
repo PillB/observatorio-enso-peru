@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <feed xmlns="http://www.w3.org/2005/Atom" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:georss="http://www.georss.org/georss">
+    <id>urn:uuid:5c3020d9-29dd-4f5e-bf09-f151746ce526</id><title>        TSUNAMI INFORMATION STATEMENT NUMBER   1        </title>
+    <updated>2026-10-20T04:31:12Z</updated>
+    <author>
+      <name>NWS PACIFIC TSUNAMI WARNING CENTER HONOLULU HI</name>
+<uri>https://www.tsunami.gov/</uri>
+     <email>ntwc@noaa.gov</email>
+    </author>
+<icon>https://www.tsunami.gov/images/favicon.ico</icon>
+<link type="application/atom+xml" rel="self" title="self" href="https://www.tsunami.gov/events/xml/PAAQAtom.xml"/>
+ <link rel="related" title="Energy Map" href="https://www.tsunami.gov/events/PHEB/2026/10/20/26293000/1/WEGM42/ " type="image/jpeg" /> 
+
+   <entry>
+
+    <title>VANUATU</title><updated>2026-10-20T04:31:12Z</updated>
+<geo:lat>-13.869</geo:lat>
+<geo:long>165.713</geo:long>
+<summary type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml">
+     <strong>Category:</strong> Information<br/><strong>Bulletin Issue Time: </strong> 2026.10.20 04:31:12 UTC <br/><strong>Preliminary Magnitude: </strong>6.6(Mwp)<br/><strong>Lat/Lon: </strong>-13.869 / 165.713<br/><strong>Affected Region: </strong>VANUATU<br/><b>Note:</b>  <br/><strong>Definition: </strong><a href="https://www.tsunami.gov/events/PHEB/2026/10/20/26293000/1/WEGM42/WEGM42.txt">View bulletin</a><img src="https://www.tsunami.gov/events/PHEB/2026/10/20/26293000/1/WEGM42/ " alt="Energy Map" /> 
+ </div></summary>
+    <id>urn:uuid:00551658-d438-4b4a-8a1c-42d07012ed84</id><link rel="related" title="CapXML document" href="https://www.tsunami.gov/events/PHEB/2026/10/20/26293000/1/WEGM42/PHEBCAP.xml" type="application/cap+xml" />
+<link rel="alternate" title="Bulletin" href="https://www.tsunami.gov/events/PHEB/2026/10/20/26293000/1/WEGM42/WEGM42.txt" type="application/xml" />
+</entry>
+</feed>
