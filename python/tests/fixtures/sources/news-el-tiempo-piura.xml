@@ -12,7 +12,7 @@
 	<atom:link href="https://eltiempo.pe/feed/" rel="self" type="application/rss+xml" />
 	<link>https://eltiempo.pe</link>
 	<description></description>
-	<lastBuildDate>Tue, 20 Oct 2026 23:02:03 +0000</lastBuildDate>
+	<lastBuildDate>Wed, 21 Oct 2026 02:05:42 +0000</lastBuildDate>
 	<language>es</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -28,6 +28,35 @@
 	<height>32</height>
 </image> 
 	<item>
+		<title>El Niño: lluvias se intensificarán desde noviembre y podrían alcanzar los 300 mm al día</title>
+		<link>https://eltiempo.pe/local/el-nino-lluvias-se-intensificaran-desde-noviembre-y-podrian-alcanzar-los-300-mm-al-dia/</link>
+		
+		<dc:creator><![CDATA[SEO El Tiempo]]></dc:creator>
+		<pubDate>Wed, 21 Oct 2026 02:05:46 +0000</pubDate>
+				<category><![CDATA[Local]]></category>
+		<guid isPermaLink="false">https://eltiempo.pe/?p=1079626</guid>
+
+					<description><![CDATA[Las lluvias en la costa norte del Perú podrían alcanzar acumulados de hasta 300 milímetros en un solo día durante el verano de 2027, en medio de la evolución de El Niño Costero. Las regiones de Piura y Tumbes figuran entre las zonas que deberán mantenerse bajo vigilancia ante la posibilidad de precipitaciones intensas, inundaciones [&#8230;]]]></description>
+		
+		
+		
+			</item>
+		<item>
+		<title>El Niño: Alertan que drenes están sin capacidad para desviar río Piura</title>
+		<link>https://eltiempo.pe/local/drenes-sin-capacidad-para-desviar-rio-piura/</link>
+		
+		<dc:creator><![CDATA[SEO El Tiempo]]></dc:creator>
+		<pubDate>Wed, 21 Oct 2026 02:00:17 +0000</pubDate>
+				<category><![CDATA[Anclado]]></category>
+		<category><![CDATA[Local]]></category>
+		<guid isPermaLink="false">https://eltiempo.pe/?p=1079564</guid>
+
+					<description><![CDATA[AlertanLa decisión del gobierno de la presidenta Keiko Fujimori de desviar parte del caudal del río Piura por el “río Loco” hacia Sechura, implica el uso de drenes agrícolas que no tienen capacidad para soportar el volumen de agua. Así lo explicó el ingeniero Juan Paiva Nunura, especialista en temas hidráulicos, en relación a los [&#8230;]]]></description>
+		
+		
+		
+			</item>
+		<item>
 		<title>Guía sobre qué opciones existen de adelanto de sueldo y cuánto cuestan</title>
 		<link>https://eltiempo.pe/economia/guia-sobre-que-opciones-existen-de-adelanto-de-sueldo-y-cuanto-cuestan/</link>
 		
@@ -126,20 +155,6 @@
 		
 			</item>
 		<item>
-		<title>El Niño: lluvias se intensificarán desde noviembre y podrían alcanzar los 300 mm al día</title>
-		<link>https://eltiempo.pe/nacional/el-nino-lluvias-se-intensificaran-desde-noviembre-y-podrian-alcanzar-los-300-mm-al-dia/</link>
-		
-		<dc:creator><![CDATA[SEO El Tiempo]]></dc:creator>
-		<pubDate>Tue, 20 Oct 2026 18:16:46 +0000</pubDate>
-				<category><![CDATA[Nacional]]></category>
-		<guid isPermaLink="false">https://eltiempo.pe/?p=1079626</guid>
-
-					<description><![CDATA[Las lluvias en la costa norte del Perú podrían alcanzar acumulados de hasta 300 milímetros en un solo día durante el verano de 2027, en medio de la evolución de El Niño Costero. Las regiones de Piura y Tumbes figuran entre las zonas que deberán mantenerse bajo vigilancia ante la posibilidad de precipitaciones intensas, inundaciones [&#8230;]]]></description>
-		
-		
-		
-			</item>
-		<item>
 		<title>Papa León XIV: misión de avanzada llega para “sellar” detalles sobre visita, indica la CEP</title>
 		<link>https://eltiempo.pe/internacional/papa-leon-xiv-mision-de-avanzada-llega-para-sellar-detalles-sobre-visita-indica-la-cep/</link>
 		
@@ -153,22 +168,7 @@
 		
 		
 			</item>
-		<item>
-		<title>Techo Propio: personas que viven solas podrán acceder a subsidios de hasta S/ 52.250 para comprar una vivienda</title>
-		<link>https://eltiempo.pe/nacional/techo-propio-personas-que-viven-solas-podran-acceder-a-subsidios-de-hasta-s-52-250-para-comprar-una-vivienda/</link>
-		
-		<dc:creator><![CDATA[SEO JR El Tiempo]]></dc:creator>
-		<pubDate>Tue, 20 Oct 2026 18:10:21 +0000</pubDate>
-				<category><![CDATA[Bonos Y Subsidios]]></category>
-		<category><![CDATA[Nacional]]></category>
-		<guid isPermaLink="false">https://eltiempo.pe/?p=771307</guid>
-
-					<description><![CDATA[El Ministerio de Vivienda, Construcción y Saneamiento (MVCS) aprobó el nuevo Reglamento de la Ley de Vivienda de Interés Social (VIS), el cual incorpora por primera vez a la familia unipersonal como una de las modalidades reconocidas para acceder a los programas de vivienda promovidos por el Estado. Con esta modificación, las personas que viven [&#8230;]]]></description>
-		
-		
-		
-			</item>
 	</channel>
 </rss>
 
-<!-- plugin=object-cache-pro client=phpredis metric#hits=2317 metric#misses=67 metric#hit-ratio=97.2 metric#bytes=757810 metric#prefetches=0 metric#store-reads=114 metric#store-writes=10 metric#store-hits=123 metric#store-misses=51 metric#sql-queries=21 metric#ms-total=229.92 metric#ms-cache=15.08 metric#ms-cache-avg=0.1226 metric#ms-cache-ratio=6.6 -->
+<!-- plugin=object-cache-pro client=phpredis metric#hits=2315 metric#misses=65 metric#hit-ratio=97.3 metric#bytes=742603 metric#prefetches=0 metric#store-reads=115 metric#store-writes=5 metric#store-hits=124 metric#store-misses=49 metric#sql-queries=16 metric#ms-total=160.12 metric#ms-cache=10.51 metric#ms-cache-avg=0.0883 metric#ms-cache-ratio=6.6 -->

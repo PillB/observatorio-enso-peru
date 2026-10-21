@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:30:21 -0500</lastBuildDate>
+  <lastBuildDate>Tue, 20 Oct 2026 21:49:54 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Carlos Neuhaus sobre lluvias e inundaciones en Piura: "Se están comprando extractoras de agua y seguirán llegando"]]></title>
+        <description><![CDATA[El presidente del comando privado frente al <strong>fenómeno El Niño </strong>informó que se están coordinando entre las empresas para brindar ayuda a la población afectada por las inundaciones.]]></description>
+        <pubDate>Tue, 20 Oct 2026 21:03:30 -0500</pubDate>
+        <link>https://rpp.pe/lima/actualidad/carlos-neuhaus-sobre-lluvias-e-inundaciones-en-piura-se-estan-comprando-extractoras-de-agua-noticia-1713638</link>
+        <guid>1713638</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/20/uhaus-2026-10-20-20-57-47-30912-1920826mp4_1920827.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Fenómeno El Niño, Carlos Neuhaus, Videos más vistos, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Chorrillos: delincuente disparó por error a su cómplice durante intento de secuestro a un empresario]]></title>
         <description><![CDATA[Un empresario iba a ser <a data-mce-href="https://rpp.pe/noticias/secuestro" href="https://rpp.pe/noticias/secuestro" target="_blank" rel="noopener">secuestrado</a> en un <strong>vehículo polarizado</strong> cuando llegaba a su centro de labores.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/10/12/430043_1917554.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Corte de luz, Lima, Pluz Energía, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Lurigancho-Chosica: PNP detuvo a presunto miembro banda que usurpaba terrenos y exigía dinero para devolverlos]]></title>
-        <description><![CDATA[El sujeto fue intervenido durante un operativo realizado en <a data-mce-href="https://rpp.pe/noticias/chosica" href="https://rpp.pe/noticias/chosica">el cerro El Mirador</a>, en el distrito de <strong>Lurigancho-Chosica</strong>.]]></description>
-        <pubDate>Thu, 15 Oct 2026 08:41:42 -0500</pubDate>
-        <link>https://rpp.pe/lima/policiales/lurigancho-chosica-pnp-detuvo-a-presunto-miembro-banda-que-usurpaba-terrenos-y-exigia-dinero-para-devolverlos-noticia-1712715</link>
-        <guid>1712715</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/10/15/245024_1918728.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Lurigancho-Chosica, Chosica, Inseguridad ciudadana, PNP, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
