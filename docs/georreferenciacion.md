@@ -202,22 +202,55 @@ valer de inmediato.
 ### Seguridad
 
 - Contraseñas aleatorias de 16 caracteres (~93 bits); en Cloudflare solo
-  hay hashes con sal. Se usan 5 000 iteraciones de PBKDF2 y no 100 000
-  porque el plan gratuito de Workers da 10 ms de CPU por solicitud (100 000
-  iteraciones toman unos 50 ms y el ingreso fallaría); con contraseñas
-  aleatorias de ese largo, el estiramiento no es lo que las protege. El
-  secreto admite 5 KB: unas 35 cuentas. Un usuario inexistente tarda lo mismo que una clave
-  equivocada y recibe el mismo mensaje.
+  hay hashes con sal. Se usan 5 000 iteraciones de PBKDF2-SHA256 y no las
+  600 000 que OWASP pide para claves elegidas por personas, porque el
+  plan gratuito de Workers da 10 ms de CPU por solicitud. Medido en
+  workerd (el motor de Cloudflare): 5 000 iteraciones ≈ 4 ms, 20 000 ≈
+  18 ms, 100 000 ≈ 49 ms; la Function rechaza hashes de más de 8 000.
+  Las iteraciones solo suman log2(n) bits (5 000 ≈ 12 bits, 600 000 ≈ 19):
+  lo que protege es la entropía de la clave. Con el secreto filtrado, una
+  RTX 4090 prueba ~1,8 millones de claves por segundo a 5 000 iteraciones
+  (8,9 millones con 999 en hashcat 6.2.6, modo 10900) y necesitaría unos
+  10^14 años para una clave de 93 bits. Por eso las claves las genera
+  siempre `tools/geo_users.py` y nunca las elige una persona. El secreto
+  admite 5 KB: unas 35 cuentas. Un usuario inexistente tarda lo mismo
+  que una clave equivocada y recibe el mismo mensaje.
 - Sesión de 12 horas en una cookie `__Host-` `HttpOnly`, `Secure`,
   `SameSite=Strict`; en D1 se guarda el SHA-256 del token, no el token.
 - Bloqueo de 15 minutos tras 8 fallos por usuario o 30 por IP; tope de
-  600 correcciones por hora y usuario.
+  600 correcciones por hora y usuario. Un intento bloqueado no escribe
+  nada y los nombres inexistentes no crean contadores, para que una
+  avalancha de intentos no agote las escrituras diarias de D1. Riesgo que
+  queda: muchos atacantes desde muchas IP podrían agotar las 100 000
+  solicitudes diarias de Functions; eso apaga la consola hasta las 00:00
+  UTC, pero no el sitio público (solo `/api/geo/*` invoca Functions, según
+  el `_routes.json` que genera Cloudflare) ni las correcciones ya hechas
+  (el pipeline usa las de la publicación anterior).
 - Escrituras solo desde el mismo origen y con JSON (CSRF); códigos
   UBIGEO validados contra el nomenclátor publicado; cuerpos de más de
   16 KB rechazados.
 - Respuestas `no-store`, `noindex`, sin marcos y con CSP estricta; la
   página de la consola no carga nada de terceros y muestra los títulos de
   los medios como texto, nunca como HTML.
+
+### Consumo del plan gratuito
+
+| Operación | Viajes a D1 | Filas leídas | Filas escritas |
+|---|---|---|---|
+| Ingreso correcto | 2 | 2 contadores + sesiones vencidas | ~5 (sesión, registro, limpieza) |
+| Ingreso fallido | 2 | 2 | 2–3 |
+| Ingreso bloqueado | 1 | 2 | 0 |
+| Cada pedido con sesión | 1 | 1 | 0 |
+| Corrección | 3 | 3 (sesión, revisión vigente, contador) | ~6 con índices |
+| Lista vigente (consola y pipeline) | 1 | 1 por nota corregida | 0 |
+
+La tabla `current` guarda la última corrección de cada nota, así nada
+recorre el historial completo; el tope por hora es un contador, no un
+`COUNT(*)`. Las tablas se crean solas la primera vez que una consulta no
+las encuentra (no en cada arranque). Los límites gratuitos (5 M filas
+leídas y 100 000 escritas por día) alcanzan para miles de correcciones
+diarias. La consola descarga `geo/items.json` (~1,3 MB, ~0,4 MB
+comprimido) una vez por sesión y luego lo revalida (304 si no cambió).
 
 ## Archivos
 

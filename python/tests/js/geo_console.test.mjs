@@ -58,6 +58,8 @@ describe('contraseñas', () => {
     assert.ok(!(await verifyPassword('Secreta', h)));
     assert.ok(!(await verifyPassword('secreta', 'md5$abc')));
     assert.ok(!(await verifyPassword('secreta', 'pbkdf2-sha256$5000000$AAAA$AAAA')));
+    const slow = await hashPassword('secreta', new Uint8Array(16), 20000);
+    assert.ok(!(await verifyPassword('secreta', slow)), 'más de 8 000 iteraciones no cabe en 10 ms de CPU');
   });
 
   it('acepta los hashes que genera python/tools/geo_users.py', { skip: !process.env.GEO_TEST_PY_HASH }, async () => {
@@ -133,6 +135,78 @@ describe('ingreso', () => {
     assert.equal((await handle(req('me'), { GEO_USERS: '{}' })).status, 503);
     const r = await handle(req('login', { method: 'POST', body: { username: 'a', password: 'b' } }), { ...env, GEO_USERS: '' });
     assert.equal(r.status, 503);
+  });
+});
+
+describe('consumo del plan gratuito', () => {
+  it('base nueva: las tablas se crean solas y luego no se vuelven a crear', async () => {
+    const r = await handle(req('overrides', { origin: null }), env);
+    assert.equal(r.status, 200);
+    const t0 = env.GEO_DB.trips;
+    await handle(req('overrides', { origin: null }), env);
+    assert.equal(env.GEO_DB.trips - t0, 1, 'una sola consulta por pedido del pipeline');
+  });
+
+  it('ingreso en 2 viajes; un fallo en 2; un bloqueo en 1 y sin escribir', async () => {
+    await handle(req('overrides', { origin: null }), env); // crea las tablas
+    let t0 = env.GEO_DB.trips;
+    const { cookie } = await login();
+    assert.equal(env.GEO_DB.trips - t0, 2);
+    t0 = env.GEO_DB.trips;
+    await handle(req('me', { cookie }), env);
+    assert.equal(env.GEO_DB.trips - t0, 1);
+    t0 = env.GEO_DB.trips;
+    await login('revisor02', 'mal');
+    assert.equal(env.GEO_DB.trips - t0, 2);
+    for (let i = 0; i < 8; i++) await login('revisor02', 'mal');
+    const writes = (await env.GEO_DB.prepare('SELECT COUNT(*) AS n FROM audit').first()).n;
+    t0 = env.GEO_DB.trips;
+    assert.equal((await login('revisor02', 'mal')).r.status, 429);
+    assert.equal(env.GEO_DB.trips - t0, 1);
+    assert.equal((await env.GEO_DB.prepare('SELECT COUNT(*) AS n FROM audit').first()).n, writes, 'bloqueado no escribe');
+  });
+
+  it('nombres inventados no crean contadores por usuario', async () => {
+    for (let i = 0; i < 5; i++) await login(`nadie${i}`, 'mal');
+    const keys = (await env.GEO_DB.prepare('SELECT key FROM attempts').all()).results.map((r) => r.key);
+    assert.deepEqual(keys, ['ip:203.0.113.7']);
+  });
+
+  it('una corrección en 3 viajes; la lista vigente lee una fila por nota', async () => {
+    const { cookie } = await login();
+    const t0 = env.GEO_DB.trips;
+    const r = await handle(req('corrections', { method: 'POST', cookie, body: { item: ITEM, action: 'none', expectedRev: 0 } }), env);
+    assert.equal(r.status, 201);
+    assert.equal(env.GEO_DB.trips - t0, 3);
+    for (let rev = 1; rev < 4; rev++) {
+      await handle(req('corrections', { method: 'POST', cookie, body: { item: ITEM, action: rev % 2 ? 'confirm' : 'none', expectedRev: rev } }), env);
+    }
+    const cur = (await env.GEO_DB.prepare('SELECT item_id, rev, action FROM current').all()).results;
+    assert.deepEqual(cur, [{ item_id: ITEM, rev: 4, action: 'confirm' }]);
+    const latest = await (await handle(req('corrections', { cookie }), env)).json();
+    assert.deepEqual(latest.corrections.map((c) => [c.item, c.rev]), [[ITEM, 4]]);
+    const plan = env.GEO_DB.sqlite.prepare("EXPLAIN QUERY PLAN SELECT item_id, action, places, rev, created_at FROM current WHERE action != 'clear' ORDER BY item_id").all();
+    assert.ok(plan.every((p) => !/TEMP B-TREE/.test(p.detail)), JSON.stringify(plan));
+  });
+
+  it('el tope de correcciones por hora se lleva en un contador', async () => {
+    const { cookie } = await login();
+    await env.GEO_DB.prepare("INSERT INTO attempts (key, count, window_start) VALUES ('write:revisor01', 600, ?)").bind(Math.floor(Date.now() / 1000) - 10).run();
+    const r = await handle(req('corrections', { method: 'POST', cookie, body: { item: ITEM, action: 'none', expectedRev: 0 } }), env);
+    assert.equal(r.status, 429);
+    await env.GEO_DB.prepare("UPDATE attempts SET window_start = window_start - 3600 WHERE key = 'write:revisor01'").run();
+    const ok = await handle(req('corrections', { method: 'POST', cookie, body: { item: ITEM, action: 'none', expectedRev: 0 } }), env);
+    assert.equal(ok.status, 201, 'la ventana vencida se reinicia');
+  });
+
+  it('una base creada antes de la tabla current se completa sola', async () => {
+    const db = env.GEO_DB;
+    db.sqlite.exec(`CREATE TABLE corrections (id INTEGER PRIMARY KEY AUTOINCREMENT, item_id TEXT NOT NULL, rev INTEGER NOT NULL,
+      action TEXT NOT NULL, places TEXT, note TEXT, before TEXT, username TEXT NOT NULL, created_at TEXT NOT NULL, UNIQUE (item_id, rev));
+      INSERT INTO corrections (item_id, rev, action, places, username, created_at) VALUES
+        ('${ITEM}', 1, 'set', '["15"]', 'pablo', '2026-10-01T00:00:00Z'), ('${ITEM}', 2, 'set', '["20"]', 'pablo', '2026-10-02T00:00:00Z');`);
+    const pub = await (await handle(req('overrides', { origin: null }), env)).json();
+    assert.deepEqual(pub.overrides.map((o) => [o.rev, o.places]), [[2, ['20']]]);
   });
 });
 

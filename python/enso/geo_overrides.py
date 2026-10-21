@@ -192,6 +192,9 @@ def quality(items: list[dict], ov_stats: dict) -> dict:
             "overrides": ov_stats, "publishMin": PUBLISH_MIN, "reviewBelow": REVIEW_BELOW}
 
 
+_CONSOLE_DROP = {"department", "province"}
+
+
 def console_items(items: list[dict], now: datetime) -> list[dict]:
     """Las notas recientes con su ubicación, para la consola (``geo/items.json``)."""
     since = (now - timedelta(days=CONSOLE_DAYS)).isoformat()
@@ -199,10 +202,14 @@ def console_items(items: list[dict], now: datetime) -> list[dict]:
     recent.sort(key=lambda i: i.get("published") or i.get("first_seen") or "", reverse=True)
     out = []
     for i in recent[:CONSOLE_MAX]:
+        geo = i.get("geo")
+        if geo and geo.get("places"):
+            # La consola saca los nombres de departamento y provincia del nomenclátor (geo/ubigeo.json).
+            geo = {**geo, "places": [{k: v for k, v in p.items() if k not in _CONSOLE_DROP} for p in geo["places"]]}
         out.append({"id": i["id"], "title": i.get("title") or "", "summary": (i.get("summary") or "")[:400],
-                    "link": i.get("link") or "", "outlet": i.get("outlet") or "", "feed": i.get("feed") or "",
+                    "link": i.get("link") or "", "outlet": i.get("outlet") or "",
                     "kind": i.get("kind") or "", "region": i.get("region") or "", "relevance": i.get("relevance") or "",
-                    "published": i.get("published") or i.get("first_seen"), "geo": i.get("geo")})
+                    "published": i.get("published") or i.get("first_seen"), "geo": geo})
     return out
 
 

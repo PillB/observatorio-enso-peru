@@ -301,8 +301,8 @@ async function start() {
   say('Cargando…');
   try {
     const [items, gaz] = await Promise.all([
-      fetch(new URL('items.json', DATA), { cache: 'no-store' }).then((r) => (r.ok ? r.json() : { items: [] })),
-      fetch(new URL('ubigeo.json', DATA), { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error('nomenclátor'); return r.json(); }),
+      fetch(new URL('items.json', DATA), { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : { items: [] })),
+      fetch(new URL('ubigeo.json', DATA), { cache: 'no-cache' }).then((r) => { if (!r.ok) throw new Error('nomenclátor'); return r.json(); }),
     ]);
     state.items = items.items || [];
     state.gaz = gaz;

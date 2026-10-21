@@ -1,5 +1,6 @@
 // D1 de mentira sobre node:sqlite, con la misma interfaz que usan las Functions
-// (prepare → bind → first / all / run, y batch en una transacción).
+// (prepare → bind → first / all / run, y batch en una transacción). `trips` cuenta los viajes a la base, que en
+// Cloudflare son idas y vueltas por la red.
 import { DatabaseSync } from 'node:sqlite';
 
 class Statement {
@@ -14,10 +15,11 @@ class Statement {
   }
 
   _stmt() {
-    return this.db.prepare(this.sql);
+    return this.db.sqlite.prepare(this.sql);
   }
 
   async first(col) {
+    this.db.trips += 1;
     const row = this._stmt().get(...this.args);
     if (row === undefined) return null;
     const plain = { ...row };
@@ -25,10 +27,16 @@ class Statement {
   }
 
   async all() {
+    this.db.trips += 1;
     return { results: this._stmt().all(...this.args).map((r) => ({ ...r })), success: true };
   }
 
   async run() {
+    this.db.trips += 1;
+    return this._run();
+  }
+
+  _run() {
     const r = this._stmt().run(...this.args);
     return { success: true, meta: { changes: Number(r.changes), last_row_id: Number(r.lastInsertRowid) } };
   }
@@ -36,22 +44,23 @@ class Statement {
 
 export class FakeD1 {
   constructor() {
-    this.db = new DatabaseSync(':memory:');
+    this.sqlite = new DatabaseSync(':memory:');
+    this.trips = 0;
   }
 
   prepare(sql) {
-    return new Statement(this.db, sql);
+    return new Statement(this, sql);
   }
 
   async batch(stmts) {
-    this.db.exec('BEGIN');
+    this.trips += 1;
+    this.sqlite.exec('BEGIN');
     try {
-      const out = [];
-      for (const s of stmts) out.push(await s.run());
-      this.db.exec('COMMIT');
+      const out = stmts.map((s) => s._run());
+      this.sqlite.exec('COMMIT');
       return out;
     } catch (e) {
-      this.db.exec('ROLLBACK');
+      this.sqlite.exec('ROLLBACK');
       throw e;
     }
   }
