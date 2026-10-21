@@ -31,7 +31,11 @@ jobs:
         with:
           script: |
             const wf = 'observatory.yml';
-            try { await github.rest.actions.enableWorkflow({ ...context.repo, workflow_id: wf }); } catch (e) { core.warning(e.message); }
+            // Reactivar por API reinicia el plazo de 60 días sin actividad; el vigilante
+            // también se reactiva a sí mismo y el flujo diario lo reactiva a él (keepalive).
+            for (const id of [wf, 'watchdog.yml', 'probe-sources.yml']) {
+              try { await github.rest.actions.enableWorkflow({ ...context.repo, workflow_id: id }); } catch (e) { core.warning(`${id}: ${e.message}`); }
+            }
             let gen = null, pub = null, worst = null, err = null;
             try {
               const r = await fetch(`${process.env.SITE_URL}data/dashboard.json?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache' } });

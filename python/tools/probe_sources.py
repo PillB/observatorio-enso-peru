@@ -26,10 +26,10 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso import registry  # noqa: E402
+from enso.fetch import CONTACT  # noqa: E402
 from enso.reach import classify  # noqa: E402
 
-UA = ("Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; source-probe; "
-      "+https://github.com/PillB/observatorio-enso-peru)")
+UA = f"Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; source-probe; +{CONTACT})"
 
 
 def probe(urls: list[str], vantage: str, timeout: float = 25.0) -> dict[str, dict]:
