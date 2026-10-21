@@ -95,12 +95,16 @@ jobs:
         id: relay
         continue-on-error: true
         run: |
+          # La carpeta va al pipeline aunque falte: lo anota como incidencia; aquí queda el motivo.
           echo "dir=$RUNNER_TEMP/relay" >> "$GITHUB_OUTPUT"
-          if git ls-remote --exit-code --heads origin data-peru >/dev/null; then
-            git fetch --depth 1 origin data-peru
-            git worktree add --detach "$RUNNER_TEMP/relay" FETCH_HEAD
-          else
+          rc=0; git ls-remote --exit-code --heads origin data-peru >/dev/null || rc=$?
+          if [ "$rc" = 0 ]; then
+            git fetch --depth 1 origin data-peru && git worktree add --detach "$RUNNER_TEMP/relay" FETCH_HEAD \
+              || echo "::warning::La rama data-peru existe pero no se pudo bajar en esta corrida."
+          elif [ "$rc" = 2 ]; then
             echo "::warning::La rama data-peru no existe: sin copias desde el Perú."
+          else
+            echo "::warning::No se pudo consultar la rama data-peru (git ls-remote terminó con $rc)."
           fi
 
       # Copias que el flujo de n8n (n8n/, docs/n8n.md) sube a la rama data-n8n:
@@ -109,29 +113,37 @@ jobs:
         id: n8n
         continue-on-error: true
         run: |
+          # La carpeta va al pipeline aunque falte: lo anota como incidencia; aquí queda el motivo.
           echo "dir=$RUNNER_TEMP/n8n" >> "$GITHUB_OUTPUT"
-          if git ls-remote --exit-code --heads origin data-n8n >/dev/null; then
-            git fetch --depth 1 origin data-n8n
-            git worktree add --detach "$RUNNER_TEMP/n8n" FETCH_HEAD
-          else
+          rc=0; git ls-remote --exit-code --heads origin data-n8n >/dev/null || rc=$?
+          if [ "$rc" = 0 ]; then
+            git fetch --depth 1 origin data-n8n && git worktree add --detach "$RUNNER_TEMP/n8n" FETCH_HEAD \
+              || echo "::warning::La rama data-n8n existe pero no se pudo bajar en esta corrida."
+          elif [ "$rc" = 2 ]; then
             echo "::warning::La rama data-n8n no existe: sin copias de n8n."
+          else
+            echo "::warning::No se pudo consultar la rama data-n8n (git ls-remote terminó con $rc)."
           fi
 
-      # Si la publicación anterior no trae el histórico de noticias (sitio
-      # caído, primer despliegue en otro hosting), se rehace con las notas que
-      # cada corrida guarda en la rama data-archive (sources/news/<día>.jsonl).
-      - name: News history backup (only if the live copy is unreachable)
+      # Copia del histórico de noticias que el job «archive» guarda en la rama
+      # data-archive (sources/news/items.jsonl). Se baja siempre (un solo
+      # archivo, por la API): el pipeline la usa si no puede leer el histórico
+      # publicado (sitio caído, otro hosting) o si la corrida anterior tuvo que
+      # empezarlo de nuevo, y decide él, en el momento en que lo lee.
+      - name: News history backup
         id: history
         continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          if curl -fsS --max-time 60 -o /dev/null "${SITE_URL}data/news/items.jsonl"; then
-            echo "El histórico publicado responde: no hace falta la copia."
-          elif git ls-remote --exit-code --heads origin data-archive >/dev/null; then
-            git fetch --depth 1 origin data-archive
-            mkdir -p "$RUNNER_TEMP/history"
-            git archive FETCH_HEAD sources/news | tar -x -C "$RUNNER_TEMP/history" --strip-components=2 \
-              && echo "dir=$RUNNER_TEMP/history" >> "$GITHUB_OUTPUT"
-            ls "$RUNNER_TEMP/history" | tail -3
+          mkdir -p "$RUNNER_TEMP/history"
+          if gh api -H "Accept: application/vnd.github.raw+json" \
+              "repos/$GITHUB_REPOSITORY/contents/sources/news/items.jsonl?ref=data-archive" \
+              > "$RUNNER_TEMP/history/items.jsonl"; then
+            echo "dir=$RUNNER_TEMP/history" >> "$GITHUB_OUTPUT"
+            echo "Copia del histórico: $(wc -l < "$RUNNER_TEMP/history/items.jsonl") notas."
+          else
+            echo "::notice::Sin copia del histórico de noticias en data-archive (todavía no hay una corrida archivada)."
           fi
 
       - name: Fetch, validate and build the publication
@@ -328,7 +340,16 @@ jobs:
             git worktree add --detach ../archive
             git -C ../archive switch --orphan data-archive
           fi
-          mkdir -p ../archive/sources
+          mkdir -p ../archive/sources/news
+          # Notas nuevas de cada día: varias corridas el mismo día se suman (sin repetir líneas).
+          for f in raw/news/2*.jsonl; do
+            [ -e "$f" ] || continue
+            t="../archive/sources/news/$(basename "$f")"
+            touch "$t"; cat "$t" "$f" | awk '!seen[$0]++' > "$t.tmp" && mv "$t.tmp" "$t"
+          done
+          # El histórico completo de esta publicación reemplaza al anterior (solo si la corrida lo tuvo entero).
+          [ -f raw/news/items.jsonl ] && cp raw/news/items.jsonl ../archive/sources/news/items.jsonl
+          rm -rf raw/news
           cp -rn raw/. ../archive/sources/
           cd ../archive
           git add sources
