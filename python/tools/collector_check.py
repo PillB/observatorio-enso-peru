@@ -46,6 +46,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import uuid
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timedelta, timezone
@@ -441,32 +442,46 @@ CHECKS: list[tuple[str, Callable[[dict], object]]] = [
 # --- Prueba de la tarea programada ----------------------------------------------
 
 def test_scheduled_run(ctx: dict, wait_min: float = 15.0, emit: Callable[[str], None] = print) -> Result:
-    """Dispara la tarea programada y espera a que termine (como a las 21:00)."""
+    """Dispara la tarea programada y espera a que termine (como a las 21:00).
+
+    El pedido lleva un id que la corrida anota en estado.json: así no se confunde
+    con otra corrida que ya estaba en curso (en macOS, launchd corre la tarea al
+    instalarla) y, si el sistema ignora el disparo porque la tarea seguía
+    corriendo, se vuelve a disparar cuando termina.
+    """
     p = svc.paths(ctx["root"])
-    before = svc.read_state(ctx["root"])
-    p["force"].write_text(json.dumps({"created": datetime.now(timezone.utc).isoformat(), "dispatch": False}),
-                          encoding="utf-8")
     python = sys.executable
     if os.name == "nt" and Path(python).with_name("pythonw.exe").exists():
         python = str(Path(python).with_name("pythonw.exe"))
+    deadline = time.time() + wait_min * 60
+    if p["lock"].exists():
+        emit("Hay una recolección en curso; se espera a que termine antes de la prueba...")
+        while p["lock"].exists() and time.time() < deadline:
+            time.sleep(3)
+    test_id = uuid.uuid4().hex[:12]
+    p["force"].write_text(json.dumps({"created": datetime.now(timezone.utc).isoformat(), "dispatch": False,
+                                      "id": test_id}), encoding="utf-8")
     if not sched.kick(python, ctx["root"]):
         p["force"].unlink(missing_ok=True)
         return Result("prueba-tarea", FAIL, "el sistema no pudo disparar la tarea", "",
                       "Ver «tarea»; volver a ejecutar el instalador.")
     emit(f"Tarea disparada; esperando su resultado (hasta {wait_min:.0f} min)...")
-    deadline = time.time() + wait_min * 60
-    started = False
+    kicked, kicks, started = time.time(), 1, False
     while time.time() < deadline:
         time.sleep(3)
         s = svc.read_state(ctx["root"])
-        if s.get("last_attempt") != before.get("last_attempt") or s.get("result") != before.get("result"):
-            started = True
-        if started and s.get("result") not in (None, "en curso") and s.get("last_attempt"):
+        mine = s.get("test_id") == test_id
+        started = started or mine or not p["force"].exists()
+        if mine and s.get("result") not in (None, "en curso"):
             if s.get("result") == "ok":
                 return Result("prueba-tarea", OK, "la tarea programada recolectó y subió la copia",
                               f"{s.get('summary')} · {s.get('duration_s')} s")
             return Result("prueba-tarea", FAIL, f"la tarea programada corrió y falló: {s.get('detail', '')}",
                           f"código {s.get('exit_code')}", s.get("hint", ""), lines=[json.dumps(s, ensure_ascii=False)])
+        # Pedido sin tomar y nada corriendo: el disparo se perdió (la tarea seguía en curso).
+        if p["force"].exists() and not p["lock"].exists() and time.time() - kicked > 20 and kicks < 4:
+            sched.kick(python, ctx["root"])
+            kicked, kicks = time.time(), kicks + 1
     p["force"].unlink(missing_ok=True)
     where = {"win32": "Programador de tareas → Biblioteca → la tarea → Historial",
              "darwin": f"{p['logs'] / 'launchd.log'}"}.get(sys.platform, f"{p['logs'] / 'cron.log'}")

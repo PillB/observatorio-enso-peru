@@ -545,7 +545,7 @@ def run(*, scheduled: bool = False, do_push: bool = True, do_dispatch: bool = Tr
         return EXIT_OK
     started = time.monotonic()
     state.update(last_attempt=now.isoformat(timespec="seconds"), trigger="prueba" if forced is not None
-                 else "programada" if scheduled else "manual")
+                 else "programada" if scheduled else "manual", test_id=(forced or {}).get("id"))
     watchdog = _watchdog(float(os.environ.get("ENSO_RUN_TIMEOUT_MIN", "45")), root)
     try:
         with run_lock(root):
@@ -560,6 +560,8 @@ def run(*, scheduled: bool = False, do_push: bool = True, do_dispatch: bool = Tr
         code = p.code
         if code == EXIT_BUSY:  # otra corrida está trabajando: no es una falla
             log(str(p))
+            if forced is not None:  # la prueba queda pendiente para la próxima corrida
+                paths(root)["force"].write_text(json.dumps(forced), encoding="utf-8")
             return code
         state.update(result="falla", exit_code=code, detail=str(p), hint=p.hint,
                      consecutive_failures=state.get("consecutive_failures", 0) + 1)

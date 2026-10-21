@@ -44,6 +44,12 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
 $HoraGiven = $PSBoundParameters.ContainsKey('Hora')
 
+# La salida de Python llega por una tubería: que viaje y se lea en UTF-8. Si no,
+# en una consola en español «Verificación» se ve como «Verificaci¾n».
+$env:PYTHONIOENCODING = 'utf-8'
+try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false }
+catch { Write-Verbose "Sin consola: la salida queda con su codificación ($($_.Exception.Message))" }
+
 $TaskName = 'Observatorio ENSO - recolector Peru'
 $OldTaskName = 'ENSO recolector Peru'
 $KitUrl = 'https://github.com/PillB/observatorio-enso-peru/releases/download/recolector-kit/recolector-peru.zip'
@@ -399,8 +405,15 @@ function Invoke-Uninstall {
     $protected = @($root, $env:USERPROFILE, $env:LOCALAPPDATA, $env:APPDATA, $env:ProgramFiles) | ForEach-Object { "$_".TrimEnd('\') }
     if ($ours -and ($protected -notcontains $Destino.TrimEnd('\'))) {
         Set-Location $env:TEMP
-        Remove-Item -Recurse -Force $Destino
-        Write-Info "Carpeta $Destino borrada."
+        try {
+            Remove-Item -Recurse -Force $Destino
+            Write-Info "Carpeta $Destino borrada."
+        } catch {
+            # Suele ser otra ventana (VERIFICAR, una consola) abierta en esa carpeta.
+            Write-Warn "No se pudo borrar todo $Destino ($($_.Exception.Message))."
+            Write-Info 'La tarea ya no correrá. Cerrar las ventanas abiertas en esa carpeta y borrarla a mano.'
+            return 1
+        }
     } elseif (Test-Path $Destino) {
         Write-Warn "$Destino no parece una instalación del recolector: no se borró."
     }

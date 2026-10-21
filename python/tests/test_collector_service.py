@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
 import re
+import shutil
 import subprocess
 import sys
 import zipfile
@@ -216,6 +218,49 @@ def test_force_flag_from_the_check_runs_once_without_dispatch(home, peru_network
     assert not dispatched
 
 
+def test_task_test_ignores_a_run_already_in_progress_and_rekicks(home, monkeypatch):
+    """macOS: launchd corre la tarea al instalarla e ignora el disparo mientras sigue en curso."""
+    monkeypatch.setattr(svc, "collect_and_push", lambda **kw: (_ for _ in ()).throw(
+        svc.Problem(svc.EXIT_GITHUB, "GitHub rechazó el token")))
+    p = svc.paths(home)
+    p["lock"].write_text("123", encoding="utf-8")  # la corrida de la instalación sigue trabajando
+    clock = {"t": 1000.0, "sleeps": 0}
+
+    def sleep(sec):
+        clock["t"] += sec
+        clock["sleeps"] += 1
+        if clock["sleeps"] == 2 and p["lock"].exists():  # termina después de que la prueba la espera
+            p["lock"].unlink()
+            svc.write_state({"last_attempt": "2026-10-21T01:37:56+00:00", "trigger": "programada",
+                             "result": "falla", "exit_code": 3}, home)
+
+    monkeypatch.setattr(chk, "time", type("T", (), {"time": staticmethod(lambda: clock["t"]),
+                                                    "sleep": staticmethod(sleep)}))
+    kicks = []
+
+    def kick(python, root):
+        kicks.append(clock["t"])
+        if len(kicks) > 1:  # el primer disparo se pierde
+            svc.run(scheduled=True, root=root)
+        return True
+
+    monkeypatch.setattr(chk.sched, "kick", kick)
+    r = chk.test_scheduled_run({"root": home}, wait_min=5, emit=lambda line: None)
+    assert r.level == chk.FAIL and "rechazó el token" in r.title, r
+    state = svc.read_state(home)
+    assert state["trigger"] == "prueba" and state["exit_code"] == svc.EXIT_GITHUB
+    assert len(kicks) == 2 and not p["force"].exists()
+
+
+def test_forced_run_that_finds_another_run_keeps_the_request(home, monkeypatch):
+    p = svc.paths(home)
+    p["lock"].write_text("123", encoding="utf-8")
+    p["force"].write_text(json.dumps({"created": datetime.now(timezone.utc).isoformat(), "id": "abc"}),
+                          encoding="utf-8")
+    assert svc.run(scheduled=True, root=home) == svc.EXIT_BUSY
+    assert json.loads(p["force"].read_text(encoding="utf-8"))["id"] == "abc"
+
+
 def test_push_failure_is_explained(home, peru_network, remote, monkeypatch):
     def rejected(snap, token):
         raise RuntimeError("git push falló: remote: Permission to PillB/observatorio-enso-peru.git denied. 403")
@@ -396,9 +441,33 @@ def test_launchers_only_use_options_the_installers_know():
             assert re.search(rf"^\s+{flag}\)", sh, re.M), (f.name, flag)
 
 
+def find_bash() -> str | None:
+    """bash de Git en Windows: el de System32 es WSL y sin una distro instalada no corre nada."""
+    if os.name != "nt":
+        return shutil.which("bash")
+    git = shutil.which("git")
+    if git:
+        for base in Path(git).resolve().parents[:2]:
+            for rel in ("bin/bash.exe", "usr/bin/bash.exe"):
+                if (base / rel).exists():
+                    return str(base / rel)
+    return None
+
+
 def test_install_script_is_valid_bash():
-    r = subprocess.run(["bash", "-n", str(REPO_ROOT / "collector" / "instalar.sh")], capture_output=True, text=True)
+    bash = find_bash()
+    if not bash:
+        pytest.skip("no hay bash en este equipo")
+    r = subprocess.run([bash, "-n", str(REPO_ROOT / "collector" / "instalar.sh")], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
+
+
+def test_launchers_that_replace_their_folder_run_from_a_temp_copy():
+    """cmd relee el .cmd mientras corre y no deja borrar su carpeta actual."""
+    for name in ("DESINSTALAR-Windows.cmd", "ACTUALIZAR-Windows.cmd"):
+        text = (REPO_ROOT / "collector" / "lanzadores" / "otras-acciones" / name).read_text(encoding="ascii")
+        assert 'cd /d "%TEMP%"' in text and '"%TEMP%\\observatorio-enso-%~nx0" %*' in text, name
+        assert text.index("goto run") < text.index("copy /y") < text.index(":run"), name
 
 
 def test_site_run_warns_before_the_collector_token_expires(tmp_path):

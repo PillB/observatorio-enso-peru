@@ -1,8 +1,15 @@
 @echo off
 rem Observatorio ENSO Peru: quitar la tarea programada y la instalacion. Doble clic para ejecutar.
-setlocal
-set "S=%~dp0collector\instalar.ps1"
-if not exist "%S%" set "S=%~dp0..\collector\instalar.ps1"
-if not exist "%S%" set "S=%~dp0..\instalar.ps1"
-if not exist "%S%" set "S=%~dp0..\..\instalar.ps1"
+rem Corre desde una copia en %TEMP%: esta carpeta se borra o se reemplaza mientras corre, y
+rem cmd vuelve a leer el .cmd (y no deja borrar su carpeta actual) mientras lo ejecuta.
+if defined ENSO_LANZADOR goto run
+set "ENSO_LANZADOR=%~dp0"
+copy /y "%~f0" "%TEMP%\observatorio-enso-%~nx0" >nul 2>&1 && cd /d "%TEMP%" && "%TEMP%\observatorio-enso-%~nx0" %*
+:run
+set "H=%ENSO_LANZADOR%"
+set "ENSO_LANZADOR="
+set "S=%H%collector\instalar.ps1"
+if not exist "%S%" set "S=%H%..\collector\instalar.ps1"
+if not exist "%S%" set "S=%H%..\instalar.ps1"
+if not exist "%S%" set "S=%H%..\..\instalar.ps1"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%S%" -Desinstalar -Pausa %* & exit /b

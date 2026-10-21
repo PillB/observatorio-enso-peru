@@ -164,6 +164,9 @@ copy_kit() {
     [ -f "$src/$f" ] && cp "$src/$f" "$DEST/"
   done
   find "$DEST" -name __pycache__ -type d -prune -exec rm -rf {} + 2>/dev/null
+  # Un zip abierto con «python -m zipfile» (ACTUALIZAR), una memoria USB o una
+  # carpeta en la nube pierden el permiso de ejecución de los lanzadores.
+  chmod +x "$DEST"/*.command "$DEST"/otras-acciones/*.command "$DEST"/collector/*.sh 2>/dev/null || true
   if [ "$OS" = "Darwin" ]; then xattr -dr com.apple.quarantine "$DEST" 2>/dev/null || true; fi
   say "Archivos copiados a $DEST"
 }

@@ -127,7 +127,12 @@ jobs:
           Get-Content "$dest\logs\recolector.log" -Tail 20
           if ($state.trigger -ne 'prueba' -or $state.exit_code -ne 3) { throw 'La tarea programada no corrió como se esperaba' }
 
-          & "$dest\otras-acciones\DESINSTALAR-Windows.cmd" -NoInteractivo
+          # Como un doble clic: la consola arranca dentro de la carpeta que se borra.
+          Push-Location "$dest\otras-acciones"
+          & .\DESINSTALAR-Windows.cmd -NoInteractivo
+          $code = $LASTEXITCODE
+          Pop-Location
+          if ($code -ne 0) { throw "DESINSTALAR terminó con $code" }
           if (Get-ScheduledTask -TaskName 'Observatorio ENSO - recolector Peru' -ErrorAction SilentlyContinue) { throw 'La tarea sigue registrada' }
           if (Test-Path $dest) { throw 'La carpeta sigue ahí' }
 
