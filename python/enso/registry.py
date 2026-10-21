@@ -92,15 +92,23 @@ def _feed_entries() -> list[Entry]:
     out = []
     for f in news.FEEDS:
         host = urlparse(f.url).netloc
-        gob = f.adapter == "gobpe"
+        expect, method = ADAPTER_KIND.get(f.adapter, ("rss", "feed"))
+        parser = "enso.feedparse:parse" if f.adapter in ("feed", "gobpe") else "enso.hazardparse:parse"
         out.append(Entry(
             id=f"news-{f.id}", group=_slug(f.name.split("·")[0]) or host, name=f.name,
-            institution=f.name.split("·")[0].strip(), url=f.url, expect="html" if gob else "rss",
-            method="html" if gob else "feed", kind="feed", home=f"https://{host}/",
-            hazards=["enso"] if f.scope == "general" else [], interval_minutes=1440,
-            parser="enso.feedparse:parse" + (" (adapter=gobpe)" if gob else ""), department=f.department,
+            institution=f.name.split("·")[0].strip(), url=f.url, expect=expect,
+            method=method, kind="feed", home=f"https://{host}/",
+            hazards=list(f.covers) or (["enso"] if f.scope == "general" else []), interval_minutes=1440,
+            parser=parser + (f" (adapter={f.adapter})" if f.adapter != "feed" else ""), department=f.department,
             notes=f"tipo de medio: {f.kind}; alcance: {f.scope}"))
     return out
+
+
+#: Qué devuelve cada lector de ``news`` (``expect``) y cómo se accede (``method``).
+ADAPTER_KIND = {"feed": ("rss", "feed"), "indeci-coen": ("rss", "feed"), "gobpe": ("html", "html"),
+                "dhn": ("html", "html"), "dhn-avisos": ("html", "html"), "cenvul": ("html", "html"), "telegram": ("html", "html"),
+                "geojson": ("json", "api"), "arcgis": ("json", "api"), "ptwc-text": ("text", "download"),
+                "firms": ("csv", "download")}
 
 
 def _kind_of(url: str) -> tuple[str, str]:

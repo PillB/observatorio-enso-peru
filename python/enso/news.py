@@ -51,13 +51,23 @@ class Feed:
     kind: str = "diario"
     #: Código UBIGEO de 2 dígitos del departamento que cubre el medio, si es regional.
     department: Optional[str] = None
-    #: "feed" (RSS/Atom/JSON Feed) o "gobpe" (listado de noticias de gob.pe, sin RSS).
+    #: "feed" (RSS/Atom/JSON Feed), "gobpe" (listado de noticias de gob.pe, sin RSS) o
+    #: uno de los lectores de fuentes de peligros sin RSS (``hazardparse.ADAPTERS``).
     adapter: str = "feed"
+    #: Las entradas más antiguas se ignoran (listados que acumulan años de boletines).
+    max_age_days: Optional[int] = None
+    #: Peligros que cubre una fuente oficial de alertas (para el registro de fuentes).
+    covers: tuple[str, ...] = ()
 
     @property
     def fixture(self) -> str:
         """Nombre del archivo capturado (fixtures y archivo crudo)."""
-        return f"news-{self.id}.{'html' if self.adapter == 'gobpe' else 'xml'}"
+        return f"news-{self.id}.{ADAPTER_EXT.get(self.adapter, 'xml')}"
+
+
+#: Extensión de la captura según lo que devuelve cada lector.
+ADAPTER_EXT = {"gobpe": "html", "dhn": "html", "dhn-avisos": "html", "cenvul": "html", "telegram": "html", "geojson": "json",
+               "arcgis": "json", "ptwc-text": "txt", "firms": "csv"}
 
 
 _GN = "https://news.google.com/rss/search?q="
@@ -385,6 +395,49 @@ FEEDS: list[Feed] = [
          kind="digital", scope="local", stale_days=21, department="25"),
     Feed("gobpe-imarpe", "IMARPE · noticias en gob.pe", "peru", "https://www.gob.pe/institucion/imarpe/noticias",
          kind="gobierno", scope="hazard", stale_days=30, adapter="gobpe"),
+    # Alertas oficiales de peligros sin RSS (enso.hazardparse). Para cada una se usa la vía más
+    # simple que trae el dato desde EE. UU. (tools.scrape_ladder, informe en la rama bot/scrape-ladder/…).
+    Feed("indeci-coen", "INDECI · COEN, reportes de emergencias", "peru", "https://portal.indeci.gob.pe/emergencias/feed/?paged=1",
+         kind="gobierno", scope="hazard", stale_days=3, adapter="indeci-coen",
+         covers=("lluvias", "inundacion", "huaico", "frio", "calor", "viento", "incendio", "oleaje", "sismo", "volcan", "emergencia")),
+    Feed("senamhi-quebradas", "SENAMHI · avisos de activación de quebradas (servidor GEOSINPAD del INDECI)", "peru",
+         "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2"
+         "/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json",
+         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis",
+         covers=("huaico", "lluvias")),
+    Feed("senamhi-hidrologicos", "SENAMHI · avisos hidrológicos (servidor GEOSINPAD del INDECI)", "peru",
+         "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/4/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
+         kind="gobierno", scope="hazard", stale_days=10, adapter="arcgis",
+         covers=("inundacion", "sequia")),
+    Feed("usgs-sismos", "USGS · sismos de magnitud 4 o más (Perú y alrededores)", "peru",
+         "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minlatitude=-20&maxlatitude=1"
+         "&minlongitude=-84&maxlongitude=-68&minmagnitude=4&orderby=time&limit=100",
+         kind="organismo", scope="hazard", stale_days=14, adapter="geojson", max_age_days=30,
+         covers=("sismo", "tsunami")),
+    Feed("dhn-tsunamis", "DHN · boletines de sismo y tsunami", "peru", "https://www.dhn.mil.pe/portal/boletin-sismo-tsunami",
+         kind="gobierno", scope="hazard", stale_days=90, adapter="dhn", max_age_days=30,
+         covers=("sismo", "tsunami")),
+    Feed("dhn-avisos", "DHN · avisos especiales de oleaje y de viento", "peru", "https://www.dhn.mil.pe/portal/avisos-especiales",
+         kind="gobierno", scope="hazard", stale_days=30, adapter="dhn-avisos", max_age_days=30,
+         covers=("oleaje", "viento")),
+    Feed("ptwc-mensajes", "PTWC · mensajes de tsunami del Pacífico", "mundo", "https://www.tsunami.gov/events/xml/PHEBAtom.xml",
+         lang="en", kind="organismo", scope="hazard", stale_days=365, max_age_days=30,
+         covers=("tsunami",)),
+    Feed("ptwc-wepa40", "PTWC · último mensaje de tsunami (texto)", "mundo",
+         "https://tgftp.nws.noaa.gov/data/raw/we/wepa40.pheb.tsu.pac.txt",
+         lang="en", kind="organismo", scope="hazard", stale_days=365, adapter="ptwc-text", max_age_days=30,
+         covers=("tsunami",)),
+    Feed("igp-cenvul-boletines", "IGP · boletines vulcanológicos (CENVUL)", "peru",
+         "https://cenvul.igp.gob.pe/productos/boletines-vulcanologicos",
+         kind="gobierno", scope="hazard", stale_days=30, adapter="cenvul", max_age_days=60,
+         covers=("volcan",)),
+    Feed("igp-cenvul-alertas", "IGP · alertas vulcanológicas (CENVUL)", "peru",
+         "https://cenvul.igp.gob.pe/productos/alertas-vulcanologicas",
+         kind="gobierno", scope="hazard", stale_days=30, adapter="cenvul", max_age_days=30,
+         covers=("volcan",)),
+    Feed("senamhi-telegram", "SENAMHI · canal oficial de Telegram (avisos)", "peru", "https://t.me/s/Senamhi_Peru",
+         kind="gobierno", scope="hazard", stale_days=7, adapter="telegram",
+         covers=("lluvias", "frio", "calor", "viento", "incendio", "sequia", "enso")),
     # Mundo
     Feed("gnews-world", "Google News (search El Niño)", "mundo",
          _GN + "%22El%20Ni%C3%B1o%22%20OR%20%22La%20Ni%C3%B1a%22%20OR%20ENSO&hl=en-US&gl=US&ceid=US:en",
@@ -419,20 +472,25 @@ ENSO_RE = _rx(r"fen[oó]meno (?:del?|de el|de la) ni[nñ][oa]|ni[nñ]o costero|n
 #: Peligros concretos (cuentan aunque estén solo en el resumen).
 HAZARDS: dict[str, tuple[str, re.Pattern]] = {
     "lluvias": ("Lluvias", _rx(r"lluvias? (?:intensas?|fuertes?|torrenciales?|extremas?)|(?:intensas?|fuertes?|torrenciales?) lluvias?|"
-                               r"precipitaciones (?:intensas|fuertes|extremas)|tormentas? el[eé]ctricas?|aguaceros?|heavy rain(?:s|fall)?")),
+                               r"precipitaciones (?:intensas|fuertes|extremas)|tormentas? el[eé]ctricas?|aguaceros?|heavy rain(?:s|fall)?|"
+                               r"avisos? (?:meteorol[oó]gicos? )?(?:de|por) lluvias?|aviso meteorol[oó]gico[^.:]{0,30}: precipitaciones|"
+                               r"(?:se (?:presentar|registrar|esperar?|prev)\w*|continuar\w*(?: las)?|ocurrencia de) precipitaciones(?! (?:ligeras|d[eé]biles|aisladas))")),
     "inundacion": ("Inundaciones", _rx(r"inundaci[oó]n(?:es)?|inundad[oa]s?|inunda(?:n|ron)?|inund[oó]|desbordes?|desbord(?:a|an|[oó]|aron)|"
-                                       r"crecidas?|aniegos?|anegad[oa]s?|floods?|flooding")),
+                                       r"crecidas?|aniegos?|anegad[oa]s?|floods?|flooding|(?:incremento|aumento|ascenso) del (?:nivel|caudal) del r[ií]o|"
+                                       r"tendencia ascendente en su nivel|(?:ascenso|incremento|aumento) en su nivel")),
     "huaico": ("Huaicos y deslizamientos", _rx(r"huaicos?|aluvi[oó]n(?:es)?|activaci[oó]n de (?:las )?quebradas?|quebradas? activad\w*|"
                                                r"deslizamientos?|derrumbes?|landslides?|mudslides?")),
     "sequia": ("Sequía", _rx(r"sequ[ií]as?|d[eé]ficit h[ií]drico|estr[eé]s h[ií]drico|escasez (?:de|del) agua|condiciones secas|"
-                             r"d[eé]ficit de lluvias|lluvias deficitarias|drought")),
+                             r"d[eé]ficit de lluvias|lluvias deficitarias|drought|vaciantes?|descenso del (?:nivel|caudal) del r[ií]o|"
+                             r"tendencia descendente en su nivel|descenso en su nivel")),
     "calor": ("Calor", _rx(r"olas? de calor|altas temperaturas|temperaturas? (?:extremas|r[eé]cord)|calor (?:extremo|intenso)|"
                            r"intenso calor|incremento de (?:la )?temperatura|radiaci[oó]n (?:uv|ultravioleta)(?: (?:extrema|muy alta))?|"
                            r"alta radiaci[oó]n|heat ?waves?")),
-    "frio": ("Frío, friaje y heladas", _rx(r"friajes?|heladas?|nevadas?|granizadas?|olas? de fr[ií]o|bajas temperaturas|"
+    "frio": ("Frío, friaje y heladas", _rx(r"friajes?|heladas?|nevadas?|granizadas?|granizo|aguanieve|nieve|olas? de fr[ií]o|bajas temperaturas|"
                                            r"descenso de (?:la )?temperatura|temperaturas? bajo cero|cold waves?")),
     "viento": ("Vientos", _rx(r"vientos? (?:fuertes|intensos|paracas)|(?:fuertes|intensos) vientos|r[aá]fagas(?: de viento)?|"
-                              r"vientos? de hasta \d+|incremento de (?:la )?(?:velocidad del )?vientos?")),
+                              r"vientos? de hasta \d+|incremento de (?:la )?(?:velocidad del )?vientos?|"
+                              r"(?:incrementar[aá]|aumentar[aá]) la velocidad del viento|avisos? especial(?:es)? de vientos?|brisas? (?:fuertes?|frescas?)|vientos? (?:de moderada|moderados?) a (?:fuerte|extrema)")),
     "oleaje": ("Oleaje", _rx(r"oleajes?|maretazos?|bravezas? (?:del? )?mar|cierre de puertos|swells?")),
     "sismo": ("Sismos y tsunamis", _rx(r"sismos?|terremotos?|temblor(?:es)?|r[eé]plicas? s[ií]smicas?|tsunamis?|maremotos?|earthquakes?")),
     "volcan": ("Volcanes", _rx(r"volc[aá]n(?:es)?|erupci[oó]n(?:es)?|ceniza volc[aá]nica|ubinas|sabancaya|volcano(?:es)?")),
@@ -459,7 +517,7 @@ OFFTOPIC_RE = {
 }
 #: Comunicado de una entidad de alerta («Senamhi advierte…», «Indeci alerta…»): cuenta aunque no nombre el peligro.
 OFFICIAL_ALERT_RE = _rx(r"(?:senamhi|indeci|igp|dhn|enfen|cenepred|coen|coer|ana)\W+(?:\w+\W+){0,3}?"
-                        r"(?:alerta|alertan|advierte|advierten|emite|activa|declara|pronostica|prev[eé])")
+                        r"(?:alerta|alertan|advierte|advierten|emite|activa|declara|pronostica|prev[eé]|avisos?)")
 #: «sismo de magnitud 3.5»: los sismos leves que el IGP reporta a diario no son una alerta.
 MAGNITUDE_RE = re.compile(r"magnitud (?:de )?(\d+(?:[.,]\d)?)", re.I)
 #: Incendios que no son forestales: solo cuentan en feeds de emergencias o regionales.
@@ -772,12 +830,15 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
     st.update({"ok": True, "items": len(entries), "latest": max(dates) if dates else None,
                "format": parsed.format, "repairs": parsed.repairs})
     st["active"] = bool(st["latest"]) and st["latest"] >= (now - timedelta(days=f.stale_days)).isoformat()
-    if not entries:
+    if not entries and f.adapter != "arcgis":  # una capa de avisos vacía es que no hay avisos vigentes
         st["error"] = "feed sin entradas"
     future = (now + timedelta(hours=2)).isoformat()
+    oldest = (now - timedelta(days=f.max_age_days)).isoformat() if f.max_age_days else ""
     gz = gazetteer()
     found = []
     for e in entries:
+        if oldest and (not e["published"] or e["published"] < oldest):
+            continue  # sin fecha no se puede saber si es de hace años
         outlet = e.get("outlet") or f.name
         if SOCIAL_RE.search(e["link"]) or SOCIAL_RE.search(outlet):
             continue  # publicaciones en redes sociales, no notas de prensa
@@ -792,7 +853,8 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
             continue  # medio de otro país en una búsqueda de Google Noticias (Junín de Argentina, Jaén de España…)
         try:
             # Las categorías de un medio regional son sus secciones («Trujillo», «Edición Impresa»): no ubican la nota.
-            texts = [title, summary] + ([" · ".join(e.get("categories") or [])] if not f.department else [])
+            # Las fuentes con lugares en campos propios (``geo``) se ubican solo con ellos.
+            texts = e.get("geo") or [title, summary] + ([" · ".join(e.get("categories") or [])] if not f.department else [])
             tag = gz.tag(texts, peru_context=f.region == "peru", default_dep=f.department)
         except Exception:  # noqa: BLE001 — una nota con texto raro queda sin lugar, no sin noticias
             tag = None

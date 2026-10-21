@@ -8,9 +8,11 @@ y enlaza al documento o archivo original.
 from __future__ import annotations
 
 import calendar
+from datetime import datetime, timedelta
 from typing import Optional
 
 GROUPS = [
+    ("alertas", "Alertas y reportes de peligros (últimos 7 días)"),
     ("oficial", "Comunicados y avisos oficiales"),
     ("indices", "Índices oficiales"),
     ("mar", "Temperatura del mar"),
@@ -37,9 +39,68 @@ def _period_date(period: str) -> str:
     return period[:10]
 
 
-def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, relay=None) -> dict:
-    """``sources``: id → {institution, docs, retrievedAt, channel, status}."""
-    items: list[dict] = []
+#: Avisos y reportes de las fuentes oficiales de peligros que se muestran como máximo.
+ALERTS_MAX = 40
+ALERTS_DAYS = 7
+
+
+def alerts(news_items: list[dict], now: datetime) -> list[dict]:
+    """Lo último de las fuentes oficiales de peligros (INDECI, SENAMHI, IGP, DHN, USGS…), sin agrupar.
+
+    Cada aviso enlaza a la fuente en vivo y a la página del archivo del día en que se vio."""
+    from .archive import news_page
+    from .geo import department_names
+    from .hazardparse import TG_KINDS
+    from .news import FEED_BY_ID
+
+    since = (now - timedelta(days=ALERTS_DAYS)).isoformat()
+    deps = department_names()
+    out, seen = [], set()
+    for i in sorted(news_items, key=lambda i: i.get("published") or i["first_seen"], reverse=True):
+        f = FEED_BY_ID.get(i.get("feed") or "")
+        when = i.get("published") or i["first_seen"]
+        if not f or not f.covers or when < since or i["link"] in seen:
+            continue
+        if f.adapter == "telegram" and not i["title"].startswith(tuple(TG_KINDS.values())):
+            continue  # el canal mezcla avisos con notas de prensa («Senamhi capacita a…»)
+        seen.add(i["link"])
+        hz = [h for h in (i.get("hazards") or []) if h != "enso"]
+        if len(hz) > 1:  # «mochila de emergencia», «rutas de evacuación»: consejo, no otro peligro
+            hz = [h for h in hz if h != "emergencia"]
+        where = [p["name"] if p.get("level") == "departamento" else f"{p['name']} ({deps.get(p['code'][:2], '')})".replace(" ()", "")
+                 for p in (i.get("places") or [])][:3]
+        out.append({"group": "alertas", "id": f"alert-{i['id']}", "source": f"news-{f.id}",
+                    "institution": f.name.split("·")[0].strip(), "kind": f.name.split("·", 1)[-1].strip(),
+                    "title": i["title"], "text": i.get("summary") or "", "date": when, "url": i["link"],
+                    "archive": news_page(i), "hazards": hz[:3],
+                    "where": where, "stale": False})
+        if len(out) >= ALERTS_MAX:
+            break
+    return out
+
+
+def alert_sources(feed_status: Optional[list[dict]]) -> list[dict]:
+    """Si cada fuente de alertas respondió en esta corrida. Sin avisos no quiere decir sin peligro:
+    el sitio dice cuáles no respondieron, para que nadie lea su silencio como calma."""
+    from .news import FEED_BY_ID
+
+    out = []
+    for st in feed_status or []:
+        f = FEED_BY_ID.get(st.get("id") or "")
+        if f and f.covers:
+            out.append({"id": f.id, "name": f.name, "url": f.url, "ok": bool(st.get("ok")),
+                        "latest": st.get("latest"), "error": st.get("error") or ""})
+    return out
+
+
+def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, relay=None,
+          news_items: Optional[list[dict]] = None, now: Optional[datetime] = None,
+          feed_status: Optional[list[dict]] = None) -> dict:
+    """``sources``: id → {institution, docs, retrievedAt, channel, status}; ``news_items``: el histórico
+    de noticias, del que salen las alertas de las fuentes oficiales de peligros; ``feed_status``: el
+    estado de cada feed en esta corrida (``news/feeds.json``)."""
+    items: list[dict] = alerts(news_items, now) if news_items and now else []
+    status = alert_sources(feed_status)
 
     def src(sid: str) -> dict:
         return sources.get(sid) or {}
@@ -105,5 +166,9 @@ def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, r
 
     order = {g: i for i, (g, _) in enumerate(GROUPS)}
     items.sort(key=lambda i: (order[i["group"]], -(int((i.get("date") or "0000-00-00").replace("-", "")[:8] or 0))))
-    return {"groups": [{"id": g, "label": label, "items": [i for i in items if i["group"] == g]}
-                       for g, label in GROUPS if any(i["group"] == g for i in items)]}
+    groups = [{"id": g, "label": label, "items": [i for i in items if i["group"] == g]}
+              for g, label in GROUPS if any(i["group"] == g for i in items) or (g == "alertas" and status)]
+    for g in groups:
+        if g["id"] == "alertas":
+            g["sources"] = status  # aunque no haya avisos: el grupo dice qué fuentes se consultaron
+    return {"groups": groups}

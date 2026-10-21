@@ -251,11 +251,13 @@ function sourceFoot(keys) {
 const ARCHIVE_RE = /^archive\/[\w.\/-]+(?:#[\w-]+)?$/;
 const archiveHref = (p) => (p && ARCHIVE_RE.test(p) ? DATA + p : '');
 
-function sourceLinks(live, arch, { liveLabel = 'Fuente en vivo', archLabel = 'Copia archivada', when, prefix } = {}) {
+function sourceLinks(live, arch, { liveLabel = 'Fuente en vivo', archLabel = 'Copia archivada', when, prefix, snapshot } = {}) {
   const a = archiveHref(arch);
+  const snap = archiveHref(snapshot);
   const parts = [
     live ? html`<a href="${safeUrl(live)}" rel="noopener" target="_blank">${liveLabel}</a>` : '',
     a ? html`<a href="${a}" target="_blank" rel="noopener" title="${when ? `Copia bajada el ${F.fmtDateTime(when)}` : 'Copia que bajó el observatorio'}">${archLabel}</a>` : '',
+    snap ? html`<a href="${snap}" target="_blank" rel="noopener" title="La respuesta de la fuente tal como la bajó el observatorio hoy">Respuesta original bajada</a>` : '',
   ].filter(Boolean);
   if (!parts.length) return '';
   return html`<p class="src-links">${prefix ? html`<span>${prefix}:</span> ` : ''}${parts.map((x, i) => html`${i ? ' · ' : ''}${x}`)}</p>`;
@@ -609,20 +611,33 @@ function feedValue(it) {
 }
 
 function officialItem(it) {
-  const when = it.date ? html`<time datetime="${it.date}">${F.fmtDate(it.date)}</time>` : '';
+  const when = it.date ? html`<time datetime="${it.date}">${it.date.length > 10 ? F.fmtDateTime(it.date).replace(' (hora de Lima)', '') : F.fmtDate(it.date)}</time>` : '';
   return html`<li class="feed-item">
     <div class="feed-meta"><span class="feed-inst">${it.institution}</span>${when ? html` · ${when}` : ''}${it.kind ? html` · <span class="muted">${it.kind}</span>` : ''}</div>
     <h3 class="feed-title">${it.url ? html`<a href="${safeUrl(it.url)}" rel="noopener" target="_blank">${it.title}</a>` : it.title}</h3>
     ${feedValue(it)}
     ${it.text ? html`<p class="feed-text">${it.text}</p>` : ''}
     <div class="feed-tags">
+      ${(it.hazards || []).filter((h) => HAZARD_LABEL[h]).map((h) => html`<span class="tag tag-hazard">${HAZARD_LABEL[h]}</span> `)}${(it.where || []).map((w) => html`<span class="tag tag-place">${raw(ICON.pin)}${w}</span> `)}
       ${it.level ? chip(it.level, LEVEL_TXT[it.level] && it.level !== 'ok' ? `Alerta ${LEVEL_TXT[it.level].toLowerCase()}` : undefined) : ''}
       ${it.stale ? html`<span class="tag tag-prelim">vencido</span>` : ''}
       ${it.newerListed ? html`<span class="tag tag-prelim">hay un comunicado más reciente (${it.newerListed}) sin leer</span>` : ''}
       ${it.next ? html`<span class="tag">próximo: ${F.fmtDate(it.next)}</span>` : ''}
       ${String(it.channel || '').startsWith('archive') ? html`<span class="tag">vía Internet Archive</span>` : it.channel === 'relay-peru' ? html`<span class="tag">vía recolector en el Perú</span>` : ''}
     </div>
-    ${sourceLinks(it.url, it.archive, { when: it.retrievedAt })}</li>`;
+    ${sourceLinks(it.url, it.archive, { when: it.retrievedAt, snapshot: it.snapshot })}</li>`;
+}
+
+// Sin avisos no quiere decir sin peligro: se dice qué fuentes de alertas no respondieron.
+function alertSources(g) {
+  const src = g.sources || [];
+  if (!src.length) return '';
+  const down = src.filter((s) => !s.ok);
+  const links = (list) => list.map((s, i) => html`${i ? ', ' : ''}<a href="${safeUrl(s.url)}" rel="noopener" target="_blank">${s.name}</a>`);
+  const empty = g.items.length ? '' : down.length === src.length
+    ? html`<p class="notice notice-alert">Ninguna fuente de alertas respondió en esta actualización: consulte directamente a las instituciones.</p>`
+    : html`<p>Las fuentes consultadas no publicaron avisos en los últimos 7 días.</p>`;
+  return html`${empty}<p class="alert-sources muted small">${src.length - down.length} de ${src.length} fuentes de alertas respondieron en esta actualización.${down.length && down.length < src.length ? html` <strong>Sin respuesta:</strong> ${links(down)}. Sus avisos pueden faltar aquí; consulte la fuente.` : ''}</p>`;
 }
 
 function clusterItem(c, deps = {}, dep = '') {
@@ -635,7 +650,7 @@ function clusterItem(c, deps = {}, dep = '') {
     <h3 class="feed-title"><a href="${safeUrl(c.links[0].url)}" rel="noopener" target="_blank">${c.title}</a></h3>
     ${c.summary ? html`<p class="feed-text">${c.summary}</p>` : ''}
     <div class="feed-tags"><span class="tag">${c.relevance === 'enso' ? 'El Niño / La Niña' : 'Impactos y peligros'}</span>${(c.hazards || []).filter((h) => h !== 'enso' && HAZARD_LABEL[h]).slice(0, 3).map((h) => html` <span class="tag tag-hazard">${HAZARD_LABEL[h]}</span>`)}${c.count > 1 ? html` <span class="tag">${c.count} notas similares</span>` : ''}${(c.kinds || []).map((k) => html` <span class="tag tag-kind tag-${KIND_GROUP[k] || 'diario'}">${KIND_LABEL[k] || k}</span>`)}${places.map((p) => html` <span class="tag tag-place">${raw(ICON.pin)}${placeLabel(p, deps)}</span>`)}</div>
-    ${sourceLinks(c.links[0].url, c.links[0].archive, { liveLabel: 'Nota original' })}
+    ${sourceLinks(c.links[0].url, c.links[0].archive, { liveLabel: 'Nota original', snapshot: c.links[0].snapshot })}
     ${more ? html`<details class="feed-more"><summary>Ver las ${c.links.length} notas</summary><ul>${c.links.map((l) => html`<li><a href="${safeUrl(l.url)}" rel="noopener" target="_blank">${l.title}</a> <span class="muted small">${l.outlet}${l.kind ? ` (${(KIND_LABEL[l.kind] || l.kind).toLowerCase()})` : ''}${l.published ? ` · ${F.fmtDate(l.published.slice(0, 10))}` : ''}</span>${archiveHref(l.archive) ? html` <a class="small" href="${archiveHref(l.archive)}" rel="noopener" target="_blank">copia</a>` : ''}</li>`)}</ul></details>` : ''}
   </li>`;
 }
@@ -679,7 +694,7 @@ VIEWS.noticias = {
       const { tab } = p;
       $$('[data-tab]').forEach((b) => { const on = b.dataset.tab === tab; b.setAttribute('aria-selected', String(on)); b.setAttribute('aria-pressed', String(on)); });
       if (tab === 'oficial') {
-        body.innerHTML = feed ? String(html`${feed.groups.map((g) => html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2><ul class="feed">${g.items.map(officialItem)}</ul></section>`)}`) : '<p class="card">No disponible en esta publicación.</p>';
+        body.innerHTML = feed ? String(html`${feed.groups.map((g) => html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2>${alertSources(g)}<ul class="feed">${g.items.map(officialItem)}</ul></section>`)}`) : '<p class="card">No disponible en esta publicación.</p>';
         return;
       }
       if (!clusters) { body.innerHTML = '<p class="card">Las noticias no están disponibles en esta publicación.</p>'; return; }

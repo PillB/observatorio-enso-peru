@@ -144,3 +144,11 @@ def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypat
     assert browser["blockedByRobots"] == [f"{base}/private/secret.json"]
     assert "/private/secret.json" not in _Site.hits  # el navegador tampoco pide lo que robots.txt prohíbe
     assert os.path.exists(tmp_path / next(c["file"] for c in browser["calls"] if c.get("file")))
+
+
+def test_expect_patterns_match_text_not_bytes():
+    from tools.scrape_ladder import _found
+    assert _found(r"BOLET[ÍI]N", "BOLETÍN DE SISMO".encode("utf-8"))
+    assert _found(r"BOLET[ÍI]N", "BOLETÍN DE SISMO".encode("cp1252"))
+    assert _found(r"N[°º] \d+", "Aviso N° 429".encode("utf-8"))
+    assert not _found(r"BOLET[ÍI]N", b"<html>sin boletines</html>")

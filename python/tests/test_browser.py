@@ -272,7 +272,10 @@ def test_items_link_to_live_source_and_archived_copy(site, page):
     off = page.locator("#news-body .feed-item").first
     expect(off.get_by_role("link", name="Copia archivada")).to_have_count(1, timeout=10000)
     a = off.get_by_role("link", name="Copia archivada").get_attribute("href")
-    assert (root / a).exists(), a
+    assert (root / a.split("#")[0]).exists(), a  # las alertas enlazan a su entrada en la página del día
+    snap = off.get_by_role("link", name="Respuesta original bajada")
+    if snap.count():  # la respuesta de la fuente tal como se bajó en esta corrida
+        assert (root / snap.get_attribute("href")).exists()
     go(page, base, "")
     doc = page.locator(".status-card").get_by_role("link", name="Copia archivada").first
     assert (root / doc.get_attribute("href")).exists()
