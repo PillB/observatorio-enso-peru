@@ -190,9 +190,10 @@ def test_missing_relay_branches_are_reported(tmp_path):
     assert obs.load_relay(tmp_path / "relay", log, plan) is None
     ev = log.events[-1]
     assert ev.code == "relay-missing" and ev.severity == "warning"
-    assert "data-peru no existe" in ev.message and "2 URL" in ev.message and "senamhi.gob.pe" in ev.message
+    assert "rama data-peru" in ev.message and "no se pudo bajar" in ev.message
+    assert "2 URL" in ev.message and "senamhi.gob.pe" in ev.message
     assert obs.load_n8n_relay(tmp_path / "n8n", log) is None
-    assert log.events[-1].code == "relay-n8n-missing" and "data-n8n no existe" in log.events[-1].message
+    assert log.events[-1].code == "relay-n8n-missing" and "rama data-n8n" in log.events[-1].message
 
 
 def test_n8n_heartbeat_without_sources_is_a_warning(tmp_path):
@@ -277,6 +278,16 @@ def test_gobpe_feeds_respect_its_robots_txt():
     assert not rules.allowed("https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sheet=1&sort_by=recent")
 
 
+def test_gobpe_rss_without_sheet_still_lists_news():
+    """Lo bajado desde Actions el 21 de octubre sin «sheet»: el RSS trae sus 25 notas más recientes."""
+    from enso import news as N
+
+    for inst in ("indeci", "regionpiura"):
+        body = (ROBOTS / f"gobpe-rss-{inst}.http.xml").read_bytes()
+        items = N.parse_feed(body, "https://www.gob.pe/")
+        assert len(items) == 25 and all(i["link"].startswith("https://www.gob.pe/") for i in items), inst
+
+
 def test_google_news_and_un_news_disallow_their_rss_to_generic_agents():
     """Lo que dicen hoy sus robots.txt (21 de octubre de 2026): por eso el registro deja esos feeds sin canales."""
     from enso import news as N
@@ -318,3 +329,113 @@ def test_feeds_barred_by_robots_are_not_requested_and_not_counted_as_down(tmp_pa
     assert st["andina"]["skipped"] == "robots" and "robots.txt" in st["andina"]["error"]
     codes = [e.code for e in log.events]
     assert "feeds-robots" in codes and not any(e.code == "feed-down" and "Andina" in e.message for e in log.events)
+
+
+def test_history_backup_reads_the_full_copy_first(tmp_path):
+    """items.jsonl es el histórico entero de la última corrida archivada; las notas de cada día completan."""
+    d = tmp_path / "news"
+    d.mkdir()
+    a, b, c = ({"id": i, "first_seen": f"2026-10-{n}T05:00:00+00:00"} for i, n in (("a1", 18), ("b2", 19), ("c3", 20)))
+    (d / "2026-10-20.jsonl").write_text(json.dumps(c) + "\n", encoding="utf-8")
+    (d / "items.jsonl").write_text(json.dumps(a) + "\n" + json.dumps(b) + "\n", encoding="utf-8")
+    assert [json.loads(x)["id"] for x in obs.read_history_backup(d).splitlines()] == ["a1", "b2", "c3"]
+
+
+def _one_feed(monkeypatch):
+    from enso import news as N
+
+    one = next(f for f in N.FEEDS if f.id == "usgs-sismos")
+    monkeypatch.setattr(N, "FEEDS", [one])
+    body = (Path(__file__).parent / "fixtures" / "sources" / one.fixture).read_bytes()
+    real = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(
+        lambda req: httpx.Response(200, content=body, headers={"content-type": "application/json"}))}))
+    return Fetcher(polite_delay=0)
+
+
+def test_a_restarted_history_is_flagged_and_completed_from_the_copy(tmp_path, monkeypatch):
+    """Si no se leyó ni el histórico publicado ni la copia, se publica con las notas de hoy, se marca
+    «restarted» y no se pisa la copia de data-archive; la corrida siguiente lo completa con esa copia."""
+    fetcher = _one_feed(monkeypatch)
+    old = [{"id": f"old{i}", "first_seen": "2026-10-01T05:00:00+00:00", "title": f"Nota {i}",
+            "link": f"https://andina.pe/nota-{i}"} for i in range(3)]
+    site = tmp_path / "site"
+    (site / "news").mkdir(parents=True)
+    (site / "news" / "feeds.json").write_text(json.dumps({"history": {"items": 3}}), encoding="utf-8")
+    raw, log = tmp_path / "raw", obs.EventLog()
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, NOW, raw)
+    assert got["feeds"]["history"]["restarted"] is True
+    assert any(e.code == "news-history-missing" and e.severity == "error" for e in log.events)
+    assert not (raw / "news" / "items.jsonl").exists()  # la copia buena de data-archive queda como estaba
+    today = got["jsonl"]
+
+    (site / "news" / "items.jsonl").write_text(today, encoding="utf-8")
+    (site / "news" / "feeds.json").write_text(json.dumps(got["feeds"]), encoding="utf-8")
+    backup = tmp_path / "history"
+    backup.mkdir()
+    (backup / "items.jsonl").write_text("".join(json.dumps(i) + "\n" for i in old), encoding="utf-8")
+    raw2, log2 = tmp_path / "raw2", obs.EventLog()
+    got2 = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log2, NOW, raw2, backup)
+    assert got2["jsonl"].startswith(today)  # solo se agrega al final
+    assert {"old0", "old1", "old2"} <= {i["id"] for i in got2["items"]}
+    assert "restarted" not in got2["feeds"]["history"]
+    assert any(e.code == "news-history-restored" for e in log2.events)
+    assert (raw2 / "news" / "items.jsonl").read_text(encoding="utf-8") == got2["jsonl"]
+
+
+def test_previous_history_is_retried_on_server_errors(monkeypatch):
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    calls = []
+
+    def net(req):
+        calls.append(req.url.path)
+        if req.url.path.endswith("missing.jsonl"):
+            return httpx.Response(404)
+        return httpx.Response(503) if len(calls) < 3 else httpx.Response(200, text='{"id":"a"}\n')
+
+    fetcher = Fetcher(polite_delay=0)
+    fetcher.client = httpx.Client(transport=httpx.MockTransport(net))
+    prev = obs.PreviousPublication("https://sitio.example/data", fetcher)
+    assert prev.get_text("news/items.jsonl", tries=3) == '{"id":"a"}\n' and len(calls) == 3
+    calls.clear()
+    assert prev.get_text("news/missing.jsonl", tries=3) is None and len(calls) == 1  # no existe: no se insiste
+
+
+def _archive_news_script() -> str:
+    import yaml
+
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
+    run = next(s["run"] for s in wf["jobs"]["archive"]["steps"] if "data-archive" in s.get("name", ""))
+    start, end = run.index("mkdir -p ../archive/sources/news"), run.index("cp -rn raw/. ../archive/sources/")
+    return run[start:end] + "cp -rn raw/. ../archive/sources/\n"
+
+
+def test_archive_adds_each_runs_notes_and_replaces_the_full_copy(tmp_path):
+    """Dos corridas el mismo día suman sus notas (antes «cp -rn» dejaba solo las de la primera) y la copia
+    completa del histórico se reemplaza; las respuestas crudas siguen sin pisarse."""
+    import subprocess
+
+    work, arch = tmp_path / "work", tmp_path / "archive" / "sources"
+    (work / "raw" / "news").mkdir(parents=True)
+    (arch / "news").mkdir(parents=True)
+    (arch / "news" / "2026-10-21.jsonl").write_text('{"id":"a"}\n', encoding="utf-8")
+    (arch / "news" / "items.jsonl").write_text('{"id":"a"}\n', encoding="utf-8")
+    (arch / "usgs").mkdir()
+    (arch / "usgs" / "x.json").write_text("viejo", encoding="utf-8")
+    (work / "raw" / "news" / "2026-10-21.jsonl").write_text('{"id":"a"}\n{"id":"b"}\n', encoding="utf-8")
+    (work / "raw" / "news" / "items.jsonl").write_text('{"id":"a"}\n{"id":"b"}\n', encoding="utf-8")
+    (work / "raw" / "usgs").mkdir()
+    (work / "raw" / "usgs" / "x.json").write_text("nuevo", encoding="utf-8")
+    subprocess.run(["bash", "-e", "-c", _archive_news_script()], cwd=work, check=True)
+    assert (arch / "news" / "2026-10-21.jsonl").read_text(encoding="utf-8") == '{"id":"a"}\n{"id":"b"}\n'
+    assert (arch / "news" / "items.jsonl").read_text(encoding="utf-8") == '{"id":"a"}\n{"id":"b"}\n'
+    assert (arch / "usgs" / "x.json").read_text(encoding="utf-8") == "viejo"
+
+
+def test_history_backup_is_fetched_every_run():
+    """La decisión de usar la copia la toma el pipeline al leer el histórico, no una consulta previa."""
+    import yaml
+
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
+    step = next(s for s in wf["jobs"]["build"]["steps"] if s.get("id") == "history")
+    assert "curl" not in step["run"] and "sources/news/items.jsonl?ref=data-archive" in step["run"]

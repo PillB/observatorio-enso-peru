@@ -76,7 +76,8 @@ Códigos frecuentes:
 | `relay-n8n-missing` | La rama `data-n8n` no existe o no se pudo leer: no hay segundo canal si Actions no alcanza una fuente | Revisar el flujo «ENSO · Recolector n8n» ([n8n](n8n.md)) |
 | `relay-n8n-stale` | La última corrida de n8n tiene más de 36 h | Revisar que el flujo siga activo en n8n |
 | `relay-n8n-sources-down` | n8n corrió hoy, pero ninguna fuente le respondió | Nada en n8n: son las fuentes o la red de su nube; se usan copias de hasta 72 h |
-| `news-history-missing` | La publicación anterior no trajo el histórico de noticias. Advertencia si se rehízo con la rama `data-archive`; error si tampoco había copia y el histórico empieza de nuevo | Revisar el sitio publicado y la rama `data-archive` |
+| `news-history-missing` | La publicación anterior no trajo el histórico de noticias tras tres intentos. Advertencia si se rehízo con la copia de `data-archive` (`sources/news/items.jsonl`); error si tampoco había copia: se publican solo las notas de hoy y el histórico queda marcado `restarted` | Revisar el sitio publicado y la rama `data-archive` |
+| `news-history-restored` | Una corrida anterior publicó el histórico incompleto (`restarted`); esta le agregó al final las notas de la copia de `data-archive` | Ninguna: se resolvió sola |
 | `relay-token-expiring` | El token de GitHub del recolector vence en menos de 21 días | Crear un token nuevo y ejecutar INSTALAR en el equipo del recolector con ese token ([servidor-peru](servidor-peru.md#1-token-de-github)) |
 | `carried-forward` | Se conservó el dato de la publicación anterior | Revisar la fuente si persiste |
 | `format-drift` | Cambió la huella del formato pero se pudo leer | Revisar que los valores sigan siendo correctos y actualizar las pruebas |

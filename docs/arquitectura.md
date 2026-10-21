@@ -140,10 +140,15 @@ disponible», nunca como vigente.
   temprana; el resumen es la primera oración del resumen más largo.
 - **Histórico:** `news/items.jsonl` se lee de la publicación anterior y
   se le agregan las notas nuevas (por `id` = hash de enlace y titular).
-  Las notas de cada día se guardan también en la rama `data-archive`
-  (`sources/news/<día>.jsonl`). Si el histórico publicado no responde, la
-  corrida diaria baja esa rama y lo rehace con esas notas (incidencia
-  `news-history-missing`).
+  Cada corrida archivada guarda en la rama `data-archive` el histórico
+  entero (`sources/news/items.jsonl`, que se reemplaza) y las notas nuevas
+  de cada día (`sources/news/<día>.jsonl`, que se suman). La corrida baja
+  siempre esa copia; si el histórico publicado no responde tras tres
+  intentos, lo rehace con ella (incidencia `news-history-missing`). Si
+  tampoco hay copia, publica solo las notas de hoy, marca el histórico
+  como `restarted` en `news/feeds.json` y no reemplaza la copia; la corrida
+  siguiente que la lea agrega al final las notas que faltaban
+  (`news-history-restored`).
 - **Derechos:** solo se guarda lo que el medio publica en su feed
   (titular, resumen, fecha y enlace). El sitio enlaza siempre a la nota
   original.
