@@ -511,7 +511,7 @@ def collect_and_push(*, do_push: bool, do_dispatch: bool, state: dict, root: Opt
     with tempfile.TemporaryDirectory(prefix="enso-relay-") as tmp:
         snap = Path(tmp) / "snapshot"
         idx = pc.collect(snap)
-        ok = sum(1 for e in idx["entries"] if e.get("status") == 200)
+        ok = sum(1 for e in idx["entries"] if pc.usable(e))
         info.update(summary=idx["summary"], ok=ok, total=len(idx["entries"]))
         log(f"resumen: {idx['summary']}")
         idx["collector"].update({

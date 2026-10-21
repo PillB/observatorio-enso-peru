@@ -195,6 +195,12 @@ def follow_links(client: httpx.Client, page: dict, rule: dict, seen: set[str]) -
     return out
 
 
+def usable(entry: dict) -> bool:
+    """Una entrada sirve si quedó guardada en files/: el sitio (enso.fetch.Relay)
+    ignora las demás, aunque hayan respondido 200 (vacías o demasiado grandes)."""
+    return entry.get("status") == 200 and bool(entry.get("file"))
+
+
 def fetch(client: httpx.Client, url: str) -> dict:
     started = time.monotonic()
     err = ""
@@ -202,10 +208,13 @@ def fetch(client: httpx.Client, url: str) -> dict:
         try:
             r = client.get(url)
             body = r.content
-            return {"url": url, "status": r.status_code, "content_type": r.headers.get("content-type", ""),
-                    "bytes": len(body), "elapsed_s": round(time.monotonic() - started, 1),
-                    "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                    "body": body if len(body) <= MAX_BYTES else b""}
+            out = {"url": url, "status": r.status_code, "content_type": r.headers.get("content-type", ""),
+                   "bytes": len(body), "elapsed_s": round(time.monotonic() - started, 1),
+                   "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                   "body": body if len(body) <= MAX_BYTES else b""}
+            if len(body) > MAX_BYTES:
+                out["error"] = f"más de {MAX_BYTES // 1_000_000} MB: no se guarda"
+            return out
         except httpx.HTTPError as exc:
             err = f"{type(exc).__name__}: {exc}"[:200]
             time.sleep(3 * (attempt + 1))
@@ -301,6 +310,8 @@ def collect(out: Path) -> dict:
                 name = f"files/{sha[:16]}{ext}"
                 (out / name).write_bytes(body)
                 r.update({"file": name, "sha256": sha})
+            elif r.get("status") == 200 and not r.get("error"):
+                r["error"] = "respuesta vacía"
             r["group"] = group
             entries.append(r)
     index = {
@@ -310,7 +321,7 @@ def collect(out: Path) -> dict:
         "registry": {"origin": origin or "ninguno", "generated_at": registry.get("generated_at"),
                      "peru_server": len(peru_sources(registry))},
         "entries": entries,
-        "summary": {g: f"{sum(1 for e in entries if e['group'] == g and e.get('status') == 200)}/"
+        "summary": {g: f"{sum(1 for e in entries if e['group'] == g and usable(e))}/"
                        f"{sum(1 for e in entries if e['group'] == g)}" for g in results},
     }
     (out / "index.json").write_text(json.dumps(index, indent=1, ensure_ascii=False), encoding="utf-8")
@@ -323,7 +334,7 @@ def heartbeat(idx: dict, result: str) -> dict:
     (latido viejo) de «las instituciones no responden ni desde el Perú»
     (latido reciente con ``result`` = ``sin-fuentes``)."""
     entries = idx.get("entries") or []
-    ok = sum(1 for e in entries if e.get("status") == 200)
+    ok = sum(1 for e in entries if usable(e))
     return {
         "schema": "enso-relay-heartbeat/1",
         "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -331,7 +342,7 @@ def heartbeat(idx: dict, result: str) -> dict:
         "reachable": f"{ok}/{len(entries)}",
         "summary": idx.get("summary") or {},
         "failures": [{k: e[k] for k in ("url", "status", "error") if e.get(k) is not None}
-                     for e in entries if e.get("status") != 200][:40],
+                     for e in entries if not usable(e)][:40],
         "collector": idx.get("collector") or {},
     }
 
@@ -413,7 +424,7 @@ def run_once(do_push: bool, keep: Path | None, do_dispatch: bool = False) -> int
         log(f"resumen: {idx['summary']}")
         if keep:
             shutil.copytree(snap, keep, dirs_exist_ok=True)
-        ok = sum(1 for e in idx["entries"] if e.get("status") == 200)
+        ok = sum(1 for e in idx["entries"] if usable(e))
         token = os.environ.get("GITHUB_TOKEN", "").strip()
         if do_push and not token:
             log("falta GITHUB_TOKEN: no se sube nada")

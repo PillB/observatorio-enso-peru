@@ -194,25 +194,31 @@ def remote_file(bare: Path, name: str) -> dict:
     return json.loads(out)
 
 
-def _all_sources_down(monkeypatch):
+def _all_sources_down(monkeypatch, how: str = "dns"):
     def down(req):
+        if how == "vacio":  # responden 200 sin contenido: nada que guardar
+            return httpx.Response(200, content=b"")
+        if how == "enorme":  # responden 200 con más de MAX_BYTES: tampoco se guarda
+            return httpx.Response(200, content=b"x" * (pc.MAX_BYTES + 1))
         raise httpx.ConnectError("Temporary failure in name resolution")
 
     real = httpx.Client
     monkeypatch.setattr(pc.httpx, "Client", lambda **kw: real(**{"transport": httpx.MockTransport(down), **kw}))
 
 
-def test_nothing_answered_keeps_the_copy_and_pushes_a_heartbeat(home, peru_network, remote, monkeypatch):
+@pytest.mark.parametrize("how", ["dns", "vacio", "enorme"])
+def test_nothing_answered_keeps_the_copy_and_pushes_a_heartbeat(home, peru_network, remote, monkeypatch, how):
     assert svc.run(root=home) == svc.EXIT_OK
     good = remote_index(remote)
     assert remote_file(remote, pc.HEARTBEAT)["result"] == "ok"
-    _all_sources_down(monkeypatch)
+    _all_sources_down(monkeypatch, how)
     assert svc.run(root=home) == svc.EXIT_NO_SOURCES
     assert "solo el latido" in svc.read_state(home)["detail"]
     assert remote_index(remote) == good  # la última copia buena sigue ahí
     hb = remote_file(remote, pc.HEARTBEAT)
     assert hb["schema"] == "enso-relay-heartbeat/1" and hb["result"] == "sin-fuentes"
     assert hb["reachable"].startswith("0/") and hb["failures"] and hb["collector"]["runner"]
+    assert all(f.get("error") for f in hb["failures"])  # vacía, demasiado grande o sin conexión
 
 
 def test_nothing_answered_and_no_github_either(home, remote, monkeypatch):
