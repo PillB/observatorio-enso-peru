@@ -144,14 +144,24 @@ disponible», nunca como vigente.
 - **Histórico:** `news/items.jsonl` se lee de la publicación anterior y
   se le agregan las notas nuevas (por `id` = hash de enlace y titular).
   Cada corrida archivada guarda en la rama `data-archive` el histórico
-  entero (`sources/news/items.jsonl`, que se reemplaza) y las notas nuevas
-  de cada día (`sources/news/<día>.jsonl`, que se suman). La corrida baja
-  siempre esa copia; si el histórico publicado no responde tras tres
-  intentos, lo rehace con ella (incidencia `news-history-missing`). Si
-  tampoco hay copia, publica solo las notas de hoy, marca el histórico
-  como `restarted` en `news/feeds.json` y no reemplaza la copia; la corrida
-  siguiente que la lea agrega al final las notas que faltaban
-  (`news-history-restored`).
+  entero comprimido (`sources/news/items.jsonl.gz`, que se reemplaza) y
+  las notas nuevas de cada día (`sources/news/<día>.jsonl`, que se suman).
+  La corrida baja siempre esa copia y le agrega al histórico publicado,
+  al final, las notas que no tenga (p. ej. las de una corrida que no llegó
+  a desplegar: `news-history-restored`). Si el histórico publicado no
+  responde tras tres intentos, lo rehace con la copia
+  (`news-history-missing`, advertencia). Un sitio que no responde (5xx,
+  sin respuesta) no es lo mismo que uno que no tiene el archivo (404): solo
+  con 404 en el sitio y en `data-archive` se trata como primera
+  publicación. Si no hay histórico ni copia que leer, publica solo las
+  notas de hoy, marca el histórico como `restarted` en `news/feeds.json`
+  (`news-history-missing`, error) y no reemplaza la copia; la corrida
+  siguiente que la lea lo completa. Una corrida sin noticias (su lectura
+  falló) sirve las de la publicación anterior. GitHub no acepta archivos de
+  más de 100 MB y Cloudflare Pages no sirve archivos de más de 25 MiB: el
+  pipeline avisa (`news-history-large`) cuando `items.jsonl` pasa de
+  20 MiB, y el archivo deja de reemplazar la copia comprimida si pasa de
+  90 MiB.
 - **Derechos:** solo se guarda lo que el medio publica en su feed
   (titular, resumen, fecha y enlace). El sitio enlaza siempre a la nota
   original.

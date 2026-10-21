@@ -216,6 +216,24 @@ def test_format_drift_is_detected(pub, tmp_path):
     assert any(e["source"] == "cpc-roni" and e["code"] == "format-drift" for e in rep["events"])
 
 
+def test_a_run_without_news_serves_the_previous_news(pub, tmp_path):
+    """Si las noticias no se leyeron (aquí, con --only), la publicación no se cae y sirve las anteriores:
+    la siguiente corrida encuentra el histórico donde siempre."""
+    prev, _ = pub
+    out = tmp_path / "data"
+    obs.run(out, str(prev), fixtures=FIX, only=["cpc-roni"])
+    for name in ("items.jsonl", "items.csv"):
+        assert (out / "news" / name).read_bytes() == (prev / "news" / name).read_bytes(), name
+    stamp = ("schema", "publicationId", "generatedAt")
+    for name in ("feeds.json", "clusters.json"):
+        a, b = (json.loads((d / "news" / name).read_text(encoding="utf-8")) for d in (out, prev))
+        assert {k: v for k, v in a.items() if k not in stamp} == {k: v for k, v in b.items() if k not in stamp}, name
+    d = json.loads((out / "dashboard.json").read_text(encoding="utf-8"))
+    assert d["news"]["items"] == json.loads((prev / "dashboard.json").read_text(encoding="utf-8"))["news"]["items"]
+    man = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
+    assert "news/items.jsonl" in man["files"]
+
+
 def test_raw_archive_skips_fixtures(tmp_path):
     a = obs.Acquired(obs.SOURCE_BY_ID["cpc-roni"], raw=b"datos", channel="direct", sha256="ab" * 32)
     b = obs.Acquired(obs.SOURCE_BY_ID["cpc-oni"], raw=b"datos", channel="fixture", sha256="cd" * 32)

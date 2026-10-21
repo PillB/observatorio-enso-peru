@@ -77,7 +77,8 @@ _GN = "https://news.google.com/rss/search?q="
 #: regiones, radios y entidades del Estado con ``tools.probe_feeds``, cuyo
 #: informe queda en tests/fixtures/news-probe/report.json). Ver
 #: docs/catalogo-fuentes.md, donde también figuran los descartados. El estado de
-#: cada uno se vuelve a verificar en cada corrida y se publica en ``news/feeds.json``.
+#: cada uno se vuelve a verificar en cada corrida y se publica en ``news/feeds.json``
+#: (los que se leen una vez al día, ``registry.reader_urls``, repiten su última lectura).
 FEEDS: list[Feed] = [
     # Perú
     Feed("andina", "Andina (agencia estatal)", "peru", "https://andina.pe/agencia/rss/3.xml", kind="gobierno"),

@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import hashlib
 import io
 import json
@@ -212,12 +213,17 @@ class Acquired:
 
 
 class PreviousPublication:
-    """Lee los artefactos de la publicación anterior (en vivo o local)."""
+    """Lee los artefactos de la publicación anterior (en vivo o local).
+
+    ``state[nombre]`` dice qué pasó con cada archivo pedido: ``ok``, ``missing`` (no existe: 404 o no hay
+    archivo; p. ej. la primera publicación en un hosting nuevo) o ``unreachable`` (el servidor falló, no
+    respondió o el archivo no se pudo leer). No es lo mismo un sitio caído que uno que aún no tiene el archivo."""
 
     def __init__(self, base: Optional[str], fetcher=None):
         self.base = base.rstrip("/") if base else None
         self.fetcher = fetcher
         self._cache: dict[str, Any] = {}
+        self.state: dict[str, str] = {}
 
     def get_text(self, name: str, tries: int = 1) -> Optional[str]:
         """Archivo de texto de la publicación anterior (p. ej. el histórico de noticias).
@@ -225,21 +231,32 @@ class PreviousPublication:
         Con ``tries`` > 1 se reintenta si el servidor falla o no responde (no si el archivo no existe)."""
         if not self.base:
             return None
+        self.state[name] = "unreachable"
         for attempt in range(max(1, tries)):
             if attempt:
                 time.sleep(5 * attempt)
             try:
                 if self.base.startswith("http"):
                     if self.fetcher is None:
+                        self.state.pop(name, None)
                         return None
                     r = self.fetcher.client.get(f"{self.base}/{name}", params={"t": int(time.time())})
                     if r.status_code == 200:
+                        self.state[name] = "ok"
                         return r.text
-                    if r.status_code < 500:
+                    if r.status_code in (404, 410):
+                        self.state[name] = "missing"
                         return None
+                    if r.status_code < 500 and r.status_code != 429:
+                        return None  # 401/403…: el archivo existe o no, no se sabe
                     continue
                 p = Path(self.base) / name
-                return p.read_text(encoding="utf-8") if p.exists() else None
+                if not p.exists():
+                    self.state[name] = "missing"
+                    return None
+                text = p.read_text(encoding="utf-8")
+                self.state[name] = "ok"
+                return text
             except Exception:
                 continue
         return None
@@ -259,26 +276,20 @@ class PreviousPublication:
         except Exception:
             return None
 
-    def get(self, name: str) -> Optional[Any]:
+    def get(self, name: str, tries: int = 1) -> Optional[Any]:
+        """JSON de la publicación anterior (o None); ``state[name]`` dice por qué falta."""
         if not self.base:
             return None
         if name in self._cache:
             return self._cache[name]
+        text = self.get_text(name, tries=tries)
         val = None
-        try:
-            if self.base.startswith("http"):
-                if self.fetcher is None:
-                    return None
-                r = self.fetcher.client.get(f"{self.base}/{name}", params={"t": int(time.time())})
-                if r.status_code == 200:
-                    val = r.json()
-            else:
-                p = Path(self.base) / name
-                if p.exists():
-                    val = json.loads(p.read_text(encoding="utf-8"))
-        except Exception:
-            val = None
-        self._cache[name] = val
+        if text is not None:
+            try:
+                val = json.loads(text)
+            except ValueError:
+                self.state[name] = "unreachable"  # existe pero llegó roto: no es lo mismo que no tenerlo
+        self._cache[name] = val  # también si falló: con el sitio caído no se espera dos veces por lo mismo
         return val
 
 
@@ -966,14 +977,42 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                     it["snapshot"] = snapshots[fid]  # la respuesta de la fuente tal como se bajó hoy
     if feed is not None:
         dump("feed.json", feed)
+    news_dash = None
+    if news is not None:
         (tmp / "news").mkdir()
         dump("news/feeds.json", news["feeds"])
         dump("news/clusters.json", news["clusters"])
         (tmp / "news" / "items.jsonl").write_text(news["jsonl"], encoding="utf-8")
         (tmp / "news" / "items.csv").write_text(news["csv"], encoding="utf-8")
-        dashboard["news"] = {"clusters": len(news["clusters"]["clusters"]), "items": news["feeds"]["history"]["items"],
-                             "feedsActive": sum(1 for f in news["feeds"]["feeds"] if f["active"]),
-                             "feedsTotal": len(news["feeds"]["feeds"])}
+        news_dash = (news["feeds"], news["clusters"])
+    elif previous is not None:
+        # Corrida sin noticias (su lectura falló, o --offline/--only): se sirven las de la publicación
+        # anterior, para que la siguiente encuentre el histórico y no lo dé por perdido.
+        carried: dict[str, dict] = {}
+        for name in ("news/feeds.json", "news/clusters.json", "news/items.jsonl", "news/items.csv"):
+            body = previous.get_bytes(name)
+            if not body:
+                continue
+            if name.endswith(".json"):
+                try:
+                    obj = json.loads(body)
+                except ValueError:
+                    continue
+                if not isinstance(obj, dict):
+                    continue
+                carried[name] = {k: v for k, v in obj.items() if k not in common}
+            (tmp / "news").mkdir(exist_ok=True)
+            if name in carried:
+                dump(name, carried[name])  # con el publicationId de esta publicación
+            else:
+                (tmp / name).write_bytes(body)
+        if "news/feeds.json" in carried and "news/clusters.json" in carried:
+            news_dash = (carried["news/feeds.json"], carried["news/clusters.json"])
+    if news_dash is not None:
+        nf, nc = news_dash
+        dashboard["news"] = {"clusters": len(nc.get("clusters") or []), "items": (nf.get("history") or {}).get("items"),
+                             "feedsActive": sum(1 for f in nf.get("feeds") or [] if f.get("active")),
+                             "feedsTotal": len(nf.get("feeds") or [])}
     dump("dashboard.json", dashboard)
     (tmp / archive.ROOT).mkdir(exist_ok=True)
     dump(f"{archive.ROOT}/index.json", aw.index(now.isoformat(timespec="seconds")))
@@ -1088,10 +1127,12 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         today: Optional[date] = None, only: Optional[list[str]] = None, raw_dir: Optional[Path] = None,
         relay_dir: Optional[Path] = None, n8n_dir: Optional[Path] = None,
         plan: Optional[dict[str, list[str]]] = None, history_dir: Optional[Path] = None,
-        reader: Optional[set[str]] = None) -> dict:
+        reader: Optional[set[str]] = None, history_absent: bool = False,
+        reader_state: Optional[Path] = None) -> dict:
     """``plan``: canales de cada URL según el registro (``registry.url_channels``); la línea de comandos
     lo lee de ``registry/sources.json`` para no insistir con lo que solo responde desde el Perú.
-    ``reader``: feeds que robots.txt no permite y se leen como un lector de feeds (``registry.reader_urls``)."""
+    ``reader``: feeds que robots.txt no permite y se leen como un lector de feeds (``registry.reader_urls``).
+    ``history_dir``, ``history_absent`` y ``reader_state``: ver ``acquire_news``."""
     from .fetch import Fetcher
 
     started = datetime.now(timezone.utc)
@@ -1120,7 +1161,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         try:
             news = acquire_news(fetcher, fixtures, prev, log, started if fixtures is None else
                                 datetime.combine(today, datetime.min.time(), timezone.utc), raw_dir, history_dir,
-                                reader if fixtures is None else None)
+                                reader if fixtures is None else None, history_absent,
+                                reader_state if fixtures is None else None)
         except Exception as exc:  # las noticias nunca deben detener la publicación
             log.add("warning", "news", "parse", "exception", f"{type(exc).__name__}: {exc}")
     from . import sourcefeed
@@ -1147,6 +1189,26 @@ RELAY_STALE_HOURS = 36
 RELAY_TOKEN_WARN_DAYS = 21
 #: Tiempo máximo para empezar a pedir feeds de noticias (el build entero tiene 30 min).
 NEWS_DEADLINE_S = 600
+#: Aviso antes de que news/items.jsonl llegue al límite de 25 MiB por archivo de Cloudflare Pages.
+NEWS_HISTORY_WARN_BYTES = 20 * 2**20
+
+
+def read_reader_state(path: Optional[Path]) -> dict:
+    """{url: {"status": estado del feed en su última lectura buena}} de los feeds «reader» (vacío si no hay)."""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8")) if path is not None and path.exists() else {}
+    except (OSError, ValueError):
+        return {}
+    feeds = data.get("feeds") if isinstance(data, dict) and data.get("schema") == "enso-reader-state/1" else None
+    return {u: v for u, v in (feeds or {}).items() if isinstance(v, dict)}
+
+
+def write_reader_state(path: Path, feeds: dict) -> None:
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"schema": "enso-reader-state/1", "feeds": feeds}, ensure_ascii=False), encoding="utf-8")
+    except OSError:
+        pass  # sin estado, la próxima corrida se guía por la publicación anterior
 
 
 def _hours_since(iso: Optional[str], now: datetime) -> float:
@@ -1159,13 +1221,29 @@ def _hours_since(iso: Optional[str], now: datetime) -> float:
 
 def read_history_backup(history_dir: Optional[Path]) -> str:
     """El histórico de noticias según la rama ``data-archive``: primero la copia completa de la última
-    corrida archivada (``items.jsonl``), luego las notas de cada día (``<día>.jsonl``) que no estén en ella."""
+    corrida archivada (``items.jsonl.gz``; ``items.jsonl`` en copias anteriores), luego las notas de cada
+    día (``<día>.jsonl``) que no estén en ella. Una copia rota o cortada no se usa: sería un histórico
+    incompleto que luego reemplazaría al entero."""
+    import zlib
+
     if history_dir is None or not history_dir.is_dir():
         return ""
     seen, lines = set(), []
-    files = sorted(history_dir.glob("*.jsonl"), key=lambda p: (p.name != "items.jsonl", p.name))
-    for p in files:
-        for line in p.read_text(encoding="utf-8", errors="replace").splitlines():
+    files = [p for p in (history_dir / "items.jsonl.gz", history_dir / "items.jsonl") if p.is_file()]
+    files += sorted(p for p in history_dir.glob("*.jsonl") if p.name != "items.jsonl")
+
+    def text(p: Path) -> str:
+        if p.suffix != ".gz":
+            return p.read_text(encoding="utf-8", errors="replace")
+        with gzip.open(p, "rt", encoding="utf-8", errors="replace") as fh:
+            return fh.read()
+
+    try:
+        texts = [text(p) for p in files]
+    except (OSError, EOFError, zlib.error):
+        return ""
+    for t in texts:
+        for line in t.splitlines():
             try:
                 item = json.loads(line)
             except ValueError:
@@ -1178,11 +1256,14 @@ def read_history_backup(history_dir: Optional[Path]) -> str:
 
 def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublication, log: EventLog,
                  now: datetime, raw_dir: Optional[Path], history_dir: Optional[Path] = None,
-                 reader: Optional[set[str]] = None) -> Optional[dict]:
+                 reader: Optional[set[str]] = None, history_absent: bool = False,
+                 reader_state: Optional[Path] = None) -> Optional[dict]:
     """Feeds de noticias → histórico de solo anexar, CSV, estado de feeds y grupos.
 
-    ``reader``: URL de feeds que robots.txt no permite y se leen como un lector de feeds
-    (``registry.reader_urls``): como mucho una vez cada ``registry.READER_MIN_HOURS``."""
+    ``history_dir``: la copia del histórico bajada de data-archive (vacía si no se pudo bajar);
+    ``history_absent``: data-archive no tiene copia (404). ``reader``: URL de feeds que robots.txt no
+    permite y se leen como un lector de feeds (``registry.reader_urls``): como mucho una vez cada
+    ``registry.READER_MIN_HOURS``; ``reader_state``: archivo donde se anota su última lectura buena."""
     from . import news as N
     from .fetch import FetchError
     from .geo import department_names
@@ -1218,23 +1299,33 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     plan = getattr(fetcher, "plan", None) or {}
     barred = {f.id for f in N.FEEDS if plan.get(f.url) == []}
     # Los que se leen como un lector de feeds y tuvieron una lectura buena hace menos de READER_MIN_HOURS
-    # no se vuelven a pedir: queda el estado de esa lectura (sus notas ya están en el histórico).
+    # no se vuelven a pedir: queda el estado de esa lectura (sus notas ya están en el histórico). La hora de
+    # la última lectura sale de la publicación anterior y del estado que guarda cada corrida (--reader-state,
+    # en la caché de Actions), que sobrevive a una corrida que leyó los feeds y no llegó a publicar.
     from .registry import READER_MIN_HOURS
 
-    prev_feeds = previous.get("news/feeds.json") or {}
+    prev_feeds = previous.get("news/feeds.json", tries=3) or {}
     prev_status = {st.get("id"): st for st in prev_feeds.get("feeds") or [] if isinstance(st, dict)}
+    state = read_reader_state(reader_state)
     recent = {}
     for f in N.FEEDS:
-        st = prev_status.get(f.id) or {}
-        if (f.url in (reader or ()) and f.id not in barred and st.get("ok") and not st.get("skipped")
-                and 0 <= _hours_since(st.get("checkedAt"), now) < READER_MIN_HOURS):
-            recent[f.id] = {**st, "carried": True}
+        if f.url not in (reader or ()) or f.id in barred:
+            continue
+        seen = [st for st in (prev_status.get(f.id), (state.get(f.url) or {}).get("status")) if isinstance(st, dict)
+                and st.get("ok") and not st.get("skipped") and 0 <= _hours_since(st.get("checkedAt"), now) < READER_MIN_HOURS]
+        if seen:
+            recent[f.id] = {**max(seen, key=lambda st: str(st.get("checkedAt"))), "carried": True}
     try:
         found, status, raw = N.collect(fetch, now, feeds=[f for f in N.FEEDS if f.id not in barred | set(recent)],
                                        deadline=None if fixtures is not None else NEWS_DEADLINE_S)
     finally:
         if fixtures is None:
             news_fetcher.close()
+    if reader and reader_state is not None:
+        got = {st["id"]: st for st in status}
+        write_reader_state(reader_state, {**{u: v for u, v in state.items() if u in reader},
+                                          **{f.url: {"status": got[f.id]} for f in N.FEEDS
+                                             if f.url in reader and got.get(f.id, {}).get("ok")}})
     if barred or recent:
         by_id = {st["id"]: st for st in status}
         by_id.update({f.id: {**N._status(f, now, "omitido: su robots.txt no permite pedir este feed"), "skipped": "robots"}
@@ -1249,43 +1340,67 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         log.add("info", "news", "fetch", "feeds-reader",
                 f"Feeds que su robots.txt no permite, leídos como un lector de feeds (una vez cada {READER_MIN_HOURS} h): "
                 f"{asked_reader} pedidos en esta corrida, {len(recent)} con la lectura anterior.")
+
+    # Histórico. «complete»: lo que se publica es el histórico entero, y solo entonces reemplaza la copia
+    # de data-archive. Un sitio caído (5xx, sin respuesta) no es una primera publicación (404).
     prev_text = previous.get_text("news/items.jsonl", tries=3) or ""
+    items_state = previous.state.get("news/items.jsonl", "missing")
+    feeds_state = previous.state.get("news/feeds.json", "missing")
     had = (prev_feeds.get("history") or {}).get("items")
-    # «restarted»: una corrida anterior publicó un histórico incompleto (no leyó ni el publicado ni la copia).
-    incomplete = bool((prev_feeds.get("history") or {}).get("restarted"))
-    if not prev_text and (had or history_dir is not None):
-        # Sin el histórico publicado (sitio caído, otro hosting), se rehace con la copia de data-archive.
-        prev_text = read_history_backup(history_dir)
-        was = f" ({had} notas)" if had else ""
-        if prev_text:
-            incomplete = False
-            log.add("warning", "news", "fetch", "news-history-missing",
-                    f"No se pudo leer el histórico de noticias de la publicación anterior{was}; se rehízo con la "
-                    f"copia de la rama data-archive ({prev_text.count(chr(10))} notas).")
-        elif had:
-            incomplete = True
-            log.add("error", "news", "fetch", "news-history-missing",
-                    f"No se pudo leer el histórico de noticias de la publicación anterior{was} ni la copia de la "
-                    "rama data-archive: se publica solo con las notas de hoy y se completa en cuanto se lea la copia.")
-    elif incomplete and history_dir is not None:
-        # La publicación anterior empezó de nuevo: se le agregan al final (sin reordenar) las notas de la copia.
-        backup = N.read_jsonl(read_history_backup(history_dir))
-        if backup:
+    # «restarted»: una corrida anterior publicó un histórico incompleto. Si feeds.json no se pudo leer no
+    # se sabe, y se supone que sí: completarlo con la copia no cambia nada si no faltaba nada.
+    restarted = bool((prev_feeds.get("history") or {}).get("restarted")) or feeds_state == "unreachable"
+    backup_text = read_history_backup(history_dir) if history_dir is not None else ""
+    backup = "ok" if backup_text else ("absent" if history_absent else ("unavailable" if history_dir is not None else None))
+    was = f" ({had} notas)" if had else ""
+    complete = True
+    if items_state == "ok":
+        if backup == "ok":
+            # Se le agregan al final (sin reordenar: el archivo es de solo anexar) las notas de la copia que no
+            # tenga: las de una corrida que no llegó a publicar (despliegue fallido) o de un histórico rehecho.
             known = {i["id"] for i in N.read_jsonl(prev_text)}
-            back = [i for i in backup if i.get("id") not in known]
+            back = [i for i in N.read_jsonl(backup_text) if i.get("id") not in known]
             if prev_text and not prev_text.endswith("\n"):
                 prev_text += "\n"
             prev_text += "".join(json.dumps(i, ensure_ascii=False, separators=(",", ":")) + "\n" for i in back)
-            incomplete = False
+            if back or (prev_feeds.get("history") or {}).get("restarted"):
+                log.add("warning", "news", "fetch", "news-history-restored",
+                        f"Se completó el histórico de noticias con {len(back)} notas de la copia de data-archive "
+                        "que la publicación anterior no tenía (una corrida que no llegó a publicar, o que no pudo "
+                        "leer el histórico entero).")
+        elif restarted and backup == "absent":
             log.add("warning", "news", "fetch", "news-history-restored",
-                    f"Se completó el histórico de noticias con {len(back)} notas de la copia de data-archive "
-                    "(una corrida anterior no pudo leerlo).")
+                    "Una corrida anterior no pudo leer el histórico de noticias entero y data-archive no tiene copia "
+                    "con qué completarlo: queda como está.")
+        elif restarted:
+            complete = False  # la copia existe o no se sabe, y no se pudo leer: se intenta en la próxima
+    elif backup == "ok":
+        prev_text = backup_text
+        log.add("warning", "news", "fetch", "news-history-missing",
+                f"No se pudo leer el histórico de noticias de la publicación anterior{was} "
+                f"({'no existe' if items_state == 'missing' else 'el sitio no respondió'}); se rehízo con la copia "
+                f"de la rama data-archive ({prev_text.count(chr(10))} notas).")
+    elif items_state == "missing" and not had and feeds_state != "unreachable" and backup in ("absent", None):
+        pass  # primera publicación: no hay histórico en ninguna parte
+    else:
+        complete = False
+        why = "no existe en el sitio" if items_state == "missing" else "el sitio no respondió"
+        copy = {"absent": "data-archive no tiene copia", "unavailable": "no se pudo bajar la copia de data-archive",
+                None: "no se indicó la copia de data-archive"}[backup]
+        log.add("error", "news", "fetch", "news-history-missing",
+                f"No se pudo leer el histórico de noticias de la publicación anterior{was} ({why}) y {copy}: se "
+                "publica solo con las notas de hoy, marcado «restarted», y se completa en cuanto se lea la copia.")
     history = N.read_jsonl(prev_text)
     added = N.new_lines(history, found)
     if prev_text and not prev_text.endswith("\n"):
         prev_text += "\n"
     jsonl = prev_text + "".join(json.dumps(i, ensure_ascii=False, separators=(",", ":")) + "\n" for i in added)
     items = history + added
+    size = len(jsonl.encode("utf-8"))
+    if size > NEWS_HISTORY_WARN_BYTES:
+        log.add("warning", "news", "publish", "news-history-large",
+                f"El histórico de noticias publicado pesa {size / 2**20:.1f} MiB; Cloudflare Pages no sirve archivos "
+                f"de más de 25 MiB: hay que dividirlo (docs/operaciones.md).")
 
     for st in status:
         if st.get("skipped") or st.get("carried"):
@@ -1314,16 +1429,17 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             (raw_dir / "news").mkdir(parents=True, exist_ok=True)
             with open(raw_dir / "news" / f"{day}.jsonl", "a", encoding="utf-8") as fh:
                 fh.write("".join(json.dumps(i, ensure_ascii=False) + "\n" for i in added))
-        if not incomplete:  # la copia de data-archive solo se reemplaza con un histórico entero
+        if complete:  # la copia de data-archive solo se reemplaza con un histórico entero
             (raw_dir / "news").mkdir(parents=True, exist_ok=True)
-            (raw_dir / "news" / "items.jsonl").write_text(jsonl, encoding="utf-8")
+            with gzip.open(raw_dir / "news" / "items.jsonl.gz", "wt", encoding="utf-8", compresslevel=9) as fh:
+                fh.write(jsonl)
 
     return {
         "jsonl": jsonl, "csv": N.to_csv(items), "items": items, "raw": raw,
         "live": {i["id"]: i["feed"] for i in found},
         "feeds": {"feeds": status, "history": {"items": len(items), "added": len(added),
                                                "since": min((i["first_seen"] for i in items), default=None),
-                                               **({"restarted": True} if incomplete else {})}},
+                                               **({"restarted": True} if not complete else {})}},
         "clusters": {"days": 14, "clusters": N.cluster(items, now), "departmentNames": department_names()},
     }
 
@@ -1448,8 +1564,13 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--relay-dir", default=None, help="Copia de la rama data-peru (recolector del Perú)")
     ap.add_argument("--n8n-dir", default=None, help="Copia de la rama data-n8n (flujo de n8n)")
     ap.add_argument("--history-dir", default=None,
-                    help="Copia del histórico de noticias de la rama data-archive (sources/news/items.jsonl y "
+                    help="Copia del histórico de noticias de la rama data-archive (sources/news/items.jsonl.gz y "
                          "las notas de cada día), para rehacerlo si la publicación anterior no lo trae")
+    ap.add_argument("--history-absent", action="store_true",
+                    help="data-archive no tiene copia del histórico (respondió 404): no es una falla de descarga")
+    ap.add_argument("--reader-state", default=None,
+                    help="Archivo donde se anota la última lectura buena de cada feed que se lee como un lector "
+                         "de feeds (el flujo lo guarda en la caché de Actions)")
     ap.add_argument("--fail-on", default="critical", choices=["error", "critical", "never"])
     args = ap.parse_args(argv)
     out = Path(args.out).resolve()
@@ -1458,6 +1579,8 @@ def main(argv: Optional[list[str]] = None) -> int:
               relay_dir=Path(args.relay_dir).resolve() if args.relay_dir else None,
               n8n_dir=Path(args.n8n_dir).resolve() if args.n8n_dir else None,
               history_dir=Path(args.history_dir).resolve() if args.history_dir else None,
+              history_absent=args.history_absent,
+              reader_state=Path(args.reader_state).resolve() if args.reader_state else None,
               plan=None if args.fixtures or args.offline else registry.url_channels(),
               reader=None if args.fixtures or args.offline else registry.reader_urls())
     print(json.dumps(res, ensure_ascii=False))
