@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T01:52:28+00:00",
+ "generated_at": "2026-10-21T02:36:48+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true",
   "tiers": {
@@ -6084,8 +6084,8 @@
    "name": "Índices mensuales de TSM en regiones Niño (OISST v2.1, base 1991–2020)",
    "institution": "NOAA / CPC",
    "url": "https://www.cpc.ncep.noaa.gov/data/indices/sstoi.indices",
-   "expect": "html",
-   "method": "html",
+   "expect": "text",
+   "method": "download",
    "kind": "dataset",
    "home": "https://www.cpc.ncep.noaa.gov/data/indices/",
    "alt_urls": [],
@@ -6096,7 +6096,7 @@
    "parser": "enso.observatory:cpc-sstoi",
    "needs_browser": false,
    "archive": true,
-   "tier": 2,
+   "tier": 1,
    "geoblock": {
     "status": "unknown",
     "measured_at": null,
