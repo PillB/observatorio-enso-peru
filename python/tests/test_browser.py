@@ -43,12 +43,17 @@ def site(request):
 
 
 @pytest.fixture(scope="session")
-def browser():
+def playwright():
     with pw.sync_playwright() as p:
-        exe = os.environ.get("PW_CHROMIUM")
-        b = p.chromium.launch(executable_path=exe) if exe else p.chromium.launch()
-        yield b
-        b.close()
+        yield p
+
+
+@pytest.fixture(scope="session")
+def browser(playwright):
+    exe = os.environ.get("PW_CHROMIUM")
+    b = playwright.chromium.launch(executable_path=exe) if exe else playwright.chromium.launch()
+    yield b
+    b.close()
 
 
 @pytest.fixture
@@ -275,3 +280,50 @@ def test_no_inline_scripts_and_strict_csp(site):
     html = (root / "index.html").read_text(encoding="utf-8")
     assert "script-src 'self'" in html and "unsafe-eval" not in html
     assert not re.search(r"<script(?![^>]*\bsrc=)[^>]*>", html), "no debe haber scripts en línea"
+
+
+# --- Dispositivos de referencia (tools/devices.py) ----------------------------
+
+@pytest.fixture(scope="module", params=["chromium", "webkit", "firefox"])
+def engine(request, playwright, browser):
+    """El motor pedido si está instalado (WebKit = Safari de iPhone y Mac); si no, la prueba se omite."""
+    name = request.param
+    if name == "chromium":
+        yield playwright, browser
+        return
+    exe = os.environ.get(f"PW_{name.upper()}")
+    try:
+        b = getattr(playwright, name).launch(executable_path=exe) if exe else getattr(playwright, name).launch()
+    except Exception as exc:  # motor no instalado en este equipo
+        pytest.skip(f"{name} no está instalado: {str(exc).splitlines()[0]}")
+    yield playwright, b
+    b.close()
+
+
+def test_news_fits_every_reference_device(site, engine):
+    """Noticias (pestaña Perú) sin desborde horizontal ni errores en cada dispositivo de su motor."""
+    from tools.devices import DEVICES, context_options
+
+    base, _ = site
+    p, b = engine
+    name = b.browser_type.name
+    checked = 0
+    for dev_id, label, eng, desc, extra in DEVICES:
+        if eng != name and not (name == "chromium" and os.environ.get("ENSO_ALL_DEVICES_ON_CHROMIUM", "1") == "1"):
+            continue
+        ctx = b.new_context(**context_options(p, name, desc, extra))
+        pg = ctx.new_page()
+        errors = []
+        pg.on("pageerror", lambda e: errors.append(str(e)))
+        pg.goto(f"{base}#/noticias?tab=peru")
+        expect(pg.locator(".news-filters")).to_be_visible(timeout=15000)
+        dims = pg.evaluate("() => [document.scrollingElement.scrollWidth, innerWidth]")
+        assert dims[0] <= dims[1] + 1, f"{label}: la página mide {dims[0]} px en una pantalla de {dims[1]} px"
+        assert not errors, f"{label}: {errors}"
+        if dev_id not in ("kaios-flip",):
+            pg.get_by_role("button", name=re.compile("^Radio y TV")).click()
+            expect(pg).to_have_url(re.compile(r"tipo=radiotv"))
+        ctx.close()
+        checked += 1
+    if not checked:
+        pytest.skip(f"ningún dispositivo de referencia usa {name}")

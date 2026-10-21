@@ -22,16 +22,15 @@ from __future__ import annotations
 
 import csv
 import hashlib
-import html
 import io
 import json
 import re
 import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from email.utils import parsedate_to_datetime
 from typing import Optional
-from xml.etree import ElementTree as ET
+
+from .feedparse import LIMA, FeedError, parse as parse_any
 
 
 @dataclass(frozen=True)
@@ -43,8 +42,13 @@ class Feed:
     lang: str = "es"
     #: "general": medio general (se exige un término ENSO);
     #: "hazard": feed de emergencias o clima (basta un peligro asociado).
+    #: "local": medio regional (basta un peligro: lluvias, huaico, friaje…).
     scope: str = "general"
     stale_days: int = 7
+    #: "gobierno" | "diario" | "radio" | "tv" | "digital" | "agregador" | "organismo"
+    kind: str = "diario"
+    #: Código UBIGEO de 2 dígitos del departamento que cubre el medio, si es regional.
+    department: Optional[str] = None
 
 
 _GN = "https://news.google.com/rss/search?q="
@@ -55,28 +59,30 @@ _GN = "https://news.google.com/rss/search?q="
 #: y se publica en ``news/feeds.json``.
 FEEDS: list[Feed] = [
     # Perú
-    Feed("andina", "Andina (agencia estatal)", "peru", "https://andina.pe/agencia/rss/3.xml"),
+    Feed("andina", "Andina (agencia estatal)", "peru", "https://andina.pe/agencia/rss/3.xml", kind="gobierno"),
     Feed("elcomercio", "El Comercio", "peru", "https://elcomercio.pe/arcio/rss/"),
     Feed("gestion", "Gestión", "peru", "https://gestion.pe/arcio/rss/"),
     Feed("correo", "Diario Correo", "peru", "https://diariocorreo.pe/arcio/rss/"),
     Feed("larepublica", "La República", "peru", "https://larepublica.pe/rss/sociedad.xml"),
-    Feed("rpp", "RPP Noticias", "peru", "https://rpp.pe/rss"),
-    Feed("infobae-peru", "Infobae Perú", "peru", "https://www.infobae.com/arc/outboundfeeds/rss/category/peru/"),
+    Feed("rpp", "RPP Noticias", "peru", "https://rpp.pe/rss", kind="radio"),
+    Feed("infobae-peru", "Infobae Perú", "peru", "https://www.infobae.com/arc/outboundfeeds/rss/category/peru/",
+         kind="digital"),
     Feed("caretas", "Caretas", "peru", "https://caretas.pe/feed/"),
-    Feed("perureports", "Peru Reports", "peru", "https://perureports.com/feed/", lang="en"),
+    Feed("perureports", "Peru Reports", "peru", "https://perureports.com/feed/", lang="en", kind="digital"),
     Feed("gnews-peru", "Google Noticias Perú (búsqueda El Niño)", "peru",
          _GN + "%22El%20Ni%C3%B1o%22%20OR%20ENFEN%20OR%20%22Ni%C3%B1o%20costero%22&hl=es-419&gl=PE&ceid=PE:es-419",
-         scope="hazard", stale_days=3),
+         scope="hazard", stale_days=3, kind="agregador"),
     # Mundo
     Feed("gnews-world", "Google News (search El Niño)", "mundo",
          _GN + "%22El%20Ni%C3%B1o%22%20OR%20%22La%20Ni%C3%B1a%22%20OR%20ENSO&hl=en-US&gl=US&ceid=US:en",
-         lang="en", scope="hazard", stale_days=3),
-    Feed("bbc-mundo", "BBC News Mundo", "mundo", "https://feeds.bbci.co.uk/mundo/rss.xml"),
+         lang="en", scope="hazard", stale_days=3, kind="agregador"),
+    Feed("bbc-mundo", "BBC News Mundo", "mundo", "https://feeds.bbci.co.uk/mundo/rss.xml", kind="digital"),
     Feed("un-news-clima", "Noticias ONU · Clima", "mundo",
-         "https://news.un.org/feed/subscribe/es/news/topic/climate-change/feed/rss.xml", scope="hazard", stale_days=14),
-    Feed("gdacs", "GDACS (alertas de desastres)", "mundo", "https://www.gdacs.org/xml/rss.xml", lang="en", scope="hazard"),
-    Feed("carbonbrief", "Carbon Brief", "mundo", "https://www.carbonbrief.org/feed/", lang="en", stale_days=14),
-    Feed("ciifen", "CIIFEN", "mundo", "https://ciifen.org/feed/", scope="hazard", stale_days=120),
+         "https://news.un.org/feed/subscribe/es/news/topic/climate-change/feed/rss.xml", scope="hazard", stale_days=14, kind="organismo"),
+    Feed("gdacs", "GDACS (alertas de desastres)", "mundo", "https://www.gdacs.org/xml/rss.xml", lang="en", scope="hazard",
+         kind="organismo"),
+    Feed("carbonbrief", "Carbon Brief", "mundo", "https://www.carbonbrief.org/feed/", lang="en", stale_days=14, kind="digital"),
+    Feed("ciifen", "CIIFEN", "mundo", "https://ciifen.org/feed/", scope="hazard", stale_days=120, kind="organismo"),
 ]
 
 FEED_BY_ID = {f.id: f for f in FEEDS}
@@ -91,6 +97,13 @@ HAZARD_RE = re.compile(
     r"\b(lluvias? (intensas?|fuertes?)|huaicos?|inundaci[oó]n(es)?|desbordes?|sequ[ií]as?|friaje|heladas?|"
     r"oleajes?|deslizamientos?|emergencia|senamhi|indeci|cenepred|imarpe|igp|aviso meteorol[oó]gico|"
     r"flood(s|ing)?|drought|heavy rain|landslides?|cyclone|tropical storm|climate|clima)\b", re.I)
+#: Peligros concretos para medios regionales (sin «emergencia» ni «clima», demasiado amplios).
+LOCAL_RE = re.compile(
+    r"\b(lluvias?|precipitaci[oó]n(es)?|huaicos?|inundaci[oó]n(es)?|inundad[oa]s?|desbordes?|desbord[oó]|"
+    r"crecida|caudal|sequ[ií]as?|d[eé]ficit h[ií]drico|friaje|heladas?|nevadas?|granizadas?|oleajes?|"
+    r"deslizamientos?|derrumbes?|aluvi[oó]n|activaci[oó]n de quebradas?|quebradas? activad|damnificad[oa]s?|"
+    r"estado de emergencia|alerta (roja|naranja|amarilla)|senamhi|indeci|coer|coen|cenepred|"
+    r"temperatura del mar|anchoveta|pesca artesanal|dengue)\b", re.I)
 PERU_RE = re.compile(r"\b(per[uú]|peruan[oa]s?|lima|piura|tumbes|lambayeque|la libertad|ica|arequipa|"
                      r"ancash|[aá]ncash|loreto|cusco|puno|cajamarca|jun[ií]n)\b", re.I)
 
@@ -102,81 +115,17 @@ def relevance(feed: Feed, title: str, summary: str) -> Optional[str]:
         return "enso"
     if feed.scope == "hazard" and HAZARD_RE.search(text) and (feed.region == "peru" or PERU_RE.search(text)):
         return "impacto"
+    if feed.scope == "local" and LOCAL_RE.search(text):
+        return "impacto"
     return None
 
 
 # --- Lectura de RSS/Atom -----------------------------------------------------
+# El lector tolerante (reparaciones, formatos, fechas) está en ``feedparse``.
 
-ATOM = "{http://www.w3.org/2005/Atom}"
-TAG_RE = re.compile(r"<[^>]+>")
-MAX_FEED_BYTES = 5_000_000
-
-
-class FeedError(ValueError):
-    pass
-
-
-def _clean(text: Optional[str], limit: int = 600) -> str:
-    text = html.unescape(TAG_RE.sub(" ", html.unescape(text or "")))
-    return re.sub(r"\s+", " ", text).strip()[:limit]
-
-
-def _date(text: Optional[str]) -> Optional[str]:
-    if not text:
-        return None
-    text = text.strip()
-    try:
-        d = parsedate_to_datetime(text)
-    except (TypeError, ValueError):
-        try:
-            d = datetime.fromisoformat(text.replace("Z", "+00:00"))
-        except ValueError:
-            return None
-    if d.tzinfo is None:
-        d = d.replace(tzinfo=timezone.utc)
-    return d.astimezone(timezone.utc).isoformat(timespec="seconds")
-
-
-def parse_feed(body: bytes) -> list[dict]:
-    """Entradas de un RSS 2.0, RSS 1.0 (RDF) o Atom: título, enlace, fecha, resumen."""
-    if len(body) > MAX_FEED_BYTES:
-        raise FeedError("feed demasiado grande")
-    head = body[:2048].lower()
-    if b"<!entity" in body[:20000].lower():
-        raise FeedError("el feed declara entidades XML; se rechaza")
-    if b"<html" in head and b"<rss" not in head and b"<feed" not in head:
-        raise FeedError("la respuesta es una página HTML, no un feed")
-    try:
-        root = ET.fromstring(body)
-    except ET.ParseError as exc:
-        raise FeedError(f"XML inválido: {exc}") from exc
-    items = []
-    if root.tag == f"{ATOM}feed":
-        for e in root.findall(f"{ATOM}entry"):
-            link = next((l.get("href") for l in e.findall(f"{ATOM}link") if l.get("rel", "alternate") == "alternate"), None)
-            items.append({"title": _clean(e.findtext(f"{ATOM}title"), 300), "link": (link or "").strip(),
-                          "published": _date(e.findtext(f"{ATOM}published") or e.findtext(f"{ATOM}updated")),
-                          "summary": _clean(e.findtext(f"{ATOM}summary") or e.findtext(f"{ATOM}content"))})
-    else:
-        for e in root.iter():
-            if not (e.tag == "item" or e.tag.endswith("}item")):
-                continue
-
-            def child(name: str) -> Optional[str]:
-                for c in e:
-                    if c.tag == name or c.tag.endswith("}" + name):
-                        return c.text
-                return None
-
-            items.append({"title": _clean(child("title"), 300), "link": (child("link") or "").strip(),
-                          "published": _date(child("pubDate") or child("date") or child("published")),
-                          "summary": _clean(child("description") or child("encoded"))})
-            src = next((c for c in e if c.tag == "source"), None)
-            if src is not None and src.text:
-                items[-1]["outlet"] = _clean(src.text, 120)
-    if root.tag not in (f"{ATOM}feed", "rss") and not root.tag.endswith("RDF"):
-        raise FeedError(f"raíz XML inesperada: {root.tag[:60]}")
-    return [i for i in items if i["title"] and i["link"].startswith(("http://", "https://"))]
+def parse_feed(body: bytes, base_url: str = "") -> list[dict]:
+    """Entradas homologadas de un feed (RSS 2.0/1.0, Atom o JSON Feed)."""
+    return parse_any(body, base_url=base_url).items
 
 
 SOCIAL_RE = re.compile(r"(facebook|instagram|tiktok|twitter|youtube)\.com|//(www\.)?x\.com/|^(Facebook|Instagram|TikTok|X|YouTube)$", re.I)
@@ -224,6 +173,12 @@ def _outlet(i: dict) -> str:
     return i.get("outlet") or (FEED_BY_ID[i["feed"]].name if i["feed"] in FEED_BY_ID else i["feed"])
 
 
+def _kind(i: dict) -> str:
+    """Tipo de fuente para entradas del histórico anteriores a este campo."""
+    f = FEED_BY_ID.get(i["feed"])
+    return f.kind if f else "diario"
+
+
 def _without_title(i: dict) -> str:
     """El resumen sin el titular repetido al comienzo (algunos medios lo repiten)."""
     summ, title = i["summary"].strip(), i["title"].strip().rstrip(".")
@@ -258,6 +213,7 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
         own = [x for x in (_without_title(i) for i in its) if x and not _tokens(x) <= _tokens(lead["title"]) | _tokens(_outlet(lead))]
         summary = max(own, key=len, default="")
         outlets = list(dict.fromkeys(_outlet(i) for i in its))
+        places = list({p["code"]: p for i in its for p in (i.get("places") or [])}.values())
         out.append({
             "id": lead["id"], "region": g["region"], "title": lead["title"],
             "summary": _first_sentence(summary) if summary else "",
@@ -265,7 +221,11 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
             "last": max(i.get("published") or i["first_seen"] for i in its),
             "relevance": "enso" if any(i["relevance"] == "enso" for i in its) else "impacto",
             "count": len(its), "outlets": outlets,
-            "links": [{"title": i["title"], "url": i["link"], "outlet": _outlet(i), "published": i.get("published")}
+            "kinds": list(dict.fromkeys(i.get("kind") or _kind(i) for i in its)),
+            "departments": list(dict.fromkeys(d for i in its for d in (i.get("departments") or []))),
+            "places": places[:6],
+            "links": [{"title": i["title"], "url": i["link"], "outlet": _outlet(i), "published": i.get("published"),
+                       "kind": i.get("kind") or _kind(i)}
                       for i in its][:8],
         })
     out.sort(key=lambda g: (g["last"], g["count"]), reverse=True)
@@ -274,7 +234,18 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
 
 # --- Histórico de solo anexar y CSV -------------------------------------------
 
-CSV_FIELDS = ["first_seen", "published", "region", "feed", "outlet", "relevance", "title", "summary", "link", "id"]
+CSV_FIELDS = ["first_seen", "published", "region", "kind", "feed", "outlet", "relevance", "departments", "places",
+              "title", "summary", "link", "id"]
+
+
+def _csv_value(i: dict, k: str) -> str:
+    if k == "departments":
+        from .geo import department_names
+        names = department_names()
+        return "; ".join(names.get(c, c) for c in i.get("departments") or [])
+    if k == "places":
+        return "; ".join(p["name"] for p in i.get("places") or [])
+    return i.get(k) or ""
 
 
 def read_jsonl(text: str) -> list[dict]:
@@ -314,57 +285,96 @@ def to_csv(items: list[dict]) -> str:
     w = csv.DictWriter(buf, fieldnames=CSV_FIELDS, extrasaction="ignore", lineterminator="\n")
     w.writeheader()
     for i in sorted(items, key=lambda i: i.get("published") or i["first_seen"], reverse=True):
-        w.writerow({k: _csv_safe(i.get(k) or "") for k in CSV_FIELDS})
+        w.writerow({k: _csv_safe(_csv_value(i, k)) for k in CSV_FIELDS})
     return buf.getvalue()
 
 
 # --- Recolección -------------------------------------------------------------
 
-def collect(fetch, now: datetime) -> tuple[list[dict], list[dict], dict[str, bytes]]:
-    """Descarga todos los feeds. ``fetch(url)`` devuelve (estado, cuerpo, tipo, error).
+def _by_host(feeds: list[Feed]) -> list[list[Feed]]:
+    """Feeds agrupados por servidor: cada grupo se descarga en serie (cortesía), los grupos en paralelo."""
+    groups: dict[str, list[Feed]] = {}
+    for f in feeds:
+        groups.setdefault(re.sub(r"^https?://([^/]+).*", r"\1", f.url), []).append(f)
+    return list(groups.values())
 
-    Devuelve (entradas relevantes, estado por feed, cuerpos crudos por feed).
-    """
-    found, status, raw = [], [], {}
+
+def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optional[bytes]]:
+    from .geo import gazetteer
+
     seen_at = now.isoformat(timespec="seconds")
-    for f in FEEDS:
-        st = {"id": f.id, "name": f.name, "region": f.region, "url": f.url, "lang": f.lang, "scope": f.scope,
-              "checkedAt": seen_at, "ok": False, "items": 0, "relevant": 0, "latest": None, "active": False, "error": ""}
-        code, body, ctype, err = fetch(f.url)
-        st["httpStatus"] = code
-        if code != 200 or not body:
-            st["error"] = err or f"HTTP {code}"
-            status.append(st)
+    st = {"id": f.id, "name": f.name, "region": f.region, "url": f.url, "lang": f.lang, "scope": f.scope,
+          "kind": f.kind, "department": f.department, "checkedAt": seen_at, "ok": False, "items": 0,
+          "relevant": 0, "latest": None, "active": False, "error": "", "format": None, "repairs": []}
+    code, body, ctype, err = fetch(f.url)
+    st["httpStatus"] = code
+    if code != 200 or not body:
+        st["error"] = err or f"HTTP {code}"
+        return st, [], None
+    try:
+        parsed = parse_any(body, base_url=f.url, default_tz=LIMA if f.region == "peru" else timezone.utc, now=now)
+    except FeedError as exc:
+        st["error"] = str(exc)
+        return st, [], body
+    entries = parsed.items
+    dates = [e["published"] for e in entries if e["published"]]
+    st.update({"ok": True, "items": len(entries), "latest": max(dates) if dates else None,
+               "format": parsed.format, "repairs": parsed.repairs})
+    st["active"] = bool(st["latest"]) and st["latest"] >= (now - timedelta(days=f.stale_days)).isoformat()
+    if not entries:
+        st["error"] = "feed sin entradas"
+    future = (now + timedelta(hours=2)).isoformat()
+    gz = gazetteer()
+    found = []
+    for e in entries:
+        outlet = e.get("outlet") or f.name
+        if SOCIAL_RE.search(e["link"]) or SOCIAL_RE.search(outlet):
+            continue  # publicaciones en redes sociales, no notas de prensa
+        title = _strip_outlet(e["title"], outlet)
+        why = relevance(f, title, e["summary"])
+        if not why:
             continue
-        raw[f.id] = body
-        try:
-            entries = parse_feed(body)
-        except FeedError as exc:
-            st["error"] = str(exc)
-            status.append(st)
-            continue
-        dates = [e["published"] for e in entries if e["published"]]
-        st.update({"ok": True, "items": len(entries), "latest": max(dates) if dates else None})
-        st["active"] = bool(st["latest"]) and st["latest"] >= (now - timedelta(days=f.stale_days)).isoformat()
-        if not entries:
-            st["error"] = "feed sin entradas"
-        future = (now + timedelta(hours=2)).isoformat()
-        for e in entries:
-            outlet = e.get("outlet") or f.name
-            if SOCIAL_RE.search(e["link"]) or SOCIAL_RE.search(outlet):
-                continue  # publicaciones en redes sociales, no notas de prensa
-            title = _strip_outlet(e["title"], outlet)
-            why = relevance(f, title, e["summary"])
-            if not why:
-                continue
-            st["relevant"] += 1
-            published = e["published"]
-            if published and published > future:
-                # Algunos medios publican la hora local marcada como UTC.
-                st["futureDates"] = st.get("futureDates", 0) + 1
-                published = seen_at
-            found.append({"id": item_id(e["link"], e["title"]), "first_seen": seen_at, "published": published,
-                          "region": f.region, "feed": f.id, "outlet": outlet, "relevance": why,
-                          "title": title, "summary": e["summary"], "link": e["link"]})
+        st["relevant"] += 1
+        published = e["published"]
+        if published and published > future:
+            # Algunos medios publican la hora local marcada como UTC.
+            st["futureDates"] = st.get("futureDates", 0) + 1
+            published = seen_at
+        tag = gz.tag([title, e["summary"], " · ".join(e.get("categories") or [])],
+                     peru_context=f.region == "peru", default_dep=f.department)
+        item = {"id": item_id(e["link"], e["title"]), "first_seen": seen_at, "published": published,
+                "region": f.region, "feed": f.id, "kind": f.kind, "outlet": outlet, "relevance": why,
+                "title": title, "summary": e["summary"], "link": e["link"]}
+        if tag:
+            item["departments"] = tag["departments"]
+            item["places"] = [{k: p[k] for k in ("code", "level", "name")} for p in tag["places"]]
+            item["geoSource"] = tag["source"]
+        found.append(item)
+    return st, found, body
+
+
+def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None,
+            workers: int = 8) -> tuple[list[dict], list[dict], dict[str, bytes]]:
+    """Descarga los feeds. ``fetch(url)`` devuelve (estado, cuerpo, tipo, error) y debe ser seguro entre hilos.
+
+    Devuelve (entradas relevantes, estado por feed, cuerpos crudos por feed), en el orden del catálogo.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    feeds = FEEDS if feeds is None else feeds
+    results: dict[str, tuple] = {}
+
+    def run_group(group: list[Feed]) -> None:
+        for f in group:
+            results[f.id] = _read_feed(f, fetch, now)
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        list(ex.map(run_group, _by_host(feeds)))
+    found, status, raw = [], [], {}
+    for f in feeds:
+        st, items, body = results[f.id]
         status.append(st)
+        found.extend(items)
+        if body is not None:
+            raw[f.id] = body
     return found, status, raw

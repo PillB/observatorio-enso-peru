@@ -26,5 +26,6 @@ export const ICON = {
   pause: svg('<path d="M8 4v16M16 4v16"/>'),
   close: svg('<path d="M6 6l12 12M18 6L6 18"/>'),
   send: svg('<path d="M4 12l16-8-6 16-2.5-6.5z"/>'),
+  pin: svg('<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'),
   download: svg('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>'),
 };

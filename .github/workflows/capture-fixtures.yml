@@ -16,6 +16,7 @@ on:
     paths:
       - 'python/tools/capture_sources.py'
       - 'python/enso/observatory.py'
+      - 'python/enso/news.py'
       - '.github/workflows/capture-fixtures.yml'
 
 permissions:

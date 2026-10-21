@@ -37,7 +37,7 @@ jobs:
       - name: Browser journeys (Chromium, phone and desktop)
         working-directory: python
         run: |
-          python -m playwright install --with-deps chromium
+          python -m playwright install --with-deps chromium webkit firefox
           python -m pytest -q -m browser --site-dir=../public
       - uses: actions/upload-artifact@v4
         if: failure()

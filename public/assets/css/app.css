@@ -430,3 +430,35 @@ table.grd .chip { white-space: normal; }
 .feed-more li { margin-bottom: 4px; }
 .arch-figure { margin: 0; overflow-x: auto; }
 .arch-figure svg { width: 100%; min-width: 640px; height: auto; display: block; }
+
+/* Noticias: filtros por tipo de fuente y departamento */
+.news-filters { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 0 0 12px; min-width: 0; }
+.kind-chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; max-width: 100%; }
+.kind-chip { font: inherit; font-size: 0.86rem; min-height: 36px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg-elev); color: var(--fg-2); cursor: pointer; }
+.kind-chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.kind-chip[aria-pressed="true"] .muted { color: inherit; opacity: 0.75; }
+.kind-chip:focus-visible, .dep-select select:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.dep-select { display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--fg-2); }
+.dep-select select { font: inherit; min-height: 38px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg-elev); color: var(--fg); max-width: 100%; }
+.news-count { margin: 0 0 4px; }
+.tag-place { display: inline-flex; align-items: center; gap: 3px; }
+.tag-place svg { width: 13px; height: 13px; flex: none; }
+.tag-kind { font-weight: 600; }
+@media (max-width: 560px) {
+  .news-filters { flex-direction: column; align-items: stretch; }
+  .kind-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+  .kind-chip { flex: none; }
+  .dep-select { flex-direction: column; align-items: stretch; gap: 4px; }
+  .dep-select select { width: 100%; }
+}
+/* Pantallas muy pequeñas (teléfonos de tapa, pantalla externa de plegables) */
+@media (max-width: 300px) {
+  .brand-name { white-space: normal; font-size: 0.9rem; line-height: 1.15; }
+  .brand > span { min-width: 0; }
+  .header-inner { padding: 6px 8px; gap: 6px; }
+  .brand svg { width: 24px; height: 24px; }
+  main { padding: 12px 8px 24px; }
+  .card { padding: 10px; }
+  .seg { flex-wrap: wrap; max-width: 100%; }
+  main table { display: block; overflow-x: auto; }
+}

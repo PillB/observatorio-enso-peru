@@ -1068,6 +1068,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     """Feeds de noticias → histórico de solo anexar, CSV, estado de feeds y grupos."""
     from . import news as N
     from .fetch import FetchError
+    from .geo import department_names
 
     by_url = {f.url: f for f in N.FEEDS}
     if fixtures is not None and not any(fixtures.glob("news-*.xml")):
@@ -1126,7 +1127,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         "jsonl": jsonl, "csv": N.to_csv(items),
         "feeds": {"feeds": status, "history": {"items": len(items), "added": len(added),
                                                "since": min((i["first_seen"] for i in items), default=None)}},
-        "clusters": {"days": 14, "clusters": N.cluster(items, now)},
+        "clusters": {"days": 14, "clusters": N.cluster(items, now), "departmentNames": department_names()},
     }
 
 

@@ -1,0 +1,401 @@
+[
+ {
+  "id": "gnews-01",
+  "name": "Google Noticias · Amazonas",
+  "department": "Amazonas",
+  "dep": "01",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22regi%C3%B3n%20Amazonas%22%20OR%20Chachapoyas%20OR%20Bagua%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-02",
+  "name": "Google Noticias · Áncash",
+  "department": "Áncash",
+  "dep": "02",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22%C3%81ncash%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-03",
+  "name": "Google Noticias · Apurímac",
+  "department": "Apurímac",
+  "dep": "03",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Apur%C3%ADmac%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-04",
+  "name": "Google Noticias · Arequipa",
+  "department": "Arequipa",
+  "dep": "04",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Arequipa%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-05",
+  "name": "Google Noticias · Ayacucho",
+  "department": "Ayacucho",
+  "dep": "05",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ayacucho%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-06",
+  "name": "Google Noticias · Cajamarca",
+  "department": "Cajamarca",
+  "dep": "06",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Cajamarca%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-07",
+  "name": "Google Noticias · Callao",
+  "department": "Callao",
+  "dep": "07",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Callao%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-08",
+  "name": "Google Noticias · Cusco",
+  "department": "Cusco",
+  "dep": "08",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Cusco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-09",
+  "name": "Google Noticias · Huancavelica",
+  "department": "Huancavelica",
+  "dep": "09",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Huancavelica%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-10",
+  "name": "Google Noticias · Huánuco",
+  "department": "Huánuco",
+  "dep": "10",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Hu%C3%A1nuco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-11",
+  "name": "Google Noticias · Ica",
+  "department": "Ica",
+  "dep": "11",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ica%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-12",
+  "name": "Google Noticias · Junín",
+  "department": "Junín",
+  "dep": "12",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Jun%C3%ADn%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-13",
+  "name": "Google Noticias · La Libertad",
+  "department": "La Libertad",
+  "dep": "13",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22La%20Libertad%22%20OR%20Trujillo%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-14",
+  "name": "Google Noticias · Lambayeque",
+  "department": "Lambayeque",
+  "dep": "14",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Lambayeque%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-15",
+  "name": "Google Noticias · Lima",
+  "department": "Lima",
+  "dep": "15",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28Lima%20OR%20%22Lima%20Metropolitana%22%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-16",
+  "name": "Google Noticias · Loreto",
+  "department": "Loreto",
+  "dep": "16",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Loreto%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-17",
+  "name": "Google Noticias · Madre de Dios",
+  "department": "Madre de Dios",
+  "dep": "17",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Madre%20de%20Dios%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-18",
+  "name": "Google Noticias · Moquegua",
+  "department": "Moquegua",
+  "dep": "18",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Moquegua%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-19",
+  "name": "Google Noticias · Pasco",
+  "department": "Pasco",
+  "dep": "19",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Pasco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-20",
+  "name": "Google Noticias · Piura",
+  "department": "Piura",
+  "dep": "20",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Piura%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-21",
+  "name": "Google Noticias · Puno",
+  "department": "Puno",
+  "dep": "21",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Puno%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-22",
+  "name": "Google Noticias · San Martín",
+  "department": "San Martín",
+  "dep": "22",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22regi%C3%B3n%20San%20Mart%C3%ADn%22%20OR%20Tarapoto%20OR%20Moyobamba%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-23",
+  "name": "Google Noticias · Tacna",
+  "department": "Tacna",
+  "dep": "23",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Tacna%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-24",
+  "name": "Google Noticias · Tumbes",
+  "department": "Tumbes",
+  "dep": "24",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Tumbes%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gnews-25",
+  "name": "Google Noticias · Ucayali",
+  "department": "Ucayali",
+  "dep": "25",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ucayali%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ]
+ },
+ {
+  "id": "gobpe-indeci",
+  "name": "INDECI (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/indeci/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/indeci/noticias.rss",
+   "https://www.gob.pe/institucion/indeci/noticias.atom",
+   "https://www.gob.pe/institucion/indeci/noticias?format=rss",
+   "https://www.gob.pe/institucion/indeci/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-senamhi",
+  "name": "SENAMHI (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/senamhi/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/senamhi/noticias.rss",
+   "https://www.gob.pe/institucion/senamhi/noticias.atom",
+   "https://www.gob.pe/institucion/senamhi/noticias?format=rss",
+   "https://www.gob.pe/institucion/senamhi/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-igp",
+  "name": "Instituto Geofísico del Perú (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/igp/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/igp/noticias.rss",
+   "https://www.gob.pe/institucion/igp/noticias.atom",
+   "https://www.gob.pe/institucion/igp/noticias?format=rss",
+   "https://www.gob.pe/institucion/igp/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-ana",
+  "name": "Autoridad Nacional del Agua (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/ana/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/ana/noticias.rss",
+   "https://www.gob.pe/institucion/ana/noticias.atom",
+   "https://www.gob.pe/institucion/ana/noticias?format=rss",
+   "https://www.gob.pe/institucion/ana/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-imarpe",
+  "name": "IMARPE (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/imarpe/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/imarpe/noticias.rss",
+   "https://www.gob.pe/institucion/imarpe/noticias.atom",
+   "https://www.gob.pe/institucion/imarpe/noticias?format=rss",
+   "https://www.gob.pe/institucion/imarpe/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-enfen",
+  "name": "ENFEN (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/enfen/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/enfen/noticias.rss",
+   "https://www.gob.pe/institucion/enfen/noticias.atom",
+   "https://www.gob.pe/institucion/enfen/noticias?format=rss",
+   "https://www.gob.pe/institucion/enfen/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-minam",
+  "name": "Ministerio del Ambiente (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/minam/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/minam/noticias.rss",
+   "https://www.gob.pe/institucion/minam/noticias.atom",
+   "https://www.gob.pe/institucion/minam/noticias?format=rss",
+   "https://www.gob.pe/institucion/minam/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-midagri",
+  "name": "MIDAGRI (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/midagri/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/midagri/noticias.rss",
+   "https://www.gob.pe/institucion/midagri/noticias.atom",
+   "https://www.gob.pe/institucion/midagri/noticias?format=rss",
+   "https://www.gob.pe/institucion/midagri/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-cenepred",
+  "name": "CENEPRED (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/cenepred/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/cenepred/noticias.rss",
+   "https://www.gob.pe/institucion/cenepred/noticias.atom",
+   "https://www.gob.pe/institucion/cenepred/noticias?format=rss",
+   "https://www.gob.pe/institucion/cenepred/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-pcm",
+  "name": "PCM (gob.pe)",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/pcm/noticias",
+  "feeds": [
+   "https://www.gob.pe/institucion/pcm/noticias.rss",
+   "https://www.gob.pe/institucion/pcm/noticias.atom",
+   "https://www.gob.pe/institucion/pcm/noticias?format=rss",
+   "https://www.gob.pe/institucion/pcm/noticias.xml"
+  ],
+  "savehtml": true
+ },
+ {
+  "id": "andina-rss-index",
+  "name": "Andina índice de RSS",
+  "department": "nacional",
+  "kind": "gobierno",
+  "home": "https://andina.pe/agencia/rss.aspx",
+  "feeds": [],
+  "savehtml": true
+ }
+]

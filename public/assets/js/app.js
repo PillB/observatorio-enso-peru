@@ -560,6 +560,20 @@ VIEWS.metodologia = {
 // Noticias: novedades de cada fuente oficial y noticias de medios agrupadas
 // ---------------------------------------------------------------------------
 const NEWS_TABS = [['oficial', 'Fuentes oficiales'], ['peru', 'Perú'], ['mundo', 'Mundo']];
+// Tipos de fuente: el filtro agrupa los tipos del catálogo de feeds.
+const NEWS_KINDS = [['', 'Todas'], ['estado', 'Autoridades y Estado'], ['diario', 'Diarios'], ['radiotv', 'Radio y TV'], ['digital', 'Medios digitales'], ['agregador', 'Agregadores']];
+const KIND_GROUP = { gobierno: 'estado', organismo: 'estado', diario: 'diario', radio: 'radiotv', tv: 'radiotv', digital: 'digital', agregador: 'agregador' };
+const KIND_LABEL = { gobierno: 'Estado', organismo: 'Organismo', diario: 'Diario', radio: 'Radio', tv: 'TV', digital: 'Digital', agregador: 'Agregador' };
+
+function newsParams() {
+  const q = new URLSearchParams(location.hash.split('?')[1] || '');
+  return { tab: q.get('tab') || 'oficial', tipo: q.get('tipo') || '', dep: q.get('dep') || '' };
+}
+
+function placeLabel(p, deps) {
+  const dep = deps[p.code.slice(0, 2)];
+  return p.level === 'departamento' ? p.name : `${p.name}${dep ? ` (${dep})` : ''}`;
+}
 
 function feedValue(it) {
   if (it.value === undefined || it.value === null) return '';
@@ -584,25 +598,26 @@ function officialItem(it) {
     </div></li>`;
 }
 
-function clusterItem(c) {
+function clusterItem(c, deps = {}) {
   const more = c.links.length > 1;
+  const places = (c.places || []).slice(0, 3);
   return html`<li class="feed-item">
     <div class="feed-meta"><time datetime="${c.first}">${F.fmtDateTime(c.first).replace(' (hora de Lima)', '')}</time> · <span class="feed-inst">${c.outlets.slice(0, 3).join(', ')}${c.outlets.length > 3 ? ` y ${c.outlets.length - 3} más` : ''}</span></div>
     <h3 class="feed-title"><a href="${safeUrl(c.links[0].url)}" rel="noopener" target="_blank">${c.title}</a></h3>
     ${c.summary ? html`<p class="feed-text">${c.summary}</p>` : ''}
-    <div class="feed-tags"><span class="tag">${c.relevance === 'enso' ? 'El Niño / La Niña' : 'Impactos y peligros'}</span>${c.count > 1 ? html` <span class="tag">${c.count} notas similares</span>` : ''}</div>
-    ${more ? html`<details class="feed-more"><summary>Ver las ${c.links.length} notas</summary><ul>${c.links.map((l) => html`<li><a href="${safeUrl(l.url)}" rel="noopener" target="_blank">${l.title}</a> <span class="muted small">${l.outlet}${l.published ? ` · ${F.fmtDate(l.published.slice(0, 10))}` : ''}</span></li>`)}</ul></details>` : ''}
+    <div class="feed-tags"><span class="tag">${c.relevance === 'enso' ? 'El Niño / La Niña' : 'Impactos y peligros'}</span>${c.count > 1 ? html` <span class="tag">${c.count} notas similares</span>` : ''}${(c.kinds || []).map((k) => html` <span class="tag tag-kind tag-${KIND_GROUP[k] || 'diario'}">${KIND_LABEL[k] || k}</span>`)}${places.map((p) => html` <span class="tag tag-place">${raw(ICON.pin)}${placeLabel(p, deps)}</span>`)}</div>
+    ${more ? html`<details class="feed-more"><summary>Ver las ${c.links.length} notas</summary><ul>${c.links.map((l) => html`<li><a href="${safeUrl(l.url)}" rel="noopener" target="_blank">${l.title}</a> <span class="muted small">${l.outlet}${l.kind ? ` (${(KIND_LABEL[l.kind] || l.kind).toLowerCase()})` : ''}${l.published ? ` · ${F.fmtDate(l.published.slice(0, 10))}` : ''}</span></li>`)}</ul></details>` : ''}
   </li>`;
 }
 
 VIEWS.noticias = {
   title: 'Noticias',
   render() {
-    const tab = new URLSearchParams(location.hash.split('?')[1] || '').get('tab') || 'oficial';
+    const { tab } = newsParams();
     const cur = NEWS_TABS.some(([k]) => k === tab) ? tab : 'oficial';
     return html`
       <div class="page-head"><div class="eyebrow">Novedades</div><h1>Noticias y novedades</h1>
-        <p>Lo último que publicó cada fuente oficial y las noticias sobre El Niño en el Perú y el mundo. Cuando varios medios cuentan lo mismo se agrupan en una sola entrada con el enlace a cada uno.</p></div>
+        <p>Lo último que publicó cada fuente oficial y las noticias sobre El Niño y sus impactos en el Perú y el mundo: autoridades, diarios, radios y medios regionales. Cuando varios medios cuentan lo mismo se agrupan en una sola entrada con el enlace a cada uno, y cada noticia se ubica en su departamento, provincia o distrito.</p></div>
       <div class="seg" role="tablist" aria-label="Tipo de novedades" data-tour-id="news-tabs">${NEWS_TABS.map(([k, l]) => html`<button type="button" role="tab" data-tab="${k}" aria-selected="${String(k === cur)}" aria-pressed="${String(k === cur)}">${l}</button>`)}</div>
       <div id="news-body" class="news-body"><div class="skeleton"></div></div>
       <section class="card" aria-labelledby="nd-h" data-tour-id="news-downloads"><h2 id="nd-h">Descargas y estado de los feeds</h2>
@@ -621,25 +636,43 @@ VIEWS.noticias = {
     const body = $('#news-body');
     const hasNews = Boolean(S.dash.news);
     const [feed, clusters, feeds] = await Promise.all([load('feed.json'), hasNews ? load('news/clusters.json') : null, hasNews ? load('news/feeds.json') : null]);
-    const show = (tab) => {
+    const deps = clusters?.departmentNames || {};
+    const setUrl = (p) => history.replaceState(null, '', `#/noticias?${new URLSearchParams(Object.entries(p).filter(([, v]) => v)).toString()}`);
+    const show = (p) => {
+      const { tab } = p;
       $$('[data-tab]').forEach((b) => { const on = b.dataset.tab === tab; b.setAttribute('aria-selected', String(on)); b.setAttribute('aria-pressed', String(on)); });
       if (tab === 'oficial') {
         body.innerHTML = feed ? String(html`${feed.groups.map((g) => html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2><ul class="feed">${g.items.map(officialItem)}</ul></section>`)}`) : '<p class="card">No disponible en esta publicación.</p>';
         return;
       }
-      const list = (clusters?.clusters || []).filter((c) => c.region === tab);
-      body.innerHTML = clusters
-        ? String(html`<section class="card" aria-label="Noticias ${tab === 'peru' ? 'del Perú' : 'del mundo'}">${list.length ? html`<ul class="feed">${list.map(clusterItem)}</ul>` : html`<p class="muted">No hay noticias sobre El Niño en los feeds de los últimos ${clusters.days} días.</p>`}</section>`)
-        : '<p class="card">Las noticias no están disponibles en esta publicación.</p>';
+      if (!clusters) { body.innerHTML = '<p class="card">Las noticias no están disponibles en esta publicación.</p>'; return; }
+      const region = (clusters.clusters || []).filter((c) => c.region === tab);
+      const byKind = (c) => !p.tipo || (c.kinds || ['diario']).some((k) => KIND_GROUP[k] === p.tipo);
+      const byDep = (c) => !p.dep || (c.departments || []).includes(p.dep);
+      const list = region.filter((c) => byKind(c) && byDep(c));
+      const kindCount = (k) => region.filter((c) => byDep(c) && (!k || (c.kinds || ['diario']).some((x) => KIND_GROUP[x] === k))).length;
+      const depCount = {};
+      region.filter(byKind).forEach((c) => (c.departments || []).forEach((d) => { depCount[d] = (depCount[d] || 0) + 1; }));
+      const depOpts = Object.keys(deps).sort((a, b) => deps[a].localeCompare(deps[b], 'es'));
+      const filters = html`<div class="news-filters">
+        <div class="kind-chips" role="group" aria-label="Tipo de fuente">${NEWS_KINDS.map(([k, l]) => html`<button type="button" class="kind-chip" data-kind="${k}" aria-pressed="${String(k === p.tipo)}">${l} <span class="muted">${kindCount(k)}</span></button>`)}</div>
+        ${tab === 'peru' ? html`<label class="dep-select"><span>Departamento</span><select id="news-dep"><option value="">Todo el Perú (${region.filter(byKind).length})</option>${depOpts.map((d) => html`<option value="${d}" ${d === p.dep ? 'selected' : ''}>${deps[d]} (${depCount[d] || 0})</option>`)}</select></label>` : ''}
+      </div>`;
+      const what = `${tab === 'peru' ? 'del Perú' : 'del mundo'}${p.dep && deps[p.dep] ? ` en ${deps[p.dep]}` : ''}`;
+      body.innerHTML = String(html`${filters}<section class="card" aria-label="Noticias ${what}">${list.length ? html`<p class="muted small news-count" aria-live="polite">${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what} en los últimos ${clusters.days} días</p><ul class="feed">${list.map((c) => clusterItem(c, deps))}</ul>` : html`<p class="muted">No hay noticias ${what} con este filtro en los últimos ${clusters.days} días.</p>`}</section>`);
+      $$('.kind-chip', body).forEach((b) => b.addEventListener('click', () => { const n = { ...p, tipo: b.dataset.kind }; setUrl(n); show(n); }));
+      $('#news-dep', body)?.addEventListener('change', (e) => { const n = { ...p, dep: e.target.value }; setUrl(n); show(n); $('#news-dep', body)?.focus(); });
     };
     $$('[data-tab]').forEach((b) => b.addEventListener('click', () => {
-      history.replaceState(null, '', `#/noticias?tab=${b.dataset.tab}`);
-      show(b.dataset.tab);
+      const n = { ...newsParams(), tab: b.dataset.tab };
+      if (n.tab !== 'peru') n.dep = '';
+      setUrl(n);
+      show(n);
     }));
-    show(new URLSearchParams(location.hash.split('?')[1] || '').get('tab') || 'oficial');
+    show(newsParams());
     const box = $('#feeds-status .feeds-table');
     box.innerHTML = feeds ? String(html`<div class="table-wrap"><table><thead><tr><th scope="col">Feed</th><th scope="col">Estado</th><th scope="col">Entradas</th><th scope="col">Más reciente</th></tr></thead><tbody>
-      ${feeds.feeds.map((f) => html`<tr><th scope="row"><a href="${safeUrl(f.url)}" rel="noopener" target="_blank">${f.name}</a><div class="muted small">${f.region === 'peru' ? 'Perú' : 'Mundo'}</div></th>
+      ${feeds.feeds.map((f) => html`<tr><th scope="row"><a href="${safeUrl(f.url)}" rel="noopener" target="_blank">${f.name}</a><div class="muted small">${f.region === 'peru' ? (f.department && deps[f.department] ? deps[f.department] : 'Perú') : 'Mundo'} · ${KIND_LABEL[f.kind] || 'Diario'}${f.repairs && f.repairs.length ? ` · reparado: ${f.repairs.join(', ')}` : ''}</div></th>
       <td>${f.ok ? (f.active ? chip('ok', 'Activo') : chip('watch', 'Sin novedades')) : chip('alert', 'No responde')}${f.error ? html`<div class="muted small">${f.error}</div>` : ''}</td>
       <td>${f.items} (${f.relevant} sobre El Niño)</td><td>${f.latest ? F.fmtDate(f.latest.slice(0, 10)) : '—'}</td></tr>`)}</tbody></table></div>
       <p class="muted small">${feeds.history.items} notas guardadas desde ${feeds.history.since ? F.fmtDate(feeds.history.since.slice(0, 10)) : '—'}; ${feeds.history.added} nuevas en esta corrida.</p>`) : 'No disponible.';
