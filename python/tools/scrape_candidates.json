@@ -49,6 +49,7 @@
     {"id": "robots-sinrodeos", "hazard": "registro", "institution": "robots.txt de sinrodeoscajamarca.com (¿permite sus feeds RSS?)", "url": "https://sinrodeoscajamarca.com/robots.txt", "expect": "(?i)user-agent"},
     {"id": "gobpe-rss-indeci", "hazard": "registro", "institution": "gob.pe · noticias de indeci en RSS sin «sheet» (robots.txt prohíbe ?sheet=)", "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sort_by=recent", "expect": "<item>"},
     {"id": "gobpe-rss-regionpiura", "hazard": "registro", "institution": "gob.pe · noticias de regionpiura en RSS sin «sheet» (robots.txt prohíbe ?sheet=)", "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sort_by=recent", "expect": "<item>"},
-    {"id": "robots-bing", "hazard": "registro", "institution": "robots.txt de www.bing.com (¿permite sus búsquedas de noticias en RSS?)", "url": "https://www.bing.com/robots.txt", "expect": "(?i)user-agent"}
+    {"id": "robots-bing", "hazard": "registro", "institution": "robots.txt de www.bing.com (¿permite sus búsquedas de noticias en RSS?)", "url": "https://www.bing.com/robots.txt", "expect": "(?i)user-agent"},
+    {"id": "bing-news-rss-piura", "hazard": "registro", "institution": "Bing News · búsqueda en RSS (su robots.txt permite /news/search): ¿sirve en lugar de Google News por departamento?", "url": "https://www.bing.com/news/search?q=lluvias+Piura&format=rss&setlang=es-PE&cc=PE", "expect": "<item>"}
   ]
 }

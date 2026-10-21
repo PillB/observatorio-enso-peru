@@ -278,6 +278,16 @@ def test_gobpe_feeds_respect_its_robots_txt():
     assert not rules.allowed("https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sheet=1&sort_by=recent")
 
 
+def test_gobpe_rss_without_sheet_still_lists_news():
+    """Lo bajado desde Actions el 21 de octubre sin «sheet»: el RSS trae sus 25 notas más recientes."""
+    from enso import news as N
+
+    for inst in ("indeci", "regionpiura"):
+        body = (ROBOTS / f"gobpe-rss-{inst}.http.xml").read_bytes()
+        items = N.parse_feed(body, "https://www.gob.pe/")
+        assert len(items) == 25 and all(i["link"].startswith("https://www.gob.pe/") for i in items), inst
+
+
 def test_google_news_and_un_news_disallow_their_rss_to_generic_agents():
     """Lo que dicen hoy sus robots.txt (21 de octubre de 2026): por eso el registro deja esos feeds sin canales."""
     from enso import news as N
