@@ -225,9 +225,18 @@ def test_a_run_without_news_serves_the_previous_news(pub, tmp_path):
     for name in ("items.jsonl", "items.csv"):
         assert (out / "news" / name).read_bytes() == (prev / "news" / name).read_bytes(), name
     stamp = ("schema", "publicationId", "generatedAt")
-    for name in ("news/feeds.json", "news/clusters.json", "geo/overrides.json", "geo/items.json"):
+    for name in ("geo/overrides.json", "geo/items.json"):
         a, b = (json.loads((d / name).read_text(encoding="utf-8")) for d in (out, prev))
         assert {k: v for k, v in a.items() if k not in stamp} == {k: v for k, v in b.items() if k not in stamp}, name
+    # El estado de los feeds dice de cuándo es y que esta corrida no agregó notas.
+    feeds, before = (json.loads((d / "news" / "feeds.json").read_text(encoding="utf-8")) for d in (out, prev))
+    assert feeds["carriedFrom"] == before["generatedAt"] and feeds["history"]["added"] == 0
+    assert feeds["feeds"] == before["feeds"] and feeds["history"]["items"] == before["history"]["items"]
+    # Los grupos enlazan a páginas del archivo que existen; la respuesta cruda de aquel día no se sirve.
+    clusters = json.loads((out / "news" / "clusters.json").read_text(encoding="utf-8"))["clusters"]
+    links = [link for c in clusters for link in c["links"]]
+    assert links and not any("snapshot" in link for link in links)
+    assert all((out / link["archive"].split("#")[0]).exists() for link in links if link.get("archive"))
     d = json.loads((out / "dashboard.json").read_text(encoding="utf-8"))
     assert d["news"]["items"] == json.loads((prev / "dashboard.json").read_text(encoding="utf-8"))["news"]["items"]
     man = json.loads((out / "manifest.json").read_text(encoding="utf-8"))

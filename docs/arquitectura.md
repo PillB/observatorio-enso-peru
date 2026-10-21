@@ -69,8 +69,10 @@ la fuente son la unión. El pipeline lee el registro en cada corrida:
   y se pide directo una sola vez, por si volvió a responder;
 - una URL cuyo `robots.txt` lo prohíbe no se pide (sin canales), salvo los
   feeds de noticias marcados `reader` (Google Noticias, Noticias ONU, Sin
-  Rodeos): se leen como un lector de feeds, solo desde Actions y como mucho
-  una vez cada 20 horas; entre dos lecturas queda el estado de la última;
+  Rodeos): se leen como un lector de feeds, solo desde la corrida diaria de
+  Actions y como mucho una vez cada 20 horas; entre dos lecturas queda el
+  estado de la última, y sus notas se guardan con él en la caché de Actions
+  por si esa corrida no llega a publicar;
 - si hay varias copias de una URL (Perú y n8n), gana la más reciente, también
   para las noticias y las alertas.
 
@@ -143,25 +145,27 @@ disponible», nunca como vigente.
   temprana; el resumen es la primera oración del resumen más largo.
 - **Histórico:** `news/items.jsonl` se lee de la publicación anterior y
   se le agregan las notas nuevas (por `id` = hash de enlace y titular).
-  Cada corrida archivada guarda en la rama `data-archive` el histórico
-  entero comprimido (`sources/news/items.jsonl.gz`, que se reemplaza) y
-  las notas nuevas de cada día (`sources/news/<día>.jsonl`, que se suman).
-  La corrida baja siempre esa copia y le agrega al histórico publicado,
-  al final, las notas que no tenga (p. ej. las de una corrida que no llegó
-  a desplegar: `news-history-restored`). Si el histórico publicado no
-  responde tras tres intentos, lo rehace con la copia
-  (`news-history-missing`, advertencia). Un sitio que no responde (5xx,
-  sin respuesta) no es lo mismo que uno que no tiene el archivo (404): solo
-  con 404 en el sitio y en `data-archive` se trata como primera
-  publicación. Si no hay histórico ni copia que leer, publica solo las
-  notas de hoy, marca el histórico como `restarted` en `news/feeds.json`
-  (`news-history-missing`, error) y no reemplaza la copia; la corrida
-  siguiente que la lea lo completa. Una corrida sin noticias (su lectura
-  falló) sirve las de la publicación anterior. GitHub no acepta archivos de
-  más de 100 MB y Cloudflare Pages no sirve archivos de más de 25 MiB: el
-  pipeline avisa (`news-history-large`) cuando `items.jsonl` pasa de
-  20 MiB, y el archivo deja de reemplazar la copia comprimida si pasa de
-  90 MiB.
+  Cada corrida archivada guarda en la rama `data-archive` la unión de todo
+  lo publicado, comprimida (`sources/news/items.jsonl.gz`: el job
+  `archive` le agrega con `python/tools/merge_history.py` las notas de la
+  corrida que no tenga y nunca le quita ninguna), y las notas nuevas de
+  cada día (`sources/news/<día>.jsonl`, que se suman). La corrida baja
+  siempre esa copia y le agrega al histórico publicado, al final, las notas
+  que no tenga (p. ej. las de una corrida que no llegó a desplegar:
+  `news-history-restored`). Si el histórico publicado no responde tras tres
+  intentos, lo rehace con la copia (`news-history-missing`, advertencia).
+  Un sitio que no responde (5xx, sin respuesta) no es lo mismo que uno que
+  no tiene el archivo (404): solo con 404 en el sitio y en `data-archive`
+  se trata como primera publicación. Si no hay histórico ni copia que
+  leer, publica solo las notas de hoy y marca el histórico como
+  `restarted` en `news/feeds.json` (`news-history-missing`, error, que se
+  repite mientras siga así); la corrida siguiente que lea la copia lo
+  completa. Una corrida sin noticias (su lectura falló) sirve las de la
+  publicación anterior, con `carriedFrom` en `news/feeds.json`. GitHub no
+  acepta archivos de más de 100 MB y Cloudflare Pages no sirve archivos de
+  más de 25 MiB: el pipeline avisa (`news-history-large`) cuando
+  `items.jsonl` pasa de 20 MiB, y la copia comprimida deja de crecer (con
+  aviso) si pasaría de 90 MiB.
 - **Derechos:** solo se guarda lo que el medio publica en su feed
   (titular, resumen, fecha y enlace). El sitio enlaza siempre a la nota
   original.

@@ -41,7 +41,8 @@ pip install -r requirements-dev.txt
 # Publicación sin red, a partir de las respuestas capturadas
 python -m enso.observatory --out ../public/data --previous '' --fixtures tests/fixtures/sources
 
-# Publicación con datos en vivo
+# Publicación con datos en vivo (los 40 feeds que robots.txt no permite y se
+# leen una vez al día no se piden: solo los lee la corrida diaria, con --reader-state)
 python -m enso.observatory --out ../public/data
 
 # Servir el sitio

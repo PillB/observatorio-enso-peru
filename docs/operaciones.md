@@ -76,7 +76,7 @@ Códigos frecuentes:
 | `relay-n8n-missing` | La rama `data-n8n` no existe o no se pudo leer: no hay segundo canal si Actions no alcanza una fuente | Revisar el flujo «ENSO · Recolector n8n» ([n8n](n8n.md)) |
 | `relay-n8n-stale` | La última corrida de n8n tiene más de 36 h | Revisar que el flujo siga activo en n8n |
 | `relay-n8n-sources-down` | n8n corrió hoy, pero ninguna fuente le respondió | Nada en n8n: son las fuentes o la red de su nube; se usan copias de hasta 72 h |
-| `news-history-missing` | La publicación anterior no trajo el histórico de noticias tras tres intentos (el mensaje dice si no existe o si el sitio no respondió). Advertencia si se rehízo con la copia de `data-archive` (`sources/news/items.jsonl.gz`); error si tampoco se pudo leer la copia: se publican solo las notas de hoy, el histórico queda marcado `restarted` y la copia no se reemplaza | Revisar el sitio publicado y el paso «News history backup» de la corrida |
+| `news-history-missing` | La publicación anterior no trajo el histórico de noticias tras tres intentos (el mensaje dice si no existe o si el sitio no respondió). Advertencia si se rehízo con la copia de `data-archive` (`sources/news/items.jsonl.gz`); error si tampoco se pudo leer la copia: se publican solo las notas de hoy y el histórico queda marcado `restarted`. El error se repite en cada corrida hasta que se lea la copia (la copia no pierde notas: el job `archive` solo le agrega) | Revisar el sitio publicado y el paso «News history backup» de la corrida |
 | `news-history-restored` | Esta corrida le agregó al histórico publicado notas de la copia de `data-archive` que no tenía (una corrida anterior no llegó a desplegar o lo publicó incompleto), o aceptó como está un histórico `restarted` porque `data-archive` no tiene copia | Ninguna: se resolvió sola |
 | `news-history-large` | `news/items.jsonl` pasa de 20 MiB; Cloudflare Pages no sirve archivos de más de 25 MiB | Dividir el histórico (por ejemplo, un archivo por mes) antes de que llegue al límite |
 | `relay-token-expiring` | El token de GitHub del recolector vence en menos de 21 días | Crear un token nuevo y ejecutar INSTALAR en el equipo del recolector con ese token ([servidor-peru](servidor-peru.md#1-token-de-github)) |
@@ -98,3 +98,9 @@ Códigos frecuentes:
   URL nueva al principio de la lista; las anteriores quedan como respaldo.
 - **Respuestas originales:** la rama `data-archive` guarda cada respuesta
   nueva por fuente y SHA-256, útil para reconstruir o añadir pruebas.
+- **Quitar una nota del histórico de noticias** (p. ej. a pedido de un
+  medio): hoy no se puede sin tocar el código. El histórico publicado es de
+  solo anexar y su copia en `data-archive` (`sources/news/items.jsonl.gz`)
+  lo completa en cada corrida, así que una nota borrada en un lado vuelve
+  desde el otro. Haría falta una lista de notas retiradas que el pipeline
+  filtre al leer los dos.

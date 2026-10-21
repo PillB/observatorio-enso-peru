@@ -133,12 +133,12 @@ jobs:
           fi
 
       # Copia del histórico de noticias que el job «archive» guarda en la rama
-      # data-archive (sources/news/items.jsonl.gz). Se baja siempre (un solo
-      # archivo, por la API): el pipeline le suma al histórico publicado las
-      # notas que le falten y lo rehace con ella si no puede leerlo (sitio
-      # caído, otro hosting). La carpeta va aunque la descarga falle: vacía, el
-      # pipeline sabe que la copia no se pudo bajar; «absent» (HTTP 404) es que
-      # todavía no hay ninguna, como en la primera publicación.
+      # data-archive (sources/news/items.jsonl.gz, unión de todo lo publicado).
+      # Se baja siempre (un solo archivo, por la API): el pipeline le suma al
+      # histórico publicado las notas que le falten y lo rehace con ella si no
+      # puede leerlo (sitio caído, otro hosting). La carpeta va aunque la
+      # descarga falle: vacía, el pipeline sabe que la copia no se pudo bajar;
+      # «absent» (HTTP 404) es que todavía no hay ninguna.
       - name: News history backup
         id: history
         continue-on-error: true
@@ -148,7 +148,8 @@ jobs:
           mkdir -p "$RUNNER_TEMP/history"
           echo "dir=$RUNNER_TEMP/history" >> "$GITHUB_OUTPUT"
           f="$RUNNER_TEMP/history/items.jsonl.gz"
-          if gh api -H "Accept: application/vnd.github.raw+json" \
+          # «raw», no «raw+json»: con este gh lo trata como JSON y daña cualquier archivo binario.
+          if gh api -H "Accept: application/vnd.github.raw" \
               "repos/$GITHUB_REPOSITORY/contents/sources/news/items.jsonl.gz?ref=data-archive" \
               > "$f" 2> "$RUNNER_TEMP/history.err"; then
             if gzip -t "$f"; then
@@ -390,15 +391,10 @@ jobs:
             t="../archive/sources/news/$(basename "$f")"
             touch "$t"; cat "$t" "$f" | awk '!seen[$0]++' > "$t.tmp" && mv "$t.tmp" "$t"
           done
-          # El histórico completo de esta publicación reemplaza al anterior (solo si la corrida lo tuvo
-          # entero). GitHub rechaza archivos de más de 100 MB: por encima de 90 MiB queda la copia anterior.
+          # El histórico de esta corrida se une a la copia: la copia nunca pierde notas, aunque la corrida
+          # no haya podido leerla o haya publicado un histórico incompleto (python/tools/merge_history.py).
           if [ -f raw/news/items.jsonl.gz ]; then
-            size=$(stat -c %s raw/news/items.jsonl.gz)
-            if [ "$size" -lt 94371840 ]; then
-              cp raw/news/items.jsonl.gz ../archive/sources/news/items.jsonl.gz
-            else
-              echo "::warning::El histórico de noticias comprimido pesa $size bytes: no cabe en data-archive y queda la copia anterior. Hay que dividirlo (docs/operaciones.md)."
-            fi
+            python3 python/tools/merge_history.py raw/news/items.jsonl.gz ../archive/sources/news/items.jsonl.gz
           fi
           rm -rf raw/news
           cp -rn raw/. ../archive/sources/
