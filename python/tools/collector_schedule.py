@@ -25,6 +25,7 @@ import json
 import os
 import plistlib
 import shlex
+import shutil
 import subprocess
 import sys
 import time
@@ -214,6 +215,8 @@ def install_cron(python: str, root: Path, times: list[str]) -> str:
 
 
 def remove_cron() -> bool:
+    if not shutil.which("crontab"):
+        return False  # sin cron (el instalador avisó y siguió sin tarea): no hay nada que quitar
     lines = _crontab_read()
     keep = [line for line in lines if CRON_TAG not in line]
     if len(keep) != len(lines):

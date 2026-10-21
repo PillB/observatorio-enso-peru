@@ -34,7 +34,8 @@ KIT_URL="https://github.com/$REPO/releases/download/recolector-kit/recolector-pe
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 KIT_ROOT="$(cd "$HERE/.." && pwd -P)"
 OS="$(uname -s)"
-if [ -f "$KIT_ROOT/kit.json" ] && { [ -d "$KIT_ROOT/.venv" ] || [ -f "$KIT_ROOT/.env" ]; }; then
+MARKER=".instalacion-recolector"
+if [ -f "$KIT_ROOT/$MARKER" ] || { [ -f "$KIT_ROOT/kit.json" ] && { [ -d "$KIT_ROOT/.venv" ] || [ -f "$KIT_ROOT/.env" ]; }; }; then
   # Corre desde una instalación (sus lanzadores): esa es la carpeta, aunque
   # se haya instalado con --destino en otro lugar.
   DEST="$KIT_ROOT"
@@ -99,8 +100,10 @@ case "$HORA" in
   [01][0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]) ;;
   *) die "--hora debe ser HH:MM (por ejemplo 21:00)" ;;
 esac
+[ -n "$DEST" ] || die "--destino necesita una carpeta"
+# Ruta absoluta: in_python cambia de carpeta antes de llamar a $VPY.
+case "$DEST" in /*) ;; *) DEST="$PWD/${DEST#./}" ;; esac
 VPY="$DEST/.venv/bin/python"
-MARKER=".instalacion-recolector"
 ENV_FILE="$DEST/.env"
 
 py_ok() { "$1" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1; }

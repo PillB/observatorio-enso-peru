@@ -55,11 +55,12 @@ $OldTaskName = 'ENSO recolector Peru'
 $Repo = 'PillB/observatorio-enso-peru'
 $KitUrl = "https://github.com/$Repo/releases/download/recolector-kit/recolector-peru.zip"
 $KitRoot = Split-Path -Parent $PSScriptRoot
+$Marker = '.instalacion-recolector'
 if (-not $Destino) {
     # Corre desde una instalación (sus lanzadores): esa es la carpeta, aunque
     # se haya instalado con -Destino en otro lugar.
     $installed = (Test-Path (Join-Path $KitRoot '.venv')) -or (Test-Path (Join-Path $KitRoot '.env'))
-    if ($installed -and (Test-Path (Join-Path $KitRoot 'kit.json'))) { $Destino = $KitRoot }
+    if ((Test-Path (Join-Path $KitRoot $Marker)) -or ($installed -and (Test-Path (Join-Path $KitRoot 'kit.json')))) { $Destino = $KitRoot }
     else { $Destino = Join-Path $env:LOCALAPPDATA 'ObservatorioENSO\recolector' }
 }
 $Destino = [IO.Path]::GetFullPath($Destino)
@@ -67,7 +68,6 @@ $VenvPy = Join-Path $Destino '.venv\Scripts\python.exe'
 $VenvPyw = Join-Path $Destino '.venv\Scripts\pythonw.exe'
 $EnvFile = Join-Path $Destino '.env'
 $StartMenu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Observatorio ENSO'
-$Marker = '.instalacion-recolector'
 
 function Write-Step([string]$Message) { Write-Host ''; Write-Host "== $Message" -ForegroundColor Cyan }
 function Write-Info([string]$Message) { Write-Host "   $Message" }

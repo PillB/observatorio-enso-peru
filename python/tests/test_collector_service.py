@@ -382,6 +382,7 @@ def test_cron_lines_quote_paths_and_replace_old_ones(tmp_path, monkeypatch):
     store = ["0 5 * * * otra-cosa", f"0 1 * * * vieja {sched.CRON_TAG}"]
     monkeypatch.setattr(sched, "_crontab_read", lambda: list(store))
     monkeypatch.setattr(sched, "_crontab_write", lambda lines: store.__setitem__(slice(None), lines))
+    monkeypatch.setattr(sched.shutil, "which", lambda name: f"/usr/bin/{name}")
     sched.install_cron(str(root / ".venv/bin/python"), root, ["21:00", "21:30"])
     assert store[0] == "0 5 * * * otra-cosa" and not any("vieja" in line for line in store)
     assert store[1].startswith("0 21 * * * cd ") and f"'{root / 'python'}'" in store[1]
@@ -695,6 +696,7 @@ def test_unreadable_crontab_is_not_read_as_empty(tmp_path, monkeypatch, stderr, 
     """Leer el crontab como vacío por un error haría que instalar borre las
     líneas ajenas y que desinstalar borre la carpeta con la tarea puesta."""
     writes = []
+    monkeypatch.setattr(sched.shutil, "which", lambda name: f"/usr/bin/{name}")
     monkeypatch.setattr(sched.subprocess, "run", lambda *a, **k: subprocess.CompletedProcess(a[0], 1, "", stderr))
     monkeypatch.setattr(sched, "_crontab_write", writes.append)
     if lines is not None:
@@ -744,6 +746,28 @@ def test_launchd_agent_is_gone_before_reporting_it_removed(tmp_path, monkeypatch
     else:
         assert sched.remove_launchd() and not plist.exists()
         assert sched.remove_launchd() is False  # ya no estaba: nada que quitar
+
+
+def test_uninstall_where_cron_was_never_available(monkeypatch, capsys):
+    """Sin crontab el instalador sigue sin tarea; desinstalar no debe quedar bloqueado por eso."""
+    monkeypatch.setattr(sched.shutil, "which", lambda name: None)
+    monkeypatch.setattr(sched.subprocess, "run", lambda *a, **k: (_ for _ in ()).throw(FileNotFoundError("crontab")))
+    monkeypatch.setattr(sched, "remove", sched.remove_cron)
+    assert sched.main(["quitar"]) == 0 and "No había tarea" in capsys.readouterr().out
+
+
+@pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
+def test_installer_resolves_a_relative_destination(tmp_path):
+    """--destino ./carpeta: in_python cambia de carpeta antes de usar la ruta del .venv."""
+    env = {**os.environ, "ENSO_SIN_PAUSA": "1"}
+    r = subprocess.run(["bash", str(REPO_ROOT / "collector" / "instalar.sh"), "--no-interactivo", "--sin-verificar",
+                        "--sin-tarea", "--destino", "./relativa"], capture_output=True, text=True, env=env,
+                       cwd=tmp_path, timeout=600)
+    assert r.returncode == 0, r.stdout[-2000:] + r.stderr[-2000:]
+    assert f"Carpeta de instalación: {tmp_path / 'relativa'}" in r.stdout
+    r = subprocess.run(["bash", str(tmp_path / "relativa" / "VERIFICAR-Mac.command"), "--solo", "python"],
+                       capture_output=True, text=True, env=env, cwd=tmp_path, timeout=120)
+    assert "Python 3." in r.stdout, r.stdout[-2000:] + r.stderr[-2000:]
 
 
 def test_schedule_cli_reports_a_failed_removal(monkeypatch, capsys):
