@@ -122,10 +122,14 @@ class RobotRules:
 class Robots:
     """robots.txt de cada servidor, leído una vez por corrida y respetado (RFC 9309).
 
-    * 2xx: se aplican sus reglas (``RobotRules``: gana la regla más larga).
+    * 2xx: se aplican sus reglas (``RobotRules``: gana la regla más larga). Una
+      página HTML en su lugar (un «no encontrado» con código 200, o una
+      redirección a la portada, como ``portal.indeci.gob.pe``) no tiene reglas:
+      se permite todo, como al leer cualquier archivo sin reglas (RFC 9309 §2.3.1.1).
     * 4xx (no existe, prohibido): se permite todo, como indica la RFC.
-    * 5xx, sin conexión, o una página de verificación en su lugar: no se sabe y,
-      como pide la RFC, no se pide nada a ese servidor (``allowed`` devuelve ``None``).
+    * 5xx, sin conexión, o una página de verificación antirobots en su lugar: no se
+      sabe y, como pide la RFC (§2.3.1.4), no se pide nada a ese servidor
+      (``allowed`` devuelve ``None``).
     """
 
     def __init__(self, client, agent: str = "Observatorio-ENSO-Peru"):
@@ -147,7 +151,7 @@ class Robots:
             status, head = r.status_code, r.content[:30000]
             if 400 <= r.status_code < 500:
                 rp = RobotRules(allow_all=True)
-            elif r.status_code >= 500 or CHALLENGE_RE.search(head) or b"<html" in head[:2000].lower():
+            elif r.status_code >= 500 or CHALLENGE_RE.search(head):
                 rp = None
             else:
                 rp = RobotRules(r.content[:500_000].decode("utf-8", errors="replace"), self.agent)
@@ -172,4 +176,4 @@ class Robots:
         if rp is not None:
             return ""
         cls = classify(status, head, error)
-        return "http-5xx" if cls == "ok" else cls  # una página HTML en lugar de robots.txt
+        return "http-5xx" if cls == "ok" else cls

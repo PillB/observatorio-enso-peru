@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T05:09:29+00:00",
+ "generated_at": "2026-10-21T05:15:09+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h",
@@ -13717,6 +13717,132 @@
    }
   },
   {
+   "id": "senamhi-gestion-riesgo-desastres-avisos-meteorol",
+   "group": "senamhi",
+   "name": "SENAMHI: gestion-riesgo-desastres/avisos-meteorologicos",
+   "institution": "SENAMHI",
+   "url": "https://observatorio.senamhi.gob.pe/gestion-riesgo-desastres/avisos-meteorologicos",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://observatorio.senamhi.gob.pe/gestion-riesgo-desastres/avisos-meteorologicos",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": true,
+   "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions",
+    "n8n"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://observatorio.senamhi.gob.pe/gestion-riesgo-desastres/avisos-meteorologicos": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
+    }
+   }
+  },
+  {
+   "id": "senamhi-geoserver-ows-service-wfs-version-2-0-0-",
+   "group": "senamhi",
+   "name": "SENAMHI: geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities",
+   "institution": "SENAMHI",
+   "url": "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities",
+   "expect": "text",
+   "method": "download",
+   "kind": "dataset",
+   "home": "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": true,
+   "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions",
+    "n8n"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
+    }
+   }
+  },
+  {
+   "id": "senamhi-geoserver-g-aviso-ows-service-wfs-versio",
+   "group": "senamhi",
+   "name": "SENAMHI: geoserver/g_aviso/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=g_aviso:view_aviso&maxFeatures=5&outputFormat=application/json",
+   "institution": "SENAMHI",
+   "url": "https://idesep.senamhi.gob.pe/geoserver/g_aviso/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=g_aviso:view_aviso&maxFeatures=5&outputFormat=application/json",
+   "expect": "json",
+   "method": "api",
+   "kind": "dataset",
+   "home": "https://idesep.senamhi.gob.pe/geoserver/g_aviso/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=g_aviso:view_aviso&maxFeatures=5&outputFormat=application/json",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": true,
+   "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions",
+    "n8n"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://idesep.senamhi.gob.pe/geoserver/g_aviso/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=g_aviso:view_aviso&maxFeatures=5&outputFormat=application/json": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
+    }
+   }
+  },
+  {
    "id": "ana-snirh-ana-gob-pe",
    "group": "ana",
    "name": "ANA: snirh.ana.gob.pe",
@@ -13991,6 +14117,48 @@
    "by_url": {
     "https://www.imarpe.gob.pe/imarpe/index.php?id_seccion=I0178070000000000000000": {
      "status": "open",
+     "channels": [
+      "actions",
+      "n8n"
+     ]
+    }
+   }
+  },
+  {
+   "id": "cenepred-arcgis-server-rest-services-f-pjson",
+   "group": "cenepred",
+   "name": "CENEPRED: arcgis_server/rest/services?f=pjson",
+   "institution": "CENEPRED",
+   "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
+   "expect": "json",
+   "method": "api",
+   "kind": "dataset",
+   "home": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": true,
+   "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions",
+    "n8n"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson": {
+     "status": "unknown",
      "channels": [
       "actions",
       "n8n"

@@ -38,7 +38,6 @@ import importlib
 import json
 import os
 import platform
-import re
 import shutil
 import socket
 import struct
@@ -53,6 +52,7 @@ from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Callable, Optional
+from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -62,7 +62,6 @@ from tools import collector_service as svc  # noqa: E402
 OK, WARN, FAIL, INFO = "OK", "AVISO", "FALLA", "INFO"
 TAG = {OK: "[  OK  ]", WARN: "[AVISO ]", FAIL: "[FALLA ]", INFO: "[ INFO ]"}
 REPO_DEFAULT = "PillB/observatorio-enso-peru"
-HUMAN_CHECK = re.compile(r"verificaci[oó]n de seguridad|captcha|cf-challenge|just a moment|attention required", re.I)
 STALE_HOURS = 36
 REPORTS_KEPT = 15
 
@@ -149,10 +148,10 @@ def check_code(ctx: dict) -> Result:
     except Exception as exc:
         return Result("codigo", FAIL, "el recolector no carga", f"{type(exc).__name__}: {exc}",
                       "Volver a ejecutar el instalador; si sigue, descargar el kit de nuevo.")
-    registry, origin = pc.load_registry(os.environ.get("GITHUB_TOKEN", "").strip())
+    registry, info = pc.load_registry_info(os.environ.get("GITHUB_TOKEN", "").strip())
     groups, _ = pc.plan(registry)
     n = sum(len(v) for v in groups.values())
-    detail = (f"{n} URL en {len(groups)} grupos (registro: {origin or 'ninguno'}) · kit {svc.kit_version(root)}"
+    detail = (f"{n} URL en {len(groups)} grupos · {pc.describe_registry(info)} · kit {svc.kit_version(root)}"
               f" · carpeta {root}")
     policy = root / "config" / "threshold-policies" / "expert-grd-image-v1.yaml"
     if not policy.exists():
@@ -400,19 +399,49 @@ def check_write(ctx: dict) -> Result:
                   "Si la subida diaria funciona (ver «ultima-corrida»), ignorar.")
 
 
-def _probe(url: str) -> dict:
+def _probe(url: str, expect: Optional[str] = None) -> dict:
+    """Una URL, juzgada como en la recolección (``peru_collector.judge``): una
+    página antirobots o un formato distinto del esperado no cuenta."""
+    from tools import peru_collector as pc
+
     t0 = time.time()
     try:
         with _client(25.0) as c:
             r = c.get(url)
         body = r.content
-        ok = r.status_code == 200 and len(body) > 500
-        why = f"HTTP {r.status_code}"
-        if ok and b"%PDF-" != body[:5] and HUMAN_CHECK.search(body[:20000].decode("utf-8", "replace")):
-            ok, why = False, "pide verificación humana"
-        return {"url": url, "ok": ok, "why": why, "bytes": len(body), "s": time.time() - t0}
+        cls, _, why = pc.judge(r.status_code, body, r.headers.get("content-type", ""), expect)
+        ok = cls == "ok"
+        if not ok and cls == "challenge":
+            why = "pide verificación humana"
+        return {"url": url, "ok": ok, "why": f"HTTP {r.status_code}" if ok or not why else why,
+                "bytes": len(body), "s": time.time() - t0}
     except Exception as exc:
         return {"url": url, "ok": False, "why": f"{type(exc).__name__}: {exc}"[:120], "bytes": 0, "s": time.time() - t0}
+
+
+def _robots_verdicts(urls: list[str]) -> dict[str, str]:
+    """Las URL que la recolección no pediría por robots.txt (``enso.reach.Robots``,
+    RFC 9309), con el motivo. Un robots.txt por servidor, los servidores en paralelo."""
+    from enso.reach import Robots
+
+    hosts: dict[str, list[str]] = {}
+    for u in urls:
+        hosts.setdefault(urlparse(u).netloc.lower(), []).append(u)
+    out: dict[str, str] = {}
+    with _client(20.0) as c:
+        robots = Robots(c)
+
+        def one(host_urls: list[str]) -> None:
+            for u in host_urls:
+                allowed = robots.allowed(u)
+                if allowed is False:
+                    out[u] = "robots.txt no lo permite"
+                elif allowed is None:
+                    out[u] = f"robots.txt sin respuesta ({robots.failure(u) or 'connect'})"
+
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            list(pool.map(one, hosts.values()))
+    return out
 
 
 def check_sources(ctx: dict) -> Result:
@@ -422,10 +451,21 @@ def check_sources(ctx: dict) -> Result:
         from tools import peru_collector as pc
     except Exception as exc:
         return Result("fuentes", FAIL, "no se puede comprobar", f"{type(exc).__name__}: {exc}", "Ver «codigo».")
-    groups, _ = pc.plan(pc.load_registry(os.environ.get("GITHUB_TOKEN", "").strip())[0])
+    registry = pc.load_registry(os.environ.get("GITHUB_TOKEN", "").strip())[0]
+    groups, _ = pc.plan(registry)
+    meta = pc.url_info(registry)
     jobs = [(g, u) for g, urls in groups.items() for u in urls]
+    # Lo que robots.txt no permite (o un robots.txt que no responde) no se pide, como en la recolección.
+    refused = _robots_verdicts([u for _, u in jobs])
+
+    def one(gu: tuple[str, str]) -> tuple[str, dict]:
+        g, u = gu
+        if u in refused:
+            return g, {"url": u, "ok": False, "why": refused[u], "bytes": 0, "s": 0.0}
+        return g, _probe(u, meta.get(u, {}).get("expect") or pc.guess_expect(u))
+
     with ThreadPoolExecutor(max_workers=6) as pool:
-        res = list(pool.map(lambda gu: (gu[0], _probe(gu[1])), jobs))
+        res = list(pool.map(one, jobs))
     lines = [f"{'OK' if r['ok'] else 'NO'}  {g:8} {r['why']:>9} {r['bytes']:>9} B {r['s']:5.1f}s  {r['url']}" for g, r in res]
     by_group = {g: (sum(1 for gg, r in res if gg == g and r["ok"]), sum(1 for gg, _ in res if gg == g)) for g in groups}
     summary = ", ".join(f"{g} {a}/{b}" for g, (a, b) in by_group.items())

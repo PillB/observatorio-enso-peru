@@ -434,13 +434,35 @@ def test_check_explains_missing_token(home):
 
 
 def test_check_sources_verdicts(monkeypatch):
-    monkeypatch.setattr(chk, "_probe", lambda url: {"url": url, "ok": False, "why": "ConnectError", "bytes": 0, "s": 1.0})
+    monkeypatch.setattr(chk, "_robots_verdicts", lambda urls: {})
+    monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": False, "why": "ConnectError", "bytes": 0, "s": 1.0})
     assert chk.check_sources({}).level == chk.FAIL
-    monkeypatch.setattr(chk, "_probe", lambda url: {"url": url, "ok": "senamhi" in url or "ana" in url,
+    monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": "senamhi" in url or "ana" in url,
                                                      "why": "HTTP 200", "bytes": 900, "s": 1.0})
     assert chk.check_sources({}).level == chk.WARN  # el ENFEN no responde
-    monkeypatch.setattr(chk, "_probe", lambda url: {"url": url, "ok": True, "why": "HTTP 200", "bytes": 900, "s": 1.0})
+    monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": True, "why": "HTTP 200", "bytes": 900, "s": 1.0})
     assert chk.check_sources({}).level == chk.OK
+    # Lo que robots.txt no permite, o un robots.txt que no responde, no se pide (como en la recolección).
+    monkeypatch.setattr(chk, "_robots_verdicts",
+                        lambda urls: {u: "robots.txt sin respuesta (timeout)" for u in urls if "enfen" in u or "ICEN" in u})
+    r = chk.check_sources({})
+    assert r.level == chk.WARN and any(ln.startswith("NO") and "robots.txt sin respuesta" in ln for ln in r.lines)
+
+
+def test_robots_verdicts_follow_rfc_9309(monkeypatch):
+    import httpx
+
+    def handler(req):
+        if req.url.host == "a.pe":
+            return httpx.Response(200, text="User-agent: *\nDisallow: /x\n")
+        if req.url.host == "b.pe":
+            raise httpx.ConnectTimeout("timed out")
+        return httpx.Response(200, text="<html>no encontrado</html>")  # sin reglas: se permite todo
+
+    real = httpx.Client
+    monkeypatch.setattr(chk, "_client", lambda timeout=20.0: real(transport=httpx.MockTransport(handler)))
+    got = chk._robots_verdicts(["https://a.pe/x/1", "https://a.pe/y", "https://b.pe/z", "https://c.pe/feed/"])
+    assert got == {"https://a.pe/x/1": "robots.txt no lo permite", "https://b.pe/z": "robots.txt sin respuesta (timeout)"}
 
 
 def test_check_flags_tampered_or_missing_kit_files(home):
@@ -492,10 +514,22 @@ def test_kit_is_complete_reproducible_and_runs_alone(tmp_path):
         assert (z.getinfo(root + "INSTALAR-Mac.command").external_attr >> 16) & 0o111
         manifest = json.loads(z.read(root + "kit.json"))
         assert set(manifest["files"]) == {n.removeprefix(root) for n in names} - {"kit.json"}
+        # El registro de respaldo está al día con el código: válido y con todas las fuentes fijas.
+        from enso import registry
+
+        reg = json.loads(z.read(root + "registry/sources.json"))
+        assert registry.validate(reg) == []
+        known = {u for s in reg["sources"] for u in [s["url"], *s.get("alt_urls", [])]}
+        assert {u for urls in pc.SOURCES.values() for u in urls} <= known
+        committed = json.loads((REPO_ROOT / "registry" / "sources.json").read_text(encoding="utf-8"))
+        if {k: v for k, v in committed.items() if k != "generated_at"} == \
+                {k: v for k, v in reg.items() if k != "generated_at"}:
+            assert reg["generated_at"] == committed["generated_at"]  # la misma versión que GitHub
         z.extractall(tmp_path / "x")
     # El código del kit carga solo, sin el repositorio.
     code = ("import sys; sys.path.insert(0, sys.argv[1]); "
-            "import tools.peru_collector, tools.collector_service, tools.collector_check, tools.collector_schedule")
+            "import tools.peru_collector, tools.collector_service, tools.collector_check, tools.collector_schedule, "
+            "tools.probe_sources")
     r = subprocess.run([sys.executable, "-I", "-c", code, str(tmp_path / "x" / "recolector-peru" / "python")],
                        capture_output=True, text=True, cwd=tmp_path)
     assert r.returncode == 0, r.stderr

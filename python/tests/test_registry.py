@@ -139,7 +139,8 @@ def test_robots_parser():
     from enso.reach import Robots
 
     bodies = {"a.pe": (200, "User-agent: *\nDisallow: /api/\n"), "b.pe": (404, ""), "c.pe": (403, ""),
-              "d.pe": (200, "<html><div class='cf-turnstile'></div></html>")}
+              "d.pe": (200, "<html><div class='cf-turnstile'></div></html>"),
+              "e.pe": (200, "<!DOCTYPE html><html><body>Página no encontrada</body></html>"), "f.pe": (503, "")}
 
     def handler(req):
         code, text = bodies[req.url.host]
@@ -152,6 +153,10 @@ def test_robots_parser():
     assert r.allowed("https://c.pe/anything") is True  # 4xx: se permite (RFC 9309)
     assert r.allowed("https://d.pe/anything") is None  # una verificación en lugar de robots.txt
     assert r.failure("https://d.pe/x") == "challenge"
+    # Una página HTML en lugar de robots.txt (un «no encontrado» con 200, o la portada a la que
+    # redirige, como portal.indeci.gob.pe) no tiene reglas: se permite todo (RFC 9309 §2.3.1.1).
+    assert r.allowed("https://e.pe/emergencias/feed/") is True and r.failure("https://e.pe/x") == ""
+    assert r.allowed("https://f.pe/anything") is None and r.failure("https://f.pe/x") == "http-5xx"
 
 
 def test_data_files_are_expected_as_text():
@@ -219,3 +224,15 @@ def test_robots_longest_rule_wins():
     assert own.allowed("https://a.pe/feed") and not own.allowed("https://a.pe/privado/x")  # su propio grupo manda
     anchored = RobotRules("User-agent: *\nDisallow: /\nAllow: /feed$\n")
     assert anchored.allowed("https://a.pe/feed") and not anchored.allowed("https://a.pe/feed/2")
+
+
+def test_peru_collector_urls_keep_their_type_in_the_registry():
+    """Los JSON y XML que solo responden desde el Perú (IDESEP, CENEPRED) no se esperan como HTML:
+    n8n y el recolector rechazarían la respuesta buena."""
+    from tools import peru_collector
+
+    sources = registry.build(reach={})["sources"]
+    by_url = {s["url"]: s for s in sources}
+    known = set(by_url) | {u for s in sources for u in s.get("alt_urls", [])}
+    assert {u for urls in peru_collector.SOURCES.values() for u in urls} <= known
+    assert {u: by_url[u]["expect"] for u in peru_collector.EXPECT} == peru_collector.EXPECT
