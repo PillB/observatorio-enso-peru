@@ -40,7 +40,7 @@ del despliegue, sigue publicado el sitio anterior.
 
 | Módulo | Función |
 |---|---|
-| `fetch.py` | Descarga con reintentos, límites de tamaño y respaldo en el Internet Archive (CDX y, si se activa con `ENSO_ARCHIVE_SAVE=1`, Save Page Now) |
+| `fetch.py` | Descarga con reintentos, límites de tamaño, un tiempo total por pedido (5 min las fuentes oficiales, 1 min cada feed: el plazo del cliente es por lectura y un servidor que manda la respuesta de a pocos bytes no lo agota) y respaldo en el Internet Archive (CDX y, si se activa con `ENSO_ARCHIVE_SAVE=1`, Save Page Now) |
 | `feeds/cpc.py` | Lectores de los archivos de texto de NOAA/CPC: semanal OISST, mensual por región, RONI/ONI, matrices año×mes (SOI, presiones, vientos), contenido de calor y la ENSO Diagnostic Discussion |
 | `feeds/peru.py` | Lectores del ICEN del IGP, del listado de comunicados del ENFEN (HTML y WordPress JSON) y del texto de cada comunicado (PDF) |
 | `signals.py` | Categorías ICEN 2024, eventos ICEN, categorías ONI/RONI y la señal del equipo GRD |
@@ -163,7 +163,9 @@ disponible», nunca como vigente.
   `restarted` en `news/feeds.json` (`news-history-missing`, error, que se
   repite mientras siga así); la corrida siguiente que lea la copia lo
   completa. Una corrida sin noticias (su lectura falló) sirve las de la
-  publicación anterior, con `carriedFrom` en `news/feeds.json`. GitHub no
+  publicación anterior, con `carriedFrom` en `news/feeds.json`, y sus
+  alertas son las últimas conocidas, con los lugares corregidos en la
+  consola; el sitio avisa que ninguna fuente de alertas se leyó. GitHub no
   acepta archivos de más de 100 MB y Cloudflare Pages no sirve archivos de
   más de 25 MiB: el pipeline avisa (`news-history-large`) cuando
   `items.jsonl` pasa de 20 MiB, y la copia comprimida deja de crecer (con

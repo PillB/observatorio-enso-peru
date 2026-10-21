@@ -220,7 +220,7 @@ def test_news_view_shows_official_feed_and_news(site, page):
     go(page, base, "noticias")
     expect(page.locator("[data-tab]")).to_have_count(3)
     expect(page.locator("#news-body section.card")).to_have_count(len(feed["groups"]), timeout=10000)
-    first = feed["groups"][0]["items"][0]
+    first = next(i for g in feed["groups"] for i in g["items"])  # el grupo de alertas puede no tener avisos
     expect(page.locator("#news-body .feed-title").first).to_contain_text(first["title"][:30])
     page.locator("[data-tab=peru]").click()
     expect(page.locator("[data-tab=peru]")).to_have_attribute("aria-selected", "true")
@@ -233,6 +233,29 @@ def test_news_view_shows_official_feed_and_news(site, page):
     expect(page.locator("#feeds-status")).to_have_attribute("open", "")
     go(page, base, "metodologia")
     expect(page.locator("#arch-fig svg")).to_have_count(1, timeout=10000)
+
+
+def test_alerts_card_says_when_no_alert_source_was_read(site, page):
+    """Una corrida que no leyó ninguna fuente de alertas muestra las últimas conocidas: el aviso lo dice, haya
+    avisos o no (la línea «0 de N fuentes» sola no alcanza)."""
+    base, root = site
+    feed = json.loads((root / "data" / "feed.json").read_text(encoding="utf-8"))
+    sample = dict(next(i for g in feed["groups"] for i in g["items"]), group="alertas")
+    alerts = next((g for g in feed["groups"] if g["id"] == "alertas"), None)
+    if alerts is None:
+        alerts = {"id": "alertas", "label": "Alertas oficiales", "items": []}
+        feed["groups"].insert(0, alerts)
+    alerts["sources"] = [{**s, "ok": False, "error": "no se leyeron las noticias en esta corrida"}
+                         for s in alerts.get("sources") or [{"id": "indeci", "name": "INDECI", "url": "https://www.gob.pe/indeci"}]]
+    body = {}
+    page.route("**/data/feed.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=body["v"]))
+    for items, text in (([sample], "los avisos de abajo son los últimos conocidos"),
+                        ([], "Ninguna fuente de alertas respondió")):
+        alerts["items"] = items
+        body["v"] = json.dumps(feed)
+        page.goto("about:blank")  # la vista guarda el feed ya leído
+        go(page, base, "noticias")
+        expect(page.locator("#news-body section.card").first.locator(".notice-alert")).to_contain_text(text, timeout=10000)
 
 
 def test_items_link_to_live_source_and_archived_copy(site, page):

@@ -142,9 +142,13 @@ class Relay:
 class Fetcher:
     def __init__(self, timeout: float = 45.0, retries: int = 3, polite_delay: float = 0.8,
                  allow_archive: bool = True, allow_save: bool = False, offline: bool = False,
-                 relay: Optional["Relay | list[Relay]"] = None, plan: Optional[dict[str, list[str]]] = None):
+                 relay: Optional["Relay | list[Relay]"] = None, plan: Optional[dict[str, list[str]]] = None,
+                 max_seconds: Optional[float] = None):
         self.client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
         self.retries = retries
+        #: Tiempo total de cada pedido. ``timeout`` vale por lectura: un servidor que manda la respuesta de a
+        #: pocos bytes nunca lo agota y, sin este límite, retendría la corrida hasta el límite del build.
+        self.max_seconds = max_seconds
         self.polite_delay = polite_delay
         self.allow_archive = allow_archive
         self.allow_save = allow_save
@@ -169,11 +173,26 @@ class Fetcher:
             time.sleep(self.polite_delay - dt)
         self._last[host] = time.monotonic()
 
+    def _request(self, url: str) -> httpx.Response:
+        if not self.max_seconds:
+            return self.client.get(url)
+        end = time.monotonic() + self.max_seconds
+        with self.client.stream("GET", url) as r:
+            chunks = []
+            for chunk in r.iter_bytes():
+                chunks.append(chunk)
+                if time.monotonic() > end:
+                    raise httpx.ReadTimeout(f"la respuesta tardó más de {self.max_seconds:g} s", request=r.request)
+            # El cuerpo ya viene descomprimido: sin Content-Encoding, la respuesta no lo descomprime otra vez.
+            headers = [(k, v) for k, v in r.headers.multi_items()
+                       if k.lower() not in ("content-encoding", "content-length", "transfer-encoding")]
+        return httpx.Response(r.status_code, headers=headers, content=b"".join(chunks), request=r.request)
+
     def _get(self, url: str, attempts: list, tries: Optional[int] = None) -> Optional[httpx.Response]:
         for i in range(tries or self.retries):
             self._wait_host(url)
             try:
-                r = self.client.get(url)
+                r = self._request(url)
             except TRANSIENT as exc:
                 attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
                 time.sleep(min(30, 2 ** i * 2))

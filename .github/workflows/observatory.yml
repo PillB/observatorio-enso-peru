@@ -184,6 +184,9 @@ jobs:
       - name: Fetch, validate and build the publication
         id: pipeline
         working-directory: python
+        # Por debajo del límite del job: si se pasa, falla este paso y los siguientes con always() (el estado de
+        # los feeds «reader», el informe) corren igual.
+        timeout-minutes: 24
         env:
           ENSO_ARCHIVE_SAVE: ${{ (github.event_name != 'workflow_dispatch' || inputs.archive_save) && '1' || '0' }}
           RELAY_DIR: ${{ steps.relay.outputs.dir }}
@@ -221,8 +224,11 @@ jobs:
           python -m playwright install --with-deps chromium
           python -m pytest -q -m browser --site-dir=../public
 
+      # Las dos subidas auxiliares no detienen el despliegue de los datos oficiales si fallan: el job
+      # «archive» avisa si le falta raw-sources, y «incidents» sigue sin informe.
       - uses: actions/upload-artifact@v4
         if: always()
+        continue-on-error: true
         with:
           name: run-report
           path: |
@@ -231,6 +237,7 @@ jobs:
           if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         if: success()
+        continue-on-error: true
         with:
           name: raw-sources
           path: ${{ runner.temp }}/raw
@@ -336,8 +343,9 @@ jobs:
           if [ -f ../report/run-report.json ]; then
             python -m tools.sync_issues --report ../report/run-report.json --run-url "$RUN_URL"
           fi
+      # always(): aunque falle la sincronización de incidencias (API de GitHub, PyPI), la falla de la corrida se avisa.
       - name: Open an issue when the run itself failed
-        if: needs.build.result == 'failure' || needs.deploy.result == 'failure' || needs.archive.result == 'failure'
+        if: always() && (needs.build.result == 'failure' || needs.deploy.result == 'failure' || needs.archive.result == 'failure')
         uses: actions/github-script@v8
         with:
           script: |
@@ -349,7 +357,7 @@ jobs:
             if (prev) await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body: `Volvió a fallar: ${url}` });
             else await github.rest.issues.create({ ...context.repo, title, body, labels: ['incidente-datos'] });
       - name: Close the run-failure issue after a good run
-        if: needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
+        if: always() && needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
         uses: actions/github-script@v8
         with:
           script: |
@@ -384,9 +392,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           if git ls-remote --exit-code --heads origin data-archive >/dev/null; then
-            git fetch --depth 1 origin data-archive
-            git worktree add ../archive FETCH_HEAD
-            git -C ../archive switch -c data-archive
+            # Solo se bajan la lista de archivos y sources/news, lo único que este job lee o cambia: data-archive
+            # crece cada día y bajarla entera terminaría por no caber en el runner ni en el tiempo del job.
+            git fetch --depth 1 --filter=blob:none origin data-archive
+            git worktree add --no-checkout ../archive FETCH_HEAD
+            git -C ../archive sparse-checkout set sources/news
+            git -C ../archive checkout -q -B data-archive
           else
             git worktree add --detach ../archive
             git -C ../archive switch --orphan data-archive
@@ -404,9 +415,24 @@ jobs:
             python3 python/tools/merge_history.py raw/news/items.jsonl.gz ../archive/sources/news/items.jsonl.gz
           fi
           rm -rf raw/news
+          # Una respuesta que data-archive ya tiene (mismo sha256, misma fuente) no se agrega otra vez con la
+          # fecha de hoy: las fuentes que no cambian no hacen crecer la rama.
+          git -C ../archive ls-tree -r --name-only HEAD -- sources 2>/dev/null \
+            | sed -nE 's#^sources/([^/]+)/[0-9-]{10}-([0-9a-f]{12})\.[A-Za-z0-9]+$#\1/\2#p' > ../archived.txt || true
+          for f in raw/*/*; do
+            k="$(printf '%s\n' "$f" | sed -nE 's#^raw/([^/]+)/[0-9-]{10}-([0-9a-f]{12})\.[A-Za-z0-9]+$#\1/\2#p')"
+            if [ -n "$k" ] && grep -qxF -- "$k" ../archived.txt; then rm -f -- "$f"; fi
+          done
           cp -rn raw/. ../archive/sources/
           cd ../archive
-          git add sources
+          git add --sparse sources
+          # Este job solo agrega y actualiza archivos: un commit que borre alguno es un error (de la copia parcial,
+          # por ejemplo) y no se sube.
+          if ! git diff --cached --quiet --diff-filter=D; then
+            echo "::error::El commit de data-archive borraría archivos; no se sube."
+            git diff --cached --name-only --diff-filter=D | head -20
+            exit 1
+          fi
           git diff --cached --quiet && exit 0
           git commit -q -m "archive: raw source responses $(date -u +%F)"
           # Solo este flujo escribe en data-archive y sus corridas no se cruzan: un rechazo es de la red.

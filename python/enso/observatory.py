@@ -1160,7 +1160,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     relay = load_relay(relay_dir, log, plan) if relay_dir is not None and fixtures is None else None
     n8n = load_n8n_relay(n8n_dir, log) if n8n_dir is not None and fixtures is None else None
     fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=[relay, n8n],
-                      plan=plan if fixtures is None else None)
+                      plan=plan if fixtures is None else None, max_seconds=OFFICIAL_REQUEST_MAX_S)
     prev = PreviousPublication(previous, fetcher)
     acquired: dict[str, Acquired] = {}
     for src in SOURCES:
@@ -1195,6 +1195,12 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         # fuente de alertas figura como no leída, para que nadie lea su silencio como calma.
         from . import news as N
         news_items = N.read_jsonl(prev.get_text("news/items.jsonl") or "")
+        try:  # con los lugares que tenían publicados: ubicados de nuevo y con las correcciones de la consola
+            from . import geo_overrides as GO
+            GO.apply_all(news_items, GO.fetch_overrides(getattr(fetcher, "client", None), prev, log)[0], N.FEED_BY_ID)
+        except Exception as exc:  # noqa: BLE001 — quedan como se guardaron
+            log.add("warning", "geo", "parse", "alerts-places",
+                    f"Las alertas anteriores quedan con el lugar con que se guardaron ({type(exc).__name__}: {exc})"[:300])
         feed_status = [{"id": f.id, "ok": False, "error": "no se leyeron las noticias en esta corrida"}
                        for f in N.FEEDS if f.covers]
     feed = sourcefeed.build(official, b.series, weekly, meta, relay, news_items=news_items,
@@ -1217,6 +1223,13 @@ RELAY_STALE_HOURS = 36
 RELAY_TOKEN_WARN_DAYS = 21
 #: Tiempo máximo para empezar a pedir feeds de noticias (el build entero tiene 30 min).
 NEWS_DEADLINE_S = 600
+#: Tiempo total de cada pedido de un feed (el plazo del cliente es por lectura, no por pedido).
+NEWS_REQUEST_MAX_S = 60.0
+#: Lo mismo para las fuentes oficiales (algunas sirven PDF de varios MB desde servidores lentos).
+OFFICIAL_REQUEST_MAX_S = 300.0
+#: Las notas de los feeds «reader» que ninguna publicación tiene todavía se guardan en su estado hasta este
+#: plazo (días seguidos sin publicar).
+READER_KEEP_DAYS = 14
 #: Margen sobre READER_MIN_HOURS: los feeds se piden hasta 30 min (límite del build) después de la hora
 #: que anota su estado, que es la de inicio de la corrida.
 READER_SLACK_HOURS = 0.5
@@ -1235,9 +1248,12 @@ def read_reader_state(path: Optional[Path]) -> dict:
 
 
 def write_reader_state(path: Path, feeds: dict) -> None:
+    """Se escribe aparte y se reemplaza: una corrida que se corta a mitad de la escritura no deja un estado roto."""
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps({"schema": "enso-reader-state/1", "feeds": feeds}, ensure_ascii=False), encoding="utf-8")
+        tmp = path.with_name(path.name + ".tmp")
+        tmp.write_text(json.dumps({"schema": "enso-reader-state/1", "feeds": feeds}, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp, path)
     except OSError:
         pass  # sin estado, la próxima corrida se guía por la publicación anterior
 
@@ -1312,13 +1328,17 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         from .fetch import Fetcher
         import httpx
         # Todas las copias (Perú y n8n), no solo la primera: gana la más reciente de la URL.
+        # Cada pedido tiene además un tiempo total: el plazo de 20 s es por lectura y un servidor que manda el
+        # feed de a pocos bytes retendría la recolección (y la publicación) hasta el límite del build.
         news_fetcher = Fetcher(timeout=20.0, retries=2, polite_delay=1.0, relay=list(getattr(fetcher, "relays", [])),
-                               plan=getattr(fetcher, "plan", None))
+                               plan=getattr(fetcher, "plan", None), max_seconds=NEWS_REQUEST_MAX_S)
         # Los feeds que se leen como un lector de feeds se piden una sola vez: sin reintento ante 429 o 5xx.
         reader_fetcher = Fetcher(timeout=20.0, retries=1, polite_delay=1.0, relay=list(getattr(fetcher, "relays", [])),
-                                 plan=getattr(fetcher, "plan", None))
+                                 plan=getattr(fetcher, "plan", None), max_seconds=NEWS_REQUEST_MAX_S)
 
         def fetch(url):
+            if url in (reader or ()):
+                note_request(url)
             try:
                 r = (reader_fetcher if url in (reader or ()) else news_fetcher).get([url], archive=False)
                 return 200, r.body, r.content_type, "", {"channel": r.channel, "copyAt": r.archived_at or None}
@@ -1336,8 +1356,9 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     # respondido o no (como un lector de feeds, que vuelve a la hora que le toca): entre dos pedidos queda el
     # estado del último. La hora sale de la publicación anterior y del estado que guarda cada corrida diaria
     # (--reader-state, en la caché de Actions), que sobrevive a una corrida que pidió los feeds y no llegó a
-    # publicar; ese estado guarda también las notas de la última lectura buena, que se suman aquí (las que el
-    # histórico ya tenga no se repiten).
+    # publicar; ese estado guarda también las notas de sus lecturas que ninguna publicación tiene todavía, que
+    # se suman aquí (las que el histórico ya tenga no se repiten).
+    import threading
     from .registry import READER_MIN_HOURS
 
     prev_feeds = previous.get("news/feeds.json", tries=3) or {}
@@ -1346,6 +1367,28 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     prev_status = {st.get("id"): st for st in prev_feeds.get("feeds") or [] if isinstance(st, dict)}
     state = read_reader_state(reader_state)
     recent, restored = {}, []
+    # El histórico publicado: las notas guardadas en el estado que ya están en él no hace falta guardarlas más.
+    prev_text = previous.get_text("news/items.jsonl", tries=3) or ""
+    published = {i.get("id") for i in N.read_jsonl(prev_text)} if reader and reader_state is not None else set()
+    pending = {u: v for u, v in state.items() if u in (reader or ())}
+    requested: set[str] = set()
+    lock = threading.Lock()
+
+    def note_request(url: str) -> None:
+        """Anota el pedido en el estado antes de hacerlo: si la corrida se corta a mitad de la recolección (límite
+        de tiempo, cancelación), el estado ya lo tiene y la siguiente no vuelve a pedir el feed antes de plazo."""
+        with lock:
+            requested.add(url)
+            if reader_state is None:
+                return
+            entry = pending.get(url) or {}
+            pending[url] = {"status": {**N._status(by_url[url], now, "pedido sin resultado anotado"), "httpStatus": None},
+                            "items": entry.get("items") if isinstance(entry.get("items"), list) else []}
+            write_reader_state(reader_state, pending)
+
+    def unpublished(i) -> bool:
+        return (isinstance(i, dict) and i.get("id") not in published
+                and _hours_since(i.get("first_seen"), now) < READER_KEEP_DAYS * 24)
 
     def asked(st) -> bool:
         """Un pedido que se hizo (respondiera o no) hace menos del plazo. ``checkedAt`` es la hora de inicio de
@@ -1379,14 +1422,20 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             entry = keep.get(f.url) or {}
             before = entry.get("status") if isinstance(entry.get("status"), dict) else {}
             items = entry.get("items") if isinstance(entry.get("items"), list) else []
-            if "httpStatus" in got.get(f.id, {}):
-                # Pedido en esta corrida: queda su hora; las notas, las de esta lectura si fue buena.
-                ok = got[f.id].get("ok")
-                keep[f.url] = {"status": got[f.id], "items": [i for i in found if i.get("feed") == f.id] if ok else items}
+            st = got.get(f.id, {})
+            if "httpStatus" in st or f.url in requested:
+                # Pedido en esta corrida (aunque la lectura fallara después): queda su hora. Las notas de una lectura
+                # buena se suman a las de lecturas anteriores que ninguna publicación tiene todavía (una corrida que
+                # no publicó, o varias seguidas): no se pierden aunque el feed ya no las traiga.
+                new = [i for i in found if i.get("feed") == f.id] if st.get("ok") else []
+                ids = {i["id"] for i in new}
+                keep[f.url] = {"status": st if "httpStatus" in st else {**st, "httpStatus": None},
+                               "items": new + [i for i in items if unpublished(i) and i.get("id") not in ids]}
             elif f.id in recent and before.get("checkedAt") != recent[f.id].get("checkedAt"):
                 # Pedido que se arrastra de la publicación anterior: se anota con su hora, para que el estado no
                 # dependa de que esa publicación se pueda leer.
-                keep[f.url] = {"status": {k: v for k, v in recent[f.id].items() if k != "carried"}, "items": items}
+                keep[f.url] = {"status": {k: v for k, v in recent[f.id].items() if k != "carried"},
+                               "items": [i for i in items if unpublished(i)]}
         write_reader_state(reader_state, keep)
     if barred or recent:
         by_id = {st["id"]: st for st in status}
@@ -1405,7 +1454,6 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
 
     # Histórico. «complete»: lo que se publica es el histórico entero, y solo entonces reemplaza la copia
     # de data-archive. Un sitio caído (5xx, sin respuesta) no es una primera publicación (404).
-    prev_text = previous.get_text("news/items.jsonl", tries=3) or ""
     items_state = previous.state.get("news/items.jsonl", "missing")
     feeds_state = previous.state.get("news/feeds.json", "missing")
     had = (prev_feeds.get("history") or {}).get("items")

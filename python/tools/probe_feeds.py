@@ -37,6 +37,7 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso import feedparse, geo, news  # noqa: E402
+from enso.reach import Robots  # noqa: E402
 
 UA = ("Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; feed-probe; "
       "+https://github.com/PillB/observatorio-enso-peru)")
@@ -67,8 +68,16 @@ class Probe:
                                             "Accept-Language": "es-PE,es;q=0.9,en;q=0.5"})
         self.locks: dict[str, threading.Lock] = defaultdict(threading.Lock)
         self.last: dict[str, float] = {}
+        # Como capture_sources: lo que robots.txt no permite no se pide, ni cuando robots.txt no responde (RFC
+        # 9309). Los feeds que el registro lee una vez al día pese a su robots.txt (Google Noticias) los pide
+        # solo la corrida diaria de observatory.yml en main, nunca este sondeo.
+        self.robots = Robots(self.client, agent="Observatorio-ENSO-Peru")
 
     def get(self, url: str) -> tuple[int | None, bytes, str, str, str]:
+        allowed = self.robots.allowed(url)
+        if not allowed:
+            why = "robots.txt no permite la ruta" if allowed is False else "robots.txt no respondió"
+            return None, b"", "", url, f"omitido: {why}"
         host = urlparse(url).netloc
         with self.locks[host]:
             wait = 1.5 - (time.monotonic() - self.last.get(host, 0))

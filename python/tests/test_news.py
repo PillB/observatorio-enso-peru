@@ -222,6 +222,34 @@ def test_equivalent_links_and_url_outlets():
     assert N._strip_outlet("Lluvias - https://otro.pe/", "hbanoticias.pe") == "Lluvias - https://otro.pe/"
 
 
+def test_probe_feeds_respects_robots_txt():
+    """Revisión: el sondeo pedía los feeds de Google Noticias que robots.txt no permite (los que el registro lee
+    una vez al día solo desde la corrida diaria). Ahora no pide nada que robots.txt no permita, ni a un servidor
+    cuyo robots.txt no responde."""
+    import httpx
+
+    from enso.reach import Robots
+    from tools import probe_feeds as P
+
+    asked = []
+
+    def net(req):
+        asked.append(str(req.url))
+        if req.url.path == "/robots.txt":
+            if req.url.host == "news.google.com":
+                return httpx.Response(200, text="User-agent: *\nDisallow: /rss/search\n")
+            return httpx.Response(503) if req.url.host == "caido.pe" else httpx.Response(404)
+        return httpx.Response(200, text="<rss/>")
+
+    pr = P.Probe()
+    pr.client = httpx.Client(transport=httpx.MockTransport(net))
+    pr.robots = Robots(pr.client)
+    assert pr.get("https://news.google.com/rss/search?q=lluvias")[4] == "omitido: robots.txt no permite la ruta"
+    assert pr.get("https://caido.pe/feed/")[4] == "omitido: robots.txt no respondió"
+    assert pr.get("https://diario.pe/feed/")[0] == 200
+    assert not any("/rss/search" in u or u == "https://caido.pe/feed/" for u in asked)
+
+
 def test_probe_feeds_only_replaces_what_it_probes(tmp_path, monkeypatch):
     """Revisión: ``--only`` no borra las demás capturas ni el informe, y una corrida sin red falla."""
     import json as _json

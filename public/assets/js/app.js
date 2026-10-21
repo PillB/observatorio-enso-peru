@@ -656,9 +656,10 @@ function alertSources(g) {
   const copies = src.filter((s) => s.ok && CHANNEL_SHORT[s.channel]);
   const links = (list) => list.map((s, i) => html`${i ? ', ' : ''}<a href="${safeUrl(s.url)}" rel="noopener" target="_blank">${s.name}</a>`);
   const via = (list) => list.map((s, i) => html`${i ? ', ' : ''}<a href="${safeUrl(s.url)}" rel="noopener" target="_blank">${s.name}</a> (${CHANNEL_SHORT[s.channel]}${s.copyAt ? `, copia del ${F.fmtDateTime(s.copyAt).replace(' (hora de Lima)', '')}` : ''})`);
-  const empty = g.items.length ? '' : down.length === src.length
-    ? html`<p class="notice notice-alert">Ninguna fuente de alertas respondió en esta actualización: consulte directamente a las instituciones.</p>`
-    : html`<p>Las fuentes consultadas no publicaron avisos en los últimos 7 días.</p>`;
+  // Ninguna leída: los avisos que haya son los últimos conocidos, no los de hoy.
+  const empty = down.length === src.length
+    ? html`<p class="notice notice-alert">${g.items.length ? 'Ninguna fuente de alertas se leyó en esta actualización: los avisos de abajo son los últimos conocidos y pueden faltar los más recientes. Consulte directamente a las instituciones.' : 'Ninguna fuente de alertas respondió en esta actualización: consulte directamente a las instituciones.'}</p>`
+    : g.items.length ? '' : html`<p>Las fuentes consultadas no publicaron avisos en los últimos 7 días.</p>`;
   return html`${empty}<p class="alert-sources muted small">${src.length - down.length} de ${src.length} fuentes de alertas respondieron en esta actualización.${down.length && down.length < src.length ? html` <strong>Sin respuesta:</strong> ${links(down)}. Sus avisos pueden faltar aquí; consulte la fuente.` : ''}${copies.length ? html` <strong>Leídas de una copia:</strong> ${via(copies)}; los avisos posteriores a la copia pueden faltar.` : ''}</p>`;
 }
 

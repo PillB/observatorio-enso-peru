@@ -103,7 +103,12 @@ Códigos frecuentes:
 - **Fuente que cambió de URL:** editar su entrada en `SOURCES` y añadir la
   URL nueva al principio de la lista; las anteriores quedan como respaldo.
 - **Respuestas originales:** la rama `data-archive` guarda cada respuesta
-  nueva por fuente y SHA-256, útil para reconstruir o añadir pruebas.
+  nueva por fuente y SHA-256, útil para reconstruir o añadir pruebas. Una
+  respuesta igual a una que ya tiene (mismo SHA-256 en la misma fuente) no
+  se vuelve a guardar con otra fecha. El job `archive` baja solo la lista
+  de archivos y `sources/news` (copia parcial: la rama crece cada día) y no
+  sube un commit que borre archivos. Para mirar la rama entera:
+  `git fetch origin data-archive && git switch data-archive`.
 - **Quitar una nota del histórico de noticias** (p. ej. a pedido de un
   medio): hoy no se puede sin tocar el código. El histórico publicado es de
   solo anexar y su copia en `data-archive` (`sources/news/items.jsonl.gz`)

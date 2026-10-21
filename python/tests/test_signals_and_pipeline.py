@@ -266,6 +266,36 @@ def test_a_run_whose_news_failed_keeps_the_last_alerts_and_says_no_source_was_re
     assert json.loads((again / "news" / "feeds.json").read_text(encoding="utf-8"))["carriedFrom"] == first
 
 
+def test_the_last_alerts_keep_their_place_corrections(pub, tmp_path, monkeypatch):
+    """Revisión: en una corrida sin noticias las alertas salían del JSONL tal como se guardó, sin la ubicación
+    rehecha ni las correcciones de la consola: un aviso corregido volvía a su lugar automático."""
+    import shutil
+
+    prev, _ = pub
+    alert = next(g for g in json.loads((prev / "feed.json").read_text(encoding="utf-8"))["groups"]
+                 if g["id"] == "alertas")["items"][0]
+    fix = tmp_path / "fix"
+    shutil.copytree(FIX, fix)
+    (fix / "geo-overrides.json").write_text(json.dumps({"overrides": [
+        {"id": alert["id"].removeprefix("alert-"), "action": "set", "places": ["200101"], "rev": 1}]}), encoding="utf-8")
+    out = tmp_path / "data"
+    obs.run(out, str(prev), fixtures=fix)
+
+    def where(d):
+        g = next(g for g in json.loads((d / "feed.json").read_text(encoding="utf-8"))["groups"] if g["id"] == "alertas")
+        return next(i for i in g["items"] if i["id"] == alert["id"])["where"]
+
+    assert where(out) == ["Piura (Piura)"] != alert["where"]
+
+    def boom(*a, **kw):
+        raise RuntimeError("simulado")
+
+    monkeypatch.setattr(obs, "acquire_news", boom)
+    again = tmp_path / "data2"
+    obs.run(again, str(out), fixtures=fix)
+    assert where(again) == ["Piura (Piura)"]
+
+
 def test_raw_archive_skips_fixtures(tmp_path):
     a = obs.Acquired(obs.SOURCE_BY_ID["cpc-roni"], raw=b"datos", channel="direct", sha256="ab" * 32)
     b = obs.Acquired(obs.SOURCE_BY_ID["cpc-oni"], raw=b"datos", channel="fixture", sha256="cd" * 32)
