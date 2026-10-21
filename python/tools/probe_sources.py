@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import threading
 import time
@@ -26,9 +27,10 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso import registry  # noqa: E402
-from enso.fetch import CONTACT  # noqa: E402
 from enso.reach import classify  # noqa: E402
 
+#: El contacto que ven las fuentes (como en enso.fetch): el sitio publicado o el repositorio.
+CONTACT = os.environ.get("ENSO_CONTACT_URL") or "https://github.com/PillB/observatorio-enso-peru"
 UA = f"Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; source-probe; +{CONTACT})"
 
 
