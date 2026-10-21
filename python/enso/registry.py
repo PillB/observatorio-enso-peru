@@ -157,9 +157,12 @@ def _collector_entries(known: set[str]) -> list[Entry]:
                 continue
             p = urlparse(url)
             name = (p.path.strip("/") or p.netloc) + (f"?{p.query}" if p.query else "")
+            expect = getattr(peru_collector, "EXPECT", {}).get(url, "html")  # JSON y XML de servicios GIS
             out.append(Entry(
                 id=f"{group}-{_slug(name) or 'portada'}", group=group, name=f"{group.upper()}: {name}",
-                institution=group.upper(), url=url, expect="html", method="html", kind="page", home=url,
+                institution=group.upper(), url=url, expect=expect,
+                method="html" if expect == "html" else "api" if expect == "json" else "download",
+                kind="page" if expect == "html" else "dataset", home=url,
                 hazards=[], notes="se archiva desde el Perú; aún sin intérprete en el pipeline"))
     return out
 

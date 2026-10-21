@@ -200,3 +200,15 @@ def test_robots_longest_rule_wins():
     assert own.allowed("https://a.pe/feed") and not own.allowed("https://a.pe/privado/x")  # su propio grupo manda
     anchored = RobotRules("User-agent: *\nDisallow: /\nAllow: /feed$\n")
     assert anchored.allowed("https://a.pe/feed") and not anchored.allowed("https://a.pe/feed/2")
+
+
+def test_peru_collector_urls_keep_their_type_in_the_registry():
+    """Los JSON y XML que solo responden desde el Perú (IDESEP, CENEPRED) no se esperan como HTML:
+    n8n y el recolector rechazarían la respuesta buena."""
+    from tools import peru_collector
+
+    sources = registry.build(reach={})["sources"]
+    by_url = {s["url"]: s for s in sources}
+    known = set(by_url) | {u for s in sources for u in s.get("alt_urls", [])}
+    assert {u for urls in peru_collector.SOURCES.values() for u in urls} <= known
+    assert {u: by_url[u]["expect"] for u in peru_collector.EXPECT} == peru_collector.EXPECT

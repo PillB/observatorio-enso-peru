@@ -10,7 +10,7 @@ bajó de esa misma URL, comprueba su sha256 y su antigüedad, y la marca en
 el registro de fuentes y en el sitio («vía recolector en el Perú»).
 
 **En resumen:** crear un [token de GitHub](#1-token-de-github), descargar
-el [kit](#2-descargar-el-kit) (un .zip de unos 175 KB), copiarlo a la
+el [kit](#2-descargar-el-kit) (un .zip de unos 300 KB), copiarlo a la
 computadora en el Perú y hacer doble clic en `INSTALAR` y luego en
 `VERIFICAR`. Funciona en Windows 10/11, macOS 12 o más reciente y Linux
 (Raspberry Pi incluida).
@@ -19,7 +19,7 @@ computadora en el Perú y hacer doble clic en `INSTALAR` y luego en
 
 | Hora (Lima) | Qué pasa |
 |---|---|
-| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes) y las páginas de SENAMHI, ANA e IMARPE, y sube la copia a `data-peru` |
+| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, el GeoServer de IDESEP y el SIG del CENEPRED, y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
 | 21:00 + unos minutos | Pide a GitHub la actualización del sitio en el momento (`--dispatch`) |
 | 21:30 a 23:30 | Reintentos cada 30 minutos, solo si la de las 21:00 falló |
 | Al encender o iniciar sesión | Si esa noche no hubo copia (equipo apagado o sin internet), la recolecta en ese momento |
@@ -29,8 +29,13 @@ Si la última copia tiene más de 36 horas, la corrida diaria registra la
 incidencia `relay-stale` y abre un issue. Copias de más de 7 días no se
 usan. Si la rama `data-peru` no existe, el sitio funciona igual que antes.
 
-Las páginas de SENAMHI, ANA e IMARPE quedan guardadas para construir y
-probar sus lectores; todavía no alimentan indicadores del sitio.
+Las páginas de SENAMHI, ANA, IMARPE y CENEPRED quedan guardadas para
+construir y probar sus lectores; todavía no alimentan indicadores del sitio.
+
+Si la corrida de las 23:30 sube después de que empezó la de las 23:37, la
+actualización que pide al terminar (`--dispatch`) queda en cola: el sitio
+corre sus actualizaciones de a una (`concurrency` en
+`.github/workflows/observatory.yml`) y esa usa la copia nueva.
 
 ## Lo que necesita la computadora
 
@@ -240,13 +245,49 @@ nadie está mirando.
 - **Antes de recolectar** comprueba el token con GitHub y anota su
   vencimiento. **Después**, si ninguna fuente respondió, sube solo el
   latido (abajo): la última copia buena se conserva en `data-peru`.
-- **Lo que sube:** `index.json` (cada URL con su estado, tamaño, hora y
-  sha256, más un diagnóstico del equipo: versión del kit, sistema, Python,
-  Git, fallas previas, vencimiento del token), los archivos originales en
-  `files/` y `heartbeat.json`. Se puede ver en GitHub, rama `data-peru`.
+- **Qué cuenta como respuesta:** cada respuesta pasa por el mismo
+  clasificador que usan GitHub Actions y n8n (`enso.reach.classify`). Una
+  página de verificación antirobots (Cloudflare, CAPTCHA) no se guarda
+  ni se intenta evadir. Tampoco se guarda una respuesta con otro formato
+  que el que el registro espera (`expect`): por ejemplo, una página HTML
+  donde debía llegar un PDF o un JSON, que suele ser una página de error
+  servida con 200. Si la URL principal de una fuente del registro no
+  sirve, se prueban sus alternativas (`alt_urls`), en orden.
+- **Si una fuente falla esta noche,** se conserva su última copia buena
+  de las 72 horas anteriores (contadas desde que se bajó), marcada
+  `carried: true`, con su fecha original y lo que pasó esta noche en
+  `last_attempt`. Es la misma regla que n8n. El sitio la usa con esa
+  fecha. No se conserva si otra URL de la misma fuente respondió esta
+  noche, ni si robots.txt ya no la permite.
+- **Plazo:** un servidor que no contesta recibe un solo intento por URL
+  desde su primer fallo y se deja para la noche siguiente tras el
+  segundo. Pasados 25 minutos (`ENSO_COLLECT_BUDGET_MIN` en `.env`) no
+  se pide nada más. Así, aunque todas las fuentes estén caídas, la
+  corrida termina y sube el latido antes del corte de los 45 minutos.
+- **robots.txt:** el equipo lee el robots.txt de cada servidor una vez
+  por corrida y no pide una ruta que prohíba (queda anotada con la clase
+  `robots`; el registro la marca `robots-disallowed` y nadie la pide).
+- **Lo que sube:** `index.json` (cada URL con su estado, clase, formato,
+  tamaño, hora y sha256; qué registro de fuentes usó, de dónde y de qué
+  fecha; las mediciones de las URL del registro en `probes`; y un
+  diagnóstico del equipo: versión del kit, sistema, Python, Git, fallas
+  previas, vencimiento del token), los archivos originales en `files/` y
+  `heartbeat.json`. Se puede ver en GitHub, rama `data-peru`.
+- **Mediciones para el registro:** al final de cada corrida, si quedan al
+  menos 3 minutos del plazo, el equipo mide hasta 60 URL del registro con
+  estado `unknown`, `suspected-geoblock` o `down` (por ejemplo, el feed
+  del COEN del INDECI), con el mismo código que mide desde GitHub
+  (`tools/probe_sources.py`). No las guarda. La medición diaria de
+  GitHub las lee de `index.json`: si responden desde el Perú y no desde
+  EE. UU., pasan a `peru-server` y las recolecta este equipo; si no
+  responden desde ningún lado, quedan `down`. `ENSO_PERU_PROBES=0` en
+  `.env` lo desactiva.
 - **El latido** (`heartbeat.json`) se sube en cada corrida que llega a
   GitHub, aunque ninguna fuente responda: hora, resultado (`ok` o
-  `sin-fuentes`), cuántas fuentes respondieron, cuáles fallaron y por qué.
+  `sin-fuentes`), cuántas fuentes respondieron, cuáles fallaron y por qué,
+  cuántas copias se conservaron (`carried`), qué registro de fuentes usó
+  (`registry`: `github` o `kit`, su fecha y, si no pudo leer el de
+  GitHub, el motivo) y el resultado de las mediciones (`probes`).
   Con él el sitio distingue «el equipo no corre» (latido viejo:
   `relay-stale`) de «las instituciones no responden ni desde el Perú»
   (latido reciente: `relay-sources-down`).
@@ -314,7 +355,10 @@ Si sigue sin funcionar, enviar a quien mantiene el sitio el último
   geobloqueadas: solo las que no responden desde fuera del Perú pasan por
   este equipo. Lee el registro de GitHub en cada corrida (con el token),
   así que un cambio en el registro llega sin reinstalar; si GitHub no
-  responde, usa la copia del kit. Una regla `follow` baja además los
+  responde, usa la copia del kit y lo anota (en `logs/recolector.log`,
+  `index.json` y el latido, con el motivo y la fecha de la copia; avisa
+  si tiene más de 14 días). El kit lleva el registro regenerado con el
+  código de su versión. Una regla `follow` baja además los
   documentos enlazados (por ejemplo, los PDF de un listado), hasta `max`.
   Lo que el registro marca `robots-disallowed` (el robots.txt del servidor
   no permite la ruta) no se pide, aunque esté en la lista base.
@@ -397,7 +441,8 @@ El temporizador usa la zona `America/Lima` aunque el equipo tenga otra, y
 
 | Archivo | Qué hace |
 |---|---|
-| `python/tools/peru_collector.py` | Descarga y sube (`--probe`, `--once`, `--daemon`; lo usan Docker y systemd) |
+| `python/tools/peru_collector.py` | Descarga y sube (`--probe`, `--once`, `--daemon`; lo usan Docker y systemd): clasificador, alternativas, copias conservadas, plazo y mediciones |
+| `python/tools/probe_sources.py` | Mide las URL del registro (en GitHub y, al final de cada corrida, desde este equipo) y lee lo que midió el equipo |
 | `python/tools/collector_service.py` | La corrida programada: `.env`, registro, candado, horario, comprobación del token, alarmas, `estado.json` |
 | `python/tools/collector_schedule.py` | Horas locales de los disparos, agente de launchd, crontab; estado y disparo de la tarea en los tres sistemas |
 | `python/tools/collector_check.py` | La verificación |

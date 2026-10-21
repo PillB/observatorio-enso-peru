@@ -27,7 +27,8 @@ from typing import Optional
 
 REPO = Path(__file__).resolve().parents[2]
 NAME = "recolector-peru"
-TOOLS = ["__init__.py", "peru_collector.py", "collector_service.py", "collector_schedule.py", "collector_check.py"]
+TOOLS = ["__init__.py", "peru_collector.py", "probe_sources.py", "collector_service.py", "collector_schedule.py",
+         "collector_check.py"]
 #: Archivos del repositorio que van al kit (ruta en el repo -> ruta en el kit).
 SKIP_PARTS = {"__pycache__", ".pytest_cache"}
 CRLF = {".cmd", ".ps1"}
@@ -56,7 +57,8 @@ def kit_files(repo: Path = REPO) -> dict[str, Path]:
     files["LEEME.txt"] = repo / "collector" / "LEEME.txt"
     files["docs/servidor-peru.md"] = repo / "docs" / "servidor-peru.md"
     files["LICENSE"] = repo / "LICENSE"
-    # Registro de fuentes: copia de respaldo (el recolector lee primero el de GitHub).
+    # Registro de fuentes: copia de respaldo (el recolector lee primero el de
+    # GitHub). ``build`` la regenera con el código de este commit.
     if (repo / "registry" / "sources.json").is_file():
         files["registry/sources.json"] = repo / "registry" / "sources.json"
     missing = [str(p) for p in files.values() if not p.is_file()]
@@ -97,10 +99,36 @@ def version_info(repo: Path = REPO) -> dict:
     return {"version": version, "commit": commit or None, "date": when}
 
 
+def fresh_registry(repo: Path = REPO, when: Optional[datetime] = None) -> Optional[bytes]:
+    """El registro de fuentes regenerado con el código y las mediciones de este
+    commit (como ``tools.build_registry``), para que la copia de respaldo del kit
+    no quede atrás del código. Conserva la fecha del archivo del repositorio si
+    no cambió nada; si no, usa la del commit (el zip sigue siendo reproducible).
+    ``None`` si ``repo`` no es este repositorio."""
+    if repo.resolve() != REPO:
+        return None
+    from enso import registry
+
+    reg = registry.build(now=when)
+    errs = registry.validate(reg)
+    if errs:
+        raise ValueError(f"el registro de fuentes no es válido: {errs[:5]}")
+    try:
+        old = json.loads((repo / "registry" / "sources.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        old = {}
+    if {k: v for k, v in old.items() if k != "generated_at"} == {k: v for k, v in reg.items() if k != "generated_at"}:
+        reg["generated_at"] = old["generated_at"]
+    return (json.dumps(reg, ensure_ascii=False, indent=1) + "\n").encode("utf-8")
+
+
 def build(out: Path, repo: Path = REPO) -> tuple[Path, str]:
     files = kit_files(repo)
     info = version_info(repo)
     blobs = {rel: normalized(src, rel) for rel, src in files.items()}
+    registry_blob = fresh_registry(repo, info["date"])
+    if registry_blob is not None:
+        blobs["registry/sources.json"] = registry_blob
     manifest = {
         "name": NAME,
         "version": info["version"],

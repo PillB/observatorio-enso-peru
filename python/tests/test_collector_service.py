@@ -434,12 +434,12 @@ def test_check_explains_missing_token(home):
 
 
 def test_check_sources_verdicts(monkeypatch):
-    monkeypatch.setattr(chk, "_probe", lambda url: {"url": url, "ok": False, "why": "ConnectError", "bytes": 0, "s": 1.0})
+    monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": False, "why": "ConnectError", "bytes": 0, "s": 1.0})
     assert chk.check_sources({}).level == chk.FAIL
-    monkeypatch.setattr(chk, "_probe", lambda url: {"url": url, "ok": "senamhi" in url or "ana" in url,
+    monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": "senamhi" in url or "ana" in url,
                                                      "why": "HTTP 200", "bytes": 900, "s": 1.0})
     assert chk.check_sources({}).level == chk.WARN  # el ENFEN no responde
-    monkeypatch.setattr(chk, "_probe", lambda url: {"url": url, "ok": True, "why": "HTTP 200", "bytes": 900, "s": 1.0})
+    monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": True, "why": "HTTP 200", "bytes": 900, "s": 1.0})
     assert chk.check_sources({}).level == chk.OK
 
 
@@ -492,10 +492,22 @@ def test_kit_is_complete_reproducible_and_runs_alone(tmp_path):
         assert (z.getinfo(root + "INSTALAR-Mac.command").external_attr >> 16) & 0o111
         manifest = json.loads(z.read(root + "kit.json"))
         assert set(manifest["files"]) == {n.removeprefix(root) for n in names} - {"kit.json"}
+        # El registro de respaldo está al día con el código: válido y con todas las fuentes fijas.
+        from enso import registry
+
+        reg = json.loads(z.read(root + "registry/sources.json"))
+        assert registry.validate(reg) == []
+        known = {u for s in reg["sources"] for u in [s["url"], *s.get("alt_urls", [])]}
+        assert {u for urls in pc.SOURCES.values() for u in urls} <= known
+        committed = json.loads((REPO_ROOT / "registry" / "sources.json").read_text(encoding="utf-8"))
+        if {k: v for k, v in committed.items() if k != "generated_at"} == \
+                {k: v for k, v in reg.items() if k != "generated_at"}:
+            assert reg["generated_at"] == committed["generated_at"]  # la misma versión que GitHub
         z.extractall(tmp_path / "x")
     # El código del kit carga solo, sin el repositorio.
     code = ("import sys; sys.path.insert(0, sys.argv[1]); "
-            "import tools.peru_collector, tools.collector_service, tools.collector_check, tools.collector_schedule")
+            "import tools.peru_collector, tools.collector_service, tools.collector_check, tools.collector_schedule, "
+            "tools.probe_sources")
     r = subprocess.run([sys.executable, "-I", "-c", code, str(tmp_path / "x" / "recolector-peru" / "python")],
                        capture_output=True, text=True, cwd=tmp_path)
     assert r.returncode == 0, r.stderr
