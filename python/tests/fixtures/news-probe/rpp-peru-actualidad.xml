@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:02:19 -0500</lastBuildDate>
+  <lastBuildDate>Wed, 21 Oct 2026 04:38:00 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,50 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[SENAMHI: Pronóstico del clima hoy miércoles 21 de octubre 2026]]></title>
+        <description><![CDATA[Consulta el pronóstico del <a href="https://rpp.pe/noticias/clima-hoy">clima hoy</a> en <a href="https://rpp.pe/noticias/lima">Lima</a> y ciudades del Perú: temperatura actual, sensación térmica, radiación UV, probabilidad de lluvia y reporte oficial del <a href="https://rpp.pe/noticias/senamhi">Senamhi</a> actualizado.]]></description>
+        <pubDate>Wed, 21 Oct 2026 04:00:45 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/senamhi-pronostico-del-clima-hoy-miercoles-21-de-octubre-2026-noticia-1713664</link>
+        <guid>1713664</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/12/03/213221_1818086.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Lima, Senamhi, Temperatura, Peru, Clima hoy, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[¿Qué nivel de precipitaciones se espera en el verano tras lluvias que anegaron Piura? La advertencia del Senamhi por El Niño]]></title>
+        <description><![CDATA[Raquel Loayza, meteoróloga del <a data-mce-href="https://rpp.pe/noticias/senamhi?ref=rpp" href="https://rpp.pe/noticias/senamhi?ref=rpp">Senamhi,</a> advirtió en declaraciones a <em>RPP </em>que el acoplamiento atmosférico en verano intensificará las <strong>lluvias </strong>en la costa norte.]]></description>
+        <pubDate>Tue, 20 Oct 2026 22:09:46 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/lluvias-en-piura-senamhi-preve-precipitaciones-de-hasta-200-litros-por-metro-cuadrado-en-verano-por-el-nino-noticia-1713646</link>
+        <guid>1713646</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/20/portada_1110901.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Lluvias, Piura, Senamhi, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Visita del papa León XIV al Perú sigue en pie, afirmó vocero del Arzobispado de Lima]]></title>
+        <description><![CDATA[El padre <strong>Juan Bytton</strong> aseguró en RPP que no existe una comunicación oficial sobre cambios o cancelaciones del viaje y señaló que una delegación del <a data-mce-href="https://rpp.pe/noticias/vaticano" href="https://rpp.pe/noticias/vaticano" target="_blank" rel="noopener">Vaticano</a> llegará a fin de mes para revisar los preparativos y las medidas de seguridad.]]></description>
+        <pubDate>Tue, 20 Oct 2026 20:55:16 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/visita-del-papa-leon-xiv-al-peru-sigue-en-pie-afirmo-vocero-del-arzobispado-de-lima-noticia-1713635</link>
+        <guid>1713635</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/20/494149_1920819.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ papa León XIV, León XIV, Perú, Vaticano, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Minsa emite alerta epidemiológica por riesgo de incremento de enfermedades ante el fenómeno El Niño]]></title>
+        <description><![CDATA[El sector indicó que refuerza la vigilancia y preparación de los establecimientos de salud e invita a la población a vacunarse, eliminar criaderos de zancudos y adoptar medidas de prevención.]]></description>
+        <pubDate>Tue, 20 Oct 2026 19:58:26 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/fenomeno-el-nino-minsa-emite-alerta-epidemiologica-por-riesgo-de-incremento-de-enfermedades-noticia-1713634</link>
+        <guid>1713634</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/20/270527_1920815.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Fenómeno El Niño, Minsa, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Médicos del hospital Rebagliati extirpan con éxito un tumor de páncreas a paciente que nació con órganos invertidos]]></title>
         <description><![CDATA[El equipo médico realizó una <strong>pancreatoduodenectomía</strong>, conocida como cirugía de <em>Whipple</em>, procedimiento que permitió retirar la zona afectada.]]></description>
@@ -520,50 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2025/12/03/413441_1818088.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Lima, Senamhi, Temperatura, Peru, Clima hoy, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Cusco: joven detenido falleció en comisaría de Sicuani y su familia exige esclarecer las circunstancias del caso]]></title>
-        <description><![CDATA[Según la Defensoría del Pueblo, el joven fue intervenido por conducir en presunto estado de ebriedad y trasladado a la dependencia policial para someterse a una prueba de dosaje etílico. Posteriormente, fue ingresado al calabozo, donde, minutos después, fue hallado sin vida por efectivos policiales.]]></description>
-        <pubDate>Fri, 16 Oct 2026 00:21:13 -0500</pubDate>
-        <link>https://rpp.pe/peru/actualidad/cusco-joven-detenido-fallecio-en-comisaria-de-sicuani-y-su-familia-exige-esclarecer-las-circunstancias-del-caso-noticia-1712878</link>
-        <guid>1712878</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/10/15/falso-20261015224459-1919109mp3_1919110.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Cusco, Policía Nacional del Perú, Sicuani, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Ministro de Defensa critica al Senado y califica de "inaudito" falta de consenso sobre facultades legislativas]]></title>
-        <description><![CDATA[Rafael Belaúnde Llosa defendió el pedido del Ejecutivo y señaló que necesita atribuciones para declarar a organizaciones criminales como grupos hostiles y permitir la intervención de las Fuerzas Armadas, así como para asumir el control perimetral y de los ingresos de los penales.]]></description>
-        <pubDate>Thu, 15 Oct 2026 21:16:44 -0500</pubDate>
-        <link>https://rpp.pe/politica/gobierno/ministro-de-defensa-critica-al-senado-por-falta-de-consenso-sobre-facultades-legislativas-es-innecesario-e-inaudito-noticia-1712868</link>
-        <guid>1712868</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/10/15/nistrofacultades-1919081mp4_1919082.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Comisión de Constitución, Rafael Belaúnde, facultades legislativas, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Rafael Belaúnde plantea que FF. AA. asuman la conducción de operaciones contra el crimen: "La policía ha sido rebasada"]]></title>
-        <description><![CDATA[Rafael Belaúnde Llosa defendió la participación de las Fuerzas Armadas en operaciones contra organizaciones criminales que utilizan armamento de guerra y explosivos. Señaló que el Ejecutivo necesita facultades legislativas para catalogarlas como grupos hostiles y considerarlas objetivos militares.]]></description>
-        <pubDate>Thu, 15 Oct 2026 20:28:46 -0500</pubDate>
-        <link>https://rpp.pe/politica/gobierno/ministro-de-defensa-pide-facultades-legislativas-para-que-ff-aa-asuman-operaciones-contra-el-crimen-organizado-noticia-1712866</link>
-        <guid>1712866</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/10/15/deo-sobre-bealunde-1919074mp4_1919075.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Fuerzas Armadas, Ministerio de Defensa, facultades legislativas, Rafael Belaúnde, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Cusco: adulto mayor fallece y se convierte en la séptima víctima mortal de los incendios forestales]]></title>
-        <description><![CDATA[El hombre participaba junto a otros pobladores en las labores para sofocar las llamas cuando fue alcanzado por el fuego en la comunidad de Santo Domingo.]]></description>
-        <pubDate>Thu, 15 Oct 2026 20:13:46 -0500</pubDate>
-        <link>https://rpp.pe/peru/actualidad/cusco-adulto-mayor-fallece-y-se-convierte-en-la-septima-victima-mortal-de-los-incendios-forestales-noticia-1712862</link>
-        <guid>1712862</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/10/15/h16m-mp3cutnet-1919061mp3_1919062.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Cusco, Incendios forestales en Cusco, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>

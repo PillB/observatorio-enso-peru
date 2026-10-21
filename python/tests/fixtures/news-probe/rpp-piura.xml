@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:02:54 -0500</lastBuildDate>
+  <lastBuildDate>Wed, 21 Oct 2026 04:38:44 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Lluvias en Piura: colapso de alcantarillado y falta de motobombas prolongan inundación de las calles]]></title>
+        <description><![CDATA[Diversos sectores de <a data-mce-href="https://rpp.pe/noticias/piura" href="https://rpp.pe/noticias/piura">Piura</a> sufren anegamientos, colapso de desagües y la suspensión de clases presenciales, mientras se esperan más <strong>lluvias</strong>.]]></description>
+        <pubDate>Tue, 20 Oct 2026 23:40:42 -0500</pubDate>
+        <link>https://rpp.pe/peru/piura/lluvias-en-piura-hoy-sectores-anegados-colapso-de-desagues-y-suspension-de-clases-noticia-1713655</link>
+        <guid>1713655</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/20/ura1-2026-10-20-20-47-47-7536-1920857mp4_1920858.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Piura, Lluvia, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Persiste anegamiento en mercados y urbanizaciones de Piura pese al trabajo ininterrumpido de electrobombas]]></title>
         <description><![CDATA[A pesar del bombeo continuo en sectores anegados de <a data-mce-href="https://rpp.pe/noticias/piura" href="https://rpp.pe/noticias/piura">Piura</a>, la población exige más equipos ante la alerta del Senamhi por la continuidad de lluvias de moderada a fuerte intensidad.]]></description>
@@ -93,7 +104,7 @@
         <media:keywords><![CDATA[ Piura, Chulucanas, Lluvias torrenciales, Lluvias, Fenómeno El Niño, Noticias Última Hora]]></media:keywords>
       </item>
            <item>
-        <title><![CDATA[Lluvias en Piura provocan aniegos y obligan a suspende procesión en Chulucanas]]></title>
+        <title><![CDATA[Lluvias en Piura provocan aniegos y obligan a suspender procesión en Chulucanas]]></title>
         <description><![CDATA[<strong>Lluvias</strong> de moderada a fuerte intensidad en Morropón inundaron calles y paralizaron el recorrido del Señor de los Milagros. El Senamhi y el COER emitieron alerta por <strong>activación de quebradas</strong>.]]></description>
         <pubDate>Mon, 19 Oct 2026 23:53:34 -0500</pubDate>
         <link>https://rpp.pe/peru/piura/lluvias-en-piura-provocan-aniegos-y-suspension-de-procesion-en-chulucanas-noticia-1713460</link>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/08/15/522152_1896698.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Piura, Sismo, IGP, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Piura celebra su 494° aniversario: el inmenso atractivo de su gastronomía, playas y paisajes [INFORME]]]></title>
-        <description><![CDATA[<a data-mce-href="https://rpp.pe/noticias/piura" href="https://rpp.pe/noticias/piura">Piura</a> celebra en agosto su aniversario. Este 2026, se conmemoran 494 años de ser <strong>la primera ciudad fundada por los españoles.</strong>]]></description>
-        <pubDate>Sat, 15 Aug 2026 08:15:14 -0500</pubDate>
-        <link>https://rpp.pe/peru/actualidad/piura-celebra-su-4940-aniversario-el-inmenso-atractivo-de-su-gastronomia-playas-y-paisajes-noticia-1701669</link>
-        <guid>1701669</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/14/451345_1896471.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Piura, Gastronomía, Turismo, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
