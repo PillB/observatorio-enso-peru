@@ -199,6 +199,11 @@ def test_architecture_diagrams_are_drawn_from_the_model():
     assert doc == A.render_doc(model, doc), "docs/arquitectura.md: corre python -m tools.architecture"
     for n in model["full"]["nodes"]:
         assert f"| **{n['name_es']}** |" in doc, f"{n['id']}: la caja no está en el texto de docs/arquitectura.md"
+    # Las cuentas escritas a mano en el texto siguen al modelo.
+    nf, ef = len(model["full"]["nodes"]), len(model["full"]["edges"])
+    for found in re.findall(r"(\d+) (?:cajas|partes) y (\d+) conexiones", doc):
+        assert found == (str(nf), str(ef)), f"docs/arquitectura.md dice {found}; el modelo tiene {nf} cajas y {ef} conexiones"
+    assert f"{len(model['simple']['nodes'])} cajas para explicar" in doc
 
 
 @pytest.mark.parametrize("feed", N.FEEDS, ids=lambda f: f.id)

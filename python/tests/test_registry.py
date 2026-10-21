@@ -203,6 +203,39 @@ def test_probe_imports_measurements_from_other_networks(tmp_path):
     assert gb["status"] == "open" and gb["open_from"] == ["actions"]
 
 
+def test_probe_imports_the_n8n_validation_report_as_it_comes_out(tmp_path):
+    """El informe del flujo de validación de n8n (JSON de n8n.yml o CSV bajado de n8n) entra tal cual con
+    --import: antes solo se aceptaba enso-reachability-vantage/1, que nada producía."""
+    out = tmp_path / "reach.json"
+    rows = [{"resultado": "RESUMEN: 1/2", "id": "resumen", "url": "", "alcance": ""},
+            {"resultado": "FALLA", "veredicto": "dns", "alcance": "dns", "bloqueo": "", "http": "", "bytes": 0,
+             "id": "enfen", "url": "https://enfen.gob.pe/x", "nota": "ENOTFOUND", "medido": "2026-10-21T03:00:00.000Z"},
+            {"resultado": "OK", "veredicto": "ok", "alcance": "ok", "bloqueo": "", "http": 200, "bytes": 512,
+             "id": "dhn", "url": "https://www.dhn.mil.pe/y", "nota": "", "medido": "2026-10-21T03:00:01.000Z"},
+            {"resultado": "FALLA", "veredicto": "timeout", "alcance": "timeout", "bloqueo": "", "http": "", "bytes": 0,
+             "id": "igp", "url": "https://www.igp.gob.pe/z", "nota": "aborted", "medido": "2026-10-21T03:00:02.000Z"}]
+    report = tmp_path / "validacion-actions.json"
+    report.write_text(json.dumps(rows))
+    assert probe_sources.main(["--no-probe", "--import", str(report), "--import-vantage", "n8n-actions-azure",
+                               "--out", str(out)]) == 0
+    got = json.loads(out.read_text())["urls"]
+    assert got["https://enfen.gob.pe/x"]["actions"]["n8n-actions-azure"] == {
+        "class": "dns", "at": "2026-10-21T03:00:00+00:00", "detail": "ENOTFOUND", "bytes": 0, "vantage": "n8n-actions-azure"}
+    assert got["https://www.dhn.mil.pe/y"]["actions"]["n8n-actions-azure"]["http"] == 200
+    # El corte «aborted» del nodo HTTP de n8n sigue sin contar como medición.
+    assert registry.unmeasured(got["https://www.igp.gob.pe/z"]["actions"]["n8n-actions-azure"])
+
+    csv_file = tmp_path / "validacion-fuentes-n8n.csv"
+    keys = list(rows[1])
+    csv_file.write_text(",".join(keys) + "\n" + "\n".join(",".join(str(r.get(k, "")) for k in keys) for r in rows) + "\n")
+    out2 = tmp_path / "reach2.json"
+    assert probe_sources.main(["--no-probe", "--import", str(csv_file), "--import-vantage", "n8n-aws",
+                               "--out", str(out2)]) == 0
+    got = json.loads(out2.read_text())["urls"]
+    assert got["https://www.dhn.mil.pe/y"]["n8n"]["n8n-aws"]["http"] == 200
+    assert got["https://enfen.gob.pe/x"]["n8n"]["n8n-aws"]["class"] == "dns"
+
+
 def test_alternate_urls_carry_their_own_format():
     """El listado de ENFEN y la réplica de la DHN son páginas HTML aunque la URL principal sea la API JSON."""
     enfen = next(s for s in registry.build()["sources"] if s["id"] == "enfen-comunicados")

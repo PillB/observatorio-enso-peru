@@ -3,13 +3,15 @@
 Corre en GitHub Actions (vantage «github-actions»), lee el ``index.json`` del
 recolector del Perú (rama ``data-peru``) y el del flujo de n8n (rama
 ``data-n8n``), y puede importar lo medido por el flujo de validación de n8n
-(``--import``, formato enso-reachability-vantage/1). Cada medición se guarda
+(``--import``: su informe tal como sale, en JSON como lo guarda ``n8n.yml`` o en
+CSV como lo baja n8n, o el formato enso-reachability-vantage/1). Cada medición se guarda
 por red (``actions``, ``n8n``, ``peru``) y punto de medición, y el registro
 decide con todas qué fuentes están geobloqueadas y quién recolecta cada una.
 
 Uso:
     python -m tools.probe_sources [--vantage github-actions] [--peru-index ruta/index.json]
-        [--n8n-index ruta/index.json] [--import n8n-reach.json ...] [--no-probe] [--only id ...]
+        [--n8n-index ruta/index.json] [--import validacion.json|.csv ...] [--import-vantage n8n-aws]
+        [--no-probe] [--only id ...]
 """
 
 from __future__ import annotations
@@ -133,7 +135,47 @@ def from_n8n_index(index: dict) -> dict[str, dict]:
     return out
 
 
-def from_vantage_file(data: dict) -> list[dict]:
+def _iso(at) -> str | None:
+    """«2026-10-21T03:00:00.000Z» (n8n) como las demás mediciones, «2026-10-21T03:00:00+00:00»: el registro
+    compara las fechas como texto."""
+    try:
+        return datetime.fromisoformat(str(at).replace("Z", "+00:00")).astimezone(timezone.utc).isoformat(timespec="seconds")
+    except ValueError:
+        return None
+
+
+def from_n8n_report(rows: list, vantage: str) -> list[dict]:
+    """El informe del flujo «ENSO · Validación de fuentes desde n8n» (nodo Informe): una fila por URL con
+    ``alcance`` (la clase del registro, ``reachClass`` en n8n/lib/classify.js), ``http``, ``bytes`` y ``medido``.
+    La primera fila es el resumen. Sirve igual leído del JSON o del CSV (allí todo llega como texto)."""
+    out = []
+    for r in rows:
+        if not isinstance(r, dict) or r.get("id") == "resumen" or not r.get("url") or r.get("alcance") not in registry.CLASSES:
+            continue
+        rec = {"url": r["url"], "class": r["alcance"], "at": _iso(r.get("medido")),
+               "detail": str(r.get("nota") or r.get("bloqueo") or "") or None}  # como from_n8n_index: «aborted» se reconoce
+        for k in ("http", "bytes"):
+            v = r.get(k)
+            if isinstance(v, int) or (isinstance(v, str) and v.isdigit()):
+                rec[k] = int(v)
+        out.append({k: v for k, v in rec.items() if v is not None} | {"vantage": vantage})
+    if not out:
+        raise SystemExit("formato no reconocido: el informe de n8n no trae filas con url y alcance")
+    return out
+
+
+def read_import(path: Path, vantage: str) -> list[dict]:
+    """Un archivo de --import: el informe de validación de n8n (JSON o CSV) o enso-reachability-vantage/1."""
+    text = path.read_text(encoding="utf-8-sig")
+    if path.suffix.lower() == ".csv":
+        import csv
+        import io
+        return from_n8n_report(list(csv.DictReader(io.StringIO(text))), vantage)
+    data = json.loads(text)
+    return from_n8n_report(data, vantage) if isinstance(data, list) else from_vantage_file(data, vantage)
+
+
+def from_vantage_file(data: dict, vantage: str = "n8n") -> list[dict]:
     """Mediciones hechas en otra parte (n8n…) en formato enso-reachability-vantage/1: [{url, class, at, vantage…}]."""
     if data.get("schema") != "enso-reachability-vantage/1":
         raise SystemExit(f"formato no reconocido: {data.get('schema')}")
@@ -141,7 +183,7 @@ def from_vantage_file(data: dict) -> list[dict]:
     for r in data.get("results", []):
         if r.get("url") and r.get("class") in registry.CLASSES:
             out.append({k: r.get(k) for k in ("url", "class", "http", "bytes", "ms", "detail", "at", "robots")
-                        if r.get(k) is not None} | {"vantage": r.get("vantage") or data.get("vantage") or "n8n"})
+                        if r.get(k) is not None} | {"vantage": r.get("vantage") or data.get("vantage") or vantage})
     return out
 
 
@@ -158,7 +200,9 @@ def main(argv=None) -> int:
     ap.add_argument("--peru-index", type=Path)
     ap.add_argument("--n8n-index", type=Path, help="index.json de la rama data-n8n (lo que n8n bajó)")
     ap.add_argument("--import", dest="imports", type=Path, nargs="*", default=[],
-                    help="archivos enso-reachability-vantage/1 (p. ej. la validación de n8n)")
+                    help="informe de la validación de n8n (JSON o CSV) o archivos enso-reachability-vantage/1")
+    ap.add_argument("--import-vantage", default="n8n",
+                    help="desde dónde corrió esa validación, p. ej. n8n-aws o n8n-actions-azure (n8n.yml)")
     ap.add_argument("--no-probe", action="store_true", help="solo importar mediciones")
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--out", type=Path, default=registry.REACHABILITY)
@@ -177,7 +221,7 @@ def main(argv=None) -> int:
         for url, rec in from_n8n_index(json.loads(a.n8n_index.read_text(encoding="utf-8"))).items():
             _put(data, url, rec)
     for f in a.imports:
-        for rec in from_vantage_file(json.loads(f.read_text(encoding="utf-8"))):
+        for rec in read_import(f, a.import_vantage):
             _put(data, rec["url"], rec)
     data["schema"] = registry.REACH_SCHEMA
     data["updated_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
