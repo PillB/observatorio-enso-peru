@@ -268,7 +268,7 @@ nadie está mirando.
 | Issue `relay-stale` en GitHub | La última copia y el último latido tienen más de 36 horas: el equipo no está corriendo | Pedir que ejecuten `VERIFICAR` y envíen el informe |
 | Issue `relay-sources-down` en GitHub | El equipo funciona, pero hace más de 36 horas que ninguna fuente peruana le responde | Nada en el equipo: son SENAMHI, ANA, IMARPE o el ENFEN. `heartbeat.json` dice qué respondió cada una. El sitio usa la última copia buena hasta 7 días |
 | Issue `relay-token-expiring` en GitHub | El token vence en menos de 21 días | Renovarlo y ejecutar `INSTALAR` con el nuevo |
-| Issue `relay-missing` en GitHub | `data-peru` existe pero su `index.json` no se puede leer | Ver la última subida del recolector |
+| Issue `relay-missing` en GitHub | `data-peru` no existe todavía, o existe pero su `index.json` no se puede leer | Ver la última subida del recolector |
 
 Los issues se cierran solos cuando el problema desaparece
 ([operaciones](operaciones.md)).

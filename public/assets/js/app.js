@@ -121,8 +121,7 @@ function statusCard(kind) {
       : html`<p class="status" id="st-${kind}">${raw(ICON[LEVEL_ICON[lvl]] || '')} ${status}</p><p class="status-sub">${sub}</p>`}
     <div class="meta">
       ${o.nextIssue ? html`<span>Próximo: <strong>${F.fmtDate(o.nextIssue)}</strong>${o.nextIssueEstimated ? ' (estimado)' : ''}</span>` : ''}
-      ${o.channel === 'archive' || o.channel === 'archive-fresh' ? html`<span class="tag">vía copia del Internet Archive</span>` : ''}
-      ${o.channel === 'relay-peru' ? html`<span class="tag">vía recolector en el Perú</span>` : ''}
+      ${channelTag(o.channel)}
       ${o.carried ? html`<span class="tag">último dato válido</span>` : ''}
       <a href="${safeUrl(o.documentUrl || o.url)}" rel="noopener" target="_blank">Documento oficial</a>
       ${archiveHref(o.archive) ? html`<a href="${archiveHref(o.archive)}" rel="noopener" target="_blank" title="Copia que bajó el observatorio${o.retrievedAt ? ` el ${F.fmtDateTime(o.retrievedAt)}` : ''}">Copia archivada</a>` : ''}
@@ -623,21 +622,31 @@ function officialItem(it) {
       ${it.stale ? html`<span class="tag tag-prelim">vencido</span>` : ''}
       ${it.newerListed ? html`<span class="tag tag-prelim">hay un comunicado más reciente (${it.newerListed}) sin leer</span>` : ''}
       ${it.next ? html`<span class="tag">próximo: ${F.fmtDate(it.next)}</span>` : ''}
-      ${String(it.channel || '').startsWith('archive') ? html`<span class="tag">vía Internet Archive</span>` : it.channel === 'relay-peru' ? html`<span class="tag">vía recolector en el Perú</span>` : ''}
+      ${channelTag(it.channel)}
     </div>
     ${sourceLinks(it.url, it.archive, { when: it.retrievedAt, snapshot: it.snapshot })}</li>`;
 }
 
-// Sin avisos no quiere decir sin peligro: se dice qué fuentes de alertas no respondieron.
+// Por dónde llegó un dato que no vino directo de la fuente.
+const CHANNEL_TAG = { 'relay-peru': 'vía recolector en el Perú', 'relay-n8n': 'vía n8n', archive: 'vía Internet Archive', 'archive-fresh': 'vía Internet Archive', mirror: 'vía réplica oficial' };
+const CHANNEL_SHORT = { 'relay-peru': 'recolector en el Perú', 'relay-n8n': 'n8n', archive: 'Internet Archive', 'archive-fresh': 'Internet Archive', mirror: 'réplica oficial' };
+function channelTag(ch) {
+  return CHANNEL_TAG[ch] ? html`<span class="tag">${CHANNEL_TAG[ch]}</span>` : '';
+}
+
+// Sin avisos no quiere decir sin peligro: se dice qué fuentes de alertas no respondieron y cuáles se
+// leyeron de una copia de otro recolector (con su fecha: una copia de ayer no trae los avisos de hoy).
 function alertSources(g) {
   const src = g.sources || [];
   if (!src.length) return '';
   const down = src.filter((s) => !s.ok);
+  const copies = src.filter((s) => s.ok && CHANNEL_SHORT[s.channel]);
   const links = (list) => list.map((s, i) => html`${i ? ', ' : ''}<a href="${safeUrl(s.url)}" rel="noopener" target="_blank">${s.name}</a>`);
+  const via = (list) => list.map((s, i) => html`${i ? ', ' : ''}<a href="${safeUrl(s.url)}" rel="noopener" target="_blank">${s.name}</a> (${CHANNEL_SHORT[s.channel]}${s.copyAt ? `, copia del ${F.fmtDateTime(s.copyAt).replace(' (hora de Lima)', '')}` : ''})`);
   const empty = g.items.length ? '' : down.length === src.length
     ? html`<p class="notice notice-alert">Ninguna fuente de alertas respondió en esta actualización: consulte directamente a las instituciones.</p>`
     : html`<p>Las fuentes consultadas no publicaron avisos en los últimos 7 días.</p>`;
-  return html`${empty}<p class="alert-sources muted small">${src.length - down.length} de ${src.length} fuentes de alertas respondieron en esta actualización.${down.length && down.length < src.length ? html` <strong>Sin respuesta:</strong> ${links(down)}. Sus avisos pueden faltar aquí; consulte la fuente.` : ''}</p>`;
+  return html`${empty}<p class="alert-sources muted small">${src.length - down.length} de ${src.length} fuentes de alertas respondieron en esta actualización.${down.length && down.length < src.length ? html` <strong>Sin respuesta:</strong> ${links(down)}. Sus avisos pueden faltar aquí; consulte la fuente.` : ''}${copies.length ? html` <strong>Leídas de una copia:</strong> ${via(copies)}; los avisos posteriores a la copia pueden faltar.` : ''}</p>`;
 }
 
 function clusterItem(c, deps = {}, dep = '') {

@@ -818,8 +818,14 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
 
     seen_at = now.isoformat(timespec="seconds")
     st = _status(f, now)
-    code, body, ctype, err = fetch(f.url)
+    got = fetch(f.url)
+    code, body, ctype, err = got[:4]
     st["httpStatus"] = code
+    via = got[4] if len(got) > 4 and isinstance(got[4], dict) else {}
+    if via.get("channel") not in (None, "direct"):
+        # Copia de otro recolector (Perú, n8n) o réplica: el sitio dice de cuándo es y por qué canal llegó.
+        st["channel"] = via["channel"]
+        st["copyAt"] = via.get("copyAt")
     if code != 200 or not body:
         st["error"] = err or f"HTTP {code}"
         return st, [], None
@@ -886,7 +892,8 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
 
 def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None, workers: int = 8,
             deadline: Optional[float] = None, host_failures: int = 2) -> tuple[list[dict], list[dict], dict[str, bytes]]:
-    """Descarga los feeds. ``fetch(url)`` devuelve (estado, cuerpo, tipo, error) y debe ser seguro entre hilos.
+    """Descarga los feeds. ``fetch(url)`` devuelve (estado, cuerpo, tipo, error[, {channel, copyAt}]) y debe
+    ser seguro entre hilos.
 
     Los feeds de un mismo servidor se piden en serie (cortesía). Tras ``host_failures``
     fallos de red seguidos se omiten los demás feeds de ese servidor, y pasados
