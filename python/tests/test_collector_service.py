@@ -607,6 +607,38 @@ def test_installer_never_takes_over_or_deletes_someone_elses_folder(tmp_path):
     assert sorted(p.relative_to(dest) for p in dest.rglob("*")) == before
 
 
+@pytest.mark.skipif(os.name == "nt", reason="instalar.sh es para macOS y Linux")
+@pytest.mark.parametrize("stuck", [False, True])
+def test_uninstall_without_python_on_macos_checks_legacy_loaded_agents(tmp_path, stuck):
+    """Sin .venv, DESINSTALAR en macOS quita el agente con launchctl; uno cargado
+    con «load» (sin sesión gráfica) solo se ve en «launchctl list»."""
+    label = "io.github.pillb.observatorio-enso.recolector"
+    dest = tmp_path / "instalacion"
+    dest.mkdir()
+    (dest / ".instalacion-recolector").write_text("recolector\n", encoding="utf-8")
+    plist = tmp_path / "Library" / "LaunchAgents" / f"{label}.plist"
+    plist.parent.mkdir(parents=True)
+    plist.write_text("<plist/>", encoding="utf-8")
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    log = tmp_path / "launchctl.log"
+    (bin_dir / "uname").write_text("#!/bin/sh\necho Darwin\n", encoding="utf-8")
+    listed = f"echo '123\t0\t{label}'" if stuck else "echo '-\t0\tcom.apple.otro'"
+    (bin_dir / "launchctl").write_text(
+        f"#!/bin/sh\necho \"$1\" >> '{log}'\ncase \"$1\" in\n  print) exit 113 ;;\n"
+        f"  list) echo 'PID\tStatus\tLabel'; {listed} ;;\n  *) exit {5 if stuck else 0} ;;\nesac\n", encoding="utf-8")
+    for f in bin_dir.iterdir():
+        f.chmod(0o755)
+    env = {**os.environ, "HOME": str(tmp_path), "ENSO_SIN_PAUSA": "1", "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}"}
+    r = subprocess.run(["bash", str(REPO_ROOT / "collector" / "instalar.sh"), "--desinstalar", "--no-interactivo",
+                        "--destino", str(dest)], capture_output=True, text=True, env=env, timeout=60)
+    assert log.read_text().split()[:2] == ["bootout", "unload"]
+    if stuck:
+        assert r.returncode != 0 and dest.exists() and plist.exists(), r.stdout + r.stderr
+    else:
+        assert r.returncode == 0 and not dest.exists() and not plist.exists(), r.stdout + r.stderr
+
+
 @pytest.mark.skipif(sys.platform != "linux", reason="el respaldo sin Python usa cron (Linux)")
 @pytest.mark.parametrize("message, deleted", [("no crontab for pablo", True),
                                                ("You (pablo) are not allowed to use this program", False)])

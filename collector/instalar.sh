@@ -384,12 +384,18 @@ do_uninstall() {
   if [ -x "$VPY" ]; then
     in_python -m tools.collector_schedule quitar || removed=0
   elif [ "$OS" = "Darwin" ]; then
-    launchctl bootout "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" 2>/dev/null
+    # Como remove_launchd: bootout y, para un agente cargado sin sesión gráfica
+    # (con «load»), unload; si launchd lo sigue viendo, no se borra nada.
+    local label="io.github.pillb.observatorio-enso.recolector"
+    local plist="$HOME/Library/LaunchAgents/$label.plist"
+    launchctl bootout "gui/$(id -u)/$label" 2>/dev/null
+    [ -f "$plist" ] && launchctl unload "$plist" 2>/dev/null
     sleep 2
-    if launchctl print "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" >/dev/null 2>&1; then
+    if launchctl print "gui/$(id -u)/$label" >/dev/null 2>&1 \
+        || launchctl list 2>/dev/null | awk -v l="$label" '$NF == l { found = 1 } END { exit !found }'; then
       removed=0
     else
-      rm -f "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist" || removed=0
+      rm -f "$plist" || removed=0
     fi
   elif command -v crontab >/dev/null 2>&1; then
     # Sin crontab no hay nada que quitar; si no se puede leer, no se reescribe a ciegas.
