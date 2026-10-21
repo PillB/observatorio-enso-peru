@@ -92,6 +92,11 @@ def test_relative_links_guid_and_feedburner():
                      "https://diario.pe/b"]
 
 
+def test_source_url_becomes_outlet_host():
+    item = '<item><title>T</title><link>https://n.pe/1</link><source url="https://www.stakeholders.com.pe">https://www.stakeholders.com.pe/</source></item>'
+    assert F.parse(rss(item), now=NOW).items[0]["outlet"] == "stakeholders.com.pe"
+
+
 def test_duplicate_links_are_dropped():
     assert len(F.parse(rss(one(), one()), now=NOW).items) == 1
 

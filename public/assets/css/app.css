@@ -463,3 +463,5 @@ table.grd .chip { white-space: normal; }
   .seg { flex-wrap: wrap; max-width: 100%; }
   main table { display: block; overflow-x: auto; }
 }
+/* Nombres de medios o enlaces largos sin espacios no deben ensanchar la página */
+.feed-meta, .feed-title, .feed-text, .feed-more li, #feeds-status th { overflow-wrap: anywhere; }

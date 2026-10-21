@@ -283,7 +283,10 @@ def _rss_item(e: ET.Element, base: str, tz: timezone, now: datetime) -> dict:
     }
     src = _children(e, "source")
     if src and _text(src[0]).strip():
-        item["outlet"] = clean_text(_text(src[0]), 120)
+        outlet = clean_text(_text(src[0]), 120)
+        # Google Noticias a veces pone la URL del medio en lugar de su nombre.
+        m = re.match(r"^https?://(?:www\.)?([^/\s]+)/?$", outlet)
+        item["outlet"] = m.group(1) if m else outlet
     return item
 
 
