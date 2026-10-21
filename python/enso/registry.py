@@ -10,13 +10,17 @@ del Perú (``servidor-peru``) y el flujo de n8n. Se genera con
   responde cada URL, por red: los ejecutores de GitHub Actions, el servidor de
   n8n (ambos en EE. UU.) y el servidor del Perú.
 
-Regla de canales: una fuente va por ``peru-server`` si y solo si está
+Regla de canales, por URL: una URL va por ``peru-server`` si y solo si está
 geobloqueada (no responde desde ninguna red de EE. UU. y sí desde el Perú, o
 no responde desde EE. UU. por bloqueo y aún no hay medición desde el Perú).
 Las demás van por ``actions`` (la actualización diaria) y ``n8n`` (canal
 alternativo); si una de las dos redes se midió y no responde mientras la otra
-sí, solo por la que responde (p. ej. ENFEN no resuelve desde Azure y sí desde
-la nube de n8n: la recolecta n8n y el pipeline usa esa copia).
+sí, solo por la que responde (p. ej. un servidor que corta a n8n en AWS y
+atiende a Actions). ``by_url`` guarda el estado y los canales de cada URL (la
+principal y sus réplicas) y ``channels`` es la unión: el portal del ENFEN no
+resuelve desde Azure ni desde AWS y se pide desde el Perú, mientras que su
+réplica en la DHN responde a Actions. ``geoblocked`` es verdadero si alguna URL
+de la fuente necesita el servidor del Perú.
 
 Método de acceso, de lo más simple a lo más complejo (``tier``):
   1 ``api`` / ``feed`` / ``download`` — interfaz, feed o archivo publicado;
@@ -257,20 +261,45 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
     entries += _collector_entries(known)
     sources = []
     for e in entries:
-        gb = geoblock(e.url, reach)
+        by_url = {}
+        for u in [e.url, *e.alt_urls]:
+            g = geoblock(u, reach)
+            by_url[u] = {"status": g["status"], "channels": channels_for(
+                g["status"], g["open_from"], [k for k in ("actions", "n8n") if g.get(k)])}
         d = {k: v for k, v in e.__dict__.items() if v not in (None, [], "") or k in ("hazards", "alt_urls")}
         d["tier"] = METHODS[e.method]
-        d["geoblock"] = gb
-        d["geoblocked"] = True if gb["status"] in ("geoblocked", "suspected-geoblock") else (
-            False if gb["status"] == "open" else None)
-        d["channels"] = channels_for(gb["status"], gb["open_from"],
-                                     [g for g in ("actions", "n8n") if gb.get(g)])
+        d["geoblock"] = geoblock(e.url, reach)  # la URL principal
+        d["channels"] = [c for c in CHANNELS if any(c in r["channels"] for r in by_url.values())]
+        d["geoblocked"] = True if "peru-server" in d["channels"] else (
+            False if all(r["status"] == "open" for r in by_url.values()) else None)
+        d["by_url"] = by_url
         sources.append(d)
     now = now or datetime.now(timezone.utc)
     return {"schema": SCHEMA, "generated_at": now.isoformat(timespec="seconds"),
-            "rules": {"peru-server": "si y solo si geoblocked es true",
+            "rules": {"peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
                       "tiers": METHODS, "channels": list(CHANNELS)},
             "sources": sources}
+
+
+def url_channels(reg: Optional[dict] = None) -> dict[str, list[str]]:
+    """Canales de cada URL del registro (la principal y sus réplicas): qué recolector la pide.
+
+    Lo usa el pipeline en GitHub Actions: una URL que Actions no alcanza se lee primero de las copias
+    del Perú o de n8n, y una que robots.txt prohíbe (sin canales) no se pide. Vacío si no hay registro."""
+    if reg is None:
+        try:
+            reg = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return {}
+    if not isinstance(reg, dict) or reg.get("schema") != SCHEMA:
+        return {}
+    out: dict[str, list[str]] = {}
+    for s in reg.get("sources") or []:
+        by_url = s.get("by_url") or {s.get("url"): {"channels": s.get("channels") or []}}
+        for u, r in by_url.items():
+            if isinstance(u, str) and isinstance(r, dict):
+                out[u] = list(r.get("channels") or [])
+    return out
 
 
 def validate(reg: dict) -> list[str]:
@@ -294,9 +323,19 @@ def validate(reg: dict) -> list[str]:
             errs.append(f"{sid}: expect «{s.get('expect')}» no válido")
         if s.get("method") not in METHODS or s.get("tier") != METHODS.get(s.get("method")):
             errs.append(f"{sid}: método o nivel no válido")
-        robots = (s.get("geoblock") or {}).get("status") == "robots-disallowed"
-        if not set(s.get("channels", [])) <= set(CHANNELS) or (not s.get("channels")) != robots:
-            errs.append(f"{sid}: canales no válidos (vacíos solo si robots.txt prohíbe la ruta)")
+        by_url = s.get("by_url") or {s.get("url"): {"status": (s.get("geoblock") or {}).get("status"),
+                                                   "channels": s.get("channels", [])}}
+        for u, r in by_url.items():
+            robots = r.get("status") == "robots-disallowed"
+            if not set(r.get("channels", [])) <= set(CHANNELS) or (not r.get("channels")) != robots:
+                errs.append(f"{sid}: canales no válidos para {u} (vacíos solo si robots.txt prohíbe la ruta)")
+            if ("peru-server" in r.get("channels", [])) != (r.get("status") in ("geoblocked", "suspected-geoblock")):
+                errs.append(f"{sid}: peru-server debe usarse si y solo si {u} está geobloqueada")
+        if set(by_url) != {s.get("url"), *s.get("alt_urls", [])}:
+            errs.append(f"{sid}: by_url no corresponde a url y alt_urls")
+        union = [c for c in CHANNELS if any(c in r.get("channels", []) for r in by_url.values())]
+        if s.get("channels") != union:
+            errs.append(f"{sid}: channels debe ser la unión de los canales de cada URL")
         if ("peru-server" in s.get("channels", [])) != (s.get("geoblocked") is True):
             errs.append(f"{sid}: peru-server debe usarse si y solo si la fuente está geobloqueada")
         if s.get("alt_expect") and (len(s["alt_expect"]) != len(s.get("alt_urls", []))

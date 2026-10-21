@@ -1,13 +1,20 @@
 # Mide desde GitHub Actions (EE. UU., como n8n en AWS) qué fuentes del
-# registro responden, suma lo que bajó el servidor del Perú (rama data-peru,
-# si existe) y regenera registry/sources.json: así se decide qué fuentes van
-# por servidor-peru (solo las geobloqueadas). Manual y una vez por semana.
+# registro responden, suma lo que bajaron el servidor del Perú (rama data-peru)
+# y n8n (rama data-n8n), si existen, y regenera registry/sources.json: así se
+# decide qué fuentes van por servidor-peru (solo las geobloqueadas) y cuáles
+# por n8n. Manual, una vez por semana y, en las ramas claude/**, al cambiar el
+# medidor (como los demás sondeos; el resultado va a bot/registry/<rama>).
 name: probe-sources
 
 on:
   workflow_dispatch:
   schedule:
     - cron: '17 9 * * 1'
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'python/tools/probe_sources.py'
+      - '.github/workflows/probe-sources.yml'
 
 permissions:
   contents: write
@@ -34,11 +41,18 @@ jobs:
             git show FETCH_HEAD:index.json > /tmp/peru-index.json 2>/dev/null || rm -f /tmp/peru-index.json
           fi
           ls -l /tmp/peru-index.json 2>/dev/null || echo "sin índice del Perú todavía"
+      - name: n8n relay index (optional)
+        run: |
+          if git fetch --depth=1 origin data-n8n 2>/dev/null; then
+            git show FETCH_HEAD:index.json > /tmp/n8n-index.json 2>/dev/null || rm -f /tmp/n8n-index.json
+          fi
+          ls -l /tmp/n8n-index.json 2>/dev/null || echo "sin índice de n8n todavía"
       - name: Probe and rebuild the registry
         working-directory: python
         run: |
           args=""
           [ -s /tmp/peru-index.json ] && args="--peru-index /tmp/peru-index.json"
+          [ -s /tmp/n8n-index.json ] && args="$args --n8n-index /tmp/n8n-index.json"
           python -m tools.probe_sources $args
           python -m tools.build_registry
       - name: Commit
