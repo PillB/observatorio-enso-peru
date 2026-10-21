@@ -55,7 +55,13 @@ $OldTaskName = 'ENSO recolector Peru'
 $Repo = 'PillB/observatorio-enso-peru'
 $KitUrl = "https://github.com/$Repo/releases/download/recolector-kit/recolector-peru.zip"
 $KitRoot = Split-Path -Parent $PSScriptRoot
-if (-not $Destino) { $Destino = Join-Path $env:LOCALAPPDATA 'ObservatorioENSO\recolector' }
+if (-not $Destino) {
+    # Corre desde una instalación (sus lanzadores): esa es la carpeta, aunque
+    # se haya instalado con -Destino en otro lugar.
+    $installed = (Test-Path (Join-Path $KitRoot '.venv')) -or (Test-Path (Join-Path $KitRoot '.env'))
+    if ($installed -and (Test-Path (Join-Path $KitRoot 'kit.json'))) { $Destino = $KitRoot }
+    else { $Destino = Join-Path $env:LOCALAPPDATA 'ObservatorioENSO\recolector' }
+}
 $Destino = [IO.Path]::GetFullPath($Destino)
 $VenvPy = Join-Path $Destino '.venv\Scripts\python.exe'
 $VenvPyw = Join-Path $Destino '.venv\Scripts\pythonw.exe'

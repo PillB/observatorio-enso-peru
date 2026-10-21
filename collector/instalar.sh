@@ -34,7 +34,11 @@ KIT_URL="https://github.com/$REPO/releases/download/recolector-kit/recolector-pe
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 KIT_ROOT="$(cd "$HERE/.." && pwd -P)"
 OS="$(uname -s)"
-if [ "$OS" = "Darwin" ]; then
+if [ -f "$KIT_ROOT/kit.json" ] && { [ -d "$KIT_ROOT/.venv" ] || [ -f "$KIT_ROOT/.env" ]; }; then
+  # Corre desde una instalación (sus lanzadores): esa es la carpeta, aunque
+  # se haya instalado con --destino en otro lugar.
+  DEST="$KIT_ROOT"
+elif [ "$OS" = "Darwin" ]; then
   DEST="$HOME/Library/Application Support/ObservatorioENSO/recolector"
 else
   DEST="${XDG_DATA_HOME:-$HOME/.local/share}/observatorio-enso/recolector"

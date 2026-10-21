@@ -325,8 +325,11 @@ def last_slot(now: datetime, at: str = "21:00") -> datetime:
 
 
 def is_due(state: dict, now: datetime, at: str = "21:00") -> bool:
+    """¿Falta la copia de la última hora programada? Una corrida que arrancó
+    hasta ``GRACE`` antes de la hora (un disparo adelantado) cuenta como la de
+    esa hora; si no, los reintentos de la noche la repetirían."""
     done = parse_time(state.get("last_success"))
-    return done is None or done < last_slot(now, at)
+    return done is None or done < last_slot(now, at) - GRACE
 
 
 @contextmanager
@@ -572,9 +575,10 @@ def run(*, scheduled: bool = False, do_push: bool = True, do_dispatch: bool = Tr
         with run_lock(root):
             write_state({**state, "result": "en curso"}, root)
             info = collect_and_push(do_push=do_push, do_dispatch=do_dispatch, state=state, root=root)
-        state.update(result="ok", exit_code=EXIT_OK, detail=info.get("warning", ""),
-                     last_success=now.isoformat(timespec="seconds"), consecutive_failures=0,
+        state.update(result="ok", exit_code=EXIT_OK, detail=info.get("warning", ""), consecutive_failures=0,
                      summary=info.get("summary"), token_expires_at=info.get("token_expires_at"), hint="")
+        if do_push:  # sin subir no hay copia en data-peru: la tarea de la noche no debe darla por hecha
+            state["last_success"] = now.isoformat(timespec="seconds")
         code = EXIT_OK
         log("listo" + (" (copia subida a GitHub)" if do_push else " (sin subir)"))
     except Problem as p:

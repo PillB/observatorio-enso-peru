@@ -161,8 +161,9 @@ jobs:
           set -eux
           command -v crontab || { sudo apt-get update -q && sudo apt-get install -y -q cron; }
           unzip -q dist/recolector-peru.zip -d kit
-          dest="$HOME/.local/share/observatorio-enso/recolector"
-          bash kit/recolector-peru/collector/instalar.sh --no-interactivo --sin-verificar --token "$FAKE_TOKEN"
+          # Carpeta propia, con espacios: los lanzadores instalados deben usarla sin repetir --destino.
+          dest="$RUNNER_TEMP/mi recolector"
+          bash kit/recolector-peru/collector/instalar.sh --no-interactivo --sin-verificar --token "$FAKE_TOKEN" --destino "$dest"
           crontab -l
           test "$(stat -c %a "$dest/.env")" = 600
           bash "$dest/VERIFICAR-Mac.command" --omitir token,escritura,fuentes,ultima-corrida

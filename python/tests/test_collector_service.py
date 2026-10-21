@@ -66,6 +66,15 @@ def remote_index(bare: Path) -> dict:
 
 # --- Horario ---------------------------------------------------------------------
 
+def test_an_early_trigger_counts_for_its_slot():
+    """Un disparo que arranca a las 20:59:58 es la copia de las 21:00: los reintentos no la repiten."""
+    early = {"last_success": lima(2026, 10, 20, 20, 59).isoformat()}
+    assert not svc.is_due(early, lima(2026, 10, 20, 21, 30))
+    assert not svc.is_due(early, lima(2026, 10, 20, 20, 59))
+    assert svc.is_due({"last_success": lima(2026, 10, 20, 20, 50).isoformat()}, lima(2026, 10, 20, 21, 30))
+    assert svc.is_due(early, lima(2026, 10, 21, 21, 0))
+
+
 def test_last_slot_has_grace_and_rolls_back_a_day():
     assert svc.last_slot(lima(2026, 10, 20, 20, 0)) == lima(2026, 10, 19, 21, 0)
     # Una tarea que arranca unos segundos antes de la hora cuenta como la de hoy.
@@ -281,6 +290,15 @@ def test_forced_run_that_finds_another_run_keeps_the_request(home, monkeypatch):
                           encoding="utf-8")
     assert svc.run(scheduled=True, root=home) == svc.EXIT_BUSY
     assert json.loads(p["force"].read_text(encoding="utf-8"))["id"] == "abc"
+
+
+def test_a_run_without_upload_does_not_count_for_tonight(home, peru_network, monkeypatch):
+    """--sin-subir no deja copia en data-peru: la tarea de la noche igual debe recolectar."""
+    monkeypatch.setenv("GITHUB_TOKEN", TOKEN)
+    assert svc.run(do_push=False, root=home) == svc.EXIT_OK
+    s = svc.read_state(home)
+    assert s["result"] == "ok" and "last_success" not in s
+    assert svc.is_due(s, datetime.now(timezone.utc), "00:00")
 
 
 def test_push_failure_is_explained(home, peru_network, remote, monkeypatch):
