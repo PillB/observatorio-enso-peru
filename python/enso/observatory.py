@@ -581,7 +581,20 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
             text = peru.pdf_text(resp.body)
             c = peru.parse_enfen_communique(text, source=_clean_wpdm(item["url"]))
             # Perspectiva (magnitud esperada por región, con su oración) y enlace al informe técnico.
-            c.data["outlook"] = reports.communique_outlook(text)
+            c.data["outlook"] = reports.communique_outlook(text, c.data.get("status"))
+            if not c.data["outlook"] and re.search(r"\b(?:magnitud|categor[ií]a)\b\W+(?:\w+\W+){0,3}?(?:extraordinari|muy\s+fuerte|"
+                                                   r"fuerte|moderad|d[eé]bil)", text, re.I):
+                # El comunicado trae perspectiva con magnitud y no se pudo leer: incidencia y, si hay modelo de
+                # lenguaje configurado, una propuesta para revisión (nunca se publica sola).
+                proposal = reports.llm_extract(getattr(fetcher, "client", None), "enfen-perspectiva", text,
+                                               url=_clean_wpdm(item["url"]), published=c.data.get("issued"))
+                c.data["outlookUnread"] = True
+                if proposal:
+                    c.data["outlookReview"] = proposal
+                log.add("warning", "enfen-comunicados", "parse", "outlook-unread",
+                        f"El comunicado {item['id']} trae una perspectiva con magnitudes que no se pudo leer; la "
+                        "vista El Niño costero no la muestra." + (" La lectura del modelo de lenguaje queda para revisión."
+                                                                  if proposal and proposal.get("ok") else ""))
             c.data["informe_url"] = reports.informe_link(text)
         except FetchError as exc:
             failures.append(f"{item['id']}: {exc}")
@@ -887,6 +900,8 @@ class Builder:
                     "number": latest["id"], "issued": latest.get("issued"), "nextIssue": latest.get("next_issue"),
                     "summary": latest.get("summary"), "documentUrl": latest.get("source") or (listing[0]["url"] if listing else ""),
                     "archive": latest.get("archive"), "stale": stale, "outlook": latest.get("outlook") or [],
+                    "outlookUnread": bool(latest.get("outlookUnread")),
+                    **({"outlookReview": latest["outlookReview"]} if latest.get("outlookReview") else {}),
                 })
                 if (listing and listing[0].get("kind", "oficial") == "oficial"
                         and (listing[0]["year"], listing[0]["number"]) > (latest["year"], latest["number"])):
@@ -909,6 +924,8 @@ class Builder:
     def informe(self, inf: dict) -> dict:
         """Contrasta el informe técnico con el ICEN oficial del IGP y suma el ICEN temporal a la serie ICEN."""
         inf = dict(inf)
+        if any(i.get("code") == "informe-provisional-superseded" for i in inf.get("issues") or []):
+            inf["icenSuperseded"] = True
         icen = self.series.get("icen")
         tmp, last = inf.get("icenProvisional"), inf.get("lastOfficial")
         if icen:
@@ -918,6 +935,7 @@ class Builder:
                              f"El ICEN de {last['period']} del informe técnico ({last['icen']:+.2f}) difiere del archivo "
                              f"del IGP ({igp[last['period']]:+.2f}).")
             if tmp and icen["latest"]["period"] and tmp["period"] <= icen["latest"]["period"]:
+                inf["icenSuperseded"] = tmp["period"]
                 tmp = inf["icenProvisional"] = None  # el IGP ya publicó el oficial de ese mes
             if tmp:
                 icen["latest"]["provisional"] = {
@@ -1016,6 +1034,10 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     if official.get("enfen", {}).get("archive"):
         official["enfen"]["archive"] = archive.carry(aw, official["enfen"]["archive"], prev_bytes,
                                                      source="enfen-comunicados", document=True)
+    inf = (official.get("enfen") or {}).get("informe") or {}
+    if inf.get("archive"):
+        # El PDF del informe se publica la vez que se lee; después se arrastra la copia anterior.
+        inf["archive"] = archive.carry(aw, inf["archive"], prev_bytes, source="enfen-comunicados", document=True)
     if official.get("noaa") is not None:
         official["noaa"]["archive"] = (arch.get("cpc-ensodisc") or {}).get("file")
     if feed is not None:
@@ -1287,7 +1309,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                 a = acquired[src.id]
                 prev_inf = ((prev.get("sources/enfen-comunicados.json") or {}).get("data") or {}).get("informe")
                 try:
-                    a.data["informe"] = reports.acquire_informe(a.data.get("latest"), fetcher, prev_inf, log, today)
+                    a.data["informe"] = reports.acquire_informe(a.data.get("latest"), fetcher, prev_inf, log, today,
+                                                                documents=a.documents)
                 except Exception as exc:  # noqa: BLE001 — el informe nunca detiene la publicación
                     a.data["informe"] = prev_inf
                     log.add("error", "enfen-informe", "parse", "informe-exception",

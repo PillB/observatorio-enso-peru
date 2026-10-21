@@ -159,11 +159,55 @@ def test_informe_link_rejoins_the_wrapped_url():
     assert R.informe_link(t).endswith("diciembre-de-2025/")
 
 
-def test_informe_links_from_portal_listing():
+U18 = "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166"
+
+
+def test_informe_entries_from_portal_listing():
     html = ('<a href="https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/'
             '?wpdmdl=2166&#038;refresh=6ad8">x</a>')
-    assert R.informe_links(html) == {18: "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-"
-                                         "de-octubre-de-2026-2/?wpdmdl=2166"}
+    assert R.informe_entries(html) == [{"url": U18, "year": 2026, "n": 18, "dataTo": "2026-10-13"}]
+
+
+def _a(slug):
+    return f'<a href="https://enfen.imarpe.gob.pe/download/{slug}/">x</a>'
+
+
+LISTING = "".join(_a(x) for x in (
+    "informe-tecnico-enfen-ano-12-n12-al-12-de-junio-de2026", "informe-tecnico-enfen-ano-12-n12-al-24-de-junio-de2026",
+    "informe-tecnico-enfen-ano-11-n06-al-16-de-abril-de-2025", "informe-tecnico-enfen-ano-11-n05-al-14-de-marzo-de-2025",
+    "informe-tecnico-enfen-ano-10-n13-al-10-de-julio-de-2024"))
+
+
+def test_informe_is_picked_by_date_not_by_number():
+    e = R.informe_entries(LISTING)
+    assert len(e) == 5  # dos «n12» del mismo año no se pisan
+    # 2025 va un número adelante: el comunicado 05-2025 (18 de abril) cita el informe N° 06.
+    assert R.pick_informe(e, {"id": "05-2025", "year": 2025, "issued": "2025-04-18"})["n"] == 6
+    assert "24-de-junio" in R.pick_informe(e, {"id": "12-2026", "issued": "2026-06-26"})["url"]
+    # El N° 13 de 2024 nunca es el informe del comunicado 13-2026.
+    assert R.pick_informe(e, {"id": "13-2026", "year": 2026, "issued": "2026-07-10"}) is None
+
+
+HIST = Path(__file__).parent / "fixtures" / "sources" / "history"
+
+
+@pytest.mark.parametrize("name", ["enfen-pdf-imarpe-20250610123158.txt", "enfen-pdf-imarpe-20250610131514.txt",
+                                  "enfen-pdf-imarpe-20250804102527.txt", "enfen-pdf-imarpe-20260214031330.txt",
+                                  "enfen-pdf-imarpe-20261020175050.txt"])
+def test_real_communiques_cite_an_informe_within_the_lag_window(name):
+    # 2024 coincide en número, 2025 va uno adelante (05-2025 → N° 06, 13-2025 → N° 14): la fecha siempre encaja.
+    t = peru.pdf_text((HIST / name).read_bytes())
+    c = peru.parse_enfen_communique(t).data
+    ref = R.informe_ref(R.informe_link(t))
+    assert R.pick_informe([ref], c) == ref
+
+
+def test_dhn_mirror_listing_and_url():
+    html = '<a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/informe-tecnico/16-2026.pdf">x</a>' \
+           '<a href="https://www.dhn.mil.pe/Archivos/oceanografia/enfen/informe-tecnico/20-2025.pdf">y</a>'
+    hit = R.pick_informe(R.dhn_entries(html), {"id": "17-2026", "year": 2026, "issued": "2026-10-02"})
+    assert hit["url"].endswith("/informe-tecnico/16-2026.pdf")
+    assert R.mirrors(U18) == [U18, "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/informe-tecnico/18-2026.pdf"]
 
 
 def test_communique_outlook_with_quote():
@@ -182,6 +226,32 @@ def test_cold_outlook_is_marked_cold():
     assert R.communique_outlook(t)[0]["phase"] == "fria"
 
 
+@pytest.mark.parametrize("text", [
+    # El nombre del sistema de alerta menciona La Niña en la misma oración.
+    "El ENFEN mantiene el estado del “sistema de alerta ante El Niño costero y La Niña costera” en “Alerta de El Niño "
+    "costero”, debido a que en la región Niño 1+2 se espera que El Niño costero continúe con magnitud moderada hasta "
+    "marzo de 2027.",
+    # Una transición posterior a condiciones frías no cambia la fase de la perspectiva.
+    "En la región Niño 1+2 se espera que El Niño costero continúe con magnitud débil hasta enero de 2027, para luego "
+    "dar paso a condiciones neutras o frías.",
+    "Sistema de alerta ante El Niño costero y La Niña costera: Alerta de El Niño Costero " + C18[C18.find("Frente"):],
+])
+def test_warm_outlook_is_not_read_as_la_nina(text):
+    assert R.communique_outlook(text, "Alerta de El Niño Costero")[0]["phase"] == "calida"
+
+
+def test_outlook_phase_falls_back_to_the_alert_state():
+    t = "En la región Niño 1+2 se espera que continúe con magnitud débil hasta febrero de 2023."
+    assert R.communique_outlook(t, "Alerta de La Niña Costera")[0]["phase"] == "fria"
+    assert R.communique_outlook(t, "Alerta de El Niño Costero")[0]["phase"] == "calida"
+
+
+def test_month_range_without_de_before_the_first_year():
+    assert len(R._month_range("entre diciembre 2025 y agosto 2026")) == 9
+    assert len(R._month_range("entre diciembre del 2025 y agosto del 2026")) == 9
+    assert len(R._month_range("entre abril y diciembre 2025")) == 9
+
+
 # --- Adquisición: una vez por comunicado, último valor bueno si falla ---------------------------------------
 
 
@@ -194,6 +264,8 @@ class _Log:
 
 
 class _Fetcher:
+    offline = True  # sin Internet Archive
+
     def __init__(self, responses: dict):
         self.responses, self.asked = responses, []
         self.client = None
@@ -208,38 +280,111 @@ class _Fetcher:
         raise FetchError("sin respuesta", [])
 
 
-LATEST = {"number": 18, "id": "18-2026", "informe_url": "https://enfen.imarpe.gob.pe/download/informe-x/?wpdmdl=1"}
+LATEST = {"number": 18, "id": "18-2026", "year": 2026, "issued": "2026-10-16", "informe_url": U18}
+DHN18 = "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/informe-tecnico/18-2026.pdf"
+PREV = {"number": 17, "communique": "17-2026", "url": "u17", "icenProvisional": {"period": "2026-08", "icen": 3.97}}
 
 
 def test_acquire_reuses_the_informe_already_read():
-    prev = {"number": 18, "icenProvisional": {"period": "2026-09", "icen": 4.15}}
+    prev = {"number": 18, "communique": "18-2026", "icenProvisional": {"period": "2026-09", "icen": 4.15}}
     f = _Fetcher({})
     assert R.acquire_informe(LATEST, f, prev, _Log(), date(2026, 10, 21)) is prev and f.asked == []
 
 
+def test_acquire_reads_the_new_informe_even_if_numbers_are_offset(monkeypatch):
+    # 2025: el comunicado 06 trae el informe N° 07; el anterior (N° 06) iba con el comunicado 05.
+    pages, _ = _pages(N18)
+    monkeypatch.setattr(R, "pdf_pages", lambda b: pages)
+    prev = {"number": 18, "communique": "17-2026", "url": "u17", "icenProvisional": {"period": "2026-08", "icen": 3.97}}
+    f = _Fetcher({U18: b"%PDF-1.7 x"})
+    res = R.acquire_informe(LATEST, f, prev, _Log(), date(2026, 10, 21))
+    assert f.asked == [U18] and res["communique"] == "18-2026" and res["dataTo"] == "2026-10-13"
+
+
 def test_acquire_keeps_last_good_value_when_download_fails():
-    prev = {"number": 17, "icenProvisional": {"period": "2026-08", "icen": 3.97}}
     log = _Log()
-    res = R.acquire_informe(LATEST, _Fetcher({}), prev, log, date(2026, 10, 21))
+    f = _Fetcher({})
+    res = R.acquire_informe(LATEST, f, PREV, log, date(2026, 10, 21))
     assert res["carried"] and res["icenProvisional"]["icen"] == 3.97 and res["number"] == 17
-    assert any(c == "informe-unread" and s == "error" for s, c, _ in log.events)
+    assert f.asked == [U18, DHN18]  # portal y réplica de la DHN
+    # Un documento auxiliar que no responde no marca la publicación como degradada.
+    assert [(s, c) for s, c, _ in log.events] == [("warning", "informe-unread")]
+
+
+def test_acquire_uses_the_dhn_mirror(monkeypatch):
+    pages, _ = _pages(N18)
+    monkeypatch.setattr(R, "pdf_pages", lambda b: pages)
+    docs = []
+    res = R.acquire_informe(LATEST, _Fetcher({DHN18: b"%PDF-1.7 dhn"}), None, _Log(), date(2026, 10, 21), documents=docs)
+    assert res["icenProvisional"]["icen"] == 4.15 and docs == [b"%PDF-1.7 dhn"]
+    assert res["archive"].startswith("archive/sources/enfen-comunicados/") and res["archive"].endswith(".pdf")
+
+
+def test_acquire_finds_the_informe_in_the_listing_by_date(monkeypatch):
+    pages, _ = _pages(N18)
+    monkeypatch.setattr(R, "pdf_pages", lambda b: pages)
+    listing = _a("informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2") + _a(
+        "informe-tecnico-enfen-ano-11-n18-al-10-de-octubre-de-2025")
+    url = "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/"
+    f = _Fetcher({R.INFORMES_PAGE: listing.encode(), url: b"%PDF-1.7 x"})
+    res = R.acquire_informe({**LATEST, "informe_url": None}, f, None, _Log(), date(2026, 10, 21))
+    assert res["url"] == url and res["number"] == 18
+
+
+def test_acquire_rejects_the_informe_of_another_communique(monkeypatch):
+    pages, _ = _pages(N17)  # datos al 25 de setiembre: no es el informe de un comunicado del 30 de octubre
+    monkeypatch.setattr(R, "pdf_pages", lambda b: pages)
+    log = _Log()
+    late = {**LATEST, "id": "18-2026", "issued": "2026-10-16"}
+    res = R.acquire_informe(late, _Fetcher({U18: b"%PDF-1.7 x"}), PREV, log, date(2026, 10, 31))
+    assert res["carried"] and res["number"] == 17
+    assert any(c == "informe-other-communique" for _, c, _ in log.events)
 
 
 def test_acquire_keeps_last_good_value_when_format_changes(monkeypatch):
-    prev = {"number": 17, "icenProvisional": {"period": "2026-08", "icen": 3.97}}
     monkeypatch.setattr(R, "pdf_pages", lambda b: ["Documento sin tablas"])
     log = _Log()
-    res = R.acquire_informe(LATEST, _Fetcher({LATEST["informe_url"]: b"%PDF-1.7 x"}), prev, log, date(2026, 10, 21))
+    res = R.acquire_informe(LATEST, _Fetcher({U18: b"%PDF-1.7 x"}), PREV, log, date(2026, 10, 21))
     assert res["carried"] and "review" not in res  # sin servicio de modelo configurado no hay propuesta
-    assert any("formato" in m for _, _, m in log.events)
+    assert any("formato" in m and "Se conserva" in m for _, _, m in log.events)
+
+
+def test_llm_proposal_survives_without_a_previous_informe(monkeypatch):
+    monkeypatch.setattr(R, "pdf_pages", lambda b: ["Documento sin tablas"])
+    calls = []
+    monkeypatch.setattr(R, "llm_extract", lambda *a, **k: calls.append(1) or {"ok": True, "data": {"number": 18}})
+    log = _Log()
+    res = R.acquire_informe(LATEST, _Fetcher({U18: b"%PDF-1.7 x"}), None, log, date(2026, 10, 21))
+    assert res["carried"] and res["review"]["proposal"]["data"] == {"number": 18} and not res.get("probabilities")
+    assert any("queda para revisión" in m and "Se conserva" not in m for _, _, m in log.events)
+    # Al día siguiente, el mismo PDF no se le vuelve a pasar al modelo.
+    again = R.acquire_informe(LATEST, _Fetcher({U18: b"%PDF-1.7 x"}), res, _Log(), date(2026, 10, 22))
+    assert len(calls) == 1 and again["review"] == res["review"]
 
 
 def test_acquire_reads_a_new_informe(monkeypatch):
     pages, _ = _pages(N18)
     monkeypatch.setattr(R, "pdf_pages", lambda b: pages)
-    res = R.acquire_informe(LATEST, _Fetcher({LATEST["informe_url"]: b"%PDF-1.7 x"}), None, _Log(), date(2026, 10, 21))
+    res = R.acquire_informe(LATEST, _Fetcher({U18: b"%PDF-1.7 x"}), None, _Log(), date(2026, 10, 21))
     assert res["number"] == 18 and res["icenProvisional"]["icen"] == 4.15 and res["communique"] == "18-2026"
-    assert res["url"] == LATEST["informe_url"] and len(res["probabilities"]) == 2
+    assert res["url"] == U18 and len(res["probabilities"]) == 2
+
+
+def test_informe_periods_must_fit_its_date():
+    pages, url = _pages(N18)
+    ext = R.parse_informe([p.replace("de 2026 y", "de 2016 y").replace("de 2027", "de 2017") for p in pages], url)
+    R.validate_informe(ext, today=date(2026, 10, 21))
+    assert any(i.code == "informe-period" for i in ext.issues) and not R.informe_summary(ext)["probabilities"]
+
+
+def test_seasonal_label_variants_do_not_block_other_values():
+    pages, url = _pages("informe-tecnico-enfen-ano-11-n14-al-16-de-diciembre-de-2025.pages.json.gz")
+    for variant in ("diciembre 2025 – marzo 2026", "diciembre de 2025 a marzo de 2026", "verano 2026"):
+        alt = [p.replace("diciembre 2025 - marzo 2026", variant) for p in pages]
+        ext = R.validate_informe(R.parse_informe(alt, url), today=date(2025, 12, 20))
+        s = R.informe_summary(ext)
+        assert s["icenProvisional"] and len(s["probabilities"]) == 2, variant
+        assert not any(i.code.startswith("informe-schema") for i in ext.issues), variant
 
 
 # --- Respaldo con modelo de lenguaje: validado y solo como propuesta -----------------------------------------
@@ -265,6 +410,14 @@ def test_llm_output_is_schema_checked(monkeypatch):
     assert sent["schema"] == R.SCHEMAS["enfen-informe"] and sent["kind"] == "enfen-informe"
     assert res["ok"] and res["model"] == "modelo-x" and any("icen" in e for e in res["schemaErrors"])
     assert res["evidence"] == {"indices.official.0.icen": "ICEN 12,0"}
+
+
+@pytest.mark.parametrize("reply", [[{"data": {}, "model": "m"}], "ok", 5])
+def test_llm_reply_that_is_not_an_object_never_raises(monkeypatch, reply):
+    monkeypatch.setenv(R.LLM_URL_ENV, "https://n8n.example/webhook/extract")
+    client = httpx.Client(transport=httpx.MockTransport(lambda req: httpx.Response(200, json=reply)))
+    res = R.llm_extract(client, "enfen-informe", "texto", url="u")
+    assert res["ok"] is False and res["model"] is None
 
 
 def test_llm_failure_never_raises(monkeypatch):

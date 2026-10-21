@@ -16,8 +16,8 @@ Cada valor sale con su procedencia: la URL del documento, su fecha, la página y
 leyó (``evidence``). Antes de publicarse pasa por un esquema (``SCHEMAS``, un subconjunto de JSON Schema que
 también sirve de formato de salida para un modelo de lenguaje) y por reglas de plausibilidad
 (``validate_informe``): rangos físicos, meses consecutivos, columnas de probabilidad que suman 100, y
-coherencia con el ICEN oficial del IGP. Lo que no las pasa no se publica; se conserva el último valor
-bueno y queda una incidencia.
+coherencia con el ICEN oficial del IGP. Lo que no las pasa no se publica y queda una incidencia; si no se
+pudo leer nada, se conserva el informe anterior marcado como arrastrado.
 
 La lectura es determinista (expresiones regulares sobre el texto del PDF). Un modelo de lenguaje solo
 entra cuando la lectura determinista falla y su resultado no se publica sin revisión (``llm_extract``).
@@ -64,7 +64,7 @@ _PROB = {"type": "object", "required": ["region", "months", "categories"], "prop
     "summer": {"type": ["object", "null"], "properties": {c: _PCT for c in CATEGORIES}},
     "evidence": _EVIDENCE}}
 _SEASON = {"type": "object", "required": ["region", "season", "categories"], "properties": {
-    "region": {"type": "string", "enum": REGIONS}, "season": {"type": "string", "minLength": 3},
+    "region": {"type": "string", "enum": REGIONS}, "season": {"type": ["string", "null"], "minLength": 3},
     "categories": {"type": "object", "properties": {c: _PCT for c in CATEGORIES}}, "evidence": _EVIDENCE}}
 SCHEMAS: dict[str, dict] = {
     "enfen-informe": {"type": "object", "required": ["number", "indices", "probabilities"], "properties": {
@@ -197,15 +197,72 @@ def informe_link(text: str) -> Optional[str]:
 
 
 INFORMES_PAGE = "https://enfen.imarpe.gob.pe/informes-tecnicos/"
-_INFORME_HREF = re.compile(r"href=[\"'](https?://[^\"']*/download/informe-tecnico-enfen-ano-\d+-n-?(\d{1,2})-[^\"']*)[\"']", re.I)
+#: Réplica de la Dirección de Hidrografía y Navegación: responde fuera del Perú, como la de los comunicados.
+DHN_INFORMES_PAGE = "https://www.dhn.mil.pe/portal/informe-tecnico-enfen"
+DHN_INFORME = "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/informe-tecnico/{n:02d}-{year}.pdf"
+_INFORME_HREF = re.compile(r"href=[\"'](https?://[^\"']*/download/informe-tecnico-enfen-ano-(\d+)-n-?(\d{1,2})-[^\"']*)[\"']",
+                           re.I)
+_SLUG = re.compile(r"informe-tecnico-enfen-ano-(\d+)-n-?(\d{1,2})(?:-al-(\d{1,2})-de-([a-z]+)-de-?(\d{4}))?", re.I)
+#: Días entre el corte de datos del informe y la emisión de su comunicado: 0 a 5 en 2024–2026; los comunicados
+#: salen cada dos semanas, así que el informe del comunicado anterior queda fuera.
+INFORME_LAG_DAYS = 10
+_DHN_HREF = re.compile(r"/informe-tecnico/(\d{1,2})-(\d{4})\.pdf", re.I)
 
 
-def informe_links(html_text: str) -> dict[int, str]:
-    """Enlaces de descarga del listado de informes técnicos del portal, por número de informe."""
-    out: dict[int, str] = {}
+def informe_ref(url: str) -> Optional[dict]:
+    """Año, número y fecha de corte de un informe a partir de su URL de descarga en el portal del ENFEN.
+
+    El «AÑO» del informe cuenta desde 2014 (AÑO 12 = 2026)."""
+    m = _SLUG.search(url or "")
+    if not m:
+        return None
+    ref = {"url": url, "year": 2014 + int(m.group(1)), "n": int(m.group(2)), "dataTo": None}
+    if m.group(3) and _plain(m.group(4)) in MONTHS_ES:
+        try:
+            ref["dataTo"] = date(int(m.group(5)), MONTHS_ES[_plain(m.group(4))], int(m.group(3))).isoformat()
+        except ValueError:
+            pass
+    return ref
+
+
+def informe_entries(html_text: str) -> list[dict]:
+    """Informes del listado del portal del ENFEN (``informe_ref`` de cada enlace), sin repetir URL."""
+    out, seen = [], set()
     for m in _INFORME_HREF.finditer(html_text):
         url = re.sub(r"[&?](refresh|ind)=[^&]*", "", m.group(1).replace("&#038;", "&").replace("&amp;", "&"))
-        out.setdefault(int(m.group(2)), url)
+        if url not in seen and (ref := informe_ref(url)):
+            seen.add(url)
+            out.append(ref)
+    return out
+
+
+def dhn_entries(html_text: str) -> list[dict]:
+    """Informes de la réplica de la DHN (``NN-AAAA.pdf``), sin fecha de corte."""
+    found = {(int(y), int(n)) for n, y in _DHN_HREF.findall(html_text)}
+    return [{"url": DHN_INFORME.format(n=n, year=y), "year": y, "n": n, "dataTo": None} for y, n in sorted(found)]
+
+
+def pick_informe(entries: list[dict], communique: dict) -> Optional[dict]:
+    """El informe técnico de un comunicado. El número no sirve (2025: comunicado 05 → informe N° 06; 2022 va
+    uno atrás), así que se elige por fecha: el de corte más reciente hasta tres días después de la emisión y
+    no más de ``INFORME_LAG_DAYS`` antes. Sin fechas (réplica de la DHN), el de número más alto del año del comunicado; la
+    validación descarta después uno de otro periodo."""
+    issued = communique.get("issued")
+    if issued and any(e.get("dataTo") for e in entries):
+        d0 = date.fromisoformat(issued)
+        fit = [e for e in entries if e.get("dataTo") and -3 <= (d0 - date.fromisoformat(e["dataTo"])).days <= INFORME_LAG_DAYS]
+        return max(fit, key=lambda e: e["dataTo"]) if fit else None
+    year = communique.get("year") or (int(issued[:4]) if issued else None)
+    same = [e for e in entries if e["year"] == year]
+    return max(same, key=lambda e: e["n"]) if same else None
+
+
+def mirrors(url: str) -> list[str]:
+    """URL del informe y su copia en la réplica de la DHN (mismo número y año)."""
+    ref = informe_ref(url)
+    out = [url]
+    if ref and "dhn.mil.pe" not in url:
+        out.append(DHN_INFORME.format(n=ref["n"], year=ref["year"]))
     return out
 
 
@@ -262,7 +319,7 @@ _CAT_RE = re.compile(r"\b(Fr[ií]a|C[aá]lida)\s+(muy\s+fuerte|extraordinari[oa]
 _SEASON_CAT_RE = re.compile(r"\b(La\s+Ni[ñn]a|El\s+Ni[ñn]o)\s+(muy\s+fuerte|extraordinari[oa]|fuerte|moderad[oa]|d[eé]bil)\b|\bNeutr[oa]\b",
                             re.I)
 _MONTHS_RE = "|".join(sorted(MONTHS_ES, key=len, reverse=True))
-_RANGE_RE = re.compile(rf"entre\s+({_MONTHS_RE})(?:\s+(?:de|del)\s+(\d{{4}}))?\s+y\s+({_MONTHS_RE})(?:\s+(?:de|del))?\s+(\d{{4}})",
+_RANGE_RE = re.compile(rf"entre\s+({_MONTHS_RE})(?:(?:\s+(?:de|del))?\s+(\d{{4}}))?\s+(?:y|a|hasta)\s+({_MONTHS_RE})(?:\s+(?:de|del))?\s+(\d{{4}})",
                        re.I)
 
 
@@ -352,14 +409,16 @@ def parse_seasonal_tables(doc: Paged) -> list[dict]:
         body = _table_body(doc, m.end())
         title = body[:400]
         region = _region(title.split("Magnitud")[0])
-        season = re.search(rf"({_MONTHS_RE})\s+(\d{{4}})\s*-\s*({_MONTHS_RE})\s+(\d{{4}})", _flat(body), re.I)
+        season = (re.search(rf"({_MONTHS_RE})(?:\s+del?)?\s+(\d{{4}})\s*(?:[-–—]|\s(?:a|al|hasta)\s)\s*({_MONTHS_RE})"
+                            rf"(?:\s+del?)?\s+(\d{{4}})", _flat(body), re.I)
+                  or re.search(r"verano\s+(?:del?\s+)?\d{4}(?:\s*[-–—/]\s*\d{2,4})?", _flat(title), re.I))
         cats = {}
         for c in _SEASON_CAT_RE.finditer(body):
             n = re.match(r"\s*(\d{1,3})\b", body[c.end():])
             if n:
                 cats[_season_code(c)] = int(n.group(1))
         if region and cats:
-            out.append({"region": region, "season": _flat(season.group(0)) if season else "",
+            out.append({"region": region, "season": _flat(season.group(0)) if season else None,
                         "categories": cats, "evidence": {"quote": _flat(doc.text[m.start(): m.end() + 200])[:240],
                                                          "page": doc.page(m.start())}})
     return out
@@ -407,7 +466,14 @@ def parse_informe(pages: list[str], url: str = "") -> Extraction:
         issues.append(Issue("warning", "informe-probability-row", p))
     data["seasonal"] = parse_seasonal_tables(doc)
     for e in check(SCHEMAS["enfen-informe"], data):
-        issues.append(Issue("error", "informe-schema", e))
+        # Un error de esquema bloquea solo la parte donde está: una tabla estacional mal leída no retiene el
+        # ICEN temporal ni las probabilidades mensuales.
+        part = re.match(r"\$\.(probabilities|seasonal)\[(\d+)\]", e)
+        if part:
+            data[part.group(1)][int(part.group(2))]["invalid"] = True
+            issues.append(Issue("error", f"informe-schema-{part.group(1)}", e))
+        else:
+            issues.append(Issue("error", "informe-schema", e))
     return Extraction("enfen-informe", url, data, issues=issues)
 
 
@@ -461,10 +527,31 @@ def validate_informe(ext: Extraction, *, icen_official: Optional[list[dict]] = N
         age = (today - date.fromisoformat(d["dataTo"])).days
         if age > 45:
             add(Issue("warning", "informe-old", f"el informe técnico más reciente es del {d['dataTo']} ({age} días)"))
-    if communique and communique.get("number") and d.get("number") and communique["number"] != d["number"]:
-        add(Issue("warning", "informe-number", f"el informe N° {d['number']} no corresponde al comunicado "
-                  f"N° {communique['number']}"))
+    if d.get("dataTo"):
+        ref = _mindex(d["dataTo"][:7])
+        if tmp and not 0 <= ref - _mindex(tmp[0]["period"]) <= 2:
+            add(Issue("error", "informe-period", f"el ICEN temporal es de {tmp[0]['period']} y el informe tiene "
+                      f"datos al {d['dataTo']}: el periodo no encaja"))
+        for t in d.get("probabilities") or []:
+            if not -1 <= _mindex(t["months"][0]) - ref <= 3:
+                add(Issue("error", "informe-period", f"las probabilidades de {t['region']} empiezan en "
+                          f"{t['months'][0]} y el informe tiene datos al {d['dataTo']}: el periodo no encaja"))
+                t["invalid"] = True
+        # El número del informe no sigue al del comunicado (2025: comunicado 05 → informe N° 06): se compara la
+        # fecha. Un informe técnico sale con su comunicado, con datos de los días anteriores.
+        issued = (communique or {}).get("issued")
+        if issued:
+            lag = (date.fromisoformat(issued) - date.fromisoformat(d["dataTo"])).days
+            if not -3 <= lag <= INFORME_LAG_DAYS:
+                add(Issue("error", "informe-other-communique",
+                          f"el informe N° {d.get('number')} tiene datos al {d['dataTo']} y el comunicado "
+                          f"{communique.get('id')} es del {issued}: no es su informe técnico"))
     return ext
+
+
+def _mindex(period: str) -> int:
+    y, m = map(int, period[:7].split("-"))
+    return y * 12 + m
 
 
 # ---------------------------------------------------------------------------
@@ -481,7 +568,23 @@ def _mag(s: str) -> str:
     return {"extraordinario": "extraordinaria", "moderado": "moderada", "muy fuerte": "muy_fuerte"}.get(m, m)
 
 
-def communique_outlook(text: str) -> list[dict]:
+def _phase(clause: str, status: Optional[str]) -> str:
+    """Fase de la perspectiva según el sujeto de la oración (entre la región y «magnitud»), no según cualquier
+    mención de La Niña en el texto: el nombre del sistema de alerta («… El Niño costero y La Niña costera») y
+    las transiciones («para luego … condiciones frías») no cuentan. Sin sujeto, decide el estado de alerta."""
+    c = _plain(clause)
+    cold = re.search(r"la nina|\bfri[ao]s?\b|enfriamiento|anomalias negativas", c)
+    warm = re.search(r"el nino|\bcalid[ao]s?\b|calentamiento|anomalias positivas", c)
+    if cold and not warm:
+        return "fria"
+    if warm and not cold:
+        return "calida"
+    if cold and warm:
+        return "fria" if cold.start() > warm.start() else "calida"  # el sujeto más cercano a «magnitud»
+    return "fria" if "la nina" in _plain(status or "") else "calida"
+
+
+def communique_outlook(text: str, status: Optional[str] = None) -> list[dict]:
     """Magnitud esperada por región y hasta cuándo, con la oración de donde sale.
 
     «Frente a la costa peruana (región Niño 1+2) es más probable que calentamiento del mar (El Niño costero) se
@@ -499,8 +602,8 @@ def communique_outlook(text: str) -> list[dict]:
             until = f"{int(um.group(2)):04d}-{MONTHS_ES[_plain(um.group(1))]:02d}"
         then = re.search(rf"(?:disminuir|reducir|bajar)\w*\s+a\s+{_MAG_RE}", rest, re.I)
         start = flat.rfind(". ", 0, m.start()) + 2 if flat.rfind(". ", 0, m.start()) >= 0 else m.start()
-        sentence = flat[(flat.rfind(". ", 0, m.start()) + 2) if flat.rfind(". ", 0, m.start()) >= 0 else 0: m.end()]
-        phase = "fria" if re.search(r"\bfr[ií]a|La\s+Ni[ñn]a", sentence, re.I) else "calida"
+        clause = flat[m.start(): m.start(2)]
+        phase = _phase(clause, status)
         out[region] = {"region": region, "phase": phase, "magnitude": _mag(m.group(2)), "until": until,
                        "then": _mag(then.group(1)) if then else None,
                        # Sin las llamadas de nota pegadas a las palabras («extraordinaria2»).
@@ -539,9 +642,10 @@ def llm_extract(client, kind: str, text: str, *, url: str, published: Optional[s
         reply = r.json()
     except Exception as exc:  # noqa: BLE001 — el respaldo nunca detiene la corrida
         return {"ok": False, "error": f"{type(exc).__name__}: {exc}"[:300]}
-    data = reply.get("data") if isinstance(reply, dict) else None
-    return {"ok": data is not None, "data": data, "model": (reply or {}).get("model"),
-            "evidence": (reply or {}).get("evidence") if isinstance((reply or {}).get("evidence"), dict) else None,
+    reply = reply if isinstance(reply, dict) else {}
+    data = reply.get("data")
+    return {"ok": data is not None, "data": data, "model": reply.get("model"),
+            "evidence": reply.get("evidence") if isinstance(reply.get("evidence"), dict) else None,
             "schemaErrors": check(SCHEMAS[kind], data) if data is not None else ["sin «data»"]}
 
 
@@ -561,14 +665,15 @@ def informe_summary(ext: Extraction) -> dict:
     ind = d.get("indices") or {}
     blocked = {i.code for i in ext.issues if i.severity == "error"}
     tmp = None
-    if ind.get("provisional") and not blocked & {"informe-icen-jump", "informe-index-months", "informe-schema"}:
+    if ind.get("provisional") and not blocked & {"informe-icen-jump", "informe-index-months", "informe-schema",
+                                                  "informe-period", "informe-other-communique"}:
         if not any(i.code == "informe-provisional-superseded" for i in ext.issues):
             tmp = ind["provisional"][0]
     probs = [t for t in d.get("probabilities") or [] if not t.get("invalid")]
     return {
         "number": d.get("number"), "dataTo": d.get("dataTo"), "url": ext.url, "method": ext.method,
         "icenProvisional": tmp, "lastOfficial": (ind.get("official") or [None])[-1],
-        "probabilities": probs if "informe-schema" not in blocked else [],
+        "probabilities": probs if not blocked & {"informe-schema", "informe-other-communique"} else [],
         "seasonal": [s for s in d.get("seasonal") or [] if not s.get("invalid")],
         "issues": [{"severity": i.severity, "code": i.code, "message": i.message} for i in ext.issues],
     }
@@ -578,69 +683,103 @@ def informe_summary(ext: Extraction) -> dict:
 # Adquisición dentro de la corrida diaria
 # ---------------------------------------------------------------------------
 def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[dict], log, today: date,
-                    icen_points: Optional[list[dict]] = None) -> Optional[dict]:
+                    icen_points: Optional[list[dict]] = None, documents: Optional[list] = None) -> Optional[dict]:
     """Informe técnico del comunicado vigente: se baja una vez por comunicado (pesa 10–20 MB) y se lee.
 
-    Devuelve el resumen publicable (``informe_summary``) con ``retrievedAt`` y ``channel``. Si no se puede
-    bajar o leer, o lo leído no pasa las reglas, se conserva el resumen anterior marcado ``carried`` y queda la
-    incidencia; nunca se publica un valor que no pasó la validación."""
+    Rutas, en orden: el portal del ENFEN (no responde desde GitHub Actions ni desde n8n), la réplica de la DHN,
+    las copias de los recolectores (si alguno lo bajó) y el Internet Archive. Devuelve el resumen publicable
+    (``informe_summary``) con ``retrievedAt``, ``channel`` y ``archive`` (la copia del PDF, que se agrega a
+    ``documents``). Si no se puede bajar o leer, o nada de lo leído pasa las reglas, se conserva el resumen
+    anterior marcado ``carried`` y queda la incidencia. Si solo falla una parte (una región, el ICEN
+    temporal), esa parte no se publica y queda su incidencia. Nunca se publica un valor que no pasó la
+    validación."""
     from datetime import datetime, timezone
 
-    from .fetch import FetchError
+    from . import archive
+    from .fetch import FetchError, archive_prefix
 
     if not latest:
         return previous_informe
-    number = latest.get("number")
-    if previous_informe and previous_informe.get("number") == number and not previous_informe.get("carried"):
+    cid = latest.get("id")
+    if previous_informe and previous_informe.get("communique") == cid and not previous_informe.get("carried"):
         return previous_informe  # ya leído en una corrida anterior
 
-    def keep(reason: str, severity: str = "error", stage: str = "parse") -> Optional[dict]:
-        log.add(severity, "enfen-informe", stage, "informe-unread", reason[:1500])
-        if previous_informe:
-            return {**previous_informe, "carried": True,
-                    "carriedReason": f"No se pudo leer el informe del comunicado {latest.get('id')}."}
-        return None
+    def keep(reason: str, severity: str = "error", stage: str = "parse", review: Optional[dict] = None) -> Optional[dict]:
+        have = bool(previous_informe and (previous_informe.get("probabilities") or previous_informe.get("icenProvisional")
+                                          or previous_informe.get("lastOfficial")))
+        note = " Se conserva el último informe leído." if have else ""
+        if review:
+            note += (" La lectura con el modelo de lenguaje queda para revisión." if review["proposal"].get("ok")
+                     else " El modelo de lenguaje tampoco dio una lectura válida.")
+        log.add(severity, "enfen-informe", stage, "informe-unread", (reason + note)[:1500])
+        base = {k: v for k, v in (previous_informe or {}).items() if k not in ("review", "carriedReason")}
+        if not base and not review:
+            return None
+        return {**base, "carried": True, **({} if base else {"communique": None}),
+                "carriedReason": f"No se pudo leer el informe del comunicado {cid}.", **({"review": review} if review else {})}
 
     url = latest.get("informe_url")
     if not url:
         try:
-            r = fetcher.get([INFORMES_PAGE], archive=False, accept=("html",))
-            url = informe_links(r.text).get(number)
-        except FetchError as exc:
-            return keep(f"No se pudo bajar el listado de informes técnicos: {exc}", stage="fetch")
-        if not url:
-            return keep(f"El comunicado {latest.get('id')} no enlaza su informe técnico y el listado aún no lo trae.",
-                        "warning", "fetch")
+            r = fetcher.get([INFORMES_PAGE], archive=True, accept=("html",))
+            hit = pick_informe(informe_entries(r.text), latest)
+        except FetchError:
+            hit = None
+        if hit is None:
+            try:
+                r = fetcher.get([DHN_INFORMES_PAGE], archive=False, accept=("html",))
+                hit = pick_informe(dhn_entries(r.text), latest)
+            except FetchError:
+                hit = None
+        if hit is None:
+            return keep(f"El comunicado {cid} no enlaza su informe técnico y los listados del portal y de la DHN "
+                        "no lo traen (o no respondieron).", "warning", "fetch")
+        url = hit["url"]
+    if previous_informe and previous_informe.get("url") == url and not previous_informe.get("carried"):
+        return {**previous_informe, "communique": cid}  # el comunicado nuevo cita el mismo informe
     try:
-        r = fetcher.get([url], archive=False, accept=("pdf", "octet-stream", "html"))
+        try:
+            r = fetcher.get(mirrors(url), archive=True, accept=("pdf", "octet-stream", "html"))
+        except FetchError as exc:
+            # El Internet Archive guarda la descarga con el parámetro wpdmdl, que no se conoce de antemano.
+            r = archive_prefix(fetcher, url.split("?")[0]) if "/download/" in url else None
+            if r is None:
+                raise exc
         if r.body[:5] != b"%PDF-":
             m = re.search(r"href=[\"']([^\"']*wpdmdl=\d+[^\"']*)[\"']", r.text)
             if not m:
-                return keep(f"La descarga del informe técnico no es un PDF ({url}).")
-            r = fetcher.get([m.group(1).replace("&#038;", "&").replace("&amp;", "&")], archive=False,
+                return keep(f"La descarga del informe técnico no es un PDF ({url}).", "warning", "fetch")
+            r = fetcher.get([m.group(1).replace("&#038;", "&").replace("&amp;", "&")], archive=True,
                             accept=("pdf", "octet-stream"))
             if r.body[:5] != b"%PDF-":
-                return keep(f"La descarga del informe técnico no es un PDF ({url}).")
+                return keep(f"La descarga del informe técnico no es un PDF ({url}).", "warning", "fetch")
         pages = pdf_pages(r.body)
     except FetchError as exc:
-        return keep(f"No se pudo bajar el informe técnico {url}: {exc}", stage="fetch")
+        return keep(f"No se pudo bajar el informe técnico {url} (portal, réplica de la DHN, copias y archivo): {exc}",
+                    "warning", "fetch")
     except Exception as exc:  # noqa: BLE001 — un PDF dañado no detiene la corrida
         return keep(f"No se pudo leer el PDF del informe técnico {url}: {type(exc).__name__}: {exc}")
+    if documents is not None:
+        documents.append(r.body)
     try:
         ext = parse_informe(pages, url)
     except FormatChanged as exc:
-        proposal = llm_extract(getattr(fetcher, "client", None), "enfen-informe", "\n\f".join(pages), url=url)
-        res = keep(f"Cambió el formato del informe técnico ({exc}). Se conserva el último dato leído"
-                   + ("; la lectura con el modelo de lenguaje queda para revisión." if proposal else "."))
-        if res is not None and proposal:
-            res["review"] = {"proposal": proposal, "reason": str(exc)[:300]}
-        return res
+        prior = (previous_informe or {}).get("review") or {}
+        if prior.get("url") == url:
+            review = prior  # el mismo PDF ya se le pasó al modelo: no se repite la consulta
+        else:
+            proposal = llm_extract(getattr(fetcher, "client", None), "enfen-informe", "\n\f".join(pages), url=url)
+            review = {"proposal": proposal, "reason": str(exc)[:300], "url": url} if proposal else None
+        return keep(f"Cambió el formato del informe técnico ({exc}).", review=review)
     validate_informe(ext, icen_official=icen_points, today=today, communique=latest)
     for i in ext.issues:
         log.add(i.severity, "enfen-informe", "validate", i.code, i.message)
     summary = informe_summary(ext)
     summary.update({"retrievedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"), "channel": r.channel,
-                    "communique": latest.get("id"), "pages": len(pages)})
+                    "communique": cid, "pages": len(pages),
+                    "archive": archive.source_path("enfen-comunicados", r.body)})
+    if any(i.code == "informe-other-communique" for i in ext.issues):
+        return keep(f"El informe N° {ext.data.get('number')} no es el del comunicado {cid}.", "warning", "validate")
     if not summary["icenProvisional"] and not summary["probabilities"] and previous_informe:
         return keep("El informe técnico se leyó pero ninguno de sus valores pasó la validación.")
     return summary

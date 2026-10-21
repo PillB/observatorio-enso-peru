@@ -190,16 +190,21 @@ function freshnessPanel(view) {
   const v = f?.views?.[view];
   if (!v || !v.items.length) return '';
   const rows = v.items.map((id) => f.items[id]).filter(Boolean);
-  const late = rows.filter((r) => r.state === 'atrasado' || r.state === 'vencido');
+  const counted = rows.filter((r) => !r.optional);
+  const late = counted.filter((r) => r.state === 'atrasado' || r.state === 'vencido');
+  const missing = counted.filter((r) => r.state === 'sin-dato');
   const [lv, txt] = FRESH[v.worst] || FRESH['sin-dato'];
-  const head = late.length
-    ? `${late.length} de ${rows.length} datos de esta vista no están al día: ${late.map((r) => r.label).join(', ')}.`
-    : `Los ${rows.length} datos de esta vista son los más recientes que publicaron sus fuentes.`;
+  const parts = [];
+  if (late.length) parts.push(`${late.length} de ${counted.length} datos de esta vista no están al día: ${late.map((r) => r.label).join(', ')}.`);
+  if (missing.length) parts.push(`Sin dato en esta publicación: ${missing.map((r) => r.label).join(', ')}.`);
+  if (!parts.length) parts.push(`Los ${counted.length} datos de esta vista son los más recientes que publicaron sus fuentes.`);
+  else if (!late.length) parts.unshift(`${counted.length - missing.length} de ${counted.length} datos están al día.`);
+  const head = parts.join(' ');
   return html`<details class="card fresh-panel" data-tour-id="freshness" data-state="${v.worst}">
     <summary><span class="fresh-sum">${chip(lv, txt)} <span>¿Qué tan recientes son estos datos?</span></span><span class="muted small">${head}</span></summary>
     <div class="table-wrap"><table class="grd fresh-table"><thead><tr><th scope="col">Dato</th><th scope="col">Estado</th><th scope="col">Fecha del dato</th><th scope="col">Bajado por el observatorio</th><th scope="col">Detalle</th></tr></thead><tbody>
     ${rows.map((r) => html`<tr data-fresh="${r.id}"><th scope="row">${r.label}${r.document ? html`<div class="muted small">${r.document}</div>` : ''}</th>
-      <td data-label="Estado">${chip(FRESH[r.state]?.[0] || 'na', FRESH[r.state]?.[1] || r.state)}</td>
+      <td data-label="Estado">${r.optional ? chip('na', 'No aplica') : chip(FRESH[r.state]?.[0] || 'na', FRESH[r.state]?.[1] || r.state)}</td>
       <td data-label="Fecha del dato">${freshObserved(r)}</td>
       <td data-label="Bajado">${r.retrievedAt ? F.fmtDateTime(r.retrievedAt).replace(' (hora de Lima)', '') : '—'}${CHANNEL_SHORT[r.channel] ? html`<div class="muted small">vía ${CHANNEL_SHORT[r.channel]}</div>` : ''}</td>
       <td class="small">${freshWhy(r)}</td></tr>`)}</tbody></table></div>
@@ -214,8 +219,16 @@ const MAG_ES = { debil: 'débil', moderada: 'moderada', fuerte: 'fuerte', muy_fu
 const REGION_ES = { nino12: 'Niño 1+2 (costa del Perú)', nino34: 'Niño 3.4 (Pacífico central)' };
 const CAT_ES = { fria_fuerte: 'Fría fuerte', fria_moderada: 'Fría moderada', fria_debil: 'Fría débil', neutro: 'Neutro', calida_debil: 'Cálida débil', calida_moderada: 'Cálida moderada', calida_fuerte: 'Cálida fuerte', calida_muy_fuerte: 'Cálida muy fuerte', calida_extraordinaria: 'Cálida extraordinaria' };
 
-function provenance(url, page, quote, when) {
-  return html`<p class="src-links small">${url ? html`<a href="${safeUrl(url)}" rel="noopener" target="_blank">Documento oficial${page ? `, página ${page}` : ''}</a>` : ''}${when ? html` · ${when}` : ''}${quote ? html`<span class="quote"> · Texto: «${quote}»</span>` : ''}</p>`;
+function provenance(url, page, quote, when, arch) {
+  const at = page ? `#page=${page}` : '';
+  const a = archiveHref(arch);
+  return html`<p class="src-links small">${url ? html`<a href="${safeUrl(url) + at}" rel="noopener" target="_blank">Documento oficial${page ? `, página ${page}` : ''}</a>` : ''}${a ? html` · <a href="${a + at}" rel="noopener" target="_blank" title="Copia del PDF que bajó el observatorio">Copia archivada</a>` : ''}${when ? html` · ${when}` : ''}${quote ? html`<span class="quote"> · Texto: «${quote}»</span>` : ''}</p>`;
+}
+
+/** Un dato del informe que el panel de vigencia da por vencido no se muestra como actual. */
+function informeExpired(id) {
+  const e = S.dash.official?.enfen;
+  return Boolean(e?.stale) || S.dash.freshness?.items?.[id]?.state === 'vencido';
 }
 
 function outlookCard() {
@@ -231,12 +244,16 @@ function probabilityCard() {
   const inf = S.dash.official?.enfen?.informe;
   const tables = inf?.probabilities || [];
   if (!tables.length) return '';
+  if (informeExpired('enfen-probabilities')) {
+    return html`<section class="card" aria-labelledby="pr-h" data-tour-id="enfen-probabilities"><h2 id="pr-h">Probabilidades del ENFEN por mes (%)</h2>
+      <p>Dato actual no disponible: el último informe leído (N° ${inf.number}${inf.dataTo ? `, datos al ${F.fmtDate(inf.dataTo)}` : ''}) corresponde a un comunicado que ya venció.</p></section>`;
+  }
   const card = (t) => {
     const cats = Object.keys(CAT_ES).filter((c) => t.categories[c]);
     return html`<div class="prob"><h3>${REGION_ES[t.region] || t.region}</h3><div class="table-wrap"><table class="data prob-table"><caption class="visually-hidden">Probabilidad (%) de cada categoría por mes, ${REGION_ES[t.region]}</caption>
       <thead><tr><th scope="col">Categoría</th>${t.months.map((m) => html`<th scope="col">${F.fmtMonth(m, { short: true })}</th>`)}${t.summer ? html`<th scope="col">Verano</th>` : ''}</tr></thead>
       <tbody>${cats.map((c) => html`<tr><th scope="row">${CAT_ES[c]}</th>${t.categories[c].map((v) => html`<td class="${v >= 50 ? 'hi' : v >= 20 ? 'mid' : ''}">${v}</td>`)}${t.summer ? html`<td>${t.summer[c] ?? '—'}</td>` : ''}</tr>`)}</tbody></table></div>
-      ${provenance(inf.url, t.evidence?.page, t.evidence?.quote)}${t.review ? html`<p class="muted small">El ENFEN marcó esta tabla con «revisar los valores».</p>` : ''}</div>`;
+      ${provenance(inf.url, t.evidence?.page, t.evidence?.quote, '', inf.archive)}${t.review ? html`<p class="muted small">El ENFEN marcó esta tabla con «revisar los valores».</p>` : ''}</div>`;
   };
   return html`<section class="card" aria-labelledby="pr-h" data-tour-id="enfen-probabilities"><div class="section-head"><h2 id="pr-h">Probabilidades del ENFEN por mes (%)</h2>${inf.carried ? html`<span class="tag tag-prelim">último informe leído</span>` : ''}</div>
     <p class="muted">Probabilidad que el ENFEN estima para cada categoría del ICEN (costa) y del RONI (Pacífico central). Informe técnico N° ${inf.number}${inf.dataTo ? `, con datos al ${F.fmtDate(inf.dataTo)}` : ''}.</p>
@@ -245,7 +262,7 @@ function probabilityCard() {
 
 function icenProvisional() {
   const p = latest('icen')?.provisional;
-  if (!p) return '';
+  if (!p || informeExpired('icen-provisional')) return '';
   return html`<p class="metric-desc">ICEN temporal de ${F.fmtMonth(p.period)}: <strong>${F.fmtValue(p.value, 'degC')}</strong>${p.category?.short ? ` (${p.category.short})` : ''}, estimado por el ENFEN en su informe técnico N° ${p.informe}. El valor oficial llega el mes siguiente.</p>`;
 }
 
@@ -435,9 +452,9 @@ VIEWS.costero = {
           <dl class="kv">
             <dt>ICEN oficial</dt><dd>${ic ? (ic.stale ? 'Dato actual no disponible' : html`${F.fmtValue(ic.value, 'degC')} (${F.fmtMonth(ic.period)})`) : 'N/D'}</dd>
             <dt>Clasificación</dt><dd>${cur || '—'}</dd>
-            ${ic?.provisional ? html`<dt>ICEN temporal</dt><dd>${F.fmtValue(ic.provisional.value, 'degC')} (${F.fmtMonth(ic.provisional.period)}${ic.provisional.category?.short ? `, ${ic.provisional.category.short.toLowerCase()}` : ''})</dd>` : ''}
+            ${ic?.provisional && !informeExpired('icen-provisional') ? html`<dt>ICEN temporal</dt><dd>${F.fmtValue(ic.provisional.value, 'degC')} (${F.fmtMonth(ic.provisional.period)}${ic.provisional.category?.short ? `, ${ic.provisional.category.short.toLowerCase()}` : ''})</dd>` : ''}
           </dl>
-          ${ic?.provisional ? html`<p class="muted small">El ICEN temporal lo estima el ENFEN antes de que exista el oficial; el oficial lo reemplaza el mes siguiente.</p>${provenance(ic.provisional.url, ic.provisional.page, ic.provisional.quote, ic.provisional.informe ? `Informe técnico N° ${ic.provisional.informe}` : '')}` : ''}
+          ${ic?.provisional && !informeExpired('icen-provisional') ? html`<p class="muted small">El ICEN temporal lo estima el ENFEN antes de que exista el oficial; el oficial lo reemplaza el mes siguiente.</p>${provenance(ic.provisional.url, ic.provisional.page, ic.provisional.quote, ic.provisional.informe ? `Informe técnico N° ${ic.provisional.informe}` : '', S.dash.official?.enfen?.informe?.archive)}` : ''}
         </div>
       </div>
       ${outlookCard()}

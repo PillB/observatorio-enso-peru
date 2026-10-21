@@ -22,23 +22,48 @@ muestra cada vista.
    cambios de diagramación: las columnas salen del encabezado de cada tabla, la región del título y los meses de
    la frase «entre X de Y y Z de W». Se probó con cinco informes reales de 2024 a 2026
    (`python/tests/fixtures/reports/`).
-2. **Validación.** Cada extracción pasa por un esquema (`SCHEMAS`) y por reglas de plausibilidad:
-   - meses consecutivos y periodos que encajan con la fecha del informe;
-   - cada fila de probabilidades suma 100 % (±2); si no, la tabla no se publica;
+2. **Cuál es el informe del comunicado.** El número del informe no sigue al del comunicado (2022 va uno
+   atrás; 2025, uno adelante: el comunicado 05-2025 cita el informe N° 06). Se usa el enlace que trae el
+   comunicado y, si no lo trae, el listado del portal, eligiendo por la fecha de corte de datos (de 3 días
+   después a `INFORME_LAG_DAYS` = 10 días antes de la emisión; en 2024–2026 fue de 0 a 5). Sin listado del
+   portal, el de la réplica de la DHN (el número más alto del año), que la validación descarta si es de otro
+   periodo. Un informe ya leído no se vuelve a bajar mientras siga el mismo comunicado.
+3. **De dónde se baja.** El portal del ENFEN no responde desde GitHub Actions ni desde n8n (DNS). Se prueba,
+   en orden: el portal, la réplica de la DHN (`informe-tecnico/NN-AAAA.pdf`, que responde fuera del Perú pero
+   publica con unos días de atraso), las copias de los recolectores si las hay y el Internet Archive. El
+   recolector del Perú todavía no baja el informe: su límite es de 8 MB por archivo y el PDF pesa 10–17 MB. La copia del PDF se publica en `data/archive` (enlace «Copia archivada»). Si
+   ninguna ruta responde queda una advertencia, no un error: la publicación no se marca degradada.
+4. **Validación.** Cada extracción pasa por un esquema (`SCHEMAS`) y por reglas de plausibilidad:
+   - meses consecutivos en la tabla de índices;
+   - el ICEN temporal es de 0 a 2 meses antes del corte de datos y la primera columna de probabilidades, de
+     un mes antes a tres después;
+   - cada mes (columna) de probabilidades suma 100 % (±2) y hay al menos 7 categorías;
    - el ICEN temporal no salta más de 1,5 respecto del último ICEN oficial;
    - el ICEN oficial que repite el informe coincide con el del IGP (±0,05);
-   - el número del informe corresponde al comunicado vigente y el informe tiene menos de 45 días.
-3. **Procedencia.** Todo valor publicado lleva la URL del PDF, la página y la cita textual de donde salió; el
-   sitio la muestra bajo cada tabla.
-4. **Si algo falla** (no se encuentra el informe, cambió el formato, un valor es implausible): se conserva el
-   último valor bueno marcado como arrastrado, la vista lo muestra como «atrasado» y queda una incidencia en
-   `run-report.json`, que abre un issue en GitHub.
-5. **El ICEN temporal se retira solo** cuando el IGP publica el ICEN oficial de ese mes.
+   - la fecha de corte encaja con la emisión del comunicado (si no, no es su informe y no se usa) y el
+     informe tiene menos de 45 días.
+   Un error de esquema bloquea solo la parte donde está (una tabla estacional mal leída no retiene el ICEN
+   temporal ni las probabilidades).
+5. **Procedencia.** Todo valor publicado lleva la URL del PDF, la página y la cita textual de donde salió, y
+   la copia archivada del PDF; el sitio enlaza las dos a la página citada.
+6. **Si algo falla.** Si el informe no se encuentra o no se baja, cambió el formato o nada de lo leído pasa
+   las reglas, se conserva el informe anterior marcado como arrastrado, la vista lo muestra como «atrasado»
+   y queda una incidencia en `run-report.json`, que abre un issue en GitHub. Si falla solo una parte (una
+   región que no suma 100, un ICEN temporal implausible), esa parte no se publica, queda su incidencia y el
+   panel de vigencia lo anota; el resto del informe sí se publica.
+7. **El ICEN temporal se retira solo** cuando el IGP publica el ICEN oficial de ese mes; entonces el panel
+   de vigencia lo marca «no aplica».
+8. **Perspectiva del comunicado.** La fase (El Niño o La Niña) sale del sujeto de la oración de cada región
+   y, si no lo hay, del estado de alerta; el nombre del sistema de alerta y las transiciones posteriores no
+   cuentan. Si el comunicado habla de magnitudes y la perspectiva no se pudo leer, queda la incidencia
+   `outlook-unread` y, con el modelo configurado, una propuesta en `outlookReview`. No se arrastra la
+   perspectiva del comunicado anterior: es de otro comunicado.
 
 ## Respaldo con un modelo de lenguaje (opcional, apagado)
 
 Solo se usa cuando la lectura determinista falla por cambio de formato. Nunca publica: deja una **propuesta**
-en `informe.review` para que una persona la revise.
+en `informe.review` (o `outlookReview` para la perspectiva) para que una persona la revise, aunque no haya un
+informe anterior. El mismo PDF no se le vuelve a pasar al modelo en las corridas siguientes.
 
 - Variables: `ENSO_LLM_EXTRACT_URL` (por ejemplo, un webhook de n8n con un nodo AI Agent) y
   `ENSO_LLM_EXTRACT_TOKEN` (cabecera `Authorization: Bearer`).
@@ -69,8 +94,13 @@ Cada dato del sitio tiene uno de cuatro estados, según el calendario de su inst
 - **al día**: es lo más reciente que la institución debía haber publicado;
 - **atrasado**: ya pasó la fecha esperada más el margen, o el dato viene de una copia o del último valor conservado;
 - **vencido**: supera la antigüedad máxima de su fuente;
-- **sin dato**: la fuente no dio nada en esta publicación.
+- **sin dato**: la fuente no dio nada en esta publicación (una serie que no llegó también aparece, no se omite);
+- **no aplica**: el ICEN temporal ya retirado o la perspectiva de un comunicado que no la trae. No cuenta para el
+  estado de la vista.
 
 El resultado va en `dashboard.json` (`freshness`). Cada vista muestra un panel «Vigencia de los datos» con el
-peor estado de sus paneles y, desplegado, cada dato con su fecha, fuente y próxima publicación esperada. Los
-datos atrasados quedan como incidencia `late-<id>`.
+peor estado de sus paneles, un resumen que nombra lo atrasado y lo que falta y, desplegado, cada dato con su
+fecha, fuente y próxima publicación esperada. El mapa reporta el OISST semanal, que es lo que dibuja. Un dato
+del informe que el panel da por vencido no se muestra como actual. Los datos atrasados quedan como
+incidencia `late-<id>`. Las noticias cuentan como fallidas las fuentes omitidas por servidor caído o por
+tiempo; solo no cuentan las que `robots.txt` no permite.

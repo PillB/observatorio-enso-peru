@@ -64,10 +64,44 @@ def test_informe_of_an_older_communique_is_late():
 def test_alerts_and_news():
     feed = {"groups": [{"id": "alertas", "items": [{"date": "2026-10-21T17:00:00Z"}],
                         "sources": [{"ok": True}, {"ok": False}]}]}
-    feeds = [{"ok": True, "latest": "2026-10-21T10:00:00+00:00"}, {"ok": False, "error": "omitido: robots"}]
+    feeds = [{"ok": True, "latest": "2026-10-21T10:00:00+00:00"}, {"ok": False, "skipped": "robots", "error": "omitido: robots"}]
     f = _build(feed=feed, feeds=feeds)
     assert f["items"]["alerts"]["state"] == "atrasado" and f["items"]["alerts"]["sourcesOk"] == 1
     assert f["items"]["news"]["state"] == "al-dia" and f["items"]["news"]["sourcesTotal"] == 1
+
+
+def test_news_omitted_for_a_down_host_or_the_deadline_count_as_failures():
+    ok = [{"ok": True, "latest": "2026-10-21T10:00:00+00:00"}] * 2
+    down = [{"ok": False, "error": "omitido: el servidor no respondió a los feeds anteriores"}] * 20
+    late = [{"ok": False, "error": "omitido: se agotó el tiempo de la recolección de noticias"}] * 40
+    n = _build(feeds=ok + down + late)["items"]["news"]
+    assert n["state"] == "atrasado" and (n["sourcesOk"], n["sourcesTotal"]) == (2, 62)
+
+
+def test_map_view_reports_the_weekly_data_it_draws():
+    f = _build(weekly={"nino12": {"latest": {"date": "2026-09-23"}}}, meta={"cpc-wksst": {"channel": "previous-publication"}})
+    assert f["views"]["mapa"] == {"items": ["weekly"], "worst": "vencido"}
+
+
+def test_a_series_missing_from_the_publication_is_reported_not_dropped():
+    f = _build({"nino12_oisst": _s("2026-09")})
+    assert f["views"]["historia"] == {"items": ["icen"], "worst": "sin-dato"}
+    assert f["items"]["icen"]["label"] == "ICEN oficial" and "icen" in f["views"]["costero"]["items"]
+
+
+def test_weekly_from_an_archive_copy_is_late():
+    wk = {"nino12": {"latest": {"date": "2026-10-14"}}}
+    assert _build(weekly=wk, meta={"cpc-wksst": {"channel": "archive"}})["items"]["weekly"]["state"] == "atrasado"
+    assert _build(weekly=wk, meta={"cpc-wksst": {"channel": "direct"}})["items"]["weekly"]["state"] == "al-dia"
+
+
+def test_retired_provisional_icen_and_absent_outlook_do_not_mark_the_view():
+    off = {"enfen": {"status": "No activo", "number": "18-2026", "issued": "2026-10-16", "nextIssue": "2026-10-30",
+                     "informe": {"number": 18, "communique": "18-2026", "dataTo": "2026-10-13", "icenSuperseded": True,
+                                 "probabilities": [{"region": "nino12"}], "lastOfficial": {"period": "2026-08"}}}}
+    f = _build({"icen": _s("2026-08", "igp-icen")}, weekly={"nino12": {"latest": {"date": "2026-10-14"}}}, official=off)
+    assert f["items"]["icen-provisional"]["optional"] and f["items"]["enfen-outlook"]["optional"]
+    assert f["views"]["costero"]["worst"] == "al-dia"
 
 
 def test_late_items_become_incidents():

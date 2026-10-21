@@ -38,9 +38,21 @@ VIEWS: dict[str, list[str]] = {
     "pacifico": ["noaa", "roni", "oni", "nino3_oisst", "nino34_oisst", "nino4_oisst", "nino12_oisst"],
     "oceano": ["weekly", "nino12", "nino34", "nino12_oisst", "nino34_oisst", "wpac850", "cpac850", "epac850",
                "heat_180w100w", "heat_160e80w", "soi_troup"],
-    "mapa": ["alerts", "news"],
+    "mapa": ["weekly"],  # el mapa dibuja solo las anomalías semanales
     "historia": ["icen"],
     "noticias": ["enfen", "noaa", "alerts", "news"],
+}
+
+
+#: Nombre de cada serie de las vistas, para la fila «sin dato» cuando la publicación no la trae.
+SERIES_LABELS = {
+    "icen": "ICEN oficial", "roni": "RONI", "oni": "ONI", "nino12": "Niño 1+2 (ERSSTv6)", "nino34": "Niño 3.4 (ERSSTv6)",
+    "nino12_oisst": "Niño 1+2 (OISST)", "nino3_oisst": "Niño 3 (OISST)", "nino34_oisst": "Niño 3.4 (OISST)",
+    "nino4_oisst": "Niño 4 (OISST)", "soi_troup": "SOI escala Troup", "wpac850": "Viento 850 hPa, Pacífico occidental",
+    "cpac850": "Viento 850 hPa, Pacífico central", "epac850": "Viento 850 hPa, Pacífico oriental",
+    "cpac850_anom": "Viento 850 hPa, Pacífico central (anomalía)",
+    "epac850_anom": "Viento 850 hPa, Pacífico oriental (anomalía)",
+    "heat_180w100w": "Contenido de calor 0–300 m (180°–100° O)", "heat_160e80w": "Contenido de calor 0–300 m (160° E–80° O)",
 }
 
 
@@ -106,9 +118,10 @@ def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed
                 "id": "weekly", "label": "Temperatura del mar semanal (OISST)", "kind": "serie", "observed": last,
                 "observedKind": "week", "expectedNext": (d + timedelta(days=12)).isoformat(),
                 "state": _state(today, d + timedelta(days=12), GRACE_DAYS["weekly"], stale=(today - d).days > 16,
-                                degraded=(m.get("channel") or "") == "previous-publication"),
+                                degraded=(m.get("channel") or "") == "previous-publication"
+                                or (m.get("channel") or "").startswith("archive")),
                 "source": "cpc-wksst", "institution": m.get("institution"), "retrievedAt": m.get("retrievedAt"),
-                "channel": m.get("channel")}
+                "channel": m.get("channel"), "carried": (m.get("channel") or "") == "previous-publication"}
     if "weekly" not in items:
         items["weekly"] = {"id": "weekly", "label": "Temperatura del mar semanal (OISST)", "state": "sin-dato",
                            "source": "cpc-wksst"}
@@ -123,10 +136,17 @@ def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed
     else:
         items["enfen-outlook"] = {"id": "enfen-outlook", "label": "Perspectiva del ENFEN (magnitud esperada)",
                                   "state": "sin-dato", "source": "enfen-comunicados"}
+        if e.get("status") and not e.get("outlookUnread"):
+            # Un comunicado sin perspectiva de magnitud (p. ej. «No activo») no deja un dato faltante.
+            items["enfen-outlook"].update(optional=True, note="El comunicado vigente no trae una perspectiva de "
+                                                              "magnitud por región.")
+        elif e.get("outlookUnread"):
+            items["enfen-outlook"]["note"] = "El comunicado trae una perspectiva que no se pudo leer (queda una incidencia)."
     inf = e.get("informe") or {}
     if inf.get("probabilities") or inf.get("icenProvisional") or inf.get("lastOfficial"):
         inf_state = "atrasado" if inf.get("carried") or (inf.get("communique") and e.get("number")
                                                           and inf["communique"] != e["number"]) else base["state"]
+        withheld = sorted({i["message"] for i in inf.get("issues") or [] if i.get("severity") == "error"})
         common = {"kind": "informe", "observedKind": "date", "observed": inf.get("dataTo"),
                   "document": f"Informe técnico N° {inf.get('number')}", "expectedNext": e.get("nextIssue"),
                   "source": "enfen-informe", "url": inf.get("url"), "retrievedAt": inf.get("retrievedAt"),
@@ -134,13 +154,19 @@ def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed
         items["enfen-probabilities"] = {**common, "id": "enfen-probabilities",
                                         "label": "Probabilidades mensuales del ENFEN",
                                         "state": inf_state if inf.get("probabilities") else "sin-dato"}
+        if withheld:
+            items["enfen-probabilities"]["note"] = ("Parte del informe no pasó la validación y no se publica: "
+                                                    + "; ".join(withheld)[:400])
         tmp = inf.get("icenProvisional")
         items["icen-provisional"] = ({**common, "id": "icen-provisional", "label": "ICEN temporal (ENFEN)",
                                       "observed": tmp["period"], "observedKind": "month", "state": inf_state}
                                      if tmp else {"id": "icen-provisional", "label": "ICEN temporal (ENFEN)",
                                                   "state": "sin-dato", "source": "enfen-informe",
-                                                  "note": "El IGP ya publicó el ICEN oficial del último mes o el "
-                                                          "informe no trae un valor válido."})
+                                                  "note": "El informe no trae un valor válido del ICEN temporal."})
+        if not tmp and inf.get("icenSuperseded"):
+            # Se retira solo cuando el IGP publica el oficial de ese mes: no es un dato faltante.
+            items["icen-provisional"].update(optional=True, note="El IGP ya publicó el ICEN oficial de ese mes; "
+                                                                 "el temporal ya no hace falta.")
     else:
         for k, lbl in (("enfen-probabilities", "Probabilidades mensuales del ENFEN"),
                        ("icen-provisional", "ICEN temporal (ENFEN)")):
@@ -159,7 +185,7 @@ def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed
     else:
         items["alerts"] = {"id": "alerts", "label": "Alertas de peligros", "state": "sin-dato"}
     if news_feeds:
-        asked = [f for f in news_feeds if not f.get("skipped") and "omitido" not in (f.get("error") or "")]
+        asked = [f for f in news_feeds if not f.get("skipped")]  # «omitido» por servidor caído o tiempo: falló
         ok = [f for f in asked if f.get("ok")]
         latest = max((f.get("latest") or "" for f in ok), default="") or None
         items["news"] = {"id": "news", "label": "Noticias de medios y del Estado", "kind": "noticias",
@@ -170,10 +196,15 @@ def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed
     else:
         items["news"] = {"id": "news", "label": "Noticias de medios y del Estado", "state": "sin-dato"}
 
+    for keys in VIEWS.values():
+        for k in keys:
+            if k not in items:  # una serie que esta publicación no trae: fila «sin dato», no se omite
+                items[k] = {"id": k, "label": SERIES_LABELS.get(k, k), "kind": "serie", "state": "sin-dato"}
     views = {}
     for view, keys in VIEWS.items():
-        rows = [items[k] for k in keys if k in items]
-        views[view] = {"items": [r["id"] for r in rows], "worst": _worst(r["state"] for r in rows)}
+        rows = [items[k] for k in keys]
+        views[view] = {"items": [r["id"] for r in rows],
+                       "worst": _worst(r["state"] for r in rows if not r.get("optional"))}
     views["datos"] = {"items": sorted(series), "worst": _worst(items[k]["state"] for k in series)}
     return {"today": today.isoformat(), "items": items, "views": views,
             "counts": {s: sum(1 for i in items.values() if i["state"] == s) for s in STATES}}
