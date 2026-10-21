@@ -38,7 +38,7 @@ jobs:
       - run: pip install -r python/requirements.txt
       - name: Capture
         working-directory: python
-        run: python -m tools.capture_sources --out tests/fixtures/sources ${{ (github.event_name == 'push' || inputs.history) && '--history' || '' }}
+        run: python -m tools.capture_sources --out tests/fixtures/sources ${{ inputs.history && '--history' || '' }}
       - name: Live pipeline probe
         working-directory: python
         env:

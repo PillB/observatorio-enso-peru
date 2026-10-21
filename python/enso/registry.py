@@ -108,7 +108,7 @@ def _source_entries() -> list[Entry]:
         path = urlparse(url).path.lower()
         if "wp-json" in url:
             expect, method = "json", "api"
-        elif path.endswith((".txt", ".for", ".data", ".ascii")) or re.search(r"/indices/[a-z0-9]+$", path):
+        elif path.endswith((".txt", ".for", ".data", ".ascii", ".indices")) or re.search(r"/indices/[a-z0-9]+$", path):
             expect, method = "text", "download"
         elif path.endswith(".pdf"):
             expect, method = "pdf", "download"

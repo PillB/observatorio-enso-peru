@@ -133,3 +133,10 @@ def test_robots_parser():
     assert r.allowed("https://c.pe/anything") is True  # 4xx: se permite (RFC 9309)
     assert r.allowed("https://d.pe/anything") is None  # una verificación en lugar de robots.txt
     assert r.failure("https://d.pe/x") == "challenge"
+
+
+def test_data_files_are_expected_as_text():
+    """Los archivos de datos de CPC (``sstoi.indices``, ``soi``…) no son páginas HTML."""
+    reg = registry.build()
+    data = [s for s in reg["sources"] if "/data/indices/" in s["url"]]
+    assert data and all(s["expect"] == "text" for s in data), [(s["id"], s["expect"]) for s in data if s["expect"] != "text"]
