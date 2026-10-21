@@ -224,7 +224,7 @@ def check_internet(ctx: dict) -> list[Result]:
                 raw = {**headers, "Accept": "application/vnd.github.raw+json"}
                 for name in ("index.json", "heartbeat.json"):
                     f = c.get(f"{url}/contents/{name}", params={"ref": relay_branch}, headers=raw)
-                    copies[name] = _json_or_none(f)
+                    copies[name] = (f.status_code, _json_or_none(f))
     except httpx.HTTPError as exc:
         return [Result("internet", FAIL, "no hay conexión con GitHub", _scrub(f"{type(exc).__name__}: {exc}")[:300],
                        svc.network_hint(exc))]
@@ -254,7 +254,9 @@ def check_internet(ctx: dict) -> list[Result]:
     except (TypeError, ValueError):
         pass
     if branch.status_code == 200:
-        out.extend(relay_copy_results(_json_or_none(branch) or {}, copies.get("index.json"), copies.get("heartbeat.json")))
+        status, index = copies.get("index.json", (None, None))
+        out.extend(relay_copy_results(_json_or_none(branch) or {}, index, copies.get("heartbeat.json", (None, None))[1],
+                                      index_missing=status == 404))
     elif branch.status_code == 404 and ok:  # sin acceso al repositorio, 404 no dice nada de la rama
         out.append(Result("internet", INFO, "la rama data-peru todavía no existe (la crea la primera subida)"))
     return out
@@ -276,29 +278,39 @@ def _when(value) -> Optional[datetime]:
     return t if t.tzinfo else t.replace(tzinfo=timezone.utc)
 
 
-def relay_copy_results(branch: dict, index: Optional[dict], beat: Optional[dict]) -> list[Result]:
+def relay_copy_results(branch: dict, index: Optional[dict], beat: Optional[dict],
+                       index_missing: bool = False) -> list[Result]:
     """Edad de la última copia en data-peru según ``collected_at`` de su índice.
     No sirve la fecha del último commit: una corrida sin fuentes sube solo el
-    latido (un commit nuevo) y conserva la copia anterior, que puede ser vieja."""
+    latido (un commit nuevo) y conserva la copia anterior, que puede ser vieja.
+    Sin index.json (``index_missing``) la rama tiene solo latidos: todavía no
+    hay copia. Si el índice no se pudo leer, se usa la fecha del commit."""
     out = []
     commit = (branch.get("commit") or {}).get("commit") or {}
-    when, basis = _when((index or {}).get("collected_at")), "collected_at de index.json"
-    if when is None:
-        when, basis = _when((commit.get("committer") or {}).get("date")), "fecha del último commit"
-    if when is None:
-        return out
     now = datetime.now(timezone.utc)
-    age = (now - when).total_seconds() / 3600
-    stale = age > STALE_HOURS
-    out.append(Result("internet", WARN if stale else INFO,
-                      f"última copia en la rama data-peru: hace {age:.0f} h ({when.astimezone(svc.LIMA):%Y-%m-%d %H:%M} Lima)",
-                      f"según {basis}" + (f" · {commit.get('message', '')[:120]}" if commit.get("message") else ""),
-                      "El sitio avisa con un issue «relay-stale» pasadas 36 h." if stale else ""))
+    when, stale = None, True
+    if index_missing:
+        out.append(Result("internet", WARN, "la rama data-peru todavía no tiene ninguna copia (no hay index.json)",
+                          ("solo latidos: " if beat else "") + "el sitio no recibe nada de este equipo",
+                          "Si las fuentes responden (comprobación «fuentes»), disparar la tarea con PROBAR-TAREA."))
+    else:
+        when, basis = _when((index or {}).get("collected_at")), "collected_at de index.json"
+        if when is None:
+            when, basis = _when((commit.get("committer") or {}).get("date")), "fecha del último commit (index.json ilegible)"
+        if when is None:
+            return out
+        age = (now - when).total_seconds() / 3600
+        stale = age > STALE_HOURS
+        out.append(Result("internet", WARN if stale else INFO,
+                          f"última copia en la rama data-peru: hace {age:.0f} h ({when.astimezone(svc.LIMA):%Y-%m-%d %H:%M} Lima)",
+                          f"según {basis}" + (f" · {commit.get('message', '')[:120]}" if commit.get("message") else ""),
+                          "El sitio avisa con un issue «relay-stale» pasadas 36 h." if stale else ""))
     beat_at = _when((beat or {}).get("at"))
-    if beat_at is not None and beat_at > when and (beat or {}).get("result") == "sin-fuentes":
+    if beat_at is not None and (when is None or beat_at > when) and (beat or {}).get("result") == "sin-fuentes":
         hours = (now - beat_at).total_seconds() / 3600
         out.append(Result("internet", WARN if stale else INFO,
-                          f"último latido hace {hours:.0f} h: ninguna fuente respondió y se conservó la copia anterior",
+                          f"último latido hace {hours:.0f} h: ninguna fuente respondió"
+                          + (" y se conservó la copia anterior" if when else ""),
                           f"fuentes que respondieron: {beat.get('reachable', '?')}",
                           "Son las instituciones, no este equipo: el sitio avisa con «relay-sources-down»." if stale else ""))
     return out

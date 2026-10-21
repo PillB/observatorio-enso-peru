@@ -536,6 +536,7 @@ def test_internet_check_dates_the_copy_from_its_index_not_the_heartbeat_commit(h
     files = {"index.json": {"schema": "enso-relay/1", "collected_at": iso(50), "entries": []},
              "heartbeat.json": {"schema": "enso-relay-heartbeat/1", "at": iso(1), "result": "sin-fuentes",
                                 "reachable": "0/11"}}
+    broken = set()
 
     def reply(req: httpx.Request) -> httpx.Response:
         path = req.url.path
@@ -545,6 +546,8 @@ def test_internet_check_dates_the_copy_from_its_index_not_the_heartbeat_commit(h
         if "/contents/" in path:
             assert req.url.params["ref"] == "data-peru" and "raw" in req.headers["accept"]
             name = path.rsplit("/", 1)[-1]
+            if name in broken:
+                return httpx.Response(502)
             return httpx.Response(200, json=files[name]) if name in files else httpx.Response(404)
         return httpx.Response(200, json={"full_name": chk.repo()}, headers={"date": now.strftime("%a, %d %b %Y %H:%M:%S GMT")})
 
@@ -554,10 +557,17 @@ def test_internet_check_dates_the_copy_from_its_index_not_the_heartbeat_commit(h
     assert copy.level == chk.WARN and "hace 50 h" in copy.title and "index.json" in copy.detail
     beat = next(r for r in results if r.title.startswith("último latido"))
     assert "ninguna fuente respondió" in beat.title and "relay-sources-down" in beat.hint
-    # Sin index.json legible (rama de una versión anterior) se usa la fecha del commit.
-    files.pop("index.json")
+    # Si index.json no se pudo leer, se usa la fecha del commit.
+    broken.add("index.json")
     copy = next(r for r in chk.check_internet({"root": home}) if r.title.startswith("última copia"))
     assert copy.level == chk.INFO and "hace 1 h" in copy.title and "commit" in copy.detail
+    # Sin index.json (la primera corrida no alcanzó ninguna fuente) no hay copia, por reciente que sea el commit.
+    broken.clear()
+    files.pop("index.json")
+    results = chk.check_internet({"root": home})
+    assert not any(r.title.startswith("última copia") for r in results)
+    assert any(r.level == chk.WARN and "ninguna copia" in r.title for r in results)
+    assert any(r.title.startswith("último latido") and r.level == chk.WARN for r in results)
 
 
 def test_launchers_only_use_options_the_installers_know():
