@@ -7,10 +7,10 @@
     <description>Near real-time notification about natural disaster with a potential humanitarian impact</description>
     <managingEditor>stefano.paris@ext.ec.europa.eu</managingEditor>
     <!--Records number 248-->
-    <!--Start 10/21/2026 1:55:01 AM-->
-    <!--=Start 10/21/2026 1:55:01 AM-->
+    <!--Start 10/21/2026 3:25:01 AM-->
+    <!--=Start 10/21/2026 3:25:01 AM-->
     <webMaster>stefano.paris@ext.ec.europa.eu</webMaster>
-    <pubDate>Tue, 20 Oct 2026 23:55:01 GMT</pubDate>
+    <pubDate>Wed, 21 Oct 2026 01:25:01 GMT</pubDate>
     <atom:link href="https://www.gdacs.org/xml/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Green earthquake (Magnitude 6.3M, Depth:16km) in Vanuatu Islands 20/10/2026 04:20 UTC, [unknown].</title>
@@ -3207,7 +3207,7 @@
       <pubDate>Mon, 19 Oct 2026 06:04:57 GMT</pubDate>
       <gdacs:dateadded>Mon, 19 Oct 2026 06:04:57 GMT</gdacs:dateadded>
       <gdacs:datemodified>Mon, 19 Oct 2026 06:04:56 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Thu, 15 Oct 2026 01:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 01:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>0</gdacs:durationinweek>
@@ -3261,7 +3261,7 @@
       <pubDate>Mon, 19 Oct 2026 06:44:13 GMT</pubDate>
       <gdacs:dateadded>Mon, 19 Oct 2026 06:44:13 GMT</gdacs:dateadded>
       <gdacs:datemodified>Mon, 19 Oct 2026 06:44:13 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Thu, 15 Oct 2026 01:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 01:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>0</gdacs:durationinweek>
@@ -3315,7 +3315,7 @@
       <pubDate>Fri, 16 Oct 2026 19:00:57 GMT</pubDate>
       <gdacs:dateadded>Fri, 16 Oct 2026 19:00:57 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:05:19 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Thu, 15 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>0</gdacs:durationinweek>
@@ -4124,7 +4124,7 @@
       <link>https://www.gdacs.org/report.aspx?eventtype=TC&amp;eventid=1001338</link>
       <pubDate>Wed, 14 Oct 2026 14:31:53 GMT</pubDate>
       <gdacs:dateadded>Wed, 14 Oct 2026 14:31:53 GMT</gdacs:dateadded>
-      <gdacs:datemodified>Tue, 20 Oct 2026 21:00:55 GMT</gdacs:datemodified>
+      <gdacs:datemodified>Wed, 21 Oct 2026 01:01:17 GMT</gdacs:datemodified>
       <gdacs:iscurrent>true</gdacs:iscurrent>
       <gdacs:fromdate>Wed, 14 Oct 2026 12:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Tue, 20 Oct 2026 18:00:00 GMT</gdacs:todate>
@@ -5096,7 +5096,7 @@
       <link>https://www.gdacs.org/report.aspx?eventtype=TC&amp;eventid=1001337</link>
       <pubDate>Tue, 13 Oct 2026 15:15:58 GMT</pubDate>
       <gdacs:dateadded>Tue, 13 Oct 2026 15:15:58 GMT</gdacs:dateadded>
-      <gdacs:datemodified>Tue, 20 Oct 2026 23:36:44 GMT</gdacs:datemodified>
+      <gdacs:datemodified>Wed, 21 Oct 2026 00:21:20 GMT</gdacs:datemodified>
       <gdacs:iscurrent>true</gdacs:iscurrent>
       <gdacs:fromdate>Tue, 13 Oct 2026 15:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Tue, 20 Oct 2026 03:00:00 GMT</gdacs:todate>
@@ -5799,7 +5799,7 @@
       <pubDate>Sat, 17 Oct 2026 11:01:32 GMT</pubDate>
       <gdacs:dateadded>Sat, 17 Oct 2026 11:01:32 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:08:04 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Tue, 13 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -6339,7 +6339,7 @@
       <pubDate>Thu, 15 Oct 2026 11:02:13 GMT</pubDate>
       <gdacs:dateadded>Thu, 15 Oct 2026 11:02:13 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:09:11 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Mon, 12 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -7041,7 +7041,7 @@
       <pubDate>Fri, 16 Oct 2026 11:02:37 GMT</pubDate>
       <gdacs:dateadded>Fri, 16 Oct 2026 11:02:37 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:10:32 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Sun, 11 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -7095,7 +7095,7 @@
       <pubDate>Mon, 12 Oct 2026 19:00:42 GMT</pubDate>
       <gdacs:dateadded>Mon, 12 Oct 2026 19:00:42 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:10:44 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Sun, 11 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -7581,7 +7581,7 @@
       <pubDate>Sun, 18 Oct 2026 15:05:54 GMT</pubDate>
       <gdacs:dateadded>Sun, 18 Oct 2026 15:05:54 GMT</gdacs:dateadded>
       <gdacs:datemodified>Sun, 18 Oct 2026 15:05:54 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Sat, 10 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -7635,7 +7635,7 @@
       <pubDate>Thu, 15 Oct 2026 15:04:01 GMT</pubDate>
       <gdacs:dateadded>Thu, 15 Oct 2026 15:04:01 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:13:00 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Sat, 10 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -8067,7 +8067,7 @@
       <pubDate>Wed, 14 Oct 2026 07:03:55 GMT</pubDate>
       <gdacs:dateadded>Wed, 14 Oct 2026 07:03:55 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:15:24 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Fri, 09 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -8877,7 +8877,7 @@
       <pubDate>Sat, 17 Oct 2026 11:09:22 GMT</pubDate>
       <gdacs:dateadded>Sat, 17 Oct 2026 11:09:22 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:17:47 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Thu, 08 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -8931,7 +8931,7 @@
       <pubDate>Thu, 15 Oct 2026 19:06:33 GMT</pubDate>
       <gdacs:dateadded>Thu, 15 Oct 2026 19:06:33 GMT</gdacs:dateadded>
       <gdacs:datemodified>Sun, 18 Oct 2026 07:09:19 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Thu, 08 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -9363,7 +9363,7 @@
       <pubDate>Fri, 16 Oct 2026 07:07:24 GMT</pubDate>
       <gdacs:dateadded>Fri, 16 Oct 2026 07:07:24 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:17:55 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Wed, 07 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
@@ -10551,7 +10551,7 @@
       <pubDate>Thu, 15 Oct 2026 19:10:06 GMT</pubDate>
       <gdacs:dateadded>Thu, 15 Oct 2026 19:10:06 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:20:40 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Tue, 06 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>2</gdacs:durationinweek>
@@ -10605,7 +10605,7 @@
       <pubDate>Tue, 13 Oct 2026 19:05:44 GMT</pubDate>
       <gdacs:dateadded>Tue, 13 Oct 2026 19:05:44 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 23:20:28 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Tue, 06 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>2</gdacs:durationinweek>
@@ -10875,7 +10875,7 @@
       <pubDate>Sat, 17 Oct 2026 19:13:24 GMT</pubDate>
       <gdacs:dateadded>Sat, 17 Oct 2026 19:13:24 GMT</gdacs:dateadded>
       <gdacs:datemodified>Tue, 20 Oct 2026 19:23:32 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Mon, 05 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>2</gdacs:durationinweek>
@@ -11955,7 +11955,7 @@
       <pubDate>Wed, 14 Oct 2026 23:11:49 GMT</pubDate>
       <gdacs:dateadded>Wed, 14 Oct 2026 23:11:49 GMT</gdacs:dateadded>
       <gdacs:datemodified>Mon, 19 Oct 2026 15:01:15 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Sun, 04 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>2</gdacs:durationinweek>
@@ -12009,7 +12009,7 @@
       <pubDate>Mon, 12 Oct 2026 07:08:42 GMT</pubDate>
       <gdacs:dateadded>Mon, 12 Oct 2026 07:08:42 GMT</gdacs:dateadded>
       <gdacs:datemodified>Mon, 19 Oct 2026 14:59:56 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Sun, 04 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>2</gdacs:durationinweek>
@@ -12063,7 +12063,7 @@
       <pubDate>Thu, 15 Oct 2026 15:12:59 GMT</pubDate>
       <gdacs:dateadded>Thu, 15 Oct 2026 15:12:59 GMT</gdacs:dateadded>
       <gdacs:datemodified>Mon, 19 Oct 2026 15:00:20 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Sun, 04 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>2</gdacs:durationinweek>
@@ -12117,7 +12117,7 @@
       <pubDate>Sat, 17 Oct 2026 23:18:44 GMT</pubDate>
       <gdacs:dateadded>Sat, 17 Oct 2026 23:18:44 GMT</gdacs:dateadded>
       <gdacs:datemodified>Sun, 18 Oct 2026 19:17:20 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Sat, 03 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>2</gdacs:durationinweek>
@@ -12549,7 +12549,7 @@
       <pubDate>Sun, 11 Oct 2026 15:09:02 GMT</pubDate>
       <gdacs:dateadded>Sun, 11 Oct 2026 15:09:02 GMT</gdacs:dateadded>
       <gdacs:datemodified>Sat, 17 Oct 2026 19:18:24 GMT</gdacs:datemodified>
-      <gdacs:iscurrent>true</gdacs:iscurrent>
+      <gdacs:iscurrent>false</gdacs:iscurrent>
       <gdacs:fromdate>Fri, 02 Oct 2026 00:00:00 GMT</gdacs:fromdate>
       <gdacs:todate>Sat, 17 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>2</gdacs:durationinweek>
@@ -13405,4 +13405,4 @@
       </gdacs:resources>
     </item>
   </channel>
-</rss><!--End 10/21/2026 1:55:40 AM-->
+</rss><!--End 10/21/2026 3:25:40 AM-->
