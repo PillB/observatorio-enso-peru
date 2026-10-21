@@ -164,23 +164,23 @@ def test_tutorial_start_pause_resume_and_clear(site, page):
     go(page, base)
     page.get_by_role("button", name="Ayuda y tutorial").click()
     dlg = page.get_by_role("dialog", name="Ayuda y tutorial")
-    assert dlg.locator(".tour-menu li").count() == 13
+    expect(dlg.locator(".tour-menu li")).to_have_count(13)
     dlg.get_by_role("button", name=re.compile("^Inicio rápido")).click()
     pop = page.locator(".tour-pop")
-    assert pop.get_by_text("paso 1 de").is_visible()
+    expect(pop.get_by_text("paso 1 de")).to_be_visible()
     pop.get_by_role("button", name="Siguiente").click()
-    assert pop.get_by_text("paso 2 de").is_visible()
+    expect(pop.get_by_text("paso 2 de")).to_be_visible()
     pop.get_by_role("button", name="Pausar").click()
-    assert pop.count() == 0
+    expect(pop).to_have_count(0)
     page.reload()
     go(page, base)
     page.get_by_role("button", name="Ayuda y tutorial").click()
     dlg.get_by_role("button", name="Reanudar").click()
-    assert page.locator(".tour-pop").get_by_text("paso 2 de").is_visible()
+    expect(page.locator(".tour-pop").get_by_text("paso 2 de")).to_be_visible()
     page.keyboard.press("Escape")
     page.get_by_role("button", name="Ayuda y tutorial").click()
     dlg.get_by_role("button", name="Borrar progreso del tutorial").click()
-    assert dlg.get_by_role("button", name="Reanudar").count() == 0
+    expect(dlg.get_by_role("button", name="Reanudar")).to_have_count(0)
 
 
 def test_full_tour_visits_every_target(site, page):
@@ -190,10 +190,10 @@ def test_full_tour_visits_every_target(site, page):
     page.get_by_role("button", name=re.compile("^Recorrido completo")).click()
     for _ in range(9):
         pop = page.locator(".tour-pop")
-        assert pop.is_visible()
+        expect(pop).to_be_visible()
         assert pop.get_by_text("Este elemento no está visible").count() == 0, pop.inner_text()
         pop.get_by_role("button", name=re.compile("Siguiente|Terminar")).click()
-    assert page.locator(".tour-pop").count() == 0
+    expect(page.locator(".tour-pop")).to_have_count(0)
 
 
 def test_assistant_answers_with_evidence_and_refuses_alerts(site, page):
