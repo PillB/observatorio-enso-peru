@@ -94,11 +94,13 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/v" && chmod 777 "$RUNNER_TEMP/v"
           cp n8n/dist/enso-n8n-validacion.json "$RUNNER_TEMP/v/"
+          # La salida va a un archivo en la carpeta montada: por la salida estándar del contenedor, el JSON de
+          # varios MB a veces llegaba cortado (jq: «Unfinished string at EOF»).
           docker run --rm --network host -u root -v "$RUNNER_TEMP/v:/w" -e N8N_USER_FOLDER=/w/home \
             --entrypoint sh n8nio/n8n:2.44.4 -c \
-            "n8n import:workflow --input=/w/enso-n8n-validacion.json && n8n execute --id=EnsoValidacion01 --rawOutput" \
-            > "$RUNNER_TEMP/v/run.log" 2>&1 || { tail -50 "$RUNNER_TEMP/v/run.log"; exit 1; }
-          sed -n '/^{/,$p' "$RUNNER_TEMP/v/run.log" \
+            "n8n import:workflow --input=/w/enso-n8n-validacion.json && n8n execute --id=EnsoValidacion01 --rawOutput > /w/out.json" \
+            > "$RUNNER_TEMP/v/run.log" 2>&1 || { tail -50 "$RUNNER_TEMP/v/run.log"; tail -c 2000 "$RUNNER_TEMP/v/out.json"; exit 1; }
+          sed -n '/^{/,$p' "$RUNNER_TEMP/v/out.json" \
             | jq '[.data.resultData.runData.Informe[0].data.main[0][].json]' > validacion-actions.json
           {
             echo "### n8n desde GitHub Actions (Azure, EE. UU.)"
