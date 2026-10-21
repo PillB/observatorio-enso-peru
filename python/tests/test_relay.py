@@ -639,3 +639,40 @@ def test_robots_txt_is_respected_from_peru(tmp_path, monkeypatch):
     e = next(e for e in idx["entries"] if "id_seccion" in e["url"])
     assert e["class"] == "robots" and e["skipped"] == "robots" and not any("id_seccion" in u for u in asked)
     assert probe_sources_urls(idx) >= {e["url"]}  # el registro la marcará «robots-disallowed»
+
+
+def test_registry_sources_are_fetched_once_and_enfen_pdfs_are_followed(tmp_path, monkeypatch):
+    """Con el registro del repositorio: ninguna URL se pide dos veces (lista fija, registro, documentos
+    del ENFEN y enlaces ``follow``) y la regla ``follow`` del ENFEN baja los PDF de la API de WordPress."""
+    from collections import Counter
+
+    monkeypatch.setenv("ENSO_REGISTRY_FILE", str(Path(pc.__file__).resolve().parents[2] / "registry" / "sources.json"))
+    monkeypatch.setenv("ENSO_PERU_PROBES", "0")
+    pdf_up = "https://enfen.imarpe.gob.pe/wp-content/uploads/2026/10/CO-17-2026.pdf"
+    dhn17 = "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/17-2026.pdf"
+    posts = [{"title": {"rendered": "Comunicado Oficial ENFEN N° 17-2026"}, "date": "2026-10-14T00:00:00",
+              "link": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-17-2026/",
+              "content": {"rendered": f'<p>Comunicado oficial <a href="{pdf_up}">PDF</a> <a href="{dhn17}">DHN</a></p>'}}]
+    asked: Counter = Counter()
+
+    def peru(req):
+        u = str(req.url)
+        if u.endswith("/robots.txt"):
+            return httpx.Response(404)
+        asked[u] += 1
+        if "wp-json" in u:
+            return httpx.Response(200, json=posts)
+        if u in (pdf_up, dhn17):
+            return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
+        if u.endswith("/download/comunicado-oficial-enfen-n-17-2026/"):
+            return httpx.Response(200, headers={"content-type": "text/html"}, text=(
+                '<a href="https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-17-2026/'
+                f'?wpdmdl=2161&amp;refresh=x">Descargar</a> <a href="{dhn17}">DHN</a>'))
+        return _peru_only(req)
+
+    idx = _collect(tmp_path, monkeypatch, peru)
+    assert [u for u, n in asked.items() if n > 1] == []
+    linked = [e for e in idx["entries"] if e["group"] == "enlaces"]
+    assert [e["url"] for e in linked] == [pdf_up] and pc.usable(linked[0])
+    assert linked[0]["parent"] == "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado"
+    assert any(e["url"] == dhn17 and pc.usable(e) for e in idx["entries"])
