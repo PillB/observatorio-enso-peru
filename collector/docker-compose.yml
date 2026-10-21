@@ -1,0 +1,14 @@
+# docker compose -f collector/docker-compose.yml up -d --build
+# Requiere un archivo collector/.env con GITHUB_TOKEN=... (no se versiona).
+services:
+  enso-collector:
+    build:
+      context: ..
+      dockerfile: collector/Dockerfile
+    env_file: .env
+    environment:
+      ENSO_COLLECT_AT: "21:00"
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: {max-size: "5m", max-file: "5"}

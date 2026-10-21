@@ -1,0 +1,68 @@
+# Capturas de la página de Noticias en los dispositivos de referencia
+# (tools/devices.py) con su motor real: WebKit para iPhone, iPad y Safari en
+# Mac; Chromium para Android, Samsung y Chrome/Edge; Firefox para PC y KaiOS.
+# Se construye el sitio con las fuentes capturadas y se guardan las capturas
+# y el informe de verificación en docs/capturas/.
+name: device-screens
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'python/tools/screenshots.py'
+      - 'python/tools/devices.py'
+      - '.github/workflows/device-screens.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: device-screens-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  screens:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: python/requirements*.txt
+      - run: pip install -r python/requirements-dev.txt pillow
+      - run: python -m playwright install --with-deps chromium webkit firefox
+      - name: Build the site from captured sources
+        working-directory: python
+        run: python -m enso.observatory --out ../public/data --previous '' --fixtures tests/fixtures/sources --fail-on critical
+      - name: Capture and check every device
+        working-directory: python
+        run: |
+          rc=0
+          python -m tools.screenshots --site-dir ../public --out ../docs/capturas/noticias-peru --route "noticias?tab=peru" || rc=1
+          python -m tools.screenshots --site-dir ../public --out ../docs/capturas/noticias-oficial --route "noticias?tab=oficial" || rc=1
+          exit $rc
+      - name: Commit screenshots
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A docs/capturas
+          git diff --cached --quiet && exit 0
+          # Nunca en la rama de trabajo: los commits del bot dejan las
+          # comprobaciones del PR en «action_required» y engordan el diff.
+          # Se publican en una rama aparte que se trae a mano cuando sirve:
+          #   git fetch origin bot/screens/$GITHUB_REF_NAME && git checkout FETCH_HEAD -- docs/capturas
+          git commit -m "chore(docs): device screenshots of the news page"
+          git push --force origin "HEAD:refs/heads/bot/screens/$GITHUB_REF_NAME"
+          echo "::notice::Resultado en la rama bot/screens/$GITHUB_REF_NAME"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: device-screens
+          path: |
+            docs/capturas
+          if-no-files-found: ignore
+          retention-days: 14

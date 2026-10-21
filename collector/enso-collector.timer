@@ -1,0 +1,12 @@
+# Todos los días a las 21:00 hora de Lima. Persistent=true recupera la
+# corrida si la máquina estaba apagada a esa hora.
+[Unit]
+Description=Observatorio ENSO Peru - recoleccion diaria 21:00 Lima
+
+[Timer]
+OnCalendar=*-*-* 21:00:00 America/Lima
+Persistent=true
+RandomizedDelaySec=120
+
+[Install]
+WantedBy=timers.target

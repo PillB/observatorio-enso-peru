@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>&#xCD;ndice Costero El Ni&#xF1;o (ICEN) - IMARPE SIOFEN</title>
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="/assets/css/main.css" media="screen">
+	<link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/assets/css/bootstrap-grid.css" />
+	<link rel="stylesheet" href="/assets/css/jquery.fancybox.css?v=2.1.5" />
+	<link rel="stylesheet" href="/assets/css/modal.css" />
+	<link rel="stylesheet" href="/assets/plugins/sweetalert/sweetalert2.min.css" />
+	<link rel="stylesheet" href="/css/site.css?v=49Clg3AYBSurkc7KYrW-Png2-nhqgAWpPdKjixz58f0" />
+	<link rel="stylesheet" href="/IMARPE.SIOFEN.WebApp.styles.css?v=E4ltZ8BwiQd7q4ryYzyc-016uq2Zem1W-mLYGnAh4eQ" />
+	<link rel="stylesheet" href="/assets/plugins/zoom/zoom.css?v=yXGq52TtoFI7jJ6GIvKWw139s87GWHPj7i23iGXjFJM" />
+
+	<!--Jquery-->
+	<script src="/lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
+	<script src="/lib/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+	<script src="/lib/jquery-validation/dist/additional-methods.min.js" type="text/javascript"></script>
+</head>
+<body id="page-home">
+	<div b-87z407k6h1 id="loader"></div>
+	<div b-87z407k6h1 class="wrapper wrapper_interna">
+		<header b-87z407k6h1 id="header" class="headerEstatico">
+			<div b-87z407k6h1 class="white_bar">
+				<div b-87z407k6h1 class="container">
+					<div b-87z407k6h1 class="logo_sup logo-min row">
+						<a b-87z407k6h1 href="/" class="img__logo__imarpe"><img src="/assets/images/Logo-SIOFEN-a_h.png" class="img-fluid mr-3" alt="Logo Imarpe"></a>
+					</div>
+					<div b-87z407k6h1 class="logo_sup logo-imarpe">
+						
+<div class="redes">
+			<div class="ico">
+				<a href="https://www.instagram.com/institutodelmardelperu/?hl=es" target="_blank">
+					<img src="https://siofen-admin.imarpe.gob.pe/img/redSocial/Instagram_logo.png" class="img-fluid" alt="item.Titulo" 
+					title="Instagram" />
+				</a>
+			</div>
+			<div class="ico">
+				<a href="https://www.facebook.com/imarpe.pe/?locale=es_LA" target="_blank">
+					<img src="https://siofen-admin.imarpe.gob.pe/img/redSocial/icon-facebook.png" class="img-fluid" alt="item.Titulo" 
+					title="facebook" />
+				</a>
+			</div>
+			<div class="ico">
+				<a href="https://twitter.com/ImarpePeru?s=20" target="_blank">
+					<img src="https://siofen-admin.imarpe.gob.pe/img/redSocial/twitter_circle.png" class="img-fluid" alt="item.Titulo" 
+					title="twitter" />
+				</a>
+			</div>
+</div>
+					</div>
+				</div>
+			</div>
+			<div b-87z407k6h1 class="box_topper">
+				<div b-87z407k6h1 class="container">
+					<nav b-87z407k6h1>
+						<ul b-87z407k6h1 class="menu_principal" id="menu_principal">
+						</ul>
+						
+<ul class="menu">
+				<li class="menu_nosotros">
+					<a href="/pagina/nosotros" class="full"></a>
+					<span>Nosotros</span>
+				</li>
+				<li class="menu_nosotros">
+					<a href="https://www.imarpe.gob.pe/nino/" target="_blank" class="full"></a>
+					<span>El Ni&#xF1;o y La Ni&#xF1;a</span>
+				</li>
+				<li class="menu_nosotros">
+					<a href="/proyectos" class="full"></a>
+					<span>PROGRAMAS</span>
+				</li>
+				<li class="menu_nosotros">
+					<a href="/pagina/recursos-de-informacion" class="full"></a>
+					<span>Recursos de Informaci&#xF3;n</span>
+				</li>
+				<li class="menu_nosotros">
+					<a href="/pagina/repositorio" class="full"></a>
+					<span>PUBLICACIONES</span>
+				</li>
+				<li class="menu_nosotros">
+					<a href="/blog" class="full"></a>
+					<span>Blog</span>
+				</li>
+				<li class="menu_nosotros">
+					<a href="/contactenos" class="full"></a>
+					<span>Cont&#xE1;ctanos</span>
+				</li>
+				<li class="menu_nosotros">
+					<a href="https://sapo.ifop.cl/" target="_blank" class="full"></a>
+					<span>S.A.P.O.</span>
+				</li>
+				<li class="menu_nosotros">
+					<a href="https://siocc.imarpe.gob.pe/" target="_blank" class="full"></a>
+					<span>SIOCC</span>
+				</li>
+</ul>
+					</nav>
+				</div>
+			</div>
+		</header>
+		<div b-87z407k6h1 class="menu_mobile">
+			<div b-87z407k6h1 class="logo">
+				<a b-87z407k6h1 href="/">
+					<img src="/assets/images/logo-isotipo-white.svg" alt="Imarpe">
+				</a>
+			</div>
+			<div b-87z407k6h1 class="sanguche">
+				<div b-87z407k6h1 class="lines"></div>
+				<div b-87z407k6h1 class="lines"></div>
+				<div b-87z407k6h1 class="lines"></div>
+			</div>
+			<div b-87z407k6h1 class="mobile_tools">
+				<div b-87z407k6h1 class="btn_close">
+					<img src="/assets/images/btn_close_menu.svg" alt="Imarpe">
+				</div>
+			</div>
+		</div>
+		<section b-87z407k6h1 class="seccion_principal ">
+			
+
+<style>
+	.information_footer {
+		background-color: #f5f5f5;
+	}
+</style>
+
+		<div class="banner_page_interna" style="background-image: url(https://siofen-admin.imarpe.gob.pe/img/menuNivel2/banner_indices_3.png);"></div>
+		<div class="caja_principal">
+			<div class="breadcrumb">
+				<div class="container">
+					<a href="/">Home</a> / <a href="/principal/indices-climaticos">INDICES CLIM&#xC1;TICOS</a> / <a href="/nivel1/indices-regionales">&#xCD;ndices Regionales</a> / &#xCD;ndice Costero El Ni&#xF1;o (ICEN)
+				</div>
+			</div>
+			<div class="superior">
+				<div class="container">
+					<h1>
+						&#xCD;ndices Regionales
+					</h1>
+					<div class="titulo">
+						&#xCD;ndice Costero El Ni&#xF1;o (ICEN)
+					</div>
+					<div class="texto container__html">
+						<p style="text-align:justify">El &Iacute;ndice Costero El Ni&ntilde;o (ICEN) fue establecido por la Comisi&oacute;n Multisectorial encargada del Estudio del Fen&oacute;meno El Ni&ntilde;o (ENFEN) para el diagn&oacute;stico oficial de El Ni&ntilde;o y La Ni&ntilde;a en el Per&uacute; (ENFEN, 2012; Takahashi et al., 2014) desde el 2012 hasta 2024. En diciembre del 2024, debido a los cambios clim&aacute;ticos actuales, fue actualizado siguiendo la metodolog&iacute;a presentada en la Nota T&eacute;cnica ENFEN 01-2024 (ENFEN, 2024).&nbsp;</p>
+
+<p style="text-align:justify">Este &iacute;ndice representa la variabilidad del clima regional en el este del Oc&eacute;ano Pac&iacute;fico ecuatorial, que incluye las zonas frente a Ecuador y norte del Per&uacute;. Se calcula como la media m&oacute;vil de tres meses de las anomal&iacute;as mensuales de la temperatura superficial del mar (TSM) en la regi&oacute;n Ni&ntilde;o 1+2 (90&deg;-80&deg;W, 10&deg;S-0&deg;) del producto ERSSTv5 de la NOAA con respecto a la climatolog&iacute;a para el periodo de 1991-2020.</p>
+
+<table align="center">
+	<tbody>
+		<tr>
+			<td>
+			<p style="text-align:center"><strong>ESTADO ACTUAL DEL ICEN</strong></p>
+
+			<p><img alt="" src="https://siofen-admin.imarpe.gob.pe/img/menuNivel2/SIOFEN_INDICES_ICEN_DIA_1.png" style="height:266px; width:350px" />&nbsp;</p>
+			</td>
+			<td>
+			<p style="text-align:center"><strong>CRITERIO</strong></p>
+
+			<p><img alt="" src="https://siofen-admin.imarpe.gob.pe/img/menuNivel2/SIOFEN_INDICES_ICEN_CRI_2.png" style="height:269px; width:390px" />&nbsp;</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="text-align:center"><strong>TABLA DE VALORES HIST&Oacute;RICOS DEL ICEN</strong></p>
+
+<p style="text-align:center"><img alt="" src="https://siofen-admin.imarpe.gob.pe/img/menuNivel4/SIOFEN_INDICES_ICEN_THIS_3.png" style="height:356px; width:500px" /></p>
+
+<p style="text-align:center"><strong>VARIACI&Oacute;N MENSUAL A LARGO PLAZO DEL ICEN</strong></p>
+
+<p style="text-align:center"><img alt="" src="https://siofen-admin.imarpe.gob.pe/img/menuNivel4/SIOFEN_INDICES_ICEN_SERIE_4.png" style="height:403px; width:800px" /></p>
+
+<p style="text-align:center"><a href="http://met.igp.gob.pe/datos/ICEN.txt" target="_blank">DESCARGAR DATOS</a></p>
+
+<p style="text-align:center">&nbsp;</p>
+
+<p>* Nota informativa: El ICEN temporal es extra&iacute;do del &uacute;ltimo informe publicado por el ENFEN.</p>
+
+					</div>
+				</div>
+			</div>
+		</div>
+			<div class="information_footer py-5">
+				<div class="container">
+					<p><strong>REFERENCIAS BIBLIOGR&Aacute;FICAS </strong></p>
+
+<p>ENFEN (2012). Definici&oacute;n operacional de los eventos El Ni&ntilde;o y La Ni&ntilde;a y sus magnitudes en la costa del Per&uacute;. Nota T&eacute;cnica, 3p. Comit&eacute; T&eacute;cnico del Estudio Nacional del Fen&oacute;meno El Ni&ntilde;o. <a href="https://enfen.imarpe.gob.pe/download/nota-tecnica-enfen-abril-2012-definicion-operacional-de-loseventos-el-nino-y-la-nina-y-sus-magnitudes-en-la-costa-delperu/?wpdmdl=770&amp;refresh=67530eb0e312b1733496496" style="text-decoration:none">https://enfen.imarpe.gob.pe/download/nota-tecnica-enfen-abril-2012-definicion-operacional-de-loseventos-el-nino-y-la-nina-y-sus-magnitudes-en-la-costa-delperu/?wpdmdl=770&amp;refresh=67530eb0e312b1733496496</a></p>
+
+<p>ENFEN (2024). Definici&oacute;n operacional de los eventos El Ni&ntilde;o y La Ni&ntilde;a costera en el Per&uacute;. Nota T&eacute;cnica ENFEN 01-2024, 7p. Comit&eacute; T&eacute;cnico del Estudio Nacional del Fen&oacute;meno El Ni&ntilde;o. <a href="https://enfen.imarpe.gob.pe/download/nota-tecnica-enfen-01-2024-definicion-operacional-de-los-eventos-el-nino-costero-y-la-nina-costera-en-el-peru/?wpdmdl=1905&amp;refresh=680b4fa2195251745571746" style="text-decoration:none">https://enfen.imarpe.gob.pe/download/nota-tecnica-enfen-01-2024-definicion-operacional-de-los-eventos-el-nino-costero-y-la-nina-costera-en-el-peru/?wpdmdl=1905&amp;refresh=680b4fa2195251745571746</a></p>
+
+<p>Takahashi, K, K. Mosquera y J.Reupo, 2014. El Indice Costero El Ni&ntilde;o (ICEN): historia y actualizaci&oacute;n. Bolet&iacute;n T&eacute;cnico - Vol. 1 Nro. 2, Febrero del 2014. <a href="https://repositorio.igp.gob.pe/server/api/core/bitstreams/f272dbdc-959e-44d6-b2d8-3a1d7530e04e/content" style="text-decoration:none">https://repositorio.igp.gob.pe/server/api/core/bitstreams/f272dbdc-959e-44d6-b2d8-3a1d7530e04e/content</a>.</p>
+
+				</div>
+			</div>
+
+		</section>
+		<footer b-87z407k6h1>
+			<div b-87z407k6h1 class="section_blue">
+				<div b-87z407k6h1 class="container">
+					<div b-87z407k6h1 class="row">
+						<div b-87z407k6h1 class="col-md-3">
+							<div b-87z407k6h1 class="logo">
+								<img b-87z407k6h1 src="/assets/images/logo-siofen_white.svg"  alt="logo_principal" />
+							</div>
+						</div>
+						<div b-87z407k6h1 class="col-md-9">
+							<div b-87z407k6h1 class="row" id="menu_principalfooter">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div b-87z407k6h1 class="section_turqueza">
+				<div b-87z407k6h1 class="container">
+					<div b-87z407k6h1 class="row">
+						
+<div class="logos">
+			<a href="#" target="_blank">
+				<img src="https://siofen-admin.imarpe.gob.pe/img/footerImagen/logo-premio-ciudadanosaldia-1-removebg-preview.png" alt="Logo Premio 2018" title="Logo Premio 2018" />
+			</a>
+			<a href="https://enfen.imarpe.gob.pe/" target="_blank">
+				<img src="https://siofen-admin.imarpe.gob.pe/img/footerImagen/LOGO-ENFEN.png" alt="ENFEN" title="ENFEN" />
+			</a>
+			<a href="https://cpps-int.org/index.php" target="_blank">
+				<img src="https://siofen-admin.imarpe.gob.pe/img/footerImagen/logo-CPPS.png" alt="CPPS" title="CPPS" />
+			</a>
+			<a href="https://origin.cpc.ncep.noaa.gov/products/precip/CWlink/MJO/enso.shtml" target="_blank">
+				<img src="https://siofen-admin.imarpe.gob.pe/img/footerImagen/logo-NOAA.svg" alt="NOAA" title="NOAA" />
+			</a>
+			<a href="https://data.marine.copernicus.eu/products" target="_blank">
+				<img src="https://siofen-admin.imarpe.gob.pe/img/footerImagen/logo-COPERNICUS.png" alt="COPERNICUS" title="COPERNICUS" />
+			</a>
+			<a href="https://sapo.ifop.cl/" target="_blank">
+				<img src="https://siofen-admin.imarpe.gob.pe/img/footerImagen/logo_sapo.gif" alt="SAPO" title="SAPO" />
+			</a>
+</div>
+						<div b-87z407k6h1 class="col-12">
+							<div b-87z407k6h1 class="line"></div>
+						</div>
+						<div b-87z407k6h1 class="col-md-10">
+							<div b-87z407k6h1 class="copy">
+								Copyright 2026 © IMARPE | Todos los derechos reservados
+							</div>
+						</div>
+						<div b-87z407k6h1 class="col-md-2">
+							<img b-87z407k6h1 src="/assets/images/logo-ministerio.png" class="img-fluid" alt="Logo Ministerio">
+							<div b-87z407k6h1 class="clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<script src="/assets/js/jquery-1.11.3.min.js"></script>
+	<script src="/assets/js/jquery.matchHeight.js"></script>
+	<script src="/assets/js/popper.min.js"></script>
+	<script src="/assets/js/bootstrap.min.js"></script>
+	<script src="/assets/js/Pxloader.js"></script>
+	<script src="/assets/js/PxloaderImage.js"></script>
+	<script src="/assets/js/TweenMax.min.js"></script>
+	<script src="/assets/js/owl.carousel.min.js"></script>
+	<script src="/assets/js/jquery.stellar.min.js"></script>
+	<script src="/assets/js/jquery.superscrollorama.js"></script>
+	<script src="/assets/js/funciones.js"></script>
+	<script src="/assets/js/jquery.jqtransform.js"></script>
+	<script src="/assets/js/jquery.bxslider.min.js"></script>
+	<script src="/assets/js/jquery.fancybox.pack.js?v=2.1.5"></script>
+	<script src="/assets/plugins/sweetalert/sweetalert2.min.js"></script>
+	<script src="/assets/plugins/zoom/zoom.min.js"></script>
+	<script src="/assets/plugins/moment/moment.js"></script>
+	<script src="/assets/plugins/moment/es.js"></script>
+	<script src="/assets/plugins/select2/select2.min.js" type="text/javascript"></script>
+	<script src="/js/site.js?v=omkkSn3RuirGg6T3OPGRfJLkChz03gBnwnRR6PjZJsw"></script>
+	<script src="/js/master.js?v=9C6RK6N5nqkZMp_48Kk3_uQGrrD4qd3HGm_iPBAa9dQ"></script>
+	
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"49ec3752136e4e47a057dcad41a3b0d0","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

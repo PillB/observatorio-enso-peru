@@ -1,0 +1,476 @@
+# Actualización diaria, validación y despliegue atómico del observatorio.
+#
+# Un solo flujo publica el sitio: cada noche a las 23:37 hora de Lima
+# (04:37 UTC; Perú no tiene horario de verano), al fusionar en main, a
+# pedido del vigilante o manualmente. Si el pipeline o las pruebas fallan,
+# el sitio anterior sigue publicado. Después de desplegar, comprueba que
+# el sitio en vivo sirve la nueva publicación y sincroniza las incidencias
+# con issues de GitHub.
+#
+# Destino del sitio (variables del repositorio, ver docs/despliegue-cloudflare.md):
+#   DEPLOY_TARGET       github-pages (por omisión) o cloudflare
+#   CLOUDFLARE_PROJECT  nombre del proyecto de Cloudflare Pages (observatorio-enso)
+#   SITE_URL            dirección pública; con Cloudflare se deduce del proyecto
+# Con Cloudflare, el sitio publicado no enlaza al repositorio de GitHub.
+name: observatory
+
+on:
+  schedule:
+    - cron: '37 4 * * *'
+  push:
+    branches: [main]
+    paths-ignore: ['**.md', 'docs/**']
+  workflow_dispatch:
+    inputs:
+      archive_save:
+        description: 'Pedir una copia nueva al Internet Archive cuando una fuente no responda'
+        type: boolean
+        default: true
+  repository_dispatch:
+    types: [enso-refresh]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: enso-production-publication
+  cancel-in-progress: false
+
+env:
+  DEPLOY_TARGET: ${{ vars.DEPLOY_TARGET || 'github-pages' }}
+  CF_PROJECT: ${{ vars.CLOUDFLARE_PROJECT || 'observatorio-enso' }}
+  SITE_URL: ${{ vars.SITE_URL || 'https://pillb.github.io/observatorio-enso-peru/' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # El pipeline tiene 26 min; el resto del build (pruebas, navegador, subidas) cabe en los otros 10.
+    timeout-minutes: 36
+    outputs:
+      publication_id: ${{ steps.pipeline.outputs.publication_id }}
+      worst: ${{ steps.pipeline.outputs.worst }}
+      site_url: ${{ steps.site.outputs.url }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: python/requirements*.txt
+      - run: pip install -r python/requirements-dev.txt
+      # Node 22 (node:sqlite) para las pruebas de la consola de lugares (functions/).
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Con Cloudflare, la dirección sale del proyecto (se crea si falta),
+      # salvo que la variable SITE_URL fije otra (p. ej. un dominio propio).
+      - name: Resolve the public address
+        id: site
+        working-directory: python
+        env:
+          SITE_URL_VAR: ${{ vars.SITE_URL }}
+          GEO_OVERRIDES_URL_VAR: ${{ vars.GEO_OVERRIDES_URL }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          url="$SITE_URL"
+          if [ "$DEPLOY_TARGET" = cloudflare ]; then
+            if [ -z "$SITE_URL_VAR" ]; then
+              url=$(python -m tools.cloudflare_pages --project "$CF_PROJECT")
+              echo "::notice::Sitio en $url. Guarde esa dirección en la variable SITE_URL para que el vigilante la revise."
+            fi
+            # Las fuentes ven la dirección del sitio como contacto, no el repositorio.
+            echo "ENSO_CONTACT_URL=${url%/}/" >> "$GITHUB_ENV"
+            # Correcciones de la consola de lugares (Pages Function); si no responde, se usan las anteriores.
+            echo "GEO_OVERRIDES_URL=${GEO_OVERRIDES_URL_VAR:-${url%/}/api/geo/overrides}" >> "$GITHUB_ENV"
+          elif [ "$DEPLOY_TARGET" != github-pages ]; then
+            echo "::error::DEPLOY_TARGET debe ser github-pages o cloudflare (es «$DEPLOY_TARGET»)"; exit 1
+          fi
+          url="${url%/}/"
+          echo "SITE_URL=$url" >> "$GITHUB_ENV"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Unit and backtest suite
+        working-directory: python
+        run: python -m pytest -q -m "not browser"
+
+      # Copias que el recolector del Perú (python/tools/peru_collector.py)
+      # sube a la rama data-peru. Si la rama no existe, la carpeta tampoco y
+      # el pipeline lo registra como incidencia (relay-missing): sin ella, lo
+      # geobloqueado solo llega por réplicas y archivo.
+      - name: Fetch the Peru relay copies
+        id: relay
+        continue-on-error: true
+        run: |
+          # La carpeta va al pipeline aunque falte: lo anota como incidencia; aquí queda el motivo.
+          echo "dir=$RUNNER_TEMP/relay" >> "$GITHUB_OUTPUT"
+          rc=0; git ls-remote --exit-code --heads origin data-peru >/dev/null || rc=$?
+          if [ "$rc" = 0 ]; then
+            git fetch --depth 1 origin data-peru && git worktree add --detach "$RUNNER_TEMP/relay" FETCH_HEAD \
+              || echo "::warning::La rama data-peru existe pero no se pudo bajar en esta corrida."
+          elif [ "$rc" = 2 ]; then
+            echo "::warning::La rama data-peru no existe: sin copias desde el Perú."
+          else
+            echo "::warning::No se pudo consultar la rama data-peru (git ls-remote terminó con $rc)."
+          fi
+
+      # Copias que el flujo de n8n (n8n/, docs/n8n.md) sube a la rama data-n8n:
+      # un segundo canal fuera de Actions para las fuentes no geobloqueadas.
+      - name: Fetch the n8n relay copies
+        id: n8n
+        continue-on-error: true
+        run: |
+          # La carpeta va al pipeline aunque falte: lo anota como incidencia; aquí queda el motivo.
+          echo "dir=$RUNNER_TEMP/n8n" >> "$GITHUB_OUTPUT"
+          rc=0; git ls-remote --exit-code --heads origin data-n8n >/dev/null || rc=$?
+          if [ "$rc" = 0 ]; then
+            git fetch --depth 1 origin data-n8n && git worktree add --detach "$RUNNER_TEMP/n8n" FETCH_HEAD \
+              || echo "::warning::La rama data-n8n existe pero no se pudo bajar en esta corrida."
+          elif [ "$rc" = 2 ]; then
+            echo "::warning::La rama data-n8n no existe: sin copias de n8n."
+          else
+            echo "::warning::No se pudo consultar la rama data-n8n (git ls-remote terminó con $rc)."
+          fi
+
+      # Copia del histórico de noticias que el job «archive» guarda en la rama
+      # data-archive (sources/news/items.jsonl.gz, unión de todo lo publicado).
+      # Se baja siempre (un solo archivo, por la API): el pipeline le suma al
+      # histórico publicado las notas que le falten y lo rehace con ella si no
+      # puede leerlo (sitio caído, otro hosting). La carpeta va aunque la
+      # descarga falle: vacía, el pipeline sabe que la copia no se pudo bajar;
+      # «absent» (HTTP 404) es que todavía no hay ninguna.
+      - name: News history backup
+        id: history
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/history"
+          echo "dir=$RUNNER_TEMP/history" >> "$GITHUB_OUTPUT"
+          f="$RUNNER_TEMP/history/items.jsonl.gz"
+          # «raw», no «raw+json»: con este gh lo trata como JSON y daña cualquier archivo binario.
+          if gh api -H "Accept: application/vnd.github.raw" \
+              "repos/$GITHUB_REPOSITORY/contents/sources/news/items.jsonl.gz?ref=data-archive" \
+              > "$f" 2> "$RUNNER_TEMP/history.err"; then
+            if gzip -t "$f"; then
+              echo "Copia del histórico: $(gzip -dc "$f" | wc -l) notas."
+            else
+              rm -f "$f"
+              echo "::warning::La copia del histórico de noticias de data-archive llegó rota; no se usa en esta corrida."
+            fi
+          elif grep -q "(HTTP 404)" "$RUNNER_TEMP/history.err"; then
+            rm -f "$f"
+            echo "absent=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::data-archive todavía no tiene copia del histórico de noticias."
+          else
+            rm -f "$f"
+            echo "::warning::No se pudo bajar la copia del histórico de noticias: $(head -c 300 "$RUNNER_TEMP/history.err")"
+          fi
+
+      # Último pedido (y notas de la última lectura buena) de los feeds que
+      # robots.txt no permite y se leen como un lector de feeds, una vez al día:
+      # sobrevive a una corrida que los pidió y no llegó a publicar. Solo en
+      # main: la caché de otra rama no la ve main, que los volvería a pedir;
+      # fuera de main esos feeds no se piden.
+      - name: Restore the reader-feed state
+        if: github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/reader-state.json
+          key: enso-reader-state-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: enso-reader-state-
+
+      - name: Fetch, validate and build the publication
+        id: pipeline
+        working-directory: python
+        # Por debajo del límite del job: si se pasa, falla este paso y los siguientes con always() (el estado de
+        # los feeds «reader», el informe) corren igual.
+        timeout-minutes: 26
+        env:
+          ENSO_ARCHIVE_SAVE: ${{ (github.event_name != 'workflow_dispatch' || inputs.archive_save) && '1' || '0' }}
+          RELAY_DIR: ${{ steps.relay.outputs.dir }}
+          N8N_DIR: ${{ steps.n8n.outputs.dir }}
+          HISTORY_DIR: ${{ steps.history.outputs.dir }}
+          HISTORY_ABSENT: ${{ steps.history.outputs.absent }}
+          READER_STATE: ${{ github.ref == 'refs/heads/main' && format('{0}/reader-state.json', runner.temp) || '' }}
+        run: |
+          python -m enso.observatory \
+            --out ../public/data \
+            --previous "${SITE_URL}data" \
+            --raw-dir "$RUNNER_TEMP/raw" \
+            ${RELAY_DIR:+--relay-dir "$RELAY_DIR"} \
+            ${N8N_DIR:+--n8n-dir "$N8N_DIR"} \
+            ${HISTORY_DIR:+--history-dir "$HISTORY_DIR"} \
+            ${HISTORY_ABSENT:+--history-absent} \
+            ${READER_STATE:+--reader-state "$READER_STATE"} \
+            --fail-on critical
+
+      - name: Save the reader-feed state
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/reader-state.json
+          key: enso-reader-state-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Adapt the site to its public address
+        working-directory: python
+        run: python -m tools.prepare_site --site-dir ../public --site-url "$SITE_URL" ${{ env.DEPLOY_TARGET == 'cloudflare' && '--hide-repo --cloudflare' || '' }}
+
+      # Solo Chromium: WebKit y Firefox se prueban en ci.yml y en device-screens.yml. Un problema al instalar o
+      # abrir esos motores no debe detener la publicación de los datos oficiales.
+      - name: Browser checks against the built site
+        working-directory: python
+        run: |
+          python -m playwright install --with-deps chromium
+          python -m pytest -q -m browser --site-dir=../public -k "not webkit and not firefox"
+
+      # Las dos subidas auxiliares no detienen el despliegue de los datos oficiales si fallan: el job
+      # «archive» avisa si le falta raw-sources, y «incidents» sigue sin informe.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: run-report
+          path: |
+            public/data/run-report.json
+            public/data/sources.json
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        if: success()
+        continue-on-error: true
+        with:
+          name: raw-sources
+          path: ${{ runner.temp }}/raw
+          if-no-files-found: ignore
+          retention-days: 7
+      - uses: actions/configure-pages@v5
+        if: env.DEPLOY_TARGET == 'github-pages'
+      - uses: actions/upload-pages-artifact@v3
+        if: env.DEPLOY_TARGET == 'github-pages'
+        with:
+          path: public
+      - uses: actions/upload-artifact@v4
+        if: env.DEPLOY_TARGET == 'cloudflare'
+        with:
+          name: site
+          path: public
+          retention-days: 3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: ${{ vars.DEPLOY_TARGET == 'cloudflare' && 'cloudflare-pages' || 'github-pages' }}
+      url: ${{ needs.build.outputs.site_url }}
+    env:
+      SITE_URL: ${{ needs.build.outputs.site_url }}
+    steps:
+      - id: deploy
+        if: env.DEPLOY_TARGET == 'github-pages'
+        uses: actions/deploy-pages@v4
+      # functions/ y wrangler.toml (si existen) viajan con la subida directa:
+      # wrangler los toma del directorio de trabajo (Pages Functions y sus
+      # vínculos D1/KV). El modo cono incluye siempre los archivos de la raíz.
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            python
+            functions
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install httpx
+      - name: Make sure the Cloudflare Pages project exists
+        id: cf
+        if: env.DEPLOY_TARGET == 'cloudflare'
+        working-directory: python
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python -m tools.cloudflare_pages --project "$CF_PROJECT"
+      - uses: actions/download-artifact@v4
+        if: env.DEPLOY_TARGET == 'cloudflare'
+        with:
+          name: site
+          path: public
+      # Sin gitHubToken: no se crean «deployments» de GitHub que enlacen el
+      # repositorio con el sitio. Se despliega a la rama de producción del
+      # proyecto: otra rama quedaría como vista previa.
+      - name: Deploy to Cloudflare Pages
+        if: env.DEPLOY_TARGET == 'cloudflare'
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy public --project-name=${{ env.CF_PROJECT }} --branch=${{ steps.cf.outputs.branch }} --commit-message="publicación ${{ needs.build.outputs.publication_id }}" --commit-dirty=true
+      - name: Verify the live site serves this publication
+        working-directory: python
+        run: python -m tools.verify_live --base "$SITE_URL" --expect "${{ needs.build.outputs.publication_id }}"
+
+  incidents:
+    # Corre siempre que el build haya llegado a producir un informe; también al fusionar en main, que publica.
+    needs: [build, deploy, archive]
+    if: always() && needs.build.result != 'skipped'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: python
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install httpx
+      - uses: actions/download-artifact@v4
+        with:
+          name: run-report
+          path: report
+        continue-on-error: true
+      - name: Sync incidents with issues
+        working-directory: python
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -f ../report/run-report.json ]; then
+            python -m tools.sync_issues --report ../report/run-report.json --run-url "$RUN_URL"
+          fi
+      # always(): aunque falle la sincronización de incidencias (API de GitHub, PyPI), la falla de la corrida se avisa.
+      # «cancelled» también: un job que pasa su límite de tiempo termina así, y el sitio queda igual de atrasado.
+      - name: Open an issue when the run itself failed
+        if: always() && (contains(fromJSON('["failure","cancelled"]'), needs.build.result) || contains(fromJSON('["failure","cancelled"]'), needs.deploy.result) || contains(fromJSON('["failure","cancelled"]'), needs.archive.result))
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = '[datos] La actualización diaria falló';
+            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
+            const url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = `La corrida ${url} terminó con error (build: ${{ needs.build.result }}, despliegue: ${{ needs.deploy.result }}, archivo: ${{ needs.archive.result }}). Si falló el build o el despliegue, el sitio sigue mostrando la publicación anterior; si falló el archivo, el sitio se actualizó pero data-archive (y su copia del histórico de noticias) no.\n\n<!-- enso-fp:run-failed -->`;
+            const prev = open.find(i => (i.body || '').includes('enso-fp:run-failed'));
+            if (prev) await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body: `Volvió a fallar: ${url}` });
+            else await github.rest.issues.create({ ...context.repo, title, body, labels: ['incidente-datos'] });
+      - name: Close the run-failure issue after a good run
+        if: always() && needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
+            for (const i of open.filter(i => (i.body || '').includes('enso-fp:run-failed'))) {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: i.number, body: 'La actualización volvió a funcionar. Se cierra automáticamente.' });
+              await github.rest.issues.update({ ...context.repo, issue_number: i.number, state: 'closed', state_reason: 'completed' });
+            }
+
+  archive:
+    # Corpus de respuestas originales para backtesting de los lectores.
+    # También al fusionar en main: esa corrida publica notas y su copia del histórico. Solo en main: la copia
+    # del histórico vuelve al sitio publicado, y las notas de una corrida de prueba en otra rama no deben.
+    needs: build
+    if: success() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        id: raw
+        with:
+          name: raw-sources
+          path: raw
+        continue-on-error: true
+      - name: Commit new raw responses to the data-archive branch
+        env:
+          RAW_OUTCOME: ${{ steps.raw.outcome }}
+        run: |
+          # Una descarga que falló a medias deja archivos cortados: se mira el resultado, no la carpeta.
+          if [ "$RAW_OUTCOME" != success ] || [ ! -d raw ]; then
+            echo "::warning::No llegaron las respuestas de la corrida (artefacto raw-sources): data-archive no se actualiza y su copia del histórico de noticias queda sin las notas de hoy."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin data-archive >/dev/null; then
+            # Solo se bajan la lista de archivos y sources/news, lo único que este job lee o cambia: data-archive
+            # crece cada día y bajarla entera terminaría por no caber en el runner ni en el tiempo del job.
+            git fetch --depth 1 --filter=blob:none origin data-archive
+            git worktree add --no-checkout ../archive FETCH_HEAD
+            git -C ../archive sparse-checkout set sources/news
+            git -C ../archive checkout -q -B data-archive
+          else
+            git worktree add --detach ../archive
+            git -C ../archive switch --orphan data-archive
+          fi
+          mkdir -p ../archive/sources/news
+          # Notas nuevas de cada día: varias corridas el mismo día se suman (sin repetir líneas).
+          for f in raw/news/2*.jsonl; do
+            [ -e "$f" ] || continue
+            t="../archive/sources/news/$(basename "$f")"
+            touch "$t"; cat "$t" "$f" | awk '!seen[$0]++' > "$t.tmp" && mv "$t.tmp" "$t"
+          done
+          # El histórico de esta corrida se une a la copia: la copia nunca pierde notas, aunque la corrida
+          # no haya podido leerla o haya publicado un histórico incompleto (python/tools/merge_history.py).
+          if [ -f raw/news/items.jsonl.gz ]; then
+            python3 python/tools/merge_history.py raw/news/items.jsonl.gz ../archive/sources/news/items.jsonl.gz
+          fi
+          rm -rf raw/news
+          # Una respuesta que data-archive ya tiene (mismo sha256, misma fuente) no se agrega otra vez con la
+          # fecha de hoy: las fuentes que no cambian no hacen crecer la rama.
+          git -C ../archive ls-tree -r --name-only HEAD -- sources 2>/dev/null \
+            | sed -nE 's#^sources/([^/]+)/[0-9-]{10}-([0-9a-f]{12})\.[A-Za-z0-9]+$#\1/\2#p' > ../archived.txt || true
+          for f in raw/*/*; do
+            k="$(printf '%s\n' "$f" | sed -nE 's#^raw/([^/]+)/[0-9-]{10}-([0-9a-f]{12})\.[A-Za-z0-9]+$#\1/\2#p')"
+            [ -n "$k" ] || continue
+            if [ "$(sha256sum "$f" | cut -c1-12)" != "${k#*/}" ]; then
+              echo "::warning::$f no coincide con su sha256 (llegó incompleto): no se archiva."
+              rm -f -- "$f"
+            elif grep -qxF -- "$k" ../archived.txt; then
+              rm -f -- "$f"
+            fi
+          done
+          cp -rn raw/. ../archive/sources/
+          cd ../archive
+          git add --sparse sources
+          # Este job solo agrega y actualiza archivos: un commit que borre alguno es un error (de la copia parcial,
+          # por ejemplo) y no se sube.
+          if ! git diff --cached --quiet --diff-filter=D; then
+            echo "::error::El commit de data-archive borraría archivos; no se sube."
+            git diff --cached --name-only --diff-filter=D | head -20
+            exit 1
+          fi
+          git diff --cached --quiet && exit 0
+          git commit -q -m "archive: raw source responses $(date -u +%F)"
+          # Solo este flujo escribe en data-archive y sus corridas no se cruzan: un rechazo es de la red.
+          for i in 1 2 3; do
+            git push origin data-archive && exit 0
+            sleep $((i * 15))
+          done
+          echo "::error::No se pudo subir a data-archive tras tres intentos."
+          exit 1
+
+  keepalive:
+    # GitHub desactiva los flujos programados tras 60 días sin actividad en
+    # el repositorio. Reactivarlos por API reinicia ese plazo.
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            for (const id of ['observatory.yml', 'watchdog.yml', 'probe-sources.yml']) {
+              try { await github.rest.actions.enableWorkflow({ ...context.repo, workflow_id: id }); core.info(`enabled ${id}`); }
+              catch (e) { core.warning(`${id}: ${e.message}`); }
+            }

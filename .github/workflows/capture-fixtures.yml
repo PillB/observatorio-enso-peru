@@ -1,0 +1,74 @@
+# Captura respuestas crudas de las fuentes (actuales e históricas vía
+# Wayback Machine) y las guarda como fixtures de prueba en la propia rama.
+# Se usa para construir y hacer backtesting de los parsers contra formatos
+# reales. Manual, o al cambiar la herramienta de captura en una rama claude/**.
+# El resultado va a la rama bot/fixtures/<rama> y como artefacto, nunca a la
+# rama de trabajo.
+name: capture-fixtures
+
+on:
+  workflow_dispatch:
+    inputs:
+      history:
+        description: 'Incluir versiones históricas de Wayback'
+        type: boolean
+        default: true
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'python/tools/capture_sources.py'
+      - '.github/workflows/capture-fixtures.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: capture-fixtures-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r python/requirements.txt
+      - name: Capture
+        working-directory: python
+        run: python -m tools.capture_sources --out tests/fixtures/sources ${{ inputs.history && '--history' || '' }}
+      - name: Live pipeline probe
+        working-directory: python
+        env:
+          ENSO_ARCHIVE_SAVE: '1'
+        run: |
+          python -m enso.observatory --out "$RUNNER_TEMP/pub/data" --previous '' --raw-dir tests/fixtures/live-run/raw --fail-on never || true
+          mkdir -p tests/fixtures/live-run
+          mkdir -p tests/fixtures/live-run/news
+          for f in dashboard.json run-report.json sources.json feed.json news/feeds.json news/clusters.json news/items.csv; do
+            [ -f "$RUNNER_TEMP/pub/data/$f" ] && cp "$RUNNER_TEMP/pub/data/$f" "tests/fixtures/live-run/$f"
+          done
+      - name: Commit fixtures
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add python/tests/fixtures/sources python/tests/fixtures/live-run
+          git diff --cached --quiet && exit 0
+          # Nunca en la rama de trabajo: los commits del bot dejan las
+          # comprobaciones del PR en «action_required» y engordan el diff.
+          # Se publican en una rama aparte que se trae a mano cuando sirve:
+          #   git fetch origin bot/fixtures/$GITHUB_REF_NAME && git checkout FETCH_HEAD -- python/tests/fixtures/sources python/tests/fixtures/live-run
+          git commit -m "chore(fixtures): capture raw source snapshots"
+          git push --force origin "HEAD:refs/heads/bot/fixtures/$GITHUB_REF_NAME"
+          echo "::notice::Resultado en la rama bot/fixtures/$GITHUB_REF_NAME"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fixtures
+          path: |
+            python/tests/fixtures/sources
+            python/tests/fixtures/live-run
+          if-no-files-found: ignore
+          retention-days: 14

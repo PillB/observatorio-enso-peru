@@ -1,0 +1,249 @@
+# Kit del recolector desde el Perú (docs/servidor-peru.md).
+#
+# En cada pull request que lo toca: arma el kit, revisa los scripts
+# (shellcheck, PSScriptAnalyzer), corre sus pruebas en Windows y macOS, y lo
+# instala de verdad en Windows, macOS y Linux: instalación, verificación,
+# disparo de la tarea programada (que debe correr y anotar que GitHub
+# rechazó el token de prueba) y desinstalación. En main, además, publica el
+# zip en la versión «recolector-kit», con un enlace fijo para descargarlo.
+name: recolector-kit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'collector/**'
+      - 'python/tools/peru_collector.py'
+      - 'python/tools/probe_sources.py'
+      - 'python/tools/__init__.py'
+      - 'python/tools/collector_*.py'
+      - 'python/enso/**'
+      - 'python/requirements.txt'
+      - 'python/tests/test_collector_service.py'
+      - 'config/**/*.yaml'
+      - 'registry/**'
+      - 'docs/servidor-peru.md'
+      - 'LICENSE'
+      - '.github/workflows/recolector-kit.yml'
+  pull_request:
+    paths:
+      - 'collector/**'
+      - 'python/tools/peru_collector.py'
+      - 'python/tools/probe_sources.py'
+      - 'python/tools/__init__.py'
+      - 'python/tools/collector_*.py'
+      - 'python/enso/**'
+      - 'python/requirements.txt'
+      - 'python/tests/test_collector_service.py'
+      - 'config/**/*.yaml'
+      - 'registry/**'
+      - 'docs/servidor-peru.md'
+      - 'LICENSE'
+      - '.github/workflows/recolector-kit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: recolector-kit-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Un token con el formato de GitHub que GitHub rechaza: prueba toda la
+  # cadena (archivo .env privado, tarea sin consola, consulta a GitHub).
+  FAKE_TOKEN: github_pat_11CI0000000000000000000_token_de_prueba_rechazado_por_github
+  ENSO_SIN_PAUSA: '1'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Lint the shell scripts
+        run: shellcheck collector/instalar.sh collector/lanzadores/*.command collector/lanzadores/otras-acciones/*.command
+      - name: Lint the PowerShell installer
+        shell: pwsh
+        run: |
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          $issues = Invoke-ScriptAnalyzer -Path collector/instalar.ps1 -Severity Warning,Error `
+            -ExcludeRule PSAvoidUsingWriteHost,PSAvoidUsingPositionalParameters
+          $issues | Format-Table -AutoSize | Out-String -Width 200
+          if ($issues) { exit 1 }
+      # El kit lleva el registro de fuentes regenerado con el código (enso.registry).
+      - run: pip install -r python/requirements.txt
+      - name: Build the kit
+        working-directory: python
+        env:
+          # Con el sitio fuera de GitHub Pages, el recolector se presenta con su dirección.
+          ENSO_CONTACT_URL: ${{ vars.DEPLOY_TARGET == 'cloudflare' && vars.SITE_URL || '' }}
+        run: python -m tools.collector_kit --out ../dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recolector-peru
+          path: dist/
+          retention-days: 30
+
+  unit:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r python/requirements.txt pytest
+      - name: Collector tests on ${{ matrix.os }}
+        working-directory: python
+        run: python -m pytest -q -p no:cacheprovider tests/test_collector_service.py
+
+  install:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: recolector-peru
+          path: dist
+
+      - name: Install, verify, fire the task and uninstall (Windows PowerShell 5.1)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Expand-Archive dist/recolector-peru.zip -DestinationPath kit
+          $dest = Join-Path $env:LOCALAPPDATA 'ObservatorioENSO\recolector'
+          & "kit\recolector-peru\INSTALAR-Windows.cmd" -NoInteractivo -SinVerificar -Token $env:FAKE_TOKEN
+          if ($LASTEXITCODE -ne 0) { throw "INSTALAR terminó con $LASTEXITCODE" }
+          Get-ScheduledTask -TaskName 'Observatorio ENSO - recolector Peru' | Format-List TaskName, State, Principal
+          if ((Get-Content "$dest\.env" -Raw) -notmatch 'GITHUB_TOKEN=github_pat_') { throw '.env sin token' }
+          # Reinstalar encima (como ACTUALIZAR): reemplaza el código y conserva el token.
+          & "kit\recolector-peru\INSTALAR-Windows.cmd" -NoInteractivo -SinVerificar
+          if ($LASTEXITCODE -ne 0) { throw "Reinstalar terminó con $LASTEXITCODE" }
+          if ((Get-Content "$dest\.env" -Raw) -notmatch 'GITHUB_TOKEN=github_pat_') { throw 'Reinstalar perdió el token' }
+          if ((Test-Path "$dest\.instalando") -or -not (Test-Path "$dest\python\tools\collector_service.py")) { throw 'Reinstalar dejó la copia a medias' }
+
+          & "$dest\VERIFICAR-Windows.cmd" -Omitir token,escritura,fuentes,ultima-corrida
+          if ($LASTEXITCODE -ne 0) { throw "VERIFICAR terminó con $LASTEXITCODE" }
+
+          & "$dest\otras-acciones\PROBAR-TAREA-Windows.cmd" -Solo tarea
+          $state = Get-Content "$dest\estado.json" -Raw | ConvertFrom-Json
+          $state | Format-List
+          Get-Content "$dest\logs\recolector.log" -Tail 20
+          if ($state.trigger -ne 'prueba' -or $state.exit_code -ne 3) { throw 'La tarea programada no corrió como se esperaba' }
+
+          # Una carpeta ajena (un proyecto con su .venv) no se toma ni se borra,
+          # y desinstalarla no le quita la tarea ni el menú Inicio a la instalación en uso.
+          $menu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Observatorio ENSO'
+          $hadMenu = Test-Path $menu
+          $foreign = Join-Path $env:RUNNER_TEMP 'mi proyecto'
+          New-Item -ItemType Directory -Force -Path "$foreign\.venv" | Out-Null
+          Set-Content "$foreign\notas.txt" 'mio'
+          & "kit\recolector-peru\INSTALAR-Windows.cmd" -NoInteractivo -SinVerificar -SinTarea -Destino $foreign
+          if ($LASTEXITCODE -eq 0) { throw 'INSTALAR aceptó una carpeta ajena' }
+          & "kit\recolector-peru\otras-acciones\DESINSTALAR-Windows.cmd" -NoInteractivo -Destino $foreign
+          if (-not (Test-Path "$foreign\notas.txt") -or (Test-Path "$foreign\logs")) { throw 'Se tocó una carpeta ajena' }
+          if (-not (Get-ScheduledTask -TaskName 'Observatorio ENSO - recolector Peru' -ErrorAction SilentlyContinue)) { throw 'Desinstalar una carpeta ajena quitó la tarea' }
+          if ($hadMenu -and -not (Test-Path $menu)) { throw 'Desinstalar una carpeta ajena quitó el menú Inicio' }
+
+          # Como un doble clic: la consola arranca dentro de la carpeta que se borra.
+          Push-Location "$dest\otras-acciones"
+          & .\DESINSTALAR-Windows.cmd -NoInteractivo
+          $code = $LASTEXITCODE
+          Pop-Location
+          if ($code -ne 0) { throw "DESINSTALAR terminó con $code" }
+          if (Get-ScheduledTask -TaskName 'Observatorio ENSO - recolector Peru' -ErrorAction SilentlyContinue) { throw 'La tarea sigue registrada' }
+          if (Test-Path $dest) { throw 'La carpeta sigue ahí' }
+          if (Test-Path $menu) { throw 'El menú Inicio sigue ahí' }
+
+      - name: Install, verify, fire the task and uninstall (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          set -eux
+          ditto -x -k dist/recolector-peru.zip kit
+          dest="$HOME/Library/Application Support/ObservatorioENSO/recolector"
+          ./kit/recolector-peru/INSTALAR-Mac.command --no-interactivo --sin-verificar --token "$FAKE_TOKEN"
+          launchctl print "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" | head -20
+          test "$(stat -f %Lp "$dest/.env")" = 600
+          # Reinstalar encima (como ACTUALIZAR): reemplaza el código y conserva el token.
+          ./kit/recolector-peru/INSTALAR-Mac.command --no-interactivo --sin-verificar
+          grep -q '^GITHUB_TOKEN=github_pat_' "$dest/.env" && test ! -e "$dest/.instalando" && test -f "$dest/python/tools/collector_service.py"
+          "$dest/VERIFICAR-Mac.command" --omitir token,escritura,fuentes,ultima-corrida
+          "$dest/otras-acciones/PROBAR-TAREA-Mac.command" --solo tarea || true
+          cat "$dest/estado.json"; tail -20 "$dest/logs/recolector.log"
+          python3 -c 'import json,sys; s=json.load(open(sys.argv[1])); assert s["trigger"]=="prueba" and s["exit_code"]==3, s' "$dest/estado.json"
+          # Desinstalar una carpeta ajena no le quita el agente a la instalación en uso.
+          mkdir -p "$RUNNER_TEMP/ajena" && echo mio > "$RUNNER_TEMP/ajena/notas.txt"
+          "$dest/otras-acciones/DESINSTALAR-Mac.command" --no-interactivo --destino "$RUNNER_TEMP/ajena"
+          test -f "$RUNNER_TEMP/ajena/notas.txt" && test -f "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist"
+          launchctl print "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" >/dev/null
+          "$dest/otras-acciones/DESINSTALAR-Mac.command" --no-interactivo
+          test ! -e "$dest" && test ! -e "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist"
+
+      - name: Install, verify, fire the task and uninstall (Linux, cron)
+        if: runner.os == 'Linux'
+        run: |
+          set -eux
+          command -v crontab || { sudo apt-get update -q && sudo apt-get install -y -q cron; }
+          unzip -q dist/recolector-peru.zip -d kit
+          # Carpeta propia, con espacios: los lanzadores instalados deben usarla sin repetir --destino.
+          dest="$RUNNER_TEMP/mi recolector"
+          bash kit/recolector-peru/collector/instalar.sh --no-interactivo --sin-verificar --token "$FAKE_TOKEN" --destino "$dest"
+          crontab -l
+          test "$(stat -c %a "$dest/.env")" = 600
+          # Reinstalar encima (como ACTUALIZAR): reemplaza el código y conserva el token.
+          bash kit/recolector-peru/collector/instalar.sh --no-interactivo --sin-verificar --destino "$dest"
+          grep -q '^GITHUB_TOKEN=github_pat_' "$dest/.env" && test ! -e "$dest/.instalando" && test -f "$dest/python/tools/collector_service.py"
+          test "$(crontab -l | grep -c observatorio-enso-recolector)" -ge 2 && crontab -l | grep -q 'PATH='
+          bash "$dest/VERIFICAR-Mac.command" --omitir token,escritura,fuentes,ultima-corrida
+          bash "$dest/otras-acciones/PROBAR-TAREA-Mac.command" --solo tarea || true
+          cat "$dest/estado.json"; tail -20 "$dest/logs/recolector.log"
+          python3 -c 'import json,sys; s=json.load(open(sys.argv[1])); assert s["trigger"]=="prueba" and s["exit_code"]==3, s' "$dest/estado.json"
+          # Desinstalar una carpeta ajena no le quita las líneas del crontab a la instalación en uso.
+          mkdir -p "$RUNNER_TEMP/ajena" && echo mio > "$RUNNER_TEMP/ajena/notas.txt"
+          bash "$dest/otras-acciones/DESINSTALAR-Mac.command" --no-interactivo --destino "$RUNNER_TEMP/ajena"
+          test -f "$RUNNER_TEMP/ajena/notas.txt" && crontab -l | grep -q observatorio-enso-recolector
+          bash "$dest/otras-acciones/DESINSTALAR-Mac.command" --no-interactivo
+          test ! -e "$dest" && ! crontab -l 2>/dev/null | grep -q observatorio-enso-recolector
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [build, unit, install]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    concurrency:
+      group: recolector-kit-release
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: recolector-peru
+          path: dist
+      - name: Publish the kit to the recolector-kit release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          notes="Kit del recolector desde el Perú. Instrucciones: https://github.com/${GH_REPO}/blob/main/docs/servidor-peru.md
+          Versión del commit ${GITHUB_SHA::7}, probada en Windows, macOS y Linux. sha256: $(cut -d' ' -f1 dist/recolector-peru.zip.sha256)"
+          if ! gh release view recolector-kit >/dev/null 2>&1; then
+            gh release create recolector-kit --target "$GITHUB_SHA" --title "Recolector desde el Perú (kit)" \
+              --notes "$notes" --latest=false
+          fi
+          gh release upload recolector-kit dist/recolector-peru.zip dist/recolector-peru.zip.sha256 --clobber
+          gh release edit recolector-kit --notes "$notes"

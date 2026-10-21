@@ -1,215 +1,145 @@
-# Metodología científica — Observatorio ENSO Perú
+# Metodología e indicadores
 
-> Formal Spanish. Documento de referencia científica para indicadores,
-> definiciones, convenciones de signos, climatología y umbrales.
+El observatorio no recalcula los índices oficiales: publica los valores
+que difunden las instituciones, con su categoría y su antigüedad. Solo
+calcula dos cosas propias, ambas documentadas aquí: el SOI en escala
+Troup y la señal del equipo GRD.
 
-## 1. Marco conceptual
+## 1. Estado oficial
 
-El **ENSO** (El Niño–Oscilación del Sur) es un modo acoplado
-océano–atmósfera del Pacífico ecuatorial. El observatorio distingue dos
-modalidades de monitoreo:
+| Sistema | Fuente | Cuándo se actualiza |
+|---|---|---|
+| ENFEN (Perú) | Comunicado oficial más reciente (PDF) | Normalmente cada dos semanas; con más frecuencia durante un evento |
+| NOAA (EE. UU.) | ENSO Diagnostic Discussion del CPC | Segundo jueves de cada mes |
 
-- **ENSO de cuenca**: Pacífico central, monitoreado operacionalmente por
-  NOAA/CPC mediante el **RONI** sobre la región Niño 3.4.
-- **El Niño Costero**: Pacífico oriental frente a Ecuador y el norte del
-  Perú, monitoreado por ENFEN/IMARPE mediante el **ICEN** sobre la
-  región Niño 1+2.
+El estado del ENFEN se lee del propio comunicado (tipo de alerta, número
+y fecha) y la fecha del siguiente se toma del texto. Si se publica un
+comunicado nuevo que no se pudo leer, o si pasa la fecha prevista del
+siguiente, el estado se marca vencido. El de NOAA se marca vencido tres
+días después del segundo jueves esperado.
 
-Ambos pueden ocurrir juntos o por separado. El caso paradigmático de
-separación es **2017**: ocurrió un El Niño Costero fuerte sin que se
-declarara El Niño de cuenca.
+## 2. ICEN (Índice Costero El Niño)
 
-## 2. Regiones geográficas
+- **Qué es:** media corrida de tres meses de la anomalía de TSM en la
+  región Niño 1+2 (0°–10°S, 90°–80°O), calculada por el ENFEN con
+  ERSSTv5.
+- **Climatología:** periodos de 30 años que se actualizan cada cinco
+  años; la vigente es 1991–2020.
+- **Fuente:** `met.igp.gob.pe/datos/ICEN.txt` (IGP, miembro del ENFEN).
+- **Magnitudes** (Nota Técnica ENFEN 01-2024, vigente desde diciembre de
+  2024), en °C:
 
-| Región      | Latitud        | Longitud (-180..180) | Convención 0..360 |
-|-------------|----------------|----------------------|-------------------|
-| Niño 1+2    | 10°S – 0°      | 90°O – 80°O          | 270°E – 280°E     |
-| Niño 3.4    | 5°S – 5°N      | 170°O – 120°O        | 190°E – 240°E     |
+| Categoría | Rango |
+|---|---|
+| Fría fuerte | < −1,3 |
+| Fría moderada | −1,3 a < −1,1 |
+| Fría débil | −1,1 a < −0,7 |
+| Neutra | −0,7 a +0,5 |
+| Cálida débil | > +0,5 a +1,3 |
+| Cálida moderada | > +1,3 a +2,1 |
+| Cálida fuerte | > +2,1 a +3,5 |
+| Cálida extraordinaria | > +3,5 |
 
-**Conversión**: 270°E ≡ 90°O. Las conversiones son idempotentes y
-preservan NaN.
+La tabla vive en `config/threshold-policies/enfen-icen-2024.yaml` y una
+prueba verifica que el código la aplique igual.
 
-## 3. Indicadores
+**Eventos:** un evento El Niño (o La Niña) costero requiere al menos tres
+meses consecutivos en condición cálida (o fría). Su magnitud es la máxima
+alcanzada. El observatorio reconstruye la lista desde la serie publicada;
+la prueba de backtesting confirma que coincide con el registro oficial
+(1982–83 y 1997–98 extraordinarios, 2015–16 fuerte, 2017 moderado,
+2023–24 fuerte).
 
-### 3.1 Costeros
+## 3. Temperatura del mar por región
 
-#### TSM Niño 1+2 (`nino12`)
-- **Variable**: anomalía mensual de TSM en Niño 1+2.
-- **Unidades**: °C.
-- **Nivel**: superficie.
-- **Agregación**: media mensual.
-- **Climatología**: PSL 1981–2010.
-- **Convención de signos**: anomalía positiva ⇒ más cálido (favorable a
-  El Niño Costero); negativa ⇒ más frío (favorable a La Niña Costera).
-- **Fuente**: NOAA / PSL.
+| Serie | Producto | Uso |
+|---|---|---|
+| Semanal Niño 1+2, 3, 3.4 y 4 | NOAA OISST v2.1, base 1991–2020 | Lo más reciente disponible (días de retraso); alimenta el mapa |
+| Mensual por región | OISST v2.1 | Seguimiento mensual de las cuatro regiones y señal GRD |
+| Mensual Niño 1+2 y 3.4 | NOAA ERSSTv6 (PSL), llevada de la base 1981–2010 a 1991–2020 | Serie larga desde 1950, la reconstrucción que NOAA usa para el RONI |
 
-#### ICEN (`icen`)
-- **Variable**: media móvil de 3 meses de la anomalía mensual de TSM en
-  Niño 1+2.
-- **Unidades**: °C.
-- **Nivel**: superficie.
-- **Agregación**: media móvil de 3 meses.
-- **Climatología**: metodología ENFEN (baseline móvil 30 años).
-- **Convención**: positivo ⇒ anomalía cálida sostenida.
-- **Umbrales** (metodología ENFEN):
-  - |ICEN| < 0.4 °C → Normal
-  - 0.4 ≤ ICEN < 1.0 → El Niño Costero débil
-  - 1.0 ≤ ICEN < 1.5 → El Niño Costero moderado
-  - 1.5 ≤ ICEN < 2.0 → El Niño Costero fuerte
-  - ICEN ≥ 2.0 → El Niño Costero muy fuerte
-  - −1.0 < ICEN ≤ −0.4 → La Niña Costera débil
-  - −1.5 < ICEN ≤ −1.0 → La Niña Costera moderada
-  - ICEN ≤ −1.5 → La Niña Costera fuerte
-- **Activación**: requiere persistencia (3 meses consecutivos).
-- **Fuente**: ENFEN / IMARPE (SIOFEN).
+NOAA dejó de actualizar ERSSTv5 en 2026 (el último mes disponible es
+junio). El cambio de base se hace restando, para cada mes del año, la
+media de 1991–2020; frente a ERSSTv5 la diferencia media es de 0,2 °C en
+Niño 1+2 y 0,14 °C en Niño 3.4.
 
-### 3.2 Cuenca
+**Por qué no hay un «ICEN estimado»:** una media de tres meses de
+ERSSTv6 difiere del ICEN oficial hasta 0,7 °C (en agosto de 2026, 3,28
+frente a 3,98) y coincide en la categoría solo el 71 % de los meses desde
+1991. Mostrarlo confundiría la magnitud del evento, así que solo se
+publica el ICEN oficial.
 
-#### TSM Niño 3.4 (`nino34`)
-- **Variable**: anomalía mensual de TSM en Niño 3.4.
-- **Unidades**: °C.
-- **Climatología**: PSL 1981–2010.
-- **Fuente**: NOAA / PSL (ERSST v5).
+## 4. RONI y ONI
 
-#### RONI (`roni`)
-- **Variable**: media móvil de 3 meses de la anomalía de TSM en Niño
-  3.4 con baseline adaptativa.
-- **Unidades**: °C.
-- **Climatología**: baseline móvil de 30 años (adaptativa al
-  calentamiento secular).
-- **Umbrales operativos**:
-  - RONI ≥ +0.5 °C sostenido → El Niño (cuenca)
-  - RONI ≤ −0.5 °C sostenido → La Niña (cuenca)
-  - |RONI| < 0.5 °C → ENSO Neutral
-- **Fuente**: NOAA / CPC. Índice operacional actual; reemplaza al ONI
-  heredado (base fija 1971–2000).
+- **RONI** (Índice Oceánico Relativo de El Niño): índice oficial de NOAA
+  desde el 1 de febrero de 2026. Es la anomalía de Niño 3.4 menos la
+  anomalía media de los trópicos, reescalada; corrige la tendencia del
+  calentamiento global.
+- **ONI:** índice tradicional, se muestra solo como referencia.
+- Umbral de condición El Niño o La Niña: ±0,5 °C en la media trimestral.
+  NOAA declara un episodio cuando la condición persiste y la atmósfera
+  responde; el observatorio muestra el estado que NOAA declara, no lo
+  deduce.
 
-### 3.3 Atmosféricos
+## 5. Índice de Oscilación del Sur (SOI)
 
-#### SOI (`soi`)
-- **Variable**: anomalía estandarizada de la diferencia de presión
-  superficial media entre **Tahiti** y **Darwin**.
-- **Unidades**: adimensional.
-- **Convención**: SOI negativo sostenido ⇒ componente atmosférica de El
-  Niño; positivo ⇒ La Niña.
-- **Escala**: de cuenca.
-- **Fuente**: NOAA / PSL.
+- Se publica el **SOI de NOAA/CPC** (estandarizado) y un **SOI en escala
+  Troup** (×10), que es el que usa la tabla del equipo GRD.
+- Troup se calcula con las presiones de Tahití y Darwin del CPC:
+  `SOI = 10 × (ΔP − media mensual) / desviación mensual`, con
+  `ΔP = Tahití − Darwin` y base 1951–1992 (el periodo común más largo en
+  los archivos del CPC; BoM usa 1933–1992).
+- Validación: frente a 64 meses del SOI mensual archivado de BoM, la
+  diferencia media absoluta es 0,70 y la fase (±7) coincide.
+- Negativo sostenido (< −7) acompaña a El Niño; positivo (> +7), a La Niña.
 
-> **No existe «SOI costero»**. El observatorio no define tal índice: no
-> hay proxy de presión costera con definición ni respaldo metodológico
-> equivalente al SOI convencional. La condición costera se monitorea con
-> TSM Niño 1+2 e ICEN.
+## 6. Vientos alisios
 
-#### Viento zonal a 850 hPa (`u850`)
-- **Variable**: anomalía de la componente zonal **u** a 850 hPa.
-- **Unidades**: m/s.
-- **Nivel**: 850 hPa (bajo nivel), distinto de superficie (10 m).
-- **Convención de signos**:
-  - u > 0 ⇒ flujo hacia el **este** (componente del oeste / **westerly**).
-  - u < 0 ⇒ flujo hacia el **oeste** (componente del este / **easterly**).
-- **Distinciones**: valor observado vs anomalía; superficie vs bajo
-  nivel; componente zonal vs vectorial.
-- **Interpretación**: las anomalías del oeste (westerly) favorecen el
-  desplazamiento hacia el este de la masa de agua cálida, típico de El
-  Niño de cuenca.
-- **Fuente**: NOAA / CPC (NCEP/NCAR Reanalysis).
+Índices del CPC a 850 hPa en el Pacífico occidental, central y oriental.
+El signo sigue la convención del CPC: **positivo = viento del este**
+(alisios reforzados); negativo = viento del oeste, típico del inicio o
+refuerzo de El Niño.
 
-### 3.4 Subsuperficie
+## 7. Contenido de calor del océano
 
-#### D20 (`d20`)
-- **Variable**: anomalía de la profundidad de la isoterma de 20 °C
-  (proxy de la termoclina en el Pacífico ecuatorial).
-- **Unidades**: m.
-- **Convención de signos**:
-  - Anomalía **positiva** ⇒ isoterma de 20 °C más **profunda** (típica
-    de El Niño de cuenca).
-  - Anomalía **negativa** ⇒ isoterma más **somera** (típica de La Niña).
-- **Fuente**: NOAA / CPC (GODAS).
+Índice del CPC (GODAS): anomalía de la temperatura media de los 300 m
+superiores en tres franjas ecuatoriales (130°E–80°O, 160°E–80°O y
+180°–100°O), base 1981–2010. Un aumento suele anticipar el calentamiento
+en superficie.
 
-## 4. Climatología y baseline
+**Por qué no se muestra la profundidad de la isoterma de 20 °C (D20):**
+no hay una fuente pública que la publique como serie lista para usar. El
+campo `dbss_obil` de GODAS es la profundidad de la capa isotérmica, no
+D20, y usarlo como si lo fuera daría valores erróneos. Por eso la señal
+GRD de termoclina figura como «sin dato» y se explica el motivo.
 
-- **PSL**: base 1981–2010 (publicada).
-- **NOAA/CPC ONI/RONI**: base móvil de 30 años (adaptativa).
-- **ENFEN ICEN**: metodología con baseline móvil de 30 años.
-- **NCEP/NCAR Reanalysis**: climatología del reanálisis.
-- **GODAS**: climatología del sistema GODAS.
+## 8. Señal del equipo GRD
 
-El RONI difiere del ONI heredado en la línea base: el RONI adapta la
-climatología para reducir el sesgo por el calentamiento secular de la
-TSM. No deben confundirse.
+Es una interpretación operativa basada en la tabla que entregó el equipo
+de gestión del riesgo (imagen original y su SHA-256 en
+`config/threshold-policies/`). **No es** el sistema oficial de alertas
+del ENFEN ni el de NOAA, y el sitio lo dice junto a la señal.
 
-## 5. Convenciones de signos — resumen
+| Indicador | Dato usado | Normal | Amarillo | Rojo |
+|---|---|---|---|---|
+| TSM costera | Anomalía mensual Niño 1+2 | −0,7 a +0,5 °C | +1,3 a +2,0 °C | > +2,1 °C |
+| TSM de cuenca | Anomalía mensual Niño 3.4 | −0,5 a +0,5 °C | > +1,0 a +1,5 °C | > +1,5 °C |
+| Vientos (costero y global) | Índice CPC 850 hPa oriental y central | Del este | — | Del oeste |
+| Termoclina | D20 | −20 a +20 m | 30 a 50 m | > 50 m |
+| SOI | Troup | −7 a +7 | — | < −7 |
 
-| Variable | Signo | Significado |
-|----------|-------|-------------|
-| TSM Niño 1+2 / 3.4 | + | Más cálido que lo normal |
-| TSM Niño 1+2 / 3.4 | − | Más frío que lo normal |
-| ICEN | + | Anomalía cálida sostenida en la costa |
-| ICEN | − | Anomalía fría sostenida en la costa |
-| RONI | + | Pacífico central cálido (El Niño cuenca) |
-| RONI | − | Pacífico central frío (La Niña cuenca) |
-| SOI | − | Presión más baja en Tahiti (El Niño) |
-| SOI | + | Presión más alta en Tahiti (La Niña) |
-| u850 | + | Flujo hacia el este (westerly) |
-| u850 | − | Flujo hacia el oeste (easterly) |
-| D20 | + | Termoclina más profunda |
-| D20 | − | Termoclina más somera |
+Reglas:
 
-## 6. Cálculos derivados
-
-### 6.1 ICEN
-
-ICEN(t) = (TSM_anom(t−2) + TSM_anom(t−1) + TSM_anom(t)) / 3
-
-Requiere exactamente 3 valores. Si falta alguno, el resultado es NaN
-(los huecos se preservan, no se rellenan). Redondeo a 2 decimales.
-
-### 6.2 RONI
-
-RONI(t) ≈ media móvil de 3 meses de la anomalía de TSM en Niño 3.4 con
-ajuste de baseline adaptativa. En este observatorio se aplica la media
-móvil de 3 meses (el ajuste fino del baseline se documenta en NOAA/CPC).
-
-### 6.3 Percentil
-
-Percentil(x) = (#valores de la historia estrictamente menores que x) /
-(#total de valores) × 100.
-
-## 7. Estados oficiales vs interpretaciones
-
-- **Estados oficiales** (alerta ENFEN para lo costero, NOAA/CPC ENSO
-  Diagnostic Discussion para la cuenca): se citan **textualmente** de la
-  fuente.
-- **Categorías de intensidad** (débil, moderado, fuerte, muy fuerte):
-  reproducen los umbrales ENFEN y son **interpretación generada por el
-  observatorio**, sujeta a la publicación oficial.
-- Ante duda sobre el estado oficial, se remite a la institución
-  competente.
-
-## 8. Datos faltantes y preliminares
-
-- Cuando un dato no está disponible, se muestra «Sin datos». Nunca se
-  fabrica.
-- Los datos preliminares se marcan explícitamente (`flag=preliminary`).
-- Una revisión posterior actualiza la marca a `final`.
-- Los huecos (NaN) se preservan a través del cálculo de ICEN y otras
-  medias móviles.
+- Un valor que cae en un hueco de la tabla (por ejemplo +1,0 °C en la TSM
+  costera) queda **sin clasificar** y se explica por qué; nunca se pinta
+  de verde.
+- Un dato vencido o ausente no recibe color.
+- La señal se calcula solo en el pipeline (`signals.py`); el navegador la
+  muestra tal cual.
 
 ## 9. Frescura
 
-Cada indicador muestra su mes de referencia, si el dato es preliminar o
-final, y la fecha de corte del observatorio. Los datos se actualizan
-siguiendo la frecuencia nativa de cada fuente. Un indicador con frescura
-> 72 h respecto al corte se marca como `stale` (obsoleto) de forma
-visible.
-
-## 10. Limitaciones de la metodología
-
-- El ICEN reproduce los umbrales ENFEN; la activación oficial requiere
-  persistencia y la declaración de ENFEN.
-- El RONI es el índice operacional actual; comparaciones históricas con
-  ONI deben hacerse con cuidado por el cambio de baseline.
-- D20 y u850 provienen de reanálisis/asimilación; tienen su propia
-  incertidumbre.
-- El observatorio no emite pronósticos ni alertas oficiales. Para
-  emergencias, consultar INDECI, CENEPRED, SENAMHI y ENFEN.
+Cada fuente tiene una cadencia y una antigüedad máxima aceptable del
+último periodo observado (por ejemplo, 16 días para el semanal OISST y
+100 días para el ICEN, que se publica con un trimestre de retraso). Pasado
+ese límite el valor se marca vencido y se registra una incidencia.

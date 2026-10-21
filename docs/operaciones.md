@@ -1,0 +1,125 @@
+# Operación diaria, incidencias y recuperación
+
+## Flujos de GitHub Actions
+
+| Flujo | Cuándo | Qué hace |
+|---|---|---|
+| `observatory.yml` | Todos los días a las 04:37 UTC (23:37 en Lima), al fusionar en `main` (salvo cambios solo en `.md` o `docs/`), al recibir `enso-refresh` (lo manda el recolector del Perú tras subir su copia; n8n, si se activa su aviso), a pedido del vigilante o a mano | Pruebas → pipeline con datos en vivo → recorridos de navegador → despliegue en GitHub Pages o Cloudflare Pages ([despliegue-cloudflare](despliegue-cloudflare.md)) y verificación del sitio en vivo, a la par del archivo de respuestas originales (solo en `main`) → sincronización de incidencias |
+| `watchdog.yml` | Cada 6 horas (minuto 17) | Reactiva `observatory.yml`, `watchdog.yml` y `probe-sources.yml` (no `n8n.yml`, que también es programado) y lee el sitio en vivo; si la publicación tiene más de 30 horas, relanza el flujo diario y abre un issue |
+| `ci.yml` | En cada PR y en ramas `claude/**` | Pruebas, publicación sin red con las respuestas capturadas y recorridos de navegador |
+| `probe-sources.yml` | Lunes 09:17 UTC, a mano y al cambiar el medidor en ramas `claude/**` | Mide desde GitHub Actions qué URL del registro responden, suma lo que bajaron el recolector del Perú (`data-peru`) y n8n (`data-n8n`) y regenera `registry/sources.json` con los canales de cada URL (en `main`; en otras ramas, en `bot/registry/<rama>`). Las mediciones del flujo de validación de n8n (el CSV que baja n8n o el `validacion-actions.json` que deja `n8n.yml`) se suman con `python -m tools.probe_sources --no-probe --import <archivo> --import-vantage n8n-aws` (`n8n-actions-azure` para el de `n8n.yml`) |
+| `capture-fixtures.yml` | A mano o al cambiar la herramienta de captura | Captura las respuestas reales usadas en el backtesting, en la rama `bot/fixtures/<rama>` y como artefacto |
+| `probe-feeds.yml` | A mano o al cambiar el sondeo o la lista de feeds candidatos | Sondea feeds candidatos; informe en `bot/news-probe/<rama>` y como artefacto |
+| `scrape-ladder.yml` | A mano o al cambiar la escalera o sus candidatos | Para fuentes sin API ni feed: prueba `robots.txt`, una petición simple, cabeceras de navegador, Chromium y (si hay clave) Firecrawl, en ese orden, y se detiene en el primer paso que funciona o ante una verificación anti-robots; informe en `bot/scrape-ladder/<rama>` y como artefacto |
+| `device-screens.yml` | A mano o al cambiar la herramienta de capturas | Capturas de Noticias en los dispositivos de referencia, en `bot/screens/<rama>` y como artefacto |
+| `n8n.yml` | Lunes 13:17 UTC (08:17 en Lima), a mano y al cambiar `n8n/`, el registro o `fetch.py` | Pruebas de los nodos de n8n, armado de `n8n/dist/` y una corrida real del flujo de validación en un n8n en Docker ([n8n](n8n.md)) |
+| `recolector-kit.yml` | Al cambiar el kit, el recolector, `python/enso/` o el registro (en PR y en `main`) | Arma el kit del recolector del Perú, lo instala de verdad en Windows, macOS y Linux y, en `main`, publica el zip en la versión «recolector-kit» ([servidor-peru](servidor-peru.md)) |
+
+Las corridas que publican no se cruzan: la diaria, la que pide el vigilante y
+las que piden el recolector del Perú (al subir su copia, entre las 21:00 y las
+23:30 de Lima) o n8n (22:50, si se activa su aviso) comparten el grupo de
+concurrencia `enso-production-publication` sin cancelar la que está en curso.
+Una copia que llega tarde espera a que termine la publicación y la siguiente
+corrida la usa.
+
+Los flujos de desarrollo nunca escriben en la rama de trabajo: sus commits
+dejaban las comprobaciones del PR en «action_required» y llenaban el diff.
+Para traer un resultado: `git fetch origin bot/fixtures/<rama> && git
+checkout FETCH_HEAD -- python/tests/fixtures/sources` (igual con las otras
+ramas `bot/...`), revisar y hacer commit.
+
+Si las pruebas, el pipeline o los recorridos fallan, **no se despliega** y
+el sitio sigue mostrando la publicación anterior.
+
+### Que GitHub no apague los flujos programados
+
+GitHub desactiva los flujos programados de un repositorio público tras 60
+días sin actividad, y un flujo desactivado no corre ni a mano ni por
+`repository_dispatch`. Así le pasó en `main` a la versión
+anterior (sin corridas desde el 2026-10-08). Defensas:
+
+- El trabajo `keepalive` del flujo diario reactiva por API `observatory.yml`,
+  `watchdog.yml` y `probe-sources.yml` en cada corrida programada; reactivar
+  reinicia el plazo. La validación semanal de `n8n.yml` no está en esa lista:
+  si GitHub la apaga, solo deja de correr esa validación.
+- El vigilante (cada 6 horas) reactiva los mismos tres, incluido él mismo.
+  Basta con que uno de los dos siga corriendo para que el otro vuelva.
+- Fuera de GitHub, el recolector del Perú deja de ver la actualización de
+  las 23:37 y el sitio envejece: el vigilante externo (n8n, si está activo)
+  revisa `data/manifest.json` y avisa si la publicación tiene más de 30 horas.
+- Revisión manual mensual: en *Actions*, ningún flujo debe aparecer como
+  *disabled*; si alguno lo está, *Enable workflow* y luego *Run workflow*
+  en `observatory.yml`.
+
+## Registro de incidencias
+
+Cada corrida escribe `run-report.json` con todas las incidencias:
+severidad (`info`, `warning`, `error`, `critical`), fuente, etapa
+(`fetch`, `parse`, `validate`, `derive`, `publish`), código y huella.
+El trabajo `incidents` las convierte en issues con la etiqueta
+`incidente-datos`:
+
+- Una incidencia nueva abre un issue con el mensaje, la corrida y la
+  fecha en que apareció.
+- Si se repite, se actualiza el mismo issue (contador y última corrida)
+  en lugar de abrir otro.
+- Cuando deja de aparecer, el issue se cierra con un comentario.
+- Una corrida que falla abre «La actualización diaria falló», que se
+  cierra sola con la siguiente corrida buena. Vale para todas las corridas
+  de `observatory.yml`, también la que se lanza al fusionar en `main`. También si un job pasó su
+  límite de tiempo (GitHub lo marca «cancelled»): el pipeline tiene 26 min
+  y el build 36. También si solo falló el job
+  `archive`: el sitio se actualizó, pero `data-archive` y su copia del
+  histórico de noticias no. El despliegue no espera al archivo a propósito:
+  los datos y avisos oficiales salen aunque `data-archive` falle; a cambio,
+  si en la corrida siguiente el sitio tampoco responde, el histórico se
+  rehace con una copia a la que le faltan las notas de esa corrida.
+
+Códigos frecuentes:
+
+| Código | Significado | Qué hacer |
+|---|---|---|
+| `unreachable` | La fuente no respondió por ningún canal | Normalmente es temporal; si dura más de unos días, revisar si cambió la URL |
+| `archive-channel` | Se usó la copia del Internet Archive | Nada, salvo que sea permanente |
+| `relay-stale` | La última copia del recolector desde el Perú y su último latido tienen más de 36 h: el equipo no está corriendo | Pedir en el equipo del recolector que ejecuten VERIFICAR y envíen el informe ([servidor-peru](servidor-peru.md#si-algo-falla)) |
+| `relay-sources-down` | El recolector sigue subiendo su latido, pero hace más de 36 h que ninguna fuente peruana le responde | Nada en el equipo: son las instituciones. `heartbeat.json` en `data-peru` dice qué respondió cada una |
+| `relay-missing` | La rama `data-peru` no existe, o existe pero su `index.json` no se pudo leer. Dice cuántas URL del registro solo responden desde el Perú | Instalar el recolector ([servidor-peru](servidor-peru.md)) o revisar su última subida |
+| `relay-n8n-missing` | La rama `data-n8n` no existe o no se pudo leer: no hay segundo canal si Actions no alcanza una fuente | Revisar el flujo «ENSO · Recolector n8n» ([n8n](n8n.md)) |
+| `relay-n8n-stale` | La última corrida de n8n tiene más de 36 h | Revisar que el flujo siga activo en n8n |
+| `relay-n8n-sources-down` | n8n corrió hoy, pero ninguna fuente le respondió | Nada en n8n: son las fuentes o la red de su nube; se usan copias de hasta 72 h |
+| `news-history-missing` | La publicación anterior no trajo el histórico de noticias tras tres intentos (el mensaje dice si no existe o si el sitio no respondió). Advertencia si se rehízo con la copia de `data-archive` (`sources/news/items.jsonl.gz`); error si tampoco se pudo leer la copia: se publican solo las notas de hoy y el histórico queda marcado `restarted`. El error se repite en cada corrida hasta que se lea la copia (la copia no pierde notas: el job `archive` solo le agrega) | Revisar el sitio publicado y el paso «News history backup» de la corrida |
+| `news-history-restored` | Esta corrida le agregó al histórico publicado notas de la copia de `data-archive` que no tenía (una corrida anterior no llegó a desplegar o lo publicó incompleto), o aceptó como está un histórico `restarted` porque `data-archive` no tiene copia | Ninguna: se resolvió sola |
+| `news-reader-restored` | Informativa: notas de feeds que se leen una vez al día que vienen de su última lectura (guardada en la caché de Actions), porque la corrida que las leyó no llegó a publicar | Ninguna |
+| `feeds-reader-unknown` | Los feeds que se leen una vez al día no se pidieron: no había estado guardado (la caché de Actions no se leyó) y la publicación anterior no bastaba (el sitio no respondió, o una corrida que no llegó a publicar pudo haberlos pedido), así que no se sabía cuándo se pidieron por última vez. Esa corrida cuenta como su pedido: se vuelven a pedir 20 h después | Ninguna si es aislada; si se repite, revisar el sitio y el paso «Restore the reader-feed state» |
+| `news-history-large` | `news/items.jsonl` pasa de 20 MiB; Cloudflare Pages no sirve archivos de más de 25 MiB | Dividir el histórico (por ejemplo, un archivo por mes) antes de que llegue al límite |
+| `relay-token-expiring` | El token de GitHub del recolector vence en menos de 21 días | Crear un token nuevo y ejecutar INSTALAR en el equipo del recolector con ese token ([servidor-peru](servidor-peru.md#1-token-de-github)) |
+| `carried-forward` | Se conservó el dato de la publicación anterior | Revisar la fuente si persiste |
+| `format-drift` | Cambió la huella del formato pero se pudo leer | Revisar que los valores sigan siendo correctos y actualizar las pruebas |
+| `format-changed` | El formato ya no se puede leer | Ajustar el lector en `python/enso/feeds/` y añadir la nueva respuesta a las fixtures |
+| `stale-*`, `official-overdue` | El dato o el comunicado está vencido | Comprobar en la fuente si realmente no hay uno nuevo |
+| `newer-communique-unparsed` | Hay un comunicado del ENFEN más nuevo que no se pudo leer | Revisar el PDF y el lector de comunicados |
+| `no-data` | Una serie quedó vacía | Si la fuente es crítica, no se despliega |
+
+## Recuperación
+
+- **Relanzar a mano:** Actions → `observatory` → Run workflow. La opción
+  `archive_save` pide copias nuevas al Internet Archive.
+- **Probar sin red:** ver el README (publicación con `--fixtures`).
+- **Volver a una publicación anterior:** relanzar el despliegue de una
+  corrida anterior desde Actions, o revertir el commit en `main`.
+- **Fuente que cambió de URL:** editar su entrada en `SOURCES` y añadir la
+  URL nueva al principio de la lista; las anteriores quedan como respaldo.
+- **Respuestas originales:** la rama `data-archive` guarda cada respuesta
+  nueva por fuente y SHA-256, útil para reconstruir o añadir pruebas. Una
+  respuesta igual a una que ya tiene (mismo SHA-256 en la misma fuente) no
+  se vuelve a guardar con otra fecha. El job `archive` corre solo en `main` (una corrida
+  de prueba en otra rama no agrega notas a la copia del histórico), baja solo la lista
+  de archivos y `sources/news` (copia parcial: la rama crece cada día) y no
+  sube un commit que borre archivos. Para mirar la rama entera:
+  `git fetch origin data-archive && git switch data-archive`.
+- **Quitar una nota del histórico de noticias** (p. ej. a pedido de un
+  medio): hoy no se puede sin tocar el código. El histórico publicado es de
+  solo anexar y su copia en `data-archive` (`sources/news/items.jsonl.gz`)
+  lo completa en cada corrida, así que una nota borrada en un lado vuelve
+  desde el otro. Haría falta una lista de notas retiradas que el pipeline
+  filtre al leer los dos.

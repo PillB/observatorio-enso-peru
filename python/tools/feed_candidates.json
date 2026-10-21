@@ -1,0 +1,2321 @@
+[
+ {
+  "id": "andina",
+  "name": "Andina (Agencia Peruana de Noticias)",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://andina.pe/agencia/",
+  "feeds": [
+   "https://andina.pe/agencia/rss",
+   "https://andina.pe/agencia/rss/3.xml"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Section IDs from the menu (4=Regionales, 3=Locales, 42=Cambio Climático) do NOT filter: rss/4.xml and rss/42.xml return the same general feed. Andina has no per-region feed; filter by text."
+ },
+ {
+  "id": "rpp-peru-actualidad",
+  "name": "RPP Noticias · Perú/Actualidad",
+  "department": "nacional",
+  "dep": null,
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/actualidad",
+  "feeds": [
+   "https://rpp.pe/feed/peru/actualidad",
+   "https://rpp.pe/rss"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. RPP exposes per-section feeds as https://rpp.pe/feed/<section path>. WARNING: top-level /feed/peru and /feed/lima are stale (last items Aug 2026) and /feed/peru/desastres-naturales is stale (Apr 2026); the leaf sections (actualidad, per-department) are fresh. Per-department feeds are listed under each department."
+ },
+ {
+  "id": "correo-ediciones",
+  "name": "Diario Correo · ediciones regionales",
+  "department": "nacional",
+  "dep": null,
+  "kind": "diario",
+  "home": "https://diariocorreo.pe/edicion/",
+  "feeds": [
+   "https://diariocorreo.pe/arcio/rss/category/edicion/",
+   "https://diariocorreo.pe/arcio/rss/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. One Arc feed for ALL regional editions; per-edition URLs (/arcio/rss/category/edicion/piura/, /arc/outboundfeeds/...) return errors. Map department from item link /edicion/<slug>/ (slugs seen: piura, lambayeque, la-libertad, arequipa, pasco, huancayo=Junín, ica, lima, tumbes, huancavelica, cusco, ayacucho, huanuco, tacna, puno). Only ~19 items covering ~6 h: poll at least hourly."
+ },
+ {
+  "id": "elcomercio-peru",
+  "name": "El Comercio · Perú (regiones)",
+  "department": "nacional",
+  "dep": null,
+  "kind": "diario",
+  "home": "https://elcomercio.pe/peru/",
+  "feeds": [
+   "https://elcomercio.pe/arcio/rss/category/peru/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Item links carry /peru/<departamento>/ (seen: ica, junin, ucayali...). Sub-category feeds (/category/peru/piura/) error. Repo already has /arcio/rss/ (general); this one is the regional subset."
+ },
+ {
+  "id": "canal-n",
+  "name": "Canal N",
+  "department": "nacional",
+  "dep": null,
+  "kind": "tv",
+  "home": "https://canaln.pe/",
+  "feeds": [
+   "https://canaln.pe/feed"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Section /peru carries regional stories; no per-region feed found."
+ },
+ {
+  "id": "willax",
+  "name": "Willax Televisión",
+  "department": "nacional",
+  "dep": null,
+  "kind": "tv",
+  "home": "https://willax.pe/",
+  "feeds": [
+   "https://willax.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "atv",
+  "name": "ATV Noticias",
+  "department": "nacional",
+  "dep": null,
+  "kind": "tv",
+  "home": "https://www.atv.pe/",
+  "feeds": [
+   "https://www.atv.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Valid RSS (WordPress) but STALE: newest item 27 Sep 2026 when read on 21 Oct 2026. Low priority."
+ },
+ {
+  "id": "radio-santa-rosa",
+  "name": "Radio Santa Rosa (Santa Rosa Radio TV)",
+  "department": "nacional",
+  "dep": null,
+  "kind": "radio",
+  "home": "https://www.radiosantarosa.com.pe/",
+  "feeds": [
+   "https://www.radiosantarosa.com.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. National Catholic radio with many regional briefs (Piura, Arequipa, Iquitos)."
+ },
+ {
+  "id": "exitosa",
+  "name": "Exitosa Noticias",
+  "department": "nacional",
+  "dep": null,
+  "kind": "radio",
+  "home": "https://www.exitosanoticias.pe/",
+  "feeds": [
+   "https://www.exitosanoticias.pe/rss",
+   "https://exitosanoticias.pe/feed/",
+   "https://news.google.com/rss/search?q=site%3Aexitosanoticias.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "AmuraCMS; homepage shows no feed link and /rss and /feed/ errored from here. Regional sections exist: /regiones/{arequipa,chiclayo,chimbote,cusco,Huancayo,huaraz,ica,iquitos,piura,puno,tacna,trujillo}. Last candidate is a Google News site: fallback."
+ },
+ {
+  "id": "radio-nacional",
+  "name": "Radio Nacional del Perú",
+  "department": "nacional",
+  "dep": null,
+  "kind": "radio",
+  "home": "https://www.radionacional.gob.pe/",
+  "feeds": [
+   "https://www.radionacional.gob.pe/rss.xml",
+   "https://www.radionacional.gob.pe/feed",
+   "https://news.google.com/rss/search?q=site%3Aradionacional.gob.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "State radio (IRTP). Site errored on every WebFetch; Drupal-style /rss.xml is a guess. Articles live under /noticias/<seccion>/<slug>."
+ },
+ {
+  "id": "tvperu",
+  "name": "TV Perú Noticias",
+  "department": "nacional",
+  "dep": null,
+  "kind": "tv",
+  "home": "https://www.tvperu.gob.pe/",
+  "feeds": [
+   "https://www.tvperu.gob.pe/rss.xml",
+   "https://www.tvperu.gob.pe/feed",
+   "https://news.google.com/rss/search?q=site%3Atvperu.gob.pe/noticias&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "State TV (IRTP). Homepage reachable but no feed link; /rss.xml and /feed errored. Tag pages exist per region, e.g. /noticias/tags/cusco, /noticias/tags/tacna; section /noticias/nacionales."
+ },
+ {
+  "id": "panamericana",
+  "name": "Panamericana TV (24 Horas)",
+  "department": "nacional",
+  "dep": null,
+  "kind": "tv",
+  "home": "https://panamericana.pe/",
+  "feeds": [
+   "https://panamericana.pe/rss",
+   "https://news.google.com/rss/search?q=site%3Apanamericana.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "No feed link on homepage; /rss errored. Relevant sections: /nacionales (regional disasters), /locales."
+ },
+ {
+  "id": "altavoz",
+  "name": "Altavoz",
+  "department": "nacional",
+  "dep": null,
+  "kind": "digital",
+  "home": "https://altavoz.pe/",
+  "feeds": [
+   "https://altavoz.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Independent digital outlet with strong regional/environment coverage; topic pages /temas/<departamento>/ (WordPress tag base 'temas')."
+ },
+ {
+  "id": "inforegion",
+  "name": "Inforegión · Agencia de Prensa Ambiental",
+  "department": "nacional",
+  "dep": null,
+  "kind": "digital",
+  "home": "https://inforegion.pe/",
+  "feeds": [
+   "https://www.inforegion.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Environmental/regional agency; heavy on Amazonía, Junín, Huánuco, Pasco, Ucayali."
+ },
+ {
+  "id": "mongabay-latam-peru",
+  "name": "Mongabay Latam · Perú",
+  "department": "nacional",
+  "dep": null,
+  "kind": "digital",
+  "home": "https://es.mongabay.com/list/peru/",
+  "feeds": [
+   "https://es.mongabay.com/feed/?location=peru",
+   "https://es.mongabay.com/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. ?location=peru filters to items whose <locations> include Perú (checked). /list/peru/feed/ returns HTML, not a feed."
+ },
+ {
+  "id": "actualidad-ambiental",
+  "name": "Actualidad Ambiental (SPDA)",
+  "department": "nacional",
+  "dep": null,
+  "kind": "digital",
+  "home": "https://www.actualidadambiental.pe/",
+  "feeds": [
+   "https://www.actualidadambiental.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Tag pages per place, e.g. /tag/chachapoyas/."
+ },
+ {
+  "id": "servindi",
+  "name": "Servindi",
+  "department": "nacional",
+  "dep": null,
+  "kind": "digital",
+  "home": "https://www.servindi.org/",
+  "feeds": [
+   "https://www.servindi.org/rss.xml"
+  ],
+  "evidence": "seen",
+  "note": "Drupal 7. /rss.xml is valid but STALE (items from 2017-2018, front-page promotion feed). Homepage mentions 'Sindique las noticias (RSS)' without a link; a taxonomy feed (/taxonomy/term/<tid>/feed) would be needed. Indigenous/Amazon coverage."
+ },
+ {
+  "id": "noticias-ser",
+  "name": "Noticias SER",
+  "department": "nacional",
+  "dep": null,
+  "kind": "digital",
+  "home": "https://www.noticiasser.pe/",
+  "feeds": [
+   "https://www.noticiasser.pe/rss.xml",
+   "https://www.noticiasser.pe/feed",
+   "https://news.google.com/rss/search?q=site%3Anoticiasser.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "WebFetch blocked by robots.txt (site exists) so the feed was not read. Drupal-style /rss.xml guessed."
+ },
+ {
+  "id": "convoca",
+  "name": "Convoca",
+  "department": "nacional",
+  "dep": null,
+  "kind": "digital",
+  "home": "https://convoca.pe/",
+  "feeds": [
+   "https://convoca.pe/rss.xml",
+   "https://news.google.com/rss/search?q=site%3Aconvoca.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "seen",
+  "note": "Drupal 9. /rss.xml is valid RSS but effectively STALE/mis-sorted (newest item Jan 2026; site has Oct 2026 stories). Prefer the Google News site: fallback."
+ },
+ {
+  "id": "ojo-publico",
+  "name": "Ojo Público",
+  "department": "nacional",
+  "dep": null,
+  "kind": "digital",
+  "home": "https://ojo-publico.com/",
+  "feeds": [
+   "https://ojo-publico.com/rss.xml",
+   "https://ojo-publico.com/feed",
+   "https://news.google.com/rss/search?q=site%3Aojo-publico.com&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Drupal 10; homepage has no feed link and both guesses errored from here."
+ },
+ {
+  "id": "el-peruano",
+  "name": "El Peruano (diario oficial)",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://elperuano.pe/",
+  "feeds": [
+   "https://elperuano.pe/rss",
+   "https://news.google.com/rss/search?q=site%3Aelperuano.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Homepage shows no feed link; /rss errored. Sections /pais, /mundo. Declaratorias de emergencia appear in Normas Legales (not an RSS)."
+ },
+ {
+  "id": "enfen",
+  "name": "Comisión Multisectorial ENFEN",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://enfen.imarpe.gob.pe/",
+  "feeds": [
+   "https://enfen.imarpe.gob.pe/feed/?post_type=wpdmpro",
+   "https://enfen.imarpe.gob.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. BEST official ENSO source: the WP Download Manager feed (?post_type=wpdmpro) lists every Comunicado Oficial and Informe Técnico (newest: Informe Técnico Año 12 N°18, 18 Oct 2026; Comunicado N°18-2026, 16 Oct). The plain /feed/ (posts) lags (newest Jul 2026)."
+ },
+ {
+  "id": "imarpe",
+  "name": "IMARPE",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.imarpe.gob.pe/",
+  "feeds": [
+   "https://www.imarpe.gob.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Valid WordPress RSS; newest item 17 Sep 2026 (low frequency). Also /noticias/, /nino/, SIOFEN bulletins at https://siofen.imarpe.gob.pe/boletines-e-informes (HTML)."
+ },
+ {
+  "id": "dhn",
+  "name": "Dirección de Hidrografía y Navegación (DHN)",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.dhn.mil.pe/",
+  "feeds": [],
+  "evidence": "seen",
+  "note": "No RSS found. Scrape HTML: https://www.dhn.mil.pe/portal/hidronoticias, https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen (PDF pattern https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/NN-YYYY.pdf), https://www.dhn.mil.pe/portal/avisos-especiales, https://www.dhn.mil.pe/portal/boletin-sismo-tsunami, CNAT https://www.dhn.mil.pe/cnat/, daily ocean bulletin https://www.dhn.mil.pe/portal/boletin-diario-condiciones-oceanograficas."
+ },
+ {
+  "id": "gobpe-indeci",
+  "name": "INDECI (incl. COEN) · gob.pe",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/indeci/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=indeci&sheet=1&sort_by=recent",
+   "https://www.gob.pe/institucion/indeci/noticias.rss",
+   "https://www.indeci.gob.pe/feed/"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N. indeci.gob.pe is WordPress-like but robots.txt blocked WebFetch of /feed/. COEN emergency reports/'INDECI al Día' bulletins are on gob.pe and SINPAD (HTML).",
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-senamhi",
+  "name": "SENAMHI · gob.pe",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/senamhi/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=senamhi&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=senamhi&sheet=1&sort_by=recent",
+   "https://www.gob.pe/institucion/senamhi/noticias.rss"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N. senamhi.gob.pe blocks WebFetch via robots.txt; no RSS known. Warnings are HTML: https://www.senamhi.gob.pe/?p=aviso-meteorologico and per department https://www.senamhi.gob.pe/main.php?dp=<departamento>&p=aviso-24H (seen in search for huancavelica). gob.pe also has /institucion/senamhi/colecciones/noticias.",
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-igp",
+  "name": "Instituto Geofísico del Perú · gob.pe",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/igp/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=igp&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=igp&sheet=1&sort_by=recent",
+   "https://www.gob.pe/institucion/igp/noticias.rss",
+   "https://www.igp.gob.pe/rss.xml"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N. igp.gob.pe errored on WebFetch; IGP publishes the monthly ENSO 'Boletín técnico' and earthquake reports.",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-ana",
+  "name": "Autoridad Nacional del Agua · gob.pe",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/ana/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=ana&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=ana&sheet=1&sort_by=recent",
+   "https://www.gob.pe/institucion/ana/noticias.rss",
+   "https://www.ana.gob.pe/rss.xml"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N. ana.gob.pe blocks WebFetch via robots.txt; river-level alerts (umbral rojo/naranja) are announced as news.",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-cenepred",
+  "name": "CENEPRED · gob.pe",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/cenepred/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=cenepred&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=cenepred&sheet=1&sort_by=recent",
+   "https://www.gob.pe/institucion/cenepred/noticias.rss",
+   "https://www.cenepred.gob.pe/feed/"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N. cenepred.gob.pe blocks WebFetch via robots.txt; risk scenarios (escenarios de riesgo por lluvias/El Niño) are PDFs.",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-minam",
+  "name": "Ministerio del Ambiente · gob.pe",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/minam/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=minam&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=minam&sheet=1&sort_by=recent",
+   "https://www.gob.pe/institucion/minam/noticias.rss"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N.",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-midagri",
+  "name": "MIDAGRI (sequía, heladas, agro) · gob.pe",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/midagri/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=midagri&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=midagri&sheet=1&sort_by=recent",
+   "https://www.gob.pe/institucion/midagri/noticias.rss"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N.",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-pcm",
+  "name": "PCM (declaratorias de emergencia) · gob.pe",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/pcm/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=pcm&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=pcm&sheet=1&sort_by=recent",
+   "https://www.gob.pe/institucion/pcm/noticias.rss"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N.",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-presidencia",
+  "name": "Presidencia de la República · gob.pe",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/presidencia/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=presidencia&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=presidencia&sheet=1&sort_by=recent",
+   "https://www.gob.pe/institucion/presidencia/noticias.rss"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N. Slug 'presidencia' is a guess.",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-busqueda-peligros",
+  "name": "gob.pe · búsqueda de noticias por peligro",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/busquedas",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=huaico",
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=lluvias",
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=inundaci%C3%B3n",
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=Fen%C3%B3meno%20El%20Ni%C3%B1o",
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=sequ%C3%ADa",
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=emergencia"
+  ],
+  "evidence": "guessed",
+  "note": "gob.pe DOES serve RSS through its search endpoint busquedas.rss (pattern seen in public code: DavidCastilloAlvarado/opencovid_ETL uses busquedas.rss?categoria[]=6-salud&contenido[]=noticias&sort_by=recent..., RodNalCY/php-scripts uses busquedas.rss?contenido=noticias&institucion=concytec&sheet=1&sort_by=recent and sends browser-like headers). Not live-tested: gob.pe is unreachable from this sandbox (WebFetch errors, proxy 403). Another repo notes busquedas.rss without contenido=noticias returns office listings. /institucion/<slug>/noticias.rss is a pure guess. HTML fallback: https://www.gob.pe/institucion/<slug>/noticias?sheet=N. Cross-institution search; the 'term' parameter name is a guess (filters categoria[]/contenido[]/tipo_noticia[]/desde/sort_by/sheet were seen)."
+ },
+ {
+  "id": "gnews-peligros-nacional",
+  "name": "Google Noticias · peligros (Perú)",
+  "department": "nacional",
+  "dep": null,
+  "kind": "agregador",
+  "home": "https://news.google.com/?hl=es-419&gl=PE&ceid=PE:es-419",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28huaico%20OR%20huaicos%20OR%20%22activaci%C3%B3n%20de%20quebrada%22%20OR%20inundaci%C3%B3n%20OR%20desborde%29%20Per%C3%BA%20when%3A3d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28ENFEN%20OR%20%22Ni%C3%B1o%20costero%22%20OR%20%22temperatura%20del%20mar%22%20OR%20%22anomal%C3%ADa%22%20%29%20Per%C3%BA%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28sequ%C3%ADa%20OR%20%22d%C3%A9ficit%20h%C3%ADdrico%22%20OR%20heladas%20OR%20friaje%29%20Per%C3%BA%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Hazard-centric national queries complementing the repo's existing El Niño query; same URL pattern, not testable from this sandbox."
+ },
+ {
+  "id": "rpp-amazonas",
+  "name": "RPP Noticias · Amazonas",
+  "department": "Amazonas",
+  "dep": "01",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/amazonas",
+  "feeds": [
+   "https://rpp.pe/feed/peru/amazonas"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, newest 14 Oct 2026 (low volume). Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs."
+ },
+ {
+  "id": "rpp-ancash",
+  "name": "RPP Noticias · Áncash",
+  "department": "Áncash",
+  "dep": "02",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/ancash",
+  "feeds": [
+   "https://rpp.pe/feed/peru/ancash"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 19 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-apurimac",
+  "name": "RPP Noticias · Apurímac",
+  "department": "Apurímac",
+  "dep": "03",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/apurimac",
+  "feeds": [
+   "https://rpp.pe/feed/peru/apurimac"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 16 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-arequipa",
+  "name": "RPP Noticias · Arequipa",
+  "department": "Arequipa",
+  "dep": "04",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/arequipa",
+  "feeds": [
+   "https://rpp.pe/feed/peru/arequipa"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 20 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-ayacucho",
+  "name": "RPP Noticias · Ayacucho",
+  "department": "Ayacucho",
+  "dep": "05",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/ayacucho",
+  "feeds": [
+   "https://rpp.pe/feed/peru/ayacucho"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 14 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-cajamarca",
+  "name": "RPP Noticias · Cajamarca",
+  "department": "Cajamarca",
+  "dep": "06",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/cajamarca",
+  "feeds": [
+   "https://rpp.pe/feed/peru/cajamarca"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 17 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-callao",
+  "name": "RPP Noticias · Callao",
+  "department": "Callao",
+  "dep": "07",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/callao",
+  "feeds": [
+   "https://rpp.pe/feed/peru/callao"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, newest 19 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs."
+ },
+ {
+  "id": "rpp-cusco",
+  "name": "RPP Noticias · Cusco",
+  "department": "Cusco",
+  "dep": "08",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/cusco",
+  "feeds": [
+   "https://rpp.pe/feed/peru/cusco"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 20 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-huancavelica",
+  "name": "RPP Noticias · Huancavelica",
+  "department": "Huancavelica",
+  "dep": "09",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/huancavelica",
+  "feeds": [
+   "https://rpp.pe/feed/peru/huancavelica"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 18 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-huanuco",
+  "name": "RPP Noticias · Huánuco",
+  "department": "Huánuco",
+  "dep": "10",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/huanuco",
+  "feeds": [
+   "https://rpp.pe/feed/peru/huanuco"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 10 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-ica",
+  "name": "RPP Noticias · Ica",
+  "department": "Ica",
+  "dep": "11",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/ica",
+  "feeds": [
+   "https://rpp.pe/feed/peru/ica"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 19 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-junin",
+  "name": "RPP Noticias · Junín",
+  "department": "Junín",
+  "dep": "12",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/junin",
+  "feeds": [
+   "https://rpp.pe/feed/peru/junin"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 18 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-la-libertad",
+  "name": "RPP Noticias · La Libertad",
+  "department": "La Libertad",
+  "dep": "13",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/la-libertad",
+  "feeds": [
+   "https://rpp.pe/feed/peru/la-libertad"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 18 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-lambayeque",
+  "name": "RPP Noticias · Lambayeque",
+  "department": "Lambayeque",
+  "dep": "14",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/lambayeque",
+  "feeds": [
+   "https://rpp.pe/feed/peru/lambayeque"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 20 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-loreto",
+  "name": "RPP Noticias · Loreto",
+  "department": "Loreto",
+  "dep": "16",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/loreto",
+  "feeds": [
+   "https://rpp.pe/feed/peru/loreto"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 19 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-madre-de-dios",
+  "name": "RPP Noticias · Madre de Dios",
+  "department": "Madre de Dios",
+  "dep": "17",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/madre-de-dios",
+  "feeds": [
+   "https://rpp.pe/feed/peru/madre-de-dios"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, newest 18 Oct 2026 (section not in RPP menu but feed works). Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs."
+ },
+ {
+  "id": "rpp-moquegua",
+  "name": "RPP Noticias · Moquegua",
+  "department": "Moquegua",
+  "dep": "18",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/moquegua",
+  "feeds": [
+   "https://rpp.pe/feed/peru/moquegua"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 6 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-pasco",
+  "name": "RPP Noticias · Pasco",
+  "department": "Pasco",
+  "dep": "19",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/pasco",
+  "feeds": [
+   "https://rpp.pe/feed/peru/pasco"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 17 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-piura",
+  "name": "RPP Noticias · Piura",
+  "department": "Piura",
+  "dep": "20",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/piura",
+  "feeds": [
+   "https://rpp.pe/feed/peru/piura"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, newest 20 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs."
+ },
+ {
+  "id": "rpp-puno",
+  "name": "RPP Noticias · Puno",
+  "department": "Puno",
+  "dep": "21",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/puno",
+  "feeds": [
+   "https://rpp.pe/feed/peru/puno"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 19 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-san-martin",
+  "name": "RPP Noticias · San Martín",
+  "department": "San Martín",
+  "dep": "22",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/san-martin",
+  "feeds": [
+   "https://rpp.pe/feed/peru/san-martin"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 24 Sep (low volume) 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-tacna",
+  "name": "RPP Noticias · Tacna",
+  "department": "Tacna",
+  "dep": "23",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/tacna",
+  "feeds": [
+   "https://rpp.pe/feed/peru/tacna"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 14 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-tumbes",
+  "name": "RPP Noticias · Tumbes",
+  "department": "Tumbes",
+  "dep": "24",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/tumbes",
+  "feeds": [
+   "https://rpp.pe/feed/peru/tumbes"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, newest 20 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs."
+ },
+ {
+  "id": "rpp-ucayali",
+  "name": "RPP Noticias · Ucayali",
+  "department": "Ucayali",
+  "dep": "25",
+  "kind": "radio",
+  "home": "https://rpp.pe/peru/ucayali",
+  "feeds": [
+   "https://rpp.pe/feed/peru/ucayali"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 50 items, newest 20 Oct 2026. Pattern https://rpp.pe/feed/peru/<slug> verified on all 24 department slugs (incl. madre-de-dios, which is not in the menu)."
+ },
+ {
+  "id": "rpp-lima",
+  "name": "RPP Noticias · Lima/Actualidad",
+  "department": "Lima",
+  "dep": "15",
+  "kind": "radio",
+  "home": "https://rpp.pe/lima/actualidad",
+  "feeds": [
+   "https://rpp.pe/feed/lima/actualidad"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Use the leaf section: /feed/lima (root) is stale since Aug 2026. Other Lima leaves: /lima/obras, /lima/seguridad (guess)."
+ },
+ {
+  "id": "reina-de-la-selva",
+  "name": "Radio Reina de la Selva (Chachapoyas)",
+  "department": "Amazonas",
+  "dep": "01",
+  "kind": "radio",
+  "home": "https://reinadelaselva.pe/",
+  "feeds": [
+   "https://reinadelaselva.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. WordPress/Elementor; regional radio from Chachapoyas."
+ },
+ {
+  "id": "esfera-radio",
+  "name": "Esfera Radio (Chachapoyas)",
+  "department": "Amazonas",
+  "dep": "01",
+  "kind": "radio",
+  "home": "https://www.esferaradio.net/noticias/",
+  "feeds": [
+   "https://www.esferaradio.net/rss",
+   "https://news.google.com/rss/search?q=site%3Aesferaradio.net&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Custom CMS (/panel, /uploads/media/news); no feed link found and /rss errored. News dated 16 Oct 2026 (active). Use Google News site: fallback or scrape /noticias/."
+ },
+ {
+  "id": "chachapoyas-online",
+  "name": "Chachapoyas Online",
+  "department": "Amazonas",
+  "dep": "01",
+  "kind": "digital",
+  "home": "https://chachapoyasonline.com/",
+  "feeds": [
+   "https://chachapoyasonline.com/sitemap-news.xml",
+   "https://news.google.com/rss/search?q=site%3Achachapoyasonline.com&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "seen",
+  "note": "No RSS; a Google News sitemap exists (seen, valid but empty: 'no news in last 48 h' on 21 Oct). Latest articles 16 Oct 2026, mixes national news."
+ },
+ {
+  "id": "diario-de-chimbote",
+  "name": "Diario de Chimbote",
+  "department": "Áncash",
+  "dep": "02",
+  "kind": "diario",
+  "home": "https://diariodechimbote.com/",
+  "feeds": [
+   "https://www.diariodechimbote.com/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "radio-rsd-chimbote",
+  "name": "Radio Santo Domingo RSD (Chimbote)",
+  "department": "Áncash",
+  "dep": "02",
+  "kind": "radio",
+  "home": "https://radiorsd.pe/",
+  "feeds": [
+   "https://radiorsd.pe/rss.xml"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Drupal 10; covers Chimbote, Casma, Huaraz."
+ },
+ {
+  "id": "soltv-ancash",
+  "name": "Sol TV · Áncash",
+  "department": "Áncash",
+  "dep": "02",
+  "kind": "tv",
+  "home": "https://soltvperu.com/category/regiones/ancash-noticias/",
+  "feeds": [
+   "https://soltvperu.com/category/regiones/ancash-noticias/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Valid RSS but low frequency (newest 11 Sep 2026 on 21 Oct). Sol TV is a Trujillo-based northern network."
+ },
+ {
+  "id": "pregon-apurimac",
+  "name": "Diario Pregón (Abancay)",
+  "department": "Apurímac",
+  "dep": "03",
+  "kind": "diario",
+  "home": "https://pregon.com.pe/",
+  "feeds": [
+   "https://pregon.com.pe/index.php/regionales?format=feed&type=rss",
+   "https://pregon.com.pe/index.php/locales?format=feed&type=rss",
+   "https://pregon.com.pe/?format=feed&type=rss"
+  ],
+  "evidence": "seen",
+  "note": "First URL: WebFetch 2026-10-21 valid RSS ('Noticias Regionales'), newest 20 Oct 2026. Joomla/K2: other menus (locales, policiales, provinces under /index.php/regionales/<provincia>) accept ?format=feed&type=rss (guessed)."
+ },
+ {
+  "id": "chaski-apurimac",
+  "name": "Diario Chaski (Abancay)",
+  "department": "Apurímac",
+  "dep": "03",
+  "kind": "diario",
+  "home": "https://chaski.pe/",
+  "feeds": [
+   "https://news.google.com/rss/search?q=site%3Achaski.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Custom CMS, no feed link found (sections /noticias/local, /noticias/regional). Active (20 Oct 2026). Only a Google News site: fallback or HTML scraping."
+ },
+ {
+  "id": "radio-andahuaylas",
+  "name": "Radio Andahuaylas",
+  "department": "Apurímac",
+  "dep": "03",
+  "kind": "radio",
+  "home": "https://radioandahuaylas.com/",
+  "feeds": [
+   "https://radioandahuaylas.com/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Valid WordPress RSS but STALE (newest 21 Aug 2026). Low priority."
+ },
+ {
+  "id": "radio-titanka",
+  "name": "Radio Titanka (Andahuaylas/Abancay)",
+  "department": "Apurímac",
+  "dep": "03",
+  "kind": "radio",
+  "home": "https://radiotitanka.pe/noticias",
+  "feeds": [
+   "https://news.google.com/rss/search?q=site%3Aradiotitanka.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Custom PHP site, no feed found; active with Apurímac weather/SENAMHI items. Scrape or Google News site:."
+ },
+ {
+  "id": "el-buho",
+  "name": "El Búho",
+  "department": "Arequipa",
+  "dep": "04",
+  "kind": "digital",
+  "home": "https://elbuho.pe/",
+  "feeds": [
+   "https://elbuho.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Arequipa-based, also covers the south and national regions."
+ },
+ {
+  "id": "diario-sin-fronteras",
+  "name": "Diario Sin Fronteras (Arequipa · Tacna · Puno · Moquegua)",
+  "department": "Arequipa",
+  "dep": "04",
+  "kind": "diario",
+  "home": "https://diariosinfronteras.com.pe/",
+  "feeds": [
+   "https://diariosinfronteras.com.pe/category/arequipa/feed/",
+   "https://www.diariosinfronteras.com.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "All seen: /feed/ valid and fresh (20 Oct); category feeds /category/{arequipa,puno,tacna,moquegua}/feed/ return 10 items each (arequipa newest 20 Oct 2026; WebFetch output was truncated, not malformed). Use category feeds for department split."
+ },
+ {
+  "id": "radio-yaravi",
+  "name": "Radio Yaraví",
+  "department": "Arequipa",
+  "dep": "04",
+  "kind": "radio",
+  "home": "https://radioyaravi.org.pe/",
+  "feeds": [
+   "https://radioyaravi.org.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "diario-jornada",
+  "name": "Diario Jornada (Ayacucho)",
+  "department": "Ayacucho",
+  "dep": "05",
+  "kind": "diario",
+  "home": "https://jornada.com.pe/",
+  "feeds": [
+   "https://jornada.com.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Includes SENAMHI alerts and VRAEM huaicos."
+ },
+ {
+  "id": "soltv-cajamarca",
+  "name": "Sol TV · Cajamarca",
+  "department": "Cajamarca",
+  "dep": "06",
+  "kind": "tv",
+  "home": "https://soltvperu.com/category/regiones/cajamarca-noticias/",
+  "feeds": [
+   "https://soltvperu.com/category/regiones/cajamarca-noticias/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "panorama-cajamarquino",
+  "name": "Panorama Cajamarquino",
+  "department": "Cajamarca",
+  "dep": "06",
+  "kind": "diario",
+  "home": "https://panoramacajamarquino.com/",
+  "feeds": [
+   "https://panoramacajamarquino.com/feed/",
+   "https://news.google.com/rss/search?q=site%3Apanoramacajamarquino.com&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "WebFetch blocked by robots.txt (site exists, WordPress-like) so the feed was not read."
+ },
+ {
+  "id": "sin-rodeos-cajamarca",
+  "name": "Sin Rodeos Cajamarca",
+  "department": "Cajamarca",
+  "dep": "06",
+  "kind": "digital",
+  "home": "https://sinrodeoscajamarca.com/",
+  "feeds": [
+   "https://sinrodeoscajamarca.com/feed/",
+   "https://news.google.com/rss/search?q=site%3Asinrodeoscajamarca.com&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "WebFetch blocked by robots.txt (site exists, WordPress-like) so the feed was not read."
+ },
+ {
+  "id": "andina-radio-chota",
+  "name": "Andina Radio (Chota)",
+  "department": "Cajamarca",
+  "dep": "06",
+  "kind": "radio",
+  "home": "https://andinaradio.net/",
+  "feeds": [
+   "https://andinaradio.net/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Valid RSS but STALE (newest 5 Nov 2025). Keep only as low-priority."
+ },
+ {
+  "id": "prensa-chalaca",
+  "name": "Prensa Chalaca",
+  "department": "Callao",
+  "dep": "07",
+  "kind": "digital",
+  "home": "https://prensachalaca.com/",
+  "feeds": [
+   "https://prensachalaca.com/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. District pages /distrito/<x>/."
+ },
+ {
+  "id": "nacional-callao-tv",
+  "name": "Nacional Callao TV",
+  "department": "Callao",
+  "dep": "07",
+  "kind": "tv",
+  "home": "https://nacionalcallaotv.pe/",
+  "feeds": [
+   "https://nacionalcallaotv.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Valid RSS, sporadic (two items 15 Oct, previous Jun 2026)."
+ },
+ {
+  "id": "diario-del-cusco",
+  "name": "El Diario del Cusco",
+  "department": "Cusco",
+  "dep": "08",
+  "kind": "diario",
+  "home": "https://diariodelcusco.pe/",
+  "feeds": [
+   "https://diariodelcusco.pe/feed/",
+   "https://diariodelcusco.pe/category/actualidad/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Domain is diariodelcusco.pe (diariodelcusco.com is robots-blocked/old). /feed/ is valid but carries ONLY daily 'Edición Impresa' posts (each bundling ~9 headlines). /category/actualidad/feed/ is valid (seen) but sparse (newest 9 Oct 2026). Lower priority than Cusco Post."
+ },
+ {
+  "id": "cusco-post",
+  "name": "Cusco Post",
+  "department": "Cusco",
+  "dep": "08",
+  "kind": "digital",
+  "home": "https://cuscopost.pe/",
+  "feeds": [
+   "https://cuscopost.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Covers the southern Andes (Cusco, Puno, Ayacucho, Junín)."
+ },
+ {
+  "id": "radio-anqara",
+  "name": "Radio Anqara (Huancavelica)",
+  "department": "Huancavelica",
+  "dep": "09",
+  "kind": "radio",
+  "home": "http://radioanqara.com/",
+  "feeds": [
+   "https://news.google.com/rss/search?q=site%3Aradioanqara.com&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Active regional radio; /feed/ returns the HTML homepage (no feed). Google News site: fallback or scrape."
+ },
+ {
+  "id": "altavoz-huancavelica",
+  "name": "Altavoz · tema Huancavelica",
+  "department": "Huancavelica",
+  "dep": "09",
+  "kind": "digital",
+  "home": "https://altavoz.pe/temas/huancavelica/",
+  "feeds": [
+   "https://altavoz.pe/temas/huancavelica/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 10 items, but slow and noisy (newest 4 Oct 2026, an election item). Tag-feed pattern https://altavoz.pe/temas/<tema>/feed/ works, so other departments can use it too. Huancavelica has very few feed-enabled local outlets: rely on RPP, Correo /edicion/huancavelica/ and Google News."
+ },
+ {
+  "id": "tu-diario-huanuco",
+  "name": "Tu Diario Huánuco",
+  "department": "Huánuco",
+  "dep": "10",
+  "kind": "digital",
+  "home": "https://tudiariohuanuco.pe/",
+  "feeds": [
+   "https://tudiariohuanuco.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "diario-ahora-huanuco",
+  "name": "Diario Ahora (Huánuco)",
+  "department": "Huánuco",
+  "dep": "10",
+  "kind": "diario",
+  "home": "https://ahora.com.pe/",
+  "feeds": [
+   "https://ahora.com.pe/rss.xml",
+   "https://ahora.com.pe/feed"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Next.js site; both URLs return the same RSS (items not sorted by date, enclosure length=0)."
+ },
+ {
+  "id": "la-lupa-ica",
+  "name": "La Lupa (Ica)",
+  "department": "Ica",
+  "dep": "11",
+  "kind": "digital",
+  "home": "https://lalupa.pe/",
+  "feeds": [
+   "https://lalupa.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "la-opinion-ica",
+  "name": "Diario La Opinión (Ica)",
+  "department": "Ica",
+  "dep": "11",
+  "kind": "diario",
+  "home": "https://laopinion.pe/",
+  "feeds": [
+   "https://laopinion.pe/feed/",
+   "https://news.google.com/rss/search?q=site%3Alaopinion.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Homepage readable (Ica/Nasca/Pisco news) but /feed/ blocked by robots.txt for WebFetch."
+ },
+ {
+  "id": "radio-huancayo",
+  "name": "Radio Huancayo",
+  "department": "Junín",
+  "dep": "12",
+  "kind": "radio",
+  "home": "https://radiohuancayo.com.pe/",
+  "feeds": [
+   "https://radiohuancayo.com.pe/wp54/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Valid RSS (WordPress installed under /wp54/); newest 15 Oct 2026."
+ },
+ {
+  "id": "primicia-huancayo",
+  "name": "Diario Primicia (Huancayo)",
+  "department": "Junín",
+  "dep": "12",
+  "kind": "diario",
+  "home": "https://primicia.com.pe/",
+  "feeds": [
+   "https://primicia.com.pe/feed/",
+   "https://news.google.com/rss/search?q=site%3Aprimicia.com.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "WebFetch blocked by robots.txt (site exists, WordPress-like) so the feed was not read."
+ },
+ {
+  "id": "soltv-la-libertad",
+  "name": "Sol TV · La Libertad",
+  "department": "La Libertad",
+  "dep": "13",
+  "kind": "tv",
+  "home": "https://soltvperu.com/category/regiones/la-libertad-noticias/",
+  "feeds": [
+   "https://soltvperu.com/category/regiones/la-libertad-noticias/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "la-industria",
+  "name": "Diario La Industria (Trujillo/Chiclayo)",
+  "department": "La Libertad",
+  "dep": "13",
+  "kind": "diario",
+  "home": "https://www.laindustria.pe/",
+  "feeds": [
+   "https://www.laindustria.pe/feed/",
+   "https://www.laindustria.pe/rss",
+   "https://news.google.com/rss/search?q=site%3Alaindustria.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "robots.txt blocks WebFetch on the whole site, so CMS/feed unknown. Covers La Libertad and Lambayeque (Chiclayo edition)."
+ },
+ {
+  "id": "soltv-lambayeque",
+  "name": "Sol TV · Lambayeque",
+  "department": "Lambayeque",
+  "dep": "14",
+  "kind": "tv",
+  "home": "https://soltvperu.com/category/regiones/lambayeque-noticias/",
+  "feeds": [
+   "https://soltvperu.com/category/regiones/lambayeque-noticias/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Other Sol TV category feeds: piura, cajamarca, ancash, la-libertad (all checked)."
+ },
+ {
+  "id": "etp-huacho",
+  "name": "ETP Huacho",
+  "department": "Lima",
+  "dep": "15",
+  "kind": "digital",
+  "home": "https://etphuacho.com/",
+  "feeds": [
+   "https://etphuacho.com/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Lima provincias (Huaura, Barranca)."
+ },
+ {
+  "id": "huaral-en-linea",
+  "name": "Huaral en Línea",
+  "department": "Lima",
+  "dep": "15",
+  "kind": "digital",
+  "home": "https://huaralenlinea.com/",
+  "feeds": [
+   "https://huaralenlinea.com/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Valid RSS but slow (newest 1 Sep 2026). Lima provincias (Huaral, Chancay)."
+ },
+ {
+  "id": "pro-y-contra",
+  "name": "Pro & Contra (Iquitos)",
+  "department": "Loreto",
+  "dep": "16",
+  "kind": "diario",
+  "home": "https://proycontra.com.pe/",
+  "feeds": [
+   "https://www.proycontra.com.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Includes edicts/esoteric filler; filter by keywords."
+ },
+ {
+  "id": "diario-la-region",
+  "name": "Diario La Región (Iquitos)",
+  "department": "Loreto",
+  "dep": "16",
+  "kind": "diario",
+  "home": "https://diariolaregion.com/",
+  "feeds": [
+   "https://diariolaregion.com/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "radio-madre-de-dios",
+  "name": "Radio Madre de Dios",
+  "department": "Madre de Dios",
+  "dep": "17",
+  "kind": "radio",
+  "home": "https://noticias.madrededios.com/",
+  "feeds": [
+   "https://noticias.madrededios.com/rss/",
+   "https://noticias.madrededios.com/rss/local-medio-ambiente/",
+   "https://noticias.madrededios.com/rss/amazonia/"
+  ],
+  "evidence": "seen",
+  "note": "OpenNemas CMS; feed index at https://noticias.madrededios.com/rss/listado/ (47 feeds). /rss/ valid and fresh (19 Oct 2026); category feeds listed there (/rss/local/ is stale, newest May 2026). Old domain radiomadrededios.com blocks robots."
+ },
+ {
+  "id": "prensa-regional",
+  "name": "La Prensa Regional (Moquegua)",
+  "department": "Moquegua",
+  "dep": "18",
+  "kind": "diario",
+  "home": "https://prensaregional.pe/",
+  "feeds": [
+   "https://prensaregional.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Covers Moquegua, Ilo, Mollendo (Arequipa) and Tacna."
+ },
+ {
+  "id": "sin-fronteras-moquegua",
+  "name": "Diario Sin Fronteras · Moquegua",
+  "department": "Moquegua",
+  "dep": "18",
+  "kind": "diario",
+  "home": "https://diariosinfronteras.com.pe/category/moquegua/",
+  "feeds": [
+   "https://diariosinfronteras.com.pe/category/moquegua/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Valid RSS but low volume (newest 1 Jul 2026)."
+ },
+ {
+  "id": "pasco-libre",
+  "name": "Pasco Libre",
+  "department": "Pasco",
+  "dep": "19",
+  "kind": "digital",
+  "home": "http://www.pascolibre.com/",
+  "feeds": [
+   "http://www.pascolibre.com/feeds/posts/default?alt=rss",
+   "http://www.pascolibre.com/feeds/posts/default",
+   "https://news.google.com/rss/search?q=site%3Apascolibre.com&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Blogger site, active (posts Oct 2026 seen in search); standard Blogger feed URLs, blocked for WebFetch by robots.txt."
+ },
+ {
+  "id": "el-tiempo-piura",
+  "name": "El Tiempo (Piura)",
+  "department": "Piura",
+  "dep": "20",
+  "kind": "diario",
+  "home": "https://eltiempo.pe/",
+  "feeds": [
+   "https://eltiempo.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Footer link 'Suscríbete a nuestro RSS'. Already reporting El Niño impacts."
+ },
+ {
+  "id": "radio-cutivalu",
+  "name": "Radio Cutivalú",
+  "department": "Piura",
+  "dep": "20",
+  "kind": "radio",
+  "home": "https://www.cutivalu.pe/",
+  "feeds": [
+   "https://www.cutivalu.pe/feed/",
+   "https://www.cutivalu.pe/secciones/region/feed/",
+   "https://www.cutivalu.pe/secciones/piura/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Domain is cutivalu.pe (not radiocutivalu.org). Feeds valid but return only 1 item each (posts_per_rss=1): poll frequently or scrape /ultimas-noticias/. Region feed seen; /secciones/piura/feed/ guessed."
+ },
+ {
+  "id": "soltv-piura",
+  "name": "Sol TV · Piura",
+  "department": "Piura",
+  "dep": "20",
+  "kind": "tv",
+  "home": "https://soltvperu.com/category/regiones/piura-noticias/",
+  "feeds": [
+   "https://soltvperu.com/category/regiones/piura-noticias/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "los-andes",
+  "name": "Diario Los Andes (Puno)",
+  "department": "Puno",
+  "dep": "21",
+  "kind": "diario",
+  "home": "https://losandes.com.pe/",
+  "feeds": [
+   "https://losandes.com.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "radio-onda-azul",
+  "name": "Radio Onda Azul (Puno)",
+  "department": "Puno",
+  "dep": "21",
+  "kind": "radio",
+  "home": "https://radioondaazul.com/",
+  "feeds": [
+   "https://radioondaazul.com/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. Tag pages e.g. /etiqueta/puno/."
+ },
+ {
+  "id": "pachamama-radio",
+  "name": "Pachamama Radio (Puno/Juliaca)",
+  "department": "Puno",
+  "dep": "21",
+  "kind": "radio",
+  "home": "https://pachamamaradio.org/",
+  "feeds": [
+   "https://pachamamaradio.org/feed/",
+   "https://pachamamaradio.org/puno/feed/",
+   "https://news.google.com/rss/search?q=site%3Apachamamaradio.org&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "WordPress confirmed (section pages readable, active 20 Oct 2026) but /feed/ blocked by robots.txt for WebFetch."
+ },
+ {
+  "id": "sin-fronteras-puno",
+  "name": "Diario Sin Fronteras · Puno",
+  "department": "Puno",
+  "dep": "21",
+  "kind": "diario",
+  "home": "https://diariosinfronteras.com.pe/category/puno/",
+  "feeds": [
+   "https://diariosinfronteras.com.pe/category/puno/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, 10 items, newest 20 Oct 2026."
+ },
+ {
+  "id": "diario-voces",
+  "name": "Diario Voces (Tarapoto)",
+  "department": "San Martín",
+  "dep": "22",
+  "kind": "diario",
+  "home": "https://diariovoces.com.pe/",
+  "feeds": [
+   "https://diariovoces.com.pe/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "diario-hoy-san-martin",
+  "name": "Diario HOY (San Martín)",
+  "department": "San Martín",
+  "dep": "22",
+  "kind": "diario",
+  "home": "https://www.diario-hoy.com.pe/",
+  "feeds": [
+   "https://www.diario-hoy.com.pe/feed/",
+   "https://news.google.com/rss/search?q=site%3Adiario-hoy.com.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Seen in search as 'Últimas noticias de la región San Martín'; /feed/ errored from here."
+ },
+ {
+  "id": "diario-amanecer",
+  "name": "Diario Amanecer (Alto Mayo, Moyobamba)",
+  "department": "San Martín",
+  "dep": "22",
+  "kind": "diario",
+  "home": "https://diarioamanecer.net/",
+  "feeds": [
+   "https://diarioamanecer.net/feed/",
+   "https://news.google.com/rss/search?q=site%3Adiarioamanecer.net&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Seen in search; /feed/ errored from here."
+ },
+ {
+  "id": "radio-uno-tacna",
+  "name": "Radio Uno 93.7 (Tacna)",
+  "department": "Tacna",
+  "dep": "23",
+  "kind": "radio",
+  "home": "https://radiouno.pe/",
+  "feeds": [
+   "https://radiouno.pe/feed/",
+   "https://radiouno.pe/noticias/category/locales/feed/",
+   "https://radiouno.pe/noticias/category/regionales/feed/",
+   "https://radiouno.pe/noticias/category/medio-ambiente/feed/"
+  ],
+  "evidence": "seen",
+  "note": "Seen: /feed/, /noticias/category/locales/feed/ and /noticias/category/regionales/feed/ (17 items, newest 20 Oct 2026). medio-ambiente category feed guessed from the menu."
+ },
+ {
+  "id": "sin-fronteras-tacna",
+  "name": "Diario Sin Fronteras · Tacna",
+  "department": "Tacna",
+  "dep": "23",
+  "kind": "diario",
+  "home": "https://diariosinfronteras.com.pe/category/tacna/",
+  "feeds": [
+   "https://diariosinfronteras.com.pe/category/tacna/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items. (newest 15 Oct 2026)."
+ },
+ {
+  "id": "tumbes-de-miercoles",
+  "name": "Tumbes de Miércoles",
+  "department": "Tumbes",
+  "dep": "24",
+  "kind": "digital",
+  "home": "https://tumbesdemiercoles.com.pe/",
+  "feeds": [
+   "https://tumbesdemiercoles.com.pe/rss.xml",
+   "https://tumbesdemiercoles.com.pe/feed/",
+   "https://news.google.com/rss/search?q=site%3Atumbesdemiercoles.com.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Next.js site, no feed link; /rss.xml and /feed/ errored. Newest items 1 Oct 2026 (category pages /categorias/<x>). Tumbes has very few feed-enabled local outlets: rely on RPP Tumbes, Correo /edicion/tumbes/ and Google News."
+ },
+ {
+  "id": "gaceta-ucayalina",
+  "name": "Gaceta Ucayalina",
+  "department": "Ucayali",
+  "dep": "25",
+  "kind": "digital",
+  "home": "https://www.gacetaucayalina.com/",
+  "feeds": [
+   "https://www.gacetaucayalina.com/feed/"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: valid RSS, fresh items."
+ },
+ {
+  "id": "diario-impetu",
+  "name": "Diario Ímpetu (Pucallpa)",
+  "department": "Ucayali",
+  "dep": "25",
+  "kind": "diario",
+  "home": "https://diarioimpetu.com.pe/",
+  "feeds": [
+   "https://diarioimpetu.com.pe/feed/",
+   "https://news.google.com/rss/search?q=site%3Adiarioimpetu.com.pe&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "WebFetch blocked by robots.txt (domain answers) so the feed was not read. Domain inferred; X handle @diarioimpetu."
+ },
+ {
+  "id": "gnews-01",
+  "name": "Google Noticias · Amazonas",
+  "department": "Amazonas",
+  "dep": "01",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Chachapoyas%20OR%20Bagua%20OR%20Utcubamba%20OR%20%22regi%C3%B3n%20Amazonas%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22regi%C3%B3n%20Amazonas%22%20OR%20Chachapoyas%20OR%20Bagua%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-02",
+  "name": "Google Noticias · Áncash",
+  "department": "Áncash",
+  "dep": "02",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28%C3%81ncash%20OR%20Ancash%20OR%20Huaraz%20OR%20Chimbote%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22%C3%81ncash%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-03",
+  "name": "Google Noticias · Apurímac",
+  "department": "Apurímac",
+  "dep": "03",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Apur%C3%ADmac%20OR%20Abancay%20OR%20Andahuaylas%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Apur%C3%ADmac%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-04",
+  "name": "Google Noticias · Arequipa",
+  "department": "Arequipa",
+  "dep": "04",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Arequipa%20OR%20Caman%C3%A1%20OR%20Caylloma%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Arequipa%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-05",
+  "name": "Google Noticias · Ayacucho",
+  "department": "Ayacucho",
+  "dep": "05",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Ayacucho%20OR%20Huamanga%20OR%20Huanta%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ayacucho%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-06",
+  "name": "Google Noticias · Cajamarca",
+  "department": "Cajamarca",
+  "dep": "06",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Cajamarca%20OR%20Ja%C3%A9n%20OR%20Chota%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Cajamarca%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-07",
+  "name": "Google Noticias · Callao",
+  "department": "Callao",
+  "dep": "07",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Callao%20OR%20Ventanilla%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Callao%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-08",
+  "name": "Google Noticias · Cusco",
+  "department": "Cusco",
+  "dep": "08",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Cusco%20OR%20Quillabamba%20OR%20%22La%20Convenci%C3%B3n%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Cusco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-09",
+  "name": "Google Noticias · Huancavelica",
+  "department": "Huancavelica",
+  "dep": "09",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Huancavelica%20OR%20Tayacaja%20OR%20Angaraes%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Huancavelica%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-10",
+  "name": "Google Noticias · Huánuco",
+  "department": "Huánuco",
+  "dep": "10",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Hu%C3%A1nuco%20OR%20%22Tingo%20Mar%C3%ADa%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Hu%C3%A1nuco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-11",
+  "name": "Google Noticias · Ica",
+  "department": "Ica",
+  "dep": "11",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28%22regi%C3%B3n%20Ica%22%20OR%20Ica%20OR%20Pisco%20OR%20Chincha%20OR%20Nasca%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ica%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-12",
+  "name": "Google Noticias · Junín",
+  "department": "Junín",
+  "dep": "12",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Jun%C3%ADn%20OR%20Huancayo%20OR%20Satipo%20OR%20Chanchamayo%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Jun%C3%ADn%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-13",
+  "name": "Google Noticias · La Libertad",
+  "department": "La Libertad",
+  "dep": "13",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28%22La%20Libertad%22%20OR%20Trujillo%20OR%20Pacasmayo%20OR%20Chep%C3%A9n%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22La%20Libertad%22%20OR%20Trujillo%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-14",
+  "name": "Google Noticias · Lambayeque",
+  "department": "Lambayeque",
+  "dep": "14",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Lambayeque%20OR%20Chiclayo%20OR%20Ferre%C3%B1afe%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Lambayeque%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-15",
+  "name": "Google Noticias · Lima",
+  "department": "Lima",
+  "dep": "15",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28%22Lima%20Metropolitana%22%20OR%20Huaura%20OR%20Huacho%20OR%20Ca%C3%B1ete%20OR%20Huaral%20OR%20Barranca%20OR%20Chosica%20OR%20Huarochir%C3%AD%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28Lima%20OR%20%22Lima%20Metropolitana%22%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-16",
+  "name": "Google Noticias · Loreto",
+  "department": "Loreto",
+  "dep": "16",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Loreto%20OR%20Iquitos%20OR%20Yurimaguas%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Loreto%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-17",
+  "name": "Google Noticias · Madre de Dios",
+  "department": "Madre de Dios",
+  "dep": "17",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28%22Madre%20de%20Dios%22%20OR%20%22Puerto%20Maldonado%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Madre%20de%20Dios%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-18",
+  "name": "Google Noticias · Moquegua",
+  "department": "Moquegua",
+  "dep": "18",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Moquegua%20OR%20Ilo%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Moquegua%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-19",
+  "name": "Google Noticias · Pasco",
+  "department": "Pasco",
+  "dep": "19",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Pasco%20OR%20Oxapampa%20OR%20%22Cerro%20de%20Pasco%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Pasco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-20",
+  "name": "Google Noticias · Piura",
+  "department": "Piura",
+  "dep": "20",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Piura%20OR%20Sullana%20OR%20Talara%20OR%20Chulucanas%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Piura%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-21",
+  "name": "Google Noticias · Puno",
+  "department": "Puno",
+  "dep": "21",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Puno%20OR%20Juliaca%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Puno%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-22",
+  "name": "Google Noticias · San Martín",
+  "department": "San Martín",
+  "dep": "22",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28%22regi%C3%B3n%20San%20Mart%C3%ADn%22%20OR%20Tarapoto%20OR%20Moyobamba%20OR%20Tocache%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22regi%C3%B3n%20San%20Mart%C3%ADn%22%20OR%20Tarapoto%20OR%20Moyobamba%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-23",
+  "name": "Google Noticias · Tacna",
+  "department": "Tacna",
+  "dep": "23",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Tacna%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Tacna%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-24",
+  "name": "Google Noticias · Tumbes",
+  "department": "Tumbes",
+  "dep": "24",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Tumbes%20OR%20Zarumilla%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Tumbes%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gnews-25",
+  "name": "Google Noticias · Ucayali",
+  "department": "Ucayali",
+  "dep": "25",
+  "kind": "agregador",
+  "feeds": [
+   "https://news.google.com/rss/search?q=%28Ucayali%20OR%20Pucallpa%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419",
+   "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ucayali%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  ],
+  "evidence": "guessed",
+  "note": "Búsqueda por provincias del departamento y peligros"
+ },
+ {
+  "id": "gobpe-regionamazonas",
+  "name": "Gobierno Regional de Amazonas (gob.pe)",
+  "department": "Amazonas",
+  "dep": "01",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionamazonas/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionamazonas&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionancash",
+  "name": "Gobierno Regional de Áncash (gob.pe)",
+  "department": "Áncash",
+  "dep": "02",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionancash/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionancash&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionancash&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionapurimac",
+  "name": "Gobierno Regional de Apurímac (gob.pe)",
+  "department": "Apurímac",
+  "dep": "03",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionapurimac/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionapurimac&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionapurimac&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionarequipa",
+  "name": "Gobierno Regional de Arequipa (gob.pe)",
+  "department": "Arequipa",
+  "dep": "04",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionarequipa/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionarequipa&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionarequipa&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionayacucho",
+  "name": "Gobierno Regional de Ayacucho (gob.pe)",
+  "department": "Ayacucho",
+  "dep": "05",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionayacucho/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionayacucho&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionayacucho&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regioncajamarca",
+  "name": "Gobierno Regional de Cajamarca (gob.pe)",
+  "department": "Cajamarca",
+  "dep": "06",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regioncajamarca/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncajamarca&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regioncajamarca&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regioncallao",
+  "name": "Gobierno Regional de Callao (gob.pe)",
+  "department": "Callao",
+  "dep": "07",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regioncallao/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncallao&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regioncallao&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regioncusco",
+  "name": "Gobierno Regional de Cusco (gob.pe)",
+  "department": "Cusco",
+  "dep": "08",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regioncusco/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncusco&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regioncusco&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionhuancavelica",
+  "name": "Gobierno Regional de Huancavelica (gob.pe)",
+  "department": "Huancavelica",
+  "dep": "09",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionhuancavelica/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuancavelica&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionhuancavelica&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionhuanuco",
+  "name": "Gobierno Regional de Huánuco (gob.pe)",
+  "department": "Huánuco",
+  "dep": "10",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionhuanuco/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuanuco&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionhuanuco&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionica",
+  "name": "Gobierno Regional de Ica (gob.pe)",
+  "department": "Ica",
+  "dep": "11",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionica/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionica&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionica&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionjunin",
+  "name": "Gobierno Regional de Junín (gob.pe)",
+  "department": "Junín",
+  "dep": "12",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionjunin/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionjunin&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionjunin&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionlalibertad",
+  "name": "Gobierno Regional de La Libertad (gob.pe)",
+  "department": "La Libertad",
+  "dep": "13",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionlalibertad/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionlalibertad&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionlambayeque",
+  "name": "Gobierno Regional de Lambayeque (gob.pe)",
+  "department": "Lambayeque",
+  "dep": "14",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionlambayeque/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionlambayeque&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionlima",
+  "name": "Gobierno Regional de Lima (gob.pe)",
+  "department": "Lima",
+  "dep": "15",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionlima/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlima&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionlima&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionloreto",
+  "name": "Gobierno Regional de Loreto (gob.pe)",
+  "department": "Loreto",
+  "dep": "16",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionloreto/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionloreto&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionloreto&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionmadrededios",
+  "name": "Gobierno Regional de Madre de Dios (gob.pe)",
+  "department": "Madre de Dios",
+  "dep": "17",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionmadrededios/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmadrededios&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionmadrededios&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionmoquegua",
+  "name": "Gobierno Regional de Moquegua (gob.pe)",
+  "department": "Moquegua",
+  "dep": "18",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionmoquegua/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionmoquegua&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionpasco",
+  "name": "Gobierno Regional de Pasco (gob.pe)",
+  "department": "Pasco",
+  "dep": "19",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionpasco/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpasco&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionpasco&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionpiura",
+  "name": "Gobierno Regional de Piura (gob.pe)",
+  "department": "Piura",
+  "dep": "20",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionpiura/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionpiura&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-regionpuno",
+  "name": "Gobierno Regional de Puno (gob.pe)",
+  "department": "Puno",
+  "dep": "21",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionpuno/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpuno&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionpuno&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regionsanmartin",
+  "name": "Gobierno Regional de San Martín (gob.pe)",
+  "department": "San Martín",
+  "dep": "22",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionsanmartin/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionsanmartin&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionsanmartin&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regiontacna",
+  "name": "Gobierno Regional de Tacna (gob.pe)",
+  "department": "Tacna",
+  "dep": "23",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regiontacna/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontacna&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regiontacna&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-regiontumbes",
+  "name": "Gobierno Regional de Tumbes (gob.pe)",
+  "department": "Tumbes",
+  "dep": "24",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regiontumbes/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontumbes&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regiontumbes&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": true
+ },
+ {
+  "id": "gobpe-regionucayali",
+  "name": "Gobierno Regional de Ucayali (gob.pe)",
+  "department": "Ucayali",
+  "dep": "25",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/regionucayali/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionucayali&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=regionucayali&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "gobpe-munlima",
+  "name": "Municipalidad de Lima (gob.pe)",
+  "department": "Lima",
+  "dep": "15",
+  "kind": "gobierno",
+  "home": "https://www.gob.pe/institucion/munlima/noticias",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=munlima&sheet=1&sort_by=recent",
+   "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=munlima&sheet=1&sort_by=recent"
+  ],
+  "evidence": "guessed",
+  "savehtml": false
+ },
+ {
+  "id": "andina-rss-index",
+  "name": "Andina índice de RSS",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "home": "https://andina.pe/agencia/rss.aspx",
+  "feeds": [],
+  "savehtml": true
+ },
+ {
+  "id": "indeci-coen-emergencias",
+  "name": "INDECI · COEN, reportes de emergencias",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "scope": "hazard",
+  "home": "https://portal.indeci.gob.pe/emergencias/",
+  "feeds": [
+   "https://portal.indeci.gob.pe/emergencias/feed/?paged=1",
+   "https://portal.indeci.gob.pe/emergencias/feed/?paged=2"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: RSS 2.0 of the 'emergencias' post type, 25-40 posts a day (all hazards, district and department in the title). The bare /emergencias/feed/ was a stale cached copy (lastBuildDate 12 Oct); ?paged=N was fresh."
+ },
+ {
+  "id": "gobpe-normas-emergencia",
+  "name": "gob.pe · normas «estado de emergencia»",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "scope": "hazard",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=normas&sheet=1&sort_by=recent&term=estado+de+emergencia",
+   "https://www.gob.pe/busquedas.rss?contenido[]=normas&institucion[]=pcm&sheet=1&sort_by=recent&term=estado+de+emergencia"
+  ],
+  "evidence": "guessed",
+  "note": "Same busquedas.rss endpoint as the noticias feeds that work from Actions, with contenido[]=normas: declarations and extensions of states of emergency."
+ }
+]

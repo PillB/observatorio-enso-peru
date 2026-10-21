@@ -1,0 +1,14 @@
+# systemd (Linux, Raspberry Pi): una recolección; la dispara enso-collector.timer.
+# Instalación en docs/servidor-peru.md.
+[Unit]
+Description=Observatorio ENSO Peru - recoleccion desde el Peru
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=enso
+WorkingDirectory=/opt/observatorio-enso-peru/python
+EnvironmentFile=/etc/enso-collector.env
+ExecStart=/opt/observatorio-enso-peru/.venv/bin/python -m tools.peru_collector --once --push --dispatch
+TimeoutStartSec=30min
