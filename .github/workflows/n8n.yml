@@ -108,6 +108,14 @@ jobs:
             echo "|---|---|---|---|---|---|---|"
             jq -r '.[1:][] | select(.resultado != "OK") | "| \(.veredicto) | \(.alcance) | \(.bloqueo) | \(.http) | \(.id) | \(.url) | \(.nota | gsub("\\|"; "/") | .[0:80]) |"' validacion-actions.json
           } >> "$GITHUB_STEP_SUMMARY"
+      - name: Errors of each pass, as n8n reported them
+        run: |
+          sed -n '/^{/,$p' "$RUNNER_TEMP/v/run.log" | jq -r '
+            .data.resultData.runData as $r
+            | ["Descargar", "Descargar (2.ª pasada)"][] as $n
+            | ($r[$n][0].data.main[0] // []) | to_entries[]
+            | select(.value.json.error) | "\($n)\t#\(.key)\t\(.value.json.error.message // .value.json.error | tostring | .[0:80])"' | tee pasadas.txt | head -80
+          sed -n '/^{/,$p' "$RUNNER_TEMP/v/run.log" | jq -r '.data.resultData.runData | to_entries[] | "\(.key)\t\(.value[0].startTime)\t\(.value[0].executionTime) ms"'
       - name: The same feeds through variants of n8n's HTTP node (which option makes n8n abort?)
         run: |
           mkdir -p "$RUNNER_TEMP/x" && chmod 777 "$RUNNER_TEMP/x"
