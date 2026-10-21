@@ -182,6 +182,7 @@ def test_architecture_diagrams_are_drawn_from_the_model():
         for n in part["nodes"]:
             assert f'data-node="{n["id"]}"' in svg
             assert n["what_es"] and n["what_en"]
+            assert bool(n.get("details_es")) == bool(n.get("details_en")), f"{n['id']}: detalle en un solo idioma"
         for e in part["edges"]:
             assert e["from"] in ids and e["to"] in ids, e
             assert e["label_es"] and e["explain_es"] and e["label_en"] and e["explain_en"]
@@ -196,6 +197,8 @@ def test_architecture_diagrams_are_drawn_from_the_model():
         assert set(step["nodes"]) <= simple_ids, step["title_es"]
     doc = A.DOC.read_text(encoding="utf-8")
     assert doc == A.render_doc(model, doc), "docs/arquitectura.md: corre python -m tools.architecture"
+    for n in model["full"]["nodes"]:
+        assert f"| **{n['name_es']}** |" in doc, f"{n['id']}: la caja no está en el texto de docs/arquitectura.md"
 
 
 @pytest.mark.parametrize("feed", N.FEEDS, ids=lambda f: f.id)

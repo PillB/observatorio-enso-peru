@@ -828,7 +828,8 @@ DOC_START, DOC_END = "<!-- recorrido:inicio (generado por python -m tools.archit
 
 
 def _cell(s: str) -> str:
-    return s.replace("|", "\\|").replace("\n", " ")
+    # «sources/<id>.json» se vería como una etiqueta HTML y desaparecería al mostrar el Markdown.
+    return s.replace("|", "\\|").replace("\n", " ").replace("<", "&lt;")
 
 
 def render_doc_section(model: dict) -> str:
@@ -858,7 +859,18 @@ def render_doc_section(model: dict) -> str:
     for i, e in enumerate(full["edges"]):
         out.append(f"| {i + 1} | {_cell(fn[e['from']]['name_es'])} → {_cell(fn[e['to']]['name_es'])} | {_cell(e.get('when_es', ''))} | "
                    f"**{_cell(e['label_es'])}.** {_cell(e['explain_es'])} |")
-    out += ["", "</details>", "", DOC_END]
+    out += ["", "</details>", ""]
+    out += [f"<details><summary>Las {len(full['nodes'])} cajas del diagrama completo, en texto</summary>", ""]
+    groups = [(c["id"], c["title_es"]) for c in full["columns"]] + [("band", full["band"]["title_es"])]
+    for col, title in groups:
+        out += [f"**{title}**", "", "| Caja | Qué es y qué hace | Detalle |", "|---|---|---|"]
+        for n in full["nodes"]:
+            if n["col"] != col:
+                continue
+            when = f" _{_cell(n['meta_es'])}._" if n.get("meta_es") else ""
+            out.append(f"| **{_cell(n['name_es'])}** | {_cell(n['what_es'])}{when} | {_cell(n.get('details_es', ''))} |")
+        out.append("")
+    out += ["</details>", "", DOC_END]
     return "\n".join(out)
 
 
