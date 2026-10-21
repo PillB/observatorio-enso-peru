@@ -98,10 +98,10 @@ cada feed y publica el resultado en `news/feeds.json`.
 | Infobae Perú | Perú | Activo | 100 / 4 |
 | Caretas | Perú | Activo | 60 / 1 |
 | Peru Reports (inglés) | Perú | Activo | 15 / 0 |
-| Google Noticias, búsqueda «El Niño», «ENFEN», «Niño costero» (Perú) | Perú | Activo; agrega medios regionales | 100 / 99 |
-| Google News, búsqueda «El Niño», «La Niña», «ENSO» (inglés) | Mundo | Activo | 100 / 96 |
+| Google Noticias, búsqueda «El Niño», «ENFEN», «Niño costero» (Perú) | Perú | Omitido: su robots.txt no lo permite (ver abajo) | 100 / 99 |
+| Google News, búsqueda «El Niño», «La Niña», «ENSO» (inglés) | Mundo | Omitido: su robots.txt no lo permite | 100 / 96 |
 | BBC News Mundo | Mundo | Activo | 34 / 0 |
-| Noticias ONU · Cambio climático | Mundo | Activo | 30 / 5 |
+| Noticias ONU · Cambio climático | Mundo | Omitido: su robots.txt no lo permite | 30 / 5 |
 | GDACS (alertas de desastres) | Mundo | Activo; solo cuenta lo que afecta al Perú | 248 / 0 |
 | Carbon Brief | Mundo | Activo | 12 / 0 |
 | CIIFEN | Mundo | Responde, publica pocas veces al año | 3 / 1 |
@@ -118,6 +118,27 @@ Descartados en la verificación:
 
 Las publicaciones de redes sociales que aparecen en Google Noticias
 (Facebook, X, Instagram, TikTok, YouTube) se descartan.
+
+### Feeds que su robots.txt no permite
+
+El registro (`registry/sources.json`) no les asigna canal y el pipeline no
+los pide: aparecen en `news/feeds.json` como `skipped: "robots"` («Omitido
+(robots.txt)» en el sitio), no como caídos. Copias de cada robots.txt en
+`python/tests/fixtures/scrape-ladder/robots-*.http.txt` (21 de octubre de
+2026) y pruebas en `python/tests/test_channels.py`.
+
+| Sitio | Regla | Feeds |
+|---|---|---|
+| Google Noticias | `User-agent: *` con `Disallow: /`; solo permite la portada, temas y publicaciones, no `/rss/` | Las 25 búsquedas por departamento y las de El Niño |
+| Noticias ONU | `Disallow: */news/` para todos (solo Feedfetcher-Google puede leer sus feeds) | Cambio climático |
+| Sin Rodeos (Cajamarca) | `Disallow: /` | Su feed |
+| gob.pe | Prohíbe `?sheet=` y `&sheet=` (la paginación de las búsquedas), no los RSS | Sus 30 feeds van sin `sheet` y sí se leen |
+
+Cada departamento conserva entre 1 y 6 feeds regionales (gob.pe del
+gobierno regional, RPP regional y medios locales). Bing Noticias en RSS
+responde y su robots.txt permite `/news/search`, pero el propio feed
+limita su uso a «un agregador RSS para su uso personal y no comercial»,
+así que no se usa como reemplazo.
 
 ## Alertas oficiales de peligros
 
