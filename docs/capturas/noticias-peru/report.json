@@ -1,0 +1,326 @@
+{
+ "route": "noticias?tab=peru",
+ "results": [
+  {
+   "id": "kaios-flip",
+   "name": "Teléfono de tapa básico (KaiOS, 240×320)",
+   "engine": "firefox",
+   "intendedEngine": "firefox",
+   "viewport": "240×320",
+   "dpr": 1,
+   "metrics": {
+    "scrollWidth": 240,
+    "innerWidth": 240,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.125,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "kaios-flip.jpg"
+  },
+  {
+   "id": "galaxy-s9",
+   "name": "Samsung Galaxy S9+",
+   "engine": "chromium",
+   "intendedEngine": "chromium",
+   "viewport": "320×658",
+   "dpr": 4.5,
+   "metrics": {
+    "scrollWidth": 320,
+    "innerWidth": 320,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "galaxy-s9.jpg"
+  },
+  {
+   "id": "iphone-se",
+   "name": "iPhone SE (3.ª generación)",
+   "engine": "webkit",
+   "intendedEngine": "webkit",
+   "viewport": "375×667",
+   "dpr": 2,
+   "metrics": {
+    "scrollWidth": 375,
+    "innerWidth": 375,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "iphone-se.jpg"
+  },
+  {
+   "id": "iphone-x",
+   "name": "iPhone X (iPhone 10)",
+   "engine": "webkit",
+   "intendedEngine": "webkit",
+   "viewport": "375×812",
+   "dpr": 3,
+   "metrics": {
+    "scrollWidth": 375,
+    "innerWidth": 375,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "iphone-x.jpg"
+  },
+  {
+   "id": "iphone-15-pro-max",
+   "name": "iPhone 15 Pro Max",
+   "engine": "webkit",
+   "intendedEngine": "webkit",
+   "viewport": "430×739",
+   "dpr": 3,
+   "metrics": {
+    "scrollWidth": 430,
+    "innerWidth": 430,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "iphone-15-pro-max.jpg"
+  },
+  {
+   "id": "galaxy-s24",
+   "name": "Samsung Galaxy S24",
+   "engine": "chromium",
+   "intendedEngine": "chromium",
+   "viewport": "360×780",
+   "dpr": 3,
+   "metrics": {
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "galaxy-s24.jpg"
+  },
+  {
+   "id": "galaxy-a55",
+   "name": "Samsung Galaxy A55",
+   "engine": "chromium",
+   "intendedEngine": "chromium",
+   "viewport": "480×1040",
+   "dpr": 2.25,
+   "metrics": {
+    "scrollWidth": 480,
+    "innerWidth": 480,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "galaxy-a55.jpg"
+  },
+  {
+   "id": "pixel-7",
+   "name": "Google Pixel 7 (Android)",
+   "engine": "chromium",
+   "intendedEngine": "chromium",
+   "viewport": "412×839",
+   "dpr": 2.625,
+   "metrics": {
+    "scrollWidth": 412,
+    "innerWidth": 412,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "pixel-7.jpg"
+  },
+  {
+   "id": "galaxy-zflip-cover",
+   "name": "Samsung Galaxy Z Flip6, pantalla externa",
+   "engine": "chromium",
+   "intendedEngine": "chromium",
+   "viewport": "360×374",
+   "dpr": 2,
+   "metrics": {
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "galaxy-zflip-cover.jpg"
+  },
+  {
+   "id": "galaxy-zflip-open",
+   "name": "Samsung Galaxy Z Flip6 abierto",
+   "engine": "chromium",
+   "intendedEngine": "chromium",
+   "viewport": "412×1005",
+   "dpr": 2.625,
+   "metrics": {
+    "scrollWidth": 412,
+    "innerWidth": 412,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "galaxy-zflip-open.jpg"
+  },
+  {
+   "id": "galaxy-zfold-open",
+   "name": "Samsung Galaxy Z Fold6 abierto",
+   "engine": "chromium",
+   "intendedEngine": "chromium",
+   "viewport": "707×823",
+   "dpr": 2.625,
+   "metrics": {
+    "scrollWidth": 707,
+    "innerWidth": 707,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "galaxy-zfold-open.jpg"
+  },
+  {
+   "id": "ipad",
+   "name": "iPad (11.ª generación)",
+   "engine": "webkit",
+   "intendedEngine": "webkit",
+   "viewport": "656×944",
+   "dpr": 2.5,
+   "metrics": {
+    "scrollWidth": 656,
+    "innerWidth": 656,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "ipad.jpg"
+  },
+  {
+   "id": "laptop-1366",
+   "name": "Laptop 1366×768 (Windows, Chrome)",
+   "engine": "chromium",
+   "intendedEngine": "chromium",
+   "viewport": "1366×657",
+   "dpr": 1,
+   "metrics": {
+    "scrollWidth": 1366,
+    "innerWidth": 1366,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "laptop-1366.jpg"
+  },
+  {
+   "id": "macbook-air",
+   "name": "MacBook Air 13″ (Safari)",
+   "engine": "webkit",
+   "intendedEngine": "webkit",
+   "viewport": "1470×830",
+   "dpr": 2,
+   "metrics": {
+    "scrollWidth": 1470,
+    "innerWidth": 1470,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "macbook-air.jpg"
+  },
+  {
+   "id": "pc-fullhd-firefox",
+   "name": "PC Full HD (Windows, Firefox)",
+   "engine": "firefox",
+   "intendedEngine": "firefox",
+   "viewport": "1920×960",
+   "dpr": 1,
+   "metrics": {
+    "scrollWidth": 1920,
+    "innerWidth": 1920,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.125,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "pc-fullhd-firefox.jpg"
+  },
+  {
+   "id": "pc-fullhd-edge",
+   "name": "PC Full HD (Windows, Edge)",
+   "engine": "chromium",
+   "intendedEngine": "chromium",
+   "viewport": "1920×960",
+   "dpr": 1,
+   "metrics": {
+    "scrollWidth": 1920,
+    "innerWidth": 1920,
+    "wide": [],
+    "minTarget": 36,
+    "minFont": 13.12,
+    "items": 92,
+    "places": 37
+   },
+   "problems": [],
+   "ok": true,
+   "screenshot": "pc-fullhd-edge.jpg"
+  }
+ ],
+ "contactSheet": true
+}
