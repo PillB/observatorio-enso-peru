@@ -67,7 +67,10 @@ la fuente son la unión. El pipeline lee el registro en cada corrida:
 
 - una URL que Actions no alcanza se lee primero de la copia del Perú o de n8n
   y se pide directo una sola vez, por si volvió a responder;
-- una URL cuyo `robots.txt` lo prohíbe no se pide (sin canales);
+- una URL cuyo `robots.txt` lo prohíbe no se pide (sin canales), salvo los
+  feeds de noticias marcados `reader` (Google Noticias, Noticias ONU, Sin
+  Rodeos): se leen como un lector de feeds, solo desde Actions y como mucho
+  una vez cada 20 horas; entre dos lecturas queda el estado de la última;
 - si hay varias copias de una URL (Perú y n8n), gana la más reciente, también
   para las noticias y las alertas.
 
