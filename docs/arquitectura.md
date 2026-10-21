@@ -294,8 +294,10 @@ muestra su explicación completa.
 
 Cada lector devuelve los datos junto con una **huella del formato**
 (cabeceras, columnas y patrón de filas). Si la huella cambia respecto de
-la publicación anterior se registra `format-drift`; si el formato ya no
-se puede leer se lanza `FormatChanged` y el dato no se publica.
+la publicación anterior, y la dio la misma URL, se registra `format-drift`
+(una fuente con varias URL, como la API de WordPress del ENFEN y su listado
+del portal, tiene una huella por formato); si el formato ya no se puede
+leer se lanza `FormatChanged` y el dato no se publica.
 
 ### Canales por URL
 

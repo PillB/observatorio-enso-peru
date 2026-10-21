@@ -216,6 +216,24 @@ def test_format_drift_is_detected(pub, tmp_path):
     assert any(e["source"] == "cpc-roni" and e["code"] == "format-drift" for e in rep["events"])
 
 
+def test_a_different_url_of_the_same_source_is_not_format_drift(pub, tmp_path):
+    """La huella anterior la dio otra URL de la fuente (como la API de WordPress del ENFEN frente a su listado):
+    otro formato, no un cambio de formato."""
+    prev, _ = pub
+    s = json.loads((prev / "sources" / "cpc-roni.json").read_text(encoding="utf-8"))
+    s["fingerprint"], s["url"] = "otra-huella", "https://www.cpc.ncep.noaa.gov/otra-url-de-la-fuente"
+    p2 = tmp_path / "prev"
+    shutil.copytree(prev, p2)
+    (p2 / "sources" / "cpc-roni.json").write_text(json.dumps(s), encoding="utf-8")
+    out = tmp_path / "data"
+    obs.run(out, str(p2), fixtures=FIX)
+    rep = json.loads((out / "run-report.json").read_text(encoding="utf-8"))
+    assert not any(e["source"] == "cpc-roni" and e["code"] == "format-drift" for e in rep["events"])
+    sources = json.loads((out / "sources.json").read_text(encoding="utf-8"))["sources"]
+    roni = next(h for h in sources if h["id"] == "cpc-roni")
+    assert roni["formatDrift"] is False
+
+
 def test_a_run_without_news_serves_the_previous_news(pub, tmp_path):
     """Si las noticias no se leyeron (aquí, con --only), la publicación no se cae y sirve las anteriores:
     la siguiente corrida encuentra el histórico donde siempre."""
