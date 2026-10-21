@@ -749,7 +749,7 @@ VIEWS.noticias = {
     const box = $('#feeds-status .feeds-table');
     box.innerHTML = feeds ? String(html`<div class="table-wrap"><table><thead><tr><th scope="col">Feed</th><th scope="col">Estado</th><th scope="col">Entradas</th><th scope="col">Más reciente</th></tr></thead><tbody>
       ${feeds.feeds.map((f) => html`<tr><th scope="row"><a href="${safeUrl(f.url)}" rel="noopener" target="_blank">${f.name}</a><div class="muted small">${f.region === 'peru' ? (f.department && deps[f.department] ? deps[f.department] : 'Perú') : 'Mundo'} · ${KIND_LABEL[f.kind] || 'Diario'}${f.repairs && f.repairs.length ? ` · reparado: ${f.repairs.join(', ')}` : ''}</div></th>
-      <td>${f.skipped ? chip('na', 'Omitido (robots.txt)') : f.ok ? (f.active ? chip('ok', 'Activo') : chip('watch', 'Sin novedades')) : chip('alert', 'No responde')}${f.error ? html`<div class="muted small">${f.error}</div>` : ''}</td>
+      <td>${f.skipped ? chip('na', 'Omitido (robots.txt)') : f.ok ? (f.active ? chip('ok', 'Activo') : chip('watch', 'Sin novedades')) : chip('alert', 'No responde')}${f.error ? html`<div class="muted small">${f.error}</div>` : ''}${f.carried ? html`<div class="muted small">Lectura del ${F.fmtDateTime(f.checkedAt)}: este feed se lee una vez al día.</div>` : ''}</td>
       <td>${f.items} (${f.relevant} sobre El Niño)</td><td>${f.latest ? F.fmtDate(f.latest.slice(0, 10)) : '—'}</td></tr>`)}</tbody></table></div>
       <p class="muted small">${feeds.history.items} notas guardadas desde ${feeds.history.since ? F.fmtDate(feeds.history.since.slice(0, 10)) : '—'}; ${feeds.history.added} nuevas en esta corrida.</p>`) : 'No disponible.';
   },

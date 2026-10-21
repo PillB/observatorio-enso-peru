@@ -107,11 +107,30 @@ def test_robots_disallowed_sources_get_no_channel():
     assert gb["status"] == "robots-disallowed"
     assert registry.channels_for(gb["status"]) == []
     reg = registry.build(reach={})
-    url = reg["sources"][0]["url"]
+    i = next(n for n, x in enumerate(reg["sources"]) if x["kind"] != "feed")  # una fuente oficial
+    url = reg["sources"][i]["url"]
     reg = registry.build(reach={url: {"us": {"class": "robots", "at": "x", "vantage": "github-actions"}}})
-    assert reg["sources"][0]["channels"] == [] and registry.validate(reg) == []
-    reg["sources"][1]["channels"] = []
+    assert reg["sources"][i]["channels"] == [] and registry.validate(reg) == []
+    reg["sources"][i + 1]["channels"] = []
     assert any("canales" in e for e in registry.validate(reg))
+
+
+def test_news_feeds_barred_by_robots_are_read_like_a_feed_reader():
+    """Decisión del 21 de octubre de 2026: un feed de noticias que robots.txt no permite se lee solo desde
+    Actions (como mucho una vez al día); una fuente oficial o página en esa situación sigue sin canales."""
+    reg = registry.build(reach={})
+    feed = next(x for x in reg["sources"] if x["kind"] == "feed" and x["id"].startswith("news-gnews"))
+    reg = registry.build(reach={feed["url"]: {"us": {"class": "robots", "at": "x", "vantage": "github-actions"}}})
+    got = next(x for x in reg["sources"] if x["id"] == feed["id"])
+    assert got["by_url"][feed["url"]] == {"status": "robots-disallowed", "channels": ["actions"], "reader": True}
+    assert got["channels"] == ["actions"] and registry.validate(reg) == []
+    assert registry.reader_urls(reg) == {feed["url"]}
+    assert registry.url_channels(reg)[feed["url"]] == ["actions"]
+    got["by_url"][feed["url"]]["channels"] = ["actions", "n8n"]  # n8n no: correría varias veces al día
+    assert any("reader" in e for e in registry.validate(reg))
+    other = next(x for x in reg["sources"] if x["kind"] != "feed")
+    other["by_url"][other["url"]]["reader"] = True
+    assert any(other["id"] in e and "reader" in e for e in registry.validate(reg))
 
 
 def test_robots_parser():

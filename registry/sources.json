@@ -1,8 +1,9 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T04:56:15+00:00",
+ "generated_at": "2026-10-21T05:09:29+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
+  "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h",
   "tiers": {
    "api": 1,
    "feed": 1,
@@ -745,12 +746,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%22El%20Ni%C3%B1o%22%20OR%20ENFEN%20OR%20%22Ni%C3%B1o%20costero%22&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -811,12 +817,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Aelperuano.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -1603,12 +1614,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28huaico%20OR%20huaicos%20OR%20%22activaci%C3%B3n%20de%20quebrada%22%20OR%20inundaci%C3%B3n%20OR%20desborde%29%20Per%C3%BA%20when%3A3d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -1749,12 +1765,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Aradionacional.gob.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -2049,12 +2070,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Apanamericana.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -2117,12 +2143,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Atvperu.gob.pe/noticias&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -2718,12 +2749,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Chachapoyas%20OR%20Bagua%20OR%20Utcubamba%20OR%20%22regi%C3%B3n%20Amazonas%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -2785,12 +2821,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Aesferaradio.net&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -3006,12 +3047,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Achachapoyasonline.com&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -3073,12 +3119,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28%C3%81ncash%20OR%20Ancash%20OR%20Huaraz%20OR%20Chimbote%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -3360,12 +3411,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Apur%C3%ADmac%20OR%20Abancay%20OR%20Andahuaylas%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -3427,12 +3483,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Aradiotitanka.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -3571,12 +3632,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Achaski.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -3781,12 +3847,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Arequipa%20OR%20Caman%C3%A1%20OR%20Caylloma%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -4222,12 +4293,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Ayacucho%20OR%20Huamanga%20OR%20Huanta%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -4443,12 +4519,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Cajamarca%20OR%20Ja%C3%A9n%20OR%20Chota%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -4664,12 +4745,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://sinrodeoscajamarca.com/feed/": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -4797,12 +4883,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Callao%20OR%20Ventanilla%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -5161,12 +5252,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Cusco%20OR%20Quillabamba%20OR%20%22La%20Convenci%C3%B3n%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -5525,12 +5621,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Huancavelica%20OR%20Tayacaja%20OR%20Angaraes%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -5812,12 +5913,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Hu%C3%A1nuco%20OR%20%22Tingo%20Mar%C3%ADa%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -6110,12 +6216,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28%22regi%C3%B3n%20Ica%22%20OR%20Ica%20OR%20Pisco%20OR%20Chincha%20OR%20Nasca%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -6254,12 +6365,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Jun%C3%ADn%20OR%20Huancayo%20OR%20Satipo%20OR%20Chanchamayo%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -6541,12 +6657,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28%22La%20Libertad%22%20OR%20Trujillo%20OR%20Pacasmayo%20OR%20Chep%C3%A9n%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -6828,12 +6949,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Lambayeque%20OR%20Chiclayo%20OR%20Ferre%C3%B1afe%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -7115,12 +7241,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28%22Lima%20Metropolitana%22%20OR%20Huaura%20OR%20Huacho%20OR%20Ca%C3%B1ete%20OR%20Huaral%20OR%20Barranca%20OR%20Chosica%20OR%20Huarochir%C3%AD%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -7325,12 +7456,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Loreto%20OR%20Iquitos%20OR%20Yurimaguas%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -7678,12 +7814,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28%22Madre%20de%20Dios%22%20OR%20%22Puerto%20Maldonado%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -7965,12 +8106,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Moquegua%20OR%20Ilo%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -8252,12 +8398,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Pasco%20OR%20Oxapampa%20OR%20%22Cerro%20de%20Pasco%22%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -8539,12 +8690,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Piura%20OR%20Sullana%20OR%20Talara%20OR%20Chulucanas%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -8980,12 +9136,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Puno%20OR%20Juliaca%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -9494,12 +9655,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28%22regi%C3%B3n%20San%20Mart%C3%ADn%22%20OR%20Tarapoto%20OR%20Moyobamba%20OR%20Tocache%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -9638,12 +9804,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Adiario-hoy.com.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -9782,12 +9953,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Tacna%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -10146,12 +10322,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Tumbes%20OR%20Zarumilla%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -10290,12 +10471,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=site%3Atumbesdemiercoles.com.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -10423,12 +10609,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%28Ucayali%20OR%20Pucallpa%29%20%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20%22El%20Ni%C3%B1o%22%20OR%20sequ%C3%ADa%20OR%20helada%20OR%20emergencia%20OR%20Senamhi%20OR%20Indeci%29%20when%3A7d&hl=es-419&gl=PE&ceid=PE:es-419": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -11609,12 +11800,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.google.com/rss/search?q=%22El%20Ni%C3%B1o%22%20OR%20%22La%20Ni%C3%B1a%22%20OR%20ENSO&hl=en-US&gl=US&ceid=US:en": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -11753,12 +11949,17 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [],
+   "channels": [
+    "actions"
+   ],
    "geoblocked": null,
    "by_url": {
     "https://news.un.org/feed/subscribe/es/news/topic/climate-change/feed/rss.xml": {
      "status": "robots-disallowed",
-     "channels": []
+     "channels": [
+      "actions"
+     ],
+     "reader": true
     }
    }
   },

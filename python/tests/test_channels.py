@@ -289,7 +289,8 @@ def test_gobpe_rss_without_sheet_still_lists_news():
 
 
 def test_google_news_and_un_news_disallow_their_rss_to_generic_agents():
-    """Lo que dicen hoy sus robots.txt (21 de octubre de 2026): por eso el registro deja esos feeds sin canales."""
+    """Lo que dicen hoy sus robots.txt (21 de octubre de 2026). Pablo eligió leerlos igual, como un lector de
+    feeds: el registro los asigna solo a Actions y marca «reader»."""
     from enso import news as N
 
     gn = _rules("google-news")
@@ -302,7 +303,8 @@ def test_google_news_and_un_news_disallow_their_rss_to_generic_agents():
     assert len(barred) > 25
     reg = {s["id"]: s for s in json.loads(registry.REGISTRY.read_text(encoding="utf-8"))["sources"]}
     for fid in barred:
-        assert reg[f"news-{fid}"]["channels"] == [], fid
+        r = reg[f"news-{fid}"]["by_url"][N.FEED_BY_ID[fid].url]
+        assert r["status"] == "robots-disallowed" and r["channels"] == ["actions"] and r["reader"], fid
 
 
 def test_feeds_barred_by_robots_are_not_requested_and_not_counted_as_down(tmp_path, monkeypatch):
@@ -439,3 +441,46 @@ def test_history_backup_is_fetched_every_run():
     wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
     step = next(s for s in wf["jobs"]["build"]["steps"] if s.get("id") == "history")
     assert "curl" not in step["run"] and "sources/news/items.jsonl?ref=data-archive" in step["run"]
+
+
+def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, monkeypatch):
+    """Un feed «reader» con una lectura buena hace menos de 20 h no se vuelve a pedir y queda su estado; uno
+    leído hace más, uno que falló la última vez o uno que antes se omitía por robots.txt sí se pide."""
+    from enso import news as N
+
+    feeds = [f for f in N.FEEDS if "news.google.com" in f.url][:4]
+    monkeypatch.setattr(N, "FEEDS", feeds)
+    body = (Path(__file__).parent / "fixtures" / "sources" / feeds[1].fixture).read_bytes()
+    asked = []
+
+    def net(req):
+        asked.append(str(req.url))
+        return httpx.Response(200, content=body, headers={"content-type": "application/rss+xml"})
+
+    real = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
+    ago = lambda h: (NOW - timedelta(hours=h)).isoformat(timespec="seconds")  # noqa: E731
+    prev = [{**N._status(feeds[0], NOW), "checkedAt": ago(3), "ok": True, "active": True, "items": 7, "httpStatus": 200},
+            {**N._status(feeds[1], NOW), "checkedAt": ago(25), "ok": True, "httpStatus": 200},
+            {**N._status(feeds[2], NOW), "checkedAt": ago(3), "ok": False, "httpStatus": 503},
+            {**N._status(feeds[3], NOW, "omitido: su robots.txt no permite pedir este feed"), "checkedAt": ago(1),
+             "skipped": "robots"}]
+    site = tmp_path / "site"
+    (site / "news").mkdir(parents=True)
+    (site / "news" / "feeds.json").write_text(json.dumps({"feeds": prev, "history": {"items": 0}}), encoding="utf-8")
+    plan = {f.url: ["actions"] for f in feeds}
+    fetcher = Fetcher(polite_delay=0, plan=plan)
+    log = obs.EventLog()
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, NOW, None,
+                           reader={f.url for f in feeds})
+    assert sorted(asked) == sorted(f.url for f in feeds[1:])
+    st = {s["id"]: s for s in got["feeds"]["feeds"]}
+    assert st[feeds[0].id]["carried"] is True and st[feeds[0].id]["items"] == 7
+    assert st[feeds[0].id]["checkedAt"] == ago(3)  # conserva la hora de la lectura: el plazo no se renueva
+    assert not any(s.get("carried") for fid, s in st.items() if fid != feeds[0].id)
+    assert any(e.code == "feeds-reader" and "3 pedidos" in e.message and "1 con la lectura anterior" in e.message
+               for e in log.events)
+    # Sin «reader» (otra fuente con canal Actions) se pide siempre.
+    asked.clear()
+    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(), NOW, None)
+    assert len(asked) == 4

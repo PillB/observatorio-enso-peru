@@ -98,10 +98,10 @@ cada feed y publica el resultado en `news/feeds.json`.
 | Infobae Perú | Perú | Activo | 100 / 4 |
 | Caretas | Perú | Activo | 60 / 1 |
 | Peru Reports (inglés) | Perú | Activo | 15 / 0 |
-| Google Noticias, búsqueda «El Niño», «ENFEN», «Niño costero» (Perú) | Perú | Omitido: su robots.txt no lo permite (ver abajo) | 100 / 99 |
-| Google News, búsqueda «El Niño», «La Niña», «ENSO» (inglés) | Mundo | Omitido: su robots.txt no lo permite | 100 / 96 |
+| Google Noticias, búsqueda «El Niño», «ENFEN», «Niño costero» (Perú) | Perú | Activo; se lee una vez al día aunque su robots.txt no lo permite (ver abajo) | 100 / 99 |
+| Google News, búsqueda «El Niño», «La Niña», «ENSO» (inglés) | Mundo | Activo; una vez al día (ver abajo) | 100 / 96 |
 | BBC News Mundo | Mundo | Activo | 34 / 0 |
-| Noticias ONU · Cambio climático | Mundo | Omitido: su robots.txt no lo permite | 30 / 5 |
+| Noticias ONU · Cambio climático | Mundo | Activo; una vez al día (ver abajo) | 30 / 5 |
 | GDACS (alertas de desastres) | Mundo | Activo; solo cuenta lo que afecta al Perú | 248 / 0 |
 | Carbon Brief | Mundo | Activo | 12 / 0 |
 | CIIFEN | Mundo | Responde, publica pocas veces al año | 3 / 1 |
@@ -121,11 +121,18 @@ Las publicaciones de redes sociales que aparecen en Google Noticias
 
 ### Feeds que su robots.txt no permite
 
-El registro (`registry/sources.json`) no les asigna canal y el pipeline no
-los pide: aparecen en `news/feeds.json` como `skipped: "robots"` («Omitido
-(robots.txt)» en el sitio), no como caídos. Copias de cada robots.txt en
-`python/tests/fixtures/scrape-ladder/robots-*.http.txt` (21 de octubre de
-2026) y pruebas en `python/tests/test_channels.py`.
+Decisión del 21 de octubre de 2026: estos 40 feeds de noticias se leen
+como lo hace un lector de feeds, solo desde GitHub Actions y como mucho una
+vez cada 20 horas (`READER_MIN_HOURS` en `python/enso/registry.py`). En el
+registro (`registry/sources.json`) su URL queda `robots-disallowed` con
+canales `["actions"]` y `"reader": true`; n8n y el recolector del Perú no
+los piden. Entre dos lecturas, `news/feeds.json` repite el estado de la
+última con `carried: true` (el sitio dice de cuándo es). robots.txt sigue
+rigiendo todo lo demás: fuentes oficiales, páginas y el rastreo con
+navegador; una fuente que no sea un feed de noticias y que robots.txt
+prohíba queda sin canales. Copias de cada robots.txt en
+`python/tests/fixtures/scrape-ladder/robots-*.http.txt` y pruebas en
+`python/tests/test_channels.py`.
 
 | Sitio | Regla | Feeds |
 |---|---|---|
@@ -134,8 +141,8 @@ los pide: aparecen en `news/feeds.json` como `skipped: "robots"` («Omitido
 | Sin Rodeos (Cajamarca) | `Disallow: /` | Su feed |
 | gob.pe | Prohíbe `?sheet=` y `&sheet=` (la paginación de las búsquedas), no los RSS | Sus 30 feeds van sin `sheet` y sí se leen |
 
-Cada departamento conserva entre 1 y 6 feeds regionales (gob.pe del
-gobierno regional, RPP regional y medios locales). Bing Noticias en RSS
+Sin ellos, cada departamento tendría igual entre 1 y 6 feeds regionales
+(gob.pe del gobierno regional, RPP regional y medios locales). Bing Noticias en RSS
 responde y su robots.txt permite `/news/search`, pero el propio feed
 limita su uso a «un agregador RSS para su uso personal y no comercial»,
 así que no se usa como reemplazo.

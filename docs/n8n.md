@@ -98,7 +98,7 @@ sigue funcionando (todo va por la API, nada por `raw.githubusercontent.com`).
    | `api` | `https://api.github.com` | API de GitHub |
    | `data_branch` | `data-n8n` | Rama donde se publican las copias (se crea sola) |
    | `registry_ref`, `registry_path` | `main`, `registry/sources.json` | De dónde se lee el registro. Si no se puede leer, se usa la copia incluida en el flujo |
-   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. Las que `robots.txt` prohíbe (sin canales en el registro) no se piden nunca |
+   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. Las que `robots.txt` prohíbe no se piden nunca: ni las que no tienen canales ni los feeds `reader` (solo Actions, una vez al día) |
    | `host_label`, `egress` | `n8n-aws`, `aws-us-east-1` | Se anotan en cada copia |
    | `carry_hours` | `72` | Si una URL falla, se conserva su última copia válida hasta estas horas |
    | `max_file_mb` | `8` | Respuestas más grandes no se guardan |
