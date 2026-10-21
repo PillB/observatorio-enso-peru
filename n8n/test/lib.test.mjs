@@ -154,6 +154,17 @@ test('enlaces de descarga del ENFEN sin el token «refresh» y n.º 01 en enero'
   assert.ok(urls.includes('https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/01-2027.pdf'));
 });
 
+test('desde la API de WordPress se usa el enlace de descarga de la entrada', () => {
+  const posts = JSON.stringify([
+    { title: { rendered: 'Comunicado Oficial ENFEN N° 18-2026' }, link: 'https://enfen.imarpe.gob.pe/2026/10/10/comunicado-18/',
+      content: { rendered: '<p>Comunicado oficial</p><a href="https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165&#038;refresh=ab">PDF</a>' } },
+    { title: { rendered: 'Comunicado Oficial ENFEN N° 17-2026' }, link: 'https://enfen.imarpe.gob.pe/2026/09/26/comunicado-17/', content: { rendered: '<p>sin enlace</p>' } },
+  ]);
+  const urls = deriveEnfenTargets([{ url: 'wp', text: posts }], new Date('2026-10-20T00:00:00Z'));
+  assert.equal(urls[0], 'https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165');
+  assert.ok(urls.includes('https://enfen.imarpe.gob.pe/2026/09/26/comunicado-17/'));
+});
+
 function res(url, ok, body, extra = {}) {
   const cls = ok
     ? classify({ url, expect: 'any', status: 200, headers: { 'content-type': 'text/plain' }, body: enc(body) })

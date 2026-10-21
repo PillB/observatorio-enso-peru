@@ -51,7 +51,11 @@ function parseWpPosts(text) {
     const content = String((p.content || {}).rendered || '').replace(/<[^>]+>/g, ' ');
     const m = NUMBER_RE.exec(`${title} ${content}`) || /N\s*[°º]?\s*(\d{1,2})\s*[-–]\s*(\d{4})/.exec(title);
     if (!m || !(title + content.slice(0, 300)).toLowerCase().includes('comunicado')) continue;
-    out.push({ kind: 'oficial', year: Number(m[2]), number: Number(m[1]), url: p.link || '' });
+    // La entrada trae el enlace de descarga (``?wpdmdl=`` o un .pdf) en su
+    // contenido; si no, queda la página de la entrada.
+    const html = String((p.content || {}).rendered || '');
+    const dl = /href=["']([^"']*(?:[?&](?:amp;|#0?38;)?wpdmdl=\d+|\.pdf)[^"']*)["']/i.exec(html);
+    out.push({ kind: 'oficial', year: Number(m[2]), number: Number(m[1]), url: dl ? dl[1] : (p.link || '') });
   }
   return out;
 }

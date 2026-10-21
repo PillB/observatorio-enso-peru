@@ -112,10 +112,13 @@ class Relay:
             if e.get("fetched_at") and _age_hours(e["fetched_at"]) > self.max_age_hours:
                 continue
             ct = (e.get("content_type") or "").lower()
-            if accept and not any(a in ct for a in accept):
-                continue
+            # El tipo que el recolector reconoció en el cuerpo cuenta igual que
+            # la cabecera: un PDF servido como «text/html» sigue siendo un PDF.
+            kind = f"{ct} {(e.get('detected') or '').lower()}"
             body = (self.root / e["file"]).read_bytes() if (self.root / e["file"]).is_file() else b""
             if not body or hashlib.sha256(body).hexdigest() != e.get("sha256"):
+                continue
+            if accept and not any(a in kind for a in accept) and not ("pdf" in accept and body.startswith(b"%PDF")):
                 continue
             return Response(url, body, self.channel, 200, ct, archived_at=e.get("fetched_at") or self.collected_at)
         return None

@@ -107,3 +107,9 @@ def test_old_entries_are_not_used_even_in_a_fresh_index(tmp_path):
     old = (datetime.now(timezone.utc) - timedelta(days=9)).isoformat(timespec="seconds")
     d = snapshot(tmp_path, [{"url": U_ONI, "expect": "text", "status": 200, "body": " SEAS  YR", "fetched_at": old}])
     assert Relay(d).get(U_ONI) is None
+
+
+def test_a_pdf_served_as_html_is_still_a_pdf(tmp_path):
+    d = snapshot(tmp_path, [{"url": U_PDF, "expect": "pdf", "status": 200, "content_type": "text/html", "body_file": str(PDF)}])
+    got = Relay(d).get(U_PDF, ("pdf", "octet-stream"))
+    assert got is not None and got.body[:5] == b"%PDF-"
