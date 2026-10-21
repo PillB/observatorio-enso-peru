@@ -433,8 +433,12 @@ def test_antibot_pages_are_not_saved_and_do_not_count(tmp_path, monkeypatch):
     assert not pc.usable(e) and {"url": e["url"], "status": 200, "class": "challenge",
                                  "error": e["error"]} in pc.heartbeat(idx, "ok")["failures"]
     # Los JSON de IDESEP y del CENEPRED se esperan como JSON: una página HTML no sirve.
-    idesep = next(e for e in idx["entries"] if "g_aviso" in e["url"])
+    idesep = next(e for e in idx["entries"] if e["url"] == pc.IDESEP_AVISOS + "&request=GetFeature&maxFeatures=100"
+                  "&outputFormat=application/json")
     assert idesep["expect"] == "json" and idesep["class"] == "empty" and "file" not in idesep
+    # El esquema de la capa (DescribeFeatureType) es XML: se guarda como texto.
+    schema = next(e for e in idx["entries"] if e["url"].endswith("&request=DescribeFeatureType"))
+    assert schema["expect"] == "text"
 
 
 ALT_REGISTRY = {
