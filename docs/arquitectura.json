@@ -837,8 +837,8 @@
     "kind": "control",
     "label_es": "plan de canales por URL",
     "label_en": "per-URL channel plan",
-    "explain_es": "En cada corrida el pipeline lee quién pide cada URL. Lo que Actions no alcanza se lee primero de las copias, lo prohibido no se pide y los 40 reader se piden como mucho cada 20 h, solo en main.",
-    "explain_en": "Each run the pipeline reads who fetches each URL. What Actions cannot reach is read from copies first, forbidden URLs are not requested and the 40 reader feeds are requested at most every 20 h, only on main.",
+    "explain_es": "En cada corrida el pipeline lee quién pide cada URL. Lo que el registro no da a Actions se lee de las copias (sin copia, se pide directo una vez), lo prohibido no se pide y los 40 reader se piden como mucho cada 20 h, solo en main.",
+    "explain_en": "Each run the pipeline reads who fetches each URL. What the registry does not give to Actions is read from the copies (with no copy, it is requested directly once), forbidden URLs are not requested and the 40 reader feeds are requested at most every 20 h, only on main.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
     "evidence": "python/enso/registry.py:309-340; python/enso/observatory.py:1790-1791; python/enso/fetch.py:279-290"

@@ -231,7 +231,7 @@
     <text class="ar-t" x="690" y="987.8" font-size="10.5" text-anchor="middle">18</text>
   </g>
   <g class="ar-edge" id="af-e-19" data-edge="19" data-from="registry" data-to="fetch" tabindex="0">
-    <title>19. Registro de fuentes (registry/) → Descarga en GitHub Actions (Fetcher): plan de canales por URL. En cada corrida el pipeline lee quién pide cada URL. Lo que Actions no alcanza se lee primero de las copias, lo prohibido no se pide y los 40 reader se piden como mucho cada 20 h, solo en main.</title>
+    <title>19. Registro de fuentes (registry/) → Descarga en GitHub Actions (Fetcher): plan de canales por URL. En cada corrida el pipeline lee quién pide cada URL. Lo que el registro no da a Actions se lee de las copias (sin copia, se pide directo una vez), lo prohibido no se pide y los 40 reader se piden como mucho cada 20 h, solo en main.</title>
     <path class="ar-e ar-e-control" d="M631 270 L654 270 Q660 270 660 276 L660 738 Q660 744 654 744 L631 744" stroke-dasharray="2 3" marker-end="url(#af-m-control)"/>
     <circle class="ar-badge ar-e-control" cx="660" cy="507" r="9"/>
     <text class="ar-t" x="660" y="510.8" font-size="10.5" text-anchor="middle">19</text>
@@ -1269,9 +1269,9 @@
   <text class="ar-t" x="50" y="3628.8" font-size="11.5">plan de canales por URL</text>
   <text class="ar-m" x="50" y="3642.8" font-size="10.5">Registro de fuentes (registry/) → Descarga en GitHub Actions (Fetcher) · cada corrida de</text>
   <text class="ar-m" x="50" y="3656.8" font-size="10.5">observatory.yml</text>
-  <text class="ar-s" x="50" y="3671.8" font-size="11">En cada corrida el pipeline lee quién pide cada URL. Lo que Actions no alcanza se lee</text>
-  <text class="ar-s" x="50" y="3686.8" font-size="11">primero de las copias, lo prohibido no se pide y los 40 reader se piden como mucho cada 20</text>
-  <text class="ar-s" x="50" y="3701.8" font-size="11">h, solo en main.</text>
+  <text class="ar-s" x="50" y="3671.8" font-size="11">En cada corrida el pipeline lee quién pide cada URL. Lo que el registro no da a Actions se</text>
+  <text class="ar-s" x="50" y="3686.8" font-size="11">lee de las copias (sin copia, se pide directo una vez), lo prohibido no se pide y los 40 reader</text>
+  <text class="ar-s" x="50" y="3701.8" font-size="11">se piden como mucho cada 20 h, solo en main.</text>
   <circle class="ar-badge ar-e-control" cx="30" cy="3724.8" r="9"/>
   <text class="ar-t" x="30" y="3728.6" font-size="10.5" text-anchor="middle">20</text>
   <text class="ar-t" x="50" y="3728.8" font-size="11.5">149 URL para n8n</text>
