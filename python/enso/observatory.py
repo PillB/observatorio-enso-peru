@@ -463,7 +463,10 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
                 pass
             page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{pn:02d}-{py}/"
             try:
-                r = fetcher.get([page], archive=True, save=True, accept=("html",))
+                # Sin Save Page Now: el servidor del ENFEN no le responde al Internet Archive (HTTP 523) y la página
+                # casi nunca existe todavía; cada captura fallida costaba hasta un minuto del tiempo de las fuentes
+                # oficiales y contaba como fallo de Save Page Now para el comunicado que sí hay que capturar.
+                r = fetcher.get([page], archive=True, save=False, accept=("html",))
             except FetchError:
                 continue
             got = peru.LISTING_RE.search(r.text) or re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
@@ -1361,6 +1364,9 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
 
         def fetch(url):
             if url in (reader or ()):
+                skip = reader_fetcher.skip_reason(url)
+                if skip:  # no se pide: no cuenta como pedido (ni en el estado ni en la publicación)
+                    return None, b"", "", skip, {"requested": False}
                 note_request(url)
             try:
                 r = (reader_fetcher if url in (reader or ()) else news_fetcher).get([url], archive=False)
@@ -1450,23 +1456,26 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         seen = [st for st in (prev_status.get(f.id), kept.get("status")) if asked(st)]
         if seen:
             recent[f.id] = {**max(seen, key=lambda st: str(st.get("checkedAt"))), "carried": True}
-    # Sin estado guardado (la caché no se pudo leer) y sin la publicación anterior (el sitio no respondió) no se
-    # sabe cuándo se pidieron por última vez: no se piden en esta corrida, en lugar de arriesgar un segundo
-    # pedido antes de plazo, y esta corrida cuenta como su pedido (en el estado y en la publicación): las
-    # siguientes esperan READER_MIN_HOURS desde ahora, que es después de cualquier pedido anterior. Una primera
-    # publicación no tiene feeds.json (404), no es este caso.
+    # Sin estado guardado (la caché no se pudo leer) no se sabe cuándo se pidieron por última vez: la publicación
+    # anterior no los muestra si el sitio no respondió, ni si una corrida posterior los pidió y no llegó a publicar
+    # (toda corrida de main que los trata deja estado, así que un estado vacío es una caché que no se leyó). No se
+    # piden en esta corrida, en lugar de arriesgar un segundo pedido antes de plazo, y esta corrida cuenta como su
+    # pedido (en el estado y en la publicación): las siguientes esperan READER_MIN_HOURS desde ahora, que es
+    # después de cualquier pedido anterior. Los que la publicación anterior muestra pedidos hace menos del plazo
+    # siguen con esa lectura. Una primera publicación no tiene feeds.json (404): ahí sí se piden.
     unknown: dict[str, dict] = {}
-    if reader and reader_state is not None and not state and previous.state.get("news/feeds.json") == "unreachable":
-        unknown = {f.id: {**N._status(f, now, "no se pidió: no se sabía cuándo se pidió por última vez (sin estado "
-                                                 f"guardado ni publicación anterior); se pide {READER_MIN_HOURS} h después "
-                                                 "de esta corrida"),
+    site = previous.state.get("news/feeds.json")
+    if reader and reader_state is not None and not state and site in ("ok", "unreachable"):
+        why = "el sitio no respondió" if site == "unreachable" else "una corrida que no publicó pudo haberlos pedido"
+        unknown = {f.id: {**N._status(f, now, f"no se pidió: sin estado guardado no se sabía cuándo se pidió por última "
+                                                 f"vez ({why}); se pide {READER_MIN_HOURS} h después de esta corrida"),
                           "httpStatus": None, "skipped": "reader-unknown"}
                    for f in N.FEEDS if f.url in reader and f.id not in barred and f.id not in recent}
         if unknown:
             log.add("warning", "news", "fetch", "feeds-reader-unknown",
-                    f"{len(unknown)} feeds que se leen una vez al día no se piden: no hay estado guardado ni se pudo leer "
-                    "news/feeds.json de la publicación anterior, así que no se sabe cuándo se pidieron por última vez. "
-                    f"Se piden {READER_MIN_HOURS} h después de esta corrida.")
+                    f"{len(unknown)} feeds que se leen una vez al día no se piden: no hay estado guardado (la caché de "
+                    f"Actions no se leyó) y la publicación anterior no basta ({why}), así que no se sabe cuándo se "
+                    f"pidieron por última vez. Se piden {READER_MIN_HOURS} h después de esta corrida.")
             pending.update({N.FEED_BY_ID[fid].url: {"status": st, "items": []} for fid, st in unknown.items()})
             write_reader_state(reader_state, pending)
     try:

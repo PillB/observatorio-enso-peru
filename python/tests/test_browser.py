@@ -90,6 +90,50 @@ def test_every_section_renders_without_errors_or_overflow(site, browser, vp):
     ctx.close()
 
 
+LONG = "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/" + "sin-cortes-" * 12 + "18-2026.pdf"
+TEXT_KEYS = {"message", "title", "summary", "error", "text", "outlet", "note", "statusEs", "product", "institution"}
+
+
+def _stretch(v):
+    """Agrega una URL larga sin espacios a cada texto que viene de las fuentes o del registro de incidencias."""
+    if isinstance(v, dict):
+        return {k: (f"{x} {LONG}" if k in TEXT_KEYS and isinstance(x, str) and x else _stretch(x)) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_stretch(x) for x in v]
+    return v
+
+
+@pytest.mark.parametrize("w", [320, 390])
+def test_long_unbroken_text_from_the_sources_never_widens_the_page(site, browser, w):
+    """Revisión 8: una incidencia con una URL larga (p. ej. «sin respuesta válida para https://…») ensanchaba
+    Metodología en un teléfono, y la comprobación del navegador detenía el despliegue de los datos oficiales.
+    Ningún texto que venga de una fuente o del registro de incidencias puede ensanchar la página."""
+    from urllib.parse import urlsplit
+
+    base, root = site
+    ctx = browser.new_context(viewport={"width": w, "height": 800})
+
+    def stretched(route):
+        rel = urlsplit(route.request.url).path.split("/data/", 1)[1]
+        f = root / "data" / rel
+        if not f.is_file():
+            return route.continue_()
+        route.fulfill(status=200, content_type="application/json",
+                      body=json.dumps(_stretch(json.loads(f.read_text(encoding="utf-8")))))
+
+    ctx.route("**/data/**/*.json*", stretched)
+    pg = ctx.new_page()
+    try:
+        for r in ROUTES:
+            go(pg, base, r)
+            overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            assert overflow <= 1, f"desbordamiento horizontal de {overflow}px en #{r} a {w}px"
+        go(pg, base, "metodologia")
+        expect(pg.locator(".incidents li").first).to_contain_text("sin-cortes-")
+    finally:
+        ctx.close()
+
+
 def test_home_shows_official_status_and_dates(site, page):
     base, root = site
     dash = json.loads((root / "data" / "dashboard.json").read_text(encoding="utf-8"))

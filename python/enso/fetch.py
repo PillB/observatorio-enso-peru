@@ -208,21 +208,35 @@ class Fetcher:
                        if k.lower() not in ("content-encoding", "content-length", "transfer-encoding")]
         return httpx.Response(r.status_code, headers=headers, content=b"".join(chunks), request=r.request)
 
-    def _get(self, url: str, attempts: list, tries: Optional[int] = None) -> Optional[httpx.Response]:
+    @staticmethod
+    def _key(url: str) -> str:
+        """Cuenta de fallos de la URL: la del servidor. Save Page Now lleva la suya: una captura lenta no apaga las
+        lecturas del archivo (CDX y copias)."""
         parts = urlsplit(url)
         host = parts.hostname or ""
-        # Save Page Now lleva su propia cuenta: una captura lenta no apaga las lecturas del archivo (CDX y copias).
-        key = host + "/save" if host == "web.archive.org" and parts.path.startswith("/save/") else host
+        return host + "/save" if host == "web.archive.org" and parts.path.startswith("/save/") else host
+
+    def skip_reason(self, url: str) -> Optional[str]:
+        """Por qué no se pediría ahora esta URL (``None``: se pediría): se agotó el tiempo o su servidor ya falló
+        demasiadas veces en la corrida."""
+        if self.deadline is not None and time.monotonic() > self.deadline:
+            return "omitido: se agotó el tiempo de la corrida para estos pedidos"
+        down = self._down.get(self._key(url), 0)
+        if down >= HOST_SKIP_AFTER:
+            return f"omitido: el servidor suma {down} fallos seguidos en esta corrida"
+        return None
+
+    def _get(self, url: str, attempts: list, tries: Optional[int] = None) -> Optional[httpx.Response]:
+        host = urlsplit(url).hostname or ""
+        key = self._key(url)
         n = tries or self.retries
         overloaded = False  # el último intento fue un 429 o un 5xx
         for i in range(n):
-            if self.deadline is not None and time.monotonic() > self.deadline:
-                attempts.append({"url": url, "error": "omitido: se agotó el tiempo de la corrida para estos pedidos"})
+            skip = self.skip_reason(url)
+            if skip:
+                attempts.append({"url": url, "error": skip})
                 return None
             down = self._down.get(key, 0)
-            if down >= HOST_SKIP_AFTER:
-                attempts.append({"url": url, "error": f"omitido: el servidor suma {down} fallos seguidos en esta corrida"})
-                return None
             if down >= HOST_ONE_TRY_AFTER and i:
                 break
             self._wait_host(host)

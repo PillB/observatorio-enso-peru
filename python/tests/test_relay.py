@@ -361,6 +361,32 @@ def test_communique_found_by_archive_prefix_when_dhn_and_enfen_fail():
     assert any(e.code == "communique-unread" and "18-2026" in e.message for e in log.events)
 
 
+def test_probes_of_unpublished_communiques_do_not_ask_save_page_now():
+    """Revisión 8: los sondeos de los dos números siguientes (que casi nunca existen todavía) le pedían una copia
+    nueva al Internet Archive, que el ENFEN no atiende (523): unos 200 s por corrida del tiempo de las fuentes
+    oficiales, y fallos de Save Page Now antes de capturar el comunicado que sí hay que leer."""
+    from datetime import date
+
+    asked = []
+    base = _actions_view()
+
+    def handler(req):
+        asked.append(str(req.url))
+        return base(req)
+
+    acq = _dhn_acquired()
+    top = acq.data["listing"][0]
+    f = Fetcher(retries=1, polite_delay=0, allow_save=True)
+    f.client = httpx.Client(transport=httpx.MockTransport(handler))
+    obs.enfen_latest(acq, f, None, _Prev(None), obs.EventLog(), date(2026, 10, 20))
+    saves = [u for u in asked if "/save/" in u]
+    for n in (top["number"] + 1, top["number"] + 2):
+        page = f"comunicado-oficial-enfen-n-{n:02d}-{top['year']}"
+        assert any(page in u for u in asked), page  # se sondea (directo y copia existente del archivo)
+        assert not any(page in u for u in saves), page
+    assert saves  # el comunicado del listado sí se pide al archivo
+
+
 # --- Control del contenido, alternativas, copias conservadas y mediciones ---------
 
 CHALLENGE = ("<html><head><title>Just a moment...</title></head><body>"

@@ -88,8 +88,9 @@ desde Actions y suma lo que bajaron el Perú y n8n.
    registro Actions no alcanza se lee primero de las copias del paso 2.
 2. Copia del recolector del Perú o de n8n (gana la más reciente).
 3. Copia más reciente del Internet Archive.
-4. Copia nueva pedida al Internet Archive (Save Page Now): solo para los
-   comunicados del ENFEN, en las corridas de Actions con
+4. Copia nueva pedida al Internet Archive (Save Page Now): solo para el
+   listado y el PDF de los comunicados del ENFEN (no para los números que
+   se sondean antes de que aparezcan), en las corridas de Actions con
    `ENSO_ARCHIVE_SAVE=1` (todas salvo una manual con `archive_save`
    desmarcado), cuando la copia existente tiene más de un día.
 5. Último dato válido de la publicación anterior, marcado `carried: true`.

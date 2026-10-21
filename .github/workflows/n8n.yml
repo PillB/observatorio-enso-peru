@@ -80,6 +80,7 @@ jobs:
           name: n8n-e2e-${{ strategy.job-index }}
           path: |
             ${{ runner.temp }}/e2e/*.log
+            ${{ runner.temp }}/e2e/*.out
             ${{ runner.temp }}/e2e/copia/index.json
             ${{ runner.temp }}/e2e/copia/heartbeat.json
           retention-days: 14

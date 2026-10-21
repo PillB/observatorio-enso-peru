@@ -32,7 +32,8 @@ una sola página:
 2. Se sondean los dos números siguientes por su página de descarga
    (`/download/comunicado-oficial-enfen-n-NN-AAAA/`), y en enero el n.º 01
    del año nuevo. Así se detecta un comunicado nuevo aunque el listado
-   todavía no lo muestre.
+   todavía no lo muestre. Para esas páginas se usa la copia existente del
+   Internet Archive, sin pedirle una nueva: el ENFEN no le responde.
 3. Se descarga el PDF y se extrae el tipo de alerta, el número, la fecha
    y la fecha del siguiente comunicado.
 4. Si el listado muestra un número más nuevo que el que se pudo leer, el
@@ -149,10 +150,13 @@ pida de nuevo antes de tiempo. Ese estado guarda también sus notas que
 ninguna publicación tiene todavía, en cuanto termina cada lectura y hasta
 14 días (`READER_KEEP_DAYS`): no se pierden aunque varias corridas
 seguidas no publiquen y el feed ya no las traiga. Si no hay estado (la
-caché no se pudo leer) y tampoco se puede leer `news/feeds.json` de la
-publicación anterior, no se sabe cuándo se pidieron y esa corrida no los
-pide (`feeds-reader-unknown`); cuenta como su pedido, en el estado y en la
-publicación, así que se vuelven a pedir 20 horas después de ella. El sondeo de candidatos (`probe-feeds.yml`) no los pide:
+caché no se pudo leer), la publicación anterior no basta: el sitio puede no
+responder, y aunque responda, una corrida que no llegó a publicar pudo
+haberlos pedido. Esa corrida no pide los que la publicación no muestra
+pedidos hace menos de 20 horas (`feeds-reader-unknown`) y cuenta como su
+pedido, en el estado y en la publicación, así que se vuelven a pedir 20
+horas después de ella. En la primera publicación (sin `news/feeds.json`)
+sí se piden. El sondeo de candidatos (`probe-feeds.yml`) no los pide:
 respeta robots.txt como la captura de fuentes. En el
 registro (`registry/sources.json`) su URL queda `robots-disallowed` con
 canales `["actions"]` y `"reader": true`; n8n y el recolector del Perú no

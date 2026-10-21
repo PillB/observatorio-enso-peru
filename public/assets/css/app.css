@@ -361,7 +361,10 @@ blockquote { margin: 0 0 10px; padding: 8px 14px; border-left: 3px solid var(--b
 .impacts li { padding-left: 12px; border-left: 3px solid var(--line); }
 .impacts p { margin: 0 0 4px; }
 .incidents { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-.incidents li p { margin: 4px 0 0; font-size: 0.9rem; color: var(--fg-2); }
+.incidents li { min-width: 0; }
+/* El texto que viene de las fuentes (titulares, resúmenes, errores con URL) nunca ensancha la página en un teléfono. */
+.card :is(p, li, dd, blockquote, figcaption) { overflow-wrap: anywhere; }
+.incidents li p { margin: 4px 0 0; font-size: 0.9rem; color: var(--fg-2); overflow-wrap: anywhere; }
 .glossary { display: grid; grid-template-columns: minmax(120px, max-content) 1fr; gap: 6px 16px; }
 .glossary dt { font-weight: 700; }
 .glossary dd { margin: 0; color: var(--fg-2); }

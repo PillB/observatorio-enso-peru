@@ -406,6 +406,16 @@ def _history_site(tmp_path, items, feeds=None):
     return site
 
 
+def _first_site(tmp_path):
+    """Una primera publicación: sin notas y sin news/feeds.json (404). Con el sitio respondiendo y sin estado
+    guardado, los feeds «reader» no se piden (la caché no se leyó); en una primera publicación, sí."""
+    site = tmp_path / "site"
+    (site / "news").mkdir(parents=True, exist_ok=True)
+    (site / "news" / "items.jsonl").write_text("", encoding="utf-8")
+    (site / "news" / "feeds.json").unlink(missing_ok=True)
+    return site
+
+
 def _notes(prefix, n):
     return [{"id": f"{prefix}{i}", "first_seen": "2026-10-01T05:00:00+00:00", "title": f"Nota {i}",
              "link": f"https://andina.pe/{prefix}-{i}"} for i in range(n)]
@@ -798,7 +808,7 @@ def test_reader_feeds_are_not_asked_again_after_a_run_that_did_not_publish(tmp_p
 
     real = httpx.Client
     monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
-    site = _history_site(tmp_path, [])
+    site = _first_site(tmp_path)
     fetcher = Fetcher(polite_delay=0, plan={f.url: ["actions"] for f in feeds})
     state = tmp_path / "cache" / "reader-state.json"
     reader = {f.url for f in feeds}
@@ -826,10 +836,15 @@ def test_reader_feeds_are_not_asked_again_after_a_run_that_did_not_publish(tmp_p
           "ok": True, "active": True, "items": 3, "httpStatus": 200}
     site = _history_site(tmp_path, [], {"feeds": [st], "history": {"items": 0}})
     asked.clear()
-    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(), NOW, None,
+    log = obs.EventLog()
+    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, NOW, None,
                      reader=reader, reader_state=state)
-    saved = json.loads(state.read_text())["feeds"][feeds[0].url]
-    assert asked == [feeds[1].url] and saved["status"]["checkedAt"] == st["checkedAt"] and saved["items"] == []
+    saved = json.loads(state.read_text())["feeds"]
+    assert saved[feeds[0].url]["status"]["checkedAt"] == st["checkedAt"] and saved[feeds[0].url]["items"] == []
+    # Revisión 8: el otro no aparece en la publicación, pero sin estado no se sabe si una corrida que no llegó a
+    # publicar lo pidió: no se pide, y esta corrida cuenta como su pedido.
+    assert asked == [] and saved[feeds[1].url]["status"]["skipped"] == "reader-unknown"
+    assert any(e.code == "feeds-reader-unknown" for e in log.events)
     asked.clear()
     obs.acquire_news(fetcher, None, obs.PreviousPublication(str(tmp_path / "no-hay"), fetcher), obs.EventLog(),
                      NOW + timedelta(hours=3), None, reader=reader, reader_state=state)
@@ -853,7 +868,7 @@ def test_a_reader_feed_that_failed_is_not_asked_again_within_a_day(tmp_path, mon
 
     real = httpx.Client
     monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
-    site = _history_site(tmp_path, [])
+    site = _first_site(tmp_path)
     fetcher = Fetcher(polite_delay=0, plan={feed.url: ["actions"]})
     state, reader = tmp_path / "state.json", {feed.url}
 
@@ -921,7 +936,7 @@ def test_reader_notes_survive_several_runs_that_did_not_publish(tmp_path, monkey
     bodies = [b""]
     feed, asked, fetcher = _reader_feed(monkeypatch, bodies)
     a, b = _split_feed(feed)
-    site, state, reader = _history_site(tmp_path, []), tmp_path / "state.json", {feed.url}
+    site, state, reader = _first_site(tmp_path), tmp_path / "state.json", {feed.url}
 
     def run(hours, site=site):
         return obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(),
@@ -952,7 +967,7 @@ def test_a_reader_request_is_noted_before_it_is_made(tmp_path, monkeypatch):
 
     bodies = [Killed()]
     feed, asked, fetcher = _reader_feed(monkeypatch, bodies)
-    site, state = _history_site(tmp_path, []), tmp_path / "state.json"
+    site, state = _first_site(tmp_path), tmp_path / "state.json"
     with pytest.raises(Killed):
         obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(), NOW, None,
                          reader={feed.url}, reader_state=state)
@@ -975,7 +990,7 @@ def test_a_reader_feed_whose_reading_failed_after_the_request_counts_as_asked(tm
     feed = next(f for f in N.FEEDS if "news.google.com" in f.url)
     feed, asked, fetcher = _reader_feed(monkeypatch, [_split_feed(feed)[0]])
     monkeypatch.setattr(N, "hazards", broken)
-    site, state = _history_site(tmp_path, []), tmp_path / "state.json"
+    site, state = _first_site(tmp_path), tmp_path / "state.json"
     for hours in (0, 1, 2):
         got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(),
                                NOW + timedelta(hours=hours), None, reader={feed.url}, reader_state=state)
@@ -1163,13 +1178,50 @@ def test_reader_notes_are_kept_when_the_run_is_cut_after_their_read(tmp_path, mo
     real = httpx.Client
     monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
     fetcher = Fetcher(polite_delay=0, plan={f.url: ["actions"] for f in feeds})
-    site, state = _history_site(tmp_path, []), tmp_path / "state.json"
+    site, state = _first_site(tmp_path), tmp_path / "state.json"
     with pytest.raises(Killed):
         obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(), NOW, None,
                          reader={f.url for f in feeds}, reader_state=state)
     saved = json.loads(state.read_text())["feeds"]
     assert saved[feeds[0].url]["status"]["ok"] is True and saved[feeds[0].url]["items"]
     assert saved[feeds[1].url]["status"]["httpStatus"] is None  # el que estaba en curso: pedido, sin resultado
+
+
+def test_a_reader_feed_the_fetcher_skips_is_not_counted_as_asked(tmp_path, monkeypatch):
+    """Revisión 8: con Google respondiendo 503 a todo, la cuenta de fallos del servidor deja de pedir tras cinco; los
+    feeds siguientes se anotaban como pedidos (y no se pedían en 20 h) aunque no se les había pedido nada."""
+    from enso import news as N
+
+    feeds = [f for f in N.FEEDS if "news.google.com" in f.url][:8]
+    monkeypatch.setattr(N, "FEEDS", feeds)
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    monkeypatch.setattr("enso.fetch.time.sleep", lambda s: None)
+    asked = []
+
+    def net(req):
+        asked.append(str(req.url))
+        return httpx.Response(503)
+
+    real = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
+    fetcher = Fetcher(polite_delay=0, plan={f.url: ["actions"] for f in feeds})
+    state = tmp_path / "state.json"
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(_first_site(tmp_path)), fetcher), obs.EventLog(),
+                           NOW, None, reader={f.url for f in feeds}, reader_state=state)
+    sent = [f.url for f in feeds if f.url in asked]
+    counted = [st["url"] for st in got["feeds"]["feeds"] if "httpStatus" in st]
+    saved = json.loads(state.read_text())["feeds"]
+    assert len(asked) == len(sent) == 5 and counted == sent and set(saved) == set(sent)
+    skipped = [st for st in got["feeds"]["feeds"] if st["url"] not in sent]
+    assert skipped and all("httpStatus" not in st and not st["ok"] for st in skipped)
+    # La corrida siguiente pide los que no se pidieron, y solo esos.
+    asked.clear()
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(
+        lambda req: asked.append(str(req.url)) or httpx.Response(200, content=b"<rss><channel></channel></rss>"))}))
+    fetcher = Fetcher(polite_delay=0, plan={f.url: ["actions"] for f in feeds})
+    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(_first_site(tmp_path)), fetcher), obs.EventLog(),
+                     NOW + timedelta(hours=1), None, reader={f.url for f in feeds}, reader_state=state)
+    assert sorted(asked) == sorted(f.url for f in feeds if f.url not in sent)
 
 
 def test_reader_feeds_are_not_asked_when_nothing_says_when_they_were_last_asked(tmp_path, monkeypatch):

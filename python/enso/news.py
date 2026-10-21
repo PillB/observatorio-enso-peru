@@ -821,8 +821,9 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
     st = _status(f, now)
     got = fetch(f.url)
     code, body, ctype, err = got[:4]
-    st["httpStatus"] = code
     via = got[4] if len(got) > 4 and isinstance(got[4], dict) else {}
+    if via.get("requested") is not False:  # sin «httpStatus»: no se le pidió nada al servidor
+        st["httpStatus"] = code
     if via.get("channel") not in (None, "direct"):
         # Copia de otro recolector (Perú, n8n) o réplica: el sitio dice de cuándo es y por qué canal llegó.
         st["channel"] = via["channel"]

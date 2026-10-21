@@ -48,8 +48,11 @@ for run in 1 2; do
   echo "== corrida $run"
   # La salida va a un archivo en la carpeta montada: por la salida estándar del contenedor (una tubería), el
   # JSON grande a veces llega cortado (Node descarta lo pendiente al salir; jq: «Unfinished string at EOF»).
+  # n8n escribe sus errores en la salida estándar (el .out): se muestran los dos, sin que un grep vacío corte aquí.
   n8n "n8n execute --id=EnsoRecolector01 --rawOutput > /w/corrida-$run.out" > "$WORK/corrida-$run.log" 2>&1 || {
-    grep -v '^    at ' "$WORK/corrida-$run.log" | tail -40; tail -c 2000 "$WORK/corrida-$run.out" 2>/dev/null || true; exit 1; }
+    { grep -v '^    at ' "$WORK/corrida-$run.log" | tail -40; } || true
+    { grep -v '^    at ' "$WORK/corrida-$run.out" | tail -60; } 2>/dev/null || true
+    exit 1; }
   sed -n '/^{/,$p' "$WORK/corrida-$run.out" > "$WORK/corrida-$run.json"
   jq -e '.data.resultData.runData.Resumen[0].data.main[0][0].json' "$WORK/corrida-$run.json"
   curl -sf "http://127.0.0.1:$PORT/__stats" | tee "$WORK/stats-$run.json"; echo

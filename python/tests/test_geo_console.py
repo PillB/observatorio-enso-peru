@@ -130,6 +130,11 @@ def test_reviewer_logs_in_corrects_a_place_and_sees_the_history(console, browser
         expect(first).to_be_visible()
         title = first.locator("h2").inner_text()
         first.get_by_role("button", name="Corregir…").click()
+        # El editor parte de los lugares que la nota ya tiene (en la publicación en vivo, casi siempre alguno):
+        # se quitan para que la corrección sea solo Miraflores.
+        remove = first.locator('.gc-chosen button[aria-label^="Quitar"]')
+        while remove.count():
+            remove.first.click()
         first.get_by_label("Departamento", exact=True).select_option(label="Lima")
         first.get_by_label("Provincia", exact=True).select_option(label="Lima")
         first.get_by_label("Distrito", exact=True).select_option(label="Miraflores")
