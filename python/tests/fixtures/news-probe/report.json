@@ -1,0 +1,3301 @@
+{
+ "checkedAt": "2026-10-21T00:49:30+00:00",
+ "total": 36,
+ "ok": 25,
+ "results": [
+  {
+   "id": "gnews-01",
+   "name": "Google Noticias · Amazonas",
+   "department": "Amazonas",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22regi%C3%B3n%20Amazonas%22%20OR%20Chachapoyas%20OR%20Bagua%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 15,
+   "latest": "2026-10-21T00:00:22+00:00",
+   "undated": 0,
+   "lastWeek": 14,
+   "relevant": 2,
+   "departments": {
+    "01": 15,
+    "10": 2
+   },
+   "samples": [
+    {
+     "title": "Ministerio de Cultura adopta medidas preventivas ante el fenómeno El Niño - El Peruano",
+     "published": "2026-10-19T21:33:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOR3FmbkJDN3lDY1hVSkVSNUhJaExLVC03WFBZbzIyYjl2RmlZR2RBaEdnWGhoclB1SkNGNGg3R3hWbTJObHZZUG84WVQ3Ry1VTGRnSE15SlJpYlRjZUJaZkhXOWtaX3ByOEdPNkFfaF94YldodDZSMGNGRm15VnY5dXZsMjl0R2hqWlp2ejcwMnN5dFZrN0R3QjNhNEhXLTl1QlM5MUFrMW82dFZQR2c?oc=5",
+     "places": [
+      "Amazonas"
+     ]
+    },
+    {
+     "title": "🔴🔵 #HablemosClaro💬💬 | Nicolás Lúcar, conductor de 'Hablemos Claro' en Exitosa, recalcó que ya se están notando las consecuencias del fenómeno El Niño y que esta se agravará por la negligencia e incapacidad de las autoridades. 📻 95.5 FM 📡 6.1 señal - Facebook",
+     "published": "2026-10-16T14:17:01+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxNSDFtNmk4RnEwOS1yQ3VzWnJyQmE0Wkh2U2pQVEd2TmEtd2VUTEpPVlE3ZXRKcVRSNG83V01DTWM2NzF1QXVfOTN2c25TbjZQRFRDeXB5czVlZWx5amFFX05jNTVMbk91YUNSdFVhWExrMGk3LUFnYW4xVTg0dnloajV1QU1BZ2ctN3N5SldXb1dWTmR5c3Q1WHFxOXdIb3lRSHl4WHJwbHBpZEl2andteWJfbm1kMVIteHlESHRKVHNyc05ha05Tb1Zxc3hFTkVCWG9WbnBMSTdpVVJneGhXVzEybkdXWGlQWjRDZ0RZUkl6Zw?oc=5",
+     "places": [
+      "Amazonas"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Quebradas se desbordan en Bagua Grande y registran fuertes vientos en Huánuco - Willax",
+    "Ministerio de Cultura adopta medidas preventivas ante el fenómeno El Niño - El Peruano",
+    "Quebrada Cachimay desborda e inunda calles de Bagua Grande - Sqala TV"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22regi%C3%B3n%20Amazonas%22%20OR%20Chachapoyas%20OR%20Bagua%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-02",
+   "name": "Google Noticias · Áncash",
+   "department": "Áncash",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22%C3%81ncash%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 51,
+   "latest": "2026-10-20T22:11:57+00:00",
+   "undated": 0,
+   "lastWeek": 30,
+   "relevant": 16,
+   "departments": {
+    "02": 48,
+    "24": 1,
+    "11": 1,
+    "08": 1,
+    "06": 1
+   },
+   "samples": [
+    {
+     "title": "Oscar Reto lidera mesa multisectorial y exige acciones concretas para prevenir los efectos del fenómeno El Niño en Áncash - Congreso",
+     "published": "2026-10-13T21:01:15+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxPTUNDVmFqZ0p5Ujg0WXZrTF92eGRzb0JXZWZha1FzX1R5OEpUVDBIamJQcWNSN2ZlanRTa2NrVTRxRTVySjVmTElDaUxqM0gteF9mYWE2RmpkYlZua29XNzZBYkg1bGFQa3BkR0tCTG9PSko2WkxsOVg0bS1MTVRMZHFhQUwzSEZrMEZSVlNJQVNUYnRLZ0xBajVxU25OQjdEYXdMb29FSFl4RVhCbDBXOW9xdFV2NnE3c1lvQUNOdHhNOGNsQlhhSFlDZ1FpYmlzbUpvQ0ZMSFFyUHM1SkFMakg2TFNLcG9xRW9YRkZKRGk0RUJFUzl4bXYtUE1ZODQ?oc=5",
+     "places": [
+      "Áncash"
+     ]
+    },
+    {
+     "title": "Ausencia de lluvias en Áncash podría estar relacionada con el fenómeno de El Niño - Ancash Noticias",
+     "published": "2026-10-15T15:54:12+00:00",
+     "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNQ29uNURUdmk3ZTBMbERENHhaN0RDTnNIbHJSbjNiR3d6bl9WNTBOWHloTlNCd08xUVB3d0Q5N01mOVJLdmhBYWR1QWlGV29vdUhMaWpBZGNLS1JHaU1kS3dCUEp1Tm16WENBOTc5LW90U182SVlULTZXTDlsSHlnbzVoZ01iVzJtMk1EQUFWMXlPRkc2eGJueFpOTkljdUZrTENaOGJ2ZUI0b0R6S1JhcVdRTWEzaWdNMXBVWdIBwgFBVV95cUxQTEhxUWI0QzZOYjMyNWpOMnFRZzlhT2x2Y1g5eExOMmlQR0VVaGJCcDUwOG5PamJvZ3dWT3JKTm84ak9YTE5VZnA2ODZDRzdSZ0pmODI1QlJYY2o0Nk5MY0tySmNUQkU1VHFkV2toNHFIaldNNXpyWUw2SVNBd0w4TXZaaXB0c0NsY1c0R1BJeG43dUdPUWppN09tSU9kUkxnWFFldGJCek5KblBDWjJlRXc4V3V2QUZUSmc0dzRIRlRMUQ?oc=5",
+     "places": [
+      "Áncash"
+     ]
+    },
+    {
+     "title": "Oscar Reto encabeza mesa multisectorial y solicita acciones ante fenómeno El Niño - Agencia Andina",
+     "published": "2026-10-13T22:41:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQdEdJaS00cFRqaHBBY19RT2haa2NXbkVzRGFkNWIzQXprWGxUaURzSjhzaDdWM3hDR2F3bEswbVYxR1M1dGU2dV9YR1RCeU1Zam1JeFRHM3MxcmE2QkFaUjlheTZheEx5LWduVnZOLWRQTUptSFNyOE00XzN2Z3FORkljY1R5TkNlakJSLW9qaUVVUXNQVDRGOGpUWFFaM2FhQlVmaFlERE51OVUxazBxREJmRnd4TzNaZmdKd3pmaEMxcEU?oc=5",
+     "places": [
+      "Áncash"
+     ]
+    },
+    {
+     "title": "Adelantan cierre del año escolar presencial en Áncash por El Niño y fuertes lluvias - Bolognesi Noticias",
+     "published": "2026-10-07T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5IX2c3SERZSU5JWml5b2NQVDhXbWJGSC1Kc2EzNDI4andHYlROMm1HTUp0QkdKbTBDRWdDRDczQy1UWDdmMTJsbE55blJOdHBESEc1dmMtSWx5X1ZJTFFmVjBkRks2RlZXblByamJrMm5GX21vMU80MHlR?oc=5",
+     "places": [
+      "Áncash"
+     ]
+    },
+    {
+     "title": "El Niño Costero: más de 3 millones de personas podrían verse afectadas en el norte del Perú, advierte Sunass - Perú 21",
+     "published": "2026-10-20T18:39:58+00:00",
+     "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNYS13LXpST2JHUFEtM0dpZXUzRkUxU0dsSEMxZk5TajQ4VVFXbXR0NzVuYVRiNG80dHdma3J5Z1d1T2lqWnVDWlZ5NDBqVzdwWU5nWnJqakMxNVFBUnU4MGlia2JtM1BKem9mX3BxdG4tbXlVdkMtVlg3N3J0SEZHdndVWWFQXzRSd000N1NFcS1HZnVVcUlRTHNrb3d5bVQ3MGpHZjBn?oc=5",
+     "places": [
+      "Áncash"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Oscar Reto lidera mesa multisectorial y exige acciones concretas para prevenir los efectos del fenómeno El Niño en Áncash - Congreso",
+    "Áncash: Senamhi prevé lluvias, granizo y nieve en la sierra desde este domingo - Radio RSD",
+    "Ausencia de lluvias en Áncash podría estar relacionada con el fenómeno de El Niño - Ancash Noticias"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22%C3%81ncash%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-03",
+   "name": "Google Noticias · Apurímac",
+   "department": "Apurímac",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Apur%C3%ADmac%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 38,
+   "latest": "2026-10-21T00:06:21+00:00",
+   "undated": 0,
+   "lastWeek": 24,
+   "relevant": 6,
+   "departments": {
+    "03": 35,
+    "08": 6,
+    "06": 2,
+    "19": 1,
+    "15": 1,
+    "12": 1,
+    "21": 1
+   },
+   "samples": [
+    {
+     "title": "Enfen mantiene la alerta por El Niño Costero, que se extendería hasta el otoño de 2027 - AGROPERÚ Informa",
+     "published": "2026-10-20T14:19:50+00:00",
+     "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNUWVxdGpXX09Ra3hJaDV0OHJRN3RZZXpiSDhfa2gyWEJ4LVdxczV2THRfWnFpbDdsb0V5Q0NSYzFhZ0c1YjlQa25ER1p6aTVpbmdhbXNZenlleFdRbzVKQ09wbEhlbUNyS09PUGxKaXhGVU4wRG1wYU96YVJPM3hRSy03azhPcENNZEEwVzNVSEtTZ1ZnUk1vMlBHTkZ1TTRSSkNGSUVhcnVpZXJQNHVR?oc=5",
+     "places": [
+      "Apurímac"
+     ]
+    },
+    {
+     "title": "Alerta roja en el Perú por incendios forestales: la ausencia de lluvias por El Niño facilita que el fuego se descontrole - Infobae",
+     "published": "2026-10-12T15:32:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPbi1zdXhIUVlldThMNnp6U0ZGdGhpN1V3dHJ5bTRVdDNQOUR3bXFtSWp0WU11WGpWZVJqVm05d2l3dWpkNWJ0akZaQjNXR1B4UE9FQzJxX1BGdksyUmFZZXU4RTBLMWNkVWsxanZPLXVUMnpKTFlDTXpJdWxOUTB1ZWpKOXo1RXNKZjlObVZJZTZmTzlpbmVNdlRpckNmbzJsRWNCYmdPQ1lLRXg0Slk1TVB6VmxUZXJuVXZPbmg3aUR2UzFPTGhLYUJTS01HTGk3N25GS1N2WEdNRjlOaHV1SFl6WGNwc0pQMVBVaUpNS3VJd9IBjAJBVV95cUxOMndfZDBCak9vWTBxbWM0d2tCM1QwYWlwVjV6VEZpQUZHTFdTVTkyRUtXWktfMk40cmJwSTRzeUJjM0RFV2E5OXdLWU8zVmZHMTFOaWl4Vk1JYmh0SnU1ZXd3RHNJbV9RTEpzb2FtQ1VTVHFuNFJuZVlUNENoQ3FQb3o2LVdLRFlCUkR5STNMc0l3Z1J6Q0JBS2c1X1QxNEMzYzhIdVhYTjlQZ3BFbjVIQjBIQXRZTTExSXpXM2NRUDUwNEd5YVVkVVhXM2dEekhWR0otdUNyNFB0Z0dEX3hnWkM1Y1BESFI0ZV9YU3BNcGNtVC1paUczX2NXcWswYVBkZGM4QkhaZ1NSX2JV?oc=5",
+     "places": [
+      "Apurímac"
+     ]
+    },
+    {
+     "title": "NIÑO COSTERO 2026: LIMA PODRÍA COLAPSAR ANTE LLUVIAS EXTREMAS POR DEFICIENCIAS DE DRENAJE, ADVIERTE METEORÓLOGA DEL SENAMHI - RCR Peru",
+     "published": "2026-10-19T20:18:02+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxOWWVNWDhXWHU3dGpXVlkxaVE4dEJfMGw5b3VVNEtIdHpaSXRhZk1vVUZkaFMtVE9MRzBmQ1VSdmFjUGZ0OE5IZEhaM3BGczM5andLbHZSam5obUozaGdQWUlQUzFjcXdBM0dGTm9ZZXZUV2cwWUcxLVFtRGNfbDROY2lvcmlVeWxBQzduN2l6c1JFa203ZDlGQW8tOHBXMHk4X0xjMmNMVFJSOWUzaWlXNUhuSTRTOVpLR2UzYWVWM0taeU9pNGJ3R1d5eGpHSkNkRUdVLVVEcFFQV0J5WkVj?oc=5",
+     "places": [
+      "Lima"
+     ]
+    },
+    {
+     "title": "Cusco: Gobierno declara en emergencia a 116 distritos por riesgo de sequía ante El Niño - Pachamama Radio",
+     "published": "2026-10-12T16:15:06+00:00",
+     "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQZmF6cWhKdlI5ZVdsUGJkLUZCVUJIdGhMMGJOM3NUTjRsY1hoT2RjSl8ydGZHdloxZFNEbS1JZUFxQ0U2TlNPTFByYVAyV19Gc2RoakpSTTdfekd2WWtCa2w3UTZPTFNTNGJBcWZIRno3V1QwZG9XUTVKNWtadUpSWElNWFBsNWstdTFyRmFCa3A5NmIweFduaWVEcUxtUVVIbFpqTEpYd1VYVk9NVFZ5STF5UmI?oc=5",
+     "places": [
+      "Cusco"
+     ]
+    },
+    {
+     "title": "Cenepred: 116 hidroeléctricas en riesgo alto o muy alto por El Niño en verano 2027 - Diario Ahora",
+     "published": "2026-10-13T10:58:49+00:00",
+     "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE11WGZCbVBEcHpXTkNqWEwtamdiRGprTXNyMzNUV2c4aFZXQnJDVEtBbU11RlZyYVEtZnAycUh6RGxXemx4aUhQUzYxYzRyeE1wRHA0cVdSNnAwUlBrYjJYUmg4UW5IN0xHM0tOeGgxZ3gwZUxvNEdHMjVLYm9XUQ?oc=5",
+     "places": [
+      "Apurímac"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "🔴🔵 #ElInformativoDeExitosa📺📺 | Un incendio forestal de grandes proporciones lleva 14 días activo y fuera de control en el distrito de Curahuasi, región de Apurímac. Las autoridades de INDECI y el Gobierno Regional coordinan acciones de respuesta mientr - Facebook",
+    "Enfen mantiene la alerta por El Niño Costero, que se extendería hasta el otoño de 2027 - AGROPERÚ Informa",
+    "🔵⚪ Durante una entrevista radial, el jefe del Indeci, Luis Enrique Vásquez Guerrero, informó que los incendios forestales han dejado, hasta el momento, 12 fallecidos en el Perú: cuatro en Cusco, tres en Cajamarca, dos en Apurímac, dos en Pasco y uno en P - Instagram"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Apur%C3%ADmac%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-04",
+   "name": "Google Noticias · Arequipa",
+   "department": "Arequipa",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Arequipa%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 97,
+   "latest": "2026-10-21T00:04:00+00:00",
+   "undated": 0,
+   "lastWeek": 51,
+   "relevant": 36,
+   "departments": {
+    "04": 95,
+    "15": 2,
+    "07": 2,
+    "11": 2,
+    "13": 1,
+    "08": 2,
+    "19": 1
+   },
+   "samples": [
+    {
+     "title": "Fenómeno El Niño en Arequipa: Senamhi identifica 155 puntos críticos y advierte impacto en la agricultura - Diario Correo",
+     "published": "2026-10-16T01:37:59+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxQOWpEaUUtLXAzckNUVS1WaVdBWXN6QjVHdW5lNFZqWlBndVZsX0h3bVozbTZtSDZUY3BUazdzUDdHVmVYYUwyR0gzd2lpWmp4YWduNmRzaU5ZUm0telZ4R3F6QmVXOXFNbWNCRUxTVnE4MGFIcTRHZVZpSmRRY1ItdkZHNXJ4cFU3Z3ZGOTJ1QWdzSllVcDRCcUxFYWdFeWhnNXRkbXMzNHI0MGJEZ1dzSFRadDI1Y3pIOGR1SFpxVlVqZWpFZE9oSzJnWWNOb1pFeXVhb09EckZ2bnI0aGFTeGo2VmtvamE3WFHSAf4BQVVfeXFMTld6VkVJdDNQWktTUGx2anBrOWthRFFjcV9oVUxSdFRvdUtfOWs2S3p4Z1plYk9QMUFfZWU5c29WS3lxTDdGZndwanVLSms2SUdfcHNhbEZsUXU1cjdjTGJpeFhwLWhzTGVoTklYejA2bVVKU3dmb1B1ZTQ5bjc5QmJYQUZPU1dOMjV0cUYyYTFYdjJRUlhRQXF6c3hSSHNJa3BnZVoxVzNMRzRpN04tWTJkQWNFUDRkQUo1Ymhralpmb1NIT3Z3eU9UZTlTdi14cGlpSGVCOFk0SndDXzV1d0NqaV9CU0xFRk05QUw5T1FDTzlnWUhDZGpWWkV4SEE?oc=5",
+     "places": [
+      "Arequipa"
+     ]
+    },
+    {
+     "title": "El Niño: 21 distritos de Arequipa están en riesgo por inundaciones y deslizamientos - Encuentro",
+     "published": "2026-10-20T20:00:12+00:00",
+     "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOUmhhbE1XSE81LXNJeHpDSnlwUWI1WURiVVFUODRSY0FBVnlDWFVWaXpwTDhxbWdCR1BrRk9YSnk0Q0pBQjRTYlVaQnZxSDFXR1ZBV3I2TFl6d3NaSXhsVWxsZzVDZGVSb0JVTGx0THhZQ3U2ZUwyU1JJQXFpdFI3UmRKWV9sOWp3QWlXOWxhOV9rSDg0YWU2anhYRnYyQ2RvWWpIdnp2YnlFaE55RXlIcWkyT0JiZw?oc=5",
+     "places": [
+      "Arequipa"
+     ]
+    },
+    {
+     "title": "El Niño en Arequipa: Más de 80 comunidades campesinas acorraladas entre lluvias extremas y sequías - El Búho.pe",
+     "published": "2026-10-20T16:26:58+00:00",
+     "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPNm8ySXdEOU1hRFl5akwwcXI2RjZJcTUzRzhLZGxoNGloTGV5OW44Q21jeWdqS2RNenU3Q0hTMU5feHU3YnlndHFhTWJSMng3UGZ1anNRbzJ4TFljcnFwcWlLQmxaSmh6dmhoempkOEtrR2x2QVFhUjdPY3lYZkxMaU01MERjZGFKbGJOakRVZlFOUjdMd0h0MUpVNlRYUzQ2M202Y3Q4Z2NCMmQ0dzQwX1I2MGlGUF9YUXdaXzVwYw?oc=5",
+     "places": [
+      "Arequipa"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: Midagri interviene 16 puntos críticos en la región Arequipa - Agencia Andina",
+     "published": "2026-10-18T05:25:18+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOVDM2NlpVR3JUUjhHQmg3M1lUalAtMHUwZmgzeEQ4cUw4UGt4bDQ0V01DZWVRSWo2Rm1DaHZSZXotTk4zZnUzN3Y0Y0x4YVJDLThobFdLVE1hek9BM3dCRzRUeHpqQ1BpUnozOVRTRXFBaEJ4OUJyWllXQ2JNUHpMczdtNlE4b3BxR2FVQTU2Unh4bVNKMkRxWmlFUVd6WTdpdFBqb2xOaGxLSTY3TGFNQUVWNDdneE5Y?oc=5",
+     "places": [
+      "Arequipa"
+     ]
+    },
+    {
+     "title": "Arequipa podría registrar lluvias y caudales inferiores durante El Niño - Evidencia.pe",
+     "published": "2026-10-18T02:30:23+00:00",
+     "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOa2s2Ym9sVG5HT1doVWppcEJaRzdWaGszNDRJTEZNVVYyd2VLMkFUamhkalgyUzRIamtYcTNaQTIxR25iUExURldnM3EteUZod3ZPVmpqOGVKMERvSXVKM2paUENCNndkOWVEd2Y5YU9VaDM3a2lEWng0U2xPczUxQkF3VFFwVngwN01wa25TRTRKRThmNEN3atIBngFBVV95cUxPcmpLMVpVVHRfai0tWUt3dDFKWmJEVUZYeGVJdElXQmNLcXVraHFsSjVYTFFfY1MtSmdnZ1ZiVU5HMWNET0VFNmh2Y1EtSm5ablZxNk0wbWE3QVBJRkxwdEJBamYtN0VfM0NpNUtfV2Q0dDRRZFFKWjQwNWUwdG5FX21wbm4xekFrSTdCMDNDMGN4N1FiTkdnT2pZbmZOdw?oc=5",
+     "places": [
+      "Arequipa"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Fenómeno El Niño en Arequipa: Senamhi identifica 155 puntos críticos y advierte impacto en la agricultura - Diario Correo",
+    "El Niño: 21 distritos de Arequipa están en riesgo por inundaciones y deslizamientos - Encuentro",
+    "El Niño en Arequipa: Más de 80 comunidades campesinas acorraladas entre lluvias extremas y sequías - El Búho.pe"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Arequipa%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-05",
+   "name": "Google Noticias · Ayacucho",
+   "department": "Ayacucho",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ayacucho%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 40,
+   "latest": "2026-10-20T22:57:22+00:00",
+   "undated": 0,
+   "lastWeek": 21,
+   "relevant": 5,
+   "departments": {
+    "05": 38,
+    "18": 2,
+    "21": 3,
+    "09": 4,
+    "08": 6,
+    "19": 3,
+    "22": 2,
+    "20": 1,
+    "06": 1,
+    "03": 1,
+    "11": 1,
+    "25": 1,
+    "24": 1
+   },
+   "samples": [
+    {
+     "title": "Alerta roja en el Perú por incendios forestales: la ausencia de lluvias por El Niño facilita que el fuego se descontrole - Infobae",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPbi1zdXhIUVlldThMNnp6U0ZGdGhpN1V3dHJ5bTRVdDNQOUR3bXFtSWp0WU11WGpWZVJqVm05d2l3dWpkNWJ0akZaQjNXR1B4UE9FQzJxX1BGdksyUmFZZXU4RTBLMWNkVWsxanZPLXVUMnpKTFlDTXpJdWxOUTB1ZWpKOXo1RXNKZjlObVZJZTZmTzlpbmVNdlRpckNmbzJsRWNCYmdPQ1lLRXg0Slk1TVB6VmxUZXJuVXZPbmg3aUR2UzFPTGhLYUJTS01HTGk3N25GS1N2WEdNRjlOaHV1SFl6WGNwc0pQMVBVaUpNS3VJd9IBjAJBVV95cUxOMndfZDBCak9vWTBxbWM0d2tCM1QwYWlwVjV6VEZpQUZHTFdTVTkyRUtXWktfMk40cmJwSTRzeUJjM0RFV2E5OXdLWU8zVmZHMTFOaWl4Vk1JYmh0SnU1ZXd3RHNJbV9RTEpzb2FtQ1VTVHFuNFJuZVlUNENoQ3FQb3o2LVdLRFlCUkR5STNMc0l3Z1J6Q0JBS2c1X1QxNEMzYzhIdVhYTjlQZ3BFbjVIQjBIQXRZTTExSXpXM2NRUDUwNEd5YVVkVVhXM2dEekhWR0otdUNyNFB0Z0dEX3hnWkM1Y1BESFI0ZV9YU3BNcGNtVC1paUczX2NXcWswYVBkZGM4QkhaZ1NSX2JV?oc=5",
+     "places": [
+      "Ayacucho"
+     ]
+    },
+    {
+     "title": "XXI BIENAL NACIONAL DE ARQUITECTURA EN AYACUCHO ANALIZARÁ GESTIÓN DEL TERRITORIO Y MITIGACIÓN DE RIESGOS ANTE EL NIÑO COSTERO 2026 - RCR Peru",
+     "published": "2026-10-15T21:09:29+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxObXZaYlhIYm5CcWFJSUVqSVVNRUFETkREN0NrekJqOElWWjJURmZ6TnNhMmFfMFpNUVZQWXMzVV9rU2ZOcVo2OFp2bG5WOVVjb3RRSHIxOV9Fc0o2MF9xVDNuREQ1UG5TT1EzVFRmbjU4YmVLa1BfR2VKUWtuaVdaMkFxNWFJQzBQazhTMlBsRVhldlNtRmxQemFyQk1xaW9hcjY2VjAzcVJDbjZxd1I3S05xS1BxQmdFZUJoVDEzbTJaZnE4dXFDWUJyY3U2U2UzR3dKRlZRYllMME9UN3lwbk9qVzZqNVBTbDBv?oc=5",
+     "places": [
+      "Ayacucho"
+     ]
+    },
+    {
+     "title": "Cusco: Gobierno declara en emergencia a 116 distritos por riesgo de sequía ante El Niño - Pachamama Radio",
+     "published": "2026-10-12T16:15:06+00:00",
+     "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQZmF6cWhKdlI5ZVdsUGJkLUZCVUJIdGhMMGJOM3NUTjRsY1hoT2RjSl8ydGZHdloxZFNEbS1JZUFxQ0U2TlNPTFByYVAyV19Gc2RoakpSTTdfekd2WWtCa2w3UTZPTFNTNGJBcWZIRno3V1QwZG9XUTVKNWtadUpSWElNWFBsNWstdTFyRmFCa3A5NmIweFduaWVEcUxtUVVIbFpqTEpYd1VYVk9NVFZ5STF5UmI?oc=5",
+     "places": [
+      "Cusco"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: Evalúan zonas críticas por peligros geológicos en Ica, Huancavelica y Ayacucho - Peru Construye",
+     "published": "2026-10-20T15:11:48+00:00",
+     "link": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPU3laWndBbFF1YTZXNVZWenVOMWlFLWpCVnd6VnRrN0tFaEtGMlFRNUtERVdFVE15aEQxSU1NX2NvOGRHN3BWR1dpWHp2TlQ5M3VObndFZTFIeHh4NjJpenVCWXF3RUZsdE1YVGdpVVdFUDBIdmNIVTdidmJidmJESXNWa0UxNDl5YXV1TFRFdU9KcVhkellFNWptNkFXMmhtVU4zSHF4a2w1eXNveU5qeEtBOVFkZkJSbWRUVHdianRRdktEMlA4bWlBWmI?oc=5",
+     "places": [
+      "Ica",
+      "Huancavelica",
+      "Ayacucho"
+     ]
+    },
+    {
+     "title": "La furia de ‘El Niño’ azota Ucayali, Tumbes, Ayacucho y Pasco - ATV.pe",
+     "published": "2026-10-20T15:57:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5NUXJOanlWV29ObjZOQWMwQ0hPaFMzbnNPUnJ2RU44SjJfSlNVRFVjSGZtakhTY1NkdC0yX010ZXBHOHZ0SlA4NXlfY1B4UEZ6czdjdFVmRFZsQi11RGZHbVlaTnhIcDZOZHFhV01zY1RWcEU?oc=5",
+     "places": [
+      "Ucayali",
+      "Tumbes",
+      "Ayacucho",
+      "Pasco"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Senamhi advierte por incremento de temperaturas y radiación UV en Ayacucho - Jornada",
+    "Alerta roja en el Perú por incendios forestales: la ausencia de lluvias por El Niño facilita que el fuego se descontrole - Infobae",
+    "Indeci alerta que incendios forestales en Ayacucho, Moquegua y Puno siguen activos y destruyen cobertura natural - La República"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ayacucho%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-06",
+   "name": "Google Noticias · Cajamarca",
+   "department": "Cajamarca",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Cajamarca%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 44,
+   "latest": "2026-10-20T14:46:00+00:00",
+   "undated": 0,
+   "lastWeek": 24,
+   "relevant": 9,
+   "departments": {
+    "20": 3,
+    "06": 40,
+    "13": 3,
+    "08": 4,
+    "03": 3,
+    "19": 1
+   },
+   "samples": [
+    {
+     "title": "Fenómeno El Niño: Cajamarca adquiere combustible para descolmatar ríos y quebradas - Agencia Andina",
+     "published": "2026-10-09T11:58:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNaGpnaHFqSEdvWk90QnpscEwwaTJaVlp5WGF0SUdjeFpBV2pWRndybGljcC1xVkVoTnY5SlVpRGVRdXpHZnQxUDk4cXpWTEZhbzliTnl1MVdvVUtaM2RKNE4tNDc0dzYxNERlYVNVZVdydHkwVEFxcmdpQ0Q1Z29sOWRDaUZ3c0pqUXRsS3ZtQ3l0QzB1Z2VGaU96VjhKR1A2SF90QTBYNlBJMDJsdW42WG4wUWZaTU95elVkdmVYYWZWZEk?oc=5",
+     "places": [
+      "Cajamarca"
+     ]
+    },
+    {
+     "title": "GORE CAJAMARCA DESTACA QUE CONVENIO ENTRE INDECI Y NEWMONT REDUCIRÁ TIEMPOS DE RESPUESTA ANTE EL FENÓMENO EL NIÑO - RCR Peru",
+     "published": "2026-10-07T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQLXhVclRrTmZ3RXJNUDdvRkd0RzBMSVZndzJCZDR5NXFWaWR2eEtkRWozeWdDZUlORjBmOE54Vm1ma0dYcFhraWpoWi15WWltOTBOUkNJaXVLOHlCUFJVM09WTzFZSGc3R2tpam91d0t0OGFnVTZwTUcycW8zdFo0OHAxSDdwY2dJNEd5SjRKc0VPX0JGaG1wZ3VlWEpub2lnUDQ5YUZhdU45MF9MLUJBdlIxVlhfZ1VicXBvWWNzRHpXUVZhUmdJYWN2dnNuODFRSm5kNQ?oc=5",
+     "places": [
+      "Cajamarca"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: DDC Cajamarca protegerá el patrimonio arqueológico de tres provincias - Agencia Andina",
+     "published": "2026-10-13T12:45:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOMm5VeEloLXJJdFN5MG00VVFVV3YyQ25NT2NPWlBSZU9pMW9tSUJKQld6Uk5HM0l2aV83SGtqZ3BQYmEzMTdKRU5QQkN6SWdkdGUyRlc3Z20wbGU1QXBHMzlCMFRmMHBOVGVMZHQ1c3BYOHlqVTlEWmxKN25IV0FmaW04S3FKTDVVQ0YydXdJN3pkQjRNT09GbWxsOEN6eXByZWpGWENjX3IyWE9GNWpsakx0V1Z6cGFIdG5KYkxWbFpEQQ?oc=5",
+     "places": [
+      "Cajamarca"
+     ]
+    },
+    {
+     "title": "CAJAMARCA REGISTRA 76 PUNTOS CRÍTICOS PRIORIZADOS Y REFUERZA ACCIONES DE PREVENCIÓN ANTE EL FENÓMENO EL NIÑO - RCR Peru",
+     "published": "2026-10-07T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPWkpaOTItSWhWbHk2c05QM21iekR3RVU1Vi1RS1BIdUE1Q0pCUWxnSjUtX0hVWEt1V19Sc05Nb2JTYTJ0X202TkltY19uYjNWRlF5dkhJV1hRdUhWOG05UjZYaVMzSFVVa0dfb0RGSnBQYWJsTGJSUFJpWm1yV2hSX2stUk1sTjZ3ZVdIQXl3SFJRaGVodHlNUXZETndwb1RwM3RzcDhtVTBjb1JXRFVLcmROb1ZyUkdvMVBBdlJFNEoxMTh3WEY0bHhqaHdEUQ?oc=5",
+     "places": [
+      "Cajamarca"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: PNP, Ejército y bomberos reciben implementos para atender emergencias - Agencia Andina",
+     "published": "2026-10-18T02:29:26+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPM0x6TDV0QUFReEdzSm1VSmtYMHdBNzJhUUxIVC1ETkFualpmMzN3OGt3TWxmejB4SDlVam04aWRvdmFrVV9OUW02RVFKcmZzV1k5eUVwSG5icUhiQ2ozdVVodjdJd2xmLS1NRy1pX0RBdHpNRVlaS2tHc2QtZUdOYnZpM2dLUnhUcWp6YmNWZVFmTkpWZVF0bDlRaFduRmlqRGNNYVM4ZUNJZWd2QkJJeGxqTTFpdVNXcnZfMERwVkFDaTNGOGY1cw?oc=5",
+     "places": [
+      "Cajamarca"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "🔴🔵 Fuertes lluvias en Piura y Cajamarca podrían activar quebradas en las próximas 24 horas: conoce las provincias en alerta🚨⬇ - Facebook",
+    "Fenómeno El Niño: Cajamarca adquiere combustible para descolmatar ríos y quebradas - Agencia Andina",
+    "EN LOS PRÓXIMOS DÍAS SE CONCRETARÁ EL TRASLADO DE AYUDA HUMANITARIA PARA 371 FAMILIAS DE CAJAMARCA TRAS CONVENIO ENTRE INDECI Y NEWMONT FONCREAGRO - RCR Peru"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Cajamarca%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-07",
+   "name": "Google Noticias · Callao",
+   "department": "Callao",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Callao%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 57,
+   "latest": "2026-10-20T23:30:55+00:00",
+   "undated": 0,
+   "lastWeek": 37,
+   "relevant": 16,
+   "departments": {
+    "15": 25,
+    "07": 42,
+    "11": 3,
+    "04": 1,
+    "16": 1,
+    "20": 2
+   },
+   "samples": [
+    {
+     "title": "El Niño en Lima y Callao: Sedapal asegura continuidad del abastecimiento de agua potable - Gestión",
+     "published": "2026-10-20T22:00:17+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNMWQ0X2dfVmdENXk5OHY0eWRwbFd6bmRYbGlZNGJQNXBzbjZuMHZndVg0OVZOWmIxQ1h5OW1aOWtZcDQwRnhTVUg5c1o5ckZJMk8yZF9mME9ENVhucGZZcUYzLW1oNWQxeGZuUUppdUxmSEp5SDI0WFEwZExHNVp3TUYzRXZiaXY2RFRxVHlzblhYekNYelUtTDBhX3V5Njk5UlA0NU1lRHQ2ZmVoVDdjM0hTeU42V3JrN0VFMmJaN3QyZw?oc=5",
+     "places": [
+      "Lima",
+      "Callao"
+     ]
+    },
+    {
+     "title": "Agua potable en Lima y Callao: Sedapal prepara medidas ante fenómeno El Niño - Expreso",
+     "published": "2026-10-19T22:02:19+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQNVVRMEQ1TlNKOGxrRlBEd0JQSkdfS19MTEV1VFpiQ056bG9GbVpuejVNbXpRTHJadTZkWW9fczQ5eVdkY0xmR3R6dHpvbkRZRlFGd25JSlJ4cUtDdk5fbWs3a2g0dkloWFdEUWp2MnhVY2tmYTUzMVBxRVF1dVpTT0cxVlNrbS1xS1pHQVZ5aHZaZlVHNzFRVzRKcDBqS2gzdlAtZHpQaGFTQlNzQThNOE1YWXJ2ZV95X2VZWUlPUUU5ajZRUEdOdzRn?oc=5",
+     "places": [
+      "Lima",
+      "Callao"
+     ]
+    },
+    {
+     "title": "Fenómeno de El Niño: Sedapal detalló plan de emergencia para proteger el abastecimiento de agua potable en Lima y Callao - Willax",
+     "published": "2026-10-20T23:30:55+00:00",
+     "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOWE9UWGZWT3h0bFdDLU9tNWlYaHB2VXE2TU1sYlNsWjJQLUJmamVKdmdubDN2ZmYwNHFqX3VsUFA4c25EM1BOTjhjMk5lS3FneWxRbUlVV25UM1ZPaVZqQi16VTk4d3RVTkt0Z0pXUk5qOWZtSHRRSUlGTHlNLTV3VF9RdXN5SmRaZV9oenZMcm5Fb25ueWlnQk1wcE1XeFliN1BYWkh3?oc=5",
+     "places": [
+      "Lima",
+      "Callao"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño cambia el panorama climático en Perú: se adelantan las lluvias en todo el litoral y prevén récords de temperatura - Infobae",
+     "published": "2026-10-08T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxPTTgtMlZXUTNWQWJtby1DOWFHLWh4ckN4eFA1NF9VejBVNzI1dERoNy16a2VjbEQwLXQtQm1xRkF0RTQ3U01sOUtxVzBYbmNoODNCaHRhMDgtRk5wQXZXaWo2WDA0S0JsYkwxaTk4bDl2elRvTEI5TU42d0k1eUN0MzY3NzZ2ZGFjTHJxaTNIWl9tLWNSWjJpYmhtb2JFcGFncmhwb3BPbFNuRTVUd3N2bEFISndFc1g4bElKSmU4U2Z1ZHo3QWctNF84RnBaOXJPcE02V01wc3ZfWU9qYWIydzI0UVVWeU5jUGJWZnVYRTlqMXlwWFFaNVE1TU0xZVHSAZoCQVVfeXFMTjBaT3ZHU0pjWG9sdGpWekYyU01Fc2FjZU1GLUhROTJ6SW5VMWIwOTVlT2RBVlFFWklwMXZQRTd6ODVaQXRCQ0diX2V1NGJsOUJRRUQ3d2xzVlBCQlM2MTdlMjU2UFBITnRPNFhGSkthWUVsdTd4WXBxWm9INHhIbUV3QjhEQmJBOW05c1BGRVpYZHhHVkd3Nmw0bnpxc2NuNkFjUkZXc1ZxT0VTN3R2emdxcjQ4OWlVRTgtcFZIWkVrOUpQV1M3QTJEMHF1aHhmNlp6VlBmQ0pUamhMcnZWRXhoTXN5WHZadXV6S3JFTTByYTFRaW1XUTkzd1cxVkd6UGQzXzhLWE5obnJPWFEtbnh6TzdXN2sxU21B?oc=5",
+     "places": [
+      "Callao"
+     ]
+    },
+    {
+     "title": "¿Lima y Callao adelantará el fin del año escolar?: Conoce las fechas y regiones donde se modificaron el calendario de clases debido al fenómeno El Niño - Infobae",
+     "published": "2026-10-15T13:39:43+00:00",
+     "link": "https://news.google.com/rss/articles/CBMimAJBVV95cUxPWFNjYU5TbFlWekFSRXBNbW5NMlptbkZDdU1wS2tOelVGM1g3WkxOa3FYMlNUR1lHR3dQMjkyM0FwbnhoQ3hFSTlFNHBHYmpjZnhlS2VFSDkxQVlVUWhNUFVUZmp6NUZEZE9DeTktM1ZfbVU4XzhuRjJGbW81TEhUWGkwejZhN2pvT181aVoxOUZnLWFyWS1ndHB5NjZGeTB5ZGgtQjctRXk2NWtPeDB1T1Fzc093Z0dlSS1WWm1PUUp0OFhvSWlha2FubUdKc0xMSmNfSHpubklPbkQyNGZXZzRMQlVCM0J5LUVYVnNGTEljZlBtazZPTHVYVjdQYWhFM18wNGxwMXczRWtnYjFzamRwdUFPb0pV0gGzAkFVX3lxTFBEUm9zWGsxNU4wZFFMRDRkNGM5UWY4OVZyNzIzT05jMkNKdTFGaEJHNnFPcWplY09DdjNlNlljSzV0VnpBdEFfbUI0eW13WTlSZTlhVXFvVGNYZHNrOVBHNGYzY3A3WVdvNFZzNFE5eVdUVmJVcEo1bDJBMnQ3QWcyWXZLdHUzZFlveGZjeHpSUFE4R1hRVWRfcEtULVJRLXJGZmJDcllVMl9uNGpNMVk1YzdxYXV5bUJZdWFVWEpiVm9xbU5KenQ0U2pDTGVRUG1WT0c0cXdjTzFoazNla2dYQnJGUmxKSG1BaXZOZmQtY25sQzhOazR6SFVzelBkZ0oyQzN4ZlM4eVhkMVp4Szk1NDRuQ2tnZmo1eE9NSVFRWHg4elczVFN3MTBjUXNJV0p3SFk?oc=5",
+     "places": [
+      "Lima",
+      "Callao"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "“Refuerza techos y ventanas”: Senamhi advierte por ráfagas de vientos que afectarán Lima y Callao este 17 de octubre - Infobae",
+    "“Refuerza techos y ventanas”: Senamhi advierte por fuertes vientos en Lima y Callao - Perú 21",
+    "El Niño en Lima y Callao: Sedapal asegura continuidad del abastecimiento de agua potable - Gestión"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Callao%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-08",
+   "name": "Google Noticias · Cusco",
+   "department": "Cusco",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Cusco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 50,
+   "latest": "2026-10-20T17:45:01+00:00",
+   "undated": 0,
+   "lastWeek": 28,
+   "relevant": 9,
+   "departments": {
+    "08": 50,
+    "21": 8,
+    "17": 5,
+    "06": 3,
+    "03": 3,
+    "19": 4,
+    "05": 4,
+    "20": 1,
+    "09": 3,
+    "22": 2,
+    "04": 1
+   },
+   "samples": [
+    {
+     "title": "Cusco: Gobierno declara en emergencia a 116 distritos por riesgo de sequía ante El Niño - El Búho.pe",
+     "published": "2026-10-11T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOQV9OREttd1NHZXJpNjdBWFh0MFpiallzSFN4RlpjR09vZGJCMlVyUGdlMTc3QnZGS1NUaEdrbERDNDFLeUkycUVydTA5R2dlamRSUXRjQWpsMDBZbGNoNllQN2x3M1RRSnBTb1hGWTFsajh3ZXdyaUFXbkxhX3hBaEpPQ3FtLVJjQlo2Q25oTFNhU01vZk9hNDBGOTJ5NWo0TXl6Y1h5MzJVODFlWHVzeHJ2UQ?oc=5",
+     "places": [
+      "Cusco"
+     ]
+    },
+    {
+     "title": "Cusco: 116 distritos de las 13 provincias son declarados en emergencia por riesgo de sequía ante El Niño - INFOREGION",
+     "published": "2026-10-13T21:20:50+00:00",
+     "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOUHZ5N2lsM2JGV1pjUFBUakNKSVEyOUVIaHpEaEV2anFidm9WZVVNZXZuMnNxMk5wdThEVW5EVy02cVA4TTNEMDU2dDZ0NzVmbmdKMWUwUEZKYjJCN1hDS0UxakRpZDRSdXo2cFdVc0JHWWtUdWJwUjRHM2R3OGlPNWVBOTVCVW9IYmotZ3dUam9QTlI4U0lsU1o3WWJod0RvenNoNFpvVkhOZ2JiTWFBU2d6djZ4MmJMSEc5NTc4NDN5cUw1?oc=5",
+     "places": [
+      "Cusco"
+     ]
+    },
+    {
+     "title": "Incendios forestales en la sierra del Perú: causas y El Niño - PuntoEdu PUCP",
+     "published": "2026-10-16T06:53:48+00:00",
+     "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPemdEOEtIZHZpZlgzMU8zWUdhblFLcFZIR3JTUXNVMGx3OVlkdjFCemJpdHltRFE2bW56dmZVTGRnYU8wRGw3RkFiTHFEZ1l0LWJSNGFrTVBjVzJnX1dsXzBYY3dkTElNNkxhdWJpcHdtbXpVSXJ3YnAzaVRwTFB2MjlZNzZEaV85bFh2NkdDRjEyUUVDVDJGSlVURWtQZzg5TGFEaTBXTEpxYy1WTjB6YkdsRnJ5UXZpMUFjUQ?oc=5",
+     "places": [
+      "Cusco"
+     ]
+    },
+    {
+     "title": "El Niño y falta de lluvias elevan riesgo de incendios forestales en sierra y selva: Cusco ya registra cinco fallecidos - La República",
+     "published": "2026-10-08T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxQcmlnQjhZRks5LXBmZHJwTDdYajJxX01JWk1Gd1VLbVZsRHdUUExNLXJuSzJjRlhpQng0RUVudHBYSnhwaFNYU1hsY0dJSHhqakFNcklrTl9uWUNwc1liOWJFTmdOYnZWNmU1TFRsLS1CY0hybkFGV245MDM2QndvQzc5U2FKMjVBZXl5N3ZiWGtzdm5MajhRc1lBRk9jWENYVVZFeG5mOF9pcWViSnRTdjZjMjBtalpRUXRadE5MMVl5YzNWWDN1TDBJZWJXVkhVWktUOVE2LXA1NHFoZjhHMXRBVHJBSG5SLUktMWFnN3N0czhJT2tJVUVHa9IBgAJBVV95cUxNazVkaEpJTFNVNkptTnN2TDJIUUkzZ0ZDVUlzbFZLeUhNNUc5Q0VoU0R6eDhoaGJBYXZDOUdxdnNBcExsbGpiY2tOZmxNdmhibjBRdGR0VHhSM0Y2SkNKX3VUenZrNUE5UTBhR21DOGYtZWFyalBvR2o2QVdYcE9neDFvU1JKMmN3TER4eFhmQk1pWVE3Mk9fME9ZaW1NNkdmVWZQSVdibGw0c2tpMmtBVVFzdWNpSUdJa2I2QjlnN1RGbTdxV2VwTG5rU1NSOTV0NVNuUEgzQzduMVpTV051QVlxUkZMcUZJSFQtMXI5OEV6dGhEcFNfc1dBekwzM1VK?oc=5",
+     "places": [
+      "Cusco"
+     ]
+    },
+    {
+     "title": "Alerta roja en el Perú por incendios forestales: la ausencia de lluvias por El Niño facilita que el fuego se descontrole - Infobae",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPbi1zdXhIUVlldThMNnp6U0ZGdGhpN1V3dHJ5bTRVdDNQOUR3bXFtSWp0WU11WGpWZVJqVm05d2l3dWpkNWJ0akZaQjNXR1B4UE9FQzJxX1BGdksyUmFZZXU4RTBLMWNkVWsxanZPLXVUMnpKTFlDTXpJdWxOUTB1ZWpKOXo1RXNKZjlObVZJZTZmTzlpbmVNdlRpckNmbzJsRWNCYmdPQ1lLRXg0Slk1TVB6VmxUZXJuVXZPbmg3aUR2UzFPTGhLYUJTS01HTGk3N25GS1N2WEdNRjlOaHV1SFl6WGNwc0pQMVBVaUpNS3VJd9IBjAJBVV95cUxOMndfZDBCak9vWTBxbWM0d2tCM1QwYWlwVjV6VEZpQUZHTFdTVTkyRUtXWktfMk40cmJwSTRzeUJjM0RFV2E5OXdLWU8zVmZHMTFOaWl4Vk1JYmh0SnU1ZXd3RHNJbV9RTEpzb2FtQ1VTVHFuNFJuZVlUNENoQ3FQb3o2LVdLRFlCUkR5STNMc0l3Z1J6Q0JBS2c1X1QxNEMzYzhIdVhYTjlQZ3BFbjVIQjBIQXRZTTExSXpXM2NRUDUwNEd5YVVkVVhXM2dEekhWR0otdUNyNFB0Z0dEX3hnWkM1Y1BESFI0ZV9YU3BNcGNtVC1paUczX2NXcWswYVBkZGM4QkhaZ1NSX2JV?oc=5",
+     "places": [
+      "Cusco"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Exitosa Noticias. . 🔴🔵 #ElInformativoDeExitosa📺📺 | El Instituto Nacional de Defensa Civil (INDECI) informó que los fuertes vientos, la densa vegetación y la compleja geografía dificultan el control del incendio forestal activo en la provincia de Calca, Cusco. La - Facebook",
+    "Nuevo friaje ingresará a las regiones Puno, Madre de Dios y Cusco: ¿Cuándo? - Gestión",
+    "Cusco: Gobierno declara en emergencia a 116 distritos por riesgo de sequía ante El Niño - El Búho.pe"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Cusco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-09",
+   "name": "Google Noticias · Huancavelica",
+   "department": "Huancavelica",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Huancavelica%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 43,
+   "latest": "2026-10-20T21:59:12+00:00",
+   "undated": 0,
+   "lastWeek": 24,
+   "relevant": 4,
+   "departments": {
+    "09": 37,
+    "05": 5,
+    "08": 5,
+    "19": 3,
+    "22": 4,
+    "21": 1,
+    "20": 3,
+    "11": 2,
+    "15": 2,
+    "13": 1
+   },
+   "samples": [
+    {
+     "title": "🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | En Huancavelica, las granizadas, sequías y heladas generan preocupación ante los efectos del fenómeno El Niño. Una fuerte caída de granizo provocó el colapso del techo de una losa deportiva. 📻 95.5 FM 📡 6.1 señal digital abierta - Facebook",
+     "published": "2026-10-19T13:48:56+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxOS1ZjQzR3d04tMm03aTJfaGRHSDhOXzNIY0RFVG8tM3VWalc0TnhwXzQyT2FWTy02eFlraUVLa0l0c0t1Y0JwN25CZUhfcFRLNkppNGdzbnB3Vm5sNmo2cnlvOGdtdFlDTnZMUDBDTFJmSXNVcU9ES0phRXJQSEZGbkxqWnB3R2cxWEVsV1RwV2trZklYeHhyTmVydXBiUEdaV185M3ZqeWVhMnB6V3ROMUtZV0hGSmw3dWZMTTRuUkpPMFlPamtuQXhSNTNreUo0bk56WUphYnFkNHd0dktqenRxaE1vU2tqWmlN?oc=5",
+     "places": [
+      "Huancavelica"
+     ]
+    },
+    {
+     "title": "Alerta roja en el Perú por incendios forestales: la ausencia de lluvias por El Niño facilita que el fuego se descontrole - Infobae",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPbi1zdXhIUVlldThMNnp6U0ZGdGhpN1V3dHJ5bTRVdDNQOUR3bXFtSWp0WU11WGpWZVJqVm05d2l3dWpkNWJ0akZaQjNXR1B4UE9FQzJxX1BGdksyUmFZZXU4RTBLMWNkVWsxanZPLXVUMnpKTFlDTXpJdWxOUTB1ZWpKOXo1RXNKZjlObVZJZTZmTzlpbmVNdlRpckNmbzJsRWNCYmdPQ1lLRXg0Slk1TVB6VmxUZXJuVXZPbmg3aUR2UzFPTGhLYUJTS01HTGk3N25GS1N2WEdNRjlOaHV1SFl6WGNwc0pQMVBVaUpNS3VJd9IBjAJBVV95cUxOMndfZDBCak9vWTBxbWM0d2tCM1QwYWlwVjV6VEZpQUZHTFdTVTkyRUtXWktfMk40cmJwSTRzeUJjM0RFV2E5OXdLWU8zVmZHMTFOaWl4Vk1JYmh0SnU1ZXd3RHNJbV9RTEpzb2FtQ1VTVHFuNFJuZVlUNENoQ3FQb3o2LVdLRFlCUkR5STNMc0l3Z1J6Q0JBS2c1X1QxNEMzYzhIdVhYTjlQZ3BFbjVIQjBIQXRZTTExSXpXM2NRUDUwNEd5YVVkVVhXM2dEekhWR0otdUNyNFB0Z0dEX3hnWkM1Y1BESFI0ZV9YU3BNcGNtVC1paUczX2NXcWswYVBkZGM4QkhaZ1NSX2JV?oc=5",
+     "places": [
+      "Huancavelica"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: Evalúan zonas críticas por peligros geológicos en Ica, Huancavelica y Ayacucho - Peru Construye",
+     "published": "2026-10-20T15:11:48+00:00",
+     "link": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPU3laWndBbFF1YTZXNVZWenVOMWlFLWpCVnd6VnRrN0tFaEtGMlFRNUtERVdFVE15aEQxSU1NX2NvOGRHN3BWR1dpWHp2TlQ5M3VObndFZTFIeHh4NjJpenVCWXF3RUZsdE1YVGdpVVdFUDBIdmNIVTdidmJidmJESXNWa0UxNDl5YXV1TFRFdU9KcVhkellFNWptNkFXMmhtVU4zSHF4a2w1eXNveU5qeEtBOVFkZkJSbWRUVHdianRRdktEMlA4bWlBWmI?oc=5",
+     "places": [
+      "Ica",
+      "Huancavelica",
+      "Ayacucho"
+     ]
+    },
+    {
+     "title": "Cusco: Gobierno declara en emergencia a 116 distritos por riesgo de sequía ante El Niño - Pachamama Radio",
+     "published": "2026-10-12T16:15:06+00:00",
+     "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQZmF6cWhKdlI5ZVdsUGJkLUZCVUJIdGhMMGJOM3NUTjRsY1hoT2RjSl8ydGZHdloxZFNEbS1JZUFxQ0U2TlNPTFByYVAyV19Gc2RoakpSTTdfekd2WWtCa2w3UTZPTFNTNGJBcWZIRno3V1QwZG9XUTVKNWtadUpSWElNWFBsNWstdTFyRmFCa3A5NmIweFduaWVEcUxtUVVIbFpqTEpYd1VYVk9NVFZ5STF5UmI?oc=5",
+     "places": [
+      "Cusco"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | En Huancavelica, las granizadas, sequías y heladas generan preocupación ante los efectos del fenómeno El Niño. Una fuerte caída de granizo provocó el colapso del techo de una losa deportiva. 📻 95.5 FM 📡 6.1 señal digital abierta - Facebook",
+    "Indeci reporta 7 nuevos incendios forestales en Ayacucho, Huancavelica, Cusco, Pasco y San Martín - El Comercio Perú",
+    "Extinguen incendios forestales en distritos de Cusco, Ayacucho, Puno, Piura y Huancavelica - Agencia Andina"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Huancavelica%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-10",
+   "name": "Google Noticias · Huánuco",
+   "department": "Huánuco",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Hu%C3%A1nuco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 54,
+   "latest": "2026-10-20T21:20:13+00:00",
+   "undated": 0,
+   "lastWeek": 35,
+   "relevant": 10,
+   "departments": {
+    "10": 50,
+    "01": 2,
+    "15": 3,
+    "07": 1,
+    "20": 1
+   },
+   "samples": [
+    {
+     "title": "Huánuco: clases presenciales culminarán el 11 de diciembre como precaución ante los posibles efectos del fenómeno El Niño - INFOREGION",
+     "published": "2026-10-07T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNSkR2R3NFeEhPczNGWXBTYmoyN3BaYnVNclV6UzRlYkpOanJsOS0wbFJKajZVNzdkelZ1XzBrV0ktNk5hcTZFZXB2TXdrNFk1OUhqXzBsS1VUYWJ5c0JodUxOcDVLT05ZTU4wNnJFS21DNEx0cnRMMWd6NmJXUzVqNFRVVFVha3kwTmFXc3ZGT1lwUm1hN3E1ejlETlJENG1sZW1rLWVMNmR2UHduWHlKaDhOZXJfWnAwNXlDaFhPZ29CcHZNQk0xNlNod3ZMY096RmhhVWd6dnpXaTg?oc=5",
+     "places": [
+      "Huánuco"
+     ]
+    },
+    {
+     "title": "Huánuco: sequía amenaza al ganado en Lauricocha y lluvias intensas ponen en alerta a la selva ante el fenómeno El Niño - INFOREGION",
+     "published": "2026-10-16T14:37:22+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNSVZMMFA5MGRQY01SLUdlemdvT0IyT3RGN1dDWXg4akNUWDVrV3hVOHVKbFJXN0ozS2dsckl6bGxGdDlacVZHamhrU1NHUmhPeWxCUFJRV1E2SmdveXJSYVJJUi1FQ1hNT2FZZnRVeHlkdjdDWUlfOHdmX3NJWXM2RzdMRUx4RmdhSGJRS1MyeDhHSUFaU25BekRwSlRSWnF2c0RYT2FkS1FCVUFYWDJVSlhYQjBZcFY2cnRXekVnWGEzaWxKdU1pMVJSUGFSRGJoa2VmS2JpMA?oc=5",
+     "places": [
+      "Lauricocha"
+     ]
+    },
+    {
+     "title": "Huánuco adelantará culminación del Año Escolar 2026 por amenazas de El Niño - Tu Diario Huánuco",
+     "published": "2026-10-09T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQcW81LUZFQ3dlSEMwNnZfRGRuaG5mS3E1VXBMR1Y5c0tqR1M5eEQyQURyYndHSnhSMDkxRmpiY1VnRmNUZnBrQWNjY3I3V2RlWHpuc3dfYnp5N19uQzlTX0NSLXBZVjhIMGZSSHZVTzd0V0RrNHQ0NzNWOHRYdTFRdXhuU2gtRTNKY3hza1dNc1IzRzUzSEhRbGxvNjFEOVIwckZVSDh3U0ZxWlV0ZVlHR0pn?oc=5",
+     "places": [
+      "Huánuco"
+     ]
+    },
+    {
+     "title": "Niñas de cuatro regiones del Perú exigen medidas ante El Niño y el cambio climático que afectan sus hogares y educación - INFOREGION",
+     "published": "2026-10-15T22:53:26+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNNFZWTmxpaUVuRU1sN1RiVTJia19PNm5MdUhEaWtyOWkwakNEWTVSLUpNbHNlRi1LSjMxRE1oSWpXZFpOY3VhY2ZyeFZuNzVuOXVHLWZmZ0VrYzZRVmRBbVRMc0NjWklrTy1sWjQ3RnJlTUM3TC16V25hUTQ0aFpFLTZ4bE4wWk1UVWluNU1tVzBCQklaNTMzTkx0cHF4T2JvZi1McjZYNGVTNGJwNmxmZnMtMVd4OFFUcm9WTm1CTUxJZUtfa3E2OXVsaTdTX3hEeGVjbXVuTEpuZw?oc=5",
+     "places": [
+      "Huánuco"
+     ]
+    },
+    {
+     "title": "Gobierno declara en emergencia 34 distritos de Huánuco ante lluvias de El Niño - Diario Ahora",
+     "published": "2026-10-19T16:00:35+00:00",
+     "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPd0g4V3ZocFZIenhuR3BEb082UkFZNk9BVE5JYWxBMHc5bXNRMlZIVUZZTDB1ZkhwQ2ZYX3JDTFZScDNPeHc0RFBsdXFYdFpYWUd4Y2dkYVR0N1Z4dGZ6bkc3NXdqUzg4LTNjclk3dDhiQk9rZlpoZFZ6ZGREOURuT2N3R0tmcG9XejljVFdScE9VODFMM21KdFd6RUlCZ2Fmd1RaLTMtRGFjX3pI?oc=5",
+     "places": [
+      "Huánuco"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Huánuco: clases presenciales culminarán el 11 de diciembre como precaución ante los posibles efectos del fenómeno El Niño - INFOREGION",
+    "Quebradas se desbordan en Bagua Grande y registran fuertes vientos en Huánuco - Willax",
+    "Indeci advierte que incendios forestales agravarán la sequía - Tu Diario Huánuco"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Hu%C3%A1nuco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-11",
+   "name": "Google Noticias · Ica",
+   "department": "Ica",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ica%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 44,
+   "latest": "2026-10-20T21:07:22+00:00",
+   "undated": 0,
+   "lastWeek": 29,
+   "relevant": 16,
+   "departments": {
+    "11": 39,
+    "04": 2,
+    "24": 1,
+    "14": 1,
+    "13": 1,
+    "15": 3,
+    "07": 2,
+    "20": 1,
+    "09": 1,
+    "05": 1,
+    "23": 1,
+    "02": 1
+   },
+   "samples": [
+    {
+     "title": "El Niño en Perú: no está operativo ninguno de los 18 sistemas de alertas tempranas previstos desde 2017 - Mongabay Latam",
+     "published": "2026-10-12T14:33:07+00:00",
+     "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPcUFVY24zLUNGWUxTdk1VOGhpVGl3dEdDb3hJWXNlWjNleFVtMmpKVTlNMXFGM0dLWnZuWlhPMHViQnZRVlA3cXJwOFNvcUxwdEVUeWpWSWpQbEl1UUVfS2Ffc0I0VXZrLTlPamwzVEhQTEFoQmcwazExS1RBRkRUN1ZQQzZRTGlmY21VMF9YQ0JMd2hKVlFVYXd3?oc=5",
+     "places": [
+      "Ica"
+     ]
+    },
+    {
+     "title": "Casi 100 mil empleos de la agroexportación en riesgo por El Niño en Ica y regiones del norte - La Lupa",
+     "published": "2026-10-15T16:38:24+00:00",
+     "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOUnlScFdmZHlxa3IwTlRxeUdJR3paeEVrRXVldjBwSW5zYkRaUVoyZFdKWDNiMDRCMGZSOEU2MUd5bkhrTDB1WXFORllfbHVoSGVYTENpY08tcTNfdklzc2VaQ2JmY05aYkVWckFkdmdub1BWQ1hJcmp4b2JnNHN6WkN2amJaV1BZSmp3MTNDQjYwcG1ObmVRckFzUHZoR09zVUNabGktSDBpMjhxa291WS1wUWg5SHRYelBZbVFaWQ?oc=5",
+     "places": [
+      "Ica"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño en Perú: universidad de Ica activa una plataforma para anticipar fenómenos naturales - Infobae",
+     "published": "2026-10-07T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOYlJlSE5rcTV6T29TbHQzVHEwRzUzVlhCbWg0S2h4QUxwR0lxQ0J5WWVTWmhyTjliSGNQYkhxREstSEhBNFdkSHdDcHIzTnBkUXIyTTRQcllEbXdFU21xOXFTakYzelFYXy1pUFl4N1NqeGlvUy1jQlVkZi14dTIycVlETVJVWUYydTg2NUFSNW9ubFI1NVZ5MXZKNW5SdVJKU0FaeDJRRDJxN0JqSzV0Z1gwZEZpa0N4SHVQY2t2ZEFkODA3TFFXdl9yNDdvbk9tQzNydXdXVUbSAfMBQVVfeXFMTU1TS3drVTc3RFlNbGp3WWdBRkJZWlZFMlFMbmJ2OTdiTHM0QlhzeVBRZHViVGI4UmlQY2VGZkI4WThVZHhXLWM0U1haNW5ZVHZrLXZlUEZ4VWtsUXM1YkRnMzRNaEVQNzBIWV80ZkNXVkVXRkdDSXJ1TmpyaUpvUjhYM2tPOGxPQU9IbnFIOVQ5NXp0T2pqWUhJWWtGd3hDN2dnQS00QUhIMGE3VU1iN1hKLUNwQzQ4bVFCZ09SOFBJTkt4TFV2SEs4a28zc3E0ZUFrTGlONDFCVURTYy1ZeVNvMXV0OTBXTnpTTWQtTVBwQ2hn?oc=5",
+     "places": [
+      "Ica"
+     ]
+    },
+    {
+     "title": "Ica: JUASVI señala que lluvias podrían darse desde diciembre por el Fenómeno El Niño 2026-2027 - Diario Correo",
+     "published": "2026-10-20T14:04:04+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxNbXhncmhZblFvUDltdVJFTjg2UmF4TnBQa0cxY19QSmRVNklnM1dyODd0aHo5OEhtYm12NGVnb2JkYWJzc3AzYld1djBIZDVpbHZtSzM0V0tYbkFOQmFTZF9xeU4wTU9oa0l5TFozQXMtTlp5VGZmQzlTWm55VllxVnFGb2FkRVozNDNlNGNnSk1JTnFrYnIzWHJTcU1KaktVbVdvZ3pPWFBwQjRhQ3NjWGowZGJUVm5nOGZybFFTWkhIQ3BhY2dIekVEMW5RcVhpYXRTVtIB6AFBVV95cUxONV9OLXZ5eWQtWHdRYlNkX1dRQ01ubm82aWJMTkp1S1Y2VmZoVjAzd1plQnpIa25TMlBBcFZOV01NTEdfYjlxUUUxY2lTbUstUDZVWDI3ZmZ4SVMyRW4xNEJHT2NPblRBOU4yT3lsc0czS0lNSkVwMjlKeEFLVExHMkFxZGRqOVNkeWZVYUNTV0I3OHFZeVdUMlowTW9HMnZxV0lPTEYxbkFwMDlHSk5OQUg1d3ZoQXFEOFVRVkF6QUZVNWs0VHBtMlprb2FNQXZaQUZkVUIzbXpJZUZna0dWUkZsN3NoNU1U?oc=5",
+     "places": [
+      "Ica"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: Sector Vivienda coordina estrategia multisectorial en Ica y Arequipa - Agencia Andina",
+     "published": "2026-10-18T15:30:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOTHRJMDdMZEpab0VKcjRlNEZmTzVRb2FBTEphU2xJSXUxSXI3ZWRWT1kycW1Vb0pLcl83WEQ4UVV6QVRUTkd3OTV4QUQ1NHJLVVY2cmlWTUU3b2tBeDRmSUtUeXBCSjB1MFU2blR2Rkh3ZlFHS2VaanFMc0ViYWY0dndfME5XZmFZNlZST1dUbE01UmpPOGFiZzJVVGtxcmNCV2NJcndYZGFIOEFhUVpNQ045N1dZRklCWkE2R3YzSlRFcExK?oc=5",
+     "places": [
+      "Ica",
+      "Arequipa"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "El Niño en Perú: no está operativo ninguno de los 18 sistemas de alertas tempranas previstos desde 2017 - Mongabay Latam",
+    "Casi 100 mil empleos de la agroexportación en riesgo por El Niño en Ica y regiones del norte - La Lupa",
+    "Ica: Vientos fuertes de hasta 46 km/h se registran en Paracas - RPP Noticias"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ica%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-12",
+   "name": "Google Noticias · Junín",
+   "department": "Junín",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Jun%C3%ADn%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 58,
+   "latest": "2026-10-20T19:15:01+00:00",
+   "undated": 0,
+   "lastWeek": 30,
+   "relevant": 14,
+   "departments": {
+    "12": 53,
+    "03": 3,
+    "08": 3,
+    "06": 3,
+    "19": 2,
+    "01": 3
+   },
+   "samples": [
+    {
+     "title": "Más del 70% de distritos en emergencia en Junín por El Niño: diciembre con sequía y febrero con lluvias - Diario Correo",
+     "published": "2026-10-14T18:51:12+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxPWkxsUzZWTVdNN3FReVNQZzVVbm55RlU1TV9QT0I3eE5XdnRqaVdrR040VkdqLXBjelVjbGJrdVhLOGFlZmlnOXNjSlNMTGVfTXNaQm03QWRvbmhjOU1ybTgyV0Q4SkxzSU9SOVFUME5HYW5DdVRWalNINUxJVlJPRm00bV9FbGhZcTdPYnFVTWU1RGVLTTItc05xM0FjNGw2dGFHTmRkWk1DXzA1clAydm5XOUtURXhqOEJRd0hfTWI4eXZudDZnTlhVX3pZOXVHVzRkeEtqS0ZMR2Zaa254alZoVDA1d9IB-gFBVV95cUxNUjhJSG5VWmRrbExXQ0ZOUF9xdEUyaW1mSnRZcDJlWk5lelNfQThwd0QtdUNOTXNzU0VzQTZleXh2T3BkZVdVVmRlbEVQbDMxcDJfWHc2N0UzbFBnTHRCZFNDNEx0RWF3TWJGcGgweHF1SHYtV2U5SE93RkRiZ2ZrVUMtOS0yT1J3dTlsM1JLN0hCb1J6MmlPYTZPemtKTThpMF85dGQzWTNudV80RC1TRnBwZkRlT2dDdGNnbnFvamRoSUJCX2tkV2hEYkZfNzN2bE1yS1VmWVUwVGZGbFJydkxwZXoweEh6TXdRVUxhNmxoTmZmRXJrZDBn?oc=5",
+     "places": [
+      "Junín"
+     ]
+    },
+    {
+     "title": "Cenepred: 116 hidroeléctricas en riesgo alto o muy alto por El Niño en verano 2027 - Diario Ahora",
+     "published": "2026-10-13T10:58:49+00:00",
+     "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE11WGZCbVBEcHpXTkNqWEwtamdiRGprTXNyMzNUV2c4aFZXQnJDVEtBbU11RlZyYVEtZnAycUh6RGxXemx4aUhQUzYxYzRyeE1wRHA0cVdSNnAwUlBrYjJYUmg4UW5IN0xHM0tOeGgxZ3gwZUxvNEdHMjVLYm9XUQ?oc=5",
+     "places": [
+      "Junín"
+     ]
+    },
+    {
+     "title": "El Niño: la Región Sanitaria III coordina medidas preventivas con ocho municipios - Diario Democracia",
+     "published": "2026-10-20T12:43:41+00:00",
+     "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNRXY2NGVKcDMzSnNsUXpSUVUzQ3l1eWFGYTVUdTVpbUpkb1NDbXpQaHV2bWpCYXQ5TEtjdTlnQmNCLUhmNU1VQzJpYXVJYXNxRFlsMXN4UUwzb09Tbk5JZTgzNnJJbXp4YmV3RzlWWTlIT3BTa2J2b3B4aFZDOUtiQjdHVzhWd0dpYWIzbUxyeHJ1Q0ZYejBzVVFiUG91Wk83M2VBbkxCOA?oc=5",
+     "places": [
+      "Junín"
+     ]
+    },
+    {
+     "title": "El Niño se porta bien y hasta prepara la cama - Semanario de Junín",
+     "published": "2026-10-13T11:22:56+00:00",
+     "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPTEd2ZFRvdWFzaWx0Q0wxYm1YODIwaVZHaWpVaDlqMTBlTGxvR3pGOFZwRjRpUUI0OTdPQTFhM2hsRUhsWHJWblhiclJZRjBiQjFtU3JlNlZvM3h4SDlsaU50ZXNqeHNoLTdKRXlaZUxteHQzSmdTOS1pQzlSNVZmTXJWaFdVai0wVEgtMlBrbzhvVUE?oc=5",
+     "places": [
+      "Junín"
+     ]
+    },
+    {
+     "title": "El Niño ya está activo y la lluvia de hoy superó todo lo acumulado en septiembre - Diario Democracia",
+     "published": "2026-10-08T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNOGNPaHJvMWxmYTkwOHdWVGE4U1Q2d1dhY3hNYTBEVWJGcHNqRml5Q1VtWHZXQmU1alotTzBELUpTVlZqc1FDc1FaQzk1ZnUyTGtHRnJtVzk0eFp5TGVLVFhzSVlaTjAySEl1VWk4aVJRM0xvLXg5dWhiNHJnanJKVVczaEt3bEhwZDdjbF9JVWo1bTQybHdISmMwOC1idi0zVHZOaDlpaw?oc=5",
+     "places": [
+      "Junín"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Más del 70% de distritos en emergencia en Junín por El Niño: diciembre con sequía y febrero con lluvias - Diario Correo",
+    "🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | En diálogo con Exitosa, el jefe del Indeci, Luis Enrique Vásquez Guerrero, informó que 12 incendios forestales permanecen activos en el Perú. Además, señaló que Junín y Apurímac son las zonas más críticas ante esta emergencia. - Facebook",
+    "Senamhi advierte que persisten condiciones secas en la sierra y selva del país - Infobae"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Jun%C3%ADn%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-13",
+   "name": "Google Noticias · La Libertad",
+   "department": "La Libertad",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22La%20Libertad%22%20OR%20Trujillo%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 59,
+   "latest": "2026-10-20T20:28:00+00:00",
+   "undated": 0,
+   "lastWeek": 45,
+   "relevant": 36,
+   "departments": {
+    "13": 56,
+    "06": 2,
+    "20": 9,
+    "04": 1,
+    "15": 1,
+    "01": 1
+   },
+   "samples": [
+    {
+     "title": "El Niño: ANA supervisa obras de prevención en La Libertad - TVPerú",
+     "published": "2026-10-14T20:17:51+00:00",
+     "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxPZk1HcXV5TGItaTg2cFVjc0xGcG5xRXFuMUY5OTM4Q3FVNGYwRDRLN2tQRFNNLWJhZ09PdTZzQjZMc0NUU08zM1hiMWNCUDdZck42RVVGdkFmR0I5YUdaMllyOHVjM1Rkb0RmQnJMRTFlb0Y2ZERnT1pxeG5HUll0X3BkWXFfZW9Xa2gxZGxmUFpyVVU5RUZmVWxkSXJIbXNVVjU3NQ?oc=5",
+     "places": [
+      "La Libertad"
+     ]
+    },
+    {
+     "title": "Presidenta supervisa obras de prevención ante El Niño en Piura y La Libertad - Agencia Andina",
+     "published": "2026-10-16T15:19:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxON3JYbE9jaEo2WTlLQm1fUkh4Q3dkcF9XQ1Y3UzNZc2hNZHRkbk1SZjREOU9Za19ZMXlkRm1xWEI1aEE1c0hpX3h3LXhWMzZpbk1teGxwZS1TZ05UYUU3OTU5S0RqSVYwUnhMeGdyV25UZDdJZ215V0g3SVl2X296RXBVeWVIc3QwS3I2OUtvYTJxVm9DNUZhc3F6dlhYb0ZKZWFFWVdjanNsOUEtTm81ag?oc=5",
+     "places": [
+      "Piura",
+      "La Libertad"
+     ]
+    },
+    {
+     "title": "Presidenta supervisa obra de prevención ante El Niño en La Libertad - Trujillo en Línea",
+     "published": "2026-10-16T19:08:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOM3dsT3BuN282VVRpS3ZQVExwa3JGVWt3ODBXcGRUOHJUcjZRQmtRWWEyS0tSM3AxLVVEN3I2UVN6V0RvNmhkZ2ROR0VjeWI0M21sRVpJc2UwMUVIbzYySi1CMFpWaFktX2ZwVUJtVDNrOEFUTnNXaVpZOG9FVDBveDlPZGlHRFhGRFpJc3FOQnIteEVhZEE2ZTVlTTBVeHRWQUdTMnR6dG9VOVNWY3Y4eDN3Q2ltWXlQWERTcDJoSHRhX2kxNmVUWTdMdnZPQQ?oc=5",
+     "places": [
+      "Trujillo"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: Keiko Fujimori inspecciona obras de prevención ante inundaciones y huaicos en Piura y La Libertad - El Comercio Perú",
+     "published": "2026-10-16T21:10:25+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxNMFRPQXM2ZUI3Mk5jRkI2djJBT2JlMlQ0QlR3NWhKLXIwMzlnNXBxMmpxeTFHem85STlEM19pZS1MR3p4b2YyNUZRbGhEM2FtZGhQcmxHOW5mVDc4RlNZbzNYNi1FZ3duSV9zTnAteFJIbmtQV3l4OWdNYW5ZQXVzVGJXbGVfdzROZ2pBT3RoVmZsY3lpcEQ3T3B1NUFhTldvOE5FbVhBRHprSzZQODNsLVJNZDJWUGo3ZVNDandCQkVuQUM1UElzVXFpR3I1RkxrbDZoQmF5VTI4dkRvUWxzdkx4U3N0bnp2ZkpQb1ZyTGhmc1lfNDdn0gGLAkFVX3lxTE1uWlEtbmRoVVhHQ0tjVmhwelEyS3l0Z2lLVWhJZThkcHRPbHdUUXZUQy11T1l2TDV3QnR5OGVKNmZhc1p2TEZaTzVzYmdJYmZRVElmMkJQYVNHMEFCR3o0UmZjZXhUdjRLaGt4Nld2d2ZSQkxSV1g0eThuNTc4YlJrd25oMDRSUld3M0xKWEFMcnhpT3BrZjdsY3NJNWJPaTgyTVBjb2R6eEtHY3lxWFBLY19iSEY0MHZoU0NpUDVIUDc2UEFvR191TzllM0Vpc1dBRmlkWFRYMmhKekJvcDA0d1FUV2RiNGdWRE85UkR4VWNsVHEwWjBlZVFRODFSdDNZaFBQRTROTXhJbw?oc=5",
+     "places": [
+      "Piura",
+      "La Libertad"
+     ]
+    },
+    {
+     "title": "Keiko Fujimori en Piura: presidenta supervisó obras de prevención ante el fenómeno de El Niño | VIDEO - Perú 21",
+     "published": "2026-10-16T19:25:34+00:00",
+     "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNWFZHNUJURXVYWVBST25OOWpRSFZ1bHRKMGJQUUJMOTVvTGpjcm8wT1dTTUhlLUxJQnZLcFkzZ3QxNHlMUlJib0tocy1WaTB1TmVhVmZmc09PYl9KUURRWG1HUk9EUWZfZkJDeXYyNDFPY3JRc0tySTZvbEkycmk4VjhhQldkYjNfd3VCOUZtZ0FqaDY4OENmcjVTX1dHb0w2?oc=5",
+     "places": [
+      "Piura"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "El Niño: ANA supervisa obras de prevención en La Libertad - TVPerú",
+    "🔴🔵 Las variaciones de temperatura y las precipitaciones marcarán las condiciones meteorológicas en el sur de Cajamarca y la zona andina de La Libertad durante los próximos días. Según el Senamhi, entre el 16 y el 20 de octubre se prevé un ligero descen - Facebook",
+    "Presidenta supervisa obras de prevención ante El Niño en Piura y La Libertad - Agencia Andina"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22La%20Libertad%22%20OR%20Trujillo%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-14",
+   "name": "Google Noticias · Lambayeque",
+   "department": "Lambayeque",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Lambayeque%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 49,
+   "latest": "2026-10-21T00:25:30+00:00",
+   "undated": 0,
+   "lastWeek": 35,
+   "relevant": 29,
+   "departments": {
+    "14": 42,
+    "20": 5,
+    "24": 5,
+    "13": 3,
+    "15": 1
+   },
+   "samples": [
+    {
+     "title": "El Niño: Gobierno impulsa mejoras en EsSalud Lambayeque para garantizar atención - Agencia Andina",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPSnN0YXhfR1ktbWhDODdHSDhNZ2lpcTFnb2EzWWtMczRjaGFYSkdRUGwtWDk5a3VWSmJybDl3dUtxelY3Q0lCWW9ldzR6TDJyVjMwbjRmV3E0WG1VT05DcllFVnRMYV9pTkZhVzlfZnlzN1U1MTRMcDQ0VXF1eGZubDVjdlJhdnR1bHVmZ3czQzF3NkE4eGZJN0RPaGNVYVFJSWZHbWx1eGp5al9zVE82eTVaMU5tUjJRcHkwbTBNSEs?oc=5",
+     "places": [
+      "Lambayeque"
+     ]
+    },
+    {
+     "title": "Movistar prepara su red en Lambayeque ante posibles emergencias por el Fenómeno El Niño - La República",
+     "published": "2026-10-16T18:47:35+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQUWlSRks0VklIWWlpZ05UQVdDSXNzZWplVjZIYVZUR19sUFZ4Nmtyb1ZpdkEyZ3Q5bEJDYlItYVBPakxJVmpRU3RrZXlNSGVTT1JRWUJpSEhOcVZoQkg0UjMtVXdGLTF3UllHdDZPT3lIZEJ5WFJRNzNoWS1Ndk80ZGE3VnZLbVdUNkV6MWs3NmNsNVF5d0VZOHo3TjlEUzAxTnpER281cldxNy1XbW1raXNCX3h5U29XeW04eS0zREV1cXNRd1hKME5ZTGtBUUhfTGlSNHZLOUF1dTZf0gHiAUFVX3lxTE1RM0FkR245cjRXYVp1N1ZHclNxcUNfczRyWEkxYzZYRHF1NWFoT2JoMGdTMkZrajZlLVI1UU9IOUJCQlR4NW5qek4zamcweWR1MlNwUFE5OUxsejdGUVBVNmlpMjNJTWpBWXJIRFJleUJiRjVhSUt2TkZoOFpJXzJ2cjFFUW0wN1lvamIxTXpqSmVOMHQ5ZWpTTG9DSVlYcVFvUEJBZEhVU1ZxY0JkdzR5aGFqODRZZFJNV05DU0gwai0zdUR3YXd5ZzJjcTA2N0dsaDctN2UzV3VuS3YzcjF4X1E?oc=5",
+     "places": [
+      "Lambayeque"
+     ]
+    },
+    {
+     "title": "Gobierno refuerza prevención ante El Niño y anuncia mejoras en la atención de Essalud en Lambayeque - TVPerú",
+     "published": "2026-10-12T16:47:43+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxON1hvamI4R0xUU1pXVTc2cXFzbW5wa0tJM0kyd0pWYXlOOGUwb1hLeHBvbUc1cDBudnB2MUpJV3VKX3pIS1dyWDVnWF9WRjVLTWhmbnZzcWcyLURfX0tQaDR2WmdpWElzcHplNV9PcXFJeVVhdFctRmlBb01xX1JsQVNRS2k2ekdrYzZyLU5vdDhLVElYYjl4WVdxWWdoNW1XNlJPTHVmODJjdXVPMnhXOHdQN2xOc2ViR3N3WU5lYlJpR2VEeXkyWGVxcDdXbUFTcU9WQXJ2N1dTSkpvUEE?oc=5",
+     "places": [
+      "Lambayeque"
+     ]
+    },
+    {
+     "title": "Lambayeque soportará temperaturas de hasta 38 °C hasta fin de octubre por El Niño costero - Diario Correo",
+     "published": "2026-10-18T00:27:21+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQTzdTRTBGQm5Tb2JkOW1kQ092SFFVR1k0T3ZwdzJDTTdFTERfa2hQb3FHM29iTmxseHRQUGMzYThXSl9mY3UwR2I2YTV6NVA5Ti1KNGVXWWFZUEFLdzlQTmZJbk1xd2hzdkJSSEM4UEVBZ25FdkpvTF91d01memQtaGU4TG5rYUNVVi1pa000TFpaWlhZWXRhUTBpY3FqcG10ME1hZFQxQ1RXMU9SUmdQRWpOUXVtWmwzYXE3R3h2UW5yMlQyb2hlY3BnRlUxMnJWSzQ5TXE4WdIB6wFBVV95cUxOZ0lrd0NjNnNTWlp1RlZxejlTMWcxZ1FlTWZ1VTY0YkxTV0ZPU09FZ2ptWDZYa1VYYUJmdVRyc05mUE1feTk4emNId2V5enlmSGR0TVVaU0JpcHhDb3IxU2ltOHpGOXk1ZlZlTFoyTmlrZ1FnRzFKSDZuUjFJclRTU0JhNlJHajk5bTBMTzB2RzBKSlRISjN3UG9FUFQwUUdjM1R2b3Y5c1RnakhOU2VSZ21jMTJnTWl1YnpqYy0tbG4wWlJCX1VXVjFKWEFWaDZJMlZQRFhaclJTT3Y5b01wRUJPRFdCWE5PR1FJ?oc=5",
+     "places": [
+      "Lambayeque"
+     ]
+    },
+    {
+     "title": "Impulsan mejoras en EsSalud Lambayeque y garantizar atención ante fenómeno El Niño - Crónica Viva",
+     "published": "2026-10-13T13:47:08+00:00",
+     "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOa2l5RVQ4TlRXV0lfeGVRWkZoemNfb1RCVGJtZTI5YWdzalE3cUREUWJjS1o3NEhKaHpYRVA3MWxWbWo4M01PWHdtMFdVOXJ3UDBuUXNZVzFKTHZNdmFucUMwaGYzbVU3TVNvU1FmTDJ0QVRqZjBBRXJVZVQ1UFVzc2k1LWMxNzY0V3QyRm1KUUNDYUNrdnhMa3lnSVp6RkVlSFh1RWw0ekhtcmNKRjhTVGhXeGc?oc=5",
+     "places": [
+      "Lambayeque"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "🔴 #Expreso65Años | ¡Atención, Lambayeque! Senamhi anuncia lluvias y fuertes vientos, ¿qué días se presentarán? - Facebook",
+    "¡Atención, Lambayeque! Senamhi anuncia lluvias y fuertes vientos, ¿qué días se presentarán? - Expreso",
+    "El Niño: Gobierno impulsa mejoras en EsSalud Lambayeque para garantizar atención - Agencia Andina"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Lambayeque%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-15",
+   "name": "Google Noticias · Lima",
+   "department": "Lima",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28Lima%20OR%20%22Lima%20Metropolitana%22%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 81,
+   "latest": "2026-10-21T00:40:49+00:00",
+   "undated": 0,
+   "lastWeek": 64,
+   "relevant": 33,
+   "departments": {
+    "15": 80,
+    "07": 6,
+    "20": 2,
+    "16": 1
+   },
+   "samples": [
+    {
+     "title": "“Ningún peruano vivo ha experimentado un Niño tan fuerte”: Abraham Levy sobre el calentamiento del mar - Canal N",
+     "published": "2026-10-16T16:57:45+00:00",
+     "link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPLXgxeVN6ZXF0QXg3MHFKUmFDQXFLM1IySFVuSG5tLUhocUhXdTg3QzU4ZThqaU5TZ2xVUFBNcXVKaVhMZHZRLUc0YkY2NGpCa014TlJZWG9MdHYwWXZEVjlKVmFma3o1NlVOVk1ydlN4cmhwYlRBOVd6QnRYTTBWbXRSZFJwRlBEY2FOWGExSVJoeENTUXRIcVJlMlNJTFowRVlOMzBrbmdKOFFRNG4xemdiQm1uNXNVRDhwQ0RibmY4RldtSm9EWjdWeHVsc3c?oc=5",
+     "places": [
+      "Lima"
+     ]
+    },
+    {
+     "title": "El aluvión de Chile y la advertencia para Lima: Las quebradas de Chaclacayo bajo alerta tras riesgos de huaicos por El Niño - Infobae",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMihgJBVV95cUxOcXJiVWxpWDJLVlVJX2dSOW45bW5lU2JXcFZLUlg0VmlraDloN3NMdWNmM3g2ZXZzUHNrVWkxa1VkaFZETDNDV2cwRXRlVHVROC1ickw3UDlmTGFQajRLUVhPQ1JNOGVYR3VLU1ZQb2xySzdlSHBwRHNBZUJGZk1ILUVpU21qYjg2UDZzSDE0cDkyM0R4QktVcjlNQkJtall1bTl0dmRSamYwX2p2UkZPM21XakFPa1BEQVFiNWl2MXJOMldYMjFTSVNkYjM4bkxBU2VSTU9DNzl3M25kV1YwbTY4Zmh4Z1ZEQWNQYmg5OXMya3hpVHV6RFBoWWowX3I2SkVMVVZR0gGgAkFVX3lxTFBBbTBhdDlfSVVMeW5IRGRQVnRiZ0ZUUGtXX09JNVlNajExSGxFbjFJTVY3UXVCSXN1XzNDRXVDY3ZOZU51SVpmd2luSHVuWjNMbmhIeWtoWVZicGZqQlFkNDR4eHEzRnNiY3JIOHNvajJweXdsV1FHYmFlQ3hOUWgyNlNlUWFNUk51TGJ4UGFVVkh6dkJNYnJqY1phVmZDU3RTSDZVNUNjQ08tNFdrMlZ3ckc2UHFYZ2FNVDUxaG13SzI5amNaZHlGWnUwdjFwRjA4TGZocnZRMFFweU9oY1JxUXU1djVZQjRZUHNxODVFajZDWTJXRzI0VElUN3NYTDl3OVpITTNDRU5BdGswa09aQTZmVkZzLWNMZWtUbGtqUQ?oc=5",
+     "places": [
+      "Chaclacayo"
+     ]
+    },
+    {
+     "title": "El Niño podría activar hasta 15 quebradas en Lima: Chosica, Chaclacayo y Cieneguilla entre zonas de mayor riesgo - La República",
+     "published": "2026-10-11T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxOc052eFNESGFKdGdKQWlMZ2ppUUlkV3RzazVPaG02eVp1VG5CQUVLeE9xTU5fT2ROcF9leUk4Um1GLU1DV0Qtd3RvM0o4Z1o3TmNWcS1sam9yUmpZNWQ4blpqaEZCNjdmNzJsb2tkLTEzLWNRYUpKOUNvc1FVWWNjbWVPT2l3YmFzRW9iamRuX3ZNa1N4MnZTQjVSSEVsOHNBN2FsaHh1M2x2Z0FrUzFOb1IzTV9penQzV01tQWZzY1doREl4YVpjQ0stZThDeXdMdl9Wem5CVDZjVUtMRERIaUZjMHpEU0ZiTDFKNFo4LW9WZ9IB9wFBVV95cUxQWlA5aFlpdnk1Vl9TOEVucnFQMlAxR0Q5bWNaUEJFa3V5Ump6c2x4TmVFb1M4SkxpbHhWLUdUOVA4LS0tUzIwaTdUYTQxbVh6SXlKYjRsRUFIVXVPNlNydWhoZXJ1S2NOQ1NERmcyM2JjOUpRM0NoVklXSl9JQTJYTE5BQmhZVjBkUExxVHBhMkVvRmtmTXdCMEJKTjBzRlJxRkV5N2dNSDQ2SjZHYmctMkU1YlRGNTQ5ajVEdUNtNnJYYkJ4X0dEMUEtSEtYUE5LTUpwUmJub3Z3dXB1eW1fOEVHUnUtdWg5bmNSZURkcHU0LWhkX0tr?oc=5",
+     "places": [
+      "Lurigancho",
+      "Chaclacayo",
+      "Cieneguilla"
+     ]
+    },
+    {
+     "title": "NIÑO COSTERO 2026: LIMA PODRÍA COLAPSAR ANTE LLUVIAS EXTREMAS POR DEFICIENCIAS DE DRENAJE, ADVIERTE METEORÓLOGA DEL SENAMHI - RCR Peru",
+     "published": "2026-10-19T20:18:02+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxOWWVNWDhXWHU3dGpXVlkxaVE4dEJfMGw5b3VVNEtIdHpaSXRhZk1vVUZkaFMtVE9MRzBmQ1VSdmFjUGZ0OE5IZEhaM3BGczM5andLbHZSam5obUozaGdQWUlQUzFjcXdBM0dGTm9ZZXZUV2cwWUcxLVFtRGNfbDROY2lvcmlVeWxBQzduN2l6c1JFa203ZDlGQW8tOHBXMHk4X0xjMmNMVFJSOWUzaWlXNUhuSTRTOVpLR2UzYWVWM0taeU9pNGJ3R1d5eGpHSkNkRUdVLVVEcFFQV0J5WkVj?oc=5",
+     "places": [
+      "Lima"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: Senamhi identifica zonas vulnerables a huaicos en Lima - América TV",
+     "published": "2026-10-09T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNd3VnZUNHaElQNzNQYndGcDNhYXJMMFdKUEg1UkNRNFhqblhkR00xVmliUkE5WFRHMlhCcXFwaWt4UDRoQ29FbzZZQ0o1bnRqMXRpQUNqQ0JITnFFam5tTDRlYWxIRjEyT203clJEZV9SOGlIQndjMS1SVnNpZVRyOXlLT19RamJVLWR6anBNQVpWOTJ3SHVaMXdLRlMwcmNHRTBfN09xRzNja3A3SFlWdlpzMHBqZzVCNE82OE1TUDl5NkJJQUHSAcsBQVVfeXFMT1BQTnVxcWdhWmRMT3RVVDY5UGEtS1c3S3U5MW85U0J6TWhJd0piUkFmeTNDLVUydW5aZHFzU29RaWVmZVVDSXdHQWxIQndROUs3QnRsMExwQkZDR0s2Y2lxUjN3V2d3eFRHSTVGVlpmdmVwMS1ZeE53UWtxaFU2aUdKdU81R3lGLW9KR3pPbEhuZGxfS1pBZWNkdFdYZ1FWbmZLWEZXcm5kRWo0dG1vSVRibUNiWEhaSHk2QXhNa3Y1UmxsbTJiUzR3MTQ?oc=5",
+     "places": [
+      "Lima"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "“Ningún peruano vivo ha experimentado un Niño tan fuerte”: Abraham Levy sobre el calentamiento del mar - Canal N",
+    "El aluvión de Chile y la advertencia para Lima: Las quebradas de Chaclacayo bajo alerta tras riesgos de huaicos por El Niño - Infobae",
+    "El Niño podría activar hasta 15 quebradas en Lima: Chosica, Chaclacayo y Cieneguilla entre zonas de mayor riesgo - La República"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28Lima%20OR%20%22Lima%20Metropolitana%22%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-16",
+   "name": "Google Noticias · Loreto",
+   "department": "Loreto",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Loreto%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 47,
+   "latest": "2026-10-20T15:18:02+00:00",
+   "undated": 0,
+   "lastWeek": 32,
+   "relevant": 7,
+   "departments": {
+    "16": 43,
+    "14": 1,
+    "20": 1,
+    "15": 1,
+    "24": 1,
+    "04": 1
+   },
+   "samples": [
+    {
+     "title": "🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | En diálogo con Exitosa, desde Iquitos, Jorge Khan, especialista del Senamhi en Loreto, advirtió sobre los posibles efectos del fenómeno El Niño en la Amazonía, entre ellos un déficit hídrico. 📻 95.5 FM 📡 6.1 señal digital abierta 📺 Mo - Facebook",
+     "published": "2026-10-18T22:03:18+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNYno3VWg4aDBfcTdLZjRqNUlXY2lKZHJaZlVHM2dkcmhXVmRvVzBXUTZtWlpIWURsazZJTHlnUGNKbjBGRUNtN3V6Q3ZMR2Z3bHNqVlk5bmJpWjVNRUtaUE9GekwtUHlNZFEtT21MbEJ0TUVuR3NtUWJfaTJUZmhHbXQ2YUVYY3FzamxpNVRwTTBHY1pTbVFId1A3bWhENWNocXZxYXRtMVVhMVFjZmFkN1N2T1B1ZTN1Z05LVlpxQTFuOEo3LVdrdDdMVkwxZ2VRcnFhYk42dU5UNzBwZDk3WjNZWC1CY2RhUjZn?oc=5",
+     "places": [
+      "Iquitos"
+     ]
+    },
+    {
+     "title": "Inabif refuerza la protección de niñas y niños en Loreto y activa medidas preventivas ante el fenómeno El Niño - Diario UNO",
+     "published": "2026-10-19T03:18:43+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOVHhuWHM1M3l2TUFjZVR1SUpDWEctTnpoMkthUy1OYU1SVzduWWRXSkJjMWtUUTN6eXJyb1RYcTdiSzlIYmFlUWRBNVBzaHpoS3U1Uy1SSEV0T2pLTzYzNDBDbVV3MU1hc2NmbmFiX0V3clFHM2dZQmJJSGg4cGdSWlE2M1d5dDZ0S1dDMGhCUnIzejdJTXNRVDAwTXZEN0l4U3plRUx6RkpFOE5yTXJhX0dsMUtwYUhIX1cxakVpTlc3MVpOai1iOHNlUHduREw2Y2c5Wi1QY01mLW8?oc=5",
+     "places": [
+      "Loreto"
+     ]
+    },
+    {
+     "title": "Perú: Sociedad civil exige Plan de Contingencia para enfrentar Fenómeno El Niño - Pressenza - International Press Agency",
+     "published": "2026-10-15T03:10:36+00:00",
+     "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOVzZ6OEsyQTFiVVZnV3ZVTFlRdUVwdjdnTEwyRzBwcmdBTFVxbXdmNFk0cER1TnZhcllYOUlhZUJOUjZVMUJpdEhPSVc0bGoya0VTS1dBNnVoUWZqcndzRGl6WnVWYmFocTl3aTlCZDBDelpZX19abTJINUtjNTlqOThPUGVKTkloSU04SFA3RlhOQkNObkV0SGUybklRRlRFNTdTdGRSeXVZNTZnV1hVYTFyNVVuNTQ?oc=5",
+     "places": [
+      "Loreto"
+     ]
+    },
+    {
+     "title": "Niñas de cuatro regiones del Perú exigen medidas ante El Niño y el cambio climático que afectan sus hogares y educación - INFOREGION",
+     "published": "2026-10-15T22:53:26+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNNFZWTmxpaUVuRU1sN1RiVTJia19PNm5MdUhEaWtyOWkwakNEWTVSLUpNbHNlRi1LSjMxRE1oSWpXZFpOY3VhY2ZyeFZuNzVuOXVHLWZmZ0VrYzZRVmRBbVRMc0NjWklrTy1sWjQ3RnJlTUM3TC16V25hUTQ0aFpFLTZ4bE4wWk1UVWluNU1tVzBCQklaNTMzTkx0cHF4T2JvZi1McjZYNGVTNGJwNmxmZnMtMVd4OFFUcm9WTm1CTUxJZUtfa3E2OXVsaTdTX3hEeGVjbXVuTEpuZw?oc=5",
+     "places": [
+      "Loreto"
+     ]
+    },
+    {
+     "title": "LIMA EN ALTO RIESGO POR EL DENGUE ANTE EL NIÑO COSTERO: EL MINSA NO CUMPLE CON METAS DE PREVENCIÓN, ADVIERTE EXVICEMINISTRO HERBERTH CUBA - RCR Peru",
+     "published": "2026-10-19T16:03:49+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxNanNpR3BkS3dqZEdXNkE3cDI2SWUwaG1CTmxnY0hiNEgyRF95SjdnZFljM1FCR2sxQ0drd25sT3NGMVFaU1BRVndYNVNfaDRjM2FkWGdxSXZHcWhZR0JoWFJtR2VyYmxET3Y3R1VUX28wY3BUUk9RcF9mcEZBRGhybXA4UUJpaEpVSmhUbHdWUERRUDdicXIyR2M3alUzWkZRT1VpZGVzYWJVVHhKMXo1S3pXZVpVN01uaWRXcFZySnNSZTF4QVV3NXd4M1lKMEVydHhUVFlIQlRUX01Od0p3dHhfQWFXMzVMRF9ZWTR1eUdPUQ?oc=5",
+     "places": [
+      "Lima"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | En diálogo con Exitosa, desde Iquitos, Jorge Khan, especialista del Senamhi en Loreto, advirtió sobre los posibles efectos del fenómeno El Niño en la Amazonía, entre ellos un déficit hídrico. 📻 95.5 FM 📡 6.1 señal digital abierta 📺 Mo - Facebook",
+    "Sensación térmica en Loreto podría superar los 42 °C, según el Senamhi - Infobae",
+    "Senamhi advierte que la sensación térmica en Loreto podría superar los 42 °C - Agencia Andina"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Loreto%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-17",
+   "name": "Google Noticias · Madre de Dios",
+   "department": "Madre de Dios",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Madre%20de%20Dios%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 62,
+   "latest": "2026-10-20T18:53:43+00:00",
+   "undated": 0,
+   "lastWeek": 34,
+   "relevant": 14,
+   "departments": {
+    "21": 6,
+    "17": 54,
+    "08": 5,
+    "23": 1,
+    "16": 2,
+    "15": 2,
+    "04": 1,
+    "10": 1
+   },
+   "samples": [
+    {
+     "title": "Fenómeno El Niño: escuelas rurales se preparan ante impactos por lluvias y otros eventos - Agencia Andina",
+     "published": "2026-10-16T18:46:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOQk1EY25aeVB4S2Q2aDVXZ0p2RDFpN3JfRS1lVzVKUnI3MzhsaGhVaVRsb2dhb0tRSUxlYlRpejNkdHFUa1hSZ0lfeGUyTUhlcUhnZTBocThpSmdDV1lGaHBnX3F5c0t0aGxMVmFRRkd6RG5vcjIwSGJGS2Z3TnJNaHU0VjBTeWFRR1BZZGY4MkpIb09hOFU3Q1M0TlJSZnF6aVd3Q3FfbElGUm1NbzEySUVjYUVIcHdtMkppWHBjWkc1UGdKWlE?oc=5",
+     "places": [
+      "Madre de Dios"
+     ]
+    },
+    {
+     "title": "Enfen advirtió que El Niño Costero podría alcanzar magnitud extraordinaria y durar hasta el 2027 - Canal N",
+     "published": "2026-10-18T14:17:54+00:00",
+     "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPOXcteThNMHZTTE1kakZyYXlmajZybDhZLXU3cmYyTGdIRkpsTWFiT3pZeHJhUng2eTMza3piVTREN25Ldm5HUUsxWTUwNGk0dkVTcko2SjRCMVFNdi10UC00X2xJTk0wRlJMc3NoTmliay1LYkswUC1YVmJRX1MxV2N2SFNFeVE?oc=5",
+     "places": [
+      "Madre de Dios"
+     ]
+    },
+    {
+     "title": "Niño Costero: lluvias, huaicos y deslizamientos amenazan a la región - Diario El Pueblo",
+     "published": "2026-10-13T05:25:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNdVduZ2Q4Tmlrb3JiU1RFNWV4Ulk0QlVfazJWTFdBSHRFZWhhclFiQ05UTVAtcE1YdXVnS2RHelBjYmctMHpVaHFHMHZrN05KV1padHF3NWI1UGVFMGFUVkctWFk3WVZ6OW9TLXBUNE9CY2VOM3l0M0tUTDhiOW5HM0JxZHVpU1Q4UkkwNkRBVFhYVG9pUlQzUFg3c3F5aGJ4cEtoUmczREZqVUxy?oc=5",
+     "places": [
+      "Madre de Dios"
+     ]
+    },
+    {
+     "title": "El Niño: ninguno de los 18 sistemas de alertas tempranas previstos desde 2017 se encuentra operativo - hytimes.pe",
+     "published": "2026-10-18T01:57:08+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQQmVzZHYzVk5BaFF0TFhoTXJ1c1d6ZjlDczVEemM1SnRzUEVKVVdSSl9uVTVxd1ZtdVdpTHdvRE9oX041S3FTOGZ1Y3gwZmQzX3lMcVRfbk9zQWVIUnRzT3dCX0w2eE9TZzcyV2xibWF3SEt2QVFiM0hQckQzRHN3TmE0VEFkZkM5M3VkdkRzdWx4bHllVGJYM2xlc0sxb09reEotdnJmU0N1UGdJWVJxeWMxU1R0S3g0QklB?oc=5",
+     "places": [
+      "Madre de Dios"
+     ]
+    },
+    {
+     "title": "Keiko Fujimori advierte que fenómeno de El Niño será dramático - Canal N",
+     "published": "2026-10-16T01:20:44+00:00",
+     "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPRmNaYmptOHNnNHFhanpXTTJxcUNKRG1pbEtSRzVWZzlVM091WUxBMTJEVTAyZnJkMWk1UG1uS3lUNHNOZzE0djFZY3hXV0hfa0pPbXk1UkNiZGUyb1pkU1NNWGZpWTlGcEMwVUpwXzh1dmhXYy1Oa0NCcHU4eTNHeWRyQ2tmc2Y5M0JfRjhvcmVfQQ?oc=5",
+     "places": [
+      "Madre de Dios"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "🔴🔵De acuerdo con el Senamhi, entre el 15 y el 17 de octubre se registrarán lluvias, descargas eléctricas, ráfagas de viento y cobertura nubosa en Puno, Madre de Dios y Cusco, debido al ingreso del décimo segundo friaje del año. 🌐Más información en: http - Facebook",
+    "Nuevo friaje ingresará a las regiones Puno, Madre de Dios y Cusco: ¿Cuándo? - Gestión",
+    "Decimosegundo friaje ingresará por Puno, Madre de Dios y Cusco el jueves 15 de octubre - Agencia Andina"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Madre%20de%20Dios%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-18",
+   "name": "Google Noticias · Moquegua",
+   "department": "Moquegua",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Moquegua%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 41,
+   "latest": "2026-10-20T21:08:34+00:00",
+   "undated": 0,
+   "lastWeek": 14,
+   "relevant": 10,
+   "departments": {
+    "18": 33,
+    "23": 4,
+    "05": 4,
+    "21": 4,
+    "15": 1,
+    "20": 1,
+    "24": 1,
+    "14": 1,
+    "13": 1,
+    "04": 1,
+    "08": 2,
+    "02": 1
+   },
+   "samples": [
+    {
+     "title": "El Niño: ANA prepara a instituciones de la cuenca Moquegua-Ilo ante posibles impactos - Agencia Andina",
+     "published": "2026-10-10T18:45:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQeGxMbFdGd2hzSmNETFdSSmdfV3AzbTRCdkpxbThWMkJXMndQWXotbHBENW9yOF9HbWRnaDdUOFNrOV8wRGVhdWhRZERLZy1kd0xVX0RDTmwzUW0yMTkyZXZHaUtjRHdkNG9icVhTYTFWR0l5d0lNQ3lLaktVU3FULXgtWDFuYXJkU2FQc0JrTERZUm1GZXo4SGFrNHh4a1F2N2hUczZlRmZKU09DblF1eTdBTGs3Ny1yWXpWRUNnV0Y2OUQtQkE?oc=5",
+     "places": [
+      "Moquegua"
+     ]
+    },
+    {
+     "title": "Alerta roja en el Perú por incendios forestales: la ausencia de lluvias por El Niño facilita que el fuego se descontrole - Infobae",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPbi1zdXhIUVlldThMNnp6U0ZGdGhpN1V3dHJ5bTRVdDNQOUR3bXFtSWp0WU11WGpWZVJqVm05d2l3dWpkNWJ0akZaQjNXR1B4UE9FQzJxX1BGdksyUmFZZXU4RTBLMWNkVWsxanZPLXVUMnpKTFlDTXpJdWxOUTB1ZWpKOXo1RXNKZjlObVZJZTZmTzlpbmVNdlRpckNmbzJsRWNCYmdPQ1lLRXg0Slk1TVB6VmxUZXJuVXZPbmg3aUR2UzFPTGhLYUJTS01HTGk3N25GS1N2WEdNRjlOaHV1SFl6WGNwc0pQMVBVaUpNS3VJd9IBjAJBVV95cUxOMndfZDBCak9vWTBxbWM0d2tCM1QwYWlwVjV6VEZpQUZHTFdTVTkyRUtXWktfMk40cmJwSTRzeUJjM0RFV2E5OXdLWU8zVmZHMTFOaWl4Vk1JYmh0SnU1ZXd3RHNJbV9RTEpzb2FtQ1VTVHFuNFJuZVlUNENoQ3FQb3o2LVdLRFlCUkR5STNMc0l3Z1J6Q0JBS2c1X1QxNEMzYzhIdVhYTjlQZ3BFbjVIQjBIQXRZTTExSXpXM2NRUDUwNEd5YVVkVVhXM2dEekhWR0otdUNyNFB0Z0dEX3hnWkM1Y1BESFI0ZV9YU3BNcGNtVC1paUczX2NXcWswYVBkZGM4QkhaZ1NSX2JV?oc=5",
+     "places": [
+      "Moquegua"
+     ]
+    },
+    {
+     "title": "Senamhi: Lluvias se incrementarán en la costa norte y central del Perú por 'El Niño' y tendrán su pico entre diciembre y marzo - RPP Noticias",
+     "published": "2026-10-20T21:08:34+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxPWTY1c3M3Rzl3bmVDTTNNSmF1ekhuTDlVY3U1VlhJQW9Pa1JCWEh4X2YxeUREU0l4X2hQVzdQUHV0a180clZrRXZVeGRhRW5yUmdvRTFlN2VWWUpobGR1YjdBWjF6YXk4V3VHOHlwTlQ4ZW5iUVhNNjVNSkl5bVR4aU9NZ0o4Z29wOThqUU10RjBQR2RSRURMX1RrZVFmdVJjakxIb3ZwT0RkaURQZDFKSmlQdHg4Tl9janFXMThlWDdLM1BtTkhtXzRxSEV4Q2psSlR6VkM0eWtPRFZoZDJicHVzbDNUT21aYnhYVDZBSnFONGpLbWNhbmNDX01KTjQ?oc=5",
+     "places": [
+      "Moquegua"
+     ]
+    },
+    {
+     "title": "Moquegua conforma equipo técnico para prevenir impactos del Fenómeno El Niño - Revelación.pe",
+     "published": "2026-10-17T05:48:01+00:00",
+     "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPcm1YYlduOUdjcHUtN0xSeHZ2eUlnUHR6Y2xRb0dnMWNHbUxqRWxxcTB6dkx5TWRzWVdwTzBUeXl0MEF4VmdTc1JXVUtMNGh0ZFBoa2lLbVFOMEhxeldPd3RHTjc5Z0VUQ01iWE00TnFiWXdnOUowbXo5VFZuek5yaDNNNXNhZGNNQXhqdENFZW9GdXZhVm9nZDJIYlJ4b0p5WEpNRWZGOWJLcFZERFpF?oc=5",
+     "places": [
+      "Moquegua"
+     ]
+    },
+    {
+     "title": "El Niño: Senamhi presenta información meteorológica en Tacna y Moquegua - Agencia Andina",
+     "published": "2026-10-07T18:30:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOa1FLZjJ5dFBwOVJ4YUhhaTMwdTlLMmJPd3N2MnN5SEREbHdjMExMVnBYUWlJNVRKWHZWVjAwVnRRNFBCaTJpVnV6QzRrNHpLVndQeWZudTZuUHotODZFM291cldsVVIxMVhYeDloN0FjUXpVMDdRX2FTa2FqOTR3Z1JKeFBRdWVKemRiMG55Z2R2VmNEcXQzYkxIMnEtQjI5REhPSUdWQ0cyLTlGYXN2Nk9YTzE?oc=5",
+     "places": [
+      "Tacna",
+      "Moquegua"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Prefecto advierte riesgos por lluvias y pide reforzar prevención en Moquegua - La Prensa Regional",
+    "El Niño: ANA prepara a instituciones de la cuenca Moquegua-Ilo ante posibles impactos - Agencia Andina",
+    "Senamhi advierte lloviznas en Tacna y Moquegua y alerta por riesgo de incendios forestales - radio uno 93.7"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Moquegua%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-19",
+   "name": "Google Noticias · Pasco",
+   "department": "Pasco",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Pasco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 45,
+   "latest": "2026-10-20T17:45:01+00:00",
+   "undated": 0,
+   "lastWeek": 30,
+   "relevant": 5,
+   "departments": {
+    "19": 39,
+    "08": 7,
+    "06": 4,
+    "05": 3,
+    "09": 2,
+    "22": 2,
+    "03": 2,
+    "04": 1,
+    "25": 1,
+    "24": 1,
+    "15": 2,
+    "07": 1
+   },
+   "samples": [
+    {
+     "title": "La furia de ‘El Niño’ azota Ucayali, Tumbes, Ayacucho y Pasco - ATV.pe",
+     "published": "2026-10-20T15:57:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5NUXJOanlWV29ObjZOQWMwQ0hPaFMzbnNPUnJ2RU44SjJfSlNVRFVjSGZtakhTY1NkdC0yX010ZXBHOHZ0SlA4NXlfY1B4UEZ6czdjdFVmRFZsQi11RGZHbVlaTnhIcDZOZHFhV01zY1RWcEU?oc=5",
+     "places": [
+      "Ucayali",
+      "Tumbes",
+      "Ayacucho",
+      "Pasco"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño pone en riesgo el suministro de agua potable para siete millones de peruanos a nivel nacional - Infobae",
+     "published": "2026-10-20T13:40:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOcW11dEQyN1lJRmt1cFBaVjFfOXZMQW5jb2pvUEtZb1VnY1QwRG1PNkFPTXdTN1RqVk5jR2RwTlR3b0dCZ2tXSVh6eDlub0hFOVk1cVpOd0FCYk5HemJ4Mi1wYy1faGQtaXNTeTY3azdhSlBVTGlBX2xSQTAtYmNkdjBFNTU1RjV1S3Brd1RfdmxqV3VGMGJHMmtQaC16ajlrbFU2LTNoNmNjLWlyWXNVdHhnVjhieVk5SVNQS3U2cFdxYjJpWk9HVl83SmxOOE9jVGYwWV9nb2FtM1gxOXhFbWJrSEVuUdIBgAJBVV95cUxPUzc2ZW15SnBVT2RJTUVMUmFobEx5OXJwYnZfVFZiQmdhRnJpOUNqQ21UUjM0R1BQamgzVnQyaGotZmx5UTI0eENWeENXYUg0RGJWSERFdXBIT1A4VFNjaEJyd0pBS1BtQmdCa0hWeUExalV4aDdwNkozOWVOZjAtWEZWb2lXYlNOR2VfQTlLOXU0dWRGM3RXc3ZKZGxzLVBJU0paSjFQWkxCR3RCVjdfdWlnS0dzV3JwYnFGLTdQd3dTaWRvT3o3VHg3SU01dWZFNkdkVmhlUG5nXzU3M1doNlRudXMxY001YnNPSk4zT1VONlVCbzk4MkMxTml6a1pq?oc=5",
+     "places": [
+      "Pasco"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: ¿cómo preparar tu auto para... - Panamericana TV",
+     "published": "2026-10-16T23:57:48+00:00",
+     "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOQW4xQVJ6THFsZGNmT21PMHIxeHlzLWs1S3ZOa2I4VURwQ1BMWWZXczBOcHlLbGNVYVNPZXNTVVpJWU9DUjl3elc0YnFfV3N3c2h6QjA1V3FRZU00cTRzaW0wUTZYeXZlWTdmR2xGc3ROYnFlOGd6RERkb2NkYTBkSEs3LXlJd2JHWHRoedIBkgFBVV95cUxOVXQ3bld2WUdHVDhFcUNkcEtBYjRUZ3h5SmhMQkZsVkVZNHY2OGpkbHVWVGxjVjI3QnBFemsyM1FLWm5mbkhLbEp3aUdudU5JYkxlSnVIM3dPalhpdFRKbTNpOTZtbTNFNmg2emRibkxtRGoyWlppYjBJd0gtaWd3VHg1TU5rMHNFT1VLeE5mREp5UQ?oc=5",
+     "places": [
+      "Pasco"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño afecta la pesca artesanal en... - Panamericana TV",
+     "published": "2026-10-16T23:52:10+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNRFZodW1xcjlhcmZ5S0ZkLUNycjg4MU9vQ2hGZnkwb3h6dmNxR2tpaENtRnAxY0ptU1M5Y1ZCXzRQTEZoRnFIanFPNWl4TVdjeHZONVVfTDlFek1rV3NqdXZwSlhNWXFzZlRfN3p3Rm1fSlA4YmoydjRjWXIyUFVPRlNDZDMzWlloUi1vSGpRSVNLN2luR3BySE9zUVNJOC1hNWxTd2VjUTRJSElnMVlLTEVaQjJLWXdrNDlPQXd2UXFqRE5yQldwYdIBzgFBVV95cUxPenJvVTVIZjdscjBJVEJ0anh6LW5NQXlDTjlteUloSzhleEVlYzc2RnBNZ0ZCWGtFYzMyeTVkZVFZUi1pS2lqaEVTbUpxc1NDWU5WSVpYbE9fSW1YRjRyQW40RzZVRzVRWndGQ3RHdnFHc0paRFNlamFEbjJ6aXF3dnpIS25aeUxucXBNZEx6Y2RPZ1lHWV83VExsdDBnOUxxSW1ZZ0dMSnBvZnZQZm8wMEFrWkFTVGdvRHdmMkRRN19QbFNWZGRaS19UeXlJUQ?oc=5",
+     "places": [
+      "Pasco"
+     ]
+    },
+    {
+     "title": "Cámara de Comercio pide declarar en emergencia la Carretera Central ante El Niño - Diario Ahora",
+     "published": "2026-10-13T09:09:27+00:00",
+     "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQQzVLbWF5UVF5akdmLVlmRi0zZDhBSTBZSU1IZlFBU0lVcVpTUG5iUWFBc3REWGVJMWxJdDVoRXJyZkJockdxOFlYYUhFRG4tTW9oVlRBTGFteTlyS1VJWk8zcEdlSGxGVmNkZGU2M3RfSmhURTBITzdvU0tzMkgxRngxSUlFZFBGbXhQLWgxeDBOSGR2aDh4cldsa1ZwTEpibW0yUlJWT2FCckZmdmdF?oc=5",
+     "places": [
+      "Pasco"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Fuertes lluvias en Pasco: precipitaciones... - Panamericana TV",
+    "Pasco: Fuertes lluvias inundan viviendas, locales y calles del distrito Constitución - Agencia Andina",
+    "🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | En diálogo con Exitosa, el jefe del Indeci, Luis Enrique Vásquez Guerrero, informó que los incendios forestales han dejado 12 personas fallecidas en el Perú. Precisó que cuatro víctimas se reportaron en Cusco, tres en Cajamarca, d - Facebook"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Pasco%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-20",
+   "name": "Google Noticias · Piura",
+   "department": "Piura",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Piura%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 100,
+   "latest": "2026-10-21T00:40:49+00:00",
+   "undated": 0,
+   "lastWeek": 100,
+   "relevant": 36,
+   "departments": {
+    "20": 100,
+    "06": 2,
+    "24": 6,
+    "15": 1,
+    "13": 3
+   },
+   "samples": [
+    {
+     "title": "El norte del Perú empieza a sentir los estragos de El Niño: calles de Piura amanecen inundadas por lluvias - Infobae",
+     "published": "2026-10-20T15:57:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPbHVZTDN0eHdmT0hydTVYMkpDZm1nUnozcjBrdDVfaEp2RlNUa1NkUHk3RFBGcFh4NVRDaS1sNTYxM2hja0I3bmxRck83TF9feDlPUjI5azI5ZVg1VmRuLTBsMHpOMTU3aHVZNDJzeDY3X3NfbmZuQzRKQUtWQTJGRUhiQ3RfR3hZYVlROHdySGFVNU5qNzN1NFF6WEVxcDBRbVdSalV0bkVNY1FrRHVpeVFpOW5WQWE2UWJnRDE1VWxJZHV1WjJCemxMcDJRUzVZTG5HdzNhQndHclRyVlRN0gH6AUFVX3lxTE4tQ0RuaGtIX3lTTGJLbnJEU0lFZ0owLUJINjhzOXZVdXdUZUNET0FWNGYtVVhiQXVuQm9wWXRNR1A0R1lXMHNjOE1sNXlId2N6VXgzQmh2aVBuV2F6T21sNGZHRlJRNW1EblB5eEJkTmlsbUFReUJwU0YyQ3Q2S2c2TzlzRnlqVnVvbXNnbm5VRU5Cazl2X3JKY2hEUzF5b2NjQ0xhQnRUOUFkRzRteklnTFlSNE9iRWFKX2Y3ekpyNldDd01LRWswSHNjb0hfdnRNekVCWlJYT1hYNHROcXNkUUVSbkxIUkcxNTY0THpuSXpQUmVEY2NhZEE?oc=5",
+     "places": [
+      "Piura"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: lluvias intensas persisten en Piura por segundo día consecutivo - El Comercio Perú",
+     "published": "2026-10-20T15:22:06+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxOTGtlLS1oRUNCQ2xGOTFWM0EzQk1kQ3F5WG9KSFJaanpqWllTVGpwOGFZYnVOcFVNLUNsUDhBZlZuaVpDMDB6Rm9xczlxX1A2T0hPY2lLTlp0TWw5LUx0U2NxQ182eVJNWURFSjF2elVRYzBaVk1CMTl3M0hPN0NoUzRRTHpVOEEtcGU2dlNrZ05iRTNReDNEWjZLbFU3UnFjdWtuUjMtaVBpSGVRcHMtMG9iQUEzTjFFV0s0Ti1YQjhtWVdiX2FraUlYNm1YcHM5a3Y0VEt2X1dOZ9IB7gFBVV95cUxNdXBEaDNQdkd6eHREMjRfVlhFazZhM0lRbnZUVUF5Q1dsUk5xWmJnZ2ozbzBqX3Zscm9YS1M2UTBHdWxyWDNYRjhCQ0RiZElXamVxMVgybVlzcGJubE5sTldTT1pPbGFoelljQ29STFhZT2JhWmVNaHc3OFl2OWowSV9ZUWpFSjdmbldPeFJ4aUUzYTZ6YXNqOFlrSzZmelJ2T0hKTmVfSkJ6U0JhWXNIV3pUTHFWalFDNHBodExYZjNXa2NtMHZPVTM2bVI0T2JrWFJ0WnFLaXdMbEIxQnlFbzVFVUFyRC1FUnJGX213?oc=5",
+     "places": [
+      "Piura"
+     ]
+    },
+    {
+     "title": "🔴🔵 Piura registra intensas lluvias desde la madrugada en Chulucanas, Sullana y otros sectores, generando preocupación por el colapso del drenaje y los posibles efectos del fenómeno El Niño. - Facebook",
+     "published": "2026-10-20T15:02:32+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQT3RodWxxXzJaRkJDUjZSd1RXYlBtd1RsWndpekZ1ektha29SZXRfdTRRRTltNVltdG96SWZ0UGkyZ1N1NzZtS19XZU5EbkdpdFBNLURvbnJnU1JmSkpPaDdHMEpnOTVEakxFTFMzaVFJZEIzSENWVzNTTWJ3aTg2UnVfcmhJTldzOXVvektzU0ZkdFZkMW5NM1BUNnl2RzBDM2hOOG9aVXhtOFNQMjNObmxJUnc2RTA0aTBNX2hCd0dUX2xIY3BDTXFjR2JWUjZkaFcyUjd2WjFBNnpPenc?oc=5",
+     "places": [
+      "Sullana",
+      "Chulucanas"
+     ]
+    },
+    {
+     "title": "🔴🔵 Piura registra intensas lluvias desde la madrugada en Chulucanas, Sullana y otros sectores, generando preocupación por el colapso del drenaje y los posibles efectos del fenómeno El Niño. - Facebook",
+     "published": "2026-10-20T15:33:04+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOZGFqQ280VE5QeXhndERnSDZ6UXpGVU9udjYzVUpIRTlHVFFHd2FMV1p0ZGVFd2Q1c3JkSjVtOUxETUFLdHMxbnFGdDQ2VFl5alBfTU1rWnU2Q2RFZUlwY2xVdVJZU2tUdlJJR292Zm5jUE1nWXpQb0lNdVZhWklYSm9FVWFYSWhlNjRBNE5DSW5Ya1RaMWgyd3pjQTVUWGE3TWVlbklRenJHRnlWSmlndThvUTQ5VmlWNF9XeC1aMjFjMGZudUxPcG52TEJvWGJSNWlrQ0J4U3N1ZTZtcnc?oc=5",
+     "places": [
+      "Sullana",
+      "Chulucanas"
+     ]
+    },
+    {
+     "title": "🔴 #Expreso65Años | Fenómeno El Niño: Ejército evacúa agua acumulada por lluvias en Piura con bombas de transvase - Facebook",
+     "published": "2026-10-20T22:51:23+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxQbU1Pb282VHdUUlZVUF9qWDlQUFprRzdsNlNabUFGcEp3S3ktUEJhMzdUY0dMZmlud293RXFOYThVWS1CTXM1bFljdnRBbXNCQ1VkOUFSSFdHMnVvS1lZcFZhQW9XYnhaTEFaUG5oWl9BNGJhUlBqRkhURFY0bm1uTFFaN3hGZTV3SzYtZWdlRm9tR1Q4QTVFdzFoVkRIUDNycU5OeGhQWGozLWl1R29KUzBaN2ZzQjVkT3BXX0xiUFE2RFNfemE4bEQ1RkN5N2N2TDE3YUNxcjhZLUVBU1dscU9id1BiVGdBUl9CcGhoeVY5XzhCaDZZemFjSHRpdw?oc=5",
+     "places": [
+      "Piura"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | En Piura, se registraron intensas lluvias durante la madrugada, que afectaron diversas zonas de la región. 📻 95.5 FM 📡 6.1 señal digital abierta 📺 Movistar: 34 SD - 734 HD 🌐http://exitosanoticias.pe - Facebook",
+    "Lluvias en Piura apenas comienzan: especialista del Senamhi advierte que “las que vienen son mucho mayores” - La República",
+    "Lluvias intensas inundan calles y viviendas en Piura: Senamhi advierte que las precipitaciones continuarán - Canal N"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Piura%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-21",
+   "name": "Google Noticias · Puno",
+   "department": "Puno",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Puno%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 54,
+   "latest": "2026-10-20T21:41:19+00:00",
+   "undated": 0,
+   "lastWeek": 30,
+   "relevant": 15,
+   "departments": {
+    "21": 51,
+    "17": 5,
+    "08": 11,
+    "06": 2,
+    "03": 3,
+    "19": 1,
+    "05": 2,
+    "18": 1,
+    "20": 1,
+    "09": 1
+   },
+   "samples": [
+    {
+     "title": "Alerta roja en el Perú por incendios forestales: la ausencia de lluvias por El Niño facilita que el fuego se descontrole - Infobae",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPbi1zdXhIUVlldThMNnp6U0ZGdGhpN1V3dHJ5bTRVdDNQOUR3bXFtSWp0WU11WGpWZVJqVm05d2l3dWpkNWJ0akZaQjNXR1B4UE9FQzJxX1BGdksyUmFZZXU4RTBLMWNkVWsxanZPLXVUMnpKTFlDTXpJdWxOUTB1ZWpKOXo1RXNKZjlObVZJZTZmTzlpbmVNdlRpckNmbzJsRWNCYmdPQ1lLRXg0Slk1TVB6VmxUZXJuVXZPbmg3aUR2UzFPTGhLYUJTS01HTGk3N25GS1N2WEdNRjlOaHV1SFl6WGNwc0pQMVBVaUpNS3VJd9IBjAJBVV95cUxOMndfZDBCak9vWTBxbWM0d2tCM1QwYWlwVjV6VEZpQUZHTFdTVTkyRUtXWktfMk40cmJwSTRzeUJjM0RFV2E5OXdLWU8zVmZHMTFOaWl4Vk1JYmh0SnU1ZXd3RHNJbV9RTEpzb2FtQ1VTVHFuNFJuZVlUNENoQ3FQb3o2LVdLRFlCUkR5STNMc0l3Z1J6Q0JBS2c1X1QxNEMzYzhIdVhYTjlQZ3BFbjVIQjBIQXRZTTExSXpXM2NRUDUwNEd5YVVkVVhXM2dEekhWR0otdUNyNFB0Z0dEX3hnWkM1Y1BESFI0ZV9YU3BNcGNtVC1paUczX2NXcWswYVBkZGM4QkhaZ1NSX2JV?oc=5",
+     "places": [
+      "Puno"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño pone en riesgo la campaña agrícola 2026-2027 en la región de Puno - Pachamama Radio",
+     "published": "2026-10-19T15:20:35+00:00",
+     "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQQnE0OUNVUFJ2LWJPYzhqNV83dGhrRi1lUXNvQ3JVNTQzTExFTFk0MHZwX0dVSWt6a2lPRG1mS2lPUUVBNjV3NTJ4SGw5Q014d0xwdm9KMHBZOFBEeUY2cXd3Z2JDYTNwYTI1Y05LUGVXa2lZLTNJaGJPM3hhZjI2c3lTNTIwdnl5NWE1blVjNk1mcExwY0pMS0lsTktzazRlYnZtNzBlNTVFcVI5RFlr?oc=5",
+     "places": [
+      "Puno"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño en Perú: experto exige evacuación preventiva urgente - Pachamama Radio",
+     "published": "2026-10-17T01:47:47+00:00",
+     "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNN3JHN2pwSFY0d3djQUVONkdicnBwVEJ6MUR5dHdXQlJuS0E0amduU1dhRm1fV19pM1NPb2kwVTNaa2NRZ0tqYmJUQWNwZVZnV21HeThtYXlheUlXWGFWb3NEc012elM5eFRrcER2UUlRMVUwWXVZdjUtN0ZHaFhmOEJaakRNX0RsOWUwMlR4WU9XZWZ1OVhNZGNMSlY?oc=5",
+     "places": [
+      "Puno"
+     ]
+    },
+    {
+     "title": "Pocas municipalidades priorizan la prevención ante El Niño pese a la demanda de pozos de agua en Puno - Pachamama Radio",
+     "published": "2026-10-19T16:57:41+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPbktBRVV3bFZoRkVuR2VBOVlvWjJVM1I5MEZtaVpuamJWSkxhaXFBNVNtbFBpTkIxX21wdTg4TGUxaXpvRk9IY3ZWWnlhd2lpamZNVk9mcUlGbkh0TDdoVkhwTmhRR3QyV0hOOG5WX2VJT2dKamdpOEhGQ0VZWDlrakRDMlBBQktuMV9Hejd0VGRHY3Z0Y1REVWR5Q00tWjZFbEswcmlwaWVKRGxzUHVLU1pSS3lxRjBzY25XMUdqbDdWbGFEOUxVWg?oc=5",
+     "places": [
+      "Puno"
+     ]
+    },
+    {
+     "title": "Puno recibiría solo 21 millones de más 5 mil millones aprobados para enfrentar el fenómeno El Niño - Pachamama Radio",
+     "published": "2026-10-13T23:51:32+00:00",
+     "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPUHpCc0c0aUpmakJNN2ZxRWhDNmh2QkxrTHU2WjYzcGU4eEVPVzRGNDhDSUg0aTNtLXlwX1RkcG5MNEdlWmI4UmQ5Tm14RllVN1NNS0k4RGppMWQ1LW42cVltR0dtNlNSeHpmZU1XZ2pNQWVNcjZSb0l4dG5zSU1nUXEwb2RxRDJmNTd3RGFpUU5IakpobnBlU0ttdmF0Qlc5ZkRGVzNNTVRlX2I2cTB3dm9va251a000WDcwTXRxcERLX0hE?oc=5",
+     "places": [
+      "Puno"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "🔴🔵De acuerdo con el Senamhi, entre el 15 y el 17 de octubre se registrarán lluvias, descargas eléctricas, ráfagas de viento y cobertura nubosa en Puno, Madre de Dios y Cusco, debido al ingreso del décimo segundo friaje del año. 🌐Más información en: http - Facebook",
+    "Nuevo friaje ingresará a las regiones Puno, Madre de Dios y Cusco: ¿Cuándo? - Gestión",
+    "Decimosegundo friaje ingresará por Puno, Madre de Dios y Cusco el jueves 15 de octubre - Agencia Andina"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Puno%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-22",
+   "name": "Google Noticias · San Martín",
+   "department": "San Martín",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22regi%C3%B3n%20San%20Mart%C3%ADn%22%20OR%20Tarapoto%20OR%20Moyobamba%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 39,
+   "latest": "2026-10-20T15:05:59+00:00",
+   "undated": 0,
+   "lastWeek": 26,
+   "relevant": 6,
+   "departments": {
+    "22": 31,
+    "20": 2,
+    "09": 2,
+    "14": 1,
+    "13": 1,
+    "15": 6,
+    "08": 1
+   },
+   "samples": [
+    {
+     "title": "EL NIÑO 2026 AMENAZA LA AMAZONÍA PERUANA CON SEQUÍAS E INCENDIOS FORESTALES Y PONE EN RIESGO LA AGRICULTURA, ADVIERTE ECOLOGISTA DAVID LANDA - RCR Peru",
+     "published": "2026-10-11T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxQQnNRQmJiUkpSd2EwRFo5eVZJT2tDZ0NORE5xU0xCUl85bWtUUFZSRFZueFI0TGI4NjZST0ctakIxX0dvdGJzT2tGYmNvZ0JCdDhmazhzM1RRSmFZV1ZLMGs1YmpBX29ickRfb3ZxWGJ6QnhCZHdrdHpObE5LRURnQlBQTHBRQlpfTnFCcmRZZkFveTFOMmhQYjN3cmxLclc5QlIwaUloRE5UUkl2WW1OeTRaTW9scFcxZ0Z3V2dMODRLbXh0YXhlb0o4bjhqYXkxN1pESzZoWmhfY19fZEVyRlh0UHZFa2YxZGNkQlVkeEZzMzR4TVFF?oc=5",
+     "places": [
+      "San Martín"
+     ]
+    },
+    {
+     "title": "El Niño podría paralizar la refinería de Talara y desatar una nueva crisis de combustibles en Perú - Infobae",
+     "published": "2026-10-15T15:02:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQN21Wc0N1YjZBMktIQVA5Nm42aHJ1T082Z1gxa1NrYkF5YnF2Ti1rcjQ4OFRqX3g5M2Z0RG81SVlCTm5VZTdET3g3UUNHcWpleHA2VDI0NEpoSGlXZjZpRGQyVEZ5NVZXOWNxczdZSWRMRzF0d29Za3NSb2FEenhaY3h3eFJTYTYzR09zbTVJWkIwWFFwWVZNN0M2cGs1U09MbGR6R29NVDZCdF9TRXJrWXZJRFd2Vy1iaDNmQkgwSlNoX09aNjdFNXlwUXZ0UTVSaUlWWHN30gHwAUFVX3lxTFAwLUJVeENyTUNyLVNlSFpxRXJfcVJaWWF3Q1pKOUR0emM3OWlIdDJkc2tDcENKWWt2QkVabnR2SnR3RUFIbDJ4VldsMEZHSVlGV3pzeWJwOWhBZmhvcHd4T1NRRjFNaTE2aDJBOFN6Y20wYS0tUnBzVFRnOS04V3JpWVdWZG1Tc2xLdG0xWDNjZVUwWmRGNWE1S3JabEZ2RzRvX0dzMzd1eWx5ZWZac2lYS19nNERuYjhYSVlTTUxNbDMwV1RMNXBCTVlsSjN4SklwME9DNTJ4U1Ric1RNSXJSaUZPazJrUElUZGV1TmZabw?oc=5",
+     "places": [
+      "Talara"
+     ]
+    },
+    {
+     "title": "🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | En Huancavelica, las granizadas, sequías y heladas generan preocupación ante los efectos del fenómeno El Niño. Una fuerte caída de granizo provocó el colapso del techo de una losa deportiva. 📻 95.5 FM 📡 6.1 señal digital abierta - Facebook",
+     "published": "2026-10-19T13:48:56+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxOS1ZjQzR3d04tMm03aTJfaGRHSDhOXzNIY0RFVG8tM3VWalc0TnhwXzQyT2FWTy02eFlraUVLa0l0c0t1Y0JwN25CZUhfcFRLNkppNGdzbnB3Vm5sNmo2cnlvOGdtdFlDTnZMUDBDTFJmSXNVcU9ES0phRXJQSEZGbkxqWnB3R2cxWEVsV1RwV2trZklYeHhyTmVydXBiUEdaV185M3ZqeWVhMnB6V3ROMUtZV0hGSmw3dWZMTTRuUkpPMFlPamtuQXhSNTNreUo0bk56WUphYnFkNHd0dktqenRxaE1vU2tqWmlN?oc=5",
+     "places": [
+      "Huancavelica"
+     ]
+    },
+    {
+     "title": "Ante inminente sequía por El Niño, declaran en emergencia a 17 regiones del país - Diario Voces",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOV0J4X01VaWl1eUtabGRzYTh2aTdtazBnRzh5VFlkQTFTYld0ZENLcV9SV1ZnTHloemlkdUdRU3FpUGlCOTBYNm5RYTE0UF9jaV9Ib3JhaGNqUnZMNTR3dkR4eXp3Sm80X0hJcnZHRC1zVWNCdWJNUUtncTgwVWF5RWZrbHJhSGZ4dUkyd0l4NmpPdDhxN1lwWUNQMDVkbmlMOVRqQWo3WEVzSE0?oc=5",
+     "places": [
+      "San Martín"
+     ]
+    },
+    {
+     "title": "Riesgo de huaicos en Lima: PUCP busca reforzar laderas ante el Niño Costero que amenaza a 1,2 millones de personas - La República",
+     "published": "2026-10-19T21:41:09+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxQN2JabEczRVZWV21HY0RJNEg2MXV6RTF6aHRVaEowOXcwRTJyNG5aZlM5dTRYLWNnZ050djE3TVg5RlAtczVOTERyWWJtdFhVU0pCckVtNE50RDhuTkNUWXhteUxld0ZKUVd5ZGxjc2NUWWJXVkZPQmZNcmU3NlpzM3pfYldlMEJ5ZkcxdEFyWVh0LUtxQkVxazRtRXphOWRmOG9PWkFKdUEtTUVnUUJwSTJMcXl0UmN0eEJYeU5vVnc2Uk02cUZEM2h5TlZfd2RzTjBFN3Q1VVljM1RoamZPek5CRUZDd19kZXVYY0oyc3V3cDJX0gH6AUFVX3lxTE5iVlU0eGpfLVBhaDJKSldRaHFWQlloM0tyS09JcDRTZTdOMzdENVVrUW5wMnVoOEJyRWNNSDVuTTU2cWk5T2NzWUVZWFZxNWVpcm52aTBJdTYzUDdhR2czbkhEb2xfeUZnUXNJTkl2U084NXdhT0FkdkV0V09WZkpDb29wYjNUM2tHSWp4WnUtUnlaMHU0UzFFQzBhX1BnTVhhX3JMWEppU2VxVjNxS2NOSmNpTWJ2aExWTzFMeVl2M0g4MEplWDNqamE5cWpFaDZtZmNvM05EQkJTR2U4TG1hZmxuaTd5NExmWjdGTGllYnZlMjRCb2QzVmc?oc=5",
+     "places": [
+      "Lima"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "La región San Martín supera los 40,4 °C y el Senamhi proyecta la llegada de lluvias desde el 18 de octubre - Exitosa Noticias",
+    "San Martín pasa del frío al calor extremo: Tarapoto soportará temperaturas de hasta 38 °C - Agencia Andina",
+    "Exitosa Noticias. . 🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | La región San Martín enfrenta emergencias recurrentes debido a incendios forestales que arrasan cientos de hectáreas de bosques y cultivos. El Centro de Operaciones de Emergencia Regional y diversos reportes - Facebook"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%28%22regi%C3%B3n%20San%20Mart%C3%ADn%22%20OR%20Tarapoto%20OR%20Moyobamba%29+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-23",
+   "name": "Google Noticias · Tacna",
+   "department": "Tacna",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Tacna%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 47,
+   "latest": "2026-10-20T22:38:00+00:00",
+   "undated": 0,
+   "lastWeek": 17,
+   "relevant": 10,
+   "departments": {
+    "23": 44,
+    "18": 2,
+    "24": 1,
+    "14": 1,
+    "13": 1,
+    "15": 1,
+    "04": 1
+   },
+   "samples": [
+    {
+     "title": "Fenómeno el Niño: advierten escasa reserva de agua para abastecer a la población de Tacna - Agencia Andina",
+     "published": "2026-10-08T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQdUtLeUlhc0lBU2g5bjVaa29FMXlLcUJSTHpNYlhzSUVnNGw0MU81eVFvT3Q3MFl2SXg1VXU4ZF9xYjBYVEFqdVBsNXg3Z0h6OHJncDRnLVlqU25Ickh6Vmo4RmRyVHVtZE9US0J4UVN3R1dMUWU2YkFpQ3pZbGREc2NSTWJQV01fcUoxNUloc1VldTliQlRRMW5DWEFCdVVCeXJ5SGstWGNyQm42LUN1TGg1bG81TEdFMmZYZjE1VGc?oc=5",
+     "places": [
+      "Tacna"
+     ]
+    },
+    {
+     "title": "El Niño: Senamhi presenta información meteorológica en Tacna y Moquegua - Agencia Andina",
+     "published": "2026-10-07T18:30:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOa1FLZjJ5dFBwOVJ4YUhhaTMwdTlLMmJPd3N2MnN5SEREbHdjMExMVnBYUWlJNVRKWHZWVjAwVnRRNFBCaTJpVnV6QzRrNHpLVndQeWZudTZuUHotODZFM291cldsVVIxMVhYeDloN0FjUXpVMDdRX2FTa2FqOTR3Z1JKeFBRdWVKemRiMG55Z2R2VmNEcXQzYkxIMnEtQjI5REhPSUdWQ0cyLTlGYXN2Nk9YTzE?oc=5",
+     "places": [
+      "Tacna",
+      "Moquegua"
+     ]
+    },
+    {
+     "title": "Un aluvión como el de Chile podría ocurrir en Perú, advierte el Senamhi: lluvias y huaicos podrían intensificarse por el fenómeno El Niño - Infobae",
+     "published": "2026-10-09T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMihwJBVV95cUxOd1lWMWRVdzRHMkZOQmgweFJ0SW9yaU5ZdW02Yy1JRGdyNGxjeW9TcVNlV3JlaG5yZFM0UHhDOEFaZjU4dWhDTFVtT2ZlY3NDd0N5Y2xtZFNreU9ITTY5OFppOFVXNUVvWi1sc0o2Wnh4SGhtS0t3OTY5VFVoaDRTODhGam9tNlFsbEFnZ1hWemFULWUzdkdveTlONUY2Q3E4eTBjNDNKT0gta3pCZXVDY0w5eXByOEh3WC0yX1lGdERURmhEZ19wMWoybGI5WmZwN1FUdHlKU1Q1SkYwc0pZa2gwb3hFbnkxNjlrSjliNTJzSVpFNURmSHRoLW5WcXZBeTFKbjRfONIBogJBVV95cUxPWHd2Rm1mcFE2ZThXV2lDN2QzRk1oWDBESlV3VU5INU91MEwxZk9Fa1B6M25iUF9XeDVKckFGSHNjQVVaTjk5SGJpVUh3bXZyVG5oZkllSG9yOTJyRUJuc2NDMnlSOEVEYWY1UGE5aklleVFpcjlNNU80Tmh6NXFzc19pVmZXODNkZDVaVXViRDk0UGRmbUNvUlBaZ3Rra01ObC1lWF9URVNxTFRvMm5TQ1VuaHhaemphTzYxZ3lWekQ5RGtNMFN5QWtVUVpEZF9faG9Ua0lmYXhKSUN4cFVFSjJVOUctWVlBMERVd1YtM01XcTNMTUl4UXhwWEs3VDF6dnE2dktGNzVRTG1lNG9WeDBrR2w3TEctSWtPOEpOTmJoQQ?oc=5",
+     "places": [
+      "Tacna"
+     ]
+    },
+    {
+     "title": "Alerta roja en el Perú por incendios forestales: la ausencia de lluvias por El Niño facilita que el fuego se descontrole - Infobae",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPbi1zdXhIUVlldThMNnp6U0ZGdGhpN1V3dHJ5bTRVdDNQOUR3bXFtSWp0WU11WGpWZVJqVm05d2l3dWpkNWJ0akZaQjNXR1B4UE9FQzJxX1BGdksyUmFZZXU4RTBLMWNkVWsxanZPLXVUMnpKTFlDTXpJdWxOUTB1ZWpKOXo1RXNKZjlObVZJZTZmTzlpbmVNdlRpckNmbzJsRWNCYmdPQ1lLRXg0Slk1TVB6VmxUZXJuVXZPbmg3aUR2UzFPTGhLYUJTS01HTGk3N25GS1N2WEdNRjlOaHV1SFl6WGNwc0pQMVBVaUpNS3VJd9IBjAJBVV95cUxOMndfZDBCak9vWTBxbWM0d2tCM1QwYWlwVjV6VEZpQUZHTFdTVTkyRUtXWktfMk40cmJwSTRzeUJjM0RFV2E5OXdLWU8zVmZHMTFOaWl4Vk1JYmh0SnU1ZXd3RHNJbV9RTEpzb2FtQ1VTVHFuNFJuZVlUNENoQ3FQb3o2LVdLRFlCUkR5STNMc0l3Z1J6Q0JBS2c1X1QxNEMzYzhIdVhYTjlQZ3BFbjVIQjBIQXRZTTExSXpXM2NRUDUwNEd5YVVkVVhXM2dEekhWR0otdUNyNFB0Z0dEX3hnWkM1Y1BESFI0ZV9YU3BNcGNtVC1paUczX2NXcWswYVBkZGM4QkhaZ1NSX2JV?oc=5",
+     "places": [
+      "Tacna"
+     ]
+    },
+    {
+     "title": "Tacna solicita más de S/ 188 millones para afrontar déficit hídrico ante el fenómeno El Niño - radio uno 93.7",
+     "published": "2026-10-12T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQLUtaWFBic0JrNVJ3Y2taVUxJaTVzbzhIdXppSmZkZldfd2JaYzdZVHI4TGpQLXZyX1diRHdlMk16R29nYmxmY21fYjdIQUhWMzBWbUxBWTE4R1l3WWZEU19oeXZ0NHF4ckxwa2hJYzJXNkQ2UzZEdWF6VTlLRmI1M0M0TzFWM25RMEVqVmZGa0d0YnZycjB2a0F0YXp5eTA3VVpVSVdnMnVQSlR0TzM1a25NRmhqVThzTzM5TGJhckxoSFN4eUM4?oc=5",
+     "places": [
+      "Tacna"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Exitosa Noticias. . 🔴🔵 #ExitosaPerú🇵🇪🇵🇪 | Tacna se prepara para afrontar un escenario de déficit hídrico con la posibilidad de que las lluvias de recarga no sean suficientes en el próximo verano. Las autoridades se mantienen en alerta por el calentamiento - Facebook",
+    "Quebrada del Diablo: Vecinos de Tacna siguen esperando obras de prevención tras huaico de 2020 - Canal N",
+    "Senamhi alerta por escasez de agua en Tacna, represa Paucarani almacena 39% de su capacidad y ya recortan el servicio - Infobae"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Tacna%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-24",
+   "name": "Google Noticias · Tumbes",
+   "department": "Tumbes",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Tumbes%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 44,
+   "latest": "2026-10-21T00:40:49+00:00",
+   "undated": 0,
+   "lastWeek": 37,
+   "relevant": 23,
+   "departments": {
+    "24": 42,
+    "20": 18,
+    "15": 1,
+    "14": 2,
+    "25": 1,
+    "05": 1,
+    "19": 1
+   },
+   "samples": [
+    {
+     "title": "Tumbes: cerca de 200 familias de sectores ubicados en la margen derecha del río Zarumilla podrían verse afectadas por inundaciones durante El Niño - Defensoria del Pueblo Peru",
+     "published": "2026-10-15T22:27:39+00:00",
+     "link": "https://news.google.com/rss/articles/CBMihwJBVV95cUxPVUxSaEdMNDQ1QmxPR3dxbHJrV1RhNllWNHBaX0Vmdy1SQ2RrWTRnM2FveHFWSTFTbElqSGtVT0hNOUtURjNOeGVhdjNSZXpqRzZwYUtEZFVub3N2cC1yZ2c3bGpOV3VBRXVNckJKVHN2QTVqOGRZOEtvZ2Z5WXNzVUZGMzV5ck5jNktxaE9nLWFqU1o2RmF0TEdJWkdXTlZIQUluOFBINWNRd2JyQUM1SHcwbHRpbksyNHFKY2xFLV9uU2VLWFUycG5hOFN4ZHVUTXlHWkh5U2tXYkpPSEZMdXRzTTA4QmRQVzc2UnB1ZzA4bFhuOFk4LVpZSVRVNXNKdE5IczV0MA?oc=5",
+     "places": [
+      "Zarumilla"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: lluvias en Tumbes y Piura continuarán en próximas horas, alerta Senamhi - Agencia Andina",
+     "published": "2026-10-20T20:42:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQQTEySDg1R3NBbUY3dkktbWVNY25qVkdjc2xTc2syT1hsQkNweENid3piYUtFcmc0T0dnU29lUFpnQ3BGNV80N1A3WWhuZk9LbDg3SVl1LXI0dS1ub2FaSWpmWVQxQWFMNUN4dW55VVM0T1EwaXBMeTdHcU5NWE9pc29oQVBPMWFXa196Y2hobnJCSUZxUmZ0NTFIZ01pNGpPX0cxdGpTUGdaR2sta3FkQThyWS1qNHFYRmxPSkY1cTlwYTg?oc=5",
+     "places": [
+      "Tumbes",
+      "Piura"
+     ]
+    },
+    {
+     "title": "Ministro de Defensa liderará acciones de emergencia en Piura y Tumbes ante El Niño - El Peruano",
+     "published": "2026-10-16T16:29:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPVmVuTTlvazl3XzFmcldnTG04QWVnWnNCMWh3M09aQ3BZSTJlSkUzbEhzRUtuYnNFV3F2eERQYWZaR1RrWUJnOHlkbGd5Y3RLWUpISmxOUExzVUxWeXRDTmJhaWZhRkIxV3AxYkp6ekc0aEZmQmV3SW9IUEh6SHo0bm1Ic2pNWndwX2x4RmVZZThnOHRHR2VsV1FrbXVxdWxESmdHR3ZnNEl6aUo3OHhKR1MtTUZKTjZhN2c?oc=5",
+     "places": [
+      "Piura",
+      "Tumbes"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: Lluvias en Piura y Tumbes continuarán en las próximas horas - El Comercio Perú",
+     "published": "2026-10-20T23:33:44+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxQQ0JYUG9raEJfQS13WTY5U0xKV2NEbXVYYUY1XzBQaGJxLUFKY09YdDdELURiOTJrU01GX0ppcW51Um5tdmtmMHQ1SmNpX0RTendzczh5RFdqbmhaVmtOd2lMLTlIQm80N0JmQjBONzRoMTREb3YwZS1VYzN1TV9JeEY2M1Z2eTNidWp0b25Va3pzaXNoM3VuelhTcm83bWVPRWdmYkdXWjZiZ0wyT3BhTmQ2bXA3ZDV1NEhiNHVNcjQyY05Sb0wycUVORGV2RDNlR05mNlRuZEFpMXVOSEhjTGRQQ3pBMWY1SnktbdIBgAJBVV95cUxPa3dVSUlINTRNRkk3UERGaEtXWUJMRHhFS1VGNHBfVzNYVk12TXY1VDN6dV9FeEV3ZmJXNXZUYVRlZUpvd0haWmZzWFhyNzdyd3pkZXpuekFZSS1qTWYtbFZ2eFZzWlBGQkZmU3R1WHJjT184NG5TcEFWSXRVTVdrTXduLWM4cnV2MFZRMTlrTWEwWmhNNWJMQVQ1Q1JleGczbmxVdXhKQ3oyNXhuZ1NvVDd3OC1OZnZ3WkFQMTlwTkZONzZQWG1fZVU4UzdRUU1GZE82bFo5ZmVHSFpCUnhqMzJpLWtVcEh5V0xnbEVpRXJkLUZIT3lUVU9nVktUX3Vy?oc=5",
+     "places": [
+      "Piura",
+      "Tumbes"
+     ]
+    },
+    {
+     "title": "Fenómeno El Niño: Defensoría del Pueblo advierte que falta de labores de descolmatación en río Tumbes podría repetir escenarios como los registrados en años anteriores - Defensoria del Pueblo Peru",
+     "published": "2026-10-19T22:47:57+00:00",
+     "link": "https://news.google.com/rss/articles/CBMiowJBVV95cUxNQnFkcGU2RE5yQkl4LUpoOHRlTjRnUjhjRTV3cXdCN3ZDQjhpeGRIa0N1WENjY09MRnJvUlUyak8ydHJNcU1CcTJYbHZidmpCcTllX2doekIxVTZtOC0xZkszaVMwTE1oWlRqa2pwZFlLWjN5aFZkcklBSldGRXdfckF3cDBIb1E4ZEY1VDlmVjJnYVVvb1JPa1AzNnU4aW1idGhST0ZaVDRyUHVINFYzNE96WVMtc3BDWWNfVlJOQU4tMVY1Qk5mQ3B2VndZc1pPSWU5YnU3RVpXQy00R1FxUVg1ckdCYTZLVHN1eG9tWFpUZVMzRWZRRmZPN21sbVZZRVpWYmJVTVV6YmM2WXoyZEtZejhvckJxWkFxWThYcmlWX00?oc=5",
+     "places": [
+      "Tumbes"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "Tumbes: cerca de 200 familias de sectores ubicados en la margen derecha del río Zarumilla podrían verse afectadas por inundaciones durante El Niño - Defensoria del Pueblo Peru",
+    "Lluvias intensas afectan el tránsito por tercer día consecutivo en Tumbes - Canal N",
+    "El Senamhi revela qué regiones tendrán más lluvias y cuáles enfrentarán sequía por el ‘Mega Niño’ - Infobae"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Tumbes%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gnews-25",
+   "name": "Google Noticias · Ucayali",
+   "department": "Ucayali",
+   "kind": "agregador",
+   "tried": [
+    {
+     "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ucayali%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419",
+     "status": 200,
+     "type": "application/xml; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": true,
+   "format": "rss2.0",
+   "repairs": [],
+   "items": 46,
+   "latest": "2026-10-20T16:00:15+00:00",
+   "undated": 0,
+   "lastWeek": 28,
+   "relevant": 11,
+   "departments": {
+    "21": 1,
+    "17": 1,
+    "08": 2,
+    "25": 36,
+    "24": 1,
+    "05": 1,
+    "19": 2,
+    "10": 3,
+    "15": 2,
+    "04": 1,
+    "02": 2,
+    "20": 1
+   },
+   "samples": [
+    {
+     "title": "Expoamazónica Ucayali 2026: Proponen uso de madera 100% amazónica para albergar a familias afectadas por El Niño - La República",
+     "published": "2026-10-20T02:43:54+00:00",
+     "link": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxQaERoUUc3SkhZb3FJV08zYnp3X2U3NUwwTEVJclpHMDc5ZmlWMS1vVkZDSDFkYUlMYjVNSHBvaEZZcUlxcmNOdklnZ1N2a0EteVNaX3dmb0xRX0pzMkdHdUw5WE56Nk9RS3ItZHVtcUc2MmpTbUpLYlVWc2pfYVpoQWdybEhNTDd4eFAwQzBmcVVPQjdoLWY2VThyamJnampRY0lZZk94MzN2Tmd6UWwxLV9kOVNBSVYzQ21xQWIxMGc2ZUVnUEF0aElaU3k4ajZKckotaEt2aDQzam1nNWI3b3ZrRl91Z29VX3lZeTdsOFAtZmpxRHVsWXlsVdIBgAJBVV95cUxQd3NPdDVTeGQ3aGg1MlJWY3cyaUF3ZDc2TVNQVGk0M0JzUUNua1A3Y0VuVjhzMlBxaUJaQ1FEamt5NzhLN3RkcDBJeFlaTlNjbDZKTVpxcmpQa2paZFltSXkwWVdaNGw4Z1ZGcUtJZWNDNWxGa1hkbWZKOHgycGFQVmJaZGxRc2hTSS1XYXAtZExrTWhFR2ZPX3hMMEszUmFySF92OWFZMHdlRGljbjRHZHN3Zm45NlQ5S2U4Nm9tMW9MaVVpeElNZGxwS1AxOVMzOE05YlVVSUVoOTJjd1hGbVVWMHhZZ1NvREdaREZCUjI0WjZQaldJeHE2S3lFc01o?oc=5",
+     "places": [
+      "Ucayali"
+     ]
+    },
+    {
+     "title": "La furia de ‘El Niño’ azota Ucayali, Tumbes, Ayacucho y Pasco - ATV.pe",
+     "published": "2026-10-20T15:57:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5NUXJOanlWV29ObjZOQWMwQ0hPaFMzbnNPUnJ2RU44SjJfSlNVRFVjSGZtakhTY1NkdC0yX010ZXBHOHZ0SlA4NXlfY1B4UEZ6czdjdFVmRFZsQi11RGZHbVlaTnhIcDZOZHFhV01zY1RWcEU?oc=5",
+     "places": [
+      "Ucayali",
+      "Tumbes",
+      "Ayacucho",
+      "Pasco"
+     ]
+    },
+    {
+     "title": "El Niño: Estado no acaba proyectos preventivos - Servindi",
+     "published": "2026-10-07T07:00:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNMmI3c3I5UHRLOXlHME52bTloX2dLdjhSeTJUZXhFcHFjVjdGVW82bktJajhJZDBmcXBvc0pJZmtRbWZ1Y3ZOakJNVjFWQXFvR205dTVua24zMnEtUnQ3WDlkeG9tYzUwd2wzMEt5SWJWdjd3WDd5Ml9WbEp0bTRLVl9RT1RtZw?oc=5",
+     "places": [
+      "Ucayali"
+     ]
+    },
+    {
+     "title": "¿Cómo afecta el fenómeno El Niño al lago Titicaca y por qué su evolución genera preocupación en medio de los cambios climáticos en Perú? - Infobae",
+     "published": "2026-10-14T00:57:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMihgJBVV95cUxOdnI2SkoxR0hobmhUR1Eyd3lodkM1WV9iRFY0ckFaTE53RmFCcUZ0dlRId3YzNGJPbEVqN18wZFNtTlREMk9MZ19JcnktTU9RYk9BWGF0SENVSXlqM1Z3ellkMGNXeHNGaUQza2dITjZZRk9TanktNWFCOEI1a05tOEhSR1dpUk5sbkV3N3VUSzd5NV9RWFdLMUgtQzl1RGtzQmNPbVRHR21BX1JLZEhJU3JiN01WODVrM1lMcFpGakdmZ2NydkJSN3JJazhuenZNblpLYnpVdE1jUjNGWXUtT3ZNeWtxUUJ4OHVoZ1ZPTllvYm9nNUZ2aW04dzBGOXA4UktTVEVn0gGgAkFVX3lxTE1wRXl6WTl2XzRGQk40a3djTHJXRDBLOS1IcWx2d0ZEYWE1ZTJGNmxlQWIzdjNUX3ZXRXlvQUlNa3g5VmxYVHlCS1BqWTk1Y0RoZ25pTmxzd2FaVmRZc05EU25GcjV3QkdZTS16bVk3aFRXR3dXR1lGZTVCcDg3VnRXOEdSOGdvRlU3VjZ0TFllVXcyblZxUUV5QjZYR1JwNk52dUVTblJYMVpRa1A1cUtQLVhlV05IbkZaZTNLMHQ0TEJYNmsxcTRfbTlPV1R2ZnJ5eGRURzJYYmE0RGxTclFNYUdWck0tb2E0alNIZk1mM19Va1RNTXV5VGdPRXUxYXQ0Y2JiNXF4WVh6SnJRZGM3Y1ktM19wc2NodUJLVENzZg?oc=5",
+     "places": [
+      "Ucayali"
+     ]
+    },
+    {
+     "title": "Diésel en Perú podría superar los S/30 ante riesgo del fenómeno El Niño - Infobae",
+     "published": "2026-10-15T14:04:00+00:00",
+     "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNUW4zSno2RzBQVUJuZVZIei1MYjRiZTZSOTY1cGdZSFBGTUc3dDIyZDVZalpNbmY4T2ZlenUzakxUWVJ5YW1jLXo0ZVhTZjczRDBsRURZclVnMG1jWF9NcENrbk9PNmJvWW9ULS1uMVJsckxKXzN6UnVrN29IVi1pTG8tdTR5SWczcXAtT1NiLW5CMjRzVjRmUEl5NjFDUlBUOFltRU1jeUEyQ0lwYnNMLdIBywFBVV95cUxNWFBMc2tQR3Eya1c3S05DczFhWGNyQnE1bHUzNzBCd3diakhieENfS2pBc2t3TDNmdXVFX29PRzJPd0JpdXVyOXY1TXFGR3c3ci05aExqeGRySlhSX1ZRT2JIbmxSakpZSmFFVl9Id3UxWkJKcXRINU1TbVZqdVliY2d3WEtZWjFaNzZrOGxZM2NHZWcwNktGVWhNeUpHdHlnNEZienFYOEJoTjdzZVpnYlJCTVhuek16R1Y0d043WUFKUE5KMDk5Slp0NA?oc=5",
+     "places": [
+      "Ucayali"
+     ]
+    }
+   ],
+   "firstTitles": [
+    "🔴🔵De acuerdo con el Senamhi, entre el 15 y el 17 de octubre se registrarán lluvias, descargas eléctricas, ráfagas de viento y cobertura nubosa en Puno, Madre de Dios y Cusco, debido al ingreso del décimo segundo friaje del año. 🌐Más información en: http - Facebook",
+    "Senamhi advierte LLUVIAS EXTREMAS Y RÁFAGAS DE VIENTO en 11 regiones del Perú: conoce las zonas en ALERTA ROJA - El Popular",
+    "Perú enfrentará dos fenómenos climáticos: friaje en la selva y frío intenso en la sierra - Infobae"
+   ],
+   "url": "https://news.google.com/rss/search?q=%28lluvias%20OR%20huaico%20OR%20inundaci%C3%B3n%20OR%20desborde%20OR%20friaje%20OR%20heladas%20OR%20sequ%C3%ADa%20OR%20oleaje%20OR%20%22El%20Ni%C3%B1o%22%20OR%20Senamhi%20OR%20Indeci%29%20%22Ucayali%22+when:14d&hl=es-419&gl=PE&ceid=PE:es-419"
+  },
+  {
+   "id": "gobpe-indeci",
+   "name": "INDECI (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/indeci/noticias.rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/indeci/noticias.atom",
+     "status": 400,
+     "type": "application/atom+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/indeci/noticias?format=rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/indeci/noticias.xml",
+     "status": 400,
+     "type": "application/xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://www.gob.pe/institucion/indeci/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "gobpe-senamhi",
+   "name": "SENAMHI (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/senamhi/noticias.rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/senamhi/noticias.atom",
+     "status": 400,
+     "type": "application/atom+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/senamhi/noticias?format=rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/senamhi/noticias.xml",
+     "status": 400,
+     "type": "application/xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://www.gob.pe/institucion/senamhi/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "gobpe-igp",
+   "name": "Instituto Geofísico del Perú (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/igp/noticias.rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/igp/noticias.atom",
+     "status": 400,
+     "type": "application/atom+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/igp/noticias?format=rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/igp/noticias.xml",
+     "status": 400,
+     "type": "application/xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://www.gob.pe/institucion/igp/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "gobpe-ana",
+   "name": "Autoridad Nacional del Agua (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/ana/noticias.rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/ana/noticias.atom",
+     "status": 400,
+     "type": "application/atom+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/ana/noticias?format=rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/ana/noticias.xml",
+     "status": 400,
+     "type": "application/xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://www.gob.pe/institucion/ana/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "gobpe-imarpe",
+   "name": "IMARPE (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/imarpe/noticias.rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/imarpe/noticias.atom",
+     "status": 400,
+     "type": "application/atom+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/imarpe/noticias?format=rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/imarpe/noticias.xml",
+     "status": 400,
+     "type": "application/xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://www.gob.pe/institucion/imarpe/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "gobpe-enfen",
+   "name": "ENFEN (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/enfen/noticias.rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/enfen/noticias.atom",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/enfen/noticias?format=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/enfen/noticias.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 404,
+    "final": "https://www.gob.pe/institucion/enfen/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "gobpe-minam",
+   "name": "Ministerio del Ambiente (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/minam/noticias.rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/minam/noticias.atom",
+     "status": 400,
+     "type": "application/atom+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/minam/noticias?format=rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/minam/noticias.xml",
+     "status": 400,
+     "type": "application/xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://www.gob.pe/institucion/minam/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "gobpe-midagri",
+   "name": "MIDAGRI (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/midagri/noticias.rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/midagri/noticias.atom",
+     "status": 400,
+     "type": "application/atom+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/midagri/noticias?format=rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/midagri/noticias.xml",
+     "status": 400,
+     "type": "application/xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://www.gob.pe/institucion/midagri/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "gobpe-cenepred",
+   "name": "CENEPRED (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/cenepred/noticias.rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/cenepred/noticias.atom",
+     "status": 400,
+     "type": "application/atom+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/cenepred/noticias?format=rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/cenepred/noticias.xml",
+     "status": 400,
+     "type": "application/xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://www.gob.pe/institucion/cenepred/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "gobpe-pcm",
+   "name": "PCM (gob.pe)",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://www.gob.pe/institucion/pcm/noticias.rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/pcm/noticias.atom",
+     "status": 400,
+     "type": "application/atom+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/pcm/noticias?format=rss",
+     "status": 400,
+     "type": "application/rss+xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/institucion/pcm/noticias.xml",
+     "status": 400,
+     "type": "application/xml",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/rss.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feed.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/arcio/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/index.xml",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://www.gob.pe/rss/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/feeds/posts/default?alt=rss",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://www.gob.pe/noticias/feed/",
+     "status": 404,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://www.gob.pe/institucion/pcm/noticias",
+    "error": ""
+   }
+  },
+  {
+   "id": "andina-rss-index",
+   "name": "Andina índice de RSS",
+   "department": "nacional",
+   "kind": "gobierno",
+   "tried": [
+    {
+     "url": "https://andina.pe/feed/",
+     "status": 500,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://andina.pe/rss",
+     "status": 403,
+     "type": "text/html",
+     "final": "https://andina.pe/rss/",
+     "error": ""
+    },
+    {
+     "url": "https://andina.pe/rss.xml",
+     "status": 500,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://andina.pe/feed",
+     "status": 500,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://andina.pe/feed.xml",
+     "status": 500,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://andina.pe/arcio/rss/",
+     "status": 500,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://andina.pe/index.xml",
+     "status": 500,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://andina.pe/?feed=rss2",
+     "status": 200,
+     "type": "text/html; charset=utf-8",
+     "final": "https://andina.pe/agencia/",
+     "error": "la respuesta es una página HTML, no un feed"
+    },
+    {
+     "url": "https://andina.pe/rss/",
+     "status": 403,
+     "type": "text/html",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://andina.pe/feeds/posts/default?alt=rss",
+     "status": 500,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": ""
+    },
+    {
+     "url": "https://andina.pe/noticias/feed/",
+     "status": 500,
+     "type": "text/html; charset=utf-8",
+     "final": null,
+     "error": ""
+    }
+   ],
+   "ok": false,
+   "home": {
+    "status": 200,
+    "final": "https://andina.pe/agencia/rss.aspx",
+    "error": ""
+   }
+  }
+ ]
+}
