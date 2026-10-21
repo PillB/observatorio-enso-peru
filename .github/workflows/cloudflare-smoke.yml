@@ -1,0 +1,51 @@
+# Prueba única (se elimina en el commit siguiente): valida el token de
+# Cloudflare y crea el proyecto con una vista previa, sin tocar producción.
+name: cloudflare-smoke
+on:
+  push:
+    branches: [claude/project-thread-vipcca]
+    paths: ['.github/workflows/cloudflare-smoke.yml']
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CF_PROJECT: ${{ vars.CLOUDFLARE_PROJECT || 'observatorio-enso' }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r python/requirements.txt
+      - name: Project and token
+        id: cf
+        working-directory: python
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python -m tools.cloudflare_pages --project "$CF_PROJECT"
+      - name: Offline build
+        working-directory: python
+        run: |
+          python -m enso.observatory --out ../public/data --previous '' --fixtures tests/fixtures/sources --offline
+          python -m tools.prepare_site --site-dir ../public --site-url "${{ steps.cf.outputs.url }}" --hide-repo --cloudflare
+      - name: Preview deploy (not production)
+        id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy public --project-name=${{ env.CF_PROJECT }} --branch=smoke-test --commit-dirty=true
+      - name: Check the preview
+        env:
+          URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          echo "preview: $URL  production: ${{ steps.cf.outputs.url }}"
+          for i in 1 2 3 4 5 6; do
+            if curl -fsS "$URL/data/dashboard.json" | jq -e .publicationId; then break; fi; sleep 10
+          done
+          curl -fsSI "$URL/" | grep -i -E "^(x-content-type-options|referrer-policy)"
+          ! curl -fsS "$URL/" | grep -i "github.com/PillB"
+          curl -fsSI "$URL/data/dashboard.json" | grep -i "access-control-allow-origin"
