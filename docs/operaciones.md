@@ -4,7 +4,7 @@
 
 | Flujo | Cuándo | Qué hace |
 |---|---|---|
-| `observatory.yml` | Todos los días a las 04:37 UTC (23:37 en Lima), al fusionar en `main`, a pedido del vigilante o a mano | Pruebas → pipeline con datos en vivo → recorridos de navegador → despliegue en Pages → verificación del sitio en vivo → sincronización de incidencias → archivo de respuestas originales |
+| `observatory.yml` | Todos los días a las 04:37 UTC (23:37 en Lima), al fusionar en `main`, a pedido del vigilante o a mano | Pruebas → pipeline con datos en vivo → recorridos de navegador → despliegue en GitHub Pages o Cloudflare Pages ([despliegue-cloudflare](despliegue-cloudflare.md)) → verificación del sitio en vivo → sincronización de incidencias → archivo de respuestas originales |
 | `watchdog.yml` | Cada 6 horas (minuto 17) | Lee el sitio en vivo; si la publicación tiene más de 30 horas, reactiva y relanza el flujo diario y abre un issue |
 | `ci.yml` | En cada PR y en ramas `claude/**` | Pruebas, publicación sin red con las respuestas capturadas y recorridos de navegador |
 | `probe-sources.yml` | Lunes 09:17 UTC y a mano | Mide desde EE. UU. qué fuentes del registro responden, suma lo que bajó el recolector del Perú y regenera `registry/sources.json` (en `main`; en otras ramas, en `bot/registry/<rama>`) |
@@ -63,8 +63,10 @@ Códigos frecuentes:
 |---|---|---|
 | `unreachable` | La fuente no respondió por ningún canal | Normalmente es temporal; si dura más de unos días, revisar si cambió la URL |
 | `archive-channel` | Se usó la copia del Internet Archive | Nada, salvo que sea permanente |
-| `relay-stale` | La última copia del recolector desde el Perú tiene más de 36 h | Revisar que el equipo del recolector esté encendido y su token vigente ([servidor-peru](servidor-peru.md)) |
+| `relay-stale` | La última copia del recolector desde el Perú y su último latido tienen más de 36 h: el equipo no está corriendo | Pedir en el equipo del recolector que ejecuten VERIFICAR y envíen el informe ([servidor-peru](servidor-peru.md#si-algo-falla)) |
+| `relay-sources-down` | El recolector sigue subiendo su latido, pero hace más de 36 h que ninguna fuente peruana le responde | Nada en el equipo: son las instituciones. `heartbeat.json` en `data-peru` dice qué respondió cada una |
 | `relay-missing` | La rama `data-peru` existe pero su `index.json` no se pudo leer | Revisar la última subida del recolector |
+| `relay-token-expiring` | El token de GitHub del recolector vence en menos de 21 días | Crear un token nuevo y ejecutar INSTALAR en el equipo del recolector con ese token ([servidor-peru](servidor-peru.md#1-token-de-github)) |
 | `carried-forward` | Se conservó el dato de la publicación anterior | Revisar la fuente si persiste |
 | `format-drift` | Cambió la huella del formato pero se pudo leer | Revisar que los valores sigan siendo correctos y actualizar las pruebas |
 | `format-changed` | El formato ya no se puede leer | Ajustar el lector en `python/enso/feeds/` y añadir la nueva respuesta a las fixtures |

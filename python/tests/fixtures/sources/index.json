@@ -4508,6 +4508,29 @@
    "name": "news-dhn-avisos.html",
    "captured_by": "tools.scrape_ladder desde GitHub Actions, 2026-10-21T03:36 (bot/scrape-ladder, commit e235ac7)",
    "note": "Recortada a los 30 avisos más recientes; la respuesta original tenía 2 352 326 bytes y 578 avisos (SHA-256 7fe85150beaa523be66f8c2007aaf9b6729f268722fe6e9096fc951d70a59978)."
+  },
+  {
+   "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
+   "status": 200,
+   "content_type": "text/csv",
+   "bytes": 38796,
+   "truncated": true,
+   "file": "news-firms-focos.csv",
+   "name": "news-firms-focos.csv",
+   "sha256": "28cb5c67be1efae13414f655ac82371c20e31ba90f55b277fe770fad940663ad",
+   "captured_by": "tools.scrape_ladder desde GitHub Actions, 2026-10-21T03:56 (bot/scrape-ladder, commit a26ef58)",
+   "note": "Solo las filas dentro del recuadro del Perú (lat -19 a 1, lon -82 a -68), con los países vecinos que caen en él: 459 de 9328 filas; la respuesta original tenía 785036 bytes (SHA-256 1c6f325473845de659289372c37cd12eb5b9c90af83439fd5b6bfd855831467c)."
+  },
+  {
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+   "status": 200,
+   "content_type": "application/geo+json;charset=UTF-8",
+   "bytes": 2592,
+   "truncated": false,
+   "file": "news-senamhi-incendios.json",
+   "name": "news-senamhi-incendios.json",
+   "sha256": "99931fc2c1c3302845a76e6c988393435472605444182d18a33353342e90ca56",
+   "captured_by": "tools.scrape_ladder desde GitHub Actions, 2026-10-21T03:09:36+00:00 (commit a1688c45)"
   }
  ]
 }

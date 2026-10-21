@@ -37,6 +37,12 @@ def _peru_only(req: httpx.Request) -> httpx.Response:
 
 
 @pytest.fixture(autouse=True)
+def _no_registry(monkeypatch, tmp_path):
+    """Sin registro de fuentes salvo que la prueba lo ponga (y sin consultar GitHub)."""
+    monkeypatch.setenv("ENSO_REGISTRY_FILE", str(tmp_path / "sin-registro.json"))
+
+
+@pytest.fixture(autouse=True)
 def _no_backoff(monkeypatch):
     import enso.fetch
 
@@ -112,6 +118,107 @@ def test_stale_or_missing_relay_is_logged(tmp_path, snapshot):
     (out / "index.json").write_text(json.dumps(idx), encoding="utf-8")
     assert obs.load_relay(out, log) is not None
     assert log.events[-1].code == "relay-stale" and log.events[-1].severity == "warning"
+
+
+def _beat(out: Path, hours_ago: float, result: str = "sin-fuentes") -> None:
+    at = (datetime.now(timezone.utc) - timedelta(hours=hours_ago)).isoformat(timespec="seconds")
+    (out / "heartbeat.json").write_text(json.dumps({
+        "schema": "enso-relay-heartbeat/1", "at": at, "result": result, "reachable": "0/11",
+        "collector": {"token_expires_at": "2099-01-01T00:00:00+00:00"}}), encoding="utf-8")
+
+
+def test_heartbeat_tells_sources_down_from_collector_down(tmp_path, snapshot):
+    out, idx = snapshot
+    idx["collected_at"] = (datetime.now(timezone.utc) - timedelta(hours=50)).isoformat(timespec="seconds")
+    (out / "index.json").write_text(json.dumps(idx), encoding="utf-8")
+    # Latido reciente sin fuentes: el equipo funciona, las instituciones no responden.
+    _beat(out, 2)
+    log = obs.EventLog()
+    assert obs.load_relay(out, log) is not None
+    codes = [e.code for e in log.events]
+    assert "relay-sources-down" in codes and "relay-stale" not in codes
+    # Latido viejo también: el recolector no está corriendo.
+    _beat(out, 48)
+    log = obs.EventLog()
+    obs.load_relay(out, log)
+    stale = [e for e in log.events if e.code == "relay-stale"]
+    assert stale and "último latido" in stale[0].message
+    # Sin copia buena todavía, pero con latido: tampoco es «relay-missing».
+    empty = tmp_path / "solo-latido"
+    empty.mkdir()
+    _beat(empty, 1)
+    log = obs.EventLog()
+    assert obs.load_relay(empty, log) is None and log.events[-1].code == "relay-sources-down"
+
+
+REGISTRY = {
+    "schema": "enso-source-registry/1",
+    "generated_at": "2026-10-21T00:00:00+00:00",
+    "sources": [
+        # Geobloqueada y con documentos enlazados: la baja este equipo.
+        {"id": "indeci-alertas", "group": "INDECI", "url": "https://www.indeci.gob.pe/alertas/",
+         "channels": ["peru-server"], "geoblocked": True,
+         "follow": {"pattern": r"[^\"'\s<>]+\.pdf", "max": 2}},
+        # Ya está en SOURCES: no se repite.
+        {"id": "senamhi-avisos", "group": "senamhi", "url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico",
+         "channels": ["peru-server"], "geoblocked": True},
+        # Responde desde fuera: no es para este equipo.
+        {"id": "news-andina", "group": "andina", "url": "https://andina.pe/agencia/rss/3.xml",
+         "channels": ["actions", "n8n"], "geoblocked": False},
+        {"id": "roto", "url": "javascript:alert(1)", "channels": ["peru-server"]},
+        # Su robots.txt no lo permite: tampoco se pide la copia de SOURCES.
+        {"id": "imarpe-seccion", "group": "imarpe", "channels": [], "geoblock": {"status": "robots-disallowed"},
+         "url": "https://www.imarpe.gob.pe/imarpe/index.php?id_seccion=I0178070000000000000000"},
+    ],
+}
+
+
+def test_collector_adds_peru_only_sources_from_the_registry(tmp_path, monkeypatch):
+    reg = tmp_path / "sources.json"
+    reg.write_text(json.dumps(REGISTRY), encoding="utf-8")
+    monkeypatch.setenv("ENSO_REGISTRY_FILE", str(reg))
+
+    def peru(req: httpx.Request) -> httpx.Response:
+        if str(req.url) == "https://www.indeci.gob.pe/alertas/":
+            return httpx.Response(200, headers={"content-type": "text/html"}, text=(
+                '<a href="/docs/alerta-1.pdf">1</a> <a href="/docs/alerta-1.pdf">otra vez</a> '
+                '"https:\\/\\/www.indeci.gob.pe\\/docs\\/alerta-2.pdf" <a href="/docs/alerta-3.pdf">3</a>'))
+        if str(req.url).endswith(".pdf") and "indeci" in str(req.url):
+            return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
+        return _peru_only(req)
+
+    real = httpx.Client
+    monkeypatch.setattr(pc.httpx, "Client", lambda **kw: real(**{"transport": httpx.MockTransport(peru), **kw}))
+    monkeypatch.setattr(pc.time, "sleep", lambda s: None)
+    idx = pc.collect(tmp_path / "out")
+    urls = [e["url"] for e in idx["entries"]]
+    assert "https://www.indeci.gob.pe/alertas/" in urls and "https://andina.pe/agencia/rss/3.xml" not in urls
+    assert urls.count("https://www.senamhi.gob.pe/?p=aviso-meteorologico") == 1
+    assert not any("id_seccion" in u for u in urls) and "https://www.imarpe.gob.pe/" in urls
+    linked = [e for e in idx["entries"] if e["group"] == "enlaces"]
+    assert [e["url"] for e in linked] == ["https://www.indeci.gob.pe/docs/alerta-1.pdf",
+                                          "https://www.indeci.gob.pe/docs/alerta-2.pdf"]
+    assert all(e["parent"] == "https://www.indeci.gob.pe/alertas/" and e["file"].endswith(".pdf") for e in linked)
+    assert idx["registry"] == {"origin": "archivo", "generated_at": "2026-10-21T00:00:00+00:00", "peru_server": 2}
+    assert idx["summary"]["indeci"] == "1/1"
+
+
+def test_registry_comes_from_github_with_the_token_then_the_kit(monkeypatch, tmp_path):
+    monkeypatch.delenv("ENSO_REGISTRY_FILE")
+    monkeypatch.delenv("ENSO_RELAY_REMOTE", raising=False)
+    asked = []
+
+    def get(url, **kw):
+        asked.append((url, kw["headers"].get("Authorization")))
+        return httpx.Response(200, json=REGISTRY, request=httpx.Request("GET", url))
+
+    monkeypatch.setattr(pc.httpx, "get", get)
+    reg, origin = pc.load_registry("github_pat_x")
+    assert origin == "github" and reg["sources"] and asked[0][1] == "Bearer github_pat_x"
+    assert asked[0][0].endswith("/contents/registry/sources.json")
+    monkeypatch.setattr(pc.httpx, "get", lambda url, **kw: (_ for _ in ()).throw(httpx.ConnectError("sin red")))
+    reg, origin = pc.load_registry("github_pat_x")  # sin GitHub: la copia del kit/repositorio, si existe
+    assert origin in ("kit", "") and (bool(reg) == (origin == "kit"))
 
 
 def test_next_run_is_9pm_lima():

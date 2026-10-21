@@ -409,6 +409,13 @@ FEEDS: list[Feed] = [
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/4/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
          kind="gobierno", scope="hazard", stale_days=10, adapter="arcgis",
          covers=("inundacion", "sequia")),
+    Feed("senamhi-incendios", "SENAMHI · peligro de incendios forestales, índice FWI (servidor GEOSINPAD del INDECI)", "peru",
+         "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=1%3D1"
+         "&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", covers=("incendio",)),
+    Feed("firms-focos", "NASA FIRMS · focos de calor (VIIRS, NOAA-20)", "peru",
+         "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
+         kind="organismo", scope="hazard", stale_days=2, adapter="firms", covers=("incendio",)),
     Feed("usgs-sismos", "USGS · sismos de magnitud 4 o más (Perú y alrededores)", "peru",
          "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minlatitude=-20&maxlatitude=1"
          "&minlongitude=-84&maxlongitude=-68&minmagnitude=4&orderby=time&limit=100",
@@ -494,7 +501,7 @@ HAZARDS: dict[str, tuple[str, re.Pattern]] = {
     "oleaje": ("Oleaje", _rx(r"oleajes?|maretazos?|bravezas? (?:del? )?mar|cierre de puertos|swells?")),
     "sismo": ("Sismos y tsunamis", _rx(r"sismos?|terremotos?|temblor(?:es)?|r[eé]plicas? s[ií]smicas?|tsunamis?|maremotos?|earthquakes?")),
     "volcan": ("Volcanes", _rx(r"volc[aá]n(?:es)?|erupci[oó]n(?:es)?|ceniza volc[aá]nica|ubinas|sabancaya|volcano(?:es)?")),
-    "incendio": ("Incendios", _rx(r"incen[dc]ios?|quemas? agr[ií]colas?|wildfires?|forest fires?")),
+    "incendio": ("Incendios", _rx(r"incen[dc]ios?|quemas? agr[ií]colas?|focos? de calor|wildfires?|forest fires?")),
     "emergencia": ("Emergencias", _rx(r"estado de emergencia|damnificad[oa]s?|alerta (?:roja|naranja)|aviso meteorol[oó]gico|"
                                       r"peligro inminente|zona de desastre|declaratoria de emergencia|evacuad[oa]s?|evacuaci[oó]n")),
     "salud": ("Salud", _rx(r"dengue|leptospirosis|zancudos?|fiebre amarilla|infecciones respiratorias|neumon[ií]as?")),
@@ -521,7 +528,7 @@ OFFICIAL_ALERT_RE = _rx(r"(?:senamhi|indeci|igp|dhn|enfen|cenepred|coen|coer|ana
 #: «sismo de magnitud 3.5»: los sismos leves que el IGP reporta a diario no son una alerta.
 MAGNITUDE_RE = re.compile(r"magnitud (?:de )?(\d+(?:[.,]\d)?)", re.I)
 #: Incendios que no son forestales: solo cuentan en feeds de emergencias o regionales.
-FOREST_FIRE_RE = _rx(r"incen[dc]ios? forestal(?:es)?|quemas? agr[ií]colas?|wildfires?|forest fires?")
+FOREST_FIRE_RE = _rx(r"incen[dc]ios? forestal(?:es)?|quemas? agr[ií]colas?|focos? de calor|wildfires?|forest fires?")
 PERU_RE = re.compile(r"\b(per[uú]|peruan[oa]s?|peruvian|lima|piura|tumbes|lambayeque|la libertad|ica|arequipa|"
                      r"ancash|[aá]ncash|loreto|cusco|puno|cajamarca|jun[ií]n)\b", re.I)
 
@@ -830,7 +837,7 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
     st.update({"ok": True, "items": len(entries), "latest": max(dates) if dates else None,
                "format": parsed.format, "repairs": parsed.repairs})
     st["active"] = bool(st["latest"]) and st["latest"] >= (now - timedelta(days=f.stale_days)).isoformat()
-    if not entries and f.adapter != "arcgis":  # una capa de avisos vacía es que no hay avisos vigentes
+    if not entries and f.adapter not in ("arcgis", "firms"):  # una capa de avisos vacía es que no hay avisos vigentes
         st["error"] = "feed sin entradas"
     future = (now + timedelta(hours=2)).isoformat()
     oldest = (now - timedelta(days=f.max_age_days)).isoformat() if f.max_age_days else ""

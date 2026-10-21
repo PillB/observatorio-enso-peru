@@ -482,6 +482,15 @@ def _layer_link(base_url: str, where: str) -> str:
     return f"{layer}/query?where={quote(where)}&outFields=*&returnGeometry=false&f=html"
 
 
+def _range_es(r: str) -> str:
+    """«> 97» → «por encima de 97»; «38 - 97» → «entre 38 y 97»."""
+    m = re.match(r"^\s*([<>]=?)\s*([\d.,]+)\s*$", r)
+    if m:
+        return f"{'por encima' if m.group(1).startswith('>') else 'por debajo'} de {m.group(2)}"
+    m = re.match(r"^\s*([\d.,]+)\s*(?:-|–|a)\s*([\d.,]+)\s*$", r)
+    return f"entre {m.group(1)} y {m.group(2)}" if m else f"en {r}"
+
+
 def parse_arcgis(body: bytes, base_url: str) -> Parsed:
     try:
         data = json.loads(body.decode("utf-8-sig"))
@@ -536,9 +545,116 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
                           "summary": clean_text("Distritos con probable activación de quebradas en las próximas 24 horas, "
                                                 "según el SENAMHI: " + ", ".join(f"{d} ({n})" for d, n in per) + ".", 600),
                           "categories": ["huaico", str(nivel)], "geo": [", ".join(f"departamento de {d}" for d in deps)]})
+    elif "INTENSIDAD" in keys and "RANGO" in keys:  # peligro de incendios forestales (FWI): polígonos sin lugares
+        from .geo import department_names
+        from .geopoly import polygon_departments
+
+        names = department_names()
+        groups = {}
+        for f in feats:
+            r = (f or {}).get("properties") or (f or {}).get("attributes") or {}
+            g = groups.setdefault((r.get("FECHA"), str(r.get("INTENSIDAD") or "").strip(), str(r.get("RANGO") or "").strip()), {})
+            for code, area in polygon_departments((f or {}).get("geometry") or {}).items():
+                g[code] = g.get(code, 0.0) + area
+        for (fecha, intensidad, rango), by_dep in sorted(groups.items(), key=lambda kv: (kv[0][0] or 0, kv[0][1]), reverse=True):
+            total = sum(by_dep.values())
+            # Las astillas de menos del 3 % del área no nombran un departamento.
+            codes = [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
+            when = _day_ms(fecha)
+            deps = [names.get(c, c) for c in codes]
+            level = intensidad.lower() or "sin nivel"
+            items.append({"title": clean_text(f"SENAMHI · peligro {level} de incendios forestales (índice FWI {rango})"
+                                              + (f": {_join(deps[:6])}" if deps else "")
+                                              + (f" y {len(deps) - 6} departamentos más" if len(deps) > 6 else ""), 300),
+                          "link": _layer_link(base_url, f"INTENSIDAD='{intensidad}'"
+                                              + (f" AND FECHA=DATE '{when.date().isoformat()}'" if when else "")),
+                          "published": _iso(when) if when else None,
+                          "summary": clean_text(f"Zonas donde el índice meteorológico de peligro de incendios forestales (FWI) "
+                                                f"está {_range_es(rango)}, nivel {level}, según el aviso de 24 horas del SENAMHI. "
+                                                + (f"Departamentos, de mayor a menor área: {', '.join(deps)}. " if deps else "")
+                                                + "No es un incendio: son condiciones en que un fuego se inicia y propaga con facilidad.", 600),
+                          "categories": ["incendio", "FWI", intensidad],
+                          "ubigeo": codes, "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else []})
     else:
         raise FeedError("capa de ArcGIS sin los campos de un aviso conocido")
     return _finish(Parsed("arcgis-json", items))
+
+
+# --- NASA FIRMS: focos de calor (VIIRS, 24 horas) -----------------------------------
+# Un CSV con todos los focos de Sudamérica de las últimas 24 horas, solo con
+# coordenadas. Se ubican por departamento con los límites del INDECI y se publica
+# un resumen por corrida: cuántos focos y dónde. Las detecciones de baja confianza
+# no se cuentan.
+
+FIRMS_MAP = "https://firms.modaps.eosdis.nasa.gov/map/#d:24hrs;@-75.0,-9.4,5.6z"
+_PERU_BOX = (-18.6, -81.5, 0.2, -68.4)  # lat0, lon0, lat1, lon1
+
+
+def _days_es(a: datetime, b: datetime) -> str:
+    """«19 y 20 de octubre», «20 de octubre», «31 de octubre y 1 de noviembre» (hora del Perú). El archivo
+    «24h» de FIRMS junta las pasadas del satélite de unas 24 a 38 horas, así que se dicen los días."""
+    months = {v: k for k, v in _ES_MONTHS.items() if k != "setiembre"}
+    a, b = a.astimezone(LIMA), b.astimezone(LIMA)
+    if a.date() == b.date():
+        return f"{b.day} de {months[b.month]}"
+    if a.month == b.month:
+        return f"{a.day} y {b.day} de {months[b.month]}" if (b - a).days < 2 else f"del {a.day} al {b.day} de {months[b.month]}"
+    return f"{a.day} de {months[a.month]} y {b.day} de {months[b.month]}"
+
+
+def parse_firms(body: bytes, base_url: str = "") -> Parsed:
+    import csv
+    import io
+
+    from .geo import department_names
+    from .geopoly import department_at
+
+    text = body.decode("utf-8-sig", errors="replace")
+    head = text.split("\n", 1)[0].lower()
+    if "latitude" not in head or "acq_date" not in head:
+        raise FeedError("no es un CSV de focos de calor de FIRMS")
+    names = department_names()
+    by_dep: dict[str, int] = {}
+    times, low, sat = [], 0, ""
+    for r in csv.DictReader(io.StringIO(text)):
+        try:
+            lat, lon = float(r["latitude"]), float(r["longitude"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if not (_PERU_BOX[0] <= lat <= _PERU_BOX[2] and _PERU_BOX[1] <= lon <= _PERU_BOX[3]):
+            continue
+        code = department_at(lat, lon)
+        if not code:
+            continue  # países vecinos dentro del recuadro
+        if str(r.get("confidence") or "").strip().lower() in ("l", "low"):
+            low += 1
+            continue
+        by_dep[code] = by_dep.get(code, 0) + 1
+        sat = sat or str(r.get("satellite") or "").strip()
+        hhmm = str(r.get("acq_time") or "").strip().zfill(4)
+        try:
+            times.append(datetime.strptime(f"{r['acq_date']} {hhmm}", "%Y-%m-%d %H%M").replace(tzinfo=timezone.utc))
+        except (KeyError, ValueError):
+            pass
+    repairs = [f"{low} detecciones de baja confianza no contadas"] if low else []
+    if not by_dep:
+        return Parsed("firms-csv", [], repairs + ["sin focos de calor en el Perú en las últimas 24 horas"])
+    per = sorted(by_dep.items(), key=lambda x: (-x[1], names.get(x[0], x[0])))
+    total = sum(n for _, n in per)
+    top = [f"{names.get(c, c)} ({n})" for c, n in per[:3]]
+    sat_name = {"N": "Suomi NPP", "1": "NOAA-20", "N20": "NOAA-20", "J1": "NOAA-20", "N21": "NOAA-21", "J2": "NOAA-21"}.get(sat, sat)
+    span = (f"entre el {min(times).astimezone(LIMA):%d/%m %H:%M} y el {max(times).astimezone(LIMA):%d/%m %H:%M} (UTC−5)"
+            if times else "en las últimas 24 horas")
+    title = (f"NASA FIRMS · {total} foco{'s' if total != 1 else ''} de calor en el Perú"
+             + (f" ({_days_es(min(times), max(times))})" if times else "") + ": "
+             + _join(top + ([f"{len(per) - 3} departamentos más"] if len(per) > 3 else [])))
+    summary = (f"Detecciones del satélite {sat_name or '?'} (VIIRS, 375 m) {span}: "
+               + ", ".join(f"{names.get(c, c)} {n}" for c, n in per) + ". Un foco de calor es una temperatura alta "
+               "detectada desde el espacio: puede ser un incendio forestal, una quema agrícola u otra fuente de calor.")
+    item = {"title": clean_text(title, 300), "link": FIRMS_MAP, "published": _iso(max(times)) if times else None,
+            "summary": clean_text(summary, 600), "categories": ["incendio", "focos de calor"],
+            "ubigeo": [c for c, _ in per], "geo": [", ".join(f"departamento de {names.get(c, c)}" for c, _ in per)]}
+    return Parsed("firms-csv", [item], repairs)
 
 
 # --- INDECI COEN: reportes de emergencias (RSS de WordPress) ------------------------
@@ -644,7 +760,7 @@ def parse_coen(body: bytes, base_url: str) -> Parsed:
 
 
 ADAPTERS = {"dhn": parse_dhn, "dhn-avisos": parse_dhn_avisos, "ptwc-text": parse_ptwc_text, "cenvul": parse_cenvul, "telegram": parse_telegram,
-            "arcgis": parse_arcgis, "indeci-coen": parse_coen}
+            "arcgis": parse_arcgis, "indeci-coen": parse_coen, "firms": parse_firms}
 
 
 def parse(body: bytes, base_url: str, adapter: str) -> Parsed:

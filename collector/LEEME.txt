@@ -1,0 +1,62 @@
+OBSERVATORIO ENSO PERÚ · RECOLECTOR DESDE EL PERÚ
+==================================================
+
+Este equipo descargará cada noche, a las 21:00 de Lima, los comunicados del
+ENFEN y las páginas de SENAMHI, ANA e IMARPE (que no responden a servidores
+fuera del Perú) y los subirá a GitHub para el sitio del observatorio.
+
+Necesita: el equipo encendido a esa hora (o que se encienda después: la
+recolección se recupera sola), internet y un token de GitHub que le dará
+quien mantiene el sitio. Python y Git se instalan solos si faltan.
+
+
+WINDOWS (10 u 11)
+-----------------
+1. Clic derecho en el .zip → Propiedades → marcar «Desbloquear» → Aceptar.
+   Luego clic derecho → «Extraer todo...».
+2. Doble clic en INSTALAR-Windows.cmd.
+   Si aparece «Windows protegió su PC»: «Más información» → «Ejecutar de
+   todas formas».
+   Para que corra aunque nadie haya iniciado sesión: clic derecho →
+   «Ejecutar como administrador» (con la cuenta de uso habitual).
+3. Pegue el token cuando lo pida (clic derecho o Ctrl+V, luego Enter).
+4. Al final responda «S» para probar la tarea programada.
+Después: menú Inicio → «Observatorio ENSO» → «Verificar el recolector».
+
+
+MAC (macOS 12 o más reciente)
+-----------------------------
+1. Doble clic en el .zip para descomprimirlo.
+2. Abra la aplicación Terminal, escriba   bash   y un espacio, arrastre el
+   archivo INSTALAR-Mac.command a la ventana y presione Enter.
+   (También puede hacer doble clic en INSTALAR-Mac.command; si macOS no lo
+   deja abrir: Ajustes del Sistema → Privacidad y seguridad → «Abrir igualmente».)
+3. Si pide instalar las «herramientas de desarrollo», acepte y, cuando
+   terminen, repita el paso 2.
+4. Pegue el token cuando lo pida (Cmd+V, luego Enter).
+5. Al final responda «S» para probar la tarea programada.
+Después: doble clic en VERIFICAR-Mac.command.
+
+
+LINUX / RASPBERRY PI
+--------------------
+   bash collector/instalar.sh
+
+
+QUÉ HAY EN ESTA CARPETA
+-----------------------
+INSTALAR-*      instala o reinstala (es seguro repetirlo; conserva el token)
+VERIFICAR-*     revisa todo y dice qué hacer con cada problema; guarda un
+                informe en logs/ para enviarlo a quien mantiene el sitio
+otras-acciones/ probar la tarea, recolectar ahora, actualizar, desinstalar
+docs/servidor-peru.md   manual completo (problemas frecuentes al final)
+collector/      instaladores y archivos para Docker y systemd
+python/         el programa (Python) y sus dependencias (requirements.txt)
+config/         configuración del pipeline
+kit.json        versión del kit y huella de cada archivo
+
+
+¿ALGO NO FUNCIONA?
+------------------
+Ejecute VERIFICAR y envíe el informe que guarda en la carpeta logs
+(la ruta aparece al final) a quien mantiene el sitio.
