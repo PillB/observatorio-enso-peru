@@ -1,0 +1,277 @@
+{
+ "schema": "enso-relay-heartbeat/1",
+ "at": "2026-10-21T03:34:32+00:00",
+ "result": "ok",
+ "reachable": "154/185",
+ "summary": {
+  "andina-agencia-estatal": "1/1",
+  "el-comercio": "1/2",
+  "gestion": "0/1",
+  "diario-correo": "2/2",
+  "la-republica": "1/1",
+  "rpp-noticias": "27/27",
+  "infobae-peru": "0/1",
+  "caretas": "1/1",
+  "peru-reports": "1/1",
+  "google-noticias-peru-busqueda-el-nino": "1/1",
+  "el-peruano-diario-oficial": "1/1",
+  "autoridad-nacional-del-agua": "0/1",
+  "gob-pe": "0/1",
+  "cenepred": "1/1",
+  "instituto-geofisico-del-peru": "0/1",
+  "indeci-incl-coen": "0/1",
+  "midagri-sequia-heladas-agro": "0/1",
+  "ministerio-del-ambiente": "0/1",
+  "pcm-declaratorias-de-emergencia": "1/1",
+  "presidencia-de-la-republica": "0/1",
+  "senamhi": "0/5",
+  "imarpe": "4/4",
+  "google-noticias": "26/26",
+  "exitosa-noticias": "1/1",
+  "radio-nacional-del-peru": "1/1",
+  "radio-santa-rosa-santa-rosa-radio-tv": "1/1",
+  "canal-n": "1/1",
+  "panamericana-tv-24-horas": "1/1",
+  "tv-peru-noticias": "1/1",
+  "actualidad-ambiental-spda": "1/1",
+  "altavoz": "2/2",
+  "mongabay-latam": "1/1",
+  "noticias-ser": "1/1",
+  "gobierno-regional-de-amazonas-gob-pe": "1/1",
+  "esfera-radio-chachapoyas": "1/1",
+  "radio-reina-de-la-selva-chachapoyas": "1/1",
+  "chachapoyas-online": "1/1",
+  "diario-de-chimbote": "1/1",
+  "gobierno-regional-de-apurimac-gob-pe": "1/1",
+  "radio-titanka-andahuaylas-abancay": "1/1",
+  "diario-chaski-abancay": "1/1",
+  "diario-pregon-abancay": "1/1",
+  "gobierno-regional-de-arequipa-gob-pe": "1/1",
+  "radio-yaravi": "1/1",
+  "diario-sin-fronteras-arequipa": "1/1",
+  "el-buho": "1/1",
+  "gobierno-regional-de-ayacucho-gob-pe": "1/1",
+  "diario-jornada-ayacucho": "1/1",
+  "sol-tv": "4/4",
+  "sin-rodeos-cajamarca": "1/1",
+  "gobierno-regional-de-callao-gob-pe": "1/1",
+  "nacional-callao-tv": "1/1",
+  "prensa-chalaca": "1/1",
+  "gobierno-regional-de-cusco-gob-pe": "1/1",
+  "el-diario-del-cusco": "1/1",
+  "cusco-post": "1/1",
+  "gobierno-regional-de-huancavelica-gob-pe": "0/1",
+  "gobierno-regional-de-huanuco-gob-pe": "1/1",
+  "diario-ahora-huanuco": "1/1",
+  "tu-diario-huanuco": "1/1",
+  "radio-huancayo": "1/1",
+  "gobierno-regional-de-la-libertad-gob-pe": "0/1",
+  "gobierno-regional-de-lambayeque-gob-pe": "0/1",
+  "gobierno-regional-de-lima-gob-pe": "1/1",
+  "gobierno-regional-de-loreto-gob-pe": "1/1",
+  "diario-la-region-iquitos": "1/1",
+  "pro-contra-iquitos": "0/1",
+  "gobierno-regional-de-madre-de-dios-gob-p": "1/1",
+  "radio-madre-de-dios": "1/1",
+  "gobierno-regional-de-moquegua-gob-pe": "0/1",
+  "la-prensa-regional-moquegua": "1/1",
+  "gobierno-regional-de-pasco-gob-pe": "1/1",
+  "pasco-libre": "1/1",
+  "gobierno-regional-de-piura-gob-pe": "1/1",
+  "radio-cutivalu": "1/1",
+  "el-tiempo-piura": "1/1",
+  "gobierno-regional-de-puno-gob-pe": "1/1",
+  "pachamama-radio-puno-juliaca": "1/1",
+  "radio-onda-azul-puno": "1/1",
+  "diario-los-andes-puno": "1/1",
+  "diario-sin-fronteras": "2/2",
+  "gobierno-regional-de-san-martin-gob-pe": "1/1",
+  "diario-hoy-san-martin": "1/1",
+  "diario-voces-tarapoto": "1/1",
+  "radio-uno-93-7-tacna": "1/1",
+  "gobierno-regional-de-tumbes-gob-pe": "1/1",
+  "tumbes-de-miercoles": "1/1",
+  "gobierno-regional-de-ucayali-gob-pe": "1/1",
+  "gaceta-ucayalina": "1/1",
+  "google-news-search-el-nino": "1/1",
+  "bbc-news-mundo": "1/1",
+  "noticias-onu": "1/1",
+  "gdacs-alertas-de-desastres": "0/1",
+  "carbon-brief": "1/1",
+  "ciifen": "1/1",
+  "noaa": "13/14",
+  "enfen": "2/9",
+  "ana": "0/2"
+ },
+ "failures": [
+  {
+   "url": "https://elcomercio.pe/arcio/rss/",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://gestion.pe/arcio/rss/",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.infobae.com/arc/outboundfeeds/rss/category/peru/",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=ana&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=huaico",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=igp&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=midagri&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=minam&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=presidencia&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=senamhi&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuancavelica&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.proycontra.com.pe/rss.xml",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sheet=1&sort_by=recent",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.gdacs.org/xml/rss.xml",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.cpc.ncep.noaa.gov/data/indices/wksst9120.for",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://met.igp.gob.pe/datos/ICEN.txt",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado",
+   "status": null,
+   "verdict": "dns"
+  },
+  {
+   "url": "https://enfen.imarpe.gob.pe/comunicados/",
+   "status": null,
+   "verdict": "dns"
+  },
+  {
+   "url": "https://www.senamhi.gob.pe/?p=fenomeno-el-nino",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.senamhi.gob.pe/?p=boletines",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.senamhi.gob.pe/mapas/mapa-estaciones-2/",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://snirh.ana.gob.pe/",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://snirh.ana.gob.pe/onrh/",
+   "status": null,
+   "verdict": "timeout"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf",
+   "status": 200,
+   "verdict": "blocked",
+   "block": "human-verification"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/17-2026.pdf",
+   "status": 200,
+   "verdict": "blocked",
+   "block": "human-verification"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
+   "status": 200,
+   "verdict": "blocked",
+   "block": "human-verification"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/20-2026.pdf",
+   "status": 200,
+   "verdict": "blocked",
+   "block": "human-verification"
+  }
+ ],
+ "collector": {
+  "kind": "n8n",
+  "host": "n8n-aws",
+  "egress": "aws-us-east-1",
+  "tz": "America/Lima",
+  "workflow": "enso-n8n-recolector",
+  "version": "7979b51fd8",
+  "execution": "1304",
+  "previous": "sin copia anterior"
+ }
+}
