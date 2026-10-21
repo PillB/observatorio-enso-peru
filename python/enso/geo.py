@@ -115,6 +115,11 @@ CUE_RE = re.compile(
     r"\b(?:en|de|del|a|al|desde|hacia|hasta|para|por|entre|sobre|v[ií]a|carretera|tramo|ruta|in|near|at|from|across)"
     r"\s+(?:la\s+|el\s+|los\s+|las\s+)?$",
     re.I)
+#: «a 71 km al S de», «12 kilómetros al noreste de», «frente a las costas de»: el nombre es una referencia.
+RELATIVE_RE = re.compile(
+    r"(?:\b(?P<km>\d+(?:[.,]\d+)?)\s*(?:km|kil[oó]metros?)\s+(?:al?\s+)?"
+    r"(?:(?:[NSEO]{1,3}|norte|sur|este|oeste|noreste|noroeste|sureste|suroeste|sudeste|sudoeste|nor-?oeste|nor-?este)\s+)?"
+    r"(?:de|del)\s+(?:la\s+|el\s+)?|\bfrente\s+a\s+(?:las?\s+costas?\s+de\s+)?)$", re.I)
 #: Palabra de nivel antes del nombre; el grupo indica el nivel.
 LEVEL_RE = re.compile(
     r"\b(?:(?P<dep>regi[oó]n(?:es)?|departamentos?|gobierno regional|gore|diresa|geresa|coer)|"
@@ -297,6 +302,7 @@ class Match:
     chained: bool = False  # sigue a otro nombre en una enumeración
     chain_hint: Optional[str] = None  # el nivel que heredaría de la enumeración
     plural: bool = False  # «distritos de», «provincias de»
+    relative_km: Optional[float] = None  # «a 71 km al S de Camaná»: el lugar es una referencia, no el sitio
 
 
 @dataclass
@@ -489,6 +495,9 @@ class Gazetteer:
                        plural=bool(lv and re.search(r"(?:distritos|provincias)\s+(?:de|del)?\s*$", lv.group(0), re.I)))
             if chained and prev is not None and not mm.plural:
                 mm.plural = prev.plural
+            rel = RELATIVE_RE.search(before)
+            if rel:
+                mm.relative_km = float(rel.group("km").replace(",", ".")) if rel.group("km") else 30.0
             out.append(mm)
             prev, prev_end, prev_state = mm, end, None
             # «Pampas y Caja (Huancavelica)»: el departamento entre paréntesis respalda a toda la enumeración.
@@ -584,6 +593,13 @@ class Gazetteer:
         picked: dict[str, Place] = {}
 
         def pick(code: str, conf: float, m: Match, why: str = "") -> None:
+            if m.relative_km is not None:
+                # Un sismo «a 18 km al SSE de Camaná» puede estar en otro distrito o en el mar: se afirma el
+                # departamento (o la provincia, si está muy cerca) y con menos confianza si está lejos.
+                km = m.relative_km
+                code = code[:4] if km <= 10 and len(code) >= 4 else code[:2]
+                conf = min(conf, 0.7 if km <= 50 else 0.55)
+                why = f"referencia: a {km:g} km de {m.name.title()}"
             if code not in picked or picked[code].confidence < conf:
                 picked[code] = Place(code, round(conf, 2), "texto", m.evidence, {"rule": why} if why else {})
 
@@ -898,5 +914,5 @@ def legacy_fields(g: Optional[dict]) -> dict:
         return {}
     m = g.get("method") or ""
     return {"departments": g["departments"],
-            "places": [{k: p[k] for k in ("code", "level", "name")} for p in g["places"]],
+            "places": [{k: p[k] for k in ("code", "level", "name", "confidence", "method") if k in p} for p in g["places"]],
             "geoSource": "correccion" if "correccion" in m else "medio" if m == "medio" else "texto"}

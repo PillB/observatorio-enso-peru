@@ -443,6 +443,7 @@ table.grd .chip { white-space: normal; }
 .news-count { margin: 0 0 4px; }
 .tag-place { display: inline-flex; align-items: center; gap: 3px; }
 .tag-place svg { width: 13px; height: 13px; flex: none; }
+.tag-approx { border-style: dashed; }
 .tag-kind { font-weight: 600; }
 .tag-hazard { background: var(--watch-bg); color: var(--watch); font-weight: 600; }
 .src-links { margin: 6px 0 0; font-size: 0.84rem; color: var(--fg-3); overflow-wrap: anywhere; }

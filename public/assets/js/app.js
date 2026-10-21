@@ -603,6 +603,17 @@ function placeLabel(p, deps) {
   return p.level === 'departamento' ? p.name : `${p.name}${dep ? ` (${dep})` : ''}`;
 }
 
+// Cómo se ubicó la nota, para el título de la etiqueta de lugar.
+const PLACE_METHOD = { texto: 'según el texto', campo: 'según la fuente', coordenadas: 'por coordenadas', medio: 'por el medio regional que la publicó', correccion: 'revisada a mano', anterior: 'ubicación anterior' };
+function placeTitle(p) {
+  if (!p || p.confidence === undefined) return '';
+  return `Ubicación ${PLACE_METHOD[p.method] || ''}${p.method === 'correccion' ? '' : ` · confianza ${Math.round(p.confidence * 100)} %`}`.replace('  ', ' ');
+}
+function placeTag(p, deps) {
+  const approx = p.confidence !== undefined && p.confidence < 0.8 && p.method !== 'correccion';
+  return html`<span class="tag tag-place${approx ? ' tag-approx' : ''}" title="${placeTitle(p)}">${raw(ICON.pin)}${approx ? '≈ ' : ''}${placeLabel(p, deps)}</span>`;
+}
+
 function feedValue(it) {
   if (it.value === undefined || it.value === null) return '';
   const per = it.periodKind === 'season' ? seasonLabel(it.period) : it.periodKind === 'date' ? `semana del ${F.fmtDate(it.period)}` : F.fmtMonth(it.period);
@@ -649,7 +660,7 @@ function clusterItem(c, deps = {}, dep = '') {
     <div class="feed-meta"><time datetime="${c.first}">${F.fmtDateTime(c.first).replace(' (hora de Lima)', '')}</time> · <span class="feed-inst">${c.outlets.slice(0, 3).join(', ')}${c.outlets.length > 3 ? ` y ${c.outlets.length - 3} más` : ''}</span></div>
     <h3 class="feed-title"><a href="${safeUrl(c.links[0].url)}" rel="noopener" target="_blank">${c.title}</a></h3>
     ${c.summary ? html`<p class="feed-text">${c.summary}</p>` : ''}
-    <div class="feed-tags"><span class="tag">${c.relevance === 'enso' ? 'El Niño / La Niña' : 'Impactos y peligros'}</span>${(c.hazards || []).filter((h) => h !== 'enso' && HAZARD_LABEL[h]).slice(0, 3).map((h) => html` <span class="tag tag-hazard">${HAZARD_LABEL[h]}</span>`)}${c.count > 1 ? html` <span class="tag">${c.count} notas similares</span>` : ''}${(c.kinds || []).map((k) => html` <span class="tag tag-kind tag-${KIND_GROUP[k] || 'diario'}">${KIND_LABEL[k] || k}</span>`)}${places.map((p) => html` <span class="tag tag-place">${raw(ICON.pin)}${placeLabel(p, deps)}</span>`)}</div>
+    <div class="feed-tags"><span class="tag">${c.relevance === 'enso' ? 'El Niño / La Niña' : 'Impactos y peligros'}</span>${(c.hazards || []).filter((h) => h !== 'enso' && HAZARD_LABEL[h]).slice(0, 3).map((h) => html` <span class="tag tag-hazard">${HAZARD_LABEL[h]}</span>`)}${c.count > 1 ? html` <span class="tag">${c.count} notas similares</span>` : ''}${(c.kinds || []).map((k) => html` <span class="tag tag-kind tag-${KIND_GROUP[k] || 'diario'}">${KIND_LABEL[k] || k}</span>`)}${places.map((p) => html` ${placeTag(p, deps)}`)}</div>
     ${sourceLinks(c.links[0].url, c.links[0].archive, { liveLabel: 'Nota original', snapshot: c.links[0].snapshot })}
     ${more ? html`<details class="feed-more"><summary>Ver las ${c.links.length} notas</summary><ul>${c.links.map((l) => html`<li><a href="${safeUrl(l.url)}" rel="noopener" target="_blank">${l.title}</a> <span class="muted small">${l.outlet}${l.kind ? ` (${(KIND_LABEL[l.kind] || l.kind).toLowerCase()})` : ''}${l.published ? ` · ${F.fmtDate(l.published.slice(0, 10))}` : ''}</span>${archiveHref(l.archive) ? html` <a class="small" href="${archiveHref(l.archive)}" rel="noopener" target="_blank">copia</a>` : ''}</li>`)}</ul></details>` : ''}
   </li>`;

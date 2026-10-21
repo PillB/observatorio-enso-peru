@@ -83,6 +83,9 @@ def parse_geojson(data: dict, base_url: str = "") -> Parsed:
                 "link": p.get("url") or "", "published": _iso(when) if when else None,
                 "summary": clean_text(". ".join(x for x in facts if x) + ".", 600),
                 "categories": ["sismo"] + (["tsunami"] if p.get("tsunami") else []),
+                # [lat, lon, incertidumbre en km]: el epicentro preliminar puede moverse unos 10 km
+                **({"coords": [[coords[1], coords[0], 5 if p.get("status") == "reviewed" else 10]]}
+                   if len(coords) >= 2 and all(isinstance(c, (int, float)) for c in coords[:2]) else {}),
             })
         elif "eventtype" in p:  # GDACS
             url = (p.get("url") or {}).get("report") if isinstance(p.get("url"), dict) else p.get("url")

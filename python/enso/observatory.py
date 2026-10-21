@@ -959,6 +959,10 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         (tmp / "news").mkdir()
         dump("news/feeds.json", news["feeds"])
         dump("news/clusters.json", news["clusters"])
+        if news.get("geo"):
+            (tmp / "geo").mkdir(exist_ok=True)
+            for name, val in news["geo"].items():
+                dump(f"geo/{name}.json", val)
         (tmp / "news" / "items.jsonl").write_text(news["jsonl"], encoding="utf-8")
         (tmp / "news" / "items.csv").write_text(news["csv"], encoding="utf-8")
         dashboard["news"] = {"clusters": len(news["clusters"]["clusters"]), "items": news["feeds"]["history"]["items"],
@@ -1179,6 +1183,19 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         prev_text += "\n"
     jsonl = prev_text + "".join(json.dumps(i, ensure_ascii=False, separators=(",", ":")) + "\n" for i in added)
     items = history + added
+    # Todo el histórico se ubica de nuevo y recibe las correcciones de la consola (el JSONL queda como se guardó).
+    from . import geo_overrides as GO
+    ov_fixture = fixtures / "geo-overrides.json" if fixtures is not None else None
+    if ov_fixture is not None:
+        overrides = GO.valid_overrides(json.loads(ov_fixture.read_text(encoding="utf-8"))) if ov_fixture.exists() else []
+        ov_source = "fixture" if overrides else "ninguna"
+    else:
+        overrides, ov_source = GO.fetch_overrides(getattr(fetcher, "client", None), previous, log)
+    geo_quality = GO.apply_all(items, overrides, N.FEED_BY_ID)
+    geo_quality["overridesSource"] = ov_source
+    if geo_quality["overrides"]["rejected"]:
+        log.add("warning", "geo", "parse", "overrides-rejected",
+                f"{geo_quality['overrides']['rejected']} correcciones de lugar no se pudieron aplicar (códigos inválidos).")
 
     for st in status:
         if not st["ok"]:
@@ -1211,6 +1228,8 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         "feeds": {"feeds": status, "history": {"items": len(items), "added": len(added),
                                                "since": min((i["first_seen"] for i in items), default=None)}},
         "clusters": {"days": 14, "clusters": N.cluster(items, now), "departmentNames": department_names()},
+        "geo": {"items": {"generatedAt": now.isoformat(timespec="seconds"), "items": GO.console_items(items, now)},
+                "overrides": {"source": ov_source, "overrides": overrides}, "quality": geo_quality},
     }
 
 
