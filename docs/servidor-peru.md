@@ -10,7 +10,7 @@ bajó de esa misma URL, comprueba su sha256 y su antigüedad, y la marca en
 el registro de fuentes y en el sitio («vía recolector en el Perú»).
 
 **En resumen:** crear un [token de GitHub](#1-token-de-github), descargar
-el [kit](#2-descargar-el-kit) (un .zip de unos 300 KB), copiarlo a la
+el [kit](#2-descargar-el-kit) (un .zip de unos 2 MB), copiarlo a la
 computadora en el Perú y hacer doble clic en `INSTALAR` y luego en
 `VERIFICAR`. Funciona en Windows 10/11, macOS 12 o más reciente y Linux
 (Raspberry Pi incluida).
