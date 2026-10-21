@@ -399,3 +399,23 @@ def test_launchers_only_use_options_the_installers_know():
 def test_install_script_is_valid_bash():
     r = subprocess.run(["bash", "-n", str(REPO_ROOT / "collector" / "instalar.sh")], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
+
+
+def test_site_run_warns_before_the_collector_token_expires(tmp_path):
+    """La corrida diaria abre un issue «relay-token-expiring» 21 días antes."""
+    from enso import observatory as obs
+
+    def relay_with(expires):
+        root = tmp_path / f"relay-{expires[:10]}"
+        root.mkdir()
+        (root / "index.json").write_text(json.dumps({
+            "schema": "enso-relay/1", "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "collector": {"host": "pc-lima", "token_expires_at": expires}, "entries": []}), encoding="utf-8")
+        log = obs.EventLog()
+        obs.load_relay(root, log)
+        return [e.code for e in log.events]
+
+    soon = (datetime.now(timezone.utc) + timedelta(days=10)).isoformat()
+    later = (datetime.now(timezone.utc) + timedelta(days=200)).isoformat()
+    assert "relay-token-expiring" in relay_with(soon)
+    assert "relay-token-expiring" not in relay_with(later)

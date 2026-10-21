@@ -44,7 +44,7 @@ def kit_files(repo: Path = REPO) -> dict[str, Path]:
                 files[f"{dest}/{p.relative_to(src).as_posix()}"] = p
 
     files["python/requirements.txt"] = repo / "python" / "requirements.txt"
-    add_tree(repo / "python" / "enso", "python/enso", "*.py")
+    add_tree(repo / "python" / "enso", "python/enso")  # código y datos (p. ej. data/ubigeo.json)
     for t in TOOLS:
         files[f"python/tools/{t}"] = repo / "python" / "tools" / t
     add_tree(repo / "config", "config", "*.yaml")

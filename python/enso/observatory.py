@@ -1061,6 +1061,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
 
 
 RELAY_STALE_HOURS = 36
+RELAY_TOKEN_WARN_DAYS = 21
 
 
 def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublication, log: EventLog,
@@ -1151,6 +1152,16 @@ def load_relay(relay_dir: Path, log: EventLog):
     else:
         log.add("info", "relay-peru", "fetch", "relay-ok",
                 f"Recolección desde el Perú del {relay.collected_at}: {relay.summary}.")
+    # El recolector anota cuándo vence su token: avisar antes de que deje de subir.
+    expires = str(relay.collector.get("token_expires_at") or "")
+    try:
+        left = (datetime.fromisoformat(expires) - datetime.now(timezone.utc)).total_seconds() / 86400
+    except (TypeError, ValueError):  # vacío, ilegible o sin zona horaria
+        left = None
+    if left is not None and left < RELAY_TOKEN_WARN_DAYS:
+        log.add("warning", "relay-peru", "fetch", "relay-token-expiring",
+                f"El token de GitHub del recolector del Perú vence el {expires[:10]} (en {max(left, 0):.0f} días): "
+                "crear uno nuevo y ejecutar INSTALAR en ese equipo con el token nuevo (docs/servidor-peru.md).")
     return relay
 
 
