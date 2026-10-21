@@ -1142,7 +1142,8 @@ def _is_number(s: str) -> bool:
 def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, official: dict, weekly, grd: dict,
                       log: EventLog, started: datetime, news: Optional[dict] = None,
                       feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None,
-                      freshness: Optional[dict] = None, manual_needed: Optional[dict] = None) -> dict:
+                      freshness: Optional[dict] = None, manual_needed: Optional[dict] = None,
+                      imarpe_bsobp: Optional[dict] = None) -> dict:
     now = datetime.now(timezone.utc)
     content_hash = hashlib.sha256(json.dumps(
         {k: v["points"][-24:] for k, v in sorted(b.series.items())} | {"official": official}, sort_keys=True, default=str
@@ -1299,6 +1300,9 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     dump("sources.json", {"sources": health})
     # Documentos que hay que bajar a mano (consola de documentos): siempre, vacío si no falta nada.
     dump("manual-needed.json", manual_needed or {"version": 1, "pending": [], "used": []})
+    if imarpe_bsobp:
+        # Boletín semanal del IMARPE: anomalía subsuperficial frente a Paita y Chicama, con su cita.
+        dump("imarpe-bsobp.json", imarpe_bsobp)
     dump("run-report.json", {"events": events, "worst": log.worst(),
                              "counts": {s: sum(1 for e in events if e["severity"] == s) for s in ("info", "warning", "error", "critical")}})
     dump("health.json", {"pipelineStatus": "degraded" if log.worst() in ("error", "critical") else "ok",
@@ -1452,6 +1456,16 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                     a.data["informe"] = prev_inf
                     log.add("error", "enfen-informe", "parse", "informe-exception",
                             f"{type(exc).__name__}: {exc}"[:300])
+    bsobp = None
+    if fixtures is None and not offline and not only:
+        from .feeds import imarpe_bsobp
+
+        prev_bs = prev.get("imarpe-bsobp.json")
+        try:
+            bsobp = imarpe_bsobp.acquire(fetcher, prev_bs, log, today, needs)
+        except Exception as exc:  # noqa: BLE001 — el boletín nunca detiene la publicación
+            bsobp = prev_bs
+            log.add("error", imarpe_bsobp.SOURCE, "parse", "bsobp-exception", f"{type(exc).__name__}: {exc}"[:300])
     needs.log(log)
     acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
     b = Builder(acquired, log, today)
@@ -1505,7 +1519,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
             log.add("critical" if s.critical else "error", s.id, "publish", "no-data",
                     "La fuente falló y no hay un dato anterior que conservar.")
     res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev,
-                            freshness=fresh, manual_needed=needs.as_json(prev.get("manual-needed.json"), today))
+                            freshness=fresh, manual_needed=needs.as_json(prev.get("manual-needed.json"), today),
+                            imarpe_bsobp=bsobp)
     if raw_dir is not None:
         res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
