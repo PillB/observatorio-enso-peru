@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T03:14:52+00:00",
+ "generated_at": "2026-10-21T03:43:10+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true",
   "tiers": {
@@ -7570,6 +7570,43 @@
    ],
    "interval_minutes": 1440,
    "parser": "enso.hazardparse:parse (adapter=dhn)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "measured_at": null,
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "geoblocked": null,
+   "channels": [
+    "actions",
+    "n8n"
+   ]
+  },
+  {
+   "id": "news-dhn-avisos",
+   "group": "dhn",
+   "name": "DHN · avisos especiales de oleaje y de viento",
+   "institution": "DHN",
+   "url": "https://www.dhn.mil.pe/portal/avisos-especiales",
+   "expect": "html",
+   "method": "html",
+   "kind": "feed",
+   "home": "https://www.dhn.mil.pe/",
+   "alt_urls": [],
+   "hazards": [
+    "oleaje",
+    "viento"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=dhn-avisos)",
    "needs_browser": false,
    "archive": true,
    "notes": "tipo de medio: gobierno; alcance: hazard",

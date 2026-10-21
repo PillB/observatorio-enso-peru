@@ -78,7 +78,11 @@ def _ext(content_type: str, body: bytes) -> str:
 
 
 def _found(expect: str, body: bytes) -> bool:
-    return bool(re.search(expect.encode("utf-8"), body))
+    """Busca el patrón en el texto, no en los bytes: «[ÍI]» no casa con los dos bytes UTF-8 de «Í».
+    Las páginas que no están en UTF-8 suelen estar en Windows-1252."""
+    rx = re.compile(expect)
+    text = body.decode("utf-8", errors="replace")
+    return bool(rx.search(text) or ("\ufffd" in text and rx.search(body.decode("cp1252", errors="replace"))))
 
 
 def http_step(client: httpx.Client, url: str, expect: str, headers: Optional[dict] = None) -> dict:

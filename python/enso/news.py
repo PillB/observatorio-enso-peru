@@ -66,7 +66,7 @@ class Feed:
 
 
 #: Extensión de la captura según lo que devuelve cada lector.
-ADAPTER_EXT = {"gobpe": "html", "dhn": "html", "cenvul": "html", "telegram": "html", "geojson": "json",
+ADAPTER_EXT = {"gobpe": "html", "dhn": "html", "dhn-avisos": "html", "cenvul": "html", "telegram": "html", "geojson": "json",
                "arcgis": "json", "ptwc-text": "txt", "firms": "csv"}
 
 
@@ -417,6 +417,9 @@ FEEDS: list[Feed] = [
     Feed("dhn-tsunamis", "DHN · boletines de sismo y tsunami", "peru", "https://www.dhn.mil.pe/portal/boletin-sismo-tsunami",
          kind="gobierno", scope="hazard", stale_days=90, adapter="dhn", max_age_days=30,
          covers=("sismo", "tsunami")),
+    Feed("dhn-avisos", "DHN · avisos especiales de oleaje y de viento", "peru", "https://www.dhn.mil.pe/portal/avisos-especiales",
+         kind="gobierno", scope="hazard", stale_days=30, adapter="dhn-avisos", max_age_days=30,
+         covers=("oleaje", "viento")),
     Feed("ptwc-mensajes", "PTWC · mensajes de tsunami del Pacífico", "mundo", "https://www.tsunami.gov/events/xml/PHEBAtom.xml",
          lang="en", kind="organismo", scope="hazard", stale_days=365, max_age_days=30,
          covers=("tsunami",)),
@@ -487,7 +490,7 @@ HAZARDS: dict[str, tuple[str, re.Pattern]] = {
                                            r"descenso de (?:la )?temperatura|temperaturas? bajo cero|cold waves?")),
     "viento": ("Vientos", _rx(r"vientos? (?:fuertes|intensos|paracas)|(?:fuertes|intensos) vientos|r[aá]fagas(?: de viento)?|"
                               r"vientos? de hasta \d+|incremento de (?:la )?(?:velocidad del )?vientos?|"
-                              r"(?:incrementar[aá]|aumentar[aá]) la velocidad del viento|vientos? (?:de moderada|moderados?) a (?:fuerte|extrema)")),
+                              r"(?:incrementar[aá]|aumentar[aá]) la velocidad del viento|avisos? especial(?:es)? de vientos?|brisas? (?:fuertes?|frescas?)|vientos? (?:de moderada|moderados?) a (?:fuerte|extrema)")),
     "oleaje": ("Oleaje", _rx(r"oleajes?|maretazos?|bravezas? (?:del? )?mar|cierre de puertos|swells?")),
     "sismo": ("Sismos y tsunamis", _rx(r"sismos?|terremotos?|temblor(?:es)?|r[eé]plicas? s[ií]smicas?|tsunamis?|maremotos?|earthquakes?")),
     "volcan": ("Volcanes", _rx(r"volc[aá]n(?:es)?|erupci[oó]n(?:es)?|ceniza volc[aá]nica|ubinas|sabancaya|volcano(?:es)?")),

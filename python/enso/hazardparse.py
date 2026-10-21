@@ -7,7 +7,8 @@ y enlaces a la fuente en vivo y a la copia archivada. Se eligió, para cada
 fuente, la vía más simple que trae el dato (``tools.scrape_ladder``):
 
 * USGS: API FDSN en GeoJSON (``parse_geojson``, también lee GDACS).
-* DHN: listado HTML de boletines de sismo y tsunami (``parse_dhn``). Los PDF
+* DHN: listados HTML de boletines de sismo y tsunami (``parse_dhn``) y de
+  avisos especiales de oleaje y de viento (``parse_dhn_avisos``). Los PDF
   están tras una verificación antirobots y no se piden.
 * PTWC: mensaje de texto WEPA40 (``parse_ptwc_text``); el Atom se lee como feed.
 * IGP CENVUL: listados HTML de boletines y alertas (``parse_cenvul``).
@@ -146,6 +147,93 @@ def parse_dhn(body: bytes, base_url: str = "https://www.dhn.mil.pe/portal/boleti
     if drills:
         out.repairs.append(f"{drills} boletines de simulacro omitidos")
     return out
+
+
+# --- DHN: avisos especiales de oleaje y de viento ------------------------------------
+
+#: Títulos de 2026 («AVISO ESPECIAL DE OLEAJE NRO. 42-26 (Válido del…)») y anteriores
+#: («AVISO ESPECIAL Nº 118 [Oleaje]», «… Nro. 7 (ACTUALIZACIÓN 2/3/2021)»): el tipo va entre corchetes.
+_DHN_AV_TITLE_RE = re.compile(r"AVISO ESPECIAL(?: DE (?P<kind>[A-ZÁÉÍÓÚÑ]+))?\s+N(?:RO\.?|[°º]\.?)\s*(?P<num>\d+(?:\s*-\s*\d+)?)"
+                              r"(?:\s*\((?P<valid>V[ÁA]LIDO[^)]*)\))?(?:.*?\[(?P<tag>[^\]]+)\])?", re.I)
+_DHN_AV_ID_RE = re.compile(r"pdf-aviso-especial/(\d+)")
+_DHN_AV_VALID_RE = re.compile(r"del (\d{1,2})(?: de (\w+))?(?: del? (\d{4}))? al (\d{1,2}) de (\w+)(?: del?)? (\d{4})", re.I)
+_DHN_AV_ISSUED_RE = re.compile(r"Callao,?\s*(\d{1,2}) de (\w+)(?: del?)? (\d{4})", re.I)
+_DHN_AV_LITORAL_RE = re.compile(r"Litoral (Norte|Centro|Sur)\b[^:]*:(?P<txt>[^\n]*)", re.I)
+_DHN_AV_WIND_RE = re.compile(r"(?P<what>(?:brisa|viento)s? [a-záéíóú]+(?: [a-záéíóú]+)?) \(hasta (?P<kt>\d+) nudos\)"
+                             r"(?:[^.;]*?entre las localidades de (?P<a>[^;,.]+?) (?:a|y) (?P<b>[^;,.]+?)(?=[;,.]))?", re.I)
+#: Fórmula con que empieza cada aviso; se quita para que el resumen vaya al grano.
+_DHN_AV_LEAD_RE = re.compile(r"^La Marina de Guerra del Per[uú],? a trav[eé]s de la Direcci[oó]n de Hidrograf[ií]a y Navegaci[oó]n,?\s*"
+                             r"(?:informa|pone en conocimiento|comunica)\s*(?:a la opini[oó]n p[uú]blica)?,?\s*(?:que,?\s*)?", re.I)
+_SWELL = ["ligero", "moderado", "fuerte", "muy fuerte"]
+_SWELL_RE = re.compile(r"\b(muy fuerte|fuerte|moderado|ligero)\b", re.I)
+#: Departamentos de cada tramo del litoral en los avisos de oleaje de la DHN
+#: (norte: Tumbes a Salaverry; centro: hasta San Juan de Marcona; sur: hasta Tacna).
+DHN_LITORAL = {"norte": ("Tumbes", "Piura", "Lambayeque", "La Libertad"),
+               "centro": ("La Libertad", "Áncash", "Lima", "Callao", "Ica"),
+               "sur": ("Ica", "Arequipa", "Moquegua", "Tacna")}
+
+
+def _es_date(day: str, month: str, year: str) -> Optional[datetime]:
+    mo = _ES_MONTHS.get((month or "").lower())
+    return datetime(int(year), mo, int(day), 12, tzinfo=LIMA) if mo else None
+
+
+def parse_dhn_avisos(body: bytes, base_url: str = "https://www.dhn.mil.pe/portal/avisos-especiales") -> Parsed:
+    """Avisos especiales de la DHN: oleaje anómalo y vientos en el litoral y el mar peruano."""
+    text = body.decode("utf-8", errors="replace")
+    if "avisos-especiales" not in text or "AVISO ESPECIAL" not in text.upper():
+        raise FeedError("no es el listado de avisos especiales de la DHN")
+    items = []
+    for chunk in text.split('class="position-relative"')[1:]:
+        tm = re.search(r'class="accordion-title">(.*?)</div>', chunk, re.S)
+        head = _DHN_AV_TITLE_RE.search(clean_text(tm.group(1), 300)) if tm else None
+        if not head:
+            continue
+        num = re.sub(r"\s+", "", head.group("num"))
+        kind = re.sub(r"s$", "", (head.group("kind") or head.group("tag") or "").strip().lower())  # «vientos»
+        if not kind:
+            continue
+        content = chunk.split('class="accordion-content">', 1)[-1]
+        lines = [clean_text(x, 1000) for x in re.split(r"<br\s*/?>|</h4>", content)]
+        lines = [x for x in lines if x]
+        body_txt = " ".join(lines)
+        valid = clean_text(head.group("valid") or "", 120)
+        vm, im = _DHN_AV_VALID_RE.search(valid), _DHN_AV_ISSUED_RE.search(body_txt)
+        when = _es_date(*im.groups()) if im else None
+        if not when and vm:
+            when = _es_date(vm.group(1), vm.group(2) or vm.group(5), vm.group(3) or vm.group(6))
+        period = f"válido {valid.split(' ', 1)[1]}" if valid.lower().startswith("válido ") else valid.lower()
+        geo, what = [], ""
+        if kind == "oleaje":
+            level: dict[str, int] = {}
+            for lm in _DHN_AV_LITORAL_RE.finditer("\n".join(lines)):
+                found = [_SWELL.index(x.lower()) for x in _SWELL_RE.findall(lm.group("txt"))]
+                if found:
+                    level[lm.group(1).lower()] = max(found)
+            if level:
+                top = max(level.values())
+                where = [k for k in ("norte", "centro", "sur") if level.get(k) == top]
+                what = f"oleaje {_SWELL[top]} en el litoral {_join(where)}"
+                geo = [f"departamento de {d}" for d in dict.fromkeys(x for k in level for x in DHN_LITORAL[k])]
+        else:
+            wm = _DHN_AV_WIND_RE.search(body_txt)
+            if wm:
+                what = f"{wm.group('what').lower()} (hasta {wm.group('kt')} nudos)"
+                if wm.group("a"):
+                    what += f" entre {wm.group('a').strip()} y {wm.group('b').strip()}"
+        title = f"DHN · aviso especial de {kind} N° {num}" + (f": {what}" if what else "") + (f" ({period})" if period else "")
+        summary = _DHN_AV_LEAD_RE.sub("", " ".join(x for x in lines if not re.match(r"^(?:[a-d]\.|Atentamente|DIRECCI|dihidronav)", x)))
+        summary = summary[:1].upper() + summary[1:]
+        aid = _DHN_AV_ID_RE.search(chunk)
+        item = {"title": clean_text(title, 300), "link": f"{base_url.split('#')[0]}#{aid.group(1) if aid else num}",
+                "published": _iso(when) if when else None, "summary": clean_text(summary, 600),
+                "categories": [kind, f"aviso especial {num}"]}
+        if geo:
+            item["geo"] = [", ".join(geo)]
+        items.append(item)
+    if not items:
+        raise FeedError("el listado de la DHN no tiene avisos especiales con el formato esperado")
+    return _finish(Parsed("dhn-avisos-html", items))
 
 
 # --- PTWC: mensaje de texto (WEPA40) ------------------------------------------------
@@ -496,10 +584,13 @@ def parse_coen(body: bytes, base_url: str) -> Parsed:
     from .feedparse import parse as parse_feed
 
     p = parse_feed(body, base_url=base_url, default_tz=LIMA)
-    items, human = [], 0
+    items, human, drills = [], 0, 0
     for e in p.items:
         title = re.sub(r"\s+", " ", e["title"]).strip()
         summary = e["summary"]
+        if SIMULACRO_RE.search(title):
+            drills += 1
+            continue
         b = _COEN_BULLETIN_RE.match(title)
         m = _COEN_TITLE_RE.match(title)
         if b:  # avisos del SENAMHI que el COEN difunde
@@ -533,10 +624,12 @@ def parse_coen(body: bytes, base_url: str) -> Parsed:
     out = _finish(Parsed(p.format, items, list(p.repairs)))
     if human:
         out.repairs.append(f"{human} reportes de emergencias no naturales omitidos (incendios urbanos, accidentes…)")
+    if drills:
+        out.repairs.append(f"{drills} reportes de simulacro omitidos")
     return out
 
 
-ADAPTERS = {"dhn": parse_dhn, "ptwc-text": parse_ptwc_text, "cenvul": parse_cenvul, "telegram": parse_telegram,
+ADAPTERS = {"dhn": parse_dhn, "dhn-avisos": parse_dhn_avisos, "ptwc-text": parse_ptwc_text, "cenvul": parse_cenvul, "telegram": parse_telegram,
             "arcgis": parse_arcgis, "indeci-coen": parse_coen}
 
 

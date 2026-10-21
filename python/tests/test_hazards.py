@@ -92,10 +92,13 @@ def test_indeci_coen_titles_are_rewritten_and_human_made_events_dropped():
            "<pubDate>Tue, 20 Oct 2026 15:00:00 +0000</pubDate></item>"
            "<item><title>REPORTE PRELIMINAR N.º 0941 – 20/10/2026 / COEN – INDECI / 11:00 HORAS HUAICO EN LOS DISTRITOS "
            "DE CHOSICA Y LURIGANCHO – LIMA</title><link>https://portal.indeci.gob.pe/emergencias/b/</link>"
-           "<pubDate>Tue, 20 Oct 2026 16:00:00 +0000</pubDate></item></channel></rss>").encode()
+           "<pubDate>Tue, 20 Oct 2026 16:00:00 +0000</pubDate></item>"
+           "<item><title>REPORTE PRELIMINAR N.º 0942 – 20/10/2026 / COEN – INDECI / 12:00 HORAS SIMULACRO DE SISMO EN EL "
+           "DISTRITO DE ATE – LIMA</title><link>https://portal.indeci.gob.pe/emergencias/c/</link>"
+           "<pubDate>Tue, 20 Oct 2026 17:00:00 +0000</pubDate></item></channel></rss>").encode()
     p = H.parse(rss, "https://portal.indeci.gob.pe/emergencias/feed/", "indeci-coen")
     assert [i["title"] for i in p.items] == ["Huaico en los distritos de Chosica y Lurigancho (Lima)"]
-    assert any("no naturales" in r for r in p.repairs)
+    assert any("no naturales" in r for r in p.repairs) and any("simulacro" in r for r in p.repairs)
 
 
 def test_arcgis_warnings_from_indeci_copy_of_senamhi():
@@ -147,3 +150,25 @@ def test_alerts_tab_keeps_senamhi_warnings_and_drops_press_notes():
     rain = next(a for a in tg if "precipitaciones en la costa centro y sur" in a["title"])
     assert rain["hazards"] == ["lluvias"]  # «mochila de emergencia» es un consejo, no otro peligro
     assert all(a["archive"].split("#")[1] for a in alerts)
+
+
+def test_dhn_swell_and_wind_warnings_read_every_title_format():
+    found, status = _collect("dhn-avisos")
+    assert status["dhn-avisos"]["ok"] and found
+    swell = next(i for i in found if "N° 42-26" in i["title"])
+    assert swell["title"].startswith("DHN · aviso especial de oleaje N° 42-26: oleaje fuerte en el litoral norte, centro y sur")
+    assert "oleaje" in swell["hazards"] and {"24", "20", "23"} <= set(swell["departments"])  # Tumbes, Piura, Tacna
+    assert not swell["summary"].startswith("La Marina")  # sin la fórmula de saludo
+    wind = next(i for i in found if "N° 22-26" in i["title"])
+    assert "brisa fuerte (hasta 24 nudos) entre Cerro Azul y Ático" in wind["title"] and "viento" in wind["hazards"]
+    assert all(i["link"].startswith("https://www.dhn.mil.pe/portal/avisos-especiales#") for i in found)
+    # Formatos anteriores a 2025: sin tipo en el título, que va entre corchetes, y «Nº» en vez de «NRO.»
+    old = ('<a href="https://www.dhn.mil.pe/portal/avisos-especiales">x</a><section id="avisos-especiales">'
+           '<div class="position-relative"><a href="https://www.dhn.mil.pe/portal/pdf-aviso-especial/118">PDF</a>'
+           '<div class="accordion-title"><span class="pe-2">AVISO ESPECIAL Nº 118</span> <span>[Vientos]</span></div>'
+           '<div class="accordion-content"><h4>La Marina de Guerra del Perú a través de la Dirección de Hidrografía y '
+           'Navegación, informa a la opinión pública que se presentará viento fuerte (hasta 25 nudos).</h4>'
+           '<div>Callao, 3 de setiembre del 2021</div></div></div></section>').encode()
+    p = H.parse(old, "https://www.dhn.mil.pe/portal/avisos-especiales", "dhn-avisos")
+    assert [i["title"] for i in p.items] == ["DHN · aviso especial de viento N° 118: viento fuerte (hasta 25 nudos)"]
+    assert p.items[0]["published"].startswith("2021-09-03") and p.items[0]["summary"].startswith("Se presentará")

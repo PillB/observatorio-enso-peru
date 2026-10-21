@@ -4495,6 +4495,19 @@
    "sha256": "1c3e3494ee14ded219200044795f3ccd8600a7bea173f4525c423aedaac5284a",
    "name": "news-senamhi-hidrologicos.json",
    "captured_by": "tools.scrape_ladder desde GitHub Actions, 2026-10-21T03:09:36+00:00"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/portal/avisos-especiales",
+   "final_url": "https://www.dhn.mil.pe/portal/avisos-especiales",
+   "status": 200,
+   "content_type": "text/html; charset=UTF-8",
+   "bytes": 157806,
+   "truncated": true,
+   "file": "news-dhn-avisos.html",
+   "sha256": "2454dc7094fde90f09596e6a34c7101b001805ed53214c774f5be8cd512c415f",
+   "name": "news-dhn-avisos.html",
+   "captured_by": "tools.scrape_ladder desde GitHub Actions, 2026-10-21T03:36 (bot/scrape-ladder, commit e235ac7)",
+   "note": "Recortada a los 30 avisos más recientes; la respuesta original tenía 2 352 326 bytes y 578 avisos (SHA-256 7fe85150beaa523be66f8c2007aaf9b6729f268722fe6e9096fc951d70a59978)."
   }
  ]
 }

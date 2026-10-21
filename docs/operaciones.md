@@ -10,6 +10,7 @@
 | `probe-sources.yml` | Lunes 09:17 UTC y a mano | Mide desde EE. UU. qué fuentes del registro responden, suma lo que bajó el recolector del Perú y regenera `registry/sources.json` (en `main`; en otras ramas, en `bot/registry/<rama>`) |
 | `capture-fixtures.yml` | A mano o al cambiar la herramienta de captura | Captura las respuestas reales usadas en el backtesting, en la rama `bot/fixtures/<rama>` y como artefacto |
 | `probe-feeds.yml` | A mano o al cambiar el sondeo o la lista de feeds candidatos | Sondea feeds candidatos; informe en `bot/news-probe/<rama>` y como artefacto |
+| `scrape-ladder.yml` | A mano o al cambiar la escalera o sus candidatos | Para fuentes sin API ni feed: prueba `robots.txt`, una petición simple, cabeceras de navegador, Chromium y (si hay clave) Firecrawl, en ese orden, y se detiene en el primer paso que funciona o ante una verificación anti-robots; informe en `bot/scrape-ladder/<rama>` y como artefacto |
 | `device-screens.yml` | A mano o al cambiar la herramienta de capturas | Capturas de Noticias en los dispositivos de referencia, en `bot/screens/<rama>` y como artefacto |
 
 Los flujos de desarrollo nunca escriben en la rama de trabajo: sus commits

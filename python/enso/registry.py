@@ -106,7 +106,7 @@ def _feed_entries() -> list[Entry]:
 
 #: Qué devuelve cada lector de ``news`` (``expect``) y cómo se accede (``method``).
 ADAPTER_KIND = {"feed": ("rss", "feed"), "indeci-coen": ("rss", "feed"), "gobpe": ("html", "html"),
-                "dhn": ("html", "html"), "cenvul": ("html", "html"), "telegram": ("html", "html"),
+                "dhn": ("html", "html"), "dhn-avisos": ("html", "html"), "cenvul": ("html", "html"), "telegram": ("html", "html"),
                 "geojson": ("json", "api"), "arcgis": ("json", "api"), "ptwc-text": ("text", "download"),
                 "firms": ("csv", "download")}
 
