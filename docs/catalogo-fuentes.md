@@ -132,12 +132,17 @@ Perú y las de medios sin feed propio con `site:`: El Peruano, Radio Nacional,
 Panamericana, TV Perú, Esfera Radio, Chachapoyas Online, Radio Titanka,
 Diario Chaski, Diario HOY y Tumbes de Miércoles), Noticias ONU · Clima y Sin
 Rodeos Cajamarca. La lista sale del registro: `registry.reader_urls()`. Solo
-los pide la corrida diaria (`observatory.yml`, con `--reader-state`); las
-demás (la prueba de `capture-fixtures.yml`, una corrida a mano) los omiten.
-La hora de la última lectura buena de cada uno y sus notas se guardan
-también en la caché de Actions, así que una corrida que los leyó y no llegó
-a publicar no hace que la siguiente los pida de nuevo antes de tiempo ni se
-pierden sus notas. En el
+los piden las corridas de `observatory.yml` en `main` (con `--reader-state`);
+las demás (otra rama, la prueba de `capture-fixtures.yml`, una corrida a
+mano) los omiten. El plazo cuenta desde el último pedido, haya respondido o
+no (un 429 o un 5xx no se reintentan hasta el día siguiente), con un margen
+de 30 minutos porque la hora anotada es la de inicio de la corrida. Cada
+uno se pide una sola vez por corrida, sin reintento, y dos 429 seguidos de
+Google detienen los demás pedidos a Google en esa corrida. La hora del
+último pedido de cada uno y las notas de su última lectura buena se
+guardan también en la caché de Actions, así que una corrida que los pidió
+y no llegó a publicar no hace que la siguiente los pida de nuevo antes de
+tiempo ni se pierden sus notas. En el
 registro (`registry/sources.json`) su URL queda `robots-disallowed` con
 canales `["actions"]` y `"reader": true`; n8n y el recolector del Perú no
 los piden. Entre dos lecturas, `news/feeds.json` repite el estado de la

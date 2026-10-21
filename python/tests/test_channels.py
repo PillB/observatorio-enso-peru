@@ -583,13 +583,21 @@ def test_history_backup_is_fetched_every_run():
     # El estado de los feeds «reader» se guarda aunque la corrida falle después de leerlos.
     names = [s.get("uses", "") for s in steps]
     restore, save = names.index("actions/cache/restore@v4"), names.index("actions/cache/save@v4")
-    assert restore < steps.index(pipeline) < save and steps[save]["if"] == "always()"
+    assert restore < steps.index(pipeline) < save and steps[save]["if"].startswith("always()")
+    # Solo en main: la caché de otra rama no la ve main, que volvería a pedir los feeds antes de 20 h.
+    main = "github.ref == 'refs/heads/main'"
+    assert main in steps[restore]["if"] and main in steps[save]["if"] and main in pipeline["env"]["READER_STATE"]
+    assert '${READER_STATE:+--reader-state "$READER_STATE"}' in pipeline["run"]
+    # Si falla el archivo, se abre la incidencia de corrida fallida (el sitio pudo quedar por delante de la copia).
+    inc = wf["jobs"]["incidents"]
+    assert "archive" in inc["needs"]
+    assert any("needs.archive.result == 'failure'" in (st.get("if") or "") for st in inc["steps"])
     assert wf["jobs"]["archive"]["if"] == "success()"  # también al fusionar en main
 
 
 def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, monkeypatch):
-    """Un feed «reader» con una lectura buena hace menos de 20 h no se vuelve a pedir y queda su estado; uno
-    leído hace más, uno que falló la última vez o uno que antes se omitía por robots.txt sí se pide."""
+    """Un feed «reader» pedido hace menos de 20 h no se vuelve a pedir, haya respondido o no (como un lector
+    de feeds), y queda el estado de ese pedido; uno pedido hace más o uno que antes se omitía sí se pide."""
     from enso import news as N
 
     feeds = [f for f in N.FEEDS if "news.google.com" in f.url][:4]
@@ -617,12 +625,13 @@ def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, mo
     log = obs.EventLog()
     got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, NOW, None,
                            reader={f.url for f in feeds})
-    assert sorted(asked) == sorted(f.url for f in feeds[1:])
+    assert sorted(asked) == sorted([feeds[1].url, feeds[3].url])
     st = {s["id"]: s for s in got["feeds"]["feeds"]}
     assert st[feeds[0].id]["carried"] is True and st[feeds[0].id]["items"] == 7
     assert st[feeds[0].id]["checkedAt"] == ago(3)  # conserva la hora de la lectura: el plazo no se renueva
-    assert not any(s.get("carried") for fid, s in st.items() if fid != feeds[0].id)
-    assert any(e.code == "feeds-reader" and "3 pedidos" in e.message and "1 con la lectura anterior" in e.message
+    assert st[feeds[2].id]["carried"] is True and st[feeds[2].id]["ok"] is False  # falló hace 3 h: no se insiste
+    assert not any(s.get("carried") for fid, s in st.items() if fid not in (feeds[0].id, feeds[2].id))
+    assert any(e.code == "feeds-reader" and "2 pedidos" in e.message and "2 con la lectura anterior" in e.message
                for e in log.events)
     # Sin «reader» (otra fuente con canal Actions) se pide siempre.
     asked.clear()
@@ -682,6 +691,52 @@ def test_reader_feeds_are_not_asked_again_after_a_run_that_did_not_publish(tmp_p
     obs.acquire_news(fetcher, None, obs.PreviousPublication(str(tmp_path / "no-hay"), fetcher), obs.EventLog(),
                      NOW + timedelta(hours=3), None, reader=reader, reader_state=state)
     assert asked == []
+
+
+def test_a_reader_feed_that_failed_is_not_asked_again_within_a_day(tmp_path, monkeypatch):
+    """Un 429 o un 5xx también cuentan como pedido: un lector de feeds vuelve a la hora que le toca, no en la
+    corrida siguiente. Se pide una sola vez (sin reintento) y el estado conserva las notas de la última lectura
+    buena. El plazo tiene un margen de 30 min: la hora anotada es la de inicio de la corrida."""
+    from enso import news as N
+
+    feed = next(f for f in N.FEEDS if "news.google.com" in f.url)
+    monkeypatch.setattr(N, "FEEDS", [feed])
+    body = (Path(__file__).parent / "fixtures" / "sources" / feed.fixture).read_bytes()
+    asked, mode = [], {"code": 200}
+
+    def net(req):
+        asked.append(str(req.url))
+        return httpx.Response(mode["code"], content=body if mode["code"] == 200 else b"")
+
+    real = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
+    site = _history_site(tmp_path, [])
+    fetcher = Fetcher(polite_delay=0, plan={feed.url: ["actions"]})
+    state, reader = tmp_path / "state.json", {feed.url}
+
+    def run(hours):
+        log = obs.EventLog()
+        got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log,
+                               NOW + timedelta(hours=hours), None, reader=reader, reader_state=state)
+        return got, log
+
+    run(0)
+    good = json.loads(state.read_text())["feeds"][feed.url]["items"]
+    assert len(asked) == 1 and good
+    mode["code"] = 429
+    asked.clear()
+    got, _ = run(20.6)
+    assert len(asked) == 1  # una sola vez, sin reintento ante 429
+    saved = json.loads(state.read_text())["feeds"][feed.url]
+    assert saved["status"]["httpStatus"] == 429 and saved["items"] == good  # las notas buenas siguen ahí
+    asked.clear()
+    got, _ = run(25)
+    assert asked == [] and got["feeds"]["feeds"][0]["carried"] is True and got["feeds"]["feeds"][0]["ok"] is False
+    got, _ = run(20.6 + 20.2)  # 20,2 h después del 429: dentro del margen
+    assert asked == []
+    mode["code"] = 200
+    run(20.6 + 21)
+    assert len(asked) == 1
 
 
 def test_reader_feeds_are_only_read_by_the_daily_run(monkeypatch, tmp_path):

@@ -141,6 +141,10 @@ def test_collect_isolates_bad_feeds_and_slow_hosts():
     assert st["c1"]["ok"] and len(found) == 1 and set(raw) == {"c1"}
     found, status, _ = N.collect(lambda u: (200, RSS, "", ""), NOW, feeds=feeds, deadline=-1)
     assert not found and all("tiempo" in s["error"] for s in status)
+    # 429: el servidor pide que se le pida menos; tras dos seguidos no se le piden los demás.
+    calls.clear()
+    N.collect(lambda u: calls.append(u) or (429, b"", "", "HTTP 429"), NOW, feeds=feeds[:3])
+    assert calls == ["https://a.pe/1", "https://a.pe/2"]
 
 
 def test_history_is_append_only_and_csv_is_safe():

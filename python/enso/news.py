@@ -927,7 +927,8 @@ def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None, workers: i
             except Exception as exc:  # noqa: BLE001 — un feed que falla de forma inesperada no detiene a los demás
                 results[f.id] = (_status(f, now, f"error inesperado: {type(exc).__name__}: {exc}"[:300]), [], None)
             st = results[f.id][0]
-            fails = fails + 1 if not st["ok"] and st.get("httpStatus") is None else 0
+            # Sin respuesta, o 429 (el servidor pide que se le pida menos): cuenta para dejar de pedirle.
+            fails = fails + 1 if not st["ok"] and st.get("httpStatus") in (None, 429) else 0
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         list(ex.map(run_group, _by_host(feeds)))

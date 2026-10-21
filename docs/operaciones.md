@@ -62,7 +62,12 @@ El trabajo `incidents` las convierte en issues con la etiqueta
   en lugar de abrir otro.
 - Cuando deja de aparecer, el issue se cierra con un comentario.
 - Una corrida que falla abre «La actualización diaria falló», que se
-  cierra sola con la siguiente corrida buena.
+  cierra sola con la siguiente corrida buena. También si solo falló el job
+  `archive`: el sitio se actualizó, pero `data-archive` y su copia del
+  histórico de noticias no. El despliegue no espera al archivo a propósito:
+  los datos y avisos oficiales salen aunque `data-archive` falle; a cambio,
+  si en la corrida siguiente el sitio tampoco responde, el histórico se
+  rehace con una copia a la que le faltan las notas de esa corrida.
 
 Códigos frecuentes:
 
@@ -78,6 +83,7 @@ Códigos frecuentes:
 | `relay-n8n-sources-down` | n8n corrió hoy, pero ninguna fuente le respondió | Nada en n8n: son las fuentes o la red de su nube; se usan copias de hasta 72 h |
 | `news-history-missing` | La publicación anterior no trajo el histórico de noticias tras tres intentos (el mensaje dice si no existe o si el sitio no respondió). Advertencia si se rehízo con la copia de `data-archive` (`sources/news/items.jsonl.gz`); error si tampoco se pudo leer la copia: se publican solo las notas de hoy y el histórico queda marcado `restarted`. El error se repite en cada corrida hasta que se lea la copia (la copia no pierde notas: el job `archive` solo le agrega) | Revisar el sitio publicado y el paso «News history backup» de la corrida |
 | `news-history-restored` | Esta corrida le agregó al histórico publicado notas de la copia de `data-archive` que no tenía (una corrida anterior no llegó a desplegar o lo publicó incompleto), o aceptó como está un histórico `restarted` porque `data-archive` no tiene copia | Ninguna: se resolvió sola |
+| `news-reader-restored` | Informativa: notas de feeds que se leen una vez al día que vienen de su última lectura (guardada en la caché de Actions), porque la corrida que las leyó no llegó a publicar | Ninguna |
 | `news-history-large` | `news/items.jsonl` pasa de 20 MiB; Cloudflare Pages no sirve archivos de más de 25 MiB | Dividir el histórico (por ejemplo, un archivo por mes) antes de que llegue al límite |
 | `relay-token-expiring` | El token de GitHub del recolector vence en menos de 21 días | Crear un token nuevo y ejecutar INSTALAR en el equipo del recolector con ese token ([servidor-peru](servidor-peru.md#1-token-de-github)) |
 | `carried-forward` | Se conservó el dato de la publicación anterior | Revisar la fuente si persiste |

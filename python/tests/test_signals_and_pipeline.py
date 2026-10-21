@@ -243,6 +243,29 @@ def test_a_run_without_news_serves_the_previous_news(pub, tmp_path):
     assert "news/items.jsonl" in man["files"]
 
 
+def test_a_run_whose_news_failed_keeps_the_last_alerts_and_says_no_source_was_read(pub, tmp_path, monkeypatch):
+    """Si leer las noticias falla, las alertas son las últimas conocidas y cada fuente de alertas figura
+    como no leída (sin avisos no es sin peligro). Dos corridas así seguidas dicen de cuándo son las noticias."""
+    prev, _ = pub
+
+    def boom(*a, **kw):
+        raise RuntimeError("simulado")
+
+    monkeypatch.setattr(obs, "acquire_news", boom)
+    out = tmp_path / "data"
+    obs.run(out, str(prev), fixtures=FIX)
+    groups = {g["id"]: g for g in json.loads((out / "feed.json").read_text(encoding="utf-8"))["groups"]}
+    before = {g["id"]: g for g in json.loads((prev / "feed.json").read_text(encoding="utf-8"))["groups"]}
+    assert groups["alertas"]["items"] and len(groups["alertas"]["items"]) == len(before["alertas"]["items"])
+    assert groups["alertas"]["sources"] and not any(s["ok"] for s in groups["alertas"]["sources"])
+    for it in groups["alertas"]["items"]:
+        assert (out / it["archive"].split("#")[0]).exists()
+    first = json.loads((out / "news" / "feeds.json").read_text(encoding="utf-8"))["carriedFrom"]
+    again = tmp_path / "data2"
+    obs.run(again, str(out), fixtures=FIX)
+    assert json.loads((again / "news" / "feeds.json").read_text(encoding="utf-8"))["carriedFrom"] == first
+
+
 def test_raw_archive_skips_fixtures(tmp_path):
     a = obs.Acquired(obs.SOURCE_BY_ID["cpc-roni"], raw=b"datos", channel="direct", sha256="ab" * 32)
     b = obs.Acquired(obs.SOURCE_BY_ID["cpc-oni"], raw=b"datos", channel="fixture", sha256="cd" * 32)

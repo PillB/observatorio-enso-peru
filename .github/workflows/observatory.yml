@@ -167,10 +167,13 @@ jobs:
             echo "::warning::No se pudo bajar la copia del histórico de noticias: $(head -c 300 "$RUNNER_TEMP/history.err")"
           fi
 
-      # Última lectura buena de los feeds que robots.txt no permite y se leen
-      # como un lector de feeds (una vez al día): sobrevive a una corrida que
-      # los leyó y no llegó a publicar, para no volver a pedirlos antes de tiempo.
+      # Último pedido (y notas de la última lectura buena) de los feeds que
+      # robots.txt no permite y se leen como un lector de feeds, una vez al día:
+      # sobrevive a una corrida que los pidió y no llegó a publicar. Solo en
+      # main: la caché de otra rama no la ve main, que los volvería a pedir;
+      # fuera de main esos feeds no se piden.
       - name: Restore the reader-feed state
+        if: github.ref == 'refs/heads/main'
         continue-on-error: true
         uses: actions/cache/restore@v4
         with:
@@ -187,6 +190,7 @@ jobs:
           N8N_DIR: ${{ steps.n8n.outputs.dir }}
           HISTORY_DIR: ${{ steps.history.outputs.dir }}
           HISTORY_ABSENT: ${{ steps.history.outputs.absent }}
+          READER_STATE: ${{ github.ref == 'refs/heads/main' && format('{0}/reader-state.json', runner.temp) || '' }}
         run: |
           python -m enso.observatory \
             --out ../public/data \
@@ -196,11 +200,11 @@ jobs:
             ${N8N_DIR:+--n8n-dir "$N8N_DIR"} \
             ${HISTORY_DIR:+--history-dir "$HISTORY_DIR"} \
             ${HISTORY_ABSENT:+--history-absent} \
-            --reader-state "$RUNNER_TEMP/reader-state.json" \
+            ${READER_STATE:+--reader-state "$READER_STATE"} \
             --fail-on critical
 
       - name: Save the reader-feed state
-        if: always()
+        if: always() && github.ref == 'refs/heads/main'
         continue-on-error: true
         uses: actions/cache/save@v4
         with:
@@ -303,7 +307,7 @@ jobs:
 
   incidents:
     # Corre siempre que el build haya llegado a producir un informe.
-    needs: [build, deploy]
+    needs: [build, deploy, archive]
     if: always() && needs.build.result != 'skipped' && github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -333,19 +337,19 @@ jobs:
             python -m tools.sync_issues --report ../report/run-report.json --run-url "$RUN_URL"
           fi
       - name: Open an issue when the run itself failed
-        if: needs.build.result == 'failure' || needs.deploy.result == 'failure'
+        if: needs.build.result == 'failure' || needs.deploy.result == 'failure' || needs.archive.result == 'failure'
         uses: actions/github-script@v8
         with:
           script: |
             const title = '[datos] La actualización diaria falló';
             const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
             const url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const body = `La corrida ${url} terminó con error (build: ${{ needs.build.result }}, despliegue: ${{ needs.deploy.result }}). El sitio publicado sigue mostrando la publicación anterior.\n\n<!-- enso-fp:run-failed -->`;
+            const body = `La corrida ${url} terminó con error (build: ${{ needs.build.result }}, despliegue: ${{ needs.deploy.result }}, archivo: ${{ needs.archive.result }}). Si falló el build o el despliegue, el sitio sigue mostrando la publicación anterior; si falló el archivo, el sitio se actualizó pero data-archive (y su copia del histórico de noticias) no.\n\n<!-- enso-fp:run-failed -->`;
             const prev = open.find(i => (i.body || '').includes('enso-fp:run-failed'));
             if (prev) await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body: `Volvió a fallar: ${url}` });
             else await github.rest.issues.create({ ...context.repo, title, body, labels: ['incidente-datos'] });
       - name: Close the run-failure issue after a good run
-        if: needs.build.result == 'success' && needs.deploy.result == 'success'
+        if: needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
         uses: actions/github-script@v8
         with:
           script: |
@@ -373,7 +377,10 @@ jobs:
         continue-on-error: true
       - name: Commit new raw responses to the data-archive branch
         run: |
-          [ -d raw ] || exit 0
+          if [ ! -d raw ]; then
+            echo "::warning::No llegaron las respuestas de la corrida (artefacto raw-sources): data-archive no se actualiza y su copia del histórico de noticias queda sin las notas de hoy."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           if git ls-remote --exit-code --heads origin data-archive >/dev/null; then
@@ -402,7 +409,13 @@ jobs:
           git add sources
           git diff --cached --quiet && exit 0
           git commit -q -m "archive: raw source responses $(date -u +%F)"
-          git push origin data-archive
+          # Solo este flujo escribe en data-archive y sus corridas no se cruzan: un rechazo es de la red.
+          for i in 1 2 3; do
+            git push origin data-archive && exit 0
+            sleep $((i * 15))
+          done
+          echo "::error::No se pudo subir a data-archive tras tres intentos."
+          exit 1
 
   keepalive:
     # GitHub desactiva los flujos programados tras 60 días sin actividad en
