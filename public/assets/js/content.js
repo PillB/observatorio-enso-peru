@@ -118,7 +118,8 @@ export const TOUR_MODES = [
     { route: '#/oceano', target: 'ocean-winds', title: 'Vientos alisios', text: 'Índices de NOAA en tres franjas del Pacífico. Positivo = viento del este (normal); negativo = flujo de oeste a este, típico de El Niño.' },
   ] },
   { id: 'termoclina', title: 'Termoclina', desc: 'Calor bajo la superficie.', steps: [
-    { route: '#/oceano', target: 'ocean-heat', title: 'Contenido de calor', text: 'Temperatura media de los 300 m superiores. El observatorio no muestra D20 porque no hay una fuente pública verificada; se explica en Metodología.' },
+    { route: '#/oceano', target: 'ocean-heat', title: 'Contenido de calor', text: 'Temperatura media de los 300 m superiores del Pacífico ecuatorial.' },
+    { route: '#/oceano', target: 'ocean-d20', title: 'Profundidad de la termoclina', text: 'Anomalía de la profundidad de la isoterma de 20 °C en Niño 1+2 y Niño 3.4. Si es positiva, la capa cálida es más gruesa y el mar frente al Perú tarda más en enfriarse.' },
   ] },
   { id: 'soi', title: 'SOI y presión', desc: 'La componente atmosférica.', steps: [
     { route: '#/oceano', target: 'ocean-soi', title: 'SOI', text: 'Diferencia de presión Tahití − Darwin. Se muestra en dos escalas: la estandarizada de NOAA y la de Troup (×10) que usa la tabla del equipo GRD.' },

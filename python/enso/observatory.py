@@ -38,7 +38,7 @@ from pathlib import Path
 from typing import Any, Callable, Optional
 
 from .feeds import FormatChanged, Parsed
-from .feeds import cpc, peru
+from .feeds import cpc, godas, peru
 from . import archive
 from . import signals as sig
 
@@ -102,10 +102,60 @@ class Source:
     docs: str = ""
     critical: bool = False
     accept: tuple = ()
+    #: Descarga propia (varios pedidos) en lugar de ``fetcher.get(urls)``; devuelve un ``Response``.
+    fetch: Optional[Callable[[Any], Any]] = None
 
 
 def _txt(fn):
     return lambda resp: fn(resp.text)
+
+
+def _fetch_godas(fetcher):
+    """D20 de los meses de GODAS posteriores al histórico versionado (``enso/data/godas-d20.json``).
+
+    Por cada mes pide solo los primeros ≈6,5 MB del GRIB mensual (temperatura de 5 a 303 m) y guarda el D20
+    regional ya calculado: el cuerpo de la respuesta es ese JSON, que es lo que se archiva y lo que usan las
+    pruebas. Un mes que aún no existe responde 404. Si ningún pedido llega al servidor, falla la fuente."""
+    import httpx
+
+    from .fetch import FetchError, Response
+
+    history = godas.load_history()
+    months, errors, attempts = {}, {}, []
+    reached = False
+    for y, m in godas.months_to_fetch(history, datetime.now(timezone.utc).date()):
+        u = godas.url(y, m)
+        skip = fetcher.skip_reason(u)
+        if skip:
+            attempts.append({"url": u, "error": skip})
+            continue
+        fetcher._wait_host("ftp.cpc.ncep.noaa.gov")
+        try:
+            r = fetcher.client.get(u, headers={"Range": f"bytes=0-{godas.RANGE_BYTES - 1}"})
+        except httpx.HTTPError as exc:
+            attempts.append({"url": u, "error": f"{type(exc).__name__}: {exc}"[:200]})
+            continue
+        attempts.append({"url": u, "status": r.status_code})
+        reached = True
+        if r.status_code == 404:
+            continue
+        if r.status_code not in (200, 206):
+            errors[f"{y:04d}-{m:02d}"] = f"HTTP {r.status_code}"
+            continue
+        try:
+            months[f"{y:04d}-{m:02d}"] = godas.regional_d20(godas.pot_records(r.content))
+        except FormatChanged as exc:
+            errors[f"{y:04d}-{m:02d}"] = str(exc)
+    if not reached:
+        raise FetchError("sin respuesta del servidor de GODAS de NOAA/CPC", attempts)
+    if errors and not months:
+        raise FormatChanged("godas: ningún mes nuevo se pudo leer: " + "; ".join(f"{k}: {v}" for k, v in errors.items()))
+    body = json.dumps({"months": months, "errors": errors}, ensure_ascii=False, sort_keys=True).encode()
+    return Response(godas.BASE + "/", body, "direct", 200, "application/json", attempts=attempts)
+
+
+def _parse_godas(resp) -> Parsed:
+    return godas.build_series(json.loads(resp.text), godas.load_history())
 
 
 def _parse_enfen(resp) -> Parsed:
@@ -177,6 +227,9 @@ SOURCES: list[Source] = [
            ["https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ocean/index/heat_content_index.txt"],
            _txt(cpc.parse_heat_content), 31, 50, "index", "cpc-heat-content.txt",
            docs="https://www.cpc.ncep.noaa.gov/products/GODAS/"),
+    Source("cpc-godas-d20", "NOAA / CPC", "Profundidad de la isoterma de 20 °C (D20) en Niño 1+2 y Niño 3.4, calculada de GODAS",
+           [godas.BASE + "/"], _parse_godas, 31, 50, "index", "cpc-godas-d20.json", fetch=_fetch_godas,
+           docs=godas.DOCS),
     Source("igp-icen", "ENFEN / IGP", "ICEN oficial (Nota Técnica ENFEN 01-2024)",
            ["http://met.igp.gob.pe/datos/ICEN.txt", "https://met.igp.gob.pe/datos/ICEN.txt"],
            _txt(peru.parse_icen_txt), 31, 100, "index", "igp-icen.txt",
@@ -316,7 +369,8 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         if fixtures is not None:
             resp = _fixture_response(src, fixtures)
         else:
-            resp = fetcher.get(src.urls, archive=src.archive, save=src.save, accept=src.accept)
+            resp = src.fetch(fetcher) if src.fetch else fetcher.get(src.urls, archive=src.archive, save=src.save,
+                                                                     accept=src.accept)
         acq.attempts = resp.attempts
         acq.raw = resp.body
         parsed = src.parse(resp)
@@ -819,6 +873,21 @@ class Builder:
                                     source="cpc-heat", frequency="mensual", slo_days=50, climatology="1981–2010",
                                     history_from="1979-01", category=lambda v: {"tone": sig.anomaly_tone(v)},
                                     description=f"Anomalía de la temperatura media de los 300 m superiores del océano en el Pacífico ecuatorial ({region}, GODAS). Valores positivos indican una termoclina más profunda y calor acumulado bajo la superficie, que suele anticipar el calentamiento superficial.")
+
+        d20 = self.data("cpc-godas-d20")
+        if d20:
+            for key, sid, region, scope in (
+                    ("d20_coastal", "d20_nino12", "Niño 1+2 (0°–10°S, 90°–80°O)", "coastal"),
+                    ("d20_global", "d20_nino34", "Niño 3.4 (5°N–5°S, 170°–120°O)", "basin"),
+                    ("d20_180w100w", "d20_180w100w", "180°–100°O (5°N–5°S)", "basin")):
+                if d20.get(sid):
+                    self.add_series(key, d20[sid], label=f"Anomalía de D20, {region.split(' (')[0]} (GODAS)", units="m",
+                                    scope=scope, source="cpc-godas-d20", frequency="mensual", slo_days=50,
+                                    climatology="1991–2020", history_from="1980-01",
+                                    category=lambda v: {"tone": "warm" if v >= 10 else "cool" if v <= -10 else "neutral"},
+                                    description=f"Anomalía de la profundidad de la isoterma de 20 °C (D20) en {region}: promedio de área "
+                                                "del D20 de cada punto de NCEP GODAS menos su media 1991–2020 del mismo mes, calculado "
+                                                "por el observatorio. Positiva = termoclina más profunda (agua cálida más gruesa).")
 
     def events(self) -> list[dict]:
         s = self.series.get("icen")
