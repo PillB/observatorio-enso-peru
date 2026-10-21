@@ -20,6 +20,7 @@ Hay dos flujos, en `n8n/dist/`:
 | `enso-n8n-validacion.json` | Comprobar qué fuentes responden **desde ese n8n**. Descarga cada fuente del registro una vez y devuelve un informe (también en CSV) | Ninguna |
 | `enso-n8n-recolector.json` | Recolectar todos los días a las 22:50 (Lima) y publicar en `data-n8n` | Token de GitHub |
 | `enso-n8n-vigilante.json` | Cada 6 horas, revisar que el sitio publicado esté al día (`data/manifest.json`, `generatedAt` de menos de 30 h); si no, la ejecución falla y avisa | Ninguna |
+| `enso-n8n-extractor.json` | Respaldo con OpenAI para leer los informes del ENFEN cuando su formato cambia: el pipeline lo llama por un webhook con token y recibe una propuesta en JSON para revisión | OpenAI del colega y un token propio |
 
 Probados de punta a punta con n8n **2.44** y **1.123** (CI: `.github/workflows/n8n.yml`).
 
@@ -136,6 +137,54 @@ ya pasó sin que nadie lo notara. El vigilante no depende de GitHub: importar
 del sitio (hoy `https://pillb.github.io/observatorio-enso-peru/`; cambiarla
 si se muda a Cloudflare), y activarlo. Cuando falla, avisa el «Error
 workflow» de n8n (paso 5).
+
+## Extractor de informes con OpenAI (opcional)
+
+Cuando el lector de los informes y perspectivas del ENFEN encuentra un
+formato que no conoce, el pipeline puede pedir una segunda lectura a un
+modelo (`python/enso/reports.py`, `llm_extract`; contrato en
+[informes-texto.md](informes-texto.md)). El modelo solo **propone**: el
+pipeline vuelve a validar con el esquema y deja el resultado para revisión;
+nunca se publica solo. Solo se llama cuando el lector falla, así que el costo
+es bajo (unos 30 000 tokens por documento).
+
+El flujo: **Webhook** `POST /webhook/enso-extraer` con autenticación por
+cabecera → valida el pedido (`kind`, `schema`, `text`; si no, responde 400) →
+OpenAI `chat/completions` con temperatura 0 y `response_format: json_object`
+→ responde `{data, model, evidence}`. `evidence` trae, para cada valor, la
+cita del documento de donde sale. Si OpenAI falla responde 502 y el pipeline
+sigue sin la propuesta.
+
+Lo hace el colega:
+
+1. Generar un token largo y aleatorio (por ejemplo `openssl rand -hex 32`).
+2. **Credentials → Add credential → Header Auth**: Name `Authorization`,
+   Value `Bearer <token>`. Nombre de la credencial: `Token del extractor ENSO`.
+3. **Credentials → Add credential → OpenAI**: la clave de OpenAI. Nombre:
+   `OpenAI ENSO (n8n)`.
+4. Importar `n8n/dist/enso-n8n-extractor.json`. En **Petición del pipeline**
+   elegir `Token del extractor ENSO`; en **Preguntar al modelo**, `OpenAI ENSO (n8n)`.
+5. En **Configuración**, `model` (por defecto `gpt-4.1-mini`) se puede cambiar
+   por otro modelo de chat que admita `json_object`.
+6. Activar (n8n 1.x) o publicar (n8n 2.x). La dirección es la **Production
+   URL** del nodo Webhook: `https://<servidor-n8n>/webhook/enso-extraer` (no la
+   «Test URL»). Debe ser accesible desde internet por HTTPS.
+
+Lo hace Pablo, en GitHub → Settings → Secrets and variables → Actions:
+
+- `ENSO_LLM_EXTRACT_URL` = la Production URL del paso 6.
+- `ENSO_LLM_EXTRACT_TOKEN` = el token del paso 1 (sin «Bearer»).
+
+Prueba rápida (debe responder 400 con `«kind» debe ser …`, señal de que el
+token y el flujo funcionan):
+
+```
+curl -X POST "$ENSO_LLM_EXTRACT_URL" -H "Authorization: Bearer $ENSO_LLM_EXTRACT_TOKEN" \
+  -H 'content-type: application/json' -d '{"kind":"prueba","schema":{},"text":"x"}'
+```
+
+Sin el token responde 403. La prueba de punta a punta con n8n real y un
+OpenAI falso es `n8n/test/e2e-extractor.sh n8nio/n8n:2.44.4 /tmp/ext`.
 
 ## Qué publica
 

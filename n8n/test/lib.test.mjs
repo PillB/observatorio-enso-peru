@@ -345,3 +345,23 @@ test('Vigilante: falla si el sitio está viejo o no responde', async () => {
   await assert.rejects(runCode('vigilante', {}, cfg, [{ json: { statusCode: 200, data: '{"generatedAt":"2026-08-09T06:04:07+00:00"}' } }]), /desactualizado/);
   await assert.rejects(runCode('vigilante', {}, cfg, [{ json: { statusCode: 404, data: '' } }]), /no responde/);
 });
+
+test('Extractor: valida el pedido y convierte la respuesta de OpenAI', async () => {
+  const cfg = { 'Configuración': [{ json: { model: 'gpt-x', max_chars: 50 } }] };
+  const pedido = (body) => runCode('extraer-pedido', {}, { ...cfg, 'Petición del pipeline': [{ json: { body } }] });
+  const bad = await pedido({ kind: 'otro', schema: {}, text: 'x' });
+  assert.deepEqual([bad[0].json.ok, bad[0].json.status], [false, 400]);
+  const ok = await pedido({ kind: 'enfen-informe', schema: { type: 'object' }, text: 'a'.repeat(200), url: 'u', published: '2026-10-10' });
+  const r = ok[0].json.request;
+  assert.equal(ok[0].json.ok, true);
+  assert.deepEqual([r.model, r.temperature, r.response_format.type], ['gpt-x', 0, 'json_object']);
+  assert.ok(r.messages[1].content.endsWith('a'.repeat(50)) && !r.messages[1].content.includes('a'.repeat(51)));
+  const respuesta = (json) => runCode('extraer-respuesta', {}, cfg, [{ json }]);
+  const content = JSON.stringify({ data: { icen: 0.85 }, evidence: { icen: 'ICEN 0,85' } });
+  const good = await respuesta({ statusCode: 200, body: { model: 'gpt-x-2026', choices: [{ message: { content } }] } });
+  assert.deepEqual(good[0].json, { status: 200, body: { data: { icen: 0.85 }, model: 'gpt-x-2026', evidence: { icen: 'ICEN 0,85' }, usage: null } });
+  const bare = await respuesta({ statusCode: 200, body: { choices: [{ message: { content: '{"icen":1}' } }] } });
+  assert.deepEqual(bare[0].json.body.data, { icen: 1 });
+  assert.equal((await respuesta({ statusCode: 429, body: { error: { message: 'cuota' } } }))[0].json.status, 502);
+  assert.equal((await respuesta({ statusCode: 200, body: { choices: [{ message: { content: 'no es json' } }] } }))[0].json.status, 502);
+});
