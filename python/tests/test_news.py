@@ -53,10 +53,47 @@ def test_bad_feeds_are_rejected(body, msg):
 def test_relevance():
     gen = N.FEED_BY_ID["elcomercio"]
     haz = N.FEED_BY_ID["gdacs"]
-    assert N.relevance(gen, "Senamhi: lluvias intensas en Piura", "") is None  # medio general: exige término ENSO
+    assert N.relevance(gen, "Senamhi: lluvias intensas en Piura", "") == "impacto"  # peligro en el titular
+    assert N.relevance(gen, "Congreso aprueba ley", "durante las lluvias intensas de marzo") is None  # medio general: en el titular
     assert N.relevance(gen, "La Niña podría llegar en 2027", "") == "enso"
     assert N.relevance(haz, "Flood alert in Peru", "Heavy rain in Piura") == "impacto"
     assert N.relevance(haz, "Flood alert in Spain", "") is None  # feed del mundo: debe mencionar el Perú
+
+
+LOCAL = N.Feed("x", "Diario regional", "peru", "https://x.pe/feed", scope="local", kind="diario", department="20")
+
+
+@pytest.mark.parametrize("title,summary,expected", [
+    # Revisión de 300 entradas: lo que no es un peligro aunque use sus palabras.
+    ("Kristen Bell, la Anna de Frozen y su cruzada por la autoestima de las niñas", "de la niña que fue", None),
+    ("Israel reconoce que sus soldados dispararon al vehículo de Hind Rajab, la niña palestina", "", None),
+    ("Ministerio autorizó a IMARPE la pesca exploratoria de anchoveta blanca", "en el litoral del mar peruano", None),
+    ("Convocatoria para la contratación de un(a) Desarrollador(a) de Servicios Climáticos", "Centro del Fenómeno El Niño", None),
+    ("SENAMHI: Pronóstico del clima hoy domingo 18 de octubre 2026", "probabilidad de lluvias", None),
+    ("Huancavelica: tres integrantes de una familia mueren en accidente vehicular", "la lluvia dejó la vía en mal estado", None),
+    ("La Libertad: Gobierno prorrogó por 60 días el estado de emergencia en Pataz", "por la criminalidad y la minería ilegal", None),
+    ("Modernizarán infraestructura deportiva de colegio", "techo para protegerse de la radiación y las lluvias", None),
+    ("Dengue cobra una nueva víctima en Lambayeque", "la cifra de fallecidos llega a 10", None),
+    ("Sedapal refuerza planta La Atarjea para asegurar agua en Lima durante FEN", "", "enso"),
+    # Lo que sí: el ENSO y todos los peligros que alerta el observatorio.
+    ("Chosica se prepara ante posible activación de quebradas", "", "impacto"),
+    ("Sismo de magnitud 5,0 remece Junín", "", "impacto"),
+    ("Incendio forestal en Julao fue extinguido", "", "impacto"),
+    ("Senamhi alerta ola de calor en la costa norte", "", "impacto"),
+    ("Friaje: temperaturas bajarán en la selva", "", "impacto"),
+    ("Dengue: casos aumentan tras las lluvias en Piura", "", "impacto"),
+    ("Volcán Sabancaya registra explosiones", "", "impacto"),
+    ("Piura soporta primeras lluvias", "", "impacto"),
+])
+def test_relevance_rules(title, summary, expected):
+    assert N.relevance(LOCAL, title, summary) == expected
+
+
+def test_hazard_types():
+    assert N.hazards("Huaico en Chosica deja damnificados", "") == ["huaico", "emergencia"]
+    assert N.hazards("El Niño costero: lluvias intensas y desbordes en Tumbes") == ["enso", "lluvias", "inundacion"]
+    assert N.hazards("Heladas y friaje en Puno", "") == ["frio"]
+    assert N.hazards("Dengue en Lambayeque", "") == []
 
 
 def _collect(bodies):
@@ -131,3 +168,17 @@ def test_live_capture_clusters_are_coherent():
         assert not any(o.lower() in ("facebook", "instagram", "x", "youtube") for o in g["outlets"])
         assert len({l["url"] for l in g["links"]}) == len(g["links"])
         assert not any(g["title"].endswith(f" - {o}") for o in g["outlets"])
+
+
+@pytest.mark.parametrize("title,expected", [
+    ("Un sismo de magnitud 3.5 se sintió esta mañana en la región Pasco", None),
+    ("Un sismo de magnitud 4.8 remeció la región Ucayali esta madrugada", "impacto"),
+    ("Minedu activa app para reportar emergencias en colegios", None),
+    ("Clima en Cusco hoy miércoles 14 de octubre", None),
+    ("¡ALERTA ESTE VIERNES! Senamhi advierte FUERTE evento por las próximas 24 HORAS", "impacto"),
+    ("Incencios forestales han dejado 12 personas fallecidas, reporta Indeci", "impacto"),
+    ("Senamhi alerta por calor extremo y alta radiación UV en Lima", "impacto"),
+    ("Vientos de hasta 30 km/h en Palpa, Ica", "impacto"),
+])
+def test_relevance_edges(title, expected):
+    assert N.relevance(LOCAL, title, "") == expected
