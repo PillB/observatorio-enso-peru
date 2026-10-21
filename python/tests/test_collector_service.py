@@ -549,6 +549,56 @@ def test_uninstall_keeps_the_folder_when_the_task_cannot_be_removed(tmp_path, mo
     assert "no se borró" in r.stdout + r.stderr
 
 
+@pytest.mark.skipif(sys.platform != "linux", reason="el respaldo sin Python usa cron (Linux)")
+@pytest.mark.parametrize("message, deleted", [("no crontab for pablo", True),
+                                               ("You (pablo) are not allowed to use this program", False)])
+def test_uninstall_without_python_reads_the_crontab_before_rewriting_it(tmp_path, message, deleted):
+    """Sin .venv, DESINSTALAR quita las líneas con crontab directamente: un
+    crontab ilegible no se reescribe vacío ni se da por quitado."""
+    dest = tmp_path / "instalacion"
+    dest.mkdir()
+    (dest / "kit.json").write_text("{}", encoding="utf-8")
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    log = tmp_path / "crontab.log"
+    fake = bin_dir / "crontab"
+    fake.write_text(f"#!/bin/sh\necho \"$*\" >> '{log}'\n[ \"$1\" = -l ] && {{ echo '{message}' >&2; exit 1; }}\n"
+                    "cat >/dev/null\n", encoding="utf-8")
+    fake.chmod(0o755)
+    env = {**os.environ, "HOME": str(tmp_path), "ENSO_SIN_PAUSA": "1", "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}"}
+    r = subprocess.run(["bash", str(REPO_ROOT / "collector" / "instalar.sh"), "--desinstalar", "--no-interactivo",
+                        "--destino", str(dest)], capture_output=True, text=True, env=env, timeout=60)
+    assert dest.exists() is not deleted, r.stdout + r.stderr
+    assert "-" not in log.read_text().split(), "no debe reescribir el crontab"
+    assert (r.returncode == 0) is deleted
+
+
+@pytest.mark.parametrize("stderr, lines", [
+    ("no crontab for pablo\n", []),                                   # cronie, Debian
+    ("crontab: no crontab for pablo\n", []),                          # macOS
+    ("crontab: can't open 'pablo': No such file or directory\n", []),  # busybox
+    ("You (pablo) are not allowed to use this program (crontab)\n", None),
+    ("crontab: your UID isn't in the passwd file. bailing out.\n", None),
+])
+def test_unreadable_crontab_is_not_read_as_empty(monkeypatch, stderr, lines):
+    """Leer el crontab como vacío por un error haría que instalar borre las
+    líneas ajenas y que desinstalar borre la carpeta con la tarea puesta."""
+    writes = []
+    monkeypatch.setattr(sched.subprocess, "run", lambda *a, **k: subprocess.CompletedProcess(a[0], 1, "", stderr))
+    monkeypatch.setattr(sched, "_crontab_write", writes.append)
+    if lines is not None:
+        assert sched._crontab_read() == lines and sched.remove_cron() is False
+        return
+    with pytest.raises(RuntimeError, match="no se pudo leer el crontab"):
+        sched.install_cron("/x/python", Path("/x"), ["21:00"])
+    with pytest.raises(RuntimeError):
+        sched.remove_cron()
+    assert writes == []
+    assert not sched.status_cron()["installed"] and "no se pudo leer" in sched.status_cron()["detail"]
+    monkeypatch.setattr(sched, "remove", sched.remove_cron)
+    assert sched.main(["quitar"]) == 1
+
+
 def test_schedule_cli_reports_a_failed_removal(monkeypatch, capsys):
     monkeypatch.setattr(sched, "remove", lambda: (_ for _ in ()).throw(RuntimeError("crontab no aceptó los cambios")))
     assert sched.main(["quitar"]) == 1

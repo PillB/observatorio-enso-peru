@@ -363,7 +363,19 @@ do_uninstall() {
     launchctl bootout "gui/$(id -u)/io.github.pillb.observatorio-enso.recolector" 2>/dev/null
     rm -f "$HOME/Library/LaunchAgents/io.github.pillb.observatorio-enso.recolector.plist" || removed=0
   elif command -v crontab >/dev/null 2>&1; then
-    { crontab -l 2>/dev/null | grep -v 'observatorio-enso-recolector' | crontab -; } || removed=0
+    # Sin crontab no hay nada que quitar; si no se puede leer, no se reescribe a ciegas.
+    local cur
+    if cur=$(crontab -l 2>/dev/null); then
+      case "$cur" in
+        *observatorio-enso-recolector*)
+          printf '%s\n' "$cur" | grep -v 'observatorio-enso-recolector' | crontab - || removed=0 ;;
+      esac
+    else
+      case "$(crontab -l 2>&1)" in
+        *"no crontab"* | *"No such file"* | *"no such file"*) ;;
+        *) removed=0 ;;
+      esac
+    fi
   fi
   # Sin la tarea quitada, borrar la carpeta dejaría una tarea que falla cada noche.
   [ "$removed" = 1 ] || die "No se pudo quitar la tarea programada; la carpeta $DEST no se borró." \

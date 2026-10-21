@@ -169,7 +169,10 @@ unzip recolector-peru.zip && bash recolector-peru/collector/instalar.sh
 Queda en `~/.local/share/observatorio-enso/recolector` con líneas en el
 `crontab` del usuario (marcadas `observatorio-enso-recolector`), incluida
 una al encender (`@reboot`). Si faltan Python o el módulo venv:
-`sudo apt install git python3 python3-venv`.
+`sudo apt install git python3 python3-venv`. Si dice «no se pudo leer el
+crontab», el usuario no tiene permiso para usar cron (`/etc/cron.allow` o
+`/etc/cron.deny`): el instalador no toca el crontab ni, al desinstalar,
+borra la carpeta hasta que `crontab -l` funcione.
 
 ### Opciones
 

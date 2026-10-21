@@ -161,9 +161,24 @@ def cron_lines(python: str, root: Path, times: list[str]) -> list[str]:
     return [*lines, f"@reboot sleep 300 && {cmd} {CRON_TAG}"]
 
 
+#: Lo que dice ``crontab -l`` cuando el usuario aún no tiene crontab (cronie,
+#: Debian, macOS: «no crontab for …»; busybox: «can't open '…': No such file»).
+_NO_CRONTAB = ("no crontab for", "no such file")
+
+
 def _crontab_read() -> list[str]:
+    """Las líneas del crontab del usuario; [] si todavía no tiene.
+
+    Cualquier otro fallo (permisos, cron.allow, demonio roto) es un error:
+    leerlo como vacío haría que instalar borre las líneas ajenas y que
+    desinstalar diga que no había tarea y borre la carpeta igual."""
     r = subprocess.run(["crontab", "-l"], capture_output=True, text=True, timeout=30)
-    return r.stdout.splitlines() if r.returncode == 0 else []
+    if r.returncode == 0:
+        return r.stdout.splitlines()
+    err = (r.stderr or "").strip()
+    if any(m in err.lower() for m in _NO_CRONTAB):
+        return []
+    raise RuntimeError(f"no se pudo leer el crontab (código {r.returncode}): {err or 'sin detalle'}")
 
 
 def _crontab_write(lines: list[str]) -> None:
@@ -192,8 +207,8 @@ def remove_cron() -> bool:
 def status_cron() -> dict:
     try:
         mine = [line for line in _crontab_read() if CRON_TAG in line]
-    except (OSError, subprocess.SubprocessError):
-        return {"kind": "cron", "installed": False, "detail": "crontab no disponible"}
+    except (OSError, subprocess.SubprocessError, RuntimeError) as exc:
+        return {"kind": "cron", "installed": False, "detail": f"crontab no disponible: {exc}"}
     program = None
     if mine:
         parts = shlex.split(mine[0].split(" && ", 1)[1].split(" >", 1)[0])
