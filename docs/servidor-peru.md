@@ -304,9 +304,10 @@ nadie está mirando.
   Con él el sitio distingue «el equipo no corre» (latido viejo:
   `relay-stale`) de «las instituciones no responden ni desde el Perú»
   (latido reciente: `relay-sources-down`).
-- **Protecciones:** un candado impide dos corridas a la vez; una corrida
-  colgada se corta a los 45 minutos; git corre sin ventanas de contraseña
-  ni ayudantes de credenciales (el token no termina en el Llavero ni en el
+- **Protecciones:** un candado impide dos corridas a la vez (el de una
+  corrida que ya no está, porque se apagó el equipo o se reinstaló, se
+  descarta enseguida); una corrida colgada se corta a los 45 minutos; git
+  corre sin ventanas de contraseña ni ayudantes de credenciales (el token no termina en el Llavero ni en el
   Administrador de credenciales) y corta una subida trabada.
 - **Registro:** `logs/recolector.log` (rota a los 2 MB y guarda 5),
   `estado.json` (último intento, resultado, motivo y qué hacer),
@@ -348,7 +349,8 @@ solución. Los más frecuentes:
 | macOS: «no se puede abrir» | Archivo descargado de internet | Usar el método de Terminal (`bash` + arrastrar el archivo) |
 | Linux: «Falta el módulo venv» | Debian y Ubuntu lo separan | `sudo apt install python3-venv` |
 | `zona-horaria`: el equipo no usa la hora de Lima | Equipo con otra zona | Funciona igual; si la zona cambia de horario (verano), ejecutar `INSTALAR` otra vez |
-| `ultima-corrida`: «ya hay una recolección en curso» | Otra corrida está trabajando | Esperar; un candado de más de 2 horas se descarta solo |
+| `ultima-corrida`: «ya hay una recolección en curso» | Otra corrida está trabajando | Esperar |
+| `ultima-corrida`: «la última recolección se cortó antes de terminar» | Se apagó el equipo o se reinstaló durante la recolección | Nada: se reintenta en la próxima hora programada |
 | Dos computadoras recolectando | Ambas suben; gana la última y la otra reintenta | Dejar una sola instalada |
 
 Si sigue sin funcionar, enviar a quien mantiene el sitio el último
