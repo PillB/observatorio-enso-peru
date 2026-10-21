@@ -207,3 +207,34 @@ def test_live_capture_clusters_are_coherent():
 ])
 def test_relevance_edges(title, expected):
     assert N.relevance(LOCAL, title, "") == expected
+
+
+def test_equivalent_links_and_url_outlets():
+    """Revisión: «?outputType=» y «utm_» no separan la misma nota; « - https://medio.pe/» sale del titular."""
+    assert N._norm_link("https://elcomercio.pe/peru/nota/?outputType=amp") == N._norm_link("https://elcomercio.pe/peru/nota")
+    assert N._norm_link("https://x.pe/n?utm_source=a&id=3") == N._norm_link("http://www.x.pe/n?id=3") == "x.pe/n?id=3"
+    assert N._norm_link("https://x.pe/n?preference=1") == "x.pe/n?preference=1"
+    assert N._strip_outlet("Lluvias en Huánuco - https://hbanoticias.pe/", "hbanoticias.pe") == "Lluvias en Huánuco"
+    assert N._strip_outlet("Lluvias - https://otro.pe/", "hbanoticias.pe") == "Lluvias - https://otro.pe/"
+
+
+def test_probe_feeds_only_replaces_what_it_probes(tmp_path, monkeypatch):
+    """Revisión: ``--only`` no borra las demás capturas ni el informe, y una corrida sin red falla."""
+    import json as _json
+
+    from tools import probe_feeds as P
+
+    cands = tmp_path / "c.json"
+    cands.write_text(_json.dumps([{"id": "a", "name": "A"}, {"id": "b", "name": "B"}]), encoding="utf-8")
+    out = tmp_path / "out"
+    out.mkdir()
+    (out / "a.xml").write_text("<rss/>")
+    (out / "b.xml").write_text("<rss/>")
+    (out / "report.json").write_text(_json.dumps({"results": [{"id": "a", "ok": True}, {"id": "b", "ok": True}]}))
+    monkeypatch.setattr(P, "Probe", lambda: None)
+    monkeypatch.setattr(P, "safe_probe", lambda pr, c, now, o: {"id": c["id"], "ok": False, "tried": []})
+    assert P.main(["--out", str(out), "--candidates", str(cands), "--only", "b"]) == 0  # «a» sigue bien
+    assert (out / "a.xml").exists() and not (out / "b.xml").exists()
+    rep = _json.loads((out / "report.json").read_text())
+    assert [r["id"] for r in rep["results"]] == ["a", "b"] and rep["ok"] == 1
+    assert P.main(["--out", str(out), "--candidates", str(cands)]) == 1  # ninguno respondió

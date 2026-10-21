@@ -529,8 +529,14 @@ def _fold(s: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c)).lower().strip()
 
 
+_URL_SUFFIX_RE = re.compile(r"\s[-–|]\s+https?://(?:www\.)?([^/\s]+)/?$", re.I)
+
+
 def _strip_outlet(title: str, outlet: str) -> str:
     """Google Noticias (y algunos medios) terminan los titulares con « - Medio»."""
+    m = _URL_SUFFIX_RE.search(title)
+    if m and outlet and m.group(1).lower() == outlet.lower().removeprefix("www."):
+        return title[: m.start()].rstrip()  # « - https://medio.pe/» cuando el medio viene como URL
     for sep in (" - ", " – ", " | "):
         if outlet and title.endswith(sep + outlet):
             return title[: -len(sep + outlet)].rstrip()
@@ -597,7 +603,7 @@ def _outlet(i: dict) -> str:
 def _norm_link(url: str) -> str:
     """Enlace comparable: sin esquema, «www.», parámetros de campaña ni barra final."""
     u = re.sub(r"^https?://(www\.)?", "", url.strip().lower())
-    u = re.sub(r"[?&](utm_[a-z]+|outputType|ref|fbclid)=[^&#]*", "", u).rstrip("?&#/")
+    u = re.sub(r"(?<=[?&])(utm_[a-z]+|outputtype|ref|fbclid)=[^&#]*&?", "", u).rstrip("?&#/")
     return u
 
 

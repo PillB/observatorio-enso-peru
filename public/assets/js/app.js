@@ -625,9 +625,11 @@ function officialItem(it) {
     ${sourceLinks(it.url, it.archive, { when: it.retrievedAt })}</li>`;
 }
 
-function clusterItem(c, deps = {}) {
+function clusterItem(c, deps = {}, dep = '') {
   const more = c.links.length > 1;
-  const places = (c.places || []).slice(0, 3);
+  // Con un departamento elegido, sus lugares van primero: la tarjeta muestra por qué está en la lista.
+  const all = c.places || [];
+  const places = (dep ? [...all.filter((p) => p.code.startsWith(dep)), ...all.filter((p) => !p.code.startsWith(dep))] : all).slice(0, 3);
   return html`<li class="feed-item">
     <div class="feed-meta"><time datetime="${c.first}">${F.fmtDateTime(c.first).replace(' (hora de Lima)', '')}</time> · <span class="feed-inst">${c.outlets.slice(0, 3).join(', ')}${c.outlets.length > 3 ? ` y ${c.outlets.length - 3} más` : ''}</span></div>
     <h3 class="feed-title"><a href="${safeUrl(c.links[0].url)}" rel="noopener" target="_blank">${c.title}</a></h3>
@@ -701,7 +703,7 @@ VIEWS.noticias = {
       const hazWhat = p.peligro ? ` sobre ${(p.peligro === 'enso' ? 'El Niño / La Niña' : HAZARD_LABEL[p.peligro] || p.peligro).toLowerCase()}` : '';
       const what = `${tab === 'peru' ? 'del Perú' : 'del mundo'}${p.dep && deps[p.dep] ? ` en ${deps[p.dep]}` : ''}${hazWhat}`;
       $('#news-live').textContent = `${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what}`;
-      body.innerHTML = String(html`${filters}<section class="card" aria-label="Noticias ${what}">${list.length ? html`<p class="muted small news-count">${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what} en los últimos ${clusters.days} días</p><ul class="feed">${list.map((c) => clusterItem(c, deps))}</ul>` : html`<p class="muted">No hay noticias ${what} con este filtro en los últimos ${clusters.days} días.</p>`}</section>`);
+      body.innerHTML = String(html`${filters}<section class="card" aria-label="Noticias ${what}">${list.length ? html`<p class="muted small news-count">${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what} en los últimos ${clusters.days} días</p><ul class="feed">${list.map((c) => clusterItem(c, deps, p.dep))}</ul>` : html`<p class="muted">No hay noticias ${what} con este filtro en los últimos ${clusters.days} días.</p>`}</section>`);
       $$('.kind-chip', body).forEach((b) => b.addEventListener('click', () => {
         const n = { ...p, tipo: b.dataset.kind };
         setUrl(n);

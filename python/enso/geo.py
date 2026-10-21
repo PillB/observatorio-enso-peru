@@ -63,7 +63,7 @@ cocha, huanca, quilca, palca, cochas, pucara, nueva, alianza, libertad, providen
 el porvenir, sorochuco, lucre, luya, ocros, acos, tinta, frias, vilca, ilave, ayo, yanque, pampa, montero,
 maria, constitucion, choco, balsas, granada, manta, el alto, montevideo, las lomas, lomas, huaca, puerto,
 tres unidos, la merced, los baños del inca, banos, la cruz, cruz, rioja, mariscal caceres, padre abad,
-asia, gamarra, jorge chavez, mosca
+asia, gamarra, jorge chavez, mosca, habana, rosario
 """.replace("\n", " ").split(",") if w.strip()}
 #: Departamentos de ``WEAK`` que se aceptan también tras una preposición («lluvias en La Libertad»).
 WEAK_DEPARTMENTS = {"la libertad", "amazonas", "san martin"}
@@ -91,6 +91,8 @@ ANTI_RE = re.compile(
     r"centros? poblados?|comunidad(?:es)?(?: campesinas?| nativas?)?|diario|radio|canal|revista|banco|caja|"
     r"aeropuerto|emporio|galer[ií]as?|mercados?|hospital|colegio|instituci[oó]n educativa|i\.?e\.?)"
     r"\.?\s+(?:(?:de|del|la|el|los|las|a|usuarios de|campesina de|nativa de)\s+){0,2}$", re.I)
+#: Palabras que, después del nombre, lo vuelven otra cosa: «pisco sour» es un cóctel.
+NOT_PLACE_AFTER_RE = re.compile(r"^\s+(?:sour|acholado|quebranta|mosto verde)\b", re.I)
 DATELINE_RE = re.compile(r"^\s*,\s*\d{1,2}\s+de\s+[a-z]+", re.I)
 SEP_RE = re.compile(r"^\s*(?:,|y|e|,\s*y|,\s*e|-|–|/|and|,\s*and)\s*$")
 HEAD_PREFIX_RE = re.compile(r"^(?:[A-ZÁÉÍÓÚÑ ]{2,20}\s*\|\s*|[\"“«'‘]\s*)?")
@@ -119,7 +121,7 @@ NOTABLE_CAPITALS = {"chosica"}
 #: Nombres de uso común que el INEI escribe de otra forma, o que la prensa usa para otro distrito.
 ALIASES = {"surco": {"150140"}, "tambogrande": {"200114"}, "pichanaki": {"120303"},
            "carmen de la legua": {"070103"}, "nasca": {"1103", "110301"}, "nazca": {"1103", "110301"},
-           "banos del inca": {"060108"}, "cuzco": {"08"}, "lima metropolitana": {"1501"}, "lima provincias": {"15"},
+           "banos del inca": {"060108"}, "cuzco": {"08"}, "ciudad imperial": {"0801"}, "lima metropolitana": {"1501"}, "lima provincias": {"15"},
            # «Lima» y «Callao»: la provincia (Lima Metropolitana, Callao) y no el departamento ni el distrito.
            "lima": {"1501"}, "callao": {"0701"}}
 
@@ -242,6 +244,8 @@ class Gazetteer:
             prev = None
             if DATELINE_RE.match(after):
                 continue  # «Lima, 20 de octubre de 2026»: lugar de emisión del comunicado
+            if NOT_PLACE_AFTER_RE.match(after):
+                continue
             if informative and self._part_of_longer_name(folded, start, end, codes):
                 continue
             cue, hint = None, None

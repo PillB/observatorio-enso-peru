@@ -119,12 +119,25 @@ def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypat
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), _Site)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{srv.server_address[1]}"
+    got: dict = {}
+
+    def ladder():  # en otro hilo: las pruebas del sitio ya tienen Playwright abierto en este
+        try:
+            client = httpx.Client(trust_env=False, timeout=10)
+            got["rep"] = L.run([{"id": "spa", "url": f"{base}/app", "expect": "naranja"}], tmp_path,
+                               browser_ok=True, client=client)
+        except Exception as exc:  # noqa: BLE001 — se vuelve a lanzar abajo
+            got["exc"] = exc
+
+    t = threading.Thread(target=ladder)
     try:
-        client = httpx.Client(trust_env=False, timeout=10)
-        rep = L.run([{"id": "spa", "url": f"{base}/app", "expect": "naranja"}], tmp_path, browser_ok=True, client=client)
+        t.start()
+        t.join(120)
     finally:
         srv.shutdown()
-    r = rep["results"][0]
+    if "exc" in got:
+        raise got["exc"]
+    r = got["rep"]["results"][0]
     assert [s["step"] for s in r["steps"]] == ["http", "http-headers", "browser"]
     assert r["answer"] == "hidden-api" and r["dataUrl"] == f"{base}/data.json"
     browser = r["steps"][-1]
