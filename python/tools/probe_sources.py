@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import threading
 import time
@@ -26,19 +27,29 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso import registry  # noqa: E402
-from enso.reach import classify  # noqa: E402
+from enso.reach import Robots, classify  # noqa: E402
 
-UA = ("Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; source-probe; "
-      "+https://github.com/PillB/observatorio-enso-peru)")
+#: El contacto que ven las fuentes (como en enso.fetch): el sitio publicado o el repositorio.
+CONTACT = os.environ.get("ENSO_CONTACT_URL") or "https://github.com/PillB/observatorio-enso-peru"
+UA = f"Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; source-probe; +{CONTACT})"
 
 
 def probe(urls: list[str], vantage: str, timeout: float = 25.0) -> dict[str, dict]:
     client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
+    robots = Robots(client)
     locks: dict[str, threading.Lock] = defaultdict(threading.Lock)
     last: dict[str, float] = {}
 
     def one(url: str) -> tuple[str, dict]:
         host = urlparse(url).netloc
+        allowed = robots.allowed(url)
+        if not allowed:
+            # RFC 9309: ruta prohibida, o robots.txt inalcanzable (no se pide nada al servidor).
+            cls = "robots" if allowed is False else (robots.failure(url) or "connect")
+            return url, {"class": cls, "http": None, "bytes": 0, "ms": 0,
+                         "detail": "robots.txt no permite la ruta" if allowed is False else "robots.txt sin respuesta",
+                         "robots": "disallowed" if allowed is False else "unreachable",
+                         "at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "vantage": vantage}
         with locks[host]:  # una consulta a la vez por servidor, con pausa de cortesía
             wait = 1.5 - (time.monotonic() - last.get(host, 0))
             if wait > 0:
@@ -53,6 +64,7 @@ def probe(urls: list[str], vantage: str, timeout: float = 25.0) -> dict[str, dic
                 last[host] = time.monotonic()
         return url, {"class": classify(status, body, err), "http": status, "bytes": len(body),
                      "ms": int((time.monotonic() - started) * 1000), "detail": err,
+                     "robots": "allowed",
                      "at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "vantage": vantage}
 
     with ThreadPoolExecutor(max_workers=12) as ex:

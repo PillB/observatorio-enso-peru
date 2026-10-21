@@ -30,6 +30,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
+from .archive import news_page
 from .feedparse import LIMA, FeedError, parse as parse_any
 from .geo import FOREIGN_RE, PERU_RE as PERU_WORD_RE
 
@@ -657,8 +658,9 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
             "hazards": list(dict.fromkeys(h for i in its for h in (i.get("hazards") or hazards(i["title"], i.get("summary", ""))))),
             "departments": list(dict.fromkeys(d for i in its for d in (i.get("departments") or []))),
             "places": places[:6],
-            "links": [{"title": i["title"], "url": i["link"], "outlet": _outlet(i), "published": i.get("published"),
-                       "kind": i.get("kind") or _kind(i)}
+            "links": [{"id": i["id"], "title": i["title"], "url": i["link"], "outlet": _outlet(i),
+                       "published": i.get("published"), "kind": i.get("kind") or _kind(i),
+                       "archive": news_page(i)}
                       for i in its][:8],
         })
     out.sort(key=lambda g: (g["last"], g["count"]), reverse=True)
@@ -734,13 +736,17 @@ def _by_host(feeds: list[Feed]) -> list[list[Feed]]:
     return list(groups.values())
 
 
+def _status(f: Feed, now: datetime, error: str = "") -> dict:
+    return {"id": f.id, "name": f.name, "region": f.region, "url": f.url, "lang": f.lang, "scope": f.scope,
+            "kind": f.kind, "department": f.department, "checkedAt": now.isoformat(timespec="seconds"), "ok": False,
+            "items": 0, "relevant": 0, "latest": None, "active": False, "error": error, "format": None, "repairs": []}
+
+
 def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optional[bytes]]:
     from .geo import gazetteer
 
     seen_at = now.isoformat(timespec="seconds")
-    st = {"id": f.id, "name": f.name, "region": f.region, "url": f.url, "lang": f.lang, "scope": f.scope,
-          "kind": f.kind, "department": f.department, "checkedAt": seen_at, "ok": False, "items": 0,
-          "relevant": 0, "latest": None, "active": False, "error": "", "format": None, "repairs": []}
+    st = _status(f, now)
     code, body, ctype, err = fetch(f.url)
     st["httpStatus"] = code
     if code != 200 or not body:
@@ -803,20 +809,39 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
     return st, found, body
 
 
-def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None,
-            workers: int = 8) -> tuple[list[dict], list[dict], dict[str, bytes]]:
+def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None, workers: int = 8,
+            deadline: Optional[float] = None, host_failures: int = 2) -> tuple[list[dict], list[dict], dict[str, bytes]]:
     """Descarga los feeds. ``fetch(url)`` devuelve (estado, cuerpo, tipo, error) y debe ser seguro entre hilos.
+
+    Los feeds de un mismo servidor se piden en serie (cortesía). Tras ``host_failures``
+    fallos de red seguidos se omiten los demás feeds de ese servidor, y pasados
+    ``deadline`` segundos no se empiezan feeds nuevos: un servidor lento no puede
+    dejar al sitio sin noticias. Un error inesperado en un feed no afecta a los demás.
 
     Devuelve (entradas relevantes, estado por feed, cuerpos crudos por feed), en el orden del catálogo.
     """
+    import time
     from concurrent.futures import ThreadPoolExecutor
 
     feeds = FEEDS if feeds is None else feeds
     results: dict[str, tuple] = {}
+    started = time.monotonic()
 
     def run_group(group: list[Feed]) -> None:
+        fails = 0
         for f in group:
-            results[f.id] = _read_feed(f, fetch, now)
+            if fails >= host_failures:
+                results[f.id] = (_status(f, now, "omitido: el servidor no respondió a los feeds anteriores"), [], None)
+                continue
+            if deadline is not None and time.monotonic() - started > deadline:
+                results[f.id] = (_status(f, now, "omitido: se agotó el tiempo de la recolección de noticias"), [], None)
+                continue
+            try:
+                results[f.id] = _read_feed(f, fetch, now)
+            except Exception as exc:  # noqa: BLE001 — un feed que falla de forma inesperada no detiene a los demás
+                results[f.id] = (_status(f, now, f"error inesperado: {type(exc).__name__}: {exc}"[:300]), [], None)
+            st = results[f.id][0]
+            fails = fails + 1 if not st["ok"] and st.get("httpStatus") is None else 0
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         list(ex.map(run_group, _by_host(feeds)))

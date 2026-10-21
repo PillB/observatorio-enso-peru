@@ -30,8 +30,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.devices import DEVICES, context_options  # noqa: E402
 
+# El ancho de la pantalla es el del viewport de diseño (clientWidth). Con la
+# emulación móvil, innerWidth crece hasta el ancho del contenido cuando la
+# página desborda, así que compararlo consigo mismo nunca detecta nada.
 CHECK_JS = """() => {
   const doc = document.scrollingElement || document.documentElement;
+  const innerWidth = document.documentElement.clientWidth;
   const wide = [...document.querySelectorAll('main *')].filter((e) => {
     const r = e.getBoundingClientRect();
     return r.width > 0 && r.right > innerWidth + 1 && getComputedStyle(e).position !== 'fixed'

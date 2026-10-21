@@ -47,7 +47,7 @@ def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, r
     e = official.get("enfen") or {}
     if e.get("number"):
         items.append({
-            "group": "oficial", "id": "enfen", "institution": "ENFEN", "kind": "comunicado",
+            "group": "oficial", "id": "enfen", "source": "enfen-comunicados", "institution": "ENFEN", "kind": "comunicado",
             "title": f"Comunicado oficial N° {e['number']}: {e.get('status', '')}".strip(": "),
             "text": e.get("summary") or "", "date": e.get("issued"), "next": e.get("nextIssue"),
             "url": e.get("documentUrl") or e.get("url"), "stale": bool(e.get("stale")),
@@ -56,7 +56,7 @@ def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, r
     n = official.get("noaa") or {}
     if n.get("status"):
         items.append({
-            "group": "oficial", "id": "noaa", "institution": "NOAA / CPC", "kind": "discusión diagnóstica",
+            "group": "oficial", "id": "noaa", "source": "cpc-ensodisc", "institution": "NOAA / CPC", "kind": "discusión diagnóstica",
             "title": f"ENSO Diagnostic Discussion: {n.get('statusEs') or n['status']}",
             "text": n.get("synopsis") or "", "date": n.get("issued"), "next": n.get("nextIssue"),
             "url": n.get("url"), "stale": bool(n.get("stale")), "channel": n.get("channel"), "level": n.get("level"),
@@ -68,7 +68,7 @@ def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, r
             continue
         s = src("cpc-wksst")
         items.append({
-            "group": "mar", "id": f"weekly-{region}", "institution": "NOAA / CPC", "kind": "semanal",
+            "group": "mar", "id": f"weekly-{region}", "source": "cpc-wksst", "institution": "NOAA / CPC", "kind": "semanal",
             "title": f"{WEEKLY_LABEL.get(region, region)} semanal (OISST)", "value": lt.get("anom"), "units": "degC",
             "period": lt["date"], "periodKind": "date", "date": lt["date"], "sst": lt.get("sst"),
             "url": s.get("docs"), "channel": s.get("channel"), "stale": False,
@@ -83,7 +83,8 @@ def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, r
             s = src(meta["source"])
             prev = lt.get("previous") or {}
             items.append({
-                "group": group, "id": k, "institution": s.get("institution", ""), "kind": meta.get("frequency", ""),
+                "group": group, "id": k, "source": meta["source"], "institution": s.get("institution", ""),
+                "kind": meta.get("frequency", ""),
                 "title": meta["label"], "value": lt.get("value"), "units": meta.get("units"),
                 "period": lt.get("period"), "periodKind": meta.get("periodKind"),
                 "date": _period_date(lt.get("period") or ""), "change": prev.get("change"),

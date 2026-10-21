@@ -62,7 +62,8 @@ magdalena, yura, moro, supe, canta,
 cocha, huanca, quilca, palca, cochas, pucara, nueva, alianza, libertad, providencia, porvenir,
 el porvenir, sorochuco, lucre, luya, ocros, acos, tinta, frias, vilca, ilave, ayo, yanque, pampa, montero,
 maria, constitucion, choco, balsas, granada, manta, el alto, montevideo, las lomas, lomas, huaca, puerto,
-tres unidos, la merced, los baños del inca, banos, la cruz, cruz, rioja, mariscal caceres, padre abad
+tres unidos, la merced, los baños del inca, banos, la cruz, cruz, rioja, mariscal caceres, padre abad,
+asia, gamarra, jorge chavez, mosca
 """.replace("\n", " ").split(",") if w.strip()}
 #: Departamentos de ``WEAK`` que se aceptan también tras una preposición («lluvias en La Libertad»).
 WEAK_DEPARTMENTS = {"la libertad", "amazonas", "san martin"}
@@ -87,7 +88,8 @@ ANTI_RE = re.compile(
     r"sporting|deportivo|atl[eé]tico|proyecto especial|comisi[oó]n|junta de usuarios|comit[eé]|"
     r"placas?|tect[oó]nicas?|vientos?|combate|batalla|h[eé]roe|monumento|se[ñn]or|virgen|santuario|"
     r"sectore?s?|barrio|urbanizaci[oó]n|urb|asentamiento humano|aa\.?\s?hh|anexos?|caser[ií]os?|"
-    r"centros? poblados?|comunidad(?:es)?(?: campesinas?| nativas?)?|diario|radio|canal|revista|banco|caja)"
+    r"centros? poblados?|comunidad(?:es)?(?: campesinas?| nativas?)?|diario|radio|canal|revista|banco|caja|"
+    r"aeropuerto|emporio|galer[ií]as?|mercados?|hospital|colegio|instituci[oó]n educativa|i\.?e\.?)"
     r"\.?\s+(?:(?:de|del|la|el|los|las|a|usuarios de|campesina de|nativa de)\s+){0,2}$", re.I)
 DATELINE_RE = re.compile(r"^\s*,\s*\d{1,2}\s+de\s+[a-z]+", re.I)
 SEP_RE = re.compile(r"^\s*(?:,|y|e|,\s*y|,\s*e|-|–|/|and|,\s*and)\s*$")
@@ -312,6 +314,7 @@ class Gazetteer:
         # 1) departamentos y provincias inequívocos
         deps: list[str] = []
         provs: list[str] = []
+        named: set[str] = set()
         for m in found:
             codes = self._resolve(m.codes, m.hint)
             if len(codes) != 1:
@@ -329,6 +332,7 @@ class Gazetteer:
                 if not ok:
                     continue
             (deps if len(c) == 2 else provs).append(c)
+            named.add(m.name)
         # «Lima» junto a otros departamentos («Áncash, Junín y Lima») es el departamento.
         if "1501" in provs and len({d for d in deps if d != "15"} | {p[:2] for p in provs if p[:2] != "15"}) >= 2:
             provs = [p for p in provs if p != "1501"]
@@ -345,6 +349,10 @@ class Gazetteer:
             weak = m.name in WEAK
             if weak and m.cue != "level":
                 continue
+            if m.name in named:
+                continue  # «Chota» ya es la provincia: no el homónimo de otro departamento
+            if m.name in self.minor_alias and not m.informative and m.cue != "level":
+                continue  # en un titular en mayúsculas «DE MOSCA» no es el pueblo de Mosca
             by_prov = [c for c in cands if c[:4] in provs and c not in provs]
             by_dep = [c for c in cands if c[:2] in mentioned and c not in provs]
             backed = by_prov or by_dep
