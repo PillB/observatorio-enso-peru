@@ -23,6 +23,8 @@ Método de acceso, de lo más simple a lo más complejo (``tier``):
   5 ``hosted`` — servicio externo de rastreo (Firecrawl…), último recurso.
 Nunca se evaden CAPTCHAs ni verificaciones antirobots: una fuente así se
 marca ``challenge`` y se lee desde el Perú, si allí responde, o de otra fuente.
+Si el robots.txt del servidor prohíbe la ruta, la fuente queda sin canales
+(``robots-disallowed``) hasta que la institución lo permita o publique otra vía.
 """
 
 from __future__ import annotations
@@ -45,7 +47,7 @@ METHODS = {"api": 1, "feed": 1, "download": 1, "html": 2, "hidden-api": 3, "brow
 EXPECT = {"rss", "html", "pdf", "json", "text", "csv"}
 CHANNELS = ("actions", "n8n", "peru-server")
 #: Clases de resultado de una medición (el mismo clasificador en Actions, n8n y el Perú).
-CLASSES = {"ok", "http-403", "http-4xx", "http-5xx", "timeout", "connect", "dns", "tls", "challenge", "empty"}
+CLASSES = {"ok", "http-403", "http-4xx", "http-5xx", "timeout", "connect", "dns", "tls", "challenge", "empty", "robots"}
 #: Clases que, desde EE. UU., indican bloqueo y no caída (el servidor existe pero no atiende a la nube).
 BLOCK_CLASSES = {"http-403", "timeout", "connect", "challenge", "dns"}
 
@@ -166,7 +168,9 @@ def geoblock(url: str, reach: dict) -> dict:
         out["measured_at"] = max(filter(None, [out["measured_at"], pe.get("at")]), default=None)
     us_ok = bool(us) and us.get("class") == "ok"
     pe_ok = bool(pe) and pe.get("class") == "ok"
-    if us_ok:
+    if us and us.get("class") == "robots":
+        out["status"] = "robots-disallowed"  # el servidor pide no automatizar esta ruta: no la pide nadie
+    elif us_ok:
         out["status"] = "open"
     elif us and pe_ok:
         out["status"] = "geoblocked"
@@ -180,7 +184,9 @@ def geoblock(url: str, reach: dict) -> dict:
 
 
 def channels_for(status: str) -> list[str]:
-    """``peru-server`` si y solo si la fuente está (o parece) geobloqueada."""
+    """``peru-server`` si y solo si la fuente está (o parece) geobloqueada; ninguno si robots.txt lo prohíbe."""
+    if status == "robots-disallowed":
+        return []
     if status in ("geoblocked", "suspected-geoblock"):
         return ["peru-server"]
     return ["actions", "n8n"]
@@ -229,8 +235,9 @@ def validate(reg: dict) -> list[str]:
             errs.append(f"{sid}: expect «{s.get('expect')}» no válido")
         if s.get("method") not in METHODS or s.get("tier") != METHODS.get(s.get("method")):
             errs.append(f"{sid}: método o nivel no válido")
-        if not set(s.get("channels", [])) <= set(CHANNELS) or not s.get("channels"):
-            errs.append(f"{sid}: canales no válidos")
+        robots = (s.get("geoblock") or {}).get("status") == "robots-disallowed"
+        if not set(s.get("channels", [])) <= set(CHANNELS) or (not s.get("channels")) != robots:
+            errs.append(f"{sid}: canales no válidos (vacíos solo si robots.txt prohíbe la ruta)")
         if ("peru-server" in s.get("channels", [])) != (s.get("geoblocked") is True):
             errs.append(f"{sid}: peru-server debe usarse si y solo si la fuente está geobloqueada")
         if not str(s.get("url", "")).startswith(("http://", "https://")):

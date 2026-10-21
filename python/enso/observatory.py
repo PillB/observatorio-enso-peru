@@ -1115,6 +1115,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
 
 RELAY_STALE_HOURS = 36
 RELAY_TOKEN_WARN_DAYS = 21
+#: Tiempo máximo para empezar a pedir feeds de noticias (el build entero tiene 30 min).
+NEWS_DEADLINE_S = 600
 
 
 def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublication, log: EventLog,
@@ -1132,15 +1134,27 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             p = fixtures / by_url[url].fixture
             return (200, p.read_bytes(), "", "") if p.exists() else (None, b"", "", "sin captura")
     else:
+        # Cliente propio para los feeds: menos espera y menos reintentos que para las
+        # fuentes oficiales (son ~180 y un medio caído no debe retrasar la publicación).
+        from .fetch import Fetcher
+        import httpx
+        news_fetcher = Fetcher(timeout=20.0, retries=2, polite_delay=1.0, relay=getattr(fetcher, "relay", None))
+
         def fetch(url):
             try:
-                r = fetcher.get([url], archive=False)
+                r = news_fetcher.get([url], archive=False)
                 return 200, r.body, r.content_type, ""
             except FetchError as exc:
                 last = exc.attempts[-1] if exc.attempts else {}
                 return last.get("status"), b"", "", last.get("error") or f"HTTP {last.get('status')}"
+            except httpx.HTTPError as exc:  # redirecciones infinitas, gzip roto, URL inválida…
+                return None, b"", "", f"{type(exc).__name__}: {exc}"[:200]
 
-    found, status, raw = N.collect(fetch, now)
+    try:
+        found, status, raw = N.collect(fetch, now, deadline=None if fixtures is not None else NEWS_DEADLINE_S)
+    finally:
+        if fixtures is None:
+            news_fetcher.close()
     prev_text = previous.get_text("news/items.jsonl") or ""
     prev_feeds = previous.get("news/feeds.json") or {}
     if not prev_text and (prev_feeds.get("history") or {}).get("items"):

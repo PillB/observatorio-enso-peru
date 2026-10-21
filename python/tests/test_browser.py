@@ -246,6 +246,38 @@ def test_news_view_shows_official_feed_and_news(site, page):
     expect(page.locator("#arch-fig svg")).to_have_count(1, timeout=10000)
 
 
+def test_items_link_to_live_source_and_archived_copy(site, page):
+    """Cada noticia y cada dato oficial enlaza a su fuente en vivo y a una copia servida por el sitio."""
+    base, root = site
+    go(page, base, "noticias?tab=peru")
+    item = page.locator("#news-body .feed-item").first
+    expect(item).to_be_visible(timeout=10000)
+    live = item.get_by_role("link", name="Nota original")
+    arch = item.get_by_role("link", name="Copia archivada")
+    assert live.get_attribute("href").startswith("http")
+    href = arch.get_attribute("href")
+    assert href.startswith("data/archive/news/") and "#" in href, href
+    page_file, anchor = href.split("#")
+    assert f'id="{anchor}"' in (root / page_file).read_text(encoding="utf-8")
+    # Filtro por peligro: la cuenta del filtro coincide con la lista.
+    sel = page.locator("#news-haz")
+    opt = sel.locator("option").nth(1)
+    value, label = opt.get_attribute("value"), opt.inner_text()
+    sel.select_option(value)
+    expect(page).to_have_url(re.compile(rf"peligro={value}"))
+    n = int(re.search(r"\((\d+)\)", label).group(1))
+    expect(page.locator("#news-body .feed-item")).to_have_count(n)
+    expect(page.locator("#news-live")).to_contain_text(str(n))
+    go(page, base, "noticias?tab=oficial")
+    off = page.locator("#news-body .feed-item").first
+    expect(off.get_by_role("link", name="Copia archivada")).to_have_count(1, timeout=10000)
+    a = off.get_by_role("link", name="Copia archivada").get_attribute("href")
+    assert (root / a).exists(), a
+    go(page, base, "")
+    doc = page.locator(".status-card").get_by_role("link", name="Copia archivada").first
+    assert (root / doc.get_attribute("href")).exists()
+
+
 def test_downloads_exist_and_csv_is_safe(site, page):
     base, root = site
     go(page, base, "datos")

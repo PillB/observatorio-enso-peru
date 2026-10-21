@@ -99,3 +99,37 @@ def test_peru_index_is_read():
     assert got["https://www.dhn.mil.pe/b"]["class"] == "http-403"
     assert got["https://x.gob.pe/c"]["class"] == "timeout"
     assert got["https://www.senamhi.gob.pe/a"]["at"] == "2026-10-21T05:00:00Z"
+
+
+def test_robots_disallowed_sources_get_no_channel():
+    u = "https://censis.example.pe/api/ultimo-sismo"
+    gb = registry.geoblock(u, {u: {"us": {"class": "robots", "at": "2026-10-21T01:00:00+00:00", "vantage": "github-actions"}}})
+    assert gb["status"] == "robots-disallowed"
+    assert registry.channels_for(gb["status"]) == []
+    reg = registry.build(reach={})
+    url = reg["sources"][0]["url"]
+    reg = registry.build(reach={url: {"us": {"class": "robots", "at": "x", "vantage": "github-actions"}}})
+    assert reg["sources"][0]["channels"] == [] and registry.validate(reg) == []
+    reg["sources"][1]["channels"] = []
+    assert any("canales" in e for e in registry.validate(reg))
+
+
+def test_robots_parser():
+    import httpx
+
+    from enso.reach import Robots
+
+    bodies = {"a.pe": (200, "User-agent: *\nDisallow: /api/\n"), "b.pe": (404, ""), "c.pe": (403, ""),
+              "d.pe": (200, "<html><div class='cf-turnstile'></div></html>")}
+
+    def handler(req):
+        code, text = bodies[req.url.host]
+        return httpx.Response(code, text=text)
+
+    r = Robots(httpx.Client(transport=httpx.MockTransport(handler)))
+    assert r.allowed("https://a.pe/api/x") is False
+    assert r.allowed("https://a.pe/productos") is True
+    assert r.allowed("https://b.pe/anything") is True
+    assert r.allowed("https://c.pe/anything") is True  # 4xx: se permite (RFC 9309)
+    assert r.allowed("https://d.pe/anything") is None  # una verificación en lugar de robots.txt
+    assert r.failure("https://d.pe/x") == "challenge"

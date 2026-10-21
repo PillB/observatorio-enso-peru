@@ -118,6 +118,31 @@ def test_collect_status_and_clusters():
     assert [l["url"] for l in g["links"]] == ["https://otro.pe/x", "https://medio.pe/a"]
 
 
+def test_collect_isolates_bad_feeds_and_slow_hosts():
+    """Un feed que explota no tumba a los demás; un servidor caído no se reintenta feed por feed."""
+    feeds = [N.Feed("a1", "A1", "peru", "https://a.pe/1"), N.Feed("a2", "A2", "peru", "https://a.pe/2"),
+             N.Feed("a3", "A3", "peru", "https://a.pe/3"), N.Feed("b1", "B1", "peru", "https://b.pe/1"),
+             N.Feed("c1", "C1", "peru", "https://c.pe/1")]
+    calls = []
+
+    def fetch(url):
+        calls.append(url)
+        if url.startswith("https://a.pe"):
+            return None, b"", "", "ConnectTimeout: timed out"
+        if url == "https://b.pe/1":
+            raise RuntimeError("redirecciones infinitas")
+        return 200, RSS, "", ""
+
+    found, status, raw = N.collect(fetch, NOW, feeds=feeds)
+    st = {s["id"]: s for s in status}
+    assert calls.count("https://a.pe/3") == 0, "tras dos fallos de red seguidos se omite el resto del servidor"
+    assert st["a3"]["error"].startswith("omitido") and not st["a3"]["ok"]
+    assert "RuntimeError" in st["b1"]["error"]
+    assert st["c1"]["ok"] and len(found) == 1 and set(raw) == {"c1"}
+    found, status, _ = N.collect(lambda u: (200, RSS, "", ""), NOW, feeds=feeds, deadline=-1)
+    assert not found and all("tiempo" in s["error"] for s in status)
+
+
 def test_history_is_append_only_and_csv_is_safe():
     found, _, _ = _collect({"elcomercio": RSS})
     hist = N.read_jsonl(json.dumps(found[0]) + "\n{roto\n")
