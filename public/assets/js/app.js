@@ -598,7 +598,7 @@ function newsParams() {
 }
 
 function placeLabel(p, deps) {
-  const dep = deps[p.code.slice(0, 2)];
+  const dep = deps[p.code.slice(0, 2)] || p.department;
   return p.level === 'departamento' ? p.name : `${p.name}${dep ? ` (${dep})` : ''}`;
 }
 
@@ -628,7 +628,7 @@ function officialItem(it) {
     ${feedValue(it)}
     ${it.text ? html`<p class="feed-text">${it.text}</p>` : ''}
     <div class="feed-tags">
-      ${(it.hazards || []).filter((h) => HAZARD_LABEL[h]).map((h) => html`<span class="tag tag-hazard">${HAZARD_LABEL[h]}</span> `)}${(it.where || []).map((w) => html`<span class="tag tag-place">${raw(ICON.pin)}${w}</span> `)}
+      ${(it.hazards || []).filter((h) => HAZARD_LABEL[h]).map((h) => html`<span class="tag tag-hazard">${HAZARD_LABEL[h]}</span> `)}${it.geo && (it.geo.places || []).length ? it.geo.places.slice(0, 3).map((p) => html`${placeTag(p, {})} `) : (it.where || []).map((w) => html`<span class="tag tag-place">${raw(ICON.pin)}${w}</span> `)}
       ${it.level ? chip(it.level, LEVEL_TXT[it.level] && it.level !== 'ok' ? `Alerta ${LEVEL_TXT[it.level].toLowerCase()}` : undefined) : ''}
       ${it.stale ? html`<span class="tag tag-prelim">vencido</span>` : ''}
       ${it.newerListed ? html`<span class="tag tag-prelim">hay un comunicado más reciente (${it.newerListed}) sin leer</span>` : ''}

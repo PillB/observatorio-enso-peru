@@ -289,7 +289,8 @@ async function createCorrection(request, env, url, session) {
   if (!ITEM_RE.test(item)) return fail(400, 'Nota inválida.');
   if (!ACTIONS.includes(action)) return fail(400, 'Acción inválida.');
   let places = [];
-  if (action === 'set') {
+  // «confirm» guarda los lugares que la persona vio: si el ubicador cambia después, valen esos.
+  if (action === 'set' || (action === 'confirm' && Array.isArray(body.places) && body.places.length)) {
     if (!Array.isArray(body.places) || !body.places.length || body.places.length > 20) {
       return fail(400, 'Indique entre 1 y 20 lugares.');
     }

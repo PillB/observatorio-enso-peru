@@ -115,6 +115,16 @@ def _edge_dist(a: Area, lon: float, lat: float) -> float:
 def department_at(lat: float, lon: float, areas: Optional[list[Area]] = None, near: float = NEAR) -> Optional[str]:
     """UBIGEO del departamento que contiene el punto (o cuyo límite está a menos de ``near`` grados),
     o None si cae fuera del Perú."""
+    if areas is None:
+        # Primero los límites del IGN a ~110 m (``enso.limites``); los de esta capa (~1 km) quedan para
+        # los puntos que caen justo afuera (orilla, borde simplificado).
+        from .limites import limits
+
+        lim = limits()
+        x, y = lon * lim.scale, lat * lim.scale
+        hit = lim.containing(2, x, y)
+        if hit:
+            return hit
     areas = areas if areas is not None else departments()
     for a in areas:
         if a.contains(lon, lat):

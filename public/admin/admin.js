@@ -148,7 +148,7 @@ function itemCard(it) {
     sugg.length ? h('div', { class: 'gc-places' }, h('span', { class: 'gc-label' }, 'Sugerido'), sugg) : null,
     fixBanner(it),
     h('div', { class: 'gc-actions' },
-      places.length ? btn('Confirmar', () => save(it, { action: 'confirm' }, li)) : null,
+      places.length ? btn('Confirmar', () => save(it, { action: 'confirm', places: (g.places || []).map((p) => p.code) }, li)) : null,
       btn('Corregir…', () => openEditor(it, li)),
       btn('Nacional / sin lugar', () => save(it, { action: 'none' }, li)),
       btn('No es del Perú', () => save(it, { action: 'foreign' }, li)),

@@ -16,7 +16,8 @@ Formato de una corrección (lo que devuelve la consola)::
     {"id": "<id de la nota>", "action": "set" | "confirm" | "none" | "foreign",
      "places": ["150101", "1501"], "rev": 3, "at": "2026-10-21T15:04:05Z"}
 
-``set`` reemplaza los lugares; ``confirm`` deja los que hay y los marca revisados; ``none`` dice que la nota
+``set`` reemplaza los lugares; ``confirm`` marca revisados los lugares que la persona vio (``places``; si el
+ubicador cambió después, se vuelven a poner esos); ``none`` dice que la nota
 no es de un lugar (alcance nacional o sin lugar); ``foreign`` dice que no ocurre en el Perú.
 """
 
@@ -91,7 +92,12 @@ def _apply(item: dict, ov: dict) -> bool:
                  scope="local" if any(p["level"] != "departamento" for p in places) else
                  "regional" if len({c[:2] for c in codes}) <= 3 else "nacional")
     elif action == "confirm":
-        if not g.get("places"):
+        seen = [c for c in dict.fromkeys(str(c) for c in ov.get("places") or []) if gz.valid(c)]
+        current = [p["code"] for p in g.get("places") or []]
+        if seen and set(seen) != set(current):
+            # El ubicador cambió desde que alguien confirmó: vale lo que esa persona vio, no lo nuevo.
+            return _apply(item, dict(ov, action="set", places=seen)) and _mark(item, "confirm")
+        if not current:
             return False
         g["places"] = [dict(p, confidence=1.0) for p in g["places"]]
         g.update(confidence=1.0, suggested=[])
@@ -108,6 +114,11 @@ def _apply(item: dict, ov: dict) -> bool:
     for k in ("departments", "places", "geoSource"):
         item.pop(k, None)
     item.update(legacy_fields(g))
+    return True
+
+
+def _mark(item: dict, action: str) -> bool:
+    item["geo"]["review"]["action"] = action
     return True
 
 

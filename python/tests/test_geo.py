@@ -148,6 +148,13 @@ def test_overrides_apply_latest_revision_and_validate():
     assert q["overrides"] == {"applied": 2, "unknownItem": 1, "rejected": 1}
 
 
+def test_confirm_keeps_what_the_reviewer_saw_when_the_tagger_changes():
+    items = _items()
+    GO.apply_all(items, [{"id": "a" * 16, "action": "confirm", "places": ["150122"], "rev": 1}], {})
+    g = items[0]["geo"]
+    assert [p["code"] for p in g["places"]] == ["150122"] and g["review"]["action"] == "confirm"
+
+
 def test_confirm_and_none():
     items = _items()
     GO.apply_all(items, [{"id": "a" * 16, "action": "confirm", "rev": 1}, {"id": "c" * 16, "action": "none", "rev": 1}], {})

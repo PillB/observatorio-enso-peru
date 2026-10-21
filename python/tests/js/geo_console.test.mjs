@@ -160,6 +160,8 @@ describe('correcciones', () => {
     const b = (await login('revisor02', 'clave-revisor-2', '198.51.100.2')).cookie;
     const ok = await handle(req('corrections', { method: 'POST', cookie: a, body: { item: ITEM, action: 'confirm', expectedRev: 0 } }), env);
     assert.equal(ok.status, 201);
+    const pub0 = await (await handle(req('overrides', { origin: null }), env)).json();
+    assert.deepEqual(pub0.overrides[0].places, [], 'confirmar sin lugares es válido (versiones anteriores)');
     const late = await handle(req('corrections', { method: 'POST', cookie: b, body: { item: ITEM, action: 'none', expectedRev: 0 } }), env);
     assert.equal(late.status, 409);
     const clear = await handle(req('corrections', { method: 'POST', cookie: b, body: { item: ITEM, action: 'clear', expectedRev: 1 } }), env);
@@ -168,6 +170,16 @@ describe('correcciones', () => {
     assert.deepEqual(pub.overrides, []);
     const hist = await (await handle(req(`corrections?item=${ITEM}`, { cookie: a }), env)).json();
     assert.deepEqual(hist.corrections.map((c) => c.action), ['clear', 'confirm'], 'el historial no se borra');
+  });
+
+  it('confirmar guarda los lugares que se vieron', async () => {
+    const { cookie } = await login();
+    const r = await handle(req('corrections', { method: 'POST', cookie, body: { item: ITEM, action: 'confirm', places: ['150101'], expectedRev: 0 } }), env);
+    assert.equal(r.status, 201);
+    const pub = await (await handle(req('overrides', { origin: null }), env)).json();
+    assert.deepEqual(pub.overrides[0].places, ['150101']);
+    const bad = await handle(req('corrections', { method: 'POST', cookie, body: { item: ITEM, action: 'confirm', places: ['99'], expectedRev: 1 } }), env);
+    assert.equal(bad.status, 400);
   });
 
   it('valida nota, acción y códigos', async () => {
