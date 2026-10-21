@@ -140,3 +140,46 @@ def test_data_files_are_expected_as_text():
     reg = registry.build()
     data = [s for s in reg["sources"] if "/data/indices/" in s["url"]]
     assert data and all(s["expect"] == "text" for s in data), [(s["id"], s["expect"]) for s in data if s["expect"] != "text"]
+
+
+def test_reachability_is_kept_per_network():
+    """«No responde a GitHub» no es «geobloqueado»: si n8n la alcanza, la recolecta n8n."""
+    u = "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts"
+    dns = {"class": "dns", "at": "2026-10-21T02:37:00+00:00", "vantage": "github-actions"}
+    ok_n8n = {"class": "ok", "at": "2026-10-21T02:30:00+00:00", "vantage": "n8n-gcp"}
+    gb = registry.geoblock(u, {u: {"actions": {"github-actions": dns}, "n8n": {"n8n-gcp": ok_n8n}}})
+    assert gb["status"] == "open" and gb["open_from"] == ["n8n"]
+    assert registry.channels_for(gb["status"], gb["open_from"], ["actions", "n8n"]) == ["n8n"]
+    # Una medición ruidosa en la misma red no tapa la que respondió.
+    noisy = {"class": "timeout", "at": "2026-10-21T03:00:00+00:00", "vantage": "n8n-actions-azure"}
+    ok_gh = {"class": "ok", "at": "2026-10-21T00:04:00+00:00", "vantage": "github-actions"}
+    gb = registry.geoblock(u, {u: {"actions": {"github-actions": ok_gh, "n8n-actions-azure": noisy}}})
+    assert gb["status"] == "open" and registry.channels_for(gb["status"], gb["open_from"], ["actions"]) == ["actions", "n8n"]
+    # Sin respuesta desde ninguna red de EE. UU. y sí desde el Perú: geobloqueada.
+    pe = {"class": "ok", "at": "2026-10-21T01:00:00+00:00", "vantage": "peru-server"}
+    gb = registry.geoblock(u, {u: {"actions": {"github-actions": dns}, "n8n": {"n8n-gcp": {**ok_n8n, "class": "timeout"}},
+                                   "peru": {"peru-server": pe}}})
+    assert gb["status"] == "geoblocked" and registry.channels_for(gb["status"]) == ["peru-server"]
+    assert registry.vantage_group("n8n-actions-azure") == "actions" and registry.vantage_group("n8n-aws") == "n8n"
+
+
+def test_probe_imports_measurements_from_other_networks(tmp_path):
+    out = tmp_path / "reach.json"
+    out.write_text(json.dumps({"schema": "enso-reachability/1", "urls": {
+        "https://a.pe/x": {"us": {"class": "ok", "at": "2026-10-20T00:00:00+00:00", "vantage": "github-actions"}}}}))
+    n8n = tmp_path / "n8n.json"
+    n8n.write_text(json.dumps({"schema": "enso-reachability-vantage/1", "vantage": "n8n-aws", "results": [
+        {"url": "https://a.pe/x", "class": "timeout", "at": "2026-10-21T00:00:00+00:00", "vantage": "n8n-aws"},
+        {"url": "https://b.pe/y", "class": "bogus"}]}))
+    assert probe_sources.main(["--no-probe", "--import", str(n8n), "--out", str(out)]) == 0
+    data = json.loads(out.read_text())
+    assert data["schema"] == "enso-reachability/2"
+    assert set(data["urls"]["https://a.pe/x"]) == {"actions", "n8n"} and "https://b.pe/y" not in data["urls"]
+    gb = registry.geoblock("https://a.pe/x", registry.load_reachability(out))
+    assert gb["status"] == "open" and gb["open_from"] == ["actions"]
+
+
+def test_alternate_urls_carry_their_own_format():
+    """El listado de ENFEN y la réplica de la DHN son páginas HTML aunque la URL principal sea la API JSON."""
+    enfen = next(s for s in registry.build()["sources"] if s["id"] == "enfen-comunicados")
+    assert enfen["expect"] == "json" and enfen["alt_expect"] == ["html"] * len(enfen["alt_urls"])

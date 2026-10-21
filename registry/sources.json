@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-21T02:36:48+00:00",
+ "generated_at": "2026-10-21T02:48:53+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true",
   "tiers": {
@@ -43,8 +43,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -76,8 +79,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -109,8 +115,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -142,8 +151,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -175,8 +187,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -208,8 +223,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -241,8 +259,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -274,8 +295,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -307,8 +331,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -338,8 +365,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -371,6 +401,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -378,7 +411,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -410,6 +451,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -417,7 +461,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -449,6 +501,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -456,7 +511,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -488,6 +551,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -495,7 +561,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -527,6 +601,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -534,7 +611,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -566,6 +651,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -573,7 +661,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -605,6 +701,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -612,7 +711,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -644,6 +751,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -651,7 +761,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -683,6 +801,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -690,7 +811,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -722,6 +851,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -729,7 +861,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -761,6 +901,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -768,7 +911,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -800,6 +951,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -807,7 +961,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -839,6 +1001,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -846,7 +1011,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -880,6 +1053,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -887,7 +1063,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -921,6 +1105,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -928,7 +1115,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -962,6 +1157,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -969,7 +1167,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1001,6 +1207,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1008,7 +1217,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1042,6 +1259,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1049,7 +1269,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1083,6 +1311,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1090,7 +1321,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1124,6 +1363,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1131,7 +1373,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1165,6 +1415,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1172,7 +1425,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1206,6 +1467,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1213,7 +1477,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1247,6 +1519,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1254,7 +1529,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1288,6 +1571,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1295,7 +1581,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1329,6 +1623,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1336,7 +1633,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1370,6 +1675,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1377,7 +1685,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1410,6 +1726,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1417,7 +1736,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1450,6 +1777,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1457,7 +1787,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1490,6 +1828,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1497,7 +1838,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1530,6 +1879,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1537,7 +1889,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1570,6 +1930,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1577,7 +1940,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1610,6 +1981,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1617,7 +1991,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1650,6 +2032,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1657,7 +2042,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1690,6 +2083,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1697,7 +2093,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1730,6 +2134,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1737,7 +2144,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1770,6 +2185,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1777,7 +2195,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1810,6 +2236,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1817,7 +2246,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1850,6 +2287,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1857,7 +2297,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1890,6 +2338,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1897,7 +2348,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1930,6 +2389,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1937,7 +2399,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -1970,6 +2440,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -1977,7 +2450,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2010,6 +2491,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2017,7 +2501,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2050,6 +2542,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2057,7 +2552,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2090,6 +2593,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2097,7 +2603,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2130,6 +2644,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2137,7 +2654,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2170,6 +2695,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2177,7 +2705,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2210,6 +2746,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2217,7 +2756,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2250,6 +2797,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2257,7 +2807,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2290,6 +2848,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2297,7 +2858,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2330,6 +2899,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2337,7 +2909,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2370,6 +2950,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2377,7 +2960,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2410,6 +3001,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2417,7 +3011,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2450,6 +3052,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2457,7 +3062,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2490,6 +3103,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2497,7 +3113,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2530,6 +3154,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2537,7 +3164,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2570,6 +3205,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2577,7 +3215,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2610,6 +3256,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2617,7 +3266,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2650,6 +3307,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2657,7 +3317,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2690,6 +3358,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2697,7 +3368,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2730,6 +3409,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2737,7 +3419,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2770,6 +3460,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2777,7 +3470,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2810,6 +3511,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2817,7 +3521,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2850,6 +3562,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2857,7 +3572,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2890,6 +3613,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2897,7 +3623,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2930,6 +3664,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2937,7 +3674,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -2970,6 +3715,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -2977,7 +3725,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3010,6 +3766,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3017,7 +3776,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3050,6 +3817,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3057,7 +3827,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3090,6 +3868,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3097,7 +3878,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3130,6 +3919,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3137,7 +3929,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3170,6 +3970,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3177,7 +3980,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3210,6 +4021,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3217,7 +4031,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3250,6 +4072,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3257,7 +4082,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3290,6 +4123,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3297,7 +4133,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3330,6 +4174,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3337,7 +4184,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3370,6 +4225,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3377,7 +4235,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3410,6 +4276,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3417,7 +4286,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3450,6 +4327,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3457,7 +4337,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3490,6 +4378,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3497,7 +4388,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3530,6 +4429,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3537,7 +4439,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3570,6 +4480,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3577,7 +4490,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3610,6 +4531,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3617,7 +4541,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3650,6 +4582,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3657,7 +4592,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3690,6 +4633,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3697,7 +4643,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3730,6 +4684,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3737,7 +4694,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3770,6 +4735,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3777,7 +4745,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3810,6 +4786,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3817,7 +4796,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3850,6 +4837,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3857,7 +4847,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3890,6 +4888,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3897,7 +4898,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3930,6 +4939,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3937,7 +4949,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -3970,6 +4990,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -3977,7 +5000,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4010,6 +5041,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4017,7 +5051,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4050,6 +5092,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4057,7 +5102,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4090,6 +5143,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4097,7 +5153,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4130,6 +5194,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4137,7 +5204,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4170,6 +5245,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4177,7 +5255,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4210,6 +5296,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4217,7 +5306,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4250,6 +5347,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4257,7 +5357,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4290,6 +5398,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4297,7 +5408,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4330,6 +5449,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4337,7 +5459,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4370,6 +5500,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4377,7 +5510,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4410,6 +5551,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4417,7 +5561,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4450,6 +5602,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4457,7 +5612,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4490,6 +5653,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4497,7 +5663,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4530,6 +5704,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4537,7 +5714,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4570,6 +5755,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4577,7 +5765,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4610,6 +5806,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4617,7 +5816,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4650,6 +5857,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4657,7 +5867,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4690,6 +5908,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4697,7 +5918,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4730,6 +5959,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4737,7 +5969,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4770,6 +6010,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4777,7 +6020,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4810,6 +6061,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4817,7 +6071,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4850,6 +6112,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4857,7 +6122,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4890,6 +6163,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4897,7 +6173,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4930,6 +6214,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4937,7 +6224,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -4970,6 +6265,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -4977,7 +6275,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5010,6 +6316,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5017,7 +6326,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5050,6 +6367,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5057,7 +6377,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5090,6 +6418,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5097,7 +6428,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5130,6 +6469,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5137,7 +6479,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5170,6 +6520,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5177,7 +6530,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5210,6 +6571,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5217,7 +6581,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5250,6 +6622,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5257,7 +6632,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5290,6 +6673,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5297,7 +6683,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5330,6 +6724,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5337,7 +6734,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5370,6 +6775,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5377,7 +6785,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5410,6 +6826,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5417,7 +6836,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5450,6 +6877,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5457,7 +6887,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5490,6 +6928,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5497,7 +6938,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5530,6 +6979,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5537,7 +6989,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5570,6 +7030,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5577,7 +7040,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5610,6 +7081,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5617,7 +7091,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5650,6 +7132,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5657,7 +7142,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5690,6 +7183,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5697,7 +7193,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5730,6 +7234,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5737,7 +7244,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5770,6 +7285,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5777,7 +7295,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5810,6 +7336,9 @@
     "from": [
      "github-actions"
     ],
+    "open_from": [
+     "actions"
+    ],
     "us": {
      "class": "ok",
      "http": 200,
@@ -5817,7 +7346,15 @@
      "vantage": "github-actions",
      "detail": ""
     },
-    "peru": null
+    "peru": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "at": "2026-10-21T01:06:51+00:00",
+     "vantage": "github-actions",
+     "detail": ""
+    },
+    "n8n": null
    },
    "geoblocked": false,
    "channels": [
@@ -5847,8 +7384,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -5878,8 +7418,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -5911,8 +7454,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -5942,8 +7488,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -5973,8 +7522,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6006,8 +7558,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6037,8 +7592,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6069,8 +7627,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6101,8 +7662,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6133,8 +7697,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6165,8 +7732,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6197,8 +7767,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6229,8 +7802,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6261,8 +7837,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6293,8 +7872,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6325,8 +7907,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6357,8 +7942,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6389,8 +7977,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6421,8 +8012,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6453,8 +8047,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6475,6 +8072,9 @@
    "alt_urls": [
     "https://met.igp.gob.pe/datos/ICEN.txt"
    ],
+   "alt_expect": [
+    "text"
+   ],
    "hazards": [
     "enso"
    ],
@@ -6487,8 +8087,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6519,8 +8122,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6542,6 +8148,10 @@
     "https://enfen.imarpe.gob.pe/comunicados/",
     "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen"
    ],
+   "alt_expect": [
+    "html",
+    "html"
+   ],
    "hazards": [
     "enso"
    ],
@@ -6558,8 +8168,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6588,8 +8201,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6618,8 +8234,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6648,8 +8267,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6678,8 +8300,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6708,8 +8333,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6738,8 +8366,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6768,8 +8399,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
@@ -6798,8 +8432,11 @@
     "status": "unknown",
     "measured_at": null,
     "from": [],
+    "open_from": [],
     "us": null,
-    "peru": null
+    "peru": null,
+    "actions": null,
+    "n8n": null
    },
    "geoblocked": null,
    "channels": [
