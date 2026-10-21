@@ -219,11 +219,13 @@ jobs:
         working-directory: python
         run: python -m tools.prepare_site --site-dir ../public --site-url "$SITE_URL" ${{ env.DEPLOY_TARGET == 'cloudflare' && '--hide-repo --cloudflare' || '' }}
 
+      # Solo Chromium: WebKit y Firefox se prueban en ci.yml y en device-screens.yml. Un problema al instalar o
+      # abrir esos motores no debe detener la publicación de los datos oficiales.
       - name: Browser checks against the built site
         working-directory: python
         run: |
           python -m playwright install --with-deps chromium
-          python -m pytest -q -m browser --site-dir=../public
+          python -m pytest -q -m browser --site-dir=../public -k "not webkit and not firefox"
 
       # Las dos subidas auxiliares no detienen el despliegue de los datos oficiales si fallan: el job
       # «archive» avisa si le falta raw-sources, y «incidents» sigue sin informe.
@@ -314,9 +316,9 @@ jobs:
         run: python -m tools.verify_live --base "$SITE_URL" --expect "${{ needs.build.outputs.publication_id }}"
 
   incidents:
-    # Corre siempre que el build haya llegado a producir un informe.
+    # Corre siempre que el build haya llegado a producir un informe; también al fusionar en main, que publica.
     needs: [build, deploy, archive]
-    if: always() && needs.build.result != 'skipped' && github.event_name != 'push'
+    if: always() && needs.build.result != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

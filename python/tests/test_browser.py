@@ -258,6 +258,29 @@ def test_alerts_card_says_when_no_alert_source_was_read(site, page):
         expect(page.locator("#news-body section.card").first.locator(".notice-alert")).to_contain_text(text, timeout=10000)
 
 
+def test_feeds_table_names_why_a_feed_was_not_asked(site, page):
+    """Revisión 7: todo feed omitido decía «Omitido (robots.txt)», también los que se leen una vez al día y no se
+    pidieron porque no se sabía cuándo se habían pedido; y uno arrastrado decía «Lectura del…» sin haberse leído."""
+    base, root = site
+    feeds = json.loads((root / "data" / "news" / "feeds.json").read_text(encoding="utf-8"))
+    a, b, c = feeds["feeds"][:3]
+    a.update(ok=False, skipped="robots", error="omitido: su robots.txt no permite pedir este feed")
+    b.update(ok=False, skipped="reader-unknown", httpStatus=None, error="no se pidió: no se sabía cuándo se pidió")
+    c.update(ok=False, skipped="reader-unknown", httpStatus=None, carried=True, checkedAt="2026-10-20T04:40:00+00:00",
+             error="no se pidió: no se sabía cuándo se pidió")
+    page.route("**/data/news/feeds.json*", lambda r: r.fulfill(status=200, content_type="application/json",
+                                                               body=json.dumps(feeds)))
+    go(page, base, "noticias")
+    page.locator("#feeds-status summary").click()
+    rows = page.locator("#feeds-status tbody tr")
+    expect(rows.nth(0)).to_contain_text("Omitido (robots.txt)", timeout=10000)
+    for row in (rows.nth(1), rows.nth(2)):
+        expect(row).to_contain_text("Omitido")
+        expect(row).not_to_contain_text("robots.txt")
+    expect(rows.nth(2)).to_contain_text("Corrida del")
+    expect(rows.nth(2)).not_to_contain_text("Lectura del")
+
+
 def test_items_link_to_live_source_and_archived_copy(site, page):
     """Cada noticia y cada dato oficial enlaza a su fuente en vivo y a una copia servida por el sitio."""
     base, root = site

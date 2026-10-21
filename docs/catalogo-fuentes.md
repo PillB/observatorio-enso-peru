@@ -133,8 +133,10 @@ Panamericana, TV Perú, Esfera Radio, Chachapoyas Online, Radio Titanka,
 Diario Chaski, Diario HOY y Tumbes de Miércoles), Noticias ONU · Clima y Sin
 Rodeos Cajamarca. La lista sale del registro: `registry.reader_urls()`. Solo
 los piden las corridas de `observatory.yml` en `main` (con `--reader-state`);
-las demás (otra rama, la prueba de `capture-fixtures.yml`, una corrida a
-mano) los omiten. El plazo cuenta desde el último pedido, haya respondido o
+las demás (otra rama, la prueba de `capture-fixtures.yml`, una corrida
+local sin `--reader-state`) los omiten. En `main` cuentan todas: la
+diaria, la que pide el vigilante, la del recolector o n8n, la que se lanza
+al fusionar y la manual. El plazo cuenta desde el último pedido, haya respondido o
 no (un 429 o un 5xx no se reintentan hasta el día siguiente), con un margen
 de 30 minutos porque la hora anotada es la de inicio de la corrida y el
 paso del pipeline no dura más de 26. Cada
@@ -149,7 +151,8 @@ ninguna publicación tiene todavía, en cuanto termina cada lectura y hasta
 seguidas no publiquen y el feed ya no las traiga. Si no hay estado (la
 caché no se pudo leer) y tampoco se puede leer `news/feeds.json` de la
 publicación anterior, no se sabe cuándo se pidieron y esa corrida no los
-pide (`feeds-reader-unknown`). El sondeo de candidatos (`probe-feeds.yml`) no los pide:
+pide (`feeds-reader-unknown`); cuenta como su pedido, en el estado y en la
+publicación, así que se vuelven a pedir 20 horas después de ella. El sondeo de candidatos (`probe-feeds.yml`) no los pide:
 respeta robots.txt como la captura de fuentes. En el
 registro (`registry/sources.json`) su URL queda `robots-disallowed` con
 canales `["actions"]` y `"reader": true`; n8n y el recolector del Perú no

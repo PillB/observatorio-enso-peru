@@ -314,6 +314,24 @@ def test_a_failure_while_looking_for_the_latest_communique_does_not_stop_the_pub
     assert any(e.get("code") == "latest-exception" for e in report.get("events", []))
 
 
+def test_the_enfen_communique_is_looked_up_before_the_other_official_sources(pub, tmp_path, monkeypatch):
+    """Revisión 7: el tiempo de las fuentes oficiales es uno solo y el ENFEN se pedía al final: un día malo de NOAA
+    (lento, 503 o 429) lo agotaba y el comunicado publicado ese día no se leía. Ahora se pide primero (con la
+    búsqueda del último comunicado justo después), luego el ICEN y la Discussion; la publicación no cambia de orden."""
+    prev, _ = pub
+    order = []
+    real_acquire, real_latest = obs.acquire, obs.enfen_latest
+    monkeypatch.setattr(obs, "acquire", lambda src, *a, **k: order.append(src.id) or real_acquire(src, *a, **k))
+    monkeypatch.setattr(obs, "enfen_latest", lambda *a, **k: order.append("latest") or real_latest(*a, **k))
+    out = tmp_path / "data"
+    obs.run(out, str(prev), fixtures=FIX)
+    assert order[:4] == ["enfen-comunicados", "latest", "igp-icen", "cpc-ensodisc"]
+    assert sorted(order[4:]) == sorted(s.id for s in obs.SOURCES if s.id not in obs.OFFICIAL_FIRST)
+    reg = json.loads((out / "sources.json").read_text(encoding="utf-8"))
+    ids = [s["id"] for s in reg["sources"]]
+    assert ids == [s.id for s in obs.SOURCES if s.id in ids]
+
+
 def test_raw_archive_skips_fixtures(tmp_path):
     a = obs.Acquired(obs.SOURCE_BY_ID["cpc-roni"], raw=b"datos", channel="direct", sha256="ab" * 32)
     b = obs.Acquired(obs.SOURCE_BY_ID["cpc-oni"], raw=b"datos", channel="fixture", sha256="cd" * 32)

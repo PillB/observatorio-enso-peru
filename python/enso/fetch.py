@@ -39,8 +39,10 @@ import httpx
 CONTACT = os.environ.get("ENSO_CONTACT_URL") or "https://github.com/PillB/observatorio-enso-peru"
 UA = f"Observatorio-ENSO-Peru/4.0 (+{CONTACT}; datos abiertos)"
 TRANSIENT = (httpx.TimeoutException, httpx.ConnectError, httpx.RemoteProtocolError, httpx.ReadError)
-#: Fallos de red seguidos de un servidor (sin respuesta, o una que no terminó a tiempo) tras los que se le pide
-#: una sola vez por URL, y tras los que ya no se le pide nada en la corrida (se pasa a las copias y al archivo).
+#: Fallos seguidos de un servidor tras los que se le pide una sola vez por URL, y tras los que ya no se le pide
+#: nada en la corrida (se pasa a las copias y al archivo). Cada pedido sin respuesta suma uno, una respuesta que
+#: no termina a tiempo dos y una URL que solo recibió 429 o 5xx uno; cualquier otra respuesta vuelve a cero.
+#: Save Page Now lleva su propia cuenta.
 HOST_ONE_TRY_AFTER = 3
 HOST_SKIP_AFTER = 5
 
@@ -207,41 +209,52 @@ class Fetcher:
         return httpx.Response(r.status_code, headers=headers, content=b"".join(chunks), request=r.request)
 
     def _get(self, url: str, attempts: list, tries: Optional[int] = None) -> Optional[httpx.Response]:
-        host = urlsplit(url).hostname or ""
+        parts = urlsplit(url)
+        host = parts.hostname or ""
+        # Save Page Now lleva su propia cuenta: una captura lenta no apaga las lecturas del archivo (CDX y copias).
+        key = host + "/save" if host == "web.archive.org" and parts.path.startswith("/save/") else host
         n = tries or self.retries
+        overloaded = False  # el último intento fue un 429 o un 5xx
         for i in range(n):
             if self.deadline is not None and time.monotonic() > self.deadline:
                 attempts.append({"url": url, "error": "omitido: se agotó el tiempo de la corrida para estos pedidos"})
                 return None
-            down = self._down.get(host, 0)
+            down = self._down.get(key, 0)
             if down >= HOST_SKIP_AFTER:
-                attempts.append({"url": url, "error": f"omitido: el servidor no respondió a los {down} pedidos anteriores"})
+                attempts.append({"url": url, "error": f"omitido: el servidor suma {down} fallos seguidos en esta corrida"})
                 return None
             if down >= HOST_ONE_TRY_AFTER and i:
-                return None
+                break
             self._wait_host(host)
+            overloaded = False
             try:
                 r = self._request(url)
             except TooSlow as exc:
                 attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
-                self._down[host] = down + 2  # un servidor así de lento lo será también con el pedido siguiente
+                self._down[key] = down + 2  # un servidor así de lento lo será también con el pedido siguiente
                 return None
             except TRANSIENT as exc:
                 attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
-                self._down[host] = down + 1
-                if i + 1 < n and self._down[host] < HOST_ONE_TRY_AFTER:
+                self._down[key] = down + 1
+                if i + 1 < n and self._down[key] < HOST_ONE_TRY_AFTER:
                     time.sleep(min(30, 2 ** i * 2))
                 continue
             except (httpx.HTTPError, httpx.InvalidURL) as exc:  # gzip roto, redirecciones sin fin, URL inválida
                 attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
                 return None
-            self._down[host] = 0
             attempts.append({"url": url, "status": r.status_code})
             if r.status_code == 429 or r.status_code >= 500:
-                wait = r.headers.get("retry-after")
-                time.sleep(min(60, float(wait)) if wait and wait.isdigit() else min(30, 2 ** i * 3))
+                overloaded = True
+                if i + 1 < n and down < HOST_ONE_TRY_AFTER:  # tras el último intento no hay nada que esperar
+                    wait = r.headers.get("retry-after")
+                    time.sleep(min(60, float(wait)) if wait and wait.isdigit() else min(30, 2 ** i * 3))
                 continue
+            self._down[key] = 0
             return r
+        if overloaded:
+            # Una URL que solo recibió 429 o 5xx es un fallo más del servidor: uno que responde así a todo deja de
+            # costar tres intentos y sus esperas por URL.
+            self._down[key] = self._down.get(key, 0) + 1
         return None
 
     def get(self, urls: list[str], *, archive: bool = True, save: bool = False,

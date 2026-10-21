@@ -40,7 +40,7 @@ del despliegue, sigue publicado el sitio anterior.
 
 | Módulo | Función |
 |---|---|
-| `fetch.py` | Descarga con reintentos, límites de tamaño y respaldo en el Internet Archive (CDX y, si se activa con `ENSO_ARCHIVE_SAVE=1`, Save Page Now). El tiempo está acotado: conectar, 15 s; cada pedido, 5 min las fuentes oficiales y 1 min cada feed en total (el plazo del cliente es por lectura y un servidor que manda la respuesta de a pocos bytes no lo agota), sin reintento si se agota; un servidor con 3 fallos de red seguidos recibe un solo intento por URL, y con 5 ya no se le pide nada en la corrida; todas las fuentes oficiales juntas, 8 min (`OFFICIAL_BUDGET_S`), y las que falten siguen con sus copias o su dato anterior. Una respuesta rota (gzip mal declarado, redirecciones sin fin) es una URL fallida más, no un error que detenga la corrida |
+| `fetch.py` | Descarga con reintentos, límites de tamaño y respaldo en el Internet Archive (CDX y, si se activa con `ENSO_ARCHIVE_SAVE=1`, Save Page Now). El tiempo está acotado: conectar, 15 s; cada pedido, 5 min las fuentes oficiales y 1 min cada feed en total (el plazo del cliente es por lectura y un servidor que manda la respuesta de a pocos bytes no lo agota), sin reintento si se agota; cada servidor lleva la cuenta de sus fallos seguidos (un pedido sin respuesta suma uno, una respuesta que no termina a tiempo dos, una URL que solo recibió 429 o 5xx uno, y cualquier otra respuesta la pone en cero; Save Page Now lleva la suya): con 3 recibe un solo intento por URL, y con 5 ya no se le pide nada en la corrida; tras el último intento no se espera. Todas las fuentes oficiales juntas, 8 min (`OFFICIAL_BUDGET_S`), empezando por el ENFEN (listado y último comunicado), el ICEN y la ENSO Diagnostic Discussion (`OFFICIAL_FIRST`); pasado ese tiempo, las que falten siguen solo con las copias del Perú y de n8n o con su dato anterior (ya no se pide al Internet Archive). Una respuesta rota (gzip mal declarado, redirecciones sin fin) es una URL fallida más, no un error que detenga la corrida |
 | `feeds/cpc.py` | Lectores de los archivos de texto de NOAA/CPC: semanal OISST, mensual por región, RONI/ONI, matrices año×mes (SOI, presiones, vientos), contenido de calor y la ENSO Diagnostic Discussion |
 | `feeds/peru.py` | Lectores del ICEN del IGP, del listado de comunicados del ENFEN (HTML y WordPress JSON) y del texto de cada comunicado (PDF) |
 | `signals.py` | Categorías ICEN 2024, eventos ICEN, categorías ONI/RONI y la señal del equipo GRD |
@@ -84,10 +84,15 @@ desde Actions y suma lo que bajaron el Perú y n8n.
 
 ### Orden de respaldo por fuente
 
-1. URL oficial (y espejos oficiales cuando existen).
-2. Copia más reciente del Internet Archive.
-3. Copia nueva pedida al Internet Archive (solo en la corrida programada).
-4. Último dato válido de la publicación anterior, marcado `carried: true`.
+1. URL oficial (y espejos oficiales cuando existen). Una URL que según el
+   registro Actions no alcanza se lee primero de las copias del paso 2.
+2. Copia del recolector del Perú o de n8n (gana la más reciente).
+3. Copia más reciente del Internet Archive.
+4. Copia nueva pedida al Internet Archive (Save Page Now): solo para los
+   comunicados del ENFEN, en las corridas de Actions con
+   `ENSO_ARCHIVE_SAVE=1` (todas salvo una manual con `archive_save`
+   desmarcado), cuando la copia existente tiene más de un día.
+5. Último dato válido de la publicación anterior, marcado `carried: true`.
 
 Cuando todo falla para una fuente crítica, la corrida termina en
 `critical` y no se despliega.

@@ -187,6 +187,9 @@ SOURCES: list[Source] = [
 ]
 
 SOURCE_BY_ID = {s.id: s for s in SOURCES}
+#: Orden de pedido de las fuentes oficiales: estas primero (el último comunicado del ENFEN se busca en cuanto se
+#: lee su listado), las demás después en el orden de SOURCES. La publicación sigue el orden de SOURCES.
+OFFICIAL_FIRST = ("enfen-comunicados", "igp-icen", "cpc-ensodisc")
 
 
 # ---------------------------------------------------------------------------
@@ -1163,19 +1166,23 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                       plan=plan if fixtures is None else None, max_seconds=OFFICIAL_REQUEST_MAX_S,
                       budget_s=OFFICIAL_BUDGET_S if fixtures is None else None)
     prev = PreviousPublication(previous, fetcher)
+    if today is None:
+        today = (started.date() if fixtures is None else _fixture_date(fixtures)) or started.date()
     acquired: dict[str, Acquired] = {}
-    for src in SOURCES:
+    # Primero las fuentes peruanas y la crítica: el tiempo de las fuentes oficiales (OFFICIAL_BUDGET_S) es uno
+    # solo, y un día malo de NOAA no debe dejar sin leer el comunicado del ENFEN publicado ese día.
+    first = [s for s in SOURCES if s.id in OFFICIAL_FIRST]
+    for src in sorted(first, key=lambda s: OFFICIAL_FIRST.index(s.id)) + [s for s in SOURCES if s not in first]:
         if only and src.id not in only:
             continue
         acquired[src.id] = acquire(src, fetcher, fixtures, prev, log)
-    if today is None:
-        today = (started.date() if fixtures is None else _fixture_date(fixtures)) or started.date()
-    if "enfen-comunicados" in acquired:
-        try:
-            enfen_latest(acquired["enfen-comunicados"], fetcher, fixtures, prev, log, today)
-        except Exception as exc:  # noqa: BLE001 — el último comunicado no debe detener la publicación
-            log.add("error", "enfen-comunicados", "parse", "latest-exception",
-                    f"No se pudo buscar el último comunicado: {type(exc).__name__}: {exc}"[:300])
+        if src.id == "enfen-comunicados":
+            try:
+                enfen_latest(acquired[src.id], fetcher, fixtures, prev, log, today)
+            except Exception as exc:  # noqa: BLE001 — el último comunicado no debe detener la publicación
+                log.add("error", "enfen-comunicados", "parse", "latest-exception",
+                        f"No se pudo buscar el último comunicado: {type(exc).__name__}: {exc}"[:300])
+    acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
     b = Builder(acquired, log, today)
     b.build_series()
     weekly = b.weekly()
@@ -1239,8 +1246,9 @@ NEWS_REQUEST_MAX_S = 60.0
 #: Lo mismo para las fuentes oficiales (algunas sirven PDF de varios MB desde servidores lentos).
 OFFICIAL_REQUEST_MAX_S = 300.0
 #: Tiempo para todos los pedidos de las fuentes oficiales (y sus copias de archivo). Una corrida normal tarda
-#: unos 2 min; pasado este tiempo cada fuente que falta sigue con sus copias o su dato anterior, para que las
-#: noticias y la publicación quepan en el límite del paso del pipeline.
+#: unos 2 min; pasado este tiempo cada fuente que falta sigue con las copias del Perú y de n8n o con su dato
+#: anterior, para que las noticias y la publicación quepan en el límite del paso del pipeline. Las de
+#: OFFICIAL_FIRST se piden antes que las demás.
 OFFICIAL_BUDGET_S = 480.0
 #: Las notas de los feeds «reader» que ninguna publicación tiene todavía se guardan en su estado hasta este
 #: plazo (días seguidos sin publicar).
@@ -1430,7 +1438,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         """Un pedido que se hizo (respondiera o no) hace menos del plazo. ``checkedAt`` es la hora de inicio de
         su corrida y los feeds se piden después de las fuentes oficiales: el margen cubre el límite de 26 min
         del paso del pipeline, para que dos pedidos nunca queden a menos de READER_MIN_HOURS."""
-        return (isinstance(st, dict) and "httpStatus" in st and not st.get("skipped")
+        return (isinstance(st, dict) and "httpStatus" in st and st.get("skipped") in (None, "reader-unknown")
                 and 0 <= _hours_since(st.get("checkedAt"), now) < READER_MIN_HOURS + READER_SLACK_HOURS)
 
     for f in N.FEEDS:
@@ -1444,16 +1452,25 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             recent[f.id] = {**max(seen, key=lambda st: str(st.get("checkedAt"))), "carried": True}
     # Sin estado guardado (la caché no se pudo leer) y sin la publicación anterior (el sitio no respondió) no se
     # sabe cuándo se pidieron por última vez: no se piden en esta corrida, en lugar de arriesgar un segundo
-    # pedido antes de plazo. Una primera publicación no tiene feeds.json (404), no es este caso.
-    unknown = set()
+    # pedido antes de plazo, y esta corrida cuenta como su pedido (en el estado y en la publicación): las
+    # siguientes esperan READER_MIN_HOURS desde ahora, que es después de cualquier pedido anterior. Una primera
+    # publicación no tiene feeds.json (404), no es este caso.
+    unknown: dict[str, dict] = {}
     if reader and reader_state is not None and not state and previous.state.get("news/feeds.json") == "unreachable":
-        unknown = {f.id for f in N.FEEDS if f.url in reader and f.id not in barred and f.id not in recent}
+        unknown = {f.id: {**N._status(f, now, "no se pidió: no se sabía cuándo se pidió por última vez (sin estado "
+                                                 f"guardado ni publicación anterior); se pide {READER_MIN_HOURS} h después "
+                                                 "de esta corrida"),
+                          "httpStatus": None, "skipped": "reader-unknown"}
+                   for f in N.FEEDS if f.url in reader and f.id not in barred and f.id not in recent}
         if unknown:
             log.add("warning", "news", "fetch", "feeds-reader-unknown",
                     f"{len(unknown)} feeds que se leen una vez al día no se piden: no hay estado guardado ni se pudo leer "
-                    "news/feeds.json de la publicación anterior, así que no se sabe cuándo se pidieron por última vez.")
+                    "news/feeds.json de la publicación anterior, así que no se sabe cuándo se pidieron por última vez. "
+                    f"Se piden {READER_MIN_HOURS} h después de esta corrida.")
+            pending.update({N.FEED_BY_ID[fid].url: {"status": st, "items": []} for fid, st in unknown.items()})
+            write_reader_state(reader_state, pending)
     try:
-        found, status, raw = N.collect(fetch, now, feeds=[f for f in N.FEEDS if f.id not in barred | set(recent) | unknown],
+        found, status, raw = N.collect(fetch, now, feeds=[f for f in N.FEEDS if f.id not in barred | set(recent) | set(unknown)],
                                        deadline=None if fixtures is not None else NEWS_DEADLINE_S, on_result=on_result)
     finally:
         if fixtures is None:
@@ -1472,7 +1489,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             entry = keep.get(f.url) or {}
             before = entry.get("status") if isinstance(entry.get("status"), dict) else {}
             items = entry.get("items") if isinstance(entry.get("items"), list) else []
-            if f.url in answered:
+            if f.url in answered or f.id in unknown:
                 keep[f.url] = pending[f.url]  # pedido en esta corrida: lo que se guardó al terminar su lectura
             elif f.id in recent and before.get("checkedAt") != recent[f.id].get("checkedAt"):
                 # Pedido que se arrastra de la publicación anterior: se anota con su hora, para que el estado no
@@ -1484,15 +1501,13 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         by_id = {st["id"]: st for st in status}
         by_id.update({f.id: {**N._status(f, now, "omitido: su robots.txt no permite pedir este feed"), "skipped": "robots"}
                       for f in N.FEEDS if f.id in barred})
-        by_id.update({f.id: {**N._status(f, now, "omitido: no se sabe cuándo se pidió por última vez (sin estado "
-                                                 "guardado ni publicación anterior)"), "skipped": "reader-unknown"}
-                      for f in N.FEEDS if f.id in unknown})
+        by_id.update(unknown)
         by_id.update(recent)
         status = [by_id[f.id] for f in N.FEEDS]
     if barred:
         log.add("info", "news", "fetch", "feeds-robots",
                 f"{len(barred)} feeds no se piden porque su robots.txt no lo permite (registro de fuentes).")
-    asked_reader = sum(1 for f in N.FEEDS if f.url in (reader or ()) and f.id not in set(recent) | barred | unknown)
+    asked_reader = sum(1 for f in N.FEEDS if f.url in (reader or ()) and f.id not in set(recent) | barred | set(unknown))
     if reader and (recent or asked_reader):
         log.add("info", "news", "fetch", "feeds-reader",
                 f"Feeds que su robots.txt no permite, leídos como un lector de feeds (una vez cada {READER_MIN_HOURS} h): "

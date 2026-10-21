@@ -62,7 +62,8 @@ El trabajo `incidents` las convierte en issues con la etiqueta
   en lugar de abrir otro.
 - Cuando deja de aparecer, el issue se cierra con un comentario.
 - Una corrida que falla abre «La actualización diaria falló», que se
-  cierra sola con la siguiente corrida buena. También si un job pasó su
+  cierra sola con la siguiente corrida buena. Vale para todas las corridas
+  de `observatory.yml`, también la que se lanza al fusionar en `main`. También si un job pasó su
   límite de tiempo (GitHub lo marca «cancelled»): el pipeline tiene 26 min
   y el build 36. También si solo falló el job
   `archive`: el sitio se actualizó, pero `data-archive` y su copia del
@@ -86,7 +87,7 @@ Códigos frecuentes:
 | `news-history-missing` | La publicación anterior no trajo el histórico de noticias tras tres intentos (el mensaje dice si no existe o si el sitio no respondió). Advertencia si se rehízo con la copia de `data-archive` (`sources/news/items.jsonl.gz`); error si tampoco se pudo leer la copia: se publican solo las notas de hoy y el histórico queda marcado `restarted`. El error se repite en cada corrida hasta que se lea la copia (la copia no pierde notas: el job `archive` solo le agrega) | Revisar el sitio publicado y el paso «News history backup» de la corrida |
 | `news-history-restored` | Esta corrida le agregó al histórico publicado notas de la copia de `data-archive` que no tenía (una corrida anterior no llegó a desplegar o lo publicó incompleto), o aceptó como está un histórico `restarted` porque `data-archive` no tiene copia | Ninguna: se resolvió sola |
 | `news-reader-restored` | Informativa: notas de feeds que se leen una vez al día que vienen de su última lectura (guardada en la caché de Actions), porque la corrida que las leyó no llegó a publicar | Ninguna |
-| `feeds-reader-unknown` | Los feeds que se leen una vez al día no se pidieron: no había estado guardado (caché de Actions) ni se pudo leer `news/feeds.json` del sitio, así que no se sabía cuándo se pidieron por última vez | Ninguna si es aislada; si se repite, revisar el sitio y el paso «Restore the reader-feed state» |
+| `feeds-reader-unknown` | Los feeds que se leen una vez al día no se pidieron: no había estado guardado (caché de Actions) ni se pudo leer `news/feeds.json` del sitio, así que no se sabía cuándo se pidieron por última vez. Esa corrida cuenta como su pedido: se vuelven a pedir 20 h después | Ninguna si es aislada; si se repite, revisar el sitio y el paso «Restore the reader-feed state» |
 | `news-history-large` | `news/items.jsonl` pasa de 20 MiB; Cloudflare Pages no sirve archivos de más de 25 MiB | Dividir el histórico (por ejemplo, un archivo por mes) antes de que llegue al límite |
 | `relay-token-expiring` | El token de GitHub del recolector vence en menos de 21 días | Crear un token nuevo y ejecutar INSTALAR en el equipo del recolector con ese token ([servidor-peru](servidor-peru.md#1-token-de-github)) |
 | `carried-forward` | Se conservó el dato de la publicación anterior | Revisar la fuente si persiste |

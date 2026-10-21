@@ -720,6 +720,24 @@ def test_history_backup_is_fetched_every_run():
         assert next(st for st in steps if (st.get("with") or {}).get("name") == name)["continue-on-error"] is True
 
 
+def test_the_publishing_run_checks_only_what_it_installs_and_reports_every_failure():
+    """Revisión 7: el build instalaba solo Chromium, pero la prueba de los dispositivos falla en CI si WebKit o
+    Firefox no arrancan: ninguna corrida habría desplegado. Y la corrida al fusionar en main (que publica y
+    archiva) no avisaba si fallaba. La salida de n8n se lee de un archivo, no de la salida estándar del
+    contenedor, que la cortaba."""
+    import yaml
+
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
+    run = next(s for s in wf["jobs"]["build"]["steps"] if s.get("name") == "Browser checks against the built site")["run"]
+    install = next(line for line in run.splitlines() if "playwright install" in line)
+    for engine in ("webkit", "firefox"):
+        assert engine in install or f"not {engine}" in run, engine
+    assert "event_name" not in wf["jobs"]["incidents"]["if"]
+    for path in (obs.REPO / "n8n" / "test" / "e2e.sh", obs.REPO / ".github" / "workflows" / "n8n.yml"):
+        lines = [line for line in path.read_text(encoding="utf-8").splitlines() if "--rawOutput" in line]
+        assert lines and all("--rawOutput > /w/" in line for line in lines), path.name
+
+
 def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, monkeypatch):
     """Un feed «reader» pedido hace menos de 20 h no se vuelve a pedir, haya respondido o no (como un lector
     de feeds), y queda el estado de ese pedido; uno pedido hace más o uno que antes se omitía sí se pide."""
@@ -1020,6 +1038,73 @@ def test_a_host_that_does_not_answer_stops_costing_time(monkeypatch):
     assert f.get(["https://otro.gov/x.txt"]).body == b"ok"  # los demás servidores, como siempre
 
 
+def test_a_host_that_answers_503_to_everything_stops_costing_time(monkeypatch):
+    """Revisión 7: cada 429 o 5xx ponía la cuenta del servidor en cero, así que uno que respondía 503 a todo nunca
+    dejaba de costar tres intentos y sus esperas por URL (con Retry-After: 60, tres minutos por fuente), y se esperaba
+    también después del último intento. Ahora una URL que solo recibió 429/5xx es un fallo del servidor."""
+    asked, slept = [], []
+    monkeypatch.setattr("enso.fetch.time.sleep", lambda s: slept.append(s))
+
+    def net(req):
+        asked.append(str(req.url))
+        if req.url.host == "saturado.gov":
+            return httpx.Response(503, headers={"retry-after": "60"})
+        return httpx.Response(200, text="ok")
+
+    f = Fetcher(polite_delay=0, retries=3, allow_archive=False)
+    f.client = httpx.Client(transport=httpx.MockTransport(net))
+    for i in range(12):
+        with pytest.raises(FetchError):
+            f.get([f"https://saturado.gov/datos-{i}.txt"])
+    assert len(asked) == 3 * 3 + 2  # tres URL con sus tres intentos, dos con uno, y después ninguno
+    assert slept == [60, 60] * 3  # dos esperas por URL: ninguna tras el último intento
+    assert f.get(["https://otro.gov/x.txt"]).body == b"ok"
+    one = Fetcher(polite_delay=0, retries=1, allow_archive=False)  # como el de los feeds «reader»
+    one.client = httpx.Client(transport=httpx.MockTransport(lambda req: httpx.Response(429, headers={"retry-after": "30"})))
+    slept.clear()
+    with pytest.raises(FetchError):
+        one.get(["https://news.example/rss"])
+    assert slept == []
+    back = Fetcher(polite_delay=0, retries=3, allow_archive=False)  # un 503 pasajero no cuenta
+    replies = iter([503, 200, 503, 200, 503, 200, 503, 200])
+    back.client = httpx.Client(transport=httpx.MockTransport(lambda req: httpx.Response(next(replies), text="ok")))
+    for i in range(4):
+        assert back.get([f"https://pasajero.gov/{i}"]).body == b"ok"
+    assert back._down.get("pasajero.gov", 0) == 0
+
+
+def test_slow_save_page_now_does_not_turn_off_the_archive_reads(monkeypatch):
+    """Revisión 7: Save Page Now compartía la cuenta de fallos con las búsquedas (CDX) y las copias del Internet
+    Archive: las capturas lentas de las páginas que se sondean (el comunicado siguiente, que aún no existe) y un
+    CDX que tardó apagaban todas las lecturas del archivo, y el PDF del comunicado nuevo no se leía."""
+    monkeypatch.setattr("enso.fetch.time.sleep", lambda s: None)
+    header = ["urlkey", "timestamp", "original"]
+    cdx_18 = []
+
+    def net(req):
+        if req.url.path.startswith("/save/"):
+            raise httpx.ReadTimeout("captura lenta")
+        if req.url.path.startswith("/cdx/"):
+            if "19.pdf" in str(req.url):
+                return httpx.Response(200, json=[header])  # el comunicado siguiente aún no tiene copias
+            cdx_18.append(1)
+            if len(cdx_18) == 1:
+                raise httpx.ReadTimeout("CDX lento")
+            return httpx.Response(200, json=[header, ["k", "20261020120000", "https://enfen.example/18.pdf"]])
+        if req.url.path.startswith("/web/"):
+            return httpx.Response(200, content=b"%PDF-1.7 comunicado", headers={"content-type": "application/pdf"})
+        return httpx.Response(404)
+
+    f = Fetcher(polite_delay=0, retries=3, allow_save=True)
+    f.client = httpx.Client(transport=httpx.MockTransport(net))
+    with pytest.raises(FetchError):  # sondeo: sin copia y con capturas que no terminan
+        f.get(["https://enfen.example/19.pdf"], save=True)
+    assert f._down["web.archive.org/save"] == 3
+    got = f.get(["https://enfen.example/18.pdf"], save=True)
+    assert got.body.startswith(b"%PDF") and got.channel == "archive" and len(cdx_18) == 2
+    assert f._down.get("web.archive.org", 0) == 0
+
+
 def test_a_broken_answer_is_a_failed_url_not_a_crash():
     """Revisión: gzip roto o redirecciones sin fin no son errores de red y salían de Fetcher.get, deteniendo la
     publicación entera desde el sondeo de comunicados. Ahora son una URL fallida: se sigue con la siguiente."""
@@ -1102,10 +1187,30 @@ def test_reader_feeds_are_not_asked_when_nothing_says_when_they_were_last_asked(
                            reader={feed.url}, reader_state=tmp_path / "state.json")
     assert asked == [] and got["feeds"]["feeds"][0]["skipped"] == "reader-unknown"
     assert any(e.code == "feeds-reader-unknown" and e.severity == "warning" for e in log.events)
+    # Revisión 7: esa corrida cuenta como el pedido, en el estado y en la publicación. Antes guardaba un estado
+    # vacío y publicaba el feed sin hora de pedido, y la corrida siguiente lo pedía aunque el anterior fuera de
+    # hacía una hora.
+    saved = json.loads((tmp_path / "state.json").read_text())["feeds"][feed.url]["status"]
+    assert saved["httpStatus"] is None and saved["skipped"] == "reader-unknown" and saved["checkedAt"] == NOW.isoformat(timespec="seconds")
+    assert got["feeds"]["feeds"][0]["httpStatus"] is None
+    feeds_json = json.dumps(got["feeds"]).encode()
+    site = Fetcher(polite_delay=0)
+    site.client = client(transport=httpx.MockTransport(
+        lambda req: httpx.Response(200, content=feeds_json) if req.url.path.endswith("/news/feeds.json") else httpx.Response(404)))
+    for hours, state, want in ((3, "state.json", []), (3, "otra.json", []), (21, "state.json", [feed.url])):
+        log = obs.EventLog()
+        later = obs.acquire_news(fetcher, None, obs.PreviousPublication("https://sitio.example/data", site), log,
+                                 NOW + timedelta(hours=hours), None, reader={feed.url}, reader_state=tmp_path / state)
+        assert asked == want, (hours, state)
+        assert not any(e.code == "feeds-reader-unknown" for e in log.events)
+        if not want:
+            st = later["feeds"]["feeds"][0]
+            assert st["carried"] and st["skipped"] == "reader-unknown" and st["checkedAt"] == NOW.isoformat(timespec="seconds")
+    asked.clear()
     first = Fetcher(polite_delay=0)
     first.client = client(transport=httpx.MockTransport(lambda req: httpx.Response(404)))
     obs.acquire_news(fetcher, None, obs.PreviousPublication("https://sitio.example/data", first), obs.EventLog(), NOW,
-                     None, reader={feed.url}, reader_state=tmp_path / "state.json")
+                     None, reader={feed.url}, reader_state=tmp_path / "primera.json")
     assert asked == [feed.url]
 
 
