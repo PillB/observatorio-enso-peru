@@ -134,6 +134,28 @@ def test_long_unbroken_text_from_the_sources_never_widens_the_page(site, browser
         ctx.close()
 
 
+@pytest.mark.parametrize("w", [320, 390, 820, 1000, 1100, 1366])
+def test_indicator_values_never_split_across_lines(site, browser, w):
+    """El corte de textos largos (revisión 8) dejaba que la tarjeta partiera «+3,98 °C» en «+3,98 °» y «C», o
+    «−20,3» tras la coma, a unos 1100 px. Un valor con su unidad ocupa una sola línea y no sale de su tarjeta."""
+    base, _ = site
+    ctx = browser.new_context(viewport={"width": w, "height": 900})
+    pg = ctx.new_page()
+    try:
+        for r in ("", "oceano"):
+            go(pg, base, r)
+            expect(pg.locator(".metric-value").first).to_be_visible()
+            bad = pg.evaluate("""() => [...document.querySelectorAll('.metric-value:not(.na)')].filter((e) => e.offsetParent)
+              .map((e) => { const rg = document.createRange(); rg.selectNodeContents(e);
+                const lines = new Set([...rg.getClientRects()].map((x) => Math.round(x.top))).size;
+                const out = e.getBoundingClientRect().right - e.closest('.card').getBoundingClientRect().right;
+                return { text: e.textContent, lines, out }; })
+              .filter((x) => x.lines > 1 || x.out > 0.5)""")
+            assert not bad, f"#{r} a {w}px: {bad}"
+    finally:
+        ctx.close()
+
+
 def test_home_shows_official_status_and_dates(site, page):
     base, root = site
     dash = json.loads((root / "data" / "dashboard.json").read_text(encoding="utf-8"))
