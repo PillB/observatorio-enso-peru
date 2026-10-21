@@ -316,6 +316,8 @@ Si sigue sin funcionar, enviar a quien mantiene el sitio el último
   así que un cambio en el registro llega sin reinstalar; si GitHub no
   responde, usa la copia del kit. Una regla `follow` baja además los
   documentos enlazados (por ejemplo, los PDF de un listado), hasta `max`.
+  Lo que el registro marca `robots-disallowed` (el robots.txt del servidor
+  no permite la ruta) no se pide, aunque esté en la lista base.
   Todo se guarda tal cual: el análisis se hace en GitHub Actions, así que
   corregir un lector nunca exige actualizar este equipo. Las URL deben
   coincidir con las que pide el pipeline (se buscan por URL y alias).

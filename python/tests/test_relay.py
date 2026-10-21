@@ -166,6 +166,9 @@ REGISTRY = {
         {"id": "news-andina", "group": "andina", "url": "https://andina.pe/agencia/rss/3.xml",
          "channels": ["actions", "n8n"], "geoblocked": False},
         {"id": "roto", "url": "javascript:alert(1)", "channels": ["peru-server"]},
+        # Su robots.txt no lo permite: tampoco se pide la copia de SOURCES.
+        {"id": "imarpe-seccion", "group": "imarpe", "channels": [], "geoblock": {"status": "robots-disallowed"},
+         "url": "https://www.imarpe.gob.pe/imarpe/index.php?id_seccion=I0178070000000000000000"},
     ],
 }
 
@@ -191,6 +194,7 @@ def test_collector_adds_peru_only_sources_from_the_registry(tmp_path, monkeypatc
     urls = [e["url"] for e in idx["entries"]]
     assert "https://www.indeci.gob.pe/alertas/" in urls and "https://andina.pe/agencia/rss/3.xml" not in urls
     assert urls.count("https://www.senamhi.gob.pe/?p=aviso-meteorologico") == 1
+    assert not any("id_seccion" in u for u in urls) and "https://www.imarpe.gob.pe/" in urls
     linked = [e for e in idx["entries"] if e["group"] == "enlaces"]
     assert [e["url"] for e in linked] == ["https://www.indeci.gob.pe/docs/alerta-1.pdf",
                                           "https://www.indeci.gob.pe/docs/alerta-2.pdf"]

@@ -134,10 +134,23 @@ def peru_sources(registry: dict) -> list[dict]:
     return out[:MAX_REGISTRY_SOURCES]
 
 
+def robots_disallowed(registry: dict) -> set[str]:
+    """URL que el registro marca «robots-disallowed»: el robots.txt del servidor
+    pide no automatizarlas y no las pide nadie, tampoco este equipo."""
+    out: set[str] = set()
+    for src in registry.get("sources") or []:
+        geo = src.get("geoblock") if isinstance(src, dict) else None
+        if isinstance(geo, dict) and geo.get("status") == "robots-disallowed":
+            out.update(u for u in [src.get("url"), *(src.get("alt_urls") or [])] if isinstance(u, str))
+    return out
+
+
 def plan(registry: dict) -> tuple[dict[str, list[str]], dict[str, dict]]:
-    """Qué descargar: ``SOURCES`` más las fuentes «peru-server» del registro
-    (por grupo, sin repetir URL), y las reglas ``follow`` de cada URL."""
-    groups = {g: list(urls) for g, urls in SOURCES.items()}
+    """Qué descargar: ``SOURCES`` (menos lo que robots.txt no permite) más las
+    fuentes «peru-server» del registro (por grupo, sin repetir URL), y las
+    reglas ``follow`` de cada URL."""
+    blocked = robots_disallowed(registry)
+    groups = {g: [u for u in urls if u not in blocked] for g, urls in SOURCES.items()}
     known = {u for urls in groups.values() for u in urls}
     follow: dict[str, dict] = {}
     for src in peru_sources(registry):
@@ -260,6 +273,8 @@ def collect(out: Path) -> dict:
     groups, follow = plan(registry)
     if registry:
         log(f"registro de fuentes ({origin}): {len(peru_sources(registry))} para este equipo")
+    for url in sorted(robots_disallowed(registry) & {u for urls in SOURCES.values() for u in urls}):
+        log(f"no se pide {url}: su robots.txt no lo permite (registro)")
     with httpx.Client(timeout=40.0, follow_redirects=True, headers={"User-Agent": UA}) as client:
         results = {}
         for group, urls in groups.items():
