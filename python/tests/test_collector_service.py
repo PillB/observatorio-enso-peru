@@ -699,6 +699,14 @@ def test_schedule_cli_reports_a_failed_removal(monkeypatch, capsys):
     assert "crontab no aceptó" in capsys.readouterr().err
 
 
+def test_windows_launchers_return_the_installer_exit_code():
+    """«powershell ... & exit /b» en la misma línea devolvía 0 aunque el instalador fallara."""
+    for f in (REPO_ROOT / "collector" / "lanzadores").rglob("*.cmd"):
+        lines = f.read_text(encoding="ascii").splitlines()
+        assert "& exit /b" not in "\n".join(lines), f.name
+        assert lines[-2].startswith("powershell.exe ") and lines[-1] == "exit /b %ERRORLEVEL%", f.name
+
+
 def test_launchers_that_replace_their_folder_run_from_a_temp_copy():
     """cmd relee el .cmd mientras corre y no deja borrar su carpeta actual."""
     for name in ("DESINSTALAR-Windows.cmd", "ACTUALIZAR-Windows.cmd"):
