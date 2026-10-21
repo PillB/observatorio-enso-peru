@@ -580,7 +580,7 @@ def test_uninstall_without_python_reads_the_crontab_before_rewriting_it(tmp_path
     ("You (pablo) are not allowed to use this program (crontab)\n", None),
     ("crontab: your UID isn't in the passwd file. bailing out.\n", None),
 ])
-def test_unreadable_crontab_is_not_read_as_empty(monkeypatch, stderr, lines):
+def test_unreadable_crontab_is_not_read_as_empty(tmp_path, monkeypatch, stderr, lines):
     """Leer el crontab como vacío por un error haría que instalar borre las
     líneas ajenas y que desinstalar borre la carpeta con la tarea puesta."""
     writes = []
@@ -590,7 +590,7 @@ def test_unreadable_crontab_is_not_read_as_empty(monkeypatch, stderr, lines):
         assert sched._crontab_read() == lines and sched.remove_cron() is False
         return
     with pytest.raises(RuntimeError, match="no se pudo leer el crontab"):
-        sched.install_cron("/x/python", Path("/x"), ["21:00"])
+        sched.install_cron(str(tmp_path / ".venv/bin/python"), tmp_path, ["21:00"])
     with pytest.raises(RuntimeError):
         sched.remove_cron()
     assert writes == []
