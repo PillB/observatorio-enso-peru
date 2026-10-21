@@ -1,0 +1,267 @@
+{
+  "id": "EnsoExtractor001",
+  "name": "ENSO · Extractor de informes (OpenAI)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "enso-extraer",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "0907ad1a-42ed-42f7-8b12-0d86b3df28d9",
+      "name": "Petición del pipeline",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "b1f0c6d2-4e5a-4c1e-9a77-0e2f5d8c3a11",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "EnsoHookToken01",
+          "name": "Token del extractor ENSO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9372c470",
+              "name": "model",
+              "value": "gpt-4.1-mini",
+              "type": "string"
+            },
+            {
+              "id": "14c2529e",
+              "name": "api",
+              "value": "https://api.openai.com/v1",
+              "type": "string"
+            },
+            {
+              "id": "20a3134e",
+              "name": "max_chars",
+              "value": 120000,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "87c527c9-b1a1-45be-8064-410f485441b9",
+      "name": "Configuración",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generado por n8n/build.mjs desde n8n/nodes/extraer-pedido.js. No editar en n8n.\n// Extracción con OpenAI para los informes del ENFEN: valida la petición del\n// pipeline (python/enso/reports.py, llm_extract) y arma la llamada al modelo.\n// El modelo solo propone: el pipeline vuelve a validar con el esquema y\n// guarda el resultado como propuesta para revisión, nunca lo publica.\nconst cfg = $('Configuración').first().json;\nconst req = $('Petición del pipeline').first().json.body || {};\nconst KINDS = ['enfen-informe', 'enfen-perspectiva'];\n// Una petición mal formada se responde con 400 (rama «no» del nodo siguiente).\nconst invalid = !KINDS.includes(req.kind) ? `«kind» debe ser ${KINDS.join(' o ')}`\n  : !req.schema || typeof req.schema !== 'object' ? 'falta «schema» (objeto JSON)'\n    : typeof req.text !== 'string' || !req.text.trim() ? 'falta «text»' : null;\nif (invalid) return [{ json: { ok: false, status: 400, body: { error: invalid } } }];\nconst maxChars = Number(cfg.max_chars) || 120000;\nconst SYSTEM = [\n  'Extraes datos de un documento oficial del ENFEN (Perú) a JSON.',\n  'Reglas:',\n  '1. Usa solo lo que el texto dice. No calcules, no completes, no uses conocimiento externo.',\n  '2. Sigue exactamente el esquema JSON dado: mismos nombres de campos y tipos.',\n  '3. Si un valor no aparece o no estás seguro, pon null.',\n  '4. Responde un objeto JSON con dos claves: \"data\" (el objeto que sigue el esquema) y',\n  '   \"evidence\" (objeto que asigna a cada ruta de campo con valor, p. ej. \"indices.provisional[0].value\",',\n  '   la cita textual del documento de donde sale, de 300 caracteres como máximo).',\n].join('\\n');\nconst user = [\n  `Tipo de documento: ${req.kind}`,\n  `URL: ${req.url || 'desconocida'}`,\n  `Publicado: ${req.published || 'desconocido'}`,\n  'Esquema JSON de \"data\":',\n  JSON.stringify(req.schema),\n  'Texto del documento:',\n  req.text.slice(0, maxChars),\n].join('\\n\\n');\nreturn [{ json: {\n  ok: true,\n  kind: req.kind,\n  request: {\n    model: String(cfg.model),\n    temperature: 0,\n    response_format: { type: 'json_object' },\n    messages: [{ role: 'system', content: SYSTEM }, { role: 'user', content: user }],\n  },\n} }];\n"
+      },
+      "id": "7298007a-4f5d-4e63-80cf-9956d679de5b",
+      "name": "Preparar pedido",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "f3a1c2d4-0b5e-4e6f-9a7b-8c9d0e1f2a3b",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9199f948-72a2-4237-872b-4a15011f76ff",
+      "name": "¿Pedido válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        720,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Configuración').first().json.api }}/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.request) }}",
+        "options": {
+          "timeout": 110000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "5a61126b-bdac-48ab-883c-b84595b0b706",
+      "name": "Preguntar al modelo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        0
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "EnsoOpenAiCred01",
+          "name": "OpenAI ENSO (n8n)"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generado por n8n/build.mjs desde n8n/nodes/extraer-respuesta.js. No editar en n8n.\n// Convierte la respuesta de OpenAI en {data, model, evidence} para el\n// pipeline. Si el modelo falla o no devuelve JSON, responde un error HTTP\n// (el pipeline lo anota y sigue sin la propuesta).\nconst r = $input.first().json;\nconst fail = (status, error) => [{ json: { status, body: { error: String(error).slice(0, 500) } } }];\nif (r.error) return fail(502, `OpenAI no respondió: ${r.error.message || JSON.stringify(r.error)}`);\nlet body = r.body !== undefined ? r.body : r.data;\nif (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { return fail(502, 'respuesta de OpenAI ilegible'); } }\nif (r.statusCode !== 200) return fail(502, `OpenAI HTTP ${r.statusCode}: ${(body && body.error && body.error.message) || ''}`);\nconst content = body && body.choices && body.choices[0] && body.choices[0].message && body.choices[0].message.content;\nlet parsed;\ntry { parsed = JSON.parse(content); } catch (e) { return fail(502, 'el modelo no devolvió JSON'); }\n// Si el modelo devolvió solo el objeto del esquema, sin envolver, se acepta igual.\nconst wrapped = parsed && typeof parsed === 'object' && 'data' in parsed;\nconst data = wrapped ? parsed.data : parsed;\nif (!data || typeof data !== 'object') return fail(502, 'el modelo no devolvió «data»');\nreturn [{ json: { status: 200, body: {\n  data,\n  model: body.model || String($('Configuración').first().json.model),\n  evidence: wrapped && parsed.evidence && typeof parsed.evidence === 'object' ? parsed.evidence : {},\n  usage: body.usage || null,\n} } }];\n"
+      },
+      "id": "ade8b83a-b9c6-409e-837e-0e0db9140472",
+      "name": "Armar respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "responseCode": "={{ $json.status }}"
+        }
+      },
+      "id": "66ff5d77-1b64-4dc0-8877-d96f8549bec2",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Petición del pipeline": {
+      "main": [
+        [
+          {
+            "node": "Configuración",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuración": {
+      "main": [
+        [
+          {
+            "node": "Preparar pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar pedido": {
+      "main": [
+        [
+          {
+            "node": "¿Pedido válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Pedido válido?": {
+      "main": [
+        [
+          {
+            "node": "Preguntar al modelo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preguntar al modelo": {
+      "main": [
+        [
+          {
+            "node": "Armar respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar respuesta": {
+      "main": [
+        [
+          {
+            "node": "Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Lima",
+    "saveManualExecutions": true
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "ensoVersion": "c1cc2b309e"
+  },
+  "tags": []
+}

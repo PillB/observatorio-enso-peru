@@ -34,6 +34,8 @@ const NODE_LIBS = {
   'rama': [],
   'resumen': [],
   'vigilante': [],
+  'extraer-pedido': [],
+  'extraer-respuesta': [],
 };
 
 /** Código final de un nodo Code: bibliotecas + cuerpo, con los marcadores reemplazados. */
@@ -270,10 +272,60 @@ const watcher = workflow('EnsoVigilante001', 'ENSO · Vigilante del sitio public
   return c;
 })());
 
+// ---------------------------------------------------------------- extractor
+// Respaldo con OpenAI para los informes del ENFEN cuando el lector determinista
+// encuentra un formato nuevo (python/enso/reports.py, llm_extract). Webhook
+// con token, el modelo propone un JSON según el esquema y el pipeline lo
+// vuelve a validar y lo guarda como propuesta para revisión.
+const OPENAI_CRED = { openAiApi: { id: process.env.N8N_OPENAI_CRED_ID || 'EnsoOpenAiCred01', name: 'OpenAI ENSO (n8n)' } };
+const HOOK_CRED = { httpHeaderAuth: { id: process.env.N8N_HOOK_CRED_ID || 'EnsoHookToken01', name: 'Token del extractor ENSO' } };
+export const EXTRACTOR_PATH = 'enso-extraer';
+nextX = -240;
+const extractor = workflow('EnsoExtractor001', 'ENSO · Extractor de informes (OpenAI)', [
+  node('Petición del pipeline', 'n8n-nodes-base.webhook', 2, {
+    httpMethod: 'POST', path: EXTRACTOR_PATH, authentication: 'headerAuth', responseMode: 'responseNode', options: {},
+  }, { webhookId: 'b1f0c6d2-4e5a-4c1e-9a77-0e2f5d8c3a11', credentials: HOOK_CRED }),
+  setNode('Configuración', [
+    ['model', 'gpt-4.1-mini'],
+    ['api', 'https://api.openai.com/v1'],
+    ['max_chars', 120000, 'number'],
+  ]),
+  code('Preparar pedido', 'extraer-pedido', {}),
+  node('¿Pedido válido?', 'n8n-nodes-base.if', 2, {
+    conditions: {
+      options: { caseSensitive: true, leftValue: '', typeValidation: 'strict' },
+      conditions: [{ id: 'f3a1c2d4-0b5e-4e6f-9a7b-8c9d0e1f2a3b', leftValue: '={{ $json.ok }}', rightValue: '', operator: { type: 'boolean', operation: 'true', singleValue: true } }],
+      combinator: 'and',
+    },
+    options: {},
+  }),
+  node('Preguntar al modelo', 'n8n-nodes-base.httpRequest', 4.2, {
+    method: 'POST',
+    url: "={{ $('Configuración').first().json.api }}/chat/completions",
+    authentication: 'predefinedCredentialType',
+    nodeCredentialType: 'openAiApi',
+    sendBody: true,
+    specifyBody: 'json',
+    jsonBody: '={{ JSON.stringify($json.request) }}',
+    options: { timeout: 110000, response: { response: { fullResponse: true, neverError: true, responseFormat: 'json' } } },
+  }, { credentials: OPENAI_CRED, onError: 'continueRegularOutput', retryOnFail: true, maxTries: 2, waitBetweenTries: 3000 }),
+  code('Armar respuesta', 'extraer-respuesta', {}),
+  node('Responder', 'n8n-nodes-base.respondToWebhook', 1.1, {
+    respondWith: 'json',
+    responseBody: '={{ JSON.stringify($json.body) }}',
+    options: { responseCode: '={{ $json.status }}' },
+  }),
+], (() => {
+  const c = chain(['Petición del pipeline', 'Configuración', 'Preparar pedido', '¿Pedido válido?']);
+  c['¿Pedido válido?'] = { main: [[{ node: 'Preguntar al modelo', type: 'main', index: 0 }], [{ node: 'Responder', type: 'main', index: 0 }]] };
+  return chain(['Preguntar al modelo', 'Armar respuesta', 'Responder'], c);
+})());
+
 export const WORKFLOWS = {
   'enso-n8n-validacion.json': validation,
   'enso-n8n-recolector.json': collector,
   'enso-n8n-vigilante.json': watcher,
+  'enso-n8n-extractor.json': extractor,
 };
 
 if (import.meta.url === `file://${process.argv[1]}`) {
