@@ -112,10 +112,30 @@ class _Site(http.server.BaseHTTPRequestHandler):
         pass
 
 
+class _Down(http.server.BaseHTTPRequestHandler):
+    """Otro servidor, cuyo robots.txt da 503: no se sabe qué permite, así que no se le pide nada."""
+    hits: list[str] = []
+
+    def do_GET(self):  # noqa: N802
+        type(self).hits.append(self.path)
+        self.send_response(503 if self.path == "/robots.txt" else 200)
+        self.send_header("content-type", "application/json")
+        self.end_headers()
+        self.wfile.write(b"" if self.path == "/robots.txt" else b'{"x": 1}')
+
+    def log_message(self, *a):
+        pass
+
+
 @pytest.mark.browser
 def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypatch):
     pytest.importorskip("playwright.sync_api")
     monkeypatch.setattr(L, "DELAY_S", 0)
+    down = http.server.ThreadingHTTPServer(("127.0.0.1", 0), _Down)
+    threading.Thread(target=down.serve_forever, daemon=True).start()
+    other = f"http://127.0.0.1:{down.server_address[1]}/lib.json"
+    ct, app = _Site.FILES["/app"]
+    monkeypatch.setitem(_Site.FILES, "/app", (ct, app.replace(b"<script>", f"<script>fetch('{other}').catch(()=>{{}});".encode())))
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), _Site)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{srv.server_address[1]}"
@@ -135,14 +155,16 @@ def test_browser_step_finds_the_hidden_api_and_honors_robots(tmp_path, monkeypat
         t.join(120)
     finally:
         srv.shutdown()
+        down.shutdown()
     if "exc" in got:
         raise got["exc"]
     r = got["rep"]["results"][0]
     assert [s["step"] for s in r["steps"]] == ["http", "http-headers", "browser"]
     assert r["answer"] == "hidden-api" and r["dataUrl"] == f"{base}/data.json"
     browser = r["steps"][-1]
-    assert browser["blockedByRobots"] == [f"{base}/private/secret.json"]
+    assert browser["blockedByRobots"] == sorted([f"{base}/private/secret.json", other])
     assert "/private/secret.json" not in _Site.hits  # el navegador tampoco pide lo que robots.txt prohíbe
+    assert "/lib.json" not in _Down.hits  # ni lo de un servidor cuyo robots.txt no respondió
     assert os.path.exists(tmp_path / next(c["file"] for c in browser["calls"] if c.get("file")))
 
 

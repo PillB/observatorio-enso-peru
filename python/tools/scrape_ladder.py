@@ -110,7 +110,9 @@ def browser_step(browser, url: str, expect: str, robots: Robots) -> dict:
 
     def route(r):
         req_url = r.request.url
-        if req_url.startswith("http") and robots.allowed(req_url) is False:
+        # Como en el resto del observatorio (RFC 9309 §2.3.1.4), un robots.txt que no responde equivale a «todo
+        # prohibido», también para lo que la página carga de otros servidores.
+        if req_url.startswith("http") and robots.allowed(req_url) is not True:
             blocked.append(req_url)
             return r.abort()
         return r.continue_()
