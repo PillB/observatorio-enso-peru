@@ -44,6 +44,8 @@ import os
 import re
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeout
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -66,15 +68,45 @@ XHR_TYPES = ("json", "xml", "text/plain", "csv", "geo+json")
 CANDIDATES = Path(__file__).with_name("scrape_candidates.json")
 DELAY_S = 1.0
 MAX_HOPS = 10
-#: Plazo para leer el robots.txt de los demás servidores que carga la página (scripts, CDN): mientras se lee,
-#: el navegador no avanza con las otras peticiones.
+#: Plazo para leer el robots.txt de cada servidor que la página carga y que los GET no tocaron (scripts, CDN), y
+#: tope de todas esas lecturas juntas por página: mientras se lee uno, el navegador no avanza con los demás
+#: pedidos. Sin respuesta a tiempo, el servidor cuenta como «robots.txt sin respuesta» y no se le pide nada.
 SUB_ROBOTS_TIMEOUT_S = 5.0
+SUB_ROBOTS_BUDGET_S = 20.0
 #: Recursos que no traen datos (tipos del protocolo de Chromium): no se piden, menos carga para servidores con
 #: pocos recursos.
 SKIP_TYPES = ("Image", "Media", "Font")
-#: Sin aislamiento por sitio, los iframes de otros sitios corren en el proceso de la página y sus pedidos
-#: también se detienen en su sesión ``Fetch``; con él escaparían de la revisión de robots.txt.
-BROWSER_ARGS = ["--disable-site-isolation-trials", "--disable-features=IsolateOrigins,site-per-process"]
+#: Reglas de precarga («speculation rules»): Chromium hace esas precargas por fuera de la sesión ``Fetch``, así que
+#: no deben llegar a leerse. Las de la cabecera ``Speculation-Rules`` se quitan de la respuesta; las de un
+#: ``<script type=speculationrules>`` las saca este guion, que corre en cada página y marco antes que los de la
+#: página, apenas el elemento entra al documento (o a una sombra abierta, o a una creada con ``attachShadow``) y
+#: antes de que Chromium las procese, que lo hace en una microtarea posterior. Reescribir el HTML en la sesión
+#: ``Fetch`` (``fulfillRequest``) no sirve: deja colgados los iframes de otro sitio. Lo que escape (una sombra
+#: declarativa cerrada, una página que lo esquive a propósito) aparece en ``unchecked``.
+SPECULATION_GUARD_JS = """(() => {
+  const rules = e => e.localName === 'script' && (e.getAttribute('type') || '').trim().toLowerCase() === 'speculationrules';
+  const watched = new WeakSet();
+  const sweep = n => {
+    if (n && n.nodeType === 3) n = n.parentNode;
+    if (!n || !n.querySelectorAll) return;
+    for (const e of n.nodeType === 1 ? [n, ...n.querySelectorAll('*')] : n.querySelectorAll('*')) {
+      if (rules(e)) e.remove();
+      else if (e.shadowRoot) watch(e.shadowRoot);
+    }
+  };
+  const mo = new MutationObserver(ms => {
+    for (const m of ms) { if (m.type === 'childList') m.addedNodes.forEach(sweep); else sweep(m.target); }
+  });
+  const watch = root => {
+    if (watched.has(root)) return;
+    watched.add(root);
+    mo.observe(root, {childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['type']});
+    sweep(root);
+  };
+  const attach = Element.prototype.attachShadow;
+  Element.prototype.attachShadow = function (...a) { const r = attach.apply(this, a); watch(r); return r; };
+  watch(document);
+})();"""
 
 
 def _ext(content_type: str, body: bytes) -> str:
@@ -140,48 +172,88 @@ def http_step(client: httpx.Client, url: str, expect: str, headers: Optional[dic
 def browser_step(browser, url: str, expect: str, robots: Robots, sub_robots: Optional[Robots] = None) -> dict:
     """Abre la página en Chromium sin interfaz y anota las llamadas de datos que hace.
 
-    Cada pedido del navegador, también cada salto de una redirección, se detiene en el dominio ``Fetch`` del
-    protocolo de Chromium antes de salir: se consulta el robots.txt de su servidor (``sub_robots``, con un plazo
-    corto, para los que no son el de la página) y solo entonces sigue. ``page.route`` no sirve para esto:
-    solo ve el primer pedido de una cadena de redirecciones. Como en el resto del observatorio (RFC 9309
-    §2.3.1.4), un robots.txt que no responde equivale a «todo prohibido». Sin service workers, que pedirían por
-    fuera de esta revisión."""
+    Cada pedido del navegador (de la página, sus iframes, ventanas emergentes y workers, y cada salto de una
+    redirección) se detiene antes de salir en una sesión ``Fetch`` del protocolo de Chromium abierta sobre todo
+    el navegador, y solo sigue si el robots.txt de su servidor lo permite. ``page.route`` no sirve para esto: solo
+    ve el primer pedido de una cadena de redirecciones y nada de otras ventanas. Para los servidores que los GET
+    no tocaron se usa ``sub_robots`` con un plazo corto. Como en el resto del observatorio (RFC 9309 §2.3.1.4), un
+    robots.txt que no responde equivale a «todo prohibido». No se abren WebSocket ni service workers, y se quitan
+    las reglas de precarga, que saldrían por fuera de esta revisión. Lo que igual llegue a responder sin haber
+    pasado por ella queda en ``unchecked``."""
     t = time.monotonic()
     calls: list[dict] = []
     blocked: list[str] = []
+    verdicts: dict[str, Optional[bool]] = {}  # documentos bloqueados → veredicto (False prohibido, None sin respuesta)
     checked: set[str] = set()  # lo que pasó por ``paused``
-    seen: set[str] = set()  # todo lo que el navegador pidió
-    host = urlparse(url).netloc
+    answered: set[str] = set()  # lo que el navegador recibió
+    gave_up: set[str] = set()  # servidores cuyo robots.txt no llegó a tiempo
+    budget = [SUB_ROBOTS_BUDGET_S]
+    pool = ThreadPoolExecutor(max_workers=2)
+
+    def base(u: str) -> str:
+        p = urlparse(u)
+        return f"{p.scheme}://{p.netloc}"
 
     def allowed(u: str) -> Optional[bool]:
-        return (robots if sub_robots is None or urlparse(u).netloc == host else sub_robots).allowed(u)
+        if sub_robots is None or robots.known(u) or sub_robots.known(u):
+            return (robots if sub_robots is None or robots.known(u) else sub_robots).allowed(u)
+        if base(u) in gave_up or budget[0] <= 0:
+            return None
+        started = time.monotonic()
+        try:
+            return pool.submit(sub_robots.allowed, u).result(timeout=min(SUB_ROBOTS_TIMEOUT_S, budget[0]))
+        except FutureTimeout:
+            gave_up.add(base(u))
+            return None
+        finally:
+            budget[0] -= time.monotonic() - started
 
-    ctx = browser.new_context(user_agent=UA, locale="es-PE", service_workers="block",
-                              extra_http_headers={"Accept-Language": BROWSER_HEADERS["Accept-Language"]})
-    page = ctx.new_page()
-    cdp = ctx.new_cdp_session(page)
+    cdp = browser.new_browser_cdp_session()
+
+    def strip_speculation(ev: dict) -> None:
+        rid, code = ev["requestId"], ev["responseStatusCode"]
+        all_headers = ev.get("responseHeaders") or []
+        headers = [h for h in all_headers if h["name"].lower() != "speculation-rules"]
+        if len(headers) == len(all_headers):
+            cdp.send("Fetch.continueRequest", {"requestId": rid})
+        else:  # solo cambian las cabeceras: el cuerpo sigue tal cual
+            cdp.send("Fetch.continueResponse", {"requestId": rid, "responseCode": code, "responseHeaders": headers})
 
     def paused(ev: dict) -> None:
-        req_url = ev["request"]["url"]
+        rid, req_url, kind = ev["requestId"], ev["request"]["url"], ev.get("resourceType")
+        if "responseStatusCode" in ev:  # una página ya recibida: sin cabecera de reglas de precarga
+            try:
+                strip_speculation(ev)
+            except Exception:  # noqa: BLE001 — se deja pasar tal cual (ya pasó la revisión de robots.txt)
+                try:
+                    cdp.send("Fetch.continueRequest", {"requestId": rid})
+                except Exception:  # noqa: BLE001 — la página ya se cerró
+                    pass
+            return
         checked.add(req_url)
-        go = True
         try:
-            if ev.get("resourceType") in SKIP_TYPES:
-                go = False
-            elif req_url.startswith("http") and allowed(req_url) is not True:
-                go = False
+            verdict: Optional[bool] = True
+            if kind in SKIP_TYPES:
+                verdict = False
+            elif req_url.startswith("http"):
+                try:
+                    verdict = allowed(req_url)
+                except Exception:  # noqa: BLE001 — sin veredicto no se pide
+                    verdict = None
+            if verdict is True:
+                cdp.send("Fetch.continueRequest", {"requestId": rid})
+                return
+            cdp.send("Fetch.failRequest", {"requestId": rid, "errorReason": "BlockedByClient"})
+            if kind not in SKIP_TYPES:
                 blocked.append(req_url)
-        except Exception:  # noqa: BLE001 — sin veredicto no se pide
-            go = False
-        try:
-            if go:
-                cdp.send("Fetch.continueRequest", {"requestId": ev["requestId"]})
-            else:
-                cdp.send("Fetch.failRequest", {"requestId": ev["requestId"], "errorReason": "BlockedByClient"})
-        except Exception:  # noqa: BLE001 — la página ya se cerró
+                if kind == "Document":
+                    verdicts[req_url] = verdict
+        except Exception:  # noqa: BLE001 — el pedido ya no existe (la página se cerró)
             pass
 
     def on_response(resp):
+        if resp.url.startswith("http"):
+            answered.add(resp.url)
         if resp.request.resource_type not in ("xhr", "fetch"):
             return
         ct = resp.headers.get("content-type", "")
@@ -194,13 +266,26 @@ def browser_step(browser, url: str, expect: str, robots: Robots, sub_robots: Opt
         calls.append({"url": resp.url, "status": resp.status, "contentType": ct, "bytes": len(body),
                       "method": resp.request.method, "found": _found(expect, body), "_body": body})
 
+    def on_websocket(ws) -> None:
+        blocked.append(ws.url)  # sin connect_to_server: el servidor nunca recibe el pedido
+
     cdp.on("Fetch.requestPaused", paused)
-    cdp.send("Fetch.enable", {"patterns": [{"urlPattern": "*", "requestStage": "Request"}]})
-    page.on("response", on_response)
-    page.on("request", lambda req: seen.add(req.url) if req.url.startswith("http") else None)
+    cdp.send("Fetch.enable", {"patterns": [{"urlPattern": "*", "requestStage": "Request"},
+                                            {"urlPattern": "*", "resourceType": "Document", "requestStage": "Response"}]})
+    ctx = browser.new_context(user_agent=UA, locale="es-PE", service_workers="block",
+                              extra_http_headers={"Accept-Language": BROWSER_HEADERS["Accept-Language"]})
+    ctx.add_init_script(SPECULATION_GUARD_JS)
+    ctx.route_web_socket(re.compile(r".*"), on_websocket)
+    ctx.on("response", on_response)
+    page = ctx.new_page()
     out: dict = {}
     try:
-        resp = page.goto(url, wait_until="networkidle", timeout=60_000)
+        resp = page.goto(url, wait_until="load", timeout=60_000)
+        try:
+            # Una página que nunca queda quieta (sondeo periódico, un worker compartido) no debe costar el paso.
+            page.wait_for_load_state("networkidle", timeout=15_000)
+        except Exception:  # noqa: BLE001
+            pass
         page.wait_for_timeout(1500)
         html = page.content().encode("utf-8")
         status = resp.status if resp else None
@@ -209,15 +294,33 @@ def browser_step(browser, url: str, expect: str, robots: Robots, sub_robots: Opt
     except Exception as exc:  # noqa: BLE001
         out = {"status": None, "class": classify(None, b"", f"{type(exc).__name__}: {exc}"),
                "error": f"{type(exc).__name__}: {exc}"[:200], "found": False, "_body": b""}
+        doc = next((u for u in verdicts if u in blocked), None)
+        if doc and "ERR_BLOCKED_BY_CLIENT" in str(exc):
+            # La página (o un salto de su redirección) no se pidió por robots.txt: igual que en los GET.
+            out["class"] = "robots" if verdicts[doc] is False else (sub_robots or robots).failure(doc) or "robots-unreachable"
+            out["blockedByRobots"] = doc
     finally:
+        # Primero se sale de la página, con la revisión todavía activa: los avisos que una página manda al irse
+        # («beacons», fetch con keepalive) también pasan por ella.
+        try:
+            page.goto("about:blank", timeout=10_000)
+        except Exception:  # noqa: BLE001
+            pass
         ctx.close()
+        try:
+            cdp.send("Fetch.disable")
+            cdp.detach()
+        except Exception:  # noqa: BLE001
+            pass
+        pool.shutdown(wait=False)
     for c in calls:
         c["robots"] = {True: "allowed", False: "disallowed", None: "unreachable"}[allowed(c["url"])]
+    page_blocked = out.pop("blockedByRobots", None)
     out.update({"ms": round((time.monotonic() - t) * 1000), "calls": calls, "blockedByRobots": sorted(set(blocked))})
-    if seen - checked:
-        # Pedidos que no pasaron por la revisión (un navegador abierto sin BROWSER_ARGS): se anotan para que el
-        # informe no los dé por revisados.
-        out["unchecked"] = sorted(seen - checked)
+    if page_blocked:
+        out["pageBlocked"] = page_blocked
+    if answered - checked:
+        out["unchecked"] = sorted(answered - checked)
     return out
 
 
@@ -296,8 +399,7 @@ def run(cands: list[dict], out: Path, browser_ok: bool = True, client: Optional[
                         if browser is None:
                             from playwright.sync_api import sync_playwright
                             pw = sync_playwright().start()
-                            browser = pw.chromium.launch(executable_path=os.environ.get("PW_CHROMIUM") or None,
-                                                         args=BROWSER_ARGS)
+                            browser = pw.chromium.launch(executable_path=os.environ.get("PW_CHROMIUM") or None)
                         r3 = browser_step(browser, c["url"], c["expect"], robots, sub_robots)
                         keep("browser", r3)
                         xhr = next((x for x in r3.get("calls", []) if x["found"] and x["robots"] == "allowed"), None)
