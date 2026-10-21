@@ -201,6 +201,22 @@ def test_firms_hotspots_are_counted_by_department_in_peru_only():
     assert st["ok"] and not st["error"] and not items  # sin focos no es una falla
 
 
+def test_rain_warning_polygons_are_split_among_departments():
+    """La capa SENAMHI_AvisoPP24H: pocos polígonos grandes, cada uno sobre varios departamentos."""
+    found, status = _collect("senamhi-lluvias")
+    assert status["senamhi-lluvias"]["ok"] and len(found) == 2  # niveles 3 y 2; el nivel 1 (verde) no es un aviso
+    n3 = next(i for i in found if ", nivel 3:" in i["title"])
+    assert n3["title"].startswith("SENAMHI · aviso de precipitaciones para 24 horas, nivel 3: Piura, Lima")
+    assert {"20", "24", "15", "04", "08"} <= set(n3["departments"])  # Piura y Tumbes, Lima, Arequipa y Cusco
+    n2 = next(i for i in found if ", nivel 2:" in i["title"])
+    assert n2["title"].endswith("y 6 departamentos más") and {"16", "21", "05", "09"} <= set(n2["departments"])
+    assert "NIVEL%3D%27Nivel%203%27" in n3["link"] and "f=html" in n3["link"]
+    only_green = b'{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"NIVEL":"Nivel 1","FECHA":1792540800000},' \
+                 b'"geometry":{"type":"Polygon","coordinates":[[[-75,-10],[-74,-10],[-74,-9],[-75,-9],[-75,-10]]]}}]}'
+    p = H.parse(only_green, N.FEED_BY_ID["senamhi-lluvias"].url, "arcgis")
+    assert p.items == [] and "nivel 2 o más" in p.repairs[-1]
+
+
 def test_fire_risk_polygons_are_named_by_department():
     found, status = _collect("senamhi-incendios")
     assert status["senamhi-incendios"]["ok"] and len(found) == 1

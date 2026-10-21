@@ -414,6 +414,10 @@ FEEDS: list[Feed] = [
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=1%3D1"
          "&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
          kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", covers=("incendio",)),
+    Feed("senamhi-lluvias", "SENAMHI · avisos de precipitaciones para 24 horas (servidor GEOSINPAD del INDECI)", "peru",
+         "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=1%3D1"
+         "&outFields=NIVEL,FECHA&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", covers=("lluvias",)),
     Feed("firms-focos", "NASA FIRMS · focos de calor (VIIRS, NOAA-20)", "peru",
          "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
          kind="organismo", scope="hazard", stale_days=2, adapter="firms", covers=("incendio",)),

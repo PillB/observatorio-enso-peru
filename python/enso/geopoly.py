@@ -153,16 +153,50 @@ def ring_center(ring: Ring) -> tuple[float, float]:
     return cx / (3 * a), cy / (3 * a)
 
 
-def polygon_departments(geom: dict, areas: Optional[list[Area]] = None) -> dict[str, float]:
+def polygon_departments(geom: dict, areas: Optional[list[Area]] = None, sample: bool = False) -> dict[str, float]:
     """Departamentos que toca un (multi)polígono, con el área de las partes que caen en cada uno.
-    Cada parte se ubica por su centroide (o, si queda fuera del Perú, por su primer vértice dentro)."""
+    Cada parte se ubica por su centroide (o, si queda fuera del Perú, por su primer vértice dentro).
+
+    ``sample``: para partes grandes que cruzan varios departamentos (los avisos de lluvia del SENAMHI
+    cubren media sierra con un solo polígono), el área de cada parte se reparte entre los departamentos
+    con una grilla de hasta ``SAMPLE_POINTS`` puntos; una parte más chica que una celda va por su centroide."""
     areas = areas if areas is not None else departments()
     out: dict[str, float] = {}
     for rings in _polygons(geom):
         ext = rings[0]
+        shares = _sampled(rings, areas) if sample else {}
+        if shares:
+            for code, a in shares.items():
+                out[code] = out.get(code, 0.0) + a
+            continue
         x, y = ring_center(ext)
         code = department_at(y, x, areas, near=0) if _in_rings(x, y, rings) else None
         code = code or next((c for c in (department_at(py, px, areas, near=0) for px, py in ext) if c), None)
         if code:
             out[code] = out.get(code, 0.0) + ring_area(ext)
     return out
+
+
+#: Puntos de la grilla con que ``polygon_departments(sample=True)`` reparte una parte entre departamentos.
+SAMPLE_POINTS = 400
+
+
+def _sampled(rings: list[Ring], areas: list[Area]) -> dict[str, float]:
+    ext = rings[0]
+    x0, y0 = min(p[0] for p in ext), min(p[1] for p in ext)
+    x1, y1 = max(p[0] for p in ext), max(p[1] for p in ext)
+    step = max(0.02, ((x1 - x0) * (y1 - y0) / SAMPLE_POINTS) ** 0.5)
+    hits: dict[str, int] = {}
+    y = y0 + step / 2
+    while y < y1:
+        x = x0 + step / 2
+        while x < x1:
+            if _in_rings(x, y, rings):
+                code = department_at(y, x, areas, near=0)
+                if code:
+                    hits[code] = hits.get(code, 0) + 1
+            x += step
+        y += step
+    total = sum(hits.values())
+    area = ring_area(ext)
+    return {c: area * n / total for c, n in hits.items()} if total else {}

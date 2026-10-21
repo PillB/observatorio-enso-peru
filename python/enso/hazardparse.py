@@ -578,6 +578,40 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
                                                 + "No es un incendio: son condiciones en que un fuego se inicia y propaga con facilidad.", 600),
                           "categories": ["incendio", "FWI", intensidad],
                           "ubigeo": codes, "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else []})
+    elif "NIVEL" in keys and "NOMBDEP" not in keys:  # avisos de precipitaciones de 24 horas: polígonos por nivel
+        from .geo import department_names
+        from .geopoly import polygon_departments
+
+        names = department_names()
+        groups = {}
+        for f in feats:
+            r = (f or {}).get("properties") or (f or {}).get("attributes") or {}
+            nivel = str(r.get("NIVEL") or "").strip()
+            if not re.match(r"(?i)^nivel\s+[2-4]$", nivel):
+                continue  # el nivel 1 (verde) no es un aviso
+            g = groups.setdefault((r.get("FECHA"), nivel), {})
+            # Un polígono cubre a veces varios departamentos: su área se reparte con una grilla.
+            for code, area in polygon_departments((f or {}).get("geometry") or {}, sample=True).items():
+                g[code] = g.get(code, 0.0) + area
+        for (fecha, nivel), by_dep in sorted(groups.items(), key=lambda kv: (kv[0][0] or 0, kv[0][1]), reverse=True):
+            total = sum(by_dep.values())
+            codes = [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
+            when = _day_ms(fecha)
+            deps = [names.get(c, c) for c in codes]
+            more = len(deps) - 6
+            named = _join(deps) if more <= 0 else f"{', '.join(deps[:6])} y {more} departamento{'s' if more > 1 else ''} más"
+            items.append({"title": clean_text(f"SENAMHI · aviso de precipitaciones para 24 horas, {nivel.lower()}"
+                                              + (f": {named}" if deps else ""), 300),
+                          "link": _layer_link(base_url, f"NIVEL='{nivel}'"
+                                              + (f" AND FECHA=DATE '{when.date().isoformat()}'" if when else "")),
+                          "published": _iso(when) if when else None,
+                          "summary": clean_text(f"Zonas con aviso de precipitaciones de {nivel.lower()} para las próximas "
+                                                "24 horas, según la capa del SENAMHI en el servidor GEOSINPAD del INDECI. "
+                                                + (f"Departamentos, de mayor a menor área: {', '.join(deps)}." if deps else ""), 600),
+                          "categories": ["lluvias", nivel], "ubigeo": codes,
+                          "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else []})
+        if not items:
+            return Parsed("arcgis-json", [], ["la capa no tiene avisos de nivel 2 o más"])
     else:
         raise FeedError("capa de ArcGIS sin los campos de un aviso conocido")
     return _finish(Parsed("arcgis-json", items))
