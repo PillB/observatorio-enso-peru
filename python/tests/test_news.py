@@ -101,3 +101,33 @@ def test_architecture_diagram_copies_match():
     docs = (ROOT.parent / "docs" / "arquitectura.svg").read_bytes()
     assert docs == (ROOT.parent / "public" / "assets" / "arquitectura.svg").read_bytes()
     assert docs.lstrip().startswith(b"<svg") and b"<script" not in docs
+
+
+@pytest.mark.parametrize("feed", N.FEEDS, ids=lambda f: f.id)
+def test_real_feed_captures_parse(feed):
+    """Cada feed del catálogo, tal como respondió en la captura en vivo (21 de octubre de 2026)."""
+    from conftest import FIX
+
+    path = FIX / f"news-{feed.id}.xml"
+    if not path.exists():
+        pytest.skip("sin captura de este feed")
+    items = N.parse_feed(path.read_bytes())
+    assert items, "el feed no tiene entradas"
+    assert all(i["link"].startswith("http") and i["title"] for i in items)
+    assert sum(1 for i in items if i["published"]) >= len(items) * 0.9, "faltan fechas"
+
+
+def test_live_capture_clusters_are_coherent():
+    """Sobre las capturas reales: sin notas de redes sociales, sin enlaces repetidos en un grupo y
+    titulares sin el « - Medio» de Google Noticias."""
+    from conftest import FIX
+
+    bodies = {f.id: (FIX / f"news-{f.id}.xml").read_bytes() for f in N.FEEDS if (FIX / f"news-{f.id}.xml").exists()}
+    found, status, _ = _collect(bodies)
+    assert len(found) > 50
+    groups = N.cluster(found, NOW)
+    assert any(g["count"] >= 3 and g["region"] == "peru" for g in groups)
+    for g in groups:
+        assert not any(o.lower() in ("facebook", "instagram", "x", "youtube") for o in g["outlets"])
+        assert len({l["url"] for l in g["links"]}) == len(g["links"])
+        assert not any(g["title"].endswith(f" - {o}") for o in g["outlets"])

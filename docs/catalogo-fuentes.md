@@ -80,6 +80,45 @@ nueva en la rama `data-archive`, de modo que el corpus crece solo.
 | CIIFEN, INAMHI, INOCAR, IDEAM | Responden | Candidatos regionales |
 | CPPS (ERFEN), SHOA, DMC Chile | URL probada no válida (404/405) | Por revisar |
 
+## Feeds de noticias
+
+Catálogo ejecutable: `FEEDS` en `python/enso/news.py`. Verificado en vivo
+desde GitHub Actions el 21 de octubre de 2026 (entradas en el feed /
+relevantes sobre El Niño en ese momento). Cada corrida vuelve a comprobar
+cada feed y publica el resultado en `news/feeds.json`.
+
+| Feed | Región | Resultado | Entradas / relevantes |
+|---|---|---|---|
+| Andina (`andina.pe/agencia/rss/3.xml`) | Perú | Activo | 20 / 0 |
+| El Comercio (`elcomercio.pe/arcio/rss/`) | Perú | Activo | 100 / 8 |
+| Gestión (`gestion.pe/arcio/rss/`) | Perú | Activo | 100 / 7 |
+| Diario Correo (`diariocorreo.pe/arcio/rss/`) | Perú | Activo | 100 / 8 |
+| La República (`larepublica.pe/rss/sociedad.xml`) | Perú | Activo | 64 / 10 |
+| RPP (`rpp.pe/rss`) | Perú | Activo; algunas fechas llegan adelantadas y se corrigen a la hora de lectura | 60 / 5 |
+| Infobae Perú | Perú | Activo | 100 / 4 |
+| Caretas | Perú | Activo | 60 / 1 |
+| Peru Reports (inglés) | Perú | Activo | 15 / 0 |
+| Google Noticias, búsqueda «El Niño», «ENFEN», «Niño costero» (Perú) | Perú | Activo; agrega medios regionales | 100 / 99 |
+| Google News, búsqueda «El Niño», «La Niña», «ENSO» (inglés) | Mundo | Activo | 100 / 96 |
+| BBC News Mundo | Mundo | Activo | 34 / 0 |
+| Noticias ONU · Cambio climático | Mundo | Activo | 30 / 5 |
+| GDACS (alertas de desastres) | Mundo | Activo; solo cuenta lo que afecta al Perú | 248 / 0 |
+| Carbon Brief | Mundo | Activo | 12 / 0 |
+| CIIFEN | Mundo | Responde, publica pocas veces al año | 3 / 1 |
+
+Descartados en la verificación:
+
+| Feed | Motivo |
+|---|---|
+| Perú21 (`peru21.pe/arcio/rss/`) | HTTP 403 a servidores |
+| ReliefWeb Perú (RSS) | HTTP 202 con verificación anti-robots; su API pide registro |
+| NASA Earth Observatory | El feed no es XML válido |
+| ScienceDaily · El Niño | HTTP 404 |
+| NOAA Climate.gov · ENSO Blog | Archivado desde el 25 de junio de 2025; la última entrada es del 12 de junio de 2025 |
+
+Las publicaciones de redes sociales que aparecen en Google Noticias
+(Facebook, X, Instagram, TikTok, YouTube) se descartan.
+
 ## Fuentes evaluadas y no usadas
 
 | Producto | Motivo |

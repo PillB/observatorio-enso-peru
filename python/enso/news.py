@@ -49,16 +49,16 @@ class Feed:
 
 _GN = "https://news.google.com/rss/search?q="
 
-#: Catálogo de feeds. El estado de cada uno se verifica en cada corrida y se
-#: publica en ``news/feeds.json``; los resultados de la verificación de
-#: octubre de 2026 están en docs/catalogo-fuentes.md.
+#: Catálogo de feeds verificado en vivo desde GitHub Actions el 21 de octubre
+#: de 2026 (ver docs/catalogo-fuentes.md, donde también figuran los
+#: descartados). El estado de cada uno se vuelve a verificar en cada corrida
+#: y se publica en ``news/feeds.json``.
 FEEDS: list[Feed] = [
     # Perú
     Feed("andina", "Andina (agencia estatal)", "peru", "https://andina.pe/agencia/rss/3.xml"),
     Feed("elcomercio", "El Comercio", "peru", "https://elcomercio.pe/arcio/rss/"),
     Feed("gestion", "Gestión", "peru", "https://gestion.pe/arcio/rss/"),
     Feed("correo", "Diario Correo", "peru", "https://diariocorreo.pe/arcio/rss/"),
-    Feed("peru21", "Perú21", "peru", "https://peru21.pe/arcio/rss/"),
     Feed("larepublica", "La República", "peru", "https://larepublica.pe/rss/sociedad.xml"),
     Feed("rpp", "RPP Noticias", "peru", "https://rpp.pe/rss"),
     Feed("infobae-peru", "Infobae Perú", "peru", "https://www.infobae.com/arc/outboundfeeds/rss/category/peru/"),
@@ -67,8 +67,6 @@ FEEDS: list[Feed] = [
     Feed("gnews-peru", "Google Noticias Perú (búsqueda El Niño)", "peru",
          _GN + "%22El%20Ni%C3%B1o%22%20OR%20ENFEN%20OR%20%22Ni%C3%B1o%20costero%22&hl=es-419&gl=PE&ceid=PE:es-419",
          scope="hazard", stale_days=3),
-    Feed("reliefweb-peru", "ReliefWeb · Perú (OCHA)", "peru",
-         "https://reliefweb.int/updates/rss.xml?advanced-search=%28PC187%29", scope="hazard", stale_days=14),
     # Mundo
     Feed("gnews-world", "Google News (search El Niño)", "mundo",
          _GN + "%22El%20Ni%C3%B1o%22%20OR%20%22La%20Ni%C3%B1a%22%20OR%20ENSO&hl=en-US&gl=US&ceid=US:en",
@@ -78,13 +76,7 @@ FEEDS: list[Feed] = [
          "https://news.un.org/feed/subscribe/es/news/topic/climate-change/feed/rss.xml", scope="hazard", stale_days=14),
     Feed("gdacs", "GDACS (alertas de desastres)", "mundo", "https://www.gdacs.org/xml/rss.xml", lang="en", scope="hazard"),
     Feed("carbonbrief", "Carbon Brief", "mundo", "https://www.carbonbrief.org/feed/", lang="en", stale_days=14),
-    Feed("nasa-eo", "NASA Earth Observatory", "mundo", "https://earthobservatory.nasa.gov/feeds/earth-observatory.rss",
-         lang="en", stale_days=21),
-    Feed("sciencedaily-enso", "ScienceDaily · El Niño", "mundo",
-         "https://www.sciencedaily.com/rss/earth_climate/el_nino.xml", lang="en", scope="hazard", stale_days=30),
-    Feed("ciifen", "CIIFEN", "mundo", "https://ciifen.org/feed/", scope="hazard", stale_days=30),
-    Feed("noaa-enso-blog", "NOAA Climate.gov · ENSO Blog", "mundo",
-         "https://www.climate.gov/feeds/news-features/enso.rss", lang="en", scope="hazard", stale_days=45),
+    Feed("ciifen", "CIIFEN", "mundo", "https://ciifen.org/feed/", scope="hazard", stale_days=120),
 ]
 
 FEED_BY_ID = {f.id: f for f in FEEDS}
@@ -187,6 +179,17 @@ def parse_feed(body: bytes) -> list[dict]:
     return [i for i in items if i["title"] and i["link"].startswith(("http://", "https://"))]
 
 
+SOCIAL_RE = re.compile(r"(facebook|instagram|tiktok|twitter|youtube)\.com|//(www\.)?x\.com/|^(Facebook|Instagram|TikTok|X|YouTube)$", re.I)
+
+
+def _strip_outlet(title: str, outlet: str) -> str:
+    """Google Noticias termina los titulares con « - Medio»."""
+    for sep in (" - ", " – ", " | "):
+        if outlet and title.endswith(sep + outlet):
+            return title[: -len(sep + outlet)].rstrip()
+    return title
+
+
 def item_id(link: str, title: str) -> str:
     return hashlib.sha256(f"{link.strip()}|{title.strip().lower()}".encode()).hexdigest()[:16]
 
@@ -202,7 +205,7 @@ def _tokens(title: str) -> set[str]:
     t = "".join(c for c in t if not unicodedata.combining(c))
     # Google Noticias añade « - Medio» al final del titular.
     t = re.sub(r"\s[-–|]\s[^-–|]{2,40}$", "", t)
-    return {w for w in re.findall(r"[a-z0-9+.]{3,}", t) if w not in STOP}
+    return {w.strip(".") for w in re.findall(r"[a-z0-9+.]{3,}", t) if w.strip(".") not in STOP and len(w.strip(".")) >= 3}
 
 
 def _similar(a: set[str], b: set[str]) -> bool:
@@ -219,6 +222,14 @@ def _first_sentence(text: str) -> str:
 
 def _outlet(i: dict) -> str:
     return i.get("outlet") or (FEED_BY_ID[i["feed"]].name if i["feed"] in FEED_BY_ID else i["feed"])
+
+
+def _without_title(i: dict) -> str:
+    """El resumen sin el titular repetido al comienzo (algunos medios lo repiten)."""
+    summ, title = i["summary"].strip(), i["title"].strip().rstrip(".")
+    if summ.lower().startswith(title.lower()):
+        summ = summ[len(title):].lstrip(" .:-–")
+    return summ
 
 
 def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
@@ -238,13 +249,18 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
             groups.append({"region": it["region"], "items": [it], "_tokens": [tok]})
     out = []
     for g in groups:
-        its = g["items"]
+        # La misma nota puede llegar por el feed del medio y por Google Noticias.
+        uniq: dict = {}
+        for i, tok in zip(g["items"], g["_tokens"]):
+            uniq.setdefault((_outlet(i).lower(), frozenset(tok)), i)
+        its = list(uniq.values())
         lead = its[0]
-        summary = max((i["summary"] for i in its), key=len, default="")
+        own = [x for x in (_without_title(i) for i in its) if x and not _tokens(x) <= _tokens(lead["title"]) | _tokens(_outlet(lead))]
+        summary = max(own, key=len, default="")
         outlets = list(dict.fromkeys(_outlet(i) for i in its))
         out.append({
             "id": lead["id"], "region": g["region"], "title": lead["title"],
-            "summary": _first_sentence(summary) if summary and summary.lower() != lead["title"].lower() else "",
+            "summary": _first_sentence(summary) if summary else "",
             "first": lead.get("published") or lead["first_seen"],
             "last": max(i.get("published") or i["first_seen"] for i in its),
             "relevance": "enso" if any(i["relevance"] == "enso" for i in its) else "impacto",
@@ -332,13 +348,23 @@ def collect(fetch, now: datetime) -> tuple[list[dict], list[dict], dict[str, byt
         st["active"] = bool(st["latest"]) and st["latest"] >= (now - timedelta(days=f.stale_days)).isoformat()
         if not entries:
             st["error"] = "feed sin entradas"
+        future = (now + timedelta(hours=2)).isoformat()
         for e in entries:
-            why = relevance(f, e["title"], e["summary"])
+            outlet = e.get("outlet") or f.name
+            if SOCIAL_RE.search(e["link"]) or SOCIAL_RE.search(outlet):
+                continue  # publicaciones en redes sociales, no notas de prensa
+            title = _strip_outlet(e["title"], outlet)
+            why = relevance(f, title, e["summary"])
             if not why:
                 continue
             st["relevant"] += 1
-            found.append({"id": item_id(e["link"], e["title"]), "first_seen": seen_at, "published": e["published"],
-                          "region": f.region, "feed": f.id, "outlet": e.get("outlet") or f.name, "relevance": why,
-                          "title": e["title"], "summary": e["summary"], "link": e["link"]})
+            published = e["published"]
+            if published and published > future:
+                # Algunos medios publican la hora local marcada como UTC.
+                st["futureDates"] = st.get("futureDates", 0) + 1
+                published = seen_at
+            found.append({"id": item_id(e["link"], e["title"]), "first_seen": seen_at, "published": published,
+                          "region": f.region, "feed": f.id, "outlet": outlet, "relevance": why,
+                          "title": title, "summary": e["summary"], "link": e["link"]})
         status.append(st)
     return found, status, raw
