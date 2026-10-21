@@ -2288,5 +2288,34 @@
   "home": "https://andina.pe/agencia/rss.aspx",
   "feeds": [],
   "savehtml": true
+ },
+ {
+  "id": "indeci-coen-emergencias",
+  "name": "INDECI · COEN, reportes de emergencias",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "scope": "hazard",
+  "home": "https://portal.indeci.gob.pe/emergencias/",
+  "feeds": [
+   "https://portal.indeci.gob.pe/emergencias/feed/?paged=1",
+   "https://portal.indeci.gob.pe/emergencias/feed/?paged=2"
+  ],
+  "evidence": "seen",
+  "note": "WebFetch 2026-10-21: RSS 2.0 of the 'emergencias' post type, 25-40 posts a day (all hazards, district and department in the title). The bare /emergencias/feed/ was a stale cached copy (lastBuildDate 12 Oct); ?paged=N was fresh."
+ },
+ {
+  "id": "gobpe-normas-emergencia",
+  "name": "gob.pe · normas «estado de emergencia»",
+  "department": "nacional",
+  "dep": null,
+  "kind": "gobierno",
+  "scope": "hazard",
+  "feeds": [
+   "https://www.gob.pe/busquedas.rss?contenido[]=normas&sheet=1&sort_by=recent&term=estado+de+emergencia",
+   "https://www.gob.pe/busquedas.rss?contenido[]=normas&institucion[]=pcm&sheet=1&sort_by=recent&term=estado+de+emergencia"
+  ],
+  "evidence": "guessed",
+  "note": "Same busquedas.rss endpoint as the noticias feeds that work from Actions, with contenido[]=normas: declarations and extensions of states of emergency."
  }
 ]
