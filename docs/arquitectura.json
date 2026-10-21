@@ -133,8 +133,8 @@
     "name_en": "Each server's robots.txt",
     "what_es": "Las reglas que cada sitio publica para los robots. El observatorio las lee según la RFC 9309 y no pide lo que prohíben, salvo 40 feeds de noticias que lee como lector, cada 20 h o más.",
     "what_en": "The rules each site publishes for robots. The observatory reads them per RFC 9309 and does not request what they forbid, except 40 news feeds it reads like a feed reader, every 20 h or more.",
-    "details_es": "Gana la regla más larga y un empate lo gana Allow. Los leen en vivo el sondeo semanal, el recolector del Perú y la escalera de extracción: si el robots.txt da 5xx, no responde o muestra una verificación antirobots, no le piden nada a ese servidor. La corrida diaria y n8n no los leen: siguen el registro.",
-    "details_en": "The longest rule wins and Allow wins a tie. The weekly probe, the Peru collector and the scraping ladder read them live: if robots.txt returns 5xx, does not answer or shows an anti-bot check, they ask that server nothing. The daily run and n8n do not read them: they follow the registry.",
+    "details_es": "Gana la regla más larga y un empate lo gana Allow. Los leen en vivo el sondeo semanal, el recolector del Perú y la escalera de extracción: si el robots.txt da 5xx, no responde o trae una verificación antirobots sin código 4xx, no le piden nada a ese servidor; un 4xx, aunque sea una verificación, cuenta como «todo permitido» (RFC 9309), y la verificación que aparezca después se anota, nunca se evade. La corrida diaria y n8n no los leen: siguen el registro.",
+    "details_en": "The longest rule wins and Allow wins a tie. The weekly probe, the Peru collector and the scraping ladder read them live: if robots.txt returns 5xx, does not answer or shows an anti-bot check without a 4xx code, they ask that server nothing; a 4xx, even an anti-bot check, counts as 'everything allowed' (RFC 9309), and any check that appears afterwards is logged, never bypassed. The daily run and n8n do not read them: they follow the registry.",
     "evidence": "python/enso/reach.py:52-179; python/tools/probe_sources.py:41-54; python/tools/peru_collector.py:440-490; python/tools/scrape_ladder.py:9"
    },
    {
@@ -313,8 +313,8 @@
     "name_en": "Series, statuses and GRD signal",
     "what_es": "Arma 20 series con último valor y antigüedad (17 con categoría), el semanal por región Niño, los estados de ENFEN y NOAA y la señal GRD: normal, amarillo, rojo, sin clasificar o sin dato.",
     "what_en": "Builds 20 series with latest value and age (17 with a category), weekly data per Niño region, the ENFEN and NOAA statuses and the GRD signal: normal, yellow, red, unclassified or no data.",
-    "details_es": "Builder y signals.py. Evento costero: ICEN sobre +0,5 o bajo −0,7 al menos 3 meses seguidos. Todo sale de Python; el navegador solo colorea la franja semanal (±0,5). La termoclina D20 no tiene fuente y siempre sale «na».",
-    "details_en": "Builder and signals.py. Coastal event: ICEN above +0.5 or below −0.7 for at least 3 months in a row. Everything comes from Python; the browser only colours the weekly strip (±0.5). The D20 thermocline has no source and is always 'na'.",
+    "details_es": "Builder y signals.py. Evento costero: ICEN sobre +0,5 o bajo −0,7 al menos 3 meses seguidos. Las categorías, los estados y la señal GRD salen de Python; el navegador solo agrega ayudas de lectura: el color de la franja semanal (±0,5, y N/D si el dato tiene más de 16 días), la escala del mapa (pasos de 0,5 °C) y la dirección del viento según su signo. La termoclina D20 no tiene fuente y siempre sale «na».",
+    "details_en": "Builder and signals.py. Coastal event: ICEN above +0.5 or below −0.7 for at least 3 months in a row. Categories, statuses and the GRD signal come from Python; the browser only adds reading aids: the weekly strip colour (±0.5, and N/D when the value is over 16 days old), the map scale (0.5 °C steps) and the wind direction from its sign. The D20 thermocline has no source and is always 'na'.",
     "evidence": "python/enso/observatory.py:622-862; python/enso/signals.py:1-216"
    },
    {
@@ -483,8 +483,8 @@
     "name_en": "Collector kit and check",
     "what_es": "recolector-kit.yml arma un .zip con el código, los instaladores y una copia de respaldo del registro, lo instala de prueba en Windows, macOS y Linux y lo publica en la versión recolector-kit. VERIFICAR revisa el equipo.",
     "what_en": "recolector-kit.yml builds a .zip with the code, installers and a backup copy of the registry, test-installs it on Windows, macOS and Linux and publishes it to the recolector-kit release. VERIFY checks the machine.",
-    "details_es": "Se publica al fusionar en main cambios del kit, del recolector, de python/enso/, de config/ o de registry/. El equipo no se actualiza solo: un kit nuevo se instala con ACTUALIZAR. VERIFICAR (collector_check.py) revisa Python, git, token, acceso a las fuentes, la tarea programada y la edad de la última copia en data-peru (aviso a las 36 h); con --probar-tarea dispara la tarea real.",
-    "details_en": "Published when changes to the kit, the collector, python/enso/, config/ or registry/ are merged into main. The machine does not update itself: a new kit is installed with ACTUALIZAR. VERIFICAR (collector_check.py) checks Python, git, the token, access to the sources, the scheduled task and the age of the last copy in data-peru (warning at 36 h); with --probar-tarea it fires the real task.",
+    "details_es": "Se publica al fusionar en main cambios del kit, del recolector, de python/enso/, de config/ o de registry/. El commit semanal del registro no lo dispara (lo sube el bot con el token de Actions); no hace falta, porque el recolector lee el registro de GitHub y la copia del kit solo se usa si GitHub no responde (avisa si tiene más de 14 días). El equipo no se actualiza solo: un kit nuevo se instala con ACTUALIZAR. VERIFICAR (collector_check.py) revisa Python, git, token, acceso a las fuentes, la tarea programada y la edad de la última copia en data-peru (aviso a las 36 h); con --probar-tarea dispara la tarea real.",
+    "details_en": "Published when changes to the kit, the collector, python/enso/, config/ or registry/ are merged into main. The weekly registry commit does not trigger it (the bot pushes it with the Actions token); it does not need to, because the collector reads the registry from GitHub and the kit copy is used only if GitHub does not answer (it warns when that copy is over 14 days old). The machine does not update itself: a new kit is installed with ACTUALIZAR. VERIFICAR (collector_check.py) checks Python, git, the token, access to the sources, the scheduled task and the age of the last copy in data-peru (warning at 36 h); with --probar-tarea it fires the real task.",
     "evidence": ".github/workflows/recolector-kit.yml:1-249; python/tools/collector_kit.py:1-157; python/tools/collector_check.py:1-30, 200-315, 557-605"
    },
    {
@@ -947,8 +947,8 @@
     "label_en": "kit .zip and VERIFICAR",
     "explain_es": "La persona baja recolector-peru.zip de la versión recolector-kit y corre VERIFICAR (el informe queda en logs/ para enviarlo). El equipo no se actualiza solo: un kit nuevo se instala con ACTUALIZAR.",
     "explain_en": "The person downloads recolector-peru.zip from the recolector-kit release and runs VERIFICAR (the report is saved in logs/ to send in). The machine does not update itself: a new kit is installed with ACTUALIZAR.",
-    "when_es": "al cambiar en main el kit, python/enso/ o el registro",
-    "when_en": "when the kit, python/enso/ or the registry change on main",
+    "when_es": "al fusionar en main cambios del kit, python/enso/ o el registro (el commit semanal del bot no cuenta)",
+    "when_en": "when changes to the kit, python/enso/ or the registry are merged to main (the bot's weekly commit does not count)",
     "evidence": ".github/workflows/recolector-kit.yml:222-249; python/tools/collector_check.py:1-30, 631-644"
    },
    {

@@ -1325,8 +1325,8 @@
   <circle class="ar-badge ar-e-human" cx="599.3" cy="2231.8" r="9"/>
   <text class="ar-t" x="599.3" y="2235.6" font-size="10.5" text-anchor="middle">28</text>
   <text class="ar-t" x="619.3" y="2235.8" font-size="11.5">kit .zip y VERIFICAR</text>
-  <text class="ar-m" x="619.3" y="2249.8" font-size="10.5">Kit y verificación del recolector → Responsable del equipo en el Perú · al cambiar en main el kit,</text>
-  <text class="ar-m" x="619.3" y="2263.8" font-size="10.5">python/enso/ o el registro</text>
+  <text class="ar-m" x="619.3" y="2249.8" font-size="10.5">Kit y verificación del recolector → Responsable del equipo en el Perú · al fusionar en main</text>
+  <text class="ar-m" x="619.3" y="2263.8" font-size="10.5">cambios del kit, python/enso/ o el registro (el commit semanal del bot no cuenta)</text>
   <text class="ar-s" x="619.3" y="2278.8" font-size="11">La persona baja recolector-peru.zip de la versión recolector-kit y corre VERIFICAR (el</text>
   <text class="ar-s" x="619.3" y="2293.8" font-size="11">informe queda en logs/ para enviarlo). El equipo no se actualiza solo: un kit nuevo se instala</text>
   <text class="ar-s" x="619.3" y="2308.8" font-size="11">con ACTUALIZAR.</text>
