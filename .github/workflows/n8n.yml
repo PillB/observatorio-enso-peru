@@ -112,40 +112,12 @@ jobs:
         run: |
           sed -n '/^{/,$p' "$RUNNER_TEMP/v/run.log" | jq -r '
             .data.resultData.runData as $r
-            | ["Descargar", "Descargar (2.ª pasada)"][] as $n
+            | [["Descargar", "Fuentes"], ["Descargar (2.ª pasada)", "Segunda pasada"]][] as [$n, $src]
+            | ($r[$src][0].data.main[0] // []) as $in
             | ($r[$n][0].data.main[0] // []) | to_entries[]
-            | select(.value.json.error) | "\($n)\t#\(.key)\t\(.value.json.error.message // .value.json.error | tostring | .[0:80])"' | tee pasadas.txt | head -80
+            | select(.value.json.error)
+            | "\($n)\t#\(.key)\t\($in[.key].json.url // "")\t\(.value.json.error | if type == "object" then (.message // tostring) else tostring end | .[0:100])"' | tee pasadas.txt | head -80
           sed -n '/^{/,$p' "$RUNNER_TEMP/v/run.log" | jq -r '.data.resultData.runData | to_entries[] | "\(.key)\t\(.value[0].startTime)\t\(.value[0].executionTime) ms"'
-      - name: The same feeds through variants of n8n's HTTP node (which option makes n8n abort?)
-        run: |
-          mkdir -p "$RUNNER_TEMP/x" && chmod 777 "$RUNNER_TEMP/x"
-          node n8n/test/experimento-http.mjs > "$RUNNER_TEMP/x/exp.json"
-          docker run --rm --network host -u root -v "$RUNNER_TEMP/x:/w" -e N8N_USER_FOLDER=/w/home \
-            --entrypoint sh n8nio/n8n:2.44.4 -c \
-            "n8n import:workflow --input=/w/exp.json && n8n execute --id=EnsoExperimento1 --rawOutput" \
-            > "$RUNNER_TEMP/x/out.log" 2>&1 || true
-          { echo; echo "### Variantes del nodo HTTP de n8n"; echo; node n8n/test/experimento-http.mjs --resultado "$RUNNER_TEMP/x/out.log"; } | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: Same failed URLs with curl and with Node fetch (is it the network or n8n?)
-        run: |
-          UA="Observatorio-ENSO-Peru/4.0 (+https://github.com/PillB/observatorio-enso-peru; datos abiertos; n8n)"
-          {
-            echo; echo "### Fallas de n8n repetidas con curl y con Node (fetch)"
-            echo; echo "| URL | curl: HTTP, bytes, s (IPv4) | curl IPv6 | Node fetch |"; echo "|---|---|---|---|"
-          } >> "$GITHUB_STEP_SUMMARY"
-          for h in enfen.imarpe.gob.pe www.gob.pe www.senamhi.gob.pe; do
-            echo "DNS $h: sistema=$(getent ahostsv4 "$h" | head -1 | cut -d' ' -f1) 1.1.1.1=$(dig +short @1.1.1.1 "$h" | tail -1) 8.8.8.8=$(dig +short @8.8.8.8 "$h" | tail -1)" | tee -a "$GITHUB_STEP_SUMMARY"
-          done
-          jq -r '.[1:][] | select(.resultado != "OK") | .url' validacion-actions.json | sort -u | head -40 | while read -r u; do
-            c4=$(curl -4 -sg -o /dev/null -A "$UA" -H 'Accept: */*' --compressed -w '%{http_code} %{size_download} %{time_total}' --max-time 20 "$u" 2>&1 || true)
-            c6=$(curl -6 -sg -o /dev/null -A "$UA" --max-time 20 -w '%{http_code} %{time_total}' "$u" 2>&1 || true)
-            nf=$(node -e '
-              const t0 = Date.now();
-              fetch(process.argv[1], { headers: { "user-agent": process.argv[2], accept: "*/*" }, signal: AbortSignal.timeout(20000) })
-                .then(async (r) => { const b = await r.arrayBuffer(); console.log(r.status, b.byteLength, ((Date.now() - t0) / 1000).toFixed(1)); })
-                .catch((e) => console.log("error", (e.cause && e.cause.code) || e.name, ((Date.now() - t0) / 1000).toFixed(1)));
-            ' "$u" "$UA")
-            echo "| ${u:0:90} | $c4 | $c6 | $nf |" | tee -a "$GITHUB_STEP_SUMMARY"
-          done
       - uses: actions/upload-artifact@v4
         with:
           name: n8n-validacion-actions
