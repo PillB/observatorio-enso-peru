@@ -43,6 +43,8 @@ UA = ("Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; feed-probe; "
 CANDIDATES = Path(__file__).resolve().parent / "feed_candidates.json"
 COMMON_PATHS = ["/feed/", "/rss", "/rss.xml", "/feed", "/feed.xml", "/arcio/rss/", "/index.xml",
                 "/?feed=rss2", "/rss/", "/feeds/posts/default?alt=rss", "/noticias/feed/"]
+#: Portales donde probar rutas habituales no tiene sentido (una sola plataforma para todo).
+NO_GUESS = {"www.gob.pe", "gob.pe", "news.google.com"}
 ALT_RE = re.compile(r"<link\b[^>]*>", re.I)
 MAX_SAVE = 1_500_000
 
@@ -82,8 +84,10 @@ class Probe:
 
 
 def evaluate(cand: dict, body: bytes, url: str, now: datetime) -> dict:
+    kind = cand.get("kind", "diario")
+    scope = cand.get("scope") or ("local" if cand.get("dep") else "hazard" if kind in ("gobierno", "agregador") else "general")
     feed = news.Feed(cand["id"], cand["name"], "peru" if cand.get("department") != "mundo" else "mundo", url,
-                     kind=cand.get("kind", "diario"), department=cand.get("dep"))
+                     kind=kind, department=cand.get("dep"), scope=scope)
     p = feedparse.parse(body, base_url=url, default_tz=feedparse.LIMA, now=now)
     dates = sorted((i["published"] for i in p.items if i["published"]), reverse=True)
     rel, deps, samples = 0, defaultdict(int), []
@@ -123,6 +127,7 @@ def probe_one(pr: Probe, cand: dict, now: datetime, out: Path) -> dict:
             ev = evaluate(cand, body, final, now)
         except feedparse.FeedError as exc:
             rec["error"] = str(exc)[:200]
+            rec["head"] = re.sub(r"\s+", " ", body[:300].decode("utf-8", errors="replace"))
             return False
         if not ev["items"]:
             rec["error"] = "sin entradas"
@@ -148,6 +153,8 @@ def probe_one(pr: Probe, cand: dict, now: datetime, out: Path) -> dict:
             if cand.get("savehtml"):
                 (out / f"{cand['id']}.html").write_bytes(body[:800_000])
         base = f"{urlparse(final or home).scheme}://{urlparse(final or home).netloc}"
+        if urlparse(base).netloc in NO_GUESS or code != 200:
+            return res
         for path in COMMON_PATHS:
             if attempt(base + path):
                 res["guessedPath"] = path
