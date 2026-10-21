@@ -7,6 +7,7 @@ import os
 import re
 import shlex
 import shutil
+import signal
 import subprocess
 import sys
 import zipfile
@@ -150,11 +151,26 @@ def test_lock_blocks_a_second_run_and_expires(home):
         assert busy.value.code == svc.EXIT_BUSY
     assert not svc.paths(home)["lock"].exists()
     lock = svc.paths(home)["lock"]
-    lock.write_text("123", encoding="utf-8")
+    lock.write_text(f"{os.getpid()} 2026-10-21T22:51:36+00:00", encoding="utf-8")
     old = (datetime.now() - svc.LOCK_STALE - timedelta(minutes=1)).timestamp()
     svc.os.utime(lock, (old, old))
-    with svc.run_lock(home):  # candado de una corrida que murió: se reemplaza
+    with svc.run_lock(home):  # tan viejo es de una corrida que murió, aunque su número siga en uso: se reemplaza
         pass
+
+
+def test_a_lock_whose_run_is_gone_does_not_block_the_next(home):
+    """launchd detiene la corrida de la instalación al reinstalar encima: su candado queda,
+    pero no es de nadie (antes frenaba a las corridas siguientes durante 2 horas)."""
+    lock = svc.paths(home)["lock"]
+    child = subprocess.Popen([sys.executable, "-c", "pass"])
+    child.wait()
+    assert not svc.pid_alive(child.pid) and svc.pid_alive(os.getpid())
+    lock.write_text(f"{child.pid} 2026-10-21T22:51:36+00:00", encoding="utf-8")
+    assert not svc.lock_busy(home)
+    with svc.run_lock(home):
+        assert svc.lock_busy(home) and lock.read_text(encoding="utf-8").startswith(f"{os.getpid()} ")
+    lock.write_text("", encoding="utf-8")  # recién creado, todavía sin número: se respeta
+    assert svc.lock_busy(home)
 
 
 # --- Corridas ------------------------------------------------------------------------
@@ -262,7 +278,7 @@ def test_task_test_ignores_a_run_already_in_progress_and_rekicks(home, monkeypat
     monkeypatch.setattr(svc, "collect_and_push", lambda **kw: (_ for _ in ()).throw(
         svc.Problem(svc.EXIT_GITHUB, "GitHub rechazó el token")))
     p = svc.paths(home)
-    p["lock"].write_text("123", encoding="utf-8")  # la corrida de la instalación sigue trabajando
+    p["lock"].write_text(str(os.getpid()), encoding="utf-8")  # la corrida de la instalación sigue trabajando
     clock = {"t": 1000.0, "sleeps": 0}
 
     def sleep(sec):
@@ -291,9 +307,60 @@ def test_task_test_ignores_a_run_already_in_progress_and_rekicks(home, monkeypat
     assert len(kicks) == 2 and not p["force"].exists()
 
 
+def test_task_test_after_a_reinstall_killed_the_install_run(home, monkeypatch):
+    """CI de macOS: la corrida al cargar el agente quedó «en curso» con su candado, sin proceso.
+    La prueba no la espera 15 minutos: dispara la tarea, que toma el candado y corre."""
+    monkeypatch.setattr(svc, "collect_and_push", lambda **kw: (_ for _ in ()).throw(
+        svc.Problem(svc.EXIT_GITHUB, "GitHub rechazó el token")))
+    p = svc.paths(home)
+    child = subprocess.Popen([sys.executable, "-c", "pass"])
+    child.wait()
+    p["lock"].write_text(f"{child.pid} 2026-10-21T22:51:36+00:00", encoding="utf-8")
+    svc.write_state({"last_attempt": "2026-10-21T22:51:36+00:00", "trigger": "programada", "result": "en curso"}, home)
+    r = chk.check_last_run({"root": home})
+    assert r.level == chk.WARN and "se cortó" in r.title
+    lines = []
+    monkeypatch.setattr(chk.time, "sleep", lambda sec: None)
+    monkeypatch.setattr(chk.sched, "kick", lambda python, root: svc.run(scheduled=True, root=root) is not None)
+    r = chk.test_scheduled_run({"root": home}, wait_min=1, emit=lines.append)
+    assert r.level == chk.FAIL and "rechazó el token" in r.title, r
+    assert not any("se espera" in line for line in lines)
+    s = svc.read_state(home)
+    assert s["trigger"] == "prueba" and s["exit_code"] == svc.EXIT_GITHUB and not p["lock"].exists()
+
+
+def test_task_test_does_not_blame_the_task_while_a_collection_runs(home, monkeypatch):
+    p = svc.paths(home)
+    p["lock"].write_text(str(os.getpid()), encoding="utf-8")
+    clock = {"t": 1000.0}
+    monkeypatch.setattr(chk, "time", type("T", (), {"time": staticmethod(lambda: clock["t"]),
+                                                    "sleep": staticmethod(lambda sec: clock.update(t=clock["t"] + sec))}))
+    monkeypatch.setattr(chk.sched, "kick", lambda python, root: pytest.fail("no se dispara con otra corrida en curso"))
+    r = chk.test_scheduled_run({"root": home}, wait_min=1, emit=lambda line: None)
+    assert r.level == chk.WARN and "no se probó" in r.title and not p["force"].exists()
+
+
+@pytest.mark.skipif(os.name == "nt", reason="el Programador de tareas no avisa: termina el proceso")
+def test_sigterm_releases_the_lock_and_is_not_a_failure(home, monkeypatch):
+    """launchd pide terminar con SIGTERM al reinstalar, cerrar la sesión o apagar."""
+    def stopped(**kw):
+        assert svc.paths(home)["lock"].exists()
+        signal.raise_signal(signal.SIGTERM)
+
+    monkeypatch.setattr(svc, "collect_and_push", stopped)
+    before = signal.getsignal(signal.SIGTERM)
+    svc.write_state({"consecutive_failures": 1}, home)
+    assert svc.run(root=home) == svc.EXIT_STOPPED
+    s = svc.read_state(home)
+    assert s["result"] == "interrumpida" and s["consecutive_failures"] == 1 and "last_success" not in s
+    assert not svc.paths(home)["lock"].exists() and signal.getsignal(signal.SIGTERM) == before
+    r = chk.check_last_run({"root": home})
+    assert r.level == chk.WARN and "se cortó" in r.title and "se reintenta" in r.hint
+
+
 def test_forced_run_that_finds_another_run_keeps_the_request(home, monkeypatch):
     p = svc.paths(home)
-    p["lock"].write_text("123", encoding="utf-8")
+    p["lock"].write_text(str(os.getpid()), encoding="utf-8")
     p["force"].write_text(json.dumps({"created": datetime.now(timezone.utc).isoformat(), "id": "abc"}),
                           encoding="utf-8")
     assert svc.run(scheduled=True, root=home) == svc.EXIT_BUSY

@@ -543,11 +543,17 @@ def check_last_run(ctx: dict) -> Result:
     s = svc.read_state(ctx["root"])
     if not s.get("last_attempt"):
         return Result("ultima-corrida", INFO, "todavía no hubo recolecciones en este equipo")
-    if s.get("result") == "en curso":
+    running = s.get("result") == "en curso"
+    if running and svc.lock_busy(ctx["root"]):
         return Result("ultima-corrida", INFO, f"hay una recolección en curso (desde {s['last_attempt']})")
     done = svc.parse_time(s.get("last_success"))
     age = (datetime.now(timezone.utc) - done).total_seconds() / 3600 if done else None
     detail = f"último intento {s.get('last_attempt')} ({s.get('trigger', '?')}): {s.get('result')} {s.get('detail', '')}".strip()
+    if running or s.get("result") == "interrumpida":  # «en curso» sin corrida viva: murió sin anotarlo
+        return Result("ultima-corrida", WARN if (age is None or age > STALE_HOURS) else INFO,
+                      "la última recolección se cortó antes de terminar", detail,
+                      "Pasa si el equipo se apaga o se reinstala el recolector durante la recolección; "
+                      "se reintenta sola en la próxima hora programada.")
     if s.get("result") == "falla":
         level = FAIL if (age is None or age > STALE_HOURS) else WARN
         return Result("ultima-corrida", level, f"la última recolección falló ({s.get('consecutive_failures', 1)} seguidas)",
@@ -590,11 +596,15 @@ def test_scheduled_run(ctx: dict, wait_min: float = 15.0, emit: Callable[[str], 
     python = sys.executable
     if os.name == "nt" and Path(python).with_name("pythonw.exe").exists():
         python = str(Path(python).with_name("pythonw.exe"))
-    deadline = time.time() + wait_min * 60
-    if p["lock"].exists():
+    if svc.lock_busy(ctx["root"]):
         emit("Hay una recolección en curso; se espera a que termine antes de la prueba...")
-        while p["lock"].exists() and time.time() < deadline:
+        until = time.time() + wait_min * 60
+        while svc.lock_busy(ctx["root"]) and time.time() < until:
             time.sleep(3)
+        if svc.lock_busy(ctx["root"]):
+            return Result("prueba-tarea", WARN, f"no se probó la tarea: la recolección en curso sigue después de "
+                          f"{wait_min:.0f} min", f"Ver {p['log']}.", "Repetir la prueba cuando termine.")
+    deadline = time.time() + wait_min * 60
     test_id = uuid.uuid4().hex[:12]
     p["force"].write_text(json.dumps({"created": datetime.now(timezone.utc).isoformat(), "dispatch": False,
                                       "id": test_id}), encoding="utf-8")
@@ -616,7 +626,7 @@ def test_scheduled_run(ctx: dict, wait_min: float = 15.0, emit: Callable[[str], 
             return Result("prueba-tarea", FAIL, f"la tarea programada corrió y falló: {s.get('detail', '')}",
                           f"código {s.get('exit_code')}", s.get("hint", ""), lines=[json.dumps(s, ensure_ascii=False)])
         # Pedido sin tomar y nada corriendo: el disparo se perdió (la tarea seguía en curso).
-        if p["force"].exists() and not p["lock"].exists() and time.time() - kicked > 20 and kicks < 4:
+        if p["force"].exists() and not svc.lock_busy(ctx["root"]) and time.time() - kicked > 20 and kicks < 4:
             sched.kick(python, ctx["root"])
             kicked, kicks = time.time(), kicks + 1
     p["force"].unlink(missing_ok=True)
