@@ -375,6 +375,16 @@ _HASHTAG_RE = re.compile(r"#[\wÁÉÍÓÚÑáéíóúñ]+")
 TG_KINDS = {"aviso": "Aviso del SENAMHI", "ahora": "SENAMHI, en este momento"}
 
 
+def _tg_more(url: str) -> str:
+    """El enlace del mensaje, dicho en palabras: una URL larga no cabe en la pantalla de un teléfono
+    (el mensaje en Telegram, enlazado, la tiene)."""
+    m = re.search(r"senamhi\.gob\.pe/.*?avisos-(meteorologicos|hidrologicos|incendios-forestales)/(\d+)", url)
+    if m:
+        return f"Detalle en el sitio del SENAMHI (aviso {m.group(1).replace('-', ' ').replace('logicos', 'lógico')} {m.group(2)})."
+    host = re.sub(r"^www\.", "", re.sub(r"^https?://([^/]+).*$", r"\1", url))
+    return f"Más información en {host}."
+
+
 def parse_telegram(body: bytes, base_url: str = "") -> Parsed:
     """Vista pública del canal. Los avisos («#Aviso») y los reportes en curso («#Ahora») llevan
     un titular que los distingue (``TG_KINDS``); las notas de prensa, su propio titular."""
@@ -400,9 +410,13 @@ def parse_telegram(body: bytes, base_url: str = "") -> Parsed:
         title = f"{kind}: {first[:1].lower() + first[1:]}" if kind else first
         links = [u for u in _TG_LINK_RE.findall(tm.group("t")) if "telegram.org" not in u]
         when = _TG_TIME_RE.search(m.group("body"))
+        rest = body_txt[len(first):].strip() if body_txt.startswith(first) else body_txt
+        rest = " ".join(dict.fromkeys(re.split(r"(?<=[.!?])\s+", rest)))  # el canal a veces repite el consejo
+        if rest and not rest.endswith((".", "!", "?")):
+            rest += "."
         items.append({"title": clean_text(title, 300), "link": f"https://t.me/{m.group('post')}",
                       "published": _iso(datetime.fromisoformat(when.group(1))) if when else None,
-                      "summary": clean_text(body_txt + (f" Más información: {links[0]}" if links else ""), 600),
+                      "summary": clean_text((rest or body_txt) + (f" {_tg_more(links[0])}" if links else ""), 600),
                       "categories": tags[:12]})
     if not items:
         raise FeedError("el canal de Telegram no tiene mensajes con texto")

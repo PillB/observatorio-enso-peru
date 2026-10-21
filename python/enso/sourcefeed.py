@@ -79,11 +79,28 @@ def alerts(news_items: list[dict], now: datetime) -> list[dict]:
     return out
 
 
+def alert_sources(feed_status: Optional[list[dict]]) -> list[dict]:
+    """Si cada fuente de alertas respondió en esta corrida. Sin avisos no quiere decir sin peligro:
+    el sitio dice cuáles no respondieron, para que nadie lea su silencio como calma."""
+    from .news import FEED_BY_ID
+
+    out = []
+    for st in feed_status or []:
+        f = FEED_BY_ID.get(st.get("id") or "")
+        if f and f.covers:
+            out.append({"id": f.id, "name": f.name, "url": f.url, "ok": bool(st.get("ok")),
+                        "latest": st.get("latest"), "error": st.get("error") or ""})
+    return out
+
+
 def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, relay=None,
-          news_items: Optional[list[dict]] = None, now: Optional[datetime] = None) -> dict:
+          news_items: Optional[list[dict]] = None, now: Optional[datetime] = None,
+          feed_status: Optional[list[dict]] = None) -> dict:
     """``sources``: id → {institution, docs, retrievedAt, channel, status}; ``news_items``: el histórico
-    de noticias, del que salen las alertas de las fuentes oficiales de peligros."""
+    de noticias, del que salen las alertas de las fuentes oficiales de peligros; ``feed_status``: el
+    estado de cada feed en esta corrida (``news/feeds.json``)."""
     items: list[dict] = alerts(news_items, now) if news_items and now else []
+    status = alert_sources(feed_status)
 
     def src(sid: str) -> dict:
         return sources.get(sid) or {}
@@ -149,5 +166,9 @@ def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, r
 
     order = {g: i for i, (g, _) in enumerate(GROUPS)}
     items.sort(key=lambda i: (order[i["group"]], -(int((i.get("date") or "0000-00-00").replace("-", "")[:8] or 0))))
-    return {"groups": [{"id": g, "label": label, "items": [i for i in items if i["group"] == g]}
-                       for g, label in GROUPS if any(i["group"] == g for i in items)]}
+    groups = [{"id": g, "label": label, "items": [i for i in items if i["group"] == g]}
+              for g, label in GROUPS if any(i["group"] == g for i in items) or (g == "alertas" and status)]
+    for g in groups:
+        if g["id"] == "alertas":
+            g["sources"] = status  # aunque no haya avisos: el grupo dice qué fuentes se consultaron
+    return {"groups": groups}

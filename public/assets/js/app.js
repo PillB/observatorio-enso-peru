@@ -628,6 +628,18 @@ function officialItem(it) {
     ${sourceLinks(it.url, it.archive, { when: it.retrievedAt, snapshot: it.snapshot })}</li>`;
 }
 
+// Sin avisos no quiere decir sin peligro: se dice qué fuentes de alertas no respondieron.
+function alertSources(g) {
+  const src = g.sources || [];
+  if (!src.length) return '';
+  const down = src.filter((s) => !s.ok);
+  const links = (list) => list.map((s, i) => html`${i ? ', ' : ''}<a href="${safeUrl(s.url)}" rel="noopener" target="_blank">${s.name}</a>`);
+  const empty = g.items.length ? '' : down.length === src.length
+    ? html`<p class="notice notice-alert">Ninguna fuente de alertas respondió en esta actualización: consulte directamente a las instituciones.</p>`
+    : html`<p>Las fuentes consultadas no publicaron avisos en los últimos 7 días.</p>`;
+  return html`${empty}<p class="alert-sources muted small">${src.length - down.length} de ${src.length} fuentes de alertas respondieron en esta actualización.${down.length && down.length < src.length ? html` <strong>Sin respuesta:</strong> ${links(down)}. Sus avisos pueden faltar aquí; consulte la fuente.` : ''}</p>`;
+}
+
 function clusterItem(c, deps = {}, dep = '') {
   const more = c.links.length > 1;
   // Con un departamento elegido, sus lugares van primero: la tarjeta muestra por qué está en la lista.
@@ -682,7 +694,7 @@ VIEWS.noticias = {
       const { tab } = p;
       $$('[data-tab]').forEach((b) => { const on = b.dataset.tab === tab; b.setAttribute('aria-selected', String(on)); b.setAttribute('aria-pressed', String(on)); });
       if (tab === 'oficial') {
-        body.innerHTML = feed ? String(html`${feed.groups.map((g) => html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2><ul class="feed">${g.items.map(officialItem)}</ul></section>`)}`) : '<p class="card">No disponible en esta publicación.</p>';
+        body.innerHTML = feed ? String(html`${feed.groups.map((g) => html`<section class="card" aria-labelledby="fg-${g.id}"><h2 id="fg-${g.id}">${g.label}</h2>${alertSources(g)}<ul class="feed">${g.items.map(officialItem)}</ul></section>`)}`) : '<p class="card">No disponible en esta publicación.</p>';
         return;
       }
       if (!clusters) { body.innerHTML = '<p class="card">Las noticias no están disponibles en esta publicación.</p>'; return; }

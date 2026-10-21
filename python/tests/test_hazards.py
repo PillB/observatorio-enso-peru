@@ -172,3 +172,14 @@ def test_dhn_swell_and_wind_warnings_read_every_title_format():
     p = H.parse(old, "https://www.dhn.mil.pe/portal/avisos-especiales", "dhn-avisos")
     assert [i["title"] for i in p.items] == ["DHN · aviso especial de viento N° 118: viento fuerte (hasta 25 nudos)"]
     assert p.items[0]["published"].startswith("2021-09-03") and p.items[0]["summary"].startswith("Se presentará")
+
+
+def test_alerts_group_lists_sources_that_did_not_answer():
+    from enso import sourcefeed
+    status = [{"id": "senamhi-telegram", "ok": False, "error": "ConnectTimeout"},
+              {"id": "indeci-coen", "ok": True, "latest": "2026-10-21T03:02:00Z"},
+              {"id": "andina", "ok": True}]  # no es una fuente de alertas
+    feed = sourcefeed.build({}, {}, None, {}, news_items=[], now=NOW, feed_status=status)
+    g = feed["groups"][0]
+    assert g["id"] == "alertas" and g["items"] == []  # el grupo aparece aunque no haya avisos
+    assert [(s["id"], s["ok"]) for s in g["sources"]] == [("senamhi-telegram", False), ("indeci-coen", True)]

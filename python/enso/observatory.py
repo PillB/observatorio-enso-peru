@@ -1107,7 +1107,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                    "retrievedAt": acquired[s.id].retrieved_at if s.id in acquired else None,
                    "channel": acquired[s.id].channel if s.id in acquired else None} for s in SOURCES}
     feed = sourcefeed.build(official, b.series, weekly, meta, relay, news_items=(news or {}).get("items"),
-                            now=started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc))
+                            now=started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc),
+                            feed_status=((news or {}).get("feeds") or {}).get("feeds"))
     for s in SOURCES:
         a = acquired.get(s.id)
         if a and not a.ok and not a.carried:

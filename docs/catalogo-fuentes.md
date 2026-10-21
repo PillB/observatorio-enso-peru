@@ -141,6 +141,7 @@ simple desde GitHub Actions (escalera de extracción del 21 de octubre de
 | `usgs-sismos` | Sismos de magnitud 4 o más | GeoJSON del USGS para el Perú y alrededores | Solo los ubicados en el Perú o frente a su costa; la hora va en UTC−5 |
 | `dhn-tsunamis` | Sismos y tsunamis | Boletines de la DHN | Se omiten los simulacros |
 | `ptwc-mensajes`, `ptwc-wepa40` | Tsunamis | Atom y texto del Centro de Alerta de Tsunamis del Pacífico | Solo cuentan si el mensaje menciona al Perú; la alerta nacional la emite la DHN |
+| `dhn-avisos` | Oleaje anómalo y vientos en el litoral | Listado de avisos especiales de la DHN (`dhn.mil.pe/portal/avisos-especiales`) | Lee los títulos de todos los formatos desde 2020; el titular dice el oleaje más fuerte y en qué tramo del litoral (norte, centro, sur, con sus departamentos), o la velocidad del viento en nudos y entre qué localidades |
 | `igp-cenvul-boletines`, `igp-cenvul-alertas` | Volcanes | Tarjetas de boletines y alertas del CENVUL (IGP) | Se omiten los volcanes en alerta verde; cada volcán lleva su provincia y departamento |
 
 En el sitio, la pestaña Oficial de Noticias empieza por «Alertas y
@@ -155,7 +156,6 @@ Evaluadas y pendientes:
 |---|---|
 | NASA FIRMS (focos de calor VIIRS y MODIS, Sudamérica, 24 h) | Responde (CSV); falta ubicar cada foco por departamento |
 | Riesgo de incendios forestales del SENAMHI (FWI, capa 3 de GEOSINPAD) | Responde (polígonos sin nombres de lugar); falta ubicarlos por departamento |
-| Avisos especiales de oleaje y viento de la DHN | En la escalera de extracción |
 | Focos de calor del INPE (Brasil), con país y departamento | En la escalera de extracción |
 | Global Volcanism Program (Smithsonian) | Verificación anti-robots; no se intenta saltarla |
 | API del IGP (`api.igp.gob.pe`) | `robots.txt` la excluye |
