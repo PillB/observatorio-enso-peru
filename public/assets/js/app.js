@@ -647,6 +647,7 @@ VIEWS.noticias = {
       <div class="page-head"><div class="eyebrow">Novedades</div><h1>Noticias y novedades</h1>
         <p>Lo último que publicó cada fuente oficial y las noticias sobre El Niño y sus impactos en el Perú y el mundo: autoridades, diarios, radios y medios regionales. Cuando varios medios cuentan lo mismo se agrupan en una sola entrada con el enlace a cada uno, y cada noticia se ubica en su departamento, provincia o distrito.</p></div>
       <div class="seg" role="tablist" aria-label="Tipo de novedades" data-tour-id="news-tabs">${NEWS_TABS.map(([k, l]) => html`<button type="button" role="tab" data-tab="${k}" aria-selected="${String(k === cur)}" aria-pressed="${String(k === cur)}">${l}</button>`)}</div>
+      <p id="news-live" class="visually-hidden" aria-live="polite"></p>
       <div id="news-body" class="news-body"><div class="skeleton"></div></div>
       <section class="card" aria-labelledby="nd-h" data-tour-id="news-downloads"><h2 id="nd-h">Descargas y estado de los feeds</h2>
         <p class="muted small">El histórico de noticias solo crece: cada corrida agrega las notas nuevas y nunca reescribe las anteriores. Solo se guarda lo que cada medio publica en su feed (titular, resumen, fecha y enlace).</p>
@@ -667,6 +668,12 @@ VIEWS.noticias = {
     const deps = clusters?.departmentNames || {};
     const setUrl = (p) => history.replaceState(null, '', `#/noticias?${new URLSearchParams(Object.entries(p).filter(([, v]) => v)).toString()}`);
     const show = (p) => {
+      // Parámetros de la URL validados: un valor desconocido no deja la lista vacía sin explicación.
+      p = { ...p };
+      if (!NEWS_TABS.some(([k]) => k === p.tab)) p.tab = 'oficial';
+      if (!NEWS_KINDS.some(([k]) => k === p.tipo)) p.tipo = '';
+      if (p.tab !== 'peru' || !deps[p.dep]) p.dep = '';
+      if (p.peligro && p.peligro !== 'enso' && !HAZARD_LABEL[p.peligro]) p.peligro = '';
       const { tab } = p;
       $$('[data-tab]').forEach((b) => { const on = b.dataset.tab === tab; b.setAttribute('aria-selected', String(on)); b.setAttribute('aria-pressed', String(on)); });
       if (tab === 'oficial') {
@@ -693,8 +700,14 @@ VIEWS.noticias = {
       </div>`;
       const hazWhat = p.peligro ? ` sobre ${(p.peligro === 'enso' ? 'El Niño / La Niña' : HAZARD_LABEL[p.peligro] || p.peligro).toLowerCase()}` : '';
       const what = `${tab === 'peru' ? 'del Perú' : 'del mundo'}${p.dep && deps[p.dep] ? ` en ${deps[p.dep]}` : ''}${hazWhat}`;
-      body.innerHTML = String(html`${filters}<section class="card" aria-label="Noticias ${what}">${list.length ? html`<p class="muted small news-count" aria-live="polite">${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what} en los últimos ${clusters.days} días</p><ul class="feed">${list.map((c) => clusterItem(c, deps))}</ul>` : html`<p class="muted">No hay noticias ${what} con este filtro en los últimos ${clusters.days} días.</p>`}</section>`);
-      $$('.kind-chip', body).forEach((b) => b.addEventListener('click', () => { const n = { ...p, tipo: b.dataset.kind }; setUrl(n); show(n); }));
+      $('#news-live').textContent = `${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what}`;
+      body.innerHTML = String(html`${filters}<section class="card" aria-label="Noticias ${what}">${list.length ? html`<p class="muted small news-count">${list.length} ${list.length === 1 ? 'noticia' : 'noticias'} ${what} en los últimos ${clusters.days} días</p><ul class="feed">${list.map((c) => clusterItem(c, deps))}</ul>` : html`<p class="muted">No hay noticias ${what} con este filtro en los últimos ${clusters.days} días.</p>`}</section>`);
+      $$('.kind-chip', body).forEach((b) => b.addEventListener('click', () => {
+        const n = { ...p, tipo: b.dataset.kind };
+        setUrl(n);
+        show(n);
+        $(`.kind-chip[data-kind="${n.tipo}"]`, body)?.focus();  // la lista se redibuja: el foco vuelve al filtro
+      }));
       $('#news-dep', body)?.addEventListener('change', (e) => { const n = { ...p, dep: e.target.value }; setUrl(n); show(n); $('#news-dep', body)?.focus(); });
       $('#news-haz', body)?.addEventListener('change', (e) => { const n = { ...p, peligro: e.target.value }; setUrl(n); show(n); $('#news-haz', body)?.focus(); });
     };
