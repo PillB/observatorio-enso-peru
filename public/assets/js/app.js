@@ -272,6 +272,10 @@ function chartSources(el, specSeries) {
 // ---------------------------------------------------------------------------
 // Vistas
 // ---------------------------------------------------------------------------
+// Diagramas de arquitectura (python -m tools.architecture los dibuja desde docs/arquitectura.json).
+const ARCH = [['simple', 'Simplificado'], ['full', 'Completo']];
+const ARCH_FILE = { simple: 'arquitectura-simple.svg', full: 'arquitectura.svg' };
+
 const VIEWS = {};
 
 VIEWS[''] = {
@@ -531,9 +535,12 @@ VIEWS.metodologia = {
         <h3>Señal operativa del equipo GRD</h3><p>Transcripción de la tabla del equipo GRD (política expert-grd-image-v1, en borrador). TSM costera: normal −0,7 a +0,5; amarillo +1,3 a +2,0; rojo &gt; +2,1 °C. TSM de cuenca: normal −0,5 a +0,5; amarillo &gt; +1,0 a +1,5; rojo &gt; +1,5 °C. Vientos: rojo si el flujo es de oeste a este. Termoclina: normal ±20 m; amarillo 30 a 50 m; rojo &gt; 50 m. SOI: normal −7 a +7; rojo &lt; −7. Los intervalos no definidos quedan «Sin clasificación».</p>
       </section>
       <section class="card" aria-labelledby="arch-h" data-tour-id="architecture">
-        <h2 id="arch-h">Arquitectura</h2>
-        <p class="muted">De las fuentes al sitio: canales de obtención, pipeline en Python, publicación atómica y operación diaria.</p>
-        <figure class="arch-figure" id="arch-fig"><a href="assets/arquitectura.svg" rel="noopener" target="_blank">Ver el diagrama de arquitectura</a></figure>
+        <div class="section-head"><h2 id="arch-h">Arquitectura</h2>
+          <div class="seg" role="group" aria-label="Versión del diagrama">${ARCH.map(([k, l]) => html`<button type="button" data-arch="${k}" aria-pressed="${String(k === 'simple')}">${l}</button>`)}</div></div>
+        <p class="muted">De las fuentes al sitio: quién baja cada dato, qué respaldo se usa si una fuente no responde, cómo se publica y quién vigila. Toca una caja o una conexión (letra o número) para leer qué es.</p>
+        <figure class="arch-figure" id="arch-fig"><a href="assets/arquitectura-simple.svg" rel="noopener" target="_blank">Ver el diagrama de arquitectura</a></figure>
+        <p class="arch-note" id="arch-note" aria-live="polite" hidden></p>
+        <p class="small"><a id="arch-open" href="assets/arquitectura-simple.svg" rel="noopener" target="_blank">Abrir el diagrama en otra pestaña</a></p>
       </section>
       <section class="card prose" aria-labelledby="met-h">
         <h2 id="met-h">Cómo funciona</h2>
@@ -559,9 +566,25 @@ VIEWS.metodologia = {
       <section class="card prose" aria-labelledby="gl-h"><h2 id="gl-h">Glosario</h2><dl class="glossary">${GLOSSARY.map(([t, d]) => html`<dt>${t}</dt><dd>${d}</dd>`)}</dl></section>`;
   },
   async after() {
-    fetch('assets/arquitectura.svg').then((r) => (r.ok ? r.text() : null)).then((svg) => {
-      if (svg && svg.trimStart().startsWith('<svg')) $('#arch-fig').innerHTML = svg;
-    }).catch(() => {});
+    const showArch = (k) => {
+      const file = `assets/${ARCH_FILE[k]}`;
+      $$('[data-arch]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.arch === k)));
+      $('#arch-open').href = file;
+      $('#arch-note').hidden = true;
+      fetch(file).then((r) => (r.ok ? r.text() : null)).then((svg) => {
+        if (svg && svg.trimStart().startsWith('<svg') && $(`[data-arch="${k}"]`)?.getAttribute('aria-pressed') === 'true') $('#arch-fig').innerHTML = svg;
+      }).catch(() => {});
+    };
+    $$('[data-arch]').forEach((b) => b.addEventListener('click', () => showArch(b.dataset.arch)));
+    // En el teléfono no hay «hover»: al tocar una caja o una conexión, su explicación (el <title> del SVG) aparece debajo.
+    $('#arch-fig').addEventListener('click', (ev) => {
+      const el = ev.target.closest?.('[data-node], [data-edge]');
+      const tip = el?.querySelector(':scope > title')?.textContent;
+      if (!tip) return;
+      $('#arch-note').textContent = tip;
+      $('#arch-note').hidden = false;
+    });
+    showArch('simple');
     const src = await load('sources.json');
     const rep = await load('run-report.json');
     const ST = { ok: ['ok', 'Directa'], archive: ['watch', 'Copia de archivo'], carried: ['watch', 'Último dato válido'], failed: ['alert', 'Falló'] };

@@ -160,13 +160,42 @@ def test_history_is_append_only_and_csv_is_safe():
     assert all(not r["title"].startswith("=") for r in rows)
 
 
-def test_architecture_diagram_copies_match():
-    """El diagrama del sitio es el mismo que el de docs/."""
-    from conftest import ROOT
+def test_architecture_diagrams_are_drawn_from_the_model():
+    """Los dos diagramas (completo y simplificado) salen de docs/arquitectura.json: los SVG de docs/ y del sitio
+    son los que dibuja el generador, cada caja y cada conexión del modelo está en el dibujo con su explicación, y
+    el recorrido solo nombra cajas que existen."""
+    import re
 
-    docs = (ROOT.parent / "docs" / "arquitectura.svg").read_bytes()
-    assert docs == (ROOT.parent / "public" / "assets" / "arquitectura.svg").read_bytes()
-    assert docs.lstrip().startswith(b"<svg") and b"<script" not in docs
+    from conftest import ROOT
+    from tools import architecture as A
+
+    model = json.loads(A.MODEL.read_text(encoding="utf-8"))
+    out = A.render_all(model)
+    for key, paths in A.OUT.items():
+        for p in paths:
+            assert p.read_text(encoding="utf-8") == out[key], f"{p.relative_to(ROOT.parent)}: corre python -m tools.architecture"
+        svg = out[key]
+        assert svg.startswith("<svg") and "<script" not in svg and "<foreignObject" not in svg
+        part = model[key]
+        ids = {n["id"] for n in part["nodes"]}
+        assert len(ids) == len(part["nodes"]), "ids de cajas repetidos"
+        for n in part["nodes"]:
+            assert f'data-node="{n["id"]}"' in svg
+            assert n["what_es"] and n["what_en"]
+        for e in part["edges"]:
+            assert e["from"] in ids and e["to"] in ids, e
+            assert e["label_es"] and e["explain_es"] and e["label_en"] and e["explain_en"]
+        assert len(re.findall(r'data-edge="', svg)) == len(part["edges"])
+    simple_ids = {n["id"] for n in model["simple"]["nodes"]}
+    full_ids = {n["id"] for n in model["full"]["nodes"]}
+    for n in model["simple"]["nodes"]:
+        assert set(n["covers"]) <= full_ids, n["id"]
+    covered = {c for n in model["simple"]["nodes"] for c in n["covers"]}
+    assert covered == full_ids, f"cajas del completo sin lugar en el simplificado: {sorted(full_ids - covered)}"
+    for step in model["walkthrough"]:
+        assert set(step["nodes"]) <= simple_ids, step["title_es"]
+    doc = A.DOC.read_text(encoding="utf-8")
+    assert doc == A.render_doc(model, doc), "docs/arquitectura.md: corre python -m tools.architecture"
 
 
 @pytest.mark.parametrize("feed", N.FEEDS, ids=lambda f: f.id)

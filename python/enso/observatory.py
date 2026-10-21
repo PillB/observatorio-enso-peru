@@ -1350,7 +1350,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             return (200, p.read_bytes(), "", "") if p.exists() else (None, b"", "", "sin captura")
     else:
         # Cliente propio para los feeds: menos espera y menos reintentos que para las
-        # fuentes oficiales (son ~180 y un medio caído no debe retrasar la publicación).
+        # fuentes oficiales (son más de 160 y un medio caído no debe retrasar la publicación).
         from .fetch import Fetcher
         import httpx
         # Todas las copias (Perú y n8n), no solo la primera: gana la más reciente de la URL.

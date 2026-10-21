@@ -433,6 +433,10 @@ table.grd .chip { white-space: normal; }
 .feed-more li { margin-bottom: 4px; }
 .arch-figure { margin: 0; overflow-x: auto; }
 .arch-figure svg { width: 100%; min-width: 640px; height: auto; display: block; }
+/* El completo tiene letra chica: en pantallas angostas se desplaza dentro de la figura en vez de achicarse. */
+.arch-figure svg[aria-labelledby^='af-'] { min-width: 1100px; }
+.arch-figure [data-node], .arch-figure [data-edge] { cursor: pointer; }
+.arch-note { margin: 10px 0 0; padding: 10px 12px; border-left: 3px solid var(--brand); background: var(--bg-sunk); border-radius: var(--radius-s); }
 
 /* Noticias: filtros por tipo de fuente y departamento */
 .news-filters { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 0 0 12px; min-width: 0; }

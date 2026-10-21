@@ -5,7 +5,7 @@ Cada corrida:
      (responde, cuántas entradas, fecha de la más reciente). Un feed sin
      entradas nuevas en ``stale_days`` se marca inactivo.
   2. Se queda con las entradas que tratan del ENSO o de sus impactos en el
-     Perú (``relevance``). Los feeds temáticos (ReliefWeb Perú, GDACS) usan
+     Perú (``relevance``). Los feeds temáticos (GDACS, alertas, Google Noticias) usan
      un filtro más amplio de peligros.
   3. Agrega las nuevas al histórico de solo anexar ``news/items.jsonl``
      (una línea por entrada, nunca se reescriben las anteriores) y genera

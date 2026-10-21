@@ -12,6 +12,8 @@
 | `probe-feeds.yml` | A mano o al cambiar el sondeo o la lista de feeds candidatos | Sondea feeds candidatos; informe en `bot/news-probe/<rama>` y como artefacto |
 | `scrape-ladder.yml` | A mano o al cambiar la escalera o sus candidatos | Para fuentes sin API ni feed: prueba `robots.txt`, una petición simple, cabeceras de navegador, Chromium y (si hay clave) Firecrawl, en ese orden, y se detiene en el primer paso que funciona o ante una verificación anti-robots; informe en `bot/scrape-ladder/<rama>` y como artefacto |
 | `device-screens.yml` | A mano o al cambiar la herramienta de capturas | Capturas de Noticias en los dispositivos de referencia, en `bot/screens/<rama>` y como artefacto |
+| `n8n.yml` | Lunes 13:17 UTC (08:17 en Lima), a mano y al cambiar `n8n/`, el registro o `fetch.py` | Pruebas de los nodos de n8n, armado de `n8n/dist/` y una corrida real del flujo de validación en un n8n en Docker ([n8n](n8n.md)) |
+| `recolector-kit.yml` | Al cambiar el kit, el recolector, `python/enso/` o el registro (en PR y en `main`) | Arma el kit del recolector del Perú, lo instala de verdad en Windows, macOS y Linux y, en `main`, publica el zip en la versión «recolector-kit» ([servidor-peru](servidor-peru.md)) |
 
 Las corridas que publican no se cruzan: la diaria, la que pide el vigilante y
 las que piden el recolector del Perú (al subir su copia, entre las 21:00 y las
@@ -38,12 +40,13 @@ anterior (sin corridas desde el 2026-10-08). Defensas:
 
 - El trabajo `keepalive` del flujo diario reactiva por API `observatory.yml`,
   `watchdog.yml` y `probe-sources.yml` en cada corrida programada; reactivar
-  reinicia el plazo.
+  reinicia el plazo. La validación semanal de `n8n.yml` no está en esa lista:
+  si GitHub la apaga, solo deja de correr esa validación.
 - El vigilante (cada 6 horas) reactiva los mismos tres, incluido él mismo.
   Basta con que uno de los dos siga corriendo para que el otro vuelva.
 - Fuera de GitHub, el recolector del Perú deja de ver la actualización de
   las 23:37 y el sitio envejece: el vigilante externo (n8n, si está activo)
-  revisa `data/dashboard.json` y avisa si la publicación tiene más de 30 horas.
+  revisa `data/manifest.json` y avisa si la publicación tiene más de 30 horas.
 - Revisión manual mensual: en *Actions*, ningún flujo debe aparecer como
   *disabled*; si alguno lo está, *Enable workflow* y luego *Run workflow*
   en `observatory.yml`.

@@ -279,6 +279,27 @@ def test_news_view_shows_official_feed_and_news(site, page):
     expect(page.locator("#arch-fig svg")).to_have_count(1, timeout=10000)
 
 
+def test_methodology_switches_between_the_two_architecture_diagrams(site, page):
+    """Metodología abre el diagrama simplificado, cambia al completo y, al tocar una caja o una conexión, escribe
+    debajo su explicación (en el teléfono no hay «hover» que muestre el <title> del SVG)."""
+    base, _ = site
+    go(page, base, "metodologia")
+    fig = page.locator("#arch-fig")
+    expect(fig.locator("svg[aria-labelledby^='as-']")).to_have_count(1, timeout=10000)
+    expect(page.locator("[data-arch=simple]")).to_have_attribute("aria-pressed", "true")
+    note = page.locator("#arch-note")
+    expect(note).to_be_hidden()
+    fig.locator("[data-edge=A] text").first.click()
+    expect(note).to_be_visible()
+    assert note.inner_text().startswith("A. ")
+    page.locator("[data-arch=full]").click()
+    expect(fig.locator("svg[aria-labelledby^='af-']")).to_have_count(1, timeout=10000)
+    expect(page.locator("#arch-open")).to_have_attribute("href", "assets/arquitectura.svg")
+    expect(note).to_be_hidden()
+    fig.locator("[data-node=fetch] text").first.click()
+    expect(note).to_contain_text("GitHub Actions")
+
+
 def test_alerts_card_says_when_no_alert_source_was_read(site, page):
     """Una corrida que no leyó ninguna fuente de alertas muestra las últimas conocidas: el aviso lo dice, haya
     avisos o no (la línea «0 de N fuentes» sola no alcanza)."""
