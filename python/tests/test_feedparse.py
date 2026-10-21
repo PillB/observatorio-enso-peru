@@ -164,6 +164,8 @@ def test_dates(text, expected):
     ("NIÑOS DEL JARDÍN 123 AFECTADOS POR LLUVIAS EN CHOTA", True, "05", ["Chota"]),  # la provincia, no el homónimo local
     ("SENASA ALERTA POR PLAGA DE MOSCA DE LA FRUTA TRAS LLUVIAS", True, "10", ["Huánuco"]),
     ("Lluvias en el distrito de Asia, Cañete", True, None, ["Asia", "Cañete"]),
+    ("Turistas llegan a la Ciudad Imperial pese a las lluvias", True, None, ["Cusco"]),
+    ("Lluvias en Pisco", True, None, ["Pisco"]),
 ])
 def test_places(text, peru, dep, places):
     tag = gazetteer().tag([text], peru, dep)
@@ -179,6 +181,9 @@ def test_places(text, peru, dep, places):
     ("Crece la presión sobre Gamarra por El Niño", True),  # el emporio de Lima, no el distrito de Apurímac
     ("Exportaciones a Asia crecen pese a El Niño", True),
     ("Retrasos en vuelos del aeropuerto Jorge Chávez por neblina", True),
+    ("Diálogo de paz en La Habana", True),
+    ("Lluvias en Rosario, Argentina", True),
+    ("FESTIVAL DEL PISCO SOUR SUSPENDIDO POR LLUVIAS", True),  # el cóctel, no la provincia
 ])
 def test_no_false_places(text, peru):
     assert gazetteer().tag([text], peru) is None

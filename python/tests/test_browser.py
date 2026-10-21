@@ -327,6 +327,8 @@ def engine(request, playwright, browser):
     try:
         b = getattr(playwright, name).launch(executable_path=exe) if exe else getattr(playwright, name).launch()
     except Exception as exc:  # motor no instalado en este equipo
+        if os.environ.get("CI"):  # en CI se instalan los tres motores: si uno no arranca, es una falla
+            raise
         pytest.skip(f"{name} no está instalado: {str(exc).splitlines()[0]}")
     yield playwright, b
     b.close()
