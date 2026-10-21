@@ -1,0 +1,66 @@
+# Escalera de extracción (python/tools/scrape_ladder.py): para cada fuente sin
+# feed de scrape_candidates.json prueba primero un GET simple y solo si hace
+# falta un navegador sin interfaz, desde EE. UU. (GitHub Actions). Respeta
+# robots.txt y no intenta pasar verificaciones antirobots. Manual, o al cambiar
+# la herramienta o la lista en una rama claude/**. El informe va a la rama
+# bot/scrape-ladder/<rama> y como artefacto, nunca a la rama de trabajo.
+name: scrape-ladder
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'ids separados por comas (vacío: todos)'
+        type: string
+        default: ''
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'python/tools/scrape_ladder.py'
+      - 'python/tools/scrape_candidates.json'
+      - '.github/workflows/scrape-ladder.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scrape-ladder-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ladder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: python/requirements*.txt
+      - run: pip install -r python/requirements-dev.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Run the ladder
+        working-directory: python
+        env:
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+          ONLY: ${{ inputs.only }}
+        run: python -m tools.scrape_ladder --out tests/fixtures/scrape-ladder ${ONLY:+--only "$ONLY"}
+      - name: Publish the report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A python/tests/fixtures/scrape-ladder
+          git diff --cached --quiet && exit 0
+          # Nunca en la rama de trabajo (ver docs/operaciones.md). Para traerlo:
+          #   git fetch origin bot/scrape-ladder/$GITHUB_REF_NAME && git checkout FETCH_HEAD -- python/tests/fixtures/scrape-ladder
+          git commit -m "chore(fixtures): scrape ladder report"
+          git push --force origin "HEAD:refs/heads/bot/scrape-ladder/$GITHUB_REF_NAME"
+          echo "::notice::Resultado en la rama bot/scrape-ladder/$GITHUB_REF_NAME"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scrape-ladder
+          path: python/tests/fixtures/scrape-ladder
+          if-no-files-found: ignore
+          retention-days: 14

@@ -26,6 +26,9 @@ from pathlib import Path
 
 import httpx
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from enso.reach import Robots  # noqa: E402
+
 UA = "Observatorio-ENSO-Peru/4.0 (fixture-capture; +https://github.com/PillB/observatorio-enso-peru)"
 
 #: Fuentes actuales. Clave = nombre de archivo estable.
@@ -164,15 +167,26 @@ def _save(out: Path, name: str, res: dict, index: list) -> None:
 
 def _with_news() -> dict:
     """Las fuentes más los feeds de noticias del catálogo del pipeline."""
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     from enso.news import FEEDS
 
     return CURRENT | {f.fixture: f.url for f in FEEDS}
 
 
 def capture_current(client: httpx.Client, out: Path, index: list) -> None:
+    """Respuesta actual de cada fuente, si el robots.txt de su servidor lo permite.
+
+    Las copias históricas no pasan por aquí: las sirve el Internet Archive."""
+    robots = Robots(client, agent="Observatorio-ENSO-Peru")
     for name, url in _with_news().items():
-        _save(out, name, _get(client, url), index)
+        allowed = robots.allowed(url)
+        if allowed:
+            res = _get(client, url)
+        else:
+            res = {"url": url, "status": None, "body": b"",
+                   "error": "robots.txt no permite la ruta" if allowed is False else
+                            f"robots.txt sin respuesta ({robots.failure(url)})"}
+        res["robots"] = {True: "allowed", False: "disallowed", None: "unreachable"}[allowed]
+        _save(out, name, res, index)
 
 
 def capture_history(client: httpx.Client, out: Path, index: list, per_source: int) -> None:

@@ -1,0 +1,25 @@
+{
+  "note": "Fuentes sin feed ni API documentada (o cuyo acceso no está verificado) que prueba tools.scrape_ladder. expect: expresión regular que prueba que el dato está en la respuesta (no basta con que la página cargue).",
+  "candidates": [
+    {"id": "usgs-fdsn-peru", "hazard": "sismo", "institution": "USGS", "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minlatitude=-20&maxlatitude=1&minlongitude=-84&maxlongitude=-68&minmagnitude=4&orderby=time&limit=100", "expect": "\"FeatureCollection\""},
+    {"id": "geofon-fdsn-peru", "hazard": "sismo", "institution": "GFZ GEOFON", "url": "https://geofon.gfz.de/fdsnws/event/1/query?minlat=-20&maxlat=1&minlon=-84&maxlon=-68&format=text&limit=50", "expect": "#EventID"},
+    {"id": "igp-ultimosismo", "hazard": "sismo", "institution": "IGP (CENSIS)", "url": "https://ultimosismo.igp.gob.pe/", "expect": "(?i)magnitud\\s*[:=]?\\s*\\d", "note": "Aplicación Nuxt: los datos vienen de /api/, que su robots.txt prohíbe."},
+    {"id": "gdacs-peru", "hazard": "sismo", "institution": "GDACS", "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH?eventlist=EQ;FL;VO;DR;WF;TC&country=Peru", "expect": "\"FeatureCollection\"|\"features\""},
+    {"id": "ptwc-pheb-atom", "hazard": "sismo", "institution": "NOAA PTWC", "url": "https://www.tsunami.gov/events/xml/PHEBAtom.xml", "expect": "<feed"},
+    {"id": "tgftp-wepa40", "hazard": "sismo", "institution": "NOAA PTWC", "url": "https://tgftp.nws.noaa.gov/data/raw/we/wepa40.pheb.tsu.pac.txt", "expect": "WEPA40"},
+    {"id": "dhn-boletin-sismo-tsunami", "hazard": "sismo", "institution": "DHN (Centro Nacional de Alerta de Tsunamis)", "url": "https://www.dhn.mil.pe/portal/boletin-sismo-tsunami", "expect": "(?i)tsunami.{0,400}(?:mw|magnitud|\\d\\.\\d)", "note": "Los PDF están tras una verificación antirobots: no se piden."},
+    {"id": "dhn-cnat", "hazard": "sismo", "institution": "DHN (Centro Nacional de Alerta de Tsunamis)", "url": "https://www.dhn.mil.pe/cnat/", "expect": "(?i)tsunami"},
+    {"id": "cenvul-boletines", "hazard": "volcan", "institution": "IGP (CENVUL)", "url": "https://cenvul.igp.gob.pe/productos/boletines-vulcanologicos", "expect": "IGP/CENVUL"},
+    {"id": "cenvul-alertas", "hazard": "volcan", "institution": "IGP (CENVUL)", "url": "https://cenvul.igp.gob.pe/productos/alertas-vulcanologicas", "expect": "(?i)cenizas|lahares"},
+    {"id": "cenvul-reportes", "hazard": "volcan", "institution": "IGP (CENVUL)", "url": "https://cenvul.igp.gob.pe/productos/reportes-vulcanologicos-diarios", "expect": "RVD"},
+    {"id": "vaac-fvag01", "hazard": "volcan", "institution": "VAAC Buenos Aires (vía NOAA)", "url": "https://tgftp.nws.noaa.gov/data/raw/fv/fvag01.sabm..txt", "expect": "(?i)VA ADVISORY"},
+    {"id": "gvp-weekly", "hazard": "volcan", "institution": "Smithsonian GVP / USGS", "url": "https://volcano.si.edu/news/WeeklyVolcanoRSS.xml", "expect": "<rss"},
+    {"id": "senamhi-telegram", "hazard": "lluvias", "institution": "SENAMHI (canal público de Telegram)", "url": "https://t.me/s/Senamhi_Peru", "expect": "tgme_widget_message_text"},
+    {"id": "senamhi-observatorio-avisos", "hazard": "lluvias", "institution": "SENAMHI (observatorio)", "url": "https://observatorio.senamhi.gob.pe/gestion-riesgo-desastres/avisos-meteorologicos", "expect": "(?i)nivel\\s+(?:amarillo|naranja|rojo)|aviso\\s+n[°º]", "note": "Aplicación que arma la página con JavaScript."},
+    {"id": "senamhi-www-avisos", "hazard": "lluvias", "institution": "SENAMHI", "url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico", "expect": "(?i)aviso", "note": "Desde EE. UU. suele no responder: canal del recolector del Perú."},
+    {"id": "idesep-wfs-capabilities", "hazard": "lluvias", "institution": "SENAMHI (IDESEP GeoServer)", "url": "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities", "expect": "WFS_Capabilities"},
+    {"id": "idesep-wfs-avisos", "hazard": "lluvias", "institution": "SENAMHI (IDESEP GeoServer)", "url": "https://idesep.senamhi.gob.pe/geoserver/g_aviso/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=g_aviso:view_aviso&maxFeatures=5&outputFormat=application/json", "expect": "\"FeatureCollection\""},
+    {"id": "firms-modis-sa-24h", "hazard": "incendio", "institution": "NASA FIRMS", "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/modis-c6.1/csv/MODIS_C6_1_South_America_24h.csv", "expect": "latitude,longitude"},
+    {"id": "firms-viirs-sa-24h", "hazard": "incendio", "institution": "NASA FIRMS", "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/suomi-npp-viirs-c2/csv/SUOMI_VIIRS_C2_South_America_24h.csv", "expect": "latitude,longitude"}
+  ]
+}

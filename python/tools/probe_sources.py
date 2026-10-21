@@ -1,12 +1,14 @@
 """Mide desde dónde responde cada URL del registro y actualiza ``registry/reachability.json``.
 
-Corre en GitHub Actions (vantage «github-actions», un servidor de EE. UU.
-como el de n8n) y también puede leer el ``index.json`` del recolector del
-Perú (rama ``data-peru``) para anotar qué respondió desde allí. Con ambas
-mediciones el registro decide qué fuentes están geobloqueadas.
+Corre en GitHub Actions (vantage «github-actions»), lee el ``index.json`` del
+recolector del Perú (rama ``data-peru``) y puede importar lo medido por n8n
+(``--import``, formato enso-reachability-vantage/1). Cada medición se guarda
+por red (``actions``, ``n8n``, ``peru``) y punto de medición, y el registro
+decide con todas qué fuentes están geobloqueadas y quién recolecta cada una.
 
 Uso:
-    python -m tools.probe_sources [--vantage github-actions] [--peru-index ruta/index.json] [--only id ...]
+    python -m tools.probe_sources [--vantage github-actions] [--peru-index ruta/index.json]
+        [--import n8n-reach.json ...] [--no-probe] [--only id ...]
 """
 
 from __future__ import annotations
@@ -85,31 +87,57 @@ def from_peru_index(index: dict) -> dict[str, dict]:
     return out
 
 
+def from_vantage_file(data: dict) -> list[dict]:
+    """Mediciones hechas en otra parte (n8n…) en formato enso-reachability-vantage/1: [{url, class, at, vantage…}]."""
+    if data.get("schema") != "enso-reachability-vantage/1":
+        raise SystemExit(f"formato no reconocido: {data.get('schema')}")
+    out = []
+    for r in data.get("results", []):
+        if r.get("url") and r.get("class") in registry.CLASSES:
+            out.append({k: r.get(k) for k in ("url", "class", "http", "bytes", "ms", "detail", "at", "robots")
+                        if r.get(k) is not None} | {"vantage": r.get("vantage") or data.get("vantage") or "n8n"})
+    return out
+
+
+def _put(data: dict, url: str, rec: dict) -> None:
+    rec = {k: v for k, v in rec.items() if k != "url"}
+    groups = registry._groups(data["urls"].get(url) or {})
+    groups.setdefault(registry.vantage_group(rec["vantage"]), {})[rec["vantage"]] = rec
+    data["urls"][url] = groups
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--vantage", default="github-actions")
     ap.add_argument("--peru-index", type=Path)
+    ap.add_argument("--import", dest="imports", type=Path, nargs="*", default=[],
+                    help="archivos enso-reachability-vantage/1 (p. ej. la validación de n8n)")
+    ap.add_argument("--no-probe", action="store_true", help="solo importar mediciones")
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--out", type=Path, default=registry.REACHABILITY)
     a = ap.parse_args(argv)
     reg = registry.build(reach={})
     urls = sorted({u for s in reg["sources"] if not a.only or s["id"] in a.only for u in [s["url"], *s.get("alt_urls", [])]})
-    data = json.loads(a.out.read_text(encoding="utf-8")) if a.out.exists() else {"schema": registry.REACH_SCHEMA, "urls": {}}
-    side = "peru" if a.vantage == "peru-server" else "us"
-    for url, rec in probe(urls, a.vantage).items():
-        data["urls"].setdefault(url, {})[side] = rec
+    data = json.loads(a.out.read_text(encoding="utf-8")) if a.out.exists() else {"urls": {}}
+    data["urls"] = {u: registry._groups(e) for u, e in data.get("urls", {}).items()}
+    measured = {} if a.no_probe else probe(urls, a.vantage)
+    for url, rec in measured.items():
+        _put(data, url, {**rec, "vantage": a.vantage})
     if a.peru_index and a.peru_index.exists():
         for url, rec in from_peru_index(json.loads(a.peru_index.read_text(encoding="utf-8"))).items():
-            data["urls"].setdefault(url, {})["peru"] = rec
+            _put(data, url, rec)
+    for f in a.imports:
+        for rec in from_vantage_file(json.loads(f.read_text(encoding="utf-8"))):
+            _put(data, rec["url"], rec)
     data["schema"] = registry.REACH_SCHEMA
     data["updated_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     data["urls"] = dict(sorted(data["urls"].items()))
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     counts: dict[str, int] = defaultdict(int)
-    for u in urls:
-        counts[data["urls"][u][side]["class"]] += 1
-    print(f"{len(urls)} URL medidas desde {a.vantage}: " + ", ".join(f"{k} {v}" for k, v in sorted(counts.items())))
+    for rec in measured.values():
+        counts[rec["class"]] += 1
+    print(f"{len(measured)} URL medidas desde {a.vantage}: " + ", ".join(f"{k} {v}" for k, v in sorted(counts.items())))
     return 0
 
 
