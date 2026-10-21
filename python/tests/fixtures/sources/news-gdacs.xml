@@ -7,10 +7,10 @@
     <description>Near real-time notification about natural disaster with a potential humanitarian impact</description>
     <managingEditor>stefano.paris@ext.ec.europa.eu</managingEditor>
     <!--Records number 248-->
-    <!--Start 10/21/2026 3:25:01 AM-->
-    <!--=Start 10/21/2026 3:25:01 AM-->
+    <!--Start 10/21/2026 4:35:02 AM-->
+    <!--=Start 10/21/2026 4:35:02 AM-->
     <webMaster>stefano.paris@ext.ec.europa.eu</webMaster>
-    <pubDate>Wed, 21 Oct 2026 01:25:01 GMT</pubDate>
+    <pubDate>Wed, 21 Oct 2026 02:35:02 GMT</pubDate>
     <atom:link href="https://www.gdacs.org/xml/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Green earthquake (Magnitude 6.3M, Depth:16km) in Vanuatu Islands 20/10/2026 04:20 UTC, [unknown].</title>
@@ -4117,31 +4117,31 @@
       </gdacs:resources>
     </item>
     <item>
-      <title>Red notification for tropical cyclone CHAMPI-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 7.023 million .</title>
-      <description>From 14/10/2026 to 20/10/2026, a Hurricane/Typhoon &gt; 74 mph (maximum wind speed of 296 km/h) CHAMPI-26 was active in NWPacific. The cyclone affects these countries: Guam, Northern Mariana Islands, Japan (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 7.023 million .</description>
-      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001338/1001338_26_tn.png" />
+      <title>Red notification for tropical cyclone CHAMPI-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0.233 million .</title>
+      <description>From 14/10/2026 to 21/10/2026, a Hurricane/Typhoon &gt; 74 mph (maximum wind speed of 296 km/h) CHAMPI-26 was active in NWPacific. The cyclone affects these countries: Guam, Northern Mariana Islands, Japan (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0.233 million .</description>
+      <enclosure type="image/png" length="1" url="https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001338/1001338_27_tn.png" />
       <gdacs:temporary>false</gdacs:temporary>
       <link>https://www.gdacs.org/report.aspx?eventtype=TC&amp;eventid=1001338</link>
       <pubDate>Wed, 14 Oct 2026 14:31:53 GMT</pubDate>
       <gdacs:dateadded>Wed, 14 Oct 2026 14:31:53 GMT</gdacs:dateadded>
-      <gdacs:datemodified>Wed, 21 Oct 2026 01:01:17 GMT</gdacs:datemodified>
+      <gdacs:datemodified>Wed, 21 Oct 2026 02:13:39 GMT</gdacs:datemodified>
       <gdacs:iscurrent>true</gdacs:iscurrent>
       <gdacs:fromdate>Wed, 14 Oct 2026 12:00:00 GMT</gdacs:fromdate>
-      <gdacs:todate>Tue, 20 Oct 2026 18:00:00 GMT</gdacs:todate>
+      <gdacs:todate>Wed, 21 Oct 2026 00:00:00 GMT</gdacs:todate>
       <gdacs:durationinweek>1</gdacs:durationinweek>
       <gdacs:year>2026</gdacs:year>
       <dc:subject>TC1</dc:subject>
       <guid isPermaLink="false">TC1001338</guid>
       <geo:Point>
-        <geo:lat>17.4</geo:lat>
-        <geo:long>131.5</geo:long>
+        <geo:lat>18.1</geo:lat>
+        <geo:long>130.1</geo:long>
       </geo:Point>
       <!--gdacs:bbox format = lonmin lonmax latmin latmax-->
-      <gdacs:bbox>119.109782950579 145.109782950579 7.97415313730071 33.9741531373007</gdacs:bbox>
-      <georss:point>17.4 131.5</georss:point>
+      <gdacs:bbox>119.225022847744 145.225022847744 8.45272621152466 34.4527262115247</gdacs:bbox>
+      <georss:point>18.1 130.1</georss:point>
       <gdacs:cap>https://www.gdacs.org/contentdata/resources/TC/1001338/cap_1001338.xml</gdacs:cap>
       <gdacs:icon>https://www.gdacs.org/Images/gdacs_icons/alerts/Red/TC.png</gdacs:icon>
-      <gdacs:version>26</gdacs:version>
+      <gdacs:version>27</gdacs:version>
       <gdacs:eventtype>TC</gdacs:eventtype>
       <gdacs:alertlevel>Red</gdacs:alertlevel>
       <gdacs:alertscore>3</gdacs:alertscore>
@@ -4149,14 +4149,14 @@
       <gdacs:episodealertscore>1</gdacs:episodealertscore>
       <gdacs:eventname>CHAMPI-26</gdacs:eventname>
       <gdacs:eventid>1001338</gdacs:eventid>
-      <gdacs:episodeid>26</gdacs:episodeid>
+      <gdacs:episodeid>27</gdacs:episodeid>
       <gdacs:calculationtype>tropicalcyclonewithstormsurge</gdacs:calculationtype>
-      <gdacs:severity unit="km/h" value="296.2944">Hurricane/Typhoon &gt; 74 mph (maximum wind speed of 296 km/h)</gdacs:severity>
-      <gdacs:population unit="Pop74" value="7022835">Population affected by Category 1 (120 km/h) wind speeds or higher is 7.023 million </gdacs:population>
+      <gdacs:severity unit="km/h" value="296.2944">Hurricane/Typhoon &gt; 74 mph (maximum wind speed of 287 km/h)</gdacs:severity>
+      <gdacs:population unit="Pop74" value="232897">Population affected by Category 1 (120 km/h) wind speeds or higher is 0.233 million </gdacs:population>
       <gdacs:vulnerability value="2">Medium</gdacs:vulnerability>
       <gdacs:iso3>GUM</gdacs:iso3>
       <gdacs:country>Guam, Northern Mariana Islands, Japan</gdacs:country>
-      <gdacs:glide>TC-2026-000192-GUM</gdacs:glide>
+      <gdacs:glide />
       <gdacs:mapimage />
       <gdacs:maplink />
       <gdacs:gtsimage />
@@ -13405,4 +13405,4 @@
       </gdacs:resources>
     </item>
   </channel>
-</rss><!--End 10/21/2026 3:25:40 AM-->
+</rss><!--End 10/21/2026 4:35:39 AM-->
