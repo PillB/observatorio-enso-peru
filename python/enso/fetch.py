@@ -30,7 +30,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 
 import httpx
 
@@ -39,6 +39,15 @@ import httpx
 CONTACT = os.environ.get("ENSO_CONTACT_URL") or "https://github.com/PillB/observatorio-enso-peru"
 UA = f"Observatorio-ENSO-Peru/4.0 (+{CONTACT}; datos abiertos)"
 TRANSIENT = (httpx.TimeoutException, httpx.ConnectError, httpx.RemoteProtocolError, httpx.ReadError)
+#: Fallos de red seguidos de un servidor (sin respuesta, o una que no terminó a tiempo) tras los que se le pide
+#: una sola vez por URL, y tras los que ya no se le pide nada en la corrida (se pasa a las copias y al archivo).
+HOST_ONE_TRY_AFTER = 3
+HOST_SKIP_AFTER = 5
+
+
+class TooSlow(httpx.TransportError):
+    """La respuesta no terminó de llegar en el tiempo total del pedido. No es transitorio: al reintentar
+    tardaría lo mismo."""
 
 
 @dataclass
@@ -143,12 +152,20 @@ class Fetcher:
     def __init__(self, timeout: float = 45.0, retries: int = 3, polite_delay: float = 0.8,
                  allow_archive: bool = True, allow_save: bool = False, offline: bool = False,
                  relay: Optional["Relay | list[Relay]"] = None, plan: Optional[dict[str, list[str]]] = None,
-                 max_seconds: Optional[float] = None):
-        self.client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
+                 max_seconds: Optional[float] = None, budget_s: Optional[float] = None):
+        # Conectar no lleva más de unos segundos aunque el servidor sea lento: un servidor que no acepta la
+        # conexión no retiene cada pedido el plazo entero.
+        self.client = httpx.Client(timeout=httpx.Timeout(timeout, connect=min(timeout, 15.0)), follow_redirects=True,
+                                   headers={"User-Agent": UA})
         self.retries = retries
         #: Tiempo total de cada pedido. ``timeout`` vale por lectura: un servidor que manda la respuesta de a
         #: pocos bytes nunca lo agota y, sin este límite, retendría la corrida hasta el límite del build.
         self.max_seconds = max_seconds
+        #: Tiempo para todos los pedidos de este cliente (desde que se crea): pasado ese tiempo no se pide nada
+        #: más y cada fuente sigue con sus copias o con el dato anterior, para que la corrida llegue a publicar.
+        self.deadline = time.monotonic() + budget_s if budget_s else None
+        #: Fallos de red seguidos por servidor en esta corrida.
+        self._down: dict[str, int] = {}
         self.polite_delay = polite_delay
         self.allow_archive = allow_archive
         self.allow_save = allow_save
@@ -166,37 +183,59 @@ class Fetcher:
     def close(self) -> None:
         self.client.close()
 
-    def _wait_host(self, url: str) -> None:
-        host = httpx.URL(url).host
+    def _wait_host(self, host: str) -> None:
         dt = time.monotonic() - self._last.get(host, 0)
         if dt < self.polite_delay:
             time.sleep(self.polite_delay - dt)
         self._last[host] = time.monotonic()
 
     def _request(self, url: str) -> httpx.Response:
-        if not self.max_seconds:
+        ends = [t for t in (time.monotonic() + self.max_seconds if self.max_seconds else None, self.deadline) if t]
+        if not ends:
             return self.client.get(url)
-        end = time.monotonic() + self.max_seconds
+        end = min(ends)
         with self.client.stream("GET", url) as r:
             chunks = []
             for chunk in r.iter_bytes():
                 chunks.append(chunk)
                 if time.monotonic() > end:
-                    raise httpx.ReadTimeout(f"la respuesta tardó más de {self.max_seconds:g} s", request=r.request)
+                    raise TooSlow("la respuesta no terminó de llegar a tiempo"
+                                  + (f" ({self.max_seconds:g} s por pedido)" if self.max_seconds else ""), request=r.request)
             # El cuerpo ya viene descomprimido: sin Content-Encoding, la respuesta no lo descomprime otra vez.
             headers = [(k, v) for k, v in r.headers.multi_items()
                        if k.lower() not in ("content-encoding", "content-length", "transfer-encoding")]
         return httpx.Response(r.status_code, headers=headers, content=b"".join(chunks), request=r.request)
 
     def _get(self, url: str, attempts: list, tries: Optional[int] = None) -> Optional[httpx.Response]:
-        for i in range(tries or self.retries):
-            self._wait_host(url)
+        host = urlsplit(url).hostname or ""
+        n = tries or self.retries
+        for i in range(n):
+            if self.deadline is not None and time.monotonic() > self.deadline:
+                attempts.append({"url": url, "error": "omitido: se agotó el tiempo de la corrida para estos pedidos"})
+                return None
+            down = self._down.get(host, 0)
+            if down >= HOST_SKIP_AFTER:
+                attempts.append({"url": url, "error": f"omitido: el servidor no respondió a los {down} pedidos anteriores"})
+                return None
+            if down >= HOST_ONE_TRY_AFTER and i:
+                return None
+            self._wait_host(host)
             try:
                 r = self._request(url)
+            except TooSlow as exc:
+                attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
+                self._down[host] = down + 2  # un servidor así de lento lo será también con el pedido siguiente
+                return None
             except TRANSIENT as exc:
                 attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
-                time.sleep(min(30, 2 ** i * 2))
+                self._down[host] = down + 1
+                if i + 1 < n and self._down[host] < HOST_ONE_TRY_AFTER:
+                    time.sleep(min(30, 2 ** i * 2))
                 continue
+            except (httpx.HTTPError, httpx.InvalidURL) as exc:  # gzip roto, redirecciones sin fin, URL inválida
+                attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
+                return None
+            self._down[host] = 0
             attempts.append({"url": url, "status": r.status_code})
             if r.status_code == 429 or r.status_code >= 500:
                 wait = r.headers.get("retry-after")

@@ -44,7 +44,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # El pipeline tiene 26 min; el resto del build (pruebas, navegador, subidas) cabe en los otros 10.
+    timeout-minutes: 36
     outputs:
       publication_id: ${{ steps.pipeline.outputs.publication_id }}
       worst: ${{ steps.pipeline.outputs.worst }}
@@ -186,7 +187,7 @@ jobs:
         working-directory: python
         # Por debajo del límite del job: si se pasa, falla este paso y los siguientes con always() (el estado de
         # los feeds «reader», el informe) corren igual.
-        timeout-minutes: 24
+        timeout-minutes: 26
         env:
           ENSO_ARCHIVE_SAVE: ${{ (github.event_name != 'workflow_dispatch' || inputs.archive_save) && '1' || '0' }}
           RELAY_DIR: ${{ steps.relay.outputs.dir }}
@@ -344,8 +345,9 @@ jobs:
             python -m tools.sync_issues --report ../report/run-report.json --run-url "$RUN_URL"
           fi
       # always(): aunque falle la sincronización de incidencias (API de GitHub, PyPI), la falla de la corrida se avisa.
+      # «cancelled» también: un job que pasa su límite de tiempo termina así, y el sitio queda igual de atrasado.
       - name: Open an issue when the run itself failed
-        if: always() && (needs.build.result == 'failure' || needs.deploy.result == 'failure' || needs.archive.result == 'failure')
+        if: always() && (contains(fromJSON('["failure","cancelled"]'), needs.build.result) || contains(fromJSON('["failure","cancelled"]'), needs.deploy.result) || contains(fromJSON('["failure","cancelled"]'), needs.archive.result))
         uses: actions/github-script@v8
         with:
           script: |
@@ -369,9 +371,10 @@ jobs:
 
   archive:
     # Corpus de respuestas originales para backtesting de los lectores.
-    # También al fusionar en main: esa corrida publica notas y su copia del histórico.
+    # También al fusionar en main: esa corrida publica notas y su copia del histórico. Solo en main: la copia
+    # del histórico vuelve al sitio publicado, y las notas de una corrida de prueba en otra rama no deben.
     needs: build
-    if: success()
+    if: success() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -379,13 +382,17 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: actions/download-artifact@v4
+        id: raw
         with:
           name: raw-sources
           path: raw
         continue-on-error: true
       - name: Commit new raw responses to the data-archive branch
+        env:
+          RAW_OUTCOME: ${{ steps.raw.outcome }}
         run: |
-          if [ ! -d raw ]; then
+          # Una descarga que falló a medias deja archivos cortados: se mira el resultado, no la carpeta.
+          if [ "$RAW_OUTCOME" != success ] || [ ! -d raw ]; then
             echo "::warning::No llegaron las respuestas de la corrida (artefacto raw-sources): data-archive no se actualiza y su copia del histórico de noticias queda sin las notas de hoy."
             exit 0
           fi
@@ -421,7 +428,13 @@ jobs:
             | sed -nE 's#^sources/([^/]+)/[0-9-]{10}-([0-9a-f]{12})\.[A-Za-z0-9]+$#\1/\2#p' > ../archived.txt || true
           for f in raw/*/*; do
             k="$(printf '%s\n' "$f" | sed -nE 's#^raw/([^/]+)/[0-9-]{10}-([0-9a-f]{12})\.[A-Za-z0-9]+$#\1/\2#p')"
-            if [ -n "$k" ] && grep -qxF -- "$k" ../archived.txt; then rm -f -- "$f"; fi
+            [ -n "$k" ] || continue
+            if [ "$(sha256sum "$f" | cut -c1-12)" != "${k#*/}" ]; then
+              echo "::warning::$f no coincide con su sha256 (llegó incompleto): no se archiva."
+              rm -f -- "$f"
+            elif grep -qxF -- "$k" ../archived.txt; then
+              rm -f -- "$f"
+            fi
           done
           cp -rn raw/. ../archive/sources/
           cd ../archive

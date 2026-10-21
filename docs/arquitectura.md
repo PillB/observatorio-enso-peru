@@ -40,7 +40,7 @@ del despliegue, sigue publicado el sitio anterior.
 
 | Módulo | Función |
 |---|---|
-| `fetch.py` | Descarga con reintentos, límites de tamaño, un tiempo total por pedido (5 min las fuentes oficiales, 1 min cada feed: el plazo del cliente es por lectura y un servidor que manda la respuesta de a pocos bytes no lo agota) y respaldo en el Internet Archive (CDX y, si se activa con `ENSO_ARCHIVE_SAVE=1`, Save Page Now) |
+| `fetch.py` | Descarga con reintentos, límites de tamaño y respaldo en el Internet Archive (CDX y, si se activa con `ENSO_ARCHIVE_SAVE=1`, Save Page Now). El tiempo está acotado: conectar, 15 s; cada pedido, 5 min las fuentes oficiales y 1 min cada feed en total (el plazo del cliente es por lectura y un servidor que manda la respuesta de a pocos bytes no lo agota), sin reintento si se agota; un servidor con 3 fallos de red seguidos recibe un solo intento por URL, y con 5 ya no se le pide nada en la corrida; todas las fuentes oficiales juntas, 8 min (`OFFICIAL_BUDGET_S`), y las que falten siguen con sus copias o su dato anterior. Una respuesta rota (gzip mal declarado, redirecciones sin fin) es una URL fallida más, no un error que detenga la corrida |
 | `feeds/cpc.py` | Lectores de los archivos de texto de NOAA/CPC: semanal OISST, mensual por región, RONI/ONI, matrices año×mes (SOI, presiones, vientos), contenido de calor y la ENSO Diagnostic Discussion |
 | `feeds/peru.py` | Lectores del ICEN del IGP, del listado de comunicados del ENFEN (HTML y WordPress JSON) y del texto de cada comunicado (PDF) |
 | `signals.py` | Categorías ICEN 2024, eventos ICEN, categorías ONI/RONI y la señal del equipo GRD |

@@ -895,9 +895,11 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
 
 
 def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None, workers: int = 8,
-            deadline: Optional[float] = None, host_failures: int = 2) -> tuple[list[dict], list[dict], dict[str, bytes]]:
+            deadline: Optional[float] = None, host_failures: int = 2,
+            on_result=None) -> tuple[list[dict], list[dict], dict[str, bytes]]:
     """Descarga los feeds. ``fetch(url)`` devuelve (estado, cuerpo, tipo, error[, {channel, copyAt}]) y debe
-    ser seguro entre hilos.
+    ser seguro entre hilos. ``on_result(feed, estado, entradas, cuerpo)``, si se da, se llama en cuanto termina
+    cada feed (también seguro entre hilos); un error suyo no detiene la recolección.
 
     Los feeds de un mismo servidor se piden en serie (cortesía). Tras ``host_failures``
     fallos de red seguidos se omiten los demás feeds de ese servidor, y pasados
@@ -926,6 +928,11 @@ def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None, workers: i
                 results[f.id] = _read_feed(f, fetch, now)
             except Exception as exc:  # noqa: BLE001 — un feed que falla de forma inesperada no detiene a los demás
                 results[f.id] = (_status(f, now, f"error inesperado: {type(exc).__name__}: {exc}"[:300]), [], None)
+            if on_result is not None:
+                try:
+                    on_result(f, *results[f.id])
+                except Exception:  # noqa: BLE001
+                    pass
             st = results[f.id][0]
             # Sin respuesta, o 429 (el servidor pide que se le pida menos): cuenta para dejar de pedirle.
             fails = fails + 1 if not st["ok"] and st.get("httpStatus") in (None, 429) else 0

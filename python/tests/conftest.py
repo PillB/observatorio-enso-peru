@@ -20,6 +20,13 @@ FIX = ROOT / "tests" / "fixtures" / "sources"
 HIST = FIX / "history"
 
 
+@pytest.fixture(autouse=True)
+def _no_live_console(monkeypatch):
+    """En Actions, el paso que resuelve la dirección pública deja GEO_OVERRIDES_URL en el entorno de los pasos
+    siguientes, también el de las pruebas: ninguna prueba debe pedirle nada a la consola de producción."""
+    monkeypatch.delenv("GEO_OVERRIDES_URL", raising=False)
+
+
 def pytest_addoption(parser):
     parser.addoption("--site-dir", default=None, help="Carpeta del sitio construido (public/) para pruebas de navegador")
 

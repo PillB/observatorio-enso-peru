@@ -291,9 +291,27 @@ def test_the_last_alerts_keep_their_place_corrections(pub, tmp_path, monkeypatch
         raise RuntimeError("simulado")
 
     monkeypatch.setattr(obs, "acquire_news", boom)
+    # Una corrida con capturas no le pide nada a la consola, aunque el entorno tenga su dirección.
+    monkeypatch.setenv("GEO_OVERRIDES_URL", "http://127.0.0.1:9/api/geo/overrides")
     again = tmp_path / "data2"
     obs.run(again, str(out), fixtures=fix)
     assert where(again) == ["Piura (Piura)"]
+    report = json.loads((again / "run-report.json").read_text(encoding="utf-8"))
+    assert not any(e.get("code", "").startswith("overrides-") for e in report.get("events", []))
+
+
+def test_a_failure_while_looking_for_the_latest_communique_does_not_stop_the_publication(pub, tmp_path, monkeypatch):
+    prev, _ = pub
+
+    def boom(*a, **kw):
+        raise ValueError("simulado")
+
+    monkeypatch.setattr(obs, "enfen_latest", boom)
+    out = tmp_path / "data"
+    obs.run(out, str(prev), fixtures=FIX)
+    report = json.loads((out / "run-report.json").read_text(encoding="utf-8"))
+    assert (out / "dashboard.json").exists()
+    assert any(e.get("code") == "latest-exception" for e in report.get("events", []))
 
 
 def test_raw_archive_skips_fixtures(tmp_path):

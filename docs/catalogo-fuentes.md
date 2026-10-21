@@ -136,16 +136,20 @@ los piden las corridas de `observatory.yml` en `main` (con `--reader-state`);
 las demás (otra rama, la prueba de `capture-fixtures.yml`, una corrida a
 mano) los omiten. El plazo cuenta desde el último pedido, haya respondido o
 no (un 429 o un 5xx no se reintentan hasta el día siguiente), con un margen
-de 30 minutos porque la hora anotada es la de inicio de la corrida. Cada
+de 30 minutos porque la hora anotada es la de inicio de la corrida y el
+paso del pipeline no dura más de 26. Cada
 uno se pide una sola vez por corrida, sin reintento, y dos 429 seguidos de
 Google detienen los demás pedidos a Google en esa corrida. La hora del
 último pedido de cada uno se guarda también en la caché de Actions, y se
 anota antes de hacerlo: una corrida que los pidió y no llegó a publicar
 (o que se cortó a mitad de la recolección) no hace que la siguiente los
 pida de nuevo antes de tiempo. Ese estado guarda también sus notas que
-ninguna publicación tiene todavía, hasta 14 días (`READER_KEEP_DAYS`):
-no se pierden aunque varias corridas seguidas no publiquen y el feed ya
-no las traiga. El sondeo de candidatos (`probe-feeds.yml`) no los pide:
+ninguna publicación tiene todavía, en cuanto termina cada lectura y hasta
+14 días (`READER_KEEP_DAYS`): no se pierden aunque varias corridas
+seguidas no publiquen y el feed ya no las traiga. Si no hay estado (la
+caché no se pudo leer) y tampoco se puede leer `news/feeds.json` de la
+publicación anterior, no se sabe cuándo se pidieron y esa corrida no los
+pide (`feeds-reader-unknown`). El sondeo de candidatos (`probe-feeds.yml`) no los pide:
 respeta robots.txt como la captura de fuentes. En el
 registro (`registry/sources.json`) su URL queda `robots-disallowed` con
 canales `["actions"]` y `"reader": true`; n8n y el recolector del Perú no

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -148,7 +149,8 @@ def test_geoblocked_url_without_copy_is_tried_once(tmp_path):
     with pytest.raises(Exception):
         f.get([ENFEN])
     assert asked == [ENFEN]  # una vez, por si volvió a responder; no tres
-    f.plan = {}
+    f = Fetcher(retries=3, polite_delay=0, allow_archive=False)  # otra corrida: sin los fallos de esta
+    f.client = httpx.Client(transport=httpx.MockTransport(net))
     asked.clear()
     with pytest.raises(Exception):
         f.get([ENFEN])
@@ -571,7 +573,14 @@ def _archive_step(tmp_path, seed_files: dict | None = None) -> Path:
     return work
 
 
-def _run_archive_step(work: Path, before_add: str = "") -> str:
+def _raw_name(day: str, body: bytes, ext: str) -> str:
+    """Como archive_raw: fecha y los 12 primeros caracteres del sha256 del cuerpo."""
+    import hashlib
+
+    return f"{day}-{hashlib.sha256(body).hexdigest()[:12]}.{ext}"
+
+
+def _run_archive_step(work: Path, before_add: str = "", outcome: str = "success") -> str:
     import subprocess
 
     import yaml
@@ -582,7 +591,7 @@ def _run_archive_step(work: Path, before_add: str = "") -> str:
     run = run.replace("git add --sparse sources\n", f"git add --sparse sources\n{before_add}\n")
     # Como el shell de Actions: bash -e -o pipefail.
     return subprocess.run(["bash", "--noprofile", "--norc", "-eo", "pipefail", "-c", run], cwd=work, check=True,
-                          capture_output=True, text=True).stdout
+                          capture_output=True, text=True, env={**os.environ, "RAW_OUTCOME": outcome}).stdout
 
 
 def _archive_tree(work: Path) -> dict:
@@ -599,41 +608,48 @@ def test_archive_job_downloads_only_the_news_history_and_never_deletes(tmp_path)
     """Revisión: el job bajaba data-archive entera, que crece cada día, y volvía a agregar con la fecha de hoy
     las respuestas que no cambian. Ahora baja la lista de archivos y solo sources/news, no repite una respuesta
     que ya tiene (mismo sha256, misma fuente) y no borra nada de lo que no bajó."""
-    old = {"sources/usgs/2026-10-20-aaaaaaaaaaaa.txt": b"igual", "sources/igp/2026-10-19-cccccccccccc.pdf": b"%PDF-1",
+    same, pdf = _raw_name("2026-10-20", b"igual", "txt"), _raw_name("2026-10-19", b"%PDF-1", "pdf")
+    old = {f"sources/usgs/{same}": b"igual", f"sources/igp/{pdf}": b"%PDF-1",
            "sources/news/2026-10-20.jsonl": b'{"id":"a"}\n', "sources/news/items.jsonl.gz": gzip.compress(b'{"id":"a"}\n')}
     work = _archive_step(tmp_path, old)
     raw = work / "raw"
     (raw / "usgs").mkdir(parents=True)
-    (raw / "usgs" / "2026-10-21-aaaaaaaaaaaa.txt").write_bytes(b"igual")
-    (raw / "usgs" / "2026-10-21-bbbbbbbbbbbb.txt").write_bytes(b"nuevo")
+    (raw / "usgs" / _raw_name("2026-10-21", b"igual", "txt")).write_bytes(b"igual")  # ya está, con otra fecha
+    new = _raw_name("2026-10-21", b"nuevo", "txt")
+    (raw / "usgs" / new).write_bytes(b"nuevo")
+    (raw / "usgs" / _raw_name("2026-10-21", b"entero", "txt")).write_bytes(b"ent")  # llegó cortado
     (raw / "news").mkdir()
     (raw / "news" / "2026-10-21.jsonl").write_text('{"id":"b"}\n', encoding="utf-8")
     (raw / "news" / "items.jsonl.gz").write_bytes(gzip.compress(b'{"id":"b"}\n'))
     out = _run_archive_step(work)
     tree = _archive_tree(work)
-    assert sorted(tree) == sorted([*old, "sources/news/2026-10-21.jsonl", "sources/usgs/2026-10-21-bbbbbbbbbbbb.txt"])
+    assert sorted(tree) == sorted([*old, "sources/news/2026-10-21.jsonl", f"sources/usgs/{new}"])
     assert gzip.decompress(tree["sources/news/items.jsonl.gz"]) == b'{"id":"a"}\n{"id":"b"}\n' and "2 notas" in out
-    assert tree["sources/igp/2026-10-19-cccccccccccc.pdf"] == b"%PDF-1"
+    assert tree[f"sources/igp/{pdf}"] == b"%PDF-1" and "llegó incompleto" in out
     assert not (tmp_path / "archive" / "sources" / "igp").exists()  # no se bajó al disco
     assert (tmp_path / "archive" / "sources" / "news" / "2026-10-20.jsonl").exists()
     # Un commit que borrara algo no se sube.
     import subprocess
 
     subprocess.run(["git", "worktree", "remove", "--force", "../archive"], cwd=work, check=True, capture_output=True)
-    (raw / "usgs" / "2026-10-22-dddddddddddd.txt").write_bytes(b"otro")
+    (raw / "usgs" / _raw_name("2026-10-22", b"otro", "txt")).write_bytes(b"otro")
     with pytest.raises(subprocess.CalledProcessError) as err:
-        _run_archive_step(work, "git rm -q --sparse --cached sources/igp/2026-10-19-cccccccccccc.pdf")
+        _run_archive_step(work, f"git rm -q --sparse --cached sources/igp/{pdf}")
     assert "borraría archivos" in err.value.stdout and _archive_tree(work) == tree
+    # Si la descarga del artefacto falló (a medias o del todo), no se archiva nada.
+    subprocess.run(["git", "worktree", "remove", "--force", "../archive"], cwd=work, check=True, capture_output=True)
+    assert "no se actualiza" in _run_archive_step(work, outcome="failure") and _archive_tree(work) == tree
 
 
 def test_archive_job_starts_the_branch_when_it_does_not_exist(tmp_path):
     work = _archive_step(tmp_path)
     (work / "raw" / "usgs").mkdir(parents=True)
-    (work / "raw" / "usgs" / "2026-10-21-aaaaaaaaaaaa.txt").write_bytes(b"x")
+    name = _raw_name("2026-10-21", b"x", "txt")
+    (work / "raw" / "usgs" / name).write_bytes(b"x")
     (work / "raw" / "news").mkdir()
     (work / "raw" / "news" / "items.jsonl.gz").write_bytes(gzip.compress(b'{"id":"a"}\n'))
     _run_archive_step(work)
-    assert sorted(_archive_tree(work)) == ["sources/news/items.jsonl.gz", "sources/usgs/2026-10-21-aaaaaaaaaaaa.txt"]
+    assert sorted(_archive_tree(work)) == ["sources/news/items.jsonl.gz", f"sources/usgs/{name}"]
 
 
 def test_merge_history_keeps_every_note_and_its_order(tmp_path):
@@ -685,14 +701,21 @@ def test_history_backup_is_fetched_every_run():
     # Si falla el archivo, se abre la incidencia de corrida fallida (el sitio pudo quedar por delante de la copia).
     inc = wf["jobs"]["incidents"]
     assert "archive" in inc["needs"]
-    assert any("needs.archive.result == 'failure'" in (st.get("if") or "") for st in inc["steps"])
-    assert wf["jobs"]["archive"]["if"] == "success()"  # también al fusionar en main
+    opener = next(st for st in inc["steps"] if st.get("name") == "Open an issue when the run itself failed")
+    # «cancelled» también: así termina un job que pasa su límite de tiempo.
+    assert "needs.archive.result" in opener["if"] and '["failure","cancelled"]' in opener["if"]
+    # Solo en main (también al fusionar): la copia del histórico vuelve al sitio publicado.
+    assert wf["jobs"]["archive"]["if"] == "success() && github.ref == 'refs/heads/main'"
     # Aunque falle la sincronización de incidencias, la falla de la corrida se avisa (y se cierra).
     for name in ("Open an issue when the run itself failed", "Close the run-failure issue after a good run"):
         assert next(st for st in inc["steps"] if st.get("name") == name)["if"].startswith("always() && ")
     # El pipeline tiene su propio límite, por debajo del del job: si se pasa, el estado de los feeds «reader» se
     # guarda igual. Las subidas auxiliares no detienen el despliegue.
-    assert pipeline["timeout-minutes"] < wf["jobs"]["build"]["timeout-minutes"] - 4
+    assert pipeline["timeout-minutes"] <= wf["jobs"]["build"]["timeout-minutes"] - 10
+    # El pipeline deja tiempo de sobra a sus propias fuentes: oficiales, noticias, y la publicación.
+    assert (obs.OFFICIAL_BUDGET_S + obs.NEWS_DEADLINE_S + 3 * obs.NEWS_REQUEST_MAX_S) / 60 < pipeline["timeout-minutes"] - 4
+    archive = wf["jobs"]["archive"]["steps"]
+    assert next(st for st in archive if st.get("uses", "").startswith("actions/download-artifact"))["id"] == "raw"
     for name in ("run-report", "raw-sources"):
         assert next(st for st in steps if (st.get("with") or {}).get("name") == name)["continue-on-error"] is True
 
@@ -771,7 +794,7 @@ def test_reader_feeds_are_not_asked_again_after_a_run_that_did_not_publish(tmp_p
     assert asked == [] and all(s["carried"] for s in got["feeds"]["feeds"])
     # Las notas de aquella lectura, que no llegó a publicarse, salen del estado: no se pierden.
     kept = json.loads(state.read_text())["feeds"]
-    assert got["items"] and len(got["items"]) == sum(len(v["items"]) for v in kept.values())
+    assert got["items"] and len(got["items"]) == len({i["id"] for v in kept.values() for i in v["items"]})
     assert any(e.code == "news-reader-restored" for e in log.events)
     obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(),
                      NOW + timedelta(hours=21), None, reader=reader, reader_state=state)
@@ -940,6 +963,14 @@ def test_a_reader_feed_whose_reading_failed_after_the_request_counts_as_asked(tm
                                NOW + timedelta(hours=hours), None, reader={feed.url}, reader_state=state)
     assert len(asked) == 1 and "error inesperado" in got["feeds"]["feeds"][0]["error"]
     assert json.loads(state.read_text())["feeds"][feed.url]["status"]["httpStatus"] is None
+    # También en la publicación: sin la caché, la corrida siguiente tampoco lo pide antes de plazo.
+    first = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(),
+                             NOW + timedelta(hours=25), None, reader={feed.url}, reader_state=state)
+    assert len(asked) == 2 and first["feeds"]["feeds"][0]["httpStatus"] is None
+    published = _history_site(tmp_path, [], first["feeds"])
+    obs.acquire_news(fetcher, None, obs.PreviousPublication(str(published), fetcher), obs.EventLog(),
+                     NOW + timedelta(hours=28), None, reader={feed.url}, reader_state=tmp_path / "vacio.json")
+    assert len(asked) == 2
 
 
 def test_a_request_that_trickles_in_is_cut_at_its_total_time(monkeypatch):
@@ -954,12 +985,12 @@ def test_a_request_that_trickles_in_is_cut_at_its_total_time(monkeypatch):
                 threading.Event().wait(0.02)  # time.sleep está anulado en estas pruebas
                 yield b"x"
 
-    f = Fetcher(polite_delay=0, retries=1, max_seconds=0.3)
+    f = Fetcher(polite_delay=0, retries=3, max_seconds=0.3)  # sin reintento: tardaría lo mismo
     f.client = httpx.Client(transport=httpx.MockTransport(lambda req: httpx.Response(200, stream=Slow())))
     t = time.monotonic()
     with pytest.raises(FetchError) as err:
         f.get(["https://lento.pe/feed"], archive=False)
-    assert time.monotonic() - t < 0.9 and "tardó más de 0.3 s" in str(err.value.attempts)
+    assert time.monotonic() - t < 0.9 and "TooSlow" in str(err.value.attempts) and len(err.value.attempts) == 1
     # Una respuesta normal llega entera, descomprimida, con su URL final.
     import gzip as gz
 
@@ -967,6 +998,115 @@ def test_a_request_that_trickles_in_is_cut_at_its_total_time(monkeypatch):
         200, content=gz.compress(b"<rss/>"), headers={"content-encoding": "gzip", "content-type": "application/rss+xml"})))
     r = f.get(["https://rapido.pe/feed"], archive=False)
     assert r.body == b"<rss/>" and r.url == "https://rapido.pe/feed" and "rss" in r.content_type
+
+
+def test_a_host_that_does_not_answer_stops_costing_time(monkeypatch):
+    """Revisión: cada fuente oficial reintentaba tres veces un servidor caído (12 fuentes en el de CPC): media
+    hora sin publicar. Ahora, tras tres fallos de red seguidos, una sola vez por URL, y tras cinco, nada."""
+    asked = []
+
+    def net(req):
+        asked.append(str(req.url))
+        if req.url.host == "caido.gov":
+            raise httpx.ConnectTimeout("sin respuesta")
+        return httpx.Response(200, text="ok")
+
+    f = Fetcher(polite_delay=0, retries=3, allow_archive=False)
+    f.client = httpx.Client(transport=httpx.MockTransport(net))
+    for i in range(12):
+        with pytest.raises(FetchError):
+            f.get([f"https://caido.gov/datos-{i}.txt"])
+    assert len(asked) == 5  # 3 + 1 + 1, y después ninguno
+    assert f.get(["https://otro.gov/x.txt"]).body == b"ok"  # los demás servidores, como siempre
+
+
+def test_a_broken_answer_is_a_failed_url_not_a_crash():
+    """Revisión: gzip roto o redirecciones sin fin no son errores de red y salían de Fetcher.get, deteniendo la
+    publicación entera desde el sondeo de comunicados. Ahora son una URL fallida: se sigue con la siguiente."""
+    def net(req):
+        if req.url.path == "/gzip":
+            return httpx.Response(200, content=b"%PDF-no comprimido", headers={"content-encoding": "gzip"})
+        if req.url.path == "/bucle":
+            return httpx.Response(302, headers={"location": "/bucle"})
+        return httpx.Response(200, content=b"%PDF-bien")
+
+    for limit in (None, 300):
+        f = Fetcher(polite_delay=0, retries=3, allow_archive=False, max_seconds=limit)
+        f.client = httpx.Client(transport=httpx.MockTransport(net), follow_redirects=True)
+        r = f.get(["https://dhn.example/gzip", "https://dhn.example/bucle", "https://dhn.example/ok"])
+        assert r.body == b"%PDF-bien" and r.channel == "mirror"
+        assert [a["error"].split(":")[0] for a in r.attempts[:2]] == ["DecodingError", "TooManyRedirects"]
+
+
+def test_requests_stop_when_the_time_budget_is_spent(monkeypatch):
+    """Pasado el tiempo de las fuentes oficiales no se pide nada más (cada fuente sigue con su copia o su dato
+    anterior), y un pedido en curso no lo sobrepasa."""
+    import threading
+
+    class Slow(httpx.SyncByteStream):
+        def __iter__(self):
+            for _ in range(100):
+                threading.Event().wait(0.02)
+                yield b"x"
+
+    asked = []
+    f = Fetcher(polite_delay=0, retries=3, allow_archive=False, max_seconds=60, budget_s=0.3)
+    f.client = httpx.Client(transport=httpx.MockTransport(lambda req: asked.append(1) or httpx.Response(200, stream=Slow())))
+    with pytest.raises(FetchError) as err:
+        f.get(["https://lento.gov/a", "https://lento.gov/b"])
+    assert len(asked) == 1 and "TooSlow" in err.value.attempts[0]["error"]
+    assert "se agotó el tiempo" in err.value.attempts[1]["error"]
+
+
+def test_reader_notes_are_kept_when_the_run_is_cut_after_their_read(tmp_path, monkeypatch):
+    """Revisión: las notas de una lectura buena se guardaban al final de la recolección; una corrida cortada
+    después (límite de tiempo, cancelación) las perdía, y el feed quedaba como pedido por 20 h."""
+    from enso import news as N
+
+    class Killed(BaseException):
+        pass
+
+    feeds = [f for f in N.FEEDS if "news.google.com" in f.url][:2]
+    monkeypatch.setattr(N, "FEEDS", feeds)
+    body = (Path(__file__).parent / "fixtures" / "sources" / feeds[0].fixture).read_bytes()
+
+    def net(req):
+        if str(req.url) == feeds[1].url:
+            raise Killed()
+        return httpx.Response(200, content=body, headers={"content-type": "application/rss+xml"})
+
+    real = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
+    fetcher = Fetcher(polite_delay=0, plan={f.url: ["actions"] for f in feeds})
+    site, state = _history_site(tmp_path, []), tmp_path / "state.json"
+    with pytest.raises(Killed):
+        obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), obs.EventLog(), NOW, None,
+                         reader={f.url for f in feeds}, reader_state=state)
+    saved = json.loads(state.read_text())["feeds"]
+    assert saved[feeds[0].url]["status"]["ok"] is True and saved[feeds[0].url]["items"]
+    assert saved[feeds[1].url]["status"]["httpStatus"] is None  # el que estaba en curso: pedido, sin resultado
+
+
+def test_reader_feeds_are_not_asked_when_nothing_says_when_they_were_last_asked(tmp_path, monkeypatch):
+    """Revisión: sin estado (la caché no se pudo leer) y con el sitio caído no se sabía cuándo se habían pedido, y
+    se volvían a pedir todos. Ahora no se piden en esa corrida; en una primera publicación (404) sí."""
+    from enso import news as N
+
+    feed, asked, fetcher = _reader_feed(monkeypatch, [_split_feed(next(f for f in N.FEEDS if "news.google.com" in f.url))[0]])
+    client = type(fetcher.client)  # httpx.Client sin el transporte de _reader_feed
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    down = Fetcher(polite_delay=0)
+    down.client = client(transport=httpx.MockTransport(lambda req: httpx.Response(503)))
+    log = obs.EventLog()
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication("https://sitio.example/data", down), log, NOW, None,
+                           reader={feed.url}, reader_state=tmp_path / "state.json")
+    assert asked == [] and got["feeds"]["feeds"][0]["skipped"] == "reader-unknown"
+    assert any(e.code == "feeds-reader-unknown" and e.severity == "warning" for e in log.events)
+    first = Fetcher(polite_delay=0)
+    first.client = client(transport=httpx.MockTransport(lambda req: httpx.Response(404)))
+    obs.acquire_news(fetcher, None, obs.PreviousPublication("https://sitio.example/data", first), obs.EventLog(), NOW,
+                     None, reader={feed.url}, reader_state=tmp_path / "state.json")
+    assert asked == [feed.url]
 
 
 def test_reader_feeds_are_only_read_by_the_daily_run(monkeypatch, tmp_path):
