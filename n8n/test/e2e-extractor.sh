@@ -49,6 +49,8 @@ c=$(post ok "Bearer token-de-prueba" "$(body 'El ICEN temporal de septiembre es 
 [ "$c" = 200 ]
 jq -e '.data.icen == 0.85 and .data.estado == null and .model == "gpt-prueba-2026" and (.evidence.icen | test("0,85"))' "$WORK/ok.json" >/dev/null
 curl -s "http://127.0.0.1:$OPORT/__last" | jq -e '.body.temperature == 0 and .body.response_format.type == "json_object" and (.body.messages[1].content | contains("Publicado: 2026-10-10"))' >/dev/null
-c=$(post falla "Bearer token-de-prueba" "$(body 'FALLA')"); echo "OpenAI caído: $c $(cat "$WORK/falla.json")"; [ "$c" = 502 ]
+c=$(post reintento "Bearer token-de-prueba" "$(body 'FALLA UNA VEZ. ICEN 0,40')"); echo "429 y reintento: $c $(cat "$WORK/reintento.json")"; [ "$c" = 200 ]
+jq -e '.data.icen == 0.4' "$WORK/reintento.json" >/dev/null
+c=$(post falla "Bearer token-de-prueba" "$(body 'FALLA SIEMPRE')"); echo "OpenAI caído: $c $(cat "$WORK/falla.json")"; [ "$c" = 502 ]
 c=$(post mal "Bearer token-de-prueba" '{"kind":"otro","schema":{},"text":"x"}'); echo "petición inválida: $c $(cat "$WORK/mal.json")"; [ "$c" = 400 ]
 echo "OK: el extractor responde como espera el pipeline"

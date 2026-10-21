@@ -307,8 +307,10 @@ const extractor = workflow('EnsoExtractor001', 'ENSO · Extractor de informes (O
     sendBody: true,
     specifyBody: 'json',
     jsonBody: '={{ JSON.stringify($json.request) }}',
-    options: { timeout: 110000, response: { response: { fullResponse: true, neverError: true, responseFormat: 'json' } } },
-  }, { credentials: OPENAI_CRED, onError: 'continueRegularOutput', retryOnFail: true, maxTries: 2, waitBetweenTries: 3000 }),
+    // Sin «neverError»: un 429 o 5xx de OpenAI cuenta como falla y se reintenta;
+    // si sigue fallando, el error llega a «Armar respuesta», que responde 502.
+    options: { timeout: 110000, response: { response: { fullResponse: true, responseFormat: 'json' } } },
+  }, { credentials: OPENAI_CRED, onError: 'continueRegularOutput', retryOnFail: true, maxTries: 3, waitBetweenTries: 5000 }),
   code('Armar respuesta', 'extraer-respuesta', {}),
   node('Responder', 'n8n-nodes-base.respondToWebhook', 1.1, {
     respondWith: 'json',

@@ -121,7 +121,6 @@
           "response": {
             "response": {
               "fullResponse": true,
-              "neverError": true,
               "responseFormat": "json"
             }
           }
@@ -143,8 +142,8 @@
       },
       "onError": "continueRegularOutput",
       "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000
+      "maxTries": 3,
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
