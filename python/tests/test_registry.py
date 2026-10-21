@@ -183,3 +183,20 @@ def test_alternate_urls_carry_their_own_format():
     """El listado de ENFEN y la réplica de la DHN son páginas HTML aunque la URL principal sea la API JSON."""
     enfen = next(s for s in registry.build()["sources"] if s["id"] == "enfen-comunicados")
     assert enfen["expect"] == "json" and enfen["alt_expect"] == ["html"] * len(enfen["alt_urls"])
+
+
+def test_robots_longest_rule_wins():
+    """RFC 9309: «Allow: /» y luego «Disallow: /api/» (IGP) prohíbe /api/; urllib.robotparser lo permitía."""
+    from enso.reach import RobotRules
+
+    igp = RobotRules("User-Agent: *\nAllow: /\nDisallow: /api/\nCrawl-delay: 1\n\nUser-agent: Googlebot\nAllow: /\n",
+                     "Observatorio-ENSO-Peru")
+    assert igp.allowed("https://ultimosismo.igp.gob.pe/") and not igp.allowed("https://ultimosismo.igp.gob.pe/api/ultimo-sismo")
+    assert igp.crawl_delay == 1.0
+    emsc = RobotRules("User-agent: *\nDisallow: /fdsnws/event/1/query*\n")
+    assert not emsc.allowed("https://www.seismicportal.eu/fdsnws/event/1/query?format=json")
+    own = RobotRules("User-agent: *\nDisallow: /\n\nUser-agent: observatorio-enso-peru\nDisallow: /privado\n",
+                     "Observatorio-ENSO-Peru")
+    assert own.allowed("https://a.pe/feed") and not own.allowed("https://a.pe/privado/x")  # su propio grupo manda
+    anchored = RobotRules("User-agent: *\nDisallow: /\nAllow: /feed$\n")
+    assert anchored.allowed("https://a.pe/feed") and not anchored.allowed("https://a.pe/feed/2")
