@@ -58,8 +58,13 @@ Lo hace el colega que administra el n8n:
 5. Abrir el nodo **Informe CSV** y descargar `validacion-fuentes-n8n.csv`. Enviárselo a Pablo.
 
 Con ese archivo se actualiza el registro: lo que responde desde AWS queda en
-los canales `actions` y `n8n`; lo que solo responde desde el Perú, en
-`peru-server`.
+los canales `actions` y `n8n`; lo que no responde desde ninguna red de EE. UU.
+(GitHub Actions en Azure, n8n en AWS), en `peru-server`. Los canales se deciden
+por URL (`by_url` en `registry/sources.json`): el portal del ENFEN no resuelve
+desde Azure ni desde AWS y lo pide el servidor del Perú, mientras que su réplica
+en la DHN la piden Actions y n8n. Desde entonces, la medición semanal
+(`probe-sources.yml`) también lee lo que bajó el recolector de n8n en la rama
+`data-n8n`.
 
 ## Paso 2 — Token de GitHub (Pablo)
 
@@ -115,7 +120,9 @@ la copia de esa noche.
 
 Recomendado en n8n: **Settings → Error workflow** con un flujo que avise por
 correo, para enterarse si el recolector falla. Además, la actualización diaria
-registra `relay-n8n-stale` si la última corrida tiene más de 36 horas.
+registra `relay-n8n-stale` si la última corrida tiene más de 36 horas,
+`relay-n8n-sources-down` si n8n corrió pero ninguna fuente le respondió y
+`relay-n8n-missing` si la rama `data-n8n` no existe.
 
 ## Vigilante del sitio (opcional, recomendado)
 

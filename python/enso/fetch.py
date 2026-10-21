@@ -142,7 +142,7 @@ class Relay:
 class Fetcher:
     def __init__(self, timeout: float = 45.0, retries: int = 3, polite_delay: float = 0.8,
                  allow_archive: bool = True, allow_save: bool = False, offline: bool = False,
-                 relay: Optional["Relay | list[Relay]"] = None):
+                 relay: Optional["Relay | list[Relay]"] = None, plan: Optional[dict[str, list[str]]] = None):
         self.client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
         self.retries = retries
         self.polite_delay = polite_delay
@@ -153,6 +153,10 @@ class Fetcher:
         #: tienen la URL, se usa la más reciente.
         self.relays: list[Relay] = [r for r in (relay if isinstance(relay, list) else [relay]) if r is not None]
         self.relay = self.relays[0] if self.relays else None
+        #: Canales de cada URL según el registro (``registry.url_channels``). Una URL que Actions no
+        #: alcanza (geobloqueada) se lee primero de esas copias y se pide directo una sola vez, por si
+        #: volvió a responder; una que robots.txt prohíbe (sin canales) no se pide al servidor.
+        self.plan = plan or {}
         self._last: dict[str, float] = {}
 
     def close(self) -> None:
@@ -165,8 +169,8 @@ class Fetcher:
             time.sleep(self.polite_delay - dt)
         self._last[host] = time.monotonic()
 
-    def _get(self, url: str, attempts: list) -> Optional[httpx.Response]:
-        for i in range(self.retries):
+    def _get(self, url: str, attempts: list, tries: Optional[int] = None) -> Optional[httpx.Response]:
+        for i in range(tries or self.retries):
             self._wait_host(url)
             try:
                 r = self.client.get(url)
@@ -189,7 +193,18 @@ class Fetcher:
         if self.offline:
             raise FetchError("modo sin conexión", attempts)
         for i, url in enumerate(urls):
-            r = self._get(url, attempts)
+            planned = self.plan.get(url)
+            if planned is not None and "actions" not in planned:
+                got = self._from_relays(url, accept)
+                if got is not None:
+                    attempts.append({"url": url, "channel": got.channel, "collected_at": got.archived_at,
+                                     "note": "el registro la asigna a " + ", ".join(planned)})
+                    got.attempts = attempts
+                    return got
+                if not planned:
+                    attempts.append({"url": url, "note": "robots.txt no permite la ruta: no se pide"})
+                    continue
+            r = self._get(url, attempts, tries=1 if planned is not None and "actions" not in planned else None)
             if r is not None and r.status_code == 200 and r.content and self._acceptable(r, accept):
                 return Response(str(r.url), r.content, "direct" if i == 0 else "mirror", 200,
                                 r.headers.get("content-type", ""), r.headers.get("last-modified", ""),

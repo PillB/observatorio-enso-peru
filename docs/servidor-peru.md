@@ -309,7 +309,7 @@ nadie está mirando.
 | Issue `relay-stale` en GitHub | La última copia y el último latido tienen más de 36 horas: el equipo no está corriendo | Pedir que ejecuten `VERIFICAR` y envíen el informe |
 | Issue `relay-sources-down` en GitHub | El equipo funciona, pero hace más de 36 horas que ninguna fuente peruana le responde | Nada en el equipo: son SENAMHI, ANA, IMARPE o el ENFEN. `heartbeat.json` dice qué respondió cada una. El sitio usa la última copia buena hasta 7 días |
 | Issue `relay-token-expiring` en GitHub | El token vence en menos de 21 días | Renovarlo y ejecutar `INSTALAR` con el nuevo |
-| Issue `relay-missing` en GitHub | `data-peru` existe pero su `index.json` no se puede leer | Ver la última subida del recolector |
+| Issue `relay-missing` en GitHub | `data-peru` no existe todavía, o existe pero su `index.json` no se puede leer | Ver la última subida del recolector |
 
 Los issues se cierran solos cuando el problema desaparece
 ([operaciones](operaciones.md)).
@@ -350,10 +350,12 @@ Si sigue sin funcionar, enviar a quien mantiene el sitio el último
 - **Cambiar de computadora:** `DESINSTALAR` en la vieja (quita la tarea y
   el token) e `INSTALAR` en la nueva.
 - **Fuentes:** el equipo baja la lista base (`SOURCES` en
-  `peru_collector.py`) más las fuentes del registro
+  `peru_collector.py`) más las URL del registro
   (`registry/sources.json`) con el canal `peru-server`, que son las
   geobloqueadas: solo las que no responden desde fuera del Perú pasan por
-  este equipo. Lee el registro de GitHub en cada corrida (con el token),
+  este equipo. El canal es por URL (`by_url`): de una fuente con réplicas,
+  el equipo baja solo las que no responden a EE. UU. (por ejemplo, el
+  portal del ENFEN, no su réplica en la DHN). Lee el registro de GitHub en cada corrida (con el token),
   así que un cambio en el registro llega sin reinstalar; si GitHub no
   responde, usa la copia del kit y lo anota (en `logs/recolector.log`,
   `index.json` y el latido, con el motivo y la fecha de la copia; avisa

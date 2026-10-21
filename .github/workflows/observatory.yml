@@ -88,17 +88,19 @@ jobs:
         run: python -m pytest -q -m "not browser"
 
       # Copias que el recolector del Perú (python/tools/peru_collector.py)
-      # sube a la rama data-peru. Si la rama no existe todavía, se sigue sin ellas.
+      # sube a la rama data-peru. Si la rama no existe, la carpeta tampoco y
+      # el pipeline lo registra como incidencia (relay-missing): sin ella, lo
+      # geobloqueado solo llega por réplicas y archivo.
       - name: Fetch the Peru relay copies
         id: relay
         continue-on-error: true
         run: |
+          echo "dir=$RUNNER_TEMP/relay" >> "$GITHUB_OUTPUT"
           if git ls-remote --exit-code --heads origin data-peru >/dev/null; then
             git fetch --depth 1 origin data-peru
             git worktree add --detach "$RUNNER_TEMP/relay" FETCH_HEAD
-            echo "dir=$RUNNER_TEMP/relay" >> "$GITHUB_OUTPUT"
           else
-            echo "La rama data-peru no existe: sin copias desde el Perú."
+            echo "::warning::La rama data-peru no existe: sin copias desde el Perú."
           fi
 
       # Copias que el flujo de n8n (n8n/, docs/n8n.md) sube a la rama data-n8n:
@@ -107,12 +109,29 @@ jobs:
         id: n8n
         continue-on-error: true
         run: |
+          echo "dir=$RUNNER_TEMP/n8n" >> "$GITHUB_OUTPUT"
           if git ls-remote --exit-code --heads origin data-n8n >/dev/null; then
             git fetch --depth 1 origin data-n8n
             git worktree add --detach "$RUNNER_TEMP/n8n" FETCH_HEAD
-            echo "dir=$RUNNER_TEMP/n8n" >> "$GITHUB_OUTPUT"
           else
-            echo "La rama data-n8n no existe: sin copias de n8n."
+            echo "::warning::La rama data-n8n no existe: sin copias de n8n."
+          fi
+
+      # Si la publicación anterior no trae el histórico de noticias (sitio
+      # caído, primer despliegue en otro hosting), se rehace con las notas que
+      # cada corrida guarda en la rama data-archive (sources/news/<día>.jsonl).
+      - name: News history backup (only if the live copy is unreachable)
+        id: history
+        continue-on-error: true
+        run: |
+          if curl -fsS --max-time 60 -o /dev/null "${SITE_URL}data/news/items.jsonl"; then
+            echo "El histórico publicado responde: no hace falta la copia."
+          elif git ls-remote --exit-code --heads origin data-archive >/dev/null; then
+            git fetch --depth 1 origin data-archive
+            mkdir -p "$RUNNER_TEMP/history"
+            git archive FETCH_HEAD sources/news | tar -x -C "$RUNNER_TEMP/history" --strip-components=2 \
+              && echo "dir=$RUNNER_TEMP/history" >> "$GITHUB_OUTPUT"
+            ls "$RUNNER_TEMP/history" | tail -3
           fi
 
       - name: Fetch, validate and build the publication
@@ -122,6 +141,7 @@ jobs:
           ENSO_ARCHIVE_SAVE: ${{ (github.event_name != 'workflow_dispatch' || inputs.archive_save) && '1' || '0' }}
           RELAY_DIR: ${{ steps.relay.outputs.dir }}
           N8N_DIR: ${{ steps.n8n.outputs.dir }}
+          HISTORY_DIR: ${{ steps.history.outputs.dir }}
         run: |
           python -m enso.observatory \
             --out ../public/data \
@@ -129,6 +149,7 @@ jobs:
             --raw-dir "$RUNNER_TEMP/raw" \
             ${RELAY_DIR:+--relay-dir "$RELAY_DIR"} \
             ${N8N_DIR:+--n8n-dir "$N8N_DIR"} \
+            ${HISTORY_DIR:+--history-dir "$HISTORY_DIR"} \
             --fail-on critical
 
       - name: Adapt the site to its public address

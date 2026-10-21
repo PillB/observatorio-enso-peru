@@ -1,14 +1,15 @@
 """Mide desde dónde responde cada URL del registro y actualiza ``registry/reachability.json``.
 
 Corre en GitHub Actions (vantage «github-actions»), lee el ``index.json`` del
-recolector del Perú (rama ``data-peru``) y puede importar lo medido por n8n
+recolector del Perú (rama ``data-peru``) y el del flujo de n8n (rama
+``data-n8n``), y puede importar lo medido por el flujo de validación de n8n
 (``--import``, formato enso-reachability-vantage/1). Cada medición se guarda
 por red (``actions``, ``n8n``, ``peru``) y punto de medición, y el registro
 decide con todas qué fuentes están geobloqueadas y quién recolecta cada una.
 
 Uso:
     python -m tools.probe_sources [--vantage github-actions] [--peru-index ruta/index.json]
-        [--import n8n-reach.json ...] [--no-probe] [--only id ...]
+        [--n8n-index ruta/index.json] [--import n8n-reach.json ...] [--no-probe] [--only id ...]
 """
 
 from __future__ import annotations
@@ -16,6 +17,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import threading
 import time
@@ -104,6 +106,33 @@ def from_peru_index(index: dict) -> dict[str, dict]:
     return out
 
 
+def from_n8n_index(index: dict) -> dict[str, dict]:
+    """Lo que el recolector de n8n intentó en su última corrida (rama ``data-n8n``, enso-relay/1).
+
+    n8n clasifica cada respuesta con las mismas clases (``reach``). Una copia conservada de una corrida
+    anterior (``carried``) no es una medición de hoy: cuenta su último intento, que falló."""
+    col = index.get("collector") or {}
+    label = re.sub(r"[^a-z0-9]+", "-", str(col.get("egress") or col.get("host") or "").lower()).strip("-")
+    vantage = "n8n" if label in ("", "n8n") else label if label.startswith("n8n") else f"n8n-{label}"
+    at = index.get("collected_at")
+    out = {}
+    for e in index.get("entries", []):
+        last = e.get("last_attempt") if e.get("carried") else None
+        if last:
+            status, err = last.get("status"), " ".join(str(last.get(k) or "") for k in ("block", "note")).strip()
+            cls = classify(status, b"", err or ("sin respuesta" if status is None else ""))
+            rec = {"class": cls, "http": status, "bytes": 0, "at": last.get("at") or at, "detail": err}
+        else:
+            cls = e.get("reach") if e.get("reach") in registry.CLASSES else classify(
+                e.get("status"), b"x" * int(e.get("bytes") or 0), str(e.get("note") or e.get("block") or ""))
+            rec = {"class": cls, "http": e.get("status"), "bytes": e.get("bytes"), "at": e.get("fetched_at") or at,
+                   "detail": str(e.get("note") or e.get("block") or "")}
+        for u in [e.get("url"), *(e.get("aliases") or [])]:
+            if u:
+                out[u] = rec | {"vantage": vantage}
+    return out
+
+
 def from_vantage_file(data: dict) -> list[dict]:
     """Mediciones hechas en otra parte (n8n…) en formato enso-reachability-vantage/1: [{url, class, at, vantage…}]."""
     if data.get("schema") != "enso-reachability-vantage/1":
@@ -127,6 +156,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--vantage", default="github-actions")
     ap.add_argument("--peru-index", type=Path)
+    ap.add_argument("--n8n-index", type=Path, help="index.json de la rama data-n8n (lo que n8n bajó)")
     ap.add_argument("--import", dest="imports", type=Path, nargs="*", default=[],
                     help="archivos enso-reachability-vantage/1 (p. ej. la validación de n8n)")
     ap.add_argument("--no-probe", action="store_true", help="solo importar mediciones")
@@ -142,6 +172,9 @@ def main(argv=None) -> int:
         _put(data, url, {**rec, "vantage": a.vantage})
     if a.peru_index and a.peru_index.exists():
         for url, rec in from_peru_index(json.loads(a.peru_index.read_text(encoding="utf-8"))).items():
+            _put(data, url, rec)
+    if a.n8n_index and a.n8n_index.exists():
+        for url, rec in from_n8n_index(json.loads(a.n8n_index.read_text(encoding="utf-8"))).items():
             _put(data, url, rec)
     for f in a.imports:
         for rec in from_vantage_file(json.loads(f.read_text(encoding="utf-8"))):

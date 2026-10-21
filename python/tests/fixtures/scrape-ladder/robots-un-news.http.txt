@@ -1,0 +1,153 @@
+#
+# robots.txt
+#
+# This file is to prevent the crawling and indexing of certain parts
+# of your site by web crawlers and spiders run by sites like Yahoo!
+# and Google. By telling these "robots" where not to go on your site,
+# you save bandwidth and server resources.
+#
+# This file will be ignored unless it is at the root of your host:
+# Used:    http://example.com/robots.txt
+# Ignored: http://example.com/site/robots.txt
+#
+# For more information about the robots.txt standard, see:
+# http://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+# CSS, JS, Images
+Allow: /core/*.css$
+Allow: /core/*.css?
+Allow: /core/*.js$
+Allow: /core/*.js?
+Allow: /core/*.avif
+Allow: /core/*.gif
+Allow: /core/*.jpg
+Allow: /core/*.jpeg
+Allow: /core/*.png
+Allow: /core/*.svg
+Allow: /core/*.webp
+Allow: /profiles/*.css$
+Allow: /profiles/*.css?
+Allow: /profiles/*.js$
+Allow: /profiles/*.js?
+Allow: /profiles/*.avif
+Allow: /profiles/*.gif
+Allow: /profiles/*.jpg
+Allow: /profiles/*.jpeg
+Allow: /profiles/*.png
+Allow: /profiles/*.svg
+Allow: /profiles/*.webp
+# Directories
+Disallow: /core/
+Disallow: /profiles/
+# Files
+Disallow: /README.md
+Disallow: /composer/Metapackage/README.txt
+Disallow: /composer/Plugin/ProjectMessage/README.md
+Disallow: /composer/Plugin/Scaffold/README.md
+Disallow: /composer/Plugin/VendorHardening/README.txt
+Disallow: /composer/Template/README.txt
+Disallow: /modules/README.txt
+Disallow: /sites/README.txt
+Disallow: /themes/README.txt
+# Paths (clean URLs)
+Disallow: /admin/
+Disallow: /comment/reply/
+Disallow: /filter/tips
+Disallow: /node/add/
+Disallow: /search/
+Disallow: /search?
+Disallow: /user/register
+Disallow: /user/password
+Disallow: /user/login
+Disallow: /user/logout
+Disallow: /media/oembed
+Disallow: /*/media/oembed
+# Paths (no clean URLs)
+Disallow: /index.php/admin/
+Disallow: /index.php/comment/reply/
+Disallow: /index.php/filter/tips
+Disallow: /index.php/node/add/
+Disallow: /index.php/search/
+Disallow: /index.php/search?
+Disallow: /index.php/user/password
+Disallow: /index.php/user/register
+Disallow: /index.php/user/login
+Disallow: /index.php/user/logout
+Disallow: /index.php/media/oembed
+Disallow: /index.php/*/media/oembed
+
+#Added by UNNEWS
+#
+# Two confirmed reasons for this block, from the team:
+# (1) prevent crawlers getting stuck in Search API Facets combinations
+#     (?f[0]=date:2020, stackable, going back to 2001)
+# (2) these are list/aggregator pages, and the same content they list
+#     is already indexed individually elsewhere (e.g. each story has
+#     its own /story/ URL) -- the list views themselves were judged to
+#     have no SEO relevance and were intentionally excluded from the
+#     index, including their region/topic sub-listings, which are also
+#     just filtered re-lists of already-indexed content, not distinct
+#     content in their own right.
+#
+# Restored the original broad subtree blocks (moved to root, where
+# they'll actually be enforced for the first time) to satisfy (2), and
+# kept the global facet/pagination rules below as defense-in-depth for
+# (1) on any page/section not explicitly listed here, including future
+# ones if Facets gets added elsewhere.
+Disallow: */news/
+Disallow: */features*
+Disallow: */interviews*
+
+# Extends the same "list page, no SEO relevance, duplicates already-
+# indexed content" reasoning to /audio-hub -- a paginated list of
+# /audio-product/ shows, which are themselves already indexed
+# individually. Not in the original UNNEWS block (site added this
+# section later); added here for consistency with the stated intent.
+Disallow: */audio-hub*
+
+# Global facet rule -- defense-in-depth per (1) above, covers any
+# ?f[0]=... combination site-wide, including sections not explicitly
+# blocked above.
+Disallow: /*?f%5B0%5D=
+
+# Global pagination rule -- same crawl-budget reasoning as facets,
+# covers ?page=N site-wide.
+Disallow: /*?page=
+
+Disallow: */views/ajax
+
+# Intentionally broad/unanchored: every /*/tags/{term} page is an
+# individually auto-generated, thin tag-archive page -- the rule's
+# purpose is to block all of them.
+Disallow: */tags/
+
+Disallow: */search/
+
+# /*/audio-product/* pages are NOT list/aggregator pages -- confirmed
+# each show (un-news-today, podcast-the-lid-is-on, focus-gender,
+# un-and-africa, podcast-classics) is the unique, primary content
+# itself, not a re-listing of content indexed elsewhere. Neither stated
+# rationale ((1) facets or (2) duplicate list pages) applies to these
+# URLs, so they stay crawlable. Their own pagination/facet variants (if
+# any) are still covered by the two global rules above.
+
+#Allow Podcast Feed Fetcher Agents
+User-agent: Feedfetcher-Google
+Allow: /feed/subscribe/
+
+# No Sitemap directive existed before. There is no single root
+# sitemap.xml -- each locale has its own sitemap index (Simple XML
+# Sitemap module). en/ar/zh/ru/fr/sw verified live; es/pt/hi/ur
+# assumed to follow the same per-locale pattern -- confirm before
+# relying on it.
+Sitemap: https://news.un.org/en/sitemap.xml
+Sitemap: https://news.un.org/fr/sitemap.xml
+Sitemap: https://news.un.org/ar/sitemap.xml
+Sitemap: https://news.un.org/zh/sitemap.xml
+Sitemap: https://news.un.org/ru/sitemap.xml
+Sitemap: https://news.un.org/es/sitemap.xml
+Sitemap: https://news.un.org/pt/sitemap.xml
+Sitemap: https://news.un.org/sw/sitemap.xml
+Sitemap: https://news.un.org/hi/sitemap.xml
+Sitemap: https://news.un.org/ur/sitemap.xml

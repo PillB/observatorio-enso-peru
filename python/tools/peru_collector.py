@@ -227,34 +227,44 @@ def peru_sources(registry: dict) -> list[dict]:
     return out[:MAX_REGISTRY_SOURCES]
 
 
+def url_states(src: dict) -> dict[str, dict]:
+    """Estado y canales de cada URL de una fuente del registro (``by_url``: la
+    principal y sus réplicas, cada una con su canal). En un registro anterior,
+    sin ``by_url``, todas tienen el estado y los canales de la fuente."""
+    by_url = src.get("by_url")
+    if isinstance(by_url, dict) and by_url:
+        return {u: r for u, r in by_url.items() if isinstance(u, str) and isinstance(r, dict)}
+    geo = src.get("geoblock") if isinstance(src.get("geoblock"), dict) else {}
+    state = {"status": geo.get("status"), "channels": list(src.get("channels") or [])}
+    return {u: state for u in [src.get("url"), *(src.get("alt_urls") or [])] if isinstance(u, str)}
+
+
 def robots_disallowed(registry: dict) -> set[str]:
     """URL que el registro marca «robots-disallowed»: el robots.txt del servidor
     pide no automatizarlas y no las pide nadie, tampoco este equipo."""
-    out: set[str] = set()
-    for src in registry.get("sources") or []:
-        geo = src.get("geoblock") if isinstance(src, dict) else None
-        if isinstance(geo, dict) and geo.get("status") == "robots-disallowed":
-            out.update(u for u in [src.get("url"), *(src.get("alt_urls") or [])] if isinstance(u, str))
-    return out
+    return {u for src in registry.get("sources") or [] if isinstance(src, dict)
+            for u, st in url_states(src).items() if st.get("status") == "robots-disallowed"}
 
 
 def plan(registry: dict) -> tuple[dict[str, list[str]], dict[str, dict]]:
     """Qué descargar: ``SOURCES`` (menos lo que robots.txt no permite) más las
-    fuentes «peru-server» del registro (por grupo, sin repetir URL), y las
-    reglas ``follow`` de cada URL."""
+    URL del registro con el canal «peru-server» (las geobloqueadas: la
+    principal o una réplica; por grupo, sin repetir URL), y las reglas
+    ``follow`` de cada URL."""
     blocked = robots_disallowed(registry)
     groups = {g: [u for u in urls if u not in blocked] for g, urls in SOURCES.items()}
     known = {u for urls in groups.values() for u in urls}
     follow: dict[str, dict] = {}
     for src in peru_sources(registry):
-        url = src["url"]
         if isinstance(src.get("follow"), dict):
-            follow[url] = src["follow"]
-        if url in known:
-            continue
+            follow[src["url"]] = src["follow"]
         group = re.sub(r"[^a-z0-9-]+", "-", str(src.get("group") or src.get("id") or "registro").lower()).strip("-")
-        groups.setdefault(group[:40] or "registro", []).append(url)
-        known.add(url)
+        for url, st in url_states(src).items():
+            if url in known or PERU_CHANNEL not in (st.get("channels") or []) or "{" in url \
+                    or not url.startswith(("https://", "http://")):
+                continue
+            groups.setdefault(group[:40] or "registro", []).append(url)
+            known.add(url)
     return groups, follow
 
 
@@ -271,19 +281,21 @@ def guess_expect(url: str) -> str | None:
 
 def url_info(registry: dict) -> dict[str, dict]:
     """Por URL del registro: el formato esperado, la fuente a la que pertenece y,
-    para la URL principal, sus alternativas con su formato (``alt_urls`` y
-    ``alt_expect``), menos las que robots.txt no permite."""
-    blocked = robots_disallowed(registry)
+    para la URL principal, las alternativas (``alt_urls`` y ``alt_expect``) que
+    se prueban si la principal no sirve."""
     out: dict[str, dict] = {}
     for src in registry.get("sources") or []:
         if not isinstance(src, dict) or not isinstance(src.get("url"), str):
             continue
-        sid, expect = str(src.get("id") or ""), src.get("expect")
+        sid, expect, states = str(src.get("id") or ""), src.get("expect"), url_states(src)
         alts = [u for u in src.get("alt_urls") or [] if isinstance(u, str)]
         alt_expect = src.get("alt_expect") if isinstance(src.get("alt_expect"), list) else []
         pairs = [(u, alt_expect[k] if k < len(alt_expect) else guess_expect(u)) for k, u in enumerate(alts)]
-        out.setdefault(src["url"], {"expect": expect, "source": sid,
-                                    "alts": [(u, e) for u, e in pairs if u not in blocked and "{" not in u]})
+        # Como respaldo, solo las réplicas que nadie más alcanza (las que responden
+        # a EE. UU. ya las bajan Actions o n8n) y que robots.txt permite.
+        backup = [(u, e) for u, e in pairs if "{" not in u
+                  and (states.get(u) or {}).get("status") not in ("open", "robots-disallowed")]
+        out.setdefault(src["url"], {"expect": expect, "source": sid, "alts": backup})
         for u, e in pairs:
             out.setdefault(u, {"expect": e, "source": sid, "alts": []})
     return out
@@ -297,11 +309,9 @@ def probe_targets(registry: dict, skip: set[str]) -> list[str]:
     out: list[str] = []
     per_host: Counter = Counter()
     for src in registry.get("sources") or []:
-        geo = src.get("geoblock") if isinstance(src, dict) else None
-        if not isinstance(geo, dict) or geo.get("status") not in PROBE_STATUSES:
-            continue
-        for u in [src.get("url"), *(src.get("alt_urls") or [])]:
-            if not isinstance(u, str) or not u.startswith(("https://", "http://")) or "{" in u or u in skip:
+        for u, st in url_states(src).items() if isinstance(src, dict) else ():
+            if st.get("status") not in PROBE_STATUSES or not u.startswith(("https://", "http://")) \
+                    or "{" in u or u in skip:
                 continue
             host = urlparse(u).netloc.lower()
             if per_host[host] < MAX_PROBES_PER_HOST and u not in out:

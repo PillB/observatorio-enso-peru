@@ -415,9 +415,20 @@ ALT_REGISTRY = {
     "schema": "enso-source-registry/1", "generated_at": "2026-10-21T00:00:00+00:00",
     "sources": [
         {"id": "dhn-avisos", "group": "dhn", "url": "https://www.dhn.mil.pe/portal/avisos-especiales",
-         "expect": "html", "channels": ["peru-server"], "geoblocked": True,
-         "alt_urls": ["https://www.dhn.mil.pe/espejo/avisos", "https://www.dhn.mil.pe/avisos.json"],
-         "alt_expect": ["html", "json"]},
+         "expect": "html", "channels": ["actions", "n8n", "peru-server"], "geoblocked": True,
+         "alt_urls": ["https://www.dhn.mil.pe/abierto", "https://www.dhn.mil.pe/espejo/avisos",
+                      "https://www.dhn.mil.pe/avisos.json"],
+         "alt_expect": ["html", "html", "json"],
+         "by_url": {"https://www.dhn.mil.pe/portal/avisos-especiales": {"status": "geoblocked", "channels": ["peru-server"]},
+                    "https://www.dhn.mil.pe/abierto": {"status": "open", "channels": ["actions", "n8n"]},
+                    "https://www.dhn.mil.pe/espejo/avisos": {"status": "unknown", "channels": ["actions", "n8n"]},
+                    "https://www.dhn.mil.pe/avisos.json": {"status": "down", "channels": ["actions", "n8n"]}}},
+        # Por URL: la principal responde a Actions y la réplica https solo desde el Perú.
+        {"id": "igp-icen", "group": "igp", "url": "http://met.igp.gob.pe/datos/ICEN.txt", "expect": "text",
+         "channels": ["actions", "n8n", "peru-server"], "geoblocked": True,
+         "alt_urls": ["https://met.igp.gob.pe/datos/ICEN.txt"], "alt_expect": ["text"],
+         "by_url": {"http://met.igp.gob.pe/datos/ICEN.txt": {"status": "open", "channels": ["actions", "n8n"]},
+                    "https://met.igp.gob.pe/datos/ICEN.txt": {"status": "geoblocked", "channels": ["peru-server"]}}},
     ],
 }
 
@@ -434,14 +445,21 @@ def test_alternative_urls_are_tried_only_when_the_main_one_fails(tmp_path, monke
             return httpx.Response(200, text=CHALLENGE, headers={"content-type": "text/html"})
         if u.endswith("/avisos.json"):
             return httpx.Response(200, json={"avisos": [1]})
+        if u.endswith("ICEN.txt"):
+            return httpx.Response(200, text="2026 9 0.85\n")
         return _peru_only(req)
 
     idx = _collect(tmp_path, monkeypatch, peru, ALT_REGISTRY)
     dhn = [e for e in idx["entries"] if e["group"] == "dhn"]
+    # La réplica que responde a EE. UU. no se pide: ya la bajan Actions y n8n.
     assert [(e["url"].rsplit("/", 1)[-1], e["class"]) for e in dhn] == [
         ("avisos-especiales", "http-5xx"), ("avisos", "challenge"), ("avisos.json", "ok")]
+    assert not any(u.endswith("/abierto") for u in asked)
     assert all(e["source"] == "dhn-avisos" for e in dhn) and dhn[2]["alt_of"] == ALT_REGISTRY["sources"][0]["url"]
     assert dhn[2]["file"].endswith(".json") and dhn[2]["expect"] == "json"
+    # Canales por URL: del ICEN se pide solo la URL asignada al Perú.
+    assert [e["url"] for e in idx["entries"] if e["group"] == "igp"] == ["https://met.igp.gob.pe/datos/ICEN.txt"]
+    assert next(e for e in idx["entries"] if e["group"] == "igp")["file"].endswith(".txt")
 
     asked.clear()
     idx = _collect(tmp_path, monkeypatch, _peru_only, ALT_REGISTRY, name="otra")
