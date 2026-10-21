@@ -299,6 +299,12 @@ test('Fuentes: con alcance «n8n» omite las URL que el registro asigna a otros 
   const cfg = (scope) => ({ 'Configuración': [{ json: { scope, only: '' } }] });
   assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg('n8n'))).map((i) => i.json.url), ['https://dhn/listado']);
   assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg('todas'))).map((i) => i.json.url), ['https://portal/api', 'https://dhn/listado']);
+  // robots.txt por URL: se salta la URL prohibida, no las demás de la fuente.
+  const robots = { schema: 'enso-source-registry/1', sources: [
+    { id: 'r', group: 'g', url: 'https://x/api/', alt_urls: ['https://x/listado'], expect: 'json', channels: [], geoblock: { status: 'robots-disallowed' },
+      by_url: { 'https://x/api/': { status: 'robots-disallowed', channels: [] }, 'https://x/listado': { status: 'open', channels: ['actions', 'n8n'] } } },
+  ] };
+  assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(robots) }, cfg('todas'))).map((i) => i.json.url), ['https://x/listado']);
 });
 
 test('Preparar copia: no publica si no pudo leer la copia anterior', async () => {

@@ -37,11 +37,7 @@ const seen = new Set();
 const out = [];
 for (const s of registry.sources) {
   if (only && !s.id.includes(only) && s.group !== only) continue;
-  const channels = s.channels || [];
-  // robots.txt lo prohíbe: el registro deja la fuente sin canales y nadie la pide.
-  if (!channels.length || (s.geoblock && s.geoblock.status === 'robots-disallowed')) continue;
-  // «n8n»: solo lo que el registro asigna a n8n. «todas»: también mide las del Perú.
-  if (scope === 'n8n' && !channels.includes('n8n')) continue;
+  const sourceRule = { status: s.geoblock && s.geoblock.status, channels: s.channels || [] };
   const urls = [s.url, ...(s.alt_urls || [])];
   urls.forEach((raw, k) => {
     const url = String(raw).replace('{year}', year);
@@ -53,15 +49,17 @@ for (const s of registry.sources) {
     const altExpect = k && Array.isArray(s.alt_expect) ? s.alt_expect[k - 1] : null;
     const expect = altExpect || (!k || ext(url) === ext(s.url) ? s.expect || 'any' : 'any');
     if (seen.has(url)) return;
-    // Canales por URL (registro «by_url»): con alcance «n8n», una URL que el
-    // registro asigna solo a otros canales (p. ej. el portal del ENFEN, que
-    // solo responde desde el Perú) no se pide, aunque la fuente sí vaya por n8n.
-    const perUrl = s.by_url && s.by_url[raw] && Array.isArray(s.by_url[raw].channels) ? s.by_url[raw].channels : null;
-    if (scope === 'n8n' && perUrl && !perUrl.includes('n8n')) return;
+    // Canales por URL (registro «by_url»); si la URL no figura, valen los de
+    // la fuente. Sin canales o con robots.txt en contra, no se pide nunca.
+    // «n8n»: solo lo que el registro asigna a n8n (p. ej. no el portal del
+    // ENFEN, que solo responde desde el Perú). «todas»: también mide el resto.
+    const u = s.by_url && s.by_url[raw] && Array.isArray(s.by_url[raw].channels) ? s.by_url[raw] : sourceRule;
+    if (!u.channels.length || u.status === 'robots-disallowed') return;
+    if (scope === 'n8n' && !u.channels.includes('n8n')) return;
     seen.add(url);
     out.push({ json: {
       id: k ? `${s.id}#${k + 1}` : s.id, group: s.group, name: s.name, url, expect,
-      follow: k === 0 && s.follow ? s.follow : null, channels: s.channels || [], pass: 1, registry: origin,
+      follow: k === 0 && s.follow ? s.follow : null, channels: u.channels, pass: 1, registry: origin,
     } });
   });
 }
