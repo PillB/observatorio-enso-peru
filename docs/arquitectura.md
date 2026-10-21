@@ -7,20 +7,34 @@
 El diagrama (`docs/arquitectura.svg`, copiado en `public/assets/` para la
 sección Metodología del sitio) se lee de izquierda a derecha:
 
-1. **Fuentes:** oficiales del Perú (ENFEN, IGP; SENAMHI, ANA e IMARPE solo
-   desde el Perú), NOAA (CPC y PSL), 21 feeds de noticias y la política de
-   umbrales.
-2. **Canales**, en orden: directo, recolector en el Perú (rama
-   `data-peru`), Internet Archive y publicación anterior.
+1. **Fuentes:** oficiales del ENSO (ENFEN, IGP), NOAA (CPC y PSL), alertas
+   de peligros (INDECI, SENAMHI, DHN, IGP, USGS, PTWC, NASA FIRMS), feeds de
+   noticias nacionales y regionales, y el registro de fuentes
+   (`registry/sources.json`) con el alcance de cada una por red.
+2. **Canales**, del más simple al más complejo: directo desde GitHub
+   Actions (escalera `robots.txt` → petición simple → cabeceras de
+   navegador → Chromium → Firecrawl, que se detiene ante cualquier
+   verificación anti-robots), n8n en la nube (rama `data-n8n`, para fuentes
+   no geobloqueadas que fallan desde Actions), el recolector en el Perú
+   (rama `data-peru`, solo para fuentes geobloqueadas), el Internet Archive
+   y la publicación anterior.
 3. **Pipeline** en Python: descarga con procedencia, lectores con
-   backtesting, validación y armado, señal GRD, noticias y feed de fuentes.
-4. **Publicación** atómica en `public/data/` y archivo de respuestas
-   originales en la rama `data-archive`.
-5. **Sitio** estático en GitHub Pages.
+   backtesting, lectores de alertas sin RSS (`hazardparse.py`), ubicación
+   por distrito, provincia y departamento, validación y armado, señal GRD,
+   noticias y feed de fuentes.
+4. **Publicación** atómica en `public/data/`, con una copia archivada de
+   cada noticia y alerta (`data/archive/news/<día>.html#<id>`) y la
+   respuesta original de cada fuente (`data/archive/feeds/`), más la rama
+   `data-archive`.
+5. **Sitio** estático en Cloudflare Pages (sin enlace al repositorio) o
+   GitHub Pages. Cada ítem enlaza a la fuente en vivo, a su copia archivada
+   y a la respuesta original bajada.
+6. **Operación** en GitHub Actions: actualización diaria, vigilante,
+   integración continua, sondeos de fuentes e incidencias como issues.
 
 No hay servidor ni base de datos. Una corrida de GitHub Actions genera la
-publicación y GitHub Pages la sirve junto con el sitio. Si algo falla
-antes del despliegue, sigue publicado el sitio anterior.
+publicación y el hosting la sirve junto con el sitio. Si algo falla antes
+del despliegue, sigue publicado el sitio anterior.
 
 ## Pipeline (`python/enso/`)
 
@@ -31,8 +45,12 @@ antes del despliegue, sigue publicado el sitio anterior.
 | `feeds/peru.py` | Lectores del ICEN del IGP, del listado de comunicados del ENFEN (HTML y WordPress JSON) y del texto de cada comunicado (PDF) |
 | `signals.py` | Categorías ICEN 2024, eventos ICEN, categorías ONI/RONI y la señal del equipo GRD |
 | `observatory.py` | Catálogo de fuentes, adquisición con respaldo, armado de la publicación, registro de incidencias y CLI |
+| `reach.py` | `robots.txt` según RFC 9309 (la regla más larga gana) y clases de alcance por red (Actions, n8n, Perú) |
+| `feedparse.py` | Lector tolerante de RSS 2.0/1.0, Atom, JSON Feed y listados de gob.pe: repara XML mal formado, fechas y codificaciones |
+| `hazardparse.py` | Lectores de alertas sin RSS: GeoJSON de USGS, boletines y avisos especiales de la DHN, mensajes del PTWC, boletines del CENVUL, canal de Telegram y capas ArcGIS del SENAMHI (copia del INDECI), reportes del COEN y focos de calor de FIRMS |
+| `geo.py`, `geopoly.py` | Ubicación por distrito, provincia y departamento (UBIGEO del INEI); coordenadas y polígonos por los límites oficiales del INDECI |
 | `news.py` | Feeds RSS/Atom de noticias: estado de cada feed, filtro de relevancia, agrupación de notas similares, histórico de solo anexar y CSV |
-| `sourcefeed.py` | Última novedad de cada fuente oficial, agrupada por tipo (comunicados, índices, mar, atmósfera, subsuperficie) |
+| `sourcefeed.py` | Alertas y reportes de peligros de los últimos 7 días (con las fuentes de alertas que no respondieron) y la última novedad de cada fuente oficial, agrupada por tipo |
 
 Cada lector devuelve los datos junto con una **huella del formato**
 (cabeceras, columnas y patrón de filas). Si la huella cambia respecto de
@@ -64,7 +82,7 @@ si no coinciden, muestra un aviso en lugar de mezclar datos.
 | `run-report.json` | Todas las incidencias de la corrida con severidad, etapa, código y huella |
 | `health.json` | Resumen para monitoreo externo |
 | `manifest.json` | Lista de archivos de la publicación |
-| `feed.json` | Novedades de las fuentes oficiales agrupadas por tipo: título, fecha, valor, categoría, cambio y enlace al documento |
+| `feed.json` | Alertas de peligros (últimos 7 días, con el estado de cada fuente de alertas) y novedades de las fuentes oficiales agrupadas por tipo: título, fecha, valor, categoría, cambio, enlace en vivo, copia archivada y respuesta original |
 | `news/feeds.json` | Estado de cada feed de noticias en esta corrida: responde, entradas, relevantes, fecha de la más reciente, activo |
 | `news/clusters.json` | Notas de los últimos 14 días agrupadas por similitud del titular: titular más temprano, medios, resumen y enlaces |
 | `news/items.jsonl` | Histórico de noticias de solo anexar: cada corrida agrega las notas nuevas al final y nunca reescribe las anteriores |
@@ -121,6 +139,10 @@ disponible», nunca como vigente.
   oficial, SOI Troup frente a los valores archivados de BoM, publicación
   completa sin red, respaldo cuando falla una fuente y detección de
   cambios de formato.
+- `test_hazards.py`: cada lector de alertas sobre respuestas reales del
+  21 de octubre de 2026 y sobre formatos anteriores o mal formados.
+- `test_geopoly.py`: la ubicación por departamento frente a la que asigna
+  el INPE de Brasil a los mismos focos de calor.
 - `test_browser.py`: recorridos en Chromium a 320, 390, 820 y 1366 px
   (errores, desbordes, paridad de valores, teclado, tema, tutorial, mapa,
   descargas, publicación mezclada y caída de datos).
