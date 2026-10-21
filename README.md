@@ -7,7 +7,9 @@ alisios, el Índice de Oscilación del Sur y el contenido de calor del
 océano. Está pensado para el público general y para equipos de gestión
 del riesgo de desastres.
 
-**Sitio:** https://pillb.github.io/observatorio-enso-peru/
+**Sitio:** https://pillb.github.io/observatorio-enso-peru/ (o la dirección de la
+variable `SITE_URL` si se publica en Cloudflare Pages; ver
+[despliegue-cloudflare](docs/despliegue-cloudflare.md)).
 
 > El observatorio no emite alertas. Los avisos oficiales en el Perú son
 > los comunicados del ENFEN; ante una emergencia siga a INDECI y a su
@@ -62,6 +64,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Catálogo de fuentes](docs/catalogo-fuentes.md)
 - [Operación diaria, incidencias y recuperación](docs/operaciones.md)
 - [Recolector desde el Perú (mini servidor)](docs/servidor-peru.md): kit descargable, instalación en Windows y macOS, verificación y alarmas
+- [Publicar en Cloudflare Pages sin enlace al repositorio](docs/despliegue-cloudflare.md)
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)
