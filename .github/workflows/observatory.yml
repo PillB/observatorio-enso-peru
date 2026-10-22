@@ -380,8 +380,19 @@ jobs:
             const prev = open.find(i => (i.body || '').includes('enso-fp:run-failed'));
             if (prev) await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body: `Volvió a fallar: ${url}` });
             else await github.rest.issues.create({ ...context.repo, title, body, labels: ['incidente-datos'] });
+      - name: Close the run-failure issue after a good run
+        if: always() && needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
+            for (const i of open.filter(i => (i.body || '').includes('enso-fp:run-failed'))) {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: i.number, body: 'La actualización volvió a funcionar. Se cierra automáticamente.' });
+              await github.rest.issues.update({ ...context.repo, issue_number: i.number, state: 'closed', state_reason: 'completed' });
+            }
       # Correo a las direcciones de la variable ALERT_EMAILS (además del aviso de GitHub a quien sigue el
       # repositorio): una vez por corrida, solo con las incidencias que se abrieron, cerraron o repitieron en ella.
+      # Va al final del job, después de cerrar el issue de la corrida fallida, para que ese cierre salga como resuelto.
       - name: Email the configured addresses
         if: always() && vars.ALERT_EMAILS != ''
         working-directory: python
@@ -395,16 +406,6 @@ jobs:
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
         run: python -m tools.alert_email --since "$ALERT_SINCE" --run-url "$RUN_URL"
-      - name: Close the run-failure issue after a good run
-        if: always() && needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
-            for (const i of open.filter(i => (i.body || '').includes('enso-fp:run-failed'))) {
-              await github.rest.issues.createComment({ ...context.repo, issue_number: i.number, body: 'La actualización volvió a funcionar. Se cierra automáticamente.' });
-              await github.rest.issues.update({ ...context.repo, issue_number: i.number, state: 'closed', state_reason: 'completed' });
-            }
 
   archive:
     # Corpus de respuestas originales para backtesting de los lectores.

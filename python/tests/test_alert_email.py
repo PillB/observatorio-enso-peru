@@ -91,3 +91,14 @@ def test_send_failure_is_a_warning_not_a_failed_run(monkeypatch, capsys):
     env = {"ALERT_EMAILS": "a@x.pe", "SMTP_HOST": "smtp.x", "GITHUB_REPOSITORY": "o/r", "GITHUB_TOKEN": "t"}
     assert A.main(["--since", SINCE], env=env) == 0
     assert "::warning::No se pudo enviar" in capsys.readouterr().out
+
+
+def test_failure_issue_closed_later_in_the_same_job_is_mailed_as_resolved():
+    # El paso del correo va al final del job: el cierre de «La actualización diaria falló» de esta corrida
+    # (después de ALERT_SINCE) sale como resuelto, no queda sin aviso.
+    closed_now = _issue(5, "[datos] La actualización diaria falló", "2026-10-10T06:00:00Z", state="closed",
+                        closed="2026-10-22T06:40:00Z", updated="2026-10-22T06:40:00Z",
+                        body="La corrida falló.\n\n<!-- enso-fp:run-failed -->")
+    ch = A.changes([closed_now], SINCE)
+    assert [i["number"] for i in ch["resolved"]] == [5] and not ch["again"]
+    assert A.compose(ch, "o/r", "")[0] == "[Observatorio ENSO] 1 resuelta"
