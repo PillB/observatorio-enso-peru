@@ -840,6 +840,7 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
                            adapter=f.adapter)
     except FeedError as exc:
         st["error"] = str(exc)
+        st["formatError"] = True  # respondió, pero con otra forma (una capa renumerada, otro formato)
         return st, [], body
     except Exception as exc:  # noqa: BLE001 — un feed raro no debe detener la recolección de los demás
         st["error"] = f"error inesperado al leer el feed: {type(exc).__name__}: {exc}"[:300]

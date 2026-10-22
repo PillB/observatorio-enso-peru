@@ -1,0 +1,559 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1492.1" role="img" aria-labelledby="a6-t a6-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="a6-t">Anexo A6 · Noticias y alertas: lectura, filtro, histórico y lugar</title>
+  <desc id="a6-d">Las noticias y alertas en la corrida diaria: descarga, lectura tolerante, filtro de relevancia y peligros, histórico de solo anexar con su copia y ubicación por UBIGEO con las correcciones de la consola.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="a6-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a6-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a6-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a6-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a6-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1492.1" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Anexo A6 · Noticias y alertas: lectura, filtro, histórico y lugar</text>
+  <a class="ar-annex" href="../arquitectura.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Volver al diagrama completo</text></a>
+  <text class="ar-s" x="20" y="60" font-size="12">Cada corrida lee 168 feeds, se queda con las notas sobre El Niño o sobre un peligro en el Perú, las suma a un histórico que nunca borra y ubica cada una en su departamento, provincia y distrito. Los revisores corrigen el lugar en la</text>
+  <text class="ar-s" x="20" y="77" font-size="12">consola (anexo A7).</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: Noticias y alertas: lectura y filtro, Histórico de noticias (solo anexar), Ubicación y correcciones de lugar.</text>
+  <text class="ar-t" x="20" y="121" font-size="11.5">Líneas:</text>
+  <path class="ar-e ar-e-data" d="M78.5 117 L112.5 117" marker-end="url(#a6-m-data)"/>
+  <text class="ar-s" x="120.5" y="121" font-size="11.5">datos</text>
+  <path class="ar-e ar-e-fallback" d="M174.3 117 L208.3 117" stroke-dasharray="6 4" marker-end="url(#a6-m-fallback)"/>
+  <text class="ar-s" x="216.3" y="121" font-size="11.5">respaldo</text>
+  <path class="ar-e ar-e-trigger" d="M288 117 L322 117" stroke-dasharray="2 3" marker-end="url(#a6-m-trigger)"/>
+  <text class="ar-s" x="330" y="121" font-size="11.5">disparo o control</text>
+  <path class="ar-e ar-e-human" d="M449.1 117 L483.1 117" stroke-dasharray="8 3 2 3" marker-end="url(#a6-m-human)"/>
+  <text class="ar-s" x="491.1" y="121" font-size="11.5">paso manual</text>
+  <rect class="ar-col" x="36" y="141" width="300" height="704.1" rx="10"/>
+  <text class="ar-h" x="48" y="166" font-size="15">Lectura</text>
+  <text class="ar-m" x="48" y="183" font-size="10.5">8 hilos · en serie por servidor · 60 s por feed</text>
+  <rect class="ar-col" x="392" y="141" width="300" height="704.1" rx="10"/>
+  <text class="ar-h" x="404" y="166" font-size="15">Filtro y peligros</text>
+  <text class="ar-m" x="404" y="183" font-size="10.5">news.py · feedparse.py · hazardparse.py</text>
+  <rect class="ar-col" x="748" y="141" width="300" height="704.1" rx="10"/>
+  <text class="ar-h" x="760" y="166" font-size="15">Histórico</text>
+  <text class="ar-m" x="760" y="183" font-size="10.5">solo anexar · copia en data-archive</text>
+  <rect class="ar-col" x="1104" y="141" width="300" height="704.1" rx="10"/>
+  <text class="ar-h" x="1116" y="166" font-size="15">Lugar y grupos</text>
+  <text class="ar-m" x="1116" y="183" font-size="10.5">geo.py · limites.py · geopoly.py · geo_overrides.py</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="a6-e-1" data-edge="1" data-from="feeds" data-to="reader" tabindex="0">
+    <title>1. 168 feeds → Feeds reader: 40 prohibidos por robots.txt. Los feeds reader siguen su propio ritmo; los demás se piden en cada corrida.</title>
+    <path class="ar-e ar-e-trigger" d="M186 300.5 L186 330.5" stroke-dasharray="2 3" marker-end="url(#a6-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="186" cy="315.5" r="9"/>
+    <text class="ar-t" x="186" y="319.3" font-size="10.5" text-anchor="middle">1</text>
+  </g>
+  <g class="ar-edge" id="a6-e-2" data-edge="2" data-from="reader" data-to="fetch" tabindex="0">
+    <title>2. Feeds reader → Descarga de feeds: cuando toca. Si no pasaron 20 h desde el último pedido, no se piden y queda su estado anterior.</title>
+    <path class="ar-e ar-e-trigger" d="M186 451.3 L186 481.3" stroke-dasharray="2 3" marker-end="url(#a6-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="186" cy="466.3" r="9"/>
+    <text class="ar-t" x="186" y="470.1" font-size="10.5" text-anchor="middle">2</text>
+  </g>
+  <g class="ar-edge" id="a6-e-3" data-edge="3" data-from="feeds" data-to="fetch" tabindex="0">
+    <title>3. 168 feeds → Descarga de feeds: 128 feeds en cada corrida. Uno tras otro por servidor, por cortesía; 10 minutos para empezar todos.</title>
+    <path class="ar-e ar-e-data" d="M326 246 L342 246 Q348 246 348 252 L348 510 Q348 516 342 516 L326 516" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="348" cy="381" r="9"/>
+    <text class="ar-t" x="348" y="384.8" font-size="10.5" text-anchor="middle">3</text>
+  </g>
+  <g class="ar-edge" id="a6-e-4" data-edge="4" data-from="fetch" data-to="status" tabindex="0">
+    <title>4. Descarga de feeds → Estado de cada feed: resultado por feed. Un feed sin entradas nuevas en mucho tiempo se marca inactivo.</title>
+    <path class="ar-e ar-e-data" d="M186 641.2 L186 671.2" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="186" cy="656.2" r="9"/>
+    <text class="ar-t" x="186" y="660" font-size="10.5" text-anchor="middle">4</text>
+  </g>
+  <g class="ar-edge" id="a6-e-5" data-edge="5" data-from="fetch" data-to="parse" tabindex="0">
+    <title>5. Descarga de feeds → Lectura tolerante: feeds de noticias. XML, JSON o HTML tal como llegaron.</title>
+    <path class="ar-e ar-e-data" d="M326 564 L366 564 Q372 564 372 558 L372 264 Q372 258 378 258 L402 258" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="372" cy="411" r="9"/>
+    <text class="ar-t" x="372" y="414.8" font-size="10.5" text-anchor="middle">5</text>
+  </g>
+  <g class="ar-edge" id="a6-e-6" data-edge="6" data-from="fetch" data-to="hazards" tabindex="0">
+    <title>6. Descarga de feeds → Alertas sin RSS: fuentes de alertas. Cada fuente de alertas con su formato propio.</title>
+    <path class="ar-e ar-e-data" d="M326 606 L372 606 Q378 606 378 600 L378 438 Q378 432 384 432 L402 432" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="378" cy="519" r="9"/>
+    <text class="ar-t" x="378" y="522.8" font-size="10.5" text-anchor="middle">6</text>
+  </g>
+  <g class="ar-edge" id="a6-e-7" data-edge="7" data-from="parse" data-to="relevance" tabindex="0">
+    <title>7. Lectura tolerante → Relevancia: entradas. Titular, resumen, fecha y enlace.</title>
+    <path class="ar-e ar-e-data" d="M682 258 L702 258 Q708 258 708 264 L708 606 Q708 612 702 612 L682 612" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="708" cy="435" r="9"/>
+    <text class="ar-t" x="708" y="438.8" font-size="10.5" text-anchor="middle">7</text>
+  </g>
+  <g class="ar-edge" id="a6-e-8" data-edge="8" data-from="hazards" data-to="relevance" tabindex="0">
+    <title>8. Alertas sin RSS → Relevancia: avisos con lugar. Los avisos traen su lugar y severidad desde la fuente.</title>
+    <path class="ar-e ar-e-data" d="M540 514.4 L540 544.4" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="529.4" r="9"/>
+    <text class="ar-t" x="540" y="533.2" font-size="10.5" text-anchor="middle">8</text>
+  </g>
+  <g class="ar-edge" id="a6-e-9" data-edge="9" data-from="relevance" data-to="tags" tabindex="0">
+    <title>9. Relevancia → 13 tipos de peligro: notas relevantes. Solo las que pasan el filtro.</title>
+    <path class="ar-e ar-e-data" d="M540 680.3 L540 710.3" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="695.3" r="9"/>
+    <text class="ar-t" x="540" y="699.1" font-size="10.5" text-anchor="middle">9</text>
+  </g>
+  <g class="ar-edge" id="a6-e-10" data-edge="10" data-from="tags" data-to="append" tabindex="0">
+    <title>10. 13 tipos de peligro → Solo anexar: notas nuevas. Una nota ya vista no se agrega otra vez.</title>
+    <path class="ar-e ar-e-data" d="M682 768 L726 768 Q732 768 732 762 L732 576 Q732 570 738 570 L758 570" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="732" cy="669" r="9"/>
+    <text class="ar-t" x="732" y="672.8" font-size="10.5" text-anchor="middle">10</text>
+  </g>
+  <g class="ar-edge" id="a6-e-11" data-edge="11" data-from="prev" data-to="append" tabindex="0">
+    <title>11. Histórico publicado → Solo anexar: histórico anterior. La base sobre la que se anexa.</title>
+    <path class="ar-e ar-e-data" d="M1038 258 L1056 258 Q1062 258 1062 264 L1062 534 Q1062 540 1056 540 L1038 540" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1062" cy="399" r="9"/>
+    <text class="ar-t" x="1062" y="402.8" font-size="10.5" text-anchor="middle">11</text>
+  </g>
+  <g class="ar-edge" id="a6-e-12" data-edge="12" data-from="backup" data-to="append" tabindex="0">
+    <title>12. Copia en data-archive → Solo anexar: notas que falten o rehacer. news-history-restored si suma notas; news-history-missing si tiene que rehacerlo.</title>
+    <path class="ar-e ar-e-fallback" d="M900 466.4 L900 496.4" stroke-dasharray="6 4" marker-end="url(#a6-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="900" cy="481.4" r="9"/>
+    <text class="ar-t" x="900" y="485.2" font-size="10.5" text-anchor="middle">12</text>
+  </g>
+  <g class="ar-edge" id="a6-e-13" data-edge="13" data-from="append" data-to="locate" tabindex="0">
+    <title>13. Solo anexar → Ubicación (UBIGEO): todo el histórico. Se vuelve a ubicar todo con las reglas actuales: una mejora vale también para las notas viejas.</title>
+    <path class="ar-e ar-e-data" d="M1038 600 L1086 600 Q1092 600 1092 594 L1092 282 Q1092 276 1098 276 L1114 276" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1092" cy="438" r="9"/>
+    <text class="ar-t" x="1092" y="441.8" font-size="10.5" text-anchor="middle">13</text>
+  </g>
+  <g class="ar-edge" id="a6-e-14" data-edge="14" data-from="locate" data-to="overrides" tabindex="0">
+    <title>14. Ubicación (UBIGEO) → Correcciones de la consola: lugar automático. Con su método, confianza y evidencia.</title>
+    <path class="ar-e ar-e-data" d="M1254 354.9 L1254 384.9" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="369.9" r="9"/>
+    <text class="ar-t" x="1254" y="373.7" font-size="10.5" text-anchor="middle">14</text>
+  </g>
+  <g class="ar-edge" id="a6-e-15" data-edge="15" data-from="overrides" data-to="publish" tabindex="0">
+    <title>15. Correcciones de la consola → Qué se publica: lugar final. Gana la corrección con la revisión mayor.</title>
+    <path class="ar-e ar-e-data" d="M1254 505.6 L1254 535.6" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="520.6" r="9"/>
+    <text class="ar-t" x="1254" y="524.4" font-size="10.5" text-anchor="middle">15</text>
+  </g>
+  <g class="ar-edge" id="a6-e-16" data-edge="16" data-from="publish" data-to="clusters" tabindex="0">
+    <title>16. Qué se publica → Grupos de notas: notas ubicadas. Los grupos se arman con las notas recientes.</title>
+    <path class="ar-e ar-e-data" d="M1254 641.2 L1254 671.2" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="656.2" r="9"/>
+    <text class="ar-t" x="1254" y="660" font-size="10.5" text-anchor="middle">16</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="a6-n-feeds" data-node="feeds">
+    <title>168 feeds. 116 de medios y del Estado, 38 búsquedas de Google Noticias y 14 fuentes de alertas, con el plan del registro.</title>
+    <rect class="ar-node ar-g-sources" x="46" y="195" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-sources" x="46" y="203" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-sources" x="58" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-sources" transform="translate(61 208)"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.4"/></g>
+    <text class="ar-t" x="96" y="224.5" font-size="12.5">168 feeds</text>
+    <text class="ar-s" x="58" y="256.4" font-size="11">116 de medios y del Estado, 38 búsquedas de</text>
+    <text class="ar-s" x="58" y="271.6" font-size="11">Google Noticias y 14 fuentes de alertas, con</text>
+    <text class="ar-s" x="58" y="286.8" font-size="11">el plan del registro.</text>
+    <a class="ar-annex" href="a1.svg" data-annex="a1"><title>Anexo A1: Fuentes, alcance y registro</title><rect class="ar-tag" x="290.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="214.5" font-size="10.5" text-anchor="middle">A1</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-reader" data-node="reader">
+    <title>Feeds reader. Google Noticias, Noticias ONU y Sin Rodeos: un solo intento, como mucho cada 20 h y solo en main; entre lecturas queda el estado de la última.</title>
+    <rect class="ar-node ar-g-pipeline" x="46" y="330.5" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="46" y="338.5" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="58" y="340.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(61 343.5)"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 4v4.5H8M12 8v4.5l3 2"/></g>
+    <text class="ar-t" x="96" y="360" font-size="12.5">Feeds reader</text>
+    <text class="ar-s" x="58" y="392" font-size="11">Google Noticias, Noticias ONU y Sin Rodeos:</text>
+    <text class="ar-s" x="58" y="407.1" font-size="11">un solo intento, como mucho cada 20 h y solo</text>
+    <text class="ar-s" x="58" y="422.3" font-size="11">en main; entre lecturas queda el estado de la</text>
+    <text class="ar-s" x="58" y="437.5" font-size="11">última.</text>
+    <a class="ar-annex" href="a4.svg" data-annex="a4"><title>Anexo A4: Descarga en GitHub Actions y respaldo por fuente</title><rect class="ar-tag" x="290.6" y="337.5" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="350" font-size="10.5" text-anchor="middle">A4</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-fetch" data-node="fetch">
+    <title>Descarga de feeds. Cliente propio con menos espera que el de las fuentes oficiales: 2 intentos, 1 s entre pedidos al mismo servidor, 60 s por feed. Si un feed falla, usa la copia más reciente del Perú o de n8n. Tecnología: httpx, Fetcher.</title>
+    <rect class="ar-node ar-g-pipeline" x="46" y="481.3" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="46" y="489.3" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="58" y="491.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(61 494.3)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
+    <text class="ar-t" x="96" y="510.8" font-size="12.5">Descarga de feeds</text>
+    <text class="ar-s" x="58" y="542.7" font-size="11">Cliente propio con menos espera que el de las</text>
+    <text class="ar-s" x="58" y="557.9" font-size="11">fuentes oficiales: 2 intentos, 1 s entre pedidos</text>
+    <text class="ar-s" x="58" y="573" font-size="11">al mismo servidor, 60 s por feed. Si un feed</text>
+    <text class="ar-s" x="58" y="588.2" font-size="11">falla, usa la copia más reciente del Perú o de</text>
+    <text class="ar-s" x="58" y="603.4" font-size="11">n8n.</text>
+    <rect class="ar-chip" x="58" y="613.2" width="38.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="625.2" font-size="10">httpx</text>
+    <rect class="ar-chip" x="101.5" y="613.2" width="49.9" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="107.5" y="625.2" font-size="10">Fetcher</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-status" data-node="status">
+    <title>Estado de cada feed. Responde o no, entradas, relevantes, fecha de la más reciente y si sigue activo (news/feeds.json).</title>
+    <rect class="ar-node ar-g-pipeline" x="46" y="671.2" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="46" y="679.2" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="58" y="681.2" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(61 684.2)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="96" y="700.7" font-size="12.5">Estado de cada feed</text>
+    <text class="ar-s" x="58" y="732.6" font-size="11">Responde o no, entradas, relevantes, fecha</text>
+    <text class="ar-s" x="58" y="747.8" font-size="11">de la más reciente y si sigue activo</text>
+    <text class="ar-s" x="58" y="762.9" font-size="11">(news/feeds.json).</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-parse" data-node="parse">
+    <title>Lectura tolerante. RSS 2.0 y 1.0, Atom, JSON Feed y listados de gob.pe: repara XML mal formado, fechas y codificaciones; tope de 5 MB por feed. Tecnología: feedparse.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="195" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="203" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 208)"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/></g>
+    <text class="ar-t" x="452" y="224.5" font-size="12.5">Lectura tolerante</text>
+    <text class="ar-s" x="414" y="256.4" font-size="11">RSS 2.0 y 1.0, Atom, JSON Feed y listados de</text>
+    <text class="ar-s" x="414" y="271.6" font-size="11">gob.pe: repara XML mal formado, fechas y</text>
+    <text class="ar-s" x="414" y="286.8" font-size="11">codificaciones; tope de 5 MB por feed.</text>
+    <rect class="ar-chip" x="414" y="296.5" width="77.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="308.5" font-size="10">feedparse.py</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-hazards" data-node="hazards">
+    <title>Alertas sin RSS. Convierte USGS (GeoJSON), DHN, PTWC, CENVUL, Telegram y capas ArcGIS del SENAMHI, el COEN del INDECI y los focos de calor de FIRMS en notas con lugar y severidad. Tecnología: hazardparse.py, severity.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="354.5" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="362.5" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="364.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 367.5)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+    <text class="ar-t" x="452" y="384" font-size="12.5">Alertas sin RSS</text>
+    <text class="ar-s" x="414" y="416" font-size="11">Convierte USGS (GeoJSON), DHN, PTWC,</text>
+    <text class="ar-s" x="414" y="431.1" font-size="11">CENVUL, Telegram y capas ArcGIS del</text>
+    <text class="ar-s" x="414" y="446.3" font-size="11">SENAMHI, el COEN del INDECI y los focos de</text>
+    <text class="ar-s" x="414" y="461.5" font-size="11">calor de FIRMS en notas con lugar y</text>
+    <text class="ar-s" x="414" y="476.7" font-size="11">severidad.</text>
+    <rect class="ar-chip" x="414" y="486.4" width="89.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="498.4" font-size="10">hazardparse.py</text>
+    <rect class="ar-chip" x="508.7" y="486.4" width="67.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="514.7" y="498.4" font-size="10">severity.py</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-relevance" data-node="relevance">
+    <title>Relevancia. Medios generales: un término del ENSO o el peligro en el titular. Medios locales, del Estado y de peligros del Perú: basta un peligro. Descarta empleo, accidentes, sismos menores de 4 y simulacros.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="544.4" width="280" height="135.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="552.4" width="4" height="119.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="554.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 557.4)"><path d="M3 5h18l-7 8.5V20l-4-2v-4.5z"/></g>
+    <text class="ar-t" x="452" y="573.9" font-size="12.5">Relevancia</text>
+    <text class="ar-s" x="414" y="605.9" font-size="11">Medios generales: un término del ENSO o el</text>
+    <text class="ar-s" x="414" y="621" font-size="11">peligro en el titular. Medios locales, del</text>
+    <text class="ar-s" x="414" y="636.2" font-size="11">Estado y de peligros del Perú: basta un</text>
+    <text class="ar-s" x="414" y="651.4" font-size="11">peligro. Descarta empleo, accidentes, sismos</text>
+    <text class="ar-s" x="414" y="666.6" font-size="11">menores de 4 y simulacros.</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-tags" data-node="tags">
+    <title>13 tipos de peligro. Lluvias, inundación, huaico, sequía, calor, frío, viento, oleaje, sismo, volcán, incendio, emergencia y salud, además de El Niño o La Niña.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="710.3" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="718.3" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="720.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 723.3)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="452" y="739.8" font-size="12.5">13 tipos de peligro</text>
+    <text class="ar-s" x="414" y="771.8" font-size="11">Lluvias, inundación, huaico, sequía, calor, frío,</text>
+    <text class="ar-s" x="414" y="786.9" font-size="11">viento, oleaje, sismo, volcán, incendio,</text>
+    <text class="ar-s" x="414" y="802.1" font-size="11">emergencia y salud, además de El Niño o La</text>
+    <text class="ar-s" x="414" y="817.3" font-size="11">Niña.</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-prev" data-node="prev">
+    <title>Histórico publicado. news/items.jsonl de la publicación anterior (3 intentos). Solo con 404 en el sitio y en data-archive se trata como primera publicación.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="195" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="203" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 208)"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8.5 20h7M12 16v4"/></g>
+    <text class="ar-t" x="808" y="224.5" font-size="12.5">Histórico publicado</text>
+    <text class="ar-s" x="770" y="256.4" font-size="11">news/items.jsonl de la publicación anterior (3</text>
+    <text class="ar-s" x="770" y="271.6" font-size="11">intentos). Solo con 404 en el sitio y en</text>
+    <text class="ar-s" x="770" y="286.8" font-size="11">data-archive se trata como primera</text>
+    <text class="ar-s" x="770" y="302" font-size="11">publicación.</text>
+    <a class="ar-annex" href="a9.svg" data-annex="a9"><title>Anexo A9: El sitio en el navegador</title><rect class="ar-tag" x="1002.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="214.5" font-size="10.5" text-anchor="middle">A9</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-backup" data-node="backup">
+    <title>Copia en data-archive. sources/news/items.jsonl.gz, la unión de todo lo publicado: le suma al histórico las notas que le falten o lo rehace si el sitio no responde.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="345.7" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="353.7" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="355.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 358.7)"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></g>
+    <text class="ar-t" x="808" y="375.2" font-size="12.5">Copia en data-archive</text>
+    <text class="ar-s" x="770" y="407.2" font-size="11">sources/news/items.jsonl.gz, la unión de todo</text>
+    <text class="ar-s" x="770" y="422.3" font-size="11">lo publicado: le suma al histórico las notas</text>
+    <text class="ar-s" x="770" y="437.5" font-size="11">que le falten o lo rehace si el sitio no</text>
+    <text class="ar-s" x="770" y="452.7" font-size="11">responde.</text>
+    <a class="ar-annex" href="a8.svg" data-annex="a8"><title>Anexo A8: Publicación, despliegue y archivo</title><rect class="ar-tag" x="1002.6" y="352.7" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="365.2" font-size="10.5" text-anchor="middle">A8</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-append" data-node="append">
+    <title>Solo anexar. Agrega al final las notas nuevas (id = hash del enlace y el titular) y nunca reescribe las anteriores; CSV protegido contra fórmulas. aviso a los 20 MiB. Tecnología: JSON Lines, CSV.</title>
+    <rect class="ar-node ar-g-pipeline" x="758" y="496.4" width="280" height="148" rx="8"/>
+    <rect class="ar-f-pipeline" x="758" y="504.4" width="4" height="132" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="770" y="506.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(773 509.4)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="808" y="525.9" font-size="12.5">Solo anexar</text>
+    <text class="ar-s" x="770" y="557.9" font-size="11">Agrega al final las notas nuevas (id = hash</text>
+    <text class="ar-s" x="770" y="573" font-size="11">del enlace y el titular) y nunca reescribe las</text>
+    <text class="ar-s" x="770" y="588.2" font-size="11">anteriores; CSV protegido contra fórmulas.</text>
+    <text class="ar-m" x="770" y="607.4" font-size="10.5">aviso a los 20 MiB</text>
+    <rect class="ar-chip" x="770" y="616.5" width="65.9" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="628.5" font-size="10">JSON Lines</text>
+    <rect class="ar-chip" x="840.9" y="616.5" width="32.2" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="846.9" y="628.5" font-size="10">CSV</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-locate" data-node="locate">
+    <title>Ubicación (UBIGEO). Por campos de la fuente, por coordenadas (punto en polígono sobre los límites del IGN) o por el texto (25 departamentos, 196 provincias, 1893 distritos, con reglas contra falsos positivos). Confianza de 0,35 a 0,97. Tecnología: geo.py, limites.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="195" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="203" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 208)"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></g>
+    <text class="ar-t" x="1164" y="224.5" font-size="12.5">Ubicación (UBIGEO)</text>
+    <text class="ar-s" x="1126" y="256.4" font-size="11">Por campos de la fuente, por coordenadas</text>
+    <text class="ar-s" x="1126" y="271.6" font-size="11">(punto en polígono sobre los límites del IGN)</text>
+    <text class="ar-s" x="1126" y="286.8" font-size="11">o por el texto (25 departamentos, 196</text>
+    <text class="ar-s" x="1126" y="302" font-size="11">provincias, 1893 distritos, con reglas contra</text>
+    <text class="ar-s" x="1126" y="317.2" font-size="11">falsos positivos). Confianza de 0,35 a 0,97.</text>
+    <rect class="ar-chip" x="1126" y="326.9" width="46.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="338.9" font-size="10">geo.py</text>
+    <rect class="ar-chip" x="1177.1" y="326.9" width="60.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1183.1" y="338.9" font-size="10">limites.py</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-overrides" data-node="overrides">
+    <title>Correcciones de la consola. Las correcciones vigentes (/api/geo/overrides en Cloudflare) tienen la última palabra; si la consola no responde se usan las ya publicadas.</title>
+    <rect class="ar-node ar-g-people" x="1114" y="384.9" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-people" x="1114" y="392.9" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="1126" y="394.9" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(1129 397.9)"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></g>
+    <text class="ar-t" x="1164" y="409.4" font-size="12.5">Correcciones de la</text>
+    <text class="ar-t" x="1164" y="425.6" font-size="12.5">consola</text>
+    <text class="ar-s" x="1126" y="446.3" font-size="11">Las correcciones vigentes (/api/geo/overrides</text>
+    <text class="ar-s" x="1126" y="461.5" font-size="11">en Cloudflare) tienen la última palabra; si la</text>
+    <text class="ar-s" x="1126" y="476.7" font-size="11">consola no responde se usan las ya</text>
+    <text class="ar-s" x="1126" y="491.9" font-size="11">publicadas.</text>
+    <a class="ar-annex" href="a7.svg" data-annex="a7"><title>Anexo A7: Consolas de revisión en Cloudflare</title><rect class="ar-tag" x="1358.6" y="391.9" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="404.4" font-size="10.5" text-anchor="middle">A7</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-publish" data-node="publish">
+    <title>Qué se publica. Lugares con confianza de 0,5 o más; lo menor a 0,8 va a revisión. geo/items.json: 120 días, hasta 4000 notas.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="535.6" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="543.6" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="545.6" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 548.6)"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></g>
+    <text class="ar-t" x="1164" y="565.1" font-size="12.5">Qué se publica</text>
+    <text class="ar-s" x="1126" y="597" font-size="11">Lugares con confianza de 0,5 o más; lo menor</text>
+    <text class="ar-s" x="1126" y="612.2" font-size="11">a 0,8 va a revisión. geo/items.json: 120 días,</text>
+    <text class="ar-s" x="1126" y="627.4" font-size="11">hasta 4000 notas.</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-clusters" data-node="clusters">
+    <title>Grupos de notas. Notas de los últimos 14 días con 3 palabras en común y el 60 % del titular más corto, en la misma región: titular más temprano, medios, resumen y enlaces.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="671.2" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="679.2" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="681.2" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 684.2)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 7.2v9.6M7.5 6.6C9 10 12 12 15.8 12"/></g>
+    <text class="ar-t" x="1164" y="700.7" font-size="12.5">Grupos de notas</text>
+    <text class="ar-s" x="1126" y="732.6" font-size="11">Notas de los últimos 14 días con 3 palabras</text>
+    <text class="ar-s" x="1126" y="747.8" font-size="11">en común y el 60 % del titular más corto, en</text>
+    <text class="ar-s" x="1126" y="762.9" font-size="11">la misma región: titular más temprano,</text>
+    <text class="ar-s" x="1126" y="778.1" font-size="11">medios, resumen y enlaces.</text>
+  </g>
+  <line class="ar-rule" x1="20" y1="885.1" x2="1420" y2="885.1"/>
+  <text class="ar-h" x="20" y="915.1" font-size="15">Pasos y conexiones: qué viaja por cada línea, cuándo y por qué</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="943.1" r="9"/>
+  <text class="ar-t" x="30" y="946.9" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="947.1" font-size="11.5">40 prohibidos por robots.txt</text>
+  <text class="ar-m" x="50" y="961.1" font-size="10.5">168 feeds → Feeds reader</text>
+  <text class="ar-s" x="50" y="976.1" font-size="11">Los feeds reader siguen su propio ritmo; los demás se piden en cada</text>
+  <text class="ar-s" x="50" y="991.1" font-size="11">corrida.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1014.1" r="9"/>
+  <text class="ar-t" x="30" y="1017.9" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1018.1" font-size="11.5">cuando toca</text>
+  <text class="ar-m" x="50" y="1032.1" font-size="10.5">Feeds reader → Descarga de feeds</text>
+  <text class="ar-s" x="50" y="1047.1" font-size="11">Si no pasaron 20 h desde el último pedido, no se piden y queda su estado</text>
+  <text class="ar-s" x="50" y="1062.1" font-size="11">anterior.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1085.1" r="9"/>
+  <text class="ar-t" x="30" y="1088.9" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1089.1" font-size="11.5">128 feeds en cada corrida</text>
+  <text class="ar-m" x="50" y="1103.1" font-size="10.5">168 feeds → Descarga de feeds</text>
+  <text class="ar-s" x="50" y="1118.1" font-size="11">Uno tras otro por servidor, por cortesía; 10 minutos para empezar todos.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1141.1" r="9"/>
+  <text class="ar-t" x="30" y="1144.9" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1145.1" font-size="11.5">resultado por feed</text>
+  <text class="ar-m" x="50" y="1159.1" font-size="10.5">Descarga de feeds → Estado de cada feed</text>
+  <text class="ar-s" x="50" y="1174.1" font-size="11">Un feed sin entradas nuevas en mucho tiempo se marca inactivo.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1197.1" r="9"/>
+  <text class="ar-t" x="30" y="1200.9" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="1201.1" font-size="11.5">feeds de noticias</text>
+  <text class="ar-m" x="50" y="1215.1" font-size="10.5">Descarga de feeds → Lectura tolerante</text>
+  <text class="ar-s" x="50" y="1230.1" font-size="11">XML, JSON o HTML tal como llegaron.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="943.1" r="9"/>
+  <text class="ar-t" x="506" y="946.9" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="526" y="947.1" font-size="11.5">fuentes de alertas</text>
+  <text class="ar-m" x="526" y="961.1" font-size="10.5">Descarga de feeds → Alertas sin RSS</text>
+  <text class="ar-s" x="526" y="976.1" font-size="11">Cada fuente de alertas con su formato propio.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="999.1" r="9"/>
+  <text class="ar-t" x="506" y="1002.9" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="1003.1" font-size="11.5">entradas</text>
+  <text class="ar-m" x="526" y="1017.1" font-size="10.5">Lectura tolerante → Relevancia</text>
+  <text class="ar-s" x="526" y="1032.1" font-size="11">Titular, resumen, fecha y enlace.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1055.1" r="9"/>
+  <text class="ar-t" x="506" y="1058.9" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1059.1" font-size="11.5">avisos con lugar</text>
+  <text class="ar-m" x="526" y="1073.1" font-size="10.5">Alertas sin RSS → Relevancia</text>
+  <text class="ar-s" x="526" y="1088.1" font-size="11">Los avisos traen su lugar y severidad desde la fuente.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1111.1" r="9"/>
+  <text class="ar-t" x="506" y="1114.9" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1115.1" font-size="11.5">notas relevantes</text>
+  <text class="ar-m" x="526" y="1129.1" font-size="10.5">Relevancia → 13 tipos de peligro</text>
+  <text class="ar-s" x="526" y="1144.1" font-size="11">Solo las que pasan el filtro.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1167.1" r="9"/>
+  <text class="ar-t" x="506" y="1170.9" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="526" y="1171.1" font-size="11.5">notas nuevas</text>
+  <text class="ar-m" x="526" y="1185.1" font-size="10.5">13 tipos de peligro → Solo anexar</text>
+  <text class="ar-s" x="526" y="1200.1" font-size="11">Una nota ya vista no se agrega otra vez.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1223.1" r="9"/>
+  <text class="ar-t" x="506" y="1226.9" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="526" y="1227.1" font-size="11.5">histórico anterior</text>
+  <text class="ar-m" x="526" y="1241.1" font-size="10.5">Histórico publicado → Solo anexar</text>
+  <text class="ar-s" x="526" y="1256.1" font-size="11">La base sobre la que se anexa.</text>
+  <circle class="ar-badge ar-e-fallback" cx="982" cy="943.1" r="9"/>
+  <text class="ar-t" x="982" y="946.9" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="1002" y="947.1" font-size="11.5">notas que falten o rehacer</text>
+  <text class="ar-m" x="1002" y="961.1" font-size="10.5">Copia en data-archive → Solo anexar</text>
+  <text class="ar-s" x="1002" y="976.1" font-size="11">news-history-restored si suma notas; news-history-missing si tiene que</text>
+  <text class="ar-s" x="1002" y="991.1" font-size="11">rehacerlo.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1014.1" r="9"/>
+  <text class="ar-t" x="982" y="1017.9" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="1002" y="1018.1" font-size="11.5">todo el histórico</text>
+  <text class="ar-m" x="1002" y="1032.1" font-size="10.5">Solo anexar → Ubicación (UBIGEO)</text>
+  <text class="ar-s" x="1002" y="1047.1" font-size="11">Se vuelve a ubicar todo con las reglas actuales: una mejora vale también</text>
+  <text class="ar-s" x="1002" y="1062.1" font-size="11">para las notas viejas.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1085.1" r="9"/>
+  <text class="ar-t" x="982" y="1088.9" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1089.1" font-size="11.5">lugar automático</text>
+  <text class="ar-m" x="1002" y="1103.1" font-size="10.5">Ubicación (UBIGEO) → Correcciones de la consola</text>
+  <text class="ar-s" x="1002" y="1118.1" font-size="11">Con su método, confianza y evidencia.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1141.1" r="9"/>
+  <text class="ar-t" x="982" y="1144.9" font-size="10.5" text-anchor="middle">15</text>
+  <text class="ar-t" x="1002" y="1145.1" font-size="11.5">lugar final</text>
+  <text class="ar-m" x="1002" y="1159.1" font-size="10.5">Correcciones de la consola → Qué se publica</text>
+  <text class="ar-s" x="1002" y="1174.1" font-size="11">Gana la corrección con la revisión mayor.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1197.1" r="9"/>
+  <text class="ar-t" x="982" y="1200.9" font-size="10.5" text-anchor="middle">16</text>
+  <text class="ar-t" x="1002" y="1201.1" font-size="11.5">notas ubicadas</text>
+  <text class="ar-m" x="1002" y="1215.1" font-size="10.5">Qué se publica → Grupos de notas</text>
+  <text class="ar-s" x="1002" y="1230.1" font-size="11">Los grupos se arman con las notas recientes.</text>
+  <line class="ar-rule" x1="20" y1="1291.1" x2="1420" y2="1291.1"/>
+  <text class="ar-h" x="20" y="1321.1" font-size="15">Si algo falla: qué pasa y qué respaldo entra</text>
+  <g class="ar-warn" transform="translate(20 1338.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1353.1" font-size="11.5">Un feed no responde o llega roto</text>
+  <text class="ar-s" x="50" y="1368.1" font-size="11">Se usa la copia más reciente del Perú o de n8n; si no hay, queda como</text>
+  <text class="ar-s" x="50" y="1383.1" font-size="11">caído en news/feeds.json y la corrida sigue.</text>
+  <g class="ar-warn" transform="translate(20 1395.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1410.1" font-size="11.5">Falla toda la lectura de noticias</text>
+  <text class="ar-s" x="50" y="1425.1" font-size="11">Se sirven las notas anteriores y las últimas alertas conocidas; las 14</text>
+  <text class="ar-s" x="50" y="1440.1" font-size="11">fuentes de alertas figuran como no leídas, para que el silencio no parezca</text>
+  <text class="ar-s" x="50" y="1455.1" font-size="11">calma.</text>
+  <g class="ar-warn" transform="translate(496 1338.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1353.1" font-size="11.5">El histórico publicado no se puede leer</text>
+  <text class="ar-s" x="526" y="1368.1" font-size="11">Se rehace con la copia de data-archive; sin copia, se publican solo las de</text>
+  <text class="ar-s" x="526" y="1383.1" font-size="11">hoy marcadas restarted y la corrida siguiente lo completa.</text>
+  <g class="ar-warn" transform="translate(496 1395.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1410.1" font-size="11.5">Una corrida pidió los feeds reader y no publicó</text>
+  <text class="ar-s" x="526" y="1425.1" font-size="11">Su estado y sus notas quedan en la caché de Actions: la siguiente no los</text>
+  <text class="ar-s" x="526" y="1440.1" font-size="11">pide antes de 20 h y no pierde esas notas.</text>
+  <g class="ar-warn" transform="translate(972 1338.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1353.1" font-size="11.5">La consola no responde o el sitio está en GitHub Pages</text>
+  <text class="ar-s" x="1002" y="1368.1" font-size="11">Se aplican las correcciones ya publicadas en geo/overrides.json.</text>
+  <g class="ar-warn" transform="translate(972 1380.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1395.1" font-size="11.5">El histórico crece demasiado</text>
+  <text class="ar-s" x="1002" y="1410.1" font-size="11">Aviso news-history-large a los 20 MiB (Cloudflare sirve hasta 25 MiB por</text>
+  <text class="ar-s" x="1002" y="1425.1" font-size="11">archivo); la copia comprimida deja de crecer, con aviso, antes de 90 MiB.</text>
+</svg>

@@ -348,6 +348,61 @@ def test_methodology_switches_between_the_two_architecture_diagrams(site, page):
     expect(note).to_contain_text("GitHub Actions")
 
 
+def test_architecture_explorer_navigates_from_the_diagrams_to_their_annexes(site, page):
+    """arquitectura.html: tocar una caja del simplificado abre su anexo (o deja elegir entre sus anexos), la
+    etiqueta A4 del completo abre el A4, «Volver» regresa al completo, hay versión en inglés y Metodología enlaza
+    cada etiqueta al explorador. Ningún texto de un anexo se sale de su caja."""
+    base, _ = site
+    page.goto(f"{base}arquitectura.html")
+    fig = page.locator("#ax-fig")
+    expect(fig.locator("svg[aria-labelledby^='as-']")).to_have_count(1, timeout=10000)
+    # La consola del simplificado tiene un solo anexo (A7): se abre directamente.
+    fig.locator("[data-node=s-consola] text").first.click()
+    expect(page).to_have_url(re.compile(r"#a7$"))
+    expect(fig.locator("svg[aria-labelledby^='a7-']")).to_have_count(1, timeout=10000)
+    expect(page.locator("#ax-title")).to_contain_text("A7")
+    # Las cajas del anexo explican qué son y enlazan a sus vecinos.
+    fig.locator("[data-node=login] text").first.click()
+    expect(page.locator("#ax-note")).to_contain_text("SameSite=Strict")
+    fig.locator('a[data-annex="full"]').click()
+    expect(fig.locator("svg[aria-labelledby^='af-']")).to_have_count(1, timeout=10000)
+    fig.locator('[data-node=fetch] a[data-annex="a4"]').click()
+    expect(page).to_have_url(re.compile(r"#a4$"))
+    expect(fig.locator("svg[aria-labelledby^='a4-']")).to_have_count(1, timeout=10000)
+    page.locator("[data-lang=en]").click()
+    expect(page).to_have_url(re.compile(r"#a4-en$"))
+    expect(fig.locator("svg title").first).to_contain_text("Annex A4", timeout=10000)
+    expect(page.locator("html")).to_have_attribute("lang", "en")
+    page.locator("#ax-next").click()
+    expect(page).to_have_url(re.compile(r"#a5-en$"))
+    # Una caja del simplificado con varios anexos deja elegir.
+    page.goto(f"{base}arquitectura.html#simple")
+    expect(fig.locator("svg[aria-labelledby^='as-']")).to_have_count(1, timeout=10000)
+    fig.locator("[data-node=s-recolectores] text").first.click()
+    expect(page.locator("#ax-note .ax-go")).to_have_count(3)
+    page.locator("#ax-note .ax-go").nth(1).click()
+    expect(page).to_have_url(re.compile(r"#a3$"))
+    outside = page.evaluate("""() => {
+      const bad = [];
+      for (const g of document.querySelectorAll('#ax-fig g[data-node]')) {
+        const r = g.querySelector('rect').getBBox();
+        for (const t of g.querySelectorAll('text')) {
+          const b = t.getBBox();
+          if (b.x < r.x - 0.5 || b.y < r.y - 0.5 || b.x + b.width > r.x + r.width + 0.5 || b.y + b.height > r.y + r.height + 0.5)
+            bad.push(`${g.dataset.node}: ${t.textContent}`);
+        }
+      }
+      return bad;
+    }""")
+    assert not outside, outside
+    assert not page.errors, page.errors
+    # Desde Metodología, la etiqueta de una caja abre su anexo en el explorador.
+    go(page, base, "metodologia")
+    page.locator("[data-arch=full]").click()
+    page.locator('#arch-fig [data-node=fetch] a[data-annex="a4"]').click()
+    expect(page).to_have_url(re.compile(r"arquitectura\.html#a4$"))
+
+
 def test_alerts_card_says_when_no_alert_source_was_read(site, page):
     """Una corrida que no leyó ninguna fuente de alertas muestra las últimas conocidas: el aviso lo dice, haya
     avisos o no (la línea «0 de N fuentes» sola no alcanza)."""

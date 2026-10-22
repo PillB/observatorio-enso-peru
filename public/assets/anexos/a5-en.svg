@@ -1,0 +1,662 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1903.9" role="img" aria-labelledby="a5-t a5-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="a5-t">Annex A5 · Daily update: official sources, series and signals</title>
+  <desc id="a5-d">The daily update: triggers, build job preparation, reading ENFEN and its technical report, NOAA, IGP and IMARPE, series, GRD signal, freshness and incidents.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="a5-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a5-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a5-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a5-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a5-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1903.9" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Annex A5 · Daily update: official sources, series and signals</text>
+  <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
+  <text class="ar-s" x="20" y="60" font-size="12">observatory.yml runs the Python pipeline (python -m enso.observatory) every night at 23:37 Lima and whenever someone asks. It reads each official source, validates, builds the series and statuses and logs every problem. News</text>
+  <text class="ar-s" x="20" y="77" font-size="12">and places are in annex A6; publication, in A8.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: Daily update (observatory.yml), Official source reading, Series, statuses and GRD signal, Incident log, Reference data: places and thresholds.</text>
+  <text class="ar-t" x="20" y="121" font-size="11.5">Lines:</text>
+  <path class="ar-e ar-e-data" d="M70.7 117 L104.7 117" marker-end="url(#a5-m-data)"/>
+  <text class="ar-s" x="112.7" y="121" font-size="11.5">data</text>
+  <path class="ar-e ar-e-fallback" d="M160.6 117 L194.6 117" stroke-dasharray="6 4" marker-end="url(#a5-m-fallback)"/>
+  <text class="ar-s" x="202.6" y="121" font-size="11.5">fallback</text>
+  <path class="ar-e ar-e-trigger" d="M269.4 117 L303.4 117" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
+  <text class="ar-s" x="311.4" y="121" font-size="11.5">trigger or control</text>
+  <path class="ar-e ar-e-human" d="M431.5 117 L465.5 117" stroke-dasharray="8 3 2 3" marker-end="url(#a5-m-human)"/>
+  <text class="ar-s" x="473.5" y="121" font-size="11.5">manual step</text>
+  <rect class="ar-col" x="36" y="141" width="300" height="1059.9" rx="10"/>
+  <text class="ar-h" x="48" y="166" font-size="15">Triggers</text>
+  <text class="ar-m" x="48" y="183" font-size="10.5">GitHub Actions · one run at a time</text>
+  <rect class="ar-col" x="392" y="141" width="300" height="1059.9" rx="10"/>
+  <text class="ar-h" x="404" y="166" font-size="15">Preparation (build job)</text>
+  <text class="ar-m" x="404" y="183" font-size="10.5">ubuntu-latest · Python 3.12 · Node 22 · 36 min</text>
+  <rect class="ar-col" x="748" y="141" width="300" height="1059.9" rx="10"/>
+  <text class="ar-h" x="760" y="166" font-size="15">Official sources</text>
+  <text class="ar-m" x="760" y="183" font-size="10.5">enso/observatory.py · feeds/ · reports.py · pypdf</text>
+  <rect class="ar-col" x="1104" y="141" width="300" height="1059.9" rx="10"/>
+  <text class="ar-h" x="1116" y="166" font-size="15">Series, signals and incidents</text>
+  <text class="ar-m" x="1116" y="183" font-size="10.5">Builder · signals.py · freshness.py · EventLog</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="a5-e-1" data-edge="1" data-from="cron" data-to="queue" tabindex="0">
+    <title>1. Every night 23:37 Lima → Queue: scheduled. The nightly run.</title>
+    <path class="ar-e ar-e-trigger" d="M326 240 L354 240 Q360 240 360 246 L360 720 Q360 726 354 726 L326 726" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="360" cy="483" r="9"/>
+    <text class="ar-t" x="360" y="486.8" font-size="10.5" text-anchor="middle">1</text>
+  </g>
+  <g class="ar-edge" id="a5-e-2" data-edge="2" data-from="push" data-to="queue" tabindex="0">
+    <title>2. Merge to main or by hand → Queue: merge or by hand. A change on main is published right away.</title>
+    <path class="ar-e ar-e-human" d="M326 378 L348 378 Q354 378 354 384 L354 762 Q354 768 348 768 L326 768" stroke-dasharray="8 3 2 3" marker-end="url(#a5-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="354" cy="573" r="9"/>
+    <text class="ar-t" x="354" y="576.8" font-size="10.5" text-anchor="middle">2</text>
+  </g>
+  <g class="ar-edge" id="a5-e-3" data-edge="3" data-from="dispatch" data-to="queue" tabindex="0">
+    <title>3. enso-refresh → Queue: a new copy exists. No need to wait for 23:37 to use the Peru copy or an uploaded PDF.</title>
+    <path class="ar-e ar-e-trigger" d="M326 510 L342 510 Q348 510 348 516 L348 786 Q348 792 342 792 L326 792" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="348" cy="651" r="9"/>
+    <text class="ar-t" x="348" y="654.8" font-size="10.5" text-anchor="middle">3</text>
+  </g>
+  <g class="ar-edge" id="a5-e-4" data-edge="4" data-from="wd" data-to="queue" tabindex="0">
+    <title>4. Watchdog → Queue: site behind. Unless a run is in progress or one was relaunched in the last 6 h.</title>
+    <path class="ar-e ar-e-trigger" d="M186 676.8 L186 706.8" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="186" cy="691.8" r="9"/>
+    <text class="ar-t" x="186" y="695.6" font-size="10.5" text-anchor="middle">4</text>
+  </g>
+  <g class="ar-edge" id="a5-e-5" data-edge="5" data-from="queue" data-to="tests" tabindex="0">
+    <title>5. Queue → Tests: the build job starts. If a run is already going, the new one waits its turn.</title>
+    <path class="ar-e ar-e-trigger" d="M326 750 L372 750 Q378 750 378 744 L378 276 Q378 270 384 270 L402 270" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="378" cy="510" r="9"/>
+    <text class="ar-t" x="378" y="513.8" font-size="10.5" text-anchor="middle">5</text>
+  </g>
+  <g class="ar-edge" id="a5-e-6" data-edge="6" data-from="tests" data-to="site-url" tabindex="0">
+    <title>6. Tests → Site address: tests pass. Without green tests it does not go on.</title>
+    <path class="ar-e ar-e-data" d="M540 339.7 L540 369.7" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="354.7" r="9"/>
+    <text class="ar-t" x="540" y="358.5" font-size="10.5" text-anchor="middle">6</text>
+  </g>
+  <g class="ar-edge" id="a5-e-7" data-edge="7" data-from="site-url" data-to="inputs" tabindex="0">
+    <title>7. Site address → Copies and history: address resolved. The address decides where the previous publication and the corrections are read from.</title>
+    <path class="ar-e ar-e-data" d="M540 514.4 L540 544.4" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="529.4" r="9"/>
+    <text class="ar-t" x="540" y="533.2" font-size="10.5" text-anchor="middle">7</text>
+  </g>
+  <g class="ar-edge" id="a5-e-8" data-edge="8" data-from="inputs" data-to="run" tabindex="0">
+    <title>8. Copies and history → python -m enso.observatory: copy folders. The folders go even if empty: the pipeline knows what is missing and logs it.</title>
+    <path class="ar-e ar-e-data" d="M540 689.2 L540 719.2" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="704.2" r="9"/>
+    <text class="ar-t" x="540" y="708" font-size="10.5" text-anchor="middle">8</text>
+  </g>
+  <g class="ar-edge" id="a5-e-9" data-edge="9" data-from="run" data-to="order" tabindex="0">
+    <title>9. python -m enso.observatory → Critical first: reads the sources. 8 minutes for all official sources.</title>
+    <path class="ar-e ar-e-trigger" d="M682 792 L726 792 Q732 792 732 786 L732 264 Q732 258 738 258 L758 258" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="732" cy="525" r="9"/>
+    <text class="ar-t" x="732" y="528.8" font-size="10.5" text-anchor="middle">9</text>
+  </g>
+  <g class="ar-edge" id="a5-e-10" data-edge="10" data-from="order" data-to="enfen" tabindex="0">
+    <title>10. Critical first → Latest ENFEN communiqué: ENFEN communiqués. The communiqué listing, with its fallback ladder.</title>
+    <path class="ar-e ar-e-data" d="M900 315.7 L900 345.7" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="900" cy="330.7" r="9"/>
+    <text class="ar-t" x="900" y="334.5" font-size="10.5" text-anchor="middle">10</text>
+  </g>
+  <g class="ar-edge" id="a5-e-11" data-edge="11" data-from="enfen" data-to="informe" tabindex="0">
+    <title>11. Latest ENFEN communiqué → Technical report: current communiqué. The report is chosen by date, not number, and downloaded only once.</title>
+    <path class="ar-e ar-e-data" d="M900 505.6 L900 535.6" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="900" cy="520.6" r="9"/>
+    <text class="ar-t" x="900" y="524.4" font-size="10.5" text-anchor="middle">11</text>
+  </g>
+  <g class="ar-edge" id="a5-e-12" data-edge="12" data-from="informe" data-to="llm" tabindex="0">
+    <title>12. Technical report → Optional second reading: the reader fails. The model&#x27;s proposal waits for review; it is never published on its own.</title>
+    <path class="ar-e ar-e-fallback" d="M900 695.5 L900 725.5" stroke-dasharray="6 4" marker-end="url(#a5-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="900" cy="710.5" r="9"/>
+    <text class="ar-t" x="900" y="714.3" font-size="10.5" text-anchor="middle">12</text>
+  </g>
+  <g class="ar-edge" id="a5-e-13" data-edge="13" data-from="order" data-to="others" tabindex="0">
+    <title>13. Critical first → NOAA, IGP and IMARPE: the other 14 sources. NOAA, the ICEN and IMARPE&#x27;s bulletin, each with its reader.</title>
+    <path class="ar-e ar-e-data" d="M1038 258 L1056 258 Q1062 258 1062 264 L1062 942 Q1062 948 1056 948 L1038 948" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1062" cy="603" r="9"/>
+    <text class="ar-t" x="1062" y="606.8" font-size="10.5" text-anchor="middle">13</text>
+  </g>
+  <g class="ar-edge" id="a5-e-14" data-edge="14" data-from="others" data-to="drift" tabindex="0">
+    <title>14. NOAA, IGP and IMARPE → Format fingerprint: parsed data. With their format fingerprint and range warnings.</title>
+    <path class="ar-e ar-e-data" d="M900 1021 L900 1051" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="900" cy="1036" r="9"/>
+    <text class="ar-t" x="900" y="1039.8" font-size="10.5" text-anchor="middle">14</text>
+  </g>
+  <g class="ar-edge" id="a5-e-15" data-edge="15" data-from="drift" data-to="builder" tabindex="0">
+    <title>15. Format fingerprint → Series and statuses: valid or carried. Each source brings its fresh value or the last good one, with its real date.</title>
+    <path class="ar-e ar-e-data" d="M1038 1092 L1080 1092 Q1086 1092 1086 1086 L1086 432 Q1086 426 1092 426 L1114 426" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1086" cy="759" r="9"/>
+    <text class="ar-t" x="1086" y="762.8" font-size="10.5" text-anchor="middle">15</text>
+  </g>
+  <g class="ar-edge" id="a5-e-16" data-edge="16" data-from="ref" data-to="builder" tabindex="0">
+    <title>16. Reference data → Series and statuses: thresholds and categories. Categories and the signal come from Python; the browser only adds reading aids.</title>
+    <path class="ar-e ar-e-data" d="M1254 324.5 L1254 354.5" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="339.5" r="9"/>
+    <text class="ar-t" x="1254" y="343.3" font-size="10.5" text-anchor="middle">16</text>
+  </g>
+  <g class="ar-edge" id="a5-e-17" data-edge="17" data-from="builder" data-to="grd" tabindex="0">
+    <title>17. Series and statuses → GRD signal: latest values. The signal uses OISST, winds, D20 and SOI.</title>
+    <path class="ar-e ar-e-data" d="M1254 499.3 L1254 529.3" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="514.3" r="9"/>
+    <text class="ar-t" x="1254" y="518.1" font-size="10.5" text-anchor="middle">17</text>
+  </g>
+  <g class="ar-edge" id="a5-e-18" data-edge="18" data-from="grd" data-to="fresh" tabindex="0">
+    <title>18. GRD signal → Freshness of each value: status by indicator. Everything goes through freshness before being published.</title>
+    <path class="ar-e ar-e-data" d="M1254 634.8 L1254 664.8" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="649.8" r="9"/>
+    <text class="ar-t" x="1254" y="653.6" font-size="10.5" text-anchor="middle">18</text>
+  </g>
+  <g class="ar-edge" id="a5-e-19" data-edge="19" data-from="drift" data-to="log" tabindex="0">
+    <title>19. Format fingerprint → Incident log: each stage&#x27;s problems. format-drift, format-changed, unreachable, carried-forward and the health of the copies.</title>
+    <path class="ar-e ar-e-data" d="M1038 1146 L1086 1146 Q1092 1146 1092 1140 L1092 864 Q1092 858 1098 858 L1114 858" marker-end="url(#a5-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1092" cy="1002" r="9"/>
+    <text class="ar-t" x="1092" y="1005.8" font-size="10.5" text-anchor="middle">19</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="a5-n-cron" data-node="cron">
+    <title>Every night 23:37 Lima. cron 37 4 * * * (04:37 UTC; Peru has no daylight saving).</title>
+    <rect class="ar-node ar-g-operations" x="46" y="195" width="280" height="90.4" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="203" width="4" height="74.4" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 208)"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g>
+    <text class="ar-t" x="96" y="224.5" font-size="12.5">Every night 23:37 Lima</text>
+    <text class="ar-s" x="58" y="256.4" font-size="11">cron 37 4 * * * (04:37 UTC; Peru has no</text>
+    <text class="ar-s" x="58" y="271.6" font-size="11">daylight saving).</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-push" data-node="push">
+    <title>Merge to main or by hand. Every push to main publishes (except changes only in .md or docs/). By hand you choose whether to ask the Internet Archive for new copies.</title>
+    <rect class="ar-node ar-g-people" x="46" y="315.4" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-people" x="46" y="323.4" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="58" y="325.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(61 328.4)"><circle cx="12" cy="12" r="3.5"/><path d="M2 12h6.5M15.5 12H22"/></g>
+    <text class="ar-t" x="96" y="344.9" font-size="12.5">Merge to main or by hand</text>
+    <text class="ar-s" x="58" y="376.8" font-size="11">Every push to main publishes (except</text>
+    <text class="ar-s" x="58" y="392" font-size="11">changes only in .md or docs/). By hand you</text>
+    <text class="ar-s" x="58" y="407.2" font-size="11">choose whether to ask the Internet Archive</text>
+    <text class="ar-s" x="58" y="422.3" font-size="11">for new copies.</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-dispatch" data-node="dispatch">
+    <title>enso-refresh. repository_dispatch from the Peru collector, the documents console or, if enabled, n8n.</title>
+    <rect class="ar-node ar-g-channels" x="46" y="466.1" width="280" height="90.4" rx="8"/>
+    <rect class="ar-f-channels" x="46" y="474.1" width="4" height="74.4" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="58" y="476.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(61 479.1)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
+    <text class="ar-t" x="96" y="495.6" font-size="12.5">enso-refresh</text>
+    <text class="ar-s" x="58" y="527.5" font-size="11">repository_dispatch from the Peru collector,</text>
+    <text class="ar-s" x="58" y="542.7" font-size="11">the documents console or, if enabled, n8n.</text>
+    <a class="ar-annex" href="a7-en.svg" data-annex="a7"><title>Annex A7: Review consoles on Cloudflare</title><rect class="ar-tag" x="290.6" y="473.1" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="485.6" font-size="10.5" text-anchor="middle">A7</text></a>
+    <a class="ar-annex" href="a2-en.svg" data-annex="a2"><title>Annex A2: Peru collector: the local server</title><rect class="ar-tag" x="259.1" y="473.1" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="272.8" y="485.6" font-size="10.5" text-anchor="middle">A2</text></a>
+  </g>
+  <g class="ar-node-g" id="a5-n-wd" data-node="wd">
+    <title>Watchdog. Relaunches the run if the site is older than 30 h.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="586.4" width="280" height="90.4" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="594.4" width="4" height="74.4" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="596.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 599.4)"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g>
+    <text class="ar-t" x="96" y="615.9" font-size="12.5">Watchdog</text>
+    <text class="ar-s" x="58" y="647.9" font-size="11">Relaunches the run if the site is older than 30</text>
+    <text class="ar-s" x="58" y="663" font-size="11">h.</text>
+    <a class="ar-annex" href="a10-en.svg" data-annex="a10"><title>Annex A10: Monitoring, alerts and maintenance</title><rect class="ar-tag" x="283.3" y="593.4" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="300.6" y="605.9" font-size="10.5" text-anchor="middle">A10</text></a>
+  </g>
+  <g class="ar-node-g" id="a5-n-queue" data-node="queue">
+    <title>Queue. Group enso-production-publication: one run at a time and one waiting; the one in progress is never cancelled.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="706.8" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="714.8" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="716.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 719.8)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="96" y="736.3" font-size="12.5">Queue</text>
+    <text class="ar-s" x="58" y="768.2" font-size="11">Group enso-production-publication: one run at</text>
+    <text class="ar-s" x="58" y="783.4" font-size="11">a time and one waiting; the one in progress is</text>
+    <text class="ar-s" x="58" y="798.6" font-size="11">never cancelled.</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-tests" data-node="tests">
+    <title>Tests. pytest without a browser: readers against real and historical answers, thresholds and a full offline publication. If they fail, nothing is published. Technology: pytest.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="195" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="203" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 208)"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></g>
+    <text class="ar-t" x="452" y="224.5" font-size="12.5">Tests</text>
+    <text class="ar-s" x="414" y="256.4" font-size="11">pytest without a browser: readers against real</text>
+    <text class="ar-s" x="414" y="271.6" font-size="11">and historical answers, thresholds and a full</text>
+    <text class="ar-s" x="414" y="286.8" font-size="11">offline publication. If they fail, nothing is</text>
+    <text class="ar-s" x="414" y="302" font-size="11">published.</text>
+    <rect class="ar-chip" x="414" y="311.7" width="43.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="323.7" font-size="10">pytest</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-site-url" data-node="site-url">
+    <title>Site address. DEPLOY_TARGET picks GitHub Pages or Cloudflare Pages; with Cloudflare the address comes from the project and place corrections from /api/geo/overrides. Technology: cloudflare_pages.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="369.7" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="377.7" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="379.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 382.7)"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></g>
+    <text class="ar-t" x="452" y="399.2" font-size="12.5">Site address</text>
+    <text class="ar-s" x="414" y="431.2" font-size="11">DEPLOY_TARGET picks GitHub Pages or</text>
+    <text class="ar-s" x="414" y="446.3" font-size="11">Cloudflare Pages; with Cloudflare the address</text>
+    <text class="ar-s" x="414" y="461.5" font-size="11">comes from the project and place corrections</text>
+    <text class="ar-s" x="414" y="476.7" font-size="11">from /api/geo/overrides.</text>
+    <rect class="ar-chip" x="414" y="486.4" width="112.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="498.4" font-size="10">cloudflare_pages.py</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-inputs" data-node="inputs">
+    <title>Copies and history. Fetches data-peru, data-n8n and data-manual, the news-history copy from data-archive and the reader-feed state. If something is missing, it goes on and logs it. Technology: git, gh api, actions/cache.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="544.4" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="552.4" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="554.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 557.4)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
+    <text class="ar-t" x="452" y="573.9" font-size="12.5">Copies and history</text>
+    <text class="ar-s" x="414" y="605.9" font-size="11">Fetches data-peru, data-n8n and</text>
+    <text class="ar-s" x="414" y="621" font-size="11">data-manual, the news-history copy from</text>
+    <text class="ar-s" x="414" y="636.2" font-size="11">data-archive and the reader-feed state. If</text>
+    <text class="ar-s" x="414" y="651.4" font-size="11">something is missing, it goes on and logs it.</text>
+    <rect class="ar-chip" x="414" y="661.2" width="25.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="673.2" font-size="10">git</text>
+    <rect class="ar-chip" x="444.1" y="661.2" width="43.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="450.1" y="673.2" font-size="10">gh api</text>
+    <rect class="ar-chip" x="492.2" y="661.2" width="81" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="498.2" y="673.2" font-size="10">actions/cache</text>
+    <a class="ar-annex" href="a4-en.svg" data-annex="a4"><title>Annex A4: Download in GitHub Actions and per-source fallbacks</title><rect class="ar-tag" x="646.6" y="551.4" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="660.3" y="563.9" font-size="10.5" text-anchor="middle">A4</text></a>
+  </g>
+  <g class="ar-node-g" id="a5-n-run" data-node="run">
+    <title>python -m enso.observatory. --out public/data, --previous ${SITE_URL}data, the copies, the history and --fail-on critical. 26 min limit. Technology: Python 3.12, httpx.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="719.2" width="280" height="148" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="727.2" width="4" height="132" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="729.2" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 732.2)"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12.5 15H17"/></g>
+    <text class="ar-t" x="452" y="748.7" font-size="12.5">python -m enso.observatory</text>
+    <text class="ar-s" x="414" y="780.6" font-size="11">--out public/data, --previous</text>
+    <text class="ar-s" x="414" y="795.8" font-size="11">${SITE_URL}data, the copies, the history and</text>
+    <text class="ar-s" x="414" y="810.9" font-size="11">--fail-on critical.</text>
+    <text class="ar-m" x="414" y="830.1" font-size="10.5">26 min limit</text>
+    <rect class="ar-chip" x="414" y="839.2" width="72.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="851.2" font-size="10">Python 3.12</text>
+    <rect class="ar-chip" x="491.1" y="839.2" width="38.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="497.1" y="851.2" font-size="10">httpx</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-order" data-node="order">
+    <title>Critical first. ENFEN, ICEN and the ENSO discussion go first: a bad NOAA day does not leave the communiqué unread. Then the other 14 sources, each with its fallback ladder.</title>
+    <rect class="ar-node ar-g-pipeline" x="758" y="195" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="758" y="203" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="770" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(773 208)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="808" y="224.5" font-size="12.5">Critical first</text>
+    <text class="ar-s" x="770" y="256.4" font-size="11">ENFEN, ICEN and the ENSO discussion go</text>
+    <text class="ar-s" x="770" y="271.6" font-size="11">first: a bad NOAA day does not leave the</text>
+    <text class="ar-s" x="770" y="286.8" font-size="11">communiqué unread. Then the other 14</text>
+    <text class="ar-s" x="770" y="302" font-size="11">sources, each with its fallback ladder.</text>
+    <a class="ar-annex" href="a4-en.svg" data-annex="a4"><title>Annex A4: Download in GitHub Actions and per-source fallbacks</title><rect class="ar-tag" x="1002.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="214.5" font-size="10.5" text-anchor="middle">A4</text></a>
+  </g>
+  <g class="ar-node-g" id="a5-n-enfen" data-node="enfen">
+    <title>Latest ENFEN communiqué. Joins the portal listing, the DHN mirror and the API; probes the numbers after the latest known one (up to 6) and reads the PDF: number, status, level, dates, summary and outlook by region. Technology: pypdf, feeds/peru.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="758" y="345.7" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="758" y="353.7" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="770" y="355.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(773 358.7)"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></g>
+    <text class="ar-t" x="808" y="375.2" font-size="12.5">Latest ENFEN communiqué</text>
+    <text class="ar-s" x="770" y="407.2" font-size="11">Joins the portal listing, the DHN mirror and</text>
+    <text class="ar-s" x="770" y="422.3" font-size="11">the API; probes the numbers after the latest</text>
+    <text class="ar-s" x="770" y="437.5" font-size="11">known one (up to 6) and reads the PDF:</text>
+    <text class="ar-s" x="770" y="452.7" font-size="11">number, status, level, dates, summary and</text>
+    <text class="ar-s" x="770" y="467.9" font-size="11">outlook by region.</text>
+    <rect class="ar-chip" x="770" y="477.6" width="40.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="489.6" font-size="10">pypdf</text>
+    <rect class="ar-chip" x="815.5" y="477.6" width="81.2" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="821.5" y="489.6" font-size="10">feeds/peru.py</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-informe" data-node="informe">
+    <title>Technical report. Once per communiqué (10 to 20 MB): provisional ICEN and monthly probabilities, with page and quote. Validated with a schema, sums to 100 % and IGP&#x27;s ICEN; if no route brings it, it waits in the console. Technology: reports.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="758" y="535.6" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="758" y="543.6" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="770" y="545.6" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(773 548.6)"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></g>
+    <text class="ar-t" x="808" y="565.1" font-size="12.5">Technical report</text>
+    <text class="ar-s" x="770" y="597" font-size="11">Once per communiqué (10 to 20 MB):</text>
+    <text class="ar-s" x="770" y="612.2" font-size="11">provisional ICEN and monthly probabilities,</text>
+    <text class="ar-s" x="770" y="627.4" font-size="11">with page and quote. Validated with a</text>
+    <text class="ar-s" x="770" y="642.6" font-size="11">schema, sums to 100 % and IGP&#x27;s ICEN; if no</text>
+    <text class="ar-s" x="770" y="657.8" font-size="11">route brings it, it waits in the console.</text>
+    <rect class="ar-chip" x="770" y="667.5" width="63.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="679.5" font-size="10">reports.py</text>
+    <a class="ar-annex" href="a7-en.svg" data-annex="a7"><title>Annex A7: Review consoles on Cloudflare</title><rect class="ar-tag" x="1002.6" y="542.6" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="555.1" font-size="10.5" text-anchor="middle">A7</text></a>
+  </g>
+  <g class="ar-node-g" id="a5-n-llm" data-node="llm">
+    <title>Optional second reading. Only if the deterministic reader fails and ENSO_LLM_EXTRACT_URL is set: the n8n extractor proposes, the schema checks and nothing is published without review.</title>
+    <rect class="ar-node ar-g-pipeline" x="758" y="725.5" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="758" y="733.5" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="770" y="735.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(773 738.5)"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></g>
+    <text class="ar-t" x="808" y="755" font-size="12.5">Optional second reading</text>
+    <text class="ar-s" x="770" y="786.9" font-size="11">Only if the deterministic reader fails and</text>
+    <text class="ar-s" x="770" y="802.1" font-size="11">ENSO_LLM_EXTRACT_URL is set: the n8n</text>
+    <text class="ar-s" x="770" y="817.3" font-size="11">extractor proposes, the schema checks and</text>
+    <text class="ar-s" x="770" y="832.5" font-size="11">nothing is published without review.</text>
+    <a class="ar-annex" href="a3-en.svg" data-annex="a3"><title>Annex A3: n8n in the cloud (AWS): second copy and helper workflows</title><rect class="ar-tag" x="1002.6" y="732.5" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="745" font-size="10.5" text-anchor="middle">A3</text></a>
+  </g>
+  <g class="ar-node-g" id="a5-n-others" data-node="others">
+    <title>NOAA, IGP and IMARPE. Readers by headers, not positions: CPC and PSL text, the ENSO discussion in HTML, the ICEN, GODAS D20 (HTTP range of the GRIB) and IMARPE&#x27;s bulletin (Sundays). Technology: cpc.py, godas.py, imarpe_bsobp.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="758" y="876.2" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="758" y="884.2" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="770" y="886.2" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(773 889.2)"><path d="M2 12c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M2 17c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M12 3v4"/></g>
+    <text class="ar-t" x="808" y="905.7" font-size="12.5">NOAA, IGP and IMARPE</text>
+    <text class="ar-s" x="770" y="937.7" font-size="11">Readers by headers, not positions: CPC and</text>
+    <text class="ar-s" x="770" y="952.8" font-size="11">PSL text, the ENSO discussion in HTML, the</text>
+    <text class="ar-s" x="770" y="968" font-size="11">ICEN, GODAS D20 (HTTP range of the GRIB)</text>
+    <text class="ar-s" x="770" y="983.2" font-size="11">and IMARPE&#x27;s bulletin (Sundays).</text>
+    <rect class="ar-chip" x="770" y="993" width="44.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="1005" font-size="10">cpc.py</text>
+    <rect class="ar-chip" x="819.8" y="993" width="57.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="825.8" y="1005" font-size="10">godas.py</text>
+    <rect class="ar-chip" x="882.4" y="993" width="98.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="888.4" y="1005" font-size="10">imarpe_bsobp.py</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-drift" data-node="drift">
+    <title>Format fingerprint. Each reader returns a fingerprint (headers, columns, pattern). If it changes from yesterday, format-drift; if it can no longer be read, FormatChanged and the value is not published.</title>
+    <rect class="ar-node ar-g-pipeline" x="758" y="1051" width="280" height="135.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="758" y="1059" width="4" height="119.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="770" y="1061" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(773 1064)"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></g>
+    <text class="ar-t" x="808" y="1080.5" font-size="12.5">Format fingerprint</text>
+    <text class="ar-s" x="770" y="1112.4" font-size="11">Each reader returns a fingerprint (headers,</text>
+    <text class="ar-s" x="770" y="1127.6" font-size="11">columns, pattern). If it changes from</text>
+    <text class="ar-s" x="770" y="1142.8" font-size="11">yesterday, format-drift; if it can no longer be</text>
+    <text class="ar-s" x="770" y="1157.9" font-size="11">read, FormatChanged and the value is not</text>
+    <text class="ar-s" x="770" y="1173.1" font-size="11">published.</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-ref" data-node="ref">
+    <title>Reference data. ICEN categories (ENFEN Technical Note 01-2024), GRD team thresholds (transcribed draft), UBIGEO and IGN boundaries. Technology: YAML, JSON.</title>
+    <rect class="ar-node ar-g-stores" x="1114" y="195" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-stores" x="1114" y="203" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="1126" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(1129 208)"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></g>
+    <text class="ar-t" x="1164" y="224.5" font-size="12.5">Reference data</text>
+    <text class="ar-s" x="1126" y="256.4" font-size="11">ICEN categories (ENFEN Technical Note</text>
+    <text class="ar-s" x="1126" y="271.6" font-size="11">01-2024), GRD team thresholds (transcribed</text>
+    <text class="ar-s" x="1126" y="286.8" font-size="11">draft), UBIGEO and IGN boundaries.</text>
+    <rect class="ar-chip" x="1126" y="296.5" width="39.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="308.5" font-size="10">YAML</text>
+    <rect class="ar-chip" x="1170.2" y="296.5" width="36.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1176.2" y="308.5" font-size="10">JSON</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-builder" data-node="builder">
+    <title>Series and statuses. 23 series with latest value, age and category, the weekly data by Niño region, the ENFEN and NOAA statuses and ICEN events (+0.5 or −0.7 for at least 3 months). Technology: Builder, signals.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="354.5" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="362.5" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="364.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 367.5)"><path d="M4 4v16h16"/><path d="M7 15l4-5 3 3 5-6"/></g>
+    <text class="ar-t" x="1164" y="384" font-size="12.5">Series and statuses</text>
+    <text class="ar-s" x="1126" y="416" font-size="11">23 series with latest value, age and category,</text>
+    <text class="ar-s" x="1126" y="431.1" font-size="11">the weekly data by Niño region, the ENFEN</text>
+    <text class="ar-s" x="1126" y="446.3" font-size="11">and NOAA statuses and ICEN events (+0.5 or</text>
+    <text class="ar-s" x="1126" y="461.5" font-size="11">−0.7 for at least 3 months).</text>
+    <rect class="ar-chip" x="1126" y="471.3" width="47.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="483.3" font-size="10">Builder</text>
+    <rect class="ar-chip" x="1178.4" y="471.3" width="62.2" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1184.4" y="483.3" font-size="10">signals.py</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-grd" data-node="grd">
+    <title>GRD signal. Normal, yellow, red, unclassified or no data for each indicator: coastal and basin SST, winds, thermocline (GODAS D20) and SOI.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="529.3" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="537.3" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="539.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 542.3)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+    <text class="ar-t" x="1164" y="558.8" font-size="12.5">GRD signal</text>
+    <text class="ar-s" x="1126" y="590.7" font-size="11">Normal, yellow, red, unclassified or no data</text>
+    <text class="ar-s" x="1126" y="605.9" font-size="11">for each indicator: coastal and basin SST,</text>
+    <text class="ar-s" x="1126" y="621" font-size="11">winds, thermocline (GODAS D20) and SOI.</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-fresh" data-node="fresh">
+    <title>Freshness of each value. freshness.py marks each value current, late or expired by its institution&#x27;s calendar; an expired one is never shown as current.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="664.8" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="672.8" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="674.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 677.8)"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g>
+    <text class="ar-t" x="1164" y="694.3" font-size="12.5">Freshness of each value</text>
+    <text class="ar-s" x="1126" y="726.2" font-size="11">freshness.py marks each value current, late</text>
+    <text class="ar-s" x="1126" y="741.4" font-size="11">or expired by its institution&#x27;s calendar; an</text>
+    <text class="ar-s" x="1126" y="756.6" font-size="11">expired one is never shown as current.</text>
+  </g>
+  <g class="ar-node-g" id="a5-n-log" data-node="log">
+    <title>Incident log. Each problem with severity (info, warning, error, critical), source, stage, code and fingerprint; includes the health of the Peru and n8n copies.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="800.3" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="808.3" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="810.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 813.3)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="1164" y="829.8" font-size="12.5">Incident log</text>
+    <text class="ar-s" x="1126" y="861.8" font-size="11">Each problem with severity (info, warning,</text>
+    <text class="ar-s" x="1126" y="876.9" font-size="11">error, critical), source, stage, code and</text>
+    <text class="ar-s" x="1126" y="892.1" font-size="11">fingerprint; includes the health of the Peru</text>
+    <text class="ar-s" x="1126" y="907.3" font-size="11">and n8n copies.</text>
+    <a class="ar-annex" href="a10-en.svg" data-annex="a10"><title>Annex A10: Monitoring, alerts and maintenance</title><rect class="ar-tag" x="1351.3" y="807.3" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="1368.6" y="819.8" font-size="10.5" text-anchor="middle">A10</text></a>
+  </g>
+  <line class="ar-rule" x1="20" y1="1240.9" x2="1420" y2="1240.9"/>
+  <text class="ar-h" x="20" y="1270.9" font-size="15">Steps and connections: what travels along each line, when and why</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1298.9" r="9"/>
+  <text class="ar-t" x="30" y="1302.7" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="1302.9" font-size="11.5">scheduled</text>
+  <text class="ar-m" x="50" y="1316.9" font-size="10.5">Every night 23:37 Lima → Queue · daily 23:37 Lima</text>
+  <text class="ar-s" x="50" y="1331.9" font-size="11">The nightly run.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1354.9" r="9"/>
+  <text class="ar-t" x="30" y="1358.7" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1358.9" font-size="11.5">merge or by hand</text>
+  <text class="ar-m" x="50" y="1372.9" font-size="10.5">Merge to main or by hand → Queue</text>
+  <text class="ar-s" x="50" y="1387.9" font-size="11">A change on main is published right away.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1410.9" r="9"/>
+  <text class="ar-t" x="30" y="1414.7" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1414.9" font-size="11.5">a new copy exists</text>
+  <text class="ar-m" x="50" y="1428.9" font-size="10.5">enso-refresh → Queue</text>
+  <text class="ar-s" x="50" y="1443.9" font-size="11">No need to wait for 23:37 to use the Peru copy or an uploaded PDF.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1466.9" r="9"/>
+  <text class="ar-t" x="30" y="1470.7" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1470.9" font-size="11.5">site behind</text>
+  <text class="ar-m" x="50" y="1484.9" font-size="10.5">Watchdog → Queue</text>
+  <text class="ar-s" x="50" y="1499.9" font-size="11">Unless a run is in progress or one was relaunched in the last 6 h.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1522.9" r="9"/>
+  <text class="ar-t" x="30" y="1526.7" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="1526.9" font-size="11.5">the build job starts</text>
+  <text class="ar-m" x="50" y="1540.9" font-size="10.5">Queue → Tests</text>
+  <text class="ar-s" x="50" y="1555.9" font-size="11">If a run is already going, the new one waits its turn.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1578.9" r="9"/>
+  <text class="ar-t" x="30" y="1582.7" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="50" y="1582.9" font-size="11.5">tests pass</text>
+  <text class="ar-m" x="50" y="1596.9" font-size="10.5">Tests → Site address</text>
+  <text class="ar-s" x="50" y="1611.9" font-size="11">Without green tests it does not go on.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1634.9" r="9"/>
+  <text class="ar-t" x="30" y="1638.7" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="50" y="1638.9" font-size="11.5">address resolved</text>
+  <text class="ar-m" x="50" y="1652.9" font-size="10.5">Site address → Copies and history</text>
+  <text class="ar-s" x="50" y="1667.9" font-size="11">The address decides where the previous publication and the corrections</text>
+  <text class="ar-s" x="50" y="1682.9" font-size="11">are read from.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1298.9" r="9"/>
+  <text class="ar-t" x="506" y="1302.7" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1302.9" font-size="11.5">copy folders</text>
+  <text class="ar-m" x="526" y="1316.9" font-size="10.5">Copies and history → python -m enso.observatory</text>
+  <text class="ar-s" x="526" y="1331.9" font-size="11">The folders go even if empty: the pipeline knows what is missing and logs</text>
+  <text class="ar-s" x="526" y="1346.9" font-size="11">it.</text>
+  <circle class="ar-badge ar-e-trigger" cx="506" cy="1369.9" r="9"/>
+  <text class="ar-t" x="506" y="1373.7" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1373.9" font-size="11.5">reads the sources</text>
+  <text class="ar-m" x="526" y="1387.9" font-size="10.5">python -m enso.observatory → Critical first</text>
+  <text class="ar-s" x="526" y="1402.9" font-size="11">8 minutes for all official sources.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1425.9" r="9"/>
+  <text class="ar-t" x="506" y="1429.7" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="526" y="1429.9" font-size="11.5">ENFEN communiqués</text>
+  <text class="ar-m" x="526" y="1443.9" font-size="10.5">Critical first → Latest ENFEN communiqué</text>
+  <text class="ar-s" x="526" y="1458.9" font-size="11">The communiqué listing, with its fallback ladder.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1481.9" r="9"/>
+  <text class="ar-t" x="506" y="1485.7" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="526" y="1485.9" font-size="11.5">current communiqué</text>
+  <text class="ar-m" x="526" y="1499.9" font-size="10.5">Latest ENFEN communiqué → Technical report</text>
+  <text class="ar-s" x="526" y="1514.9" font-size="11">The report is chosen by date, not number, and downloaded only once.</text>
+  <circle class="ar-badge ar-e-fallback" cx="506" cy="1537.9" r="9"/>
+  <text class="ar-t" x="506" y="1541.7" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="526" y="1541.9" font-size="11.5">the reader fails</text>
+  <text class="ar-m" x="526" y="1555.9" font-size="10.5">Technical report → Optional second reading</text>
+  <text class="ar-s" x="526" y="1570.9" font-size="11">The model&#x27;s proposal waits for review; it is never published on its own.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1593.9" r="9"/>
+  <text class="ar-t" x="506" y="1597.7" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="526" y="1597.9" font-size="11.5">the other 14 sources</text>
+  <text class="ar-m" x="526" y="1611.9" font-size="10.5">Critical first → NOAA, IGP and IMARPE</text>
+  <text class="ar-s" x="526" y="1626.9" font-size="11">NOAA, the ICEN and IMARPE&#x27;s bulletin, each with its reader.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1298.9" r="9"/>
+  <text class="ar-t" x="982" y="1302.7" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1302.9" font-size="11.5">parsed data</text>
+  <text class="ar-m" x="1002" y="1316.9" font-size="10.5">NOAA, IGP and IMARPE → Format fingerprint</text>
+  <text class="ar-s" x="1002" y="1331.9" font-size="11">With their format fingerprint and range warnings.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1354.9" r="9"/>
+  <text class="ar-t" x="982" y="1358.7" font-size="10.5" text-anchor="middle">15</text>
+  <text class="ar-t" x="1002" y="1358.9" font-size="11.5">valid or carried</text>
+  <text class="ar-m" x="1002" y="1372.9" font-size="10.5">Format fingerprint → Series and statuses</text>
+  <text class="ar-s" x="1002" y="1387.9" font-size="11">Each source brings its fresh value or the last good one, with its real date.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1410.9" r="9"/>
+  <text class="ar-t" x="982" y="1414.7" font-size="10.5" text-anchor="middle">16</text>
+  <text class="ar-t" x="1002" y="1414.9" font-size="11.5">thresholds and categories</text>
+  <text class="ar-m" x="1002" y="1428.9" font-size="10.5">Reference data → Series and statuses</text>
+  <text class="ar-s" x="1002" y="1443.9" font-size="11">Categories and the signal come from Python; the browser only adds</text>
+  <text class="ar-s" x="1002" y="1458.9" font-size="11">reading aids.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1481.9" r="9"/>
+  <text class="ar-t" x="982" y="1485.7" font-size="10.5" text-anchor="middle">17</text>
+  <text class="ar-t" x="1002" y="1485.9" font-size="11.5">latest values</text>
+  <text class="ar-m" x="1002" y="1499.9" font-size="10.5">Series and statuses → GRD signal</text>
+  <text class="ar-s" x="1002" y="1514.9" font-size="11">The signal uses OISST, winds, D20 and SOI.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1537.9" r="9"/>
+  <text class="ar-t" x="982" y="1541.7" font-size="10.5" text-anchor="middle">18</text>
+  <text class="ar-t" x="1002" y="1541.9" font-size="11.5">status by indicator</text>
+  <text class="ar-m" x="1002" y="1555.9" font-size="10.5">GRD signal → Freshness of each value</text>
+  <text class="ar-s" x="1002" y="1570.9" font-size="11">Everything goes through freshness before being published.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1593.9" r="9"/>
+  <text class="ar-t" x="982" y="1597.7" font-size="10.5" text-anchor="middle">19</text>
+  <text class="ar-t" x="1002" y="1597.9" font-size="11.5">each stage&#x27;s problems</text>
+  <text class="ar-m" x="1002" y="1611.9" font-size="10.5">Format fingerprint → Incident log</text>
+  <text class="ar-s" x="1002" y="1626.9" font-size="11">format-drift, format-changed, unreachable, carried-forward and the health</text>
+  <text class="ar-s" x="1002" y="1641.9" font-size="11">of the copies.</text>
+  <line class="ar-rule" x1="20" y1="1717.9" x2="1420" y2="1717.9"/>
+  <text class="ar-h" x="20" y="1747.9" font-size="15">If something fails: what happens and which fallback takes over</text>
+  <g class="ar-warn" transform="translate(20 1764.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1779.9" font-size="11.5">Tests fail</text>
+  <text class="ar-s" x="50" y="1794.9" font-size="11">The pipeline does not run and nothing is published; yesterday&#x27;s site stays</text>
+  <text class="ar-s" x="50" y="1809.9" font-size="11">and “The daily update failed” opens.</text>
+  <g class="ar-warn" transform="translate(20 1821.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1836.9" font-size="11.5">The communiqué or its report arrive by no route</text>
+  <text class="ar-s" x="50" y="1851.9" font-size="11">It waits in the documents console (manual-download-needed) and the last</text>
+  <text class="ar-s" x="50" y="1866.9" font-size="11">good one is kept, marked.</text>
+  <g class="ar-warn" transform="translate(496 1764.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1779.9" font-size="11.5">A report value does not add up</text>
+  <text class="ar-s" x="526" y="1794.9" font-size="11">That part is not published (for example, probabilities not adding to 100 %);</text>
+  <text class="ar-s" x="526" y="1809.9" font-size="11">the incident and the last good value stay.</text>
+  <g class="ar-warn" transform="translate(496 1821.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1836.9" font-size="11.5">A source&#x27;s format changes</text>
+  <text class="ar-s" x="526" y="1851.9" font-size="11">If it can still be read, format-drift for review; if not, the value stays in</text>
+  <text class="ar-s" x="526" y="1866.9" font-size="11">validation and the previous one is used.</text>
+  <g class="ar-warn" transform="translate(972 1764.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1779.9" font-size="11.5">The pipeline exceeds 26 minutes</text>
+  <text class="ar-s" x="1002" y="1794.9" font-size="11">That step fails, but the reader-feed state and the report are saved anyway</text>
+  <text class="ar-s" x="1002" y="1809.9" font-size="11">(always()); nothing is deployed.</text>
+  <g class="ar-warn" transform="translate(972 1821.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1836.9" font-size="11.5">Two requests arrive at once</text>
+  <text class="ar-s" x="1002" y="1851.9" font-size="11">One run at a time and one waiting: two publications never overlap.</text>
+</svg>

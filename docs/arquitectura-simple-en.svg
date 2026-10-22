@@ -1,0 +1,499 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 2349.7" role="img" aria-labelledby="as-t as-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="as-t">Peru ENSO Observatory architecture: simplified diagram</title>
+  <desc id="as-d">Official ENSO sources, hazard alerts and news feeds are fetched every night by three collectors: a machine in Peru (21:00), n8n in the cloud (22:50) and GitHub Actions (23:37), following a registry measured every Monday. When a source does not answer, the Peru and n8n copies, the Internet Archive or the previous publication are used. The Python pipeline reads, validates, places news by location and publishes everything at once; the site shows each value with links to the live source and the archived copy. Two watchdogs check the site every 6 hours and incidents become issues.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="as-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="as-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="as-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="as-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="as-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1200" height="2349.7" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Peru ENSO Observatory architecture: simplified diagram</text>
+  <text class="ar-s" x="20" y="60" font-size="12">Read it top to bottom. Box numbers follow the walkthrough below; line letters are the connections, explained at the end. Tags A1 to A10 open each part&#x27;s annex: its steps, technologies and</text>
+  <text class="ar-s" x="20" y="77" font-size="12">fallbacks.</text>
+  <text class="ar-t" x="20" y="104" font-size="11.5">Lines:</text>
+  <path class="ar-e ar-e-data" d="M70.7 100 L104.7 100" marker-end="url(#as-m-data)"/>
+  <text class="ar-s" x="112.7" y="104" font-size="11.5">data</text>
+  <path class="ar-e ar-e-fallback" d="M160.6 100 L194.6 100" stroke-dasharray="6 4" marker-end="url(#as-m-fallback)"/>
+  <text class="ar-s" x="202.6" y="104" font-size="11.5">fallback</text>
+  <path class="ar-e ar-e-trigger" d="M269.4 100 L303.4 100" stroke-dasharray="2 3" marker-end="url(#as-m-trigger)"/>
+  <text class="ar-s" x="311.4" y="104" font-size="11.5">trigger or control</text>
+  <path class="ar-e ar-e-human" d="M431.5 100 L465.5 100" stroke-dasharray="8 3 2 3" marker-end="url(#as-m-human)"/>
+  <text class="ar-s" x="473.5" y="104" font-size="11.5">manual step</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="as-e-A" data-edge="A" data-from="s-fuentes" data-to="s-recolectores" tabindex="0">
+    <title>A. Official sources and alerts → Collectors (Actions, n8n, Peru): Downloaded every night. Every night the collectors download the official data and alerts. What only answers inside the country, like the ENFEN portal, is fetched by the computer in Peru.</title>
+    <path class="ar-e ar-e-data" d="M550 186 L564 186 Q570 186 570 192 L570 330 Q570 336 564 336 L504 336 Q498 336 498 342 L498 358" marker-end="url(#as-m-data)"/>
+    <text class="ar-s ar-halo" x="413.1" y="264" font-size="11.5">Downloaded every night</text>
+    <circle class="ar-badge ar-e-data" cx="570" cy="261" r="9"/>
+    <text class="ar-t" x="570" y="264.8" font-size="10.5" text-anchor="middle">A</text>
+  </g>
+  <g class="ar-edge" id="as-e-B" data-edge="B" data-from="s-noticias" data-to="s-recolectores" tabindex="0">
+    <title>B. News → Collectors (Actions, n8n, Peru): News feeds. GitHub Actions reads the news on every run and n8n keeps a copy. Google News forbids robots: it is read like a feed reader, at most once a day.</title>
+    <path class="ar-e ar-e-data" d="M650 174 L636 174 Q630 174 630 180 L630 330 Q630 336 636 336 L696 336 Q702 336 702 342 L702 358" marker-end="url(#as-m-data)"/>
+    <text class="ar-s ar-halo" x="646" y="258" font-size="11.5">News feeds</text>
+    <circle class="ar-badge ar-e-data" cx="630" cy="255" r="9"/>
+    <text class="ar-t" x="630" y="258.8" font-size="10.5" text-anchor="middle">B</text>
+  </g>
+  <g class="ar-edge" id="as-e-C" data-edge="C" data-from="s-recolectores" data-to="s-pipeline" tabindex="0">
+    <title>C. Collectors (Actions, n8n, Peru) → Daily pipeline: Data with its origin. Each value arrives with who downloaded it, from where and when. When the computer in Peru pushes its copy, it also asks for the site to be updated.</title>
+    <path class="ar-e ar-e-data" d="M702 453.7 L702 570 Q702 576 696 576 L522 576 Q516 576 516 582 L516 598" marker-end="url(#as-m-data)"/>
+    <text class="ar-s ar-halo" x="554.4" y="560.5" font-size="11.5">Data with its origin</text>
+    <circle class="ar-badge ar-e-data" cx="609" cy="576" r="9"/>
+    <text class="ar-t" x="609" y="579.8" font-size="10.5" text-anchor="middle">C</text>
+  </g>
+  <g class="ar-edge" id="as-e-D" data-edge="D" data-from="s-respaldo" data-to="s-recolectores" tabindex="0">
+    <title>D. Backup → Collectors (Actions, n8n, Peru): Internet Archive copy. If the source, its mirror and the Peru and n8n copies fail, the download uses the latest Internet Archive copy, with its date.</title>
+    <path class="ar-e ar-e-fallback" d="M300 624 L396 624 Q402 624 402 618 L402 486 Q402 480 408 480 L492 480 Q498 480 498 474 L498 453.7" stroke-dasharray="6 4" marker-end="url(#as-m-fallback)"/>
+    <text class="ar-s ar-halo" x="418" y="555" font-size="11.5">Internet Archive copy</text>
+    <circle class="ar-badge ar-e-fallback" cx="402" cy="552" r="9"/>
+    <text class="ar-t" x="402" y="555.8" font-size="10.5" text-anchor="middle">D</text>
+  </g>
+  <g class="ar-edge" id="as-e-E" data-edge="E" data-from="s-respaldo" data-to="s-pipeline" tabindex="0">
+    <title>E. Backup → Daily pipeline: If a source fails. If a source does not answer today, its last good published value is used, with its real date. A missing news history is restored from the data-archive copy.</title>
+    <path class="ar-e ar-e-fallback" d="M300 660 L390 660 Q396 660 396 654 L396 636 Q396 630 402 630 L420 630" stroke-dasharray="6 4" marker-end="url(#as-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="348" cy="660" r="9"/>
+    <text class="ar-t" x="348" y="663.8" font-size="10.5" text-anchor="middle">E</text>
+  </g>
+  <g class="ar-edge" id="as-e-F" data-edge="F" data-from="s-pipeline" data-to="s-publicacion" tabindex="0">
+    <title>F. Daily pipeline → Publication: Checked data. Series, official statuses, the GRD signal, placed news and the list of problems go on to build the files people will see.</title>
+    <path class="ar-e ar-e-data" d="M684 710.2 L684 828 Q684 834 678 834 L606 834 Q600 834 600 840 L600 858" marker-end="url(#as-m-data)"/>
+    <text class="ar-s ar-halo" x="700" y="775.1" font-size="11.5">Checked data</text>
+    <circle class="ar-badge ar-e-data" cx="684" cy="772.1" r="9"/>
+    <text class="ar-t" x="684" y="775.9" font-size="10.5" text-anchor="middle">F</text>
+  </g>
+  <g class="ar-edge" id="as-e-G" data-edge="G" data-from="s-publicacion" data-to="s-sitio" tabindex="0">
+    <title>G. Publication → Website: Published and checked. The site is uploaded whole at once and then checked to make sure the live page shows the new version. If something serious failed, yesterday&#x27;s stays.</title>
+    <path class="ar-e ar-e-data" d="M600 953.7 L600 1098" marker-end="url(#as-m-data)"/>
+    <text class="ar-s ar-halo" x="616" y="1028.9" font-size="11.5">Published and checked</text>
+    <circle class="ar-badge ar-e-data" cx="600" cy="1025.8" r="9"/>
+    <text class="ar-t" x="600" y="1029.6" font-size="10.5" text-anchor="middle">G</text>
+  </g>
+  <g class="ar-edge" id="as-e-H" data-edge="H" data-from="s-sitio" data-to="s-respaldo" tabindex="0">
+    <title>H. Website → Backup: Today backs up tomorrow. What the site shows today is what tomorrow&#x27;s run uses as the last good value if a source fails.</title>
+    <path class="ar-e ar-e-control" d="M420 1146 L336 1146 Q330 1146 330 1140 L330 756 Q330 750 324 750 L168 750 Q162 750 162 744 L162 726.8" stroke-dasharray="2 3" marker-end="url(#as-m-control)"/>
+    <text class="ar-s ar-halo" x="346" y="1010.4" font-size="11.5">Today backs up tomorrow</text>
+    <circle class="ar-badge ar-e-control" cx="330" cy="1007.4" r="9"/>
+    <text class="ar-t" x="330" y="1011.2" font-size="10.5" text-anchor="middle">H</text>
+  </g>
+  <g class="ar-edge" id="as-e-I" data-edge="I" data-from="s-pipeline" data-to="s-respaldo" tabindex="0">
+    <title>I. Daily pipeline → Backup: Permanent copy. After each good run, the new raw responses and the news history are saved in an archive that never deletes anything.</title>
+    <path class="ar-e ar-e-data" d="M420 678 L330 678 Q324 678 324 684 L324 690 Q324 696 318 696 L300 696" marker-end="url(#as-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="372" cy="678" r="9"/>
+    <text class="ar-t" x="372" y="681.8" font-size="10.5" text-anchor="middle">I</text>
+  </g>
+  <g class="ar-edge" id="as-e-J" data-edge="J" data-from="s-publicacion" data-to="s-consola" tabindex="0">
+    <title>J. Publication → Places and documents console: Items to review. The console has the last 120 days of news and opens on doubtful places, so a person can confirm or fix them.</title>
+    <path class="ar-e ar-e-data" d="M420 906 L330 906 Q324 906 324 912 L324 978 Q324 984 318 984 L300 984" marker-end="url(#as-m-data)"/>
+    <text class="ar-s ar-halo" x="348.3" y="875.6" font-size="11.5">Items to</text>
+    <text class="ar-s ar-halo" x="348.3" y="890.6" font-size="11.5">review</text>
+    <circle class="ar-badge ar-e-data" cx="372" cy="906" r="9"/>
+    <text class="ar-t" x="372" y="909.8" font-size="10.5" text-anchor="middle">J</text>
+  </g>
+  <g class="ar-edge" id="as-e-K" data-edge="K" data-from="s-consola" data-to="s-pipeline" tabindex="0">
+    <title>K. Places and documents console → Daily pipeline: Place corrections. Corrections are applied in the next run and have the final say. If the console does not answer, the ones already published are used.</title>
+    <path class="ar-e ar-e-data" d="M300 906 L318 906 Q324 906 324 900 L324 738 Q324 732 330 732 L510 732 Q516 732 516 726 L516 710.2" marker-end="url(#as-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="420" cy="732" r="9"/>
+    <text class="ar-t" x="420" y="735.8" font-size="10.5" text-anchor="middle">K</text>
+  </g>
+  <g class="ar-edge" id="as-e-L" data-edge="L" data-from="s-operacion" data-to="s-recolectores" tabindex="0">
+    <title>L. Operations and monitoring → Collectors (Actions, n8n, Peru): Adjusts who fetches what. Every Monday it measures which sources answer from each place and updates the registry the three collectors follow.</title>
+    <path class="ar-e ar-e-control" d="M900 402 L849 402 Q846 402 846 405 L846 405 Q846 408 843 408 L820 408" stroke-dasharray="2 3" marker-end="url(#as-m-control)"/>
+    <circle class="ar-badge ar-e-control" cx="873" cy="402" r="9"/>
+    <text class="ar-t" x="873" y="405.8" font-size="10.5" text-anchor="middle">L</text>
+  </g>
+  <g class="ar-edge" id="as-e-M" data-edge="M" data-from="s-sitio" data-to="s-operacion" tabindex="0">
+    <title>M. Website → Operations and monitoring: Checked every 6 hours. Two watchdogs, one on GitHub and one on n8n, check every 6 hours that the site is less than 30 hours old.</title>
+    <path class="ar-e ar-e-data" d="M780 1146 L972 1146 Q978 1146 978 1140 L978 503.2" marker-end="url(#as-m-data)"/>
+    <text class="ar-s ar-halo" x="812.6" y="1130.5" font-size="11.5">Checked every 6 hours</text>
+    <circle class="ar-badge ar-e-data" cx="879" cy="1146" r="9"/>
+    <text class="ar-t" x="879" y="1149.8" font-size="10.5" text-anchor="middle">M</text>
+  </g>
+  <g class="ar-edge" id="as-e-N" data-edge="N" data-from="s-operacion" data-to="s-pipeline" tabindex="0">
+    <title>N. Operations and monitoring → Daily pipeline: Re-runs or runs by hand. If the site is behind, the watchdog relaunches the update. People also start it when they approve changes or by hand.</title>
+    <path class="ar-e ar-e-trigger" d="M900 462 L846 462 Q840 462 840 468 L840 564 Q840 570 834 570 L690 570 Q684 570 684 576 L684 598" stroke-dasharray="2 3" marker-end="url(#as-m-trigger)"/>
+    <text class="ar-s ar-halo" x="715.8" y="554.5" font-size="11.5">Re-runs or runs by hand</text>
+    <circle class="ar-badge ar-e-trigger" cx="785.4" cy="570" r="9"/>
+    <text class="ar-t" x="785.4" y="573.8" font-size="10.5" text-anchor="middle">N</text>
+  </g>
+  <g class="ar-edge" id="as-e-O" data-edge="O" data-from="s-publicacion" data-to="s-operacion" tabindex="0">
+    <title>O. Publication → Operations and monitoring: Problem alerts. Each problem in the run becomes an alert on GitHub, which closes by itself once the problem goes away.</title>
+    <path class="ar-e ar-e-control" d="M780 906 L1098 906 Q1104 906 1104 900 L1104 503.2" stroke-dasharray="2 3" marker-end="url(#as-m-control)"/>
+    <text class="ar-s ar-halo" x="851.6" y="890.5" font-size="11.5">Problem alerts</text>
+    <circle class="ar-badge ar-e-control" cx="893.4" cy="906" r="9"/>
+    <text class="ar-t" x="893.4" y="909.8" font-size="10.5" text-anchor="middle">O</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="as-n-s-fuentes" data-node="s-fuentes">
+    <title>Official sources and alerts. What we watch: the ENFEN communiqué, IGP&#x27;s ICEN, 15 NOAA products and 14 alert services (INDECI, SENAMHI, DHN, IGP, USGS, PTWC and NASA). Also government pages we only keep as an archive.</title>
+    <rect class="ar-node ar-g-sources" x="150" y="128" width="400" height="112.2" rx="8"/>
+    <rect class="ar-f-sources" x="150" y="136" width="4" height="96.2" rx="2"/>
+    <circle class="ar-step" cx="171" cy="149" r="10"/>
+    <text class="ar-step-n" x="171" y="153.2" font-size="12" text-anchor="middle">1</text>
+    <text class="ar-t" x="188" y="154" font-size="14">Official sources and alerts</text>
+    <text class="ar-s" x="162" y="176.4" font-size="12">What we watch: the ENFEN communiqué, IGP&#x27;s ICEN, 15</text>
+    <text class="ar-s" x="162" y="192.9" font-size="12">NOAA products and 14 alert services (INDECI, SENAMHI, DHN,</text>
+    <text class="ar-s" x="162" y="209.5" font-size="12">IGP, USGS, PTWC and NASA). Also government pages we only</text>
+    <text class="ar-s" x="162" y="226" font-size="12">keep as an archive.</text>
+    <a class="ar-annex" href="anexos/a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="514.6" y="135" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="528.3" y="147.5" font-size="10.5" text-anchor="middle">A1</text></a>
+  </g>
+  <g class="ar-node-g" id="as-n-s-noticias" data-node="s-noticias">
+    <title>News. 154 feeds from media, radio stations, government agencies and Google News searches, to know what is happening in each department.</title>
+    <rect class="ar-node ar-g-sources" x="650" y="128" width="400" height="95.7" rx="8"/>
+    <rect class="ar-f-sources" x="650" y="136" width="4" height="79.7" rx="2"/>
+    <circle class="ar-step" cx="671" cy="149" r="10"/>
+    <text class="ar-step-n" x="671" y="153.2" font-size="12" text-anchor="middle">1</text>
+    <text class="ar-t" x="688" y="154" font-size="14">News</text>
+    <text class="ar-s" x="662" y="176.4" font-size="12">154 feeds from media, radio stations, government agencies</text>
+    <text class="ar-s" x="662" y="192.9" font-size="12">and Google News searches, to know what is happening in</text>
+    <text class="ar-s" x="662" y="209.5" font-size="12">each department.</text>
+    <a class="ar-annex" href="anexos/a6-en.svg" data-annex="a6"><title>Annex A6: News and alerts: reading, filtering, history and place</title><rect class="ar-tag" x="1014.6" y="135" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1028.3" y="147.5" font-size="10.5" text-anchor="middle">A6</text></a>
+    <a class="ar-annex" href="anexos/a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="983.1" y="135" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="996.8" y="147.5" font-size="10.5" text-anchor="middle">A1</text></a>
+  </g>
+  <g class="ar-node-g" id="as-n-s-recolectores" data-node="s-recolectores">
+    <title>Collectors (Actions, n8n, Peru). Three machines download the data every night: a computer in Peru (21:00), n8n in the cloud (22:50) and GitHub Actions (23:37). A registry says which one fetches each address.</title>
+    <rect class="ar-node ar-g-channels" x="380" y="358" width="440" height="95.7" rx="8"/>
+    <rect class="ar-f-channels" x="380" y="366" width="4" height="79.7" rx="2"/>
+    <circle class="ar-step" cx="401" cy="379" r="10"/>
+    <text class="ar-step-n" x="401" y="383.2" font-size="12" text-anchor="middle">2</text>
+    <text class="ar-t" x="418" y="384" font-size="14">Collectors (Actions, n8n, Peru)</text>
+    <text class="ar-s" x="392" y="406.4" font-size="12">Three machines download the data every night: a computer in Peru</text>
+    <text class="ar-s" x="392" y="422.9" font-size="12">(21:00), n8n in the cloud (22:50) and GitHub Actions (23:37). A</text>
+    <text class="ar-s" x="392" y="439.5" font-size="12">registry says which one fetches each address.</text>
+    <a class="ar-annex" href="anexos/a4-en.svg" data-annex="a4"><title>Annex A4: Download in GitHub Actions and per-source fallbacks</title><rect class="ar-tag" x="784.6" y="365" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="798.3" y="377.5" font-size="10.5" text-anchor="middle">A4</text></a>
+    <a class="ar-annex" href="anexos/a3-en.svg" data-annex="a3"><title>Annex A3: n8n in the cloud (AWS): second copy and helper workflows</title><rect class="ar-tag" x="753.1" y="365" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="766.8" y="377.5" font-size="10.5" text-anchor="middle">A3</text></a>
+    <a class="ar-annex" href="anexos/a2-en.svg" data-annex="a2"><title>Annex A2: Peru collector: the local server</title><rect class="ar-tag" x="721.7" y="365" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="735.4" y="377.5" font-size="10.5" text-anchor="middle">A2</text></a>
+  </g>
+  <g class="ar-node-g" id="as-n-s-respaldo" data-node="s-respaldo">
+    <title>Backup. If an official source fails, the Internet Archive copy is used or else the last published value, with its real date. data-archive keeps the raw responses and restores the news history.</title>
+    <rect class="ar-node ar-g-stores" x="20" y="598" width="280" height="128.8" rx="8"/>
+    <rect class="ar-f-stores" x="20" y="606" width="4" height="112.8" rx="2"/>
+    <circle class="ar-step" cx="41" cy="619" r="10"/>
+    <text class="ar-step-n" x="41" y="623.2" font-size="12" text-anchor="middle">4</text>
+    <text class="ar-t" x="58" y="624" font-size="14">Backup</text>
+    <text class="ar-s" x="32" y="646.4" font-size="12">If an official source fails, the Internet</text>
+    <text class="ar-s" x="32" y="662.9" font-size="12">Archive copy is used or else the last</text>
+    <text class="ar-s" x="32" y="679.5" font-size="12">published value, with its real date.</text>
+    <text class="ar-s" x="32" y="696" font-size="12">data-archive keeps the raw responses and</text>
+    <text class="ar-s" x="32" y="712.6" font-size="12">restores the news history.</text>
+    <a class="ar-annex" href="anexos/a8-en.svg" data-annex="a8"><title>Annex A8: Publication, deployment and archive</title><rect class="ar-tag" x="264.6" y="605" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="278.3" y="617.5" font-size="10.5" text-anchor="middle">A8</text></a>
+    <a class="ar-annex" href="anexos/a4-en.svg" data-annex="a4"><title>Annex A4: Download in GitHub Actions and per-source fallbacks</title><rect class="ar-tag" x="233.1" y="605" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="246.8" y="617.5" font-size="10.5" text-anchor="middle">A4</text></a>
+  </g>
+  <g class="ar-node-g" id="as-n-s-pipeline" data-node="s-pipeline">
+    <title>Daily pipeline. Every night it checks the data, builds the series, reads the official statuses, computes the GRD signal, filters the news and places each item in its department. It logs every problem it finds.</title>
+    <rect class="ar-node ar-g-pipeline" x="420" y="598" width="360" height="112.2" rx="8"/>
+    <rect class="ar-f-pipeline" x="420" y="606" width="4" height="96.2" rx="2"/>
+    <circle class="ar-step" cx="441" cy="619" r="10"/>
+    <text class="ar-step-n" x="441" y="623.2" font-size="12" text-anchor="middle">5</text>
+    <text class="ar-t" x="458" y="624" font-size="14">Daily pipeline</text>
+    <text class="ar-s" x="432" y="646.4" font-size="12">Every night it checks the data, builds the series, reads</text>
+    <text class="ar-s" x="432" y="662.9" font-size="12">the official statuses, computes the GRD signal, filters</text>
+    <text class="ar-s" x="432" y="679.5" font-size="12">the news and places each item in its department. It</text>
+    <text class="ar-s" x="432" y="696" font-size="12">logs every problem it finds.</text>
+    <a class="ar-annex" href="anexos/a6-en.svg" data-annex="a6"><title>Annex A6: News and alerts: reading, filtering, history and place</title><rect class="ar-tag" x="744.6" y="605" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="758.3" y="617.5" font-size="10.5" text-anchor="middle">A6</text></a>
+    <a class="ar-annex" href="anexos/a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="713.1" y="605" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="726.8" y="617.5" font-size="10.5" text-anchor="middle">A5</text></a>
+  </g>
+  <g class="ar-node-g" id="as-n-s-publicacion" data-node="s-publicacion">
+    <title>Publication. Builds all files at once, validates them and tests the site. If there is a serious problem, nothing is published and yesterday&#x27;s site stays.</title>
+    <rect class="ar-node ar-g-publication" x="420" y="858" width="360" height="95.7" rx="8"/>
+    <rect class="ar-f-publication" x="420" y="866" width="4" height="79.7" rx="2"/>
+    <circle class="ar-step" cx="441" cy="879" r="10"/>
+    <text class="ar-step-n" x="441" y="883.2" font-size="12" text-anchor="middle">7</text>
+    <text class="ar-t" x="458" y="884" font-size="14">Publication</text>
+    <text class="ar-s" x="432" y="906.4" font-size="12">Builds all files at once, validates them and tests the</text>
+    <text class="ar-s" x="432" y="922.9" font-size="12">site. If there is a serious problem, nothing is published</text>
+    <text class="ar-s" x="432" y="939.5" font-size="12">and yesterday&#x27;s site stays.</text>
+    <a class="ar-annex" href="anexos/a8-en.svg" data-annex="a8"><title>Annex A8: Publication, deployment and archive</title><rect class="ar-tag" x="744.6" y="865" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="758.3" y="877.5" font-size="10.5" text-anchor="middle">A8</text></a>
+  </g>
+  <g class="ar-node-g" id="as-n-s-sitio" data-node="s-sitio">
+    <title>Website. The public website with 10 views and open downloads. Next to each value are links to the original source and its archived copy.</title>
+    <rect class="ar-node ar-g-site" x="420" y="1098" width="360" height="95.7" rx="8"/>
+    <rect class="ar-f-site" x="420" y="1106" width="4" height="79.7" rx="2"/>
+    <circle class="ar-step" cx="441" cy="1119" r="10"/>
+    <text class="ar-step-n" x="441" y="1123.2" font-size="12" text-anchor="middle">8</text>
+    <text class="ar-t" x="458" y="1124" font-size="14">Website</text>
+    <text class="ar-s" x="432" y="1146.4" font-size="12">The public website with 10 views and open downloads.</text>
+    <text class="ar-s" x="432" y="1162.9" font-size="12">Next to each value are links to the original source and</text>
+    <text class="ar-s" x="432" y="1179.5" font-size="12">its archived copy.</text>
+    <a class="ar-annex" href="anexos/a9-en.svg" data-annex="a9"><title>Annex A9: The site in the browser</title><rect class="ar-tag" x="744.6" y="1105" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="758.3" y="1117.5" font-size="10.5" text-anchor="middle">A9</text></a>
+  </g>
+  <g class="ar-node-g" id="as-n-s-operacion" data-node="s-operacion">
+    <title>Operations and monitoring. Two watchdogs check the site every 6 hours, problems become alerts on GitHub and a weekly probe checks which sources answer. The people who keep the system running are here too.</title>
+    <rect class="ar-node ar-g-operations" x="900" y="358" width="280" height="145.2" rx="8"/>
+    <rect class="ar-f-operations" x="900" y="366" width="4" height="129.2" rx="2"/>
+    <circle class="ar-step" cx="921" cy="379" r="10"/>
+    <text class="ar-step-n" x="921" y="383.2" font-size="12" text-anchor="middle">9</text>
+    <text class="ar-t" x="938" y="384" font-size="14">Operations and</text>
+    <text class="ar-t" x="938" y="402.2" font-size="14">monitoring</text>
+    <text class="ar-s" x="912" y="422.8" font-size="12">Two watchdogs check the site every 6</text>
+    <text class="ar-s" x="912" y="439.3" font-size="12">hours, problems become alerts on GitHub</text>
+    <text class="ar-s" x="912" y="455.9" font-size="12">and a weekly probe checks which sources</text>
+    <text class="ar-s" x="912" y="472.4" font-size="12">answer. The people who keep the system</text>
+    <text class="ar-s" x="912" y="489" font-size="12">running are here too.</text>
+    <a class="ar-annex" href="anexos/a10-en.svg" data-annex="a10"><title>Annex A10: Monitoring, alerts and maintenance</title><rect class="ar-tag" x="1137.3" y="365" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="1154.6" y="377.5" font-size="10.5" text-anchor="middle">A10</text></a>
+  </g>
+  <g class="ar-node-g" id="as-n-s-consola" data-node="s-consola">
+    <title>Places and documents console. A page where reviewers, with a username and password, fix by hand the place of a news item when the system is unsure, and where an administrator uploads the PDF of an official document behind a human check. It only works with the site on Cloudflare.</title>
+    <rect class="ar-node ar-g-people" x="20" y="858" width="280" height="178.3" rx="8"/>
+    <rect class="ar-f-people" x="20" y="866" width="4" height="162.3" rx="2"/>
+    <circle class="ar-step" cx="41" cy="879" r="10"/>
+    <text class="ar-step-n" x="41" y="883.2" font-size="12" text-anchor="middle">6</text>
+    <text class="ar-t" x="58" y="884" font-size="14">Places and documents</text>
+    <text class="ar-t" x="58" y="902.2" font-size="14">console</text>
+    <text class="ar-s" x="32" y="922.8" font-size="12">A page where reviewers, with a username</text>
+    <text class="ar-s" x="32" y="939.3" font-size="12">and password, fix by hand the place of a</text>
+    <text class="ar-s" x="32" y="955.9" font-size="12">news item when the system is unsure,</text>
+    <text class="ar-s" x="32" y="972.4" font-size="12">and where an administrator uploads the</text>
+    <text class="ar-s" x="32" y="989" font-size="12">PDF of an official document behind a</text>
+    <text class="ar-s" x="32" y="1005.6" font-size="12">human check. It only works with the site</text>
+    <text class="ar-s" x="32" y="1022.1" font-size="12">on Cloudflare.</text>
+    <a class="ar-annex" href="anexos/a7-en.svg" data-annex="a7"><title>Annex A7: Review consoles on Cloudflare</title><rect class="ar-tag" x="264.6" y="865" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="278.3" y="877.5" font-size="10.5" text-anchor="middle">A7</text></a>
+  </g>
+  <line class="ar-rule" x1="20" y1="1229.7" x2="1180" y2="1229.7"/>
+  <text class="ar-h" x="20" y="1259.7" font-size="15">Walkthrough</text>
+  <text class="ar-h" x="616" y="1259.7" font-size="15">Connections</text>
+  <circle class="ar-step" cx="30" cy="1285.7" r="10"/>
+  <text class="ar-step-n" x="30" y="1289.9" font-size="11.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="1289.7" font-size="11.5">What we watch</text>
+  <text class="ar-s" x="50" y="1304.7" font-size="11">The observatory follows the official ENSO sources (ENFEN, IGP and NOAA), 14 hazard-alert</text>
+  <text class="ar-s" x="50" y="1319.7" font-size="11">services and 154 news feeds. It obeys each site&#x27;s robot rules, except 40 news feeds it reads like</text>
+  <text class="ar-s" x="50" y="1334.7" font-size="11">a feed reader, at most once a day.</text>
+  <circle class="ar-step" cx="30" cy="1357.7" r="10"/>
+  <text class="ar-step-n" x="30" y="1361.9" font-size="11.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1361.7" font-size="11.5">Three collectors every night</text>
+  <text class="ar-s" x="50" y="1376.7" font-size="11">At 21:00 a computer in Peru fetches what is blocked, at 22:50 n8n in the cloud keeps a second</text>
+  <text class="ar-s" x="50" y="1391.7" font-size="11">copy, and at 23:37 GitHub Actions fetches what it can reach and uses those copies if something</text>
+  <text class="ar-s" x="50" y="1406.7" font-size="11">fails.</text>
+  <circle class="ar-step" cx="30" cy="1429.7" r="10"/>
+  <text class="ar-step-n" x="30" y="1433.9" font-size="11.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1433.7" font-size="11.5">A registry says who fetches what</text>
+  <text class="ar-s" x="50" y="1448.7" font-size="11">Some government pages do not answer outside Peru. Every Monday we measure what answers</text>
+  <text class="ar-s" x="50" y="1463.7" font-size="11">from where and update a registry that assigns each address to a collector.</text>
+  <circle class="ar-step" cx="30" cy="1486.7" r="10"/>
+  <text class="ar-step-n" x="30" y="1490.9" font-size="11.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1490.7" font-size="11.5">When something fails</text>
+  <text class="ar-s" x="50" y="1505.7" font-size="11">If a source does not answer, the Peru or n8n copy, an Internet Archive copy or the last good</text>
+  <text class="ar-s" x="50" y="1520.7" font-size="11">published value is used. Each value shows its real date, so nothing old passes as new.</text>
+  <circle class="ar-step" cx="30" cy="1543.7" r="10"/>
+  <text class="ar-step-n" x="30" y="1547.9" font-size="11.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="1547.7" font-size="11.5">The daily pipeline</text>
+  <text class="ar-s" x="50" y="1562.7" font-size="11">It reads and checks each value, builds the series, reads ENFEN&#x27;s official status, computes the</text>
+  <text class="ar-s" x="50" y="1577.7" font-size="11">GRD signal, filters the news by hazard and places it by department. It logs every problem.</text>
+  <circle class="ar-step" cx="30" cy="1600.7" r="10"/>
+  <text class="ar-step-n" x="30" y="1604.9" font-size="11.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="50" y="1604.7" font-size="11.5">The places console</text>
+  <text class="ar-s" x="50" y="1619.7" font-size="11">With the site on Cloudflare, when the system is unsure where a news item happened, a</text>
+  <text class="ar-s" x="50" y="1634.7" font-size="11">reviewer fixes it in the console. The fix applies from the next run and stays stored.</text>
+  <circle class="ar-step" cx="30" cy="1657.7" r="10"/>
+  <text class="ar-step-n" x="30" y="1661.9" font-size="11.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="50" y="1661.7" font-size="11.5">Publishing without breaking anything</text>
+  <text class="ar-s" x="50" y="1676.7" font-size="11">All files are built and validated together, the site is tested in a browser and uploaded whole. If</text>
+  <text class="ar-s" x="50" y="1691.7" font-size="11">there is a serious problem, yesterday&#x27;s site stays.</text>
+  <circle class="ar-step" cx="30" cy="1714.7" r="10"/>
+  <text class="ar-step-n" x="30" y="1718.9" font-size="11.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="50" y="1718.7" font-size="11.5">What people see</text>
+  <text class="ar-s" x="50" y="1733.7" font-size="11">The site shows 10 views and open downloads, with links to the original source and the archived</text>
+  <text class="ar-s" x="50" y="1748.7" font-size="11">copy next to each value. Today&#x27;s data will be tomorrow&#x27;s backup.</text>
+  <circle class="ar-step" cx="30" cy="1771.7" r="10"/>
+  <text class="ar-step-n" x="30" y="1775.9" font-size="11.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="50" y="1775.7" font-size="11.5">Monitoring and alerts</text>
+  <text class="ar-s" x="50" y="1790.7" font-size="11">Two watchdogs check the site every 6 hours; the GitHub one relaunches the update if it falls</text>
+  <text class="ar-s" x="50" y="1805.7" font-size="11">behind. Each problem becomes a GitHub alert that closes itself once resolved.</text>
+  <circle class="ar-badge ar-e-data" cx="626" cy="1285.7" r="9"/>
+  <text class="ar-t" x="626" y="1289.5" font-size="10.5" text-anchor="middle">A</text>
+  <text class="ar-t" x="646" y="1289.7" font-size="11.5">Downloaded every night</text>
+  <text class="ar-m" x="646" y="1303.7" font-size="10.5">Official sources and alerts → Collectors (Actions, n8n, Peru)</text>
+  <text class="ar-s" x="646" y="1318.7" font-size="11">Every night the collectors download the official data and alerts. What only answers inside the</text>
+  <text class="ar-s" x="646" y="1333.7" font-size="11">country, like the ENFEN portal, is fetched by the computer in Peru.</text>
+  <circle class="ar-badge ar-e-data" cx="626" cy="1356.7" r="9"/>
+  <text class="ar-t" x="626" y="1360.5" font-size="10.5" text-anchor="middle">B</text>
+  <text class="ar-t" x="646" y="1360.7" font-size="11.5">News feeds</text>
+  <text class="ar-m" x="646" y="1374.7" font-size="10.5">News → Collectors (Actions, n8n, Peru)</text>
+  <text class="ar-s" x="646" y="1389.7" font-size="11">GitHub Actions reads the news on every run and n8n keeps a copy. Google News forbids robots:</text>
+  <text class="ar-s" x="646" y="1404.7" font-size="11">it is read like a feed reader, at most once a day.</text>
+  <circle class="ar-badge ar-e-data" cx="626" cy="1427.7" r="9"/>
+  <text class="ar-t" x="626" y="1431.5" font-size="10.5" text-anchor="middle">C</text>
+  <text class="ar-t" x="646" y="1431.7" font-size="11.5">Data with its origin</text>
+  <text class="ar-m" x="646" y="1445.7" font-size="10.5">Collectors (Actions, n8n, Peru) → Daily pipeline</text>
+  <text class="ar-s" x="646" y="1460.7" font-size="11">Each value arrives with who downloaded it, from where and when. When the computer in Peru</text>
+  <text class="ar-s" x="646" y="1475.7" font-size="11">pushes its copy, it also asks for the site to be updated.</text>
+  <circle class="ar-badge ar-e-fallback" cx="626" cy="1498.7" r="9"/>
+  <text class="ar-t" x="626" y="1502.5" font-size="10.5" text-anchor="middle">D</text>
+  <text class="ar-t" x="646" y="1502.7" font-size="11.5">Internet Archive copy</text>
+  <text class="ar-m" x="646" y="1516.7" font-size="10.5">Backup → Collectors (Actions, n8n, Peru)</text>
+  <text class="ar-s" x="646" y="1531.7" font-size="11">If the source, its mirror and the Peru and n8n copies fail, the download uses the latest Internet</text>
+  <text class="ar-s" x="646" y="1546.7" font-size="11">Archive copy, with its date.</text>
+  <circle class="ar-badge ar-e-fallback" cx="626" cy="1569.7" r="9"/>
+  <text class="ar-t" x="626" y="1573.5" font-size="10.5" text-anchor="middle">E</text>
+  <text class="ar-t" x="646" y="1573.7" font-size="11.5">If a source fails</text>
+  <text class="ar-m" x="646" y="1587.7" font-size="10.5">Backup → Daily pipeline</text>
+  <text class="ar-s" x="646" y="1602.7" font-size="11">If a source does not answer today, its last good published value is used, with its real date. A</text>
+  <text class="ar-s" x="646" y="1617.7" font-size="11">missing news history is restored from the data-archive copy.</text>
+  <circle class="ar-badge ar-e-data" cx="626" cy="1640.7" r="9"/>
+  <text class="ar-t" x="626" y="1644.5" font-size="10.5" text-anchor="middle">F</text>
+  <text class="ar-t" x="646" y="1644.7" font-size="11.5">Checked data</text>
+  <text class="ar-m" x="646" y="1658.7" font-size="10.5">Daily pipeline → Publication</text>
+  <text class="ar-s" x="646" y="1673.7" font-size="11">Series, official statuses, the GRD signal, placed news and the list of problems go on to build the</text>
+  <text class="ar-s" x="646" y="1688.7" font-size="11">files people will see.</text>
+  <circle class="ar-badge ar-e-data" cx="626" cy="1711.7" r="9"/>
+  <text class="ar-t" x="626" y="1715.5" font-size="10.5" text-anchor="middle">G</text>
+  <text class="ar-t" x="646" y="1715.7" font-size="11.5">Published and checked</text>
+  <text class="ar-m" x="646" y="1729.7" font-size="10.5">Publication → Website</text>
+  <text class="ar-s" x="646" y="1744.7" font-size="11">The site is uploaded whole at once and then checked to make sure the live page shows the new</text>
+  <text class="ar-s" x="646" y="1759.7" font-size="11">version. If something serious failed, yesterday&#x27;s stays.</text>
+  <circle class="ar-badge ar-e-control" cx="626" cy="1782.7" r="9"/>
+  <text class="ar-t" x="626" y="1786.5" font-size="10.5" text-anchor="middle">H</text>
+  <text class="ar-t" x="646" y="1786.7" font-size="11.5">Today backs up tomorrow</text>
+  <text class="ar-m" x="646" y="1800.7" font-size="10.5">Website → Backup</text>
+  <text class="ar-s" x="646" y="1815.7" font-size="11">What the site shows today is what tomorrow&#x27;s run uses as the last good value if a source fails.</text>
+  <circle class="ar-badge ar-e-data" cx="626" cy="1838.7" r="9"/>
+  <text class="ar-t" x="626" y="1842.5" font-size="10.5" text-anchor="middle">I</text>
+  <text class="ar-t" x="646" y="1842.7" font-size="11.5">Permanent copy</text>
+  <text class="ar-m" x="646" y="1856.7" font-size="10.5">Daily pipeline → Backup</text>
+  <text class="ar-s" x="646" y="1871.7" font-size="11">After each good run, the new raw responses and the news history are saved in an archive that</text>
+  <text class="ar-s" x="646" y="1886.7" font-size="11">never deletes anything.</text>
+  <circle class="ar-badge ar-e-data" cx="626" cy="1909.7" r="9"/>
+  <text class="ar-t" x="626" y="1913.5" font-size="10.5" text-anchor="middle">J</text>
+  <text class="ar-t" x="646" y="1913.7" font-size="11.5">Items to review</text>
+  <text class="ar-m" x="646" y="1927.7" font-size="10.5">Publication → Places and documents console</text>
+  <text class="ar-s" x="646" y="1942.7" font-size="11">The console has the last 120 days of news and opens on doubtful places, so a person can</text>
+  <text class="ar-s" x="646" y="1957.7" font-size="11">confirm or fix them.</text>
+  <circle class="ar-badge ar-e-data" cx="626" cy="1980.7" r="9"/>
+  <text class="ar-t" x="626" y="1984.5" font-size="10.5" text-anchor="middle">K</text>
+  <text class="ar-t" x="646" y="1984.7" font-size="11.5">Place corrections</text>
+  <text class="ar-m" x="646" y="1998.7" font-size="10.5">Places and documents console → Daily pipeline</text>
+  <text class="ar-s" x="646" y="2013.7" font-size="11">Corrections are applied in the next run and have the final say. If the console does not answer,</text>
+  <text class="ar-s" x="646" y="2028.7" font-size="11">the ones already published are used.</text>
+  <circle class="ar-badge ar-e-control" cx="626" cy="2051.7" r="9"/>
+  <text class="ar-t" x="626" y="2055.5" font-size="10.5" text-anchor="middle">L</text>
+  <text class="ar-t" x="646" y="2055.7" font-size="11.5">Adjusts who fetches what</text>
+  <text class="ar-m" x="646" y="2069.7" font-size="10.5">Operations and monitoring → Collectors (Actions, n8n, Peru)</text>
+  <text class="ar-s" x="646" y="2084.7" font-size="11">Every Monday it measures which sources answer from each place and updates the registry the</text>
+  <text class="ar-s" x="646" y="2099.7" font-size="11">three collectors follow.</text>
+  <circle class="ar-badge ar-e-data" cx="626" cy="2122.7" r="9"/>
+  <text class="ar-t" x="626" y="2126.5" font-size="10.5" text-anchor="middle">M</text>
+  <text class="ar-t" x="646" y="2126.7" font-size="11.5">Checked every 6 hours</text>
+  <text class="ar-m" x="646" y="2140.7" font-size="10.5">Website → Operations and monitoring</text>
+  <text class="ar-s" x="646" y="2155.7" font-size="11">Two watchdogs, one on GitHub and one on n8n, check every 6 hours that the site is less than</text>
+  <text class="ar-s" x="646" y="2170.7" font-size="11">30 hours old.</text>
+  <circle class="ar-badge ar-e-trigger" cx="626" cy="2193.7" r="9"/>
+  <text class="ar-t" x="626" y="2197.5" font-size="10.5" text-anchor="middle">N</text>
+  <text class="ar-t" x="646" y="2197.7" font-size="11.5">Re-runs or runs by hand</text>
+  <text class="ar-m" x="646" y="2211.7" font-size="10.5">Operations and monitoring → Daily pipeline</text>
+  <text class="ar-s" x="646" y="2226.7" font-size="11">If the site is behind, the watchdog relaunches the update. People also start it when they</text>
+  <text class="ar-s" x="646" y="2241.7" font-size="11">approve changes or by hand.</text>
+  <circle class="ar-badge ar-e-control" cx="626" cy="2264.7" r="9"/>
+  <text class="ar-t" x="626" y="2268.5" font-size="10.5" text-anchor="middle">O</text>
+  <text class="ar-t" x="646" y="2268.7" font-size="11.5">Problem alerts</text>
+  <text class="ar-m" x="646" y="2282.7" font-size="10.5">Publication → Operations and monitoring</text>
+  <text class="ar-s" x="646" y="2297.7" font-size="11">Each problem in the run becomes an alert on GitHub, which closes by itself once the problem</text>
+  <text class="ar-s" x="646" y="2312.7" font-size="11">goes away.</text>
+</svg>

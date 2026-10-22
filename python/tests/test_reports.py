@@ -308,8 +308,9 @@ def test_acquire_keeps_last_good_value_when_download_fails():
     res = R.acquire_informe(LATEST, f, PREV, log, date(2026, 10, 21))
     assert res["carried"] and res["icenProvisional"]["icen"] == 3.97 and res["number"] == 17
     assert f.asked[:2] == [U18, DHN18]  # portal y réplica de la DHN
-    # Un documento auxiliar que no responde no marca la publicación como degradada.
-    assert [(s, c) for s, c, _ in log.events] == [("warning", "informe-unread")]
+    # Un documento auxiliar que no responde no marca la publicación como degradada. El repositorio del IMARPE
+    # tampoco respondió (este fetcher no lo simula): queda su propia advertencia.
+    assert [(s, c) for s, c, _ in log.events] == [("warning", "informe-unread"), ("warning", "repository-unreachable")]
 
 
 def test_acquire_uses_the_dhn_mirror(monkeypatch):
@@ -576,7 +577,8 @@ def test_undated_dhn_pick_is_downloaded_and_validated_not_reused(monkeypatch):
     res = R.acquire_informe(latest, _Fetcher({R.DHN_INFORMES_PAGE: listing17, dhn17: b"%PDF-1.7 17"}), prev, log,
                             date(2026, 10, 21))
     assert res["carried"] and res["communique"] == "17-2026"  # no se presenta como el del comunicado 18
-    assert [s for s, _, _ in log.events] == ["warning"]
+    assert [c for s, c, _ in log.events if s == "warning"] == ["informe-unread", "repository-unreachable"]
+    assert {s for s, _, _ in log.events} == {"warning"}
     p18, _ = _pages(N18)
     monkeypatch.setattr(R, "pdf_pages", lambda b: p18)
     dhn18 = R.DHN_INFORME.format(n=18, year=2026)

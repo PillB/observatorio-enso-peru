@@ -140,10 +140,17 @@ jobs:
         id: manual
         continue-on-error: true
         run: |
-          if git ls-remote --exit-code --heads origin data-manual >/dev/null; then
+          # La carpeta va al pipeline aunque falte: si la rama existe y no se pudo bajar, lo anota como
+          # incidencia (manual-unreadable); «absent» es que todavía nadie subió nada.
+          echo "dir=$RUNNER_TEMP/manual" >> "$GITHUB_OUTPUT"
+          rc=0; git ls-remote --exit-code --heads origin data-manual >/dev/null || rc=$?
+          if [ "$rc" = 0 ]; then
             git fetch --depth 1 origin data-manual && git worktree add --detach "$RUNNER_TEMP/manual" FETCH_HEAD \
-              && echo "dir=$RUNNER_TEMP/manual" >> "$GITHUB_OUTPUT" \
               || echo "::warning::La rama data-manual existe pero no se pudo bajar en esta corrida."
+          elif [ "$rc" = 2 ]; then
+            echo "absent=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::No se pudo consultar la rama data-manual (git ls-remote terminó con $rc)."
           fi
 
       # Copia del histórico de noticias que el job «archive» guarda en la rama
@@ -209,6 +216,7 @@ jobs:
           RELAY_DIR: ${{ steps.relay.outputs.dir }}
           N8N_DIR: ${{ steps.n8n.outputs.dir }}
           MANUAL_DIR: ${{ steps.manual.outputs.dir }}
+          MANUAL_ABSENT: ${{ steps.manual.outputs.absent }}
           HISTORY_DIR: ${{ steps.history.outputs.dir }}
           HISTORY_ABSENT: ${{ steps.history.outputs.absent }}
           READER_STATE: ${{ github.ref == 'refs/heads/main' && format('{0}/reader-state.json', runner.temp) || '' }}
@@ -220,6 +228,7 @@ jobs:
             ${RELAY_DIR:+--relay-dir "$RELAY_DIR"} \
             ${N8N_DIR:+--n8n-dir "$N8N_DIR"} \
             ${MANUAL_DIR:+--manual-dir "$MANUAL_DIR"} \
+            ${MANUAL_ABSENT:+--manual-absent} \
             ${HISTORY_DIR:+--history-dir "$HISTORY_DIR"} \
             ${HISTORY_ABSENT:+--history-absent} \
             ${READER_STATE:+--reader-state "$READER_STATE"} \

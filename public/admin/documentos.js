@@ -150,13 +150,24 @@ function pendingItem(doc) {
   return li;
 }
 
+/** Aviso sobre el token de GitHub de la subida (vencido, sin permiso o por vencer), o ''. */
+export function tokenWarning(d, now = Date.now()) {
+  if (!d || !d.configured) return '';
+  if (d.tokenOk === false) {
+    return `El token de GitHub de la subida no sirve (HTTP ${d.tokenStatus}): renovar el secreto DOCS_GITHUB_TOKEN en Cloudflare.`;
+  }
+  const left = d.tokenExpiresAt ? (Date.parse(d.tokenExpiresAt) - now) / 86400000 : Infinity;
+  return left < 21 ? `El token de GitHub de la subida vence en ${Math.max(0, Math.floor(left))} días: renovar el secreto DOCS_GITHUB_TOKEN en Cloudflare.` : '';
+}
+
 function render() {
   const d = state.data;
   const pending = d.pending || [];
+  const warn = tokenWarning(d);
   $('count-pending').textContent = `(${pending.length})`;
-  $('pending-info').textContent = pending.length
+  $('pending-info').textContent = (pending.length
     ? `Lista de la actualización del ${fmtDate(d.generatedAt)}.`
-    : `No falta ningún documento (actualización del ${fmtDate(d.generatedAt)}).`;
+    : `No falta ningún documento (actualización del ${fmtDate(d.generatedAt)}).`) + (warn ? ` ${warn}` : '');
   $('pending').replaceChildren(...pending.map(pendingItem));
   $('used').replaceChildren(...((d.used || []).length
     ? d.used.map((u) => h('li', { class: 'gc-audit-row' }, `${u.label || u.id}: publicado desde la copia subida el ${fmtDate(u.uploadedAt)}.`))
