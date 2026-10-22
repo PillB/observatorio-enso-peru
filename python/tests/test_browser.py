@@ -417,6 +417,59 @@ def test_items_link_to_live_source_and_archived_copy(site, page):
     assert (root / doc.get_attribute("href")).exists()
 
 
+def test_grd_rows_link_to_live_source_and_archived_copy(site, page):
+    """Revisión del 22-10-2026: la tabla GRD, la de las decisiones, era la única sin enlace a la fuente en vivo ni a la
+    copia archivada. Cada fila con fuente enlaza su origen y, si la publicación tiene copia, la copia que sirve el
+    sitio (data/archive/…), como las demás tarjetas."""
+    base, root = site
+    dash = json.loads((root / "data" / "dashboard.json").read_text(encoding="utf-8"))
+    signals = dash["grd"]["signals"]
+    go(page, base)
+    rows = page.locator("[data-tour-id=grd] table.grd tbody tr")
+    expect(rows).to_have_count(len(signals))
+    with_source = [(i, x, dash["sources"][x["source"]]) for i, x in enumerate(signals) if x.get("source") in dash["sources"]]
+    assert with_source, "ninguna fila de la tabla GRD trae su fuente"
+    for i, x, m in with_source:
+        row = rows.nth(i)
+        live = row.get_by_role("link", name="Fuente en vivo")
+        expect(live).to_have_count(1)
+        assert live.get_attribute("href") == m["live"] and m["live"].startswith("http"), x["name"]
+        arch = row.locator("a[href^='data/archive/']")
+        if m.get("archive"):
+            expect(arch).to_have_count(1)
+            href = arch.get_attribute("href")
+            assert href == f"data/{m['archive']}" and (root / href).exists(), href
+        else:  # sin copia en esta publicación (la fuente no respondió y no quedó la anterior): no hay enlace
+            expect(arch).to_have_count(0)
+
+
+def test_sources_table_names_the_relay_instead_of_direct(site, page):
+    """Revisión del 22-10-2026: una copia del recolector del Perú (hasta 7 días) o de n8n (hasta 72 h) salía como
+    «Directa». El estado sigue siendo «ok», pero la tabla dice por dónde llegó el dato."""
+    base, root = site
+    src = json.loads((root / "data" / "sources.json").read_text(encoding="utf-8"))
+    rows = src["sources"]
+    assert len(rows) >= 5
+    relayed = {rows[0]["id"]: ("relay-peru", "recolector en el Perú"), rows[1]["id"]: ("relay-n8n", "n8n"),
+               rows[2]["id"]: ("relay-manual", "consola de documentos"), rows[3]["id"]: ("mirror", "otra dirección oficial")}
+    for r in rows:
+        if r["id"] in relayed:
+            r.update(status="ok", channel=relayed[r["id"]][0], archivedAt="2026-10-20T02:10:00+00:00")
+    direct = rows[4]
+    direct.update(status="ok", channel="direct")
+    page.route("**/data/sources.json*", lambda r: r.fulfill(status=200, content_type="application/json",
+                                                           body=json.dumps(src)))
+    go(page, base, "metodologia")
+    table = page.locator("#sources-table")
+    expect(table.locator("tbody tr")).to_have_count(len(rows), timeout=10000)
+    for sid, (_, via) in relayed.items():
+        status = table.locator(f'tr[data-source="{sid}"] td').first
+        expect(status).to_contain_text(via)
+        expect(status).not_to_contain_text("Directa")
+    expect(table.locator(f'tr[data-source="{rows[0]["id"]}"] td').first).to_contain_text("copia del")
+    expect(table.locator(f'tr[data-source="{direct["id"]}"] td').first).to_contain_text("Directa")
+
+
 def test_downloads_exist_and_csv_is_safe(site, page):
     base, root = site
     go(page, base, "datos")
