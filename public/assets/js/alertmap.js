@@ -171,7 +171,7 @@ export function levelsNote(levels, now = Date.now()) {
   if (!levels?.copyAt) return '';
   const h = (now - Date.parse(levels.copyAt)) / H;
   const copy = archiveHref(levels.archive);
-  return html`Los niveles de los avisos del SENAMHI salen de su <a href="${safeUrl(levels.url)}" rel="noopener" target="_blank">tabla de avisos</a>, copiada desde el Perú ${when(levels.copyAt)}${copy ? html` (<a href="${copy}" rel="noopener" target="_blank">copia</a>)` : ''}.${h > 36 ? html` <strong>Esa copia tiene ${ago(levels.copyAt, now).replace('hace ', '')}: los avisos emitidos después figuran sin nivel.</strong>` : ''} `;
+  return html`Los niveles de los avisos del SENAMHI salen de su <a href="${safeUrl(levels.url)}" rel="noopener" target="_blank">tabla de avisos</a>, copiada desde el Perú el ${when(levels.copyAt)}${copy ? html` (<a href="${copy}" rel="noopener" target="_blank">copia</a>)` : ''}.${h > 36 ? html` <strong>Esa copia tiene ${ago(levels.copyAt, now).replace('hace ', '')}: los avisos emitidos después figuran sin nivel.</strong>` : ''} `;
 }
 
 function summary(m, alerts) {
