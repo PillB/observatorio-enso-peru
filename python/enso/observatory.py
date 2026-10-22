@@ -1143,7 +1143,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                       log: EventLog, started: datetime, news: Optional[dict] = None,
                       feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None,
                       freshness: Optional[dict] = None, manual_needed: Optional[dict] = None,
-                      imarpe_bsobp: Optional[dict] = None) -> dict:
+                      imarpe_bsobp: Optional[dict] = None, levels=None) -> dict:
+    """``levels``: la tabla de avisos del SENAMHI con que se dio nivel a los avisos (``sourcefeed.levels_table``)."""
     now = datetime.now(timezone.utc)
     content_hash = hashlib.sha256(json.dumps(
         {k: v["points"][-24:] for k, v in sorted(b.series.items())} | {"official": official}, sort_keys=True, default=str
@@ -1180,6 +1181,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                     continue  # ya enlazan a la página del archivo de noticias
                 it["archive"] = (official.get("enfen", {}).get("archive") if it.get("id") == "enfen"
                                  else (arch.get(it.get("source") or "") or {}).get("file"))
+        archive_levels(aw, feed, levels)
 
     # Por fuente (base para el arrastre en la siguiente corrida)
     health = []
@@ -1513,9 +1515,10 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                     f"Las alertas anteriores quedan con el lugar con que se guardaron ({type(exc).__name__}: {exc})"[:300])
         feed_status = [{"id": f.id, "ok": False, "error": "no se leyeron las noticias en esta corrida"}
                        for f in N.FEEDS if f.covers]
+    levels = sourcefeed.levels_table(relay, log, started)  # el nivel de los avisos del SENAMHI
     feed = sourcefeed.build(official, b.series, weekly, meta, relay, news_items=news_items,
                             now=started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc),
-                            feed_status=feed_status)
+                            feed_status=feed_status, avisos=levels)
     from . import freshness
     fresh = freshness.build(b.series, weekly, official, meta, feed, feed_status, today,
                             started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc))
@@ -1527,7 +1530,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                     "La fuente falló y no hay un dato anterior que conservar.")
     res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev,
                             freshness=fresh, manual_needed=needs.as_json(prev.get("manual-needed.json"), today),
-                            imarpe_bsobp=bsobp)
+                            imarpe_bsobp=bsobp, levels=levels)
     if raw_dir is not None:
         res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
@@ -1537,6 +1540,10 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
 
 RELAY_STALE_HOURS = 36
 RELAY_TOKEN_WARN_DAYS = 21
+#: Lo mínimo que debe saber recolectar el kit del Perú (``tools.peru_collector.COLLECTOR_CONTRACT``, que el
+#: recolector anota en el índice y en el latido). Sube junto con el del kit cuando el sitio pasa a necesitar
+#: algo que solo baja un kit nuevo; un kit anterior (sin el número: 0) recibe el aviso «relay-kit-outdated».
+MIN_COLLECTOR_CONTRACT = 1
 #: Tiempo máximo para empezar a pedir feeds de noticias (el paso del pipeline tiene 26 min).
 NEWS_DEADLINE_S = 600
 #: Tiempo total de cada pedido de un feed (el plazo del cliente es por lectura, no por pedido).
@@ -1950,6 +1957,28 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     }
 
 
+def archive_levels(aw: "archive.Writer", feed: dict, table) -> Optional[str]:
+    """Publica en el archivo del sitio la copia de la tabla de avisos del SENAMHI de la que salió el nivel de
+    los avisos, y la enlaza desde cada nivel (``severity.basisArchive``) y desde el pie del mapa
+    (``levelsFrom.archive``): la tabla solo responde desde el Perú, así que su copia es la única que casi todos
+    pueden abrir. Devuelve la ruta de la copia."""
+    from .senamhi_avisos import URL
+
+    group = next((g for g in feed.get("groups", []) if g["id"] == "alertas"), None)
+    if table is None or not getattr(table, "body", b"") or not group or not group.get("levelsFrom"):
+        return None
+    rel = aw.add(archive.source_path("senamhi-avisos", table.body, "text/html", URL), table.body,
+                 source="senamhi-avisos", url=URL, retrievedAt=table.copy_at, channel="relay-peru")
+    if not rel:
+        return None
+    group["levelsFrom"]["archive"] = rel
+    for it in group["items"]:
+        sev = it.get("severity") or {}
+        if it.get("aviso") and sev.get("basisUrl"):
+            sev["basisArchive"] = rel
+    return rel
+
+
 def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str]]] = None):
     """Abre las copias del recolector del Perú y registra si faltan o están viejas.
 
@@ -2017,6 +2046,17 @@ def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str
         log.add("warning", "relay-peru", "fetch", "relay-token-expiring",
                 f"El token de GitHub del recolector del Perú vence el {expires[:10]} (en {max(left, 0):.0f} días): "
                 "crear uno nuevo y ejecutar INSTALAR en ese equipo con el token nuevo (docs/servidor-peru.md).")
+    # Un kit viejo no baja lo que el sitio ahora espera (documentos, capas) y no lo diría: la versión manda.
+    try:
+        contract = int(collector.get("contract") or 0)
+    except (TypeError, ValueError):
+        contract = 0
+    if contract < MIN_COLLECTOR_CONTRACT:
+        log.add("warning", "relay-peru", "fetch", "relay-kit-outdated",
+                f"El recolector del Perú{f' en {relay.host}' if relay.host else ''} usa un kit anterior al que "
+                f"necesita el sitio (versión {collector.get('kit') or 'sin número'}, contrato {contract}; hace falta "
+                f"{MIN_COLLECTOR_CONTRACT}): ejecutar otras-acciones/ACTUALIZAR en ese equipo (docs/servidor-peru.md, "
+                "«Mantenimiento»).")
     return relay
 
 

@@ -158,8 +158,18 @@ def _source_entries() -> list[Entry]:
     return out
 
 
+#: Páginas del recolector del Perú que el pipeline ya lee: lector, peligros y para qué.
+_COLLECTOR_READERS = {
+    "https://www.senamhi.gob.pe/?p=aviso-meteorologico": (
+        "enso.senamhi_avisos:parse", ["lluvias"],
+        "se archiva desde el Perú; da el nivel (amarillo, naranja o rojo) y el inicio y fin a los avisos "
+        "meteorológicos del SENAMHI que llegan por Telegram y por el COEN (copia de hasta 7 días)"),
+}
+
+
 def _collector_entries(known: set[str]) -> list[Entry]:
-    """Páginas que el recolector del Perú ya baja y que el pipeline aún no interpreta."""
+    """Páginas que el recolector del Perú ya baja: casi todas solo se archivan; las de ``_COLLECTOR_READERS``
+    ya las lee el pipeline."""
     try:
         from tools import peru_collector
     except ImportError:
@@ -177,12 +187,14 @@ def _collector_entries(known: set[str]) -> list[Entry]:
             if sid in ids:  # dos pedidos al mismo servicio solo difieren después de los 40 caracteres del slug
                 sid += "-" + hashlib.sha1(url.encode()).hexdigest()[:6]
             ids.add(sid)
+            parser, hazards, notes = _COLLECTOR_READERS.get(
+                url, (None, [], "se archiva desde el Perú; aún sin intérprete en el pipeline"))
             out.append(Entry(
                 id=sid, group=group, name=f"{group.upper()}: {name}",
                 institution=group.upper(), url=url, expect=expect,
                 method="html" if expect == "html" else "api" if expect == "json" else "download",
                 kind="page" if expect == "html" else "dataset", home=url,
-                hazards=[], notes="se archiva desde el Perú; aún sin intérprete en el pipeline"))
+                hazards=hazards, notes=notes, **({"parser": parser} if parser else {})))
     return out
 
 

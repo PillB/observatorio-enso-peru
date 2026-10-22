@@ -83,21 +83,21 @@
     "name_en": "Official hazard alerts (14 sources)",
     "what_es": "Avisos del COEN del INDECI, del SENAMHI (Telegram y 4 capas en GEOSINPAD), focos de calor de NASA FIRMS, sismos del USGS, boletines de la DHN, mensajes del PTWC y alertas volcánicas del IGP (CENVUL).",
     "what_en": "Warnings from INDECI's COEN, SENAMHI (Telegram and 4 GEOSINPAD layers), NASA FIRMS hotspots, USGS earthquakes, DHN bulletins, PTWC messages and IGP volcano alerts (CENVUL).",
-    "details_es": "Son 14 de los 168 feeds (los que tienen covers): indeci-coen, senamhi-quebradas, senamhi-hidrologicos, senamhi-incendios, senamhi-lluvias, senamhi-telegram, firms-focos, usgs-sismos, dhn-tsunamis, dhn-avisos, ptwc-mensajes, ptwc-wepa40, igp-cenvul-boletines, igp-cenvul-alertas. Abiertas (actions+n8n). Se omiten los simulacros de la DHN y del COEN. Los PDF de boletines de la DHN tienen verificación antirobots y no se piden. En la última medición el robots.txt del INDECI dio 5xx (estado down).",
-    "details_en": "These are 14 of the 168 feeds (the ones with covers): indeci-coen, senamhi-quebradas, senamhi-hidrologicos, senamhi-incendios, senamhi-lluvias, senamhi-telegram, firms-focos, usgs-sismos, dhn-tsunamis, dhn-avisos, ptwc-mensajes, ptwc-wepa40, igp-cenvul-boletines, igp-cenvul-alertas. Open (actions+n8n). DHN and COEN drills are skipped. DHN bulletin PDFs sit behind an anti-bot check and are not requested. In the last measurement INDECI's robots.txt returned 5xx (status down).",
+    "details_es": "Son 14 de los 168 feeds (los que tienen covers): indeci-coen, senamhi-quebradas, senamhi-hidrologicos, senamhi-incendios, senamhi-lluvias, senamhi-telegram, firms-focos, usgs-sismos, dhn-tsunamis, dhn-avisos, ptwc-mensajes, ptwc-wepa40, igp-cenvul-boletines, igp-cenvul-alertas. Abiertas (actions+n8n). El nivel de los avisos meteorológicos del SENAMHI que llegan por Telegram y por el COEN sale de su tabla de avisos, que solo responde desde el Perú (copia de data-peru de hasta 7 días). Se omiten los simulacros de la DHN y del COEN. Los PDF de boletines de la DHN tienen verificación antirobots y no se piden. En la última medición el robots.txt del INDECI dio 5xx (estado down).",
+    "details_en": "These are 14 of the 168 feeds (the ones with covers): indeci-coen, senamhi-quebradas, senamhi-hidrologicos, senamhi-incendios, senamhi-lluvias, senamhi-telegram, firms-focos, usgs-sismos, dhn-tsunamis, dhn-avisos, ptwc-mensajes, ptwc-wepa40, igp-cenvul-boletines, igp-cenvul-alertas. Open (actions+n8n). The level of SENAMHI weather warnings arriving by Telegram and COEN comes from its warning table, which only answers from Peru (data-peru copy up to 7 days old). DHN and COEN drills are skipped. DHN bulletin PDFs sit behind an anti-bot check and are not requested. In the last measurement INDECI's robots.txt returned 5xx (status down).",
     "evidence": "python/enso/news.py:399-448; python/enso/hazardparse.py:1-22; registry/sources.json (portal.indeci.gob.pe: down)"
    },
    {
     "id": "peru-archive-pages",
     "group": "sources",
     "col": "sources",
-    "name_es": "Páginas del Estado solo para archivo",
-    "name_en": "Government pages kept as archive only",
-    "what_es": "Web del SENAMHI, el GeoServer IDESEP, el SNIRH de la ANA, dos páginas del IMARPE y el catálogo del CENEPRED. Se guardan como respaldo; el pipeline todavía no las interpreta.",
-    "what_en": "SENAMHI's website, the IDESEP GeoServer, ANA's SNIRH, two IMARPE pages and CENEPRED's catalogue. They are kept as a backup; the pipeline does not parse them yet.",
-    "details_es": "12 URL de la lista fija del recolector del Perú. 6 no responden desde EE. UU. y solo las baja el Perú (4 de www.senamhi.gob.pe y 2 de la ANA, suspected-geoblock). Las otras 6 (IMARPE, CENEPRED, observatorio del SENAMHI, IDESEP) son abiertas o sin medir y n8n también las baja. La corrida diaria no las pide porque no tienen lector; el sondeo semanal sí las mide. feed.json solo muestra cuántas bajó el Perú.",
-    "details_en": "12 URLs on the Peru collector's fixed list. 6 do not answer from the US and only Peru fetches them (4 from www.senamhi.gob.pe and 2 from ANA, suspected-geoblock). The other 6 (IMARPE, CENEPRED, the SENAMHI observatory, IDESEP) are open or unmeasured and n8n fetches them too. The daily run does not request them since they have no parser; the weekly probe does measure them. feed.json only shows how many Peru fetched.",
-    "evidence": "python/tools/peru_collector.py:86-118; python/enso/registry.py:160-180; python/enso/sourcefeed.py:171-179"
+    "name_es": "Páginas del Estado que guarda el Perú",
+    "name_en": "Government pages kept from Peru",
+    "what_es": "Web del SENAMHI, el GeoServer IDESEP, el SNIRH de la ANA, dos páginas del IMARPE y el catálogo del CENEPRED. Se guardan como respaldo; de ellas el pipeline solo lee la tabla de avisos del SENAMHI, que da el nivel a sus avisos.",
+    "what_en": "SENAMHI's website, the IDESEP GeoServer, ANA's SNIRH, two IMARPE pages and CENEPRED's catalogue. They are kept as a backup; the pipeline only reads SENAMHI's warning table from them, which gives its warnings their level.",
+    "details_es": "13 URL de la lista fija del recolector del Perú. 6 no responden desde EE. UU. y solo las baja el Perú (4 de www.senamhi.gob.pe y 2 de la ANA, suspected-geoblock). Las otras 7 (IMARPE, CENEPRED, observatorio del SENAMHI y 3 de IDESEP: la capa de avisos de 5 días, su lista de campos y el GetCapabilities) son abiertas o sin medir y n8n también las baja. La tabla ?p=aviso-meteorologico la lee enso/senamhi_avisos.py desde data-peru (nivel, inicio y fin de cada aviso); sin ella o con una copia de más de 36 h, el pipeline anota senamhi-avisos-unread o -stale. Las demás no tienen lector y la corrida diaria no las pide; el sondeo semanal sí las mide. Lo que robots.txt prohibía se vuelve a comprobar cada noche (robots_recheck).",
+    "details_en": "13 URLs on the Peru collector's fixed list. 6 do not answer from the US and only Peru fetches them (4 from www.senamhi.gob.pe and 2 from ANA, suspected-geoblock). The other 7 (IMARPE, CENEPRED, the SENAMHI observatory and 3 from IDESEP: the 5-day warning layer, its field list and GetCapabilities) are open or unmeasured and n8n fetches them too. The ?p=aviso-meteorologico table is read by enso/senamhi_avisos.py from data-peru (level, start and end of each warning); without it, or with a copy over 36 h old, the pipeline logs senamhi-avisos-unread or -stale. The rest have no parser and the daily run does not request them; the weekly probe does measure them. What robots.txt forbade is rechecked every night (robots_recheck).",
+    "evidence": "python/tools/peru_collector.py:84-150, 265-285; python/enso/registry.py:160-200; python/enso/senamhi_avisos.py:1-200; python/enso/sourcefeed.py:114-147"
    },
    {
     "id": "news-feeds",
@@ -143,8 +143,8 @@
     "col": "sources",
     "name_es": "Armado del registro",
     "name_en": "Registry builder",
-    "what_es": "Junta los catálogos del código (168 feeds, 16 fuentes ENSO y 12 páginas del Perú) con las mediciones y decide el estado y los canales de cada URL.",
-    "what_en": "Joins the in-code catalogues (168 feeds, 16 ENSO sources and 12 Peru pages) with the measurements and decides each URL's status and channels.",
+    "what_es": "Junta los catálogos del código (168 feeds, 16 fuentes ENSO y 13 páginas del Perú) con las mediciones y decide el estado y los canales de cada URL.",
+    "what_en": "Joins the in-code catalogues (168 feeds, 16 ENSO sources and 13 Peru pages) with the measurements and decides each URL's status and channels.",
     "details_es": "Regla: peru-server si y solo si la URL está geobloqueada o lo parece; sin canales si robots.txt la prohíbe, salvo los 40 reader (solo actions, cada 20 h o más); en lo demás, actions y n8n, menos la red que no responde cuando la otra sí. tools.build_registry --check falla si el archivo no está al día y una prueba lo exige.",
     "details_en": "Rule: peru-server if and only if the URL is geoblocked or looks it; no channels if robots.txt forbids it, except the 40 reader feeds (actions only, every 20 h or more); otherwise actions and n8n, minus a network that fails while the other answers. tools.build_registry --check fails if the file is out of date, and a test requires it.",
     "evidence": "python/enso/registry.py:13-40, 102-180, 237-306, 343-387; python/tools/build_registry.py:1-45; python/tests/test_registry.py:72-73"
@@ -375,8 +375,8 @@
     "name_en": "Incident log",
     "what_es": "Cada etapa anota sus problemas con severidad (info, warning, error, critical), fuente, código y una huella. Si una fuente crítica no tiene dato ni anterior, la corrida es critical y no se despliega.",
     "what_en": "Every stage logs its problems with severity (info, warning, error, critical), source, code and a fingerprint. If a critical source has neither fresh nor previous data, the run is critical and nothing is deployed.",
-    "details_es": "Incluye la salud de las copias: relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed (falta el PDF del comunicado o del informe más reciente), relay-token-expiring (menos de 21 días) y relay-n8n-missing, -stale y -sources-down. Huella: sha1 de fuente|etapa|código.",
-    "details_en": "Includes copy health: relay-missing, relay-stale (over 36 h), relay-sources-down, relay-goal-missed (the newest comunicado or informe PDF is missing), relay-token-expiring (under 21 days) and relay-n8n-missing, -stale and -sources-down. Fingerprint: sha1 of source|stage|code.",
+    "details_es": "Incluye la salud de las copias: relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed (falta el PDF del comunicado o del informe más reciente), relay-token-expiring (menos de 21 días), relay-kit-outdated (el kit no tiene el contrato mínimo) y relay-n8n-missing, -stale y -sources-down. Huella: sha1 de fuente|etapa|código.",
+    "details_en": "Includes copy health: relay-missing, relay-stale (over 36 h), relay-sources-down, relay-goal-missed (the newest comunicado or informe PDF is missing), relay-token-expiring (under 21 days), relay-kit-outdated (the kit lacks the minimum contract) and relay-n8n-missing, -stale and -sources-down. Fingerprint: sha1 of source|stage|code.",
     "evidence": "python/enso/observatory.py:55-87, 1230-1235, 1658-1755, 1810-1813"
    },
    {
@@ -731,8 +731,8 @@
     "kind": "data",
     "label_es": "solo archivo, desde el Perú",
     "label_en": "archive only, from Peru",
-    "explain_es": "Cada noche el recolector baja las 12 páginas de su lista fija para guardar el original. 6 (4 web del SENAMHI y 2 de la ANA) no responden desde EE. UU.",
-    "explain_en": "The collector downloads these 12 fixed-list pages nightly to keep the original. 6 of them (4 SENAMHI web pages, 2 ANA) do not answer from the US.",
+    "explain_es": "Cada noche el recolector baja las 13 páginas de su lista fija para guardar el original. 6 (4 web del SENAMHI y 2 de la ANA) no responden desde EE. UU.",
+    "explain_en": "The collector downloads these 13 fixed-list pages nightly to keep the original. 6 of them (4 SENAMHI web pages, 2 ANA) do not answer from the US.",
     "when_es": "diario 21:00 Lima",
     "when_en": "daily 21:00 Lima",
     "evidence": "python/tools/peru_collector.py:94-118, 249-256; registry/sources.json"
@@ -741,8 +741,8 @@
     "from": "peru-archive-pages",
     "to": "n8n-collector",
     "kind": "data",
-    "label_es": "las 6 del canal n8n",
-    "label_en": "the 6 on n8n",
+    "label_es": "las 7 del canal n8n",
+    "label_en": "the 7 on n8n",
     "explain_es": "IMARPE, CENEPRED, el observatorio del SENAMHI e IDESEP llevan el canal n8n por regla (abiertas o sin medir), así que n8n también las baja. La corrida diaria no las pide porque no tienen lector.",
     "explain_en": "IMARPE, CENEPRED, the SENAMHI observatory and IDESEP carry the n8n channel by rule (open or unmeasured), so n8n downloads them too. The daily run does not request them since they have no parser.",
     "when_es": "diario 22:50 Lima",
@@ -1271,8 +1271,8 @@
     "kind": "control",
     "label_es": "salud de la copia del Perú",
     "label_en": "Peru copy health",
-    "explain_es": "Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed o relay-token-expiring. Así un equipo apagado se vuelve issue.",
-    "explain_en": "At start the pipeline reads data-peru's index.json and heartbeat.json and logs relay-missing, relay-stale (over 36 h), relay-sources-down, relay-goal-missed or relay-token-expiring. That is how a machine that is off becomes an issue.",
+    "explain_es": "Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed, relay-token-expiring o relay-kit-outdated (un kit anterior al que el sitio necesita). Así un equipo apagado se vuelve issue.",
+    "explain_en": "At start the pipeline reads data-peru's index.json and heartbeat.json and logs relay-missing, relay-stale (over 36 h), relay-sources-down, relay-goal-missed, relay-token-expiring or relay-kit-outdated (a kit older than the site needs). That is how a machine that is off becomes an issue.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
     "evidence": "python/enso/observatory.py:1166-1167, 1658-1720"
@@ -1608,6 +1608,18 @@
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
     "evidence": ".github/workflows/observatory.yml:136-147; python/enso/observatory.py:1900-1918; python/enso/reports.py:714-734"
+   },
+   {
+    "from": "data-peru-branch",
+    "to": "news-collect",
+    "kind": "data",
+    "label_es": "nivel de los avisos del SENAMHI",
+    "label_en": "SENAMHI warning levels",
+    "explain_es": "La tabla de avisos del SENAMHI de la copia del Perú da el nivel (amarillo, naranja o rojo) y el inicio y fin a los avisos que llegan por Telegram y por el COEN. El sitio publica esa copia y cada nivel la enlaza.",
+    "explain_en": "SENAMHI's warning table in the Peru copy gives the warnings that arrive by Telegram and COEN their level (yellow, orange or red) and their start and end. The site publishes that copy and each level links to it.",
+    "when_es": "cada corrida de observatory.yml",
+    "when_en": "every observatory.yml run",
+    "evidence": "python/enso/sourcefeed.py:114-147; python/enso/severity.py:281-288; python/enso/observatory.py:1518-1521, 1960-1979"
    }
   ]
  },

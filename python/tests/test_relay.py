@@ -178,7 +178,7 @@ REGISTRY = {
         {"id": "news-andina", "group": "andina", "url": "https://andina.pe/agencia/rss/3.xml",
          "channels": ["actions", "n8n"], "geoblocked": False},
         {"id": "roto", "url": "javascript:alert(1)", "channels": ["peru-server"]},
-        # Su robots.txt no lo permite: tampoco se pide la copia de SOURCES.
+        # El registro la da por prohibida (robots.txt): el equipo vuelve a leer ese robots.txt cada noche.
         {"id": "imarpe-seccion", "group": "imarpe", "channels": [], "geoblock": {"status": "robots-disallowed"},
          "url": "https://www.imarpe.gob.pe/imarpe/index.php?id_seccion=I0178070000000000000000"},
     ],
@@ -206,7 +206,10 @@ def test_collector_adds_peru_only_sources_from_the_registry(tmp_path, monkeypatc
     urls = [e["url"] for e in idx["entries"]]
     assert "https://www.indeci.gob.pe/alertas/" in urls and "https://andina.pe/agencia/rss/3.xml" not in urls
     assert urls.count("https://www.senamhi.gob.pe/?p=aviso-meteorologico") == 1
-    assert not any("id_seccion" in u for u in urls) and "https://www.imarpe.gob.pe/" in urls
+    assert "https://www.imarpe.gob.pe/" in urls
+    # Esta noche su robots.txt ya lo permite: se pide, y el índice lo dice para que el registro se corrija.
+    seccion = next(e for e in idx["entries"] if "id_seccion" in e["url"])
+    assert seccion["class"] == "ok" and idx["robots_recheck"] == {seccion["url"]: "permitida"}
     linked = [e for e in idx["entries"] if e["group"] == "enlaces"]
     assert [e["url"] for e in linked] == ["https://www.indeci.gob.pe/docs/alerta-1.pdf",
                                           "https://www.indeci.gob.pe/docs/alerta-2.pdf"]
@@ -444,8 +447,7 @@ def test_antibot_pages_are_not_saved_and_do_not_count(tmp_path, monkeypatch):
     assert not pc.usable(e) and {"url": e["url"], "status": 200, "class": "challenge",
                                  "error": e["error"]} in pc.heartbeat(idx, "ok")["failures"]
     # Los JSON de IDESEP y del CENEPRED se esperan como JSON: una página HTML no sirve.
-    idesep = next(e for e in idx["entries"] if e["url"] == pc.IDESEP_AVISOS + "&request=GetFeature&maxFeatures=100"
-                  "&outputFormat=application/json")
+    idesep = next(e for e in idx["entries"] if e["url"] == pc.IDESEP_FEATURES)
     assert idesep["expect"] == "json" and idesep["class"] == "empty" and "file" not in idesep
     # El esquema de la capa (DescribeFeatureType) es XML: se guarda como texto.
     schema = next(e for e in idx["entries"] if e["url"].endswith("&request=DescribeFeatureType"))
@@ -498,9 +500,9 @@ def test_alternative_urls_are_tried_only_when_the_main_one_fails(tmp_path, monke
     assert not any(u.endswith("/abierto") for u in asked)
     assert all(e["source"] == "dhn-avisos" for e in dhn) and dhn[2]["alt_of"] == ALT_REGISTRY["sources"][0]["url"]
     assert dhn[2]["file"].endswith(".json") and dhn[2]["expect"] == "json"
-    # Canales por URL: del ICEN se pide solo la URL asignada al Perú.
-    assert [e["url"] for e in idx["entries"] if e["group"] == "igp"] == ["https://met.igp.gob.pe/datos/ICEN.txt"]
-    assert next(e for e in idx["entries"] if e["group"] == "igp")["file"].endswith(".txt")
+    # Canales por URL: de las réplicas del ICEN se pide solo la asignada al Perú (la http es la copia propia del kit).
+    assert [e["url"] for e in idx["entries"] if e["group"] == "igp"] == [pc.ICEN, "https://met.igp.gob.pe/datos/ICEN.txt"]
+    assert all(e["file"].endswith(".txt") for e in idx["entries"] if e["group"] == "igp")
 
     asked.clear()
     idx = _collect(tmp_path, monkeypatch, _peru_only, ALT_REGISTRY, name="otra")
@@ -971,3 +973,98 @@ def test_outlook_unread_is_logged_on_every_run_while_the_communique_stays():
         ev = [e for e in log.events if e.code == "outlook-unread"]
         assert len(ev) == 1 and "Niño 1+2" in ev[0].message
     assert off["enfen"]["outlookUnread"] and off["enfen"]["outlookUnreadRegions"] == ["nino12"]
+
+
+# --- Auditoría del 22-10-2026: lo que el sitio necesita saber de cada recolección ---------------------------
+
+BARRED = {"schema": "enso-source-registry/1", "generated_at": "2026-10-21T00:00:00+00:00", "sources": [
+    {"id": "ana-snirh", "group": "ana", "url": "https://snirh.ana.gob.pe/", "channels": [],
+     "geoblock": {"status": "robots-disallowed"}}]}
+
+
+def test_a_page_the_registry_bars_is_rechecked_against_its_robots_txt(tmp_path, monkeypatch):
+    """El registro la daba por prohibida desde una noche: cada noche se vuelve a leer solo su robots.txt."""
+    asked = []
+
+    def peru(req):
+        asked.append(str(req.url))
+        if str(req.url) == "https://snirh.ana.gob.pe/robots.txt":
+            return httpx.Response(200, text="User-agent: *\nDisallow: /\n")
+        return _peru_only(req)
+
+    idx = _collect(tmp_path, monkeypatch, peru, BARRED)
+    e = next(e for e in idx["entries"] if e["url"] == "https://snirh.ana.gob.pe/")
+    assert e["class"] == "robots" and not any(u.startswith("https://snirh.ana.gob.pe/") and "robots" not in u
+                                              for u in asked)
+    assert idx["robots_recheck"] == {"https://snirh.ana.gob.pe/": "prohibida"}
+    from tools import probe_sources
+    assert probe_sources.from_peru_index(idx)["https://snirh.ana.gob.pe/"]["class"] == "robots"  # se renueva
+
+
+def test_gis_layers_record_how_many_features_they_brought():
+    full = json.dumps({"type": "FeatureCollection", "totalFeatures": 240, "features": [{}] * 100}).encode()
+    assert pc.feature_counts(full) == {"features": 100, "total": 240, "note": "truncado: 100 de 240"}
+    empty = json.dumps({"type": "FeatureCollection", "numberMatched": 0, "features": []}).encode()
+    assert pc.feature_counts(empty) == {"features": 0, "total": 0}  # vacía puede ser normal: se guarda igual
+    assert pc.feature_counts(b'{"avisos": []}') == {} and pc.feature_counts(b"[1]") == {}
+
+
+def test_idesep_layer_is_saved_with_its_counts(tmp_path, monkeypatch):
+    def peru(req):
+        if str(req.url) == pc.IDESEP_FEATURES:
+            return httpx.Response(200, json={"type": "FeatureCollection", "totalFeatures": 0, "features": []})
+        return _peru_only(req)
+
+    idx = _collect(tmp_path, monkeypatch, peru)
+    e = next(e for e in idx["entries"] if e["url"] == pc.IDESEP_FEATURES)
+    assert e["class"] == "ok" and e["features"] == 0 and e["total"] == 0 and e["file"].endswith(".json")
+
+
+def test_kit_lists_are_named_and_consistent():
+    every = {u for urls in pc.SOURCES.values() for u in urls}
+    assert set(pc.EXPECT) <= every
+    assert pc.EXPECT[pc.IDESEP_FEATURES] == "json" and pc.EXPECT[pc.IDESEP_SCHEMA] == "text"
+    assert pc.ICEN in every and pc.EXPECT[pc.ICEN] == "text"
+    from enso import senamhi_avisos
+    assert senamhi_avisos.URL in pc.SOURCES["senamhi"]  # la tabla que da el nivel a los avisos del SENAMHI
+
+
+def test_index_carries_the_kit_contract_and_uses_the_bundled_intermediates(tmp_path, monkeypatch):
+    seen = []
+    real = httpx.Client
+
+    def client(**kw):
+        seen.append(kw.get("verify"))
+        return real(**{"transport": httpx.MockTransport(_peru_only), **kw})
+
+    monkeypatch.setattr(pc.httpx, "Client", client)
+    monkeypatch.setattr(pc.time, "sleep", lambda s: None)
+    idx = pc.collect(tmp_path / "out")
+    assert idx["collector"]["contract"] == pc.COLLECTOR_CONTRACT
+    assert pc.heartbeat(idx, "ok")["collector"]["contract"] == pc.COLLECTOR_CONTRACT
+    import ssl
+    assert seen and isinstance(seen[0], ssl.SSLContext)  # repositorio.imarpe.gob.pe no manda su intermedio
+    from tools import collector_kit
+    assert "python/enso/data/ca-intermedios.pem" in collector_kit.kit_files()  # y el kit lleva esos intermedios
+
+
+def test_goals_are_declared_with_their_cause_when_the_listings_fail(tmp_path, monkeypatch):
+    """Con todo el ENFEN pidiendo verificación, la meta existe igual y dice por qué no se logró."""
+    def peru(req):
+        u = str(req.url)
+        if "enfen.imarpe.gob.pe" in u and not u.endswith("/robots.txt") or "comunicados-oficiales-enfen" in u:
+            return httpx.Response(403, text=CHALLENGE, headers={"content-type": "text/html", "cf-mitigated": "challenge"})
+        return _peru_only(req)
+
+    idx = _collect(tmp_path, monkeypatch, peru)
+    assert idx["goals"] == {"comunicado": False, "informe técnico": False}
+    assert idx["goal_detail"]["informe técnico"]["class"] == "challenge"
+    assert idx["goal_detail"]["informe técnico"]["status"] == 403 and not idx["goal_detail"]["comunicado"]["saved"]
+
+
+def test_goal_detail_points_at_the_saved_pdf(snapshot):
+    _, idx = snapshot
+    assert idx["goals"] and all(idx["goals"].values())
+    for g, ok in idx["goals"].items():
+        d = idx["goal_detail"][g]
+        assert d["saved"] == ok and (not ok or d["url"].startswith("https://"))

@@ -8,11 +8,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
 
+from enso import archive
+from enso import observatory as obs
 from enso import senamhi_avisos as SA
 from enso import severity as SV
 from enso import sourcefeed
@@ -104,14 +106,18 @@ def test_coen_repost_matches_number_and_year(table):
     assert SV.assess("indeci-coen", i["title"], i["summary"], "2027-10-21T01:39:50Z", NOW, table)["severity"] is None
 
 
-def _relay(tmp_path: Path, body: bytes) -> Relay:
-    (tmp_path / "files").mkdir()
+def _relay(tmp_path: Path, body: bytes, copied_hours_ago: float = 0, collected_hours_ago: float = 0) -> Relay:
+    """Una copia del recolector del Perú con la tabla bajada hace ``copied_hours_ago`` (la última buena, que el
+    recolector arrastra si esa noche no la pudo bajar) en una recolección de hace ``collected_hours_ago``."""
+    (tmp_path / "files").mkdir(parents=True)
     (tmp_path / "files" / "76ad3aed9d48ed62.html").write_bytes(body)
     at = NOW.isoformat(timespec="seconds")
+    now = datetime.now(timezone.utc)
     (tmp_path / "index.json").write_text(json.dumps({
-        "schema": "enso-relay/1", "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "schema": "enso-relay/1", "collected_at": (now - timedelta(hours=collected_hours_ago)).isoformat(timespec="seconds"),
         "entries": [{"url": SA.URL, "status": 200, "file": "files/76ad3aed9d48ed62.html", "content_type": "text/html",
-                     "sha256": hashlib.sha256(body).hexdigest(), "fetched_at": datetime.now(timezone.utc).isoformat(),
+                     "sha256": hashlib.sha256(body).hexdigest(),
+                     "fetched_at": (now - timedelta(hours=copied_hours_ago)).isoformat(),
                      "group": "senamhi", "at": at}]}), encoding="utf-8")
     return Relay(tmp_path)
 
@@ -137,3 +143,60 @@ def test_no_relay_or_a_broken_copy_leaves_texts_as_they_are(tmp_path):
     assert SA.from_relay(Broken()) is None
     ok = type("R", (), {"get": lambda self, url, accept=(): Response(url, TABLE, "relay-peru", 200)})()
     assert len(SA.from_relay(ok)) == 24
+
+
+def test_load_says_why_there_is_no_table(tmp_path):
+    assert SA.load(None) == (None, "")  # sin copia del Perú: de eso avisa observatory.load_relay
+    t, why = SA.load(_relay(tmp_path / "ok", TABLE))
+    assert len(t) == 24 and why == "" and t.body == TABLE and t.age_hours() < 1
+    assert "filas de avisos" in SA.load(_relay(tmp_path / "m", b"<html><body>Mantenimiento</body></html>"))[1]
+    assert "no la trae" in SA.load(type("R", (), {"get": lambda self, url, accept=(): None})())[1]
+
+    class Broken:
+        def get(self, url, accept=()):
+            raise OSError("disco")
+
+    assert SA.load(Broken()) == (None, "no se pudo leer la copia (OSError: disco)")
+
+
+def _codes(relay) -> tuple[object, list[str]]:
+    log = obs.EventLog()
+    t = sourcefeed.levels_table(relay, log)
+    return t, [e.code for e in log.events]
+
+
+def test_a_missing_or_old_table_is_logged_so_grey_warnings_do_not_go_unnoticed(tmp_path):
+    """Sin la tabla, los avisos del SENAMHI se pintan «sin nivel»: eso no puede pasar sin que nadie se entere."""
+    t, codes = _codes(_relay(tmp_path / "ok", TABLE))
+    assert len(t) == 24 and codes == []
+    t, codes = _codes(_relay(tmp_path / "maint", b"<html><body>Mantenimiento</body></html>"))
+    assert t is None and codes == ["senamhi-avisos-unread"]
+    # La recolección de anoche no la pudo bajar y arrastró la de hace dos días: se usa, pero se avisa.
+    t, codes = _codes(_relay(tmp_path / "old", TABLE, copied_hours_ago=50))
+    assert len(t) == 24 and codes == ["senamhi-avisos-stale"]
+    # Si toda la copia del Perú es vieja, ya avisa «relay-stale»: no se repite por la tabla.
+    assert _codes(_relay(tmp_path / "stale", b"<html></html>", 50, 50))[1] == []
+    assert _codes(None) == (None, [])
+
+
+def test_the_level_links_the_aviso_and_the_published_copy_of_the_table(tmp_path, telegram):
+    t = SA.from_relay(_relay(tmp_path / "relay", TABLE))
+    items = [dict(i, id=f"tg{n}", feed="senamhi-telegram", first_seen=i["published"], hazards=["lluvias"])
+             for n, i in enumerate(telegram)]
+    feed = sourcefeed.build({}, {}, None, {}, news_items=items, now=NOW, avisos=t)
+    g = next(g for g in feed["groups"] if g["id"] == "alertas")
+    assert g["levelsFrom"] == {"source": "senamhi-avisos", "institution": "SENAMHI", "url": SA.URL,
+                               "copyAt": t.copy_at, "avisos": 24}
+    rated = [i for i in g["items"] if i.get("aviso")]
+    assert rated and all(i["severity"]["basisUrl"] == i["aviso"]["url"] for i in rated)
+
+    w = archive.Writer(tmp_path / "pub")
+    rel = obs.archive_levels(w, feed, t)
+    assert rel == archive.source_path("senamhi-avisos", TABLE, "text/html", SA.URL) and rel.endswith(".txt")
+    assert (tmp_path / "pub" / rel).read_bytes() == TABLE
+    assert w.files[rel]["channel"] == "relay-peru" and w.files[rel]["retrievedAt"] == t.copy_at
+    assert g["levelsFrom"]["archive"] == rel and all(i["severity"]["basisArchive"] == rel for i in rated)
+    # Sin tabla, ni pie ni copia.
+    bare = sourcefeed.build({}, {}, None, {}, news_items=items, now=NOW, avisos=None)
+    assert "levelsFrom" not in next(g for g in bare["groups"] if g["id"] == "alertas")
+    assert obs.archive_levels(archive.Writer(tmp_path / "pub2"), bare, None) is None

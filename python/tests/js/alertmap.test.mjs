@@ -16,3 +16,34 @@ it('un aviso vigente según su vigencia', () => {
 it('un aviso que la tabla del SENAMHI marca cancelado ya no está vigente', () => {
   assert.equal(phaseOf({ ...AVISO, aviso: { num: 425, cancelled: true } }, NOW), 'vencida');
 });
+
+// safeUrl resuelve contra la página; en node no hay documento.
+globalThis.document ??= { baseURI: 'https://observatorio.example/' };
+const { itemBadges, levelsNote, prepare } = await import('../../../public/assets/js/alertmap.js');
+
+const RATED = { ...AVISO, title: 'Aviso del SENAMHI N° 429', severity: { scale: 'senamhi-colores', rank: 3, label: 'Rojo', scaleLabel: 'SENAMHI',
+  basisUrl: 'https://www.senamhi.gob.pe/?p=aviso-meteorologico-detalle&a=2026&b=29296&c=00&d=SENA',
+  basisArchive: 'archive/sources/senamhi-avisos/0123456789ab.txt' } };
+
+it('el nivel enlaza el aviso en el SENAMHI y la copia de su tabla', () => {
+  const out = String(itemBadges(RATED, NOW));
+  assert.match(out, /href="https:\/\/www\.senamhi\.gob\.pe\/\?p=aviso-meteorologico-detalle&amp;a=2026&amp;b=29296/);
+  assert.match(out, /href="data\/archive\/sources\/senamhi-avisos\/0123456789ab\.txt"[^>]*>copia de la tabla/);
+  // Sin esos datos (un aviso de otra institución) no aparece nada, y una ruta ajena no se enlaza.
+  assert.doesNotMatch(String(itemBadges({ ...AVISO, severity: { rank: 2, label: 'Naranja' } }, NOW)), /nivel:/);
+  assert.doesNotMatch(String(itemBadges({ ...RATED, severity: { ...RATED.severity, basisArchive: '../x' } }, NOW)), /copia de la tabla/);
+});
+
+it('el pie dice de qué copia de la tabla salen los niveles y avisa si es vieja', () => {
+  const levels = { url: 'https://www.senamhi.gob.pe/?p=aviso-meteorologico', copyAt: '2026-10-21T05:10:00Z',
+    archive: 'archive/sources/senamhi-avisos/0123456789ab.txt', avisos: 24 };
+  const feed = { groups: [{ id: 'alertas', items: [RATED], levelsFrom: levels }] };
+  assert.deepEqual(prepare(feed, NOW).levels, levels);
+  const fresh = String(levelsNote(levels, NOW));
+  assert.match(fresh, /copiada desde el Perú/);
+  assert.match(fresh, /href="data\/archive\/sources\/senamhi-avisos\/0123456789ab\.txt"/);
+  assert.doesNotMatch(fresh, /figuran sin nivel/);
+  assert.match(String(levelsNote(levels, NOW + 48 * 36e5)), /<strong>Esa copia tiene 3 días: los avisos emitidos después figuran sin nivel/);
+  assert.equal(levelsNote(null, NOW), '');
+  assert.equal(prepare({ groups: [{ id: 'alertas', items: [] }] }, NOW).levels, null);
+});

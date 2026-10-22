@@ -16,6 +16,10 @@ Cada aviso se identifica de dos maneras:
 
 Un mensaje de Telegram sin enlace se reconoce solo si una única fila tiene las mismas fechas de inicio
 y fin y todas las palabras de su título.
+
+Que falte la tabla no se calla (``load`` dice por qué y ``sourcefeed.levels_table`` lo registra), y la
+copia usada se publica en el archivo del sitio: cada nivel enlaza el aviso en el sitio del SENAMHI y esa
+copia, porque la página solo responde desde el Perú.
 """
 
 from __future__ import annotations
@@ -28,6 +32,9 @@ from datetime import date, datetime, timedelta, timezone
 from typing import Optional
 
 URL = "https://www.senamhi.gob.pe/?p=aviso-meteorologico"
+#: Una tabla más vieja que esto se avisa: los avisos emitidos después quedan sin nivel y una cancelación
+#: posterior no se ve (la copia del Perú es diaria; el recolector conserva hasta 72 h la última buena).
+STALE_HOURS = 36
 #: Clase del nivel en la tabla → color (``severity.SCALES["senamhi-colores"]``).
 LEVEL_CLASS = {"dos": "amarillo", "tres": "naranja", "cuatro": "rojo"}
 LEVEL_NAME = {"AMARILLO": "amarillo", "NARANJA": "naranja", "ROJO": "rojo"}
@@ -101,9 +108,11 @@ def parse(body: str | bytes) -> list[Aviso]:
 class Table:
     """Los avisos de la tabla, por ``id`` y por año y número."""
 
-    def __init__(self, avisos: list[Aviso], copy_at: Optional[str] = None):
+    def __init__(self, avisos: list[Aviso], copy_at: Optional[str] = None, body: bytes = b""):
         self.avisos = avisos
+        #: Cuándo bajó la página el recolector del Perú, y la página tal cual (para el archivo del sitio).
         self.copy_at = copy_at
+        self.body = body
         self.by_id = {a.id: a for a in avisos}
         self.by_num: dict[tuple[int, int], list[Aviso]] = {}
         for a in avisos:
@@ -111,6 +120,10 @@ class Table:
 
     def __len__(self) -> int:
         return len(self.avisos)
+
+    def age_hours(self, now: Optional[datetime] = None) -> Optional[float]:
+        when = _when(self.copy_at)
+        return None if when is None else ((now or datetime.now(timezone.utc)) - when).total_seconds() / 3600
 
     def find(self, feed_id: str, title: str, summary: str, published: Optional[str],
              valid: Optional[dict] = None) -> Optional[Aviso]:
@@ -161,13 +174,27 @@ def _when(s: Optional[str]) -> Optional[datetime]:
     return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
-def from_relay(relay) -> Optional[Table]:
-    """La tabla de la última copia del recolector del Perú, o ``None`` si no hay copia legible."""
+def load(relay) -> tuple[Optional[Table], str]:
+    """La tabla de la última copia del recolector del Perú y, si no hay tabla que usar, por qué («» sin copia
+    del Perú: de eso ya avisa ``observatory.load_relay``)."""
     if relay is None:
-        return None
+        return None, ""
     try:
         r = relay.get(URL)
-        avisos = parse(r.body) if r is not None else []
-    except Exception:  # noqa: BLE001 — sin tabla, los avisos quedan con lo que diga su texto
-        return None
-    return Table(avisos, getattr(r, "archived_at", None)) if avisos else None
+    except Exception as exc:  # noqa: BLE001 — sin tabla, los avisos quedan con lo que diga su texto
+        return None, f"no se pudo leer la copia ({type(exc).__name__}: {exc})"[:200]
+    if r is None:
+        return None, "la copia del Perú no la trae (no respondió, pidió verificación o tiene más de 7 días)"
+    try:
+        avisos = parse(r.body)
+    except Exception as exc:  # noqa: BLE001
+        return None, f"no se pudo leer la página ({type(exc).__name__})"
+    if not avisos:
+        return None, ("la página no trae filas de avisos legibles: puede haber cambiado de formato o haber "
+                      "respondido una página de mantenimiento")
+    return Table(avisos, getattr(r, "archived_at", None), r.body), ""
+
+
+def from_relay(relay) -> Optional[Table]:
+    """La tabla de la última copia del recolector del Perú, o ``None`` si no hay copia legible."""
+    return load(relay)[0]
