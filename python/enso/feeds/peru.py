@@ -153,6 +153,26 @@ def parse_enfen_communique(text: str, *, source: str = "") -> Parsed:
     return Parsed(data, fingerprint("enfen-comunicado", "RESUMEN EJECUTIVO" if rm else "sin-resumen"), warnings)
 
 
+def download_button(page_html: str, page_url: str) -> Optional[str]:
+    """Enlace del botón «Descargar» (``?wpdmdl=``) de una página de descarga del portal del ENFEN.
+
+    Solo vale el enlace a la misma página (``/download/<slug>/?wpdmdl=…``): el primer enlace de la página es
+    el canónico a sí misma, sin ``wpdmdl``, y la barra lateral enlaza otros documentos. Es el único lector de
+    estas páginas: lo usan la actualización diaria, el sondeo de comunicados, el informe técnico y el
+    recolector del Perú."""
+    import html as _html
+    from urllib.parse import urlparse
+
+    slug = urlparse(page_url).path.rstrip("/").rsplit("/", 1)[-1]
+    if not slug:
+        return None
+    for m in re.finditer(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)[\"']", page_html):
+        link = _html.unescape(m.group(1))
+        if urlparse(link).path.rstrip("/").rsplit("/", 1)[-1] == slug:
+            return re.sub(r"[&?]refresh=[^&]*", "", link)
+    return None
+
+
 LISTING_RE = re.compile(
     r"href=[\"']([^\"']*comunicado-(oficial|extraordinario)-enfen-n-?(\d{1,2})-(\d{4})[^\"']*)[\"']", re.I
 )

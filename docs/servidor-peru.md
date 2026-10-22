@@ -19,7 +19,7 @@ computadora en el Perú y hacer doble clic en `INSTALAR` y luego en
 
 | Hora (Lima) | Qué pasa |
 |---|---|
-| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, los avisos de los últimos 5 días del GeoServer de IDESEP (capa `g_100_01:view_aviso_24horas_5dias_ultimos` y su lista de campos) y el SIG del CENEPRED, y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
+| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), el listado de informes técnicos y los PDF de los dos más recientes (hasta 20 MB cada uno), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, los avisos de los últimos 5 días del GeoServer de IDESEP (capa `g_100_01:view_aviso_24horas_5dias_ultimos` y su lista de campos) y el SIG del CENEPRED, y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
 | 21:00 + unos minutos | Pide a GitHub la actualización del sitio en el momento (`--dispatch`) |
 | 21:30 a 23:30 | Reintentos cada 30 minutos, solo si la de las 21:00 falló |
 | Al encender o iniciar sesión | Si esa noche no hubo copia (equipo apagado o sin internet), la recolecta en ese momento |

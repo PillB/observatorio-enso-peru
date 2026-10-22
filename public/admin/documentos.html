@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Consola de documentos</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="admin.css">
+  <script type="module" src="documentos.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="brand"><img src="../favicon.svg" width="32" height="32" alt=""><span><span class="brand-name">Consola de documentos</span><span class="brand-tag">Observatorio ENSO Perú · documentos que hay que bajar a mano</span></span></span>
+      <div class="header-actions" id="session" hidden>
+        <a class="btn" href="./">Lugares</a>
+        <span class="muted small" id="who"></span>
+        <button type="button" class="btn" id="logout">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="gc-main">
+    <p id="status" class="gc-status" role="status" aria-live="polite"></p>
+
+    <section id="login-view" class="gc-card gc-login" hidden>
+      <h1>Ingresar</h1>
+      <p class="muted">La misma cuenta de la consola de lugares. Cada subida queda registrada con su usuario y la hora.</p>
+      <form id="login-form" autocomplete="on" novalidate>
+        <label for="username">Usuario</label>
+        <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required maxlength="40">
+        <label for="password">Contraseña</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="200">
+        <p id="login-error" class="gc-error" role="alert"></p>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+      </form>
+    </section>
+
+    <section id="app-view" hidden>
+      <div class="gc-intro">
+        <p>Algunos documentos oficiales solo se pueden bajar desde un navegador: la réplica de la DHN pide una verificación humana a los servidores automáticos y el portal del ENFEN no responde fuera del Perú. Para cada documento pendiente: ábralo, pase la verificación si aparece, guarde el PDF y súbalo aquí. La actualización del sitio empieza sola y valida el PDF; si no es el documento esperado, no se publica y vuelve a aparecer aquí con el motivo.</p>
+      </div>
+      <h2 class="dc-h">Pendientes <span class="gc-count" id="count-pending"></span></h2>
+      <p class="muted small" id="pending-info"></p>
+      <ol class="gc-list" id="pending"></ol>
+      <h2 class="dc-h">Leídos de una copia subida</h2>
+      <ol class="gc-list" id="used"></ol>
+      <h2 class="dc-h">Últimas subidas</h2>
+      <ol class="gc-list" id="uploads"></ol>
+    </section>
+  </main>
+</body>
+</html>

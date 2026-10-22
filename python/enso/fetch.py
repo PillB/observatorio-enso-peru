@@ -93,6 +93,24 @@ def read_heartbeat(root: Path) -> dict:
     return hb if isinstance(hb, dict) and hb.get("schema") == "enso-relay-heartbeat/1" else {}
 
 
+#: Intermedios públicos que algunos servidores oficiales no envían (ver el encabezado del archivo).
+INTERMEDIATES = Path(__file__).parent / "data" / "ca-intermedios.pem"
+
+
+def ssl_context():
+    """El contexto TLS de siempre (certifi o ``SSL_CERT_FILE``) más los intermedios de ``INTERMEDIATES``: así un
+    servidor que manda solo su certificado (repositorio.imarpe.gob.pe) se verifica igual que en un navegador, sin
+    apagar la verificación. Las raíces siguen siendo las de siempre."""
+    import ssl
+
+    ctx = httpx.create_ssl_context()
+    try:
+        ctx.load_verify_locations(cafile=str(INTERMEDIATES))
+    except (OSError, ssl.SSLError):
+        pass  # sin el archivo, la verificación normal
+    return ctx
+
+
 class Relay:
     """Copias recolectadas fuera de GitHub Actions: desde el Perú (rama
     ``data-peru``) o por el flujo de n8n (rama ``data-n8n``), con el mismo
@@ -115,10 +133,13 @@ class Relay:
         self.collector: dict = idx.get("collector") or {}
         self.host: str = self.collector.get("host", "")
         self.summary: dict = idx.get("summary") or {}
+        #: Metas de la recolección (``tools.peru_collector.goals``): documento → si se guardó su PDF.
+        self.goals: dict = idx.get("goals") or {}
         self.heartbeat: dict = read_heartbeat(self.root)
         self.max_age_hours = max_age_hours
-        #: Canal con que se marcan las respuestas: «relay-n8n» o «relay-peru».
-        self.channel = "relay-n8n" if (idx.get("collector") or {}).get("kind") == "n8n" else "relay-peru"
+        #: Canal con que se marcan las respuestas: «relay-n8n», «relay-manual» (consola de documentos) o «relay-peru».
+        kind = (idx.get("collector") or {}).get("kind")
+        self.channel = {"n8n": "relay-n8n", "manual": "relay-manual"}.get(kind, "relay-peru")
         self._by_url: dict[str, list[dict]] = {}
         for e in idx.get("entries") or []:
             if e.get("status") != 200 or not self.FILE_RE.match(e.get("file") or ""):
@@ -158,7 +179,7 @@ class Fetcher:
         # Conectar no lleva más de unos segundos aunque el servidor sea lento: un servidor que no acepta la
         # conexión no retiene cada pedido el plazo entero.
         self.client = httpx.Client(timeout=httpx.Timeout(timeout, connect=min(timeout, 15.0)), follow_redirects=True,
-                                   headers={"User-Agent": UA})
+                                   headers={"User-Agent": UA}, verify=ssl_context())
         self.retries = retries
         #: Tiempo total de cada pedido. ``timeout`` vale por lectura: un servidor que manda la respuesta de a
         #: pocos bytes nunca lo agota y, sin este límite, retendría la corrida hasta el límite del build.
@@ -312,6 +333,10 @@ class Fetcher:
                     attempts.append({"url": url, "channel": got.channel,
                                      "note": f"copia de archivo con tipo inesperado ({got.content_type[:60]})"})
         raise FetchError(f"sin respuesta válida para {urls[0]}", attempts)
+
+    def copy(self, url: str, accept: tuple[str, ...] = ()) -> Optional[Response]:
+        """Solo las copias de los recolectores (sin pedir nada): para las URL sintéticas ``manual://``."""
+        return self._from_relays(url, accept)
 
     def _from_relays(self, url: str, accept: tuple[str, ...]) -> Optional[Response]:
         hits = [got for got in (r.get(url, accept) for r in self.relays) if got is not None]

@@ -103,11 +103,23 @@ def _stretch(v):
     return v
 
 
-@pytest.mark.parametrize("w", [320, 390])
-def test_long_unbroken_text_from_the_sources_never_widens_the_page(site, browser, w):
+def _with_an_incident(report: dict, clean: bool) -> dict:
+    """El informe de la corrida con al menos una incidencia que estirar. Una corrida sin incidencias es la
+    situación normal en producción: sin esto la prueba fallaba justo cuando todo respondía bien, y detenía el
+    despliegue (21 de octubre de 2026). ``clean`` simula esa corrida quitando las incidencias del sitio armado."""
+    events = [e for e in report.get("events") or [] if not clean or e.get("severity") == "info"]
+    if not any(e.get("severity") != "info" for e in events):
+        events.append({"severity": "warning", "source": "prueba", "stage": "fetch", "code": "fetch-failed",
+                       "message": "sin respuesta válida para", "fingerprint": "prueba"})
+    return {**report, "events": events}
+
+
+@pytest.mark.parametrize("w,clean", [(320, False), (390, False), (320, True)])
+def test_long_unbroken_text_from_the_sources_never_widens_the_page(site, browser, w, clean):
     """Revisión 8: una incidencia con una URL larga (p. ej. «sin respuesta válida para https://…») ensanchaba
     Metodología en un teléfono, y la comprobación del navegador detenía el despliegue de los datos oficiales.
-    Ningún texto que venga de una fuente o del registro de incidencias puede ensanchar la página."""
+    Ningún texto que venga de una fuente o del registro de incidencias puede ensanchar la página, haya o no
+    incidencias en la corrida real."""
     from urllib.parse import urlsplit
 
     base, root = site
@@ -118,8 +130,10 @@ def test_long_unbroken_text_from_the_sources_never_widens_the_page(site, browser
         f = root / "data" / rel
         if not f.is_file():
             return route.continue_()
-        route.fulfill(status=200, content_type="application/json",
-                      body=json.dumps(_stretch(json.loads(f.read_text(encoding="utf-8")))))
+        data = json.loads(f.read_text(encoding="utf-8"))
+        if rel == "run-report.json":
+            data = _with_an_incident(data, clean)
+        route.fulfill(status=200, content_type="application/json", body=json.dumps(_stretch(data)))
 
     ctx.route("**/data/**/*.json*", stretched)
     pg = ctx.new_page()

@@ -38,8 +38,10 @@ from pathlib import Path
 from typing import Any, Callable, Optional
 
 from .feeds import FormatChanged, Parsed
-from .feeds import cpc, godas, peru
+from .feeds import cpc, godas, imarpe_repo, peru
 from . import archive
+from . import manual
+from . import reports
 from . import signals as sig
 
 SCHEMA = "observatorio-enso/4"
@@ -470,6 +472,20 @@ def _communique_urls(item: dict) -> list[str]:
     return list(dict.fromkeys(urls))
 
 
+def _need_communique(needs: Optional["manual.ManualNeeds"], item: dict, reason: str,
+                     problem: Optional[str] = None) -> None:
+    """Anota el comunicado para bajarlo a mano: sus URL de búsqueda y las que una persona abre en el navegador
+    (la página de descarga del portal y el PDF de la DHN, que a un navegador le pide la verificación)."""
+    if needs is None:
+        return
+    n, y = item["number"], item["year"]
+    page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{n:02d}-{y}/"
+    dhn = f"{peru.DHN_BASE}/Archivos/oceanografia/enfen/comunicado-oficial/{n:02d}-{y}.pdf"
+    urls = _communique_urls(item)
+    needs.add(f"comunicado-{item['id']}", "comunicado", f"Comunicado oficial ENFEN N° {item['id']}", urls + [page],
+              [page, dhn], reason, expect={"year": y, "number": n}, problem=problem)
+
+
 def _get_communique(fetcher, item: dict):
     """PDF de un comunicado: sus URL conocidas y, si ninguna sirve, cualquier
     copia en PDF que el Internet Archive tenga de su página de descarga en el
@@ -479,6 +495,11 @@ def _get_communique(fetcher, item: dict):
     try:
         return fetcher.get(_communique_urls(item), archive=True, save=True, accept=("pdf", "octet-stream"))
     except FetchError as exc:
+        # El repositorio institucional del IMARPE: oficial, sin verificación humana y alcanzable desde Actions.
+        got = imarpe_repo.communique_pdf(fetcher, item["year"], item["number"])
+        if got is not None:
+            got.attempts = exc.attempts + [{"url": got.url, "channel": "repositorio IMARPE"}]
+            return got
         page = f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{item['number']:02d}-{item['year']}/"
         tried: list = []
         got = archive_prefix(fetcher, page, attempts=tried)
@@ -514,9 +535,8 @@ def _probe_communique(fetcher, py: int, pn: int, log: EventLog) -> Optional[dict
         r = fetcher.get([page], archive=True, save=False, accept=("html",))
     except FetchError:
         return None
-    got = peru.LISTING_RE.search(r.text) or re.search(r"href=[\"']([^\"']*\?wpdmdl=\d+[^\"']*)", r.text)
-    url = got.group(1) if got else f"{page}?wpdmdl="
-    if "wpdmdl=" in url and not url.endswith("="):
+    url = peru.download_button(r.text, page)
+    if url:
         log.add("info", "enfen-comunicados", "fetch", "probe-found",
                 f"Se detectó el comunicado {pn:02d}-{py} antes de que apareciera en el listado.")
         return {"year": py, "number": pn, "kind": "oficial", "id": f"{pn:02d}-{py}", "url": url}
@@ -555,7 +575,7 @@ def merge_enfen_listings(*listings: list[dict]) -> list[dict]:
 
 
 def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
-                 log: EventLog, today: date) -> None:
+                 log: EventLog, today: date, needs: Optional["manual.ManualNeeds"] = None) -> None:
     """Completa el listado ENFEN con el comunicado más reciente (PDF).
 
     1. Toma el número más alto entre el listado y la publicación anterior.
@@ -578,6 +598,14 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
     candidate = data.pop("latest", None)
     if fixtures is None and acq.ok and not acq.carried and "wp-json" in (acq.url or ""):
         listing = merge_enfen_listings(listing, portal_enfen_listing(fetcher, log))
+    if fixtures is None:
+        # El repositorio del IMARPE responde a GitHub Actions y deposita cada comunicado unos días después: va
+        # último, así una entrada del portal o de la DHN (con enlace al PDF) gana para el mismo número.
+        try:
+            listing = merge_enfen_listings(listing, imarpe_repo.communiques(fetcher))
+        except Exception as exc:  # noqa: BLE001 — una ruta más nunca detiene la corrida
+            log.add("info", "enfen-comunicados", "fetch", "repository-unavailable",
+                    f"No se pudo consultar el repositorio del IMARPE: {type(exc).__name__}")
     known = [(i["year"], i["number"]) for i in listing if i.get("kind", "oficial") == "oficial"]
     for c in (prev_latest, candidate):
         if c:
@@ -633,7 +661,10 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
         oficial = [i for i in listing if i.get("kind", "oficial") == "oficial"][:3]
         candidates = [(i, None) for i in oficial]
     failures = []
-    for item, canned in candidates:
+    for k, (item, canned) in enumerate(candidates):
+        resp = None
+        # Solo el más reciente se pide a mano: los anteriores ya no son el vigente.
+        need = needs if k == 0 and fixtures is None else None
         if prev_latest and (prev_latest["year"], prev_latest["number"]) >= (item["year"], item["number"]):
             data["latest"] = prev_latest
             break
@@ -642,20 +673,48 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
             acq.documents.append(resp.body)
             if resp.body[:5] != b"%PDF-":
                 raise FormatChanged("enfen: la descarga no es un PDF")
-            c = peru.parse_enfen_communique(peru.pdf_text(resp.body), source=_clean_wpdm(item["url"]))
+            text = peru.pdf_text(resp.body)
+            c = peru.parse_enfen_communique(text, source=_clean_wpdm(item["url"]))
+            got_id = (c.data.get("year"), c.data.get("number"))
+            if fixtures is None and None not in got_id and got_id != (item["year"], item["number"]):
+                # Otro comunicado detrás de la URL de este (una copia subida a mano equivocada, un enlace del
+                # portal mal puesto): no se publica como si fuera el buscado.
+                raise FormatChanged(f"el PDF es el comunicado {got_id[1]:02d}-{got_id[0]}, no el {item['id']} "
+                                    f"(canal {resp.channel})")
+            # Perspectiva (magnitud esperada por región, con su oración) y enlace al informe técnico.
+            c.data["outlook"] = reports.communique_outlook(text, c.data.get("status"))
+            unread = reports.outlook_unread(text, c.data["outlook"])
+            if unread:
+                # El comunicado trae una perspectiva con magnitud que no se pudo leer (toda o una región): queda
+                # marcado (la incidencia la anota Builder.official en cada corrida) y, si hay modelo de lenguaje
+                # configurado, una propuesta para revisión (nunca se publica sola).
+                c.data["outlookUnread"] = unread
+                proposal = reports.llm_extract(getattr(fetcher, "client", None), "enfen-perspectiva", text,
+                                               url=_clean_wpdm(item["url"]), published=c.data.get("issued"))
+                if proposal:
+                    c.data["outlookReview"] = proposal
+            c.data["informe_url"] = reports.informe_link(text)
         except FetchError as exc:
             failures.append(f"{item['id']}: {exc}")
+            _need_communique(need, item, manual.reason_from(exc.attempts, "Ninguna ruta automática dio el PDF."))
             continue
         except FormatChanged as exc:
             failures.append(f"{item['id']}: {exc}")
+            _need_communique(need, item, "La descarga automática no dio un PDF legible del comunicado.",
+                             str(exc) if resp is not None and resp.channel == "relay-manual" else None)
             continue
         except Exception as exc:  # pypdf u otro error inesperado
             failures.append(f"{item['id']}: {type(exc).__name__}: {exc}")
+            _need_communique(need, item, "La descarga automática no dio un PDF legible del comunicado.",
+                             f"{type(exc).__name__}: {exc}" if resp is not None and resp.channel == "relay-manual" else None)
             continue
         for w in c.warnings:
             log.add("warning", "enfen-comunicados", "parse", "communique-warning", w)
         c.data["channel"] = resp.channel
         c.data["archived_at"] = resp.archived_at
+        if resp.channel == "relay-manual" and needs is not None:
+            needs.mark_used(f"comunicado-{item['id']}", f"Comunicado oficial ENFEN N° {item['id']}", resp.url,
+                            resp.archived_at)
         c.data["archive"] = archive.source_path("enfen-comunicados", resp.body)
         data["latest"] = c.data
         if resp.channel.startswith("archive") and fixtures is None:
@@ -961,8 +1020,21 @@ class Builder:
                     "status": latest["status"], "statusCode": latest["status_code"], "level": level,
                     "number": latest["id"], "issued": latest.get("issued"), "nextIssue": latest.get("next_issue"),
                     "summary": latest.get("summary"), "documentUrl": latest.get("source") or (listing[0]["url"] if listing else ""),
-                    "archive": latest.get("archive"), "stale": stale,
+                    "archive": latest.get("archive"), "stale": stale, "outlook": latest.get("outlook") or [],
+                    "outlookUnread": bool(latest.get("outlookUnread")),
+                    **({"outlookUnreadRegions": latest["outlookUnread"]} if isinstance(latest.get("outlookUnread"), list) else {}),
+                    **({"outlookReview": latest["outlookReview"]} if latest.get("outlookReview") else {}),
                 })
+                if latest.get("outlookUnread"):
+                    # En cada corrida mientras siga el mismo comunicado: si no, el issue se cerraría solo.
+                    regions = latest["outlookUnread"] if isinstance(latest["outlookUnread"], list) else []
+                    names = {"nino12": "Niño 1+2", "nino34": "Niño 3.4", "general": "sin región"}
+                    review = latest.get("outlookReview") or {}
+                    self.log.add("warning", "enfen-comunicados", "parse", "outlook-unread",
+                                 f"El comunicado {latest['id']} trae una perspectiva con magnitudes que no se pudo leer"
+                                 + (f" ({', '.join(names.get(r, r) for r in regions)})" if regions else "")
+                                 + "; la vista El Niño costero no la muestra."
+                                 + (" La lectura del modelo de lenguaje queda para revisión." if review.get("ok") else ""))
                 if (listing and listing[0].get("kind", "oficial") == "oficial"
                         and (listing[0]["year"], listing[0]["number"]) > (latest["year"], latest["number"])):
                     # Un comunicado más reciente existe pero no se pudo leer: el estado
@@ -974,10 +1046,36 @@ class Builder:
                 if stale:
                     self.log.add("warning", "enfen-comunicados", "validate", "official-overdue",
                                  f"El siguiente comunicado ENFEN estaba previsto para {latest.get('next_issue')} y no se ha capturado.")
+        if enfen and enfen.get("informe"):
+            res["enfen"]["informe"] = self.informe(enfen["informe"])
         if "enfen" not in res or "status" not in res.get("enfen", {}):
             self.log.add("error", "enfen-comunicados", "derive", "status-unknown",
                          "No se pudo determinar el estado del sistema de alerta de ENFEN en esta corrida.")
         return res
+
+    def informe(self, inf: dict) -> dict:
+        """Contrasta el informe técnico con el ICEN oficial del IGP y suma el ICEN temporal a la serie ICEN."""
+        inf = dict(inf)
+        if any(i.get("code") == "informe-provisional-superseded" for i in inf.get("issues") or []):
+            inf["icenSuperseded"] = True
+        icen = self.series.get("icen")
+        tmp, last = inf.get("icenProvisional"), inf.get("lastOfficial")
+        if icen:
+            igp = {p["period"]: p["value"] for p in icen["points"] if p["value"] is not None}
+            if last and last["period"] in igp and abs(last["icen"] - igp[last["period"]]) > 0.05:
+                self.log.add("warning", "enfen-informe", "validate", "informe-icen-mismatch",
+                             f"El ICEN de {last['period']} del informe técnico ({last['icen']:+.2f}) difiere del archivo "
+                             f"del IGP ({igp[last['period']]:+.2f}).")
+            if tmp and icen["latest"]["period"] and tmp["period"] <= icen["latest"]["period"]:
+                inf["icenSuperseded"] = tmp["period"]
+                tmp = inf["icenProvisional"] = None  # el IGP ya publicó el oficial de ese mes
+            if tmp:
+                icen["latest"]["provisional"] = {
+                    "period": tmp["period"], "value": tmp["icen"], "category": sig.icen_category(tmp["icen"]),
+                    "source": "enfen-informe", "url": inf.get("url"), "page": (tmp.get("evidence") or {}).get("page"),
+                    "quote": (tmp.get("evidence") or {}).get("quote"), "dataTo": inf.get("dataTo"),
+                    "informe": inf.get("number")}
+        return inf
 
     def grd(self) -> dict:
         def pick(key, stale_days=None):
@@ -1043,7 +1141,8 @@ def _is_number(s: str) -> bool:
 
 def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, official: dict, weekly, grd: dict,
                       log: EventLog, started: datetime, news: Optional[dict] = None,
-                      feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None) -> dict:
+                      feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None,
+                      freshness: Optional[dict] = None, manual_needed: Optional[dict] = None) -> dict:
     now = datetime.now(timezone.utc)
     content_hash = hashlib.sha256(json.dumps(
         {k: v["points"][-24:] for k, v in sorted(b.series.items())} | {"official": official}, sort_keys=True, default=str
@@ -1067,6 +1166,10 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     if official.get("enfen", {}).get("archive"):
         official["enfen"]["archive"] = archive.carry(aw, official["enfen"]["archive"], prev_bytes,
                                                      source="enfen-comunicados", document=True)
+    inf = (official.get("enfen") or {}).get("informe") or {}
+    if inf.get("archive"):
+        # El PDF del informe se publica la vez que se lee; después se arrastra la copia anterior.
+        inf["archive"] = archive.carry(aw, inf["archive"], prev_bytes, source="enfen-comunicados", document=True)
     if official.get("noaa") is not None:
         official["noaa"]["archive"] = (arch.get("cpc-ensodisc") or {}).get("file")
     if feed is not None:
@@ -1112,6 +1215,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                    "degraded": [h["id"] for h in health if h["status"] != "ok"], "worst": log.worst()},
         "pipeline": {"version": PIPELINE_VERSION, "gitSha": git_sha, "startedAt": started.isoformat(timespec="seconds")},
     }
+    if freshness is not None:
+        dashboard["freshness"] = freshness
     if news is not None:
         from .news import FEED_BY_ID
         snapshots = archive.write_feeds(aw, news.get("raw") or {}, FEED_BY_ID, now.isoformat(timespec="seconds"))
@@ -1192,6 +1297,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     if weekly:
         dump("weekly.json", {"source": "cpc-wksst", "regions": weekly})
     dump("sources.json", {"sources": health})
+    # Documentos que hay que bajar a mano (consola de documentos): siempre, vacío si no falta nada.
+    dump("manual-needed.json", manual_needed or {"version": 1, "pending": [], "used": []})
     dump("run-report.json", {"events": events, "worst": log.worst(),
                              "counts": {s: sum(1 for e in events if e["severity"] == s) for s in ("info", "warning", "error", "critical")}})
     dump("health.json", {"pipelineStatus": "degraded" if log.worst() in ("error", "critical") else "ok",
@@ -1300,18 +1407,21 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         relay_dir: Optional[Path] = None, n8n_dir: Optional[Path] = None,
         plan: Optional[dict[str, list[str]]] = None, history_dir: Optional[Path] = None,
         reader: Optional[set[str]] = None, history_absent: bool = False,
-        reader_state: Optional[Path] = None) -> dict:
+        reader_state: Optional[Path] = None, manual_dir: Optional[Path] = None) -> dict:
     """``plan``: canales de cada URL según el registro (``registry.url_channels``); la línea de comandos
     lo lee de ``registry/sources.json`` para no insistir con lo que solo responde desde el Perú.
     ``reader``: feeds que robots.txt no permite y se leen como un lector de feeds (``registry.reader_urls``).
-    ``history_dir``, ``history_absent`` y ``reader_state``: ver ``acquire_news``."""
+    ``history_dir``, ``history_absent`` y ``reader_state``: ver ``acquire_news``. ``manual_dir``: copia de la rama
+    ``data-manual`` (documentos subidos en la consola, ``enso.manual``)."""
     from .fetch import Fetcher
 
     started = datetime.now(timezone.utc)
     log = EventLog()
     relay = load_relay(relay_dir, log, plan) if relay_dir is not None and fixtures is None else None
     n8n = load_n8n_relay(n8n_dir, log) if n8n_dir is not None and fixtures is None else None
-    fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=[relay, n8n],
+    uploads = load_manual_relay(manual_dir, log) if manual_dir is not None and fixtures is None else None
+    needs = manual.ManualNeeds()
+    fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=[relay, n8n, uploads],
                       plan=plan if fixtures is None else None, max_seconds=OFFICIAL_REQUEST_MAX_S,
                       budget_s=OFFICIAL_BUDGET_S if fixtures is None else None)
     prev = PreviousPublication(previous, fetcher)
@@ -1327,10 +1437,22 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         acquired[src.id] = acquire(src, fetcher, fixtures, prev, log)
         if src.id == "enfen-comunicados":
             try:
-                enfen_latest(acquired[src.id], fetcher, fixtures, prev, log, today)
+                enfen_latest(acquired[src.id], fetcher, fixtures, prev, log, today, needs)
             except Exception as exc:  # noqa: BLE001 — el último comunicado no debe detener la publicación
                 log.add("error", "enfen-comunicados", "parse", "latest-exception",
                         f"No se pudo buscar el último comunicado: {type(exc).__name__}: {exc}"[:300])
+            if fixtures is None and isinstance(acquired[src.id].data, dict):
+                # Informe técnico del comunicado vigente: ICEN temporal y probabilidades del ENFEN.
+                a = acquired[src.id]
+                prev_inf = ((prev.get("sources/enfen-comunicados.json") or {}).get("data") or {}).get("informe")
+                try:
+                    a.data["informe"] = reports.acquire_informe(a.data.get("latest"), fetcher, prev_inf, log, today,
+                                                                documents=a.documents, needs=needs)
+                except Exception as exc:  # noqa: BLE001 — el informe nunca detiene la publicación
+                    a.data["informe"] = prev_inf
+                    log.add("error", "enfen-informe", "parse", "informe-exception",
+                            f"{type(exc).__name__}: {exc}"[:300])
+    needs.log(log)
     acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
     b = Builder(acquired, log, today)
     b.build_series()
@@ -1373,12 +1495,17 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     feed = sourcefeed.build(official, b.series, weekly, meta, relay, news_items=news_items,
                             now=started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc),
                             feed_status=feed_status)
+    from . import freshness
+    fresh = freshness.build(b.series, weekly, official, meta, feed, feed_status, today,
+                            started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc))
+    freshness.log_late(fresh, log)
     for s in SOURCES:
         a = acquired.get(s.id)
         if a and not a.ok and not a.carried:
             log.add("critical" if s.critical else "error", s.id, "publish", "no-data",
                     "La fuente falló y no hay un dato anterior que conservar.")
-    res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev)
+    res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev,
+                            freshness=fresh, manual_needed=needs.as_json(prev.get("manual-needed.json"), today))
     if raw_dir is not None:
         res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
@@ -1851,6 +1978,12 @@ def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str
     else:
         log.add("info", "relay-peru", "fetch", "relay-ok",
                 f"Recolección desde el Perú del {relay.collected_at}: {relay.summary}.")
+    missed = [g for g, ok in relay.goals.items() if not ok]
+    if missed and age <= RELAY_STALE_HOURS:
+        # Una recolección «ok» con un 4/8 en enfen-docs puede haber perdido justo el documento que falta aquí.
+        log.add("warning", "relay-peru", "fetch", "relay-goal-missed",
+                f"La recolección desde el Perú del {relay.collected_at} no guardó el PDF de: {', '.join(missed)}; "
+                f"revisar su registro en {relay.host or 'el equipo del Perú'}.")
     # El recolector anota cuándo vence su token: avisar antes de que deje de subir.
     collector = (hb.get("collector") if hb_age < age else None) or relay.collector
     expires = str(collector.get("token_expires_at") or "")
@@ -1862,6 +1995,24 @@ def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str
         log.add("warning", "relay-peru", "fetch", "relay-token-expiring",
                 f"El token de GitHub del recolector del Perú vence el {expires[:10]} (en {max(left, 0):.0f} días): "
                 "crear uno nuevo y ejecutar INSTALAR en ese equipo con el token nuevo (docs/servidor-peru.md).")
+    return relay
+
+
+def load_manual_relay(manual_dir: Path, log: EventLog):
+    """Documentos subidos a mano en la consola (rama ``data-manual``, ``enso.manual``). Que no exista es lo normal:
+    solo se crea la primera vez que alguien sube un documento."""
+    from .fetch import Relay
+
+    if not (manual_dir / "index.json").exists():
+        return None
+    try:
+        relay = Relay(manual_dir, max_age_hours=manual.MAX_AGE_DAYS * 24)
+    except (OSError, ValueError, KeyError) as exc:
+        log.add("warning", "manual", "fetch", "manual-unreadable",
+                f"No se pudo leer la rama data-manual ({type(exc).__name__}: {exc}); los documentos subidos a mano "
+                "no se usan en esta corrida.")
+        return None
+    log.add("info", "manual", "fetch", "manual-ok", f"Documentos subidos a mano: último del {relay.collected_at}.")
     return relay
 
 
@@ -1920,6 +2071,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--raw-dir", default=None, help="Carpeta donde archivar las respuestas originales nuevas")
     ap.add_argument("--relay-dir", default=None, help="Copia de la rama data-peru (recolector del Perú)")
     ap.add_argument("--n8n-dir", default=None, help="Copia de la rama data-n8n (flujo de n8n)")
+    ap.add_argument("--manual-dir", default=None, help="Copia de la rama data-manual (documentos subidos en la consola)")
     ap.add_argument("--history-dir", default=None,
                     help="Copia del histórico de noticias de la rama data-archive (sources/news/items.jsonl.gz y "
                          "las notas de cada día), para rehacerlo si la publicación anterior no lo trae")
@@ -1944,6 +2096,7 @@ def main(argv: Optional[list[str]] = None) -> int:
               raw_dir=Path(args.raw_dir).resolve() if args.raw_dir else None,
               relay_dir=Path(args.relay_dir).resolve() if args.relay_dir else None,
               n8n_dir=Path(args.n8n_dir).resolve() if args.n8n_dir else None,
+              manual_dir=Path(args.manual_dir).resolve() if args.manual_dir else None,
               history_dir=Path(args.history_dir).resolve() if args.history_dir else None,
               history_absent=args.history_absent,
               reader_state=Path(args.reader_state).resolve() if args.reader_state else None,
