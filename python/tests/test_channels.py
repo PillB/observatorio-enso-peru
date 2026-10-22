@@ -748,6 +748,26 @@ def test_the_publishing_run_checks_only_what_it_installs_and_reports_every_failu
         assert lines and all("--rawOutput > /w/" in line for line in lines), path.name
 
 
+def test_the_weekly_probe_rebuilds_the_n8n_flows_with_the_registry():
+    """Revisión: el sondeo semanal regeneraba registry/sources.json pero no n8n/dist, que lo lleva dentro: el control
+    «dist/ matches the source» de n8n.yml fallaba cada lunes. Ahora build.mjs corre después de build_registry y su
+    salida va en el mismo commit."""
+    import yaml
+
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "probe-sources.yml").read_text(encoding="utf-8"))
+    steps = wf["jobs"]["probe"]["steps"]
+    node = next(i for i, st in enumerate(steps) if st.get("uses", "").startswith("actions/setup-node"))
+    n8n = yaml.safe_load((obs.REPO / ".github" / "workflows" / "n8n.yml").read_text(encoding="utf-8"))
+    n8n_node = next(st for st in n8n["jobs"]["pruebas"]["steps"] if st.get("uses", "").startswith("actions/setup-node"))
+    assert steps[node]["with"]["node-version"] == n8n_node["with"]["node-version"] == "22"
+    registry_step = next(i for i, st in enumerate(steps) if "python -m tools.build_registry" in st.get("run", ""))
+    build = next(i for i, st in enumerate(steps) if st.get("run", "").strip() == "node n8n/build.mjs")
+    assert node < build and registry_step < build and "working-directory" not in steps[build]  # desde la raíz
+    assert "N8N_GITHUB_CRED_ID" not in (steps[build].get("env") or {})
+    commit = next(i for i, st in enumerate(steps) if st.get("name") == "Commit")
+    assert build < commit and "git add registry/ n8n/dist" in steps[commit]["run"]
+
+
 def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, monkeypatch):
     """Un feed «reader» pedido hace menos de 20 h no se vuelve a pedir, haya respondido o no (como un lector
     de feeds), y queda el estado de ese pedido; uno pedido hace más o uno que antes se omitía sí se pide."""

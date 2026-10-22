@@ -4,6 +4,8 @@
 # decide qué fuentes van por servidor-peru (solo las geobloqueadas) y cuáles
 # por n8n. Manual, una vez por semana y, en las ramas claude/**, al cambiar el
 # medidor (como los demás sondeos; el resultado va a bot/registry/<rama>).
+# El registro va dentro de los flujos de n8n (n8n/dist): se regeneran en el
+# mismo commit, o el control «dist/ matches the source» de n8n.yml falla.
 name: probe-sources
 
 on:
@@ -35,6 +37,9 @@ jobs:
           cache: pip
           cache-dependency-path: python/requirements*.txt
       - run: pip install -r python/requirements.txt
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
       - name: Peru relay index (optional)
         run: |
           if git fetch --depth=1 origin data-peru 2>/dev/null; then
@@ -55,11 +60,14 @@ jobs:
           [ -s /tmp/n8n-index.json ] && args="$args --n8n-index /tmp/n8n-index.json"
           python -m tools.probe_sources $args
           python -m tools.build_registry
+      # Sin N8N_GITHUB_CRED_ID: el dist/ del repositorio lleva el id de credencial por omisión (docs/n8n.md).
+      - name: Rebuild the n8n flows with the new registry
+        run: node n8n/build.mjs
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
-          git add registry/
+          git add registry/ n8n/dist
           git diff --cached --quiet && exit 0
           git commit -m "Update source reachability and registry"
           # En main el registro medido es el que leen el recolector del Perú y
