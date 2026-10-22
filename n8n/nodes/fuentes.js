@@ -55,8 +55,12 @@ for (const s of registry.sources) {
     // ENFEN, que solo responde desde el Perú). «todas»: también mide el resto.
     const u = s.by_url && s.by_url[raw] && Array.isArray(s.by_url[raw].channels) ? s.by_url[raw] : sourceRule;
     // Lectores de feeds («reader»): las lee solo el pipeline, como un lector
-    // de RSS, y n8n no las pide en ningún alcance.
+    // de RSS, y n8n no las pide en ningún alcance. Tampoco lo que robots.txt
+    // no permite ni aquello cuyo robots.txt nadie pudo leer («unknown»): n8n
+    // no lo lee. Se comparan los valores explícitos para que un registro
+    // anterior, sin «robots», siga sirviendo.
     if (!u.channels.length || u.status === 'robots-disallowed' || u.reader) return;
+    if (u.robots === 'unknown' || u.robots === 'disallowed') return;
     if (scope === 'n8n' && !u.channels.includes('n8n')) return;
     seen.add(url);
     out.push({ json: {

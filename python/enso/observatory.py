@@ -233,7 +233,7 @@ SOURCES: list[Source] = [
            [godas.BASE + "/"], _parse_godas, 31, 50, "index", "cpc-godas-d20.json", fetch=_fetch_godas,
            docs=godas.DOCS),
     Source("igp-icen", "ENFEN / IGP", "ICEN oficial (Nota Técnica ENFEN 01-2024)",
-           ["http://met.igp.gob.pe/datos/ICEN.txt", "https://met.igp.gob.pe/datos/ICEN.txt"],
+           ["http://met.igp.gob.pe/datos/ICEN.txt"],  # por https no responde desde ninguna red
            _txt(peru.parse_icen_txt), 31, 100, "index", "igp-icen.txt",
            docs="https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen"),
     Source("cpc-ensodisc", "NOAA / CPC", "ENSO Diagnostic Discussion (estado del sistema de alerta)",
@@ -1418,6 +1418,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     ``reader``: feeds que robots.txt no permite y se leen como un lector de feeds (``registry.reader_urls``).
     ``history_dir``, ``history_absent`` y ``reader_state``: ver ``acquire_news``. ``manual_dir``: copia de la rama
     ``data-manual`` (documentos subidos en la consola, ``enso.manual``)."""
+    from . import registry
     from .fetch import Fetcher
 
     started = datetime.now(timezone.utc)
@@ -1426,9 +1427,13 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     n8n = load_n8n_relay(n8n_dir, log) if n8n_dir is not None and fixtures is None else None
     uploads = load_manual_relay(manual_dir, log) if manual_dir is not None and fixtures is None else None
     needs = manual.ManualNeeds()
+    # En la corrida real, robots.txt se lee antes de pedir directo lo que la sonda semanal no cubrió
+    # (``Fetcher.robots``); el registro dice qué URL ya tienen su robots.txt leído.
+    live = fixtures is None and not offline
     fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=[relay, n8n, uploads],
                       plan=plan if fixtures is None else None, max_seconds=OFFICIAL_REQUEST_MAX_S,
-                      budget_s=OFFICIAL_BUDGET_S if fixtures is None else None)
+                      budget_s=OFFICIAL_BUDGET_S if fixtures is None else None,
+                      robots=live, robots_known=registry.url_robots() if live else None)
     prev = PreviousPublication(previous, fetcher)
     if today is None:
         today = (started.date() if fixtures is None else _fixture_date(fixtures)) or started.date()
@@ -1651,8 +1656,12 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         # Todas las copias (Perú y n8n), no solo la primera: gana la más reciente de la URL.
         # Cada pedido tiene además un tiempo total: el plazo de 20 s es por lectura y un servidor que manda el
         # feed de a pocos bytes retendría la recolección (y la publicación) hasta el límite del build.
+        # robots.txt como en el cliente de las fuentes oficiales; los feeds que se leen como un lector de feeds no
+        # lo consultan (decisión del 21 de octubre de 2026, ``registry.READER_MIN_HOURS``).
         news_fetcher = Fetcher(timeout=20.0, retries=2, polite_delay=1.0, relay=list(getattr(fetcher, "relays", [])),
-                               plan=getattr(fetcher, "plan", None), max_seconds=NEWS_REQUEST_MAX_S)
+                               plan=getattr(fetcher, "plan", None), max_seconds=NEWS_REQUEST_MAX_S,
+                               robots=getattr(fetcher, "robots", None) is not None,
+                               robots_known=getattr(fetcher, "robots_known", None))
         # Los feeds que se leen como un lector de feeds se piden una sola vez: sin reintento ante 429 o 5xx.
         reader_fetcher = Fetcher(timeout=20.0, retries=1, polite_delay=1.0, relay=list(getattr(fetcher, "relays", [])),
                                  plan=getattr(fetcher, "plan", None), max_seconds=NEWS_REQUEST_MAX_S)

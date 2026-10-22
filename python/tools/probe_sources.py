@@ -7,6 +7,8 @@ recolector del Perú (rama ``data-peru``) y el del flujo de n8n (rama
 CSV como lo baja n8n, o el formato enso-reachability-vantage/1). Cada medición se guarda
 por red (``actions``, ``n8n``, ``peru``) y punto de medición, y el registro
 decide con todas qué fuentes están geobloqueadas y quién recolecta cada una.
+Las URL que ya no están en el registro se olvidan cuando su última medición
+tiene más de ``PRUNE_DAYS`` días.
 
 Uso:
     python -m tools.probe_sources [--vantage github-actions] [--peru-index ruta/index.json]
@@ -24,7 +26,7 @@ import threading
 import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -32,15 +34,26 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso import registry  # noqa: E402
-# El User-Agent del pipeline: hay servidores que deciden por él (GDACS respondió 403 a «Mozilla/5.0
-# (compatible; …)» y 200 a curl desde el mismo ejecutor), y la sonda mide lo que verá el pipeline.
-from enso.fetch import UA  # noqa: E402
-from enso.reach import Robots, classify  # noqa: E402
+# El User-Agent y los certificados del pipeline: hay servidores que deciden por el User-Agent (GDACS respondió
+# 403 a «Mozilla/5.0 (compatible; …)» y 200 a curl desde el mismo ejecutor) y otros que no envían su certificado
+# intermedio (repositorio.imarpe.gob.pe): la sonda mide lo que verá el pipeline.
+from enso.fetch import UA, ssl_context  # noqa: E402
+from enso.reach import ROBOTS_TIMEOUT_S, Robots, classify, judge  # noqa: E402
+
+#: Días tras los que se olvida una URL que ya no está en el registro, contados desde la medición más reciente
+#: del archivo: los PDF que n8n siguió y los feeds retirados no crecen reachability.json para siempre, y una
+#: fuente que vuelve pronto conserva su historia.
+PRUNE_DAYS = 30
 
 
-def probe(urls: list[str], vantage: str, timeout: float = 25.0) -> dict[str, dict]:
-    client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
-    robots = Robots(client)
+def probe(urls: list[str], vantage: str, timeout: float = 25.0,
+          expect: dict[str, str] | None = None) -> dict[str, dict]:
+    """Mide cada URL desde ``vantage``, con robots.txt leído antes (RFC 9309) y el mismo clasificador que n8n y
+    el Perú (``enso.reach.judge``). ``expect``: lo que el registro espera de cada URL; otro formato cuenta como
+    ``empty``. ``robots`` dice qué se leyó: ``allowed`` (reglas que la permiten), ``absent`` (no hay robots.txt:
+    un 4xx), ``disallowed`` o ``unreachable``."""
+    client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA}, verify=ssl_context())
+    robots = Robots(client, timeout=min(timeout, ROBOTS_TIMEOUT_S))
     locks: dict[str, threading.Lock] = defaultdict(threading.Lock)
     last: dict[str, float] = {}
 
@@ -61,14 +74,16 @@ def probe(urls: list[str], vantage: str, timeout: float = 25.0) -> dict[str, dic
             started = time.monotonic()
             try:
                 r = client.get(url)
-                status, body, err = r.status_code, r.content[:200_000], ""
+                status, body, headers, err = r.status_code, r.content, r.headers, ""
             except httpx.HTTPError as exc:
-                status, body, err = None, b"", f"{type(exc).__name__}: {exc}"[:200]
+                status, body, headers, err = None, b"", None, f"{type(exc).__name__}: {exc}"[:200]
             finally:
                 last[host] = time.monotonic()
-        return url, {"class": classify(status, body, err), "http": status, "bytes": len(body),
-                     "ms": int((time.monotonic() - started) * 1000), "detail": err,
-                     "robots": "allowed",
+        cls, _, why = judge(status, body, headers.get("content-type", "") if headers else "",
+                            (expect or {}).get(url), err, headers)
+        return url, {"class": cls, "http": status, "bytes": len(body),
+                     "ms": int((time.monotonic() - started) * 1000), "detail": err or why,
+                     "robots": "absent" if robots.source(url) == "absent" else "allowed",
                      "at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "vantage": vantage}
 
     with ThreadPoolExecutor(max_workers=12) as ex:
@@ -83,7 +98,9 @@ def from_peru_index(index: dict) -> dict[str, dict]:
     noche (``last_attempt``), y una URL que no se pidió no es una medición
     salvo que traiga su clase: la de robots.txt cuando la prohíbe (``robots``)
     o cuando no responde (``timeout``…, como en ``probe``); el plazo o un
-    servidor caído no la traen."""
+    servidor caído no la traen. El recolector lee robots.txt antes de cada
+    pedido: lo que pidió lleva ``robots: allowed``, lo omitido porque robots.txt
+    no respondió ``unreachable`` y lo que prohíbe ``disallowed``."""
     out = {}
     at = index.get("collected_at") or index.get("at")
     for url, rec in (index.get("probes") or {}).items():
@@ -100,8 +117,10 @@ def from_peru_index(index: dict) -> dict[str, dict]:
             continue
         cls = e.get("class") if e.get("class") in registry.CLASSES else \
             classify(e.get("status"), b"x" * int(e.get("bytes") or 0), e.get("error", ""))
+        unread = e.get("skipped") == "robots-sin-respuesta" or str(e.get("error") or "").startswith("robots.txt sin respuesta")
         rec = {"class": cls, "http": e.get("status"), "bytes": e.get("bytes"), "at": e.get("fetched_at") or at,
-               "vantage": "peru-server", "detail": e.get("error", "")}
+               "vantage": "peru-server", "detail": e.get("error", ""),
+               "robots": "disallowed" if cls == "robots" else "unreachable" if unread else "allowed"}
         for u in [e.get("url"), *(e.get("aliases") or [])]:
             if u:
                 out[u] = rec
@@ -194,6 +213,31 @@ def _put(data: dict, url: str, rec: dict) -> None:
     data["urls"][url] = groups
 
 
+def prune(data: dict, keep: set[str]) -> list[str]:
+    """Quita de ``data["urls"]`` las URL fuera de ``keep`` (el registro) cuya medición más reciente tiene más de
+    ``PRUNE_DAYS`` días respecto de la más reciente del archivo. Devuelve las quitadas."""
+    newest = registry.newest_at(data["urls"])
+    if newest is None:
+        return []
+    cutoff = newest - timedelta(days=PRUNE_DAYS)
+    gone = [u for u, e in data["urls"].items() if u not in keep
+            and (registry.newest_at({u: e}) or newest) < cutoff]
+    for u in gone:
+        del data["urls"][u]
+    return gone
+
+
+def _expects(reg: dict) -> dict[str, str]:
+    """Lo que el registro espera de cada URL (``expect`` y ``alt_expect``)."""
+    out = {}
+    for s in reg["sources"]:
+        alts = s.get("alt_urls", [])
+        for u, e in zip([s["url"], *alts], [s["expect"], *(s.get("alt_expect") or [None] * len(alts))]):
+            if e:
+                out.setdefault(u, e)
+    return out
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--vantage", default="github-actions")
@@ -208,10 +252,11 @@ def main(argv=None) -> int:
     ap.add_argument("--out", type=Path, default=registry.REACHABILITY)
     a = ap.parse_args(argv)
     reg = registry.build(reach={})
+    every = {u for s in reg["sources"] for u in [s["url"], *s.get("alt_urls", [])]}
     urls = sorted({u for s in reg["sources"] if not a.only or s["id"] in a.only for u in [s["url"], *s.get("alt_urls", [])]})
     data = json.loads(a.out.read_text(encoding="utf-8")) if a.out.exists() else {"urls": {}}
     data["urls"] = {u: registry._groups(e) for u, e in data.get("urls", {}).items()}
-    measured = {} if a.no_probe else probe(urls, a.vantage)
+    measured = {} if a.no_probe else probe(urls, a.vantage, expect=_expects(reg))
     for url, rec in measured.items():
         _put(data, url, {**rec, "vantage": a.vantage})
     if a.peru_index and a.peru_index.exists():
@@ -223,6 +268,7 @@ def main(argv=None) -> int:
     for f in a.imports:
         for rec in read_import(f, a.import_vantage):
             _put(data, rec["url"], rec)
+    gone = prune(data, every)  # con todo el registro, no solo --only
     data["schema"] = registry.REACH_SCHEMA
     data["updated_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     data["urls"] = dict(sorted(data["urls"].items()))
@@ -232,6 +278,8 @@ def main(argv=None) -> int:
     for rec in measured.values():
         counts[rec["class"]] += 1
     print(f"{len(measured)} URL medidas desde {a.vantage}: " + ", ".join(f"{k} {v}" for k, v in sorted(counts.items())))
+    if gone:
+        print(f"{len(gone)} URL fuera del registro olvidadas (sin medir en {PRUNE_DAYS} días)")
     return 0
 
 

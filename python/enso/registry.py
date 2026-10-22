@@ -20,7 +20,11 @@ atiende a Actions). ``by_url`` guarda el estado y los canales de cada URL (la
 principal y sus réplicas) y ``channels`` es la unión: el portal del ENFEN no
 resuelve desde Azure ni desde AWS y se pide desde el Perú, mientras que su
 réplica en la DHN responde a Actions. ``geoblocked`` es verdadero si alguna URL
-de la fuente necesita el servidor del Perú.
+de la fuente necesita el servidor del Perú. Por red cuenta la medición más
+reciente que respondió; en la de Actions, la del propio pipeline
+(``github-actions``) si la hay, y una medición de más de ``STALE_DAYS`` no
+cuenta si su red tiene otra más reciente. Una fuente con ``n8n: false`` no va
+nunca por n8n (ver sus ``notes``).
 
 Método de acceso, de lo más simple a lo más complejo (``tier``):
   1 ``api`` / ``feed`` / ``download`` — interfaz, feed o archivo publicado;
@@ -36,6 +40,12 @@ Excepción, decidida el 21 de octubre de 2026: los feeds de noticias (Google
 Noticias, Noticias ONU, Sin Rodeos) se leen como lo hace un lector de feeds,
 solo desde Actions y como mucho una vez al día (``by_url[url]["reader"]``,
 ``READER_MIN_HOURS``); robots.txt sigue rigiendo todo lo demás y el rastreo.
+``by_url[url]["robots"]`` dice lo que se sabe de su robots.txt: ``allowed``
+(alguien lo leyó y permite la ruta, o no existe), ``disallowed`` o ``unknown``
+(nadie pudo leerlo: n8n no la pide y el pipeline lo lee antes de pedirla).
+
+El registro no guarda la hora, el tiempo ni el tamaño de cada medición (siguen
+en ``reachability.json``): solo cambia cuando cambia el alcance.
 """
 
 from __future__ import annotations
@@ -44,7 +54,7 @@ import hashlib
 import json
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
@@ -66,6 +76,11 @@ BLOCK_CLASSES = {"http-403", "timeout", "connect", "challenge", "dns"}
 #: no antes de estas horas desde la última lectura buena (decisión del 21 de octubre de 2026).
 READER_MIN_HOURS = 20
 READER_CHANNELS = ["actions"]
+#: Lo que se sabe del robots.txt de cada URL (``by_url[url]["robots"]``).
+ROBOTS = ("allowed", "disallowed", "unknown")
+#: Una medición de más de estos días no cuenta si su red tiene otra más reciente: un punto de medición que dejó de
+#: medir (n8n-actions-azure, una prueba desde otra nube) no fija el estado para siempre.
+STALE_DAYS = 45
 
 
 @dataclass
@@ -91,6 +106,7 @@ class Entry:
     archive: bool = True  # se publica la copia descargada como respaldo
     notes: str = ""
     reader: bool = False  # feed de noticias: si robots.txt lo prohíbe, se lee como un lector de feeds
+    n8n: bool = True  # False: n8n no la pide nunca (el motivo va en notes)
 
 
 def _slug(text: str) -> str:
@@ -156,6 +172,29 @@ def _source_entries() -> list[Entry]:
             home=s.docs or url, hazards=["enso"], interval_minutes=1440, parser=f"enso.observatory:{s.id}",
             follow=follow))
     return out
+
+
+def _report_entries() -> list[Entry]:
+    """Los documentos del ENFEN que lee ``enso.reports`` (el listado de informes técnicos y su réplica en la DHN) y
+    las búsquedas del repositorio del IMARPE (``feeds.imarpe_repo``): así la sonda mide su alcance y lee su robots.txt,
+    y el pipeline sabe por dónde pedirlas."""
+    from . import reports
+    from .feeds import imarpe_repo as repo
+
+    return [
+        Entry(id="enfen-informes", group="enfen", name="Informes técnicos del ENFEN (listado)", institution="ENFEN",
+              url=reports.INFORMES_PAGE, alt_urls=[reports.DHN_INFORMES_PAGE], alt_expect=["html"], expect="html",
+              method="html", kind="document-list", home=reports.INFORMES_PAGE, hazards=["enso"],
+              parser="enso.reports:informe_entries (réplica de la DHN: dhn_entries)"),
+        Entry(id="imarpe-repositorio-enfen", group="imarpe",
+              name="Repositorio del IMARPE: comunicados e informes técnicos del ENFEN", institution="IMARPE",
+              url=repo.listing_url(repo.COMMUNIQUE_QUERY, repo.COMMUNIQUES_SIZE),
+              alt_urls=[repo.listing_url(repo.INFORME_QUERY, repo.INFORMES_SIZE)], alt_expect=["json"],
+              expect="json", method="api", kind="document-list", home=repo.BASE, hazards=["enso"],
+              parser="enso.feeds.imarpe_repo:communiques (y informes)", n8n=False,
+              notes="n8n no la pide: el servidor no envía el intermedio de Sectigo y n8n no verifica su certificado "
+                    "sin NODE_EXTRA_CA_CERTS (python/enso/data/ca-intermedios.pem)"),
+    ]
 
 
 def _collector_entries(known: set[str]) -> list[Entry]:
@@ -240,11 +279,41 @@ def unmeasured(rec: dict) -> bool:
             and str(rec.get("vantage") or "").lower().startswith("n8n"))
 
 
-def geoblock(url: str, reach: dict) -> dict:
-    """Estado de geobloqueo de una URL a partir de lo medido desde cada red (EE. UU.: Actions y n8n; Perú)."""
+def record_at(rec: dict) -> Optional[datetime]:
+    """Cuándo se tomó una medición (``at``), o ``None`` si no lo dice."""
+    try:
+        t = datetime.fromisoformat(str(rec.get("at") or "").replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return t if t.tzinfo else t.replace(tzinfo=timezone.utc)
+
+
+def newest_at(reach: dict) -> Optional[datetime]:
+    """La medición más reciente de ``reach`` (como lo devuelve ``load_reachability``)."""
+    return max((t for e in reach.values() for rs in _groups(e).values() for r in rs.values() if (t := record_at(r))),
+               default=None)
+
+
+def _recent(recs: dict[str, dict], now: Optional[datetime]) -> dict[str, dict]:
+    """Las mediciones de un grupo sin las de más de ``STALE_DAYS`` antes de ``now``, salvo la más reciente."""
+    if now is None or len(recs) < 2:
+        return recs
+    oldest = datetime.min.replace(tzinfo=timezone.utc)
+    newest = max(recs.values(), key=lambda r: record_at(r) or oldest)
+    cutoff = now - timedelta(days=STALE_DAYS)
+    return {v: r for v, r in recs.items() if r is newest or (record_at(r) or cutoff) >= cutoff}
+
+
+def geoblock(url: str, reach: dict, now: Optional[datetime] = None) -> dict:
+    """Estado de geobloqueo de una URL a partir de lo medido desde cada red (EE. UU.: Actions y n8n; Perú).
+
+    En la red de Actions cuenta la medición del propio pipeline (``github-actions``) si la hay: n8n corriendo en un
+    ejecutor de Actions mide la misma red con otro cliente, y su respuesta de otro día no tapa una verificación de
+    hoy. Con ``now``, las mediciones de más de ``STALE_DAYS`` no cuentan si su red tiene otra más reciente."""
     groups = {g: kept for g, rs in _groups(reach.get(url) or {}).items()
-              if (kept := {v: r for v, r in rs.items() if not unmeasured(r)})}
-    act, n8n, pe = (_best(groups.get(g)) for g in VANTAGE_GROUPS)
+              if (kept := _recent({v: r for v, r in rs.items() if not unmeasured(r)}, now))}
+    act = (groups.get("actions") or {}).get("github-actions") or _best(groups.get("actions"))
+    n8n, pe = _best(groups.get("n8n")), _best(groups.get("peru"))
     us_recs = [r for r in (act, n8n) if r]
     us = max([r for r in us_recs if r.get("class") == "ok"] or us_recs, key=lambda r: r.get("at") or "") if us_recs else None
     open_from = [g for g, r in zip(VANTAGE_GROUPS, (act, n8n, pe)) if r and r.get("class") == "ok"]
@@ -267,37 +336,71 @@ def geoblock(url: str, reach: dict) -> dict:
     return out
 
 
-def channels_for(status: str, open_from: Optional[list[str]] = None, measured: Optional[list[str]] = None) -> list[str]:
+def robots_verdict(url: str, reach: dict) -> str:
+    """Lo que se sabe del robots.txt de ``url``: ``disallowed`` si alguna medición lo encontró en contra;
+    ``allowed`` si alguien lo leyó y permite la ruta (o no existe: un 4xx) o si el recolector del Perú la pidió (lo
+    lee antes de cada pedido); ``unknown`` si nadie pudo leerlo (n8n no lo lee)."""
+    recs = [(g, r) for g, rs in _groups(reach.get(url) or {}).items() for r in rs.values()]
+    if any(r.get("class") == "robots" for _, r in recs):
+        return "disallowed"
+    if any(r.get("robots") in ("allowed", "absent") or (
+            g == "peru" and r.get("class") in CLASSES and r.get("robots") not in ("unreachable", "disallowed")
+            and not str(r.get("detail") or "").startswith("robots.txt")) for g, r in recs):
+        return "allowed"
+    return "unknown"
+
+
+def channels_for(status: str, open_from: Optional[list[str]] = None, measured: Optional[list[str]] = None,
+                 n8n: bool = True) -> list[str]:
     """Quién la recolecta: ``peru-server`` si y solo si está (o parece) geobloqueada; ninguno si robots.txt lo
-    prohíbe; si no, Actions y n8n, salvo el que se midió y no responde mientras el otro sí."""
+    prohíbe; si no, Actions y n8n, salvo el que se midió y no responde mientras el otro sí. Con ``n8n`` falso
+    (la fuente no va por n8n), Actions."""
     if status == "robots-disallowed":
         return []
     if status in ("geoblocked", "suspected-geoblock"):
         return ["peru-server"]
+    out = ["actions", "n8n"]
     if status == "open" and open_from is not None:
         measured = measured or []
-        return [c for c in ("actions", "n8n") if c in open_from or c not in measured]
-    return ["actions", "n8n"]
+        out = [c for c in ("actions", "n8n") if c in open_from or c not in measured]
+    return out if n8n else [c for c in out if c != "n8n"] or ["actions"]
+
+
+def _published(g: dict) -> dict:
+    """El estado de la URL principal tal como queda en el registro: sin la hora, el tiempo ni el tamaño de cada
+    medición, que cambian cada semana aunque el alcance no cambie (siguen en reachability.json). Así el registro, y
+    los flujos de n8n que lo incluyen, solo cambian cuando cambia el alcance."""
+    def rec(r: Optional[dict]) -> Optional[dict]:
+        return {k: r[k] for k in ("class", "http", "robots") if r.get(k) is not None} if r else None
+
+    return {"status": g["status"], "from": g["from"], "open_from": g["open_from"],
+            **{k: rec(g[k]) for k in ("us", "peru", "actions", "n8n")}}
 
 
 def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
+    """El registro. La antigüedad de las mediciones (``STALE_DAYS``) se cuenta desde ``now`` o, sin él, desde la
+    medición más reciente (no el reloj): así el registro no cambia solo con el paso de los días."""
     reach = load_reachability() if reach is None else reach
-    entries = _feed_entries() + _source_entries()
+    ref = now or newest_at(reach)
+    entries = _feed_entries() + _source_entries() + _report_entries()
     known = {e.url for e in entries} | {u for e in entries for u in e.alt_urls}
     entries += _collector_entries(known)
     sources = []
     for e in entries:
         by_url = {}
         for u in [e.url, *e.alt_urls]:
-            g = geoblock(u, reach)
+            g = geoblock(u, reach, ref)
             by_url[u] = {"status": g["status"], "channels": channels_for(
-                g["status"], g["open_from"], [k for k in ("actions", "n8n") if g.get(k)])}
+                g["status"], g["open_from"], [k for k in ("actions", "n8n") if g.get(k)], n8n=e.n8n),
+                "robots": robots_verdict(u, reach)}
             if e.reader and g["status"] == "robots-disallowed":
                 by_url[u].update(channels=list(READER_CHANNELS), reader=True)
         d = {k: v for k, v in e.__dict__.items()
-             if (v not in (None, [], "") or k in ("hazards", "alt_urls")) and k != "reader"}
+             if (v not in (None, [], "") or k in ("hazards", "alt_urls")) and k not in ("reader", "n8n")}
+        if not e.n8n:
+            d["n8n"] = False
         d["tier"] = METHODS[e.method]
-        d["geoblock"] = geoblock(e.url, reach)  # la URL principal
+        d["geoblock"] = _published(geoblock(e.url, reach, ref))  # la URL principal
         d["channels"] = [c for c in CHANNELS if any(c in r["channels"] for r in by_url.values())]
         d["geoblocked"] = True if "peru-server" in d["channels"] else (
             False if all(r["status"] == "open" for r in by_url.values()) else None)
@@ -307,9 +410,22 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
     return {"schema": SCHEMA, "generated_at": now.isoformat(timespec="seconds"),
             "rules": {"peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
                       "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con "
-                                f"reader: solo {'+'.join(READER_CHANNELS)}, como mucho cada {READER_MIN_HOURS} h",
+                                f"reader: solo {'+'.join(READER_CHANNELS)}, como mucho cada {READER_MIN_HOURS} h; "
+                                "by_url robots unknown (nadie pudo leer su robots.txt): n8n no la pide y el pipeline "
+                                "lo lee antes de pedirla",
+                      "n8n": "una fuente con n8n false no va por n8n (ver notes)",
                       "tiers": METHODS, "channels": list(CHANNELS)},
             "sources": sources}
+
+
+def _load(reg: Optional[dict]) -> Optional[dict]:
+    """``reg`` o ``registry/sources.json``; ``None`` si no hay registro válido."""
+    if reg is None:
+        try:
+            reg = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None
+    return reg if isinstance(reg, dict) and reg.get("schema") == SCHEMA else None
 
 
 def url_channels(reg: Optional[dict] = None) -> dict[str, list[str]]:
@@ -317,12 +433,8 @@ def url_channels(reg: Optional[dict] = None) -> dict[str, list[str]]:
 
     Lo usa el pipeline en GitHub Actions: una URL que Actions no alcanza se lee primero de las copias
     del Perú o de n8n, y una que robots.txt prohíbe (sin canales) no se pide. Vacío si no hay registro."""
+    reg = _load(reg)
     if reg is None:
-        try:
-            reg = json.loads(REGISTRY.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            return {}
-    if not isinstance(reg, dict) or reg.get("schema") != SCHEMA:
         return {}
     out: dict[str, list[str]] = {}
     for s in reg.get("sources") or []:
@@ -335,15 +447,24 @@ def url_channels(reg: Optional[dict] = None) -> dict[str, list[str]]:
 
 def reader_urls(reg: Optional[dict] = None) -> set[str]:
     """Feeds que robots.txt no permite y se leen como un lector de feeds (como mucho cada READER_MIN_HOURS)."""
+    reg = _load(reg)
     if reg is None:
-        try:
-            reg = json.loads(REGISTRY.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            return set()
-    if not isinstance(reg, dict) or reg.get("schema") != SCHEMA:
         return set()
     return {u for s in reg.get("sources") or [] for u, r in (s.get("by_url") or {}).items()
             if isinstance(r, dict) and r.get("reader")}
+
+
+def url_robots(reg: Optional[dict] = None) -> dict[str, str]:
+    """Lo que se sabe del robots.txt de cada URL del registro (``allowed``, ``disallowed`` o ``unknown``).
+
+    Lo usa el pipeline: una URL ``unknown`` se lee primero de las copias y, antes de pedirla, se lee su robots.txt;
+    con ``allowed`` vale como copia guardada si en la corrida robots.txt no responde. Vacío si no hay registro (o
+    es de antes de este dato)."""
+    reg = _load(reg)
+    if reg is None:
+        return {}
+    return {u: r["robots"] for s in reg.get("sources") or [] for u, r in (s.get("by_url") or {}).items()
+            if isinstance(u, str) and isinstance(r, dict) and r.get("robots") in ROBOTS}
 
 
 def validate(reg: dict) -> list[str]:
@@ -378,6 +499,10 @@ def validate(reg: dict) -> list[str]:
                 errs.append(f"{sid}: canales no válidos para {u} (vacíos solo si robots.txt prohíbe la ruta)")
             if ("peru-server" in r.get("channels", [])) != (r.get("status") in ("geoblocked", "suspected-geoblock")):
                 errs.append(f"{sid}: peru-server debe usarse si y solo si {u} está geobloqueada")
+            if s.get("by_url") and (r.get("robots") not in ROBOTS or (r.get("robots") == "disallowed") != robots):
+                errs.append(f"{sid}: robots no válido para {u} (disallowed si y solo si robots.txt prohíbe la ruta)")
+            if s.get("n8n") is False and "n8n" in r.get("channels", []):
+                errs.append(f"{sid}: {u} no va por n8n (la fuente dice n8n: false)")
         if set(by_url) != {s.get("url"), *s.get("alt_urls", [])}:
             errs.append(f"{sid}: by_url no corresponde a url y alt_urls")
         union = [c for c in CHANNELS if any(c in r.get("channels", []) for r in by_url.values())]

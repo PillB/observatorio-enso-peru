@@ -2,7 +2,10 @@
 
 Orden de intento para cada fuente:
   1. URL oficial (y sus espejos declarados), con reintentos y espera
-     exponencial ante errores transitorios (DNS, 5xx, 429, timeouts).
+     exponencial ante errores transitorios (DNS, 5xx, 429, timeouts). Con
+     ``robots``, antes de pedir directo una URL cuyo robots.txt no leyó la
+     sonda semanal (fuera del registro, asignada a otro canal o ``unknown``)
+     se lee su robots.txt (RFC 9309): si no la permite o no responde, no se pide.
   2. Si una URL no responde, la copia que el recolector del Perú
      (``tools/peru_collector.py``) bajó de esa misma URL y subió a la rama
      ``data-peru`` (canal «relay-peru»). Las fuentes peruanas que bloquean
@@ -33,6 +36,8 @@ from typing import Optional
 from urllib.parse import quote, urlsplit
 
 import httpx
+
+from .reach import ROBOTS_TIMEOUT_S, Robots
 
 #: El contacto que ven las fuentes: el sitio publicado cuando el flujo lo
 #: define (ENSO_CONTACT_URL), o el repositorio.
@@ -175,7 +180,8 @@ class Fetcher:
     def __init__(self, timeout: float = 45.0, retries: int = 3, polite_delay: float = 0.8,
                  allow_archive: bool = True, allow_save: bool = False, offline: bool = False,
                  relay: Optional["Relay | list[Relay]"] = None, plan: Optional[dict[str, list[str]]] = None,
-                 max_seconds: Optional[float] = None, budget_s: Optional[float] = None):
+                 max_seconds: Optional[float] = None, budget_s: Optional[float] = None,
+                 robots: bool = False, robots_known: Optional[dict[str, str]] = None):
         # Conectar no lleva más de unos segundos aunque el servidor sea lento: un servidor que no acepta la
         # conexión no retiene cada pedido el plazo entero.
         self.client = httpx.Client(timeout=httpx.Timeout(timeout, connect=min(timeout, 15.0)), follow_redirects=True,
@@ -201,6 +207,12 @@ class Fetcher:
         #: alcanza (geobloqueada) se lee primero de esas copias y se pide directo una sola vez, por si
         #: volvió a responder; una que robots.txt prohíbe (sin canales) no se pide al servidor.
         self.plan = plan or {}
+        #: Lo que el registro sabe del robots.txt de cada URL (``registry.url_robots``): una URL ``unknown`` (nadie
+        #: pudo leerlo) se lee primero de las copias, como una que Actions no alcanza.
+        self.robots_known = robots_known or {}
+        #: robots.txt leído durante la corrida (``enso.reach.Robots``), antes del pedido directo a lo que la sonda
+        #: semanal no cubrió y antes de pedir una copia nueva al Internet Archive. Apagado, no se lee.
+        self.robots: Optional[Robots] = Robots(self.client, timeout=ROBOTS_TIMEOUT_S) if robots else None
         self._last: dict[str, float] = {}
 
     def close(self) -> None:
@@ -294,6 +306,22 @@ class Fetcher:
             self._down[key] = self._down.get(key, 0) + 1
         return None
 
+    def _robots_skip(self, url: str, planned: Optional[list[str]]) -> Optional[str]:
+        """Por qué no se pide directo ``url`` según su robots.txt (``None``: se pide). Lo que el registro asigna a
+        Actions con robots.txt leído por la sonda semanal no se vuelve a revisar; lo demás se revisa en la corrida, y
+        si robots.txt no responde vale lo que leyó la sonda (``allowed``: RFC 9309 §2.3.1.4 admite una copia guardada)."""
+        if self.robots is None or self.skip_reason(url):
+            return None  # sin robots, o no se pediría de todos modos (``_get`` lo anota)
+        known = self.robots_known.get(url)
+        if planned and "actions" in planned and known != "unknown":
+            return None
+        allowed = self.robots.allowed(url)
+        if allowed is False:
+            return "robots.txt no permite la ruta: no se pide"
+        if allowed is None and known != "allowed":
+            return "robots.txt sin respuesta: no se pide"
+        return None
+
     def get(self, urls: list[str], *, archive: bool = True, save: bool = False,
             accept: tuple[str, ...] = ()) -> Response:
         """Intenta cada URL y luego los canales de archivo."""
@@ -302,23 +330,29 @@ class Fetcher:
             raise FetchError("modo sin conexión", attempts)
         for i, url in enumerate(urls):
             planned = self.plan.get(url)
-            if planned is not None and "actions" not in planned:
+            unread = self.robots_known.get(url) == "unknown"
+            if planned is not None and ("actions" not in planned or unread):
                 got = self._from_relays(url, accept)
                 if got is not None:
                     attempts.append({"url": url, "channel": got.channel, "collected_at": got.archived_at,
-                                     "note": "el registro la asigna a " + ", ".join(planned)})
+                                     "note": "nadie pudo leer su robots.txt" if "actions" in planned
+                                     else "el registro la asigna a " + ", ".join(planned)})
                     got.attempts = attempts
                     return got
                 if not planned:
                     attempts.append({"url": url, "note": "robots.txt no permite la ruta: no se pide"})
                     continue
-            r = self._get(url, attempts, tries=1 if planned is not None and "actions" not in planned else None)
-            if r is not None and r.status_code == 200 and r.content and self._acceptable(r, accept):
-                return Response(str(r.url), r.content, "direct" if i == 0 else "mirror", 200,
-                                r.headers.get("content-type", ""), r.headers.get("last-modified", ""),
-                                attempts=attempts)
-            if r is not None and r.status_code == 200:
-                attempts[-1]["note"] = "contenido vacío o tipo inesperado"
+            skip = self._robots_skip(url, planned)
+            if skip:
+                attempts.append({"url": url, "note": skip})
+            else:
+                r = self._get(url, attempts, tries=1 if planned is not None and "actions" not in planned else None)
+                if r is not None and r.status_code == 200 and r.content and self._acceptable(r, accept):
+                    return Response(str(r.url), r.content, "direct" if i == 0 else "mirror", 200,
+                                    r.headers.get("content-type", ""), r.headers.get("last-modified", ""),
+                                    attempts=attempts)
+                if r is not None and r.status_code == 200:
+                    attempts[-1]["note"] = "contenido vacío o tipo inesperado"
             got = self._from_relays(url, accept)
             if got is not None:
                 attempts.append({"url": url, "channel": got.channel, "collected_at": got.archived_at})
@@ -326,7 +360,11 @@ class Fetcher:
                 return got
         if archive and self.allow_archive:
             for url in urls:
-                got = self._from_archive(url, attempts, fresh=save and self.allow_save)
+                # Una copia nueva (Save Page Now) la pide el Internet Archive al servidor: no si robots.txt no lo
+                # permite (o no se pudo leer en la corrida).
+                fresh = save and self.allow_save and self.plan.get(url) != [] and (
+                    self.robots is None or self.robots.allowed(url) is True)
+                got = self._from_archive(url, attempts, fresh=fresh)
                 if got and (not accept or any(a in got.content_type.lower() for a in accept)):
                     return got
                 if got:
