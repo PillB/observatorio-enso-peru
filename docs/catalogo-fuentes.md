@@ -20,6 +20,12 @@ esta tabla lo resume. «Antigüedad máxima» es la edad máxima, en días, del
 | `cpc-heat` | NOAA / CPC | Contenido de calor 0–300 m (GODAS) | `heat_content_index.txt` | 50 | — |
 | `cpc-godas-d20` | NOAA / CPC | D20 en Niño 1+2, Niño 3.4 y 180°–100°O, calculado de GODAS (ver Metodología §7b) | `godas/monthly/godas.M.AAAAMM.grb` (rango de bytes) | 50 | — |
 
+`cpc-godas-d20` tiene una sola ruta: solo GitHub Actions lo pide, sin copia
+de n8n, del recolector del Perú ni del Internet Archive. Si CPC no responde
+se mantiene el dato anterior o, si no hay, el último mes del histórico
+versionado (`python/enso/data/godas-d20.json`). Lo que se archiva es el D20
+calculado por mes (JSON), no los GRIB: sus URL quedan en la lista `grib`.
+
 Una fuente «crítica» sin ningún dato (ni directo, ni de archivo, ni de la
 publicación anterior) detiene el despliegue.
 
@@ -261,12 +267,12 @@ Evaluadas y pendientes:
 | Producto | Motivo |
 |---|---|
 | D20 de GODAS (`dbss_obil`) | Es la profundidad de la capa isotérmica, no la isoterma de 20 °C |
-| D20 de las boyas TAO/TRITON (PMEL, ERDDAP `pmelTaoDyIso`) | Mide D20 diario, pero solo en puntos del ecuador (no hay boyas al este de 95°O, así que nada en Niño 1+2), sin anomalía publicada y con 3 a 4 semanas de retraso en ERDDAP. Se usa para validar el cálculo con GODAS |
+| D20 de las boyas TAO/TRITON (PMEL, ERDDAP `pmelTaoDyIso`) | Mide D20 diario, pero solo en puntos del ecuador (no hay boyas al este de 95°O, así que nada en Niño 1+2), sin anomalía publicada y con 3 a 4 semanas de retraso en ERDDAP. Se usó para validar el cálculo con GODAS (setiembre de 2026). No hay una comparación automática: el `robots.txt` del ERDDAP de NOAA (`coastwatch.pfeg.noaa.gov`, al que redirige el de PMEL) prohíbe pedir CSV y consultas |
 | `GODAS_pentad_EQ_anom_AAAA.nc` (CPC) | Anomalía de temperatura por pentada en 5°N–5°S; no trae la temperatura total, así que no da D20 sin otra climatología, y no cubre 10°S |
 | Mapas de D20 de CPC (`pent.anom.xy.d20.30d.gif`) y del IRI | Solo imágenes: no se leen valores de píxeles |
 | Copernicus Marine (GLORYS12, análisis global) | Exige cuenta y credenciales; GLORYS llega con meses de retraso |
 | Argo en grilla (Roemmich–Gilson, IPRC) | Mensual con 1 a 2 meses de retraso y casi sin datos sobre la plataforma peruana |
-| Informe técnico ENFEN, secciones de IMARPE, IGP | Describen la termoclina costera con la isoterma de 15 °C, en texto y figuras y sin serie numérica por región |
+| Informe técnico ENFEN, secciones de IMARPE, IGP | Describen la termoclina costera con la isoterma de 15 °C, en texto y figuras y sin serie numérica por región. En los informes técnicos del ENFEN de 2024 a 2026 revisados, la profundidad de la isoterma de 15 °C sale solo en figuras; el texto no da metros. Sí se publica lo que dice el texto: el estado de la termoclina y la anomalía subsuperficial (informe ENFEN) y la isoterma de 15 °C cuando el boletín BS-OBP del IMARPE la escribe para Paita o Chicama |
 | ERSSTv5 (`ersst5.nino.mth.91-20.ascii`) | NOAA dejó de actualizarlo en junio de 2026; se conserva solo en las pruebas |
 | ERSSTv6 Niño 1+2 en el CPC | El CPC solo publica Niño 3.4 en v6; Niño 1+2 se toma de PSL |
 | Estado de alerta en la portada del ENFEN | Se toma del comunicado, que es el documento oficial |

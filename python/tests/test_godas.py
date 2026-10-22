@@ -192,3 +192,191 @@ def test_fixture_feeds_the_grd_signal(tmp_path):
         s = sigs[key]
         assert s["value"] is not None and s["period"] == last and s["source"] == "cpc-godas-d20"
         assert s["level"] in ("ok", "watch", "alert", "unclassified") and "GODAS" in s["reason"]
+
+
+# ---------------------------------------------------------------------------
+# Lectura en vivo: plan, caídas, meses no leídos, archivos que faltan, plazos, histórico y reutilización
+# ---------------------------------------------------------------------------
+import threading  # noqa: E402
+import time  # noqa: E402
+from datetime import date  # noqa: E402
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer  # noqa: E402
+
+import httpx  # noqa: E402
+
+from enso import observatory as obs  # noqa: E402
+from enso.fetch import FetchError, Fetcher  # noqa: E402
+
+TODAY = date(2026, 10, 19)  # lunes; el histórico termina en 2026-09: se piden 2026-09 (entero) y 2026-10
+SRC = obs.SOURCE_BY_ID["cpc-godas-d20"]
+GOOD = {k: {"d20": 100.0, "points": 10, "outcrop": 0.0} for k in godas.REGIONS}
+
+
+class _Log(obs.EventLog):
+    def triples(self):
+        return [(e.severity, e.stage, e.code) for e in self.events]
+
+
+def _fetcher(handler, **kw):
+    f = Fetcher(polite_delay=0, **kw)
+    f.client = httpx.Client(transport=httpx.MockTransport(handler))
+    return f
+
+
+@pytest.fixture
+def live(monkeypatch):
+    """Día fijo y un decodificador falso: el cuerpo «GOOD» se lee; cualquier otro es un GRIB ilegible."""
+    monkeypatch.setattr(obs, "_utc_today", lambda: TODAY)
+    monkeypatch.setattr(godas, "pot_records", lambda raw: raw)
+
+    def regional(raw):
+        if raw != b"GOOD":
+            raise FormatChanged("godas: registro POT con otra grilla")
+        return GOOD
+
+    monkeypatch.setattr(godas, "regional_d20", regional)
+
+
+def _acquire(f, prev=None):
+    log = _Log()
+
+    class _Prev(obs.PreviousPublication):
+        def get(self, name, tries=1):
+            return prev if name == "sources/cpc-godas-d20.json" else None
+
+    return obs.acquire(SRC, f, None, _Prev(None), log), log
+
+
+def _by_month(answers, asked=None):
+    def handler(req):
+        if asked is not None:
+            asked.append((str(req.url), req.headers.get("range")))
+        for k, v in answers.items():
+            if k in str(req.url):
+                return v(req) if callable(v) else v
+        return httpx.Response(404)
+    return handler
+
+
+@pytest.mark.parametrize("plan_or_offline", [{godas.BASE + "/": []}, {godas.BASE + "/": ["peru-server"]}, "offline"])
+def test_plan_and_offline_mode_make_no_request(live, plan_or_offline):
+    asked = []
+    kw = {"offline": True} if plan_or_offline == "offline" else {"plan": plan_or_offline}
+    acq, log = _acquire(_fetcher(_by_month({}, asked), **kw))
+    assert asked == [] and not acq.ok
+    assert log.triples() == [("warning", "fetch", "unreachable")]
+
+
+@pytest.mark.parametrize("status", [503, 500, 429, 403])
+def test_server_outage_is_unreachable_not_a_format_change(live, status):
+    acq, log = _acquire(_fetcher(lambda req: httpx.Response(status)))
+    assert log.triples() == [("warning", "fetch", "unreachable")] and log.worst() != "error"
+    # Sin publicación anterior se publica el histórico versionado (el GRD no queda sin D20).
+    assert acq.ok and acq.channel == "previous-publication" and acq.data["d20_nino12"][-1]["period"] == "2026-09"
+
+
+def test_unreadable_grib_is_still_a_format_change(live):
+    acq, log = _acquire(_fetcher(lambda req: httpx.Response(206, content=b"junk")))
+    assert ("error", "parse", "format-changed") in log.triples() and not acq.ok
+
+
+@pytest.mark.parametrize("bad", [httpx.Response(403), httpx.Response(206, content=b"junk")])
+def test_a_month_that_fails_to_read_is_reported(live, bad):
+    acq, log = _acquire(_fetcher(_by_month({"202609": httpx.Response(206, content=b"GOOD"), "202610": bad})))
+    assert acq.ok
+    ev = [e for e in log.events if e.code == "month-unread"]
+    assert len(ev) == 1 and "2026-10" in ev[0].message and ev[0].severity == "warning"
+
+
+def test_missing_file_for_a_month_that_must_exist_is_reported(live):
+    acq, log = _acquire(_fetcher(lambda req: httpx.Response(404)))
+    ev = [e for e in log.events if e.code == "unreachable"]
+    assert ev and "2026-09" in ev[0].message and "404" in ev[0].message
+
+
+def test_404_for_a_month_not_yet_published_is_normal(live):
+    acq, log = _acquire(_fetcher(_by_month({"202609": httpx.Response(206, content=b"GOOD")})))
+    assert acq.ok and log.events == [] and acq.data["d20_nino12"][-1]["period"] == "2026-09"
+
+
+def test_connection_refused_with_no_previous_publication_publishes_the_history(live):
+    def refuse(req):
+        raise httpx.ConnectError("refused", request=req)
+
+    acq, log = _acquire(_fetcher(refuse))
+    assert acq.ok and acq.data["d20_nino12"][-1]["period"] == "2026-09"
+    assert abs(acq.data["d20_nino12"][-1]["value"] - 83.2) < 0.1
+    assert [e.code for e in log.events] == ["unreachable"]
+
+
+class _Trickle(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(206)
+        self.send_header("Content-Length", "1000")
+        self.end_headers()
+        try:
+            for _ in range(1000):
+                self.wfile.write(b"x")
+                self.wfile.flush()
+                time.sleep(0.2)
+        except OSError:
+            pass
+
+    def log_message(self, *a):
+        pass
+
+
+def test_a_trickling_server_is_cut_by_the_request_limit(live, monkeypatch):
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), _Trickle)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    monkeypatch.setattr(godas, "url", lambda y, m: f"http://127.0.0.1:{srv.server_port}/godas.M.{y}{m:02d}.grb")
+    f = Fetcher(timeout=1, max_seconds=1, budget_s=2, polite_delay=0)
+    t = time.monotonic()
+    try:
+        resp = obs._fetch_godas(f, None, TODAY)
+        attempts = resp.attempts
+    except FetchError as exc:
+        attempts = exc.attempts
+    finally:
+        srv.shutdown()
+    assert time.monotonic() - t < 3.5
+    assert f._down["127.0.0.1"] >= 2 and any("TooSlow" in (a.get("error") or "") for a in attempts)
+
+
+def test_months_to_fetch_keeps_the_last_history_month_and_the_newest():
+    h = {"monthly": {"x": [{"period": "2026-09"}]}}
+    got = godas.months_to_fetch(h, date(2030, 1, 1))
+    assert len(got) == godas.MAX_LIVE_MONTHS and got[0] == (2026, 9) and got[-1] == (2030, 1) and (2029, 12) in got
+
+
+def test_old_history_is_reported(live, monkeypatch):
+    monkeypatch.setattr(obs, "_utc_today", lambda: date(2027, 12, 15))
+    acq, log = _acquire(_fetcher(lambda req: httpx.Response(206, content=b"GOOD")))
+    assert ("warning", "fetch", "history-old") in log.triples()
+
+
+def test_months_already_read_are_reused_with_a_one_byte_check(live, monkeypatch):
+    monkeypatch.setattr(obs, "_utc_today", lambda: date(2027, 1, 15))  # un viernes
+    prev = {"data": {k: [{"period": p, "value": 1.0, "d20": 90.0, "outcrop": 0.0} for p in ("2026-09", "2026-10")]
+                     for k in godas.REGIONS}}
+    asked = []
+    acq, log = _acquire(_fetcher(_by_month({"202611": httpx.Response(206, content=b"GOOD"),
+                                            "202612": httpx.Response(206, content=b"GOOD"),
+                                            "godas.M.2027": httpx.Response(206, content=b"GOOD"),
+                                            "godas.M.2026": httpx.Response(206, content=b"x")}, asked)), prev)
+    ranges = {u.rsplit(".", 2)[-2][-6:]: r for u, r in asked}
+    assert ranges["202609"] == ranges["202610"] == "bytes=0-0"
+    assert ranges["202611"] == ranges["202612"] == f"bytes=0-{godas.RANGE_BYTES - 1}"
+    pers = [p["period"] for p in acq.data["d20_nino12"]]
+    assert "2026-10" in pers and "2026-12" in pers and log.events == []
+    body = json.loads(acq.raw)
+    assert body["reused"] == ["2026-09", "2026-10"] and all("godas.M." in u for u in body["grib"])
+
+
+def test_last_history_month_is_only_checked_except_on_mondays(live, monkeypatch):
+    monkeypatch.setattr(obs, "_utc_today", lambda: date(2026, 10, 22))  # jueves
+    asked = []
+    acq, log = _acquire(_fetcher(_by_month({"202609": httpx.Response(206, content=b"x"),
+                                            "202610": httpx.Response(404)}, asked)))
+    assert dict((u[-10:-4], r) for u, r in asked)["202609"] == "bytes=0-0"
+    assert acq.ok and log.events == [] and acq.data["d20_nino12"][-1]["period"] == "2026-09"

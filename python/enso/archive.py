@@ -8,7 +8,9 @@ o no responde. Nunca se enlaza a ramas ni archivos del repositorio.
 Dentro de la publicación (``data/``):
 
 * ``archive/sources/<fuente>/<sha12>.<ext>``: la respuesta original de cada
-  fuente oficial y los PDF de los comunicados, byte por byte.
+  fuente oficial y los PDF de los comunicados, byte por byte. Excepción:
+  ``cpc-godas-d20`` archiva el D20 calculado por mes (JSON); las URL de los GRIB
+  leídos quedan en su lista ``grib`` y en los intentos.
 * ``archive/feeds/<feed>.txt``: el feed RSS/Atom/JSON de cada medio tal como
   se bajó en esta corrida.
 * ``archive/news/<AAAA-MM-DD>.html``: por día, lo que dijo el feed de cada
