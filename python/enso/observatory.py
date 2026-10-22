@@ -1457,7 +1457,11 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                     log.add("error", "enfen-informe", "parse", "informe-exception",
                             f"{type(exc).__name__}: {exc}"[:300])
     bsobp = None
-    if fixtures is None and not offline and not only:
+    if fixtures is not None and not only:
+        from .feeds import imarpe_bsobp
+
+        bsobp = imarpe_bsobp.from_seed(today)  # pruebas: los boletines ya leídos que trae el repositorio
+    elif not offline and not only:
         from .feeds import imarpe_bsobp
 
         prev_bs = prev.get("imarpe-bsobp.json")

@@ -502,6 +502,46 @@ VIEWS.pacifico = {
   },
 };
 
+const THERMO_STATE = { somera: 'más somera que lo normal', somera_normal: 'entre somera y normal', normal: 'en su posición normal', normal_profunda: 'entre normal y más profunda', profunda: 'más profunda que lo normal' };
+/** Anomalía como la escribe el documento («+8 °C», «-2,5 °C»), sin inventar decimales. */
+const asWritten = (v) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${String(Math.abs(v)).replace('.', ',')} °C`;
+const PLATFORM = { estacion_fija: 'puntos fijos del IMARPE', seccion: 'secciones o crucero del IMARPE', argo: 'perfiladores Argo', glider: 'planeador', boya: 'boya' };
+
+/** Termoclina costera en texto: el informe técnico del ENFEN y el boletín semanal del IMARPE (BS-OBP). */
+async function mountCoastThermocline() {
+  const box = $('#coast-thermo-body');
+  if (!box) return;
+  const parts = [];
+  const inf = S.dash.official?.enfen?.informe;
+  const th = inf?.thermocline;
+  if (th && !informeExpired('enfen-probabilities')) {
+    const sub = th.subsurface;
+    parts.push(html`<h3>ENFEN, informe técnico N° ${inf.number}${inf.dataTo ? html` (datos al ${F.fmtDate(inf.dataTo)})` : ''}</h3>
+      ${th.state ? html`<p>Termoclina costera (isoterma de 15 °C): <strong>${THERMO_STATE[th.state] || th.state}</strong>.</p>${provenance(inf.url, th.evidence?.page, th.evidence?.quote, '', inf.archive)}` : ''}
+      ${sub ? html`<p>Anomalía subsuperficial más intensa frente a la costa: <strong>${asWritten(sub.anomaly)}</strong>${sub.layer ? ` ${sub.layer}` : ''}.</p>${provenance(inf.url, sub.page, sub.quote, '', inf.archive)}` : ''}`);
+  }
+  const bs = await load('imarpe-bsobp.json');
+  const list = bs?.bulletins || [];
+  if (list.length) {
+    const last = list[0];
+    const withData = list.find((b) => b.sites && Object.keys(b.sites).length);
+    const b = withData || last;
+    const rows = ['Paita', 'Chicama'].filter((k) => b.sites?.[k]).map((k) => {
+      const v = b.sites[k];
+      return html`<tr><th scope="row">${k}</th><td>${asWritten(v.anomaly)}</td><td>${v.layer || '—'}</td><td>${PLATFORM[v.platform] || 'no indicada'}</td></tr>`;
+    });
+    const quotes = [...new Set(['Paita', 'Chicama'].map((k) => b.sites?.[k]?.quote).filter(Boolean))];
+    parts.push(html`<h3>IMARPE, boletín semanal N° ${b.number}-${b.year} (semana al ${F.fmtDate(b.period)})</h3>
+      ${b !== last ? html`<p class="muted small">El boletín más reciente (N° ${last.number}-${last.year}, semana al ${F.fmtDate(last.period)}) no informa la columna de agua frente a Paita ni Chicama: no se muestrea allí todas las semanas.</p>` : ''}
+      ${rows.length ? html`<div class="table-wrap"><table><thead><tr><th scope="col">Lugar</th><th scope="col">Anomalía</th><th scope="col">Capa</th><th scope="col">Medido con</th></tr></thead><tbody>${rows}</tbody></table></div>` : html`<p class="muted">Sin dato subsuperficial frente a Paita o Chicama en el último año de boletines leídos.</p>`}
+      ${b.isotherm15 ? html`<p>Isoterma de 15 °C frente a ${b.isotherm15.site}: ${b.isotherm15.from ? `de ${b.isotherm15.from} a ` : ''}${b.isotherm15.depth} m.</p>` : ''}
+      ${quotes.map((q) => provenance(b.url || b.page, b.url ? 1 : null, q, '', null))}
+      <p class="src-links small"><a href="${safeUrl(b.page)}" rel="noopener" target="_blank">Ficha del boletín en el repositorio del IMARPE</a></p>
+      ${bs.pending?.length ? html`<p class="muted small">Boletín${bs.pending.length > 1 ? 'es' : ''} listado${bs.pending.length > 1 ? 's' : ''} pero aún no leído${bs.pending.length > 1 ? 's' : ''}: ${bs.pending.map((p) => `N° ${p.number}-${p.year}`).join(', ')}.</p>` : ''}`);
+  }
+  box.innerHTML = parts.length ? String(html`${parts}`) : '<p class="muted">Dato actual no disponible: ni el informe técnico del ENFEN ni el boletín del IMARPE se pudieron leer en esta publicación.</p>';
+}
+
 VIEWS.oceano = {
   title: 'Océano y atmósfera',
   render() {
@@ -525,6 +565,11 @@ VIEWS.oceano = {
       ${chartCard('ch-wind', { title: 'Anomalía de los vientos alisios', range: '5', desc: 'Negativo: alisios más débiles o viento del oeste (favorece El Niño). Positivo: alisios más fuertes. Fuente: NOAA/CPC, 5°N–5°S.' })}
       ${chartCard('ch-heat', { title: 'Calor bajo la superficie (0–300 m)', tour: 'ocean-heat', range: '5', desc: 'Anomalía de la temperatura media de los 300 m superiores del Pacífico ecuatorial (NOAA GODAS, base 1981–2010). Su aumento suele anticipar el calentamiento en superficie.', foot: 'La profundidad de la termoclina (isoterma de 20 °C) se muestra en el gráfico siguiente.' })}
       ${chartCard('ch-d20', { title: 'Profundidad de la termoclina (isoterma de 20 °C)', tour: 'ocean-d20', range: '5', desc: 'Anomalía mensual de la profundidad de la isoterma de 20 °C (D20), en metros, frente a su media 1991–2020. Positiva: termoclina más profunda y capa cálida más gruesa, lo que frente al Perú reduce el afloramiento de agua fría.', foot: 'Calculado por el observatorio con la temperatura del modelo de asimilación GODAS de NOAA/CPC (promedio de cada región). Validado contra las boyas TAO del ecuador: diferencias de 0 a 10 m. Ver Metodología.' })}
+      <section class="card" id="coast-thermo" data-tour-id="ocean-coast-thermo" aria-labelledby="coast-thermo-h">
+        <h2 id="coast-thermo-h">Termoclina frente a Paita y Chicama (textos del ENFEN y el IMARPE)</h2>
+        <p class="muted">Lo que el informe técnico del ENFEN y el boletín semanal del IMARPE escriben sobre la columna de agua frente a la costa norte, tal cual y con su cita. No es el D20 del gráfico anterior y no se le aplican sus umbrales.</p>
+        <div id="coast-thermo-body"><p class="muted small">Cargando…</p></div>
+      </section>
       ${chartCard('ch-soi', { title: 'Índice de Oscilación del Sur (SOI)', tour: 'ocean-soi', range: '5', desc: 'Diferencia de presión Tahití − Darwin. Negativo sostenido: favorece El Niño. Se muestra en escala Troup (×10, umbrales ±7).', foot: 'SOI en escala Troup calculado por el observatorio con las presiones de NOAA/CPC (climatología 1951–1992) y validado contra valores históricos de la Oficina de Meteorología de Australia. NOAA publica además un SOI estandarizado (±3).' })}`;
   },
   async after() {
@@ -533,6 +578,7 @@ VIEWS.oceano = {
     await mountChart($('#ch-wind'), { title: 'Anomalía de vientos', units: 'm_per_s', series: [{ key: 'wpac850_anom', label: 'Occidental' }, { key: 'cpac850_anom', label: 'Central' }, { key: 'epac850_anom', label: 'Oriental' }] });
     await mountChart($('#ch-heat'), { title: 'Contenido de calor', units: 'degC', fill: true, series: [{ key: 'heat_180w100w', label: '180°–100°O' }, { key: 'heat_160e80w', label: '160°E–80°O', dashed: true }] });
     await mountChart($('#ch-d20'), { title: 'Anomalía de D20', units: 'm', fill: true, refLines: [{ v: 20, label: '+20 m' }, { v: 50, label: '+50 m', tone: 'warm' }], series: [{ key: 'd20_coastal', label: 'Niño 1+2' }, { key: 'd20_global', label: 'Niño 3.4' }, { key: 'd20_180w100w', label: '180°–100°O', dashed: true }] });
+    await mountCoastThermocline();
     await mountChart($('#ch-soi'), { title: 'SOI', units: 'dimensionless', refLines: [{ v: 7, label: '+7', tone: 'cool' }, { v: -7, label: '−7', tone: 'warm' }], series: [{ key: 'soi_troup', label: 'SOI (Troup)' }], fill: true, invertFill: true });
   },
 };

@@ -151,7 +151,14 @@ en 95°O y los flotadores Argo casi no entran a la plataforma), así que el
 valor de Niño 1+2 es una estimación regional, no una medición costera.
 IMARPE describe la termoclina costera con la isoterma de 15 °C en sus
 secciones (Paita, Chicama, Callao); esas mediciones no se publican como
-serie y no son comparables con D20. La tabla GRD no dice qué producto ni
+serie y no son comparables con D20. Lo que sí escriben se muestra aparte,
+debajo del gráfico de D20 («Termoclina frente a Paita y Chicama»): del
+informe técnico del ENFEN, el estado de la termoclina costera frente a su
+climatología y la anomalía subsuperficial más intensa; del boletín
+semanal del IMARPE (BS-OBP, leído de su repositorio), la anomalía que el
+resumen atribuye a Paita y Chicama, con la capa y la plataforma. Cada
+valor lleva la cita y el enlace al documento, y no se le aplican los
+umbrales de D20 (ver catálogo de fuentes). La tabla GRD no dice qué producto ni
 qué región usar: Niño 1+2 y Niño 3.4 de GODAS son una elección del
 observatorio, pendiente de confirmación del equipo GRD (ver
 `observatory_application` en la política).

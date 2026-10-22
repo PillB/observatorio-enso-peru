@@ -291,6 +291,20 @@ def load_seed() -> list[dict]:
         return []
 
 
+def _envelope(today: date) -> dict:
+    return {"version": 1, "source": SOURCE, "institution": "IMARPE",
+            "product": "Boletín Semanal Oceanográfico y Biológico-Pesquero (BS-OBP)",
+            "docs": "https://repositorio.imarpe.gob.pe", "checkedAt": today.isoformat(),
+            "note": ("Anomalía térmica subsuperficial que el resumen del boletín atribuye a Paita y Chicama, tal como "
+                     "la escribe el IMARPE, con la plataforma que la midió. No es el D20 y no se le aplican sus umbrales."),
+            "pending": []}
+
+
+def from_seed(today: date) -> dict:
+    """Sin red (pruebas con fixtures): los boletines ya leídos que trae el repositorio."""
+    return {**_envelope(today), "bulletins": load_seed()[:KEEP], "lastListed": None}
+
+
 def acquire(fetcher, previous: Optional[dict], log, today: date, needs=None) -> dict:
     """Lee los boletines nuevos del repositorio y devuelve lo que se publica en ``imarpe-bsobp.json``.
 
@@ -304,12 +318,7 @@ def acquire(fetcher, previous: Optional[dict], log, today: date, needs=None) -> 
     bulletins = list(prev.get("bulletins") or load_seed())
     have = {(b.get("year"), b.get("number")) for b in bulletins}
     listed = _listed(fetcher)
-    out = {"version": 1, "source": SOURCE, "institution": "IMARPE",
-           "product": "Boletín Semanal Oceanográfico y Biológico-Pesquero (BS-OBP)",
-           "docs": "https://repositorio.imarpe.gob.pe", "checkedAt": today.isoformat(),
-           "note": ("Anomalía térmica subsuperficial que el resumen del boletín atribuye a Paita y Chicama, tal como "
-                    "la escribe el IMARPE, con la plataforma que la midió. No es el D20 y no se le aplican sus umbrales."),
-           "pending": []}
+    out = _envelope(today)
     if not listed:
         log.add("warning", SOURCE, "fetch", "bsobp-unreachable",
                 "El repositorio del IMARPE no listó boletines semanales; se conservan los ya leídos.")
