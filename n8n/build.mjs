@@ -255,7 +255,8 @@ const watcher = workflow('EnsoVigilante001', 'ENSO · Vigilante del sitio public
   node('Cada 6 horas', 'n8n-nodes-base.scheduleTrigger', 1.2, { rule: { interval: [{ field: 'hours', hoursInterval: 6 }] } }, { y: -120 }),
   node('Ejecutar a mano', 'n8n-nodes-base.manualTrigger', 1, {}, { x: 0, y: 120 }),
   setNode('Configuración', [
-    ['site', 'https://pillb.github.io/observatorio-enso-peru/'],
+    // El sitio está en Cloudflare Pages; N8N_SITE_URL lo cambia al construir (dominio propio).
+    ['site', process.env.N8N_SITE_URL || 'https://enso-peru.pages.dev/'],
     ['max_age_hours', 30, 'number'],
     ...CONFIG_COMMON.filter(([k]) => k === 'contact'),
   ]),

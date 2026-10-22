@@ -790,7 +790,7 @@ def test_dhn_challenge_is_not_read_and_the_last_informe_is_kept(monkeypatch):
     latest = {"id": "18-2026", "number": 18, "year": 2026, "issued": "2026-10-16", "informe_url": INFORME18}
     res = reports.acquire_informe(latest, f, prev, log, datetime(2026, 10, 21).date())
     assert read == [] and res["carried"] and res["icenProvisional"]["icen"] == 3.97
-    assert [(e[0], e[3]) for e in log.events] == [("warning", "informe-unread")]
+    assert [(e[0], e[3]) for e in log.events] == [("warning", "informe-unread"), ("warning", "repository-unreachable")]
     # Sin informe anterior (primera corrida): no hay dato, solo la advertencia.
     assert reports.acquire_informe(latest, f, None, _Log(), datetime(2026, 10, 21).date()) is None
 
@@ -955,7 +955,14 @@ def test_manual_needed_keeps_the_first_day_it_was_pending():
 
 def test_missing_manual_branch_is_normal(tmp_path):
     log = obs.EventLog()
-    assert obs.load_manual_relay(tmp_path / "no-existe", log) is None and log.events == []
+    assert obs.load_manual_relay(tmp_path / "no-existe", log, absent=True) is None and log.events == []
+
+
+def test_manual_branch_that_exists_but_did_not_arrive_is_an_incident(tmp_path):
+    """La rama existe (no ``absent``) pero su copia no llegó: las subidas no se leen y queda la incidencia."""
+    log = obs.EventLog()
+    assert obs.load_manual_relay(tmp_path / "vacia", log) is None
+    assert [(e.severity, e.code) for e in log.events] == [("warning", "manual-unreadable")]
 
 
 def test_outlook_unread_is_logged_on_every_run_while_the_communique_stays():

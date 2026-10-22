@@ -13,7 +13,7 @@ registro de fuentes ──► n8n (AWS) ──► rama data-n8n ──┐
                         servidor del Perú ─► data-peru ─┘   (directo › relay más reciente › Internet Archive)
 ```
 
-Hay dos flujos, en `n8n/dist/`:
+Hay cuatro flujos, en `n8n/dist/`:
 
 | Archivo | Para qué | Credenciales |
 |---|---|---|
@@ -123,8 +123,8 @@ zona horaria en la configuración del flujo, así que no depende de la zona del
 servidor. La actualización diaria del sitio corre a las 23:37 (Lima) y usa
 la copia de esa noche.
 
-Recomendado en n8n: **Settings → Error workflow** con un flujo que avise por
-correo, para enterarse si el recolector falla. Además, la actualización diaria
+Necesario en n8n: **Settings → Error workflow** con un flujo que avise por
+correo. Sin él, n8n no avisa a nadie cuando el recolector o el vigilante fallan. Además, la actualización diaria
 registra `relay-n8n-stale` si la última corrida tiene más de 36 horas,
 `relay-n8n-sources-down` si n8n corrió pero ninguna fuente le respondió y
 `relay-n8n-missing` si la rama `data-n8n` no existe.
@@ -133,10 +133,15 @@ registra `relay-n8n-stale` si la última corrida tiene más de 36 horas,
 
 GitHub desactiva los flujos programados de un repositorio sin actividad, y
 ya pasó sin que nadie lo notara. El vigilante no depende de GitHub: importar
-`enso-n8n-vigilante.json`, poner en **Configuración → site** la dirección
-del sitio (hoy `https://pillb.github.io/observatorio-enso-peru/`; cambiarla
-si se muda a Cloudflare), y activarlo. Cuando falla, avisa el «Error
-workflow» de n8n (paso 5).
+`enso-n8n-vigilante.json`, revisar que **Configuración → site** sea la
+dirección del sitio (viene con `https://enso-peru.pages.dev/`, el sitio en
+Cloudflare Pages, igual que la variable `SITE_URL` del repositorio) y
+activarlo. Cuando falla, avisa el «Error workflow» de n8n (paso 5).
+
+Reimportar el flujo vuelve a poner la dirección con que se construyó. Si el
+sitio pasa a otra dirección (un dominio propio), construir los flujos con
+`N8N_SITE_URL=https://<dirección>/ node n8n/build.mjs` o volver a cambiar el
+campo después de cada importación.
 
 ## Extractor de informes con OpenAI (opcional)
 
@@ -226,6 +231,8 @@ punta con n8n real es `n8n/test/e2e.sh n8nio/n8n:2.44.4 /tmp/e2e noaa`
 | `Publicar` falla con 422 | La rama cambió mientras corría (otra corrida a la vez). Volver a correr |
 | Muchas fuentes `timeout` o `connection` | La salida a internet del servidor de n8n (proxy, firewall, NAT) |
 | Muchas fuentes grandes con `timeout` y nota `aborted` | Flujo anterior a esta versión: n8n lanzaba todas las descargas y leía los cuerpos al final, y las respuestas grandes se cortaban. Reimportar los flujos actuales (bajan las URL de a una) |
+| `repositorio.imarpe.gob.pe` con `tls` (`unable to verify the first certificate`) | El servidor envía solo su certificado, sin el intermedio de Sectigo. El registro no le asigna n8n; para habilitarlo, el administrador de n8n guarda ese intermedio en un archivo PEM y arranca n8n con `NODE_EXTRA_CA_CERTS=/ruta/sectigo-intermedio.pem`. Nunca apagar la verificación TLS |
+| Aviso `relay-token-expiring` en la actualización diaria | El token de GitHub del paso 2 vence pronto: el recolector guarda su vencimiento (`collector.token_expires_at` en `index.json`). Crear otro token (paso 2) y actualizar la credencial de n8n (paso 3) |
 | `enfen.imarpe.gob.pe` con `dns` (`EAI_AGAIN`) | Los servidores de nombres propios del IMARPE responden mal a los resolvedores de AWS y Azure (sí a 1.1.1.1 y 8.8.8.8). El registro deja ese portal al servidor del Perú; n8n ya no lo pide |
 | Una fuente `blocked` con `challenge` | Esa institución bloquea a los servidores en la nube. No se evade: si responde desde el Perú, va por el servidor del Perú |
 | El informe dice `incluido en el flujo` en `registry` | No se pudo leer el registro desde GitHub (validación: siempre; recolector: revisar credencial y `registry_ref`). Se usó la copia incluida al construir el flujo |

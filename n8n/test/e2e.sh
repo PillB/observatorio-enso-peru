@@ -75,6 +75,8 @@ hb = json.loads((copia / "heartbeat.json").read_text(encoding="utf-8"))
 ok = [e for e in idx["entries"] if e.get("file")]
 assert relay.channel == "relay-n8n", relay.channel
 assert idx["collector"]["kind"] == "n8n"
+assert idx["collector"].get("token_expires_at") == "2027-05-10T00:00:00+00:00", idx["collector"].get("token_expires_at")
+assert hb["collector"].get("token_expires_at") == idx["collector"]["token_expires_at"]
 assert hb["schema"] == "enso-relay-heartbeat/1", hb
 missing = [e["url"] for e in ok if relay.get(e["url"]) is None]
 assert not missing, f"el pipeline no lee estas copias: {missing[:5]}"

@@ -105,6 +105,8 @@ def alert_sources(feed_status: Optional[list[dict]]) -> list[dict]:
         if f and f.covers:
             row = {"id": f.id, "name": f.name, "url": f.url, "ok": bool(st.get("ok")),
                    "latest": st.get("latest"), "error": st.get("error") or ""}
+            if st.get("formatError"):
+                row["formatError"] = True
             if st.get("channel"):  # respondió una copia (Perú, n8n), no la fuente: de cuándo es
                 row.update({"channel": st["channel"], "copyAt": st.get("copyAt")})
             out.append(row)

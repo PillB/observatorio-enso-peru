@@ -29,6 +29,10 @@ for (let i = 0; i < items.length; i++) {
   }
   results.push({ ...j, body });
 }
+let tokenHeader = null;
+try {
+  tokenHeader = (($('Leer registro').first().json || {}).headers || {})['github-authentication-token-expiration'];
+} catch (e) { /* sin «Leer registro» no hay vencimiento que informar */ }
 const now = new Date();
 const { index, files } = buildSnapshot({
   results,
@@ -46,6 +50,8 @@ const { index, files } = buildSnapshot({
     execution: typeof $execution !== 'undefined' ? String($execution.id) : '',
     previous: previousNote,
     registry: String($('Fuentes').first().json.registry || ''),
+    // Para que el pipeline avise antes de que venza (el token se crea con un año de plazo).
+    token_expires_at: parseTokenExpiry(tokenHeader),
   },
 });
 const indexBytes = utf8Encode(JSON.stringify(index, null, 1) + '\n');

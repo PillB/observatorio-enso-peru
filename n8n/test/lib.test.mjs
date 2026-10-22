@@ -6,6 +6,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash, randomBytes } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { libSource, nodeCode } from '../build.mjs';
@@ -27,7 +28,7 @@ function loadWith(shadow, ...names) {
     hash: ['sha256Hex', 'sha1Hex', 'gitBlobSha', 'toBase64'],
     classify: ['classify', 'reachClass', 'detectFormat', 'feedStats', 'fileExtension', 'utf8Decode', 'utf8Encode'],
     enfen: ['deriveEnfenTargets', 'parseListing', 'parseWpPosts', 'cleanWpdm'],
-    relay: ['buildSnapshot', 'pickResults', 'heartbeat'],
+    relay: ['buildSnapshot', 'pickResults', 'heartbeat', 'parseTokenExpiry'],
   };
   const code = names.map(libSource).join('\n');
   const all = names.flatMap((n) => exportsList[n]);
@@ -37,7 +38,7 @@ function loadWith(shadow, ...names) {
 const { sha256Hex, sha1Hex, gitBlobSha, toBase64 } = load('hash');
 const { classify, reachClass, detectFormat, fileExtension } = load('classify');
 const { deriveEnfenTargets, parseListing, cleanWpdm } = load('enfen');
-const { buildSnapshot, heartbeat } = load('hash', 'classify', 'relay');
+const { buildSnapshot, heartbeat, parseTokenExpiry } = load('hash', 'classify', 'relay');
 
 const enc = (s) => new TextEncoder().encode(s);
 
@@ -324,6 +325,22 @@ test('Preparar copia: no publica si no pudo leer la copia anterior', async () =>
   const idx = first.find((i) => i.json.path === 'index.json');
   assert.ok(idx);
   assert.match(Buffer.from(idx.json.content, 'base64').toString(), /"registry": "GitHub x@main/);
+  assert.equal(JSON.parse(Buffer.from(idx.json.content, 'base64').toString()).collector.token_expires_at, null);
+  // El vencimiento del token (cabecera de GitHub en «Leer registro») queda en index.json y en el latido.
+  const withToken = await runCode('preparar', {}, { ...nodes({ statusCode: 404, data: '' }),
+    'Leer registro': [{ json: { statusCode: 200, headers: { 'github-authentication-token-expiration': '2026-11-01 00:00:00 UTC' } } }] });
+  for (const path of ['index.json', 'heartbeat.json']) {
+    const f = withToken.find((i) => i.json.path === path);
+    assert.equal(JSON.parse(Buffer.from(f.json.content, 'base64').toString()).collector.token_expires_at, '2026-11-01T00:00:00+00:00', path);
+  }
+});
+
+test('vencimiento del token de GitHub, como collector_service.parse_token_expiry', () => {
+  assert.equal(parseTokenExpiry('2027-05-10 00:00:00 UTC'), '2027-05-10T00:00:00+00:00');
+  assert.equal(parseTokenExpiry('2027-05-09 19:00:00 -0500'), '2027-05-10T00:00:00+00:00');
+  assert.equal(parseTokenExpiry('2027-05-09 19:00 -05:00'), '2027-05-10T00:00:00+00:00');
+  assert.equal(parseTokenExpiry(undefined), null);
+  assert.equal(parseTokenExpiry('nunca'), null);
 });
 
 test('Fuentes: una alternativa con otra terminación no hereda el tipo esperado', async () => {
@@ -346,6 +363,18 @@ test('Vigilante: falla si el sitio está viejo o no responde', async () => {
   await assert.rejects(runCode('vigilante', {}, cfg, [{ json: { statusCode: 404, data: '' } }]), /no responde/);
 });
 
+test('Vigilante: revisa el sitio de Cloudflare, o el de N8N_SITE_URL al construir', () => {
+  const site = (env) => {
+    const r = spawnSync(process.execPath, ['--input-type=module', '-e',
+      "const m = await import(process.argv[1]); const w = m.WORKFLOWS['enso-n8n-vigilante.json']; console.log(w.nodes.find((n) => n.name === 'Configuración').parameters.assignments.assignments.find((a) => a.name === 'site').value);",
+      new URL('../build.mjs', import.meta.url).href], { env: { ...process.env, ...env }, encoding: 'utf8' });
+    assert.equal(r.status, 0, r.stderr);
+    return r.stdout.trim();
+  };
+  assert.equal(site({ N8N_SITE_URL: '' }), 'https://enso-peru.pages.dev/');
+  assert.equal(site({ N8N_SITE_URL: 'https://enso.example.pe/' }), 'https://enso.example.pe/');
+});
+
 test('Extractor: valida el pedido y convierte la respuesta de OpenAI', async () => {
   const cfg = { 'Configuración': [{ json: { model: 'gpt-x', max_chars: 50 } }] };
   const pedido = (body) => runCode('extraer-pedido', {}, { ...cfg, 'Petición del pipeline': [{ json: { body } }] });
@@ -364,4 +393,11 @@ test('Extractor: valida el pedido y convierte la respuesta de OpenAI', async () 
   assert.deepEqual(bare[0].json.body.data, { icen: 1 });
   assert.equal((await respuesta({ statusCode: 429, body: { error: { message: 'cuota' } } }))[0].json.status, 502);
   assert.equal((await respuesta({ statusCode: 200, body: { choices: [{ message: { content: 'no es json' } }] } }))[0].json.status, 502);
+});
+
+test('docs/n8n.md cuenta los flujos de n8n/dist', () => {
+  const words = { uno: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, seis: 6 };
+  const m = /Hay (\w+) flujos/.exec(readFileSync(join(HERE, '..', '..', 'docs', 'n8n.md'), 'utf8'));
+  assert.ok(m);
+  assert.equal(words[m[1]], readdirSync(join(HERE, '..', 'dist')).filter((f) => f.endsWith('.json')).length);
 });

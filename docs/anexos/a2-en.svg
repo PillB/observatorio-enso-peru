@@ -1,0 +1,641 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1982.7" role="img" aria-labelledby="a2-t a2-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="a2-t">Annex A2 · Peru collector: the local server</title>
+  <desc id="a2-d">The Peru collector: kit and installation, scheduled task with retries, download with robots.txt and classifier, ENFEN PDFs, extra measurements, push to data-peru, heartbeat and site refresh.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="a2-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a2-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a2-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a2-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a2-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1982.7" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Annex A2 · Peru collector: the local server</text>
+  <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
+  <text class="ar-s" x="20" y="60" font-size="12">A Python program on a computer inside Peru (Windows, macOS or Linux) fetches every night what does not answer outside the country and pushes it to the data-peru branch. A person installs it with the kit; if the machine was off,</text>
+  <text class="ar-s" x="20" y="77" font-size="12">collection catches up on its own.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: Peru collector, data-peru branch, Collector kit and check, Peru machine operator.</text>
+  <text class="ar-t" x="20" y="121" font-size="11.5">Lines:</text>
+  <path class="ar-e ar-e-data" d="M70.7 117 L104.7 117" marker-end="url(#a2-m-data)"/>
+  <text class="ar-s" x="112.7" y="121" font-size="11.5">data</text>
+  <path class="ar-e ar-e-fallback" d="M160.6 117 L194.6 117" stroke-dasharray="6 4" marker-end="url(#a2-m-fallback)"/>
+  <text class="ar-s" x="202.6" y="121" font-size="11.5">fallback</text>
+  <path class="ar-e ar-e-trigger" d="M269.4 117 L303.4 117" stroke-dasharray="2 3" marker-end="url(#a2-m-trigger)"/>
+  <text class="ar-s" x="311.4" y="121" font-size="11.5">trigger or control</text>
+  <path class="ar-e ar-e-human" d="M431.5 117 L465.5 117" stroke-dasharray="8 3 2 3" marker-end="url(#a2-m-human)"/>
+  <text class="ar-s" x="473.5" y="121" font-size="11.5">manual step</text>
+  <rect class="ar-col" x="36" y="141" width="300" height="1119.7" rx="10"/>
+  <text class="ar-h" x="48" y="166" font-size="15">Installation, task and alerts</text>
+  <text class="ar-m" x="48" y="183" font-size="10.5">Kit .zip · INSTALL and VERIFY · Windows, macOS,</text>
+  <text class="ar-m" x="48" y="197" font-size="10.5">Linux</text>
+  <rect class="ar-col" x="392" y="141" width="300" height="1119.7" rx="10"/>
+  <text class="ar-h" x="404" y="166" font-size="15">Every night on the machine</text>
+  <text class="ar-m" x="404" y="183" font-size="10.5">Python 3 · httpx · git · tools.collector_service</text>
+  <rect class="ar-col" x="748" y="141" width="300" height="1119.7" rx="10"/>
+  <text class="ar-h" x="760" y="166" font-size="15">Sources in Peru</text>
+  <text class="ar-m" x="760" y="183" font-size="10.5">16 URLs and the ENFEN PDFs, with live robots.txt</text>
+  <rect class="ar-col" x="1104" y="141" width="300" height="1119.7" rx="10"/>
+  <text class="ar-h" x="1116" y="166" font-size="15">On GitHub</text>
+  <text class="ar-m" x="1116" y="183" font-size="10.5">data-peru branch · repository_dispatch</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="a2-e-1" data-edge="1" data-from="kit" data-to="operator" tabindex="0">
+    <title>1. Collector kit → Machine operator: kit .zip and VERIFY. The person downloads recolector-peru.zip from the recolector-kit release. The machine does not update itself.</title>
+    <path class="ar-e ar-e-human" d="M186 386.7 L186 416.7" stroke-dasharray="8 3 2 3" marker-end="url(#a2-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="186" cy="401.7" r="9"/>
+    <text class="ar-t" x="186" y="405.5" font-size="10.5" text-anchor="middle">1</text>
+  </g>
+  <g class="ar-edge" id="a2-e-2" data-edge="2" data-from="operator" data-to="task" tabindex="0">
+    <title>2. Machine operator → Scheduled task: INSTALL with the token. The installer stores the token in .env, installs Python and git if missing and registers the 21:00 task.</title>
+    <path class="ar-e ar-e-human" d="M186 537.4 L186 567.4" stroke-dasharray="8 3 2 3" marker-end="url(#a2-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="186" cy="552.4" r="9"/>
+    <text class="ar-t" x="186" y="556.2" font-size="10.5" text-anchor="middle">2</text>
+  </g>
+  <g class="ar-edge" id="a2-e-3" data-edge="3" data-from="operator" data-to="verify" tabindex="0">
+    <title>3. Machine operator → VERIFY: runs VERIFY. Checks the machine and leaves the report for the maintainers; with --probar-tarea it fires the real task.</title>
+    <path class="ar-e ar-e-human" d="M326 480 L342 480 Q348 480 348 486 L348 816 Q348 822 342 822 L326 822" stroke-dasharray="8 3 2 3" marker-end="url(#a2-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="348" cy="651" r="9"/>
+    <text class="ar-t" x="348" y="654.8" font-size="10.5" text-anchor="middle">3</text>
+  </g>
+  <g class="ar-edge" id="a2-e-4" data-edge="4" data-from="task" data-to="service" tabindex="0">
+    <title>4. Scheduled task → Run start: 21:00 and retries. Each trigger runs the service; if today&#x27;s copy is already there, it does nothing. That way it recovers a night with the machine off.</title>
+    <path class="ar-e ar-e-trigger" d="M326 642 L372 642 Q378 642 378 636 L378 258 Q378 252 384 252 L402 252" stroke-dasharray="2 3" marker-end="url(#a2-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="378" cy="447" r="9"/>
+    <text class="ar-t" x="378" y="450.8" font-size="10.5" text-anchor="middle">4</text>
+  </g>
+  <g class="ar-edge" id="a2-e-5" data-edge="5" data-from="service" data-to="preflight" tabindex="0">
+    <title>5. Run start → Token and registry: token from .env. Without a token nothing can be pushed: the run ends with a clear message and a hint to fix it.</title>
+    <path class="ar-e ar-e-data" d="M540 372.2 L540 402.2" marker-end="url(#a2-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="387.2" r="9"/>
+    <text class="ar-t" x="540" y="391" font-size="10.5" text-anchor="middle">5</text>
+  </g>
+  <g class="ar-edge" id="a2-e-6" data-edge="6" data-from="preflight" data-to="collect" tabindex="0">
+    <title>6. Token and registry → Download: fixed list and peru-server. Its fixed-list URLs plus those the registry assigns to Peru, and their rules for following PDFs.</title>
+    <path class="ar-e ar-e-data" d="M540 546.9 L540 576.9" marker-end="url(#a2-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="561.9" r="9"/>
+    <text class="ar-t" x="540" y="565.7" font-size="10.5" text-anchor="middle">6</text>
+  </g>
+  <g class="ar-edge" id="a2-e-7" data-edge="7" data-from="src-robots" data-to="collect" tabindex="0">
+    <title>7. Live robots.txt → Download: robots.txt rules. A forbidden path is not requested; if robots.txt does not answer, that server is skipped tonight.</title>
+    <path class="ar-e ar-e-trigger" d="M758 264 L726 264 Q720 264 720 270 L720 600 Q720 606 714 606 L682 606" stroke-dasharray="2 3" marker-end="url(#a2-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="720" cy="435" r="9"/>
+    <text class="ar-t" x="720" y="438.8" font-size="10.5" text-anchor="middle">7</text>
+  </g>
+  <g class="ar-edge" id="a2-e-8" data-edge="8" data-from="src-enfen" data-to="collect" tabindex="0">
+    <title>8. ENFEN portal → Download: API, listing and PDFs. The official communiqué arrives even though the portal does not answer the cloud.</title>
+    <path class="ar-e ar-e-data" d="M758 396 L714 396 Q708 396 708 402 L708 642 Q708 648 702 648 L682 648" marker-end="url(#a2-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="708" cy="522" r="9"/>
+    <text class="ar-t" x="708" y="525.8" font-size="10.5" text-anchor="middle">8</text>
+  </g>
+  <g class="ar-edge" id="a2-e-9" data-edge="9" data-from="src-icen" data-to="collect" tabindex="0">
+    <title>9. ICEN over https (IGP) → Download: ICEN https. Kept like the rest; Actions also has the http version.</title>
+    <path class="ar-e ar-e-data" d="M758 528 L720 528 Q714 528 714 534 L714 678 Q714 684 708 684 L682 684" marker-end="url(#a2-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="714" cy="606" r="9"/>
+    <text class="ar-t" x="714" y="609.8" font-size="10.5" text-anchor="middle">9</text>
+  </g>
+  <g class="ar-edge" id="a2-e-10" data-edge="10" data-from="src-pages" data-to="collect" tabindex="0">
+    <title>10. SENAMHI, ANA, IMARPE… → Download: archive pages. The original is kept as a backup for when a reader exists.</title>
+    <path class="ar-e ar-e-data" d="M758 660 L714 660 Q708 660 708 666 L708 720 Q708 726 702 726 L682 726" marker-end="url(#a2-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="708" cy="693" r="9"/>
+    <text class="ar-t" x="708" y="696.8" font-size="10.5" text-anchor="middle">10</text>
+  </g>
+  <g class="ar-edge" id="a2-e-11" data-edge="11" data-from="collect" data-to="pdfs" tabindex="0">
+    <title>11. Download → ENFEN PDFs and links: listings → PDFs. The PDFs are looked up in the listings that answered tonight.</title>
+    <path class="ar-e ar-e-data" d="M540 755.3 L540 785.3" marker-end="url(#a2-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="770.3" r="9"/>
+    <text class="ar-t" x="540" y="774.1" font-size="10.5" text-anchor="middle">11</text>
+  </g>
+  <g class="ar-edge" id="a2-e-12" data-edge="12" data-from="pdfs" data-to="probes" tabindex="0">
+    <title>12. ENFEN PDFs and links → Extra measurements: unmeasured URLs. With the time left it measures the registry URLs nobody measured from Peru.</title>
+    <path class="ar-e ar-e-data" d="M540 906 L540 936" marker-end="url(#a2-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="921" r="9"/>
+    <text class="ar-t" x="540" y="924.8" font-size="10.5" text-anchor="middle">12</text>
+  </g>
+  <g class="ar-edge" id="a2-e-13" data-edge="13" data-from="probes" data-to="snapshot" tabindex="0">
+    <title>13. Extra measurements → Tonight&#x27;s copy: measurements in index.json. The measurements go in index.json and the weekly probe adds them to the registry.</title>
+    <path class="ar-e ar-e-data" d="M540 1071.9 L540 1101.9" marker-end="url(#a2-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="1086.9" r="9"/>
+    <text class="ar-t" x="540" y="1090.7" font-size="10.5" text-anchor="middle">13</text>
+  </g>
+  <g class="ar-edge" id="a2-e-14" data-edge="14" data-from="branch" data-to="snapshot" tabindex="0">
+    <title>14. data-peru branch → Tonight&#x27;s copy: copies up to 72 h old. Before pushing it reads the previous copy and keeps each URL that failed tonight, marked carried.</title>
+    <path class="ar-e ar-e-fallback" d="M1114 246 L1068 246 Q1062 246 1062 252 L1062 1128 Q1062 1134 1056 1134 L682 1134" stroke-dasharray="6 4" marker-end="url(#a2-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="1062" cy="690" r="9"/>
+    <text class="ar-t" x="1062" y="693.8" font-size="10.5" text-anchor="middle">14</text>
+  </g>
+  <g class="ar-edge" id="a2-e-15" data-edge="15" data-from="snapshot" data-to="branch" tabindex="0">
+    <title>15. Tonight&#x27;s copy → data-peru branch: commit and push. git without credential helpers or prompts: nobody would answer them in a scheduled task.</title>
+    <path class="ar-e ar-e-data" d="M682 1176 L1080 1176 Q1086 1176 1086 1170 L1086 306 Q1086 300 1092 300 L1114 300" marker-end="url(#a2-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1086" cy="738" r="9"/>
+    <text class="ar-t" x="1086" y="741.8" font-size="10.5" text-anchor="middle">15</text>
+  </g>
+  <g class="ar-edge" id="a2-e-16" data-edge="16" data-from="snapshot" data-to="heartbeat" tabindex="0">
+    <title>16. Tonight&#x27;s copy → Heartbeat only: nothing answered. An empty copy would replace the last good one: only the heartbeat is pushed.</title>
+    <path class="ar-e ar-e-fallback" d="M682 1218 L1086 1218 Q1092 1218 1092 1212 L1092 432 Q1092 426 1098 426 L1114 426" stroke-dasharray="6 4" marker-end="url(#a2-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="1092" cy="822" r="9"/>
+    <text class="ar-t" x="1092" y="825.8" font-size="10.5" text-anchor="middle">16</text>
+  </g>
+  <g class="ar-edge" id="a2-e-17" data-edge="17" data-from="branch" data-to="dispatch" tabindex="0">
+    <title>17. data-peru branch → Asks for a site refresh: after pushing. If a run is in progress, the new one queues. If the request fails, the 23:37 run uses the copy anyway.</title>
+    <path class="ar-e ar-e-trigger" d="M1394 276 L1410 276 Q1416 276 1416 282 L1416 588 Q1416 594 1410 594 L1394 594" stroke-dasharray="2 3" marker-end="url(#a2-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="1416" cy="435" r="9"/>
+    <text class="ar-t" x="1416" y="438.8" font-size="10.5" text-anchor="middle">17</text>
+  </g>
+  <g class="ar-edge" id="a2-e-18" data-edge="18" data-from="service" data-to="notify" tabindex="0">
+    <title>18. Run start → Desktop alert: failures or expiring token. Each run&#x27;s state decides whether to alert the person.</title>
+    <path class="ar-e ar-e-control" d="M402 324 L390 324 Q384 324 384 330 L384 978 Q384 984 378 984 L326 984" stroke-dasharray="2 3" marker-end="url(#a2-m-control)"/>
+    <circle class="ar-badge ar-e-control" cx="384" cy="654" r="9"/>
+    <text class="ar-t" x="384" y="657.8" font-size="10.5" text-anchor="middle">18</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="a2-n-kit" data-node="kit">
+    <title>Collector kit. recolector-kit.yml builds the .zip with the code, the installers and a registry copy, test-installs it on Windows, macOS and Linux and publishes it in the recolector-kit release. when kit, python/enso/ or registry changes merge. Technology: GitHub Actions, GitHub Releases.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="209" width="280" height="177.7" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="217" width="4" height="161.7" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 222)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></g>
+    <text class="ar-t" x="96" y="238.5" font-size="12.5">Collector kit</text>
+    <text class="ar-s" x="58" y="270.4" font-size="11">recolector-kit.yml builds the .zip with the</text>
+    <text class="ar-s" x="58" y="285.6" font-size="11">code, the installers and a registry copy,</text>
+    <text class="ar-s" x="58" y="300.8" font-size="11">test-installs it on Windows, macOS and Linux</text>
+    <text class="ar-s" x="58" y="316" font-size="11">and publishes it in the recolector-kit release.</text>
+    <text class="ar-m" x="58" y="335.2" font-size="10.5">when kit, python/enso/ or registry changes</text>
+    <text class="ar-m" x="58" y="349.6" font-size="10.5">merge</text>
+    <rect class="ar-chip" x="58" y="358.7" width="86.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="370.7" font-size="10">GitHub Actions</text>
+    <rect class="ar-chip" x="149.6" y="358.7" width="94.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="155.6" y="370.7" font-size="10">GitHub Releases</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-operator" data-node="operator">
+    <title>Machine operator. Downloads the kit, runs INSTALL and pastes a fine-grained GitHub token (this repository only, Contents read and write). A new kit is installed with UPDATE.</title>
+    <rect class="ar-node ar-g-people" x="46" y="416.7" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-people" x="46" y="424.7" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="58" y="426.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(61 429.7)"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g>
+    <text class="ar-t" x="96" y="446.2" font-size="12.5">Machine operator</text>
+    <text class="ar-s" x="58" y="478.1" font-size="11">Downloads the kit, runs INSTALL and pastes a</text>
+    <text class="ar-s" x="58" y="493.3" font-size="11">fine-grained GitHub token (this repository</text>
+    <text class="ar-s" x="58" y="508.5" font-size="11">only, Contents read and write). A new kit is</text>
+    <text class="ar-s" x="58" y="523.7" font-size="11">installed with UPDATE.</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-task" data-node="task">
+    <title>Scheduled task. 21:00 Lima and then every 30 min until 23:30, plus at login or power-on. Each trigger runs collector_service --programado. Technology: Programador de tareas, launchd, cron, systemd, Docker.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="567.4" width="280" height="151.5" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="575.4" width="4" height="135.5" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="577.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 580.4)"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></g>
+    <text class="ar-t" x="96" y="596.9" font-size="12.5">Scheduled task</text>
+    <text class="ar-s" x="58" y="628.8" font-size="11">21:00 Lima and then every 30 min until</text>
+    <text class="ar-s" x="58" y="644" font-size="11">23:30, plus at login or power-on. Each trigger</text>
+    <text class="ar-s" x="58" y="659.2" font-size="11">runs collector_service --programado.</text>
+    <rect class="ar-chip" x="58" y="669" width="127.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="681" font-size="10">Programador de tareas</text>
+    <rect class="ar-chip" x="190.8" y="669" width="51.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="196.8" y="681" font-size="10">launchd</text>
+    <rect class="ar-chip" x="247.6" y="669" width="34.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="253.6" y="681" font-size="10">cron</text>
+    <rect class="ar-chip" x="58" y="691" width="54.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="703" font-size="10">systemd</text>
+    <rect class="ar-chip" x="117.5" y="691" width="47.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="123.5" y="703" font-size="10">Docker</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-verify" data-node="verify">
+    <title>VERIFY. Checks Python, git, the token and its expiry, access to the sources, the scheduled task and the age of the latest copy; leaves a report in logs/ to send. Technology: collector_check.py.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="749" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="757" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="759" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 762)"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></g>
+    <text class="ar-t" x="96" y="778.5" font-size="12.5">VERIFY</text>
+    <text class="ar-s" x="58" y="810.4" font-size="11">Checks Python, git, the token and its expiry,</text>
+    <text class="ar-s" x="58" y="825.6" font-size="11">access to the sources, the scheduled task and</text>
+    <text class="ar-s" x="58" y="840.7" font-size="11">the age of the latest copy; leaves a report in</text>
+    <text class="ar-s" x="58" y="855.9" font-size="11">logs/ to send.</text>
+    <rect class="ar-chip" x="58" y="865.7" width="104.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="877.7" font-size="10">collector_check.py</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-notify" data-node="notify">
+    <title>Desktop alert. After 2 failures in a row, or if the token expires in under 21 days, it shows a desktop alert (once a day). Each run&#x27;s result is kept in estado.json.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="923.7" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="931.7" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="933.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 936.7)"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g>
+    <text class="ar-t" x="96" y="953.2" font-size="12.5">Desktop alert</text>
+    <text class="ar-s" x="58" y="985.1" font-size="11">After 2 failures in a row, or if the token</text>
+    <text class="ar-s" x="58" y="1000.3" font-size="11">expires in under 21 days, it shows a desktop</text>
+    <text class="ar-s" x="58" y="1015.5" font-size="11">alert (once a day). Each run&#x27;s result is kept in</text>
+    <text class="ar-s" x="58" y="1030.6" font-size="11">estado.json.</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-service" data-node="service">
+    <title>Run start. Takes the token from .env, writes a rotating log that never shows the token, takes the lock (never runs twice) and only goes on if today&#x27;s 21:00 copy is missing. a hung run is cut at 45 min. Technology: collector_service.py.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="209" width="280" height="163.2" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="217" width="4" height="147.2" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 222)"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12.5 15H17"/></g>
+    <text class="ar-t" x="452" y="238.5" font-size="12.5">Run start</text>
+    <text class="ar-s" x="414" y="270.4" font-size="11">Takes the token from .env, writes a rotating</text>
+    <text class="ar-s" x="414" y="285.6" font-size="11">log that never shows the token, takes the lock</text>
+    <text class="ar-s" x="414" y="300.8" font-size="11">(never runs twice) and only goes on if today&#x27;s</text>
+    <text class="ar-s" x="414" y="316" font-size="11">21:00 copy is missing.</text>
+    <text class="ar-m" x="414" y="335.2" font-size="10.5">a hung run is cut at 45 min</text>
+    <rect class="ar-chip" x="414" y="344.2" width="111.2" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="356.2" font-size="10">collector_service.py</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-preflight" data-node="preflight">
+    <title>Token and registry. Checks the token with the GitHub API and records when it expires. Reads registry/sources.json from main with the token; if it cannot, it uses the kit&#x27;s copy. Technology: GitHub API.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="402.2" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="410.2" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="412.2" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 415.2)"><circle cx="8" cy="15" r="4.5"/><path d="M11.2 11.8L20 3M16 7l3 3M14 9l2 2"/></g>
+    <text class="ar-t" x="452" y="431.7" font-size="12.5">Token and registry</text>
+    <text class="ar-s" x="414" y="463.6" font-size="11">Checks the token with the GitHub API and</text>
+    <text class="ar-s" x="414" y="478.8" font-size="11">records when it expires. Reads</text>
+    <text class="ar-s" x="414" y="494" font-size="11">registry/sources.json from main with the</text>
+    <text class="ar-s" x="414" y="509.2" font-size="11">token; if it cannot, it uses the kit&#x27;s copy.</text>
+    <rect class="ar-chip" x="414" y="518.9" width="65.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="530.9" font-size="10">GitHub API</text>
+    <a class="ar-annex" href="a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="646.6" y="409.2" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="660.3" y="421.7" font-size="10.5" text-anchor="middle">A1</text></a>
+  </g>
+  <g class="ar-node-g" id="a2-n-collect" data-node="collect">
+    <title>Download. Requests its fixed list and the registry&#x27;s peru-server URLs, each with its alternatives. Classifies every answer like Actions and n8n: it never keeps anti-bot checks or unexpected formats. 40 s per request, 25 min in total. Technology: peru_collector.py, httpx, reach.py.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="576.9" width="280" height="178.4" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="584.9" width="4" height="162.4" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="586.9" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 589.9)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
+    <text class="ar-t" x="452" y="606.4" font-size="12.5">Download</text>
+    <text class="ar-s" x="414" y="638.4" font-size="11">Requests its fixed list and the registry&#x27;s</text>
+    <text class="ar-s" x="414" y="653.5" font-size="11">peru-server URLs, each with its alternatives.</text>
+    <text class="ar-s" x="414" y="668.7" font-size="11">Classifies every answer like Actions and n8n:</text>
+    <text class="ar-s" x="414" y="683.9" font-size="11">it never keeps anti-bot checks or unexpected</text>
+    <text class="ar-s" x="414" y="699.1" font-size="11">formats.</text>
+    <text class="ar-m" x="414" y="718.3" font-size="10.5">40 s per request, 25 min in total</text>
+    <rect class="ar-chip" x="414" y="727.3" width="98.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="739.3" font-size="10">peru_collector.py</text>
+    <rect class="ar-chip" x="517.4" y="727.3" width="38.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="523.4" y="739.3" font-size="10">httpx</text>
+    <rect class="ar-chip" x="560.8" y="727.3" width="55.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="566.8" y="739.3" font-size="10">reach.py</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-pdfs" data-node="pdfs">
+    <title>ENFEN PDFs and links. From the ENFEN listing it derives the communiqué PDFs and the two latest technical reports (up to 20 MB) and follows the links the registry asks for.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="785.3" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="793.3" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="795.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 798.3)"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></g>
+    <text class="ar-t" x="452" y="814.8" font-size="12.5">ENFEN PDFs and links</text>
+    <text class="ar-s" x="414" y="846.8" font-size="11">From the ENFEN listing it derives the</text>
+    <text class="ar-s" x="414" y="861.9" font-size="11">communiqué PDFs and the two latest</text>
+    <text class="ar-s" x="414" y="877.1" font-size="11">technical reports (up to 20 MB) and follows</text>
+    <text class="ar-s" x="414" y="892.3" font-size="11">the links the registry asks for.</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-probes" data-node="probes">
+    <title>Extra measurements. Measures, without keeping them, up to 60 registry URLs with no measurement from Peru (unmeasured, suspected geoblock or down): that is how the registry can confirm a geoblock.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="936" width="280" height="135.9" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="944" width="4" height="119.9" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="946" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 949)"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></g>
+    <text class="ar-t" x="452" y="965.5" font-size="12.5">Extra measurements</text>
+    <text class="ar-s" x="414" y="997.5" font-size="11">Measures, without keeping them, up to 60</text>
+    <text class="ar-s" x="414" y="1012.6" font-size="11">registry URLs with no measurement from Peru</text>
+    <text class="ar-s" x="414" y="1027.8" font-size="11">(unmeasured, suspected geoblock or down):</text>
+    <text class="ar-s" x="414" y="1043" font-size="11">that is how the registry can confirm a</text>
+    <text class="ar-s" x="414" y="1058.2" font-size="11">geoblock.</text>
+    <a class="ar-annex" href="a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="646.6" y="943" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="660.3" y="955.5" font-size="10.5" text-anchor="middle">A1</text></a>
+  </g>
+  <g class="ar-node-g" id="a2-n-snapshot" data-node="snapshot">
+    <title>Tonight&#x27;s copy. index.json (each URL with status, class, sha256 and file), files/ and heartbeat.json. Keeps for up to 72 h the good copy of a URL that failed tonight, marked carried. Technology: enso-relay/1.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="1101.9" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="1109.9" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="1111.9" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 1114.9)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="452" y="1131.4" font-size="12.5">Tonight&#x27;s copy</text>
+    <text class="ar-s" x="414" y="1163.4" font-size="11">index.json (each URL with status, class,</text>
+    <text class="ar-s" x="414" y="1178.6" font-size="11">sha256 and file), files/ and heartbeat.json.</text>
+    <text class="ar-s" x="414" y="1193.7" font-size="11">Keeps for up to 72 h the good copy of a URL</text>
+    <text class="ar-s" x="414" y="1208.9" font-size="11">that failed tonight, marked carried.</text>
+    <rect class="ar-chip" x="414" y="1218.7" width="74.2" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="1230.7" font-size="10">enso-relay/1</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-src-robots" data-node="src-robots">
+    <title>Live robots.txt. Read before requesting: a forbidden path is never requested, and if robots.txt does not answer nothing is requested from that server.</title>
+    <rect class="ar-node ar-g-sources" x="758" y="209" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-sources" x="758" y="217" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-sources" x="770" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-sources" transform="translate(773 222)"><rect x="5" y="8" width="14" height="11" rx="2"/><path d="M12 8V4.5M9.5 12.5h.01M14.5 12.5h.01M9.5 16h5M3 12.5v3M21 12.5v3"/><circle cx="12" cy="4" r="1"/></g>
+    <text class="ar-t" x="808" y="238.5" font-size="12.5">Live robots.txt</text>
+    <text class="ar-s" x="770" y="270.4" font-size="11">Read before requesting: a forbidden path is</text>
+    <text class="ar-s" x="770" y="285.6" font-size="11">never requested, and if robots.txt does not</text>
+    <text class="ar-s" x="770" y="300.8" font-size="11">answer nothing is requested from that server.</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-src-enfen" data-node="src-enfen">
+    <title>ENFEN portal. WordPress API and /comunicados/ listing, with the PDFs. Its DNS does not resolve from the US.</title>
+    <rect class="ar-node ar-g-sources" x="758" y="344.5" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-sources" x="758" y="352.5" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-sources" x="770" y="354.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-sources" transform="translate(773 357.5)"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></g>
+    <text class="ar-t" x="808" y="374" font-size="12.5">ENFEN portal</text>
+    <text class="ar-s" x="770" y="406" font-size="11">WordPress API and /comunicados/ listing, with</text>
+    <text class="ar-s" x="770" y="421.1" font-size="11">the PDFs. Its DNS does not resolve from the</text>
+    <text class="ar-s" x="770" y="436.3" font-size="11">US.</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-src-icen" data-node="src-icen">
+    <title>ICEN over https (IGP). The https version of the ICEN, which does not answer the cloud either.</title>
+    <rect class="ar-node ar-g-sources" x="758" y="480.1" width="280" height="90.4" rx="8"/>
+    <rect class="ar-f-sources" x="758" y="488.1" width="4" height="74.4" rx="2"/>
+    <rect class="ar-tile ar-f-sources" x="770" y="490.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-sources" transform="translate(773 493.1)"><path d="M4 4v16h16"/><path d="M7 15l4-5 3 3 5-6"/></g>
+    <text class="ar-t" x="808" y="509.6" font-size="12.5">ICEN over https (IGP)</text>
+    <text class="ar-s" x="770" y="541.5" font-size="11">The https version of the ICEN, which does not</text>
+    <text class="ar-s" x="770" y="556.7" font-size="11">answer the cloud either.</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-src-pages" data-node="src-pages">
+    <title>SENAMHI, ANA, IMARPE…. The 13 pages on its fixed list: 6 only answer from Peru (4 from SENAMHI and 2 from ANA). The SENAMHI warning table gives its warnings their level.</title>
+    <rect class="ar-node ar-g-sources" x="758" y="600.4" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-sources" x="758" y="608.4" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-sources" x="770" y="610.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-sources" transform="translate(773 613.4)"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></g>
+    <text class="ar-t" x="808" y="629.9" font-size="12.5">SENAMHI, ANA, IMARPE…</text>
+    <text class="ar-s" x="770" y="661.9" font-size="11">The 13 pages on its fixed list: 6 only answer</text>
+    <text class="ar-s" x="770" y="677" font-size="11">from Peru (4 from SENAMHI and 2 from ANA).</text>
+    <text class="ar-s" x="770" y="692.2" font-size="11">The SENAMHI warning table gives its</text>
+    <text class="ar-s" x="770" y="707.4" font-size="11">warnings their level.</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-branch" data-node="branch">
+    <title>data-peru branch. Each push replaces the contents; git history keeps the previous ones. The pipeline uses copies up to 7 days old and warns at 36 h. Technology: git push, enso-relay/1.</title>
+    <rect class="ar-node ar-g-stores" x="1114" y="209" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-stores" x="1114" y="217" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="1126" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(1129 222)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="7" r="2.2"/><path d="M6 7.2v9.6M18 9.2c0 5-6 3.5-11 7.8"/></g>
+    <text class="ar-t" x="1164" y="238.5" font-size="12.5">data-peru branch</text>
+    <text class="ar-s" x="1126" y="270.4" font-size="11">Each push replaces the contents; git history</text>
+    <text class="ar-s" x="1126" y="285.6" font-size="11">keeps the previous ones. The pipeline uses</text>
+    <text class="ar-s" x="1126" y="300.8" font-size="11">copies up to 7 days old and warns at 36 h.</text>
+    <rect class="ar-chip" x="1126" y="310.5" width="52.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="322.5" font-size="10">git push</text>
+    <rect class="ar-chip" x="1183.5" y="310.5" width="74.2" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1189.5" y="322.5" font-size="10">enso-relay/1</text>
+    <a class="ar-annex" href="a4-en.svg" data-annex="a4"><title>Annex A4: Download in GitHub Actions and per-source fallbacks</title><rect class="ar-tag" x="1358.6" y="216" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="228.5" font-size="10.5" text-anchor="middle">A4</text></a>
+  </g>
+  <g class="ar-node-g" id="a2-n-heartbeat" data-node="heartbeat">
+    <title>Heartbeat only. If no source answered, it pushes only heartbeat.json (“sin-fuentes”) and leaves the last good copy intact: that tells a machine that is off apart from sources that are down.</title>
+    <rect class="ar-node ar-g-stores" x="1114" y="368.5" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-stores" x="1114" y="376.5" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="1126" y="378.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(1129 381.5)"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g>
+    <text class="ar-t" x="1164" y="398" font-size="12.5">Heartbeat only</text>
+    <text class="ar-s" x="1126" y="430" font-size="11">If no source answered, it pushes only</text>
+    <text class="ar-s" x="1126" y="445.1" font-size="11">heartbeat.json (“sin-fuentes”) and leaves</text>
+    <text class="ar-s" x="1126" y="460.3" font-size="11">the last good copy intact: that tells a machine</text>
+    <text class="ar-s" x="1126" y="475.5" font-size="11">that is off apart from sources that are down.</text>
+  </g>
+  <g class="ar-node-g" id="a2-n-dispatch" data-node="dispatch">
+    <title>Asks for a site refresh. After pushing a copy it sends repository_dispatch enso-refresh: the daily update runs right away instead of waiting for 23:37. Technology: GitHub API.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="519.3" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="527.3" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="529.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 532.3)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
+    <text class="ar-t" x="1164" y="548.8" font-size="12.5">Asks for a site refresh</text>
+    <text class="ar-s" x="1126" y="580.7" font-size="11">After pushing a copy it sends</text>
+    <text class="ar-s" x="1126" y="595.9" font-size="11">repository_dispatch enso-refresh: the daily</text>
+    <text class="ar-s" x="1126" y="611" font-size="11">update runs right away instead of waiting for</text>
+    <text class="ar-s" x="1126" y="626.2" font-size="11">23:37.</text>
+    <rect class="ar-chip" x="1126" y="636" width="65.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="648" font-size="10">GitHub API</text>
+    <a class="ar-annex" href="a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="1358.6" y="526.3" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="538.8" font-size="10.5" text-anchor="middle">A5</text></a>
+  </g>
+  <line class="ar-rule" x1="20" y1="1300.7" x2="1420" y2="1300.7"/>
+  <text class="ar-h" x="20" y="1330.7" font-size="15">Steps and connections: what travels along each line, when and why</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1358.7" r="9"/>
+  <text class="ar-t" x="30" y="1362.5" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="1362.7" font-size="11.5">kit .zip and VERIFY</text>
+  <text class="ar-m" x="50" y="1376.7" font-size="10.5">Collector kit → Machine operator</text>
+  <text class="ar-s" x="50" y="1391.7" font-size="11">The person downloads recolector-peru.zip from the recolector-kit release.</text>
+  <text class="ar-s" x="50" y="1406.7" font-size="11">The machine does not update itself.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1429.7" r="9"/>
+  <text class="ar-t" x="30" y="1433.5" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1433.7" font-size="11.5">INSTALL with the token</text>
+  <text class="ar-m" x="50" y="1447.7" font-size="10.5">Machine operator → Scheduled task</text>
+  <text class="ar-s" x="50" y="1462.7" font-size="11">The installer stores the token in .env, installs Python and git if missing and</text>
+  <text class="ar-s" x="50" y="1477.7" font-size="11">registers the 21:00 task.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1500.7" r="9"/>
+  <text class="ar-t" x="30" y="1504.5" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1504.7" font-size="11.5">runs VERIFY</text>
+  <text class="ar-m" x="50" y="1518.7" font-size="10.5">Machine operator → VERIFY</text>
+  <text class="ar-s" x="50" y="1533.7" font-size="11">Checks the machine and leaves the report for the maintainers; with</text>
+  <text class="ar-s" x="50" y="1548.7" font-size="11">--probar-tarea it fires the real task.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1571.7" r="9"/>
+  <text class="ar-t" x="30" y="1575.5" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1575.7" font-size="11.5">21:00 and retries</text>
+  <text class="ar-m" x="50" y="1589.7" font-size="10.5">Scheduled task → Run start · 21:00 to 23:30 Lima</text>
+  <text class="ar-s" x="50" y="1604.7" font-size="11">Each trigger runs the service; if today&#x27;s copy is already there, it does</text>
+  <text class="ar-s" x="50" y="1619.7" font-size="11">nothing. That way it recovers a night with the machine off.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1642.7" r="9"/>
+  <text class="ar-t" x="30" y="1646.5" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="1646.7" font-size="11.5">token from .env</text>
+  <text class="ar-m" x="50" y="1660.7" font-size="10.5">Run start → Token and registry</text>
+  <text class="ar-s" x="50" y="1675.7" font-size="11">Without a token nothing can be pushed: the run ends with a clear message</text>
+  <text class="ar-s" x="50" y="1690.7" font-size="11">and a hint to fix it.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1713.7" r="9"/>
+  <text class="ar-t" x="30" y="1717.5" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="50" y="1717.7" font-size="11.5">fixed list and peru-server</text>
+  <text class="ar-m" x="50" y="1731.7" font-size="10.5">Token and registry → Download</text>
+  <text class="ar-s" x="50" y="1746.7" font-size="11">Its fixed-list URLs plus those the registry assigns to Peru, and their rules for</text>
+  <text class="ar-s" x="50" y="1761.7" font-size="11">following PDFs.</text>
+  <circle class="ar-badge ar-e-trigger" cx="506" cy="1358.7" r="9"/>
+  <text class="ar-t" x="506" y="1362.5" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="1362.7" font-size="11.5">robots.txt rules</text>
+  <text class="ar-m" x="526" y="1376.7" font-size="10.5">Live robots.txt → Download</text>
+  <text class="ar-s" x="526" y="1391.7" font-size="11">A forbidden path is not requested; if robots.txt does not answer, that</text>
+  <text class="ar-s" x="526" y="1406.7" font-size="11">server is skipped tonight.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1429.7" r="9"/>
+  <text class="ar-t" x="506" y="1433.5" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1433.7" font-size="11.5">API, listing and PDFs</text>
+  <text class="ar-m" x="526" y="1447.7" font-size="10.5">ENFEN portal → Download</text>
+  <text class="ar-s" x="526" y="1462.7" font-size="11">The official communiqué arrives even though the portal does not answer</text>
+  <text class="ar-s" x="526" y="1477.7" font-size="11">the cloud.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1500.7" r="9"/>
+  <text class="ar-t" x="506" y="1504.5" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1504.7" font-size="11.5">ICEN https</text>
+  <text class="ar-m" x="526" y="1518.7" font-size="10.5">ICEN over https (IGP) → Download</text>
+  <text class="ar-s" x="526" y="1533.7" font-size="11">Kept like the rest; Actions also has the http version.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1556.7" r="9"/>
+  <text class="ar-t" x="506" y="1560.5" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="526" y="1560.7" font-size="11.5">archive pages</text>
+  <text class="ar-m" x="526" y="1574.7" font-size="10.5">SENAMHI, ANA, IMARPE… → Download</text>
+  <text class="ar-s" x="526" y="1589.7" font-size="11">The original is kept as a backup for when a reader exists.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1612.7" r="9"/>
+  <text class="ar-t" x="506" y="1616.5" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="526" y="1616.7" font-size="11.5">listings → PDFs</text>
+  <text class="ar-m" x="526" y="1630.7" font-size="10.5">Download → ENFEN PDFs and links</text>
+  <text class="ar-s" x="526" y="1645.7" font-size="11">The PDFs are looked up in the listings that answered tonight.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1668.7" r="9"/>
+  <text class="ar-t" x="506" y="1672.5" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="526" y="1672.7" font-size="11.5">unmeasured URLs</text>
+  <text class="ar-m" x="526" y="1686.7" font-size="10.5">ENFEN PDFs and links → Extra measurements</text>
+  <text class="ar-s" x="526" y="1701.7" font-size="11">With the time left it measures the registry URLs nobody measured from</text>
+  <text class="ar-s" x="526" y="1716.7" font-size="11">Peru.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1358.7" r="9"/>
+  <text class="ar-t" x="982" y="1362.5" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="1002" y="1362.7" font-size="11.5">measurements in index.json</text>
+  <text class="ar-m" x="1002" y="1376.7" font-size="10.5">Extra measurements → Tonight&#x27;s copy</text>
+  <text class="ar-s" x="1002" y="1391.7" font-size="11">The measurements go in index.json and the weekly probe adds them to</text>
+  <text class="ar-s" x="1002" y="1406.7" font-size="11">the registry.</text>
+  <circle class="ar-badge ar-e-fallback" cx="982" cy="1429.7" r="9"/>
+  <text class="ar-t" x="982" y="1433.5" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1433.7" font-size="11.5">copies up to 72 h old</text>
+  <text class="ar-m" x="1002" y="1447.7" font-size="10.5">data-peru branch → Tonight&#x27;s copy</text>
+  <text class="ar-s" x="1002" y="1462.7" font-size="11">Before pushing it reads the previous copy and keeps each URL that failed</text>
+  <text class="ar-s" x="1002" y="1477.7" font-size="11">tonight, marked carried.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1500.7" r="9"/>
+  <text class="ar-t" x="982" y="1504.5" font-size="10.5" text-anchor="middle">15</text>
+  <text class="ar-t" x="1002" y="1504.7" font-size="11.5">commit and push</text>
+  <text class="ar-m" x="1002" y="1518.7" font-size="10.5">Tonight&#x27;s copy → data-peru branch</text>
+  <text class="ar-s" x="1002" y="1533.7" font-size="11">git without credential helpers or prompts: nobody would answer them in a</text>
+  <text class="ar-s" x="1002" y="1548.7" font-size="11">scheduled task.</text>
+  <circle class="ar-badge ar-e-fallback" cx="982" cy="1571.7" r="9"/>
+  <text class="ar-t" x="982" y="1575.5" font-size="10.5" text-anchor="middle">16</text>
+  <text class="ar-t" x="1002" y="1575.7" font-size="11.5">nothing answered</text>
+  <text class="ar-m" x="1002" y="1589.7" font-size="10.5">Tonight&#x27;s copy → Heartbeat only</text>
+  <text class="ar-s" x="1002" y="1604.7" font-size="11">An empty copy would replace the last good one: only the heartbeat is</text>
+  <text class="ar-s" x="1002" y="1619.7" font-size="11">pushed.</text>
+  <circle class="ar-badge ar-e-trigger" cx="982" cy="1642.7" r="9"/>
+  <text class="ar-t" x="982" y="1646.5" font-size="10.5" text-anchor="middle">17</text>
+  <text class="ar-t" x="1002" y="1646.7" font-size="11.5">after pushing</text>
+  <text class="ar-m" x="1002" y="1660.7" font-size="10.5">data-peru branch → Asks for a site refresh</text>
+  <text class="ar-s" x="1002" y="1675.7" font-size="11">If a run is in progress, the new one queues. If the request fails, the 23:37</text>
+  <text class="ar-s" x="1002" y="1690.7" font-size="11">run uses the copy anyway.</text>
+  <circle class="ar-badge ar-e-control" cx="982" cy="1713.7" r="9"/>
+  <text class="ar-t" x="982" y="1717.5" font-size="10.5" text-anchor="middle">18</text>
+  <text class="ar-t" x="1002" y="1717.7" font-size="11.5">failures or expiring token</text>
+  <text class="ar-m" x="1002" y="1731.7" font-size="10.5">Run start → Desktop alert</text>
+  <text class="ar-s" x="1002" y="1746.7" font-size="11">Each run&#x27;s state decides whether to alert the person.</text>
+  <line class="ar-rule" x1="20" y1="1796.7" x2="1420" y2="1796.7"/>
+  <text class="ar-h" x="20" y="1826.7" font-size="15">If something fails: what happens and which fallback takes over</text>
+  <g class="ar-warn" transform="translate(20 1843.7) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1858.7" font-size="11.5">The machine was off at 21:00</text>
+  <text class="ar-s" x="50" y="1873.7" font-size="11">The task runs at power-on or login and recovers the day&#x27;s copy; if not,</text>
+  <text class="ar-s" x="50" y="1888.7" font-size="11">Actions uses n8n, the Internet Archive or the last value.</text>
+  <g class="ar-warn" transform="translate(20 1900.7) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1915.7" font-size="11.5">No source answers even from Peru</text>
+  <text class="ar-s" x="50" y="1930.7" font-size="11">Only the “sin-fuentes” heartbeat is pushed: the previous copy holds for 7</text>
+  <text class="ar-s" x="50" y="1945.7" font-size="11">days and relay-sources-down opens at 36 h.</text>
+  <g class="ar-warn" transform="translate(496 1843.7) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1858.7" font-size="11.5">A URL fails tonight</text>
+  <text class="ar-s" x="526" y="1873.7" font-size="11">Its last good copy up to 72 h old is kept, marked carried, along with what</text>
+  <text class="ar-s" x="526" y="1888.7" font-size="11">happened tonight.</text>
+  <g class="ar-warn" transform="translate(496 1900.7) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1915.7" font-size="11.5">The token expires or lacks permission</text>
+  <text class="ar-s" x="526" y="1930.7" font-size="11">The preflight fails with a hint to fix it; the desktop alert and</text>
+  <text class="ar-s" x="526" y="1945.7" font-size="11">relay-token-expiring warn from 21 days ahead.</text>
+  <g class="ar-warn" transform="translate(972 1843.7) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1858.7" font-size="11.5">The run hangs or the system stops it</text>
+  <text class="ar-s" x="1002" y="1873.7" font-size="11">It is cut at 45 min and a stale lock does not block the next one; a shutdown</text>
+  <text class="ar-s" x="1002" y="1888.7" font-size="11">or reinstall does not count as a failure.</text>
+  <g class="ar-warn" transform="translate(972 1900.7) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1915.7" font-size="11.5">The refresh request failed</text>
+  <text class="ar-s" x="1002" y="1930.7" font-size="11">The copy is already pushed: the 23:37 run uses it.</text>
+</svg>

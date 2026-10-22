@@ -1,0 +1,4242 @@
+{
+ "annexes": [
+  {
+   "id": "a1",
+   "title_es": "Fuentes, alcance y registro",
+   "title_en": "Sources, reachability and registry",
+   "subtitle_es": "Qué vigila el observatorio y cómo se decide, URL por URL, quién la descarga. Cada lunes se mide desde dónde responde cada dirección (GitHub Actions en Azure, n8n en AWS y el equipo en el Perú) y el registro asigna cada una a un recolector. Nadie pide lo que robots.txt prohíbe, salvo 40 feeds de noticias que se leen como un lector.",
+   "subtitle_en": "What the observatory watches and how it is decided, URL by URL, who fetches it. Every Monday it is measured where each address answers from (GitHub Actions on Azure, n8n on AWS and the machine in Peru) and the registry assigns each one to a collector. Nobody requests what robots.txt forbids, except 40 news feeds read as a feed reader.",
+   "desc_es": "Las fuentes oficiales, de alertas y de noticias; el sondeo semanal que mide su alcance desde cada red y el registro que reparte cada URL entre GitHub Actions, n8n y el equipo del Perú.",
+   "desc_en": "The official, alert and news sources; the weekly probe that measures their reach from each network and the registry that splits each URL among GitHub Actions, n8n and the Peru machine.",
+   "covers": [
+    "peru-official",
+    "noaa",
+    "hazard-alerts",
+    "peru-archive-pages",
+    "news-feeds",
+    "news-google",
+    "robots-txt",
+    "registry-builder",
+    "registry",
+    "probe-sources"
+   ],
+   "simple": [
+    "s-fuentes",
+    "s-noticias"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 300,
+     "title_es": "Fuentes oficiales",
+     "title_en": "Official sources",
+     "sub_es": "17 fuentes ENSO y 13 páginas del Perú",
+     "sub_en": "17 ENSO sources and 13 Peru pages"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Alertas y noticias",
+     "title_en": "Alerts and news",
+     "sub_es": "168 feeds: 14 de alertas, 116 de medios y del Estado y 38 de Google Noticias",
+     "sub_en": "168 feeds: 14 alert sources, 116 media and government feeds and 38 Google News searches"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Medición semanal",
+     "title_en": "Weekly measurement",
+     "sub_es": "GitHub Actions · Python 3.12 · lunes 04:17 Lima",
+     "sub_en": "GitHub Actions · Python 3.12 · Mondays 04:17 Lima"
+    },
+    {
+     "id": "c4",
+     "w": 300,
+     "title_es": "Registro (registry/)",
+     "title_en": "Registry (registry/)",
+     "sub_es": "JSON versionado en main; lo siguen los tres recolectores",
+     "sub_en": "JSON versioned on main; all three collectors follow it"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "enfen",
+     "col": "c1",
+     "icon": "pdf",
+     "group": "sources",
+     "name_es": "ENFEN: comunicado oficial",
+     "name_en": "ENFEN: official communiqué",
+     "what_es": "Trae el estado de alerta El Niño o La Niña Costero. Portal (API de WordPress y listado /comunicados/) y su réplica en la DHN; el repositorio del IMARPE recibe cada documento unos 3 días después.",
+     "what_en": "Carries the coastal El Niño or La Niña alert status. Portal (WordPress API and /comunicados/ listing) and its mirror at the DHN; IMARPE's repository receives each document about 3 days later.",
+     "meta_es": "el portal solo responde desde el Perú",
+     "meta_en": "the portal only answers from Peru",
+     "tech": [
+      "WordPress API",
+      "DSpace API",
+      "PDF"
+     ]
+    },
+    {
+     "id": "icen",
+     "col": "c1",
+     "icon": "chart",
+     "group": "sources",
+     "name_es": "IGP: ICEN mensual",
+     "name_en": "IGP: monthly ICEN",
+     "what_es": "El Índice Costero El Niño en texto. Por http responde a todos; por https, solo desde el Perú, como el portal del ENFEN.",
+     "what_en": "The Coastal El Niño Index as text. Over http it answers everyone; over https only from Peru, like the ENFEN portal.",
+     "tech": [
+      "ICEN.txt"
+     ]
+    },
+    {
+     "id": "noaa",
+     "col": "c1",
+     "icon": "wave",
+     "group": "sources",
+     "name_es": "NOAA: 15 productos",
+     "name_en": "NOAA: 15 products",
+     "what_es": "OISST semanal y mensual, RONI, ONI, SOI, presiones de Tahití y Darwin, vientos a 850 hPa, contenido de calor, D20 de GODAS y la discusión ENSO (CPC); ERSSTv6 Niño 1+2 y 3.4 (PSL).",
+     "what_en": "Weekly and monthly OISST, RONI, ONI, SOI, Tahiti and Darwin pressure, 850 hPa winds, heat content, GODAS D20 and the ENSO discussion (CPC); ERSSTv6 Niño 1+2 and 3.4 (PSL).",
+     "meta_es": "críticos: OISST semanal, RONI y discusión ENSO",
+     "meta_en": "critical: weekly OISST, RONI and ENSO discussion",
+     "tech": [
+      "texto",
+      "HTML",
+      "GRIB1"
+     ]
+    },
+    {
+     "id": "bsobp",
+     "col": "c1",
+     "icon": "chart",
+     "group": "sources",
+     "name_es": "IMARPE: boletín semanal",
+     "name_en": "IMARPE: weekly bulletin",
+     "what_es": "Anomalía de temperatura bajo la superficie frente a Paita y Chicama (BS-OBP), con su cita. Se lee los domingos por la API del repositorio del IMARPE.",
+     "what_en": "Subsurface temperature anomaly off Paita and Chicama (BS-OBP), with its quote. Read on Sundays through the IMARPE repository API.",
+     "tech": [
+      "DSpace API",
+      "PDF"
+     ]
+    },
+    {
+     "id": "archive-pages",
+     "col": "c1",
+     "icon": "archive",
+     "group": "sources",
+     "name_es": "13 páginas del Perú",
+     "name_en": "13 Peru pages",
+     "what_es": "Web del SENAMHI, GeoServer IDESEP, SNIRH de la ANA, IMARPE y CENEPRED: se guardan como respaldo; todavía no tienen lector. 6 solo responden desde el Perú.",
+     "what_en": "SENAMHI web, IDESEP GeoServer, ANA's SNIRH, IMARPE and CENEPRED: kept as a backup; they have no reader yet. 6 only answer from Peru."
+    },
+    {
+     "id": "alerts",
+     "col": "c2",
+     "icon": "alert",
+     "group": "sources",
+     "name_es": "14 fuentes de alertas",
+     "name_en": "14 alert sources",
+     "what_es": "COEN del INDECI, SENAMHI (Telegram y 4 capas ArcGIS), NASA FIRMS, USGS, DHN, PTWC e IGP (CENVUL), cada una en su formato.",
+     "what_en": "INDECI's COEN, SENAMHI (Telegram and 4 ArcGIS layers), NASA FIRMS, USGS, DHN, PTWC and IGP (CENVUL), each in its own format.",
+     "tech": [
+      "RSS",
+      "GeoJSON",
+      "ArcGIS",
+      "CSV",
+      "HTML"
+     ]
+    },
+    {
+     "id": "news",
+     "col": "c2",
+     "icon": "rss",
+     "group": "sources",
+     "name_es": "116 feeds de medios y del Estado",
+     "name_en": "116 media and government feeds",
+     "what_es": "Estado (33, sobre todo búsquedas en gob.pe), medios nacionales (14), regionales de 19 departamentos (27), radios (37) e internacionales (5).",
+     "what_en": "Government (33, mostly gob.pe searches), national media (14), regional media from 19 departments (27), radio (37) and international (5).",
+     "tech": [
+      "RSS",
+      "Atom",
+      "JSON Feed",
+      "gob.pe"
+     ]
+    },
+    {
+     "id": "google",
+     "col": "c2",
+     "icon": "search",
+     "group": "sources",
+     "name_es": "Google Noticias: 38 búsquedas",
+     "name_en": "Google News: 38 searches",
+     "what_es": "Por departamento (25), nacionales (2), mundial (1) y de medios sin feed propio (10). Su robots.txt las prohíbe: se leen como un lector de feeds.",
+     "what_en": "By department (25), national (2), world (1) and for outlets without their own feed (10). Their robots.txt forbids them: they are read as a feed reader.",
+     "meta_es": "como mucho cada 20 h, solo desde main",
+     "meta_en": "at most every 20 h, only from main"
+    },
+    {
+     "id": "robots",
+     "col": "c2",
+     "icon": "robot",
+     "group": "sources",
+     "name_es": "robots.txt de cada servidor",
+     "name_en": "Each server's robots.txt",
+     "what_es": "Las reglas de cada sitio para robots, leídas según la RFC 9309: gana la regla más larga y, en un empate, Allow.",
+     "what_en": "Each site's rules for robots, read per RFC 9309: the longest rule wins and, on a tie, Allow.",
+     "tech": [
+      "reach.py"
+     ]
+    },
+    {
+     "id": "probe",
+     "col": "c3",
+     "icon": "search",
+     "group": "operations",
+     "name_es": "Sondeo de alcance",
+     "name_en": "Reachability probe",
+     "what_es": "Lee robots.txt y pide cada URL del registro desde Actions. Clasifica la respuesta: ok, 403, 4xx, 5xx, tiempo, conexión, DNS, TLS, verificación antirobots, vacía o prohibida. Una verificación se anota y nunca se evade.",
+     "what_en": "Reads robots.txt and requests every registry URL from Actions. Classifies the answer: ok, 403, 4xx, 5xx, timeout, connection, DNS, TLS, anti-bot check, empty or forbidden. A check is recorded and never bypassed.",
+     "meta_es": "lunes 04:17 Lima, a mano o al cambiar el medidor",
+     "meta_en": "Mondays 04:17 Lima, by hand or when the probe changes",
+     "tech": [
+      "probe-sources.yml",
+      "probe_sources.py",
+      "httpx"
+     ]
+    },
+    {
+     "id": "vantages",
+     "col": "c3",
+     "icon": "layers",
+     "group": "stores",
+     "name_es": "Lo medido por n8n y el Perú",
+     "name_en": "What n8n and Peru measured",
+     "what_es": "Suma el index.json de data-n8n y de data-peru (con las mediciones extra del Perú) y, a mano con --import, el informe del flujo de validación de n8n.",
+     "what_en": "Adds the index.json of data-n8n and data-peru (with Peru's extra measurements) and, by hand with --import, the report of the n8n validation workflow.",
+     "see": [
+      "a2",
+      "a3"
+     ]
+    },
+    {
+     "id": "reach",
+     "col": "c3",
+     "icon": "database",
+     "group": "stores",
+     "name_es": "reachability.json",
+     "name_en": "reachability.json",
+     "what_es": "Cada medición por red (actions, n8n, peru) y punto de medición, con clase, código HTTP y fecha. 311 URL medidas desde Actions y n8n; todavía ninguna desde el Perú, así que ningún geobloqueo está confirmado.",
+     "what_en": "Every measurement by network (actions, n8n, peru) and vantage point, with class, HTTP code and date. 311 URLs measured from Actions and n8n; none from Peru yet, so no geoblock is confirmed.",
+     "tech": [
+      "JSON"
+     ]
+    },
+    {
+     "id": "build",
+     "col": "c4",
+     "icon": "code",
+     "group": "pipeline",
+     "name_es": "Armado del registro",
+     "name_en": "Registry builder",
+     "what_es": "Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo 40 feeds reader, solo Actions); lo demás, Actions y n8n.",
+     "what_en": "Joins the code's catalogs (168 feeds, 17 ENSO sources, 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except 40 reader feeds, Actions only); the rest, Actions and n8n.",
+     "meta_es": "--check falla si no está al día",
+     "meta_en": "--check fails if out of date",
+     "tech": [
+      "build_registry.py",
+      "registry.py"
+     ]
+    },
+    {
+     "id": "sources-json",
+     "col": "c4",
+     "icon": "list",
+     "group": "stores",
+     "name_es": "sources.json",
+     "name_en": "sources.json",
+     "what_es": "198 fuentes y 201 URL: 152 para Actions y n8n, 40 solo Actions (reader) y 9 solo el Perú. Estado: 144 abiertas, 40 prohibidas, 9 con geobloqueo sospechado, 7 sin medir y 1 caída.",
+     "what_en": "198 sources and 201 URLs: 152 for Actions and n8n, 40 Actions only (reader) and 9 Peru only. Status: 144 open, 40 forbidden, 9 suspected geoblock, 7 unmeasured and 1 down.",
+     "meta_es": "commit en main; en otras ramas, a bot/registry/",
+     "meta_en": "committed on main; elsewhere, to bot/registry/",
+     "tech": [
+      "enso-source-registry/1"
+     ]
+    },
+    {
+     "id": "readers",
+     "col": "c4",
+     "icon": "users",
+     "group": "channels",
+     "name_es": "Quién lo sigue",
+     "name_en": "Who follows it",
+     "what_es": "GitHub Actions en cada corrida; n8n a las 22:50 (de main o su copia incluida); el equipo del Perú a las 21:00 (con su token, o la copia del kit).",
+     "what_en": "GitHub Actions on every run; n8n at 22:50 (from main or its embedded copy); the Peru machine at 21:00 (with its token, or the kit's copy).",
+     "see": [
+      "a2",
+      "a3",
+      "a4"
+     ]
+    }
+   ],
+   "edges": [
+    {
+     "from": "robots",
+     "to": "probe",
+     "kind": "trigger",
+     "label_es": "robots.txt primero",
+     "label_en": "robots.txt first",
+     "explain_es": "Antes de medir, el sondeo lee el robots.txt de cada servidor. Una ruta prohibida queda robots-disallowed y no se pide.",
+     "explain_en": "Before measuring, the probe reads each server's robots.txt. A forbidden path becomes robots-disallowed and is not requested."
+    },
+    {
+     "from": "enfen",
+     "to": "probe",
+     "kind": "data",
+     "label_es": "URL oficiales y espejos",
+     "label_en": "Official URLs and mirrors",
+     "explain_es": "Se mide cada URL de las fuentes oficiales, también las de respaldo (réplica de la DHN, repositorio del IMARPE).",
+     "explain_en": "Every official source URL is measured, including the fallbacks (DHN mirror, IMARPE repository).",
+     "when_es": "lunes 04:17 Lima",
+     "when_en": "Mondays 04:17 Lima"
+    },
+    {
+     "from": "archive-pages",
+     "to": "probe",
+     "kind": "data",
+     "label_es": "páginas de archivo",
+     "label_en": "archive pages",
+     "explain_es": "Las 13 páginas del Perú no se piden en la corrida diaria (la tabla de avisos del SENAMHI se lee de la copia del Perú), pero el sondeo sí las mide.",
+     "explain_en": "The daily run does not request the 13 Peru pages (the SENAMHI warning table is read from the Peru copy), but the probe does measure them."
+    },
+    {
+     "from": "alerts",
+     "to": "probe",
+     "kind": "data",
+     "label_es": "feeds de alertas y noticias",
+     "label_en": "alert and news feeds",
+     "explain_es": "Los 168 feeds se miden igual: así se sabe cuáles responden desde Actions y desde n8n.",
+     "explain_en": "The 168 feeds are measured the same way: that is how we know which answer from Actions and from n8n."
+    },
+    {
+     "from": "vantages",
+     "to": "reach",
+     "kind": "data",
+     "label_es": "mediciones de n8n y del Perú",
+     "label_en": "n8n and Peru measurements",
+     "explain_es": "El último intento de n8n cuenta como medición de la red n8n; una copia arrastrada cuenta como su último fallo. Del Perú, el resultado de cada URL y sus mediciones extra.",
+     "explain_en": "n8n's latest attempt counts as a measurement of the n8n network; a carried copy counts as its last failure. From Peru, each URL's result and its extra measurements."
+    },
+    {
+     "from": "probe",
+     "to": "reach",
+     "kind": "data",
+     "label_es": "mediciones de Actions",
+     "label_en": "Actions measurements",
+     "explain_es": "El sondeo escribe lo medido desde GitHub Actions, por red y punto de medición.",
+     "explain_en": "The probe writes what it measured from GitHub Actions, by network and vantage point."
+    },
+    {
+     "from": "reach",
+     "to": "build",
+     "kind": "data",
+     "label_es": "todas las mediciones",
+     "label_en": "all measurements",
+     "explain_es": "Enseguida corre build_registry: los canales siguen las mediciones nuevas.",
+     "explain_en": "build_registry runs right after: channels follow the new measurements."
+    },
+    {
+     "from": "build",
+     "to": "sources-json",
+     "kind": "data",
+     "label_es": "genera y valida",
+     "label_en": "generates and validates",
+     "explain_es": "Escribe el estado y los canales de cada URL. En main el sondeo hace commit de registry/; en otra rama, a bot/registry/<rama>.",
+     "explain_en": "Writes each URL's status and channels. On main the probe commits registry/; on another branch, to bot/registry/<branch>."
+    },
+    {
+     "from": "google",
+     "to": "sources-json",
+     "kind": "trigger",
+     "label_es": "excepción: 40 feeds reader",
+     "label_en": "exception: 40 reader feeds",
+     "explain_es": "Google Noticias, Noticias ONU y Sin Rodeos quedan solo para Actions, como un lector de feeds: un intento, como mucho cada 20 h.",
+     "explain_en": "Google News, UN News and Sin Rodeos stay with Actions only, as a feed reader: one try, at most every 20 h."
+    },
+    {
+     "from": "sources-json",
+     "to": "readers",
+     "kind": "data",
+     "label_es": "plan de canales por URL",
+     "label_en": "per-URL channel plan",
+     "explain_es": "Los tres recolectores leen la misma lista: cada uno pide solo las URL que le tocan.",
+     "explain_en": "All three collectors read the same list: each requests only the URLs assigned to it."
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "El robots.txt de un servidor no responde (5xx o sin respuesta)",
+     "then_es": "Esa semana no se le pide nada a ese servidor; sus URL quedan como estaban.",
+     "if_en": "A server's robots.txt does not answer (5xx or no answer)",
+     "then_en": "Nothing is requested from that server that week; its URLs stay as they were."
+    },
+    {
+     "if_es": "Una URL solo falla desde EE. UU.",
+     "then_es": "Queda como geobloqueo sospechado y pasa al equipo del Perú, que la confirma con sus mediciones.",
+     "if_en": "A URL only fails from the US",
+     "then_en": "It becomes a suspected geoblock and moves to the Peru machine, which confirms it with its measurements."
+    },
+    {
+     "if_es": "Aparece una verificación antirobots",
+     "then_es": "Se anota como challenge y nunca se evade: la URL pierde ese canal.",
+     "if_en": "An anti-bot check appears",
+     "then_en": "It is recorded as challenge and never bypassed: the URL loses that channel."
+    },
+    {
+     "if_es": "GitHub apagó el sondeo por inactividad",
+     "then_es": "El registro anterior sigue valiendo; el job keepalive y el vigilante reactivan probe-sources.",
+     "if_en": "GitHub disabled the probe for inactivity",
+     "then_en": "The previous registry still holds; the keepalive job and the watchdog re-enable probe-sources."
+    },
+    {
+     "if_es": "Un recolector no puede leer el registro de GitHub",
+     "then_es": "n8n usa la copia incluida al construir el flujo y el Perú la del kit (avisa si tiene más de 14 días).",
+     "if_en": "A collector cannot read the registry from GitHub",
+     "then_en": "n8n uses the copy embedded at build time and Peru the kit's copy (it warns if older than 14 days)."
+    },
+    {
+     "if_es": "El sondeo corre en otra rama",
+     "then_es": "El resultado va a bot/registry/<rama> y no cambia lo que usa la producción.",
+     "if_en": "The probe runs on another branch",
+     "then_en": "The result goes to bot/registry/<branch> and does not change what production uses."
+    }
+   ]
+  },
+  {
+   "id": "a2",
+   "title_es": "Recolector en el Perú: el servidor local",
+   "title_en": "Peru collector: the local server",
+   "subtitle_es": "Un programa en Python en una computadora dentro del Perú (Windows, macOS o Linux) baja cada noche lo que no responde fuera del país y lo sube a la rama data-peru. Una persona lo instala con el kit; si el equipo estuvo apagado, la recolección se recupera sola.",
+   "subtitle_en": "A Python program on a computer inside Peru (Windows, macOS or Linux) fetches every night what does not answer outside the country and pushes it to the data-peru branch. A person installs it with the kit; if the machine was off, collection catches up on its own.",
+   "desc_es": "El recolector del Perú: kit e instalación, tarea programada con reintentos, descarga con robots.txt y clasificador, PDF del ENFEN, mediciones extra, subida a data-peru, latido y aviso al sitio.",
+   "desc_en": "The Peru collector: kit and installation, scheduled task with retries, download with robots.txt and classifier, ENFEN PDFs, extra measurements, push to data-peru, heartbeat and site refresh.",
+   "covers": [
+    "peru-collector",
+    "data-peru-branch",
+    "collector-kit",
+    "peru-operator"
+   ],
+   "simple": [
+    "s-recolectores"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 300,
+     "title_es": "Instalación, tarea y avisos",
+     "title_en": "Installation, task and alerts",
+     "sub_es": "Kit .zip · INSTALAR y VERIFICAR · Windows, macOS, Linux",
+     "sub_en": "Kit .zip · INSTALL and VERIFY · Windows, macOS, Linux"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Cada noche en el equipo",
+     "title_en": "Every night on the machine",
+     "sub_es": "Python 3 · httpx · git · tools.collector_service",
+     "sub_en": "Python 3 · httpx · git · tools.collector_service"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Fuentes en el Perú",
+     "title_en": "Sources in Peru",
+     "sub_es": "16 URL y los PDF del ENFEN, con robots.txt en vivo",
+     "sub_en": "16 URLs and the ENFEN PDFs, with live robots.txt"
+    },
+    {
+     "id": "c4",
+     "w": 300,
+     "title_es": "En GitHub",
+     "title_en": "On GitHub",
+     "sub_es": "rama data-peru · repository_dispatch",
+     "sub_en": "data-peru branch · repository_dispatch"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "kit",
+     "col": "c1",
+     "icon": "box",
+     "group": "operations",
+     "name_es": "Kit del recolector",
+     "name_en": "Collector kit",
+     "what_es": "recolector-kit.yml arma el .zip con el código, los instaladores y una copia del registro, lo instala de prueba en Windows, macOS y Linux y lo publica en la versión recolector-kit.",
+     "what_en": "recolector-kit.yml builds the .zip with the code, the installers and a registry copy, test-installs it on Windows, macOS and Linux and publishes it in the recolector-kit release.",
+     "meta_es": "al fusionar cambios del kit, de python/enso/ o del registro",
+     "meta_en": "when kit, python/enso/ or registry changes merge",
+     "tech": [
+      "GitHub Actions",
+      "GitHub Releases"
+     ]
+    },
+    {
+     "id": "operator",
+     "col": "c1",
+     "icon": "user",
+     "group": "people",
+     "name_es": "Responsable del equipo",
+     "name_en": "Machine operator",
+     "what_es": "Baja el kit, ejecuta INSTALAR y pega un token de GitHub de grano fino (solo este repositorio, Contents de lectura y escritura). Un kit nuevo se instala con ACTUALIZAR.",
+     "what_en": "Downloads the kit, runs INSTALL and pastes a fine-grained GitHub token (this repository only, Contents read and write). A new kit is installed with UPDATE."
+    },
+    {
+     "id": "task",
+     "col": "c1",
+     "icon": "calendar",
+     "group": "operations",
+     "name_es": "Tarea programada",
+     "name_en": "Scheduled task",
+     "what_es": "21:00 Lima y luego cada 30 min hasta las 23:30, además de al iniciar sesión o al encender. Cada disparo corre collector_service --programado.",
+     "what_en": "21:00 Lima and then every 30 min until 23:30, plus at login or power-on. Each trigger runs collector_service --programado.",
+     "tech": [
+      "Programador de tareas",
+      "launchd",
+      "cron",
+      "systemd",
+      "Docker"
+     ]
+    },
+    {
+     "id": "verify",
+     "col": "c1",
+     "icon": "check",
+     "group": "operations",
+     "name_es": "VERIFICAR",
+     "name_en": "VERIFY",
+     "what_es": "Revisa Python, git, el token y su vencimiento, el acceso a las fuentes, la tarea programada y la edad de la última copia; deja un informe en logs/ para enviarlo.",
+     "what_en": "Checks Python, git, the token and its expiry, access to the sources, the scheduled task and the age of the latest copy; leaves a report in logs/ to send.",
+     "tech": [
+      "collector_check.py"
+     ]
+    },
+    {
+     "id": "notify",
+     "col": "c1",
+     "icon": "bell",
+     "group": "operations",
+     "name_es": "Aviso en el escritorio",
+     "name_en": "Desktop alert",
+     "what_es": "Tras 2 fallas seguidas, o si el token vence en menos de 21 días, avisa en el escritorio (una vez por día). El resultado de cada corrida queda en estado.json.",
+     "what_en": "After 2 failures in a row, or if the token expires in under 21 days, it shows a desktop alert (once a day). Each run's result is kept in estado.json."
+    },
+    {
+     "id": "service",
+     "col": "c2",
+     "icon": "terminal",
+     "group": "channels",
+     "name_es": "Arranque de la corrida",
+     "name_en": "Run start",
+     "what_es": "Toma el token de .env, escribe un registro rotativo que nunca muestra el token, toma el candado (no corre dos veces) y solo sigue si falta la copia de las 21:00 de hoy.",
+     "what_en": "Takes the token from .env, writes a rotating log that never shows the token, takes the lock (never runs twice) and only goes on if today's 21:00 copy is missing.",
+     "meta_es": "una corrida colgada se corta a los 45 min",
+     "meta_en": "a hung run is cut at 45 min",
+     "tech": [
+      "collector_service.py"
+     ]
+    },
+    {
+     "id": "preflight",
+     "col": "c2",
+     "icon": "key",
+     "group": "channels",
+     "name_es": "Token y registro",
+     "name_en": "Token and registry",
+     "what_es": "Comprueba el token con la API de GitHub y anota cuándo vence. Lee registry/sources.json de main con el token; si no puede, usa la copia del kit.",
+     "what_en": "Checks the token with the GitHub API and records when it expires. Reads registry/sources.json from main with the token; if it cannot, it uses the kit's copy.",
+     "tech": [
+      "GitHub API"
+     ],
+     "see": [
+      "a1"
+     ]
+    },
+    {
+     "id": "collect",
+     "col": "c2",
+     "icon": "download",
+     "group": "channels",
+     "name_es": "Descarga",
+     "name_en": "Download",
+     "what_es": "Pide su lista fija y las URL peru-server del registro, cada una con sus alternativas. Clasifica cada respuesta como Actions y n8n: no guarda verificaciones antirobots ni formatos inesperados.",
+     "what_en": "Requests its fixed list and the registry's peru-server URLs, each with its alternatives. Classifies every answer like Actions and n8n: it never keeps anti-bot checks or unexpected formats.",
+     "meta_es": "40 s por pedido, 25 min en total",
+     "meta_en": "40 s per request, 25 min in total",
+     "tech": [
+      "peru_collector.py",
+      "httpx",
+      "reach.py"
+     ]
+    },
+    {
+     "id": "pdfs",
+     "col": "c2",
+     "icon": "pdf",
+     "group": "channels",
+     "name_es": "PDF del ENFEN y enlaces",
+     "name_en": "ENFEN PDFs and links",
+     "what_es": "Del listado del ENFEN deduce los PDF de los comunicados y de los dos últimos informes técnicos (hasta 20 MB) y sigue los enlaces que pide el registro.",
+     "what_en": "From the ENFEN listing it derives the communiqué PDFs and the two latest technical reports (up to 20 MB) and follows the links the registry asks for."
+    },
+    {
+     "id": "probes",
+     "col": "c2",
+     "icon": "search",
+     "group": "channels",
+     "name_es": "Mediciones extra",
+     "name_en": "Extra measurements",
+     "what_es": "Mide, sin guardarlas, hasta 60 URL del registro sin medición desde el Perú (sin medir, geobloqueo sospechado o caídas): así el registro puede confirmar un geobloqueo.",
+     "what_en": "Measures, without keeping them, up to 60 registry URLs with no measurement from Peru (unmeasured, suspected geoblock or down): that is how the registry can confirm a geoblock.",
+     "see": [
+      "a1"
+     ]
+    },
+    {
+     "id": "snapshot",
+     "col": "c2",
+     "icon": "layers",
+     "group": "channels",
+     "name_es": "Copia de la noche",
+     "name_en": "Tonight's copy",
+     "what_es": "index.json (cada URL con estado, clase, sha256 y archivo), files/ y heartbeat.json. Conserva hasta 72 h la copia buena de una URL que hoy falló, marcada carried.",
+     "what_en": "index.json (each URL with status, class, sha256 and file), files/ and heartbeat.json. Keeps for up to 72 h the good copy of a URL that failed tonight, marked carried.",
+     "tech": [
+      "enso-relay/1"
+     ]
+    },
+    {
+     "id": "src-robots",
+     "col": "c3",
+     "icon": "robot",
+     "group": "sources",
+     "name_es": "robots.txt en vivo",
+     "name_en": "Live robots.txt",
+     "what_es": "Se lee antes de pedir: no se pide una ruta prohibida, y si el robots.txt no responde no se le pide nada a ese servidor.",
+     "what_en": "Read before requesting: a forbidden path is never requested, and if robots.txt does not answer nothing is requested from that server."
+    },
+    {
+     "id": "src-enfen",
+     "col": "c3",
+     "icon": "globe",
+     "group": "sources",
+     "name_es": "Portal del ENFEN",
+     "name_en": "ENFEN portal",
+     "what_es": "API de WordPress y listado /comunicados/, con los PDF. Su DNS no resuelve desde EE. UU.",
+     "what_en": "WordPress API and /comunicados/ listing, with the PDFs. Its DNS does not resolve from the US."
+    },
+    {
+     "id": "src-icen",
+     "col": "c3",
+     "icon": "chart",
+     "group": "sources",
+     "name_es": "ICEN por https (IGP)",
+     "name_en": "ICEN over https (IGP)",
+     "what_es": "La versión https del ICEN, que tampoco responde a la nube.",
+     "what_en": "The https version of the ICEN, which does not answer the cloud either."
+    },
+    {
+     "id": "src-pages",
+     "col": "c3",
+     "icon": "archive",
+     "group": "sources",
+     "name_es": "SENAMHI, ANA, IMARPE…",
+     "name_en": "SENAMHI, ANA, IMARPE…",
+     "what_es": "Las 13 páginas de su lista fija: 6 solo responden desde el Perú (4 del SENAMHI y 2 de la ANA). La tabla de avisos del SENAMHI da el nivel a sus avisos.",
+     "what_en": "The 13 pages on its fixed list: 6 only answer from Peru (4 from SENAMHI and 2 from ANA). The SENAMHI warning table gives its warnings their level."
+    },
+    {
+     "id": "branch",
+     "col": "c4",
+     "icon": "branch",
+     "group": "stores",
+     "name_es": "Rama data-peru",
+     "name_en": "data-peru branch",
+     "what_es": "Cada subida reemplaza el contenido; el historial de git guarda las anteriores. El pipeline usa copias de hasta 7 días y avisa a las 36 h.",
+     "what_en": "Each push replaces the contents; git history keeps the previous ones. The pipeline uses copies up to 7 days old and warns at 36 h.",
+     "tech": [
+      "git push",
+      "enso-relay/1"
+     ],
+     "see": [
+      "a4"
+     ]
+    },
+    {
+     "id": "heartbeat",
+     "col": "c4",
+     "icon": "bell",
+     "group": "stores",
+     "name_es": "Solo el latido",
+     "name_en": "Heartbeat only",
+     "what_es": "Si ninguna fuente respondió, sube solo heartbeat.json («sin-fuentes») y deja intacta la última copia buena: así se distingue un equipo apagado de unas fuentes caídas.",
+     "what_en": "If no source answered, it pushes only heartbeat.json (“sin-fuentes”) and leaves the last good copy intact: that tells a machine that is off apart from sources that are down."
+    },
+    {
+     "id": "dispatch",
+     "col": "c4",
+     "icon": "refresh",
+     "group": "pipeline",
+     "name_es": "Pide actualizar el sitio",
+     "name_en": "Asks for a site refresh",
+     "what_es": "Tras subir una copia manda repository_dispatch enso-refresh: la actualización diaria corre enseguida en vez de esperar a las 23:37.",
+     "what_en": "After pushing a copy it sends repository_dispatch enso-refresh: the daily update runs right away instead of waiting for 23:37.",
+     "tech": [
+      "GitHub API"
+     ],
+     "see": [
+      "a5"
+     ]
+    }
+   ],
+   "edges": [
+    {
+     "from": "kit",
+     "to": "operator",
+     "kind": "human",
+     "label_es": "kit .zip y VERIFICAR",
+     "label_en": "kit .zip and VERIFY",
+     "explain_es": "La persona baja recolector-peru.zip de la versión recolector-kit. El equipo no se actualiza solo.",
+     "explain_en": "The person downloads recolector-peru.zip from the recolector-kit release. The machine does not update itself."
+    },
+    {
+     "from": "operator",
+     "to": "task",
+     "kind": "human",
+     "label_es": "INSTALAR con el token",
+     "label_en": "INSTALL with the token",
+     "explain_es": "El instalador guarda el token en .env, instala Python y git si faltan y registra la tarea de las 21:00.",
+     "explain_en": "The installer stores the token in .env, installs Python and git if missing and registers the 21:00 task."
+    },
+    {
+     "from": "operator",
+     "to": "verify",
+     "kind": "human",
+     "label_es": "corre VERIFICAR",
+     "label_en": "runs VERIFY",
+     "explain_es": "Revisa el equipo y deja el informe para quien mantiene el sitio; con --probar-tarea dispara la tarea real.",
+     "explain_en": "Checks the machine and leaves the report for the maintainers; with --probar-tarea it fires the real task."
+    },
+    {
+     "from": "task",
+     "to": "service",
+     "kind": "trigger",
+     "label_es": "21:00 y reintentos",
+     "label_en": "21:00 and retries",
+     "explain_es": "Cada disparo corre el servicio; si la copia de hoy ya está, no hace nada. Así recupera una noche con el equipo apagado.",
+     "explain_en": "Each trigger runs the service; if today's copy is already there, it does nothing. That way it recovers a night with the machine off.",
+     "when_es": "21:00 a 23:30 Lima",
+     "when_en": "21:00 to 23:30 Lima"
+    },
+    {
+     "from": "service",
+     "to": "preflight",
+     "kind": "data",
+     "label_es": "token de .env",
+     "label_en": "token from .env",
+     "explain_es": "Sin token no se puede subir: la corrida termina con un mensaje claro y la pista para resolverlo.",
+     "explain_en": "Without a token nothing can be pushed: the run ends with a clear message and a hint to fix it."
+    },
+    {
+     "from": "preflight",
+     "to": "collect",
+     "kind": "data",
+     "label_es": "lista fija y peru-server",
+     "label_en": "fixed list and peru-server",
+     "explain_es": "Las URL de su lista fija más las que el registro asigna al Perú, y sus reglas para seguir PDF.",
+     "explain_en": "Its fixed-list URLs plus those the registry assigns to Peru, and their rules for following PDFs."
+    },
+    {
+     "from": "src-robots",
+     "to": "collect",
+     "kind": "trigger",
+     "label_es": "reglas de robots.txt",
+     "label_en": "robots.txt rules",
+     "explain_es": "Una ruta prohibida no se pide; si el robots.txt no responde, ese servidor queda sin pedir esta noche.",
+     "explain_en": "A forbidden path is not requested; if robots.txt does not answer, that server is skipped tonight."
+    },
+    {
+     "from": "src-enfen",
+     "to": "collect",
+     "kind": "data",
+     "label_es": "API, listado y PDF",
+     "label_en": "API, listing and PDFs",
+     "explain_es": "El comunicado oficial llega aunque el portal no responda a la nube.",
+     "explain_en": "The official communiqué arrives even though the portal does not answer the cloud."
+    },
+    {
+     "from": "src-icen",
+     "to": "collect",
+     "kind": "data",
+     "label_es": "ICEN https",
+     "label_en": "ICEN https",
+     "explain_es": "Se guarda igual que las demás; Actions también tiene la versión http.",
+     "explain_en": "Kept like the rest; Actions also has the http version."
+    },
+    {
+     "from": "src-pages",
+     "to": "collect",
+     "kind": "data",
+     "label_es": "páginas de archivo",
+     "label_en": "archive pages",
+     "explain_es": "Se guarda el original como respaldo para cuando haya un lector.",
+     "explain_en": "The original is kept as a backup for when a reader exists."
+    },
+    {
+     "from": "collect",
+     "to": "pdfs",
+     "kind": "data",
+     "label_es": "listados → PDF",
+     "label_en": "listings → PDFs",
+     "explain_es": "Los PDF se buscan en los listados que respondieron esta noche.",
+     "explain_en": "The PDFs are looked up in the listings that answered tonight."
+    },
+    {
+     "from": "pdfs",
+     "to": "probes",
+     "kind": "data",
+     "label_es": "URL sin medir",
+     "label_en": "unmeasured URLs",
+     "explain_es": "Con el tiempo que queda mide las URL del registro que nadie midió desde el Perú.",
+     "explain_en": "With the time left it measures the registry URLs nobody measured from Peru."
+    },
+    {
+     "from": "probes",
+     "to": "snapshot",
+     "kind": "data",
+     "label_es": "mediciones en index.json",
+     "label_en": "measurements in index.json",
+     "explain_es": "Las mediciones van en index.json y el sondeo semanal las suma al registro.",
+     "explain_en": "The measurements go in index.json and the weekly probe adds them to the registry."
+    },
+    {
+     "from": "branch",
+     "to": "snapshot",
+     "kind": "fallback",
+     "label_es": "copias de hasta 72 h",
+     "label_en": "copies up to 72 h old",
+     "explain_es": "Antes de subir lee la copia anterior y conserva la de cada URL que hoy falló, marcada carried.",
+     "explain_en": "Before pushing it reads the previous copy and keeps each URL that failed tonight, marked carried."
+    },
+    {
+     "from": "snapshot",
+     "to": "branch",
+     "kind": "data",
+     "label_es": "commit y push",
+     "label_en": "commit and push",
+     "explain_es": "git sin ayudantes de credenciales ni ventanas: en una tarea programada nadie las contestaría.",
+     "explain_en": "git without credential helpers or prompts: nobody would answer them in a scheduled task."
+    },
+    {
+     "from": "snapshot",
+     "to": "heartbeat",
+     "kind": "fallback",
+     "label_es": "nada respondió",
+     "label_en": "nothing answered",
+     "explain_es": "Una copia vacía reemplazaría a la última buena: solo se sube el latido.",
+     "explain_en": "An empty copy would replace the last good one: only the heartbeat is pushed."
+    },
+    {
+     "from": "branch",
+     "to": "dispatch",
+     "kind": "trigger",
+     "label_es": "tras subir",
+     "label_en": "after pushing",
+     "explain_es": "Si hay una corrida en curso, la nueva queda en cola. Si el aviso falla, la corrida de las 23:37 usa la copia igual.",
+     "explain_en": "If a run is in progress, the new one queues. If the request fails, the 23:37 run uses the copy anyway."
+    },
+    {
+     "from": "service",
+     "to": "notify",
+     "kind": "control",
+     "label_es": "fallas o token por vencer",
+     "label_en": "failures or expiring token",
+     "explain_es": "El estado de cada corrida decide si hay que avisar a la persona.",
+     "explain_en": "Each run's state decides whether to alert the person."
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "El equipo estaba apagado a las 21:00",
+     "then_es": "La tarea corre al encender o al iniciar sesión y recupera la copia del día; si no, Actions usa n8n, el Internet Archive o el último dato.",
+     "if_en": "The machine was off at 21:00",
+     "then_en": "The task runs at power-on or login and recovers the day's copy; if not, Actions uses n8n, the Internet Archive or the last value."
+    },
+    {
+     "if_es": "Ninguna fuente responde ni desde el Perú",
+     "then_es": "Se sube solo el latido «sin-fuentes»: la copia anterior vale hasta 7 días y a las 36 h se abre relay-sources-down.",
+     "if_en": "No source answers even from Peru",
+     "then_en": "Only the “sin-fuentes” heartbeat is pushed: the previous copy holds for 7 days and relay-sources-down opens at 36 h."
+    },
+    {
+     "if_es": "Una URL falla esta noche",
+     "then_es": "Se conserva su última copia buena de hasta 72 h, marcada carried, con lo que pasó esta noche.",
+     "if_en": "A URL fails tonight",
+     "then_en": "Its last good copy up to 72 h old is kept, marked carried, along with what happened tonight."
+    },
+    {
+     "if_es": "El token vence o no tiene permiso",
+     "then_es": "La comprobación previa falla con la pista para resolverlo; el aviso de escritorio y relay-token-expiring avisan desde 21 días antes.",
+     "if_en": "The token expires or lacks permission",
+     "then_en": "The preflight fails with a hint to fix it; the desktop alert and relay-token-expiring warn from 21 days ahead."
+    },
+    {
+     "if_es": "La corrida se cuelga o el sistema la detiene",
+     "then_es": "Se corta a los 45 min y un candado viejo no frena la siguiente; un apagado o una reinstalación no cuentan como falla.",
+     "if_en": "The run hangs or the system stops it",
+     "then_en": "It is cut at 45 min and a stale lock does not block the next one; a shutdown or reinstall does not count as a failure."
+    },
+    {
+     "if_es": "No se pudo pedir la actualización",
+     "then_es": "La copia ya está subida: la corrida de las 23:37 la usa.",
+     "if_en": "The refresh request failed",
+     "then_en": "The copy is already pushed: the 23:37 run uses it."
+    }
+   ]
+  },
+  {
+   "id": "a3",
+   "title_es": "n8n en la nube (AWS): segunda copia y flujos auxiliares",
+   "title_en": "n8n in the cloud (AWS): second copy and helper workflows",
+   "subtitle_es": "Cuatro flujos de n8n corren fuera de GitHub, en el n8n de un colega en AWS (EE. UU.). El recolector deja cada noche una segunda copia de todo lo que no está bloqueado ni prohibido, falle o no Actions; los otros vigilan el sitio, miden el alcance a pedido y ayudan a leer informes con un modelo de lenguaje. El código de cada nodo vive en el repositorio (n8n/) y se arma con build.mjs.",
+   "subtitle_en": "Four n8n workflows run outside GitHub, on a colleague's n8n on AWS (US). The collector leaves a second copy every night of everything that is neither blocked nor forbidden, whether Actions fails or not; the others watch the site, measure reachability on demand and help read reports with a language model. Each node's code lives in the repository (n8n/) and is built with build.mjs.",
+   "desc_es": "El recolector de n8n nodo por nodo (registro, dos pasadas, copia, commit sin padre en data-n8n) y los flujos de vigilancia, validación y extracción, con su construcción y prueba desde el repositorio.",
+   "desc_en": "The n8n collector node by node (registry, two passes, copy, parentless commit to data-n8n) and the watchdog, validation and extraction workflows, built and tested from the repository.",
+   "covers": [
+    "n8n-collector",
+    "data-n8n-branch",
+    "n8n-colleague"
+   ],
+   "simple": [
+    "s-recolectores"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 300,
+     "title_es": "Repositorio (n8n/)",
+     "title_en": "Repository (n8n/)",
+     "sub_es": "Node.js · build.mjs · pruebas con n8n real (n8n.yml)",
+     "sub_en": "Node.js · build.mjs · tests on real n8n (n8n.yml)"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Recolector: cada día 22:50 Lima",
+     "title_en": "Collector: daily 22:50 Lima",
+     "sub_es": "nodos Schedule, HTTP Request, Split in Batches y Code",
+     "sub_en": "Schedule, HTTP Request, Split in Batches and Code nodes"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Hacia GitHub",
+     "title_en": "Towards GitHub",
+     "sub_es": "API de Git Data con la credencial «GitHub ENSO (n8n)»",
+     "sub_en": "Git Data API with the “GitHub ENSO (n8n)” credential"
+    },
+    {
+     "id": "c4",
+     "w": 300,
+     "title_es": "Otros flujos",
+     "title_en": "Other workflows",
+     "sub_es": "vigilante · validación · extractor",
+     "sub_en": "watchdog · validation · extractor"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "code",
+     "col": "c1",
+     "icon": "code",
+     "group": "operations",
+     "name_es": "Código de los nodos",
+     "name_en": "Node code",
+     "what_es": "lib/ (clasificador de respuestas y bloqueos, SHA-256 y SHA-1, PDF del ENFEN, armado de la copia) y nodes/ (cuerpo de cada nodo Code). No se edita en la interfaz de n8n.",
+     "what_en": "lib/ (answer and block classifier, SHA-256 and SHA-1, ENFEN PDFs, copy assembly) and nodes/ (each Code node's body). It is not edited in the n8n interface.",
+     "tech": [
+      "JavaScript",
+      "Node 22"
+     ]
+    },
+    {
+     "id": "build",
+     "col": "c1",
+     "icon": "box",
+     "group": "operations",
+     "name_es": "build.mjs → dist/",
+     "name_en": "build.mjs → dist/",
+     "what_es": "Arma los 4 flujos importables e incluye una copia del registro. n8n.yml comprueba que dist/ coincide con el código y los prueba en n8n real con una API de GitHub falsa.",
+     "what_en": "Builds the 4 importable workflows and embeds a registry copy. n8n.yml checks that dist/ matches the code and tests them on real n8n with a fake GitHub API.",
+     "tech": [
+      "node --test",
+      "n8n en Docker"
+     ]
+    },
+    {
+     "id": "colleague",
+     "col": "c1",
+     "icon": "user",
+     "group": "people",
+     "name_es": "Colega que opera n8n",
+     "name_en": "n8n operator (colleague)",
+     "what_es": "Importa los flujos de dist/, elige la credencial de GitHub (token de grano fino, Contents de lectura y escritura, 1 año) y activa los programados; puede asignarles un Error workflow que avise por correo.",
+     "what_en": "Imports the dist/ workflows, picks the GitHub credential (fine-grained token, Contents read and write, 1 year) and activates the scheduled ones; may give them an Error workflow that sends an email."
+    },
+    {
+     "id": "schedule",
+     "col": "c2",
+     "icon": "clock",
+     "group": "channels",
+     "name_es": "Disparador y configuración",
+     "name_en": "Trigger and settings",
+     "what_es": "cron 50 22 * * * en la zona America/Lima, o «Ejecutar a mano». Configuración: repositorio, rama data-n8n, 72 h de arrastre y 8 MB por archivo.",
+     "what_en": "cron 50 22 * * * in the America/Lima zone, or “Run by hand”. Settings: repository, data-n8n branch, 72 h carry and 8 MB per file.",
+     "tech": [
+      "Schedule Trigger",
+      "Set"
+     ]
+    },
+    {
+     "id": "read",
+     "col": "c2",
+     "icon": "list",
+     "group": "channels",
+     "name_es": "Leer registro y copia anterior",
+     "name_en": "Read registry and previous copy",
+     "what_es": "Lee registry/sources.json de main por la API de GitHub y el index.json actual de data-n8n.",
+     "what_en": "Reads registry/sources.json from main through the GitHub API and the current index.json of data-n8n.",
+     "tech": [
+      "HTTP Request"
+     ],
+     "see": [
+      "a1"
+     ]
+    },
+    {
+     "id": "plan",
+     "col": "c2",
+     "icon": "filter",
+     "group": "channels",
+     "name_es": "Fuentes",
+     "name_en": "Sources",
+     "what_es": "Se queda con las URL que el registro da a n8n (y sus réplicas): omite las prohibidas, las reader y las que solo responden desde el Perú.",
+     "what_en": "Keeps the URLs the registry gives n8n (and their mirrors): skips the forbidden, the reader and the Peru-only ones.",
+     "meta_es": "152 URL",
+     "meta_en": "152 URLs",
+     "tech": [
+      "Code"
+     ]
+    },
+    {
+     "id": "pass1",
+     "col": "c2",
+     "icon": "download",
+     "group": "channels",
+     "name_es": "Descarga, una por una",
+     "name_en": "Download, one at a time",
+     "what_es": "Una URL a la vez, hasta 10 redirecciones y 40 s de plazo; «Analizar» clasifica cada respuesta con el mismo criterio que Actions y el Perú.",
+     "what_en": "One URL at a time, up to 10 redirects and a 40 s timeout; “Analyze” classifies each answer with the same rules as Actions and Peru.",
+     "tech": [
+      "Split in Batches",
+      "HTTP Request",
+      "Code"
+     ]
+    },
+    {
+     "id": "pass2",
+     "col": "c2",
+     "icon": "refresh",
+     "group": "channels",
+     "name_es": "Segunda pasada",
+     "name_en": "Second pass",
+     "what_es": "Tras 30 s reintenta lo que falló por causas pasajeras (tiempo, conexión, 5xx, 429) con 60 s de plazo, y baja los PDF del ENFEN y los enlaces que pide el registro.",
+     "what_en": "After 30 s it retries what failed for transient reasons (timeout, connection, 5xx, 429) with a 60 s timeout, and fetches the ENFEN PDFs and the links the registry asks for.",
+     "tech": [
+      "Wait",
+      "Code"
+     ]
+    },
+    {
+     "id": "prepare",
+     "col": "c2",
+     "icon": "layers",
+     "group": "channels",
+     "name_es": "Preparar copia",
+     "name_en": "Prepare copy",
+     "what_es": "Une las dos pasadas y arma index.json y heartbeat.json (enso-relay/1). Conserva hasta 72 h la copia buena de una URL que hoy falló, marcada carried.",
+     "what_en": "Merges both passes and builds index.json and heartbeat.json (enso-relay/1). Keeps for up to 72 h the good copy of a URL that failed tonight, marked carried.",
+     "tech": [
+      "Merge",
+      "Code"
+     ]
+    },
+    {
+     "id": "blobs",
+     "col": "c3",
+     "icon": "upload",
+     "group": "stores",
+     "name_es": "Crear blobs",
+     "name_en": "Create blobs",
+     "what_es": "Sube solo los archivos nuevos, uno cada 0,8 s; los que ya están en la rama se reutilizan por su SHA-1 de git.",
+     "what_en": "Uploads only the new files, one every 0.8 s; those already on the branch are reused by their git SHA-1.",
+     "tech": [
+      "POST git/blobs"
+     ]
+    },
+    {
+     "id": "commit",
+     "col": "c3",
+     "icon": "commit",
+     "group": "stores",
+     "name_es": "Árbol y commit sin padre",
+     "name_en": "Tree and parentless commit",
+     "what_es": "Arma el árbol con index.json, heartbeat.json y files/, y un commit sin padre: la rama guarda solo la última copia.",
+     "what_en": "Builds the tree with index.json, heartbeat.json and files/, and a parentless commit: the branch keeps only the latest copy.",
+     "tech": [
+      "git/trees",
+      "git/commits"
+     ]
+    },
+    {
+     "id": "branch",
+     "col": "c3",
+     "icon": "branch",
+     "group": "stores",
+     "name_es": "Rama data-n8n",
+     "name_en": "data-n8n branch",
+     "what_es": "Mueve la rama al commit nuevo (o la crea). index.json y heartbeat.json van siempre, aunque nada responda.",
+     "what_en": "Moves the branch to the new commit (or creates it). index.json and heartbeat.json always go, even if nothing answers.",
+     "meta_es": "el pipeline la usa hasta 72 h",
+     "meta_en": "the pipeline uses it up to 72 h",
+     "tech": [
+      "git/refs"
+     ],
+     "see": [
+      "a4"
+     ]
+    },
+    {
+     "id": "notify",
+     "col": "c3",
+     "icon": "refresh",
+     "group": "pipeline",
+     "name_es": "Avisar al sitio (apagado)",
+     "name_en": "Notify the site (off)",
+     "what_es": "Puede mandar repository_dispatch enso-refresh al terminar; viene desactivado porque el token necesitaría ese permiso.",
+     "what_en": "Can send repository_dispatch enso-refresh at the end; it ships disabled because the token would need that permission.",
+     "see": [
+      "a5"
+     ]
+    },
+    {
+     "id": "watch",
+     "col": "c4",
+     "icon": "eye",
+     "group": "operations",
+     "name_es": "Vigilante del sitio",
+     "name_en": "Site watchdog",
+     "what_es": "Cada 6 horas lee data/manifest.json; si no responde o tiene más de 30 h, la ejecución falla y avisa el Error workflow, aunque GitHub esté apagado.",
+     "what_en": "Every 6 hours it reads data/manifest.json; if it does not answer or is older than 30 h, the execution fails and the Error workflow alerts, even if GitHub is down.",
+     "tech": [
+      "Schedule Trigger",
+      "HTTP Request"
+     ],
+     "see": [
+      "a10"
+     ]
+    },
+    {
+     "id": "validate",
+     "col": "c4",
+     "icon": "search",
+     "group": "operations",
+     "name_es": "Validación de fuentes",
+     "name_en": "Source validation",
+     "what_es": "A mano: baja cada URL del registro con las mismas dos pasadas y entrega un informe CSV; el sondeo semanal lo importa como medición de la red n8n. n8n.yml lo corre los lunes desde Actions.",
+     "what_en": "By hand: fetches every registry URL with the same two passes and returns a CSV report; the weekly probe imports it as an n8n-network measurement. n8n.yml runs it on Mondays from Actions.",
+     "tech": [
+      "Convert to File"
+     ],
+     "see": [
+      "a1"
+     ]
+    },
+    {
+     "id": "extract",
+     "col": "c4",
+     "icon": "sparkle",
+     "group": "operations",
+     "name_es": "Extractor de informes",
+     "name_en": "Report extractor",
+     "what_es": "Webhook con token: cuando el lector de los informes del ENFEN falla, el pipeline le pide una lectura a OpenAI (temperatura 0, JSON con la cita de cada valor). Solo deja una propuesta para revisión.",
+     "what_en": "Token-protected webhook: when the ENFEN report reader fails, the pipeline asks OpenAI for a reading (temperature 0, JSON with each value's quote). It only leaves a proposal for review.",
+     "tech": [
+      "Webhook",
+      "OpenAI"
+     ],
+     "see": [
+      "a5"
+     ]
+    }
+   ],
+   "edges": [
+    {
+     "from": "code",
+     "to": "build",
+     "kind": "data",
+     "label_es": "código y registro",
+     "label_en": "code and registry",
+     "explain_es": "build.mjs inserta el código de lib/ y nodes/ en cada nodo y una copia del registro de fuentes.",
+     "explain_en": "build.mjs inserts the lib/ and nodes/ code into each node, plus a copy of the source registry."
+    },
+    {
+     "from": "build",
+     "to": "colleague",
+     "kind": "human",
+     "label_es": "flujos de dist/",
+     "label_en": "dist/ workflows",
+     "explain_es": "Los nodos se regeneran con build.mjs: un cambio se importa de nuevo, no se edita en n8n.",
+     "explain_en": "Nodes are regenerated with build.mjs: a change is re-imported, not edited in n8n."
+    },
+    {
+     "from": "colleague",
+     "to": "schedule",
+     "kind": "human",
+     "label_es": "importa, credencial y activa",
+     "label_en": "imports, credential and activates",
+     "explain_es": "Elige la credencial «GitHub ENSO (n8n)» en cada nodo que habla con GitHub y activa el flujo.",
+     "explain_en": "Picks the “GitHub ENSO (n8n)” credential on each node that talks to GitHub and activates the workflow."
+    },
+    {
+     "from": "schedule",
+     "to": "read",
+     "kind": "trigger",
+     "label_es": "22:50 Lima",
+     "label_en": "22:50 Lima",
+     "explain_es": "Corre cada noche, haya fallado Actions o no: la copia ya está lista cuando la corrida de las 23:37 la busca.",
+     "explain_en": "Runs every night, whether Actions failed or not: the copy is ready when the 23:37 run looks for it.",
+     "when_es": "diario 22:50 Lima",
+     "when_en": "daily 22:50 Lima"
+    },
+    {
+     "from": "read",
+     "to": "plan",
+     "kind": "data",
+     "label_es": "registro y copia anterior",
+     "label_en": "registry and previous copy",
+     "explain_es": "Si el registro de GitHub no se puede leer, usa la copia incluida al construir el flujo.",
+     "explain_en": "If the GitHub registry cannot be read, it uses the copy embedded at build time."
+    },
+    {
+     "from": "plan",
+     "to": "pass1",
+     "kind": "data",
+     "label_es": "URL asignadas a n8n",
+     "label_en": "URLs assigned to n8n",
+     "explain_es": "Solo las que el registro da a n8n: los tres recolectores leen la misma lista.",
+     "explain_en": "Only those the registry gives n8n: all three collectors read the same list."
+    },
+    {
+     "from": "pass1",
+     "to": "pass2",
+     "kind": "fallback",
+     "label_es": "fallas pasajeras",
+     "label_en": "transient failures",
+     "explain_es": "Lo que falló por tiempo, conexión, 5xx o 429 se reintenta una vez; si no hay nada que reintentar, esta rama no corre.",
+     "explain_en": "What failed by timeout, connection, 5xx or 429 is retried once; if there is nothing to retry, this branch does not run."
+    },
+    {
+     "from": "pass1",
+     "to": "prepare",
+     "kind": "data",
+     "label_es": "primera pasada",
+     "label_en": "first pass",
+     "explain_es": "Las respuestas buenas de la primera pasada van directo a la copia.",
+     "explain_en": "Good answers from the first pass go straight to the copy."
+    },
+    {
+     "from": "pass2",
+     "to": "prepare",
+     "kind": "data",
+     "label_es": "segunda pasada",
+     "label_en": "second pass",
+     "explain_es": "«Unir pasadas» junta las dos antes de armar la copia.",
+     "explain_en": "“Merge passes” joins both before building the copy."
+    },
+    {
+     "from": "prepare",
+     "to": "blobs",
+     "kind": "data",
+     "label_es": "archivos nuevos",
+     "label_en": "new files",
+     "explain_es": "Los archivos que no cambiaron reutilizan su blob: la subida es pequeña.",
+     "explain_en": "Unchanged files reuse their blob: the upload is small."
+    },
+    {
+     "from": "blobs",
+     "to": "commit",
+     "kind": "data",
+     "label_es": "blobs listos",
+     "label_en": "blobs ready",
+     "explain_es": "Con los blobs se arma el árbol y el commit.",
+     "explain_en": "The tree and the commit are built from the blobs."
+    },
+    {
+     "from": "commit",
+     "to": "branch",
+     "kind": "data",
+     "label_es": "commit sin padre",
+     "label_en": "parentless commit",
+     "explain_es": "La rama se reemplaza (force): el historial no crece; data-archive guarda lo que el pipeline usa.",
+     "explain_en": "The branch is replaced (force): history does not grow; data-archive keeps what the pipeline uses."
+    },
+    {
+     "from": "branch",
+     "to": "read",
+     "kind": "fallback",
+     "label_es": "copia anterior (72 h)",
+     "label_en": "previous copy (72 h)",
+     "explain_es": "Su nodo «Leer copia anterior» lee data-n8n para conservar las URL que esta noche fallaron.",
+     "explain_en": "Its “Read previous copy” node reads data-n8n to keep the URLs that failed tonight."
+    },
+    {
+     "from": "branch",
+     "to": "notify",
+     "kind": "trigger",
+     "label_es": "opcional",
+     "label_en": "optional",
+     "explain_es": "Si se activa, la actualización corre enseguida; si no, la de las 23:37 usa la copia.",
+     "explain_en": "If enabled, the update runs right away; if not, the 23:37 run uses the copy."
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "Una URL falla en la primera pasada",
+     "then_es": "La segunda pasada la reintenta tras 30 s; si sigue fallando se conserva su copia buena de hasta 72 h.",
+     "if_en": "A URL fails in the first pass",
+     "then_en": "The second pass retries it after 30 s; if it still fails, its good copy up to 72 h old is kept."
+    },
+    {
+     "if_es": "Nada responde esta noche",
+     "then_es": "index.json y heartbeat.json se publican igual: el pipeline ve que n8n corre y que son las fuentes las que no responden (relay-n8n-sources-down).",
+     "if_en": "Nothing answers tonight",
+     "then_en": "index.json and heartbeat.json are published anyway: the pipeline sees n8n is running and that the sources are the ones not answering (relay-n8n-sources-down)."
+    },
+    {
+     "if_es": "Vence el token de GitHub (1 año)",
+     "then_es": "La copia deja de subir y la ejecución queda en rojo; a las 36 h el pipeline abre relay-n8n-stale. n8n no avisa antes.",
+     "if_en": "The GitHub token expires (1 year)",
+     "then_en": "The copy stops being pushed and the execution turns red; at 36 h the pipeline opens relay-n8n-stale. n8n does not warn ahead."
+    },
+    {
+     "if_es": "n8n no puede leer el registro de GitHub",
+     "then_es": "Usa la copia del registro incluida al construir el flujo.",
+     "if_en": "n8n cannot read the registry from GitHub",
+     "then_en": "It uses the registry copy embedded at build time."
+    },
+    {
+     "if_es": "OpenAI falla o responde algo inválido",
+     "then_es": "El extractor responde 502 o el pipeline rechaza la propuesta; el informe anterior se conserva marcado arrastrado.",
+     "if_en": "OpenAI fails or answers something invalid",
+     "then_en": "The extractor answers 502 or the pipeline rejects the proposal; the previous report is kept, marked carried."
+    },
+    {
+     "if_es": "El sitio pasa a Cloudflare",
+     "then_es": "El vigilante tiene la dirección fija: hay que cambiarla a mano en su nodo Configuración.",
+     "if_en": "The site moves to Cloudflare",
+     "then_en": "The watchdog has a fixed address: it must be changed by hand in its Settings node."
+    }
+   ]
+  },
+  {
+   "id": "a4",
+   "title_es": "Descarga en GitHub Actions y respaldo por fuente",
+   "title_en": "Download in GitHub Actions and per-source fallbacks",
+   "subtitle_es": "Cómo la actualización diaria consigue cada dato: sigue el registro, pide la URL oficial desde servidores de GitHub en EE. UU. y, si no responde, baja una escalera de respaldos hasta el último dato bueno ya publicado. Cada respuesta queda con su canal, URL, fecha y sha256.",
+   "subtitle_en": "How the daily update gets each value: it follows the registry, requests the official URL from GitHub servers in the US and, if it does not answer, walks down a ladder of fallbacks to the last good value already published. Every answer keeps its channel, URL, date and sha256.",
+   "desc_es": "La escalera de respaldo de cada fuente en la corrida diaria: URL oficial, copias del Perú, de n8n y de la consola, espejos, Internet Archive y publicación anterior, con sus plazos y su procedencia.",
+   "desc_en": "Each source's fallback ladder in the daily run: official URL, Peru, n8n and console copies, mirrors, Internet Archive and previous publication, with their time limits and provenance.",
+   "covers": [
+    "fetch",
+    "internet-archive",
+    "previous-publication",
+    "reader-state-cache"
+   ],
+   "simple": [
+    "s-recolectores",
+    "s-respaldo"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 300,
+     "title_es": "Antes de pedir",
+     "title_en": "Before requesting",
+     "sub_es": "registro · caché de Actions · plazos",
+     "sub_en": "registry · Actions cache · time limits"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Escalera por fuente",
+     "title_en": "Ladder per source",
+     "sub_es": "Python 3.12 · httpx · enso/fetch.py",
+     "sub_en": "Python 3.12 · httpx · enso/fetch.py"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Copias y archivo",
+     "title_en": "Copies and archive",
+     "sub_es": "ramas data-* · Internet Archive · sitio en vivo",
+     "sub_en": "data-* branches · Internet Archive · live site"
+    },
+    {
+     "id": "c4",
+     "w": 300,
+     "title_es": "Resultado",
+     "title_en": "Result",
+     "sub_es": "dato, canal y procedencia de cada fuente",
+     "sub_en": "value, channel and provenance of each source"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "plan",
+     "col": "c1",
+     "icon": "list",
+     "group": "pipeline",
+     "name_es": "Plan de canales",
+     "name_en": "Channel plan",
+     "what_es": "registry/sources.json dice quién pide cada URL: una que no se asigna a Actions se lee primero de las copias (sin copia, un solo intento directo); una prohibida por robots.txt no se pide.",
+     "what_en": "registry/sources.json says who requests each URL: one not assigned to Actions is read from the copies first (with no copy, a single direct try); one forbidden by robots.txt is not requested.",
+     "tech": [
+      "registry.url_channels"
+     ],
+     "see": [
+      "a1"
+     ]
+    },
+    {
+     "id": "reader",
+     "col": "c1",
+     "icon": "history",
+     "group": "stores",
+     "name_es": "Estado de los feeds reader",
+     "name_en": "Reader-feed state",
+     "what_es": "reader-state.json en la caché de Actions: cuándo se pidió cada uno de los 40 feeds reader y sus notas aún no publicadas. Se restaura al empezar y se guarda al final aunque la corrida falle; solo en main.",
+     "what_en": "reader-state.json in the Actions cache: when each of the 40 reader feeds was last requested and its notes not yet published. Restored at the start and saved at the end even if the run fails; main only.",
+     "meta_es": "mínimo 20 h entre pedidos",
+     "meta_en": "at least 20 h between requests",
+     "tech": [
+      "actions/cache"
+     ]
+    },
+    {
+     "id": "budget",
+     "col": "c1",
+     "icon": "clock",
+     "group": "pipeline",
+     "name_es": "Plazos",
+     "name_en": "Time limits",
+     "what_es": "Fuentes oficiales: 8 min en total y 5 min por pedido; primero ENFEN, ICEN y la discusión ENSO. Noticias: 60 s por feed. Pasado el plazo no se pide nada más.",
+     "what_en": "Official sources: 8 min in total and 5 min per request; ENFEN, ICEN and the ENSO discussion first. News: 60 s per feed. After the limit nothing more is requested."
+    },
+    {
+     "id": "direct",
+     "col": "c2",
+     "icon": "globe",
+     "group": "pipeline",
+     "name_es": "1 · URL oficial",
+     "name_en": "1 · Official URL",
+     "what_es": "Hasta 3 intentos con espera creciente ante errores pasajeros (DNS, 5xx, 429, tiempo); 0,8 s entre pedidos al mismo servidor. Con 3 fallos seguidos un servidor recibe 1 intento; con 5, se omite.",
+     "what_en": "Up to 3 tries with growing waits on transient errors (DNS, 5xx, 429, timeout); 0.8 s between requests to the same server. After 3 failures in a row a server gets 1 try; after 5, it is skipped.",
+     "meta_es": "canal direct",
+     "meta_en": "direct channel",
+     "tech": [
+      "httpx",
+      "TLS + intermedios"
+     ]
+    },
+    {
+     "id": "relay",
+     "col": "c2",
+     "icon": "layers",
+     "group": "pipeline",
+     "name_es": "2 · Copia de un recolector",
+     "name_en": "2 · A collector's copy",
+     "what_es": "La copia de esa misma URL del Perú (hasta 7 días), de n8n (72 h) o de la consola (120 días), con estado 200 y sha256 verificado. Si hay varias, gana la más reciente.",
+     "what_en": "The copy of that same URL from Peru (up to 7 days), n8n (72 h) or the console (120 days), with status 200 and a verified sha256. If there are several, the newest wins.",
+     "meta_es": "canales relay-peru, relay-n8n y relay-manual",
+     "meta_en": "relay-peru, relay-n8n and relay-manual channels"
+    },
+    {
+     "id": "mirror",
+     "col": "c2",
+     "icon": "globe",
+     "group": "pipeline",
+     "name_es": "3 · Espejo oficial",
+     "name_en": "3 · Official mirror",
+     "what_es": "Lo mismo con cada espejo declarado, en orden (por ejemplo, la réplica del ENFEN en la DHN), y su copia.",
+     "what_en": "The same with each declared mirror, in order (for example, the ENFEN mirror at the DHN), and its copy.",
+     "meta_es": "canal mirror",
+     "meta_en": "mirror channel"
+    },
+    {
+     "id": "wayback",
+     "col": "c2",
+     "icon": "archive",
+     "group": "pipeline",
+     "name_es": "4 · Internet Archive",
+     "name_en": "4 · Internet Archive",
+     "what_es": "La copia más reciente con estado 200, sin cambios. Para el ENFEN, si tiene más de un día, pide una copia nueva (Save Page Now). Las noticias nunca lo usan.",
+     "what_en": "The newest copy with status 200, unchanged. For ENFEN, if it is older than a day, it asks for a new one (Save Page Now). News never uses it.",
+     "meta_es": "canales archive y archive-fresh",
+     "meta_en": "archive and archive-fresh channels"
+    },
+    {
+     "id": "previous",
+     "col": "c2",
+     "icon": "history",
+     "group": "pipeline",
+     "name_es": "5 · Último dato publicado",
+     "name_en": "5 · Last published value",
+     "what_es": "Si todo falla, el último dato válido de la publicación anterior, con su fecha real y marcado carried.",
+     "what_en": "If everything fails, the last valid value of the previous publication, with its real date and marked carried.",
+     "meta_es": "canal previous-publication",
+     "meta_en": "previous-publication channel"
+    },
+    {
+     "id": "peru-b",
+     "col": "c3",
+     "icon": "branch",
+     "group": "stores",
+     "name_es": "data-peru",
+     "name_en": "data-peru",
+     "what_es": "Copia del equipo del Perú (git, profundidad 1). Aviso a las 36 h; sin rama, relay-missing.",
+     "what_en": "Copy from the Peru machine (git, depth 1). Warning at 36 h; no branch, relay-missing.",
+     "see": [
+      "a2"
+     ]
+    },
+    {
+     "id": "n8n-b",
+     "col": "c3",
+     "icon": "branch",
+     "group": "stores",
+     "name_es": "data-n8n",
+     "name_en": "data-n8n",
+     "what_es": "Copia de n8n en AWS. Aviso a las 36 h; sin rama, relay-n8n-missing.",
+     "what_en": "Copy from n8n on AWS. Warning at 36 h; no branch, relay-n8n-missing.",
+     "see": [
+      "a3"
+     ]
+    },
+    {
+     "id": "manual-b",
+     "col": "c3",
+     "icon": "branch",
+     "group": "stores",
+     "name_es": "data-manual",
+     "name_en": "data-manual",
+     "what_es": "PDF subidos a mano en la consola de documentos. Que no exista es lo normal.",
+     "what_en": "PDFs uploaded by hand in the documents console. It not existing is normal.",
+     "see": [
+      "a7"
+     ]
+    },
+    {
+     "id": "ia",
+     "col": "c3",
+     "icon": "archive",
+     "group": "stores",
+     "name_es": "web.archive.org",
+     "name_en": "web.archive.org",
+     "what_es": "CDX para buscar, id_ para bajar el original y /save/ para una copia nueva (solo con ENSO_ARCHIVE_SAVE=1, en todas las corridas salvo una manual que lo desmarque).",
+     "what_en": "CDX to search, id_ to fetch the original and /save/ for a new copy (only with ENSO_ARCHIVE_SAVE=1, on every run except a manual one that unticks it).",
+     "tech": [
+      "CDX API",
+      "Save Page Now"
+     ]
+    },
+    {
+     "id": "live",
+     "col": "c3",
+     "icon": "monitor",
+     "group": "stores",
+     "name_es": "Sitio en vivo (data/)",
+     "name_en": "Live site (data/)",
+     "what_es": "--previous ${SITE_URL}data: sources/<id>.json, el histórico de noticias, el estado de los feeds y las correcciones de lugar. Distingue «no existe» (404) de «no responde».",
+     "what_en": "--previous ${SITE_URL}data: sources/<id>.json, the news history, the feed status and the place corrections. It tells “does not exist” (404) from “does not answer”.",
+     "see": [
+      "a9"
+     ]
+    },
+    {
+     "id": "parse",
+     "col": "c4",
+     "icon": "shield",
+     "group": "pipeline",
+     "name_es": "Lector y validación",
+     "name_en": "Reader and validation",
+     "what_es": "Cada respuesta pasa a su lector. Si el formato cambió de verdad (FormatChanged), el dato no se publica y se usa el anterior.",
+     "what_en": "Each answer goes to its reader. If the format really changed (FormatChanged), the value is not published and the previous one is used.",
+     "see": [
+      "a5"
+     ]
+    },
+    {
+     "id": "acquired",
+     "col": "c4",
+     "icon": "check",
+     "group": "pipeline",
+     "name_es": "Dato con procedencia",
+     "name_en": "Value with provenance",
+     "what_es": "Canal, URL efectiva, fecha de descarga o de la copia, sha256, huella del formato e intentos: todo se publica en sources.json y sources/<id>.json.",
+     "what_en": "Channel, effective URL, download or copy date, sha256, format fingerprint and attempts: all published in sources.json and sources/<id>.json."
+    },
+    {
+     "id": "events",
+     "col": "c4",
+     "icon": "alert",
+     "group": "pipeline",
+     "name_es": "Incidencias",
+     "name_en": "Incidents",
+     "what_es": "relay-channel (info), archive-channel (aviso), unreachable y carried-forward. Una fuente crítica sin dato ni anterior deja la corrida en critical y no se despliega.",
+     "what_en": "relay-channel (info), archive-channel (warning), unreachable and carried-forward. A critical source with no value and no previous one leaves the run critical and nothing is deployed.",
+     "see": [
+      "a10"
+     ]
+    }
+   ],
+   "edges": [
+    {
+     "from": "plan",
+     "to": "direct",
+     "kind": "trigger",
+     "label_es": "plan de la URL",
+     "label_en": "the URL's plan",
+     "explain_es": "Si la URL es de Actions se pide; si no, primero la copia; si está prohibida, no se pide.",
+     "explain_en": "If the URL belongs to Actions it is requested; if not, the copy first; if forbidden, it is not requested."
+    },
+    {
+     "from": "reader",
+     "to": "direct",
+     "kind": "trigger",
+     "label_es": "feeds reader: cada 20 h o más",
+     "label_en": "reader feeds: every 20 h or more",
+     "explain_es": "Un solo intento y sin reintento ante 429 o 5xx; entre lecturas queda el estado de la última.",
+     "explain_en": "A single try with no retry on 429 or 5xx; between reads the last state stays."
+    },
+    {
+     "from": "budget",
+     "to": "direct",
+     "kind": "trigger",
+     "label_es": "plazo de la corrida",
+     "label_en": "run time limit",
+     "explain_es": "Pasado el plazo, cada fuente sigue con sus copias o con su dato anterior, para que la corrida llegue a publicar.",
+     "explain_en": "After the limit, each source goes on with its copies or its previous value, so the run gets to publish."
+    },
+    {
+     "from": "direct",
+     "to": "relay",
+     "kind": "fallback",
+     "label_es": "no responde",
+     "label_en": "no answer",
+     "explain_es": "La copia se usa si el pedido falla o si responde algo vacío o de otro tipo.",
+     "explain_en": "The copy is used if the request fails or answers something empty or of another type."
+    },
+    {
+     "from": "relay",
+     "to": "mirror",
+     "kind": "fallback",
+     "label_es": "sin copia",
+     "label_en": "no copy",
+     "explain_es": "Se pasa al siguiente espejo oficial de la fuente.",
+     "explain_en": "It moves on to the source's next official mirror."
+    },
+    {
+     "from": "mirror",
+     "to": "wayback",
+     "kind": "fallback",
+     "label_es": "espejos fallan",
+     "label_en": "mirrors fail",
+     "explain_es": "Con todas las URL agotadas, se busca la copia archivada de cada una.",
+     "explain_en": "With every URL exhausted, it looks for each one's archived copy."
+    },
+    {
+     "from": "wayback",
+     "to": "previous",
+     "kind": "fallback",
+     "label_es": "sin copia archivada",
+     "label_en": "no archived copy",
+     "explain_es": "Si el archivo tampoco tiene una copia, se conserva el último dato bueno.",
+     "explain_en": "If the archive has no copy either, the last good value is kept."
+    },
+    {
+     "from": "peru-b",
+     "to": "relay",
+     "kind": "data",
+     "label_es": "copia del Perú",
+     "label_en": "Peru copy",
+     "explain_es": "Hasta 7 días; aviso a las 36 h y relay-goal-missed si falta el PDF del comunicado o del informe.",
+     "explain_en": "Up to 7 days; warning at 36 h and relay-goal-missed if the communiqué or report PDF is missing."
+    },
+    {
+     "from": "n8n-b",
+     "to": "relay",
+     "kind": "data",
+     "label_es": "copia de n8n",
+     "label_en": "n8n copy",
+     "explain_es": "Hasta 72 h; aviso a las 36 h.",
+     "explain_en": "Up to 72 h; warning at 36 h."
+    },
+    {
+     "from": "manual-b",
+     "to": "relay",
+     "kind": "data",
+     "label_es": "PDF subido",
+     "label_en": "uploaded PDF",
+     "explain_es": "Se busca con la misma URL que el documento (o manual://enfen-informe/<id>).",
+     "explain_en": "Looked up with the document's own URL (or manual://enfen-informe/<id>)."
+    },
+    {
+     "from": "ia",
+     "to": "wayback",
+     "kind": "data",
+     "label_es": "CDX e id_",
+     "label_en": "CDX and id_",
+     "explain_es": "Pasados los 8 minutos de las fuentes oficiales ya no se consulta.",
+     "explain_en": "After the official sources' 8 minutes it is no longer queried."
+    },
+    {
+     "from": "live",
+     "to": "previous",
+     "kind": "data",
+     "label_es": "sources/<id>.json",
+     "label_en": "sources/<id>.json",
+     "explain_es": "El dato anterior se lee del sitio publicado; hasta 3 intentos para el histórico y el estado de los feeds.",
+     "explain_en": "The previous value is read from the published site; up to 3 tries for the history and the feed status."
+    },
+    {
+     "from": "direct",
+     "to": "parse",
+     "kind": "data",
+     "label_es": "la primera respuesta válida",
+     "label_en": "the first valid answer",
+     "explain_es": "Cualquier peldaño que responda (directo, copia, espejo o archivo) pasa al lector.",
+     "explain_en": "Any rung that answers (direct, copy, mirror or archive) goes to the reader."
+    },
+    {
+     "from": "previous",
+     "to": "acquired",
+     "kind": "fallback",
+     "label_es": "dato arrastrado",
+     "label_en": "carried value",
+     "explain_es": "Marcado carried, con la fecha en que se obtuvo de verdad.",
+     "explain_en": "Marked carried, with the date it was really obtained."
+    },
+    {
+     "from": "parse",
+     "to": "acquired",
+     "kind": "data",
+     "label_es": "dato leído",
+     "label_en": "parsed value",
+     "explain_es": "El dato, su huella de formato y sus avisos de plausibilidad.",
+     "explain_en": "The value, its format fingerprint and its plausibility warnings."
+    },
+    {
+     "from": "acquired",
+     "to": "events",
+     "kind": "data",
+     "label_es": "canal e intentos",
+     "label_en": "channel and attempts",
+     "explain_es": "Cada uso de un respaldo deja su incidencia con el detalle de los intentos.",
+     "explain_en": "Each use of a fallback leaves its incident with the attempts' detail."
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "El portal del ENFEN no responde desde EE. UU.",
+     "then_es": "El registro lo da al Perú: se usa la copia de data-peru y solo sin copia se intenta una vez; después la réplica de la DHN y el Internet Archive.",
+     "if_en": "The ENFEN portal does not answer from the US",
+     "then_en": "The registry gives it to Peru: the data-peru copy is used and only without a copy is it tried once; then the DHN mirror and the Internet Archive."
+    },
+    {
+     "if_es": "Una rama de copias no existe o no se puede bajar",
+     "then_es": "La carpeta va vacía y la corrida sigue con los demás respaldos; queda relay-missing o relay-n8n-missing.",
+     "if_en": "A copy branch does not exist or cannot be fetched",
+     "then_en": "The folder goes empty and the run continues with the other fallbacks; relay-missing or relay-n8n-missing is logged."
+    },
+    {
+     "if_es": "Un servidor responde muy lento o nada",
+     "then_es": "Cada pedido tiene un tiempo total; tras 3 fallos el servidor recibe un solo intento y tras 5 se omite en la corrida.",
+     "if_en": "A server answers very slowly or not at all",
+     "then_en": "Each request has a total time; after 3 failures the server gets a single try and after 5 it is skipped for the run."
+    },
+    {
+     "if_es": "Se agotan los 8 minutos",
+     "then_es": "No se pide nada más: cada fuente sigue con sus copias o con su dato anterior, y la corrida publica.",
+     "if_en": "The 8 minutes run out",
+     "then_en": "Nothing more is requested: each source goes on with its copies or its previous value, and the run publishes."
+    },
+    {
+     "if_es": "Un dato llega vencido",
+     "then_es": "Se publica con su fecha real y el sitio muestra «Dato actual no disponible»: nunca se presenta como vigente.",
+     "if_en": "A value arrives expired",
+     "then_en": "It is published with its real date and the site shows “Current value not available”: never as current."
+    },
+    {
+     "if_es": "Una fuente crítica no tiene dato ni anterior",
+     "then_es": "La corrida termina en critical y no se despliega: sigue el sitio de ayer.",
+     "if_en": "A critical source has no value and no previous one",
+     "then_en": "The run ends critical and nothing is deployed: yesterday's site stays."
+    }
+   ]
+  },
+  {
+   "id": "a5",
+   "title_es": "Actualización diaria: fuentes oficiales, series y señales",
+   "title_en": "Daily update: official sources, series and signals",
+   "subtitle_es": "observatory.yml corre el pipeline de Python (python -m enso.observatory) cada noche a las 23:37 Lima y cada vez que alguien lo pide. Lee cada fuente oficial, valida, arma las series y los estados y anota cada problema. Las noticias y los lugares están en el anexo A6; la publicación, en el A8.",
+   "subtitle_en": "observatory.yml runs the Python pipeline (python -m enso.observatory) every night at 23:37 Lima and whenever someone asks. It reads each official source, validates, builds the series and statuses and logs every problem. News and places are in annex A6; publication, in A8.",
+   "desc_es": "La actualización diaria: disparadores, preparación del job build, lectura del ENFEN y su informe técnico, NOAA, IGP e IMARPE, series, señal GRD, vigencia e incidencias.",
+   "desc_en": "The daily update: triggers, build job preparation, reading ENFEN and its technical report, NOAA, IGP and IMARPE, series, GRD signal, freshness and incidents.",
+   "covers": [
+    "observatory-workflow",
+    "official-parse",
+    "builder",
+    "event-log",
+    "reference-data"
+   ],
+   "simple": [
+    "s-pipeline"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 300,
+     "title_es": "Disparadores",
+     "title_en": "Triggers",
+     "sub_es": "GitHub Actions · una corrida a la vez",
+     "sub_en": "GitHub Actions · one run at a time"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Preparación (job build)",
+     "title_en": "Preparation (build job)",
+     "sub_es": "ubuntu-latest · Python 3.12 · Node 22 · 36 min",
+     "sub_en": "ubuntu-latest · Python 3.12 · Node 22 · 36 min"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Fuentes oficiales",
+     "title_en": "Official sources",
+     "sub_es": "enso/observatory.py · feeds/ · reports.py · pypdf",
+     "sub_en": "enso/observatory.py · feeds/ · reports.py · pypdf"
+    },
+    {
+     "id": "c4",
+     "w": 300,
+     "title_es": "Series, señales e incidencias",
+     "title_en": "Series, signals and incidents",
+     "sub_es": "Builder · signals.py · freshness.py · EventLog",
+     "sub_en": "Builder · signals.py · freshness.py · EventLog"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "cron",
+     "col": "c1",
+     "icon": "clock",
+     "group": "operations",
+     "name_es": "Cada noche 23:37 Lima",
+     "name_en": "Every night 23:37 Lima",
+     "what_es": "cron 37 4 * * * (04:37 UTC; el Perú no cambia de hora).",
+     "what_en": "cron 37 4 * * * (04:37 UTC; Peru has no daylight saving)."
+    },
+    {
+     "id": "push",
+     "col": "c1",
+     "icon": "commit",
+     "group": "people",
+     "name_es": "Fusión en main o a mano",
+     "name_en": "Merge to main or by hand",
+     "what_es": "Cada push a main publica (salvo cambios solo en .md o docs/). A mano se elige si se piden copias nuevas al Internet Archive.",
+     "what_en": "Every push to main publishes (except changes only in .md or docs/). By hand you choose whether to ask the Internet Archive for new copies."
+    },
+    {
+     "id": "dispatch",
+     "col": "c1",
+     "icon": "refresh",
+     "group": "channels",
+     "name_es": "enso-refresh",
+     "name_en": "enso-refresh",
+     "what_es": "repository_dispatch del recolector del Perú, de la consola de documentos o, si se activa, de n8n.",
+     "what_en": "repository_dispatch from the Peru collector, the documents console or, if enabled, n8n.",
+     "see": [
+      "a2",
+      "a7"
+     ]
+    },
+    {
+     "id": "wd",
+     "col": "c1",
+     "icon": "eye",
+     "group": "operations",
+     "name_es": "Vigilante",
+     "name_en": "Watchdog",
+     "what_es": "Relanza la corrida si el sitio tiene más de 30 h.",
+     "what_en": "Relaunches the run if the site is older than 30 h.",
+     "see": [
+      "a10"
+     ]
+    },
+    {
+     "id": "queue",
+     "col": "c1",
+     "icon": "layers",
+     "group": "operations",
+     "name_es": "Cola",
+     "name_en": "Queue",
+     "what_es": "Grupo enso-production-publication: una corrida a la vez y una en espera; la que está en curso nunca se cancela.",
+     "what_en": "Group enso-production-publication: one run at a time and one waiting; the one in progress is never cancelled."
+    },
+    {
+     "id": "tests",
+     "col": "c2",
+     "icon": "check",
+     "group": "pipeline",
+     "name_es": "Pruebas",
+     "name_en": "Tests",
+     "what_es": "pytest sin navegador: lectores contra respuestas reales e históricas, umbrales y una publicación completa sin red. Si fallan, no se publica.",
+     "what_en": "pytest without a browser: readers against real and historical answers, thresholds and a full offline publication. If they fail, nothing is published.",
+     "tech": [
+      "pytest"
+     ]
+    },
+    {
+     "id": "site-url",
+     "col": "c2",
+     "icon": "globe",
+     "group": "pipeline",
+     "name_es": "Dirección del sitio",
+     "name_en": "Site address",
+     "what_es": "DEPLOY_TARGET elige GitHub Pages o Cloudflare Pages; con Cloudflare la dirección sale del proyecto y las correcciones de lugar, de /api/geo/overrides.",
+     "what_en": "DEPLOY_TARGET picks GitHub Pages or Cloudflare Pages; with Cloudflare the address comes from the project and place corrections from /api/geo/overrides.",
+     "tech": [
+      "cloudflare_pages.py"
+     ]
+    },
+    {
+     "id": "inputs",
+     "col": "c2",
+     "icon": "download",
+     "group": "pipeline",
+     "name_es": "Copias e histórico",
+     "name_en": "Copies and history",
+     "what_es": "Baja data-peru, data-n8n y data-manual, la copia del histórico de noticias de data-archive y el estado de los feeds reader. Si algo falta, sigue y lo anota.",
+     "what_en": "Fetches data-peru, data-n8n and data-manual, the news-history copy from data-archive and the reader-feed state. If something is missing, it goes on and logs it.",
+     "tech": [
+      "git",
+      "gh api",
+      "actions/cache"
+     ],
+     "see": [
+      "a4"
+     ]
+    },
+    {
+     "id": "run",
+     "col": "c2",
+     "icon": "terminal",
+     "group": "pipeline",
+     "name_es": "python -m enso.observatory",
+     "name_en": "python -m enso.observatory",
+     "what_es": "--out public/data, --previous ${SITE_URL}data, las copias, el histórico y --fail-on critical.",
+     "what_en": "--out public/data, --previous ${SITE_URL}data, the copies, the history and --fail-on critical.",
+     "meta_es": "26 min de límite",
+     "meta_en": "26 min limit",
+     "tech": [
+      "Python 3.12",
+      "httpx"
+     ]
+    },
+    {
+     "id": "order",
+     "col": "c3",
+     "icon": "list",
+     "group": "pipeline",
+     "name_es": "Primero lo crítico",
+     "name_en": "Critical first",
+     "what_es": "ENFEN, ICEN y la discusión ENSO van primero: un mal día de NOAA no deja sin leer el comunicado. Luego las otras 14 fuentes, cada una con su escalera de respaldo.",
+     "what_en": "ENFEN, ICEN and the ENSO discussion go first: a bad NOAA day does not leave the communiqué unread. Then the other 14 sources, each with its fallback ladder.",
+     "see": [
+      "a4"
+     ]
+    },
+    {
+     "id": "enfen",
+     "col": "c3",
+     "icon": "pdf",
+     "group": "pipeline",
+     "name_es": "Último comunicado del ENFEN",
+     "name_en": "Latest ENFEN communiqué",
+     "what_es": "Une el listado del portal, la réplica de la DHN y la API; sondea los números siguientes al último conocido (hasta 6) y lee el PDF: número, estado, nivel, fechas, resumen y perspectiva por región.",
+     "what_en": "Joins the portal listing, the DHN mirror and the API; probes the numbers after the latest known one (up to 6) and reads the PDF: number, status, level, dates, summary and outlook by region.",
+     "tech": [
+      "pypdf",
+      "feeds/peru.py"
+     ]
+    },
+    {
+     "id": "informe",
+     "col": "c3",
+     "icon": "pdf",
+     "group": "pipeline",
+     "name_es": "Informe técnico",
+     "name_en": "Technical report",
+     "what_es": "Una vez por comunicado (10 a 20 MB): ICEN temporal y probabilidades mensuales, con página y cita. Se valida con un esquema, sumas al 100 % y el ICEN del IGP; si no llega por ninguna ruta, queda pendiente en la consola.",
+     "what_en": "Once per communiqué (10 to 20 MB): provisional ICEN and monthly probabilities, with page and quote. Validated with a schema, sums to 100 % and IGP's ICEN; if no route brings it, it waits in the console.",
+     "tech": [
+      "reports.py"
+     ],
+     "see": [
+      "a7"
+     ]
+    },
+    {
+     "id": "llm",
+     "col": "c3",
+     "icon": "sparkle",
+     "group": "pipeline",
+     "name_es": "Segunda lectura opcional",
+     "name_en": "Optional second reading",
+     "what_es": "Solo si el lector determinista falla y hay ENSO_LLM_EXTRACT_URL: el extractor de n8n propone, el esquema revisa y nada se publica sin revisión.",
+     "what_en": "Only if the deterministic reader fails and ENSO_LLM_EXTRACT_URL is set: the n8n extractor proposes, the schema checks and nothing is published without review.",
+     "see": [
+      "a3"
+     ]
+    },
+    {
+     "id": "others",
+     "col": "c3",
+     "icon": "wave",
+     "group": "pipeline",
+     "name_es": "NOAA, IGP e IMARPE",
+     "name_en": "NOAA, IGP and IMARPE",
+     "what_es": "Lectores por encabezados, no por posiciones: CPC y PSL en texto, la discusión ENSO en HTML, el ICEN, el D20 de GODAS (rango HTTP del GRIB) y el boletín del IMARPE (domingos).",
+     "what_en": "Readers by headers, not positions: CPC and PSL text, the ENSO discussion in HTML, the ICEN, GODAS D20 (HTTP range of the GRIB) and IMARPE's bulletin (Sundays).",
+     "tech": [
+      "cpc.py",
+      "godas.py",
+      "imarpe_bsobp.py"
+     ]
+    },
+    {
+     "id": "drift",
+     "col": "c3",
+     "icon": "shield",
+     "group": "pipeline",
+     "name_es": "Huella del formato",
+     "name_en": "Format fingerprint",
+     "what_es": "Cada lector devuelve una huella (cabeceras, columnas, patrón). Si cambia respecto de ayer queda format-drift; si ya no se puede leer, FormatChanged y el dato no se publica.",
+     "what_en": "Each reader returns a fingerprint (headers, columns, pattern). If it changes from yesterday, format-drift; if it can no longer be read, FormatChanged and the value is not published."
+    },
+    {
+     "id": "ref",
+     "col": "c4",
+     "icon": "map",
+     "group": "stores",
+     "name_es": "Datos de referencia",
+     "name_en": "Reference data",
+     "what_es": "Categorías ICEN (Nota Técnica ENFEN 01-2024), umbrales del equipo GRD (borrador transcrito), UBIGEO y límites del IGN.",
+     "what_en": "ICEN categories (ENFEN Technical Note 01-2024), GRD team thresholds (transcribed draft), UBIGEO and IGN boundaries.",
+     "tech": [
+      "YAML",
+      "JSON"
+     ]
+    },
+    {
+     "id": "builder",
+     "col": "c4",
+     "icon": "chart",
+     "group": "pipeline",
+     "name_es": "Series y estados",
+     "name_en": "Series and statuses",
+     "what_es": "23 series con último valor, antigüedad y categoría, el semanal por región Niño, los estados de ENFEN y NOAA y los eventos ICEN (+0,5 o −0,7 al menos 3 meses).",
+     "what_en": "23 series with latest value, age and category, the weekly data by Niño region, the ENFEN and NOAA statuses and ICEN events (+0.5 or −0.7 for at least 3 months).",
+     "tech": [
+      "Builder",
+      "signals.py"
+     ]
+    },
+    {
+     "id": "grd",
+     "col": "c4",
+     "icon": "alert",
+     "group": "pipeline",
+     "name_es": "Señal GRD",
+     "name_en": "GRD signal",
+     "what_es": "Normal, amarillo, rojo, sin clasificar o sin dato para cada indicador: TSM costera y de cuenca, vientos, termoclina (D20 de GODAS) y SOI.",
+     "what_en": "Normal, yellow, red, unclassified or no data for each indicator: coastal and basin SST, winds, thermocline (GODAS D20) and SOI."
+    },
+    {
+     "id": "fresh",
+     "col": "c4",
+     "icon": "clock",
+     "group": "pipeline",
+     "name_es": "Vigencia de cada dato",
+     "name_en": "Freshness of each value",
+     "what_es": "freshness.py marca cada dato al día, atrasado o vencido según el calendario de su institución; un vencido nunca se muestra como vigente.",
+     "what_en": "freshness.py marks each value current, late or expired by its institution's calendar; an expired one is never shown as current."
+    },
+    {
+     "id": "log",
+     "col": "c4",
+     "icon": "list",
+     "group": "pipeline",
+     "name_es": "Registro de incidencias",
+     "name_en": "Incident log",
+     "what_es": "Cada problema con severidad (info, warning, error, critical), fuente, etapa, código y huella; incluye la salud de las copias del Perú y de n8n.",
+     "what_en": "Each problem with severity (info, warning, error, critical), source, stage, code and fingerprint; includes the health of the Peru and n8n copies.",
+     "see": [
+      "a10"
+     ]
+    }
+   ],
+   "edges": [
+    {
+     "from": "cron",
+     "to": "queue",
+     "kind": "trigger",
+     "label_es": "programada",
+     "label_en": "scheduled",
+     "explain_es": "La corrida de cada noche.",
+     "explain_en": "The nightly run.",
+     "when_es": "diario 23:37 Lima",
+     "when_en": "daily 23:37 Lima"
+    },
+    {
+     "from": "push",
+     "to": "queue",
+     "kind": "human",
+     "label_es": "fusión o a mano",
+     "label_en": "merge or by hand",
+     "explain_es": "Un cambio en main se publica enseguida.",
+     "explain_en": "A change on main is published right away."
+    },
+    {
+     "from": "dispatch",
+     "to": "queue",
+     "kind": "trigger",
+     "label_es": "hay una copia nueva",
+     "label_en": "a new copy exists",
+     "explain_es": "No hay que esperar a las 23:37 para usar la copia del Perú o un PDF subido.",
+     "explain_en": "No need to wait for 23:37 to use the Peru copy or an uploaded PDF."
+    },
+    {
+     "from": "wd",
+     "to": "queue",
+     "kind": "trigger",
+     "label_es": "sitio atrasado",
+     "label_en": "site behind",
+     "explain_es": "Salvo que haya una corrida en curso o una relanzada en las últimas 6 h.",
+     "explain_en": "Unless a run is in progress or one was relaunched in the last 6 h."
+    },
+    {
+     "from": "queue",
+     "to": "tests",
+     "kind": "trigger",
+     "label_es": "empieza el job build",
+     "label_en": "the build job starts",
+     "explain_es": "Si ya hay una corrida, la nueva espera su turno.",
+     "explain_en": "If a run is already going, the new one waits its turn."
+    },
+    {
+     "from": "tests",
+     "to": "site-url",
+     "kind": "data",
+     "label_es": "pruebas pasan",
+     "label_en": "tests pass",
+     "explain_es": "Sin pruebas verdes no se sigue.",
+     "explain_en": "Without green tests it does not go on."
+    },
+    {
+     "from": "site-url",
+     "to": "inputs",
+     "kind": "data",
+     "label_es": "dirección resuelta",
+     "label_en": "address resolved",
+     "explain_es": "La dirección decide de dónde se lee la publicación anterior y las correcciones.",
+     "explain_en": "The address decides where the previous publication and the corrections are read from."
+    },
+    {
+     "from": "inputs",
+     "to": "run",
+     "kind": "data",
+     "label_es": "carpetas de copias",
+     "label_en": "copy folders",
+     "explain_es": "Las carpetas van aunque estén vacías: el pipeline sabe qué falta y lo anota.",
+     "explain_en": "The folders go even if empty: the pipeline knows what is missing and logs it."
+    },
+    {
+     "from": "run",
+     "to": "order",
+     "kind": "trigger",
+     "label_es": "lee las fuentes",
+     "label_en": "reads the sources",
+     "explain_es": "8 minutos para todas las fuentes oficiales.",
+     "explain_en": "8 minutes for all official sources."
+    },
+    {
+     "from": "order",
+     "to": "enfen",
+     "kind": "data",
+     "label_es": "comunicados del ENFEN",
+     "label_en": "ENFEN communiqués",
+     "explain_es": "El listado de comunicados, con su escalera de respaldo.",
+     "explain_en": "The communiqué listing, with its fallback ladder."
+    },
+    {
+     "from": "enfen",
+     "to": "informe",
+     "kind": "data",
+     "label_es": "comunicado vigente",
+     "label_en": "current communiqué",
+     "explain_es": "El informe se elige por fecha, no por número, y se baja una sola vez.",
+     "explain_en": "The report is chosen by date, not number, and downloaded only once."
+    },
+    {
+     "from": "informe",
+     "to": "llm",
+     "kind": "fallback",
+     "label_es": "el lector no entiende",
+     "label_en": "the reader fails",
+     "explain_es": "La propuesta del modelo queda para revisión; nunca se publica sola.",
+     "explain_en": "The model's proposal waits for review; it is never published on its own."
+    },
+    {
+     "from": "order",
+     "to": "others",
+     "kind": "data",
+     "label_es": "las otras 14 fuentes",
+     "label_en": "the other 14 sources",
+     "explain_es": "NOAA, el ICEN y el boletín del IMARPE, cada una con su lector.",
+     "explain_en": "NOAA, the ICEN and IMARPE's bulletin, each with its reader."
+    },
+    {
+     "from": "others",
+     "to": "drift",
+     "kind": "data",
+     "label_es": "datos leídos",
+     "label_en": "parsed data",
+     "explain_es": "Con su huella de formato y sus avisos de rango.",
+     "explain_en": "With their format fingerprint and range warnings."
+    },
+    {
+     "from": "drift",
+     "to": "builder",
+     "kind": "data",
+     "label_es": "válidos o arrastrados",
+     "label_en": "valid or carried",
+     "explain_es": "Cada fuente aporta su dato fresco o el último bueno, con su fecha real.",
+     "explain_en": "Each source brings its fresh value or the last good one, with its real date."
+    },
+    {
+     "from": "ref",
+     "to": "builder",
+     "kind": "data",
+     "label_es": "umbrales y categorías",
+     "label_en": "thresholds and categories",
+     "explain_es": "Las categorías y la señal salen de Python; el navegador solo agrega ayudas de lectura.",
+     "explain_en": "Categories and the signal come from Python; the browser only adds reading aids."
+    },
+    {
+     "from": "builder",
+     "to": "grd",
+     "kind": "data",
+     "label_es": "últimos valores",
+     "label_en": "latest values",
+     "explain_es": "La señal usa OISST, vientos, D20 y SOI.",
+     "explain_en": "The signal uses OISST, winds, D20 and SOI."
+    },
+    {
+     "from": "grd",
+     "to": "fresh",
+     "kind": "data",
+     "label_es": "estado por indicador",
+     "label_en": "status by indicator",
+     "explain_es": "Todo pasa por la vigencia antes de publicarse.",
+     "explain_en": "Everything goes through freshness before being published."
+    },
+    {
+     "from": "drift",
+     "to": "log",
+     "kind": "data",
+     "label_es": "problemas de cada etapa",
+     "label_en": "each stage's problems",
+     "explain_es": "format-drift, format-changed, unreachable, carried-forward y la salud de las copias.",
+     "explain_en": "format-drift, format-changed, unreachable, carried-forward and the health of the copies."
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "Las pruebas fallan",
+     "then_es": "No se corre el pipeline ni se publica; sigue el sitio de ayer y se abre «La actualización diaria falló».",
+     "if_en": "Tests fail",
+     "then_en": "The pipeline does not run and nothing is published; yesterday's site stays and “The daily update failed” opens."
+    },
+    {
+     "if_es": "El comunicado o su informe no llegan por ninguna ruta",
+     "then_es": "Queda pendiente en la consola de documentos (manual-download-needed) y se conserva el último bueno, marcado.",
+     "if_en": "The communiqué or its report arrive by no route",
+     "then_en": "It waits in the documents console (manual-download-needed) and the last good one is kept, marked."
+    },
+    {
+     "if_es": "Un valor del informe no cuadra",
+     "then_es": "No se publica esa parte (por ejemplo, probabilidades que no suman 100 %); queda la incidencia y el último valor bueno.",
+     "if_en": "A report value does not add up",
+     "then_en": "That part is not published (for example, probabilities not adding to 100 %); the incident and the last good value stay."
+    },
+    {
+     "if_es": "El formato de una fuente cambia",
+     "then_es": "Si aún se puede leer, format-drift para revisar; si no, el dato queda en validación y se usa el anterior.",
+     "if_en": "A source's format changes",
+     "then_en": "If it can still be read, format-drift for review; if not, the value stays in validation and the previous one is used."
+    },
+    {
+     "if_es": "El pipeline pasa de 26 minutos",
+     "then_es": "Falla ese paso, pero el estado de los feeds reader y el informe se guardan igual (always()); no se despliega.",
+     "if_en": "The pipeline exceeds 26 minutes",
+     "then_en": "That step fails, but the reader-feed state and the report are saved anyway (always()); nothing is deployed."
+    },
+    {
+     "if_es": "Llegan dos pedidos a la vez",
+     "then_es": "Una corrida a la vez y una en espera: nunca dos publicaciones se pisan.",
+     "if_en": "Two requests arrive at once",
+     "then_en": "One run at a time and one waiting: two publications never overlap."
+    }
+   ]
+  },
+  {
+   "id": "a6",
+   "title_es": "Noticias y alertas: lectura, filtro, histórico y lugar",
+   "title_en": "News and alerts: reading, filtering, history and place",
+   "subtitle_es": "Cada corrida lee 168 feeds, se queda con las notas sobre El Niño o sobre un peligro en el Perú, las suma a un histórico que nunca borra y ubica cada una en su departamento, provincia y distrito. Los revisores corrigen el lugar en la consola (anexo A7).",
+   "subtitle_en": "Every run reads 168 feeds, keeps the notes about El Niño or about a hazard in Peru, appends them to a history that never deletes and places each one in its department, province and district. Reviewers fix the place in the console (annex A7).",
+   "desc_es": "Las noticias y alertas en la corrida diaria: descarga, lectura tolerante, filtro de relevancia y peligros, histórico de solo anexar con su copia y ubicación por UBIGEO con las correcciones de la consola.",
+   "desc_en": "News and alerts in the daily run: download, tolerant parsing, relevance and hazard filter, append-only history with its copy, and UBIGEO placement with the console's corrections.",
+   "covers": [
+    "news-collect",
+    "news-history",
+    "geo-place"
+   ],
+   "simple": [
+    "s-noticias",
+    "s-pipeline"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 300,
+     "title_es": "Lectura",
+     "title_en": "Reading",
+     "sub_es": "8 hilos · en serie por servidor · 60 s por feed",
+     "sub_en": "8 threads · serial per server · 60 s per feed"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Filtro y peligros",
+     "title_en": "Filter and hazards",
+     "sub_es": "news.py · feedparse.py · hazardparse.py",
+     "sub_en": "news.py · feedparse.py · hazardparse.py"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Histórico",
+     "title_en": "History",
+     "sub_es": "solo anexar · copia en data-archive",
+     "sub_en": "append-only · copy in data-archive"
+    },
+    {
+     "id": "c4",
+     "w": 300,
+     "title_es": "Lugar y grupos",
+     "title_en": "Place and clusters",
+     "sub_es": "geo.py · limites.py · geopoly.py · geo_overrides.py",
+     "sub_en": "geo.py · limites.py · geopoly.py · geo_overrides.py"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "feeds",
+     "col": "c1",
+     "icon": "rss",
+     "group": "sources",
+     "name_es": "168 feeds",
+     "name_en": "168 feeds",
+     "what_es": "116 de medios y del Estado, 38 búsquedas de Google Noticias y 14 fuentes de alertas, con el plan del registro.",
+     "what_en": "116 media and government feeds, 38 Google News searches and 14 alert sources, with the registry's plan.",
+     "see": [
+      "a1"
+     ]
+    },
+    {
+     "id": "reader",
+     "col": "c1",
+     "icon": "history",
+     "group": "pipeline",
+     "name_es": "Feeds reader",
+     "name_en": "Reader feeds",
+     "what_es": "Google Noticias, Noticias ONU y Sin Rodeos: un solo intento, como mucho cada 20 h y solo en main; entre lecturas queda el estado de la última.",
+     "what_en": "Google News, UN News and Sin Rodeos: a single try, at most every 20 h and only on main; between reads the last state stays.",
+     "see": [
+      "a4"
+     ]
+    },
+    {
+     "id": "fetch",
+     "col": "c1",
+     "icon": "download",
+     "group": "pipeline",
+     "name_es": "Descarga de feeds",
+     "name_en": "Feed download",
+     "what_es": "Cliente propio con menos espera que el de las fuentes oficiales: 2 intentos, 1 s entre pedidos al mismo servidor, 60 s por feed. Si un feed falla, usa la copia más reciente del Perú o de n8n.",
+     "what_en": "Its own client with shorter waits than the official one: 2 tries, 1 s between requests to the same server, 60 s per feed. If a feed fails, it uses the newest Peru or n8n copy.",
+     "tech": [
+      "httpx",
+      "Fetcher"
+     ]
+    },
+    {
+     "id": "status",
+     "col": "c1",
+     "icon": "list",
+     "group": "pipeline",
+     "name_es": "Estado de cada feed",
+     "name_en": "Status of each feed",
+     "what_es": "Responde o no, entradas, relevantes, fecha de la más reciente y si sigue activo (news/feeds.json).",
+     "what_en": "Answers or not, entries, relevant ones, newest date and whether still active (news/feeds.json)."
+    },
+    {
+     "id": "parse",
+     "col": "c2",
+     "icon": "code",
+     "group": "pipeline",
+     "name_es": "Lectura tolerante",
+     "name_en": "Tolerant parsing",
+     "what_es": "RSS 2.0 y 1.0, Atom, JSON Feed y listados de gob.pe: repara XML mal formado, fechas y codificaciones; tope de 5 MB por feed.",
+     "what_en": "RSS 2.0 and 1.0, Atom, JSON Feed and gob.pe listings: repairs malformed XML, dates and encodings; 5 MB cap per feed.",
+     "tech": [
+      "feedparse.py"
+     ]
+    },
+    {
+     "id": "hazards",
+     "col": "c2",
+     "icon": "alert",
+     "group": "pipeline",
+     "name_es": "Alertas sin RSS",
+     "name_en": "Alerts without RSS",
+     "what_es": "Convierte USGS (GeoJSON), DHN, PTWC, CENVUL, Telegram y capas ArcGIS del SENAMHI, el COEN del INDECI y los focos de calor de FIRMS en notas con lugar y severidad.",
+     "what_en": "Turns USGS (GeoJSON), DHN, PTWC, CENVUL, Telegram and SENAMHI ArcGIS layers, INDECI's COEN and FIRMS hot spots into notes with place and severity.",
+     "tech": [
+      "hazardparse.py",
+      "severity.py"
+     ]
+    },
+    {
+     "id": "relevance",
+     "col": "c2",
+     "icon": "filter",
+     "group": "pipeline",
+     "name_es": "Relevancia",
+     "name_en": "Relevance",
+     "what_es": "Medios generales: un término del ENSO o el peligro en el titular. Medios locales, del Estado y de peligros del Perú: basta un peligro. Descarta empleo, accidentes, sismos menores de 4 y simulacros.",
+     "what_en": "General media: an ENSO term or the hazard in the headline. Local, government and Peruvian hazard feeds: a hazard is enough. Drops jobs, accidents, quakes under 4 and drills."
+    },
+    {
+     "id": "tags",
+     "col": "c2",
+     "icon": "list",
+     "group": "pipeline",
+     "name_es": "13 tipos de peligro",
+     "name_en": "13 hazard types",
+     "what_es": "Lluvias, inundación, huaico, sequía, calor, frío, viento, oleaje, sismo, volcán, incendio, emergencia y salud, además de El Niño o La Niña.",
+     "what_en": "Rain, flood, debris flow, drought, heat, cold, wind, swell, earthquake, volcano, fire, emergency and health, plus El Niño or La Niña."
+    },
+    {
+     "id": "prev",
+     "col": "c3",
+     "icon": "monitor",
+     "group": "stores",
+     "name_es": "Histórico publicado",
+     "name_en": "Published history",
+     "what_es": "news/items.jsonl de la publicación anterior (3 intentos). Solo con 404 en el sitio y en data-archive se trata como primera publicación.",
+     "what_en": "news/items.jsonl from the previous publication (3 tries). Only a 404 on the site and in data-archive counts as a first publication.",
+     "see": [
+      "a9"
+     ]
+    },
+    {
+     "id": "backup",
+     "col": "c3",
+     "icon": "archive",
+     "group": "stores",
+     "name_es": "Copia en data-archive",
+     "name_en": "Copy in data-archive",
+     "what_es": "sources/news/items.jsonl.gz, la unión de todo lo publicado: le suma al histórico las notas que le falten o lo rehace si el sitio no responde.",
+     "what_en": "sources/news/items.jsonl.gz, the union of everything published: adds any missing notes to the history or rebuilds it if the site does not answer.",
+     "see": [
+      "a8"
+     ]
+    },
+    {
+     "id": "append",
+     "col": "c3",
+     "icon": "layers",
+     "group": "pipeline",
+     "name_es": "Solo anexar",
+     "name_en": "Append only",
+     "what_es": "Agrega al final las notas nuevas (id = hash del enlace y el titular) y nunca reescribe las anteriores; CSV protegido contra fórmulas.",
+     "what_en": "Appends the new notes (id = hash of link and headline) and never rewrites earlier ones; CSV protected against formulas.",
+     "meta_es": "aviso a los 20 MiB",
+     "meta_en": "warning at 20 MiB",
+     "tech": [
+      "JSON Lines",
+      "CSV"
+     ]
+    },
+    {
+     "id": "locate",
+     "col": "c4",
+     "icon": "pin",
+     "group": "pipeline",
+     "name_es": "Ubicación (UBIGEO)",
+     "name_en": "Placement (UBIGEO)",
+     "what_es": "Por campos de la fuente, por coordenadas (punto en polígono sobre los límites del IGN) o por el texto (25 departamentos, 196 provincias, 1893 distritos, con reglas contra falsos positivos). Confianza de 0,35 a 0,97.",
+     "what_en": "By the source's fields, by coordinates (point in polygon on IGN boundaries) or by the text (25 departments, 196 provinces, 1893 districts, with rules against false positives). Confidence 0.35 to 0.97.",
+     "tech": [
+      "geo.py",
+      "limites.py"
+     ]
+    },
+    {
+     "id": "overrides",
+     "col": "c4",
+     "icon": "users",
+     "group": "people",
+     "name_es": "Correcciones de la consola",
+     "name_en": "Console corrections",
+     "what_es": "Las correcciones vigentes (/api/geo/overrides en Cloudflare) tienen la última palabra; si la consola no responde se usan las ya publicadas.",
+     "what_en": "Current corrections (/api/geo/overrides on Cloudflare) have the last word; if the console does not answer, the published ones are used.",
+     "see": [
+      "a7"
+     ]
+    },
+    {
+     "id": "publish",
+     "col": "c4",
+     "icon": "check",
+     "group": "pipeline",
+     "name_es": "Qué se publica",
+     "name_en": "What gets published",
+     "what_es": "Lugares con confianza de 0,5 o más; lo menor a 0,8 va a revisión. geo/items.json: 120 días, hasta 4000 notas.",
+     "what_en": "Places with confidence 0.5 or more; below 0.8 goes to review. geo/items.json: 120 days, up to 4000 notes."
+    },
+    {
+     "id": "clusters",
+     "col": "c4",
+     "icon": "merge",
+     "group": "pipeline",
+     "name_es": "Grupos de notas",
+     "name_en": "Note clusters",
+     "what_es": "Notas de los últimos 14 días con 3 palabras en común y el 60 % del titular más corto, en la misma región: titular más temprano, medios, resumen y enlaces.",
+     "what_en": "Notes from the last 14 days sharing 3 words and 60 % of the shorter headline, in the same region: earliest headline, outlets, summary and links."
+    }
+   ],
+   "edges": [
+    {
+     "from": "feeds",
+     "to": "reader",
+     "kind": "trigger",
+     "label_es": "40 prohibidos por robots.txt",
+     "label_en": "40 forbidden by robots.txt",
+     "explain_es": "Los feeds reader siguen su propio ritmo; los demás se piden en cada corrida.",
+     "explain_en": "Reader feeds follow their own pace; the rest are requested every run."
+    },
+    {
+     "from": "reader",
+     "to": "fetch",
+     "kind": "trigger",
+     "label_es": "cuando toca",
+     "label_en": "when due",
+     "explain_es": "Si no pasaron 20 h desde el último pedido, no se piden y queda su estado anterior.",
+     "explain_en": "If 20 h have not passed since the last request, they are not requested and their previous state stays."
+    },
+    {
+     "from": "feeds",
+     "to": "fetch",
+     "kind": "data",
+     "label_es": "128 feeds en cada corrida",
+     "label_en": "128 feeds every run",
+     "explain_es": "Uno tras otro por servidor, por cortesía; 10 minutos para empezar todos.",
+     "explain_en": "One after another per server, out of courtesy; 10 minutes to start them all."
+    },
+    {
+     "from": "fetch",
+     "to": "status",
+     "kind": "data",
+     "label_es": "resultado por feed",
+     "label_en": "result per feed",
+     "explain_es": "Un feed sin entradas nuevas en mucho tiempo se marca inactivo.",
+     "explain_en": "A feed with no new entries for a long time is marked inactive."
+    },
+    {
+     "from": "fetch",
+     "to": "parse",
+     "kind": "data",
+     "label_es": "feeds de noticias",
+     "label_en": "news feeds",
+     "explain_es": "XML, JSON o HTML tal como llegaron.",
+     "explain_en": "XML, JSON or HTML as they arrived."
+    },
+    {
+     "from": "fetch",
+     "to": "hazards",
+     "kind": "data",
+     "label_es": "fuentes de alertas",
+     "label_en": "alert sources",
+     "explain_es": "Cada fuente de alertas con su formato propio.",
+     "explain_en": "Each alert source with its own format."
+    },
+    {
+     "from": "parse",
+     "to": "relevance",
+     "kind": "data",
+     "label_es": "entradas",
+     "label_en": "entries",
+     "explain_es": "Titular, resumen, fecha y enlace.",
+     "explain_en": "Headline, summary, date and link."
+    },
+    {
+     "from": "hazards",
+     "to": "relevance",
+     "kind": "data",
+     "label_es": "avisos con lugar",
+     "label_en": "alerts with place",
+     "explain_es": "Los avisos traen su lugar y severidad desde la fuente.",
+     "explain_en": "Alerts bring their place and severity from the source."
+    },
+    {
+     "from": "relevance",
+     "to": "tags",
+     "kind": "data",
+     "label_es": "notas relevantes",
+     "label_en": "relevant notes",
+     "explain_es": "Solo las que pasan el filtro.",
+     "explain_en": "Only those that pass the filter."
+    },
+    {
+     "from": "tags",
+     "to": "append",
+     "kind": "data",
+     "label_es": "notas nuevas",
+     "label_en": "new notes",
+     "explain_es": "Una nota ya vista no se agrega otra vez.",
+     "explain_en": "A note already seen is not added again."
+    },
+    {
+     "from": "prev",
+     "to": "append",
+     "kind": "data",
+     "label_es": "histórico anterior",
+     "label_en": "previous history",
+     "explain_es": "La base sobre la que se anexa.",
+     "explain_en": "The base the new notes are appended to."
+    },
+    {
+     "from": "backup",
+     "to": "append",
+     "kind": "fallback",
+     "label_es": "notas que falten o rehacer",
+     "label_en": "missing notes or rebuild",
+     "explain_es": "news-history-restored si suma notas; news-history-missing si tiene que rehacerlo.",
+     "explain_en": "news-history-restored if it adds notes; news-history-missing if it has to rebuild."
+    },
+    {
+     "from": "append",
+     "to": "locate",
+     "kind": "data",
+     "label_es": "todo el histórico",
+     "label_en": "the whole history",
+     "explain_es": "Se vuelve a ubicar todo con las reglas actuales: una mejora vale también para las notas viejas.",
+     "explain_en": "Everything is placed again with the current rules: an improvement also applies to old notes."
+    },
+    {
+     "from": "locate",
+     "to": "overrides",
+     "kind": "data",
+     "label_es": "lugar automático",
+     "label_en": "automatic place",
+     "explain_es": "Con su método, confianza y evidencia.",
+     "explain_en": "With its method, confidence and evidence."
+    },
+    {
+     "from": "overrides",
+     "to": "publish",
+     "kind": "data",
+     "label_es": "lugar final",
+     "label_en": "final place",
+     "explain_es": "Gana la corrección con la revisión mayor.",
+     "explain_en": "The correction with the highest revision wins."
+    },
+    {
+     "from": "publish",
+     "to": "clusters",
+     "kind": "data",
+     "label_es": "notas ubicadas",
+     "label_en": "placed notes",
+     "explain_es": "Los grupos se arman con las notas recientes.",
+     "explain_en": "Clusters are built from recent notes."
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "Un feed no responde o llega roto",
+     "then_es": "Se usa la copia más reciente del Perú o de n8n; si no hay, queda como caído en news/feeds.json y la corrida sigue.",
+     "if_en": "A feed does not answer or arrives broken",
+     "then_en": "The newest Peru or n8n copy is used; if none, it shows as down in news/feeds.json and the run goes on."
+    },
+    {
+     "if_es": "Falla toda la lectura de noticias",
+     "then_es": "Se sirven las notas anteriores y las últimas alertas conocidas; las 14 fuentes de alertas figuran como no leídas, para que el silencio no parezca calma.",
+     "if_en": "All news reading fails",
+     "then_en": "The previous notes and the latest known alerts are served; the 14 alert sources show as unread, so silence does not look like calm."
+    },
+    {
+     "if_es": "El histórico publicado no se puede leer",
+     "then_es": "Se rehace con la copia de data-archive; sin copia, se publican solo las de hoy marcadas restarted y la corrida siguiente lo completa.",
+     "if_en": "The published history cannot be read",
+     "then_en": "It is rebuilt from the data-archive copy; with no copy, only today's are published marked restarted and the next run completes it."
+    },
+    {
+     "if_es": "Una corrida pidió los feeds reader y no publicó",
+     "then_es": "Su estado y sus notas quedan en la caché de Actions: la siguiente no los pide antes de 20 h y no pierde esas notas.",
+     "if_en": "A run requested the reader feeds and did not publish",
+     "then_en": "Their state and notes stay in the Actions cache: the next run does not request them before 20 h and keeps those notes."
+    },
+    {
+     "if_es": "La consola no responde o el sitio está en GitHub Pages",
+     "then_es": "Se aplican las correcciones ya publicadas en geo/overrides.json.",
+     "if_en": "The console does not answer or the site is on GitHub Pages",
+     "then_en": "The corrections already published in geo/overrides.json are applied."
+    },
+    {
+     "if_es": "El histórico crece demasiado",
+     "then_es": "Aviso news-history-large a los 20 MiB (Cloudflare sirve hasta 25 MiB por archivo); la copia comprimida deja de crecer, con aviso, antes de 90 MiB.",
+     "if_en": "The history grows too large",
+     "then_en": "news-history-large warning at 20 MiB (Cloudflare serves up to 25 MiB per file); the compressed copy stops growing, with a warning, before 90 MiB."
+    }
+   ]
+  },
+  {
+   "id": "a7",
+   "title_es": "Consolas de revisión en Cloudflare",
+   "title_en": "Review consoles on Cloudflare",
+   "subtitle_es": "Dos páginas para personas autorizadas, servidas por el mismo sitio: la consola de lugares, donde se confirma o corrige el lugar de cada nota, y la de documentos, donde un administrador sube el PDF que ninguna ruta automática trae. Sus API son Pages Functions de Cloudflare con una base D1; nada de esto corre en GitHub Pages.",
+   "subtitle_en": "Two pages for authorized people, served by the same site: the places console, where each item's place is confirmed or corrected, and the documents console, where an administrator uploads the PDF no automatic route brings. Their APIs are Cloudflare Pages Functions with a D1 database; none of this runs on GitHub Pages.",
+   "desc_es": "Cuentas y sesión, correcciones de lugares guardadas en D1 y leídas por el pipeline, y la subida de PDF a la rama data-manual con su aviso de actualización.",
+   "desc_en": "Accounts and session, place corrections stored in D1 and read by the pipeline, and PDF upload to the data-manual branch with its refresh request.",
+   "covers": [
+    "geo-console",
+    "doc-console",
+    "reviewers",
+    "data-manual-branch"
+   ],
+   "simple": [
+    "s-consola"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 260,
+     "title_es": "Personas",
+     "title_en": "People",
+     "sub_es": "cuentas en el secreto GEO_USERS",
+     "sub_en": "accounts in the GEO_USERS secret"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Páginas (/admin/)",
+     "title_en": "Pages (/admin/)",
+     "sub_es": "HTML y JavaScript sin compilación",
+     "sub_en": "HTML and JavaScript, no build step"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "API en Cloudflare",
+     "title_en": "API on Cloudflare",
+     "sub_es": "Pages Functions · D1 (GEO_DB) · plan gratuito",
+     "sub_en": "Pages Functions · D1 (GEO_DB) · free plan"
+    },
+    {
+     "id": "c4",
+     "w": 300,
+     "title_es": "Hacia el pipeline",
+     "title_en": "Towards the pipeline",
+     "sub_es": "API de GitHub · rama data-manual · repository_dispatch",
+     "sub_en": "GitHub API · data-manual branch · repository_dispatch"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "owner",
+     "col": "c1",
+     "icon": "key",
+     "group": "people",
+     "name_es": "Propietario",
+     "name_en": "Owner",
+     "what_es": "Crea las cuentas con python -m tools.geo_users (hash PBKDF2-SHA256 de 5 000 iteraciones) y las guarda en el secreto GEO_USERS de Cloudflare: las contraseñas nunca se guardan.",
+     "what_en": "Creates accounts with python -m tools.geo_users (PBKDF2-SHA256 hash, 5,000 iterations) and stores them in the GEO_USERS secret on Cloudflare: passwords are never stored.",
+     "tech": [
+      "Python",
+      "wrangler"
+     ]
+    },
+    {
+     "id": "reviewers",
+     "col": "c1",
+     "icon": "users",
+     "group": "people",
+     "name_es": "Revisores (rol tester)",
+     "name_en": "Reviewers (tester role)",
+     "what_es": "Revisan las notas dudosas (por ejemplo, confianza menor a 0,8) y fijan, confirman o descartan su lugar.",
+     "what_en": "Review doubtful items (for example, confidence below 0.8) and set, confirm or dismiss their place."
+    },
+    {
+     "id": "admin",
+     "col": "c1",
+     "icon": "user",
+     "group": "people",
+     "name_es": "Administrador (rol admin)",
+     "name_en": "Administrator (admin role)",
+     "what_es": "Además de revisar, sube los PDF que faltan. La DHN pide verificación humana: la persona la pasa en su navegador y baja el documento ella misma.",
+     "what_en": "Besides reviewing, uploads missing PDFs. The DHN asks for human verification: the person passes it in their browser and downloads the document themselves."
+    },
+    {
+     "id": "geo-page",
+     "col": "c2",
+     "icon": "map",
+     "group": "site",
+     "name_es": "Consola de lugares",
+     "name_en": "Places console",
+     "what_es": "Lista las notas de geo/items.json con su lugar propuesto y su confianza; cada corrección muestra quién y cuándo.",
+     "what_en": "Lists the items in geo/items.json with their proposed place and confidence; each correction shows who and when.",
+     "tech": [
+      "/admin/index.html",
+      "admin.js"
+     ],
+     "see": [
+      "a6"
+     ]
+    },
+    {
+     "id": "doc-page",
+     "col": "c2",
+     "icon": "pdf",
+     "group": "site",
+     "name_es": "Consola de documentos",
+     "name_en": "Documents console",
+     "what_es": "Muestra lo que falta según data/manual-needed.json. El navegador calcula el sha256 y codifica el PDF en base64 antes de subirlo.",
+     "what_en": "Shows what is missing according to data/manual-needed.json. The browser computes the sha256 and encodes the PDF in base64 before uploading it.",
+     "tech": [
+      "/admin/documentos.html",
+      "documentos.js"
+     ]
+    },
+    {
+     "id": "login",
+     "col": "c3",
+     "icon": "lock",
+     "group": "operations",
+     "name_es": "Ingreso y sesión",
+     "name_en": "Login and session",
+     "what_es": "POST /api/geo/login verifica el hash y entrega una cookie __Host- HttpOnly, Secure y SameSite=Strict de 12 h. En D1 queda solo el hash del token.",
+     "what_en": "POST /api/geo/login checks the hash and returns a 12 h __Host- cookie (HttpOnly, Secure, SameSite=Strict). D1 keeps only the token's hash.",
+     "meta_es": "8 fallos por usuario, 30 por IP en 15 min",
+     "meta_en": "8 failures per user, 30 per IP in 15 min",
+     "tech": [
+      "Web Crypto",
+      "D1"
+     ]
+    },
+    {
+     "id": "corrections",
+     "col": "c3",
+     "icon": "pin",
+     "group": "operations",
+     "name_es": "Correcciones de lugares",
+     "name_en": "Place corrections",
+     "what_es": "Cada corrección es una fila nueva con su revisión: nada se borra ni se edita, y el historial completo y la auditoría quedan en D1.",
+     "what_en": "Each correction is a new row with its revision: nothing is deleted or edited, and the full history and the audit log stay in D1.",
+     "meta_es": "hasta 600 por usuario y hora",
+     "meta_en": "up to 600 per user per hour",
+     "tech": [
+      "/api/geo/corrections",
+      "D1"
+     ]
+    },
+    {
+     "id": "d1",
+     "col": "c3",
+     "icon": "database",
+     "group": "stores",
+     "name_es": "Base D1 (GEO_DB)",
+     "name_en": "D1 database (GEO_DB)",
+     "what_es": "Tablas de sesiones, intentos, correcciones, auditoría y subidas; la comparte la analítica A/B del mapa de alertas, con un tope diario propio.",
+     "what_en": "Tables for sessions, attempts, corrections, audit and uploads; shared with the alert-map A/B analytics, which has its own daily cap.",
+     "tech": [
+      "Cloudflare D1",
+      "SQLite"
+     ]
+    },
+    {
+     "id": "overrides",
+     "col": "c3",
+     "icon": "list",
+     "group": "operations",
+     "name_es": "Correcciones vigentes (pública)",
+     "name_en": "Current corrections (public)",
+     "what_es": "GET /api/geo/overrides: la última revisión de cada nota, sin nombres ni notas internas, con caché de 60 s.",
+     "what_en": "GET /api/geo/overrides: each item's latest revision, without names or internal notes, cached for 60 s.",
+     "tech": [
+      "/api/geo/overrides"
+     ]
+    },
+    {
+     "id": "upload",
+     "col": "c3",
+     "icon": "upload",
+     "group": "operations",
+     "name_es": "Subida de documentos",
+     "name_en": "Document upload",
+     "what_es": "POST /api/docs/upload: solo roles de DOCS_UPLOAD_ROLES (admin). Comprueba %PDF- y %%EOF y pasa el archivo en flujo a GitHub sin decodificarlo (10 ms de CPU por solicitud).",
+     "what_en": "POST /api/docs/upload: only DOCS_UPLOAD_ROLES (admin). Checks %PDF- and %%EOF and streams the file to GitHub without decoding it (10 ms of CPU per request).",
+     "meta_es": "hasta 25 MB y 10 subidas por hora",
+     "meta_en": "up to 25 MB and 10 uploads per hour",
+     "tech": [
+      "/api/docs/upload"
+     ]
+    },
+    {
+     "id": "branch",
+     "col": "c4",
+     "icon": "branch",
+     "group": "stores",
+     "name_es": "Rama data-manual",
+     "name_en": "data-manual branch",
+     "what_es": "Blob, árbol y commit con el formato enso-relay/1 (canal relay-manual): una entrada por documento, que la subida nueva reemplaza. Las copias de más de 120 días salen del índice.",
+     "what_en": "Blob, tree and commit in the enso-relay/1 format (relay-manual channel): one entry per document, replaced by a new upload. Copies older than 120 days leave the index.",
+     "tech": [
+      "GitHub Git Data API"
+     ],
+     "see": [
+      "a4"
+     ]
+    },
+    {
+     "id": "refresh",
+     "col": "c4",
+     "icon": "refresh",
+     "group": "pipeline",
+     "name_es": "Pedir actualización",
+     "name_en": "Request a refresh",
+     "what_es": "Tras subir, manda repository_dispatch enso-refresh para que el sitio no espere a la corrida de las 23:37.",
+     "what_en": "After uploading, sends repository_dispatch enso-refresh so the site does not wait for the 23:37 run.",
+     "tech": [
+      "repository_dispatch"
+     ]
+    },
+    {
+     "id": "pipeline",
+     "col": "c4",
+     "icon": "rocket",
+     "group": "pipeline",
+     "name_es": "Actualización diaria",
+     "name_en": "Daily update",
+     "what_es": "Lee data-manual como un recolector más y valida el PDF como cualquier copia; aplica las correcciones de lugares después de las automáticas: tienen la última palabra.",
+     "what_en": "Reads data-manual like any other collector and validates the PDF like any copy; applies the place corrections after the automatic ones: they have the last word.",
+     "tech": [
+      "Python 3.12"
+     ],
+     "see": [
+      "a5",
+      "a6"
+     ]
+    }
+   ],
+   "edges": [
+    {
+     "from": "owner",
+     "to": "login",
+     "kind": "human",
+     "label_es": "cuentas en GEO_USERS",
+     "label_en": "accounts in GEO_USERS",
+     "explain_es": "Un usuario es «tester» o «admin»; sin cuentas la API responde 503 y explica qué falta.",
+     "explain_en": "A user is “tester” or “admin”; without accounts the API answers 503 and explains what is missing."
+    },
+    {
+     "from": "reviewers",
+     "to": "geo-page",
+     "kind": "human",
+     "label_es": "revisan notas",
+     "label_en": "review items",
+     "explain_es": "Las notas dudosas aparecen primero.",
+     "explain_en": "Doubtful items come first."
+    },
+    {
+     "from": "admin",
+     "to": "doc-page",
+     "kind": "human",
+     "label_es": "sube el PDF que falta",
+     "label_en": "uploads the missing PDF",
+     "explain_es": "El PDF lo baja la persona tras pasar la verificación de la DHN.",
+     "explain_en": "The person downloads the PDF after passing the DHN check."
+    },
+    {
+     "from": "geo-page",
+     "to": "login",
+     "kind": "data",
+     "label_es": "ingreso",
+     "label_en": "login"
+    },
+    {
+     "from": "geo-page",
+     "to": "corrections",
+     "kind": "data",
+     "label_es": "corrección",
+     "label_en": "correction",
+     "explain_es": "Lleva la revisión que la persona vio: si otra la cambió antes, responde 409 y pide recargar.",
+     "explain_en": "Carries the revision the person saw: if someone changed it first, it answers 409 and asks to reload."
+    },
+    {
+     "from": "doc-page",
+     "to": "upload",
+     "kind": "data",
+     "label_es": "PDF en base64 + sha256",
+     "label_en": "base64 PDF + sha256"
+    },
+    {
+     "from": "corrections",
+     "to": "d1",
+     "kind": "data",
+     "label_es": "fila nueva + auditoría",
+     "label_en": "new row + audit"
+    },
+    {
+     "from": "login",
+     "to": "d1",
+     "kind": "data",
+     "label_es": "sesión e intentos",
+     "label_en": "session and attempts"
+    },
+    {
+     "from": "d1",
+     "to": "overrides",
+     "kind": "data",
+     "label_es": "última revisión por nota",
+     "label_en": "latest revision per item"
+    },
+    {
+     "from": "upload",
+     "to": "branch",
+     "kind": "data",
+     "label_es": "blob, árbol y commit",
+     "label_en": "blob, tree and commit",
+     "explain_es": "Si el commit choca con otra subida (422), se reintenta una vez sobre la rama nueva.",
+     "explain_en": "If the commit clashes with another upload (422), it is retried once on the new branch head."
+    },
+    {
+     "from": "upload",
+     "to": "refresh",
+     "kind": "trigger",
+     "label_es": "tras subir",
+     "label_en": "after uploading"
+    },
+    {
+     "from": "refresh",
+     "to": "pipeline",
+     "kind": "trigger",
+     "label_es": "enso-refresh",
+     "label_en": "enso-refresh",
+     "explain_es": "Si una corrida ya está en curso, la nueva queda en cola (concurrency de producción).",
+     "explain_en": "If a run is already in progress, the new one queues (production concurrency)."
+    },
+    {
+     "from": "branch",
+     "to": "pipeline",
+     "kind": "data",
+     "label_es": "se lee en cada corrida",
+     "label_en": "read on every run"
+    },
+    {
+     "from": "overrides",
+     "to": "pipeline",
+     "kind": "data",
+     "label_es": "correcciones",
+     "label_en": "corrections",
+     "explain_es": "Si la consola no responde, se usan las de la publicación anterior (geo/overrides.json).",
+     "explain_en": "If the console does not answer, those of the previous publication (geo/overrides.json) are used."
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "Alguien prueba contraseñas",
+     "then_es": "Tras 8 fallos por usuario o 30 por IP en 15 min responde 429; un usuario inexistente tarda lo mismo que uno real.",
+     "if_en": "Someone guesses passwords",
+     "then_en": "After 8 failures per user or 30 per IP in 15 min it answers 429; an unknown user takes as long as a real one."
+    },
+    {
+     "if_es": "Dos revisores corrigen la misma nota",
+     "then_es": "El segundo recibe 409 y recarga: ninguna corrección pisa a otra sin verla.",
+     "if_en": "Two reviewers correct the same item",
+     "then_en": "The second gets 409 and reloads: no correction overwrites another unseen."
+    },
+    {
+     "if_es": "La consola o Cloudflare no responden",
+     "then_es": "El pipeline aplica las correcciones de la publicación anterior; no se pierde ninguna.",
+     "if_en": "The console or Cloudflare does not answer",
+     "then_en": "The pipeline applies the previous publication's corrections; none is lost."
+    },
+    {
+     "if_es": "El PDF subido no es el esperado",
+     "then_es": "El pipeline recalcula el sha256 y valida el documento: si no coincide, no se publica.",
+     "if_en": "The uploaded PDF is not the expected one",
+     "then_en": "The pipeline recomputes the sha256 and validates the document: if it does not match, it is not published."
+    },
+    {
+     "if_es": "El sitio está en GitHub Pages",
+     "then_es": "Las consolas necesitan Cloudflare: /admin/ explica que no están disponibles y el resto del sitio sigue igual.",
+     "if_en": "The site is on GitHub Pages",
+     "then_en": "The consoles need Cloudflare: /admin/ explains they are unavailable and the rest of the site is unchanged."
+    }
+   ]
+  },
+  {
+   "id": "a8",
+   "title_es": "Publicación, despliegue y archivo",
+   "title_en": "Publication, deployment and archive",
+   "subtitle_es": "Cómo una corrida convierte lo validado en el sitio en vivo sin dejarlo nunca a medias: la publicación se escribe aparte y reemplaza a la anterior de una vez, se prueba en Chromium, se despliega en GitHub Pages o Cloudflare Pages y se comprueba que el sitio en vivo ya la sirve. Las respuestas originales quedan para siempre en data-archive.",
+   "subtitle_en": "How a run turns what was validated into the live site without ever leaving it half done: the publication is written aside and replaces the previous one at once, tested in Chromium, deployed to GitHub Pages or Cloudflare Pages, and the live site is checked to serve it. The original responses are kept forever in data-archive.",
+   "desc_es": "Escritura y validación de data/, pruebas en el navegador, artefactos, despliegue y verificación, y el job archive que solo agrega a data-archive.",
+   "desc_en": "Writing and validating data/, browser checks, artifacts, deployment and verification, and the archive job that only adds to data-archive.",
+   "covers": [
+    "write-publication",
+    "publication-data",
+    "deploy",
+    "archive-job",
+    "data-archive-branch"
+   ],
+   "simple": [
+    "s-publicacion",
+    "s-respaldo"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 300,
+     "title_es": "Escritura (job build)",
+     "title_en": "Writing (build job)",
+     "sub_es": "Python 3.12 · enso.observatory.write_publication",
+     "sub_en": "Python 3.12 · enso.observatory.write_publication"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Prueba y subida",
+     "title_en": "Testing and upload",
+     "sub_es": "prepare_site · Playwright · artefactos de Actions",
+     "sub_en": "prepare_site · Playwright · Actions artifacts"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Despliegue (job deploy)",
+     "title_en": "Deployment (deploy job)",
+     "sub_es": "hasta 15 min · DEPLOY_TARGET elige el destino",
+     "sub_en": "up to 15 min · DEPLOY_TARGET picks the target"
+    },
+    {
+     "id": "c4",
+     "w": 300,
+     "title_es": "Archivo (job archive)",
+     "title_en": "Archive (archive job)",
+     "sub_es": "solo en main y tras un build exitoso",
+     "sub_en": "only on main and after a successful build"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "write",
+     "col": "c1",
+     "icon": "layers",
+     "group": "publication",
+     "name_es": "Escribir en una carpeta aparte",
+     "name_en": "Write to a separate folder",
+     "what_es": "Todos los JSON y CSV salen con el mismo publicationId y generatedAt; lo que no se pudo renovar se conserva de la publicación anterior, con el identificador nuevo.",
+     "what_en": "Every JSON and CSV carries the same publicationId and generatedAt; what could not be renewed is kept from the previous publication, with the new identifier.",
+     "see": [
+      "a5"
+     ]
+    },
+    {
+     "id": "files",
+     "col": "c1",
+     "icon": "list",
+     "group": "publication",
+     "name_es": "Archivos de data/",
+     "name_en": "data/ files",
+     "what_es": "dashboard.json, series.json y CSV, sources.json, feed.json, news/, geo/, run-report.json, data/archive/ con las copias archivadas y manifest.json con la lista y un hash del contenido.",
+     "what_en": "dashboard.json, series.json and CSVs, sources.json, feed.json, news/, geo/, run-report.json, data/archive/ with the archived copies and manifest.json with the list and a content hash."
+    },
+    {
+     "id": "validate",
+     "col": "c1",
+     "icon": "check",
+     "group": "publication",
+     "name_es": "Validar",
+     "name_en": "Validate",
+     "what_es": "Todos los JSON comparten publicationId, las series no tienen periodos repetidos ni desordenados y dashboard.json trae lo oficial, las series y la señal GRD.",
+     "what_en": "All JSON files share the publicationId, series have no repeated or unordered periods and dashboard.json has the official data, series and GRD signal."
+    },
+    {
+     "id": "swap",
+     "col": "c1",
+     "icon": "merge",
+     "group": "publication",
+     "name_es": "Reemplazo de una vez",
+     "name_en": "Swap at once",
+     "what_es": "public/data pasa a data.old y la carpeta nueva toma su lugar con dos rename; si algo falló antes, queda la publicación anterior intacta.",
+     "what_en": "public/data moves to data.old and the new folder takes its place with two renames; if anything failed before, the previous publication stays intact."
+    },
+    {
+     "id": "raw",
+     "col": "c1",
+     "icon": "archive",
+     "group": "stores",
+     "name_es": "Respuestas originales",
+     "name_en": "Original responses",
+     "what_es": "Cada respuesta descargada se guarda como fuente/fecha-sha256 y las notas del día en news/.",
+     "what_en": "Each downloaded response is saved as source/date-sha256, plus the day's items in news/."
+    },
+    {
+     "id": "prepare",
+     "col": "c2",
+     "icon": "globe",
+     "group": "publication",
+     "name_es": "Adaptar a la dirección",
+     "name_en": "Adapt to the address",
+     "what_es": "prepare_site pone SITE_URL en canonical, sitemap y robots.txt. En Cloudflare, --hide-repo quita los enlaces al repositorio y falla si queda alguno.",
+     "what_en": "prepare_site writes SITE_URL into canonical, sitemap and robots.txt. On Cloudflare, --hide-repo removes links to the repository and fails if any remain.",
+     "tech": [
+      "tools.prepare_site"
+     ]
+    },
+    {
+     "id": "browser",
+     "col": "c2",
+     "icon": "monitor",
+     "group": "publication",
+     "name_es": "Pruebas en Chromium",
+     "name_en": "Chromium checks",
+     "what_es": "pytest -m browser contra el sitio ya armado: vistas, accesibilidad y datos. WebKit y Firefox se prueban en ci.yml para no frenar los datos oficiales.",
+     "what_en": "pytest -m browser against the built site: views, accessibility and data. WebKit and Firefox are tested in ci.yml so they never hold back official data.",
+     "tech": [
+      "Playwright",
+      "pytest"
+     ]
+    },
+    {
+     "id": "artifacts",
+     "col": "c2",
+     "icon": "box",
+     "group": "publication",
+     "name_es": "Artefactos de la corrida",
+     "name_en": "Run artifacts",
+     "what_es": "run-report (siempre), raw-sources (7 días) y el sitio: github-pages o «site» para Cloudflare (3 días).",
+     "what_en": "run-report (always), raw-sources (7 days) and the site: github-pages or “site” for Cloudflare (3 days).",
+     "tech": [
+      "upload-artifact"
+     ]
+    },
+    {
+     "id": "gh-pages",
+     "col": "c3",
+     "icon": "rocket",
+     "group": "publication",
+     "name_es": "GitHub Pages (por omisión)",
+     "name_en": "GitHub Pages (default)",
+     "what_es": "actions/deploy-pages publica el artefacto en https://pillb.github.io/observatorio-enso-peru/.",
+     "what_en": "actions/deploy-pages publishes the artifact at https://pillb.github.io/observatorio-enso-peru/.",
+     "tech": [
+      "deploy-pages"
+     ]
+    },
+    {
+     "id": "cf",
+     "col": "c3",
+     "icon": "cloud",
+     "group": "publication",
+     "name_es": "Cloudflare Pages",
+     "name_en": "Cloudflare Pages",
+     "what_es": "tools.cloudflare_pages crea el proyecto si falta y wrangler sube el sitio con functions/ (consolas) a la rama de producción, sin enlazar el repositorio.",
+     "what_en": "tools.cloudflare_pages creates the project if missing and wrangler uploads the site with functions/ (consoles) to the production branch, without linking the repository.",
+     "tech": [
+      "wrangler",
+      "Pages Functions"
+     ],
+     "see": [
+      "a7"
+     ]
+    },
+    {
+     "id": "live",
+     "col": "c3",
+     "icon": "globe",
+     "group": "site",
+     "name_es": "Sitio en vivo (SITE_URL)",
+     "name_en": "Live site (SITE_URL)",
+     "what_es": "La dirección pública: sirve el sitio y su carpeta data/.",
+     "what_en": "The public address: serves the site and its data/ folder.",
+     "see": [
+      "a9"
+     ]
+    },
+    {
+     "id": "verify",
+     "col": "c3",
+     "icon": "search",
+     "group": "publication",
+     "name_es": "Verificar el sitio en vivo",
+     "name_en": "Verify the live site",
+     "what_es": "tools.verify_live lee dashboard.json sin caché cada 20 s hasta ver el publicationId nuevo; a los 10 min la corrida falla.",
+     "what_en": "tools.verify_live reads dashboard.json without cache every 20 s until it sees the new publicationId; after 10 min the run fails.",
+     "tech": [
+      "httpx"
+     ]
+    },
+    {
+     "id": "get-raw",
+     "col": "c4",
+     "icon": "download",
+     "group": "stores",
+     "name_es": "Bajar raw-sources",
+     "name_en": "Download raw-sources",
+     "what_es": "Solo la lista de archivos y sources/news de data-archive (clon parcial y sparse): la rama crece cada día.",
+     "what_en": "Only the file list and sources/news of data-archive (partial, sparse clone): the branch grows every day.",
+     "tech": [
+      "git sparse-checkout"
+     ]
+    },
+    {
+     "id": "dedupe",
+     "col": "c4",
+     "icon": "filter",
+     "group": "stores",
+     "name_es": "Quitar repetidos y cortados",
+     "name_en": "Drop duplicates and truncated files",
+     "what_es": "Una respuesta con el mismo sha256 y fuente no se agrega otra vez; una que no coincide con su sha256 llegó incompleta y se descarta.",
+     "what_en": "A response with the same sha256 and source is not added again; one that does not match its sha256 arrived truncated and is dropped."
+    },
+    {
+     "id": "merge",
+     "col": "c4",
+     "icon": "history",
+     "group": "stores",
+     "name_es": "Unir el histórico de noticias",
+     "name_en": "Merge the news history",
+     "what_es": "merge_history.py une items.jsonl.gz con la copia: nunca pierde notas aunque la corrida haya publicado un histórico incompleto.",
+     "what_en": "merge_history.py merges items.jsonl.gz into the copy: it never loses items even if the run published an incomplete history.",
+     "tech": [
+      "Python"
+     ],
+     "see": [
+      "a6"
+     ]
+    },
+    {
+     "id": "commit",
+     "col": "c4",
+     "icon": "commit",
+     "group": "stores",
+     "name_es": "Commit en data-archive",
+     "name_en": "Commit to data-archive",
+     "what_es": "Corpus permanente por fuente, fecha y sha256. Un commit que borre archivos se rechaza; el push se intenta 3 veces.",
+     "what_en": "Permanent corpus by source, date and sha256. A commit that deletes files is refused; the push is tried 3 times.",
+     "meta_es": "solo crece",
+     "meta_en": "only grows",
+     "tech": [
+      "git"
+     ]
+    }
+   ],
+   "edges": [
+    {
+     "from": "write",
+     "to": "files",
+     "kind": "data",
+     "label_es": "archivos con un publicationId",
+     "label_en": "files with one publicationId"
+    },
+    {
+     "from": "files",
+     "to": "validate",
+     "kind": "data",
+     "label_es": "carpeta temporal",
+     "label_en": "temporary folder"
+    },
+    {
+     "from": "validate",
+     "to": "swap",
+     "kind": "data",
+     "label_es": "todo coherente",
+     "label_en": "all consistent",
+     "explain_es": "Si la validación falla, la corrida se detiene antes del reemplazo.",
+     "explain_en": "If validation fails, the run stops before the swap."
+    },
+    {
+     "from": "write",
+     "to": "raw",
+     "kind": "data",
+     "label_es": "cada respuesta",
+     "label_en": "every response"
+    },
+    {
+     "from": "swap",
+     "to": "prepare",
+     "kind": "data",
+     "label_es": "public/",
+     "label_en": "public/"
+    },
+    {
+     "from": "prepare",
+     "to": "browser",
+     "kind": "data",
+     "label_es": "sitio armado",
+     "label_en": "built site"
+    },
+    {
+     "from": "browser",
+     "to": "artifacts",
+     "kind": "data",
+     "label_es": "si pasa",
+     "label_en": "if it passes",
+     "explain_es": "Una prueba que falla detiene el despliegue: sigue en línea la publicación anterior.",
+     "explain_en": "A failing check stops the deployment: the previous publication stays online."
+    },
+    {
+     "from": "raw",
+     "to": "artifacts",
+     "kind": "data",
+     "label_es": "raw-sources",
+     "label_en": "raw-sources"
+    },
+    {
+     "from": "artifacts",
+     "to": "gh-pages",
+     "kind": "data",
+     "label_es": "github-pages",
+     "label_en": "github-pages"
+    },
+    {
+     "from": "artifacts",
+     "to": "cf",
+     "kind": "data",
+     "label_es": "site",
+     "label_en": "site"
+    },
+    {
+     "from": "gh-pages",
+     "to": "live",
+     "kind": "data",
+     "label_es": "publica",
+     "label_en": "publishes"
+    },
+    {
+     "from": "cf",
+     "to": "live",
+     "kind": "data",
+     "label_es": "publica",
+     "label_en": "publishes"
+    },
+    {
+     "from": "live",
+     "to": "verify",
+     "kind": "control",
+     "label_es": "¿sirve la publicación nueva?",
+     "label_en": "serving the new publication?"
+    },
+    {
+     "from": "artifacts",
+     "to": "get-raw",
+     "kind": "data",
+     "label_es": "raw-sources",
+     "label_en": "raw-sources"
+    },
+    {
+     "from": "get-raw",
+     "to": "dedupe",
+     "kind": "data",
+     "label_es": "respuestas de hoy",
+     "label_en": "today's responses"
+    },
+    {
+     "from": "dedupe",
+     "to": "commit",
+     "kind": "data",
+     "label_es": "solo lo nuevo",
+     "label_en": "only what is new"
+    },
+    {
+     "from": "get-raw",
+     "to": "merge",
+     "kind": "data",
+     "label_es": "notas e histórico",
+     "label_en": "items and history"
+    },
+    {
+     "from": "merge",
+     "to": "commit",
+     "kind": "data",
+     "label_es": "histórico unido",
+     "label_en": "merged history"
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "La validación de la publicación falla",
+     "then_es": "No se reemplaza nada: el sitio sigue sirviendo la publicación anterior y el job incidents abre un issue.",
+     "if_en": "Publication validation fails",
+     "then_en": "Nothing is replaced: the site keeps serving the previous publication and the incidents job opens an issue."
+    },
+    {
+     "if_es": "Una prueba en Chromium falla",
+     "then_es": "No se despliega; queda en línea lo último bueno y la corrida queda marcada como fallida.",
+     "if_en": "A Chromium check fails",
+     "then_en": "Nothing is deployed; the last good version stays online and the run is marked as failed."
+    },
+    {
+     "if_es": "El sitio en vivo no muestra la publicación en 10 min",
+     "then_es": "La corrida falla y abre «La actualización diaria falló»; el vigilante de 6 h vuelve a mirar.",
+     "if_en": "The live site does not show the publication within 10 min",
+     "then_en": "The run fails and opens “The daily update failed”; the 6 h watchdog looks again."
+    },
+    {
+     "if_es": "No llegó raw-sources",
+     "then_es": "archive avisa y no toca data-archive; las notas del día quedan en la publicación y entran mañana.",
+     "if_en": "raw-sources did not arrive",
+     "then_en": "archive warns and leaves data-archive untouched; the day's items stay in the publication and go in tomorrow."
+    },
+    {
+     "if_es": "El push a data-archive falla",
+     "then_es": "Se reintenta 3 veces con espera; si sigue fallando, la corrida falla y se avisa.",
+     "if_en": "The push to data-archive fails",
+     "then_en": "It is retried 3 times with a wait; if it still fails, the run fails and alerts."
+    }
+   ]
+  },
+  {
+   "id": "a9",
+   "title_es": "El sitio en el navegador",
+   "title_en": "The site in the browser",
+   "subtitle_es": "El sitio es una página estática, sin compilación ni servidor propio: todo lo que muestra sale de los archivos de data/ de una misma publicación. El navegador comprueba que cada archivo sea de esa publicación y, si no puede, lo dice en vez de mezclar datos.",
+   "subtitle_en": "The site is a static page, with no build step or server of its own: everything it shows comes from the data/ files of one publication. The browser checks each file belongs to that publication and, if it cannot, says so instead of mixing data.",
+   "desc_es": "Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 10 vistas con la procedencia de cada valor y quién lo usa.",
+   "desc_en": "Where it is hosted, how it loads the data and checks its consistency, its 10 views with each value's provenance and who uses it.",
+   "covers": [
+    "live-site",
+    "site-app",
+    "public"
+   ],
+   "simple": [
+    "s-sitio"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 300,
+     "title_es": "Alojamiento",
+     "title_en": "Hosting",
+     "sub_es": "GitHub Pages o Cloudflare Pages · CSP estricta",
+     "sub_en": "GitHub Pages or Cloudflare Pages · strict CSP"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Carga en el navegador",
+     "title_en": "Loading in the browser",
+     "sub_es": "JavaScript en módulos, sin dependencias externas",
+     "sub_en": "JavaScript modules, no external dependencies"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Vistas",
+     "title_en": "Views",
+     "sub_es": "rutas con # · español · claro y oscuro",
+     "sub_en": "# routes · Spanish · light and dark"
+    },
+    {
+     "id": "c4",
+     "w": 260,
+     "title_es": "Personas",
+     "title_en": "People",
+     "sub_es": "en el navegador o con los datos abiertos",
+     "sub_en": "in the browser or with the open data"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "hosting",
+     "col": "c1",
+     "icon": "server",
+     "group": "site",
+     "name_es": "Sitio en vivo (SITE_URL)",
+     "name_en": "Live site (SITE_URL)",
+     "what_es": "Sirve index.html, assets/ y data/. Por omisión https://pillb.github.io/observatorio-enso-peru/; con DEPLOY_TARGET=cloudflare, la dirección de Cloudflare Pages.",
+     "what_en": "Serves index.html, assets/ and data/. By default https://pillb.github.io/observatorio-enso-peru/; with DEPLOY_TARGET=cloudflare, the Cloudflare Pages address.",
+     "tech": [
+      "GitHub Pages",
+      "Cloudflare Pages"
+     ],
+     "see": [
+      "a8"
+     ]
+    },
+    {
+     "id": "data",
+     "col": "c1",
+     "icon": "database",
+     "group": "publication",
+     "name_es": "Publicación (data/)",
+     "name_en": "Publication (data/)",
+     "what_es": "dashboard.json lleva el publicationId; el resto de los archivos se piden con ese identificador para no mezclar dos publicaciones.",
+     "what_en": "dashboard.json carries the publicationId; the other files are requested with that identifier so two publications are never mixed."
+    },
+    {
+     "id": "ab",
+     "col": "c1",
+     "icon": "chart",
+     "group": "operations",
+     "name_es": "Analítica A/B del mapa",
+     "name_en": "Map A/B analytics",
+     "what_es": "Solo en Cloudflare: /api/ab suma 1 por día, versión (A a D) y evento. Sin IP, sin cookies ni identificador.",
+     "what_en": "Only on Cloudflare: /api/ab adds 1 per day, version (A to D) and event. No IP, cookies or identifier.",
+     "tech": [
+      "Pages Functions",
+      "D1"
+     ]
+    },
+    {
+     "id": "boot",
+     "col": "c2",
+     "icon": "download",
+     "group": "site",
+     "name_es": "Arranque",
+     "name_en": "Start-up",
+     "what_es": "Lee dashboard.json sin caché y muestra «Actualizado: … · Publicación …». Si no puede, explica que los datos están en validación y enlaza al ENFEN.",
+     "what_en": "Reads dashboard.json without cache and shows “Updated: … · Publication …”. If it cannot, it explains the data is being validated and links to ENFEN.",
+     "tech": [
+      "app.js",
+      "fetch"
+     ]
+    },
+    {
+     "id": "checks",
+     "col": "c2",
+     "icon": "shield",
+     "group": "site",
+     "name_es": "Coherencia de la publicación",
+     "name_en": "Publication consistency",
+     "what_es": "Si un archivo trae otro publicationId lo vuelve a pedir sin caché; si sigue distinto, no lo usa y avisa con un aviso visible.",
+     "what_en": "If a file carries another publicationId it is requested again without cache; if still different, it is not used and a visible banner says so."
+    },
+    {
+     "id": "a11y",
+     "col": "c2",
+     "icon": "eye",
+     "group": "site",
+     "name_es": "Accesibilidad y vigencia",
+     "name_en": "Accessibility and freshness",
+     "what_es": "Teclado, roles ARIA y tema claro u oscuro, probados con Playwright en Chromium, WebKit y Firefox. Cada dato muestra su periodo y se marca si está vencido.",
+     "what_en": "Keyboard, ARIA roles and light or dark theme, tested with Playwright in Chromium, WebKit and Firefox. Each value shows its period and is flagged when out of date.",
+     "tech": [
+      "Playwright"
+     ]
+    },
+    {
+     "id": "views",
+     "col": "c3",
+     "icon": "layers",
+     "group": "site",
+     "name_es": "10 vistas",
+     "name_en": "10 views",
+     "what_es": "Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una.",
+     "what_en": "Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, News, Data, Methodology and Assistant; a guided tour explains each one.",
+     "tech": [
+      "app.js",
+      "tour.js"
+     ]
+    },
+    {
+     "id": "provenance",
+     "col": "c3",
+     "icon": "link",
+     "group": "site",
+     "name_es": "Procedencia de cada valor",
+     "name_en": "Each value's provenance",
+     "what_es": "Junto a cada dato: la fuente en vivo y la copia archivada en data/archive/, por si la fuente cambia o cae.",
+     "what_en": "Next to each value: the live source and the archived copy in data/archive/, in case the source changes or goes down."
+    },
+    {
+     "id": "assistant",
+     "col": "c3",
+     "icon": "chat",
+     "group": "site",
+     "name_es": "Asistente de datos",
+     "name_en": "Data assistant",
+     "what_es": "No es un modelo de lenguaje: reconoce la pregunta con reglas y responde solo con valores de la publicación, citando serie, periodo, fuente y publicación.",
+     "what_en": "Not a language model: it recognizes the question with rules and answers only with publication values, citing series, period, source and publication.",
+     "tech": [
+      "assistant.js"
+     ]
+    },
+    {
+     "id": "method",
+     "col": "c3",
+     "icon": "flow",
+     "group": "site",
+     "name_es": "Metodología y arquitectura",
+     "name_en": "Methodology and architecture",
+     "what_es": "Explica los métodos y muestra estos diagramas; cada caja explica su parte y las etiquetas A1 a A10 abren su anexo.",
+     "what_en": "Explains the methods and shows these diagrams; each box explains its part and the A1 to A10 tags open its annex."
+    },
+    {
+     "id": "public",
+     "col": "c4",
+     "icon": "users",
+     "group": "people",
+     "name_es": "Público",
+     "name_en": "Public",
+     "what_es": "Personas, equipos de gestión del riesgo y medios que consultan el estado de El Niño y sus fuentes.",
+     "what_en": "People, risk-management teams and media checking the state of El Niño and its sources."
+    },
+    {
+     "id": "open-data",
+     "col": "c4",
+     "icon": "code",
+     "group": "people",
+     "name_es": "Usuarios de datos abiertos",
+     "name_en": "Open-data users",
+     "what_es": "Descargan los CSV y JSON de data/ o los leen desde sus programas; manifest.json lista cada archivo.",
+     "what_en": "Download the CSV and JSON files in data/ or read them from their programs; manifest.json lists each file."
+    }
+   ],
+   "edges": [
+    {
+     "from": "hosting",
+     "to": "boot",
+     "kind": "data",
+     "label_es": "index.html y assets/",
+     "label_en": "index.html and assets/"
+    },
+    {
+     "from": "data",
+     "to": "boot",
+     "kind": "data",
+     "label_es": "dashboard.json",
+     "label_en": "dashboard.json"
+    },
+    {
+     "from": "boot",
+     "to": "checks",
+     "kind": "data",
+     "label_es": "publicationId",
+     "label_en": "publicationId"
+    },
+    {
+     "from": "data",
+     "to": "checks",
+     "kind": "data",
+     "label_es": "archivos de cada vista",
+     "label_en": "each view's files",
+     "explain_es": "Cada vista pide solo los archivos que necesita, cuando se abre.",
+     "explain_en": "Each view requests only the files it needs, when opened."
+    },
+    {
+     "from": "checks",
+     "to": "views",
+     "kind": "data",
+     "label_es": "datos coherentes",
+     "label_en": "consistent data"
+    },
+    {
+     "from": "a11y",
+     "to": "views",
+     "kind": "control",
+     "label_es": "vigencia y accesibilidad",
+     "label_en": "freshness and accessibility"
+    },
+    {
+     "from": "views",
+     "to": "provenance",
+     "kind": "data",
+     "label_es": "cada valor",
+     "label_en": "each value"
+    },
+    {
+     "from": "views",
+     "to": "assistant",
+     "kind": "data",
+     "label_es": "misma publicación",
+     "label_en": "same publication"
+    },
+    {
+     "from": "views",
+     "to": "method",
+     "kind": "data",
+     "label_es": "diagramas",
+     "label_en": "diagrams"
+    },
+    {
+     "from": "views",
+     "to": "ab",
+     "kind": "data",
+     "label_es": "versión del mapa y eventos",
+     "label_en": "map version and events",
+     "explain_es": "Una sola solicitud al salir de la página; en GitHub Pages no se manda nada.",
+     "explain_en": "A single request when leaving the page; on GitHub Pages nothing is sent."
+    },
+    {
+     "from": "views",
+     "to": "public",
+     "kind": "human",
+     "label_es": "consultan",
+     "label_en": "consult"
+    },
+    {
+     "from": "data",
+     "to": "open-data",
+     "kind": "human",
+     "label_es": "CSV y JSON",
+     "label_en": "CSV y JSON"
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "No se puede leer dashboard.json",
+     "then_es": "El sitio lo dice y enlaza a los comunicados oficiales del ENFEN; no muestra datos viejos como si fueran actuales.",
+     "if_en": "dashboard.json cannot be read",
+     "then_en": "The site says so and links to the official ENFEN communiqués; it never shows old data as current."
+    },
+    {
+     "if_es": "Un archivo es de otra publicación (caché a medias)",
+     "then_es": "Se vuelve a pedir; si sigue distinto, esa parte queda vacía con un aviso, sin mezclar publicaciones.",
+     "if_en": "A file belongs to another publication (stale cache)",
+     "then_en": "It is requested again; if still different, that part stays empty with a banner, without mixing publications."
+    },
+    {
+     "if_es": "Un dato está vencido o se arrastró de un día anterior",
+     "then_es": "Se muestra con su periodo y una marca de vencido o conservado, y la procedencia indica de qué copia salió.",
+     "if_en": "A value is out of date or carried from an earlier day",
+     "then_en": "It shows its period and an out-of-date or carried mark, and the provenance tells which copy it came from."
+    },
+    {
+     "if_es": "La fuente oficial cambió o cayó",
+     "then_es": "La copia archivada en data/archive/ permite ver lo que se leyó.",
+     "if_en": "The official source changed or went down",
+     "then_en": "The archived copy in data/archive/ shows what was read."
+    }
+   ]
+  },
+  {
+   "id": "a10",
+   "title_es": "Vigilancia, avisos y mantenimiento",
+   "title_en": "Monitoring, alerts and maintenance",
+   "subtitle_es": "Quién se entera cuando algo sale mal y cómo. Cada corrida deja un informe; sus problemas se vuelven issues que se cierran solos, y dos vigilantes independientes (uno en GitHub, otro en n8n) miran el sitio en vivo cada 6 horas. Los avisos llegan por GitHub y, si se configura, por correo.",
+   "subtitle_en": "Who finds out when something goes wrong and how. Each run leaves a report; its problems become issues that close themselves, and two independent watchdogs (one on GitHub, one on n8n) look at the live site every 6 hours. Alerts arrive through GitHub and, if configured, by email.",
+   "desc_es": "Informe de la corrida, issues por huella, vigilantes, correo, mantenimiento de los flujos programados y las herramientas de desarrollo.",
+   "desc_en": "Run report, issues by fingerprint, watchdogs, email, keeping scheduled workflows alive and the development tools.",
+   "covers": [
+    "watchdog",
+    "n8n-watchdog",
+    "github-issues",
+    "dev-tools",
+    "maintainers"
+   ],
+   "simple": [
+    "s-operacion"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 280,
+     "title_es": "Señales",
+     "title_en": "Signals",
+     "sub_es": "lo que deja cada corrida y el sitio en vivo",
+     "sub_en": "what each run and the live site leave behind"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Automático en GitHub",
+     "title_en": "Automatic on GitHub",
+     "sub_es": "jobs incidents y keepalive · watchdog.yml",
+     "sub_en": "incidents and keepalive jobs · watchdog.yml"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Fuera de GitHub",
+     "title_en": "Outside GitHub",
+     "sub_es": "SMTP · n8n en AWS",
+     "sub_en": "SMTP · n8n on AWS"
+    },
+    {
+     "id": "c4",
+     "w": 280,
+     "title_es": "Personas",
+     "title_en": "People",
+     "sub_es": "revisan, deciden y corrigen",
+     "sub_en": "review, decide and fix"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "report",
+     "col": "c1",
+     "icon": "list",
+     "group": "operations",
+     "name_es": "Informe de la corrida",
+     "name_en": "Run report",
+     "what_es": "run-report.json lista cada aviso, error o falla crítica con su fuente, etapa, código y huella; viaja como artefacto aunque la corrida falle.",
+     "what_en": "run-report.json lists every warning, error or critical failure with its source, stage, code and fingerprint; it travels as an artifact even if the run fails.",
+     "see": [
+      "a5"
+     ]
+    },
+    {
+     "id": "result",
+     "col": "c1",
+     "icon": "alert",
+     "group": "operations",
+     "name_es": "Resultado de los jobs",
+     "name_en": "Job results",
+     "what_es": "Si build, deploy o archive fallan o se cancelan, eso mismo es una señal, aunque no haya informe.",
+     "what_en": "If build, deploy or archive fail or are cancelled, that itself is a signal, even without a report."
+    },
+    {
+     "id": "live",
+     "col": "c1",
+     "icon": "globe",
+     "group": "site",
+     "name_es": "Sitio en vivo",
+     "name_en": "Live site",
+     "what_es": "data/dashboard.json y data/manifest.json dicen qué publicación se sirve y cuándo se generó.",
+     "what_en": "data/dashboard.json and data/manifest.json tell which publication is served and when it was generated.",
+     "see": [
+      "a9"
+     ]
+    },
+    {
+     "id": "sync",
+     "col": "c2",
+     "icon": "merge",
+     "group": "operations",
+     "name_es": "Issues por huella (sync_issues)",
+     "name_en": "Issues by fingerprint (sync_issues)",
+     "what_es": "Un issue incidente-datos por huella (fuente + etapa + código), con la huella oculta; se comenta si vuelve y se cierra solo cuando desaparece.",
+     "what_en": "One incidente-datos issue per fingerprint (source + stage + code), with the fingerprint hidden; it is commented when it recurs and closes itself when it disappears.",
+     "tech": [
+      "Python",
+      "GitHub API"
+     ]
+    },
+    {
+     "id": "runfail",
+     "col": "c2",
+     "icon": "alert",
+     "group": "operations",
+     "name_es": "«La actualización diaria falló»",
+     "name_en": "“The daily update failed”",
+     "what_es": "Issue que se abre o comenta cuando un job falla y se cierra tras una corrida buena.",
+     "what_en": "Issue opened or commented when a job fails and closed after a good run.",
+     "tech": [
+      "github-script"
+     ]
+    },
+    {
+     "id": "watchdog",
+     "col": "c2",
+     "icon": "eye",
+     "group": "operations",
+     "name_es": "Vigilante (watchdog.yml)",
+     "name_en": "Watchdog (watchdog.yml)",
+     "what_es": "Cada 6 h (minuto 17) lee dashboard.json del sitio. Con más de 30 h relanza la actualización una vez cada 6 h y abre «El sitio publicado está desactualizado».",
+     "what_en": "Every 6 h (minute 17) it reads the site's dashboard.json. Past 30 h it relaunches the update once every 6 h and opens “The published site is out of date”.",
+     "tech": [
+      "GitHub Actions",
+      "cron 17 */6"
+     ]
+    },
+    {
+     "id": "keepalive",
+     "col": "c2",
+     "icon": "refresh",
+     "group": "operations",
+     "name_es": "Mantener vivos los flujos",
+     "name_en": "Keep workflows alive",
+     "what_es": "GitHub apaga los flujos programados tras 60 días sin actividad: el job keepalive y el vigilante reactivan observatory, watchdog y probe-sources.",
+     "what_en": "GitHub disables scheduled workflows after 60 days without activity: the keepalive job and the watchdog re-enable observatory, watchdog and probe-sources.",
+     "tech": [
+      "API de Actions"
+     ]
+    },
+    {
+     "id": "email",
+     "col": "c3",
+     "icon": "mail",
+     "group": "channels",
+     "name_es": "Correo de avisos",
+     "name_en": "Alert email",
+     "what_es": "tools.alert_email manda un solo correo por corrida a ALERT_EMAILS, y solo si algo se abrió, cerró o volvió a ocurrir. Sin SMTP_HOST no hace nada.",
+     "what_en": "tools.alert_email sends a single email per run to ALERT_EMAILS, and only if something opened, closed or recurred. Without SMTP_HOST it does nothing.",
+     "tech": [
+      "SMTP",
+      "Python"
+     ]
+    },
+    {
+     "id": "n8n-watch",
+     "col": "c3",
+     "icon": "flow",
+     "group": "channels",
+     "name_es": "Vigilante n8n",
+     "name_en": "n8n watchdog",
+     "what_es": "Cada 6 h lee data/manifest.json; si no responde o tiene más de 30 h, la ejecución falla. Sirve aunque GitHub entero esté caído.",
+     "what_en": "Every 6 h it reads data/manifest.json; if it does not answer or is older than 30 h, the execution fails. It works even if all of GitHub is down.",
+     "tech": [
+      "n8n"
+     ],
+     "see": [
+      "a3"
+     ]
+    },
+    {
+     "id": "error-wf",
+     "col": "c3",
+     "icon": "bell",
+     "group": "channels",
+     "name_es": "Error workflow de n8n",
+     "name_en": "n8n Error workflow",
+     "what_es": "El flujo de error que el colega asigne en n8n (correo, chat) avisa cuando falla el vigilante o el recolector.",
+     "what_en": "The error workflow the colleague assigns in n8n (email, chat) alerts when the watchdog or the collector fails."
+    },
+    {
+     "id": "recipients",
+     "col": "c4",
+     "icon": "users",
+     "group": "people",
+     "name_es": "Destinatarios del correo",
+     "name_en": "Email recipients",
+     "what_es": "Personas sin cuenta de GitHub que deben enterarse: equipos de gestión del riesgo o responsables del sitio.",
+     "what_en": "People without a GitHub account who need to know: risk-management teams or site owners."
+    },
+    {
+     "id": "maintainers",
+     "col": "c4",
+     "icon": "user",
+     "group": "people",
+     "name_es": "Mantenedores y propietario",
+     "name_en": "Maintainers and owner",
+     "what_es": "Siguen el repositorio (los issues les llegan por GitHub), fusionan en main, lanzan flujos a mano, eligen el destino del sitio y crean las cuentas de la consola.",
+     "what_en": "Watch the repository (issues reach them through GitHub), merge into main, run workflows by hand, choose the site's target and create the console accounts."
+    },
+    {
+     "id": "devtools",
+     "col": "c4",
+     "icon": "terminal",
+     "group": "operations",
+     "name_es": "Herramientas de desarrollo",
+     "name_en": "Development tools",
+     "what_es": "ci.yml y n8n.yml (pruebas), probe-feeds, scrape-ladder, capture-fixtures, device-screens y recolector-kit: no publican; dejan ramas bot/ y artefactos.",
+     "what_en": "ci.yml and n8n.yml (tests), probe-feeds, scrape-ladder, capture-fixtures, device-screens and recolector-kit: they do not publish; they leave bot/ branches and artifacts.",
+     "tech": [
+      "GitHub Actions",
+      "pytest",
+      "node --test"
+     ]
+    }
+   ],
+   "edges": [
+    {
+     "from": "report",
+     "to": "sync",
+     "kind": "data",
+     "label_es": "avisos y errores",
+     "label_en": "warnings and errors"
+    },
+    {
+     "from": "result",
+     "to": "runfail",
+     "kind": "data",
+     "label_es": "falla o cancelación",
+     "label_en": "failure or cancellation"
+    },
+    {
+     "from": "live",
+     "to": "watchdog",
+     "kind": "data",
+     "label_es": "dashboard.json",
+     "label_en": "dashboard.json"
+    },
+    {
+     "from": "live",
+     "to": "n8n-watch",
+     "kind": "data",
+     "label_es": "manifest.json",
+     "label_en": "manifest.json"
+    },
+    {
+     "from": "sync",
+     "to": "email",
+     "kind": "data",
+     "label_es": "abiertos, cerrados, repetidos",
+     "label_en": "opened, closed, recurring"
+    },
+    {
+     "from": "runfail",
+     "to": "email",
+     "kind": "data",
+     "label_es": "vuelve a ocurrir",
+     "label_en": "recurs"
+    },
+    {
+     "from": "watchdog",
+     "to": "email",
+     "kind": "data",
+     "label_es": "su issue cambió",
+     "label_en": "its issue changed"
+    },
+    {
+     "from": "n8n-watch",
+     "to": "error-wf",
+     "kind": "fallback",
+     "label_es": "ejecución fallida",
+     "label_en": "failed execution",
+     "explain_es": "La ruta que no depende de GitHub.",
+     "explain_en": "The route that does not depend on GitHub."
+    },
+    {
+     "from": "email",
+     "to": "recipients",
+     "kind": "human",
+     "label_es": "un correo por corrida",
+     "label_en": "one email per run"
+    },
+    {
+     "from": "error-wf",
+     "to": "maintainers",
+     "kind": "human",
+     "label_es": "aviso",
+     "label_en": "alert"
+    },
+    {
+     "from": "sync",
+     "to": "maintainers",
+     "kind": "human",
+     "label_es": "issues incidente-datos",
+     "label_en": "incidente-datos issues"
+    },
+    {
+     "from": "runfail",
+     "to": "maintainers",
+     "kind": "human",
+     "label_es": "issue",
+     "label_en": "issue"
+    },
+    {
+     "from": "watchdog",
+     "to": "maintainers",
+     "kind": "human",
+     "label_es": "issue sitio desactualizado",
+     "label_en": "stale-site issue"
+    },
+    {
+     "from": "watchdog",
+     "to": "keepalive",
+     "kind": "control",
+     "label_es": "reactiva",
+     "label_en": "re-enables"
+    },
+    {
+     "from": "maintainers",
+     "to": "devtools",
+     "kind": "human",
+     "label_es": "lanzan y revisan",
+     "label_en": "run and review"
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "El sitio deja de actualizarse",
+     "then_es": "A las 30 h el vigilante relanza la actualización y abre un issue; si ya la relanzó en 6 h, pide revisión en vez de insistir.",
+     "if_en": "The site stops updating",
+     "then_en": "At 30 h the watchdog relaunches the update and opens an issue; if it already relaunched within 6 h, it asks for review instead of insisting."
+    },
+    {
+     "if_es": "GitHub entero está caído",
+     "then_es": "El vigilante de n8n sigue mirando el sitio y su Error workflow avisa.",
+     "if_en": "All of GitHub is down",
+     "then_en": "The n8n watchdog keeps watching the site and its Error workflow alerts."
+    },
+    {
+     "if_es": "Un problema se repite cada día",
+     "then_es": "Sigue siendo un solo issue; el correo solo sale cuando algo se abre, se cierra o vuelve a ocurrir.",
+     "if_en": "A problem repeats every day",
+     "then_en": "It stays a single issue; the email only goes out when something opens, closes or recurs."
+    },
+    {
+     "if_es": "El repositorio pasa 60 días sin actividad",
+     "then_es": "keepalive y el vigilante reactivan los flujos programados y reinician el plazo.",
+     "if_en": "The repository goes 60 days without activity",
+     "then_en": "keepalive and the watchdog re-enable the scheduled workflows and restart the clock."
+    },
+    {
+     "if_es": "Falla el envío del correo o no hay SMTP",
+     "then_es": "Se anota en la corrida y no la detiene; los issues siguen llegando por GitHub.",
+     "if_en": "Sending the email fails or there is no SMTP",
+     "then_en": "It is noted in the run and does not stop it; issues keep arriving through GitHub."
+    }
+   ]
+  }
+ ]
+}

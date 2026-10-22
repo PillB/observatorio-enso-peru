@@ -69,10 +69,10 @@
     "col": "sources",
     "name_es": "NOAA (CPC y PSL)",
     "name_en": "NOAA (CPC and PSL)",
-    "what_es": "14 productos de NOAA: OISST semanal y mensual, RONI, ONI, SOI, presión en Tahití y Darwin, vientos a 850 hPa, contenido de calor y la discusión ENSO en HTML (CPC), y ERSSTv6 Niño 1+2 y 3.4 (PSL).",
-    "what_en": "14 NOAA products: weekly and monthly OISST, RONI, ONI, SOI, Tahiti and Darwin pressure, 850 hPa winds, heat content and the HTML ENSO discussion (CPC), plus ERSSTv6 Niño 1+2 and 3.4 (PSL).",
-    "details_es": "Críticos: cpc-wksst, cpc-roni y cpc-ensodisc. Si uno falla y no hay dato anterior, la corrida termina en critical y no se despliega. Las 14 URL son abiertas (actions+n8n).",
-    "details_en": "Critical: cpc-wksst, cpc-roni and cpc-ensodisc. If one fails and there is no previous value, the run ends critical and nothing is deployed. All 14 URLs are open (actions+n8n).",
+    "what_es": "15 productos de NOAA: OISST semanal y mensual, RONI, ONI, SOI, presión en Tahití y Darwin, vientos a 850 hPa, contenido de calor, la D20 de GODAS y la discusión ENSO en HTML (CPC), y ERSSTv6 Niño 1+2 y 3.4 (PSL).",
+    "what_en": "15 NOAA products: weekly and monthly OISST, RONI, ONI, SOI, Tahiti and Darwin pressure, 850 hPa winds, heat content, GODAS D20 and the HTML ENSO discussion (CPC), plus ERSSTv6 Niño 1+2 and 3.4 (PSL).",
+    "details_es": "Críticos: cpc-wksst, cpc-roni y cpc-ensodisc. Si uno falla y no hay dato anterior, la corrida termina en critical y no se despliega. Las 15 URL son abiertas (actions+n8n).",
+    "details_en": "Critical: cpc-wksst, cpc-roni and cpc-ensodisc. If one fails and there is no previous value, the run ends critical and nothing is deployed. All 15 URLs are open (actions+n8n).",
     "evidence": "python/enso/observatory.py:127-179, 1230-1235"
    },
    {
@@ -143,8 +143,8 @@
     "col": "sources",
     "name_es": "Armado del registro",
     "name_en": "Registry builder",
-    "what_es": "Junta los catálogos del código (168 feeds, 16 fuentes ENSO y 13 páginas del Perú) con las mediciones y decide el estado y los canales de cada URL.",
-    "what_en": "Joins the in-code catalogues (168 feeds, 16 ENSO sources and 13 Peru pages) with the measurements and decides each URL's status and channels.",
+    "what_es": "Junta los catálogos del código (168 feeds, 17 fuentes ENSO y 13 páginas del Perú) con las mediciones y decide el estado y los canales de cada URL.",
+    "what_en": "Joins the in-code catalogues (168 feeds, 17 ENSO sources and 13 Peru pages) with the measurements and decides each URL's status and channels.",
     "details_es": "Regla: peru-server si y solo si la URL está geobloqueada o lo parece; sin canales si robots.txt la prohíbe, salvo los 40 reader (solo actions, cada 20 h o más); en lo demás, actions y n8n, menos la red que no responde cuando la otra sí. tools.build_registry --check falla si el archivo no está al día y una prueba lo exige.",
     "details_en": "Rule: peru-server if and only if the URL is geoblocked or looks it; no channels if robots.txt forbids it, except the 40 reader feeds (actions only, every 20 h or more); otherwise actions and n8n, minus a network that fails while the other answers. tools.build_registry --check fails if the file is out of date, and a test requires it.",
     "evidence": "python/enso/registry.py:13-40, 102-180, 237-306, 343-387; python/tools/build_registry.py:1-45; python/tests/test_registry.py:72-73"
@@ -157,10 +157,10 @@
     "name_en": "Source registry (registry/)",
     "what_es": "Lista única de qué se descarga y quién lo pide: sources.json da el canal de cada URL (Actions, n8n o Perú) y reachability.json guarda las mediciones de alcance.",
     "what_en": "Single list of what is downloaded and who fetches it: sources.json gives each URL's channel (Actions, n8n or Peru) and reachability.json keeps the reachability measurements.",
-    "meta_es": "198 URL: 149 Actions y n8n, 40 solo Actions, 9 solo Perú",
-    "meta_en": "198 URLs: 149 Actions and n8n, 40 Actions only, 9 Peru only",
-    "details_es": "195 fuentes y 198 URL: 149 actions+n8n, 40 solo actions (feeds reader), 9 solo peru-server. Estado por URL: open 144, robots-disallowed 40, suspected-geoblock 9, unknown 4, down 1. reachability.json: 311 URL medidas desde Actions y n8n, todavía ninguna desde el Perú, así que ningún geobloqueo está confirmado. Generado el 21-10-2026 a las 05:15 UTC.",
-    "details_en": "195 sources and 198 URLs: 149 actions+n8n, 40 actions only (reader feeds), 9 peru-server only. Status per URL: open 144, robots-disallowed 40, suspected-geoblock 9, unknown 4, down 1. reachability.json: 311 URLs measured from Actions and n8n, none from Peru yet, so no geoblock is confirmed. Generated on 21 Oct 2026 at 05:15 UTC.",
+    "meta_es": "201 URL: 152 Actions y n8n, 40 solo Actions, 9 solo Perú",
+    "meta_en": "201 URLs: 152 Actions and n8n, 40 Actions only, 9 Peru only",
+    "details_es": "198 fuentes y 201 URL: 152 actions+n8n, 40 solo actions (feeds reader), 9 solo peru-server. Estado por URL: open 144, robots-disallowed 40, suspected-geoblock 9, unknown 7, down 1. reachability.json: 311 URL medidas desde Actions y n8n, todavía ninguna desde el Perú, así que ningún geobloqueo está confirmado. Generado el 21-10-2026 a las 05:15 UTC.",
+    "details_en": "198 sources and 201 URLs: 152 actions+n8n, 40 actions only (reader feeds), 9 peru-server only. Status per URL: open 144, robots-disallowed 40, suspected-geoblock 9, unknown 7, down 1. reachability.json: 311 URLs measured from Actions and n8n, none from Peru yet, so no geoblock is confirmed. Generated on 21 Oct 2026 at 05:15 UTC.",
     "evidence": "registry/sources.json:1-10; registry/reachability.json:1-5; python/enso/registry.py:59-67, 309-340 (conteos con registry.url_channels())"
    },
    {
@@ -183,10 +183,10 @@
     "col": "collect",
     "name_es": "Recolector n8n (nube AWS)",
     "name_en": "n8n collector (AWS cloud)",
-    "what_es": "Flujo de n8n en AWS que cada noche baja las 149 URL que el registro asigna a n8n y deja una segunda copia en la rama data-n8n, por si GitHub Actions no obtiene respuesta.",
-    "what_en": "An n8n flow on AWS that every night downloads the 149 URLs the registry assigns to n8n and leaves a second copy on the data-n8n branch, in case GitHub Actions gets no answer.",
-    "meta_es": "22:50 Lima · 149 URL",
-    "meta_en": "22:50 Lima · 149 URLs",
+    "what_es": "Flujo de n8n en AWS que cada noche baja las 152 URL que el registro asigna a n8n y deja una segunda copia en la rama data-n8n, por si GitHub Actions no obtiene respuesta.",
+    "what_en": "An n8n flow on AWS that every night downloads the 152 URLs the registry assigns to n8n and leaves a second copy on the data-n8n branch, in case GitHub Actions gets no answer.",
+    "meta_es": "22:50 Lima · 152 URL",
+    "meta_en": "22:50 Lima · 152 URLs",
     "details_es": "Flujo «ENSO · Recolector n8n (fuentes no bloqueadas)», 22:50 Lima (cron 50 22 * * *, zona America/Lima). Lee el registro de main o la copia incluida al construir. Omite las URL sin canales, las robots-disallowed, las reader y las solo peru-server. Baja todo su alcance cada noche, falle o no Actions. Una URL a la vez (40 s), segunda pasada tras 30 s, sigue los PDF del ENFEN, conserva 72 h la copia buena. Su nodo «Avisar al sitio» (enso-refresh) viene desactivado.",
     "details_en": "Flow 'ENSO · Recolector n8n (fuentes no bloqueadas)', 22:50 Lima (cron 50 22 * * *, zone America/Lima). It reads the registry from main or the copy bundled at build time. It skips URLs with no channels, robots-disallowed, reader and peru-server-only URLs. It fetches its whole scope every night, whether Actions fails or not. One URL at a time (40 s), a second pass after 30 s, follows the ENFEN PDFs, keeps the good copy for 72 h. Its 'Avisar al sitio' node (enso-refresh) ships disabled.",
     "evidence": "n8n/build.mjs:179, 201-242; n8n/nodes/fuentes.js:1-73; n8n/nodes/segunda.js:1-41; n8n/lib/relay.js:1-16"
@@ -325,10 +325,10 @@
     "col": "pipeline",
     "name_es": "Series, estados y señal GRD",
     "name_en": "Series, statuses and GRD signal",
-    "what_es": "Arma 20 series con último valor y antigüedad (17 con categoría), el semanal por región Niño, los estados de ENFEN y NOAA y la señal GRD: normal, amarillo, rojo, sin clasificar o sin dato.",
-    "what_en": "Builds 20 series with latest value and age (17 with a category), weekly data per Niño region, the ENFEN and NOAA statuses and the GRD signal: normal, yellow, red, unclassified or no data.",
-    "details_es": "Builder y signals.py. Evento costero: ICEN sobre +0,5 o bajo −0,7 al menos 3 meses seguidos. Las categorías, los estados y la señal GRD salen de Python; el navegador solo agrega ayudas de lectura: colores por umbral o por signo (franja semanal ±0,5, escala del mapa de −2 a +4 °C, minigráficos, áreas de los gráficos y valor del viento), la dirección del viento y N/D si el dato semanal tiene más de 16 días. La termoclina D20 no tiene fuente y siempre sale «na». freshness.py da a cada dato su vigencia (al día, atrasado, vencido, sin dato) según el calendario de su institución y la agrupa por vista en dashboard.json.",
-    "details_en": "Builder and signals.py. Coastal event: ICEN above +0.5 or below −0.7 for at least 3 months in a row. Categories, statuses and the GRD signal come from Python; the browser only adds reading aids: colours by threshold or sign (weekly strip ±0.5, map scale from −2 to +4 °C, sparklines, chart areas and the wind value), the wind direction and N/D when the weekly value is over 16 days old. The D20 thermocline has no source and is always 'na'. freshness.py gives every datum its freshness (on time, late, expired, no data) from its institution's calendar and groups it per view in dashboard.json.",
+    "what_es": "Arma 23 series con último valor y antigüedad (20 con categoría), el semanal por región Niño, los estados de ENFEN y NOAA y la señal GRD: normal, amarillo, rojo, sin clasificar o sin dato.",
+    "what_en": "Builds 23 series with latest value and age (20 with a category), weekly data per Niño region, the ENFEN and NOAA statuses and the GRD signal: normal, yellow, red, unclassified or no data.",
+    "details_es": "Builder y signals.py. Evento costero: ICEN sobre +0,5 o bajo −0,7 al menos 3 meses seguidos. Las categorías, los estados y la señal GRD salen de Python; el navegador solo agrega ayudas de lectura: colores por umbral o por signo (franja semanal ±0,5, escala del mapa de −2 a +4 °C, minigráficos, áreas de los gráficos y valor del viento), la dirección del viento y N/D si el dato semanal tiene más de 16 días. La termoclina usa la anomalía de D20 que el observatorio calcula con GODAS en Niño 1+2 y Niño 3.4. freshness.py da a cada dato su vigencia (al día, atrasado, vencido, sin dato) según el calendario de su institución y la agrupa por vista en dashboard.json.",
+    "details_en": "Builder and signals.py. Coastal event: ICEN above +0.5 or below −0.7 for at least 3 months in a row. Categories, statuses and the GRD signal come from Python; the browser only adds reading aids: colours by threshold or sign (weekly strip ±0.5, map scale from −2 to +4 °C, sparklines, chart areas and the wind value), the wind direction and N/D when the weekly value is over 16 days old. The thermocline uses the D20 anomaly the observatory computes from GODAS in Niño 1+2 and Niño 3.4. freshness.py gives every datum its freshness (on time, late, expired, no data) from its institution's calendar and groups it per view in dashboard.json.",
     "evidence": "python/enso/observatory.py:622-862; python/enso/signals.py:1-216"
    },
    {
@@ -397,8 +397,8 @@
     "col": "site",
     "name_es": "Archivos publicados (data/)",
     "name_en": "Published files (data/)",
-    "what_es": "Lo que se publica: dashboard.json, series y CSV, estado de las 16 fuentes, feed.json, news/, geo/, run-report.json, manifest.json y data/archive/ con las copias archivadas.",
-    "what_en": "What gets published: dashboard.json, series and CSVs, the status of the 16 sources, feed.json, news/, geo/, run-report.json, manifest.json and data/archive/ with the archived copies.",
+    "what_es": "Lo que se publica: dashboard.json, series y CSV, estado de las 17 fuentes, feed.json, news/, geo/, run-report.json, manifest.json y data/archive/ con las copias archivadas.",
+    "what_en": "What gets published: dashboard.json, series and CSVs, the status of the 17 sources, feed.json, news/, geo/, run-report.json, manifest.json and data/archive/ with the archived copies.",
     "details_es": "Cada JSON propio (no las copias de terceros) lleva schema observatorio-enso/4, publicationId y generatedAt. data/archive/: respuesta original y PDF de cada fuente oficial (archive/sources/), cada feed bajado (archive/feeds/) y una página por día de noticias (60 días); máx. 20 MiB por copia. geo/items.json: 120 días, máx. 4000 notas.",
     "details_en": "Every own JSON (not the third-party copies) carries schema observatorio-enso/4, publicationId and generatedAt. data/archive/: original response and PDF of each official source (archive/sources/), each downloaded feed (archive/feeds/) and one page per news day (60 days); max 20 MiB per copy. geo/items.json: 120 days, max 4000 items.",
     "evidence": "python/enso/observatory.py:898-1100; python/enso/archive.py:1-208; python/enso/geo_overrides.py:180-222"
@@ -469,8 +469,8 @@
     "name_en": "Documents console (/admin/documentos.html)",
     "what_es": "Página de la consola donde un administrador sube el PDF de un documento que ninguna ruta automática trae (la DHN pide verificación humana). Usa la sesión y el registro de la consola de lugares.",
     "what_en": "Console page where an administrator uploads the PDF of a document no automatic route brings (DHN asks for a human check). It uses the places console's session and audit log.",
-    "details_es": "/api/docs/status y /api/docs/upload. Solo acepta documentos de data/manual-needed.json, PDF que empiezan con %PDF- y terminan con %%EOF, hasta 25 MB y 10 por hora; por omisión solo el rol admin (DOCS_UPLOAD_ROLES). El PDF pasa en flujo a GitHub sin decodificarse (10 ms de CPU del plan gratuito). Secreto DOCS_GITHUB_TOKEN (Contents: Read and write solo en este repositorio).",
-    "details_en": "/api/docs/status and /api/docs/upload. It only accepts documents listed in data/manual-needed.json, PDFs that start with %PDF- and end with %%EOF, up to 25 MB and 10 an hour; by default only the admin role (DOCS_UPLOAD_ROLES). The PDF streams to GitHub without being decoded (the free plan's 10 ms of CPU). Secret DOCS_GITHUB_TOKEN (Contents: Read and write on this repository only).",
+    "details_es": "/api/docs/status y /api/docs/upload. Solo acepta documentos de data/manual-needed.json, PDF que empiezan con %PDF- y terminan con %%EOF, hasta 20 MB y 10 por hora; por omisión solo el rol admin (DOCS_UPLOAD_ROLES). El PDF pasa en flujo a GitHub sin decodificarse (10 ms de CPU del plan gratuito). Secreto DOCS_GITHUB_TOKEN (Contents: Read and write solo en este repositorio).",
+    "details_en": "/api/docs/status and /api/docs/upload. It only accepts documents listed in data/manual-needed.json, PDFs that start with %PDF- and end with %%EOF, up to 20 MB and 10 an hour; by default only the admin role (DOCS_UPLOAD_ROLES). The PDF streams to GitHub without being decoded (the free plan's 10 ms of CPU). Secret DOCS_GITHUB_TOKEN (Contents: Read and write on this repository only).",
     "evidence": "public/admin/documentos.html:1-57; public/admin/documentos.js:1-120; functions/api/docs/[[path]].js:1-4; functions/_lib/doc-uploads.js:1-40, 124-210, 278-330"
    },
    {
@@ -593,8 +593,8 @@
     "row": 1,
     "name_es": "Colega que opera n8n",
     "name_en": "n8n operator (colleague)",
-    "what_es": "Importa los 3 flujos de n8n/dist (recolector, vigilante y validación) en su n8n de AWS, elige la credencial de GitHub y activa los programados; asignarles un Error workflow es opcional.",
-    "what_en": "Imports the 3 n8n/dist flows (collector, watchdog and validation) into their AWS n8n, picks the GitHub credential and activates the scheduled ones; assigning an Error workflow is optional.",
+    "what_es": "Importa los 4 flujos de n8n/dist (recolector, vigilante, validación y el extractor opcional de informes) en su n8n de AWS, elige la credencial de GitHub y activa los programados; asignarles un Error workflow es opcional.",
+    "what_en": "Imports the 4 n8n/dist flows (collector, watchdog, validation and the optional report extractor) into their AWS n8n, picks the GitHub credential and activates the scheduled ones; assigning an Error workflow is optional.",
     "evidence": "n8n/README.md:3-21; n8n/build.mjs:1-8, 246-250"
    },
    {
@@ -681,8 +681,8 @@
     "from": "noaa",
     "to": "fetch",
     "kind": "data",
-    "label_es": "14 productos, directo",
-    "label_en": "14 products, direct",
+    "label_es": "15 productos, directo",
+    "label_en": "15 products, direct",
     "explain_es": "Actions baja cada noche los índices, la temperatura del mar, el calor bajo la superficie y la discusión ENSO de NOAA. Si un producto crítico falla y no hay dato anterior, no se despliega.",
     "explain_en": "Each night Actions downloads NOAA's indices, sea temperature, subsurface heat and ENSO discussion. If a critical product fails with no previous value, nothing is deployed.",
     "when_es": "diario 23:37 Lima",
@@ -873,8 +873,8 @@
     "from": "registry",
     "to": "n8n-collector",
     "kind": "control",
-    "label_es": "149 URL para n8n",
-    "label_en": "149 URLs for n8n",
+    "label_es": "152 URL para n8n",
+    "label_en": "152 URLs for n8n",
     "explain_es": "Al empezar, n8n lee el registro de main en GitHub (o la copia incluida en el flujo) y pide solo las URL asignadas a n8n.",
     "explain_en": "At start n8n reads the registry from main on GitHub (or the copy built into the flow) and requests only the URLs assigned to n8n.",
     "when_es": "diario 22:50 Lima",
@@ -1093,8 +1093,8 @@
     "kind": "data",
     "label_es": "datos y comunicado",
     "label_en": "data and communiqué",
-    "explain_es": "Los datos de las 16 fuentes, frescos o arrastrados, y el último comunicado del ENFEN pasan a armar las series, el semanal y los estados oficiales.",
-    "explain_en": "The data of the 16 sources, fresh or carried, and the latest ENFEN communiqué go on to build the series, the weekly data and the official statuses.",
+    "explain_es": "Los datos de las 17 fuentes, frescos o arrastrados, y el último comunicado del ENFEN pasan a armar las series, el semanal y los estados oficiales.",
+    "explain_en": "The data of the 17 sources, fresh or carried, and the latest ENFEN communiqué go on to build the series, the weekly data and the official statuses.",
     "evidence": "python/enso/observatory.py:781-835, 1176-1195"
    },
    {
@@ -1640,8 +1640,8 @@
     "w": 400,
     "name_es": "Fuentes oficiales y alertas",
     "name_en": "Official sources and alerts",
-    "what_es": "Lo que vigilamos: el comunicado del ENFEN, el ICEN del IGP, 14 productos de NOAA y 13 servicios de alertas (INDECI, SENAMHI, DHN, IGP, USGS, PTWC y NASA). También páginas del Estado que solo guardamos como archivo.",
-    "what_en": "What we watch: the ENFEN communiqué, IGP's ICEN, 14 NOAA products and 14 alert services (INDECI, SENAMHI, DHN, IGP, USGS, PTWC and NASA). Also government pages we only keep as an archive.",
+    "what_es": "Lo que vigilamos: el comunicado del ENFEN, el ICEN del IGP, 15 productos de NOAA y 14 servicios de alertas (INDECI, SENAMHI, DHN, IGP, USGS, PTWC y NASA). También páginas del Estado que solo guardamos como archivo.",
+    "what_en": "What we watch: the ENFEN communiqué, IGP's ICEN, 15 NOAA products and 14 alert services (INDECI, SENAMHI, DHN, IGP, USGS, PTWC and NASA). Also government pages we only keep as an archive.",
     "covers": [
      "peru-official",
      "noaa",
@@ -1973,8 +1973,8 @@
   {
    "title_es": "Qué vigilamos",
    "title_en": "What we watch",
-   "text_es": "El observatorio sigue las fuentes oficiales del ENSO (ENFEN, IGP y NOAA), 13 servicios de alertas de peligros y 154 feeds de noticias. Respeta las reglas de cada sitio para robots, salvo 40 feeds de noticias que lee como un lector, como mucho una vez al día.",
-   "text_en": "The observatory follows the official ENSO sources (ENFEN, IGP and NOAA), 13 hazard-alert services and 154 news feeds. It obeys each site's robot rules, except 40 news feeds it reads like a feed reader, at most once a day.",
+   "text_es": "El observatorio sigue las fuentes oficiales del ENSO (ENFEN, IGP y NOAA), 14 servicios de alertas de peligros y 154 feeds de noticias. Respeta las reglas de cada sitio para robots, salvo 40 feeds de noticias que lee como un lector, como mucho una vez al día.",
+   "text_en": "The observatory follows the official ENSO sources (ENFEN, IGP and NOAA), 14 hazard-alert services and 154 news feeds. It obeys each site's robot rules, except 40 news feeds it reads like a feed reader, at most once a day.",
    "nodes": [
     "s-fuentes",
     "s-noticias"

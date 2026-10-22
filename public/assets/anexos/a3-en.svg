@@ -1,0 +1,584 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1835.3" role="img" aria-labelledby="a3-t a3-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="a3-t">Annex A3 · n8n in the cloud (AWS): second copy and helper workflows</title>
+  <desc id="a3-d">The n8n collector node by node (registry, two passes, copy, parentless commit to data-n8n) and the watchdog, validation and extraction workflows, built and tested from the repository.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="a3-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a3-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a3-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a3-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a3-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1835.3" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Annex A3 · n8n in the cloud (AWS): second copy and helper workflows</text>
+  <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
+  <text class="ar-s" x="20" y="60" font-size="12">Four n8n workflows run outside GitHub, on a colleague&#x27;s n8n on AWS (US). The collector leaves a second copy every night of everything that is neither blocked nor forbidden, whether Actions fails or not; the others watch the site,</text>
+  <text class="ar-s" x="20" y="77" font-size="12">measure reachability on demand and help read reports with a language model. Each node&#x27;s code lives in the repository (n8n/) and is built with build.mjs.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: n8n collector (AWS cloud), data-n8n branch, n8n operator (colleague).</text>
+  <text class="ar-t" x="20" y="121" font-size="11.5">Lines:</text>
+  <path class="ar-e ar-e-data" d="M70.7 117 L104.7 117" marker-end="url(#a3-m-data)"/>
+  <text class="ar-s" x="112.7" y="121" font-size="11.5">data</text>
+  <path class="ar-e ar-e-fallback" d="M160.6 117 L194.6 117" stroke-dasharray="6 4" marker-end="url(#a3-m-fallback)"/>
+  <text class="ar-s" x="202.6" y="121" font-size="11.5">fallback</text>
+  <path class="ar-e ar-e-trigger" d="M269.4 117 L303.4 117" stroke-dasharray="2 3" marker-end="url(#a3-m-trigger)"/>
+  <text class="ar-s" x="311.4" y="121" font-size="11.5">trigger or control</text>
+  <path class="ar-e ar-e-human" d="M431.5 117 L465.5 117" stroke-dasharray="8 3 2 3" marker-end="url(#a3-m-human)"/>
+  <text class="ar-s" x="473.5" y="121" font-size="11.5">manual step</text>
+  <rect class="ar-col" x="36" y="141" width="300" height="1073.3" rx="10"/>
+  <text class="ar-h" x="48" y="166" font-size="15">Repository (n8n/)</text>
+  <text class="ar-m" x="48" y="183" font-size="10.5">Node.js · build.mjs · tests on real n8n (n8n.yml)</text>
+  <rect class="ar-col" x="392" y="141" width="300" height="1073.3" rx="10"/>
+  <text class="ar-h" x="404" y="166" font-size="15">Collector: daily 22:50 Lima</text>
+  <text class="ar-m" x="404" y="183" font-size="10.5">Schedule, HTTP Request, Split in Batches and Code</text>
+  <text class="ar-m" x="404" y="197" font-size="10.5">nodes</text>
+  <rect class="ar-col" x="748" y="141" width="300" height="1073.3" rx="10"/>
+  <text class="ar-h" x="760" y="166" font-size="15">Towards GitHub</text>
+  <text class="ar-m" x="760" y="183" font-size="10.5">Git Data API with the “GitHub ENSO (n8n)”</text>
+  <text class="ar-m" x="760" y="197" font-size="10.5">credential</text>
+  <rect class="ar-col" x="1104" y="141" width="300" height="1073.3" rx="10"/>
+  <text class="ar-h" x="1116" y="166" font-size="15">Other workflows</text>
+  <text class="ar-m" x="1116" y="183" font-size="10.5">watchdog · validation · extractor</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="a3-e-1" data-edge="1" data-from="code" data-to="build" tabindex="0">
+    <title>1. Node code → build.mjs → dist/: code and registry. build.mjs inserts the lib/ and nodes/ code into each node, plus a copy of the source registry.</title>
+    <path class="ar-e ar-e-data" d="M186 353.7 L186 383.7" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="186" cy="368.7" r="9"/>
+    <text class="ar-t" x="186" y="372.5" font-size="10.5" text-anchor="middle">1</text>
+  </g>
+  <g class="ar-edge" id="a3-e-2" data-edge="2" data-from="build" data-to="colleague" tabindex="0">
+    <title>2. build.mjs → dist/ → n8n operator (colleague): dist/ workflows. Nodes are regenerated with build.mjs: a change is re-imported, not edited in n8n.</title>
+    <path class="ar-e ar-e-human" d="M186 528.4 L186 558.4" stroke-dasharray="8 3 2 3" marker-end="url(#a3-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="186" cy="543.4" r="9"/>
+    <text class="ar-t" x="186" y="547.2" font-size="10.5" text-anchor="middle">2</text>
+  </g>
+  <g class="ar-edge" id="a3-e-3" data-edge="3" data-from="colleague" data-to="schedule" tabindex="0">
+    <title>3. n8n operator (colleague) → Trigger and settings: imports, credential and activates. Picks the “GitHub ENSO (n8n)” credential on each node that talks to GitHub and activates the workflow.</title>
+    <path class="ar-e ar-e-human" d="M326 624 L372 624 Q378 624 378 618 L378 282 Q378 276 384 276 L402 276" stroke-dasharray="8 3 2 3" marker-end="url(#a3-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="378" cy="450" r="9"/>
+    <text class="ar-t" x="378" y="453.8" font-size="10.5" text-anchor="middle">3</text>
+  </g>
+  <g class="ar-edge" id="a3-e-4" data-edge="4" data-from="schedule" data-to="read" tabindex="0">
+    <title>4. Trigger and settings → Read registry and previous copy: 22:50 Lima. Runs every night, whether Actions failed or not: the copy is ready when the 23:37 run looks for it.</title>
+    <path class="ar-e ar-e-trigger" d="M540 338.5 L540 368.5" stroke-dasharray="2 3" marker-end="url(#a3-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="540" cy="353.5" r="9"/>
+    <text class="ar-t" x="540" y="357.3" font-size="10.5" text-anchor="middle">4</text>
+  </g>
+  <g class="ar-edge" id="a3-e-5" data-edge="5" data-from="read" data-to="plan" tabindex="0">
+    <title>5. Read registry and previous copy → Sources: registry and previous copy. If the GitHub registry cannot be read, it uses the copy embedded at build time.</title>
+    <path class="ar-e ar-e-data" d="M540 498.1 L540 528.1" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="513.1" r="9"/>
+    <text class="ar-t" x="540" y="516.9" font-size="10.5" text-anchor="middle">5</text>
+  </g>
+  <g class="ar-edge" id="a3-e-6" data-edge="6" data-from="plan" data-to="pass1" tabindex="0">
+    <title>6. Sources → Download, one at a time: URLs assigned to n8n. Only those the registry gives n8n: all three collectors read the same list.</title>
+    <path class="ar-e ar-e-data" d="M540 676.1 L540 706.1" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="691.1" r="9"/>
+    <text class="ar-t" x="540" y="694.9" font-size="10.5" text-anchor="middle">6</text>
+  </g>
+  <g class="ar-edge" id="a3-e-7" data-edge="7" data-from="pass1" data-to="pass2" tabindex="0">
+    <title>7. Download, one at a time → Second pass: transient failures. What failed by timeout, connection, 5xx or 429 is retried once; if there is nothing to retry, this branch does not run.</title>
+    <path class="ar-e ar-e-fallback" d="M540 850.8 L540 880.8" stroke-dasharray="6 4" marker-end="url(#a3-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="540" cy="865.8" r="9"/>
+    <text class="ar-t" x="540" y="869.6" font-size="10.5" text-anchor="middle">7</text>
+  </g>
+  <g class="ar-edge" id="a3-e-8" data-edge="8" data-from="pass1" data-to="prepare" tabindex="0">
+    <title>8. Download, one at a time → Prepare copy: first pass. Good answers from the first pass go straight to the copy.</title>
+    <path class="ar-e ar-e-data" d="M682 780 L702 780 Q708 780 708 786 L708 1152 Q708 1158 702 1158 L682 1158" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="708" cy="969" r="9"/>
+    <text class="ar-t" x="708" y="972.8" font-size="10.5" text-anchor="middle">8</text>
+  </g>
+  <g class="ar-edge" id="a3-e-9" data-edge="9" data-from="pass2" data-to="prepare" tabindex="0">
+    <title>9. Second pass → Prepare copy: second pass. “Merge passes” joins both before building the copy.</title>
+    <path class="ar-e ar-e-data" d="M540 1025.5 L540 1055.5" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="1040.5" r="9"/>
+    <text class="ar-t" x="540" y="1044.3" font-size="10.5" text-anchor="middle">9</text>
+  </g>
+  <g class="ar-edge" id="a3-e-10" data-edge="10" data-from="prepare" data-to="blobs" tabindex="0">
+    <title>10. Prepare copy → Create blobs: new files. Unchanged files reuse their blob: the upload is small.</title>
+    <path class="ar-e ar-e-data" d="M682 1098 L726 1098 Q732 1098 732 1092 L732 282 Q732 276 738 276 L758 276" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="732" cy="687" r="9"/>
+    <text class="ar-t" x="732" y="690.8" font-size="10.5" text-anchor="middle">10</text>
+  </g>
+  <g class="ar-edge" id="a3-e-11" data-edge="11" data-from="blobs" data-to="commit" tabindex="0">
+    <title>11. Create blobs → Tree and parentless commit: blobs ready. The tree and the commit are built from the blobs.</title>
+    <path class="ar-e ar-e-data" d="M900 338.5 L900 368.5" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="900" cy="353.5" r="9"/>
+    <text class="ar-t" x="900" y="357.3" font-size="10.5" text-anchor="middle">11</text>
+  </g>
+  <g class="ar-edge" id="a3-e-12" data-edge="12" data-from="commit" data-to="branch" tabindex="0">
+    <title>12. Tree and parentless commit → data-n8n branch: parentless commit. The branch is replaced (force): history does not grow; data-archive keeps what the pipeline uses.</title>
+    <path class="ar-e ar-e-data" d="M900 498.1 L900 528.1" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="900" cy="513.1" r="9"/>
+    <text class="ar-t" x="900" y="516.9" font-size="10.5" text-anchor="middle">12</text>
+  </g>
+  <g class="ar-edge" id="a3-e-13" data-edge="13" data-from="branch" data-to="read" tabindex="0">
+    <title>13. data-n8n branch → Read registry and previous copy: previous copy (72 h). Its “Read previous copy” node reads data-n8n to keep the URLs that failed tonight.</title>
+    <path class="ar-e ar-e-fallback" d="M758 600 L714 600 Q708 600 708 594 L708 438 Q708 432 702 432 L682 432" stroke-dasharray="6 4" marker-end="url(#a3-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="708" cy="516" r="9"/>
+    <text class="ar-t" x="708" y="519.8" font-size="10.5" text-anchor="middle">13</text>
+  </g>
+  <g class="ar-edge" id="a3-e-14" data-edge="14" data-from="branch" data-to="notify" tabindex="0">
+    <title>14. data-n8n branch → Notify the site (off): optional. If enabled, the update runs right away; if not, the 23:37 run uses the copy.</title>
+    <path class="ar-e ar-e-trigger" d="M900 676.1 L900 706.1" stroke-dasharray="2 3" marker-end="url(#a3-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="900" cy="691.1" r="9"/>
+    <text class="ar-t" x="900" y="694.9" font-size="10.5" text-anchor="middle">14</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="a3-n-code" data-node="code">
+    <title>Node code. lib/ (answer and block classifier, SHA-256 and SHA-1, ENFEN PDFs, copy assembly) and nodes/ (each Code node&#x27;s body). It is not edited in the n8n interface. Technology: JavaScript, Node 22.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="209" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="217" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 222)"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/></g>
+    <text class="ar-t" x="96" y="238.5" font-size="12.5">Node code</text>
+    <text class="ar-s" x="58" y="270.4" font-size="11">lib/ (answer and block classifier, SHA-256 and</text>
+    <text class="ar-s" x="58" y="285.6" font-size="11">SHA-1, ENFEN PDFs, copy assembly) and</text>
+    <text class="ar-s" x="58" y="300.8" font-size="11">nodes/ (each Code node&#x27;s body). It is not</text>
+    <text class="ar-s" x="58" y="316" font-size="11">edited in the n8n interface.</text>
+    <rect class="ar-chip" x="58" y="325.7" width="62.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="337.7" font-size="10">JavaScript</text>
+    <rect class="ar-chip" x="125.1" y="325.7" width="54" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="131.1" y="337.7" font-size="10">Node 22</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-build" data-node="build">
+    <title>build.mjs → dist/. Builds the 4 importable workflows and embeds a registry copy. n8n.yml checks that dist/ matches the code and tests them on real n8n with a fake GitHub API. Technology: node --test, n8n en Docker.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="383.7" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="391.7" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="393.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 396.7)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></g>
+    <text class="ar-t" x="96" y="413.2" font-size="12.5">build.mjs → dist/</text>
+    <text class="ar-s" x="58" y="445.2" font-size="11">Builds the 4 importable workflows and</text>
+    <text class="ar-s" x="58" y="460.3" font-size="11">embeds a registry copy. n8n.yml checks that</text>
+    <text class="ar-s" x="58" y="475.5" font-size="11">dist/ matches the code and tests them on real</text>
+    <text class="ar-s" x="58" y="490.7" font-size="11">n8n with a fake GitHub API.</text>
+    <rect class="ar-chip" x="58" y="500.4" width="66.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="512.4" font-size="10">node --test</text>
+    <rect class="ar-chip" x="129.6" y="500.4" width="85.3" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="135.6" y="512.4" font-size="10">n8n en Docker</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-colleague" data-node="colleague">
+    <title>n8n operator (colleague). Imports the dist/ workflows, picks the GitHub credential (fine-grained token, Contents read and write, 1 year) and activates the scheduled ones; may give them an Error workflow that sends an email.</title>
+    <rect class="ar-node ar-g-people" x="46" y="558.4" width="280" height="135.9" rx="8"/>
+    <rect class="ar-f-people" x="46" y="566.4" width="4" height="119.9" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="58" y="568.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(61 571.4)"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g>
+    <text class="ar-t" x="96" y="587.9" font-size="12.5">n8n operator (colleague)</text>
+    <text class="ar-s" x="58" y="619.9" font-size="11">Imports the dist/ workflows, picks the GitHub</text>
+    <text class="ar-s" x="58" y="635" font-size="11">credential (fine-grained token, Contents read</text>
+    <text class="ar-s" x="58" y="650.2" font-size="11">and write, 1 year) and activates the</text>
+    <text class="ar-s" x="58" y="665.4" font-size="11">scheduled ones; may give them an Error</text>
+    <text class="ar-s" x="58" y="680.6" font-size="11">workflow that sends an email.</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-schedule" data-node="schedule">
+    <title>Trigger and settings. cron 50 22 * * * in the America/Lima zone, or “Run by hand”. Settings: repository, data-n8n branch, 72 h carry and 8 MB per file. Technology: Schedule Trigger, Set.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="209" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="217" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 222)"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g>
+    <text class="ar-t" x="452" y="238.5" font-size="12.5">Trigger and settings</text>
+    <text class="ar-s" x="414" y="270.4" font-size="11">cron 50 22 * * * in the America/Lima zone, or</text>
+    <text class="ar-s" x="414" y="285.6" font-size="11">“Run by hand”. Settings: repository,</text>
+    <text class="ar-s" x="414" y="300.8" font-size="11">data-n8n branch, 72 h carry and 8 MB per file.</text>
+    <rect class="ar-chip" x="414" y="310.5" width="97.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="322.5" font-size="10">Schedule Trigger</text>
+    <rect class="ar-chip" x="516.1" y="310.5" width="28.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="522.1" y="322.5" font-size="10">Set</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-read" data-node="read">
+    <title>Read registry and previous copy. Reads registry/sources.json from main through the GitHub API and the current index.json of data-n8n. Technology: HTTP Request.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="368.5" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="376.5" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="378.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 381.5)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="452" y="393" font-size="12.5">Read registry and</text>
+    <text class="ar-t" x="452" y="409.3" font-size="12.5">previous copy</text>
+    <text class="ar-s" x="414" y="430" font-size="11">Reads registry/sources.json from main</text>
+    <text class="ar-s" x="414" y="445.1" font-size="11">through the GitHub API and the current</text>
+    <text class="ar-s" x="414" y="460.3" font-size="11">index.json of data-n8n.</text>
+    <rect class="ar-chip" x="414" y="470.1" width="82" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="482.1" font-size="10">HTTP Request</text>
+    <a class="ar-annex" href="a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="646.6" y="375.5" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="660.3" y="388" font-size="10.5" text-anchor="middle">A1</text></a>
+  </g>
+  <g class="ar-node-g" id="a3-n-plan" data-node="plan">
+    <title>Sources. Keeps the URLs the registry gives n8n (and their mirrors): skips the forbidden, the reader and the Peru-only ones. 152 URLs. Technology: Code.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="528.1" width="280" height="148" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="536.1" width="4" height="132" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="538.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 541.1)"><path d="M3 5h18l-7 8.5V20l-4-2v-4.5z"/></g>
+    <text class="ar-t" x="452" y="557.6" font-size="12.5">Sources</text>
+    <text class="ar-s" x="414" y="589.5" font-size="11">Keeps the URLs the registry gives n8n (and</text>
+    <text class="ar-s" x="414" y="604.7" font-size="11">their mirrors): skips the forbidden, the reader</text>
+    <text class="ar-s" x="414" y="619.9" font-size="11">and the Peru-only ones.</text>
+    <text class="ar-m" x="414" y="639" font-size="10.5">152 URLs</text>
+    <rect class="ar-chip" x="414" y="648.1" width="37.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="660.1" font-size="10">Code</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-pass1" data-node="pass1">
+    <title>Download, one at a time. One URL at a time, up to 10 redirects and a 40 s timeout; “Analyze” classifies each answer with the same rules as Actions and Peru. Technology: Split in Batches, HTTP Request, Code.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="706.1" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="714.1" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="716.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 719.1)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
+    <text class="ar-t" x="452" y="735.6" font-size="12.5">Download, one at a time</text>
+    <text class="ar-s" x="414" y="767.5" font-size="11">One URL at a time, up to 10 redirects and a</text>
+    <text class="ar-s" x="414" y="782.7" font-size="11">40 s timeout; “Analyze” classifies each</text>
+    <text class="ar-s" x="414" y="797.9" font-size="11">answer with the same rules as Actions and</text>
+    <text class="ar-s" x="414" y="813.1" font-size="11">Peru.</text>
+    <rect class="ar-chip" x="414" y="822.8" width="89.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="834.8" font-size="10">Split in Batches</text>
+    <rect class="ar-chip" x="508.8" y="822.8" width="82" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="514.8" y="834.8" font-size="10">HTTP Request</text>
+    <rect class="ar-chip" x="595.8" y="822.8" width="37.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="601.8" y="834.8" font-size="10">Code</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-pass2" data-node="pass2">
+    <title>Second pass. After 30 s it retries what failed for transient reasons (timeout, connection, 5xx, 429) with a 60 s timeout, and fetches the ENFEN PDFs and the links the registry asks for. Technology: Wait, Code.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="880.8" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="888.8" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="890.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 893.8)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
+    <text class="ar-t" x="452" y="910.3" font-size="12.5">Second pass</text>
+    <text class="ar-s" x="414" y="942.3" font-size="11">After 30 s it retries what failed for transient</text>
+    <text class="ar-s" x="414" y="957.4" font-size="11">reasons (timeout, connection, 5xx, 429) with</text>
+    <text class="ar-s" x="414" y="972.6" font-size="11">a 60 s timeout, and fetches the ENFEN PDFs</text>
+    <text class="ar-s" x="414" y="987.8" font-size="11">and the links the registry asks for.</text>
+    <rect class="ar-chip" x="414" y="997.5" width="34.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="1009.5" font-size="10">Wait</text>
+    <rect class="ar-chip" x="453.7" y="997.5" width="37.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="459.7" y="1009.5" font-size="10">Code</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-prepare" data-node="prepare">
+    <title>Prepare copy. Merges both passes and builds index.json and heartbeat.json (enso-relay/1). Keeps for up to 72 h the good copy of a URL that failed tonight, marked carried. Technology: Merge, Code.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="1055.5" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="1063.5" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="1065.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 1068.5)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="452" y="1085" font-size="12.5">Prepare copy</text>
+    <text class="ar-s" x="414" y="1117" font-size="11">Merges both passes and builds index.json and</text>
+    <text class="ar-s" x="414" y="1132.2" font-size="11">heartbeat.json (enso-relay/1). Keeps for up to</text>
+    <text class="ar-s" x="414" y="1147.3" font-size="11">72 h the good copy of a URL that failed</text>
+    <text class="ar-s" x="414" y="1162.5" font-size="11">tonight, marked carried.</text>
+    <rect class="ar-chip" x="414" y="1172.3" width="43.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="1184.3" font-size="10">Merge</text>
+    <rect class="ar-chip" x="462.4" y="1172.3" width="37.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="468.4" y="1184.3" font-size="10">Code</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-blobs" data-node="blobs">
+    <title>Create blobs. Uploads only the new files, one every 0.8 s; those already on the branch are reused by their git SHA-1. Technology: POST git/blobs.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="209" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="217" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 222)"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></g>
+    <text class="ar-t" x="808" y="238.5" font-size="12.5">Create blobs</text>
+    <text class="ar-s" x="770" y="270.4" font-size="11">Uploads only the new files, one every 0.8 s;</text>
+    <text class="ar-s" x="770" y="285.6" font-size="11">those already on the branch are reused by</text>
+    <text class="ar-s" x="770" y="300.8" font-size="11">their git SHA-1.</text>
+    <rect class="ar-chip" x="770" y="310.5" width="84.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="322.5" font-size="10">POST git/blobs</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-commit" data-node="commit">
+    <title>Tree and parentless commit. Builds the tree with index.json, heartbeat.json and files/, and a parentless commit: the branch keeps only the latest copy. Technology: git/trees, git/commits.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="368.5" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="376.5" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="378.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 381.5)"><circle cx="12" cy="12" r="3.5"/><path d="M2 12h6.5M15.5 12H22"/></g>
+    <text class="ar-t" x="808" y="398" font-size="12.5">Tree and parentless commit</text>
+    <text class="ar-s" x="770" y="430" font-size="11">Builds the tree with index.json, heartbeat.json</text>
+    <text class="ar-s" x="770" y="445.1" font-size="11">and files/, and a parentless commit: the</text>
+    <text class="ar-s" x="770" y="460.3" font-size="11">branch keeps only the latest copy.</text>
+    <rect class="ar-chip" x="770" y="470.1" width="54" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="482.1" font-size="10">git/trees</text>
+    <rect class="ar-chip" x="829" y="470.1" width="71.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="835" y="482.1" font-size="10">git/commits</text>
+  </g>
+  <g class="ar-node-g" id="a3-n-branch" data-node="branch">
+    <title>data-n8n branch. Moves the branch to the new commit (or creates it). index.json and heartbeat.json always go, even if nothing answers. the pipeline uses it up to 72 h. Technology: git/refs.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="528.1" width="280" height="148" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="536.1" width="4" height="132" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="538.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 541.1)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="7" r="2.2"/><path d="M6 7.2v9.6M18 9.2c0 5-6 3.5-11 7.8"/></g>
+    <text class="ar-t" x="808" y="557.6" font-size="12.5">data-n8n branch</text>
+    <text class="ar-s" x="770" y="589.5" font-size="11">Moves the branch to the new commit (or</text>
+    <text class="ar-s" x="770" y="604.7" font-size="11">creates it). index.json and heartbeat.json</text>
+    <text class="ar-s" x="770" y="619.9" font-size="11">always go, even if nothing answers.</text>
+    <text class="ar-m" x="770" y="639" font-size="10.5">the pipeline uses it up to 72 h</text>
+    <rect class="ar-chip" x="770" y="648.1" width="47.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="660.1" font-size="10">git/refs</text>
+    <a class="ar-annex" href="a4-en.svg" data-annex="a4"><title>Annex A4: Download in GitHub Actions and per-source fallbacks</title><rect class="ar-tag" x="1002.6" y="535.1" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="547.6" font-size="10.5" text-anchor="middle">A4</text></a>
+  </g>
+  <g class="ar-node-g" id="a3-n-notify" data-node="notify">
+    <title>Notify the site (off). Can send repository_dispatch enso-refresh at the end; it ships disabled because the token would need that permission.</title>
+    <rect class="ar-node ar-g-pipeline" x="758" y="706.1" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="758" y="714.1" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="770" y="716.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(773 719.1)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
+    <text class="ar-t" x="808" y="735.6" font-size="12.5">Notify the site (off)</text>
+    <text class="ar-s" x="770" y="767.5" font-size="11">Can send repository_dispatch enso-refresh at</text>
+    <text class="ar-s" x="770" y="782.7" font-size="11">the end; it ships disabled because the token</text>
+    <text class="ar-s" x="770" y="797.9" font-size="11">would need that permission.</text>
+    <a class="ar-annex" href="a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="1002.6" y="713.1" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="725.6" font-size="10.5" text-anchor="middle">A5</text></a>
+  </g>
+  <g class="ar-node-g" id="a3-n-watch" data-node="watch">
+    <title>Site watchdog. Every 6 hours it reads data/manifest.json; if it does not answer or is older than 30 h, the execution fails and the Error workflow alerts, even if GitHub is down. Technology: Schedule Trigger, HTTP Request.</title>
+    <rect class="ar-node ar-g-operations" x="1114" y="209" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-operations" x="1114" y="217" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="1126" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(1129 222)"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g>
+    <text class="ar-t" x="1164" y="238.5" font-size="12.5">Site watchdog</text>
+    <text class="ar-s" x="1126" y="270.4" font-size="11">Every 6 hours it reads data/manifest.json; if it</text>
+    <text class="ar-s" x="1126" y="285.6" font-size="11">does not answer or is older than 30 h, the</text>
+    <text class="ar-s" x="1126" y="300.8" font-size="11">execution fails and the Error workflow alerts,</text>
+    <text class="ar-s" x="1126" y="316" font-size="11">even if GitHub is down.</text>
+    <rect class="ar-chip" x="1126" y="325.7" width="97.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="337.7" font-size="10">Schedule Trigger</text>
+    <rect class="ar-chip" x="1228.1" y="325.7" width="82" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1234.1" y="337.7" font-size="10">HTTP Request</text>
+    <a class="ar-annex" href="a10-en.svg" data-annex="a10"><title>Annex A10: Monitoring, alerts and maintenance</title><rect class="ar-tag" x="1351.3" y="216" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="1368.6" y="228.5" font-size="10.5" text-anchor="middle">A10</text></a>
+  </g>
+  <g class="ar-node-g" id="a3-n-validate" data-node="validate">
+    <title>Source validation. By hand: fetches every registry URL with the same two passes and returns a CSV report; the weekly probe imports it as an n8n-network measurement. n8n.yml runs it on Mondays from Actions. Technology: Convert to File.</title>
+    <rect class="ar-node ar-g-operations" x="1114" y="383.7" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-operations" x="1114" y="391.7" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="1126" y="393.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(1129 396.7)"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></g>
+    <text class="ar-t" x="1164" y="413.2" font-size="12.5">Source validation</text>
+    <text class="ar-s" x="1126" y="445.2" font-size="11">By hand: fetches every registry URL with the</text>
+    <text class="ar-s" x="1126" y="460.3" font-size="11">same two passes and returns a CSV report;</text>
+    <text class="ar-s" x="1126" y="475.5" font-size="11">the weekly probe imports it as an</text>
+    <text class="ar-s" x="1126" y="490.7" font-size="11">n8n-network measurement. n8n.yml runs it</text>
+    <text class="ar-s" x="1126" y="505.9" font-size="11">on Mondays from Actions.</text>
+    <rect class="ar-chip" x="1126" y="515.6" width="85.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="527.6" font-size="10">Convert to File</text>
+    <a class="ar-annex" href="a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="1358.6" y="390.7" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="403.2" font-size="10.5" text-anchor="middle">A1</text></a>
+  </g>
+  <g class="ar-node-g" id="a3-n-extract" data-node="extract">
+    <title>Report extractor. Token-protected webhook: when the ENFEN report reader fails, the pipeline asks OpenAI for a reading (temperature 0, JSON with each value&#x27;s quote). It only leaves a proposal for review. Technology: Webhook, OpenAI.</title>
+    <rect class="ar-node ar-g-operations" x="1114" y="573.6" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-operations" x="1114" y="581.6" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="1126" y="583.6" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(1129 586.6)"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></g>
+    <text class="ar-t" x="1164" y="603.1" font-size="12.5">Report extractor</text>
+    <text class="ar-s" x="1126" y="635" font-size="11">Token-protected webhook: when the ENFEN</text>
+    <text class="ar-s" x="1126" y="650.2" font-size="11">report reader fails, the pipeline asks OpenAI</text>
+    <text class="ar-s" x="1126" y="665.4" font-size="11">for a reading (temperature 0, JSON with each</text>
+    <text class="ar-s" x="1126" y="680.6" font-size="11">value&#x27;s quote). It only leaves a proposal for</text>
+    <text class="ar-s" x="1126" y="695.8" font-size="11">review.</text>
+    <rect class="ar-chip" x="1126" y="705.5" width="58.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="717.5" font-size="10">Webhook</text>
+    <rect class="ar-chip" x="1189.8" y="705.5" width="48.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1195.8" y="717.5" font-size="10">OpenAI</text>
+    <a class="ar-annex" href="a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="1358.6" y="580.6" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="593.1" font-size="10.5" text-anchor="middle">A5</text></a>
+  </g>
+  <line class="ar-rule" x1="20" y1="1254.3" x2="1420" y2="1254.3"/>
+  <text class="ar-h" x="20" y="1284.3" font-size="15">Steps and connections: what travels along each line, when and why</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1312.3" r="9"/>
+  <text class="ar-t" x="30" y="1316.1" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="1316.3" font-size="11.5">code and registry</text>
+  <text class="ar-m" x="50" y="1330.3" font-size="10.5">Node code → build.mjs → dist/</text>
+  <text class="ar-s" x="50" y="1345.3" font-size="11">build.mjs inserts the lib/ and nodes/ code into each node, plus a copy of</text>
+  <text class="ar-s" x="50" y="1360.3" font-size="11">the source registry.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1383.3" r="9"/>
+  <text class="ar-t" x="30" y="1387.1" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1387.3" font-size="11.5">dist/ workflows</text>
+  <text class="ar-m" x="50" y="1401.3" font-size="10.5">build.mjs → dist/ → n8n operator (colleague)</text>
+  <text class="ar-s" x="50" y="1416.3" font-size="11">Nodes are regenerated with build.mjs: a change is re-imported, not edited</text>
+  <text class="ar-s" x="50" y="1431.3" font-size="11">in n8n.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1454.3" r="9"/>
+  <text class="ar-t" x="30" y="1458.1" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1458.3" font-size="11.5">imports, credential and activates</text>
+  <text class="ar-m" x="50" y="1472.3" font-size="10.5">n8n operator (colleague) → Trigger and settings</text>
+  <text class="ar-s" x="50" y="1487.3" font-size="11">Picks the “GitHub ENSO (n8n)” credential on each node that talks to</text>
+  <text class="ar-s" x="50" y="1502.3" font-size="11">GitHub and activates the workflow.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1525.3" r="9"/>
+  <text class="ar-t" x="30" y="1529.1" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1529.3" font-size="11.5">22:50 Lima</text>
+  <text class="ar-m" x="50" y="1543.3" font-size="10.5">Trigger and settings → Read registry and previous copy · daily 22:50 Lima</text>
+  <text class="ar-s" x="50" y="1558.3" font-size="11">Runs every night, whether Actions failed or not: the copy is ready when the</text>
+  <text class="ar-s" x="50" y="1573.3" font-size="11">23:37 run looks for it.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1312.3" r="9"/>
+  <text class="ar-t" x="506" y="1316.1" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="526" y="1316.3" font-size="11.5">registry and previous copy</text>
+  <text class="ar-m" x="526" y="1330.3" font-size="10.5">Read registry and previous copy → Sources</text>
+  <text class="ar-s" x="526" y="1345.3" font-size="11">If the GitHub registry cannot be read, it uses the copy embedded at build</text>
+  <text class="ar-s" x="526" y="1360.3" font-size="11">time.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1383.3" r="9"/>
+  <text class="ar-t" x="506" y="1387.1" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="526" y="1387.3" font-size="11.5">URLs assigned to n8n</text>
+  <text class="ar-m" x="526" y="1401.3" font-size="10.5">Sources → Download, one at a time</text>
+  <text class="ar-s" x="526" y="1416.3" font-size="11">Only those the registry gives n8n: all three collectors read the same list.</text>
+  <circle class="ar-badge ar-e-fallback" cx="506" cy="1439.3" r="9"/>
+  <text class="ar-t" x="506" y="1443.1" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="1443.3" font-size="11.5">transient failures</text>
+  <text class="ar-m" x="526" y="1457.3" font-size="10.5">Download, one at a time → Second pass</text>
+  <text class="ar-s" x="526" y="1472.3" font-size="11">What failed by timeout, connection, 5xx or 429 is retried once; if there is</text>
+  <text class="ar-s" x="526" y="1487.3" font-size="11">nothing to retry, this branch does not run.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1510.3" r="9"/>
+  <text class="ar-t" x="506" y="1514.1" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1514.3" font-size="11.5">first pass</text>
+  <text class="ar-m" x="526" y="1528.3" font-size="10.5">Download, one at a time → Prepare copy</text>
+  <text class="ar-s" x="526" y="1543.3" font-size="11">Good answers from the first pass go straight to the copy.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1566.3" r="9"/>
+  <text class="ar-t" x="506" y="1570.1" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1570.3" font-size="11.5">second pass</text>
+  <text class="ar-m" x="526" y="1584.3" font-size="10.5">Second pass → Prepare copy</text>
+  <text class="ar-s" x="526" y="1599.3" font-size="11">“Merge passes” joins both before building the copy.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1312.3" r="9"/>
+  <text class="ar-t" x="982" y="1316.1" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="1002" y="1316.3" font-size="11.5">new files</text>
+  <text class="ar-m" x="1002" y="1330.3" font-size="10.5">Prepare copy → Create blobs</text>
+  <text class="ar-s" x="1002" y="1345.3" font-size="11">Unchanged files reuse their blob: the upload is small.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1368.3" r="9"/>
+  <text class="ar-t" x="982" y="1372.1" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="1002" y="1372.3" font-size="11.5">blobs ready</text>
+  <text class="ar-m" x="1002" y="1386.3" font-size="10.5">Create blobs → Tree and parentless commit</text>
+  <text class="ar-s" x="1002" y="1401.3" font-size="11">The tree and the commit are built from the blobs.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1424.3" r="9"/>
+  <text class="ar-t" x="982" y="1428.1" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="1002" y="1428.3" font-size="11.5">parentless commit</text>
+  <text class="ar-m" x="1002" y="1442.3" font-size="10.5">Tree and parentless commit → data-n8n branch</text>
+  <text class="ar-s" x="1002" y="1457.3" font-size="11">The branch is replaced (force): history does not grow; data-archive keeps</text>
+  <text class="ar-s" x="1002" y="1472.3" font-size="11">what the pipeline uses.</text>
+  <circle class="ar-badge ar-e-fallback" cx="982" cy="1495.3" r="9"/>
+  <text class="ar-t" x="982" y="1499.1" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="1002" y="1499.3" font-size="11.5">previous copy (72 h)</text>
+  <text class="ar-m" x="1002" y="1513.3" font-size="10.5">data-n8n branch → Read registry and previous copy</text>
+  <text class="ar-s" x="1002" y="1528.3" font-size="11">Its “Read previous copy” node reads data-n8n to keep the URLs that</text>
+  <text class="ar-s" x="1002" y="1543.3" font-size="11">failed tonight.</text>
+  <circle class="ar-badge ar-e-trigger" cx="982" cy="1566.3" r="9"/>
+  <text class="ar-t" x="982" y="1570.1" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1570.3" font-size="11.5">optional</text>
+  <text class="ar-m" x="1002" y="1584.3" font-size="10.5">data-n8n branch → Notify the site (off)</text>
+  <text class="ar-s" x="1002" y="1599.3" font-size="11">If enabled, the update runs right away; if not, the 23:37 run uses the copy.</text>
+  <line class="ar-rule" x1="20" y1="1634.3" x2="1420" y2="1634.3"/>
+  <text class="ar-h" x="20" y="1664.3" font-size="15">If something fails: what happens and which fallback takes over</text>
+  <g class="ar-warn" transform="translate(20 1681.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1696.3" font-size="11.5">A URL fails in the first pass</text>
+  <text class="ar-s" x="50" y="1711.3" font-size="11">The second pass retries it after 30 s; if it still fails, its good copy up to 72 h</text>
+  <text class="ar-s" x="50" y="1726.3" font-size="11">old is kept.</text>
+  <g class="ar-warn" transform="translate(20 1738.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1753.3" font-size="11.5">Nothing answers tonight</text>
+  <text class="ar-s" x="50" y="1768.3" font-size="11">index.json and heartbeat.json are published anyway: the pipeline sees n8n</text>
+  <text class="ar-s" x="50" y="1783.3" font-size="11">is running and that the sources are the ones not answering</text>
+  <text class="ar-s" x="50" y="1798.3" font-size="11">(relay-n8n-sources-down).</text>
+  <g class="ar-warn" transform="translate(496 1681.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1696.3" font-size="11.5">The GitHub token expires (1 year)</text>
+  <text class="ar-s" x="526" y="1711.3" font-size="11">The copy stops being pushed and the execution turns red; at 36 h the</text>
+  <text class="ar-s" x="526" y="1726.3" font-size="11">pipeline opens relay-n8n-stale. n8n does not warn ahead.</text>
+  <g class="ar-warn" transform="translate(496 1738.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1753.3" font-size="11.5">n8n cannot read the registry from GitHub</text>
+  <text class="ar-s" x="526" y="1768.3" font-size="11">It uses the registry copy embedded at build time.</text>
+  <g class="ar-warn" transform="translate(972 1681.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1696.3" font-size="11.5">OpenAI fails or answers something invalid</text>
+  <text class="ar-s" x="1002" y="1711.3" font-size="11">The extractor answers 502 or the pipeline rejects the proposal; the</text>
+  <text class="ar-s" x="1002" y="1726.3" font-size="11">previous report is kept, marked carried.</text>
+  <g class="ar-warn" transform="translate(972 1738.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1753.3" font-size="11.5">The site moves to Cloudflare</text>
+  <text class="ar-s" x="1002" y="1768.3" font-size="11">The watchdog has a fixed address: it must be changed by hand in its</text>
+  <text class="ar-s" x="1002" y="1783.3" font-size="11">Settings node.</text>
+</svg>

@@ -1,0 +1,553 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1461.9" role="img" aria-labelledby="a6-t a6-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="a6-t">Annex A6 · News and alerts: reading, filtering, history and place</title>
+  <desc id="a6-d">News and alerts in the daily run: download, tolerant parsing, relevance and hazard filter, append-only history with its copy, and UBIGEO placement with the console&#x27;s corrections.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="a6-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a6-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a6-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a6-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a6-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1461.9" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Annex A6 · News and alerts: reading, filtering, history and place</text>
+  <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
+  <text class="ar-s" x="20" y="60" font-size="12">Every run reads 168 feeds, keeps the notes about El Niño or about a hazard in Peru, appends them to a history that never deletes and places each one in its department, province and district. Reviewers fix the place in the console</text>
+  <text class="ar-s" x="20" y="77" font-size="12">(annex A7).</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: News and alerts: reading and filtering, Append-only news history, Placement and place corrections.</text>
+  <text class="ar-t" x="20" y="121" font-size="11.5">Lines:</text>
+  <path class="ar-e ar-e-data" d="M70.7 117 L104.7 117" marker-end="url(#a6-m-data)"/>
+  <text class="ar-s" x="112.7" y="121" font-size="11.5">data</text>
+  <path class="ar-e ar-e-fallback" d="M160.6 117 L194.6 117" stroke-dasharray="6 4" marker-end="url(#a6-m-fallback)"/>
+  <text class="ar-s" x="202.6" y="121" font-size="11.5">fallback</text>
+  <path class="ar-e ar-e-trigger" d="M269.4 117 L303.4 117" stroke-dasharray="2 3" marker-end="url(#a6-m-trigger)"/>
+  <text class="ar-s" x="311.4" y="121" font-size="11.5">trigger or control</text>
+  <path class="ar-e ar-e-human" d="M431.5 117 L465.5 117" stroke-dasharray="8 3 2 3" marker-end="url(#a6-m-human)"/>
+  <text class="ar-s" x="473.5" y="121" font-size="11.5">manual step</text>
+  <rect class="ar-col" x="36" y="141" width="300" height="688.9" rx="10"/>
+  <text class="ar-h" x="48" y="166" font-size="15">Reading</text>
+  <text class="ar-m" x="48" y="183" font-size="10.5">8 threads · serial per server · 60 s per feed</text>
+  <rect class="ar-col" x="392" y="141" width="300" height="688.9" rx="10"/>
+  <text class="ar-h" x="404" y="166" font-size="15">Filter and hazards</text>
+  <text class="ar-m" x="404" y="183" font-size="10.5">news.py · feedparse.py · hazardparse.py</text>
+  <rect class="ar-col" x="748" y="141" width="300" height="688.9" rx="10"/>
+  <text class="ar-h" x="760" y="166" font-size="15">History</text>
+  <text class="ar-m" x="760" y="183" font-size="10.5">append-only · copy in data-archive</text>
+  <rect class="ar-col" x="1104" y="141" width="300" height="688.9" rx="10"/>
+  <text class="ar-h" x="1116" y="166" font-size="15">Place and clusters</text>
+  <text class="ar-m" x="1116" y="183" font-size="10.5">geo.py · limites.py · geopoly.py · geo_overrides.py</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="a6-e-1" data-edge="1" data-from="feeds" data-to="reader" tabindex="0">
+    <title>1. 168 feeds → Reader feeds: 40 forbidden by robots.txt. Reader feeds follow their own pace; the rest are requested every run.</title>
+    <path class="ar-e ar-e-trigger" d="M186 300.5 L186 330.5" stroke-dasharray="2 3" marker-end="url(#a6-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="186" cy="315.5" r="9"/>
+    <text class="ar-t" x="186" y="319.3" font-size="10.5" text-anchor="middle">1</text>
+  </g>
+  <g class="ar-edge" id="a6-e-2" data-edge="2" data-from="reader" data-to="fetch" tabindex="0">
+    <title>2. Reader feeds → Feed download: when due. If 20 h have not passed since the last request, they are not requested and their previous state stays.</title>
+    <path class="ar-e ar-e-trigger" d="M186 436.1 L186 466.1" stroke-dasharray="2 3" marker-end="url(#a6-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="186" cy="451.1" r="9"/>
+    <text class="ar-t" x="186" y="454.9" font-size="10.5" text-anchor="middle">2</text>
+  </g>
+  <g class="ar-edge" id="a6-e-3" data-edge="3" data-from="feeds" data-to="fetch" tabindex="0">
+    <title>3. 168 feeds → Feed download: 128 feeds every run. One after another per server, out of courtesy; 10 minutes to start them all.</title>
+    <path class="ar-e ar-e-data" d="M326 246 L342 246 Q348 246 348 252 L348 492 Q348 498 342 498 L326 498" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="348" cy="372" r="9"/>
+    <text class="ar-t" x="348" y="375.8" font-size="10.5" text-anchor="middle">3</text>
+  </g>
+  <g class="ar-edge" id="a6-e-4" data-edge="4" data-from="fetch" data-to="status" tabindex="0">
+    <title>4. Feed download → Status of each feed: result per feed. A feed with no new entries for a long time is marked inactive.</title>
+    <path class="ar-e ar-e-data" d="M186 610.8 L186 640.8" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="186" cy="625.8" r="9"/>
+    <text class="ar-t" x="186" y="629.6" font-size="10.5" text-anchor="middle">4</text>
+  </g>
+  <g class="ar-edge" id="a6-e-5" data-edge="5" data-from="fetch" data-to="parse" tabindex="0">
+    <title>5. Feed download → Tolerant parsing: news feeds. XML, JSON or HTML as they arrived.</title>
+    <path class="ar-e ar-e-data" d="M326 540 L366 540 Q372 540 372 534 L372 264 Q372 258 378 258 L402 258" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="372" cy="399" r="9"/>
+    <text class="ar-t" x="372" y="402.8" font-size="10.5" text-anchor="middle">5</text>
+  </g>
+  <g class="ar-edge" id="a6-e-6" data-edge="6" data-from="fetch" data-to="hazards" tabindex="0">
+    <title>6. Feed download → Alerts without RSS: alert sources. Each alert source with its own format.</title>
+    <path class="ar-e ar-e-data" d="M326 582 L372 582 Q378 582 378 576 L378 432 Q378 426 384 426 L402 426" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="378" cy="504" r="9"/>
+    <text class="ar-t" x="378" y="507.8" font-size="10.5" text-anchor="middle">6</text>
+  </g>
+  <g class="ar-edge" id="a6-e-7" data-edge="7" data-from="parse" data-to="relevance" tabindex="0">
+    <title>7. Tolerant parsing → Relevance: entries. Headline, summary, date and link.</title>
+    <path class="ar-e ar-e-data" d="M682 258 L702 258 Q708 258 708 264 L708 594 Q708 600 702 600 L682 600" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="708" cy="429" r="9"/>
+    <text class="ar-t" x="708" y="432.8" font-size="10.5" text-anchor="middle">7</text>
+  </g>
+  <g class="ar-edge" id="a6-e-8" data-edge="8" data-from="hazards" data-to="relevance" tabindex="0">
+    <title>8. Alerts without RSS → Relevance: alerts with place. Alerts bring their place and severity from the source.</title>
+    <path class="ar-e ar-e-data" d="M540 499.3 L540 529.3" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="514.3" r="9"/>
+    <text class="ar-t" x="540" y="518.1" font-size="10.5" text-anchor="middle">8</text>
+  </g>
+  <g class="ar-edge" id="a6-e-9" data-edge="9" data-from="relevance" data-to="tags" tabindex="0">
+    <title>9. Relevance → 13 hazard types: relevant notes. Only those that pass the filter.</title>
+    <path class="ar-e ar-e-data" d="M540 665.2 L540 695.2" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="680.2" r="9"/>
+    <text class="ar-t" x="540" y="684" font-size="10.5" text-anchor="middle">9</text>
+  </g>
+  <g class="ar-edge" id="a6-e-10" data-edge="10" data-from="tags" data-to="append" tabindex="0">
+    <title>10. 13 hazard types → Append only: new notes. A note already seen is not added again.</title>
+    <path class="ar-e ar-e-data" d="M682 756 L726 756 Q732 756 732 750 L732 576 Q732 570 738 570 L758 570" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="732" cy="663" r="9"/>
+    <text class="ar-t" x="732" y="666.8" font-size="10.5" text-anchor="middle">10</text>
+  </g>
+  <g class="ar-edge" id="a6-e-11" data-edge="11" data-from="prev" data-to="append" tabindex="0">
+    <title>11. Published history → Append only: previous history. The base the new notes are appended to.</title>
+    <path class="ar-e ar-e-data" d="M1038 258 L1056 258 Q1062 258 1062 264 L1062 534 Q1062 540 1056 540 L1038 540" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1062" cy="399" r="9"/>
+    <text class="ar-t" x="1062" y="402.8" font-size="10.5" text-anchor="middle">11</text>
+  </g>
+  <g class="ar-edge" id="a6-e-12" data-edge="12" data-from="backup" data-to="append" tabindex="0">
+    <title>12. Copy in data-archive → Append only: missing notes or rebuild. news-history-restored if it adds notes; news-history-missing if it has to rebuild.</title>
+    <path class="ar-e ar-e-fallback" d="M900 466.4 L900 496.4" stroke-dasharray="6 4" marker-end="url(#a6-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="900" cy="481.4" r="9"/>
+    <text class="ar-t" x="900" y="485.2" font-size="10.5" text-anchor="middle">12</text>
+  </g>
+  <g class="ar-edge" id="a6-e-13" data-edge="13" data-from="append" data-to="locate" tabindex="0">
+    <title>13. Append only → Placement (UBIGEO): the whole history. Everything is placed again with the current rules: an improvement also applies to old notes.</title>
+    <path class="ar-e ar-e-data" d="M1038 600 L1086 600 Q1092 600 1092 594 L1092 282 Q1092 276 1098 276 L1114 276" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1092" cy="438" r="9"/>
+    <text class="ar-t" x="1092" y="441.8" font-size="10.5" text-anchor="middle">13</text>
+  </g>
+  <g class="ar-edge" id="a6-e-14" data-edge="14" data-from="locate" data-to="overrides" tabindex="0">
+    <title>14. Placement (UBIGEO) → Console corrections: automatic place. With its method, confidence and evidence.</title>
+    <path class="ar-e ar-e-data" d="M1254 354.9 L1254 384.9" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="369.9" r="9"/>
+    <text class="ar-t" x="1254" y="373.7" font-size="10.5" text-anchor="middle">14</text>
+  </g>
+  <g class="ar-edge" id="a6-e-15" data-edge="15" data-from="overrides" data-to="publish" tabindex="0">
+    <title>15. Console corrections → What gets published: final place. The correction with the highest revision wins.</title>
+    <path class="ar-e ar-e-data" d="M1254 505.6 L1254 535.6" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="520.6" r="9"/>
+    <text class="ar-t" x="1254" y="524.4" font-size="10.5" text-anchor="middle">15</text>
+  </g>
+  <g class="ar-edge" id="a6-e-16" data-edge="16" data-from="publish" data-to="clusters" tabindex="0">
+    <title>16. What gets published → Note clusters: placed notes. Clusters are built from recent notes.</title>
+    <path class="ar-e ar-e-data" d="M1254 641.2 L1254 671.2" marker-end="url(#a6-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="656.2" r="9"/>
+    <text class="ar-t" x="1254" y="660" font-size="10.5" text-anchor="middle">16</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="a6-n-feeds" data-node="feeds">
+    <title>168 feeds. 116 media and government feeds, 38 Google News searches and 14 alert sources, with the registry&#x27;s plan.</title>
+    <rect class="ar-node ar-g-sources" x="46" y="195" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-sources" x="46" y="203" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-sources" x="58" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-sources" transform="translate(61 208)"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.4"/></g>
+    <text class="ar-t" x="96" y="224.5" font-size="12.5">168 feeds</text>
+    <text class="ar-s" x="58" y="256.4" font-size="11">116 media and government feeds, 38 Google</text>
+    <text class="ar-s" x="58" y="271.6" font-size="11">News searches and 14 alert sources, with the</text>
+    <text class="ar-s" x="58" y="286.8" font-size="11">registry&#x27;s plan.</text>
+    <a class="ar-annex" href="a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="290.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="214.5" font-size="10.5" text-anchor="middle">A1</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-reader" data-node="reader">
+    <title>Reader feeds. Google News, UN News and Sin Rodeos: a single try, at most every 20 h and only on main; between reads the last state stays.</title>
+    <rect class="ar-node ar-g-pipeline" x="46" y="330.5" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="46" y="338.5" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="58" y="340.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(61 343.5)"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 4v4.5H8M12 8v4.5l3 2"/></g>
+    <text class="ar-t" x="96" y="360" font-size="12.5">Reader feeds</text>
+    <text class="ar-s" x="58" y="392" font-size="11">Google News, UN News and Sin Rodeos: a</text>
+    <text class="ar-s" x="58" y="407.1" font-size="11">single try, at most every 20 h and only on</text>
+    <text class="ar-s" x="58" y="422.3" font-size="11">main; between reads the last state stays.</text>
+    <a class="ar-annex" href="a4-en.svg" data-annex="a4"><title>Annex A4: Download in GitHub Actions and per-source fallbacks</title><rect class="ar-tag" x="290.6" y="337.5" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="350" font-size="10.5" text-anchor="middle">A4</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-fetch" data-node="fetch">
+    <title>Feed download. Its own client with shorter waits than the official one: 2 tries, 1 s between requests to the same server, 60 s per feed. If a feed fails, it uses the newest Peru or n8n copy. Technology: httpx, Fetcher.</title>
+    <rect class="ar-node ar-g-pipeline" x="46" y="466.1" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="46" y="474.1" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="58" y="476.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(61 479.1)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
+    <text class="ar-t" x="96" y="495.6" font-size="12.5">Feed download</text>
+    <text class="ar-s" x="58" y="527.5" font-size="11">Its own client with shorter waits than the</text>
+    <text class="ar-s" x="58" y="542.7" font-size="11">official one: 2 tries, 1 s between requests to</text>
+    <text class="ar-s" x="58" y="557.9" font-size="11">the same server, 60 s per feed. If a feed fails,</text>
+    <text class="ar-s" x="58" y="573" font-size="11">it uses the newest Peru or n8n copy.</text>
+    <rect class="ar-chip" x="58" y="582.8" width="38.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="594.8" font-size="10">httpx</text>
+    <rect class="ar-chip" x="101.5" y="582.8" width="49.9" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="107.5" y="594.8" font-size="10">Fetcher</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-status" data-node="status">
+    <title>Status of each feed. Answers or not, entries, relevant ones, newest date and whether still active (news/feeds.json).</title>
+    <rect class="ar-node ar-g-pipeline" x="46" y="640.8" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="46" y="648.8" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="58" y="650.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(61 653.8)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="96" y="670.3" font-size="12.5">Status of each feed</text>
+    <text class="ar-s" x="58" y="702.2" font-size="11">Answers or not, entries, relevant ones,</text>
+    <text class="ar-s" x="58" y="717.4" font-size="11">newest date and whether still active</text>
+    <text class="ar-s" x="58" y="732.6" font-size="11">(news/feeds.json).</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-parse" data-node="parse">
+    <title>Tolerant parsing. RSS 2.0 and 1.0, Atom, JSON Feed and gob.pe listings: repairs malformed XML, dates and encodings; 5 MB cap per feed. Technology: feedparse.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="195" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="203" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 208)"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/></g>
+    <text class="ar-t" x="452" y="224.5" font-size="12.5">Tolerant parsing</text>
+    <text class="ar-s" x="414" y="256.4" font-size="11">RSS 2.0 and 1.0, Atom, JSON Feed and gob.pe</text>
+    <text class="ar-s" x="414" y="271.6" font-size="11">listings: repairs malformed XML, dates and</text>
+    <text class="ar-s" x="414" y="286.8" font-size="11">encodings; 5 MB cap per feed.</text>
+    <rect class="ar-chip" x="414" y="296.5" width="77.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="308.5" font-size="10">feedparse.py</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-hazards" data-node="hazards">
+    <title>Alerts without RSS. Turns USGS (GeoJSON), DHN, PTWC, CENVUL, Telegram and SENAMHI ArcGIS layers, INDECI&#x27;s COEN and FIRMS hot spots into notes with place and severity. Technology: hazardparse.py, severity.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="354.5" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="362.5" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="364.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 367.5)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+    <text class="ar-t" x="452" y="384" font-size="12.5">Alerts without RSS</text>
+    <text class="ar-s" x="414" y="416" font-size="11">Turns USGS (GeoJSON), DHN, PTWC, CENVUL,</text>
+    <text class="ar-s" x="414" y="431.1" font-size="11">Telegram and SENAMHI ArcGIS layers,</text>
+    <text class="ar-s" x="414" y="446.3" font-size="11">INDECI&#x27;s COEN and FIRMS hot spots into</text>
+    <text class="ar-s" x="414" y="461.5" font-size="11">notes with place and severity.</text>
+    <rect class="ar-chip" x="414" y="471.3" width="89.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="483.3" font-size="10">hazardparse.py</text>
+    <rect class="ar-chip" x="508.7" y="471.3" width="67.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="514.7" y="483.3" font-size="10">severity.py</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-relevance" data-node="relevance">
+    <title>Relevance. General media: an ENSO term or the hazard in the headline. Local, government and Peruvian hazard feeds: a hazard is enough. Drops jobs, accidents, quakes under 4 and drills.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="529.3" width="280" height="135.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="537.3" width="4" height="119.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="539.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 542.3)"><path d="M3 5h18l-7 8.5V20l-4-2v-4.5z"/></g>
+    <text class="ar-t" x="452" y="558.8" font-size="12.5">Relevance</text>
+    <text class="ar-s" x="414" y="590.7" font-size="11">General media: an ENSO term or the hazard</text>
+    <text class="ar-s" x="414" y="605.9" font-size="11">in the headline. Local, government and</text>
+    <text class="ar-s" x="414" y="621" font-size="11">Peruvian hazard feeds: a hazard is enough.</text>
+    <text class="ar-s" x="414" y="636.2" font-size="11">Drops jobs, accidents, quakes under 4 and</text>
+    <text class="ar-s" x="414" y="651.4" font-size="11">drills.</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-tags" data-node="tags">
+    <title>13 hazard types. Rain, flood, debris flow, drought, heat, cold, wind, swell, earthquake, volcano, fire, emergency and health, plus El Niño or La Niña.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="695.2" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="703.2" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="705.2" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 708.2)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="452" y="724.7" font-size="12.5">13 hazard types</text>
+    <text class="ar-s" x="414" y="756.6" font-size="11">Rain, flood, debris flow, drought, heat, cold,</text>
+    <text class="ar-s" x="414" y="771.8" font-size="11">wind, swell, earthquake, volcano, fire,</text>
+    <text class="ar-s" x="414" y="786.9" font-size="11">emergency and health, plus El Niño or La</text>
+    <text class="ar-s" x="414" y="802.1" font-size="11">Niña.</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-prev" data-node="prev">
+    <title>Published history. news/items.jsonl from the previous publication (3 tries). Only a 404 on the site and in data-archive counts as a first publication.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="195" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="203" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 208)"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8.5 20h7M12 16v4"/></g>
+    <text class="ar-t" x="808" y="224.5" font-size="12.5">Published history</text>
+    <text class="ar-s" x="770" y="256.4" font-size="11">news/items.jsonl from the previous</text>
+    <text class="ar-s" x="770" y="271.6" font-size="11">publication (3 tries). Only a 404 on the site</text>
+    <text class="ar-s" x="770" y="286.8" font-size="11">and in data-archive counts as a first</text>
+    <text class="ar-s" x="770" y="302" font-size="11">publication.</text>
+    <a class="ar-annex" href="a9-en.svg" data-annex="a9"><title>Annex A9: The site in the browser</title><rect class="ar-tag" x="1002.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="214.5" font-size="10.5" text-anchor="middle">A9</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-backup" data-node="backup">
+    <title>Copy in data-archive. sources/news/items.jsonl.gz, the union of everything published: adds any missing notes to the history or rebuilds it if the site does not answer.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="345.7" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="353.7" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="355.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 358.7)"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></g>
+    <text class="ar-t" x="808" y="375.2" font-size="12.5">Copy in data-archive</text>
+    <text class="ar-s" x="770" y="407.2" font-size="11">sources/news/items.jsonl.gz, the union of</text>
+    <text class="ar-s" x="770" y="422.3" font-size="11">everything published: adds any missing notes</text>
+    <text class="ar-s" x="770" y="437.5" font-size="11">to the history or rebuilds it if the site does not</text>
+    <text class="ar-s" x="770" y="452.7" font-size="11">answer.</text>
+    <a class="ar-annex" href="a8-en.svg" data-annex="a8"><title>Annex A8: Publication, deployment and archive</title><rect class="ar-tag" x="1002.6" y="352.7" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="365.2" font-size="10.5" text-anchor="middle">A8</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-append" data-node="append">
+    <title>Append only. Appends the new notes (id = hash of link and headline) and never rewrites earlier ones; CSV protected against formulas. warning at 20 MiB. Technology: JSON Lines, CSV.</title>
+    <rect class="ar-node ar-g-pipeline" x="758" y="496.4" width="280" height="148" rx="8"/>
+    <rect class="ar-f-pipeline" x="758" y="504.4" width="4" height="132" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="770" y="506.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(773 509.4)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="808" y="525.9" font-size="12.5">Append only</text>
+    <text class="ar-s" x="770" y="557.9" font-size="11">Appends the new notes (id = hash of link and</text>
+    <text class="ar-s" x="770" y="573" font-size="11">headline) and never rewrites earlier ones;</text>
+    <text class="ar-s" x="770" y="588.2" font-size="11">CSV protected against formulas.</text>
+    <text class="ar-m" x="770" y="607.4" font-size="10.5">warning at 20 MiB</text>
+    <rect class="ar-chip" x="770" y="616.5" width="65.9" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="628.5" font-size="10">JSON Lines</text>
+    <rect class="ar-chip" x="840.9" y="616.5" width="32.2" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="846.9" y="628.5" font-size="10">CSV</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-locate" data-node="locate">
+    <title>Placement (UBIGEO). By the source&#x27;s fields, by coordinates (point in polygon on IGN boundaries) or by the text (25 departments, 196 provinces, 1893 districts, with rules against false positives). Confidence 0.35 to 0.97. Technology: geo.py, limites.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="195" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="203" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 208)"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></g>
+    <text class="ar-t" x="1164" y="224.5" font-size="12.5">Placement (UBIGEO)</text>
+    <text class="ar-s" x="1126" y="256.4" font-size="11">By the source&#x27;s fields, by coordinates (point in</text>
+    <text class="ar-s" x="1126" y="271.6" font-size="11">polygon on IGN boundaries) or by the text (25</text>
+    <text class="ar-s" x="1126" y="286.8" font-size="11">departments, 196 provinces, 1893 districts,</text>
+    <text class="ar-s" x="1126" y="302" font-size="11">with rules against false positives). Confidence</text>
+    <text class="ar-s" x="1126" y="317.2" font-size="11">0.35 to 0.97.</text>
+    <rect class="ar-chip" x="1126" y="326.9" width="46.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="338.9" font-size="10">geo.py</text>
+    <rect class="ar-chip" x="1177.1" y="326.9" width="60.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1183.1" y="338.9" font-size="10">limites.py</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-overrides" data-node="overrides">
+    <title>Console corrections. Current corrections (/api/geo/overrides on Cloudflare) have the last word; if the console does not answer, the published ones are used.</title>
+    <rect class="ar-node ar-g-people" x="1114" y="384.9" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-people" x="1114" y="392.9" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="1126" y="394.9" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(1129 397.9)"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></g>
+    <text class="ar-t" x="1164" y="414.4" font-size="12.5">Console corrections</text>
+    <text class="ar-s" x="1126" y="446.3" font-size="11">Current corrections (/api/geo/overrides on</text>
+    <text class="ar-s" x="1126" y="461.5" font-size="11">Cloudflare) have the last word; if the console</text>
+    <text class="ar-s" x="1126" y="476.7" font-size="11">does not answer, the published ones are</text>
+    <text class="ar-s" x="1126" y="491.9" font-size="11">used.</text>
+    <a class="ar-annex" href="a7-en.svg" data-annex="a7"><title>Annex A7: Review consoles on Cloudflare</title><rect class="ar-tag" x="1358.6" y="391.9" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="404.4" font-size="10.5" text-anchor="middle">A7</text></a>
+  </g>
+  <g class="ar-node-g" id="a6-n-publish" data-node="publish">
+    <title>What gets published. Places with confidence 0.5 or more; below 0.8 goes to review. geo/items.json: 120 days, up to 4000 notes.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="535.6" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="543.6" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="545.6" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 548.6)"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></g>
+    <text class="ar-t" x="1164" y="565.1" font-size="12.5">What gets published</text>
+    <text class="ar-s" x="1126" y="597" font-size="11">Places with confidence 0.5 or more; below 0.8</text>
+    <text class="ar-s" x="1126" y="612.2" font-size="11">goes to review. geo/items.json: 120 days, up</text>
+    <text class="ar-s" x="1126" y="627.4" font-size="11">to 4000 notes.</text>
+  </g>
+  <g class="ar-node-g" id="a6-n-clusters" data-node="clusters">
+    <title>Note clusters. Notes from the last 14 days sharing 3 words and 60 % of the shorter headline, in the same region: earliest headline, outlets, summary and links.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="671.2" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="679.2" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="681.2" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 684.2)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 7.2v9.6M7.5 6.6C9 10 12 12 15.8 12"/></g>
+    <text class="ar-t" x="1164" y="700.7" font-size="12.5">Note clusters</text>
+    <text class="ar-s" x="1126" y="732.6" font-size="11">Notes from the last 14 days sharing 3 words</text>
+    <text class="ar-s" x="1126" y="747.8" font-size="11">and 60 % of the shorter headline, in the same</text>
+    <text class="ar-s" x="1126" y="762.9" font-size="11">region: earliest headline, outlets, summary</text>
+    <text class="ar-s" x="1126" y="778.1" font-size="11">and links.</text>
+  </g>
+  <line class="ar-rule" x1="20" y1="869.9" x2="1420" y2="869.9"/>
+  <text class="ar-h" x="20" y="899.9" font-size="15">Steps and connections: what travels along each line, when and why</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="927.9" r="9"/>
+  <text class="ar-t" x="30" y="931.7" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="931.9" font-size="11.5">40 forbidden by robots.txt</text>
+  <text class="ar-m" x="50" y="945.9" font-size="10.5">168 feeds → Reader feeds</text>
+  <text class="ar-s" x="50" y="960.9" font-size="11">Reader feeds follow their own pace; the rest are requested every run.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="983.9" r="9"/>
+  <text class="ar-t" x="30" y="987.7" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="987.9" font-size="11.5">when due</text>
+  <text class="ar-m" x="50" y="1001.9" font-size="10.5">Reader feeds → Feed download</text>
+  <text class="ar-s" x="50" y="1016.9" font-size="11">If 20 h have not passed since the last request, they are not requested and</text>
+  <text class="ar-s" x="50" y="1031.9" font-size="11">their previous state stays.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1054.9" r="9"/>
+  <text class="ar-t" x="30" y="1058.7" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1058.9" font-size="11.5">128 feeds every run</text>
+  <text class="ar-m" x="50" y="1072.9" font-size="10.5">168 feeds → Feed download</text>
+  <text class="ar-s" x="50" y="1087.9" font-size="11">One after another per server, out of courtesy; 10 minutes to start them all.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1110.9" r="9"/>
+  <text class="ar-t" x="30" y="1114.7" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1114.9" font-size="11.5">result per feed</text>
+  <text class="ar-m" x="50" y="1128.9" font-size="10.5">Feed download → Status of each feed</text>
+  <text class="ar-s" x="50" y="1143.9" font-size="11">A feed with no new entries for a long time is marked inactive.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1166.9" r="9"/>
+  <text class="ar-t" x="30" y="1170.7" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="1170.9" font-size="11.5">news feeds</text>
+  <text class="ar-m" x="50" y="1184.9" font-size="10.5">Feed download → Tolerant parsing</text>
+  <text class="ar-s" x="50" y="1199.9" font-size="11">XML, JSON or HTML as they arrived.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="927.9" r="9"/>
+  <text class="ar-t" x="506" y="931.7" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="526" y="931.9" font-size="11.5">alert sources</text>
+  <text class="ar-m" x="526" y="945.9" font-size="10.5">Feed download → Alerts without RSS</text>
+  <text class="ar-s" x="526" y="960.9" font-size="11">Each alert source with its own format.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="983.9" r="9"/>
+  <text class="ar-t" x="506" y="987.7" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="987.9" font-size="11.5">entries</text>
+  <text class="ar-m" x="526" y="1001.9" font-size="10.5">Tolerant parsing → Relevance</text>
+  <text class="ar-s" x="526" y="1016.9" font-size="11">Headline, summary, date and link.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1039.9" r="9"/>
+  <text class="ar-t" x="506" y="1043.7" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1043.9" font-size="11.5">alerts with place</text>
+  <text class="ar-m" x="526" y="1057.9" font-size="10.5">Alerts without RSS → Relevance</text>
+  <text class="ar-s" x="526" y="1072.9" font-size="11">Alerts bring their place and severity from the source.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1095.9" r="9"/>
+  <text class="ar-t" x="506" y="1099.7" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1099.9" font-size="11.5">relevant notes</text>
+  <text class="ar-m" x="526" y="1113.9" font-size="10.5">Relevance → 13 hazard types</text>
+  <text class="ar-s" x="526" y="1128.9" font-size="11">Only those that pass the filter.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1151.9" r="9"/>
+  <text class="ar-t" x="506" y="1155.7" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="526" y="1155.9" font-size="11.5">new notes</text>
+  <text class="ar-m" x="526" y="1169.9" font-size="10.5">13 hazard types → Append only</text>
+  <text class="ar-s" x="526" y="1184.9" font-size="11">A note already seen is not added again.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1207.9" r="9"/>
+  <text class="ar-t" x="506" y="1211.7" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="526" y="1211.9" font-size="11.5">previous history</text>
+  <text class="ar-m" x="526" y="1225.9" font-size="10.5">Published history → Append only</text>
+  <text class="ar-s" x="526" y="1240.9" font-size="11">The base the new notes are appended to.</text>
+  <circle class="ar-badge ar-e-fallback" cx="982" cy="927.9" r="9"/>
+  <text class="ar-t" x="982" y="931.7" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="1002" y="931.9" font-size="11.5">missing notes or rebuild</text>
+  <text class="ar-m" x="1002" y="945.9" font-size="10.5">Copy in data-archive → Append only</text>
+  <text class="ar-s" x="1002" y="960.9" font-size="11">news-history-restored if it adds notes; news-history-missing if it has to</text>
+  <text class="ar-s" x="1002" y="975.9" font-size="11">rebuild.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="998.9" r="9"/>
+  <text class="ar-t" x="982" y="1002.7" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="1002" y="1002.9" font-size="11.5">the whole history</text>
+  <text class="ar-m" x="1002" y="1016.9" font-size="10.5">Append only → Placement (UBIGEO)</text>
+  <text class="ar-s" x="1002" y="1031.9" font-size="11">Everything is placed again with the current rules: an improvement also</text>
+  <text class="ar-s" x="1002" y="1046.9" font-size="11">applies to old notes.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1069.9" r="9"/>
+  <text class="ar-t" x="982" y="1073.7" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1073.9" font-size="11.5">automatic place</text>
+  <text class="ar-m" x="1002" y="1087.9" font-size="10.5">Placement (UBIGEO) → Console corrections</text>
+  <text class="ar-s" x="1002" y="1102.9" font-size="11">With its method, confidence and evidence.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1125.9" r="9"/>
+  <text class="ar-t" x="982" y="1129.7" font-size="10.5" text-anchor="middle">15</text>
+  <text class="ar-t" x="1002" y="1129.9" font-size="11.5">final place</text>
+  <text class="ar-m" x="1002" y="1143.9" font-size="10.5">Console corrections → What gets published</text>
+  <text class="ar-s" x="1002" y="1158.9" font-size="11">The correction with the highest revision wins.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1181.9" r="9"/>
+  <text class="ar-t" x="982" y="1185.7" font-size="10.5" text-anchor="middle">16</text>
+  <text class="ar-t" x="1002" y="1185.9" font-size="11.5">placed notes</text>
+  <text class="ar-m" x="1002" y="1199.9" font-size="10.5">What gets published → Note clusters</text>
+  <text class="ar-s" x="1002" y="1214.9" font-size="11">Clusters are built from recent notes.</text>
+  <line class="ar-rule" x1="20" y1="1275.9" x2="1420" y2="1275.9"/>
+  <text class="ar-h" x="20" y="1305.9" font-size="15">If something fails: what happens and which fallback takes over</text>
+  <g class="ar-warn" transform="translate(20 1322.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1337.9" font-size="11.5">A feed does not answer or arrives broken</text>
+  <text class="ar-s" x="50" y="1352.9" font-size="11">The newest Peru or n8n copy is used; if none, it shows as down in</text>
+  <text class="ar-s" x="50" y="1367.9" font-size="11">news/feeds.json and the run goes on.</text>
+  <g class="ar-warn" transform="translate(20 1379.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1394.9" font-size="11.5">All news reading fails</text>
+  <text class="ar-s" x="50" y="1409.9" font-size="11">The previous notes and the latest known alerts are served; the 14 alert</text>
+  <text class="ar-s" x="50" y="1424.9" font-size="11">sources show as unread, so silence does not look like calm.</text>
+  <g class="ar-warn" transform="translate(496 1322.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1337.9" font-size="11.5">The published history cannot be read</text>
+  <text class="ar-s" x="526" y="1352.9" font-size="11">It is rebuilt from the data-archive copy; with no copy, only today&#x27;s are</text>
+  <text class="ar-s" x="526" y="1367.9" font-size="11">published marked restarted and the next run completes it.</text>
+  <g class="ar-warn" transform="translate(496 1379.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1394.9" font-size="11.5">A run requested the reader feeds and did not publish</text>
+  <text class="ar-s" x="526" y="1409.9" font-size="11">Their state and notes stay in the Actions cache: the next run does not</text>
+  <text class="ar-s" x="526" y="1424.9" font-size="11">request them before 20 h and keeps those notes.</text>
+  <g class="ar-warn" transform="translate(972 1322.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1337.9" font-size="11.5">The console does not answer or the site is on GitHub Pages</text>
+  <text class="ar-s" x="1002" y="1352.9" font-size="11">The corrections already published in geo/overrides.json are applied.</text>
+  <g class="ar-warn" transform="translate(972 1364.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1379.9" font-size="11.5">The history grows too large</text>
+  <text class="ar-s" x="1002" y="1394.9" font-size="11">news-history-large warning at 20 MiB (Cloudflare serves up to 25 MiB per</text>
+  <text class="ar-s" x="1002" y="1409.9" font-size="11">file); the compressed copy stops growing, with a warning, before 90 MiB.</text>
+</svg>
