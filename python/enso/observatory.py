@@ -295,70 +295,76 @@ class PreviousPublication:
     archivo; p. ej. la primera publicación en un hosting nuevo) o ``unreachable`` (el servidor falló, no
     respondió o el archivo no se pudo leer). No es lo mismo un sitio caído que uno que aún no tiene el archivo."""
 
+    #: Intentos para lo que se arrastra (``sources/<id>.json``, copias archivadas): un 5xx suelto del sitio no
+    #: debe dejar a una fuente caída sin su último dato ni al comunicado sin su copia archivada.
+    TRIES = 3
+    BACKOFF_S = 1.0
+
     def __init__(self, base: Optional[str], fetcher=None):
         self.base = base.rstrip("/") if base else None
         self.fetcher = fetcher
         self._cache: dict[str, Any] = {}
         self.state: dict[str, str] = {}
+        #: El último archivo pedido agotó sus intentos sin respuesta (caída, tiempo agotado): los siguientes se
+        #: piden una vez, para no esperar tres veces por cada uno con el sitio caído.
+        self.down = False
 
-    def get_text(self, name: str, tries: int = 1) -> Optional[str]:
+    def _read(self, name: str, tries: int, backoff: float, binary: bool):
+        """Lee ``name``; reintenta si el servidor falla o no responde (no si el archivo no existe)."""
+        if not self.base or (self.base.startswith("http") and self.fetcher is None):
+            return None
+        self.state[name] = "unreachable"
+        tries = 1 if self.down else max(1, tries)
+        answered = False
+        try:
+            for attempt in range(tries):
+                if attempt:
+                    time.sleep(backoff * attempt)
+                try:
+                    if self.base.startswith("http"):
+                        r = self.fetcher.client.get(f"{self.base}/{name}",
+                                                    params=None if binary else {"t": int(time.time())})
+                        answered = True
+                        if r.status_code == 200:
+                            self.state[name] = "ok"
+                            return r.content if binary else r.text
+                        if r.status_code in (404, 410):
+                            self.state[name] = "missing"
+                            return None
+                        if r.status_code < 500 and r.status_code != 429:
+                            return None  # 401/403…: el archivo existe o no, no se sabe
+                        continue
+                    p = Path(self.base) / name
+                    answered = True
+                    if not p.exists():
+                        self.state[name] = "missing"
+                        return None
+                    body = p.read_bytes() if binary else p.read_text(encoding="utf-8")
+                    self.state[name] = "ok"
+                    return body
+                except Exception:
+                    continue
+            return None
+        finally:
+            self.down = not answered
+
+    def get_text(self, name: str, tries: int = 1, backoff: float = 5.0) -> Optional[str]:
         """Archivo de texto de la publicación anterior (p. ej. el histórico de noticias).
 
         Con ``tries`` > 1 se reintenta si el servidor falla o no responde (no si el archivo no existe)."""
-        if not self.base:
-            return None
-        self.state[name] = "unreachable"
-        for attempt in range(max(1, tries)):
-            if attempt:
-                time.sleep(5 * attempt)
-            try:
-                if self.base.startswith("http"):
-                    if self.fetcher is None:
-                        self.state.pop(name, None)
-                        return None
-                    r = self.fetcher.client.get(f"{self.base}/{name}", params={"t": int(time.time())})
-                    if r.status_code == 200:
-                        self.state[name] = "ok"
-                        return r.text
-                    if r.status_code in (404, 410):
-                        self.state[name] = "missing"
-                        return None
-                    if r.status_code < 500 and r.status_code != 429:
-                        return None  # 401/403…: el archivo existe o no, no se sabe
-                    continue
-                p = Path(self.base) / name
-                if not p.exists():
-                    self.state[name] = "missing"
-                    return None
-                text = p.read_text(encoding="utf-8")
-                self.state[name] = "ok"
-                return text
-            except Exception:
-                continue
-        return None
+        return self._read(name, tries, backoff, binary=False)
 
-    def get_bytes(self, name: str) -> Optional[bytes]:
-        """Archivo binario de la publicación anterior (p. ej. una copia archivada)."""
-        if not self.base:
-            return None
-        try:
-            if self.base.startswith("http"):
-                if self.fetcher is None:
-                    return None
-                r = self.fetcher.client.get(f"{self.base}/{name}")
-                return r.content if r.status_code == 200 else None
-            p = Path(self.base) / name
-            return p.read_bytes() if p.exists() else None
-        except Exception:
-            return None
+    def get_bytes(self, name: str, tries: int = TRIES) -> Optional[bytes]:
+        """Archivo binario de la publicación anterior (p. ej. una copia archivada), con reintentos como get_text."""
+        return self._read(name, tries, self.BACKOFF_S, binary=True)
 
-    def get(self, name: str, tries: int = 1) -> Optional[Any]:
+    def get(self, name: str, tries: int = 1, backoff: float = 5.0) -> Optional[Any]:
         """JSON de la publicación anterior (o None); ``state[name]`` dice por qué falta."""
         if not self.base:
             return None
         if name in self._cache:
             return self._cache[name]
-        text = self.get_text(name, tries=tries)
+        text = self.get_text(name, tries=tries, backoff=backoff)
         val = None
         if text is not None:
             try:
@@ -373,10 +379,12 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
     from .fetch import FetchError, Response
 
     acq = Acquired(src)
-    prev = previous.get(f"sources/{src.id}.json")
+    prev_name = f"sources/{src.id}.json"
+    prev = previous.get(prev_name, tries=previous.TRIES, backoff=previous.BACKOFF_S)
     if prev:
         acq.previous_fingerprint = prev.get("fingerprint", "")
-        acq.previous_url = prev.get("url") or ""
+        # «fingerprintUrl»: la URL que dio la huella, también si la publicación anterior la arrastró («url» vacía).
+        acq.previous_url = prev.get("fingerprintUrl") or prev.get("url") or ""
     resp = None
     try:
         if fixtures is not None:
@@ -426,9 +434,16 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         acq.carried = True
         acq.channel = "previous-publication"
         acq.retrieved_at = prev.get("retrievedAt", "")
+        # La huella y la URL que la dio siguen siendo las de la publicación anterior (previous_url): mañana se
+        # comparan con la URL que responda, no con una vacía.
         acq.fingerprint = prev.get("fingerprint", "")
         log.add("info", src.id, "fetch", "carried-forward",
                 f"Se mantiene el último dato válido obtenido el {acq.retrieved_at}.")
+    elif not acq.ok and previous.state.get(prev_name) == "unreachable":
+        log.add("warning", src.id, "fetch", "previous-unreachable",
+                f"La fuente no respondió y tampoco se pudo leer su último dato de la publicación anterior "
+                f"({prev_name}: el sitio falló o no respondió): esta publicación sale sin dato de la fuente y la "
+                "siguiente no tendrá qué arrastrar.")
     return acq
 
 
@@ -1161,7 +1176,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
 
     # Copias archivadas servidas por el propio sitio (enlace «copia archivada»)
     aw = archive.Writer(tmp)
-    prev_bytes = previous.get_bytes if previous is not None else None
+    prev_bytes = previous.get_bytes if previous is not None and previous.base else None
     arch = archive.write_sources(aw, acquired, prev_bytes,
                                  (lambda sid: previous.get(f"sources/{sid}.json")) if previous is not None else None)
     if official.get("enfen", {}).get("archive"):
@@ -1171,6 +1186,11 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     if inf.get("archive"):
         # El PDF del informe se publica la vez que se lee; después se arrastra la copia anterior.
         inf["archive"] = archive.carry(aw, inf["archive"], prev_bytes, source="enfen-comunicados", document=True)
+    for sid, rel in aw.missed:
+        # Sin el archivo no hay enlace que publicar, pero no se pierde en silencio.
+        log.add("warning", sid, "publish", "archive-carry-failed",
+                f"La publicación anterior tenía la copia archivada {rel}, pero no se pudo leer (el sitio falló, no "
+                "respondió o ya no la tiene): esta publicación sale sin ese enlace «copia archivada».")
     if official.get("noaa") is not None:
         official["noaa"]["archive"] = (arch.get("cpc-ensodisc") or {}).get("file")
     if feed is not None:
@@ -1188,7 +1208,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         dump(f"sources/{sid}.json", {
             "id": sid, "ok": a.ok, "carried": a.carried, "channel": a.channel, "url": a.url,
             "retrievedAt": a.retrieved_at, "archivedAt": a.archived_at, "sha256": a.sha256,
-            "fingerprint": a.fingerprint, "archive": arch.get(sid), "data": a.data,
+            "fingerprint": a.fingerprint, "fingerprintUrl": a.url or a.previous_url,
+            "archive": arch.get(sid), "data": a.data,
         })
         health.append({
             "id": sid, "institution": s.institution, "product": s.product, "layer": s.layer,

@@ -80,6 +80,8 @@ class Writer:
     def __init__(self, base: Path):
         self.base = base
         self.files: dict[str, dict] = {}
+        #: Copias que la publicación anterior listaba y no se pudieron leer: ``(fuente, ruta)``.
+        self.missed: list[tuple[str, str]] = []
 
     def add(self, rel: str, body: bytes, **meta) -> Optional[str]:
         if not body or len(body) > MAX_BYTES:
@@ -120,6 +122,8 @@ def write_sources(w: Writer, acquired: dict, previous_get: Optional[Callable[[st
             if body and w.add(rel, body, source=sid, url=a.url or None, retrievedAt=prev.get("retrievedAt"),
                               channel=prev.get("channel"), carried=True):
                 entry = {**prev, "carried": True}
+            elif rel and _is_archive_path(rel) and not body:
+                w.missed.append((sid, rel))
         docs = []
         for body in a.documents:
             rel = w.add(source_path(sid, body), body, source=sid, retrievedAt=a.retrieved_at, document=True)
@@ -133,12 +137,16 @@ def write_sources(w: Writer, acquired: dict, previous_get: Optional[Callable[[st
 
 
 def carry(w: Writer, rel: Optional[str], previous_get: Optional[Callable[[str], Optional[bytes]]], **meta) -> Optional[str]:
-    """Vuelve a publicar una copia de la publicación anterior (p. ej. el PDF del último comunicado)."""
+    """Vuelve a publicar una copia de la publicación anterior (p. ej. el PDF del último comunicado).
+
+    Si la anterior la listaba y no se pudo leer, queda en ``w.missed``."""
     if not rel or not _is_archive_path(rel):
         return None
     if rel in w.files:
         return rel
     body = previous_get(rel) if previous_get else None
+    if previous_get and not body:
+        w.missed.append((meta.get("source") or "", rel))
     return w.add(rel, body, carried=True, **meta) if body else None
 
 

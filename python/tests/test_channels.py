@@ -510,6 +510,98 @@ def test_previous_history_is_retried_on_server_errors(monkeypatch):
     assert prev.get_text("news/missing.jsonl", tries=3) is None and len(calls) == 1  # no existe: no se insiste
 
 
+def _previous_site(fail: int, files: dict[str, bytes]):
+    """Sitio anterior que responde 503 a las primeras ``fail`` lecturas de cada archivo; ``calls``: lo pedido."""
+    calls = []
+
+    def net(req):
+        name = req.url.path.removeprefix("/data/")
+        calls.append(name)
+        if calls.count(name) <= fail:
+            return httpx.Response(503)
+        return httpx.Response(200, content=files[name]) if name in files else httpx.Response(404)
+
+    fetcher = Fetcher(polite_delay=0)
+    fetcher.client = httpx.Client(transport=httpx.MockTransport(net))
+    return obs.PreviousPublication("https://sitio.example/data", fetcher), calls
+
+
+def _down_source(sid: str = "fuente-x") -> obs.Source:
+    def fetch(fetcher):
+        raise FetchError("sin respuesta", [])
+
+    return obs.Source(sid, "Institución", "Producto", ["https://fuente.example/x"], parse=lambda r: None,
+                      cadence_days=1, slo_days=3, layer="index", fixture="x.txt", fetch=fetch)
+
+
+def test_carried_data_and_archived_copies_survive_one_server_error(tmp_path, monkeypatch):
+    """Revisión: el último dato de una fuente caída (sources/<id>.json) y la copia archivada del comunicado vigente
+    dependían de una sola lectura de la publicación anterior; un 503 los perdía para siempre. Ahora se reintenta
+    (3 veces, con espera corta) y, si igual no se puede, queda un aviso en lugar de perderse en silencio."""
+    from enso import archive
+
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    pdf = b"%PDF-1.7 comunicado oficial"
+    rel = archive.source_path("enfen-comunicados", pdf)
+    files = {"sources/fuente-x.json": json.dumps({"id": "fuente-x", "data": {"v": 1}, "fingerprint": "f1",
+                                                  "url": "https://fuente.example/x", "retrievedAt": AT}).encode(),
+             rel: pdf}
+    prev, calls = _previous_site(1, files)
+    log = obs.EventLog()
+    a = obs.acquire(_down_source(), prev.fetcher, None, prev, log)
+    assert a.carried and a.data == {"v": 1} and calls.count("sources/fuente-x.json") == 2
+    assert {e.code for e in log.events} == {"unreachable", "carried-forward"}
+    w = archive.Writer(tmp_path / "pub")
+    assert archive.carry(w, rel, prev.get_bytes, source="enfen-comunicados", document=True) == rel
+    assert (tmp_path / "pub" / rel).read_bytes() == pdf and w.missed == [] and calls.count(rel) == 2
+
+    prev, calls = _previous_site(99, files)
+    log = obs.EventLog()
+    a = obs.acquire(_down_source(), prev.fetcher, None, prev, log)
+    assert not a.carried and a.data is None and calls.count("sources/fuente-x.json") == prev.TRIES
+    ev = next(e for e in log.events if e.code == "previous-unreachable")
+    assert ev.severity == "warning" and "sources/fuente-x.json" in ev.message
+    w = archive.Writer(tmp_path / "pub2")
+    assert archive.carry(w, rel, prev.get_bytes, source="enfen-comunicados") is None
+    assert w.missed == [("enfen-comunicados", rel)] and calls.count(rel) == prev.TRIES
+    # La copia de una fuente caída (write_sources) también se reintenta y, si falta, se anota.
+    a.raw, out = b"", archive.Writer(tmp_path / "pub3")
+    assert archive.write_sources(out, {"fuente-x": a}, prev.get_bytes,
+                                 lambda sid: {"archive": {"file": rel, "retrievedAt": AT}}) == {}
+    assert out.missed == [("fuente-x", rel)]
+
+    # Primera publicación (404): ni se insiste ni hay aviso.
+    prev, calls = _previous_site(0, {})
+    log = obs.EventLog()
+    obs.acquire(_down_source(), prev.fetcher, None, prev, log)
+    assert calls == ["sources/fuente-x.json"] and not any(e.code == "previous-unreachable" for e in log.events)
+
+
+def test_a_previous_site_that_does_not_answer_is_asked_once_per_file(monkeypatch):
+    """Con el sitio anterior sin responder (caído, tiempo agotado), los reintentos se gastan en el primer archivo;
+    los siguientes se piden una vez, como antes. Cuando vuelve a responder, se reintenta otra vez."""
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    calls, up = [], []
+
+    def net(req):
+        calls.append(req.url.path)
+        if not up:
+            raise httpx.ConnectTimeout("sin respuesta", request=req)
+        return httpx.Response(503)
+
+    fetcher = Fetcher(polite_delay=0)
+    fetcher.client = httpx.Client(transport=httpx.MockTransport(net))
+    prev = obs.PreviousPublication("https://sitio.example/data", fetcher)
+    assert prev.get("sources/a.json", tries=3) is None and len(calls) == 3 and prev.down
+    assert prev.get("sources/b.json", tries=3) is None and len(calls) == 4
+    assert prev.get_bytes("archive/sources/a/x.pdf") is None and len(calls) == 5
+    assert prev.state["sources/b.json"] == "unreachable"
+    up.append(True)  # responde, aunque con 503: ya no está caído
+    calls.clear()
+    assert prev.get_bytes("archive/sources/a/y.pdf") is None and len(calls) == 1 and not prev.down
+    assert prev.get_bytes("archive/sources/a/z.pdf") is None and len(calls) == 4
+
+
 def _archive_news_script() -> str:
     import yaml
 
