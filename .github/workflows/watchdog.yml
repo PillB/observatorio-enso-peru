@@ -1,7 +1,10 @@
 # Vigilante independiente: cada 6 horas (minuto 17) lee el sitio en vivo.
 # Si la publicación tiene más de 30 horas, reactiva y relanza el flujo
 # diario una vez y abre un issue. Si el flujo diario estaba desactivado
-# por inactividad, lo reactiva.
+# por inactividad, lo reactiva. También lee el latido (heartbeat.json) de
+# las ramas data-peru y data-n8n: si un recolector lleva más de 36 horas
+# callado, abre un issue aunque el flujo diario esté fallando. La lógica
+# está en .github/scripts/watchdog.cjs.
 name: watchdog
 
 on:
@@ -23,56 +26,23 @@ jobs:
     permissions:
       actions: write
       issues: write
+      contents: read  # heartbeat.json de data-peru y data-n8n
     steps:
       - name: Note when the job started (for the alert email)
         run: echo "ALERT_SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+      # Solo el módulo del vigilante (el modo cono trae también los archivos de la raíz).
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: .github/scripts
       - uses: actions/github-script@v8
         env:
           SITE_URL: ${{ vars.SITE_URL || (vars.DEPLOY_TARGET != 'cloudflare' && 'https://pillb.github.io/observatorio-enso-peru/' || '') }}
           MAX_AGE_HOURS: '30'
         with:
           script: |
-            if (!process.env.SITE_URL) {
-              core.setFailed('Con DEPLOY_TARGET=cloudflare hay que guardar la dirección del sitio en la variable SITE_URL (ver docs/despliegue-cloudflare.md).');
-              return;
-            }
-            const wf = 'observatory.yml';
-            // Reactivar por API reinicia el plazo de 60 días sin actividad; el vigilante
-            // también se reactiva a sí mismo y el flujo diario lo reactiva a él (keepalive).
-            for (const id of [wf, 'watchdog.yml', 'probe-sources.yml']) {
-              try { await github.rest.actions.enableWorkflow({ ...context.repo, workflow_id: id }); } catch (e) { core.warning(`${id}: ${e.message}`); }
-            }
-            let gen = null, pub = null, worst = null, err = null;
-            try {
-              const r = await fetch(`${process.env.SITE_URL.replace(/\/?$/, '/')}data/dashboard.json?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache' } });
-              if (!r.ok) throw new Error(`HTTP ${r.status}`);
-              const d = await r.json();
-              gen = d.generatedAt; pub = d.publicationId; worst = d.health?.worst;
-            } catch (e) { err = e.message; }
-            const age = gen ? (Date.now() - Date.parse(gen)) / 36e5 : Infinity;
-            core.info(`publication ${pub} generated ${gen} (${age.toFixed(1)} h), worst=${worst}, error=${err}`);
-            const stale = !(age <= Number(process.env.MAX_AGE_HOURS));
-            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
-            const prev = open.find(i => (i.body || '').includes('enso-fp:site-stale'));
-            if (!stale) {
-              if (prev) {
-                await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body: `El sitio vuelve a estar al día (publicación \`${pub}\`). Se cierra automáticamente.` });
-                await github.rest.issues.update({ ...context.repo, issue_number: prev.number, state: 'closed', state_reason: 'completed' });
-              }
-              return;
-            }
-            const { data: runs } = await github.rest.actions.listWorkflowRuns({ ...context.repo, workflow_id: wf, per_page: 5 });
-            const busy = runs.workflow_runs.some(r => ['queued', 'in_progress', 'waiting', 'pending'].includes(r.status));
-            const recent = runs.workflow_runs.find(r => r.event === 'workflow_dispatch' && Date.now() - Date.parse(r.created_at) < 6 * 36e5);
-            let action = 'ya hay una corrida en curso';
-            if (!busy && !recent) {
-              await github.rest.actions.createWorkflowDispatch({ ...context.repo, workflow_id: wf, ref: context.payload.repository?.default_branch || 'main' });
-              action = 'se relanzó la actualización';
-            } else if (recent && !busy) action = 'ya se relanzó en las últimas 6 horas; se requiere revisión';
-            const body = `El sitio en vivo no está al día: ${err ? `no se pudo leer (${err})` : `la publicación \`${pub}\` tiene ${age.toFixed(0)} horas`}. Acción: ${action}.\n\n<!-- enso-fp:site-stale -->`;
-            if (prev) await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body });
-            else await github.rest.issues.create({ ...context.repo, title: '[datos] El sitio publicado está desactualizado', body, labels: ['incidente-datos'] });
-      # Correo a las direcciones de ALERT_EMAILS si el vigilante abrió, comentó o cerró su issue (ver tools/alert_email.py).
+            const { run } = require('./.github/scripts/watchdog.cjs');
+            await run({ github, context, core });
+      # Correo a las direcciones de ALERT_EMAILS si el vigilante abrió, comentó o cerró sus issues (ver tools/alert_email.py).
       - uses: actions/checkout@v5
         if: always() && vars.ALERT_EMAILS != ''
         with:
