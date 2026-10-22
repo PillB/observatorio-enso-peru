@@ -1,0 +1,522 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1713.1" role="img" aria-labelledby="a7-t a7-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="a7-t">Anexo A7 · Consolas de revisión en Cloudflare</title>
+  <desc id="a7-d">Cuentas y sesión, correcciones de lugares guardadas en D1 y leídas por el pipeline, y la subida de PDF a la rama data-manual con su aviso de actualización.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="a7-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a7-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a7-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a7-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a7-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1713.1" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Anexo A7 · Consolas de revisión en Cloudflare</text>
+  <a class="ar-annex" href="../arquitectura.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Volver al diagrama completo</text></a>
+  <text class="ar-s" x="20" y="60" font-size="12">Dos páginas para personas autorizadas, servidas por el mismo sitio: la consola de lugares, donde se confirma o corrige el lugar de cada nota, y la de documentos, donde un administrador sube el PDF que ninguna ruta automática</text>
+  <text class="ar-s" x="20" y="77" font-size="12">trae. Sus API son Pages Functions de Cloudflare con una base D1; nada de esto corre en GitHub Pages.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: Consola de lugares (/admin/), Consola de documentos (/admin/documentos.html), Revisores de lugares, Rama data-manual.</text>
+  <text class="ar-t" x="20" y="121" font-size="11.5">Líneas:</text>
+  <path class="ar-e ar-e-data" d="M78.5 117 L112.5 117" marker-end="url(#a7-m-data)"/>
+  <text class="ar-s" x="120.5" y="121" font-size="11.5">datos</text>
+  <path class="ar-e ar-e-fallback" d="M174.3 117 L208.3 117" stroke-dasharray="6 4" marker-end="url(#a7-m-fallback)"/>
+  <text class="ar-s" x="216.3" y="121" font-size="11.5">respaldo</text>
+  <path class="ar-e ar-e-trigger" d="M288 117 L322 117" stroke-dasharray="2 3" marker-end="url(#a7-m-trigger)"/>
+  <text class="ar-s" x="330" y="121" font-size="11.5">disparo o control</text>
+  <path class="ar-e ar-e-human" d="M449.1 117 L483.1 117" stroke-dasharray="8 3 2 3" marker-end="url(#a7-m-human)"/>
+  <text class="ar-s" x="491.1" y="121" font-size="11.5">paso manual</text>
+  <rect class="ar-col" x="36" y="141" width="260" height="981.1" rx="10"/>
+  <text class="ar-h" x="48" y="166" font-size="15">Personas</text>
+  <text class="ar-m" x="48" y="183" font-size="10.5">cuentas en el secreto GEO_USERS</text>
+  <rect class="ar-col" x="365.3" y="141" width="300" height="981.1" rx="10"/>
+  <text class="ar-h" x="377.3" y="166" font-size="15">Páginas (/admin/)</text>
+  <text class="ar-m" x="377.3" y="183" font-size="10.5">HTML y JavaScript sin compilación</text>
+  <rect class="ar-col" x="734.7" y="141" width="300" height="981.1" rx="10"/>
+  <text class="ar-h" x="746.7" y="166" font-size="15">API en Cloudflare</text>
+  <text class="ar-m" x="746.7" y="183" font-size="10.5">Pages Functions · D1 (GEO_DB) · plan gratuito</text>
+  <rect class="ar-col" x="1104" y="141" width="300" height="981.1" rx="10"/>
+  <text class="ar-h" x="1116" y="166" font-size="15">Hacia el pipeline</text>
+  <text class="ar-m" x="1116" y="183" font-size="10.5">API de GitHub · rama data-manual ·</text>
+  <text class="ar-m" x="1116" y="197" font-size="10.5">repository_dispatch</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="a7-e-1" data-edge="1" data-from="owner" data-to="login" tabindex="0">
+    <title>1. Propietario → Ingreso y sesión: cuentas en GEO_USERS. Un usuario es «tester» o «admin»; sin cuentas la API responde 503 y explica qué falta.</title>
+    <path class="ar-e ar-e-human" d="M286 288 L336 288 Q342 288 342 294 L342 528 Q342 534 348 534 L708 534 Q714 534 714 528 L714 330 Q714 324 720 324 L744.7 324" stroke-dasharray="8 3 2 3" marker-end="url(#a7-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="528" cy="534" r="9"/>
+    <text class="ar-t" x="528" y="537.8" font-size="10.5" text-anchor="middle">1</text>
+  </g>
+  <g class="ar-edge" id="a7-e-2" data-edge="2" data-from="reviewers" data-to="geo-page" tabindex="0">
+    <title>2. Revisores (rol tester) → Consola de lugares: revisan notas. Las notas dudosas aparecen primero.</title>
+    <path class="ar-e ar-e-human" d="M286 450 L342 450 Q348 450 348 444 L348 282 Q348 276 354 276 L375.3 276" stroke-dasharray="8 3 2 3" marker-end="url(#a7-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="348" cy="363" r="9"/>
+    <text class="ar-t" x="348" y="366.8" font-size="10.5" text-anchor="middle">2</text>
+  </g>
+  <g class="ar-edge" id="a7-e-3" data-edge="3" data-from="admin" data-to="doc-page" tabindex="0">
+    <title>3. Administrador (rol admin) → Consola de documentos: sube el PDF que falta. El PDF lo baja la persona tras pasar la verificación de la DHN.</title>
+    <path class="ar-e ar-e-human" d="M286 600 L348 600 Q354 600 354 594 L354 444 Q354 438 360 438 L375.3 438" stroke-dasharray="8 3 2 3" marker-end="url(#a7-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="354" cy="519" r="9"/>
+    <text class="ar-t" x="354" y="522.8" font-size="10.5" text-anchor="middle">3</text>
+  </g>
+  <g class="ar-edge" id="a7-e-4" data-edge="4" data-from="geo-page" data-to="login" tabindex="0">
+    <title>4. Consola de lugares → Ingreso y sesión: ingreso.</title>
+    <path class="ar-e ar-e-data" d="M655.3 246 L717 246 Q720 246 720 249 L720 249 Q720 252 723 252 L744.7 252" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="687.7" cy="246" r="9"/>
+    <text class="ar-t" x="687.7" y="249.8" font-size="10.5" text-anchor="middle">4</text>
+  </g>
+  <g class="ar-edge" id="a7-e-5" data-edge="5" data-from="geo-page" data-to="corrections" tabindex="0">
+    <title>5. Consola de lugares → Correcciones de lugares: corrección. Lleva la revisión que la persona vio: si otra la cambió antes, responde 409 y pide recargar.</title>
+    <path class="ar-e ar-e-data" d="M655.3 300 L714 300 Q720 300 720 306 L720 480 Q720 486 726 486 L744.7 486" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="720" cy="393" r="9"/>
+    <text class="ar-t" x="720" y="396.8" font-size="10.5" text-anchor="middle">5</text>
+  </g>
+  <g class="ar-edge" id="a7-e-6" data-edge="6" data-from="doc-page" data-to="upload" tabindex="0">
+    <title>6. Consola de documentos → Subida de documentos: PDF en base64 + sha256.</title>
+    <path class="ar-e ar-e-data" d="M655.3 438 L702 438 Q708 438 708 444 L708 1014 Q708 1020 714 1020 L744.7 1020" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="708" cy="729" r="9"/>
+    <text class="ar-t" x="708" y="732.8" font-size="10.5" text-anchor="middle">6</text>
+  </g>
+  <g class="ar-edge" id="a7-e-7" data-edge="7" data-from="corrections" data-to="d1" tabindex="0">
+    <title>7. Correcciones de lugares → Base D1 (GEO_DB): fila nueva + auditoría.</title>
+    <path class="ar-e ar-e-data" d="M882 565.4 L882 595.4" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="882" cy="580.4" r="9"/>
+    <text class="ar-t" x="882" y="584.2" font-size="10.5" text-anchor="middle">7</text>
+  </g>
+  <g class="ar-edge" id="a7-e-8" data-edge="8" data-from="login" data-to="d1" tabindex="0">
+    <title>8. Ingreso y sesión → Base D1 (GEO_DB): sesión e intentos.</title>
+    <path class="ar-e ar-e-data" d="M1024.7 288 L1044 288 Q1050 288 1050 294 L1050 660 Q1050 666 1044 666 L1024.7 666" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1050" cy="477" r="9"/>
+    <text class="ar-t" x="1050" y="480.8" font-size="10.5" text-anchor="middle">8</text>
+  </g>
+  <g class="ar-edge" id="a7-e-9" data-edge="9" data-from="d1" data-to="overrides" tabindex="0">
+    <title>9. Base D1 (GEO_DB) → Correcciones vigentes (pública): última revisión por nota.</title>
+    <path class="ar-e ar-e-data" d="M882 740.1 L882 770.1" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="882" cy="755.1" r="9"/>
+    <text class="ar-t" x="882" y="758.9" font-size="10.5" text-anchor="middle">9</text>
+  </g>
+  <g class="ar-edge" id="a7-e-10" data-edge="10" data-from="upload" data-to="branch" tabindex="0">
+    <title>10. Subida de documentos → Rama data-manual: blob, árbol y commit. Si el commit choca con otra subida (422), se reintenta una vez sobre la rama nueva.</title>
+    <path class="ar-e ar-e-data" d="M1024.7 978 L1074 978 Q1080 978 1080 972 L1080 294 Q1080 288 1086 288 L1114 288" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1080" cy="633" r="9"/>
+    <text class="ar-t" x="1080" y="636.8" font-size="10.5" text-anchor="middle">10</text>
+  </g>
+  <g class="ar-edge" id="a7-e-11" data-edge="11" data-from="upload" data-to="refresh" tabindex="0">
+    <title>11. Subida de documentos → Pedir actualización: tras subir.</title>
+    <path class="ar-e ar-e-trigger" d="M1024.7 1056 L1080 1056 Q1086 1056 1086 1050 L1086 468 Q1086 462 1092 462 L1114 462" stroke-dasharray="2 3" marker-end="url(#a7-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="1086" cy="759" r="9"/>
+    <text class="ar-t" x="1086" y="762.8" font-size="10.5" text-anchor="middle">11</text>
+  </g>
+  <g class="ar-edge" id="a7-e-12" data-edge="12" data-from="refresh" data-to="pipeline" tabindex="0">
+    <title>12. Pedir actualización → Actualización diaria: enso-refresh. Si una corrida ya está en curso, la nueva queda en cola (concurrency de producción).</title>
+    <path class="ar-e ar-e-trigger" d="M1254 528.4 L1254 558.4" stroke-dasharray="2 3" marker-end="url(#a7-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="1254" cy="543.4" r="9"/>
+    <text class="ar-t" x="1254" y="547.2" font-size="10.5" text-anchor="middle">12</text>
+  </g>
+  <g class="ar-edge" id="a7-e-13" data-edge="13" data-from="branch" data-to="pipeline" tabindex="0">
+    <title>13. Rama data-manual → Actualización diaria: se lee en cada corrida.</title>
+    <path class="ar-e ar-e-data" d="M1394 288 L1410 288 Q1416 288 1416 294 L1416 624 Q1416 630 1410 630 L1394 630" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1416" cy="459" r="9"/>
+    <text class="ar-t" x="1416" y="462.8" font-size="10.5" text-anchor="middle">13</text>
+  </g>
+  <g class="ar-edge" id="a7-e-14" data-edge="14" data-from="overrides" data-to="pipeline" tabindex="0">
+    <title>14. Correcciones vigentes (pública) → Actualización diaria: correcciones. Si la consola no responde, se usan las de la publicación anterior (geo/overrides.json).</title>
+    <path class="ar-e ar-e-data" d="M1024.7 834 L1086 834 Q1092 834 1092 828 L1092 636 Q1092 630 1098 630 L1114 630" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1092" cy="732" r="9"/>
+    <text class="ar-t" x="1092" y="735.8" font-size="10.5" text-anchor="middle">14</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="a7-n-owner" data-node="owner">
+    <title>Propietario. Crea las cuentas con python -m tools.geo_users (hash PBKDF2-SHA256 de 5 000 iteraciones) y las guarda en el secreto GEO_USERS de Cloudflare: las contraseñas nunca se guardan. Tecnología: Python, wrangler.</title>
+    <rect class="ar-node ar-g-people" x="46" y="209" width="240" height="159.9" rx="8"/>
+    <rect class="ar-f-people" x="46" y="217" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="58" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(61 222)"><circle cx="8" cy="15" r="4.5"/><path d="M11.2 11.8L20 3M16 7l3 3M14 9l2 2"/></g>
+    <text class="ar-t" x="96" y="238.5" font-size="12.5">Propietario</text>
+    <text class="ar-s" x="58" y="270.4" font-size="11">Crea las cuentas con python -m</text>
+    <text class="ar-s" x="58" y="285.6" font-size="11">tools.geo_users (hash PBKDF2-SHA256</text>
+    <text class="ar-s" x="58" y="300.8" font-size="11">de 5 000 iteraciones) y las guarda en</text>
+    <text class="ar-s" x="58" y="316" font-size="11">el secreto GEO_USERS de Cloudflare:</text>
+    <text class="ar-s" x="58" y="331.2" font-size="11">las contraseñas nunca se guardan.</text>
+    <rect class="ar-chip" x="58" y="340.9" width="46.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="352.9" font-size="10">Python</text>
+    <rect class="ar-chip" x="109.7" y="340.9" width="56.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="115.7" y="352.9" font-size="10">wrangler</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-reviewers" data-node="reviewers">
+    <title>Revisores (rol tester). Revisan las notas dudosas (por ejemplo, confianza menor a 0,8) y fijan, confirman o descartan su lugar.</title>
+    <rect class="ar-node ar-g-people" x="46" y="398.9" width="240" height="105.5" rx="8"/>
+    <rect class="ar-f-people" x="46" y="406.9" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="58" y="408.9" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(61 411.9)"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></g>
+    <text class="ar-t" x="96" y="428.4" font-size="12.5">Revisores (rol tester)</text>
+    <text class="ar-s" x="58" y="460.3" font-size="11">Revisan las notas dudosas (por</text>
+    <text class="ar-s" x="58" y="475.5" font-size="11">ejemplo, confianza menor a 0,8) y</text>
+    <text class="ar-s" x="58" y="490.7" font-size="11">fijan, confirman o descartan su lugar.</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-admin" data-node="admin">
+    <title>Administrador (rol admin). Además de revisar, sube los PDF que faltan. La DHN pide verificación humana: la persona la pasa en su navegador y baja el documento ella misma.</title>
+    <rect class="ar-node ar-g-people" x="46" y="534.4" width="240" height="135.9" rx="8"/>
+    <rect class="ar-f-people" x="46" y="542.4" width="4" height="119.9" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="58" y="544.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(61 547.4)"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g>
+    <text class="ar-t" x="96" y="558.9" font-size="12.5">Administrador (rol</text>
+    <text class="ar-t" x="96" y="575.2" font-size="12.5">admin)</text>
+    <text class="ar-s" x="58" y="595.9" font-size="11">Además de revisar, sube los PDF que</text>
+    <text class="ar-s" x="58" y="611" font-size="11">faltan. La DHN pide verificación</text>
+    <text class="ar-s" x="58" y="626.2" font-size="11">humana: la persona la pasa en su</text>
+    <text class="ar-s" x="58" y="641.4" font-size="11">navegador y baja el documento ella</text>
+    <text class="ar-s" x="58" y="656.6" font-size="11">misma.</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-geo-page" data-node="geo-page">
+    <title>Consola de lugares. Lista las notas de geo/items.json con su lugar propuesto y su confianza; cada corrección muestra quién y cuándo. Tecnología: /admin/index.html, admin.js.</title>
+    <rect class="ar-node ar-g-site" x="375.3" y="209" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-site" x="375.3" y="217" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="387.3" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(390.3 222)"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></g>
+    <text class="ar-t" x="425.3" y="238.5" font-size="12.5">Consola de lugares</text>
+    <text class="ar-s" x="387.3" y="270.4" font-size="11">Lista las notas de geo/items.json con su lugar</text>
+    <text class="ar-s" x="387.3" y="285.6" font-size="11">propuesto y su confianza; cada corrección</text>
+    <text class="ar-s" x="387.3" y="300.8" font-size="11">muestra quién y cuándo.</text>
+    <rect class="ar-chip" x="387.3" y="310.5" width="103.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="393.3" y="322.5" font-size="10">/admin/index.html</text>
+    <rect class="ar-chip" x="495.9" y="310.5" width="54.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="501.9" y="322.5" font-size="10">admin.js</text>
+    <a class="ar-annex" href="a6.svg" data-annex="a6"><title>Anexo A6: Noticias y alertas: lectura, filtro, histórico y lugar</title><rect class="ar-tag" x="619.9" y="216" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="633.6" y="228.5" font-size="10.5" text-anchor="middle">A6</text></a>
+  </g>
+  <g class="ar-node-g" id="a7-n-doc-page" data-node="doc-page">
+    <title>Consola de documentos. Muestra lo que falta según data/manual-needed.json. El navegador calcula el sha256 y codifica el PDF en base64 antes de subirlo. Tecnología: /admin/documentos.html, documentos.js.</title>
+    <rect class="ar-node ar-g-site" x="375.3" y="368.5" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-site" x="375.3" y="376.5" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="387.3" y="378.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(390.3 381.5)"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></g>
+    <text class="ar-t" x="425.3" y="398" font-size="12.5">Consola de documentos</text>
+    <text class="ar-s" x="387.3" y="430" font-size="11">Muestra lo que falta según</text>
+    <text class="ar-s" x="387.3" y="445.1" font-size="11">data/manual-needed.json. El navegador</text>
+    <text class="ar-s" x="387.3" y="460.3" font-size="11">calcula el sha256 y codifica el PDF en base64</text>
+    <text class="ar-s" x="387.3" y="475.5" font-size="11">antes de subirlo.</text>
+    <rect class="ar-chip" x="387.3" y="485.3" width="137.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="393.3" y="497.3" font-size="10">/admin/documentos.html</text>
+    <rect class="ar-chip" x="530.2" y="485.3" width="85" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="536.2" y="497.3" font-size="10">documentos.js</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-login" data-node="login">
+    <title>Ingreso y sesión. POST /api/geo/login verifica el hash y entrega una cookie __Host- HttpOnly, Secure y SameSite=Strict de 12 h. En D1 queda solo el hash del token. 8 fallos por usuario, 30 por IP en 15 min. Tecnología: Web Crypto, D1.</title>
+    <rect class="ar-node ar-g-operations" x="744.7" y="209" width="280" height="163.2" rx="8"/>
+    <rect class="ar-f-operations" x="744.7" y="217" width="4" height="147.2" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="756.7" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(759.7 222)"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5M12 14.5v2.5"/></g>
+    <text class="ar-t" x="794.7" y="238.5" font-size="12.5">Ingreso y sesión</text>
+    <text class="ar-s" x="756.7" y="270.4" font-size="11">POST /api/geo/login verifica el hash y entrega</text>
+    <text class="ar-s" x="756.7" y="285.6" font-size="11">una cookie __Host- HttpOnly, Secure y</text>
+    <text class="ar-s" x="756.7" y="300.8" font-size="11">SameSite=Strict de 12 h. En D1 queda solo el</text>
+    <text class="ar-s" x="756.7" y="316" font-size="11">hash del token.</text>
+    <text class="ar-m" x="756.7" y="335.2" font-size="10.5">8 fallos por usuario, 30 por IP en 15 min</text>
+    <rect class="ar-chip" x="756.7" y="344.2" width="71" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="762.7" y="356.2" font-size="10">Web Crypto</text>
+    <rect class="ar-chip" x="832.6" y="344.2" width="26.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="838.6" y="356.2" font-size="10">D1</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-corrections" data-node="corrections">
+    <title>Correcciones de lugares. Cada corrección es una fila nueva con su revisión: nada se borra ni se edita, y el historial completo y la auditoría quedan en D1. hasta 600 por usuario y hora. Tecnología: /api/geo/corrections, D1.</title>
+    <rect class="ar-node ar-g-operations" x="744.7" y="402.2" width="280" height="163.2" rx="8"/>
+    <rect class="ar-f-operations" x="744.7" y="410.2" width="4" height="147.2" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="756.7" y="412.2" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(759.7 415.2)"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></g>
+    <text class="ar-t" x="794.7" y="431.7" font-size="12.5">Correcciones de lugares</text>
+    <text class="ar-s" x="756.7" y="463.6" font-size="11">Cada corrección es una fila nueva con su</text>
+    <text class="ar-s" x="756.7" y="478.8" font-size="11">revisión: nada se borra ni se edita, y el</text>
+    <text class="ar-s" x="756.7" y="494" font-size="11">historial completo y la auditoría quedan en</text>
+    <text class="ar-s" x="756.7" y="509.2" font-size="11">D1.</text>
+    <text class="ar-m" x="756.7" y="528.4" font-size="10.5">hasta 600 por usuario y hora</text>
+    <rect class="ar-chip" x="756.7" y="537.4" width="111.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="762.7" y="549.4" font-size="10">/api/geo/corrections</text>
+    <rect class="ar-chip" x="873.5" y="537.4" width="26.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="879.5" y="549.4" font-size="10">D1</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-d1" data-node="d1">
+    <title>Base D1 (GEO_DB). Tablas de sesiones, intentos, correcciones, auditoría y subidas; la comparte la analítica A/B del mapa de alertas, con un tope diario propio. Tecnología: Cloudflare D1, SQLite.</title>
+    <rect class="ar-node ar-g-stores" x="744.7" y="595.4" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-stores" x="744.7" y="603.4" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="756.7" y="605.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(759.7 608.4)"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8v-13M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/></g>
+    <text class="ar-t" x="794.7" y="624.9" font-size="12.5">Base D1 (GEO_DB)</text>
+    <text class="ar-s" x="756.7" y="656.9" font-size="11">Tablas de sesiones, intentos, correcciones,</text>
+    <text class="ar-s" x="756.7" y="672" font-size="11">auditoría y subidas; la comparte la analítica</text>
+    <text class="ar-s" x="756.7" y="687.2" font-size="11">A/B del mapa de alertas, con un tope diario</text>
+    <text class="ar-s" x="756.7" y="702.4" font-size="11">propio.</text>
+    <rect class="ar-chip" x="756.7" y="712.1" width="80.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="762.7" y="724.1" font-size="10">Cloudflare D1</text>
+    <rect class="ar-chip" x="842.2" y="712.1" width="44.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="848.2" y="724.1" font-size="10">SQLite</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-overrides" data-node="overrides">
+    <title>Correcciones vigentes (pública). GET /api/geo/overrides: la última revisión de cada nota, sin nombres ni notas internas, con caché de 60 s. Tecnología: /api/geo/overrides.</title>
+    <rect class="ar-node ar-g-operations" x="744.7" y="770.1" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-operations" x="744.7" y="778.1" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="756.7" y="780.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(759.7 783.1)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="794.7" y="794.6" font-size="12.5">Correcciones vigentes</text>
+    <text class="ar-t" x="794.7" y="810.9" font-size="12.5">(pública)</text>
+    <text class="ar-s" x="756.7" y="831.6" font-size="11">GET /api/geo/overrides: la última revisión de</text>
+    <text class="ar-s" x="756.7" y="846.8" font-size="11">cada nota, sin nombres ni notas internas, con</text>
+    <text class="ar-s" x="756.7" y="861.9" font-size="11">caché de 60 s.</text>
+    <rect class="ar-chip" x="756.7" y="871.7" width="102.9" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="762.7" y="883.7" font-size="10">/api/geo/overrides</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-upload" data-node="upload">
+    <title>Subida de documentos. POST /api/docs/upload: solo roles de DOCS_UPLOAD_ROLES (admin). Comprueba %PDF- y %%EOF y pasa el archivo en flujo a GitHub sin decodificarlo (10 ms de CPU por solicitud). hasta 25 MB y 10 subidas por hora. Tecnología: /api/docs/upload.</title>
+    <rect class="ar-node ar-g-operations" x="744.7" y="929.7" width="280" height="178.4" rx="8"/>
+    <rect class="ar-f-operations" x="744.7" y="937.7" width="4" height="162.4" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="756.7" y="939.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(759.7 942.7)"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></g>
+    <text class="ar-t" x="794.7" y="959.2" font-size="12.5">Subida de documentos</text>
+    <text class="ar-s" x="756.7" y="991.1" font-size="11">POST /api/docs/upload: solo roles de</text>
+    <text class="ar-s" x="756.7" y="1006.3" font-size="11">DOCS_UPLOAD_ROLES (admin). Comprueba</text>
+    <text class="ar-s" x="756.7" y="1021.5" font-size="11">%PDF- y %%EOF y pasa el archivo en flujo a</text>
+    <text class="ar-s" x="756.7" y="1036.6" font-size="11">GitHub sin decodificarlo (10 ms de CPU por</text>
+    <text class="ar-s" x="756.7" y="1051.8" font-size="11">solicitud).</text>
+    <text class="ar-m" x="756.7" y="1071" font-size="10.5">hasta 25 MB y 10 subidas por hora</text>
+    <rect class="ar-chip" x="756.7" y="1080.1" width="94.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="762.7" y="1092.1" font-size="10">/api/docs/upload</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-branch" data-node="branch">
+    <title>Rama data-manual. Blob, árbol y commit con el formato enso-relay/1 (canal relay-manual): una entrada por documento, que la subida nueva reemplaza. Las copias de más de 120 días salen del índice. Tecnología: GitHub Git Data API.</title>
+    <rect class="ar-node ar-g-stores" x="1114" y="209" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-stores" x="1114" y="217" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="1126" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(1129 222)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="7" r="2.2"/><path d="M6 7.2v9.6M18 9.2c0 5-6 3.5-11 7.8"/></g>
+    <text class="ar-t" x="1164" y="238.5" font-size="12.5">Rama data-manual</text>
+    <text class="ar-s" x="1126" y="270.4" font-size="11">Blob, árbol y commit con el formato</text>
+    <text class="ar-s" x="1126" y="285.6" font-size="11">enso-relay/1 (canal relay-manual): una</text>
+    <text class="ar-s" x="1126" y="300.8" font-size="11">entrada por documento, que la subida nueva</text>
+    <text class="ar-s" x="1126" y="316" font-size="11">reemplaza. Las copias de más de 120 días</text>
+    <text class="ar-s" x="1126" y="331.2" font-size="11">salen del índice.</text>
+    <rect class="ar-chip" x="1126" y="340.9" width="110.3" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="352.9" font-size="10">GitHub Git Data API</text>
+    <a class="ar-annex" href="a4.svg" data-annex="a4"><title>Anexo A4: Descarga en GitHub Actions y respaldo por fuente</title><rect class="ar-tag" x="1358.6" y="216" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="228.5" font-size="10.5" text-anchor="middle">A4</text></a>
+  </g>
+  <g class="ar-node-g" id="a7-n-refresh" data-node="refresh">
+    <title>Pedir actualización. Tras subir, manda repository_dispatch enso-refresh para que el sitio no espere a la corrida de las 23:37. Tecnología: repository_dispatch.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="398.9" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="406.9" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="408.9" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 411.9)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
+    <text class="ar-t" x="1164" y="428.4" font-size="12.5">Pedir actualización</text>
+    <text class="ar-s" x="1126" y="460.3" font-size="11">Tras subir, manda repository_dispatch</text>
+    <text class="ar-s" x="1126" y="475.5" font-size="11">enso-refresh para que el sitio no espere a la</text>
+    <text class="ar-s" x="1126" y="490.7" font-size="11">corrida de las 23:37.</text>
+    <rect class="ar-chip" x="1126" y="500.4" width="110.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="512.4" font-size="10">repository_dispatch</text>
+  </g>
+  <g class="ar-node-g" id="a7-n-pipeline" data-node="pipeline">
+    <title>Actualización diaria. Lee data-manual como un recolector más y valida el PDF como cualquier copia; aplica las correcciones de lugares después de las automáticas: tienen la última palabra. Tecnología: Python 3.12.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="558.4" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="566.4" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="568.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 571.4)"><path d="M5 15c-1.5 1.5-2 4.5-2 6 1.5 0 4.5-.5 6-2M14.5 4.5c3-1.5 5-1.5 5.5-1 .5.5.5 2.5-1 5.5L13 15l-4-4z"/><path d="M9 11l-3.5-.5L8 7.5l4 .5M13 15l.5 3.5L16.5 16l-.5-4"/></g>
+    <text class="ar-t" x="1164" y="587.9" font-size="12.5">Actualización diaria</text>
+    <text class="ar-s" x="1126" y="619.9" font-size="11">Lee data-manual como un recolector más y</text>
+    <text class="ar-s" x="1126" y="635" font-size="11">valida el PDF como cualquier copia; aplica las</text>
+    <text class="ar-s" x="1126" y="650.2" font-size="11">correcciones de lugares después de las</text>
+    <text class="ar-s" x="1126" y="665.4" font-size="11">automáticas: tienen la última palabra.</text>
+    <rect class="ar-chip" x="1126" y="675.2" width="72.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="687.2" font-size="10">Python 3.12</text>
+    <a class="ar-annex" href="a6.svg" data-annex="a6"><title>Anexo A6: Noticias y alertas: lectura, filtro, histórico y lugar</title><rect class="ar-tag" x="1358.6" y="565.4" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="577.9" font-size="10.5" text-anchor="middle">A6</text></a>
+    <a class="ar-annex" href="a5.svg" data-annex="a5"><title>Anexo A5: Actualización diaria: fuentes oficiales, series y señales</title><rect class="ar-tag" x="1327.1" y="565.4" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1340.8" y="577.9" font-size="10.5" text-anchor="middle">A5</text></a>
+  </g>
+  <line class="ar-rule" x1="20" y1="1162.1" x2="1420" y2="1162.1"/>
+  <text class="ar-h" x="20" y="1192.1" font-size="15">Pasos y conexiones: qué viaja por cada línea, cuándo y por qué</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1220.1" r="9"/>
+  <text class="ar-t" x="30" y="1223.9" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="1224.1" font-size="11.5">cuentas en GEO_USERS</text>
+  <text class="ar-m" x="50" y="1238.1" font-size="10.5">Propietario → Ingreso y sesión</text>
+  <text class="ar-s" x="50" y="1253.1" font-size="11">Un usuario es «tester» o «admin»; sin cuentas la API responde 503 y</text>
+  <text class="ar-s" x="50" y="1268.1" font-size="11">explica qué falta.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1291.1" r="9"/>
+  <text class="ar-t" x="30" y="1294.9" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1295.1" font-size="11.5">revisan notas</text>
+  <text class="ar-m" x="50" y="1309.1" font-size="10.5">Revisores (rol tester) → Consola de lugares</text>
+  <text class="ar-s" x="50" y="1324.1" font-size="11">Las notas dudosas aparecen primero.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1347.1" r="9"/>
+  <text class="ar-t" x="30" y="1350.9" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1351.1" font-size="11.5">sube el PDF que falta</text>
+  <text class="ar-m" x="50" y="1365.1" font-size="10.5">Administrador (rol admin) → Consola de documentos</text>
+  <text class="ar-s" x="50" y="1380.1" font-size="11">El PDF lo baja la persona tras pasar la verificación de la DHN.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1403.1" r="9"/>
+  <text class="ar-t" x="30" y="1406.9" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1407.1" font-size="11.5">ingreso</text>
+  <text class="ar-m" x="50" y="1421.1" font-size="10.5">Consola de lugares → Ingreso y sesión</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1220.1" r="9"/>
+  <text class="ar-t" x="506" y="1223.9" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="526" y="1224.1" font-size="11.5">corrección</text>
+  <text class="ar-m" x="526" y="1238.1" font-size="10.5">Consola de lugares → Correcciones de lugares</text>
+  <text class="ar-s" x="526" y="1253.1" font-size="11">Lleva la revisión que la persona vio: si otra la cambió antes, responde 409</text>
+  <text class="ar-s" x="526" y="1268.1" font-size="11">y pide recargar.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1291.1" r="9"/>
+  <text class="ar-t" x="506" y="1294.9" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="526" y="1295.1" font-size="11.5">PDF en base64 + sha256</text>
+  <text class="ar-m" x="526" y="1309.1" font-size="10.5">Consola de documentos → Subida de documentos</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1332.1" r="9"/>
+  <text class="ar-t" x="506" y="1335.9" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="1336.1" font-size="11.5">fila nueva + auditoría</text>
+  <text class="ar-m" x="526" y="1350.1" font-size="10.5">Correcciones de lugares → Base D1 (GEO_DB)</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1373.1" r="9"/>
+  <text class="ar-t" x="506" y="1376.9" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1377.1" font-size="11.5">sesión e intentos</text>
+  <text class="ar-m" x="526" y="1391.1" font-size="10.5">Ingreso y sesión → Base D1 (GEO_DB)</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1414.1" r="9"/>
+  <text class="ar-t" x="506" y="1417.9" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1418.1" font-size="11.5">última revisión por nota</text>
+  <text class="ar-m" x="526" y="1432.1" font-size="10.5">Base D1 (GEO_DB) → Correcciones vigentes (pública)</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1220.1" r="9"/>
+  <text class="ar-t" x="982" y="1223.9" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="1002" y="1224.1" font-size="11.5">blob, árbol y commit</text>
+  <text class="ar-m" x="1002" y="1238.1" font-size="10.5">Subida de documentos → Rama data-manual</text>
+  <text class="ar-s" x="1002" y="1253.1" font-size="11">Si el commit choca con otra subida (422), se reintenta una vez sobre la</text>
+  <text class="ar-s" x="1002" y="1268.1" font-size="11">rama nueva.</text>
+  <circle class="ar-badge ar-e-trigger" cx="982" cy="1291.1" r="9"/>
+  <text class="ar-t" x="982" y="1294.9" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="1002" y="1295.1" font-size="11.5">tras subir</text>
+  <text class="ar-m" x="1002" y="1309.1" font-size="10.5">Subida de documentos → Pedir actualización</text>
+  <circle class="ar-badge ar-e-trigger" cx="982" cy="1332.1" r="9"/>
+  <text class="ar-t" x="982" y="1335.9" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="1002" y="1336.1" font-size="11.5">enso-refresh</text>
+  <text class="ar-m" x="1002" y="1350.1" font-size="10.5">Pedir actualización → Actualización diaria</text>
+  <text class="ar-s" x="1002" y="1365.1" font-size="11">Si una corrida ya está en curso, la nueva queda en cola (concurrency de</text>
+  <text class="ar-s" x="1002" y="1380.1" font-size="11">producción).</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1403.1" r="9"/>
+  <text class="ar-t" x="982" y="1406.9" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="1002" y="1407.1" font-size="11.5">se lee en cada corrida</text>
+  <text class="ar-m" x="1002" y="1421.1" font-size="10.5">Rama data-manual → Actualización diaria</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1444.1" r="9"/>
+  <text class="ar-t" x="982" y="1447.9" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1448.1" font-size="11.5">correcciones</text>
+  <text class="ar-m" x="1002" y="1462.1" font-size="10.5">Correcciones vigentes (pública) → Actualización diaria</text>
+  <text class="ar-s" x="1002" y="1477.1" font-size="11">Si la consola no responde, se usan las de la publicación anterior</text>
+  <text class="ar-s" x="1002" y="1492.1" font-size="11">(geo/overrides.json).</text>
+  <line class="ar-rule" x1="20" y1="1527.1" x2="1420" y2="1527.1"/>
+  <text class="ar-h" x="20" y="1557.1" font-size="15">Si algo falla: qué pasa y qué respaldo entra</text>
+  <g class="ar-warn" transform="translate(20 1574.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1589.1" font-size="11.5">Alguien prueba contraseñas</text>
+  <text class="ar-s" x="50" y="1604.1" font-size="11">Tras 8 fallos por usuario o 30 por IP en 15 min responde 429; un usuario</text>
+  <text class="ar-s" x="50" y="1619.1" font-size="11">inexistente tarda lo mismo que uno real.</text>
+  <g class="ar-warn" transform="translate(20 1631.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1646.1" font-size="11.5">Dos revisores corrigen la misma nota</text>
+  <text class="ar-s" x="50" y="1661.1" font-size="11">El segundo recibe 409 y recarga: ninguna corrección pisa a otra sin verla.</text>
+  <g class="ar-warn" transform="translate(496 1574.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1589.1" font-size="11.5">La consola o Cloudflare no responden</text>
+  <text class="ar-s" x="526" y="1604.1" font-size="11">El pipeline aplica las correcciones de la publicación anterior; no se pierde</text>
+  <text class="ar-s" x="526" y="1619.1" font-size="11">ninguna.</text>
+  <g class="ar-warn" transform="translate(496 1631.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1646.1" font-size="11.5">El PDF subido no es el esperado</text>
+  <text class="ar-s" x="526" y="1661.1" font-size="11">El pipeline recalcula el sha256 y valida el documento: si no coincide, no se</text>
+  <text class="ar-s" x="526" y="1676.1" font-size="11">publica.</text>
+  <g class="ar-warn" transform="translate(972 1574.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1589.1" font-size="11.5">El sitio está en GitHub Pages</text>
+  <text class="ar-s" x="1002" y="1604.1" font-size="11">Las consolas necesitan Cloudflare: /admin/ explica que no están</text>
+  <text class="ar-s" x="1002" y="1619.1" font-size="11">disponibles y el resto del sitio sigue igual.</text>
+</svg>
