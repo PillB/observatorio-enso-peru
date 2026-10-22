@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Thu, 22 Oct 2026 00:11:05 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>UCV se convierte en la primera universidad de referencia de Google en inteligencia artificial en el Perú</title>
+		<link>https://www.cutivalu.pe/ucv-se-convierte-en-la-primera-universidad-de-referencia-de-google-en-inteligencia-artificial-en-el-peru/</link>
+		
+		<dc:creator><![CDATA[Esthefany Azcarate]]></dc:creator>
+		<pubDate>Thu, 22 Oct 2026 00:11:05 +0000</pubDate>
+				<category><![CDATA[Nacional]]></category>
+		<category><![CDATA[Portada]]></category>
+		<category><![CDATA[Google]]></category>
+		<category><![CDATA[IA]]></category>
+		<category><![CDATA[INTELIGENCIA ARTIFICIAL]]></category>
+		<category><![CDATA[Perú]]></category>
+		<category><![CDATA[Primera universida de referencia en IA]]></category>
+		<category><![CDATA[UCV]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=194814</guid>
+
+					<description><![CDATA[<p>La estrategia de innovación de la Universidad César Vallejo apuesta por nuevas formas de enseñar, aprender y desarrollar competencias para el futuro profesional. En un hito para la educación superior del país, Google ha elegido a la Universidad César Vallejo (UCV) para ser su universidad de referencia en el uso de inteligencia artificial, específicamente a [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/ucv-se-convierte-en-la-primera-universidad-de-referencia-de-google-en-inteligencia-artificial-en-el-peru/">UCV se convierte en la primera universidad de referencia de Google en inteligencia artificial en el Perú</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
