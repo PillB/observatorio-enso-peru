@@ -193,9 +193,10 @@ def check_git(ctx: dict) -> Result:
 def _client(timeout: float = 20.0):
     import httpx
 
-    from enso.fetch import UA
+    from enso.fetch import UA, ssl_context
 
-    return httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
+    # Los mismos certificados que la recolección (con los intermedios que algunos servidores oficiales no envían).
+    return httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA}, verify=ssl_context())
 
 
 def check_internet(ctx: dict) -> list[Result]:
@@ -486,7 +487,7 @@ def check_sources(ctx: dict) -> Result:
     skipped = len(res) - len(asked)
     by_group = {g: (sum(1 for gg, r in asked if gg == g and r["ok"]), sum(1 for gg, _ in asked if gg == g))
                 for g in groups}
-    # Un grupo sin URL que pedir es uno cuyo robots.txt no lo permite (aquí o, en el registro, ``plan``).
+    # Un grupo sin URL que pedir es uno cuyo robots.txt no lo permite (leído ahora, como en la recolección).
     summary = ", ".join(f"{g} {a}/{b}" if b else f"{g}: robots.txt no lo permite" for g, (a, b) in by_group.items())
     ok = sum(a for a, _ in by_group.values())
     if not asked:

@@ -45,6 +45,12 @@ en la consola) se marcan «≈»; los revisados en la consola, «lugar revisado�
   Un aviso emitido después de la última copia queda «Sin nivel» hasta la noche siguiente. Si el texto no da
   fechas, la vigencia es el inicio y el fin de la tabla (días completos en Lima) y `valid.source` vale
   `"tabla"`. Un aviso que la tabla marca «(AVISO CANCELADO)» lleva `aviso.cancelled: true`.
+  Cada nivel que sale de la tabla enlaza el aviso en el SENAMHI (`severity.basisUrl`) y la copia de la tabla
+  que publica el sitio (`severity.basisArchive`, en `data/archive/sources/senamhi-avisos/`), porque esa
+  página no abre fuera del Perú. El grupo de alertas de `feed.json` dice de qué copia salen los niveles
+  (`levelsFrom`: `copyAt`, `archive`, cuántos avisos trae) y el pie del mapa lo muestra; si la copia tiene
+  más de 36 horas, el pie lo advierte y el pipeline anota `senamhi-avisos-stale`. Sin tabla legible anota
+  `senamhi-avisos-unread`.
 - Esos avisos siguen sin departamento cuando el texto nombra una región («costa centro y sur»): aparecen
   en «avisos sin departamento». La capa de precipitaciones de 24 horas de GEOSINPAD (`senamhi-lluvias`)
   sí trae polígonos: colorea los departamentos con su nivel desde la nube, sin depender del recolector.

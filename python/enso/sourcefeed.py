@@ -113,15 +113,51 @@ def alert_sources(feed_status: Optional[list[dict]]) -> list[dict]:
     return out
 
 
+def levels_table(relay, log=None, now: Optional[datetime] = None):
+    """La tabla de avisos del SENAMHI que da su nivel a los avisos de Telegram y del COEN (``senamhi_avisos``),
+    y en ``log`` por qué falta o si es vieja: sin ella esos avisos quedan «sin nivel» y nadie lo notaría."""
+    from .senamhi_avisos import STALE_HOURS, URL, load
+
+    table, why = load(relay)
+    if log is None or relay is None:
+        return table
+    fresh = getattr(relay, "age_hours", 0) <= STALE_HOURS  # si toda la copia es vieja, ya avisa «relay-stale»
+    if why and fresh:
+        log.add("warning", "senamhi-avisos", "parse", "senamhi-avisos-unread",
+                f"No se pudo usar la tabla de avisos del SENAMHI ({URL}) de la copia del Perú: {why}. Los avisos "
+                "del SENAMHI que llegan por Telegram y por el COEN quedan «sin nivel» en el mapa hasta que haya "
+                "una copia legible; revisar esa URL en logs/recolector.log del equipo del Perú.")
+    age = table.age_hours(now) if table is not None else None
+    if age is not None and age > STALE_HOURS and fresh:
+        log.add("warning", "senamhi-avisos", "fetch", "senamhi-avisos-stale",
+                f"La tabla de avisos del SENAMHI que da el nivel a los avisos es del {table.copy_at} (hace {age:.0f} h): "
+                "esta noche el equipo del Perú no la pudo bajar y se usa la copia anterior. Los avisos emitidos "
+                "después quedan sin nivel y una cancelación posterior no se ve.")
+    return table
+
+
+def levels_from(table) -> Optional[dict]:
+    """Para el pie del mapa: de qué copia de la tabla del SENAMHI salen los niveles (``archive`` lo agrega la
+    publicación, con la copia servida por el sitio)."""
+    from .senamhi_avisos import URL
+
+    if table is None:
+        return None
+    return {"source": "senamhi-avisos", "institution": "SENAMHI", "url": URL, "copyAt": table.copy_at,
+            "avisos": len(table)}
+
+
 def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, relay=None,
           news_items: Optional[list[dict]] = None, now: Optional[datetime] = None,
-          feed_status: Optional[list[dict]] = None) -> dict:
+          feed_status: Optional[list[dict]] = None, avisos=None) -> dict:
     """``sources``: id → {institution, docs, retrievedAt, channel, status}; ``news_items``: el histórico
     de noticias, del que salen las alertas de las fuentes oficiales de peligros; ``feed_status``: el
-    estado de cada feed en esta corrida (``news/feeds.json``)."""
+    estado de cada feed en esta corrida (``news/feeds.json``); ``avisos``: la tabla de avisos del SENAMHI
+    (``levels_table``; sin ella, se lee de ``relay`` sin registrar nada)."""
     from .senamhi_avisos import from_relay
 
-    items: list[dict] = alerts(news_items, now, from_relay(relay)) if news_items and now else []
+    table = avisos if avisos is not None else from_relay(relay)
+    items: list[dict] = alerts(news_items, now, table) if news_items and now else []
     status = alert_sources(feed_status)
 
     def src(sid: str) -> dict:
@@ -193,4 +229,6 @@ def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, r
     for g in groups:
         if g["id"] == "alertas":
             g["sources"] = status  # aunque no haya avisos: el grupo dice qué fuentes se consultaron
+            if table is not None and any(i.get("aviso") for i in g["items"]):
+                g["levelsFrom"] = levels_from(table)
     return {"groups": groups}
