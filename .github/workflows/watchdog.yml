@@ -24,6 +24,8 @@ jobs:
       actions: write
       issues: write
     steps:
+      - name: Note when the job started (for the alert email)
+        run: echo "ALERT_SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
       - uses: actions/github-script@v8
         env:
           SITE_URL: ${{ vars.SITE_URL || (vars.DEPLOY_TARGET != 'cloudflare' && 'https://pillb.github.io/observatorio-enso-peru/' || '') }}
@@ -70,3 +72,27 @@ jobs:
             const body = `El sitio en vivo no está al día: ${err ? `no se pudo leer (${err})` : `la publicación \`${pub}\` tiene ${age.toFixed(0)} horas`}. Acción: ${action}.\n\n<!-- enso-fp:site-stale -->`;
             if (prev) await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body });
             else await github.rest.issues.create({ ...context.repo, title: '[datos] El sitio publicado está desactualizado', body, labels: ['incidente-datos'] });
+      # Correo a las direcciones de ALERT_EMAILS si el vigilante abrió, comentó o cerró su issue (ver tools/alert_email.py).
+      - uses: actions/checkout@v5
+        if: always() && vars.ALERT_EMAILS != ''
+        with:
+          sparse-checkout: python
+      - uses: actions/setup-python@v6
+        if: always() && vars.ALERT_EMAILS != ''
+        with:
+          python-version: '3.12'
+      - name: Email the configured addresses
+        if: always() && vars.ALERT_EMAILS != ''
+        working-directory: python
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ALERT_EMAILS: ${{ vars.ALERT_EMAILS }}
+          ALERT_FROM: ${{ vars.ALERT_FROM }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        run: |
+          pip install -q httpx
+          python -m tools.alert_email --since "$ALERT_SINCE" --run-url "$RUN_URL"
