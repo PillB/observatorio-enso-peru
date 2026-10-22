@@ -280,3 +280,36 @@ def test_peru_collector_urls_keep_their_type_in_the_registry():
     known = set(by_url) | {u for s in sources for u in s.get("alt_urls", [])}
     assert {u for urls in peru_collector.SOURCES.values() for u in urls} <= known
     assert {u: by_url[u]["expect"] for u in peru_collector.EXPECT} == peru_collector.EXPECT
+
+
+def test_the_registry_says_who_reads_each_peru_only_page():
+    """La tabla de avisos del SENAMHI no es una copia muerta: da el nivel a los avisos (enso.senamhi_avisos)."""
+    import importlib
+
+    from enso import senamhi_avisos
+    from tools import peru_collector
+
+    by_url = {s["url"]: s for s in registry.build(reach={})["sources"]}
+    table = by_url[senamhi_avisos.URL]
+    assert table["parser"] == "enso.senamhi_avisos:parse" and table["hazards"] == ["lluvias"]
+    mod, fn = table["parser"].split(":")
+    assert getattr(importlib.import_module(mod), fn) is senamhi_avisos.parse
+    # Las demás páginas del recolector siguen sin intérprete, y lo dicen.
+    others = [by_url[u] for urls in peru_collector.SOURCES.values() for u in urls
+              if u in by_url and "se archiva desde el Perú" in by_url[u].get("notes", "") and u != senamhi_avisos.URL]
+    assert others and all(not s.get("parser") and "sin intérprete" in s["notes"] for s in others)
+
+
+def test_architecture_model_counts_the_peru_pages_the_registry_has():
+    """El diagrama dice cuántas páginas guarda el Perú y cuántas baja también n8n: deben ser las del registro."""
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    model = json.loads((root / "docs" / "arquitectura.json").read_text(encoding="utf-8"))
+    node = next(n for n in model["full"]["nodes"] if n["id"] == "peru-archive-pages")
+    current = json.loads((root / "registry" / "sources.json").read_text(encoding="utf-8"))  # con lo medido
+    pages = [s for s in current["sources"] if "se archiva desde el Perú" in s.get("notes", "")]
+    n8n = [s for s in pages if "n8n" in (s.get("channels") or [])]
+    assert int(re.search(r"(\d+) URL de la lista fija", node["details_es"])[1]) == len(pages)
+    assert int(re.search(r"Las otras (\d+)", node["details_es"])[1]) == len(n8n)

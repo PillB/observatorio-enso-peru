@@ -69,7 +69,7 @@ export function prepare(feed, now = Date.now()) {
   const alerts = (g?.items || []).map((it) => toAlert(it, now)).sort(byPrio);
   const src = g?.sources || [];
   return { alerts, now, generatedAt: feed?.generatedAt, sources: { ok: src.filter((s) => s.ok).length, total: src.length },
-    hasLevels: alerts.some((a) => a.kind) };
+    hasLevels: alerts.some((a) => a.kind), levels: g?.levelsFrom || null };
 }
 
 export function readFilter(p) {
@@ -146,11 +146,32 @@ function levelChip(a, { small = false } = {}) {
   return html`<span class="lvl lvl-r${r}${small ? ' lvl-s' : ''}" title="${a.sev.scaleLabel}">${r === 3 ? raw(ICON.octagon) : r ? raw(ICON.triangle) : ''}${a.sev.label}</span>`;
 }
 
+// La copia de la tabla de avisos del SENAMHI que publica el sitio (data/archive/…): esa página solo
+// responde desde el Perú, así que es la que casi todos pueden abrir.
+const ARCHIVE_RE = /^archive\/[\w.\/-]+$/;
+const archiveHref = (p) => (p && ARCHIVE_RE.test(p) ? `data/${p}` : '');
+
+/** De dónde sale el nivel de un aviso del SENAMHI: el aviso en su sitio y la copia de su tabla de avisos. */
+function levelSource(sev) {
+  const live = sev?.basisUrl ? html`<a href="${safeUrl(sev.basisUrl)}" rel="noopener" target="_blank" title="El sitio del SENAMHI puede no abrir fuera del Perú">aviso en el SENAMHI</a>` : '';
+  const copy = archiveHref(sev?.basisArchive) ? html`<a href="${archiveHref(sev.basisArchive)}" rel="noopener" target="_blank" title="La tabla de avisos del SENAMHI tal como la bajó el observatorio desde el Perú">copia de la tabla</a>` : '';
+  return live || copy ? html` <span class="muted small">nivel: ${live}${live && copy ? ' · ' : ''}${copy}</span>` : '';
+}
+
 /** Etiquetas de nivel y vigencia para cada aviso de la lista de noticias. */
 export function itemBadges(it, now = Date.now()) {
   if (!it.kind) return '';
   const a = toAlert(it, now);
-  return html`${levelChip(a, { small: true })} <span class="tag tag-phase ph-${a.phase}">${PHASE[a.phase][0]}</span> <span class="muted small">${phaseText(a)}</span>`;
+  return html`${levelChip(a, { small: true })} <span class="tag tag-phase ph-${a.phase}">${PHASE[a.phase][0]}</span> <span class="muted small">${phaseText(a)}</span>${levelSource(a.sev)}`;
+}
+
+/** Para el pie del mapa: de qué copia de la tabla del SENAMHI salen los niveles, y si es vieja (más de 36 h,
+ * el mismo plazo con que el pipeline avisa «senamhi-avisos-stale»). */
+export function levelsNote(levels, now = Date.now()) {
+  if (!levels?.copyAt) return '';
+  const h = (now - Date.parse(levels.copyAt)) / H;
+  const copy = archiveHref(levels.archive);
+  return html`Los niveles de los avisos del SENAMHI salen de su <a href="${safeUrl(levels.url)}" rel="noopener" target="_blank">tabla de avisos</a>, copiada desde el Perú el ${when(levels.copyAt)}${copy ? html` (<a href="${copy}" rel="noopener" target="_blank">copia</a>)` : ''}.${h > 36 ? html` <strong>Esa copia tiene ${ago(levels.copyAt, now).replace('hace ', '')}: los avisos emitidos después figuran sin nivel.</strong>` : ''} `;
 }
 
 function summary(m, alerts) {
@@ -408,7 +429,7 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
       ${filtersHtml(f, model.alerts)}
       ${national(model.alerts, f)}
       ${depList(geo, by)}
-      <p class="amap-foot muted small">El nivel y la vigencia son los que publica cada institución (SENAMHI, INDECI, IGP, DHN, USGS); el observatorio no asigna niveles. ${model.sources.total ? `${model.sources.ok} de ${model.sources.total} fuentes de alertas respondieron en la actualización ${model.generatedAt ? `del ${when(model.generatedAt)}` : ''}.` : ''} ${pubAge > 30 ? html`<strong>Esa actualización tiene ${Math.round(pubAge / 24)} días: pueden faltar avisos recientes.</strong>` : 'Los avisos emitidos después llegan con la siguiente actualización.'} Sin avisos no quiere decir sin peligro: ante una emergencia, siga a INDECI, al SENAMHI y a su gobierno local. Límites: IGN, vía OCHA HDX (CC BY-IGO).</p>
+      <p class="amap-foot muted small">El nivel y la vigencia son los que publica cada institución (SENAMHI, INDECI, IGP, DHN, USGS); el observatorio no asigna niveles. ${levelsNote(model.levels)}${model.sources.total ? `${model.sources.ok} de ${model.sources.total} fuentes de alertas respondieron en la actualización ${model.generatedAt ? `del ${when(model.generatedAt)}` : ''}.` : ''} ${pubAge > 30 ? html`<strong>Esa actualización tiene ${Math.round(pubAge / 24)} días: pueden faltar avisos recientes.</strong>` : 'Los avisos emitidos después llegan con la siguiente actualización.'} Sin avisos no quiere decir sin peligro: ante una emergencia, siga a INDECI, al SENAMHI y a su gobierno local. Límites: IGN, vía OCHA HDX (CC BY-IGO).</p>
     </section>`);
     wire(el, f, by);
     if (refocus) (el.querySelector(refocus) || $('#amap-h', el))?.focus?.({ preventScroll: true });

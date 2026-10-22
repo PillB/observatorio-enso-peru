@@ -19,7 +19,7 @@ computadora en el Perú y hacer doble clic en `INSTALAR` y luego en
 
 | Hora (Lima) | Qué pasa |
 |---|---|
-| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), el listado de informes técnicos y los PDF de los dos más recientes (hasta 20 MB cada uno), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, los avisos de los últimos 5 días del GeoServer de IDESEP (capa `g_100_01:view_aviso_24horas_5dias_ultimos` y su lista de campos) y el SIG del CENEPRED, y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
+| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), el listado de informes técnicos y los PDF de los dos más recientes (hasta 20 MB cada uno), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, los avisos de los últimos 5 días del GeoServer de IDESEP (capa `g_100_01:view_aviso_24horas_5dias_ultimos` y su lista de campos), el SIG del CENEPRED y el ICEN del IGP (por http: su dirección https no responde ni desde el Perú), y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
 | 21:00 + unos minutos | Pide a GitHub la actualización del sitio en el momento (`--dispatch`) |
 | 21:30 a 23:30 | Reintentos cada 30 minutos, solo si la de las 21:00 falló |
 | Al encender o iniciar sesión | Si esa noche no hubo copia (equipo apagado o sin internet), la recolecta en ese momento |
@@ -35,10 +35,27 @@ El nivel oficial de cada aviso del SENAMHI (amarillo, naranja o rojo) y su
 inicio y fin están en la tabla de `?p=aviso-meteorologico`: el sitio la lee
 de esta copia para dar su nivel a los avisos que llegan por Telegram y por
 el COEN (`enso/senamhi_avisos.py`); sin el recolector, un aviso nuevo queda
-«sin nivel» en el mapa. La capa de IDESEP se guarda con su esquema
-(`DescribeFeatureType`) para saber qué campos trae. Un documento que pide verificación antirobots también desde
-el Perú (como los PDF de la DHN) no lo baja el recolector, que no evade
-esas verificaciones: se sube a mano en la consola de documentos del sitio.
+«sin nivel» en el mapa. Si esa tabla falta en la copia o no trae filas
+legibles, la corrida diaria anota `senamhi-avisos-unread`; si es de hace
+más de 36 horas (esa noche no se pudo bajar y se usa la anterior),
+`senamhi-avisos-stale`. El sitio publica la copia de la tabla que usó y
+cada nivel enlaza el aviso en el SENAMHI y esa copia; el pie del mapa dice
+de cuándo es.
+
+La capa de IDESEP se guarda con su esquema (`DescribeFeatureType`) para
+saber qué campos trae, y el registro dice cuántos avisos trajo y, si el
+servidor dice tener más, `truncado: N de M` (se piden hasta 1000). Una
+capa vacía puede ser normal: ningún aviso en esos 5 días.
+
+Un documento que pide verificación antirobots también desde el Perú no lo
+baja el recolector, que no evade esas verificaciones. Cuando eso pasa con
+el comunicado o el informe técnico del ENFEN, `index.json` lo dice
+(`goals` y, en `goal_detail`, la URL, la clase y el estado del intento,
+por ejemplo `challenge` y 403) y el sitio abre `relay-goal-missed`. La
+consola de documentos del sitio acepta solo lo que el sitio pide en
+`data/manual-needed.json`: el comunicado y el informe técnico del ENFEN y
+el boletín BS-OBP del IMARPE. Los demás (los PDF de la DHN, los productos
+del SIOFEN) todavía no tienen otra vía.
 
 Si la corrida de las 23:30 sube después de que empezó la de las 23:37, la
 actualización que pide al terminar (`--dispatch`) queda en cola: el sitio
@@ -280,7 +297,11 @@ nadie está mirando.
 - **robots.txt:** el equipo lee el robots.txt de cada servidor una vez
   por corrida (RFC 9309) y no pide una ruta que prohíba (queda anotada
   con la clase `robots`; el registro la marca `robots-disallowed` y nadie
-  la pide). Si robots.txt no responde (sin conexión, error 5xx o una
+  la pide). Lo de la lista base que el registro ya marca así se vuelve a
+  comparar cada noche con el robots.txt actual y se pide solo si ahora lo
+  permite; `index.json` anota el resultado en `robots_recheck`
+  (`prohibida`, `sin respuesta` o `permitida`), así un cambio del
+  servidor llega al registro. Si robots.txt no responde (sin conexión, error 5xx o una
   verificación antirobots en su lugar), esa noche no se pide nada a ese
   servidor: cada URL queda anotada como `robots-sin-respuesta` con la
   clase del intento (`timeout`, `challenge`…), que cuenta como medición
@@ -368,7 +389,12 @@ Si sigue sin funcionar, enviar a quien mantiene el sitio el último
 
 - **Actualizar:** `otras-acciones/ACTUALIZAR` descarga la última versión
   del kit, comprueba su sha256 y la instala conservando el token. También
-  se puede descargar el .zip nuevo y ejecutar `INSTALAR`.
+  se puede descargar el .zip nuevo y ejecutar `INSTALAR`. Cada kit anota
+  en `index.json` y en el latido lo que sabe recolectar (`contract`, un
+  número); cuando el sitio pasa a necesitar algo que solo baja un kit
+  nuevo, sube el mínimo (`MIN_COLLECTOR_CONTRACT` en
+  `enso/observatory.py`) y la corrida diaria abre `relay-kit-outdated`
+  hasta que se ejecute `ACTUALIZAR` en el equipo.
 - **Renovar el token:** ver [Token de GitHub](#1-token-de-github).
 - **Cambiar de computadora:** `DESINSTALAR` en la vieja (quita la tarea y
   el token) e `INSTALAR` en la nueva.
@@ -386,7 +412,9 @@ Si sigue sin funcionar, enviar a quien mantiene el sitio el último
   código de su versión. Una regla `follow` baja además los
   documentos enlazados (por ejemplo, los PDF de un listado), hasta `max`.
   Lo que el registro marca `robots-disallowed` (el robots.txt del servidor
-  no permite la ruta) no se pide, aunque esté en la lista base.
+  no permite la ruta) no se pide; si está en la lista base, el equipo
+  vuelve a leer ese robots.txt cada noche y la pide solo si ahora lo
+  permite (`robots_recheck`).
   Todo se guarda tal cual: el análisis se hace en GitHub Actions, así que
   corregir un lector nunca exige actualizar este equipo. Las URL deben
   coincidir con las que pide el pipeline (se buscan por URL y alias).

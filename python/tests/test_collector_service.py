@@ -1117,3 +1117,32 @@ def test_site_run_warns_before_the_collector_token_expires(tmp_path):
     later = (datetime.now(timezone.utc) + timedelta(days=200)).isoformat()
     assert "relay-token-expiring" in relay_with(soon)
     assert "relay-token-expiring" not in relay_with(later)
+
+
+def test_site_run_asks_to_update_a_collector_kit_older_than_the_site_needs(tmp_path):
+    """Un kit viejo sigue subiendo copias «ok» pero sin lo que el sitio ahora espera: el contrato lo delata."""
+    from enso import observatory as obs
+    from tools import peru_collector as pc
+
+    def codes(collector, beat=None):
+        root = tmp_path / f"relay-{len(list(tmp_path.iterdir()))}"
+        root.mkdir()
+        now = datetime.now(timezone.utc)
+        (root / "index.json").write_text(json.dumps({
+            "schema": "enso-relay/1", "collected_at": (now - timedelta(hours=3)).isoformat(timespec="seconds"),
+            "collector": collector, "entries": []}), encoding="utf-8")
+        if beat is not None:
+            (root / "heartbeat.json").write_text(json.dumps({"schema": "enso-relay-heartbeat/1", "result": "ok",
+                                                             "at": now.isoformat(timespec="seconds"),
+                                                             "collector": beat}), encoding="utf-8")
+        log = obs.EventLog()
+        obs.load_relay(root, log)
+        return [e for e in log.events if e.code == "relay-kit-outdated"]
+
+    assert obs.MIN_COLLECTOR_CONTRACT <= pc.COLLECTOR_CONTRACT  # el kit de este commit cumple lo que pide el sitio
+    old = codes({"host": "pc-lima", "kit": "2026.10.22-7843235"})
+    assert len(old) == 1 and "2026.10.22-7843235" in old[0].message and "ACTUALIZAR" in old[0].message
+    assert codes({"host": "pc-lima", "contract": "x"})  # ilegible: como si no lo tuviera
+    assert not codes({"host": "pc-lima", "contract": pc.COLLECTOR_CONTRACT})
+    # El latido más nuevo que la copia manda: el equipo ya se actualizó aunque la copia sea de antes.
+    assert not codes({"host": "pc-lima"}, beat={"host": "pc-lima", "contract": pc.COLLECTOR_CONTRACT})

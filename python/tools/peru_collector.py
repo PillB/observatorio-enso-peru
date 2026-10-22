@@ -52,7 +52,7 @@ import httpx
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from enso.feeds import FormatChanged, peru  # noqa: E402
-from enso.fetch import UA, Relay  # noqa: E402
+from enso.fetch import UA, Relay, ssl_context  # noqa: E402
 from enso.observatory import ENFEN_BASE, _clean_wpdm, _communique_urls, merge_enfen_listings  # noqa: E402
 from enso.reach import Robots, classify  # noqa: E402
 
@@ -82,10 +82,20 @@ MAX_PROBES_PER_HOST = 10
 PROBE_MIN_LEFT_S = 180
 #: Un registro de respaldo más viejo que esto se avisa en el registro de la corrida.
 REGISTRY_OLD_DAYS = 14
+#: Lo que esta versión del kit sabe recolectar. Sube cuando el sitio pasa a necesitar algo que solo un kit
+#: nuevo baja (una URL, un documento o un campo del índice); la actualización diaria compara este número con
+#: ``enso.observatory.MIN_COLLECTOR_CONTRACT`` y avisa que hay que ejecutar ACTUALIZAR en el equipo.
+#: 1: metas de documentos (``goals``) con su causa, la capa de avisos de 5 días de IDESEP, el ICEN por http y
+#: la revisión de los robots.txt que prohibían.
+COLLECTOR_CONTRACT = 1
 
-#: Capa de avisos del GeoServer de IDESEP (SENAMHI) que se pide por WFS.
+#: Capa de avisos del GeoServer de IDESEP (SENAMHI) que se pide por WFS: los avisos y la lista de campos.
 IDESEP_AVISOS = ("https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0"
                  "&typeName=g_100_01:view_aviso_24horas_5dias_ultimos")
+IDESEP_FEATURES = IDESEP_AVISOS + "&request=GetFeature&maxFeatures=1000&outputFormat=application/json"
+IDESEP_SCHEMA = IDESEP_AVISOS + "&request=DescribeFeatureType"
+#: ICEN oficial (IGP). Su https no responde ni desde el Perú; el http es el que lee la actualización diaria.
+ICEN = "http://met.igp.gob.pe/datos/ICEN.txt"
 
 #: Fuentes que se recolectan desde el Perú. Las URL deben coincidir con las
 #: del catálogo del pipeline para que la actualización diaria las encuentre.
@@ -97,6 +107,8 @@ SOURCES: dict[str, list[str]] = {
         # verificación humana a servidores en la nube.
         "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen",
     ],
+    # Copia propia del ICEN: si el IGP deja de responder a la nube, sigue llegando desde el Perú.
+    "igp": [ICEN],
     "senamhi": [
         "https://www.senamhi.gob.pe/?p=fenomeno-el-nino",
         "https://www.senamhi.gob.pe/?p=aviso-meteorologico",
@@ -110,8 +122,8 @@ SOURCES: dict[str, list[str]] = {
         # Avisos de los últimos 5 días (la capa nacional g_aviso:view_aviso llegó vacía el 21-10-2026 con
         # avisos vigentes) y sus campos, para saber si traen nivel y vigencia. El nivel oficial (AMARILLO,
         # NARANJA, ROJO) y las fechas de inicio y fin están en la tabla de ?p=aviso-meteorologico.
-        IDESEP_AVISOS + "&request=GetFeature&maxFeatures=100&outputFormat=application/json",
-        IDESEP_AVISOS + "&request=DescribeFeatureType",
+        IDESEP_FEATURES,
+        IDESEP_SCHEMA,
     ],
     "ana": [
         "https://snirh.ana.gob.pe/",
@@ -131,8 +143,9 @@ SOURCES: dict[str, list[str]] = {
 EXPECT: dict[str, str] = {
     "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado": "json",
     "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities": "text",
-    SOURCES["senamhi"][-2]: "json",
-    SOURCES["senamhi"][-1]: "text",  # esquema XML de la capa
+    IDESEP_FEATURES: "json",
+    IDESEP_SCHEMA: "text",  # esquema XML de la capa
+    ICEN: "text",
     "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson": "json",
 }
 
@@ -251,18 +264,19 @@ def url_states(src: dict) -> dict[str, dict]:
 
 def robots_disallowed(registry: dict) -> set[str]:
     """URL que el registro marca «robots-disallowed»: el robots.txt del servidor
-    pide no automatizarlas y no las pide nadie, tampoco este equipo."""
+    pedía no automatizarlas. Este equipo vuelve a leer ese robots.txt cada noche
+    (``fetch`` lo consulta antes de cada URL) y pide la página solo si ahora lo
+    permite: así un cambio del servidor llega al registro (``robots_recheck``)."""
     return {u for src in registry.get("sources") or [] if isinstance(src, dict)
             for u, st in url_states(src).items() if st.get("status") == "robots-disallowed"}
 
 
 def plan(registry: dict) -> tuple[dict[str, list[str]], dict[str, dict]]:
-    """Qué descargar: ``SOURCES`` (menos lo que robots.txt no permite) más las
-    URL del registro con el canal «peru-server» (las geobloqueadas: la
-    principal o una réplica; por grupo, sin repetir URL), y las reglas
-    ``follow`` de cada URL."""
-    blocked = robots_disallowed(registry)
-    groups = {g: [u for u in urls if u not in blocked] for g, urls in SOURCES.items()}
+    """Qué descargar: ``SOURCES`` más las URL del registro con el canal
+    «peru-server» (las geobloqueadas: la principal o una réplica; por grupo, sin
+    repetir URL), y las reglas ``follow`` de cada URL. Lo que robots.txt no
+    permite no se pide: ``fetch`` lo comprueba esa misma noche."""
+    groups = {g: list(urls) for g, urls in SOURCES.items()}
     known = {u for urls in groups.values() for u in urls}
     follow: dict[str, dict] = {}
     for src in peru_sources(registry):
@@ -521,12 +535,32 @@ def fetch(client: httpx.Client | Session, url: str, expect: str | None = None, m
             out["error"] = f"más de {max_bytes // 1_000_000} MB: no se guarda"
         elif cls == "ok":
             out["body"] = body
+            if detected == "json":
+                out.update(feature_counts(body))
         elif why:
             out["error"] = why
         return out
     s.down[host] += 1
     return {**out, "error": err, "class": classify(None, b"", err), "fetched_at": _now_iso(),
             "elapsed_s": round(time.monotonic() - started, 1)}
+
+
+def feature_counts(body: bytes) -> dict:
+    """Una capa de un servidor GIS (GeoJSON de WFS o de ArcGIS): cuántos elementos trae y cuántos dice tener.
+    Vacía puede ser normal (ningún aviso); con menos de los que tiene, quedó cortada por el límite del pedido."""
+    try:
+        data = json.loads(body.decode("utf-8-sig"))
+    except ValueError:
+        return {}
+    if not isinstance(data, dict) or data.get("type") != "FeatureCollection" or not isinstance(data.get("features"), list):
+        return {}
+    out: dict = {"features": len(data["features"])}
+    total = data.get("totalFeatures", data.get("numberMatched"))
+    if isinstance(total, int) and not isinstance(total, bool):
+        out["total"] = total
+        if total > out["features"]:
+            out["note"] = f"truncado: {out['features']} de {total}"
+    return out
 
 
 def _pdf_link(html: str, page_url: str) -> str | None:
@@ -556,6 +590,9 @@ def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[d
                 continue
     listing = merge_enfen_listings(*listings)
     oficial = [i for i in listing if i.get("kind", "oficial") == "oficial"]
+    if not oficial:  # ningún listado respondió o se pudo leer: la meta queda declarada, con la causa de cada uno
+        for p in pages:
+            p["goal"] = "comunicado"
     targets = [_clean_wpdm(u) for i in oficial[:2] for u in _communique_urls(i)]
     newest = {_clean_wpdm(u) for u in _communique_urls(oficial[0])} if oficial else set()
     goal = f"comunicado {oficial[0]['number']:02d}-{oficial[0]['year']}" if oficial else None
@@ -595,6 +632,7 @@ def enfen_informes(client: httpx.Client | Session, keep: int = 2) -> list[dict]:
     listing = fetch(client, reports.INFORMES_PAGE, "html")
     out = [listing]
     if listing.get("status") != 200 or not listing["body"]:
+        listing["goal"] = "informe técnico"  # la meta queda declarada, con la causa de este intento
         return out
     entries = reports.informe_entries(listing["body"].decode("utf-8", "replace"))
     for k, e in enumerate(sorted(entries, key=lambda e: e.get("dataTo") or "", reverse=True)[:keep]):
@@ -626,8 +664,24 @@ def goals(entries: list[dict]) -> dict[str, bool]:
     return out
 
 
+def goal_detail(entries: list[dict]) -> dict[str, dict]:
+    """Por qué se logró o no cada meta: la entrada que guardó el PDF o, si ninguna, el último intento (su clase,
+    estado HTTP y motivo). Así el sitio distingue «el servidor rechazó al equipo» (antirobots, 403) de «no se
+    intentó» (plazo, robots.txt) y de «demasiado grande»."""
+    out: dict[str, dict] = {}
+    for e in entries:
+        g = e.get("goal")
+        if not g or out.get(g, {}).get("saved"):
+            continue
+        out[g] = {"url": e.get("url"), "saved": e.get("detected") == "pdf" and bool(e.get("file")),
+                  **{k: e[k] for k in ("class", "status", "error", "skipped", "bytes") if e.get(k) not in (None, "")}}
+    return out
+
+
 def _log_fetch(r: dict) -> None:
     note = r.get("error") or ("" if r.get("class") in (None, "ok") else r["class"])
+    if not note and "features" in r:
+        note = r.get("note") or f"{r['features']} elementos"
     status = "—" if r.get("status") is None else r["status"]  # no se pidió (robots.txt, plazo) o no respondió
     log(f"{status!s:>4} {r.get('bytes', 0):>9} B {r['elapsed_s']:>5}s {r['url']} {note}")
 
@@ -668,9 +722,7 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
     if reg_info.get("origin") != "github" and (reg_info.get("age_days") or 0) > REGISTRY_OLD_DAYS:
         log(f"AVISO el registro de fuentes usado tiene {reg_info['age_days']} días: "
             "actualizar el kit o revisar el acceso a GitHub")
-    not_requested = sorted(robots_disallowed(registry) & {u for urls in SOURCES.values() for u in urls})
-    for url in not_requested:
-        log(f"no se pide {url}: su robots.txt no lo permite (registro)")
+    recheck = sorted(robots_disallowed(registry) & {u for urls in SOURCES.values() for u in urls})
     planned = {u for urls in groups.values() for u in urls}
     budget = budget_min
     if budget is None:
@@ -678,7 +730,7 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
             budget = float(os.environ.get("ENSO_COLLECT_BUDGET_MIN") or COLLECT_BUDGET_MIN)
         except ValueError:
             budget = COLLECT_BUDGET_MIN
-    with httpx.Client(timeout=40.0, follow_redirects=True, headers={"User-Agent": UA}) as client:
+    with httpx.Client(timeout=40.0, follow_redirects=True, headers={"User-Agent": UA}, verify=ssl_context()) as client:
         session = Session(client, budget * 60)
         results: dict[str, list[dict]] = {}
         seen: set[str] = set()
@@ -716,7 +768,7 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
             _log_fetch(r)
         if linked:
             results["enlaces"] = linked
-        probes = probe_registry(registry, seen | set(not_requested), session)
+        probes = probe_registry(registry, seen, session)
     for group, rs in results.items():
         for r in rs:
             body = r.pop("body", b"")
@@ -740,10 +792,16 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
     for g, ok in met.items():
         if not ok:
             log(f"AVISO no se pudo guardar el PDF del {g}: revisar las líneas de enfen-docs de arriba")
+    # El registro las daba por prohibidas: lo que dijo su robots.txt esta noche (se pidieron solo si lo permite).
+    rechecked = {e["url"]: "prohibida" if e.get("class") == "robots" else
+                 "sin respuesta" if e.get("skipped") == "robots-sin-respuesta" else "permitida"
+                 for e in entries if e.get("url") in recheck and not e.get("alt_of")}
+    for url, verdict in rechecked.items():
+        log(f"robots.txt de {url} (el registro la daba por prohibida): {verdict}")
     index = {
         "schema": "enso-relay/1",
         "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "collector": {"host": socket.gethostname(), "tz": "America/Lima"},
+        "collector": {"host": socket.gethostname(), "tz": "America/Lima", "contract": COLLECTOR_CONTRACT},
         "registry": reg_info,
         "entries": entries,
         "summary": {g: f"{sum(1 for e in entries if e['group'] == g and usable(e))}/"
@@ -751,8 +809,9 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
     }
     if met:
         index["goals"] = met
-    if not_requested:
-        index["not_requested"] = not_requested
+        index["goal_detail"] = goal_detail(entries)
+    if rechecked:
+        index["robots_recheck"] = rechecked
     if probes:
         index["probes"] = probes
     (out / "index.json").write_text(json.dumps(index, indent=1, ensure_ascii=False), encoding="utf-8")
@@ -990,7 +1049,7 @@ def probe() -> int:
     print(describe_registry(info), flush=True)
     groups, _ = plan(registry)
     meta = url_info(registry)
-    with httpx.Client(timeout=25.0, follow_redirects=True, headers={"User-Agent": UA}) as client:
+    with httpx.Client(timeout=25.0, follow_redirects=True, headers={"User-Agent": UA}, verify=ssl_context()) as client:
         session = Session(client)
         ok = 0
         for group, urls in groups.items():

@@ -280,8 +280,11 @@ def phase(kind: str, valid: Optional[dict], published: Optional[str], now: datet
 
 def _table_level(aviso, kind: str) -> dict:
     cites = " que cita" if kind != "pronostico" else ""  # «en este momento…, según el aviso vigente»
-    return _level("senamhi-colores", aviso.level,
-                  f"nivel del aviso N° {aviso.num}{cites} en la tabla de avisos del SENAMHI")
+    # De dónde sale el nivel: el aviso en el sitio del SENAMHI (``basisArchive``, la copia de la tabla en el
+    # archivo del sitio, la agrega la publicación: esa página solo responde desde el Perú).
+    return {**_level("senamhi-colores", aviso.level,
+                     f"nivel del aviso N° {aviso.num}{cites} en la tabla de avisos del SENAMHI"),
+            "basisUrl": aviso.url}
 
 
 def _table_validity(aviso) -> Optional[dict]:

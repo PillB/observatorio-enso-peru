@@ -30,8 +30,8 @@
      "w": 300,
      "title_es": "Fuentes oficiales",
      "title_en": "Official sources",
-     "sub_es": "17 fuentes ENSO y 12 páginas solo para archivo",
-     "sub_en": "17 ENSO sources and 12 archive-only pages"
+     "sub_es": "17 fuentes ENSO y 13 páginas del Perú",
+     "sub_en": "17 ENSO sources and 13 Peru pages"
     },
     {
      "id": "c2",
@@ -125,8 +125,8 @@
      "col": "c1",
      "icon": "archive",
      "group": "sources",
-     "name_es": "12 páginas solo para archivo",
-     "name_en": "12 archive-only pages",
+     "name_es": "13 páginas del Perú",
+     "name_en": "13 Peru pages",
      "what_es": "Web del SENAMHI, GeoServer IDESEP, SNIRH de la ANA, IMARPE y CENEPRED: se guardan como respaldo; todavía no tienen lector. 6 solo responden desde el Perú.",
      "what_en": "SENAMHI web, IDESEP GeoServer, ANA's SNIRH, IMARPE and CENEPRED: kept as a backup; they have no reader yet. 6 only answer from Peru."
     },
@@ -239,8 +239,8 @@
      "group": "pipeline",
      "name_es": "Armado del registro",
      "name_en": "Registry builder",
-     "what_es": "Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 12 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo 40 feeds reader, solo Actions); lo demás, Actions y n8n.",
-     "what_en": "Joins the code's catalogs (168 feeds, 17 ENSO sources, 12 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except 40 reader feeds, Actions only); the rest, Actions and n8n.",
+     "what_es": "Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo 40 feeds reader, solo Actions); lo demás, Actions y n8n.",
+     "what_en": "Joins the code's catalogs (168 feeds, 17 ENSO sources, 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except 40 reader feeds, Actions only); the rest, Actions and n8n.",
      "meta_es": "--check falla si no está al día",
      "meta_en": "--check fails if out of date",
      "tech": [
@@ -306,8 +306,8 @@
      "kind": "data",
      "label_es": "páginas de archivo",
      "label_en": "archive pages",
-     "explain_es": "Las 12 páginas de archivo no se leen en la corrida diaria, pero el sondeo sí las mide.",
-     "explain_en": "The 12 archive pages are not read by the daily run, but the probe does measure them."
+     "explain_es": "Las 13 páginas del Perú no se piden en la corrida diaria (la tabla de avisos del SENAMHI se lee de la copia del Perú), pero el sondeo sí las mide.",
+     "explain_en": "The daily run does not request the 13 Peru pages (the SENAMHI warning table is read from the Peru copy), but the probe does measure them."
     },
     {
      "from": "alerts",
@@ -651,8 +651,8 @@
      "group": "sources",
      "name_es": "SENAMHI, ANA, IMARPE…",
      "name_en": "SENAMHI, ANA, IMARPE…",
-     "what_es": "Las 12 páginas de archivo de su lista fija: 6 solo responden desde el Perú (4 del SENAMHI y 2 de la ANA).",
-     "what_en": "The 12 archive pages on its fixed list: 6 only answer from Peru (4 from SENAMHI and 2 from ANA)."
+     "what_es": "Las 13 páginas de su lista fija: 6 solo responden desde el Perú (4 del SENAMHI y 2 de la ANA). La tabla de avisos del SENAMHI da el nivel a sus avisos.",
+     "what_en": "The 13 pages on its fixed list: 6 only answer from Peru (4 from SENAMHI and 2 from ANA). The SENAMHI warning table gives its warnings their level."
     },
     {
      "id": "branch",
