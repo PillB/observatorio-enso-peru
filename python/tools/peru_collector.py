@@ -61,7 +61,7 @@ REPO = os.environ.get("ENSO_REPO", "PillB/observatorio-enso-peru")
 BRANCH = os.environ.get("ENSO_RELAY_BRANCH", "data-peru")
 MAX_BYTES = 8_000_000
 #: El informe técnico del ENFEN pesa 10–17 MB; solo se guarda el de los dos últimos comunicados.
-MAX_INFORME_BYTES = 20_000_000
+MAX_INFORME_BYTES = 20 * 1024 * 1024  # el mismo límite que la copia archivada (enso.archive.MAX_BYTES)
 HEARTBEAT = "heartbeat.json"
 #: Registro de fuentes (rama principal del repositorio; copia en el kit).
 REGISTRY_PATH = "registry/sources.json"

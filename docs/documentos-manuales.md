@@ -16,7 +16,7 @@ una persona los baja en su navegador y los sube en la **consola de documentos**.
 2. **Una persona lo baja.** En la consola (`/admin/documentos.html`, con la cuenta de la consola de lugares)
    abre el enlace, pasa la verificación si aparece y guarda el PDF.
 3. **Lo sube.** El navegador revisa el archivo antes de enviarlo: que sea un PDF (si es la página de la
-   verificación guardada por error, lo dice), que esté completo (`%%EOF`) y que no pase de 25 MB. La persona
+   verificación guardada por error, lo dice), que esté completo (`%%EOF`) y que no pase de 20 MB. La persona
    confirma que es el documento indicado.
 4. **La API lo guarda** (`functions/_lib/doc-uploads.js`) en la rama `data-manual`, con el formato de los
    recolectores (`enso-relay/1`, canal `relay-manual`), y pide una actualización del sitio
@@ -28,6 +28,9 @@ una persona los baja en su navegador y los sube en la **consola de documentos**.
 
 ## Seguridad
 
+- La rama `data-manual` es pública: cada copia lleva el rol de quien la subió (`rol admin`), no su usuario. El
+  usuario queda en la tabla `uploads` y en el registro de la consola.
+- La consola revisa el token al abrirse y avisa si no sirve o vence en menos de 21 días.
 - Solo suben las cuentas con un rol de `DOCS_UPLOAD_ROLES` (por omisión, solo `admin`). Los revisores de
   lugares ven la lista pero no suben.
 - Solo se aceptan documentos que el pipeline pidió (`manual-needed.json`): nadie puede guardar un archivo bajo
@@ -43,7 +46,7 @@ una persona los baja en su navegador y los sube en la **consola de documentos**.
 Cada solicitud tiene 10 ms de CPU. Un PDF de 15 MB no se puede decodificar ni copiar en ese tiempo, así que el
 navegador lo codifica en base64 con el formato exacto de la API de blobs de GitHub y la función lo pasa en flujo
 (`FixedLengthStream`) sin leerlo entero: solo mira el principio (`%PDF-`) y el final (`%%EOF`). El cuerpo de una
-solicitud puede pesar hasta 100 MB; el límite de 25 MB deja margen.
+solicitud puede pesar hasta 100 MB; el límite de 20 MB (el mismo de la copia archivada del sitio) deja margen.
 
 ## Configurar (una vez)
 
@@ -69,5 +72,5 @@ tabla `uploads` se crea sola. Con GitHub Pages no hay API: la página existe per
 | Dos personas suben a la vez | La segunda rehace su commit sobre el de la primera (avance sin forzar, un reintento). Gana la última subida de cada documento. |
 | El documento ya no está pendiente (lo trajo otra ruta) | La API responde «ya no está pendiente»: recargar la lista. |
 | No se pudo pedir la actualización | La subida queda guardada y se lee en la corrida diaria de las 23:37; la consola lo avisa. |
-| Copias viejas | El índice olvida las de más de 120 días y su archivo sale del árbol de la rama. |
+| Copias viejas | El pipeline ignora las de más de 120 días. Salen del índice y del árbol de la rama en la subida siguiente; hasta entonces (y en su historial) siguen en la rama. |
 | El comunicado no trae la URL del informe y ningún listado responde | El informe se guarda con la clave `manual://enfen-informe/<comunicado>`; la procedencia publicada es el listado oficial de informes. |
