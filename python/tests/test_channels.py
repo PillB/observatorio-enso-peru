@@ -748,6 +748,31 @@ def test_the_publishing_run_checks_only_what_it_installs_and_reports_every_failu
         assert lines and all("--rawOutput > /w/" in line for line in lines), path.name
 
 
+def test_only_main_deploys_and_touches_the_incident_issues():
+    """Revisión: una corrida a mano desde otra rama desplegaba a producción y sincronizaba los issues: cerraba los de
+    incidencias que esa rama no emite (main los reabría como nuevos, sin su historia). Fuera de main se construye y
+    se prueba, y el job de incidencias solo muestra lo que haría (--dry-run)."""
+    import yaml
+
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
+    main = "github.ref == 'refs/heads/main'"
+    assert wf["jobs"]["deploy"]["if"] == main
+    inc = wf["jobs"]["incidents"]
+    steps = {st.get("name"): st for st in inc["steps"]}
+    for name in ("Sync incidents with issues", "Open an issue when the run itself failed",
+                 "Close the run-failure issue after a good run", "Email the configured addresses"):
+        assert main in steps[name]["if"], name
+    plan = steps["Show what the incident sync would do (branches other than main)"]
+    assert plan["if"] == "github.ref != 'refs/heads/main'" and plan["continue-on-error"] is True
+    assert "python -m tools.sync_issues" in plan["run"] and "--dry-run" in plan["run"]
+    assert "--dry-run" not in steps["Sync incidents with issues"]["run"]
+    # El correo sigue al final, después de cerrar el issue de la corrida fallida.
+    assert inc["steps"][-1]["name"] == "Email the configured addresses"
+    # Los disparos de producción siguen corriendo en main: programado, push a main y el pedido de los recolectores.
+    on = wf[True] if True in wf else wf["on"]
+    assert on["push"]["branches"] == ["main"] and "schedule" in on and "repository_dispatch" in on
+
+
 def test_the_weekly_probe_rebuilds_the_n8n_flows_with_the_registry():
     """Revisión: el sondeo semanal regeneraba registry/sources.json pero no n8n/dist, que lo lleva dentro: el control
     «dist/ matches the source» de n8n.yml fallaba cada lunes. Ahora build.mjs corre después de build_registry y su
