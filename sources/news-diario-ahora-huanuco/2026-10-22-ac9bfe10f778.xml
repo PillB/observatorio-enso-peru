@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Thu, 22 Oct 2026 00:10:25 GMT</lastBuildDate>
+    <pubDate>Wed, 21 Oct 2026 10:28:26 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Martín Vizcarra es trasladado a la UCI del Hospital de Ate por complicación cardíaca</title>
+    <link>https://ahora.com.pe/nacional/vizcarra-uci-complicacion-cardiaca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/vizcarra-uci-complicacion-cardiaca</guid>
+    <pubDate>Wed, 21 Oct 2026 10:28:26 GMT</pubDate>
+    <description><![CDATA[Martín Vizcarra fue trasladado a la UCI del Hospital de Lima Este, en Ate Vitarte, por una complicación cardíaca surgida tras ingresar por un cólico renal. Cumple condena en el Penal de Barbadillo.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Martín Vizcarra]]></category>
+    <category><![CDATA[UCI]]></category>
+    <category><![CDATA[Hospital de Ate]]></category>
+    <category><![CDATA[complicación cardíaca]]></category>
+    <category><![CDATA[Penal de Barbadillo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/77dc8515bfa7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/77dc8515bfa7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/77dc8515bfa7.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Petroperú y Petroecuador firman memorando de cooperación en hidrocarburos</title>
+    <link>https://ahora.com.pe/economia/petroperu-petroecuador-memorando-hidrocarburos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/petroperu-petroecuador-memorando-hidrocarburos</guid>
+    <pubDate>Wed, 21 Oct 2026 23:48:31 GMT</pubDate>
+    <description><![CDATA[Petroperú y EP Petroecuador firmaron un memorando de entendimiento en Lima para evaluar oportunidades de cooperación en la cadena de valor de los hidrocarburos. El acuerdo, de cuatro años, abarca comercialización, logística, almacenamiento e intercambio técnico. No implica operaciones comerciales concretas.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Petroperú]]></category>
+    <category><![CDATA[Petroecuador]]></category>
+    <category><![CDATA[memorando de entendimiento]]></category>
+    <category><![CDATA[hidrocarburos]]></category>
+    <category><![CDATA[Gabinete Binacional Perú-Ecuador]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/2edd6f7a4873.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/2edd6f7a4873.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/2edd6f7a4873.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Universitario, ya eliminado, cierra la Libertadores Femenina ante Belgrano</title>
+    <link>https://ahora.com.pe/deportes/universitario-belgrano-fecha-3-libertadores-femenina-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-belgrano-fecha-3-libertadores-femenina-2026</guid>
+    <pubDate>Wed, 21 Oct 2026 23:38:36 GMT</pubDate>
+    <description><![CDATA[Universitario de Deportes, eliminado del Grupo B, enfrenta a Belgrano este miércoles 21 de octubre en la última fecha de la fase de grupos de la Copa Libertadores Femenina 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Copa Libertadores Femenina 2026]]></category>
+    <category><![CDATA[Belgrano]]></category>
+    <category><![CDATA[Grupo B]]></category>
+    <category><![CDATA[Carlos Véliz]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/9652e01b5702.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/9652e01b5702.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/9652e01b5702.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Flamengo y Estudiantes definen al segundo finalista en el Maracaná</title>
+    <link>https://ahora.com.pe/deportes/flamengo-estudiantes-vuelta-semifinal-libertadores-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/flamengo-estudiantes-vuelta-semifinal-libertadores-2026</guid>
+    <pubDate>Wed, 21 Oct 2026 23:38:34 GMT</pubDate>
+    <description><![CDATA[Flamengo y Estudiantes juegan este jueves en el Maracaná la vuelta de semifinales de la Copa Libertadores 2026 tras empatar 0-0 en la ida. El ganador enfrentará al vencedor de Palmeiras vs Fluminense.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Flamengo]]></category>
+    <category><![CDATA[Estudiantes]]></category>
+    <category><![CDATA[Copa Libertadores 2026]]></category>
+    <category><![CDATA[Maracaná]]></category>
+    <category><![CDATA[semifinales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/42ec269d98dc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/42ec269d98dc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/42ec269d98dc.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Memo Ochoa y Fuerza Regida se alían para apoyar a la comunidad latina en EE. UU.</title>
+    <link>https://ahora.com.pe/entretenimiento/memo-ochoa-fuerza-regida-alianza-comunidad-latina</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/memo-ochoa-fuerza-regida-alianza-comunidad-latina</guid>
+    <pubDate>Wed, 21 Oct 2026 23:38:33 GMT</pubDate>
+    <description><![CDATA[Guillermo &apos;Memo&apos; Ochoa y Fuerza Regida anunciaron una alianza para impulsar proyectos comunitarios en San Bernardino, California, en beneficio de la comunidad latina en Estados Unidos.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Memo Ochoa]]></category>
+    <category><![CDATA[Fuerza Regida]]></category>
+    <category><![CDATA[comunidad latina]]></category>
+    <category><![CDATA[San Bernardino]]></category>
+    <category><![CDATA[Semana Billboard Música Latina]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/a3dc7edd78a8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/a3dc7edd78a8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/a3dc7edd78a8.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Luis Aguiar: &quot;Sería la final más linda del fútbol peruano&quot; ante Universitario</title>
+    <link>https://ahora.com.pe/deportes/luis-aguiar-final-alianza-universitario</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/luis-aguiar-final-alianza-universitario</guid>
+    <pubDate>Wed, 21 Oct 2026 23:28:29 GMT</pubDate>
+    <description><![CDATA[Luis Aguiar consideró que una final Alianza Lima-Universitario sería la mejor del fútbol peruano y se refirió al presente de Kevin Quevedo y a su deseo de dirigir al club victoriano.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Luis Aguiar]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Kevin Quevedo]]></category>
+    <category><![CDATA[Leao Butrón]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0730c7b48c2b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0730c7b48c2b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0730c7b48c2b.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Brujas vence 3-0 al Lens y suma su segunda victoria en la Champions</title>
+    <link>https://ahora.com.pe/deportes/brujas-3-0-lens-champions-league</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/brujas-3-0-lens-champions-league</guid>
+    <pubDate>Wed, 21 Oct 2026 22:58:27 GMT</pubDate>
+    <description><![CDATA[El Brujas de Ivan Leko encadena su segunda victoria consecutiva en la Champions League tras imponerse 3-0 al Lens, pese al mayor volumen de ocasiones del equipo francés.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Brujas]]></category>
+    <category><![CDATA[Lens]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <category><![CDATA[Vanaken]]></category>
+    <category><![CDATA[Seys]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/29f4746a5d62.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/29f4746a5d62.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/29f4746a5d62.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Carlos Grados, portero de CD Moquegua, elogia a tres jugadores de Alianza Lima</title>
+    <link>https://ahora.com.pe/deportes/carlos-grados-portero-moquegua-elogia-jugadores-alianza-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/carlos-grados-portero-moquegua-elogia-jugadores-alianza-lima</guid>
+    <pubDate>Wed, 21 Oct 2026 21:48:28 GMT</pubDate>
+    <description><![CDATA[Carlos Grados, portero de CD Moquegua, elogió a Jairo Vélez, Fernando Gaibor y Eryc Castillo de Alianza Lima antes del partido por la fecha 13 del Torneo Clausura 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Carlos Grados]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Jairo Vélez]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/96d44cb7c5ba.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/96d44cb7c5ba.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/96d44cb7c5ba.jpg"/>
+    <media:description type="plain"><![CDATA[El guardameta de Deportivo Moquegua, Carlos Grados, se refirió a su próximo enfrentamiento ante Alianza Lima y sorprendió al elogiar a tres jugadores blanquiazules. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Petroperú adjudica dos contratos de crudo a Petroecuador para Talara</title>
+    <link>https://ahora.com.pe/economia/petroperu-contratos-crudo-petroecuador-talara</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/petroperu-contratos-crudo-petroecuador-talara</guid>
+    <pubDate>Wed, 21 Oct 2026 21:48:27 GMT</pubDate>
+    <description><![CDATA[Petroperú se adjudicó dos contratos de suministro de crudo en la licitación de Petroecuador, con acompañamiento de PROINVERSIÓN. La operación reduce el precio por barril entre US$ 8 y US$ 10 y el flete de US$ 7-8 millones a US$ 1.8 millones por buque. Se proyecta un ahorro anual de hasta US$ 180 millones.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Petroperú]]></category>
+    <category><![CDATA[Petroecuador]]></category>
+    <category><![CDATA[Refinería de Talara]]></category>
+    <category><![CDATA[PROINVERSIÓN]]></category>
+    <category><![CDATA[crudo Oriente]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/99021c0790c8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/99021c0790c8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/99021c0790c8.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Vaticano: León XIV no necesitará tratamiento adicional tras extirparle un adenocarcinoma</title>
+    <link>https://ahora.com.pe/regional/leon-xiv-sin-tratamiento-adenocarcinoma</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/leon-xiv-sin-tratamiento-adenocarcinoma</guid>
+    <pubDate>Wed, 21 Oct 2026 20:58:28 GMT</pubDate>
+    <description><![CDATA[El papa León XIV no necesitará tratamiento complementario tras la extirpación de un adenocarcinoma pulmonar localizado, según el Vaticano. El pontífice retomó actividades y su viaje a Perú sigue en preparación.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[León XIV]]></category>
+    <category><![CDATA[adenocarcinoma]]></category>
+    <category><![CDATA[Vaticano]]></category>
+    <category><![CDATA[viaje a Perú]]></category>
+    <category><![CDATA[Policlínico Gemelli]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/a384ba56de6b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/a384ba56de6b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/a384ba56de6b.jpg"/>
+    <media:description type="plain"><![CDATA[El papa León XIV no necesitará ningún tratamiento adicional tras habérsele extirpado con éxito un adenocarcinoma en el pulmón, según confirmaron los exámenes histológicos definitivos, informó este jueves la Oficina de Prensa del Vaticano. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Betis y Feyenoord, en directo: el conjunto andaluz arranca con dominio en La Cartuja</title>
+    <link>https://ahora.com.pe/deportes/betis-feyenoord-champions-la-cartuja</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/betis-feyenoord-champions-la-cartuja</guid>
+    <pubDate>Wed, 21 Oct 2026 19:38:30 GMT</pubDate>
+    <description><![CDATA[Real Betis y Feyenoord se enfrentan en La Cartuja por la tercera jornada de la fase liga de la Champions League. El conjunto andaluz, con seis puntos, busca su tercera victoria en el torneo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Betis]]></category>
+    <category><![CDATA[Feyenoord]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <category><![CDATA[La Cartuja]]></category>
+    <category><![CDATA[Manuel Pellegrini]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f52f4dae3a5f.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f52f4dae3a5f.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f52f4dae3a5f.webp"/>
+    <media:description type="plain"><![CDATA[<b>Real Betis - Feyenoord | Champions League</b> — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Nico Paz marca a los 3&apos; y el Como se adelanta al United en la Champions</title>
+    <link>https://ahora.com.pe/deportes/nico-paz-gol-como-manchester-united-champions</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/nico-paz-gol-como-manchester-united-champions</guid>
+    <pubDate>Wed, 21 Oct 2026 17:58:29 GMT</pubDate>
+    <description><![CDATA[Nico Paz anotó al minuto 3 el 1-0 del Como ante el Manchester United en la tercera jornada de la fase de grupos de la Champions League. Hasta el minuto 20, los lombardos dominaban la posesión.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Nico Paz]]></category>
+    <category><![CDATA[Como]]></category>
+    <category><![CDATA[Manchester United]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <category><![CDATA[Cesc Fàbregas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/ed6271fcc373.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/ed6271fcc373.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/ed6271fcc373.webp"/>
+    <media:description type="plain"><![CDATA[Buenas tardes y bienvenidos a la narración, en directo, del partido de fútbol de la Champions League que enfrenta al Como contra el Manchester United correspondiente a Fase Grupos J-3. Desde Mundo Deportivo, te ofrecemos toda la cobertura minuto a minuto, la previa, las alineaciones, las mejores jug — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Sedapal asegura abastecimiento de agua en Lima y Callao ante El Niño</title>
+    <link>https://ahora.com.pe/sociedad/sedapal-abastecimiento-agua-lima-callao-el-nino</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/sedapal-abastecimiento-agua-lima-callao-el-nino</guid>
+    <pubDate>Wed, 21 Oct 2026 17:28:29 GMT</pubDate>
+    <description><![CDATA[Sedapal garantiza el suministro de agua potable en Lima y Callao frente al fenómeno El Niño, con reservas y mejoras en plantas de tratamiento. Un exfuncionario advierte posible desabastecimiento y recomienda almacenar agua.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Sedapal]]></category>
+    <category><![CDATA[El Niño]]></category>
+    <category><![CDATA[cortes de agua]]></category>
+    <category><![CDATA[Lima y Callao]]></category>
+    <category><![CDATA[abastecimiento de agua]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/2a5da9113631.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/2a5da9113631.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/2a5da9113631.jpg"/>
+    <media:description type="plain"><![CDATA[El Servicio de Agua Potable y Alcantarillado (Sedapal) de Lima y Callao contempla una serie de acciones en el marco de su plan de emergencia ante el fenómeno El Niño y lluvias de gran magnitud, entre ellas la posibilidad de reducir la presión de agua en los hogares para ahorrar el consumo del recurs — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>EL SAXOFÓN QUE LA MUERTE NO PUDO SILENCIAR - HOMENAJE A ELISEO TALANCHA BERROSPI</title>
+    <link>https://ahora.com.pe/opinion/el-saxofon-que-la-muerte-no-pudo-silenciar</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/el-saxofon-que-la-muerte-no-pudo-silenciar</guid>
+    <pubDate>Wed, 21 Oct 2026 14:44:31 GMT</pubDate>
+    <description><![CDATA[Hay ausencias que el tiempo no borra, recuerdos que la muerte jamás puede apagar y melodías que siguen resonando aun después de que el músico ha partido. Hoy 20 de octubre se cumplen dieciséis años desde que mi querido padre, Eliseo Talancha Berrospi, maestro saxofonista, ilustre músico huacarino y]]></description>
+    <dc:creator><![CDATA[Diario Ahora]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[ELISEO TALANCHA BERROSPI]]></category>
+    <category><![CDATA[SILENCIAR HOMENAJE]]></category>
+    <category><![CDATA[MUERTE]]></category>
+    <category><![CDATA[SAXOFÓN]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/37790593fbfa.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/37790593fbfa.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/37790593fbfa.jpg"/>
+  </item>
+  <item>
+    <title>7 DE OCTUBRE</title>
+    <link>https://ahora.com.pe/opinion/7-de-octubre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/7-de-octubre</guid>
+    <pubDate>Wed, 21 Oct 2026 14:26:08 GMT</pubDate>
+    <description><![CDATA[Originalmente tenía pensado publicar este texto el mismo día 7 de octubre que caía un miércoles; eso sí, desistí de hacerlo porque en esa fecha correspondía hacer un comentario sobre las elecciones regionales y municipales. Ahora, y luego de comentar la semana pasada sobre un clásico del cual quería]]></description>
+    <dc:creator><![CDATA[Diario Ahora]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[OCTUBRE]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/af91650d169b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/af91650d169b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/af91650d169b.jpg"/>
+  </item>
+  <item>
+    <title>Seda ya no enfrenta solo reclamos: enfrenta una crisis de confianza</title>
+    <link>https://ahora.com.pe/economia/seda-ya-no-enfrenta-solo-reclamos-enfrenta-una-crisis-de-confianza</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/seda-ya-no-enfrenta-solo-reclamos-enfrenta-una-crisis-de-confianza</guid>
+    <pubDate>Wed, 21 Oct 2026 14:21:06 GMT</pubDate>
+    <description><![CDATA[Cuando un vecino pasa de pagar S/26 a S/120 o S/130 por agua, no necesita que le expliquen primero la teoría del funcionamiento de un medidor. Necesita saber, con pruebas, por qué su recibo cambió tanto. Y cuando ese mismo reclamo se repite en cientos de usuarios, deja de ser una molestia individual]]></description>
+    <dc:creator><![CDATA[Diario Ahora]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[crisis de confianza]]></category>
+    <category><![CDATA[enfrenta solo reclamos]]></category>
+    <category><![CDATA[Seda]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0e9720e8d7ed.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0e9720e8d7ed.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0e9720e8d7ed.png"/>
+  </item>
+  <item>
+    <title>Juan Carlos Orderique deja América TV tras más de 20 años</title>
+    <link>https://ahora.com.pe/entretenimiento/juan-carlos-orderique-deja-america-tv</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/juan-carlos-orderique-deja-america-tv</guid>
+    <pubDate>Wed, 21 Oct 2026 13:28:27 GMT</pubDate>
+    <description><![CDATA[Juan Carlos Orderique anunció su salida de América Televisión después de más de 20 años, en un mensaje publicado el 20 de octubre en sus redes sociales.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Juan Carlos Orderique]]></category>
+    <category><![CDATA[América Televisión]]></category>
+    <category><![CDATA[Fútbol en América]]></category>
+    <category><![CDATA[Sí va a salir]]></category>
+    <category><![CDATA[televisión peruana]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/8d962f902f08.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/8d962f902f08.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/8d962f902f08.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Bancos digitales apuntan al Perú: SBS reporta nuevas licencias y reducción de plazos</title>
+    <link>https://ahora.com.pe/economia/bancos-digitales-mercado-financiero-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/bancos-digitales-mercado-financiero-peru</guid>
+    <pubDate>Wed, 21 Oct 2026 12:08:32 GMT</pubDate>
+    <description><![CDATA[La SBS informó que el mercado financiero peruano atrae a bancos digitales y entidades extranjeras, con nuevas licencias otorgadas y solicitudes en trámite.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[bancos digitales]]></category>
+    <category><![CDATA[SBS]]></category>
+    <category><![CDATA[licencias financieras]]></category>
+    <category><![CDATA[Revolut]]></category>
+    <category><![CDATA[BTG Pactual]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/025dcf613c74.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/025dcf613c74.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/025dcf613c74.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Katy Ryan, MVP en el debut de Regatas: 25 puntos y meta de ser máxima anotadora</title>
+    <link>https://ahora.com.pe/deportes/katy-ryan-mvp-debut-regatas-lima-liga-voley</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/katy-ryan-mvp-debut-regatas-lima-liga-voley</guid>
+    <pubDate>Wed, 21 Oct 2026 11:48:30 GMT</pubDate>
+    <description><![CDATA[Katy Ryan debutó con 25 puntos y el MVP en el 3-0 de Regatas Lima sobre Deportivo Géminis por la Liga Peruana de Vóley 2026/27. La estadounidense declaró que su objetivo es ser la máxima anotadora del torneo y ahora enfrentará a Alianza Lima, vigente tricampeón, el sábado 24 de octubre.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Katy Ryan]]></category>
+    <category><![CDATA[Regatas Lima]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Deportivo Géminis]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/3b3f9ce16659.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/3b3f9ce16659.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/3b3f9ce16659.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Petroecuador venderá 16,2 millones de barriles de crudo a Perú por US$1.652 millones</title>
+    <link>https://ahora.com.pe/economia/petroecuador-16-millones-barriles-peru-talara</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/petroecuador-16-millones-barriles-peru-talara</guid>
+    <pubDate>Wed, 21 Oct 2026 11:48:28 GMT</pubDate>
+    <description><![CDATA[Petroecuador adjudicó dos contratos para exportar 16,2 millones de barriles de crudo Oriente a Perú, con ingresos estimados de US$1.652 millones. El crudo abastecerá la refinería de Talara y las estatales retoman relaciones comerciales después de cuatro años.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Petroecuador]]></category>
+    <category><![CDATA[Petroperú]]></category>
+    <category><![CDATA[refinería de Talara]]></category>
+    <category><![CDATA[crudo Oriente]]></category>
+    <category><![CDATA[Daniel Noboa]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0898d65b7f7f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0898d65b7f7f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0898d65b7f7f.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Petroperú y EP Petroecuador firman memorando de cooperación energética por cuatro años</title>
+    <link>https://ahora.com.pe/economia/petroperu-petroecuador-memorando-cooperacion-energetica</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/petroperu-petroecuador-memorando-cooperacion-energetica</guid>
+    <pubDate>Wed, 21 Oct 2026 11:28:29 GMT</pubDate>
+    <description><![CDATA[Petroperú y EP Petroecuador suscribieron un memorando de entendimiento con vigencia de cuatro años para evaluar iniciativas conjuntas en comercialización de hidrocarburos, logística e intercambio técnico, en el marco del XVII Gabinete Binacional Perú-Ecuador realizado en Lima.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Petroperú]]></category>
+    <category><![CDATA[EP Petroecuador]]></category>
+    <category><![CDATA[memorando de entendimiento]]></category>
+    <category><![CDATA[cooperación energética]]></category>
+    <category><![CDATA[Gabinete Binacional Perú-Ecuador]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/82c0784e470b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/82c0784e470b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/82c0784e470b.jpg"/>
+    <media:description type="plain"><![CDATA[Petroperú y EP Petroecuador suscribieron un memorando de entendimiento para fortalecer la cooperación e integración energética entre Perú y Ecuador, mediante la identificación y evaluación de oportunidades de interés común en la cadena de valor de los hidrocarburos. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Barça de Flick: 15 goles recibidos en 12 partidos y alerta defensiva antes del Clásico</title>
+    <link>https://ahora.com.pe/deportes/barca-flick-alerta-defensiva-goles-recibidos-clasico</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/barca-flick-alerta-defensiva-goles-recibidos-clasico</guid>
+    <pubDate>Wed, 21 Oct 2026 11:18:28 GMT</pubDate>
+    <description><![CDATA[El Barça de Hansi Flick suma 15 goles recibidos en 12 partidos oficiales, con problemas en jugadas a balón parado y errores individuales, antes del Clásico.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barça]]></category>
+    <category><![CDATA[Hansi Flick]]></category>
+    <category><![CDATA[goles recibidos]]></category>
+    <category><![CDATA[Clásico]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/26f498c54e63.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/26f498c54e63.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/26f498c54e63.webp"/>
+    <media:description type="plain"><![CDATA[Por los goles encajados se pueden detectar los problemas defensivos del <b>Barça</b>. En los 12 partidos oficiales disputados, el equipo de <b>Hansi Flick </b>ha recibido 9 goles, a uno por partido, en <b>LaLiga </b>y 6 en la <b>Champions League,</b> a dos. Un par del <b>Rayo, Levante, Racing y  Bet — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Sofía Neves anotó 29 puntos en la derrota de Rebaza Acosta ante Alianza Lima</title>
+    <link>https://ahora.com.pe/deportes/sofia-neves-29-puntos-rebaza-acosta-alianza-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sofia-neves-29-puntos-rebaza-acosta-alianza-lima</guid>
+    <pubDate>Wed, 21 Oct 2026 10:08:30 GMT</pubDate>
+    <description><![CDATA[Sofía Neves anotó 29 puntos en el debut de Rebaza Acosta ante Alianza Lima, que ganó 3-2 en la primera fecha de la Liga Peruana de Vóley 2026/27.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sofía Neves]]></category>
+    <category><![CDATA[Rebaza Acosta]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[vóley peruano]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/abef8136c3a9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/abef8136c3a9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/abef8136c3a9.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>AHA: hasta 400 mg de cafeína al día son seguros para el corazón</title>
+    <link>https://ahora.com.pe/sociedad/aha-cafeina-seguridad-cardiovascular-400-mg</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/aha-cafeina-seguridad-cardiovascular-400-mg</guid>
+    <pubDate>Wed, 21 Oct 2026 09:48:26 GMT</pubDate>
+    <description><![CDATA[La American Heart Association publicó en Circulation una declaración científica sobre la cafeína y el riesgo cardiovascular. Hasta 400 mg diarios son seguros para la mayoría de adultos; las bebidas energéticas muestran señales de daño y el café no filtrado eleva el colesterol LDL.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[cafeína]]></category>
+    <category><![CDATA[American Heart Association]]></category>
+    <category><![CDATA[salud cardiovascular]]></category>
+    <category><![CDATA[café]]></category>
+    <category><![CDATA[bebidas energéticas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/a56979e7e7ca.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/a56979e7e7ca.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/a56979e7e7ca.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Polémica por el VAR en el Madrid-Sevilla: aclaran que el árbitro pudo ver la repetición</title>
+    <link>https://ahora.com.pe/deportes/var-repeticion-madrid-sevilla-aclaracion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/var-repeticion-madrid-sevilla-aclaracion</guid>
+    <pubDate>Wed, 21 Oct 2026 09:38:28 GMT</pubDate>
+    <description><![CDATA[La polémica por la falta de repeticiones en el Real Madrid-Sevilla sigue abierta: desde El Partidazo de COPE aclararon que el VAR tiene acceso a todas las cámaras y que la emisión televisiva no condiciona su revisión.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[VAR]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Sevilla]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[Sergio Carranza]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/d1fd4a4af567.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/d1fd4a4af567.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/d1fd4a4af567.webp"/>
+    <media:description type="plain"><![CDATA[Tras el tremendo revuelo provocado por las declaraciones en <b>'El Partidazo de COPE' </b>del responsable de realización de la<b> LaLiga</b>, <b>Sergio Carranza</b>, asegurando que "se decidió no dar la repetición" de la posible falta de <b>Konate</b> a<b> Ure</b> previa al gol de<b> Kylian Mbappé</ — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Copa Perú entra a su fase decisiva</title>
+    <link>https://ahora.com.pe/deportes/copa-peru-entra-a-su-fase-decisiva</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/copa-peru-entra-a-su-fase-decisiva</guid>
+    <pubDate>Wed, 21 Oct 2026 09:10:25 GMT</pubDate>
+    <description><![CDATA[La Copa Perú ingresa a una etapa de mayor exigencia con el inicio de la Fase 2 de la Etapa Nacional, en la que 32 equipos continuarán en competencia por el título y el único boleto de ascenso a la]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Copa Perú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/2ab28f48b1f0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/2ab28f48b1f0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/2ab28f48b1f0.jpg"/>
+    <media:description type="plain"><![CDATA[Copa Perú entra a su fase decisiva — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Boca elimina a Vasco y alcanza la final</title>
+    <link>https://ahora.com.pe/deportes/boca-elimina-a-vasco-y-alcanza-la-final</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/boca-elimina-a-vasco-y-alcanza-la-final</guid>
+    <pubDate>Wed, 21 Oct 2026 09:10:22 GMT</pubDate>
+    <description><![CDATA[Boca Juniors consiguió una importante clasificación a la final de la Copa Sudamericana 2026 después de derrotar 3-1 a Vasco da Gama en el estadio Maracaná de Río de Janeiro, remontando la derrota 1-0]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Boca]]></category>
+    <category><![CDATA[Vasco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/b38b0996b7a9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/b38b0996b7a9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/b38b0996b7a9.jpg"/>
+    <media:description type="plain"><![CDATA[Boca elimina a Vasco y alcanza la final — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>PSG derrota 4-2 al Barcelona en París</title>
+    <link>https://ahora.com.pe/deportes/psg-derrota-4-2-al-barcelona-en-paris</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/psg-derrota-4-2-al-barcelona-en-paris</guid>
+    <pubDate>Wed, 21 Oct 2026 09:10:19 GMT</pubDate>
+    <description><![CDATA[El París Saint-Germain consiguió una importante victoria en la Champions League al derrotar 4-2 al Barcelona, en un intenso encuentro disputado el martes 20 de octubre en el Parque de los Príncipes]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[PSG]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[París]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/b8a87adf74c5.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/b8a87adf74c5.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/b8a87adf74c5.jpg"/>
+    <media:description type="plain"><![CDATA[PSG derrota 4-2 al Barcelona en París — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Venezuela y Uruguay rechazan jugar contra Perú en Cusco</title>
+    <link>https://ahora.com.pe/deportes/venezuela-y-uruguay-rechazan-jugar-contra-peru-en-cusco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/venezuela-y-uruguay-rechazan-jugar-contra-peru-en-cusco</guid>
+    <pubDate>Wed, 21 Oct 2026 09:10:16 GMT</pubDate>
+    <description><![CDATA[La Selección Peruana encontró dificultades para organizar sus próximos partidos amistosos internacionales.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Venezuela]]></category>
+    <category><![CDATA[Uruguay]]></category>
+    <category><![CDATA[Perú]]></category>
+    <category><![CDATA[Cusco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/9d227196dd25.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/9d227196dd25.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/9d227196dd25.jpg"/>
+    <media:description type="plain"><![CDATA[Venezuela y Uruguay rechazan jugar contra Perú en Cusco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima apunta a dos seleccionados para 2027</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-apunta-a-dos-seleccionados-para-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-apunta-a-dos-seleccionados-para-2027</guid>
+    <pubDate>Wed, 21 Oct 2026 09:10:12 GMT</pubDate>
+    <description><![CDATA[Alianza Lima comenzó a preparar su plantel para la temporada 2027, aunque todavía se encuentra disputando la recta final de la Liga 1.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/b440e37d507a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/b440e37d507a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/b440e37d507a.jpg"/>
+    <media:description type="plain"><![CDATA[Alianza Lima apunta a dos seleccionados para 2027 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Constructores deja frustrados a hinchas uchicinos</title>
+    <link>https://ahora.com.pe/deportes/constructores-deja-frustrados-a-hinchas-uchicinos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/constructores-deja-frustrados-a-hinchas-uchicinos</guid>
+    <pubDate>Wed, 21 Oct 2026 09:10:08 GMT</pubDate>
+    <description><![CDATA[La eliminación de Constructores de Uchiza de la Etapa Nacional de la Copa Perú generó decepción entre los aficionados, quienes esperaban que el equipo avanzara hasta las instancias decisivas y]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Constructores]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/dac02896ab69.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/dac02896ab69.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/dac02896ab69.jpg"/>
+    <media:description type="plain"><![CDATA[Constructores deja frustrados a hinchas uchicinos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Axel Gómez recupera la punta en Amarilis</title>
+    <link>https://ahora.com.pe/deportes/axel-gomez-recupera-la-punta-en-amarilis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/axel-gomez-recupera-la-punta-en-amarilis</guid>
+    <pubDate>Wed, 21 Oct 2026 09:10:05 GMT</pubDate>
+    <description><![CDATA[El campeonato de ascenso de la Liga Distrital de Fútbol de Amarilis se pone cada vez más interesante.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Axel Gómez]]></category>
+    <category><![CDATA[Amarilis]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/a7dad1bb8655.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/a7dad1bb8655.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/a7dad1bb8655.jpg"/>
+    <media:description type="plain"><![CDATA[Axel Gómez recupera la punta en Amarilis — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Municipal de Atalaya pierde reclamo contra Bancos</title>
+    <link>https://ahora.com.pe/deportes/municipal-de-atalaya-pierde-reclamo-contra-bancos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/municipal-de-atalaya-pierde-reclamo-contra-bancos</guid>
+    <pubDate>Wed, 21 Oct 2026 09:10:01 GMT</pubDate>
+    <description><![CDATA[La Comisión Disciplinaria de la Liga Nacional de Fútbol Aficionado (LINFA) declaró improcedente el reclamo presentado por Municipal de Atalaya contra Bancos, por una presunta infracción al reglamento]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Municipal de Atalaya]]></category>
+    <category><![CDATA[Bancos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/da61a6e5a219.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/da61a6e5a219.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/da61a6e5a219.jpg"/>
+    <media:description type="plain"><![CDATA[Municipal de Atalaya pierde reclamo contra Bancos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Fiscalía reporta diecinueve detenidos por presuntas agresiones contra mujeres e integrantes del grupo familiar</title>
+    <link>https://ahora.com.pe/policiales/fiscalia-reporta-diecinueve-detenidos-por-presuntas-agresiones-contra-mujeres-e</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/fiscalia-reporta-diecinueve-detenidos-por-presuntas-agresiones-contra-mujeres-e</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:58 GMT</pubDate>
+    <description><![CDATA[El despacho de Amarilis precisó que los casos no reunieron graves y fundados elementos de convicción para vincular a los intervenidos con el delito investigado.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Fiscalía]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/34df0364a9ce.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/34df0364a9ce.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/34df0364a9ce.jpg"/>
+    <media:description type="plain"><![CDATA[Fiscalía reporta diecinueve detenidos por presuntas agresiones contra mujeres e integrantes del grupo familiar — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Maquinaria del Gobierno Regional incautada por presunta minería ilegal será inspeccionada por la Fiscalía</title>
+    <link>https://ahora.com.pe/policiales/maquinaria-del-gobierno-regional-incautada-por-presunta-mineria-ilegal-sera</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/maquinaria-del-gobierno-regional-incautada-por-presunta-mineria-ilegal-sera</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:54 GMT</pubDate>
+    <description><![CDATA[La diligencia está prevista para hoy en Tishgo, donde una intervención dejó ocho detenidos y equipos valorizados en más de S/ 4 millones.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Gobierno Regional]]></category>
+    <category><![CDATA[Fiscalía]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/743fcc39bccc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/743fcc39bccc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/743fcc39bccc.jpg"/>
+    <media:description type="plain"><![CDATA[Maquinaria del Gobierno Regional incautada por presunta minería ilegal será inspeccionada por la Fiscalía — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Robo y muerte de transportista: «Veneca» afrontará doce meses de prisión preventiva</title>
+    <link>https://ahora.com.pe/policiales/robo-y-muerte-de-transportista-veneca-afrontara-doce-meses-de-prision-preventiva</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/robo-y-muerte-de-transportista-veneca-afrontara-doce-meses-de-prision-preventiva</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:51 GMT</pubDate>
+    <description><![CDATA[El juzgado ordenó doce meses de detención para la investigada por el asalto ocurrido en Carpish, en agosto de 2025.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f69150224aba.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f69150224aba.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f69150224aba.jpg"/>
+    <media:description type="plain"><![CDATA[Robo y muerte de transportista: «Veneca» afrontará doce meses de prisión preventiva — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Dictan cadena perpetua por violación sexual de una adolescente y ordenan capturar al sentenciado</title>
+    <link>https://ahora.com.pe/policiales/dictan-cadena-perpetua-por-violacion-sexual-de-una-adolescente-y-ordenan</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/dictan-cadena-perpetua-por-violacion-sexual-de-una-adolescente-y-ordenan</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:47 GMT</pubDate>
+    <description><![CDATA[El juzgado también dispuso el pago de S/ 10 000 de reparación civil por las agresiones ocurridas en Castillo Grande.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/1ad1ba47cb12.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/1ad1ba47cb12.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/1ad1ba47cb12.png"/>
+    <media:description type="plain"><![CDATA[Dictan cadena perpetua por violación sexual de una adolescente y ordenan capturar al sentenciado — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Detienen a pasajero de bus interprovincial con dos paquetes de presunta droga entre sus prendas</title>
+    <link>https://ahora.com.pe/policiales/detienen-a-pasajero-de-bus-interprovincial-con-dos-paquetes-de-presunta-droga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/detienen-a-pasajero-de-bus-interprovincial-con-dos-paquetes-de-presunta-droga</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:40 GMT</pubDate>
+    <description><![CDATA[Un pasajero de 35 años, identificado con las iniciales E. P. L., fue detenido durante una intervención a un bus interprovincial que cubría la ruta de Tingo María a Lima.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/db20295428df.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/db20295428df.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/db20295428df.png"/>
+    <media:description type="plain"><![CDATA[Diario Ahora - Policiales — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Estados Unidos sanciona a banco cubano por prestar servicios a una entidad iraní</title>
+    <link>https://ahora.com.pe/mundo/estados-unidos-sanciona-a-banco-cubano-por-prestar-servicios-a-una-entidad-irani</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/estados-unidos-sanciona-a-banco-cubano-por-prestar-servicios-a-una-entidad-irani</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:37 GMT</pubDate>
+    <description><![CDATA[Estados Unidos impuso nuevas sanciones al Banco Internacional de Comercio de Cuba (BICSA), una entidad estatal a la que acusa de prestar servicios financieros al banco iraní Karafarin, incluido desde]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Unidos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/a49d662a0906.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/a49d662a0906.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/a49d662a0906.jpg"/>
+    <media:description type="plain"><![CDATA[Estados Unidos sanciona a banco cubano por prestar servicios a una entidad iraní — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>La paz se aleja mientras Ucrania enfrenta desgaste militar y crecientes presiones diplomáticas</title>
+    <link>https://ahora.com.pe/mundo/la-paz-se-aleja-mientras-ucrania-enfrenta-desgaste-militar-y-crecientes</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/la-paz-se-aleja-mientras-ucrania-enfrenta-desgaste-militar-y-crecientes</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:33 GMT</pubDate>
+    <description><![CDATA[El futuro del este de Ucrania se ha convertido en uno de los principales obstáculos para detener la guerra con Rusia.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Ucrania]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/10756ec1a374.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/10756ec1a374.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/10756ec1a374.jpg"/>
+    <media:description type="plain"><![CDATA[La paz se aleja mientras Ucrania enfrenta desgaste militar y crecientes presiones diplomáticas — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Paralización pesquera pondría en riesgo S/14.000 millones y miles de empleos en el país</title>
+    <link>https://ahora.com.pe/economia/paralizacion-pesquera-pondria-en-riesgo-s-14-000-millones-y-miles-de-empleos-en</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/paralizacion-pesquera-pondria-en-riesgo-s-14-000-millones-y-miles-de-empleos-en</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:30 GMT</pubDate>
+    <description><![CDATA[La crisis de la pesca industrial amenaza con golpear la economía peruana. Jessica Luna, presidenta de la Sociedad Nacional de Pesquería (SNP), advirtió que la cadena productiva del sector dejaría de]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/856cd5a2ce1f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/856cd5a2ce1f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/856cd5a2ce1f.jpg"/>
+    <media:description type="plain"><![CDATA[Paralización pesquera pondría en riesgo S/14.000 millones y miles de empleos en el país — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Lluvias inundan viviendas y calles mientras crece la preocupación por enfermedades ante El Niño</title>
+    <link>https://ahora.com.pe/sociedad/lluvias-inundan-viviendas-y-calles-mientras-crece-la-preocupacion-por</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/lluvias-inundan-viviendas-y-calles-mientras-crece-la-preocupacion-por</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:24 GMT</pubDate>
+    <description><![CDATA[Las lluvias registradas este 20 de octubre de 2026 provocaron inundaciones en viviendas, calles y negocios de Piura, mientras el Ministerio de Salud emitió una alerta epidemiológica ante los riesgos]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Niño]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/479a6db7262f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/479a6db7262f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/479a6db7262f.jpg"/>
+    <media:description type="plain"><![CDATA[Lluvias inundan viviendas y calles mientras crece la preocupación por enfermedades ante El Niño — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>La Biblioteca Pública Municipal de Huánuco abre con visitas guiadas y pide presupuesto</title>
+    <link>https://ahora.com.pe/regional/la-biblioteca-publica-municipal-de-huanuco-abre-con-visitas-guiadas-y-pide</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/la-biblioteca-publica-municipal-de-huanuco-abre-con-visitas-guiadas-y-pide</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:19 GMT</pubDate>
+    <description><![CDATA[Atiende desde las 7:30 a. m. en el primer piso de la municipalidad provincial. Tiene colección local y estadísticas del INEI desde 1980.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Biblioteca Pública Municipal de Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/67d7af1860ce.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/67d7af1860ce.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/67d7af1860ce.png"/>
+    <media:description type="plain"><![CDATA[La Biblioteca Pública Municipal de Huánuco abre con visitas guiadas y pide presupuesto — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Gobierno Regional tiene 71 días para gastar S/ 212,3 millones en proyectos, según el MEF</title>
+    <link>https://ahora.com.pe/regional/gobierno-regional-tiene-71-dias-para-gastar-s-212-3-millones-en-proyectos-segun</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/gobierno-regional-tiene-71-dias-para-gastar-s-212-3-millones-en-proyectos-segun</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:15 GMT</pubDate>
+    <description><![CDATA[Faltan S/ 212,3 millones por gastar en 71 días. Pulgar dijo que sus viajes no le cuestan al Gobierno Regional, que sí pagó los de emprendedores.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Gobierno Regional]]></category>
+    <category><![CDATA[MEF]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/ff08a0c36674.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/ff08a0c36674.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/ff08a0c36674.jpg"/>
+    <media:description type="plain"><![CDATA[Gobierno Regional tiene 71 días para gastar S/ 212,3 millones en proyectos, según el MEF — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Anillo de Jactay vence el 24 de octubre y muestra solo el 23.62 % de avance.</title>
+    <link>https://ahora.com.pe/regional/anillo-de-jactay-vence-el-24-de-octubre-y-muestra-solo-el-23-62-de-avance</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/anillo-de-jactay-vence-el-24-de-octubre-y-muestra-solo-el-23-62-de-avance</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:12 GMT</pubDate>
+    <description><![CDATA[Pulgar culpa a Seda por la factibilidad del agua. La Contraloría suma predios sin liberar, postes sin mover y muros sin conexión de desagüe. El saldo de obra, de S/ 26,8 millones, lo ejecuta el Consorcio Cruz Verde desde el 29 de diciembre de 2025.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Jactay]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/87fdf5f98523.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/87fdf5f98523.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/87fdf5f98523.jpg"/>
+    <media:description type="plain"><![CDATA[Anillo de Jactay vence el 24 de octubre y muestra solo el 23.62 % de avance. — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Marabamba entrega su primer esquema de ordenamiento; su alcaldesa critica al Gobierno Regional</title>
+    <link>https://ahora.com.pe/regional/marabamba-entrega-su-primer-esquema-de-ordenamiento-su-alcaldesa-critica-al</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/marabamba-entrega-su-primer-esquema-de-ordenamiento-su-alcaldesa-critica-al</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:08 GMT</pubDate>
+    <description><![CDATA[Dice que el centro poblado no tenía información catastral y que el Gobierno Regional le dio «quizá un cinco por ciento» de apoyo en cuatro años.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Marabamba]]></category>
+    <category><![CDATA[Gobierno Regional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/5e77df2b129a.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/5e77df2b129a.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/5e77df2b129a.png"/>
+    <media:description type="plain"><![CDATA[Marabamba entrega su primer esquema de ordenamiento; su alcaldesa critica al Gobierno Regional — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Pulgar menciona que sus viajes fueron invitaciones; siete acuerdos no dicen quién pagó</title>
+    <link>https://ahora.com.pe/regional/pulgar-menciona-que-sus-viajes-fueron-invitaciones-siete-acuerdos-no-dicen-quien</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/pulgar-menciona-que-sus-viajes-fueron-invitaciones-siete-acuerdos-no-dicen-quien</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:04 GMT</pubDate>
+    <description><![CDATA[El Gobierno Regional sí pagó viajes a París de emprendedores: un servicio de S/ 39 400 en 2023 y S/ 48 434,80 en pasajes en 2024. Al martes 20 de octubre, había gastado 52.9 % de su presupuesto de proyectos. Pulgar dijo que certificar es «ya compré».]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Pulgar]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/d3100869b617.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/d3100869b617.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/d3100869b617.png"/>
+    <media:description type="plain"><![CDATA[Pulgar menciona que sus viajes fueron invitaciones; siete acuerdos no dicen quién pagó — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Vía Higueras-Cozo, de seis kilómetros, ya cuesta S/ 37 millones y va por 45 %</title>
+    <link>https://ahora.com.pe/regional/via-higueras-cozo-de-seis-kilometros-ya-cuesta-s-37-millones-y-va-por-45</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/via-higueras-cozo-de-seis-kilometros-ya-cuesta-s-37-millones-y-va-por-45</guid>
+    <pubDate>Wed, 21 Oct 2026 09:09:00 GMT</pubDate>
+    <description><![CDATA[El MEF programa su fin para el 15 de diciembre, 16 días antes de que termine la gestión de Pulgar. Erasmo Fernández, que la inició en 2022, duda que se cumpla.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Higueras]]></category>
+    <category><![CDATA[Cozo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/d21f706e26f8.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/d21f706e26f8.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/d21f706e26f8.png"/>
+    <media:description type="plain"><![CDATA[Diario Ahora - Regional — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Transportistas dan plazo al alcalde para derogar la Ordenanza 024 o irán al paro</title>
+    <link>https://ahora.com.pe/regional/transportistas-dan-plazo-al-alcalde-para-derogar-la-ordenanza-024-o-iran-al-paro</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/transportistas-dan-plazo-al-alcalde-para-derogar-la-ordenanza-024-o-iran-al-paro</guid>
+    <pubDate>Wed, 21 Oct 2026 09:08:58 GMT</pubDate>
+    <description><![CDATA[Dirigente advierte que la norma elevaría sanciones hasta 60% de la UIT y anuncia adhesión al paro provincial del 4 de noviembre]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Ordenanza]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/64fe7604351d.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/64fe7604351d.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/64fe7604351d.png"/>
+    <media:description type="plain"><![CDATA[Transportistas dan plazo al alcalde para derogar la Ordenanza 024 o irán al paro — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>UNHEVAL ACREDITA GESTIONES Y DECISIONES CONCRETAS PARA AVANZAR EN LA PROMOCIÓN DE SUS DOCENTES</title>
+    <link>https://ahora.com.pe/regional/unheval-acredita-gestiones-y-decisiones-concretas-para-avanzar-en-la-promocion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/unheval-acredita-gestiones-y-decisiones-concretas-para-avanzar-en-la-promocion</guid>
+    <pubDate>Wed, 21 Oct 2026 09:08:53 GMT</pubDate>
+    <description><![CDATA[El Rectorado presentó un requerimiento de S/ 4 836 489,89, impulsó la aprobación de docentes aptos y formalizó la promoción de profesores de Medicina Veterinaria y Zootecnia y otras facultades, cuya ejecución está sujeta al financiamiento y al registro correspondiente.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[UNHEVAL ACREDITA GESTIONES]]></category>
+    <category><![CDATA[DECISIONES CONCRETAS]]></category>
+    <category><![CDATA[AVANZAR]]></category>
+    <category><![CDATA[PROMOCIÓN]]></category>
+    <category><![CDATA[DOCENTES]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/904e52915760.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/904e52915760.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/904e52915760.jpg"/>
+    <media:description type="plain"><![CDATA[UNHEVAL ACREDITA GESTIONES Y DECISIONES CONCRETAS PARA AVANZAR EN LA PROMOCIÓN DE SUS DOCENTES — Licencia: propia]]></media:description>
+  </item>
+  </channel>
+</rss>
