@@ -249,6 +249,13 @@ def doc_id(year: int, number: int) -> str:
     return f"imarpe-bsobp-{year}-{number:02d}"
 
 
+def manual_key(year: int, number: int) -> str:
+    """URL sintética con que la consola guarda el PDF cuando el repositorio no da su dirección."""
+    from .. import manual
+
+    return manual.key(SOURCE, f"{year}-{number:02d}")
+
+
 def _listed(fetcher) -> list[dict]:
     from . import imarpe_repo
 
@@ -266,12 +273,18 @@ def _read(fetcher, item: dict) -> tuple[Optional[dict], Optional[str], Optional[
     from . import imarpe_repo
 
     files = imarpe_repo.pdfs(fetcher, item["uuid"])
-    if not files:
-        return None, None, "el ítem del repositorio no tiene un PDF"
-    url = files[0]["url"]
-    resp = imarpe_repo.fetch_pdf(fetcher, url)
-    if resp is None:
-        return None, url, "el PDF no se pudo bajar (o no era un PDF)"
+    if files:
+        url = files[0]["url"]
+        resp = imarpe_repo.fetch_pdf(fetcher, url)
+        if resp is None:
+            return None, url, "el PDF no se pudo bajar (o no era un PDF)"
+    else:
+        # Sin la URL del PDF (el ítem no la da o el repositorio no respondió): la copia que una persona haya
+        # subido en la consola con la clave sintética del boletín.
+        url = manual_key(item["year"], item["number"])
+        resp = fetcher.copy(url, ("pdf",)) if hasattr(fetcher, "copy") else None
+        if resp is None or resp.body[:5] != b"%PDF-":
+            return None, url, "el repositorio no dio la dirección del PDF del boletín"
     try:
         data = parse(pdf_pages(resp.body))
     except Exception as exc:  # noqa: BLE001 — un PDF dañado o con otro formato
@@ -280,7 +293,8 @@ def _read(fetcher, item: dict) -> tuple[Optional[dict], Optional[str], Optional[
         return None, url, (f"el PDF dice N° {data['number']} ({data['period']}) y el repositorio "
                            f"N° {item['number']}-{item['year']}")
     data.update({"year": item["year"], "title": item["title"], "issued": item["issued"], "page": item["page"],
-                 "url": url, "channel": resp.channel, "retrievedAt": resp.archived_at or None})
+                 "url": None if url.startswith("manual://") else url, "channel": resp.channel,
+                 "retrievedAt": resp.archived_at or None})
     return data, url, None
 
 
@@ -338,7 +352,7 @@ def acquire(fetcher, previous: Optional[dict], log, today: date, needs=None) -> 
         log.add("warning", SOURCE, "fetch", "bsobp-unreadable",
                 f"{label} ({it['page']}): {problem}. Si el repositorio no lo entrega, abrir la página, bajar el PDF "
                 "y subirlo en la consola de documentos; la actualización siguiente lo lee.")
-        if needs is not None and url:
+        if needs is not None:
             needs.add(doc_id(it["year"], it["number"]), "imarpe-bsobp", label, [url], [it["page"]],
                       "El repositorio del IMARPE listó el boletín pero el PDF no se pudo bajar o leer.",
                       expect={"number": it["number"], "year": it["year"]}, problem=problem)

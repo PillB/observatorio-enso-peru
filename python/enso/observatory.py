@@ -1302,7 +1302,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     dump("manual-needed.json", manual_needed or {"version": 1, "pending": [], "used": []})
     if imarpe_bsobp:
         # Boletín semanal del IMARPE: anomalía subsuperficial frente a Paita y Chicama, con su cita.
-        dump("imarpe-bsobp.json", imarpe_bsobp)
+        # Lo conservado de la publicación anterior trae su propio publicationId: vale el de esta publicación.
+        dump("imarpe-bsobp.json", {k: v for k, v in imarpe_bsobp.items() if k not in common})
     dump("run-report.json", {"events": events, "worst": log.worst(),
                              "counts": {s: sum(1 for e in events if e["severity"] == s) for s in ("info", "warning", "error", "critical")}})
     dump("health.json", {"pipelineStatus": "degraded" if log.worst() in ("error", "critical") else "ok",
@@ -1470,6 +1471,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         except Exception as exc:  # noqa: BLE001 — el boletín nunca detiene la publicación
             bsobp = prev_bs
             log.add("error", imarpe_bsobp.SOURCE, "parse", "bsobp-exception", f"{type(exc).__name__}: {exc}"[:300])
+    elif fixtures is None:
+        bsobp = prev.get("imarpe-bsobp.json")  # corrida parcial o sin red: se conserva lo publicado
     needs.log(log)
     acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
     b = Builder(acquired, log, today)

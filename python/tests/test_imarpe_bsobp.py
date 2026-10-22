@@ -160,3 +160,40 @@ def test_week_without_paita_or_chicama_is_not_an_alert(monkeypatch):
     log = _Log()
     out = bs.acquire(_Fetcher(_routes()), None, log, date(2026, 10, 26))
     assert not log.events and out["bulletins"][0]["number"] == 43 and out["bulletins"][0]["sites"] == {}
+
+
+def test_item_without_a_pdf_link_is_queued_under_a_manual_key_and_read_once_uploaded(monkeypatch):
+    routes = _routes()
+    routes[f"/server/api/core/items/{U43}/bundles"] = _bundles()  # el ítem no trae el PDF
+    log, needs = _Log(), manual.ManualNeeds()
+    out = bs.acquire(_Fetcher(routes), None, log, date(2026, 10, 26), needs)
+    key = manual.key("imarpe-bsobp", "2026-43")
+    assert "bsobp-unreadable" in log.codes() and out["pending"][0]["number"] == 43
+    assert needs.items["imarpe-bsobp-2026-43"]["urls"] == [key]
+
+    from enso.fetch import Response
+
+    class _Uploaded(_Fetcher):
+        def copy(self, url, accept=()):
+            return Response(url, b"%PDF-1.7 b43", "relay-manual", 200, archived_at="2026-10-26T12:00:00Z") \
+                if url == key else None
+
+    monkeypatch.setattr("enso.reports.pdf_pages", lambda b: _page43())
+    needs = manual.ManualNeeds()
+    out = bs.acquire(_Uploaded(routes), out, _Log(), date(2026, 10, 27), needs)
+    top = out["bulletins"][0]
+    assert top["number"] == 43 and top["channel"] == "relay-manual" and top["url"] is None
+    assert needs.used and needs.used[0]["id"] == "imarpe-bsobp-2026-43" and not needs.items
+
+
+def test_partial_run_keeps_the_published_bulletins(tmp_path):
+    from enso import observatory as obs
+    from conftest import FIX
+
+    full = tmp_path / "full"
+    obs.run(full, None, fixtures=FIX)
+    assert (full / "imarpe-bsobp.json").exists()
+    part = tmp_path / "part"
+    obs.run(part, str(full), offline=True, only=["cpc-sstoi"])
+    kept = json.loads((part / "imarpe-bsobp.json").read_text(encoding="utf-8"))
+    assert kept["bulletins"][0]["number"] == 42
