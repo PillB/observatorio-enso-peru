@@ -49,6 +49,9 @@ CATEGORY_ES = {"fria_fuerte": "Fría fuerte", "fria_moderada": "Fría moderada",
                "calida_extraordinaria": "Cálida extraordinaria"}
 MAGNITUDES = ["debil", "moderada", "fuerte", "muy_fuerte", "extraordinaria"]
 REGIONS = ["nino12", "nino34"]
+#: Posición de la termoclina costera (isoterma de 15 °C frente a Paita y Chicama) frente a su climatología, tal
+#: como la describe el texto del informe: más somera (por encima), normal o más profunda (por debajo).
+THERMOCLINE_STATES = ["somera", "somera_normal", "normal", "normal_profunda", "profunda"]
 _PERIOD = {"type": "string", "pattern": r"^\d{4}-(0[1-9]|1[0-2])$"}
 _DAY = {"type": "string", "pattern": r"^\d{4}-\d{2}-\d{2}$"}
 _INDEX = {"type": ["number", "null"], "minimum": -4.0, "maximum": 6.0}
@@ -75,7 +78,15 @@ SCHEMAS: dict[str, dict] = {
             "official": {"type": "array", "items": _ROW, "minItems": 1},
             "provisional": {"type": "array", "items": _ROW}}},
         "probabilities": {"type": "array", "items": _PROB, "maxItems": 2},
-        "seasonal": {"type": "array", "items": _SEASON, "maxItems": 2}}},
+        "seasonal": {"type": "array", "items": _SEASON, "maxItems": 2},
+        "thermocline": {"type": ["object", "null"], "properties": {
+            "state": {"type": ["string", "null"], "enum": THERMOCLINE_STATES + [None]},
+            "evidence": {"type": ["object", "null"], "properties": _EVIDENCE["properties"]},
+            "subsurface": {"type": ["object", "null"], "required": ["anomaly", "quote"], "properties": {
+                "anomaly": {"type": "number", "minimum": -12, "maximum": 14},
+                "layer": {"type": ["string", "null"]}, "isotherms": {"type": ["string", "null"],
+                                                                     "enum": ["profundizacion", "ascenso", None]},
+                "quote": {"type": "string", "minLength": 10}, "page": {"type": ["integer", "null"], "minimum": 1}}}}}}},
     "enfen-perspectiva": {"type": "array", "maxItems": 2, "items": {
         "type": "object", "required": ["region", "magnitude", "quote"], "properties": {
             "region": {"type": "string", "enum": REGIONS}, "phase": {"type": "string", "enum": ["calida", "fria"]},
@@ -431,6 +442,98 @@ def parse_seasonal_tables(doc: Paged) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
+# Termoclina costera y temperatura subsuperficial (texto de «Condiciones oceánicas … locales»)
+# ---------------------------------------------------------------------------
+#: Frases que no describen lo observado: pronósticos, modelos y perspectivas.
+_NOT_OBSERVED = re.compile(r"pron[oó]stico|se esper|se prev[eé]|se proyecta|continuar[ií]a|podr[ií]a|"
+                           r"perspectiva|modelo|simula|se mantendr[ií]a|ser[ií]a\b", re.I)
+#: Lugares que no son la costa peruana (el informe también describe Galápagos y el Pacífico ecuatorial).
+_NOT_COAST = re.compile(r"Gal[aá]pagos|ecuatorial|occidental|Ni[nñ]o\s*3|Rossby", re.I)
+_COAST = re.compile(r"Paita|Chicama|Talara|Tumbes|Chimbote|Callao|Pisco|Ilo|San Juan|costa|litoral|mn\b|millas", re.I)
+#: (estado, patrón): el primero que aparece en la frase gana; las posiciones explícitas van antes que las tendencias.
+_STATE_RULES = [
+    ("normal_profunda", r"(rango\s+)?normal\s+a\s+ligeramente\s+m[aá]s\s+profund"),
+    ("somera_normal", r"(rango\s+)?normal\s+a\s+ligeramente\s+m[aá]s\s+somer|ligeramente\s+por\s+encima\s+de\s+(lo\s+normal|su)"),
+    ("somera", r"por\s+encima\s+de\s+(su|la)\s+(posici[oó]n\s+)?climatol|m[aá]s\s+somer[ao]\s+(de|que)\s+lo\s+normal|"
+               r"menor\s+profundidad\s+(de|que)\s+lo\s+normal"),
+    ("profunda", r"por\s+debajo\s+(de\s+)?(su|la)\s+(posici[oó]n\s+)?climatol|m[aá]s\s+profund[ao]\s+(de|que)\s+lo\s+normal|"
+                 r"mayor\s+profundidad\s+(de|que)\s+lo\s+normal"),
+    ("normal", r"(dentro\s+de(l)?\s+(su\s+)?rango\s+(normal|climatol)|posici[oó]n\s+normal|en\s+su\s+posici[oó]n\s+climatol)"),
+]
+_ANOM = re.compile(r"hasta\s+([+\-−–]?\s?\d+(?:,\d+)?)\s*°\s*C", re.I)
+_LAYER = re.compile(r"(?:en\s+los\s+primeros|sobre\s+los|por\s+encima\s+de\s+los|por\s+debajo\s+de\s+los|entre\s+(?:los\s+)?\d+\s+y|"
+                    r"alrededor\s+de\s+los|cercanas?\s+a)\s*\d+(?:\s*y\s*\d+)?\s*m\b|capa\s+superior\s*\(0\s*[–-]\s*\d+\s*m\)", re.I)
+
+
+def _sentences(doc: Paged, start: int = 0, end: Optional[int] = None):
+    """Frases del texto (posición, frase aplanada). Un punto seguido de mayúscula corta la frase; uno decimal no."""
+    text = doc.text[start:end]
+    pos = 0
+    for m in re.finditer(r"(?<!\d)\.(?=\s+[A-ZÁÉÍÓÚÑ\d(])|\n\f", text):
+        yield start + pos, _flat(text[pos:m.end()])
+        pos = m.end()
+    if pos < len(text):
+        yield start + pos, _flat(text[pos:])
+
+
+def _local_section(doc: Paged) -> tuple[int, int]:
+    """Desde «Condiciones oceánicas y atmosféricas locales» (o la primera mención de Paita) hasta las
+    perspectivas; si no se reconocen, todo el texto antes de las figuras."""
+    t = doc.text
+    a = re.search(r"Condiciones\s+oce[aá]nicas\s+y\s+atmosf[eé]ricas\s+locales", t, re.I) or re.search(r"Paita", t)
+    start = a.start() if a else 0
+    b = re.search(r"\n\s*(Perspectivas|PERSPECTIVAS|Anexo|ANEXO|Figura\s+1\b)", t[start:])
+    return start, start + b.start() if b else len(t)
+
+
+def parse_thermocline(doc: Paged) -> Optional[dict]:
+    """Termoclina costera frente a su climatología y la anomalía subsuperficial más intensa observada.
+
+    El informe da la profundidad de la isoterma de 15 °C (indicadora de la termoclina) solo en sus figuras; en el
+    texto la describe por comparación con su climatología («se mantuvo por encima de su posición climatológica
+    dentro de las 100 millas», «en el rango normal a ligeramente más profunda»). Se toma esa frase tal cual, sin
+    convertirla en metros. Solo cuentan frases de lo observado frente a la costa peruana, no pronósticos."""
+    start, end = _local_section(doc)
+    state = evidence = None
+    sub = None
+    for pos, sent in _sentences(doc, start, end):
+        if _NOT_OBSERVED.search(sent) or _NOT_COAST.search(sent):
+            continue
+        low = _plain(sent)
+        # La isoterma de 15 °C solo se usa frente a la costa; una frase sobre la oxiclina que menciona la termoclina
+        # («A diferencia de la termoclina, la oxiclina …») describe la oxiclina.
+        if (state is None and "oxiclina" not in low
+                and ("isoterma de 15" in low or ("termoclina" in low and _COAST.search(sent)))):
+            for code, pat in _STATE_RULES:
+                if re.search(pat, sent, re.I):
+                    state, evidence = code, {"quote": sent[:600], "page": doc.page(pos)}
+                    break
+        subsurface = ("subsuperficial" in low or "columna de agua" in low or "isotermas" in low
+                      or ("anomal" in low and _LAYER.search(sent)))
+        if subsurface and _COAST.search(sent):
+            vals = []
+            for m in _ANOM.finditer(sent):
+                try:
+                    vals.append((_num(m.group(1)), m))
+                except ValueError:
+                    continue
+            if not vals:
+                continue
+            v, m = max(vals, key=lambda x: abs(x[0]))
+            if sub is not None and abs(v) <= abs(sub["anomaly"]):
+                continue
+            after = _LAYER.search(sent, m.end()) or _LAYER.search(sent)
+            iso = ("profundizacion" if re.search(r"profundiz\w*\s+(de\s+)?las\s+isotermas", sent, re.I) else
+                   "ascenso" if re.search(r"(ascenso|somerizaci[oó]n|superficializaci[oó]n)\s+de\s+las\s+isotermas", sent, re.I)
+                   else None)
+            sub = {"anomaly": v, "layer": _flat(after.group(0)) if after else None, "isotherms": iso,
+                   "quote": sent[:600], "page": doc.page(pos)}
+    if state is None and sub is None:
+        return None
+    return {"state": state, "evidence": evidence, "subsurface": sub}
+
+
+# ---------------------------------------------------------------------------
 # Informe técnico completo
 # ---------------------------------------------------------------------------
 @dataclass
@@ -471,11 +574,15 @@ def parse_informe(pages: list[str], url: str = "") -> Extraction:
     for p in problems:
         issues.append(Issue("warning", "informe-probability-row", p))
     data["seasonal"] = parse_seasonal_tables(doc)
+    data["thermocline"] = parse_thermocline(doc)
     for e in check(SCHEMAS["enfen-informe"], data):
         # Un error de esquema bloquea solo la parte donde está: una tabla estacional mal leída no retiene el
         # ICEN temporal ni las probabilidades mensuales.
         part = re.match(r"\$\.(probabilities|seasonal)\[(\d+)\]", e)
-        if part:
+        if e.startswith("$.thermocline"):
+            data["thermocline"] = None
+            issues.append(Issue("error", "informe-schema-thermocline", e))
+        elif part:
             data[part.group(1)][int(part.group(2))]["invalid"] = True
             issues.append(Issue("error", f"informe-schema-{part.group(1)}", e))
         else:
@@ -744,6 +851,8 @@ def informe_summary(ext: Extraction) -> dict:
         "icenProvisional": tmp, "lastOfficial": (ind.get("official") or [None])[-1],
         "probabilities": probs if not blocked & {"informe-schema", "informe-other-communique"} else [],
         "seasonal": [s for s in d.get("seasonal") or [] if not s.get("invalid")],
+        "thermocline": d.get("thermocline") if not blocked & {"informe-schema-thermocline",
+                                                               "informe-other-communique"} else None,
         "issues": [{"severity": i.severity, "code": i.code, "message": i.message} for i in ext.issues],
     }
 

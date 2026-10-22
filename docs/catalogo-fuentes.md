@@ -57,6 +57,35 @@ tampoco la hay, la copia más reciente del Internet Archive. El listado también
 extraordinarios, que el ENFEN emite durante los eventos con numeración
 propia.
 
+## Boletín semanal del IMARPE (columna de agua frente a Paita y Chicama)
+
+El IMARPE deposita cada domingo su Boletín Semanal Oceanográfico y
+Biológico-Pesquero (BS-OBP) en su repositorio institucional
+(`repositorio.imarpe.gob.pe`, API REST de DSpace, que responde a GitHub
+Actions; SIOFEN, en cambio, está detrás de una verificación de
+Cloudflare). La corrida diaria busca los boletines nuevos con el cliente
+único `enso.feeds.imarpe_repo`, baja hasta dos por corrida y los lee con
+`enso.feeds.imarpe_bsobp`; publica `imarpe-bsobp.json` con el último año.
+
+El boletín no trae una serie numérica: el resumen de la primera página
+dice, en texto, la anomalía térmica subsuperficial frente a la costa norte
+y con qué la midió (puntos fijos a 7 mn de Paita y 15 mn de Chicama,
+secciones del monitoreo bio-oceanográfico, perfiladores Argo). Se toma,
+por lugar, la anomalía más intensa que la frase le atribuye sin
+ambigüedad, con su capa, la plataforma, la cita y la página; los valores
+de otros lugares (Punta La Negra, Chimbote) o de un tramo («desde Chicama
+a Huarmey») no se atribuyen. La profundidad de la isoterma de 15 °C (la
+termoclina costera del IMARPE y el ENFEN) se publica solo cuando el texto
+la da para Paita o Chicama. En los 44 boletines de diciembre de 2025 a
+octubre de 2026, 12 traen un valor para Paita o Chicama y 1 la isoterma
+de 15 °C; las demás semanas no muestrearon allí, lo que no es un error.
+No se le aplican los umbrales del D20.
+
+Si un boletín listado no se puede leer, o pasan 12 días sin uno nuevo,
+la corrida abre un issue (`bsobp-unreadable`, `bsobp-overdue`) y el
+boletín queda en la consola de documentos para subirlo a mano: nadie
+tiene que revisar el repositorio cada día.
+
 ## Backtesting de formatos
 
 `python/tools/capture_sources.py` (flujo `capture-fixtures`) descarga la

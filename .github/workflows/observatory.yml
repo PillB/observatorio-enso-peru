@@ -343,6 +343,8 @@ jobs:
       issues: write
       contents: read
     steps:
+      - name: Note when the job started (for the alert email)
+        run: echo "ALERT_SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
       - uses: actions/checkout@v5
         with:
           sparse-checkout: python
@@ -388,6 +390,22 @@ jobs:
               await github.rest.issues.createComment({ ...context.repo, issue_number: i.number, body: 'La actualización volvió a funcionar. Se cierra automáticamente.' });
               await github.rest.issues.update({ ...context.repo, issue_number: i.number, state: 'closed', state_reason: 'completed' });
             }
+      # Correo a las direcciones de la variable ALERT_EMAILS (además del aviso de GitHub a quien sigue el
+      # repositorio): una vez por corrida, solo con las incidencias que se abrieron, cerraron o repitieron en ella.
+      # Va al final del job, después de cerrar el issue de la corrida fallida, para que ese cierre salga como resuelto.
+      - name: Email the configured addresses
+        if: always() && vars.ALERT_EMAILS != ''
+        working-directory: python
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ALERT_EMAILS: ${{ vars.ALERT_EMAILS }}
+          ALERT_FROM: ${{ vars.ALERT_FROM }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        run: python -m tools.alert_email --since "$ALERT_SINCE" --run-url "$RUN_URL"
 
   archive:
     # Corpus de respuestas originales para backtesting de los lectores.

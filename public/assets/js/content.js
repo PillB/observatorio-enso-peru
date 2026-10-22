@@ -120,6 +120,7 @@ export const TOUR_MODES = [
   { id: 'termoclina', title: 'Termoclina', desc: 'Calor bajo la superficie.', steps: [
     { route: '#/oceano', target: 'ocean-heat', title: 'Contenido de calor', text: 'Temperatura media de los 300 m superiores del Pacífico ecuatorial.' },
     { route: '#/oceano', target: 'ocean-d20', title: 'Profundidad de la termoclina', text: 'Anomalía de la profundidad de la isoterma de 20 °C en Niño 1+2 y Niño 3.4. Si es positiva, la capa cálida es más gruesa y el mar frente al Perú tarda más en enfriarse.' },
+    { route: '#/oceano', target: 'ocean-coast-thermo', title: 'Termoclina frente a Paita y Chicama', text: 'Lo que escriben el informe técnico del ENFEN y el boletín semanal del IMARPE sobre la columna de agua frente a la costa norte, con la cita y el enlace a cada documento. Son textos, no una serie: no se les aplican los umbrales del D20.' },
   ] },
   { id: 'soi', title: 'SOI y presión', desc: 'La componente atmosférica.', steps: [
     { route: '#/oceano', target: 'ocean-soi', title: 'SOI', text: 'Diferencia de presión Tahití − Darwin. Se muestra en dos escalas: la estandarizada de NOAA y la de Troup (×10) que usa la tabla del equipo GRD.' },

@@ -602,3 +602,57 @@ def test_outlook_unread_detects_one_reworded_region_and_other_wordings():
     assert R.outlook_unread(reworded, R.communique_outlook(reworded, "x")) == ["nino12"]
     assert R.outlook_unread("Se prevé un evento extraordinario en la región Niño 1+2.", []) == ["nino12"]
     assert R.outlook_unread("Son más probables las condiciones cálidas moderadas en febrero.", []) == ["general"]
+
+
+# ---------------------------------------------------------------------------
+# Termoclina costera y anomalía subsuperficial (texto de las condiciones locales)
+# ---------------------------------------------------------------------------
+# Leído a mano de cada PDF: (estado, página de la frase, anomalía subsuperficial °C, capa, página).
+THERMOCLINE = {
+    "informe-tecnico-enfen-ano-10-n09-al-12-de-junio-de-2024.pages.json.gz":
+        ("profunda", 14, -2.0, "sobre los 50 m", 14),
+    "informe-tecnico-enfen-ano-11-n06-al-16-de-abril-de-2025.pages.json.gz":
+        ("normal_profunda", 15, 5.0, "por encima de los 20 m", 15),
+    "informe-tecnico-enfen-ano-11-n14-al-16-de-diciembre-de-2025.pages.json.gz":
+        ("somera", 17, -2.0, "cercanas a 50 y 100 m", 18),
+    N17: (None, None, 9.0, "en los primeros 200 m", 15),
+    N18: (None, None, 10.0, "en los primeros 150 m", 16),
+}
+
+
+@pytest.mark.parametrize("name", list(THERMOCLINE))
+def test_thermocline_backtest(name):
+    pages, url = _pages(name)
+    ext = R.parse_informe(pages, url)
+    t = ext.data["thermocline"]
+    state, spage, anom, layer, apage = THERMOCLINE[name]
+    assert t["state"] == state
+    if state:
+        assert t["evidence"]["page"] == spage and "termoclina" in t["evidence"]["quote"]
+        assert "oxiclina" not in t["evidence"]["quote"]
+    sub = t["subsurface"]
+    assert (sub["anomaly"], sub["layer"], sub["page"]) == (anom, layer, apage)
+    assert f"{abs(anom):g}" in sub["quote"].replace(",", ".")
+    assert not [i for i in ext.issues if "thermocline" in i.code]
+    assert R.informe_summary(ext)["thermocline"] == t
+
+
+def test_thermocline_ignores_forecasts_oxycline_and_galapagos():
+    doc = R.Paged(["Condiciones oceánicas y atmosféricas locales\n"
+                   "En cuanto a la termoclina, continuaría en una posición por encima de su climatología frente a la costa. "
+                   "A diferencia de la termoclina, la oxiclina se mantuvo a menor profundidad de lo normal frente a Paita. "
+                   "En la capa subsuperficial, alrededor de las islas Galápagos, persistieron anomalías de hasta −6 °C entre los 30 y 150 m. "
+                   "Frente a Paita la termoclina se ubicó por debajo de su posición climatológica dentro de las 100 mn. "
+                   "En la columna de agua frente a Chicama se observaron anomalías de hasta +1,5 °C sobre los 80 m."])
+    t = R.parse_thermocline(doc)
+    assert t["state"] == "profunda" and "Paita" in t["evidence"]["quote"]
+    assert t["subsurface"]["anomaly"] == 1.5 and t["subsurface"]["layer"] == "sobre los 80 m"
+
+
+def test_thermocline_out_of_range_is_withheld_alone():
+    pages, url = _pages(N18)
+    ext = R.parse_informe(pages, url)
+    bad = copy.deepcopy(ext.data)
+    bad["thermocline"]["subsurface"]["anomaly"] = 40.0
+    errs = R.check(R.SCHEMAS["enfen-informe"], bad)
+    assert errs and all(e.startswith("$.thermocline") for e in errs)

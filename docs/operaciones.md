@@ -75,6 +75,31 @@ El trabajo `incidents` las convierte en issues con la etiqueta
   si en la corrida siguiente el sitio tampoco responde, el histórico se
   rehace con una copia a la que le faltan las notas de esa corrida.
 
+### Avisos por correo a otras direcciones
+
+GitHub ya avisa por correo de cada issue a quien sigue el repositorio. Para
+que el aviso llegue también a otras direcciones (sin cuenta de GitHub), la
+actualización diaria y el vigilante mandan un correo propio al terminar:
+
+- **Una vez por corrida y solo si algo cambió:** incidencias nuevas (con
+  su detalle y enlace), las que se repiten («La actualización diaria
+  falló», «El sitio publicado está desactualizado») y las resueltas. Una
+  incidencia que sigue igual que el día anterior no vuelve a mandar correo.
+- **A quién:** la variable del repositorio `ALERT_EMAILS` (Settings →
+  Secrets and variables → Actions → Variables), con las direcciones
+  separadas por comas. Se cambia ahí, sin tocar el código; vacía o sin
+  definir, no se envía nada. Van en copia oculta.
+- **Por dónde sale:** cualquier servidor SMTP (el de la institución, Gmail
+  con contraseña de aplicación, SendGrid, Resend…), con los secretos
+  `SMTP_HOST`, `SMTP_PORT` (465 o 587), `SMTP_USERNAME` y `SMTP_PASSWORD`.
+  El remitente es la variable `ALERT_FROM` o, sin ella, `SMTP_USERNAME`.
+- Si `ALERT_EMAILS` tiene direcciones pero falta `SMTP_HOST`, o el envío
+  falla, la corrida lo anota como advertencia y no se detiene.
+
+Para probarlo sin enviar: `python -m tools.alert_email --since
+2026-10-22T00:00:00Z --dry-run` (desde `python/`, con `GITHUB_TOKEN`,
+`GITHUB_REPOSITORY` y `ALERT_EMAILS`) muestra el correo que saldría.
+
 Códigos frecuentes:
 
 | Código | Significado | Qué hacer |
@@ -98,6 +123,9 @@ Códigos frecuentes:
 | `format-changed` | El formato ya no se puede leer | Ajustar el lector en `python/enso/feeds/` y añadir la nueva respuesta a las fixtures |
 | `stale-*`, `official-overdue` | El dato o el comunicado está vencido | Comprobar en la fuente si realmente no hay uno nuevo |
 | `newer-communique-unparsed` | Hay un comunicado del ENFEN más nuevo que no se pudo leer | Revisar el PDF y el lector de comunicados |
+| `bsobp-unreadable` | El repositorio del IMARPE listó un boletín semanal (BS-OBP) cuyo PDF no se pudo bajar o leer, o que dice otro número. Queda también en la consola de documentos | Abrir la página del boletín que trae el mensaje, bajar el PDF y subirlo en la consola de documentos; la actualización siguiente lo lee. El issue se cierra solo |
+| `bsobp-overdue` | Más de 12 días sin un boletín semanal nuevo en el repositorio del IMARPE (sale cada domingo) | Ver si el IMARPE dejó de depositarlo o cambió el título; si cambió, ajustar `QUERY`/`TITLE_RE` en `python/enso/feeds/imarpe_bsobp.py` |
+| `bsobp-unreachable` | El repositorio del IMARPE no listó boletines; se conservan los ya leídos | Normalmente es temporal |
 | `no-data` | Una serie quedó vacía | Si la fuente es crítica, no se despliega |
 
 ## Histórico de D20 (GODAS)
