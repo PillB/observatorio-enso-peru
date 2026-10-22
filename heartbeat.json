@@ -1,15 +1,15 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-10-21T20:29:08+00:00",
+ "at": "2026-10-22T02:01:52+00:00",
  "result": "ok",
- "reachable": "17/24",
+ "reachable": "17/26",
  "summary": {
   "enfen": "3/4",
-  "senamhi": "7/7",
+  "senamhi": "8/8",
   "ana": "0/2",
   "imarpe": "2/2",
   "cenepred": "1/1",
-  "enfen-docs": "4/8"
+  "enfen-docs": "3/9"
  },
  "failures": [
   {
@@ -28,35 +28,45 @@
    "error": "robots.txt no permite la ruta: no se pide"
   },
   {
-   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/13-2026.pdf",
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf",
    "status": 200,
    "class": "challenge",
    "error": "página de verificación antirobots: no se guarda (no se evade)"
   },
   {
-   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/12-2026.pdf",
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/17-2026.pdf",
    "status": 200,
    "class": "challenge",
    "error": "página de verificación antirobots: no se guarda (no se evade)"
   },
   {
-   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/14-2026.pdf",
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
    "status": 200,
    "class": "challenge",
    "error": "página de verificación antirobots: no se guarda (no se evade)"
   },
   {
-   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/15-2026.pdf",
+   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-19-2026/",
+   "status": 404,
+   "class": "http-4xx"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/20-2026.pdf",
    "status": 200,
    "class": "challenge",
    "error": "página de verificación antirobots: no se guarda (no se evade)"
+  },
+  {
+   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-20-2026/",
+   "status": 404,
+   "class": "http-4xx"
   }
  ],
  "collector": {
   "host": "Pablos-MacBook-Pro.local",
   "tz": "America/Lima",
   "runner": "collector_service/1",
-  "kit": "2026.10.21-07fa322",
+  "kit": "2026.10.22-7843235",
   "os": "macOS-26.6.2",
   "python": "3.12.15",
   "git": "2.50.1 (Apple Git-155)",
@@ -65,11 +75,12 @@
  },
  "registry": {
   "origin": "github",
-  "generated_at": "2026-10-21T05:15:09+00:00",
-  "sources": 195,
+  "generated_at": "2026-10-21T22:42:36+00:00",
+  "sources": 198,
   "peru_server": 8
  },
  "probes": {
-  "ok": 1
- }
+  "ok": 3
+ },
+ "carried": 5
 }

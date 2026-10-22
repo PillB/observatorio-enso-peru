@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:g_100_01="http://localhost:8087/g_100_01" xmlns:gml="http://www.opengis.net/gml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://localhost:8087/g_100_01">
+  <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="https://idesep.senamhi.gob.pe:443/geoserver/schemas/gml/2.1.2/feature.xsd"/>
+  <xsd:complexType name="view_aviso_24horas_5dias_ultimosType">
+    <xsd:complexContent>
+      <xsd:extension base="gml:AbstractFeatureType">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="1" name="gid" nillable="false" type="xsd:long"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="nivel" nillable="true" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="fecha" nillable="true" type="xsd:date"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="nro_mapa" nillable="true" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="descripcio" nillable="true" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="recomendac" nillable="true" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="respons" nillable="true" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="geom" nillable="true" type="gml:MultiPolygonPropertyType"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="view_aviso_24horas_5dias_ultimos" substitutionGroup="gml:_Feature" type="g_100_01:view_aviso_24horas_5dias_ultimosType"/>
+</xsd:schema>
