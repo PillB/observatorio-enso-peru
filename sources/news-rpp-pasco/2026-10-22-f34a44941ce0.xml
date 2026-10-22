@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0" xml:base="https://rpp.pe">
+<channel>
+  <title>RPP NOTICIAS</title>
+  <link>https://rpp.pe</link>
+  <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
+  <language>es</language>
+  <copyright>RPP NOTICIAS</copyright>
+  <lastBuildDate>Wed, 21 Oct 2026 20:12:58 -0500</lastBuildDate>
+  <ttl>15</ttl>
+
+    <image>
+      <title>RPP NOTICIAS.</title>
+  		<url>//s2.rpp-noticias.io/images/rpp-noticias.png</url>
+  		<link>https://rpp.pe</link>
+    </image>
+
+           <item>
+        <title><![CDATA[Un sismo de magnitud 3.5 se sintió esta mañana en la región Pasco]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 7 kilómetros al noreste de <strong>Oxapampa</strong>, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Sat, 17 Oct 2026 10:40:35 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-35-se-sintio-esta-manana-en-la-region-noticia-1713120</link>
+        <guid>1713120</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/17/294029_1919610.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Instituto Geofísico del Perú, Sismo, IGP, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: ambulancia de la Micro Red de Salud cayó a un barranco en el sector Pichanaz]]></title>
+        <description><![CDATA[El accidente ocurrió aproximadamente a las 5:45 a. m., cuando la unidad retornaba de <strong>Villa Rica</strong> tras cumplir una misión de servicio.]]></description>
+        <pubDate>Tue, 06 Oct 2026 23:55:38 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-ambulancia-de-la-micro-red-de-salud-cayo-a-un-barranco-en-el-sector-pichanaz-noticia-1711180</link>
+        <guid>1711180</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/06/124712_1915553.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, COER, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 3.5 remeció la región Pasco esta tarde]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 20 kilómetros al oeste de <strong>Oxapampa</strong>, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Sat, 26 Sep 2026 15:10:51 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-35-remecio-la-region-esta-tarde-noticia-1709529</link>
+        <guid>1709529</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/09/26/240924_1911990.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ IGP, Instituto Geofísico del Perú, Sismo, Pasco, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 3.4 se sintió en la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 11 kilómetros al sureste de Pozuzo, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Sat, 29 Aug 2026 06:30:01 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-34-se-sintio-en-la-region-esta-madrugada-noticia-1704411</link>
+        <guid>1704411</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/08/29/323232_1901779.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Instituto Geofísico del Perú, Sismo, IGP, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Oxapampa: rescatan a dos monos pichico víctimas del tráfico de fauna]]></title>
+        <description><![CDATA[La intervención se realizó gracias al aviso oportuno de una <strong>ciudadana</strong>. Los primates presentaban cuadro de <strong>deshidratación</strong> y alto <strong>estrés</strong>.]]></description>
+        <pubDate>Wed, 26 Aug 2026 13:29:49 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/oxapampa-rescatan-a-dos-monos-pichico-victimas-del-trafico-ilegal-de-fauna-noticia-1703803</link>
+        <guid>1703803</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/08/26/331633_1900615.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Oxapampa, Pasco, Monos, Amimales, Serfor, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Una nueva joya de la biodiversidad: descubren orquídea en el Parque Nacional Yanachaga Chemillén [FOTOS]]]></title>
+        <description><![CDATA[Una nueva especie de orquídea fue identificada en los bosques montanos del <strong>Parque Nacional Yanachaga Chemillén</strong>, en <a data-mce-href="https://rpp.pe/noticias/oxapampa" href="https://rpp.pe/noticias/oxapampa" target="_blank" rel="noopener"><strong>Oxapampa</strong></a>. La Lepanthes ashaninka fue descrita por investigadores peruanos y recibió su nombre en homenaje al pueblo indígena <strong>Asháninka</strong>.]]></description>
+        <pubDate>Sat, 08 Aug 2026 16:25:57 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-descubren-nueva-especie-de-orquidea-en-el-parque-nacional-yanachaga-chemillen-fotos-noticia-1700708</link>
+        <guid>1700708</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/08/08/portada_2440398.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Parque Nacional Yanachaga Chemillén, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: un sismo de magnitud 3.4 fue registrado esta mañana en Oxapampa]]></title>
+        <description><![CDATA[De acuerdo con información del <a href="https://rpp.pe/noticias/igp" target="_blank" rel="noopener" data-mrf-link="https://rpp.pe/noticias/igp" data-mrf-recirculation-id="Links Subtítulo_0" data-mce-href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú (IGP)</a>, el <a href="https://rpp.pe/noticias/sismo" target="_blank" rel="noopener" data-mrf-link="https://rpp.pe/noticias/sismo" data-mrf-recirculation-id="Links Subtítulo_1" data-mce-href="https://rpp.pe/noticias/sismo">sismo</a> se localizó<strong> </strong>a 3 kilómetros al noroeste del distrito de<strong> Huancabamba.</strong>]]></description>
+        <pubDate>Tue, 07 Jul 2026 06:15:19 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-un-sismo-de-magnitud-34-fue-registrado-esta-manana-en-oxapampa-noticia-1696197</link>
+        <guid>1696197</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/07/07/182218_1884753.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Sismo, Temblor, Instituto Geofísico del Perú, Pasco, Oxapampa, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 3.8 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 11 kilómetros al oeste de Pozuzo, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Tue, 16 Jun 2026 05:05:25 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-38-remecio-la-region-esta-madrugada-noticia-1693228</link>
+        <guid>1693228</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/06/16/030503_1878445.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, IGP, Sismo, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: mujer intentó ingresar marihuana oculta en su cuerpo al penal de Cochamarca]]></title>
+        <description><![CDATA[Según el <strong>Inpe</strong>, se trataba de un paquete cilíndrico de pequeñas dimensiones, envuelto en plástico transparente, cuyo análisis de campo arrojó resultado positivo para cannabis sativa (<strong>marihuana</strong>). Efectivos de la Comisaría de Cochamarca procedieron con la detención de la implicada.]]></description>
+        <pubDate>Sun, 14 Jun 2026 19:37:09 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/pasco-mujer-intento-ingresar-marihuana-oculta-en-su-cuerpo-al-penal-de-cochamarca-noticia-1693040</link>
+        <guid>1693040</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/06/14/552855_1877998.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Penal de  Cochamarca, Pasco, Inpe, Fiscalía, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Elecciones Regionales y Municipales 2026: afiliados eligen a sus candidatos en Arequipa y Pasco]]></title>
+        <description><![CDATA[Este domingo 17 de mayo el movimiento regional <em>Arequipa Avancemos </em>elegirá a sus candidatos para las <strong>Elecciones Regionales y Municipales 2026</strong>. La jornada electoral también se realiza en Pasco, en donde el Movimiento Regional <em>Pasco Joven</em> elegirá a sus candidatos.]]></description>
+        <pubDate>Sun, 17 May 2026 10:30:05 -0500</pubDate>
+        <link>https://rpp.pe/politica/elecciones/elecciones-regionales-y-municipales-2026-afiliados-eligen-a-sus-candidatos-en-arequipa-y-pasco-noticia-1688784</link>
+        <guid>1688784</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/05/17/192719_1868158.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Arequipa, Elecciones Regionales y Municipales 2026, elecciones primarias, ODPE, ONPE, Pasco, El Poder en tus Manos, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Las elecciones primarias del movimiento regional Pasco Joven se realizan este domingo]]></title>
+        <description><![CDATA[La organización cuenta con más de 2 100 afiliados y en este proceso se presentó una única lista, encabezada por su presidente, <strong>Neftaly Muñoz</strong>, quien aspira a llegar al gobierno regional.]]></description>
+        <pubDate>Sun, 17 May 2026 08:21:45 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/hoy-se-realizan-las-elecciones-primarias-del-movimiento-regional-pasco-joven-noticia-1688774</link>
+        <guid>1688774</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/05/17/26-05-17-07-42-29-31882-1868125mp4_1868126.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Pasco Joven, elecciones primarias, El Poder en tus Manos, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Intervienen a tres personas sospechosas de secuestrar a un hombre en Constitución]]></title>
+        <description><![CDATA[Según información de la PNP, los delincuentes se vistieron de policías para secuestrar a la víctima, por quien exigían el pago de 500 mil dólares a cambio de su liberación.]]></description>
+        <pubDate>Wed, 22 Apr 2026 08:04:44 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/intervienen-a-tres-personas-sindicadas-de-secuestrar-a-un-hombre-en-constitucion-noticia-1685359</link>
+        <guid>1685359</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/04/22/402940_1860161.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Policía Nacional, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: carretera sin asfaltar se agrieta tras deslizamiento de piedras en el centro poblado de Acobamba [VIDEO]]]></title>
+        <description><![CDATA[<a data-mce-href="https://rotafono.pe/" href="https://rotafono.pe/" target="_blank"><strong><em>Rotafono de RPP</em></strong></a> | Los pobladores de esta zona de <strong>Huariaca</strong>, en <a data-mce-href="https://rotafono.pe/tag/pasco?label=Pasco" href="https://rotafono.pe/tag/pasco?label=Pasco" target="_blank">Pasco </a>han advertido sobre los <strong>deslizamientos de rocas</strong> en la carretera sin asfaltar y temen que caiga en sus casas si no se hace nada al respecto.]]></description>
+        <pubDate>Fri, 27 Mar 2026 16:50:45 -0500</pubDate>
+        <link>https://rpp.pe/rotafono/emergencias/pasco-carretera-sin-asfaltar-se-agrieta-tras-deslizamiento-de-piedras-en-el-centro-poblado-de-acobamba-video-noticia-1681976</link>
+        <guid>1681976</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/03/27/atsapp-video-2026-03-27-at-23531-pm-1852435mp4_1852436.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, deslizamiento, deslizamiento de piedras, intensas lluvias, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Al menos cuatro fallecidos en trágico accidente de tránsito en la carretera Canta-Huayllay]]></title>
+        <description><![CDATA[Un automóvil chocó frontalmente <strong>con un bus interprovincial</strong>, tras lo cual terminó varios metros <a data-mce-href="https://rpp.pe/noticias/accidente-de-transito" href="https://rpp.pe/noticias/accidente-de-transito">fuera de la vía</a>.]]></description>
+        <pubDate>Wed, 04 Feb 2026 08:54:40 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-al-menos-cuatro-fallecidos-en-tragico-accidente-de-transito-en-la-carretera-canta-huayllay-noticia-1674362</link>
+        <guid>1674362</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/02/04/463346_1835355.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Canta, Pasco, Accidente de tránsito, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Frustran intento de fuga en penal de Pasco: reos realizaron forado y destruyeron el marco de una ventana]]></title>
+        <description><![CDATA[Agentes penitenciarios realizaron una<strong> “revisión focalizada”</strong> en el tercer piso del pabellón A-1 del <a data-mce-href="https://rpp.pe/noticias/pasco" href="https://rpp.pe/noticias/pasco">penal de Cochamarca</a>, desbaratando un plan de escape en marcha.]]></description>
+        <pubDate>Sat, 31 Jan 2026 10:30:50 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-frustran-intento-de-fuga-en-penal-reos-habian-destruido-el-marco-de-una-ventana-noticia-1673896</link>
+        <guid>1673896</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/01/31/044004_1834355.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Penal de Cochamarca, Pasco, INPE, Inseguridad ciudadana, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: joven pierde la vida tras caer de Balcón de Trama cuando intentaba tomarse una fotografía]]></title>
+        <description><![CDATA[Las autoridades activaron un operativo de rescate tras el accidente y trasladaron el cuerpo de la joven a la morgue de <strong><a data-mce-href="https://rpp.pe/noticias/la-merced" href="https://rpp.pe/noticias/la-merced" target="_blank" rel="noopener">La Merced</a></strong> para las diligencias de ley.]]></description>
+        <pubDate>Tue, 09 Dec 2025 11:11:56 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-joven-pierde-la-vida-tras-caer-de-balcon-de-trama-cuando-intentaba-tomarse-una-fotografia-noticia-1667162</link>
+        <guid>1667162</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/12/09/port-rpp-20251209-103540-1819688mp4_1819689.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Balcón de Trama, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: descubren una nueva especia de orquídea en el Parque Nacional Yanachaga - Chemillén]]></title>
+        <description><![CDATA[La <strong>orquídea destaca por su color amarillo verdoso </strong>y estructura única que la diferencian de otras especies. Fue<strong> hallada a más de 2,100 metros </strong>de <a data-mce-href="https://rpp.pe/peru/actualidad/actualizan-mapas-geologicos-de-la-sierra-central-ingemmet-reporta-nueva-informacion-sobre-fallas-activas-y-vetas-de-oro-noticia-1653235" href="https://rpp.pe/peru/actualidad/actualizan-mapas-geologicos-de-la-sierra-central-ingemmet-reporta-nueva-informacion-sobre-fallas-activas-y-vetas-de-oro-noticia-1653235">altitud.</a>]]></description>
+        <pubDate>Fri, 03 Oct 2025 16:48:37 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/descubren-una-nueva-especia-de-orquidea-en-pasco-en-el-parque-nacional-yanachaga-chemillen-noticia-1658028</link>
+        <guid>1658028</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/10/03/112311_1798504.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, orquídea, Sernanp, Parque Nacional Yanachaga - Chemillén, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Vehículo cae a pendiente en Pasco: accidente deja siete fallecidos, entre ellos un menor]]></title>
+        <description><![CDATA[El accidente ocurrió el lunes, pero fue recién este martes que efectivos de la <a data-mce-href="https://rpp.pe/noticias/policia-nacional-del-peru" href="https://rpp.pe/noticias/policia-nacional-del-peru" target="_blank" rel="noopener">Policía Nacional</a> y representantes del <a data-mce-href="https://rpp.pe/noticias/ministerio-publico" href="https://rpp.pe/noticias/ministerio-publico" target="_blank" rel="noopener">Ministerio Público</a> lograron recuperar los cuerpos.]]></description>
+        <pubDate>Tue, 26 Aug 2025 17:49:34 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/vehiculo-cae-a-pendiente-en-pasco-accidente-deja-siete-fallecidos-entre-ellos-un-menor-noticia-1652361</link>
+        <guid>1652361</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/08/26/atsapp-video-2025-08-26-at-42520-pm-1785238mp4_1785239.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, accidente vehicular, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.1 remeció la región Pasco esta mañana]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a seis kilómetros al noreste de Huancabamba, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Wed, 30 Jul 2025 11:00:06 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-41-remecio-la-region-esta-manana-noticia-1648406</link>
+        <guid>1648406</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/07/30/401040_1775298.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ IGP, Pasco, Sismo, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.8 remeció la región Pasco esta tarde]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 34 kilómetros al este de Villa Rica, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Fri, 11 Jul 2025 12:45:44 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-48-remecio-la-region-esta-tarde-noticia-1645920</link>
+        <guid>1645920</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/07/11/274627_1769239.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ IGP, Sismo, Pasco, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: pobladores toman como rehén al alcalde de Ninacaca por no cumplir con hacer obras]]></title>
+        <description><![CDATA[El general PNP<strong> Eloy Lara Bendezú</strong>, jefe de la <a data-mce-href="https://rpp.pe/peru/pasco" href="https://rpp.pe/peru/pasco">Región Policial Pasco</a>, señaló que los pobladores retuvieron y llevaron, a la fuerza, al burgomaestre hasta la comunidad de Ranyac para que brinde explicaciones.]]></description>
+        <pubDate>Tue, 17 Jun 2025 16:31:46 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-pobladores-toman-como-rehen-al-alcalde-de-ninacaca-por-no-cumplir-con-hacer-obras-noticia-1641478</link>
+        <guid>1641478</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/06/17/350935_1758833.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Policía Nacional, Fiscalía, Protesta, Videos más vistos, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.0 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 42 kilómetros al noreste de Puerto Bermúdez, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Fri, 16 May 2025 05:10:20 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-40-remecio-la-region-esta-madrugada-noticia-1634962</link>
+        <guid>1634962</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/05/16/090709_1744553.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Instituto Geofísico del Perú, Pasco, IGP, Sismo, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.1 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 21 kilómetros al noroeste de Huancabamba, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Sat, 03 May 2025 06:30:02 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-41-remecio-la-region-esta-madrugada-noticia-1632330</link>
+        <guid>1632330</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/05/03/073607_1738708.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Instituto Geofísico del Perú, Sismo, Pasco, IGP, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 3.7 remeció la región Pasco esta mañana]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 19 kilómetros al oeste de Pozuzo, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Fri, 25 Apr 2025 06:30:44 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-37-remecio-la-region-esta-manana-noticia-1630694</link>
+        <guid>1630694</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/04/25/373637_1735309.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Instituto Geofísico del Perú, IGP, Sismo, Pasco, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.3 remeció la región Pasco esta tarde]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 11 kilómetros al sur de <strong>Oxapampa</strong>, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Fri, 31 Jan 2025 14:40:49 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-43-remecio-la-region-esta-tarde-noticia-1613460</link>
+        <guid>1613460</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/01/31/283928_1699712.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Instituto Geofísico del Perú, IGP, Sismo, Pasco, Oxapampa, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: reportan unos 50 perros asesinados en una zona de Oxapampa]]></title>
+        <description><![CDATA[<a data-mce-href="https://rotafono.pe/" href="https://rotafono.pe/" target="_blank"><em><strong>Rotafono de RPP</strong></em></a> | Vecinos de Oxapampa indicaron que entre 2023 y 2024 hubo más de 160 perros asesinados en esta zona de <strong>Pasco </strong>y exigen a las autoridades dar con los responsable.]]></description>
+        <pubDate>Sun, 12 Jan 2025 20:27:52 -0500</pubDate>
+        <link>https://rpp.pe/rotafono/servicios-a-la-comunidad/pasco-reportan-unos-50-perros-asesinados-en-una-zona-de-oxapampa-noticia-1609522</link>
+        <guid>1609522</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2025/01/12/atsapp-video-2025-01-12-at-65110-pm-1-1691518mp4_1691519.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Oxapampa, rotafono, perros asesinos, Perros, perros envenenados, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Reserva Comunal El Sira ha perdido más de 12 mil hectáreas de bosque por minería ilegal y cultivo de coca]]></title>
+        <description><![CDATA[De acuerdo al <a data-mce-href="https://rpp.pe/economia/economia/cambios-en-ingemmet-generan-alerta-por-mineria-ilegal-pero-la-institucion-asegura-que-sus-procesos-son-transparentes-noticia-1602953" href="https://rpp.pe/economia/economia/cambios-en-ingemmet-generan-alerta-por-mineria-ilegal-pero-la-institucion-asegura-que-sus-procesos-son-transparentes-noticia-1602953">INGEMMET</a>, existen <strong>112 operaciones mineras </strong>en la zona de amortiguamiento (espacios adyacentes) de El Sira, lo que supone daños significativos para la integridad ecológica del área protegida.]]></description>
+        <pubDate>Wed, 11 Dec 2024 09:04:20 -0500</pubDate>
+        <link>https://rpp.pe/economia/economia/cies-reserva-comunal-el-sira-ha-perdido-mas-de-12-mil-hectareas-de-bosque-por-mineria-ilegal-y-cultivo-de-coca-ucayali-huanuco-pasco-noticia-1603830</link>
+        <guid>1603830</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/12/11/532653_1680218.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Minería ilegal, Cultivo de Coca, Amazonía, Ingemmet, CIES, Reserva Comunal El Sira, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 3.6 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 28 kilómetros al noreste de Villa Rica, en Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Tue, 03 Dec 2024 05:00:12 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-36-remecio-la-region-esta-madrugada-noticia-1602067</link>
+        <guid>1602067</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/12/03/471247_1676822.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ IGP, Pasco, Sismo, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[La policía encuentra a niña de 10 años y su perrito que habrían sido abandonados en terminal terrestre de Pasco]]></title>
+        <description><![CDATA[La menor tenía en su poder 600 soles dentro de una bolsa y deambulaba junto a su mascota. Las autoridades han iniciado la búsqueda de la madre para que responda por este caso en <strong>Pasco. </strong>]]></description>
+        <pubDate>Sun, 01 Dec 2024 20:43:27 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-nina-de-10-anos-y-su-perrito-habrian-sido-abandonados-en-terminal-terrestre-de-pasco-noticia-1601821</link>
+        <guid>1601821</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/12/01/403640_1676382.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Policía Nacional, Pasco, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.6 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 19 kilómetros al noroeste de Huancabamba, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Fri, 22 Nov 2024 05:00:25 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-46-remecio-la-region-esta-madrugada-noticia-1599916</link>
+        <guid>1599916</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/11/22/551055_1672478.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ IGP, Sismo, Pasco, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 3.5 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 12 kilómetros al noreste de Pozuzo, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Wed, 13 Nov 2024 05:15:06 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-35-remecio-la-region-esta-madrugada-noticia-1597951</link>
+        <guid>1597951</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/11/13/495649_1668634.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Instituto Geofísico del Perú, Sismo, Pasco, IGP, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: reportan robo de un camión con 16 toros que se dirigía de Huánuco a Lima]]></title>
+        <description><![CDATA[<a data-mce-href="https://rotafono.pe/" href="https://rotafono.pe/" target="_blank" rel="noopener"><em><strong>Rotafono de RPP</strong></em></a> | Unos ladrones interceptaron al camión lleno de toros en una zona cerca al distrito de Huayllay, en <a data-mce-href="https://rotafono.pe/tag/pasco?label=Pasco" href="https://rotafono.pe/tag/pasco?label=Pasco" target="_blank" rel="noopener">Pasco </a>este último lunes en la noche.]]></description>
+        <pubDate>Tue, 12 Nov 2024 15:55:19 -0500</pubDate>
+        <link>https://rpp.pe/rotafono/seguridad-ciudadana/pasco-reportan-robo-de-un-camion-con-16-toros-que-se-dirigia-de-huanuco-a-lima-noticia-1597833</link>
+        <guid>1597833</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/11/12/473347_1668473.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Robo de camión, rotafono, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.5 remeció la región Pasco esta mañana]]></title>
+        <description><![CDATA[De acuerdo con información del <a href="https://rpp.pe/noticias/igp" target="_blank" rel="noopener" data-mrf-link="https://rpp.pe/noticias/igp" data-mrf-recirculation-id="Links Subtítulo_0" data-mce-href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú (IGP)</a>, el epicentro del <a href="https://rpp.pe/noticias/sismo" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/sismo">sismo</a> se localizó<strong> </strong>a 2 kilómetros al noreste de Huancabamba, provincia de<strong> </strong>Oxapampa, región <a href="https://rpp.pe/peru/pasco" data-mce-href="https://rpp.pe/peru/pasco">Pasco</a>.]]></description>
+        <pubDate>Thu, 03 Oct 2024 09:15:08 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/un-sismo-de-magnitud-45-remecio-la-region-pasco-esta-manana-noticia-1588898</link>
+        <guid>1588898</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/10/03/235723_1650221.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ sismo, Pasco, IGP, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: incautan 190 kilos de droga líquida y cuatro toneladas de insumos químicos en pozas de maceración]]></title>
+        <description><![CDATA[La <a data-mce-href="https://rpp.pe/lima/policiales/manchay-capturan-a-presuntos-integrantes-de-banda-dedicada-a-la-extorsion-sicariato-entre-otros-delitos-noticia-1583876" href="https://rpp.pe/lima/policiales/manchay-capturan-a-presuntos-integrantes-de-banda-dedicada-a-la-extorsion-sicariato-entre-otros-delitos-noticia-1583876"><strong>Policía Nacional</strong></a> intervino y destruyó tres laboratorios clandestinos, en donde también se encontraron escopetas y celulares, que serán claves para dar con la identidad de los narcotraficantes.]]></description>
+        <pubDate>Tue, 17 Sep 2024 09:15:59 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-incautan-190-kilos-de-droga-liquida-y-cuatro-toneladas-de-insumos-quimicos-en-pozas-de-maceracion-noticia-1584714</link>
+        <guid>1584714</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/09/17/471447_1642154.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Narcotráfico, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.6 remeció la región Pasco esta tarde]]></title>
+        <description><![CDATA[De acuerdo con información del <a href="https://rpp.pe/noticias/igp" target="_blank" rel="noopener" data-mrf-link="https://rpp.pe/noticias/igp" data-mrf-recirculation-id="Links Subtítulo_0" data-mce-href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú (IGP)</a>, el epicentro del <a href="https://rpp.pe/noticias/sismo" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/sismo">sismo</a> se localizó<strong> </strong>a 36 kilómetros al sureste de Puerto Bermúdez, provincia de<strong> </strong>Oxapampa, región <a href="https://rpp.pe/peru/pasco" data-mce-href="https://rpp.pe/peru/pasco">Pasco</a>.]]></description>
+        <pubDate>Thu, 08 Aug 2024 14:34:43 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/un-sismo-de-magnitud-46-remecio-la-region-pasco-la-tarde-del-jueves-8-de-agosto-noticia-1575155</link>
+        <guid>1575155</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/08/08/372237_1623978.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, sismo, IGP, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.3 remeció la región Pasco esta mañana]]></title>
+        <description><![CDATA[De acuerdo con información del <a href="https://rpp.pe/noticias/igp" target="_blank" rel="noopener" data-mrf-link="https://rpp.pe/noticias/igp" data-mrf-recirculation-id="Links Subtítulo_0" data-mce-href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú (IGP)</a>, el epicentro del <a href="https://rpp.pe/noticias/sismo" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/sismo">sismo</a> se localizó<strong> </strong>a 7 kilómetros al oeste de Pozuzo, provincia de<strong> </strong>Oxapampa, región <a data-mce-href="https://rpp.pe/peru/pasco" href="https://rpp.pe/peru/pasco">Pasco</a>.]]></description>
+        <pubDate>Wed, 31 Jul 2024 09:55:10 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-43-remecio-oxapampa-esta-manana-noticia-1573154</link>
+        <guid>1573154</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/07/31/344534_1620129.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Sismo, IGP, Pasco, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Presunta banda delictiva integrada por trabajadores del MTC cobraba hasta S/2 000 para entregar licencias de conducir de manera irregular]]></title>
+        <description><![CDATA[Los presuntos integrantes de la banda '<strong>Los confiables del centro' </strong>operaban en la provincia de Oxapampa, en la región de <strong>Pasco</strong>. La PNP y la Fiscalía allanaron tres viviendas y detuvieron a 15 personas involucradas. Además, incautaron tres vehículos y S/50 000.]]></description>
+        <pubDate>Mon, 24 Jun 2024 17:36:44 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/presunta-banda-delictiva-integrada-por-trabajadores-del-mtc-cobraba-para-entregar-licencias-de-manera-irregular-noticia-1564211</link>
+        <guid>1564211</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/06/24/513351_1601908.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ MTC, Los confiables del centro, Fiscalía, Policía Nacional del Perú, Licencia de conducir, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 5.0 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 45 kilómetros al norte de Puerto Bermúdez, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Fri, 24 May 2024 05:00:16 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-50-remecio-la-region-esta-madrugada-noticia-1556977</link>
+        <guid>1556977</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/05/24/571157_1586748.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ IGP, Sismo, Pasco, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Ocho personas murieron tras choque entre un tráiler y una combi en Pasco]]></title>
+        <description><![CDATA[El <strong>accidente </strong>se registró en un sector conocido como La Aurora, a cinco minutos de distancia del puente Huanchal, en el distrito de Ticlacayán, provincia de <a data-mce-href="https://rpp.pe/peru/pasco" href="https://rpp.pe/peru/pasco">Pasco</a>. Entre los <strong>fallecidos </strong>se identificó a dos menores de edad.]]></description>
+        <pubDate>Mon, 20 May 2024 10:22:59 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/ocho-personas-murieron-tras-choque-entre-un-trailer-y-una-combi-en-pasco-noticia-1555924</link>
+        <guid>1555924</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/05/20/591359_1584615.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Accidente, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.5 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 40 kilómetros al este de Villa Rica, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Tue, 07 May 2024 05:00:24 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-45-remecio-la-region-esta-madrugada-noticia-1552824</link>
+        <guid>1552824</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/05/07/120412_1577874.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ IGP, Sismo, Pasco, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.1 remeció la región Pasco esta mañana]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 10 kilómetros al noreste de Huancabamba, en la provincia de Oxapampa, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Wed, 01 May 2024 06:15:00 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-41-remecio-la-region-esta-manana-noticia-1551621</link>
+        <guid>1551621</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/05/01/362236_1575300.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ IGP, Sismo, Pasco, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: buses y camiones varados por bloqueo de carretera central]]></title>
+        <description><![CDATA[<a data-mce-href="https://rotafono.pe/" href="https://rotafono.pe/"><em><strong>Rotafono de RPP</strong></em></a> | Pobladores del distrito de Huariaca acatan un paro para exigir a Provías Nacional que<strong> </strong>efectúen el mantenimiento de la vía que se encuentra en pésimo estado.]]></description>
+        <pubDate>Wed, 24 Apr 2024 12:13:33 -0500</pubDate>
+        <link>https://rpp.pe/rotafono/transito-y-transporte/pasco-buses-y-camiones-varados-por-bloqueo-de-carretera-central-noticia-1550070</link>
+        <guid>1550070</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/04/24/atsapp-video-2024-04-24-at-92055-am-1571872mp4_1571873.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ ROTAFONO, PARO DE TRANSPORTE, Pasco, tránsito, HUARICA, Provias, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: un sismo de magnitud 5.0 se sintió esta noche en Oxapampa]]></title>
+        <description><![CDATA[De acuerdo con información del <a href="https://rpp.pe/noticias/igp" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/igp" data-mrf-link="https://rpp.pe/noticias/igp" data-mrf-recirculation-id="Links Subtítulo_0">Instituto Geofísico del Perú (IGP)</a>, el <a href="https://rpp.pe/noticias/sismo" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/sismo" data-mrf-link="https://rpp.pe/noticias/sismo" data-mrf-recirculation-id="Links Subtítulo_1">sismo</a> se localizó<strong> </strong>a 15 kilómetros al sureoeste de <strong>Huancabamba.</strong>]]></description>
+        <pubDate>Tue, 02 Apr 2024 22:43:30 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-un-sismo-de-magnitud-50-se-sintio-esta-noche-en-oxapampa-noticia-1545021</link>
+        <guid>1545021</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/04/02/395039_1561193.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Huancabamba, Oxapampa, Pasco, Instituto Geofísico del Perú, Temblor, Sismo, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: reportan el desborde del río Llamaquizú de la provincia de Oxapampa]]></title>
+        <description><![CDATA[<a data-mce-href="https://rotafono.pe/" href="https://rotafono.pe/"><strong><em>Rotafono de RPP</em> |</strong></a> El desborde fue a las 5.00 a. m. y perjudicó una planta lechera y viviendas de pobladores que se dedican a la agricultura o la ganadería.]]></description>
+        <pubDate>Wed, 28 Feb 2024 13:08:25 -0500</pubDate>
+        <link>https://rpp.pe/rotafono/eventos-naturales/pasco-reportan-el-desborde-del-rio-llamaquizu-de-la-provincia-de-oxapampa-noticia-1537489</link>
+        <guid>1537489</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/02/28/portada_585858.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Rotafono, Pasco, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Jóvenes científicos de Pasco enviarán un nanosatélite al espacio]]></title>
+        <description><![CDATA[Jina Mayely Huamán Mendoza, presidenta del <strong>Club de Ciencias 'Ashishum Yachachiqkuta' (Buscando el saber)</strong>, habla sobre el proyecto en el que están trabajando para <strong>enviar un nanosatélite al espacio</strong> como parte del proyecto <strong>CubeSats in PERU</strong>.]]></description>
+        <pubDate>Mon, 12 Feb 2024 14:55:22 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/jovenes-cientificos-de-pasco-enviaran-un-nanosatelite-al-espacio-noticia-1533831</link>
+        <guid>1533831</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/02/12/audio-1-1538022mp3_1538023.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Nanosatélites, Pasco, Jovenes Científicos, Espacio, Audiogalería, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.3 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 32 kilómetros al noroeste de Puerto Bermúdez, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Sat, 13 Jan 2024 07:00:20 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-43-remecio-la-region-esta-madrugada-noticia-1527222</link>
+        <guid>1527222</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/01/13/242024_1524501.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Instituto Geofísico del Perú, IGP, Sismo, Pasco, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: reportan desborde de ríos Huachón y Ranyac en comunidad campesina de Quiparacrac [VIDEO]]]></title>
+        <description><![CDATA[<strong><a data-mce-href="https://rotafono.pe/" href="https://rotafono.pe/"><em>Rotafono de RPP</em></a> </strong>| Los pobladores indicaron que <strong>inundaciones </strong>en esta zona de la región <a data-mce-href="https://rotafono.pe/casos/?departamento=pasco" href="https://rotafono.pe/casos/?departamento=pasco">Pasco</a> afectaron aproximadamente 30 viviendas y causaron pérdidas de campos agrícolas.]]></description>
+        <pubDate>Fri, 05 Jan 2024 12:15:07 -0500</pubDate>
+        <link>https://rpp.pe/rotafono/eventos-naturales/pasco-reportan-desborde-de-rios-huachon-y-ranyac-en-comunidad-campesina-de-quiparacrac-video-noticia-1525728</link>
+        <guid>1525728</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/01/05/pasco-2024-01-05-10-18-15-31741-1521362mp4_1521364.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Rotafono, desborde, río, Quiparacrac, río Huachón, río Ranyac, Pasco, Inundación, Pasco, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Pasco: vivienda se desploma tras intensas lluvias en Huachón [VIDEO]]]></title>
+        <description><![CDATA[<strong>El hecho no dejó heridos</strong>, pero las calles del distrito<strong> </strong><em></em>de <strong>Huachón </strong>quedaron inundadas, luego de más de 10 horas de <a href="https://rpp.pe/noticias/lluvias" data-mce-href="https://rpp.pe/noticias/lluvias">lluvias fuertes</a>.]]></description>
+        <pubDate>Fri, 05 Jan 2024 10:57:16 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-vivienda-se-desploma-tras-intensas-lluvias-en-huanchon-video-noticia-1525751</link>
+        <guid>1525751</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2024/01/05/whatsapp-video-2024-01-05-at-93251-am-1521367mp4_1521368.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, lluvias, Fenómeno El Niño, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 3.7 remeció la región Pasco esta madrugada]]></title>
+        <description><![CDATA[De acuerdo con información del <a href="https://rpp.pe/noticias/igp" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú (<strong>IGP</strong>)</a>, el <a href="https://rpp.pe/noticias/sismo" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/sismo">sismo</a> se localizó<strong> </strong>a 18 kilómetros al suroeste de Pozuzo, en la provincia Oxapampa, región<a data-mce-href="https://rpp.pe/peru/pasco" href="https://rpp.pe/peru/pasco"> Pasco</a>.]]></description>
+        <pubDate>Tue, 24 Oct 2023 05:00:33 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-37-remecio-oxapampa-esta-madrugada-noticia-1512162</link>
+        <guid>1512162</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2023/10/24/111311_1490964.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, sismo, IGP, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.0 remeció la región Pasco esta tarde]]></title>
+        <description><![CDATA[De acuerdo con información del <a href="https://rpp.pe/noticias/igp" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú (<strong>IGP</strong>)</a>, el <a href="https://rpp.pe/noticias/sismo" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/sismo">sismo</a> se localizó<strong> </strong>a 62 kilómetros al noroeste de Puerto Bermúdez, en la provincia de Oxapampa, región <a data-mce-href="https://rpp.pe/peru/pasco" href="https://rpp.pe/peru/pasco">Pasco</a>.]]></description>
+        <pubDate>Fri, 20 Oct 2023 14:27:52 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-40-remecio-la-region-esta-tarde-noticia-1511737</link>
+        <guid>1511737</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2023/10/20/252225_1489986.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ IGP, sismo, Pasco, Noticias Última Hora]]></media:keywords>
+      </item>
+     </channel>
+</rss>
