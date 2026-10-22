@@ -1,12 +1,18 @@
 """Dibuja los diagramas de arquitectura a partir de ``docs/arquitectura.json``.
 
 Uso:
-    python -m tools.architecture [--check]   # --check: falla si los SVG no están al día
+    python -m tools.architecture [--check] [--explorer ruta.html]
+    # --check: falla si los SVG, el texto o el explorador no están al día
+    # --explorer: además escribe el explorador en un solo archivo, que se abre sin servidor
 
 Escribe ``docs/arquitectura.svg`` (completo), ``docs/arquitectura-simple.svg``
-(simplificado) y sus copias en ``public/assets/``. Las cajas y las conexiones
-salen del modelo; las líneas se trazan solas (rutas ortogonales que esquivan
-las cajas), así que agregar una conexión es editar el JSON y volver a correr.
+(simplificado), sus versiones en inglés (``-en.svg``) y sus copias en
+``public/assets/``; los anexos A1 a A10 de ``docs/arquitectura-anexos.json``
+en ``docs/anexos/`` y ``public/assets/anexos/``; el explorador
+``public/arquitectura.html`` y el texto de ``docs/arquitectura.md``. Las cajas
+y las conexiones salen del modelo; las líneas se trazan solas (rutas
+ortogonales que esquivan las cajas), así que agregar una conexión es editar el
+JSON y volver a correr.
 
 Los anchos de texto se miden con las métricas de DejaVu Sans, la más ancha de
 las fuentes del sistema que usan los navegadores: si cabe con ella, cabe en
@@ -272,6 +278,11 @@ def _rules(pal: dict) -> list[tuple[str, str]]:
         (".ar-step", f"fill: {v('brand')};"),
         (".ar-step-n", f"fill: {v('bg-elev')};"),
         (".ar-rule", f"stroke: {v('line')};"),
+        (".ar-chip", f"fill: {v('bg-sunk')}; stroke: {v('line')};"),
+        (".ar-chip-t", f"fill: {v('fg-2')};"),
+        (".ar-tag", f"fill: {v('bg-elev')}; stroke: {v('brand-2')};"),
+        (".ar-tag-t, .ar-link", f"fill: {v('brand-2')};"),
+        (".ar-warn", f"stroke: {v('watch')};"),
     ]
     for g, var in GROUP_VAR.items():
         r.append((f".ar-g-{g}", f"stroke: {v(var)};"))
@@ -293,6 +304,13 @@ def style_block() -> str:
         ".ar-e { fill: none; stroke-width: 1.5; }",
         ".ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }",
         ".ar-node-g:hover .ar-node { stroke-width: 3; }",
+        ".ar-tile { fill-opacity: 0.13; }",
+        ".ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }",
+        ".ar-chip { stroke-width: 1; }",
+        ".ar-tag { stroke-width: 1.2; }",
+        ".ar-tag-t, .ar-link { font-weight: 700; }",
+        ".ar-annex { cursor: pointer; }",
+        ".ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }",
     ]
     out = ["  <style>"]
     out += [f"    {x}" for x in fixed]
@@ -324,21 +342,97 @@ def t(x, y, s, cls, size, anchor=None, extra=""):
 # ---------------------------------------------------------------------------
 # Cajas
 # ---------------------------------------------------------------------------
+TAG_SIZE, CHIP_SIZE, CHIP_H, TILE = 10.5, 10, 17, 30
+
+# Íconos de los anexos: trazos propios en una grilla de 24×24 (como public/assets/js/icons.js), sin logotipos.
+ICONS = {
+    "clock": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    "calendar": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    "server": '<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01M11 7.5h6M11 16.5h6"/>',
+    "laptop": '<rect x="5" y="5" width="14" height="10" rx="1.5"/><path d="M2.5 19h19l-2-4h-15z"/>',
+    "cloud": '<path d="M7 19a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9.5a4.75 4.75 0 0 1-.5 9.5z"/>',
+    "flow": '<circle cx="5" cy="6" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 6h3a3 3 0 0 1 3 3v0a3 3 0 0 0 3 3M7.5 18h3a3 3 0 0 0 3-3v0a3 3 0 0 1 3-3"/>',
+    "branch": '<circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="7" r="2.2"/><path d="M6 7.2v9.6M18 9.2c0 5-6 3.5-11 7.8"/>',
+    "commit": '<circle cx="12" cy="12" r="3.5"/><path d="M2 12h6.5M15.5 12H22"/>',
+    "globe": '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/>',
+    "pdf": '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',
+    "rss": '<path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.4"/>',
+    "database": '<ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8v-13M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/>',
+    "archive": '<rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/>',
+    "shield": '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+    "alert": '<path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/>',
+    "mail": '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/>',
+    "user": '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    "users": '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/>',
+    "pin": '<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+    "chart": '<path d="M4 4v16h16"/><path d="M7 15l4-5 3 3 5-6"/>',
+    "search": '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>',
+    "key": '<circle cx="8" cy="15" r="4.5"/><path d="M11.2 11.8L20 3M16 7l3 3M14 9l2 2"/>',
+    "lock": '<rect x="4.5" y="10.5" width="15" height="10.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5M12 14.5v2.5"/>',
+    "upload": '<path d="M12 16V4M7 9l5-5 5 5M5 20h14"/>',
+    "download": '<path d="M12 4v12M7 11l5 5 5-5M5 20h14"/>',
+    "refresh": '<path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/>',
+    "list": '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>',
+    "eye": '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    "terminal": '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12.5 15H17"/>',
+    "rocket": '<path d="M5 15c-1.5 1.5-2 4.5-2 6 1.5 0 4.5-.5 6-2M14.5 4.5c3-1.5 5-1.5 5.5-1 .5.5.5 2.5-1 5.5L13 15l-4-4z"/><path d="M9 11l-3.5-.5L8 7.5l4 .5M13 15l.5 3.5L16.5 16l-.5-4"/>',
+    "monitor": '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8.5 20h7M12 16v4"/>',
+    "check": '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/>',
+    "history": '<path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 4v4.5H8M12 8v4.5l3 2"/>',
+    "filter": '<path d="M3 5h18l-7 8.5V20l-4-2v-4.5z"/>',
+    "merge": '<circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 7.2v9.6M7.5 6.6C9 10 12 12 15.8 12"/>',
+    "robot": '<rect x="5" y="8" width="14" height="11" rx="2"/><path d="M12 8V4.5M9.5 12.5h.01M14.5 12.5h.01M9.5 16h5M3 12.5v3M21 12.5v3"/><circle cx="12" cy="4" r="1"/>',
+    "sparkle": '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/>',
+    "layers": '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+    "bell": '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+    "map": '<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
+    "box": '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
+    "wave": '<path d="M2 12c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M2 17c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M12 3v4"/>',
+    "code": '<path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/>',
+    "chat": '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+    "link": '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+}
+
+
+def tag_width(label: str) -> float:
+    return text_width(label, TAG_SIZE, True) + 12
+
+
 class Box:
-    def __init__(self, node: dict, x: float, y: float, w: float, lang: str, sizes: tuple, step: str = ""):
+    """Caja con título, texto y detalle. Opcionales: ``step`` (número del recorrido), ``tags`` (anexos a los que
+    remite: (id, etiqueta, href, explicación)), y en los anexos el ícono (``node["icon"]``) y las tecnologías
+    (``node["tech"]``)."""
+
+    def __init__(self, node: dict, x: float, y: float, w: float, lang: str, sizes: tuple, step: str = "",
+                 tags: list | None = None):
         self.node, self.id, self.x, self.y, self.w = node, node["id"], x, y, w
         self.group = node.get("group", "pipeline")
         ts, ss, ms = sizes
         self.sizes = sizes
         self.step = step
+        self.tags = tags or []
+        self.icon = node.get("icon") or ""
         pad = 12
-        inner = w - 2 * pad - (26 if step else 0)
+        self.tags_w = sum(tag_width(tg[1]) for tg in self.tags) + 4 * max(0, len(self.tags) - 1) + (8 if self.tags else 0)
+        inner = w - 2 * pad - (26 if step else 0) - (TILE + 8 if self.icon else 0) - self.tags_w
         self.title = wrap(node[f"name_{lang}"], inner, ts, True)
         self.body = wrap(node[f"what_{lang}"], w - 2 * pad, ss)
         meta = node.get(f"meta_{lang}") or ""
         self.meta = wrap(meta, w - 2 * pad, ms) if meta else []
         self.lh_t, self.lh_s, self.lh_m = ts * 1.3, ss * 1.38, ms * 1.38
-        self.h = pad + len(self.title) * self.lh_t + 4 + len(self.body) * self.lh_s + (len(self.meta) * self.lh_m + 4 if self.meta else 0) + pad - 2
+        # Tecnologías: fichas en filas, al pie de la caja.
+        self.chips: list[tuple[float, float, str]] = []
+        cx, row = 0.0, 0
+        for name in node.get("tech") or []:
+            cw = text_width(name, CHIP_SIZE) + 12
+            if cx and cx + cw > w - 2 * pad:
+                cx, row = 0.0, row + 1
+            self.chips.append((cx, row * (CHIP_H + 5), name))
+            cx += cw + 5
+        chips_h = self.chips_h = (row + 1) * (CHIP_H + 5) + 2 if self.chips else 0
+        head = max(len(self.title) * self.lh_t, TILE + 4 if self.icon else 0, 20 if self.tags else 0)
+        self.head = head
+        self.h = pad + head + 4 + len(self.body) * self.lh_s + (len(self.meta) * self.lh_m + 4 if self.meta else 0) + chips_h + pad - 2
 
     @property
     def rect(self):
@@ -365,10 +459,17 @@ class Box:
             o.append(f'    <circle class="ar-step" cx="{_n(tx + 9)}" cy="{_n(y - ts * 0.36)}" r="10"/>')
             o.append("    " + t(tx + 9, y - ts * 0.36 + 4.2, self.step, "ar-step-n", 12, "middle"))
             tx += 26
+        if self.icon:
+            ty = self.y + pad - 2
+            o.append(f'    <rect class="ar-tile ar-f-{self.group}" x="{_n(tx)}" y="{_n(ty)}" width="{TILE}" height="{TILE}" rx="7"/>')
+            o.append(f'    <g class="ar-icon ar-g-{self.group}" transform="translate({_n(tx + 3)} {_n(ty + 3)})">{ICONS[self.icon]}</g>')
+            if len(self.title) == 1:
+                y = ty + TILE / 2 + ts * 0.36
+            tx += TILE + 8
         for line in self.title:
             o.append("    " + t(tx, y, line, "ar-t", ts))
             y += self.lh_t
-        y += 4 - self.lh_t + self.lh_s
+        y = self.y + pad + self.head + 4 + (ts - self.lh_t) + self.lh_s
         for line in self.body:
             o.append("    " + t(self.x + pad, y, line, "ar-s", ss))
             y += self.lh_s
@@ -377,6 +478,21 @@ class Box:
             for line in self.meta:
                 o.append("    " + t(self.x + pad, y, line, "ar-m", ms))
                 y += self.lh_m
+        if self.chips:
+            cy0 = self.y + self.h - 4 - self.chips_h
+            for cx, dy, name in self.chips:
+                cw = text_width(name, CHIP_SIZE) + 12
+                o.append(f'    <rect class="ar-chip" x="{_n(self.x + pad + cx)}" y="{_n(cy0 + dy)}" width="{_n(cw)}" height="{CHIP_H}" rx="8.5"/>')
+                o.append("    " + t(self.x + pad + cx + 6, cy0 + dy + 12, name, "ar-chip-t", CHIP_SIZE))
+        # Las etiquetas de anexo van al final: así el primer texto de la caja sigue siendo su título.
+        tx = self.x + self.w - pad + 4
+        for aid, label, href, tip in reversed(self.tags):
+            tw = tag_width(label)
+            tx -= tw
+            o.append(f'    <a class="ar-annex" href="{escape(href)}" data-annex="{aid}"><title>{escape(tip)}</title>'
+                     f'<rect class="ar-tag" x="{_n(tx)}" y="{_n(self.y + 7)}" width="{_n(tw)}" height="17" rx="8.5"/>'
+                     + t(tx + tw / 2, self.y + 19.5, label, "ar-tag-t", TAG_SIZE, "middle") + "</a>")
+            tx -= 4
         o.append("  </g>")
         return o
 
@@ -562,9 +678,19 @@ def edge_svg(prefix: str, i: int, e: dict, pts, badge: str, bpos, label: str | N
 # ---------------------------------------------------------------------------
 UI = {
     "es": {"how": "Cómo leerlo", "edges": "Conexiones", "steps": "Recorrido", "key": "Líneas:",
-           "kinds": {"data": "datos", "fallback": "respaldo", "trigger": "disparo o control", "human": "paso manual"}},
+           "kinds": {"data": "datos", "fallback": "respaldo", "trigger": "disparo o control", "human": "paso manual"},
+           "annex": "Anexo", "annex_steps": "Pasos y conexiones", "annex_edges": "qué viaja por cada línea, cuándo y por qué",
+           "fails": "Si algo falla", "fails_sub": "qué pasa y qué respaldo entra",
+           "details": "Detalla estas cajas del diagrama completo:", "back": "← Volver al diagrama completo",
+           "tags": "Las etiquetas A1 a A{n} abren el anexo de cada parte: sus pasos, tecnologías y respaldos.",
+           "tech": "Tecnología"},
     "en": {"how": "How to read it", "edges": "Connections", "steps": "Walkthrough", "key": "Lines:",
-           "kinds": {"data": "data", "fallback": "fallback", "trigger": "trigger or control", "human": "manual step"}},
+           "kinds": {"data": "data", "fallback": "fallback", "trigger": "trigger or control", "human": "manual step"},
+           "annex": "Annex", "annex_steps": "Steps and connections", "annex_edges": "what travels along each line, when and why",
+           "fails": "If something fails", "fails_sub": "what happens and which fallback takes over",
+           "details": "Details these boxes of the full diagram:", "back": "← Back to the full diagram",
+           "tags": "Tags A1 to A{n} open each part's annex: its steps, technologies and fallbacks.",
+           "tech": "Technology"},
 }
 
 
@@ -583,13 +709,16 @@ def _key_row(x: float, y: float, lang: str, prefix: str) -> tuple[list[str], flo
 def _tip(n: dict, lang: str) -> str:
     parts = [n[f"name_{lang}"] + ".", n[f"what_{lang}"]]
     if n.get(f"meta_{lang}"):
-        parts.append(n[f"meta_{lang}"])
+        parts.append(n[f"meta_{lang}"].rstrip(".") + ".")
+    if n.get("tech"):
+        parts.append(f'{UI[lang]["tech"]}: {", ".join(n["tech"])}.')
     return " ".join(parts)
 
 
 def _etip(e: dict, nodes: dict, lang: str, badge: str) -> str:
     a, b = nodes[e["from"]][f"name_{lang}"], nodes[e["to"]][f"name_{lang}"]
-    return f"{badge}. {a} → {b}: {e[f'label_{lang}']}. {e[f'explain_{lang}']}"
+    expl = e.get(f"explain_{lang}", "")
+    return f"{badge}. {a} → {b}: {e[f'label_{lang}']}." + (f" {expl}" if expl else "")
 
 
 def _legend(entries: list[tuple[str, str, str, str, str]], x: float, y: float, width: float, ncols: int,
@@ -601,7 +730,7 @@ def _legend(entries: list[tuple[str, str, str, str, str]], x: float, y: float, w
     for badge, kind, title, sub, body in entries:
         tl = wrap(title, colw - text_x, 11.5, True)
         sl = wrap(sub, colw - text_x, 10.5) if sub else []
-        bl = wrap(body, colw - text_x, 11)
+        bl = wrap(body, colw - text_x, 11) if body else []
         h = len(tl) * 15 + len(sl) * 14 + len(bl) * 15 + 12
         blocks.append((badge, kind, tl, sl, bl, h))
     total = sum(b[-1] for b in blocks)
@@ -620,7 +749,9 @@ def _legend(entries: list[tuple[str, str, str, str, str]], x: float, y: float, w
         cx, cy = x + ci * (colw + gap), y
         for badge, kind, tl, sl, bl, h in col:
             k = kind if kind in EDGE_STYLE else "data"
-            if kind == "step":
+            if kind == "warn":
+                o.append(f'<g class="ar-warn" transform="translate({_n(cx)} {_n(cy - 5)}) scale(0.85)">{ICONS["alert"]}</g>')
+            elif kind == "step":
                 o.append(f'<circle class="ar-step" cx="{_n(cx + 10)}" cy="{_n(cy + 6)}" r="10"/>')
                 o.append(t(cx + 10, cy + 10.2, badge, "ar-step-n", 11.5, "middle"))
             else:
@@ -658,15 +789,29 @@ def _svg(prefix: str, width: float, height: float, title: str, desc: str, body: 
     ])
 
 
-def render_full(model: dict, lang: str = "es") -> str:
+def annex_file(aid: str, lang: str) -> str:
+    return f"{aid}{'-en' if lang == 'en' else ''}.svg"
+
+
+def annex_tag(a: dict, lang: str, base: str = "anexos/") -> tuple[str, str, str, str]:
+    return (a["id"], a["id"].upper(), base + annex_file(a["id"], lang), f'{UI[lang]["annex"]} {a["id"].upper()}: {a[f"title_{lang}"]}')
+
+
+def _subtitle(text: str, lang: str, annexes: list | None) -> str:
+    return f'{text} {UI[lang]["tags"].format(n=len(annexes))}' if annexes else text
+
+
+def render_full(model: dict, lang: str = "es", annexes: list | None = None) -> str:
     m = model["full"]
     P = "af"
     W, M = m["width"], 20
     MC = m.get("margin", 44)  # las columnas dejan a cada lado un pasillo para las líneas
     nodes = {n["id"]: n for n in m["nodes"]}
+    # Cada caja remite al anexo que la detalla.
+    tag_of = {c: [annex_tag(a, lang)] for a in annexes or [] for c in a["covers"]}
     body: list[str] = []
     body.append(t(M, 38, m[f"title_{lang}"], "ar-big", 20))
-    sub = wrap(m[f"subtitle_{lang}"], W - 2 * M, 12)
+    sub = wrap(_subtitle(m[f"subtitle_{lang}"], lang, annexes), W - 2 * M, 12)
     y = 60
     for line in sub:
         body.append(t(M, y, line, "ar-s", 12))
@@ -687,7 +832,7 @@ def render_full(model: dict, lang: str = "es") -> str:
         cy = top + 40
         for n in (n for n in m["nodes"] if n.get("col") == c["id"]):
             cy += n.get("gap_before", 0)
-            b = Box(n, xs[ci] + 10, cy, c["w"] - 20, lang, (12.5, 11, 10.5))
+            b = Box(n, xs[ci] + 10, cy, c["w"] - 20, lang, (12.5, 11, 10.5), tags=tag_of.get(n["id"]))
             boxes[n["id"]] = b
             col_of[n["id"]] = ci
             cy += b.h + m.get("gap", 26)
@@ -711,7 +856,7 @@ def render_full(model: dict, lang: str = "es") -> str:
         rh = 0.0
         for n in rows[r]:
             ci = col_idx[n["slot"]]
-            b = Box(n, xs[ci] + 10, ry, cols[ci]["w"] - 20, lang, (12.5, 11, 10.5))
+            b = Box(n, xs[ci] + 10, ry, cols[ci]["w"] - 20, lang, (12.5, 11, 10.5), tags=tag_of.get(n["id"]))
             boxes[n["id"]] = b
             rh = max(rh, b.h)
         ry += rh + m.get("band_gap", 40)
@@ -757,8 +902,12 @@ def render_full(model: dict, lang: str = "es") -> str:
     return _svg(P, W, H, m[f"title_{lang}"], m[f"desc_{lang}"], body)
 
 
-def render_simple(model: dict, lang: str = "es") -> str:
+def render_simple(model: dict, lang: str = "es", annexes: list | None = None) -> str:
     m = model["simple"]
+    tag_of: dict[str, list] = {}
+    for a in annexes or []:
+        for sid in a.get("simple", []):
+            tag_of.setdefault(sid, []).append(annex_tag(a, lang))
     P = "as"
     W, M = m["width"], 20
     nodes = {n["id"]: n for n in m["nodes"]}
@@ -773,7 +922,7 @@ def render_simple(model: dict, lang: str = "es") -> str:
     body: list[str] = []
     body.append(t(M, 38, m[f"title_{lang}"], "ar-big", 20))
     y = 60
-    for line in wrap(m[f"subtitle_{lang}"], W - 2 * M, 12):
+    for line in wrap(_subtitle(m[f"subtitle_{lang}"], lang, annexes), W - 2 * M, 12):
         body.append(t(M, y, line, "ar-s", 12))
         y += 17
     k, _ = _key_row(M, y + 6, lang, P)
@@ -781,7 +930,8 @@ def render_simple(model: dict, lang: str = "es") -> str:
     top = y + 34
     boxes: dict[str, Box] = {}
     for n in m["nodes"]:
-        boxes[n["id"]] = Box(n, n["x"], top + n["y"], n["w"], lang, (14, 12, 11), step_of.get(n["id"], ""))
+        boxes[n["id"]] = Box(n, n["x"], top + n["y"], n["w"], lang, (14, 12, 11), step_of.get(n["id"], ""),
+                             tags=tag_of.get(n["id"]))
     region_h = max(b.y + b.h for b in boxes.values()) + 30
     routes = route_edges(boxes, m["edges"], {}, W, region_h, 6, [(0, 0, W, top - 12)])
     taken: list = []
@@ -819,8 +969,140 @@ def render_simple(model: dict, lang: str = "es") -> str:
     return _svg(P, W, H, m[f"title_{lang}"], m[f"desc_{lang}"], body)
 
 
-def render_all(model: dict) -> dict[str, str]:
-    return {"full": render_full(model), "simple": render_simple(model)}
+def render_annex(model: dict, annexes: list, a: dict, lang: str = "es") -> str:
+    """Un anexo: el detalle de una parte del sistema en columnas (dónde corre cada paso), con sus pasos, la
+    tecnología de cada uno, las conexiones numeradas y, abajo, qué pasa si algo falla."""
+    P = a["id"]
+    AID = a["id"].upper()
+    W, M = a.get("width", 1440), 20
+    MC = a.get("margin", 36)
+    by_id = {x["id"]: x for x in annexes}
+    full_nodes = {n["id"]: n for n in model["full"]["nodes"]}
+    nodes = {n["id"]: n for n in a["nodes"]}
+    body: list[str] = []
+    back = UI[lang]["back"]
+    back_w = text_width(back, 12, True)
+    title = f'{UI[lang]["annex"]} {AID} · {a[f"title_{lang}"]}'
+    y = 38
+    for line in wrap(title, W - 2 * M - back_w - 24, 20, True):
+        body.append(t(M, y, line, "ar-big", 20))
+        y += 26
+    body.append(f'<a class="ar-annex" href="../arquitectura{"-en" if lang == "en" else ""}.svg" data-annex="full">'
+                + t(W - M, 36, back, "ar-link", 12, "end") + "</a>")
+    y += 22 - 26
+    for line in wrap(a[f"subtitle_{lang}"], W - 2 * M, 12):
+        body.append(t(M, y, line, "ar-s", 12))
+        y += 17
+    covers = ", ".join(full_nodes[c][f"name_{lang}"] for c in a["covers"])
+    for line in wrap(f'{UI[lang]["details"]} {covers}.', W - 2 * M, 11):
+        body.append(t(M, y + 2, line, "ar-m", 11))
+        y += 15
+    k, _ = _key_row(M, y + 8, lang, P)
+    body += k
+    top = y + 32
+    cols = a["columns"]
+    gutter = (W - 2 * MC - sum(c["w"] for c in cols)) / max(1, len(cols) - 1)
+    if len(cols) > 1 and gutter < 48:
+        raise ValueError(f"{a['id']}: columnas demasiado anchas (pasillo de {gutter:.0f} px)")
+    xs, x = [], MC
+    for c in cols:
+        xs.append(x)
+        x += c["w"] + gutter
+    heads = []
+    for c in cols:
+        sub = wrap(c.get(f"sub_{lang}", ""), c["w"] - 24, 10.5) if c.get(f"sub_{lang}") else []
+        heads.append(sub)
+    head_h = 34 + max(len(h) for h in heads) * 14
+    boxes: dict[str, Box] = {}
+    col_of: dict[str, int] = {}
+    bottoms = []
+    for ci, c in enumerate(cols):
+        cy = top + head_h + 6
+        for n in (n for n in a["nodes"] if n["col"] == c["id"]):
+            cy += n.get("gap_before", 0)
+            tags = [annex_tag(by_id[s], lang, "") for s in n.get("see", [])]
+            b = Box({"group": a.get("group", "pipeline"), **n}, xs[ci] + 10, cy, c["w"] - 20, lang, (12.5, 11, 10.5), tags=tags)
+            boxes[n["id"]] = b
+            col_of[n["id"]] = ci
+            cy += b.h + a.get("gap", 30)
+        bottoms.append(cy)
+    col_bottom = max(bottoms) - a.get("gap", 30) + 14
+    panels = []
+    obstacles = [(0, 0, W, top - 8)]
+    for ci, c in enumerate(cols):
+        panels.append(f'<rect class="ar-col" x="{_n(xs[ci])}" y="{_n(top)}" width="{_n(c["w"])}" height="{_n(col_bottom - top)}" rx="10"/>')
+        panels.append(t(xs[ci] + 12, top + 25, c[f"title_{lang}"], "ar-h", 15))
+        for li, line in enumerate(heads[ci]):
+            panels.append(t(xs[ci] + 12, top + 42 + li * 14, line, "ar-m", 10.5))
+        obstacles.append((xs[ci], top + 6, c["w"], head_h - 4))
+    region_h = col_bottom + 24
+    info = {"band": set(), "next": {}, "last": set()}
+    for c in cols:
+        ids = [n["id"] for n in a["nodes"] if n["col"] == c["id"]]
+        info["next"].update(zip(ids, ids[1:]))
+        if ids:
+            info["last"].add(ids[-1])
+    try:
+        routes = route_edges(boxes, a["edges"], col_of, W, region_h, 6, obstacles, info)
+    except ValueError as exc:
+        raise ValueError(f"{a['id']}: {exc}") from None
+    taken: list = []
+    rects = [b.rect for b in boxes.values()]
+    edge_parts: list[str] = []
+    for i, e in enumerate(a["edges"]):
+        badge = str(i + 1)
+        r = 9 if len(badge) < 3 else 11
+        pos = place_on_path(routes[i], 2 * r + 2, 2 * r + 2, taken, rects)
+        taken.append((pos[0] - r - 1, pos[1] - r - 1, 2 * r + 2, 2 * r + 2))
+        edge_parts += edge_svg(P, i, e, routes[i], badge, pos, None, None, lang, _etip(e, nodes, lang, badge))
+    body += panels
+    body += ["", "  <!-- conexiones -->", *edge_parts, "", "  <!-- cajas -->"]
+    for b in boxes.values():
+        body += b.svg(P, _tip(b.node, lang))
+    ly = region_h + 16
+    body.append(f'<line class="ar-rule" x1="{M}" y1="{_n(ly)}" x2="{_n(W - M)}" y2="{_n(ly)}"/>')
+    body.append(t(M, ly + 30, f'{UI[lang]["annex_steps"]}: {UI[lang]["annex_edges"]}', "ar-h", 15))
+    entries = []
+    for i, e in enumerate(a["edges"]):
+        fa, fb = nodes[e["from"]][f"name_{lang}"], nodes[e["to"]][f"name_{lang}"]
+        when = f' · {e[f"when_{lang}"]}' if e.get(f"when_{lang}") else ""
+        entries.append((str(i + 1), e.get("kind", "data"), e[f"label_{lang}"], f"{fa} → {fb}{when}", e.get(f"explain_{lang}", "")))
+    leg, bottom = _legend(entries, M, ly + 52, W - 2 * M, 3)
+    body += leg
+    if a.get("fails"):
+        fy = bottom + 18
+        body.append(f'<line class="ar-rule" x1="{M}" y1="{_n(fy)}" x2="{_n(W - M)}" y2="{_n(fy)}"/>')
+        body.append(t(M, fy + 30, f'{UI[lang]["fails"]}: {UI[lang]["fails_sub"]}', "ar-h", 15))
+        fails = [("", "warn", f[f"if_{lang}"], "", f[f"then_{lang}"]) for f in a["fails"]]
+        leg, bottom = _legend(fails, M, fy + 52, W - 2 * M, 3)
+        body += leg
+    H = bottom + 20
+    return _svg(P, W, H, title, a[f"desc_{lang}"], body)
+
+
+ANNEXES = ROOT / "docs" / "arquitectura-anexos.json"
+ANNEX_DIRS = [ROOT / "docs" / "anexos", ROOT / "public" / "assets" / "anexos"]
+
+
+def load_annexes(path: Path = ANNEXES) -> list:
+    return json.loads(path.read_text(encoding="utf-8"))["annexes"] if path.exists() else []
+
+
+def outputs(model: dict, annexes: list) -> dict[str, tuple[str, list[Path]]]:
+    """Cada dibujo con los archivos donde va: los principales en docs/ y public/assets/, los anexos en anexos/."""
+    out: dict[str, tuple[str, list[Path]]] = {}
+    for lang, sfx in (("es", ""), ("en", "-en")):
+        out[f"full{sfx}"] = (render_full(model, lang, annexes), [p.with_name(p.stem + sfx + ".svg") for p in OUT["full"]])
+        out[f"simple{sfx}"] = (render_simple(model, lang, annexes), [p.with_name(p.stem + sfx + ".svg") for p in OUT["simple"]])
+        for a in annexes:
+            out[a["id"] + sfx] = (render_annex(model, annexes, a, lang), [d / annex_file(a["id"], lang) for d in ANNEX_DIRS])
+    return out
+
+
+def render_all(model: dict, annexes: list | None = None) -> dict[str, str]:
+    if annexes is None:
+        annexes = load_annexes()
+    return {k: svg for k, (svg, _) in outputs(model, annexes).items()}
 
 
 DOC = ROOT / "docs" / "arquitectura.md"
@@ -874,27 +1156,198 @@ def render_doc_section(model: dict) -> str:
     return "\n".join(out)
 
 
-def render_doc(model: dict, doc: str) -> str:
+ANNEX_START, ANNEX_END = "<!-- anexos:inicio (generado por python -m tools.architecture) -->", "<!-- anexos:fin -->"
+
+
+def render_doc_annexes(model: dict, annexes: list) -> str:
+    """Los anexos en docs/arquitectura.md: un índice, el dibujo de cada uno y su texto (pasos, cajas y fallas)."""
+    fn = {n["id"]: n for n in model["full"]["nodes"]}
+    sn = {n["id"]: n for n in model["simple"]["nodes"]}
+    out = [ANNEX_START, "", "| Anexo | Qué detalla | Cajas del completo | Cajas del simplificado |", "|---|---|---|---|"]
+    for a in annexes:
+        out.append(f"| [{a['id'].upper()} · {_cell(a['title_es'])}](#{a['id']}) | {_cell(a['desc_es'])} | "
+                   + ", ".join(_cell(fn[c]["name_es"]) for c in a["covers"]) + " | "
+                   + ", ".join(_cell(sn[c]["name_es"]) for c in a["simple"]) + " |")
+    out.append("")
+    for a in annexes:
+        aid, nodes = a["id"], {n["id"]: n for n in a["nodes"]}
+        out += [f'<a id="{aid}"></a>', "", f"#### Anexo {aid.upper()} · {a['title_es']}", "", a["subtitle_es"], "",
+                f"![Anexo {aid.upper()}: {a['title_es']}](anexos/{annex_file(aid, 'es')})", "",
+                f"_In English: [anexos/{annex_file(aid, 'en')}](anexos/{annex_file(aid, 'en')})._", "",
+                f"<details><summary>{aid.upper()} en texto: {len(a['nodes'])} pasos, {len(a['edges'])} conexiones "
+                f"y {len(a.get('fails', []))} casos de falla</summary>", "",
+                "| Paso | Dónde | Qué hace | Tecnología |", "|---|---|---|---|"]
+        cols = {c["id"]: c["title_es"] for c in a["columns"]}
+        for n in a["nodes"]:
+            meta = f" _{_cell(n['meta_es'])}._" if n.get("meta_es") else ""
+            see = " Ver " + ", ".join(f"[{x.upper()}](#{x})" for x in n["see"]) + "." if n.get("see") else ""
+            out.append(f"| **{_cell(n['name_es'])}** | {_cell(cols[n['col']])} | {_cell(n['what_es'])}{meta}{see} | "
+                       f"{_cell(', '.join(n.get('tech', [])))} |")
+        out += ["", "| N.º | De → a | Qué viaja, cuándo y por qué |", "|---|---|---|"]
+        for i, e in enumerate(a["edges"]):
+            when = f" _{_cell(e['when_es'])}._" if e.get("when_es") else ""
+            expl = f" {_cell(e['explain_es'])}" if e.get("explain_es") else ""
+            out.append(f"| {i + 1} | {_cell(nodes[e['from']]['name_es'])} → {_cell(nodes[e['to']]['name_es'])} | "
+                       f"**{_cell(e['label_es'])}.**{expl}{when} |")
+        if a.get("fails"):
+            out += ["", "**Si algo falla:**", ""]
+            out += [f"- **{f['if_es']}.** {f['then_es']}" for f in a["fails"]]
+        out += ["", "</details>", ""]
+    out.append(ANNEX_END)
+    return "\n".join(out)
+
+
+def render_doc(model: dict, doc: str, annexes: list | None = None) -> str:
     a, b = doc.index(DOC_START), doc.index(DOC_END) + len(DOC_END)
-    return doc[:a] + render_doc_section(model) + doc[b:]
+    doc = doc[:a] + render_doc_section(model) + doc[b:]
+    if annexes and ANNEX_START in doc:
+        a, b = doc.index(ANNEX_START), doc.index(ANNEX_END) + len(ANNEX_END)
+        doc = doc[:a] + render_doc_annexes(model, annexes) + doc[b:]
+    return doc
+
+
+EXPLORER = ROOT / "public" / "arquitectura.html"
+EXPLORER_UI = {
+    "es": {"page": "Arquitectura del Observatorio ENSO Perú", "simple": "Diagrama simplificado", "full": "Diagrama completo",
+           "simple_lead": "El sistema en {ns} cajas, de las fuentes al sitio. Toca una caja para abrir el anexo que la detalla.",
+           "full_lead": "Las {nf} partes del sistema y sus conexiones numeradas. Toca una caja o su etiqueta A1 a A10 "
+                        "para abrir su anexo: los pasos, la tecnología de cada uno y qué pasa si algo falla.",
+           "hint": "Toca una caja o una conexión para leer qué es; las etiquetas A1 a A10 abren el anexo de cada parte.",
+           "diagrams": "Diagramas", "annexes": "Anexos", "open": "Abrir", "zoom": "Tamaño real", "lang": "Idioma",
+           "svg": "Abrir este SVG", "site": "Volver al sitio", "nav": "Diagramas y anexos",
+           "error": "No se pudo cargar este diagrama. Intente de nuevo en unos minutos.",
+           "foot": "Se dibujan con python -m tools.architecture desde docs/arquitectura.json y docs/arquitectura-anexos.json."},
+    "en": {"page": "ENSO Peru Observatory architecture", "simple": "Simplified diagram", "full": "Full diagram",
+           "simple_lead": "The system in {ns} boxes, from the sources to the site. Tap a box to open the annex that details it.",
+           "full_lead": "The system's {nf} parts and their numbered connections. Tap a box or its A1 to A10 tag to open "
+                        "its annex: the steps, each one's technology and what happens if something fails.",
+           "hint": "Tap a box or a connection to read what it is; the A1 to A10 tags open each part's annex.",
+           "diagrams": "Diagrams", "annexes": "Annexes", "open": "Open", "zoom": "Actual size", "lang": "Language",
+           "svg": "Open this SVG", "site": "Back to the site", "nav": "Diagrams and annexes",
+           "error": "This diagram could not be loaded. Please try again in a few minutes.",
+           "foot": "Drawn with python -m tools.architecture from docs/arquitectura.json and docs/arquitectura-anexos.json."},
+}
+
+
+def render_explorer(model: dict, annexes: list, inline: dict | None = None) -> str:
+    """La página que recorre los diagramas y sus anexos (public/arquitectura.html).
+
+    Con ``inline`` ({"css": ..., "js": ..., "svgs": {archivo: svg}}) sale una sola página que se abre sin servidor:
+    estilos, código y dibujos van dentro."""
+    counts = {"ns": len(model["simple"]["nodes"]), "nf": len(model["full"]["nodes"])}
+    ui = {lang: {k: v.format(**counts) if "{" in v else v for k, v in d.items()} for lang, d in EXPLORER_UI.items()}
+    U = ui["es"]
+    meta = {"base": "assets/", "ui": ui,
+            "annexes": [{k: a[k] for k in ("id", "title_es", "title_en", "desc_es", "desc_en")} for a in annexes]}
+    meta_json = json.dumps(meta, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    nav = [f'      <li class="ax-main-view"><a href="#{v}" data-view="{v}"><span class="ax-nav-t">{escape(U[v])}</span></a></li>'
+           for v in ("simple", "full")]
+    items = [f'      <li><a href="#{a["id"]}" data-view="{a["id"]}" title="{escape(a["title_es"])}"><b>{a["id"].upper()}</b>'
+             f'<span class="ax-nav-t">{escape(a["title_es"])}</span></a></li>' for a in annexes]
+    if inline:
+        head = [f"  <style>\n{inline['css']}  </style>"]
+        site = ""
+        open_svg = ""
+        tail = [f'  <template data-file="{escape(name)}">{svg}</template>' for name, svg in inline["svgs"].items()]
+        tail.append(f"  <script>\n{inline['js']}  </script>")
+    else:
+        head = ['  <meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\'; '
+                "style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; "
+                "base-uri 'self'; form-action 'self'\">",
+                '  <link rel="icon" href="favicon.svg" type="image/svg+xml">',
+                '  <link rel="stylesheet" href="assets/css/arquitectura.css">']
+        site = f'      <a class="ax-btn" href="./#/metodologia" data-ui="site">{U["site"]}</a>\n'
+        open_svg = f'    <p class="ax-foot"><a id="ax-open" href="assets/arquitectura-simple.svg" target="_blank" rel="noopener" data-ui="svg">{U["svg"]}</a></p>\n'
+        tail = ['  <script src="assets/js/arquitectura.js"></script>']
+    return "\n".join([
+        "<!doctype html>",
+        '<html lang="es-PE">',
+        "<head>",
+        '  <meta charset="utf-8">',
+        '  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
+        f"  <title>{escape(U['page'])}</title>",
+        '  <meta name="description" content="Diagramas de arquitectura del Observatorio ENSO Perú y sus anexos A1 a A10: de dónde sale cada dato, qué tecnología lo procesa y qué respaldo entra si algo falla.">',
+        *head,
+        "</head>",
+        "<body>",
+        '  <header class="ax-header">',
+        f'    <span class="ax-brand"><span>{escape(U["page"])}<small>{len(annexes)} anexos · ES / EN</small></span></span>',
+        '    <div class="ax-tools">',
+        f'      <div class="ax-seg" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">Español</button><button type="button" data-lang="en" aria-pressed="false">English</button></div>',
+        f'      <button type="button" class="ax-btn" id="ax-zoom" aria-pressed="false" data-ui="zoom">{U["zoom"]}</button>',
+        site + "    </div>",
+        "  </header>",
+        '  <div class="ax-layout">',
+        f'    <nav class="ax-nav" aria-label="{escape(U["nav"])}">',
+        f'      <h2 data-ui="diagrams">{U["diagrams"]}</h2>',
+        "      <ol>",
+        *nav,
+        "      </ol>",
+        f'      <h2 data-ui="annexes">{U["annexes"]}</h2>',
+        "      <ol>",
+        *items,
+        "      </ol>",
+        "    </nav>",
+        '    <main class="ax-main">',
+        f'      <h1 id="ax-title" tabindex="-1">{escape(U["simple"])}</h1>',
+        f'      <p class="ax-lead" id="ax-lead">{escape(U["simple_lead"])}</p>',
+        f'      <p class="ax-hint" data-ui="hint">{escape(U["hint"])}</p>',
+        '      <figure class="ax-fig" id="ax-fig" aria-busy="true"></figure>',
+        '      <div class="ax-note" id="ax-note" aria-live="polite" hidden></div>',
+        '      <div class="ax-pager"><button type="button" class="ax-btn" id="ax-prev" hidden></button>'
+        '<button type="button" class="ax-btn" id="ax-next" hidden></button></div>',
+        open_svg + f'      <p class="ax-foot" data-ui="foot">{escape(U["foot"])}</p>',
+        "    </main>",
+        "  </div>",
+        f'  <script type="application/json" id="arch-meta">{meta_json}</script>',
+        *tail,
+        "</body>",
+        "</html>",
+        "",
+    ])
+
+
+def render_standalone(model: dict, annexes: list) -> str:
+    """El explorador en un solo archivo, para compartir sin el sitio."""
+    svgs = {}
+    for key, (svg, paths) in outputs(model, annexes).items():
+        p = paths[-1]
+        svgs[f"anexos/{p.name}" if p.parent.name == "anexos" else p.name] = svg
+    css = (ROOT / "public" / "assets" / "css" / "arquitectura.css").read_text(encoding="utf-8")
+    js = (ROOT / "public" / "assets" / "js" / "arquitectura.js").read_text(encoding="utf-8")
+    return render_explorer(model, annexes, {"css": css, "js": js, "svgs": svgs})
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--model", type=Path, default=MODEL)
+    ap.add_argument("--annexes", type=Path, default=ANNEXES)
+    ap.add_argument("--explorer", type=Path, help="además, escribir el explorador en un solo archivo HTML en esta ruta")
     a = ap.parse_args(argv)
     model = json.loads(a.model.read_text(encoding="utf-8"))
-    out = render_all(model)
+    annexes = load_annexes(a.annexes)
     stale = []
-    files = [(p, svg) for key, svg in out.items() for p in OUT[key]]
-    files.append((DOC, render_doc(model, DOC.read_text(encoding="utf-8"))))
+    files = [(p, svg) for svg, paths in outputs(model, annexes).values() for p in paths]
+    files.append((DOC, render_doc(model, DOC.read_text(encoding="utf-8"), annexes)))
+    files.append((EXPLORER, render_explorer(model, annexes)))
+    expected = {p for p, _ in files}
+    for d in ANNEX_DIRS:
+        # Un anexo que ya no está en el modelo no debe quedar publicado.
+        stale += [p for p in sorted(d.glob("*.svg")) if p not in expected] if d.exists() else []
     for p, text in files:
         if a.check:
             if not p.exists() or p.read_text(encoding="utf-8") != text:
                 stale.append(p)
         else:
+            p.parent.mkdir(parents=True, exist_ok=True)
             p.write_text(text, encoding="utf-8")
+    if not a.check:
+        for p in stale:
+            p.unlink()
+        stale = []
+        if a.explorer:
+            a.explorer.write_text(render_standalone(model, annexes), encoding="utf-8")
     if stale:
         print("No están al día (corre python -m tools.architecture): " + ", ".join(str(p.relative_to(ROOT)) for p in stale))
         return 1

@@ -1,0 +1,563 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1489.6" role="img" aria-labelledby="a8-t a8-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="a8-t">Annex A8 · Publication, deployment and archive</title>
+  <desc id="a8-d">Writing and validating data/, browser checks, artifacts, deployment and verification, and the archive job that only adds to data-archive.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="a8-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a8-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a8-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a8-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a8-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1489.6" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Annex A8 · Publication, deployment and archive</text>
+  <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
+  <text class="ar-s" x="20" y="60" font-size="12">How a run turns what was validated into the live site without ever leaving it half done: the publication is written aside and replaces the previous one at once, tested in Chromium, deployed to GitHub Pages or Cloudflare Pages, and</text>
+  <text class="ar-s" x="20" y="77" font-size="12">the live site is checked to serve it. The original responses are kept forever in data-archive.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: Publication write and validation, Published files (data/), Deploy and verification, archive job, data-archive branch.</text>
+  <text class="ar-t" x="20" y="121" font-size="11.5">Lines:</text>
+  <path class="ar-e ar-e-data" d="M70.7 117 L104.7 117" marker-end="url(#a8-m-data)"/>
+  <text class="ar-s" x="112.7" y="121" font-size="11.5">data</text>
+  <path class="ar-e ar-e-fallback" d="M160.6 117 L194.6 117" stroke-dasharray="6 4" marker-end="url(#a8-m-fallback)"/>
+  <text class="ar-s" x="202.6" y="121" font-size="11.5">fallback</text>
+  <path class="ar-e ar-e-trigger" d="M269.4 117 L303.4 117" stroke-dasharray="2 3" marker-end="url(#a8-m-trigger)"/>
+  <text class="ar-s" x="311.4" y="121" font-size="11.5">trigger or control</text>
+  <path class="ar-e ar-e-human" d="M431.5 117 L465.5 117" stroke-dasharray="8 3 2 3" marker-end="url(#a8-m-human)"/>
+  <text class="ar-s" x="473.5" y="121" font-size="11.5">manual step</text>
+  <rect class="ar-col" x="36" y="141" width="300" height="791.6" rx="10"/>
+  <text class="ar-h" x="48" y="166" font-size="15">Writing (build job)</text>
+  <text class="ar-m" x="48" y="183" font-size="10.5">Python 3.12 · enso.observatory.write_publication</text>
+  <rect class="ar-col" x="392" y="141" width="300" height="791.6" rx="10"/>
+  <text class="ar-h" x="404" y="166" font-size="15">Testing and upload</text>
+  <text class="ar-m" x="404" y="183" font-size="10.5">prepare_site · Playwright · Actions artifacts</text>
+  <rect class="ar-col" x="748" y="141" width="300" height="791.6" rx="10"/>
+  <text class="ar-h" x="760" y="166" font-size="15">Deployment (deploy job)</text>
+  <text class="ar-m" x="760" y="183" font-size="10.5">up to 15 min · DEPLOY_TARGET picks the target</text>
+  <rect class="ar-col" x="1104" y="141" width="300" height="791.6" rx="10"/>
+  <text class="ar-h" x="1116" y="166" font-size="15">Archive (archive job)</text>
+  <text class="ar-m" x="1116" y="183" font-size="10.5">only on main and after a successful build</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="a8-e-1" data-edge="1" data-from="write" data-to="files" tabindex="0">
+    <title>1. Write to a separate folder → data/ files: files with one publicationId.</title>
+    <path class="ar-e ar-e-data" d="M186 315.7 L186 345.7" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="186" cy="330.7" r="9"/>
+    <text class="ar-t" x="186" y="334.5" font-size="10.5" text-anchor="middle">1</text>
+  </g>
+  <g class="ar-edge" id="a8-e-2" data-edge="2" data-from="files" data-to="validate" tabindex="0">
+    <title>2. data/ files → Validate: temporary folder.</title>
+    <path class="ar-e ar-e-data" d="M186 481.6 L186 511.6" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="186" cy="496.6" r="9"/>
+    <text class="ar-t" x="186" y="500.4" font-size="10.5" text-anchor="middle">2</text>
+  </g>
+  <g class="ar-edge" id="a8-e-3" data-edge="3" data-from="validate" data-to="swap" tabindex="0">
+    <title>3. Validate → Swap at once: all consistent. If validation fails, the run stops before the swap.</title>
+    <path class="ar-e ar-e-data" d="M186 632.3 L186 662.3" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="186" cy="647.3" r="9"/>
+    <text class="ar-t" x="186" y="651.1" font-size="10.5" text-anchor="middle">3</text>
+  </g>
+  <g class="ar-edge" id="a8-e-4" data-edge="4" data-from="write" data-to="raw" tabindex="0">
+    <title>4. Write to a separate folder → Original responses: every response.</title>
+    <path class="ar-e ar-e-data" d="M326 258 L342 258 Q348 258 348 264 L348 840 Q348 846 342 846 L326 846" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="348" cy="552" r="9"/>
+    <text class="ar-t" x="348" y="555.8" font-size="10.5" text-anchor="middle">4</text>
+  </g>
+  <g class="ar-edge" id="a8-e-5" data-edge="5" data-from="swap" data-to="prepare" tabindex="0">
+    <title>5. Swap at once → Adapt to the address: public/.</title>
+    <path class="ar-e ar-e-data" d="M326 720 L366 720 Q372 720 372 714 L372 276 Q372 270 378 270 L402 270" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="372" cy="495" r="9"/>
+    <text class="ar-t" x="372" y="498.8" font-size="10.5" text-anchor="middle">5</text>
+  </g>
+  <g class="ar-edge" id="a8-e-6" data-edge="6" data-from="prepare" data-to="browser" tabindex="0">
+    <title>6. Adapt to the address → Chromium checks: built site.</title>
+    <path class="ar-e ar-e-data" d="M540 339.7 L540 369.7" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="354.7" r="9"/>
+    <text class="ar-t" x="540" y="358.5" font-size="10.5" text-anchor="middle">6</text>
+  </g>
+  <g class="ar-edge" id="a8-e-7" data-edge="7" data-from="browser" data-to="artifacts" tabindex="0">
+    <title>7. Chromium checks → Run artifacts: if it passes. A failing check stops the deployment: the previous publication stays online.</title>
+    <path class="ar-e ar-e-data" d="M540 514.4 L540 544.4" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="529.4" r="9"/>
+    <text class="ar-t" x="540" y="533.2" font-size="10.5" text-anchor="middle">7</text>
+  </g>
+  <g class="ar-edge" id="a8-e-8" data-edge="8" data-from="raw" data-to="artifacts" tabindex="0">
+    <title>8. Original responses → Run artifacts: raw-sources.</title>
+    <path class="ar-e ar-e-data" d="M326 888 L372 888 Q378 888 378 882 L378 618 Q378 612 384 612 L402 612" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="378" cy="750" r="9"/>
+    <text class="ar-t" x="378" y="753.8" font-size="10.5" text-anchor="middle">8</text>
+  </g>
+  <g class="ar-edge" id="a8-e-9" data-edge="9" data-from="artifacts" data-to="gh-pages" tabindex="0">
+    <title>9. Run artifacts → GitHub Pages (default): github-pages.</title>
+    <path class="ar-e ar-e-data" d="M682 570 L720 570 Q726 570 726 564 L726 258 Q726 252 732 252 L758 252" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="726" cy="411" r="9"/>
+    <text class="ar-t" x="726" y="414.8" font-size="10.5" text-anchor="middle">9</text>
+  </g>
+  <g class="ar-edge" id="a8-e-10" data-edge="10" data-from="artifacts" data-to="cf" tabindex="0">
+    <title>10. Run artifacts → Cloudflare Pages: site.</title>
+    <path class="ar-e ar-e-data" d="M682 648 L726 648 Q732 648 732 642 L732 420 Q732 414 738 414 L758 414" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="732" cy="531" r="9"/>
+    <text class="ar-t" x="732" y="534.8" font-size="10.5" text-anchor="middle">10</text>
+  </g>
+  <g class="ar-edge" id="a8-e-11" data-edge="11" data-from="gh-pages" data-to="live" tabindex="0">
+    <title>11. GitHub Pages (default) → Live site (SITE_URL): publishes.</title>
+    <path class="ar-e ar-e-data" d="M1038 252 L1056 252 Q1062 252 1062 258 L1062 552 Q1062 558 1056 558 L1038 558" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1062" cy="405" r="9"/>
+    <text class="ar-t" x="1062" y="408.8" font-size="10.5" text-anchor="middle">11</text>
+  </g>
+  <g class="ar-edge" id="a8-e-12" data-edge="12" data-from="cf" data-to="live" tabindex="0">
+    <title>12. Cloudflare Pages → Live site (SITE_URL): publishes.</title>
+    <path class="ar-e ar-e-data" d="M900 484.1 L900 514.1" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="900" cy="499.1" r="9"/>
+    <text class="ar-t" x="900" y="502.9" font-size="10.5" text-anchor="middle">12</text>
+  </g>
+  <g class="ar-edge" id="a8-e-13" data-edge="13" data-from="live" data-to="verify" tabindex="0">
+    <title>13. Live site (SITE_URL) → Verify the live site: serving the new publication?.</title>
+    <path class="ar-e ar-e-control" d="M900 604.4 L900 634.4" stroke-dasharray="2 3" marker-end="url(#a8-m-control)"/>
+    <circle class="ar-badge ar-e-control" cx="900" cy="619.4" r="9"/>
+    <text class="ar-t" x="900" y="623.2" font-size="10.5" text-anchor="middle">13</text>
+  </g>
+  <g class="ar-edge" id="a8-e-14" data-edge="14" data-from="artifacts" data-to="get-raw" tabindex="0">
+    <title>14. Run artifacts → Download raw-sources: raw-sources.</title>
+    <path class="ar-e ar-e-data" d="M682 612 L732 612 Q738 612 738 618 L738 780 Q738 786 744 786 L1086 786 Q1092 786 1092 780 L1092 264 Q1092 258 1098 258 L1114 258" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1092" cy="522" r="9"/>
+    <text class="ar-t" x="1092" y="525.8" font-size="10.5" text-anchor="middle">14</text>
+  </g>
+  <g class="ar-edge" id="a8-e-15" data-edge="15" data-from="get-raw" data-to="dedupe" tabindex="0">
+    <title>15. Download raw-sources → Drop duplicates and truncated files: today&#x27;s responses.</title>
+    <path class="ar-e ar-e-data" d="M1254 324.5 L1254 354.5" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="339.5" r="9"/>
+    <text class="ar-t" x="1254" y="343.3" font-size="10.5" text-anchor="middle">15</text>
+  </g>
+  <g class="ar-edge" id="a8-e-16" data-edge="16" data-from="dedupe" data-to="commit" tabindex="0">
+    <title>16. Drop duplicates and truncated files → Commit to data-archive: only what is new.</title>
+    <path class="ar-e ar-e-data" d="M1394 408 L1416 408 Q1422 408 1422 414 L1422 720 Q1422 726 1416 726 L1394 726" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1422" cy="567" r="9"/>
+    <text class="ar-t" x="1422" y="570.8" font-size="10.5" text-anchor="middle">16</text>
+  </g>
+  <g class="ar-edge" id="a8-e-17" data-edge="17" data-from="get-raw" data-to="merge" tabindex="0">
+    <title>17. Download raw-sources → Merge the news history: items and history.</title>
+    <path class="ar-e ar-e-data" d="M1394 258 L1410 258 Q1416 258 1416 264 L1416 546 Q1416 552 1410 552 L1394 552" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1416" cy="405" r="9"/>
+    <text class="ar-t" x="1416" y="408.8" font-size="10.5" text-anchor="middle">17</text>
+  </g>
+  <g class="ar-edge" id="a8-e-18" data-edge="18" data-from="merge" data-to="commit" tabindex="0">
+    <title>18. Merge the news history → Commit to data-archive: merged history.</title>
+    <path class="ar-e ar-e-data" d="M1254 619.6 L1254 649.6" marker-end="url(#a8-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="634.6" r="9"/>
+    <text class="ar-t" x="1254" y="638.4" font-size="10.5" text-anchor="middle">18</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="a8-n-write" data-node="write">
+    <title>Write to a separate folder. Every JSON and CSV carries the same publicationId and generatedAt; what could not be renewed is kept from the previous publication, with the new identifier.</title>
+    <rect class="ar-node ar-g-publication" x="46" y="195" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-publication" x="46" y="203" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="58" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(61 208)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="96" y="219.5" font-size="12.5">Write to a separate</text>
+    <text class="ar-t" x="96" y="235.8" font-size="12.5">folder</text>
+    <text class="ar-s" x="58" y="256.4" font-size="11">Every JSON and CSV carries the same</text>
+    <text class="ar-s" x="58" y="271.6" font-size="11">publicationId and generatedAt; what could</text>
+    <text class="ar-s" x="58" y="286.8" font-size="11">not be renewed is kept from the previous</text>
+    <text class="ar-s" x="58" y="302" font-size="11">publication, with the new identifier.</text>
+    <a class="ar-annex" href="a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="290.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="214.5" font-size="10.5" text-anchor="middle">A5</text></a>
+  </g>
+  <g class="ar-node-g" id="a8-n-files" data-node="files">
+    <title>data/ files. dashboard.json, series.json and CSVs, sources.json, feed.json, news/, geo/, run-report.json, data/archive/ with the archived copies and manifest.json with the list and a content hash.</title>
+    <rect class="ar-node ar-g-publication" x="46" y="345.7" width="280" height="135.9" rx="8"/>
+    <rect class="ar-f-publication" x="46" y="353.7" width="4" height="119.9" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="58" y="355.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(61 358.7)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="96" y="375.2" font-size="12.5">data/ files</text>
+    <text class="ar-s" x="58" y="407.2" font-size="11">dashboard.json, series.json and CSVs,</text>
+    <text class="ar-s" x="58" y="422.3" font-size="11">sources.json, feed.json, news/, geo/,</text>
+    <text class="ar-s" x="58" y="437.5" font-size="11">run-report.json, data/archive/ with the</text>
+    <text class="ar-s" x="58" y="452.7" font-size="11">archived copies and manifest.json with the</text>
+    <text class="ar-s" x="58" y="467.9" font-size="11">list and a content hash.</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-validate" data-node="validate">
+    <title>Validate. All JSON files share the publicationId, series have no repeated or unordered periods and dashboard.json has the official data, series and GRD signal.</title>
+    <rect class="ar-node ar-g-publication" x="46" y="511.6" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-publication" x="46" y="519.6" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="58" y="521.6" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(61 524.6)"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></g>
+    <text class="ar-t" x="96" y="541.1" font-size="12.5">Validate</text>
+    <text class="ar-s" x="58" y="573" font-size="11">All JSON files share the publicationId, series</text>
+    <text class="ar-s" x="58" y="588.2" font-size="11">have no repeated or unordered periods and</text>
+    <text class="ar-s" x="58" y="603.4" font-size="11">dashboard.json has the official data, series</text>
+    <text class="ar-s" x="58" y="618.6" font-size="11">and GRD signal.</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-swap" data-node="swap">
+    <title>Swap at once. public/data moves to data.old and the new folder takes its place with two renames; if anything failed before, the previous publication stays intact.</title>
+    <rect class="ar-node ar-g-publication" x="46" y="662.3" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-publication" x="46" y="670.3" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="58" y="672.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(61 675.3)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 7.2v9.6M7.5 6.6C9 10 12 12 15.8 12"/></g>
+    <text class="ar-t" x="96" y="691.8" font-size="12.5">Swap at once</text>
+    <text class="ar-s" x="58" y="723.8" font-size="11">public/data moves to data.old and the new</text>
+    <text class="ar-s" x="58" y="738.9" font-size="11">folder takes its place with two renames; if</text>
+    <text class="ar-s" x="58" y="754.1" font-size="11">anything failed before, the previous</text>
+    <text class="ar-s" x="58" y="769.3" font-size="11">publication stays intact.</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-raw" data-node="raw">
+    <title>Original responses. Each downloaded response is saved as source/date-sha256, plus the day&#x27;s items in news/.</title>
+    <rect class="ar-node ar-g-stores" x="46" y="813.1" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-stores" x="46" y="821.1" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="58" y="823.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(61 826.1)"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></g>
+    <text class="ar-t" x="96" y="842.6" font-size="12.5">Original responses</text>
+    <text class="ar-s" x="58" y="874.5" font-size="11">Each downloaded response is saved as</text>
+    <text class="ar-s" x="58" y="889.7" font-size="11">source/date-sha256, plus the day&#x27;s items in</text>
+    <text class="ar-s" x="58" y="904.8" font-size="11">news/.</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-prepare" data-node="prepare">
+    <title>Adapt to the address. prepare_site writes SITE_URL into canonical, sitemap and robots.txt. On Cloudflare, --hide-repo removes links to the repository and fails if any remain. Technology: tools.prepare_site.</title>
+    <rect class="ar-node ar-g-publication" x="402" y="195" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-publication" x="402" y="203" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="414" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(417 208)"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></g>
+    <text class="ar-t" x="452" y="224.5" font-size="12.5">Adapt to the address</text>
+    <text class="ar-s" x="414" y="256.4" font-size="11">prepare_site writes SITE_URL into canonical,</text>
+    <text class="ar-s" x="414" y="271.6" font-size="11">sitemap and robots.txt. On Cloudflare,</text>
+    <text class="ar-s" x="414" y="286.8" font-size="11">--hide-repo removes links to the repository</text>
+    <text class="ar-s" x="414" y="302" font-size="11">and fails if any remain.</text>
+    <rect class="ar-chip" x="414" y="311.7" width="101.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="323.7" font-size="10">tools.prepare_site</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-browser" data-node="browser">
+    <title>Chromium checks. pytest -m browser against the built site: views, accessibility and data. WebKit and Firefox are tested in ci.yml so they never hold back official data. Technology: Playwright, pytest.</title>
+    <rect class="ar-node ar-g-publication" x="402" y="369.7" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-publication" x="402" y="377.7" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="414" y="379.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(417 382.7)"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8.5 20h7M12 16v4"/></g>
+    <text class="ar-t" x="452" y="399.2" font-size="12.5">Chromium checks</text>
+    <text class="ar-s" x="414" y="431.2" font-size="11">pytest -m browser against the built site:</text>
+    <text class="ar-s" x="414" y="446.3" font-size="11">views, accessibility and data. WebKit and</text>
+    <text class="ar-s" x="414" y="461.5" font-size="11">Firefox are tested in ci.yml so they never hold</text>
+    <text class="ar-s" x="414" y="476.7" font-size="11">back official data.</text>
+    <rect class="ar-chip" x="414" y="486.4" width="64.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="498.4" font-size="10">Playwright</text>
+    <rect class="ar-chip" x="483.5" y="486.4" width="43.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="489.5" y="498.4" font-size="10">pytest</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-artifacts" data-node="artifacts">
+    <title>Run artifacts. run-report (always), raw-sources (7 days) and the site: github-pages or “site” for Cloudflare (3 days). Technology: upload-artifact.</title>
+    <rect class="ar-node ar-g-publication" x="402" y="544.4" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-publication" x="402" y="552.4" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="414" y="554.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(417 557.4)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></g>
+    <text class="ar-t" x="452" y="573.9" font-size="12.5">Run artifacts</text>
+    <text class="ar-s" x="414" y="605.9" font-size="11">run-report (always), raw-sources (7 days) and</text>
+    <text class="ar-s" x="414" y="621" font-size="11">the site: github-pages or “site” for</text>
+    <text class="ar-s" x="414" y="636.2" font-size="11">Cloudflare (3 days).</text>
+    <rect class="ar-chip" x="414" y="646" width="85.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="658" font-size="10">upload-artifact</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-gh-pages" data-node="gh-pages">
+    <title>GitHub Pages (default). actions/deploy-pages publishes the artifact at https://pillb.github.io/observatorio-enso-peru/. Technology: deploy-pages.</title>
+    <rect class="ar-node ar-g-publication" x="758" y="195" width="280" height="114.4" rx="8"/>
+    <rect class="ar-f-publication" x="758" y="203" width="4" height="98.4" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="770" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(773 208)"><path d="M5 15c-1.5 1.5-2 4.5-2 6 1.5 0 4.5-.5 6-2M14.5 4.5c3-1.5 5-1.5 5.5-1 .5.5.5 2.5-1 5.5L13 15l-4-4z"/><path d="M9 11l-3.5-.5L8 7.5l4 .5M13 15l.5 3.5L16.5 16l-.5-4"/></g>
+    <text class="ar-t" x="808" y="224.5" font-size="12.5">GitHub Pages (default)</text>
+    <text class="ar-s" x="770" y="256.4" font-size="11">actions/deploy-pages publishes the artifact at</text>
+    <text class="ar-s" x="770" y="271.6" font-size="11">https://pillb.github.io/observatorio-enso-peru/.</text>
+    <rect class="ar-chip" x="770" y="281.4" width="79.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="293.4" font-size="10">deploy-pages</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-cf" data-node="cf">
+    <title>Cloudflare Pages. tools.cloudflare_pages creates the project if missing and wrangler uploads the site with functions/ (consoles) to the production branch, without linking the repository. Technology: wrangler, Pages Functions.</title>
+    <rect class="ar-node ar-g-publication" x="758" y="339.4" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-publication" x="758" y="347.4" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="770" y="349.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(773 352.4)"><path d="M7 19a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9.5a4.75 4.75 0 0 1-.5 9.5z"/></g>
+    <text class="ar-t" x="808" y="368.9" font-size="12.5">Cloudflare Pages</text>
+    <text class="ar-s" x="770" y="400.8" font-size="11">tools.cloudflare_pages creates the project if</text>
+    <text class="ar-s" x="770" y="416" font-size="11">missing and wrangler uploads the site with</text>
+    <text class="ar-s" x="770" y="431.2" font-size="11">functions/ (consoles) to the production</text>
+    <text class="ar-s" x="770" y="446.3" font-size="11">branch, without linking the repository.</text>
+    <rect class="ar-chip" x="770" y="456.1" width="56.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="468.1" font-size="10">wrangler</text>
+    <rect class="ar-chip" x="831.1" y="456.1" width="93.3" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="837.1" y="468.1" font-size="10">Pages Functions</text>
+    <a class="ar-annex" href="a7-en.svg" data-annex="a7"><title>Annex A7: Review consoles on Cloudflare</title><rect class="ar-tag" x="1002.6" y="346.4" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="358.9" font-size="10.5" text-anchor="middle">A7</text></a>
+  </g>
+  <g class="ar-node-g" id="a8-n-live" data-node="live">
+    <title>Live site (SITE_URL). The public address: serves the site and its data/ folder.</title>
+    <rect class="ar-node ar-g-site" x="758" y="514.1" width="280" height="90.4" rx="8"/>
+    <rect class="ar-f-site" x="758" y="522.1" width="4" height="74.4" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="770" y="524.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(773 527.1)"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></g>
+    <text class="ar-t" x="808" y="543.6" font-size="12.5">Live site (SITE_URL)</text>
+    <text class="ar-s" x="770" y="575.5" font-size="11">The public address: serves the site and its</text>
+    <text class="ar-s" x="770" y="590.7" font-size="11">data/ folder.</text>
+    <a class="ar-annex" href="a9-en.svg" data-annex="a9"><title>Annex A9: The site in the browser</title><rect class="ar-tag" x="1002.6" y="521.1" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="533.6" font-size="10.5" text-anchor="middle">A9</text></a>
+  </g>
+  <g class="ar-node-g" id="a8-n-verify" data-node="verify">
+    <title>Verify the live site. tools.verify_live reads dashboard.json without cache every 20 s until it sees the new publicationId; after 10 min the run fails. Technology: httpx.</title>
+    <rect class="ar-node ar-g-publication" x="758" y="634.4" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-publication" x="758" y="642.4" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="770" y="644.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(773 647.4)"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></g>
+    <text class="ar-t" x="808" y="663.9" font-size="12.5">Verify the live site</text>
+    <text class="ar-s" x="770" y="695.9" font-size="11">tools.verify_live reads dashboard.json without</text>
+    <text class="ar-s" x="770" y="711" font-size="11">cache every 20 s until it sees the new</text>
+    <text class="ar-s" x="770" y="726.2" font-size="11">publicationId; after 10 min the run fails.</text>
+    <rect class="ar-chip" x="770" y="736" width="38.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="748" font-size="10">httpx</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-get-raw" data-node="get-raw">
+    <title>Download raw-sources. Only the file list and sources/news of data-archive (partial, sparse clone): the branch grows every day. Technology: git sparse-checkout.</title>
+    <rect class="ar-node ar-g-stores" x="1114" y="195" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-stores" x="1114" y="203" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="1126" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(1129 208)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
+    <text class="ar-t" x="1164" y="224.5" font-size="12.5">Download raw-sources</text>
+    <text class="ar-s" x="1126" y="256.4" font-size="11">Only the file list and sources/news of</text>
+    <text class="ar-s" x="1126" y="271.6" font-size="11">data-archive (partial, sparse clone): the</text>
+    <text class="ar-s" x="1126" y="286.8" font-size="11">branch grows every day.</text>
+    <rect class="ar-chip" x="1126" y="296.5" width="110.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="308.5" font-size="10">git sparse-checkout</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-dedupe" data-node="dedupe">
+    <title>Drop duplicates and truncated files. A response with the same sha256 and source is not added again; one that does not match its sha256 arrived truncated and is dropped.</title>
+    <rect class="ar-node ar-g-stores" x="1114" y="354.5" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-stores" x="1114" y="362.5" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="1126" y="364.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(1129 367.5)"><path d="M3 5h18l-7 8.5V20l-4-2v-4.5z"/></g>
+    <text class="ar-t" x="1164" y="379" font-size="12.5">Drop duplicates and truncated</text>
+    <text class="ar-t" x="1164" y="395.3" font-size="12.5">files</text>
+    <text class="ar-s" x="1126" y="416" font-size="11">A response with the same sha256 and source</text>
+    <text class="ar-s" x="1126" y="431.1" font-size="11">is not added again; one that does not match</text>
+    <text class="ar-s" x="1126" y="446.3" font-size="11">its sha256 arrived truncated and is dropped.</text>
+  </g>
+  <g class="ar-node-g" id="a8-n-merge" data-node="merge">
+    <title>Merge the news history. merge_history.py merges items.jsonl.gz into the copy: it never loses items even if the run published an incomplete history. Technology: Python.</title>
+    <rect class="ar-node ar-g-stores" x="1114" y="490.1" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-stores" x="1114" y="498.1" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="1126" y="500.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(1129 503.1)"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 4v4.5H8M12 8v4.5l3 2"/></g>
+    <text class="ar-t" x="1164" y="519.6" font-size="12.5">Merge the news history</text>
+    <text class="ar-s" x="1126" y="551.5" font-size="11">merge_history.py merges items.jsonl.gz into</text>
+    <text class="ar-s" x="1126" y="566.7" font-size="11">the copy: it never loses items even if the run</text>
+    <text class="ar-s" x="1126" y="581.9" font-size="11">published an incomplete history.</text>
+    <rect class="ar-chip" x="1126" y="591.6" width="46.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="603.6" font-size="10">Python</text>
+    <a class="ar-annex" href="a6-en.svg" data-annex="a6"><title>Annex A6: News and alerts: reading, filtering, history and place</title><rect class="ar-tag" x="1358.6" y="497.1" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="509.6" font-size="10.5" text-anchor="middle">A6</text></a>
+  </g>
+  <g class="ar-node-g" id="a8-n-commit" data-node="commit">
+    <title>Commit to data-archive. Permanent corpus by source, date and sha256. A commit that deletes files is refused; the push is tried 3 times. only grows. Technology: git.</title>
+    <rect class="ar-node ar-g-stores" x="1114" y="649.6" width="280" height="148" rx="8"/>
+    <rect class="ar-f-stores" x="1114" y="657.6" width="4" height="132" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="1126" y="659.6" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(1129 662.6)"><circle cx="12" cy="12" r="3.5"/><path d="M2 12h6.5M15.5 12H22"/></g>
+    <text class="ar-t" x="1164" y="679.1" font-size="12.5">Commit to data-archive</text>
+    <text class="ar-s" x="1126" y="711" font-size="11">Permanent corpus by source, date and</text>
+    <text class="ar-s" x="1126" y="726.2" font-size="11">sha256. A commit that deletes files is</text>
+    <text class="ar-s" x="1126" y="741.4" font-size="11">refused; the push is tried 3 times.</text>
+    <text class="ar-m" x="1126" y="760.6" font-size="10.5">only grows</text>
+    <rect class="ar-chip" x="1126" y="769.6" width="25.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="781.6" font-size="10">git</text>
+  </g>
+  <line class="ar-rule" x1="20" y1="972.6" x2="1420" y2="972.6"/>
+  <text class="ar-h" x="20" y="1002.6" font-size="15">Steps and connections: what travels along each line, when and why</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1030.6" r="9"/>
+  <text class="ar-t" x="30" y="1034.4" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="1034.6" font-size="11.5">files with one publicationId</text>
+  <text class="ar-m" x="50" y="1048.6" font-size="10.5">Write to a separate folder → data/ files</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1071.6" r="9"/>
+  <text class="ar-t" x="30" y="1075.4" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1075.6" font-size="11.5">temporary folder</text>
+  <text class="ar-m" x="50" y="1089.6" font-size="10.5">data/ files → Validate</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1112.6" r="9"/>
+  <text class="ar-t" x="30" y="1116.4" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1116.6" font-size="11.5">all consistent</text>
+  <text class="ar-m" x="50" y="1130.6" font-size="10.5">Validate → Swap at once</text>
+  <text class="ar-s" x="50" y="1145.6" font-size="11">If validation fails, the run stops before the swap.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1168.6" r="9"/>
+  <text class="ar-t" x="30" y="1172.4" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1172.6" font-size="11.5">every response</text>
+  <text class="ar-m" x="50" y="1186.6" font-size="10.5">Write to a separate folder → Original responses</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1209.6" r="9"/>
+  <text class="ar-t" x="30" y="1213.4" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="1213.6" font-size="11.5">public/</text>
+  <text class="ar-m" x="50" y="1227.6" font-size="10.5">Swap at once → Adapt to the address</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1250.6" r="9"/>
+  <text class="ar-t" x="30" y="1254.4" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="50" y="1254.6" font-size="11.5">built site</text>
+  <text class="ar-m" x="50" y="1268.6" font-size="10.5">Adapt to the address → Chromium checks</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1030.6" r="9"/>
+  <text class="ar-t" x="506" y="1034.4" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="1034.6" font-size="11.5">if it passes</text>
+  <text class="ar-m" x="526" y="1048.6" font-size="10.5">Chromium checks → Run artifacts</text>
+  <text class="ar-s" x="526" y="1063.6" font-size="11">A failing check stops the deployment: the previous publication stays online.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1086.6" r="9"/>
+  <text class="ar-t" x="506" y="1090.4" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1090.6" font-size="11.5">raw-sources</text>
+  <text class="ar-m" x="526" y="1104.6" font-size="10.5">Original responses → Run artifacts</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1127.6" r="9"/>
+  <text class="ar-t" x="506" y="1131.4" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1131.6" font-size="11.5">github-pages</text>
+  <text class="ar-m" x="526" y="1145.6" font-size="10.5">Run artifacts → GitHub Pages (default)</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1168.6" r="9"/>
+  <text class="ar-t" x="506" y="1172.4" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="526" y="1172.6" font-size="11.5">site</text>
+  <text class="ar-m" x="526" y="1186.6" font-size="10.5">Run artifacts → Cloudflare Pages</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1209.6" r="9"/>
+  <text class="ar-t" x="506" y="1213.4" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="526" y="1213.6" font-size="11.5">publishes</text>
+  <text class="ar-m" x="526" y="1227.6" font-size="10.5">GitHub Pages (default) → Live site (SITE_URL)</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1250.6" r="9"/>
+  <text class="ar-t" x="506" y="1254.4" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="526" y="1254.6" font-size="11.5">publishes</text>
+  <text class="ar-m" x="526" y="1268.6" font-size="10.5">Cloudflare Pages → Live site (SITE_URL)</text>
+  <circle class="ar-badge ar-e-control" cx="982" cy="1030.6" r="9"/>
+  <text class="ar-t" x="982" y="1034.4" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="1002" y="1034.6" font-size="11.5">serving the new publication?</text>
+  <text class="ar-m" x="1002" y="1048.6" font-size="10.5">Live site (SITE_URL) → Verify the live site</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1071.6" r="9"/>
+  <text class="ar-t" x="982" y="1075.4" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1075.6" font-size="11.5">raw-sources</text>
+  <text class="ar-m" x="1002" y="1089.6" font-size="10.5">Run artifacts → Download raw-sources</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1112.6" r="9"/>
+  <text class="ar-t" x="982" y="1116.4" font-size="10.5" text-anchor="middle">15</text>
+  <text class="ar-t" x="1002" y="1116.6" font-size="11.5">today&#x27;s responses</text>
+  <text class="ar-m" x="1002" y="1130.6" font-size="10.5">Download raw-sources → Drop duplicates and truncated files</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1153.6" r="9"/>
+  <text class="ar-t" x="982" y="1157.4" font-size="10.5" text-anchor="middle">16</text>
+  <text class="ar-t" x="1002" y="1157.6" font-size="11.5">only what is new</text>
+  <text class="ar-m" x="1002" y="1171.6" font-size="10.5">Drop duplicates and truncated files → Commit to data-archive</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1194.6" r="9"/>
+  <text class="ar-t" x="982" y="1198.4" font-size="10.5" text-anchor="middle">17</text>
+  <text class="ar-t" x="1002" y="1198.6" font-size="11.5">items and history</text>
+  <text class="ar-m" x="1002" y="1212.6" font-size="10.5">Download raw-sources → Merge the news history</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1235.6" r="9"/>
+  <text class="ar-t" x="982" y="1239.4" font-size="10.5" text-anchor="middle">18</text>
+  <text class="ar-t" x="1002" y="1239.6" font-size="11.5">merged history</text>
+  <text class="ar-m" x="1002" y="1253.6" font-size="10.5">Merge the news history → Commit to data-archive</text>
+  <line class="ar-rule" x1="20" y1="1303.6" x2="1420" y2="1303.6"/>
+  <text class="ar-h" x="20" y="1333.6" font-size="15">If something fails: what happens and which fallback takes over</text>
+  <g class="ar-warn" transform="translate(20 1350.6) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1365.6" font-size="11.5">Publication validation fails</text>
+  <text class="ar-s" x="50" y="1380.6" font-size="11">Nothing is replaced: the site keeps serving the previous publication and</text>
+  <text class="ar-s" x="50" y="1395.6" font-size="11">the incidents job opens an issue.</text>
+  <g class="ar-warn" transform="translate(20 1407.6) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1422.6" font-size="11.5">A Chromium check fails</text>
+  <text class="ar-s" x="50" y="1437.6" font-size="11">Nothing is deployed; the last good version stays online and the run is</text>
+  <text class="ar-s" x="50" y="1452.6" font-size="11">marked as failed.</text>
+  <g class="ar-warn" transform="translate(496 1350.6) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1365.6" font-size="11.5">The live site does not show the publication within 10 min</text>
+  <text class="ar-s" x="526" y="1380.6" font-size="11">The run fails and opens “The daily update failed”; the 6 h watchdog looks</text>
+  <text class="ar-s" x="526" y="1395.6" font-size="11">again.</text>
+  <g class="ar-warn" transform="translate(496 1407.6) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1422.6" font-size="11.5">raw-sources did not arrive</text>
+  <text class="ar-s" x="526" y="1437.6" font-size="11">archive warns and leaves data-archive untouched; the day&#x27;s items stay in</text>
+  <text class="ar-s" x="526" y="1452.6" font-size="11">the publication and go in tomorrow.</text>
+  <g class="ar-warn" transform="translate(972 1350.6) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1365.6" font-size="11.5">The push to data-archive fails</text>
+  <text class="ar-s" x="1002" y="1380.6" font-size="11">It is retried 3 times with a wait; if it still fails, the run fails and alerts.</text>
+</svg>

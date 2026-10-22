@@ -1,0 +1,569 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1695.4" role="img" aria-labelledby="a4-t a4-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="a4-t">Annex A4 · Download in GitHub Actions and per-source fallbacks</title>
+  <desc id="a4-d">Each source&#x27;s fallback ladder in the daily run: official URL, Peru, n8n and console copies, mirrors, Internet Archive and previous publication, with their time limits and provenance.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="a4-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a4-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a4-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a4-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a4-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1695.4" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Annex A4 · Download in GitHub Actions and per-source fallbacks</text>
+  <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
+  <text class="ar-s" x="20" y="60" font-size="12">How the daily update gets each value: it follows the registry, requests the official URL from GitHub servers in the US and, if it does not answer, walks down a ladder of fallbacks to the last good value already published. Every answer</text>
+  <text class="ar-s" x="20" y="77" font-size="12">keeps its channel, URL, date and sha256.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: Download in GitHub Actions (Fetcher), Internet Archive (Wayback), Previous publication (live data/), Actions cache: reader feeds.</text>
+  <text class="ar-t" x="20" y="121" font-size="11.5">Lines:</text>
+  <path class="ar-e ar-e-data" d="M70.7 117 L104.7 117" marker-end="url(#a4-m-data)"/>
+  <text class="ar-s" x="112.7" y="121" font-size="11.5">data</text>
+  <path class="ar-e ar-e-fallback" d="M160.6 117 L194.6 117" stroke-dasharray="6 4" marker-end="url(#a4-m-fallback)"/>
+  <text class="ar-s" x="202.6" y="121" font-size="11.5">fallback</text>
+  <path class="ar-e ar-e-trigger" d="M269.4 117 L303.4 117" stroke-dasharray="2 3" marker-end="url(#a4-m-trigger)"/>
+  <text class="ar-s" x="311.4" y="121" font-size="11.5">trigger or control</text>
+  <path class="ar-e ar-e-human" d="M431.5 117 L465.5 117" stroke-dasharray="8 3 2 3" marker-end="url(#a4-m-human)"/>
+  <text class="ar-s" x="473.5" y="121" font-size="11.5">manual step</text>
+  <rect class="ar-col" x="36" y="141" width="300" height="907.4" rx="10"/>
+  <text class="ar-h" x="48" y="166" font-size="15">Before requesting</text>
+  <text class="ar-m" x="48" y="183" font-size="10.5">registry · Actions cache · time limits</text>
+  <rect class="ar-col" x="392" y="141" width="300" height="907.4" rx="10"/>
+  <text class="ar-h" x="404" y="166" font-size="15">Ladder per source</text>
+  <text class="ar-m" x="404" y="183" font-size="10.5">Python 3.12 · httpx · enso/fetch.py</text>
+  <rect class="ar-col" x="748" y="141" width="300" height="907.4" rx="10"/>
+  <text class="ar-h" x="760" y="166" font-size="15">Copies and archive</text>
+  <text class="ar-m" x="760" y="183" font-size="10.5">data-* branches · Internet Archive · live site</text>
+  <rect class="ar-col" x="1104" y="141" width="300" height="907.4" rx="10"/>
+  <text class="ar-h" x="1116" y="166" font-size="15">Result</text>
+  <text class="ar-m" x="1116" y="183" font-size="10.5">value, channel and provenance of each source</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="a4-e-1" data-edge="1" data-from="plan" data-to="direct" tabindex="0">
+    <title>1. Channel plan → 1 · Official URL: the URL&#x27;s plan. If the URL belongs to Actions it is requested; if not, the copy first; if forbidden, it is not requested.</title>
+    <path class="ar-e ar-e-trigger" d="M326 276 L372 276 Q378 276 378 270 L378 240 Q378 234 384 234 L402 234" stroke-dasharray="2 3" marker-end="url(#a4-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="352" cy="276" r="9"/>
+    <text class="ar-t" x="352" y="279.8" font-size="10.5" text-anchor="middle">1</text>
+  </g>
+  <g class="ar-edge" id="a4-e-2" data-edge="2" data-from="reader" data-to="direct" tabindex="0">
+    <title>2. Reader-feed state → 1 · Official URL: reader feeds: every 20 h or more. A single try with no retry on 429 or 5xx; between reads the last state stays.</title>
+    <path class="ar-e ar-e-trigger" d="M326 474 L372 474 Q378 474 378 468 L378 288 Q378 282 384 282 L402 282" stroke-dasharray="2 3" marker-end="url(#a4-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="378" cy="378" r="9"/>
+    <text class="ar-t" x="378" y="381.8" font-size="10.5" text-anchor="middle">2</text>
+  </g>
+  <g class="ar-edge" id="a4-e-3" data-edge="3" data-from="budget" data-to="direct" tabindex="0">
+    <title>3. Time limits → 1 · Official URL: run time limit. After the limit, each source goes on with its copies or its previous value, so the run gets to publish.</title>
+    <path class="ar-e ar-e-trigger" d="M326 654 L366 654 Q372 654 372 648 L372 342 Q372 336 378 336 L402 336" stroke-dasharray="2 3" marker-end="url(#a4-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="372" cy="495" r="9"/>
+    <text class="ar-t" x="372" y="498.8" font-size="10.5" text-anchor="middle">3</text>
+  </g>
+  <g class="ar-edge" id="a4-e-4" data-edge="4" data-from="direct" data-to="relay" tabindex="0">
+    <title>4. 1 · Official URL → 2 · A collector&#x27;s copy: no answer. The copy is used if the request fails or answers something empty or of another type.</title>
+    <path class="ar-e ar-e-fallback" d="M540 373.4 L540 403.4" stroke-dasharray="6 4" marker-end="url(#a4-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="540" cy="388.4" r="9"/>
+    <text class="ar-t" x="540" y="392.2" font-size="10.5" text-anchor="middle">4</text>
+  </g>
+  <g class="ar-edge" id="a4-e-5" data-edge="5" data-from="relay" data-to="mirror" tabindex="0">
+    <title>5. 2 · A collector&#x27;s copy → 3 · Official mirror: no copy. It moves on to the source&#x27;s next official mirror.</title>
+    <path class="ar-e ar-e-fallback" d="M540 557.1 L540 587.1" stroke-dasharray="6 4" marker-end="url(#a4-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="540" cy="572.1" r="9"/>
+    <text class="ar-t" x="540" y="575.9" font-size="10.5" text-anchor="middle">5</text>
+  </g>
+  <g class="ar-edge" id="a4-e-6" data-edge="6" data-from="mirror" data-to="wayback" tabindex="0">
+    <title>6. 3 · Official mirror → 4 · Internet Archive: mirrors fail. With every URL exhausted, it looks for each one&#x27;s archived copy.</title>
+    <path class="ar-e ar-e-fallback" d="M540 711.1 L540 741.1" stroke-dasharray="6 4" marker-end="url(#a4-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="540" cy="726.1" r="9"/>
+    <text class="ar-t" x="540" y="729.9" font-size="10.5" text-anchor="middle">6</text>
+  </g>
+  <g class="ar-edge" id="a4-e-7" data-edge="7" data-from="wayback" data-to="previous" tabindex="0">
+    <title>7. 4 · Internet Archive → 5 · Last published value: no archived copy. If the archive has no copy either, the last good value is kept.</title>
+    <path class="ar-e ar-e-fallback" d="M540 880.3 L540 910.3" stroke-dasharray="6 4" marker-end="url(#a4-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="540" cy="895.3" r="9"/>
+    <text class="ar-t" x="540" y="899.1" font-size="10.5" text-anchor="middle">7</text>
+  </g>
+  <g class="ar-edge" id="a4-e-8" data-edge="8" data-from="peru-b" data-to="relay" tabindex="0">
+    <title>8. data-peru → 2 · A collector&#x27;s copy: Peru copy. Up to 7 days; warning at 36 h and relay-goal-missed if the communiqué or report PDF is missing.</title>
+    <path class="ar-e ar-e-data" d="M758 240 L720 240 Q714 240 714 246 L714 432 Q714 438 708 438 L682 438" marker-end="url(#a4-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="714" cy="339" r="9"/>
+    <text class="ar-t" x="714" y="342.8" font-size="10.5" text-anchor="middle">8</text>
+  </g>
+  <g class="ar-edge" id="a4-e-9" data-edge="9" data-from="n8n-b" data-to="relay" tabindex="0">
+    <title>9. data-n8n → 2 · A collector&#x27;s copy: n8n copy. Up to 72 h; warning at 36 h.</title>
+    <path class="ar-e ar-e-data" d="M758 360 L714 360 Q708 360 708 366 L708 474 Q708 480 702 480 L682 480" marker-end="url(#a4-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="708" cy="420" r="9"/>
+    <text class="ar-t" x="708" y="423.8" font-size="10.5" text-anchor="middle">9</text>
+  </g>
+  <g class="ar-edge" id="a4-e-10" data-edge="10" data-from="manual-b" data-to="relay" tabindex="0">
+    <title>10. data-manual → 2 · A collector&#x27;s copy: uploaded PDF. Looked up with the document&#x27;s own URL (or manual://enfen-informe/&lt;id&gt;).</title>
+    <path class="ar-e ar-e-data" d="M758 480 L714 480 Q708 480 708 486 L708 516 Q708 522 702 522 L682 522" marker-end="url(#a4-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="733" cy="480" r="9"/>
+    <text class="ar-t" x="733" y="483.8" font-size="10.5" text-anchor="middle">10</text>
+  </g>
+  <g class="ar-edge" id="a4-e-11" data-edge="11" data-from="ia" data-to="wayback" tabindex="0">
+    <title>11. web.archive.org → 4 · Internet Archive: CDX and id_. After the official sources&#x27; 8 minutes it is no longer queried.</title>
+    <path class="ar-e ar-e-data" d="M758 630 L720 630 Q714 630 714 636 L714 804 Q714 810 708 810 L682 810" marker-end="url(#a4-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="714" cy="720" r="9"/>
+    <text class="ar-t" x="714" y="723.8" font-size="10.5" text-anchor="middle">11</text>
+  </g>
+  <g class="ar-edge" id="a4-e-12" data-edge="12" data-from="live" data-to="previous" tabindex="0">
+    <title>12. Live site (data/) → 5 · Last published value: sources/&lt;id&gt;.json. The previous value is read from the published site; up to 3 tries for the history and the feed status.</title>
+    <path class="ar-e ar-e-data" d="M758 798 L714 798 Q708 798 708 804 L708 990 Q708 996 702 996 L682 996" marker-end="url(#a4-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="708" cy="897" r="9"/>
+    <text class="ar-t" x="708" y="900.8" font-size="10.5" text-anchor="middle">12</text>
+  </g>
+  <g class="ar-edge" id="a4-e-13" data-edge="13" data-from="direct" data-to="parse" tabindex="0">
+    <title>13. 1 · Official URL → Reader and validation: the first valid answer. Any rung that answers (direct, copy, mirror or archive) goes to the reader.</title>
+    <path class="ar-e ar-e-data" d="M682 282 L732 282 Q738 282 738 288 L738 288 Q738 294 744 294 L1086 294 Q1092 294 1092 288 L1092 252 Q1092 246 1098 246 L1114 246" marker-end="url(#a4-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="710" cy="282" r="9"/>
+    <text class="ar-t" x="710" y="285.8" font-size="10.5" text-anchor="middle">13</text>
+  </g>
+  <g class="ar-edge" id="a4-e-14" data-edge="14" data-from="previous" data-to="acquired" tabindex="0">
+    <title>14. 5 · Last published value → Value with provenance: carried value. Marked carried, with the date it was really obtained.</title>
+    <path class="ar-e ar-e-fallback" d="M682 948 L1086 948 Q1092 948 1092 942 L1092 396 Q1092 390 1098 390 L1114 390" stroke-dasharray="6 4" marker-end="url(#a4-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="1092" cy="669" r="9"/>
+    <text class="ar-t" x="1092" y="672.8" font-size="10.5" text-anchor="middle">14</text>
+  </g>
+  <g class="ar-edge" id="a4-e-15" data-edge="15" data-from="parse" data-to="acquired" tabindex="0">
+    <title>15. Reader and validation → Value with provenance: parsed value. The value, its format fingerprint and its plausibility warnings.</title>
+    <path class="ar-e ar-e-data" d="M1254 300.5 L1254 330.5" marker-end="url(#a4-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="315.5" r="9"/>
+    <text class="ar-t" x="1254" y="319.3" font-size="10.5" text-anchor="middle">15</text>
+  </g>
+  <g class="ar-edge" id="a4-e-16" data-edge="16" data-from="acquired" data-to="events" tabindex="0">
+    <title>16. Value with provenance → Incidents: channel and attempts. Each use of a fallback leaves its incident with the attempts&#x27; detail.</title>
+    <path class="ar-e ar-e-data" d="M1254 451.3 L1254 481.3" marker-end="url(#a4-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="466.3" r="9"/>
+    <text class="ar-t" x="1254" y="470.1" font-size="10.5" text-anchor="middle">16</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="a4-n-plan" data-node="plan">
+    <title>Channel plan. registry/sources.json says who requests each URL: one not assigned to Actions is read from the copies first (with no copy, a single direct try); one forbidden by robots.txt is not requested. Technology: registry.url_channels.</title>
+    <rect class="ar-node ar-g-pipeline" x="46" y="195" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="46" y="203" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="58" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(61 208)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="96" y="224.5" font-size="12.5">Channel plan</text>
+    <text class="ar-s" x="58" y="256.4" font-size="11">registry/sources.json says who requests each</text>
+    <text class="ar-s" x="58" y="271.6" font-size="11">URL: one not assigned to Actions is read from</text>
+    <text class="ar-s" x="58" y="286.8" font-size="11">the copies first (with no copy, a single direct</text>
+    <text class="ar-s" x="58" y="302" font-size="11">try); one forbidden by robots.txt is not</text>
+    <text class="ar-s" x="58" y="317.2" font-size="11">requested.</text>
+    <rect class="ar-chip" x="58" y="326.9" width="116.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="338.9" font-size="10">registry.url_channels</text>
+    <a class="ar-annex" href="a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="290.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="214.5" font-size="10.5" text-anchor="middle">A1</text></a>
+  </g>
+  <g class="ar-node-g" id="a4-n-reader" data-node="reader">
+    <title>Reader-feed state. reader-state.json in the Actions cache: when each of the 40 reader feeds was last requested and its notes not yet published. Restored at the start and saved at the end even if the run fails; main only. at least 20 h between requests. Technology: actions/cache.</title>
+    <rect class="ar-node ar-g-stores" x="46" y="384.9" width="280" height="178.4" rx="8"/>
+    <rect class="ar-f-stores" x="46" y="392.9" width="4" height="162.4" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="58" y="394.9" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(61 397.9)"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 4v4.5H8M12 8v4.5l3 2"/></g>
+    <text class="ar-t" x="96" y="414.4" font-size="12.5">Reader-feed state</text>
+    <text class="ar-s" x="58" y="446.3" font-size="11">reader-state.json in the Actions cache: when</text>
+    <text class="ar-s" x="58" y="461.5" font-size="11">each of the 40 reader feeds was last</text>
+    <text class="ar-s" x="58" y="476.7" font-size="11">requested and its notes not yet published.</text>
+    <text class="ar-s" x="58" y="491.9" font-size="11">Restored at the start and saved at the end</text>
+    <text class="ar-s" x="58" y="507.1" font-size="11">even if the run fails; main only.</text>
+    <text class="ar-m" x="58" y="526.2" font-size="10.5">at least 20 h between requests</text>
+    <rect class="ar-chip" x="58" y="535.3" width="81" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="547.3" font-size="10">actions/cache</text>
+  </g>
+  <g class="ar-node-g" id="a4-n-budget" data-node="budget">
+    <title>Time limits. Official sources: 8 min in total and 5 min per request; ENFEN, ICEN and the ENSO discussion first. News: 60 s per feed. After the limit nothing more is requested.</title>
+    <rect class="ar-node ar-g-pipeline" x="46" y="593.3" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="46" y="601.3" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="58" y="603.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(61 606.3)"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g>
+    <text class="ar-t" x="96" y="622.8" font-size="12.5">Time limits</text>
+    <text class="ar-s" x="58" y="654.7" font-size="11">Official sources: 8 min in total and 5 min per</text>
+    <text class="ar-s" x="58" y="669.9" font-size="11">request; ENFEN, ICEN and the ENSO</text>
+    <text class="ar-s" x="58" y="685.1" font-size="11">discussion first. News: 60 s per feed. After the</text>
+    <text class="ar-s" x="58" y="700.3" font-size="11">limit nothing more is requested.</text>
+  </g>
+  <g class="ar-node-g" id="a4-n-direct" data-node="direct">
+    <title>1 · Official URL. Up to 3 tries with growing waits on transient errors (DNS, 5xx, 429, timeout); 0.8 s between requests to the same server. After 3 failures in a row a server gets 1 try; after 5, it is skipped. direct channel. Technology: httpx, TLS + intermedios.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="195" width="280" height="178.4" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="203" width="4" height="162.4" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 208)"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></g>
+    <text class="ar-t" x="452" y="224.5" font-size="12.5">1 · Official URL</text>
+    <text class="ar-s" x="414" y="256.4" font-size="11">Up to 3 tries with growing waits on transient</text>
+    <text class="ar-s" x="414" y="271.6" font-size="11">errors (DNS, 5xx, 429, timeout); 0.8 s</text>
+    <text class="ar-s" x="414" y="286.8" font-size="11">between requests to the same server. After 3</text>
+    <text class="ar-s" x="414" y="302" font-size="11">failures in a row a server gets 1 try; after 5, it</text>
+    <text class="ar-s" x="414" y="317.2" font-size="11">is skipped.</text>
+    <text class="ar-m" x="414" y="336.3" font-size="10.5">direct channel</text>
+    <rect class="ar-chip" x="414" y="345.4" width="38.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="357.4" font-size="10">httpx</text>
+    <rect class="ar-chip" x="457.4" y="345.4" width="104.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="463.4" y="357.4" font-size="10">TLS + intermedios</text>
+  </g>
+  <g class="ar-node-g" id="a4-n-relay" data-node="relay">
+    <title>2 · A collector&#x27;s copy. The copy of that same URL from Peru (up to 7 days), n8n (72 h) or the console (120 days), with status 200 and a verified sha256. If there are several, the newest wins. relay-peru, relay-n8n and relay-manual channels.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="403.4" width="280" height="153.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="411.4" width="4" height="137.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="413.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 416.4)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="452" y="432.9" font-size="12.5">2 · A collector&#x27;s copy</text>
+    <text class="ar-s" x="414" y="464.8" font-size="11">The copy of that same URL from Peru (up to 7</text>
+    <text class="ar-s" x="414" y="480" font-size="11">days), n8n (72 h) or the console (120 days),</text>
+    <text class="ar-s" x="414" y="495.2" font-size="11">with status 200 and a verified sha256. If there</text>
+    <text class="ar-s" x="414" y="510.4" font-size="11">are several, the newest wins.</text>
+    <text class="ar-m" x="414" y="529.5" font-size="10.5">relay-peru, relay-n8n and relay-manual</text>
+    <text class="ar-m" x="414" y="544" font-size="10.5">channels</text>
+  </g>
+  <g class="ar-node-g" id="a4-n-mirror" data-node="mirror">
+    <title>3 · Official mirror. The same with each declared mirror, in order (for example, the ENFEN mirror at the DHN), and its copy. mirror channel.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="587.1" width="280" height="124" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="595.1" width="4" height="108" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="597.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 600.1)"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></g>
+    <text class="ar-t" x="452" y="616.6" font-size="12.5">3 · Official mirror</text>
+    <text class="ar-s" x="414" y="648.5" font-size="11">The same with each declared mirror, in order</text>
+    <text class="ar-s" x="414" y="663.7" font-size="11">(for example, the ENFEN mirror at the DHN),</text>
+    <text class="ar-s" x="414" y="678.9" font-size="11">and its copy.</text>
+    <text class="ar-m" x="414" y="698.1" font-size="10.5">mirror channel</text>
+  </g>
+  <g class="ar-node-g" id="a4-n-wayback" data-node="wayback">
+    <title>4 · Internet Archive. The newest copy with status 200, unchanged. For ENFEN, if it is older than a day, it asks for a new one (Save Page Now). News never uses it. archive and archive-fresh channels.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="741.1" width="280" height="139.2" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="749.1" width="4" height="123.2" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="751.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 754.1)"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></g>
+    <text class="ar-t" x="452" y="770.6" font-size="12.5">4 · Internet Archive</text>
+    <text class="ar-s" x="414" y="802.5" font-size="11">The newest copy with status 200, unchanged.</text>
+    <text class="ar-s" x="414" y="817.7" font-size="11">For ENFEN, if it is older than a day, it asks for</text>
+    <text class="ar-s" x="414" y="832.9" font-size="11">a new one (Save Page Now). News never uses</text>
+    <text class="ar-s" x="414" y="848.1" font-size="11">it.</text>
+    <text class="ar-m" x="414" y="867.3" font-size="10.5">archive and archive-fresh channels</text>
+  </g>
+  <g class="ar-node-g" id="a4-n-previous" data-node="previous">
+    <title>5 · Last published value. If everything fails, the last valid value of the previous publication, with its real date and marked carried. previous-publication channel.</title>
+    <rect class="ar-node ar-g-pipeline" x="402" y="910.3" width="280" height="124" rx="8"/>
+    <rect class="ar-f-pipeline" x="402" y="918.3" width="4" height="108" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="414" y="920.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(417 923.3)"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 4v4.5H8M12 8v4.5l3 2"/></g>
+    <text class="ar-t" x="452" y="939.8" font-size="12.5">5 · Last published value</text>
+    <text class="ar-s" x="414" y="971.8" font-size="11">If everything fails, the last valid value of the</text>
+    <text class="ar-s" x="414" y="986.9" font-size="11">previous publication, with its real date and</text>
+    <text class="ar-s" x="414" y="1002.1" font-size="11">marked carried.</text>
+    <text class="ar-m" x="414" y="1021.3" font-size="10.5">previous-publication channel</text>
+  </g>
+  <g class="ar-node-g" id="a4-n-peru-b" data-node="peru-b">
+    <title>data-peru. Copy from the Peru machine (git, depth 1). Warning at 36 h; no branch, relay-missing.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="195" width="280" height="90.4" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="203" width="4" height="74.4" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 208)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="7" r="2.2"/><path d="M6 7.2v9.6M18 9.2c0 5-6 3.5-11 7.8"/></g>
+    <text class="ar-t" x="808" y="224.5" font-size="12.5">data-peru</text>
+    <text class="ar-s" x="770" y="256.4" font-size="11">Copy from the Peru machine (git, depth 1).</text>
+    <text class="ar-s" x="770" y="271.6" font-size="11">Warning at 36 h; no branch, relay-missing.</text>
+    <a class="ar-annex" href="a2-en.svg" data-annex="a2"><title>Annex A2: Peru collector: the local server</title><rect class="ar-tag" x="1002.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="214.5" font-size="10.5" text-anchor="middle">A2</text></a>
+  </g>
+  <g class="ar-node-g" id="a4-n-n8n-b" data-node="n8n-b">
+    <title>data-n8n. Copy from n8n on AWS. Warning at 36 h; no branch, relay-n8n-missing.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="315.4" width="280" height="90.4" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="323.4" width="4" height="74.4" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="325.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 328.4)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="7" r="2.2"/><path d="M6 7.2v9.6M18 9.2c0 5-6 3.5-11 7.8"/></g>
+    <text class="ar-t" x="808" y="344.9" font-size="12.5">data-n8n</text>
+    <text class="ar-s" x="770" y="376.8" font-size="11">Copy from n8n on AWS. Warning at 36 h; no</text>
+    <text class="ar-s" x="770" y="392" font-size="11">branch, relay-n8n-missing.</text>
+    <a class="ar-annex" href="a3-en.svg" data-annex="a3"><title>Annex A3: n8n in the cloud (AWS): second copy and helper workflows</title><rect class="ar-tag" x="1002.6" y="322.4" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="334.9" font-size="10.5" text-anchor="middle">A3</text></a>
+  </g>
+  <g class="ar-node-g" id="a4-n-manual-b" data-node="manual-b">
+    <title>data-manual. PDFs uploaded by hand in the documents console. It not existing is normal.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="435.7" width="280" height="90.4" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="443.7" width="4" height="74.4" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="445.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 448.7)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="7" r="2.2"/><path d="M6 7.2v9.6M18 9.2c0 5-6 3.5-11 7.8"/></g>
+    <text class="ar-t" x="808" y="465.2" font-size="12.5">data-manual</text>
+    <text class="ar-s" x="770" y="497.2" font-size="11">PDFs uploaded by hand in the documents</text>
+    <text class="ar-s" x="770" y="512.3" font-size="11">console. It not existing is normal.</text>
+    <a class="ar-annex" href="a7-en.svg" data-annex="a7"><title>Annex A7: Review consoles on Cloudflare</title><rect class="ar-tag" x="1002.6" y="442.7" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="455.2" font-size="10.5" text-anchor="middle">A7</text></a>
+  </g>
+  <g class="ar-node-g" id="a4-n-ia" data-node="ia">
+    <title>web.archive.org. CDX to search, id_ to fetch the original and /save/ for a new copy (only with ENSO_ARCHIVE_SAVE=1, on every run except a manual one that unticks it). Technology: CDX API, Save Page Now.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="556.1" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="564.1" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="566.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 569.1)"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></g>
+    <text class="ar-t" x="808" y="585.6" font-size="12.5">web.archive.org</text>
+    <text class="ar-s" x="770" y="617.5" font-size="11">CDX to search, id_ to fetch the original and</text>
+    <text class="ar-s" x="770" y="632.7" font-size="11">/save/ for a new copy (only with</text>
+    <text class="ar-s" x="770" y="647.9" font-size="11">ENSO_ARCHIVE_SAVE=1, on every run except</text>
+    <text class="ar-s" x="770" y="663" font-size="11">a manual one that unticks it).</text>
+    <rect class="ar-chip" x="770" y="672.8" width="52.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="684.8" font-size="10">CDX API</text>
+    <rect class="ar-chip" x="827.5" y="672.8" width="89.3" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="833.5" y="684.8" font-size="10">Save Page Now</text>
+  </g>
+  <g class="ar-node-g" id="a4-n-live" data-node="live">
+    <title>Live site (data/). --previous ${SITE_URL}data: sources/&lt;id&gt;.json, the news history, the feed status and the place corrections. It tells “does not exist” (404) from “does not answer”.</title>
+    <rect class="ar-node ar-g-stores" x="758" y="730.8" width="280" height="135.9" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="738.8" width="4" height="119.9" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="740.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 743.8)"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8.5 20h7M12 16v4"/></g>
+    <text class="ar-t" x="808" y="760.3" font-size="12.5">Live site (data/)</text>
+    <text class="ar-s" x="770" y="792.2" font-size="11">--previous ${SITE_URL}data:</text>
+    <text class="ar-s" x="770" y="807.4" font-size="11">sources/&lt;id&gt;.json, the news history, the feed</text>
+    <text class="ar-s" x="770" y="822.6" font-size="11">status and the place corrections. It tells</text>
+    <text class="ar-s" x="770" y="837.8" font-size="11">“does not exist” (404) from “does not</text>
+    <text class="ar-s" x="770" y="852.9" font-size="11">answer”.</text>
+    <a class="ar-annex" href="a9-en.svg" data-annex="a9"><title>Annex A9: The site in the browser</title><rect class="ar-tag" x="1002.6" y="737.8" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="750.3" font-size="10.5" text-anchor="middle">A9</text></a>
+  </g>
+  <g class="ar-node-g" id="a4-n-parse" data-node="parse">
+    <title>Reader and validation. Each answer goes to its reader. If the format really changed (FormatChanged), the value is not published and the previous one is used.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="195" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="203" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 208)"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></g>
+    <text class="ar-t" x="1164" y="224.5" font-size="12.5">Reader and validation</text>
+    <text class="ar-s" x="1126" y="256.4" font-size="11">Each answer goes to its reader. If the format</text>
+    <text class="ar-s" x="1126" y="271.6" font-size="11">really changed (FormatChanged), the value is</text>
+    <text class="ar-s" x="1126" y="286.8" font-size="11">not published and the previous one is used.</text>
+    <a class="ar-annex" href="a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="1358.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="214.5" font-size="10.5" text-anchor="middle">A5</text></a>
+  </g>
+  <g class="ar-node-g" id="a4-n-acquired" data-node="acquired">
+    <title>Value with provenance. Channel, effective URL, download or copy date, sha256, format fingerprint and attempts: all published in sources.json and sources/&lt;id&gt;.json.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="330.5" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="338.5" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="340.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 343.5)"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></g>
+    <text class="ar-t" x="1164" y="360" font-size="12.5">Value with provenance</text>
+    <text class="ar-s" x="1126" y="392" font-size="11">Channel, effective URL, download or copy</text>
+    <text class="ar-s" x="1126" y="407.1" font-size="11">date, sha256, format fingerprint and</text>
+    <text class="ar-s" x="1126" y="422.3" font-size="11">attempts: all published in sources.json and</text>
+    <text class="ar-s" x="1126" y="437.5" font-size="11">sources/&lt;id&gt;.json.</text>
+  </g>
+  <g class="ar-node-g" id="a4-n-events" data-node="events">
+    <title>Incidents. relay-channel (info), archive-channel (warning), unreachable and carried-forward. A critical source with no value and no previous one leaves the run critical and nothing is deployed.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="481.3" width="280" height="135.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="489.3" width="4" height="119.9" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="491.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 494.3)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+    <text class="ar-t" x="1164" y="510.8" font-size="12.5">Incidents</text>
+    <text class="ar-s" x="1126" y="542.7" font-size="11">relay-channel (info), archive-channel</text>
+    <text class="ar-s" x="1126" y="557.9" font-size="11">(warning), unreachable and carried-forward. A</text>
+    <text class="ar-s" x="1126" y="573" font-size="11">critical source with no value and no previous</text>
+    <text class="ar-s" x="1126" y="588.2" font-size="11">one leaves the run critical and nothing is</text>
+    <text class="ar-s" x="1126" y="603.4" font-size="11">deployed.</text>
+    <a class="ar-annex" href="a10-en.svg" data-annex="a10"><title>Annex A10: Monitoring, alerts and maintenance</title><rect class="ar-tag" x="1351.3" y="488.3" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="1368.6" y="500.8" font-size="10.5" text-anchor="middle">A10</text></a>
+  </g>
+  <line class="ar-rule" x1="20" y1="1088.4" x2="1420" y2="1088.4"/>
+  <text class="ar-h" x="20" y="1118.4" font-size="15">Steps and connections: what travels along each line, when and why</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1146.4" r="9"/>
+  <text class="ar-t" x="30" y="1150.2" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="1150.4" font-size="11.5">the URL&#x27;s plan</text>
+  <text class="ar-m" x="50" y="1164.4" font-size="10.5">Channel plan → 1 · Official URL</text>
+  <text class="ar-s" x="50" y="1179.4" font-size="11">If the URL belongs to Actions it is requested; if not, the copy first; if</text>
+  <text class="ar-s" x="50" y="1194.4" font-size="11">forbidden, it is not requested.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1217.4" r="9"/>
+  <text class="ar-t" x="30" y="1221.2" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1221.4" font-size="11.5">reader feeds: every 20 h or more</text>
+  <text class="ar-m" x="50" y="1235.4" font-size="10.5">Reader-feed state → 1 · Official URL</text>
+  <text class="ar-s" x="50" y="1250.4" font-size="11">A single try with no retry on 429 or 5xx; between reads the last state stays.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1273.4" r="9"/>
+  <text class="ar-t" x="30" y="1277.2" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1277.4" font-size="11.5">run time limit</text>
+  <text class="ar-m" x="50" y="1291.4" font-size="10.5">Time limits → 1 · Official URL</text>
+  <text class="ar-s" x="50" y="1306.4" font-size="11">After the limit, each source goes on with its copies or its previous value, so</text>
+  <text class="ar-s" x="50" y="1321.4" font-size="11">the run gets to publish.</text>
+  <circle class="ar-badge ar-e-fallback" cx="30" cy="1344.4" r="9"/>
+  <text class="ar-t" x="30" y="1348.2" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1348.4" font-size="11.5">no answer</text>
+  <text class="ar-m" x="50" y="1362.4" font-size="10.5">1 · Official URL → 2 · A collector&#x27;s copy</text>
+  <text class="ar-s" x="50" y="1377.4" font-size="11">The copy is used if the request fails or answers something empty or of</text>
+  <text class="ar-s" x="50" y="1392.4" font-size="11">another type.</text>
+  <circle class="ar-badge ar-e-fallback" cx="30" cy="1415.4" r="9"/>
+  <text class="ar-t" x="30" y="1419.2" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="1419.4" font-size="11.5">no copy</text>
+  <text class="ar-m" x="50" y="1433.4" font-size="10.5">2 · A collector&#x27;s copy → 3 · Official mirror</text>
+  <text class="ar-s" x="50" y="1448.4" font-size="11">It moves on to the source&#x27;s next official mirror.</text>
+  <circle class="ar-badge ar-e-fallback" cx="506" cy="1146.4" r="9"/>
+  <text class="ar-t" x="506" y="1150.2" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="526" y="1150.4" font-size="11.5">mirrors fail</text>
+  <text class="ar-m" x="526" y="1164.4" font-size="10.5">3 · Official mirror → 4 · Internet Archive</text>
+  <text class="ar-s" x="526" y="1179.4" font-size="11">With every URL exhausted, it looks for each one&#x27;s archived copy.</text>
+  <circle class="ar-badge ar-e-fallback" cx="506" cy="1202.4" r="9"/>
+  <text class="ar-t" x="506" y="1206.2" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="1206.4" font-size="11.5">no archived copy</text>
+  <text class="ar-m" x="526" y="1220.4" font-size="10.5">4 · Internet Archive → 5 · Last published value</text>
+  <text class="ar-s" x="526" y="1235.4" font-size="11">If the archive has no copy either, the last good value is kept.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1258.4" r="9"/>
+  <text class="ar-t" x="506" y="1262.2" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1262.4" font-size="11.5">Peru copy</text>
+  <text class="ar-m" x="526" y="1276.4" font-size="10.5">data-peru → 2 · A collector&#x27;s copy</text>
+  <text class="ar-s" x="526" y="1291.4" font-size="11">Up to 7 days; warning at 36 h and relay-goal-missed if the communiqué or</text>
+  <text class="ar-s" x="526" y="1306.4" font-size="11">report PDF is missing.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1329.4" r="9"/>
+  <text class="ar-t" x="506" y="1333.2" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1333.4" font-size="11.5">n8n copy</text>
+  <text class="ar-m" x="526" y="1347.4" font-size="10.5">data-n8n → 2 · A collector&#x27;s copy</text>
+  <text class="ar-s" x="526" y="1362.4" font-size="11">Up to 72 h; warning at 36 h.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1385.4" r="9"/>
+  <text class="ar-t" x="506" y="1389.2" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="526" y="1389.4" font-size="11.5">uploaded PDF</text>
+  <text class="ar-m" x="526" y="1403.4" font-size="10.5">data-manual → 2 · A collector&#x27;s copy</text>
+  <text class="ar-s" x="526" y="1418.4" font-size="11">Looked up with the document&#x27;s own URL (or manual://enfen-informe/&lt;id&gt;).</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1441.4" r="9"/>
+  <text class="ar-t" x="506" y="1445.2" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="526" y="1445.4" font-size="11.5">CDX and id_</text>
+  <text class="ar-m" x="526" y="1459.4" font-size="10.5">web.archive.org → 4 · Internet Archive</text>
+  <text class="ar-s" x="526" y="1474.4" font-size="11">After the official sources&#x27; 8 minutes it is no longer queried.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1146.4" r="9"/>
+  <text class="ar-t" x="982" y="1150.2" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="1002" y="1150.4" font-size="11.5">sources/&lt;id&gt;.json</text>
+  <text class="ar-m" x="1002" y="1164.4" font-size="10.5">Live site (data/) → 5 · Last published value</text>
+  <text class="ar-s" x="1002" y="1179.4" font-size="11">The previous value is read from the published site; up to 3 tries for the</text>
+  <text class="ar-s" x="1002" y="1194.4" font-size="11">history and the feed status.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1217.4" r="9"/>
+  <text class="ar-t" x="982" y="1221.2" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="1002" y="1221.4" font-size="11.5">the first valid answer</text>
+  <text class="ar-m" x="1002" y="1235.4" font-size="10.5">1 · Official URL → Reader and validation</text>
+  <text class="ar-s" x="1002" y="1250.4" font-size="11">Any rung that answers (direct, copy, mirror or archive) goes to the reader.</text>
+  <circle class="ar-badge ar-e-fallback" cx="982" cy="1273.4" r="9"/>
+  <text class="ar-t" x="982" y="1277.2" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1277.4" font-size="11.5">carried value</text>
+  <text class="ar-m" x="1002" y="1291.4" font-size="10.5">5 · Last published value → Value with provenance</text>
+  <text class="ar-s" x="1002" y="1306.4" font-size="11">Marked carried, with the date it was really obtained.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1329.4" r="9"/>
+  <text class="ar-t" x="982" y="1333.2" font-size="10.5" text-anchor="middle">15</text>
+  <text class="ar-t" x="1002" y="1333.4" font-size="11.5">parsed value</text>
+  <text class="ar-m" x="1002" y="1347.4" font-size="10.5">Reader and validation → Value with provenance</text>
+  <text class="ar-s" x="1002" y="1362.4" font-size="11">The value, its format fingerprint and its plausibility warnings.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1385.4" r="9"/>
+  <text class="ar-t" x="982" y="1389.2" font-size="10.5" text-anchor="middle">16</text>
+  <text class="ar-t" x="1002" y="1389.4" font-size="11.5">channel and attempts</text>
+  <text class="ar-m" x="1002" y="1403.4" font-size="10.5">Value with provenance → Incidents</text>
+  <text class="ar-s" x="1002" y="1418.4" font-size="11">Each use of a fallback leaves its incident with the attempts&#x27; detail.</text>
+  <line class="ar-rule" x1="20" y1="1509.4" x2="1420" y2="1509.4"/>
+  <text class="ar-h" x="20" y="1539.4" font-size="15">If something fails: what happens and which fallback takes over</text>
+  <g class="ar-warn" transform="translate(20 1556.4) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1571.4" font-size="11.5">The ENFEN portal does not answer from the US</text>
+  <text class="ar-s" x="50" y="1586.4" font-size="11">The registry gives it to Peru: the data-peru copy is used and only without a</text>
+  <text class="ar-s" x="50" y="1601.4" font-size="11">copy is it tried once; then the DHN mirror and the Internet Archive.</text>
+  <g class="ar-warn" transform="translate(20 1613.4) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1628.4" font-size="11.5">A copy branch does not exist or cannot be fetched</text>
+  <text class="ar-s" x="50" y="1643.4" font-size="11">The folder goes empty and the run continues with the other fallbacks;</text>
+  <text class="ar-s" x="50" y="1658.4" font-size="11">relay-missing or relay-n8n-missing is logged.</text>
+  <g class="ar-warn" transform="translate(496 1556.4) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1571.4" font-size="11.5">A server answers very slowly or not at all</text>
+  <text class="ar-s" x="526" y="1586.4" font-size="11">Each request has a total time; after 3 failures the server gets a single try</text>
+  <text class="ar-s" x="526" y="1601.4" font-size="11">and after 5 it is skipped for the run.</text>
+  <g class="ar-warn" transform="translate(496 1613.4) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1628.4" font-size="11.5">The 8 minutes run out</text>
+  <text class="ar-s" x="526" y="1643.4" font-size="11">Nothing more is requested: each source goes on with its copies or its</text>
+  <text class="ar-s" x="526" y="1658.4" font-size="11">previous value, and the run publishes.</text>
+  <g class="ar-warn" transform="translate(972 1556.4) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1571.4" font-size="11.5">A value arrives expired</text>
+  <text class="ar-s" x="1002" y="1586.4" font-size="11">It is published with its real date and the site shows “Current value not</text>
+  <text class="ar-s" x="1002" y="1601.4" font-size="11">available”: never as current.</text>
+  <g class="ar-warn" transform="translate(972 1613.4) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1628.4" font-size="11.5">A critical source has no value and no previous one</text>
+  <text class="ar-s" x="1002" y="1643.4" font-size="11">The run ends critical and nothing is deployed: yesterday&#x27;s site stays.</text>
+</svg>

@@ -160,6 +160,73 @@ def test_history_is_append_only_and_csv_is_safe():
     assert all(not r["title"].startswith("=") for r in rows)
 
 
+def test_architecture_annexes_detail_every_box_and_stay_in_sync():
+    """Los anexos A1 a A10 (docs/arquitectura-anexos.json): cada caja del completo está en exactamente uno, cada
+    caja del simplificado enlaza al menos uno, los SVG (español e inglés), el explorador y el texto están al día,
+    y nada de lo que va al sitio nombra el repositorio (el despliegue en Cloudflare lo rechazaría)."""
+    import re
+
+    from conftest import ROOT
+    from tools import architecture as A
+    from tools.prepare_site import REPO_HOST
+
+    model = json.loads(A.MODEL.read_text(encoding="utf-8"))
+    annexes = A.load_annexes()
+    assert annexes, "faltan los anexos"
+    ids = [a["id"] for a in annexes]
+    assert ids == [f"a{i + 1}" for i in range(len(annexes))]
+    full_ids = {n["id"] for n in model["full"]["nodes"]}
+    covers = [c for a in annexes for c in a["covers"]]
+    assert sorted(covers) == sorted(full_ids), "cada caja del completo va en exactamente un anexo"
+    simple_ids = {n["id"] for n in model["simple"]["nodes"]}
+    linked = {s for a in annexes for s in a["simple"]}
+    assert linked == simple_ids, "cada caja del simplificado enlaza al menos un anexo"
+    icons = set(A.ICONS)
+    for a in annexes:
+        nodes = {n["id"] for n in a["nodes"]}
+        assert len(nodes) == len(a["nodes"]), f"{a['id']}: ids repetidos"
+        cols = {c["id"] for c in a["columns"]}
+        for n in a["nodes"]:
+            assert n["col"] in cols and n["icon"] in icons and n["group"] in A.GROUP_VAR, (a["id"], n["id"])
+            assert n["what_es"] and n["what_en"] and n["name_es"] and n["name_en"], (a["id"], n["id"])
+            assert set(n.get("see", [])) <= set(ids) - {a["id"]}, (a["id"], n["id"])
+        for e in a["edges"]:
+            assert e["from"] in nodes and e["to"] in nodes and e["from"] != e["to"], (a["id"], e)
+            assert e["label_es"] and e["label_en"] and bool(e.get("explain_es")) == bool(e.get("explain_en")), (a["id"], e)
+        for f in a.get("fails", []):
+            assert all(f[k] for k in ("if_es", "then_es", "if_en", "then_en")), (a["id"], f)
+    out = A.outputs(model, annexes)
+    assert len(out) == 4 + 2 * len(annexes)
+    for key, (svg, paths) in out.items():
+        for p in paths:
+            assert p.read_text(encoding="utf-8") == svg, f"{p.relative_to(ROOT.parent)}: corre python -m tools.architecture"
+        assert svg.startswith("<svg") and "<script" not in svg and "<foreignObject" not in svg
+        assert REPO_HOST.lower() not in svg.lower(), key
+    for a in annexes:
+        for lang in ("es", "en"):
+            svg = out[a["id"] + ("-en" if lang == "en" else "")][0]
+            assert len(re.findall(r'data-node="', svg)) == len(a["nodes"])
+            assert len(re.findall(r'data-edge="', svg)) == len(a["edges"])
+            assert 'data-annex="full"' in svg, "cada anexo vuelve al completo"
+            for n in a["nodes"]:
+                for s in n.get("see", []):
+                    assert f'data-annex="{s}"' in svg
+    for key in ("full", "simple", "full-en", "simple-en"):
+        for a in annexes:
+            assert f'data-annex="{a["id"]}"' in out[key][0], f"{key}: falta la etiqueta {a['id']}"
+    for d in A.ANNEX_DIRS:
+        assert sorted(p.name for p in d.glob("*.svg")) == sorted(A.annex_file(a["id"], l) for a in annexes for l in ("es", "en"))
+    page = A.EXPLORER.read_text(encoding="utf-8")
+    assert page == A.render_explorer(model, annexes), "public/arquitectura.html: corre python -m tools.architecture"
+    assert "<script>" not in page and "Content-Security-Policy" in page
+    assert REPO_HOST.lower() not in page.lower()
+    doc = A.DOC.read_text(encoding="utf-8")
+    for a in annexes:
+        assert f"](anexos/{a['id']}.svg)" in doc and f"#### Anexo {a['id'].upper()} · " in doc
+    standalone = A.render_standalone(model, annexes)
+    assert standalone.count("<template data-file=") == len(out) and "<script src=" not in standalone
+
+
 def test_architecture_diagrams_are_drawn_from_the_model():
     """Los dos diagramas (completo y simplificado) salen de docs/arquitectura.json: los SVG de docs/ y del sitio
     son los que dibuja el generador, cada caja y cada conexión del modelo está en el dibujo con su explicación, y
@@ -196,7 +263,7 @@ def test_architecture_diagrams_are_drawn_from_the_model():
     for step in model["walkthrough"]:
         assert set(step["nodes"]) <= simple_ids, step["title_es"]
     doc = A.DOC.read_text(encoding="utf-8")
-    assert doc == A.render_doc(model, doc), "docs/arquitectura.md: corre python -m tools.architecture"
+    assert doc == A.render_doc(model, doc, A.load_annexes()), "docs/arquitectura.md: corre python -m tools.architecture"
     for n in model["full"]["nodes"]:
         assert f"| **{n['name_es']}** |" in doc, f"{n['id']}: la caja no está en el texto de docs/arquitectura.md"
     # Las cuentas escritas a mano en el texto siguen al modelo.

@@ -1,0 +1,447 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1259.5" role="img" aria-labelledby="a9-t a9-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+  <title id="a9-t">Anexo A9 · El sitio en el navegador</title>
+  <desc id="a9-d">Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 10 vistas con la procedencia de cada valor y quién lo usa.</desc>
+  <style>
+    .ar-node { stroke-width: 1.5; }
+    .ar-h { font-weight: 700; }
+    .ar-big, .ar-t, .ar-step-n { font-weight: 700; }
+    .ar-halo { stroke-width: 5px; stroke-linejoin: round; paint-order: stroke; }
+    .ar-badge { stroke-width: 1.5; }
+    .ar-rule { stroke-width: 1; }
+    .ar-e { fill: none; stroke-width: 1.5; }
+    .ar-edge:hover .ar-e, .ar-edge:focus .ar-e { stroke-width: 3; }
+    .ar-node-g:hover .ar-node { stroke-width: 3; }
+    .ar-tile { fill-opacity: 0.13; }
+    .ar-icon, .ar-warn { fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ar-chip { stroke-width: 1; }
+    .ar-tag { stroke-width: 1.2; }
+    .ar-tag-t, .ar-link { font-weight: 700; }
+    .ar-annex { cursor: pointer; }
+    .ar-annex:hover .ar-tag, .ar-annex:focus .ar-tag { stroke-width: 2.4; }
+    .ar-bg { fill: var(--bg-elev, #ffffff); }
+    .ar-col { fill: var(--bg-sunk, #eaeef3); }
+    .ar-node { fill: var(--bg-elev, #ffffff); }
+    .ar-h, .ar-big, .ar-t { fill: var(--fg, #0d1b2a); }
+    .ar-s { fill: var(--fg-2, #3c4d61); }
+    .ar-m { fill: var(--fg-3, #5d6e82); }
+    .ar-halo { stroke: var(--bg-elev, #ffffff); }
+    .ar-badge { fill: var(--bg-elev, #ffffff); }
+    .ar-step { fill: var(--brand, #0b4f71); }
+    .ar-step-n { fill: var(--bg-elev, #ffffff); }
+    .ar-rule { stroke: var(--line, #d5dde7); }
+    .ar-chip { fill: var(--bg-sunk, #eaeef3); stroke: var(--line, #d5dde7); }
+    .ar-chip-t { fill: var(--fg-2, #3c4d61); }
+    .ar-tag { fill: var(--bg-elev, #ffffff); stroke: var(--brand-2, #0e7490); }
+    .ar-tag-t, .ar-link { fill: var(--brand-2, #0e7490); }
+    .ar-warn { stroke: var(--watch, #8a5a00); }
+    .ar-g-sources { stroke: var(--cool, #2166ac); }
+    .ar-f-sources { fill: var(--cool, #2166ac); }
+    .ar-g-channels { stroke: var(--s2, #0f766e); }
+    .ar-f-channels { fill: var(--s2, #0f766e); }
+    .ar-g-stores { stroke: var(--watch, #8a5a00); }
+    .ar-f-stores { fill: var(--watch, #8a5a00); }
+    .ar-g-pipeline { stroke: var(--brand, #0b4f71); }
+    .ar-f-pipeline { fill: var(--brand, #0b4f71); }
+    .ar-g-publication { stroke: var(--ok, #1b7a43); }
+    .ar-f-publication { fill: var(--ok, #1b7a43); }
+    .ar-g-site { stroke: var(--s1, #c2410c); }
+    .ar-f-site { fill: var(--s1, #c2410c); }
+    .ar-g-operations { stroke: var(--na, #55657a); }
+    .ar-f-operations { fill: var(--na, #55657a); }
+    .ar-g-people { stroke: var(--warm, #b2182b); }
+    .ar-f-people { fill: var(--warm, #b2182b); }
+    .ar-e-data { stroke: var(--fg-3, #5d6e82); }
+    .ar-k-data { fill: var(--fg-3, #5d6e82); }
+    .ar-e-fallback { stroke: var(--watch, #8a5a00); }
+    .ar-k-fallback { fill: var(--watch, #8a5a00); }
+    .ar-e-trigger { stroke: var(--brand-2, #0e7490); }
+    .ar-k-trigger { fill: var(--brand-2, #0e7490); }
+    .ar-e-control { stroke: var(--brand-2, #0e7490); }
+    .ar-k-control { fill: var(--brand-2, #0e7490); }
+    .ar-e-human { stroke: var(--warm, #b2182b); }
+    .ar-k-human { fill: var(--warm, #b2182b); }
+    /* abierto solo, sigue el tema del sistema; dentro del sitio mandan las variables del tema */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .ar-bg { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-col { fill: var(--bg-sunk, #0b1622); }
+      :root:not([data-theme='light']) .ar-node { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-h, :root:not([data-theme='light']) .ar-big, :root:not([data-theme='light']) .ar-t { fill: var(--fg, #e3ebf3); }
+      :root:not([data-theme='light']) .ar-s { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-m { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-halo { stroke: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-badge { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-step { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-step-n { fill: var(--bg-elev, #0f1c2b); }
+      :root:not([data-theme='light']) .ar-rule { stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip { fill: var(--bg-sunk, #0b1622); stroke: var(--line, #22344a); }
+      :root:not([data-theme='light']) .ar-chip-t { fill: var(--fg-2, #b4c2d1); }
+      :root:not([data-theme='light']) .ar-tag { fill: var(--bg-elev, #0f1c2b); stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-tag-t, :root:not([data-theme='light']) .ar-link { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-warn { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-sources { stroke: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-f-sources { fill: var(--cool, #6cb2e6); }
+      :root:not([data-theme='light']) .ar-g-channels { stroke: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-f-channels { fill: var(--s2, #5eead4); }
+      :root:not([data-theme='light']) .ar-g-stores { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-f-stores { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-g-pipeline { stroke: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-f-pipeline { fill: var(--brand, #5cc3e6); }
+      :root:not([data-theme='light']) .ar-g-publication { stroke: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-f-publication { fill: var(--ok, #5fd08f); }
+      :root:not([data-theme='light']) .ar-g-site { stroke: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-f-site { fill: var(--s1, #fb923c); }
+      :root:not([data-theme='light']) .ar-g-operations { stroke: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-f-operations { fill: var(--na, #9aabbf); }
+      :root:not([data-theme='light']) .ar-g-people { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-f-people { fill: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-e-data { stroke: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-k-data { fill: var(--fg-3, #8d9db0); }
+      :root:not([data-theme='light']) .ar-e-fallback { stroke: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-k-fallback { fill: var(--watch, #f3c15b); }
+      :root:not([data-theme='light']) .ar-e-trigger { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-trigger { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-control { stroke: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-k-control { fill: var(--brand-2, #38bdf8); }
+      :root:not([data-theme='light']) .ar-e-human { stroke: var(--warm, #f4795f); }
+      :root:not([data-theme='light']) .ar-k-human { fill: var(--warm, #f4795f); }
+    }
+  </style>
+  <defs>
+    <marker id="a9-m-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-data" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a9-m-fallback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-fallback" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a9-m-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-trigger" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a9-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="a9-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1259.5" rx="14"/>
+  <text class="ar-big" x="20" y="38" font-size="20">Anexo A9 · El sitio en el navegador</text>
+  <a class="ar-annex" href="../arquitectura.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Volver al diagrama completo</text></a>
+  <text class="ar-s" x="20" y="60" font-size="12">El sitio es una página estática, sin compilación ni servidor propio: todo lo que muestra sale de los archivos de data/ de una misma publicación. El navegador comprueba que cada archivo sea de esa publicación y, si no puede, lo dice</text>
+  <text class="ar-s" x="20" y="77" font-size="12">en vez de mezclar datos.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: Sitio en vivo (SITE_URL), Sitio web (10 vistas), Público.</text>
+  <text class="ar-t" x="20" y="121" font-size="11.5">Líneas:</text>
+  <path class="ar-e ar-e-data" d="M78.5 117 L112.5 117" marker-end="url(#a9-m-data)"/>
+  <text class="ar-s" x="120.5" y="121" font-size="11.5">datos</text>
+  <path class="ar-e ar-e-fallback" d="M174.3 117 L208.3 117" stroke-dasharray="6 4" marker-end="url(#a9-m-fallback)"/>
+  <text class="ar-s" x="216.3" y="121" font-size="11.5">respaldo</text>
+  <path class="ar-e ar-e-trigger" d="M288 117 L322 117" stroke-dasharray="2 3" marker-end="url(#a9-m-trigger)"/>
+  <text class="ar-s" x="330" y="121" font-size="11.5">disparo o control</text>
+  <path class="ar-e ar-e-human" d="M449.1 117 L483.1 117" stroke-dasharray="8 3 2 3" marker-end="url(#a9-m-human)"/>
+  <text class="ar-s" x="491.1" y="121" font-size="11.5">paso manual</text>
+  <rect class="ar-col" x="36" y="141" width="300" height="658.5" rx="10"/>
+  <text class="ar-h" x="48" y="166" font-size="15">Alojamiento</text>
+  <text class="ar-m" x="48" y="183" font-size="10.5">GitHub Pages o Cloudflare Pages · CSP estricta</text>
+  <rect class="ar-col" x="405.3" y="141" width="300" height="658.5" rx="10"/>
+  <text class="ar-h" x="417.3" y="166" font-size="15">Carga en el navegador</text>
+  <text class="ar-m" x="417.3" y="183" font-size="10.5">JavaScript en módulos, sin dependencias externas</text>
+  <rect class="ar-col" x="774.7" y="141" width="300" height="658.5" rx="10"/>
+  <text class="ar-h" x="786.7" y="166" font-size="15">Vistas</text>
+  <text class="ar-m" x="786.7" y="183" font-size="10.5">rutas con # · español · claro y oscuro</text>
+  <rect class="ar-col" x="1144" y="141" width="260" height="658.5" rx="10"/>
+  <text class="ar-h" x="1156" y="166" font-size="15">Personas</text>
+  <text class="ar-m" x="1156" y="183" font-size="10.5">en el navegador o con los datos abiertos</text>
+  
+  <!-- conexiones -->
+  <g class="ar-edge" id="a9-e-1" data-edge="1" data-from="hosting" data-to="boot" tabindex="0">
+    <title>1. Sitio en vivo (SITE_URL) → Arranque: index.html y assets/.</title>
+    <path class="ar-e ar-e-data" d="M326 270 L384 270 Q390 270 390 264 L390 240 Q390 234 396 234 L415.3 234" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="358" cy="270" r="9"/>
+    <text class="ar-t" x="358" y="273.8" font-size="10.5" text-anchor="middle">1</text>
+  </g>
+  <g class="ar-edge" id="a9-e-2" data-edge="2" data-from="data" data-to="boot" tabindex="0">
+    <title>2. Publicación (data/) → Arranque: dashboard.json.</title>
+    <path class="ar-e ar-e-data" d="M326 396 L384 396 Q390 396 390 390 L390 306 Q390 300 396 300 L415.3 300" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="390" cy="348" r="9"/>
+    <text class="ar-t" x="390" y="351.8" font-size="10.5" text-anchor="middle">2</text>
+  </g>
+  <g class="ar-edge" id="a9-e-3" data-edge="3" data-from="boot" data-to="checks" tabindex="0">
+    <title>3. Arranque → Coherencia de la publicación: publicationId.</title>
+    <path class="ar-e ar-e-data" d="M558 339.7 L558 369.7" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="558" cy="354.7" r="9"/>
+    <text class="ar-t" x="558" y="358.5" font-size="10.5" text-anchor="middle">3</text>
+  </g>
+  <g class="ar-edge" id="a9-e-4" data-edge="4" data-from="data" data-to="checks" tabindex="0">
+    <title>4. Publicación (data/) → Coherencia de la publicación: archivos de cada vista. Cada vista pide solo los archivos que necesita, cuando se abre.</title>
+    <path class="ar-e ar-e-data" d="M326 450 L384 450 Q390 450 390 444 L390 426 Q390 420 396 420 L415.3 420" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="358" cy="450" r="9"/>
+    <text class="ar-t" x="358" y="453.8" font-size="10.5" text-anchor="middle">4</text>
+  </g>
+  <g class="ar-edge" id="a9-e-5" data-edge="5" data-from="checks" data-to="views" tabindex="0">
+    <title>5. Coherencia de la publicación → 10 vistas: datos coherentes.</title>
+    <path class="ar-e ar-e-data" d="M695.3 420 L756 420 Q762 420 762 414 L762 234 Q762 228 768 228 L784.7 228" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="762" cy="324" r="9"/>
+    <text class="ar-t" x="762" y="327.8" font-size="10.5" text-anchor="middle">5</text>
+  </g>
+  <g class="ar-edge" id="a9-e-6" data-edge="6" data-from="a11y" data-to="views" tabindex="0">
+    <title>6. Accesibilidad y vigencia → 10 vistas: vigencia y accesibilidad.</title>
+    <path class="ar-e ar-e-control" d="M695.3 576 L750 576 Q756 576 756 570 L756 312 Q756 306 762 306 L784.7 306" stroke-dasharray="2 3" marker-end="url(#a9-m-control)"/>
+    <circle class="ar-badge ar-e-control" cx="756" cy="441" r="9"/>
+    <text class="ar-t" x="756" y="444.8" font-size="10.5" text-anchor="middle">6</text>
+  </g>
+  <g class="ar-edge" id="a9-e-7" data-edge="7" data-from="views" data-to="provenance" tabindex="0">
+    <title>7. 10 vistas → Procedencia de cada valor: cada valor.</title>
+    <path class="ar-e ar-e-data" d="M924 339.7 L924 369.7" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="924" cy="354.7" r="9"/>
+    <text class="ar-t" x="924" y="358.5" font-size="10.5" text-anchor="middle">7</text>
+  </g>
+  <g class="ar-edge" id="a9-e-8" data-edge="8" data-from="views" data-to="assistant" tabindex="0">
+    <title>8. 10 vistas → Asistente de datos: misma publicación.</title>
+    <path class="ar-e ar-e-data" d="M1064.7 270 L1080 270 Q1086 270 1086 276 L1086 570 Q1086 576 1080 576 L1064.7 576" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1086" cy="423" r="9"/>
+    <text class="ar-t" x="1086" y="426.8" font-size="10.5" text-anchor="middle">8</text>
+  </g>
+  <g class="ar-edge" id="a9-e-9" data-edge="9" data-from="views" data-to="method" tabindex="0">
+    <title>9. 10 vistas → Metodología y arquitectura: diagramas.</title>
+    <path class="ar-e ar-e-data" d="M1064.7 306 L1086 306 Q1092 306 1092 312 L1092 726 Q1092 732 1086 732 L1064.7 732" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1092" cy="519" r="9"/>
+    <text class="ar-t" x="1092" y="522.8" font-size="10.5" text-anchor="middle">9</text>
+  </g>
+  <g class="ar-edge" id="a9-e-10" data-edge="10" data-from="views" data-to="ab" tabindex="0">
+    <title>10. 10 vistas → Analítica A/B del mapa: versión del mapa y eventos. Una sola solicitud al salir de la página; en GitHub Pages no se manda nada.</title>
+    <path class="ar-e ar-e-data" d="M784.7 270 L720 270 Q714 270 714 276 L714 666 Q714 672 708 672 L354 672 Q348 672 348 666 L348 576 Q348 570 342 570 L326 570" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="714" cy="471" r="9"/>
+    <text class="ar-t" x="714" y="474.8" font-size="10.5" text-anchor="middle">10</text>
+  </g>
+  <g class="ar-edge" id="a9-e-11" data-edge="11" data-from="views" data-to="public" tabindex="0">
+    <title>11. 10 vistas → Público: consultan.</title>
+    <path class="ar-e ar-e-human" d="M1064.7 228 L1122 228 Q1128 228 1128 234 L1128 240 Q1128 246 1134 246 L1154 246" stroke-dasharray="8 3 2 3" marker-end="url(#a9-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="1096.3" cy="228" r="9"/>
+    <text class="ar-t" x="1096.3" y="231.8" font-size="10.5" text-anchor="middle">11</text>
+  </g>
+  <g class="ar-edge" id="a9-e-12" data-edge="12" data-from="data" data-to="open-data" tabindex="0">
+    <title>12. Publicación (data/) → Usuarios de datos abiertos: CSV y JSON.</title>
+    <path class="ar-e ar-e-human" d="M326 420 L378 420 Q384 420 384 426 L384 798 Q384 804 390 804 L1122 804 Q1128 804 1128 798 L1128 390 Q1128 384 1134 384 L1154 384" stroke-dasharray="8 3 2 3" marker-end="url(#a9-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="756" cy="804" r="9"/>
+    <text class="ar-t" x="756" y="807.8" font-size="10.5" text-anchor="middle">12</text>
+  </g>
+  
+  <!-- cajas -->
+  <g class="ar-node-g" id="a9-n-hosting" data-node="hosting">
+    <title>Sitio en vivo (SITE_URL). Sirve index.html, assets/ y data/. Por omisión https://pillb.github.io/observatorio-enso-peru/; con DEPLOY_TARGET=cloudflare, la dirección de Cloudflare Pages. Tecnología: GitHub Pages, Cloudflare Pages.</title>
+    <rect class="ar-node ar-g-site" x="46" y="195" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-site" x="46" y="203" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="58" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(61 208)"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01M11 7.5h6M11 16.5h6"/></g>
+    <text class="ar-t" x="96" y="224.5" font-size="12.5">Sitio en vivo (SITE_URL)</text>
+    <text class="ar-s" x="58" y="256.4" font-size="11">Sirve index.html, assets/ y data/. Por omisión</text>
+    <text class="ar-s" x="58" y="271.6" font-size="11">https://pillb.github.io/observatorio-enso-peru/;</text>
+    <text class="ar-s" x="58" y="286.8" font-size="11">con DEPLOY_TARGET=cloudflare, la dirección</text>
+    <text class="ar-s" x="58" y="302" font-size="11">de Cloudflare Pages.</text>
+    <rect class="ar-chip" x="58" y="311.7" width="79.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="323.7" font-size="10">GitHub Pages</text>
+    <rect class="ar-chip" x="142.7" y="311.7" width="96.3" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="148.7" y="323.7" font-size="10">Cloudflare Pages</text>
+    <a class="ar-annex" href="a8.svg" data-annex="a8"><title>Anexo A8: Publicación, despliegue y archivo</title><rect class="ar-tag" x="290.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="214.5" font-size="10.5" text-anchor="middle">A8</text></a>
+  </g>
+  <g class="ar-node-g" id="a9-n-data" data-node="data">
+    <title>Publicación (data/). dashboard.json lleva el publicationId; el resto de los archivos se piden con ese identificador para no mezclar dos publicaciones.</title>
+    <rect class="ar-node ar-g-publication" x="46" y="369.7" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-publication" x="46" y="377.7" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-publication" x="58" y="379.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-publication" transform="translate(61 382.7)"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8v-13M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/></g>
+    <text class="ar-t" x="96" y="399.2" font-size="12.5">Publicación (data/)</text>
+    <text class="ar-s" x="58" y="431.2" font-size="11">dashboard.json lleva el publicationId; el resto</text>
+    <text class="ar-s" x="58" y="446.3" font-size="11">de los archivos se piden con ese identificador</text>
+    <text class="ar-s" x="58" y="461.5" font-size="11">para no mezclar dos publicaciones.</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-ab" data-node="ab">
+    <title>Analítica A/B del mapa. Solo en Cloudflare: /api/ab suma 1 por día, versión (A a D) y evento. Sin IP, sin cookies ni identificador. Tecnología: Pages Functions, D1.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="505.3" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="513.3" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="515.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 518.3)"><path d="M4 4v16h16"/><path d="M7 15l4-5 3 3 5-6"/></g>
+    <text class="ar-t" x="96" y="534.8" font-size="12.5">Analítica A/B del mapa</text>
+    <text class="ar-s" x="58" y="566.7" font-size="11">Solo en Cloudflare: /api/ab suma 1 por día,</text>
+    <text class="ar-s" x="58" y="581.9" font-size="11">versión (A a D) y evento. Sin IP, sin cookies ni</text>
+    <text class="ar-s" x="58" y="597" font-size="11">identificador.</text>
+    <rect class="ar-chip" x="58" y="606.8" width="93.3" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="618.8" font-size="10">Pages Functions</text>
+    <rect class="ar-chip" x="156.3" y="606.8" width="26.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="162.3" y="618.8" font-size="10">D1</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-boot" data-node="boot">
+    <title>Arranque. Lee dashboard.json sin caché y muestra «Actualizado: … · Publicación …». Si no puede, explica que los datos están en validación y enlaza al ENFEN. Tecnología: app.js, fetch.</title>
+    <rect class="ar-node ar-g-site" x="415.3" y="195" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-site" x="415.3" y="203" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="427.3" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(430.3 208)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
+    <text class="ar-t" x="465.3" y="224.5" font-size="12.5">Arranque</text>
+    <text class="ar-s" x="427.3" y="256.4" font-size="11">Lee dashboard.json sin caché y muestra</text>
+    <text class="ar-s" x="427.3" y="271.6" font-size="11">«Actualizado: … · Publicación …». Si no</text>
+    <text class="ar-s" x="427.3" y="286.8" font-size="11">puede, explica que los datos están en</text>
+    <text class="ar-s" x="427.3" y="302" font-size="11">validación y enlaza al ENFEN.</text>
+    <rect class="ar-chip" x="427.3" y="311.7" width="42" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="433.3" y="323.7" font-size="10">app.js</text>
+    <rect class="ar-chip" x="474.3" y="311.7" width="37.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="480.3" y="323.7" font-size="10">fetch</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-checks" data-node="checks">
+    <title>Coherencia de la publicación. Si un archivo trae otro publicationId lo vuelve a pedir sin caché; si sigue distinto, no lo usa y avisa con un aviso visible.</title>
+    <rect class="ar-node ar-g-site" x="415.3" y="369.7" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-site" x="415.3" y="377.7" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="427.3" y="379.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(430.3 382.7)"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></g>
+    <text class="ar-t" x="465.3" y="399.2" font-size="12.5">Coherencia de la publicación</text>
+    <text class="ar-s" x="427.3" y="431.2" font-size="11">Si un archivo trae otro publicationId lo vuelve</text>
+    <text class="ar-s" x="427.3" y="446.3" font-size="11">a pedir sin caché; si sigue distinto, no lo usa y</text>
+    <text class="ar-s" x="427.3" y="461.5" font-size="11">avisa con un aviso visible.</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-a11y" data-node="a11y">
+    <title>Accesibilidad y vigencia. Teclado, roles ARIA y tema claro u oscuro, probados con Playwright en Chromium, WebKit y Firefox. Cada dato muestra su periodo y se marca si está vencido. Tecnología: Playwright.</title>
+    <rect class="ar-node ar-g-site" x="415.3" y="505.3" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-site" x="415.3" y="513.3" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="427.3" y="515.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(430.3 518.3)"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g>
+    <text class="ar-t" x="465.3" y="534.8" font-size="12.5">Accesibilidad y vigencia</text>
+    <text class="ar-s" x="427.3" y="566.7" font-size="11">Teclado, roles ARIA y tema claro u oscuro,</text>
+    <text class="ar-s" x="427.3" y="581.9" font-size="11">probados con Playwright en Chromium,</text>
+    <text class="ar-s" x="427.3" y="597" font-size="11">WebKit y Firefox. Cada dato muestra su</text>
+    <text class="ar-s" x="427.3" y="612.2" font-size="11">periodo y se marca si está vencido.</text>
+    <rect class="ar-chip" x="427.3" y="622" width="64.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="433.3" y="634" font-size="10">Playwright</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-views" data-node="views">
+    <title>10 vistas. Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una. Tecnología: app.js, tour.js.</title>
+    <rect class="ar-node ar-g-site" x="784.7" y="195" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-site" x="784.7" y="203" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="796.7" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(799.7 208)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="834.7" y="224.5" font-size="12.5">10 vistas</text>
+    <text class="ar-s" x="796.7" y="256.4" font-size="11">Resumen, El Niño Costero, Pacífico, Océano y</text>
+    <text class="ar-s" x="796.7" y="271.6" font-size="11">atmósfera, Mapa, Historia, Noticias, Datos,</text>
+    <text class="ar-s" x="796.7" y="286.8" font-size="11">Metodología y Asistente; una visita guiada</text>
+    <text class="ar-s" x="796.7" y="302" font-size="11">explica cada una.</text>
+    <rect class="ar-chip" x="796.7" y="311.7" width="42" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="802.7" y="323.7" font-size="10">app.js</text>
+    <rect class="ar-chip" x="843.7" y="311.7" width="43.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="849.7" y="323.7" font-size="10">tour.js</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-provenance" data-node="provenance">
+    <title>Procedencia de cada valor. Junto a cada dato: la fuente en vivo y la copia archivada en data/archive/, por si la fuente cambia o cae.</title>
+    <rect class="ar-node ar-g-site" x="784.7" y="369.7" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-site" x="784.7" y="377.7" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="796.7" y="379.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(799.7 382.7)"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></g>
+    <text class="ar-t" x="834.7" y="399.2" font-size="12.5">Procedencia de cada valor</text>
+    <text class="ar-s" x="796.7" y="431.2" font-size="11">Junto a cada dato: la fuente en vivo y la copia</text>
+    <text class="ar-s" x="796.7" y="446.3" font-size="11">archivada en data/archive/, por si la fuente</text>
+    <text class="ar-s" x="796.7" y="461.5" font-size="11">cambia o cae.</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-assistant" data-node="assistant">
+    <title>Asistente de datos. No es un modelo de lenguaje: reconoce la pregunta con reglas y responde solo con valores de la publicación, citando serie, periodo, fuente y publicación. Tecnología: assistant.js.</title>
+    <rect class="ar-node ar-g-site" x="784.7" y="505.3" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-site" x="784.7" y="513.3" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="796.7" y="515.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(799.7 518.3)"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></g>
+    <text class="ar-t" x="834.7" y="534.8" font-size="12.5">Asistente de datos</text>
+    <text class="ar-s" x="796.7" y="566.7" font-size="11">No es un modelo de lenguaje: reconoce la</text>
+    <text class="ar-s" x="796.7" y="581.9" font-size="11">pregunta con reglas y responde solo con</text>
+    <text class="ar-s" x="796.7" y="597" font-size="11">valores de la publicación, citando serie,</text>
+    <text class="ar-s" x="796.7" y="612.2" font-size="11">periodo, fuente y publicación.</text>
+    <rect class="ar-chip" x="796.7" y="622" width="68" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="802.7" y="634" font-size="10">assistant.js</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-method" data-node="method">
+    <title>Metodología y arquitectura. Explica los métodos y muestra estos diagramas; cada caja explica su parte y las etiquetas A1 a A10 abren su anexo.</title>
+    <rect class="ar-node ar-g-site" x="784.7" y="680" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-site" x="784.7" y="688" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="796.7" y="690" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(799.7 693)"><circle cx="5" cy="6" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 6h3a3 3 0 0 1 3 3v0a3 3 0 0 0 3 3M7.5 18h3a3 3 0 0 0 3-3v0a3 3 0 0 1 3-3"/></g>
+    <text class="ar-t" x="834.7" y="709.5" font-size="12.5">Metodología y arquitectura</text>
+    <text class="ar-s" x="796.7" y="741.4" font-size="11">Explica los métodos y muestra estos</text>
+    <text class="ar-s" x="796.7" y="756.6" font-size="11">diagramas; cada caja explica su parte y las</text>
+    <text class="ar-s" x="796.7" y="771.8" font-size="11">etiquetas A1 a A10 abren su anexo.</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-public" data-node="public">
+    <title>Público. Personas, equipos de gestión del riesgo y medios que consultan el estado de El Niño y sus fuentes.</title>
+    <rect class="ar-node ar-g-people" x="1154" y="195" width="240" height="105.5" rx="8"/>
+    <rect class="ar-f-people" x="1154" y="203" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="1166" y="205" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(1169 208)"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></g>
+    <text class="ar-t" x="1204" y="224.5" font-size="12.5">Público</text>
+    <text class="ar-s" x="1166" y="256.4" font-size="11">Personas, equipos de gestión del</text>
+    <text class="ar-s" x="1166" y="271.6" font-size="11">riesgo y medios que consultan el</text>
+    <text class="ar-s" x="1166" y="286.8" font-size="11">estado de El Niño y sus fuentes.</text>
+  </g>
+  <g class="ar-node-g" id="a9-n-open-data" data-node="open-data">
+    <title>Usuarios de datos abiertos. Descargan los CSV y JSON de data/ o los leen desde sus programas; manifest.json lista cada archivo.</title>
+    <rect class="ar-node ar-g-people" x="1154" y="330.5" width="240" height="105.5" rx="8"/>
+    <rect class="ar-f-people" x="1154" y="338.5" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="1166" y="340.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(1169 343.5)"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/></g>
+    <text class="ar-t" x="1204" y="355" font-size="12.5">Usuarios de datos</text>
+    <text class="ar-t" x="1204" y="371.3" font-size="12.5">abiertos</text>
+    <text class="ar-s" x="1166" y="392" font-size="11">Descargan los CSV y JSON de data/ o</text>
+    <text class="ar-s" x="1166" y="407.1" font-size="11">los leen desde sus programas;</text>
+    <text class="ar-s" x="1166" y="422.3" font-size="11">manifest.json lista cada archivo.</text>
+  </g>
+  <line class="ar-rule" x1="20" y1="839.5" x2="1420" y2="839.5"/>
+  <text class="ar-h" x="20" y="869.5" font-size="15">Pasos y conexiones: qué viaja por cada línea, cuándo y por qué</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="897.5" r="9"/>
+  <text class="ar-t" x="30" y="901.3" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="901.5" font-size="11.5">index.html y assets/</text>
+  <text class="ar-m" x="50" y="915.5" font-size="10.5">Sitio en vivo (SITE_URL) → Arranque</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="938.5" r="9"/>
+  <text class="ar-t" x="30" y="942.3" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="942.5" font-size="11.5">dashboard.json</text>
+  <text class="ar-m" x="50" y="956.5" font-size="10.5">Publicación (data/) → Arranque</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="979.5" r="9"/>
+  <text class="ar-t" x="30" y="983.3" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="983.5" font-size="11.5">publicationId</text>
+  <text class="ar-m" x="50" y="997.5" font-size="10.5">Arranque → Coherencia de la publicación</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1020.5" r="9"/>
+  <text class="ar-t" x="30" y="1024.3" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1024.5" font-size="11.5">archivos de cada vista</text>
+  <text class="ar-m" x="50" y="1038.5" font-size="10.5">Publicación (data/) → Coherencia de la publicación</text>
+  <text class="ar-s" x="50" y="1053.5" font-size="11">Cada vista pide solo los archivos que necesita, cuando se abre.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="897.5" r="9"/>
+  <text class="ar-t" x="506" y="901.3" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="526" y="901.5" font-size="11.5">datos coherentes</text>
+  <text class="ar-m" x="526" y="915.5" font-size="10.5">Coherencia de la publicación → 10 vistas</text>
+  <circle class="ar-badge ar-e-control" cx="506" cy="938.5" r="9"/>
+  <text class="ar-t" x="506" y="942.3" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="526" y="942.5" font-size="11.5">vigencia y accesibilidad</text>
+  <text class="ar-m" x="526" y="956.5" font-size="10.5">Accesibilidad y vigencia → 10 vistas</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="979.5" r="9"/>
+  <text class="ar-t" x="506" y="983.3" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="983.5" font-size="11.5">cada valor</text>
+  <text class="ar-m" x="526" y="997.5" font-size="10.5">10 vistas → Procedencia de cada valor</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1020.5" r="9"/>
+  <text class="ar-t" x="506" y="1024.3" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1024.5" font-size="11.5">misma publicación</text>
+  <text class="ar-m" x="526" y="1038.5" font-size="10.5">10 vistas → Asistente de datos</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="897.5" r="9"/>
+  <text class="ar-t" x="982" y="901.3" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="1002" y="901.5" font-size="11.5">diagramas</text>
+  <text class="ar-m" x="1002" y="915.5" font-size="10.5">10 vistas → Metodología y arquitectura</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="938.5" r="9"/>
+  <text class="ar-t" x="982" y="942.3" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="1002" y="942.5" font-size="11.5">versión del mapa y eventos</text>
+  <text class="ar-m" x="1002" y="956.5" font-size="10.5">10 vistas → Analítica A/B del mapa</text>
+  <text class="ar-s" x="1002" y="971.5" font-size="11">Una sola solicitud al salir de la página; en GitHub Pages no se manda nada.</text>
+  <circle class="ar-badge ar-e-human" cx="982" cy="994.5" r="9"/>
+  <text class="ar-t" x="982" y="998.3" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="1002" y="998.5" font-size="11.5">consultan</text>
+  <text class="ar-m" x="1002" y="1012.5" font-size="10.5">10 vistas → Público</text>
+  <circle class="ar-badge ar-e-human" cx="982" cy="1035.5" r="9"/>
+  <text class="ar-t" x="982" y="1039.3" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="1002" y="1039.5" font-size="11.5">CSV y JSON</text>
+  <text class="ar-m" x="1002" y="1053.5" font-size="10.5">Publicación (data/) → Usuarios de datos abiertos</text>
+  <line class="ar-rule" x1="20" y1="1088.5" x2="1420" y2="1088.5"/>
+  <text class="ar-h" x="20" y="1118.5" font-size="15">Si algo falla: qué pasa y qué respaldo entra</text>
+  <g class="ar-warn" transform="translate(20 1135.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1150.5" font-size="11.5">No se puede leer dashboard.json</text>
+  <text class="ar-s" x="50" y="1165.5" font-size="11">El sitio lo dice y enlaza a los comunicados oficiales del ENFEN; no muestra</text>
+  <text class="ar-s" x="50" y="1180.5" font-size="11">datos viejos como si fueran actuales.</text>
+  <g class="ar-warn" transform="translate(496 1135.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1150.5" font-size="11.5">Un archivo es de otra publicación (caché a medias)</text>
+  <text class="ar-s" x="526" y="1165.5" font-size="11">Se vuelve a pedir; si sigue distinto, esa parte queda vacía con un aviso, sin</text>
+  <text class="ar-s" x="526" y="1180.5" font-size="11">mezclar publicaciones.</text>
+  <g class="ar-warn" transform="translate(972 1135.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1150.5" font-size="11.5">Un dato está vencido o se arrastró de un día anterior</text>
+  <text class="ar-s" x="1002" y="1165.5" font-size="11">Se muestra con su periodo y una marca de vencido o conservado, y la</text>
+  <text class="ar-s" x="1002" y="1180.5" font-size="11">procedencia indica de qué copia salió.</text>
+  <g class="ar-warn" transform="translate(972 1192.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1207.5" font-size="11.5">La fuente oficial cambió o cayó</text>
+  <text class="ar-s" x="1002" y="1222.5" font-size="11">La copia archivada en data/archive/ permite ver lo que se leyó.</text>
+</svg>
