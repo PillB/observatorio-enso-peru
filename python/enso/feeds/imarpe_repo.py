@@ -29,6 +29,11 @@ API = f"{BASE}/server/api"
 
 COMMUNIQUE_TITLE = re.compile(r"Comunicado\s+Oficial\s+ENFEN\s+N\s*[°º.]*\s*(\d{1,2})\s*[-–]\s*(\d{4})", re.I)
 INFORME_TITLE = re.compile(r"Informe\s+T[ée]cnico\s+ENFEN\s+A[ñn]o\s+(\d{1,2})\s+N\s*[°º.]*\s*(\d{1,2})\s*,\s*(\d{4})", re.I)
+#: Búsquedas de los documentos del ENFEN y cuántos ítems trae cada listado (``communiques``, ``informes``).
+COMMUNIQUE_QUERY = '"Comunicado Oficial ENFEN"'
+INFORME_QUERY = '"Informe Técnico ENFEN"'
+COMMUNIQUES_SIZE = 6
+INFORMES_SIZE = 4
 # «Informe Tecnico ENFEN Año 12 N°18 al 13 octubre 2026.pdf»: la fecha de corte de datos.
 _DATA_TO = re.compile(r"\bal\s+(\d{1,2})\s+(?:de\s+)?([a-záéíóú]+)\s+(?:de\s+)?(\d{4})", re.I)
 
@@ -49,10 +54,16 @@ def _meta(item: dict, key: str) -> Optional[str]:
     return vals[0].get("value") if vals and isinstance(vals[0], dict) else None
 
 
+def listing_url(query: str, size: int = 10) -> str:
+    """La búsqueda que pide ``search``: el registro declara la de ``communiques`` y la de ``informes``
+    (``COMMUNIQUE_QUERY``, ``INFORME_QUERY``) para que la sonda semanal mida su alcance y lea su robots.txt."""
+    return f"{API}/discover/search/objects?" + urlencode(
+        {"query": query, "dsoType": "ITEM", "size": size, "sort": "dc.date.issued,DESC"})
+
+
 def search(fetcher, query: str, size: int = 10) -> list[dict]:
     """Ítems más recientes (por fecha de emisión) que responden a ``query``: uuid, título, fecha y su página."""
-    params = urlencode({"query": query, "dsoType": "ITEM", "size": size, "sort": "dc.date.issued,DESC"})
-    data = _get_json(fetcher, f"{API}/discover/search/objects?{params}")
+    data = _get_json(fetcher, listing_url(query, size))
     try:
         objs = data["_embedded"]["searchResult"]["_embedded"]["objects"]
     except (KeyError, TypeError):
@@ -101,10 +112,10 @@ def fetch_pdf(fetcher, url: str):
     return r
 
 
-def communiques(fetcher, size: int = 6) -> list[dict]:
+def communiques(fetcher, size: int = COMMUNIQUES_SIZE) -> list[dict]:
     """Comunicados oficiales depositados, del más reciente al más antiguo, en el formato del listado del ENFEN."""
     out = []
-    for it in search(fetcher, '"Comunicado Oficial ENFEN"', size):
+    for it in search(fetcher, COMMUNIQUE_QUERY, size):
         m = COMMUNIQUE_TITLE.search(it["title"])
         if m:
             n, y = int(m.group(1)), int(m.group(2))
@@ -115,7 +126,7 @@ def communiques(fetcher, size: int = 6) -> list[dict]:
 
 def communique_pdf(fetcher, year: int, number: int):
     """El PDF del comunicado N° ``number``-``year``, solo si el título del ítem es exactamente ese número."""
-    for it in search(fetcher, f'"Comunicado Oficial ENFEN" {number:02d}-{year}', 5):
+    for it in search(fetcher, f'{COMMUNIQUE_QUERY} {number:02d}-{year}', 5):
         m = COMMUNIQUE_TITLE.search(it["title"])
         if m and (int(m.group(2)), int(m.group(1))) == (year, number):
             for f in pdfs(fetcher, it["uuid"]):
@@ -136,11 +147,11 @@ def _data_to(name: str) -> Optional[str]:
         return None
 
 
-def informes(fetcher, size: int = 4) -> list[dict]:
+def informes(fetcher, size: int = INFORMES_SIZE) -> list[dict]:
     """Informes técnicos depositados, con la URL de su PDF y la fecha de corte que trae el nombre del archivo, en
     el formato de ``reports.informe_entries`` (``year``, ``n``, ``dataTo``, ``url``)."""
     out = []
-    for it in search(fetcher, '"Informe Técnico ENFEN"', size):
+    for it in search(fetcher, INFORME_QUERY, size):
         m = INFORME_TITLE.search(it["title"])
         if not m:
             continue
@@ -152,7 +163,7 @@ def informes(fetcher, size: int = 4) -> list[dict]:
 
 def informe_pdf(fetcher, year: int, number: int):
     """El PDF del informe técnico N° ``number`` de ``year``, solo si el título es exactamente ese número."""
-    for it in search(fetcher, f'"Informe Técnico ENFEN" N°{number}, {year}', 5):
+    for it in search(fetcher, f'{INFORME_QUERY} N°{number}, {year}', 5):
         m = INFORME_TITLE.search(it["title"])
         if m and (int(m.group(3)), int(m.group(2))) == (year, number):
             for f in pdfs(fetcher, it["uuid"]):
