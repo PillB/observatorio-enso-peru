@@ -4,7 +4,7 @@
 
 | Flujo | Cuándo | Qué hace |
 |---|---|---|
-| `observatory.yml` | Todos los días a las 04:37 UTC (23:37 en Lima), al fusionar en `main` (salvo cambios solo en `.md` o `docs/`), al recibir `enso-refresh` (lo manda el recolector del Perú tras subir su copia; n8n, si se activa su aviso), a pedido del vigilante o a mano | Pruebas → pipeline con datos en vivo → recorridos de navegador → despliegue en GitHub Pages o Cloudflare Pages ([despliegue-cloudflare](despliegue-cloudflare.md)) y verificación del sitio en vivo, a la par del archivo de respuestas originales (solo en `main`) → sincronización de incidencias |
+| `observatory.yml` | Todos los días a las 04:37 UTC (23:37 en Lima), al fusionar en `main` (salvo cambios solo en `.md` o `docs/`), al recibir `enso-refresh` (lo manda el recolector del Perú tras subir su copia; la consola de documentos tras cada subida; n8n, si se activa su aviso), a pedido del vigilante o a mano | Pruebas → pipeline con datos en vivo → recorridos de navegador → despliegue en GitHub Pages o Cloudflare Pages ([despliegue-cloudflare](despliegue-cloudflare.md)) y verificación del sitio en vivo, a la par del archivo de respuestas originales (solo en `main`) → sincronización de incidencias |
 | `watchdog.yml` | Cada 6 horas (minuto 17) | Reactiva `observatory.yml`, `watchdog.yml` y `probe-sources.yml` (no `n8n.yml`, que también es programado) y lee el sitio en vivo; si la publicación tiene más de 30 horas, relanza el flujo diario y abre un issue |
 | `ci.yml` | En cada PR y en ramas `claude/**` | Pruebas, publicación sin red con las respuestas capturadas y recorridos de navegador |
 | `probe-sources.yml` | Lunes 09:17 UTC, a mano y al cambiar el medidor en ramas `claude/**` | Mide desde GitHub Actions qué URL del registro responden, suma lo que bajaron el recolector del Perú (`data-peru`) y n8n (`data-n8n`) y regenera `registry/sources.json` con los canales de cada URL (en `main`; en otras ramas, en `bot/registry/<rama>`). Las mediciones del flujo de validación de n8n (el CSV que baja n8n o el `validacion-actions.json` que deja `n8n.yml`) se suman con `python -m tools.probe_sources --no-probe --import <archivo> --import-vantage n8n-aws` (`n8n-actions-azure` para el de `n8n.yml`) |
@@ -17,8 +17,10 @@
 
 Las corridas que publican no se cruzan: la diaria, la que pide el vigilante y
 las que piden el recolector del Perú (al subir su copia, entre las 21:00 y las
-23:30 de Lima) o n8n (22:50, si se activa su aviso) comparten el grupo de
-concurrencia `enso-production-publication` sin cancelar la que está en curso.
+23:30 de Lima), la consola de documentos (tras cada subida,
+[documentos-manuales](documentos-manuales.md)) o n8n (22:50, si se activa su
+aviso) comparten el grupo de concurrencia `enso-production-publication` sin
+cancelar la que está en curso.
 Una copia que llega tarde espera a que termine la publicación y la siguiente
 corrida la usa.
 
@@ -100,7 +102,10 @@ Para probarlo sin enviar: `python -m tools.alert_email --since
 2026-10-22T00:00:00Z --dry-run` (desde `python/`, con `GITHUB_TOKEN`,
 `GITHUB_REPOSITORY` y `ALERT_EMAILS`) muestra el correo que saldría.
 
-Códigos frecuentes:
+Códigos de aviso y error. `python/tests/test_docs_codes.py` exige que cada
+código que registra el pipeline esté en esta tabla. `archive-channel`,
+`carried-forward` y `probe-found` son esperados y no abren issue (`IGNORE` en
+`python/tools/sync_issues.py`):
 
 | Código | Significado | Qué hacer |
 |---|---|---|
@@ -109,6 +114,7 @@ Códigos frecuentes:
 | `relay-stale` | La última copia del recolector desde el Perú y su último latido tienen más de 36 h: el equipo no está corriendo | Pedir en el equipo del recolector que ejecuten VERIFICAR y envíen el informe ([servidor-peru](servidor-peru.md#si-algo-falla)) |
 | `relay-sources-down` | El recolector sigue subiendo su latido, pero hace más de 36 h que ninguna fuente peruana le responde | Nada en el equipo: son las instituciones. `heartbeat.json` en `data-peru` dice qué respondió cada una |
 | `relay-missing` | La rama `data-peru` no existe, o existe pero su `index.json` no se pudo leer. Dice cuántas URL del registro solo responden desde el Perú | Instalar el recolector ([servidor-peru](servidor-peru.md)) o revisar su última subida |
+| `relay-goal-missed` | La copia del Perú de esa noche no trae el PDF del comunicado o de los informes técnicos más recientes, que el recolector debía guardar | Pedir en el equipo del recolector que ejecuten VERIFICAR y envíen el informe ([servidor-peru](servidor-peru.md#si-algo-falla)); si el documento hace falta antes, subirlo en la consola de documentos |
 | `relay-n8n-missing` | La rama `data-n8n` no existe o no se pudo leer: no hay segundo canal si Actions no alcanza una fuente | Revisar el flujo «ENSO · Recolector n8n» ([n8n](n8n.md)) |
 | `relay-n8n-stale` | La última corrida de n8n tiene más de 36 h | Revisar que el flujo siga activo en n8n |
 | `relay-n8n-sources-down` | n8n corrió hoy, pero ninguna fuente le respondió | Nada en n8n: son las fuentes o la red de su nube; se usan copias de hasta 72 h |
@@ -118,15 +124,33 @@ Códigos frecuentes:
 | `feeds-reader-unknown` | Los feeds que se leen una vez al día no se pidieron: no había estado guardado (la caché de Actions no se leyó) y la publicación anterior no bastaba (el sitio no respondió, o una corrida que no llegó a publicar pudo haberlos pedido), así que no se sabía cuándo se pidieron por última vez. Esa corrida cuenta como su pedido: se vuelven a pedir 20 h después | Ninguna si es aislada; si se repite, revisar el sitio y el paso «Restore the reader-feed state» |
 | `news-history-large` | `news/items.jsonl` pasa de 20 MiB; Cloudflare Pages no sirve archivos de más de 25 MiB | Dividir el histórico (por ejemplo, un archivo por mes) antes de que llegue al límite |
 | `relay-token-expiring` | El token de GitHub del recolector vence en menos de 21 días | Crear un token nuevo y ejecutar INSTALAR en el equipo del recolector con ese token ([servidor-peru](servidor-peru.md#1-token-de-github)) |
+| `manual-download-needed` | Uno o más documentos (comunicado o informe técnico del ENFEN, boletín semanal del IMARPE) no llegaron por ninguna ruta automática y quedaron pendientes en `data/manual-needed.json`. El mensaje dice cuáles y qué URL abrir | Abrir cada URL en un navegador (pasar la verificación si aparece), guardar el PDF y subirlo en `/admin/documentos.html` ([documentos-manuales](documentos-manuales.md)); la actualización que se inicia al subirlo lo lee y lo valida. Es un solo issue para todos: se cierra solo cuando ya no falta ninguno |
+| `manual-unreadable` | La rama `data-manual` tiene un `index.json` que no se pudo leer: los PDF subidos a mano no se usan en esta corrida | Revisar el último commit de la consola de documentos en `data-manual` ([documentos-manuales](documentos-manuales.md)) |
 | `carried-forward` | Se conservó el dato de la publicación anterior | Revisar la fuente si persiste |
 | `format-drift` | Cambió la huella del formato de la misma URL pero se pudo leer | Revisar que los valores sigan siendo correctos y actualizar las pruebas |
 | `format-changed` | El formato ya no se puede leer | Ajustar el lector en `python/enso/feeds/` y añadir la nueva respuesta a las fixtures |
-| `stale-*`, `official-overdue` | El dato o el comunicado está vencido | Comprobar en la fuente si realmente no hay uno nuevo |
+| `implausible-value` | El lector descartó unos pocos valores fuera del rango plausible (quedan vacíos; el mensaje dice cuáles). Con muchos, la fuente pasa a `format-changed` | Comparar con la fuente; si el valor es real, ampliar el rango del lector en `python/enso/feeds/` |
+| `exception` | Un lector falló por un error de programa, no de formato: la fuente queda sin dato nuevo (`error`) o, con la fuente `news`, no se leyeron las noticias de esta corrida (`warning`) | Revisar la traza en el registro de la corrida, corregir el lector y añadir la respuesta a las fixtures |
+| `rebase-failed` | No se pudo llevar ERSSTv6 a la base 1991–2020: la serie larga de Niño 1+2 o 3.4 no se publica en esta corrida | Revisar la respuesta de PSL y `rebase_anomalies` en `python/enso/feeds/cpc.py` |
+| `empty-series` | Una serie quedó sin puntos al armarla y no se publica | Revisar la fuente y su lector; si la fuente falló del todo, ver `no-data` |
+| `stale-*` (`stale-<serie>`, `stale-weekly`), `official-overdue` | El dato o el comunicado está vencido | Comprobar en la fuente si realmente no hay uno nuevo |
+| `late-*` (`late-<dato>`) | El panel de vigencia marca el dato como atrasado: según el calendario de la institución ya debió llegar uno más reciente, o se usó una copia o el último dato conservado. Los vencidos ya tienen `stale-*` u `official-overdue` | Comprobar en la fuente si ya publicó el siguiente; el cálculo está en `python/enso/freshness.py` («Vigencia por vista» en [informes-texto](informes-texto.md)) |
 | `newer-communique-unparsed` | Hay un comunicado del ENFEN más nuevo que no se pudo leer | Revisar el PDF y el lector de comunicados |
+| `communique-unread` | No se pudo leer el PDF de un comunicado del listado: ninguna ruta lo dio, o lo que llegó no era un PDF legible del número buscado (el mensaje da cada intento). Si es el más reciente, queda pendiente en la consola de documentos | Si aparece `manual-download-needed`, subir el PDF en la consola; si el PDF llegó y no se leyó, revisar el lector de comunicados (`python/enso/feeds/peru.py`) |
+| `communique-warning` | El comunicado se leyó, pero sin fecha de emisión o con una fecha que no cuadra con su año | Revisar el PDF y el estado publicado |
+| `latest-exception` | La búsqueda del último comunicado falló por un error de programa; queda lo que dio el listado o el comunicado anterior | Revisar la traza de la corrida y `enfen_latest` en `python/enso/observatory.py` |
+| `status-unknown` | No se pudo determinar el estado del sistema de alerta del ENFEN en esta corrida | Ver las incidencias del ENFEN de la misma corrida (`unreachable`, `communique-unread`) y el comunicado vigente en la fuente |
+| `outlook-unread` | El comunicado trae una perspectiva con magnitud que no se pudo leer (toda o una región): la vista El Niño costero no la muestra. Se repite en cada corrida mientras siga ese comunicado | Revisar la oración en el PDF y las reglas de `python/enso/reports.py` ([informes-texto](informes-texto.md)); con el modelo de lenguaje configurado queda una propuesta para revisión |
+| `informe-*` (`informe-unread`, `informe-exception`, `informe-icen-mismatch`, `informe-probability-sum`, `informe-period-*`, `informe-schema*`…) | El informe técnico del ENFEN no se encontró, no se bajó o no se leyó (`informe-unread`, `informe-exception`), o una parte no pasó la validación (sumas de probabilidades, meses, periodo, saltos, el ICEN del IGP). Solo se retiene la parte afectada; sin informe nuevo se conserva el último leído, marcado atrasado | Revisar el PDF (el mensaje da la URL) y `python/enso/reports.py` ([informes-texto](informes-texto.md)); si el PDF no llega por ninguna ruta, subirlo en la consola de documentos |
 | `bsobp-unreadable` | El repositorio del IMARPE listó un boletín semanal (BS-OBP) cuyo PDF no se pudo bajar o leer, o que dice otro número. Queda también en la consola de documentos | Abrir la página del boletín que trae el mensaje, bajar el PDF y subirlo en la consola de documentos; la actualización siguiente lo lee. El issue se cierra solo |
 | `bsobp-overdue` | Más de 12 días sin un boletín semanal nuevo en el repositorio del IMARPE (sale cada domingo) | Ver si el IMARPE dejó de depositarlo o cambió el título; si cambió, ajustar `QUERY`/`TITLE_RE` en `python/enso/feeds/imarpe_bsobp.py` |
 | `bsobp-unreachable` | El repositorio del IMARPE no listó boletines; se conservan los ya leídos | Normalmente es temporal |
-| `no-data` | Una serie quedó vacía | Si la fuente es crítica, no se despliega |
+| `bsobp-exception` | La lectura del boletín semanal falló por un error de programa; se conserva lo publicado | Revisar la traza y `python/enso/feeds/imarpe_bsobp.py` |
+| `news-degraded` | Menos de la mitad de los feeds de noticias pedidos están activos | Revisar `news/feeds.json` (qué falló en cada uno) |
+| `alerts-places` | Sin noticias en esta corrida, las alertas de la publicación anterior no se pudieron volver a ubicar: quedan con el lugar con que se guardaron | Ninguna si es aislada; si se repite, revisar la traza |
+| `overrides-http`, `overrides-down` | La consola de lugares (`/api/geo/overrides`) respondió con error o no respondió: se usan las correcciones de la publicación anterior | Revisar la Function y `GEO_OVERRIDES_URL` ([despliegue-cloudflare](despliegue-cloudflare.md)) |
+| `overrides-rejected` | Algunas correcciones de lugar de la consola traen códigos inválidos y no se aplicaron | Revisarlas en la consola de lugares ([georreferenciacion](georreferenciacion.md)) |
+| `no-data` | La fuente falló y no hay un dato anterior que conservar (`critical` si la fuente es crítica) | Si la fuente es crítica, no se despliega |
 
 ## Histórico de D20 (GODAS)
 
@@ -153,6 +177,15 @@ el código no los usa y recorre los mensajes del propio GRIB.
   corrida anterior desde Actions, o revertir el commit en `main`.
 - **Fuente que cambió de URL:** editar su entrada en `SOURCES` y añadir la
   URL nueva al principio de la lista; las anteriores quedan como respaldo.
+- **Conflicto en `registry/sources.json` o `n8n/dist/`:** son archivos
+  generados y se resuelven regenerándolos, nunca a mano. Resolver antes los
+  demás conflictos (también `registry/reachability.json`, del que sale el
+  registro), tomar cualquiera de las dos versiones (`git checkout --theirs --
+  registry/sources.json n8n/dist`), correr `cd python && python -m
+  tools.build_registry` y, desde la raíz, `node n8n/build.mjs` (sin las
+  variables `N8N_*_CRED_ID`, para que salga igual a la copia versionada), y
+  hacer commit. `python/tests/test_registry.py` (`build_registry --check`) y
+  `n8n.yml` (`node n8n/build.mjs --check`) fallan si quedan desactualizados.
 - **Respuestas originales:** la rama `data-archive` guarda cada respuesta
   nueva por fuente y SHA-256, útil para reconstruir o añadir pruebas. Una
   respuesta igual a una que ya tiene (mismo SHA-256 en la misma fuente) no
