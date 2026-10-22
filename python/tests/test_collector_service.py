@@ -514,6 +514,15 @@ def test_check_sources_verdicts(monkeypatch):
                         lambda urls: {u: "robots.txt sin respuesta (timeout)" for u in urls if "enfen" in u or "ICEN" in u})
     r = chk.check_sources({})
     assert r.level == chk.WARN and any(ln.startswith("NO") and "robots.txt sin respuesta" in ln for ln in r.lines)
+    # Una ruta que robots.txt prohíbe no se cuenta como falla: «--» en la lista, fuera de la cuenta.
+    monkeypatch.setattr(chk, "_robots_verdicts",
+                        lambda urls: {u: "robots.txt no lo permite" for u in urls if "snirh.ana" in u})
+    r = chk.check_sources({})
+    ana = [ln for ln in r.lines if "snirh.ana" in ln]
+    asked = len(r.lines) - len(ana)
+    assert ana and all(ln.startswith("--") for ln in ana)
+    assert r.level == chk.OK and r.title == f"{asked}/{asked} fuentes responden ({len(ana)} no se piden: su robots.txt no lo permite)"
+    assert "ana: robots.txt no lo permite" in r.detail and "ana 0/" not in r.detail
 
 
 def test_robots_verdicts_follow_rfc_9309(monkeypatch):
@@ -680,6 +689,7 @@ def test_internet_check_dates_the_copy_from_its_index_not_the_heartbeat_commit(h
     results = chk.check_internet({"root": home})
     copy = next(r for r in results if r.title.startswith("última copia"))
     assert copy.level == chk.WARN and "hace 50 h" in copy.title and "index.json" in copy.detail
+    assert "latido" not in copy.detail  # lo que trajo la copia sale de su índice, no del último commit
     beat = next(r for r in results if r.title.startswith("último latido"))
     assert "ninguna fuente respondió" in beat.title and "relay-sources-down" in beat.hint
     # Si index.json no se pudo leer, se usa la fecha del commit.
@@ -693,6 +703,17 @@ def test_internet_check_dates_the_copy_from_its_index_not_the_heartbeat_commit(h
     assert not any(r.title.startswith("última copia") for r in results)
     assert any(r.level == chk.WARN and "ninguna copia" in r.title for r in results)
     assert any(r.title.startswith("último latido") and r.level == chk.WARN for r in results)
+
+
+def test_copy_summary_lists_groups_from_the_index():
+    commit = {"message": "relay: fuentes peruanas 2026-10-21T20:29:08+00:00 ({'enfen': '3/4', 'senamhi': '7/7'"}
+    at = "2026-10-21T20:29:08+00:00"
+    assert chk._copy_summary({"collected_at": at, "summary": {"enfen": "3/4", "senamhi": "7/7"}}, commit) == \
+        " · enfen 3/4, senamhi 7/7"
+    assert chk._copy_summary({"collected_at": at}, {"message": "latido: sin fuentes"}) == ""
+    assert chk._copy_summary(None, {"message": "latido\n\ncuerpo"}) == " · latido"
+    assert chk._copy_summary({}, {"message": "x" * 300}) == " · " + "x" * 159 + "…"
+    assert chk._copy_summary({}, {}) == ""
 
 
 def test_launchers_only_use_options_the_installers_know():

@@ -19,6 +19,7 @@ NOW = datetime(2026, 10, 21, 20, 40, tzinfo=timezone.utc)
     ("senamhi-quebradas", "SENAMHI · aviso de activación de quebradas por lluvias, nivel 4: 10 distritos de Piura y Cajamarca",
      "Distritos con probable activación de quebradas en las próximas 24 horas", 3, "Nivel 4"),
     ("senamhi-quebradas", "SENAMHI · aviso de activación de quebradas por lluvias, nivel 2: 1106 distritos", "", 1, "Nivel 2"),
+    ("senamhi-lluvias", "SENAMHI · aviso de precipitaciones para 24 horas, nivel 3: Piura, Lima, Arequipa", "", 2, "Nivel 3"),
     ("senamhi-hidrologicos", "SENAMHI · aviso hidrológico N° 1655 (nivel naranja): situación actual del nivel del río Nanay",
      "", 2, "Umbral naranja"),
     ("igp-cenvul-boletines", "Volcán Sabancaya: boletín IGP/CENVUL-SAB/BV 2026-0042, alerta naranja",

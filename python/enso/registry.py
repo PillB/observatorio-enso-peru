@@ -40,6 +40,7 @@ solo desde Actions y como mucho una vez al día (``by_url[url]["reader"]``,
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from dataclasses import dataclass, field
@@ -164,6 +165,7 @@ def _collector_entries(known: set[str]) -> list[Entry]:
     except ImportError:
         return []
     out = []
+    ids: set[str] = set()
     for group, urls in peru_collector.SOURCES.items():
         for url in urls:
             if url in known:
@@ -171,8 +173,12 @@ def _collector_entries(known: set[str]) -> list[Entry]:
             p = urlparse(url)
             name = (p.path.strip("/") or p.netloc) + (f"?{p.query}" if p.query else "")
             expect = getattr(peru_collector, "EXPECT", {}).get(url, "html")  # JSON y XML de servicios GIS
+            sid = f"{group}-{_slug(name) or 'portada'}"
+            if sid in ids:  # dos pedidos al mismo servicio solo difieren después de los 40 caracteres del slug
+                sid += "-" + hashlib.sha1(url.encode()).hexdigest()[:6]
+            ids.add(sid)
             out.append(Entry(
-                id=f"{group}-{_slug(name) or 'portada'}", group=group, name=f"{group.upper()}: {name}",
+                id=sid, group=group, name=f"{group.upper()}: {name}",
                 institution=group.upper(), url=url, expect=expect,
                 method="html" if expect == "html" else "api" if expect == "json" else "download",
                 kind="page" if expect == "html" else "dataset", home=url,
