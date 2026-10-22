@@ -100,10 +100,11 @@ class Writer:
 
 
 def write_sources(w: Writer, acquired: dict, previous_get: Optional[Callable[[str], Optional[bytes]]] = None,
-                  previous_source: Optional[Callable[[str], Optional[dict]]] = None) -> dict[str, dict]:
+                  previous_source: Optional[Callable[[str], Optional[dict]]] = None, log=None) -> dict[str, dict]:
     """Copia de cada fuente oficial; si hoy no respondió, la copia anterior (si sigue publicada).
 
-    Devuelve, por fuente, ``{"file", "retrievedAt", "channel", "documents": [...]}``.
+    Devuelve, por fuente, ``{"file", "retrievedAt", "channel", "documents": [...]}``. Un documento de más de
+    ``MAX_BYTES`` no se archiva: queda la advertencia ``archive-too-large`` (si se pasa ``log``).
     """
     out: dict[str, dict] = {}
     for sid, a in acquired.items():
@@ -122,9 +123,14 @@ def write_sources(w: Writer, acquired: dict, previous_get: Optional[Callable[[st
                 entry = {**prev, "carried": True}
         docs = []
         for body in a.documents:
-            rel = w.add(source_path(sid, body), body, source=sid, retrievedAt=a.retrieved_at, document=True)
+            rel = w.add(source_path(sid, body), body, source=sid, retrievedAt=a.retrieved_at, document=True,
+                        channel=a.channel)
             if rel:
                 docs.append(rel)
+            elif len(body) > MAX_BYTES and log is not None:
+                log.add("warning", sid, "archive", "archive-too-large",
+                        f"Un documento de {len(body) / 2**20:.1f} MiB supera el límite de la copia archivada "
+                        f"({MAX_BYTES // 2**20} MiB): se publica sin copia.")
         if docs:
             entry["documents"] = docs
         if entry:

@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, it } from 'node:test';
 import { handle as geo, hashPassword, COOKIE } from '../../../functions/_lib/geo-console.js';
 import { handle, MAX_AGE_DAYS, nextEntries } from '../../../functions/_lib/doc-uploads.js';
 import { FakeD1 } from './fake-d1.mjs';
-import { prepare } from '../../../public/admin/documentos.js';
+import { prepare, tokenWarning } from '../../../public/admin/documentos.js';
 
 const ORIGIN = 'https://enso-peru.pages.dev';
 const DOC = {
@@ -24,7 +24,8 @@ let gh; // estado de la API de GitHub de mentira
 const realFetch = globalThis.fetch;
 
 function fakeGitHub() {
-  const state = { refs: {}, commits: {}, trees: {}, blobs: {}, files: {}, calls: [], dispatches: [], conflictOnce: false, n: 0 };
+  const state = { refs: {}, commits: {}, trees: {}, blobs: {}, files: {}, calls: [], dispatches: [], conflictOnce: false, n: 0,
+    repoStatus: 200, tokenExpires: '' };
   const sha = () => (state.n += 1).toString(16).padStart(40, '0');
   globalThis.fetch = async (input, init = {}) => {
     const u = new URL(typeof input === 'string' ? input : input.url);
@@ -87,6 +88,10 @@ function fakeGitHub() {
       assert.equal(b.force, false);
       state.refs['data-manual'] = b.sha;
       return reply(200, {});
+    }
+    if (method === 'GET' && path === '/repos/PillB/observatorio-enso-peru') {
+      const headers = state.tokenExpires ? { 'github-authentication-token-expiration': state.tokenExpires } : {};
+      return new Response(JSON.stringify({}), { status: state.repoStatus, headers });
     }
     if (method === 'POST' && path === 'dispatches') {
       state.dispatches.push(await body());
@@ -168,7 +173,7 @@ describe('subida de documentos', () => {
     assert.deepEqual(e.aliases, DOC.urls.slice(1));
     assert.equal(e.sha256, sha);
     assert.equal(e.doc, DOC.id);
-    assert.equal(e.uploaded_by, 'pablo');
+    assert.equal(e.uploaded_by, 'rol admin'); // la rama es pública: el usuario queda solo en D1
     assert.deepEqual(gh.dispatches, [{ event_type: 'enso-refresh', client_payload: { reason: 'manual-upload', doc: DOC.id } }]);
     // Primera subida: la rama se crea (commit sin padres).
     assert.deepEqual(gh.commits[gh.refs['data-manual']].parents, []);
@@ -176,6 +181,9 @@ describe('subida de documentos', () => {
     assert.equal(st.pending.length, 1);
     assert.equal(st.uploads[0].username, 'pablo');
     assert.ok(st.canUpload);
+    assert.equal(st.tokenOk, true);
+    // El commit de la rama pública no lleva el usuario.
+    assert.ok(!gh.commits[gh.refs['data-manual']].message.includes('pablo'));
     const audit = env.GEO_DB.sqlite.prepare("SELECT * FROM audit WHERE event = 'documento-subido'").all();
     assert.equal(audit.length, 1);
   });
@@ -269,7 +277,7 @@ describe('subida de documentos', () => {
     const old = new Date(Date.parse('2026-10-21T00:00:00Z') - (MAX_AGE_DAYS + 1) * 86400 * 1000).toISOString();
     const index = { entries: [{ doc: 'informe-1-2026', file: 'files/aaaa.pdf', fetched_at: old },
       { doc: 'informe-2-2026', file: 'files/bbbb.pdf', fetched_at: '2026-10-20T00:00:00Z' }] };
-    const { entries, removed } = nextEntries(index, { doc: DOC, sha256: 'c'.repeat(64), bytes: 1, username: 'pablo', at: '2026-10-21T00:00:00Z' });
+    const { entries, removed } = nextEntries(index, { doc: DOC, sha256: 'c'.repeat(64), bytes: 1, uploader: 'rol admin', at: '2026-10-21T00:00:00Z' });
     assert.deepEqual(entries.map((e) => e.doc), [DOC.id, 'informe-2-2026']);
     assert.deepEqual(removed, ['files/aaaa.pdf']);
   });
@@ -296,5 +304,22 @@ describe('revisión en el navegador', () => {
     await assert.rejects(prepare(file(Buffer.from('<!DOCTYPE html><html>'.padEnd(2000, ' '))), 1e8), /verificación/);
     await assert.rejects(prepare(file(PDF.subarray(0, 3000)), 1e8), /incompleto/);
     await assert.rejects(prepare(file(PDF), 1000), /límite/);
+  });
+});
+
+describe('token de GitHub de la subida', () => {
+
+  it('dice si el token no sirve o está por vencer', async () => {
+    const cookie = await login();
+    gh.repoStatus = 401;
+    let st = await (await handle(statusReq(cookie), env)).json();
+    assert.equal(st.tokenOk, false);
+    assert.match(tokenWarning(st), /HTTP 401/);
+    gh.repoStatus = 200;
+    gh.tokenExpires = '2026-11-01 00:00:00 UTC';
+    st = await (await handle(statusReq(cookie), env)).json();
+    assert.equal(st.tokenExpiresAt, '2026-11-01T00:00:00.000Z');
+    assert.match(tokenWarning(st, Date.parse('2026-10-22T00:00:00Z')), /vence en 10 días/);
+    assert.equal(tokenWarning(st, Date.parse('2026-09-01T00:00:00Z')), '');
   });
 });

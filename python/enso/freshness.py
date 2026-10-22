@@ -33,11 +33,11 @@ MONTHLY_DUE = {"default": (2, 10), "igp-icen": (3, 15),
 # Paneles de cada vista (rutas del sitio). Las series se nombran por su id en series.json.
 VIEWS: dict[str, list[str]] = {
     "": ["enfen", "noaa", "weekly", "icen", "icen-provisional", "nino12_oisst", "roni", "nino34_oisst",
-         "cpac850_anom", "heat_180w100w", "soi_troup", "epac850_anom"],
+         "cpac850_anom", "heat_180w100w", "soi_troup", "epac850_anom", "d20_coastal", "d20_global"],
     "costero": ["enfen", "enfen-outlook", "enfen-probabilities", "icen", "icen-provisional", "weekly"],
     "pacifico": ["noaa", "roni", "oni", "nino3_oisst", "nino34_oisst", "nino4_oisst", "nino12_oisst"],
     "oceano": ["weekly", "nino12", "nino34", "nino12_oisst", "nino34_oisst", "wpac850", "cpac850", "epac850",
-               "heat_180w100w", "heat_160e80w", "soi_troup"],
+               "heat_180w100w", "heat_160e80w", "d20_coastal", "d20_global", "d20_180w100w", "soi_troup"],
     "mapa": ["weekly"],  # el mapa dibuja solo las anomalías semanales
     "historia": ["icen"],
     "noticias": ["enfen", "noaa", "alerts", "news"],
@@ -53,7 +53,13 @@ SERIES_LABELS = {
     "cpac850_anom": "Viento 850 hPa, Pacífico central (anomalía)",
     "epac850_anom": "Viento 850 hPa, Pacífico oriental (anomalía)",
     "heat_180w100w": "Contenido de calor 0–300 m (180°–100° O)", "heat_160e80w": "Contenido de calor 0–300 m (160° E–80° O)",
+    "d20_coastal": "Anomalía de D20, Niño 1+2 (GODAS)", "d20_global": "Anomalía de D20, Niño 3.4 (GODAS)",
+    "d20_180w100w": "Anomalía de D20, 180°–100° O (GODAS)",
 }
+
+#: Fuentes de alertas de las que depende el mapa de alertas: cada una caída abre su propia incidencia (las demás
+#: se ven en el sitio y en el estado de los feeds, sin issue, porque algunas fallan a menudo).
+ALERT_SOURCES_WATCHED = ("senamhi-", "indeci-coen")
 
 
 def _months(period: str, n: int) -> date:
@@ -193,7 +199,10 @@ def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed
         items["alerts"] = {"id": "alerts", "label": "Alertas de peligros (SENAMHI, INDECI, IGP, DHN y otras)",
                            "kind": "alertas", "observed": max(dates) if dates else None, "observedKind": "datetime",
                            "state": state if src else "sin-dato", "sourcesOk": len(ok), "sourcesTotal": len(src),
-                           "retrievedAt": now.isoformat(timespec="seconds")}
+                           "retrievedAt": now.isoformat(timespec="seconds"),
+                           "down": [{"id": s.get("id"), "name": s.get("name"), "error": s.get("error") or "",
+                                     **({"formatError": True} if s.get("formatError") else {})}
+                                    for s in src if not s.get("ok")]}
     else:
         items["alerts"] = {"id": "alerts", "label": "Alertas de peligros", "state": "sin-dato"}
     if news_feeds:
@@ -235,3 +244,17 @@ def log_late(fresh: dict, log) -> None:
             exp = f"; se esperaba el siguiente hacia el {it['expectedNext']}" if it.get("expectedNext") else ""
             log.add("warning", it.get("source") or it["id"], "validate", f"late-{it['id']}",
                     f"{it['label']}: el dato más reciente es de {it.get('observed') or '—'} ({it['state']}){exp}.")
+    alerts = fresh["items"].get("alerts") or {}
+    if alerts.get("state") == "vencido":
+        log.add("error", "alertas", "fetch", "alerts-unread",
+                f"Ninguna de las {alerts.get('sourcesTotal')} fuentes de alertas de peligros respondió: el mapa y la "
+                "lista de alertas no se actualizaron.")
+    for s in alerts.get("down") or []:
+        if not str(s.get("id") or "").startswith(ALERT_SOURCES_WATCHED):
+            continue
+        if s.get("formatError"):
+            log.add("warning", s["id"], "parse", "alert-source-format",
+                    f"{s.get('name')}: respondió con otra forma ({s.get('error')}); revisar el lector de la fuente.")
+        else:
+            log.add("warning", s["id"], "fetch", "alert-source-down",
+                    f"{s.get('name')}: no respondió en esta corrida ({s.get('error') or 'sin detalle'}).")

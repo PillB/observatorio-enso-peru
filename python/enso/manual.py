@@ -74,17 +74,15 @@ class ManualNeeds:
         self.used.append({"id": doc_id, "label": label, "url": url, "uploadedAt": at})
 
     def log(self, log) -> None:
-        """Una sola incidencia con todos los documentos (un issue de GitHub, que se cierra solo cuando ya no falta
-        ninguno)."""
-        if not self.items:
-            return
-        lines = [f"{i['label']}: {i['reason']}" + (f" Abrir: {', '.join(i['open'][:2])}." if i["open"] else "")
-                 + (f" La copia subida no sirvió: {i['problem']}" if i.get("problem") else "")
-                 for i in self.items.values()]
-        log.add("warning", "manual", "fetch", "manual-download-needed",
-                "Hay que bajar a mano: " + " | ".join(lines) + " Abrir cada documento en un navegador, pasar la "
-                "verificación si aparece, guardar el PDF y subirlo en la consola de documentos; la actualización "
-                "que se inicia al subirlo lo lee y lo valida.")
+        """Una incidencia por documento (su propio issue de GitHub, con su aviso, que se cierra solo cuando ese
+        documento ya no falta)."""
+        for i in self.items.values():
+            log.add("warning", f"manual-{i['id']}", "fetch", "manual-download-needed",
+                    f"Hay que bajar a mano: {i['label']}. {i['reason']}"
+                    + (f" Abrir: {', '.join(i['open'][:2])}." if i["open"] else "")
+                    + (f" La copia subida no sirvió: {i['problem']}" if i.get("problem") else "")
+                    + " Abrirlo en un navegador, pasar la verificación si aparece, guardar el PDF y subirlo en la "
+                    "consola de documentos; la actualización que se inicia al subirlo lo lee y lo valida.")
 
     def as_json(self, previous: Optional[dict], today: date) -> dict:
         """El archivo ``manual-needed.json``. ``since`` se conserva de la publicación anterior."""

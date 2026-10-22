@@ -26,7 +26,7 @@ import {
 } from './geo-console.js';
 
 export const BRANCH = 'data-manual';
-export const MAX_PDF_BYTES = 25 * 1024 * 1024;
+export const MAX_PDF_BYTES = 20 * 1024 * 1024; // el mismo límite que la copia archivada (enso.archive.MAX_BYTES)
 export const MAX_AGE_DAYS = 120; // como enso.manual.MAX_AGE_DAYS: las copias más viejas se quitan del índice
 const UPLOADS_MAX_HOUR = 10;
 const UPLOAD_WINDOW_S = 3600;
@@ -91,8 +91,25 @@ async function status(env, url, session) {
       at: r.created_at, commit: r.commit_sha, dispatched: !!r.dispatched })),
     canUpload: uploadRoles(env).includes(session.role),
     configured: !!env.DOCS_GITHUB_TOKEN,
+    ...(env.DOCS_GITHUB_TOKEN ? await tokenCheck(env) : {}),
     maxBytes: MAX_PDF_BYTES,
   });
+}
+
+/** ¿Sirve el token y cuándo vence? Se mira al abrir la consola, no recién cuando urge subir un documento. */
+export async function tokenCheck(env) {
+  const repo = env.DOCS_GITHUB_REPO || 'PillB/observatorio-enso-peru';
+  try {
+    const r = await fetch(`${API}/repos/${repo}`, {
+      headers: { Authorization: `Bearer ${env.DOCS_GITHUB_TOKEN}`, Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'enso-consola-documentos' },
+    });
+    const expires = r.headers.get('github-authentication-token-expiration') || '';
+    return { tokenOk: r.status === 200, tokenStatus: r.status,
+      ...(expires ? { tokenExpiresAt: new Date(expires.replace(' UTC', 'Z').replace(' ', 'T')).toISOString() } : {}) };
+  } catch (err) {
+    return { tokenOk: null, tokenStatus: 0 }; // GitHub no respondió: no se sabe
+  }
 }
 
 // --- GitHub --------------------------------------------------------------------------
@@ -208,7 +225,7 @@ function concat(parts, total) {
 const pdfBytes = (b64Len) => Math.floor((b64Len * 3) / 4);
 
 /** Commit en data-manual con el PDF y el índice; crea la rama la primera vez. Repite una vez si alguien ganó. */
-export async function commitUpload(env, { blob, sha256, bytes, doc, username, at }) {
+export async function commitUpload(env, { blob, sha256, bytes, doc, uploader, at }) {
   const { call } = gh(env);
   for (let attempt = 0; attempt < 2; attempt++) {
     const ref = await call('GET', `git/ref/heads/${BRANCH}`);
@@ -231,7 +248,7 @@ export async function commitUpload(env, { blob, sha256, bytes, doc, username, at
     } else if (ref.status !== 404) {
       throw new HttpError(502, `GitHub no respondió por la rama ${BRANCH} (HTTP ${ref.status}).`);
     }
-    const { entries, removed } = nextEntries(index, { doc, sha256, bytes, username, at });
+    const { entries, removed } = nextEntries(index, { doc, sha256, bytes, uploader, at });
     const file = `files/${sha256.slice(0, 16)}.pdf`;
     const newIndex = {
       schema: 'enso-relay/1', collected_at: at,
@@ -246,7 +263,7 @@ export async function commitUpload(env, { blob, sha256, bytes, doc, username, at
     const t = await call('POST', 'git/trees', baseTree ? { base_tree: baseTree, tree } : { tree });
     if (t.status !== 201) throw new HttpError(502, `GitHub no armó el árbol (HTTP ${t.status}).`);
     const c = await call('POST', 'git/commits', {
-      message: `Documento subido a mano: ${doc.label || doc.id} (${username})`, tree: t.data.sha, parents: parent ? [parent] : [],
+      message: `Documento subido a mano: ${doc.label || doc.id} (${uploader})`, tree: t.data.sha, parents: parent ? [parent] : [],
     });
     if (c.status !== 201) throw new HttpError(502, `GitHub no creó el commit (HTTP ${c.status}).`);
     const u = parent
@@ -260,7 +277,9 @@ export async function commitUpload(env, { blob, sha256, bytes, doc, username, at
 }
 
 /** Índice nuevo: la subida nueva, sin las anteriores del mismo documento ni las que pasaron MAX_AGE_DAYS. */
-export function nextEntries(index, { doc, sha256, bytes, username, at }) {
+// La rama data-manual es pública: lleva el rol de quien subió, no su usuario (que queda en D1, en «uploads» y en
+// el registro de la consola).
+export function nextEntries(index, { doc, sha256, bytes, uploader, at }) {
   const limit = Date.parse(at) - MAX_AGE_DAYS * 86400 * 1000;
   const old = Array.isArray(index && index.entries) ? index.entries : [];
   const keep = old.filter((e) => e && e.doc !== doc.id && Date.parse(e.fetched_at || 0) >= limit);
@@ -270,7 +289,7 @@ export function nextEntries(index, { doc, sha256, bytes, username, at }) {
   const entry = {
     url, aliases, status: 200, content_type: 'application/pdf', detected: 'pdf', class: 'ok', group: 'manual',
     file: `files/${sha256.slice(0, 16)}.pdf`, sha256, bytes, fetched_at: at, doc: doc.id, label: doc.label || doc.id,
-    uploaded_by: username,
+    uploaded_by: uploader,
   };
   return { entries: [entry, ...keep], removed };
 }
@@ -301,7 +320,7 @@ async function upload(request, env, url, session, ip) {
 
   const { blob, bytes } = await streamBlob(env, request, length);
   const at = nowIso();
-  const commit = await commitUpload(env, { blob, sha256, bytes, doc, username: session.username, at });
+  const commit = await commitUpload(env, { blob, sha256, bytes, doc, uploader: `rol ${session.role}`, at });
   const { call } = gh(env);
   const d = await call('POST', 'dispatches', { event_type: 'enso-refresh', client_payload: { reason: 'manual-upload', doc: docId } });
   const dispatched = d.status === 204;

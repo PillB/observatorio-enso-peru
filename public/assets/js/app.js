@@ -127,6 +127,7 @@ function statusCard(kind) {
       ${channelTag(o.channel)}
       ${o.carried ? html`<span class="tag">último dato válido</span>` : ''}
       <a href="${safeUrl(o.documentUrl || o.url)}" rel="noopener" target="_blank">Documento oficial</a>
+      ${o.repositoryUrl ? html`<a href="${safeUrl(o.repositoryUrl)}" rel="noopener" target="_blank" title="El portal del ENFEN no responde fuera del Perú; el IMARPE deposita el mismo documento en su repositorio">Repositorio del IMARPE</a>` : ''}
       ${archiveHref(o.archive) ? html`<a href="${archiveHref(o.archive)}" rel="noopener" target="_blank" title="Copia que bajó el observatorio${o.retrievedAt ? ` el ${F.fmtDateTime(o.retrievedAt)}` : ''}">Copia archivada</a>` : ''}
     </div>
   </article>`;
@@ -222,10 +223,10 @@ const MAG_ES = { debil: 'débil', moderada: 'moderada', fuerte: 'fuerte', muy_fu
 const REGION_ES = { nino12: 'Niño 1+2 (costa del Perú)', nino34: 'Niño 3.4 (Pacífico central)' };
 const CAT_ES = { fria_fuerte: 'Fría fuerte', fria_moderada: 'Fría moderada', fria_debil: 'Fría débil', neutro: 'Neutro', calida_debil: 'Cálida débil', calida_moderada: 'Cálida moderada', calida_fuerte: 'Cálida fuerte', calida_muy_fuerte: 'Cálida muy fuerte', calida_extraordinaria: 'Cálida extraordinaria' };
 
-function provenance(url, page, quote, when, arch) {
+function provenance(url, page, quote, when, arch, repo, channel) {
   const at = page ? `#page=${page}` : '';
   const a = archiveHref(arch);
-  return html`<p class="src-links small">${url ? html`<a href="${safeUrl(url) + at}" rel="noopener" target="_blank">Documento oficial${page ? `, página ${page}` : ''}</a>` : ''}${a ? html` · <a href="${a + at}" rel="noopener" target="_blank" title="Copia del PDF que bajó el observatorio">Copia archivada</a>` : ''}${when ? html` · ${when}` : ''}${quote ? html`<span class="quote"> · Texto: «${quote}»</span>` : ''}</p>`;
+  return html`<p class="src-links small">${url ? html`<a href="${safeUrl(url) + at}" rel="noopener" target="_blank">Documento oficial${page ? `, página ${page}` : ''}</a>` : ''}${repo ? html` · <a href="${safeUrl(repo)}" rel="noopener" target="_blank">Repositorio del IMARPE</a>` : ''}${a ? html` · <a href="${a + at}" rel="noopener" target="_blank" title="Copia del PDF que bajó el observatorio">Copia archivada</a>` : ''}${CHANNEL_SHORT[channel] ? html` · vía ${CHANNEL_SHORT[channel]}` : ''}${when ? html` · ${when}` : ''}${quote ? html`<span class="quote"> · Texto: «${quote}»</span>` : ''}</p>`;
 }
 
 /** Un dato del informe que el panel de vigencia da por vencido no se muestra como actual. */
@@ -257,7 +258,7 @@ function probabilityCard() {
     return html`<div class="prob"><h3>${REGION_ES[t.region] || t.region}</h3><div class="table-wrap"><table class="data prob-table"><caption class="visually-hidden">Probabilidad (%) de cada categoría por mes, ${REGION_ES[t.region]}</caption>
       <thead><tr><th scope="col">Categoría</th>${t.months.map((m) => html`<th scope="col">${F.fmtMonth(m, { short: true })}</th>`)}${t.summer ? html`<th scope="col">Verano</th>` : ''}</tr></thead>
       <tbody>${cats.map((c) => html`<tr><th scope="row">${CAT_ES[c]}</th>${t.categories[c].map((v) => html`<td class="${v >= 50 ? 'hi' : v >= 20 ? 'mid' : ''}">${v}</td>`)}${t.summer ? html`<td>${t.summer[c] ?? '—'}</td>` : ''}</tr>`)}</tbody></table></div>
-      ${provenance(inf.url, t.evidence?.page, t.evidence?.quote, '', inf.archive)}${t.review ? html`<p class="muted small">El ENFEN marcó esta tabla con «revisar los valores».</p>` : ''}</div>`;
+      ${provenance(inf.url, t.evidence?.page, t.evidence?.quote, '', inf.archive, inf.repositoryUrl, inf.channel)}${t.review ? html`<p class="muted small">El ENFEN marcó esta tabla con «revisar los valores».</p>` : ''}</div>`;
   };
   return html`<section class="card" aria-labelledby="pr-h" data-tour-id="enfen-probabilities"><div class="section-head"><h2 id="pr-h">Probabilidades del ENFEN por mes (%)</h2>${inf.carried ? html`<span class="tag tag-prelim">último informe leído</span>` : ''}</div>
     <p class="muted">Probabilidad que el ENFEN estima para cada categoría del ICEN (costa) y del RONI (Pacífico central). Informe técnico N° ${inf.number}${inf.dataTo ? `, con datos al ${F.fmtDate(inf.dataTo)}` : ''}.</p>
@@ -853,8 +854,8 @@ function officialItem(it) {
 // Por dónde llegó un dato que no vino directo de la fuente.
 // «mirror» es cualquier otra URL de la misma fuente (el mismo archivo por https, la página de la propia
 // institución o la réplica de la DHN), no una copia: no entra en «Leídas de una copia».
-const CHANNEL_TAG = { 'relay-peru': 'vía recolector en el Perú', 'relay-n8n': 'vía n8n', archive: 'vía Internet Archive', 'archive-fresh': 'vía Internet Archive', mirror: 'vía otra dirección oficial' };
-const CHANNEL_SHORT = { 'relay-peru': 'recolector en el Perú', 'relay-n8n': 'n8n', archive: 'Internet Archive', 'archive-fresh': 'Internet Archive' };
+const CHANNEL_TAG = { 'relay-peru': 'vía recolector en el Perú', 'relay-n8n': 'vía n8n', 'relay-manual': 'subido a mano (consola de documentos)', archive: 'vía Internet Archive', 'archive-fresh': 'vía Internet Archive', mirror: 'vía otra dirección oficial' };
+const CHANNEL_SHORT = { 'relay-peru': 'recolector en el Perú', 'relay-n8n': 'n8n', 'relay-manual': 'subido a mano', mirror: 'otra dirección oficial', archive: 'Internet Archive', 'archive-fresh': 'Internet Archive' };
 function channelTag(ch) {
   return CHANNEL_TAG[ch] ? html`<span class="tag">${CHANNEL_TAG[ch]}</span>` : '';
 }
