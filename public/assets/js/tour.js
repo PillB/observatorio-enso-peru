@@ -94,7 +94,12 @@ export class Tour {
       });
     }
     this.clearHighlight();
-    const el = document.querySelector(`[data-tour-id="${st.target}"]`);
+    // La vista puede terminar de pintarse después de «view:ready» (datos que llegan tarde): se espera al
+    // elemento un momento antes de decir que no está.
+    const find = () => document.querySelector(`[data-tour-id="${st.target}"]`);
+    for (let t = 0; !find() && t < 20; t++) await new Promise((res) => setTimeout(res, 150));
+    if (this.mode() !== m || this.state.active?.step !== i) return;
+    const el = find();
     if (el) {
       el.classList.add('tour-highlight');
       el.scrollIntoView({ block: 'center', behavior: 'auto' });

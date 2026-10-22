@@ -6,7 +6,9 @@ macOS o Linux funcione sin nadie mirando:
 * toma el token de ``<raíz>/.env`` si no está en el entorno;
 * escribe un registro rotativo en ``<raíz>/logs/recolector.log`` y nunca
   muestra el token;
-* no corre dos veces a la vez (candado) y corta una corrida colgada;
+* no corre dos veces a la vez (candado) y corta una corrida colgada; el
+  candado de una corrida que ya no está (el equipo se apagó, o launchd la
+  detuvo al reinstalar) no frena a la siguiente;
 * con ``--programado`` solo recolecta si falta la copia de la última hora
   programada (21:00 de Lima por defecto). Así la tarea puede dispararse
   varias veces (21:00, reintentos cada 30 minutos, al iniciar sesión o al
@@ -37,6 +39,7 @@ import os
 import platform
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -46,7 +49,7 @@ import traceback
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Iterator, Optional
+from typing import Callable, Iterator, Optional
 from zoneinfo import ZoneInfo
 
 LIMA = ZoneInfo("America/Lima")
@@ -54,7 +57,8 @@ ROOT = Path(os.environ.get("ENSO_HOME") or Path(__file__).resolve().parents[2])
 #: Margen para que una tarea que arranca unos segundos antes de la hora no
 #: se tome por la del día anterior.
 GRACE = timedelta(minutes=5)
-#: Un candado más viejo que esto es de una corrida que murió sin soltarlo.
+#: Un candado más viejo que esto es de una corrida que murió sin soltarlo, aunque su
+#: número de proceso siga en uso (``lock_busy``).
 LOCK_STALE = timedelta(hours=2)
 NOTIFY_AFTER = 2
 LOG_MAX_BYTES = 2_000_000
@@ -67,7 +71,8 @@ GIT_DIRS = {
     "linux": ["/usr/local/bin", "/usr/bin", "/home/linuxbrew/.linuxbrew/bin", "/snap/bin"],
 }
 
-EXIT_OK, EXIT_NO_SOURCES, EXIT_CONFIG, EXIT_GITHUB, EXIT_PUSH, EXIT_BUSY, EXIT_HUNG, EXIT_BUG = 0, 1, 2, 3, 4, 5, 6, 9
+EXIT_OK, EXIT_NO_SOURCES, EXIT_CONFIG, EXIT_GITHUB, EXIT_PUSH, EXIT_BUSY, EXIT_HUNG, EXIT_STOPPED, EXIT_BUG = \
+    0, 1, 2, 3, 4, 5, 6, 7, 9
 
 
 class Problem(Exception):
@@ -76,6 +81,10 @@ class Problem(Exception):
     def __init__(self, code: int, message: str, hint: str = ""):
         super().__init__(message)
         self.code, self.hint = code, hint
+
+
+class Stopped(Exception):
+    """El sistema detuvo la corrida (apagado, cierre de sesión o reinstalación)."""
 
 
 # --- Rutas y configuración ---------------------------------------------------
@@ -333,6 +342,57 @@ def is_due(state: dict, now: datetime, at: str = "21:00") -> bool:
     return done is None or done < last_slot(now, at) - GRACE
 
 
+def pid_alive(pid: int) -> bool:
+    """¿Sigue corriendo el proceso ``pid``? Ante la duda, sí: el candado se respeta."""
+    if pid <= 0:
+        return False
+    if os.name == "nt":  # allí os.kill(pid, 0) no pregunta: termina el proceso
+        import ctypes
+        from ctypes import wintypes
+
+        k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        k32.OpenProcess.restype = wintypes.HANDLE
+        k32.OpenProcess.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
+        k32.GetExitCodeProcess.argtypes = (wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD))
+        k32.CloseHandle.argtypes = (wintypes.HANDLE,)
+        handle = k32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not handle:
+            return ctypes.get_last_error() == 5  # ERROR_ACCESS_DENIED: existe, es de otro usuario
+        try:
+            code = wintypes.DWORD()
+            return not k32.GetExitCodeProcess(handle, ctypes.byref(code)) or code.value == 259  # STILL_ACTIVE
+        finally:
+            k32.CloseHandle(handle)
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except OSError:  # PermissionError: existe, es de otro usuario
+        return True
+    return True
+
+
+def _lock_owner(text: str) -> Optional[int]:
+    m = re.match(r"\s*(\d+)\s", text + " ")
+    return int(m.group(1)) if m else None
+
+
+def lock_busy(root: Optional[Path] = None) -> bool:
+    """¿Hay una corrida trabajando? El candado guarda el número de proceso de su
+    corrida: si esa corrida ya no está (el equipo se apagó, o launchd la detuvo al
+    reinstalar), el candado está abandonado aunque sea de hace un minuto. Sin
+    número legible (la corrida recién lo crea), cuenta la antigüedad."""
+    lock = paths(root)["lock"]
+    try:
+        owner = _lock_owner(lock.read_text(encoding="utf-8", errors="replace"))
+        age = time.time() - lock.stat().st_mtime
+    except OSError:
+        return False
+    if age >= LOCK_STALE.total_seconds():
+        return False
+    return owner is None or pid_alive(owner)
+
+
 @contextmanager
 def run_lock(root: Optional[Path] = None) -> Iterator[None]:
     lock = paths(root)["lock"]
@@ -342,13 +402,18 @@ def run_lock(root: Optional[Path] = None) -> Iterator[None]:
             break
         except FileExistsError:
             try:
+                text = lock.read_text(encoding="utf-8", errors="replace")
                 age = time.time() - lock.stat().st_mtime
             except OSError:
                 continue
-            if age < LOCK_STALE.total_seconds():
+            if lock_busy(root):
                 raise Problem(EXIT_BUSY, f"ya hay una recolección en curso (candado de hace {age / 60:.0f} min)")
-            log(f"candado abandonado de hace {age / 3600:.1f} h: se reemplaza")
-            lock.unlink(missing_ok=True)
+            log(f"candado abandonado de hace {age / 60:.0f} min (su corrida ya no está): se reemplaza")
+            try:  # solo si sigue siendo el mismo: otra corrida pudo reemplazarlo recién
+                if lock.read_text(encoding="utf-8", errors="replace") == text:
+                    lock.unlink()
+            except OSError:
+                pass
     else:
         raise Problem(EXIT_BUSY, "no se pudo tomar el candado")
     try:
@@ -554,6 +619,23 @@ def collect_and_push(*, do_push: bool, do_dispatch: bool, state: dict, root: Opt
     return info
 
 
+def _stop(signum, frame):
+    raise Stopped(f"el sistema detuvo la corrida (señal {signum}: apagado, cierre de sesión o reinstalación)")
+
+
+def catch_sigterm() -> Callable[[], object]:
+    """launchd (al reinstalar, cerrar la sesión o apagar) y systemd piden terminar con
+    SIGTERM: la corrida suelta el candado y anota que se interrumpió, en vez de morir
+    a medias. Devuelve con qué dejar el manejador como estaba."""
+    if threading.current_thread() is not threading.main_thread():
+        return lambda: None
+    try:
+        previous = signal.signal(signal.SIGTERM, _stop)
+    except (ValueError, OSError, AttributeError):
+        return lambda: None
+    return lambda: signal.signal(signal.SIGTERM, signal.SIG_DFL if previous is None else previous)
+
+
 def run(*, scheduled: bool = False, do_push: bool = True, do_dispatch: bool = True,
         root: Optional[Path] = None, now: Optional[datetime] = None) -> int:
     state = read_state(root)
@@ -572,6 +654,7 @@ def run(*, scheduled: bool = False, do_push: bool = True, do_dispatch: bool = Tr
     state.update(last_attempt=now.isoformat(timespec="seconds"), trigger="prueba" if forced is not None
                  else "programada" if scheduled else "manual", test_id=(forced or {}).get("id"))
     watchdog = _watchdog(float(os.environ.get("ENSO_RUN_TIMEOUT_MIN", "45")), root)
+    restore = catch_sigterm()
     try:
         with run_lock(root):
             write_state({**state, "result": "en curso"}, root)
@@ -592,6 +675,11 @@ def run(*, scheduled: bool = False, do_push: bool = True, do_dispatch: bool = Tr
         state.update(result="falla", exit_code=code, detail=str(p), hint=p.hint,
                      consecutive_failures=state.get("consecutive_failures", 0) + 1)
         log(f"ERROR {p}" + (f" — {p.hint}" if p.hint else ""))
+    except Stopped as exc:  # no es una falla del recolector: no cuenta para las alarmas
+        code = EXIT_STOPPED
+        state.update(result="interrumpida", exit_code=code, detail=str(exc),
+                     hint="Se reintenta sola en la próxima hora programada.")
+        log(f"AVISO {exc}")
     except Exception as exc:
         code = EXIT_BUG
         state.update(result="falla", exit_code=code, detail=f"{type(exc).__name__}: {exc}"[:400],
@@ -600,6 +688,7 @@ def run(*, scheduled: bool = False, do_push: bool = True, do_dispatch: bool = Tr
         log("ERROR inesperado:\n" + traceback.format_exc())
     finally:
         watchdog.cancel()
+        restore()
     state["duration_s"] = round(time.monotonic() - started, 1)
     alert(state)
     write_state(state, root)

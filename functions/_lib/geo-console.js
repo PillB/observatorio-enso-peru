@@ -73,8 +73,8 @@ export function json(body, status = 200, extra = {}) {
   });
 }
 
-const fail = (status, error, extra) => json({ error }, status, extra);
-const nowIso = () => new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+export const fail = (status, error, extra) => json({ error }, status, extra);
+export const nowIso = () => new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 // --- Criptografía --------------------------------------------------------------------
 
@@ -146,16 +146,16 @@ export async function ensureSchema(db) {
 /** Compatibilidad con las pruebas: ya no hay estado por instancia. */
 export function resetSchemaCache() {}
 
-const noTable = (e) => /no such table/i.test(String(e && e.message));
+export const noTable = (e) => /no such table/i.test(String(e && e.message));
 const epoch = () => Math.floor(Date.now() / 1000);
 
-function auditStmt(db, username, event, ip, itemId = null, detail = null) {
+export function auditStmt(db, username, event, ip, itemId = null, detail = null) {
   return db.prepare('INSERT INTO audit (at, username, event, item_id, detail, ip) VALUES (?, ?, ?, ?, ?, ?)')
     .bind(nowIso(), username, event, itemId, detail === null ? null : JSON.stringify(detail).slice(0, 4000), ip);
 }
 
 /** Suma 1 al contador `key` (ventana fija de `windowS` segundos que se reinicia al vencer). */
-function bumpStmt(db, key, windowS, now = epoch()) {
+export function bumpStmt(db, key, windowS, now = epoch()) {
   return db.prepare(`INSERT INTO attempts (key, count, window_start) VALUES (?, 1, ?)
     ON CONFLICT (key) DO UPDATE SET
       count = CASE WHEN ? - window_start >= ? THEN 1 ELSE count + 1 END,
@@ -167,7 +167,7 @@ const live = (row, windowS, now) => (row && now - row.window_start < windowS ? r
 
 // --- Solicitudes ---------------------------------------------------------------------
 
-const clientIp = (request) => request.headers.get('CF-Connecting-IP') || '';
+export const clientIp = (request) => request.headers.get('CF-Connecting-IP') || '';
 
 /** Escrituras solo desde la propia consola: mismo origen y cuerpo JSON (protección contra CSRF). */
 function checkWrite(request, url) {
@@ -196,7 +196,7 @@ function sessionToken(request) {
   return m ? m[1] : null;
 }
 
-async function currentSession(request, env) {
+export async function currentSession(request, env) {
   const token = sessionToken(request);
   if (!token) return null;
   const tokenHash = await sha256(token);

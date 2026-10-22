@@ -136,3 +136,26 @@ def test_non_ascii_header_survives_the_streamed_request():
     r = f.get(["https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165"],
               archive=False, accept=("pdf",))
     assert r.body[:5] == b"%PDF-"
+
+
+def test_probe_finds_the_pdf_button_not_the_canonical_link():
+    # Página de descarga real del portal (21-10-2026): su primer enlace es el canónico a sí misma, sin wpdmdl.
+    page = (REP / "enfen-download-n14-2026-20261021.html").read_text(encoding="utf-8")
+
+    def handler(req):
+        if "dhn.mil.pe" in req.url.host:
+            return httpx.Response(200, text="<html>human-check</html>", headers={"content-type": "text/html"})
+        if req.url.path.endswith("/comunicado-oficial-enfen-n-14-2026/"):
+            return httpx.Response(200, text=page, headers={"content-type": "text/html"})
+        return httpx.Response(404)
+
+    class Log:
+        def add(self, *a):
+            pass
+
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False)
+    f.client = httpx.Client(transport=httpx.MockTransport(handler))
+    got = obs._probe_communique(f, 2026, 14, Log())
+    assert got["id"] == "14-2026" and "?wpdmdl=2141" in got["url"]
+    # La misma página no sirve como prueba de otro número (la barra lateral enlaza otros comunicados).
+    assert obs._probe_communique(f, 2026, 15, Log()) is None

@@ -58,3 +58,19 @@ label { font-size: 0.9rem; color: var(--fg-2); }
   .gc-pick label { flex: 1 1 100%; }
   .gc-actions .btn { flex: 1 1 auto; }
 }
+/* Consola de documentos (documentos.html) */
+.dc-h { font-size: 1.05rem; margin: 20px 0 8px; }
+.dc-links { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.dc-links a { overflow-wrap: anywhere; }
+.dc-upload { display: grid; gap: 8px; margin-top: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-sunk); }
+.dc-upload input[type='file'] { width: 100%; }
+.dc-check { display: flex; gap: 8px; align-items: flex-start; }
+.dc-check input { min-height: 0; margin-top: 3px; }
+.dc-problem { margin: 6px 0; padding: 8px 10px; border-radius: 8px; background: var(--watch-bg, #fff4d6); font-size: 0.88rem; overflow-wrap: anywhere; }
+.dc-ok { margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: var(--ok-bg); font-size: 0.88rem; }
+/* Encabezado de la consola en el teléfono: la marca y los botones en filas separadas, sin el nombre de usuario. */
+@media (max-width: 560px) {
+  .site-header .header-inner { flex-wrap: wrap; }
+  .site-header .header-actions { margin-left: 0; flex: 1 1 100%; justify-content: flex-end; }
+  #who { max-width: 45vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}

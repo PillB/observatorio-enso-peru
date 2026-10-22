@@ -19,7 +19,7 @@ computadora en el Perú y hacer doble clic en `INSTALAR` y luego en
 
 | Hora (Lima) | Qué pasa |
 |---|---|
-| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, el GeoServer de IDESEP y el SIG del CENEPRED, y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
+| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), el listado de informes técnicos y los PDF de los dos más recientes (hasta 20 MB cada uno), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, el GeoServer de IDESEP y el SIG del CENEPRED, y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
 | 21:00 + unos minutos | Pide a GitHub la actualización del sitio en el momento (`--dispatch`) |
 | 21:30 a 23:30 | Reintentos cada 30 minutos, solo si la de las 21:00 falló |
 | Al encender o iniciar sesión | Si esa noche no hubo copia (equipo apagado o sin internet), la recolecta en ese momento |
@@ -304,9 +304,10 @@ nadie está mirando.
   Con él el sitio distingue «el equipo no corre» (latido viejo:
   `relay-stale`) de «las instituciones no responden ni desde el Perú»
   (latido reciente: `relay-sources-down`).
-- **Protecciones:** un candado impide dos corridas a la vez; una corrida
-  colgada se corta a los 45 minutos; git corre sin ventanas de contraseña
-  ni ayudantes de credenciales (el token no termina en el Llavero ni en el
+- **Protecciones:** un candado impide dos corridas a la vez (el de una
+  corrida que ya no está, porque se apagó el equipo o se reinstaló, se
+  descarta enseguida); una corrida colgada se corta a los 45 minutos; git
+  corre sin ventanas de contraseña ni ayudantes de credenciales (el token no termina en el Llavero ni en el
   Administrador de credenciales) y corta una subida trabada.
 - **Registro:** `logs/recolector.log` (rota a los 2 MB y guarda 5),
   `estado.json` (último intento, resultado, motivo y qué hacer),
@@ -348,7 +349,8 @@ solución. Los más frecuentes:
 | macOS: «no se puede abrir» | Archivo descargado de internet | Usar el método de Terminal (`bash` + arrastrar el archivo) |
 | Linux: «Falta el módulo venv» | Debian y Ubuntu lo separan | `sudo apt install python3-venv` |
 | `zona-horaria`: el equipo no usa la hora de Lima | Equipo con otra zona | Funciona igual; si la zona cambia de horario (verano), ejecutar `INSTALAR` otra vez |
-| `ultima-corrida`: «ya hay una recolección en curso» | Otra corrida está trabajando | Esperar; un candado de más de 2 horas se descarta solo |
+| `ultima-corrida`: «ya hay una recolección en curso» | Otra corrida está trabajando | Esperar |
+| `ultima-corrida`: «la última recolección se cortó antes de terminar» | Se apagó el equipo o se reinstaló durante la recolección | Nada: se reintenta en la próxima hora programada |
 | Dos computadoras recolectando | Ambas suben; gana la última y la otra reintenta | Dejar una sola instalada |
 
 Si sigue sin funcionar, enviar a quien mantiene el sitio el último

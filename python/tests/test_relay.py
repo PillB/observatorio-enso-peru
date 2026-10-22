@@ -12,7 +12,10 @@ import pytest
 from conftest import FIX
 from enso import observatory as obs
 from enso.fetch import Fetcher, Relay
+from enso.reports import INFORMES_PAGE
 from tools import peru_collector as pc
+
+INFORME18 = "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166"
 
 LISTING = (FIX / "history" / "enfen-comunicados-20261014125242.html").read_text(encoding="utf-8")
 PDF = next((FIX.parent / "live-run" / "raw" / "enfen-comunicados").glob("*.pdf")).read_bytes()
@@ -25,6 +28,11 @@ def _peru_only(req: httpx.Request) -> httpx.Response:
         return httpx.Response(404)
     if u.rstrip("/").endswith("/comunicados"):
         return httpx.Response(200, text=LISTING, headers={"content-type": "text/html"})
+    if u == INFORMES_PAGE:
+        return httpx.Response(200, headers={"content-type": "text/html"}, text="<html>" + "x" * 600 + (
+            f'<a href="{INFORME18}&#038;refresh=1">Descargar</a></html>'))
+    if "/download/informe-tecnico-enfen-" in u:
+        return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
     if "wpdmdl=" in u:
         return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
     if "/download/comunicado-oficial-enfen-n-18-2026/" in u:
@@ -316,6 +324,9 @@ def test_dhn_pdf_from_relay_is_read(tmp_path):
     from datetime import date
 
     acq = _dhn_acquired()
+    # La copia es el PDF real del comunicado 17-2026: el listado empieza en él (un PDF de otro número no se
+    # publica como el buscado).
+    acq.data["listing"] = [i for i in acq.data["listing"] if (i["year"], i["number"]) <= (2026, 17)]
     top = acq.data["listing"][0]
     url = obs._communique_urls(top)[0]
     root = tmp_path / "relay"
@@ -721,3 +732,238 @@ def test_registry_sources_are_fetched_once_and_enfen_pdfs_are_followed(tmp_path,
     assert [e["url"] for e in linked] == [pdf_up] and pc.usable(linked[0])
     assert linked[0]["parent"] == "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado"
     assert any(e["url"] == dhn17 and pc.usable(e) for e in idx["entries"])
+
+
+def _offshore_with_dhn_challenge(req):
+    """GitHub Actions o n8n: el ENFEN no resuelve y la DHN responde con su verificación humana."""
+    if "enfen.imarpe.gob.pe" in req.url.host:
+        raise httpx.ConnectError("Temporary failure in name resolution")
+    if "dhn.mil.pe" in req.url.host:
+        return httpx.Response(200, text="<html><title>Verificación</title>human-check</html>",
+                              headers={"content-type": "text/html"})
+    return httpx.Response(404)
+
+
+class _Log:
+    def __init__(self):
+        self.events = []
+
+    def add(self, *a):
+        self.events.append(a)
+
+
+def test_informe_comes_from_the_peru_copy_when_portal_and_dhn_fail(snapshot, monkeypatch):
+    import gzip
+
+    from enso import reports
+
+    out, idx = snapshot
+    assert any(e["url"] == INFORME18 and pc.usable(e) for e in idx["entries"])
+    pages = json.loads(gzip.open(Path(__file__).parent / "fixtures" / "reports" /
+                                 "informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026.pages.json.gz", "rt").read())
+    monkeypatch.setattr(reports, "pdf_pages", lambda b: pages["pages"])
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False, relay=Relay(out))
+    f.client = httpx.Client(transport=httpx.MockTransport(_offshore_with_dhn_challenge))
+    latest = {"id": "18-2026", "number": 18, "year": 2026, "issued": "2026-10-16", "informe_url": INFORME18}
+    res = reports.acquire_informe(latest, f, None, _Log(), datetime(2026, 10, 21).date())
+    assert res["channel"] == "relay-peru" and res["icenProvisional"]["icen"] == 4.15
+    # Sin enlace en el comunicado: el listado también sale de la copia del Perú.
+    res = reports.acquire_informe({**latest, "informe_url": None}, f, None, _Log(), datetime(2026, 10, 21).date())
+    assert res["number"] == 18 and res["url"] == INFORME18
+
+
+def test_dhn_challenge_is_not_read_and_the_last_informe_is_kept(monkeypatch):
+    from enso import reports
+
+    read = []
+    monkeypatch.setattr(reports, "pdf_pages", lambda b: read.append(b) or [])
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False)
+    f.client = httpx.Client(transport=httpx.MockTransport(_offshore_with_dhn_challenge))
+    prev = {"number": 17, "communique": "17-2026", "url": "u17", "icenProvisional": {"period": "2026-08", "icen": 3.97}}
+    log = _Log()
+    latest = {"id": "18-2026", "number": 18, "year": 2026, "issued": "2026-10-16", "informe_url": INFORME18}
+    res = reports.acquire_informe(latest, f, prev, log, datetime(2026, 10, 21).date())
+    assert read == [] and res["carried"] and res["icenProvisional"]["icen"] == 3.97
+    assert [(e[0], e[3]) for e in log.events] == [("warning", "informe-unread")]
+    # Sin informe anterior (primera corrida): no hay dato, solo la advertencia.
+    assert reports.acquire_informe(latest, f, None, _Log(), datetime(2026, 10, 21).date()) is None
+
+
+def test_download_page_link_is_the_pdf_button_not_the_page_itself():
+    page = ('<link rel="canonical" href="https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/">'
+            "<a rel='nofollow' class='inddl btn' href='https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-"
+            "n-18-2026/?wpdmdl=2165&ind=1792527447290'>Descargar</a>")
+    assert "wpdmdl=2165" in pc._pdf_link(page, "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/")
+
+
+def test_download_button_reads_the_real_portal_page_and_ignores_other_slugs():
+    from enso.feeds import peru
+
+    page = (Path(__file__).parent / "fixtures" / "reports" / "enfen-download-n14-2026-20261021.html").read_text()
+    url = "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-14-2026/"
+    link = peru.download_button(page, url)
+    assert link and "wpdmdl=2141" in link and "comunicado-oficial-enfen-n-14-2026" in link and "refresh" not in link
+    # La barra lateral y el enlace canónico no cuentan: con otro slug no hay botón.
+    assert peru.download_button(page, url.replace("n-14", "n-15")) is None
+    sidebar = "<a href='https://enfen.imarpe.gob.pe/download/otro-documento/?wpdmdl=9&amp;ind=1'>x</a>"
+    assert peru.download_button(sidebar, url) is None
+
+
+def test_collector_follows_the_newest_listing_not_the_stale_wordpress_api():
+    rep = Path(__file__).parent / "fixtures" / "reports"
+    wp = (rep / "enfen-wp-posts-20261021.json").read_bytes()  # se quedó en el N° 13-2026
+    portal = (rep / "enfen-comunicados-20261021.html").read_bytes()  # ya trae el N° 18-2026
+    pages = [{"status": 200, "body": wp}, {"status": 200, "body": portal}]
+    asked = []
+
+    def handler(req):
+        asked.append(str(req.url))
+        return httpx.Response(404)
+
+    pc.enfen_documents(httpx.Client(transport=httpx.MockTransport(handler)), pages)
+    assert any("comunicado-oficial-enfen-n-18-2026" in u for u in asked)
+    assert any("comunicado-oficial-enfen-n-19-2026" in u for u in asked)  # sondeo del siguiente
+    assert not any("-14-2026" in u for u in asked)
+
+
+def test_collector_goals_flag_the_newest_documents(tmp_path, monkeypatch):
+    """La recolección anota si guardó el PDF del comunicado y del informe más recientes, no solo cuántas URL."""
+    idx = _collect(tmp_path, monkeypatch, _peru_only)
+    assert idx["goals"] == {"comunicado 17-2026": True, "informe técnico 18-2026": True}
+
+    def no_informe(req):
+        return httpx.Response(404) if "/download/informe-tecnico-enfen-" in str(req.url) else _peru_only(req)
+
+    idx = _collect(tmp_path, monkeypatch, no_informe, None, name="sin-informe")
+    assert idx["goals"]["informe técnico 18-2026"] is False
+    assert idx["goals"]["comunicado 17-2026"] is True
+
+
+def test_site_run_warns_when_the_collector_missed_a_goal(tmp_path):
+    from enso import observatory as obs
+
+    root = tmp_path / "relay"
+    root.mkdir()
+    (root / "index.json").write_text(json.dumps({
+        "schema": "enso-relay/1", "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "collector": {"host": "pc-lima"}, "entries": [],
+        "goals": {"comunicado 18-2026": True, "informe técnico 18-2026": False}}), encoding="utf-8")
+    log = obs.EventLog()
+    obs.load_relay(root, log)
+    ev = [e for e in log.events if e.code == "relay-goal-missed"]
+    assert len(ev) == 1 and ev[0].severity == "warning" and "informe técnico 18-2026" in ev[0].message
+    assert "comunicado" not in ev[0].message
+
+
+# --- Documentos que hay que bajar a mano (consola de documentos, enso.manual) -------------------------------
+
+
+def _manual_relay(root: Path, url: str, body: bytes, aliases=()) -> "Relay":
+    import hashlib
+
+    (root / "files").mkdir(parents=True)
+    sha = hashlib.sha256(body).hexdigest()
+    (root / "files" / f"{sha[:16]}.pdf").write_bytes(body)
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    (root / "index.json").write_text(json.dumps({
+        "schema": "enso-relay/1", "collected_at": now, "collector": {"kind": "manual", "host": "consola de documentos"},
+        "entries": [{"url": url, "aliases": list(aliases), "status": 200, "content_type": "application/pdf",
+                     "detected": "pdf", "file": f"files/{sha[:16]}.pdf", "sha256": sha, "fetched_at": now,
+                     "doc": "comunicado-17-2026", "uploaded_by": "pablo"}]}), encoding="utf-8")
+    return obs.load_manual_relay(root, obs.EventLog())
+
+
+def test_communique_behind_the_human_check_is_listed_for_manual_download():
+    from datetime import date
+
+    from enso import manual
+
+    acq = _dhn_acquired()
+    top = acq.data["listing"][0]
+    f = Fetcher(retries=1, polite_delay=0)
+    f.client = httpx.Client(transport=httpx.MockTransport(_actions_view()))
+    needs = manual.ManualNeeds()
+    log = obs.EventLog()
+    obs.enfen_latest(acq, f, None, _Prev(None), log, date(2026, 10, 20), needs)
+    item = needs.items[f"comunicado-{top['id']}"]
+    assert "verificación humana" in item["reason"] and item["expect"] == {"year": top["year"], "number": top["number"]}
+    page = f"https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-{top['number']:02d}-{top['year']}/"
+    assert item["open"][0] == page and any(u.endswith(f"/{top['number']:02d}-{top['year']}.pdf") for u in item["open"])
+    # Solo el más reciente: los anteriores ya no son el vigente.
+    assert len(needs.items) == 1
+    needs.log(log)
+    ev = [e for e in log.events if e.code == "manual-download-needed"]
+    assert len(ev) == 1 and ev[0].severity == "warning" and page in ev[0].message
+
+
+def test_communique_uploaded_by_hand_is_published_from_the_upload(tmp_path):
+    from datetime import date
+
+    from enso import manual
+
+    acq = _dhn_acquired()
+    acq.data["listing"] = [i for i in acq.data["listing"] if (i["year"], i["number"]) <= (2026, 17)]
+    top = acq.data["listing"][0]
+    dhn = obs._communique_urls(top)[-1]
+    relay = _manual_relay(tmp_path / "manual", obs._communique_urls(top)[0], PDF, aliases=[dhn])
+    assert relay.channel == "relay-manual"
+    f = Fetcher(retries=1, polite_delay=0, relay=[None, None, relay])
+    f.client = httpx.Client(transport=httpx.MockTransport(_actions_view()))
+    needs = manual.ManualNeeds()
+    obs.enfen_latest(acq, f, None, _Prev(None), obs.EventLog(), date(2026, 10, 20), needs)
+    assert acq.data["latest"]["channel"] == "relay-manual" and acq.data["latest"]["id"] == "17-2026"
+    assert not needs.items and needs.used[0]["id"] == "comunicado-17-2026"
+
+
+def test_wrong_pdf_uploaded_by_hand_is_not_published(tmp_path):
+    """El PDF del comunicado 17 subido como el 18: no se publica y el 18 sigue pendiente, con el motivo."""
+    from datetime import date
+
+    from enso import manual
+
+    acq = _dhn_acquired()
+    acq.data["listing"] = [i for i in acq.data["listing"] if (i["year"], i["number"]) <= (2026, 18)]
+    top = acq.data["listing"][0]
+    assert top["id"] == "18-2026"
+    relay = _manual_relay(tmp_path / "manual", obs._communique_urls(top)[0], PDF)
+    f = Fetcher(retries=1, polite_delay=0, relay=[relay])
+    f.client = httpx.Client(transport=httpx.MockTransport(_actions_view()))
+    needs = manual.ManualNeeds()
+    obs.enfen_latest(acq, f, None, _Prev(None), obs.EventLog(), date(2026, 10, 20), needs)
+    assert (acq.data.get("latest") or {}).get("id") != "18-2026"
+    assert "17-2026" in needs.items["comunicado-18-2026"]["problem"]
+
+
+def test_manual_needed_keeps_the_first_day_it_was_pending():
+    from datetime import date
+
+    from enso import manual
+
+    needs = manual.ManualNeeds()
+    needs.add("comunicado-18-2026", "comunicado", "Comunicado 18-2026", ["https://a/x.pdf"], ["https://a/"], "motivo")
+    prev = {"pending": [{"id": "comunicado-18-2026", "since": "2026-10-19"}]}
+    out = needs.as_json(prev, date(2026, 10, 21))
+    assert out["pending"][0]["since"] == "2026-10-19"
+    assert manual.ManualNeeds().as_json(prev, date(2026, 10, 21))["pending"] == []
+
+
+def test_missing_manual_branch_is_normal(tmp_path):
+    log = obs.EventLog()
+    assert obs.load_manual_relay(tmp_path / "no-existe", log) is None and log.events == []
+
+
+def test_outlook_unread_is_logged_on_every_run_while_the_communique_stays():
+    """La incidencia se anota en cada corrida (no solo cuando se lee el PDF): si no, el issue se cerraría solo."""
+    from datetime import date
+
+    latest = {"id": "18-2026", "year": 2026, "number": 18, "status": "Alerta de El Niño Costero",
+              "status_code": "alerta_nino", "issued": "2026-10-16", "next_issue": "2026-10-30", "outlook": [],
+              "outlookUnread": ["nino12"], "outlookReview": {"ok": False, "transport": True, "error": "el servicio respondió HTTP 500"}}
+    acq = obs.Acquired(obs.SOURCE_BY_ID["enfen-comunicados"])
+    acq.data, acq.ok = {"latest": latest, "listing": []}, True
+    for _ in range(2):  # el día de la lectura y el siguiente
+        log = obs.EventLog()
+        off = obs.Builder({"enfen-comunicados": acq}, log, date(2026, 10, 21)).official()
+        ev = [e for e in log.events if e.code == "outlook-unread"]
+        assert len(ev) == 1 and "Niño 1+2" in ev[0].message
+    assert off["enfen"]["outlookUnread"] and off["enfen"]["outlookUnreadRegions"] == ["nino12"]
