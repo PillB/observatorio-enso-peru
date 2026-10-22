@@ -40,7 +40,7 @@
             {
               "id": "fbae041b",
               "name": "site",
-              "value": "https://pillb.github.io/observatorio-enso-peru/",
+              "value": "https://enso-peru.pages.dev/",
               "type": "string"
             },
             {
@@ -110,7 +110,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Generado por n8n/build.mjs desde n8n/nodes/vigilante.js. No editar en n8n.\n// ¿El sitio publicado está al día? Falla (y el «Error workflow» de n8n avisa)\n// si data/manifest.json (lo publica cada actualización, con «generatedAt») no responde, no se puede leer o su «generatedAt» es más\n// viejo que max_age_hours.\nconst cfg = $('Configuración').first().json;\nconst r = $input.first().json;\nconst maxAge = Number(cfg.max_age_hours) || 30;\nconst where = `${cfg.site} (data/manifest.json)`;\nif (r.error || r.statusCode !== 200) {\n  const why = r.error ? (r.error.message || JSON.stringify(r.error)).slice(0, 200) : `HTTP ${r.statusCode}`;\n  throw new Error(`El sitio no responde: ${where}: ${why}`);\n}\nlet d;\ntry {\n  const body = r.data !== undefined ? r.data : r.body;\n  d = typeof body === 'string' ? JSON.parse(body) : body;\n} catch (e) {\n  throw new Error(`manifest.json no es JSON válido en ${where}`);\n}\nconst t = Date.parse(d && d.generatedAt);\nif (Number.isNaN(t)) throw new Error(`manifest.json no tiene «generatedAt» en ${where}`);\nconst age = (Date.now() - t) / 3600000;\nif (age > maxAge) {\n  throw new Error(`El sitio está desactualizado: la publicación ${d.publicationId || '?'} es del ${d.generatedAt} (hace ${age.toFixed(0)} h, máximo ${maxAge} h). Revisar la actualización diaria en GitHub Actions (puede estar desactivada).`);\n}\nreturn [{ json: { resultado: 'Sitio al día', publicacion: d.publicationId || '', generado: d.generatedAt, horas: Math.round(age * 10) / 10 } }];\n"
+        "jsCode": "// Generado por n8n/build.mjs desde n8n/nodes/vigilante.js. No editar en n8n.\n// ¿El sitio publicado está al día? Falla (y el «Error workflow» de n8n avisa)\n// si data/manifest.json (lo publica cada actualización, con «generatedAt») no responde, no se puede leer o su «generatedAt» es más\n// viejo que max_age_hours.\nconst cfg = $('Configuración').first().json;\nconst r = $input.first().json;\nconst maxAge = Number(cfg.max_age_hours) || 30;\nconst where = `${cfg.site} (data/manifest.json)`;\nif (r.error || r.statusCode !== 200) {\n  const why = r.error ? (r.error.message || JSON.stringify(r.error)).slice(0, 200) : `HTTP ${r.statusCode}`;\n  throw new Error(`El sitio no responde: ${where}: ${why}`);\n}\nlet d;\ntry {\n  const body = r.data !== undefined ? r.data : r.body;\n  d = typeof body === 'string' ? JSON.parse(body) : body;\n} catch (e) {\n  throw new Error(`manifest.json no es JSON válido en ${where}`);\n}\nconst t = Date.parse(d && d.generatedAt);\nif (Number.isNaN(t)) throw new Error(`manifest.json no tiene «generatedAt» en ${where}`);\nconst age = (Date.now() - t) / 3600000;\nif (age > maxAge) {\n  throw new Error(`El sitio está desactualizado: la publicación ${d.publicationId || '?'} es del ${d.generatedAt} (hace ${age.toFixed(0)} h, máximo ${maxAge} h). Revisar la actualización diaria en GitHub Actions (puede estar desactivada) y el despliegue a Cloudflare.`);\n}\nreturn [{ json: { resultado: 'Sitio al día', publicacion: d.publicationId || '', generado: d.generatedAt, horas: Math.round(age * 10) / 10 } }];\n"
       },
       "id": "fc2e6f0e-37cb-4d5a-879b-997044af29f0",
       "name": "Revisar frescura",
@@ -177,7 +177,7 @@
   },
   "meta": {
     "templateCredsSetupCompleted": false,
-    "ensoVersion": "e3da9f2049"
+    "ensoVersion": "97a1ea0d5b"
   },
   "tags": []
 }

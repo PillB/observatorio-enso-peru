@@ -4,7 +4,7 @@ Algunos documentos oficiales no se pueden bajar con un programa: la réplica de 
 **verificación humana** a GitHub Actions, a n8n y a veces al equipo del Perú, y el portal del ENFEN no responde
 fuera del Perú. El observatorio nunca intenta pasar esa verificación. Cuando el comunicado más reciente del
 ENFEN o su informe técnico no llegan por ninguna ruta (portal, DHN, repositorio del IMARPE, recolector del Perú,
-n8n, Internet Archive),
+Internet Archive; para el comunicado, también n8n, aunque hoy la DHN le responde con la misma verificación),
 una persona los baja en su navegador y los sube en la **consola de documentos**.
 
 ## Cómo funciona
