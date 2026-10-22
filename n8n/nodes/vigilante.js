@@ -20,6 +20,6 @@ const t = Date.parse(d && d.generatedAt);
 if (Number.isNaN(t)) throw new Error(`manifest.json no tiene «generatedAt» en ${where}`);
 const age = (Date.now() - t) / 3600000;
 if (age > maxAge) {
-  throw new Error(`El sitio está desactualizado: la publicación ${d.publicationId || '?'} es del ${d.generatedAt} (hace ${age.toFixed(0)} h, máximo ${maxAge} h). Revisar la actualización diaria en GitHub Actions (puede estar desactivada).`);
+  throw new Error(`El sitio está desactualizado: la publicación ${d.publicationId || '?'} es del ${d.generatedAt} (hace ${age.toFixed(0)} h, máximo ${maxAge} h). Revisar la actualización diaria en GitHub Actions (puede estar desactivada) y el despliegue a Cloudflare.`);
 }
 return [{ json: { resultado: 'Sitio al día', publicacion: d.publicationId || '', generado: d.generatedAt, horas: Math.round(age * 10) / 10 } }];
