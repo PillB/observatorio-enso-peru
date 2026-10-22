@@ -27,8 +27,9 @@ def test_map_asset_has_every_department_and_place_point():
     assert (ROOT / "public" / "assets" / "peru-map.json").stat().st_size < 150_000
 
 
-def test_ab_analytics_api_with_node():
+def test_ab_analytics_api_and_map_phase_with_node():
     node = _need_node()
-    r = subprocess.run([node, "--test", str(JS / "ab.test.mjs")], capture_output=True, text=True, timeout=300)
+    r = subprocess.run([node, "--test", str(JS / "ab.test.mjs"), str(JS / "alertmap.test.mjs")],
+                       capture_output=True, text=True, timeout=300)
     assert r.returncode == 0, r.stdout[-4000:] + r.stderr[-2000:]
     assert re.search(r"# fail 0", r.stdout) and not re.search(r"# skipped [1-9]", r.stdout), r.stdout[-2000:]

@@ -54,10 +54,12 @@ def _geo_brief(g: Optional[dict]) -> Optional[dict]:
             "reviewed": bool(g.get("review"))}
 
 
-def alerts(news_items: list[dict], now: datetime) -> list[dict]:
+def alerts(news_items: list[dict], now: datetime, avisos=None) -> list[dict]:
     """Lo último de las fuentes oficiales de peligros (INDECI, SENAMHI, IGP, DHN, USGS…), sin agrupar.
 
-    Cada aviso enlaza a la fuente en vivo y a la página del archivo del día en que se vio."""
+    Cada aviso enlaza a la fuente en vivo y a la página del archivo del día en que se vio. ``avisos``: la
+    tabla de avisos meteorológicos del SENAMHI (``senamhi_avisos``), de donde sale el nivel de los avisos
+    que llegan por Telegram o por el COEN."""
     from .archive import news_page
     from .geo import department_names
     from .hazardparse import TG_KINDS
@@ -85,7 +87,7 @@ def alerts(news_items: list[dict], now: datetime) -> list[dict]:
                     "title": i["title"], "text": i.get("summary") or "", "date": when, "url": i["link"],
                     "archive": news_page(i), "hazards": hz[:3],
                     "where": where, "geo": _geo_brief(i.get("geo")), "stale": False,
-                    **assess(f.id, i["title"], i.get("summary") or "", when, now)})
+                    **assess(f.id, i["title"], i.get("summary") or "", when, now, avisos)})
         if len(out) >= ALERTS_MAX:
             break
     return out
@@ -115,7 +117,9 @@ def build(official: dict, series: dict, weekly: Optional[dict], sources: dict, r
     """``sources``: id → {institution, docs, retrievedAt, channel, status}; ``news_items``: el histórico
     de noticias, del que salen las alertas de las fuentes oficiales de peligros; ``feed_status``: el
     estado de cada feed en esta corrida (``news/feeds.json``)."""
-    items: list[dict] = alerts(news_items, now) if news_items and now else []
+    from .senamhi_avisos import from_relay
+
+    items: list[dict] = alerts(news_items, now, from_relay(relay)) if news_items and now else []
     status = alert_sources(feed_status)
 
     def src(sid: str) -> dict:

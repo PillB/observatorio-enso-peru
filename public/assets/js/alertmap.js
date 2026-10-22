@@ -34,6 +34,7 @@ const ACTIVE = new Set(['vigente', 'en-curso', 'proxima']);
 export function phaseOf(it, now = Date.now()) {
   const t = Date.parse(it.date);
   if (it.kind === 'pronostico') {
+    if (it.aviso?.cancelled) return 'vencida'; // la tabla del SENAMHI lo marca «(AVISO CANCELADO)»: lo reemplazó otro
     if (it.valid?.from && it.valid?.until) {
       const a = Date.parse(it.valid.from), b = Date.parse(it.valid.until);
       return now < a ? 'proxima' : now <= b ? 'vigente' : 'vencida';

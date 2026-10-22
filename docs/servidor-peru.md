@@ -19,7 +19,7 @@ computadora en el Perú y hacer doble clic en `INSTALAR` y luego en
 
 | Hora (Lima) | Qué pasa |
 |---|---|
-| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), el listado de informes técnicos y los PDF de los dos más recientes (hasta 20 MB cada uno), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, el GeoServer de IDESEP y el SIG del CENEPRED, y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
+| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), el listado de informes técnicos y los PDF de los dos más recientes (hasta 20 MB cada uno), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, los avisos de los últimos 5 días del GeoServer de IDESEP (capa `g_100_01:view_aviso_24horas_5dias_ultimos` y su lista de campos) y el SIG del CENEPRED, y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
 | 21:00 + unos minutos | Pide a GitHub la actualización del sitio en el momento (`--dispatch`) |
 | 21:30 a 23:30 | Reintentos cada 30 minutos, solo si la de las 21:00 falló |
 | Al encender o iniciar sesión | Si esa noche no hubo copia (equipo apagado o sin internet), la recolecta en ese momento |
@@ -31,6 +31,14 @@ usan. Si la rama `data-peru` no existe, el sitio funciona igual que antes.
 
 Las páginas de SENAMHI, ANA, IMARPE y CENEPRED quedan guardadas para
 construir y probar sus lectores; todavía no alimentan indicadores del sitio.
+El nivel oficial de cada aviso del SENAMHI (amarillo, naranja o rojo) y su
+inicio y fin están en la tabla de `?p=aviso-meteorologico`: el sitio la lee
+de esta copia para dar su nivel a los avisos que llegan por Telegram y por
+el COEN (`enso/senamhi_avisos.py`); sin el recolector, un aviso nuevo queda
+«sin nivel» en el mapa. La capa de IDESEP se guarda con su esquema
+(`DescribeFeatureType`) para saber qué campos trae. Un documento que pide verificación antirobots también desde
+el Perú (como los PDF de la DHN) no lo baja el recolector, que no evade
+esas verificaciones: se sube a mano en la consola de documentos del sitio.
 
 Si la corrida de las 23:30 sube después de que empezó la de las 23:37, la
 actualización que pide al terminar (`--dispatch`) queda en cola: el sitio
@@ -219,7 +227,7 @@ sitio; nunca incluye el token.
 | `internet` | GitHub responde, sin portal cautivo ni reloj desfasado; antigüedad de la última copia en `data-peru` |
 | `token` | Presente, aceptado por GitHub, fecha de vencimiento, archivo `.env` privado |
 | `escritura` | El token puede subir al repositorio (`git push --dry-run`: no sube nada) |
-| `fuentes` | ENFEN, SENAMHI, ANA e IMARPE responden desde esta conexión |
+| `fuentes` | ENFEN, SENAMHI, ANA e IMARPE responden desde esta conexión. Lo que su robots.txt no permite sale con `--` y no se cuenta: no es una falla del equipo |
 | `tarea` | La tarea programada existe, está habilitada y apunta a esta instalación |
 | `ultima-corrida` | Resultado de la última recolección y fallas seguidas |
 | `disco` | Espacio libre |

@@ -10,6 +10,11 @@ Escalas de las instituciones (``SCALES``):
 * SENAMHI, avisos por niveles (capas de GEOSINPAD del INDECI): «Nivel 1» a «Nivel 4». El nivel 1
   (verde) no es un aviso; 2, 3 y 4 son amarillo, naranja y rojo (activación de quebradas de magnitud
   moderada, fuerte y extrema, según el campo ``DESCRIPCIO`` de la capa).
+* SENAMHI, avisos de precipitaciones para 24 horas (capa ``SENAMHI_AvisoPP24H`` de GEOSINPAD): «Nivel 2»
+  a «Nivel 4» por polígono, en la misma escala.
+* SENAMHI, avisos meteorológicos que llegan por Telegram o por el COEN: el nivel del aviso en la tabla de
+  ``?p=aviso-meteorologico`` (AMARILLO, NARANJA o ROJO), que el recolector del Perú guarda cada noche
+  (``enso.senamhi_avisos``; ver ``assess``).
 * SENAMHI, avisos hidrológicos: umbral amarillo, naranja o rojo de cada estación (``COLOR_TEXT``).
 * IGP / CENVUL: alerta volcánica verde, amarilla, naranja o roja.
 * USGS: alerta PAGER verde, amarilla, naranja o roja (impacto estimado), solo si USGS la calculó.
@@ -80,10 +85,12 @@ _PAGER_RE = re.compile(r"\balerta PAGER (green|yellow|orange|red)\b", re.I)
 #: Un color del SENAMHI citado en el texto de un aviso («aviso naranja», «nivel rojo», «alerta amarilla»).
 _TEXT_COLOR_RE = re.compile(r"\b(?:aviso|nivel|alerta)\s+(?:de\s+(?:color\s+)?)?(amarill[ao]|naranja|roj[ao])\b", re.I)
 
-# «del 22 al 24 de octubre», «del 18 y 19 de octubre», «del 31 de octubre al 2 de noviembre (del 2026)»
+# «del 22 al 24 de octubre», «del 18 y 19 de octubre», «del 31 de octubre al 2 de noviembre (del 2026)» y, en los
+# boletines del COEN, «desde el jueves 22 al domingo 24 de octubre»
+_DAY = r"(?:(?:lunes|martes|mi[ée]rcoles|jueves|viernes|s[áa]bado|domingo)\s+)?"
 _RANGE_RE = re.compile(
-    rf"\bdel\s+(?P<d1>\d{{1,2}})(?:\s+de\s+(?P<m1>{_MON_RE}))?\s+(?:al|y)\s+(?P<d2>\d{{1,2}})\s+de\s+(?P<m2>{_MON_RE})"
-    rf"(?:\s+del?\s+(?P<y>\d{{4}}))?", re.I)
+    rf"\b(?:del|desde el)\s+{_DAY}(?P<d1>\d{{1,2}})(?:\s+de\s+(?P<m1>{_MON_RE}))?\s+(?:al|y)\s+{_DAY}(?P<d2>\d{{1,2}})"
+    rf"\s+de\s+(?P<m2>{_MON_RE})(?:\s+del?\s+(?P<y>\d{{4}}))?", re.I)
 # «VIGENCIA: 21-10-2026 (13:00 h) al 22-10-2026 (13:00 h)»
 _VIGENCIA_RE = re.compile(r"VIGENCIA:\s*(\d{1,2})-(\d{1,2})-(\d{4})\s*\((\d{1,2}):(\d{2})\s*h\)\s*al\s*"
                           r"(\d{1,2})-(\d{1,2})-(\d{4})\s*\((\d{1,2}):(\d{2})\s*h\)", re.I)
@@ -154,9 +161,10 @@ def _range(text: str, ref: datetime) -> Optional[tuple[datetime, datetime]]:
 def severity(feed_id: str, title: str, summary: str) -> Optional[dict]:
     """El nivel que la institución asignó al aviso, o ``None`` si su fuente no trae uno."""
     text = f"{title} {summary}"
-    if feed_id == "senamhi-quebradas":
+    if feed_id in ("senamhi-quebradas", "senamhi-lluvias"):
         m = _NIVEL_RE.search(title)
-        return _level("senamhi-niveles", m.group(1), "campo NIVEL de la capa del SENAMHI en GEOSINPAD") if m else None
+        layer = "de precipitaciones " if feed_id == "senamhi-lluvias" else ""
+        return _level("senamhi-niveles", m.group(1), f"campo NIVEL de la capa {layer}del SENAMHI en GEOSINPAD") if m else None
     if feed_id == "senamhi-hidrologicos":
         m = _HIDRO_RE.search(title)
         return _level("senamhi-umbral", m.group(1).lower(), "campo COLOR_TEXT del aviso hidrológico") if m else None
@@ -198,8 +206,12 @@ def kind_of(feed_id: str, title: str) -> str:
     if feed_id == "senamhi-telegram":
         return "en-curso" if low.startswith("senamhi, en este momento") else "pronostico"
     if feed_id == "indeci-coen":
+        # Avisos del SENAMHI que el COEN difunde (``hazardparse.parse_coen`` los titula «Aviso meteorológico N° …
+        # del SENAMHI»): el meteorológico es un pronóstico; el hidrológico, el estado de un río.
+        if re.match(r"aviso (meteorol|hidrol)\w+ n° \d+ del senamhi", low):
+            return "pronostico" if low.startswith("aviso meteorol") else "en-curso"
         return "pronostico" if "aviso" in low and ("boletín" in low or "boletin" in low) else "reporte"
-    if feed_id in ("senamhi-quebradas", "senamhi-incendios", "dhn-avisos") or feed_id.startswith("ptwc"):
+    if feed_id in ("senamhi-quebradas", "senamhi-lluvias", "senamhi-incendios", "dhn-avisos") or feed_id.startswith("ptwc"):
         return "pronostico"
     if feed_id in ("senamhi-hidrologicos",) or feed_id.startswith("igp-cenvul"):
         return "en-curso"
@@ -220,7 +232,7 @@ def validity(feed_id: str, title: str, summary: str, published: Optional[str]) -
         a, b = _local(g[2], g[1], g[0], g[3], g[4]), _local(g[7], g[6], g[5], g[8], g[9])
         if a and b and b > a:
             return {"from": _iso(a), "until": _iso(b), "basis": "vigencia del boletín del COEN"}
-    if feed_id == "senamhi-quebradas" or (feed_id == "senamhi-incendios" and "24 horas" in text):
+    if feed_id in ("senamhi-quebradas", "senamhi-lluvias") or (feed_id == "senamhi-incendios" and "24 horas" in text):
         return {"from": _iso(ref), "until": _iso(ref + timedelta(hours=24)),
                 "basis": "aviso para las 24 horas siguientes a su emisión"}
     if feed_id in ("senamhi-telegram", "dhn-avisos") or (feed_id == "indeci-coen" and kind_of(feed_id, title) == "pronostico"):
@@ -266,12 +278,40 @@ def phase(kind: str, valid: Optional[dict], published: Optional[str], now: datet
     return "ocurrido"
 
 
-def assess(feed_id: str, title: str, summary: str, published: Optional[str], now: datetime) -> dict:
-    """Todo lo que el mapa necesita de un aviso, leído de su fuente."""
+def _table_level(aviso, kind: str) -> dict:
+    cites = " que cita" if kind != "pronostico" else ""  # «en este momento…, según el aviso vigente»
+    return _level("senamhi-colores", aviso.level,
+                  f"nivel del aviso N° {aviso.num}{cites} en la tabla de avisos del SENAMHI")
+
+
+def _table_validity(aviso) -> Optional[dict]:
+    """Inicio y fin del aviso en la tabla del SENAMHI: días completos en Lima (la tabla no da la hora)."""
+    a, b = _local(aviso.start.year, aviso.start.month, aviso.start.day), \
+        _local(aviso.end.year, aviso.end.month, aviso.end.day)
+    if not a or not b or b < a:
+        return None
+    return {"from": _iso(a), "until": _iso(b + timedelta(days=1) - timedelta(minutes=1)),
+            "basis": f"inicio y fin del aviso N° {aviso.num} en la tabla de avisos del SENAMHI", "source": "tabla"}
+
+
+def assess(feed_id: str, title: str, summary: str, published: Optional[str], now: datetime,
+           avisos=None) -> dict:
+    """Todo lo que el mapa necesita de un aviso, leído de su fuente.
+
+    ``avisos`` (``senamhi_avisos.Table``): la tabla de avisos meteorológicos del SENAMHI. Un mensaje de
+    Telegram o un boletín del COEN que cita uno de sus avisos toma el nivel de la tabla y, si su texto no
+    da fechas, su inicio y su fin (``valid.source == "tabla"``; solo si la entrada es el aviso mismo y no un
+    mensaje de «en este momento» que lo cita)."""
     kind = kind_of(feed_id, title)
     valid = validity(feed_id, title, summary, published)
-    out = {"kind": kind, "severity": severity(feed_id, title, summary), "valid": valid,
-           "phaseAtPublication": phase(kind, valid, published, now, feed_id)}
+    aviso = avisos.find(feed_id, title, summary, published, valid) if avisos is not None else None
+    if aviso is not None and valid is None and kind == "pronostico":
+        valid = _table_validity(aviso)
+    out = {"kind": kind,
+           "severity": _table_level(aviso, kind) if aviso is not None else severity(feed_id, title, summary),
+           "valid": valid, "phaseAtPublication": phase(kind, valid, published, now, feed_id)}
+    if aviso is not None:
+        out["aviso"] = {"num": aviso.num, "year": aviso.year, "url": aviso.url, "cancelled": aviso.cancelled}
     occ = occurred(feed_id, summary)
     if occ:
         out["occurred"] = occ

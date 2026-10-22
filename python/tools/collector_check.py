@@ -277,6 +277,18 @@ def _when(value) -> Optional[datetime]:
     return t if t.tzinfo else t.replace(tzinfo=timezone.utc)
 
 
+def _copy_summary(index: Optional[dict], commit: dict) -> str:
+    """Qué trajo la copia, por grupo, según su índice. Solo si el índice no se pudo leer, la primera línea del
+    último commit, que puede ser un latido y no la copia."""
+    if _when((index or {}).get("collected_at")) is not None:
+        summary = index.get("summary")
+        return " · " + ", ".join(f"{g} {v}" for g, v in summary.items()) if isinstance(summary, dict) and summary else ""
+    msg = str(commit.get("message") or "").strip().splitlines()
+    if not msg:
+        return ""
+    return " · " + (msg[0] if len(msg[0]) <= 160 else msg[0][:159] + "…")
+
+
 def relay_copy_results(branch: dict, index: Optional[dict], beat: Optional[dict],
                        index_missing: bool = False) -> list[Result]:
     """Edad de la última copia en data-peru según ``collected_at`` de su índice.
@@ -302,7 +314,7 @@ def relay_copy_results(branch: dict, index: Optional[dict], beat: Optional[dict]
         stale = age > STALE_HOURS
         out.append(Result("internet", WARN if stale else INFO,
                           f"última copia en la rama data-peru: hace {age:.0f} h ({when.astimezone(svc.LIMA):%Y-%m-%d %H:%M} Lima)",
-                          f"según {basis}" + (f" · {commit.get('message', '')[:120]}" if commit.get("message") else ""),
+                          f"según {basis}" + _copy_summary(index, commit),
                           "El sitio avisa con un issue «relay-stale» pasadas 36 h." if stale else ""))
     beat_at = _when((beat or {}).get("at"))
     if beat_at is not None and (when is None or beat_at > when) and (beat or {}).get("result") == "sin-fuentes":
@@ -461,15 +473,25 @@ def check_sources(ctx: dict) -> Result:
     def one(gu: tuple[str, str]) -> tuple[str, dict]:
         g, u = gu
         if u in refused:
-            return g, {"url": u, "ok": False, "why": refused[u], "bytes": 0, "s": 0.0}
+            # Una ruta que robots.txt prohíbe no es una falla del servidor ni del equipo: no se cuenta.
+            return g, {"url": u, "ok": False, "why": refused[u], "bytes": 0, "s": 0.0,
+                       "skip": refused[u] == "robots.txt no lo permite"}
         return g, _probe(u, meta.get(u, {}).get("expect") or pc.guess_expect(u))
 
     with ThreadPoolExecutor(max_workers=6) as pool:
         res = list(pool.map(one, jobs))
-    lines = [f"{'OK' if r['ok'] else 'NO'}  {g:8} {r['why']:>9} {r['bytes']:>9} B {r['s']:5.1f}s  {r['url']}" for g, r in res]
-    by_group = {g: (sum(1 for gg, r in res if gg == g and r["ok"]), sum(1 for gg, _ in res if gg == g)) for g in groups}
-    summary = ", ".join(f"{g} {a}/{b}" for g, (a, b) in by_group.items())
+    lines = [f"{'OK' if r['ok'] else '--' if r.get('skip') else 'NO'}  {g:8} {r['why']:>9} {r['bytes']:>9} B "
+             f"{r['s']:5.1f}s  {r['url']}" for g, r in res]
+    asked = [(g, r) for g, r in res if not r.get("skip")]
+    skipped = len(res) - len(asked)
+    by_group = {g: (sum(1 for gg, r in asked if gg == g and r["ok"]), sum(1 for gg, _ in asked if gg == g))
+                for g in groups}
+    # Un grupo sin URL que pedir es uno cuyo robots.txt no lo permite (aquí o, en el registro, ``plan``).
+    summary = ", ".join(f"{g} {a}/{b}" if b else f"{g}: robots.txt no lo permite" for g, (a, b) in by_group.items())
     ok = sum(a for a, _ in by_group.values())
+    if not asked:
+        return Result("fuentes", WARN, "robots.txt no permite pedir ninguna fuente", summary,
+                      "No es una falla del equipo: avisar para revisar la lista de fuentes.", lines)
     if ok == 0:
         return Result("fuentes", FAIL, "ninguna fuente peruana responde desde este equipo", summary,
                       "Este equipo no sirve como recolector desde esta red. Probar con otra conexión en el Perú; "
@@ -477,8 +499,10 @@ def check_sources(ctx: dict) -> Result:
     if by_group.get("enfen", (1, 1))[0] == 0:
         return Result("fuentes", WARN, "el ENFEN no responde desde este equipo", summary,
                       "Puede ser una caída momentánea del ENFEN: repetir más tarde.", lines)
-    level = OK if ok * 2 >= len(jobs) else WARN
-    return Result("fuentes", level, f"{ok}/{len(jobs)} fuentes responden", summary,
+    level = OK if ok * 2 >= len(asked) else WARN
+    title = f"{ok}/{len(asked)} fuentes responden" + (
+        f" ({skipped} no se piden: su robots.txt no lo permite)" if skipped else "")
+    return Result("fuentes", level, title, summary,
                   "" if level == OK else "Varias fuentes no responden: repetir más tarde; si sigue, avisar.", lines)
 
 

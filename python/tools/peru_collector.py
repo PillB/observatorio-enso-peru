@@ -83,6 +83,10 @@ PROBE_MIN_LEFT_S = 180
 #: Un registro de respaldo más viejo que esto se avisa en el registro de la corrida.
 REGISTRY_OLD_DAYS = 14
 
+#: Capa de avisos del GeoServer de IDESEP (SENAMHI) que se pide por WFS.
+IDESEP_AVISOS = ("https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0"
+                 "&typeName=g_100_01:view_aviso_24horas_5dias_ultimos")
+
 #: Fuentes que se recolectan desde el Perú. Las URL deben coincidir con las
 #: del catálogo del pipeline para que la actualización diaria las encuentre.
 SOURCES: dict[str, list[str]] = {
@@ -103,8 +107,11 @@ SOURCES: dict[str, list[str]] = {
         # tools/scrape_candidates.json).
         "https://observatorio.senamhi.gob.pe/gestion-riesgo-desastres/avisos-meteorologicos",
         "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities",
-        ("https://idesep.senamhi.gob.pe/geoserver/g_aviso/ows?service=WFS&version=1.0.0&request=GetFeature"
-         "&typeName=g_aviso:view_aviso&maxFeatures=5&outputFormat=application/json"),
+        # Avisos de los últimos 5 días (la capa nacional g_aviso:view_aviso llegó vacía el 21-10-2026 con
+        # avisos vigentes) y sus campos, para saber si traen nivel y vigencia. El nivel oficial (AMARILLO,
+        # NARANJA, ROJO) y las fechas de inicio y fin están en la tabla de ?p=aviso-meteorologico.
+        IDESEP_AVISOS + "&request=GetFeature&maxFeatures=100&outputFormat=application/json",
+        IDESEP_AVISOS + "&request=DescribeFeatureType",
     ],
     "ana": [
         "https://snirh.ana.gob.pe/",
@@ -124,7 +131,8 @@ SOURCES: dict[str, list[str]] = {
 EXPECT: dict[str, str] = {
     "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado": "json",
     "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities": "text",
-    SOURCES["senamhi"][-1]: "json",
+    SOURCES["senamhi"][-2]: "json",
+    SOURCES["senamhi"][-1]: "text",  # esquema XML de la capa
     "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson": "json",
 }
 
@@ -620,7 +628,8 @@ def goals(entries: list[dict]) -> dict[str, bool]:
 
 def _log_fetch(r: dict) -> None:
     note = r.get("error") or ("" if r.get("class") in (None, "ok") else r["class"])
-    log(f"{r.get('status')!s:>4} {r.get('bytes', 0):>9} B {r['elapsed_s']:>5}s {r['url']} {note}")
+    status = "—" if r.get("status") is None else r["status"]  # no se pidió (robots.txt, plazo) o no respondió
+    log(f"{status!s:>4} {r.get('bytes', 0):>9} B {r['elapsed_s']:>5}s {r['url']} {note}")
 
 
 def probe_registry(registry: dict, skip: set[str], session: Session) -> dict[str, dict]:
