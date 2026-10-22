@@ -142,5 +142,18 @@ function heartbeat(index, now) {
   };
 }
 
+/** Vencimiento del token de GitHub, de la cabecera
+ * «GitHub-Authentication-Token-Expiration» («2027-05-10 00:00:00 UTC» o
+ * «2027-05-09 19:00:00 -0500»), en ISO con «+00:00». null si no viene o no se
+ * entiende. Mismo criterio que collector_service.parse_token_expiry. */
+function parseTokenExpiry(header) {
+  const m = /^\s*(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2}(?::\d{2})?)\s*(UTC|Z|[+-]\d{2}:?\d{2})?/.exec(String(header || ''));
+  if (!m) return null;
+  let tz = m[3] || 'UTC';
+  tz = tz === 'UTC' || tz === 'Z' ? '+00:00' : (tz.includes(':') ? tz : `${tz.slice(0, 3)}:${tz.slice(3)}`);
+  const t = Date.parse(`${m[1]}T${m[2].length === 5 ? `${m[2]}:00` : m[2]}${tz}`);
+  return Number.isNaN(t) ? null : new Date(t).toISOString().replace(/\.\d{3}Z$/, '+00:00');
+}
+
 // @export
-if (typeof module !== 'undefined') module.exports = { buildSnapshot, pickResults, heartbeat };
+if (typeof module !== 'undefined') module.exports = { buildSnapshot, pickResults, heartbeat, parseTokenExpiry };

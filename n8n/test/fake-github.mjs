@@ -34,7 +34,8 @@ function files(branch) {
 }
 
 function send(res, status, body, type = 'application/json') {
-  res.writeHead(status, { 'content-type': type });
+  // Como GitHub con un token de plazo fijo: el recolector guarda el vencimiento.
+  res.writeHead(status, { 'content-type': type, 'GitHub-Authentication-Token-Expiration': '2027-05-10 00:00:00 UTC' });
   res.end(typeof body === 'string' || Buffer.isBuffer(body) ? body : JSON.stringify(body));
 }
 
