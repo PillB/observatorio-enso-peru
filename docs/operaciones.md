@@ -126,13 +126,18 @@ Códigos frecuentes:
 | `bsobp-unreadable` | El repositorio del IMARPE listó un boletín semanal (BS-OBP) cuyo PDF no se pudo bajar o leer, o que dice otro número. Queda también en la consola de documentos | Abrir la página del boletín que trae el mensaje, bajar el PDF y subirlo en la consola de documentos; la actualización siguiente lo lee. El issue se cierra solo |
 | `bsobp-overdue` | Más de 12 días sin un boletín semanal nuevo en el repositorio del IMARPE (sale cada domingo) | Ver si el IMARPE dejó de depositarlo o cambió el título; si cambió, ajustar `QUERY`/`TITLE_RE` en `python/enso/feeds/imarpe_bsobp.py` |
 | `bsobp-unreachable` | El repositorio del IMARPE no listó boletines; se conservan los ya leídos | Normalmente es temporal |
+| `month-unread` | GODAS (`cpc-godas-d20`): CPC respondió pero un mes no se pudo leer; se publica sin ese mes | Si se repite, revisar el archivo `godas.M.AAAAMM.grb` que nombra el mensaje |
+| `history-old` | GODAS: el histórico `python/enso/data/godas-d20.json` tiene más de 12 meses de atraso | Regenerarlo (ver «Histórico de D20» abajo) |
 | `no-data` | Una serie quedó vacía | Si la fuente es crítica, no se despliega |
 
 ## Histórico de D20 (GODAS)
 
 `python/enso/data/godas-d20.json` guarda el D20 mensual de 1980 en
 adelante y su climatología 1991–2020. Cada corrida lee de CPC solo los
-meses posteriores al último guardado (≈6,5 MB por mes, hasta 24 meses).
+meses posteriores al último guardado (≈6,5 MB por mes, hasta 24 meses: el último
+guardado y los más recientes). Un mes ya leído en la publicación anterior que
+terminó hace más de 60 días no se vuelve a bajar: un pedido de 1 byte comprueba
+que el archivo siga ahí (el último mes guardado se vuelve a bajar los lunes).
 Una vez al año, o si CPC reprocesa GODAS, conviene regenerarlo:
 
 ```bash

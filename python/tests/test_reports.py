@@ -9,6 +9,7 @@ from __future__ import annotations
 import copy
 import gzip
 import json
+import re
 from datetime import date
 from pathlib import Path
 
@@ -656,3 +657,24 @@ def test_thermocline_out_of_range_is_withheld_alone():
     bad["thermocline"]["subsurface"]["anomaly"] = 40.0
     errs = R.check(R.SCHEMAS["enfen-informe"], bad)
     assert errs and all(e.startswith("$.thermocline") for e in errs)
+
+
+def test_enfen_informes_give_the_15c_isotherm_depth_only_in_figures():
+    """Los informes técnicos del ENFEN mencionan la isoterma de 15 °C (pies de figura o texto cualitativo), pero no
+    escriben su profundidad en metros en la misma oración: un lector de texto no puede sacar ese dato de ellos."""
+    mentions = 0
+    for f in INFORMES:
+        text = re.sub(r"\s+", " ", " ".join(_pages(f.name)[0]))
+        for sentence in re.split(r"(?<=[a-z\)])\. (?=[A-ZÁÉÍÓÚ])", text):
+            if re.search(r"isotermas? de (?:los )?15\s*°\s*C", sentence, re.I):
+                mentions += 1
+                assert not re.search(r"\d+(?:[.,]\d+)?\s*m\b(?!\w)", sentence), (f.name, sentence)
+    assert mentions >= 5
+
+
+def test_report_kinds_match_the_n8n_extractor():
+    """Las clases de informe del pipeline (reports.SCHEMAS) y las que acepta el nodo de n8n (KINDS) son las mismas."""
+    js = (Path(__file__).resolve().parents[2] / "n8n" / "nodes" / "extraer-pedido.js").read_text(encoding="utf-8")
+    kinds = re.search(r"const KINDS = \[([^\]]*)\]", js)
+    assert kinds
+    assert set(re.findall(r"'([^']+)'", kinds.group(1))) == set(R.SCHEMAS)

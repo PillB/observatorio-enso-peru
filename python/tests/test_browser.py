@@ -280,6 +280,18 @@ def test_assistant_answers_with_evidence_and_refuses_alerts(site, page):
     assert "no emite alertas" in page.locator(".qa-a").last.inner_text()
 
 
+def test_assistant_answers_d20_with_the_published_values(site, page):
+    base, root = site
+    dash = json.loads((root / "data" / "dashboard.json").read_text(encoding="utf-8"))
+    sig = next(s for s in dash["grd"]["signals"] if s["id"] == "d20_coastal")
+    go(page, base, "asistente")
+    page.get_by_label("Su pregunta").fill("¿Cuál es la profundidad del D20?")
+    page.get_by_role("button", name="Preguntar").click()
+    ans = page.locator(".qa-a").last.inner_text()
+    assert "no publica" not in ans and "GODAS" in ans
+    assert f"{abs(sig['value']):.1f}".replace(".", ",") in ans and f"grd:d20_coastal@{sig['period']}" in ans
+
+
 def test_map_animation_and_table(site, page):
     base, _ = site
     go(page, base, "mapa")

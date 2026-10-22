@@ -212,12 +212,12 @@ class Fetcher:
             time.sleep(self.polite_delay - dt)
         self._last[host] = time.monotonic()
 
-    def _request(self, url: str) -> httpx.Response:
+    def _request(self, url: str, headers: Optional[dict] = None) -> httpx.Response:
         ends = [t for t in (time.monotonic() + self.max_seconds if self.max_seconds else None, self.deadline) if t]
         if not ends:
-            return self.client.get(url)
+            return self.client.get(url, headers=headers)
         end = min(ends)
-        with self.client.stream("GET", url) as r:
+        with self.client.stream("GET", url, headers=headers) as r:
             chunks = []
             for chunk in r.iter_bytes():
                 chunks.append(chunk)

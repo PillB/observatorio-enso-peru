@@ -216,14 +216,14 @@
   
   <!-- cajas -->
   <g class="ar-node-g" id="as-n-s-fuentes" data-node="s-fuentes">
-    <title>Fuentes oficiales y alertas. Lo que vigilamos: el comunicado del ENFEN, el ICEN del IGP, 14 productos de NOAA y 13 servicios de alertas (INDECI, SENAMHI, DHN, IGP, USGS, PTWC y NASA). También páginas del Estado que solo guardamos como archivo.</title>
+    <title>Fuentes oficiales y alertas. Lo que vigilamos: el comunicado del ENFEN, el ICEN del IGP, 15 productos de NOAA y 13 servicios de alertas (INDECI, SENAMHI, DHN, IGP, USGS, PTWC y NASA). También páginas del Estado que solo guardamos como archivo.</title>
     <rect class="ar-node ar-g-sources" x="150" y="111" width="400" height="110.4" rx="8"/>
     <rect class="ar-f-sources" x="150" y="119" width="4" height="94.4" rx="2"/>
     <circle class="ar-step" cx="171" cy="132" r="10"/>
     <text class="ar-step-n" x="171" y="136.2" font-size="12" text-anchor="middle">1</text>
     <text class="ar-t" x="188" y="137" font-size="14">Fuentes oficiales y alertas</text>
     <text class="ar-s" x="162" y="157.6" font-size="12">Lo que vigilamos: el comunicado del ENFEN, el ICEN del IGP,</text>
-    <text class="ar-s" x="162" y="174.1" font-size="12">14 productos de NOAA y 13 servicios de alertas (INDECI,</text>
+    <text class="ar-s" x="162" y="174.1" font-size="12">15 productos de NOAA y 13 servicios de alertas (INDECI,</text>
     <text class="ar-s" x="162" y="190.7" font-size="12">SENAMHI, DHN, IGP, USGS, PTWC y NASA). También páginas</text>
     <text class="ar-s" x="162" y="207.2" font-size="12">del Estado que solo guardamos como archivo.</text>
   </g>

@@ -104,56 +104,109 @@ class Source:
     docs: str = ""
     critical: bool = False
     accept: tuple = ()
-    #: Descarga propia (varios pedidos) en lugar de ``fetcher.get(urls)``; devuelve un ``Response``.
-    fetch: Optional[Callable[[Any], Any]] = None
+    #: Descarga propia (varios pedidos) en lugar de ``fetcher.get(urls)``: recibe el fetcher y el registro de la
+    #: fuente en la publicación anterior (o ``None``) y devuelve un ``Response``.
+    fetch: Optional[Callable[[Any, Optional[dict]], Any]] = None
 
 
 def _txt(fn):
     return lambda resp: fn(resp.text)
 
 
-def _fetch_godas(fetcher):
+def _utc_today() -> date:
+    return datetime.now(timezone.utc).date()
+
+
+def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date] = None):
     """D20 de los meses de GODAS posteriores al histórico versionado (``enso/data/godas-d20.json``).
 
     Por cada mes pide solo los primeros ≈6,5 MB del GRIB mensual (temperatura de 5 a 303 m) y guarda el D20
-    regional ya calculado: el cuerpo de la respuesta es ese JSON, que es lo que se archiva y lo que usan las
-    pruebas. Un mes que aún no existe responde 404. Si ningún pedido llega al servidor, falla la fuente."""
+    regional ya calculado: el cuerpo de la respuesta es ese JSON (con la lista de GRIB leídos en ``grib``), que es
+    lo que se archiva y lo que usan las pruebas. No hay copia de n8n, del Perú ni del Internet Archive: los pedidos
+    son por rangos de bytes de archivos de 30 MB.
+
+    - Un mes que ya estaba en la publicación anterior (``previous``) y terminó hace más de 60 días no se vuelve a
+      bajar: se pide un solo byte para confirmar que el archivo sigue ahí. Lo mismo el último mes del histórico,
+      salvo los lunes, en que se baja entero por si CPC lo reprocesó.
+    - Un 404 es normal para un mes que aún no se publica; para el último mes del histórico o uno que terminó hace
+      más de ``godas.PUBLISH_LAG_DAYS`` días, es un archivo que falta.
+    - Si ningún mes nuevo llega (servidor caído, bloqueado o lento), se publica el histórico con los meses de la
+      publicación anterior, como dato conservado, y ``build_series`` deja el aviso. Solo un GRIB que llega y no se
+      puede leer es un cambio de formato."""
     import httpx
 
-    from .fetch import FetchError, Response
+    from .fetch import FetchError, Response, TooSlow
 
+    if fetcher.offline:
+        raise FetchError("modo sin conexión", [])
+    planned = fetcher.plan.get(godas.BASE + "/")
+    if planned is not None and "actions" not in planned:
+        raise FetchError("robots.txt no permite la ruta de GODAS" if not planned
+                         else "el registro asigna GODAS a " + ", ".join(planned), [])
+    today = today or _utc_today()
     history = godas.load_history()
-    months, errors, attempts = {}, {}, []
-    reached = False
-    for y, m in godas.months_to_fetch(history, datetime.now(timezone.utc).date()):
-        u = godas.url(y, m)
+    todo = godas.months_to_fetch(history, today)
+    first = todo[0] if todo else None
+    prev_months: dict[str, dict] = {}
+    for key in godas.REGIONS:
+        for p in ((previous or {}).get("data") or {}).get(key) or []:
+            if isinstance(p, dict) and p.get("period") and p.get("d20") is not None:
+                prev_months.setdefault(p["period"], {})[key] = {"d20": p["d20"], "outcrop": p.get("outcrop", 0.0)}
+    start = f"{first[0]:04d}-{first[1]:02d}" if first else "9999"
+    prev_months = {k: v for k, v in prev_months.items() if len(v) == len(godas.REGIONS) and k >= start}
+    months, reused, grib, attempts = {}, [], [], []
+    http_errors, decode_errors = {}, {}
+    answered = 0  # respuestas 200/206 (también las de un byte): el servidor está
+    for y, m in todo:
+        k, u = f"{y:04d}-{m:02d}", godas.url(y, m)
+        old = godas.month_end(y, m) + timedelta(days=60) < today
+        probe = (k in prev_months and old) or ((y, m) == first and today.weekday() != 0)
         skip = fetcher.skip_reason(u)
         if skip:
             attempts.append({"url": u, "error": skip})
+            http_errors[k] = skip
             continue
-        fetcher._wait_host("ftp.cpc.ncep.noaa.gov")
+        host = fetcher._key(u)
+        fetcher._wait_host(host)
+        rng = "bytes=0-0" if probe else f"bytes=0-{godas.RANGE_BYTES - 1}"
         try:
-            r = fetcher.client.get(u, headers={"Range": f"bytes=0-{godas.RANGE_BYTES - 1}"})
+            # Con el plazo por pedido y el de la corrida, como cualquier otro pedido de la corrida.
+            r = fetcher._request(u, headers={"Range": rng})
         except httpx.HTTPError as exc:
-            attempts.append({"url": u, "error": f"{type(exc).__name__}: {exc}"[:200]})
+            attempts.append({"url": u, "range": rng, "error": f"{type(exc).__name__}: {exc}"[:200]})
+            fetcher._down[host] = fetcher._down.get(host, 0) + (2 if isinstance(exc, TooSlow) else 1)
+            http_errors[k] = f"{type(exc).__name__}: {exc}"[:200]
             continue
-        attempts.append({"url": u, "status": r.status_code})
-        reached = True
+        attempts.append({"url": u, "range": rng, "status": r.status_code})
+        fetcher._down[host] = 0
         if r.status_code == 404:
+            if (y, m) == first or godas.month_end(y, m) + timedelta(days=godas.PUBLISH_LAG_DAYS) < today:
+                http_errors[k] = "HTTP 404: el archivo no está (¿CPC lo movió o le cambió el nombre?)"
             continue
         if r.status_code not in (200, 206):
-            errors[f"{y:04d}-{m:02d}"] = f"HTTP {r.status_code}"
+            http_errors[k] = f"HTTP {r.status_code}"
+            continue
+        answered += 1
+        if probe:
+            if k in prev_months:
+                months[k] = prev_months[k]
+                reused.append(k)
             continue
         try:
-            months[f"{y:04d}-{m:02d}"] = godas.regional_d20(godas.pot_records(r.content))
+            months[k] = godas.regional_d20(godas.pot_records(r.content))
+            grib.append(u)
         except FormatChanged as exc:
-            errors[f"{y:04d}-{m:02d}"] = str(exc)
-    if not reached:
-        raise FetchError("sin respuesta del servidor de GODAS de NOAA/CPC", attempts)
-    if errors and not months:
-        raise FormatChanged("godas: ningún mes nuevo se pudo leer: " + "; ".join(f"{k}: {v}" for k, v in errors.items()))
-    body = json.dumps({"months": months, "errors": errors}, ensure_ascii=False, sort_keys=True).encode()
-    return Response(godas.BASE + "/", body, "direct", 200, "application/json", attempts=attempts)
+            decode_errors[k] = str(exc)
+    errors = {**http_errors, **decode_errors}
+    if decode_errors and not grib:
+        raise FormatChanged("godas: ningún mes nuevo se pudo leer: " + "; ".join(f"{k}: {v}" for k, v in decode_errors.items()))
+    unreached = bool(http_errors) and not answered
+    if unreached:
+        months = dict(prev_months)  # lo ya leído antes, sin pedirlo
+    body = json.dumps({"months": months, "errors": errors, "unreached": unreached, "reused": reused, "grib": grib,
+                       "behind": godas.months_behind(history, today)}, ensure_ascii=False, sort_keys=True).encode()
+    return Response(godas.BASE + "/", body, "previous-publication" if unreached else "direct", 200,
+                    "application/json", attempts=attempts)
 
 
 def _parse_godas(resp) -> Parsed:
@@ -382,7 +435,7 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         if fixtures is not None:
             resp = _fixture_response(src, fixtures)
         else:
-            resp = src.fetch(fetcher) if src.fetch else fetcher.get(src.urls, archive=src.archive, save=src.save,
+            resp = src.fetch(fetcher, prev) if src.fetch else fetcher.get(src.urls, archive=src.archive, save=src.save,
                                                                      accept=src.accept)
         acq.attempts = resp.attempts
         acq.raw = resp.body
@@ -395,6 +448,9 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         acq.warnings = parsed.warnings
         for w in parsed.warnings:
             log.add("warning", src.id, "validate", "implausible-value", w)
+        # Avisos del lector (meses no leídos, servidor sin respuesta con el histórico publicado, histórico viejo).
+        for stage, code, msg in (parsed.meta or {}).get("events") or []:
+            log.add("warning", src.id, stage, code, msg)
         if acq.format_drift:
             log.add("warning", src.id, "parse", "format-drift",
                     f"Se detectó un cambio en el formato de la fuente (huella {acq.previous_fingerprint} → {parsed.fingerprint}). "

@@ -91,6 +91,9 @@ class Entry:
     archive: bool = True  # se publica la copia descargada como respaldo
     notes: str = ""
     reader: bool = False  # feed de noticias: si robots.txt lo prohíbe, se lee como un lector de feeds
+    #: Canales a los que se limita la fuente. Una fuente con lector propio en el pipeline (``Source.fetch``, como
+    #: GODAS: pide por rangos archivos GRIB mensuales) solo se lee desde Actions; n8n copiaría un listado inútil.
+    only_channels: Optional[list[str]] = None
 
 
 def _slug(text: str) -> str:
@@ -154,7 +157,7 @@ def _source_entries() -> list[Entry]:
             url=url, alt_urls=list(s.urls[1:]), alt_expect=[_kind_of(u)[0] for u in s.urls[1:]],
             expect=expect, method=method, kind="dataset",
             home=s.docs or url, hazards=["enso"], interval_minutes=1440, parser=f"enso.observatory:{s.id}",
-            follow=follow))
+            follow=follow, only_channels=["actions"] if s.fetch else None))
     return out
 
 
@@ -294,8 +297,10 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
                 g["status"], g["open_from"], [k for k in ("actions", "n8n") if g.get(k)])}
             if e.reader and g["status"] == "robots-disallowed":
                 by_url[u].update(channels=list(READER_CHANNELS), reader=True)
+            if e.only_channels is not None and g["status"] != "robots-disallowed":
+                by_url[u]["channels"] = [c for c in by_url[u]["channels"] if c in e.only_channels] or list(e.only_channels)
         d = {k: v for k, v in e.__dict__.items()
-             if (v not in (None, [], "") or k in ("hazards", "alt_urls")) and k != "reader"}
+             if (v not in (None, [], "") or k in ("hazards", "alt_urls")) and k not in ("reader", "only_channels")}
         d["tier"] = METHODS[e.method]
         d["geoblock"] = geoblock(e.url, reach)  # la URL principal
         d["channels"] = [c for c in CHANNELS if any(c in r["channels"] for r in by_url.values())]

@@ -69,10 +69,10 @@
     "col": "sources",
     "name_es": "NOAA (CPC y PSL)",
     "name_en": "NOAA (CPC and PSL)",
-    "what_es": "14 productos de NOAA: OISST semanal y mensual, RONI, ONI, SOI, presión en Tahití y Darwin, vientos a 850 hPa, contenido de calor y la discusión ENSO en HTML (CPC), y ERSSTv6 Niño 1+2 y 3.4 (PSL).",
-    "what_en": "14 NOAA products: weekly and monthly OISST, RONI, ONI, SOI, Tahiti and Darwin pressure, 850 hPa winds, heat content and the HTML ENSO discussion (CPC), plus ERSSTv6 Niño 1+2 and 3.4 (PSL).",
-    "details_es": "Críticos: cpc-wksst, cpc-roni y cpc-ensodisc. Si uno falla y no hay dato anterior, la corrida termina en critical y no se despliega. Las 14 URL son abiertas (actions+n8n).",
-    "details_en": "Critical: cpc-wksst, cpc-roni and cpc-ensodisc. If one fails and there is no previous value, the run ends critical and nothing is deployed. All 14 URLs are open (actions+n8n).",
+    "what_es": "15 productos de NOAA: OISST semanal y mensual, RONI, ONI, SOI, presión en Tahití y Darwin, vientos a 850 hPa, contenido de calor, D20 calculado de GODAS y la discusión ENSO en HTML (CPC), y ERSSTv6 Niño 1+2 y 3.4 (PSL).",
+    "what_en": "15 NOAA products: weekly and monthly OISST, RONI, ONI, SOI, Tahiti and Darwin pressure, 850 hPa winds, heat content, D20 computed from GODAS and the HTML ENSO discussion (CPC), plus ERSSTv6 Niño 1+2 and 3.4 (PSL).",
+    "details_es": "Críticos: cpc-wksst, cpc-roni y cpc-ensodisc. Si uno falla y no hay dato anterior, la corrida termina en critical y no se despliega. Las 15 URL son abiertas; 14 van por actions+n8n. cpc-godas-d20 solo por actions: pide por rangos los GRIB mensuales de GODAS y no tiene copia de n8n, del Perú ni del Internet Archive; si CPC no responde se mantiene el dato anterior o el histórico python/enso/data/godas-d20.json.",
+    "details_en": "Critical: cpc-wksst, cpc-roni and cpc-ensodisc. If one fails and there is no previous value, the run ends critical and nothing is deployed. All 15 URLs are open; 14 go through actions+n8n. cpc-godas-d20 is actions only: it requests byte ranges of the monthly GODAS GRIB files and has no n8n, Peru or Internet Archive copy; if CPC does not answer, the previous value or the history in python/enso/data/godas-d20.json is kept.",
     "evidence": "python/enso/observatory.py:127-179, 1230-1235"
    },
    {
@@ -197,8 +197,8 @@
     "col": "collect",
     "name_es": "Descarga en GitHub Actions (Fetcher)",
     "name_en": "Download in GitHub Actions (Fetcher)",
-    "what_es": "Pide cada fuente desde servidores de GitHub en EE. UU. y anota canal, URL, fecha y sha256. Si falla, busca la copia más reciente del Perú o de n8n, luego la réplica y al final el Internet Archive.",
-    "what_en": "Requests each source from GitHub servers in the US and records channel, URL, date and sha256. On failure it looks for the newest Peru or n8n copy, then the mirror and finally the Internet Archive.",
+    "what_es": "Pide cada fuente desde servidores de GitHub en EE. UU. y anota canal, URL, fecha y sha256. Si falla, busca la copia más reciente del Perú o de n8n, luego la réplica y al final el Internet Archive (GODAS no tiene esas copias: mantiene el dato anterior).",
+    "what_en": "Requests each source from GitHub servers in the US and records channel, URL, date and sha256. On failure it looks for the newest Peru or n8n copy, then the mirror and finally the Internet Archive (GODAS has no such copies: it keeps the previous value).",
     "meta_es": "23:37 Lima · 8 min para las oficiales",
     "meta_en": "23:37 Lima · 8 min for official sources",
     "details_es": "Canales: direct, mirror, relay-peru, relay-n8n, archive, archive-fresh. Fuentes oficiales: 8 min en total, 5 min por pedido, 3 intentos, 0,8 s entre pedidos al mismo servidor; servidor con 3 fallos: 1 intento, con 5: se omite. Noticias: 8 hilos, en serie por servidor, 60 s por feed, 10 min para empezar. URL que el registro no da a actions: se lee la copia y, solo si no hay, se hace un intento directo. Abre data-peru (hasta 7 días) y data-n8n (hasta 72 h). No usa navegador ni lee robots.txt durante la corrida. TLS: las raíces de siempre más los intermedios públicos de enso/data/ca-intermedios.pem, para servidores que no los envían (el repositorio del IMARPE); la verificación sigue activa.",
@@ -303,8 +303,8 @@
     "name_en": "Reference data: places and thresholds",
     "what_es": "Archivos fijos en el repositorio: UBIGEO del INEI, límites distritales del IGN, departamentos del INDECI, las 8 categorías ICEN del ENFEN (2024) y la tabla de umbrales del equipo GRD.",
     "what_en": "Fixed files in the repository: INEI UBIGEO codes, IGN district boundaries, INDECI departments, ENFEN's 8 ICEN categories (2024) and the GRD team's threshold table.",
-    "details_es": "ubigeo.json (1891 distritos), limites-ign.json.gz (polígonos de 1873 distritos, más provincias y departamentos, límites de 2020), departamentos.geojson (25). Se arman a mano con tools.build_ubigeo, tools.build_limites y (departamentos) tools.scrape_ladder, no en cada corrida. ICEN: Nota Técnica ENFEN 01-2024. La tabla GRD es un borrador transcrito de una imagen recibida el 06-08-2026, no un sistema oficial.",
-    "details_en": "ubigeo.json (1891 districts), limites-ign.json.gz (polygons for 1873 districts, plus provinces and departments, 2020 boundaries), departamentos.geojson (25). Built by hand with tools.build_ubigeo, tools.build_limites and (departments) tools.scrape_ladder, not on every run. ICEN: ENFEN Technical Note 01-2024. The GRD table is a draft transcribed from an image received on 6 Aug 2026, not an official system.",
+    "details_es": "ubigeo.json (1891 distritos), limites-ign.json.gz (polígonos de 1873 distritos, más provincias y departamentos, límites de 2020), departamentos.geojson (25). Se arman a mano con tools.build_ubigeo, tools.build_limites y (departamentos) tools.scrape_ladder, no en cada corrida. ICEN: Nota Técnica ENFEN 01-2024. La tabla GRD es un borrador transcrito de una imagen recibida el 06-08-2026, no un sistema oficial. godas-d20.json: D20 mensual de GODAS desde 1980 y su climatología 1991–2020, regenerado a mano con tools.godas_d20_climatology; si tiene más de 12 meses de atraso la corrida avisa (history-old).",
+    "details_en": "ubigeo.json (1891 districts), limites-ign.json.gz (polygons for 1873 districts, plus provinces and departments, 2020 boundaries), departamentos.geojson (25). Built by hand with tools.build_ubigeo, tools.build_limites and (departments) tools.scrape_ladder, not on every run. ICEN: ENFEN Technical Note 01-2024. The GRD table is a draft transcribed from an image received on 6 Aug 2026, not an official system. godas-d20.json: monthly GODAS D20 since 1980 and its 1991–2020 climatology, regenerated by hand with tools.godas_d20_climatology; when it is more than 12 months behind the run warns (history-old).",
     "evidence": "python/enso/geo.py:78; python/enso/limites.py:1-39; python/enso/geopoly.py:1-25; python/tools/build_limites.py:1-35; config/threshold-policies/enfen-icen-2024.yaml:1-27; config/threshold-policies/expert-grd-image-v1.yaml:1-35"
    },
    {
@@ -327,8 +327,8 @@
     "name_en": "Series, statuses and GRD signal",
     "what_es": "Arma 20 series con último valor y antigüedad (17 con categoría), el semanal por región Niño, los estados de ENFEN y NOAA y la señal GRD: normal, amarillo, rojo, sin clasificar o sin dato.",
     "what_en": "Builds 20 series with latest value and age (17 with a category), weekly data per Niño region, the ENFEN and NOAA statuses and the GRD signal: normal, yellow, red, unclassified or no data.",
-    "details_es": "Builder y signals.py. Evento costero: ICEN sobre +0,5 o bajo −0,7 al menos 3 meses seguidos. Las categorías, los estados y la señal GRD salen de Python; el navegador solo agrega ayudas de lectura: colores por umbral o por signo (franja semanal ±0,5, escala del mapa de −2 a +4 °C, minigráficos, áreas de los gráficos y valor del viento), la dirección del viento y N/D si el dato semanal tiene más de 16 días. La termoclina D20 no tiene fuente y siempre sale «na». freshness.py da a cada dato su vigencia (al día, atrasado, vencido, sin dato) según el calendario de su institución y la agrupa por vista en dashboard.json.",
-    "details_en": "Builder and signals.py. Coastal event: ICEN above +0.5 or below −0.7 for at least 3 months in a row. Categories, statuses and the GRD signal come from Python; the browser only adds reading aids: colours by threshold or sign (weekly strip ±0.5, map scale from −2 to +4 °C, sparklines, chart areas and the wind value), the wind direction and N/D when the weekly value is over 16 days old. The D20 thermocline has no source and is always 'na'. freshness.py gives every datum its freshness (on time, late, expired, no data) from its institution's calendar and groups it per view in dashboard.json.",
+    "details_es": "Builder y signals.py. Evento costero: ICEN sobre +0,5 o bajo −0,7 al menos 3 meses seguidos. Las categorías, los estados y la señal GRD salen de Python; el navegador solo agrega ayudas de lectura: colores por umbral o por signo (franja semanal ±0,5, escala del mapa de −2 a +4 °C, minigráficos, áreas de los gráficos y valor del viento), la dirección del viento y N/D si el dato semanal tiene más de 16 días. La termoclina D20 sale de cpc-godas-d20 (anomalía mensual en Niño 1+2 y Niño 3.4); sin ese dato ni el anterior sale «na». freshness.py da a cada dato su vigencia (al día, atrasado, vencido, sin dato) según el calendario de su institución y la agrupa por vista en dashboard.json.",
+    "details_en": "Builder and signals.py. Coastal event: ICEN above +0.5 or below −0.7 for at least 3 months in a row. Categories, statuses and the GRD signal come from Python; the browser only adds reading aids: colours by threshold or sign (weekly strip ±0.5, map scale from −2 to +4 °C, sparklines, chart areas and the wind value), the wind direction and N/D when the weekly value is over 16 days old. The D20 thermocline comes from cpc-godas-d20 (monthly anomaly in Niño 1+2 and Niño 3.4); without it or the previous value it is 'na'. freshness.py gives every datum its freshness (on time, late, expired, no data) from its institution's calendar and groups it per view in dashboard.json.",
     "evidence": "python/enso/observatory.py:622-862; python/enso/signals.py:1-216"
    },
    {
@@ -399,8 +399,8 @@
     "name_en": "Published files (data/)",
     "what_es": "Lo que se publica: dashboard.json, series y CSV, estado de las 16 fuentes, feed.json, news/, geo/, run-report.json, manifest.json y data/archive/ con las copias archivadas.",
     "what_en": "What gets published: dashboard.json, series and CSVs, the status of the 16 sources, feed.json, news/, geo/, run-report.json, manifest.json and data/archive/ with the archived copies.",
-    "details_es": "Cada JSON propio (no las copias de terceros) lleva schema observatorio-enso/4, publicationId y generatedAt. data/archive/: respuesta original y PDF de cada fuente oficial (archive/sources/), cada feed bajado (archive/feeds/) y una página por día de noticias (60 días); máx. 20 MiB por copia. geo/items.json: 120 días, máx. 4000 notas.",
-    "details_en": "Every own JSON (not the third-party copies) carries schema observatorio-enso/4, publicationId and generatedAt. data/archive/: original response and PDF of each official source (archive/sources/), each downloaded feed (archive/feeds/) and one page per news day (60 days); max 20 MiB per copy. geo/items.json: 120 days, max 4000 items.",
+    "details_es": "Cada JSON propio (no las copias de terceros) lleva schema observatorio-enso/4, publicationId y generatedAt. data/archive/: respuesta original y PDF de cada fuente oficial (archive/sources/; cpc-godas-d20 archiva el D20 calculado por mes en JSON, con las URL de los GRIB leídos), cada feed bajado (archive/feeds/) y una página por día de noticias (60 días); máx. 20 MiB por copia. geo/items.json: 120 días, máx. 4000 notas.",
+    "details_en": "Every own JSON (not the third-party copies) carries schema observatorio-enso/4, publicationId and generatedAt. data/archive/: original response and PDF of each official source (archive/sources/; cpc-godas-d20 archives the computed monthly D20 as JSON, with the URLs of the GRIB files read), each downloaded feed (archive/feeds/) and one page per news day (60 days); max 20 MiB per copy. geo/items.json: 120 days, max 4000 items.",
     "evidence": "python/enso/observatory.py:898-1100; python/enso/archive.py:1-208; python/enso/geo_overrides.py:180-222"
    },
    {
@@ -681,8 +681,8 @@
     "from": "noaa",
     "to": "fetch",
     "kind": "data",
-    "label_es": "14 productos, directo",
-    "label_en": "14 products, direct",
+    "label_es": "15 productos, directo",
+    "label_en": "15 products, direct",
     "explain_es": "Actions baja cada noche los índices, la temperatura del mar, el calor bajo la superficie y la discusión ENSO de NOAA. Si un producto crítico falla y no hay dato anterior, no se despliega.",
     "explain_en": "Each night Actions downloads NOAA's indices, sea temperature, subsurface heat and ENSO discussion. If a critical product fails with no previous value, nothing is deployed.",
     "when_es": "diario 23:37 Lima",
@@ -695,8 +695,8 @@
     "kind": "data",
     "label_es": "copia de respaldo",
     "label_en": "backup copy",
-    "explain_es": "n8n baja las mismas 14 URL cada noche; si el pedido directo de Actions falla, el pipeline usa esa copia.",
-    "explain_en": "n8n fetches the same 14 URLs nightly; if Actions' direct request fails, the pipeline uses that copy.",
+    "explain_es": "n8n baja 14 de esas URL cada noche; si el pedido directo de Actions falla, el pipeline usa esa copia. cpc-godas-d20 no tiene copia de n8n.",
+    "explain_en": "n8n fetches 14 of those URLs nightly; if Actions' direct request fails, the pipeline uses that copy. cpc-godas-d20 has no n8n copy.",
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
     "evidence": "n8n/nodes/fuentes.js:50-66; python/enso/fetch.py:284-302"
@@ -1628,8 +1628,8 @@
     "w": 400,
     "name_es": "Fuentes oficiales y alertas",
     "name_en": "Official sources and alerts",
-    "what_es": "Lo que vigilamos: el comunicado del ENFEN, el ICEN del IGP, 14 productos de NOAA y 13 servicios de alertas (INDECI, SENAMHI, DHN, IGP, USGS, PTWC y NASA). También páginas del Estado que solo guardamos como archivo.",
-    "what_en": "What we watch: the ENFEN communiqué, IGP's ICEN, 14 NOAA products and 14 alert services (INDECI, SENAMHI, DHN, IGP, USGS, PTWC and NASA). Also government pages we only keep as an archive.",
+    "what_es": "Lo que vigilamos: el comunicado del ENFEN, el ICEN del IGP, 15 productos de NOAA y 13 servicios de alertas (INDECI, SENAMHI, DHN, IGP, USGS, PTWC y NASA). También páginas del Estado que solo guardamos como archivo.",
+    "what_en": "What we watch: the ENFEN communiqué, IGP's ICEN, 15 NOAA products and 14 alert services (INDECI, SENAMHI, DHN, IGP, USGS, PTWC and NASA). Also government pages we only keep as an archive.",
     "covers": [
      "peru-official",
      "noaa",

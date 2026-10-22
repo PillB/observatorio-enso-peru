@@ -139,7 +139,9 @@ de ecCodes (2000 puntos al azar, diferencia 0). El D20 de GODAS de
 setiembre de 2026 frente a la media mensual de las boyas TAO del ecuador
 (PMEL, `pmelTaoDyIso`): 165°E 149,8 / 149,8 m; 180° 148,8 / 153,5 m;
 140°O 163,7 / 163,8 m; 125°O 149,7 / 153,1 m; 110°O 142,4 / 132,9 m;
-95°O 115,9 / 120,4 m (GODAS / TAO). La anomalía de D20 en 180°–100°O
+95°O 115,9 / 120,4 m (GODAS / TAO). Fue una comparación única: el
+`robots.txt` del ERDDAP de NOAA prohíbe pedir CSV, así que no se repite
+de forma automática. La anomalía de D20 en 180°–100°O
 tiene una correlación de 0,93 con el índice de contenido de calor que
 publica CPC para la misma franja (561 meses, 1980–2026). La serie reproduce los eventos
 conocidos: +93 m en Niño 1+2 en diciembre de 1997 y −38 m en Niño 3.4 en
@@ -151,7 +153,9 @@ en 95°O y los flotadores Argo casi no entran a la plataforma), así que el
 valor de Niño 1+2 es una estimación regional, no una medición costera.
 IMARPE describe la termoclina costera con la isoterma de 15 °C en sus
 secciones (Paita, Chicama, Callao); esas mediciones no se publican como
-serie y no son comparables con D20. Lo que sí escriben se muestra aparte,
+serie y no son comparables con D20 (en los informes técnicos del ENFEN de
+2024 a 2026 la profundidad de la isoterma de 15 °C sale solo en figuras,
+no en el texto). Lo que sí escriben se muestra aparte,
 debajo del gráfico de D20 («Termoclina frente a Paita y Chicama»): del
 informe técnico del ENFEN, el estado de la termoclina costera frente a su
 climatología y la anomalía subsuperficial más intensa; del boletín
