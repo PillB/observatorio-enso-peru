@@ -196,7 +196,7 @@ jobs:
       - name: Restore the reader-feed state
         if: github.ref == 'refs/heads/main'
         continue-on-error: true
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: ${{ runner.temp }}/reader-state.json
           key: enso-reader-state-${{ github.run_id }}-${{ github.run_attempt }}
@@ -237,7 +237,7 @@ jobs:
       - name: Save the reader-feed state
         if: always() && github.ref == 'refs/heads/main'
         continue-on-error: true
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: ${{ runner.temp }}/reader-state.json
           key: enso-reader-state-${{ github.run_id }}-${{ github.run_attempt }}
