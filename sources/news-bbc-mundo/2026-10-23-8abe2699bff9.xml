@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title><![CDATA[BBC Mundo]]></title>
+        <description><![CDATA[BBC Mundo - Noticias - BBC News Mundo]]></description>
+        <link>https://www.bbc.com/mundo</link>
+        <image>
+            <url>http://www.bbc.co.uk/mundo/images/gel/rss_logo.gif</url>
+            <title>BBC Mundo</title>
+            <link>https://www.bbc.com/mundo</link>
+        </image>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Fri, 23 Oct 2026 02:55:08 GMT</lastBuildDate>
+        <atom:link href="https://feeds.bbci.co.uk/mundo/rss.xml" rel="self" type="application/rss+xml"/>
+        <copyright><![CDATA[Derechos Reservados de la British Broadcasting Corporation (Corporación Británica de Radiodifusión) ]]></copyright>
+        <language><![CDATA[es]]></language>
+        <ttl>15</ttl>
+        <item>
+            <title><![CDATA[Quién es Luisa González, la excandidata presidencial correísta y rival de Noboa detenida en Ecuador]]></title>
+            <description><![CDATA[La política estaba siendo investigada por supuestas irregularidades en la financiación de su campaña. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/c6x2wnkw55lvo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c6x2wnkw55lvo#0</guid>
+            <pubDate>Thu, 22 Oct 2026 15:13:40 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/7373/live/b6f01720-ce41-11f1-a86f-f78305ec9987.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Cómo Trump está tratando de influir para que Flávio Bolsonaro gane a Lula en las elecciones de Brasil]]></title>
+            <description><![CDATA[El presidente de EE.UU., Donald Trump, dijo que sigue muy de cerca las próximas elecciones y se refirió a Brasil como un país muy importante. ¿Lo está llevando este interés a interferir en la votación misma?]]></description>
+            <link>https://www.bbc.com/mundo/articles/cqglwgj3e91yo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cqglwgj3e91yo#0</guid>
+            <pubDate>Thu, 22 Oct 2026 18:31:16 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/f3b2/live/6b10a760-ce38-11f1-a86f-f78305ec9987.png"/>
+        </item>
+        <item>
+            <title><![CDATA[¿Qué es PHP y por qué generó una falla de seguridad en internet que desató una alerta global?]]></title>
+            <description><![CDATA[Una IA detectó fallos de programación ocultos durante años, lo que desencadenó una inusual respuesta de ciberseguridad por temor a que fueran explotados por ciberatacantes.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cmly0k9y9p1vo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cmly0k9y9p1vo#0</guid>
+            <pubDate>Thu, 22 Oct 2026 16:20:41 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/ac6c/live/31297e70-ce04-11f1-9688-4162f7c2e1d5.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["Ya no puedo hacer teatro, ni cine, ni leer": la enfermedad que ha frenado la carrera de la legendaria actriz británica Judi Dench]]></title>
+            <description><![CDATA[La actriz Judi Dench habla en el programa Today de BBC Radio 4 sobre cómo su problema ocular ha afectado a su vida.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c90k0p16klx7o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c90k0p16klx7o#0</guid>
+            <pubDate>Thu, 22 Oct 2026 11:05:34 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/dcfe/live/64f84a10-ce13-11f1-9f55-cdc56e9c248c.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Los anfitriones de Airbnb ya no pueden exigir a los huéspedes que quiten las sábanas ni que laven los platos]]></title>
+            <description><![CDATA[La política actualizada se aplicará a todas las reservas realizadas en el sitio web del alojamiento a partir del 20 de noviembre. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/c6vg0k034n94o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c6vg0k034n94o#0</guid>
+            <pubDate>Thu, 22 Oct 2026 21:43:11 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/9806/live/bea00990-ce54-11f1-a166-e30097724580.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[La justicia le ordena a Trump responder preguntas bajo juramento en su demanda contra la BBC]]></title>
+            <description><![CDATA[El presidente de EE.UU. demandó a la BBC por un episodio del programa documental Panorama que editó y unió dos secciones diferentes de un discurso que pronunció en 2021. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/c51kd0dm8m23o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c51kd0dm8m23o#1</guid>
+            <pubDate>Thu, 22 Oct 2026 21:07:15 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/6bf5/live/f171dec0-ce3b-11f1-a86f-f78305ec9987.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Por qué el auge de las inyecciones para adelgazar está impulsando las ventas de productos para el cuidado de la piel]]></title>
+            <description><![CDATA[El director ejecutivo de L'Oreal afirma que el uso de GLP-1 es "un fenómeno muy importante" para su compañía.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c699z39257zlo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c699z39257zlo#1</guid>
+            <pubDate>Fri, 23 Oct 2026 00:35:52 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/04f7/live/62d395b0-ce5d-11f1-a64c-550be9e3c66b.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["Me olvidé secretos de Estado en un tren: soy la prueba de que es posible recuperarse del mayor error de tu vida"]]></title>
+            <description><![CDATA[El alto funcionario Richard Jackson relata aquel fatídico día en el que olvidó importantes documentos y cómo se recuperó tras lo sucedido.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c6wyd5wx4xq1o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c6wyd5wx4xq1o#1</guid>
+            <pubDate>Thu, 22 Oct 2026 09:46:00 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/1ac3/live/e306fad0-ccad-11f1-a64c-550be9e3c66b.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[5 maneras en las que el "Súper Niño" ya está afectando el clima en América Latina y otras partes del mundo]]></title>
+            <description><![CDATA[América Latina es una de las regiones del mundo en las que los efectos del fenómeno de El Niño están siendo más evidentes y, en algunos casos, más severos.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cj5ynq730px4o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cj5ynq730px4o#1</guid>
+            <pubDate>Thu, 22 Oct 2026 10:59:11 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/6d81/live/19588300-cd68-11f1-bbdb-c39c91930f26.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Corea del Norte publica fotos de Kim Jong-un: ¿por qué siguen surgiendo rumores sobre su supuesta muerte?]]></title>
+            <description><![CDATA[Los medios estatales de Corea del Norte divulgaron fotos del líder norcoreano con su hija tras la difusión de un rumor infundado.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cv5ynk4x1161o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cv5ynk4x1161o#3</guid>
+            <pubDate>Thu, 22 Oct 2026 04:00:30 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/1f2b/live/cb87ca70-cc75-11f1-baeb-8d65d4bcd7ab.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Análisis: "La vulnerabilidad de PHP es el equivalente cibernético de una bomba sin explotar"]]></title>
+            <description><![CDATA[Sitios web de todo el mundo quedaron desactivados tras detectarse una falla de seguridad crítica en internet.]]></description>
+            <link>https://www.bbc.com/mundo/articles/ck30evyvlprqo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/ck30evyvlprqo#3</guid>
+            <pubDate>Thu, 22 Oct 2026 16:26:31 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/1fb6/live/0be15da0-ce3a-11f1-a86f-f78305ec9987.png"/>
+        </item>
+        <item>
+            <title><![CDATA[Qué es el "efecto bola de nieve" de la deuda y qué papel tiene en la crítica situación económica que alimenta las protestas en Francia]]></title>
+            <description><![CDATA[Mientras siguen las protestas en Francia, las cuentas del país empiezan a generar preocupación.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c65ynve23xj7o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c65ynve23xj7o#3</guid>
+            <pubDate>Wed, 21 Oct 2026 03:57:54 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/c1c7/live/0f28a8b0-cc32-11f1-aeea-f9fa95687445.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Springfield, el pueblo transformado por migrantes haitianos que se convirtió en  símbolo de la dura política migratoria de Trump]]></title>
+            <description><![CDATA[En 2024, el presidente puso a Springfield, Ohio, en el centro del debate nacional con la falsa acusación de que algunos migrantes se comían las mascotas de sus habitantes. Dos años después, la ciudad sigue siendo un símbolo de la polarización sobre la inmigración en EE.UU.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c8vgx4rpzynpo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c8vgx4rpzynpo#3</guid>
+            <pubDate>Wed, 21 Oct 2026 15:12:24 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/dc52/live/72052e60-cd61-11f1-b962-b7ff822cde72.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[El papa León XIV no necesitará más tratamientos tras la cirugía en la que le extirparon un tumor canceroso]]></title>
+            <description><![CDATA[Los resultados de las pruebas confirmaron su diagnóstico de adenocarcinoma de pulmón localizado.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cq99z3145317o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cq99z3145317o#3</guid>
+            <pubDate>Wed, 21 Oct 2026 21:16:22 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/a09d/live/89f335e0-cd88-11f1-b1e7-39558e114359.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["Todavía no sabemos la magnitud real del daño": el joven que diseñó un software para buscar a  desaparecidos en los terremotos en Venezuela]]></title>
+            <description><![CDATA[Jorge Bastidas creó el portal Desaparecidos Terremoto Venezuela, una iniciativa ciudadana para reportar a los desaparecidos en los sismos, a falta de cifras del gobierno venezolano.]]></description>
+            <link>https://www.bbc.com/mundo/articles/crx23yejwe1do?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/crx23yejwe1do#4</guid>
+            <pubDate>Wed, 21 Oct 2026 11:26:12 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/0468/live/35cbcb80-cd42-11f1-ad2d-43fff3ff842f.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["Empecé a consumir ketamina a los 14 años y a los 22 necesitaba pañales"]]></title>
+            <description><![CDATA[En los últimos dos años, Megan ha sufrido un dolor insoportable y ha sido incapaz de mantenerse erguida debido a su consumo de la droga.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cqlyeljpn3p8o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cqlyeljpn3p8o#4</guid>
+            <pubDate>Tue, 20 Oct 2026 22:36:12 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/0e22/live/99cf5bb0-cc66-11f1-b1a3-5bda642ff934.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Por qué Chile enfrenta una crisis económica con récord de desempleo en medio de las políticas de austeridad de Kast]]></title>
+            <description><![CDATA[El desempleo marcó un récord de 9,6%, el mayor en más de cinco años. La inversión está estancada y la confianza de los consumidores ha caído, en medio del plan de austeridad fiscal del gobierno.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c6gr8x40xvz7o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c6gr8x40xvz7o#4</guid>
+            <pubDate>Tue, 20 Oct 2026 10:58:28 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/ed76/live/e75bde90-ccc4-11f1-951b-8fbc7a9ea030.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[La nueva oleada de drogas sintéticas caseras que se propaga por EE.UU. y agrava la crisis del fentanilo]]></title>
+            <description><![CDATA[La BBC recoge testimonios de consumidores, traficantes, personal penitenciario y trabajadores de centros de rehabilitación, mientras el país lucha contra una nueva y mortal epidemia de drogas. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/c6kg543ly39lo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c6kg543ly39lo#4</guid>
+            <pubDate>Mon, 19 Oct 2026 13:59:07 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/11eb/live/394d9e60-cbc5-11f1-aba9-2bb2608f11d9.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[El líder de una secta condenado por ordenar a sus seguidores dejar morir de hambre a casi 200 niños]]></title>
+            <description><![CDATA[El autoproclamado pastor Paul Mackenzie y otros 29 de sus seguidores se enfrentaban a 191 cargos de asesinato.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c98rzyr2nze1o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c98rzyr2nze1o#4</guid>
+            <pubDate>Mon, 19 Oct 2026 17:34:20 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/8068/live/34a82040-c956-11f1-8879-9d9deeb686e1.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Bukele pide la liberación de 4 soldados salvadoreños "secuestrados" en Haití por pandillas y dice que hay una operación militar para rescatarlos]]></title>
+            <description><![CDATA["Ya acabamos con las pandillas en El Salvador, y también podemos acabar con ustedes", escribió el mandatario en X en un mensaje dirigido a los líderes pandilleros que habrían secuestrado a los salvadoreños.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cmp8gy537z1no?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cmp8gy537z1no#5</guid>
+            <pubDate>Wed, 21 Oct 2026 21:05:08 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/78dd/live/a860ead0-cd8e-11f1-b1e7-39558e114359.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["No hay intención de mantener viva su memoria": cómo se va difuminando la figura de Maduro en la nueva Venezuela de Delcy Rodríguez ]]></title>
+            <description><![CDATA[A casi diez meses de su captura por parte de Estados Unidos, el expresidente está cada vez menos presente en los discursos y en la agenda. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cm1j43k5en2do?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cm1j43k5en2do#5</guid>
+            <pubDate>Mon, 19 Oct 2026 12:03:20 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/793d/live/e2d232a0-c9a1-11f1-ad54-aba20166b422.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[La polémica por la retirada de decenas de obras del Museo Nacional de Colombia (y qué dice de la "batalla cultural" de De la Espriella)]]></title>
+            <description><![CDATA[Decenas de obras con alusión al feminismo, colectivos LGTB y víctimas del conflicto fueron retiradas del Museo Nacional. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cw98zj48e4r4o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cw98zj48e4r4o#5</guid>
+            <pubDate>Fri, 16 Oct 2026 20:59:10 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/ee82/live/3408fda0-c9a4-11f1-ad54-aba20166b422.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[En gráficos: ¿cómo le está yendo realmente a la economía de EE.UU. bajo la presidencia de Trump?]]></title>
+            <description><![CDATA[Antes de las elecciones de mitad de mandato, Trump ha presumido del desempeño de la economía estadounidense. BBC Verify analiza los datos de inflación, empleo y crecimiento económico para evaluar si esas afirmaciones se sostienen.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cq0ldk70n888o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cq0ldk70n888o#6</guid>
+            <pubDate>Tue, 20 Oct 2026 20:30:06 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/8eab/live/c10e8120-cd5a-11f1-b962-b7ff822cde72.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[De estudiantes secundarios a "chalecos amarillos": cómo creció la protesta que sacude Francia]]></title>
+            <description><![CDATA[Unas protestas estudiantiles terminaron convirtiéndose en una crisis nacional para Emmanuel Macron. Te contamos las razones. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cvlyd7rw80e5o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cvlyd7rw80e5o#6</guid>
+            <pubDate>Tue, 20 Oct 2026 03:26:41 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/756f/live/20dd47e0-cbe8-11f1-ad7b-fd8c269705fe.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Análisis: los separatistas de Alberta sufren un duro revés pero la tensión con Canadá continuará]]></title>
+            <description><![CDATA[Los líderes del movimiento independentista prometen seguir adelante, pero el margen de la derrota podría dificultarlo.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cxyvr6508relo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cxyvr6508relo#6</guid>
+            <pubDate>Tue, 20 Oct 2026 17:02:36 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/9494/live/1725eca0-cc99-11f1-9a39-31b474234113.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Sitios web de todo el mundo quedan desactivados tras detectarse una falla de seguridad crítica en internet]]></title>
+            <description><![CDATA[Una grieta en el lenguaje de programación PHP, que es ampliamente utilizado en internet, ha sido descrita como las más importantes jamás descubiertas por la inteligencia artificial.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cq3djnk48ly8o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cq3djnk48ly8o#8</guid>
+            <pubDate>Thu, 22 Oct 2026 16:34:39 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/0465/live/2e702810-cd86-11f1-b1e7-39558e114359.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Las imágenes de las fascinantes especies del nuevo atlas de las islas Galápagos]]></title>
+            <description><![CDATA[El atlas te presenta más de 60 especies del archipiélago, sus interacciones y lo que aún no se sabe de ellas. También explica sus principales amenazas, desde las especies invasoras hasta el fenómeno de El Niño.]]></description>
+            <link>https://www.bbc.com/mundo/articles/ck1wvglvpqyqo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/ck1wvglvpqyqo#8</guid>
+            <pubDate>Wed, 21 Oct 2026 10:33:41 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/3e05/live/4f2faec0-cce8-11f1-bf7e-610931a7bfda.png"/>
+        </item>
+        <item>
+            <title><![CDATA[La medusa "inmortal" capaz de rejuvenecer y cómo los secretos de sus células nos pueden ayudar a tratar enfermedades]]></title>
+            <description><![CDATA[Una medusa "inmortal" es capaz de revertir su ciclo vital para volver a ser joven. Ahora los científicos investigan sus secretos con el fin de hallar formas para que las células humanas también puedan rejuvenecer.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cr0j0qqj57zeo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cr0j0qqj57zeo#8</guid>
+            <pubDate>Tue, 20 Oct 2026 21:56:24 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/161e/live/1d4d9c20-ccd2-11f1-b06b-25a52a186d15.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Cómo contarles a tus hijos menores de edad que tienes una nueva pareja, según dos expertas]]></title>
+            <description><![CDATA[Una situación que puede ser muy ilusionante y motivo de felicidad puede convertirse en un problema si no manejamos las cosas con cautela y cariño.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cvlydk8nnr20o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cvlydk8nnr20o#9</guid>
+            <pubDate>Wed, 21 Oct 2026 09:56:09 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/5445/live/11304f30-cc98-11f1-94e6-edd4c60b2e1d.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Hipermovilidad: la poco conocida "enfermedad de la flexibilidad" que causa dolor y fatiga]]></title>
+            <description><![CDATA[Este trastorno puede afectar a cientos de miles de personas, pero muchas sufren retrasos a la hora de obtener un diagnóstico.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cqj9k3vge1r9o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cqj9k3vge1r9o#9</guid>
+            <pubDate>Tue, 20 Oct 2026 09:34:37 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/76ae/live/8e87bca0-cbdc-11f1-b139-f77a8b036d06.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Cuándo son realmente preocupantes las subidas de azúcar en sangre]]></title>
+            <description><![CDATA[Preocuparse por los picos de azúcar en sangre está de moda. Pero estos pueden ser una respuesta normal al comer. Aquí te explicamos cuándo no es necesario preocuparse.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c6rmyzg1wkego?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c6rmyzg1wkego#9</guid>
+            <pubDate>Mon, 19 Oct 2026 10:38:03 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/3120/live/33377f70-cbaa-11f1-9ee2-f74dfb8e54e5.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[De Medellín a Ho Chi Minh: 5 ciudades en pleno auge que los viajeros no deberían perderse]]></title>
+            <description><![CDATA[Un nuevo informe global destaca ciudades como Toulouse o Varsovia como destinos urbanos emergentes para los viajeros. Esto es lo que sus habitantes opinan sobre qué las hace especiales.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c6n4ewzkn45go?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c6n4ewzkn45go#11</guid>
+            <pubDate>Tue, 20 Oct 2026 10:28:50 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/12e5/live/a124ca20-cc0d-11f1-a22e-1978bafc2e9d.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["Me cambió la voz": Selena Gomez revela cómo vapear nicotina la afectó y pide a sus fans que no lo hagan]]></title>
+            <description><![CDATA[La cantante de 34 años afirma que el vapeo de nicotina "en grandes cantidades" afectó permanentemente su voz.]]></description>
+            <link>https://www.bbc.com/mundo/articles/ckr5yemlj14po?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/ckr5yemlj14po#11</guid>
+            <pubDate>Wed, 21 Oct 2026 12:42:19 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/d22b/live/362bc3c0-cbab-11f1-a64c-550be9e3c66b.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["Un mundo feliz": 3 inquietantes tendencias que la famosa novela distópica de Aldous Huxley predijo hace casi 100 años]]></title>
+            <description><![CDATA[La obra del inglés Aldous Huxley ha inspirado a decenas de escritores de ciencia ficción desde su publicación en 1932. Mucho de lo que inventó hoy es realidad.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cqx2zdkgk48ko?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cqx2zdkgk48ko#11</guid>
+            <pubDate>Sat, 17 Oct 2026 11:38:11 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/ecc0/live/ccafd900-b245-11f1-85fd-79ee2e228456.jpg"/>
+        </item>
+    </channel>
+</rss>
