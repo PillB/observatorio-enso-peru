@@ -76,7 +76,7 @@ jobs:
         run: n8n/test/e2e-extractor.sh "${{ matrix.image }}" "$RUNNER_TEMP/extractor"
       - name: Collector end to end (ENFEN sources, two runs, fake GitHub API)
         run: n8n/test/e2e.sh "${{ matrix.image }}" "$RUNNER_TEMP/e2e" enfen
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: n8n-e2e-${{ strategy.job-index }}
@@ -113,7 +113,7 @@ jobs:
             echo "|---|---|---|---|---|---|---|"
             jq -r '.[1:][] | select(.resultado != "OK") | "| \(.veredicto) | \(.alcance) | \(.bloqueo) | \(.http) | \(.id) | \(.url) | \(.nota | gsub("\\|"; "/") | .[0:80]) |"' validacion-actions.json
           } >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: n8n-validacion-actions
           path: validacion-actions.json

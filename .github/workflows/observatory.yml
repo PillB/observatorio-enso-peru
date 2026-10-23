@@ -256,7 +256,7 @@ jobs:
 
       # Las dos subidas auxiliares no detienen el despliegue de los datos oficiales si fallan: el job
       # «archive» avisa si le falta raw-sources, y «incidents» sigue sin informe.
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         continue-on-error: true
         with:
@@ -265,7 +265,7 @@ jobs:
             public/data/run-report.json
             public/data/sources.json
           if-no-files-found: ignore
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: success()
         continue-on-error: true
         with:
@@ -279,7 +279,7 @@ jobs:
         if: env.DEPLOY_TARGET == 'github-pages'
         with:
           path: public
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: env.DEPLOY_TARGET == 'cloudflare'
         with:
           name: site
