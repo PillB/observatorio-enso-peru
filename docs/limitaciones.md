@@ -65,9 +65,12 @@ Sin la copia del Perú, un aviso meteorológico queda «Sin nivel» salvo que
 su texto cite el color, y con la vigencia que diga su texto. Las demás
 páginas del SENAMHI y de la ANA se archivan, pero todavía no alimentan
 indicadores. Del IMARPE, el repositorio no responde a GitHub Actions desde
-el 22 de octubre de 2026 y sí desde el Perú: la sonda semanal asigna sus
-búsquedas al recolector del Perú. Su sitio web responde a n8n; a Actions le
-pide una verificación anti-robots (medido el 26 de octubre de 2026).
+el 22 de octubre de 2026 (desde el Perú aún no se midió): la sonda semanal
+asigna sus búsquedas al recolector del Perú, y desde el kit 2 del recolector
+también los paquetes y PDF de cada documento van en su copia; sin ellos, los
+PDF llegan por la DHN, el Internet Archive o la consola de documentos. Su
+sitio web responde a n8n; a Actions le pide a veces una verificación
+anti-robots (2 de 3 lecturas del 26 de octubre de 2026).
 
 ## ERSSTv6
 

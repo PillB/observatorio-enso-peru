@@ -8,9 +8,9 @@
 //   rama que no existe o no tiene latido (404) no se revisa: ese recolector puede no estar instalado todavía.
 //   Así un recolector callado se ve aunque el flujo diario esté fallando y no llegue a sincronizar sus incidencias.
 // * Registro: si la sonda semanal (probe-sources.yml) no terminó bien en la rama principal en PROBE_MAX_DAYS días
-//   (GitHub puede saltarse una corrida programada, como el lunes 26 de octubre de 2026), la relanza, como mucho una
-//   vez al día. Sin ella, las URL nuevas del registro quedan sin medir (robots «unknown») y los canales no siguen
-//   a los servidores que dejan de responder.
+//   (GitHub puede retrasar horas o saltarse una corrida programada; la del 26 de octubre de 2026 empezó 7 h tarde),
+//   la relanza, como mucho una vez al día. Sin ella, las URL nuevas del registro quedan sin medir (robots «unknown»)
+//   y los canales no siguen a los servidores que dejan de responder.
 //
 // Las pruebas (python/tests/js/watchdog.test.mjs) le pasan un `github` de mentira.
 'use strict';

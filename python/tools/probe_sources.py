@@ -247,9 +247,21 @@ def from_vantage_file(data: dict, vantage: str = "n8n") -> list[dict]:
 
 
 def _put(data: dict, url: str, rec: dict) -> None:
+    """Guarda la medición de una red (reemplaza la anterior de esa misma red). Si no trae una lectura de robots.txt
+    (no respondió, o esta vez no se leyó, como n8n con lo que el registro ya da por permitido), conserva en
+    ``robots_read`` la última de esa red que permitía la ruta: RFC 9309 §2.4 deja usar la copia guardada si robots.txt
+    no responde, y así una verificación de un día no borra lo que se sabía (``registry.robots_verdict``)."""
     rec = {k: v for k, v in rec.items() if k != "url"}
     groups = registry._groups(data["urls"].get(url) or {})
-    groups.setdefault(registry.vantage_group(rec["vantage"]), {})[rec["vantage"]] = rec
+    group = groups.setdefault(registry.vantage_group(rec["vantage"]), {})
+    prev = group.get(rec["vantage"])
+    if prev and rec.get("class") != "robots" and rec.get("robots") not in ("allowed", "absent", "disallowed"):
+        seen = ({"robots": prev["robots"], "at": prev.get("at")}
+                if prev.get("robots") in ("allowed", "absent") and prev.get("class") != "robots"
+                else prev.get("robots_read"))
+        if isinstance(seen, dict):
+            rec["robots_read"] = seen
+    group[rec["vantage"]] = rec
     data["urls"][url] = groups
 
 

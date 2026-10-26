@@ -42,7 +42,10 @@ solo desde Actions y como mucho una vez al día (``by_url[url]["reader"]``,
 ``READER_MIN_HOURS``); robots.txt sigue rigiendo todo lo demás y el rastreo.
 ``by_url[url]["robots"]`` dice lo que se sabe de su robots.txt: ``allowed``
 (alguien lo leyó y permite la ruta, o no existe), ``disallowed`` o ``unknown``
-(nadie pudo leerlo: n8n no la pide y el pipeline lo lee antes de pedirla).
+(nadie pudo leerlo: n8n no la pide y el pipeline lo lee antes de pedirla). Si
+una medición no pudo leerlo, vale la última lectura de esa red que permitía la
+ruta, hasta ``STALE_DAYS`` (``robots_read``; RFC 9309 §2.4), y un robots.txt en
+contra que nadie volvió a leer en ``STALE_DAYS`` deja de contar.
 
 El registro no guarda la hora, el tiempo ni el tamaño de cada medición (siguen
 en ``reachability.json``): solo cambia cuando cambia el alcance.
@@ -319,12 +322,19 @@ def newest_at(reach: dict) -> Optional[datetime]:
 
 
 def _recent(recs: dict[str, dict], now: Optional[datetime]) -> dict[str, dict]:
-    """Las mediciones de un grupo sin las de más de ``STALE_DAYS`` antes de ``now``, salvo la más reciente."""
-    if now is None or len(recs) < 2:
+    """Las mediciones de un grupo sin las de más de ``STALE_DAYS`` antes de ``now``, salvo la más reciente.
+
+    Un robots.txt en contra (clase ``robots``) de más de ``STALE_DAYS`` no cuenta aunque sea la más reciente: quien
+    lo leyó ya no pide la URL (queda sin canales) y, si el servidor la vuelve a permitir, nadie lo sabría. Sin esa
+    medición la URL vuelve a medirse (``unknown``: se lee su robots.txt antes de pedirla)."""
+    if now is None:
+        return recs
+    cutoff = now - timedelta(days=STALE_DAYS)
+    recs = {v: r for v, r in recs.items() if r.get("class") != "robots" or (record_at(r) or cutoff) >= cutoff}
+    if len(recs) < 2:
         return recs
     oldest = datetime.min.replace(tzinfo=timezone.utc)
     newest = max(recs.values(), key=lambda r: record_at(r) or oldest)
-    cutoff = now - timedelta(days=STALE_DAYS)
     return {v: r for v, r in recs.items() if r is newest or (record_at(r) or cutoff) >= cutoff}
 
 
@@ -374,7 +384,16 @@ def robots_verdict(url: str, reach: dict, now: Optional[datetime] = None) -> str
     recs = [(g, r) for g, rs in _counted(url, reach, now).items() for r in rs.values()]
     if any(r.get("class") == "robots" for _, r in recs):
         return "disallowed"
-    if any(r.get("robots") in ("allowed", "absent") or (
+    cutoff = now - timedelta(days=STALE_DAYS) if now else None
+
+    def read_before(r: dict) -> bool:
+        """La última lectura de esa red que permitía la ruta (``robots_read``, de ``probe_sources._put``), si esta
+        vez robots.txt no respondió o no se leyó: vale hasta ``STALE_DAYS`` (RFC 9309 §2.4)."""
+        seen = r.get("robots_read") if isinstance(r.get("robots_read"), dict) else {}
+        t = record_at(seen)
+        return seen.get("robots") in ("allowed", "absent") and (cutoff is None or (t is not None and t >= cutoff))
+
+    if any(r.get("robots") in ("allowed", "absent") or read_before(r) or (
             g == "peru" and r.get("class") in CLASSES and r.get("robots") not in ("unreachable", "disallowed")
             and not str(r.get("detail") or "").startswith("robots.txt")) for g, r in recs):
         return "allowed"

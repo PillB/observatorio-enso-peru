@@ -69,9 +69,13 @@ El repositorio institucional del IMARPE (`repositorio.imarpe.gob.pe`,
 DSpace; cliente único en `python/enso/feeds/imarpe_repo.py`) recibe cada
 comunicado y cada informe técnico unos 3 días después de publicados: es la
 ruta oficial sin verificación. Su API (`/server/api`) no responde a GitHub
-Actions desde el 22 de octubre de 2026 (el nombre no resuelve) y sí desde el
-Perú, así que la sonda semanal asigna sus búsquedas al recolector del Perú y
-la corrida diaria las lee de esa copia. Su listado se suma al del portal y
+Actions desde el 22 de octubre de 2026 (el nombre no resuelve; desde el Perú
+aún no se midió), así que la sonda semanal asigna sus tres búsquedas al
+recolector del Perú. La corrida diaria lee de la copia del Perú lo que ese
+equipo bajó: las búsquedas y, desde el kit 2 del recolector, los paquetes y
+PDF de los documentos que encuentran. Lo que no esté en la copia se pide
+desde Actions y hoy falla (`repository-unreachable`): el PDF llega entonces
+por las otras rutas de la lista de abajo. Su listado se suma al del portal y
 de la DHN.
 
 El PDF del comunicado se busca en este orden (`_get_communique` en
@@ -83,7 +87,8 @@ El PDF del comunicado se busca en este orden (`_get_communique` en
    (`data-n8n`, hasta 72 h) o la [consola de documentos](documentos-manuales.md)
    (`data-manual`, hasta 120 días). Una URL que el registro no asigna a
    Actions se lee primero de esas copias.
-2. El repositorio del IMARPE (su búsqueda por número y año).
+2. El repositorio del IMARPE (su búsqueda por número y año): de la copia
+   del recolector del Perú si la trae; si no, directo.
 3. La copia del Internet Archive de esas mismas URL (y una nueva con Save
    Page Now si la existente tiene más de un día y robots.txt lo permite).
 4. Cualquier copia en PDF que el Internet Archive tenga de la página de
@@ -105,8 +110,9 @@ emite durante los eventos con numeración propia.
 
 El IMARPE deposita cada domingo su Boletín Semanal Oceanográfico y
 Biológico-Pesquero (BS-OBP) en su repositorio institucional
-(`repositorio.imarpe.gob.pe`, API REST de DSpace, que responde a GitHub
-Actions; SIOFEN, en cambio, está detrás de una verificación de
+(`repositorio.imarpe.gob.pe`, API REST de DSpace; desde el 22 de octubre de
+2026 no responde a GitHub Actions y se lee de la copia del recolector del
+Perú cuando la trae; SIOFEN, en cambio, está detrás de una verificación de
 Cloudflare). La corrida diaria busca los boletines nuevos con el cliente
 único `enso.feeds.imarpe_repo`, baja hasta dos por corrida y los lee con
 `enso.feeds.imarpe_bsobp`; publica `imarpe-bsobp.json` con el último año.
@@ -149,8 +155,8 @@ el canal que decide quién la pide, en `registry/sources.json`.
 | IGP (`met.igp.gob.pe`) | Responde | En uso (ICEN) |
 | DHN (comunicados ENFEN) | El listado responde (también a n8n); los PDF piden verificación humana a los servidores, también a n8n y al recolector del Perú | Listado en uso; PDF del repositorio del IMARPE, la consola de documentos o el Internet Archive |
 | ENFEN (`enfen.imarpe.gob.pe`) | No resuelve el nombre (tampoco desde n8n) | Copia del recolector del Perú; réplica DHN, repositorio del IMARPE e Internet Archive |
-| IMARPE, repositorio (`repositorio.imarpe.gob.pe`) | Desde el 22 de octubre no responde a la corrida diaria en Actions (incidencias `repository-unreachable` y `bsobp-unreachable`, causa «conexión»; el mensaje trae el error de red). Su certificado no trae el intermedio: va en `enso/data/ca-intermedios.pem` | Ruta de los comunicados e informes técnicos del ENFEN y del boletín semanal BS-OBP. Sus tres búsquedas están en el registro (`imarpe-repositorio-enfen`, `imarpe-repositorio-bsobp`, sin n8n): la sonda semanal decide quién las pide; desde el 26 de octubre, el recolector del Perú (`suspected-geoblock`) |
-| IMARPE, sitio web (`www.imarpe.gob.pe`) | La portada y la página de sección dan HTTP 403 con verificación anti-robots (se registra, no se evade); el 26 de octubre también el feed. Desde n8n responden los tres | Feed en las noticias; las dos páginas las bajan n8n y el recolector del Perú como archivo, sin lector todavía |
+| IMARPE, repositorio (`repositorio.imarpe.gob.pe`) | Desde el 22 de octubre no responde a la corrida diaria en Actions (incidencias `repository-unreachable` y `bsobp-unreachable`, causa «conexión»; el mensaje trae el error de red). Su certificado no trae el intermedio: va en `enso/data/ca-intermedios.pem` | Ruta de los comunicados e informes técnicos del ENFEN y del boletín semanal BS-OBP. Sus tres búsquedas están en el registro (`imarpe-repositorio-enfen`, `imarpe-repositorio-bsobp`, sin n8n): la sonda semanal decide quién las pide; desde el 26 de octubre, el recolector del Perú (`suspected-geoblock`), que desde su kit 2 también baja los paquetes y PDF |
+| IMARPE, sitio web (`www.imarpe.gob.pe`) | La portada y la página de sección dan HTTP 403 con verificación anti-robots (se registra, no se evade); el feed y su robots.txt, según el ejecutor de Actions (2 de 3 lecturas el 26 de octubre). Desde n8n responden los tres | Feed en las noticias cuando Actions lo alcanza o n8n trae copia; las dos páginas las bajan n8n y el recolector del Perú como archivo, sin lector todavía |
 | SENAMHI (avisos, estaciones, boletines) | Tiempo de espera agotado | No disponible desde Actions |
 | ANA (caudales, SNIRH) | Tiempo de espera agotado | No disponible desde Actions |
 | INDECI, CENEPRED (SIGRID) | Responden | Candidatos |
@@ -176,9 +182,13 @@ copias del recolector del Perú y de n8n). Reglas:
   llevan 30 días sin medirse (`PRUNE_DAYS`).
 - **robots.txt por URL** (`by_url[...].robots`): `allowed`, `disallowed` o
   `unknown` (nadie pudo leerlo: no respondió, dio 429 o 5xx, o pidió una
-  verificación). Cualquier otro 4xx (salvo 429) o 3xx es «todo permitido» (RFC 9309). Con
+  verificación). Cualquier otro 4xx (salvo 429) o 3xx es «todo permitido» (RFC 9309). Si
+  una medición no pudo leerlo, vale la última lectura de esa misma red que
+  permitía la ruta, hasta 45 días (RFC 9309 §2.4: si robots.txt no responde se
+  usa la copia guardada): una verificación de un día no la deja `unknown`. Con
   `disallowed` la URL queda sin canales, salvo los feeds de noticias que se leen
-  una vez al día (abajo). n8n no pide ninguna URL `unknown` ni `disallowed`; la
+  una vez al día (abajo); un `disallowed` que nadie volvió a leer en 45 días
+  deja de contar y la URL vuelve a medirse. n8n no pide ninguna URL `unknown` ni `disallowed`; la
   corrida diaria lee el robots.txt de una URL `unknown` antes de pedirla, usa
   primero las copias de los recolectores y no pide nada si el robots.txt no
   responde.

@@ -392,13 +392,18 @@ class Fetcher:
     def _may_save(self, url: str) -> bool:
         """Si se puede pedir una copia nueva (Save Page Now): el Internet Archive le pide la página al servidor en
         nombre del observatorio, así que no si el registro no le da canales (robots.txt la prohíbe) ni si robots.txt
-        no la permite; si no responde en la corrida, vale lo que leyó la sonda (``allowed``), como en ``_robots_skip``."""
-        if self.plan.get(url) == []:
+        no la permite. Si no responde en la corrida, vale lo que leyó la sonda (``allowed``), como en
+        ``_robots_skip``, pero solo en lo que el registro asigna a Actions: el Internet Archive pide desde fuera del
+        Perú, y lo que solo alcanza el recolector del Perú (el portal del ENFEN) le falla siempre (HTTP 523) y gasta
+        los intentos que necesita el PDF del comunicado."""
+        planned = self.plan.get(url)
+        if planned == []:
             return False
         if self.robots is None:
             return True
         allowed = self.robots.allowed(url)
-        return allowed is True or (allowed is None and self.robots_known.get(url) == "allowed")
+        return allowed is True or (allowed is None and self.robots_known.get(url) == "allowed"
+                                   and "actions" in (planned or []))
 
     def _from_archive(self, url: str, attempts: list, fresh: bool) -> Optional[Response]:
         """Copia más reciente del Internet Archive; si tiene más de un día y

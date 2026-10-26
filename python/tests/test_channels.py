@@ -233,6 +233,50 @@ def test_urls_n8n_did_not_request_for_their_robots_txt_are_measurements():
     assert rows[0]["at"] == probe_sources._iso(AT) and "at" not in rows[1]
 
 
+def test_a_robots_txt_reading_survives_a_measurement_that_could_not_read_it():
+    """Segunda revisión: cada medición de una red reemplaza la anterior, y una que no leyó robots.txt (una
+    verificación ese día desde Actions, o n8n pidiendo lo que el registro ya daba por permitido) borraba la lectura:
+    el veredicto volvía a «unknown» cada semana. Se conserva la última lectura de esa red hasta STALE_DAYS
+    (RFC 9309 §2.4: si robots.txt no responde, vale la copia guardada)."""
+    url = "https://www.imarpe.gob.pe/feed/"
+    t0 = NOW - timedelta(days=10)
+    data = {"urls": {}}
+    probe_sources._put(data, url, {"class": "ok", "robots": "allowed", "at": t0.isoformat(), "vantage": "github-actions"})
+    probe_sources._put(data, url, {"class": "ok", "robots": "allowed", "at": t0.isoformat(), "vantage": "n8n-aws"})
+    # Una semana después: Actions recibe una verificación en robots.txt y n8n pide sin leerlo.
+    t1 = (NOW - timedelta(days=3)).isoformat()
+    probe_sources._put(data, url, {"class": "challenge", "robots": "unreachable", "detail": "robots.txt sin respuesta",
+                                   "at": t1, "vantage": "github-actions"})
+    probe_sources._put(data, url, {"class": "ok", "at": t1, "vantage": "n8n-aws"})
+    rec = data["urls"][url]["n8n"]["n8n-aws"]
+    assert rec["robots_read"] == {"robots": "allowed", "at": t0.isoformat()} and "robots" not in rec
+    assert data["urls"][url]["actions"]["github-actions"]["robots_read"]["robots"] == "allowed"
+    assert registry.robots_verdict(url, data["urls"], NOW) == "allowed"
+    # Otra semana igual: se sigue arrastrando la misma lectura, con su fecha (no la de la medición).
+    probe_sources._put(data, url, {"class": "ok", "at": NOW.isoformat(), "vantage": "n8n-aws"})
+    assert data["urls"][url]["n8n"]["n8n-aws"]["robots_read"]["at"] == t0.isoformat()
+    # Pasados STALE_DAYS desde la lectura, ya no cuenta: vuelve a leerse antes de pedir.
+    later = t0 + timedelta(days=registry.STALE_DAYS + 1)
+    assert registry.robots_verdict(url, data["urls"], later) == "unknown"
+    # Una lectura en contra no se arrastra ni se tapa.
+    probe_sources._put(data, url, {"class": "robots", "robots": "disallowed", "at": NOW.isoformat(), "vantage": "n8n-aws"})
+    assert "robots_read" not in data["urls"][url]["n8n"]["n8n-aws"]
+    assert registry.robots_verdict(url, data["urls"], NOW) == "disallowed"
+
+
+def test_a_robots_txt_disallow_nobody_read_again_stops_counting_after_stale_days():
+    """Segunda revisión: un robots.txt en contra que solo leyó n8n quedaba para siempre (la URL sin canales, nadie
+    la volvía a medir y la medición más reciente de un grupo nunca vencía). Pasados STALE_DAYS, vuelve a «unknown»
+    y se lee su robots.txt antes de pedirla."""
+    url = "https://www.imarpe.gob.pe/feed/"
+    at = NOW - timedelta(days=registry.STALE_DAYS + 2)
+    reach = {url: {"n8n": {"n8n-aws": {"class": "robots", "robots": "disallowed", "at": at.isoformat(), "vantage": "n8n-aws"}},
+                   "actions": {"github-actions": {"class": "challenge", "at": NOW.isoformat(), "vantage": "github-actions"}}}}
+    assert registry.geoblock(url, reach, at)["status"] == "robots-disallowed"
+    assert registry.geoblock(url, reach, NOW)["status"] != "robots-disallowed"
+    assert registry.robots_verdict(url, reach, NOW) == "unknown"
+
+
 def test_missing_relay_branches_are_reported(tmp_path):
     log = obs.EventLog()
     plan = {"https://www.senamhi.gob.pe/?p=boletines": ["peru-server"], "https://snirh.ana.gob.pe/": ["peru-server"],

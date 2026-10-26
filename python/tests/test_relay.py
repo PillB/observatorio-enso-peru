@@ -833,6 +833,23 @@ def test_collector_follows_the_newest_listing_not_the_stale_wordpress_api():
     assert not any("-14-2026" in u for u in asked)
 
 
+def test_informes_listing_does_not_carry_the_communique_goal():
+    """Revisión: con el listado de informes en las páginas del ENFEN (el registro lo manda al Perú), si ningún
+    listado de comunicados se leía, la meta «comunicado» quedaba en el de informes (200) y el aviso decía
+    «comunicado (ok, HTTP 200…)» en vez de la causa real. Tampoco se lee como listado de comunicados."""
+    informes = {"url": INFORMES_PAGE, "status": 200, "body": b"<html><body>sin informes</body></html>"}
+    comunicados = {"url": "https://enfen.imarpe.gob.pe/comunicados/", "status": 403, "body": b"challenge"}
+    asked = []
+
+    def handler(req):
+        asked.append(str(req.url))
+        return httpx.Response(404)
+
+    pc.enfen_documents(httpx.Client(transport=httpx.MockTransport(handler)), [comunicados, informes])
+    assert comunicados["goal"] == "comunicado" and "goal" not in informes
+    assert INFORMES_PAGE not in asked  # el listado ya bajado se reutiliza
+
+
 def test_collector_goals_flag_the_newest_documents(tmp_path, monkeypatch):
     """La recolección anota si guardó el PDF del comunicado y del informe más recientes, no solo cuántas URL."""
     idx = _collect(tmp_path, monkeypatch, _peru_only)
@@ -1245,6 +1262,14 @@ def test_save_page_now_only_where_robots_txt_allows(monkeypatch):
     asked.clear()
     archived_copy(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True), [PAGE], ("pdf",), save=True)
     assert not [u for u in asked if "/save/" in u]
+    # Segunda revisión: con robots.txt sin respuesta vale la lectura de la sonda, pero solo en lo que el registro
+    # asigna a Actions; lo que solo alcanza el Perú (el portal del ENFEN) el Internet Archive tampoco lo alcanza.
+    _net(monkeypatch, {"ana.example.pe": (503, "")}, asked)
+    url = "https://ana.example.pe/datos/"
+    for planned, want in ((["peru-server"], []), (["actions", "n8n"], [f"https://web.archive.org/save/{url}"])):
+        f = Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True, plan={url: planned},
+                    robots_known={url: "allowed"})
+        assert saves(f, url) == want, planned
 
 
 def test_imarpe_repository_search_respects_robots_txt(monkeypatch):
