@@ -44,8 +44,14 @@ de cuándo es.
 
 La capa de IDESEP se guarda con su esquema (`DescribeFeatureType`) para
 saber qué campos trae, y el registro dice cuántos avisos trajo y, si el
-servidor dice tener más, `truncado: N de M` (se piden hasta 1000). Una
-capa vacía puede ser normal: ningún aviso en esos 5 días.
+servidor dice tener más, `truncado: N de M` (se piden hasta 1000). Sus
+campos son `gid`, `nivel` (entero), `fecha`, `nro_mapa`, `descripcio`,
+`recomendac`, `respons` y `geom` (multipolígono). Del 21 al 26 de octubre
+de 2026 llegó vacía todas las noches (`totalFeatures` 0), igual que la
+capa anterior `g_aviso:view_aviso`, aunque el SENAMHI emitió los avisos
+N° 431 a 440 en esos días: el servidor no la alimenta, así que el nivel de
+los avisos sale de la tabla y la capa solo se guarda para ver si vuelve a
+traer datos.
 
 Un documento que pide verificación antirobots también desde el Perú no lo
 baja el recolector, que no evade esas verificaciones. Cuando eso pasa con
