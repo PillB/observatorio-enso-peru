@@ -208,6 +208,31 @@ def test_robots_txt_read_by_n8n_gives_the_url_a_verdict():
     assert row[0]["robots"] == "allowed" and "robots" not in row[1]
 
 
+def test_urls_n8n_did_not_request_for_their_robots_txt_are_measurements():
+    """#52: n8n lee el robots.txt de las URL «unknown» y no pide las que prohíbe o cuyo robots.txt no responde
+    (``not_requested`` en el índice, filas «NO PEDIDA» en el informe). Como en ``probe``: si lo prohíbe, la URL
+    queda sin canales; si no respondió, cuenta la clase de ese robots.txt (sin ella no es una medición)."""
+    no, gone, unread = "https://a.pe/feed", "https://b.pe/feed", "https://c.pe/feed"
+    index = {"collected_at": AT, "collector": {"kind": "n8n", "egress": "aws"}, "entries": [], "not_requested": [
+        {"url": no, "robots": "disallowed", "robots_url": "https://a.pe/robots.txt", "fetched_at": AT},
+        {"url": gone, "robots": "unreachable", "reach": "challenge", "note": "robots.txt no respondió (challenge)"},
+        {"url": unread, "robots": "unreachable", "note": "robots.txt no respondió (sin respuesta)"}, "x"]}
+    got = probe_sources.from_n8n_index(index)
+    assert got[no]["class"] == "robots" and got[no]["robots"] == "disallowed" and got[no]["vantage"] == "n8n-aws"
+    assert got[gone]["class"] == "challenge" and got[gone]["robots"] == "unreachable" and got[gone]["at"] == AT
+    assert unread not in got
+    reach = {no: {"n8n": {"n8n-aws": got[no]}}}
+    assert registry.geoblock(no, reach)["status"] == "robots-disallowed" and registry.robots_verdict(no, reach) == "disallowed"
+    rows = probe_sources.from_n8n_report([
+        {"id": "resumen", "url": ""},
+        {"resultado": "NO PEDIDA", "veredicto": "not_requested", "alcance": "", "url": no, "medido": AT, "robots": "disallowed"},
+        {"resultado": "NO PEDIDA", "veredicto": "not_requested", "alcance": "timeout", "url": gone, "robots": "unreachable"},
+        {"resultado": "NO PEDIDA", "veredicto": "not_requested", "alcance": "", "url": unread, "robots": "unreachable"},
+        {"url": "https://d.pe/", "alcance": "ok", "robots": "allowed"}], "n8n-aws")
+    assert [(r["url"], r["class"]) for r in rows] == [(no, "robots"), (gone, "timeout"), ("https://d.pe/", "ok")]
+    assert rows[0]["at"] == probe_sources._iso(AT) and "at" not in rows[1]
+
+
 def test_missing_relay_branches_are_reported(tmp_path):
     log = obs.EventLog()
     plan = {"https://www.senamhi.gob.pe/?p=boletines": ["peru-server"], "https://snirh.ana.gob.pe/": ["peru-server"],

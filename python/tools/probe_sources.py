@@ -139,7 +139,9 @@ def from_n8n_index(index: dict) -> dict[str, dict]:
     """Lo que el recolector de n8n intentó en su última corrida (rama ``data-n8n``, enso-relay/1).
 
     n8n clasifica cada respuesta con las mismas clases (``reach``). Una copia conservada de una corrida
-    anterior (``carried``) no es una medición de hoy: cuenta su último intento, que falló."""
+    anterior (``carried``) no es una medición de hoy: cuenta su último intento, que falló. n8n lee el robots.txt
+    de las URL ``robots: unknown`` antes de pedirlas: la entrada trae lo que leyó (``robots``) y las que no pidió
+    van en ``not_requested`` (``_not_requested``)."""
     col = index.get("collector") or {}
     label = re.sub(r"[^a-z0-9]+", "-", str(col.get("egress") or col.get("host") or "").lower()).strip("-")
     vantage = "n8n" if label in ("", "n8n") else label if label.startswith("n8n") else f"n8n-{label}"
@@ -161,7 +163,24 @@ def from_n8n_index(index: dict) -> dict[str, dict]:
         for u in [e.get("url"), *(e.get("aliases") or [])]:
             if u:
                 out[u] = rec | {"vantage": vantage}
+    for e in index.get("not_requested") or []:
+        rec = _not_requested(e.get("robots"), e.get("reach"), e.get("note")) if isinstance(e, dict) else None
+        if rec and e.get("url"):
+            out[e["url"]] = rec | {"at": e.get("fetched_at") or at, "vantage": vantage}
     return out
+
+
+def _not_requested(robots, reach, note) -> dict | None:
+    """Una URL que n8n no pidió por su robots.txt, como la mide ``probe``: si lo prohíbe, clase ``robots``; si no
+    respondió, la clase de ese robots.txt (``reach`` en el índice, ``alcance`` en el informe). Sin ella no es una
+    medición de la URL."""
+    if robots == "disallowed":
+        return {"class": "robots", "http": None, "bytes": 0, "detail": "robots.txt no permite la ruta",
+                "robots": "disallowed"}
+    if robots == "unreachable" and reach in registry.CLASSES and reach not in ("ok", "robots"):
+        return {"class": reach, "http": None, "bytes": 0, "detail": str(note or "robots.txt sin respuesta"),
+                "robots": "unreachable"}
+    return None
 
 
 def _iso(at) -> str | None:
@@ -175,11 +194,21 @@ def _iso(at) -> str | None:
 
 def from_n8n_report(rows: list, vantage: str) -> list[dict]:
     """El informe del flujo «ENSO · Validación de fuentes desde n8n» (nodo Informe): una fila por URL con
-    ``alcance`` (la clase del registro, ``reachClass`` en n8n/lib/classify.js), ``http``, ``bytes`` y ``medido``.
-    La primera fila es el resumen. Sirve igual leído del JSON o del CSV (allí todo llega como texto)."""
+    ``alcance`` (la clase del registro, ``reachClass`` en n8n/lib/classify.js), ``http``, ``bytes``, ``medido`` y,
+    si n8n leyó su robots.txt, ``robots``; las filas «NO PEDIDA» (``veredicto: not_requested``) son las URL que su
+    robots.txt prohíbe o cuyo robots.txt no respondió. La primera fila es el resumen. Sirve igual leído del JSON o
+    del CSV (allí todo llega como texto)."""
     out = []
     for r in rows:
-        if not isinstance(r, dict) or r.get("id") == "resumen" or not r.get("url") or r.get("alcance") not in registry.CLASSES:
+        if not isinstance(r, dict) or r.get("id") == "resumen" or not r.get("url"):
+            continue
+        if r.get("veredicto") == "not_requested":  # fila «NO PEDIDA»: su robots.txt la prohíbe o no respondió
+            rec = _not_requested(r.get("robots"), r.get("alcance"), r.get("nota"))
+            if rec:
+                rec |= {"url": r["url"], "at": _iso(r.get("medido"))}
+                out.append({k: v for k, v in rec.items() if v is not None} | {"vantage": vantage})
+            continue
+        if r.get("alcance") not in registry.CLASSES:
             continue
         rec = {"url": r["url"], "class": r["alcance"], "at": _iso(r.get("medido")),
                "detail": str(r.get("nota") or r.get("bloqueo") or "") or None,  # como from_n8n_index: «aborted» se reconoce
