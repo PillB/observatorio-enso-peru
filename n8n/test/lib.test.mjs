@@ -572,14 +572,16 @@ test('Fuentes intercala los servidores para no pedir seguido al mismo', async ()
   assert.deepEqual(out.map((i) => i.json.pause_s), [0, 0, 0, 0, 0, 0]);
 });
 
-test('Fuentes pide lo que el registro marca «disallowed» solo en entidades públicas del Perú', async () => {
+test('Fuentes no pide lo que el registro marca «disallowed», tampoco en entidades públicas del Perú (el registro ya aplica la excepción)', async () => {
   const rule = (robots) => ({ channels: ['n8n'], robots });
   const reg = { schema: 'enso-source-registry/1', sources: [
     { id: 'imarpe', group: 'g', url: 'https://www.imarpe.gob.pe/x', expect: 'html', channels: ['n8n'], by_url: { 'https://www.imarpe.gob.pe/x': rule('disallowed') } },
     { id: 'otro', group: 'g', url: 'https://example.org/x', expect: 'html', channels: ['n8n'], by_url: { 'https://example.org/x': rule('disallowed') } },
   ] };
+  // Que siga «disallowed» en un .gob.pe es una redirección a otro servidor que lo prohíbe (registry.py, #54).
+  reg.sources.push({ id: 'senamhi', group: 'g', url: 'https://www.senamhi.gob.pe/y', expect: 'html', channels: ['n8n'], by_url: { 'https://www.senamhi.gob.pe/y': rule('allowed') } });
   const out = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
-  assert.deepEqual(out.map((i) => [i.json.id, i.json.robots, i.json.robots_public]), [['imarpe', 'disallowed', true]]);
+  assert.deepEqual(out.map((i) => i.json.id), ['senamhi']);
 });
 
 test('Fuentes espera entre peticiones al mismo servidor público del Perú', async () => {

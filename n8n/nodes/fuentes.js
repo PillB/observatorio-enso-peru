@@ -62,11 +62,12 @@ for (const s of registry.sources) {
     const u = s.by_url && s.by_url[raw] && Array.isArray(s.by_url[raw].channels) ? s.by_url[raw] : sourceRule;
     // Lectores de feeds («reader»): las lee solo el pipeline, como un lector
     // de RSS, y n8n no las pide en ningún alcance. Tampoco lo que robots.txt
-    // no permite, salvo en una entidad pública del Perú (su robots.txt no
-    // decide; robots.js). Se comparan los valores explícitos para que un
-    // registro anterior, sin «robots», siga sirviendo.
-    const disallowed = u.status === 'robots-disallowed' || u.robots === 'disallowed';
-    if (!u.channels.length || u.reader || (disallowed && !publicPeru(u.hop || url))) return;
+    // no permite: el registro ya aplica la excepción de las entidades públicas
+    // del Perú («allowed»), y lo que sigue «disallowed» en una de ellas es una
+    // redirección a otro servidor que lo prohíbe. Se comparan los valores
+    // explícitos para que un registro anterior, sin «robots», siga sirviendo.
+    if (!u.channels.length || u.status === 'robots-disallowed' || u.reader) return;
+    if (u.robots === 'disallowed') return;
     if (scope === 'n8n' && !u.channels.includes('n8n')) return;
     seen.add(url);
     const target = {
@@ -74,7 +75,6 @@ for (const s of registry.sources) {
       follow: k === 0 && s.follow ? s.follow : null, channels: u.channels, pass: 1, registry: origin,
     };
     if (u.crawl_delay != null) target.crawl_delay = u.crawl_delay;
-    if (disallowed) Object.assign(target, { robots: 'disallowed', robots_public: true });
     // Nadie pudo leer su robots.txt al medir («unknown»): primero se lee aquí
     // (nodo «Analizar»), y la URL se pide en la segunda pasada solo si lo permite.
     // Con «hop» (la URL redirige ahí y el robots.txt de ese servidor no respondió

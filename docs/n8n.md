@@ -75,7 +75,10 @@ se juzga la ruta del destino:
 **Entidades públicas del Perú** (`.gob.pe`, `.mil.pe`): por decisión del
 responsable del proyecto (información pública, Ley 27806), su `robots.txt`
 no decide qué se pide, igual que `PUBLIC_PERU_SUFFIXES` en
-`python/enso/reach.py`. Una URL `disallowed` o `unreachable` se pide igual
+`python/enso/reach.py`. El registro ya las marca `allowed` (salvo una
+redirección a otro servidor que lo prohíba, o una verificación en lugar del
+`robots.txt`, que quedan `disallowed` o `unknown`). Cuando n8n lee el
+`robots.txt` de una URL `unknown`, una respuesta `disallowed` o `unreachable` se pide igual
 (`robots_public: true` en su entrada de `index.json`), salvo que en lugar del
 `robots.txt` haya llegado una verificación antirobots: esa nunca se evade.
 Lo que sí se respeta es la frecuencia: n8n intercala los servidores y, entre
@@ -139,7 +142,7 @@ sigue funcionando (todo va por la API, nada por `raw.githubusercontent.com`).
    | `api` | `https://api.github.com` | API de GitHub |
    | `data_branch` | `data-n8n` | Rama donde se publican las copias (se crea sola) |
    | `registry_ref`, `registry_path` | `main`, `registry/sources.json` | De dónde se lee el registro. Si no se puede leer, se usa la copia incluida en el flujo |
-   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. En ningún alcance se piden: las URL que `robots.txt` prohíbe (salvo en entidades públicas del Perú, ver «robots.txt»), los feeds `reader` (solo Actions, una vez al día), las URL sin canales y las fuentes con `n8n: false` (las búsquedas del repositorio del IMARPE). Las URL cuyo `robots.txt` nadie pudo leer al medir (`robots: unknown`) se piden solo si n8n lee ese `robots.txt` y lo permite (ver «robots.txt» más arriba) |
+   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. En ningún alcance se piden: las URL que `robots.txt` prohíbe según el registro (que ya aplica la excepción de las entidades públicas del Perú, ver «robots.txt»), los feeds `reader` (solo Actions, una vez al día), las URL sin canales y las fuentes con `n8n: false` (las búsquedas del repositorio del IMARPE). Las URL cuyo `robots.txt` nadie pudo leer al medir (`robots: unknown`) se piden solo si n8n lee ese `robots.txt` y lo permite (ver «robots.txt» más arriba) |
    | `host_label`, `egress` | `n8n-aws`, `aws-us-east-1` | Se anotan en cada copia |
    | `carry_hours` | `72` | Si una URL falla, se conserva su última copia válida hasta estas horas |
    | `max_file_mb` | `8` | Respuestas más grandes no se guardan |
