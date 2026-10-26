@@ -241,7 +241,7 @@ def _acquire(f, prev=None):
     log = _Log()
 
     class _Prev(obs.PreviousPublication):
-        def get(self, name, tries=1):
+        def get(self, name, tries=1, carry=False):
             return prev if name == "sources/cpc-godas-d20.json" else None
 
     return obs.acquire(SRC, f, None, _Prev(None), log), log
@@ -265,6 +265,41 @@ def test_plan_and_offline_mode_make_no_request(live, plan_or_offline):
     acq, log = _acquire(_fetcher(_by_month({}, asked), **kw))
     assert asked == [] and not acq.ok
     assert log.triples() == [("warning", "fetch", "unreachable")]
+
+
+def test_godas_follows_the_robots_rule_of_the_fetcher(live):
+    """Los rangos de bytes no pasan por ``Fetcher.get``: sin el robots.txt medido por la sonda, se lee en la
+    corrida y, si prohíbe la ruta o no responde, no se pide ningún GRIB."""
+    url = godas.BASE + "/"
+
+    def run(robots_txt, known):
+        asked = []
+
+        def handler(req):
+            if req.url.path == "/robots.txt":
+                asked.append("robots")
+                return robots_txt
+            asked.append(req.url.path)
+            return httpx.Response(404)
+
+        f = _fetcher(handler, robots=True, plan={url: ["actions"]}, robots_known={url: known})
+        f.robots.client = f.client
+        acq, log = _acquire(f)
+        return asked, acq, log
+
+    asked, acq, log = run(httpx.Response(200, text="User-agent: *\nDisallow: /godas/\n"), "unknown")
+    assert asked == ["robots"] and not acq.ok and ("warning", "fetch", "unreachable") in log.triples()
+    asked, acq, _ = run(httpx.Response(503), "unknown")
+    assert asked == ["robots", "robots"] and not acq.ok  # un fallo pasajero se reintenta una vez
+    asked, _, _ = run(httpx.Response(404), "unknown")
+    assert asked[0] == "robots" and len(asked) > 1  # sin robots.txt: se permite todo
+    # La sonda leyó el directorio, no cada GRIB: si robots.txt no responde, no se pide ninguno y se publica el
+    # histórico (barrido de robots.txt del 26 de octubre de 2026).
+    asked, _, log = run(httpx.Response(503), "allowed")
+    assert asked == ["robots", "robots"] and ("warning", "fetch", "unreachable") in log.triples()
+    # Un robots.txt que prohíbe los GRIB y no el directorio.
+    asked, _, log = run(httpx.Response(200, text="User-agent: *\nDisallow: /godas/monthly/godas.M.\n"), "allowed")
+    assert asked == ["robots"] and ("warning", "fetch", "unreachable") in log.triples()  # se publica el histórico
 
 
 @pytest.mark.parametrize("status", [503, 500, 429, 403])

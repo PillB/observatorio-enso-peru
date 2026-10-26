@@ -41,7 +41,11 @@ def main(argv=None) -> int:
     by: dict[str, int] = {}
     for s in reg["sources"]:
         by[s["geoblock"]["status"]] = by.get(s["geoblock"]["status"], 0) + 1
-    print(f"{a.out}: {len(reg['sources'])} fuentes; " + ", ".join(f"{k} {v}" for k, v in sorted(by.items())))
+    robots: dict[str, int] = {}
+    for v in registry.url_robots(reg).values():
+        robots[v] = robots.get(v, 0) + 1
+    print(f"{a.out}: {len(reg['sources'])} fuentes; " + ", ".join(f"{k} {v}" for k, v in sorted(by.items()))
+          + "; robots.txt por URL: " + ", ".join(f"{k} {v}" for k, v in sorted(robots.items())))
     return 1 if errs else 0
 
 

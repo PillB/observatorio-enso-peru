@@ -222,6 +222,7 @@ def test_a_different_url_of_the_same_source_is_not_format_drift(pub, tmp_path):
     prev, _ = pub
     s = json.loads((prev / "sources" / "cpc-roni.json").read_text(encoding="utf-8"))
     s["fingerprint"], s["url"] = "otra-huella", "https://www.cpc.ncep.noaa.gov/otra-url-de-la-fuente"
+    del s["fingerprintUrl"]  # como una publicación de antes de «fingerprintUrl»: vale «url»
     p2 = tmp_path / "prev"
     shutil.copytree(prev, p2)
     (p2 / "sources" / "cpc-roni.json").write_text(json.dumps(s), encoding="utf-8")
@@ -232,6 +233,91 @@ def test_a_different_url_of_the_same_source_is_not_format_drift(pub, tmp_path):
     sources = json.loads((out / "sources.json").read_text(encoding="utf-8"))["sources"]
     roni = next(h for h in sources if h["id"] == "cpc-roni")
     assert roni["formatDrift"] is False
+
+
+def _without_fixture(tmp_path: Path, sid: str) -> Path:
+    """Copia de las capturas sin la de ``sid`` (ni las históricas): esa fuente no responde."""
+    src = next(s for s in obs.SOURCES if s.id == sid)
+    fx = tmp_path / "fx"
+    shutil.copytree(FIX, fx, ignore=shutil.ignore_patterns("history"))
+    (fx / src.fixture).unlink()
+    idx = json.loads((fx / "index.json").read_text(encoding="utf-8"))
+    idx["entries"] = [e for e in idx["entries"] if e.get("file") != src.fixture]
+    (fx / "index.json").write_text(json.dumps(idx), encoding="utf-8")
+    return fx
+
+
+def test_a_carried_day_keeps_the_url_that_gave_the_fingerprint(pub, tmp_path):
+    """Revisión (#29): un día en que la fuente se arrastraba guardaba «url» vacía, y al día siguiente cualquier URL se
+    comparaba con la huella vieja. Ahora «fingerprintUrl» guarda la URL que dio la huella: A (huella 1), un día
+    arrastrado, B (huella 2) no es un cambio de formato; la misma URL con otra huella sí."""
+    prev, _ = pub
+    roni = next(s for s in obs.SOURCES if s.id == "cpc-roni")
+    s = json.loads((prev / "sources" / "cpc-roni.json").read_text(encoding="utf-8"))
+    s["fingerprint"], s["url"], s["fingerprintUrl"] = "huella-1", "https://cpc.example/A", "https://cpc.example/A"
+    p1 = tmp_path / "run1"
+    shutil.copytree(prev, p1)
+    (p1 / "sources" / "cpc-roni.json").write_text(json.dumps(s), encoding="utf-8")
+    p2 = tmp_path / "run2" / "data"
+    obs.run(p2, str(p1), fixtures=_without_fixture(tmp_path, "cpc-roni"))
+    carried = json.loads((p2 / "sources" / "cpc-roni.json").read_text(encoding="utf-8"))
+    assert carried["carried"] is True and carried["url"] == ""  # «url» sigue diciendo que hoy no respondió
+    assert carried["fingerprint"] == "huella-1" and carried["fingerprintUrl"] == "https://cpc.example/A"
+    out = tmp_path / "run3" / "data"
+    obs.run(out, str(p2), fixtures=FIX)  # responde roni.urls[0] (B), con su huella
+    rep = json.loads((out / "run-report.json").read_text(encoding="utf-8"))
+    assert not any(e["source"] == "cpc-roni" and e["code"] == "format-drift" for e in rep["events"])
+    health = next(h for h in json.loads((out / "sources.json").read_text(encoding="utf-8"))["sources"] if h["id"] == "cpc-roni")
+    assert health["formatDrift"] is False
+    assert json.loads((out / "sources" / "cpc-roni.json").read_text(encoding="utf-8"))["fingerprintUrl"] == roni.urls[0]
+    # Si la huella 1 la hubiera dado B, el cambio se avisa igual después del día arrastrado.
+    carried["fingerprintUrl"] = roni.urls[0]
+    (p2 / "sources" / "cpc-roni.json").write_text(json.dumps(carried), encoding="utf-8")
+    out = tmp_path / "run3b" / "data"
+    obs.run(out, str(p2), fixtures=FIX)
+    rep = json.loads((out / "run-report.json").read_text(encoding="utf-8"))
+    assert any(e["source"] == "cpc-roni" and e["code"] == "format-drift" and "huella-1" in e["message"]
+               for e in rep["events"])
+
+
+def test_a_communique_copy_that_could_not_be_carried_is_reported_once(pub, tmp_path):
+    """Revisión: si el PDF archivado del comunicado vigente no se pudo arrastrar, su ruta seguía en
+    sources/enfen-comunicados.json y cada corrida siguiente lo buscaba en un sitio que ya no lo tenía:
+    «archive-carry-failed» se repetía hasta el próximo comunicado, diciendo que la anterior sí lo tenía."""
+    prev, _ = pub
+    p1 = tmp_path / "prev"
+    shutil.copytree(prev, p1)
+    rel = json.loads((p1 / "sources" / "enfen-comunicados.json").read_text(encoding="utf-8"))["data"]["latest"]["archive"]
+    assert rel and (p1 / rel).exists()
+    (p1 / rel).unlink()
+    runs = []
+    for k, base in enumerate((p1, None)):
+        out = tmp_path / f"run{k}" / "data"
+        obs.run(out, str(base or runs[-1]), fixtures=FIX)
+        rep = json.loads((out / "run-report.json").read_text(encoding="utf-8"))
+        runs.append(out)
+        ev = [e for e in rep["events"] if e["code"] == "archive-carry-failed" and e["source"] == "enfen-comunicados"]
+        assert len(ev) == (1 if k == 0 else 0), (k, ev)
+    saved = json.loads((runs[0] / "sources" / "enfen-comunicados.json").read_text(encoding="utf-8"))["data"]["latest"]
+    assert saved["archive"] is None and saved["id"]  # el comunicado sigue; solo su copia se perdió
+
+
+def test_an_archived_copy_that_cannot_be_read_again_is_reported(pub, tmp_path):
+    """Revisión: si la copia archivada que listaba la publicación anterior ya no se podía leer, el enlace se perdía
+    sin aviso. Sigue sin publicarse (no hay archivo que servir), pero queda «archive-carry-failed» con su ruta."""
+    prev, _ = pub
+    p1 = tmp_path / "prev"
+    shutil.copytree(prev, p1)
+    rel = json.loads((p1 / "sources" / "cpc-roni.json").read_text(encoding="utf-8"))["archive"]["file"]
+    (p1 / rel).unlink()
+    out = tmp_path / "data"
+    obs.run(out, str(p1), fixtures=_without_fixture(tmp_path, "cpc-roni"))
+    rep = json.loads((out / "run-report.json").read_text(encoding="utf-8"))
+    ev = [e for e in rep["events"] if e["code"] == "archive-carry-failed"]
+    assert [(e["source"], e["severity"]) for e in ev] == [("cpc-roni", "warning")] and rel in ev[0]["message"]
+    d = json.loads((out / "dashboard.json").read_text(encoding="utf-8"))
+    assert d["sources"]["cpc-roni"]["archive"] is None and not (out / rel).exists()
+    assert d["series"]["roni"]["latest"]["carried"] is True  # el dato sí se arrastra
 
 
 def test_a_run_without_news_serves_the_previous_news(pub, tmp_path):

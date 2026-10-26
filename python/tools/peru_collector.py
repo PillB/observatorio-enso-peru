@@ -577,6 +577,12 @@ def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[d
     página de descarga, también baja el PDF que enlaza y lo registra con la
     URL de la página como alias, para que la actualización diaria lo
     encuentre con la misma URL que pide."""
+    from enso import reports
+
+    # El listado de informes técnicos (cuando el registro lo manda a este equipo) no es de comunicados: no se lee
+    # como tal ni lleva la meta «comunicado», que diría «HTTP 200» si fallan los de comunicados; lo usa enfen_informes.
+    informes = next((p for p in pages if p.get("url") == reports.INFORMES_PAGE), None)
+    pages = [p for p in pages if p is not informes]
     # Todos los listados, no el primero que responde: la API de WordPress se quedó en el N° 13-2026 mientras
     # el listado del portal ya trae el 18 (el mismo cruce que hace la actualización diaria).
     listings = []
@@ -622,17 +628,21 @@ def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[d
     if goal and not any(r.get("goal") == goal for r in out):  # el comunicado no trae URL que bajar
         out.append({"url": oficial[0].get("url") or "", "goal": goal, "status": None, "body": b"",
                     "error": "sin URL del PDF", "class": "empty", "elapsed_s": 0.0})
-    out += enfen_informes(client)
+    out += enfen_informes(client, listing=informes)
     return out
 
 
-def enfen_informes(client: httpx.Client | Session, keep: int = 2) -> list[dict]:
+def enfen_informes(client: httpx.Client | Session, keep: int = 2, listing: dict | None = None) -> list[dict]:
     """Listado de informes técnicos del ENFEN y los PDF de los ``keep`` más recientes, con la URL que cita el
-    comunicado: el portal no responde fuera del Perú y la réplica de la DHN pide verificación humana."""
+    comunicado: el portal no responde fuera del Perú y la réplica de la DHN pide verificación humana.
+    ``listing``: el listado ya pedido en el grupo del registro (que lo asigna a este equipo cuando Actions no lo
+    alcanza), para no pedirlo dos veces; ya está en el índice, así que no se devuelve otra vez."""
     from enso import reports
 
-    listing = fetch(client, reports.INFORMES_PAGE, "html")
-    out = [listing]
+    out = []
+    if listing is None:
+        listing = fetch(client, reports.INFORMES_PAGE, "html")
+        out.append(listing)
     if listing.get("status") != 200 or not listing["body"]:
         listing["goal"] = "informe técnico"  # la meta queda declarada, con la causa de este intento
         return out

@@ -43,13 +43,34 @@ Se calcula con la base 1951–1992 de las presiones del CPC; BoM usa
 
 ## Acceso a las fuentes
 
-El portal del ENFEN no es accesible desde GitHub Actions; los comunicados
-se leen de la réplica de la DHN y, si falla, del Internet Archive. SENAMHI,
-ANA e IMARPE no responden a servidores fuera del Perú; el
-[recolector desde el Perú](servidor-peru.md) las descarga cada día a las
-21:00 si está instalado. Sus páginas se guardan, pero todavía no alimentan
-indicadores del sitio. Si ninguna vía funciona, el estado se muestra como
-vencido.
+El portal del ENFEN no responde fuera del Perú (su nombre no resuelve
+desde GitHub Actions ni desde n8n), y la réplica de la DHN, cuyo listado sí
+responde, pide una verificación humana a los servidores para sus PDF
+(también a n8n y al recolector del Perú); esa página se registra y nunca se
+intenta pasar. El PDF del comunicado llega entonces de la copia más
+reciente del [recolector desde el Perú](servidor-peru.md) (que sí alcanza
+el portal), de n8n o de la [consola de documentos](documentos-manuales.md)
+y, si no hay, del Internet Archive o del repositorio del IMARPE, que recibe
+cada comunicado unos 3 días después
+([catálogo de fuentes](catalogo-fuentes.md#cómo-se-obtiene-lo-más-reciente-del-enfen)).
+Si ninguna vía funciona, el estado se muestra como vencido y el comunicado
+queda pendiente en la consola de documentos.
+
+Las páginas web del SENAMHI y de la ANA no responden a servidores fuera
+del Perú; el recolector desde el Perú las descarga cada día a las 21:00 si
+está instalado. De ellas el sitio usa hoy solo la tabla de avisos
+meteorológicos del SENAMHI (`?p=aviso-meteorologico`): da el nivel y la
+vigencia de esos avisos en el mapa de alertas ([mapa-alertas](mapa-alertas.md)).
+Sin la copia del Perú, un aviso meteorológico queda «Sin nivel» salvo que
+su texto cite el color, y con la vigencia que diga su texto. Las demás
+páginas del SENAMHI y de la ANA se archivan, pero todavía no alimentan
+indicadores. Del IMARPE, el repositorio no responde a GitHub Actions desde
+el 22 de octubre de 2026 (desde el Perú aún no se midió): la sonda semanal
+asigna sus búsquedas al recolector del Perú, y desde el kit 2 del recolector
+también los paquetes y PDF de cada documento van en su copia; sin ellos, los
+PDF llegan por la DHN, el Internet Archive o la consola de documentos. Su
+sitio web responde a n8n; a Actions le pide a veces una verificación
+anti-robots (2 de 3 lecturas del 26 de octubre de 2026).
 
 ## ERSSTv6
 

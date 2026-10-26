@@ -37,6 +37,10 @@ const seen = new Set();
 const out = [];
 for (const s of registry.sources) {
   if (only && !s.id.includes(only) && s.group !== only) continue;
+  // Una fuente con «n8n: false» no se pide en ningún alcance: n8n no la
+  // atiende (p. ej. no verifica su certificado) y su medición no diría nada
+  // de la red.
+  if (s.n8n === false) continue;
   const sourceRule = { status: s.geoblock && s.geoblock.status, channels: s.channels || [] };
   const urls = [s.url, ...(s.alt_urls || [])];
   urls.forEach((raw, k) => {
@@ -55,8 +59,12 @@ for (const s of registry.sources) {
     // ENFEN, que solo responde desde el Perú). «todas»: también mide el resto.
     const u = s.by_url && s.by_url[raw] && Array.isArray(s.by_url[raw].channels) ? s.by_url[raw] : sourceRule;
     // Lectores de feeds («reader»): las lee solo el pipeline, como un lector
-    // de RSS, y n8n no las pide en ningún alcance.
+    // de RSS, y n8n no las pide en ningún alcance. Tampoco lo que robots.txt
+    // no permite ni aquello cuyo robots.txt nadie pudo leer («unknown»): n8n
+    // no lo lee. Se comparan los valores explícitos para que un registro
+    // anterior, sin «robots», siga sirviendo.
     if (!u.channels.length || u.status === 'robots-disallowed' || u.reader) return;
+    if (u.robots === 'unknown' || u.robots === 'disallowed') return;
     if (scope === 'n8n' && !u.channels.includes('n8n')) return;
     seen.add(url);
     out.push({ json: {

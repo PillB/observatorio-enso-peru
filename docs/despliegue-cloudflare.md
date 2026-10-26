@@ -65,6 +65,10 @@ repositorio.
      `observatorio-enso`). Es el subdominio: `observatorio-enso.pages.dev`.
      Evite repetir el nombre exacto del repositorio si quiere que no se
      asocien por búsqueda.
+   - `GEO_OVERRIDES_URL` (opcional) = de dónde lee el pipeline las
+     correcciones de la consola de lugares; por omisión
+     `<SITE_URL>/api/geo/overrides`. Solo hace falta si la consola vive en
+     otra dirección.
 6. **Primera publicación.** En
    <https://github.com/PillB/observatorio-enso-peru/actions/workflows/observatory.yml>
    → *Run workflow* (rama `main`). El flujo crea el proyecto si no existe
@@ -144,15 +148,34 @@ vínculos declarados. Para usarlos:
 - Las solicitudes a Functions cuentan contra el plan gratuito de Workers
   (100 000 al día); los archivos estáticos no.
 
-La consola de lugares (`/admin/`) es la primera Function: necesita la
-base D1 `GEO_DB` y el secreto `GEO_USERS`. Los pasos están en
-[georreferenciacion.md](georreferenciacion.md#puesta-en-marcha-en-cloudflare-una-sola-vez).
+Hay tres Functions, todas bajo `/api/` (`functions/api/<ruta>/[[path]].js`,
+con la lógica en `functions/_lib/`). Los vínculos y secretos se cargan en
+el panel: *Workers & Pages → el proyecto → Settings → Bindings* (la base
+D1) y *Variables and Secrets* (los secretos y variables).
+
+| Ruta | Para qué | Qué necesita en Cloudflare |
+|---|---|---|
+| `/api/geo/*` | Consola de lugares (`/admin/`): las correcciones de lugar que lee el pipeline | Base D1 `GEO_DB` y secreto `GEO_USERS`. Pasos en [georreferenciacion.md](georreferenciacion.md#puesta-en-marcha-en-cloudflare-una-sola-vez) |
+| `/api/docs/*` | Consola de documentos (`/admin/documentos.html`): un administrador sube el PDF que ninguna ruta automática trae; la Function lo guarda en la rama `data-manual` y pide una actualización (`enso-refresh`) | Las cuentas de la consola de lugares y su base `GEO_DB` (tabla `uploads`); el secreto `DOCS_GITHUB_TOKEN` (token de grano fino de GitHub, solo este repositorio, *Contents: Read and write*) y, opcionales, `DOCS_GITHUB_REPO` (por omisión `PillB/observatorio-enso-peru`) y `DOCS_UPLOAD_ROLES` (por omisión `admin`). Pasos en [documentos-manuales.md](documentos-manuales.md#configurar-una-vez) |
+| `/api/ab/*` | Analítica anónima de las versiones del mapa de alertas: suma contadores por día, versión y evento en la tabla `ab_daily` | La misma base `GEO_DB`; sin ella responde sin hacer nada. Resultados en `#/variantes`. Ver [mapa-alertas.md](mapa-alertas.md#analítica-anónima) |
+
+Sin `DOCS_GITHUB_TOKEN`, la consola de documentos dice «La subida no está
+configurada» y la API responde 503 al subir. Las tres rutas escriben en la
+misma base D1, y el cupo gratuito de D1 (100 000 filas escritas al día) es
+por cuenta: por eso la analítica tiene un tope de 20 000 sumas al día
+(`DAILY_CAP` en `functions/_lib/ab.js`), para no dejar sin escrituras a las
+consolas. `ASSETS` (los archivos del sitio, con el que las consolas leen
+`data/`) lo pone Pages; no se configura.
 
 ## Referencias en el código
 
 | Archivo | Qué usa |
 |---|---|
-| `.github/workflows/observatory.yml` | `DEPLOY_TARGET`, `CLOUDFLARE_PROJECT`, `SITE_URL`, secretos `CLOUDFLARE_*` |
+| `.github/workflows/observatory.yml` | `DEPLOY_TARGET`, `CLOUDFLARE_PROJECT`, `SITE_URL`, `GEO_OVERRIDES_URL`, secretos `CLOUDFLARE_*` |
+| `functions/_lib/geo-console.js` (`/api/geo/*`) | `GEO_DB`, `GEO_USERS`, `ASSETS` |
+| `functions/_lib/doc-uploads.js` (`/api/docs/*`) | `GEO_DB`, `DOCS_GITHUB_TOKEN`, `DOCS_GITHUB_REPO`, `DOCS_UPLOAD_ROLES`, `ASSETS` |
+| `functions/_lib/ab.js` (`/api/ab/*`) | `GEO_DB` (tabla `ab_daily`) |
+| `python/enso/geo_overrides.py` | `GEO_OVERRIDES_URL` (lo fija el flujo diario con Cloudflare) |
 | `.github/workflows/watchdog.yml` | `SITE_URL` |
 | `python/tools/cloudflare_pages.py` | Crea el proyecto si falta y devuelve su dirección |
 | `python/tools/prepare_site.py` | Reescribe la dirección pública y quita los enlaces al repositorio |

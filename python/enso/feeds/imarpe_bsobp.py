@@ -269,10 +269,10 @@ def bulletins(items: list[dict]) -> list[dict]:
     return out
 
 
-def _listed(fetcher) -> list[dict]:
+def _listed(fetcher, problems: Optional[list] = None) -> list[dict]:
     from . import imarpe_repo
 
-    return bulletins(imarpe_repo.search(fetcher, QUERY, LIST_SIZE))
+    return bulletins(imarpe_repo.search(fetcher, QUERY, LIST_SIZE, problems))
 
 
 def _read(fetcher, item: dict) -> tuple[Optional[dict], Optional[str], Optional[str]]:
@@ -339,11 +339,14 @@ def acquire(fetcher, previous: Optional[dict], log, today: date, needs=None) -> 
     prev = previous if isinstance(previous, dict) else {}
     bulletins = list(prev.get("bulletins") or load_seed())
     have = {(b.get("year"), b.get("number")) for b in bulletins}
-    listed = _listed(fetcher)
+    problems: list = []
+    listed = _listed(fetcher, problems)
     out = _envelope(today)
     if not listed:
+        why = "; ".join(f"{p}: {p.detail}" if getattr(p, "detail", "") else str(p) for p in problems)
         log.add("warning", SOURCE, "fetch", "bsobp-unreachable",
-                "El repositorio del IMARPE no listó boletines semanales; se conservan los ya leídos.")
+                f"El repositorio del IMARPE no listó boletines semanales{f' ({why})' if why else ''}; se conservan "
+                "los ya leídos.")
         out.update({"bulletins": bulletins[:KEEP], "lastListed": prev.get("lastListed")})
         return out
     out["lastListed"] = {k: listed[0][k] for k in ("number", "year", "issued", "page", "title")}
