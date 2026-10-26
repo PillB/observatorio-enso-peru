@@ -249,6 +249,13 @@ node --test tests/js/historico.test.mjs            # paridad Python/navegador
 pytest -q tests/test_historico.py
 ```
 
+- Como el resto del observatorio, el script lee el robots.txt de cada servidor antes de pedir nada (RFC 9309, con
+  `enso.reach.Robots`) y respeta su `Crawl-delay`; si el robots.txt no responde, no pide nada a ese servidor. Cuatro
+  fuentes se descargan a mano porque su robots.txt no deja que un programa las pida: los dos CSV del IDMC en HDX
+  (`Disallow: /*.csv$`) y las capas de puntos críticos de la ANA y de establecimientos de salud del SIGRID
+  (`Disallow: /arcgis/`). En `fuentes.json` tienen `"descarga": "manual"` y el campo `manual` dice qué abrir en
+  el navegador y con qué nombre guardarlo en la caché; sin ese archivo el script se detiene y lo explica. El IDMC
+  también ofrece su propia API (su robots.txt la permite), que pide registrarse para obtener un `client_id`.
 - Cada fuente tiene su SHA-256 en `fuentes.json`. Si cambia, el script se detiene: hay que revisar el cambio y
   repetir con `--aceptar-cambios`, que actualiza el manifiesto. Así un cambio silencioso de una fuente no altera el
   catálogo publicado.

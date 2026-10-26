@@ -54,6 +54,7 @@ from enso.historico.indicadores import by_area, nino_hydro_years
 from enso.historico.registro import make
 from enso.historico.territorio import Territory
 from enso.observatory import csv_safe
+from enso.reach import Robots
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "historico"
@@ -127,16 +128,32 @@ def arcgis_dump(url: str, fields: str = "*", geometry: bool = True, where: str =
                       separators=(",", ":")).encode("utf-8")
 
 
+def robots_check(url: str) -> float:
+    """Como el resto del observatorio, respeta el robots.txt del servidor (RFC 9309) antes de pedir nada.
+    Devuelve el Crawl-delay que pida el servidor (0 si no pide)."""
+    with httpx.Client(follow_redirects=True, timeout=30, headers=UA, verify=ssl_context()) as c:
+        robots = Robots(c)
+        ok = robots.allowed(url)
+        if ok is None:
+            raise SystemExit(f"{url}: el robots.txt del servidor no respondió ({robots.failure(url)}); no se pide nada")
+        if not ok:
+            raise SystemExit(f"{url}: el robots.txt del servidor no permite pedirlo a un programa")
+        return robots.crawl_delay(url) or 0.0
+
+
 def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
     path = cache / src["archivo"]
     if not path.exists():
         if offline:
             raise SystemExit(f"{src['id']}: falta {path} y se pidió --sin-red")
+        if src.get("descarga") == "manual":
+            raise SystemExit(f"{src['id']}: falta {path}. Esta fuente se descarga a mano: {src['manual']}")
         path.parent.mkdir(parents=True, exist_ok=True)
+        delay = robots_check(src["url"])
         print(f"descargando {src['url']}", file=sys.stderr)
         if src.get("descarga") == "arcgis":
             path.write_bytes(arcgis_dump(src["url"], src.get("campos", "*"), src.get("geometria", True),
-                                         src.get("consulta", "1=1")))
+                                         src.get("consulta", "1=1"), delay=max(0.5, delay)))
         else:
             with httpx.Client(follow_redirects=True, timeout=180, headers=UA, verify=ssl_context()) as c:
                 r = c.get(src["url"])

@@ -66,7 +66,9 @@
         "Mixed disasters": 358,
         "triangulación (agregado departamental)": 87,
         "Earthquake": 29
-      }
+      },
+      "descarga": "manual",
+      "manual": "El robots.txt de data.humdata.org no deja que un programa pida archivos .csv, así que la construcción no lo descarga: una persona abre https://data.humdata.org/dataset/per-idmc-idu-events, descarga el CSV y lo guarda en la caché como per_idmc_idu_events.csv."
     },
     {
       "id": "idmc-eventos",
@@ -87,7 +89,9 @@
         "Earthquake": 28,
         "Flood": 3,
         "Volcanic activity": 1
-      }
+      },
+      "descarga": "manual",
+      "manual": "El robots.txt de data.humdata.org no deja que un programa pida archivos .csv, así que la construcción no lo descarga: una persona abre https://data.humdata.org/dataset/idmc-idp-data-per, descarga el CSV y lo guarda en la caché como idmc-desplazamientos-desastres-per.csv."
     },
     {
       "id": "nasa-glc",
@@ -147,7 +151,7 @@
       "tipo": "contexto",
       "nombre": "ANA, puntos críticos en ríos y quebradas (servicio COEN FEN 2027 del SIGRID, CENEPRED)",
       "lector": "ana-puntos",
-      "descarga": "arcgis",
+      "descarga": "manual",
       "url": "https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/25",
       "campos": "*",
       "geometria": false,
@@ -157,14 +161,16 @@
       "cobertura": "Puntos críticos de la costa con nivel de peligro, población y viviendas expuestas, acción recomendada y su costo",
       "sha256": "5eb3917e9121972b1c24a0dc6e44b815ca608fa5a26157e260c1a67accc74f4f",
       "obtenido": "2026-10-26",
-      "registros": 536
+      "registros": 536,
+      "formato": "arcgis",
+      "manual": "El robots.txt de sigrid.cenepred.gob.pe no deja que un programa consulte /arcgis/, así que la construcción no la descarga: una persona abre https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/25/query?where=1%3D1&outFields=*&f=json en el navegador (si la capa tiene más de 1 000 elementos, por bloques con resultOffset=1000, 2000…, juntando la lista features) y guarda la respuesta en la caché como ana-puntos-criticos.json. También se puede pedir la capa al CENEPRED."
     },
     {
       "id": "ipress-2023",
       "tipo": "contexto",
       "nombre": "Establecimientos de salud afectados en la temporada de lluvias 2022-2023 (COE Salud, servicio del SIGRID)",
       "lector": "ipress-2023",
-      "descarga": "arcgis",
+      "descarga": "manual",
       "url": "https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/9",
       "campos": "*",
       "geometria": false,
@@ -174,7 +180,9 @@
       "cobertura": "Establecimientos de salud afectados por lluvias en 2022-2023, por distrito",
       "sha256": "21523e8c92b707a2ca7aaa12d7282e9a1fffb41f6bb8c61fa8be219787c2d7c5",
       "obtenido": "2026-10-26",
-      "registros": 1230
+      "registros": 1230,
+      "formato": "arcgis",
+      "manual": "El robots.txt de sigrid.cenepred.gob.pe no deja que un programa consulte /arcgis/, así que la construcción no la descarga: una persona abre https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/9/query?where=1%3D1&outFields=*&f=json en el navegador (si la capa tiene más de 1 000 elementos, por bloques con resultOffset=1000, 2000…, juntando la lista features) y guarda la respuesta en la caché como ipress-afectadas-2023.json. También se puede pedir la capa al CENEPRED."
     },
     {
       "id": "curado",
@@ -199,5 +207,5 @@
       "tipo": "referencia"
     }
   ],
-  "generado": "2026-10-26T16:04:50Z"
+  "generado": "2026-10-26T16:11:09Z"
 }

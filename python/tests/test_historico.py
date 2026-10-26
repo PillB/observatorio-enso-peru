@@ -214,6 +214,39 @@ def test_manifest_records_provenance():
     assert m["cobertura"]["origenes"] == ["desinventar"]
 
 
+def test_robots_txt_is_respected(monkeypatch, tmp_path):
+    import httpx
+
+    robots = {"datos.example": "User-agent: *\nDisallow: /*.csv$\nCrawl-delay: 5\n", "caido.example": None}
+
+    def handler(request):
+        body = robots.get(request.url.host, "")
+        if request.url.path == "/robots.txt":
+            return httpx.Response(503) if body is None else httpx.Response(200, text=body)
+        raise AssertionError(f"pidió {request.url} sin permiso")
+
+    real = httpx.Client
+    monkeypatch.setattr(B.httpx, "Client", lambda **kw: real(transport=httpx.MockTransport(handler),
+                                                             **{k: v for k, v in kw.items() if k != "verify"}))
+    with pytest.raises(SystemExit, match="no permite"):
+        B.robots_check("https://datos.example/dataset/x/download/eventos.csv")
+    with pytest.raises(SystemExit, match="no respondió"):
+        B.robots_check("https://caido.example/capa/0")
+    assert B.robots_check("https://datos.example/dataset/x") == 5
+    # Lo que el robots.txt no permite se descarga a mano y la construcción no lo pide.
+    src = {"id": "x", "archivo": "x.csv", "descarga": "manual", "manual": "descárguelo desde la página",
+           "url": "https://datos.example/x.csv"}
+    with pytest.raises(SystemExit, match="a mano: descárguelo"):
+        B.fetch(src, tmp_path, False, False)
+
+
+def test_restricted_sources_are_manual():
+    m = json.loads(B.MANIFEST.read_text(encoding="utf-8"))
+    by = {s["id"]: s for s in m["fuentes"]}
+    for sid in ("idmc-idu", "idmc-eventos", "ana-puntos-criticos", "ipress-2023"):
+        assert by[sid]["descarga"] == "manual" and "robots.txt" in by[sid]["manual"], sid
+
+
 def test_published_catalog():
     with (OUT / "eventos.csv").open(encoding="utf-8-sig") as fh:
         reader = csv.DictReader(fh)
