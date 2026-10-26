@@ -145,9 +145,9 @@
   <g class="ar-edge" id="as-e-C" data-edge="C" data-from="s-recolectores" data-to="s-pipeline" tabindex="0">
     <title>C. Collectors (Actions, n8n, Peru) → Daily pipeline: Data with its origin. Each value arrives with who downloaded it, from where and when. When the computer in Peru pushes its copy, it also asks for the site to be updated.</title>
     <path class="ar-e ar-e-data" d="M738 453.7 L738 570 Q738 576 732 576 L522 576 Q516 576 516 582 L516 598" marker-end="url(#as-m-data)"/>
-    <text class="ar-s ar-halo" x="572.4" y="560.5" font-size="11.5">Data with its origin</text>
-    <circle class="ar-badge ar-e-data" cx="627" cy="576" r="9"/>
-    <text class="ar-t" x="627" y="579.8" font-size="10.5" text-anchor="middle">C</text>
+    <text class="ar-s ar-halo" x="539.1" y="560.5" font-size="11.5">Data with its origin</text>
+    <circle class="ar-badge ar-e-data" cx="593.7" cy="576" r="9"/>
+    <text class="ar-t" x="593.7" y="579.8" font-size="10.5" text-anchor="middle">C</text>
   </g>
   <g class="ar-edge" id="as-e-D" data-edge="D" data-from="s-respaldo" data-to="s-recolectores" tabindex="0">
     <title>D. Backup → Collectors (Actions, n8n, Peru): Internet Archive copy. If the source, its mirror and the Peru, n8n and console copies fail (and, for ENFEN documents, IMARPE&#x27;s repository), the download uses the latest Internet Archive copy, with its date.</title>
@@ -208,27 +208,28 @@
     <text class="ar-t" x="553.8" y="489.8" font-size="10.5" text-anchor="middle">L</text>
   </g>
   <g class="ar-edge" id="as-e-M" data-edge="M" data-from="s-operacion" data-to="s-recolectores" tabindex="0">
-    <title>M. Operations and monitoring → Collectors (Actions, n8n, Peru): Adjusts who fetches what. Every Monday it measures which sources answer from each place and updates the registry the three collectors follow.</title>
+    <title>M. Operations and monitoring → Collectors (Actions, n8n, Peru): Adjusts who fetches what. Every Monday it measures which sources answer from each place and updates the registry the three collectors follow; if the probe has not run in 8 days, the watchdog relaunches it.</title>
     <path class="ar-e ar-e-control" d="M900 402 L849 402 Q846 402 846 405 L846 405 Q846 408 843 408 L820 408" stroke-dasharray="2 3" marker-end="url(#as-m-control)"/>
     <circle class="ar-badge ar-e-control" cx="873" cy="402" r="9"/>
     <text class="ar-t" x="873" y="405.8" font-size="10.5" text-anchor="middle">M</text>
   </g>
   <g class="ar-edge" id="as-e-N" data-edge="N" data-from="s-sitio" data-to="s-operacion" tabindex="0">
     <title>N. Website → Operations and monitoring: Checked every 6 hours. Two watchdogs, one on GitHub and one on n8n, check every 6 hours that the site is less than 30 hours old.</title>
-    <path class="ar-e ar-e-data" d="M780 1146 L972 1146 Q978 1146 978 1140 L978 503.2" marker-end="url(#as-m-data)"/>
+    <path class="ar-e ar-e-data" d="M780 1146 L972 1146 Q978 1146 978 1140 L978 519.8" marker-end="url(#as-m-data)"/>
     <text class="ar-s ar-halo" x="812.6" y="1130.5" font-size="11.5">Checked every 6 hours</text>
     <circle class="ar-badge ar-e-data" cx="879" cy="1146" r="9"/>
     <text class="ar-t" x="879" y="1149.8" font-size="10.5" text-anchor="middle">N</text>
   </g>
   <g class="ar-edge" id="as-e-O" data-edge="O" data-from="s-operacion" data-to="s-pipeline" tabindex="0">
     <title>O. Operations and monitoring → Daily pipeline: Re-runs or runs by hand. If the site is behind, the watchdog relaunches the update. People also start it when they approve changes or by hand.</title>
-    <path class="ar-e ar-e-trigger" d="M900 462 L846 462 Q840 462 840 468 L840 564 Q840 570 834 570 L690 570 Q684 570 684 576 L684 598" stroke-dasharray="2 3" marker-end="url(#as-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="762" cy="570" r="9"/>
-    <text class="ar-t" x="762" y="573.8" font-size="10.5" text-anchor="middle">O</text>
+    <path class="ar-e ar-e-trigger" d="M900 474 L690 474 Q684 474 684 480 L684 598" stroke-dasharray="2 3" marker-end="url(#as-m-trigger)"/>
+    <text class="ar-s ar-halo" x="528.7" y="520.4" font-size="11.5">Re-runs or runs by hand</text>
+    <circle class="ar-badge ar-e-trigger" cx="684" cy="517.4" r="9"/>
+    <text class="ar-t" x="684" y="521.2" font-size="10.5" text-anchor="middle">O</text>
   </g>
   <g class="ar-edge" id="as-e-P" data-edge="P" data-from="s-publicacion" data-to="s-operacion" tabindex="0">
-    <title>P. Publication → Operations and monitoring: Problem alerts. Each problem in the run becomes an alert on GitHub, which closes by itself once the problem goes away.</title>
-    <path class="ar-e ar-e-control" d="M780 906 L1098 906 Q1104 906 1104 900 L1104 503.2" stroke-dasharray="2 3" marker-end="url(#as-m-control)"/>
+    <title>P. Publication → Operations and monitoring: Problem alerts. Each problem in the run becomes an alert on GitHub, which closes by itself once the problem goes away; a person closes a format change after checking the values.</title>
+    <path class="ar-e ar-e-control" d="M780 906 L1098 906 Q1104 906 1104 900 L1104 519.8" stroke-dasharray="2 3" marker-end="url(#as-m-control)"/>
     <text class="ar-s ar-halo" x="851.6" y="890.5" font-size="11.5">Problem alerts</text>
     <circle class="ar-badge ar-e-control" cx="893.4" cy="906" r="9"/>
     <text class="ar-t" x="893.4" y="909.8" font-size="10.5" text-anchor="middle">P</text>
@@ -329,9 +330,9 @@
     <a class="ar-annex" href="anexos/a9-en.svg" data-annex="a9"><title>Annex A9: The site in the browser</title><rect class="ar-tag" x="744.6" y="1105" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="758.3" y="1117.5" font-size="10.5" text-anchor="middle">A9</text></a>
   </g>
   <g class="ar-node-g" id="as-n-s-operacion" data-node="s-operacion">
-    <title>Operations and monitoring. Two watchdogs check the site every 6 hours, problems become alerts on GitHub and a weekly probe checks which sources answer. The people who keep the system running are here too.</title>
-    <rect class="ar-node ar-g-operations" x="900" y="358" width="280" height="145.2" rx="8"/>
-    <rect class="ar-f-operations" x="900" y="366" width="4" height="129.2" rx="2"/>
+    <title>Operations and monitoring. Two watchdogs check the site every 6 hours, problems become alerts on GitHub and a weekly probe checks which sources answer; the GitHub watchdog also warns if a collector goes silent. The people who keep the system running are here too.</title>
+    <rect class="ar-node ar-g-operations" x="900" y="358" width="280" height="161.8" rx="8"/>
+    <rect class="ar-f-operations" x="900" y="366" width="4" height="145.8" rx="2"/>
     <circle class="ar-step" cx="921" cy="379" r="10"/>
     <text class="ar-step-n" x="921" y="383.2" font-size="12" text-anchor="middle">9</text>
     <text class="ar-t" x="938" y="384" font-size="14">Operations and</text>
@@ -339,8 +340,9 @@
     <text class="ar-s" x="912" y="422.8" font-size="12">Two watchdogs check the site every 6</text>
     <text class="ar-s" x="912" y="439.3" font-size="12">hours, problems become alerts on GitHub</text>
     <text class="ar-s" x="912" y="455.9" font-size="12">and a weekly probe checks which sources</text>
-    <text class="ar-s" x="912" y="472.4" font-size="12">answer. The people who keep the system</text>
-    <text class="ar-s" x="912" y="489" font-size="12">running are here too.</text>
+    <text class="ar-s" x="912" y="472.4" font-size="12">answer; the GitHub watchdog also warns</text>
+    <text class="ar-s" x="912" y="489" font-size="12">if a collector goes silent. The people who</text>
+    <text class="ar-s" x="912" y="505.6" font-size="12">keep the system running are here too.</text>
     <a class="ar-annex" href="anexos/a10-en.svg" data-annex="a10"><title>Annex A10: Monitoring, alerts and maintenance</title><rect class="ar-tag" x="1137.3" y="365" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="1154.6" y="377.5" font-size="10.5" text-anchor="middle">A10</text></a>
   </g>
   <g class="ar-node-g" id="as-n-s-consola" data-node="s-consola">
@@ -413,7 +415,8 @@
   <text class="ar-step-n" x="30" y="1835.9" font-size="11.5" text-anchor="middle">9</text>
   <text class="ar-t" x="50" y="1835.7" font-size="11.5">Monitoring and alerts</text>
   <text class="ar-s" x="50" y="1850.7" font-size="11">Two watchdogs check the site every 6 hours; the GitHub one relaunches the update if it falls</text>
-  <text class="ar-s" x="50" y="1865.7" font-size="11">behind. Each problem becomes a GitHub alert that closes itself once resolved.</text>
+  <text class="ar-s" x="50" y="1865.7" font-size="11">behind and warns if a collector goes silent. Each problem becomes a GitHub alert that closes</text>
+  <text class="ar-s" x="50" y="1880.7" font-size="11">itself once resolved, except a format change, which a person closes after checking the values.</text>
   <circle class="ar-badge ar-e-data" cx="626" cy="1285.7" r="9"/>
   <text class="ar-t" x="626" y="1289.5" font-size="10.5" text-anchor="middle">A</text>
   <text class="ar-t" x="646" y="1289.7" font-size="11.5">Downloaded every night</text>
@@ -491,7 +494,7 @@
   <text class="ar-t" x="646" y="2141.7" font-size="11.5">Adjusts who fetches what</text>
   <text class="ar-m" x="646" y="2155.7" font-size="10.5">Operations and monitoring → Collectors (Actions, n8n, Peru)</text>
   <text class="ar-s" x="646" y="2170.7" font-size="11">Every Monday it measures which sources answer from each place and updates the registry the</text>
-  <text class="ar-s" x="646" y="2185.7" font-size="11">three collectors follow.</text>
+  <text class="ar-s" x="646" y="2185.7" font-size="11">three collectors follow; if the probe has not run in 8 days, the watchdog relaunches it.</text>
   <circle class="ar-badge ar-e-data" cx="626" cy="2208.7" r="9"/>
   <text class="ar-t" x="626" y="2212.5" font-size="10.5" text-anchor="middle">N</text>
   <text class="ar-t" x="646" y="2212.7" font-size="11.5">Checked every 6 hours</text>
@@ -509,5 +512,5 @@
   <text class="ar-t" x="646" y="2354.7" font-size="11.5">Problem alerts</text>
   <text class="ar-m" x="646" y="2368.7" font-size="10.5">Publication → Operations and monitoring</text>
   <text class="ar-s" x="646" y="2383.7" font-size="11">Each problem in the run becomes an alert on GitHub, which closes by itself once the problem</text>
-  <text class="ar-s" x="646" y="2398.7" font-size="11">goes away.</text>
+  <text class="ar-s" x="646" y="2398.7" font-size="11">goes away; a person closes a format change after checking the values.</text>
 </svg>

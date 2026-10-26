@@ -131,7 +131,8 @@
   <text class="ar-s" x="491.1" y="136" font-size="11.5">paso manual</text>
   <rect class="ar-col" x="36" y="156" width="300" height="968.9" rx="10"/>
   <text class="ar-h" x="48" y="181" font-size="15">Fuentes oficiales</text>
-  <text class="ar-m" x="48" y="198" font-size="10.5">17 fuentes ENSO y 13 páginas del Perú</text>
+  <text class="ar-m" x="48" y="198" font-size="10.5">17 fuentes ENSO, 3 listados de documentos y 13</text>
+  <text class="ar-m" x="48" y="212" font-size="10.5">páginas del Perú</text>
   <rect class="ar-col" x="392" y="156" width="300" height="968.9" rx="10"/>
   <text class="ar-h" x="404" y="181" font-size="15">Alertas y noticias</text>
   <text class="ar-m" x="404" y="198" font-size="10.5">168 feeds: 14 de alertas, 116 de medios y del</text>
@@ -147,21 +148,21 @@
   <!-- conexiones -->
   <g class="ar-edge" id="a1-e-1" data-edge="1" data-from="robots" data-to="probe" tabindex="0">
     <title>1. robots.txt de cada servidor → Sondeo de alcance: robots.txt primero. Antes de medir, el sondeo lee el robots.txt de cada servidor. Una ruta prohibida queda robots-disallowed y no se pide.</title>
-    <path class="ar-e ar-e-trigger" d="M682 810 L720 810 Q726 810 726 804 L726 348 Q726 342 732 342 L758 342" stroke-dasharray="2 3" marker-end="url(#a1-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="726" cy="576" r="9"/>
-    <text class="ar-t" x="726" y="579.8" font-size="10.5" text-anchor="middle">1</text>
+    <path class="ar-e ar-e-trigger" d="M682 810 L720 810 Q726 810 726 804 L726 366 Q726 360 732 360 L758 360" stroke-dasharray="2 3" marker-end="url(#a1-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="726" cy="585" r="9"/>
+    <text class="ar-t" x="726" y="588.8" font-size="10.5" text-anchor="middle">1</text>
   </g>
   <g class="ar-edge" id="a1-e-2" data-edge="2" data-from="enfen" data-to="probe" tabindex="0">
     <title>2. ENFEN: comunicado oficial → Sondeo de alcance: URL oficiales y espejos. Se mide cada URL de las fuentes oficiales, también las de respaldo (réplica de la DHN, repositorio del IMARPE).</title>
-    <path class="ar-e ar-e-data" d="M326 312 L378 312 Q384 312 384 318 L384 372 Q384 378 390 378 L726 378 Q732 378 732 372 L732 306 Q732 300 738 300 L758 300" marker-end="url(#a1-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="732" cy="339" r="9"/>
-    <text class="ar-t" x="732" y="342.8" font-size="10.5" text-anchor="middle">2</text>
+    <path class="ar-e ar-e-data" d="M326 312 L378 312 Q384 312 384 318 L384 372 Q384 378 390 378 L726 378 Q732 378 732 372 L732 318 Q732 312 738 312 L758 312" marker-end="url(#a1-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="384" cy="345" r="9"/>
+    <text class="ar-t" x="384" y="348.8" font-size="10.5" text-anchor="middle">2</text>
   </g>
   <g class="ar-edge" id="a1-e-3" data-edge="3" data-from="archive-pages" data-to="probe" tabindex="0">
     <title>3. 13 páginas del Perú → Sondeo de alcance: páginas de archivo. Las 13 páginas del Perú no se piden en la corrida diaria (la tabla de avisos del SENAMHI se lee de la copia del Perú), pero el sondeo sí las mide.</title>
-    <path class="ar-e ar-e-data" d="M326 1044 L726 1044 Q732 1044 732 1038 L732 390 Q732 384 738 384 L758 384" marker-end="url(#a1-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="732" cy="714" r="9"/>
-    <text class="ar-t" x="732" y="717.8" font-size="10.5" text-anchor="middle">3</text>
+    <path class="ar-e ar-e-data" d="M326 1044 L726 1044 Q732 1044 732 1038 L732 420 Q732 414 738 414 L758 414" marker-end="url(#a1-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="732" cy="729" r="9"/>
+    <text class="ar-t" x="732" y="732.8" font-size="10.5" text-anchor="middle">3</text>
   </g>
   <g class="ar-edge" id="a1-e-4" data-edge="4" data-from="alerts" data-to="probe" tabindex="0">
     <title>4. 14 fuentes de alertas → Sondeo de alcance: feeds de alertas y noticias. Los 168 feeds se miden igual: así se sabe cuáles responden desde Actions y desde n8n.</title>
@@ -171,39 +172,39 @@
   </g>
   <g class="ar-edge" id="a1-e-5" data-edge="5" data-from="vantages" data-to="reach" tabindex="0">
     <title>5. Lo medido por n8n y el Perú → reachability.json: mediciones de n8n y del Perú. El último intento de n8n cuenta como medición de la red n8n; una copia arrastrada cuenta como su último fallo. Del Perú, el resultado de cada URL y sus mediciones extra.</title>
-    <path class="ar-e ar-e-data" d="M900 567.6 L900 597.6" marker-end="url(#a1-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="900" cy="582.6" r="9"/>
-    <text class="ar-t" x="900" y="586.4" font-size="10.5" text-anchor="middle">5</text>
+    <path class="ar-e ar-e-data" d="M900 598 L900 628" marker-end="url(#a1-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="900" cy="613" r="9"/>
+    <text class="ar-t" x="900" y="616.8" font-size="10.5" text-anchor="middle">5</text>
   </g>
   <g class="ar-edge" id="a1-e-6" data-edge="6" data-from="probe" data-to="reach" tabindex="0">
     <title>6. Sondeo de alcance → reachability.json: mediciones de Actions. El sondeo escribe lo medido desde GitHub Actions, por red y punto de medición.</title>
-    <path class="ar-e ar-e-data" d="M1038 318 L1056 318 Q1062 318 1062 324 L1062 636 Q1062 642 1056 642 L1038 642" marker-end="url(#a1-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="1062" cy="480" r="9"/>
-    <text class="ar-t" x="1062" y="483.8" font-size="10.5" text-anchor="middle">6</text>
+    <path class="ar-e ar-e-data" d="M1038 336 L1056 336 Q1062 336 1062 342 L1062 738 Q1062 744 1056 744 L1038 744" marker-end="url(#a1-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1062" cy="540" r="9"/>
+    <text class="ar-t" x="1062" y="543.8" font-size="10.5" text-anchor="middle">6</text>
   </g>
   <g class="ar-edge" id="a1-e-7" data-edge="7" data-from="reach" data-to="build" tabindex="0">
     <title>7. reachability.json → Armado del registro: todas las mediciones. Enseguida corre build_registry: los canales siguen las mediciones nuevas.</title>
-    <path class="ar-e ar-e-data" d="M1038 714 L1086 714 Q1092 714 1092 708 L1092 324 Q1092 318 1098 318 L1114 318" marker-end="url(#a1-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="1092" cy="516" r="9"/>
-    <text class="ar-t" x="1092" y="519.8" font-size="10.5" text-anchor="middle">7</text>
+    <path class="ar-e ar-e-data" d="M1038 672 L1086 672 Q1092 672 1092 666 L1092 336 Q1092 330 1098 330 L1114 330" marker-end="url(#a1-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1092" cy="501" r="9"/>
+    <text class="ar-t" x="1092" y="504.8" font-size="10.5" text-anchor="middle">7</text>
   </g>
   <g class="ar-edge" id="a1-e-8" data-edge="8" data-from="build" data-to="sources-json" tabindex="0">
     <title>8. Armado del registro → sources.json: genera y valida. Escribe el estado y los canales de cada URL. En main el sondeo hace commit de registry/; en otra rama, a bot/registry/&lt;rama&gt;.</title>
-    <path class="ar-e ar-e-data" d="M1254 417.6 L1254 447.6" marker-end="url(#a1-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="1254" cy="432.6" r="9"/>
-    <text class="ar-t" x="1254" y="436.4" font-size="10.5" text-anchor="middle">8</text>
+    <path class="ar-e ar-e-data" d="M1254 432.8 L1254 462.8" marker-end="url(#a1-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="447.8" r="9"/>
+    <text class="ar-t" x="1254" y="451.6" font-size="10.5" text-anchor="middle">8</text>
   </g>
   <g class="ar-edge" id="a1-e-9" data-edge="9" data-from="google" data-to="sources-json" tabindex="0">
     <title>9. Google Noticias: 38 búsquedas → sources.json: excepción: feeds reader. Google Noticias, Noticias ONU y Sin Rodeos quedan solo para Actions, como un lector de feeds: un intento, como mucho cada 20 h.</title>
-    <path class="ar-e ar-e-trigger" d="M682 642 L732 642 Q738 642 738 648 L738 774 Q738 780 744 780 L1080 780 Q1086 780 1086 774 L1086 540 Q1086 534 1092 534 L1114 534" stroke-dasharray="2 3" marker-end="url(#a1-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="912" cy="780" r="9"/>
-    <text class="ar-t" x="912" y="783.8" font-size="10.5" text-anchor="middle">9</text>
+    <path class="ar-e ar-e-trigger" d="M682 642 L732 642 Q738 642 738 648 L738 804 Q738 810 744 810 L1080 810 Q1086 810 1086 804 L1086 576 Q1086 570 1092 570 L1114 570" stroke-dasharray="2 3" marker-end="url(#a1-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="912" cy="810" r="9"/>
+    <text class="ar-t" x="912" y="813.8" font-size="10.5" text-anchor="middle">9</text>
   </g>
   <g class="ar-edge" id="a1-e-10" data-edge="10" data-from="sources-json" data-to="readers" tabindex="0">
     <title>10. sources.json → Quién lo sigue: plan de canales por URL. Los tres recolectores leen la misma lista: cada uno pide solo las URL que le tocan.</title>
-    <path class="ar-e ar-e-data" d="M1254 626 L1254 656" marker-end="url(#a1-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="1254" cy="641" r="9"/>
-    <text class="ar-t" x="1254" y="644.8" font-size="10.5" text-anchor="middle">10</text>
+    <path class="ar-e ar-e-data" d="M1254 671.5 L1254 701.5" marker-end="url(#a1-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1254" cy="686.5" r="9"/>
+    <text class="ar-t" x="1254" y="690.3" font-size="10.5" text-anchor="middle">10</text>
   </g>
   
   <!-- cajas -->
@@ -228,15 +229,15 @@
     <text class="ar-chip-t" x="227.4" y="386.4" font-size="10">PDF</text>
   </g>
   <g class="ar-node-g" id="a1-n-icen" data-node="icen">
-    <title>IGP: ICEN mensual. El Índice Costero El Niño en texto. Por http responde a todos; por https, solo desde el Perú, como el portal del ENFEN. Tecnología: ICEN.txt.</title>
+    <title>IGP: ICEN mensual. El Índice Costero El Niño en texto, solo por http: por https no responde desde ninguna red. Tecnología: ICEN.txt.</title>
     <rect class="ar-node ar-g-sources" x="46" y="432.4" width="280" height="129.5" rx="8"/>
     <rect class="ar-f-sources" x="46" y="440.4" width="4" height="113.5" rx="2"/>
     <rect class="ar-tile ar-f-sources" x="58" y="442.4" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-sources" transform="translate(61 445.4)"><path d="M4 4v16h16"/><path d="M7 15l4-5 3 3 5-6"/></g>
     <text class="ar-t" x="96" y="461.9" font-size="12.5">IGP: ICEN mensual</text>
-    <text class="ar-s" x="58" y="493.8" font-size="11">El Índice Costero El Niño en texto. Por http</text>
-    <text class="ar-s" x="58" y="509" font-size="11">responde a todos; por https, solo desde el</text>
-    <text class="ar-s" x="58" y="524.2" font-size="11">Perú, como el portal del ENFEN.</text>
+    <text class="ar-s" x="58" y="493.8" font-size="11">El Índice Costero El Niño en texto, solo por</text>
+    <text class="ar-s" x="58" y="509" font-size="11">http: por https no responde desde ninguna</text>
+    <text class="ar-s" x="58" y="524.2" font-size="11">red.</text>
     <rect class="ar-chip" x="58" y="533.9" width="52.7" height="17" rx="8.5"/>
     <text class="ar-chip-t" x="64" y="545.9" font-size="10">ICEN.txt</text>
   </g>
@@ -359,105 +360,110 @@
     <text class="ar-chip-t" x="420" y="856.2" font-size="10">reach.py</text>
   </g>
   <g class="ar-node-g" id="a1-n-probe" data-node="probe">
-    <title>Sondeo de alcance. Lee robots.txt y pide cada URL del registro desde Actions. Clasifica la respuesta: ok, 403, 4xx, 5xx, tiempo, conexión, DNS, TLS, verificación antirobots, vacía o prohibida. Una verificación se anota y nunca se evade. lunes 04:17 Lima, a mano o al cambiar el medidor. Tecnología: probe-sources.yml, probe_sources.py, httpx.</title>
-    <rect class="ar-node ar-g-operations" x="758" y="224" width="280" height="192.9" rx="8"/>
-    <rect class="ar-f-operations" x="758" y="232" width="4" height="176.9" rx="2"/>
+    <title>Sondeo de alcance. Lee robots.txt y pide cada URL del registro desde Actions. Juzga la respuesta como n8n y el Perú, contra lo que el registro espera: ok, 403, 4xx, 5xx, tiempo, conexión, DNS, TLS, verificación antirobots, vacía (también otro formato o un feed sin entradas) o prohibida. Una verificación se anota y nunca se evade. lunes 04:17 Lima, a mano, por el vigilante o al cambiar el medidor. Tecnología: probe-sources.yml, probe_sources.py, httpx.</title>
+    <rect class="ar-node ar-g-operations" x="758" y="224" width="280" height="223.2" rx="8"/>
+    <rect class="ar-f-operations" x="758" y="232" width="4" height="207.2" rx="2"/>
     <rect class="ar-tile ar-f-operations" x="770" y="234" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-operations" transform="translate(773 237)"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></g>
     <text class="ar-t" x="808" y="253.5" font-size="12.5">Sondeo de alcance</text>
     <text class="ar-s" x="770" y="285.4" font-size="11">Lee robots.txt y pide cada URL del registro</text>
-    <text class="ar-s" x="770" y="300.6" font-size="11">desde Actions. Clasifica la respuesta: ok, 403,</text>
-    <text class="ar-s" x="770" y="315.8" font-size="11">4xx, 5xx, tiempo, conexión, DNS, TLS,</text>
-    <text class="ar-s" x="770" y="331" font-size="11">verificación antirobots, vacía o prohibida. Una</text>
-    <text class="ar-s" x="770" y="346.2" font-size="11">verificación se anota y nunca se evade.</text>
-    <text class="ar-m" x="770" y="365.3" font-size="10.5">lunes 04:17 Lima, a mano o al cambiar el</text>
-    <text class="ar-m" x="770" y="379.8" font-size="10.5">medidor</text>
-    <rect class="ar-chip" x="770" y="388.9" width="105" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="776" y="400.9" font-size="10">probe-sources.yml</text>
-    <rect class="ar-chip" x="880" y="388.9" width="100.2" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="886" y="400.9" font-size="10">probe_sources.py</text>
-    <rect class="ar-chip" x="985.1" y="388.9" width="38.5" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="991.1" y="400.9" font-size="10">httpx</text>
+    <text class="ar-s" x="770" y="300.6" font-size="11">desde Actions. Juzga la respuesta como n8n y</text>
+    <text class="ar-s" x="770" y="315.8" font-size="11">el Perú, contra lo que el registro espera: ok,</text>
+    <text class="ar-s" x="770" y="331" font-size="11">403, 4xx, 5xx, tiempo, conexión, DNS, TLS,</text>
+    <text class="ar-s" x="770" y="346.2" font-size="11">verificación antirobots, vacía (también otro</text>
+    <text class="ar-s" x="770" y="361.3" font-size="11">formato o un feed sin entradas) o prohibida.</text>
+    <text class="ar-s" x="770" y="376.5" font-size="11">Una verificación se anota y nunca se evade.</text>
+    <text class="ar-m" x="770" y="395.7" font-size="10.5">lunes 04:17 Lima, a mano, por el vigilante o al</text>
+    <text class="ar-m" x="770" y="410.2" font-size="10.5">cambiar el medidor</text>
+    <rect class="ar-chip" x="770" y="419.2" width="105" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="431.2" font-size="10">probe-sources.yml</text>
+    <rect class="ar-chip" x="880" y="419.2" width="100.2" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="886" y="431.2" font-size="10">probe_sources.py</text>
+    <rect class="ar-chip" x="985.1" y="419.2" width="38.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="991.1" y="431.2" font-size="10">httpx</text>
   </g>
   <g class="ar-node-g" id="a1-n-vantages" data-node="vantages">
     <title>Lo medido por n8n y el Perú. Suma el index.json de data-n8n y de data-peru (con las mediciones extra del Perú) y, a mano con --import, el informe del flujo de validación de n8n.</title>
-    <rect class="ar-node ar-g-stores" x="758" y="446.9" width="280" height="120.7" rx="8"/>
-    <rect class="ar-f-stores" x="758" y="454.9" width="4" height="104.7" rx="2"/>
-    <rect class="ar-tile ar-f-stores" x="770" y="456.9" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-stores" transform="translate(773 459.9)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
-    <text class="ar-t" x="808" y="471.4" font-size="12.5">Lo medido por n8n y</text>
-    <text class="ar-t" x="808" y="487.6" font-size="12.5">el Perú</text>
-    <text class="ar-s" x="770" y="508.3" font-size="11">Suma el index.json de data-n8n y de</text>
-    <text class="ar-s" x="770" y="523.5" font-size="11">data-peru (con las mediciones extra del Perú)</text>
-    <text class="ar-s" x="770" y="538.7" font-size="11">y, a mano con --import, el informe del flujo de</text>
-    <text class="ar-s" x="770" y="553.8" font-size="11">validación de n8n.</text>
-    <a class="ar-annex" href="a3.svg" data-annex="a3"><title>Anexo A3: n8n en la nube (AWS): segunda copia y flujos auxiliares</title><rect class="ar-tag" x="1002.6" y="453.9" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="466.4" font-size="10.5" text-anchor="middle">A3</text></a>
-    <a class="ar-annex" href="a2.svg" data-annex="a2"><title>Anexo A2: Recolector en el Perú: el servidor local</title><rect class="ar-tag" x="971.1" y="453.9" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="984.8" y="466.4" font-size="10.5" text-anchor="middle">A2</text></a>
+    <rect class="ar-node ar-g-stores" x="758" y="477.2" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="485.2" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="487.2" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 490.2)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="808" y="501.7" font-size="12.5">Lo medido por n8n y</text>
+    <text class="ar-t" x="808" y="518" font-size="12.5">el Perú</text>
+    <text class="ar-s" x="770" y="538.7" font-size="11">Suma el index.json de data-n8n y de</text>
+    <text class="ar-s" x="770" y="553.8" font-size="11">data-peru (con las mediciones extra del Perú)</text>
+    <text class="ar-s" x="770" y="569" font-size="11">y, a mano con --import, el informe del flujo de</text>
+    <text class="ar-s" x="770" y="584.2" font-size="11">validación de n8n.</text>
+    <a class="ar-annex" href="a3.svg" data-annex="a3"><title>Anexo A3: n8n en la nube (AWS): segunda copia y flujos auxiliares</title><rect class="ar-tag" x="1002.6" y="484.2" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1016.3" y="496.7" font-size="10.5" text-anchor="middle">A3</text></a>
+    <a class="ar-annex" href="a2.svg" data-annex="a2"><title>Anexo A2: Recolector en el Perú: el servidor local</title><rect class="ar-tag" x="971.1" y="484.2" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="984.8" y="496.7" font-size="10.5" text-anchor="middle">A2</text></a>
   </g>
   <g class="ar-node-g" id="a1-n-reach" data-node="reach">
     <title>reachability.json. Cada medición por red (actions, n8n, peru) y punto de medición, con clase, código HTTP y fecha. Un geobloqueo solo queda confirmado (geoblocked) cuando el Perú mide la URL y responde. Tecnología: JSON.</title>
-    <rect class="ar-node ar-g-stores" x="758" y="597.6" width="280" height="159.9" rx="8"/>
-    <rect class="ar-f-stores" x="758" y="605.6" width="4" height="143.9" rx="2"/>
-    <rect class="ar-tile ar-f-stores" x="770" y="607.6" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-stores" transform="translate(773 610.6)"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8v-13M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/></g>
-    <text class="ar-t" x="808" y="627.1" font-size="12.5">reachability.json</text>
-    <text class="ar-s" x="770" y="659" font-size="11">Cada medición por red (actions, n8n, peru) y</text>
-    <text class="ar-s" x="770" y="674.2" font-size="11">punto de medición, con clase, código HTTP y</text>
-    <text class="ar-s" x="770" y="689.4" font-size="11">fecha. Un geobloqueo solo queda confirmado</text>
-    <text class="ar-s" x="770" y="704.6" font-size="11">(geoblocked) cuando el Perú mide la URL y</text>
-    <text class="ar-s" x="770" y="719.7" font-size="11">responde.</text>
-    <rect class="ar-chip" x="770" y="729.5" width="36.6" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="776" y="741.5" font-size="10">JSON</text>
+    <rect class="ar-node ar-g-stores" x="758" y="628" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-stores" x="758" y="636" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="770" y="638" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(773 641)"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8v-13M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/></g>
+    <text class="ar-t" x="808" y="657.5" font-size="12.5">reachability.json</text>
+    <text class="ar-s" x="770" y="689.4" font-size="11">Cada medición por red (actions, n8n, peru) y</text>
+    <text class="ar-s" x="770" y="704.6" font-size="11">punto de medición, con clase, código HTTP y</text>
+    <text class="ar-s" x="770" y="719.7" font-size="11">fecha. Un geobloqueo solo queda confirmado</text>
+    <text class="ar-s" x="770" y="734.9" font-size="11">(geoblocked) cuando el Perú mide la URL y</text>
+    <text class="ar-s" x="770" y="750.1" font-size="11">responde.</text>
+    <rect class="ar-chip" x="770" y="759.9" width="36.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="776" y="771.9" font-size="10">JSON</text>
   </g>
   <g class="ar-node-g" id="a1-n-build" data-node="build">
-    <title>Armado del registro. Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo los feeds reader, solo Actions); lo demás, Actions y n8n. --check falla si no está al día. Tecnología: build_registry.py, registry.py.</title>
-    <rect class="ar-node ar-g-pipeline" x="1114" y="224" width="280" height="193.6" rx="8"/>
-    <rect class="ar-f-pipeline" x="1114" y="232" width="4" height="177.6" rx="2"/>
+    <title>Armado del registro. Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 3 listados de documentos y 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo los feeds reader, solo Actions); lo demás, Actions y n8n, salvo las fuentes con n8n: false. --check falla si no está al día. Tecnología: build_registry.py, registry.py.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="224" width="280" height="208.8" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="232" width="4" height="192.8" rx="2"/>
     <rect class="ar-tile ar-f-pipeline" x="1126" y="234" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-pipeline" transform="translate(1129 237)"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/></g>
     <text class="ar-t" x="1164" y="253.5" font-size="12.5">Armado del registro</text>
     <text class="ar-s" x="1126" y="285.4" font-size="11">Junta los catálogos del código (168 feeds, 17</text>
-    <text class="ar-s" x="1126" y="300.6" font-size="11">fuentes ENSO, 13 páginas del Perú) con las</text>
-    <text class="ar-s" x="1126" y="315.8" font-size="11">mediciones. Regla: solo el Perú pide lo</text>
-    <text class="ar-s" x="1126" y="331" font-size="11">geobloqueado; nadie pide lo prohibido por</text>
-    <text class="ar-s" x="1126" y="346.2" font-size="11">robots.txt (salvo los feeds reader, solo</text>
-    <text class="ar-s" x="1126" y="361.3" font-size="11">Actions); lo demás, Actions y n8n.</text>
-    <text class="ar-m" x="1126" y="380.5" font-size="10.5">--check falla si no está al día</text>
-    <rect class="ar-chip" x="1126" y="389.6" width="95.6" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1132" y="401.6" font-size="10">build_registry.py</text>
-    <rect class="ar-chip" x="1226.6" y="389.6" width="66" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1232.6" y="401.6" font-size="10">registry.py</text>
+    <text class="ar-s" x="1126" y="300.6" font-size="11">fuentes ENSO, 3 listados de documentos y 13</text>
+    <text class="ar-s" x="1126" y="315.8" font-size="11">páginas del Perú) con las mediciones. Regla:</text>
+    <text class="ar-s" x="1126" y="331" font-size="11">solo el Perú pide lo geobloqueado; nadie pide</text>
+    <text class="ar-s" x="1126" y="346.2" font-size="11">lo prohibido por robots.txt (salvo los feeds</text>
+    <text class="ar-s" x="1126" y="361.3" font-size="11">reader, solo Actions); lo demás, Actions y</text>
+    <text class="ar-s" x="1126" y="376.5" font-size="11">n8n, salvo las fuentes con n8n: false.</text>
+    <text class="ar-m" x="1126" y="395.7" font-size="10.5">--check falla si no está al día</text>
+    <rect class="ar-chip" x="1126" y="404.8" width="95.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="416.8" font-size="10">build_registry.py</text>
+    <rect class="ar-chip" x="1226.6" y="404.8" width="66" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1232.6" y="416.8" font-size="10">registry.py</text>
   </g>
   <g class="ar-node-g" id="a1-n-sources-json" data-node="sources-json">
-    <title>sources.json. Por URL: estado (abierta, prohibida, geobloqueo confirmado o sospechado, sin medir o caída) y canales. Los números al día salen del propio archivo; el sitio muestra el estado de cada fuente en la última corrida. commit en main; en otras ramas, a bot/registry/. Tecnología: enso-source-registry/1.</title>
-    <rect class="ar-node ar-g-stores" x="1114" y="447.6" width="280" height="178.4" rx="8"/>
-    <rect class="ar-f-stores" x="1114" y="455.6" width="4" height="162.4" rx="2"/>
-    <rect class="ar-tile ar-f-stores" x="1126" y="457.6" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-stores" transform="translate(1129 460.6)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
-    <text class="ar-t" x="1164" y="477.1" font-size="12.5">sources.json</text>
-    <text class="ar-s" x="1126" y="509" font-size="11">Por URL: estado (abierta, prohibida,</text>
-    <text class="ar-s" x="1126" y="524.2" font-size="11">geobloqueo confirmado o sospechado, sin</text>
-    <text class="ar-s" x="1126" y="539.4" font-size="11">medir o caída) y canales. Los números al día</text>
-    <text class="ar-s" x="1126" y="554.5" font-size="11">salen del propio archivo; el sitio muestra el</text>
-    <text class="ar-s" x="1126" y="569.7" font-size="11">estado de cada fuente en la última corrida.</text>
-    <text class="ar-m" x="1126" y="588.9" font-size="10.5">commit en main; en otras ramas, a bot/registry/</text>
-    <rect class="ar-chip" x="1126" y="598" width="124.8" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1132" y="610" font-size="10">enso-source-registry/1</text>
+    <title>sources.json. Por URL: estado (abierta, prohibida, geobloqueo confirmado o sospechado, sin medir o caída), canales y lo que se sabe de su robots.txt (permitido, prohibido o sin leer). Los números al día salen del propio archivo; el sitio muestra el estado de cada fuente en la última corrida. commit en main; en otras ramas, a bot/registry/. Tecnología: enso-source-registry/1.</title>
+    <rect class="ar-node ar-g-stores" x="1114" y="462.8" width="280" height="208.8" rx="8"/>
+    <rect class="ar-f-stores" x="1114" y="470.8" width="4" height="192.8" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="1126" y="472.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(1129 475.8)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="1164" y="492.2" font-size="12.5">sources.json</text>
+    <text class="ar-s" x="1126" y="524.2" font-size="11">Por URL: estado (abierta, prohibida,</text>
+    <text class="ar-s" x="1126" y="539.4" font-size="11">geobloqueo confirmado o sospechado, sin</text>
+    <text class="ar-s" x="1126" y="554.5" font-size="11">medir o caída), canales y lo que se sabe de su</text>
+    <text class="ar-s" x="1126" y="569.7" font-size="11">robots.txt (permitido, prohibido o sin leer).</text>
+    <text class="ar-s" x="1126" y="584.9" font-size="11">Los números al día salen del propio archivo;</text>
+    <text class="ar-s" x="1126" y="600.1" font-size="11">el sitio muestra el estado de cada fuente en</text>
+    <text class="ar-s" x="1126" y="615.3" font-size="11">la última corrida.</text>
+    <text class="ar-m" x="1126" y="634.4" font-size="10.5">commit en main; en otras ramas, a bot/registry/</text>
+    <rect class="ar-chip" x="1126" y="643.5" width="124.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="655.5" font-size="10">enso-source-registry/1</text>
   </g>
   <g class="ar-node-g" id="a1-n-readers" data-node="readers">
     <title>Quién lo sigue. GitHub Actions en cada corrida; n8n a las 22:50 (de main o su copia incluida); el equipo del Perú a las 21:00 (con su token, o la copia del kit).</title>
-    <rect class="ar-node ar-g-channels" x="1114" y="656" width="280" height="120.7" rx="8"/>
-    <rect class="ar-f-channels" x="1114" y="664" width="4" height="104.7" rx="2"/>
-    <rect class="ar-tile ar-f-channels" x="1126" y="666" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-channels" transform="translate(1129 669)"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></g>
-    <text class="ar-t" x="1164" y="685.5" font-size="12.5">Quién lo sigue</text>
-    <text class="ar-s" x="1126" y="717.4" font-size="11">GitHub Actions en cada corrida; n8n a las</text>
-    <text class="ar-s" x="1126" y="732.6" font-size="11">22:50 (de main o su copia incluida); el equipo</text>
-    <text class="ar-s" x="1126" y="747.7" font-size="11">del Perú a las 21:00 (con su token, o la copia</text>
-    <text class="ar-s" x="1126" y="762.9" font-size="11">del kit).</text>
-    <a class="ar-annex" href="a4.svg" data-annex="a4"><title>Anexo A4: Descarga en GitHub Actions y respaldo por fuente</title><rect class="ar-tag" x="1358.6" y="663" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="675.5" font-size="10.5" text-anchor="middle">A4</text></a>
-    <a class="ar-annex" href="a3.svg" data-annex="a3"><title>Anexo A3: n8n en la nube (AWS): segunda copia y flujos auxiliares</title><rect class="ar-tag" x="1327.1" y="663" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1340.8" y="675.5" font-size="10.5" text-anchor="middle">A3</text></a>
-    <a class="ar-annex" href="a2.svg" data-annex="a2"><title>Anexo A2: Recolector en el Perú: el servidor local</title><rect class="ar-tag" x="1295.7" y="663" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1309.4" y="675.5" font-size="10.5" text-anchor="middle">A2</text></a>
+    <rect class="ar-node ar-g-channels" x="1114" y="701.5" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-channels" x="1114" y="709.5" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="1126" y="711.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(1129 714.5)"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></g>
+    <text class="ar-t" x="1164" y="731" font-size="12.5">Quién lo sigue</text>
+    <text class="ar-s" x="1126" y="762.9" font-size="11">GitHub Actions en cada corrida; n8n a las</text>
+    <text class="ar-s" x="1126" y="778.1" font-size="11">22:50 (de main o su copia incluida); el equipo</text>
+    <text class="ar-s" x="1126" y="793.3" font-size="11">del Perú a las 21:00 (con su token, o la copia</text>
+    <text class="ar-s" x="1126" y="808.5" font-size="11">del kit).</text>
+    <a class="ar-annex" href="a4.svg" data-annex="a4"><title>Anexo A4: Descarga en GitHub Actions y respaldo por fuente</title><rect class="ar-tag" x="1358.6" y="708.5" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="721" font-size="10.5" text-anchor="middle">A4</text></a>
+    <a class="ar-annex" href="a3.svg" data-annex="a3"><title>Anexo A3: n8n en la nube (AWS): segunda copia y flujos auxiliares</title><rect class="ar-tag" x="1327.1" y="708.5" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1340.8" y="721" font-size="10.5" text-anchor="middle">A3</text></a>
+    <a class="ar-annex" href="a2.svg" data-annex="a2"><title>Anexo A2: Recolector en el Perú: el servidor local</title><rect class="ar-tag" x="1295.7" y="708.5" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1309.4" y="721" font-size="10.5" text-anchor="middle">A2</text></a>
   </g>
   <line class="ar-rule" x1="20" y1="1164.9" x2="1420" y2="1164.9"/>
   <text class="ar-h" x="20" y="1194.9" font-size="15">Pasos y conexiones: qué viaja por cada línea, cuándo y por qué</text>
@@ -535,9 +541,10 @@
   <text class="ar-t" x="526" y="1565.9" font-size="11.5">Aparece una verificación antirobots</text>
   <text class="ar-s" x="526" y="1580.9" font-size="11">Se anota como challenge y nunca se evade: la URL pierde ese canal.</text>
   <g class="ar-warn" transform="translate(496 1592.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="526" y="1607.9" font-size="11.5">GitHub apagó el sondeo por inactividad</text>
+  <text class="ar-t" x="526" y="1607.9" font-size="11.5">GitHub apagó o se saltó el sondeo</text>
   <text class="ar-s" x="526" y="1622.9" font-size="11">El registro anterior sigue valiendo; el job keepalive y el vigilante reactivan</text>
-  <text class="ar-s" x="526" y="1637.9" font-size="11">probe-sources.</text>
+  <text class="ar-s" x="526" y="1637.9" font-size="11">probe-sources, y sin una sonda buena en main en 8 días el vigilante la</text>
+  <text class="ar-s" x="526" y="1652.9" font-size="11">relanza.</text>
   <g class="ar-warn" transform="translate(972 1550.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
   <text class="ar-t" x="1002" y="1565.9" font-size="11.5">Un recolector no puede leer el registro de GitHub</text>
   <text class="ar-s" x="1002" y="1580.9" font-size="11">n8n usa la copia incluida al construir el flujo y el Perú la del kit (avisa si</text>

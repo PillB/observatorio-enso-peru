@@ -144,33 +144,33 @@
   <!-- conexiones -->
   <g class="ar-edge" id="a5-e-1" data-edge="1" data-from="cron" data-to="queue" tabindex="0">
     <title>1. Cada noche 23:37 Lima → Cola: programada. La corrida de cada noche.</title>
-    <path class="ar-e ar-e-trigger" d="M326 240 L354 240 Q360 240 360 246 L360 720 Q360 726 354 726 L326 726" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="360" cy="483" r="9"/>
-    <text class="ar-t" x="360" y="486.8" font-size="10.5" text-anchor="middle">1</text>
+    <path class="ar-e ar-e-trigger" d="M326 240 L354 240 Q360 240 360 246 L360 726 Q360 732 354 732 L326 732" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="360" cy="486" r="9"/>
+    <text class="ar-t" x="360" y="489.8" font-size="10.5" text-anchor="middle">1</text>
   </g>
   <g class="ar-edge" id="a5-e-2" data-edge="2" data-from="push" data-to="queue" tabindex="0">
     <title>2. Fusión en main o a mano → Cola: fusión o a mano. Un cambio en main se publica enseguida.</title>
-    <path class="ar-e ar-e-human" d="M326 366 L348 366 Q354 366 354 372 L354 762 Q354 768 348 768 L326 768" stroke-dasharray="8 3 2 3" marker-end="url(#a5-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="354" cy="567" r="9"/>
-    <text class="ar-t" x="354" y="570.8" font-size="10.5" text-anchor="middle">2</text>
+    <path class="ar-e ar-e-human" d="M326 366 L348 366 Q354 366 354 372 L354 774 Q354 780 348 780 L326 780" stroke-dasharray="8 3 2 3" marker-end="url(#a5-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="354" cy="573" r="9"/>
+    <text class="ar-t" x="354" y="576.8" font-size="10.5" text-anchor="middle">2</text>
   </g>
   <g class="ar-edge" id="a5-e-3" data-edge="3" data-from="dispatch" data-to="queue" tabindex="0">
     <title>3. enso-refresh → Cola: hay una copia nueva. No hay que esperar a las 23:37 para usar la copia del Perú o un PDF subido.</title>
-    <path class="ar-e ar-e-trigger" d="M326 504 L342 504 Q348 504 348 510 L348 786 Q348 792 342 792 L326 792" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="348" cy="648" r="9"/>
-    <text class="ar-t" x="348" y="651.8" font-size="10.5" text-anchor="middle">3</text>
+    <path class="ar-e ar-e-trigger" d="M326 504 L342 504 Q348 504 348 510 L348 798 Q348 804 342 804 L326 804" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="348" cy="654" r="9"/>
+    <text class="ar-t" x="348" y="657.8" font-size="10.5" text-anchor="middle">3</text>
   </g>
   <g class="ar-edge" id="a5-e-4" data-edge="4" data-from="wd" data-to="queue" tabindex="0">
-    <title>4. Vigilante → Cola: sitio atrasado. Salvo que haya una corrida en curso o una relanzada en las últimas 6 h.</title>
+    <title>4. Vigilante → Cola: sitio atrasado. Salvo que haya una corrida de main en curso o una relanzada en las últimas 6 h.</title>
     <path class="ar-e ar-e-trigger" d="M186 676.8 L186 706.8" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
     <circle class="ar-badge ar-e-trigger" cx="186" cy="691.8" r="9"/>
     <text class="ar-t" x="186" y="695.6" font-size="10.5" text-anchor="middle">4</text>
   </g>
   <g class="ar-edge" id="a5-e-5" data-edge="5" data-from="queue" data-to="tests" tabindex="0">
     <title>5. Cola → Pruebas: empieza el job build. Si ya hay una corrida, la nueva espera su turno.</title>
-    <path class="ar-e ar-e-trigger" d="M326 750 L372 750 Q378 750 378 744 L378 276 Q378 270 384 270 L402 270" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="378" cy="510" r="9"/>
-    <text class="ar-t" x="378" y="513.8" font-size="10.5" text-anchor="middle">5</text>
+    <path class="ar-e ar-e-trigger" d="M326 756 L372 756 Q378 756 378 750 L378 276 Q378 270 384 270 L402 270" stroke-dasharray="2 3" marker-end="url(#a5-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="378" cy="513" r="9"/>
+    <text class="ar-t" x="378" y="516.8" font-size="10.5" text-anchor="middle">5</text>
   </g>
   <g class="ar-edge" id="a5-e-6" data-edge="6" data-from="tests" data-to="site-url" tabindex="0">
     <title>6. Pruebas → Dirección del sitio: pruebas pasan. Sin pruebas verdes no se sigue.</title>
@@ -293,26 +293,27 @@
     <a class="ar-annex" href="a2.svg" data-annex="a2"><title>Anexo A2: Recolector en el Perú: el servidor local</title><rect class="ar-tag" x="259.1" y="457.9" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="272.8" y="470.4" font-size="10.5" text-anchor="middle">A2</text></a>
   </g>
   <g class="ar-node-g" id="a5-n-wd" data-node="wd">
-    <title>Vigilante. Relanza la corrida si el sitio tiene más de 30 h.</title>
+    <title>Vigilante. Relanza la corrida de main si el sitio tiene más de 30 h.</title>
     <rect class="ar-node ar-g-operations" x="46" y="586.4" width="280" height="90.4" rx="8"/>
     <rect class="ar-f-operations" x="46" y="594.4" width="4" height="74.4" rx="2"/>
     <rect class="ar-tile ar-f-operations" x="58" y="596.4" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-operations" transform="translate(61 599.4)"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g>
     <text class="ar-t" x="96" y="615.9" font-size="12.5">Vigilante</text>
-    <text class="ar-s" x="58" y="647.9" font-size="11">Relanza la corrida si el sitio tiene más de 30</text>
-    <text class="ar-s" x="58" y="663" font-size="11">h.</text>
+    <text class="ar-s" x="58" y="647.9" font-size="11">Relanza la corrida de main si el sitio tiene</text>
+    <text class="ar-s" x="58" y="663" font-size="11">más de 30 h.</text>
     <a class="ar-annex" href="a10.svg" data-annex="a10"><title>Anexo A10: Vigilancia, avisos y mantenimiento</title><rect class="ar-tag" x="283.3" y="593.4" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="300.6" y="605.9" font-size="10.5" text-anchor="middle">A10</text></a>
   </g>
   <g class="ar-node-g" id="a5-n-queue" data-node="queue">
-    <title>Cola. Grupo enso-production-publication: una corrida a la vez y una en espera; la que está en curso nunca se cancela.</title>
-    <rect class="ar-node ar-g-operations" x="46" y="706.8" width="280" height="105.5" rx="8"/>
-    <rect class="ar-f-operations" x="46" y="714.8" width="4" height="89.5" rx="2"/>
+    <title>Cola. En main, grupo enso-production-publication: una corrida a la vez y una en espera; la que está en curso nunca se cancela. Una de prueba en otra rama va a enso-test-&lt;ref&gt;.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="706.8" width="280" height="120.7" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="714.8" width="4" height="104.7" rx="2"/>
     <rect class="ar-tile ar-f-operations" x="58" y="716.8" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-operations" transform="translate(61 719.8)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
     <text class="ar-t" x="96" y="736.3" font-size="12.5">Cola</text>
-    <text class="ar-s" x="58" y="768.2" font-size="11">Grupo enso-production-publication: una</text>
-    <text class="ar-s" x="58" y="783.4" font-size="11">corrida a la vez y una en espera; la que está</text>
-    <text class="ar-s" x="58" y="798.6" font-size="11">en curso nunca se cancela.</text>
+    <text class="ar-s" x="58" y="768.2" font-size="11">En main, grupo enso-production-publication:</text>
+    <text class="ar-s" x="58" y="783.4" font-size="11">una corrida a la vez y una en espera; la que</text>
+    <text class="ar-s" x="58" y="798.6" font-size="11">está en curso nunca se cancela. Una de</text>
+    <text class="ar-s" x="58" y="813.8" font-size="11">prueba en otra rama va a enso-test-&lt;ref&gt;.</text>
   </g>
   <g class="ar-node-g" id="a5-n-tests" data-node="tests">
     <title>Pruebas. pytest sin navegador: lectores contra respuestas reales e históricas, umbrales y una publicación completa sin red. Si fallan, no se publica. Tecnología: pytest.</title>
@@ -557,17 +558,18 @@
   <text class="ar-t" x="30" y="1485.7" font-size="10.5" text-anchor="middle">4</text>
   <text class="ar-t" x="50" y="1485.9" font-size="11.5">sitio atrasado</text>
   <text class="ar-m" x="50" y="1499.9" font-size="10.5">Vigilante → Cola</text>
-  <text class="ar-s" x="50" y="1514.9" font-size="11">Salvo que haya una corrida en curso o una relanzada en las últimas 6 h.</text>
-  <circle class="ar-badge ar-e-trigger" cx="30" cy="1537.9" r="9"/>
-  <text class="ar-t" x="30" y="1541.7" font-size="10.5" text-anchor="middle">5</text>
-  <text class="ar-t" x="50" y="1541.9" font-size="11.5">empieza el job build</text>
-  <text class="ar-m" x="50" y="1555.9" font-size="10.5">Cola → Pruebas</text>
-  <text class="ar-s" x="50" y="1570.9" font-size="11">Si ya hay una corrida, la nueva espera su turno.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="1593.9" r="9"/>
-  <text class="ar-t" x="30" y="1597.7" font-size="10.5" text-anchor="middle">6</text>
-  <text class="ar-t" x="50" y="1597.9" font-size="11.5">pruebas pasan</text>
-  <text class="ar-m" x="50" y="1611.9" font-size="10.5">Pruebas → Dirección del sitio</text>
-  <text class="ar-s" x="50" y="1626.9" font-size="11">Sin pruebas verdes no se sigue.</text>
+  <text class="ar-s" x="50" y="1514.9" font-size="11">Salvo que haya una corrida de main en curso o una relanzada en las</text>
+  <text class="ar-s" x="50" y="1529.9" font-size="11">últimas 6 h.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1552.9" r="9"/>
+  <text class="ar-t" x="30" y="1556.7" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="1556.9" font-size="11.5">empieza el job build</text>
+  <text class="ar-m" x="50" y="1570.9" font-size="10.5">Cola → Pruebas</text>
+  <text class="ar-s" x="50" y="1585.9" font-size="11">Si ya hay una corrida, la nueva espera su turno.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1608.9" r="9"/>
+  <text class="ar-t" x="30" y="1612.7" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="50" y="1612.9" font-size="11.5">pruebas pasan</text>
+  <text class="ar-m" x="50" y="1626.9" font-size="10.5">Pruebas → Dirección del sitio</text>
+  <text class="ar-s" x="50" y="1641.9" font-size="11">Sin pruebas verdes no se sigue.</text>
   <circle class="ar-badge ar-e-data" cx="506" cy="1298.9" r="9"/>
   <text class="ar-t" x="506" y="1302.7" font-size="10.5" text-anchor="middle">7</text>
   <text class="ar-t" x="526" y="1302.9" font-size="11.5">dirección resuelta</text>
@@ -641,8 +643,8 @@
   <text class="ar-h" x="20" y="1762.9" font-size="15">Si algo falla: qué pasa y qué respaldo entra</text>
   <g class="ar-warn" transform="translate(20 1779.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
   <text class="ar-t" x="50" y="1794.9" font-size="11.5">Las pruebas fallan</text>
-  <text class="ar-s" x="50" y="1809.9" font-size="11">No se corre el pipeline ni se publica; sigue el sitio de ayer y se abre «La</text>
-  <text class="ar-s" x="50" y="1824.9" font-size="11">actualización diaria falló».</text>
+  <text class="ar-s" x="50" y="1809.9" font-size="11">No se corre el pipeline ni se publica; sigue el sitio de ayer y, en main, se</text>
+  <text class="ar-s" x="50" y="1824.9" font-size="11">abre «La actualización diaria falló».</text>
   <g class="ar-warn" transform="translate(20 1836.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
   <text class="ar-t" x="50" y="1851.9" font-size="11.5">El comunicado o su informe no llegan por ninguna ruta</text>
   <text class="ar-s" x="50" y="1866.9" font-size="11">Queda pendiente en la consola de documentos (manual-download-needed)</text>
@@ -653,8 +655,8 @@
   <text class="ar-s" x="526" y="1824.9" font-size="11">%); queda la incidencia y el último valor bueno.</text>
   <g class="ar-warn" transform="translate(496 1836.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
   <text class="ar-t" x="526" y="1851.9" font-size="11.5">El formato de una fuente cambia</text>
-  <text class="ar-s" x="526" y="1866.9" font-size="11">Si aún se puede leer, format-drift para revisar; si no, el dato queda en</text>
-  <text class="ar-s" x="526" y="1881.9" font-size="11">validación y se usa el anterior.</text>
+  <text class="ar-s" x="526" y="1866.9" font-size="11">Si aún se puede leer, format-drift para revisar (su issue lo cierra una</text>
+  <text class="ar-s" x="526" y="1881.9" font-size="11">persona); si no, el dato queda en validación y se usa el anterior.</text>
   <g class="ar-warn" transform="translate(972 1779.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
   <text class="ar-t" x="1002" y="1794.9" font-size="11.5">El pipeline pasa de 26 minutos</text>
   <text class="ar-s" x="1002" y="1809.9" font-size="11">Falla ese paso, pero el estado de los feeds reader y el informe se guardan</text>
