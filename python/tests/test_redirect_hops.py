@@ -691,7 +691,7 @@ def test_the_restrictions_report_names_what_a_url_asks_more_than_on_main(tmp_pat
     text = report.read_text(encoding="utf-8")
     assert gained and "piden más que en la rama principal (1;" in text
     assert all(f"canal {c}" in text for c in gained) and text.count(f"`{url}`") == 2
-    assert "se pide tras leer su robots.txt y el de https://cdn.example/f.xml" in text
+    assert "se pide tras leer el robots.txt de https://cdn.example/f.xml" in text
 
     # Un hop que se resuelve en «prohibido» (sin canales) o que cambia por otro no pide más: no va en esa lista.
     hop_on_main = {"actions": {"github-actions": {**measured["urls"][url]["actions"]["github-actions"], "at": t0}},
@@ -714,9 +714,11 @@ def test_the_restrictions_report_names_what_a_url_asks_more_than_on_main(tmp_pat
         assert f"`{url}`" in text and "piden más que en la rama principal" not in text, text
 
 
-def test_the_restrictions_report_says_when_an_aged_out_url_is_asked_without_reading_robots_txt(tmp_path):
+@pytest.mark.parametrize("answer", ["ok", "http-403"])
+def test_the_restrictions_report_says_when_an_aged_out_url_is_asked_without_reading_robots_txt(tmp_path, answer):
     """Un robots.txt en contra de más de 45 días deja de contar (``STALE_DAYS``) y la URL queda ``allowed``: n8n y
-    la corrida la piden sin volver a leer su robots.txt. El informe lo dice así, no que lo leen antes."""
+    la corrida la piden sin volver a leer su robots.txt. El informe lo dice así, no que lo leen antes. Si Actions
+    recibe un 403, solo la pide el recolector del Perú, que sí lo lee antes de cada pedido."""
     import json
 
     from enso import registry
@@ -731,10 +733,12 @@ def test_the_restrictions_report_says_when_an_aged_out_url_is_asked_without_read
         return {"github-actions": {**rec, "at": at, "vantage": "github-actions"}}
 
     ok = {"class": "ok", "http": 200, "robots": "allowed"}
+    if answer == "http-403":
+        ok = {"class": "http-403", "http": 403, "robots": "allowed"}
     base_reach = {"schema": registry.REACH_SCHEMA, "updated_at": t0, "urls": {
         aged: {"actions": gha(ok, t0), "n8n": {"n8n-aws": {"class": "robots", "http": None, "robots": "disallowed",
                                                             "at": "2026-09-08T03:00:00+00:00", "vantage": "n8n-aws"}}},
-        newly: {"actions": gha(ok, t0)}}}
+        newly: {"actions": gha({"class": "ok", "http": 200, "robots": "allowed"}, t0)}}}
     measured = {"schema": registry.REACH_SCHEMA, "updated_at": t1, "urls": {
         aged: {**base_reach["urls"][aged], "actions": gha(ok, t1)},
         newly: {"actions": gha({"class": "robots", "http": None, "robots": "disallowed"}, t1)}}}
@@ -750,8 +754,15 @@ def test_the_restrictions_report_says_when_an_aged_out_url_is_asked_without_read
                                    "--registry", str(paths["registry"]), "--reach", str(paths["reach"])]) == 0
     text = report.read_text(encoding="utf-8")
     line = next(x for x in text.splitlines() if x.startswith(f"- `{aged}`"))
-    assert "estado robots-disallowed → open" in line and "se pide sin volver a leer su robots.txt" in line
-    assert "tras leer" not in line and "45 días" in text
+    reg = json.loads(paths["registry"].read_text(encoding="utf-8"))
+    got = next(r for s in reg["sources"] for u, r in s["by_url"].items() if u == aged)
+    assert got["robots"] == "allowed" and "45 días" in text
+    if answer == "ok":
+        assert got["channels"] != ["peru-server"] and "estado robots-disallowed → open" in line
+        assert "se pide sin volver a leer su robots.txt" in line and "tras leer" not in line
+    else:
+        assert got["channels"] == ["peru-server"] and "canal peru-server" in line
+        assert "el recolector del Perú lee antes su robots.txt" in line and "sin volver a leer" not in line
 
 
 def test_n8n_reading_of_a_hop_robots_txt_keeps_the_hop():

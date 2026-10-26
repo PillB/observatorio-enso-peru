@@ -12,8 +12,9 @@ lista en ARCHIVO (Markdown, para el issue). Lo que llega a la rama principal qui
 medición nueva la lleva entera, y con ella puede pedir más que en la rama principal: otro canal (``peru-server``
 cuando el robots.txt del destino de su redirección no respondió desde Actions, que el registro toma por posible
 geobloqueo) o una lectura de robots.txt de más de ``STALE_DAYS`` que dejó de contar. Esas también van en ARCHIVO,
-con si se piden tras leer su robots.txt (las que quedan ``unknown``, y también el del destino si tienen ``hop``) o
-sin volver a leerlo (las que quedan ``allowed``). Sin restricciones no cambia nada ni escribe ARCHIVO.
+con si se piden tras leer robots.txt (las que quedan ``unknown``: el del destino si tienen ``hop``; las que solo
+pide el recolector del Perú) o sin volver a leerlo (las que n8n o Actions piden con ``allowed``). Sin restricciones
+no cambia nada ni escribe ARCHIVO.
 
 Sale con 1 si el registro que resulta no es válido (``registry.validate``): entonces no se escribe en la rama
 principal.
@@ -70,10 +71,14 @@ def _looser(b: dict, r: dict) -> str:
         out.append(f"robots {b.get('robots')} → {r.get('robots')}")
     if b.get("hop") and not r.get("hop"):
         out.append(f"sin el hop {b['hop']}")
+    # Quién lee robots.txt antes de pedirla: con ``unknown``, todos (n8n, con ``hop``, solo el del destino); con otro
+    # valor, n8n y la corrida con el canal Actions no lo vuelven a leer, y el recolector del Perú siempre lo lee.
     if r.get("robots") == "unknown":
-        out.append("se pide tras leer su robots.txt" + (f" y el de {r['hop']}" if r.get("hop") else ""))
-    else:
+        out.append(f"se pide tras leer el robots.txt de {r['hop']}" if r.get("hop") else "se pide tras leer su robots.txt")
+    elif set(r.get("channels") or []) & {"actions", "n8n"}:
         out.append("se pide sin volver a leer su robots.txt")
+    else:
+        out.append("el recolector del Perú lee antes su robots.txt")
     return "; ".join(out)
 
 
