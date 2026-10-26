@@ -29,7 +29,7 @@ function loadWith(shadow, ...names) {
     classify: ['classify', 'reachClass', 'detectFormat', 'feedStats', 'fileExtension', 'utf8Decode', 'utf8Encode'],
     enfen: ['deriveEnfenTargets', 'parseListing', 'parseWpPosts', 'cleanWpdm'],
     relay: ['buildSnapshot', 'pickResults', 'heartbeat', 'parseTokenExpiry', 'notRequested'],
-    robots: ['robotRules', 'robotsAllowed', 'robotsVerdicts'],
+    robots: ['robotRules', 'robotsAllowed', 'robotsVerdicts', 'robotsFetch', 'publicPeru', 'pacing', 'robotGroup'],
   };
   const code = names.map(libSource).join('\n');
   const all = names.flatMap((n) => exportsList[n]);
@@ -387,7 +387,8 @@ test('qué hace n8n con cada respuesta de robots.txt (RFC 9309)', () => {
   const urls = ['https://x/feed/', 'https://x/wp-admin/'];
   const v = (r) => robotsVerdicts({ headers: {}, ...r, cls: classify({ url: 'https://x/robots.txt', expect: 'any', headers: r.headers || {}, ...r }) }, urls);
   const rules = v({ status: 200, body: enc('User-agent: *\nDisallow: /wp-admin/\n') });
-  assert.deepEqual(rules, { source: 'rules', verdicts: { 'https://x/feed/': 'allowed', 'https://x/wp-admin/': 'disallowed' } });
+  assert.deepEqual(rules, { source: 'rules', verdicts: { 'https://x/feed/': 'allowed', 'https://x/wp-admin/': 'disallowed' }, challenge: false, crawl_delay: null });
+  assert.equal(v({ status: 200, body: enc('User-agent: *\nCrawl-delay: 5\nDisallow: /wp-admin/\n') }).crawl_delay, 5);
   // Una página HTML (un «no encontrado» con 200) no tiene reglas: se permite todo.
   assert.equal(v({ status: 200, body: enc('<!DOCTYPE html><html><body>' + 'x'.repeat(3000)) }).verdicts['https://x/wp-admin/'], 'allowed');
   assert.equal(v({ status: 404, body: enc('no') }).source, 'absent');
@@ -404,7 +405,7 @@ test('qué hace n8n con cada respuesta de robots.txt (RFC 9309)', () => {
 test('Segunda pasada pide lo que robots.txt permite; la copia anota lo que no se pidió', async () => {
   const robotsItem = (verdict) => ({ json: { id: 'robots:x', group: 'g', url: 'https://x/robots.txt', role: 'robots', fetched_at: '2026-10-26T03:50:00+00:00',
     cls: { ok: verdict !== 'unreachable', verdict: verdict === 'unreachable' ? 'blocked' : 'ok', reach: verdict === 'unreachable' ? 'challenge' : 'ok' },
-    deferred: [{ id: 'f', group: 'g', name: 'F', url: 'https://x/feed/', expect: 'rss', pass: 1, robots: verdict }] } });
+    deferred: [{ id: 'f', group: 'g', name: 'F', url: 'https://x/feed/', expect: 'rss', pass: 1, robots: verdict, fetch: verdict === 'allowed' }] } });
   const second = await runCode('segunda', {}, {}, [robotsItem('allowed')]);
   assert.deepEqual(second.map((i) => [i.json.url, i.json.pass, i.json.robots]), [['https://x/feed/', 2, 'allowed']]);
   for (const verdict of ['disallowed', 'unreachable']) {
@@ -454,10 +455,11 @@ test('Fuentes: una alternativa con otra terminación no hereda el tipo esperado'
     { id: 'wp', group: 'g', url: 'https://e/wp-json/wp/v2/posts?search=c', alt_urls: ['https://e/comunicados/'], expect: 'json', channels: ['n8n'] },
   ] };
   const out = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
-  assert.deepEqual(out.map((i) => i.json.expect), ['text', 'text', 'json', 'any']);
+  const byUrl = (o) => Object.fromEntries(o.map((i) => [i.json.url, i.json.expect]));
+  assert.deepEqual(byUrl(out), { 'http://x/ICEN.txt': 'text', 'https://x/ICEN.txt': 'text', 'https://e/wp-json/wp/v2/posts?search=c': 'json', 'https://e/comunicados/': 'any' });
   reg.sources[1].alt_expect = ['html'];
   const withAlt = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
-  assert.equal(withAlt[3].json.expect, 'html');
+  assert.equal(byUrl(withAlt)['https://e/comunicados/'], 'html');
 });
 
 test('Vigilante: falla si el sitio está viejo o no responde', async () => {
@@ -540,4 +542,72 @@ test('Fuentes y Analizar: con «hop», se lee el robots.txt del destino de la re
   const res2 = await fn.call({ helpers: { getBinaryDataBuffer: async () => body } }, () => ({ all: () => out }),
     { all: () => [{ json: { statusCode: 200, headers: { 'content-type': 'text/plain' } }, binary: { data: {} } }] }, undefined);
   assert.equal(res2[0].json.deferred[0].robots, 'disallowed');
+});
+
+test('entidades públicas del Perú: robots.txt no decide, pero una verificación sí (decisión del 26 de octubre)', () => {
+  const { robotsVerdicts, robotsFetch, publicPeru } = loadWith({ URL: undefined }, 'classify', 'robots');
+  assert.ok(publicPeru('https://www.imarpe.gob.pe/feed/'));
+  assert.ok(publicPeru('https://www.dhn.mil.pe/portal/x'));
+  assert.ok(!publicPeru('https://ftp.cpc.ncep.noaa.gov/godas/'));
+  assert.ok(!publicPeru('https://www.pucp.edu.pe/'));
+  assert.ok(!publicPeru('https://gob.pe.example.com/'));
+  const v = (r, url) => {
+    const out = robotsVerdicts({ headers: {}, ...r, cls: classify({ url: 'u', expect: 'any', headers: r.headers || {}, ...r }) }, [url]);
+    return robotsFetch(out.verdicts[url], url, out.challenge);
+  };
+  const disallowAll = { status: 200, body: enc('User-agent: *\nDisallow: /\n') };
+  assert.equal(v(disallowAll, 'https://sigrid.cenepred.gob.pe/descargas/x.zip'), true);
+  assert.equal(v(disallowAll, 'https://ejemplo.com/x'), false);
+  assert.equal(v({ status: null, error: 'ETIMEDOUT' }, 'https://www.imarpe.gob.pe/feed/'), true);
+  assert.equal(v({ status: 503, body: enc('') }, 'https://www.imarpe.gob.pe/feed/'), true);
+  // Una verificación antirobots en lugar del robots.txt: nunca se evade, tampoco en el Perú.
+  assert.equal(v({ status: 403, headers: { 'cf-mitigated': 'challenge' }, body: enc('') }, 'https://www.imarpe.gob.pe/feed/'), false);
+  assert.equal(v({ status: 200, body: enc('<!DOCTYPE html><html><head><title>Just a moment...</title></head></html>') }, 'https://www.imarpe.gob.pe/feed/'), false);
+  // También con 503 o 429 y sin «cf-mitigated»: la página es una verificación.
+  assert.equal(v({ status: 503, headers: { 'content-type': 'text/html' }, body: enc('<html><title>Just a moment...</title></html>') }, 'https://www.imarpe.gob.pe/feed/'), false);
+});
+
+test('Crawl-delay: el del grupo del observatorio o «*», y se conserva en el reintento', async () => {
+  const { robotGroup } = loadWith({ URL: undefined }, 'robots');
+  assert.equal(robotGroup('User-agent: *\nCrawl-delay: 3\nDisallow: /x\n').delay, 3);
+  assert.equal(robotGroup('User-agent: *\nCrawl-delay: 3\n\nUser-agent: observatorio-enso-peru\nCrawl-delay: 7\n').delay, 7);
+  assert.equal(robotGroup('User-agent: otro\nCrawl-delay: 9\n').delay, null);
+  const failed = (id) => ({ json: { id, group: 'g', name: id, url: `https://www.imarpe.gob.pe/${id}`, expect: 'html', crawl_delay: 10,
+    cls: { ok: false, transient: true, verdict: 'server_error', reach: 'http-5xx' } } });
+  const second = await runCode('segunda', {}, {}, [failed('a'), failed('b')]);
+  assert.deepEqual(second.map((i) => [i.json.id, i.json.crawl_delay, i.json.pause_s]), [['a', 10, 0], ['b', 10, 10]]);
+});
+
+test('Fuentes intercala los servidores para no pedir seguido al mismo', async () => {
+  const reg = { schema: 'enso-source-registry/1', sources: ['a1', 'a2', 'a3', 'b1', 'c1', 'b2'].map((id) => (
+    { id, group: 'g', url: `https://${id[0]}.pe/${id}`, expect: 'html', channels: ['n8n'] })) };
+  const out = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
+  assert.deepEqual(out.map((i) => i.json.id), ['a1', 'b1', 'c1', 'a2', 'b2', 'a3']);
+  assert.deepEqual(out.map((i) => i.json.pause_s), [0, 0, 0, 0, 0, 0]);
+});
+
+test('Fuentes no pide lo que el registro marca «disallowed», tampoco en entidades públicas del Perú (el registro ya aplica la excepción)', async () => {
+  const rule = (robots) => ({ channels: ['n8n'], robots });
+  const reg = { schema: 'enso-source-registry/1', sources: [
+    { id: 'imarpe', group: 'g', url: 'https://www.imarpe.gob.pe/x', expect: 'html', channels: ['n8n'], by_url: { 'https://www.imarpe.gob.pe/x': rule('disallowed') } },
+    { id: 'otro', group: 'g', url: 'https://example.org/x', expect: 'html', channels: ['n8n'], by_url: { 'https://example.org/x': rule('disallowed') } },
+  ] };
+  // Que siga «disallowed» en un .gob.pe es una redirección a otro servidor que lo prohíbe (registry.py, #54).
+  reg.sources.push({ id: 'senamhi', group: 'g', url: 'https://www.senamhi.gob.pe/y', expect: 'html', channels: ['n8n'], by_url: { 'https://www.senamhi.gob.pe/y': rule('allowed') } });
+  const out = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
+  assert.deepEqual(out.map((i) => i.json.id), ['senamhi']);
+});
+
+test('Fuentes espera entre peticiones al mismo servidor público del Perú', async () => {
+  const src = (id, host, extra = {}) => ({ id, group: 'g', url: `https://${host}/${id}`, expect: 'html', channels: ['n8n'], ...extra });
+  const reg = { schema: 'enso-source-registry/1', sources: [
+    src('i1', 'www.imarpe.gob.pe'), src('i2', 'www.imarpe.gob.pe'), src('i3', 'www.imarpe.gob.pe'),
+    src('n1', 'www.noaa.gov'), src('n2', 'www.noaa.gov'),
+    src('m1', 'www.dhn.mil.pe', { by_url: { 'https://www.dhn.mil.pe/m1': { channels: ['n8n'], crawl_delay: 10 } } }),
+    src('m2', 'www.dhn.mil.pe', { by_url: { 'https://www.dhn.mil.pe/m2': { channels: ['n8n'], crawl_delay: 99 } } }),
+  ] };
+  const out = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
+  // Orden: i1 n1 m1 i2 n2 m2 i3. Reloj virtual: i2 espera 1 s; m2, 30 s (tope) menos lo ya esperado.
+  assert.deepEqual(out.map((i) => [i.json.id, i.json.pause_s]),
+    [['i1', 0], ['n1', 0], ['m1', 0], ['i2', 1], ['n2', 0], ['m2', 29], ['i3', 0]]);
 });
