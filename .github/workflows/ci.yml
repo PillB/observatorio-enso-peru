@@ -19,9 +19,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # 35 min: «playwright install --with-deps» baja paquetes por apt y un espejo lento
-    # de Ubuntu llegó a gastar los 20 min de antes (PR #49, 26 de octubre).
-    timeout-minutes: 35
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v7
@@ -40,11 +38,20 @@ jobs:
       - name: Build the site from captured sources (offline)
         working-directory: python
         run: python -m enso.observatory --out ../public/data --previous '' --fixtures tests/fixtures/sources --fail-on critical
-      - name: Browser journeys (Chromium, phone and desktop)
-        working-directory: python
+      # En la imagen oficial de Playwright, que ya trae los tres navegadores y sus
+      # bibliotecas: «playwright install --with-deps» las bajaba por apt y el espejo
+      # azure.archive.ubuntu.com se quedaba en pocos kB/s hasta agotar el tiempo del
+      # job antes de la primera prueba (#49, #55, #56, #58; 26 de octubre). La
+      # etiqueta sale de la versión de Playwright que pip acaba de instalar, así que
+      # Dependabot no tiene que subirla aparte. Node 22 entra desde setup-node.
+      - name: Browser journeys (Chromium, WebKit, Firefox in the Playwright image)
         run: |
-          python -m playwright install --with-deps chromium webkit firefox
-          python -m pytest -q -m browser --site-dir=../public
+          pw=$(python -c 'import importlib.metadata as m; print(m.version("playwright"))')
+          node_dir=$(dirname "$(dirname "$(readlink -f "$(command -v node)")")")
+          docker run --rm --ipc=host -e CI \
+            -v "$node_dir:/opt/node:ro" -e PATH="/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+            -v "$GITHUB_WORKSPACE:/w" -w /w/python "mcr.microsoft.com/playwright/python:v$pw-noble" \
+            bash -c "pip install -q --root-user-action=ignore -r requirements-dev.txt 'playwright==$pw' && python -m pytest -q -m browser --site-dir=../public"
       - uses: actions/upload-artifact@v7
         if: failure()
         with:
