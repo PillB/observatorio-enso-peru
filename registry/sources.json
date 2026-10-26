@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-26T17:32:57+00:00",
+ "generated_at": "2026-10-26T17:52:39+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n no la pide y el pipeline lo lee antes de pedirla",
@@ -11357,14 +11357,14 @@
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     },
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Informe+T%C3%A9cnico+ENFEN%22&dsoType=ITEM&size=4&sort=dc.date.issued%2CDESC": {
      "status": "suspected-geoblock",
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11416,7 +11416,7 @@
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11901,23 +11901,19 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "robots-disallowed",
+    "status": "suspected-geoblock",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1",
-     "peru-server"
+     "n8n-aws-us-east-1"
     ],
     "open_from": [],
     "us": {
      "class": "timeout",
      "robots": "unreachable"
     },
-    "peru": {
-     "class": "robots",
-     "robots": "disallowed"
-    },
+    "peru": null,
     "actions": {
      "class": "timeout",
      "robots": "unreachable"
@@ -11926,13 +11922,17 @@
      "class": "timeout"
     }
    },
-   "channels": [],
-   "geoblocked": null,
+   "channels": [
+    "peru-server"
+   ],
+   "geoblocked": true,
    "by_url": {
     "https://snirh.ana.gob.pe/": {
-     "status": "robots-disallowed",
-     "channels": [],
-     "robots": "disallowed"
+     "status": "suspected-geoblock",
+     "channels": [
+      "peru-server"
+     ],
+     "robots": "allowed"
     }
    }
   },
@@ -11954,23 +11954,19 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "robots-disallowed",
+    "status": "suspected-geoblock",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1",
-     "peru-server"
+     "n8n-aws-us-east-1"
     ],
     "open_from": [],
     "us": {
      "class": "timeout",
      "robots": "unreachable"
     },
-    "peru": {
-     "class": "robots",
-     "robots": "disallowed"
-    },
+    "peru": null,
     "actions": {
      "class": "timeout",
      "robots": "unreachable"
@@ -11979,13 +11975,17 @@
      "class": "timeout"
     }
    },
-   "channels": [],
-   "geoblocked": null,
+   "channels": [
+    "peru-server"
+   ],
+   "geoblocked": true,
    "by_url": {
     "https://snirh.ana.gob.pe/onrh/": {
-     "status": "robots-disallowed",
-     "channels": [],
-     "robots": "disallowed"
+     "status": "suspected-geoblock",
+     "channels": [
+      "peru-server"
+     ],
+     "robots": "allowed"
     }
    }
   },
