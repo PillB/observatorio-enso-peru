@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from urllib.parse import urlparse
 
 import httpx
 import pytest
@@ -1075,3 +1076,199 @@ def test_goal_detail_points_at_the_saved_pdf(snapshot):
     for g, ok in idx["goals"].items():
         d = idx["goal_detail"][g]
         assert d["saved"] == ok and (not ok or d["url"].startswith("https://"))
+
+
+# --- robots.txt durante la corrida (revisión del 22 de octubre de 2026, gaps 1 y 4) ----------------------------
+
+PAGE = "https://ana.example.pe/onrh/"
+CLIENT = httpx.Client
+
+
+def _net(monkeypatch, robots: dict[str, tuple[int, str]], asked: list[str]):
+    """Red simulada para el ``Fetcher``: robots.txt por servidor y 200 en lo demás."""
+    def handler(req):
+        asked.append(str(req.url))
+        if req.url.path == "/robots.txt":
+            code, text = robots.get(req.url.host, (404, ""))
+            return httpx.Response(code, text=text)
+        if req.url.host == "web.archive.org":
+            return httpx.Response(200, json=[["urlkey", "timestamp", "original"]] if "/cdx/" in str(req.url) else {})
+        return httpx.Response(200, text="<html>" + "x" * 600 + "</html>", headers={"content-type": "text/html"})
+
+    monkeypatch.setattr(httpx, "Client", lambda **kw: CLIENT(**{**kw, "transport": httpx.MockTransport(handler)}))
+
+
+def _copy(root: Path, url: str, body: bytes = b"<html>copia del Peru</html>", kind: str = "peru") -> Relay:
+    import hashlib
+
+    sha = hashlib.sha256(body).hexdigest()
+    (root / "files").mkdir(parents=True, exist_ok=True)
+    (root / "files" / f"{sha[:16]}.html").write_bytes(body)
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    (root / "index.json").write_text(json.dumps({
+        "schema": "enso-relay/1", "collected_at": now, "collector": {"kind": kind},
+        "entries": [{"url": url, "status": 200, "file": f"files/{sha[:16]}.html", "sha256": sha,
+                     "content_type": "text/html", "fetched_at": now}]}), encoding="utf-8")
+    return Relay(root)
+
+
+def test_url_whose_robots_txt_nobody_read_is_not_requested_while_robots_txt_fails(monkeypatch, tmp_path):
+    """Gap 1: en el registro (Actions y n8n), pero robots.txt sin leer por nadie: primero la copia; sin copia, se
+    lee robots.txt y, si no responde, no se le pide nada al servidor."""
+    asked: list[str] = []
+    _net(monkeypatch, {"ana.example.pe": (503, "")}, asked)
+    f = Fetcher(retries=2, polite_delay=0, allow_archive=False, robots=True,
+                plan={PAGE: ["actions", "n8n"]}, robots_known={PAGE: "unknown"})
+    with pytest.raises(Exception) as exc:
+        f.get([PAGE], accept=("html",))
+    assert asked == ["https://ana.example.pe/robots.txt"]
+    assert exc.value.attempts[-1] == {"url": PAGE, "error": "robots.txt sin respuesta: no se pide"}
+    # Con copia de un recolector, se usa sin pedir nada (tampoco robots.txt).
+    asked.clear()
+    f = Fetcher(retries=2, polite_delay=0, allow_archive=False, robots=True, relay=_copy(tmp_path / "peru", PAGE),
+                plan={PAGE: ["actions", "n8n"]}, robots_known={PAGE: "unknown"})
+    r = f.get([PAGE], accept=("html",))
+    assert r.channel == "relay-peru" and asked == [] and "robots.txt" in r.attempts[-1]["note"]
+    # Si robots.txt responde y la permite, se pide directo.
+    _net(monkeypatch, {"ana.example.pe": (200, "User-agent: *\nAllow: /\n")}, asked)
+    f = Fetcher(retries=2, polite_delay=0, allow_archive=False, robots=True,
+                plan={PAGE: ["actions", "n8n"]}, robots_known={PAGE: "unknown"})
+    assert f.get([PAGE], accept=("html",)).channel == "direct" and asked == ["https://ana.example.pe/robots.txt", PAGE]
+
+
+def test_news_feed_skipped_by_robots_txt_says_why(monkeypatch):
+    """Revisión: un feed que no se pidió por robots.txt figuraba en el estado de los feeds como «HTTP None»."""
+    from enso import news as N
+
+    feed = next(f for f in N.FEEDS if f.id == "indeci-coen")
+    monkeypatch.setattr(N, "FEEDS", [feed])
+    asked: list[str] = []
+    _net(monkeypatch, {urlparse(feed.url).hostname: (503, "")}, asked)
+    main = Fetcher(polite_delay=0, robots=True, plan={feed.url: ["actions", "n8n"]}, robots_known={feed.url: "unknown"})
+    got = obs.acquire_news(main, None, obs.PreviousPublication(None, main), obs.EventLog(), datetime.now(timezone.utc),
+                           None)
+    st = next(s for s in got["feeds"]["feeds"] if s["id"] == feed.id)
+    assert st["error"] == "robots.txt sin respuesta: no se pide"
+    assert asked == [f"https://{urlparse(feed.url).hostname}/robots.txt"]
+
+
+def test_url_outside_the_registry_is_checked_against_robots_txt(monkeypatch):
+    """Gap 4: una URL fuera del registro se pedía tres veces sin leer robots.txt."""
+    asked: list[str] = []
+    _net(monkeypatch, {"enfen.example.pe": (200, "User-agent: *\nDisallow: /\n")}, asked)
+    f = Fetcher(retries=3, polite_delay=0, allow_archive=False, robots=True)
+    r = f.get(["https://enfen.example.pe/informes-tecnicos/", "https://dhn.example.pe/informes"], accept=("html",))
+    assert r.channel == "mirror" and r.url == "https://dhn.example.pe/informes"
+    assert "https://enfen.example.pe/informes-tecnicos/" not in asked
+    assert r.attempts[0] == {"url": "https://enfen.example.pe/informes-tecnicos/",
+                             "error": "robots.txt no permite la ruta: no se pide"}
+    # Sin robots (pruebas, otras herramientas), como antes.
+    asked.clear()
+    f = Fetcher(retries=3, polite_delay=0, allow_archive=False)
+    assert f.get(["https://enfen.example.pe/informes-tecnicos/"]).channel == "direct"
+    assert asked == ["https://enfen.example.pe/informes-tecnicos/"]
+
+
+def test_peru_only_url_with_robots_txt_down_is_not_tried_directly(monkeypatch):
+    """Gap 4: una URL que solo responde desde el Perú, sin copia y con robots.txt caído, recibía igual un pedido."""
+    asked: list[str] = []
+    _net(monkeypatch, {"ana.example.pe": (503, "")}, asked)
+    f = Fetcher(retries=3, polite_delay=0, allow_archive=False, robots=True, plan={PAGE: ["peru-server"]})
+    with pytest.raises(Exception):
+        f.get([PAGE])
+    assert asked == ["https://ana.example.pe/robots.txt"]
+    # Si la sonda semanal leyó su robots.txt y lo permitía, vale esa lectura (RFC 9309 §2.3.1.4): un intento.
+    asked.clear()
+    f = Fetcher(retries=3, polite_delay=0, allow_archive=False, robots=True, plan={PAGE: ["peru-server"]},
+                robots_known={PAGE: "allowed"})
+    assert f.get([PAGE]).channel == "direct" and asked == ["https://ana.example.pe/robots.txt", PAGE]
+
+
+def test_url_the_weekly_probe_cleared_is_not_rechecked(monkeypatch):
+    """Lo que el registro asigna a Actions con robots.txt leído no se vuelve a revisar en la corrida."""
+    asked: list[str] = []
+    _net(monkeypatch, {}, asked)
+    f = Fetcher(retries=3, polite_delay=0, allow_archive=False, robots=True, plan={PAGE: ["actions", "n8n"]},
+                robots_known={PAGE: "allowed"})
+    assert f.get([PAGE]).channel == "direct" and asked == [PAGE]
+
+
+def test_robots_unknown_goes_to_the_copy_first_even_without_robots(monkeypatch, tmp_path):
+    """Con robots apagado, todo sigue igual salvo esto: robots.txt sin leer por nadie, primero la copia."""
+    asked: list[str] = []
+    _net(monkeypatch, {}, asked)
+    f = Fetcher(retries=3, polite_delay=0, allow_archive=False, relay=_copy(tmp_path / "n8n", PAGE, kind="n8n"),
+                plan={PAGE: ["actions", "n8n"]}, robots_known={PAGE: "unknown"})
+    assert f.get([PAGE]).channel == "relay-n8n" and asked == []
+    f.robots_known = {PAGE: "allowed"}
+    assert f.get([PAGE]).channel == "direct" and asked == [PAGE]
+
+
+def test_save_page_now_only_where_robots_txt_allows(monkeypatch):
+    """Gap 4: Save Page Now le pide la página al servidor en nombre del observatorio."""
+    asked: list[str] = []
+    _net(monkeypatch, {"ana.example.pe": (200, "User-agent: *\nDisallow: /onrh/\n")}, asked)
+
+    def saves(f: Fetcher, url: str) -> list[str]:
+        asked.clear()
+        with pytest.raises(Exception):
+            f.get([url], save=True, accept=("pdf",))
+        return [u for u in asked if "/save/" in u]
+
+    # Sin canales en el registro (robots.txt lo prohíbe), aunque robots esté apagado.
+    assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, plan={PAGE: []}), PAGE) == []
+    assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True), PAGE) == []
+    assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True), "https://ana.example.pe/datos/") == [
+        "https://web.archive.org/save/https://ana.example.pe/datos/"]
+
+
+def test_imarpe_repository_search_respects_robots_txt(monkeypatch):
+    """Gap 4: imarpe_repo pedía la API sin leer robots.txt (solo un docstring decía que lo permite)."""
+    from enso.feeds import imarpe_repo
+
+    asked: list[str] = []
+    _net(monkeypatch, {"repositorio.imarpe.gob.pe": (200, "User-agent: *\nDisallow: /server/api\n")}, asked)
+    f = Fetcher(retries=2, polite_delay=0, allow_archive=False, robots=True)
+    assert imarpe_repo.search(f, imarpe_repo.COMMUNIQUE_QUERY) == []
+    assert asked == ["https://repositorio.imarpe.gob.pe/robots.txt"]
+
+
+class _Built(Exception):
+    pass
+
+
+def test_production_fetchers_read_robots_txt(monkeypatch, tmp_path):
+    """La corrida real lee robots.txt (con lo que sabe el registro); con capturas o sin conexión, no. Los feeds de
+    noticias lo leen como las fuentes oficiales; los que se leen como un lector de feeds, no."""
+    import enso.fetch
+    from enso import registry
+
+    real = enso.fetch.Fetcher
+    built: list[dict] = []
+
+    def spy(stop_after: int):
+        def make(**kw):
+            built.append(kw)
+            if len(built) >= stop_after:
+                raise _Built
+            return real(**kw)
+        return make
+
+    monkeypatch.setattr(enso.fetch, "Fetcher", spy(1))
+    with pytest.raises(_Built):
+        obs.run(tmp_path / "out", None)
+    known = registry.url_robots()
+    assert built[0]["robots"] is True and built[0]["robots_known"] == known and "unknown" in known.values()
+    for kw in ({"offline": True}, {"fixtures": FIX}):
+        built.clear()
+        with pytest.raises(_Built):
+            obs.run(tmp_path / "out", None, **kw)
+        assert built[0]["robots"] is False and built[0]["robots_known"] is None
+    main = real(polite_delay=0, robots=True, robots_known=known)
+    built.clear()
+    monkeypatch.setattr(enso.fetch, "Fetcher", spy(2))
+    with pytest.raises(_Built):
+        obs.acquire_news(main, None, obs.PreviousPublication(None, main), obs.EventLog(), datetime.now(timezone.utc), None)
+    news, reader = built
+    assert news["robots"] is True and news["robots_known"] is known
+    assert not reader.get("robots") and not reader.get("robots_known")

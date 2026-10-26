@@ -1,10 +1,16 @@
 """Registro único de fuentes: reglas de canales, validación y archivo al día."""
 
 import json
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+import httpx
 
 from enso import registry
 from enso.reach import classify
 from tools import build_registry, probe_sources
+
+SIOFEN = (Path(__file__).parent / "fixtures" / "sources" / "siofen-icen.html").read_bytes()
 
 US_OK = {"class": "ok", "at": "2026-10-21T01:00:00+00:00", "vantage": "github-actions"}
 US_403 = {"class": "http-403", "at": "2026-10-21T01:00:00+00:00", "vantage": "github-actions"}
@@ -50,8 +56,9 @@ def test_build_is_valid_and_routes_by_measurement():
     reg = registry.build(reach={url: {"us": US_403, "peru": PE_OK}})
     first = reg["sources"][0]
     assert first["geoblocked"] is True and first["channels"] == ["peru-server"]
-    assert all(s["channels"] == ["actions", "n8n"] for s in reg["sources"][1:]
-               if s["url"] != url and s["id"] != "cpc-godas-d20")
+    # Sin medición: Actions y n8n (salvo una fuente que no va por n8n; GODAS solo se lee desde Actions).
+    assert all(s["channels"] == (["actions"] if s.get("n8n") is False else ["actions", "n8n"])
+               for s in reg["sources"][1:] if s["url"] != url and s["id"] != "cpc-godas-d20")
     assert registry.validate(reg) == []
 
 
@@ -88,14 +95,57 @@ def test_classify():
     assert classify(200, b"<rss/>") == "ok"
     assert classify(200, b"  ") == "empty"
     assert classify(403, b"Forbidden") == "http-403"
-    assert classify(403, b"<script src='https://challenges.cloudflare.com/x'>") == "challenge"
-    assert classify(200, b"<div class='cf-turnstile'></div>") == "challenge"
+    assert classify(403, b"<script src='/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1'>") == "challenge"
+    assert classify(200, b"<html><div class='cf-turnstile'></div></html>") == "challenge"
+    # Como en n8n, con un 2xx solo cuenta una página HTML (un fragmento sin <html> es XML).
+    assert classify(200, b"<div class='cf-turnstile'></div>") == "ok"
     assert classify(503, b"down") == "http-5xx"
     assert classify(404, b"") == "http-4xx"
     assert classify(None, b"", "ConnectTimeout: timed out") == "timeout"
     assert classify(None, b"", "ConnectError: [Errno -2] Name or service not known") == "dns"
     assert classify(None, b"", "ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED]") == "tls"
     assert classify(None, b"", "RemoteProtocolError: Server disconnected") == "connect"
+
+
+def test_classify_reads_headers_and_the_n8n_markers():
+    """Como n8n/lib/classify.js (revisión del 22 de octubre de 2026, gap 42)."""
+    assert classify(403, b"", headers={"CF-Mitigated": "challenge"}) == "challenge"
+    assert classify(403, b"", headers=httpx.Headers({"cf-mitigated": "challenge"})) == "challenge"
+    assert classify(200, b"<html><script src='/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1'></script></html>") \
+        == "challenge"
+    assert classify(200, b"<html><h1>Verify you are human</h1></html>") == "challenge"
+    # Con un 2xx, las marcas cuentan en una página HTML de menos de 40 KB (un formulario con reCAPTCHA no es una
+    # verificación); con 403, 5xx u otro código de error, siempre. 429, 401, 407, 404 y 410 se deciden por el código,
+    # como en n8n.
+    big = b"<html><form><div class='g-recaptcha'></div></form>" + b"x" * 46000
+    assert classify(200, big) == "ok" and classify(403, big) == "challenge" and classify(503, big) == "challenge"
+    assert classify(500, big) == "challenge" and classify(451, big) == "challenge"
+    assert [classify(c, big, headers={"cf-mitigated": "challenge"}) for c in (429, 401, 407, 404, 410)] == ["http-4xx"] * 5
+    assert classify(200, b"<html><div class='h-captcha'></div></html>") == "challenge"
+    assert classify(200, b"<html><script src='https://js.hcaptcha.com/1/api.js'></script></html>") == "challenge"
+    # Las marcas de n8n que faltaban: Imperva, Akamai, AWS WAF, DataDome, el consentimiento de Google, el bloqueo
+    # por país.
+    for page in (b"Request unsuccessful. Incapsula incident ID: 1", b"Reference&#32;&#35;18.1", b"aws-waf-token",
+                 b"captcha-delivery.com", b"Before you continue to Google", "no está disponible en tu país".encode()):
+        assert classify(200, b"<html><body>" + page + b"</body></html>") == "challenge", page
+    assert classify(405, b"", headers={"x-amzn-waf-action": "captcha"}) == "challenge"
+    assert classify(301, b"") == "http-4xx"  # una redirección que no se siguió, como en n8n
+    # El script de detección de Cloudflare va en páginas normales: no es una verificación.
+    for jsd in (b"/cdn-cgi/challenge-platform/scripts/jsd/main.js", b"/cdn-cgi/challenge-platform/h/b/scripts/jsd/1a2b/main.js"):
+        assert classify(200, b"<html><body>Noticias<script>a.src='" + jsd + b"'</script></body></html>") == "ok"
+
+
+def test_judge_counts_the_expected_type():
+    from enso.reach import judge
+
+    page = b"<!DOCTYPE html><html><body>" + b"x" * 2000 + b"</body></html>"
+    assert judge(200, page, "text/html", "pdf") == ("empty", "html", "se esperaba un PDF y llegó html")
+    assert judge(200, page, "text/html", "html")[0] == "ok"
+    assert judge(200, b"%PDF-1.7 hcaptcha", "application/pdf", "pdf")[0] == "ok"  # un PDF no es una verificación
+    assert judge(200, b"<rss><channel><title>t</title></channel></rss>", "", "rss") == ("empty", "rss", "feed sin entradas")
+    assert judge(200, b"{\"a\": ", "application/json", "json")[2] == "JSON inválido"
+    assert judge(202, b"", "", "json")[0] == "challenge"
+    assert judge(None, b"", "", "pdf", "ConnectTimeout: timed out")[0] == "timeout"
 
 
 def test_peru_index_is_read():
@@ -133,7 +183,8 @@ def test_news_feeds_barred_by_robots_are_read_like_a_feed_reader():
     feed = next(x for x in reg["sources"] if x["kind"] == "feed" and x["id"].startswith("news-gnews"))
     reg = registry.build(reach={feed["url"]: {"us": {"class": "robots", "at": "x", "vantage": "github-actions"}}})
     got = next(x for x in reg["sources"] if x["id"] == feed["id"])
-    assert got["by_url"][feed["url"]] == {"status": "robots-disallowed", "channels": ["actions"], "reader": True}
+    assert got["by_url"][feed["url"]] == {"status": "robots-disallowed", "channels": ["actions"], "robots": "disallowed",
+                                          "reader": True}
     assert got["channels"] == ["actions"] and registry.validate(reg) == []
     assert registry.reader_urls(reg) == {feed["url"]}
     assert registry.url_channels(reg)[feed["url"]] == ["actions"]
@@ -168,6 +219,80 @@ def test_robots_parser():
     # redirige, como portal.indeci.gob.pe) no tiene reglas: se permite todo (RFC 9309 §2.3.1.1).
     assert r.allowed("https://e.pe/emergencias/feed/") is True and r.failure("https://e.pe/x") == ""
     assert r.allowed("https://f.pe/anything") is None and r.failure("https://f.pe/x") == "http-5xx"
+    assert [r.source(f"https://{h}/x") for h in ("a.pe", "b.pe", "c.pe", "d.pe", "f.pe")] == [
+        "rules", "absent", "absent", "unreachable", "unreachable"]
+
+
+def test_robots_challenge_or_429_is_unreachable_not_allow_all():
+    """Revisión del 22 de octubre de 2026 (gap 8): una verificación de Cloudflare con 403, o un 429, en lugar de
+    robots.txt no es «no hay robots.txt»: no se sabe, y no se pide nada al servidor."""
+    from enso.reach import Robots
+
+    asked = []
+    bodies = {"cf.pe": (403, {"cf-mitigated": "challenge", "content-type": "text/html"}, SIOFEN),
+              "page.pe": (403, {"content-type": "text/html"}, SIOFEN), "rate.pe": (429, {}, b""),
+              "plain.pe": (403, {}, b"Forbidden"),
+              # Un robots.txt que nombra un complemento de CAPTCHA es un archivo de reglas, no una verificación.
+              "wp.pe": (200, {"content-type": "text/plain"}, b"User-agent: *\nDisallow: /wp-content/plugins/hcaptcha/\n"),
+              # Un 404 de un servidor con el script de detección de Cloudflare: no hay robots.txt.
+              "jsd.pe": (404, {"content-type": "text/html"},
+                         b"<html><body>404<script src='/cdn-cgi/challenge-platform/scripts/jsd/main.js'></script></body></html>"),
+              # Ni lo hay con un 404 o un 410 cuya página de error trae un formulario con reCAPTCHA o Turnstile.
+              "wp404.pe": (404, {"content-type": "text/html"},
+                           b"<html><body><h1>No encontrado</h1><form><div class='g-recaptcha'></div></form>" + b"x" * 18000
+                           + b"</body></html>"),
+              "gone.pe": (410, {"content-type": "text/html"}, b"<html><body><div class='cf-turnstile'></div></body></html>"),
+              # Una verificación con 401 o 407 sí es una verificación; sin marcas, un 401 es «no hay robots.txt».
+              "auth.pe": (401, {"content-type": "text/html"}, b"<html><body>Checking your browser</body></html>"),
+              "auth2.pe": (401, {}, b"Unauthorized"),
+              # Un robots.txt servido como text/html que nombra una marca es un archivo de reglas.
+              "html.pe": (200, {"content-type": "text/html; charset=UTF-8"},
+                          b"User-agent: *\nDisallow: /cdn-cgi/challenge-platform/\n")}
+
+    def handler(req):
+        asked.append((req.url.host, req.extensions.get("timeout")))
+        code, headers, body = bodies[req.url.host]
+        return httpx.Response(code, headers=headers, content=body)
+
+    r = Robots(httpx.Client(transport=httpx.MockTransport(handler)), timeout=15.0)
+    for host in ("cf.pe", "page.pe"):
+        assert r.allowed(f"https://{host}/x") is None and r.failure(f"https://{host}/x") == "challenge", host
+        assert r.source(f"https://{host}/x") == "unreachable"
+    assert r.allowed("https://rate.pe/x") is None and r.source("https://rate.pe/x") == "unreachable"
+    assert r.allowed("https://plain.pe/x") is True and r.source("https://plain.pe/x") == "absent"
+    assert r.allowed("https://wp.pe/feed/") is True and r.allowed("https://wp.pe/wp-content/plugins/hcaptcha/a.js") is False
+    assert r.allowed("https://jsd.pe/x") is True and r.source("https://jsd.pe/x") == "absent"
+    for host in ("wp404.pe", "gone.pe", "auth2.pe"):
+        assert r.allowed(f"https://{host}/x") is True and r.source(f"https://{host}/x") == "absent", host
+    assert r.allowed("https://auth.pe/x") is None and r.failure("https://auth.pe/x") == "challenge"
+    assert r.allowed("https://html.pe/feed/") is True and r.allowed("https://html.pe/cdn-cgi/challenge-platform/a") is False
+    assert r.source("https://html.pe/x") == "rules"
+    # Un pedido por servidor, con el plazo corto de robots.txt.
+    assert len(asked) == len(bodies) and all(t["read"] == 15.0 for _, t in asked)
+
+
+def test_robots_txt_has_a_short_timeout_by_default():
+    """Revisión: el plazo corto de robots.txt valía solo para quien lo pedía; el recolector del Perú esperaba los 40 s
+    de su cliente por cada robots.txt colgado. Un cliente que no es de httpx (el de plazo corto de scrape_ladder)
+    usa el suyo."""
+    from enso.reach import ROBOTS_TIMEOUT_S, Robots
+
+    asked = []
+
+    def handler(req):
+        asked.append(req.extensions.get("timeout"))
+        return httpx.Response(200, text="User-agent: *\nAllow: /\n")
+
+    client = httpx.Client(timeout=40.0, transport=httpx.MockTransport(handler))
+    assert Robots(client).allowed("https://a.pe/x") is True and asked[-1]["read"] == ROBOTS_TIMEOUT_S
+    assert Robots(client, timeout=None).allowed("https://a.pe/x") is True and asked[-1]["read"] == 40.0
+
+    class Short:
+        def get(self, url, **kw):
+            assert "timeout" not in kw
+            return client.get(url, timeout=5.0, **kw)
+
+    assert Robots(Short()).allowed("https://a.pe/x") is True and asked[-1]["read"] == 5.0
 
 
 def test_data_files_are_expected_as_text():
@@ -313,3 +438,313 @@ def test_architecture_model_counts_the_peru_pages_the_registry_has():
     n8n = [s for s in pages if "n8n" in (s.get("channels") or [])]
     assert int(re.search(r"(\d+) URL de la lista fija", node["details_es"])[1]) == len(pages)
     assert int(re.search(r"Las otras (\d+)", node["details_es"])[1]) == len(n8n)
+
+
+# --- Revisión del 22 de octubre de 2026: robots.txt, red de Actions, rutas de los informes y mediciones viejas ----
+
+def _rec(cls: str, vantage: str, at: str = "2026-10-21T04:00:00+00:00", **kw) -> dict:
+    return {"class": cls, "at": at, "vantage": vantage, **kw}
+
+
+def _official_urls(n: int) -> list[str]:
+    return [s["url"] for s in registry.build(reach={})["sources"] if s["kind"] == "dataset"][:n]
+
+
+def test_robots_verdict_per_url():
+    """Gap 1: n8n pedía URL cuyo robots.txt nadie pudo leer. by_url dice qué se sabe de cada una."""
+    a, b, c, d, e, f = _official_urls(6)
+    reach = {
+        a: {"actions": {"github-actions": _rec("http-5xx", "github-actions", robots="unreachable",  # el feed del INDECI
+                                               detail="robots.txt sin respuesta")}},
+        b: {"peru": {"peru-server": _rec("robots", "peru-server", robots="disallowed")},
+            "actions": {"github-actions": _rec("ok", "github-actions", robots="allowed")}},
+        c: {"actions": {"github-actions": _rec("ok", "github-actions", robots="allowed")}},
+        d: {"actions": {"github-actions": _rec("http-403", "github-actions", robots="absent")}},
+        # El recolector del Perú lee robots.txt antes de cada pedido: si la pidió, robots.txt lo permite.
+        e: {"actions": {"github-actions": _rec("dns", "github-actions")}, "peru": {"peru-server": _rec("ok", "peru-server")}},
+        # …pero no si la omitió porque robots.txt no respondió.
+        f: {"peru": {"peru-server": _rec("timeout", "peru-server", detail="robots.txt sin respuesta (timeout): no se pide")},
+            "n8n": {"n8n-aws": _rec("ok", "n8n-aws")}},
+    }
+    reg = registry.build(reach=reach)
+    assert registry.validate(reg) == []
+    got = registry.url_robots(reg)
+    assert [got[u] for u in (a, b, c, d, e, f)] == ["unknown", "disallowed", "allowed", "allowed", "allowed", "unknown"]
+    by = {u: r for s in reg["sources"] for u, r in s["by_url"].items()}
+    assert by[b]["status"] == "robots-disallowed" and by[b]["channels"] == []
+    assert by[a]["channels"] == ["actions", "n8n"]  # robots.txt sin leer no cambia los canales: n8n la salta
+    # Un registro de antes de este dato no dice nada (el pipeline sigue como antes).
+    for s in reg["sources"]:
+        for r in s["by_url"].values():
+            r.pop("robots")
+    assert registry.url_robots(reg) == {}
+    assert any("robots no válido" in x for x in registry.validate(reg))
+
+
+def test_old_robots_record_is_dropped_like_in_geoblock():
+    """Revisión: un «robots» de más de STALE_DAYS junto a una medición más reciente de su red dejaba la URL abierta
+    con robots «disallowed», y validate() rechazaba el registro (fallaba la sonda semanal y el kit)."""
+    url = "http://met.igp.gob.pe/datos/ICEN.txt"
+    reach = {url: {"actions": {"github-actions": _rec("robots", "github-actions", "2026-08-01T04:00:00+00:00",
+                                                      robots="disallowed"),
+                               "n8n-actions-azure": _rec("ok", "n8n-actions-azure", "2026-10-20T04:00:00+00:00")}}}
+    now = datetime(2026, 10, 22, tzinfo=timezone.utc)
+    reg = registry.build(reach=reach, now=now)
+    assert registry.validate(reg) == []
+    by = next(s for s in reg["sources"] if s["id"] == "igp-icen")["by_url"][url]
+    assert by == {"status": "open", "channels": ["actions", "n8n"], "robots": "unknown"}
+    assert registry.robots_verdict(url, reach, now) == "unknown" and registry.robots_verdict(url, reach) == "disallowed"
+    # Reciente, cuenta: sin canales y «disallowed».
+    reach[url]["actions"]["github-actions"]["at"] = "2026-10-19T04:00:00+00:00"
+    reg = registry.build(reach=reach, now=now)
+    by = next(s for s in reg["sources"] if s["id"] == "igp-icen")["by_url"][url]
+    assert by == {"status": "robots-disallowed", "channels": [], "robots": "disallowed"} and registry.validate(reg) == []
+
+
+def test_validate_requires_disallowed_robots_to_match_the_status():
+    reg = registry.build(reach={})
+    s = next(x for x in reg["sources"] if x["kind"] == "dataset")
+    s["by_url"][s["url"]]["robots"] = "disallowed"  # sin robots-disallowed
+    assert any("robots no válido" in e for e in registry.validate(reg))
+    s["by_url"][s["url"]]["robots"] = "quizás"
+    assert any("robots no válido" in e for e in registry.validate(reg))
+
+
+def test_actions_network_counts_the_pipeline_measurement():
+    """Gap 3: el ok de otro día de n8n en un ejecutor de Actions tapaba la verificación de hoy al pipeline."""
+    u = "https://www.imarpe.gob.pe/"
+    gh = _rec("challenge", "github-actions", "2026-10-21T04:48:14+00:00", http=403)
+    azure = _rec("ok", "n8n-actions-azure", "2026-10-21T02:35:37+00:00")
+    gb = registry.geoblock(u, {u: {"actions": {"github-actions": gh, "n8n-actions-azure": azure}}})
+    assert "actions" not in gb["open_from"] and gb["actions"]["vantage"] == "github-actions"
+    assert gb["status"] == "suspected-geoblock"
+    # Con respuesta desde el Perú y sin n8n que responda: geobloqueada, la pide el Perú.
+    gb = registry.geoblock(u, {u: {"actions": {"github-actions": gh, "n8n-actions-azure": azure},
+                                   "n8n": {"n8n-aws": _rec("timeout", "n8n-aws")},
+                                   "peru": {"peru-server": _rec("ok", "peru-server")}}})
+    assert gb["status"] == "geoblocked" and registry.channels_for(gb["status"]) == ["peru-server"]
+    # Sin medición del pipeline cuenta la de n8n en Actions.
+    gb = registry.geoblock(u, {u: {"actions": {"n8n-actions-azure": azure}}})
+    assert gb["open_from"] == ["actions"]
+
+
+def test_old_measurements_do_not_stick():
+    """Una medición de más de STALE_DAYS no cuenta si su red tiene otra más reciente."""
+    u = "https://a.gob.pe/datos.txt"
+    now = datetime(2026, 10, 21, 5, tzinfo=timezone.utc)
+    old = (now - timedelta(days=registry.STALE_DAYS + 5)).isoformat()
+    reach = {u: {"actions": {"github-actions": _rec("ok", "github-actions", now.isoformat())},
+                 "n8n": {"n8n-gcp": _rec("ok", "n8n-gcp", old), "n8n-aws": _rec("timeout", "n8n-aws", now.isoformat())}}}
+    gb = registry.geoblock(u, reach, now)
+    assert gb["n8n"]["vantage"] == "n8n-aws" and "n8n-gcp" not in gb["from"]
+    assert registry.channels_for(gb["status"], gb["open_from"], ["actions", "n8n"]) == ["actions"]
+    assert registry.geoblock(u, reach)["open_from"] == ["actions", "n8n"]  # sin fecha de referencia cuenta todo
+    # La única medición de una red cuenta aunque sea vieja.
+    alone = {u: {"n8n": {"n8n-gcp": _rec("ok", "n8n-gcp", old)}}}
+    assert registry.geoblock(u, alone, now)["open_from"] == ["n8n"]
+    # build cuenta los días desde la medición más reciente, no desde el reloj: el registro no cambia solo.
+    url = _official_urls(1)[0]
+    reach = {url: reach[u]}
+    s = next(x for x in registry.build(reach=reach)["sources"] if x["url"] == url)
+    assert s["by_url"][url]["channels"] == ["actions"]
+    later = registry.build(reach=reach, now=now + timedelta(days=400))
+    assert next(x for x in later["sources"] if x["url"] == url)["geoblock"]["status"] == "open"
+
+
+def test_reports_and_imarpe_repository_are_in_the_registry():
+    """Gap 6: el informe técnico, su réplica en la DHN y las búsquedas del repositorio del IMARPE no estaban
+    en el registro: nadie medía su alcance ni leía su robots.txt."""
+    from enso import reports
+    from enso.feeds import imarpe_repo as repo
+
+    comunicados = repo.listing_url(repo.COMMUNIQUE_QUERY, repo.COMMUNIQUES_SIZE)
+    informes = repo.listing_url(repo.INFORME_QUERY, repo.INFORMES_SIZE)
+    reg = registry.build(reach={})
+    plan = registry.url_channels(reg)
+    assert {reports.INFORMES_PAGE, reports.DHN_INFORMES_PAGE, comunicados, informes} <= set(plan)
+    src = {s["id"]: s for s in reg["sources"]}
+    rep = src["imarpe-repositorio-enfen"]
+    assert (rep["url"], rep["alt_urls"], rep["method"], rep["expect"], rep["n8n"]) == (
+        comunicados, [informes], "api", "json", False)
+    assert "NODE_EXTRA_CA_CERTS" in rep["notes"]
+    assert src["enfen-informes"]["alt_expect"] == ["html"] and src["enfen-informes"]["expect"] == "html"
+    # Lo que pide imarpe_repo es exactamente lo registrado (el pipeline busca el plan por URL exacta).
+    asked = []
+
+    class F:
+        def get(self, urls, **kw):
+            from enso.fetch import FetchError
+
+            asked.extend(urls)
+            raise FetchError("x", [])
+
+    repo.communiques(F())
+    repo.informes(F())
+    assert asked == [comunicados, informes]
+    # n8n no verifica su certificado: con Actions bien y n8n «tls», solo Actions; nunca n8n.
+    tls = {"actions": {"github-actions": _rec("ok", "github-actions", robots="allowed")},
+           "n8n": {"n8n-aws": _rec("tls", "n8n-aws")}}
+    reg = registry.build(reach={comunicados: tls, informes: tls})
+    rep = next(s for s in reg["sources"] if s["id"] == "imarpe-repositorio-enfen")
+    assert rep["channels"] == ["actions"] and registry.validate(reg) == []
+    # Si deja de responder a Actions y responde desde el Perú, la pide el Perú (y solo el Perú).
+    moved = {"actions": {"github-actions": _rec("challenge", "github-actions", http=403)},
+             "peru": {"peru-server": _rec("ok", "peru-server")}}
+    reg = registry.build(reach={comunicados: moved})
+    rep = next(s for s in reg["sources"] if s["id"] == "imarpe-repositorio-enfen")
+    assert rep["by_url"][comunicados]["channels"] == ["peru-server"] and rep["geoblocked"] is True
+    rep["by_url"][informes]["channels"] = ["actions", "n8n"]
+    rep["channels"] = ["actions", "n8n", "peru-server"]
+    assert any("no va por n8n" in e for e in registry.validate(reg))
+
+
+def test_a_source_that_n8n_cannot_verify_never_goes_to_n8n():
+    for status, open_from, measured in (("open", ["n8n"], ["actions", "n8n"]), ("open", None, None), ("unknown", None, None),
+                                        ("down", None, None), ("open", ["actions", "n8n"], ["actions", "n8n"])):
+        assert registry.channels_for(status, open_from, measured, n8n=False) == ["actions"], status
+    assert registry.channels_for("suspected-geoblock", n8n=False) == ["peru-server"]
+    assert registry.channels_for("robots-disallowed", n8n=False) == []
+
+
+def test_icen_is_read_only_over_http():
+    """Gap 41: el ICEN por https no responde desde ninguna red (no está geobloqueado): la fuente ya no lo pide."""
+    icen = "http://met.igp.gob.pe/datos/ICEN.txt"
+    ok = {"actions": {"github-actions": _rec("ok", "github-actions", robots="allowed")}}
+    s = next(x for x in registry.build(reach={icen: ok})["sources"] if x["id"] == "igp-icen")
+    assert s["url"] == icen and s["alt_urls"] == [] and s["geoblocked"] is False and s["channels"] == ["actions", "n8n"]
+
+
+def test_registry_does_not_change_when_only_measurement_times_change():
+    """Gap 44: cada sonda semanal cambiaba la hora, el tiempo y el tamaño de cada medición en sources.json y en los
+    flujos de n8n que lo incluyen, aunque nada cambiara; eso queda en reachability.json."""
+    url = _official_urls(1)[0]
+
+    def reach(at: str, ms: int, size: int) -> dict:
+        return {url: {"actions": {"github-actions": _rec("ok", "github-actions", at, http=200, ms=ms, bytes=size,
+                                                         robots="allowed", detail="")}}}
+
+    now = datetime(2026, 10, 22, tzinfo=timezone.utc)
+    one = registry.build(reach=reach("2026-10-14T09:20:00+00:00", 120, 5000), now=now)
+    two = registry.build(reach=reach("2026-10-21T09:21:00+00:00", 340, 5100), now=now)
+    assert one == two
+    gb = next(s for s in one["sources"] if s["url"] == url)["geoblock"]
+    assert gb["actions"] == {"class": "ok", "http": 200, "robots": "allowed"} and "measured_at" not in gb
+    assert gb["from"] == ["github-actions"]
+
+
+def test_probe_trusts_the_bundled_intermediates_and_reads_headers_robots_and_type(monkeypatch):
+    """Gap 7 (la sonda sin el intermedio de Sectigo medía «tls» el repositorio del IMARPE), gap 8 (robots
+    «allowed» fijo) y gap 42 (sin cabeceras ni tipo esperado)."""
+    seen = {}
+
+    def net(req):
+        u = str(req.url)
+        if req.url.host == "nada.pe" and req.url.path == "/robots.txt":
+            return httpx.Response(404)
+        if req.url.path == "/robots.txt":
+            return httpx.Response(200, text="User-agent: *\nAllow: /\n")
+        if u.endswith("/cf"):
+            return httpx.Response(403, headers={"cf-mitigated": "challenge"})
+        return httpx.Response(200, headers={"content-type": "text/html"}, text="<html><body>" + "x" * 900 + "</body></html>")
+
+    real = httpx.Client
+
+    def client(**kw):
+        seen["verify"] = kw.get("verify")
+        return real(**{**kw, "transport": httpx.MockTransport(net)})
+
+    monkeypatch.setattr(probe_sources.httpx, "Client", client)
+    monkeypatch.setattr(probe_sources.time, "sleep", lambda s: None)
+    urls = ["https://a.pe/cf", "https://a.pe/doc.pdf", "https://nada.pe/pagina"]
+    got = probe_sources.probe(urls, "github-actions", expect={"https://a.pe/doc.pdf": "pdf"})
+    issuers = [dict(x[0] for x in c["subject"]).get("commonName") for c in seen["verify"].get_ca_certs()]
+    assert "Sectigo Public Server Authentication CA DV R36" in issuers
+    assert got["https://a.pe/cf"]["class"] == "challenge"
+    assert got["https://a.pe/doc.pdf"]["class"] == "empty" and "se esperaba un PDF" in got["https://a.pe/doc.pdf"]["detail"]
+    assert got["https://nada.pe/pagina"]["class"] == "ok"
+    assert [got[u]["robots"] for u in urls] == ["allowed", "allowed", "absent"]
+    # El registro toma «absent» (no hay robots.txt) como permitido.
+    assert registry.robots_verdict("https://nada.pe/pagina", {"https://nada.pe/pagina": {"github-actions": got[urls[2]]}}) \
+        == "allowed"
+
+
+def test_probe_from_peru_judges_the_type_the_registry_expects(monkeypatch):
+    """Revisión: la medición desde el Perú (``peru_collector.probe_registry`` llama a probe sin ``expect``) daba «ok»
+    a un feed sin entradas o a una página de otro tipo que Actions y n8n miden «empty»: el registro la tomaba por
+    geobloqueada."""
+    reg = registry.build(reach={})
+    feed = next(s for s in reg["sources"] if s["kind"] == "feed" and s["expect"] == "rss" and not s["alt_urls"])["url"]
+    data = next(s for s in reg["sources"] if s["expect"] == "json" and s["kind"] == "dataset")["url"]
+
+    def net(req):
+        if req.url.path == "/robots.txt":
+            return httpx.Response(404)
+        if str(req.url) == feed:
+            return httpx.Response(200, headers={"content-type": "application/rss+xml"},
+                                  text="<?xml version='1.0'?><rss><channel><title>t</title></channel></rss>")
+        return httpx.Response(200, headers={"content-type": "text/xml"},
+                              text="<?xml version='1.0'?><ServiceExceptionReport>" + "x" * 900 + "</ServiceExceptionReport>")
+
+    real = httpx.Client
+    monkeypatch.setattr(probe_sources.httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
+    monkeypatch.setattr(probe_sources.time, "sleep", lambda s: None)
+    got = probe_sources.probe([feed, data, "https://fuera.pe/x"], "peru-server", timeout=20.0)
+    assert (got[feed]["class"], got[feed]["detail"]) == ("empty", "feed sin entradas")
+    assert got[data]["class"] == "empty" and "se esperaba JSON" in got[data]["detail"]
+    assert got["https://fuera.pe/x"]["class"] == "ok"  # fuera del registro: cualquier formato
+    # Desde todas las redes «empty»: caída, no geobloqueada.
+    empty = {"actions": {"github-actions": _rec("empty", "github-actions")}, "n8n": {"n8n-aws": _rec("empty", "n8n-aws")},
+             "peru": {"peru-server": got[feed]}}
+    assert registry.geoblock(feed, {feed: empty})["status"] == "down"
+    # Un ``expect`` explícito (aunque vacío) manda.
+    assert probe_sources.probe([feed], "peru-server", expect={})[feed]["class"] == "ok"
+
+
+def test_peru_index_says_whether_robots_txt_was_read():
+    index = {"schema": "enso-relay/1", "collected_at": "2026-10-21T05:00:00Z", "entries": [
+        {"url": "https://www.senamhi.gob.pe/a", "status": 200, "bytes": 5000},
+        {"url": "https://snirh.ana.gob.pe/", "status": None, "skipped": "robots-sin-respuesta", "class": "timeout",
+         "error": "robots.txt sin respuesta (timeout): no se pide nada a este servidor"},
+        {"url": "https://www.imarpe.gob.pe/x", "status": None, "skipped": "robots", "class": "robots",
+         "error": "robots.txt no permite la ruta: no se pide"},
+        {"url": "https://b.gob.pe/y", "status": 200, "carried": True, "fetched_at": "2026-10-20T05:00:00Z",
+         "last_attempt": {"at": "2026-10-21T05:00:00Z", "class": "timeout",
+                          "error": "robots.txt sin respuesta (timeout): no se pide nada a este servidor"}},
+    ]}
+    got = probe_sources.from_peru_index(index)
+    assert [got[u]["robots"] for u in ("https://www.senamhi.gob.pe/a", "https://snirh.ana.gob.pe/",
+                                       "https://www.imarpe.gob.pe/x", "https://b.gob.pe/y")] == [
+        "allowed", "unreachable", "disallowed", "unreachable"]
+    # Gap 41: el ICEN por https no responde desde el Perú (robots.txt sin respuesta) ni desde EE. UU.: caído, no
+    # geobloqueado.
+    u = "https://met.igp.gob.pe/datos/ICEN.txt"
+    peru = probe_sources.from_peru_index({"collected_at": "2026-10-21T05:00:00Z", "entries": [
+        {"url": u, "status": None, "skipped": "robots-sin-respuesta", "class": "timeout",
+         "error": "robots.txt sin respuesta (timeout): no se pide nada a este servidor"}]})[u]
+    reach = {u: {"actions": {"github-actions": _rec("timeout", "github-actions")},
+                 "n8n": {"n8n-aws": _rec("timeout", "n8n-aws")}, "peru": {"peru-server": peru}}}
+    assert registry.geoblock(u, reach)["status"] == "down" and registry.robots_verdict(u, reach) == "unknown"
+
+
+def test_reachability_forgets_old_urls_outside_the_registry(tmp_path):
+    """Gap 43: reachability.json no se podaba nunca (311 URL para un registro de 199)."""
+    url = _official_urls(1)[0]
+    now = datetime.now(timezone.utc)
+    old, fresh = (now - timedelta(days=40)).isoformat(timespec="seconds"), (now - timedelta(days=1)).isoformat(timespec="seconds")
+    out = tmp_path / "reach.json"
+    out.write_text(json.dumps({"schema": registry.REACH_SCHEMA, "urls": {
+        "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/17-2026.pdf": {
+            "n8n": {"n8n-aws": _rec("challenge", "n8n-aws", old)}},
+        "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/20-2026.pdf": {
+            "n8n": {"n8n-aws": _rec("challenge", "n8n-aws", fresh)}},
+        url: {"actions": {"github-actions": _rec("ok", "github-actions", old)}}}}))
+    assert probe_sources.main(["--no-probe", "--out", str(out)]) == 0
+    assert set(json.loads(out.read_text())["urls"]) == {
+        "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/20-2026.pdf", url}
+    # --only mide unas pocas fuentes, pero no olvida las demás del registro.
+    other = _official_urls(2)[1]
+    data = json.loads(out.read_text())
+    data["urls"][other] = {"actions": {"github-actions": _rec("ok", "github-actions", old)}}
+    out.write_text(json.dumps(data))
+    assert probe_sources.main(["--no-probe", "--only", "ninguna", "--out", str(out)]) == 0
+    assert other in json.loads(out.read_text())["urls"]
