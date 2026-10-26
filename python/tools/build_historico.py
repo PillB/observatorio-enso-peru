@@ -38,12 +38,14 @@ import hashlib
 import io
 import json
 import os
+import re
 import shutil
+import subprocess
 import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 import httpx
 import yaml
@@ -181,7 +183,51 @@ def robots_check(url: str) -> float:
         return robots.crawl_delay(url) or 0.0
 
 
-def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
+PERU_FILE_RE = re.compile(r"^files/[0-9a-f]{16}\.json$")
+
+
+def data_peru_reader() -> Callable[[str], bytes]:
+    """Lee archivos de la rama ``data-peru`` (copias del recolector del Perú) con git, como el pipeline diario."""
+    ref = "refs/enso/data-peru"
+    git = ["git", "-C", str(ROOT)]
+    done = subprocess.run([*git, "fetch", "--quiet", "--depth", "1", "origin", f"+data-peru:{ref}"],
+                          capture_output=True, text=True)
+    if done.returncode:
+        raise SystemExit(f"no se pudo bajar la rama data-peru: {done.stderr.strip()[:200]}")
+    return lambda name: subprocess.run([*git, "show", f"{ref}:{name}"], capture_output=True, check=True).stdout
+
+
+def peru_layer(src: dict, read: Callable[[str], bytes]) -> bytes:
+    """Una capa de ArcGIS que baja el recolector del Perú: junta las páginas que guardó en ``data-peru`` para
+    ``src["url"]`` (las entradas cuya URL empieza con ``<capa>/query``, con su SHA-256 verificado), une los
+    elementos por su OBJECTID y devuelve el mismo JSON canónico que ``arcgis_dump``. Anota en ``src`` la
+    fecha en que el Perú la bajó."""
+    prefix = src["url"].rstrip("/") + "/query"
+    feats: dict = {}
+    fetched = []
+    for e in json.loads(read("index.json")).get("entries") or []:
+        if e.get("status") != 200 or not (e.get("url") or "").startswith(prefix) or not PERU_FILE_RE.match(e.get("file") or ""):
+            continue
+        body = read(e["file"])
+        if hashlib.sha256(body).hexdigest() != e.get("sha256"):
+            continue
+        d = json.loads(body)
+        oid = d.get("objectIdFieldName") or next((f["name"] for f in d.get("fields") or []
+                                                  if f.get("type") == "esriFieldTypeOID"), "objectid")
+        for f in d.get("features") or []:
+            a = f.get("attributes") or {}
+            key = next((v for k, v in a.items() if k.lower() == oid.lower()), None)
+            feats[key if key is not None else json.dumps(a, sort_keys=True)] = f
+        fetched.append(e.get("fetched_at") or "")
+    if not feats:
+        raise SystemExit(f"{src['id']}: no hay copia de {prefix}… en data-peru. {src['peru']}")
+    src["obtenido"] = max(fetched)[:10] or datetime.now(timezone.utc).date().isoformat()
+    ordered = [feats[k] for k in sorted(feats, key=lambda k: (not isinstance(k, (int, float)), k if isinstance(k, (int, float)) else 0, str(k)))]
+    return json.dumps({"source": src["url"], "where": "1=1", "features": ordered}, ensure_ascii=False,
+                      sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
+def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool, peru_reader=None) -> Path:
     path = cache / src["archivo"]
     if not path.exists():
         if offline:
@@ -189,8 +235,13 @@ def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
         if src.get("descarga") == "manual":
             raise SystemExit(f"{src['id']}: falta {path}. Esta fuente se descarga a mano: {src['manual']}")
         path.parent.mkdir(parents=True, exist_ok=True)
+        if src.get("descarga") == "peru":
+            print(f"leyendo {src['url']} en la rama data-peru", file=sys.stderr)
+            path.write_bytes(peru_layer(src, (peru_reader or data_peru_reader)()))
+            return finish(src, path, accept_changes)
         delay = robots_check(src["url"])
         print(f"descargando {src['url']}", file=sys.stderr)
+        src["obtenido"] = datetime.now(timezone.utc).date().isoformat()
         if src.get("descarga") == "arcgis":
             path.write_bytes(arcgis_dump(src["url"], src.get("campos", "*"), src.get("geometria", True),
                                          src.get("consulta", "1=1"), delay=max(0.5, delay)))
@@ -201,6 +252,11 @@ def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
                 r = c.get(src["url"])
                 r.raise_for_status()
                 path.write_bytes(r.content)
+    return finish(src, path, accept_changes)
+
+
+def finish(src: dict, path: Path, accept_changes: bool) -> Path:
+    """Compara el archivo con el SHA-256 del manifiesto (y lo anota)."""
     digest = sha256(path)
     if src.get("sha256") and digest != src["sha256"]:
         msg = f"{src['id']}: la fuente cambió (SHA-256 {digest[:12]}… ≠ {src['sha256'][:12]}… del manifiesto)"
