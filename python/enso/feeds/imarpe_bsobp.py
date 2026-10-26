@@ -237,6 +237,8 @@ def overdue(last_issued: Optional[str], today: date) -> bool:
 # ---------------------------------------------------------------------------
 SOURCE = "imarpe-bsobp"
 QUERY = '"Boletín Semanal Oceanográfico y Biológico"'
+#: Ítems que trae la búsqueda (los más recientes por fecha de emisión).
+LIST_SIZE = 8
 #: Boletines leídos que se conservan (un año).
 KEEP = 53
 #: Boletines nuevos que se bajan por corrida (≈5 MB cada uno); el resto queda para la siguiente.
@@ -256,11 +258,11 @@ def manual_key(year: int, number: int) -> str:
     return manual.key(SOURCE, f"{year}-{number:02d}")
 
 
-def _listed(fetcher) -> list[dict]:
+def _listed(fetcher, problems: Optional[list] = None) -> list[dict]:
     from . import imarpe_repo
 
     out = []
-    for it in imarpe_repo.search(fetcher, QUERY, 8):
+    for it in imarpe_repo.search(fetcher, QUERY, LIST_SIZE, problems):
         m = _TITLE_NUM.search(it["title"])
         if TITLE_RE.search(it["title"]) and m:
             out.append({**it, "number": int(m.group(1)), "year": int(m.group(2))})
@@ -331,11 +333,14 @@ def acquire(fetcher, previous: Optional[dict], log, today: date, needs=None) -> 
     prev = previous if isinstance(previous, dict) else {}
     bulletins = list(prev.get("bulletins") or load_seed())
     have = {(b.get("year"), b.get("number")) for b in bulletins}
-    listed = _listed(fetcher)
+    problems: list = []
+    listed = _listed(fetcher, problems)
     out = _envelope(today)
     if not listed:
+        why = "; ".join(f"{p}: {p.detail}" if getattr(p, "detail", "") else str(p) for p in problems)
         log.add("warning", SOURCE, "fetch", "bsobp-unreachable",
-                "El repositorio del IMARPE no listó boletines semanales; se conservan los ya leídos.")
+                f"El repositorio del IMARPE no listó boletines semanales{f' ({why})' if why else ''}; se conservan "
+                "los ya leídos.")
         out.update({"bulletins": bulletins[:KEEP], "lastListed": prev.get("lastListed")})
         return out
     out["lastListed"] = {k: listed[0][k] for k in ("number", "year", "issued", "page", "title")}

@@ -143,6 +143,11 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
     if planned is not None and "actions" not in planned:
         raise FetchError("robots.txt no permite la ruta de GODAS" if not planned
                          else "el registro asigna GODAS a " + ", ".join(planned), [])
+    # Los rangos de bytes no pasan por ``fetcher.get``: la misma regla de robots.txt que allí (sin medición de la
+    # sonda, se lee en la corrida).
+    skip = getattr(fetcher, "_robots_skip", lambda *a: None)(godas.BASE + "/", planned)
+    if skip:
+        raise FetchError(skip, [{"url": godas.BASE + "/", "error": skip}])
     today = today or _utc_today()
     history = godas.load_history()
     todo = godas.months_to_fetch(history, today)
@@ -161,7 +166,10 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
         k, u = f"{y:04d}-{m:02d}", godas.url(y, m)
         old = godas.month_end(y, m) + timedelta(days=60) < today
         probe = (k in prev_months and old) or ((y, m) == first and today.weekday() != 0)
-        skip = fetcher.skip_reason(u)
+        # Cada GRIB con su propia ruta, leída en la corrida (robots.txt podría prohibir los archivos y no el
+        # directorio). La lectura de la sonda es la del directorio y no vale para el archivo: si robots.txt no
+        # responde, no se pide ningún GRIB y se publican los meses de antes (barrido de robots.txt, 26 de octubre).
+        skip = fetcher.skip_reason(u) or getattr(fetcher, "_robots_skip", lambda *a: None)(u, None)
         if skip:
             attempts.append({"url": u, "error": skip})
             http_errors[k] = skip
@@ -286,7 +294,7 @@ SOURCES: list[Source] = [
            [godas.BASE + "/"], _parse_godas, 31, 50, "index", "cpc-godas-d20.json", fetch=_fetch_godas,
            docs=godas.DOCS),
     Source("igp-icen", "ENFEN / IGP", "ICEN oficial (Nota Técnica ENFEN 01-2024)",
-           ["http://met.igp.gob.pe/datos/ICEN.txt", "https://met.igp.gob.pe/datos/ICEN.txt"],
+           ["http://met.igp.gob.pe/datos/ICEN.txt"],  # por https no responde desde ninguna red
            _txt(peru.parse_icen_txt), 31, 100, "index", "igp-icen.txt",
            docs="https://siofen.imarpe.gob.pe/nivel2/indice-costero-el-nino-icen"),
     Source("cpc-ensodisc", "NOAA / CPC", "ENSO Diagnostic Discussion (estado del sistema de alerta)",
@@ -348,70 +356,82 @@ class PreviousPublication:
     archivo; p. ej. la primera publicación en un hosting nuevo) o ``unreachable`` (el servidor falló, no
     respondió o el archivo no se pudo leer). No es lo mismo un sitio caído que uno que aún no tiene el archivo."""
 
+    #: Intentos para lo que se arrastra (``sources/<id>.json``, copias archivadas): un 5xx suelto del sitio no
+    #: debe dejar a una fuente caída sin su último dato ni al comunicado sin su copia archivada.
+    TRIES = 3
+    BACKOFF_S = 1.0
+    #: Si un archivo arrastrado agota sus intentos sin una respuesta que sirva (no respondió, 5xx, 429), el sitio
+    #: se da por caído: los siguientes arrastrados se piden una vez hasta que uno responda o pasen DOWN_S desde el
+    #: último que falló. Así no se espera tres veces por cada uno, en el tiempo de las fuentes oficiales.
+    DOWN_S = 120.0
+
     def __init__(self, base: Optional[str], fetcher=None):
         self.base = base.rstrip("/") if base else None
         self.fetcher = fetcher
         self._cache: dict[str, Any] = {}
         self.state: dict[str, str] = {}
+        self._down_at: Optional[float] = None
+
+    @property
+    def down(self) -> bool:
+        """El sitio se da por caído para lo que se arrastra (ver DOWN_S)."""
+        return self._down_at is not None and time.monotonic() - self._down_at < self.DOWN_S
+
+    def _read(self, name: str, tries: int, backoff: float, binary: bool, carry: bool = False):
+        """Lee ``name``; reintenta si el servidor falla o no responde (no si el archivo no existe).
+
+        Solo lo arrastrado (``carry``) mira y cambia si el sitio está caído; lo demás (p. ej. el histórico de
+        noticias) se pide siempre con sus intentos y no cuenta."""
+        if not self.base or (self.base.startswith("http") and self.fetcher is None):
+            return None
+        self.state[name] = "unreachable"
+        for attempt in range(1 if carry and self.down else max(1, tries)):
+            if attempt:
+                time.sleep(backoff * attempt)
+            try:
+                if self.base.startswith("http"):
+                    r = self.fetcher.client.get(f"{self.base}/{name}", params=None if binary else {"t": int(time.time())})
+                    if r.status_code >= 500 or r.status_code == 429:
+                        continue
+                    status, body = r.status_code, (r.content if binary else r.text)
+                else:
+                    p = Path(self.base) / name
+                    status = 200 if p.exists() else 404
+                    body = (p.read_bytes() if binary else p.read_text(encoding="utf-8")) if status == 200 else None
+            except Exception:
+                continue
+            if carry:
+                self._down_at = None  # respondió
+            if status == 200:
+                self.state[name] = "ok"
+                return body
+            if status in (404, 410):
+                self.state[name] = "missing"
+            return None  # 404/410: no existe; 401/403…: existe o no, no se sabe (queda «unreachable»)
+        if carry:
+            self._down_at = time.monotonic()
+        return None
 
     def get_text(self, name: str, tries: int = 1) -> Optional[str]:
         """Archivo de texto de la publicación anterior (p. ej. el histórico de noticias).
 
         Con ``tries`` > 1 se reintenta si el servidor falla o no responde (no si el archivo no existe)."""
-        if not self.base:
-            return None
-        self.state[name] = "unreachable"
-        for attempt in range(max(1, tries)):
-            if attempt:
-                time.sleep(5 * attempt)
-            try:
-                if self.base.startswith("http"):
-                    if self.fetcher is None:
-                        self.state.pop(name, None)
-                        return None
-                    r = self.fetcher.client.get(f"{self.base}/{name}", params={"t": int(time.time())})
-                    if r.status_code == 200:
-                        self.state[name] = "ok"
-                        return r.text
-                    if r.status_code in (404, 410):
-                        self.state[name] = "missing"
-                        return None
-                    if r.status_code < 500 and r.status_code != 429:
-                        return None  # 401/403…: el archivo existe o no, no se sabe
-                    continue
-                p = Path(self.base) / name
-                if not p.exists():
-                    self.state[name] = "missing"
-                    return None
-                text = p.read_text(encoding="utf-8")
-                self.state[name] = "ok"
-                return text
-            except Exception:
-                continue
-        return None
+        return self._read(name, tries, 5.0, binary=False)
 
     def get_bytes(self, name: str) -> Optional[bytes]:
-        """Archivo binario de la publicación anterior (p. ej. una copia archivada)."""
-        if not self.base:
-            return None
-        try:
-            if self.base.startswith("http"):
-                if self.fetcher is None:
-                    return None
-                r = self.fetcher.client.get(f"{self.base}/{name}")
-                return r.content if r.status_code == 200 else None
-            p = Path(self.base) / name
-            return p.read_bytes() if p.exists() else None
-        except Exception:
-            return None
+        """Archivo binario arrastrado de la publicación anterior (p. ej. una copia archivada), con TRIES intentos."""
+        return self._read(name, self.TRIES, self.BACKOFF_S, binary=True, carry=True)
 
-    def get(self, name: str, tries: int = 1) -> Optional[Any]:
-        """JSON de la publicación anterior (o None); ``state[name]`` dice por qué falta."""
+    def get(self, name: str, tries: int = 1, carry: bool = False) -> Optional[Any]:
+        """JSON de la publicación anterior (o None); ``state[name]`` dice por qué falta.
+
+        Con ``carry`` (el último dato de una fuente, que se arrastra) se pide como get_bytes."""
         if not self.base:
             return None
         if name in self._cache:
             return self._cache[name]
-        text = self.get_text(name, tries=tries)
+        text = (self._read(name, self.TRIES, self.BACKOFF_S, binary=False, carry=True) if carry else
+                self.get_text(name, tries=tries))
         val = None
         if text is not None:
             try:
@@ -426,10 +446,12 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
     from .fetch import FetchError, Response
 
     acq = Acquired(src)
-    prev = previous.get(f"sources/{src.id}.json")
+    prev_name = f"sources/{src.id}.json"
+    prev = previous.get(prev_name, carry=True)
     if prev:
         acq.previous_fingerprint = prev.get("fingerprint", "")
-        acq.previous_url = prev.get("url") or ""
+        # «fingerprintUrl»: la URL que dio la huella, también si la publicación anterior la arrastró («url» vacía).
+        acq.previous_url = prev.get("fingerprintUrl") or prev.get("url") or ""
     resp = None
     try:
         if fixtures is not None:
@@ -482,9 +504,16 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         acq.carried = True
         acq.channel = "previous-publication"
         acq.retrieved_at = prev.get("retrievedAt", "")
+        # La huella y la URL que la dio siguen siendo las de la publicación anterior (previous_url): mañana se
+        # comparan con la URL que responda, no con una vacía.
         acq.fingerprint = prev.get("fingerprint", "")
         log.add("info", src.id, "fetch", "carried-forward",
                 f"Se mantiene el último dato válido obtenido el {acq.retrieved_at}.")
+    elif not acq.ok and previous.state.get(prev_name) == "unreachable":
+        log.add("warning", src.id, "fetch", "previous-unreachable",
+                f"La fuente no respondió y tampoco se pudo leer su último dato de la publicación anterior "
+                f"({prev_name}: el sitio falló o no respondió): esta publicación sale sin dato de la fuente y la "
+                "siguiente no tendrá qué arrastrar.")
     return acq
 
 
@@ -653,6 +682,12 @@ def merge_enfen_listings(*listings: list[dict]) -> list[dict]:
     return out
 
 
+#: Sondeo de comunicados que el listado todavía no muestra (``enfen_latest``): hasta PROBE_AHEAD números después del
+#: último conocido; PROBE_MAX_MISSES números seguidos sin comunicado cortan la búsqueda.
+PROBE_AHEAD = 6
+PROBE_MAX_MISSES = 2
+
+
 def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
                  log: EventLog, today: date, needs: Optional["manual.ManualNeeds"] = None) -> None:
     """Comunicado más reciente (``_enfen_latest``) y, si el repositorio del IMARPE falló en esta corrida, su
@@ -668,13 +703,19 @@ def _enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pr
                   log: EventLog, today: date, needs: Optional["manual.ManualNeeds"], repo_problems: list) -> None:
     """Completa el listado ENFEN con el comunicado más reciente (PDF).
 
-    1. Toma el número más alto entre el listado y la publicación anterior.
-    2. Sondea los dos números siguientes por su página de descarga
-       (``/download/comunicado-oficial-enfen-n-NN-AAAA/``): así un
-       comunicado nuevo se detecta aunque el listado o su copia de archivo
-       estén desactualizados.
-    3. Descarga el PDF (directo, archivo o copia nueva del archivo) y lo
-       parsea. Si el PDF ya fue leído en la corrida anterior, se reutiliza.
+    1. Toma el número más alto entre los listados (API de WordPress, portal o
+       réplica de la DHN y repositorio del IMARPE), la entrada de WordPress y
+       la publicación anterior.
+    2. Sondea hasta ``PROBE_AHEAD`` (6) números siguientes, y en enero el
+       n.º 01 del año nuevo; ``PROBE_MAX_MISSES`` (dos) ausencias seguidas
+       cortan. Cada número se busca como PDF en la réplica de la DHN y por su
+       página de descarga (``/download/comunicado-oficial-enfen-n-NN-AAAA/``):
+       así un comunicado nuevo se detecta aunque el listado o su copia de
+       archivo estén desactualizados.
+    3. Descarga el PDF (``_get_communique``: directo, copias de los
+       recolectores y de la consola, Internet Archive y repositorio del
+       IMARPE) y lo parsea. Si el PDF ya fue leído en la corrida anterior, se
+       reutiliza.
     """
     from .fetch import FetchError, Response
 
@@ -706,12 +747,13 @@ def _enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pr
     if fixtures is None and known:
         y, n = max(known)
         probes = [(today.year, 1)] if today.month == 1 and y < today.year else []
-        # Se sigue sondeando mientras aparezcan comunicados (hasta 6 números): si el listado se atrasó varios
-        # números, el más reciente se encuentra igual. Dos números seguidos sin comunicado cierran la búsqueda.
-        probes += [(y, n + k) for k in range(1, 7)]
+        # Se sigue sondeando mientras aparezcan comunicados (hasta PROBE_AHEAD números): si el listado se atrasó
+        # varios números, el más reciente se encuentra igual. PROBE_MAX_MISSES números seguidos sin comunicado
+        # cierran la búsqueda.
+        probes += [(y, n + k) for k in range(1, PROBE_AHEAD + 1)]
         misses = 0
         for py, pn in probes:
-            if misses >= 2:
+            if misses >= PROBE_MAX_MISSES:
                 break
             found = _probe_communique(fetcher, py, pn, log)
             if found:
@@ -1261,17 +1303,30 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
 
     # Copias archivadas servidas por el propio sitio (enlace «copia archivada»)
     aw = archive.Writer(tmp)
-    prev_bytes = previous.get_bytes if previous is not None else None
+    prev_bytes = previous.get_bytes if previous is not None and previous.base else None
     arch = archive.write_sources(aw, acquired, prev_bytes,
                                  (lambda sid: previous.get(f"sources/{sid}.json")) if previous is not None else None,
                                  log=log)
+    # Lo que se guarda en sources/enfen-comunicados.json (la próxima corrida lo lee de ahí): una copia que no se
+    # pudo arrastrar no está en esta publicación, así que tampoco su ruta; si no, la corrida siguiente la buscaría
+    # en un sitio que ya no la tiene y repetiría «archive-carry-failed» hasta el próximo comunicado.
+    saved = (acquired.get("enfen-comunicados").data if acquired.get("enfen-comunicados") is not None else None) or {}
     if official.get("enfen", {}).get("archive"):
         official["enfen"]["archive"] = archive.carry(aw, official["enfen"]["archive"], prev_bytes,
                                                      source="enfen-comunicados", document=True)
+        if official["enfen"]["archive"] is None and isinstance(saved.get("latest"), dict):
+            saved["latest"]["archive"] = None
     inf = (official.get("enfen") or {}).get("informe") or {}
     if inf.get("archive"):
         # El PDF del informe se publica la vez que se lee; después se arrastra la copia anterior.
         inf["archive"] = archive.carry(aw, inf["archive"], prev_bytes, source="enfen-comunicados", document=True)
+        if inf["archive"] is None and isinstance(saved.get("informe"), dict):
+            saved["informe"]["archive"] = None
+    for sid, rel in aw.missed:
+        # Sin el archivo no hay enlace que publicar, pero no se pierde en silencio.
+        log.add("warning", sid, "publish", "archive-carry-failed",
+                f"La publicación anterior tenía la copia archivada {rel}, pero no se pudo leer (el sitio falló, no "
+                "respondió o ya no la tiene): esta publicación sale sin ese enlace «copia archivada».")
     if official.get("noaa") is not None:
         official["noaa"]["archive"] = (arch.get("cpc-ensodisc") or {}).get("file")
     if feed is not None:
@@ -1290,7 +1345,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         dump(f"sources/{sid}.json", {
             "id": sid, "ok": a.ok, "carried": a.carried, "channel": a.channel, "url": a.url,
             "retrievedAt": a.retrieved_at, "archivedAt": a.archived_at, "sha256": a.sha256,
-            "fingerprint": a.fingerprint, "archive": arch.get(sid), "data": a.data,
+            "fingerprint": a.fingerprint, "fingerprintUrl": a.url or a.previous_url,
+            "archive": arch.get(sid), "data": a.data,
         })
         health.append({
             "id": sid, "institution": s.institution, "product": s.product, "layer": s.layer,
@@ -1522,6 +1578,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     ``reader``: feeds que robots.txt no permite y se leen como un lector de feeds (``registry.reader_urls``).
     ``history_dir``, ``history_absent`` y ``reader_state``: ver ``acquire_news``. ``manual_dir``: copia de la rama
     ``data-manual`` (documentos subidos en la consola, ``enso.manual``)."""
+    from . import registry
     from .fetch import Fetcher
 
     started = datetime.now(timezone.utc)
@@ -1531,9 +1588,13 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     uploads = (load_manual_relay(manual_dir, log, absent=manual_absent)
                if manual_dir is not None and fixtures is None else None)
     needs = manual.ManualNeeds()
+    # En la corrida real, robots.txt se lee antes de pedir directo lo que la sonda semanal no cubrió
+    # (``Fetcher.robots``); el registro dice qué URL ya tienen su robots.txt leído.
+    live = fixtures is None and not offline
     fetcher = Fetcher(offline=offline, allow_save=os.environ.get("ENSO_ARCHIVE_SAVE") == "1", relay=[relay, n8n, uploads],
                       plan=plan if fixtures is None else None, max_seconds=OFFICIAL_REQUEST_MAX_S,
-                      budget_s=OFFICIAL_BUDGET_S if fixtures is None else None)
+                      budget_s=OFFICIAL_BUDGET_S if fixtures is None else None,
+                      robots=live, robots_known=registry.url_robots() if live else None)
     prev = PreviousPublication(previous, fetcher)
     if today is None:
         today = (started.date() if fixtures is None else _fixture_date(fixtures)) or started.date()
@@ -1570,14 +1631,16 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     elif not offline and not only:
         from .feeds import imarpe_bsobp
 
-        prev_bs = prev.get("imarpe-bsobp.json")
+        # El historial de boletines (un año) es dato arrastrado: se lee con los reintentos de las fuentes. Si aun así
+        # no llega, se reconstruye desde la semilla del repositorio y lo nuevo del listado.
+        prev_bs = prev.get("imarpe-bsobp.json", carry=True)
         try:
             bsobp = imarpe_bsobp.acquire(fetcher, prev_bs, log, today, needs)
         except Exception as exc:  # noqa: BLE001 — el boletín nunca detiene la publicación
             bsobp = prev_bs
             log.add("error", imarpe_bsobp.SOURCE, "parse", "bsobp-exception", f"{type(exc).__name__}: {exc}"[:300])
     elif fixtures is None:
-        bsobp = prev.get("imarpe-bsobp.json")  # corrida parcial o sin red: se conserva lo publicado
+        bsobp = prev.get("imarpe-bsobp.json", carry=True)  # corrida parcial o sin red: se conserva lo publicado
     needs.log(log)
     acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
     b = Builder(acquired, log, today)
@@ -1761,8 +1824,12 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         # Todas las copias (Perú y n8n), no solo la primera: gana la más reciente de la URL.
         # Cada pedido tiene además un tiempo total: el plazo de 20 s es por lectura y un servidor que manda el
         # feed de a pocos bytes retendría la recolección (y la publicación) hasta el límite del build.
+        # robots.txt como en el cliente de las fuentes oficiales; los feeds que se leen como un lector de feeds no
+        # lo consultan (decisión del 21 de octubre de 2026, ``registry.READER_MIN_HOURS``).
         news_fetcher = Fetcher(timeout=20.0, retries=2, polite_delay=1.0, relay=list(getattr(fetcher, "relays", [])),
-                               plan=getattr(fetcher, "plan", None), max_seconds=NEWS_REQUEST_MAX_S)
+                               plan=getattr(fetcher, "plan", None), max_seconds=NEWS_REQUEST_MAX_S,
+                               robots=getattr(fetcher, "robots", None) is not None,
+                               robots_known=getattr(fetcher, "robots_known", None))
         # Los feeds que se leen como un lector de feeds se piden una sola vez: sin reintento ante 429 o 5xx.
         reader_fetcher = Fetcher(timeout=20.0, retries=1, polite_delay=1.0, relay=list(getattr(fetcher, "relays", [])),
                                  plan=getattr(fetcher, "plan", None), max_seconds=NEWS_REQUEST_MAX_S)
@@ -2007,6 +2074,9 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     doc_cache = DOC.load_cache(previous.get("news/documentos.json", tries=3) or {})
     if fixtures is None:
         from .fetch import Fetcher as _Fetcher
+        # Sin el filtro de robots.txt del fetcher diario: el COEN es una institución pública peruana y su
+        # información es pública (Ley 27806; decisión del proyecto). Se baja con pausa de cortesía, un pedido
+        # por segundo y a lo más ``DOC.MAX_PER_RUN`` publicaciones por corrida.
         doc_fetcher = _Fetcher(timeout=30.0, retries=1, polite_delay=1.0, plan=getattr(fetcher, "plan", None),
                                max_seconds=NEWS_REQUEST_MAX_S)
 
@@ -2175,19 +2245,13 @@ def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str
     if missed and age <= RELAY_STALE_HOURS:
         # Una recolección «ok» con un 4/8 en enfen-docs puede haber perdido justo el documento que falta aquí.
         log.add("warning", "relay-peru", "fetch", "relay-goal-missed",
-                f"La recolección desde el Perú del {relay.collected_at} no guardó el PDF de: {', '.join(missed)}; "
+                f"La recolección desde el Perú del {relay.collected_at} no guardó el PDF de: "
+                f"{', '.join(_goal_why(g, relay.goal_detail.get(g)) for g in missed)}; "
                 f"revisar su registro en {relay.host or 'el equipo del Perú'}.")
     # El recolector anota cuándo vence su token: avisar antes de que deje de subir.
     collector = (hb.get("collector") if hb_age < age else None) or relay.collector
-    expires = str(collector.get("token_expires_at") or "")
-    try:
-        left = (datetime.fromisoformat(expires) - datetime.now(timezone.utc)).total_seconds() / 86400
-    except (TypeError, ValueError):  # vacío, ilegible o sin zona horaria
-        left = None
-    if left is not None and left < RELAY_TOKEN_WARN_DAYS:
-        log.add("warning", "relay-peru", "fetch", "relay-token-expiring",
-                f"El token de GitHub del recolector del Perú vence el {expires[:10]} (en {max(left, 0):.0f} días): "
-                "crear uno nuevo y ejecutar INSTALAR en ese equipo con el token nuevo (docs/servidor-peru.md).")
+    _warn_token_expiring(log, "relay-peru", "del recolector del Perú", collector,
+                         "crear uno nuevo y ejecutar INSTALAR en ese equipo con el token nuevo (docs/servidor-peru.md).")
     # Un kit viejo no baja lo que el sitio ahora espera (documentos, capas) y no lo diría: la versión manda.
     try:
         contract = int(collector.get("contract") or 0)
@@ -2200,6 +2264,33 @@ def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str
                 f"{MIN_COLLECTOR_CONTRACT}): ejecutar otras-acciones/ACTUALIZAR en ese equipo (docs/servidor-peru.md, "
                 "«Mantenimiento»).")
     return relay
+
+
+def _goal_why(goal: str, detail) -> str:
+    """«informe técnico (challenge, HTTP 403, enfen.imarpe.gob.pe)»: lo que el recolector anotó del último intento,
+    para que la incidencia distinga una verificación antirobots de un plazo vencido o un robots.txt."""
+    d = detail if isinstance(detail, dict) else {}
+    why = [str(d["class"])] if d.get("class") else []
+    if isinstance(d.get("status"), int):
+        why.append(f"HTTP {d['status']}")
+    why += [str(d[k])[:80] for k in ("skipped", "error") if d.get(k)]
+    host = re.sub(r"^https?://(www\.)?([^/]+).*", r"\2", str(d.get("url") or ""))
+    if host:
+        why.append(host)
+    return f"{goal} ({', '.join(why)})" if why else goal
+
+
+def _warn_token_expiring(log: EventLog, source: str, who: str, collector: dict, fix: str) -> None:
+    """``relay-token-expiring`` cuando el token de GitHub que anota el recolector (``token_expires_at``) vence
+    en menos de ``RELAY_TOKEN_WARN_DAYS`` días: después de esa fecha el recolector ya no puede subir copias."""
+    expires = str((collector or {}).get("token_expires_at") or "")
+    try:
+        left = (datetime.fromisoformat(expires) - datetime.now(timezone.utc)).total_seconds() / 86400
+    except (TypeError, ValueError):  # vacío, ilegible o sin zona horaria
+        return
+    if left < RELAY_TOKEN_WARN_DAYS:
+        log.add("warning", source, "fetch", "relay-token-expiring",
+                f"El token de GitHub {who} vence el {expires[:10]} (en {max(left, 0):.0f} días): {fix}")
 
 
 def load_manual_relay(manual_dir: Path, log: EventLog, absent: bool = False):
@@ -2256,6 +2347,10 @@ def load_n8n_relay(n8n_dir: Path, log: EventLog):
     else:
         log.add("info", "relay-n8n", "fetch", "relay-n8n-ok",
                 f"Copias de n8n del {relay.collected_at}: {relay.summary}.")
+    # Igual que el del Perú: el flujo anota el vencimiento de su credencial de GitHub (preparar.js).
+    collector = (hb.get("collector") if hb_fresh else None) or relay.collector
+    _warn_token_expiring(log, "relay-n8n", "de la credencial de n8n", collector,
+                         "crear otro token y actualizar la credencial «GitHub ENSO (n8n)» (docs/n8n.md, pasos 2 y 3).")
     return relay
 
 

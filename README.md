@@ -63,10 +63,14 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Arquitectura y contrato de datos](docs/arquitectura.md)
 - [Metodología e indicadores](docs/metodologia.md)
 - [Catálogo de fuentes](docs/catalogo-fuentes.md)
+- [Informes en texto libre y vigencia de los datos](docs/informes-texto.md): comunicado e informe técnico del ENFEN leídos del PDF, con su validación y procedencia
 - [Operación diaria, incidencias y recuperación](docs/operaciones.md)
 - [Recolector desde el Perú (mini servidor)](docs/servidor-peru.md): kit descargable, instalación en Windows y macOS, verificación y alarmas
+- [Recolector en n8n](docs/n8n.md): segundo canal en la nube y validación semanal
+- [Documentos que hay que bajar a mano](docs/documentos-manuales.md): consola de documentos para los PDF que ninguna ruta automática trae
 - [Publicar en Cloudflare Pages sin enlace al repositorio](docs/despliegue-cloudflare.md)
 - [Georreferenciación y consola de lugares](docs/georreferenciacion.md): dónde ocurre cada noticia, con qué confianza, y cómo corregirlo
+- [Lugares de los PDF del COEN: prueba hacia atrás](docs/documentos-backtest.md): qué tan bien se leen los lugares de los avisos y reportes del COEN, y qué se corrigió
 - [Mapa de alertas](docs/mapa-alertas.md): nivel y vigencia de cada aviso según su institución, versiones A–D y su analítica anónima
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)

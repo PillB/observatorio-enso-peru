@@ -4,8 +4,8 @@
    "id": "a1",
    "title_es": "Fuentes, alcance y registro",
    "title_en": "Sources, reachability and registry",
-   "subtitle_es": "Qué vigila el observatorio y cómo se decide, URL por URL, quién la descarga. Cada lunes se mide desde dónde responde cada dirección (GitHub Actions en Azure, n8n en AWS y el equipo en el Perú) y el registro asigna cada una a un recolector. Nadie pide lo que robots.txt prohíbe, salvo 40 feeds de noticias que se leen como un lector.",
-   "subtitle_en": "What the observatory watches and how it is decided, URL by URL, who fetches it. Every Monday it is measured where each address answers from (GitHub Actions on Azure, n8n on AWS and the machine in Peru) and the registry assigns each one to a collector. Nobody requests what robots.txt forbids, except 40 news feeds read as a feed reader.",
+   "subtitle_es": "Qué vigila el observatorio y cómo se decide, URL por URL, quién la descarga. Cada lunes se mide desde dónde responde cada dirección (GitHub Actions en Azure, n8n en AWS y el equipo en el Perú) y el registro asigna cada una a un recolector. Nadie pide lo que robots.txt prohíbe, salvo los feeds de noticias que se leen como un lector.",
+   "subtitle_en": "What the observatory watches and how it is decided, URL by URL, who fetches it. Every Monday it is measured where each address answers from (GitHub Actions on Azure, n8n on AWS and the machine in Peru) and the registry assigns each one to a collector. Nobody requests what robots.txt forbids, except the news feeds read as a feed reader.",
    "desc_es": "Las fuentes oficiales, de alertas y de noticias; el sondeo semanal que mide su alcance desde cada red y el registro que reparte cada URL entre GitHub Actions, n8n y el equipo del Perú.",
    "desc_en": "The official, alert and news sources; the weekly probe that measures their reach from each network and the registry that splits each URL among GitHub Actions, n8n and the Peru machine.",
    "covers": [
@@ -30,16 +30,16 @@
      "w": 300,
      "title_es": "Fuentes oficiales",
      "title_en": "Official sources",
-     "sub_es": "17 fuentes ENSO y 13 páginas del Perú",
-     "sub_en": "17 ENSO sources and 13 Peru pages"
+     "sub_es": "17 fuentes ENSO, 3 listados de documentos y 13 páginas del Perú",
+     "sub_en": "17 ENSO sources, 3 document listings and 13 Peru pages"
     },
     {
      "id": "c2",
      "w": 300,
      "title_es": "Alertas y noticias",
      "title_en": "Alerts and news",
-     "sub_es": "168 feeds: 14 de alertas, 116 de medios y del Estado y 38 de Google Noticias",
-     "sub_en": "168 feeds: 14 alert sources, 116 media and government feeds and 38 Google News searches"
+     "sub_es": "169 feeds: 15 de alertas, 116 de medios y del Estado y 38 de Google Noticias",
+     "sub_en": "169 feeds: 15 alert sources, 116 media and government feeds and 38 Google News searches"
     },
     {
      "id": "c3",
@@ -83,8 +83,8 @@
      "group": "sources",
      "name_es": "IGP: ICEN mensual",
      "name_en": "IGP: monthly ICEN",
-     "what_es": "El Índice Costero El Niño en texto. Por http responde a todos; por https, solo desde el Perú, como el portal del ENFEN.",
-     "what_en": "The Coastal El Niño Index as text. Over http it answers everyone; over https only from Peru, like the ENFEN portal.",
+     "what_es": "El Índice Costero El Niño en texto, solo por http: por https no responde desde ninguna red.",
+     "what_en": "The Coastal El Niño Index as text, over http only: over https it answers from no network.",
      "tech": [
       "ICEN.txt"
      ]
@@ -127,16 +127,16 @@
      "group": "sources",
      "name_es": "13 páginas del Perú",
      "name_en": "13 Peru pages",
-     "what_es": "Web del SENAMHI, GeoServer IDESEP, SNIRH de la ANA, IMARPE y CENEPRED: se guardan como respaldo; todavía no tienen lector. 6 solo responden desde el Perú.",
-     "what_en": "SENAMHI web, IDESEP GeoServer, ANA's SNIRH, IMARPE and CENEPRED: kept as a backup; they have no reader yet. 6 only answer from Peru."
+     "what_es": "Web del SENAMHI, GeoServer IDESEP, SNIRH de la ANA, IMARPE y CENEPRED: se guardan como respaldo; de ellas solo se lee la tabla de avisos del SENAMHI. Las geobloqueadas solo las baja el Perú.",
+     "what_en": "SENAMHI web, IDESEP GeoServer, ANA's SNIRH, IMARPE and CENEPRED: kept as a backup; only SENAMHI's warning table is read. Geoblocked ones are fetched only by Peru."
     },
     {
      "id": "alerts",
      "col": "c2",
      "icon": "alert",
      "group": "sources",
-     "name_es": "14 fuentes de alertas",
-     "name_en": "14 alert sources",
+     "name_es": "15 fuentes de alertas",
+     "name_en": "15 alert sources",
      "what_es": "COEN del INDECI, SENAMHI (Telegram y 4 capas ArcGIS), NASA FIRMS, USGS, DHN, PTWC e IGP (CENVUL), cada una en su formato.",
      "what_en": "INDECI's COEN, SENAMHI (Telegram and 4 ArcGIS layers), NASA FIRMS, USGS, DHN, PTWC and IGP (CENVUL), each in its own format.",
      "tech": [
@@ -195,10 +195,10 @@
      "group": "operations",
      "name_es": "Sondeo de alcance",
      "name_en": "Reachability probe",
-     "what_es": "Lee robots.txt y pide cada URL del registro desde Actions. Clasifica la respuesta: ok, 403, 4xx, 5xx, tiempo, conexión, DNS, TLS, verificación antirobots, vacía o prohibida. Una verificación se anota y nunca se evade.",
-     "what_en": "Reads robots.txt and requests every registry URL from Actions. Classifies the answer: ok, 403, 4xx, 5xx, timeout, connection, DNS, TLS, anti-bot check, empty or forbidden. A check is recorded and never bypassed.",
-     "meta_es": "lunes 04:17 Lima, a mano o al cambiar el medidor",
-     "meta_en": "Mondays 04:17 Lima, by hand or when the probe changes",
+     "what_es": "Lee robots.txt y pide cada URL del registro desde Actions. Juzga la respuesta como n8n y el Perú, contra lo que el registro espera: ok, 403, 4xx, 5xx, tiempo, conexión, DNS, TLS, verificación antirobots, vacía (también otro formato o un feed sin entradas) o prohibida. Una verificación se anota y nunca se evade.",
+     "what_en": "Reads robots.txt and requests every registry URL from Actions. Judges the answer like n8n and Peru, against what the registry expects: ok, 403, 4xx, 5xx, timeout, connection, DNS, TLS, anti-bot check, empty (also another format or a feed with no entries) or forbidden. A check is recorded and never bypassed.",
+     "meta_es": "lunes 04:17 Lima, a mano, por el vigilante o al cambiar el medidor",
+     "meta_en": "Mondays 04:17 Lima, by hand, by the watchdog or when the probe changes",
      "tech": [
       "probe-sources.yml",
       "probe_sources.py",
@@ -226,8 +226,8 @@
      "group": "stores",
      "name_es": "reachability.json",
      "name_en": "reachability.json",
-     "what_es": "Cada medición por red (actions, n8n, peru) y punto de medición, con clase, código HTTP y fecha. 311 URL medidas desde Actions y n8n; todavía ninguna desde el Perú, así que ningún geobloqueo está confirmado.",
-     "what_en": "Every measurement by network (actions, n8n, peru) and vantage point, with class, HTTP code and date. 311 URLs measured from Actions and n8n; none from Peru yet, so no geoblock is confirmed.",
+     "what_es": "Cada medición por red (actions, n8n, peru) y punto de medición, con clase, código HTTP y fecha. Un geobloqueo solo queda confirmado (geoblocked) cuando el Perú mide la URL y responde.",
+     "what_en": "Every measurement by network (actions, n8n, peru) and vantage point, with class, HTTP code and date. A geoblock is only confirmed (geoblocked) when Peru measures the URL and it answers.",
      "tech": [
       "JSON"
      ]
@@ -239,8 +239,8 @@
      "group": "pipeline",
      "name_es": "Armado del registro",
      "name_en": "Registry builder",
-     "what_es": "Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo 40 feeds reader, solo Actions); lo demás, Actions y n8n.",
-     "what_en": "Joins the code's catalogs (168 feeds, 17 ENSO sources, 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except 40 reader feeds, Actions only); the rest, Actions and n8n.",
+     "what_es": "Junta los catálogos del código (169 feeds, 17 fuentes ENSO, 3 listados de documentos y 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo los feeds reader, solo Actions); lo demás, Actions y n8n, salvo las fuentes con n8n: false.",
+     "what_en": "Joins the code's catalogs (169 feeds, 17 ENSO sources, 3 document listings and 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except reader feeds, Actions only); the rest, Actions and n8n, except sources with n8n: false.",
      "meta_es": "--check falla si no está al día",
      "meta_en": "--check fails if out of date",
      "tech": [
@@ -255,8 +255,8 @@
      "group": "stores",
      "name_es": "sources.json",
      "name_en": "sources.json",
-     "what_es": "198 fuentes y 201 URL: 152 para Actions y n8n, 40 solo Actions (reader) y 9 solo el Perú. Estado: 144 abiertas, 40 prohibidas, 9 con geobloqueo sospechado, 7 sin medir y 1 caída.",
-     "what_en": "198 sources and 201 URLs: 152 for Actions and n8n, 40 Actions only (reader) and 9 Peru only. Status: 144 open, 40 forbidden, 9 suspected geoblock, 7 unmeasured and 1 down.",
+     "what_es": "Por URL: estado (abierta, prohibida, geobloqueo confirmado o sospechado, sin medir o caída), canales y lo que se sabe de su robots.txt (permitido, prohibido o sin leer). Los números al día salen del propio archivo; el sitio muestra el estado de cada fuente en la última corrida.",
+     "what_en": "Per URL: status (open, forbidden, confirmed or suspected geoblock, unmeasured or down), channels and what is known of its robots.txt (allowed, forbidden or unread). Current numbers come from the file itself; the site shows each source's status in the latest run.",
      "meta_es": "commit en main; en otras ramas, a bot/registry/",
      "meta_en": "committed on main; elsewhere, to bot/registry/",
      "tech": [
@@ -315,8 +315,8 @@
      "kind": "data",
      "label_es": "feeds de alertas y noticias",
      "label_en": "alert and news feeds",
-     "explain_es": "Los 168 feeds se miden igual: así se sabe cuáles responden desde Actions y desde n8n.",
-     "explain_en": "The 168 feeds are measured the same way: that is how we know which answer from Actions and from n8n."
+     "explain_es": "Los 169 feeds se miden igual: así se sabe cuáles responden desde Actions y desde n8n.",
+     "explain_en": "The 169 feeds are measured the same way: that is how we know which answer from Actions and from n8n."
     },
     {
      "from": "vantages",
@@ -358,8 +358,8 @@
      "from": "google",
      "to": "sources-json",
      "kind": "trigger",
-     "label_es": "excepción: 40 feeds reader",
-     "label_en": "exception: 40 reader feeds",
+     "label_es": "excepción: feeds reader",
+     "label_en": "exception: reader feeds",
      "explain_es": "Google Noticias, Noticias ONU y Sin Rodeos quedan solo para Actions, como un lector de feeds: un intento, como mucho cada 20 h.",
      "explain_en": "Google News, UN News and Sin Rodeos stay with Actions only, as a feed reader: one try, at most every 20 h."
     },
@@ -393,10 +393,10 @@
      "then_en": "It is recorded as challenge and never bypassed: the URL loses that channel."
     },
     {
-     "if_es": "GitHub apagó el sondeo por inactividad",
-     "then_es": "El registro anterior sigue valiendo; el job keepalive y el vigilante reactivan probe-sources.",
-     "if_en": "GitHub disabled the probe for inactivity",
-     "then_en": "The previous registry still holds; the keepalive job and the watchdog re-enable probe-sources."
+     "if_es": "GitHub apagó o se saltó el sondeo",
+     "then_es": "El registro anterior sigue valiendo; el job keepalive y el vigilante reactivan probe-sources, y sin una sonda buena en main en 8 días el vigilante la relanza.",
+     "if_en": "GitHub disabled or skipped the probe",
+     "then_en": "The previous registry still holds; the keepalive job and the watchdog re-enable probe-sources, and with no good probe on main in 8 days the watchdog relaunches it."
     },
     {
      "if_es": "Un recolector no puede leer el registro de GitHub",
@@ -451,8 +451,8 @@
      "w": 300,
      "title_es": "Fuentes en el Perú",
      "title_en": "Sources in Peru",
-     "sub_es": "16 URL y los PDF del ENFEN, con robots.txt en vivo",
-     "sub_en": "16 URLs and the ENFEN PDFs, with live robots.txt"
+     "sub_es": "lista fija, URL peru-server y PDF del ENFEN; robots.txt en vivo",
+     "sub_en": "fixed list, peru-server URLs and ENFEN PDFs; live robots.txt"
     },
     {
      "id": "c4",
@@ -585,8 +585,8 @@
      "group": "channels",
      "name_es": "PDF del ENFEN y enlaces",
      "name_en": "ENFEN PDFs and links",
-     "what_es": "Del listado del ENFEN deduce los PDF de los comunicados y de los dos últimos informes técnicos (hasta 20 MB) y sigue los enlaces que pide el registro.",
-     "what_en": "From the ENFEN listing it derives the communiqué PDFs and the two latest technical reports (up to 20 MB) and follows the links the registry asks for."
+     "what_es": "Del listado del ENFEN deduce los PDF de los comunicados y, del de informes técnicos (el que ya pidió si el registro se lo asigna), los dos últimos (hasta 20 MB); sigue los enlaces que pide el registro.",
+     "what_en": "From the ENFEN listing it derives the communiqué PDFs and, from the technical-report listing (the one it already fetched if the registry assigns it), the two latest reports (up to 20 MB); it follows the links the registry asks for."
     },
     {
      "id": "probes",
@@ -639,10 +639,10 @@
      "col": "c3",
      "icon": "chart",
      "group": "sources",
-     "name_es": "ICEN por https (IGP)",
-     "name_en": "ICEN over https (IGP)",
-     "what_es": "La versión https del ICEN, que tampoco responde a la nube.",
-     "what_en": "The https version of the ICEN, which does not answer the cloud either."
+     "name_es": "ICEN por http (IGP)",
+     "name_en": "ICEN over http (IGP)",
+     "what_es": "Copia propia del ICEN: si el IGP deja de responder a la nube, sigue llegando desde el Perú. Por https no responde ni desde el Perú.",
+     "what_en": "Its own copy of the ICEN: if IGP stops answering the cloud, it still arrives from Peru. Over https it does not answer even from Peru."
     },
     {
      "id": "src-pages",
@@ -651,8 +651,8 @@
      "group": "sources",
      "name_es": "SENAMHI, ANA, IMARPE…",
      "name_en": "SENAMHI, ANA, IMARPE…",
-     "what_es": "Las 13 páginas de su lista fija: 6 solo responden desde el Perú (4 del SENAMHI y 2 de la ANA). La tabla de avisos del SENAMHI da el nivel a sus avisos.",
-     "what_en": "The 13 pages on its fixed list: 6 only answer from Peru (4 from SENAMHI and 2 from ANA). The SENAMHI warning table gives its warnings their level."
+     "what_es": "Las 13 páginas de su lista fija, guardadas como respaldo; las geobloqueadas según el registro solo llegan por aquí. La tabla de avisos del SENAMHI da el nivel a sus avisos.",
+     "what_en": "The 13 pages on its fixed list, kept as a backup; those the registry marks geoblocked only arrive this way. The SENAMHI warning table gives its warnings their level."
     },
     {
      "id": "branch",
@@ -777,10 +777,10 @@
      "from": "src-icen",
      "to": "collect",
      "kind": "data",
-     "label_es": "ICEN https",
-     "label_en": "ICEN https",
-     "explain_es": "Se guarda igual que las demás; Actions también tiene la versión http.",
-     "explain_en": "Kept like the rest; Actions also has the http version."
+     "label_es": "ICEN http",
+     "label_en": "ICEN http",
+     "explain_es": "Se guarda igual que las demás, por si el pedido de Actions falla.",
+     "explain_en": "Kept like the rest, in case Actions' request fails."
     },
     {
      "from": "src-pages",
@@ -914,6 +914,7 @@
    "covers": [
     "n8n-collector",
     "data-n8n-branch",
+    "n8n-extractor",
     "n8n-colleague"
    ],
    "simple": [
@@ -1029,10 +1030,8 @@
      "group": "channels",
      "name_es": "Fuentes",
      "name_en": "Sources",
-     "what_es": "Se queda con las URL que el registro da a n8n (y sus réplicas): omite las prohibidas, las reader y las que solo responden desde el Perú.",
-     "what_en": "Keeps the URLs the registry gives n8n (and their mirrors): skips the forbidden, the reader and the Peru-only ones.",
-     "meta_es": "152 URL",
-     "meta_en": "152 URLs",
+     "what_es": "Se queda con las URL que el registro da a n8n (y sus réplicas): omite las prohibidas, las de robots.txt sin leer, las reader, las que solo responden desde el Perú y las fuentes con n8n: false.",
+     "what_en": "Keeps the URLs the registry gives n8n (and their mirrors): skips the forbidden ones, those whose robots.txt nobody read, the reader ones, the Peru-only ones and sources with n8n: false.",
      "tech": [
       "Code"
      ]
@@ -1073,8 +1072,8 @@
      "group": "channels",
      "name_es": "Preparar copia",
      "name_en": "Prepare copy",
-     "what_es": "Une las dos pasadas y arma index.json y heartbeat.json (enso-relay/1). Conserva hasta 72 h la copia buena de una URL que hoy falló, marcada carried.",
-     "what_en": "Merges both passes and builds index.json and heartbeat.json (enso-relay/1). Keeps for up to 72 h the good copy of a URL that failed tonight, marked carried.",
+     "what_es": "Une las dos pasadas y arma index.json y heartbeat.json (enso-relay/1), con el vencimiento de la credencial de GitHub. Conserva hasta 72 h la copia buena de una URL que hoy falló, marcada carried.",
+     "what_en": "Merges both passes and builds index.json and heartbeat.json (enso-relay/1), with the GitHub credential's expiry. Keeps for up to 72 h the good copy of a URL that failed tonight, marked carried.",
      "tech": [
       "Merge",
       "Code"
@@ -1334,9 +1333,9 @@
     },
     {
      "if_es": "Vence el token de GitHub (1 año)",
-     "then_es": "La copia deja de subir y la ejecución queda en rojo; a las 36 h el pipeline abre relay-n8n-stale. n8n no avisa antes.",
+     "then_es": "La actualización diaria avisa desde 21 días antes (relay-token-expiring), con la fecha que n8n anota; si vence, la copia deja de subir, la ejecución queda en rojo y a las 36 h el pipeline abre relay-n8n-stale.",
      "if_en": "The GitHub token expires (1 year)",
-     "then_en": "The copy stops being pushed and the execution turns red; at 36 h the pipeline opens relay-n8n-stale. n8n does not warn ahead."
+     "then_en": "The daily update warns from 21 days before (relay-token-expiring), with the date n8n records; if it expires, the copy stops being pushed, the execution turns red and at 36 h the pipeline opens relay-n8n-stale."
     },
     {
      "if_es": "n8n no puede leer el registro de GitHub",
@@ -1351,10 +1350,10 @@
      "then_en": "The extractor answers 502 or the pipeline rejects the proposal; the previous report is kept, marked carried."
     },
     {
-     "if_es": "El sitio pasa a Cloudflare",
-     "then_es": "El vigilante tiene la dirección fija: hay que cambiarla a mano en su nodo Configuración.",
-     "if_en": "The site moves to Cloudflare",
-     "then_en": "The watchdog has a fixed address: it must be changed by hand in its Settings node."
+     "if_es": "El sitio cambia de dirección (un dominio propio)",
+     "then_es": "El vigilante viene con https://enso-peru.pages.dev/: se construye con N8N_SITE_URL o se cambia en su nodo Configuración tras cada importación.",
+     "if_en": "The site changes address (a custom domain)",
+     "then_en": "The watchdog ships with https://enso-peru.pages.dev/: build it with N8N_SITE_URL or change it in its Configuración node after each import."
     }
    ]
   },
@@ -1418,8 +1417,8 @@
      "group": "pipeline",
      "name_es": "Plan de canales",
      "name_en": "Channel plan",
-     "what_es": "registry/sources.json dice quién pide cada URL: una que no se asigna a Actions se lee primero de las copias (sin copia, un solo intento directo); una prohibida por robots.txt no se pide.",
-     "what_en": "registry/sources.json says who requests each URL: one not assigned to Actions is read from the copies first (with no copy, a single direct try); one forbidden by robots.txt is not requested.",
+     "what_es": "registry/sources.json dice quién pide cada URL: una que no se asigna a Actions, o cuyo robots.txt nadie pudo leer, se lee primero de las copias (sin copia se pide directo, una sola vez si no es de Actions); una prohibida por robots.txt no se pide.",
+     "what_en": "registry/sources.json says who requests each URL: one not assigned to Actions, or whose robots.txt nobody could read, is read from the copies first (with no copy it is requested directly, only once if it is not Actions'); one forbidden by robots.txt is not requested.",
      "tech": [
       "registry.url_channels"
      ],
@@ -1434,8 +1433,8 @@
      "group": "stores",
      "name_es": "Estado de los feeds reader",
      "name_en": "Reader-feed state",
-     "what_es": "reader-state.json en la caché de Actions: cuándo se pidió cada uno de los 40 feeds reader y sus notas aún no publicadas. Se restaura al empezar y se guarda al final aunque la corrida falle; solo en main.",
-     "what_en": "reader-state.json in the Actions cache: when each of the 40 reader feeds was last requested and its notes not yet published. Restored at the start and saved at the end even if the run fails; main only.",
+     "what_es": "reader-state.json en la caché de Actions: cuándo se pidió cada feed reader y sus notas aún no publicadas. Se restaura al empezar y se guarda al final aunque la corrida falle; solo en main.",
+     "what_en": "reader-state.json in the Actions cache: when each reader feed was last requested and its notes not yet published. Restored at the start and saved at the end even if the run fails; main only.",
      "meta_es": "mínimo 20 h entre pedidos",
      "meta_en": "at least 20 h between requests",
      "tech": [
@@ -1499,8 +1498,8 @@
      "group": "pipeline",
      "name_es": "4 · Internet Archive",
      "name_en": "4 · Internet Archive",
-     "what_es": "La copia más reciente con estado 200, sin cambios. Para el ENFEN, si tiene más de un día, pide una copia nueva (Save Page Now). Las noticias nunca lo usan.",
-     "what_en": "The newest copy with status 200, unchanged. For ENFEN, if it is older than a day, it asks for a new one (Save Page Now). News never uses it.",
+     "what_es": "La copia más reciente con estado 200, sin cambios. Para el ENFEN, si tiene más de un día y robots.txt lo permite, pide una copia nueva (Save Page Now). Las noticias nunca lo usan.",
+     "what_en": "The newest copy with status 200, unchanged. For ENFEN, if it is older than a day and robots.txt allows it, it asks for a new one (Save Page Now). News never uses it.",
      "meta_es": "canales archive y archive-fresh",
      "meta_en": "archive and archive-fresh channels"
     },
@@ -1576,8 +1575,8 @@
      "group": "stores",
      "name_es": "Sitio en vivo (data/)",
      "name_en": "Live site (data/)",
-     "what_es": "--previous ${SITE_URL}data: sources/<id>.json, el histórico de noticias, el estado de los feeds y las correcciones de lugar. Distingue «no existe» (404) de «no responde».",
-     "what_en": "--previous ${SITE_URL}data: sources/<id>.json, the news history, the feed status and the place corrections. It tells “does not exist” (404) from “does not answer”.",
+     "what_es": "--previous ${SITE_URL}data: sources/<id>.json, el histórico de noticias, el estado de los feeds y las correcciones de lugar. Distingue «no existe» (404) de «no responde»; lo que arrastra tiene 3 intentos.",
+     "what_en": "--previous ${SITE_URL}data: sources/<id>.json, the news history, the feed status and the place corrections. It tells “does not exist” (404) from “does not answer”; what it carries gets 3 tries.",
      "see": [
       "a9"
      ]
@@ -1612,8 +1611,8 @@
      "group": "pipeline",
      "name_es": "Incidencias",
      "name_en": "Incidents",
-     "what_es": "relay-channel (info), archive-channel (aviso), unreachable y carried-forward. Una fuente crítica sin dato ni anterior deja la corrida en critical y no se despliega.",
-     "what_en": "relay-channel (info), archive-channel (warning), unreachable and carried-forward. A critical source with no value and no previous one leaves the run critical and nothing is deployed.",
+     "what_es": "relay-channel (info), archive-channel (aviso), unreachable, carried-forward y previous-unreachable (tampoco se pudo leer el dato anterior). Una fuente crítica sin dato ni anterior deja la corrida en critical y no se despliega.",
+     "what_en": "relay-channel (info), archive-channel (warning), unreachable, carried-forward and previous-unreachable (the previous value could not be read either). A critical source with no value and no previous one leaves the run critical and nothing is deployed.",
      "see": [
       "a10"
      ]
@@ -1626,8 +1625,8 @@
      "kind": "trigger",
      "label_es": "plan de la URL",
      "label_en": "the URL's plan",
-     "explain_es": "Si la URL es de Actions se pide; si no, primero la copia; si está prohibida, no se pide.",
-     "explain_en": "If the URL belongs to Actions it is requested; if not, the copy first; if forbidden, it is not requested."
+     "explain_es": "Si la URL es de Actions y su robots.txt se leyó, se pide; si no, primero la copia; si está prohibida, no se pide. Antes del pedido directo a lo que la sonda no cubrió (fuera del registro, de otro canal o sin robots.txt leído) se lee su robots.txt.",
+     "explain_en": "If the URL belongs to Actions and its robots.txt was read, it is requested; if not, the copy first; if forbidden, it is not requested. Before the direct request to what the probe did not cover (outside the registry, another channel's or with robots.txt unread) its robots.txt is read."
     },
     {
      "from": "reader",
@@ -1689,8 +1688,8 @@
      "kind": "data",
      "label_es": "copia del Perú",
      "label_en": "Peru copy",
-     "explain_es": "Hasta 7 días; aviso a las 36 h y relay-goal-missed si falta el PDF del comunicado o del informe.",
-     "explain_en": "Up to 7 days; warning at 36 h and relay-goal-missed if the communiqué or report PDF is missing."
+     "explain_es": "Hasta 7 días; aviso a las 36 h y relay-goal-missed, con su causa, si falta el PDF del comunicado o del informe.",
+     "explain_en": "Up to 7 days; warning at 36 h and relay-goal-missed, with its cause, if the communiqué or report PDF is missing."
     },
     {
      "from": "n8n-b",
@@ -1725,8 +1724,8 @@
      "kind": "data",
      "label_es": "sources/<id>.json",
      "label_en": "sources/<id>.json",
-     "explain_es": "El dato anterior se lee del sitio publicado; hasta 3 intentos para el histórico y el estado de los feeds.",
-     "explain_en": "The previous value is read from the published site; up to 3 tries for the history and the feed status."
+     "explain_es": "El dato anterior se lee del sitio publicado, con hasta 3 intentos (también el histórico y el estado de los feeds); si el sitio parece caído, un solo intento por archivo durante 2 min.",
+     "explain_en": "The previous value is read from the published site with up to 3 tries (the history and the feed status too); if the site seems down, one try per file for 2 min."
     },
     {
      "from": "direct",
@@ -1783,6 +1782,12 @@
      "then_es": "Cada pedido tiene un tiempo total; tras 3 fallos el servidor recibe un solo intento y tras 5 se omite en la corrida.",
      "if_en": "A server answers very slowly or not at all",
      "then_en": "Each request has a total time; after 3 failures the server gets a single try and after 5 it is skipped for the run."
+    },
+    {
+     "if_es": "El robots.txt de un servidor no responde en la corrida",
+     "then_es": "Se reintenta una vez; si sigue sin responder, ni el pedido directo de lo que la sonda no leyó ni Save Page Now se hacen, salvo que el registro diera la URL por permitida.",
+     "if_en": "A server's robots.txt does not answer during the run",
+     "then_en": "It is retried once; if it still does not answer, neither the direct request for what the probe did not read nor Save Page Now happens, unless the registry had the URL as allowed."
     },
     {
      "if_es": "Se agotan los 8 minutos",
@@ -1898,8 +1903,8 @@
      "group": "operations",
      "name_es": "Vigilante",
      "name_en": "Watchdog",
-     "what_es": "Relanza la corrida si el sitio tiene más de 30 h.",
-     "what_en": "Relaunches the run if the site is older than 30 h.",
+     "what_es": "Relanza la corrida de main si el sitio tiene más de 30 h.",
+     "what_en": "Relaunches the main run if the site is older than 30 h.",
      "see": [
       "a10"
      ]
@@ -1911,8 +1916,8 @@
      "group": "operations",
      "name_es": "Cola",
      "name_en": "Queue",
-     "what_es": "Grupo enso-production-publication: una corrida a la vez y una en espera; la que está en curso nunca se cancela.",
-     "what_en": "Group enso-production-publication: one run at a time and one waiting; the one in progress is never cancelled."
+     "what_es": "En main, grupo enso-production-publication: una corrida a la vez y una en espera; la que está en curso nunca se cancela. Una de prueba en otra rama va a enso-test-<ref>.",
+     "what_en": "On main, group enso-production-publication: one run at a time and one waiting; the one in progress is never cancelled. A test run on another branch goes to enso-test-<ref>."
     },
     {
      "id": "tests",
@@ -2153,8 +2158,8 @@
      "kind": "trigger",
      "label_es": "sitio atrasado",
      "label_en": "site behind",
-     "explain_es": "Salvo que haya una corrida en curso o una relanzada en las últimas 6 h.",
-     "explain_en": "Unless a run is in progress or one was relaunched in the last 6 h."
+     "explain_es": "Salvo que haya una corrida de main en curso o una relanzada en las últimas 6 h.",
+     "explain_en": "Unless a main run is in progress or one was relaunched in the last 6 h."
     },
     {
      "from": "queue",
@@ -2295,9 +2300,9 @@
    "fails": [
     {
      "if_es": "Las pruebas fallan",
-     "then_es": "No se corre el pipeline ni se publica; sigue el sitio de ayer y se abre «La actualización diaria falló».",
+     "then_es": "No se corre el pipeline ni se publica; sigue el sitio de ayer y, en main, se abre «La actualización diaria falló».",
      "if_en": "Tests fail",
-     "then_en": "The pipeline does not run and nothing is published; yesterday's site stays and “The daily update failed” opens."
+     "then_en": "The pipeline does not run and nothing is published; yesterday's site stays and, on main, “The daily update failed” opens."
     },
     {
      "if_es": "El comunicado o su informe no llegan por ninguna ruta",
@@ -2313,9 +2318,9 @@
     },
     {
      "if_es": "El formato de una fuente cambia",
-     "then_es": "Si aún se puede leer, format-drift para revisar; si no, el dato queda en validación y se usa el anterior.",
+     "then_es": "Si aún se puede leer, format-drift para revisar (su issue lo cierra una persona); si no, el dato queda en validación y se usa el anterior.",
      "if_en": "A source's format changes",
-     "then_en": "If it can still be read, format-drift for review; if not, the value stays in validation and the previous one is used."
+     "then_en": "If it can still be read, format-drift for review (a person closes its issue); if not, the value stays in validation and the previous one is used."
     },
     {
      "if_es": "El pipeline pasa de 26 minutos",
@@ -2335,8 +2340,8 @@
    "id": "a6",
    "title_es": "Noticias y alertas: lectura, filtro, histórico y lugar",
    "title_en": "News and alerts: reading, filtering, history and place",
-   "subtitle_es": "Cada corrida lee 168 feeds, se queda con las notas sobre El Niño o sobre un peligro en el Perú, las suma a un histórico que nunca borra y ubica cada una en su departamento, provincia y distrito. Los revisores corrigen el lugar en la consola (anexo A7).",
-   "subtitle_en": "Every run reads 168 feeds, keeps the notes about El Niño or about a hazard in Peru, appends them to a history that never deletes and places each one in its department, province and district. Reviewers fix the place in the console (annex A7).",
+   "subtitle_es": "Cada corrida lee 169 feeds, se queda con las notas sobre El Niño o sobre un peligro en el Perú, las suma a un histórico que nunca borra y ubica cada una en su departamento, provincia y distrito. Los revisores corrigen el lugar en la consola (anexo A7).",
+   "subtitle_en": "Every run reads 169 feeds, keeps the notes about El Niño or about a hazard in Peru, appends them to a history that never deletes and places each one in its department, province and district. Reviewers fix the place in the console (annex A7).",
    "desc_es": "Las noticias y alertas en la corrida diaria: descarga, lectura tolerante, filtro de relevancia y peligros, histórico de solo anexar con su copia y ubicación por UBIGEO con las correcciones de la consola.",
    "desc_en": "News and alerts in the daily run: download, tolerant parsing, relevance and hazard filter, append-only history with its copy, and UBIGEO placement with the console's corrections.",
    "covers": [
@@ -2388,10 +2393,10 @@
      "col": "c1",
      "icon": "rss",
      "group": "sources",
-     "name_es": "168 feeds",
-     "name_en": "168 feeds",
-     "what_es": "116 de medios y del Estado, 38 búsquedas de Google Noticias y 14 fuentes de alertas, con el plan del registro.",
-     "what_en": "116 media and government feeds, 38 Google News searches and 14 alert sources, with the registry's plan.",
+     "name_es": "169 feeds",
+     "name_en": "169 feeds",
+     "what_es": "116 de medios y del Estado, 38 búsquedas de Google Noticias y 15 fuentes de alertas, con el plan del registro.",
+     "what_en": "116 media and government feeds, 38 Google News searches and 15 alert sources, with the registry's plan.",
      "see": [
       "a1"
      ]
@@ -2575,8 +2580,8 @@
      "from": "feeds",
      "to": "reader",
      "kind": "trigger",
-     "label_es": "40 prohibidos por robots.txt",
-     "label_en": "40 forbidden by robots.txt",
+     "label_es": "prohibidos por robots.txt",
+     "label_en": "forbidden by robots.txt",
      "explain_es": "Los feeds reader siguen su propio ritmo; los demás se piden en cada corrida.",
      "explain_en": "Reader feeds follow their own pace; the rest are requested every run."
     },
@@ -2725,9 +2730,9 @@
     },
     {
      "if_es": "Falla toda la lectura de noticias",
-     "then_es": "Se sirven las notas anteriores y las últimas alertas conocidas; las 14 fuentes de alertas figuran como no leídas, para que el silencio no parezca calma.",
+     "then_es": "Se sirven las notas anteriores y las últimas alertas conocidas; las 15 fuentes de alertas figuran como no leídas, para que el silencio no parezca calma.",
      "if_en": "All news reading fails",
-     "then_en": "The previous notes and the latest known alerts are served; the 14 alert sources show as unread, so silence does not look like calm."
+     "then_en": "The previous notes and the latest known alerts are served; the 15 alert sources show as unread, so silence does not look like calm."
     },
     {
      "if_es": "El histórico publicado no se puede leer",
@@ -2940,8 +2945,8 @@
      "name_en": "Document upload",
      "what_es": "POST /api/docs/upload: solo roles de DOCS_UPLOAD_ROLES (admin). Comprueba %PDF- y %%EOF y pasa el archivo en flujo a GitHub sin decodificarlo (10 ms de CPU por solicitud).",
      "what_en": "POST /api/docs/upload: only DOCS_UPLOAD_ROLES (admin). Checks %PDF- and %%EOF and streams the file to GitHub without decoding it (10 ms of CPU per request).",
-     "meta_es": "hasta 25 MB y 10 subidas por hora",
-     "meta_en": "up to 25 MB and 10 uploads per hour",
+     "meta_es": "hasta 20 MB y 10 subidas por hora",
+     "meta_en": "up to 20 MB and 10 uploads per hour",
      "tech": [
       "/api/docs/upload"
      ]
@@ -3181,8 +3186,8 @@
      "w": 300,
      "title_es": "Despliegue (job deploy)",
      "title_en": "Deployment (deploy job)",
-     "sub_es": "hasta 15 min · DEPLOY_TARGET elige el destino",
-     "sub_en": "up to 15 min · DEPLOY_TARGET picks the target"
+     "sub_es": "hasta 15 min · solo en main · DEPLOY_TARGET elige el destino",
+     "sub_en": "up to 15 min · main only · DEPLOY_TARGET picks the target"
     },
     {
      "id": "c4",
@@ -3881,10 +3886,10 @@
    "id": "a10",
    "title_es": "Vigilancia, avisos y mantenimiento",
    "title_en": "Monitoring, alerts and maintenance",
-   "subtitle_es": "Quién se entera cuando algo sale mal y cómo. Cada corrida deja un informe; sus problemas se vuelven issues que se cierran solos, y dos vigilantes independientes (uno en GitHub, otro en n8n) miran el sitio en vivo cada 6 horas. Los avisos llegan por GitHub y, si se configura, por correo.",
-   "subtitle_en": "Who finds out when something goes wrong and how. Each run leaves a report; its problems become issues that close themselves, and two independent watchdogs (one on GitHub, one on n8n) look at the live site every 6 hours. Alerts arrive through GitHub and, if configured, by email.",
-   "desc_es": "Informe de la corrida, issues por huella, vigilantes, correo, mantenimiento de los flujos programados y las herramientas de desarrollo.",
-   "desc_en": "Run report, issues by fingerprint, watchdogs, email, keeping scheduled workflows alive and the development tools.",
+   "subtitle_es": "Quién se entera cuando algo sale mal y cómo. Cada corrida deja un informe; sus problemas se vuelven issues que se cierran solos (un cambio de formato lo cierra una persona), y dos vigilantes independientes (uno en GitHub, otro en n8n) miran el sitio en vivo cada 6 horas; el de GitHub mira también el latido de los recolectores y el sondeo semanal. Los avisos llegan por GitHub y, si se configura, por correo.",
+   "subtitle_en": "Who finds out when something goes wrong and how. Each run leaves a report; its problems become issues that close themselves (a person closes a format change), and two independent watchdogs (one on GitHub, one on n8n) look at the live site every 6 hours; the GitHub one also watches the collectors' heartbeats and the weekly probe. Alerts arrive through GitHub and, if configured, by email.",
+   "desc_es": "Informe de la corrida, latido de los recolectores, issues por huella, vigilantes, correo, mantenimiento de los flujos programados y las herramientas de desarrollo.",
+   "desc_en": "Run report, collectors' heartbeats, issues by fingerprint, watchdogs, email, keeping scheduled workflows alive and the development tools.",
    "covers": [
     "watchdog",
     "n8n-watchdog",
@@ -3901,16 +3906,16 @@
      "w": 280,
      "title_es": "Señales",
      "title_en": "Signals",
-     "sub_es": "lo que deja cada corrida y el sitio en vivo",
-     "sub_en": "what each run and the live site leave behind"
+     "sub_es": "lo que dejan cada corrida, el sitio en vivo y los recolectores",
+     "sub_en": "what each run, the live site and the collectors leave behind"
     },
     {
      "id": "c2",
      "w": 300,
      "title_es": "Automático en GitHub",
      "title_en": "Automatic on GitHub",
-     "sub_es": "jobs incidents y keepalive · watchdog.yml",
-     "sub_en": "incidents and keepalive jobs · watchdog.yml"
+     "sub_es": "jobs incidents y keepalive · watchdog.yml y watchdog.cjs",
+     "sub_en": "incidents and keepalive jobs · watchdog.yml and watchdog.cjs"
     },
     {
      "id": "c3",
@@ -3967,14 +3972,28 @@
      ]
     },
     {
+     "id": "beats",
+     "col": "c1",
+     "icon": "branch",
+     "group": "stores",
+     "name_es": "Latido de los recolectores",
+     "name_en": "Collectors' heartbeat",
+     "what_es": "heartbeat.json de las ramas data-peru y data-n8n: cuándo latió cada recolector por última vez, en qué equipo y con qué resultado.",
+     "what_en": "heartbeat.json on the data-peru and data-n8n branches: when each collector last beat, on which machine and with what result.",
+     "see": [
+      "a2",
+      "a3"
+     ]
+    },
+    {
      "id": "sync",
      "col": "c2",
      "icon": "merge",
      "group": "operations",
      "name_es": "Issues por huella (sync_issues)",
      "name_en": "Issues by fingerprint (sync_issues)",
-     "what_es": "Un issue incidente-datos por huella (fuente + etapa + código), con la huella oculta; se comenta si vuelve y se cierra solo cuando desaparece.",
-     "what_en": "One incidente-datos issue per fingerprint (source + stage + code), with the fingerprint hidden; it is commented when it recurs and closes itself when it disappears.",
+     "what_es": "Un issue incidente-datos por huella (fuente + etapa + código), con la huella oculta; mientras sigue, se actualiza sin comentar y se cierra solo cuando desaparece. Un format-drift no: se comenta una vez, lo cierra una persona y, si vuelve, se comenta. Solo en main.",
+     "what_en": "One incidente-datos issue per fingerprint (source + stage + code), with the fingerprint hidden; while it persists it is updated without comments and it closes itself when it disappears. A format-drift does not: it is commented once, a person closes it and, if it comes back, it is commented. Main only.",
      "tech": [
       "Python",
       "GitHub API"
@@ -3987,8 +4006,8 @@
      "group": "operations",
      "name_es": "«La actualización diaria falló»",
      "name_en": "“The daily update failed”",
-     "what_es": "Issue que se abre o comenta cuando un job falla y se cierra tras una corrida buena.",
-     "what_en": "Issue opened or commented when a job fails and closed after a good run.",
+     "what_es": "Issue que se abre o comenta cuando un job de main falla o se cancela, y se cierra tras una corrida buena.",
+     "what_en": "Issue opened or commented when a main job fails or is cancelled, and closed after a good run.",
      "tech": [
       "github-script"
      ]
@@ -4000,10 +4019,11 @@
      "group": "operations",
      "name_es": "Vigilante (watchdog.yml)",
      "name_en": "Watchdog (watchdog.yml)",
-     "what_es": "Cada 6 h (minuto 17) lee dashboard.json del sitio. Con más de 30 h relanza la actualización una vez cada 6 h y abre «El sitio publicado está desactualizado».",
-     "what_en": "Every 6 h (minute 17) it reads the site's dashboard.json. Past 30 h it relaunches the update once every 6 h and opens “The published site is out of date”.",
+     "what_es": "Cada 6 h (minuto 17) lee dashboard.json del sitio y el latido de cada recolector. Con más de 30 h relanza la actualización de main una vez cada 6 h y abre «El sitio publicado está desactualizado»; con un recolector callado más de 36 h abre «… no da señales» y lo recuerda una vez al día.",
+     "what_en": "Every 6 h (minute 17) it reads the site's dashboard.json and each collector's heartbeat. Past 30 h it relaunches the main update once every 6 h and opens “The published site is out of date”; with a collector silent for over 36 h it opens “… gives no signal” and reminds once a day.",
      "tech": [
       "GitHub Actions",
+      "github-script",
       "cron 17 */6"
      ]
     },
@@ -4021,14 +4041,30 @@
      ]
     },
     {
+     "id": "probe",
+     "col": "c2",
+     "icon": "search",
+     "group": "operations",
+     "name_es": "Sondeo semanal",
+     "name_en": "Weekly probe",
+     "what_es": "Si probe-sources.yml no terminó bien en la rama principal en 8 días, el vigilante lo relanza, como mucho una vez al día; no abre issue.",
+     "what_en": "If probe-sources.yml has not finished well on the default branch in 8 days, the watchdog relaunches it, at most once a day; it opens no issue.",
+     "tech": [
+      "probe-sources.yml"
+     ],
+     "see": [
+      "a1"
+     ]
+    },
+    {
      "id": "email",
      "col": "c3",
      "icon": "mail",
      "group": "channels",
      "name_es": "Correo de avisos",
      "name_en": "Alert email",
-     "what_es": "tools.alert_email manda un solo correo por corrida a ALERT_EMAILS, y solo si algo se abrió, cerró o volvió a ocurrir. Sin SMTP_HOST no hace nada.",
-     "what_en": "tools.alert_email sends a single email per run to ALERT_EMAILS, and only if something opened, closed or recurred. Without SMTP_HOST it does nothing.",
+     "what_es": "tools.alert_email manda un solo correo por corrida a ALERT_EMAILS, y solo si algo se abrió, cerró o volvió a ocurrir: un comentario nuevo en un issue fijo (también el recordatorio diario de un recolector callado) o un format-drift que volvió. Sin SMTP_HOST no hace nada.",
+     "what_en": "tools.alert_email sends a single email per run to ALERT_EMAILS, and only if something opened, closed or recurred: a new comment on a fixed issue (including a silent collector's daily reminder) or a format-drift that came back. Without SMTP_HOST it does nothing.",
      "tech": [
       "SMTP",
       "Python"
@@ -4126,6 +4162,15 @@
      "label_en": "manifest.json"
     },
     {
+     "from": "beats",
+     "to": "watchdog",
+     "kind": "data",
+     "label_es": "latido de cada rama",
+     "label_en": "each branch's heartbeat",
+     "explain_es": "Más de 36 h sin latido abre «… no da señales», aunque el flujo diario esté fallando; una rama sin latido no se revisa.",
+     "explain_en": "Over 36 h without a beat opens “… gives no signal”, even if the daily workflow is failing; a branch with no heartbeat is not checked."
+    },
+    {
      "from": "sync",
      "to": "email",
      "kind": "data",
@@ -4143,8 +4188,8 @@
      "from": "watchdog",
      "to": "email",
      "kind": "data",
-     "label_es": "su issue cambió",
-     "label_en": "its issue changed"
+     "label_es": "sus issues cambiaron",
+     "label_en": "its issues changed"
     },
     {
      "from": "n8n-watch",
@@ -4187,8 +4232,8 @@
      "from": "watchdog",
      "to": "maintainers",
      "kind": "human",
-     "label_es": "issue sitio desactualizado",
-     "label_en": "stale-site issue"
+     "label_es": "sitio atrasado o recolector callado",
+     "label_en": "stale site or silent collector"
     },
     {
      "from": "watchdog",
@@ -4196,6 +4241,15 @@
      "kind": "control",
      "label_es": "reactiva",
      "label_en": "re-enables"
+    },
+    {
+     "from": "watchdog",
+     "to": "probe",
+     "kind": "control",
+     "label_es": "sin sonda en 8 días",
+     "label_en": "no probe in 8 days",
+     "explain_es": "La relanza en la rama principal; si ya la relanzó en las últimas 24 h, solo lo anota en su registro.",
+     "explain_en": "Relaunches it on the default branch; if it already did in the last 24 h, it only notes it in its log."
     },
     {
      "from": "maintainers",
@@ -4208,9 +4262,15 @@
    "fails": [
     {
      "if_es": "El sitio deja de actualizarse",
-     "then_es": "A las 30 h el vigilante relanza la actualización y abre un issue; si ya la relanzó en 6 h, pide revisión en vez de insistir.",
+     "then_es": "A las 30 h el vigilante relanza la actualización de main y abre un issue; si ya la relanzó en 6 h, pide revisión en vez de insistir.",
      "if_en": "The site stops updating",
-     "then_en": "At 30 h the watchdog relaunches the update and opens an issue; if it already relaunched within 6 h, it asks for review instead of insisting."
+     "then_en": "At 30 h the watchdog relaunches the main update and opens an issue; if it already relaunched within 6 h, it asks for review instead of insisting."
+    },
+    {
+     "if_es": "Un recolector deja de latir",
+     "then_es": "A las 36 h el vigilante abre «… no da señales» aunque el flujo diario esté fallando, lo recuerda una vez al día y lo cierra cuando vuelve a latir.",
+     "if_en": "A collector stops beating",
+     "then_en": "At 36 h the watchdog opens “… gives no signal” even if the daily workflow is failing, reminds once a day and closes it when the collector beats again."
     },
     {
      "if_es": "GitHub entero está caído",
@@ -4223,6 +4283,18 @@
      "then_es": "Sigue siendo un solo issue; el correo solo sale cuando algo se abre, se cierra o vuelve a ocurrir.",
      "if_en": "A problem repeats every day",
      "then_en": "It stays a single issue; the email only goes out when something opens, closes or recurs."
+    },
+    {
+     "if_es": "Un cambio de formato deja de aparecer",
+     "then_es": "Su issue no se cierra solo: se comenta una vez y lo cierra una persona tras revisar los valores; si vuelve, se comenta y sale en el correo.",
+     "if_en": "A format change stops appearing",
+     "then_en": "Its issue does not close itself: it is commented once and a person closes it after checking the values; if it comes back, it is commented and goes into the email."
+    },
+    {
+     "if_es": "GitHub se salta el sondeo semanal",
+     "then_es": "Sin una sonda buena en main en 8 días, el vigilante la relanza, como mucho una vez al día; mientras tanto vale el registro anterior.",
+     "if_en": "GitHub skips the weekly probe",
+     "then_en": "With no good probe on main in 8 days the watchdog relaunches it, at most once a day; meanwhile the previous registry holds."
     },
     {
      "if_es": "El repositorio pasa 60 días sin actividad",

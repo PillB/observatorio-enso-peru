@@ -33,18 +33,31 @@ INFORME_TITLE = re.compile(r"Informe\s+T[ée]cnico\s+ENFEN\s+A[ñn]o\s+(\d{1,2})
 _DATA_TO = re.compile(r"\bal\s+(\d{1,2})\s+(?:de\s+)?([a-záéíóú]+)\s+(?:de\s+)?(\d{4})", re.I)
 
 
+class Problem(str):
+    """Causa corta («tls», «conexión»…) que además guarda el error de red tal como llegó (``detail``), para que
+    la incidencia diga si fue el DNS, un timeout o una conexión rechazada. Se compara como el texto de la causa."""
+    detail: str = ""
+
+    def __new__(cls, what: str, detail: str = ""):
+        obj = super().__new__(cls, what)
+        obj.detail = detail
+        return obj
+
+
 def cause(exc) -> str:
     """Causa corta de una falla del repositorio, para la incidencia: «tls» (el certificado no se pudo verificar:
-    revisar ``enso/data/ca-intermedios.pem``), «http-<código>», «conexión» o «formato» (respondió otra cosa)."""
+    revisar ``enso/data/ca-intermedios.pem``), «http-<código>», «conexión» o «formato» (respondió otra cosa).
+    En «tls» y «conexión» lleva en ``detail`` el último error de red."""
     if isinstance(exc, ValueError):
-        return "formato"
+        return Problem("formato")
     errors = [str(a.get("error", "")) for a in getattr(exc, "attempts", []) or []]
+    last = next((e for e in reversed(errors) if e), "")[:160]
     if any("CERTIFICATE_VERIFY_FAILED" in e or "SSLError" in e or "certificate" in e.lower() for e in errors):
-        return "tls"
+        return Problem("tls", last)
     codes = [a["status"] for a in getattr(exc, "attempts", []) or [] if isinstance(a.get("status"), int)]
     if codes:
-        return f"http-{codes[-1]}"
-    return "conexión"
+        return Problem(f"http-{codes[-1]}")
+    return Problem("conexión", last)
 
 
 def _note(problems: Optional[list], what: str) -> None:
@@ -217,10 +230,10 @@ def log_problems(log, problems: list, what: str) -> None:
     """Una advertencia por causa mientras dure (``repository-unreachable`` o ``repository-format``): la incidencia
     queda abierta hasta que el repositorio vuelva a responder bien."""
     for p in problems:
-        code = "repository-format" if p == "formato" else "repository-unreachable"
         hint = (" Revisar la cadena con `openssl s_client -showcerts -connect repositorio.imarpe.gob.pe:443` y "
                 "actualizar python/enso/data/ca-intermedios.pem." if p == "tls" else
                 " La API respondió algo que no es la búsqueda de DSpace: revisar python/enso/feeds/imarpe_repo.py."
                 if p == "formato" else "")
-        log.add("warning", "imarpe-repositorio", "fetch", code,
-                f"El repositorio del IMARPE no sirvió {what} ({p}).{hint}")
+        detail = getattr(p, "detail", "")
+        log.add("warning", "imarpe-repositorio", "fetch", "repository-format" if p == "formato" else "repository-unreachable",
+                f"El repositorio del IMARPE no sirvió {what} ({p}{f': {detail}' if detail else ''}).{hint}")

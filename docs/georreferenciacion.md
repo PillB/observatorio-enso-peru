@@ -88,7 +88,9 @@ medio, o noticias de impactos sin lugar.
 
 Límites del IGN (OCHA HDX `cod-ab-per`, CC BY-IGO), simplificados a unos
 110 m (`python/enso/data/limites-ign.json.gz`, 1,5 MB; se regenera con
-`python -m tools.build_limites`). Frente a los límites completos, 3 500
+`python -m tools.build_limites`, que respeta el robots.txt de HDX: como
+prohíbe su API, el `.geojson.zip` se baja a mano de la página del conjunto y
+se pasa con `--zip`). Frente a los límites completos, 3 500
 puntos al azar dan 99,9 % de acuerdo (4 diferencias, todas en bordes
 departamentales a metros de distancia).
 
