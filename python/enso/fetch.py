@@ -39,7 +39,7 @@ from urllib.parse import quote, urlsplit
 
 import httpx
 
-from .reach import MAX_HOPS, ROBOTS_TIMEOUT_S, Robots, RobotsHop, next_hop
+from .reach import BAD_LOCATION, MAX_HOPS, ROBOTS_TIMEOUT_S, Robots, RobotsHop, next_hop
 
 #: El contacto que ven las fuentes: el sitio publicado cuando el flujo lo
 #: define (ENSO_CONTACT_URL), o el repositorio.
@@ -332,7 +332,7 @@ class Fetcher:
                 if i + 1 < n and self._down[key] < HOST_ONE_TRY_AFTER:
                     time.sleep(min(30, 2 ** i * 2))
                 continue
-            except (httpx.HTTPError, httpx.InvalidURL) as exc:  # gzip roto, redirecciones sin fin, URL inválida
+            except (httpx.HTTPError, *BAD_LOCATION) as exc:  # gzip roto, redirecciones sin fin, URL o Location inválidos
                 attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
                 if isinstance(exc, RobotsHop):
                     self.hop_refused[url] = exc.verdict

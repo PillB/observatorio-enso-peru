@@ -347,6 +347,13 @@ class RobotsHop(httpx.HTTPError):
             self.request = request
 
 
+# Lo que httpx lanza al armar el pedido siguiente con un ``Location`` que no puede usar, aun sin seguir redirecciones:
+# ``InvalidURL`` con «https:servidor/ruta» (protocolo sin ``//`` y ruta sin ``/``) y, con un servidor «xn--…» que idna
+# no decodifica (``https://xn--zz.example/``), ``idna.IDNAError``, que es un ``UnicodeError``. Ninguno es un
+# ``httpx.HTTPError``: quien pide los vuelve ``RemoteProtocolError``, un error del servidor y no de la corrida.
+BAD_LOCATION = (httpx.InvalidURL, UnicodeError)
+
+
 def next_hop(r: httpx.Response) -> Optional[str]:
     """A dónde redirige ``r``, como lo resuelve httpx: un ``Location`` absoluto sin servidor (``http:///login``) va
     al mismo servidor. ``None`` si no redirige o si lleva a otro protocolo (``ftp://…``): no se sigue, como en httpx
@@ -356,13 +363,13 @@ def next_hop(r: httpx.Response) -> Optional[str]:
         return None
     try:
         url = httpx.URL(loc)
-    except httpx.InvalidURL as exc:  # como httpx (que falla antes, al armar el pedido siguiente): error del servidor
+        if url.scheme not in ("", "http", "https"):
+            return None
+        if url.scheme and not url.host:
+            url = url.copy_with(host=r.url.host)
+        return str(r.url.join(url) if url.is_relative_url else url)
+    except BAD_LOCATION as exc:  # como httpx (que falla antes, al armar el pedido siguiente): error del servidor
         raise httpx.RemoteProtocolError(f"Location no válido: {exc}", request=r.request) from None
-    if url.scheme not in ("", "http", "https"):
-        return None
-    if url.scheme and not url.host:
-        url = url.copy_with(host=r.url.host)
-    return str(r.url.join(url) if url.is_relative_url else url)
 
 
 def get_checked(client, url: str, robots: Optional["Robots"], headers: Optional[dict] = None, **kw):
@@ -378,7 +385,7 @@ def get_checked(client, url: str, robots: Optional["Robots"], headers: Optional[
             robots.pace(url)
         try:
             r = client.get(url, headers=headers, follow_redirects=False, **kw)
-        except httpx.InvalidURL as exc:  # «Location: https:servidor/ruta»: httpx falla al armar el pedido siguiente
+        except BAD_LOCATION as exc:  # httpx falla al armar el pedido siguiente (``BAD_LOCATION``)
             raise httpx.RemoteProtocolError(f"Location no válido: {exc}") from None
         hop = next_hop(r)
         if hop is None:

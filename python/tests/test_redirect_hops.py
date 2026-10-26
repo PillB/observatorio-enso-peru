@@ -7,7 +7,7 @@ from __future__ import annotations
 import httpx
 import pytest
 
-from enso.fetch import Fetcher, archive_prefix
+from enso.fetch import FetchError, Fetcher, archive_prefix
 from enso.reach import RobotRules, Robots, get_checked
 
 ALLOW_ALL = "User-agent: *\nAllow: /\n"
@@ -125,10 +125,13 @@ def test_get_checked_reports_the_refused_hop():
     assert (r.status_code, hop, verdict) == (302, "https://b.example/y", False) and "https://b.example/y" not in asked
 
 
-def test_a_location_httpx_cannot_build_is_a_server_error(monkeypatch):
-    """``Location: https:servidor/ruta`` (protocolo sin ``//`` y ruta sin ``/``): httpx falla con ``InvalidURL``, que
-    no es un ``HTTPError``, al armar el pedido siguiente aunque no siga redirecciones. Era un error de quien pide y
-    cortaba la corrida entera del recolector del Perú y de la sonda; ahora es un error del servidor."""
+@pytest.mark.parametrize("location", ["https:a.example/y", "https://xn--zz.example/y", "https://xn--ls8h.la/",
+                                      "//xn--zz/y"])
+def test_a_location_httpx_cannot_build_is_a_server_error(monkeypatch, location):
+    """``Location: https:servidor/ruta`` (protocolo sin ``//`` y ruta sin ``/``) o un servidor «xn--…» que idna no
+    decodifica: httpx falla con ``InvalidURL`` o ``idna.IDNAError``, que no son un ``HTTPError``, al armar el pedido
+    siguiente aunque no siga redirecciones. Era un error de quien pide y cortaba la corrida entera del recolector del
+    Perú, de la sonda y de la actualización diaria; ahora es un error del servidor."""
     from tools import peru_collector as pc
     from tools import probe_sources
 
@@ -136,13 +139,16 @@ def test_a_location_httpx_cannot_build_is_a_server_error(monkeypatch):
     asked: list[str] = []
     rss = httpx.Response(200, text="<rss><channel><item><title>t</title></item></channel></rss>",
                          headers={"content-type": "application/rss+xml"})
-    transport = _net({"a.example": (200, ALLOW_ALL)}, {bad: _to("https:a.example/y"), good: rss}, asked)
+    transport = _net({"a.example": (200, ALLOW_ALL)}, {bad: _to(location), good: rss}, asked)
     client = httpx.Client(transport=transport)
     with pytest.raises(httpx.RemoteProtocolError, match="Location no válido"):
         get_checked(client, bad, Robots(client))
     monkeypatch.setattr(pc.time, "sleep", lambda s: None)
     got = pc.fetch(pc.Session(client), bad, "rss")
     assert got["class"] == "connect" and "Location no válido" in got["error"]
+    with pytest.raises(FetchError) as err:  # la actualización diaria: un intento fallido más, no la corrida cortada
+        _fetcher(transport).get([bad])
+    assert [a["url"] for a in err.value.attempts if a.get("error")] == [bad]
     real = httpx.Client
     monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": transport}))
     recs = probe_sources.probe([bad, good], "github-actions", expect={bad: "rss", good: "rss"})
@@ -647,6 +653,44 @@ def test_the_restricted_registry_does_not_loosen_what_main_disallows(tmp_path):
         by_url = {u: r for s in registry.build(written["urls"])["sources"] for u, r in s["by_url"].items()}
         assert by_url[closed]["status"] == "robots-disallowed" and by_url[closed]["channels"] == []
         assert by_url[newly]["status"] == "robots-disallowed"
+
+
+def test_the_restrictions_report_names_what_a_url_asks_more_than_on_main(tmp_path):
+    """Revisión: una URL que la medición restringe (un ``hop`` nuevo cuyo robots.txt no respondió desde Actions) lleva
+    su medición entera, y el registro la toma por posible geobloqueo: pasa al recolector del Perú. Llega igual a main
+    (el recolector lee antes los dos robots.txt), pero el informe del issue lo dice en vez de dar todo por
+    restricciones."""
+    import json
+
+    from enso import registry
+    from tools import build_registry, registry_restrict
+
+    srcs = registry.build(reach={})["sources"]
+    url = next(s["url"] for s in srcs if s.get("kind") == "feed" and not s.get("alt_urls")
+               and registry.urlparse(s["url"]).hostname not in registry.READER_HOSTS)
+    t0, t1 = "2026-10-19T09:00:00+00:00", "2026-10-26T09:00:00+00:00"
+    base_reach = {"schema": registry.REACH_SCHEMA, "updated_at": t0, "urls": {url: {"actions": {"github-actions": {
+        "class": "ok", "http": 200, "robots": "allowed", "at": t0, "vantage": "github-actions"}}}}}
+    measured = {"schema": registry.REACH_SCHEMA, "updated_at": t1, "urls": {url: {"actions": {"github-actions": {
+        "class": "timeout", "http": 302, "robots": "unreachable", "hop": "https://cdn.example/f.xml", "at": t1,
+        "vantage": "github-actions"}}}}}
+    paths = {k: tmp_path / f"{k}.json" for k in ("base_sources", "base_reach", "reach", "registry")}
+    base = registry.build(reach=base_reach["urls"])
+    paths["base_sources"].write_text(build_registry.render(base), encoding="utf-8")
+    paths["base_reach"].write_text(json.dumps(base_reach), encoding="utf-8")
+    paths["reach"].write_text(json.dumps(measured), encoding="utf-8")
+    paths["registry"].write_text(build_registry.render(registry.build(reach=measured["urls"])), encoding="utf-8")
+    report = tmp_path / "report.md"
+    assert registry_restrict.main([str(paths["base_sources"]), str(paths["base_reach"]), "--report", str(report),
+                                   "--registry", str(paths["registry"]), "--reach", str(paths["reach"])]) == 0
+    reg = json.loads(paths["registry"].read_text(encoding="utf-8"))
+    got = next(r for s in reg["sources"] for u, r in s["by_url"].items() if u == url)
+    was = next(r for s in base["sources"] for u, r in s["by_url"].items() if u == url)
+    assert got["hop"] == "https://cdn.example/f.xml" and got["robots"] == "unknown"
+    gained = sorted(set(got["channels"]) - set(was["channels"]))
+    text = report.read_text(encoding="utf-8")
+    assert gained and "piden más que en la rama principal (1;" in text
+    assert all(f"canal {c}" in text for c in gained) and text.count(f"`{url}`") == 2
 
 
 def test_n8n_reading_of_a_hop_robots_txt_keeps_the_hop():

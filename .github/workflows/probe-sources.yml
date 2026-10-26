@@ -95,11 +95,14 @@ jobs:
           # el rebase puede chocar en ellos: no se mezclan, se regeneran sobre lo rebasado (si chocó
           # reachability.json, se aborta). Aunque no choque (un PR que solo cambió el código del registro), se
           # regeneran igual con el código de main (rebuild). Con «test», si main cambió, lo rebasado no es lo que
-          # probó el paso «Test the new registry»: se prueba otra vez y, si no pasa, no se sube (3).
+          # probó el paso «Test the new registry»: si no se puede regenerar o no pasa las pruebas otra vez, no se
+          # sube (3).
           regenerate() {
             if git diff --name-only --diff-filter=U | grep -qx registry/sources.json; then
               git checkout --theirs -- registry/sources.json  # el medido, sin marcas de conflicto, y se regenera
-              (cd python && python -m tools.build_registry) || return 1
+              # Si no valida con el código de main, lo decide rebuild(), como sin choque: con «test», el camino del
+              # registro que no pasa las pruebas (3).
+              (cd python && python -m tools.build_registry) || :
             fi
             node n8n/build.mjs && git add registry/sources.json n8n/dist && GIT_EDITOR=true git rebase --continue
           }

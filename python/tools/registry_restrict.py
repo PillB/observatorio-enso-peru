@@ -8,8 +8,12 @@ URL que restringe por robots.txt (``registry.restrictions``). n8n pide sin leer 
 rama principal da por permitido, así que esas restricciones no esperan a que alguien arregle las pruebas. Si hay,
 escribe en ``registry/reachability.json`` la de la rama principal (``BASE_REACH``) con las mediciones nuevas de esas
 URL (y de las que, si no, dejarían de estar restringidas: ``restrict``), regenera ``registry/sources.json`` y anota la
-lista en ARCHIVO (Markdown, para el issue). Así lo que llega a la rama principal solo quita pedidos. Sin
-restricciones no cambia nada ni escribe ARCHIVO.
+lista en ARCHIVO (Markdown, para el issue). Lo que llega a la rama principal quita pedidos. Una URL que lleva su
+medición nueva la lleva entera, y con ella puede pedir más que en la rama principal: otro canal (``peru-server``
+cuando el robots.txt del destino de su redirección no respondió desde Actions, que el registro toma por posible
+geobloqueo) o una lectura de robots.txt de más de ``STALE_DAYS`` que dejó de contar. Esas también van en ARCHIVO.
+Quien la pida lee antes su robots.txt (``unknown``) y el del destino (``hop``). Sin restricciones no cambia nada
+ni escribe ARCHIVO.
 
 Sale con 1 si el registro que resulta no es válido (``registry.validate``): entonces no se escribe en la rama
 principal.
@@ -32,14 +36,30 @@ def _by_url(reg: dict) -> dict[str, dict]:
             if isinstance(u, str) and isinstance(r, dict)}
 
 
+def _rank(r: dict) -> int:
+    """Lo estricto de su robots: ``disallowed`` más que ``unknown``, y este más que ``allowed``."""
+    return {"disallowed": 2, "unknown": 1}.get(r.get("robots"), 0)
+
+
 def _relaxed(b: dict, r: dict) -> bool:
     """``r`` pide más que ``b``: un canal nuevo, ya no ``robots-disallowed``, un robots menos estricto o sin su
     ``hop``."""
-    rank = {"disallowed": 2, "unknown": 1}
     return bool(set(r.get("channels") or []) - set(b.get("channels") or [])
                 or (b.get("status") == "robots-disallowed" and r.get("status") != "robots-disallowed")
-                or rank.get(r.get("robots"), 0) < rank.get(b.get("robots"), 0)
+                or _rank(r) < _rank(b)
                 or (b.get("hop") and r.get("hop") != b["hop"]))
+
+
+def _looser(b: dict, r: dict) -> str:
+    """En qué pide ``r`` más que ``b`` (``_relaxed``), para el informe."""
+    out = [f"canal {c}" for c in sorted(set(r.get("channels") or []) - set(b.get("channels") or []))]
+    if b.get("status") != r.get("status"):
+        out.append(f"estado {b.get('status')} → {r.get('status')}")
+    if _rank(r) < _rank(b):
+        out.append(f"robots {b.get('robots')} → {r.get('robots')}")
+    if b.get("hop") and r.get("hop") != b["hop"]:
+        out.append(f"sin el hop {b['hop']}")
+    return "; ".join(out)
 
 
 def restrict(base_sources: dict, base_reach: dict, measured_reach: dict, measured: dict) -> tuple[dict, dict]:
@@ -51,7 +71,8 @@ def restrict(base_sources: dict, base_reach: dict, measured_reach: dict, measure
     quede ninguna, llevan también su medición nueva las URL que así quedarían menos restringidas que en la rama
     principal (la de esta semana, que es la que vale). Las demás quedan como en la rama principal, aunque la medición
     las restrinja (o las restrinja menos): un robots.txt que no respondió esta semana no abre lo que la rama
-    principal tiene prohibido."""
+    principal tiene prohibido. Las mediciones nuevas van enteras: lo que con ellas una URL pide de más (otro canal)
+    lo anota ``main`` en el informe."""
     found = registry.restrictions(base_sources, measured)
     if not found:
         return found, {}
@@ -82,7 +103,8 @@ def main(argv=None) -> int:
     def load(p: Path) -> dict:
         return json.loads(p.read_text(encoding="utf-8")) if p.exists() and p.stat().st_size else {}
 
-    found, reach = restrict(load(a.base_sources), load(a.base_reach), load(a.reach), load(a.registry))
+    base_sources = load(a.base_sources)
+    found, reach = restrict(base_sources, load(a.base_reach), load(a.reach), load(a.registry))
     if not found:
         print("La medición no restringe ninguna URL por robots.txt.")
         return 0
@@ -93,6 +115,12 @@ def main(argv=None) -> int:
     for e in errs:
         print(f"[error] {e}")
     lines = [f"- `{u}`: {'; '.join(why)}" for u, why in sorted(found.items())]
+    before = _by_url(base_sources)
+    loose = [f"- `{u}`: {_looser(before[u], r)}" for u, r in sorted(_by_url(reg).items())
+             if u in before and _relaxed(before[u], r)]
+    if loose:
+        lines += ["", f"Con su medición de esta semana, estas URL piden más que en la rama principal ({len(loose)}; "
+                      "quien las pida lee antes su robots.txt y el del destino de su redirección):", "", *loose]
     note = "" if not errs else ("\n\nEl registro con solo esas mediciones no es válido (`registry.validate`): "
                                 "no se escribió en la rama principal.")
     a.report.write_text(f"URL que la medición restringe por robots.txt ({len(found)}):\n\n" + "\n".join(lines)

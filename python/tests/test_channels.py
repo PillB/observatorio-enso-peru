@@ -1060,10 +1060,12 @@ def test_the_weekly_probe_rebuilds_the_n8n_flows_with_the_registry():
     assert build < commit and "git add registry/ n8n/dist" in steps[commit]["run"]
 
 
-def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None, files: Optional[dict] = None):
+def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None, files: Optional[dict] = None,
+                  measured: Optional[dict] = None):
     """Corre el paso «Commit» del sondeo en un clon de un «origin» con n8n/ y el registro (y ``files``: ruta →
     texto; sin ``files``, un build_registry que deja el registro tal cual), después de que en main ``on_main(seed)``
-    cambiara algo (y reconstruyera dist) mientras se medía. Devuelve (resultado, origin, clon)."""
+    cambiara algo (y reconstruyera dist) mientras se medía. Lo medido es otro ``generated_at`` en sources.json y
+    ``measured`` (ruta en registry/ → texto). Devuelve (resultado, origin, clon)."""
     import shutil
     import subprocess
 
@@ -1107,6 +1109,8 @@ def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None, files: Op
     reg = work / "registry" / "sources.json"  # lo medido: otro registro y su dist
     reg.write_text(re.sub(r'"generated_at": "[^"]+"', '"generated_at": "2026-10-26T09:40:00+00:00"',
                           reg.read_text(encoding="utf-8"), count=1), encoding="utf-8")
+    for path, text in (measured or {}).items():
+        (work / path).write_text(text, encoding="utf-8")
     build(work)
     on_main(seed)
     build(seed)
@@ -1153,8 +1157,8 @@ def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_p
     """Revisión: dist lleva un hash de n8n/ y del registro, así que un cambio de n8n/ en main durante el sondeo
     hacía chocar el rebase en dist, y los reintentos fallaban con el rebase a medias: se perdía el registro de la
     semana. Ahora dist se regenera sobre lo rebasado, y registry/sources.json también (sale de reachability.json y
-    del código: un PR que lo regeneró en main no tira la medición); si no se puede regenerar, se aborta y falla
-    limpio."""
+    del código: un PR que lo regeneró en main no tira la medición); si no se puede regenerar, falla limpio, como un
+    registro que no pasa las pruebas."""
     import subprocess
 
     def n8n_change(seed):
@@ -1183,6 +1187,7 @@ def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_p
     assert not (work / ".git" / "rebase-merge").exists() and not (work / ".git" / "rebase-apply").exists()
     log = subprocess.run(["git", "log", "--format=%s", "main"], cwd=origin, capture_output=True, text=True).stdout
     assert log.split("\n")[0] == "cambio en main"
+    assert _log(origin, "bot/registry/main")[0] == "Update source reachability and registry"
 
     # Con build_registry (aquí uno que deja el registro medido tal cual), el choque en el registro se regenera.
     (tmp_path / "regenera").mkdir()
@@ -1223,6 +1228,44 @@ def test_the_probe_commit_rebuilds_the_registry_after_a_code_only_change_on_main
     check = tmp_path / "check"
     subprocess.run(["git", "clone", "-q", f"file://{origin}", str(check)], check=True, capture_output=True)
     assert subprocess.run(["node", "n8n/build.mjs", "--check"], cwd=check, capture_output=True).returncode == 0
+
+
+def test_a_measurement_main_new_code_rejects_takes_the_failure_path_after_a_conflict(tmp_path):
+    """Revisión: con un PR del código del registro que también regeneró sources.json en main (lo común: CI corre
+    ``build_registry --check``), el rebase choca en sources.json. Si la medición de la semana no valida con ese
+    código, se abortaba el rebase tres veces y la corrida terminaba sin rama bot/registry, sin issue y sin las
+    restricciones de robots.txt en main. Ahora sigue el mismo camino que sin choque: el de un registro que no pasa
+    las pruebas."""
+    # build_registry simulado: con la regla estricta de main (rule.txt), una medición «mala» no valida.
+    stub = {"python/tools/__init__.py": "", "python/tools/rule.txt": "laxa\n",
+            "python/tools/build_registry.py": (
+                "import pathlib\n"
+                "rule = pathlib.Path(__file__).with_name('rule.txt').read_text().strip()\n"
+                "reach = pathlib.Path('../registry/reachability.json')\n"
+                "if rule == 'estricta' and reach.exists() and 'mala' in reach.read_text():\n"
+                "    print('[error] no valida'); raise SystemExit(1)\n")}
+
+    def stricter_registry(seed):
+        (seed / "python" / "tools" / "rule.txt").write_text("estricta\n", encoding="utf-8")
+        reg = seed / "registry" / "sources.json"
+        reg.write_text(re.sub(r'"generated_at": "[^"]+"', '"generated_at": "2026-10-26T09:30:00+00:00"',
+                              reg.read_text(encoding="utf-8"), count=1), encoding="utf-8")
+
+    do = ("echo '{\"urls\": {}}' > registry/reachability.json && "
+          "sed 's/\"generated_at\": \"[^\"]*\"/\"generated_at\": \"2026-10-26T09:50:00+00:00\"/' \"$1\""
+          " > registry/sources.json && echo '- `https://a.example/feed`: robots.txt no permite la ruta' > \"$3\"")
+    r, origin, work = _probe_commit(tmp_path, stricter_registry, env={"RESTRICT_DO": do}, files=stub,
+                                    measured={"registry/reachability.json": '{"urls": {"mala": {}}}\n'})
+    assert r.returncode == 1, r.stdout[-2000:] + r.stderr[-2000:]
+    assert not (work / ".git" / "rebase-merge").exists() and not (work / ".git" / "rebase-apply").exists()
+    assert "gate=failure" in (tmp_path / "runner" / "output").read_text(encoding="utf-8")
+    assert _ran(tmp_path) == ["restrict"]
+    assert '"mala"' in _show(origin, "bot/registry/main", "registry/reachability.json")
+    assert _log(origin)[:2] == ["Robots.txt restrictions from the source probe (the full registry fails the tests)",
+                                "cambio en main"], r.stdout[-2000:] + r.stderr[-2000:]
+    assert "2026-10-26T09:50:00" in _show(origin, "main", "registry/sources.json")
+    assert "Se escribieron en la rama principal" in (tmp_path / "runner" / "registry-restricted.md").read_text(
+        encoding="utf-8")
 
 
 def test_a_registry_that_fails_the_tests_does_not_reach_main(tmp_path):
