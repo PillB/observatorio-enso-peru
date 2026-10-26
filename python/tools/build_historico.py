@@ -37,6 +37,7 @@ import csv
 import hashlib
 import io
 import json
+import os
 import shutil
 import sys
 from collections import Counter, defaultdict
@@ -128,6 +129,45 @@ def arcgis_dump(url: str, fields: str = "*", geometry: bool = True, where: str =
                       separators=(",", ":")).encode("utf-8")
 
 
+def idmc_api(src: dict, delay: float = 1.0) -> bytes:
+    """Filas del Perú de la API del IDMC, como CSV con columnas y filas ordenadas (el SHA-256 solo cambia si
+    cambian los datos). La clave (``client_id``) se lee de ``IDMC_CLIENT_ID`` y nunca se guarda ni se muestra:
+    va en la consulta, así que los errores no citan la URL."""
+    import time
+
+    key = os.environ.get("IDMC_CLIENT_ID", "").strip()
+    if not key:
+        raise SystemExit(f"{src['id']}: falta la variable IDMC_CLIENT_ID. {src['clave']}")
+    rows: list[dict] = []
+    url: Optional[str] = src["url"]
+    params: Optional[dict] = {"client_id": key, **src.get("parametros", {})}
+    with httpx.Client(follow_redirects=True, timeout=300, headers=UA, verify=ssl_context()) as c:
+        while url:
+            try:
+                r = c.get(url, params=params)
+            except httpx.HTTPError as e:
+                raise SystemExit(f"{src['id']}: la API del IDMC no respondió ({type(e).__name__})") from None
+            if r.status_code != 200:
+                raise SystemExit(f"{src['id']}: la API del IDMC respondió HTTP {r.status_code}")
+            d = r.json()
+            page = d.get("results", []) if isinstance(d, dict) else d
+            rows += [x for x in page if (x.get("iso3") or "PER") == "PER"]
+            # La página siguiente ya trae todos los parámetros (también la clave).
+            url, params = (d.get("next"), None) if isinstance(d, dict) else (None, None)
+            if url:
+                time.sleep(delay)
+    if not rows:
+        raise SystemExit(f"{src['id']}: la API del IDMC no devolvió filas del Perú")
+    cols = sorted({k for x in rows for k in x})
+    text = lambda v: "" if v is None else str(v)  # noqa: E731
+    rows.sort(key=lambda x: [text(x.get(k)) for k in ("id", "start_date", "event_name", *cols)])
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(cols)
+    w.writerows([text(x.get(k)) for k in cols] for x in rows)
+    return buf.getvalue().encode("utf-8")
+
+
 def robots_check(url: str) -> float:
     """Como el resto del observatorio, respeta el robots.txt del servidor (RFC 9309) antes de pedir nada.
     Devuelve el Crawl-delay que pida el servidor (0 si no pide)."""
@@ -154,6 +194,8 @@ def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
         if src.get("descarga") == "arcgis":
             path.write_bytes(arcgis_dump(src["url"], src.get("campos", "*"), src.get("geometria", True),
                                          src.get("consulta", "1=1"), delay=max(0.5, delay)))
+        elif src.get("descarga") == "idmc-api":
+            path.write_bytes(idmc_api(src, delay=max(1.0, delay)))
         else:
             with httpx.Client(follow_redirects=True, timeout=180, headers=UA, verify=ssl_context()) as c:
                 r = c.get(src["url"])

@@ -44,9 +44,10 @@ LIMA = timezone(timedelta(hours=-5))  # el Perú no usa horario de verano
 
 SINPAD_URL = "https://services8.arcgis.com/2qDHoDLqu6VOlf1y/arcgis/rest/services/Emergencias/FeatureServer/0"
 SINPAD_LICENSE = "Datos del SINPAD (INDECI), información pública; copia en ArcGIS Online de un tercero"
-IDMC_PAGE = "https://data.humdata.org/dataset/per-idmc-idu-events"
-IDMC_EVENTS_PAGE = "https://data.humdata.org/dataset/idmc-idp-data-per"
-IDMC_LICENSE = "IDMC con datos del INDECI, CC BY-IGO"
+IDMC_PAGE = IDMC_EVENTS_PAGE = "https://www.internal-displacement.org/database/displacement-data/"
+IDMC_LICENSE = "IDMC con datos del INDECI, CC BY-NC-SA 3.0 IGO"
+#: Columnas de la API del IDMC con otro nombre en sus exportaciones CSV (las de HDX): el lector usa estas.
+IDMC_ALIASES = {"standard_popup_text": "description", "hazard_sub_type_name": "hazard_subtype_name"}
 GLC_PAGE = "https://gpm.nasa.gov/landslides/data.html"
 GLC_LICENSE = "NASA Global Landslide Catalog (Kirschbaum et al. 2010, 2015), dominio público con cita"
 
@@ -236,10 +237,21 @@ def _houses(desc: str) -> dict:
     return out
 
 
+def _idmc_rows(text: str) -> Iterator[dict]:
+    """Filas de un CSV del IDMC, venga de su API (``tools.build_historico.idmc_api``) o de una exportación."""
+    for r in csv.DictReader(io.StringIO(text.lstrip("\ufeff"))):
+        for api, name in IDMC_ALIASES.items():
+            if not r.get(name):
+                r[name] = r.get(api) or ""
+        yield r
+
+
 def idmc_idu(text: str, territory, calendar, skipped: Optional[Counter] = None) -> Iterator[dict]:
     """Eventos de desplazamiento por distrito (IDU, 2025 en adelante): «Recommended figure»."""
     skipped = skipped if skipped is not None else Counter()
-    for r in csv.DictReader(io.StringIO(text.lstrip("\ufeff"))):
+    for r in _idmc_rows(text):
+        if (r.get("iso3") or "PER") != "PER":
+            continue
         if r.get("role") != "Recommended figure":
             skipped["triangulación (agregado departamental)"] += 1
             continue
@@ -284,7 +296,7 @@ def idmc_events(text: str, territory, calendar, since: int = 2019, until: int = 
     """Eventos del IDMC por departamento (y a veces provincia o distrito) de 2019 a 2024."""
     skipped = skipped if skipped is not None else Counter()
     seen: Counter = Counter()
-    for r in csv.DictReader(io.StringIO(text.lstrip("\ufeff"))):
+    for r in _idmc_rows(text):
         if not (r.get("year") or "")[:4].isdigit() or not (since <= int(r["year"]) <= until):
             continue
         m = _EVENT.match(r.get("event_name") or "")

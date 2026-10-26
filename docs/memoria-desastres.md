@@ -49,8 +49,8 @@ obtuvieron, el número de registros que aportan, los que se descartaron y por qu
 |---|---|---|---|---|
 | [DesInventar Perú](https://www.desinventar.net/DesInventar/profiletab.jsp?countrycode=per) (Corporación OSSO, LA RED, UNDRR) | 1970-2015 | Distrito | La serie homogénea: fichas de prensa (El Comercio, La República, Expreso) y del INDECI, con impactos. 14 114 fichas de peligros de origen climático | Uso libre con atribución |
 | SINPAD (INDECI), [copia pública en ArcGIS Online](https://services8.arcgis.com/2qDHoDLqu6VOlf1y/arcgis/rest/services/Emergencias/FeatureServer/0) | 2016-2018 | Distrito y punto | 14 124 emergencias, entre ellas más de 4 000 del Niño Costero 2017. Sin cifras de daños | Información pública del INDECI; la copia no es oficial |
-| [IDMC, actualizaciones de desplazamiento (IDU)](https://data.humdata.org/dataset/per-idmc-idu-events), con datos del INDECI | 2025-2026 | Distrito y punto | 4 895 emergencias que dejaron viviendas destruidas o inhabitables, con las personas desplazadas | CC BY-IGO |
-| [IDMC, desplazamientos por desastres](https://data.humdata.org/dataset/idmc-idp-data-per) | 2019-2024 | Casi siempre departamento y mes | 1 015 eventos; cubre el ciclón Yaku y el Niño costero 2023-24 por departamento | CC BY-IGO |
+| [IDMC, actualizaciones de desplazamiento (IDU)](https://www.internal-displacement.org/database/displacement-data/), con datos del INDECI, por la API del IDMC | 2025-2026 | Distrito y punto | 4 895 emergencias que dejaron viviendas destruidas o inhabitables, con las personas desplazadas | CC BY-NC-SA 3.0 IGO |
+| [IDMC, desplazamientos por desastres (GIDD)](https://www.internal-displacement.org/database/displacement-data/), por la API del IDMC | 2019-2024 | Casi siempre departamento y mes | 1 015 eventos; cubre el ciclón Yaku y el Niño costero 2023-24 por departamento | CC BY-NC-SA 3.0 IGO |
 | [NASA, Global Landslide Catalog](https://gpm.nasa.gov/landslides/data.html) (copia en ArcGIS Online) | 2016-2020 | Punto | 22 deslizamientos y huaycos con la noticia que los reportó | Dominio público, con cita |
 | Registros curados ([`data/historico/curado/`](../data/historico/curado/)) | 2017 | Distrito | Los diez distritos con más viviendas inhabitables o colapsadas en 2017 según el Plan Integral de Reconstrucción con Cambios | Cada registro cita su fuente |
 
@@ -250,12 +250,17 @@ pytest -q tests/test_historico.py
 ```
 
 - Como el resto del observatorio, el script lee el robots.txt de cada servidor antes de pedir nada (RFC 9309, con
-  `enso.reach.Robots`) y respeta su `Crawl-delay`; si el robots.txt no responde, no pide nada a ese servidor. Cuatro
-  fuentes se descargan a mano porque su robots.txt no deja que un programa las pida: los dos CSV del IDMC en HDX
-  (`Disallow: /*.csv$`) y las capas de puntos críticos de la ANA y de establecimientos de salud del SIGRID
-  (`Disallow: /arcgis/`). En `fuentes.json` tienen `"descarga": "manual"` y el campo `manual` dice qué abrir en
-  el navegador y con qué nombre guardarlo en la caché; sin ese archivo el script se detiene y lo explica. El IDMC
-  también ofrece su propia API (su robots.txt la permite), que pide registrarse para obtener un `client_id`.
+  `enso.reach.Robots`) y respeta su `Crawl-delay`; si el robots.txt no responde, no pide nada a ese servidor.
+- El IDMC se pide a su propia API (su robots.txt la permite; el de HDX no deja que un programa baje sus CSV). La API
+  pide una clave gratuita (`client_id`) que se solicita una vez por correo a ch.datainfo@idmc.ch, con el uso que se le
+  dará, y se guarda en la variable de entorno `IDMC_CLIENT_ID`, nunca en el repositorio. El script guarda las filas
+  del Perú como CSV con columnas y filas ordenadas. La copia vigente es la exportación del IDMC en HDX del
+  26-10-2026, con las mismas columnas. Los datos del IDMC son CC BY-NC-SA 3.0 IGO: uso no comercial, con atribución
+  y la misma licencia en lo derivado.
+- Las capas de puntos críticos de la ANA y de establecimientos de salud están en el SIGRID, cuyo robots.txt no deja
+  que un programa consulte `/arcgis/` (tampoco el recolector del Perú, que también lo respeta). En `fuentes.json`
+  tienen `"descarga": "manual"` y el campo `manual` dice qué abrir en el navegador y con qué nombre guardarlo en la
+  caché; sin ese archivo el script se detiene y lo explica.
 - Cada fuente tiene su SHA-256 en `fuentes.json`. Si cambia, el script se detiene: hay que revisar el cambio y
   repetir con `--aceptar-cambios`, que actualiza el manifiesto. Así un cambio silencioso de una fuente no altera el
   catálogo publicado.

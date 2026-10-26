@@ -240,11 +240,70 @@ def test_robots_txt_is_respected(monkeypatch, tmp_path):
         B.fetch(src, tmp_path, False, False)
 
 
-def test_restricted_sources_are_manual():
+def test_restricted_sources_are_manual_or_use_the_idmc_api():
     m = json.loads(B.MANIFEST.read_text(encoding="utf-8"))
     by = {s["id"]: s for s in m["fuentes"]}
-    for sid in ("idmc-idu", "idmc-eventos", "ana-puntos-criticos", "ipress-2023"):
+    for sid in ("ana-puntos-criticos", "ipress-2023"):
         assert by[sid]["descarga"] == "manual" and "robots.txt" in by[sid]["manual"], sid
+    for sid in ("idmc-idu", "idmc-eventos"):
+        assert by[sid]["descarga"] == "idmc-api" and by[sid]["url"].startswith("https://helix-tools-api.idmcdb.org/")
+        assert "client_id" not in json.dumps(by[sid]["url"]) and "IDMC_CLIENT_ID" in by[sid]["clave"]
+
+
+def test_idmc_api_pages_filters_peru_and_hides_the_key(monkeypatch, T, cal):
+    import httpx
+
+    seen = []
+
+    def handler(request):
+        seen.append(request.url)
+        q = dict(request.url.params)
+        assert q["client_id"] == "secreto"
+        if request.url.path.endswith("/idus/all/disaster/"):
+            return httpx.Response(200, json=[
+                {"id": 2, "iso3": "PER", "role": "Recommended figure", "type": "Flood", "subtype": "Flood",
+                 "figure": 12, "displacement_date": "2026-02-10", "displacement_start_date": "2026-02-10",
+                 "displacement_end_date": "2026-02-11", "year": 2026, "event_id": 9, "event_name": "Peru: Flood - Piura",
+                 "latitude": -5.1945, "longitude": -80.6328, "locations_name": "Piura, Province of Piura, Piura, Peru",
+                 "standard_popup_text": "Peru: 12 displacements (destroyed housing): destroyed 3 houses.", "sources": None},
+                {"id": 1, "iso3": "ECU", "role": "Recommended figure", "type": "Flood", "figure": 5}])
+        if q.get("offset"):
+            return httpx.Response(200, json={"next": None, "results": [
+                {"iso3": "PER", "year": 2023, "start_date": "2023-03-10", "start_date_accuracy": "Day",
+                 "event_name": "Peru: Flood - Lambayeque - 10/03/2023", "hazard_type_name": "Flood",
+                 "hazard_sub_type_name": "Riverine flood", "new_displacement": 300}]})
+        assert q["iso3__in"] == "PER"
+        return httpx.Response(200, json={"next": str(request.url.copy_merge_params({"offset": 1})), "results": [
+            {"iso3": "PER", "year": 2019, "start_date": "2019-01-10", "start_date_accuracy": "Day",
+             "event_name": "Peru: Flood - Junin, Chanchamayo, Pichanaqui - (10/01/2019)", "hazard_type_name": "Flood",
+             "hazard_sub_type_name": None, "new_displacement": 50}]})
+
+    real = httpx.Client
+    monkeypatch.setattr(B.httpx, "Client", lambda **kw: real(transport=httpx.MockTransport(handler),
+                                                             **{k: v for k, v in kw.items() if k != "verify"}))
+    m = {s["id"]: s for s in json.loads(B.MANIFEST.read_text(encoding="utf-8"))["fuentes"]}
+    monkeypatch.delenv("IDMC_CLIENT_ID", raising=False)
+    with pytest.raises(SystemExit, match="ch.datainfo@idmc.ch"):
+        B.idmc_api(m["idmc-idu"])
+    monkeypatch.setenv("IDMC_CLIENT_ID", "secreto")
+    idu = B.idmc_api(m["idmc-idu"], delay=0).decode()
+    rows = list(F.idmc_idu(idu, T, cal))
+    assert [r["IdFuente"] for r in rows] == ["2"] and rows[0]["Ubigeo"] == "200101"
+    assert rows[0]["ViviendasDestruidas"] == 3 and rows[0]["Desplazados"] == 12
+    events = B.idmc_api(m["idmc-eventos"], delay=0)
+    assert B.idmc_api(m["idmc-eventos"], delay=0) == events  # orden estable: el SHA-256 solo cambia con los datos
+    rows = list(F.idmc_events(events.decode(), T, cal))
+    assert sorted(r["Ubigeo"] for r in rows) == ["120303", "14"]
+    assert next(r for r in rows if r["Ubigeo"] == "14")["DangerType"] == "Inundacion fluvial"
+
+    def fail(request):
+        return httpx.Response(403, json={"detail": "Client is not registered."})
+
+    monkeypatch.setattr(B.httpx, "Client", lambda **kw: real(transport=httpx.MockTransport(fail),
+                                                             **{k: v for k, v in kw.items() if k != "verify"}))
+    with pytest.raises(SystemExit) as err:
+        B.idmc_api(m["idmc-idu"])
+    assert "HTTP 403" in str(err.value) and "secreto" not in str(err.value)
 
 
 def test_published_catalog():

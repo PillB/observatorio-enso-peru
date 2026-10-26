@@ -77,7 +77,7 @@ const DANGER_LABEL = {
   Sequias: 'Sequía', 'Incendio forestal': 'Incendio forestal', Erosion: 'Erosión', Epidemia: 'Epidemia', Plaga: 'Plaga',
 };
 const dl = (t) => DANGER_LABEL[t] || t;
-const SOURCE_LINK = { desinventar: 'DesInventar', sinpad: 'SINPAD', idmc: 'IDMC (HDX)', 'nasa-glc': 'noticia' };
+const SOURCE_LINK = { desinventar: 'DesInventar', sinpad: 'SINPAD', idmc: 'IDMC', 'nasa-glc': 'noticia' };
 const ATTN = { 'muy alto': ['Muy alto', 'octagon', 4], alto: ['Alto', 'triangle', 3], medio: ['Medio', 'info', 2], bajo: ['Bajo', 'dash', 1] };
 
 export function readState() {
