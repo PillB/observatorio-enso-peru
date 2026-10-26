@@ -2075,11 +2075,12 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     doc_cache = DOC.load_cache(previous.get("news/documentos.json", tries=3) or {})
     if fixtures is None:
         from .fetch import Fetcher as _Fetcher
-        # Sin el filtro de robots.txt del fetcher diario: el COEN es una institución pública peruana y su
-        # información es pública (Ley 27806; decisión del proyecto). Se baja con pausa de cortesía, un pedido
-        # por segundo y a lo más ``DOC.MAX_PER_RUN`` publicaciones por corrida.
+        # La regla de robots.txt del fetcher diario: el COEN es una entidad pública del Perú (Ley 27806), así que
+        # un «Disallow» no lo detiene pero su Crawl-delay sí se respeta; además, un pedido por segundo y a lo más
+        # ``DOC.MAX_PER_RUN`` publicaciones por corrida.
         doc_fetcher = _Fetcher(timeout=30.0, retries=1, polite_delay=1.0, plan=getattr(fetcher, "plan", None),
-                               max_seconds=NEWS_REQUEST_MAX_S)
+                               max_seconds=NEWS_REQUEST_MAX_S, robots=getattr(fetcher, "robots", None) is not None,
+                               robots_known=getattr(fetcher, "robots_known", None))
 
         def fetch_doc(url):
             try:
