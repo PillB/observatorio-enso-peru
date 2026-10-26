@@ -29,15 +29,17 @@ muestra cada vista.
    portal, el del repositorio del IMARPE (con la fecha de corte del nombre del archivo) y, sin él, el de la
    réplica de la DHN (el número más alto del año), que la validación descarta si es de otro periodo. Un informe ya leído no se vuelve a bajar mientras siga el mismo comunicado.
 3. **De dónde se baja.** El portal del ENFEN no responde desde GitHub Actions ni desde n8n (DNS). Se prueba,
-   en orden: el portal, la réplica de la DHN (`informe-tecnico/NN-AAAA.pdf`), el repositorio del IMARPE, las
-   copias del recolector del Perú y de la consola, y el Internet Archive. El repositorio institucional del
-   IMARPE (`repositorio.imarpe.gob.pe`, DSpace; cliente único en `python/enso/feeds/imarpe_repo.py`) recibe cada
-   comunicado e informe unos 3 días después de su publicación; su API (`/server/api`, que robots.txt no
-   prohíbe) no responde a GitHub Actions, así que el recolector del Perú guarda sus búsquedas, los paquetes de
-   archivos y los PDF con las mismas URL que pide el sitio; solo se acepta el ítem cuyo título tiene el número
-   y año exactos. El
-   servidor no envía el certificado intermedio de Sectigo: va en `python/enso/data/ca-intermedios.pem` (público,
-   vence en 2036) y la verificación TLS sigue activa. El comunicado usa la misma ruta después de sus URL. La DHN hoy responde a GitHub Actions y a n8n con una página de verificación
+   en orden: cada URL del informe (el portal y la réplica de la DHN, `informe-tecnico/NN-AAAA.pdf`), primero
+   directa y luego su copia del recolector del Perú, de n8n o de la consola (una URL que el registro no da a
+   Actions se lee primero de las copias); después el repositorio del IMARPE; y solo al final el Internet
+   Archive (`reports._informe_pdf`). El repositorio institucional del IMARPE (`repositorio.imarpe.gob.pe`,
+   DSpace; cliente único en `python/enso/feeds/imarpe_repo.py`) recibe cada comunicado e informe unos 3 días
+   después de su publicación; su API (`/server/api`, que robots.txt no prohíbe) no responde a GitHub Actions,
+   así que el recolector del Perú guarda sus búsquedas, los paquetes de archivos y los PDF con las mismas URL
+   que pide el sitio; solo se acepta el ítem cuyo título tiene el número y año exactos. El servidor no envía el
+   certificado intermedio de Sectigo: va en `python/enso/data/ca-intermedios.pem` (público, vence en 2036) y la
+   verificación TLS sigue activa. El comunicado usa la misma ruta después de sus URL y sus copias. La DHN hoy
+   responde a GitHub Actions y a n8n con una página de verificación
    humana: solo vale un cuerpo que empiece con `%PDF-`, así que esa página no se lee y la búsqueda sigue en
    las copias (nunca se intenta pasar la verificación). El recolector del Perú baja el listado de informes y
    los PDF de los dos más recientes (hasta 20 MB) con la misma URL que cita el comunicado. Mientras no haya
