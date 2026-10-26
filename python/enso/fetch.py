@@ -238,17 +238,27 @@ class Fetcher:
     def _request(self, url: str, headers: Optional[dict] = None) -> httpx.Response:
         """Un pedido, con sus redirecciones: antes de cada salto, el destino con la regla de robots.txt de un pedido
         directo (``_robots_rule``). Si no se sigue, ``RobotsHop``; el pedido ya hecho no se repite. ``max_seconds``
-        vale para el pedido entero, con sus redirecciones."""
-        ends = [t for t in (time.monotonic() + self.max_seconds if self.max_seconds else None, self.deadline) if t]
-        end = min(ends) if ends else None
-        for _ in range(MAX_HOPS + 1):
+        vale para el pedido entero, con sus redirecciones, sin contar la lectura del robots.txt de cada destino (otro
+        servidor); un salto que llega pasado ese plazo, o el de la corrida, no se pide."""
+        limit = time.monotonic() + self.max_seconds if self.max_seconds else None
+        for n in range(MAX_HOPS + 1):
+            ends = [t for t in (limit, self.deadline) if t]
+            end = min(ends) if ends else None
+            if n and end is not None and time.monotonic() > end:
+                raise TooSlow("la respuesta no terminó de llegar a tiempo"
+                              + (f" ({self.max_seconds:g} s por pedido)" if self.max_seconds else ""), request=r.request)
+            if n and self.robots is not None:
+                self.robots.pace(url)  # el Crawl-delay de una entidad pública del Perú; el primero, en ``_get``
             r = self._request_one(url, headers, end)
             hop = next_hop(r)
             if hop is None:
                 return r
+            started = time.monotonic()
             why = self._robots_rule(hop, self.plan.get(hop))
             if why:
                 raise RobotsHop(hop, self.robots.allowed(hop), why, request=r.request)
+            if limit is not None:
+                limit += time.monotonic() - started
             url = hop
         raise httpx.TooManyRedirects(f"más de {MAX_HOPS} redirecciones", request=r.request)
 
@@ -301,6 +311,8 @@ class Fetcher:
             if down >= HOST_ONE_TRY_AFTER and i:
                 break
             self._wait_host(host)
+            if self.robots is not None:
+                self.robots.pace(url)  # el Crawl-delay de una entidad pública del Perú (``reach.Robots.pace``)
             overloaded = False
             try:
                 r = self._request(url)
@@ -391,12 +403,14 @@ class Fetcher:
                                     attempts=attempts)
                 if r is not None and r.status_code == 200:
                     attempts[-1]["note"] = "contenido vacío o tipo inesperado"
-            if self.hop_refused.get(url) is False:
-                # El recolector que guardó la copia la pudo bajar siguiendo esa misma redirección.
-                attempts.append({"url": url, "note": "redirige a una ruta que robots.txt no permite: "
-                                                     "no se usan las copias de los recolectores"})
-                continue
-            got = self._from_relays(url, accept)
+            refused = self.hop_refused.get(url) is False
+            if refused and attempts and attempts[-1].get("url") == url:
+                # En el intento del salto (``RobotsHop``), que es el que lee quien muestra el motivo (``acquire_news``).
+                attempts[-1]["note"] = ("redirige a una ruta que robots.txt no permite: no se usan las copias de "
+                                        "los recolectores")
+            # El recolector que guardó la copia la pudo bajar siguiendo esa misma redirección; la que una persona
+            # subió en la consola de documentos (``relay-manual``) la bajó ella, y vale.
+            got = self._from_relays(url, accept, manual_only=refused)
             if got is not None:
                 attempts.append({"url": url, "channel": got.channel, "collected_at": got.archived_at})
                 got.attempts = attempts
@@ -415,8 +429,9 @@ class Fetcher:
         """Solo las copias de los recolectores (sin pedir nada): para las URL sintéticas ``manual://``."""
         return self._from_relays(url, accept)
 
-    def _from_relays(self, url: str, accept: tuple[str, ...]) -> Optional[Response]:
-        hits = [got for got in (r.get(url, accept) for r in self.relays) if got is not None]
+    def _from_relays(self, url: str, accept: tuple[str, ...], manual_only: bool = False) -> Optional[Response]:
+        relays = [r for r in self.relays if r.channel == "relay-manual"] if manual_only else self.relays
+        hits = [got for got in (r.get(url, accept) for r in relays) if got is not None]
         return max(hits, key=lambda g: -_age_hours(g.archived_at)) if hits else None
 
     @staticmethod

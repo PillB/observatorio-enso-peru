@@ -47,9 +47,15 @@ todo lo demás, otros feeds incluidos, y el rastreo.
 una medición no pudo leerlo, vale la última lectura de esa red que permitía la
 ruta, hasta ``STALE_DAYS`` (``robots_read``; RFC 9309 §2.4), y un robots.txt en
 contra que nadie volvió a leer en ``STALE_DAYS`` deja de contar.
+Excepción, decidida el 26 de octubre de 2026: en los servidores de entidades
+públicas del Perú (``.gob.pe``, ``.mil.pe``: ``reach.public_peru``) robots.txt
+no decide qué se pide (``robots`` es ``allowed``, salvo que en lugar del
+robots.txt llegue una verificación antirobots); su ``Crawl-delay`` se respeta.
 ``by_url[url]["hop"]``: el destino de una redirección que la medición no siguió
 porque su robots.txt no respondió; quien pida la URL lee el robots.txt de ese
-destino, no solo el de la URL (n8n lo lee en vez del de la URL).
+destino, no solo el de la URL (n8n lo lee en vez del de la URL), y ``robots``
+no queda ``allowed`` (ninguna lectura de la URL cubre la de su destino).
+Cuenta la más reciente de hasta ``STALE_DAYS``, si después nadie alcanzó la URL.
 
 El registro no guarda la hora, el tiempo ni el tamaño de cada medición (siguen
 en ``reachability.json``): solo cambia cuando cambia el alcance.
@@ -65,6 +71,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
+
+from .reach import public_peru
 
 SCHEMA = "enso-source-registry/1"
 REACH_SCHEMA = "enso-reachability/2"  # /2: mediciones por red y punto de medición
@@ -349,8 +357,26 @@ def _recent(recs: dict[str, dict], now: Optional[datetime]) -> dict[str, dict]:
 def _counted(url: str, reach: dict, now: Optional[datetime]) -> dict[str, dict[str, dict]]:
     """Las mediciones de ``url`` que cuentan, por grupo: sin las que no miden la red (``unmeasured``) y, con ``now``,
     sin las de más de ``STALE_DAYS`` si su red tiene otra más reciente (``_recent``)."""
+    # En una entidad pública del Perú (``reach.public_peru``) un robots.txt en contra no cuenta: se pide igual. Si
+    # lo prohibido es un salto de una redirección (``hop``), cuenta el servidor de ese salto, no el de la URL.
+    def exempt(r: dict) -> bool:
+        return r.get("class") == "robots" and public_peru(r.get("hop") or url)
     return {g: kept for g, rs in _groups(reach.get(url) or {}).items()
-            if (kept := _recent({v: r for v, r in rs.items() if not unmeasured(r)}, now))}
+            if (kept := _recent({v: r for v, r in rs.items() if not unmeasured(r) and not exempt(r)}, now))}
+
+
+def _hop(url: str, reach: dict, now: Optional[datetime]) -> Optional[str]:
+    """El destino de la redirección más reciente que una medición no siguió porque su robots.txt no respondió: de
+    hasta ``STALE_DAYS`` antes de ``now``, y solo si ninguna medición posterior, de cualquier red, alcanzó la URL
+    (clase ``ok``). Sin esto, la de un grupo que ya no vuelve a medirla (el Perú, si la URL se abre) quedaría para
+    siempre."""
+    oldest = datetime.min.replace(tzinfo=timezone.utc)
+    recs = [r for rs in _counted(url, reach, now).values() for r in rs.values()]
+    ok = max((record_at(r) or oldest for r in recs if r.get("class") == "ok"), default=None)
+    cutoff = now - timedelta(days=STALE_DAYS) if now else None
+    hops = [r for r in recs if r.get("hop") and r.get("robots") == "unreachable"
+            and (cutoff is None or (record_at(r) or oldest) >= cutoff) and (ok is None or (record_at(r) or oldest) > ok)]
+    return max(hops, key=lambda r: record_at(r) or oldest)["hop"] if hops else None
 
 
 def geoblock(url: str, reach: dict, now: Optional[datetime] = None) -> dict:
@@ -390,6 +416,11 @@ def robots_verdict(url: str, reach: dict, now: Optional[datetime] = None) -> str
     lee antes de cada pedido); ``unknown`` si nadie pudo leerlo (n8n y el pipeline lo leen antes de pedirla). Cuentan las mismas mediciones que
     en ``geoblock`` (con ``now``, sin las viejas): ``disallowed`` va con el estado ``robots-disallowed``."""
     recs = [(g, r) for g, rs in _counted(url, reach, now).items() for r in rs.values()]
+    # Entidad pública del Perú: su robots.txt no decide (``reach.PUBLIC_PERU_SUFFIXES``), salvo que en su lugar
+    # haya llegado una verificación antirobots, que nunca se evade: entonces se sigue la regla de siempre.
+    if public_peru(url) and not any(r.get("class") == "robots" or (
+            r.get("class") == "challenge" and r.get("robots") == "unreachable") for _, r in recs):
+        return "allowed"
     if any(r.get("class") == "robots" for _, r in recs):
         return "disallowed"
     cutoff = now - timedelta(days=STALE_DAYS) if now else None
@@ -451,10 +482,12 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
             by_url[u] = {"status": g["status"], "channels": channels_for(
                 g["status"], g["open_from"], [k for k in ("actions", "n8n") if g.get(k)], n8n=e.n8n),
                 "robots": robots_verdict(u, reach, ref)}
-            hop = next((r["hop"] for rs in _counted(u, reach, ref).values() for r in rs.values()
-                        if r.get("hop") and r.get("robots") == "unreachable"), None)
+            hop = _hop(u, reach, ref)
             if hop:
                 by_url[u]["hop"] = hop
+                if by_url[u]["robots"] == "allowed":
+                    # La lectura del robots.txt de la URL (otra red, el recolector del Perú) no cubre el de su destino.
+                    by_url[u]["robots"] = "unknown"
             if e.reader and g["status"] == "robots-disallowed":
                 by_url[u].update(channels=list(READER_CHANNELS), reader=True)
             if e.only_channels is not None and g["status"] != "robots-disallowed":
@@ -476,8 +509,8 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
                       "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con "
                                 f"reader: solo {'+'.join(READER_CHANNELS)}, como mucho cada {READER_MIN_HOURS} h; "
                                 "by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes "
-                                "de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió, "
-                                "y quien pida la URL lee también el de ese destino",
+                                "de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió "
+                                "(robots queda unknown), y quien pida la URL lee también el de ese destino",
                       "n8n": "una fuente con n8n false no va por n8n (ver notes)",
                       "tiers": METHODS, "channels": list(CHANNELS)},
             "sources": sources}
@@ -530,6 +563,34 @@ def url_robots(reg: Optional[dict] = None) -> dict[str, str]:
         return {}
     return {u: r["robots"] for s in reg.get("sources") or [] for u, r in (s.get("by_url") or {}).items()
             if isinstance(u, str) and isinstance(r, dict) and r.get("robots") in ROBOTS}
+
+
+def restrictions(old: Optional[dict], new: dict) -> dict[str, list[str]]:
+    """Las URL que ``new`` restringe por robots.txt respecto de ``old``, con los motivos: robots.txt la prohíbe
+    (``robots-disallowed``), nadie pudo leerlo (``unknown``) o redirige a un destino cuyo robots.txt no respondió
+    (``hop`` nuevo). Una URL que ``old`` no tenía no cuenta: nadie la pedía.
+
+    Las usa la sonda semanal (``tools.registry_restrict``): llegan a la rama principal aunque el registro medido no
+    pase las pruebas, porque n8n pide sin leer robots.txt lo que el registro de esa rama da por permitido."""
+    def urls(reg: Optional[dict]) -> dict[str, dict]:
+        return {u: r for s in (reg or {}).get("sources") or [] for u, r in (s.get("by_url") or {}).items()
+                if isinstance(u, str) and isinstance(r, dict)}
+
+    before, out = urls(old), {}
+    for u, r in urls(new).items():
+        b = before.get(u)
+        if b is None:
+            continue
+        why = []
+        if r.get("status") == "robots-disallowed" and b.get("status") != "robots-disallowed":
+            why.append("robots.txt no permite la ruta")
+        if r.get("robots") == "unknown" and b.get("robots") not in ("unknown", "disallowed"):
+            why.append("nadie pudo leer su robots.txt")
+        if r.get("hop") and r["hop"] != b.get("hop"):
+            why.append(f"redirige a {r['hop']}, cuyo robots.txt no respondió")
+        if why:
+            out[u] = why
+    return out
 
 
 def validate(reg: dict) -> list[str]:

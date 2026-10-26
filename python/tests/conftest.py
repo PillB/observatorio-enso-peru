@@ -27,6 +27,13 @@ def _no_live_console(monkeypatch):
     monkeypatch.delenv("GEO_OVERRIDES_URL", raising=False)
 
 
+@pytest.fixture
+def no_public_peru(monkeypatch):
+    """Sin la excepción de las entidades públicas del Perú (``reach.PUBLIC_PERU_SUFFIXES``): para las pruebas de
+    robots.txt según la RFC 9309 que usan servidores .gob.pe de ejemplo."""
+    monkeypatch.setattr("enso.reach.PUBLIC_PERU_SUFFIXES", ())
+
+
 def pytest_addoption(parser):
     parser.addoption("--site-dir", default=None, help="Carpeta del sitio construido (public/) para pruebas de navegador")
 

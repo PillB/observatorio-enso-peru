@@ -192,6 +192,7 @@ def test_n8n_index_is_a_measurement_from_n8n():
     assert "robots" not in got["https://a.pe/feed"]
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_robots_txt_read_by_n8n_gives_the_url_a_verdict():
     """Revisión: una URL que solo n8n alcanza y cuyo robots.txt Actions no pudo leer (verificación) quedaba
     «unknown» para siempre: n8n no la pide sin veredicto y nadie más la mide. Si n8n lee robots.txt y lo anota (en
@@ -234,6 +235,7 @@ def test_urls_n8n_did_not_request_for_their_robots_txt_are_measurements():
     assert rows[0]["at"] == probe_sources._iso(AT) and "at" not in rows[1]
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_a_robots_txt_reading_survives_a_measurement_that_could_not_read_it():
     """Segunda revisión: cada medición de una red reemplaza la anterior, y una que no leyó robots.txt (una
     verificación ese día desde Actions, o n8n pidiendo lo que el registro ya daba por permitido) borraba la lectura:
@@ -265,6 +267,7 @@ def test_a_robots_txt_reading_survives_a_measurement_that_could_not_read_it():
     assert registry.robots_verdict(url, data["urls"], NOW) == "disallowed"
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_a_robots_txt_disallow_nobody_read_again_stops_counting_after_stale_days():
     """Segunda revisión: un robots.txt en contra que solo leyó n8n quedaba para siempre (la URL sin canales, nadie
     la volvía a medir y la medición más reciente de un grupo nunca vencía). Pasados STALE_DAYS, vuelve a «unknown»
@@ -371,6 +374,7 @@ def test_robots_txt_with_a_byte_order_mark_keeps_its_first_group():
         assert not rules.allowed("https://a.gob.pe/datos/x.csv") and rules.allowed("https://a.gob.pe/otra")
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_the_fetcher_retries_a_transient_robots_txt_failure_once():
     """Revisión: robots.txt se lee una vez por servidor y corrida; un 503 pasajero dejaba sin pedir, toda la corrida,
     las URL de ese servidor que el registro no mide (los PDF del comunicado y del informe). Una verificación no se
@@ -1104,15 +1108,39 @@ def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None):
     git("push", "-q", str(origin), "main", cwd=seed)
     wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "probe-sources.yml").read_text(encoding="utf-8"))
     run = next(st for st in wf["jobs"]["probe"]["steps"] if st.get("name") == "Commit")["run"]
-    run = run.replace("${{ github.event.repository.default_branch || 'main' }}", "main")
     fake = tmp_path / "bin"  # sin esperas entre reintentos
     fake.mkdir()
     (fake / "sleep").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
     (fake / "sleep").chmod(0o755)
-    env = {**os.environ, "GITHUB_REF_NAME": "main", "PATH": f"{fake}{os.pathsep}{os.environ['PATH']}", **(env or {})}
+    # Las pruebas del registro y las restricciones de robots.txt, simuladas: anotan que corrieron.
+    (tmp_path / "gate.sh").write_text(f'echo gate >> "{tmp_path}/ran"\nexit "${{GATE_RC:-0}}"\n', encoding="utf-8")
+    (tmp_path / "restrict.sh").write_text(f'echo restrict >> "{tmp_path}/ran"\neval "${{RESTRICT_DO:-:}}"\n', encoding="utf-8")
+    runner = tmp_path / "runner"
+    runner.mkdir()
+    env = {**os.environ, "GITHUB_REF_NAME": "main", "MAIN": "main", "PATH": f"{fake}{os.pathsep}{os.environ['PATH']}",
+           "GITHUB_SHA": git("rev-parse", "HEAD", cwd=work).strip(), "GITHUB_OUTPUT": str(runner / "output"),
+           "RUNNER_TEMP": str(runner), "GATE_SCRIPT": str(tmp_path / "gate.sh"),
+           "RESTRICT_SCRIPT": str(tmp_path / "restrict.sh"), **(env or {})}
     r = subprocess.run(["bash", "--noprofile", "--norc", "-eo", "pipefail", "-c", run], cwd=work, env=env,
                        capture_output=True, text=True, timeout=120)
     return r, origin, work
+
+
+def _ran(tmp_path: Path) -> list[str]:
+    f = tmp_path / "ran"
+    return f.read_text(encoding="utf-8").split() if f.exists() else []
+
+
+def _log(origin: Path, ref: str = "main") -> list[str]:
+    import subprocess
+
+    return subprocess.run(["git", "log", "--format=%s", ref], cwd=origin, capture_output=True, text=True).stdout.split("\n")
+
+
+def _show(origin: Path, ref: str, path: str) -> str:
+    import subprocess
+
+    return subprocess.run(["git", "show", f"{ref}:{path}"], cwd=origin, capture_output=True, text=True).stdout
 
 
 def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_path):
@@ -1129,6 +1157,7 @@ def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_p
     assert r.returncode == 0, r.stdout[-2000:] + r.stderr[-2000:]
     log = subprocess.run(["git", "log", "--format=%s", "main"], cwd=origin, capture_output=True, text=True).stdout
     assert log.split("\n")[:3] == ["Update source reachability and registry", "cambio en main", "inicio"]
+    assert _ran(tmp_path) == ["gate"]  # main cambió mientras se medía: lo rebasado se prueba otra vez
     check = tmp_path / "check"
     subprocess.run(["git", "clone", "-q", f"file://{origin}", str(check)], check=True, capture_output=True)
     assert "2026-10-26T09:40:00" in (check / "registry" / "sources.json").read_text(encoding="utf-8")
@@ -1162,13 +1191,19 @@ def test_a_registry_that_fails_the_tests_does_not_reach_main(tmp_path):
     commit = next(i for i, st in enumerate(steps) if st.get("name") == "Commit")
     build = next(i for i, st in enumerate(steps) if st.get("run", "").strip() == "node n8n/build.mjs")
     assert build < gate < commit and steps[gate].get("continue-on-error") is True
-    assert "pytest" in steps[gate]["run"] and "build.mjs --check" in steps[gate]["run"]
-    assert steps[commit]["env"]["GATE"] == "${{ steps.gate.outcome }}"
+    script = (obs.REPO / ".github" / "scripts" / "registry-gate.sh").read_text(encoding="utf-8")
+    assert steps[gate]["run"] == "bash .github/scripts/registry-gate.sh"
+    assert all(c in script for c in ("build_registry --check", "pytest", "build.mjs --check", "node --test"))
+    assert steps[commit]["env"]["GATE"] == "${{ steps.gate.outcome }}" and steps[commit]["id"] == "commit"
+    # Un registro medido que no valida no corta el paso de la sonda: lo decide el de las pruebas.
+    probe = next(st for st in steps if "python -m tools.probe_sources" in st.get("run", ""))
+    assert "python -m tools.build_registry ||" in probe["run"]
     # En main, un issue que dice dónde quedó el registro y que se cierra con el próximo que pasa las pruebas.
     issue = {st.get("name"): st for st in steps[commit + 1:]}
     opens, closes = (issue["Open an issue when the new registry fails the tests"],
                      issue["Close the registry issue after a registry that passes"])
     assert "steps.gate.outcome == 'failure'" in opens["if"] and "always()" in opens["if"]
+    assert "steps.commit.outputs.gate == 'failure'" in opens["if"] and "registry-restricted.md" in opens["with"]["script"]
     assert "steps.gate.outcome == 'success'" in closes["if"] and wf["permissions"]["issues"] == "write"
     assert all("enso-fp:registry-gate" in st["with"]["script"] for st in (opens, closes))
 
@@ -1178,10 +1213,48 @@ def test_a_registry_that_fails_the_tests_does_not_reach_main(tmp_path):
 
     r, origin, _ = _probe_commit(tmp_path, n8n_change, env={"GATE": "failure"})
     assert r.returncode == 1 and "no pasa las pruebas" in r.stdout
+    assert _log(origin)[0] == "cambio en main" and _ran(tmp_path) == ["restrict"]
+    assert _log(origin, "bot/registry/main")[0] == "Update source reachability and registry"
+    assert "gate=failure" in (tmp_path / "runner" / "output").read_text(encoding="utf-8")
     heads = dict(line.split(" ", 1) for line in subprocess.run(
         ["git", "for-each-ref", "--format=%(refname:short) %(subject)", "refs/heads"], cwd=origin,
         capture_output=True, text=True).stdout.splitlines())
     assert heads == {"main": "cambio en main", "bot/registry/main": "Update source reachability and registry"}
+
+    # Las pruebas pasaron sobre lo medido, pero main cambió mientras tanto y con lo rebasado no pasan.
+    (tmp_path / "moved").mkdir()
+    r, origin, _ = _probe_commit(tmp_path / "moved", n8n_change, env={"GATE_RC": "1"})
+    assert r.returncode == 1 and _log(origin)[0] == "cambio en main"
+    assert _ran(tmp_path / "moved") == ["gate", "restrict"]
+    assert "gate=failure" in (tmp_path / "moved" / "runner" / "output").read_text(encoding="utf-8")
+
+
+def test_robots_restrictions_reach_main_even_when_the_registry_fails_the_tests(tmp_path):
+    """n8n pide sin leer robots.txt lo que el registro de main da por permitido: si la medición no pasa las pruebas,
+    lo que restringe por robots.txt (``tools.registry_restrict``) llega igual a main, la corrida falla y el issue lo
+    lista. La medición entera queda en bot/registry/main."""
+    def n8n_change(seed):
+        with (seed / "n8n" / "nodes" / "fuentes.js").open("a", encoding="utf-8") as f:
+            f.write("// cambio en main\n")
+
+    # Lo que haría tools.registry_restrict: el registro de main con solo las restricciones, y el informe.
+    do = ("sed 's/\"generated_at\": \"[^\"]*\"/\"generated_at\": \"2026-10-26T09:50:00+00:00\"/' \"$1\""
+          " > registry/sources.json && echo '- `https://a.example/feed`: robots.txt no permite la ruta' > \"$3\"")
+    r, origin, work = _probe_commit(tmp_path, n8n_change, env={"GATE": "failure", "RESTRICT_DO": do})
+    assert r.returncode == 1, r.stdout[-2000:] + r.stderr[-2000:]
+    assert _log(origin)[:2] == ["Robots.txt restrictions from the source probe (the full registry fails the tests)",
+                                "cambio en main"], r.stdout[-2000:] + r.stderr[-2000:]
+    assert "2026-10-26T09:50:00" in _show(origin, "main", "registry/sources.json")
+    assert "2026-10-26T09:40:00" in _show(origin, "bot/registry/main", "registry/sources.json")
+    report = (tmp_path / "runner" / "registry-restricted.md").read_text(encoding="utf-8")
+    assert "robots.txt no permite la ruta" in report and "Se escribieron en la rama principal" in report
+    import shutil
+    import subprocess
+
+    check = tmp_path / "check"
+    subprocess.run(["git", "clone", "-q", f"file://{origin}", str(check)], check=True, capture_output=True)
+    assert subprocess.run([shutil.which("node"), "n8n/build.mjs", "--check"], cwd=check,
+                          capture_output=True).returncode == 0
 
 
 def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, monkeypatch):

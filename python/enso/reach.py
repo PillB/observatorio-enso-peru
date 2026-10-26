@@ -80,6 +80,20 @@ SMALL_PAGE = 40000
 #: Plazo para leer robots.txt: un servidor que no lo entrega en ese tiempo cuenta como sin respuesta.
 ROBOTS_TIMEOUT_S = 15.0
 FEEDS = {"rss", "atom", "rdf", "jsonfeed"}
+#: Entidades públicas del Perú. Decisión del responsable del proyecto (26 de octubre de 2026): su información es
+#: pública (Constitución, art. 2.5; Ley 27806; DL 1412), así que su robots.txt se lee pero no decide si se pide una
+#: ruta. Se sigue respetando su ``Crawl-delay`` y nunca se evade una verificación antirobots. No van ``.edu.pe``
+#: (hay universidades privadas) ni ``.org.pe``.
+PUBLIC_PERU_SUFFIXES = (".gob.pe", ".mil.pe")
+#: Pausa mínima y máxima entre dos pedidos a un mismo servidor de esas entidades (``Robots.pace``): su
+#: ``Crawl-delay`` dentro de ese intervalo, o la mínima si no lo fija.
+PUBLIC_PERU_GAP_S = (1.0, 30.0)
+
+
+def public_peru(url: str) -> bool:
+    """Si ``url`` es de un servidor de una entidad pública del Perú (``PUBLIC_PERU_SUFFIXES``)."""
+    host = (urlparse(url).hostname or "").lower().rstrip(".")
+    return any(host.endswith(s) or host == s[1:] for s in PUBLIC_PERU_SUFFIXES)
 
 
 def header(headers, name: str) -> str:
@@ -334,12 +348,18 @@ class RobotsHop(httpx.HTTPError):
 
 
 def next_hop(r: httpx.Response) -> Optional[str]:
-    """A dónde redirige ``r`` (``None`` si no redirige), como lo resuelve httpx: un ``Location`` absoluto sin servidor
-    (``http:///login``) va al mismo servidor."""
+    """A dónde redirige ``r``, como lo resuelve httpx: un ``Location`` absoluto sin servidor (``http:///login``) va
+    al mismo servidor. ``None`` si no redirige o si lleva a otro protocolo (``ftp://…``): no se sigue, como en httpx
+    (que ahí falla), y queda la respuesta 3xx, sin leer un robots.txt que no existe."""
     loc = r.headers.get("location")
     if not (r.is_redirect and loc):
         return None
-    url = httpx.URL(loc)
+    try:
+        url = httpx.URL(loc)
+    except httpx.InvalidURL as exc:  # como httpx: un error del servidor, no de quien pide
+        raise httpx.RemoteProtocolError(f"Location no válido: {exc}", request=r.request) from None
+    if url.scheme not in ("", "http", "https"):
+        return None
     if url.scheme and not url.host:
         url = url.copy_with(host=r.url.host)
     return str(r.url.join(url) if url.is_relative_url else url)
@@ -348,9 +368,12 @@ def next_hop(r: httpx.Response) -> Optional[str]:
 def get_checked(client, url: str, robots: Optional["Robots"], headers: Optional[dict] = None, **kw):
     """GET que sigue las redirecciones a mano y consulta robots.txt antes de cada salto, con la misma regla que
     el pedido: una ruta prohibida o un robots.txt sin respuesta no se piden. El robots.txt de ``url`` lo revisa
-    quien llama. Devuelve la respuesta y, si un salto no se pidió, su URL y el veredicto (``False`` prohibido,
-    ``None`` sin respuesta); si no, ``None`` y ``True``."""
+    quien llama. Antes de cada pedido, el ``Crawl-delay`` de una entidad pública del Perú (``Robots.pace``).
+    Devuelve la respuesta y, si un salto no se pidió, su URL y el veredicto (``False`` prohibido, ``None`` sin
+    respuesta); si no, ``None`` y ``True``."""
     for _ in range(MAX_HOPS + 1):
+        if robots is not None:
+            robots.pace(url)
         r = client.get(url, headers=headers, follow_redirects=False, **kw)
         hop = next_hop(r)
         if hop is None:
@@ -396,6 +419,7 @@ class Robots:
         self.backoff_s = backoff_s
         self._cache: dict[str, tuple] = {}
         self._lock = threading.Lock()
+        self._next: dict[str, float] = {}  # host → cuándo puede salir el próximo pedido (``pace``)
 
     def _entry(self, url: str) -> tuple:
         p = urlparse(url)
@@ -449,8 +473,20 @@ class Robots:
             return f"{p.scheme}://{p.netloc}" in self._cache
 
     def allowed(self, url: str) -> Optional[bool]:
-        rp = self._entry(url)[0]
-        return None if rp is None else rp.allowed(url)
+        """Si robots.txt permite pedir ``url`` (``None``: no se sabe y no se pide). En un servidor de una entidad
+        pública del Perú (``public_peru``) se pide aunque lo prohíba o no responda, salvo que en su lugar haya una
+        verificación antirobots, que nunca se evade."""
+        rp, _, fail = self._entry(url)[:3]
+        verdict = None if rp is None else rp.allowed(url)
+        if verdict is not True and public_peru(url) and fail != "challenge":
+            return True
+        return verdict
+
+    def overridden(self, url: str) -> bool:
+        """Si ``allowed`` dice que sí solo porque es una entidad pública del Perú (su robots.txt prohíbe la ruta o no
+        respondió): para anotarlo en el registro de la corrida."""
+        rp, _, fail = self._entry(url)[:3]
+        return public_peru(url) and fail != "challenge" and (rp is None or rp.allowed(url) is not True)
 
     def source(self, url: str) -> str:
         """``rules`` (se leyeron reglas), ``absent`` (un 4xx: se permite todo) o ``unreachable``."""
@@ -459,6 +495,23 @@ class Robots:
     def crawl_delay(self, url: str) -> Optional[float]:
         rp = self._entry(url)[0]
         return rp.crawl_delay if rp else None
+
+    def pace(self, url: str) -> float:
+        """Espera, antes de pedir ``url`` a una entidad pública del Perú, lo que pide su ``Crawl-delay`` desde el
+        pedido anterior a ese servidor (entre ``PUBLIC_PERU_GAP_S``); con varios hilos, cada uno toma su turno.
+        Devuelve los segundos esperados (0 en otros servidores, que ya pausa cada llamador)."""
+        if not public_peru(url):
+            return 0.0
+        lo, hi = PUBLIC_PERU_GAP_S
+        gap = min(hi, max(lo, self.crawl_delay(url) or 0.0))
+        host = (urlparse(url).hostname or "").lower()
+        with self._lock:
+            now = time.monotonic()
+            start = max(now, self._next.get(host, 0.0))
+            self._next[host] = start + gap
+        if start > now:
+            time.sleep(start - now)
+        return start - now
 
     def failure(self, url: str) -> str:
         """Clase de alcance del intento de leer robots.txt (``timeout``, ``challenge``…), si falló."""

@@ -205,7 +205,7 @@ def test_firecrawl_only_after_a_browser_run_that_touched_no_forbidden_path(monke
     assert called == [] and rep["results"][0]["answer"] == "not-found"
 
 
-def _relay_copy(root, url: str, body: bytes):
+def _relay_copy(root, url: str, body: bytes, kind: str = "peru"):
     import hashlib
     import json
     from datetime import datetime, timezone
@@ -216,7 +216,8 @@ def _relay_copy(root, url: str, body: bytes):
     sha = hashlib.sha256(body).hexdigest()
     (root / "files" / f"{sha[:16]}.html").write_bytes(body)
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    (root / "index.json").write_text(json.dumps({"schema": "enso-relay/1", "collected_at": now, "entries": [
+    (root / "index.json").write_text(json.dumps({"schema": "enso-relay/1", "collected_at": now,
+                                                 "collector": {"kind": kind}, "entries": [
         {"url": url, "status": 200, "content_type": "text/html", "file": f"files/{sha[:16]}.html", "sha256": sha,
          "fetched_at": now}]}), encoding="utf-8")
     return Relay(root)
@@ -242,7 +243,29 @@ def test_a_refused_hop_is_not_captured_by_the_archive_nor_read_from_relays(tmp_p
             with pytest.raises(Exception):
                 f.get([page], save=True)
         assert not any("/save/" in u for u in asked) and target not in asked
-        assert archived_copy(f, page, [], save=True) is None and not any("/save/" in u for u in asked)
+        asked.clear()
+        assert archived_copy(f, [page], [], save=True) is None and not any("/save/" in u for u in asked)
+        assert any("/cdx/" in u and "a.example" in u for u in asked)  # el archivo se lee; lo que no se pide es capturar
+
+
+def test_after_a_refused_hop_a_manual_upload_still_counts(tmp_path):
+    """Una persona que subió el PDF en la consola de documentos lo bajó ella, en su navegador: tras un salto prohibido
+    vale su copia (``relay-manual``) y no la de un recolector, que siguió la redirección."""
+    page, target = "https://a.example/informe.pdf", "https://a.example/privado/informe.pdf"
+    body = b"<html>" + b"x" * 600 + b"</html>"
+    for kind, channel in (("peru", None), ("n8n", None), ("manual", "relay-manual")):
+        asked: list[str] = []
+        f = _fetcher(_net({"a.example": (200, "User-agent: *\nDisallow: /privado/\n")}, {page: _to(target)}, asked),
+                     relay=[_relay_copy(tmp_path / kind, page, body, kind)])
+        if channel:
+            assert f.get([page]).channel == channel
+        else:
+            with pytest.raises(Exception) as exc:
+                f.get([page])
+            last = exc.value.attempts[-1]
+            # El motivo queda en el intento del salto, que es el que muestra el estado del feed (``acquire_news``).
+            assert last["error"].startswith("RobotsHop") and "copias de los recolectores" in last["note"]
+        assert target not in asked
 
 
 def test_max_seconds_covers_the_whole_redirect_chain(monkeypatch):
@@ -260,6 +283,55 @@ def test_max_seconds_covers_the_whole_redirect_chain(monkeypatch):
     f.client = httpx.Client(transport=httpx.MockTransport(handler), follow_redirects=False)
     with pytest.raises(F.TooSlow):
         f._request("https://a.example/h0")
+
+
+def test_a_slow_hop_robots_txt_does_not_eat_the_request_time(monkeypatch):
+    """``max_seconds`` es para el servidor que responde: leer el robots.txt de otro servidor al seguir una redirección
+    no lo gasta. Un salto que llega pasado el plazo no se pide."""
+    from enso import fetch as F
+
+    clock = [0.0]
+    monkeypatch.setattr(F.time, "monotonic", lambda: clock[0])
+    asked: list[str] = []
+
+    def handler(req):
+        asked.append(str(req.url))
+        if req.url.path == "/robots.txt":
+            clock[0] += 0.9  # el robots.txt del destino tarda
+            return httpx.Response(404)
+        clock[0] += 0.3
+        return _to("https://b.example/feed") if req.url.host == "a.example" else httpx.Response(200, text="ok")
+
+    f = _fetcher(httpx.MockTransport(handler), max_seconds=1.0)
+    assert f._request("https://a.example/feed").text == "ok"
+    asked.clear()
+    f.max_seconds, f.robots = 0.5, None
+
+    def slow(req):
+        clock[0] += 0.6
+        return _to("https://b.example/feed") if req.url.host == "a.example" else httpx.Response(200, text="ok")
+
+    f.client = httpx.Client(transport=httpx.MockTransport(lambda r: asked.append(str(r.url)) or slow(r)),
+                            follow_redirects=False)
+    with pytest.raises(F.TooSlow):
+        f._request("https://a.example/feed")
+    assert asked == ["https://a.example/feed"]
+
+
+def test_a_redirect_to_another_protocol_is_not_followed():
+    """Un 302 a ``ftp://`` no se sigue (httpx tampoco puede): queda la respuesta 3xx, sin leer un robots.txt que no
+    existe ni anotar un salto que el registro no aceptaría."""
+    from enso.reach import next_hop
+
+    asked: list[str] = []
+    page = "https://a.example/feed.xml"
+    net = _net({}, {page: _to("ftp://ftp.a.example/pub/feed.xml")}, asked)
+    r, hop, verdict = get_checked(httpx.Client(transport=net), page, Robots(httpx.Client(transport=net)))
+    assert (r.status_code, hop, verdict) == (302, None, True) and asked == [page]
+    assert next_hop(httpx.Response(302, headers={"location": "mailto:x@a.example"},
+                                   request=httpx.Request("GET", page))) is None
+    f = _fetcher(net)
+    assert f._request(page).status_code == 302
 
 
 def test_a_redirect_into_a_reader_feed_reads_its_robots_txt():
@@ -285,15 +357,18 @@ def test_next_hop_resolves_locations_like_httpx():
 
 
 def test_the_observatory_own_services_still_follow_redirects(monkeypatch):
-    """La consola de lugares y el servicio de extracción son del observatorio: un dominio propio que redirige no corta
-    las correcciones de lugares ni la extracción."""
+    """La consola de lugares y el servicio de extracción son del observatorio: sus redirecciones se siguen sin
+    robots.txt. Las del mismo servidor (o de http a https) no cortan las correcciones de lugares ni la extracción,
+    con su token; a otro servidor httpx no lleva el token, como debe."""
     from enso import geo_overrides as GO, reports as R
 
     def handler(req):
-        if req.url.host == "example.org":
+        if req.url.path in ("/hook", "/api/geo/overrides"):
             return httpx.Response(308 if req.method == "POST" else 301,
-                                  headers={"location": str(req.url.copy_with(host="www.example.org"))})
+                                  headers={"location": str(req.url.copy_with(path="/v2" + req.url.path))})
         if req.method == "POST":
+            if req.headers.get("authorization") != "Bearer secreto":
+                return httpx.Response(401)
             return httpx.Response(200, json={"data": {"number": 18}, "model": "m"})
         return httpx.Response(200, json=[])
 
@@ -305,6 +380,7 @@ def test_the_observatory_own_services_still_follow_redirects(monkeypatch):
 
     assert GO.fetch_overrides(client, None, Log(), url="https://example.org/api/geo/overrides") == ([], "consola")
     monkeypatch.setenv(R.LLM_URL_ENV, "https://example.org/hook")
+    monkeypatch.setenv(R.LLM_TOKEN_ENV, "secreto")
     assert "transport" not in R.llm_extract(client, "enfen-informe", "texto", url="u")
 
 
@@ -355,3 +431,111 @@ def test_the_peru_collector_hop_reaches_the_registry():
          "hop": "https://b.example/datos.json", "error": "redirige a https://b.example/datos.json: robots.txt sin respuesta"}]}
     rec = probe_sources.from_peru_index(idx)["https://a.example/datos.json"]
     assert rec["hop"] == "https://b.example/datos.json" and rec["robots"] == "unreachable"
+
+
+def _feed_url():
+    from enso import registry
+
+    src = next(s for s in registry.build(reach={})["sources"] if s.get("kind") == "feed" and not s.get("alt_urls"))
+    return src["url"]
+
+
+def _entry(reach, url, now=None):
+    from enso import registry
+
+    reg = registry.build(reach=reach, now=now)
+    return next(s for s in reg["sources"] if s["url"] == url)["by_url"][url]
+
+
+def test_a_hop_is_not_left_allowed_by_another_network_reading():
+    """Que el recolector del Perú (o n8n) leyera el robots.txt de la URL no cubre el del destino de su redirección:
+    con ``hop``, ``robots`` queda ``unknown`` y n8n lee el del destino antes de pedirla."""
+    url, hop = _feed_url(), "https://cdn.example/feed.xml"
+    reach = {url: {"actions": {"github-actions": {"class": "timeout", "http": 302, "robots": "unreachable", "hop": hop,
+                                                  "at": "2026-10-19T09:00:00+00:00", "vantage": "github-actions"}},
+                   "peru": {"peru-server": {"class": "http-4xx", "http": 404, "robots": "allowed",
+                                            "at": "2026-10-26T05:00:00+00:00", "vantage": "peru-server"}}}}
+    e = _entry(reach, url)
+    assert e["hop"] == hop and e["robots"] == "unknown"
+
+
+def test_an_old_hop_or_one_reached_since_does_not_stay_in_the_registry():
+    """Una medición del Perú que nadie repite (la URL ya se abrió) no deja su ``hop`` para siempre: cuenta hasta
+    ``STALE_DAYS`` y solo si después ninguna red alcanzó la URL."""
+    from datetime import datetime, timezone
+
+    url, hop = _feed_url(), "https://cdn.example/feed.xml"
+    now = datetime(2026, 10, 26, tzinfo=timezone.utc)
+    peru = {"peru-server": {"class": "http-5xx", "http": 302, "robots": "unreachable", "hop": hop,
+                            "at": "2026-06-01T05:00:00+00:00", "vantage": "peru-server"}}
+    ok = {"github-actions": {"class": "ok", "http": 200, "robots": "allowed", "at": "2026-10-26T09:00:00+00:00",
+                             "vantage": "github-actions"}}
+    assert "hop" not in _entry({url: {"peru": peru, "actions": ok}}, url, now)
+    peru["peru-server"]["at"] = "2026-10-20T05:00:00+00:00"  # reciente, pero la URL respondió después
+    e = _entry({url: {"peru": peru, "actions": ok}}, url, now)
+    assert "hop" not in e and e["robots"] == "allowed"
+    ok["github-actions"]["at"] = "2026-10-19T09:00:00+00:00"  # el salto sin respuesta es lo último que se midió
+    assert _entry({url: {"peru": peru, "actions": ok}}, url, now)["hop"] == hop
+
+
+def test_robots_restrictions_between_two_registries():
+    from enso import registry
+
+    def reg(**by_url):
+        return {"sources": [{"by_url": by_url}]}
+
+    a, b, c, d = (f"https://{h}.example/f" for h in "abcd")
+    old = reg(**{a: {"status": "open", "robots": "allowed"}, b: {"status": "open", "robots": "allowed"},
+                 c: {"status": "open", "robots": "unknown"}})
+    new = reg(**{a: {"status": "robots-disallowed", "robots": "disallowed"},
+                 b: {"status": "open", "robots": "unknown", "hop": "https://cdn.example/f"},
+                 c: {"status": "open", "robots": "unknown"}, d: {"status": "robots-disallowed", "robots": "disallowed"}})
+    got = registry.restrictions(old, new)
+    assert set(got) == {a, b}  # c ya era unknown; d no estaba (nadie la pedía)
+    assert got[a] == ["robots.txt no permite la ruta"] and len(got[b]) == 2
+    assert registry.restrictions(new, new) == {} and registry.restrictions(new, old) == {}
+
+
+def test_the_probe_writes_only_the_robots_restrictions_when_its_registry_fails(tmp_path):
+    """La sonda semanal cuyo registro no pasa las pruebas no escribe la medición en main, pero sí lo que restringe
+    por robots.txt: la ``reachability.json`` de main con solo las mediciones nuevas de esas URL."""
+    import json
+
+    from enso import registry
+    from tools import build_registry, registry_restrict
+
+    url = _feed_url()
+    base_reach = {"schema": registry.REACH_SCHEMA, "updated_at": "2026-10-19T09:00:00+00:00", "urls": {}}
+    ok = {"class": "ok", "http": 200, "robots": "allowed", "vantage": "github-actions"}
+    feeds = [s["url"] for s in registry.build(reach={})["sources"] if s.get("kind") == "feed" and s["url"] != url]
+    other = feeds[0]
+    for u in (url, other):
+        base_reach["urls"][u] = {"actions": {"github-actions": {**ok, "at": "2026-10-19T09:00:00+00:00"}}}
+    measured = json.loads(json.dumps(base_reach))
+    measured["updated_at"] = "2026-10-26T09:00:00+00:00"
+    measured["urls"][url]["actions"]["github-actions"] = {"class": "robots", "robots": "disallowed", "http": None,
+                                                          "at": "2026-10-26T09:00:00+00:00", "vantage": "github-actions"}
+    measured["urls"][other]["actions"]["github-actions"] = {"class": "dns", "http": None, "robots": "allowed",
+                                                            "at": "2026-10-26T09:00:00+00:00", "vantage": "github-actions"}
+    paths = {k: tmp_path / f"{k}.json" for k in ("base_sources", "base_reach", "reach", "registry")}
+    base = registry.build(reach=base_reach["urls"])
+    paths["base_sources"].write_text(build_registry.render(base), encoding="utf-8")
+    paths["base_reach"].write_text(json.dumps(base_reach), encoding="utf-8")
+    paths["reach"].write_text(json.dumps(measured), encoding="utf-8")
+    paths["registry"].write_text(build_registry.render(registry.build(reach=measured["urls"])), encoding="utf-8")
+    report = tmp_path / "report.md"
+    assert registry_restrict.main([str(paths["base_sources"]), str(paths["base_reach"]), "--report", str(report),
+                                   "--registry", str(paths["registry"]), "--reach", str(paths["reach"])]) == 0
+    written = json.loads(paths["reach"].read_text(encoding="utf-8"))
+    assert written["urls"][url] == measured["urls"][url] and written["urls"][other] == base_reach["urls"][other]
+    reg = json.loads(paths["registry"].read_text(encoding="utf-8"))
+    by_url = {u: r for s in reg["sources"] for u, r in s["by_url"].items()}
+    assert by_url[url]["status"] == "robots-disallowed" and by_url[other]["status"] == "open"  # el dns no llega
+    assert f"`{url}`" in report.read_text(encoding="utf-8") and other not in report.read_text(encoding="utf-8")
+    # Sin restricciones no se toca nada ni se escribe el informe.
+    report.unlink()
+    paths["reach"].write_text(json.dumps(base_reach), encoding="utf-8")
+    paths["registry"].write_text(paths["base_sources"].read_text(encoding="utf-8"), encoding="utf-8")
+    assert registry_restrict.main([str(paths["base_sources"]), str(paths["base_reach"]), "--report", str(report),
+                                   "--registry", str(paths["registry"]), "--reach", str(paths["reach"])]) == 0
+    assert not report.exists() and json.loads(paths["reach"].read_text(encoding="utf-8")) == base_reach

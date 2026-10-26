@@ -199,11 +199,17 @@ copias del recolector del Perú y de n8n). Reglas:
   la URL pedida: una ruta prohibida, o un servidor cuyo robots.txt no
   responde, no se piden. La sonda semanal anota esa URL como `robots` (o con
   la falla de su robots.txt y el destino en `hop`, sin arrastrar la lectura
-  anterior de la URL), así el registro no la deja `allowed` y n8n, que sigue
-  las redirecciones sin leer robots.txt, lee el de ese destino antes de pedirla. Tras una redirección que
-  no se siguió, la corrida no le pide al Internet Archive una captura nueva de
-  esa URL (la seguiría en nombre del observatorio) y, si el destino está
-  prohibido, tampoco usa la copia de un recolector. Un robots.txt que redirige
+  anterior de la URL). Con `hop` el registro la deja `unknown`, aunque otra red
+  haya leído el robots.txt de la URL (no cubre el del destino), y n8n, que sigue
+  las redirecciones sin leer robots.txt, lee el de ese destino antes de pedirla;
+  el `hop` cuenta hasta 45 días y deja de contar si después alguna red alcanzó la
+  URL. Una redirección a otro protocolo (`ftp://`) no se sigue: queda el 3xx.
+  Tras una redirección que no se siguió, la corrida no le pide al Internet
+  Archive una captura nueva de esa URL (la seguiría en nombre del observatorio)
+  y, si el destino está prohibido, tampoco usa la copia de un recolector; la que
+  una persona subió en la consola de documentos sí vale. Las restricciones de
+  robots.txt que mide la sonda semanal llegan a `main` aunque el registro medido
+  no pase las pruebas (docs/operaciones.md). Un robots.txt que redirige
   se sigue (RFC 9309 §2.3.1.2), y las rutas se comparan con los `%XX`
   normalizados (§2.2.2: `/Señal` y `/Se%C3%B1al` son la misma ruta). El
   Internet Archive pasa por la misma regla: el robots.txt de `web.archive.org`
