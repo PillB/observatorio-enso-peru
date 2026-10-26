@@ -674,6 +674,12 @@ def merge_enfen_listings(*listings: list[dict]) -> list[dict]:
     return out
 
 
+#: Sondeo de comunicados que el listado todavía no muestra (``enfen_latest``): hasta PROBE_AHEAD números después del
+#: último conocido; PROBE_MAX_MISSES números seguidos sin comunicado cortan la búsqueda.
+PROBE_AHEAD = 6
+PROBE_MAX_MISSES = 2
+
+
 def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
                  log: EventLog, today: date, needs: Optional["manual.ManualNeeds"] = None) -> None:
     """Comunicado más reciente (``_enfen_latest``) y, si el repositorio del IMARPE falló en esta corrida, su
@@ -689,13 +695,19 @@ def _enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pr
                   log: EventLog, today: date, needs: Optional["manual.ManualNeeds"], repo_problems: list) -> None:
     """Completa el listado ENFEN con el comunicado más reciente (PDF).
 
-    1. Toma el número más alto entre el listado y la publicación anterior.
-    2. Sondea los dos números siguientes por su página de descarga
-       (``/download/comunicado-oficial-enfen-n-NN-AAAA/``): así un
-       comunicado nuevo se detecta aunque el listado o su copia de archivo
-       estén desactualizados.
-    3. Descarga el PDF (directo, archivo o copia nueva del archivo) y lo
-       parsea. Si el PDF ya fue leído en la corrida anterior, se reutiliza.
+    1. Toma el número más alto entre los listados (API de WordPress, portal o
+       réplica de la DHN y repositorio del IMARPE), la entrada de WordPress y
+       la publicación anterior.
+    2. Sondea hasta ``PROBE_AHEAD`` (6) números siguientes, y en enero el
+       n.º 01 del año nuevo; ``PROBE_MAX_MISSES`` (dos) ausencias seguidas
+       cortan. Cada número se busca como PDF en la réplica de la DHN y por su
+       página de descarga (``/download/comunicado-oficial-enfen-n-NN-AAAA/``):
+       así un comunicado nuevo se detecta aunque el listado o su copia de
+       archivo estén desactualizados.
+    3. Descarga el PDF (``_get_communique``: directo, copias de los
+       recolectores y de la consola, Internet Archive y repositorio del
+       IMARPE) y lo parsea. Si el PDF ya fue leído en la corrida anterior, se
+       reutiliza.
     """
     from .fetch import FetchError, Response
 
@@ -727,12 +739,13 @@ def _enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pr
     if fixtures is None and known:
         y, n = max(known)
         probes = [(today.year, 1)] if today.month == 1 and y < today.year else []
-        # Se sigue sondeando mientras aparezcan comunicados (hasta 6 números): si el listado se atrasó varios
-        # números, el más reciente se encuentra igual. Dos números seguidos sin comunicado cierran la búsqueda.
-        probes += [(y, n + k) for k in range(1, 7)]
+        # Se sigue sondeando mientras aparezcan comunicados (hasta PROBE_AHEAD números): si el listado se atrasó
+        # varios números, el más reciente se encuentra igual. PROBE_MAX_MISSES números seguidos sin comunicado
+        # cierran la búsqueda.
+        probes += [(y, n + k) for k in range(1, PROBE_AHEAD + 1)]
         misses = 0
         for py, pn in probes:
-            if misses >= 2:
+            if misses >= PROBE_MAX_MISSES:
                 break
             found = _probe_communique(fetcher, py, pn, log)
             if found:
