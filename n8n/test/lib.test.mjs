@@ -410,6 +410,7 @@ test('Segunda pasada pide lo que robots.txt permite; la copia anota lo que no se
     assert.deepEqual(index.entries, []);
     assert.equal(index.not_requested[0].url, 'https://x/feed/');
     assert.equal(index.not_requested[0].robots, verdict);
+    assert.equal(index.not_requested[0].reach, verdict === 'unreachable' ? 'challenge' : 'ok');
   }
   // La URL pedida lleva el veredicto en su entrada de index.json.
   const ok = res('https://x/feed/', true, '<rss></rss>');
@@ -501,4 +502,13 @@ test('docs/n8n.md cuenta los flujos de n8n/dist', () => {
   const m = /Hay (\w+) flujos/.exec(readFileSync(join(HERE, '..', '..', 'docs', 'n8n.md'), 'utf8'));
   assert.ok(m);
   assert.equal(words[m[1]], readdirSync(join(HERE, '..', 'dist')).filter((f) => f.endsWith('.json')).length);
+});
+
+test('Informe: fila NO PEDIDA con la clase del robots.txt que no respondió', async () => {
+  const robots = { id: 'robots:x', group: 'g', url: 'https://x/robots.txt', role: 'robots', fetched_at: '2026-10-26T03:50:00+00:00',
+    cls: { ok: false, verdict: 'timeout', reach: 'timeout' }, deferred: [{ id: 'f', group: 'g', url: 'https://x/feed/', robots: 'unreachable' }] };
+  const rows = (await runCode('informe', {}, {}, [{ json: robots }])).map((i) => i.json);
+  assert.match(rows[0].resultado, /^RESUMEN: 0\/0/);
+  assert.deepEqual([rows[1].resultado, rows[1].url, rows[1].alcance, rows[1].robots], ['NO PEDIDA', 'https://x/feed/', 'timeout', 'unreachable']);
+  assert.equal(rows.length, 2);
 });

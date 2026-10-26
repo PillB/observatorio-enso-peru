@@ -33,7 +33,7 @@ const rows = results.map((r) => ({
 }));
 // URL «robots: unknown» que no se pidieron: su robots.txt lo prohíbe o no respondió.
 for (const s of notRequested(items)) {
-  rows.unshift({ resultado: 'NO PEDIDA', veredicto: 'not_requested', alcance: '', bloqueo: '', http: '', bytes: '', formato: '',
+  rows.unshift({ resultado: 'NO PEDIDA', veredicto: 'not_requested', alcance: s.robots === 'unreachable' ? s.reach : '', bloqueo: '', http: '', bytes: '', formato: '',
     entradas: '', mas_reciente: '', grupo: s.group, id: s.id, url: s.url, nota: s.note, intento: '', medido: s.fetched_at, robots: s.robots });
 }
 const total = results.length;
