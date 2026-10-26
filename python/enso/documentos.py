@@ -118,16 +118,22 @@ _DEPS_LIST_RE = re.compile(r"DEPARTAMENTOS?[^:\n]{0,60}:\s*(?P<list>[^:]+?)(?:\.
 
 def listed_departments(text: str) -> list[str]:
     """«… DE LOS DEPARTAMENTOS EXPUESTOS: AMAZONAS, ÁNCASH, … Y TUMBES.» → códigos, en el orden del texto.
-    Una lista con un nombre que no es un departamento se corta ahí (lo que sigue es otra cosa)."""
+    Un trozo corto que no es un departamento se salta («PROV. CONST. DEL CALLAO» mal escrito no corta la lista);
+    uno largo la termina (lo que sigue es otra cosa)."""
     out: list[str] = []
+    # «… TUMBES Y LA PROVINCIA CONSTITUCIONAL DEL CALLAO», «PROV. CONST. DEL CALLAO», «PROVINCIACONSTITUCIONALDEL»:
+    # antes de buscar la lista, porque el punto de «PROV.» la cortaría.
+    text = re.sub(r"\b(?:LA\s*)?PROV(?:INCIA)?\.?\s*CONST(?:ITUCIONAL)?\.?\s*DE\s*L?\s*(?=CALLAO)", "", text, flags=re.I)
     for m in _DEPS_LIST_RE.finditer(text):
-        parts = re.split(r"\s*,\s*|\s+Y\s+|\s+y\s+", _flat(m.group("list")))
+        names = _flat(m.group("list"))
+        parts = re.split(r"\s*,\s*|\s+Y\s+|\s+y\s+", names)
         found = []
         for p in parts:
             c = _dep_code(p.strip(" ."))
-            if not c:
+            if c:
+                found.append(c)
+            elif len(p.split()) > 5:  # ya no es un nombre: lo que sigue es otra cosa
                 break
-            found.append(c)
         if found:
             out += [c for c in found if c not in out]
     return out
@@ -170,14 +176,83 @@ def province_table(text: str) -> list[str]:
     return [c for c in out if not (len(c) == 2 and any(o != c and o.startswith(c) for o in out))]
 
 
-def _count(name: str, text: str, glued: list[str]) -> int:
-    """Veces que ``name`` aparece en ``text`` (sin tildes, en mayúsculas) como palabra o, si tiene 4 letras o
-    más, dentro de una palabra pegada por el PDF («TALAVERAANDAHUAYLASAPURÍMAC», «CHIMUPUNOPUNOPUNO»)."""
-    n = _fold(name).upper()
-    hits = len(re.findall(rf"(?<![A-Z]){re.escape(n)}(?![A-Z])", text))
-    if len(n.replace(" ", "")) >= 4:
-        hits += sum(g.count(n.replace(" ", "")) for g in glued)
-    return hits
+def _spellings() -> dict[str, set[str]]:
+    """Código → sus nombres (sin tildes, en mayúsculas): el oficial del INEI y los alias de un solo lugar que usa
+    el COEN («KIMBIRI» por Quimbiri, «MARISCAL GAMARRA» por Gamarra)."""
+    global _SPELLINGS
+    if _SPELLINGS is None:
+        from .geo import ALIASES
+
+        gz = _gz()
+        out: dict[str, set[str]] = {}
+        for level in (gz.deps, gz.provs, gz.dists):
+            for c, x in level.items():
+                out[c] = {_fold(x["name"]).upper()}
+        for k, v in ALIASES.items():
+            if len(v) == 1 and (c := next(iter(v))) in out:
+                out[c].add(_fold(k).upper())
+        _SPELLINGS = out
+    return _SPELLINGS
+
+
+_SPELLINGS: Optional[dict[str, set[str]]] = None
+
+
+def _compact(s: str) -> str:
+    return re.sub(r"[^A-Z]", "", s)
+
+
+class _Section:
+    """El texto de la tabla, con y sin espacios, y los nombres del gazetteer que aparecen pegados en él."""
+
+    def __init__(self, text: str):
+        self.text = text
+        self.compact = _compact(text)
+        names = {_compact(n) for ns in _spellings().values() for n in ns}
+        self.present = [n for n in names if len(n) >= 4 and n in self.compact]
+        self._memo: dict[str, int] = {}
+
+    def glued(self, c: str) -> int:
+        """Apariciones de ``c`` sin espacios que no son parte de otro nombre más largo que también está («TOMAS»
+        no cuenta como Omas, «CHONGOS» no cuenta como Hongos, «ALTO PICHIGUA» no cuenta como Pichigua)."""
+        if c not in self._memo:
+            taken = [False] * len(self.compact)
+            for big in self.present:
+                if len(big) > len(c) and c in big:
+                    for m in re.finditer(f"(?={re.escape(big)})", self.compact):
+                        for i in range(m.start(), m.start() + len(big)):
+                            taken[i] = True
+            hits, i = 0, self.compact.find(c)
+            while i >= 0:
+                if not all(taken[i:i + len(c)]):
+                    hits += 1
+                    i = self.compact.find(c, i + len(c))
+                else:
+                    i = self.compact.find(c, i + 1)
+            self._memo[c] = hits
+        return self._memo[c]
+
+    def count(self, names: set[str], loose: bool = True) -> int:
+        """Veces que aparece un lugar. pypdf pega y parte las celdas de la tabla («LOCUMBAJORGE BASADRETACNA»,
+        «PAMPASAN LUISCARLOS», «PASCO OX APAMPA»): un nombre de 4 letras o más se cuenta en el texto sin espacios;
+        uno más corto, solo como palabra. ``loose=False`` exige 6 letras para contarlo pegado."""
+        best = 0
+        for n in names:
+            c = _compact(n)
+            if len(c) >= (4 if loose else 6):
+                hits = self.glued(c)
+            else:
+                hits = len(re.findall(rf"(?<![A-Z]){re.escape(n)}(?![A-Z])", self.text))
+            best = max(best, hits)
+        return best
+
+
+def _same_name(code: str, others: list[str]) -> int:
+    """Cuántos de ``others`` (ya hallados) se llaman igual que ``code``: cada uno ya usó una aparición
+    («PIURA PIURA PIURA»: el departamento, la provincia y el distrito)."""
+    sp = _spellings()
+    mine = {_compact(n) for n in sp[code]}
+    return sum(1 for o in others if o != code and mine & {_compact(n) for n in sp[o]})
 
 
 def location_rows(text: str) -> list[str]:
@@ -187,38 +262,32 @@ def location_rows(text: str) -> list[str]:
     El texto que saca pypdf de esa tabla no respeta filas ni columnas («TALAVERAANDAHUAYLASAPURÍMAC SACHAPUNA»):
     se buscan los departamentos que aparecen, luego sus provincias y luego los distritos de esas provincias. Un
     nombre igual al de su departamento o su provincia («LIMA LIMA LIMA») cuenta solo si aparece una vez más por
-    cada uno de ellos."""
+    cada uno; uno que es parte de otro nombre del texto, no cuenta ahí. Si la provincia no se lee («LIMA CALLAO
+    VENTANILLA»), se buscan los distritos de todo el departamento; un departamento sin provincia ni distrito
+    cuando otro sí los tiene es un centro poblado de ese nombre («JUNÍN CONCEPCIÓN ANDAMARCA HUÁNUCO»)."""
     m = re.search(r"UBICACI[ÓO]N\s*:?(?P<t>.+?)(?:\n\s*\d\.\s+[A-ZÁÉÍÓÚ]|EVALUACI[ÓO]N DE DA|Distribuci[óo]n\s*:|"
                   r"CENTRO DE OPERACIONES|\Z)", text, re.S)
     if not m:
         return []
-    gz = _gz()
+    gz, sp = _gz(), _spellings()
     sec = re.sub(r"\b(?:DEPARTAMENTO|PROVINCIA|DISTRITO|BARRIO|LOCALIDAD|CENTRO POBLADO|SECTOR|ANEXO|CASER[ÍI]O|"
-                 r"COMUNIDAD|ZONA|UBICACI[ÓO]N|DPTO|PROV|DIST)\.?\b", " ", m.group("t"))
-    up = _flat(_fold(sec).upper())
-    glued = [w for w in re.findall(r"[A-Z]{13,}", up)]
+                 r"COMUNIDAD|ZONA|UBICACI[ÓO]N|DPTO|PROV|DIST|DIRECCI[ÓO]N|SINPAD)\.?\b", " ", m.group("t"))
+    table = _Section(_flat(_fold(sec).upper()))
+
+    def pick(codes: list[str], above: list[str], loose: bool = True) -> list[str]:
+        return [c for c in codes if table.count(sp[c], loose) >= 1 + _same_name(c, above)]
+
     out: list[str] = []
-    for dc, d in gz.deps.items():
-        if not _count(d["name"], up, glued):
-            continue
-        provs = []
-        for pc, p in gz.provs.items():
-            if not pc.startswith(dc):
-                continue
-            if _count(p["name"], up, glued) < 1 + (_fold(p["name"]) == _fold(d["name"])):
-                continue
-            provs.append(pc)
-            dists = []
-            for xc, x in gz.dists.items():
-                if not xc.startswith(pc):
-                    continue
-                need = 1 + (_fold(x["name"]) == _fold(p["name"])) + (_fold(x["name"]) == _fold(d["name"]))
-                if _count(x["name"], up, glued) >= need:
-                    dists.append(xc)
-            out += dists or [pc]
+    for dc in pick(list(gz.deps), []):
+        provs = pick([pc for pc in gz.provs if pc.startswith(dc)], [dc])
+        rows: list[str] = []
+        for pc in provs:
+            rows += pick([xc for xc in gz.dists if xc.startswith(pc)], [dc, pc]) or [pc]
         if not provs:
-            out.append(dc)
-    return out
+            rows = pick([xc for xc in gz.dists if xc.startswith(dc)], [dc], loose=False)
+        out.append(rows or [dc])
+    deep = [r for r in out if len(r[0]) > 2]
+    return sorted(c for r in (deep or out) for c in r)
 
 
 #: Tramos del litoral en los boletines de oleaje del COEN (los mismos de la DHN).
@@ -249,6 +318,61 @@ def _body(s: str) -> str:
     return s
 
 
+_PROSE_RE = re.compile(
+    r"distrito\s+(?:y\s+provincia\s+)?(?:de\s+)?(?P<dist>[A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñü' -]+?)\s*"
+    r"(?:,\s*(?:en\s+la\s+)?provincia\s+(?:de\s+)?(?P<prov>[A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñü' -]+?))?\s*[.,;()\n]")
+
+
+def described_place(text: str) -> list[str]:
+    """Cuando la tabla de ubicación es una imagen, el lugar de la descripción del reporte, antes de la tabla
+    («…en el sector Los Pinos de la comunidad Tambillo, distrito Challhuahuacho, provincia de Cotabambas.»)."""
+    head = _flat(re.split(r"UBICACI[ÓO]N", text, maxsplit=1)[0])
+    gz = _gz()
+    for m in _PROSE_RE.finditer(head):
+        both = re.search(r"distrito\s+y\s+provincia", m.group(0), re.I)
+        dist = m.group("dist").strip()
+        c = gz.from_admin(dist, dist if both else (m.group("prov") or "").strip())
+        if c and len(c) == 6:
+            return [c]
+    return []
+
+
+_RIVER_RE = re.compile(r"comportamiento\s+hidrol[óo]gico\s+del\s+r[íi]o\s.{0,60}?\s+en\s+el\s+departamento\s+de\s+"
+                       r"(?P<dep>[A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ ]+?)\s*\(\s*Prov\.?\s*(?P<prov>[^)]+?)\s*\)", re.I | re.S)
+_STATION_RE = re.compile(r"^(?P<row>.*?[A-Za-zÁÉÍÓÚÑáéíóúñ].*?)\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?\s*$", re.M)
+
+
+def river_place(text: str) -> list[str]:
+    """Aviso hidrológico: el distrito de la estación («Río Estación Distrito … / Amazonas Puerto Alegría Yavari
+    59.54 58.78») en el departamento que nombra («…en el departamento de LORETO (Prov. Mariscal Ramón
+    Castilla)»); si no se lee, la provincia o el departamento."""
+    m = _RIVER_RE.search(text)
+    dep = _dep_code(m.group("dep")) if m else None
+    if not dep:
+        return []
+    gz, sp = _gz(), _spellings()
+    prov = next(iter(gz.find(_flat(m.group("prov")), "provincia", dep)), None)
+    rows = " · ".join(r.group("row") for r in _STATION_RE.finditer(text))
+    table = _Section(_flat(_fold(rows).upper()))
+    found = [c for c in gz.dists if c.startswith(dep) and table.count(sp[c])]
+    # La provincia del texto primero: la estación Lagunas está en el distrito de Lagunas (Alto Amazonas).
+    inside = [c for c in found if prov and c.startswith(prov)]
+    return inside or found[:3] or [prov or dep]
+
+
+#: Lima y Callao se confunden en los reportes («LIMA CALLAO VENTANILLA», «Ventanilla (Lima)»).
+_SAME = {"07": "15"}
+
+
+def title_departments(title: str) -> list[str]:
+    """Departamentos entre paréntesis al final del titular de un reporte («… de Ccapi (Cusco)»)."""
+    m = re.search(r"\(([^()]+)\)\s*$", title or "")
+    if not m:
+        return []
+    names = re.split(r"\s*,\s*|\s+y\s+", m.group(1).strip())
+    return [c for c in (_dep_code(n) for n in names) if c]
+
+
 def read(text: str, title: str = "") -> dict:
     """Lo que el observatorio usa de un PDF del COEN: lugares (``codes``), de dónde salen (``basis``), el
     número, tema y vigencia del aviso y su texto."""
@@ -262,8 +386,22 @@ def read(text: str, title: str = "") -> dict:
         out.update(codes=codes, basis="tramos del litoral del boletín de oleajes del COEN")
     elif (codes := listed_departments(text)):
         out.update(codes=codes, basis="departamentos expuestos del boletín del COEN")
+    elif (codes := river_place(text)):
+        out.update(codes=codes, basis="estación del boletín de aviso hidrológico del COEN")
     elif (codes := location_rows(text)):
         out.update(codes=codes, basis="ubicación del reporte del COEN")
+    elif (codes := described_place(text)):
+        out.update(codes=codes, basis="descripción del reporte del COEN")
+    if out.get("basis", "").endswith("reporte del COEN"):
+        # La página enlaza el PDF de otra publicación: «…Ccapi (Cusco)» con el reporte de Huancabamba (Piura),
+        # el boletín de corto plazo N° 193 con el reporte de Mariscal Gamarra.
+        gz = _gz()
+        said = title_departments(title)
+        where = ", ".join(gz.label(c)["name"] for c in codes[:3])
+        if re.match(r"\s*(?:aviso|bolet[íi]n)\b", title, re.I):
+            return {"mismatch": f"el PDF es un reporte de emergencia ({where}); la publicación, un aviso"}
+        if said and not {_SAME.get(c[:2], c[:2]) for c in codes} & {_SAME.get(d, d) for d in said}:
+            return {"mismatch": f"el PDF ubica en {where}; el titular, en {', '.join(gz.label(d)['name'] for d in said)}"}
     a = _AVISO_RE.search(text)
     if a:
         out.update(num=int(a.group("num")), what=_flat(a.group("what")).rstrip(" ."),
@@ -337,18 +475,21 @@ def is_bulletin(item: dict) -> bool:
 
 
 def wanted(item: dict, feeds: dict, now: datetime) -> bool:
-    """Una publicación del COEN de los últimos días cuyo PDF puede decir más que su titular: un aviso (siempre)
-    o un reporte de emergencia sin un distrito ubicado."""
+    """Una publicación del COEN de los últimos días: su PDF dice más que su titular. También los reportes con
+    un distrito en el titular: la prueba hacia atrás halló que la ubicación por el texto suma lugares que el
+    reporte no tiene («La Cruz (Tumbes)» con una provincia de La Libertad) y le faltan los otros distritos de
+    la tabla."""
     f = feeds.get(item.get("feed") or "")
     if not f or getattr(f, "adapter", "") not in FOLLOW_ADAPTERS or not _PAGE_RE.match(item.get("link") or ""):
         return False
     when = _when(item.get("published") or item.get("first_seen"))
     if when is None or now - when > timedelta(days=DAYS):
         return False
-    if is_bulletin(item):
-        return True
-    places = (item.get("geo") or {}).get("places") or []
-    return not any(len(p.get("code") or "") == 6 for p in places)
+    return True
+
+
+def _placed(item: dict) -> bool:
+    return any(len(p.get("code") or "") == 6 for p in (item.get("geo") or {}).get("places") or [])
 
 
 def load_cache(obj) -> dict:
@@ -371,7 +512,8 @@ def follow(items: list[dict], fetch: Callable[[str], tuple], cache: dict, feeds:
     todo = [i for i in items if wanted(i, feeds, now)]
     todo = [i for i in todo if (cache.get(i["link"]) or {}).get("status") not in ("ok", "sin-pdf", "sin-datos")
             and int((cache.get(i["link"]) or {}).get("tries") or 0) < MAX_TRIES]
-    todo.sort(key=lambda i: (not is_bulletin(i), _neg(i.get("published") or i.get("first_seen") or "")))
+    # Los avisos primero, luego los reportes sin distrito; lo más nuevo primero.
+    todo.sort(key=lambda i: (not is_bulletin(i), _placed(i), _neg(i.get("published") or i.get("first_seen") or "")))
     seen: set[str] = set()
     stats = {"read": 0, "failed": 0, "pending": 0}
     started = time.monotonic()
@@ -416,7 +558,7 @@ def _read_one(link: str, title: str, fetch) -> dict:
     if not data.startswith(b"%PDF") or len(data) > MAX_PDF_BYTES:
         return {"status": "error", "error": "la descarga no es un PDF legible", "pdf": pdf}
     doc = read(pdf_text(data), title)
-    out = {"status": "ok" if doc else "sin-datos", "pdf": pdf}
+    out = {"status": "no-coincide" if doc.get("mismatch") else "ok" if doc else "sin-datos", "pdf": pdf}
     out.update({k: v for k, v in doc.items() if v})
     return out
 

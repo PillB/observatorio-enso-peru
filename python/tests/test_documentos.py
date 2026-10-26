@@ -93,6 +93,37 @@ def test_emergency_reports_give_the_exact_district():
     assert "15" not in D.location_rows(text("reporte-14898-huaraz.txt"))
 
 
+def test_backtest_regressions_from_real_reports():
+    """Los casos que la prueba hacia atrás (``tools.documentos_backtest``, agosto–octubre de 2026) leía mal:
+    celdas pegadas o partidas («LOCUMBAJORGE BASADRETACNA», «PAMPASAN LUISCARLOS», «PASCO OX APAMPA»), nombres
+    del COEN que el INEI escribe distinto (Seclla, Kimbiri, Mariscal Gamarra, San Juan de Iscos), nombres dentro
+    de otros («ALTO PICHIGUA», «MARISCAL RAMÓN CASTILLA», «TOMAS TOMAS» y Omas, «CHONGOS» y Hongos), un centro
+    poblado con nombre de departamento («… ANDAMARCA HUÁNUCO»), «LIMA CALLAO VENTANILLA», la tabla como imagen
+    (Challhuahuacho, por la descripción) y la página que enlaza el PDF de otro reporte (Ccapi)."""
+    cases = json.loads((FIX / "regresiones.json").read_text(encoding="utf-8"))
+    assert len(cases) >= 16
+    for c in cases:
+        doc = D.read(c["text"], c["title"])
+        if c["mismatch"]:
+            assert doc.get("mismatch") and not doc.get("codes"), c["title"]
+        else:
+            assert doc.get("codes") == c["codes"], c["title"]
+    by = {c["title"]: c["codes"] for c in cases}
+    expect = {"Locumba (Tacna)": ["230301"], "San Luis (Áncash)": ["020701"], "Huancabamba (Pasco)": ["190303"],
+              "Seclla": ["090312"], "Kimbiri": ["080907"], "Mariscal Gamarra": ["030703"],
+              "Andamarca": ["120203"], "Ventanilla": ["070106"], "Alto Pichigua": ["080808"],
+              "Yavari": ["160403"], "Tomas (Lima)": ["151030"], "Challhuahuacho": ["030506"]}
+    for k, codes in expect.items():
+        got = next(v for t, v in by.items() if k in t)
+        assert got == codes, (k, got)
+    # El boletín de corto plazo N° 193 enlazaba el reporte de Mariscal Gamarra: no es su documento.
+    gamarra = next(c["text"] for c in cases if "Mariscal Gamarra" in c["title"])
+    assert D.read(gamarra, "Aviso de corto plazo ante posible activación de quebradas (boletín N° 193 del COEN)"
+                  ).get("mismatch")
+    chongos = next(v for t, v in by.items() if "Chongos Bajo" in t)
+    assert "120906" in chongos and "151012" not in chongos and "151030" in chongos  # Iscos, no Hongos; Tomás sí
+
+
 def test_region_names_are_no_substitute_for_the_document_but_cover_it():
     # Las regiones de «costa norte y sierra» cubren los departamentos expuestos del PDF del aviso 432 (salvo Ica, por
     # sus zonas altas) y no agregan otros: por eso sirven, marcadas «≈», cuando no hay PDF.
@@ -173,16 +204,16 @@ def test_follow_reads_the_pdf_once_and_apply_locates_the_aviso():
     item = _coen_item()
     old = _coen_item(id="old", link="https://portal.indeci.gob.pe/emergencias/viejo/", published="2026-10-01T00:00:00Z")
     report = _coen_item(id="r", link="https://portal.indeci.gob.pe/emergencias/reporte-x/", title="Incendio forestal en el distrito de Tinta (Cusco)",
-                        geo={"places": [{"code": "080608"}]})  # ya tiene su distrito: no se pide
+                        geo={"places": [{"code": "080608"}]})  # ya tiene su distrito: se pide, pero al final
     cache: dict = {}
-    stats = D.follow([item, old, report], fetch, cache, FEED_BY_ID, NOW)
-    assert stats == {"read": 1, "failed": 0, "pending": 0} and asked == [PAGE, PDF_URL]
+    stats = D.follow([report, item, old], fetch, cache, FEED_BY_ID, NOW)
+    assert stats == {"read": 1, "failed": 1, "pending": 0} and asked == [PAGE, PDF_URL, report["link"]]
     entry = cache[PAGE]
     assert entry["status"] == "ok" and entry["pdf"] == PDF_URL and entry["num"] == 435
     assert entry["codes"] == ["01", "02", "03", "20", "21", "22", "24"]
     # La corrida siguiente parte de lo publicado y no vuelve a pedirlo.
     cache = D.load_cache(json.loads(json.dumps(D.dump_cache(cache, NOW))))
-    assert D.follow([item], fetch, cache, FEED_BY_ID, NOW + timedelta(hours=6))["read"] == 0 and len(asked) == 2
+    assert D.follow([item], fetch, cache, FEED_BY_ID, NOW + timedelta(hours=6))["read"] == 0 and len(asked) == 3
 
     assert D.apply([item], cache) == 1
     assert item["document"] == PDF_URL
@@ -304,3 +335,29 @@ def test_quake_just_across_the_border_that_the_source_refers_to_peru():
                        f, "mundo")["places"] == []
     assert locate_item({"title": "Sismo a 90 km de Loja, Perú", "summary": "", "coords": [[-3.2, -79.2, 5]]},
                        f, "mundo")["places"] == []
+
+
+def test_river_avisos_give_the_station_district():
+    # «…en el departamento de LORETO (Prov. Mariscal Ramón Castilla)» y la fila «Amazonas Puerto Alegría Yavari».
+    cases = {"aviso-hidrologico-1652-puerto-alegria.txt": ["160403"],
+             # El texto dice «Prov. Amazonas»; la estación Borja está en Manseriche (Datem del Marañón).
+             "aviso-hidrologico-1656-borja.txt": ["160703"],
+             "aviso-hidrologico-1647-lagarto.txt": ["250201"]}  # «Ird Raimondi»: Raymondi, Atalaya (Ucayali)
+    for name, codes in cases.items():
+        doc = D.read(text(name), "Aviso hidrológico N° 1652 del SENAMHI")
+        assert doc["codes"] == codes, name
+        assert doc["basis"] == "estación del boletín de aviso hidrológico del COEN"
+    assert D.river_place("Se informa sobre el comportamiento hidrológico del río Amazonas, en el departamento de "
+                         "LORETO (Prov. Maynas). Lores 110.86 110.05") == ["1601"]
+
+
+def test_department_list_keeps_callao():
+    # Avisos 431 y 436: la lista termina en «Y LA PROVINCIA CONSTITUCIONAL DEL CALLAO» (o pegado).
+    for tail in ("Y LA PROVINCIA CONSTITUCIONAL DEL CALLAO", "Y LA PROVINCIACONSTITUCIONALDEL CALLAO",
+                 "Y LA PROV. CONSTITUCIONALDEL CALLAO"):
+        got = D.listed_departments(f"DEPARTAMENTOS DE POSIBLE AFECTACIÓN: ÁNCASH, LIMA, TUMBES {tail}. Por calor: a)")
+        assert got == ["02", "15", "24", "07"], tail
+    # Aviso 427: el Callao a media lista, partido en dos líneas; antes la lista se cortaba ahí (8 departamentos menos).
+    got = D.listed_departments("DEPARTAMENTOS DE POSIBLE AFECTACIÓN: ÁNCASH, AREQUIPA, PROV. CONST. DEL\nCALLAO, ICA, "
+                               "LA LIBERTAD, LAMBAYEQUE,LIMA, MOQUEGUA, PIURA Y TACNA.\nPor vientos fuertes:")
+    assert got == ["02", "04", "07", "11", "13", "14", "15", "18", "20", "23"]

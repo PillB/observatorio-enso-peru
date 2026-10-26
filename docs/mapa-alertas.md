@@ -67,14 +67,27 @@ en la consola) se marcan «≈»; los revisados en la consola, «lugar revisado�
 
 La página de cada publicación del COEN es una portada con un botón «Descargar archivo»; el detalle está en el
 PDF. Cada corrida baja la página y el PDF de las publicaciones de los últimos 7 días que aún no leyó (como
-mucho 40 por corrida y 3 minutos; los avisos primero; 3 intentos por publicación) y lee:
+mucho 40 por corrida y 3 minutos; los avisos primero, luego los reportes sin distrito; 3 intentos por
+publicación) y lee:
 
 | Publicación | Qué se lee del PDF | Lugar que publica |
 |---|---|---|
-| Aviso meteorológico o hidrológico | «… DEPARTAMENTOS EXPUESTOS: AMAZONAS, ÁNCASH, … Y TUMBES» (o «de posible afectación»), el tema, la vigencia y el párrafo del aviso | Departamentos |
+| Aviso meteorológico | «… DEPARTAMENTOS EXPUESTOS: AMAZONAS, ÁNCASH, … Y TUMBES» (o «de posible afectación», con «Prov. Const. del Callao» en cualquiera de sus formas), el tema, la vigencia y el párrafo del aviso | Departamentos |
+| Aviso hidrológico | «…en el departamento de LORETO (Prov. Mariscal Ramón Castilla)» y la fila de la estación («Amazonas Puerto Alegría Yavari 59.54 58.78») | Distrito de la estación (si no se lee, la provincia) |
 | Aviso de corto plazo (lluvias intensas, activación de quebradas) | Tabla «DEPARTAMENTOS · PROVINCIAS EXPUESTAS» y «VIGENCIA: 25-10-2026 (13:00 h) al 26-10-2026 (13:00 h)» | Provincias (por departamento si son más de 25) |
 | Aviso de oleaje | Tramos del litoral (norte, centro, sur) | Departamentos costeros de esos tramos |
-| Reporte de emergencia | Tabla «UBICACIÓN» (departamento, provincia, distrito) | Distritos |
+| Reporte de emergencia | Tabla «UBICACIÓN» (departamento, provincia, distrito); si la tabla es una imagen, la descripción («…distrito Challhuahuacho, provincia de Cotabambas.») | Distritos |
+
+pypdf pega y parte las celdas de la tabla («LOCUMBAJORGE BASADRETACNA», «PAMPASAN LUISCARLOS», «PASCO OX
+APAMPA»): los nombres de 4 letras o más se buscan también en el texto sin espacios, pero no dentro de otro nombre
+del gazetteer que también aparece («TOMAS» no es Omas, «CHONGOS» no es Hongos, «ALTO PICHIGUA» no es Pichigua).
+Se aceptan los alias del COEN (Kimbiri, Seclla, Mariscal Gamarra, San Juan de Iscos). Un departamento sin
+provincia ni distrito cuando otro sí los tiene es un centro poblado de ese nombre («… ANDAMARCA HUÁNUCO»).
+
+Si el PDF no es de la publicación (la página del COEN a veces enlaza el de otra: «…Ccapi (Cusco)» con el reporte
+de Huancabamba, Piura; un boletín de corto plazo con un reporte de emergencia), no se usa: queda como
+`no-coincide` en `news/documentos.json`, se reintenta hasta 3 veces por si el COEN corrige la página, y la
+publicación conserva el lugar de su titular. Lima y Callao cuentan como uno al comparar.
 
 Lo leído entra como lugares de campo (confianza 0,95) en `geoHint.geo` y reemplaza la ubicación por el
 titular; el aviso enlaza el PDF (`document`, «informe completo (PDF)») y el mapa lo abre en lugar de la portada.
@@ -88,7 +101,7 @@ boletines sísmicos y el resumen diario de peligros no son avisos y se omiten.
 **Prueba hacia atrás**: `python -m tools.documentos_backtest --items news/items.jsonl --out /tmp/bt --feed
 'https://portal.indeci.gob.pe/emergencias/feed/?s=reporte&paged=5'` compara los lugares del PDF con el
 titular de cada reporte (falsos positivos y negativos) y la aproximación por regiones con los departamentos
-de cada aviso. Resultados de octubre de 2026: `docs/documentos-backtest.md`.
+de cada aviso. Resultados (272 publicaciones de agosto a octubre de 2026): `docs/documentos-backtest.md`.
 
 ## Versiones A, B, C y D
 

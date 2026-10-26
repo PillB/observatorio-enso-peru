@@ -19,6 +19,7 @@ También mide la ubicación por el texto (la de antes) contra la misma verdad. E
 from __future__ import annotations
 
 import argparse
+import collections
 import hashlib
 import json
 import re
@@ -138,6 +139,10 @@ def run(items: list[dict], fetch, since: str) -> list[dict]:
             rows.append(row)
             continue
         doc = D.read(text, it["title"])
+        if doc.get("mismatch"):
+            row.update(status="no-coincide", pdf=D.safe_url(pdf), mismatch=doc["mismatch"])
+            rows.append(row)
+            continue
         row.update(status="ok", pdf=D.safe_url(pdf), codes=doc.get("codes") or [], basis=doc.get("basis", ""),
                    excerpt=_excerpt(text, doc))
         if not row["bulletin"]:
@@ -159,14 +164,19 @@ def judge(row: dict) -> dict:
         return {"verdict": "sin-verdad"}
     gz = gazetteer()
     codes = row.get("codes") or []
+    # Lima y Callao cuentan como uno: el COEN titula «Ventanilla (Lima)» y la tabla dice «LIMA CALLAO».
+    same = {t["dep"], {"07": "15", "15": "07"}.get(t["dep"], t["dep"])}
     deps = {c[:2] for c in codes}
-    out = {"fpDeps": sorted(deps - {t["dep"]}), "depFound": t["dep"] in deps}
+    out = {"fpDeps": sorted(deps - same), "depFound": bool(deps & same)}
     if t["level"]:
         n = 6 if t["level"] == "distrito" else 4
-        want = [x for x in t["names"]]
-        got = {key(gz.label(c)["name"]) for c in codes if len(c) == n and c.startswith(t["dep"])}
-        out["missing"] = [x for x in want if key(x) not in got]
-        out["extra"] = sorted(_names([c for c in codes if len(c) == n and key(gz.label(c)["name"]) not in {key(x) for x in want}]))
+        # Por código, con los alias del gazetteer («Mariscal Gamarra» es el distrito de Gamarra).
+        level = "distrito" if n == 6 else "provincia"
+        want = {x: {c for d in same for c in gz.find(x, level, d)} or {key(x)} for x in t["names"]}
+        every = set().union(*want.values()) if want else set()
+        got = {c for c in codes if len(c) == n}
+        out["missing"] = [x for x, cs in want.items() if not cs & got]
+        out["extra"] = sorted(_names([c for c in got if c not in every]))
         # Más grueso de lo pedido: el departamento o la provincia, sin el distrito.
         out["coarse"] = bool(out["missing"]) and any(len(c) < n and c.startswith(t["dep"]) for c in codes)
     if not codes:
@@ -197,7 +207,8 @@ def report(rows: list[dict]) -> str:
     lines = ["# Lectura de los PDF del COEN: prueba hacia atrás", "",
              f"Publicaciones: {len(rows)} ({len(rep)} reportes, {len(bul)} boletines de aviso). "
              f"PDF leídos: {sum(1 for r in rows if r.get('status') == 'ok')}; sin PDF o sin respuesta: "
-             f"{sum(1 for r in rows if r.get('status') != 'ok')}.", "",
+             f"{sum(1 for r in rows if r.get('status') not in ('ok', 'no-coincide'))}; PDF de otra publicación (descartado): "
+             f"{sum(1 for r in rows if r.get('status') == 'no-coincide')}.", "",
              "## Reportes de emergencia (verdad: el lugar del titular)", "",
              "| | PDF | Texto del titular (antes) |", "|---|---|---|"]
     for v in ("TP", "parcial", "FN", "FP"):
@@ -216,7 +227,13 @@ def report(rows: list[dict]) -> str:
                          f"{'; de más: ' + ', '.join(j.get('extra') or []) if j.get('extra') else ''}. "
                          f"Extracto: «{r.get('excerpt', '')[:240]}»")
         lines.append("")
-    lines += ["## Boletines de aviso (verdad: revisión a mano del extracto)", "",
+    odd = [r for r in rows if r.get("status") == "no-coincide"]
+    lines += [f"### PDF de otra publicación, descartado ({len(odd)})", ""]
+    lines += [f"- [{r['title']}]({r['link']}): {r['mismatch']} ([PDF]({r['pdf']}))." for r in odd]
+    placed = collections.Counter(r.get("basis") or "sin lugares" for r in bul if r.get("status") == "ok")
+    lines += ["", "## Boletines de aviso (verdad: revisión a mano del extracto)", "",
+              f"Con lugares: {sum(v for k, v in placed.items() if k != 'sin lugares')} de {sum(placed.values())} "
+              f"({'; '.join(f'{k}: {v}' for k, v in placed.most_common())}).", "",
               "| Boletín | Lugares del PDF | Extracto | Regiones del texto: aciertos / de más / faltan |", "|---|---|---|---|"]
     for r in bul:
         codes = set(r.get("codes") or [])
