@@ -37,6 +37,10 @@ const seen = new Set();
 const out = [];
 for (const s of registry.sources) {
   if (only && !s.id.includes(only) && s.group !== only) continue;
+  // Una fuente con «n8n: false» no se pide en ningún alcance: n8n no la
+  // atiende (p. ej. no verifica su certificado) y su medición no diría nada
+  // de la red.
+  if (s.n8n === false) continue;
   const sourceRule = { status: s.geoblock && s.geoblock.status, channels: s.channels || [] };
   const urls = [s.url, ...(s.alt_urls || [])];
   urls.forEach((raw, k) => {

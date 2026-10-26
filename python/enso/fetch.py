@@ -343,8 +343,8 @@ class Fetcher:
                     attempts.append({"url": url, "note": "robots.txt no permite la ruta: no se pide"})
                     continue
             skip = self._robots_skip(url, planned)
-            if skip:
-                attempts.append({"url": url, "note": skip})
+            if skip:  # como ``skip_reason`` en ``_get``: quien lee el último intento ve el motivo
+                attempts.append({"url": url, "error": skip})
             else:
                 r = self._get(url, attempts, tries=1 if planned is not None and "actions" not in planned else None)
                 if r is not None and r.status_code == 200 and r.content and self._acceptable(r, accept):

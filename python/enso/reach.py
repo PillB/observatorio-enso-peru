@@ -2,9 +2,13 @@
 
 El mismo criterio se usa en GitHub Actions, en n8n (AWS, EE. UU.) y en el
 servidor del Perú, para que el registro (``enso.registry``) compare
-mediciones equivalentes: ``judge`` da las mismas clases que ``reachClass`` de
-``n8n/lib/classify.js`` (``tests/fixtures/reach-parity.json`` lo comprueba en
-los dos). Clases:
+mediciones equivalentes: ``judge`` sigue a ``reachClass`` de
+``n8n/lib/classify.js`` (el orden de los códigos HTTP y las marcas de
+``BLOCK_SIGNATURES``), y ``tests/fixtures/reach-parity.json`` lo comprueba en
+los dos. Las filas con ``n8n`` son las diferencias que quedan, a corregir en
+classify.js: el script de detección de Cloudflare que va en páginas normales
+y las cabeceras que llevan todas las respuestas de Imperva, Sucuri y DataDome
+no son una verificación. Clases:
 
 ``ok`` responde con contenido · ``empty`` responde vacío · ``http-403`` ·
 ``http-4xx`` · ``http-5xx`` · ``timeout`` · ``connect`` (conexión rechazada o
@@ -22,16 +26,53 @@ import threading
 from typing import Optional
 from urllib.parse import urlparse
 
-#: Marcas de una página de verificación en lugar del contenido (las de ``BLOCK_SIGNATURES`` en
-#: n8n/lib/classify.js). El script de detección de Cloudflare (``/cdn-cgi/challenge-platform/…/scripts/jsd/``) va
-#: también en páginas normales: no cuenta.
-CHALLENGE_RE = re.compile(
-    rb"challenges\.cloudflare\.com|cf-chl|cf_chl_|cf-turnstile|turnstile|Just a moment\.\.\.|"
-    rb"/cdn-cgi/challenge(?!-platform/(?:h/\w+/)?scripts/jsd)|challenge-platform(?!/(?:h/\w+/)?scripts/jsd)|"
-    rb"Attention Required! \| Cloudflare|Verificaci(?:o|\xc3\xb3)n de seguridad|verify you are human|g-recaptcha|"
-    rb"hcaptcha|DDoS protection by|Checking your browser", re.I)
-#: Cuánto del cuerpo se revisa, y el tamaño desde el que una página con esas marcas ya no es una verificación
-#: salvo con 403, 429 o 503 (como en n8n): una página normal puede traer un formulario con reCAPTCHA o Turnstile.
+from httpx import Client as HTTPClient
+
+#: Marcas de una página de bloqueo o de verificación en lugar del contenido, por familia: las de
+#: ``BLOCK_SIGNATURES`` en n8n/lib/classify.js, que se buscan en minúsculas en los primeros ``SCAN_BYTES`` del
+#: cuerpo, leído como Latin-1 y como UTF-8. El script de detección de Cloudflare
+#: (``/cdn-cgi/challenge-platform/…/scripts/jsd/``) va también en páginas normales: no cuenta.
+BLOCK_SIGNATURES = (
+    ("cloudflare-challenge", ("just a moment...", "cf-chl-", "challenge-platform", "/cdn-cgi/challenge")),
+    ("cloudflare-block", ("attention required! | cloudflare", "cf-error-code", "sorry, you have been blocked",
+                          "error 1020")),
+    ("human-verification", ("verificación de seguridad", "verificacion de seguridad", "comprobación de seguridad",
+                            "security check", "verify you are human", "verifica que eres humano", "are you a robot",
+                            "checking your browser")),
+    ("captcha", ("g-recaptcha", "grecaptcha", "h-captcha", "hcaptcha.com", "cf-turnstile", "px-captcha",
+                 "captcha-delivery.com")),
+    ("imperva", ("incapsula incident", "_incapsula_resource", "request unsuccessful. incapsula")),
+    ("akamai", ("reference&#32;&#35;", "you don't have permission to access", "errors.edgesuite.net")),
+    ("sucuri", ("sucuri website firewall", "access denied - sucuri")),
+    ("aws-waf", ("awswaf", "aws-waf-token")),
+    ("f5-asm", ("the requested url was rejected. please consult with your administrator", "your support id is")),
+    ("fortinet", ("fortiguard", "web page blocked", "fortigate")),
+    ("datadome", ("datadome",)),
+    ("google-consent", ("consent.google.com", "before you continue to google", "antes de ir a google")),
+    ("geo", ("not available in your country", "no está disponible en tu país", "no disponible en su país",
+             "access from your country", "geo-restricted")),
+)
+#: Cabeceras de una verificación (nombre, valor que contiene; vacío: basta con que esté). No van las que n8n
+#: también cuenta y que llevan todas las respuestas de esos servicios (``x-iinfo``, ``x-sucuri-id``, ``x-datadome``).
+BLOCK_HEADERS = (("cloudflare-challenge", "cf-mitigated", "challenge"), ("aws-waf", "x-amzn-waf-action", ""))
+#: Lo que sigue a esas dos marcas en el script de detección de Cloudflare, que va también en páginas normales.
+_NOT_JSD = {"challenge-platform": r"(?!/(?:h/\w+/)?scripts/jsd)",
+            "/cdn-cgi/challenge": r"(?!-platform/(?:h/\w+/)?scripts/jsd)"}
+
+
+def _pattern(mark: str, enc: str = "") -> str:
+    """La marca como expresión regular (con ``enc``, la de sus bytes en esa codificación)."""
+    return re.escape(mark.encode(enc).decode("latin-1") if enc else mark) + _NOT_JSD.get(mark, "")
+
+
+_BLOCK_RES = tuple((name, re.compile("|".join(_pattern(m) for m in marks))) for name, marks in BLOCK_SIGNATURES)
+#: Las mismas marcas sobre los bytes del cuerpo, sin decodificarlo (en UTF-8 y en Latin-1), para
+#: ``tools.scrape_ladder``.
+CHALLENGE_RE = re.compile("|".join(dict.fromkeys(
+    _pattern(m, enc) for _, marks in BLOCK_SIGNATURES for m in marks for enc in ("utf-8", "latin-1"))).encode("latin-1"),
+    re.I)
+#: Cuánto del cuerpo se revisa, y el tamaño desde el que una página 2xx con esas marcas ya no es una verificación
+#: salvo en lugar de otro formato (como en n8n): una página normal puede traer un formulario con reCAPTCHA.
 SCAN_BYTES = 65536
 SMALL_PAGE = 40000
 #: Plazo para leer robots.txt: un servidor que no lo entrega en ese tiempo cuenta como sin respuesta.
@@ -47,10 +88,28 @@ def header(headers, name: str) -> str:
     return ""
 
 
+def block_mark(body: bytes, headers=None) -> str:
+    """Familia de la marca de bloqueo o de verificación de la respuesta (``BLOCK_HEADERS``, ``BLOCK_SIGNATURES``),
+    o ``""``: ``findBlock`` de n8n/lib/classify.js."""
+    names = {str(k).lower() for k in (headers or {})}
+    for name, h, value in BLOCK_HEADERS:
+        if h in names and value in header(headers, h).lower():
+            return name
+    head = body[:SCAN_BYTES]
+    if not head:
+        return ""
+    text = (head.decode("latin-1") + "\n" + head.decode("utf-8", errors="replace")).lower()
+    return next((name for name, rx in _BLOCK_RES if rx.search(text)), "")
+
+
 def classify(status: Optional[int], body: bytes = b"", error: str = "", headers=None) -> str:
-    """Clase de una respuesta (o del error, si no la hubo). Es una verificación la que trae la cabecera
-    ``cf-mitigated: challenge`` de Cloudflare, o una página con las marcas de ``CHALLENGE_RE`` que llega con 403,
-    429 o 503 o tiene menos de ``SMALL_PAGE`` bytes."""
+    """Clase de una respuesta (o del error, si no la hubo), en el orden de n8n: 429, 401, 407, 404 y 410 se
+    deciden por el código; con otro código que no es 2xx, una marca de ``block_mark`` (la cabecera
+    ``cf-mitigated: challenge`` de Cloudflare, una página de verificación) es una verificación; con un 2xx, solo
+    en una página HTML de menos de ``SMALL_PAGE`` bytes (``judge`` cuenta también la que llega en lugar del
+    formato esperado), y un 202 vacío o con HTML es un antirobots (ReliefWeb, AWS WAF)."""
+    if status == 502 and b"upstream dial failed" in body[:200].lower():
+        return "dns"  # el proxy de salida no resolvió el nombre
     if error and not status:
         e = error.lower()
         if any(s in e for s in ("name or service", "temporary failure in name", "nodename", "getaddrinfo", "no address")):
@@ -60,20 +119,23 @@ def classify(status: Optional[int], body: bytes = b"", error: str = "", headers=
         if "timeout" in e or "timed out" in e:
             return "timeout"
         return "connect"
-    if header(headers, "cf-mitigated").strip().lower() == "challenge":
-        return "challenge"
-    head = body[:SCAN_BYTES]
-    if head and CHALLENGE_RE.search(head) and (status in (403, 429, 503) or len(body) < SMALL_PAGE):
-        return "challenge"
-    if status == 403:
-        return "http-403"
-    if status is not None and status >= 500:
-        return "http-5xx"
-    if status is not None and status >= 400:
+    if status is None:
+        return "connect"
+    if status in (429, 401, 407, 404, 410):
         return "http-4xx"
-    if status is not None and 200 <= status < 300:
-        return "ok" if body.strip() else "empty"
-    return "connect"
+    mark = block_mark(body, headers)
+    if status == 403:
+        return "challenge" if mark else "http-403"
+    if status >= 500:
+        return "challenge" if mark else "http-5xx"
+    html = bool(body) and detect(body, header(headers, "content-type")) == "html"
+    if status == 202 and (mark or not body or html):
+        return "challenge"
+    if not 200 <= status < 300:  # 451, otro 4xx, un 3xx que no se siguió
+        return "challenge" if mark else "http-4xx"
+    if not body.strip():
+        return "empty"
+    return "challenge" if mark and html and len(body) < SMALL_PAGE else "ok"
 
 
 def detect(body: bytes, content_type: str = "") -> str:
@@ -123,19 +185,17 @@ def judge(status: Optional[int], body: bytes, content_type: str = "", expect: Op
     """¿Sirve la respuesta? Devuelve (clase, formato, motivo), con el criterio de n8n (``classify`` en
     n8n/lib/classify.js, ``reach``) y del recolector del Perú.
 
-    Sobre ``classify``, cuenta el formato y lo que el registro espera (``expect``): solo una página HTML es una
-    verificación (un PDF o un feed que menciona «captcha» no lo es), aunque sea grande si llega en lugar del PDF, el
-    feed o el JSON esperado; un 202 vacío o con HTML es un antirobots (ReliefWeb, AWS WAF); y otro formato que el
-    esperado, un feed sin entradas, un JSON ilegible o un HTML casi vacío cuentan como ``empty``: responde, pero
-    sin contenido útil (suele ser una página de error servida con 200). El motivo dice por qué no sirve."""
+    Sobre ``classify``, cuenta lo que el registro espera (``expect``): una página HTML con una marca de verificación
+    lo es aunque sea grande si llega en lugar del PDF, el feed o el JSON esperado (un PDF o un feed que menciona
+    «captcha» no lo es); y otro formato que el esperado, un feed sin entradas, un JSON ilegible o un HTML casi vacío
+    cuentan como ``empty``: responde, pero sin contenido útil (suele ser una página de error servida con 200). El
+    motivo dice por qué no sirve."""
+    if headers is None and content_type:
+        headers = {"content-type": content_type}
     detected = detect(body, content_type) if status else "empty"
     cls = classify(status, body, error, headers)
     exp = {"rss": "feed", "atom": "feed", "csv": "text"}.get(expect or "", expect or "any")
-    if cls == "challenge" and status and 200 <= status < 300 and detected != "html":
-        cls = "ok" if body.strip() else "empty"
-    elif cls == "ok" and detected == "html" and exp not in ("html", "any") and CHALLENGE_RE.search(body[:SCAN_BYTES]):
-        cls = "challenge"
-    if status == 202 and cls in ("ok", "empty") and detected in ("html", "empty"):
+    if cls == "ok" and detected == "html" and exp not in ("html", "any") and block_mark(body, headers):
         cls = "challenge"
     if cls != "ok":
         why = {"challenge": "página de verificación antirobots: no se guarda (no se evade)",
@@ -241,19 +301,22 @@ class Robots:
       página HTML en su lugar (un «no encontrado» con código 200, o una
       redirección a la portada, como ``portal.indeci.gob.pe``) no tiene reglas:
       se permite todo, como al leer cualquier archivo sin reglas (RFC 9309 §2.3.1.1).
-    * 4xx salvo 429 (no existe, prohibido), sin ser una verificación: se permite
-      todo, como indica la RFC (§2.3.1.3).
+    * 4xx salvo 429 (no existe, prohibido): se permite todo, como indica la RFC
+      (§2.3.1.3), aunque la página de error traiga un formulario con reCAPTCHA;
+      con 401, 403 o 407, salvo que sea una página de verificación.
     * 429, 5xx, sin conexión (o sin respuesta en ``timeout`` segundos), o una
       verificación antirobots en su lugar (la cabecera ``cf-mitigated: challenge``
-      o una página de verificación, con cualquier código): no se sabe y, como pide
-      la RFC (§2.3.1.4), no se pide nada a ese servidor (``allowed`` devuelve ``None``).
+      con cualquier código, una página de verificación con 401, 403 o 407, o una
+      página HTML de verificación con 2xx): no se sabe y, como pide la RFC
+      (§2.3.1.4), no se pide nada a ese servidor (``allowed`` devuelve ``None``).
 
     ``source`` dice qué se leyó: ``rules`` (un archivo), ``absent`` (un 4xx: se
     permite todo) o ``unreachable``. ``timeout``: plazo del pedido de robots.txt
-    (``ROBOTS_TIMEOUT_S``); ``None``, el del cliente.
+    con un ``httpx.Client`` (otro cliente, como el de plazo corto de
+    ``tools.scrape_ladder``, usa el suyo); ``None``, el del cliente.
     """
 
-    def __init__(self, client, agent: str = "Observatorio-ENSO-Peru", timeout: Optional[float] = None):
+    def __init__(self, client, agent: str = "Observatorio-ENSO-Peru", timeout: Optional[float] = ROBOTS_TIMEOUT_S):
         self.client = client
         self.agent = agent
         self.timeout = timeout
@@ -267,25 +330,27 @@ class Robots:
             if base in self._cache:
                 return self._cache[base]
         rp: Optional[RobotRules] = None
-        status, error, head, headers, source = None, "", b"", None, "unreachable"
+        status, head, headers, source, fail = None, b"", None, "unreachable", ""
         try:
-            r = (self.client.get(f"{base}/robots.txt", timeout=self.timeout) if self.timeout
-                 else self.client.get(f"{base}/robots.txt"))
+            kw = {"timeout": self.timeout} if self.timeout and isinstance(self.client, HTTPClient) else {}
+            r = self.client.get(f"{base}/robots.txt", **kw)
             status, head, headers = r.status_code, r.content[:SCAN_BYTES], r.headers
-            # Un archivo de reglas que nombra «hcaptcha» o «turnstile» no es una verificación: en un 2xx solo
-            # cuenta una página HTML (o la cabecera de Cloudflare).
-            challenged = classify(status, r.content, headers=headers) == "challenge" and (
-                status >= 400 or detect(head, headers.get("content-type", "")) == "html"
-                or header(headers, "cf-mitigated"))
-            if challenged or status == 429 or status >= 500:
-                rp = None
+            # Un archivo de reglas que nombra «hcaptcha» o «turnstile», aunque llegue como text/html, no es una
+            # verificación: en un 2xx solo cuenta un cuerpo HTML.
+            if "challenge" in header(headers, "cf-mitigated").lower() or (
+                    status in (401, 403, 407) and block_mark(r.content, headers)) or (
+                    200 <= status < 300 and detect(head) == "html" and classify(status, r.content, headers=headers)
+                    == "challenge"):
+                fail = "challenge"
+            elif status == 429 or status >= 500:
+                fail = classify(status, head, headers=headers)
             elif status >= 300:
                 rp, source = RobotRules(allow_all=True), "absent"
             else:
                 rp, source = RobotRules(r.content[:500_000].decode("utf-8", errors="replace"), self.agent), "rules"
         except Exception as exc:  # noqa: BLE001 — sin respuesta: desconocido
-            rp, error = None, f"{type(exc).__name__}: {exc}"[:200]
-        entry = (rp, status, error, head, headers, source)
+            rp, fail = None, classify(None, b"", f"{type(exc).__name__}: {exc}"[:200])
+        entry = (rp, status, fail, head, headers, source)
         with self._lock:
             self._cache[base] = entry
         return entry
@@ -310,8 +375,4 @@ class Robots:
 
     def failure(self, url: str) -> str:
         """Clase de alcance del intento de leer robots.txt (``timeout``, ``challenge``…), si falló."""
-        rp, status, error, head, headers, _ = self._entry(url)
-        if rp is not None:
-            return ""
-        cls = classify(status, head, error, headers)
-        return "http-5xx" if cls == "ok" else cls
+        return self._entry(url)[2]

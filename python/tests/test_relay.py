@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from urllib.parse import urlparse
 
 import httpx
 import pytest
@@ -1017,7 +1018,7 @@ def test_url_whose_robots_txt_nobody_read_is_not_requested_while_robots_txt_fail
     with pytest.raises(Exception) as exc:
         f.get([PAGE], accept=("html",))
     assert asked == ["https://ana.example.pe/robots.txt"]
-    assert exc.value.attempts[-1]["note"] == "robots.txt sin respuesta: no se pide"
+    assert exc.value.attempts[-1] == {"url": PAGE, "error": "robots.txt sin respuesta: no se pide"}
     # Con copia de un recolector, se usa sin pedir nada (tampoco robots.txt).
     asked.clear()
     f = Fetcher(retries=2, polite_delay=0, allow_archive=False, robots=True, relay=_copy(tmp_path / "peru", PAGE),
@@ -1031,6 +1032,22 @@ def test_url_whose_robots_txt_nobody_read_is_not_requested_while_robots_txt_fail
     assert f.get([PAGE], accept=("html",)).channel == "direct" and asked == ["https://ana.example.pe/robots.txt", PAGE]
 
 
+def test_news_feed_skipped_by_robots_txt_says_why(monkeypatch):
+    """Revisión: un feed que no se pidió por robots.txt figuraba en el estado de los feeds como «HTTP None»."""
+    from enso import news as N
+
+    feed = next(f for f in N.FEEDS if f.id == "indeci-coen")
+    monkeypatch.setattr(N, "FEEDS", [feed])
+    asked: list[str] = []
+    _net(monkeypatch, {urlparse(feed.url).hostname: (503, "")}, asked)
+    main = Fetcher(polite_delay=0, robots=True, plan={feed.url: ["actions", "n8n"]}, robots_known={feed.url: "unknown"})
+    got = obs.acquire_news(main, None, obs.PreviousPublication(None, main), obs.EventLog(), datetime.now(timezone.utc),
+                           None)
+    st = next(s for s in got["feeds"]["feeds"] if s["id"] == feed.id)
+    assert st["error"] == "robots.txt sin respuesta: no se pide"
+    assert asked == [f"https://{urlparse(feed.url).hostname}/robots.txt"]
+
+
 def test_url_outside_the_registry_is_checked_against_robots_txt(monkeypatch):
     """Gap 4: una URL fuera del registro se pedía tres veces sin leer robots.txt."""
     asked: list[str] = []
@@ -1040,7 +1057,7 @@ def test_url_outside_the_registry_is_checked_against_robots_txt(monkeypatch):
     assert r.channel == "mirror" and r.url == "https://dhn.example.pe/informes"
     assert "https://enfen.example.pe/informes-tecnicos/" not in asked
     assert r.attempts[0] == {"url": "https://enfen.example.pe/informes-tecnicos/",
-                             "note": "robots.txt no permite la ruta: no se pide"}
+                             "error": "robots.txt no permite la ruta: no se pide"}
     # Sin robots (pruebas, otras herramientas), como antes.
     asked.clear()
     f = Fetcher(retries=3, polite_delay=0, allow_archive=False)

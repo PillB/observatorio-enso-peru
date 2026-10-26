@@ -304,14 +304,20 @@ def _recent(recs: dict[str, dict], now: Optional[datetime]) -> dict[str, dict]:
     return {v: r for v, r in recs.items() if r is newest or (record_at(r) or cutoff) >= cutoff}
 
 
+def _counted(url: str, reach: dict, now: Optional[datetime]) -> dict[str, dict[str, dict]]:
+    """Las mediciones de ``url`` que cuentan, por grupo: sin las que no miden la red (``unmeasured``) y, con ``now``,
+    sin las de más de ``STALE_DAYS`` si su red tiene otra más reciente (``_recent``)."""
+    return {g: kept for g, rs in _groups(reach.get(url) or {}).items()
+            if (kept := _recent({v: r for v, r in rs.items() if not unmeasured(r)}, now))}
+
+
 def geoblock(url: str, reach: dict, now: Optional[datetime] = None) -> dict:
     """Estado de geobloqueo de una URL a partir de lo medido desde cada red (EE. UU.: Actions y n8n; Perú).
 
     En la red de Actions cuenta la medición del propio pipeline (``github-actions``) si la hay: n8n corriendo en un
     ejecutor de Actions mide la misma red con otro cliente, y su respuesta de otro día no tapa una verificación de
     hoy. Con ``now``, las mediciones de más de ``STALE_DAYS`` no cuentan si su red tiene otra más reciente."""
-    groups = {g: kept for g, rs in _groups(reach.get(url) or {}).items()
-              if (kept := _recent({v: r for v, r in rs.items() if not unmeasured(r)}, now))}
+    groups = _counted(url, reach, now)
     act = (groups.get("actions") or {}).get("github-actions") or _best(groups.get("actions"))
     n8n, pe = _best(groups.get("n8n")), _best(groups.get("peru"))
     us_recs = [r for r in (act, n8n) if r]
@@ -336,11 +342,12 @@ def geoblock(url: str, reach: dict, now: Optional[datetime] = None) -> dict:
     return out
 
 
-def robots_verdict(url: str, reach: dict) -> str:
+def robots_verdict(url: str, reach: dict, now: Optional[datetime] = None) -> str:
     """Lo que se sabe del robots.txt de ``url``: ``disallowed`` si alguna medición lo encontró en contra;
     ``allowed`` si alguien lo leyó y permite la ruta (o no existe: un 4xx) o si el recolector del Perú la pidió (lo
-    lee antes de cada pedido); ``unknown`` si nadie pudo leerlo (n8n no lo lee)."""
-    recs = [(g, r) for g, rs in _groups(reach.get(url) or {}).items() for r in rs.values()]
+    lee antes de cada pedido); ``unknown`` si nadie pudo leerlo (n8n no lo lee). Cuentan las mismas mediciones que
+    en ``geoblock`` (con ``now``, sin las viejas): ``disallowed`` va con el estado ``robots-disallowed``."""
+    recs = [(g, r) for g, rs in _counted(url, reach, now).items() for r in rs.values()]
     if any(r.get("class") == "robots" for _, r in recs):
         return "disallowed"
     if any(r.get("robots") in ("allowed", "absent") or (
@@ -392,7 +399,7 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
             g = geoblock(u, reach, ref)
             by_url[u] = {"status": g["status"], "channels": channels_for(
                 g["status"], g["open_from"], [k for k in ("actions", "n8n") if g.get(k)], n8n=e.n8n),
-                "robots": robots_verdict(u, reach)}
+                "robots": robots_verdict(u, reach, ref)}
             if e.reader and g["status"] == "robots-disallowed":
                 by_url[u].update(channels=list(READER_CHANNELS), reader=True)
         d = {k: v for k, v in e.__dict__.items()

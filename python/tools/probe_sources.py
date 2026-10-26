@@ -49,9 +49,13 @@ PRUNE_DAYS = 30
 def probe(urls: list[str], vantage: str, timeout: float = 25.0,
           expect: dict[str, str] | None = None) -> dict[str, dict]:
     """Mide cada URL desde ``vantage``, con robots.txt leído antes (RFC 9309) y el mismo clasificador que n8n y
-    el Perú (``enso.reach.judge``). ``expect``: lo que el registro espera de cada URL; otro formato cuenta como
-    ``empty``. ``robots`` dice qué se leyó: ``allowed`` (reglas que la permiten), ``absent`` (no hay robots.txt:
-    un 4xx), ``disallowed`` o ``unreachable``."""
+    el Perú (``enso.reach.judge``). ``expect``: lo que se espera de cada URL; otro formato, o un feed sin
+    entradas, cuenta como ``empty``. Sin él, lo que dice el registro: así la medición desde el Perú
+    (``peru_collector.probe_registry``) juzga igual que la de Actions, y una respuesta que no sirve en ninguna red
+    no pasa por geobloqueada. ``robots`` dice qué se leyó: ``allowed`` (reglas que la permiten), ``absent`` (no hay
+    robots.txt: un 4xx), ``disallowed`` o ``unreachable``."""
+    if expect is None:
+        expect = _expects(registry.build(reach={}))
     client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA}, verify=ssl_context())
     robots = Robots(client, timeout=min(timeout, ROBOTS_TIMEOUT_S))
     locks: dict[str, threading.Lock] = defaultdict(threading.Lock)

@@ -85,8 +85,10 @@ def test_classify():
     assert classify(200, b"<rss/>") == "ok"
     assert classify(200, b"  ") == "empty"
     assert classify(403, b"Forbidden") == "http-403"
-    assert classify(403, b"<script src='https://challenges.cloudflare.com/x'>") == "challenge"
-    assert classify(200, b"<div class='cf-turnstile'></div>") == "challenge"
+    assert classify(403, b"<script src='/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1'>") == "challenge"
+    assert classify(200, b"<html><div class='cf-turnstile'></div></html>") == "challenge"
+    # Como en n8n, con un 2xx solo cuenta una página HTML (un fragmento sin <html> es XML).
+    assert classify(200, b"<div class='cf-turnstile'></div>") == "ok"
     assert classify(503, b"down") == "http-5xx"
     assert classify(404, b"") == "http-4xx"
     assert classify(None, b"", "ConnectTimeout: timed out") == "timeout"
@@ -102,11 +104,22 @@ def test_classify_reads_headers_and_the_n8n_markers():
     assert classify(200, b"<html><script src='/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1'></script></html>") \
         == "challenge"
     assert classify(200, b"<html><h1>Verify you are human</h1></html>") == "challenge"
-    # Las marcas cuentan en una página de menos de 40 KB, o con 403, 429 o 503 (un formulario con reCAPTCHA no es una
-    # verificación).
+    # Con un 2xx, las marcas cuentan en una página HTML de menos de 40 KB (un formulario con reCAPTCHA no es una
+    # verificación); con 403, 5xx u otro código de error, siempre. 429, 401, 407, 404 y 410 se deciden por el código,
+    # como en n8n.
     big = b"<html><form><div class='g-recaptcha'></div></form>" + b"x" * 46000
     assert classify(200, big) == "ok" and classify(403, big) == "challenge" and classify(503, big) == "challenge"
-    assert classify(200, b"<html><div class='hcaptcha'></div></html>") == "challenge"
+    assert classify(500, big) == "challenge" and classify(451, big) == "challenge"
+    assert [classify(c, big, headers={"cf-mitigated": "challenge"}) for c in (429, 401, 407, 404, 410)] == ["http-4xx"] * 5
+    assert classify(200, b"<html><div class='h-captcha'></div></html>") == "challenge"
+    assert classify(200, b"<html><script src='https://js.hcaptcha.com/1/api.js'></script></html>") == "challenge"
+    # Las marcas de n8n que faltaban: Imperva, Akamai, AWS WAF, DataDome, el consentimiento de Google, el bloqueo
+    # por país.
+    for page in (b"Request unsuccessful. Incapsula incident ID: 1", b"Reference&#32;&#35;18.1", b"aws-waf-token",
+                 b"captcha-delivery.com", b"Before you continue to Google", "no está disponible en tu país".encode()):
+        assert classify(200, b"<html><body>" + page + b"</body></html>") == "challenge", page
+    assert classify(405, b"", headers={"x-amzn-waf-action": "captcha"}) == "challenge"
+    assert classify(301, b"") == "http-4xx"  # una redirección que no se siguió, como en n8n
     # El script de detección de Cloudflare va en páginas normales: no es una verificación.
     for jsd in (b"/cdn-cgi/challenge-platform/scripts/jsd/main.js", b"/cdn-cgi/challenge-platform/h/b/scripts/jsd/1a2b/main.js"):
         assert classify(200, b"<html><body>Noticias<script>a.src='" + jsd + b"'</script></body></html>") == "ok"
@@ -213,7 +226,18 @@ def test_robots_challenge_or_429_is_unreachable_not_allow_all():
               "wp.pe": (200, {"content-type": "text/plain"}, b"User-agent: *\nDisallow: /wp-content/plugins/hcaptcha/\n"),
               # Un 404 de un servidor con el script de detección de Cloudflare: no hay robots.txt.
               "jsd.pe": (404, {"content-type": "text/html"},
-                         b"<html><body>404<script src='/cdn-cgi/challenge-platform/scripts/jsd/main.js'></script></body></html>")}
+                         b"<html><body>404<script src='/cdn-cgi/challenge-platform/scripts/jsd/main.js'></script></body></html>"),
+              # Ni lo hay con un 404 o un 410 cuya página de error trae un formulario con reCAPTCHA o Turnstile.
+              "wp404.pe": (404, {"content-type": "text/html"},
+                           b"<html><body><h1>No encontrado</h1><form><div class='g-recaptcha'></div></form>" + b"x" * 18000
+                           + b"</body></html>"),
+              "gone.pe": (410, {"content-type": "text/html"}, b"<html><body><div class='cf-turnstile'></div></body></html>"),
+              # Una verificación con 401 o 407 sí es una verificación; sin marcas, un 401 es «no hay robots.txt».
+              "auth.pe": (401, {"content-type": "text/html"}, b"<html><body>Checking your browser</body></html>"),
+              "auth2.pe": (401, {}, b"Unauthorized"),
+              # Un robots.txt servido como text/html que nombra una marca es un archivo de reglas.
+              "html.pe": (200, {"content-type": "text/html; charset=UTF-8"},
+                          b"User-agent: *\nDisallow: /cdn-cgi/challenge-platform/\n")}
 
     def handler(req):
         asked.append((req.url.host, req.extensions.get("timeout")))
@@ -228,8 +252,37 @@ def test_robots_challenge_or_429_is_unreachable_not_allow_all():
     assert r.allowed("https://plain.pe/x") is True and r.source("https://plain.pe/x") == "absent"
     assert r.allowed("https://wp.pe/feed/") is True and r.allowed("https://wp.pe/wp-content/plugins/hcaptcha/a.js") is False
     assert r.allowed("https://jsd.pe/x") is True and r.source("https://jsd.pe/x") == "absent"
+    for host in ("wp404.pe", "gone.pe", "auth2.pe"):
+        assert r.allowed(f"https://{host}/x") is True and r.source(f"https://{host}/x") == "absent", host
+    assert r.allowed("https://auth.pe/x") is None and r.failure("https://auth.pe/x") == "challenge"
+    assert r.allowed("https://html.pe/feed/") is True and r.allowed("https://html.pe/cdn-cgi/challenge-platform/a") is False
+    assert r.source("https://html.pe/x") == "rules"
     # Un pedido por servidor, con el plazo corto de robots.txt.
     assert len(asked) == len(bodies) and all(t["read"] == 15.0 for _, t in asked)
+
+
+def test_robots_txt_has_a_short_timeout_by_default():
+    """Revisión: el plazo corto de robots.txt valía solo para quien lo pedía; el recolector del Perú esperaba los 40 s
+    de su cliente por cada robots.txt colgado. Un cliente que no es de httpx (el de plazo corto de scrape_ladder)
+    usa el suyo."""
+    from enso.reach import ROBOTS_TIMEOUT_S, Robots
+
+    asked = []
+
+    def handler(req):
+        asked.append(req.extensions.get("timeout"))
+        return httpx.Response(200, text="User-agent: *\nAllow: /\n")
+
+    client = httpx.Client(timeout=40.0, transport=httpx.MockTransport(handler))
+    assert Robots(client).allowed("https://a.pe/x") is True and asked[-1]["read"] == ROBOTS_TIMEOUT_S
+    assert Robots(client, timeout=None).allowed("https://a.pe/x") is True and asked[-1]["read"] == 40.0
+
+    class Short:
+        def get(self, url, **kw):
+            assert "timeout" not in kw
+            return client.get(url, timeout=5.0, **kw)
+
+    assert Robots(Short()).allowed("https://a.pe/x") is True and asked[-1]["read"] == 5.0
 
 
 def test_data_files_are_expected_as_text():
@@ -383,6 +436,26 @@ def test_robots_verdict_per_url():
             r.pop("robots")
     assert registry.url_robots(reg) == {}
     assert any("robots no válido" in x for x in registry.validate(reg))
+
+
+def test_old_robots_record_is_dropped_like_in_geoblock():
+    """Revisión: un «robots» de más de STALE_DAYS junto a una medición más reciente de su red dejaba la URL abierta
+    con robots «disallowed», y validate() rechazaba el registro (fallaba la sonda semanal y el kit)."""
+    url = "http://met.igp.gob.pe/datos/ICEN.txt"
+    reach = {url: {"actions": {"github-actions": _rec("robots", "github-actions", "2026-08-01T04:00:00+00:00",
+                                                      robots="disallowed"),
+                               "n8n-actions-azure": _rec("ok", "n8n-actions-azure", "2026-10-20T04:00:00+00:00")}}}
+    now = datetime(2026, 10, 22, tzinfo=timezone.utc)
+    reg = registry.build(reach=reach, now=now)
+    assert registry.validate(reg) == []
+    by = next(s for s in reg["sources"] if s["id"] == "igp-icen")["by_url"][url]
+    assert by == {"status": "open", "channels": ["actions", "n8n"], "robots": "unknown"}
+    assert registry.robots_verdict(url, reach, now) == "unknown" and registry.robots_verdict(url, reach) == "disallowed"
+    # Reciente, cuenta: sin canales y «disallowed».
+    reach[url]["actions"]["github-actions"]["at"] = "2026-10-19T04:00:00+00:00"
+    reg = registry.build(reach=reach, now=now)
+    by = next(s for s in reg["sources"] if s["id"] == "igp-icen")["by_url"][url]
+    assert by == {"status": "robots-disallowed", "channels": [], "robots": "disallowed"} and registry.validate(reg) == []
 
 
 def test_validate_requires_disallowed_robots_to_match_the_status():
@@ -550,6 +623,38 @@ def test_probe_trusts_the_bundled_intermediates_and_reads_headers_robots_and_typ
     # El registro toma «absent» (no hay robots.txt) como permitido.
     assert registry.robots_verdict("https://nada.pe/pagina", {"https://nada.pe/pagina": {"github-actions": got[urls[2]]}}) \
         == "allowed"
+
+
+def test_probe_from_peru_judges_the_type_the_registry_expects(monkeypatch):
+    """Revisión: la medición desde el Perú (``peru_collector.probe_registry`` llama a probe sin ``expect``) daba «ok»
+    a un feed sin entradas o a una página de otro tipo que Actions y n8n miden «empty»: el registro la tomaba por
+    geobloqueada."""
+    reg = registry.build(reach={})
+    feed = next(s for s in reg["sources"] if s["kind"] == "feed" and s["expect"] == "rss" and not s["alt_urls"])["url"]
+    data = next(s for s in reg["sources"] if s["expect"] == "json" and s["kind"] == "dataset")["url"]
+
+    def net(req):
+        if req.url.path == "/robots.txt":
+            return httpx.Response(404)
+        if str(req.url) == feed:
+            return httpx.Response(200, headers={"content-type": "application/rss+xml"},
+                                  text="<?xml version='1.0'?><rss><channel><title>t</title></channel></rss>")
+        return httpx.Response(200, headers={"content-type": "text/xml"},
+                              text="<?xml version='1.0'?><ServiceExceptionReport>" + "x" * 900 + "</ServiceExceptionReport>")
+
+    real = httpx.Client
+    monkeypatch.setattr(probe_sources.httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(net)}))
+    monkeypatch.setattr(probe_sources.time, "sleep", lambda s: None)
+    got = probe_sources.probe([feed, data, "https://fuera.pe/x"], "peru-server", timeout=20.0)
+    assert (got[feed]["class"], got[feed]["detail"]) == ("empty", "feed sin entradas")
+    assert got[data]["class"] == "empty" and "se esperaba JSON" in got[data]["detail"]
+    assert got["https://fuera.pe/x"]["class"] == "ok"  # fuera del registro: cualquier formato
+    # Desde todas las redes «empty»: caída, no geobloqueada.
+    empty = {"actions": {"github-actions": _rec("empty", "github-actions")}, "n8n": {"n8n-aws": _rec("empty", "n8n-aws")},
+             "peru": {"peru-server": got[feed]}}
+    assert registry.geoblock(feed, {feed: empty})["status"] == "down"
+    # Un ``expect`` explícito (aunque vacío) manda.
+    assert probe_sources.probe([feed], "peru-server", expect={})[feed]["class"] == "ok"
 
 
 def test_peru_index_says_whether_robots_txt_was_read():
