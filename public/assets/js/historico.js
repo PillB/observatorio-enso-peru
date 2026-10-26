@@ -288,13 +288,24 @@ export const memoriaView = {
 
 function mount(root, D) {
   let s = readState();
+  const set = (partial, sel) => { s = { ...s, ...partial }; draw(sel); };
   const draw = (focusSel) => {
     writeState(s);
     root.innerHTML = String(page(D, s));
-    wire(root, D, s, (partial, sel) => { s = { ...s, ...partial }; draw(sel); });
+    wire(root, D, s, set);
     if (focusSel) $(focusSel, root)?.focus({ preventScroll: true });
     if (s.area) { fillDetail(root, D, s); fillContext(root, D, s); }
   };
+  // Clic delegado en rankings, enlaces de área y cierre del perfil. root sobrevive a cada redibujo, así que se
+  // registra una sola vez por montaje (en wire se sumaría un manejador por redibujo).
+  root.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-area]');
+    if (!b || b.closest('svg')) return;
+    const area = b.dataset.area;
+    const nivel = b.dataset.nivelGo || (area && area.length === 6 && s.nivel !== 'distrito' ? 'distrito' : area && area.length === 4 && s.nivel === 'departamento' ? 'provincia' : s.nivel);
+    set({ area, nivel }, '#hz-side');
+    if (area) $('#hz-map-h', root)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  });
   draw();
 }
 
@@ -597,14 +608,6 @@ function wire(root, D, s, set) {
     set({ nivel: lvl, area }, `[data-nivel="${lvl}"]`);
   }));
   $('[data-clear]', root)?.addEventListener('click', () => set({ evento: '', peligro: '', desde: '', hasta: '', area: '' }, '#hz-map-h'));
-  root.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-area]');
-    if (!b || b.closest('svg')) return;
-    const area = b.dataset.area;
-    const nivel = b.dataset.nivelGo || (area && area.length === 6 && s.nivel !== 'distrito' ? 'distrito' : area && area.length === 4 && s.nivel === 'departamento' ? 'provincia' : s.nivel);
-    set({ area, nivel }, '#hz-side');
-    if (area) $('#hz-map-h', root)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-  });
 
   // Buscador de lugares (datalist con los tres niveles).
   const q = $('#hz-q', root), list = $('#hz-places', root);

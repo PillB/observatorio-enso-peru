@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Iterator, Optional
 
 from . import esquema as E
+from .fuentes import inside, locate_point
 
 DOWNLOAD_URL = "https://www.desinventar.net/DesInventar/download/DI_export_per.zip"
 PROFILE_URL = "https://www.desinventar.net/DesInventar/profiletab.jsp?countrycode=per"
@@ -145,12 +146,10 @@ def records(xml: str, territory, calendar) -> Iterator[dict]:
             continue
         dep, prov, dist = territory.names(code)
         lat, lon, geo_prec = territory.point(code)
-        try:
-            flat, flon = float(r.get("latitude") or 0), float(r.get("longitude") or 0)
-        except ValueError:
-            flat = flon = 0.0
-        if flat and flon and -18.6 < flat < 0.2 and -81.6 < flon < -68.4:
-            lat, lon, geo_prec = round(flat, 5), round(flon, 5), "coordenada-fuente"
+        # Las coordenadas de la fuente solo si caen en el área asignada (algunas contradicen el lugar).
+        loc, pt = locate_point(r.get("latitude"), r.get("longitude"))
+        if pt and inside(territory, code, loc):
+            (lat, lon), geo_prec = pt, "coordenada-fuente"
 
         dur = _num(r.get("duracion", ""))
         dur = int(dur) if dur and dur >= 1 else None

@@ -262,6 +262,9 @@ def test_published_catalog():
         assert T.normalize(r["Ubigeo"]) == r["Ubigeo"]
         assert r["Fuente"].startswith(("https://", "http://"))
         assert -18.6 < float(r["Latitud"]) < 0.2 and -81.6 < float(r["Longitud"]) < -68.4
+        # Las coordenadas de la fuente se publican solo si caen en el área asignada.
+        if r["PrecisionGeo"] == "coordenada-fuente":
+            assert F.inside(T, r["Ubigeo"], F.locate_point(r["Latitud"], r["Longitud"])[0]), r["Id"]
     origins = Counter(r["Origen"] for r in rows)
     assert {"desinventar", "sinpad", "idmc", "curado"} <= set(origins)
     hits = Counter(r["TipoEvento"] for r in rows if r["TipoEvento"] in GREAT)

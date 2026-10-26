@@ -91,31 +91,45 @@ _PLACE = re.compile(
 # ---------------------------------------------------------------------------
 # Ubicación
 # ---------------------------------------------------------------------------
+def locate_point(lat, lon) -> tuple[Optional[dict], Optional[tuple]]:
+    """(``limites.locate`` del punto, punto redondeado), o (None, None) si no hay coordenadas válidas."""
+    from ..limites import locate
+
+    try:
+        if lat not in (None, "", 0) and lon not in (None, "", 0):
+            loc = locate(float(lat), float(lon))
+            if loc:
+                return loc, (round(float(lat), 5), round(float(lon), 5))
+    except (TypeError, ValueError):
+        pass
+    return None, None
+
+
+def inside(territory, code: str, loc: Optional[dict]) -> bool:
+    """Si el punto ubicado cae en el área ``code``. Un distrito creado después de los límites del IGN no tiene
+    polígono ni capital en el nomenclátor: su punto cae en el distrito del que se separó, y basta con que esté
+    en la misma provincia."""
+    if not loc or not code:
+        return False
+    if loc["code"].startswith(code):
+        return True
+    return len(code) == 6 and territory.point(code)[0] is None and loc["code"][:4] == code[:4]
+
+
 def place(territory, dep: str, prov: str, dist: str, lat, lon, code: str = "") -> tuple[Optional[str], Optional[tuple], str]:
     """(UBIGEO, coordenadas de la fuente si son coherentes, método).
 
     Primero los nombres (o el código) de la fuente; si no alcanzan para el distrito, el punto de la fuente
     dentro de los límites del IGN, siempre que caiga en la provincia o el departamento que dicen los
     nombres. Las coordenadas de la fuente se conservan solo si caen en el área asignada."""
-    from ..limites import locate
-
     named = territory.resolve(dep or "", prov or "", dist or "", code or "")
-    loc = None
-    try:
-        if lat not in (None, "", 0) and lon not in (None, "", 0):
-            loc = locate(float(lat), float(lon))
-    except (TypeError, ValueError):
-        loc = None
-    pt = (round(float(lat), 5), round(float(lon), 5)) if loc else None
+    loc, pt = locate_point(lat, lon)
     if named and len(named) == 6:
-        # Un distrito creado después de los límites del IGN no tiene polígono ni capital en el nomenclátor:
-        # su punto cae en el distrito del que se separó; basta con que esté en la misma provincia.
-        newer = territory.point(named)[0] is None and loc and loc["code"][:4] == named[:4]
-        return named, (pt if loc and (loc["code"] == named or newer) else None), "nombre"
+        return named, (pt if inside(territory, named, loc) else None), "nombre"
     if loc and len(loc["code"]) == 6 and (not named or loc["code"].startswith(named)):
         return loc["code"], pt, "punto"
     if named:
-        return named, (pt if loc and loc["code"].startswith(named) else None), "nombre"
+        return named, (pt if inside(territory, named, loc) else None), "nombre"
     if loc and not loc.get("offshore"):
         return loc["code"], pt, "punto"
     return None, None, ""
