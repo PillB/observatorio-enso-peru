@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 19:58:23 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 26 Oct 2026 18:47:30 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,28 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Áncash: hombre pierde la vida tras choque entre motocicleta y automóvil en Samanco]]></title>
+        <description><![CDATA[Según la Policía, la motocicleta impactó aparentemente de manera frontal contra un automóvil de la empresa de transporte público Etiasa, que cubre la ruta Samanco-Chimbote y viceversa.]]></description>
+        <pubDate>Fri, 23 Oct 2026 00:33:24 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/ancash-hombre-pierde-la-vida-tras-choque-entre-motocicleta-y-automovil-en-samanco-noticia-1714030</link>
+        <guid>1714030</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/23/h31m-mp3cutnet-1921594mp3_1921595.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Áncash, Accidente de tránsito, Región Policial Áncash, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Áncash: hombre muere tras ser atacado a balazos mientras almorzaba en Chimbote]]></title>
+        <description><![CDATA[La PNP halló <strong>más de 20 casquillos de bala </strong>en la zona del crimen. Los criminales huyeron a bordo de una motocicleta.]]></description>
+        <pubDate>Wed, 21 Oct 2026 05:35:00 -0500</pubDate>
+        <link>https://rpp.pe/peru/ancash/ancash-hombre-muere-tras-ser-atacado-a-balazos-mientras-almorzaba-en-chimbote-noticia-1713641</link>
+        <guid>1713641</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/20/343634_1920830.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Chimbote, Ancash, Inseguridad ciudadana, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Áncash: incendio forestal afecta 150 hectáreas de pastizales y arbustos en Huaylas]]></title>
         <description><![CDATA[Las condiciones agrestes del terreno, la presencia de rocas y las fuertes pendientes dificultan las labores para controlar el incendio.]]></description>
@@ -542,28 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/08/24/cash-1899635mp3_1899636.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Áncash, Incendio forestal, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Áncash: suboficial muere tras ser atropellado cuando conducía su motocicleta en Nuevo Chimbote]]></title>
-        <description><![CDATA[La víctima fue identificada como <strong>Gerson Azaña Quezada (24)</strong>, quien prestaba servicio en la comisaría del distrito de Coishco.]]></description>
-        <pubDate>Sun, 16 Aug 2026 22:36:20 -0500</pubDate>
-        <link>https://rpp.pe/peru/ancash/ancash-suboficial-muere-tras-ser-atropellado-cuando-conducia-su-motocicleta-en-nuevo-chimbote-noticia-1701941</link>
-        <guid>1701941</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/16/150915_1897029.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Áncash, Policía Nacional, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Áncash: fuertes vientos han dejado 335 casas afectadas en lo que va del 2026]]></title>
-        <description><![CDATA[El reporte del Centro de Operaciones de Emergencia Regional (<a data-mce-href="https://rpp.pe/noticias/coer" href="https://rpp.pe/noticias/coer">COER</a>) también señala que <strong>679 personas resultaron afectadas</strong>, mientras que otras 79 quedaron damnificadas y una resultó herida.]]></description>
-        <pubDate>Sat, 15 Aug 2026 07:59:42 -0500</pubDate>
-        <link>https://rpp.pe/peru/ancash/ancash-fuertes-vientos-han-dejado-335-casas-afectadas-en-lo-que-va-del-2026-noticia-1701720</link>
-        <guid>1701720</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/15/cash-2026-08-15-07-52-37-3332-1896568mp4_1896569.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Áncash, COER, Senamhi, Fuertes vientos, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>

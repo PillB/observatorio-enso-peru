@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:06:49 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 26 Oct 2026 18:46:29 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,39 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Jauja: dos heridos deja enfrentamiento entre policías y comuneros durante protesta en Acolla]]></title>
+        <description><![CDATA[Los enfrentamientos ocurrieron durante un<strong> paro comunal</strong> iniciado a la medianoche para exigir al Gobierno Regional de Junín la reanudación y culminación de la construcción del <strong>Instituto Superior de Música en dicha localidad. </strong>]]></description>
+        <pubDate>Mon, 26 Oct 2026 18:22:09 -0500</pubDate>
+        <link>https://rpp.pe/peru/junin/jauja-dos-heridos-deja-enfrentamiento-entre-policias-y-comuneros-durante-protesta-en-acolla-noticia-1714579</link>
+        <guid>1714579</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/26/370337_1922846.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Junín, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[‘Tren Macho’: reactivan tramo ferroviario entre Chilca y Cuenca tras un año de paralización]]></title>
+        <description><![CDATA[La presidenta <a data-mce-href="https://rpp.pe/noticias/keiko-fujimori" href="https://rpp.pe/noticias/keiko-fujimori" target="_blank" rel="noopener"><strong>Keiko Fujimori</strong></a> encabezó la ceremonia de reactivación del <strong>‘Tren Macho’</strong> y no descartó planes de ampliación ferroviaria.]]></description>
+        <pubDate>Sat, 24 Oct 2026 11:40:18 -0500</pubDate>
+        <link>https://rpp.pe/peru/junin/tren-macho-reactivan-tramo-ferroviario-entre-chilca-y-cuenca-tras-un-ano-de-paralizacion-noticia-1714276</link>
+        <guid>1714276</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/24/562956_1922151.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Tren Macho, Chilca, Cuenca, Paralización, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Junín: lluvias contribuyeron a apagar el fuego que consumía vegetación en Río Tambo desde 19 días]]></title>
+        <description><![CDATA[Integrantes de los equipos de respuesta celebraron la llegada de las lluvias, que contribuyeron a extinguir el incendio forestal en <strong>Río Tambo</strong>, <a data-mce-href="https://rpp.pe/peru/junin" href="https://rpp.pe/peru/junin" target="_blank" rel="noopener"><strong>Junín</strong></a>, tras 19 días de labores. El siniestro afectó miles de hectáreas de bosques y cultivos, además de dejar más de 150 familias damnificadas.]]></description>
+        <pubDate>Fri, 23 Oct 2026 07:55:05 -0500</pubDate>
+        <link>https://rpp.pe/peru/junin/junin-lluvias-contribuyeron-a-apagar-el-fuego-que-consumia-vegetacion-en-rio-tambo-desde-19-dias-noticia-1714076</link>
+        <guid>1714076</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/23/nin-2026-10-23-07-17-32-28181-1921663mp4_1921664.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Junín, Satipo, Río Tambo, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Junín: instalan solo 116 módulos para damnificados por el sismo del 18 de julio, a tres meses de la emergencia [FOTOS]]]></title>
         <description><![CDATA[A tres meses del <a data-mce-href="https://rpp.pe/peru/junin/sismo-en-junin-el-testimonio-de-damnificados-tras-temblor-magnitud-51-que-afecto-pumpunya-todo-destruido-noticia-1698209" href="https://rpp.pe/peru/junin/sismo-en-junin-el-testimonio-de-damnificados-tras-temblor-magnitud-51-que-afecto-pumpunya-todo-destruido-noticia-1698209" target="_blank" rel="noopener"><strong>sismo del 18 de julio en Junín</strong></a>, solo se han instalado 116 módulos temporales para las familias damnificadas de <strong>Huancayo</strong> y<strong> Chupaca</strong>. El <strong>Gobierno Regional </strong>anunció que otros 1200 llegarán en un plazo de tres a cuatro semanas, pero solo cubrirán el<strong> 80 %</strong> de la demanda.]]></description>
@@ -531,39 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/08/06/284028_1893945.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ junín, sismo en junín, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Presidente del IGP: sismo de magnitud 5.0 en Junín es réplica del movimiento sísmico ocurrido en julio]]></title>
-        <description><![CDATA[El epicentro del sismo se ubicó a 19 kilómetros al suroeste de Chupaca, reportó el Instituto Geofísico del Perú.]]></description>
-        <pubDate>Thu, 06 Aug 2026 15:26:52 -0500</pubDate>
-        <link>https://rpp.pe/peru/junin/presidente-del-igp-sismo-de-magnitud-50-en-junin-es-replica-del-movimiento-sismico-ocurrido-en-julio-noticia-1700406</link>
-        <guid>1700406</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/06/p-2026-08-06-15-02-18-4465-1893906mp4_1893907.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ sismo en junín, IGP, hernando tavera, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Junín: IGP reporta réplica de 3.5 tras sismo de magnitud 5.0 de este jueves]]></title>
-        <description><![CDATA[El epicentro del <strong>sismo </strong>-sentido a las 14:32:31- se ubicó a 23 kilómetros al sur de <strong>Chupaca</strong>, a una profundidad de solo 9 kilómetros.]]></description>
-        <pubDate>Thu, 06 Aug 2026 14:51:59 -0500</pubDate>
-        <link>https://rpp.pe/peru/junin/junin-igp-reporta-replica-de-35-tras-sismo-de-magnitud-51-de-este-jueves-noticia-1700398</link>
-        <guid>1700398</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/06/524752_1893901.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Junín, IGP, replica, instituto geofísico del perú, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Jefe del Indeci tras fuerte sismo en Junín: "Hay viviendas inhabitables que se han terminado de caer"]]></title>
-        <description><![CDATA[En <em>La Rotativa del Aire</em>, el general <strong>Julio Gálvez </strong>señaló que <a data-mce-href="https://rpp.pe/peru/junin/nuevo-sismo-en-junin-temblor-de-magnitud-50-remecio-la-region-esta-tarde-noticia-1700392" href="https://rpp.pe/peru/junin/nuevo-sismo-en-junin-temblor-de-magnitud-50-remecio-la-region-esta-tarde-noticia-1700392">el sismo de magnitud 5.0</a> <strong>“se ha sentido muy fuerte”</strong>, provocando que viviendas afectadas por el temblor del pasado 18 de julio terminen de caer.]]></description>
-        <pubDate>Thu, 06 Aug 2026 14:45:07 -0500</pubDate>
-        <link>https://rpp.pe/peru/junin/jefe-del-indeci-reporto-un-herido-tras-fuerte-sismo-en-junin-hay-viviendas-inhabitables-que-se-han-terminado-de-caer-noticia-1700397</link>
-        <guid>1700397</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/06/deci-2026-08-06-14-31-04-766-1893897mp4_1893898.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Indeci, Junín, Sismo, Julio Gálvez, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
