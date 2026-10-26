@@ -16,12 +16,13 @@ function publicPeru(url) {
   return PUBLIC_PERU_SUFFIXES.some((s) => host.endsWith(s) || host === s.slice(1));
 }
 
-/** Reglas del grupo del observatorio o, si no hay, del grupo «*».
- * Gana la regla más larga; ante un empate, Allow. */
-function robotRules(text, agent = ROBOTS_AGENT) {
+/** Grupo del observatorio o, si no hay, el grupo «*»: sus reglas y su
+ * Crawl-delay (segundos, el mayor si hay varios; null si no hay). */
+function robotGroup(text, agent = ROBOTS_AGENT) {
   const groups = [];
   let agents = [];
   let rules = [];
+  let delay = null;
   let inRules = false;
   for (const raw of String(text || '').split(/\r\n|\r|\n/)) {
     const line = raw.split('#', 1)[0].trim();
@@ -30,20 +31,29 @@ function robotRules(text, agent = ROBOTS_AGENT) {
     const k = line.slice(0, i).trim().toLowerCase();
     const v = line.slice(i + 1).trim();
     if (k === 'user-agent') {
-      if (inRules) { groups.push({ agents, rules }); agents = []; rules = []; inRules = false; }
+      if (inRules) { groups.push({ agents, rules, delay }); agents = []; rules = []; delay = null; inRules = false; }
       agents.push(v.toLowerCase());
     } else if ((k === 'allow' || k === 'disallow') && agents.length) {
       inRules = true;
       if (v) rules.push({ allow: k === 'allow', pattern: v }); // «Disallow:» vacío no prohíbe nada
     } else if (k === 'crawl-delay' && agents.length) {
       inRules = true;
+      const d = Number(v);
+      if (Number.isFinite(d) && d >= 0) delay = Math.max(delay || 0, d);
     }
   }
-  if (agents.length) groups.push({ agents, rules });
+  if (agents.length) groups.push({ agents, rules, delay });
   const token = agent.toLowerCase();
   let mine = token !== '*' ? groups.filter((g) => g.agents.includes(token)) : [];
   if (!mine.length) mine = groups.filter((g) => g.agents.includes('*'));
-  return mine.flatMap((g) => g.rules);
+  const delays = mine.map((g) => g.delay).filter((d) => d != null);
+  return { rules: mine.flatMap((g) => g.rules), delay: delays.length ? Math.max(...delays) : null };
+}
+
+/** Reglas del grupo del observatorio o, si no hay, del grupo «*».
+ * Gana la regla más larga; ante un empate, Allow. */
+function robotRules(text, agent = ROBOTS_AGENT) {
+  return robotGroup(text, agent).rules;
 }
 
 function ruleLength(pattern, path) {
@@ -70,28 +80,29 @@ function robotsAllowed(rules, url) {
 /**
  * Qué dice el robots.txt descargado de cada URL de ``urls``.
  * @param {object} r  {status, headers (en minúsculas), body: Uint8Array|null, error, cls}
- * @returns {{source: string, verdicts: Object<string, string>, challenge: boolean}}  source: rules | absent |
- *   unreachable; cada veredicto: allowed | disallowed | absent | unreachable; challenge: en lugar del robots.txt
- *   llegó una verificación antirobots
+ * @returns {{source: string, verdicts: Object<string, string>, challenge: boolean, crawl_delay: number|null}}
+ *   source: rules | absent | unreachable; cada veredicto: allowed | disallowed | absent | unreachable;
+ *   challenge: en lugar del robots.txt llegó una verificación antirobots; crawl_delay: su Crawl-delay
  */
 function robotsVerdicts(r, urls) {
-  const all = (v, challenge = false) => ({ source: v, verdicts: Object.fromEntries(urls.map((u) => [u, v])), challenge });
+  const all = (v, challenge = false) => ({ source: v, verdicts: Object.fromEntries(urls.map((u) => [u, v])), challenge, crawl_delay: null });
   const cls = r.cls || {};
   const status = r.status == null ? null : Number(r.status);
   const mitigated = String((r.headers || {})['cf-mitigated'] || '').toLowerCase();
   // Sin respuesta, 429, 5xx o una verificación antirobots: no se sabe, y no se pide nada (§2.3.1.4).
   if (mitigated.includes('challenge')) return all('unreachable', true);
   if (r.error || status == null) return all('unreachable');
+  // Una página de verificación con cualquier código (también 429 o 503): se anota como tal.
+  if (cls.reach === 'challenge') return all('unreachable', true);
   // 401, 403 o 407: una página de verificación no dice nada; otra, como un 4xx cualquiera.
   if ((status === 401 || status === 403 || status === 407)
     && classify({ url: '', expect: 'any', status: 403, headers: r.headers || {}, body: r.body }).reach === 'challenge') return all('unreachable', true);
   if (status === 429 || status >= 500) return all('unreachable');
   // Otro 3xx o 4xx: no hay reglas, se permite todo (§2.3.1.3).
   if (status >= 300) return all('absent');
-  if (cls.detected === 'html' && cls.reach === 'challenge') return all('unreachable', true);
   const text = r.body ? utf8Decode(r.body.subarray(0, 500000)) : '';
-  const rules = robotRules(text);
-  return { source: 'rules', verdicts: Object.fromEntries(urls.map((u) => [u, robotsAllowed(rules, u) ? 'allowed' : 'disallowed'])), challenge: false };
+  const { rules, delay } = robotGroup(text);
+  return { source: 'rules', verdicts: Object.fromEntries(urls.map((u) => [u, robotsAllowed(rules, u) ? 'allowed' : 'disallowed'])), challenge: false, crawl_delay: delay };
 }
 
 /** Si se pide la URL: lo que su robots.txt permite o, en una entidad pública del
@@ -122,4 +133,4 @@ function pacing(items) {
 }
 
 // @export
-if (typeof module !== 'undefined') module.exports = { robotRules, robotsAllowed, robotsVerdicts, robotsFetch, publicPeru, pacing, ROBOTS_AGENT };
+if (typeof module !== 'undefined') module.exports = { robotGroup, robotRules, robotsAllowed, robotsVerdicts, robotsFetch, publicPeru, pacing, ROBOTS_AGENT };

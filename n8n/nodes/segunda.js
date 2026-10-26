@@ -22,7 +22,7 @@ for (const it of items) {
     for (const { pass, fetch, ...d } of j.deferred) if (fetch) add(d);
     continue;
   }
-  if (!j.cls.ok && j.cls.transient) add({ id: j.id, group: j.group, name: j.name, url: j.url, expect: j.expect, robots: j.robots, robots_public: j.robots_public });
+  if (!j.cls.ok && j.cls.transient) add({ id: j.id, group: j.group, name: j.name, url: j.url, expect: j.expect, robots: j.robots, robots_public: j.robots_public, crawl_delay: j.crawl_delay });
 }
 const pages = [];
 for (let i = 0; i < items.length; i++) {

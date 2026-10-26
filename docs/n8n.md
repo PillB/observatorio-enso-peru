@@ -83,7 +83,7 @@ redirección a otro servidor que lo prohíba, o una verificación en lugar del
 `robots.txt` haya llegado una verificación antirobots: esa nunca se evade.
 Lo que sí se respeta es la frecuencia: n8n intercala los servidores y, entre
 dos peticiones al mismo servidor público del Perú, espera su `Crawl-delay`
-(`crawl_delay` en `by_url`, si el registro lo trae) o 1 segundo, hasta 30
+(el del `robots.txt` que n8n leyó, o `crawl_delay` en `by_url` si el registro lo trae) o 1 segundo, hasta 30
 (nodos «Pausa», con `pause_s`).
 
 El veredicto queda en la entrada de `index.json` de la URL pedida (`robots`)

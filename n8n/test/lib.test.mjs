@@ -29,7 +29,7 @@ function loadWith(shadow, ...names) {
     classify: ['classify', 'reachClass', 'detectFormat', 'feedStats', 'fileExtension', 'utf8Decode', 'utf8Encode'],
     enfen: ['deriveEnfenTargets', 'parseListing', 'parseWpPosts', 'cleanWpdm'],
     relay: ['buildSnapshot', 'pickResults', 'heartbeat', 'parseTokenExpiry', 'notRequested'],
-    robots: ['robotRules', 'robotsAllowed', 'robotsVerdicts', 'robotsFetch', 'publicPeru', 'pacing'],
+    robots: ['robotRules', 'robotsAllowed', 'robotsVerdicts', 'robotsFetch', 'publicPeru', 'pacing', 'robotGroup'],
   };
   const code = names.map(libSource).join('\n');
   const all = names.flatMap((n) => exportsList[n]);
@@ -387,7 +387,8 @@ test('qué hace n8n con cada respuesta de robots.txt (RFC 9309)', () => {
   const urls = ['https://x/feed/', 'https://x/wp-admin/'];
   const v = (r) => robotsVerdicts({ headers: {}, ...r, cls: classify({ url: 'https://x/robots.txt', expect: 'any', headers: r.headers || {}, ...r }) }, urls);
   const rules = v({ status: 200, body: enc('User-agent: *\nDisallow: /wp-admin/\n') });
-  assert.deepEqual(rules, { source: 'rules', verdicts: { 'https://x/feed/': 'allowed', 'https://x/wp-admin/': 'disallowed' }, challenge: false });
+  assert.deepEqual(rules, { source: 'rules', verdicts: { 'https://x/feed/': 'allowed', 'https://x/wp-admin/': 'disallowed' }, challenge: false, crawl_delay: null });
+  assert.equal(v({ status: 200, body: enc('User-agent: *\nCrawl-delay: 5\nDisallow: /wp-admin/\n') }).crawl_delay, 5);
   // Una página HTML (un «no encontrado» con 200) no tiene reglas: se permite todo.
   assert.equal(v({ status: 200, body: enc('<!DOCTYPE html><html><body>' + 'x'.repeat(3000)) }).verdicts['https://x/wp-admin/'], 'allowed');
   assert.equal(v({ status: 404, body: enc('no') }).source, 'absent');
@@ -562,6 +563,19 @@ test('entidades públicas del Perú: robots.txt no decide, pero una verificació
   // Una verificación antirobots en lugar del robots.txt: nunca se evade, tampoco en el Perú.
   assert.equal(v({ status: 403, headers: { 'cf-mitigated': 'challenge' }, body: enc('') }, 'https://www.imarpe.gob.pe/feed/'), false);
   assert.equal(v({ status: 200, body: enc('<!DOCTYPE html><html><head><title>Just a moment...</title></head></html>') }, 'https://www.imarpe.gob.pe/feed/'), false);
+  // También con 503 o 429 y sin «cf-mitigated»: la página es una verificación.
+  assert.equal(v({ status: 503, headers: { 'content-type': 'text/html' }, body: enc('<html><title>Just a moment...</title></html>') }, 'https://www.imarpe.gob.pe/feed/'), false);
+});
+
+test('Crawl-delay: el del grupo del observatorio o «*», y se conserva en el reintento', async () => {
+  const { robotGroup } = loadWith({ URL: undefined }, 'robots');
+  assert.equal(robotGroup('User-agent: *\nCrawl-delay: 3\nDisallow: /x\n').delay, 3);
+  assert.equal(robotGroup('User-agent: *\nCrawl-delay: 3\n\nUser-agent: observatorio-enso-peru\nCrawl-delay: 7\n').delay, 7);
+  assert.equal(robotGroup('User-agent: otro\nCrawl-delay: 9\n').delay, null);
+  const failed = (id) => ({ json: { id, group: 'g', name: id, url: `https://www.imarpe.gob.pe/${id}`, expect: 'html', crawl_delay: 10,
+    cls: { ok: false, transient: true, verdict: 'server_error', reach: 'http-5xx' } } });
+  const second = await runCode('segunda', {}, {}, [failed('a'), failed('b')]);
+  assert.deepEqual(second.map((i) => [i.json.id, i.json.crawl_delay, i.json.pause_s]), [['a', 10, 0], ['b', 10, 10]]);
 });
 
 test('Fuentes intercala los servidores para no pedir seguido al mismo', async () => {
