@@ -361,3 +361,26 @@ def test_department_list_keeps_callao():
     got = D.listed_departments("DEPARTAMENTOS DE POSIBLE AFECTACIÓN: ÁNCASH, AREQUIPA, PROV. CONST. DEL\nCALLAO, ICA, "
                                "LA LIBERTAD, LAMBAYEQUE,LIMA, MOQUEGUA, PIURA Y TACNA.\nPor vientos fuertes:")
     assert got == ["02", "04", "07", "11", "13", "14", "15", "18", "20", "23"]
+
+
+def test_apply_keeps_report_facts_and_refreshes_hazards():
+    from enso.severity import occurred
+
+    report = _coen_item(id="r", link="https://portal.indeci.gob.pe/emergencias/reporte-huaraz/",
+                        feed="indeci-coen", title="Lluvias intensas en el distrito de Huaraz (Áncash)",
+                        summary="Reporte complementario N° 14898. Ocurrió el 22/10/2026 a las 17:21. Lluvias intensas "
+                                "afectaron viviendas.", hazards=["lluvias"])
+    aviso = _coen_item(hazards=["emergencia"])  # aviso 440: el RSS no trae el tema
+    cache = {report["link"]: {"status": "ok", "pdf": "https://portal.indeci.gob.pe/wp-content/uploads/r.pdf",
+                              "codes": ["020101"], "basis": "ubicación del reporte del COEN"},
+             PAGE: {"status": "ok", "pdf": PDF_URL, "codes": ["02"], "basis": "departamentos expuestos del boletín del COEN",
+                    "num": 435, "what": "PRECIPITACIONES EN LA SIERRA", "when": "LUNES 26 DE OCTUBRE"}}
+    assert D.apply([report, aviso], cache) == 2
+    # El hecho y su fecha quedan; los lugares del PDF se suman al final (una sola vez).
+    assert report["summary"].startswith("Reporte complementario N° 14898. Ocurrió el 22/10/2026 a las 17:21.")
+    assert report["summary"].endswith("Según el PDF del COEN (ubicación del reporte del COEN): Huaraz.")
+    assert occurred("indeci-coen", report["summary"]) == "2026-10-22T22:21:00Z"
+    D.apply([report], cache)
+    assert report["summary"].count("Según el PDF") == 1
+    assert report["hazards"] == ["lluvias"]
+    assert "lluvias" in aviso["hazards"] and "emergencia" not in aviso["hazards"][:1]

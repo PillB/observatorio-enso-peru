@@ -569,6 +569,7 @@ _KIND_RE = re.compile(r"^Aviso (meteorol[óo]gico|hidrol[óo]gico) N° (\d+) del
 def apply(items: list[dict], cache: dict) -> int:
     """Pasa lo leído de cada PDF a sus notas (en memoria). Devuelve cuántas notas cambiaron."""
     from .feedparse import clean_text
+    from .news import hazards
 
     n = 0
     for it in items:
@@ -589,13 +590,23 @@ def apply(items: list[dict], cache: dict) -> int:
         oleaje = title.lower().startswith("aviso especial de oleaje")
         kind = k.group(1).lower() if k else ("especial de oleaje" if oleaje else "")
         text = summary(doc, kind or "meteorológico")
-        if text:
-            tail = re.search(r"Difundido por el COEN del INDECI[^.]*\.", it.get("summary") or "")
+        before = it.get("summary") or ""
+        if text and not any(doc.get(k) for k in ("what", "num", "when", "body", "source")):
+            # Un reporte de emergencia: lo que dice el RSS (el hecho, «Ocurrió el …», que ``severity.occurred``
+            # lee) se queda; los lugares del PDF van después.
+            if "Según el PDF del COEN" not in before:
+                it["summary"] = clean_text(f"{before} {text}".strip(), 900)
+        elif text:
+            tail = re.search(r"Difundido por el COEN del INDECI[^.]*\.", before)
             it["summary"] = clean_text(text + (f" {tail.group(0)}" if tail else ""), 600)
         if (k or oleaje) and doc.get("what"):
             # El titular con el tema y la vigencia del PDF (el RSS a veces no los trae, o pega palabras).
             head = k.group(0) if k else f"Aviso especial de oleaje N° {doc.get('num') or ''}".rstrip()
             when = f" (vigencia: {doc['when'].lower()})" if doc.get("when") else ""
             it["title"] = clean_text(f"{head}: {doc['what'].lower()}{when}", 300)
+        # Los peligros, con el tema que trae el PDF (el RSS del aviso 440 no lo dice: quedaba solo «emergencia»).
+        it["hazards"] = list(dict.fromkeys(hazards(it.get("title") or "", it.get("summary") or "")
+                                           + [h for h in it.get("hazards") or [] if h != "emergencia"])) or \
+            it.get("hazards") or []
         n += 1
     return n
