@@ -38,8 +38,8 @@
      "w": 300,
      "title_es": "Alertas y noticias",
      "title_en": "Alerts and news",
-     "sub_es": "168 feeds: 14 de alertas, 116 de medios y del Estado y 38 de Google Noticias",
-     "sub_en": "168 feeds: 14 alert sources, 116 media and government feeds and 38 Google News searches"
+     "sub_es": "169 feeds: 15 de alertas, 116 de medios y del Estado y 38 de Google Noticias",
+     "sub_en": "169 feeds: 15 alert sources, 116 media and government feeds and 38 Google News searches"
     },
     {
      "id": "c3",
@@ -135,8 +135,8 @@
      "col": "c2",
      "icon": "alert",
      "group": "sources",
-     "name_es": "14 fuentes de alertas",
-     "name_en": "14 alert sources",
+     "name_es": "15 fuentes de alertas",
+     "name_en": "15 alert sources",
      "what_es": "COEN del INDECI, SENAMHI (Telegram y 4 capas ArcGIS), NASA FIRMS, USGS, DHN, PTWC e IGP (CENVUL), cada una en su formato.",
      "what_en": "INDECI's COEN, SENAMHI (Telegram and 4 ArcGIS layers), NASA FIRMS, USGS, DHN, PTWC and IGP (CENVUL), each in its own format.",
      "tech": [
@@ -239,8 +239,8 @@
      "group": "pipeline",
      "name_es": "Armado del registro",
      "name_en": "Registry builder",
-     "what_es": "Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 3 listados de documentos y 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo los feeds reader, solo Actions); lo demás, Actions y n8n, salvo las fuentes con n8n: false.",
-     "what_en": "Joins the code's catalogs (168 feeds, 17 ENSO sources, 3 document listings and 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except reader feeds, Actions only); the rest, Actions and n8n, except sources with n8n: false.",
+     "what_es": "Junta los catálogos del código (169 feeds, 17 fuentes ENSO, 3 listados de documentos y 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo los feeds reader, solo Actions); lo demás, Actions y n8n, salvo las fuentes con n8n: false.",
+     "what_en": "Joins the code's catalogs (169 feeds, 17 ENSO sources, 3 document listings and 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except reader feeds, Actions only); the rest, Actions and n8n, except sources with n8n: false.",
      "meta_es": "--check falla si no está al día",
      "meta_en": "--check fails if out of date",
      "tech": [
@@ -315,8 +315,8 @@
      "kind": "data",
      "label_es": "feeds de alertas y noticias",
      "label_en": "alert and news feeds",
-     "explain_es": "Los 168 feeds se miden igual: así se sabe cuáles responden desde Actions y desde n8n.",
-     "explain_en": "The 168 feeds are measured the same way: that is how we know which answer from Actions and from n8n."
+     "explain_es": "Los 169 feeds se miden igual: así se sabe cuáles responden desde Actions y desde n8n.",
+     "explain_en": "The 169 feeds are measured the same way: that is how we know which answer from Actions and from n8n."
     },
     {
      "from": "vantages",
@@ -2340,8 +2340,8 @@
    "id": "a6",
    "title_es": "Noticias y alertas: lectura, filtro, histórico y lugar",
    "title_en": "News and alerts: reading, filtering, history and place",
-   "subtitle_es": "Cada corrida lee 168 feeds, se queda con las notas sobre El Niño o sobre un peligro en el Perú, las suma a un histórico que nunca borra y ubica cada una en su departamento, provincia y distrito. Los revisores corrigen el lugar en la consola (anexo A7).",
-   "subtitle_en": "Every run reads 168 feeds, keeps the notes about El Niño or about a hazard in Peru, appends them to a history that never deletes and places each one in its department, province and district. Reviewers fix the place in the console (annex A7).",
+   "subtitle_es": "Cada corrida lee 169 feeds, se queda con las notas sobre El Niño o sobre un peligro en el Perú, las suma a un histórico que nunca borra y ubica cada una en su departamento, provincia y distrito. Los revisores corrigen el lugar en la consola (anexo A7).",
+   "subtitle_en": "Every run reads 169 feeds, keeps the notes about El Niño or about a hazard in Peru, appends them to a history that never deletes and places each one in its department, province and district. Reviewers fix the place in the console (annex A7).",
    "desc_es": "Las noticias y alertas en la corrida diaria: descarga, lectura tolerante, filtro de relevancia y peligros, histórico de solo anexar con su copia y ubicación por UBIGEO con las correcciones de la consola.",
    "desc_en": "News and alerts in the daily run: download, tolerant parsing, relevance and hazard filter, append-only history with its copy, and UBIGEO placement with the console's corrections.",
    "covers": [
@@ -2393,10 +2393,10 @@
      "col": "c1",
      "icon": "rss",
      "group": "sources",
-     "name_es": "168 feeds",
-     "name_en": "168 feeds",
-     "what_es": "116 de medios y del Estado, 38 búsquedas de Google Noticias y 14 fuentes de alertas, con el plan del registro.",
-     "what_en": "116 media and government feeds, 38 Google News searches and 14 alert sources, with the registry's plan.",
+     "name_es": "169 feeds",
+     "name_en": "169 feeds",
+     "what_es": "116 de medios y del Estado, 38 búsquedas de Google Noticias y 15 fuentes de alertas, con el plan del registro.",
+     "what_en": "116 media and government feeds, 38 Google News searches and 15 alert sources, with the registry's plan.",
      "see": [
       "a1"
      ]
@@ -2730,9 +2730,9 @@
     },
     {
      "if_es": "Falla toda la lectura de noticias",
-     "then_es": "Se sirven las notas anteriores y las últimas alertas conocidas; las 14 fuentes de alertas figuran como no leídas, para que el silencio no parezca calma.",
+     "then_es": "Se sirven las notas anteriores y las últimas alertas conocidas; las 15 fuentes de alertas figuran como no leídas, para que el silencio no parezca calma.",
      "if_en": "All news reading fails",
-     "then_en": "The previous notes and the latest known alerts are served; the 14 alert sources show as unread, so silence does not look like calm."
+     "then_en": "The previous notes and the latest known alerts are served; the 15 alert sources show as unread, so silence does not look like calm."
     },
     {
      "if_es": "El histórico publicado no se puede leer",

@@ -116,7 +116,7 @@
   <rect class="ar-bg" x="0" y="0" width="1440" height="1461.9" rx="14"/>
   <text class="ar-big" x="20" y="38" font-size="20">Annex A6 · News and alerts: reading, filtering, history and place</text>
   <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
-  <text class="ar-s" x="20" y="60" font-size="12">Every run reads 168 feeds, keeps the notes about El Niño or about a hazard in Peru, appends them to a history that never deletes and places each one in its department, province and district. Reviewers fix the place in the console</text>
+  <text class="ar-s" x="20" y="60" font-size="12">Every run reads 169 feeds, keeps the notes about El Niño or about a hazard in Peru, appends them to a history that never deletes and places each one in its department, province and district. Reviewers fix the place in the console</text>
   <text class="ar-s" x="20" y="77" font-size="12">(annex A7).</text>
   <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: News and alerts: reading and filtering, Append-only news history, Placement and place corrections.</text>
   <text class="ar-t" x="20" y="121" font-size="11.5">Lines:</text>
@@ -143,7 +143,7 @@
   
   <!-- conexiones -->
   <g class="ar-edge" id="a6-e-1" data-edge="1" data-from="feeds" data-to="reader" tabindex="0">
-    <title>1. 168 feeds → Reader feeds: forbidden by robots.txt. Reader feeds follow their own pace; the rest are requested every run.</title>
+    <title>1. 169 feeds → Reader feeds: forbidden by robots.txt. Reader feeds follow their own pace; the rest are requested every run.</title>
     <path class="ar-e ar-e-trigger" d="M186 300.5 L186 330.5" stroke-dasharray="2 3" marker-end="url(#a6-m-trigger)"/>
     <circle class="ar-badge ar-e-trigger" cx="186" cy="315.5" r="9"/>
     <text class="ar-t" x="186" y="319.3" font-size="10.5" text-anchor="middle">1</text>
@@ -155,7 +155,7 @@
     <text class="ar-t" x="186" y="454.9" font-size="10.5" text-anchor="middle">2</text>
   </g>
   <g class="ar-edge" id="a6-e-3" data-edge="3" data-from="feeds" data-to="fetch" tabindex="0">
-    <title>3. 168 feeds → Feed download: 128 feeds every run. One after another per server, out of courtesy; 10 minutes to start them all.</title>
+    <title>3. 169 feeds → Feed download: 128 feeds every run. One after another per server, out of courtesy; 10 minutes to start them all.</title>
     <path class="ar-e ar-e-data" d="M326 246 L342 246 Q348 246 348 252 L348 492 Q348 498 342 498 L326 498" marker-end="url(#a6-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="348" cy="372" r="9"/>
     <text class="ar-t" x="348" y="375.8" font-size="10.5" text-anchor="middle">3</text>
@@ -241,14 +241,14 @@
   
   <!-- cajas -->
   <g class="ar-node-g" id="a6-n-feeds" data-node="feeds">
-    <title>168 feeds. 116 media and government feeds, 38 Google News searches and 14 alert sources, with the registry&#x27;s plan.</title>
+    <title>169 feeds. 116 media and government feeds, 38 Google News searches and 15 alert sources, with the registry&#x27;s plan.</title>
     <rect class="ar-node ar-g-sources" x="46" y="195" width="280" height="105.5" rx="8"/>
     <rect class="ar-f-sources" x="46" y="203" width="4" height="89.5" rx="2"/>
     <rect class="ar-tile ar-f-sources" x="58" y="205" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-sources" transform="translate(61 208)"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.4"/></g>
-    <text class="ar-t" x="96" y="224.5" font-size="12.5">168 feeds</text>
+    <text class="ar-t" x="96" y="224.5" font-size="12.5">169 feeds</text>
     <text class="ar-s" x="58" y="256.4" font-size="11">116 media and government feeds, 38 Google</text>
-    <text class="ar-s" x="58" y="271.6" font-size="11">News searches and 14 alert sources, with the</text>
+    <text class="ar-s" x="58" y="271.6" font-size="11">News searches and 15 alert sources, with the</text>
     <text class="ar-s" x="58" y="286.8" font-size="11">registry&#x27;s plan.</text>
     <a class="ar-annex" href="a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="290.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="214.5" font-size="10.5" text-anchor="middle">A1</text></a>
   </g>
@@ -445,7 +445,7 @@
   <circle class="ar-badge ar-e-trigger" cx="30" cy="927.9" r="9"/>
   <text class="ar-t" x="30" y="931.7" font-size="10.5" text-anchor="middle">1</text>
   <text class="ar-t" x="50" y="931.9" font-size="11.5">forbidden by robots.txt</text>
-  <text class="ar-m" x="50" y="945.9" font-size="10.5">168 feeds → Reader feeds</text>
+  <text class="ar-m" x="50" y="945.9" font-size="10.5">169 feeds → Reader feeds</text>
   <text class="ar-s" x="50" y="960.9" font-size="11">Reader feeds follow their own pace; the rest are requested every run.</text>
   <circle class="ar-badge ar-e-trigger" cx="30" cy="983.9" r="9"/>
   <text class="ar-t" x="30" y="987.7" font-size="10.5" text-anchor="middle">2</text>
@@ -456,7 +456,7 @@
   <circle class="ar-badge ar-e-data" cx="30" cy="1054.9" r="9"/>
   <text class="ar-t" x="30" y="1058.7" font-size="10.5" text-anchor="middle">3</text>
   <text class="ar-t" x="50" y="1058.9" font-size="11.5">128 feeds every run</text>
-  <text class="ar-m" x="50" y="1072.9" font-size="10.5">168 feeds → Feed download</text>
+  <text class="ar-m" x="50" y="1072.9" font-size="10.5">169 feeds → Feed download</text>
   <text class="ar-s" x="50" y="1087.9" font-size="11">One after another per server, out of courtesy; 10 minutes to start them all.</text>
   <circle class="ar-badge ar-e-data" cx="30" cy="1110.9" r="9"/>
   <text class="ar-t" x="30" y="1114.7" font-size="10.5" text-anchor="middle">4</text>
@@ -533,7 +533,7 @@
   <text class="ar-s" x="50" y="1367.9" font-size="11">news/feeds.json and the run goes on.</text>
   <g class="ar-warn" transform="translate(20 1379.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
   <text class="ar-t" x="50" y="1394.9" font-size="11.5">All news reading fails</text>
-  <text class="ar-s" x="50" y="1409.9" font-size="11">The previous notes and the latest known alerts are served; the 14 alert</text>
+  <text class="ar-s" x="50" y="1409.9" font-size="11">The previous notes and the latest known alerts are served; the 15 alert</text>
   <text class="ar-s" x="50" y="1424.9" font-size="11">sources show as unread, so silence does not look like calm.</text>
   <g class="ar-warn" transform="translate(496 1322.9) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
   <text class="ar-t" x="526" y="1337.9" font-size="11.5">The published history cannot be read</text>

@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-26T17:52:39+00:00",
+ "generated_at": "2026-10-26T20:57:42+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n no la pide y el pipeline lo lee antes de pedirla",
@@ -9011,6 +9011,56 @@
    "by_url": {
     "https://portal.indeci.gob.pe/emergencias/feed/?paged=1": {
      "status": "open",
+     "channels": [
+      "actions",
+      "n8n"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "news-indeci-coen-boletines",
+   "group": "indeci",
+   "name": "INDECI · COEN, boletines de avisos",
+   "institution": "INDECI",
+   "url": "https://portal.indeci.gob.pe/emergencias/feed/?s=boletin+informativo",
+   "expect": "rss",
+   "method": "feed",
+   "kind": "feed",
+   "home": "https://portal.indeci.gob.pe/",
+   "alt_urls": [],
+   "hazards": [
+    "lluvias",
+    "huaico",
+    "frio",
+    "calor",
+    "viento",
+    "oleaje"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.hazardparse:parse (adapter=indeci-coen)",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "tipo de medio: gobierno; alcance: hazard",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions",
+    "n8n"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://portal.indeci.gob.pe/emergencias/feed/?s=boletin+informativo": {
+     "status": "unknown",
      "channels": [
       "actions",
       "n8n"

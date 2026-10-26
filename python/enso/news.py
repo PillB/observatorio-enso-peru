@@ -401,6 +401,13 @@ FEEDS: list[Feed] = [
     Feed("indeci-coen", "INDECI · COEN, reportes de emergencias", "peru", "https://portal.indeci.gob.pe/emergencias/feed/?paged=1",
          kind="gobierno", scope="hazard", stale_days=3, adapter="indeci-coen",
          covers=("lluvias", "inundacion", "huaico", "frio", "calor", "viento", "incendio", "oleaje", "sismo", "volcan", "emergencia")),
+    # El RSS de arriba trae solo las últimas ~14 publicaciones (unas horas de reportes): un boletín de aviso se pierde
+    # entre corridas. La búsqueda de WordPress trae los boletines de los últimos días; su detalle está en el PDF
+    # que enlaza cada uno (``documentos``).
+    Feed("indeci-coen-boletines", "INDECI · COEN, boletines de avisos", "peru",
+         "https://portal.indeci.gob.pe/emergencias/feed/?s=boletin+informativo",
+         kind="gobierno", scope="hazard", stale_days=4, adapter="indeci-coen",
+         covers=("lluvias", "huaico", "frio", "calor", "viento", "oleaje")),
     Feed("senamhi-quebradas", "SENAMHI · avisos de activación de quebradas (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2"
          "/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json",
