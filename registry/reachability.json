@@ -1,6 +1,6 @@
 {
  "schema": "enso-reachability/2",
- "updated_at": "2026-10-26T16:12:03+00:00",
+ "updated_at": "2026-10-26T23:47:27+00:00",
  "urls": {
   "http://met.igp.gob.pe/datos/ICEN.txt": {
    "n8n": {
@@ -34,10 +34,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 15853,
-     "ms": 1251,
+     "ms": 541,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:12+00:00",
+     "at": "2026-10-26T23:43:37+00:00",
      "vantage": "github-actions"
     }
    },
@@ -58,11 +58,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 178933,
-     "ms": 207,
+     "bytes": 180855,
+     "ms": 166,
      "detail": "",
-     "robots": "allowed",
-     "at": "2026-10-26T16:10:10+00:00",
+     "robots": "absent",
+     "at": "2026-10-26T23:43:37+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -98,11 +98,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 70414,
-     "ms": 657,
+     "bytes": 72826,
+     "ms": 715,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:11+00:00",
+     "at": "2026-10-26T23:43:37+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -149,11 +149,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57157,
-     "ms": 415,
+     "bytes": 70377,
+     "ms": 1189,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:11+00:00",
+     "at": "2026-10-26T23:43:41+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -189,11 +189,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 60293,
-     "ms": 859,
+     "bytes": 60278,
+     "ms": 1949,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:14+00:00",
+     "at": "2026-10-26T23:43:39+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -277,11 +277,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 19037,
-     "ms": 288,
+     "bytes": 19470,
+     "ms": 295,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:11+00:00",
+     "at": "2026-10-26T23:43:37+00:00",
      "vantage": "github-actions"
     }
    }
@@ -412,11 +412,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 25829,
-     "ms": 66,
+     "bytes": 25766,
+     "ms": 92,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:10+00:00",
+     "at": "2026-10-26T23:43:36+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -478,11 +478,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 131238,
-     "ms": 64,
+     "bytes": 129084,
+     "ms": 147,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:10+00:00",
+     "at": "2026-10-26T23:43:36+00:00",
      "vantage": "github-actions"
     }
    }
@@ -492,11 +492,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 193930,
-     "ms": 1377,
+     "bytes": 194161,
+     "ms": 2083,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:15+00:00",
+     "at": "2026-10-26T23:43:42+00:00",
      "vantage": "github-actions"
     }
    }
@@ -506,11 +506,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 214719,
-     "ms": 853,
+     "bytes": 216693,
+     "ms": 1200,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:12+00:00",
+     "at": "2026-10-26T23:43:38+00:00",
      "vantage": "github-actions"
     }
    }
@@ -558,10 +558,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8285,
-     "ms": 262,
+     "ms": 207,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:11+00:00",
+     "at": "2026-10-26T23:43:37+00:00",
      "vantage": "github-actions"
     }
    }
@@ -582,11 +582,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 64066,
-     "ms": 434,
+     "bytes": 65136,
+     "ms": 729,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:11+00:00",
+     "at": "2026-10-26T23:43:37+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -633,11 +633,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 369794,
-     "ms": 383,
+     "bytes": 474017,
+     "ms": 394,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:11+00:00",
+     "at": "2026-10-26T23:43:37+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -699,11 +699,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 600155,
-     "ms": 443,
+     "bytes": 633598,
+     "ms": 270,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:13+00:00",
+     "at": "2026-10-26T23:43:39+00:00",
      "vantage": "github-actions"
     }
    }
@@ -724,11 +724,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 29153,
-     "ms": 233,
+     "bytes": 34676,
+     "ms": 246,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:11+00:00",
+     "at": "2026-10-26T23:43:37+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -765,10 +765,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 38502,
-     "ms": 975,
+     "ms": 6263,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:12+00:00",
+     "at": "2026-10-26T23:43:44+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -816,10 +816,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 31653,
-     "ms": 215,
+     "ms": 263,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:11+00:00",
+     "at": "2026-10-26T23:43:38+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -856,10 +856,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 44686,
-     "ms": 376,
+     "ms": 198,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:15+00:00",
+     "at": "2026-10-26T23:43:40+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -906,11 +906,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 44638,
-     "ms": 74,
+     "bytes": 41375,
+     "ms": 602,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:12+00:00",
+     "at": "2026-10-26T23:43:42+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -946,11 +946,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 51832,
-     "ms": 124,
+     "bytes": 52621,
+     "ms": 183,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:13+00:00",
+     "at": "2026-10-26T23:43:38+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -987,10 +987,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 64447,
-     "ms": 361,
+     "ms": 453,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:12+00:00",
+     "at": "2026-10-26T23:43:38+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1027,10 +1027,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 11635,
-     "ms": 339,
+     "ms": 70,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:12+00:00",
+     "at": "2026-10-26T23:43:38+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1040,11 +1040,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 173100,
-     "ms": 494,
+     "bytes": 186461,
+     "ms": 655,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:12+00:00",
+     "at": "2026-10-26T23:43:39+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1080,11 +1080,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 297723,
-     "ms": 178,
+     "bytes": 372645,
+     "ms": 114,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:12+00:00",
+     "at": "2026-10-26T23:43:38+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1144,11 +1144,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 1629624,
-     "ms": 284,
+     "bytes": 1205674,
+     "ms": 254,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:14+00:00",
+     "at": "2026-10-26T23:43:40+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1180,11 +1180,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 10487,
-     "ms": 652,
+     "bytes": 10282,
+     "ms": 925,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:14+00:00",
+     "at": "2026-10-26T23:43:40+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1245,10 +1245,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:22+00:00",
+     "ms": 6826,
+     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "robots": "allowed",
+     "at": "2026-10-26T23:43:55+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1344,10 +1344,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:22+00:00",
+     "ms": 9620,
+     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "robots": "allowed",
+     "at": "2026-10-26T23:44:06+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1393,10 +1393,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:22+00:00",
+     "ms": 10029,
+     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "robots": "allowed",
+     "at": "2026-10-26T23:44:18+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1418,10 +1418,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 110493,
-     "ms": 58,
+     "ms": 117,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:12+00:00",
+     "at": "2026-10-26T23:43:39+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1505,11 +1505,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 29591,
-     "ms": 31,
+     "bytes": 29303,
+     "ms": 210,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:13+00:00",
+     "at": "2026-10-26T23:43:39+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1519,11 +1519,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 1013750,
-     "ms": 292,
+     "bytes": 1300443,
+     "ms": 795,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:13+00:00",
+     "at": "2026-10-26T23:43:40+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1534,10 +1534,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 162196,
-     "ms": 98,
+     "ms": 133,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:13+00:00",
+     "at": "2026-10-26T23:43:40+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1559,11 +1559,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 2684,
-     "ms": 344,
+     "bytes": 3534,
+     "ms": 921,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:14+00:00",
+     "at": "2026-10-26T23:43:47+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1574,10 +1574,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 42,
-     "ms": 312,
+     "ms": 352,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1587,11 +1587,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 6158,
-     "ms": 795,
+     "bytes": 5214,
+     "ms": 346,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:18+00:00",
+     "at": "2026-10-26T23:43:41+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1601,11 +1601,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 20992,
-     "ms": 713,
+     "bytes": 22386,
+     "ms": 625,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:21+00:00",
+     "at": "2026-10-26T23:43:45+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1651,11 +1651,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 864811,
-     "ms": 225,
+     "bytes": 855150,
+     "ms": 708,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:14+00:00",
+     "at": "2026-10-26T23:43:41+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1677,10 +1677,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:29+00:00",
+     "ms": 25355,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:45:15+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1702,10 +1702,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:29+00:00",
+     "ms": 25006,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:44:49+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1727,10 +1727,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:29+00:00",
+     "ms": 25671,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:44:22+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1751,11 +1751,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 97930,
-     "ms": 445,
+     "bytes": 134485,
+     "ms": 641,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:15+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1839,11 +1839,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 385104,
-     "ms": 236,
+     "bytes": 412728,
+     "ms": 244,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:42+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1853,11 +1853,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 29717,
-     "ms": 1107,
+     "bytes": 33836,
+     "ms": 1038,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:17+00:00",
+     "at": "2026-10-26T23:43:44+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1943,10 +1943,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 81036,
-     "ms": 281,
+     "ms": 332,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:44+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2012,7 +2012,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     }
    }
@@ -2052,7 +2052,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     }
    }
@@ -2066,7 +2066,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2106,7 +2106,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2146,7 +2146,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2186,7 +2186,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2226,7 +2226,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2266,7 +2266,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2306,7 +2306,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2346,7 +2346,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2386,7 +2386,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2426,7 +2426,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2466,7 +2466,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2506,7 +2506,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2546,7 +2546,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2586,7 +2586,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2626,7 +2626,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2666,7 +2666,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2706,7 +2706,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2746,7 +2746,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2786,7 +2786,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2826,7 +2826,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2866,7 +2866,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2906,7 +2906,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2946,7 +2946,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2986,7 +2986,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3026,7 +3026,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3066,7 +3066,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3106,7 +3106,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3146,7 +3146,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3186,7 +3186,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3248,7 +3248,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3288,7 +3288,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3361,7 +3361,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3434,7 +3434,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3474,7 +3474,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3514,7 +3514,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3554,7 +3554,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3620,7 +3620,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:43+00:00",
      "vantage": "github-actions"
     }
    }
@@ -3631,10 +3631,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 38732,
-     "ms": 784,
+     "ms": 1264,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:17+00:00",
+     "at": "2026-10-26T23:43:46+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3671,10 +3671,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:32+00:00",
+     "ms": 25355,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:44:24+00:00",
      "vantage": "github-actions"
     }
    },
@@ -3721,7 +3721,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:16+00:00",
+     "at": "2026-10-26T23:43:44+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3806,10 +3806,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 119505,
-     "ms": 373,
+     "ms": 137,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:17+00:00",
+     "at": "2026-10-26T23:43:45+00:00",
      "vantage": "github-actions"
     }
    }
@@ -3819,11 +3819,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 36697,
-     "ms": 669,
+     "bytes": 34300,
+     "ms": 1426,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:20+00:00",
+     "at": "2026-10-26T23:43:50+00:00",
      "vantage": "github-actions"
     }
    },
@@ -3840,16 +3840,30 @@
     }
    }
   },
+  "https://portal.indeci.gob.pe/emergencias/feed/?s=boletin+informativo": {
+   "actions": {
+    "github-actions": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 22375,
+     "ms": 388,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T23:43:47+00:00",
+     "vantage": "github-actions"
+    }
+   }
+  },
   "https://pregon.com.pe/index.php/regionales?format=feed&type=rss": {
    "actions": {
     "github-actions": {
      "class": "ok",
      "http": 200,
      "bytes": 30762,
-     "ms": 113,
+     "ms": 153,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:18+00:00",
+     "at": "2026-10-26T23:43:46+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3885,11 +3899,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 51732,
-     "ms": 49,
+     "bytes": 52905,
+     "ms": 18,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:18+00:00",
+     "at": "2026-10-26T23:43:46+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3925,11 +3939,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 45432,
-     "ms": 921,
+     "bytes": 45329,
+     "ms": 698,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:19+00:00",
+     "at": "2026-10-26T23:43:47+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4003,10 +4017,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8296,
-     "ms": 28,
+     "ms": 33,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:18+00:00",
+     "at": "2026-10-26T23:43:46+00:00",
      "vantage": "github-actions"
     }
    }
@@ -4043,10 +4057,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8362,
-     "ms": 22,
+     "ms": 32,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:20+00:00",
+     "at": "2026-10-26T23:43:47+00:00",
      "vantage": "github-actions"
     }
    }
@@ -4067,11 +4081,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 47033,
-     "ms": 346,
+     "bytes": 49657,
+     "ms": 297,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:19+00:00",
+     "at": "2026-10-26T23:43:47+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4107,11 +4121,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 44241,
-     "ms": 85,
+     "bytes": 42272,
+     "ms": 35,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:19+00:00",
+     "at": "2026-10-26T23:43:47+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4158,11 +4172,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 87509,
-     "ms": 1915,
+     "bytes": 77261,
+     "ms": 1760,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:21+00:00",
+     "at": "2026-10-26T23:43:49+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4198,11 +4212,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 100167,
-     "ms": 2069,
+     "bytes": 103254,
+     "ms": 1237,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:23+00:00",
+     "at": "2026-10-26T23:43:50+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4239,10 +4253,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 39093,
-     "ms": 132,
+     "ms": 160,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:21+00:00",
+     "at": "2026-10-26T23:43:48+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4279,10 +4293,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 86025,
-     "ms": 756,
+     "ms": 686,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:21+00:00",
+     "at": "2026-10-26T23:43:49+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4319,10 +4333,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:31+00:00",
+     "ms": 10011,
+     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "robots": "allowed",
+     "at": "2026-10-26T23:44:08+00:00",
      "vantage": "github-actions"
     }
    }
@@ -4333,10 +4347,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:31+00:00",
+     "ms": 10024,
+     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "robots": "allowed",
+     "at": "2026-10-26T23:44:20+00:00",
      "vantage": "github-actions"
     }
    }
@@ -4347,10 +4361,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:10:32+00:00",
+     "ms": 10014,
+     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "robots": "allowed",
+     "at": "2026-10-26T23:44:32+00:00",
      "vantage": "github-actions"
     }
    }
@@ -4360,11 +4374,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 58971,
-     "ms": 41,
+     "bytes": 59086,
+     "ms": 90,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:22+00:00",
+     "at": "2026-10-26T23:43:50+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4400,11 +4414,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57527,
-     "ms": 131,
+     "bytes": 61114,
+     "ms": 149,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:23+00:00",
+     "at": "2026-10-26T23:43:52+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4441,10 +4455,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 62738,
-     "ms": 39,
+     "ms": 94,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:25+00:00",
+     "at": "2026-10-26T23:43:53+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4481,10 +4495,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 59148,
-     "ms": 38,
+     "ms": 91,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:26+00:00",
+     "at": "2026-10-26T23:43:55+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4521,10 +4535,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 59774,
-     "ms": 43,
+     "ms": 90,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:28+00:00",
+     "at": "2026-10-26T23:43:56+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4561,10 +4575,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 54014,
-     "ms": 44,
+     "ms": 83,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:30+00:00",
+     "at": "2026-10-26T23:43:58+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4601,10 +4615,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 60633,
-     "ms": 42,
+     "ms": 91,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:31+00:00",
+     "at": "2026-10-26T23:44:00+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4641,10 +4655,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 59278,
-     "ms": 41,
+     "ms": 93,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:33+00:00",
+     "at": "2026-10-26T23:44:01+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4681,10 +4695,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 56971,
-     "ms": 41,
+     "ms": 87,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:34+00:00",
+     "at": "2026-10-26T23:44:03+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4720,11 +4734,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 58607,
-     "ms": 40,
+     "bytes": 58494,
+     "ms": 156,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:36+00:00",
+     "at": "2026-10-26T23:44:04+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4761,10 +4775,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 58096,
-     "ms": 41,
+     "ms": 88,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:37+00:00",
+     "at": "2026-10-26T23:44:06+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4801,10 +4815,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 57841,
-     "ms": 40,
+     "ms": 85,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:39+00:00",
+     "at": "2026-10-26T23:44:08+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4840,11 +4854,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57484,
-     "ms": 39,
+     "bytes": 57585,
+     "ms": 93,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:40+00:00",
+     "at": "2026-10-26T23:44:09+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4880,11 +4894,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57529,
-     "ms": 40,
+     "bytes": 57559,
+     "ms": 85,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:42+00:00",
+     "at": "2026-10-26T23:44:11+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4920,11 +4934,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 61127,
-     "ms": 39,
+     "bytes": 60722,
+     "ms": 154,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:43+00:00",
+     "at": "2026-10-26T23:44:12+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4960,11 +4974,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 61771,
-     "ms": 37,
+     "bytes": 61770,
+     "ms": 94,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:45+00:00",
+     "at": "2026-10-26T23:44:14+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5001,10 +5015,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 57932,
-     "ms": 40,
+     "ms": 86,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:46+00:00",
+     "at": "2026-10-26T23:44:15+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5041,10 +5055,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 64728,
-     "ms": 42,
+     "ms": 94,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:48+00:00",
+     "at": "2026-10-26T23:44:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5081,10 +5095,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 58270,
-     "ms": 43,
+     "ms": 92,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:49+00:00",
+     "at": "2026-10-26T23:44:19+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5121,10 +5135,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 55603,
-     "ms": 38,
+     "ms": 85,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:51+00:00",
+     "at": "2026-10-26T23:44:20+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5160,11 +5174,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57733,
-     "ms": 42,
+     "bytes": 58959,
+     "ms": 86,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:53+00:00",
+     "at": "2026-10-26T23:44:22+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5201,10 +5215,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 54670,
-     "ms": 37,
+     "ms": 88,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:54+00:00",
+     "at": "2026-10-26T23:44:23+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5241,10 +5255,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 59936,
-     "ms": 42,
+     "ms": 88,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:56+00:00",
+     "at": "2026-10-26T23:44:25+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5281,10 +5295,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 55988,
-     "ms": 43,
+     "ms": 85,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:57+00:00",
+     "at": "2026-10-26T23:44:27+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5321,10 +5335,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 55940,
-     "ms": 42,
+     "ms": 91,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:59+00:00",
+     "at": "2026-10-26T23:44:28+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5361,10 +5375,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 55916,
-     "ms": 38,
+     "ms": 87,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:00+00:00",
+     "at": "2026-10-26T23:44:30+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5426,11 +5440,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 451056,
-     "ms": 50,
+     "bytes": 456052,
+     "ms": 22,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:02+00:00",
+     "at": "2026-10-26T23:44:31+00:00",
      "vantage": "github-actions"
     }
    }
@@ -5441,10 +5455,10 @@
      "class": "http-4xx",
      "http": 404,
      "bytes": 1245,
-     "ms": 143,
+     "ms": 147,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:46+00:00",
+     "at": "2026-10-26T23:44:23+00:00",
      "vantage": "github-actions"
     }
    },
@@ -5469,7 +5483,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-10-26T16:10:47+00:00",
+     "at": "2026-10-26T23:44:23+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5530,10 +5544,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:11:02+00:00",
+     "ms": 25352,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:45:03+00:00",
      "vantage": "github-actions"
     }
    },
@@ -5579,10 +5593,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:11:02+00:00",
+     "ms": 25358,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:45:30+00:00",
      "vantage": "github-actions"
     }
    },
@@ -5615,10 +5629,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 52446,
-     "ms": 284,
+     "ms": 275,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:49+00:00",
+     "at": "2026-10-26T23:44:24+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5654,11 +5668,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 44939,
-     "ms": 302,
+     "bytes": 46385,
+     "ms": 272,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:50+00:00",
+     "at": "2026-10-26T23:44:26+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5695,10 +5709,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 45070,
-     "ms": 251,
+     "ms": 254,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:52+00:00",
+     "at": "2026-10-26T23:44:28+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5734,11 +5748,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 50806,
-     "ms": 274,
+     "bytes": 49126,
+     "ms": 319,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:54+00:00",
+     "at": "2026-10-26T23:44:29+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5774,11 +5788,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 121976,
-     "ms": 286,
+     "bytes": 121980,
+     "ms": 340,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:52+00:00",
+     "at": "2026-10-26T23:44:27+00:00",
      "vantage": "github-actions"
     }
    }
@@ -5789,10 +5803,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 2509,
-     "ms": 41,
+     "ms": 72,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:52+00:00",
+     "at": "2026-10-26T23:44:27+00:00",
      "vantage": "github-actions"
     }
    }
@@ -5802,11 +5816,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 11007,
-     "ms": 70,
+     "bytes": 10970,
+     "ms": 104,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:53+00:00",
+     "at": "2026-10-26T23:44:27+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5875,11 +5889,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 148757,
-     "ms": 274,
+     "bytes": 154598,
+     "ms": 413,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:53+00:00",
+     "at": "2026-10-26T23:44:28+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5952,11 +5966,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 539861,
-     "ms": 203,
+     "bytes": 539890,
+     "ms": 121,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:10:53+00:00",
+     "at": "2026-10-26T23:44:27+00:00",
      "vantage": "github-actions"
     }
    }
@@ -5993,10 +6007,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 14736,
-     "ms": 41,
+     "ms": 71,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:53+00:00",
+     "at": "2026-10-26T23:44:28+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6033,10 +6047,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 41,
+     "ms": 72,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:54+00:00",
+     "at": "2026-10-26T23:44:31+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6073,10 +6087,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "ms": 41,
+     "ms": 72,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:56+00:00",
+     "at": "2026-10-26T23:44:29+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6113,10 +6127,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 41,
+     "ms": 71,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:57+00:00",
+     "at": "2026-10-26T23:44:33+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6153,10 +6167,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23025,
-     "ms": 43,
+     "ms": 74,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:10:59+00:00",
+     "at": "2026-10-26T23:44:34+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6193,10 +6207,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12968,
-     "ms": 41,
+     "ms": 71,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:01+00:00",
+     "at": "2026-10-26T23:44:36+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6233,10 +6247,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 39272,
-     "ms": 50,
+     "ms": 75,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:02+00:00",
+     "at": "2026-10-26T23:44:37+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6273,10 +6287,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "ms": 41,
+     "ms": 72,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:04+00:00",
+     "at": "2026-10-26T23:44:39+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6311,10 +6325,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 148605,
-     "ms": 88,
+     "ms": 146,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:05+00:00",
+     "at": "2026-10-26T23:44:40+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6351,10 +6365,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 41,
+     "ms": 71,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:07+00:00",
+     "at": "2026-10-26T23:44:42+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6391,10 +6405,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 13499,
-     "ms": 43,
+     "ms": 72,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:08+00:00",
+     "at": "2026-10-26T23:44:44+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6431,10 +6445,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23053,
-     "ms": 43,
+     "ms": 74,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:10+00:00",
+     "at": "2026-10-26T23:44:45+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6444,11 +6458,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 2943,
-     "ms": 519,
+     "bytes": 2337,
+     "ms": 540,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:00+00:00",
+     "at": "2026-10-26T23:44:35+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -6696,11 +6710,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 2357514,
-     "ms": 588,
+     "bytes": 2362593,
+     "ms": 1322,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:03+00:00",
+     "at": "2026-10-26T23:44:40+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6711,10 +6725,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 645800,
-     "ms": 366,
+     "ms": 808,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:01+00:00",
+     "at": "2026-10-26T23:44:37+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6751,10 +6765,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 268509,
-     "ms": 177,
+     "ms": 209,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:05+00:00",
+     "at": "2026-10-26T23:44:41+00:00",
      "vantage": "github-actions"
     }
    },
@@ -6776,10 +6790,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 192764,
-     "ms": 171,
+     "ms": 205,
      "detail": "",
      "robots": "absent",
-     "at": "2026-10-26T16:11:06+00:00",
+     "at": "2026-10-26T23:44:43+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6855,11 +6869,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 30301,
-     "ms": 127,
+     "bytes": 30527,
+     "ms": 105,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:02+00:00",
+     "at": "2026-10-26T23:44:39+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -6907,10 +6921,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 111486,
-     "ms": 810,
+     "ms": 835,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:03+00:00",
+     "at": "2026-10-26T23:44:40+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -6970,11 +6984,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 1020236,
-     "ms": 2156,
+     "bytes": 982823,
+     "ms": 2462,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:05+00:00",
+     "at": "2026-10-26T23:44:43+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7033,11 +7047,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 73942,
-     "ms": 469,
+     "bytes": 76743,
+     "ms": 516,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:05+00:00",
+     "at": "2026-10-26T23:44:42+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7088,10 +7102,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 64179,
-     "ms": 459,
+     "ms": 658,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:03+00:00",
+     "at": "2026-10-26T23:44:44+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7140,10 +7154,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 83001,
-     "ms": 463,
+     "ms": 517,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:07+00:00",
+     "at": "2026-10-26T23:44:46+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7192,11 +7206,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 72824,
-     "ms": 460,
+     "bytes": 71831,
+     "ms": 514,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:09+00:00",
+     "at": "2026-10-26T23:44:48+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7244,11 +7258,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 103519,
-     "ms": 602,
+     "bytes": 100023,
+     "ms": 659,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:11+00:00",
+     "at": "2026-10-26T23:44:50+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7296,11 +7310,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 88634,
-     "ms": 492,
+     "bytes": 89116,
+     "ms": 605,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:13+00:00",
+     "at": "2026-10-26T23:44:52+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7361,11 +7375,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 74040,
-     "ms": 457,
+     "bytes": 73783,
+     "ms": 517,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:15+00:00",
+     "at": "2026-10-26T23:44:54+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7413,11 +7427,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 143010,
-     "ms": 865,
+     "bytes": 148993,
+     "ms": 664,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:18+00:00",
+     "at": "2026-10-26T23:44:56+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7468,10 +7482,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 37868,
-     "ms": 395,
+     "ms": 428,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:19+00:00",
+     "at": "2026-10-26T23:44:58+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7533,10 +7547,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 51068,
-     "ms": 461,
+     "ms": 585,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:21+00:00",
+     "at": "2026-10-26T23:45:00+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7586,11 +7600,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 75267,
-     "ms": 456,
+     "bytes": 79337,
+     "ms": 612,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:23+00:00",
+     "at": "2026-10-26T23:45:02+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7641,10 +7655,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 53324,
-     "ms": 456,
+     "ms": 505,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:25+00:00",
+     "at": "2026-10-26T23:45:04+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7706,10 +7720,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 69702,
-     "ms": 466,
+     "ms": 589,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:27+00:00",
+     "at": "2026-10-26T23:45:06+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7760,10 +7774,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 64090,
-     "ms": 485,
+     "ms": 652,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:29+00:00",
+     "at": "2026-10-26T23:45:08+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7812,10 +7826,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 100814,
-     "ms": 610,
+     "ms": 894,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:31+00:00",
+     "at": "2026-10-26T23:45:11+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7866,10 +7880,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 71575,
-     "ms": 460,
+     "ms": 597,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:33+00:00",
+     "at": "2026-10-26T23:45:13+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7939,11 +7953,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 74248,
-     "ms": 521,
+     "bytes": 75211,
+     "ms": 631,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:35+00:00",
+     "at": "2026-10-26T23:45:15+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7991,11 +8005,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 80704,
-     "ms": 490,
+     "bytes": 80447,
+     "ms": 695,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:37+00:00",
+     "at": "2026-10-26T23:45:17+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8046,10 +8060,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 62850,
-     "ms": 460,
+     "ms": 616,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:39+00:00",
+     "at": "2026-10-26T23:45:19+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8099,11 +8113,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 49797,
-     "ms": 451,
+     "bytes": 49824,
+     "ms": 593,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:41+00:00",
+     "at": "2026-10-26T23:45:21+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8154,10 +8168,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 63822,
-     "ms": 454,
+     "ms": 622,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:43+00:00",
+     "at": "2026-10-26T23:45:23+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8206,11 +8220,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 74448,
-     "ms": 454,
+     "bytes": 73756,
+     "ms": 593,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:45+00:00",
+     "at": "2026-10-26T23:45:25+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8261,10 +8275,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23891,
-     "ms": 312,
+     "ms": 437,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:47+00:00",
+     "at": "2026-10-26T23:45:27+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8315,10 +8329,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 69027,
-     "ms": 466,
+     "ms": 576,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:49+00:00",
+     "at": "2026-10-26T23:45:29+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8368,11 +8382,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 65806,
-     "ms": 458,
+     "bytes": 65863,
+     "ms": 668,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:51+00:00",
+     "at": "2026-10-26T23:45:32+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8423,10 +8437,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 65471,
-     "ms": 489,
+     "ms": 598,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:53+00:00",
+     "at": "2026-10-26T23:45:34+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8487,11 +8501,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 41163,
-     "ms": 346,
+     "bytes": 39928,
+     "ms": 440,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:55+00:00",
+     "at": "2026-10-26T23:45:36+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8541,11 +8555,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 72791,
-     "ms": 455,
+     "bytes": 72512,
+     "ms": 698,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:57+00:00",
+     "at": "2026-10-26T23:45:38+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8593,11 +8607,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 75214,
-     "ms": 508,
+     "bytes": 72806,
+     "ms": 619,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:59+00:00",
+     "at": "2026-10-26T23:45:40+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8645,11 +8659,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 92798,
-     "ms": 449,
+     "bytes": 91172,
+     "ms": 847,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:12:00+00:00",
+     "at": "2026-10-26T23:45:42+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8686,10 +8700,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 205135,
-     "ms": 638,
+     "ms": 634,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:12:03+00:00",
+     "at": "2026-10-26T23:45:44+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8729,7 +8743,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-26T16:11:41+00:00",
+     "at": "2026-10-26T23:45:23+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8754,7 +8768,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-26T16:11:41+00:00",
+     "at": "2026-10-26T23:45:23+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -8820,7 +8834,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-26T16:11:41+00:00",
+     "at": "2026-10-26T23:45:23+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8865,11 +8879,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 839775,
-     "ms": 181,
+     "bytes": 862895,
+     "ms": 114,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:42+00:00",
+     "at": "2026-10-26T23:45:24+00:00",
      "vantage": "github-actions"
     }
    }
@@ -8924,10 +8938,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 213936,
-     "ms": 812,
+     "ms": 1076,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:44+00:00",
+     "at": "2026-10-26T23:45:26+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -8985,11 +8999,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 79979,
-     "ms": 1843,
+     "bytes": 80357,
+     "ms": 657,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:45+00:00",
+     "at": "2026-10-26T23:45:27+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -9081,10 +9095,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:11:59+00:00",
+     "ms": 25355,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:46:07+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9130,10 +9144,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:12:00+00:00",
+     "ms": 25354,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:46:34+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9179,10 +9193,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:12:01+00:00",
+     "ms": 25354,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:47:00+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9228,10 +9242,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-26T16:12:02+00:00",
+     "ms": 25348,
+     "detail": "ConnectTimeout: timed out",
+     "robots": "allowed",
+     "at": "2026-10-26T23:47:27+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9264,10 +9278,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 1967,
-     "ms": 41,
+     "ms": 49,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-26T16:11:49+00:00",
+     "at": "2026-10-26T23:45:30+00:00",
      "vantage": "github-actions"
     }
    }
