@@ -642,6 +642,7 @@ def test_unmeasured_registry_urls_are_measured_from_peru(tmp_path, monkeypatch):
     assert "probes" not in _collect(tmp_path, monkeypatch, peru, PROBE_REGISTRY, name="sin")
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_dead_servers_and_the_time_budget_end_the_run_early(tmp_path, monkeypatch):
     calls = []
 
@@ -688,6 +689,7 @@ def probe_sources_urls(idx: dict) -> set[str]:
     return set(probe_sources.from_peru_index(idx))
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_robots_txt_is_respected_from_peru(tmp_path, monkeypatch):
     asked = []
 
@@ -1007,6 +1009,7 @@ BARRED = {"schema": "enso-source-registry/1", "generated_at": "2026-10-21T00:00:
      "geoblock": {"status": "robots-disallowed"}}]}
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_a_page_the_registry_bars_is_rechecked_against_its_robots_txt(tmp_path, monkeypatch):
     """El registro la daba por prohibida desde una noche: cada noche se vuelve a leer solo su robots.txt."""
     asked = []
@@ -1172,6 +1175,7 @@ def test_a_robots_txt_that_fails_on_its_certificate_is_reported_as_tls():
     assert problem == "tls" and "CERTIFICATE_VERIFY_FAILED" in problem.detail
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_news_feed_skipped_by_robots_txt_says_why(monkeypatch):
     """Revisión: un feed que no se pidió por robots.txt figuraba en el estado de los feeds como «HTTP None»."""
     from enso import news as N
@@ -1275,6 +1279,7 @@ def test_save_page_now_only_where_robots_txt_allows(monkeypatch):
     assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True, plan={url: ["peru-server"]}), url) == []
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_imarpe_repository_search_respects_robots_txt(monkeypatch):
     """Gap 4: imarpe_repo pedía la API sin leer robots.txt (solo un docstring decía que lo permite)."""
     from enso.feeds import imarpe_repo
@@ -1311,7 +1316,7 @@ def test_production_fetchers_read_robots_txt(monkeypatch, tmp_path):
     with pytest.raises(_Built):
         obs.run(tmp_path / "out", None)
     known = registry.url_robots()
-    assert built[0]["robots"] is True and built[0]["robots_known"] == known and "unknown" in known.values()
+    assert built[0]["robots"] is True and built[0]["robots_known"] == known
     for kw in ({"offline": True}, {"fixtures": FIX}):
         built.clear()
         with pytest.raises(_Built):

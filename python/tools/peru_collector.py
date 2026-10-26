@@ -515,6 +515,8 @@ def fetch(client: httpx.Client | Session, url: str, expect: str | None = None, m
     err = ""
     attempts = 1 if s.down[host] else 3
     for attempt in range(attempts):
+        if s.robots is not None:
+            s.robots.pace(url)  # el Crawl-delay de una entidad pública del Perú (``reach.Robots.pace``)
         try:
             r = s.client.get(url)
         except httpx.HTTPError as exc:
