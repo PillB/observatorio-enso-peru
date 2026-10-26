@@ -118,7 +118,7 @@
   <a class="ar-annex" href="../arquitectura.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Volver al diagrama completo</text></a>
   <text class="ar-s" x="20" y="60" font-size="12">Qué vigila el observatorio y cómo se decide, URL por URL, quién la descarga. Cada lunes se mide desde dónde responde cada dirección (GitHub Actions en Azure, n8n en AWS y el equipo en el Perú) y el registro asigna cada una a</text>
   <text class="ar-s" x="20" y="77" font-size="12">un recolector. Nadie pide lo que robots.txt prohíbe, salvo los feeds de noticias que se leen como un lector.</text>
-  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: ENFEN e IGP: fuentes oficiales del Perú, NOAA (CPC y PSL), Alertas oficiales de peligros (14 fuentes), Páginas del Estado que guarda el Perú, Medios y Estado: 116 feeds de noticias, Google Noticias: 38</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: ENFEN e IGP: fuentes oficiales del Perú, NOAA (CPC y PSL), Alertas oficiales de peligros (15 fuentes), Páginas del Estado que guarda el Perú, Medios y Estado: 116 feeds de noticias, Google Noticias: 38</text>
   <text class="ar-m" x="20" y="111" font-size="11">búsquedas, robots.txt de cada servidor, Armado del registro, Registro de fuentes (registry/), Sondeo semanal de alcance.</text>
   <text class="ar-t" x="20" y="136" font-size="11.5">Líneas:</text>
   <path class="ar-e ar-e-data" d="M78.5 132 L112.5 132" marker-end="url(#a1-m-data)"/>
@@ -135,7 +135,7 @@
   <text class="ar-m" x="48" y="212" font-size="10.5">páginas del Perú</text>
   <rect class="ar-col" x="392" y="156" width="300" height="968.9" rx="10"/>
   <text class="ar-h" x="404" y="181" font-size="15">Alertas y noticias</text>
-  <text class="ar-m" x="404" y="198" font-size="10.5">168 feeds: 14 de alertas, 116 de medios y del</text>
+  <text class="ar-m" x="404" y="198" font-size="10.5">169 feeds: 15 de alertas, 116 de medios y del</text>
   <text class="ar-m" x="404" y="212" font-size="10.5">Estado y 38 de Google Noticias</text>
   <rect class="ar-col" x="748" y="156" width="300" height="968.9" rx="10"/>
   <text class="ar-h" x="760" y="181" font-size="15">Medición semanal</text>
@@ -165,7 +165,7 @@
     <text class="ar-t" x="732" y="732.8" font-size="10.5" text-anchor="middle">3</text>
   </g>
   <g class="ar-edge" id="a1-e-4" data-edge="4" data-from="alerts" data-to="probe" tabindex="0">
-    <title>4. 14 fuentes de alertas → Sondeo de alcance: feeds de alertas y noticias. Los 168 feeds se miden igual: así se sabe cuáles responden desde Actions y desde n8n.</title>
+    <title>4. 15 fuentes de alertas → Sondeo de alcance: feeds de alertas y noticias. Los 169 feeds se miden igual: así se sabe cuáles responden desde Actions y desde n8n.</title>
     <path class="ar-e ar-e-data" d="M682 294 L726 294 Q732 294 732 288 L732 264 Q732 258 738 258 L758 258" marker-end="url(#a1-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="707" cy="294" r="9"/>
     <text class="ar-t" x="707" y="297.8" font-size="10.5" text-anchor="middle">4</text>
@@ -291,12 +291,12 @@
     <text class="ar-s" x="58" y="1097.2" font-size="11">las baja el Perú.</text>
   </g>
   <g class="ar-node-g" id="a1-n-alerts" data-node="alerts">
-    <title>14 fuentes de alertas. COEN del INDECI, SENAMHI (Telegram y 4 capas ArcGIS), NASA FIRMS, USGS, DHN, PTWC e IGP (CENVUL), cada una en su formato. Tecnología: RSS, GeoJSON, ArcGIS, CSV, HTML.</title>
+    <title>15 fuentes de alertas. COEN del INDECI, SENAMHI (Telegram y 4 capas ArcGIS), NASA FIRMS, USGS, DHN, PTWC e IGP (CENVUL), cada una en su formato. Tecnología: RSS, GeoJSON, ArcGIS, CSV, HTML.</title>
     <rect class="ar-node ar-g-sources" x="402" y="224" width="280" height="144.7" rx="8"/>
     <rect class="ar-f-sources" x="402" y="232" width="4" height="128.7" rx="2"/>
     <rect class="ar-tile ar-f-sources" x="414" y="234" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-sources" transform="translate(417 237)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-    <text class="ar-t" x="452" y="253.5" font-size="12.5">14 fuentes de alertas</text>
+    <text class="ar-t" x="452" y="253.5" font-size="12.5">15 fuentes de alertas</text>
     <text class="ar-s" x="414" y="285.4" font-size="11">COEN del INDECI, SENAMHI (Telegram y 4</text>
     <text class="ar-s" x="414" y="300.6" font-size="11">capas ArcGIS), NASA FIRMS, USGS, DHN,</text>
     <text class="ar-s" x="414" y="315.8" font-size="11">PTWC e IGP (CENVUL), cada una en su</text>
@@ -413,13 +413,13 @@
     <text class="ar-chip-t" x="776" y="771.9" font-size="10">JSON</text>
   </g>
   <g class="ar-node-g" id="a1-n-build" data-node="build">
-    <title>Armado del registro. Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 3 listados de documentos y 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo los feeds reader, solo Actions); lo demás, Actions y n8n, salvo las fuentes con n8n: false. --check falla si no está al día. Tecnología: build_registry.py, registry.py.</title>
+    <title>Armado del registro. Junta los catálogos del código (169 feeds, 17 fuentes ENSO, 3 listados de documentos y 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo los feeds reader, solo Actions); lo demás, Actions y n8n, salvo las fuentes con n8n: false. --check falla si no está al día. Tecnología: build_registry.py, registry.py.</title>
     <rect class="ar-node ar-g-pipeline" x="1114" y="224" width="280" height="208.8" rx="8"/>
     <rect class="ar-f-pipeline" x="1114" y="232" width="4" height="192.8" rx="2"/>
     <rect class="ar-tile ar-f-pipeline" x="1126" y="234" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-pipeline" transform="translate(1129 237)"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/></g>
     <text class="ar-t" x="1164" y="253.5" font-size="12.5">Armado del registro</text>
-    <text class="ar-s" x="1126" y="285.4" font-size="11">Junta los catálogos del código (168 feeds, 17</text>
+    <text class="ar-s" x="1126" y="285.4" font-size="11">Junta los catálogos del código (169 feeds, 17</text>
     <text class="ar-s" x="1126" y="300.6" font-size="11">fuentes ENSO, 3 listados de documentos y 13</text>
     <text class="ar-s" x="1126" y="315.8" font-size="11">páginas del Perú) con las mediciones. Regla:</text>
     <text class="ar-s" x="1126" y="331" font-size="11">solo el Perú pide lo geobloqueado; nadie pide</text>
@@ -488,8 +488,8 @@
   <circle class="ar-badge ar-e-data" cx="506" cy="1222.9" r="9"/>
   <text class="ar-t" x="506" y="1226.7" font-size="10.5" text-anchor="middle">4</text>
   <text class="ar-t" x="526" y="1226.9" font-size="11.5">feeds de alertas y noticias</text>
-  <text class="ar-m" x="526" y="1240.9" font-size="10.5">14 fuentes de alertas → Sondeo de alcance</text>
-  <text class="ar-s" x="526" y="1255.9" font-size="11">Los 168 feeds se miden igual: así se sabe cuáles responden desde Actions</text>
+  <text class="ar-m" x="526" y="1240.9" font-size="10.5">15 fuentes de alertas → Sondeo de alcance</text>
+  <text class="ar-s" x="526" y="1255.9" font-size="11">Los 169 feeds se miden igual: así se sabe cuáles responden desde Actions</text>
   <text class="ar-s" x="526" y="1270.9" font-size="11">y desde n8n.</text>
   <circle class="ar-badge ar-e-data" cx="506" cy="1293.9" r="9"/>
   <text class="ar-t" x="506" y="1297.7" font-size="10.5" text-anchor="middle">5</text>

@@ -118,7 +118,7 @@
   <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
   <text class="ar-s" x="20" y="60" font-size="12">What the observatory watches and how it is decided, URL by URL, who fetches it. Every Monday it is measured where each address answers from (GitHub Actions on Azure, n8n on AWS and the machine in Peru) and the registry</text>
   <text class="ar-s" x="20" y="77" font-size="12">assigns each one to a collector. Nobody requests what robots.txt forbids, except the news feeds read as a feed reader.</text>
-  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: ENFEN and IGP: Peru&#x27;s official sources, NOAA (CPC and PSL), Official hazard alerts (14 sources), Government pages kept from Peru, Media and government: 116 news feeds, Google News: 38 searches, Each</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: ENFEN and IGP: Peru&#x27;s official sources, NOAA (CPC and PSL), Official hazard alerts (15 sources), Government pages kept from Peru, Media and government: 116 news feeds, Google News: 38 searches, Each</text>
   <text class="ar-m" x="20" y="111" font-size="11">server&#x27;s robots.txt, Registry builder, Source registry (registry/), Weekly reachability probe.</text>
   <text class="ar-t" x="20" y="136" font-size="11.5">Lines:</text>
   <path class="ar-e ar-e-data" d="M70.7 132 L104.7 132" marker-end="url(#a1-m-data)"/>
@@ -135,7 +135,7 @@
   <text class="ar-m" x="48" y="212" font-size="10.5">pages</text>
   <rect class="ar-col" x="392" y="156" width="300" height="968.2" rx="10"/>
   <text class="ar-h" x="404" y="181" font-size="15">Alerts and news</text>
-  <text class="ar-m" x="404" y="198" font-size="10.5">168 feeds: 14 alert sources, 116 media and</text>
+  <text class="ar-m" x="404" y="198" font-size="10.5">169 feeds: 15 alert sources, 116 media and</text>
   <text class="ar-m" x="404" y="212" font-size="10.5">government feeds and 38 Google News searches</text>
   <rect class="ar-col" x="748" y="156" width="300" height="968.2" rx="10"/>
   <text class="ar-h" x="760" y="181" font-size="15">Weekly measurement</text>
@@ -164,7 +164,7 @@
     <text class="ar-t" x="732" y="732.8" font-size="10.5" text-anchor="middle">3</text>
   </g>
   <g class="ar-edge" id="a1-e-4" data-edge="4" data-from="alerts" data-to="probe" tabindex="0">
-    <title>4. 14 alert sources → Reachability probe: alert and news feeds. The 168 feeds are measured the same way: that is how we know which answer from Actions and from n8n.</title>
+    <title>4. 15 alert sources → Reachability probe: alert and news feeds. The 169 feeds are measured the same way: that is how we know which answer from Actions and from n8n.</title>
     <path class="ar-e ar-e-data" d="M682 294 L726 294 Q732 294 732 288 L732 264 Q732 258 738 258 L758 258" marker-end="url(#a1-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="707" cy="294" r="9"/>
     <text class="ar-t" x="707" y="297.8" font-size="10.5" text-anchor="middle">4</text>
@@ -290,12 +290,12 @@
     <text class="ar-s" x="58" y="1096.5" font-size="11">Peru.</text>
   </g>
   <g class="ar-node-g" id="a1-n-alerts" data-node="alerts">
-    <title>14 alert sources. INDECI&#x27;s COEN, SENAMHI (Telegram and 4 ArcGIS layers), NASA FIRMS, USGS, DHN, PTWC and IGP (CENVUL), each in its own format. Technology: RSS, GeoJSON, ArcGIS, CSV, HTML.</title>
+    <title>15 alert sources. INDECI&#x27;s COEN, SENAMHI (Telegram and 4 ArcGIS layers), NASA FIRMS, USGS, DHN, PTWC and IGP (CENVUL), each in its own format. Technology: RSS, GeoJSON, ArcGIS, CSV, HTML.</title>
     <rect class="ar-node ar-g-sources" x="402" y="224" width="280" height="144.7" rx="8"/>
     <rect class="ar-f-sources" x="402" y="232" width="4" height="128.7" rx="2"/>
     <rect class="ar-tile ar-f-sources" x="414" y="234" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-sources" transform="translate(417 237)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-    <text class="ar-t" x="452" y="253.5" font-size="12.5">14 alert sources</text>
+    <text class="ar-t" x="452" y="253.5" font-size="12.5">15 alert sources</text>
     <text class="ar-s" x="414" y="285.4" font-size="11">INDECI&#x27;s COEN, SENAMHI (Telegram and 4</text>
     <text class="ar-s" x="414" y="300.6" font-size="11">ArcGIS layers), NASA FIRMS, USGS, DHN,</text>
     <text class="ar-s" x="414" y="315.8" font-size="11">PTWC and IGP (CENVUL), each in its own</text>
@@ -412,13 +412,13 @@
     <text class="ar-chip-t" x="776" y="771.9" font-size="10">JSON</text>
   </g>
   <g class="ar-node-g" id="a1-n-build" data-node="build">
-    <title>Registry builder. Joins the code&#x27;s catalogs (168 feeds, 17 ENSO sources, 3 document listings and 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except reader feeds, Actions only); the rest, Actions and n8n, except sources with n8n: false. --check fails if out of date. Technology: build_registry.py, registry.py.</title>
+    <title>Registry builder. Joins the code&#x27;s catalogs (169 feeds, 17 ENSO sources, 3 document listings and 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except reader feeds, Actions only); the rest, Actions and n8n, except sources with n8n: false. --check fails if out of date. Technology: build_registry.py, registry.py.</title>
     <rect class="ar-node ar-g-pipeline" x="1114" y="224" width="280" height="208.8" rx="8"/>
     <rect class="ar-f-pipeline" x="1114" y="232" width="4" height="192.8" rx="2"/>
     <rect class="ar-tile ar-f-pipeline" x="1126" y="234" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-pipeline" transform="translate(1129 237)"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/></g>
     <text class="ar-t" x="1164" y="253.5" font-size="12.5">Registry builder</text>
-    <text class="ar-s" x="1126" y="285.4" font-size="11">Joins the code&#x27;s catalogs (168 feeds, 17 ENSO</text>
+    <text class="ar-s" x="1126" y="285.4" font-size="11">Joins the code&#x27;s catalogs (169 feeds, 17 ENSO</text>
     <text class="ar-s" x="1126" y="300.6" font-size="11">sources, 3 document listings and 13 Peru</text>
     <text class="ar-s" x="1126" y="315.8" font-size="11">pages) with the measurements. Rule: only</text>
     <text class="ar-s" x="1126" y="331" font-size="11">Peru fetches what is geoblocked; nobody</text>
@@ -487,8 +487,8 @@
   <circle class="ar-badge ar-e-data" cx="506" cy="1222.2" r="9"/>
   <text class="ar-t" x="506" y="1226" font-size="10.5" text-anchor="middle">4</text>
   <text class="ar-t" x="526" y="1226.2" font-size="11.5">alert and news feeds</text>
-  <text class="ar-m" x="526" y="1240.2" font-size="10.5">14 alert sources → Reachability probe</text>
-  <text class="ar-s" x="526" y="1255.2" font-size="11">The 168 feeds are measured the same way: that is how we know which</text>
+  <text class="ar-m" x="526" y="1240.2" font-size="10.5">15 alert sources → Reachability probe</text>
+  <text class="ar-s" x="526" y="1255.2" font-size="11">The 169 feeds are measured the same way: that is how we know which</text>
   <text class="ar-s" x="526" y="1270.2" font-size="11">answer from Actions and from n8n.</text>
   <circle class="ar-badge ar-e-data" cx="506" cy="1293.2" r="9"/>
   <text class="ar-t" x="506" y="1297" font-size="10.5" text-anchor="middle">5</text>

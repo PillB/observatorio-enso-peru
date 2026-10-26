@@ -4473,6 +4473,18 @@
    "captured_by": "tools.probe_feeds desde GitHub Actions, 2026-10-21T03:04:31+00:00"
   },
   {
+   "url": "https://portal.indeci.gob.pe/emergencias/feed/?s=boletin+informativo",
+   "final_url": "https://portal.indeci.gob.pe/emergencias/feed/?s=boletin+informativo",
+   "status": 200,
+   "content_type": "application/rss+xml; charset=UTF-8",
+   "bytes": 21976,
+   "truncated": false,
+   "file": "news-indeci-coen-boletines.xml",
+   "sha256": "db6fec94c5b0ed3c4d983fbb3a513fb0fd06328cc2f73b37292f76ef8ec5e9b9",
+   "name": "news-indeci-coen-boletines.xml",
+   "captured_by": "captura manual, 2026-10-26T14:29:00+00:00"
+  },
+  {
    "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json",
    "final_url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json",
    "status": 200,

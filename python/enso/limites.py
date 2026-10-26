@@ -29,6 +29,10 @@ CONF_DISTRICT_NEWER = 0.75  # la provincia tiene distritos más nuevos que los l
 CONF_PROVINCE = 0.9
 CONF_DEPARTMENT = 0.9
 CONF_OFFSHORE = 0.75
+#: Un punto en tierra de un país vecino, cerca del límite, que la fuente refiere al Perú («37 km al ESE de
+#: Cañaveral, Perú»): el departamento más cercano, como aproximación (``near_border``).
+CONF_ACROSS_BORDER = 0.55
+BORDER_KM = 25.0
 #: Caja del Perú con margen: lo que cae afuera ni se busca.
 PERU_BOX = (-82.5, -19.5, -68.0, 0.5)
 #: Lago Titicaca, del lado peruano (la frontera cruza el lago cerca de 69.3° O).
@@ -152,6 +156,23 @@ class Limits:
             return None
         return {"code": code, "confidence": CONF_OFFSHORE, "offshore": True,
                 "note": f"en el mar, a {round(km)} km de la costa"}
+
+
+def near_border(lat: float, lon: float, max_km: float = BORDER_KM) -> Optional[dict]:
+    """El departamento más cercano a un punto fuera del Perú, si está a ``max_km`` o menos de su límite.
+
+    Solo para fuentes que refieren el punto al Perú: el epicentro preliminar de un sismo sentido en Tumbes puede
+    caer unos kilómetros dentro del Ecuador."""
+    lim = limits()
+    if locate(lat, lon) is not None:
+        return None
+    x, y = float(lon) * lim.scale, float(lat) * lim.scale
+    pad = max_km / 100 * lim.scale
+    best = min(((lim._edge(x, y, d["polys"])[0], c) for c, d in lim.levels[2].items() if _in_bbox(x, y, d["bbox"], pad)),
+               default=(math.inf, None))
+    if best[1] is None or best[0] > max_km:
+        return None
+    return {"code": best[1], "confidence": CONF_ACROSS_BORDER, "km": round(best[0], 1)}
 
 
 @lru_cache(maxsize=1)

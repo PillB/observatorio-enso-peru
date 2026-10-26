@@ -106,6 +106,11 @@ CURRENT_HOURS = {"senamhi-telegram": 12, "senamhi-hidrologicos": 72, "igp-cenvul
                  "igp-cenvul-alertas": 24, "firms-focos": 24}
 
 
+def is_coen(feed_id: str) -> bool:
+    """Los feeds del COEN: el de reportes de emergencias y el de sus boletines de aviso."""
+    return feed_id in ("indeci-coen", "indeci-coen-boletines")
+
+
 def _iso(dt: datetime) -> str:
     return dt.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
@@ -195,7 +200,7 @@ def severity(feed_id: str, title: str, summary: str) -> Optional[dict]:
         if "HAZARDOUS TSUNAMI WAVES" in up or "TSUNAMI THREAT" in up:
             return _level("ptwc", "threat", "mensaje del PTWC")
         return None
-    if feed_id in ("senamhi-telegram", "indeci-coen"):
+    if feed_id == "senamhi-telegram" or is_coen(feed_id):
         m = _TEXT_COLOR_RE.search(text)
         return _level("senamhi-colores", _COLOR[m.group(1).lower()], "color del aviso citado en su texto") if m else None
     return None
@@ -205,11 +210,13 @@ def kind_of(feed_id: str, title: str) -> str:
     low = title.lower()
     if feed_id == "senamhi-telegram":
         return "en-curso" if low.startswith("senamhi, en este momento") else "pronostico"
-    if feed_id == "indeci-coen":
+    if is_coen(feed_id):
         # Avisos del SENAMHI que el COEN difunde (``hazardparse.parse_coen`` los titula «Aviso meteorológico N° …
         # del SENAMHI»): el meteorológico es un pronóstico; el hidrológico, el estado de un río.
         if re.match(r"aviso (meteorol|hidrol)\w+ n° \d+ del senamhi", low):
             return "pronostico" if low.startswith("aviso meteorol") else "en-curso"
+        if re.match(r"aviso (especial de oleaje|de corto plazo)\b", low):
+            return "pronostico"  # boletines de oleaje (DHN) y de corto plazo (SENAMHI) del COEN
         return "pronostico" if "aviso" in low and ("boletín" in low or "boletin" in low) else "reporte"
     if feed_id in ("senamhi-quebradas", "senamhi-lluvias", "senamhi-incendios", "dhn-avisos") or feed_id.startswith("ptwc"):
         return "pronostico"
@@ -235,7 +242,7 @@ def validity(feed_id: str, title: str, summary: str, published: Optional[str]) -
     if feed_id in ("senamhi-quebradas", "senamhi-lluvias") or (feed_id == "senamhi-incendios" and "24 horas" in text):
         return {"from": _iso(ref), "until": _iso(ref + timedelta(hours=24)),
                 "basis": "aviso para las 24 horas siguientes a su emisión"}
-    if feed_id in ("senamhi-telegram", "dhn-avisos") or (feed_id == "indeci-coen" and kind_of(feed_id, title) == "pronostico"):
+    if feed_id in ("senamhi-telegram", "dhn-avisos") or (is_coen(feed_id) and kind_of(feed_id, title) == "pronostico"):
         r = _range(title, ref) or _range(summary, ref)
         if r:
             return {"from": _iso(r[0]), "until": _iso(r[1]), "basis": "fechas que indica el aviso"}
@@ -253,7 +260,7 @@ def validity(feed_id: str, title: str, summary: str, published: Optional[str]) -
 
 def occurred(feed_id: str, summary: str) -> Optional[str]:
     """Cuándo ocurrió el hecho de un reporte del COEN (el reporte puede ser una actualización días después)."""
-    if feed_id != "indeci-coen":
+    if not is_coen(feed_id):
         return None
     m = _OCCURRED_RE.search(summary)
     if not m:

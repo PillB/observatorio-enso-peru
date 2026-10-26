@@ -70,6 +70,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Documentos que hay que bajar a mano](docs/documentos-manuales.md): consola de documentos para los PDF que ninguna ruta automática trae
 - [Publicar en Cloudflare Pages sin enlace al repositorio](docs/despliegue-cloudflare.md)
 - [Georreferenciación y consola de lugares](docs/georreferenciacion.md): dónde ocurre cada noticia, con qué confianza, y cómo corregirlo
+- [Lugares de los PDF del COEN: prueba hacia atrás](docs/documentos-backtest.md): qué tan bien se leen los lugares de los avisos y reportes del COEN, y qué se corrigió
 - [Mapa de alertas](docs/mapa-alertas.md): nivel y vigencia de cada aviso según su institución, versiones A–D y su analítica anónima
 - [Memoria de desastres](docs/memoria-desastres.md): catálogo de desastres de origen climático desde 1970 por distrito, con fuentes, indicadores de recurrencia y la evidencia sobre la prevención desde los años 90
 - [Limitaciones conocidas](docs/limitaciones.md)
