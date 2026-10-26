@@ -691,6 +691,67 @@ def test_the_restrictions_report_names_what_a_url_asks_more_than_on_main(tmp_pat
     text = report.read_text(encoding="utf-8")
     assert gained and "piden más que en la rama principal (1;" in text
     assert all(f"canal {c}" in text for c in gained) and text.count(f"`{url}`") == 2
+    assert "se pide tras leer su robots.txt y el de https://cdn.example/f.xml" in text
+
+    # Un hop que se resuelve en «prohibido» (sin canales) o que cambia por otro no pide más: no va en esa lista.
+    hop_on_main = {"actions": {"github-actions": {**measured["urls"][url]["actions"]["github-actions"], "at": t0}},
+                   "n8n": {"n8n-aws": {"class": "ok", "http": 200, "robots": "allowed", "at": "2026-10-10T03:00:00+00:00",
+                                       "vantage": "n8n-aws"}}}
+    base_reach["urls"][url] = hop_on_main
+    base = registry.build(reach=base_reach["urls"])
+    assert next(r for s in base["sources"] for u, r in s["by_url"].items() if u == url).get("hop")
+    for now in ({"class": "robots", "http": 302, "robots": "disallowed", "hop": "https://cdn.example/f.xml"},
+                {"class": "timeout", "http": 302, "robots": "unreachable", "hop": "https://cdn2.example/g.xml"}):
+        week = {**measured, "urls": {url: {**hop_on_main, "actions": {"github-actions": {
+            **now, "at": t1, "vantage": "github-actions"}}}}}
+        paths["base_sources"].write_text(build_registry.render(base), encoding="utf-8")
+        paths["base_reach"].write_text(json.dumps(base_reach), encoding="utf-8")
+        paths["reach"].write_text(json.dumps(week), encoding="utf-8")
+        paths["registry"].write_text(build_registry.render(registry.build(reach=week["urls"])), encoding="utf-8")
+        assert registry_restrict.main([str(paths["base_sources"]), str(paths["base_reach"]), "--report", str(report),
+                                       "--registry", str(paths["registry"]), "--reach", str(paths["reach"])]) == 0
+        text = report.read_text(encoding="utf-8")
+        assert f"`{url}`" in text and "piden más que en la rama principal" not in text, text
+
+
+def test_the_restrictions_report_says_when_an_aged_out_url_is_asked_without_reading_robots_txt(tmp_path):
+    """Un robots.txt en contra de más de 45 días deja de contar (``STALE_DAYS``) y la URL queda ``allowed``: n8n y
+    la corrida la piden sin volver a leer su robots.txt. El informe lo dice así, no que lo leen antes."""
+    import json
+
+    from enso import registry
+    from tools import build_registry, registry_restrict
+
+    feeds = [s["url"] for s in registry.build(reach={})["sources"] if s.get("kind") == "feed" and not s.get("alt_urls")
+             and registry.urlparse(s["url"]).hostname not in registry.READER_HOSTS and not registry.public_peru(s["url"])]
+    aged, newly = feeds[:2]
+    t0, t1 = "2026-10-19T09:00:00+00:00", "2026-10-26T09:00:00+00:00"
+
+    def gha(rec, at):
+        return {"github-actions": {**rec, "at": at, "vantage": "github-actions"}}
+
+    ok = {"class": "ok", "http": 200, "robots": "allowed"}
+    base_reach = {"schema": registry.REACH_SCHEMA, "updated_at": t0, "urls": {
+        aged: {"actions": gha(ok, t0), "n8n": {"n8n-aws": {"class": "robots", "http": None, "robots": "disallowed",
+                                                            "at": "2026-09-08T03:00:00+00:00", "vantage": "n8n-aws"}}},
+        newly: {"actions": gha(ok, t0)}}}
+    measured = {"schema": registry.REACH_SCHEMA, "updated_at": t1, "urls": {
+        aged: {**base_reach["urls"][aged], "actions": gha(ok, t1)},
+        newly: {"actions": gha({"class": "robots", "http": None, "robots": "disallowed"}, t1)}}}
+    base = registry.build(reach=base_reach["urls"])
+    assert next(r for s in base["sources"] for u, r in s["by_url"].items() if u == aged)["status"] == "robots-disallowed"
+    paths = {k: tmp_path / f"{k}.json" for k in ("base_sources", "base_reach", "reach", "registry")}
+    paths["base_sources"].write_text(build_registry.render(base), encoding="utf-8")
+    paths["base_reach"].write_text(json.dumps(base_reach), encoding="utf-8")
+    paths["reach"].write_text(json.dumps(measured), encoding="utf-8")
+    paths["registry"].write_text(build_registry.render(registry.build(reach=measured["urls"])), encoding="utf-8")
+    report = tmp_path / "report.md"
+    assert registry_restrict.main([str(paths["base_sources"]), str(paths["base_reach"]), "--report", str(report),
+                                   "--registry", str(paths["registry"]), "--reach", str(paths["reach"])]) == 0
+    text = report.read_text(encoding="utf-8")
+    line = next(x for x in text.splitlines() if x.startswith(f"- `{aged}`"))
+    assert "estado robots-disallowed → open" in line and "se pide sin volver a leer su robots.txt" in line
+    assert "tras leer" not in line and "45 días" in text
 
 
 def test_n8n_reading_of_a_hop_robots_txt_keeps_the_hop():

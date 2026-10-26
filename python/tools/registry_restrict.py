@@ -11,9 +11,9 @@ URL (y de las que, si no, dejarían de estar restringidas: ``restrict``), regene
 lista en ARCHIVO (Markdown, para el issue). Lo que llega a la rama principal quita pedidos. Una URL que lleva su
 medición nueva la lleva entera, y con ella puede pedir más que en la rama principal: otro canal (``peru-server``
 cuando el robots.txt del destino de su redirección no respondió desde Actions, que el registro toma por posible
-geobloqueo) o una lectura de robots.txt de más de ``STALE_DAYS`` que dejó de contar. Esas también van en ARCHIVO.
-Quien la pida lee antes su robots.txt (``unknown``) y el del destino (``hop``). Sin restricciones no cambia nada
-ni escribe ARCHIVO.
+geobloqueo) o una lectura de robots.txt de más de ``STALE_DAYS`` que dejó de contar. Esas también van en ARCHIVO,
+con si se piden tras leer su robots.txt (las que quedan ``unknown``, y también el del destino si tienen ``hop``) o
+sin volver a leerlo (las que quedan ``allowed``). Sin restricciones no cambia nada ni escribe ARCHIVO.
 
 Sale con 1 si el registro que resulta no es válido (``registry.validate``): entonces no se escribe en la rama
 principal.
@@ -50,15 +50,30 @@ def _relaxed(b: dict, r: dict) -> bool:
                 or (b.get("hop") and r.get("hop") != b["hop"]))
 
 
+def _asks_more(b: dict, r: dict) -> bool:
+    """``r`` de verdad pide más que ``b``, para el informe: tiene algún canal y uno nuevo, ya no es
+    ``robots-disallowed``, tiene un robots menos estricto o se quedó sin ``hop`` (otro ``hop`` no pide más). En el
+    bucle de ``restrict`` vale ``_relaxed``, más amplio: llevar una medición nueva de más no hace daño."""
+    return bool(r.get("channels")) and bool(
+        set(r.get("channels") or []) - set(b.get("channels") or [])
+        or (b.get("status") == "robots-disallowed" and r.get("status") != "robots-disallowed")
+        or _rank(r) < _rank(b)
+        or (b.get("hop") and not r.get("hop")))
+
+
 def _looser(b: dict, r: dict) -> str:
-    """En qué pide ``r`` más que ``b`` (``_relaxed``), para el informe."""
+    """En qué pide ``r`` más que ``b`` (``_asks_more``) y si quien la pida lee antes robots.txt, para el informe."""
     out = [f"canal {c}" for c in sorted(set(r.get("channels") or []) - set(b.get("channels") or []))]
-    if b.get("status") != r.get("status"):
+    if b.get("status") == "robots-disallowed" and r.get("status") != "robots-disallowed":
         out.append(f"estado {b.get('status')} → {r.get('status')}")
     if _rank(r) < _rank(b):
         out.append(f"robots {b.get('robots')} → {r.get('robots')}")
-    if b.get("hop") and r.get("hop") != b["hop"]:
+    if b.get("hop") and not r.get("hop"):
         out.append(f"sin el hop {b['hop']}")
+    if r.get("robots") == "unknown":
+        out.append("se pide tras leer su robots.txt" + (f" y el de {r['hop']}" if r.get("hop") else ""))
+    else:
+        out.append("se pide sin volver a leer su robots.txt")
     return "; ".join(out)
 
 
@@ -71,8 +86,8 @@ def restrict(base_sources: dict, base_reach: dict, measured_reach: dict, measure
     quede ninguna, llevan también su medición nueva las URL que así quedarían menos restringidas que en la rama
     principal (la de esta semana, que es la que vale). Las demás quedan como en la rama principal, aunque la medición
     las restrinja (o las restrinja menos): un robots.txt que no respondió esta semana no abre lo que la rama
-    principal tiene prohibido. Las mediciones nuevas van enteras: lo que con ellas una URL pide de más (otro canal)
-    lo anota ``main`` en el informe."""
+    principal tiene prohibido. Las mediciones nuevas van enteras: lo que con ellas una URL pide de más (otro canal,
+    o un robots.txt en contra que dejó de contar) lo anota ``main`` en el informe."""
     found = registry.restrictions(base_sources, measured)
     if not found:
         return found, {}
@@ -117,10 +132,11 @@ def main(argv=None) -> int:
     lines = [f"- `{u}`: {'; '.join(why)}" for u, why in sorted(found.items())]
     before = _by_url(base_sources)
     loose = [f"- `{u}`: {_looser(before[u], r)}" for u, r in sorted(_by_url(reg).items())
-             if u in before and _relaxed(before[u], r)]
+             if u in before and _asks_more(before[u], r)]
     if loose:
-        lines += ["", f"Con su medición de esta semana, estas URL piden más que en la rama principal ({len(loose)}; "
-                      "quien las pida lee antes su robots.txt y el del destino de su redirección):", "", *loose]
+        lines += ["", f"Con su medición nueva, estas URL piden más que en la rama principal ({len(loose)}; una "
+                      f"lectura de la rama principal de más de {registry.STALE_DAYS} días ya no cuenta, o la de esta "
+                      "semana les da otro canal):", "", *loose]
     note = "" if not errs else ("\n\nEl registro con solo esas mediciones no es válido (`registry.validate`): "
                                 "no se escribió en la rama principal.")
     a.report.write_text(f"URL que la medición restringe por robots.txt ({len(found)}):\n\n" + "\n".join(lines)

@@ -136,7 +136,7 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
     import httpx
 
     from .fetch import FetchError, Response, TooSlow
-    from .reach import RobotsHop
+    from .reach import BAD_LOCATION, RobotsHop
 
     if fetcher.offline:
         raise FetchError("modo sin conexión", [])
@@ -181,7 +181,7 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
         try:
             # Con el plazo por pedido y el de la corrida, como cualquier otro pedido de la corrida.
             r = fetcher._request(u, headers={"Range": rng})
-        except httpx.HTTPError as exc:
+        except (httpx.HTTPError, *BAD_LOCATION) as exc:  # también un Location que httpx no puede armar
             attempts.append({"url": u, "range": rng, "error": f"{type(exc).__name__}: {exc}"[:200]})
             if not isinstance(exc, RobotsHop):  # una redirección que no se siguió no es un fallo del servidor
                 fetcher._down[host] = fetcher._down.get(host, 0) + (2 if isinstance(exc, TooSlow) else 1)
