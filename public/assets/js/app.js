@@ -144,16 +144,26 @@ function phaseNow() {
   return null;
 }
 
+// Filas GRD cuyo dato se calcula con más de una fuente (la serie publica solo la primera).
+const GRD_INPUTS = { soi_troup: ['cpc-tahiti', 'cpc-darwin'] };
+
 function grdPanel() {
   const g = S.dash.grd;
   if (!g) return '';
-  const rows = g.signals.map((x) => html`<tr>
-    <th scope="row"><div>${x.name}</div><div class="muted small">${x.region}</div></th>
-    <td>${chip(x.level, x.label)}</td>
-    <td class="num" data-label="Valor">${x.value === null || x.value === undefined || x.stale ? 'N/D' : x.direction ? html`${x.direction}<div class="muted small">${F.fmtValue(x.value, x.units)}</div>` : F.fmtValue(x.value, x.units)}</td>
-    <td data-label="Periodo">${x.period ? F.fmtMonth(x.period) : '—'}<div class="muted small">${sourceName(x.source)}</div></td>
-    <td class="small">${x.basis}${x.reason ? html`<div class="muted">${x.reason}</div>` : ''}</td>
-  </tr>`);
+  // Como en las demás tarjetas: cada fila enlaza a su fuente en vivo y a la copia que bajó el observatorio; una fila
+  // calculada con varios archivos (GRD_INPUTS), a cada uno.
+  const rows = g.signals.map((x) => {
+    const ids = GRD_INPUTS[x.id] || [x.source];
+    const links = ids.map((id) => [id, S.dash.sources?.[id]]).filter(([, m]) => m)
+      .map(([, m]) => sourceLinks(m.live, m.archive, { when: m.retrievedAt, prefix: ids.length > 1 ? m.product : undefined }));
+    return html`<tr>
+      <th scope="row"><div>${x.name}</div><div class="muted small">${x.region}</div></th>
+      <td>${chip(x.level, x.label)}</td>
+      <td class="num" data-label="Valor">${x.value === null || x.value === undefined || x.stale ? 'N/D' : x.direction ? html`${x.direction}<div class="muted small">${F.fmtValue(x.value, x.units)}</div>` : F.fmtValue(x.value, x.units)}</td>
+      <td data-label="Periodo">${x.period ? F.fmtMonth(x.period) : '—'}<div class="muted small">${sourceName(x.source)}</div>${links}</td>
+      <td class="small">${x.basis}${x.reason ? html`<div class="muted">${x.reason}</div>` : ''}</td>
+    </tr>`;
+  });
   return html`<section class="card" data-tour-id="grd" aria-labelledby="grd-h">
     <div class="section-head"><h2 id="grd-h">Señal operativa del equipo GRD</h2><span class="tag">Política ${g.policy_id} · ${g.approval_status === 'DRAFT' ? 'borrador' : g.approval_status}</span></div>
     <p class="notice notice-info">${raw(ICON.info)}<span>${g.disclaimer}</span></p>
@@ -717,7 +727,7 @@ VIEWS.metodologia = {
       <section class="card prose" aria-labelledby="met-h">
         <h2 id="met-h">Cómo funciona</h2>
         <ol>
-          <li><strong>Cada noche (23:37, hora de Lima)</strong> el pipeline descarga cada fuente directamente de la institución. Si la institución no responde, usa la copia que bajó el recolector en el Perú a las 21:00 o la copia más reciente del Internet Archive, y lo indica; si tampoco existe, conserva el último dato válido con su fecha real.</li>
+          <li><strong>Cada noche (23:37, hora de Lima)</strong> el pipeline descarga cada fuente directamente de la institución. Si la institución no responde, usa la copia más reciente que bajaron el recolector en el Perú (21:00) o el recolector n8n en la nube (22:50) y, si no hay, la del Internet Archive, y lo indica; si tampoco existe, conserva el último dato válido con su fecha real.</li>
           <li><strong>Noticias.</strong> Se leen los feeds RSS de medios del Perú y del mundo, se conservan las notas sobre El Niño o sus impactos, se agrupan las que cuentan lo mismo y se agregan a un histórico que solo crece. Solo se guarda lo que cada medio publica en su feed.</li>
           <li><strong>Lectura tolerante a cambios de formato.</strong> Los archivos se leen por sus encabezados y etiquetas, no por posiciones fijas, y se comprueban rangos plausibles, duplicados y orden. Si el formato cambia, se registra una incidencia y el dato queda en validación. Los lectores se prueban contra copias históricas de cada fuente (2004–2026).</li>
           <li><strong>Vigencia por fuente.</strong> Cada serie tiene su propia antigüedad máxima según la frecuencia con que publica la institución. Un dato vencido nunca se presenta como actual: se muestra «Dato actual no disponible».</li>
@@ -733,7 +743,7 @@ VIEWS.metodologia = {
           <li>La señal GRD de TSM usa las anomalías mensuales OISST de Niño 1+2 y Niño 3.4, que llegan antes que ERSST. No se aplica al ICEN ni al RONI.</li>
           <li>D20 (profundidad de la isoterma de 20 °C): ninguna institución publica una serie de D20 por región. El observatorio la calcula con los archivos mensuales de GODAS de NOAA/CPC: en cada punto de la región busca la profundidad donde el agua cruza 20 °C (0 m si el agua de superficie ya está más fría), promedia la región y resta la media 1991–2020 del mismo mes. La tabla GRD no dice qué producto usar; Niño 1+2 y Niño 3.4 son una elección del observatorio pendiente de confirmación. GODAS tarda unas dos semanas en publicar cada mes.</li>
           <li>El SOI de la tabla GRD (±7) corresponde a la escala Troup (×10) de la Oficina de Meteorología de Australia. El observatorio la calcula con las presiones de Tahití y Darwin de NOAA porque el servidor australiano no permite descargas automáticas.</li>
-          <li>Los comunicados de ENFEN se leen del PDF oficial. Cuando el portal de ENFEN no responde a los servidores de GitHub, se usa la copia del Internet Archive y se indica en el estado.</li>
+          <li>Los comunicados del ENFEN se leen del PDF oficial. El portal del ENFEN no responde a los servidores de GitHub y la réplica de la DHN les pide una verificación humana, que el observatorio no intenta pasar. Por eso el PDF se toma de la copia más reciente del recolector en el Perú, de n8n o de la consola de documentos (donde una persona sube el PDF que bajó en su navegador) y, si no hay, del Internet Archive o del repositorio del IMARPE, que recibe cada comunicado unos días después. La tarjeta del estado enlaza la copia archivada del PDF que se leyó.</li>
         </ul>
         ${SITE.repo ? html`<p>Código, datos y registro de cambios: <a href="${SITE.repo}" rel="noopener" target="_blank">${SITE.repo.replace(/^https:\/\//, '')}</a>.</p>` : ''}
       </section>
@@ -776,10 +786,17 @@ VIEWS.metodologia = {
     const src = await load('sources.json');
     const rep = await load('run-report.json');
     const ST = { ok: ['ok', 'Directa'], archive: ['watch', 'Copia de archivo'], carried: ['watch', 'Último dato válido'], failed: ['alert', 'Falló'] };
+    // «ok» incluye la copia de otro recolector (de hasta 7 días), otra dirección oficial y, en el ENFEN, el listado de
+    // la publicación anterior con su comunicado ya leído (enfen_latest): nada de eso es «Directa».
+    const stChip = (s) => {
+      if (s.status === 'ok' && s.channel === 'previous-publication') return chip(...ST.carried);
+      if (s.status === 'ok' && CHANNEL_TAG[s.channel]) return chip('ok', CHANNEL_TAG[s.channel].replace(/^v/, 'V'));
+      return chip(ST[s.status]?.[0] || 'na', ST[s.status]?.[1] || s.status);
+    };
     if (src) {
       $('#sources-table').innerHTML = String(html`<div class="table-wrap"><table><thead><tr><th scope="col">Fuente</th><th scope="col">Estado</th><th scope="col">Obtenido</th><th scope="col">Frecuencia</th></tr></thead><tbody>
-        ${src.sources.map((s) => html`<tr><th scope="row"><a href="${safeUrl(s.docs)}" rel="noopener" target="_blank">${s.product}</a><div class="muted small">${s.institution}</div></th>
-        <td>${chip(ST[s.status]?.[0] || 'na', ST[s.status]?.[1] || s.status)}${s.formatDrift ? html` <span class="tag tag-prelim">formato cambió</span>` : ''}${s.archivedAt ? html`<div class="muted small">copia del ${F.fmtDate(s.archivedAt.slice(0, 10))}</div>` : ''}</td>
+        ${src.sources.map((s) => html`<tr data-source="${s.id}"><th scope="row"><a href="${safeUrl(s.docs)}" rel="noopener" target="_blank">${s.product}</a><div class="muted small">${s.institution}</div></th>
+        <td>${stChip(s)}${s.formatDrift ? html` <span class="tag tag-prelim">formato cambió</span>` : ''}${s.archivedAt ? html`<div class="muted small">copia del ${F.fmtDate(s.archivedAt.slice(0, 10))}</div>` : ''}</td>
         <td>${s.retrievedAt ? F.fmtDateTime(s.retrievedAt) : '—'}${archiveHref(s.archive) ? html`<div class="small"><a href="${archiveHref(s.archive)}" rel="noopener" target="_blank">copia archivada</a></div>` : ''}</td><td>cada ~${s.cadenceDays} días</td></tr>`)}</tbody></table></div>`);
     } else $('#sources-table').textContent = 'No disponible.';
     if (rep) {

@@ -2,7 +2,10 @@
 
 Orden de intento para cada fuente:
   1. URL oficial (y sus espejos declarados), con reintentos y espera
-     exponencial ante errores transitorios (DNS, 5xx, 429, timeouts).
+     exponencial ante errores transitorios (DNS, 5xx, 429, timeouts). Con
+     ``robots``, antes de pedir directo una URL cuyo robots.txt no leyó la
+     sonda semanal (fuera del registro, asignada a otro canal o ``unknown``)
+     se lee su robots.txt (RFC 9309): si no la permite o no responde, no se pide.
   2. Si una URL no responde, la copia que el recolector del Perú
      (``tools/peru_collector.py``) bajó de esa misma URL y subió a la rama
      ``data-peru`` (canal «relay-peru»). Las fuentes peruanas que bloquean
@@ -34,6 +37,8 @@ from urllib.parse import quote, urlsplit
 
 import httpx
 
+from .reach import ROBOTS_TIMEOUT_S, Robots
+
 #: El contacto que ven las fuentes: el sitio publicado cuando el flujo lo
 #: define (ENSO_CONTACT_URL), o el repositorio.
 CONTACT = os.environ.get("ENSO_CONTACT_URL") or "https://github.com/PillB/observatorio-enso-peru"
@@ -56,7 +61,7 @@ class TooSlow(httpx.TransportError):
 class Response:
     url: str
     body: bytes
-    channel: str  # "direct" | "mirror" | "relay-peru" | "relay-n8n" | "archive" | "archive-fresh"
+    channel: str  # "direct" | "mirror" | "relay-peru" | "relay-n8n" | "relay-manual" | "archive" | "archive-fresh"
     status: int
     content_type: str = ""
     last_modified: str = ""
@@ -135,6 +140,8 @@ class Relay:
         self.summary: dict = idx.get("summary") or {}
         #: Metas de la recolección (``tools.peru_collector.goals``): documento → si se guardó su PDF.
         self.goals: dict = idx.get("goals") or {}
+        #: Por qué se logró o no cada meta (``tools.peru_collector.goal_detail``): clase, estado HTTP, motivo.
+        self.goal_detail: dict = idx.get("goal_detail") or {}
         self.heartbeat: dict = read_heartbeat(self.root)
         self.max_age_hours = max_age_hours
         #: Canal con que se marcan las respuestas: «relay-n8n», «relay-manual» (consola de documentos) o «relay-peru».
@@ -175,7 +182,8 @@ class Fetcher:
     def __init__(self, timeout: float = 45.0, retries: int = 3, polite_delay: float = 0.8,
                  allow_archive: bool = True, allow_save: bool = False, offline: bool = False,
                  relay: Optional["Relay | list[Relay]"] = None, plan: Optional[dict[str, list[str]]] = None,
-                 max_seconds: Optional[float] = None, budget_s: Optional[float] = None):
+                 max_seconds: Optional[float] = None, budget_s: Optional[float] = None,
+                 robots: bool = False, robots_known: Optional[dict[str, str]] = None):
         # Conectar no lleva más de unos segundos aunque el servidor sea lento: un servidor que no acepta la
         # conexión no retiene cada pedido el plazo entero.
         self.client = httpx.Client(timeout=httpx.Timeout(timeout, connect=min(timeout, 15.0)), follow_redirects=True,
@@ -201,6 +209,14 @@ class Fetcher:
         #: alcanza (geobloqueada) se lee primero de esas copias y se pide directo una sola vez, por si
         #: volvió a responder; una que robots.txt prohíbe (sin canales) no se pide al servidor.
         self.plan = plan or {}
+        #: Lo que el registro sabe del robots.txt de cada URL (``registry.url_robots``): una URL ``unknown`` (nadie
+        #: pudo leerlo) se lee primero de las copias, como una que Actions no alcanza.
+        self.robots_known = robots_known or {}
+        #: robots.txt leído durante la corrida (``enso.reach.Robots``), antes del pedido directo a lo que la sonda
+        #: semanal no cubrió y antes de pedir una copia nueva al Internet Archive. Apagado, no se lee.
+        #: Un fallo pasajero al leerlo se reintenta una vez: sin robots.txt no se pide nada a ese servidor en la corrida.
+        self.robots: Optional[Robots] = Robots(self.client, timeout=ROBOTS_TIMEOUT_S, tries=2,
+                                               backoff_s=2 * polite_delay) if robots else None
         self._last: dict[str, float] = {}
 
     def close(self) -> None:
@@ -294,6 +310,24 @@ class Fetcher:
             self._down[key] = self._down.get(key, 0) + 1
         return None
 
+    def _robots_skip(self, url: str, planned: Optional[list[str]]) -> Optional[str]:
+        """Por qué no se pide directo ``url`` según su robots.txt (``None``: se pide). Lo que el registro asigna a
+        Actions con robots.txt leído por la sonda semanal no se vuelve a revisar; lo demás se revisa en la corrida, y
+        si robots.txt no responde vale lo que leyó la sonda (``allowed``: RFC 9309 §2.3.1.4 admite una copia guardada)."""
+        if self.robots is None or self.skip_reason(url):
+            return None  # sin robots, o no se pediría de todos modos (``_get`` lo anota)
+        known = self.robots_known.get(url)
+        if planned and "actions" in planned and known != "unknown":
+            return None
+        allowed = self.robots.allowed(url)
+        if allowed is False:
+            return "robots.txt no permite la ruta: no se pide"
+        if allowed is None and known != "allowed":
+            # Con el error de red: quien lee el motivo (``imarpe_repo.cause``) distingue un certificado de un corte.
+            why = self.robots.error(url) or self.robots.failure(url)
+            return "robots.txt sin respuesta: no se pide" + (f" ({why})" if why else "")
+        return None
+
     def get(self, urls: list[str], *, archive: bool = True, save: bool = False,
             accept: tuple[str, ...] = ()) -> Response:
         """Intenta cada URL y luego los canales de archivo."""
@@ -302,23 +336,29 @@ class Fetcher:
             raise FetchError("modo sin conexión", attempts)
         for i, url in enumerate(urls):
             planned = self.plan.get(url)
-            if planned is not None and "actions" not in planned:
+            unread = self.robots_known.get(url) == "unknown"
+            if planned is not None and ("actions" not in planned or unread):
                 got = self._from_relays(url, accept)
                 if got is not None:
                     attempts.append({"url": url, "channel": got.channel, "collected_at": got.archived_at,
-                                     "note": "el registro la asigna a " + ", ".join(planned)})
+                                     "note": "nadie pudo leer su robots.txt" if "actions" in planned
+                                     else "el registro la asigna a " + ", ".join(planned)})
                     got.attempts = attempts
                     return got
                 if not planned:
                     attempts.append({"url": url, "note": "robots.txt no permite la ruta: no se pide"})
                     continue
-            r = self._get(url, attempts, tries=1 if planned is not None and "actions" not in planned else None)
-            if r is not None and r.status_code == 200 and r.content and self._acceptable(r, accept):
-                return Response(str(r.url), r.content, "direct" if i == 0 else "mirror", 200,
-                                r.headers.get("content-type", ""), r.headers.get("last-modified", ""),
-                                attempts=attempts)
-            if r is not None and r.status_code == 200:
-                attempts[-1]["note"] = "contenido vacío o tipo inesperado"
+            skip = self._robots_skip(url, planned)
+            if skip:  # como ``skip_reason`` en ``_get``: quien lee el último intento ve el motivo
+                attempts.append({"url": url, "error": skip})
+            else:
+                r = self._get(url, attempts, tries=1 if planned is not None and "actions" not in planned else None)
+                if r is not None and r.status_code == 200 and r.content and self._acceptable(r, accept):
+                    return Response(str(r.url), r.content, "direct" if i == 0 else "mirror", 200,
+                                    r.headers.get("content-type", ""), r.headers.get("last-modified", ""),
+                                    attempts=attempts)
+                if r is not None and r.status_code == 200:
+                    attempts[-1]["note"] = "contenido vacío o tipo inesperado"
             got = self._from_relays(url, accept)
             if got is not None:
                 attempts.append({"url": url, "channel": got.channel, "collected_at": got.archived_at})
@@ -349,10 +389,28 @@ class Fetcher:
         ct = r.headers.get("content-type", "").lower()
         return any(a in ct for a in accept)
 
+    def _may_save(self, url: str) -> bool:
+        """Si se puede pedir una copia nueva (Save Page Now): el Internet Archive le pide la página al servidor en
+        nombre del observatorio, así que no si el registro no le da canales (robots.txt la prohíbe) ni si robots.txt
+        no la permite. Tampoco lo que el registro asigna solo al recolector del Perú: el Internet Archive pide desde
+        fuera del Perú, y ahí (el portal del ENFEN) le falla siempre (HTTP 523) y gasta los intentos que necesita el
+        PDF del comunicado. Si robots.txt no responde en la corrida, vale lo que leyó la sonda (``allowed``), como en
+        ``_robots_skip``, en lo que el registro asigna a Actions."""
+        planned = self.plan.get(url)
+        if planned is not None and not {"actions", "n8n"} & set(planned):
+            return False
+        if self.robots is None:
+            return True
+        allowed = self.robots.allowed(url)
+        return allowed is True or (allowed is None and self.robots_known.get(url) == "allowed"
+                                   and "actions" in (planned or []))
+
     def _from_archive(self, url: str, attempts: list, fresh: bool) -> Optional[Response]:
         """Copia más reciente del Internet Archive; si tiene más de un día y
-        se permite, pide una nueva (Save Page Now) y, si esa falla, devuelve
-        la existente."""
+        se permite (``_may_save``), pide una nueva (Save Page Now) y, si esa
+        falla, devuelve la existente. Todo pedido de copia nueva pasa por aquí
+        (``Fetcher.get`` y ``observatory.archived_copy``)."""
+        fresh = fresh and self._may_save(url)
         cdx = ("https://web.archive.org/cdx/search/cdx?output=json&limit=-1&filter=statuscode:200"
                f"&url={quote(url, safe='')}")
         snap = None

@@ -341,3 +341,20 @@ def test_repository_link_is_published_with_the_communique():
     b.data = lambda sid: {"latest": latest, "listing": []} if sid == "enfen-comunicados" else None
     res = b.official()
     assert res["enfen"]["repositoryUrl"].startswith("https://repositorio.imarpe.gob.pe/")
+
+
+def test_repository_incident_carries_the_network_error():
+    """«conexión» sola no distingue un DNS que no resuelve de un timeout: la incidencia trae el error tal cual."""
+    exc = FetchError("x", [{"url": imarpe_repo.API, "error": "ConnectError: [Errno -2] Name or service not known"}])
+    problems = []
+    assert imarpe_repo.communiques(_RepoFetcher(exc), problems=problems) == []
+    assert problems == ["conexión"]
+    log = _Log()
+    imarpe_repo.log_problems(log, problems, "los comunicados del ENFEN")
+    assert log.codes() == [("warning", "repository-unreachable")]
+    assert "(conexión: ConnectError: [Errno -2] Name or service not known)" in log.events[0][4]
+    # Un código HTTP ya dice lo que pasó: no se repite el error.
+    problems = [imarpe_repo.cause(FetchError("x", [{"url": "u", "status": 503, "error": "HTTP 503"}]))]
+    log = _Log()
+    imarpe_repo.log_problems(log, problems, "los informes técnicos del ENFEN")
+    assert "(http-503)." in log.events[0][4]

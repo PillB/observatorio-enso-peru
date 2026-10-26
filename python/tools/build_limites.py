@@ -10,7 +10,13 @@ Formato: coordenadas en enteros (grados × 10⁴, unos 11 m), anillos simplifica
 listas planas [x0, y0, x1, y1, …], y la caja de cada unidad para descartar rápido.
 
 Uso:
-    python -m tools.build_limites [--src DIR]   # DIR con per_admin{1,2,3}.geojson ya descomprimidos
+    python -m tools.build_limites [--src DIR | --zip ARCHIVO]
+
+``--src``: carpeta con per_admin{1,2,3}.geojson ya descomprimidos; ``--zip``: el .geojson.zip bajado a mano
+de la página del conjunto. Sin ninguno de los dos se baja de HDX, respetando su robots.txt (RFC 9309), como
+todo lo que pide el proyecto: prohíbe la API (``Disallow: /api/``, leído el 26 de octubre de 2026), así que el
+archivo se baja a mano y se pasa con ``--zip``. Los límites ya están en el repositorio: esto solo hace falta
+para una versión nueva.
 """
 
 from __future__ import annotations
@@ -24,6 +30,9 @@ from pathlib import Path
 
 import httpx
 
+from enso.fetch import UA
+from enso.reach import Robots
+
 PACKAGE = "https://data.humdata.org/api/3/action/package_show?id=cod-ab-per"
 OUT = Path(__file__).resolve().parents[1] / "enso" / "data" / "limites-ign.json.gz"
 SCALE = 10_000
@@ -31,8 +40,8 @@ SCALE = 10_000
 LEVELS = {"districts": ("per_admin3.geojson", "adm3_pcode", 10),
           "provinces": ("per_admin2.geojson", "adm2_pcode", 20),
           "departments": ("per_admin1.geojson", "adm1_pcode", 40)}
-SOURCE = ("Instituto Geográfico Nacional (IGN), vía OCHA HDX «cod-ab-per» (CC BY-IGO), "
-          "https://data.humdata.org/dataset/cod-ab-per")
+DATASET = "https://data.humdata.org/dataset/cod-ab-per"
+SOURCE = f"Instituto Geográfico Nacional (IGN), vía OCHA HDX «cod-ab-per» (CC BY-IGO), {DATASET}"
 
 
 def _simplify(pts: list[tuple[int, int]], tol: int) -> list[tuple[int, int]]:
@@ -111,21 +120,48 @@ def build(src: dict[str, dict]) -> dict:
     return out
 
 
-def _download() -> dict[str, dict]:
-    meta = httpx.get(PACKAGE, timeout=60, follow_redirects=True).raise_for_status().json()["result"]
-    url = next(r["url"] for r in meta["resources"] if r["name"].endswith(".geojson.zip"))
-    z = zipfile.ZipFile(io.BytesIO(httpx.get(url, timeout=600, follow_redirects=True).raise_for_status().content))
+def _unzip(data: bytes) -> dict[str, dict]:
+    z = zipfile.ZipFile(io.BytesIO(data))
     return {level: json.loads(z.read(name)) for level, (name, _, _) in LEVELS.items()}
+
+
+def _download(client: httpx.Client) -> dict[str, dict]:
+    """De HDX, solo lo que su robots.txt permite: la API del catálogo y luego el archivo del recurso (y cada
+    redirección, que puede llevar a otro servidor)."""
+    robots = Robots(client)
+
+    def get(url: str, timeout: float) -> httpx.Response:
+        for _ in range(6):
+            allowed = robots.allowed(url)
+            if allowed is not True:
+                why = "no permite" if allowed is False else \
+                    f"no respondió ({robots.failure(url) or 'sin respuesta'}) y no se sabe si permite"
+                raise SystemExit(f"El robots.txt de {httpx.URL(url).host} {why} {url}: no se pide. Bajar a mano "
+                                 f"el .geojson.zip de {DATASET} y pasarlo con --zip.")
+            r = client.get(url, timeout=timeout, follow_redirects=False)  # cada salto con su robots.txt
+            if not r.is_redirect:
+                return r.raise_for_status()
+            url = str(r.next_request.url)
+        raise SystemExit(f"Demasiadas redirecciones desde {url}")
+
+    meta = get(PACKAGE, 60).json()["result"]
+    url = next(r["url"] for r in meta["resources"] if r["name"].endswith(".geojson.zip"))
+    return _unzip(get(url, 600).content)
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--src", type=Path)
+    how = ap.add_mutually_exclusive_group()
+    how.add_argument("--src", type=Path, help="carpeta con per_admin{1,2,3}.geojson")
+    how.add_argument("--zip", type=Path, help=f"el .geojson.zip bajado a mano de {DATASET}")
     a = ap.parse_args(argv)
     if a.src:
         src = {k: json.loads((a.src / name).read_text(encoding="utf-8")) for k, (name, _, _) in LEVELS.items()}
+    elif a.zip:
+        src = _unzip(a.zip.read_bytes())
     else:
-        src = _download()
+        with httpx.Client(headers={"User-Agent": UA}) as client:
+            src = _download(client)
     data = build(src)
     raw = json.dumps(data, separators=(",", ":")).encode()
     OUT.write_bytes(gzip.compress(raw, 9, mtime=0))
