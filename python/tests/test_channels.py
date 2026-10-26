@@ -562,6 +562,11 @@ def test_carried_data_and_archived_copies_survive_one_server_error(tmp_path, mon
     ev = next(e for e in log.events if e.code == "previous-unreachable")
     assert ev.severity == "warning" and "sources/fuente-x.json" in ev.message
     w = archive.Writer(tmp_path / "pub2")
+    assert prev.down  # el sitio no dio nada en 3 intentos: la copia se pide una vez
+    assert archive.carry(w, rel, prev.get_bytes, source="enfen-comunicados") is None
+    assert w.missed == [("enfen-comunicados", rel)] and calls.count(rel) == 1
+    prev, calls = _previous_site(99, files)
+    w = archive.Writer(tmp_path / "pub2b")
     assert archive.carry(w, rel, prev.get_bytes, source="enfen-comunicados") is None
     assert w.missed == [("enfen-comunicados", rel)] and calls.count(rel) == prev.TRIES
     # La copia de una fuente caída (write_sources) también se reintenta y, si falta, se anota.
@@ -578,28 +583,68 @@ def test_carried_data_and_archived_copies_survive_one_server_error(tmp_path, mon
 
 
 def test_a_previous_site_that_does_not_answer_is_asked_once_per_file(monkeypatch):
-    """Con el sitio anterior sin responder (caído, tiempo agotado), los reintentos se gastan en el primer archivo;
-    los siguientes se piden una vez, como antes. Cuando vuelve a responder, se reintenta otra vez."""
+    """Con el sitio anterior caído (sin respuesta o con 5xx), los reintentos de lo arrastrado se gastan en el primer
+    archivo; los siguientes se piden una vez, como antes. Vuelven los reintentos cuando el sitio responde o pasan
+    DOWN_S desde el último que falló."""
     monkeypatch.setattr(obs.time, "sleep", lambda s: None)
-    calls, up = [], []
+    clock = [1000.0]
+    monkeypatch.setattr(obs.time, "monotonic", lambda: clock[0])
+    calls, mode = [], ["timeout"]
 
     def net(req):
         calls.append(req.url.path)
-        if not up:
+        if mode[0] == "timeout":
             raise httpx.ConnectTimeout("sin respuesta", request=req)
-        return httpx.Response(503)
+        return httpx.Response(503) if mode[0] == "503" else httpx.Response(404)
 
     fetcher = Fetcher(polite_delay=0)
     fetcher.client = httpx.Client(transport=httpx.MockTransport(net))
     prev = obs.PreviousPublication("https://sitio.example/data", fetcher)
-    assert prev.get("sources/a.json", tries=3) is None and len(calls) == 3 and prev.down
-    assert prev.get("sources/b.json", tries=3) is None and len(calls) == 4
+    assert prev.get("sources/a.json", carry=True) is None and len(calls) == prev.TRIES and prev.down
+    assert prev.get("sources/b.json", carry=True) is None and len(calls) == 4
     assert prev.get_bytes("archive/sources/a/x.pdf") is None and len(calls) == 5
     assert prev.state["sources/b.json"] == "unreachable"
-    up.append(True)  # responde, aunque con 503: ya no está caído
+    mode[0] = "503"  # un 503 sin fin cuenta igual: no se gastan 3 pedidos y 3 s por archivo
     calls.clear()
-    assert prev.get_bytes("archive/sources/a/y.pdf") is None and len(calls) == 1 and not prev.down
-    assert prev.get_bytes("archive/sources/a/z.pdf") is None and len(calls) == 4
+    assert prev.get_bytes("archive/sources/a/y.pdf") is None and len(calls) == 1 and prev.down
+    clock[0] += prev.DOWN_S  # mucho después (p. ej. al escribir la publicación): se vuelve a insistir
+    assert not prev.down
+    assert prev.get_bytes("archive/sources/a/z.pdf") is None and len(calls) == 1 + prev.TRIES and prev.down
+    mode[0] = "404"  # responde: ya no está caído
+    calls.clear()
+    assert prev.get_bytes("archive/sources/a/w.pdf") is None and len(calls) == 1 and not prev.down
+    assert prev.state["archive/sources/a/w.pdf"] == "missing"
+
+
+def test_a_failed_read_that_is_not_carried_does_not_cut_the_retries(monkeypatch):
+    """Revisión: un pedido de un solo intento sin respuesta (p. ej. imarpe-bsobp.json, justo antes de las noticias, o
+    manual-needed.json, antes de escribir) daba el sitio por caído: news/feeds.json y la copia del comunicado se
+    pedían una sola vez. Solo lo arrastrado decide si el sitio está caído, y las noticias piden siempre sus 3."""
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    calls = []
+    script = {"imarpe-bsobp.json": ["timeout"], "manual-needed.json": ["timeout"],
+              "news/feeds.json": ["503", "200"], "archive/sources/enfen-comunicados/c.pdf": ["503", "200"],
+              "sources/x.json": ["timeout"] * 3, "news/items.jsonl": ["timeout", "200"]}
+
+    def net(req):
+        name = req.url.path.removeprefix("/data/")
+        calls.append(name)
+        step = script[name].pop(0)
+        if step == "timeout":
+            raise httpx.ConnectTimeout("sin respuesta", request=req)
+        return httpx.Response(503) if step == "503" else httpx.Response(200, content=b'{"feeds": {}}')
+
+    fetcher = Fetcher(polite_delay=0)
+    fetcher.client = httpx.Client(transport=httpx.MockTransport(net))
+    prev = obs.PreviousPublication("https://sitio.example/data", fetcher)
+    assert prev.get("imarpe-bsobp.json") is None and not prev.down
+    assert prev.get("news/feeds.json", tries=3) == {"feeds": {}} and calls.count("news/feeds.json") == 2
+    assert prev.get("manual-needed.json") is None
+    assert prev.get_bytes("archive/sources/enfen-comunicados/c.pdf") == b'{"feeds": {}}'
+    # Con el sitio dado por caído por lo arrastrado, el histórico de noticias igual pide sus intentos.
+    assert prev.get("sources/x.json", carry=True) is None and prev.down
+    assert prev.get_text("news/items.jsonl", tries=3) == '{"feeds": {}}' and calls.count("news/items.jsonl") == 2
+    assert prev.down  # y no lo da por vivo: eso lo dice lo arrastrado
 
 
 def _archive_news_script() -> str:
