@@ -136,6 +136,7 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
     import httpx
 
     from .fetch import FetchError, Response, TooSlow
+    from .reach import BAD_LOCATION, RobotsHop
 
     if fetcher.offline:
         raise FetchError("modo sin conexión", [])
@@ -180,9 +181,10 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
         try:
             # Con el plazo por pedido y el de la corrida, como cualquier otro pedido de la corrida.
             r = fetcher._request(u, headers={"Range": rng})
-        except httpx.HTTPError as exc:
+        except (httpx.HTTPError, *BAD_LOCATION) as exc:  # también un Location que httpx no puede armar
             attempts.append({"url": u, "range": rng, "error": f"{type(exc).__name__}: {exc}"[:200]})
-            fetcher._down[host] = fetcher._down.get(host, 0) + (2 if isinstance(exc, TooSlow) else 1)
+            if not isinstance(exc, RobotsHop):  # una redirección que no se siguió no es un fallo del servidor
+                fetcher._down[host] = fetcher._down.get(host, 0) + (2 if isinstance(exc, TooSlow) else 1)
             http_errors[k] = f"{type(exc).__name__}: {exc}"[:200]
             continue
         attempts.append({"url": u, "range": rng, "status": r.status_code})
@@ -390,7 +392,9 @@ class PreviousPublication:
                 time.sleep(backoff * attempt)
             try:
                 if self.base.startswith("http"):
-                    r = self.fetcher.client.get(f"{self.base}/{name}", params=None if binary else {"t": int(time.time())})
+                    # El sitio publicado es el del propio observatorio: sus redirecciones se siguen sin más.
+                    r = self.fetcher.client.get(f"{self.base}/{name}", params=None if binary else {"t": int(time.time())},
+                                                follow_redirects=True)
                     if r.status_code >= 500 or r.status_code == 429:
                         continue
                     status, body = r.status_code, (r.content if binary else r.text)

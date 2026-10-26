@@ -38,7 +38,7 @@ from enso import registry  # noqa: E402
 # 403 a «Mozilla/5.0 (compatible; …)» y 200 a curl desde el mismo ejecutor) y otros que no envían su certificado
 # intermedio (repositorio.imarpe.gob.pe): la sonda mide lo que verá el pipeline.
 from enso.fetch import UA, ssl_context  # noqa: E402
-from enso.reach import ROBOTS_TIMEOUT_S, Robots, classify, judge  # noqa: E402
+from enso.reach import ROBOTS_TIMEOUT_S, Robots, classify, get_checked, judge  # noqa: E402
 
 #: Días tras los que se olvida una URL que ya no está en el registro, contados desde la medición más reciente
 #: del archivo: los PDF que n8n siguió y los feeds retirados no crecen reachability.json para siempre, y una
@@ -75,15 +75,24 @@ def probe(urls: list[str], vantage: str, timeout: float = 25.0,
             wait = 1.5 - (time.monotonic() - last.get(host, 0))
             if wait > 0:
                 time.sleep(wait)
-            robots.pace(url)  # el Crawl-delay de una entidad pública del Perú, si pide más que esa pausa
             started = time.monotonic()
+            hop, verdict = None, True
             try:
-                r = client.get(url)
+                # Cada redirección con el robots.txt de su destino: una URL que solo llega a su contenido por una
+                # ruta prohibida (o por un servidor cuyo robots.txt no responde) no queda «allowed» en el registro.
+                r, hop, verdict = get_checked(client, url, robots)
                 status, body, headers, err = r.status_code, r.content, r.headers, ""
             except httpx.HTTPError as exc:
                 status, body, headers, err = None, b"", None, f"{type(exc).__name__}: {exc}"[:200]
             finally:
                 last[host] = time.monotonic()
+        if hop:
+            return url, {"class": "robots" if verdict is False else (robots.failure(hop) or "connect"),
+                         "http": status, "bytes": 0, "ms": int((time.monotonic() - started) * 1000),
+                         "detail": f"redirige a {hop}: robots.txt "
+                                   + ("no permite la ruta" if verdict is False else "sin respuesta"),
+                         "robots": "disallowed" if verdict is False else "unreachable", "hop": hop,
+                         "at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "vantage": vantage}
         cls, _, why = judge(status, body, headers.get("content-type", "") if headers else "",
                             (expect or {}).get(url), err, headers)
         return url, {"class": cls, "http": status, "bytes": len(body),
@@ -105,7 +114,8 @@ def from_peru_index(index: dict) -> dict[str, dict]:
     o cuando no responde (``timeout``…, como en ``probe``); el plazo o un
     servidor caído no la traen. El recolector lee robots.txt antes de cada
     pedido: lo que pidió lleva ``robots: allowed``, lo omitido porque robots.txt
-    no respondió ``unreachable`` y lo que prohíbe ``disallowed``."""
+    no respondió ``unreachable`` y lo que prohíbe ``disallowed``; una redirección
+    que no siguió, su destino en ``hop``."""
     out = {}
     at = index.get("collected_at") or index.get("at")
     for url, rec in (index.get("probes") or {}).items():
@@ -126,6 +136,8 @@ def from_peru_index(index: dict) -> dict[str, dict]:
         rec = {"class": cls, "http": e.get("status"), "bytes": e.get("bytes"), "at": e.get("fetched_at") or at,
                "vantage": "peru-server", "detail": e.get("error", ""),
                "robots": "disallowed" if cls == "robots" else "unreachable" if unread else "allowed"}
+        if e.get("hop"):  # la redirección que no siguió (``enso.reach.get_checked``), como en ``probe``
+            rec["hop"] = e["hop"]
         for u in [e.get("url"), *(e.get("aliases") or [])]:
             if u:
                 out[u] = rec
@@ -165,22 +177,24 @@ def from_n8n_index(index: dict) -> dict[str, dict]:
             if u:
                 out[u] = rec | {"vantage": vantage}
     for e in index.get("not_requested") or []:
-        rec = _not_requested(e.get("robots"), e.get("reach"), e.get("note")) if isinstance(e, dict) else None
+        rec = _not_requested(e.get("robots"), e.get("reach"), e.get("note"), e.get("hop")) if isinstance(e, dict) else None
         if rec and e.get("url"):
             out[e["url"]] = rec | {"at": e.get("fetched_at") or at, "vantage": vantage}
     return out
 
 
-def _not_requested(robots, reach, note) -> dict | None:
+def _not_requested(robots, reach, note, hop=None) -> dict | None:
     """Una URL que n8n no pidió por su robots.txt, como la mide ``probe``: si lo prohíbe, clase ``robots``; si no
     respondió, la clase de ese robots.txt (``reach`` en el índice, ``alcance`` en el informe). Sin ella no es una
-    medición de la URL."""
+    medición de la URL. Si lo que leyó fue el robots.txt del destino de su redirección (``hop`` del registro), va en
+    ``hop``: el registro juzga por ese servidor (la excepción de las entidades públicas del Perú, ``registry._counted``)."""
+    hop = {"hop": hop} if isinstance(hop, str) and hop.startswith(("http://", "https://")) else {}
     if robots == "disallowed":
         return {"class": "robots", "http": None, "bytes": 0, "detail": "robots.txt no permite la ruta",
-                "robots": "disallowed"}
+                "robots": "disallowed", **hop}
     if robots == "unreachable" and reach in registry.CLASSES and reach not in ("ok", "robots"):
         return {"class": reach, "http": None, "bytes": 0, "detail": str(note or "robots.txt sin respuesta"),
-                "robots": "unreachable"}
+                "robots": "unreachable", **hop}
     return None
 
 
@@ -204,7 +218,7 @@ def from_n8n_report(rows: list, vantage: str) -> list[dict]:
         if not isinstance(r, dict) or r.get("id") == "resumen" or not r.get("url"):
             continue
         if r.get("veredicto") == "not_requested":  # fila «NO PEDIDA»: su robots.txt la prohíbe o no respondió
-            rec = _not_requested(r.get("robots"), r.get("alcance"), r.get("nota"))
+            rec = _not_requested(r.get("robots"), r.get("alcance"), r.get("nota"), r.get("hop"))
             if rec:
                 rec |= {"url": r["url"], "at": _iso(r.get("medido"))}
                 out.append({k: v for k, v in rec.items() if v is not None} | {"vantage": vantage})
@@ -251,12 +265,15 @@ def _put(data: dict, url: str, rec: dict) -> None:
     """Guarda la medición de una red (reemplaza la anterior de esa misma red). Si no trae una lectura de robots.txt
     (no respondió, o esta vez no se leyó, como n8n con lo que el registro ya da por permitido), conserva en
     ``robots_read`` la última de esa red que permitía la ruta: RFC 9309 §2.4 deja usar la copia guardada si robots.txt
-    no responde, y así una verificación de un día no borra lo que se sabía (``registry.robots_verdict``)."""
+    no responde, y así una verificación de un día no borra lo que se sabía (``registry.robots_verdict``). No si lo que
+    no respondió fue el robots.txt del destino de una redirección (``hop``): la lectura guardada es la de la URL, no la
+    de ese destino (n8n lee el de ``hop``, ``registry.build``)."""
     rec = {k: v for k, v in rec.items() if k != "url"}
     groups = registry._groups(data["urls"].get(url) or {})
     group = groups.setdefault(registry.vantage_group(rec["vantage"]), {})
     prev = group.get(rec["vantage"])
-    if prev and rec.get("class") != "robots" and rec.get("robots") not in ("allowed", "absent", "disallowed"):
+    if prev and rec.get("class") != "robots" and not rec.get("hop") \
+            and rec.get("robots") not in ("allowed", "absent", "disallowed"):
         seen = ({"robots": prev["robots"], "at": prev.get("at")}
                 if prev.get("robots") in ("allowed", "absent") and prev.get("class") != "robots"
                 else prev.get("robots_read"))
