@@ -62,7 +62,9 @@ El registro anota, por URL, qué dice su `robots.txt` (`robots`). Si dice
 ejemplo porque a GitHub Actions le responde una verificación), n8n lee ese
 `robots.txt` en la primera pasada, con las reglas de `python/enso/reach.py`
 (RFC 9309; `n8n/lib/robots.js`), y pide la URL en la segunda pasada solo si
-lo permite:
+lo permite. Si la entrada trae `hop` (la URL redirige a otro servidor cuyo
+`robots.txt` no respondió al medir), se lee el `robots.txt` de ese destino y
+se juzga la ruta del destino:
 
 | Respuesta del `robots.txt` | `robots` | ¿Se pide la URL? |
 |---|---|---|

@@ -74,9 +74,12 @@ for (const s of registry.sources) {
     };
     // Nadie pudo leer su robots.txt al medir («unknown»): primero se lee aquí
     // (nodo «Analizar»), y la URL se pide en la segunda pasada solo si lo permite.
+    // Con «hop» (la URL redirige ahí y el robots.txt de ese servidor no respondió
+    // al medir), se lee el robots.txt del destino y se juzga la ruta del destino.
     if (u.robots === 'unknown') {
+      if (u.hop) target.hop = u.hop;
       // Sin «URL»: el nodo Code de n8n no la tiene.
-      const m = /^(https?:\/\/([^/?#]+))/i.exec(url);
+      const m = /^(https?:\/\/([^/?#]+))/i.exec(u.hop || url);
       if (!m) return;
       const base = m[1].toLowerCase();
       const host = m[2].toLowerCase();

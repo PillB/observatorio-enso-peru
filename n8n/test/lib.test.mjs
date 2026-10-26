@@ -525,3 +525,19 @@ test('Segunda pasada: «follow» solo sigue enlaces del mismo servidor que la p�
   const out = await fn.call({ helpers: { getBinaryDataBuffer: async () => html } }, () => ({}), { all: () => [item] }, undefined);
   assert.deepEqual(out.map((i) => i.json.url), ['https://www.dhn.mil.pe/a/01-2026.pdf']);
 });
+
+test('Fuentes y Analizar: con «hop», se lee el robots.txt del destino de la redirección', async () => {
+  const reg = { schema: 'enso-source-registry/1', sources: [
+    { id: 'h', group: 'g', url: 'https://viejo.pe/feed', expect: 'rss', channels: ['actions', 'n8n'],
+      by_url: { 'https://viejo.pe/feed': { status: 'open', channels: ['actions', 'n8n'], robots: 'unknown', hop: 'https://nuevo.example/noticias/feed' } } },
+  ] };
+  const out = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
+  assert.deepEqual(out.map((i) => i.json.url), ['https://nuevo.example/robots.txt']);
+  assert.equal(out[0].json.deferred[0].hop, 'https://nuevo.example/noticias/feed');
+  const body = Buffer.from('User-agent: *\nDisallow: /noticias/\n');
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const fn = new AsyncFunction('$', '$input', 'URL', nodeCode('analizar', { SOURCE_NODE: 'Fuentes' }));
+  const res2 = await fn.call({ helpers: { getBinaryDataBuffer: async () => body } }, () => ({ all: () => out }),
+    { all: () => [{ json: { statusCode: 200, headers: { 'content-type': 'text/plain' } }, binary: { data: {} } }] }, undefined);
+  assert.equal(res2[0].json.deferred[0].robots, 'disallowed');
+});

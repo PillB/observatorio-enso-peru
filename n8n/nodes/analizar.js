@@ -34,8 +34,9 @@ for (let i = 0; i < items.length; i++) {
   if (t.role === 'robots') {
     const headers = {};
     for (const [k, v] of Object.entries(j.headers || {})) headers[k.toLowerCase()] = String(v);
-    const { source, verdicts } = robotsVerdicts({ status, headers, body, error, cls }, t.deferred.map((d) => d.url));
-    Object.assign(o.json, { role: 'robots', robots_source: source, deferred: t.deferred.map((d) => ({ ...d, robots: verdicts[d.url] })) });
+    // Se juzga la ruta que se va a pedir en ese servidor: la URL o su destino («hop»).
+    const { source, verdicts } = robotsVerdicts({ status, headers, body, error, cls }, t.deferred.map((d) => d.hop || d.url));
+    Object.assign(o.json, { role: 'robots', robots_source: source, deferred: t.deferred.map((d) => ({ ...d, robots: verdicts[d.hop || d.url] })) });
   } else if (cls.ok && it.binary && it.binary.data) {
     o.binary = { data: it.binary.data };
   }
