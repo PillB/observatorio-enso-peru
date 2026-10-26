@@ -39,6 +39,7 @@ function entryFrom(r) {
   if (r.aliases && r.aliases.length) e.aliases = r.aliases;
   // Qué dijo el robots.txt leído por n8n (solo en las URL «robots: unknown» del registro).
   if (r.robots) e.robots = r.robots;
+  if (r.robots_public) e.robots_public = true;
   return e;
 }
 
@@ -49,7 +50,7 @@ function notRequested(results) {
   for (const r of results) {
     if (r.role !== 'robots') continue;
     for (const d of r.deferred || []) {
-      if (d.robots === 'allowed' || d.robots === 'absent') continue;
+      if (d.fetch || (d.fetch === undefined && (d.robots === 'allowed' || d.robots === 'absent'))) continue;
       const why = d.robots === 'disallowed' ? 'robots.txt no lo permite' : `robots.txt no respondió (${(r.cls && r.cls.reach) || 'sin respuesta'})`;
       // reach: la clase del pedido de robots.txt (timeout, challenge…), como Robots.failure en python/enso/reach.py.
       out.push({ url: d.url, id: d.id, group: d.group, robots: d.robots, reach: (r.cls && r.cls.reach) || '', robots_url: r.url, fetched_at: r.fetched_at, note: why });

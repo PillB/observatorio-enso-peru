@@ -72,6 +72,17 @@ se juzga la ruta del destino:
 | 2xx sin reglas (una página HTML), 3xx o 4xx que no sea una verificación | `absent` (o `allowed`) | Sí |
 | 429, 5xx, sin respuesta o una verificación antirobots | `unreachable` | No: sin saber, no se pide nada a ese servidor |
 
+**Entidades públicas del Perú** (`.gob.pe`, `.mil.pe`): por decisión del
+responsable del proyecto (información pública, Ley 27806), su `robots.txt`
+no decide qué se pide, igual que `PUBLIC_PERU_SUFFIXES` en
+`python/enso/reach.py`. Una URL `disallowed` o `unreachable` se pide igual
+(`robots_public: true` en su entrada de `index.json`), salvo que en lugar del
+`robots.txt` haya llegado una verificación antirobots: esa nunca se evade.
+Lo que sí se respeta es la frecuencia: n8n intercala los servidores y, entre
+dos peticiones al mismo servidor público del Perú, espera su `Crawl-delay`
+(`crawl_delay` en `by_url`, si el registro lo trae) o 1 segundo, hasta 30
+(nodos «Pausa», con `pause_s`).
+
 El veredicto queda en la entrada de `index.json` de la URL pedida (`robots`)
 o, si no se pidió, en `not_requested`; en la validación, en la columna
 `robots` (fila `NO PEDIDA` si no se pidió). La medición siguiente lo pasa al
@@ -128,7 +139,7 @@ sigue funcionando (todo va por la API, nada por `raw.githubusercontent.com`).
    | `api` | `https://api.github.com` | API de GitHub |
    | `data_branch` | `data-n8n` | Rama donde se publican las copias (se crea sola) |
    | `registry_ref`, `registry_path` | `main`, `registry/sources.json` | De dónde se lee el registro. Si no se puede leer, se usa la copia incluida en el flujo |
-   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. En ningún alcance se piden: las URL que `robots.txt` prohíbe, los feeds `reader` (solo Actions, una vez al día), las URL sin canales y las fuentes con `n8n: false` (las búsquedas del repositorio del IMARPE). Las URL cuyo `robots.txt` nadie pudo leer al medir (`robots: unknown`) se piden solo si n8n lee ese `robots.txt` y lo permite (ver «robots.txt» más arriba) |
+   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. En ningún alcance se piden: las URL que `robots.txt` prohíbe (salvo en entidades públicas del Perú, ver «robots.txt»), los feeds `reader` (solo Actions, una vez al día), las URL sin canales y las fuentes con `n8n: false` (las búsquedas del repositorio del IMARPE). Las URL cuyo `robots.txt` nadie pudo leer al medir (`robots: unknown`) se piden solo si n8n lee ese `robots.txt` y lo permite (ver «robots.txt» más arriba) |
    | `host_label`, `egress` | `n8n-aws`, `aws-us-east-1` | Se anotan en cada copia |
    | `carry_hours` | `72` | Si una URL falla, se conserva su última copia válida hasta estas horas |
    | `max_file_mb` | `8` | Respuestas más grandes no se guardan |

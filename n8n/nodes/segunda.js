@@ -16,12 +16,13 @@ const add = (t) => {
 for (const it of items) {
   const j = it.json;
   if (j.role === 'robots') {
-    // Las URL que su robots.txt permite (o que no tiene reglas) se piden ahora; un robots.txt
-    // que no respondió no se reintenta: sin saber, no se pide nada a ese servidor.
-    for (const { pass, ...d } of j.deferred) if (d.robots === 'allowed' || d.robots === 'absent') add(d);
+    // Las URL que su robots.txt permite (o que no tiene reglas) se piden ahora, y en una entidad
+    // pública del Perú también las demás salvo detrás de una verificación («fetch», nodo Analizar).
+    // Un robots.txt que no respondió no se reintenta.
+    for (const { pass, fetch, ...d } of j.deferred) if (fetch) add(d);
     continue;
   }
-  if (!j.cls.ok && j.cls.transient) add({ id: j.id, group: j.group, name: j.name, url: j.url, expect: j.expect, robots: j.robots });
+  if (!j.cls.ok && j.cls.transient) add({ id: j.id, group: j.group, name: j.name, url: j.url, expect: j.expect, robots: j.robots, robots_public: j.robots_public });
 }
 const pages = [];
 for (let i = 0; i < items.length; i++) {
@@ -48,4 +49,6 @@ for (const url of deriveEnfenTargets(pages)) {
   const pdf = /\.pdf(?:[?#]|$)|wpdmdl=/i.test(url);
   add({ id: 'enfen-pdf', group: 'enfen', name: `Comunicado oficial del ENFEN (${pdf ? 'PDF' : 'página'})`, url, expect: pdf ? 'pdf' : 'any' });
 }
+// Intervalo entre peticiones al mismo servidor público del Perú (nodo «Pausa (2.ª pasada)»).
+pacing(out.map((o) => o.json)).forEach((p, i) => { out[i].json.pause_s = p; });
 return out;

@@ -31,12 +31,18 @@ for (let i = 0; i < items.length; i++) {
   const cls = classify({ url: t.url, expect: t.expect, status, headers: j.headers || {}, body, error });
   const o = { json: { id: t.id, group: t.group, name: t.name, url: t.url, expect: t.expect, pass: t.pass || 1, fetched_at: now, cls }, pairedItem: { item: i } };
   if (t.robots) o.json.robots = t.robots;
+  if (t.robots_public) o.json.robots_public = true;
   if (t.role === 'robots') {
     const headers = {};
     for (const [k, v] of Object.entries(j.headers || {})) headers[k.toLowerCase()] = String(v);
     // Se juzga la ruta que se va a pedir en ese servidor: la URL o su destino («hop»).
-    const { source, verdicts } = robotsVerdicts({ status, headers, body, error, cls }, t.deferred.map((d) => d.hop || d.url));
-    Object.assign(o.json, { role: 'robots', robots_source: source, deferred: t.deferred.map((d) => ({ ...d, robots: verdicts[d.hop || d.url] })) });
+    const { source, verdicts, challenge } = robotsVerdicts({ status, headers, body, error, cls }, t.deferred.map((d) => d.hop || d.url));
+    Object.assign(o.json, { role: 'robots', robots_source: source, deferred: t.deferred.map((d) => {
+      const robots = verdicts[d.hop || d.url];
+      const fetch = robotsFetch(robots, d.hop || d.url, challenge);
+      // «robots_public»: se pide aunque robots.txt lo prohíba o no responda (entidad pública del Perú).
+      return { ...d, robots, fetch, robots_public: fetch && robots !== 'allowed' && robots !== 'absent' };
+    }) });
   } else if (cls.ok && it.binary && it.binary.data) {
     o.binary = { data: it.binary.data };
   }
