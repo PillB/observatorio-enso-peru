@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-26T14:42:52+00:00",
+ "generated_at": "2026-10-26T18:38:54+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h",
@@ -42,7 +42,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:50+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -56,22 +56,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 19133,
-     "ms": 287,
+     "bytes": 19037,
+     "ms": 255,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 19133,
-     "ms": 287,
+     "bytes": 19037,
+     "ms": 255,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -120,7 +120,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions"
     ],
@@ -131,10 +131,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 230,
+     "ms": 122,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -142,10 +142,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 230,
+     "ms": 122,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -187,7 +187,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:52+00:00",
+    "measured_at": "2026-10-26T16:09:31+00:00",
     "from": [
      "github-actions"
     ],
@@ -198,10 +198,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 236,
+     "ms": 97,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:31+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -209,10 +209,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 236,
+     "ms": 97,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:31+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -254,7 +254,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -269,10 +269,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 131,
+     "ms": 253,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -280,10 +280,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 131,
+     "ms": 253,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -332,7 +332,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:32+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -347,10 +347,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 187,
+     "ms": 44,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:32+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -358,10 +358,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 187,
+     "ms": 44,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:32+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -410,7 +410,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:35+00:00",
+    "measured_at": "2026-10-26T16:10:19+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -425,10 +425,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 30,
+     "ms": 17,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:35+00:00",
+     "at": "2026-10-26T16:10:19+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -436,10 +436,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 30,
+     "ms": 17,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:35+00:00",
+     "at": "2026-10-26T16:10:19+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -488,7 +488,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:18+00:00",
+    "measured_at": "2026-10-26T16:11:03+00:00",
     "from": [
      "github-actions"
     ],
@@ -499,10 +499,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 108,
+     "ms": 182,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:18+00:00",
+     "at": "2026-10-26T16:11:03+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -510,10 +510,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 108,
+     "ms": 182,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:18+00:00",
+     "at": "2026-10-26T16:11:03+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -555,7 +555,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:49+00:00",
+    "measured_at": "2026-10-26T16:09:28+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -569,22 +569,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 136505,
-     "ms": 53,
+     "bytes": 131238,
+     "ms": 15,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:49+00:00",
+     "at": "2026-10-26T16:09:28+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 136505,
-     "ms": 53,
+     "bytes": 131238,
+     "ms": 15,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:49+00:00",
+     "at": "2026-10-26T16:09:28+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -633,7 +633,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:54+00:00",
+    "measured_at": "2026-10-26T16:09:35+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -647,22 +647,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 119497,
-     "ms": 250,
+     "bytes": 119505,
+     "ms": 327,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 119497,
-     "ms": 250,
+     "bytes": 119505,
+     "ms": 327,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -709,7 +709,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -780,7 +780,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -851,7 +851,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:36+00:00",
+    "measured_at": "2026-10-26T16:10:20+00:00",
     "from": [
      "github-actions"
     ],
@@ -861,22 +861,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 81921,
-     "ms": 444,
+     "bytes": 73942,
+     "ms": 507,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:36+00:00",
+     "at": "2026-10-26T16:10:20+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 81921,
-     "ms": 444,
+     "bytes": 73942,
+     "ms": 507,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:36+00:00",
+     "at": "2026-10-26T16:10:20+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -916,7 +916,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:33+00:00",
+    "measured_at": "2026-10-26T16:11:19+00:00",
     "from": [
      "github-actions"
     ],
@@ -926,22 +926,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 102258,
-     "ms": 565,
+     "bytes": 92798,
+     "ms": 731,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:33+00:00",
+     "at": "2026-10-26T16:11:19+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 102258,
-     "ms": 565,
+     "bytes": 92798,
+     "ms": 731,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:33+00:00",
+     "at": "2026-10-26T16:11:19+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -981,7 +981,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:40+00:00",
+    "measured_at": "2026-10-26T16:10:24+00:00",
     "from": [
      "github-actions"
     ],
@@ -991,22 +991,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 69034,
-     "ms": 468,
+     "bytes": 64179,
+     "ms": 608,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:40+00:00",
+     "at": "2026-10-26T16:10:24+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 69034,
-     "ms": 468,
+     "bytes": 64179,
+     "ms": 608,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:40+00:00",
+     "at": "2026-10-26T16:10:24+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -1046,7 +1046,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:38+00:00",
+    "measured_at": "2026-10-26T16:10:22+00:00",
     "from": [
      "github-actions"
     ],
@@ -1056,22 +1056,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 82705,
-     "ms": 440,
+     "bytes": 83001,
+     "ms": 386,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:38+00:00",
+     "at": "2026-10-26T16:10:22+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 82705,
-     "ms": 440,
+     "bytes": 83001,
+     "ms": 386,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:38+00:00",
+     "at": "2026-10-26T16:10:22+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -1111,7 +1111,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:42+00:00",
+    "measured_at": "2026-10-26T16:10:26+00:00",
     "from": [
      "github-actions"
     ],
@@ -1121,22 +1121,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 77441,
-     "ms": 444,
+     "bytes": 72824,
+     "ms": 387,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:42+00:00",
+     "at": "2026-10-26T16:10:26+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 77441,
-     "ms": 444,
+     "bytes": 72824,
+     "ms": 387,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:42+00:00",
+     "at": "2026-10-26T16:10:26+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -1176,7 +1176,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:44+00:00",
+    "measured_at": "2026-10-26T16:10:28+00:00",
     "from": [
      "github-actions"
     ],
@@ -1186,22 +1186,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 102551,
-     "ms": 573,
+     "bytes": 103519,
+     "ms": 615,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:44+00:00",
+     "at": "2026-10-26T16:10:28+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 102551,
-     "ms": 573,
+     "bytes": 103519,
+     "ms": 615,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:44+00:00",
+     "at": "2026-10-26T16:10:28+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -1241,7 +1241,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:46+00:00",
+    "measured_at": "2026-10-26T16:10:30+00:00",
     "from": [
      "github-actions"
     ],
@@ -1251,22 +1251,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 82329,
-     "ms": 435,
+     "bytes": 88634,
+     "ms": 516,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:46+00:00",
+     "at": "2026-10-26T16:10:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 82329,
-     "ms": 435,
+     "bytes": 88634,
+     "ms": 516,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:46+00:00",
+     "at": "2026-10-26T16:10:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -1306,7 +1306,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:48+00:00",
+    "measured_at": "2026-10-26T16:10:32+00:00",
     "from": [
      "github-actions"
     ],
@@ -1316,22 +1316,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 73819,
-     "ms": 455,
+     "bytes": 74040,
+     "ms": 383,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:48+00:00",
+     "at": "2026-10-26T16:10:32+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 73819,
-     "ms": 455,
+     "bytes": 74040,
+     "ms": 383,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:48+00:00",
+     "at": "2026-10-26T16:10:32+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -1371,7 +1371,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:50+00:00",
+    "measured_at": "2026-10-26T16:10:34+00:00",
     "from": [
      "github-actions"
     ],
@@ -1381,22 +1381,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 157857,
-     "ms": 570,
+     "bytes": 143010,
+     "ms": 519,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:50+00:00",
+     "at": "2026-10-26T16:10:34+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 157857,
-     "ms": 570,
+     "bytes": 143010,
+     "ms": 519,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:50+00:00",
+     "at": "2026-10-26T16:10:34+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -1436,7 +1436,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:31+00:00",
+    "measured_at": "2026-10-26T16:11:17+00:00",
     "from": [
      "github-actions"
     ],
@@ -1446,22 +1446,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 79697,
-     "ms": 448,
+     "bytes": 75214,
+     "ms": 419,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:31+00:00",
+     "at": "2026-10-26T16:11:17+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 79697,
-     "ms": 448,
+     "bytes": 75214,
+     "ms": 419,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:31+00:00",
+     "at": "2026-10-26T16:11:17+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -1501,7 +1501,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:19+00:00",
+    "measured_at": "2026-10-26T16:11:04+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -1515,22 +1515,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 14678,
-     "ms": 3969,
+     "bytes": 14652,
+     "ms": 3952,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:19+00:00",
+     "at": "2026-10-26T16:11:04+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 14678,
-     "ms": 3969,
+     "bytes": 14652,
+     "ms": 3952,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:19+00:00",
+     "at": "2026-10-26T16:11:04+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -1577,7 +1577,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -1650,7 +1650,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:35+00:00",
+    "measured_at": "2026-10-26T16:10:18+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -1664,22 +1664,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 30406,
-     "ms": 153,
+     "bytes": 30301,
+     "ms": 58,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:35+00:00",
+     "at": "2026-10-26T16:10:18+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 30406,
-     "ms": 153,
+     "bytes": 30301,
+     "ms": 58,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:35+00:00",
+     "at": "2026-10-26T16:10:18+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -1728,7 +1728,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -1801,7 +1801,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:58+00:00",
+    "measured_at": "2026-10-26T16:09:39+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -1815,22 +1815,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 83571,
-     "ms": 2818,
+     "bytes": 87509,
+     "ms": 2292,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:58+00:00",
+     "at": "2026-10-26T16:09:39+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 83571,
-     "ms": 2818,
+     "bytes": 87509,
+     "ms": 2292,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:58+00:00",
+     "at": "2026-10-26T16:09:39+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -1877,7 +1877,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:57+00:00",
+    "measured_at": "2026-10-26T16:09:39+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -1891,22 +1891,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 56618,
-     "ms": 38,
+     "bytes": 57527,
+     "ms": 163,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:57+00:00",
+     "at": "2026-10-26T16:09:39+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 56618,
-     "ms": 38,
+     "bytes": 57527,
+     "ms": 163,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:57+00:00",
+     "at": "2026-10-26T16:09:39+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -1955,7 +1955,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:49+00:00",
+    "measured_at": "2026-10-26T16:09:28+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -1969,22 +1969,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 26188,
-     "ms": 28,
+     "bytes": 25829,
+     "ms": 26,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:49+00:00",
+     "at": "2026-10-26T16:09:28+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 26188,
-     "ms": 28,
+     "bytes": 25829,
+     "ms": 26,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:49+00:00",
+     "at": "2026-10-26T16:09:28+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -2033,7 +2033,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2106,7 +2106,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2179,7 +2179,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:50+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2194,10 +2194,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 220,
+     "ms": 223,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -2205,10 +2205,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 220,
+     "ms": 223,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -2257,7 +2257,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:31+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2271,22 +2271,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 113186,
-     "ms": 119,
+     "bytes": 200000,
+     "ms": 77,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:31+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 113186,
-     "ms": 119,
+     "bytes": 200000,
+     "ms": 77,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:31+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -2335,7 +2335,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:26+00:00",
+    "measured_at": "2026-10-26T16:10:10+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2349,22 +2349,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 129763,
-     "ms": 266,
+     "bytes": 148757,
+     "ms": 241,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:10+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 129763,
-     "ms": 266,
+     "bytes": 148757,
+     "ms": 241,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:10+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -2413,7 +2413,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:50+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2427,22 +2427,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 61605,
-     "ms": 411,
+     "bytes": 57157,
+     "ms": 359,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 61605,
-     "ms": 411,
+     "bytes": 57157,
+     "ms": 359,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -2491,7 +2491,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:52+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2505,22 +2505,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 109832,
-     "ms": 52,
+     "bytes": 110493,
+     "ms": 158,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 109832,
-     "ms": 52,
+     "bytes": 110493,
+     "ms": 158,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -2569,7 +2569,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:19+00:00",
+    "measured_at": "2026-10-26T16:11:05+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2584,10 +2584,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 998,
+     "ms": 1278,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:19+00:00",
+     "at": "2026-10-26T16:11:05+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -2595,10 +2595,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 998,
+     "ms": 1278,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:19+00:00",
+     "at": "2026-10-26T16:11:05+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -2646,7 +2646,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:52+00:00",
+    "measured_at": "2026-10-26T16:10:36+00:00",
     "from": [
      "github-actions"
     ],
@@ -2656,22 +2656,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 41944,
-     "ms": 303,
+     "bytes": 37868,
+     "ms": 392,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:52+00:00",
+     "at": "2026-10-26T16:10:36+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 41944,
-     "ms": 303,
+     "bytes": 37868,
+     "ms": 392,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:52+00:00",
+     "at": "2026-10-26T16:10:36+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -2712,7 +2712,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2784,7 +2784,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2856,7 +2856,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:56+00:00",
+    "measured_at": "2026-10-26T16:09:38+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2870,22 +2870,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 89774,
-     "ms": 741,
+     "bytes": 86025,
+     "ms": 742,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:56+00:00",
+     "at": "2026-10-26T16:09:38+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 89774,
-     "ms": 741,
+     "bytes": 86025,
+     "ms": 742,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:56+00:00",
+     "at": "2026-10-26T16:09:38+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -2933,7 +2933,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:58+00:00",
+    "measured_at": "2026-10-26T16:09:41+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -2948,10 +2948,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 62738,
-     "ms": 37,
+     "ms": 112,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:58+00:00",
+     "at": "2026-10-26T16:09:41+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -2959,10 +2959,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 62738,
-     "ms": 37,
+     "ms": 112,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:58+00:00",
+     "at": "2026-10-26T16:09:41+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -3010,7 +3010,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3082,7 +3082,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3154,7 +3154,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:00+00:00",
+    "measured_at": "2026-10-26T16:09:42+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3168,22 +3168,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 59263,
-     "ms": 37,
+     "bytes": 59148,
+     "ms": 11,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:00+00:00",
+     "at": "2026-10-26T16:09:42+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 59263,
-     "ms": 37,
+     "bytes": 59148,
+     "ms": 11,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:00+00:00",
+     "at": "2026-10-26T16:09:42+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -3231,7 +3231,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:50+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3245,22 +3245,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 56227,
-     "ms": 262,
+     "bytes": 29153,
+     "ms": 211,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 56227,
-     "ms": 262,
+     "bytes": 29153,
+     "ms": 211,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -3308,7 +3308,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:54+00:00",
+    "measured_at": "2026-10-26T16:10:38+00:00",
     "from": [
      "github-actions"
     ],
@@ -3319,10 +3319,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 51068,
-     "ms": 454,
+     "ms": 580,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:54+00:00",
+     "at": "2026-10-26T16:10:38+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -3330,10 +3330,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 51068,
-     "ms": 454,
+     "ms": 580,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:54+00:00",
+     "at": "2026-10-26T16:10:38+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -3374,7 +3374,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3446,7 +3446,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3518,7 +3518,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:01+00:00",
+    "measured_at": "2026-10-26T16:09:44+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3532,22 +3532,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 59691,
-     "ms": 41,
+     "bytes": 59774,
+     "ms": 122,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:01+00:00",
+     "at": "2026-10-26T16:09:44+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 59691,
-     "ms": 41,
+     "bytes": 59774,
+     "ms": 122,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:01+00:00",
+     "at": "2026-10-26T16:09:44+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -3595,7 +3595,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3667,7 +3667,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:54+00:00",
+    "measured_at": "2026-10-26T16:09:35+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3681,22 +3681,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 26634,
-     "ms": 121,
+     "bytes": 30762,
+     "ms": 103,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 26634,
-     "ms": 121,
+     "bytes": 30762,
+     "ms": 103,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -3744,7 +3744,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:56+00:00",
+    "measured_at": "2026-10-26T16:10:40+00:00",
     "from": [
      "github-actions"
     ],
@@ -3754,22 +3754,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 71016,
-     "ms": 434,
+     "bytes": 75267,
+     "ms": 743,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:56+00:00",
+     "at": "2026-10-26T16:10:40+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 71016,
-     "ms": 434,
+     "bytes": 75267,
+     "ms": 743,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:56+00:00",
+     "at": "2026-10-26T16:10:40+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -3810,7 +3810,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3882,7 +3882,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:55+00:00",
+    "measured_at": "2026-10-26T16:09:37+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3896,22 +3896,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 38425,
-     "ms": 129,
+     "bytes": 39093,
+     "ms": 105,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:37+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 38425,
-     "ms": 129,
+     "bytes": 39093,
+     "ms": 105,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:37+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -3959,7 +3959,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:03+00:00",
+    "measured_at": "2026-10-26T16:09:45+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3973,22 +3973,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 53885,
-     "ms": 39,
+     "bytes": 54014,
+     "ms": 11,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:03+00:00",
+     "at": "2026-10-26T16:09:45+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 53885,
-     "ms": 39,
+     "bytes": 54014,
+     "ms": 11,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:03+00:00",
+     "at": "2026-10-26T16:09:45+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -4036,7 +4036,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:31+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4050,22 +4050,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 47417,
-     "ms": 119,
+     "bytes": 44686,
+     "ms": 457,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:31+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 47417,
-     "ms": 119,
+     "bytes": 44686,
+     "ms": 457,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:31+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -4113,7 +4113,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4127,22 +4127,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 99372,
-     "ms": 284,
+     "bytes": 173100,
+     "ms": 273,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 99372,
-     "ms": 284,
+     "bytes": 173100,
+     "ms": 273,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -4190,7 +4190,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:58+00:00",
+    "measured_at": "2026-10-26T16:10:42+00:00",
     "from": [
      "github-actions"
     ],
@@ -4200,22 +4200,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 53326,
-     "ms": 440,
+     "bytes": 53324,
+     "ms": 380,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:58+00:00",
+     "at": "2026-10-26T16:10:42+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 53326,
-     "ms": 440,
+     "bytes": 53324,
+     "ms": 380,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:58+00:00",
+     "at": "2026-10-26T16:10:42+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -4256,7 +4256,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4328,7 +4328,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:04+00:00",
+    "measured_at": "2026-10-26T16:09:47+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4343,10 +4343,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 60633,
-     "ms": 37,
+     "ms": 74,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:04+00:00",
+     "at": "2026-10-26T16:09:47+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -4354,10 +4354,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 60633,
-     "ms": 37,
+     "ms": 74,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:04+00:00",
+     "at": "2026-10-26T16:09:47+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -4405,7 +4405,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:32+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4419,22 +4419,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 147587,
-     "ms": 342,
+     "bytes": 97930,
+     "ms": 253,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:32+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 147587,
-     "ms": 342,
+     "bytes": 97930,
+     "ms": 253,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:32+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -4482,7 +4482,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4554,7 +4554,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:06+00:00",
+    "measured_at": "2026-10-26T16:09:49+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4569,10 +4569,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 59278,
-     "ms": 39,
+     "ms": 87,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:06+00:00",
+     "at": "2026-10-26T16:09:49+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -4580,10 +4580,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 59278,
-     "ms": 39,
+     "ms": 87,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:06+00:00",
+     "at": "2026-10-26T16:09:49+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -4631,7 +4631,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:22+00:00",
+    "measured_at": "2026-10-26T16:10:05+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4645,22 +4645,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 53125,
-     "ms": 270,
+     "bytes": 52446,
+     "ms": 475,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:22+00:00",
+     "at": "2026-10-26T16:10:05+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 53125,
-     "ms": 270,
+     "bytes": 52446,
+     "ms": 475,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:22+00:00",
+     "at": "2026-10-26T16:10:05+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -4708,7 +4708,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:47:19+00:00",
+    "measured_at": "2026-10-26T16:10:03+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4780,7 +4780,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:00+00:00",
+    "measured_at": "2026-10-26T16:10:44+00:00",
     "from": [
      "github-actions"
     ],
@@ -4790,22 +4790,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 72994,
-     "ms": 444,
+     "bytes": 69702,
+     "ms": 487,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:00+00:00",
+     "at": "2026-10-26T16:10:44+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 72994,
-     "ms": 444,
+     "bytes": 69702,
+     "ms": 487,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:00+00:00",
+     "at": "2026-10-26T16:10:44+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -4846,7 +4846,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4918,7 +4918,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:08+00:00",
+    "measured_at": "2026-10-26T16:09:50+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -4932,22 +4932,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 57174,
-     "ms": 42,
+     "bytes": 56971,
+     "ms": 82,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:08+00:00",
+     "at": "2026-10-26T16:09:50+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57174,
-     "ms": 42,
+     "bytes": 56971,
+     "ms": 82,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:08+00:00",
+     "at": "2026-10-26T16:09:50+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -4995,7 +4995,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:34+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5009,22 +5009,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 93716,
-     "ms": 257,
+     "bytes": 81036,
+     "ms": 1286,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:34+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 93716,
-     "ms": 257,
+     "bytes": 81036,
+     "ms": 1286,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:34+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -5072,7 +5072,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:54+00:00",
+    "measured_at": "2026-10-26T16:09:35+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5086,22 +5086,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 58467,
-     "ms": 75,
+     "bytes": 51732,
+     "ms": 22,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 58467,
-     "ms": 75,
+     "bytes": 51732,
+     "ms": 22,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -5149,7 +5149,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:02+00:00",
+    "measured_at": "2026-10-26T16:10:46+00:00",
     "from": [
      "github-actions"
     ],
@@ -5159,22 +5159,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 73840,
-     "ms": 440,
+     "bytes": 64090,
+     "ms": 524,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:02+00:00",
+     "at": "2026-10-26T16:10:46+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 73840,
-     "ms": 440,
+     "bytes": 64090,
+     "ms": 524,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:02+00:00",
+     "at": "2026-10-26T16:10:46+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -5215,7 +5215,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5287,7 +5287,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:09+00:00",
+    "measured_at": "2026-10-26T16:09:52+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5301,22 +5301,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 58612,
-     "ms": 39,
+     "bytes": 58607,
+     "ms": 80,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:09+00:00",
+     "at": "2026-10-26T16:09:52+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 58612,
-     "ms": 39,
+     "bytes": 58607,
+     "ms": 80,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:09+00:00",
+     "at": "2026-10-26T16:09:52+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -5364,7 +5364,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5378,22 +5378,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 37500,
-     "ms": 1045,
+     "bytes": 38502,
+     "ms": 922,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 37500,
-     "ms": 1045,
+     "bytes": 38502,
+     "ms": 922,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -5441,7 +5441,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:50+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5455,22 +5455,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 45939,
-     "ms": 449,
+     "bytes": 64066,
+     "ms": 406,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 45939,
-     "ms": 449,
+     "bytes": 64066,
+     "ms": 406,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -5518,7 +5518,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:04+00:00",
+    "measured_at": "2026-10-26T16:10:48+00:00",
     "from": [
      "github-actions"
     ],
@@ -5529,10 +5529,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 100814,
-     "ms": 576,
+     "ms": 655,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:04+00:00",
+     "at": "2026-10-26T16:10:48+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -5540,10 +5540,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 100814,
-     "ms": 576,
+     "ms": 655,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:04+00:00",
+     "at": "2026-10-26T16:10:48+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -5584,7 +5584,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5656,7 +5656,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:11+00:00",
+    "measured_at": "2026-10-26T16:09:54+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5671,10 +5671,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 58096,
-     "ms": 40,
+     "ms": 382,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:11+00:00",
+     "at": "2026-10-26T16:09:54+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -5682,10 +5682,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 58096,
-     "ms": 40,
+     "ms": 382,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:11+00:00",
+     "at": "2026-10-26T16:09:54+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -5733,7 +5733,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:52+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5747,22 +5747,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 60097,
-     "ms": 868,
+     "bytes": 60293,
+     "ms": 2151,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:33+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 60097,
-     "ms": 868,
+     "bytes": 60293,
+     "ms": 2151,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:33+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -5810,7 +5810,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:06+00:00",
+    "measured_at": "2026-10-26T16:10:50+00:00",
     "from": [
      "github-actions"
     ],
@@ -5820,22 +5820,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 73845,
-     "ms": 438,
+     "bytes": 71575,
+     "ms": 706,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:06+00:00",
+     "at": "2026-10-26T16:10:50+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 73845,
-     "ms": 438,
+     "bytes": 71575,
+     "ms": 706,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:06+00:00",
+     "at": "2026-10-26T16:10:50+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -5876,7 +5876,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5948,7 +5948,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:12+00:00",
+    "measured_at": "2026-10-26T16:09:55+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -5963,10 +5963,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 57841,
-     "ms": 39,
+     "ms": 115,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:12+00:00",
+     "at": "2026-10-26T16:09:55+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -5974,10 +5974,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 57841,
-     "ms": 39,
+     "ms": 115,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:12+00:00",
+     "at": "2026-10-26T16:09:55+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -6025,7 +6025,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:50+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6039,22 +6039,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 72585,
-     "ms": 602,
+     "bytes": 70414,
+     "ms": 330,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 72585,
-     "ms": 602,
+     "bytes": 70414,
+     "ms": 330,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -6102,7 +6102,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:26+00:00",
+    "measured_at": "2026-10-26T16:10:10+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6116,22 +6116,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 11180,
-     "ms": 58,
+     "bytes": 11007,
+     "ms": 180,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:10+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 11180,
-     "ms": 58,
+     "bytes": 11007,
+     "ms": 180,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:10+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -6179,7 +6179,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6251,7 +6251,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:14+00:00",
+    "measured_at": "2026-10-26T16:09:57+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6265,22 +6265,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 57384,
-     "ms": 37,
+     "bytes": 57484,
+     "ms": 13,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:14+00:00",
+     "at": "2026-10-26T16:09:57+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57384,
-     "ms": 37,
+     "bytes": 57484,
+     "ms": 13,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:14+00:00",
+     "at": "2026-10-26T16:09:57+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -6328,7 +6328,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6400,7 +6400,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:55+00:00",
+    "measured_at": "2026-10-26T16:09:36+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6414,22 +6414,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 38044,
-     "ms": 356,
+     "bytes": 47033,
+     "ms": 470,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:36+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 38044,
-     "ms": 356,
+     "bytes": 47033,
+     "ms": 470,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:36+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -6477,7 +6477,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:15+00:00",
+    "measured_at": "2026-10-26T16:09:58+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6491,22 +6491,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 57462,
-     "ms": 38,
+     "bytes": 57529,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:15+00:00",
+     "at": "2026-10-26T16:09:58+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57462,
-     "ms": 38,
+     "bytes": 57529,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:15+00:00",
+     "at": "2026-10-26T16:09:58+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -6554,7 +6554,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:08+00:00",
+    "measured_at": "2026-10-26T16:10:53+00:00",
     "from": [
      "github-actions"
     ],
@@ -6564,22 +6564,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 76582,
-     "ms": 440,
+     "bytes": 74248,
+     "ms": 755,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:08+00:00",
+     "at": "2026-10-26T16:10:53+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 76582,
-     "ms": 440,
+     "bytes": 74248,
+     "ms": 755,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:08+00:00",
+     "at": "2026-10-26T16:10:53+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -6620,7 +6620,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6692,7 +6692,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:17+00:00",
+    "measured_at": "2026-10-26T16:10:00+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6706,22 +6706,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 62446,
-     "ms": 36,
+     "bytes": 61127,
+     "ms": 10,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:17+00:00",
+     "at": "2026-10-26T16:10:00+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 62446,
-     "ms": 36,
+     "bytes": 61127,
+     "ms": 10,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:17+00:00",
+     "at": "2026-10-26T16:10:00+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -6769,7 +6769,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:24+00:00",
+    "measured_at": "2026-10-26T16:10:07+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6783,22 +6783,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 50491,
-     "ms": 240,
+     "bytes": 44939,
+     "ms": 504,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:24+00:00",
+     "at": "2026-10-26T16:10:07+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 50491,
-     "ms": 240,
+     "bytes": 44939,
+     "ms": 504,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:24+00:00",
+     "at": "2026-10-26T16:10:07+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -6846,7 +6846,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:10+00:00",
+    "measured_at": "2026-10-26T16:10:55+00:00",
     "from": [
      "github-actions"
     ],
@@ -6856,22 +6856,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 79237,
-     "ms": 434,
+     "bytes": 80704,
+     "ms": 572,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:10+00:00",
+     "at": "2026-10-26T16:10:55+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 79237,
-     "ms": 434,
+     "bytes": 80704,
+     "ms": 572,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:10+00:00",
+     "at": "2026-10-26T16:10:55+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -6912,7 +6912,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6984,7 +6984,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:18+00:00",
+    "measured_at": "2026-10-26T16:10:01+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -6998,22 +6998,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 60638,
-     "ms": 37,
+     "bytes": 61771,
+     "ms": 15,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:18+00:00",
+     "at": "2026-10-26T16:10:01+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 60638,
-     "ms": 37,
+     "bytes": 61771,
+     "ms": 15,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:18+00:00",
+     "at": "2026-10-26T16:10:01+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -7061,7 +7061,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:25+00:00",
+    "measured_at": "2026-10-26T16:10:09+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7075,22 +7075,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 45736,
-     "ms": 206,
+     "bytes": 45070,
+     "ms": 267,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:25+00:00",
+     "at": "2026-10-26T16:10:09+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 45736,
-     "ms": 206,
+     "bytes": 45070,
+     "ms": 267,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:25+00:00",
+     "at": "2026-10-26T16:10:09+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -7138,7 +7138,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:12+00:00",
+    "measured_at": "2026-10-26T16:10:57+00:00",
     "from": [
      "github-actions"
     ],
@@ -7148,22 +7148,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 63697,
-     "ms": 440,
+     "bytes": 62850,
+     "ms": 572,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:12+00:00",
+     "at": "2026-10-26T16:10:57+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 63697,
-     "ms": 440,
+     "bytes": 62850,
+     "ms": 572,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:12+00:00",
+     "at": "2026-10-26T16:10:57+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -7204,7 +7204,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7276,7 +7276,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:55+00:00",
+    "measured_at": "2026-10-26T16:09:38+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7290,22 +7290,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 57939,
-     "ms": 38,
+     "bytes": 58971,
+     "ms": 101,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:38+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57939,
-     "ms": 38,
+     "bytes": 58971,
+     "ms": 101,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:38+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -7353,7 +7353,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:14+00:00",
+    "measured_at": "2026-10-26T16:10:59+00:00",
     "from": [
      "github-actions"
     ],
@@ -7364,10 +7364,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 49797,
-     "ms": 436,
+     "ms": 520,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:14+00:00",
+     "at": "2026-10-26T16:10:59+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -7375,10 +7375,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 49797,
-     "ms": 436,
+     "ms": 520,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:14+00:00",
+     "at": "2026-10-26T16:10:59+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -7419,7 +7419,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7491,7 +7491,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:20+00:00",
+    "measured_at": "2026-10-26T16:10:03+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7505,22 +7505,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 58306,
-     "ms": 38,
+     "bytes": 57932,
+     "ms": 139,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:20+00:00",
+     "at": "2026-10-26T16:10:03+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 58306,
-     "ms": 38,
+     "bytes": 57932,
+     "ms": 139,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:20+00:00",
+     "at": "2026-10-26T16:10:03+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -7568,7 +7568,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7582,22 +7582,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 38318,
-     "ms": 254,
+     "bytes": 31653,
+     "ms": 179,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 38318,
-     "ms": 254,
+     "bytes": 31653,
+     "ms": 179,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -7645,7 +7645,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:20+00:00",
+    "measured_at": "2026-10-26T16:11:05+00:00",
     "from": [
      "github-actions"
     ],
@@ -7655,22 +7655,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 84679,
-     "ms": 361,
+     "bytes": 79979,
+     "ms": 395,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:20+00:00",
+     "at": "2026-10-26T16:11:05+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 84679,
-     "ms": 361,
+     "bytes": 79979,
+     "ms": 395,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:20+00:00",
+     "at": "2026-10-26T16:11:05+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -7711,7 +7711,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:16+00:00",
+    "measured_at": "2026-10-26T16:11:01+00:00",
     "from": [
      "github-actions"
     ],
@@ -7722,10 +7722,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 63822,
-     "ms": 438,
+     "ms": 643,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:16+00:00",
+     "at": "2026-10-26T16:11:01+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -7733,10 +7733,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 63822,
-     "ms": 438,
+     "ms": 643,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:16+00:00",
+     "at": "2026-10-26T16:11:01+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -7777,7 +7777,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7849,7 +7849,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:54+00:00",
+    "measured_at": "2026-10-26T16:09:34+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7863,22 +7863,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 38420,
-     "ms": 679,
+     "bytes": 38732,
+     "ms": 834,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:34+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 38420,
-     "ms": 679,
+     "bytes": 38732,
+     "ms": 834,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:34+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -7926,7 +7926,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:21+00:00",
+    "measured_at": "2026-10-26T16:10:05+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7940,22 +7940,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 64895,
-     "ms": 36,
+     "bytes": 64728,
+     "ms": 131,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:21+00:00",
+     "at": "2026-10-26T16:10:05+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 64895,
-     "ms": 36,
+     "bytes": 64728,
+     "ms": 131,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:21+00:00",
+     "at": "2026-10-26T16:10:05+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -8003,7 +8003,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:17+00:00",
+    "measured_at": "2026-10-26T16:11:03+00:00",
     "from": [
      "github-actions"
     ],
@@ -8013,22 +8013,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 76287,
-     "ms": 433,
+     "bytes": 74448,
+     "ms": 547,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:17+00:00",
+     "at": "2026-10-26T16:11:03+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 76287,
-     "ms": 433,
+     "bytes": 74448,
+     "ms": 547,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:17+00:00",
+     "at": "2026-10-26T16:11:03+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -8069,7 +8069,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8141,7 +8141,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:23+00:00",
+    "measured_at": "2026-10-26T16:10:06+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8155,22 +8155,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 58084,
-     "ms": 39,
+     "bytes": 58270,
+     "ms": 128,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:23+00:00",
+     "at": "2026-10-26T16:10:06+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 58084,
-     "ms": 39,
+     "bytes": 58270,
+     "ms": 128,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:23+00:00",
+     "at": "2026-10-26T16:10:06+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -8218,7 +8218,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:55+00:00",
+    "measured_at": "2026-10-26T16:09:36+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8232,22 +8232,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 45630,
-     "ms": 770,
+     "bytes": 45432,
+     "ms": 852,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:36+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 45630,
-     "ms": 770,
+     "bytes": 45432,
+     "ms": 852,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:36+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -8295,7 +8295,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:19+00:00",
+    "measured_at": "2026-10-26T16:11:05+00:00",
     "from": [
      "github-actions"
     ],
@@ -8306,10 +8306,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23891,
-     "ms": 323,
+     "ms": 410,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:19+00:00",
+     "at": "2026-10-26T16:11:05+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -8317,10 +8317,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23891,
-     "ms": 323,
+     "ms": 410,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:19+00:00",
+     "at": "2026-10-26T16:11:05+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -8361,7 +8361,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8433,7 +8433,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:24+00:00",
+    "measured_at": "2026-10-26T16:10:08+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8448,10 +8448,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 55603,
-     "ms": 17,
+     "ms": 123,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:24+00:00",
+     "at": "2026-10-26T16:10:08+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -8459,10 +8459,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 55603,
-     "ms": 17,
+     "ms": 123,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:24+00:00",
+     "at": "2026-10-26T16:10:08+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -8510,7 +8510,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:50+00:00",
+    "measured_at": "2026-10-26T16:09:28+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8524,22 +8524,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 173947,
-     "ms": 72,
+     "bytes": 178933,
+     "ms": 189,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:28+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 173947,
-     "ms": 72,
+     "bytes": 178933,
+     "ms": 189,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:50+00:00",
+     "at": "2026-10-26T16:09:28+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -8587,7 +8587,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:21+00:00",
+    "measured_at": "2026-10-26T16:11:07+00:00",
     "from": [
      "github-actions"
     ],
@@ -8598,10 +8598,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 69027,
-     "ms": 442,
+     "ms": 410,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:21+00:00",
+     "at": "2026-10-26T16:11:07+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -8609,10 +8609,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 69027,
-     "ms": 442,
+     "ms": 410,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:21+00:00",
+     "at": "2026-10-26T16:11:07+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -8653,7 +8653,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8725,7 +8725,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:34+00:00",
+    "measured_at": "2026-10-26T16:10:17+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8739,22 +8739,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 2296,
-     "ms": 442,
+     "bytes": 2943,
+     "ms": 469,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:34+00:00",
+     "at": "2026-10-26T16:10:17+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 2296,
-     "ms": 442,
+     "bytes": 2943,
+     "ms": 469,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:34+00:00",
+     "at": "2026-10-26T16:10:17+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -8802,7 +8802,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:26+00:00",
+    "measured_at": "2026-10-26T16:10:09+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8816,22 +8816,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 57099,
-     "ms": 38,
+     "bytes": 57733,
+     "ms": 112,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:09+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57099,
-     "ms": 38,
+     "bytes": 57733,
+     "ms": 112,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:09+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -8879,7 +8879,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:27+00:00",
+    "measured_at": "2026-10-26T16:10:11+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8893,22 +8893,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 51970,
-     "ms": 238,
+     "bytes": 50806,
+     "ms": 284,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:27+00:00",
+     "at": "2026-10-26T16:10:11+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 51970,
-     "ms": 238,
+     "bytes": 50806,
+     "ms": 284,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:27+00:00",
+     "at": "2026-10-26T16:10:11+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -8956,7 +8956,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -8970,22 +8970,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 10181,
-     "ms": 331,
+     "bytes": 10488,
+     "ms": 537,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 10181,
-     "ms": 331,
+     "bytes": 10488,
+     "ms": 537,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -9033,7 +9033,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:23+00:00",
+    "measured_at": "2026-10-26T16:11:09+00:00",
     "from": [
      "github-actions"
     ],
@@ -9043,22 +9043,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 64084,
-     "ms": 437,
+     "bytes": 65806,
+     "ms": 491,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:23+00:00",
+     "at": "2026-10-26T16:11:09+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 64084,
-     "ms": 437,
+     "bytes": 65806,
+     "ms": 491,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:23+00:00",
+     "at": "2026-10-26T16:11:09+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -9099,7 +9099,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9170,8 +9170,8 @@
    "notes": "tipo de medio: radio; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "open",
-    "measured_at": "2026-10-21T04:46:54+00:00",
+    "status": "robots-disallowed",
+    "measured_at": "2026-10-26T16:09:34+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9209,17 +9209,16 @@
     }
    },
    "channels": [
-    "actions",
-    "n8n"
+    "actions"
    ],
-   "geoblocked": false,
+   "geoblocked": null,
    "by_url": {
     "https://pachamamaradio.org/feed/": {
-     "status": "open",
+     "status": "robots-disallowed",
      "channels": [
-      "actions",
-      "n8n"
-     ]
+      "actions"
+     ],
+     "reader": true
     }
    }
   },
@@ -9244,7 +9243,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:55+00:00",
+    "measured_at": "2026-10-26T16:09:36+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9258,22 +9257,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 44591,
-     "ms": 35,
+     "bytes": 44241,
+     "ms": 132,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:36+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 44591,
-     "ms": 35,
+     "bytes": 44241,
+     "ms": 132,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:36+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -9321,7 +9320,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:27+00:00",
+    "measured_at": "2026-10-26T16:10:11+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9335,22 +9334,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 54816,
-     "ms": 39,
+     "bytes": 54670,
+     "ms": 80,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:27+00:00",
+     "at": "2026-10-26T16:10:11+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 54816,
-     "ms": 39,
+     "bytes": 54670,
+     "ms": 80,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:27+00:00",
+     "at": "2026-10-26T16:10:11+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -9398,7 +9397,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:55+00:00",
+    "measured_at": "2026-10-26T16:09:34+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9412,22 +9411,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 42635,
-     "ms": 1007,
+     "bytes": 29717,
+     "ms": 1035,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:34+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 42635,
-     "ms": 1007,
+     "bytes": 29717,
+     "ms": 1035,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:55+00:00",
+     "at": "2026-10-26T16:09:34+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -9475,7 +9474,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9489,22 +9488,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 37192,
-     "ms": 140,
+     "bytes": 44638,
+     "ms": 72,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 37192,
-     "ms": 140,
+     "bytes": 44638,
+     "ms": 72,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -9552,7 +9551,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:25+00:00",
+    "measured_at": "2026-10-26T16:11:11+00:00",
     "from": [
      "github-actions"
     ],
@@ -9562,22 +9561,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 63940,
-     "ms": 455,
+     "bytes": 65471,
+     "ms": 651,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:25+00:00",
+     "at": "2026-10-26T16:11:11+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 63940,
-     "ms": 455,
+     "bytes": 65471,
+     "ms": 651,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:25+00:00",
+     "at": "2026-10-26T16:11:11+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -9618,7 +9617,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9690,7 +9689,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:29+00:00",
+    "measured_at": "2026-10-26T16:10:13+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9705,10 +9704,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 59936,
-     "ms": 37,
+     "ms": 94,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:29+00:00",
+     "at": "2026-10-26T16:10:13+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -9716,10 +9715,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 59936,
-     "ms": 37,
+     "ms": 94,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:29+00:00",
+     "at": "2026-10-26T16:10:13+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -9767,7 +9766,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9839,7 +9838,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9853,22 +9852,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 72207,
-     "ms": 365,
+     "bytes": 64447,
+     "ms": 277,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 72207,
-     "ms": 365,
+     "bytes": 64447,
+     "ms": 277,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -9916,7 +9915,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9988,7 +9987,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:57+00:00",
+    "measured_at": "2026-10-26T16:09:39+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10002,22 +10001,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 110815,
-     "ms": 1661,
+     "bytes": 100167,
+     "ms": 1561,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:57+00:00",
+     "at": "2026-10-26T16:09:39+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 110815,
-     "ms": 1661,
+     "bytes": 100167,
+     "ms": 1561,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:57+00:00",
+     "at": "2026-10-26T16:09:39+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -10065,7 +10064,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:31+00:00",
+    "measured_at": "2026-10-26T16:10:14+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10079,22 +10078,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 55511,
-     "ms": 39,
+     "bytes": 55988,
+     "ms": 142,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:31+00:00",
+     "at": "2026-10-26T16:10:14+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 55511,
-     "ms": 39,
+     "bytes": 55988,
+     "ms": 142,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:31+00:00",
+     "at": "2026-10-26T16:10:14+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -10142,7 +10141,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:54+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10156,22 +10155,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 44253,
-     "ms": 446,
+     "bytes": 51832,
+     "ms": 123,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:33+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 44253,
-     "ms": 446,
+     "bytes": 51832,
+     "ms": 123,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:33+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -10219,7 +10218,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:27+00:00",
+    "measured_at": "2026-10-26T16:11:13+00:00",
     "from": [
      "github-actions"
     ],
@@ -10229,22 +10228,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 41341,
-     "ms": 316,
+     "bytes": 41163,
+     "ms": 379,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:27+00:00",
+     "at": "2026-10-26T16:11:13+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 41341,
-     "ms": 316,
+     "bytes": 41163,
+     "ms": 379,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:27+00:00",
+     "at": "2026-10-26T16:11:13+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -10285,7 +10284,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10357,7 +10356,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:32+00:00",
+    "measured_at": "2026-10-26T16:10:16+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10371,22 +10370,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 55958,
-     "ms": 37,
+     "bytes": 55940,
+     "ms": 100,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:32+00:00",
+     "at": "2026-10-26T16:10:16+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 55958,
-     "ms": 37,
+     "bytes": 55940,
+     "ms": 100,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:32+00:00",
+     "at": "2026-10-26T16:10:16+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -10434,7 +10433,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10506,7 +10505,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:29+00:00",
+    "measured_at": "2026-10-26T16:11:15+00:00",
     "from": [
      "github-actions"
     ],
@@ -10516,22 +10515,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 73164,
-     "ms": 459,
+     "bytes": 72791,
+     "ms": 590,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:29+00:00",
+     "at": "2026-10-26T16:11:15+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 73164,
-     "ms": 459,
+     "bytes": 72791,
+     "ms": 590,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:29+00:00",
+     "at": "2026-10-26T16:11:15+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -10572,7 +10571,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10644,7 +10643,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:34+00:00",
+    "measured_at": "2026-10-26T16:10:17+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10659,10 +10658,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 55916,
-     "ms": 37,
+     "ms": 99,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:34+00:00",
+     "at": "2026-10-26T16:10:17+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -10670,10 +10669,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 55916,
-     "ms": 37,
+     "ms": 99,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:34+00:00",
+     "at": "2026-10-26T16:10:17+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -10721,7 +10720,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:36+00:00",
+    "measured_at": "2026-10-26T16:10:19+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10735,22 +10734,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 63654,
-     "ms": 515,
+     "bytes": 111486,
+     "ms": 691,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:36+00:00",
+     "at": "2026-10-26T16:10:19+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 63654,
-     "ms": 515,
+     "bytes": 111486,
+     "ms": 691,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:36+00:00",
+     "at": "2026-10-26T16:10:19+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -10797,7 +10796,7 @@
    "tier": 2,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:35+00:00",
+    "measured_at": "2026-10-26T16:11:21+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -10812,10 +10811,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 598,
+     "ms": 675,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:35+00:00",
+     "at": "2026-10-26T16:11:21+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -10823,10 +10822,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 598,
+     "ms": 675,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:35+00:00",
+     "at": "2026-10-26T16:11:21+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -10884,31 +10883,44 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "down",
-    "measured_at": "2026-10-21T04:46:55+00:00",
+    "status": "open",
+    "measured_at": "2026-10-26T16:09:37+00:00",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "actions",
+     "peru"
+    ],
     "us": {
-     "class": "http-5xx",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-21T04:46:55+00:00",
+     "class": "ok",
+     "http": 200,
+     "bytes": 36697,
+     "ms": 609,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T16:09:37+00:00",
      "vantage": "github-actions"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 33913,
+     "ms": 712,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T02:01:38+00:00",
+     "vantage": "peru-server"
+    },
     "actions": {
-     "class": "http-5xx",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-21T04:46:55+00:00",
+     "class": "ok",
+     "http": 200,
+     "bytes": 36697,
+     "ms": 609,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T16:09:37+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -10917,10 +10929,10 @@
     "actions",
     "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://portal.indeci.gob.pe/emergencias/feed/?paged=1": {
-     "status": "down",
+     "status": "open",
      "channels": [
       "actions",
       "n8n"
@@ -11001,7 +11013,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions"
     ],
@@ -11011,22 +11023,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 823,
-     "ms": 299,
+     "bytes": 2684,
+     "ms": 289,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:33+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 823,
-     "ms": 299,
+     "bytes": 2684,
+     "ms": 289,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:53+00:00",
+     "at": "2026-10-26T16:09:33+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11069,7 +11081,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:57+00:00",
+    "measured_at": "2026-10-26T16:09:31+00:00",
     "from": [
      "github-actions"
     ],
@@ -11079,22 +11091,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 9888,
-     "ms": 305,
+     "bytes": 6158,
+     "ms": 268,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:57+00:00",
+     "at": "2026-10-26T16:09:31+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 9888,
-     "ms": 305,
+     "bytes": 6158,
+     "ms": 268,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:57+00:00",
+     "at": "2026-10-26T16:09:31+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11136,7 +11148,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:56+00:00",
+    "measured_at": "2026-10-26T16:09:35+00:00",
     "from": [
      "github-actions"
     ],
@@ -11146,22 +11158,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 2592,
-     "ms": 1244,
+     "bytes": 42,
+     "ms": 732,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:56+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 2592,
-     "ms": 1244,
+     "bytes": 42,
+     "ms": 732,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:56+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11202,23 +11214,56 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "measured_at": null,
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "open",
+    "measured_at": "2026-10-26T16:09:37+00:00",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "actions",
+     "peru"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 20992,
+     "ms": 632,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T16:09:37+00:00",
+     "vantage": "github-actions"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 20992,
+     "ms": 782,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T02:01:37+00:00",
+     "vantage": "peru-server"
+    },
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 20992,
+     "ms": 632,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T16:09:37+00:00",
+     "vantage": "github-actions"
+    },
     "n8n": null
    },
    "channels": [
     "actions",
     "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=1%3D1&outFields=NIVEL,FECHA&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions",
       "n8n"
@@ -11248,7 +11293,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:52+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions"
     ],
@@ -11259,10 +11304,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 214,
+     "ms": 126,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -11270,10 +11315,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 214,
+     "ms": 126,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11316,7 +11361,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions"
     ],
@@ -11326,22 +11371,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 9542,
-     "ms": 127,
+     "bytes": 11635,
+     "ms": 100,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 9542,
-     "ms": 127,
+     "bytes": 11635,
+     "ms": 100,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11384,7 +11429,7 @@
    "tier": 2,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:36+00:00",
+    "measured_at": "2026-10-26T16:10:19+00:00",
     "from": [
      "github-actions"
     ],
@@ -11395,10 +11440,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 169,
+     "ms": 152,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:36+00:00",
+     "at": "2026-10-26T16:10:19+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -11406,10 +11451,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 169,
+     "ms": 152,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:36+00:00",
+     "at": "2026-10-26T16:10:19+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11452,7 +11497,7 @@
    "tier": 2,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:34+00:00",
+    "measured_at": "2026-10-26T16:10:17+00:00",
     "from": [
      "github-actions"
     ],
@@ -11463,10 +11508,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 471,
+     "ms": 207,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:34+00:00",
+     "at": "2026-10-26T16:10:17+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -11474,10 +11519,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 471,
+     "ms": 207,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:34+00:00",
+     "at": "2026-10-26T16:10:17+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11519,7 +11564,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:22+00:00",
+    "measured_at": "2026-10-26T16:11:07+00:00",
     "from": [
      "github-actions"
     ],
@@ -11529,22 +11574,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 1939,
-     "ms": 19,
+     "bytes": 1967,
+     "ms": 40,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:22+00:00",
+     "at": "2026-10-26T16:11:07+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 1939,
-     "ms": 19,
+     "bytes": 1967,
+     "ms": 40,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:48:22+00:00",
+     "at": "2026-10-26T16:11:07+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11586,7 +11631,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:25+00:00",
+    "measured_at": "2026-10-26T16:10:09+00:00",
     "from": [
      "github-actions"
     ],
@@ -11596,22 +11641,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 2461,
-     "ms": 20,
+     "bytes": 2509,
+     "ms": 21,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:25+00:00",
+     "at": "2026-10-26T16:10:09+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 2461,
-     "ms": 20,
+     "bytes": 2509,
+     "ms": 21,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:25+00:00",
+     "at": "2026-10-26T16:10:09+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11653,7 +11698,7 @@
    "tier": 2,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:54+00:00",
+    "measured_at": "2026-10-26T16:09:32+00:00",
     "from": [
      "github-actions"
     ],
@@ -11664,10 +11709,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 1931,
+     "ms": 1226,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:32+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -11675,10 +11720,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 1931,
+     "ms": 1226,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:32+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11720,7 +11765,7 @@
    "tier": 2,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions"
     ],
@@ -11731,10 +11776,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 193930,
-     "ms": 680,
+     "ms": 641,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -11742,10 +11787,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 193930,
-     "ms": 680,
+     "ms": 641,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11793,7 +11838,7 @@
    "tier": 2,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:25+00:00",
+    "measured_at": "2026-10-26T16:10:08+00:00",
     "from": [
      "github-actions"
     ],
@@ -11803,22 +11848,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 124923,
-     "ms": 283,
+     "bytes": 121978,
+     "ms": 250,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:25+00:00",
+     "at": "2026-10-26T16:10:08+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 124923,
-     "ms": 283,
+     "bytes": 121978,
+     "ms": 250,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:25+00:00",
+     "at": "2026-10-26T16:10:08+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -11858,7 +11903,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -11931,7 +11976,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:52+00:00",
+    "measured_at": "2026-10-26T16:09:30+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -11945,22 +11990,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 28942,
-     "ms": 153,
+     "bytes": 29591,
+     "ms": 150,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 28942,
-     "ms": 153,
+     "bytes": 29591,
+     "ms": 150,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12007,7 +12052,7 @@
    "tier": 1,
    "geoblock": {
     "status": "robots-disallowed",
-    "measured_at": "2026-10-21T04:46:53+00:00",
+    "measured_at": "2026-10-26T16:09:33+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12078,7 +12123,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:37+00:00",
+    "measured_at": "2026-10-26T16:10:21+00:00",
     "from": [
      "github-actions"
     ],
@@ -12089,10 +12134,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 1698,
+     "ms": 1697,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:37+00:00",
+     "at": "2026-10-26T16:10:21+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12100,10 +12145,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 1698,
+     "ms": 1697,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:37+00:00",
+     "at": "2026-10-26T16:10:21+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -12145,7 +12190,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:26+00:00",
+    "measured_at": "2026-10-26T16:10:10+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12160,10 +12205,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 99,
+     "ms": 134,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:10+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12171,10 +12216,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 200000,
-     "ms": 99,
+     "ms": 134,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:10+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12221,7 +12266,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:52+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12236,10 +12281,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8285,
-     "ms": 268,
+     "ms": 266,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12247,10 +12292,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8285,
-     "ms": 268,
+     "ms": 266,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:52+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12298,7 +12343,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:39+00:00",
+    "measured_at": "2026-10-26T16:10:22+00:00",
     "from": [
      "github-actions"
     ],
@@ -12308,22 +12353,22 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "bytes": 148542,
-     "ms": 61,
+     "bytes": 148605,
+     "ms": 23,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:39+00:00",
+     "at": "2026-10-26T16:10:22+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 148542,
-     "ms": 61,
+     "bytes": 148605,
+     "ms": 23,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:39+00:00",
+     "at": "2026-10-26T16:10:22+00:00",
      "vantage": "github-actions"
     },
     "n8n": null
@@ -12364,7 +12409,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:35+00:00",
+    "measured_at": "2026-10-26T16:10:19+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12379,10 +12424,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 39272,
-     "ms": 33,
+     "ms": 15,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:35+00:00",
+     "at": "2026-10-26T16:10:19+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12390,10 +12435,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 39272,
-     "ms": 33,
+     "ms": 15,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:35+00:00",
+     "at": "2026-10-26T16:10:19+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12441,7 +12486,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:54+00:00",
+    "measured_at": "2026-10-26T16:09:35+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12456,10 +12501,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8296,
-     "ms": 21,
+     "ms": 53,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12467,10 +12512,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8296,
-     "ms": 21,
+     "ms": 53,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:54+00:00",
+     "at": "2026-10-26T16:09:35+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12518,7 +12563,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:56+00:00",
+    "measured_at": "2026-10-26T16:09:37+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12533,10 +12578,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8362,
-     "ms": 22,
+     "ms": 54,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:56+00:00",
+     "at": "2026-10-26T16:09:37+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12544,10 +12589,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8362,
-     "ms": 22,
+     "ms": 54,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:56+00:00",
+     "at": "2026-10-26T16:09:37+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12595,7 +12640,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:28+00:00",
+    "measured_at": "2026-10-26T16:10:10+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12610,10 +12655,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 14736,
-     "ms": 32,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:28+00:00",
+     "at": "2026-10-26T16:10:10+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12621,10 +12666,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 14736,
-     "ms": 32,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:28+00:00",
+     "at": "2026-10-26T16:10:10+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12672,7 +12717,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:32+00:00",
+    "measured_at": "2026-10-26T16:10:16+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12687,10 +12732,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23025,
-     "ms": 33,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:32+00:00",
+     "at": "2026-10-26T16:10:16+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12698,10 +12743,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23025,
-     "ms": 33,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:32+00:00",
+     "at": "2026-10-26T16:10:16+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12749,7 +12794,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:34+00:00",
+    "measured_at": "2026-10-26T16:10:17+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12764,10 +12809,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12968,
-     "ms": 33,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:34+00:00",
+     "at": "2026-10-26T16:10:17+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12775,10 +12820,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12968,
-     "ms": 33,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:34+00:00",
+     "at": "2026-10-26T16:10:17+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12826,7 +12871,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:37+00:00",
+    "measured_at": "2026-10-26T16:10:20+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12841,10 +12886,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "ms": 32,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:37+00:00",
+     "at": "2026-10-26T16:10:20+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12852,10 +12897,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "ms": 32,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:37+00:00",
+     "at": "2026-10-26T16:10:20+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12903,7 +12948,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:29+00:00",
+    "measured_at": "2026-10-26T16:10:13+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12918,10 +12963,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "ms": 32,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:29+00:00",
+     "at": "2026-10-26T16:10:13+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -12929,10 +12974,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "ms": 32,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:29+00:00",
+     "at": "2026-10-26T16:10:13+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -12980,7 +13025,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:40+00:00",
+    "measured_at": "2026-10-26T16:10:23+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -12995,10 +13040,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 33,
+     "ms": 13,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:40+00:00",
+     "at": "2026-10-26T16:10:23+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -13006,10 +13051,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 33,
+     "ms": 13,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:40+00:00",
+     "at": "2026-10-26T16:10:23+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13057,7 +13102,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:26+00:00",
+    "measured_at": "2026-10-26T16:10:11+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -13072,10 +13117,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 32,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:11+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -13083,10 +13128,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 32,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:26+00:00",
+     "at": "2026-10-26T16:10:11+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13134,7 +13179,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:31+00:00",
+    "measured_at": "2026-10-26T16:10:14+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -13149,10 +13194,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 33,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:31+00:00",
+     "at": "2026-10-26T16:10:14+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -13160,10 +13205,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 33,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:31+00:00",
+     "at": "2026-10-26T16:10:14+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13211,7 +13256,7 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:43+00:00",
+    "measured_at": "2026-10-26T16:10:26+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -13226,10 +13271,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23053,
-     "ms": 35,
+     "ms": 15,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:43+00:00",
+     "at": "2026-10-26T16:10:26+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -13237,10 +13282,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23053,
-     "ms": 35,
+     "ms": 15,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:43+00:00",
+     "at": "2026-10-26T16:10:26+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13287,22 +13332,55 @@
    "archive": true,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "measured_at": null,
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "open",
+    "measured_at": "2026-10-26T16:09:30+00:00",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "actions",
+     "peru"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 162196,
+     "ms": 82,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T16:09:30+00:00",
+     "vantage": "github-actions"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 162196,
+     "ms": 209,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T02:01:37+00:00",
+     "vantage": "peru-server"
+    },
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 162196,
+     "ms": 82,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T16:09:30+00:00",
+     "vantage": "github-actions"
+    },
     "n8n": null
    },
    "channels": [
     "actions"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://ftp.cpc.ncep.noaa.gov/godas/monthly/": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions"
      ]
@@ -13335,36 +13413,45 @@
    "tier": 1,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:46:51+00:00",
+    "measured_at": "2026-10-26T16:09:29+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [
      "actions",
-     "n8n"
+     "n8n",
+     "peru"
     ],
     "us": {
      "class": "ok",
      "http": 200,
      "bytes": 15853,
-     "ms": 1104,
+     "ms": 691,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 15853,
+     "at": "2026-10-26T02:00:52+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
     "actions": {
      "class": "ok",
      "http": 200,
      "bytes": 15853,
-     "ms": 1104,
+     "ms": 691,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:46:51+00:00",
+     "at": "2026-10-26T16:09:29+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13378,10 +13465,9 @@
    },
    "channels": [
     "actions",
-    "n8n",
-    "peru-server"
+    "n8n"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "http://met.igp.gob.pe/datos/ICEN.txt": {
      "status": "open",
@@ -13391,9 +13477,10 @@
      ]
     },
     "https://met.igp.gob.pe/datos/ICEN.txt": {
-     "status": "suspected-geoblock",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions",
+      "n8n"
      ]
     }
    }
@@ -13419,7 +13506,7 @@
    "tier": 2,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:47:42+00:00",
+    "measured_at": "2026-10-26T16:10:25+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -13434,10 +13521,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 13499,
-     "ms": 33,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:42+00:00",
+     "at": "2026-10-26T16:10:25+00:00",
      "vantage": "github-actions"
     },
     "peru": null,
@@ -13445,10 +13532,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 13499,
-     "ms": 33,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-10-21T04:47:42+00:00",
+     "at": "2026-10-26T16:10:25+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13506,15 +13593,18 @@
    "archive": true,
    "tier": 1,
    "geoblock": {
-    "status": "suspected-geoblock",
-    "measured_at": "2026-10-21T04:47:01+00:00",
+    "status": "geoblocked",
+    "measured_at": "2026-10-26T16:09:40+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "dns",
      "http": null,
@@ -13522,10 +13612,17 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:47:01+00:00",
+     "at": "2026-10-26T16:09:40+00:00",
      "vantage": "github-actions"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 69231,
+     "at": "2026-10-26T02:00:10+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
     "actions": {
      "class": "dns",
      "http": null,
@@ -13533,7 +13630,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:47:01+00:00",
+     "at": "2026-10-26T16:09:40+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13553,13 +13650,13 @@
    "geoblocked": true,
    "by_url": {
     "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ]
     },
     "https://enfen.imarpe.gob.pe/comunicados/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ]
@@ -13591,15 +13688,18 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
-    "measured_at": "2026-10-21T04:48:45+00:00",
+    "status": "geoblocked",
+    "measured_at": "2026-10-26T16:11:31+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "http": null,
@@ -13607,10 +13707,17 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:48:45+00:00",
+     "at": "2026-10-26T16:11:31+00:00",
      "vantage": "github-actions"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 72152,
+     "at": "2026-10-26T02:00:53+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
     "actions": {
      "class": "timeout",
      "http": null,
@@ -13618,7 +13725,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:48:45+00:00",
+     "at": "2026-10-26T16:11:31+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13636,7 +13743,7 @@
    "geoblocked": true,
    "by_url": {
     "https://www.senamhi.gob.pe/?p=fenomeno-el-nino": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ]
@@ -13664,15 +13771,18 @@
    "notes": "se archiva desde el Perú; da el nivel (amarillo, naranja o rojo) y el inicio y fin a los avisos meteorológicos del SENAMHI que llegan por Telegram y por el COEN (copia de hasta 7 días)",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
-    "measured_at": "2026-10-21T04:48:45+00:00",
+    "status": "geoblocked",
+    "measured_at": "2026-10-26T16:11:30+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "http": null,
@@ -13680,10 +13790,17 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:48:45+00:00",
+     "at": "2026-10-26T16:11:30+00:00",
      "vantage": "github-actions"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 1272062,
+     "at": "2026-10-26T02:00:54+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
     "actions": {
      "class": "timeout",
      "http": null,
@@ -13691,7 +13808,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:48:45+00:00",
+     "at": "2026-10-26T16:11:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13709,7 +13826,7 @@
    "geoblocked": true,
    "by_url": {
     "https://www.senamhi.gob.pe/?p=aviso-meteorologico": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ]
@@ -13734,15 +13851,18 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
-    "measured_at": "2026-10-21T04:48:45+00:00",
+    "status": "geoblocked",
+    "measured_at": "2026-10-26T16:11:30+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "http": null,
@@ -13750,10 +13870,17 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:48:45+00:00",
+     "at": "2026-10-26T16:11:30+00:00",
      "vantage": "github-actions"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 289671,
+     "at": "2026-10-26T02:00:55+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
     "actions": {
      "class": "timeout",
      "http": null,
@@ -13761,7 +13888,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:48:45+00:00",
+     "at": "2026-10-26T16:11:30+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13779,7 +13906,7 @@
    "geoblocked": true,
    "by_url": {
     "https://www.senamhi.gob.pe/?p=boletines": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ]
@@ -13804,15 +13931,18 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
-    "measured_at": "2026-10-21T04:48:47+00:00",
+    "status": "geoblocked",
+    "measured_at": "2026-10-26T16:11:31+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "http": null,
@@ -13820,10 +13950,17 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:48:47+00:00",
+     "at": "2026-10-26T16:11:31+00:00",
      "vantage": "github-actions"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 126837,
+     "at": "2026-10-26T02:00:56+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
     "actions": {
      "class": "timeout",
      "http": null,
@@ -13831,7 +13968,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:48:47+00:00",
+     "at": "2026-10-26T16:11:31+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -13849,7 +13986,7 @@
    "geoblocked": true,
    "by_url": {
     "https://www.senamhi.gob.pe/mapas/mapa-estaciones-2/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ]
@@ -13874,26 +14011,54 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "measured_at": null,
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "geoblocked",
+    "measured_at": "2026-10-26T16:09:58+00:00",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "peru"
+    ],
+    "us": {
+     "class": "timeout",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-10-26T16:09:58+00:00",
+     "vantage": "github-actions"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 188011,
+     "at": "2026-10-26T02:00:56+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
+    "actions": {
+     "class": "timeout",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-10-26T16:09:58+00:00",
+     "vantage": "github-actions"
+    },
     "n8n": null
    },
    "channels": [
-    "actions",
-    "n8n"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://observatorio.senamhi.gob.pe/gestion-riesgo-desastres/avisos-meteorologicos": {
-     "status": "unknown",
+     "status": "geoblocked",
      "channels": [
-      "actions",
-      "n8n"
+      "peru-server"
      ]
     }
    }
@@ -13916,26 +14081,54 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "measured_at": null,
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "geoblocked",
+    "measured_at": "2026-10-26T16:09:56+00:00",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "peru"
+    ],
+    "us": {
+     "class": "timeout",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-10-26T16:09:56+00:00",
+     "vantage": "github-actions"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 668777,
+     "at": "2026-10-26T02:00:57+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
+    "actions": {
+     "class": "timeout",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-10-26T16:09:56+00:00",
+     "vantage": "github-actions"
+    },
     "n8n": null
    },
    "channels": [
-    "actions",
-    "n8n"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities": {
-     "status": "unknown",
+     "status": "geoblocked",
      "channels": [
-      "actions",
-      "n8n"
+      "peru-server"
      ]
     }
    }
@@ -13958,26 +14151,54 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "measured_at": null,
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "geoblocked",
+    "measured_at": "2026-10-26T16:09:56+00:00",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "peru"
+    ],
+    "us": {
+     "class": "timeout",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-10-26T16:09:56+00:00",
+     "vantage": "github-actions"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 71,
+     "at": "2026-10-26T02:00:57+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
+    "actions": {
+     "class": "timeout",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-10-26T16:09:56+00:00",
+     "vantage": "github-actions"
+    },
     "n8n": null
    },
    "channels": [
-    "actions",
-    "n8n"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0&typeName=g_100_01:view_aviso_24horas_5dias_ultimos&request=GetFeature&maxFeatures=1000&outputFormat=application/json": {
-     "status": "unknown",
+     "status": "geoblocked",
      "channels": [
-      "actions",
-      "n8n"
+      "peru-server"
      ]
     }
    }
@@ -14000,26 +14221,54 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "measured_at": null,
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "geoblocked",
+    "measured_at": "2026-10-26T16:09:56+00:00",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "peru"
+    ],
+    "us": {
+     "class": "timeout",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-10-26T16:09:56+00:00",
+     "vantage": "github-actions"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 1646,
+     "at": "2026-10-26T02:00:57+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
+    "actions": {
+     "class": "timeout",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-10-26T16:09:56+00:00",
+     "vantage": "github-actions"
+    },
     "n8n": null
    },
    "channels": [
-    "actions",
-    "n8n"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0&typeName=g_100_01:view_aviso_24horas_5dias_ultimos&request=DescribeFeatureType": {
-     "status": "unknown",
+     "status": "geoblocked",
      "channels": [
-      "actions",
-      "n8n"
+      "peru-server"
      ]
     }
    }
@@ -14042,13 +14291,14 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
-    "measured_at": "2026-10-21T04:47:44+00:00",
+    "status": "robots-disallowed",
+    "measured_at": "2026-10-26T16:10:28+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
@@ -14058,10 +14308,17 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:47:44+00:00",
+     "at": "2026-10-26T16:10:28+00:00",
      "vantage": "github-actions"
     },
-    "peru": null,
+    "peru": {
+     "class": "robots",
+     "http": null,
+     "bytes": null,
+     "at": "2026-10-26T02:00:57+00:00",
+     "vantage": "peru-server",
+     "detail": "robots.txt no permite la ruta: no se pide"
+    },
     "actions": {
      "class": "timeout",
      "http": null,
@@ -14069,7 +14326,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:47:44+00:00",
+     "at": "2026-10-26T16:10:28+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -14081,16 +14338,12 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [
-    "peru-server"
-   ],
-   "geoblocked": true,
+   "channels": [],
+   "geoblocked": null,
    "by_url": {
     "https://snirh.ana.gob.pe/": {
-     "status": "suspected-geoblock",
-     "channels": [
-      "peru-server"
-     ]
+     "status": "robots-disallowed",
+     "channels": []
     }
    }
   },
@@ -14112,13 +14365,14 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
-    "measured_at": "2026-10-21T04:47:45+00:00",
+    "status": "robots-disallowed",
+    "measured_at": "2026-10-26T16:10:28+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
@@ -14128,10 +14382,17 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:47:45+00:00",
+     "at": "2026-10-26T16:10:28+00:00",
      "vantage": "github-actions"
     },
-    "peru": null,
+    "peru": {
+     "class": "robots",
+     "http": null,
+     "bytes": null,
+     "at": "2026-10-26T02:00:57+00:00",
+     "vantage": "peru-server",
+     "detail": "robots.txt no permite la ruta: no se pide"
+    },
     "actions": {
      "class": "timeout",
      "http": null,
@@ -14139,7 +14400,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-10-21T04:47:45+00:00",
+     "at": "2026-10-26T16:10:28+00:00",
      "vantage": "github-actions"
     },
     "n8n": {
@@ -14151,16 +14412,12 @@
      "vantage": "n8n-aws-us-east-1"
     }
    },
-   "channels": [
-    "peru-server"
-   ],
-   "geoblocked": true,
+   "channels": [],
+   "geoblocked": null,
    "by_url": {
     "https://snirh.ana.gob.pe/onrh/": {
-     "status": "suspected-geoblock",
-     "channels": [
-      "peru-server"
-     ]
+     "status": "robots-disallowed",
+     "channels": []
     }
    }
   },
@@ -14183,16 +14440,18 @@
    "tier": 2,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:14+00:00",
+    "measured_at": "2026-10-26T16:10:59+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [
      "actions",
-     "n8n"
+     "n8n",
+     "peru"
     ],
     "us": {
      "class": "ok",
@@ -14202,7 +14461,14 @@
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 301445,
+     "at": "2026-10-26T02:01:02+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
     "actions": {
      "class": "ok",
      "http": 200,
@@ -14254,16 +14520,18 @@
    "tier": 2,
    "geoblock": {
     "status": "open",
-    "measured_at": "2026-10-21T04:48:21+00:00",
+    "measured_at": "2026-10-26T16:11:06+00:00",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [
      "actions",
-     "n8n"
+     "n8n",
+     "peru"
     ],
     "us": {
      "class": "ok",
@@ -14273,7 +14541,14 @@
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 223945,
+     "at": "2026-10-26T02:01:10+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
     "actions": {
      "class": "ok",
      "http": 200,
@@ -14324,13 +14599,41 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "measured_at": null,
-    "from": [],
+    "status": "down",
+    "measured_at": "2026-10-26T16:10:03+00:00",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
     "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "us": {
+     "class": "http-4xx",
+     "http": 404,
+     "bytes": 1245,
+     "ms": 126,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T16:10:03+00:00",
+     "vantage": "github-actions"
+    },
+    "peru": {
+     "class": "http-4xx",
+     "http": 404,
+     "bytes": 0,
+     "at": "2026-10-26T02:01:10+00:00",
+     "vantage": "peru-server",
+     "detail": ""
+    },
+    "actions": {
+     "class": "http-4xx",
+     "http": 404,
+     "bytes": 1245,
+     "ms": 126,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-10-26T16:10:03+00:00",
+     "vantage": "github-actions"
+    },
     "n8n": null
    },
    "channels": [
@@ -14340,7 +14643,7 @@
    "geoblocked": null,
    "by_url": {
     "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson": {
-     "status": "unknown",
+     "status": "down",
      "channels": [
       "actions",
       "n8n"
