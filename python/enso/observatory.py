@@ -2138,19 +2138,13 @@ def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str
     if missed and age <= RELAY_STALE_HOURS:
         # Una recolección «ok» con un 4/8 en enfen-docs puede haber perdido justo el documento que falta aquí.
         log.add("warning", "relay-peru", "fetch", "relay-goal-missed",
-                f"La recolección desde el Perú del {relay.collected_at} no guardó el PDF de: {', '.join(missed)}; "
+                f"La recolección desde el Perú del {relay.collected_at} no guardó el PDF de: "
+                f"{', '.join(_goal_why(g, relay.goal_detail.get(g)) for g in missed)}; "
                 f"revisar su registro en {relay.host or 'el equipo del Perú'}.")
     # El recolector anota cuándo vence su token: avisar antes de que deje de subir.
     collector = (hb.get("collector") if hb_age < age else None) or relay.collector
-    expires = str(collector.get("token_expires_at") or "")
-    try:
-        left = (datetime.fromisoformat(expires) - datetime.now(timezone.utc)).total_seconds() / 86400
-    except (TypeError, ValueError):  # vacío, ilegible o sin zona horaria
-        left = None
-    if left is not None and left < RELAY_TOKEN_WARN_DAYS:
-        log.add("warning", "relay-peru", "fetch", "relay-token-expiring",
-                f"El token de GitHub del recolector del Perú vence el {expires[:10]} (en {max(left, 0):.0f} días): "
-                "crear uno nuevo y ejecutar INSTALAR en ese equipo con el token nuevo (docs/servidor-peru.md).")
+    _warn_token_expiring(log, "relay-peru", "del recolector del Perú", collector,
+                         "crear uno nuevo y ejecutar INSTALAR en ese equipo con el token nuevo (docs/servidor-peru.md).")
     # Un kit viejo no baja lo que el sitio ahora espera (documentos, capas) y no lo diría: la versión manda.
     try:
         contract = int(collector.get("contract") or 0)
@@ -2163,6 +2157,33 @@ def load_relay(relay_dir: Path, log: EventLog, plan: Optional[dict[str, list[str
                 f"{MIN_COLLECTOR_CONTRACT}): ejecutar otras-acciones/ACTUALIZAR en ese equipo (docs/servidor-peru.md, "
                 "«Mantenimiento»).")
     return relay
+
+
+def _goal_why(goal: str, detail) -> str:
+    """«informe técnico (challenge, HTTP 403, enfen.imarpe.gob.pe)»: lo que el recolector anotó del último intento,
+    para que la incidencia distinga una verificación antirobots de un plazo vencido o un robots.txt."""
+    d = detail if isinstance(detail, dict) else {}
+    why = [str(d["class"])] if d.get("class") else []
+    if isinstance(d.get("status"), int):
+        why.append(f"HTTP {d['status']}")
+    why += [str(d[k])[:80] for k in ("skipped", "error") if d.get(k)]
+    host = re.sub(r"^https?://(www\.)?([^/]+).*", r"\2", str(d.get("url") or ""))
+    if host:
+        why.append(host)
+    return f"{goal} ({', '.join(why)})" if why else goal
+
+
+def _warn_token_expiring(log: EventLog, source: str, who: str, collector: dict, fix: str) -> None:
+    """``relay-token-expiring`` cuando el token de GitHub que anota el recolector (``token_expires_at``) vence
+    en menos de ``RELAY_TOKEN_WARN_DAYS`` días: después de esa fecha el recolector ya no puede subir copias."""
+    expires = str((collector or {}).get("token_expires_at") or "")
+    try:
+        left = (datetime.fromisoformat(expires) - datetime.now(timezone.utc)).total_seconds() / 86400
+    except (TypeError, ValueError):  # vacío, ilegible o sin zona horaria
+        return
+    if left < RELAY_TOKEN_WARN_DAYS:
+        log.add("warning", source, "fetch", "relay-token-expiring",
+                f"El token de GitHub {who} vence el {expires[:10]} (en {max(left, 0):.0f} días): {fix}")
 
 
 def load_manual_relay(manual_dir: Path, log: EventLog, absent: bool = False):
@@ -2219,6 +2240,10 @@ def load_n8n_relay(n8n_dir: Path, log: EventLog):
     else:
         log.add("info", "relay-n8n", "fetch", "relay-n8n-ok",
                 f"Copias de n8n del {relay.collected_at}: {relay.summary}.")
+    # Igual que el del Perú: el flujo anota el vencimiento de su credencial de GitHub (preparar.js).
+    collector = (hb.get("collector") if hb_fresh else None) or relay.collector
+    _warn_token_expiring(log, "relay-n8n", "de la credencial de n8n", collector,
+                         "crear otro token y actualizar la credencial «GitHub ENSO (n8n)» (docs/n8n.md, pasos 2 y 3).")
     return relay
 
 
