@@ -188,10 +188,34 @@ copias del recolector del Perú y de n8n). Reglas:
   usa la copia guardada): una verificación de un día no la deja `unknown`. Con
   `disallowed` la URL queda sin canales, salvo los feeds de noticias que se leen
   una vez al día (abajo); un `disallowed` que nadie volvió a leer en 45 días
-  deja de contar y la URL vuelve a medirse. n8n no pide ninguna URL `unknown` ni `disallowed`; la
+  deja de contar y la URL vuelve a medirse. n8n no pide ninguna URL `disallowed`
+  y lee el robots.txt de una `unknown` antes de pedirla (docs/n8n.md); la
   corrida diaria lee el robots.txt de una URL `unknown` antes de pedirla, usa
   primero las copias de los recolectores y no pide nada si el robots.txt no
   responde.
+- **Redirecciones:** la corrida diaria, las sondas, la captura de respuestas
+  de prueba y las herramientas que bajan datos siguen cada redirección a mano
+  y piden el destino solo si su robots.txt lo permite, con la misma regla que
+  la URL pedida: una ruta prohibida, o un servidor cuyo robots.txt no
+  responde, no se piden. La sonda semanal anota esa URL como `robots` (o con
+  la falla de su robots.txt y el destino en `hop`, sin arrastrar la lectura
+  anterior de la URL). Con `hop` el registro la deja `unknown`, aunque otra red
+  haya leído el robots.txt de la URL (no cubre el del destino), y n8n, que sigue
+  las redirecciones sin leer robots.txt, lee el de ese destino antes de pedirla;
+  el `hop` cuenta hasta 45 días y deja de contar si después alguna red alcanzó la
+  URL. Una redirección a otro protocolo (`ftp://`) no se sigue: queda el 3xx.
+  Tras una redirección que no se siguió, la corrida no le pide al Internet
+  Archive una captura nueva de esa URL (la seguiría en nombre del observatorio)
+  y, si el destino está prohibido, tampoco usa la copia de un recolector; la que
+  una persona subió en la consola de documentos sí vale. Las restricciones de
+  robots.txt que mide la sonda semanal llegan a `main` aunque el registro medido
+  no pase las pruebas (docs/operaciones.md). Un robots.txt que redirige
+  se sigue (RFC 9309 §2.3.1.2), y las rutas se comparan con los `%XX`
+  normalizados (§2.2.2: `/Señal` y `/Se%C3%B1al` son la misma ruta). El
+  Internet Archive pasa por la misma regla: el robots.txt de `web.archive.org`
+  se lee en la corrida y, si no permite la ruta o no responde, esa corrida no
+  usa sus copias ni le pide una nueva. La consola de lugares y el servicio de
+  extracción son del observatorio: sus redirecciones se siguen sin robots.txt.
 - **Fuentes sin n8n** (`"n8n": false`): las búsquedas del repositorio del
   IMARPE, porque n8n no verifica su certificado sin el intermedio
   (`NODE_EXTRA_CA_CERTS`). GODAS (`cpc-godas-d20`) solo se lee desde Actions:

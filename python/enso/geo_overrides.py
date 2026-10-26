@@ -142,7 +142,8 @@ def fetch_overrides(client, previous, log, url: Optional[str] = None) -> tuple[l
     url = url if url is not None else os.environ.get(OVERRIDES_URL_ENV, "")
     if url and client is not None:
         try:
-            r = client.get(url, headers={"Accept": "application/json"}, timeout=20)
+            # La consola es del observatorio, no una fuente: sus redirecciones se siguen sin robots.txt.
+            r = client.get(url, headers={"Accept": "application/json"}, timeout=20, follow_redirects=True)
             if r.status_code == 200:
                 return valid_overrides(r.json()), "consola"
             log.add("warning", "geo", "fetch", "overrides-http",

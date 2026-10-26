@@ -19,6 +19,9 @@ from pathlib import Path
 
 import httpx
 
+from enso.fetch import UA
+from enso.reach import Robots, get_checked
+
 BASE = "https://raw.githubusercontent.com/jmcastagnetto/ubigeo-peru-aumentado/main/"
 FILES = {"dep": "ubigeo_departamento.csv", "prov": "ubigeo_provincia.csv", "dist": "ubigeo_distrito.csv"}
 OUT = Path(__file__).resolve().parents[1] / "enso" / "data" / "ubigeo.json"
@@ -138,6 +141,23 @@ def build(src: dict[str, str]) -> dict:
             "departments": deps, "provinces": provs, "districts": dists}
 
 
+def _download(client: httpx.Client) -> dict[str, str]:
+    """Los tres CSV, si el robots.txt del servidor (y el de cada redirección) lo permite, como todo lo que pide
+    el proyecto (barrido de robots.txt del 26 de octubre de 2026)."""
+    robots = Robots(client)
+    out = {}
+    for k, f in FILES.items():
+        url = BASE + f
+        allowed = robots.allowed(url)
+        r, hop, verdict = get_checked(client, url, robots) if allowed is True else (None, url, allowed)
+        if hop:
+            why = "no permite" if verdict is False else f"no respondió ({robots.failure(hop) or 'sin respuesta'}) y no se sabe si permite"
+            raise SystemExit(f"El robots.txt de {httpx.URL(hop).host} {why} {hop}: no se pide. Bajar a mano los tres "
+                             f"CSV de {BASE} y pasarlos con --src.")
+        out[k] = r.raise_for_status().text
+    return out
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--src", type=Path)
@@ -145,7 +165,8 @@ def main(argv=None) -> int:
     if a.src:
         src = {k: (a.src / f).read_text(encoding="utf-8") for k, f in FILES.items()}
     else:
-        src = {k: httpx.get(BASE + f, timeout=60).raise_for_status().text for k, f in FILES.items()}
+        with httpx.Client(headers={"User-Agent": UA}, timeout=60) as client:
+            src = _download(client)
     data = build(src)
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     print(f"{OUT}: {len(data['departments'])} departamentos, {len(data['provinces'])} provincias, "
