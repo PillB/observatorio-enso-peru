@@ -28,6 +28,7 @@ from __future__ import annotations
 import json
 import math
 from dataclasses import dataclass
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Optional
 
@@ -45,7 +46,6 @@ REGIONS = {
     # Franja del índice de temperatura subsuperficial de CPC (180°–100°O), como referencia.
     "d20_180w100w": {"label": "Pacífico ecuatorial (5°N–5°S, 180°–100°O)", "lat": (-5.0, 5.0), "lon": (180.0, 260.0)},
 }
-
 
 def url(year: int, month: int) -> str:
     return f"{BASE}/godas.M.{year:04d}{month:02d}.grb"
@@ -300,14 +300,37 @@ def load_history(path: Path = HISTORY_PATH) -> dict:
 
 def months_to_fetch(history: dict, today, max_months: int = MAX_LIVE_MONTHS) -> list[tuple[int, int]]:
     """Meses posteriores al último del histórico, hasta el mes en curso (los que aún no existen dan 404).
-    Siempre incluye el último mes del histórico, por si CPC lo reemplazó."""
-    last = max(p["period"] for pts in history["monthly"].values() for p in pts)
-    y, m = int(last[:4]), int(last[5:])
-    out = []
-    while (y, m) <= (today.year, today.month) and len(out) < max_months:
-        out.append((y, m))
+    Siempre incluye el último mes del histórico, por si CPC lo reemplazó o lo movió. Si son más de
+    ``max_months``, se quedan ese mes y los más recientes: los intermedios esperan a que se regenere el histórico."""
+    full = []
+    y, m = last_history_month(history)
+    while (y, m) <= (today.year, today.month):
+        full.append((y, m))
         y, m = (y + 1, 1) if m == 12 else (y, m + 1)
-    return out
+    return full if len(full) <= max_months else [full[0]] + full[-(max_months - 1):]
+
+
+def last_history_month(history: dict) -> tuple[int, int]:
+    last = max(p["period"] for pts in history["monthly"].values() for p in pts)
+    return int(last[:4]), int(last[5:])
+
+
+def months_behind(history: dict, today) -> int:
+    """Meses entre el último del histórico y el mes en curso."""
+    y, m = last_history_month(history)
+    return (today.year - y) * 12 + today.month - m
+
+
+#: Con más meses que estos entre el histórico y hoy, se avisa que hay que regenerarlo.
+HISTORY_MAX_BEHIND = 12
+
+
+def month_end(y: int, m: int) -> date:
+    return (date(y + (m == 12), m % 12 + 1, 1)) - timedelta(days=1)
+
+
+#: Días después del fin de un mes en que su archivo ya debería estar (CPC lo publica unas 2 semanas después).
+PUBLISH_LAG_DAYS = 45
 
 
 def build_series(live: dict, history: dict) -> Parsed:
@@ -335,6 +358,21 @@ def build_series(live: dict, history: dict) -> Parsed:
                         "d20": round(d, 1), "outcrop": by[per]["outcrop"]})
         warnings += check_series(pts, lo=-150, hi=150, name=key)
         data[key] = pts
+    errors = live.get("errors") or {}
+    # Avisos para el registro de incidencias (``acquire`` los anota como advertencias): (etapa, código, mensaje).
+    events = []
+    if live.get("unreached"):
+        events.append(("fetch", "unreachable",
+                       "El servidor de GODAS de NOAA/CPC no dio ningún mes; se publica el histórico versionado"
+                       + (" con los meses ya leídos antes" if live.get("months") else "")
+                       + ". Intentos: " + "; ".join(f"{k}: {v}" for k, v in sorted(errors.items()))[:1200]))
+    elif errors:
+        events.append(("parse", "month-unread", "Meses de GODAS no leídos (se mantiene el último mes válido): "
+                       + "; ".join(f"{k}: {v}" for k, v in sorted(errors.items()))))
+    if (live.get("behind") or 0) > HISTORY_MAX_BEHIND:
+        events.append(("fetch", "history-old",
+                       f"El histórico de GODAS termina hace {live['behind']} meses: regenerar "
+                       "python/enso/data/godas-d20.json con python -m tools.godas_d20_climatology."))
     meta = {"climatology": history.get("base_period", ""), "liveMonths": sorted(live.get("months") or {}),
-            "errors": live.get("errors") or {}}
+            "errors": errors, "events": events}
     return Parsed(data, fingerprint("godas-d20", *sorted(REGIONS), str(MAX_DEPTH)), warnings, meta)

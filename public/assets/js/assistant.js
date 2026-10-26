@@ -123,7 +123,14 @@ export function answer(q, S) {
     return out(String(html`<p>Esta publicación se generó el ${F.fmtDateTime(S.dash.generatedAt)}. Cada dato tiene su propio periodo de validez, que se indica junto al valor. ${S.dash.health ? `${S.dash.health.sourcesOk} de ${S.dash.health.sourcesTotal} fuentes respondieron con normalidad.` : ''}</p>`), ['publicacion']);
   }
   if (/\bd20\b|isoterma/.test(t)) {
-    return out('<p>El observatorio no publica la profundidad de la isoterma de 20 °C (D20): no hay una fuente pública verificada de ese valor. Como referencia del calor bajo la superficie se muestra el contenido de calor de 0–300 m de NOAA, sin aplicarle los umbrales de D20.</p>');
+    // D20 calculado de NOAA GODAS: las dos filas de la señal GRD, con su periodo, nivel y la nota sobre el producto.
+    const sig = (S.dash.grd?.signals || []).filter((x) => x.id === 'd20_coastal' || x.id === 'd20_global');
+    const shown = sig.filter((x) => x.value !== null && !x.stale);
+    if (!shown.length) return out('<p>Dato actual no disponible: la profundidad de la isoterma de 20 °C (D20) que el observatorio calcula con NOAA GODAS no está en esta publicación.</p>');
+    return out(String(html`<p>Anomalía mensual de la profundidad de la isoterma de 20 °C (D20), calculada por el observatorio con el modelo de asimilación GODAS de NOAA/CPC (base 1991–2020):</p>
+      <ul>${shown.map((x) => html`<li><strong>${x.region}</strong>: ${F.fmtValue(x.value, 'm')} (${F.fmtMonth(x.period)}) — ${x.label}. Umbrales: ${x.basis}.</li>`)}</ul>
+      <p class="muted small">${sig[0].reason || ''} Frente a Paita y Chicama, lo que escriben el ENFEN y el IMARPE se muestra aparte en Océano y atmósfera, sin estos umbrales.</p>`),
+    shown.map((x) => `grd:${x.id}@${x.period}`));
   }
   if (/grd|semaforo|senal operativa/.test(t)) {
     const g = S.dash.grd;

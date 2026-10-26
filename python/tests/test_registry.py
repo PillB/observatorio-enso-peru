@@ -50,8 +50,19 @@ def test_build_is_valid_and_routes_by_measurement():
     reg = registry.build(reach={url: {"us": US_403, "peru": PE_OK}})
     first = reg["sources"][0]
     assert first["geoblocked"] is True and first["channels"] == ["peru-server"]
-    assert all(s["channels"] == ["actions", "n8n"] for s in reg["sources"][1:] if s["url"] != url)
+    assert all(s["channels"] == ["actions", "n8n"] for s in reg["sources"][1:]
+               if s["url"] != url and s["id"] != "cpc-godas-d20")
     assert registry.validate(reg) == []
+
+
+def test_godas_is_read_only_from_actions():
+    """GODAS tiene lector propio (rangos de bytes de GRIB): n8n no lo copia, y un geobloqueo no lo deja sin canal."""
+    from enso import observatory
+
+    u = observatory.SOURCE_BY_ID["cpc-godas-d20"].urls[0]
+    for reach in ({}, {u: {"us": US_403, "peru": PE_OK}}):
+        g = next(s for s in registry.build(reach=reach)["sources"] if s["id"] == "cpc-godas-d20")
+        assert g["channels"] == ["actions"] and g["by_url"][u]["channels"] == ["actions"]
 
 
 def test_validate_catches_mistakes():
