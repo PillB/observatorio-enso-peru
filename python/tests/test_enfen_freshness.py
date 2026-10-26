@@ -159,3 +159,29 @@ def test_probe_finds_the_pdf_button_not_the_canonical_link():
     assert got["id"] == "14-2026" and "?wpdmdl=2141" in got["url"]
     # La misma página no sirve como prueba de otro número (la barra lateral enlaza otros comunicados).
     assert obs._probe_communique(f, 2026, 15, Log()) is None
+
+
+def test_probing_stops_at_probe_ahead_and_after_probe_max_misses(monkeypatch):
+    """Los sondeos siguen mientras aparezcan comunicados, hasta ``PROBE_AHEAD`` números después del último conocido,
+    y ``PROBE_MAX_MISSES`` ausencias seguidas los cortan (las dos reglas que documentan catalogo-fuentes.md y n8n.md)."""
+    def run(found_upto):
+        asked = []
+
+        def probe(fetcher, py, pn, log):
+            asked.append(pn)
+            if pn <= found_upto:
+                return {"id": f"{pn:02d}-{py}", "year": py, "number": pn, "kind": "oficial", "url": f"https://x/{pn}"}
+            return None
+
+        monkeypatch.setattr(obs, "_probe_communique", probe)
+        monkeypatch.setattr(obs, "portal_enfen_listing", lambda f, log: [])
+        monkeypatch.setattr(obs.imarpe_repo, "communiques", lambda f, problems=None: [])
+        monkeypatch.setattr(obs, "_get_communique", lambda f, item, problems=None: None)
+        acq, _ = _acquire_from_wp()  # el último conocido es el 13-2026
+        obs.enfen_latest(acq, None, None, _Prev(None), obs.EventLog(), date(2026, 10, 21))
+        return asked
+
+    # Todos aparecen: se sondean exactamente PROBE_AHEAD números.
+    assert run(99) == list(range(14, 14 + obs.PROBE_AHEAD))
+    # Aparecen 14 y 15: el 16 y el 17 faltan y cortan antes del 18.
+    assert run(15) == [14, 15, 16, 17] and obs.PROBE_MAX_MISSES == 2

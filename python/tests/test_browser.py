@@ -484,6 +484,69 @@ def test_items_link_to_live_source_and_archived_copy(site, page):
     assert (root / doc.get_attribute("href")).exists()
 
 
+def test_grd_rows_link_to_live_source_and_archived_copy(site, page):
+    """Revisión del 22-10-2026: la tabla GRD, la de las decisiones, era la única sin enlace a la fuente en vivo ni a la
+    copia archivada. Cada fila con fuente enlaza su origen y, si la publicación tiene copia, la copia que sirve el
+    sitio (data/archive/…), como las demás tarjetas. El SOI Troup se calcula con Tahití y Darwin: enlaza los dos."""
+    base, root = site
+    dash = json.loads((root / "data" / "dashboard.json").read_text(encoding="utf-8"))
+    signals = dash["grd"]["signals"]
+    inputs = {"soi_troup": ["cpc-tahiti", "cpc-darwin"]}  # GRD_INPUTS en app.js
+    go(page, base)
+    rows = page.locator("[data-tour-id=grd] table.grd tbody tr")
+    expect(rows).to_have_count(len(signals))
+    with_source = [(i, x, [dash["sources"][sid] for sid in inputs.get(x["id"], [x["source"]]) if sid in dash["sources"]])
+                   for i, x in enumerate(signals) if x.get("source") in dash["sources"]]
+    assert with_source, "ninguna fila de la tabla GRD trae su fuente"
+    assert any(x["id"] == "soi_troup" and len(ms) == 2 for _, x, ms in with_source), "falta la fila del SOI Troup"
+    for i, x, ms in with_source:
+        row = rows.nth(i)
+        live = row.get_by_role("link", name="Fuente en vivo")
+        expect(live).to_have_count(len(ms))
+        assert [live.nth(k).get_attribute("href") for k in range(len(ms))] == [m["live"] for m in ms], x["name"]
+        assert all(m["live"].startswith("http") for m in ms), x["name"]
+        arch = row.locator("a[href^='data/archive/']")
+        expected = [f"data/{m['archive']}" for m in ms if m.get("archive")]
+        # sin copia en esta publicación (la fuente no respondió y no quedó la anterior): no hay enlace
+        expect(arch).to_have_count(len(expected))
+        hrefs = [arch.nth(k).get_attribute("href") for k in range(len(expected))]
+        assert hrefs == expected and all((root / h).exists() for h in hrefs), hrefs
+
+
+def test_sources_table_names_the_relay_instead_of_direct(site, page):
+    """Revisión del 22-10-2026: una copia del recolector del Perú (hasta 7 días) o de n8n (hasta 72 h) salía como
+    «Directa». El estado sigue siendo «ok», pero la tabla dice por dónde llegó el dato. El listado del ENFEN de la
+    publicación anterior con su comunicado ya leído (``enfen_latest`` deja «ok») es el último dato válido."""
+    base, root = site
+    src = json.loads((root / "data" / "sources.json").read_text(encoding="utf-8"))
+    rows = src["sources"]
+    assert len(rows) >= 6
+    relayed = {rows[0]["id"]: ("relay-peru", "recolector en el Perú"), rows[1]["id"]: ("relay-n8n", "n8n"),
+               rows[2]["id"]: ("relay-manual", "consola de documentos"), rows[3]["id"]: ("mirror", "otra dirección oficial")}
+    for r in rows:
+        if r["id"] in relayed:
+            r.update(status="ok", channel=relayed[r["id"]][0], archivedAt="2026-10-20T02:10:00+00:00")
+    direct = rows[4]
+    direct.update(status="ok", channel="direct")
+    carried = rows[5]
+    carried.update(status="ok", channel="previous-publication", carried=True)
+    page.route("**/data/sources.json*", lambda r: r.fulfill(status=200, content_type="application/json",
+                                                           body=json.dumps(src)))
+    go(page, base, "metodologia")
+    table = page.locator("#sources-table")
+    expect(table.locator("tbody tr")).to_have_count(len(rows), timeout=10000)
+    for sid, (_, via) in relayed.items():
+        status = table.locator(f'tr[data-source="{sid}"] td').first
+        expect(status).to_contain_text(via)
+        expect(status).not_to_contain_text("Directa")
+    expect(table.locator(f'tr[data-source="{rows[0]["id"]}"] td').first).to_contain_text("copia del")
+    expect(table.locator(f'tr[data-source="{direct["id"]}"] td').first).to_contain_text("Directa")
+    kept = table.locator(f'tr[data-source="{carried["id"]}"] td').first
+    expect(kept).to_contain_text("Último dato válido")
+    expect(kept).not_to_contain_text("Directa")
+    expect(kept.locator(".chip")).to_have_class(re.compile(r"\bchip-watch\b"))
+
+
 def test_downloads_exist_and_csv_is_safe(site, page):
     base, root = site
     go(page, base, "datos")

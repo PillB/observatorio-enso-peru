@@ -197,3 +197,17 @@ def test_partial_run_keeps_the_published_bulletins(tmp_path):
     obs.run(part, str(full), offline=True, only=["cpc-sstoi"])
     kept = json.loads((part / "imarpe-bsobp.json").read_text(encoding="utf-8"))
     assert kept["bulletins"][0]["number"] == 42
+
+
+def test_unreachable_repository_says_why():
+    """La incidencia dice qué falló (DNS, timeout, código HTTP), no solo que el repositorio no listó nada."""
+    from enso.fetch import FetchError
+
+    class _Down:
+        def get(self, urls, **kw):
+            raise FetchError("sin respuesta", [{"url": urls[0], "error": "ConnectError: [Errno -2] Name or service not known"}])
+
+    log = _Log()
+    bs.acquire(_Down(), {"bulletins": []}, log, date(2026, 10, 26))
+    (_, code, message), = log.events
+    assert code == "bsobp-unreachable" and "(conexión: ConnectError: [Errno -2] Name or service not known)" in message

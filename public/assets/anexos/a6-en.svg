@@ -143,7 +143,7 @@
   
   <!-- conexiones -->
   <g class="ar-edge" id="a6-e-1" data-edge="1" data-from="feeds" data-to="reader" tabindex="0">
-    <title>1. 168 feeds → Reader feeds: 40 forbidden by robots.txt. Reader feeds follow their own pace; the rest are requested every run.</title>
+    <title>1. 168 feeds → Reader feeds: forbidden by robots.txt. Reader feeds follow their own pace; the rest are requested every run.</title>
     <path class="ar-e ar-e-trigger" d="M186 300.5 L186 330.5" stroke-dasharray="2 3" marker-end="url(#a6-m-trigger)"/>
     <circle class="ar-badge ar-e-trigger" cx="186" cy="315.5" r="9"/>
     <text class="ar-t" x="186" y="319.3" font-size="10.5" text-anchor="middle">1</text>
@@ -444,7 +444,7 @@
   <text class="ar-h" x="20" y="899.9" font-size="15">Steps and connections: what travels along each line, when and why</text>
   <circle class="ar-badge ar-e-trigger" cx="30" cy="927.9" r="9"/>
   <text class="ar-t" x="30" y="931.7" font-size="10.5" text-anchor="middle">1</text>
-  <text class="ar-t" x="50" y="931.9" font-size="11.5">40 forbidden by robots.txt</text>
+  <text class="ar-t" x="50" y="931.9" font-size="11.5">forbidden by robots.txt</text>
   <text class="ar-m" x="50" y="945.9" font-size="10.5">168 feeds → Reader feeds</text>
   <text class="ar-s" x="50" y="960.9" font-size="11">Reader feeds follow their own pace; the rest are requested every run.</text>
   <circle class="ar-badge ar-e-trigger" cx="30" cy="983.9" r="9"/>

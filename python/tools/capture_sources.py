@@ -27,6 +27,7 @@ from pathlib import Path
 import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from enso.fetch import ssl_context  # noqa: E402  (los intermedios que algunos servidores no envían)
 from enso.reach import Robots  # noqa: E402
 
 UA = "Observatorio-ENSO-Peru/4.0 (fixture-capture; +https://github.com/PillB/observatorio-enso-peru)"
@@ -232,7 +233,7 @@ def main() -> int:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     index: list = []
-    with httpx.Client(timeout=45.0, follow_redirects=True, headers={"User-Agent": UA}) as client:
+    with httpx.Client(timeout=45.0, follow_redirects=True, headers={"User-Agent": UA}, verify=ssl_context()) as client:
         capture_current(client, out, index)
         if args.history:
             capture_history(client, out, index, args.per_source)

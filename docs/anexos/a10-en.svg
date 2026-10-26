@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1363.5" role="img" aria-labelledby="a10-t a10-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1771.5" role="img" aria-labelledby="a10-t a10-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
   <title id="a10-t">Annex A10 · Monitoring, alerts and maintenance</title>
-  <desc id="a10-d">Run report, issues by fingerprint, watchdogs, email, keeping scheduled workflows alive and the development tools.</desc>
+  <desc id="a10-d">Run report, collectors&#x27; heartbeats, issues by fingerprint, watchdogs, email, keeping scheduled workflows alive and the development tools.</desc>
   <style>
     .ar-node { stroke-width: 1.5; }
     .ar-h { font-weight: 700; }
@@ -113,11 +113,11 @@
     <marker id="a10-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
     <marker id="a10-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
   </defs>
-  <rect class="ar-bg" x="0" y="0" width="1440" height="1363.5" rx="14"/>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1771.5" rx="14"/>
   <text class="ar-big" x="20" y="38" font-size="20">Annex A10 · Monitoring, alerts and maintenance</text>
   <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
-  <text class="ar-s" x="20" y="60" font-size="12">Who finds out when something goes wrong and how. Each run leaves a report; its problems become issues that close themselves, and two independent watchdogs (one on GitHub, one on n8n) look at the live site every 6 hours.</text>
-  <text class="ar-s" x="20" y="77" font-size="12">Alerts arrive through GitHub and, if configured, by email.</text>
+  <text class="ar-s" x="20" y="60" font-size="12">Who finds out when something goes wrong and how. Each run leaves a report; its problems become issues that close themselves (a person closes a format change), and two independent watchdogs (one on GitHub, one on n8n) look</text>
+  <text class="ar-s" x="20" y="77" font-size="12">at the live site every 6 hours; the GitHub one also watches the collectors&#x27; heartbeats and the weekly probe. Alerts arrive through GitHub and, if configured, by email.</text>
   <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: GitHub watchdog (watchdog.yml), n8n watchdog (outside GitHub), Incident issues (incidente-datos), Development tools, Maintainers and owner.</text>
   <text class="ar-t" x="20" y="121" font-size="11.5">Lines:</text>
   <path class="ar-e ar-e-data" d="M70.7 117 L104.7 117" marker-end="url(#a10-m-data)"/>
@@ -128,373 +128,454 @@
   <text class="ar-s" x="311.4" y="121" font-size="11.5">trigger or control</text>
   <path class="ar-e ar-e-human" d="M431.5 117 L465.5 117" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
   <text class="ar-s" x="473.5" y="121" font-size="11.5">manual step</text>
-  <rect class="ar-col" x="36" y="141" width="280" height="706.5" rx="10"/>
+  <rect class="ar-col" x="36" y="141" width="280" height="1001.5" rx="10"/>
   <text class="ar-h" x="48" y="166" font-size="15">Signals</text>
-  <text class="ar-m" x="48" y="183" font-size="10.5">what each run and the live site leave behind</text>
-  <rect class="ar-col" x="385.3" y="141" width="300" height="706.5" rx="10"/>
+  <text class="ar-m" x="48" y="183" font-size="10.5">what each run, the live site and the collectors</text>
+  <text class="ar-m" x="48" y="197" font-size="10.5">leave behind</text>
+  <rect class="ar-col" x="385.3" y="141" width="300" height="1001.5" rx="10"/>
   <text class="ar-h" x="397.3" y="166" font-size="15">Automatic on GitHub</text>
-  <text class="ar-m" x="397.3" y="183" font-size="10.5">incidents and keepalive jobs · watchdog.yml</text>
-  <rect class="ar-col" x="754.7" y="141" width="300" height="706.5" rx="10"/>
+  <text class="ar-m" x="397.3" y="183" font-size="10.5">incidents and keepalive jobs · watchdog.yml and</text>
+  <text class="ar-m" x="397.3" y="197" font-size="10.5">watchdog.cjs</text>
+  <rect class="ar-col" x="754.7" y="141" width="300" height="1001.5" rx="10"/>
   <text class="ar-h" x="766.7" y="166" font-size="15">Outside GitHub</text>
   <text class="ar-m" x="766.7" y="183" font-size="10.5">SMTP · n8n on AWS</text>
-  <rect class="ar-col" x="1124" y="141" width="280" height="706.5" rx="10"/>
+  <rect class="ar-col" x="1124" y="141" width="280" height="1001.5" rx="10"/>
   <text class="ar-h" x="1136" y="166" font-size="15">People</text>
   <text class="ar-m" x="1136" y="183" font-size="10.5">review, decide and fix</text>
   
   <!-- conexiones -->
   <g class="ar-edge" id="a10-e-1" data-edge="1" data-from="report" data-to="sync" tabindex="0">
     <title>1. Run report → Issues by fingerprint (sync_issues): warnings and errors.</title>
-    <path class="ar-e ar-e-data" d="M306 258 L366 258 Q372 258 372 264 L372 264 Q372 270 378 270 L395.3 270" marker-end="url(#a10-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="339" cy="258" r="9"/>
-    <text class="ar-t" x="339" y="261.8" font-size="10.5" text-anchor="middle">1</text>
+    <path class="ar-e ar-e-data" d="M306 270 L366 270 Q372 270 372 276 L372 300 Q372 306 378 306 L395.3 306" marker-end="url(#a10-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="339" cy="270" r="9"/>
+    <text class="ar-t" x="339" y="273.8" font-size="10.5" text-anchor="middle">1</text>
   </g>
   <g class="ar-edge" id="a10-e-2" data-edge="2" data-from="result" data-to="runfail" tabindex="0">
     <title>2. Job results → “The daily update failed”: failure or cancellation.</title>
-    <path class="ar-e ar-e-data" d="M306 396 L366 396 Q372 396 372 402 L372 420 Q372 426 378 426 L395.3 426" marker-end="url(#a10-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="339" cy="396" r="9"/>
-    <text class="ar-t" x="339" y="399.8" font-size="10.5" text-anchor="middle">2</text>
+    <path class="ar-e ar-e-data" d="M306 414 L366 414 Q372 414 372 420 L372 486 Q372 492 378 492 L395.3 492" marker-end="url(#a10-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="372" cy="453" r="9"/>
+    <text class="ar-t" x="372" y="456.8" font-size="10.5" text-anchor="middle">2</text>
   </g>
   <g class="ar-edge" id="a10-e-3" data-edge="3" data-from="live" data-to="watchdog" tabindex="0">
     <title>3. Live site → Watchdog (watchdog.yml): dashboard.json.</title>
-    <path class="ar-e ar-e-data" d="M306 558 L366 558 Q372 558 372 564 L372 582 Q372 588 378 588 L395.3 588" marker-end="url(#a10-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="339" cy="558" r="9"/>
-    <text class="ar-t" x="339" y="561.8" font-size="10.5" text-anchor="middle">3</text>
+    <path class="ar-e ar-e-data" d="M306 570 L366 570 Q372 570 372 576 L372 636 Q372 642 378 642 L395.3 642" marker-end="url(#a10-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="372" cy="606" r="9"/>
+    <text class="ar-t" x="372" y="609.8" font-size="10.5" text-anchor="middle">3</text>
   </g>
   <g class="ar-edge" id="a10-e-4" data-edge="4" data-from="live" data-to="n8n-watch" tabindex="0">
     <title>4. Live site → n8n watchdog: manifest.json.</title>
-    <path class="ar-e ar-e-data" d="M306 510 L366 510 Q372 510 372 504 L372 498 Q372 492 378 492 L732 492 Q738 492 738 486 L738 450 Q738 444 744 444 L764.7 444" marker-end="url(#a10-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="339" cy="510" r="9"/>
-    <text class="ar-t" x="339" y="513.8" font-size="10.5" text-anchor="middle">4</text>
+    <path class="ar-e ar-e-data" d="M306 528 L366 528 Q372 528 372 534 L372 564 Q372 570 378 570 L732 570 Q738 570 738 564 L738 492 Q738 486 744 486 L764.7 486" marker-end="url(#a10-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="555" cy="570" r="9"/>
+    <text class="ar-t" x="555" y="573.8" font-size="10.5" text-anchor="middle">4</text>
   </g>
-  <g class="ar-edge" id="a10-e-5" data-edge="5" data-from="sync" data-to="email" tabindex="0">
-    <title>5. Issues by fingerprint (sync_issues) → Alert email: opened, closed, recurring.</title>
-    <path class="ar-e ar-e-data" d="M675.3 234 L735 234 Q738 234 738 231 L738 231 Q738 228 741 228 L764.7 228" marker-end="url(#a10-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="706.7" cy="234" r="9"/>
-    <text class="ar-t" x="706.7" y="237.8" font-size="10.5" text-anchor="middle">5</text>
+  <g class="ar-edge" id="a10-e-5" data-edge="5" data-from="beats" data-to="watchdog" tabindex="0">
+    <title>5. Collectors&#x27; heartbeat → Watchdog (watchdog.yml): each branch&#x27;s heartbeat. Over 36 h without a beat opens “… gives no signal”, even if the daily workflow is failing; a branch with no heartbeat is not checked.</title>
+    <path class="ar-e ar-e-data" d="M306 690 L366 690 Q372 690 372 696 L372 720 Q372 726 378 726 L395.3 726" marker-end="url(#a10-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="339" cy="690" r="9"/>
+    <text class="ar-t" x="339" y="693.8" font-size="10.5" text-anchor="middle">5</text>
   </g>
-  <g class="ar-edge" id="a10-e-6" data-edge="6" data-from="runfail" data-to="email" tabindex="0">
-    <title>6. “The daily update failed” → Alert email: recurs.</title>
-    <path class="ar-e ar-e-data" d="M675.3 402 L732 402 Q738 402 738 396 L738 276 Q738 270 744 270 L764.7 270" marker-end="url(#a10-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="738" cy="336" r="9"/>
-    <text class="ar-t" x="738" y="339.8" font-size="10.5" text-anchor="middle">6</text>
+  <g class="ar-edge" id="a10-e-6" data-edge="6" data-from="sync" data-to="email" tabindex="0">
+    <title>6. Issues by fingerprint (sync_issues) → Alert email: opened, closed, recurring.</title>
+    <path class="ar-e ar-e-data" d="M675.3 264 L732 264 Q738 264 738 258 L738 252 Q738 246 744 246 L764.7 246" marker-end="url(#a10-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="706.7" cy="264" r="9"/>
+    <text class="ar-t" x="706.7" y="267.8" font-size="10.5" text-anchor="middle">6</text>
   </g>
-  <g class="ar-edge" id="a10-e-7" data-edge="7" data-from="watchdog" data-to="email" tabindex="0">
-    <title>7. Watchdog (watchdog.yml) → Alert email: its issue changed.</title>
-    <path class="ar-e ar-e-data" d="M675.3 558 L726 558 Q732 558 732 552 L732 312 Q732 306 738 306 L764.7 306" marker-end="url(#a10-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="732" cy="432" r="9"/>
-    <text class="ar-t" x="732" y="435.8" font-size="10.5" text-anchor="middle">7</text>
+  <g class="ar-edge" id="a10-e-7" data-edge="7" data-from="runfail" data-to="email" tabindex="0">
+    <title>7. “The daily update failed” → Alert email: recurs.</title>
+    <path class="ar-e ar-e-data" d="M675.3 468 L732 468 Q738 468 738 462 L738 300 Q738 294 744 294 L764.7 294" marker-end="url(#a10-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="738" cy="381" r="9"/>
+    <text class="ar-t" x="738" y="384.8" font-size="10.5" text-anchor="middle">7</text>
   </g>
-  <g class="ar-edge" id="a10-e-8" data-edge="8" data-from="n8n-watch" data-to="error-wf" tabindex="0">
-    <title>8. n8n watchdog → n8n Error workflow: failed execution. The route that does not depend on GitHub.</title>
-    <path class="ar-e ar-e-fallback" d="M906 514.4 L906 544.4" stroke-dasharray="6 4" marker-end="url(#a10-m-fallback)"/>
-    <circle class="ar-badge ar-e-fallback" cx="906" cy="529.4" r="9"/>
-    <text class="ar-t" x="906" y="533.2" font-size="10.5" text-anchor="middle">8</text>
+  <g class="ar-edge" id="a10-e-8" data-edge="8" data-from="watchdog" data-to="email" tabindex="0">
+    <title>8. Watchdog (watchdog.yml) → Alert email: its issues changed.</title>
+    <path class="ar-e ar-e-data" d="M675.3 630 L726 630 Q732 630 732 624 L732 354 Q732 348 738 348 L764.7 348" marker-end="url(#a10-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="732" cy="489" r="9"/>
+    <text class="ar-t" x="732" y="492.8" font-size="10.5" text-anchor="middle">8</text>
   </g>
-  <g class="ar-edge" id="a10-e-9" data-edge="9" data-from="email" data-to="recipients" tabindex="0">
-    <title>9. Alert email → Email recipients: one email per run.</title>
-    <path class="ar-e ar-e-human" d="M1044.7 270 L1104 270 Q1110 270 1110 264 L1110 252 Q1110 246 1116 246 L1134 246" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="1077.3" cy="270" r="9"/>
-    <text class="ar-t" x="1077.3" y="273.8" font-size="10.5" text-anchor="middle">9</text>
+  <g class="ar-edge" id="a10-e-9" data-edge="9" data-from="n8n-watch" data-to="error-wf" tabindex="0">
+    <title>9. n8n watchdog → n8n Error workflow: failed execution. The route that does not depend on GitHub.</title>
+    <path class="ar-e ar-e-fallback" d="M906 558.8 L906 588.8" stroke-dasharray="6 4" marker-end="url(#a10-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="906" cy="573.8" r="9"/>
+    <text class="ar-t" x="906" y="577.6" font-size="10.5" text-anchor="middle">9</text>
   </g>
-  <g class="ar-edge" id="a10-e-10" data-edge="10" data-from="error-wf" data-to="maintainers" tabindex="0">
-    <title>10. n8n Error workflow → Maintainers and owner: alert.</title>
-    <path class="ar-e ar-e-human" d="M1044.7 600 L1104 600 Q1110 600 1110 594 L1110 432 Q1110 426 1116 426 L1134 426" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="1110" cy="513" r="9"/>
-    <text class="ar-t" x="1110" y="516.8" font-size="10.5" text-anchor="middle">10</text>
+  <g class="ar-edge" id="a10-e-10" data-edge="10" data-from="email" data-to="recipients" tabindex="0">
+    <title>10. Alert email → Email recipients: one email per run.</title>
+    <path class="ar-e ar-e-human" d="M1044.7 294 L1104 294 Q1110 294 1110 288 L1110 270 Q1110 264 1116 264 L1134 264" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="1077.3" cy="294" r="9"/>
+    <text class="ar-t" x="1077.3" y="297.8" font-size="10.5" text-anchor="middle">10</text>
   </g>
-  <g class="ar-edge" id="a10-e-11" data-edge="11" data-from="sync" data-to="maintainers" tabindex="0">
-    <title>11. Issues by fingerprint (sync_issues) → Maintainers and owner: incidente-datos issues.</title>
-    <path class="ar-e ar-e-human" d="M675.3 300 L738 300 Q744 300 744 306 L744 348 Q744 354 750 354 L1134 354" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="939" cy="354" r="9"/>
-    <text class="ar-t" x="939" y="357.8" font-size="10.5" text-anchor="middle">11</text>
+  <g class="ar-edge" id="a10-e-11" data-edge="11" data-from="error-wf" data-to="maintainers" tabindex="0">
+    <title>11. n8n Error workflow → Maintainers and owner: alert.</title>
+    <path class="ar-e ar-e-human" d="M1044.7 642 L1104 642 Q1110 642 1110 636 L1110 426 Q1110 420 1116 420 L1134 420" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="1110" cy="531" r="9"/>
+    <text class="ar-t" x="1110" y="534.8" font-size="10.5" text-anchor="middle">11</text>
   </g>
-  <g class="ar-edge" id="a10-e-12" data-edge="12" data-from="runfail" data-to="maintainers" tabindex="0">
-    <title>12. “The daily update failed” → Maintainers and owner: issue.</title>
-    <path class="ar-e ar-e-human" d="M675.3 450 L738 450 Q744 450 744 456 L744 666 Q744 672 750 672 L1098 672 Q1104 672 1104 666 L1104 384 Q1104 378 1110 378 L1134 378" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="924" cy="672" r="9"/>
-    <text class="ar-t" x="924" y="675.8" font-size="10.5" text-anchor="middle">12</text>
+  <g class="ar-edge" id="a10-e-12" data-edge="12" data-from="sync" data-to="maintainers" tabindex="0">
+    <title>12. Issues by fingerprint (sync_issues) → Maintainers and owner: incidente-datos issues.</title>
+    <path class="ar-e ar-e-human" d="M675.3 348 L720 348 Q726 348 726 354 L726 390 Q726 396 732 396 L1092 396 Q1098 396 1098 390 L1098 372 Q1098 366 1104 366 L1134 366" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="912" cy="396" r="9"/>
+    <text class="ar-t" x="912" y="399.8" font-size="10.5" text-anchor="middle">12</text>
   </g>
-  <g class="ar-edge" id="a10-e-13" data-edge="13" data-from="watchdog" data-to="maintainers" tabindex="0">
-    <title>13. Watchdog (watchdog.yml) → Maintainers and owner: stale-site issue.</title>
-    <path class="ar-e ar-e-human" d="M675.3 618 L732 618 Q738 618 738 624 L738 672 Q738 678 744 678 L1092 678 Q1098 678 1098 672 L1098 408 Q1098 402 1104 402 L1134 402" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="1098" cy="540" r="9"/>
-    <text class="ar-t" x="1098" y="543.8" font-size="10.5" text-anchor="middle">13</text>
+  <g class="ar-edge" id="a10-e-13" data-edge="13" data-from="runfail" data-to="maintainers" tabindex="0">
+    <title>13. “The daily update failed” → Maintainers and owner: issue.</title>
+    <path class="ar-e ar-e-human" d="M675.3 522 L738 522 Q744 522 744 528 L744 708 Q744 714 750 714 L1098 714 Q1104 714 1104 708 L1104 396 Q1104 390 1110 390 L1134 390" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="924" cy="714" r="9"/>
+    <text class="ar-t" x="924" y="717.8" font-size="10.5" text-anchor="middle">13</text>
   </g>
-  <g class="ar-edge" id="a10-e-14" data-edge="14" data-from="watchdog" data-to="keepalive" tabindex="0">
-    <title>14. Watchdog (watchdog.yml) → Keep workflows alive: re-enables.</title>
-    <path class="ar-e ar-e-control" d="M534 658.8 L534 688.8" stroke-dasharray="2 3" marker-end="url(#a10-m-control)"/>
-    <circle class="ar-badge ar-e-control" cx="534" cy="673.8" r="9"/>
-    <text class="ar-t" x="534" y="677.6" font-size="10.5" text-anchor="middle">14</text>
+  <g class="ar-edge" id="a10-e-14" data-edge="14" data-from="watchdog" data-to="maintainers" tabindex="0">
+    <title>14. Watchdog (watchdog.yml) → Maintainers and owner: stale site or silent collector.</title>
+    <path class="ar-e ar-e-human" d="M675.3 684 L732 684 Q738 684 738 690 L738 714 Q738 720 744 720 L1092 720 Q1098 720 1098 714 L1098 450 Q1098 444 1104 444 L1134 444" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="1098" cy="582" r="9"/>
+    <text class="ar-t" x="1098" y="585.8" font-size="10.5" text-anchor="middle">14</text>
   </g>
-  <g class="ar-edge" id="a10-e-15" data-edge="15" data-from="maintainers" data-to="devtools" tabindex="0">
-    <title>15. Maintainers and owner → Development tools: run and review.</title>
-    <path class="ar-e ar-e-human" d="M1266 451.3 L1266 481.3" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="1266" cy="466.3" r="9"/>
-    <text class="ar-t" x="1266" y="470.1" font-size="10.5" text-anchor="middle">15</text>
+  <g class="ar-edge" id="a10-e-15" data-edge="15" data-from="watchdog" data-to="keepalive" tabindex="0">
+    <title>15. Watchdog (watchdog.yml) → Keep workflows alive: re-enables.</title>
+    <path class="ar-e ar-e-control" d="M534 779.1 L534 809.1" stroke-dasharray="2 3" marker-end="url(#a10-m-control)"/>
+    <circle class="ar-badge ar-e-control" cx="534" cy="794.1" r="9"/>
+    <text class="ar-t" x="534" y="797.9" font-size="10.5" text-anchor="middle">15</text>
+  </g>
+  <g class="ar-edge" id="a10-e-16" data-edge="16" data-from="watchdog" data-to="probe" tabindex="0">
+    <title>16. Watchdog (watchdog.yml) → Weekly probe: no probe in 8 days. Relaunches it on the default branch; if it already did in the last 24 h, it only notes it in its log.</title>
+    <path class="ar-e ar-e-control" d="M675.3 738 L696 738 Q702 738 702 744 L702 1050 Q702 1056 696 1056 L675.3 1056" stroke-dasharray="2 3" marker-end="url(#a10-m-control)"/>
+    <circle class="ar-badge ar-e-control" cx="702" cy="897" r="9"/>
+    <text class="ar-t" x="702" y="900.8" font-size="10.5" text-anchor="middle">16</text>
+  </g>
+  <g class="ar-edge" id="a10-e-17" data-edge="17" data-from="maintainers" data-to="devtools" tabindex="0">
+    <title>17. Maintainers and owner → Development tools: run and review.</title>
+    <path class="ar-e ar-e-human" d="M1266 465.3 L1266 495.3" stroke-dasharray="8 3 2 3" marker-end="url(#a10-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="1266" cy="480.3" r="9"/>
+    <text class="ar-t" x="1266" y="484.1" font-size="10.5" text-anchor="middle">17</text>
   </g>
   
   <!-- cajas -->
   <g class="ar-node-g" id="a10-n-report" data-node="report">
     <title>Run report. run-report.json lists every warning, error or critical failure with its source, stage, code and fingerprint; it travels as an artifact even if the run fails.</title>
-    <rect class="ar-node ar-g-operations" x="46" y="195" width="260" height="120.7" rx="8"/>
-    <rect class="ar-f-operations" x="46" y="203" width="4" height="104.7" rx="2"/>
-    <rect class="ar-tile ar-f-operations" x="58" y="205" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-operations" transform="translate(61 208)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
-    <text class="ar-t" x="96" y="224.5" font-size="12.5">Run report</text>
-    <text class="ar-s" x="58" y="256.4" font-size="11">run-report.json lists every warning, error</text>
-    <text class="ar-s" x="58" y="271.6" font-size="11">or critical failure with its source, stage,</text>
-    <text class="ar-s" x="58" y="286.8" font-size="11">code and fingerprint; it travels as an</text>
-    <text class="ar-s" x="58" y="302" font-size="11">artifact even if the run fails.</text>
-    <a class="ar-annex" href="a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="270.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="284.3" y="214.5" font-size="10.5" text-anchor="middle">A5</text></a>
+    <rect class="ar-node ar-g-operations" x="46" y="209" width="260" height="120.7" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="217" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 222)"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g>
+    <text class="ar-t" x="96" y="238.5" font-size="12.5">Run report</text>
+    <text class="ar-s" x="58" y="270.4" font-size="11">run-report.json lists every warning, error</text>
+    <text class="ar-s" x="58" y="285.6" font-size="11">or critical failure with its source, stage,</text>
+    <text class="ar-s" x="58" y="300.8" font-size="11">code and fingerprint; it travels as an</text>
+    <text class="ar-s" x="58" y="316" font-size="11">artifact even if the run fails.</text>
+    <a class="ar-annex" href="a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="270.6" y="216" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="284.3" y="228.5" font-size="10.5" text-anchor="middle">A5</text></a>
   </g>
   <g class="ar-node-g" id="a10-n-result" data-node="result">
     <title>Job results. If build, deploy or archive fail or are cancelled, that itself is a signal, even without a report.</title>
-    <rect class="ar-node ar-g-operations" x="46" y="345.7" width="260" height="105.5" rx="8"/>
-    <rect class="ar-f-operations" x="46" y="353.7" width="4" height="89.5" rx="2"/>
-    <rect class="ar-tile ar-f-operations" x="58" y="355.7" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-operations" transform="translate(61 358.7)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-    <text class="ar-t" x="96" y="375.2" font-size="12.5">Job results</text>
-    <text class="ar-s" x="58" y="407.2" font-size="11">If build, deploy or archive fail or are</text>
-    <text class="ar-s" x="58" y="422.3" font-size="11">cancelled, that itself is a signal, even</text>
-    <text class="ar-s" x="58" y="437.5" font-size="11">without a report.</text>
+    <rect class="ar-node ar-g-operations" x="46" y="359.7" width="260" height="105.5" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="367.7" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="58" y="369.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(61 372.7)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+    <text class="ar-t" x="96" y="389.2" font-size="12.5">Job results</text>
+    <text class="ar-s" x="58" y="421.2" font-size="11">If build, deploy or archive fail or are</text>
+    <text class="ar-s" x="58" y="436.3" font-size="11">cancelled, that itself is a signal, even</text>
+    <text class="ar-s" x="58" y="451.5" font-size="11">without a report.</text>
   </g>
   <g class="ar-node-g" id="a10-n-live" data-node="live">
     <title>Live site. data/dashboard.json and data/manifest.json tell which publication is served and when it was generated.</title>
-    <rect class="ar-node ar-g-site" x="46" y="481.3" width="260" height="105.5" rx="8"/>
-    <rect class="ar-f-site" x="46" y="489.3" width="4" height="89.5" rx="2"/>
-    <rect class="ar-tile ar-f-site" x="58" y="491.3" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-site" transform="translate(61 494.3)"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></g>
-    <text class="ar-t" x="96" y="510.8" font-size="12.5">Live site</text>
-    <text class="ar-s" x="58" y="542.7" font-size="11">data/dashboard.json and</text>
-    <text class="ar-s" x="58" y="557.9" font-size="11">data/manifest.json tell which publication is</text>
-    <text class="ar-s" x="58" y="573" font-size="11">served and when it was generated.</text>
-    <a class="ar-annex" href="a9-en.svg" data-annex="a9"><title>Annex A9: The site in the browser</title><rect class="ar-tag" x="270.6" y="488.3" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="284.3" y="500.8" font-size="10.5" text-anchor="middle">A9</text></a>
+    <rect class="ar-node ar-g-site" x="46" y="495.3" width="260" height="105.5" rx="8"/>
+    <rect class="ar-f-site" x="46" y="503.3" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-site" x="58" y="505.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-site" transform="translate(61 508.3)"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></g>
+    <text class="ar-t" x="96" y="524.8" font-size="12.5">Live site</text>
+    <text class="ar-s" x="58" y="556.7" font-size="11">data/dashboard.json and</text>
+    <text class="ar-s" x="58" y="571.9" font-size="11">data/manifest.json tell which publication is</text>
+    <text class="ar-s" x="58" y="587" font-size="11">served and when it was generated.</text>
+    <a class="ar-annex" href="a9-en.svg" data-annex="a9"><title>Annex A9: The site in the browser</title><rect class="ar-tag" x="270.6" y="502.3" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="284.3" y="514.8" font-size="10.5" text-anchor="middle">A9</text></a>
+  </g>
+  <g class="ar-node-g" id="a10-n-beats" data-node="beats">
+    <title>Collectors&#x27; heartbeat. heartbeat.json on the data-peru and data-n8n branches: when each collector last beat, on which machine and with what result.</title>
+    <rect class="ar-node ar-g-stores" x="46" y="630.8" width="260" height="120.7" rx="8"/>
+    <rect class="ar-f-stores" x="46" y="638.8" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-stores" x="58" y="640.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-stores" transform="translate(61 643.8)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="7" r="2.2"/><path d="M6 7.2v9.6M18 9.2c0 5-6 3.5-11 7.8"/></g>
+    <text class="ar-t" x="96" y="655.3" font-size="12.5">Collectors&#x27;</text>
+    <text class="ar-t" x="96" y="671.5" font-size="12.5">heartbeat</text>
+    <text class="ar-s" x="58" y="692.2" font-size="11">heartbeat.json on the data-peru and</text>
+    <text class="ar-s" x="58" y="707.4" font-size="11">data-n8n branches: when each collector</text>
+    <text class="ar-s" x="58" y="722.6" font-size="11">last beat, on which machine and with</text>
+    <text class="ar-s" x="58" y="737.8" font-size="11">what result.</text>
+    <a class="ar-annex" href="a3-en.svg" data-annex="a3"><title>Annex A3: n8n in the cloud (AWS): second copy and helper workflows</title><rect class="ar-tag" x="270.6" y="637.8" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="284.3" y="650.3" font-size="10.5" text-anchor="middle">A3</text></a>
+    <a class="ar-annex" href="a2-en.svg" data-annex="a2"><title>Annex A2: Peru collector: the local server</title><rect class="ar-tag" x="239.1" y="637.8" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="252.8" y="650.3" font-size="10.5" text-anchor="middle">A2</text></a>
   </g>
   <g class="ar-node-g" id="a10-n-sync" data-node="sync">
-    <title>Issues by fingerprint (sync_issues). One incidente-datos issue per fingerprint (source + stage + code), with the fingerprint hidden; it is commented when it recurs and closes itself when it disappears. Technology: Python, GitHub API.</title>
-    <rect class="ar-node ar-g-operations" x="395.3" y="195" width="280" height="144.7" rx="8"/>
-    <rect class="ar-f-operations" x="395.3" y="203" width="4" height="128.7" rx="2"/>
-    <rect class="ar-tile ar-f-operations" x="407.3" y="205" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-operations" transform="translate(410.3 208)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 7.2v9.6M7.5 6.6C9 10 12 12 15.8 12"/></g>
-    <text class="ar-t" x="445.3" y="219.5" font-size="12.5">Issues by fingerprint</text>
-    <text class="ar-t" x="445.3" y="235.8" font-size="12.5">(sync_issues)</text>
-    <text class="ar-s" x="407.3" y="256.4" font-size="11">One incidente-datos issue per fingerprint</text>
-    <text class="ar-s" x="407.3" y="271.6" font-size="11">(source + stage + code), with the fingerprint</text>
-    <text class="ar-s" x="407.3" y="286.8" font-size="11">hidden; it is commented when it recurs and</text>
-    <text class="ar-s" x="407.3" y="302" font-size="11">closes itself when it disappears.</text>
-    <rect class="ar-chip" x="407.3" y="311.7" width="46.7" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="413.3" y="323.7" font-size="10">Python</text>
-    <rect class="ar-chip" x="459" y="311.7" width="65.7" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="465" y="323.7" font-size="10">GitHub API</text>
+    <title>Issues by fingerprint (sync_issues). One incidente-datos issue per fingerprint (source + stage + code), with the fingerprint hidden; while it persists it is updated without comments and it closes itself when it disappears. A format-drift does not: it is commented once, a person closes it and, if it comes back, it is commented. Main only. Technology: Python, GitHub API.</title>
+    <rect class="ar-node ar-g-operations" x="395.3" y="209" width="280" height="190.3" rx="8"/>
+    <rect class="ar-f-operations" x="395.3" y="217" width="4" height="174.3" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="407.3" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(410.3 222)"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 7.2v9.6M7.5 6.6C9 10 12 12 15.8 12"/></g>
+    <text class="ar-t" x="445.3" y="233.5" font-size="12.5">Issues by fingerprint</text>
+    <text class="ar-t" x="445.3" y="249.8" font-size="12.5">(sync_issues)</text>
+    <text class="ar-s" x="407.3" y="270.4" font-size="11">One incidente-datos issue per fingerprint</text>
+    <text class="ar-s" x="407.3" y="285.6" font-size="11">(source + stage + code), with the fingerprint</text>
+    <text class="ar-s" x="407.3" y="300.8" font-size="11">hidden; while it persists it is updated without</text>
+    <text class="ar-s" x="407.3" y="316" font-size="11">comments and it closes itself when it</text>
+    <text class="ar-s" x="407.3" y="331.2" font-size="11">disappears. A format-drift does not: it is</text>
+    <text class="ar-s" x="407.3" y="346.3" font-size="11">commented once, a person closes it and, if it</text>
+    <text class="ar-s" x="407.3" y="361.5" font-size="11">comes back, it is commented. Main only.</text>
+    <rect class="ar-chip" x="407.3" y="371.3" width="46.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="413.3" y="383.3" font-size="10">Python</text>
+    <rect class="ar-chip" x="459" y="371.3" width="65.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="465" y="383.3" font-size="10">GitHub API</text>
   </g>
   <g class="ar-node-g" id="a10-n-runfail" data-node="runfail">
-    <title>“The daily update failed”. Issue opened or commented when a job fails and closed after a good run. Technology: github-script.</title>
-    <rect class="ar-node ar-g-operations" x="395.3" y="369.7" width="280" height="114.4" rx="8"/>
-    <rect class="ar-f-operations" x="395.3" y="377.7" width="4" height="98.4" rx="2"/>
-    <rect class="ar-tile ar-f-operations" x="407.3" y="379.7" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-operations" transform="translate(410.3 382.7)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-    <text class="ar-t" x="445.3" y="399.2" font-size="12.5">“The daily update failed”</text>
-    <text class="ar-s" x="407.3" y="431.2" font-size="11">Issue opened or commented when a job fails</text>
-    <text class="ar-s" x="407.3" y="446.3" font-size="11">and closed after a good run.</text>
-    <rect class="ar-chip" x="407.3" y="456.1" width="75.6" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="413.3" y="468.1" font-size="10">github-script</text>
+    <title>“The daily update failed”. Issue opened or commented when a main job fails or is cancelled, and closed after a good run. Technology: github-script.</title>
+    <rect class="ar-node ar-g-operations" x="395.3" y="429.3" width="280" height="129.5" rx="8"/>
+    <rect class="ar-f-operations" x="395.3" y="437.3" width="4" height="113.5" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="407.3" y="439.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(410.3 442.3)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+    <text class="ar-t" x="445.3" y="458.8" font-size="12.5">“The daily update failed”</text>
+    <text class="ar-s" x="407.3" y="490.7" font-size="11">Issue opened or commented when a main job</text>
+    <text class="ar-s" x="407.3" y="505.9" font-size="11">fails or is cancelled, and closed after a good</text>
+    <text class="ar-s" x="407.3" y="521" font-size="11">run.</text>
+    <rect class="ar-chip" x="407.3" y="530.8" width="75.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="413.3" y="542.8" font-size="10">github-script</text>
   </g>
   <g class="ar-node-g" id="a10-n-watchdog" data-node="watchdog">
-    <title>Watchdog (watchdog.yml). Every 6 h (minute 17) it reads the site&#x27;s dashboard.json. Past 30 h it relaunches the update once every 6 h and opens “The published site is out of date”. Technology: GitHub Actions, cron 17 */6.</title>
-    <rect class="ar-node ar-g-operations" x="395.3" y="514.1" width="280" height="144.7" rx="8"/>
-    <rect class="ar-f-operations" x="395.3" y="522.1" width="4" height="128.7" rx="2"/>
-    <rect class="ar-tile ar-f-operations" x="407.3" y="524.1" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-operations" transform="translate(410.3 527.1)"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g>
-    <text class="ar-t" x="445.3" y="543.6" font-size="12.5">Watchdog (watchdog.yml)</text>
-    <text class="ar-s" x="407.3" y="575.5" font-size="11">Every 6 h (minute 17) it reads the site&#x27;s</text>
-    <text class="ar-s" x="407.3" y="590.7" font-size="11">dashboard.json. Past 30 h it relaunches the</text>
-    <text class="ar-s" x="407.3" y="605.9" font-size="11">update once every 6 h and opens “The</text>
-    <text class="ar-s" x="407.3" y="621" font-size="11">published site is out of date”.</text>
-    <rect class="ar-chip" x="407.3" y="630.8" width="86.5" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="413.3" y="642.8" font-size="10">GitHub Actions</text>
-    <rect class="ar-chip" x="498.9" y="630.8" width="67.9" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="504.9" y="642.8" font-size="10">cron 17 */6</text>
+    <title>Watchdog (watchdog.yml). Every 6 h (minute 17) it reads the site&#x27;s dashboard.json and each collector&#x27;s heartbeat. Past 30 h it relaunches the main update once every 6 h and opens “The published site is out of date”; with a collector silent for over 36 h it opens “… gives no signal” and reminds once a day. Technology: GitHub Actions, github-script, cron 17 */6.</title>
+    <rect class="ar-node ar-g-operations" x="395.3" y="588.8" width="280" height="190.3" rx="8"/>
+    <rect class="ar-f-operations" x="395.3" y="596.8" width="4" height="174.3" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="407.3" y="598.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(410.3 601.8)"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g>
+    <text class="ar-t" x="445.3" y="618.3" font-size="12.5">Watchdog (watchdog.yml)</text>
+    <text class="ar-s" x="407.3" y="650.2" font-size="11">Every 6 h (minute 17) it reads the site&#x27;s</text>
+    <text class="ar-s" x="407.3" y="665.4" font-size="11">dashboard.json and each collector&#x27;s</text>
+    <text class="ar-s" x="407.3" y="680.6" font-size="11">heartbeat. Past 30 h it relaunches the main</text>
+    <text class="ar-s" x="407.3" y="695.8" font-size="11">update once every 6 h and opens “The</text>
+    <text class="ar-s" x="407.3" y="710.9" font-size="11">published site is out of date”; with a collector</text>
+    <text class="ar-s" x="407.3" y="726.1" font-size="11">silent for over 36 h it opens “… gives no</text>
+    <text class="ar-s" x="407.3" y="741.3" font-size="11">signal” and reminds once a day.</text>
+    <rect class="ar-chip" x="407.3" y="751.1" width="86.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="413.3" y="763.1" font-size="10">GitHub Actions</text>
+    <rect class="ar-chip" x="498.9" y="751.1" width="75.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="504.9" y="763.1" font-size="10">github-script</text>
+    <rect class="ar-chip" x="579.4" y="751.1" width="67.9" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="585.4" y="763.1" font-size="10">cron 17 */6</text>
   </g>
   <g class="ar-node-g" id="a10-n-keepalive" data-node="keepalive">
     <title>Keep workflows alive. GitHub disables scheduled workflows after 60 days without activity: the keepalive job and the watchdog re-enable observatory, watchdog and probe-sources. Technology: API de Actions.</title>
-    <rect class="ar-node ar-g-operations" x="395.3" y="688.8" width="280" height="144.7" rx="8"/>
-    <rect class="ar-f-operations" x="395.3" y="696.8" width="4" height="128.7" rx="2"/>
-    <rect class="ar-tile ar-f-operations" x="407.3" y="698.8" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-operations" transform="translate(410.3 701.8)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
-    <text class="ar-t" x="445.3" y="718.3" font-size="12.5">Keep workflows alive</text>
-    <text class="ar-s" x="407.3" y="750.2" font-size="11">GitHub disables scheduled workflows after 60</text>
-    <text class="ar-s" x="407.3" y="765.4" font-size="11">days without activity: the keepalive job and</text>
-    <text class="ar-s" x="407.3" y="780.6" font-size="11">the watchdog re-enable observatory,</text>
-    <text class="ar-s" x="407.3" y="795.8" font-size="11">watchdog and probe-sources.</text>
-    <rect class="ar-chip" x="407.3" y="805.5" width="83.4" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="413.3" y="817.5" font-size="10">API de Actions</text>
+    <rect class="ar-node ar-g-operations" x="395.3" y="809.1" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-operations" x="395.3" y="817.1" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="407.3" y="819.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(410.3 822.1)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
+    <text class="ar-t" x="445.3" y="838.6" font-size="12.5">Keep workflows alive</text>
+    <text class="ar-s" x="407.3" y="870.5" font-size="11">GitHub disables scheduled workflows after 60</text>
+    <text class="ar-s" x="407.3" y="885.7" font-size="11">days without activity: the keepalive job and</text>
+    <text class="ar-s" x="407.3" y="900.8" font-size="11">the watchdog re-enable observatory,</text>
+    <text class="ar-s" x="407.3" y="916" font-size="11">watchdog and probe-sources.</text>
+    <rect class="ar-chip" x="407.3" y="925.8" width="83.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="413.3" y="937.8" font-size="10">API de Actions</text>
+  </g>
+  <g class="ar-node-g" id="a10-n-probe" data-node="probe">
+    <title>Weekly probe. If probe-sources.yml has not finished well on the default branch in 8 days, the watchdog relaunches it, at most once a day; it opens no issue. Technology: probe-sources.yml.</title>
+    <rect class="ar-node ar-g-operations" x="395.3" y="983.8" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-operations" x="395.3" y="991.8" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="407.3" y="993.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(410.3 996.8)"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></g>
+    <text class="ar-t" x="445.3" y="1013.3" font-size="12.5">Weekly probe</text>
+    <text class="ar-s" x="407.3" y="1045.2" font-size="11">If probe-sources.yml has not finished well on</text>
+    <text class="ar-s" x="407.3" y="1060.4" font-size="11">the default branch in 8 days, the watchdog</text>
+    <text class="ar-s" x="407.3" y="1075.6" font-size="11">relaunches it, at most once a day; it opens no</text>
+    <text class="ar-s" x="407.3" y="1090.8" font-size="11">issue.</text>
+    <rect class="ar-chip" x="407.3" y="1100.5" width="105" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="413.3" y="1112.5" font-size="10">probe-sources.yml</text>
+    <a class="ar-annex" href="a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="639.9" y="990.8" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="653.6" y="1003.3" font-size="10.5" text-anchor="middle">A1</text></a>
   </g>
   <g class="ar-node-g" id="a10-n-email" data-node="email">
-    <title>Alert email. tools.alert_email sends a single email per run to ALERT_EMAILS, and only if something opened, closed or recurred. Without SMTP_HOST it does nothing. Technology: SMTP, Python.</title>
-    <rect class="ar-node ar-g-channels" x="764.7" y="195" width="280" height="144.7" rx="8"/>
-    <rect class="ar-f-channels" x="764.7" y="203" width="4" height="128.7" rx="2"/>
-    <rect class="ar-tile ar-f-channels" x="776.7" y="205" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-channels" transform="translate(779.7 208)"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/></g>
-    <text class="ar-t" x="814.7" y="224.5" font-size="12.5">Alert email</text>
-    <text class="ar-s" x="776.7" y="256.4" font-size="11">tools.alert_email sends a single email per run</text>
-    <text class="ar-s" x="776.7" y="271.6" font-size="11">to ALERT_EMAILS, and only if something</text>
-    <text class="ar-s" x="776.7" y="286.8" font-size="11">opened, closed or recurred. Without</text>
-    <text class="ar-s" x="776.7" y="302" font-size="11">SMTP_HOST it does nothing.</text>
-    <rect class="ar-chip" x="776.7" y="311.7" width="39.1" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="782.7" y="323.7" font-size="10">SMTP</text>
-    <rect class="ar-chip" x="820.8" y="311.7" width="46.7" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="826.8" y="323.7" font-size="10">Python</text>
+    <title>Alert email. tools.alert_email sends a single email per run to ALERT_EMAILS, and only if something opened, closed or recurred: a new comment on a fixed issue (including a silent collector&#x27;s daily reminder) or a format-drift that came back. Without SMTP_HOST it does nothing. Technology: SMTP, Python.</title>
+    <rect class="ar-node ar-g-channels" x="764.7" y="209" width="280" height="175.1" rx="8"/>
+    <rect class="ar-f-channels" x="764.7" y="217" width="4" height="159.1" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="776.7" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(779.7 222)"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/></g>
+    <text class="ar-t" x="814.7" y="238.5" font-size="12.5">Alert email</text>
+    <text class="ar-s" x="776.7" y="270.4" font-size="11">tools.alert_email sends a single email per run</text>
+    <text class="ar-s" x="776.7" y="285.6" font-size="11">to ALERT_EMAILS, and only if something</text>
+    <text class="ar-s" x="776.7" y="300.8" font-size="11">opened, closed or recurred: a new comment</text>
+    <text class="ar-s" x="776.7" y="316" font-size="11">on a fixed issue (including a silent collector&#x27;s</text>
+    <text class="ar-s" x="776.7" y="331.2" font-size="11">daily reminder) or a format-drift that came</text>
+    <text class="ar-s" x="776.7" y="346.3" font-size="11">back. Without SMTP_HOST it does nothing.</text>
+    <rect class="ar-chip" x="776.7" y="356.1" width="39.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="782.7" y="368.1" font-size="10">SMTP</text>
+    <rect class="ar-chip" x="820.8" y="356.1" width="46.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="826.8" y="368.1" font-size="10">Python</text>
   </g>
   <g class="ar-node-g" id="a10-n-n8n-watch" data-node="n8n-watch">
     <title>n8n watchdog. Every 6 h it reads data/manifest.json; if it does not answer or is older than 30 h, the execution fails. It works even if all of GitHub is down. Technology: n8n.</title>
-    <rect class="ar-node ar-g-channels" x="764.7" y="369.7" width="280" height="144.7" rx="8"/>
-    <rect class="ar-f-channels" x="764.7" y="377.7" width="4" height="128.7" rx="2"/>
-    <rect class="ar-tile ar-f-channels" x="776.7" y="379.7" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-channels" transform="translate(779.7 382.7)"><circle cx="5" cy="6" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 6h3a3 3 0 0 1 3 3v0a3 3 0 0 0 3 3M7.5 18h3a3 3 0 0 0 3-3v0a3 3 0 0 1 3-3"/></g>
-    <text class="ar-t" x="814.7" y="399.2" font-size="12.5">n8n watchdog</text>
-    <text class="ar-s" x="776.7" y="431.2" font-size="11">Every 6 h it reads data/manifest.json; if it</text>
-    <text class="ar-s" x="776.7" y="446.3" font-size="11">does not answer or is older than 30 h, the</text>
-    <text class="ar-s" x="776.7" y="461.5" font-size="11">execution fails. It works even if all of GitHub is</text>
-    <text class="ar-s" x="776.7" y="476.7" font-size="11">down.</text>
-    <rect class="ar-chip" x="776.7" y="486.4" width="31" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="782.7" y="498.4" font-size="10">n8n</text>
-    <a class="ar-annex" href="a3-en.svg" data-annex="a3"><title>Annex A3: n8n in the cloud (AWS): second copy and helper workflows</title><rect class="ar-tag" x="1009.2" y="376.7" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1022.9" y="389.2" font-size="10.5" text-anchor="middle">A3</text></a>
+    <rect class="ar-node ar-g-channels" x="764.7" y="414.1" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-channels" x="764.7" y="422.1" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="776.7" y="424.1" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(779.7 427.1)"><circle cx="5" cy="6" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 6h3a3 3 0 0 1 3 3v0a3 3 0 0 0 3 3M7.5 18h3a3 3 0 0 0 3-3v0a3 3 0 0 1 3-3"/></g>
+    <text class="ar-t" x="814.7" y="443.6" font-size="12.5">n8n watchdog</text>
+    <text class="ar-s" x="776.7" y="475.5" font-size="11">Every 6 h it reads data/manifest.json; if it</text>
+    <text class="ar-s" x="776.7" y="490.7" font-size="11">does not answer or is older than 30 h, the</text>
+    <text class="ar-s" x="776.7" y="505.9" font-size="11">execution fails. It works even if all of GitHub is</text>
+    <text class="ar-s" x="776.7" y="521" font-size="11">down.</text>
+    <rect class="ar-chip" x="776.7" y="530.8" width="31" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="782.7" y="542.8" font-size="10">n8n</text>
+    <a class="ar-annex" href="a3-en.svg" data-annex="a3"><title>Annex A3: n8n in the cloud (AWS): second copy and helper workflows</title><rect class="ar-tag" x="1009.2" y="421.1" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1022.9" y="433.6" font-size="10.5" text-anchor="middle">A3</text></a>
   </g>
   <g class="ar-node-g" id="a10-n-error-wf" data-node="error-wf">
     <title>n8n Error workflow. The error workflow the colleague assigns in n8n (email, chat) alerts when the watchdog or the collector fails.</title>
-    <rect class="ar-node ar-g-channels" x="764.7" y="544.4" width="280" height="105.5" rx="8"/>
-    <rect class="ar-f-channels" x="764.7" y="552.4" width="4" height="89.5" rx="2"/>
-    <rect class="ar-tile ar-f-channels" x="776.7" y="554.4" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-channels" transform="translate(779.7 557.4)"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g>
-    <text class="ar-t" x="814.7" y="573.9" font-size="12.5">n8n Error workflow</text>
-    <text class="ar-s" x="776.7" y="605.9" font-size="11">The error workflow the colleague assigns in</text>
-    <text class="ar-s" x="776.7" y="621" font-size="11">n8n (email, chat) alerts when the watchdog or</text>
-    <text class="ar-s" x="776.7" y="636.2" font-size="11">the collector fails.</text>
+    <rect class="ar-node ar-g-channels" x="764.7" y="588.8" width="280" height="105.5" rx="8"/>
+    <rect class="ar-f-channels" x="764.7" y="596.8" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="776.7" y="598.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(779.7 601.8)"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g>
+    <text class="ar-t" x="814.7" y="618.3" font-size="12.5">n8n Error workflow</text>
+    <text class="ar-s" x="776.7" y="650.2" font-size="11">The error workflow the colleague assigns in</text>
+    <text class="ar-s" x="776.7" y="665.4" font-size="11">n8n (email, chat) alerts when the watchdog or</text>
+    <text class="ar-s" x="776.7" y="680.6" font-size="11">the collector fails.</text>
   </g>
   <g class="ar-node-g" id="a10-n-recipients" data-node="recipients">
     <title>Email recipients. People without a GitHub account who need to know: risk-management teams or site owners.</title>
-    <rect class="ar-node ar-g-people" x="1134" y="195" width="260" height="105.5" rx="8"/>
-    <rect class="ar-f-people" x="1134" y="203" width="4" height="89.5" rx="2"/>
-    <rect class="ar-tile ar-f-people" x="1146" y="205" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-people" transform="translate(1149 208)"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></g>
-    <text class="ar-t" x="1184" y="224.5" font-size="12.5">Email recipients</text>
-    <text class="ar-s" x="1146" y="256.4" font-size="11">People without a GitHub account who</text>
-    <text class="ar-s" x="1146" y="271.6" font-size="11">need to know: risk-management teams or</text>
-    <text class="ar-s" x="1146" y="286.8" font-size="11">site owners.</text>
+    <rect class="ar-node ar-g-people" x="1134" y="209" width="260" height="105.5" rx="8"/>
+    <rect class="ar-f-people" x="1134" y="217" width="4" height="89.5" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="1146" y="219" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(1149 222)"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></g>
+    <text class="ar-t" x="1184" y="238.5" font-size="12.5">Email recipients</text>
+    <text class="ar-s" x="1146" y="270.4" font-size="11">People without a GitHub account who</text>
+    <text class="ar-s" x="1146" y="285.6" font-size="11">need to know: risk-management teams or</text>
+    <text class="ar-s" x="1146" y="300.8" font-size="11">site owners.</text>
   </g>
   <g class="ar-node-g" id="a10-n-maintainers" data-node="maintainers">
     <title>Maintainers and owner. Watch the repository (issues reach them through GitHub), merge into main, run workflows by hand, choose the site&#x27;s target and create the console accounts.</title>
-    <rect class="ar-node ar-g-people" x="1134" y="330.5" width="260" height="120.7" rx="8"/>
-    <rect class="ar-f-people" x="1134" y="338.5" width="4" height="104.7" rx="2"/>
-    <rect class="ar-tile ar-f-people" x="1146" y="340.5" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-people" transform="translate(1149 343.5)"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g>
-    <text class="ar-t" x="1184" y="360" font-size="12.5">Maintainers and owner</text>
-    <text class="ar-s" x="1146" y="392" font-size="11">Watch the repository (issues reach them</text>
-    <text class="ar-s" x="1146" y="407.1" font-size="11">through GitHub), merge into main, run</text>
-    <text class="ar-s" x="1146" y="422.3" font-size="11">workflows by hand, choose the site&#x27;s</text>
-    <text class="ar-s" x="1146" y="437.5" font-size="11">target and create the console accounts.</text>
+    <rect class="ar-node ar-g-people" x="1134" y="344.5" width="260" height="120.7" rx="8"/>
+    <rect class="ar-f-people" x="1134" y="352.5" width="4" height="104.7" rx="2"/>
+    <rect class="ar-tile ar-f-people" x="1146" y="354.5" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-people" transform="translate(1149 357.5)"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g>
+    <text class="ar-t" x="1184" y="374" font-size="12.5">Maintainers and owner</text>
+    <text class="ar-s" x="1146" y="406" font-size="11">Watch the repository (issues reach them</text>
+    <text class="ar-s" x="1146" y="421.1" font-size="11">through GitHub), merge into main, run</text>
+    <text class="ar-s" x="1146" y="436.3" font-size="11">workflows by hand, choose the site&#x27;s</text>
+    <text class="ar-s" x="1146" y="451.5" font-size="11">target and create the console accounts.</text>
   </g>
   <g class="ar-node-g" id="a10-n-devtools" data-node="devtools">
     <title>Development tools. ci.yml and n8n.yml (tests), probe-feeds, scrape-ladder, capture-fixtures, device-screens and recolector-kit: they do not publish; they leave bot/ branches and artifacts. Technology: GitHub Actions, pytest, node --test.</title>
-    <rect class="ar-node ar-g-operations" x="1134" y="481.3" width="260" height="159.9" rx="8"/>
-    <rect class="ar-f-operations" x="1134" y="489.3" width="4" height="143.9" rx="2"/>
-    <rect class="ar-tile ar-f-operations" x="1146" y="491.3" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-operations" transform="translate(1149 494.3)"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12.5 15H17"/></g>
-    <text class="ar-t" x="1184" y="510.8" font-size="12.5">Development tools</text>
-    <text class="ar-s" x="1146" y="542.7" font-size="11">ci.yml and n8n.yml (tests), probe-feeds,</text>
-    <text class="ar-s" x="1146" y="557.9" font-size="11">scrape-ladder, capture-fixtures,</text>
-    <text class="ar-s" x="1146" y="573" font-size="11">device-screens and recolector-kit: they do</text>
-    <text class="ar-s" x="1146" y="588.2" font-size="11">not publish; they leave bot/ branches and</text>
-    <text class="ar-s" x="1146" y="603.4" font-size="11">artifacts.</text>
-    <rect class="ar-chip" x="1146" y="613.2" width="86.5" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1152" y="625.2" font-size="10">GitHub Actions</text>
-    <rect class="ar-chip" x="1237.5" y="613.2" width="43.5" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1243.5" y="625.2" font-size="10">pytest</text>
-    <rect class="ar-chip" x="1286" y="613.2" width="66.6" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1292" y="625.2" font-size="10">node --test</text>
+    <rect class="ar-node ar-g-operations" x="1134" y="495.3" width="260" height="159.9" rx="8"/>
+    <rect class="ar-f-operations" x="1134" y="503.3" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="1146" y="505.3" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(1149 508.3)"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12.5 15H17"/></g>
+    <text class="ar-t" x="1184" y="524.8" font-size="12.5">Development tools</text>
+    <text class="ar-s" x="1146" y="556.7" font-size="11">ci.yml and n8n.yml (tests), probe-feeds,</text>
+    <text class="ar-s" x="1146" y="571.9" font-size="11">scrape-ladder, capture-fixtures,</text>
+    <text class="ar-s" x="1146" y="587" font-size="11">device-screens and recolector-kit: they do</text>
+    <text class="ar-s" x="1146" y="602.2" font-size="11">not publish; they leave bot/ branches and</text>
+    <text class="ar-s" x="1146" y="617.4" font-size="11">artifacts.</text>
+    <rect class="ar-chip" x="1146" y="627.2" width="86.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1152" y="639.2" font-size="10">GitHub Actions</text>
+    <rect class="ar-chip" x="1237.5" y="627.2" width="43.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1243.5" y="639.2" font-size="10">pytest</text>
+    <rect class="ar-chip" x="1286" y="627.2" width="66.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1292" y="639.2" font-size="10">node --test</text>
   </g>
-  <line class="ar-rule" x1="20" y1="887.5" x2="1420" y2="887.5"/>
-  <text class="ar-h" x="20" y="917.5" font-size="15">Steps and connections: what travels along each line, when and why</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="945.5" r="9"/>
-  <text class="ar-t" x="30" y="949.3" font-size="10.5" text-anchor="middle">1</text>
-  <text class="ar-t" x="50" y="949.5" font-size="11.5">warnings and errors</text>
-  <text class="ar-m" x="50" y="963.5" font-size="10.5">Run report → Issues by fingerprint (sync_issues)</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="986.5" r="9"/>
-  <text class="ar-t" x="30" y="990.3" font-size="10.5" text-anchor="middle">2</text>
-  <text class="ar-t" x="50" y="990.5" font-size="11.5">failure or cancellation</text>
-  <text class="ar-m" x="50" y="1004.5" font-size="10.5">Job results → “The daily update failed”</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="1027.5" r="9"/>
-  <text class="ar-t" x="30" y="1031.3" font-size="10.5" text-anchor="middle">3</text>
-  <text class="ar-t" x="50" y="1031.5" font-size="11.5">dashboard.json</text>
-  <text class="ar-m" x="50" y="1045.5" font-size="10.5">Live site → Watchdog (watchdog.yml)</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="1068.5" r="9"/>
-  <text class="ar-t" x="30" y="1072.3" font-size="10.5" text-anchor="middle">4</text>
-  <text class="ar-t" x="50" y="1072.5" font-size="11.5">manifest.json</text>
-  <text class="ar-m" x="50" y="1086.5" font-size="10.5">Live site → n8n watchdog</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="1109.5" r="9"/>
-  <text class="ar-t" x="30" y="1113.3" font-size="10.5" text-anchor="middle">5</text>
-  <text class="ar-t" x="50" y="1113.5" font-size="11.5">opened, closed, recurring</text>
-  <text class="ar-m" x="50" y="1127.5" font-size="10.5">Issues by fingerprint (sync_issues) → Alert email</text>
-  <circle class="ar-badge ar-e-data" cx="506" cy="945.5" r="9"/>
-  <text class="ar-t" x="506" y="949.3" font-size="10.5" text-anchor="middle">6</text>
-  <text class="ar-t" x="526" y="949.5" font-size="11.5">recurs</text>
-  <text class="ar-m" x="526" y="963.5" font-size="10.5">“The daily update failed” → Alert email</text>
-  <circle class="ar-badge ar-e-data" cx="506" cy="986.5" r="9"/>
-  <text class="ar-t" x="506" y="990.3" font-size="10.5" text-anchor="middle">7</text>
-  <text class="ar-t" x="526" y="990.5" font-size="11.5">its issue changed</text>
-  <text class="ar-m" x="526" y="1004.5" font-size="10.5">Watchdog (watchdog.yml) → Alert email</text>
-  <circle class="ar-badge ar-e-fallback" cx="506" cy="1027.5" r="9"/>
-  <text class="ar-t" x="506" y="1031.3" font-size="10.5" text-anchor="middle">8</text>
-  <text class="ar-t" x="526" y="1031.5" font-size="11.5">failed execution</text>
-  <text class="ar-m" x="526" y="1045.5" font-size="10.5">n8n watchdog → n8n Error workflow</text>
-  <text class="ar-s" x="526" y="1060.5" font-size="11">The route that does not depend on GitHub.</text>
-  <circle class="ar-badge ar-e-human" cx="506" cy="1083.5" r="9"/>
-  <text class="ar-t" x="506" y="1087.3" font-size="10.5" text-anchor="middle">9</text>
-  <text class="ar-t" x="526" y="1087.5" font-size="11.5">one email per run</text>
-  <text class="ar-m" x="526" y="1101.5" font-size="10.5">Alert email → Email recipients</text>
-  <circle class="ar-badge ar-e-human" cx="506" cy="1124.5" r="9"/>
-  <text class="ar-t" x="506" y="1128.3" font-size="10.5" text-anchor="middle">10</text>
-  <text class="ar-t" x="526" y="1128.5" font-size="11.5">alert</text>
-  <text class="ar-m" x="526" y="1142.5" font-size="10.5">n8n Error workflow → Maintainers and owner</text>
-  <circle class="ar-badge ar-e-human" cx="982" cy="945.5" r="9"/>
-  <text class="ar-t" x="982" y="949.3" font-size="10.5" text-anchor="middle">11</text>
-  <text class="ar-t" x="1002" y="949.5" font-size="11.5">incidente-datos issues</text>
-  <text class="ar-m" x="1002" y="963.5" font-size="10.5">Issues by fingerprint (sync_issues) → Maintainers and owner</text>
-  <circle class="ar-badge ar-e-human" cx="982" cy="986.5" r="9"/>
-  <text class="ar-t" x="982" y="990.3" font-size="10.5" text-anchor="middle">12</text>
-  <text class="ar-t" x="1002" y="990.5" font-size="11.5">issue</text>
-  <text class="ar-m" x="1002" y="1004.5" font-size="10.5">“The daily update failed” → Maintainers and owner</text>
-  <circle class="ar-badge ar-e-human" cx="982" cy="1027.5" r="9"/>
-  <text class="ar-t" x="982" y="1031.3" font-size="10.5" text-anchor="middle">13</text>
-  <text class="ar-t" x="1002" y="1031.5" font-size="11.5">stale-site issue</text>
-  <text class="ar-m" x="1002" y="1045.5" font-size="10.5">Watchdog (watchdog.yml) → Maintainers and owner</text>
-  <circle class="ar-badge ar-e-control" cx="982" cy="1068.5" r="9"/>
-  <text class="ar-t" x="982" y="1072.3" font-size="10.5" text-anchor="middle">14</text>
-  <text class="ar-t" x="1002" y="1072.5" font-size="11.5">re-enables</text>
-  <text class="ar-m" x="1002" y="1086.5" font-size="10.5">Watchdog (watchdog.yml) → Keep workflows alive</text>
-  <circle class="ar-badge ar-e-human" cx="982" cy="1109.5" r="9"/>
-  <text class="ar-t" x="982" y="1113.3" font-size="10.5" text-anchor="middle">15</text>
-  <text class="ar-t" x="1002" y="1113.5" font-size="11.5">run and review</text>
-  <text class="ar-m" x="1002" y="1127.5" font-size="10.5">Maintainers and owner → Development tools</text>
-  <line class="ar-rule" x1="20" y1="1177.5" x2="1420" y2="1177.5"/>
-  <text class="ar-h" x="20" y="1207.5" font-size="15">If something fails: what happens and which fallback takes over</text>
-  <g class="ar-warn" transform="translate(20 1224.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="50" y="1239.5" font-size="11.5">The site stops updating</text>
-  <text class="ar-s" x="50" y="1254.5" font-size="11">At 30 h the watchdog relaunches the update and opens an issue; if it</text>
-  <text class="ar-s" x="50" y="1269.5" font-size="11">already relaunched within 6 h, it asks for review instead of insisting.</text>
-  <g class="ar-warn" transform="translate(20 1281.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="50" y="1296.5" font-size="11.5">All of GitHub is down</text>
-  <text class="ar-s" x="50" y="1311.5" font-size="11">The n8n watchdog keeps watching the site and its Error workflow alerts.</text>
-  <g class="ar-warn" transform="translate(496 1224.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="526" y="1239.5" font-size="11.5">A problem repeats every day</text>
-  <text class="ar-s" x="526" y="1254.5" font-size="11">It stays a single issue; the email only goes out when something opens,</text>
-  <text class="ar-s" x="526" y="1269.5" font-size="11">closes or recurs.</text>
-  <g class="ar-warn" transform="translate(496 1281.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="526" y="1296.5" font-size="11.5">The repository goes 60 days without activity</text>
-  <text class="ar-s" x="526" y="1311.5" font-size="11">keepalive and the watchdog re-enable the scheduled workflows and restart</text>
-  <text class="ar-s" x="526" y="1326.5" font-size="11">the clock.</text>
-  <g class="ar-warn" transform="translate(972 1224.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="1002" y="1239.5" font-size="11.5">Sending the email fails or there is no SMTP</text>
-  <text class="ar-s" x="1002" y="1254.5" font-size="11">It is noted in the run and does not stop it; issues keep arriving through</text>
-  <text class="ar-s" x="1002" y="1269.5" font-size="11">GitHub.</text>
+  <line class="ar-rule" x1="20" y1="1182.5" x2="1420" y2="1182.5"/>
+  <text class="ar-h" x="20" y="1212.5" font-size="15">Steps and connections: what travels along each line, when and why</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1240.5" r="9"/>
+  <text class="ar-t" x="30" y="1244.3" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="1244.5" font-size="11.5">warnings and errors</text>
+  <text class="ar-m" x="50" y="1258.5" font-size="10.5">Run report → Issues by fingerprint (sync_issues)</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1281.5" r="9"/>
+  <text class="ar-t" x="30" y="1285.3" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1285.5" font-size="11.5">failure or cancellation</text>
+  <text class="ar-m" x="50" y="1299.5" font-size="10.5">Job results → “The daily update failed”</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1322.5" r="9"/>
+  <text class="ar-t" x="30" y="1326.3" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1326.5" font-size="11.5">dashboard.json</text>
+  <text class="ar-m" x="50" y="1340.5" font-size="10.5">Live site → Watchdog (watchdog.yml)</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1363.5" r="9"/>
+  <text class="ar-t" x="30" y="1367.3" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1367.5" font-size="11.5">manifest.json</text>
+  <text class="ar-m" x="50" y="1381.5" font-size="10.5">Live site → n8n watchdog</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1404.5" r="9"/>
+  <text class="ar-t" x="30" y="1408.3" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="1408.5" font-size="11.5">each branch&#x27;s heartbeat</text>
+  <text class="ar-m" x="50" y="1422.5" font-size="10.5">Collectors&#x27; heartbeat → Watchdog (watchdog.yml)</text>
+  <text class="ar-s" x="50" y="1437.5" font-size="11">Over 36 h without a beat opens “… gives no signal”, even if the daily</text>
+  <text class="ar-s" x="50" y="1452.5" font-size="11">workflow is failing; a branch with no heartbeat is not checked.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1475.5" r="9"/>
+  <text class="ar-t" x="30" y="1479.3" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="50" y="1479.5" font-size="11.5">opened, closed, recurring</text>
+  <text class="ar-m" x="50" y="1493.5" font-size="10.5">Issues by fingerprint (sync_issues) → Alert email</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1240.5" r="9"/>
+  <text class="ar-t" x="506" y="1244.3" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="1244.5" font-size="11.5">recurs</text>
+  <text class="ar-m" x="526" y="1258.5" font-size="10.5">“The daily update failed” → Alert email</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1281.5" r="9"/>
+  <text class="ar-t" x="506" y="1285.3" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1285.5" font-size="11.5">its issues changed</text>
+  <text class="ar-m" x="526" y="1299.5" font-size="10.5">Watchdog (watchdog.yml) → Alert email</text>
+  <circle class="ar-badge ar-e-fallback" cx="506" cy="1322.5" r="9"/>
+  <text class="ar-t" x="506" y="1326.3" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1326.5" font-size="11.5">failed execution</text>
+  <text class="ar-m" x="526" y="1340.5" font-size="10.5">n8n watchdog → n8n Error workflow</text>
+  <text class="ar-s" x="526" y="1355.5" font-size="11">The route that does not depend on GitHub.</text>
+  <circle class="ar-badge ar-e-human" cx="506" cy="1378.5" r="9"/>
+  <text class="ar-t" x="506" y="1382.3" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="526" y="1382.5" font-size="11.5">one email per run</text>
+  <text class="ar-m" x="526" y="1396.5" font-size="10.5">Alert email → Email recipients</text>
+  <circle class="ar-badge ar-e-human" cx="506" cy="1419.5" r="9"/>
+  <text class="ar-t" x="506" y="1423.3" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="526" y="1423.5" font-size="11.5">alert</text>
+  <text class="ar-m" x="526" y="1437.5" font-size="10.5">n8n Error workflow → Maintainers and owner</text>
+  <circle class="ar-badge ar-e-human" cx="506" cy="1460.5" r="9"/>
+  <text class="ar-t" x="506" y="1464.3" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="526" y="1464.5" font-size="11.5">incidente-datos issues</text>
+  <text class="ar-m" x="526" y="1478.5" font-size="10.5">Issues by fingerprint (sync_issues) → Maintainers and owner</text>
+  <circle class="ar-badge ar-e-human" cx="982" cy="1240.5" r="9"/>
+  <text class="ar-t" x="982" y="1244.3" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="1002" y="1244.5" font-size="11.5">issue</text>
+  <text class="ar-m" x="1002" y="1258.5" font-size="10.5">“The daily update failed” → Maintainers and owner</text>
+  <circle class="ar-badge ar-e-human" cx="982" cy="1281.5" r="9"/>
+  <text class="ar-t" x="982" y="1285.3" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1285.5" font-size="11.5">stale site or silent collector</text>
+  <text class="ar-m" x="1002" y="1299.5" font-size="10.5">Watchdog (watchdog.yml) → Maintainers and owner</text>
+  <circle class="ar-badge ar-e-control" cx="982" cy="1322.5" r="9"/>
+  <text class="ar-t" x="982" y="1326.3" font-size="10.5" text-anchor="middle">15</text>
+  <text class="ar-t" x="1002" y="1326.5" font-size="11.5">re-enables</text>
+  <text class="ar-m" x="1002" y="1340.5" font-size="10.5">Watchdog (watchdog.yml) → Keep workflows alive</text>
+  <circle class="ar-badge ar-e-control" cx="982" cy="1363.5" r="9"/>
+  <text class="ar-t" x="982" y="1367.3" font-size="10.5" text-anchor="middle">16</text>
+  <text class="ar-t" x="1002" y="1367.5" font-size="11.5">no probe in 8 days</text>
+  <text class="ar-m" x="1002" y="1381.5" font-size="10.5">Watchdog (watchdog.yml) → Weekly probe</text>
+  <text class="ar-s" x="1002" y="1396.5" font-size="11">Relaunches it on the default branch; if it already did in the last 24 h, it only</text>
+  <text class="ar-s" x="1002" y="1411.5" font-size="11">notes it in its log.</text>
+  <circle class="ar-badge ar-e-human" cx="982" cy="1434.5" r="9"/>
+  <text class="ar-t" x="982" y="1438.3" font-size="10.5" text-anchor="middle">17</text>
+  <text class="ar-t" x="1002" y="1438.5" font-size="11.5">run and review</text>
+  <text class="ar-m" x="1002" y="1452.5" font-size="10.5">Maintainers and owner → Development tools</text>
+  <line class="ar-rule" x1="20" y1="1528.5" x2="1420" y2="1528.5"/>
+  <text class="ar-h" x="20" y="1558.5" font-size="15">If something fails: what happens and which fallback takes over</text>
+  <g class="ar-warn" transform="translate(20 1575.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1590.5" font-size="11.5">The site stops updating</text>
+  <text class="ar-s" x="50" y="1605.5" font-size="11">At 30 h the watchdog relaunches the main update and opens an issue; if it</text>
+  <text class="ar-s" x="50" y="1620.5" font-size="11">already relaunched within 6 h, it asks for review instead of insisting.</text>
+  <g class="ar-warn" transform="translate(20 1632.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1647.5" font-size="11.5">A collector stops beating</text>
+  <text class="ar-s" x="50" y="1662.5" font-size="11">At 36 h the watchdog opens “… gives no signal” even if the daily</text>
+  <text class="ar-s" x="50" y="1677.5" font-size="11">workflow is failing, reminds once a day and closes it when the collector</text>
+  <text class="ar-s" x="50" y="1692.5" font-size="11">beats again.</text>
+  <g class="ar-warn" transform="translate(20 1704.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1719.5" font-size="11.5">All of GitHub is down</text>
+  <text class="ar-s" x="50" y="1734.5" font-size="11">The n8n watchdog keeps watching the site and its Error workflow alerts.</text>
+  <g class="ar-warn" transform="translate(496 1575.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1590.5" font-size="11.5">A problem repeats every day</text>
+  <text class="ar-s" x="526" y="1605.5" font-size="11">It stays a single issue; the email only goes out when something opens,</text>
+  <text class="ar-s" x="526" y="1620.5" font-size="11">closes or recurs.</text>
+  <g class="ar-warn" transform="translate(496 1632.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1647.5" font-size="11.5">A format change stops appearing</text>
+  <text class="ar-s" x="526" y="1662.5" font-size="11">Its issue does not close itself: it is commented once and a person closes it</text>
+  <text class="ar-s" x="526" y="1677.5" font-size="11">after checking the values; if it comes back, it is commented and goes into</text>
+  <text class="ar-s" x="526" y="1692.5" font-size="11">the email.</text>
+  <g class="ar-warn" transform="translate(972 1575.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1590.5" font-size="11.5">GitHub skips the weekly probe</text>
+  <text class="ar-s" x="1002" y="1605.5" font-size="11">With no good probe on main in 8 days the watchdog relaunches it, at most</text>
+  <text class="ar-s" x="1002" y="1620.5" font-size="11">once a day; meanwhile the previous registry holds.</text>
+  <g class="ar-warn" transform="translate(972 1632.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1647.5" font-size="11.5">The repository goes 60 days without activity</text>
+  <text class="ar-s" x="1002" y="1662.5" font-size="11">keepalive and the watchdog re-enable the scheduled workflows and restart</text>
+  <text class="ar-s" x="1002" y="1677.5" font-size="11">the clock.</text>
+  <g class="ar-warn" transform="translate(972 1689.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1704.5" font-size="11.5">Sending the email fails or there is no SMTP</text>
+  <text class="ar-s" x="1002" y="1719.5" font-size="11">It is noted in the run and does not stop it; issues keep arriving through</text>
+  <text class="ar-s" x="1002" y="1734.5" font-size="11">GitHub.</text>
 </svg>
