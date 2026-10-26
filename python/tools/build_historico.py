@@ -10,6 +10,11 @@ Pasos (todos reproducibles; ``docs/memoria-desastres.md``):
    ``data/historico/curado/*.yaml``) y normaliza todo a ``enso.historico.esquema.COLUMNS``. Las capas de
    contexto (INGEMMET, ANA, establecimientos de salud) no son eventos: se resumen por distrito.
 3. Ubica cada registro en su UBIGEO vigente y le asigna la fase ENSO del mes (ICEN y ONI).
+3b. Une a esas filas los reportes del COEN, los desbordes de lagunas glaciares y las notas de prensa que cuentan
+   el mismo evento (``enso.historico.enlace.link``, en el orden de ``LINK_ORDER``: suman su enlace y, del COEN,
+   las cifras de daños); los que no corresponden a ninguna quedan como filas propias. Junta las declaratorias de
+   emergencia (El Peruano), las evaluaciones técnicas del peligro (INGEMMET, IGP), el inventario de peligros con
+   fecha (INGEMMET) y los llamamientos de la Cruz Roja para los indicadores de prevención (``enlace.prevention``).
 4. Escribe:
    * ``public/assets/historico/eventos.zip``: el catálogo completo en ``eventos.csv``, con las 13 columnas
      del equipo de prevención primero (UTF-8 con BOM para que Excel lea las tildes).
@@ -22,12 +27,16 @@ Pasos (todos reproducibles; ``docs/memoria-desastres.md``):
      identificado hoy en cada distrito (zonas críticas, puntos críticos de ríos y quebradas) junto con
      su historial.
    * ``data/historico/indicadores-<nivel>.csv``: los indicadores de recurrencia por área.
+   * ``public/assets/historico/prevencion.json`` y ``data/historico/prevencion-distrito.csv``: declaratorias,
+     evaluaciones y eventos ocurridos cuando el peligro ya se conocía, por distrito y por año.
    Los CSV de ``data/historico/`` se copian también en ``public/assets/historico/`` para descargarlos
    desde el sitio.
 
 Uso:
     python -m tools.build_historico                      # con la caché en ~/.cache/enso-historico
     python -m tools.build_historico --aceptar-cambios    # tras revisar un cambio de una fuente
+    python -m tools.build_historico --cache A --cache B  # busca cada archivo en varias cachés
+    python -m tools.build_historico --parcial            # usa lo bajado de una cosecha larga que sigue a medias
 """
 
 from __future__ import annotations
@@ -38,6 +47,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import shutil
 import sys
 import zipfile
@@ -51,13 +61,13 @@ import httpx
 import yaml
 
 from enso.fetch import ssl_context
-from enso.historico import desinventar, esquema as E, fuentes as F
+from enso.historico import cosecha as C, desinventar, enlace, esquema as E, fuentes as F
 from enso.historico.enso import GREAT, NAMED, PIRCC_2017_URL, EnsoCalendar
 from enso.historico.indicadores import by_area, nino_hydro_years
 from enso.historico.registro import make
 from enso.historico.territorio import Territory
 from enso.observatory import csv_safe
-from enso.reach import Robots
+from enso.reach import Robots, public_peru
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "historico"
@@ -78,6 +88,27 @@ READERS = {
     "idmc-eventos": lambda path, t, c, sk: F.idmc_events(path.read_text(encoding="utf-8"), t, c, skipped=sk),
     "nasa-glc": lambda path, t, c, sk: F.glc(json.loads(path.read_text(encoding="utf-8")), t, c, skipped=sk),
 }
+#: Candidatos de la segunda ronda (``enso.historico.cosecha``): no se suman tal cual, se unen a las filas que
+#: cuentan el mismo evento (``enlace.link``) o quedan como filas propias.
+CANDIDATES = {
+    "coen": lambda path, t, c, sk, src: C.coen(json.loads(path.read_text(encoding="utf-8")), t, c, skipped=sk),
+    "prensa": lambda path, t, c, sk, src: C.press(json.loads(path.read_text(encoding="utf-8")), t, c, outlet=src["medio"],
+                                               departments=src.get("departamentos"), skipped=sk),
+    "glof": lambda path, t, c, sk, src: C.glof(C.ods_rows(path.read_bytes()), t, c, url=src["pagina"], skipped=sk),
+}
+#: Orden de la unión: el COEN y los GLOF antes que la prensa, para que una nota corrobore lo que solo ellos registran.
+LINK_ORDER = ("coen", "glof", "prensa")
+#: Evidencia para los indicadores de prevención: declaratorias de emergencia y evaluaciones del peligro.
+EVIDENCE = {
+    "decretos": lambda doc, t, src: C.decrees(doc, t),
+    "evaluaciones-dspace": lambda doc, t, src: C.evaluations_dspace(doc, t, src.get("institucion", "INGEMMET")),
+    "evaluaciones-geocatmin": lambda doc, t, src: C.evaluations_geocatmin(doc, t, src["url"]),
+    "evaluaciones-oai": lambda doc, t, src: C.evaluations_oai(doc, t, src.get("institucion", "IGP")),
+    "inventario-fechado": lambda doc, t, src: C.inventory_dated(doc, t, src["url"]),
+    "llamamientos": lambda doc, t, src: C.appeals(doc),
+}
+#: En qué lista de evidencia va cada lector (las demás son evaluaciones del peligro).
+EVIDENCE_KIND = {"decretos": "decretos", "llamamientos": "llamamientos"}
 #: Capas de contexto por distrito.
 CONTEXT = {
     "ingemmet-inventario": F.ingemmet_inventory, "ingemmet-criticas": F.ingemmet_critical,
@@ -258,38 +289,708 @@ def sinpad_api(src: dict, parts: Path, delay: float = 5.0, until: Optional[date]
     return out
 
 
-#: Instituciones públicas peruanas: su información es pública por ley (Ley N° 27806) y, por decisión del
-#: proyecto (26-10-2026), un «Disallow» de su robots.txt no impide pedirla. Se respeta su Crawl-delay (y al
-#: menos PERU_PUBLIC_DELAY entre pedidos) y nunca se evade una verificación antirobots. Los mismos sufijos que
-#: usará ``enso.reach`` (PUBLIC_PERU_SUFFIXES); .edu.pe no, porque no todas son entidades públicas.
-PERU_PUBLIC = (".gob.pe", ".mil.pe")
+OAI = "{http://www.openarchives.org/OAI/2.0/}"
+DC = "{http://purl.org/dc/elements/1.1/}"
+
+
+def oai_pmh(src: dict, delay: float = 5.0) -> bytes:
+    """Metadatos Dublin Core de un repositorio institucional (OAI-PMH ``ListRecords``, con el ``set`` y el
+    ``metadataPrefix`` de ``parametros``), página por página con su ``resumptionToken``, como JSON canónico
+    ordenado por identificador. Los registros borrados no se guardan. Un documento que declara entidades XML
+    no se lee (riesgo de expansión), igual que en ``enso.feedparse``."""
+    import time
+    from xml.etree import ElementTree as ET
+
+    p = dict(src.get("parametros", {}))
+    params = {"verb": "ListRecords", "metadataPrefix": p.pop("metadataPrefix", "oai_dc"), **p}
+    records: dict[str, dict] = {}
+    last = [0.0]
+    with httpx.Client(follow_redirects=True, timeout=180, headers=UA, verify=ssl_context()) as c:
+        while True:
+            for attempt in range(4):
+                time.sleep(max(0.0, last[0] + delay * (1 + 2 * attempt) - time.monotonic()))
+                last[0] = time.monotonic()
+                try:
+                    r = c.get(src["url"], params=params)
+                except httpx.HTTPError as e:
+                    why = type(e).__name__
+                    continue
+                why = f"HTTP {r.status_code}"
+                if r.status_code == 200 or (r.status_code != 429 and r.status_code < 500):
+                    break
+                print(f"  {src['id']}: {why}, se reintenta", file=sys.stderr)
+            if r.status_code != 200:
+                raise SystemExit(f"{src['id']}: el repositorio respondió {why}")
+            if b"<!ENTITY" in r.content[:4096] or b"<OAI-PMH" not in r.content[:4096]:
+                raise SystemExit(f"{src['id']}: la respuesta no es un documento OAI-PMH")
+            root = ET.fromstring(r.content)
+            err = root.find(f"{OAI}error")
+            if err is not None:
+                if err.get("code") == "noRecordsMatch":
+                    break
+                raise SystemExit(f"{src['id']}: error OAI-PMH {err.get('code')}: {err.text}")
+            lst = root.find(f"{OAI}ListRecords")
+            for rec in lst.findall(f"{OAI}record"):
+                h = rec.find(f"{OAI}header")
+                ident = h.findtext(f"{OAI}identifier")
+                if h.get("status") == "deleted":
+                    records.pop(ident, None)
+                    continue
+                dc: dict[str, list] = defaultdict(list)
+                md = rec.find(f"{OAI}metadata")
+                for el in (md.iter() if md is not None else ()):
+                    if el.tag.startswith(DC) and (el.text or "").strip():
+                        dc[el.tag[len(DC):]].append(el.text.strip())
+                records[ident] = {"id": ident, "datestamp": h.findtext(f"{OAI}datestamp"),
+                                  "sets": sorted(s.text for s in h.findall(f"{OAI}setSpec")), "dc": dict(sorted(dc.items()))}
+            token = lst.find(f"{OAI}resumptionToken")
+            print(f"  {src['id']}: {len(records)} registros", file=sys.stderr)
+            if token is None or not (token.text or "").strip():
+                break
+            params = {"verb": "ListRecords", "resumptionToken": token.text.strip()}
+    return json.dumps({"source": src["url"], "parametros": src.get("parametros", {}),
+                       "records": [records[k] for k in sorted(records)]},
+                      ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
+def dspace_items(src: dict, parts: Path, delay: float = 5.0) -> bytes:
+    """Metadatos completos de cada ítem de una colección de un repositorio DSpace 6 (JSPUI), para cuando su
+    OAI-PMH no sirve (el del INGEMMET responde «noRecordsMatch» desde la segunda página): primero la lista de
+    la colección por fecha (``…/browse?type=dateissued``, de 100 en 100) y después la ficha completa de cada
+    ítem (``?mode=full``), una por pedido. Cada ficha leída se guarda en ``parts`` y una descarga cortada sigue
+    donde quedó. Devuelve JSON canónico ordenado por handle."""
+    import html as H
+    import re
+    import time
+
+    base = src["url"].rstrip("/")
+    root = "{0.scheme}://{0.netloc}".format(urlsplit(base))
+    parts.mkdir(parents=True, exist_ok=True)
+    last = [0.0]
+
+    def get(c: httpx.Client, url: str) -> str:
+        for attempt in range(4):
+            time.sleep(max(0.0, last[0] + delay * (1 + 2 * attempt) - time.monotonic()))
+            last[0] = time.monotonic()
+            try:
+                r = c.get(url)
+            except httpx.HTTPError as e:
+                why = type(e).__name__
+                continue
+            why = f"HTTP {r.status_code}"
+            if r.status_code == 200 and "<html" in r.text[:2000].lower():
+                return r.text
+            if r.status_code != 429 and r.status_code < 500:
+                break
+            print(f"  {src['id']}: {why}, se reintenta", file=sys.stderr)
+        raise SystemExit(f"{src['id']}: {url} respondió {why}")
+
+    listing = parts / "lista.json"
+    with httpx.Client(follow_redirects=True, timeout=120, headers=UA, verify=ssl_context()) as c:
+        if listing.exists():
+            handles = json.loads(listing.read_text(encoding="utf-8"))
+        else:
+            handles, offset, total = [], 0, None
+            while total is None or offset < total:
+                t = get(c, f"{base}/browse?type=dateissued&sort_by=2&order=ASC&rpp=100&offset={offset}")
+                m = re.search(r"(?:Showing results|Mostrando resultados) \d+ (?:to|a) \d+ (?:of|de) (\d+)", t)
+                total = int(m.group(1)) if m else 0
+                found = dict.fromkeys(re.findall(r'<a href="(/handle/[\d.]+/\d+)">', t))  # el título de cada fila
+                handles += [h for h in found if h not in handles]
+                offset += 100
+                print(f"  {src['id']}: lista {len(handles)} de {total}", file=sys.stderr)
+            listing.write_text(json.dumps(handles), encoding="utf-8")
+        field = re.compile(r'<label class="metadataFieldLabel">([a-z.]+)(?: <span>[^<]*</span>)?</label>'
+                           r'<div class="metadataFieldValue">(.*?)</div></div>', re.S)
+        for i, h in enumerate(handles):
+            part = parts / (h.rsplit("/", 1)[1] + ".json")
+            if part.exists():
+                continue
+            t = get(c, f"{root}{h}?mode=full")
+            md: dict[str, list] = defaultdict(list)
+            for k, v in field.findall(t):
+                v = re.sub(r"\s+", " ", H.unescape(re.sub(r"<[^>]+>", " ", v))).strip()
+                if v:
+                    md[k].append(v)
+            pdfs = sorted(set(re.findall(r'href="(/bitstream/[^"]+\.pdf)', t, re.I)))
+            part.write_text(json.dumps({"handle": h, "url": root + h, "pdf": [root + p for p in pdfs], "dc": md},
+                                       ensure_ascii=False), encoding="utf-8")
+            if i % 50 == 0:
+                print(f"  {src['id']}: ficha {i + 1} de {len(handles)}", file=sys.stderr)
+    out = dspace_assemble(parts, base)
+    shutil.rmtree(parts)
+    return out
+
+
+def dspace_assemble(parts: Path, base: str) -> bytes:
+    """El JSON de ``dspace_items`` con las fichas que hay en ``parts`` (sin red), también a medias."""
+    items = [json.loads(f.read_text(encoding="utf-8")) for f in parts.glob("*.json") if f.stem.isdigit()]
+    return json.dumps({"source": base.rstrip("/"), "items": sorted(items, key=lambda x: int(x["handle"].rsplit("/", 1)[1]))},
+                      ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
+#: Peligros de origen climático en el título de un reporte del COEN (sin tildes, en mayúsculas). Lo demás
+#: (incendio urbano, sismo, accidente, derrame…) no se descarga.
+COEN_CLIMATE = re.compile(
+    r"LLUVIA|PRECIPITACION|INUNDACION|HUAICO|HUAYCO|ALUD|ALUVION|AVALANCHA|DESLIZAMIENTO|DERRUMBE|DESPRENDIMIENTO|"
+    r"CAIDA DE ROCA|MOVIMIENTO EN MASA|REPTACION|DESBORDE|CRECIDA|EROSION|OLEAJE|MARETAZO|MAREJADA|VIENTO|"
+    r"VENDAVAL|TORMENTA|TEMPESTAD|TEMPORAL|GRANIZ|NEVADA|HELADA|FRIAJE|BAJAS TEMPERATURAS|DESCENSO DE TEMPERATURA|"
+    r"OLA DE CALOR|SEQUIA|DEFICIT HIDRICO|INCENDIO FORESTAL|QUEBRADA|COLAPSO DE (?:VIVIENDA|PUENTE|DEFENSA)")
+
+
+def _plain(s: str) -> str:
+    import unicodedata
+
+    return "".join(c for c in unicodedata.normalize("NFD", s.upper()) if unicodedata.category(c) != "Mn")
+
+
+def pdf_text(content: bytes, timeout: int = 60) -> str:
+    """Texto de un PDF con ``pdftotext -layout`` (poppler), en un directorio temporal propio que se borra; el PDF
+    es de un tercero y no se ejecuta nada de él. Vacío si no se puede leer."""
+    import subprocess
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmp:
+        pdf = Path(tmp) / "doc.pdf"
+        pdf.write_bytes(content)
+        try:
+            r = subprocess.run(["pdftotext", "-layout", "-enc", "UTF-8", str(pdf), "-"], capture_output=True,
+                               timeout=timeout, cwd=tmp)
+        except (OSError, subprocess.TimeoutExpired):
+            return ""
+        return r.stdout.decode("utf-8", "replace") if r.returncode == 0 else ""
+
+
+#: Palabras con que se buscan notas sobre peligros climáticos en los medios (la búsqueda de WordPress recorre
+#: título y cuerpo; el lector se queda con lo que el titular confirma).
+NEWS_TERMS = ["huaico", "huayco", "inundación", "inundaciones", "desborde", "deslizamiento", "derrumbe", "aluvión",
+              "activación de quebrada", "lluvias intensas", "precipitaciones", "crecida del río", "oleaje anómalo",
+              "maretazo", "helada", "friaje", "nevada", "granizada", "sequía", "déficit hídrico", "incendio forestal",
+              "vientos fuertes", "damnificados", "estado de emergencia", "Niño costero", "Fenómeno El Niño", "ciclón Yaku"]
+
+
+def wp_rest(src: dict, delay: float = 5.0) -> bytes:
+    """Notas de un medio con WordPress (``src["url"]`` = su ``/wp-json/wp/v2/posts``) que responden a ``NEWS_TERMS`` (o a
+    ``parametros.terminos``), por su API REST pública (``/wp-json/wp/v2/posts?search=``, 100 por página): id,
+    fecha, enlace, titular y un extracto. Solo metadatos y un extracto corto, con enlace a la nota (derecho de
+    cita, D. Leg. 822, art. 44). JSON canónico ordenado por id."""
+    import html as H
+    import time
+
+    p = src.get("parametros", {})
+    api = src["url"]  # …/wp-json/wp/v2/posts
+    posts: dict[int, dict] = {}
+    last = [0.0]
+    errors = []
+    with httpx.Client(follow_redirects=True, timeout=60, headers=UA, verify=ssl_context()) as c:
+        for term in p.get("terminos", NEWS_TERMS):
+            page, pages = 1, 1
+            while page <= pages:
+                params = {"search": term, "per_page": 100, "page": page, "orderby": "date", "order": "asc",
+                          "_fields": "id,date,link,title,excerpt"}
+                for attempt in range(3):
+                    time.sleep(max(0.0, last[0] + delay * (1 + 2 * attempt) - time.monotonic()))
+                    last[0] = time.monotonic()
+                    try:
+                        r = c.get(api, params=params)
+                    except httpx.HTTPError as e:
+                        r, why = None, type(e).__name__
+                        continue
+                    why = f"HTTP {r.status_code}"
+                    if r.status_code == 200 or (r.status_code != 429 and r.status_code < 500):
+                        break
+                if r is None or r.status_code != 200:
+                    errors.append(f"{term} p. {page}: {why}")
+                    break
+                try:
+                    items = r.json()
+                except ValueError:
+                    errors.append(f"{term} p. {page}: respuesta que no es JSON (¿verificación antirobots?)")
+                    break
+                if not isinstance(items, list):
+                    errors.append(f"{term} p. {page}: respuesta inesperada")
+                    break
+                pages = int(r.headers.get("X-WP-TotalPages") or 1)
+                for it in items:
+                    pid = it.get("id")
+                    title = H.unescape(re.sub(r"<[^>]+>", "", (it.get("title") or {}).get("rendered", ""))).strip()
+                    exc = H.unescape(re.sub(r"<[^>]+>", " ", (it.get("excerpt") or {}).get("rendered", "")))
+                    rec = posts.setdefault(pid, {"id": pid, "fecha": it.get("date"), "url": it.get("link"),
+                                                 "titulo": re.sub(r"\s+", " ", title),
+                                                 "extracto": re.sub(r"\s+", " ", exc).strip()[:500], "terminos": []})
+                    rec["terminos"].append(term)
+                page += 1
+            print(f"  {src['id']}: «{term}»: {len(posts)} notas", file=sys.stderr)
+    return json.dumps({"source": api, "errores": errors, "notas": [posts[k] for k in sorted(posts)]},
+                      ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
+def _paced_get(src: dict, delay: float):
+    """Un ``get(client, url)`` que espera ``delay`` s desde el pedido anterior, reintenta 429 y 5xx con espera
+    creciente y devuelve ``None`` ante 404/410 o cualquier otro 4xx (la página no existe o no se ofrece)."""
+    import time
+
+    last = [0.0]
+
+    def get(c: httpx.Client, url: str) -> Optional[httpx.Response]:
+        why = ""
+        for attempt in range(4):
+            time.sleep(max(0.0, last[0] + delay * (1 + 2 * attempt) - time.monotonic()))
+            last[0] = time.monotonic()
+            try:
+                r = c.get(url)
+            except httpx.HTTPError as e:
+                why = type(e).__name__
+                continue
+            if r.status_code == 200:
+                return r
+            why = f"HTTP {r.status_code}"
+            if r.status_code != 429 and r.status_code < 500:
+                return None
+            print(f"  {src['id']}: {url}: {why}, se reintenta", file=sys.stderr)
+        raise SystemExit(f"{src['id']}: {url} respondió {why}")
+
+    return get
+
+
+def rpp_archivo(src: dict, parts: Path, delay: float = 5.0) -> bytes:
+    """Notas de RPP por día y sección, del archivo diario ``https://rpp.pe/archivo/<sección>/AAAA-MM-DD`` (su
+    robots.txt lo permite desde 2021): enlace, titular y fecha de cada nota, con el departamento que RPP pone en
+    la dirección. Solo metadatos. Reanudable con ``parts``; JSON canónico ordenado por enlace."""
+    import html as H
+
+    p = src.get("parametros", {})
+    parts.mkdir(parents=True, exist_ok=True)
+    state = parts / "corte.json"
+    if state.exists():
+        end = date.fromisoformat(json.loads(state.read_text(encoding="utf-8"))["hasta"])
+    else:
+        end = datetime.now(F.LIMA).date() - timedelta(days=1)
+        state.write_text(json.dumps({"hasta": end.isoformat()}), encoding="utf-8")
+    get = _paced_get(src, delay)
+    with httpx.Client(follow_redirects=True, timeout=60, headers=UA, verify=ssl_context()) as c:
+        day = date.fromisoformat(p.get("desde", "2021-01-01"))
+        while day <= end:
+            part = parts / f"{day.isoformat()}.json"
+            if not part.exists():
+                got = []
+                for sec in p.get("secciones", ["peru", "lima"]):
+                    r = get(c, f"{src['url'].rstrip('/')}/{sec}/{day.isoformat()}")
+                    for a in (r.text.split("<article")[1:] if r is not None else []):
+                        h = re.search(r'<h2[^>]*>\s*<a href="(https://rpp\.pe/[^"]+-noticia-\d+)"[^>]*>(.*?)</a>', a, re.S)
+                        if h:
+                            got.append({"url": h.group(1), "fecha": day.isoformat(), "seccion": sec,
+                                        "titulo": re.sub(r"\s+", " ", H.unescape(re.sub(r"<[^>]+>", "", h.group(2)))).strip()})
+                part.write_text(json.dumps(got, ensure_ascii=False), encoding="utf-8")
+                if day.day == 1:
+                    print(f"  {src['id']}: {day:%Y-%m}", file=sys.stderr)
+            day += timedelta(days=1)
+    data = rpp_assemble(parts, src)
+    shutil.rmtree(parts)
+    return data
+
+
+def rpp_assemble(parts: Path, src: dict) -> bytes:
+    """El JSON de ``rpp_archivo`` con los días que hay en ``parts`` (sin red); a medias, ``hasta`` es el último."""
+    notes: dict[str, dict] = {}
+    days = sorted(parts.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].json"))
+    for part in days:
+        for n in json.loads(part.read_text(encoding="utf-8")):
+            notes.setdefault(n["url"], n)
+    state = parts / "corte.json"
+    end = json.loads(state.read_text(encoding="utf-8"))["hasta"] if state.exists() else ""
+    if days and days[-1].stem < end:
+        end = days[-1].stem
+    return json.dumps({"source": src["url"], "hasta": end, "notas": [notes[k] for k in sorted(notes)]},
+                      ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
+def sitemap_news(src: dict, parts: Path, delay: float = 5.0) -> bytes:
+    """Direcciones de notas de un medio por sus sitemaps (``parametros.indice``: el índice; ``parametros.patron``:
+    expresión que deben cumplir los sitemaps hijos que se leen), con la fecha (``lastmod`` o
+    ``news:publication_date``) y, si el sitemap la trae, el titular (``news:title``), más el sitemap de donde salió
+    (si es mensual, da el mes cuando la nota no trae fecha). Se guardan solo las que tienen en la dirección una
+    palabra de peligro climático (``NEWS_SLUG``). Reanudable; JSON canónico."""
+    import html as H
+
+    p = src.get("parametros", {})
+    parts.mkdir(parents=True, exist_ok=True)
+    get = _paced_get(src, delay)
+    want = re.compile(p.get("patron", "."))
+    notes: dict[str, dict] = {}
+    with httpx.Client(follow_redirects=True, timeout=120, headers=UA, verify=ssl_context()) as c:
+        idx = parts / "indice.json"
+        if idx.exists():
+            maps = json.loads(idx.read_text(encoding="utf-8"))
+        else:
+            r = get(c, p["indice"])
+            if r is None or b"<!ENTITY" in r.content[:4096]:
+                raise SystemExit(f"{src['id']}: el índice de sitemaps no responde")
+            maps = sorted(m for m in re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", r.text) if want.search(m))
+            idx.write_text(json.dumps(maps), encoding="utf-8")
+        for i, m in enumerate(maps):
+            part = parts / (hashlib.sha256(m.encode()).hexdigest()[:16] + ".json")
+            if not part.exists():
+                r = get(c, m)
+                got = []
+                if r is not None and b"<!ENTITY" not in r.content[:4096]:
+                    for u in re.findall(r"<url>(.*?)</url>", r.text, re.S):
+                        loc = re.search(r"<loc>\s*([^<\s]+)\s*</loc>", u)
+                        if not loc or not NEWS_SLUG.search(loc.group(1).lower()):
+                            continue
+                        when = re.search(r"<(?:news:publication_date|lastmod)>\s*([^<\s]+)", u)
+                        title = re.search(r"<news:title>\s*(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?\s*</news:title>", u, re.S)
+                        got.append({"url": H.unescape(loc.group(1)), "fecha": when.group(1) if when else "",
+                                    "titulo": H.unescape(title.group(1)).strip() if title else "", "sitemap": m})
+                part.write_text(json.dumps(got, ensure_ascii=False), encoding="utf-8")
+                if i % 20 == 0:
+                    print(f"  {src['id']}: sitemap {i + 1} de {len(maps)}", file=sys.stderr)
+            for n in json.loads(part.read_text(encoding="utf-8")):
+                notes.setdefault(n["url"], n)
+    data = json.dumps({"source": p["indice"], "notas": [notes[k] for k in sorted(notes)]}, ensure_ascii=False,
+                      sort_keys=True, separators=(",", ":")).encode("utf-8")
+    shutil.rmtree(parts)
+    return data
+
+
+#: Palabras de peligro climático en la dirección de una nota (sin tildes, con guiones).
+NEWS_SLUG = re.compile(r"huaic|huayc|inundac|desborde|deslizamiento|derrumbe|aluvion|lluvia|precipitacion|crecida|"
+                       r"oleaje|maretazo|helada|friaje|nevada|granizad|sequia|deficit-hidrico|incendio-forestal|"
+                       r"vientos-fuertes|damnificad|estado-de-emergencia|nino-costero|fenomeno-el-nino|yaku|"
+                       r"quebrada|aniego|tormenta|bajas-temperaturas|ola-de-calor|alud|avalancha")
+
+
+#: Constantes del formato «turbo-stream» de React Router (los datos de cada página de busquedas.elperuano.pe).
+_TURBO = {-1: None, -2: float("nan"), -3: float("-inf"), -4: -0.0, -5: None, -6: float("inf"), -7: None}
+
+
+def turbo_stream(page: str):
+    """Los datos de la página (``loaderData``) que React Router serializa en ``streamController.enqueue(...)``:
+    una lista plana en la que cada objeto y lista apunta por índice a sus valores."""
+    chunk = re.search(r'streamController\.enqueue\(("(?:[^"\\]|\\.)*")\);</script>', page, re.S)
+    if not chunk:
+        raise ValueError("la página no trae datos de React Router")
+    arr = json.loads(json.loads(chunk.group(1)))
+    memo: dict[int, object] = {}
+
+    def dec(i):
+        if isinstance(i, int) and i < 0:
+            return _TURBO.get(i)
+        if i in memo:
+            return memo[i]
+        v = arr[i]
+        if isinstance(v, list):
+            if len(v) == 2 and v[0] == "D":
+                out = v[1]
+            else:
+                out = memo[i] = []
+                out.extend(dec(x) for x in v)
+        elif isinstance(v, dict):
+            out = memo[i] = {}
+            for k, x in v.items():
+                out[arr[int(k[1:])]] = dec(x)
+        else:
+            out = v
+        memo[i] = out
+        return out
+
+    return dec(0)
+
+
+#: Sumilla de un decreto que declara o prorroga un estado de emergencia.
+EMERGENCY_DECREE = re.compile(r"(?:declara|prorroga)\w*\s+(?:el\s+)?estado\s+de\s+emergencia", re.I)
+
+
+def elperuano_normas(src: dict, parts: Path, delay: float = 5.0) -> bytes:
+    """Decretos supremos que declaran o prorrogan un estado de emergencia, del buscador de normas legales de El
+    Peruano (``parametros.query``, mes por mes desde ``parametros.desde``, 20 resultados por página), con el texto
+    de cada uno (``pdf_text`` de su PDF, que trae el anexo de distritos). La búsqueda es de texto completo y
+    trae ruido: se guardan solo los dispositivos cuyo tipo es decreto supremo y cuya sumilla declara o prorroga
+    un estado de emergencia. Reanudable con ``parts``. JSON canónico ordenado por número de operación."""
+    import gzip
+    import time
+    from urllib.parse import urlencode
+
+    p = src.get("parametros", {})
+    base = src["url"].rstrip("/")
+    parts.mkdir(parents=True, exist_ok=True)
+    state = parts / "corte.json"
+    if state.exists():
+        end = date.fromisoformat(json.loads(state.read_text(encoding="utf-8"))["hasta"])
+    else:
+        end = datetime.now(F.LIMA).date()
+        state.write_text(json.dumps({"hasta": end.isoformat()}), encoding="utf-8")
+    last = [0.0]
+
+    def get(c: httpx.Client, url: str, pdf: bool = False) -> Optional[httpx.Response]:
+        for attempt in range(4):
+            time.sleep(max(0.0, last[0] + delay * (1 + 2 * attempt) - time.monotonic()))
+            last[0] = time.monotonic()
+            try:
+                r = c.get(url)
+            except httpx.HTTPError as e:
+                why = type(e).__name__
+                continue
+            why = f"HTTP {r.status_code}"
+            if r.status_code == 200:
+                if pdf and r.content[:5] != b"%PDF-":
+                    why = "una respuesta que no es PDF (¿verificación antirobots?)"
+                    break
+                return r
+            if pdf and r.status_code in (404, 410):
+                return None
+            # El buscador responde a veces 404 a una página de resultados que existe (visto el 26-10-2026 en la
+            # página 11 de diciembre de 2007, que al reintentar respondió bien): se reintenta como un 5xx.
+            if r.status_code not in (404, 429) and r.status_code < 500:
+                break
+            print(f"  {src['id']}: {why}, se reintenta", file=sys.stderr)
+        raise SystemExit(f"{src['id']}: {url} respondió {why}")
+
+    hits: dict[str, dict] = {}
+    with httpx.Client(follow_redirects=True, timeout=120, headers=UA, verify=ssl_context()) as c:
+        for a, b in _months(date.fromisoformat(p.get("desde", "2000-01-01")), end):
+            part = parts / f"{a:%Y-%m}.json"
+            if not part.exists():
+                got, start, total = [], 0, None
+                while total is None or start < total:
+                    q = urlencode({"query": p.get("query", "estado de emergencia"), "fechaIni": f"{a:%Y%m%d}",
+                                   "fechaFin": f"{b:%Y%m%d}", "tipoPublicacion": "NL", "start": start, "ci": "all"})
+                    res = turbo_stream(get(c, f"{base}/?{q}").text)["loaderData"]["routes/_index"]["results"]
+                    total = res["totalHits"] or 0
+                    got += [h for h in res["hits"] if (h.get("tipoDispositivo") or "").upper().startswith("DECRETO SUPREMO")
+                            and EMERGENCY_DECREE.search(h.get("sumilla") or "")]
+                    start += res.get("paginatedBy") or 20
+                    if not res["hits"]:
+                        break
+                part.write_text(json.dumps(got, ensure_ascii=False), encoding="utf-8")
+                print(f"  {src['id']}: {a:%Y-%m}: {len(got)} decretos de {total} resultados", file=sys.stderr)
+            hits.update((h["op"], h) for h in json.loads(part.read_text(encoding="utf-8")) if h.get("op"))
+        texts = parts / "textos"
+        texts.mkdir(exist_ok=True)
+        for i, (op, h) in enumerate(sorted(hits.items())):
+            f = texts / f"{op}.txt.gz"
+            if f.exists() or not h.get("urlPDF"):
+                continue
+            r = get(c, base + h["urlPDF"], pdf=True)
+            f.write_bytes(gzip.compress(pdf_text(r.content).encode("utf-8") if r is not None else b"", mtime=0))
+            if i % 100 == 0:
+                print(f"  {src['id']}: texto {i + 1} de {len(hits)}", file=sys.stderr)
+    data = elperuano_assemble(parts, src)
+    shutil.rmtree(parts)
+    return data
+
+
+def elperuano_assemble(parts: Path, src: dict) -> bytes:
+    """El JSON de ``elperuano_normas`` con lo que hay en ``parts`` (sin red), también a medias: ``hasta`` es
+    entonces el último mes buscado."""
+    import gzip
+
+    hits: dict[str, dict] = {}
+    months = sorted(parts.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9].json"))
+    for part in months:
+        hits.update((h["op"], h) for h in json.loads(part.read_text(encoding="utf-8")) if h.get("op"))
+    state = parts / "corte.json"
+    end = json.loads(state.read_text(encoding="utf-8"))["hasta"] if state.exists() else ""
+    if months and months[-1].stem < end[:7]:
+        end = months[-1].stem
+    texts = parts / "textos"
+    out = []
+    for op, h in sorted(hits.items()):
+        f = texts / f"{op}.txt.gz"
+        out.append({**{k: h.get(k) for k in ("fechaPublicacion", "numeroDispositivo", "op", "sumilla", "tipoDispositivo",
+                                                "distributor", "urlPDF")},
+                    "texto": gzip.decompress(f.read_bytes()).decode("utf-8") if f.exists() else None})
+    return json.dumps({"source": src["url"].rstrip("/"), "parametros": src.get("parametros", {}), "hasta": end,
+                       "normas": out}, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
+def indeci_coen(src: dict, parts: Path, delay: float = 5.0) -> bytes:
+    """Reportes del COEN (INDECI) de una sección del portal (``src["url"]``, p. ej. los reportes preliminares y
+    complementarios de emergencias): cada entrada del listado es una emergencia, con el título del último
+    reporte y el enlace a su PDF. Se recorre el listado completo (20 por página) y, de las emergencias de
+    origen climático (``COEN_CLIMATE`` sobre el título), se baja el PDF y se guarda su texto (``pdf_text``),
+    no el PDF. Todo queda en ``parts``, así que una descarga cortada sigue donde quedó (son decenas de miles
+    de pedidos a 5 s). Devuelve JSON canónico ordenado por la dirección de cada entrada."""
+    import gzip
+    import html as H
+    import time
+
+    base = src["url"].rstrip("/")
+    parts.mkdir(parents=True, exist_ok=True)
+    last = [0.0]
+
+    def get(c: httpx.Client, url: str, kind: str) -> Optional[httpx.Response]:
+        for attempt in range(4):
+            time.sleep(max(0.0, last[0] + delay * (1 + 2 * attempt) - time.monotonic()))
+            last[0] = time.monotonic()
+            try:
+                r = c.get(url)
+            except httpx.HTTPError as e:
+                why = type(e).__name__
+                continue
+            why = f"HTTP {r.status_code}"
+            if r.status_code == 200:
+                ctype = r.headers.get("content-type", "")
+                if kind == "pdf" and (r.content[:5] == b"%PDF-" or "pdf" in ctype):
+                    return r
+                if kind == "html" and "html" in ctype:
+                    return r
+                why = f"un {ctype or 'documento'} donde se esperaba {kind} (¿verificación antirobots?)"
+                break
+            if r.status_code in (404, 410) and kind == "pdf":
+                return None  # PDF retirado: la entrada queda sin texto
+            if r.status_code != 429 and r.status_code < 500:
+                break
+            print(f"  {src['id']}: {why}, se reintenta", file=sys.stderr)
+        raise SystemExit(f"{src['id']}: {url} respondió {why}")
+
+    def items(t: str) -> list[dict]:
+        """Entradas del listado (no las del carrusel de alertas de la cabecera)."""
+        got = []
+        for chunk in t.split('class="list-news alerts-archive"', 1)[-1].split("<article")[1:]:
+            url = re.search(r'href="(https://portal\.indeci\.gob\.pe/emergencias/[^"]+)"', chunk)
+            title = re.search(r"<h3>(.*?)</h3>", chunk, re.S)
+            pdf = re.search(r'href="([^"]+\.pdf)"', chunk, re.I)
+            if url and title:
+                got.append({"url": url.group(1), "pdf": H.unescape(pdf.group(1)) if pdf else "",
+                            "titulo": re.sub(r"\s+", " ", H.unescape(re.sub(r"<[^>]+>", "", title.group(1)))).strip()})
+        return got
+
+    entries: dict[str, dict] = {}
+    for p in sorted(parts.glob("lista-*.json")):
+        entries.update((e["url"], e) for e in json.loads(p.read_text(encoding="utf-8")))
+    with httpx.Client(follow_redirects=True, timeout=120, headers=UA, verify=ssl_context()) as c:
+        state = parts / "lista.json"
+        done = json.loads(state.read_text(encoding="utf-8")) if state.exists() else {"pagina": 0, "paginas": None}
+        page = done["pagina"] + 1
+        while done["paginas"] is None or page <= done["paginas"]:
+            t = get(c, f"{base}/page/{page}/", "html").text
+            if done["paginas"] is None:
+                m = re.findall(r"/page/(\d+)/", t)
+                done["paginas"] = max(map(int, m)) if m else 1
+            got = items(t)
+            (parts / f"lista-{page:05d}.json").write_text(json.dumps(got, ensure_ascii=False), encoding="utf-8")
+            entries.update((e["url"], e) for e in got)
+            done["pagina"] = page
+            state.write_text(json.dumps(done), encoding="utf-8")
+            if page % 50 == 0:
+                print(f"  {src['id']}: listado {page} de {done['paginas']} ({len(entries)} entradas)", file=sys.stderr)
+            page += 1
+        # El listado va del más nuevo al más viejo: lo publicado mientras se recorría corrió las páginas.
+        page = 1
+        while True:
+            t = get(c, f"{base}/page/{page}/", "html").text
+            new = [e for e in items(t) if e["url"] not in entries]
+            entries.update((e["url"], e) for e in new)
+            if not new:
+                break
+            page += 1
+        texts = parts / "textos"
+        texts.mkdir(exist_ok=True)
+        todo = [e for e in entries.values() if e["pdf"] and COEN_CLIMATE.search(_plain(e["titulo"]))]
+        for i, e in enumerate(todo):
+            f = texts / (hashlib.sha256(e["pdf"].encode()).hexdigest()[:20] + ".txt.gz")
+            if f.exists():
+                continue
+            r = get(c, e["pdf"], "pdf")
+            f.write_bytes(gzip.compress(pdf_text(r.content).encode("utf-8") if r is not None else b"", mtime=0))
+            if i % 100 == 0:
+                print(f"  {src['id']}: PDF {i + 1} de {len(todo)}", file=sys.stderr)
+    data = coen_assemble(parts, base)
+    shutil.rmtree(parts)
+    return data
+
+
+def coen_assemble(parts: Path, base: str) -> bytes:
+    """El JSON de ``indeci_coen`` con lo que hay en ``parts`` (sin red): sirve también para una descarga a medias.
+    Del texto de cada PDF quedan las secciones 1 a 3 (hechos, ubicación y daños), no las acciones de respuesta."""
+    import gzip
+
+    entries: dict[str, dict] = {}
+    for p in sorted(parts.glob("lista-*.json")):
+        entries.update((e["url"], e) for e in json.loads(p.read_text(encoding="utf-8")))
+    texts = parts / "textos"
+    out = []
+    for e in sorted(entries.values(), key=lambda e: e["url"]):
+        f = texts / (hashlib.sha256(e["pdf"].encode()).hexdigest()[:20] + ".txt.gz") if e["pdf"] else None
+        text = gzip.decompress(f.read_bytes()).decode("utf-8") if f and f.exists() else None
+        if text:
+            text = re.split(r"\n\s*4\.\s*ACCIONES", text, maxsplit=1)[0]
+        out.append({**e, "texto": text})
+    return json.dumps({"source": base, "entradas": out}, ensure_ascii=False, sort_keys=True,
+                      separators=(",", ":")).encode("utf-8")
+
+
+#: Instituciones públicas peruanas (``enso.reach.public_peru``: .gob.pe y .mil.pe): su información es pública por
+#: ley (Ley N° 27806) y, por decisión del proyecto (26-10-2026), un «Disallow» de su robots.txt no impide pedirla.
+#: ``Robots.allowed`` aplica esa excepción (nunca ante una verificación antirobots); aquí se pide además al menos
+#: PERU_PUBLIC_DELAY entre pedidos, porque estas descargas son de miles de páginas.
 PERU_PUBLIC_DELAY = 5.0
-
-
-def peru_public(url: str) -> bool:
-    host = (urlsplit(url).hostname or "").lower()
-    return any(host.endswith(sfx) for sfx in PERU_PUBLIC)
+peru_public = public_peru
 
 
 def robots_check(url: str) -> float:
     """Como el resto del observatorio, lee el robots.txt del servidor (RFC 9309) antes de pedir nada y lo
-    respeta, salvo los «Disallow» de instituciones públicas peruanas (``PERU_PUBLIC``). Devuelve la pausa entre
-    pedidos: el Crawl-delay del servidor (0 si no pide; al menos PERU_PUBLIC_DELAY para esas instituciones)."""
+    respeta, con la excepción de las instituciones públicas peruanas de ``Robots.allowed``. Devuelve la pausa
+    entre pedidos: el Crawl-delay del servidor (0 si no pide; al menos PERU_PUBLIC_DELAY para esas instituciones)."""
     with httpx.Client(follow_redirects=True, timeout=30, headers=UA, verify=ssl_context()) as c:
         robots = Robots(c)
         ok = robots.allowed(url)
-        if peru_public(url):
-            if robots.failure(url) == "challenge":
-                raise SystemExit(f"{url}: el servidor responde con una verificación antirobots; no se pide nada")
-            return max(PERU_PUBLIC_DELAY, robots.crawl_delay(url) or 0.0)
+        if not ok and robots.failure(url) == "challenge":
+            raise SystemExit(f"{url}: el servidor responde con una verificación antirobots; no se pide nada")
         if ok is None:
             raise SystemExit(f"{url}: el robots.txt del servidor no respondió ({robots.failure(url)}); no se pide nada")
         if not ok:
             raise SystemExit(f"{url}: el robots.txt del servidor no permite pedirlo a un programa")
-        return robots.crawl_delay(url) or 0.0
+        delay = robots.crawl_delay(url) or 0.0
+        return max(PERU_PUBLIC_DELAY, delay) if public_peru(url) else delay
 
 
-def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
+def locate(src: dict, caches: list[Path]) -> Path:
+    """El archivo de ``src`` en la primera caché que lo tenga, o donde se descargaría (la primera)."""
+    for cache in caches:
+        if (cache / src["archivo"]).exists():
+            return cache / src["archivo"]
+    return caches[0] / src["archivo"]
+
+
+#: Ensamblado sin red de las descargas largas y reanudables, para construir con lo bajado hasta ahora.
+ASSEMBLE = {
+    "indeci-coen": lambda src, parts: coen_assemble(parts, src["url"].rstrip("/")),
+    "elperuano": lambda src, parts: elperuano_assemble(parts, src),
+    "dspace": lambda src, parts: dspace_assemble(parts, src["url"]),
+    "rpp": lambda src, parts: rpp_assemble(parts, src),
+}
+
+
+def snapshot(src: dict, caches: list[Path]) -> Optional[Path]:
+    """Si la cosecha de ``src`` sigue a medias (hay carpeta de partes y no archivo final), escribe lo bajado hasta
+    ahora en ``<archivo>.parcial.json`` junto a las partes, lo anota en el manifiesto (``parcial``) y lo devuelve;
+    ``None`` si no hay nada a medias."""
+    if src.get("descarga") not in ASSEMBLE:
+        return None
+    for cache in caches:
+        path = cache / src["archivo"]
+        parts = cache / f"{path.stem}-partes"
+        if path.exists():
+            return None
+        if parts.is_dir():
+            out = path.with_name(path.stem + ".parcial.json")
+            out.write_bytes(ASSEMBLE[src["descarga"]](src, parts))
+            src["parcial"] = True
+            src["obtenido"] = datetime.now(timezone.utc).date().isoformat()
+            return finish(src, out, accept_changes=True)
+    return None
+
+
+def fetch(src: dict, cache, accept_changes: bool, offline: bool) -> Path:
+    caches = cache if isinstance(cache, list) else [cache]
+    stem = Path(src["archivo"]).stem
+    cache = next((c for c in caches if (c / src["archivo"]).exists()), None)
+    if cache is not None:
+        src.pop("parcial", None)
+    else:  # una cosecha a medias sigue en la caché donde están sus partes
+        cache = next((c for c in caches if (c / f"{stem}-partes").is_dir()), caches[0])
     path = cache / src["archivo"]
     if not path.exists():
         if offline:
@@ -297,7 +998,7 @@ def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
         if src.get("descarga") == "manual":
             raise SystemExit(f"{src['id']}: falta {path}. Esta fuente se descarga a mano: {src['manual']}")
         path.parent.mkdir(parents=True, exist_ok=True)
-        delay = robots_check(src["url"])
+        delay = robots_check(src.get("url_robots", src["url"]))  # p. ej. la URL con la consulta que se hará
         print(f"descargando {src['url']}", file=sys.stderr)
         src["obtenido"] = datetime.now(timezone.utc).date().isoformat()
         if src.get("descarga") == "arcgis":
@@ -307,6 +1008,20 @@ def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
             path.write_bytes(idmc_api(src, delay=max(1.0, delay)))
         elif src.get("descarga") == "sinpad-api":
             path.write_bytes(sinpad_api(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
+        elif src.get("descarga") == "oai-pmh":
+            path.write_bytes(oai_pmh(src, delay=max(PERU_PUBLIC_DELAY, delay)))
+        elif src.get("descarga") == "indeci-coen":
+            path.write_bytes(indeci_coen(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
+        elif src.get("descarga") == "elperuano":
+            path.write_bytes(elperuano_normas(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
+        elif src.get("descarga") == "wp-rest":
+            path.write_bytes(wp_rest(src, delay=max(PERU_PUBLIC_DELAY, delay)))
+        elif src.get("descarga") == "rpp":
+            path.write_bytes(rpp_archivo(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
+        elif src.get("descarga") == "sitemaps":
+            path.write_bytes(sitemap_news(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
+        elif src.get("descarga") == "dspace":
+            path.write_bytes(dspace_items(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
         else:
             with httpx.Client(follow_redirects=True, timeout=180, headers=UA, verify=ssl_context()) as c:
                 r = c.get(src["url"])
@@ -461,6 +1176,8 @@ def web_payload(records: list[dict]) -> tuple[dict, dict[str, dict]]:
             r["Descripción"], r["Ubicacion"], r["FuenteCita"], r["Fuente"], r["DuraciónEvento"] or "",
             r["PrecisionFecha"], r["Id"], r["DangerTypeMetodo"], r["AtribucionENSO"],
             {k: r[k] for k in E.IMPACT_COLUMNS if r.get(k)},
+            int(r.get("Corroboracion") or 0), [u for u in (r.get("FuentesAdicionales") or "").split(" | ") if u],
+            r.get("FechaTipo") or "evento",
         ]
     return {"cols": WEB_COLS, "dict": dicts, "rows": rows}, detail
 
@@ -561,11 +1278,42 @@ def write_context(context: dict, ind: dict, records: list[dict], ongoing: Option
     csv_path.write_text("\ufeff" + buf.getvalue(), encoding="utf-8")
 
 
+PREVENTION_COLS = ["ubigeo", "departamento", "provincia", "distrito"]  # + enlace.prevention()["columnas"]
+
+
+def write_prevention(prev: dict, evidence: dict, t: Territory, path_json: Path, path_csv: Path, generated: str) -> None:
+    """Indicadores de prevención (``enlace.prevention``) para el sitio, con la lista de declaratorias y evaluaciones
+    (fecha, tipo, peligro, enlace y distritos), y el CSV por distrito."""
+    decrees = [[d["fecha"], d["numero"], d["tipo"], d["peligro"], d["url"], d["ubigeos"]] for d in evidence.get("decretos", [])]
+    # Los informes técnicos van uno por uno; los puntos del inventario de INGEMMET (miles) solo como cifras por distrito.
+    evals = [[e["anio"], e["institucion"], e["titulo"], e["url"], e["ubigeos"]]
+             for e in sorted(evidence.get("evaluaciones", []), key=lambda e: (e["anio"], e["titulo"]))
+             if e.get("tipo") != "inventario"]
+    appeal_cols = ["fecha", "codigo", "nombre", "tipo", "modalidad", "clima", "montoCHF", "beneficiarios", "url"]
+    appeals = [[a[k] for k in appeal_cols] for a in evidence.get("llamamientos", [])]
+    path_json.write_text(json.dumps({"generatedAt": generated, **prev,
+                                     "decretos": {"cols": ["fecha", "numero", "tipo", "peligro", "url", "ubigeos"], "rows": decrees},
+                                     "evaluaciones": {"cols": ["anio", "institucion", "titulo", "url", "ubigeos"], "rows": evals},
+                                     "llamamientos": {"cols": appeal_cols, "rows": appeals}},
+                                    ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(PREVENTION_COLS + prev["columnas"])
+    for code, vals in prev["distritos"].items():
+        if len(code) != 6:
+            continue
+        dep, prov, dist = t.names(code)
+        w.writerow([code, dep, prov, dist, *vals])
+    path_csv.write_text(buf.getvalue(), encoding="utf-8")
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--cache", type=Path, default=CACHE)
+    ap.add_argument("--cache", type=Path, action="append", help="caché de descargas (puede repetirse; por omisión "
+                    "~/.cache/enso-historico)")
     ap.add_argument("--aceptar-cambios", action="store_true")
     ap.add_argument("--sin-red", action="store_true", help="no descargar: usar solo la caché")
+    ap.add_argument("--parcial", action="store_true", help="usar lo bajado de las cosechas largas que siguen a medias")
     ap.add_argument("--icen", type=Path, default=FIX / "igp-icen.txt")
     ap.add_argument("--oni", type=Path, default=FIX / "cpc-oni.txt")
     ap.add_argument("--out", type=Path, default=OUT)
@@ -574,20 +1322,56 @@ def main(argv=None) -> int:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     territory = Territory()
     calendar = EnsoCalendar.from_files(args.icen, args.oni)
+    caches = args.cache or [CACHE]
+
+    def obtain(src: dict) -> Optional[Path]:
+        """El archivo de la fuente; con ``--parcial``, lo bajado hasta ahora, o nada si la cosecha (de la segunda ronda)
+        aún no empezó o no se puede retomar: esa fuente se salta y queda anotada como pendiente."""
+        got = snapshot(src, caches) if args.parcial else None
+        if got:
+            return got
+        if args.parcial and args.sin_red and src.get("lector") in {**CANDIDATES, **EVIDENCE} \
+                and not any((c / src["archivo"]).exists() for c in caches):
+            print(f"{src['id']}: cosecha pendiente, se salta", file=sys.stderr)
+            src["parcial"] = "pendiente"
+            return None
+        return fetch(src, caches, args.aceptar_cambios, args.sin_red)
+
     records: list[dict] = []
     context: dict[str, dict] = {}
+    candidates: dict[str, list[dict]] = defaultdict(list)
+    evidence: dict[str, list[dict]] = defaultdict(list)
     for src in manifest["fuentes"]:
         lector = src.get("lector")
         if lector in READERS:
-            path = fetch(src, args.cache, args.aceptar_cambios, args.sin_red)
+            path = obtain(src)
             skipped: Counter = Counter()
             got = list(READERS[lector](path, territory, calendar, skipped))
             src["registros"] = len(got)
             if skipped:
                 src["descartados"] = dict(skipped.most_common())
             records += got
+        elif lector in CANDIDATES:
+            path = obtain(src)
+            if path is None:
+                continue
+            skipped = Counter()
+            got = list(CANDIDATES[lector](path, territory, calendar, skipped, src))
+            for r in got:
+                r["_fuente"] = src["id"]
+            src["candidatos"] = len(got)
+            if skipped:
+                src["descartados"] = dict(skipped.most_common())
+            candidates[lector] += got
+        elif lector in EVIDENCE:
+            path = obtain(src)
+            if path is None:
+                continue
+            got = EVIDENCE[lector](json.loads(path.read_text(encoding="utf-8")), territory, src)
+            src["registros"] = len(got)
+            evidence[EVIDENCE_KIND.get(lector, "evaluaciones")] += got
         elif lector in CONTEXT:
-            path = fetch(src, args.cache, args.aceptar_cambios, args.sin_red)
+            path = obtain(src)
             context[lector] = CONTEXT[lector](json.loads(path.read_text(encoding="utf-8")), territory)
             src["registros"] = sum(v["total"] if isinstance(v, Counter) else len(v) for v in context[lector].values())
     cur = curated_records(territory, calendar)
@@ -596,6 +1380,18 @@ def main(argv=None) -> int:
             src["registros"] = len(cur)
     records += cur
     records = apply_reviews(records)
+    # Segunda ronda: lo que cuentan el COEN y la prensa se une a las filas del mismo evento (o queda como fila propia).
+    link_stats: Counter = Counter()
+    ordered = [c for k in LINK_ORDER for c in sorted(candidates.get(k, []), key=lambda r: (r["Date"], r["Id"]))]
+    added = enlace.link(records, ordered, link_stats)
+    by_src = Counter(r["_fuente"] for r in added)
+    linked = Counter(r["_fuente"] for r in ordered) - by_src
+    for src in manifest["fuentes"]:
+        if src.get("lector") in CANDIDATES:
+            src["registros"] = by_src.get(src["id"], 0)
+            src["corroboran"] = linked.get(src["id"], 0)
+    records += added
+    manifest["enlace"] = dict(sorted(link_stats.items()))
     ids = Counter(r["Id"] for r in records)
     dup = [k for k, v in ids.items() if v > 1]
     if dup:
@@ -629,7 +1425,8 @@ def main(argv=None) -> int:
         "cobertura": {**manifest["cobertura"], "anios": [all_years.start, all_years.stop - 1]},
         # El sitio publicado no enlaza al repositorio (tools/prepare_site --hide-repo).
         "fuentes": [{k: (None if k == "url" and REPO in (s.get(k) or "") else s.get(k))
-                     for k in ("id", "nombre", "tipo", "url", "pagina", "licencia", "cobertura", "registros", "nota", "obtenido")}
+                     for k in ("id", "nombre", "tipo", "url", "pagina", "licencia", "cobertura", "registros", "corroboran",
+                               "parcial", "nota", "obtenido")}
                     for s in manifest["fuentes"]],
         "eventoEnCurso": ongoing,
         "grandesNinos": GREAT,
@@ -644,10 +1441,12 @@ def main(argv=None) -> int:
         "columnas": E.COLUMNS,
     }
     (args.out / "resumen.json").write_text(json.dumps(summary, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    prev = enlace.prevention(records, evidence["decretos"], evidence["evaluaciones"], evidence["llamamientos"])
+    write_prevention(prev, evidence, territory, args.out / "prevencion.json", DATA / "prevencion-distrito.csv", generated)
     write_indicators(ind, territory, lambda lvl: DATA / f"indicadores-{lvl}.csv")
     write_context(context, ind, records, ongoing, territory, args.out / "contexto.json", DATA / "contexto-distrito.csv", generated)
     # Copias en el sitio para descargarlas sin pasar por el repositorio.
-    for name in [f"indicadores-{lvl}.csv" for lvl in ind if lvl != "pais"] + ["contexto-distrito.csv"]:
+    for name in [f"indicadores-{lvl}.csv" for lvl in ind if lvl != "pais"] + ["contexto-distrito.csv", "prevencion-distrito.csv"]:
         shutil.copyfile(DATA / name, args.out / name)
     manifest["generado"] = generated
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

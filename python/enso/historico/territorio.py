@@ -37,7 +37,9 @@ DEP_ALIASES = {"lima provincia": "lima", "lima provincias": "lima", "lima region
 NAME_ALIASES = {"nasca": "nazca", "kimbiri": "quimbiri", "daniel alomia robles": "daniel alomias robles",
                 "ihuayllo": "huayllo", "pampas grande": "pampas", "hualla": "huaya", "allauca": "ayauca",
                 "san juan de iscos": "san juan de yscos", "caspizapa": "caspisapa", "lima metropolitana": "lima",
-                "lurigancho-chosica": "lurigancho"}
+                "lurigancho-chosica": "lurigancho", "lurigancho chosica": "lurigancho", "echarati": "echarate",
+                "ccatcca": "ccatca", "mariscal gamarra": "gamarra", "la encanada": "encanada",
+                "san francisco de asis yarusyacan": "san francisco de asis de yarusyacan", "zana": "sana"}
 
 
 def _name(s: str) -> str:
@@ -118,6 +120,14 @@ class Territory:
                 hit = [code for code, n in names.items() if n == loose]
                 if not hit and len(loose) >= 8:
                     hit = [code for code, n in names.items() if n.startswith(loose)]
+                if len(hit) == 1:
+                    return hit[0]
+            if not pc and dk:
+                # Sin provincia: grafía distinta («TAMBOGRANDE», «CAMPO VERDE») si en el departamento hay un único
+                # distrito que coincida sin espacios ni guiones.
+                loose = _loose(sk)
+                hit = [code for code, d in self.dist.items()
+                       if key(self.dep[code[:2]]["name"]) == dk and _loose(_name(d["name"])) == loose]
                 if len(hit) == 1:
                     return hit[0]
         if c and len(c) == 4:

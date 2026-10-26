@@ -52,12 +52,25 @@ EXTRA_COLUMNS = [
     "FuenteCita",          # la cita original (periódico y fecha, INDECI…) en texto legible
     "Licencia",
     "Confianza",           # alta | media | baja (resumen de la calidad de fecha, lugar y tipo)
+    "FechaTipo",           # evento | informe (del primer reporte) | publicacion (de la nota) | texto (la que cita la nota)
+    "Corroboracion",       # cuántos reportes o notas de otras fuentes cuentan el mismo evento (enlace.link)
+    "OrigenesCorroboran",  # de qué fuentes son (coen, prensa…)
+    "FuentesAdicionales",  # sus enlaces, separados por « | » (hasta 10)
 ]
 
 COLUMNS = TEAM_COLUMNS + EXTRA_COLUMNS
 IMPACT_COLUMNS = ["Fallecidos", "Desaparecidos", "Heridos", "Afectados", "Damnificados", "Evacuados", "Reubicados",
                   "Desplazados", "ViviendasDestruidas", "ViviendasAfectadas", "HectareasCultivo", "KmVias", "CentrosEducativos",
                   "CentrosSalud", "PerdidasUSD"]
+
+#: Nombre legible de cada columna de impacto (para descripciones).
+IMPACT_LABELS = {
+    "Fallecidos": "fallecidos", "Desaparecidos": "desaparecidos", "Heridos": "heridos", "Afectados": "personas afectadas",
+    "Damnificados": "damnificados", "Evacuados": "evacuados", "Reubicados": "reubicados", "Desplazados": "desplazados",
+    "ViviendasDestruidas": "viviendas destruidas o colapsadas", "ViviendasAfectadas": "viviendas afectadas o inhabitables",
+    "HectareasCultivo": "hectáreas de cultivo o cobertura natural", "KmVias": "km de vías",
+    "CentrosEducativos": "locales educativos", "CentrosSalud": "establecimientos de salud", "PerdidasUSD": "pérdidas (US$)",
+}
 
 # ---------------------------------------------------------------------------
 # Peligros

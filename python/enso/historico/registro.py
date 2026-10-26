@@ -55,6 +55,6 @@ def make(territory, calendar, *, code: str, day: str, precision: str, danger: st
         "AltitudCapital": territory.altitude(code), "FaseENSO": ph.phase if ph else "",
         "EventoENSO": ph.event if ph else "", "ICEN": ph.icen if ph else None, "ONI": ph.oni if ph else None,
         "AtribucionENSO": attrib, **imp, "ImpactoReportado": "si" if any(imp.values()) else "no",
-        "FuenteCita": cite, "Licencia": license, "Confianza": confidence,
+        "FuenteCita": cite, "Licencia": license, "Confianza": confidence, "FechaTipo": "evento", "Corroboracion": 0,
     })
     return rec

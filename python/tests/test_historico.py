@@ -224,7 +224,7 @@ def test_manifest_records_provenance():
     m = json.loads(B.MANIFEST.read_text(encoding="utf-8"))
     for s in m["fuentes"]:
         assert s["licencia"] and s["url"].startswith("https://"), s["id"]
-        if s.get("archivo"):
+        if s.get("archivo") and s.get("parcial") != "pendiente":
             assert re.fullmatch(r"[0-9a-f]{64}", s.get("sha256", "")), s["id"]
             assert s.get("obtenido"), s["id"]
     assert m["cobertura"]["origenes"] == ["desinventar"]

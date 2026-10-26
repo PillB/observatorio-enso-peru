@@ -14,6 +14,7 @@ import * as EV from './historico-evidencia.js';
 const BASE = 'assets/historico/';
 let CACHE = null;
 let CONTEXT = null;
+let PREVENTION = null;
 const DETAIL = new Map();
 
 async function getJSON(path) {
@@ -42,6 +43,12 @@ export async function loadAll() {
 function context() {
   if (!CONTEXT) CONTEXT = getJSON(`${BASE}contexto.json`).catch(() => ({ distritos: {} }));
   return CONTEXT;
+}
+
+/** Declaratorias, evaluaciones, inventarios y llamamientos (prevencion.json); se pide después del mapa. */
+function prevention() {
+  if (!PREVENTION) PREVENTION = getJSON(`${BASE}prevencion.json`).catch(() => null);
+  return PREVENTION;
 }
 
 async function detail(dep) {
@@ -77,7 +84,21 @@ const DANGER_LABEL = {
   Sequias: 'Sequía', 'Incendio forestal': 'Incendio forestal', Erosion: 'Erosión', Epidemia: 'Epidemia', Plaga: 'Plaga',
 };
 const dl = (t) => DANGER_LABEL[t] || t;
-const SOURCE_LINK = { desinventar: 'DesInventar', sinpad: 'SINPAD', idmc: 'IDMC', 'nasa-glc': 'noticia' };
+const SOURCE_LINK = { desinventar: 'DesInventar', sinpad: 'SINPAD', idmc: 'IDMC', 'nasa-glc': 'noticia', coen: 'reporte del COEN', prensa: 'nota de prensa', glof: 'base de GLOF' };
+/** Qué fecha trae el registro cuando no es la del evento. */
+const DATE_KIND = { informe: 'fecha del primer reporte del COEN', publicacion: 'fecha de publicación de la nota', texto: 'fecha que cita la nota' };
+const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return 'enlace'; } };
+// Varias notas del mismo medio van juntas: «medio.pe (1, 2, 3)», cada número enlaza a una nota.
+const corrLinks = (links) => {
+  const by = new Map();
+  for (const u of links) {
+    const h = hostOf(u);
+    if (!by.has(h)) by.set(h, []);
+    by.get(h).push(u);
+  }
+  const a = (u, t) => html`<a href="${safeUrl(u)}" rel="noopener" target="_blank">${t}</a>`;
+  return [...by.entries()].map(([h, us], k) => html`${k ? ', ' : ''}${us.length === 1 ? a(us[0], h) : html`${h} (${us.map((u, j) => html`${j ? ', ' : ''}${a(u, `nota ${j + 1}`)}`)})`}`);
+};
 const ATTN = { 'muy alto': ['Muy alto', 'octagon', 4], alto: ['Alto', 'triangle', 3], medio: ['Medio', 'info', 2], bajo: ['Bajo', 'dash', 1] };
 
 export function readState() {
@@ -271,7 +292,7 @@ export const memoriaView = {
   title: 'Memoria de desastres',
   render() {
     return html`
-      <div class="page-head"><div class="eyebrow">Memoria de desastres · 1970–2026</div><h1>Dónde golpearon antes El Niño, las lluvias y los huaycos</h1>
+      <div class="page-head"><div class="eyebrow">Memoria de desastres · 1559–2026</div><h1>Dónde golpearon antes El Niño, las lluvias y los huaycos</h1>
         <p>Catálogo de inundaciones, desbordes, huaycos, deslizamientos, lluvias intensas, oleajes, sequías, heladas y otros desastres de origen climático en el Perú, ubicados por distrito y con su fuente. Sirve para prepararse: si un Niño como los anteriores vuelve, lo más probable es que vuelva a golpear donde ya golpeó.</p></div>
       <div id="hz-root" data-tour-id="memoria"><div class="skeleton" aria-hidden="true"></div><p class="muted">Cargando el catálogo histórico…</p></div>`;
   },
@@ -295,7 +316,8 @@ function mount(root, D) {
     root.innerHTML = String(page(D, s));
     wire(root, D, s, set);
     if (focusSel) $(focusSel, root)?.focus({ preventScroll: true });
-    if (s.area) { fillDetail(root, D, s); fillContext(root, D, s); }
+    if (s.area) { fillDetail(root, D, s); fillContext(root, D, s); fillPrevArea(root, D, s); }
+    fillPrevention(root, D);
   };
   // Clic delegado en rankings, enlaces de área y cierre del perfil. root sobrevive a cada redibujo, así que se
   // registra una sola vez por montaje (en wire se sumaría un manejador por redibujo).
@@ -359,6 +381,8 @@ function page(D, s) {
     </section>
     ${greatSection(D, s)}
     ${rankingSection(D, s, stats)}
+    <section class="card hz-card" id="hz-prev" aria-labelledby="hz-prev-h"><div class="section-head"><h2 id="hz-prev-h">¿Se sabía antes? Peligros documentados y emergencias que igual ocurrieron</h2></div><p class="muted">Cargando declaratorias, evaluaciones e inventarios…</p></section>
+    ${pastSection(D)}
     ${evidenceSection(D)}
     ${methodSection(D)}`;
 }
@@ -426,6 +450,7 @@ function profileShell(D, s, recs, years) {
     ${now.length ? html`<p class="hz-now">${raw(ICON.triangle)}<span><strong>${D.ongoing}:</strong> ${n0(now.length)} registro${now.length > 1 ? 's' : ''} aquí desde ${F.fmtMonth(now.map((r) => r.d).sort()[0])}, el último el ${when(now.map((r) => r.d).sort().at(-1))}.</span></p>` : ''}
     ${expect}
     <div id="hz-ctx"></div>
+    <div id="hz-prevbox"></div>
     <dl class="hz-kv"><div><dt>Fallecidos y desaparecidos</dt><dd>${n0(st.muertos)}</dd></div><div><dt>Afectados y damnificados</dt><dd>${n0(st.afectados)}</dd></div><div><dt>Viviendas destruidas</dt><dd>${n0(st.viviendas)}</dd></div><div><dt>Cuánto más daño con Niño</dt><dd>${metricText(st, 'razon')}</dd></div></dl>
     ${hz.length ? html`<h4 class="hz-h4">Peligros registrados</h4><ol class="hz-bars">${hz.map(([t, v]) => html`<li><span>${dl(t)}</span><span class="hz-bar"><span style="width:${((v / maxHz) * 100).toFixed(0)}%"></span></span><span class="hz-bar-v">${n0(v)}</span></li>`)}</ol>` : ''}
     <h4 class="hz-h4">Temporadas con daños aquí</h4>
@@ -447,11 +472,13 @@ async function fillDetail(root, D, s) {
   const item = (r) => {
     const d = det[String(r.i)] || [];
     const [desc, , cite, url, dur] = d;
-    return html`<li class="hz-ev"><div class="hz-ev-top"><span class="hz-ev-d">${when(r.d)}</span><span class="tag">${dl(r.t)}</span>${r.e && !/^(Sin asociación|Temporada)/.test(r.e) ? html`<span class="tag tag-warm">${r.e}</span>` : ''}${r.o === 'curado' ? html`<span class="tag">curado</span>` : ''}${r.e === D.ongoing ? html`<span class="tag tag-warm">en curso</span>` : ''}</div>
+    const more = d[10] || 0, links = d[11] || [], kind = DATE_KIND[d[12]];
+    return html`<li class="hz-ev"><div class="hz-ev-top"><span class="hz-ev-d">${when(r.d)}</span>${kind ? html`<span class="muted small">(${kind})</span>` : ''}<span class="tag">${dl(r.t)}</span>${r.e && !/^(Sin asociación|Temporada)/.test(r.e) ? html`<span class="tag tag-warm">${r.e}</span>` : ''}${r.o === 'curado' ? html`<span class="tag">curado</span>` : ''}${r.e === D.ongoing ? html`<span class="tag tag-warm">en curso</span>` : ''}</div>
       <p class="hz-ev-where">${areaName(D, r.u)}${dur ? ` · ${dur} día${dur > 1 ? 's' : ''}` : ''}</p>
       ${desc ? html`<p class="hz-ev-t">${desc.length > 420 ? `${desc.slice(0, 420)}…` : desc}</p>` : ''}
       ${r.muertos || r.afect || r.viv ? html`<p class="small">${[r.muertos ? `${n0(r.muertos)} fallecidos o desaparecidos` : '', r.afect ? `${n0(r.afect)} afectados o damnificados` : '', r.viv ? `${n0(r.viv)} viviendas destruidas` : ''].filter(Boolean).join(' · ')}</p>` : ''}
-      <p class="muted small">Fuente: ${cite || 'ver enlace'} ${url ? html`· <a href="${safeUrl(url)}" rel="noopener" target="_blank">${SOURCE_LINK[r.o] || 'documento'}</a>` : ''}</p></li>`;
+      <p class="muted small">Fuente: ${cite || 'ver enlace'} ${url ? html`· <a href="${safeUrl(url)}" rel="noopener" target="_blank">${SOURCE_LINK[r.o] || 'documento'}</a>` : ''}</p>
+      ${more ? html`<p class="small hz-corr">${raw(ICON.check)}<span>También lo ${more > 1 ? `cuentan ${n0(more)} reportes o notas` : 'cuenta otro reporte o nota'}${links.length ? ': ' : '.'}${corrLinks(links)}</span></p>` : ''}</li>`;
   };
   const paint = () => {
     box.innerHTML = String(html`<ol class="hz-evs">${sorted.slice(0, shown).map(item)}</ol>${sorted.length > shown ? html`<button type="button" class="btn ghost" id="hz-more">Ver ${Math.min(30, sorted.length - shown)} más (quedan ${n0(sorted.length - shown)})</button>` : ''}`);
@@ -490,6 +517,128 @@ async function fillContext(root, D, s) {
     ${ana.length ? html`<details class="more"${muyAlto ? raw(' open') : ''}><summary>Puntos críticos de la ANA (${n0(ana.length)})</summary><ul class="hz-ctxlist">${ana.slice(0, 15).map((a) => html`<li><strong>${a[1]}</strong>${where(a[0])} <span class="tag${a[4] === 'Muy Alto' ? ' tag-warm' : ''}">peligro ${a[4].toLowerCase()}</span><br><span class="small">${a[2]} · ${a[3]}${a[5] ? ` · ${n0(a[5])} personas` : ''}${a[6] ? ` · ${n0(a[6])} viviendas expuestas` : ''}</span>${a[7] ? html`<br><span class="muted small">Acción recomendada: ${a[7]}${a[8] ? ` (S/ ${n0(a[8])})` : ''}</span>` : ''}</li>`)}</ul>${ana.length > 15 ? html`<p class="muted small">Y ${n0(ana.length - 15)} más en el CSV de contexto.</p>` : ''}</details>` : ''}
     ${zc.length ? html`<details class="more"><summary>Zonas críticas del INGEMMET (${n0(zc.length)})</summary><ul class="hz-ctxlist">${zc.slice(0, 15).map((z) => html`<li><strong>${z[1] || 'Sin nombre'}</strong>${where(z[0])} · ${z[2]}${z[3] ? ` · expone: ${z[3].toLowerCase()}` : ''}${z[4] ? html` · <a href="${safeUrl(z[4])}" rel="noopener" target="_blank">boletín</a>` : ''}</li>`)}</ul>${zc.length > 15 ? html`<p class="muted small">Y ${n0(zc.length - 15)} más en el CSV de contexto.</p>` : ''}</details>` : ''}
   </div>`);
+}
+
+/** Filas de una tabla {cols, rows} como objetos. */
+const objs = (t) => (t?.rows || []).map((r) => Object.fromEntries(t.cols.map((c, i) => [c, r[i]])));
+
+/** Barras al 100 %: en cada año, la parte de las emergencias con el peligro ya documentado. */
+function prevChart(A) {
+  const rows = A.filter((a) => a.anio >= 2003 && a.eventos > 0);
+  if (!rows.length) return '';
+  // Alto lógico igual al de la hoja de estilos (150 px) para que las etiquetas solo se estiren a lo ancho.
+  const W = 1000, H = 150, top = 6, base = H - 26, bw = W / rows.length, gap = 2;
+  const bars = rows.map((a, i) => {
+    const share = a.eventosConAviso / a.eventos;
+    const h = base - top, hA = share * h;
+    const x = (i * bw + bw * 0.12).toFixed(1), w = (bw * 0.76).toFixed(1);
+    const label = `${a.anio}: ${n0(a.eventosConAviso)} de ${n0(a.eventos)} emergencias (${pct(share)}) en distritos con el peligro ya documentado`;
+    return `<g data-tip="${esc(label)}"><title>${esc(label)}</title><rect class="hz-pv-b" x="${x}" y="${top}" width="${w}" height="${Math.max(0, h - hA - gap).toFixed(1)}" rx="2"></rect><rect class="hz-pv-a" x="${x}" y="${(base - hA).toFixed(1)}" width="${w}" height="${hA.toFixed(1)}" rx="2"></rect></g>`;
+  }).join('');
+  // Primer y último año pegados a los bordes; los quinquenios demasiado cerca de ellos se omiten para no encimarse.
+  const last = rows.length - 1;
+  const ticks = rows.map((a, i) => ({ a, i })).filter(({ a, i }) => i === 0 || i === last || (a.anio % 5 === 0 && i > 2 && i < last - 2)).map(({ a, i }) => {
+    const x = i === 0 ? 0 : i === last ? W : i * bw + bw / 2;
+    const anchor = i === 0 ? ' data-a="start"' : i === last ? ' data-a="end"' : '';
+    return `<text class="hz-tl-x" x="${x.toFixed(1)}" y="${H - 4}"${anchor}>${a.anio}</text>`;
+  }).join('');
+  const grid = [0.5, 1].map((v) => `<line class="hz-pv-grid" x1="0" x2="${W}" y1="${(base - v * (base - top)).toFixed(1)}" y2="${(base - v * (base - top)).toFixed(1)}"></line>`).join('');
+  return `<svg class="hz-tl hz-pv" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Parte de las emergencias oficiales de cada año ocurridas donde el peligro ya estaba documentado, ${rows[0].anio}-${rows.at(-1).anio}">${grid}${bars}${ticks}</svg>`;
+}
+
+async function fillPrevention(root, D) {
+  const box = $('#hz-prev', root);
+  if (!box) return;
+  const P = await prevention();
+  if (!box.isConnected) return;
+  const head = '<div class="section-head"><h2 id="hz-prev-h">¿Se sabía antes? Peligros documentados y emergencias que igual ocurrieron</h2></div>';
+  if (!P) { box.innerHTML = `${head}<p class="muted">No se pudo cargar prevencion.json.</p>`; return; }
+  const A = objs({ cols: P.columnasAnual, rows: P.anual });
+  const sum = (rows, k) => rows.reduce((t, a) => t + (a[k] || 0), 0);
+  const recent = A.filter((a) => a.anio >= 2016);
+  const ev = sum(recent, 'eventos'), aviso = sum(recent, 'eventosConAviso');
+  const c = (k) => P.columnas.indexOf(k);
+  const dists = Object.values(P.distritos);
+  const repeat = dists.filter((v) => v[c('aniosConEvento')] >= 5);
+  const repeatKnown = repeat.filter((v) => v[c('inventarioDesde')] || v[c('primeraEvaluacion')]).length;
+  const appeals = objs(P.llamamientos).filter((a) => a.clima);
+  const decI = sum(A, 'decretosInminente'), decD = sum(A, 'decretosImpacto'), decP = sum(A, 'prorrogas');
+  const elp = D.sum.fuentes.find((f) => f.id === 'elperuano-emergencias');
+  const pending = elp && elp.parcial;
+  box.innerHTML = String(html`${raw(head)}
+    <p>Para cada emergencia oficial (SINPAD, DesInventar y COEN, con la fecha del evento) se mira qué se sabía antes en su distrito: si INGEMMET ya había inventariado ahí un peligro del mismo tipo, si había un informe técnico de INGEMMET o del IGP de un año anterior, o si estaba vigente una declaratoria de emergencia por peligro inminente.</p>
+    <div class="hz-tiles hz-tiles-4">
+      <div class="hz-tile"><span class="hz-tile-v">${ev ? pct(aviso / ev) : 'N/D'}</span><span class="hz-tile-l">de las ${n0(ev)} emergencias oficiales desde 2016 ocurrieron donde el peligro ya estaba documentado</span></div>
+      <div class="hz-tile"><span class="hz-tile-v">${n0(repeat.length)}</span><span class="hz-tile-l">distritos con emergencias en 5 o más temporadas desde 2003; en ${n0(repeatKnown)} el peligro ya estaba inventariado o evaluado</span></div>
+      <div class="hz-tile"><span class="hz-tile-v">${n0(appeals.length)}</span><span class="hz-tile-l">llamamientos de ayuda internacional de la Cruz Roja por desastres climáticos (desde ${appeals[0]?.fecha.slice(0, 4) || '—'})</span></div>
+      <div class="hz-tile"><span class="hz-tile-v">${n0(decI)} <small>/ ${n0(decD)}</small></span><span class="hz-tile-l">declaratorias por peligro inminente (prevención) frente a declaratorias por impacto (respuesta)${pending ? ', leídas hasta ahora' : ''}</span></div>
+    </div>
+    <h3 class="hz-h3">Cada año, qué parte de las emergencias ocurrió donde el peligro ya se conocía</h3>
+    <p class="hz-legend small"><span class="hz-key hz-key-a"></span> en un distrito con el peligro ya documentado <span class="hz-key hz-key-b"></span> sin documentación previa encontrada</p>
+    ${raw(prevChart(A))}
+    <p class="muted small">Proporción, no cantidad: desde 2016 el SINPAD registra diez veces más emergencias por año que DesInventar antes. Pase el cursor por una barra para ver las cifras, o abra la tabla.</p>
+    <details class="more"><summary>Tabla por año</summary><div class="table-wrap"><table class="hz-table"><thead><tr><th scope="col">Año</th><th scope="col" class="num">Emergencias</th><th scope="col" class="num">Con el peligro documentado</th><th scope="col" class="num">Tras inventario</th><th scope="col" class="num">Tras informe técnico</th><th scope="col" class="num">Tras declaratoria inminente</th><th scope="col" class="num">Declaratorias inminente / impacto / prórroga</th><th scope="col" class="num">Informes técnicos</th><th scope="col" class="num">Puntos inventariados</th><th scope="col" class="num">Llamamientos (clima)</th></tr></thead>
+      <tbody>${[...A].reverse().map((a) => html`<tr><th scope="row">${a.anio}</th><td class="num">${n0(a.eventos)}</td><td class="num">${a.eventos ? `${n0(a.eventosConAviso)} (${pct(a.eventosConAviso / a.eventos)})` : ''}</td><td class="num">${n0(a.eventosTrasInventario)}</td><td class="num">${n0(a.eventosTrasEvaluacion)}</td><td class="num">${n0(a.eventosTrasInminente)}</td><td class="num">${n0(a.decretosInminente)} / ${n0(a.decretosImpacto)} / ${n0(a.prorrogas)}</td><td class="num">${n0(a.evaluaciones)}</td><td class="num">${n0(a.puntosInventario)}</td><td class="num">${n0(a.llamamientosClima)}</td></tr>`)}</tbody></table></div></details>
+    ${appeals.length ? html`<details class="more"><summary>Llamamientos internacionales por desastres climáticos (${n0(appeals.length)})</summary><ul class="hz-ctxlist">${[...appeals].reverse().map((a) => html`<li><strong>${F.fmtDate(a.fecha)}</strong> · ${a.nombre} <span class="tag">${a.modalidad}</span>${a.montoCHF ? ` · CHF ${n0(a.montoCHF)} pedidos` : ''}${a.beneficiarios ? ` · ${n0(a.beneficiarios)} personas` : ''} · <a href="${safeUrl(a.url)}" rel="noopener" target="_blank">IFRC GO</a></li>`)}</ul></details>` : ''}
+    <h3 class="hz-h3">Cómo leerlo</h3>
+    <ul class="hz-method">
+      <li>«Documentado» no quiere decir que se pudiera evitar, sino que el Estado tenía el peligro identificado en ese distrito antes de la emergencia. El inventario de INGEMMET marca puntos de peligro (caídas, deslizamientos, huaycos, erosión, inundación) con la fecha en que los inventarió; el mismo grupo de peligro cuenta (un inventario de huaycos vale para una emergencia por lluvias intensas).</li>
+      <li>Las notas de prensa no entran a esta cuenta; sí corroboran las fichas en la lista de cada área. Los reportes del COEN entran con la fecha del evento cuando su PDF ya se leyó.</li>
+      <li>Las declaratorias de emergencia se leen del diario oficial El Peruano (sumilla y texto del decreto). Una declaratoria de toda una provincia o un departamento cuenta para cada uno de sus distritos.${pending ? ' La descarga sigue en curso y por ahora hay pocas: esa columna crecerá.' : ''} Prórrogas en total: ${n0(decP)}.</li>
+    </ul>`);
+}
+
+/** Lo que se sabía del peligro en el área: inventarios, informes técnicos y declaratorias. */
+async function fillPrevArea(root, D, s) {
+  const box = $('#hz-prevbox', root);
+  if (!box) return;
+  const P = await prevention();
+  if (!box.isConnected || !P) return;
+  const codes = Object.keys(P.distritos).filter((x) => x.startsWith(s.area));
+  if (!codes.length) return;
+  const c = (k) => P.columnas.indexOf(k);
+  const tot = (k) => codes.reduce((t, x) => t + (P.distritos[x][c(k)] || 0), 0);
+  const first = (k) => {
+    const v = codes.map((x) => P.distritos[x][c(k)]).filter(Boolean);
+    return v.length ? Math.min(...v) : null;
+  };
+  const evs = tot('eventos'), av = tot('eventosConAviso');
+  const inv = first('inventarioDesde'), ev1 = first('primeraEvaluacion');
+  // En un área grande, las declaratorias de toda la provincia o el departamento se repiten en cada distrito.
+  const decI = Math.max(...codes.map((x) => P.distritos[x][c('decretosInminente')])), decD = Math.max(...codes.map((x) => P.distritos[x][c('decretosImpacto')]));
+  const reports = objs(P.evaluaciones).filter((e) => e.ubigeos.some((u) => u.startsWith(s.area) || s.area.startsWith(u))).reverse();
+  box.innerHTML = String(html`<div class="hz-ctxbox"><h4 class="hz-h4">¿Se sabía antes?</h4>
+    <dl class="hz-kv">
+      <div><dt>Peligro inventariado por INGEMMET</dt><dd>${inv ? `desde ${inv} · ${n0(tot('puntosInventario'))} puntos` : 'sin puntos con fecha'}</dd></div>
+      <div><dt>Informes técnicos (INGEMMET, IGP)</dt><dd>${reports.length ? `${n0(reports.length)}, el primero de ${ev1 || reports.at(-1).anio}` : 'ninguno encontrado'}</dd></div>
+      <div><dt>Declaratorias de emergencia${codes.length > 1 ? ' (máximo en un distrito)' : ''}</dt><dd>${n0(decI)} por peligro inminente · ${n0(decD)} por impacto</dd></div>
+      <div><dt>Emergencias oficiales desde 2003</dt><dd>${n0(evs)}${evs ? `, ${n0(av)} (${pct(av / evs)}) con el peligro ya documentado` : ''}</dd></div>
+    </dl>
+    ${reports.length ? html`<details class="more"><summary>Informes técnicos (${n0(reports.length)})</summary><ul class="hz-ctxlist">${reports.slice(0, 12).map((e) => html`<li><strong>${e.anio}</strong> · ${e.institucion}: ${e.url ? html`<a href="${safeUrl(e.url)}" rel="noopener" target="_blank">${e.titulo}</a>` : e.titulo}</li>`)}</ul>${reports.length > 12 ? html`<p class="muted small">Y ${n0(reports.length - 12)} más en prevencion.json.</p>` : ''}</details>` : ''}
+  </div>`);
+}
+
+/** Registros anteriores a 1970 (archivos coloniales y republicanos, desbordes de lagunas glaciares). */
+function pastSection(D) {
+  const old = D.recs.filter((r) => r.y < 1970);
+  if (!old.length) return '';
+  const by = new Map();
+  for (const r of old) {
+    const k = r.u;
+    if (!by.has(k)) by.set(k, { years: new Set(), types: new Map(), src: new Set() });
+    const o = by.get(k);
+    o.years.add(r.y);
+    o.types.set(r.t, (o.types.get(r.t) || 0) + 1);
+    o.src.add(r.o === 'glof' ? 'base de GLOF' : r.o === 'curado' ? 'archivos' : r.o);
+  }
+  const rows = [...by.entries()].sort((a, b) => b[1].years.size - a[1].years.size || a[0].localeCompare(b[0]));
+  const first = Math.min(...old.map((r) => r.y));
+  return html`<section class="card hz-card" aria-labelledby="hz-past-h">
+    <div class="section-head"><h2 id="hz-past-h">Antes de 1970: los mismos lugares, una y otra vez</h2><span class="muted small">${n0(old.length)} registros desde ${first}</span></div>
+    <p class="muted small">Las actas del Cabildo de Trujillo y otros archivos (cronología de García-Herrera et al., 2008) registran lluvias e inundaciones de El Niño en Trujillo, Chicama, Saña, Lambayeque y Piura desde el siglo XVI; la base mundial de desbordes de lagunas glaciares registra los aluviones de la Cordillera Blanca y otras cordilleras. Son los mismos lugares que vuelven a aparecer en 1983, 1998, 2017 y 2023.</p>
+    <div class="table-wrap"><table class="hz-table"><thead><tr><th scope="col">Lugar</th><th scope="col" class="num">Años</th><th scope="col">Cuándo</th><th scope="col">Peligro</th><th scope="col">Fuente</th></tr></thead>
+      <tbody>${rows.slice(0, 30).map(([code, o]) => html`<tr><th scope="row"><button type="button" class="linkish" data-area="${code}">${areaName(D, code)}</button></th><td class="num">${o.years.size}</td><td class="small">${[...o.years].sort((a, b) => a - b).join(', ')}</td><td class="small">${[...o.types.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => dl(t)).join(', ')}</td><td class="small">${[...o.src].join(', ')}</td></tr>`)}</tbody></table></div>
+  </section>`;
 }
 
 function greatSection(D, s) {
@@ -552,6 +701,11 @@ function evidenceSection(D) {
   </section>`;
 }
 
+function srcList(S, k) {
+  const unit = { eventos: 'registros', emergencias: 'registros propios', prensa: 'registros propios', prevencion: 'elementos' }[k] || 'elementos';
+  return html`<ul class="link-list">${S.fuentes.filter((f) => (f.tipo || 'eventos') === k).map((f) => html`<li>${f.pagina || f.url ? html`<a href="${safeUrl(f.pagina || f.url)}" rel="noopener" target="_blank">${f.nombre}</a>` : f.nombre} <span class="muted small">${f.cobertura || ''}${f.registros ? ` · ${n0(f.registros)} ${unit}` : ''}${f.corroboran ? ` · corroboran ${n0(f.corroboran)}` : ''}${f.parcial ? ' · descarga en curso' : ''}${f.obtenido ? ` · copia del ${F.fmtDate(f.obtenido)}` : ''} · ${f.licencia || ''}</span>${f.nota ? html`<br><span class="muted small">${f.nota}</span>` : ''}</li>`)}</ul>`;
+}
+
 function methodSection(D) {
   const S = D.sum;
   return html`<section class="card hz-card" aria-labelledby="hz-m-h">
@@ -563,9 +717,10 @@ function methodSection(D) {
           <li><a href="${BASE}eventos.zip" download>Catálogo completo (CSV en un ZIP, ${n0(S.registros)} registros)</a> <span class="muted small">Las 13 primeras columnas son las del tablero del equipo de prevención: Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud.</span></li>
           <li><a href="${BASE}eventos.json">Versión compacta (JSON)</a> · <a href="${BASE}resumen.json">Resumen, cobertura y atributos (JSON)</a> · <a href="${BASE}contexto.json">Peligro identificado hoy por distrito (JSON)</a></li>
           <li><a href="${BASE}contexto-distrito.csv">Historial y peligro actual por distrito (CSV)</a> · <a href="${BASE}indicadores-distrito.csv">indicadores por distrito</a>, <a href="${BASE}indicadores-provincia.csv">provincia</a> y <a href="${BASE}indicadores-departamento.csv">departamento</a></li>
+          <li><a href="${BASE}prevencion-distrito.csv">Prevención por distrito (CSV)</a> · <a href="${BASE}prevencion.json">declaratorias, evaluaciones y llamamientos (JSON)</a></li>
         </ul>
-        ${[['eventos', 'Fuentes de eventos'], ['contexto', 'Peligro identificado hoy (contexto, no eventos)'], ['referencia', 'Referencias territoriales']].map(([k, t]) => html`<h3 class="hz-h3">${t}</h3>
-        <ul class="link-list">${S.fuentes.filter((f) => (f.tipo || 'eventos') === k).map((f) => html`<li>${f.pagina || f.url ? html`<a href="${safeUrl(f.pagina || f.url)}" rel="noopener" target="_blank">${f.nombre}</a>` : f.nombre} <span class="muted small">${f.cobertura || ''}${f.registros ? ` · ${n0(f.registros)} ${k === 'eventos' ? 'registros' : 'elementos'}` : ''}${f.obtenido ? ` · copia del ${F.fmtDate(f.obtenido)}` : ''} · ${f.licencia || ''}</span>${f.nota ? html`<br><span class="muted small">${f.nota}</span>` : ''}</li>`)}</ul>`)}
+        ${[['eventos', 'Fuentes de eventos'], ['emergencias', 'Reportes de emergencia del COEN (se unen a las fichas del SINPAD)'], ['prensa', 'Prensa regional y nacional (cada nota se une al evento que cuenta)'], ['prevencion', 'Prevención: declaratorias, evaluaciones, inventarios y llamamientos'], ['contexto', 'Peligro identificado hoy (contexto, no eventos)'], ['referencia', 'Referencias territoriales']].map(([k, t]) => html`<h3 class="hz-h3">${t}</h3>
+        ${k === 'prensa' ? html`<details class="more"><summary>${n0(S.fuentes.filter((f) => f.tipo === k).length)} medios</summary>${srcList(S, k)}</details>` : srcList(S, k)}`)}
         <p class="muted small">Catálogo generado el ${F.fmtDate(S.generatedAt.slice(0, 10))}. Límites: IGN vía OCHA HDX (CC BY-IGO). Población, pobreza e IDH por distrito: INEI y PNUD vía ubigeo-peru-aumentado (MIT).</p>
       </div>
       <div>
