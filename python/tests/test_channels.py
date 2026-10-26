@@ -5,6 +5,7 @@ from __future__ import annotations
 import gzip
 import json
 import os
+import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -510,6 +511,143 @@ def test_previous_history_is_retried_on_server_errors(monkeypatch):
     assert prev.get_text("news/missing.jsonl", tries=3) is None and len(calls) == 1  # no existe: no se insiste
 
 
+def _previous_site(fail: int, files: dict[str, bytes]):
+    """Sitio anterior que responde 503 a las primeras ``fail`` lecturas de cada archivo; ``calls``: lo pedido."""
+    calls = []
+
+    def net(req):
+        name = req.url.path.removeprefix("/data/")
+        calls.append(name)
+        if calls.count(name) <= fail:
+            return httpx.Response(503)
+        return httpx.Response(200, content=files[name]) if name in files else httpx.Response(404)
+
+    fetcher = Fetcher(polite_delay=0)
+    fetcher.client = httpx.Client(transport=httpx.MockTransport(net))
+    return obs.PreviousPublication("https://sitio.example/data", fetcher), calls
+
+
+def _down_source(sid: str = "fuente-x") -> obs.Source:
+    def fetch(fetcher):
+        raise FetchError("sin respuesta", [])
+
+    return obs.Source(sid, "Institución", "Producto", ["https://fuente.example/x"], parse=lambda r: None,
+                      cadence_days=1, slo_days=3, layer="index", fixture="x.txt", fetch=fetch)
+
+
+def test_carried_data_and_archived_copies_survive_one_server_error(tmp_path, monkeypatch):
+    """Revisión: el último dato de una fuente caída (sources/<id>.json) y la copia archivada del comunicado vigente
+    dependían de una sola lectura de la publicación anterior; un 503 los perdía para siempre. Ahora se reintenta
+    (3 veces, con espera corta) y, si igual no se puede, queda un aviso en lugar de perderse en silencio."""
+    from enso import archive
+
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    pdf = b"%PDF-1.7 comunicado oficial"
+    rel = archive.source_path("enfen-comunicados", pdf)
+    files = {"sources/fuente-x.json": json.dumps({"id": "fuente-x", "data": {"v": 1}, "fingerprint": "f1",
+                                                  "url": "https://fuente.example/x", "retrievedAt": AT}).encode(),
+             rel: pdf}
+    prev, calls = _previous_site(1, files)
+    log = obs.EventLog()
+    a = obs.acquire(_down_source(), prev.fetcher, None, prev, log)
+    assert a.carried and a.data == {"v": 1} and calls.count("sources/fuente-x.json") == 2
+    assert {e.code for e in log.events} == {"unreachable", "carried-forward"}
+    w = archive.Writer(tmp_path / "pub")
+    assert archive.carry(w, rel, prev.get_bytes, source="enfen-comunicados", document=True) == rel
+    assert (tmp_path / "pub" / rel).read_bytes() == pdf and w.missed == [] and calls.count(rel) == 2
+
+    prev, calls = _previous_site(99, files)
+    log = obs.EventLog()
+    a = obs.acquire(_down_source(), prev.fetcher, None, prev, log)
+    assert not a.carried and a.data is None and calls.count("sources/fuente-x.json") == prev.TRIES
+    ev = next(e for e in log.events if e.code == "previous-unreachable")
+    assert ev.severity == "warning" and "sources/fuente-x.json" in ev.message
+    w = archive.Writer(tmp_path / "pub2")
+    assert prev.down  # el sitio no dio nada en 3 intentos: la copia se pide una vez
+    assert archive.carry(w, rel, prev.get_bytes, source="enfen-comunicados") is None
+    assert w.missed == [("enfen-comunicados", rel)] and calls.count(rel) == 1
+    prev, calls = _previous_site(99, files)
+    w = archive.Writer(tmp_path / "pub2b")
+    assert archive.carry(w, rel, prev.get_bytes, source="enfen-comunicados") is None
+    assert w.missed == [("enfen-comunicados", rel)] and calls.count(rel) == prev.TRIES
+    # La copia de una fuente caída (write_sources) también se reintenta y, si falta, se anota.
+    a.raw, out = b"", archive.Writer(tmp_path / "pub3")
+    assert archive.write_sources(out, {"fuente-x": a}, prev.get_bytes,
+                                 lambda sid: {"archive": {"file": rel, "retrievedAt": AT}}) == {}
+    assert out.missed == [("fuente-x", rel)]
+
+    # Primera publicación (404): ni se insiste ni hay aviso.
+    prev, calls = _previous_site(0, {})
+    log = obs.EventLog()
+    obs.acquire(_down_source(), prev.fetcher, None, prev, log)
+    assert calls == ["sources/fuente-x.json"] and not any(e.code == "previous-unreachable" for e in log.events)
+
+
+def test_a_previous_site_that_does_not_answer_is_asked_once_per_file(monkeypatch):
+    """Con el sitio anterior caído (sin respuesta o con 5xx), los reintentos de lo arrastrado se gastan en el primer
+    archivo; los siguientes se piden una vez, como antes. Vuelven los reintentos cuando el sitio responde o pasan
+    DOWN_S desde el último que falló."""
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    clock = [1000.0]
+    monkeypatch.setattr(obs.time, "monotonic", lambda: clock[0])
+    calls, mode = [], ["timeout"]
+
+    def net(req):
+        calls.append(req.url.path)
+        if mode[0] == "timeout":
+            raise httpx.ConnectTimeout("sin respuesta", request=req)
+        return httpx.Response(503) if mode[0] == "503" else httpx.Response(404)
+
+    fetcher = Fetcher(polite_delay=0)
+    fetcher.client = httpx.Client(transport=httpx.MockTransport(net))
+    prev = obs.PreviousPublication("https://sitio.example/data", fetcher)
+    assert prev.get("sources/a.json", carry=True) is None and len(calls) == prev.TRIES and prev.down
+    assert prev.get("sources/b.json", carry=True) is None and len(calls) == 4
+    assert prev.get_bytes("archive/sources/a/x.pdf") is None and len(calls) == 5
+    assert prev.state["sources/b.json"] == "unreachable"
+    mode[0] = "503"  # un 503 sin fin cuenta igual: no se gastan 3 pedidos y 3 s por archivo
+    calls.clear()
+    assert prev.get_bytes("archive/sources/a/y.pdf") is None and len(calls) == 1 and prev.down
+    clock[0] += prev.DOWN_S  # mucho después (p. ej. al escribir la publicación): se vuelve a insistir
+    assert not prev.down
+    assert prev.get_bytes("archive/sources/a/z.pdf") is None and len(calls) == 1 + prev.TRIES and prev.down
+    mode[0] = "404"  # responde: ya no está caído
+    calls.clear()
+    assert prev.get_bytes("archive/sources/a/w.pdf") is None and len(calls) == 1 and not prev.down
+    assert prev.state["archive/sources/a/w.pdf"] == "missing"
+
+
+def test_a_failed_read_that_is_not_carried_does_not_cut_the_retries(monkeypatch):
+    """Revisión: un pedido de un solo intento sin respuesta (p. ej. imarpe-bsobp.json, justo antes de las noticias, o
+    manual-needed.json, antes de escribir) daba el sitio por caído: news/feeds.json y la copia del comunicado se
+    pedían una sola vez. Solo lo arrastrado decide si el sitio está caído, y las noticias piden siempre sus 3."""
+    monkeypatch.setattr(obs.time, "sleep", lambda s: None)
+    calls = []
+    script = {"imarpe-bsobp.json": ["timeout"], "manual-needed.json": ["timeout"],
+              "news/feeds.json": ["503", "200"], "archive/sources/enfen-comunicados/c.pdf": ["503", "200"],
+              "sources/x.json": ["timeout"] * 3, "news/items.jsonl": ["timeout", "200"]}
+
+    def net(req):
+        name = req.url.path.removeprefix("/data/")
+        calls.append(name)
+        step = script[name].pop(0)
+        if step == "timeout":
+            raise httpx.ConnectTimeout("sin respuesta", request=req)
+        return httpx.Response(503) if step == "503" else httpx.Response(200, content=b'{"feeds": {}}')
+
+    fetcher = Fetcher(polite_delay=0)
+    fetcher.client = httpx.Client(transport=httpx.MockTransport(net))
+    prev = obs.PreviousPublication("https://sitio.example/data", fetcher)
+    assert prev.get("imarpe-bsobp.json") is None and not prev.down
+    assert prev.get("news/feeds.json", tries=3) == {"feeds": {}} and calls.count("news/feeds.json") == 2
+    assert prev.get("manual-needed.json") is None
+    assert prev.get_bytes("archive/sources/enfen-comunicados/c.pdf") == b'{"feeds": {}}'
+    # Con el sitio dado por caído por lo arrastrado, el histórico de noticias igual pide sus intentos.
+    assert prev.get("sources/x.json", carry=True) is None and prev.down
+    assert prev.get_text("news/items.jsonl", tries=3) == '{"feeds": {}}' and calls.count("news/items.jsonl") == 2
+    assert prev.down  # y no lo da por vivo: eso lo dice lo arrastrado
+
+
 def _archive_news_script() -> str:
     import yaml
 
@@ -746,6 +884,143 @@ def test_the_publishing_run_checks_only_what_it_installs_and_reports_every_failu
     for path in (obs.REPO / "n8n" / "test" / "e2e.sh", obs.REPO / ".github" / "workflows" / "n8n.yml"):
         lines = [line for line in path.read_text(encoding="utf-8").splitlines() if "--rawOutput" in line]
         assert lines and all("--rawOutput > /w/" in line for line in lines), path.name
+
+
+def test_only_main_deploys_and_touches_the_incident_issues():
+    """Revisión: una corrida a mano desde otra rama desplegaba a producción y sincronizaba los issues: cerraba los de
+    incidencias que esa rama no emite (main los reabría como nuevos, sin su historia). Fuera de main se construye y
+    se prueba, y el job de incidencias solo muestra lo que haría (--dry-run)."""
+    import yaml
+
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
+    main = "github.ref == 'refs/heads/main'"
+    assert wf["jobs"]["deploy"]["if"] == main
+    inc = wf["jobs"]["incidents"]
+    steps = {st.get("name"): st for st in inc["steps"]}
+    for name in ("Sync incidents with issues", "Open an issue when the run itself failed",
+                 "Close the run-failure issue after a good run", "Email the configured addresses"):
+        assert main in steps[name]["if"], name
+    plan = steps["Show what the incident sync would do (branches other than main)"]
+    assert plan["if"] == "github.ref != 'refs/heads/main'" and plan["continue-on-error"] is True
+    assert "python -m tools.sync_issues" in plan["run"] and "--dry-run" in plan["run"]
+    assert "--dry-run" not in steps["Sync incidents with issues"]["run"]
+    # El correo sigue al final, después de cerrar el issue de la corrida fallida.
+    assert inc["steps"][-1]["name"] == "Email the configured addresses"
+    # Los disparos de producción siguen corriendo en main: programado, push a main y el pedido de los recolectores.
+    on = wf[True] if True in wf else wf["on"]
+    assert on["push"]["branches"] == ["main"] and "schedule" in on and "repository_dispatch" in on
+
+
+def test_the_weekly_probe_rebuilds_the_n8n_flows_with_the_registry():
+    """Revisión: el sondeo semanal regeneraba registry/sources.json pero no n8n/dist, que lo lleva dentro: el control
+    «dist/ matches the source» de n8n.yml fallaba cada lunes. Ahora build.mjs corre después de build_registry y su
+    salida va en el mismo commit."""
+    import yaml
+
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "probe-sources.yml").read_text(encoding="utf-8"))
+    steps = wf["jobs"]["probe"]["steps"]
+    node = next(i for i, st in enumerate(steps) if st.get("uses", "").startswith("actions/setup-node"))
+    n8n = yaml.safe_load((obs.REPO / ".github" / "workflows" / "n8n.yml").read_text(encoding="utf-8"))
+    n8n_node = next(st for st in n8n["jobs"]["pruebas"]["steps"] if st.get("uses", "").startswith("actions/setup-node"))
+    assert steps[node]["with"]["node-version"] == n8n_node["with"]["node-version"] == "22"
+    registry_step = next(i for i, st in enumerate(steps) if "python -m tools.build_registry" in st.get("run", ""))
+    build = next(i for i, st in enumerate(steps) if st.get("run", "").strip() == "node n8n/build.mjs")
+    assert node < build and registry_step < build and "working-directory" not in steps[build]  # desde la raíz
+    assert "N8N_GITHUB_CRED_ID" not in (steps[build].get("env") or {})
+    commit = next(i for i, st in enumerate(steps) if st.get("name") == "Commit")
+    assert build < commit and "git add registry/ n8n/dist" in steps[commit]["run"]
+
+
+def _probe_commit(tmp_path: Path, on_main):
+    """Corre el paso «Commit» del sondeo en un clon de un «origin» con n8n/ y el registro, después de que en main
+    ``on_main(seed)`` cambiara algo (y reconstruyera dist) mientras se medía. Devuelve (resultado, origin, clon)."""
+    import shutil
+    import subprocess
+
+    import yaml
+
+    node = shutil.which("node")
+    if not node:
+        if os.environ.get("CI"):
+            pytest.fail("la prueba del commit del sondeo necesita Node")
+        pytest.skip("requiere Node")
+
+    def git(*a, cwd):
+        return subprocess.run(["git", *a], cwd=cwd, check=True, capture_output=True, text=True).stdout
+
+    def build(cwd):
+        subprocess.run([node, "n8n/build.mjs"], cwd=cwd, check=True, capture_output=True)
+
+    def config(cwd):
+        for k, v in (("user.name", "t"), ("user.email", "t@example.org"), ("commit.gpgsign", "false")):
+            git("config", k, v, cwd=cwd)
+
+    origin, seed, work = tmp_path / "origin.git", tmp_path / "seed", tmp_path / "work"
+    git("init", "-q", "--bare", "-b", "main", str(origin), cwd=tmp_path)
+    git("init", "-q", "-b", "main", str(seed), cwd=tmp_path)
+    config(seed)
+    for d in ("lib", "nodes", "dist"):
+        shutil.copytree(obs.REPO / "n8n" / d, seed / "n8n" / d)
+    shutil.copy(obs.REPO / "n8n" / "build.mjs", seed / "n8n")
+    (seed / "registry").mkdir()
+    shutil.copy(obs.REPO / "registry" / "sources.json", seed / "registry")
+    git("add", "-A", cwd=seed)
+    git("commit", "-q", "-m", "inicio", cwd=seed)
+    git("push", "-q", str(origin), "main", cwd=seed)
+    git("clone", "-q", "--depth", "1", f"file://{origin}", str(work), cwd=tmp_path)
+    config(work)
+    reg = work / "registry" / "sources.json"  # lo medido: otro registro y su dist
+    reg.write_text(re.sub(r'"generated_at": "[^"]+"', '"generated_at": "2026-10-26T09:40:00+00:00"',
+                          reg.read_text(encoding="utf-8"), count=1), encoding="utf-8")
+    build(work)
+    on_main(seed)
+    build(seed)
+    git("commit", "-q", "-am", "cambio en main", cwd=seed)
+    git("push", "-q", str(origin), "main", cwd=seed)
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "probe-sources.yml").read_text(encoding="utf-8"))
+    run = next(st for st in wf["jobs"]["probe"]["steps"] if st.get("name") == "Commit")["run"]
+    run = run.replace("${{ github.event.repository.default_branch }}", "main")
+    fake = tmp_path / "bin"  # sin esperas entre reintentos
+    fake.mkdir()
+    (fake / "sleep").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+    (fake / "sleep").chmod(0o755)
+    env = {**os.environ, "GITHUB_REF_NAME": "main", "PATH": f"{fake}{os.pathsep}{os.environ['PATH']}"}
+    r = subprocess.run(["bash", "--noprofile", "--norc", "-eo", "pipefail", "-c", run], cwd=work, env=env,
+                       capture_output=True, text=True, timeout=120)
+    return r, origin, work
+
+
+def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_path):
+    """Revisión: dist lleva un hash de n8n/ y del registro, así que un cambio de n8n/ en main durante el sondeo
+    hacía chocar el rebase en dist, y los reintentos fallaban con el rebase a medias: se perdía el registro de la
+    semana. Ahora dist se regenera sobre lo rebasado; si choca el propio registro, se aborta y falla limpio."""
+    import subprocess
+
+    def n8n_change(seed):
+        with (seed / "n8n" / "nodes" / "fuentes.js").open("a", encoding="utf-8") as f:
+            f.write("// cambio en main\n")
+
+    r, origin, work = _probe_commit(tmp_path, n8n_change)
+    assert r.returncode == 0, r.stdout[-2000:] + r.stderr[-2000:]
+    log = subprocess.run(["git", "log", "--format=%s", "main"], cwd=origin, capture_output=True, text=True).stdout
+    assert log.split("\n")[:3] == ["Update source reachability and registry", "cambio en main", "inicio"]
+    check = tmp_path / "check"
+    subprocess.run(["git", "clone", "-q", f"file://{origin}", str(check)], check=True, capture_output=True)
+    assert "2026-10-26T09:40:00" in (check / "registry" / "sources.json").read_text(encoding="utf-8")
+    assert "// cambio en main" in (check / "n8n" / "nodes" / "fuentes.js").read_text(encoding="utf-8")
+    assert subprocess.run(["node", "n8n/build.mjs", "--check"], cwd=check, capture_output=True).returncode == 0
+
+    def registry_change(seed):
+        reg = seed / "registry" / "sources.json"
+        reg.write_text(re.sub(r'"generated_at": "[^"]+"', '"generated_at": "2026-10-26T09:30:00+00:00"',
+                              reg.read_text(encoding="utf-8"), count=1), encoding="utf-8")
+
+    (tmp_path / "choque").mkdir()
+    r, origin, work = _probe_commit(tmp_path / "choque", registry_change)
+    assert r.returncode == 1
+    assert not (work / ".git" / "rebase-merge").exists() and not (work / ".git" / "rebase-apply").exists()
+    log = subprocess.run(["git", "log", "--format=%s", "main"], cwd=origin, capture_output=True, text=True).stdout
+    assert log.split("\n")[0] == "cambio en main"
 
 
 def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, monkeypatch):

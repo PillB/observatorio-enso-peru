@@ -5,7 +5,9 @@
 # pedido del vigilante o manualmente. Si el pipeline o las pruebas fallan,
 # el sitio anterior sigue publicado. Después de desplegar, comprueba que
 # el sitio en vivo sirve la nueva publicación y sincroniza las incidencias
-# con issues de GitHub.
+# con issues de GitHub. Solo desde main: una corrida de prueba en otra rama
+# (workflow_dispatch) construye y prueba, pero no despliega ni toca los
+# issues; muestra lo que haría con ellos.
 #
 # Destino del sitio (variables del repositorio, ver docs/despliegue-cloudflare.md):
 #   DEPLOY_TARGET       github-pages (por omisión) o cloudflare
@@ -288,6 +290,8 @@ jobs:
 
   deploy:
     needs: build
+    # Va a la rama de producción del sitio: una prueba desde otra rama no reemplaza la publicación.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -366,7 +370,10 @@ jobs:
           name: run-report
           path: report
         continue-on-error: true
+      # Solo en main: otra rama no tiene por qué emitir las mismas incidencias, y cerraría (o abriría) issues
+      # que main volvería a abrir sin su historia. Fuera de main se muestra el plan, sin escribir.
       - name: Sync incidents with issues
+        if: github.ref == 'refs/heads/main'
         working-directory: python
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -375,10 +382,21 @@ jobs:
           if [ -f ../report/run-report.json ]; then
             python -m tools.sync_issues --report ../report/run-report.json --run-url "$RUN_URL"
           fi
+      - name: Show what the incident sync would do (branches other than main)
+        if: github.ref != 'refs/heads/main'
+        continue-on-error: true
+        working-directory: python
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -f ../report/run-report.json ]; then
+            python -m tools.sync_issues --report ../report/run-report.json --run-url "$RUN_URL" --dry-run
+          fi
       # always(): aunque falle la sincronización de incidencias (API de GitHub, PyPI), la falla de la corrida se avisa.
       # «cancelled» también: un job que pasa su límite de tiempo termina así, y el sitio queda igual de atrasado.
       - name: Open an issue when the run itself failed
-        if: always() && (contains(fromJSON('["failure","cancelled"]'), needs.build.result) || contains(fromJSON('["failure","cancelled"]'), needs.deploy.result) || contains(fromJSON('["failure","cancelled"]'), needs.archive.result))
+        if: always() && github.ref == 'refs/heads/main' && (contains(fromJSON('["failure","cancelled"]'), needs.build.result) || contains(fromJSON('["failure","cancelled"]'), needs.deploy.result) || contains(fromJSON('["failure","cancelled"]'), needs.archive.result))
         uses: actions/github-script@v8
         with:
           script: |
@@ -390,7 +408,7 @@ jobs:
             if (prev) await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body: `Volvió a fallar: ${url}` });
             else await github.rest.issues.create({ ...context.repo, title, body, labels: ['incidente-datos'] });
       - name: Close the run-failure issue after a good run
-        if: always() && needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
+        if: always() && github.ref == 'refs/heads/main' && needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
         uses: actions/github-script@v8
         with:
           script: |
@@ -403,7 +421,7 @@ jobs:
       # repositorio): una vez por corrida, solo con las incidencias que se abrieron, cerraron o repitieron en ella.
       # Va al final del job, después de cerrar el issue de la corrida fallida, para que ese cierre salga como resuelto.
       - name: Email the configured addresses
-        if: always() && vars.ALERT_EMAILS != ''
+        if: always() && github.ref == 'refs/heads/main' && vars.ALERT_EMAILS != ''
         working-directory: python
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
