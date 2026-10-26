@@ -832,7 +832,7 @@ function placeLabel(p, deps) {
 }
 
 // Cómo se ubicó la nota, para el título de la etiqueta de lugar.
-const PLACE_METHOD = { texto: 'según el texto', campo: 'según la fuente', coordenadas: 'por coordenadas', medio: 'por el medio regional que la publicó', correccion: 'revisada a mano', anterior: 'ubicación anterior' };
+const PLACE_METHOD = { texto: 'según el texto', campo: 'según la fuente', coordenadas: 'por coordenadas', medio: 'por el medio regional que la publicó', correccion: 'revisada a mano', anterior: 'ubicación anterior', region: 'por las regiones que nombra el aviso (aproximada)' };
 function placeTitle(p) {
   if (!p || p.confidence === undefined) return '';
   return `Ubicación ${PLACE_METHOD[p.method] || ''}${p.method === 'correccion' ? '' : ` · confianza ${Math.round(p.confidence * 100)} %`}`.replace('  ', ' ');

@@ -45,11 +45,12 @@ Cada nota (`news/items.jsonl`, `geo/items.json`) y cada aviso de
 
 | Método | De dónde sale | Confianza |
 |---|---|---|
-| `campo` | La fuente trae UBIGEO o «distrito de X, provincia de Y, departamento de Z» (SENAMHI, INDECI, FIRMS, DHN) | 0,95–0,97 |
+| `campo` | La fuente trae UBIGEO o «distrito de X, provincia de Y, departamento de Z» (SENAMHI, INDECI, FIRMS, DHN), o el PDF del COEN los lista (`documentos.py`, ver `mapa-alertas.md`) | 0,95–0,97 |
 | `coordenadas` | Punto dentro de los límites del IGN (sismos de USGS, focos de calor) | 0,95 distrito; 0,9 provincia o departamento; 0,75 en el mar |
 | `texto` | El titular o el resumen nombran el lugar | 0,55–0,95 según la regla |
 | `medio` | Un medio regional que no nombra lugar: su departamento | 0,5 (0,6 gobiernos regionales; 0,35 búsquedas de Google Noticias, que no se publica) |
 | `correccion` | Una persona en la consola | 1,0 |
+| `region` | Solo en el mapa de alertas: un aviso del SENAMHI sin PDF ni boletín del mismo aviso, por las regiones que nombra («sierra sur») | 0,6 (se marca «≈») |
 | `anterior` | Notas guardadas antes de esta versión, sin pistas para volver a ubicarlas | 0,7 |
 
 Se publica todo lugar con confianza ≥ 0,5. La consola pone en la cola de
@@ -101,7 +102,9 @@ departamentales a metros de distancia).
 - **Mar y lago**: un sismo frente a la costa (al oeste o suroeste de un
   departamento costero, a menos de 100 km) se ubica en ese departamento
   con la distancia en la evidencia. En el lago Titicaca, del lado
-  peruano, Puno. Puntos en Chile, Ecuador o Bolivia quedan sin lugar.
+  peruano, Puno. Puntos en Chile, Ecuador o Bolivia quedan sin lugar, salvo que la fuente los refiera al Perú («a 37 km al ESE
+  de Cañaveral, Perú») y estén a 25 km o menos del límite: el departamento más cercano, con confianza 0,55
+  («≈», va a revisión).
 - **Distritos nuevos**: la fuente tiene los límites de 2020; en las
   provincias con distritos creados después (Huachipa en Lima, Kumpirushiato
   en La Convención…) el distrito sale con confianza 0,75 y queda para
