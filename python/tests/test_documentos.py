@@ -289,3 +289,18 @@ def test_alerts_prefer_the_newer_copy_of_a_link_and_carry_the_document():
     rows = alerts([old, new], NOW)
     assert len(rows) == 1 and rows[0]["id"] == "alert-new" and rows[0]["document"] == PDF_URL
     assert rows[0]["kind"] == "pronostico"
+
+
+def test_quake_just_across_the_border_that_the_source_refers_to_peru():
+    # USGS us6000u4pq: «37 km al ESE de Cañaveral, Perú», epicentro a 9,8 km del límite, del lado del Ecuador. El
+    # IGP lo ubicó en San Jacinto (Tumbes) y se sintió en Zorritos: Tumbes, aproximado.
+    f = FEED_BY_ID["usgs-sismos"]
+    g = locate_item({"title": "Sismo de magnitud 4.1 a 37 km al ESE de Cañaveral, Perú", "summary": "",
+                     "coords": [[-4.0944, -80.3538, 5]]}, f, "mundo")
+    assert [(p["code"], p["confidence"]) for p in g["places"]] == [("24", 0.55)]
+    assert "fuera del Perú, a 9.8 km del límite" in g["places"][0]["evidence"]
+    # El mismo punto referido al Ecuador, o uno lejos del límite, no es del Perú.
+    assert locate_item({"title": "Sismo a 30 km de Macará, Ecuador", "summary": "", "coords": [[-4.0944, -80.3538, 5]]},
+                       f, "mundo")["places"] == []
+    assert locate_item({"title": "Sismo a 90 km de Loja, Perú", "summary": "", "coords": [[-3.2, -79.2, 5]]},
+                       f, "mundo")["places"] == []

@@ -100,7 +100,9 @@ departamentales a metros de distancia).
 - **Mar y lago**: un sismo frente a la costa (al oeste o suroeste de un
   departamento costero, a menos de 100 km) se ubica en ese departamento
   con la distancia en la evidencia. En el lago Titicaca, del lado
-  peruano, Puno. Puntos en Chile, Ecuador o Bolivia quedan sin lugar.
+  peruano, Puno. Puntos en Chile, Ecuador o Bolivia quedan sin lugar, salvo que la fuente los refiera al Perú («a 37 km al ESE
+  de Cañaveral, Perú») y estén a 25 km o menos del límite: el departamento más cercano, con confianza 0,55
+  («≈», va a revisión).
 - **Distritos nuevos**: la fuente tiene los límites de 2020; en las
   provincias con distritos creados después (Huachipa en Lima, Kumpirushiato
   en La Convención…) el distrito sale con confianza 0,75 y queda para
