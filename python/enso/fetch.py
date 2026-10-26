@@ -323,7 +323,9 @@ class Fetcher:
         if allowed is False:
             return "robots.txt no permite la ruta: no se pide"
         if allowed is None and known != "allowed":
-            return "robots.txt sin respuesta: no se pide"
+            # Con el error de red: quien lee el motivo (``imarpe_repo.cause``) distingue un certificado de un corte.
+            why = self.robots.error(url) or self.robots.failure(url)
+            return "robots.txt sin respuesta: no se pide" + (f" ({why})" if why else "")
         return None
 
     def get(self, urls: list[str], *, archive: bool = True, save: bool = False,

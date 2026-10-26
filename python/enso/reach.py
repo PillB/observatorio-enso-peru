@@ -350,7 +350,7 @@ class Robots:
 
     def _read(self, base: str) -> tuple:
         rp: Optional[RobotRules] = None
-        status, head, headers, source, fail = None, b"", None, "unreachable", ""
+        status, head, headers, source, fail, error = None, b"", None, "unreachable", "", ""
         try:
             kw = {"timeout": self.timeout} if self.timeout and isinstance(self.client, HTTPClient) else {}
             r = self.client.get(f"{base}/robots.txt", **kw)
@@ -363,14 +363,15 @@ class Robots:
                     == "challenge"):
                 fail = "challenge"
             elif status == 429 or status >= 500:
-                fail = classify(status, head, headers=headers)
+                fail, error = classify(status, head, headers=headers), f"HTTP {status}"
             elif status >= 300:
                 rp, source = RobotRules(allow_all=True), "absent"
             else:
                 rp, source = RobotRules(r.content[:500_000].decode("utf-8", errors="replace"), self.agent), "rules"
         except Exception as exc:  # noqa: BLE001 — sin respuesta: desconocido
-            rp, fail = None, classify(None, b"", f"{type(exc).__name__}: {exc}"[:200])
-        return (rp, status, fail, head, headers, source)
+            error = f"{type(exc).__name__}: {exc}"[:200]
+            rp, fail = None, classify(None, b"", error)
+        return (rp, status, fail, head, headers, source, error)
 
     def known(self, url: str) -> bool:
         """Si ya se leyó (o se intentó leer) el robots.txt del servidor de ``url``."""
@@ -393,3 +394,8 @@ class Robots:
     def failure(self, url: str) -> str:
         """Clase de alcance del intento de leer robots.txt (``timeout``, ``challenge``…), si falló."""
         return self._entry(url)[2]
+
+    def error(self, url: str) -> str:
+        """El error de red o el código con que falló la lectura de robots.txt (``ConnectError: …``, ``HTTP 503``),
+        para el motivo de la incidencia; vacío si se leyó o fue una verificación."""
+        return self._entry(url)[6]

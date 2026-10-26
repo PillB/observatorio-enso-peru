@@ -1121,8 +1121,8 @@ def test_url_whose_robots_txt_nobody_read_is_not_requested_while_robots_txt_fail
                 plan={PAGE: ["actions", "n8n"]}, robots_known={PAGE: "unknown"})
     with pytest.raises(Exception) as exc:
         f.get([PAGE], accept=("html",))
-    assert asked == ["https://ana.example.pe/robots.txt"]
-    assert exc.value.attempts[-1] == {"url": PAGE, "error": "robots.txt sin respuesta: no se pide"}
+    assert asked == ["https://ana.example.pe/robots.txt"] * 2  # un 503 se reintenta una vez (``Robots.tries``)
+    assert exc.value.attempts[-1] == {"url": PAGE, "error": "robots.txt sin respuesta: no se pide (HTTP 503)"}
     # Con copia de un recolector, se usa sin pedir nada (tampoco robots.txt).
     asked.clear()
     f = Fetcher(retries=2, polite_delay=0, allow_archive=False, robots=True, relay=_copy(tmp_path / "peru", PAGE),
@@ -1134,6 +1134,25 @@ def test_url_whose_robots_txt_nobody_read_is_not_requested_while_robots_txt_fail
     f = Fetcher(retries=2, polite_delay=0, allow_archive=False, robots=True,
                 plan={PAGE: ["actions", "n8n"]}, robots_known={PAGE: "unknown"})
     assert f.get([PAGE], accept=("html",)).channel == "direct" and asked == ["https://ana.example.pe/robots.txt", PAGE]
+
+
+def test_a_robots_txt_that_fails_on_its_certificate_is_reported_as_tls():
+    """Revisión: el motivo del salto perdía el error de red, y el repositorio del IMARPE (sin robots.txt leído) con
+    un intermedio nuevo se informaba como «conexión», no como «tls» con su pista de ca-intermedios.pem."""
+    from enso.feeds import imarpe_repo
+
+    def net(request):
+        raise httpx.ConnectError("[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed", request=request)
+
+    url = "https://repositorio.imarpe.example.pe/server/api/discover/search/objects?query=x"
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False, robots=True, plan={url: ["peru-server"]},
+                robots_known={url: "unknown"})
+    f.client = f.robots.client = httpx.Client(transport=httpx.MockTransport(net))
+    with pytest.raises(Exception) as exc:
+        f.get([url], archive=False, accept=("json",))
+    assert "CERTIFICATE_VERIFY_FAILED" in exc.value.attempts[-1]["error"]
+    problem = imarpe_repo.cause(exc.value)
+    assert problem == "tls" and "CERTIFICATE_VERIFY_FAILED" in problem.detail
 
 
 def test_news_feed_skipped_by_robots_txt_says_why(monkeypatch):
@@ -1148,8 +1167,8 @@ def test_news_feed_skipped_by_robots_txt_says_why(monkeypatch):
     got = obs.acquire_news(main, None, obs.PreviousPublication(None, main), obs.EventLog(), datetime.now(timezone.utc),
                            None)
     st = next(s for s in got["feeds"]["feeds"] if s["id"] == feed.id)
-    assert st["error"] == "robots.txt sin respuesta: no se pide"
-    assert asked == [f"https://{urlparse(feed.url).hostname}/robots.txt"]
+    assert st["error"] == "robots.txt sin respuesta: no se pide (HTTP 503)"
+    assert asked == [f"https://{urlparse(feed.url).hostname}/robots.txt"] * 2  # el 503 se reintenta una vez
 
 
 def test_url_outside_the_registry_is_checked_against_robots_txt(monkeypatch):
@@ -1176,12 +1195,12 @@ def test_peru_only_url_with_robots_txt_down_is_not_tried_directly(monkeypatch):
     f = Fetcher(retries=3, polite_delay=0, allow_archive=False, robots=True, plan={PAGE: ["peru-server"]})
     with pytest.raises(Exception):
         f.get([PAGE])
-    assert asked == ["https://ana.example.pe/robots.txt"]
+    assert asked == ["https://ana.example.pe/robots.txt"] * 2  # el 503 se reintenta una vez
     # Si la sonda semanal leyó su robots.txt y lo permitía, vale esa lectura (RFC 9309 §2.3.1.4): un intento.
     asked.clear()
     f = Fetcher(retries=3, polite_delay=0, allow_archive=False, robots=True, plan={PAGE: ["peru-server"]},
                 robots_known={PAGE: "allowed"})
-    assert f.get([PAGE]).channel == "direct" and asked == ["https://ana.example.pe/robots.txt", PAGE]
+    assert f.get([PAGE]).channel == "direct" and asked == ["https://ana.example.pe/robots.txt"] * 2 + [PAGE]
 
 
 def test_url_the_weekly_probe_cleared_is_not_rechecked(monkeypatch):
