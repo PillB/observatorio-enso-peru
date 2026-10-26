@@ -226,6 +226,20 @@ test('clases de alcance iguales a las del registro (python/enso/reach.py)', () =
   assert.ok(reachClass({ verdict: 'wrong_type' }) === 'empty');
 });
 
+test('mismas clases de alcance que python/enso/reach.py (tabla compartida)', () => {
+  // La misma tabla corre en python/tests/test_reach_parity.py con enso.reach.judge. «n8n»: la clase que da hoy
+  // classify.js donde aún difiere («n8n_fix» dice el cambio que falta); al corregirlo, quitar «n8n» de la fila.
+  const { cases } = JSON.parse(readFileSync(join(FIX, 'reach-parity.json'), 'utf8'));
+  assert.ok(cases.length >= 50);
+  for (const row of cases) {
+    const text = (row.body || '') + 'x'.repeat(row.pad || 0);
+    const body = row.body_file ? readFileSync(join(FIX, row.body_file))
+      : row.encoding === 'latin-1' ? new Uint8Array(Buffer.from(text, 'latin1')) : enc(text);
+    const c = classify({ url: 'u', expect: row.expect, status: row.status, headers: row.headers || {}, body });
+    assert.equal(c.reach, row.n8n || row.reach, `${row.name}: ${c.verdict} ${c.block || ''} ${c.note}`);
+  }
+});
+
 test('el latido dice «sin-fuentes» cuando nada respondió en esta corrida', () => {
   const now = new Date('2026-10-21T03:55:00Z');
   const ok = buildSnapshot({ results: [res('u1', true, 'uno'), res('u2', false)], previous: null, now, collector: { kind: 'n8n' } });
@@ -315,6 +329,30 @@ test('Fuentes: con alcance «n8n» omite las URL que el registro asigna a otros 
   for (const scope of ['n8n', 'todas']) {
     assert.deepEqual((await runCode('fuentes', { REGISTRY: JSON.stringify(reader) }, cfg(scope))).map((i) => i.json.url), ['https://feed/ok'], scope);
   }
+});
+
+test('Fuentes: no pide lo que robots.txt no permite ni aquello cuyo robots.txt nadie pudo leer', async () => {
+  // Revisión del 22 de octubre de 2026 (gap 1): el feed del INDECI y el SNIRH del ANA se pedían sin que nadie
+  // hubiera leído su robots.txt; el repositorio del IMARPE no va por n8n (no verifica su certificado).
+  const reg = { schema: 'enso-source-registry/1', sources: [
+    { id: 'm', group: 'g', url: 'https://ok/feed', alt_urls: ['https://sin-leer/feed', 'https://prohibe/feed', 'https://antes/feed'],
+      expect: 'rss', channels: ['actions', 'n8n', 'peru-server'],
+      by_url: {
+        'https://ok/feed': { status: 'open', channels: ['actions', 'n8n'], robots: 'allowed' },
+        'https://sin-leer/feed': { status: 'down', channels: ['actions', 'n8n'], robots: 'unknown' },
+        'https://prohibe/feed': { status: 'open', channels: ['actions', 'n8n'], robots: 'disallowed' },
+        'https://antes/feed': { status: 'open', channels: ['actions', 'n8n'] }, // registro anterior, sin «robots»
+      } },
+    { id: 'ana', group: 'ana', url: 'https://snirh/', expect: 'html', channels: ['peru-server'],
+      by_url: { 'https://snirh/': { status: 'suspected-geoblock', channels: ['peru-server'], robots: 'unknown' } } },
+    { id: 'repo', group: 'imarpe', url: 'https://repo/api', expect: 'json', channels: ['actions'], n8n: false,
+      by_url: { 'https://repo/api': { status: 'open', channels: ['actions'], robots: 'allowed' } } },
+  ] };
+  const cfg = (scope) => ({ 'Configuración': [{ json: { scope, only: '' } }] });
+  const urls = async (scope) => (await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg(scope))).map((i) => i.json.url);
+  assert.deepEqual(await urls('n8n'), ['https://ok/feed', 'https://antes/feed']);
+  // El repositorio del IMARPE tampoco en la validación: su «tls» desde n8n no es una medición de la red.
+  assert.deepEqual(await urls('todas'), ['https://ok/feed', 'https://antes/feed']);
 });
 
 test('Preparar copia: no publica si no pudo leer la copia anterior', async () => {

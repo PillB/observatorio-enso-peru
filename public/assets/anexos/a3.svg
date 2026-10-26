@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1850.5" role="img" aria-labelledby="a3-t a3-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1877.3" role="img" aria-labelledby="a3-t a3-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
   <title id="a3-t">Anexo A3 · n8n en la nube (AWS): segunda copia y flujos auxiliares</title>
   <desc id="a3-d">El recolector de n8n nodo por nodo (registro, dos pasadas, copia, commit sin padre en data-n8n) y los flujos de vigilancia, validación y extracción, con su construcción y prueba desde el repositorio.</desc>
   <style>
@@ -113,12 +113,12 @@
     <marker id="a3-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
     <marker id="a3-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
   </defs>
-  <rect class="ar-bg" x="0" y="0" width="1440" height="1850.5" rx="14"/>
+  <rect class="ar-bg" x="0" y="0" width="1440" height="1877.3" rx="14"/>
   <text class="ar-big" x="20" y="38" font-size="20">Anexo A3 · n8n en la nube (AWS): segunda copia y flujos auxiliares</text>
   <a class="ar-annex" href="../arquitectura.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Volver al diagrama completo</text></a>
   <text class="ar-s" x="20" y="60" font-size="12">Cuatro flujos de n8n corren fuera de GitHub, en el n8n de un colega en AWS (EE. UU.). El recolector deja cada noche una segunda copia de todo lo que no está bloqueado ni prohibido, falle o no Actions; los otros vigilan el sitio,</text>
   <text class="ar-s" x="20" y="77" font-size="12">miden el alcance a pedido y ayudan a leer informes con un modelo de lenguaje. El código de cada nodo vive en el repositorio (n8n/) y se arma con build.mjs.</text>
-  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: Recolector n8n (nube AWS), Rama data-n8n, Colega que opera n8n.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: Recolector n8n (nube AWS), Rama data-n8n, Extractor de informes n8n (opcional), Colega que opera n8n.</text>
   <text class="ar-t" x="20" y="121" font-size="11.5">Líneas:</text>
   <path class="ar-e ar-e-data" d="M78.5 117 L112.5 117" marker-end="url(#a3-m-data)"/>
   <text class="ar-s" x="120.5" y="121" font-size="11.5">datos</text>
@@ -128,18 +128,18 @@
   <text class="ar-s" x="330" y="121" font-size="11.5">disparo o control</text>
   <path class="ar-e ar-e-human" d="M449.1 117 L483.1 117" stroke-dasharray="8 3 2 3" marker-end="url(#a3-m-human)"/>
   <text class="ar-s" x="491.1" y="121" font-size="11.5">paso manual</text>
-  <rect class="ar-col" x="36" y="141" width="300" height="1088.5" rx="10"/>
+  <rect class="ar-col" x="36" y="141" width="300" height="1100.3" rx="10"/>
   <text class="ar-h" x="48" y="166" font-size="15">Repositorio (n8n/)</text>
   <text class="ar-m" x="48" y="183" font-size="10.5">Node.js · build.mjs · pruebas con n8n real (n8n.yml)</text>
-  <rect class="ar-col" x="392" y="141" width="300" height="1088.5" rx="10"/>
+  <rect class="ar-col" x="392" y="141" width="300" height="1100.3" rx="10"/>
   <text class="ar-h" x="404" y="166" font-size="15">Recolector: cada día 22:50 Lima</text>
   <text class="ar-m" x="404" y="183" font-size="10.5">nodos Schedule, HTTP Request, Split in Batches y</text>
   <text class="ar-m" x="404" y="197" font-size="10.5">Code</text>
-  <rect class="ar-col" x="748" y="141" width="300" height="1088.5" rx="10"/>
+  <rect class="ar-col" x="748" y="141" width="300" height="1100.3" rx="10"/>
   <text class="ar-h" x="760" y="166" font-size="15">Hacia GitHub</text>
   <text class="ar-m" x="760" y="183" font-size="10.5">API de Git Data con la credencial «GitHub ENSO</text>
   <text class="ar-m" x="760" y="197" font-size="10.5">(n8n)»</text>
-  <rect class="ar-col" x="1104" y="141" width="300" height="1088.5" rx="10"/>
+  <rect class="ar-col" x="1104" y="141" width="300" height="1100.3" rx="10"/>
   <text class="ar-h" x="1116" y="166" font-size="15">Otros flujos</text>
   <text class="ar-m" x="1116" y="183" font-size="10.5">vigilante · validación · extractor</text>
   
@@ -176,27 +176,27 @@
   </g>
   <g class="ar-edge" id="a3-e-6" data-edge="6" data-from="plan" data-to="pass1" tabindex="0">
     <title>6. Fuentes → Descarga, una por una: URL asignadas a n8n. Solo las que el registro da a n8n: los tres recolectores leen la misma lista.</title>
-    <path class="ar-e ar-e-data" d="M540 691.3 L540 721.3" marker-end="url(#a3-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="540" cy="706.3" r="9"/>
-    <text class="ar-t" x="540" y="710.1" font-size="10.5" text-anchor="middle">6</text>
+    <path class="ar-e ar-e-data" d="M540 688 L540 718" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="703" r="9"/>
+    <text class="ar-t" x="540" y="706.8" font-size="10.5" text-anchor="middle">6</text>
   </g>
   <g class="ar-edge" id="a3-e-7" data-edge="7" data-from="pass1" data-to="pass2" tabindex="0">
     <title>7. Descarga, una por una → Segunda pasada: fallas pasajeras. Lo que falló por tiempo, conexión, 5xx o 429 se reintenta una vez; si no hay nada que reintentar, esta rama no corre.</title>
-    <path class="ar-e ar-e-fallback" d="M540 866 L540 896" stroke-dasharray="6 4" marker-end="url(#a3-m-fallback)"/>
-    <circle class="ar-badge ar-e-fallback" cx="540" cy="881" r="9"/>
-    <text class="ar-t" x="540" y="884.8" font-size="10.5" text-anchor="middle">7</text>
+    <path class="ar-e ar-e-fallback" d="M540 862.7 L540 892.7" stroke-dasharray="6 4" marker-end="url(#a3-m-fallback)"/>
+    <circle class="ar-badge ar-e-fallback" cx="540" cy="877.7" r="9"/>
+    <text class="ar-t" x="540" y="881.5" font-size="10.5" text-anchor="middle">7</text>
   </g>
   <g class="ar-edge" id="a3-e-8" data-edge="8" data-from="pass1" data-to="prepare" tabindex="0">
     <title>8. Descarga, una por una → Preparar copia: primera pasada. Las respuestas buenas de la primera pasada van directo a la copia.</title>
-    <path class="ar-e ar-e-data" d="M682 792 L702 792 Q708 792 708 798 L708 1170 Q708 1176 702 1176 L682 1176" marker-end="url(#a3-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="708" cy="984" r="9"/>
-    <text class="ar-t" x="708" y="987.8" font-size="10.5" text-anchor="middle">8</text>
+    <path class="ar-e ar-e-data" d="M682 792 L702 792 Q708 792 708 798 L708 1176 Q708 1182 702 1182 L682 1182" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="708" cy="987" r="9"/>
+    <text class="ar-t" x="708" y="990.8" font-size="10.5" text-anchor="middle">8</text>
   </g>
   <g class="ar-edge" id="a3-e-9" data-edge="9" data-from="pass2" data-to="prepare" tabindex="0">
     <title>9. Segunda pasada → Preparar copia: segunda pasada. «Unir pasadas» junta las dos antes de armar la copia.</title>
-    <path class="ar-e ar-e-data" d="M540 1040.7 L540 1070.7" marker-end="url(#a3-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="540" cy="1055.7" r="9"/>
-    <text class="ar-t" x="540" y="1059.5" font-size="10.5" text-anchor="middle">9</text>
+    <path class="ar-e ar-e-data" d="M540 1037.4 L540 1067.4" marker-end="url(#a3-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="540" cy="1052.4" r="9"/>
+    <text class="ar-t" x="540" y="1056.2" font-size="10.5" text-anchor="middle">9</text>
   </g>
   <g class="ar-edge" id="a3-e-10" data-edge="10" data-from="prepare" data-to="blobs" tabindex="0">
     <title>10. Preparar copia → Crear blobs: archivos nuevos. Los archivos que no cambiaron reutilizan su blob: la subida es pequeña.</title>
@@ -306,69 +306,70 @@
     <a class="ar-annex" href="a1.svg" data-annex="a1"><title>Anexo A1: Fuentes, alcance y registro</title><rect class="ar-tag" x="646.6" y="390.7" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="660.3" y="403.2" font-size="10.5" text-anchor="middle">A1</text></a>
   </g>
   <g class="ar-node-g" id="a3-n-plan" data-node="plan">
-    <title>Fuentes. Se queda con las URL que el registro da a n8n (y sus réplicas): omite las prohibidas, las reader y las que solo responden desde el Perú. 152 URL. Tecnología: Code.</title>
-    <rect class="ar-node ar-g-channels" x="402" y="528.1" width="280" height="163.2" rx="8"/>
-    <rect class="ar-f-channels" x="402" y="536.1" width="4" height="147.2" rx="2"/>
+    <title>Fuentes. Se queda con las URL que el registro da a n8n (y sus réplicas): omite las prohibidas, las de robots.txt sin leer, las reader, las que solo responden desde el Perú y las fuentes con n8n: false. Tecnología: Code.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="528.1" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="536.1" width="4" height="143.9" rx="2"/>
     <rect class="ar-tile ar-f-channels" x="414" y="538.1" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-channels" transform="translate(417 541.1)"><path d="M3 5h18l-7 8.5V20l-4-2v-4.5z"/></g>
     <text class="ar-t" x="452" y="557.6" font-size="12.5">Fuentes</text>
     <text class="ar-s" x="414" y="589.5" font-size="11">Se queda con las URL que el registro da a n8n</text>
-    <text class="ar-s" x="414" y="604.7" font-size="11">(y sus réplicas): omite las prohibidas, las</text>
-    <text class="ar-s" x="414" y="619.9" font-size="11">reader y las que solo responden desde el</text>
-    <text class="ar-s" x="414" y="635" font-size="11">Perú.</text>
-    <text class="ar-m" x="414" y="654.2" font-size="10.5">152 URL</text>
-    <rect class="ar-chip" x="414" y="663.3" width="37.6" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="420" y="675.3" font-size="10">Code</text>
+    <text class="ar-s" x="414" y="604.7" font-size="11">(y sus réplicas): omite las prohibidas, las de</text>
+    <text class="ar-s" x="414" y="619.9" font-size="11">robots.txt sin leer, las reader, las que solo</text>
+    <text class="ar-s" x="414" y="635" font-size="11">responden desde el Perú y las fuentes con</text>
+    <text class="ar-s" x="414" y="650.2" font-size="11">n8n: false.</text>
+    <rect class="ar-chip" x="414" y="660" width="37.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="672" font-size="10">Code</text>
   </g>
   <g class="ar-node-g" id="a3-n-pass1" data-node="pass1">
     <title>Descarga, una por una. Una URL a la vez, hasta 10 redirecciones y 40 s de plazo; «Analizar» clasifica cada respuesta con el mismo criterio que Actions y el Perú. Tecnología: Split in Batches, HTTP Request, Code.</title>
-    <rect class="ar-node ar-g-channels" x="402" y="721.3" width="280" height="144.7" rx="8"/>
-    <rect class="ar-f-channels" x="402" y="729.3" width="4" height="128.7" rx="2"/>
-    <rect class="ar-tile ar-f-channels" x="414" y="731.3" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-channels" transform="translate(417 734.3)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
-    <text class="ar-t" x="452" y="750.8" font-size="12.5">Descarga, una por una</text>
-    <text class="ar-s" x="414" y="782.7" font-size="11">Una URL a la vez, hasta 10 redirecciones y 40</text>
-    <text class="ar-s" x="414" y="797.9" font-size="11">s de plazo; «Analizar» clasifica cada</text>
-    <text class="ar-s" x="414" y="813.1" font-size="11">respuesta con el mismo criterio que Actions y</text>
-    <text class="ar-s" x="414" y="828.3" font-size="11">el Perú.</text>
-    <rect class="ar-chip" x="414" y="838" width="89.8" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="420" y="850" font-size="10">Split in Batches</text>
-    <rect class="ar-chip" x="508.8" y="838" width="82" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="514.8" y="850" font-size="10">HTTP Request</text>
-    <rect class="ar-chip" x="595.8" y="838" width="37.6" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="601.8" y="850" font-size="10">Code</text>
+    <rect class="ar-node ar-g-channels" x="402" y="718" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="726" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="728" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 731)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
+    <text class="ar-t" x="452" y="747.5" font-size="12.5">Descarga, una por una</text>
+    <text class="ar-s" x="414" y="779.4" font-size="11">Una URL a la vez, hasta 10 redirecciones y 40</text>
+    <text class="ar-s" x="414" y="794.6" font-size="11">s de plazo; «Analizar» clasifica cada</text>
+    <text class="ar-s" x="414" y="809.8" font-size="11">respuesta con el mismo criterio que Actions y</text>
+    <text class="ar-s" x="414" y="824.9" font-size="11">el Perú.</text>
+    <rect class="ar-chip" x="414" y="834.7" width="89.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="846.7" font-size="10">Split in Batches</text>
+    <rect class="ar-chip" x="508.8" y="834.7" width="82" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="514.8" y="846.7" font-size="10">HTTP Request</text>
+    <rect class="ar-chip" x="595.8" y="834.7" width="37.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="601.8" y="846.7" font-size="10">Code</text>
   </g>
   <g class="ar-node-g" id="a3-n-pass2" data-node="pass2">
     <title>Segunda pasada. Tras 30 s reintenta lo que falló por causas pasajeras (tiempo, conexión, 5xx, 429) con 60 s de plazo, y baja los PDF del ENFEN y los enlaces que pide el registro. Tecnología: Wait, Code.</title>
-    <rect class="ar-node ar-g-channels" x="402" y="896" width="280" height="144.7" rx="8"/>
-    <rect class="ar-f-channels" x="402" y="904" width="4" height="128.7" rx="2"/>
-    <rect class="ar-tile ar-f-channels" x="414" y="906" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-channels" transform="translate(417 909)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
-    <text class="ar-t" x="452" y="925.5" font-size="12.5">Segunda pasada</text>
-    <text class="ar-s" x="414" y="957.4" font-size="11">Tras 30 s reintenta lo que falló por causas</text>
-    <text class="ar-s" x="414" y="972.6" font-size="11">pasajeras (tiempo, conexión, 5xx, 429) con</text>
-    <text class="ar-s" x="414" y="987.8" font-size="11">60 s de plazo, y baja los PDF del ENFEN y los</text>
-    <text class="ar-s" x="414" y="1003" font-size="11">enlaces que pide el registro.</text>
-    <rect class="ar-chip" x="414" y="1012.7" width="34.7" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="420" y="1024.7" font-size="10">Wait</text>
-    <rect class="ar-chip" x="453.7" y="1012.7" width="37.6" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="459.7" y="1024.7" font-size="10">Code</text>
+    <rect class="ar-node ar-g-channels" x="402" y="892.7" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="900.7" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="902.7" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 905.7)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
+    <text class="ar-t" x="452" y="922.2" font-size="12.5">Segunda pasada</text>
+    <text class="ar-s" x="414" y="954.1" font-size="11">Tras 30 s reintenta lo que falló por causas</text>
+    <text class="ar-s" x="414" y="969.3" font-size="11">pasajeras (tiempo, conexión, 5xx, 429) con</text>
+    <text class="ar-s" x="414" y="984.5" font-size="11">60 s de plazo, y baja los PDF del ENFEN y los</text>
+    <text class="ar-s" x="414" y="999.7" font-size="11">enlaces que pide el registro.</text>
+    <rect class="ar-chip" x="414" y="1009.4" width="34.7" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="1021.4" font-size="10">Wait</text>
+    <rect class="ar-chip" x="453.7" y="1009.4" width="37.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="459.7" y="1021.4" font-size="10">Code</text>
   </g>
   <g class="ar-node-g" id="a3-n-prepare" data-node="prepare">
-    <title>Preparar copia. Une las dos pasadas y arma index.json y heartbeat.json (enso-relay/1). Conserva hasta 72 h la copia buena de una URL que hoy falló, marcada carried. Tecnología: Merge, Code.</title>
-    <rect class="ar-node ar-g-channels" x="402" y="1070.7" width="280" height="144.7" rx="8"/>
-    <rect class="ar-f-channels" x="402" y="1078.7" width="4" height="128.7" rx="2"/>
-    <rect class="ar-tile ar-f-channels" x="414" y="1080.7" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-channels" transform="translate(417 1083.7)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
-    <text class="ar-t" x="452" y="1100.2" font-size="12.5">Preparar copia</text>
-    <text class="ar-s" x="414" y="1132.2" font-size="11">Une las dos pasadas y arma index.json y</text>
-    <text class="ar-s" x="414" y="1147.3" font-size="11">heartbeat.json (enso-relay/1). Conserva hasta</text>
-    <text class="ar-s" x="414" y="1162.5" font-size="11">72 h la copia buena de una URL que hoy falló,</text>
-    <text class="ar-s" x="414" y="1177.7" font-size="11">marcada carried.</text>
-    <rect class="ar-chip" x="414" y="1187.5" width="43.4" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="420" y="1199.5" font-size="10">Merge</text>
-    <rect class="ar-chip" x="462.4" y="1187.5" width="37.6" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="468.4" y="1199.5" font-size="10">Code</text>
+    <title>Preparar copia. Une las dos pasadas y arma index.json y heartbeat.json (enso-relay/1), con el vencimiento de la credencial de GitHub. Conserva hasta 72 h la copia buena de una URL que hoy falló, marcada carried. Tecnología: Merge, Code.</title>
+    <rect class="ar-node ar-g-channels" x="402" y="1067.4" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-channels" x="402" y="1075.4" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-channels" x="414" y="1077.4" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-channels" transform="translate(417 1080.4)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <text class="ar-t" x="452" y="1096.9" font-size="12.5">Preparar copia</text>
+    <text class="ar-s" x="414" y="1128.9" font-size="11">Une las dos pasadas y arma index.json y</text>
+    <text class="ar-s" x="414" y="1144" font-size="11">heartbeat.json (enso-relay/1), con el</text>
+    <text class="ar-s" x="414" y="1159.2" font-size="11">vencimiento de la credencial de GitHub.</text>
+    <text class="ar-s" x="414" y="1174.4" font-size="11">Conserva hasta 72 h la copia buena de una</text>
+    <text class="ar-s" x="414" y="1189.6" font-size="11">URL que hoy falló, marcada carried.</text>
+    <rect class="ar-chip" x="414" y="1199.3" width="43.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="420" y="1211.3" font-size="10">Merge</text>
+    <rect class="ar-chip" x="462.4" y="1199.3" width="37.6" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="468.4" y="1211.3" font-size="10">Code</text>
   </g>
   <g class="ar-node-g" id="a3-n-blobs" data-node="blobs">
     <title>Crear blobs. Sube solo los archivos nuevos, uno cada 0,8 s; los que ya están en la rama se reutilizan por su SHA-1 de git. Tecnología: POST git/blobs.</title>
@@ -476,110 +477,112 @@
     <text class="ar-chip-t" x="1195.8" y="717.5" font-size="10">OpenAI</text>
     <a class="ar-annex" href="a5.svg" data-annex="a5"><title>Anexo A5: Actualización diaria: fuentes oficiales, series y señales</title><rect class="ar-tag" x="1358.6" y="580.6" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="593.1" font-size="10.5" text-anchor="middle">A5</text></a>
   </g>
-  <line class="ar-rule" x1="20" y1="1269.5" x2="1420" y2="1269.5"/>
-  <text class="ar-h" x="20" y="1299.5" font-size="15">Pasos y conexiones: qué viaja por cada línea, cuándo y por qué</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="1327.5" r="9"/>
-  <text class="ar-t" x="30" y="1331.2" font-size="10.5" text-anchor="middle">1</text>
-  <text class="ar-t" x="50" y="1331.5" font-size="11.5">código y registro</text>
-  <text class="ar-m" x="50" y="1345.5" font-size="10.5">Código de los nodos → build.mjs → dist/</text>
-  <text class="ar-s" x="50" y="1360.5" font-size="11">build.mjs inserta el código de lib/ y nodes/ en cada nodo y una copia del</text>
-  <text class="ar-s" x="50" y="1375.5" font-size="11">registro de fuentes.</text>
-  <circle class="ar-badge ar-e-human" cx="30" cy="1398.5" r="9"/>
-  <text class="ar-t" x="30" y="1402.2" font-size="10.5" text-anchor="middle">2</text>
-  <text class="ar-t" x="50" y="1402.5" font-size="11.5">flujos de dist/</text>
-  <text class="ar-m" x="50" y="1416.5" font-size="10.5">build.mjs → dist/ → Colega que opera n8n</text>
-  <text class="ar-s" x="50" y="1431.5" font-size="11">Los nodos se regeneran con build.mjs: un cambio se importa de nuevo, no</text>
-  <text class="ar-s" x="50" y="1446.5" font-size="11">se edita en n8n.</text>
-  <circle class="ar-badge ar-e-human" cx="30" cy="1469.5" r="9"/>
-  <text class="ar-t" x="30" y="1473.2" font-size="10.5" text-anchor="middle">3</text>
-  <text class="ar-t" x="50" y="1473.5" font-size="11.5">importa, credencial y activa</text>
-  <text class="ar-m" x="50" y="1487.5" font-size="10.5">Colega que opera n8n → Disparador y configuración</text>
-  <text class="ar-s" x="50" y="1502.5" font-size="11">Elige la credencial «GitHub ENSO (n8n)» en cada nodo que habla con</text>
-  <text class="ar-s" x="50" y="1517.5" font-size="11">GitHub y activa el flujo.</text>
-  <circle class="ar-badge ar-e-trigger" cx="30" cy="1540.5" r="9"/>
-  <text class="ar-t" x="30" y="1544.2" font-size="10.5" text-anchor="middle">4</text>
-  <text class="ar-t" x="50" y="1544.5" font-size="11.5">22:50 Lima</text>
-  <text class="ar-m" x="50" y="1558.5" font-size="10.5">Disparador y configuración → Leer registro y copia anterior · diario 22:50 Lima</text>
-  <text class="ar-s" x="50" y="1573.5" font-size="11">Corre cada noche, haya fallado Actions o no: la copia ya está lista cuando</text>
-  <text class="ar-s" x="50" y="1588.5" font-size="11">la corrida de las 23:37 la busca.</text>
-  <circle class="ar-badge ar-e-data" cx="506" cy="1327.5" r="9"/>
-  <text class="ar-t" x="506" y="1331.2" font-size="10.5" text-anchor="middle">5</text>
-  <text class="ar-t" x="526" y="1331.5" font-size="11.5">registro y copia anterior</text>
-  <text class="ar-m" x="526" y="1345.5" font-size="10.5">Leer registro y copia anterior → Fuentes</text>
-  <text class="ar-s" x="526" y="1360.5" font-size="11">Si el registro de GitHub no se puede leer, usa la copia incluida al construir</text>
-  <text class="ar-s" x="526" y="1375.5" font-size="11">el flujo.</text>
-  <circle class="ar-badge ar-e-data" cx="506" cy="1398.5" r="9"/>
-  <text class="ar-t" x="506" y="1402.2" font-size="10.5" text-anchor="middle">6</text>
-  <text class="ar-t" x="526" y="1402.5" font-size="11.5">URL asignadas a n8n</text>
-  <text class="ar-m" x="526" y="1416.5" font-size="10.5">Fuentes → Descarga, una por una</text>
-  <text class="ar-s" x="526" y="1431.5" font-size="11">Solo las que el registro da a n8n: los tres recolectores leen la misma lista.</text>
-  <circle class="ar-badge ar-e-fallback" cx="506" cy="1454.5" r="9"/>
-  <text class="ar-t" x="506" y="1458.2" font-size="10.5" text-anchor="middle">7</text>
-  <text class="ar-t" x="526" y="1458.5" font-size="11.5">fallas pasajeras</text>
-  <text class="ar-m" x="526" y="1472.5" font-size="10.5">Descarga, una por una → Segunda pasada</text>
-  <text class="ar-s" x="526" y="1487.5" font-size="11">Lo que falló por tiempo, conexión, 5xx o 429 se reintenta una vez; si no</text>
-  <text class="ar-s" x="526" y="1502.5" font-size="11">hay nada que reintentar, esta rama no corre.</text>
-  <circle class="ar-badge ar-e-data" cx="506" cy="1525.5" r="9"/>
-  <text class="ar-t" x="506" y="1529.2" font-size="10.5" text-anchor="middle">8</text>
-  <text class="ar-t" x="526" y="1529.5" font-size="11.5">primera pasada</text>
-  <text class="ar-m" x="526" y="1543.5" font-size="10.5">Descarga, una por una → Preparar copia</text>
-  <text class="ar-s" x="526" y="1558.5" font-size="11">Las respuestas buenas de la primera pasada van directo a la copia.</text>
-  <circle class="ar-badge ar-e-data" cx="506" cy="1581.5" r="9"/>
-  <text class="ar-t" x="506" y="1585.2" font-size="10.5" text-anchor="middle">9</text>
-  <text class="ar-t" x="526" y="1585.5" font-size="11.5">segunda pasada</text>
-  <text class="ar-m" x="526" y="1599.5" font-size="10.5">Segunda pasada → Preparar copia</text>
-  <text class="ar-s" x="526" y="1614.5" font-size="11">«Unir pasadas» junta las dos antes de armar la copia.</text>
-  <circle class="ar-badge ar-e-data" cx="982" cy="1327.5" r="9"/>
-  <text class="ar-t" x="982" y="1331.2" font-size="10.5" text-anchor="middle">10</text>
-  <text class="ar-t" x="1002" y="1331.5" font-size="11.5">archivos nuevos</text>
-  <text class="ar-m" x="1002" y="1345.5" font-size="10.5">Preparar copia → Crear blobs</text>
-  <text class="ar-s" x="1002" y="1360.5" font-size="11">Los archivos que no cambiaron reutilizan su blob: la subida es pequeña.</text>
-  <circle class="ar-badge ar-e-data" cx="982" cy="1383.5" r="9"/>
-  <text class="ar-t" x="982" y="1387.2" font-size="10.5" text-anchor="middle">11</text>
-  <text class="ar-t" x="1002" y="1387.5" font-size="11.5">blobs listos</text>
-  <text class="ar-m" x="1002" y="1401.5" font-size="10.5">Crear blobs → Árbol y commit sin padre</text>
-  <text class="ar-s" x="1002" y="1416.5" font-size="11">Con los blobs se arma el árbol y el commit.</text>
-  <circle class="ar-badge ar-e-data" cx="982" cy="1439.5" r="9"/>
-  <text class="ar-t" x="982" y="1443.2" font-size="10.5" text-anchor="middle">12</text>
-  <text class="ar-t" x="1002" y="1443.5" font-size="11.5">commit sin padre</text>
-  <text class="ar-m" x="1002" y="1457.5" font-size="10.5">Árbol y commit sin padre → Rama data-n8n</text>
-  <text class="ar-s" x="1002" y="1472.5" font-size="11">La rama se reemplaza (force): el historial no crece; data-archive guarda lo</text>
-  <text class="ar-s" x="1002" y="1487.5" font-size="11">que el pipeline usa.</text>
-  <circle class="ar-badge ar-e-fallback" cx="982" cy="1510.5" r="9"/>
-  <text class="ar-t" x="982" y="1514.2" font-size="10.5" text-anchor="middle">13</text>
-  <text class="ar-t" x="1002" y="1514.5" font-size="11.5">copia anterior (72 h)</text>
-  <text class="ar-m" x="1002" y="1528.5" font-size="10.5">Rama data-n8n → Leer registro y copia anterior</text>
-  <text class="ar-s" x="1002" y="1543.5" font-size="11">Su nodo «Leer copia anterior» lee data-n8n para conservar las URL que</text>
-  <text class="ar-s" x="1002" y="1558.5" font-size="11">esta noche fallaron.</text>
-  <circle class="ar-badge ar-e-trigger" cx="982" cy="1581.5" r="9"/>
-  <text class="ar-t" x="982" y="1585.2" font-size="10.5" text-anchor="middle">14</text>
-  <text class="ar-t" x="1002" y="1585.5" font-size="11.5">opcional</text>
-  <text class="ar-m" x="1002" y="1599.5" font-size="10.5">Rama data-n8n → Avisar al sitio (apagado)</text>
-  <text class="ar-s" x="1002" y="1614.5" font-size="11">Si se activa, la actualización corre enseguida; si no, la de las 23:37 usa la</text>
-  <text class="ar-s" x="1002" y="1629.5" font-size="11">copia.</text>
-  <line class="ar-rule" x1="20" y1="1664.5" x2="1420" y2="1664.5"/>
-  <text class="ar-h" x="20" y="1694.5" font-size="15">Si algo falla: qué pasa y qué respaldo entra</text>
-  <g class="ar-warn" transform="translate(20 1711.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="50" y="1726.5" font-size="11.5">Una URL falla en la primera pasada</text>
-  <text class="ar-s" x="50" y="1741.5" font-size="11">La segunda pasada la reintenta tras 30 s; si sigue fallando se conserva su</text>
-  <text class="ar-s" x="50" y="1756.5" font-size="11">copia buena de hasta 72 h.</text>
-  <g class="ar-warn" transform="translate(20 1768.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="50" y="1783.5" font-size="11.5">Nada responde esta noche</text>
-  <text class="ar-s" x="50" y="1798.5" font-size="11">index.json y heartbeat.json se publican igual: el pipeline ve que n8n corre</text>
-  <text class="ar-s" x="50" y="1813.5" font-size="11">y que son las fuentes las que no responden (relay-n8n-sources-down).</text>
-  <g class="ar-warn" transform="translate(496 1711.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="526" y="1726.5" font-size="11.5">Vence el token de GitHub (1 año)</text>
-  <text class="ar-s" x="526" y="1741.5" font-size="11">La copia deja de subir y la ejecución queda en rojo; a las 36 h el pipeline</text>
-  <text class="ar-s" x="526" y="1756.5" font-size="11">abre relay-n8n-stale. n8n no avisa antes.</text>
-  <g class="ar-warn" transform="translate(496 1768.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="526" y="1783.5" font-size="11.5">n8n no puede leer el registro de GitHub</text>
-  <text class="ar-s" x="526" y="1798.5" font-size="11">Usa la copia del registro incluida al construir el flujo.</text>
-  <g class="ar-warn" transform="translate(972 1711.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="1002" y="1726.5" font-size="11.5">OpenAI falla o responde algo inválido</text>
-  <text class="ar-s" x="1002" y="1741.5" font-size="11">El extractor responde 502 o el pipeline rechaza la propuesta; el informe</text>
-  <text class="ar-s" x="1002" y="1756.5" font-size="11">anterior se conserva marcado arrastrado.</text>
-  <g class="ar-warn" transform="translate(972 1768.5) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
-  <text class="ar-t" x="1002" y="1783.5" font-size="11.5">El sitio pasa a Cloudflare</text>
-  <text class="ar-s" x="1002" y="1798.5" font-size="11">El vigilante tiene la dirección fija: hay que cambiarla a mano en su nodo</text>
-  <text class="ar-s" x="1002" y="1813.5" font-size="11">Configuración.</text>
+  <line class="ar-rule" x1="20" y1="1281.3" x2="1420" y2="1281.3"/>
+  <text class="ar-h" x="20" y="1311.3" font-size="15">Pasos y conexiones: qué viaja por cada línea, cuándo y por qué</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="1339.3" r="9"/>
+  <text class="ar-t" x="30" y="1343.1" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="1343.3" font-size="11.5">código y registro</text>
+  <text class="ar-m" x="50" y="1357.3" font-size="10.5">Código de los nodos → build.mjs → dist/</text>
+  <text class="ar-s" x="50" y="1372.3" font-size="11">build.mjs inserta el código de lib/ y nodes/ en cada nodo y una copia del</text>
+  <text class="ar-s" x="50" y="1387.3" font-size="11">registro de fuentes.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1410.3" r="9"/>
+  <text class="ar-t" x="30" y="1414.1" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="1414.3" font-size="11.5">flujos de dist/</text>
+  <text class="ar-m" x="50" y="1428.3" font-size="10.5">build.mjs → dist/ → Colega que opera n8n</text>
+  <text class="ar-s" x="50" y="1443.3" font-size="11">Los nodos se regeneran con build.mjs: un cambio se importa de nuevo, no</text>
+  <text class="ar-s" x="50" y="1458.3" font-size="11">se edita en n8n.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="1481.3" r="9"/>
+  <text class="ar-t" x="30" y="1485.1" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="1485.3" font-size="11.5">importa, credencial y activa</text>
+  <text class="ar-m" x="50" y="1499.3" font-size="10.5">Colega que opera n8n → Disparador y configuración</text>
+  <text class="ar-s" x="50" y="1514.3" font-size="11">Elige la credencial «GitHub ENSO (n8n)» en cada nodo que habla con</text>
+  <text class="ar-s" x="50" y="1529.3" font-size="11">GitHub y activa el flujo.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="1552.3" r="9"/>
+  <text class="ar-t" x="30" y="1556.1" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="1556.3" font-size="11.5">22:50 Lima</text>
+  <text class="ar-m" x="50" y="1570.3" font-size="10.5">Disparador y configuración → Leer registro y copia anterior · diario 22:50 Lima</text>
+  <text class="ar-s" x="50" y="1585.3" font-size="11">Corre cada noche, haya fallado Actions o no: la copia ya está lista cuando</text>
+  <text class="ar-s" x="50" y="1600.3" font-size="11">la corrida de las 23:37 la busca.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1339.3" r="9"/>
+  <text class="ar-t" x="506" y="1343.1" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="526" y="1343.3" font-size="11.5">registro y copia anterior</text>
+  <text class="ar-m" x="526" y="1357.3" font-size="10.5">Leer registro y copia anterior → Fuentes</text>
+  <text class="ar-s" x="526" y="1372.3" font-size="11">Si el registro de GitHub no se puede leer, usa la copia incluida al construir</text>
+  <text class="ar-s" x="526" y="1387.3" font-size="11">el flujo.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1410.3" r="9"/>
+  <text class="ar-t" x="506" y="1414.1" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="526" y="1414.3" font-size="11.5">URL asignadas a n8n</text>
+  <text class="ar-m" x="526" y="1428.3" font-size="10.5">Fuentes → Descarga, una por una</text>
+  <text class="ar-s" x="526" y="1443.3" font-size="11">Solo las que el registro da a n8n: los tres recolectores leen la misma lista.</text>
+  <circle class="ar-badge ar-e-fallback" cx="506" cy="1466.3" r="9"/>
+  <text class="ar-t" x="506" y="1470.1" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="526" y="1470.3" font-size="11.5">fallas pasajeras</text>
+  <text class="ar-m" x="526" y="1484.3" font-size="10.5">Descarga, una por una → Segunda pasada</text>
+  <text class="ar-s" x="526" y="1499.3" font-size="11">Lo que falló por tiempo, conexión, 5xx o 429 se reintenta una vez; si no</text>
+  <text class="ar-s" x="526" y="1514.3" font-size="11">hay nada que reintentar, esta rama no corre.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1537.3" r="9"/>
+  <text class="ar-t" x="506" y="1541.1" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="526" y="1541.3" font-size="11.5">primera pasada</text>
+  <text class="ar-m" x="526" y="1555.3" font-size="10.5">Descarga, una por una → Preparar copia</text>
+  <text class="ar-s" x="526" y="1570.3" font-size="11">Las respuestas buenas de la primera pasada van directo a la copia.</text>
+  <circle class="ar-badge ar-e-data" cx="506" cy="1593.3" r="9"/>
+  <text class="ar-t" x="506" y="1597.1" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="526" y="1597.3" font-size="11.5">segunda pasada</text>
+  <text class="ar-m" x="526" y="1611.3" font-size="10.5">Segunda pasada → Preparar copia</text>
+  <text class="ar-s" x="526" y="1626.3" font-size="11">«Unir pasadas» junta las dos antes de armar la copia.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1339.3" r="9"/>
+  <text class="ar-t" x="982" y="1343.1" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="1002" y="1343.3" font-size="11.5">archivos nuevos</text>
+  <text class="ar-m" x="1002" y="1357.3" font-size="10.5">Preparar copia → Crear blobs</text>
+  <text class="ar-s" x="1002" y="1372.3" font-size="11">Los archivos que no cambiaron reutilizan su blob: la subida es pequeña.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1395.3" r="9"/>
+  <text class="ar-t" x="982" y="1399.1" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="1002" y="1399.3" font-size="11.5">blobs listos</text>
+  <text class="ar-m" x="1002" y="1413.3" font-size="10.5">Crear blobs → Árbol y commit sin padre</text>
+  <text class="ar-s" x="1002" y="1428.3" font-size="11">Con los blobs se arma el árbol y el commit.</text>
+  <circle class="ar-badge ar-e-data" cx="982" cy="1451.3" r="9"/>
+  <text class="ar-t" x="982" y="1455.1" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="1002" y="1455.3" font-size="11.5">commit sin padre</text>
+  <text class="ar-m" x="1002" y="1469.3" font-size="10.5">Árbol y commit sin padre → Rama data-n8n</text>
+  <text class="ar-s" x="1002" y="1484.3" font-size="11">La rama se reemplaza (force): el historial no crece; data-archive guarda lo</text>
+  <text class="ar-s" x="1002" y="1499.3" font-size="11">que el pipeline usa.</text>
+  <circle class="ar-badge ar-e-fallback" cx="982" cy="1522.3" r="9"/>
+  <text class="ar-t" x="982" y="1526.1" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="1002" y="1526.3" font-size="11.5">copia anterior (72 h)</text>
+  <text class="ar-m" x="1002" y="1540.3" font-size="10.5">Rama data-n8n → Leer registro y copia anterior</text>
+  <text class="ar-s" x="1002" y="1555.3" font-size="11">Su nodo «Leer copia anterior» lee data-n8n para conservar las URL que</text>
+  <text class="ar-s" x="1002" y="1570.3" font-size="11">esta noche fallaron.</text>
+  <circle class="ar-badge ar-e-trigger" cx="982" cy="1593.3" r="9"/>
+  <text class="ar-t" x="982" y="1597.1" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="1002" y="1597.3" font-size="11.5">opcional</text>
+  <text class="ar-m" x="1002" y="1611.3" font-size="10.5">Rama data-n8n → Avisar al sitio (apagado)</text>
+  <text class="ar-s" x="1002" y="1626.3" font-size="11">Si se activa, la actualización corre enseguida; si no, la de las 23:37 usa la</text>
+  <text class="ar-s" x="1002" y="1641.3" font-size="11">copia.</text>
+  <line class="ar-rule" x1="20" y1="1676.3" x2="1420" y2="1676.3"/>
+  <text class="ar-h" x="20" y="1706.3" font-size="15">Si algo falla: qué pasa y qué respaldo entra</text>
+  <g class="ar-warn" transform="translate(20 1723.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1738.3" font-size="11.5">Una URL falla en la primera pasada</text>
+  <text class="ar-s" x="50" y="1753.3" font-size="11">La segunda pasada la reintenta tras 30 s; si sigue fallando se conserva su</text>
+  <text class="ar-s" x="50" y="1768.3" font-size="11">copia buena de hasta 72 h.</text>
+  <g class="ar-warn" transform="translate(20 1780.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="50" y="1795.3" font-size="11.5">Nada responde esta noche</text>
+  <text class="ar-s" x="50" y="1810.3" font-size="11">index.json y heartbeat.json se publican igual: el pipeline ve que n8n corre</text>
+  <text class="ar-s" x="50" y="1825.3" font-size="11">y que son las fuentes las que no responden (relay-n8n-sources-down).</text>
+  <g class="ar-warn" transform="translate(496 1723.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1738.3" font-size="11.5">Vence el token de GitHub (1 año)</text>
+  <text class="ar-s" x="526" y="1753.3" font-size="11">La actualización diaria avisa desde 21 días antes (relay-token-expiring),</text>
+  <text class="ar-s" x="526" y="1768.3" font-size="11">con la fecha que n8n anota; si vence, la copia deja de subir, la ejecución</text>
+  <text class="ar-s" x="526" y="1783.3" font-size="11">queda en rojo y a las 36 h el pipeline abre relay-n8n-stale.</text>
+  <g class="ar-warn" transform="translate(496 1795.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="526" y="1810.3" font-size="11.5">n8n no puede leer el registro de GitHub</text>
+  <text class="ar-s" x="526" y="1825.3" font-size="11">Usa la copia del registro incluida al construir el flujo.</text>
+  <g class="ar-warn" transform="translate(972 1723.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1738.3" font-size="11.5">OpenAI falla o responde algo inválido</text>
+  <text class="ar-s" x="1002" y="1753.3" font-size="11">El extractor responde 502 o el pipeline rechaza la propuesta; el informe</text>
+  <text class="ar-s" x="1002" y="1768.3" font-size="11">anterior se conserva marcado arrastrado.</text>
+  <g class="ar-warn" transform="translate(972 1780.3) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
+  <text class="ar-t" x="1002" y="1795.3" font-size="11.5">El sitio cambia de dirección (un dominio propio)</text>
+  <text class="ar-s" x="1002" y="1810.3" font-size="11">El vigilante viene con https://enso-peru.pages.dev/: se construye con</text>
+  <text class="ar-s" x="1002" y="1825.3" font-size="11">N8N_SITE_URL o se cambia en su nodo Configuración tras cada</text>
+  <text class="ar-s" x="1002" y="1840.3" font-size="11">importación.</text>
 </svg>

@@ -6,7 +6,7 @@ esta tabla lo resume. «Antigüedad máxima» es la edad máxima, en días, del
 
 | ID | Institución | Producto | Archivo | Antigüedad máxima | Crítica |
 |---|---|---|---|---|---|
-| `enfen-comunicados` | ENFEN | Comunicados oficiales: listado y PDF del más reciente | `enfen.imarpe.gob.pe` (WordPress JSON y página de comunicados); réplica de la DHN `dhn.mil.pe/portal/comunicados-oficiales-enfen` | 30 | — |
+| `enfen-comunicados` | ENFEN | Comunicados oficiales: listado y PDF del más reciente | `enfen.imarpe.gob.pe` (WordPress JSON y página de comunicados); réplica de la DHN `dhn.mil.pe/portal/comunicados-oficiales-enfen`; repositorio del IMARPE `repositorio.imarpe.gob.pe` (ver abajo) | 30 | — |
 | `igp-icen` | ENFEN / IGP | ICEN | `met.igp.gob.pe/datos/ICEN.txt` | 100 | — |
 | `cpc-ensodisc` | NOAA / CPC | ENSO Diagnostic Discussion | `ensodisc.shtml` | 40 | Sí |
 | `cpc-wksst` | NOAA / CPC | TSM semanal por región Niño (OISST v2.1) | `wksst9120.for` | 16 | Sí |
@@ -36,39 +36,83 @@ formato ha cambiado varias veces (2018, 2021, 2024). Para no depender de
 una sola página:
 
 1. Se lee el listado (WordPress JSON o HTML) y se toma el número más alto.
-2. Se sondean los dos números siguientes por su página de descarga
-   (`/download/comunicado-oficial-enfen-n-NN-AAAA/`), y en enero el n.º 01
-   del año nuevo. Así se detecta un comunicado nuevo aunque el listado
-   todavía no lo muestre. Para esas páginas se usa la copia existente del
-   Internet Archive, sin pedirle una nueva: el ENFEN no le responde.
-3. Se descarga el PDF y se extrae el tipo de alerta, el número, la fecha
-   y la fecha del siguiente comunicado.
+   La API de WordPress se quedó en el N° 13-2026: su entrada es solo un
+   candidato y se contrasta con el listado del portal o de la réplica de la
+   DHN y con el del repositorio del IMARPE.
+2. Se sondean hasta 6 números siguientes (`PROBE_AHEAD`); dos ausencias
+   seguidas cortan (`PROBE_MAX_MISSES`). En enero se sondea también el
+   n.º 01 del año nuevo. Cada número se busca primero como PDF en la
+   réplica de la DHN y luego por su página de descarga del portal
+   (`/download/comunicado-oficial-enfen-n-NN-AAAA/`). Así se detecta un
+   comunicado nuevo aunque el listado todavía no lo muestre. Para esas
+   páginas se usa la copia existente del Internet Archive, sin pedirle una
+   nueva: el ENFEN no le responde.
+3. Se descarga el PDF (ver abajo) y se extrae el tipo de alerta, el
+   número, la fecha, la fecha del siguiente comunicado y la perspectiva
+   por región.
 4. Si el listado muestra un número más nuevo que el que se pudo leer, el
    estado se marca vencido y se registra la incidencia.
 
-Los servidores del ENFEN no resuelven desde GitHub Actions y tampoco
-responden al Internet Archive (HTTP 523 al pedir una copia nueva). Por eso
-el listado se lee también de la réplica de la Dirección de Hidrografía y
-Navegación (DHN), miembro del ENFEN, que publica cada comunicado como PDF
-directo (`/Archivos/oceanografia/enfen/comunicado-oficial/NN-AAAA.pdf`,
-formato estable desde 2022). Los sondeos de números nuevos prueban
-primero ese PDF. Desde el 20 de octubre de 2026 la DHN responde a los PDF
-pedidos desde GitHub Actions con una página de «Verificación de seguridad»;
-esa página se descarta (no es un PDF) y el número nuevo queda registrado
-como publicado pero no leído, de modo que el estado anterior se muestra
-vencido en lugar de vigente. El recolector desde el Perú también descarga
-esos PDF. Si una URL del ENFEN no responde, se usa la copia que
-bajó el [recolector desde el Perú](servidor-peru.md) a las 21:00; si
-tampoco la hay, la copia más reciente del Internet Archive. El listado también reconoce los comunicados
-extraordinarios, que el ENFEN emite durante los eventos con numeración
-propia.
+Los servidores del ENFEN no resuelven fuera del Perú (ni desde GitHub
+Actions ni desde n8n) y tampoco responden al Internet Archive (HTTP 523 al
+pedir una copia nueva); el [recolector desde el Perú](servidor-peru.md) sí
+los alcanza y baja el listado y los PDF. Por eso el listado se lee también
+de la réplica de la Dirección de Hidrografía y Navegación (DHN), miembro
+del ENFEN, que responde a Actions y a n8n. La DHN publica cada comunicado
+como PDF directo (`/Archivos/oceanografia/enfen/comunicado-oficial/NN-AAAA.pdf`,
+formato estable desde 2022), pero desde el 20 de octubre de 2026 responde a
+esos PDF con una página de verificación humana a los servidores, también a
+n8n y al recolector del Perú. Esa página se registra y se descarta (no es
+un PDF): nunca se intenta pasar la verificación.
+
+El repositorio institucional del IMARPE (`repositorio.imarpe.gob.pe`,
+DSpace; cliente único en `python/enso/feeds/imarpe_repo.py`) recibe cada
+comunicado y cada informe técnico unos 3 días después de publicados: es la
+ruta oficial sin verificación. Su API (`/server/api`) no responde a GitHub
+Actions desde el 22 de octubre de 2026 (el nombre no resuelve; desde el Perú
+aún no se midió), así que la sonda semanal asigna sus tres búsquedas al
+recolector del Perú. La corrida diaria lee de la copia del Perú lo que ese
+equipo bajó: las búsquedas y, desde el kit 2 del recolector, los paquetes y
+PDF de los documentos que encuentran. Lo que no esté en la copia se pide
+desde Actions y hoy falla (`repository-unreachable`): el PDF llega entonces
+por las otras rutas de la lista de abajo. Su listado se suma al del portal y
+de la DHN.
+
+El PDF del comunicado se busca en este orden (`_get_communique` en
+`python/enso/observatory.py`):
+
+1. Cada URL conocida del PDF (la del listado del portal y el PDF de la
+   DHN): primero directo y, si no da un PDF, la copia más reciente que
+   tengan el recolector del Perú (rama `data-peru`, hasta 7 días), n8n
+   (`data-n8n`, hasta 72 h) o la [consola de documentos](documentos-manuales.md)
+   (`data-manual`, hasta 120 días). Una URL que el registro no asigna a
+   Actions se lee primero de esas copias.
+2. El repositorio del IMARPE (su búsqueda por número y año): de la copia
+   del recolector del Perú si la trae; si no, directo.
+3. La copia del Internet Archive de esas mismas URL (y una nueva con Save
+   Page Now si la existente tiene más de un día y robots.txt lo permite).
+4. Cualquier copia en PDF que el Internet Archive tenga de la página de
+   descarga del portal.
+
+Solo vale un cuerpo que empiece con `%PDF-` y que sea el comunicado
+buscado. Si ninguna ruta lo da, el número nuevo queda registrado como
+publicado pero no leído, el estado anterior se muestra vencido en lugar de
+vigente y el comunicado queda pendiente en la consola de documentos para
+que una persona lo baje en su navegador y lo suba. La tarjeta del estado
+muestra el canal del listado y enlaza la copia archivada del PDF leído; el
+canal del PDF queda en `data.latest.channel` de
+`data/sources/enfen-comunicados.json`. El informe técnico que cita el comunicado (ICEN
+temporal y probabilidades) sigue el mismo orden ([informes-texto.md](informes-texto.md)).
+El listado también reconoce los comunicados extraordinarios, que el ENFEN
+emite durante los eventos con numeración propia.
 
 ## Boletín semanal del IMARPE (columna de agua frente a Paita y Chicama)
 
 El IMARPE deposita cada domingo su Boletín Semanal Oceanográfico y
 Biológico-Pesquero (BS-OBP) en su repositorio institucional
-(`repositorio.imarpe.gob.pe`, API REST de DSpace, que responde a GitHub
-Actions; SIOFEN, en cambio, está detrás de una verificación de
+(`repositorio.imarpe.gob.pe`, API REST de DSpace; desde el 22 de octubre de
+2026 no responde a GitHub Actions y se lee de la copia del recolector del
+Perú cuando la trae; SIOFEN, en cambio, está detrás de una verificación de
 Cloudflare). La corrida diaria busca los boletines nuevos con el cliente
 único `enso.feeds.imarpe_repo`, baja hasta dos por corrida y los lee con
 `enso.feeds.imarpe_bsobp`; publica `imarpe-bsobp.json` con el último año.
@@ -100,15 +144,19 @@ y las guarda en `python/tests/fixtures/`. Las pruebas pasan cada lector
 por todas esas versiones. El flujo diario además guarda cada respuesta
 nueva en la rama `data-archive`, de modo que el corpus crece solo.
 
-## Acceso verificado desde GitHub Actions (20 de octubre de 2026)
+## Acceso verificado desde GitHub Actions y n8n (20 y 21 de octubre de 2026)
+
+Las mediciones de cada URL por red están en `registry/reachability.json` y
+el canal que decide quién la pide, en `registry/sources.json`.
 
 | Institución | Resultado | Uso |
 |---|---|---|
 | NOAA CPC, PSL, NCEI, ERDDAP | Responden | En uso (CPC, PSL); NCEI y ERDDAP disponibles para mapas |
 | IGP (`met.igp.gob.pe`) | Responde | En uso (ICEN) |
-| DHN (comunicados ENFEN) | El listado responde; los PDF piden verificación humana | Listado en uso; PDF por el recolector del Perú |
-| ENFEN (`enfen.imarpe.gob.pe`) | No resuelve el nombre | Réplica DHN e Internet Archive |
-| IMARPE | HTTP 403 (bloqueo) | No disponible |
+| DHN (comunicados ENFEN) | El listado responde (también a n8n); los PDF piden verificación humana a los servidores, también a n8n y al recolector del Perú | Listado en uso; PDF del repositorio del IMARPE, la consola de documentos o el Internet Archive |
+| ENFEN (`enfen.imarpe.gob.pe`) | No resuelve el nombre (tampoco desde n8n) | Copia del recolector del Perú; réplica DHN, repositorio del IMARPE e Internet Archive |
+| IMARPE, repositorio (`repositorio.imarpe.gob.pe`) | Desde el 22 de octubre no responde a la corrida diaria en Actions (incidencias `repository-unreachable` y `bsobp-unreachable`, causa «conexión»; el mensaje trae el error de red). Su certificado no trae el intermedio: va en `enso/data/ca-intermedios.pem` | Ruta de los comunicados e informes técnicos del ENFEN y del boletín semanal BS-OBP. Sus tres búsquedas están en el registro (`imarpe-repositorio-enfen`, `imarpe-repositorio-bsobp`, sin n8n): la sonda semanal decide quién las pide; desde el 26 de octubre, el recolector del Perú (`suspected-geoblock`), que desde su kit 2 también baja los paquetes y PDF |
+| IMARPE, sitio web (`www.imarpe.gob.pe`) | La portada y la página de sección dan HTTP 403 con verificación anti-robots (se registra, no se evade); el feed y su robots.txt, según el ejecutor de Actions (2 de 3 lecturas el 26 de octubre). Desde n8n responden los tres | Feed en las noticias cuando Actions lo alcanza o n8n trae copia; las dos páginas las bajan n8n y el recolector del Perú como archivo, sin lector todavía |
 | SENAMHI (avisos, estaciones, boletines) | Tiempo de espera agotado | No disponible desde Actions |
 | ANA (caudales, SNIRH) | Tiempo de espera agotado | No disponible desde Actions |
 | INDECI, CENEPRED (SIGRID) | Responden | Candidatos |
@@ -116,6 +164,40 @@ nueva en la rama `data-archive`, de modo que el corpus crece solo.
 | NASA GPM IMERG | El índice responde; los datos piden cuenta Earthdata | Requiere credencial |
 | CIIFEN, INAMHI, INOCAR, IDEAM | Responden | Candidatos regionales |
 | CPPS (ERFEN), SHOA, DMC Chile | URL probada no válida (404/405) | Por revisar |
+
+## Quién pide cada URL (registro de fuentes)
+
+`registry/sources.json` da, para cada URL, su estado, sus canales y lo que
+se sabe de su robots.txt; lo arma `python -m tools.build_registry` con las
+mediciones de `registry/reachability.json` (sonda semanal desde Actions,
+copias del recolector del Perú y de n8n). Reglas:
+
+- **Canales:** `peru-server` (solo el recolector del Perú) cuando la URL está
+  geobloqueada o se sospecha que lo está; si no, `actions` y `n8n`. Para la red
+  de Actions decide la medición de la sonda semanal desde Actions
+  (`github-actions`, `probe-sources.yml`) si la hay: la corrida diaria no cambia
+  el registro, y para que un cambio de alcance cuente antes del lunes se ejecuta
+  esa sonda a mano. Una medición de más de 45 días (`STALE_DAYS`) no cuenta si su red tiene
+  otra más reciente, y la sonda olvida las URL que salieron del registro y
+  llevan 30 días sin medirse (`PRUNE_DAYS`).
+- **robots.txt por URL** (`by_url[...].robots`): `allowed`, `disallowed` o
+  `unknown` (nadie pudo leerlo: no respondió, dio 429 o 5xx, o pidió una
+  verificación). Cualquier otro 4xx (salvo 429) o 3xx es «todo permitido» (RFC 9309). Si
+  una medición no pudo leerlo, vale la última lectura de esa misma red que
+  permitía la ruta, hasta 45 días (RFC 9309 §2.4: si robots.txt no responde se
+  usa la copia guardada): una verificación de un día no la deja `unknown`. Con
+  `disallowed` la URL queda sin canales, salvo los feeds de noticias que se leen
+  una vez al día (abajo); un `disallowed` que nadie volvió a leer en 45 días
+  deja de contar y la URL vuelve a medirse. n8n no pide ninguna URL `unknown` ni `disallowed`; la
+  corrida diaria lee el robots.txt de una URL `unknown` antes de pedirla, usa
+  primero las copias de los recolectores y no pide nada si el robots.txt no
+  responde.
+- **Fuentes sin n8n** (`"n8n": false`): las búsquedas del repositorio del
+  IMARPE, porque n8n no verifica su certificado sin el intermedio
+  (`NODE_EXTRA_CA_CERTS`). GODAS (`cpc-godas-d20`) solo se lee desde Actions:
+  su lector pide por rangos los archivos GRIB mensuales.
+- El ICEN se pide solo por http (`http://met.igp.gob.pe/datos/ICEN.txt`): la
+  dirección https no responde desde ninguna red.
 
 ## Feeds de noticias
 
@@ -168,7 +250,10 @@ departamento, las de El Niño en el Perú y en el mundo, la de peligros en el
 Perú y las de medios sin feed propio con `site:`: El Peruano, Radio Nacional,
 Panamericana, TV Perú, Esfera Radio, Chachapoyas Online, Radio Titanka,
 Diario Chaski, Diario HOY y Tumbes de Miércoles), Noticias ONU · Clima y Sin
-Rodeos Cajamarca. La lista sale del registro: `registry.reader_urls()`. Solo
+Rodeos Cajamarca. La lista sale del registro: `registry.reader_urls()`, y
+solo de esos tres servicios (`READER_HOSTS`): otro feed que la sonda semanal
+encuentre prohibido por su robots.txt queda sin canales, como toda fuente
+(el de Pachamama Radio, el 26 de octubre), hasta que se decida otra cosa. Solo
 los piden las corridas de `observatory.yml` en `main` (con `--reader-state`);
 las demás (otra rama, la prueba de `capture-fixtures.yml`, una corrida
 local sin `--reader-state`) los omiten. En `main` cuentan todas: la

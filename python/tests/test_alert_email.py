@@ -102,3 +102,18 @@ def test_failure_issue_closed_later_in_the_same_job_is_mailed_as_resolved():
     ch = A.changes([closed_now], SINCE)
     assert [i["number"] for i in ch["resolved"]] == [5] and not ch["again"]
     assert A.compose(ch, "o/r", "")[0] == "[Observatorio ENSO] 1 resuelta"
+
+
+def test_silent_collector_reminders_and_returning_format_drift_are_mailed_again():
+    """El vigilante recuerda una vez al día un recolector callado, y un cambio de formato que vuelve con el issue
+    abierto se comenta: los dos llegan también a quien no sigue el repositorio en GitHub."""
+    silent = _issue(7, "[datos] El recolector del Perú no da señales (data-peru)", "2026-10-20T06:00:00Z",
+                    updated="2026-10-22T06:20:00Z", body="El último latido…\n\n<!-- enso-fp:collector-silent-data-peru -->")
+    back = _issue(8, "[datos] cpc-roni: format-drift", "2026-10-15T06:00:00Z", updated="2026-10-22T06:21:00Z",
+                  body="> huella cambió\n<!-- enso-fp:0a1b2c3d4e -->\n<!-- enso-again:20261022T0600Z-ab -->")
+    gone = _issue(9, "[datos] cpc-oni: format-drift", "2026-10-15T06:00:00Z", updated="2026-10-22T06:22:00Z",
+                  body="> huella cambió\n<!-- enso-fp:1a1b2c3d4e -->\n<!-- enso-gone -->")
+    ch = A.changes([silent, back, gone], SINCE)
+    assert [i["number"] for i in ch["again"]] == [7, 8]  # el «ya no se detectó» no es una repetición
+    # Un recordatorio de un día anterior no vuelve a mandar correo.
+    assert not A.changes([{**silent, "updated_at": "2026-10-21T06:20:00Z"}], SINCE)["again"]
