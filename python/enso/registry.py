@@ -21,7 +21,7 @@ principal y sus réplicas) y ``channels`` es la unión: el portal del ENFEN no
 resuelve desde Azure ni desde AWS y se pide desde el Perú, mientras que su
 réplica en la DHN responde a Actions. ``geoblocked`` es verdadero si alguna URL
 de la fuente necesita el servidor del Perú. Por red cuenta la medición más
-reciente que respondió; en la de Actions, la del propio pipeline
+reciente que respondió; en la de Actions, la de la sonda semanal
 (``github-actions``) si la hay, y una medición de más de ``STALE_DAYS`` no
 cuenta si su red tiene otra más reciente. Una fuente con ``n8n: false`` no va
 nunca por n8n (ver sus ``notes``).

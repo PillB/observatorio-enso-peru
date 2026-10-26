@@ -168,8 +168,10 @@ copias del recolector del Perú y de n8n). Reglas:
 
 - **Canales:** `peru-server` (solo el recolector del Perú) cuando la URL está
   geobloqueada o se sospecha que lo está; si no, `actions` y `n8n`. Para la red
-  de Actions decide la medición de la corrida diaria (`github-actions`) si la
-  hay. Una medición de más de 45 días (`STALE_DAYS`) no cuenta si su red tiene
+  de Actions decide la medición de la sonda semanal desde Actions
+  (`github-actions`, `probe-sources.yml`) si la hay: la corrida diaria no cambia
+  el registro, y para que un cambio de alcance cuente antes del lunes se ejecuta
+  esa sonda a mano. Una medición de más de 45 días (`STALE_DAYS`) no cuenta si su red tiene
   otra más reciente, y la sonda olvida las URL que salieron del registro y
   llevan 30 días sin medirse (`PRUNE_DAYS`).
 - **robots.txt por URL** (`by_url[...].robots`): `allowed`, `disallowed` o
