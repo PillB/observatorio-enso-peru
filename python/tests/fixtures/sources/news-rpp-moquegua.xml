@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:30:25 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 26 Oct 2026 13:54:21 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Moquegua: encuentran gaseosa en refrigeradora destinada a guardar muestras de laboratorio de hospital de EsSalud]]></title>
+        <description><![CDATA[Tras el hallazgo, <strong><a data-mce-href="https://rpp.pe/noticias/essalud" href="https://rpp.pe/noticias/essalud" target="_blank" rel="noopener">EsSalud</a> </strong>informó que reforzará la supervisión y adoptará medidas administrativas si se identifican responsabilidades.]]></description>
+        <pubDate>Thu, 22 Oct 2026 16:05:16 -0500</pubDate>
+        <link>https://rpp.pe/peru/moquegua/moquegua-encuentran-gaseosa-en-refrigeradora-destinada-a-guardar-muestras-de-laboratorio-de-hospital-de-essalud-noticia-1713964</link>
+        <guid>1713964</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/22/055205_1921459.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Moquegua, EsSalud, Hospital, Ilo, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Moquegua: tres personas fallecieron en accidente de tránsito en Carretera Binacional]]></title>
         <description><![CDATA[Dos buses interprovinciales protagonizaron <strong>un choque frontal </strong>este martes, 6 de octubre, dejando además a 29 personas heridas.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2025/02/03/125612_1700713.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Moquegua, Delincuencia, Policía Nacional del Perú, PNP, Inseguridad ciudadana, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Nueve pescadores fueron rescatados por personal de capitanía en el puerto de Ilo]]></title>
-        <description><![CDATA[La <strong>embarcación </strong>donde viajaban se hundió tras sufrir un desperfecto, pero las autoridades marítimas lograron rescatarlos a todos con vida.]]></description>
-        <pubDate>Wed, 29 Jan 2025 17:27:55 -0500</pubDate>
-        <link>https://rpp.pe/peru/moquegua/moquegua-nueve-pescadores-fueron-rescatados-por-personal-de-capitania-en-el-puerto-de-ilo-noticia-1612967</link>
-        <guid>1612967</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2025/01/29/412441_1698737.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Ilo, Tacna, Pescadores, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
