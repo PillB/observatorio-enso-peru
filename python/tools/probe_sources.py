@@ -75,6 +75,7 @@ def probe(urls: list[str], vantage: str, timeout: float = 25.0,
             wait = 1.5 - (time.monotonic() - last.get(host, 0))
             if wait > 0:
                 time.sleep(wait)
+            robots.pace(url)  # el Crawl-delay de una entidad pública del Perú, si pide más que esa pausa
             started = time.monotonic()
             try:
                 r = client.get(url)

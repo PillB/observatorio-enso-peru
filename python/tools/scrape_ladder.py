@@ -49,12 +49,12 @@ from concurrent.futures import TimeoutError as FutureTimeout
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlparse
 
 import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from enso.reach import CHALLENGE_RE, Robots, classify  # noqa: E402
+from enso.reach import CHALLENGE_RE, Robots, classify, get_checked  # noqa: E402
 
 CONTACT = os.environ.get("ENSO_CONTACT_URL") or "https://github.com/PillB/observatorio-enso-peru"
 UA = f"Observatorio-ENSO-Peru/4.0 (scrape-ladder; +{CONTACT})"
@@ -67,7 +67,6 @@ XHR_MAX_BYTES = 300_000
 XHR_TYPES = ("json", "xml", "text/plain", "csv", "geo+json")
 CANDIDATES = Path(__file__).with_name("scrape_candidates.json")
 DELAY_S = 1.0
-MAX_HOPS = 10
 #: Plazo para leer el robots.txt de cada servidor que la página carga y que los GET no tocaron (scripts, CDN), y
 #: tope de todas esas lecturas juntas por página: mientras se lee uno, el navegador no avanza con los demás
 #: pedidos. Sin respuesta a tiempo, el servidor cuenta como «robots.txt sin respuesta» y no se le pide nada.
@@ -131,21 +130,6 @@ def _found(expect: str, body: bytes) -> bool:
     return bool(rx.search(text) or ("\ufffd" in text and rx.search(body.decode("cp1252", errors="replace"))))
 
 
-def get_checked(client: httpx.Client, url: str, robots: Optional[Robots], headers: Optional[dict] = None):
-    """GET que sigue las redirecciones a mano y consulta robots.txt antes de cada salto. Devuelve la respuesta y,
-    si un salto no se pudo pedir, su URL y el veredicto de robots.txt (``False`` prohibido, ``None`` sin respuesta)."""
-    for _ in range(MAX_HOPS + 1):
-        r = client.get(url, headers=headers, follow_redirects=False)
-        loc = r.headers.get("location")
-        if not (r.is_redirect and loc):
-            return r, None, True
-        url = urljoin(str(r.url), loc)
-        verdict = True if robots is None else robots.allowed(url)
-        if verdict is not True:
-            return r, url, verdict
-    raise httpx.TooManyRedirects(f"más de {MAX_HOPS} redirecciones", request=r.request)
-
-
 def http_step(client: httpx.Client, url: str, expect: str, headers: Optional[dict] = None,
               robots: Optional[Robots] = None) -> dict:
     t = time.monotonic()
@@ -196,12 +180,16 @@ def browser_step(browser, url: str, expect: str, robots: Robots, sub_robots: Opt
 
     def allowed(u: str) -> Optional[bool]:
         if sub_robots is None or robots.known(u) or sub_robots.known(u):
-            return (robots if sub_robots is None or robots.known(u) else sub_robots).allowed(u)
+            r = robots if sub_robots is None or robots.known(u) else sub_robots
+            # El navegador no espera el Crawl-delay entre los pedidos de una página: la excepción de las entidades
+            # públicas del Perú (``reach.public_peru``) vale para los GET, que sí lo esperan, y no aquí.
+            return False if r.overridden(u) else r.allowed(u)
         if base(u) in gave_up or budget[0] <= 0:
             return None
         started = time.monotonic()
         try:
-            return pool.submit(sub_robots.allowed, u).result(timeout=min(SUB_ROBOTS_TIMEOUT_S, budget[0]))
+            ok = pool.submit(sub_robots.allowed, u).result(timeout=min(SUB_ROBOTS_TIMEOUT_S, budget[0]))
+            return False if ok and sub_robots.overridden(u) else ok
         except FutureTimeout:
             gave_up.add(base(u))
             return None

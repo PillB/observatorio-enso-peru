@@ -1,5 +1,7 @@
 // Clasifica cada respuesta del nodo de descarga (mismo criterio que
-// tools/probe.mjs) y deja el cuerpo solo en las válidas.
+// tools/probe.mjs) y deja el cuerpo solo en las válidas. Un robots.txt
+// («role: robots») no se guarda: decide qué URL de su servidor se piden en la
+// segunda pasada («deferred», cada una con su veredicto en «robots»).
 const targets = $('__SOURCE_NODE__').all();
 const items = $input.all();
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, '+00:00');
@@ -28,7 +30,25 @@ for (let i = 0; i < items.length; i++) {
   const status = j.statusCode == null ? null : j.statusCode;
   const cls = classify({ url: t.url, expect: t.expect, status, headers: j.headers || {}, body, error });
   const o = { json: { id: t.id, group: t.group, name: t.name, url: t.url, expect: t.expect, pass: t.pass || 1, fetched_at: now, cls }, pairedItem: { item: i } };
-  if (cls.ok && it.binary && it.binary.data) o.binary = { data: it.binary.data };
+  if (t.robots) o.json.robots = t.robots;
+  if (t.robots_public) o.json.robots_public = true;
+  if (t.crawl_delay != null) o.json.crawl_delay = t.crawl_delay;
+  if (t.role === 'robots') {
+    const headers = {};
+    for (const [k, v] of Object.entries(j.headers || {})) headers[k.toLowerCase()] = String(v);
+    // Se juzga la ruta que se va a pedir en ese servidor: la URL o su destino («hop»).
+    const { source, verdicts, challenge, crawl_delay } = robotsVerdicts({ status, headers, body, error, cls }, t.deferred.map((d) => d.hop || d.url));
+    Object.assign(o.json, { role: 'robots', robots_source: source, deferred: t.deferred.map((d) => {
+      const robots = verdicts[d.hop || d.url];
+      const fetch = robotsFetch(robots, d.hop || d.url, challenge);
+      // «robots_public»: se pide aunque robots.txt lo prohíba o no responda (entidad pública del Perú).
+      // Crawl-delay: el del robots.txt que se acaba de leer, si lo trae (pausa de la 2.ª pasada).
+      const delay = crawl_delay != null ? crawl_delay : d.crawl_delay;
+      return { ...d, robots, fetch, robots_public: fetch && robots !== 'allowed' && robots !== 'absent', ...(delay != null ? { crawl_delay: delay } : {}) };
+    }) });
+  } else if (cls.ok && it.binary && it.binary.data) {
+    o.binary = { data: it.binary.data };
+  }
   out.push(o);
 }
 return out;
