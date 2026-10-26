@@ -42,7 +42,8 @@ jobs:
           script: |
             const { run } = require('./.github/scripts/watchdog.cjs');
             await run({ github, context, core });
-      # Correo a las direcciones de ALERT_EMAILS si el vigilante abrió, comentó o cerró sus issues (ver tools/alert_email.py).
+      # Correo a las direcciones de ALERT_EMAILS si el vigilante abrió o cerró sus issues, o comentó el del sitio
+      # atrasado (ver tools/alert_email.py). El recordatorio diario de un recolector callado no va por correo.
       - uses: actions/checkout@v5
         if: always() && vars.ALERT_EMAILS != ''
         with:

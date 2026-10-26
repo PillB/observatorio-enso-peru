@@ -22,7 +22,9 @@ def test_watchdog_module_with_node():
         if os.environ.get("CI"):
             pytest.fail("la prueba del vigilante necesita Node")
         pytest.skip("requiere Node")
-    r = subprocess.run([node, "--test", str(JS / "watchdog.test.mjs")], capture_output=True, text=True, timeout=120)
+    # TAP explícito: desde Node 23 el informe por omisión es otro y no tendría «# fail 0».
+    r = subprocess.run([node, "--test", "--test-reporter=tap", str(JS / "watchdog.test.mjs")], capture_output=True,
+                       text=True, timeout=120)
     assert r.returncode == 0, r.stdout[-4000:] + r.stderr[-2000:]
     assert re.search(r"# fail 0", r.stdout) and not re.search(r"# skipped [1-9]", r.stdout), r.stdout[-2000:]
 

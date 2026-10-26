@@ -5,6 +5,7 @@ from __future__ import annotations
 import gzip
 import json
 import os
+import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -928,6 +929,98 @@ def test_the_weekly_probe_rebuilds_the_n8n_flows_with_the_registry():
     assert "N8N_GITHUB_CRED_ID" not in (steps[build].get("env") or {})
     commit = next(i for i, st in enumerate(steps) if st.get("name") == "Commit")
     assert build < commit and "git add registry/ n8n/dist" in steps[commit]["run"]
+
+
+def _probe_commit(tmp_path: Path, on_main):
+    """Corre el paso «Commit» del sondeo en un clon de un «origin» con n8n/ y el registro, después de que en main
+    ``on_main(seed)`` cambiara algo (y reconstruyera dist) mientras se medía. Devuelve (resultado, origin, clon)."""
+    import shutil
+    import subprocess
+
+    import yaml
+
+    node = shutil.which("node")
+    if not node:
+        if os.environ.get("CI"):
+            pytest.fail("la prueba del commit del sondeo necesita Node")
+        pytest.skip("requiere Node")
+
+    def git(*a, cwd):
+        return subprocess.run(["git", *a], cwd=cwd, check=True, capture_output=True, text=True).stdout
+
+    def build(cwd):
+        subprocess.run([node, "n8n/build.mjs"], cwd=cwd, check=True, capture_output=True)
+
+    def config(cwd):
+        for k, v in (("user.name", "t"), ("user.email", "t@example.org"), ("commit.gpgsign", "false")):
+            git("config", k, v, cwd=cwd)
+
+    origin, seed, work = tmp_path / "origin.git", tmp_path / "seed", tmp_path / "work"
+    git("init", "-q", "--bare", "-b", "main", str(origin), cwd=tmp_path)
+    git("init", "-q", "-b", "main", str(seed), cwd=tmp_path)
+    config(seed)
+    for d in ("lib", "nodes", "dist"):
+        shutil.copytree(obs.REPO / "n8n" / d, seed / "n8n" / d)
+    shutil.copy(obs.REPO / "n8n" / "build.mjs", seed / "n8n")
+    (seed / "registry").mkdir()
+    shutil.copy(obs.REPO / "registry" / "sources.json", seed / "registry")
+    git("add", "-A", cwd=seed)
+    git("commit", "-q", "-m", "inicio", cwd=seed)
+    git("push", "-q", str(origin), "main", cwd=seed)
+    git("clone", "-q", "--depth", "1", f"file://{origin}", str(work), cwd=tmp_path)
+    config(work)
+    reg = work / "registry" / "sources.json"  # lo medido: otro registro y su dist
+    reg.write_text(re.sub(r'"generated_at": "[^"]+"', '"generated_at": "2026-10-26T09:40:00+00:00"',
+                          reg.read_text(encoding="utf-8"), count=1), encoding="utf-8")
+    build(work)
+    on_main(seed)
+    build(seed)
+    git("commit", "-q", "-am", "cambio en main", cwd=seed)
+    git("push", "-q", str(origin), "main", cwd=seed)
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "probe-sources.yml").read_text(encoding="utf-8"))
+    run = next(st for st in wf["jobs"]["probe"]["steps"] if st.get("name") == "Commit")["run"]
+    run = run.replace("${{ github.event.repository.default_branch }}", "main")
+    fake = tmp_path / "bin"  # sin esperas entre reintentos
+    fake.mkdir()
+    (fake / "sleep").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+    (fake / "sleep").chmod(0o755)
+    env = {**os.environ, "GITHUB_REF_NAME": "main", "PATH": f"{fake}{os.pathsep}{os.environ['PATH']}"}
+    r = subprocess.run(["bash", "--noprofile", "--norc", "-eo", "pipefail", "-c", run], cwd=work, env=env,
+                       capture_output=True, text=True, timeout=120)
+    return r, origin, work
+
+
+def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_path):
+    """Revisión: dist lleva un hash de n8n/ y del registro, así que un cambio de n8n/ en main durante el sondeo
+    hacía chocar el rebase en dist, y los reintentos fallaban con el rebase a medias: se perdía el registro de la
+    semana. Ahora dist se regenera sobre lo rebasado; si choca el propio registro, se aborta y falla limpio."""
+    import subprocess
+
+    def n8n_change(seed):
+        with (seed / "n8n" / "nodes" / "fuentes.js").open("a", encoding="utf-8") as f:
+            f.write("// cambio en main\n")
+
+    r, origin, work = _probe_commit(tmp_path, n8n_change)
+    assert r.returncode == 0, r.stdout[-2000:] + r.stderr[-2000:]
+    log = subprocess.run(["git", "log", "--format=%s", "main"], cwd=origin, capture_output=True, text=True).stdout
+    assert log.split("\n")[:3] == ["Update source reachability and registry", "cambio en main", "inicio"]
+    check = tmp_path / "check"
+    subprocess.run(["git", "clone", "-q", f"file://{origin}", str(check)], check=True, capture_output=True)
+    assert "2026-10-26T09:40:00" in (check / "registry" / "sources.json").read_text(encoding="utf-8")
+    assert "// cambio en main" in (check / "n8n" / "nodes" / "fuentes.js").read_text(encoding="utf-8")
+    assert subprocess.run(["node", "n8n/build.mjs", "--check"], cwd=check, capture_output=True).returncode == 0
+
+    def registry_change(seed):
+        reg = seed / "registry" / "sources.json"
+        reg.write_text(re.sub(r'"generated_at": "[^"]+"', '"generated_at": "2026-10-26T09:30:00+00:00"',
+                              reg.read_text(encoding="utf-8"), count=1), encoding="utf-8")
+
+    (tmp_path / "choque").mkdir()
+    r, origin, work = _probe_commit(tmp_path / "choque", registry_change)
+    assert r.returncode == 1
+    assert not (work / ".git" / "rebase-merge").exists() and not (work / ".git" / "rebase-apply").exists()
+    log = subprocess.run(["git", "log", "--format=%s", "main"], cwd=origin, capture_output=True, text=True).stdout
+    assert log.split("\n")[0] == "cambio en main"
 
 
 def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, monkeypatch):
