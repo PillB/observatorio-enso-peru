@@ -37,7 +37,26 @@ function entryFrom(r) {
   if (c.note) e.note = c.note;
   if (r.pass && r.pass > 1) e.pass = r.pass;
   if (r.aliases && r.aliases.length) e.aliases = r.aliases;
+  // Qué dijo el robots.txt leído por n8n (solo en las URL «robots: unknown» del registro).
+  if (r.robots) e.robots = r.robots;
+  if (r.robots_public) e.robots_public = true;
   return e;
+}
+
+/** URL «robots: unknown» que no se pidieron porque su robots.txt lo prohíbe
+ * («disallowed») o no respondió («unreachable»), de los robots.txt leídos. */
+function notRequested(results) {
+  const out = [];
+  for (const r of results) {
+    if (r.role !== 'robots') continue;
+    for (const d of r.deferred || []) {
+      if (d.fetch || (d.fetch === undefined && (d.robots === 'allowed' || d.robots === 'absent'))) continue;
+      const why = d.robots === 'disallowed' ? 'robots.txt no lo permite' : `robots.txt no respondió (${(r.cls && r.cls.reach) || 'sin respuesta'})`;
+      // reach: la clase del pedido de robots.txt (timeout, challenge…), como Robots.failure en python/enso/reach.py.
+      out.push({ url: d.url, id: d.id, group: d.group, robots: d.robots, reach: (r.cls && r.cls.reach) || '', robots_url: r.url, fetched_at: r.fetched_at, note: why });
+    }
+  }
+  return out;
 }
 
 /** Elige un resultado por URL: el válido si lo hay, si no el último intento. */
@@ -72,7 +91,7 @@ function buildSnapshot({ results, previous, now, collector, carryHours = 72, max
   }
   const files = new Map();
   const entries = [];
-  for (const r of pickResults(results)) {
+  for (const r of pickResults(results.filter((x) => x.role !== 'robots'))) {
     const e = entryFrom(r);
     const body = r.body;
     if (r.cls && r.cls.ok && body && body.length) {
@@ -118,6 +137,8 @@ function buildSnapshot({ results, previous, now, collector, carryHours = 72, max
     summary,
     verdicts,
   };
+  const skipped = notRequested(results);
+  if (skipped.length) index.not_requested = skipped;
   return { index, files: [...files.values()] };
 }
 
@@ -156,4 +177,4 @@ function parseTokenExpiry(header) {
 }
 
 // @export
-if (typeof module !== 'undefined') module.exports = { buildSnapshot, pickResults, heartbeat, parseTokenExpiry };
+if (typeof module !== 'undefined') module.exports = { buildSnapshot, pickResults, heartbeat, parseTokenExpiry, notRequested };

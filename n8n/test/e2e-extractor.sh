@@ -37,7 +37,8 @@ docker run -d --name "$NAME" --network host -u root -v "$WORK:/w" -e N8N_USER_FO
 URL="http://127.0.0.1:$NPORT/webhook/enso-extraer"
 for _ in $(seq 1 90); do
   code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$URL" || true)
-  [ "$code" != "000" ] && [ "$code" != "404" ] && break
+  # Mientras arranca, n8n puede responder 5xx antes de registrar el webhook (404).
+  case "$code" in 000|404|5??) ;; *) break ;; esac
   sleep 2
 done
 

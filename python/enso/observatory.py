@@ -587,7 +587,7 @@ def archived_copy(fetcher, urls: list[str], accept: tuple[str, ...], save: bool 
 
 def _get_communique(fetcher, item: dict, problems: Optional[list] = None):
     """PDF de un comunicado, en el orden documentado: sus URL (portal, réplica de la DHN) y las copias de los
-    recolectores; el repositorio del IMARPE (oficial y alcanzable desde Actions); y solo al final el Internet
+    recolectores; el repositorio del IMARPE (oficial; desde Actions, por la copia del Perú); y solo al final el Internet
     Archive (la copia de sus URL y cualquier PDF de su página de descarga del portal). ``problems`` recibe la
     causa si el repositorio falla."""
     from .fetch import FetchError, archive_prefix
@@ -597,7 +597,8 @@ def _get_communique(fetcher, item: dict, problems: Optional[list] = None):
     try:
         return fetcher.get(urls, archive=False, accept=accept)
     except FetchError as exc:
-        # El repositorio institucional del IMARPE: oficial, sin verificación humana y alcanzable desde Actions.
+        # El repositorio institucional del IMARPE: oficial y sin verificación humana. Actions no lo alcanza: lo lee de
+        # la copia del Perú, que guarda la búsqueda por número, el paquete y el PDF con estas mismas URL.
         got = imarpe_repo.communique_pdf(fetcher, item["year"], item["number"], problems)
         if got is not None:
             got.attempts = exc.attempts + [{"url": got.url, "channel": "repositorio IMARPE"}]
@@ -731,7 +732,7 @@ def _enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pr
         # Siempre se contrastan los otros listados (portal y réplica de la DHN): el que respondió primero puede
         # ser la API de WordPress, que se quedó atrás, o una copia del Perú o del archivo de hace días.
         listing = merge_enfen_listings(listing, portal_enfen_listing(fetcher, log))
-        # El repositorio del IMARPE responde a GitHub Actions y deposita cada comunicado unos días después: va
+        # El repositorio del IMARPE (directo o por la copia del Perú) deposita cada comunicado unos días después: va
         # último, así una entrada del portal o de la DHN (con enlace al PDF) gana para el mismo número.
         try:
             listing = merge_enfen_listings(listing, imarpe_repo.communiques(fetcher, problems=repo_problems))
@@ -1709,7 +1710,7 @@ RELAY_TOKEN_WARN_DAYS = 21
 #: Lo mínimo que debe saber recolectar el kit del Perú (``tools.peru_collector.COLLECTOR_CONTRACT``, que el
 #: recolector anota en el índice y en el latido). Sube junto con el del kit cuando el sitio pasa a necesitar
 #: algo que solo baja un kit nuevo; un kit anterior (sin el número: 0) recibe el aviso «relay-kit-outdated».
-MIN_COLLECTOR_CONTRACT = 1
+MIN_COLLECTOR_CONTRACT = 2
 #: Tiempo máximo para empezar a pedir feeds de noticias (el paso del pipeline tiene 26 min).
 NEWS_DEADLINE_S = 600
 #: Tiempo total de cada pedido de un feed (el plazo del cliente es por lectura, no por pedido).

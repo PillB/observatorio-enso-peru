@@ -26,8 +26,10 @@ Probados de punta a punta con n8n **2.44** y **1.123** (CI: `.github/workflows/n
 
 ## Qué mide y cómo decide
 
-Cada respuesta pasa por el mismo clasificador (`n8n/lib/classify.js`) en
-n8n, en GitHub Actions y en `n8n/tools/probe.mjs`:
+Cada respuesta pasa por el clasificador `n8n/lib/classify.js`, en n8n y en
+`n8n/tools/probe.mjs`. El pipeline usa su gemelo en Python
+(`python/enso/reach.py`); los dos corren la misma tabla de casos
+(`python/tests/fixtures/reach-parity.json`) y deben dar la misma clase:
 
 | Veredicto | Significa |
 |---|---|
@@ -46,11 +48,48 @@ Cada URL pasa sola por el nodo HTTP (bucle «Una por una»): si n8n recibe
 muchas a la vez, lanza todas las peticiones y lee los cuerpos al final, y
 las respuestas grandes se cortan por inactividad («aborted»).
 
-Las fallas pasajeras (tiempo agotado, conexión cortada, 5xx, 429) se
-reintentan una vez a los 30 s. En la misma segunda pasada se bajan los
+Las fallas pasajeras (tiempo agotado, conexión cortada, 5xx sin marca de
+bloqueo, 429 y respuestas vacías) se reintentan una vez, tras esperar 30 s,
+en una segunda pasada. DNS, TLS, 403 y verificaciones no se reintentan. En la misma segunda pasada se bajan los
 documentos que el registro indica seguir (`follow`) y los PDF de los
 comunicados del ENFEN deducidos de sus listados (los dos últimos y los dos
 números siguientes), con el mismo criterio que el pipeline.
+
+### robots.txt
+
+El registro anota, por URL, qué dice su `robots.txt` (`robots`). Si dice
+`disallowed`, n8n no la pide. Si dice `unknown` (nadie pudo leerlo, por
+ejemplo porque a GitHub Actions le responde una verificación), n8n lee ese
+`robots.txt` en la primera pasada, con las reglas de `python/enso/reach.py`
+(RFC 9309; `n8n/lib/robots.js`), y pide la URL en la segunda pasada solo si
+lo permite. Si la entrada trae `hop` (la URL redirige a otro servidor cuyo
+`robots.txt` no respondió al medir), se lee el `robots.txt` de ese destino y
+se juzga la ruta del destino:
+
+| Respuesta del `robots.txt` | `robots` | ¿Se pide la URL? |
+|---|---|---|
+| 2xx con reglas (gana la más larga; ante un empate, `Allow`) | `allowed` o `disallowed` | Según la regla |
+| 2xx sin reglas (una página HTML), 3xx o 4xx que no sea una verificación | `absent` (o `allowed`) | Sí |
+| 429, 5xx, sin respuesta o una verificación antirobots | `unreachable` | No: sin saber, no se pide nada a ese servidor |
+
+**Entidades públicas del Perú** (`.gob.pe`, `.mil.pe`): por decisión del
+responsable del proyecto (información pública, Ley 27806), su `robots.txt`
+no decide qué se pide, igual que `PUBLIC_PERU_SUFFIXES` en
+`python/enso/reach.py`. El registro ya las marca `allowed` (salvo una
+redirección a otro servidor que lo prohíba, o una verificación en lugar del
+`robots.txt`, que quedan `disallowed` o `unknown`). Cuando n8n lee el
+`robots.txt` de una URL `unknown`, una respuesta `disallowed` o `unreachable` se pide igual
+(`robots_public: true` en su entrada de `index.json`), salvo que en lugar del
+`robots.txt` haya llegado una verificación antirobots: esa nunca se evade.
+Lo que sí se respeta es la frecuencia: n8n intercala los servidores y, entre
+dos peticiones al mismo servidor público del Perú, espera su `Crawl-delay`
+(el del `robots.txt` que n8n leyó, o `crawl_delay` en `by_url` si el registro lo trae) o 1 segundo, hasta 30
+(nodos «Pausa», con `pause_s`).
+
+El veredicto queda en la entrada de `index.json` de la URL pedida (`robots`)
+o, si no se pidió, en `not_requested`; en la validación, en la columna
+`robots` (fila `NO PEDIDA` si no se pidió). La medición siguiente lo pasa al
+registro.
 
 ## Paso 1 — Validar (unos 15 minutos, sin credenciales)
 
@@ -103,7 +142,7 @@ sigue funcionando (todo va por la API, nada por `raw.githubusercontent.com`).
    | `api` | `https://api.github.com` | API de GitHub |
    | `data_branch` | `data-n8n` | Rama donde se publican las copias (se crea sola) |
    | `registry_ref`, `registry_path` | `main`, `registry/sources.json` | De dónde se lee el registro. Si no se puede leer, se usa la copia incluida en el flujo |
-   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. Las que `robots.txt` prohíbe no se piden nunca: ni las que no tienen canales ni los feeds `reader` (solo Actions, una vez al día) |
+   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. En ningún alcance se piden: las URL que `robots.txt` prohíbe según el registro (que ya aplica la excepción de las entidades públicas del Perú, ver «robots.txt»), los feeds `reader` (solo Actions, una vez al día), las URL sin canales y las fuentes con `n8n: false` (las búsquedas del repositorio del IMARPE). Las URL cuyo `robots.txt` nadie pudo leer al medir (`robots: unknown`) se piden solo si n8n lee ese `robots.txt` y lo permite (ver «robots.txt» más arriba) |
    | `host_label`, `egress` | `n8n-aws`, `aws-us-east-1` | Se anotan en cada copia |
    | `carry_hours` | `72` | Si una URL falla, se conserva su última copia válida hasta estas horas |
    | `max_file_mb` | `8` | Respuestas más grandes no se guardan |
@@ -169,8 +208,8 @@ Lo hace el colega:
    `OpenAI ENSO (n8n)`.
 4. Importar `n8n/dist/enso-n8n-extractor.json`. En **Petición del pipeline**
    elegir `Token del extractor ENSO`; en **Preguntar al modelo**, `OpenAI ENSO (n8n)`.
-5. En **Configuración**, `model` (por defecto `gpt-4.1-mini`) se puede cambiar
-   por otro modelo de chat que admita `json_object`.
+5. En **Configuración**, `model` trae un modelo de chat económico de OpenAI;
+   se puede cambiar por otro que admita `json_object`.
 6. Activar (n8n 1.x) o publicar (n8n 2.x). La dirección es la **Production
    URL** del nodo Webhook: `https://<servidor-n8n>/webhook/enso-extraer` (no la
    «Test URL»). Debe ser accesible desde internet por HTTPS.
@@ -197,7 +236,7 @@ Rama `data-n8n`, reemplazada en cada corrida (un commit sin padre: la rama
 guarda solo la última copia y el repositorio no crece; lo que el sitio usa
 se archiva en `data-archive`):
 
-- `index.json` (`enso-relay/1`): una entrada por URL con `status`, `verdict`, `reach`, `block`, `content_type`, `bytes`, `fetched_at`, `sha256`, `git_blob` y `file`. Las entradas que fallaron también están, con su motivo: es la medición desde AWS.
+- `index.json` (`enso-relay/1`): una entrada por URL con `status`, `verdict`, `reach`, `block`, `content_type`, `bytes`, `fetched_at`, `sha256`, `git_blob` y `file`. Las entradas que fallaron también están, con su motivo: es la medición desde AWS. `robots` en las URL cuyo `robots.txt` leyó n8n, y `not_requested` con las que no pidió por su `robots.txt`.
 - `files/<sha256[:16]>.<ext>`: el cuerpo original de cada respuesta válida.
 - `heartbeat.json` (`enso-relay-heartbeat/1`, el mismo formato que el recolector del Perú): `result` es `ok` si algo respondió en esta corrida y `sin-fuentes` si nada respondió (n8n funciona, las fuentes no).
 
@@ -231,7 +270,7 @@ punta con n8n real es `n8n/test/e2e.sh n8nio/n8n:2.44.4 /tmp/e2e noaa`
 | `Publicar` falla con 422 | La rama cambió mientras corría (otra corrida a la vez). Volver a correr |
 | Muchas fuentes `timeout` o `connection` | La salida a internet del servidor de n8n (proxy, firewall, NAT) |
 | Muchas fuentes grandes con `timeout` y nota `aborted` | Flujo anterior a esta versión: n8n lanzaba todas las descargas y leía los cuerpos al final, y las respuestas grandes se cortaban. Reimportar los flujos actuales (bajan las URL de a una) |
-| `repositorio.imarpe.gob.pe` con `tls` (`unable to verify the first certificate`) | El servidor envía solo su certificado, sin el intermedio de Sectigo. El registro no le asigna n8n; para habilitarlo, el administrador de n8n guarda ese intermedio en un archivo PEM y arranca n8n con `NODE_EXTRA_CA_CERTS=/ruta/sectigo-intermedio.pem`. Nunca apagar la verificación TLS |
+| `tls` con `unable to verify the first certificate` (p. ej. `repositorio.imarpe.gob.pe`) | Varios servidores `gob.pe` envían su certificado sin el intermedio. El pipeline agrega los intermedios de `python/enso/data/ca-intermedios.pem`; n8n no. El registro marca esas fuentes con `n8n: false` para que n8n no las pida. Para que n8n también las verifique, el administrador copia ese archivo al servidor y arranca n8n con `NODE_EXTRA_CA_CERTS=/ruta/ca-intermedios.pem` (en Docker: montarlo y pasar la variable con `-e`); los intermedios se suman a las raíces, no las reemplazan. Nunca apagar la verificación TLS |
 | Aviso `relay-token-expiring` en la actualización diaria | El token de GitHub del paso 2 vence pronto: el recolector guarda su vencimiento (`collector.token_expires_at` en `index.json`). Crear otro token (paso 2) y actualizar la credencial de n8n (paso 3) |
 | `enfen.imarpe.gob.pe` con `dns` (`EAI_AGAIN`) | Los servidores de nombres propios del IMARPE responden mal a los resolvedores de AWS y Azure (sí a 1.1.1.1 y 8.8.8.8). El registro deja ese portal al servidor del Perú; n8n ya no lo pide |
 | Una fuente `blocked` con `challenge` | Esa institución bloquea a los servidores en la nube. No se evade: si responde desde el Perú, va por el servidor del Perú |
