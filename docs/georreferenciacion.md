@@ -45,11 +45,12 @@ Cada nota (`news/items.jsonl`, `geo/items.json`) y cada aviso de
 
 | Método | De dónde sale | Confianza |
 |---|---|---|
-| `campo` | La fuente trae UBIGEO o «distrito de X, provincia de Y, departamento de Z» (SENAMHI, INDECI, FIRMS, DHN) | 0,95–0,97 |
+| `campo` | La fuente trae UBIGEO o «distrito de X, provincia de Y, departamento de Z» (SENAMHI, INDECI, FIRMS, DHN), o el PDF del COEN los lista (`documentos.py`, ver `mapa-alertas.md`) | 0,95–0,97 |
 | `coordenadas` | Punto dentro de los límites del IGN (sismos de USGS, focos de calor) | 0,95 distrito; 0,9 provincia o departamento; 0,75 en el mar |
 | `texto` | El titular o el resumen nombran el lugar | 0,55–0,95 según la regla |
 | `medio` | Un medio regional que no nombra lugar: su departamento | 0,5 (0,6 gobiernos regionales; 0,35 búsquedas de Google Noticias, que no se publica) |
 | `correccion` | Una persona en la consola | 1,0 |
+| `region` | Solo en el mapa de alertas: un aviso del SENAMHI sin PDF ni boletín del mismo aviso, por las regiones que nombra («sierra sur») | 0,6 (se marca «≈») |
 | `anterior` | Notas guardadas antes de esta versión, sin pistas para volver a ubicarlas | 0,7 |
 
 Se publica todo lugar con confianza ≥ 0,5. La consola pone en la cola de
