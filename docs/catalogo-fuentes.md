@@ -192,6 +192,17 @@ copias del recolector del Perú y de n8n). Reglas:
   corrida diaria lee el robots.txt de una URL `unknown` antes de pedirla, usa
   primero las copias de los recolectores y no pide nada si el robots.txt no
   responde.
+- **Redirecciones:** la corrida diaria, las sondas, la captura de respuestas
+  de prueba y las herramientas que bajan datos siguen cada redirección a mano
+  y piden el destino solo si su robots.txt lo permite, con la misma regla que
+  la URL pedida: una ruta prohibida, o un servidor cuyo robots.txt no
+  responde, no se piden. La sonda semanal anota esa URL como `robots` (o con
+  la falla de su robots.txt), así el registro no la deja `allowed`. Un
+  robots.txt que redirige se sigue (RFC 9309 §2.3.1.2), y las rutas se
+  comparan con los `%XX` normalizados (§2.2.2: `/Señal` y `/Se%C3%B1al` son la
+  misma ruta). El Internet Archive pasa por la misma regla: el robots.txt de
+  `web.archive.org` se lee en la corrida y, si no permite la ruta o no
+  responde, esa corrida no usa sus copias ni le pide una nueva.
 - **Fuentes sin n8n** (`"n8n": false`): las búsquedas del repositorio del
   IMARPE, porque n8n no verifica su certificado sin el intermedio
   (`NODE_EXTRA_CA_CERTS`). GODAS (`cpc-godas-d20`) solo se lee desde Actions:

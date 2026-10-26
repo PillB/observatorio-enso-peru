@@ -54,7 +54,7 @@ from urllib.parse import urljoin, urlparse
 import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from enso.reach import CHALLENGE_RE, Robots, classify  # noqa: E402
+from enso.reach import CHALLENGE_RE, Robots, classify, get_checked  # noqa: E402
 
 CONTACT = os.environ.get("ENSO_CONTACT_URL") or "https://github.com/PillB/observatorio-enso-peru"
 UA = f"Observatorio-ENSO-Peru/4.0 (scrape-ladder; +{CONTACT})"
@@ -67,7 +67,6 @@ XHR_MAX_BYTES = 300_000
 XHR_TYPES = ("json", "xml", "text/plain", "csv", "geo+json")
 CANDIDATES = Path(__file__).with_name("scrape_candidates.json")
 DELAY_S = 1.0
-MAX_HOPS = 10
 #: Plazo para leer el robots.txt de cada servidor que la página carga y que los GET no tocaron (scripts, CDN), y
 #: tope de todas esas lecturas juntas por página: mientras se lee uno, el navegador no avanza con los demás
 #: pedidos. Sin respuesta a tiempo, el servidor cuenta como «robots.txt sin respuesta» y no se le pide nada.
@@ -129,21 +128,6 @@ def _found(expect: str, body: bytes) -> bool:
     rx = re.compile(expect)
     text = body.decode("utf-8", errors="replace")
     return bool(rx.search(text) or ("\ufffd" in text and rx.search(body.decode("cp1252", errors="replace"))))
-
-
-def get_checked(client: httpx.Client, url: str, robots: Optional[Robots], headers: Optional[dict] = None):
-    """GET que sigue las redirecciones a mano y consulta robots.txt antes de cada salto. Devuelve la respuesta y,
-    si un salto no se pudo pedir, su URL y el veredicto de robots.txt (``False`` prohibido, ``None`` sin respuesta)."""
-    for _ in range(MAX_HOPS + 1):
-        r = client.get(url, headers=headers, follow_redirects=False)
-        loc = r.headers.get("location")
-        if not (r.is_redirect and loc):
-            return r, None, True
-        url = urljoin(str(r.url), loc)
-        verdict = True if robots is None else robots.allowed(url)
-        if verdict is not True:
-            return r, url, verdict
-    raise httpx.TooManyRedirects(f"más de {MAX_HOPS} redirecciones", request=r.request)
 
 
 def http_step(client: httpx.Client, url: str, expect: str, headers: Optional[dict] = None,
@@ -360,6 +344,7 @@ def run(cands: list[dict], out: Path, browser_ok: bool = True, client: Optional[
             for c in cands:
                 res: dict = {"id": c["id"], "url": c["url"], "hazard": c.get("hazard"), "institution": c.get("institution"),
                              "steps": [], "answer": None}
+                refused = False  # el navegador encontró una ruta que robots.txt no permite
                 allowed = robots.allowed(c["url"])
                 res["robots"] = {True: "allowed", False: "disallowed", None: "unreachable"}[allowed]
                 if not allowed:
@@ -402,6 +387,7 @@ def run(cands: list[dict], out: Path, browser_ok: bool = True, client: Optional[
                             browser = pw.chromium.launch(executable_path=os.environ.get("PW_CHROMIUM") or None)
                         r3 = browser_step(browser, c["url"], c["expect"], robots, sub_robots)
                         keep("browser", r3)
+                        refused = bool(r3.get("pageBlocked") or r3.get("blockedByRobots") or r3["class"] == "robots")
                         xhr = next((x for x in r3.get("calls", []) if x["found"] and x["robots"] == "allowed"), None)
                         if xhr:
                             res["answer"], res["dataUrl"] = "hidden-api", xhr["url"]
@@ -411,7 +397,9 @@ def run(cands: list[dict], out: Path, browser_ok: bool = True, client: Optional[
                             res["answer"] = "challenge"
                         elif any(x["found"] for x in r3.get("calls", [])):
                             res["answer"] = "robots"  # el dato está, pero en una ruta que robots.txt prohíbe
-                    if res["answer"] is None and key:
+                    # Firecrawl carga la página en nombre del observatorio y nada revisa lo que pide después: solo
+                    # tras un navegador propio que no encontró nada que robots.txt prohíba (barrido de robots.txt).
+                    if res["answer"] is None and key and browser_ok and not refused:
                         r4 = firecrawl_step(client, c["url"], c["expect"], key)
                         keep("firecrawl", r4)
                         if r4["found"]:

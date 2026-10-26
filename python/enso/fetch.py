@@ -6,6 +6,8 @@ Orden de intento para cada fuente:
      ``robots``, antes de pedir directo una URL cuyo robots.txt no leyó la
      sonda semanal (fuera del registro, asignada a otro canal o ``unknown``)
      se lee su robots.txt (RFC 9309): si no la permite o no responde, no se pide.
+     Cada redirección se sigue a mano y su destino pasa por la misma regla
+     (``RobotsHop`` si no se sigue).
   2. Si una URL no responde, la copia que el recolector del Perú
      (``tools/peru_collector.py``) bajó de esa misma URL y subió a la rama
      ``data-peru`` (canal «relay-peru»). Las fuentes peruanas que bloquean
@@ -37,7 +39,7 @@ from urllib.parse import quote, urlsplit
 
 import httpx
 
-from .reach import ROBOTS_TIMEOUT_S, Robots
+from .reach import MAX_HOPS, ROBOTS_TIMEOUT_S, Robots, RobotsHop, next_hop
 
 #: El contacto que ven las fuentes: el sitio publicado cuando el flujo lo
 #: define (ENSO_CONTACT_URL), o el repositorio.
@@ -186,7 +188,8 @@ class Fetcher:
                  robots: bool = False, robots_known: Optional[dict[str, str]] = None):
         # Conectar no lleva más de unos segundos aunque el servidor sea lento: un servidor que no acepta la
         # conexión no retiene cada pedido el plazo entero.
-        self.client = httpx.Client(timeout=httpx.Timeout(timeout, connect=min(timeout, 15.0)), follow_redirects=True,
+        # Sin seguir redirecciones: ``_request`` las sigue a mano, con el robots.txt de cada destino.
+        self.client = httpx.Client(timeout=httpx.Timeout(timeout, connect=min(timeout, 15.0)), follow_redirects=False,
                                    headers={"User-Agent": UA}, verify=ssl_context())
         self.retries = retries
         #: Tiempo total de cada pedido. ``timeout`` vale por lectura: un servidor que manda la respuesta de a
@@ -229,6 +232,20 @@ class Fetcher:
         self._last[host] = time.monotonic()
 
     def _request(self, url: str, headers: Optional[dict] = None) -> httpx.Response:
+        """Un pedido, con sus redirecciones: antes de cada salto, el destino con la regla de robots.txt de un pedido
+        directo (``_robots_rule``). Si no se sigue, ``RobotsHop``; el pedido ya hecho no se repite."""
+        for _ in range(MAX_HOPS + 1):
+            r = self._request_one(url, headers)
+            hop = next_hop(r)
+            if hop is None:
+                return r
+            why = self._robots_rule(hop, self.plan.get(hop))
+            if why:
+                raise RobotsHop(hop, self.robots.allowed(hop), why, request=r.request)
+            url = hop
+        raise httpx.TooManyRedirects(f"más de {MAX_HOPS} redirecciones", request=r.request)
+
+    def _request_one(self, url: str, headers: Optional[dict] = None) -> httpx.Response:
         ends = [t for t in (time.monotonic() + self.max_seconds if self.max_seconds else None, self.deadline) if t]
         if not ends:
             return self.client.get(url, headers=headers)
@@ -316,6 +333,12 @@ class Fetcher:
         si robots.txt no responde vale lo que leyó la sonda (``allowed``: RFC 9309 §2.3.1.4 admite una copia guardada)."""
         if self.robots is None or self.skip_reason(url):
             return None  # sin robots, o no se pediría de todos modos (``_get`` lo anota)
+        return self._robots_rule(url, planned)
+
+    def _robots_rule(self, url: str, planned: Optional[list[str]]) -> Optional[str]:
+        """La regla de ``_robots_skip``, sin mirar si la URL se pediría: la usan también las redirecciones."""
+        if self.robots is None:
+            return None
         known = self.robots_known.get(url)
         if planned and "actions" in planned and known != "unknown":
             return None
@@ -405,6 +428,15 @@ class Fetcher:
         return allowed is True or (allowed is None and self.robots_known.get(url) == "allowed"
                                    and "actions" in (planned or []))
 
+    def _archive_skip(self, url: str, attempts: list) -> bool:
+        """Si no se pide ``url`` al Internet Archive por su robots.txt (y lo anota): la misma regla que cualquier
+        servidor. web.archive.org no está en el registro, así que su robots.txt se lee en la corrida y, si no
+        responde, no se le pide nada (barrido de robots.txt del 26 de octubre de 2026)."""
+        why = self._robots_rule(url, None)
+        if why:
+            attempts.append({"url": url, "channel": "archive", "error": why})
+        return bool(why)
+
     def _from_archive(self, url: str, attempts: list, fresh: bool) -> Optional[Response]:
         """Copia más reciente del Internet Archive; si tiene más de un día y
         se permite (``_may_save``), pide una nueva (Save Page Now) y, si esa
@@ -414,7 +446,7 @@ class Fetcher:
         cdx = ("https://web.archive.org/cdx/search/cdx?output=json&limit=-1&filter=statuscode:200"
                f"&url={quote(url, safe='')}")
         snap = None
-        r = self._get(cdx, attempts)
+        r = None if self._archive_skip(cdx, attempts) else self._get(cdx, attempts)
         if r is not None and r.status_code == 200:
             try:
                 rows = json.loads(r.text or "[]")[1:]
@@ -423,14 +455,16 @@ class Fetcher:
                 attempts[-1]["note"] = "respuesta CDX no es JSON"
             if rows:
                 ts, original = rows[-1][1], rows[-1][2]
-                got = self._get(f"https://web.archive.org/web/{ts}id_/{original}", attempts)
+                copy = f"https://web.archive.org/web/{ts}id_/{original}"
+                got = None if self._archive_skip(copy, attempts) else self._get(copy, attempts)
                 if got is not None and got.status_code == 200 and got.content:
                     snap = Response(url, got.content, "archive", 200, got.headers.get("content-type", ""),
                                     archived_at=_ts_iso(ts), attempts=attempts)
             else:
                 attempts[-1]["note"] = attempts[-1].get("note", "sin copias en el archivo")
-        if fresh and (snap is None or _age_hours(snap.archived_at) > 24):
-            r = self._get(f"https://web.archive.org/save/{url}", attempts)
+        save = f"https://web.archive.org/save/{url}"
+        if fresh and (snap is None or _age_hours(snap.archived_at) > 24) and not self._archive_skip(save, attempts):
+            r = self._get(save, attempts)
             if r is not None and r.status_code == 200 and r.content:
                 return Response(url, r.content, "archive-fresh", 200, r.headers.get("content-type", ""),
                                 archived_at=_wayback_ts(str(r.url)), attempts=attempts)
@@ -449,6 +483,8 @@ def archive_prefix(fetcher: "Fetcher", prefix: str, magic: bytes = b"%PDF-",
         return None
     cdx = ("https://web.archive.org/cdx/search/cdx?output=json&limit=-25&matchType=prefix"
            f"&filter=statuscode:200&url={quote(prefix, safe='')}")
+    if fetcher._archive_skip(cdx, attempts):
+        return None
     r = fetcher._get(cdx, attempts)
     if r is None or r.status_code != 200:
         return None
@@ -460,7 +496,10 @@ def archive_prefix(fetcher: "Fetcher", prefix: str, magic: bytes = b"%PDF-",
     attempts.append({"url": prefix, "channel": "archive-prefix", "note": f"{len(rows)} copias que no son HTML"})
     for row in sorted(rows, key=lambda row: row[1], reverse=True)[:4]:
         ts, original = row[1], row[2]
-        got = fetcher._get(f"https://web.archive.org/web/{ts}id_/{original}", attempts)
+        copy = f"https://web.archive.org/web/{ts}id_/{original}"
+        if fetcher._archive_skip(copy, attempts):
+            break  # el mismo servidor: tampoco las demás copias
+        got = fetcher._get(copy, attempts)
         if got is not None and got.status_code == 200 and got.content[:len(magic)] == magic:
             return Response(original, got.content, "archive", 200, got.headers.get("content-type", ""),
                             archived_at=_ts_iso(ts), attempts=attempts)

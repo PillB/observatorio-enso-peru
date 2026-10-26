@@ -26,6 +26,8 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso.feeds import godas  # noqa: E402
+from enso.fetch import UA  # noqa: E402
+from enso.reach import Robots, get_checked  # noqa: E402
 
 OUT = Path(__file__).resolve().parents[1] / "enso" / "data" / "godas-d20.json"
 BASE_YEARS = (1991, 2020)
@@ -39,17 +41,29 @@ def months(start: str, end: str):
         y, m = (y + 1, 1) if m == 12 else (y, m + 1)
 
 
-def fetch_month(client: httpx.Client, y: int, m: int, cache: Optional[Path] = None) -> dict:
+def _refused(url: str, verdict: Optional[bool], robots: Robots) -> SystemExit:
+    why = "no permite" if verdict is False else f"no respondió ({robots.failure(url) or 'sin respuesta'}) y no se sabe si permite"
+    return SystemExit(f"El robots.txt de {httpx.URL(url).host} {why} {url}: no se pide.")
+
+
+def fetch_month(client: httpx.Client, y: int, m: int, cache: Optional[Path] = None,
+                robots: Optional[Robots] = None) -> dict:
+    """D20 regional de un mes. Con ``robots``, el GRIB y cada redirección solo si su robots.txt lo permite (un
+    robots.txt sin respuesta detiene la corrida: no se sabe si permite)."""
     u = godas.url(y, m)
     hit = cache / f"{y:04d}{m:02d}.json" if cache else None
     if hit and hit.exists():
         return json.loads(hit.read_text())
+    if robots is not None and (allowed := robots.allowed(u)) is not True:
+        raise _refused(u, allowed, robots)
     err: Exception = RuntimeError("sin intentos")
     for attempt in range(6):
         if attempt:
             time.sleep(5 * 2 ** attempt)  # CPC responde 403 o 5xx a ráfagas de pedidos
         try:
-            r = client.get(u, headers={"Range": f"bytes=0-{godas.RANGE_BYTES - 1}"})
+            r, hop, verdict = get_checked(client, u, robots, headers={"Range": f"bytes=0-{godas.RANGE_BYTES - 1}"})
+            if hop:
+                raise _refused(hop, verdict, robots)
             if r.status_code == 404:
                 return {}
             r.raise_for_status()
@@ -72,10 +86,11 @@ def main(argv=None) -> int:
     today = date.today()
     end = a.end or f"{today.year:04d}-{today.month:02d}"
     todo = list(months(a.start, end))
-    with httpx.Client(timeout=120, follow_redirects=True) as client, ThreadPoolExecutor(a.workers) as ex:
+    with httpx.Client(timeout=120, headers={"User-Agent": UA}) as client, ThreadPoolExecutor(a.workers) as ex:
         if a.cache:
             a.cache.mkdir(parents=True, exist_ok=True)
-        results = list(ex.map(lambda ym: fetch_month(client, *ym, cache=a.cache), todo))
+        robots = Robots(client, tries=3, backoff_s=5.0)
+        results = list(ex.map(lambda ym: fetch_month(client, *ym, cache=a.cache, robots=robots), todo))
     series = {k: [] for k in godas.REGIONS}
     for (y, m), res in zip(todo, results):
         for k in godas.REGIONS:

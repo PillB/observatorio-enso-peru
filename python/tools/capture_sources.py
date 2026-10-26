@@ -23,12 +23,13 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Optional
 
 import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso.fetch import ssl_context  # noqa: E402  (los intermedios que algunos servidores no envían)
-from enso.reach import Robots  # noqa: E402
+from enso.reach import Robots, get_checked  # noqa: E402
 
 UA = "Observatorio-ENSO-Peru/4.0 (fixture-capture; +https://github.com/PillB/observatorio-enso-peru)"
 
@@ -128,12 +129,19 @@ HISTORY = [
 MAX_BYTES = 2_000_000
 
 
-def _get(client: httpx.Client, url: str) -> dict:
+def _get(client: httpx.Client, url: str, robots: Optional[Robots] = None) -> dict:
+    """Respuesta de ``url``; con ``robots``, cada redirección con el robots.txt de su destino (si no se sigue,
+    ``redirect_blocked`` dice adónde iba)."""
     started = time.monotonic()
     try:
         for attempt in range(3):
             try:
-                r = client.get(url)
+                r, hop, verdict = get_checked(client, url, robots)
+                if hop:
+                    return {"url": url, "status": None, "body": b"", "redirect_blocked": hop,
+                            "robots": "disallowed" if verdict is False else "unreachable",
+                            "error": f"redirige a {hop}: robots.txt "
+                                     + ("no permite la ruta" if verdict is False else "sin respuesta")}
                 break
             except httpx.ConnectError:
                 if attempt == 2:
@@ -173,24 +181,36 @@ def _with_news() -> dict:
     return CURRENT | {f.fixture: f.url for f in FEEDS}
 
 
-def capture_current(client: httpx.Client, out: Path, index: list) -> None:
-    """Respuesta actual de cada fuente, si el robots.txt de su servidor lo permite.
+def capture_current(client: httpx.Client, out: Path, index: list, robots: Optional[Robots] = None) -> None:
+    """Respuesta actual de cada fuente, si el robots.txt de su servidor (y el de cada redirección) lo permite.
 
     Las copias históricas no pasan por aquí: las sirve el Internet Archive."""
-    robots = Robots(client, agent="Observatorio-ENSO-Peru")
+    robots = robots or Robots(client, agent="Observatorio-ENSO-Peru")
     for name, url in _with_news().items():
         allowed = robots.allowed(url)
         if allowed:
-            res = _get(client, url)
+            res = _get(client, url, robots)
         else:
             res = {"url": url, "status": None, "body": b"",
                    "error": "robots.txt no permite la ruta" if allowed is False else
                             f"robots.txt sin respuesta ({robots.failure(url)})"}
-        res["robots"] = {True: "allowed", False: "disallowed", None: "unreachable"}[allowed]
+        res.setdefault("robots", {True: "allowed", False: "disallowed", None: "unreachable"}[allowed])
         _save(out, name, res, index)
 
 
-def capture_history(client: httpx.Client, out: Path, index: list, per_source: int) -> None:
+def _archive(client: httpx.Client, url: str, robots: Robots) -> dict:
+    """Un pedido al Internet Archive con su robots.txt, como cualquier servidor: si no lo permite o no responde,
+    no se pide."""
+    allowed = robots.allowed(url)
+    if allowed is not True:
+        return {"url": url, "status": None, "body": b"", "robots": "disallowed" if allowed is False else "unreachable",
+                "error": "robots.txt de web.archive.org " + ("no permite la ruta" if allowed is False else "sin respuesta")}
+    return _get(client, url, robots)
+
+
+def capture_history(client: httpx.Client, out: Path, index: list, per_source: int,
+                    robots: Optional[Robots] = None) -> None:
+    robots = robots or Robots(client, agent="Observatorio-ENSO-Peru")
     hist = out / "history"
     hist.mkdir(exist_ok=True)
     for entry in HISTORY:
@@ -200,7 +220,7 @@ def capture_history(client: httpx.Client, out: Path, index: list, per_source: in
             "https://web.archive.org/cdx/search/cdx?output=json&filter=statuscode:200"
             f"{match}&url={url}"
         )
-        res = _get(client, cdx)
+        res = _archive(client, cdx, robots)
         rows = []
         try:
             rows = json.loads(res.get("body") or b"[]")[1:]
@@ -217,7 +237,7 @@ def capture_history(client: httpx.Client, out: Path, index: list, per_source: in
             if ext in (".shtml", ".htm", "") or original.endswith("/"):
                 ext = ".html"
             name = f"history/{prefix}-{ts}{ext}"
-            r = _get(client, snap)
+            r = _archive(client, snap, robots)
             r["wayback_timestamp"] = ts
             r["original_url"] = original
             _save(out, name, r, index)
@@ -234,9 +254,10 @@ def main() -> int:
     out.mkdir(parents=True, exist_ok=True)
     index: list = []
     with httpx.Client(timeout=45.0, follow_redirects=True, headers={"User-Agent": UA}, verify=ssl_context()) as client:
-        capture_current(client, out, index)
+        robots = Robots(client, agent="Observatorio-ENSO-Peru")
+        capture_current(client, out, index, robots)
         if args.history:
-            capture_history(client, out, index, args.per_source)
+            capture_history(client, out, index, args.per_source, robots)
     meta = {"captured_at": datetime.now(timezone.utc).isoformat(), "entries": index}
     (out / "index.json").write_text(json.dumps(meta, indent=1, ensure_ascii=False))
     ok = sum(1 for e in index if e.get("status") == 200)

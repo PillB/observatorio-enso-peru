@@ -27,6 +27,7 @@ import time
 from typing import Optional
 from urllib.parse import urlparse
 
+import httpx
 from httpx import Client as HTTPClient
 
 #: Marcas de una página de bloqueo o de verificación en lugar del contenido, por familia: las de
@@ -225,6 +226,9 @@ def judge(status: Optional[int], body: bytes, content_type: str = "", expect: Op
     return "ok", detected, ""
 
 
+_UNRESERVED = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
+
+
 class RobotRules:
     """Reglas de un robots.txt según la RFC 9309.
 
@@ -259,7 +263,7 @@ class RobotRules:
             elif k in ("allow", "disallow") and agents:
                 in_rules = True
                 if v:  # «Disallow:» vacío no prohíbe nada
-                    rules.append((k == "allow", v))
+                    rules.append((k == "allow", self._canon(v)))
             elif k == "crawl-delay" and agents:
                 in_rules = True
                 try:
@@ -275,6 +279,23 @@ class RobotRules:
         self.crawl_delay = max(delays) if delays else None
 
     @staticmethod
+    def _canon(text: str) -> str:
+        """Ruta o regla en la forma en que se comparan (RFC 9309 §2.2.2): lo que no es ASCII, en UTF-8 con
+        ``%XX``; un ``%XX`` de un carácter no reservado (letras, cifras, ``-._~``), decodificado; los demás, en
+        mayúsculas. Así ``/Señal``, ``/Se%c3%b1al`` y ``/Se%C3%B1al`` son la misma ruta."""
+        out, raw, i = [], text.encode("utf-8"), 0
+        while i < len(raw):
+            c = raw[i]
+            if c == 0x25 and re.fullmatch(rb"[0-9A-Fa-f]{2}", raw[i + 1:i + 3]):
+                v = int(raw[i + 1:i + 3], 16)
+                out.append(chr(v) if chr(v) in _UNRESERVED else f"%{v:02X}")
+                i += 3
+                continue
+            out.append(chr(c) if 0x20 < c < 0x7F else f"%{c:02X}")
+            i += 1
+        return "".join(out)
+
+    @staticmethod
     def _matches(pattern: str, path: str) -> int:
         """Largo de la regla si coincide con la ruta (``*`` comodín, ``$`` fin), o -1."""
         rx = "".join(".*" if c == "*" else re.escape(c) for c in pattern.rstrip("$"))
@@ -286,7 +307,7 @@ class RobotRules:
         if self.allow_all:
             return True
         p = urlparse(url)
-        path = (p.path or "/") + (f"?{p.query}" if p.query else "")
+        path = self._canon((p.path or "/") + (f"?{p.query}" if p.query else ""))
         if path == "/robots.txt":
             return True
         best, allow = -1, True
@@ -295,6 +316,44 @@ class RobotRules:
             if n > best or (n == best and is_allow):
                 best, allow = n, is_allow
         return allow
+
+
+#: Redirecciones que se siguen como mucho, cada una con su robots.txt (``get_checked``, ``Fetcher``).
+MAX_HOPS = 10
+
+
+class RobotsHop(httpx.HTTPError):
+    """Una redirección lleva a una ruta que su robots.txt no permite (``verdict`` ``False``) o a un servidor cuyo
+    robots.txt no respondió (``None``): no se sigue. ``hop`` es la URL que no se pidió."""
+
+    def __init__(self, hop: str, verdict: Optional[bool], why: str, request: Optional[httpx.Request] = None):
+        super().__init__(f"redirige a {hop} y no se pide: {why}")
+        self.hop, self.verdict, self.why = hop, verdict, why
+        if request is not None:
+            self.request = request
+
+
+def next_hop(r: httpx.Response) -> Optional[str]:
+    """A dónde redirige ``r`` (``None`` si no redirige)."""
+    loc = r.headers.get("location")
+    return str(r.url.join(loc)) if r.is_redirect and loc else None
+
+
+def get_checked(client, url: str, robots: Optional["Robots"], headers: Optional[dict] = None, **kw):
+    """GET que sigue las redirecciones a mano y consulta robots.txt antes de cada salto, con la misma regla que
+    el pedido: una ruta prohibida o un robots.txt sin respuesta no se piden. El robots.txt de ``url`` lo revisa
+    quien llama. Devuelve la respuesta y, si un salto no se pidió, su URL y el veredicto (``False`` prohibido,
+    ``None`` sin respuesta); si no, ``None`` y ``True``."""
+    for _ in range(MAX_HOPS + 1):
+        r = client.get(url, headers=headers, follow_redirects=False, **kw)
+        hop = next_hop(r)
+        if hop is None:
+            return r, None, True
+        verdict = True if robots is None else robots.allowed(hop)
+        if verdict is not True:
+            return r, hop, verdict
+        url = hop
+    raise httpx.TooManyRedirects(f"más de {MAX_HOPS} redirecciones", request=r.request)
 
 
 class Robots:

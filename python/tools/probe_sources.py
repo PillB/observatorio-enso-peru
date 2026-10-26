@@ -38,7 +38,7 @@ from enso import registry  # noqa: E402
 # 403 a «Mozilla/5.0 (compatible; …)» y 200 a curl desde el mismo ejecutor) y otros que no envían su certificado
 # intermedio (repositorio.imarpe.gob.pe): la sonda mide lo que verá el pipeline.
 from enso.fetch import UA, ssl_context  # noqa: E402
-from enso.reach import ROBOTS_TIMEOUT_S, Robots, classify, judge  # noqa: E402
+from enso.reach import ROBOTS_TIMEOUT_S, Robots, classify, get_checked, judge  # noqa: E402
 
 #: Días tras los que se olvida una URL que ya no está en el registro, contados desde la medición más reciente
 #: del archivo: los PDF que n8n siguió y los feeds retirados no crecen reachability.json para siempre, y una
@@ -76,13 +76,23 @@ def probe(urls: list[str], vantage: str, timeout: float = 25.0,
             if wait > 0:
                 time.sleep(wait)
             started = time.monotonic()
+            hop, verdict = None, True
             try:
-                r = client.get(url)
+                # Cada redirección con el robots.txt de su destino: una URL que solo llega a su contenido por una
+                # ruta prohibida (o por un servidor cuyo robots.txt no responde) no queda «allowed» en el registro.
+                r, hop, verdict = get_checked(client, url, robots)
                 status, body, headers, err = r.status_code, r.content, r.headers, ""
             except httpx.HTTPError as exc:
                 status, body, headers, err = None, b"", None, f"{type(exc).__name__}: {exc}"[:200]
             finally:
                 last[host] = time.monotonic()
+        if hop:
+            return url, {"class": "robots" if verdict is False else (robots.failure(hop) or "connect"),
+                         "http": status, "bytes": 0, "ms": int((time.monotonic() - started) * 1000),
+                         "detail": f"redirige a {hop}: robots.txt "
+                                   + ("no permite la ruta" if verdict is False else "sin respuesta"),
+                         "robots": "disallowed" if verdict is False else "unreachable",
+                         "at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "vantage": vantage}
         cls, _, why = judge(status, body, headers.get("content-type", "") if headers else "",
                             (expect or {}).get(url), err, headers)
         return url, {"class": cls, "http": status, "bytes": len(body),
