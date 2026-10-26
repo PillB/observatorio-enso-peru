@@ -28,7 +28,8 @@ function loadWith(shadow, ...names) {
     hash: ['sha256Hex', 'sha1Hex', 'gitBlobSha', 'toBase64'],
     classify: ['classify', 'reachClass', 'detectFormat', 'feedStats', 'fileExtension', 'utf8Decode', 'utf8Encode'],
     enfen: ['deriveEnfenTargets', 'parseListing', 'parseWpPosts', 'cleanWpdm'],
-    relay: ['buildSnapshot', 'pickResults', 'heartbeat', 'parseTokenExpiry'],
+    relay: ['buildSnapshot', 'pickResults', 'heartbeat', 'parseTokenExpiry', 'notRequested'],
+    robots: ['robotRules', 'robotsAllowed', 'robotsVerdicts'],
   };
   const code = names.map(libSource).join('\n');
   const all = names.flatMap((n) => exportsList[n]);
@@ -281,8 +282,9 @@ test('si el registro espera HTML y llega texto, se guarda con una nota', () => {
 async function runCode(name, vars, nodes, input = []) {
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
   const $ = (n) => { if (!(n in nodes)) throw new Error(`nodo sin ejecutar: ${n}`); return { first: () => nodes[n][0], all: () => nodes[n] }; };
-  const fn = new AsyncFunction('$', '$input', nodeCode(name, { VERSION: 'test', ...vars }));
-  return fn.call({ helpers: {} }, $, { all: () => input, first: () => input[0] });
+  // Como en el nodo Code de n8n: sin «URL».
+  const fn = new AsyncFunction('$', '$input', 'URL', nodeCode(name, { VERSION: 'test', ...vars }));
+  return fn.call({ helpers: {} }, $, { all: () => input, first: () => input[0] }, undefined);
 }
 
 test('Fuentes: respeta robots.txt y el alcance «n8n»', async () => {
@@ -349,10 +351,75 @@ test('Fuentes: no pide lo que robots.txt no permite ni aquello cuyo robots.txt n
       by_url: { 'https://repo/api': { status: 'open', channels: ['actions'], robots: 'allowed' } } },
   ] };
   const cfg = (scope) => ({ 'Configuración': [{ json: { scope, only: '' } }] });
-  const urls = async (scope) => (await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg(scope))).map((i) => i.json.url);
-  assert.deepEqual(await urls('n8n'), ['https://ok/feed', 'https://antes/feed']);
+  const run = async (scope) => (await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, cfg(scope))).map((i) => i.json);
+  // «unknown»: primero su robots.txt, y la URL queda en espera («deferred») hasta saber qué dice.
+  const n8n = await run('n8n');
+  assert.deepEqual(n8n.map((j) => j.url), ['https://ok/feed', 'https://sin-leer/robots.txt', 'https://antes/feed']);
+  assert.equal(n8n[1].role, 'robots');
+  assert.deepEqual(n8n[1].deferred.map((d) => d.url), ['https://sin-leer/feed']);
   // El repositorio del IMARPE tampoco en la validación: su «tls» desde n8n no es una medición de la red.
-  assert.deepEqual(await urls('todas'), ['https://ok/feed', 'https://antes/feed']);
+  const todas = await run('todas');
+  assert.deepEqual(todas.map((j) => j.url), ['https://ok/feed', 'https://sin-leer/robots.txt', 'https://antes/feed', 'https://snirh/robots.txt']);
+});
+
+test('robots.txt como python/enso/reach.py: regla más larga, Allow en el empate, grupo propio o «*»', () => {
+  const { robotRules, robotsAllowed } = loadWith({ URL: undefined }, 'classify', 'robots');
+  const igp = robotRules('User-agent: *\nAllow: /\nDisallow: /api/\n');
+  assert.equal(robotsAllowed(igp, 'https://x/api/eventos'), false);
+  assert.equal(robotsAllowed(igp, 'https://x/datos/ICEN.txt'), true);
+  const tie = robotRules('User-agent: *\nDisallow: /a\nAllow: /a\n');
+  assert.equal(robotsAllowed(tie, 'https://x/a'), true);
+  const own = robotRules('User-agent: *\nDisallow: /\n\nUser-agent: Observatorio-ENSO-Peru\nDisallow: /privado\n');
+  assert.equal(robotsAllowed(own, 'https://x/feed/'), true);
+  assert.equal(robotsAllowed(own, 'https://x/privado/1'), false);
+  const wild = robotRules('User-agent: *\nDisallow: /*.pdf$\nDisallow: /buscar?\n');
+  assert.equal(robotsAllowed(wild, 'https://x/a/b.pdf'), false);
+  assert.equal(robotsAllowed(wild, 'https://x/a/b.pdf?x=1'), true);
+  assert.equal(robotsAllowed(wild, 'https://x/buscar?q=nino'), false);
+  assert.equal(robotsAllowed(robotRules('User-agent: *\nDisallow:\n'), 'https://x/'), true);
+  assert.equal(robotsAllowed(robotRules('User-agent: *\nDisallow: /\n'), 'https://x/robots.txt'), true);
+  assert.equal(robotsAllowed(robotRules('User-agent: *\nDisallow: /\nAllow: /$\n'), 'https://x'), true);
+  assert.equal(robotsAllowed(robotRules('User-agent: *\nDisallow: /feed\n'), 'https://X.pe:8443/feed/?paged=1#a'), false);
+});
+
+test('qué hace n8n con cada respuesta de robots.txt (RFC 9309)', () => {
+  const { robotsVerdicts } = loadWith({ URL: undefined }, 'classify', 'robots');
+  const urls = ['https://x/feed/', 'https://x/wp-admin/'];
+  const v = (r) => robotsVerdicts({ headers: {}, ...r, cls: classify({ url: 'https://x/robots.txt', expect: 'any', headers: r.headers || {}, ...r }) }, urls);
+  const rules = v({ status: 200, body: enc('User-agent: *\nDisallow: /wp-admin/\n') });
+  assert.deepEqual(rules, { source: 'rules', verdicts: { 'https://x/feed/': 'allowed', 'https://x/wp-admin/': 'disallowed' } });
+  // Una página HTML (un «no encontrado» con 200) no tiene reglas: se permite todo.
+  assert.equal(v({ status: 200, body: enc('<!DOCTYPE html><html><body>' + 'x'.repeat(3000)) }).verdicts['https://x/wp-admin/'], 'allowed');
+  assert.equal(v({ status: 404, body: enc('no') }).source, 'absent');
+  assert.equal(v({ status: 403, body: enc('<html>Forbidden</html>') }).source, 'absent');
+  assert.equal(v({ status: 401, body: enc('<html>Login</html>') }).source, 'absent');
+  for (const r of [{ status: 429, body: enc('') }, { status: 503, body: enc('') }, { status: null, error: 'ETIMEDOUT' },
+    { status: 403, headers: { 'cf-mitigated': 'challenge' }, body: enc('') },
+    { status: 403, body: enc('<html><head><title>Attention Required! | Cloudflare</title></head></html>') },
+    { status: 200, body: enc('<!DOCTYPE html><html><head><title>Just a moment...</title></head></html>') }]) {
+    assert.equal(v(r).source, 'unreachable', JSON.stringify(r).slice(0, 80));
+  }
+});
+
+test('Segunda pasada pide lo que robots.txt permite; la copia anota lo que no se pidió', async () => {
+  const robotsItem = (verdict) => ({ json: { id: 'robots:x', group: 'g', url: 'https://x/robots.txt', role: 'robots', fetched_at: '2026-10-26T03:50:00+00:00',
+    cls: { ok: verdict !== 'unreachable', verdict: verdict === 'unreachable' ? 'blocked' : 'ok', reach: verdict === 'unreachable' ? 'challenge' : 'ok' },
+    deferred: [{ id: 'f', group: 'g', name: 'F', url: 'https://x/feed/', expect: 'rss', pass: 1, robots: verdict }] } });
+  const second = await runCode('segunda', {}, {}, [robotsItem('allowed')]);
+  assert.deepEqual(second.map((i) => [i.json.url, i.json.pass, i.json.robots]), [['https://x/feed/', 2, 'allowed']]);
+  for (const verdict of ['disallowed', 'unreachable']) {
+    assert.deepEqual(await runCode('segunda', {}, {}, [robotsItem(verdict)]), []);
+    const { index } = buildSnapshot({ results: [robotsItem(verdict).json], previous: null, now: new Date('2026-10-26T04:00:00Z'), collector: {} });
+    assert.deepEqual(index.entries, []);
+    assert.equal(index.not_requested[0].url, 'https://x/feed/');
+    assert.equal(index.not_requested[0].robots, verdict);
+    assert.equal(index.not_requested[0].reach, verdict === 'unreachable' ? 'challenge' : 'ok');
+  }
+  // La URL pedida lleva el veredicto en su entrada de index.json.
+  const ok = res('https://x/feed/', true, '<rss></rss>');
+  const { index } = buildSnapshot({ results: [robotsItem('allowed').json, { ...ok, robots: 'allowed', pass: 2 }], previous: null, now: new Date(), collector: {} });
+  assert.deepEqual(index.entries.map((e) => [e.url, e.robots]), [['https://x/feed/', 'allowed']]);
+  assert.equal(index.not_requested, undefined);
 });
 
 test('Preparar copia: no publica si no pudo leer la copia anterior', async () => {
@@ -438,4 +505,39 @@ test('docs/n8n.md cuenta los flujos de n8n/dist', () => {
   const m = /Hay (\w+) flujos/.exec(readFileSync(join(HERE, '..', '..', 'docs', 'n8n.md'), 'utf8'));
   assert.ok(m);
   assert.equal(words[m[1]], readdirSync(join(HERE, '..', 'dist')).filter((f) => f.endsWith('.json')).length);
+});
+
+test('Informe: fila NO PEDIDA con la clase del robots.txt que no respondió', async () => {
+  const robots = { id: 'robots:x', group: 'g', url: 'https://x/robots.txt', role: 'robots', fetched_at: '2026-10-26T03:50:00+00:00',
+    cls: { ok: false, verdict: 'timeout', reach: 'timeout' }, deferred: [{ id: 'f', group: 'g', url: 'https://x/feed/', robots: 'unreachable' }] };
+  const rows = (await runCode('informe', {}, {}, [{ json: robots }])).map((i) => i.json);
+  assert.match(rows[0].resultado, /^RESUMEN: 0\/0/);
+  assert.deepEqual([rows[1].resultado, rows[1].url, rows[1].alcance, rows[1].robots], ['NO PEDIDA', 'https://x/feed/', 'timeout', 'unreachable']);
+  assert.equal(rows.length, 2);
+});
+
+test('Segunda pasada: «follow» solo sigue enlaces del mismo servidor que la página', async () => {
+  const html = Buffer.from('<a href="https://www.dhn.mil.pe/a/01-2026.pdf">1</a> <a href="https://otro.example/b.pdf">2</a>');
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const fn = new AsyncFunction('$', '$input', 'URL', nodeCode('segunda', { VERSION: 'test' }));
+  const item = { json: { id: 'l', group: 'x', name: 'L', url: 'https://www.dhn.mil.pe/portal/listado', cls: { ok: true }, follow: { pattern: 'https?://[^"\'\\s]+\\.pdf', max: 8 } },
+    binary: { data: {} } };
+  const out = await fn.call({ helpers: { getBinaryDataBuffer: async () => html } }, () => ({}), { all: () => [item] }, undefined);
+  assert.deepEqual(out.map((i) => i.json.url), ['https://www.dhn.mil.pe/a/01-2026.pdf']);
+});
+
+test('Fuentes y Analizar: con «hop», se lee el robots.txt del destino de la redirección', async () => {
+  const reg = { schema: 'enso-source-registry/1', sources: [
+    { id: 'h', group: 'g', url: 'https://viejo.pe/feed', expect: 'rss', channels: ['actions', 'n8n'],
+      by_url: { 'https://viejo.pe/feed': { status: 'open', channels: ['actions', 'n8n'], robots: 'unknown', hop: 'https://nuevo.example/noticias/feed' } } },
+  ] };
+  const out = await runCode('fuentes', { REGISTRY: JSON.stringify(reg) }, { 'Configuración': [{ json: { scope: 'n8n', only: '' } }] });
+  assert.deepEqual(out.map((i) => i.json.url), ['https://nuevo.example/robots.txt']);
+  assert.equal(out[0].json.deferred[0].hop, 'https://nuevo.example/noticias/feed');
+  const body = Buffer.from('User-agent: *\nDisallow: /noticias/\n');
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const fn = new AsyncFunction('$', '$input', 'URL', nodeCode('analizar', { SOURCE_NODE: 'Fuentes' }));
+  const res2 = await fn.call({ helpers: { getBinaryDataBuffer: async () => body } }, () => ({ all: () => out }),
+    { all: () => [{ json: { statusCode: 200, headers: { 'content-type': 'text/plain' } }, binary: { data: {} } }] }, undefined);
+  assert.equal(res2[0].json.deferred[0].robots, 'disallowed');
 });

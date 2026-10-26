@@ -25,7 +25,7 @@ export function libSource(name) {
 
 const NODE_LIBS = {
   'fuentes': [],
-  'analizar': ['classify'],
+  'analizar': ['classify', 'robots'],
   'segunda': ['classify', 'enfen'],
   'informe': ['relay'],
   'preparar': ['hash', 'classify', 'relay'],
@@ -52,7 +52,7 @@ export function nodeCode(name, vars = {}) {
 const registryText = readFileSync(join(ROOT, 'registry/sources.json'), 'utf8');
 const registry = JSON.parse(registryText);
 const VERSION = createHash('sha256')
-  .update(['hash', 'classify', 'enfen', 'relay'].map(libSource).join(''))
+  .update(['hash', 'classify', 'enfen', 'relay', 'robots'].map(libSource).join(''))
   .update(Object.keys(NODE_LIBS).map((n) => read(`nodes/${n}.js`)).join(''))
   .update(registryText)
   .digest('hex').slice(0, 10);
