@@ -221,6 +221,10 @@ class Fetcher:
         self.robots: Optional[Robots] = Robots(self.client, timeout=ROBOTS_TIMEOUT_S, tries=2,
                                                backoff_s=2 * polite_delay) if robots else None
         self._last: dict[str, float] = {}
+        #: URL cuya redirección no se siguió en la corrida (``RobotsHop``), con lo que dijo el robots.txt del destino
+        #: (``False`` prohíbe, ``None`` no respondió): no se le pide al Internet Archive que la capture, porque
+        #: seguiría esa misma redirección en nombre del observatorio.
+        self.hop_refused: dict[str, Optional[bool]] = {}
 
     def close(self) -> None:
         self.client.close()
@@ -233,9 +237,12 @@ class Fetcher:
 
     def _request(self, url: str, headers: Optional[dict] = None) -> httpx.Response:
         """Un pedido, con sus redirecciones: antes de cada salto, el destino con la regla de robots.txt de un pedido
-        directo (``_robots_rule``). Si no se sigue, ``RobotsHop``; el pedido ya hecho no se repite."""
+        directo (``_robots_rule``). Si no se sigue, ``RobotsHop``; el pedido ya hecho no se repite. ``max_seconds``
+        vale para el pedido entero, con sus redirecciones."""
+        ends = [t for t in (time.monotonic() + self.max_seconds if self.max_seconds else None, self.deadline) if t]
+        end = min(ends) if ends else None
         for _ in range(MAX_HOPS + 1):
-            r = self._request_one(url, headers)
+            r = self._request_one(url, headers, end)
             hop = next_hop(r)
             if hop is None:
                 return r
@@ -245,11 +252,9 @@ class Fetcher:
             url = hop
         raise httpx.TooManyRedirects(f"más de {MAX_HOPS} redirecciones", request=r.request)
 
-    def _request_one(self, url: str, headers: Optional[dict] = None) -> httpx.Response:
-        ends = [t for t in (time.monotonic() + self.max_seconds if self.max_seconds else None, self.deadline) if t]
-        if not ends:
+    def _request_one(self, url: str, headers: Optional[dict] = None, end: Optional[float] = None) -> httpx.Response:
+        if end is None:
             return self.client.get(url, headers=headers)
-        end = min(ends)
         with self.client.stream("GET", url, headers=headers) as r:
             chunks = []
             for chunk in r.iter_bytes():
@@ -311,6 +316,8 @@ class Fetcher:
                 continue
             except (httpx.HTTPError, httpx.InvalidURL) as exc:  # gzip roto, redirecciones sin fin, URL inválida
                 attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
+                if isinstance(exc, RobotsHop):
+                    self.hop_refused[url] = exc.verdict
                 return None
             attempts.append({"url": url, "status": r.status_code})
             if r.status_code == 429 or r.status_code >= 500:
@@ -340,7 +347,9 @@ class Fetcher:
         if self.robots is None:
             return None
         known = self.robots_known.get(url)
-        if planned and "actions" in planned and known != "unknown":
+        # Un feed de lector (``disallowed`` con canal Actions) solo se pide con el lector, sin robots: una redirección
+        # que lleva a él desde otro feed pasa por robots.txt.
+        if planned and "actions" in planned and known not in ("unknown", "disallowed"):
             return None
         allowed = self.robots.allowed(url)
         if allowed is False:
@@ -382,6 +391,11 @@ class Fetcher:
                                     attempts=attempts)
                 if r is not None and r.status_code == 200:
                     attempts[-1]["note"] = "contenido vacío o tipo inesperado"
+            if self.hop_refused.get(url) is False:
+                # El recolector que guardó la copia la pudo bajar siguiendo esa misma redirección.
+                attempts.append({"url": url, "note": "redirige a una ruta que robots.txt no permite: "
+                                                     "no se usan las copias de los recolectores"})
+                continue
             got = self._from_relays(url, accept)
             if got is not None:
                 attempts.append({"url": url, "channel": got.channel, "collected_at": got.archived_at})
@@ -418,9 +432,10 @@ class Fetcher:
         no la permite. Tampoco lo que el registro asigna solo al recolector del Perú: el Internet Archive pide desde
         fuera del Perú, y ahí (el portal del ENFEN) le falla siempre (HTTP 523) y gasta los intentos que necesita el
         PDF del comunicado. Si robots.txt no responde en la corrida, vale lo que leyó la sonda (``allowed``), como en
-        ``_robots_skip``, en lo que el registro asigna a Actions."""
+        ``_robots_skip``, en lo que el registro asigna a Actions. Tampoco si en la corrida no se siguió su redirección
+        (``hop_refused``): el Internet Archive la seguiría."""
         planned = self.plan.get(url)
-        if planned is not None and not {"actions", "n8n"} & set(planned):
+        if url in self.hop_refused or planned is not None and not {"actions", "n8n"} & set(planned):
             return False
         if self.robots is None:
             return True
@@ -431,7 +446,10 @@ class Fetcher:
     def _archive_skip(self, url: str, attempts: list) -> bool:
         """Si no se pide ``url`` al Internet Archive por su robots.txt (y lo anota): la misma regla que cualquier
         servidor. web.archive.org no está en el registro, así que su robots.txt se lee en la corrida y, si no
-        responde, no se le pide nada (barrido de robots.txt del 26 de octubre de 2026)."""
+        responde, no se le pide nada (barrido de robots.txt del 26 de octubre de 2026). Si no se pediría de todos modos
+        (``skip_reason``), no lee robots.txt: ``_get`` anota el motivo."""
+        if self.skip_reason(url):
+            return False
         why = self._robots_rule(url, None)
         if why:
             attempts.append({"url": url, "channel": "archive", "error": why})

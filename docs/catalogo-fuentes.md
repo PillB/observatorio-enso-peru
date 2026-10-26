@@ -197,12 +197,18 @@ copias del recolector del Perú y de n8n). Reglas:
   y piden el destino solo si su robots.txt lo permite, con la misma regla que
   la URL pedida: una ruta prohibida, o un servidor cuyo robots.txt no
   responde, no se piden. La sonda semanal anota esa URL como `robots` (o con
-  la falla de su robots.txt), así el registro no la deja `allowed`. Un
-  robots.txt que redirige se sigue (RFC 9309 §2.3.1.2), y las rutas se
-  comparan con los `%XX` normalizados (§2.2.2: `/Señal` y `/Se%C3%B1al` son la
-  misma ruta). El Internet Archive pasa por la misma regla: el robots.txt de
-  `web.archive.org` se lee en la corrida y, si no permite la ruta o no
-  responde, esa corrida no usa sus copias ni le pide una nueva.
+  la falla de su robots.txt y el destino en `hop`, sin arrastrar la lectura
+  anterior de la URL), así el registro no la deja `allowed` y n8n, que sigue
+  las redirecciones sin leer robots.txt, no la pide. Tras una redirección que
+  no se siguió, la corrida no le pide al Internet Archive una captura nueva de
+  esa URL (la seguiría en nombre del observatorio) y, si el destino está
+  prohibido, tampoco usa la copia de un recolector. Un robots.txt que redirige
+  se sigue (RFC 9309 §2.3.1.2), y las rutas se comparan con los `%XX`
+  normalizados (§2.2.2: `/Señal` y `/Se%C3%B1al` son la misma ruta). El
+  Internet Archive pasa por la misma regla: el robots.txt de `web.archive.org`
+  se lee en la corrida y, si no permite la ruta o no responde, esa corrida no
+  usa sus copias ni le pide una nueva. La consola de lugares y el servicio de
+  extracción son del observatorio: sus redirecciones se siguen sin robots.txt.
 - **Fuentes sin n8n** (`"n8n": false`): las búsquedas del repositorio del
   IMARPE, porque n8n no verifica su certificado sin el intermedio
   (`NODE_EXTRA_CA_CERTS`). GODAS (`cpc-godas-d20`) solo se lee desde Actions:

@@ -91,7 +91,7 @@ def probe(urls: list[str], vantage: str, timeout: float = 25.0,
                          "http": status, "bytes": 0, "ms": int((time.monotonic() - started) * 1000),
                          "detail": f"redirige a {hop}: robots.txt "
                                    + ("no permite la ruta" if verdict is False else "sin respuesta"),
-                         "robots": "disallowed" if verdict is False else "unreachable",
+                         "robots": "disallowed" if verdict is False else "unreachable", "hop": hop,
                          "at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "vantage": vantage}
         cls, _, why = judge(status, body, headers.get("content-type", "") if headers else "",
                             (expect or {}).get(url), err, headers)
@@ -114,7 +114,8 @@ def from_peru_index(index: dict) -> dict[str, dict]:
     o cuando no responde (``timeout``…, como en ``probe``); el plazo o un
     servidor caído no la traen. El recolector lee robots.txt antes de cada
     pedido: lo que pidió lleva ``robots: allowed``, lo omitido porque robots.txt
-    no respondió ``unreachable`` y lo que prohíbe ``disallowed``."""
+    no respondió ``unreachable`` y lo que prohíbe ``disallowed``; una redirección
+    que no siguió, su destino en ``hop``."""
     out = {}
     at = index.get("collected_at") or index.get("at")
     for url, rec in (index.get("probes") or {}).items():
@@ -135,6 +136,8 @@ def from_peru_index(index: dict) -> dict[str, dict]:
         rec = {"class": cls, "http": e.get("status"), "bytes": e.get("bytes"), "at": e.get("fetched_at") or at,
                "vantage": "peru-server", "detail": e.get("error", ""),
                "robots": "disallowed" if cls == "robots" else "unreachable" if unread else "allowed"}
+        if e.get("hop"):  # la redirección que no siguió (``enso.reach.get_checked``), como en ``probe``
+            rec["hop"] = e["hop"]
         for u in [e.get("url"), *(e.get("aliases") or [])]:
             if u:
                 out[u] = rec
@@ -260,12 +263,15 @@ def _put(data: dict, url: str, rec: dict) -> None:
     """Guarda la medición de una red (reemplaza la anterior de esa misma red). Si no trae una lectura de robots.txt
     (no respondió, o esta vez no se leyó, como n8n con lo que el registro ya da por permitido), conserva en
     ``robots_read`` la última de esa red que permitía la ruta: RFC 9309 §2.4 deja usar la copia guardada si robots.txt
-    no responde, y así una verificación de un día no borra lo que se sabía (``registry.robots_verdict``)."""
+    no responde, y así una verificación de un día no borra lo que se sabía (``registry.robots_verdict``). No si lo que
+    no respondió fue el robots.txt del destino de una redirección (``hop``): la lectura guardada es la de la URL, no la
+    de ese destino, y n8n sigue las redirecciones sin leerlo."""
     rec = {k: v for k, v in rec.items() if k != "url"}
     groups = registry._groups(data["urls"].get(url) or {})
     group = groups.setdefault(registry.vantage_group(rec["vantage"]), {})
     prev = group.get(rec["vantage"])
-    if prev and rec.get("class") != "robots" and rec.get("robots") not in ("allowed", "absent", "disallowed"):
+    if prev and rec.get("class") != "robots" and not rec.get("hop") \
+            and rec.get("robots") not in ("allowed", "absent", "disallowed"):
         seen = ({"robots": prev["robots"], "at": prev.get("at")}
                 if prev.get("robots") in ("allowed", "absent") and prev.get("class") != "robots"
                 else prev.get("robots_read"))

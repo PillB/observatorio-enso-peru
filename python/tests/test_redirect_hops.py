@@ -203,3 +203,155 @@ def test_firecrawl_only_after_a_browser_run_that_touched_no_forbidden_path(monke
     client = httpx.Client(transport=_net({}, {}, []))
     rep = L.run([{"id": "x", "url": "https://a.example/", "expect": "naranja"}], tmp_path, browser_ok=False, client=client)
     assert called == [] and rep["results"][0]["answer"] == "not-found"
+
+
+def _relay_copy(root, url: str, body: bytes):
+    import hashlib
+    import json
+    from datetime import datetime, timezone
+
+    from enso.fetch import Relay
+
+    (root / "files").mkdir(parents=True)
+    sha = hashlib.sha256(body).hexdigest()
+    (root / "files" / f"{sha[:16]}.html").write_bytes(body)
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    (root / "index.json").write_text(json.dumps({"schema": "enso-relay/1", "collected_at": now, "entries": [
+        {"url": url, "status": 200, "content_type": "text/html", "file": f"files/{sha[:16]}.html", "sha256": sha,
+         "fetched_at": now}]}), encoding="utf-8")
+    return Relay(root)
+
+
+def test_a_refused_hop_is_not_captured_by_the_archive_nor_read_from_relays(tmp_path):
+    """El Internet Archive y el recolector del Perú seguirían la misma redirección: tras un salto prohibido no se pide
+    una captura nueva ni se usa la copia de un recolector. Uno cuyo robots.txt no respondió sí deja usar la copia."""
+    from enso.observatory import archived_copy
+
+    page = "https://a.example/comunicados/"
+    for target, rule, relay_ok in (
+            ("https://a.example/privado/comunicados/", (200, "User-agent: *\nDisallow: /privado/\n"), False),
+            ("https://b.example/comunicados/", (503, ""), True)):
+        asked: list[str] = []
+        host = "a.example" if "a.example" in target else "b.example"
+        f = _fetcher(_net({host: rule, "web.archive.org": (200, ALLOW_ALL)}, {page: _to(target)}, asked),
+                     relay=_relay_copy(tmp_path / host, page, b"<html>" + b"x" * 600 + b"</html>"))
+        f.allow_archive = f.allow_save = True
+        if relay_ok:
+            assert f.get([page], save=True).channel == "relay-peru"
+        else:
+            with pytest.raises(Exception):
+                f.get([page], save=True)
+        assert not any("/save/" in u for u in asked) and target not in asked
+        assert archived_copy(f, page, [], save=True) is None and not any("/save/" in u for u in asked)
+
+
+def test_max_seconds_covers_the_whole_redirect_chain(monkeypatch):
+    from enso import fetch as F
+
+    clock = [0.0]
+    monkeypatch.setattr(F.time, "monotonic", lambda: clock[0])
+
+    def handler(req):
+        clock[0] += 0.8  # cada salto tarda 0,8 s en llegar
+        n = int(req.url.path.strip("/h") or 0)
+        return _to(f"https://a.example/h{n + 1}") if n < 3 else httpx.Response(200, text="ok")
+
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False, max_seconds=1.0)
+    f.client = httpx.Client(transport=httpx.MockTransport(handler), follow_redirects=False)
+    with pytest.raises(F.TooSlow):
+        f._request("https://a.example/h0")
+
+
+def test_a_redirect_into_a_reader_feed_reads_its_robots_txt():
+    """Los feeds de lector solo se piden con el lector (una vez cada 20 h, sin robots.txt): una redirección desde
+    otro feed que lleva a uno de ellos pasa por robots.txt."""
+    page, reader = "https://feeds.example/rss", "https://sinrodeoscajamarca.com/feed/"
+    asked: list[str] = []
+    f = _fetcher(_net({"sinrodeoscajamarca.com": (200, "User-agent: *\nDisallow: /\n")}, {page: _to(reader)}, asked),
+                 plan={reader: ["actions"]}, robots_known={reader: "disallowed"})
+    with pytest.raises(Exception):
+        f.get([page])
+    assert reader not in asked and "https://sinrodeoscajamarca.com/robots.txt" in asked
+
+
+def test_next_hop_resolves_locations_like_httpx():
+    req = httpx.Request("GET", "https://a.example/dir/page?x=1")
+    for loc, want in (("http:///login", "http://a.example/login"), ("https://", "https://a.example"),
+                      ("../b", "https://a.example/b"), ("//c.example/d", "https://c.example/d"),
+                      ("https://e.example/f", "https://e.example/f")):
+        from enso.reach import next_hop
+        assert next_hop(httpx.Response(302, headers={"location": loc}, request=req)) == want, loc
+    assert next_hop(httpx.Response(200, request=req)) is None
+
+
+def test_the_observatory_own_services_still_follow_redirects(monkeypatch):
+    """La consola de lugares y el servicio de extracción son del observatorio: un dominio propio que redirige no corta
+    las correcciones de lugares ni la extracción."""
+    from enso import geo_overrides as GO, reports as R
+
+    def handler(req):
+        if req.url.host == "example.org":
+            return httpx.Response(308 if req.method == "POST" else 301,
+                                  headers={"location": str(req.url.copy_with(host="www.example.org"))})
+        if req.method == "POST":
+            return httpx.Response(200, json={"data": {"number": 18}, "model": "m"})
+        return httpx.Response(200, json=[])
+
+    client = _fetcher(httpx.MockTransport(handler)).client  # como el de la corrida: sin seguir redirecciones
+
+    class Log:
+        def add(self, *a):
+            raise AssertionError(a)
+
+    assert GO.fetch_overrides(client, None, Log(), url="https://example.org/api/geo/overrides") == ([], "consola")
+    monkeypatch.setenv(R.LLM_URL_ENV, "https://example.org/hook")
+    assert "transport" not in R.llm_extract(client, "enfen-informe", "texto", url="u")
+
+
+def test_an_unanswered_hop_robots_txt_does_not_keep_the_old_reading():
+    """La lectura guardada de una URL (``robots_read``) es la de su propio robots.txt: si lo que no respondió fue el
+    del destino de su redirección, no se arrastra y el registro no la deja ``allowed`` (n8n seguiría el salto)."""
+    from datetime import datetime, timedelta, timezone
+
+    from enso import registry
+    from tools import probe_sources
+
+    url, now = "https://a.example/feed.xml", datetime(2026, 10, 26, tzinfo=timezone.utc)
+    data = {"urls": {}}
+    probe_sources._put(data, url, {"class": "ok", "robots": "allowed", "at": (now - timedelta(days=7)).isoformat(),
+                                   "vantage": "github-actions"})
+    probe_sources._put(data, url, {"class": "http-5xx", "http": 302, "robots": "unreachable",
+                                   "hop": "https://cdn.b.example/feed.xml", "at": now.isoformat(),
+                                   "vantage": "github-actions"})
+    assert "robots_read" not in data["urls"][url]["actions"]["github-actions"]
+    assert registry.robots_verdict(url, data["urls"], now) == "unknown"
+
+
+def test_the_registry_names_the_hop_whose_robots_txt_did_not_answer():
+    """n8n lee el robots.txt de la URL antes de pedirla y sigue las redirecciones: el registro le dice a qué destino
+    lleva, para que lea también el de ese destino."""
+    from datetime import datetime, timezone
+
+    from enso import registry
+
+    reg = registry.build(reach={})
+    src = next(s for s in reg["sources"] if s.get("kind") == "feed" and not s.get("alt_urls"))
+    url, hop = src["url"], "https://cdn.example/feed.xml"
+    at = datetime(2026, 10, 26, tzinfo=timezone.utc).isoformat()
+    reach = {url: {"actions": {"github-actions": {"class": "http-5xx", "http": 302, "robots": "unreachable",
+                                                  "hop": hop, "at": at, "vantage": "github-actions"}}}}
+    reg = registry.build(reach=reach)
+    entry = next(s for s in reg["sources"] if s["url"] == url)["by_url"][url]
+    assert entry["hop"] == hop and entry["robots"] == "unknown"
+    assert not registry.validate(reg)
+    assert "hop" not in next(s for s in registry.build(reach={})["sources"] if s["url"] == url)["by_url"][url]
+
+
+def test_the_peru_collector_hop_reaches_the_registry():
+    from tools import probe_sources
+
+    idx = {"collected_at": "2026-10-26T05:00:00+00:00", "entries": [
+        {"url": "https://a.example/datos.json", "status": 302, "skipped": "robots-sin-respuesta", "class": "timeout",
+         "hop": "https://b.example/datos.json", "error": "redirige a https://b.example/datos.json: robots.txt sin respuesta"}]}
+    rec = probe_sources.from_peru_index(idx)["https://a.example/datos.json"]
+    assert rec["hop"] == "https://b.example/datos.json" and rec["robots"] == "unreachable"

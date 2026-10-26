@@ -788,8 +788,9 @@ def llm_extract(client, kind: str, text: str, *, url: str, published: Optional[s
         headers["authorization"] = f"Bearer {os.environ[LLM_TOKEN_ENV]}"
     body = {"kind": kind, "schema": SCHEMAS[kind], "text": text[:120_000], "url": url, "published": published}
     try:
+        # El servicio es del observatorio, no una fuente: sus redirecciones se siguen sin robots.txt.
         r = client.post(endpoint, content=json.dumps(body, ensure_ascii=False).encode("utf-8"),
-                        headers=headers, timeout=timeout)
+                        headers=headers, timeout=timeout, follow_redirects=True)
         r.raise_for_status()
         reply = r.json()
     except Exception as exc:  # noqa: BLE001 — el respaldo nunca detiene la corrida

@@ -90,6 +90,9 @@ def main(argv=None) -> int:
         if a.cache:
             a.cache.mkdir(parents=True, exist_ok=True)
         robots = Robots(client, tries=3, backoff_s=5.0)
+        # Se lee una vez antes de repartir los meses: los hilos lo leerían a la vez y CPC corta las ráfagas.
+        if todo and (allowed := robots.allowed(godas.url(*todo[0]))) is not True:
+            raise _refused(godas.url(*todo[0]), allowed, robots)
         results = list(ex.map(lambda ym: fetch_month(client, *ym, cache=a.cache, robots=robots), todo))
     series = {k: [] for k in godas.REGIONS}
     for (y, m), res in zip(todo, results):

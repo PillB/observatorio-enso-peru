@@ -8,6 +8,7 @@ import os
 import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from typing import Optional
 
 import httpx
 import pytest
@@ -1055,7 +1056,7 @@ def test_the_weekly_probe_rebuilds_the_n8n_flows_with_the_registry():
     assert build < commit and "git add registry/ n8n/dist" in steps[commit]["run"]
 
 
-def _probe_commit(tmp_path: Path, on_main):
+def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None):
     """Corre el paso «Commit» del sondeo en un clon de un «origin» con n8n/ y el registro, después de que en main
     ``on_main(seed)`` cambiara algo (y reconstruyera dist) mientras se medía. Devuelve (resultado, origin, clon)."""
     import shutil
@@ -1108,7 +1109,7 @@ def _probe_commit(tmp_path: Path, on_main):
     fake.mkdir()
     (fake / "sleep").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
     (fake / "sleep").chmod(0o755)
-    env = {**os.environ, "GITHUB_REF_NAME": "main", "PATH": f"{fake}{os.pathsep}{os.environ['PATH']}"}
+    env = {**os.environ, "GITHUB_REF_NAME": "main", "PATH": f"{fake}{os.pathsep}{os.environ['PATH']}", **(env or {})}
     r = subprocess.run(["bash", "--noprofile", "--norc", "-eo", "pipefail", "-c", run], cwd=work, env=env,
                        capture_output=True, text=True, timeout=120)
     return r, origin, work
@@ -1145,6 +1146,42 @@ def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_p
     assert not (work / ".git" / "rebase-merge").exists() and not (work / ".git" / "rebase-apply").exists()
     log = subprocess.run(["git", "log", "--format=%s", "main"], cwd=origin, capture_output=True, text=True).stdout
     assert log.split("\n")[0] == "cambio en main"
+
+
+def test_a_registry_that_fails_the_tests_does_not_reach_main(tmp_path):
+    """26 de octubre de 2026: la sonda programada escribió en main un registro que dejaba en rojo dos pruebas (y a
+    todo PR que se mezclara con main). Ahora las pruebas corren antes (paso «Test the new registry») y, si fallan,
+    el registro va a bot/registry/main, la corrida falla y se abre un issue."""
+    import subprocess
+
+    import yaml
+
+    wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "probe-sources.yml").read_text(encoding="utf-8"))
+    steps = wf["jobs"]["probe"]["steps"]
+    gate = next(i for i, st in enumerate(steps) if st.get("id") == "gate")
+    commit = next(i for i, st in enumerate(steps) if st.get("name") == "Commit")
+    build = next(i for i, st in enumerate(steps) if st.get("run", "").strip() == "node n8n/build.mjs")
+    assert build < gate < commit and steps[gate].get("continue-on-error") is True
+    assert "pytest" in steps[gate]["run"] and "build.mjs --check" in steps[gate]["run"]
+    assert steps[commit]["env"]["GATE"] == "${{ steps.gate.outcome }}"
+    # En main, un issue que dice dónde quedó el registro y que se cierra con el próximo que pasa las pruebas.
+    issue = {st.get("name"): st for st in steps[commit + 1:]}
+    opens, closes = (issue["Open an issue when the new registry fails the tests"],
+                     issue["Close the registry issue after a registry that passes"])
+    assert "steps.gate.outcome == 'failure'" in opens["if"] and "always()" in opens["if"]
+    assert "steps.gate.outcome == 'success'" in closes["if"] and wf["permissions"]["issues"] == "write"
+    assert all("enso-fp:registry-gate" in st["with"]["script"] for st in (opens, closes))
+
+    def n8n_change(seed):
+        with (seed / "n8n" / "nodes" / "fuentes.js").open("a", encoding="utf-8") as f:
+            f.write("// cambio en main\n")
+
+    r, origin, _ = _probe_commit(tmp_path, n8n_change, env={"GATE": "failure"})
+    assert r.returncode == 1 and "no pasa las pruebas" in r.stdout
+    heads = dict(line.split(" ", 1) for line in subprocess.run(
+        ["git", "for-each-ref", "--format=%(refname:short) %(subject)", "refs/heads"], cwd=origin,
+        capture_output=True, text=True).stdout.splitlines())
+    assert heads == {"main": "cambio en main", "bot/registry/main": "Update source reachability and registry"}
 
 
 def test_feeds_read_like_a_feed_reader_are_asked_at_most_once_a_day(tmp_path, monkeypatch):

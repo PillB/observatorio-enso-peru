@@ -6,6 +6,10 @@
 # medidor (como los demás sondeos; el resultado va a bot/registry/<rama>).
 # El registro va dentro de los flujos de n8n (n8n/dist): se regeneran en el
 # mismo commit, o el control «dist/ matches the source» de n8n.yml falla.
+# Antes de escribir en main, el registro nuevo pasa las pruebas (la medición
+# del 26 de octubre de 2026 dejó main en rojo); si no, va a bot/registry/main
+# y la corrida falla, con un issue «incidente-datos» que se cierra solo con el
+# próximo registro que las pasa.
 name: probe-sources
 
 on:
@@ -20,6 +24,7 @@ on:
 
 permissions:
   contents: write
+  issues: write  # el issue del registro que no pasa las pruebas
 
 concurrency:
   group: probe-sources-${{ github.ref }}
@@ -36,7 +41,7 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: python/requirements*.txt
-      - run: pip install -r python/requirements.txt
+      - run: pip install -r python/requirements-dev.txt
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
@@ -63,13 +68,27 @@ jobs:
       # Sin N8N_GITHUB_CRED_ID: el dist/ del repositorio lleva el id de credencial por omisión (docs/n8n.md).
       - name: Rebuild the n8n flows with the new registry
         run: node n8n/build.mjs
+      # Las pruebas que leen el registro y n8n/dist, con lo recién medido (sin navegador: no hace falta).
+      - name: Test the new registry
+        id: gate
+        continue-on-error: true
+        run: |
+          (cd python && python -m tools.build_registry --check && python -m pytest -q -p no:cacheprovider -m "not browser")
+          node n8n/build.mjs --check && node --test n8n/test/*.test.mjs
       - name: Commit
+        env:
+          GATE: ${{ steps.gate.outcome }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           git add registry/ n8n/dist
           git diff --cached --quiet && exit 0
           git commit -m "Update source reachability and registry"
+          if [ "$GATE" = failure ]; then
+            git push --force origin "HEAD:refs/heads/bot/registry/$GITHUB_REF_NAME"
+            echo "::error::El registro nuevo no pasa las pruebas: no se escribe en $GITHUB_REF_NAME. Resultado en bot/registry/$GITHUB_REF_NAME"
+            exit 1
+          fi
           # En main el registro medido es el que leen el recolector del Perú y
           # n8n. En otras ramas va a bot/registry/<rama>, nunca a la rama de un PR.
           # Respaldo por si el evento no trae «repository»: la rama principal es main (la corrida programada del
@@ -90,3 +109,26 @@ jobs:
           fi
           git push --force origin "HEAD:refs/heads/bot/registry/$GITHUB_REF_NAME"
           echo "::notice::Resultado en la rama bot/registry/$GITHUB_REF_NAME"
+      # Solo en main: es el registro que leen el recolector del Perú y n8n.
+      - name: Open an issue when the new registry fails the tests
+        if: always() && steps.gate.outcome == 'failure' && github.ref_name == (github.event.repository.default_branch || 'main')
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = '[datos] El registro medido no pasa las pruebas';
+            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
+            const url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = `La sonda semanal ${url} midió las fuentes, pero con el registro nuevo fallan las pruebas: si cambió, quedó en la rama \`bot/registry/${context.ref.replace('refs/heads/', '')}\` y no en la principal, así que el recolector del Perú y n8n siguen con el anterior. Ver el paso «Test the new registry».\n\n<!-- enso-fp:registry-gate -->`;
+            const prev = open.find(i => (i.body || '').includes('enso-fp:registry-gate'));
+            if (prev) await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body: `Volvió a fallar: ${url}` });
+            else await github.rest.issues.create({ ...context.repo, title, body, labels: ['incidente-datos'] });
+      - name: Close the registry issue after a registry that passes
+        if: success() && steps.gate.outcome == 'success' && github.ref_name == (github.event.repository.default_branch || 'main')
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
+            for (const i of open.filter(i => (i.body || '').includes('enso-fp:registry-gate'))) {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: i.number, body: 'El registro medido volvió a pasar las pruebas y está en la rama principal. Se cierra automáticamente.' });
+              await github.rest.issues.update({ ...context.repo, issue_number: i.number, state: 'closed', state_reason: 'completed' });
+            }

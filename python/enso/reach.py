@@ -334,9 +334,15 @@ class RobotsHop(httpx.HTTPError):
 
 
 def next_hop(r: httpx.Response) -> Optional[str]:
-    """A dónde redirige ``r`` (``None`` si no redirige)."""
+    """A dónde redirige ``r`` (``None`` si no redirige), como lo resuelve httpx: un ``Location`` absoluto sin servidor
+    (``http:///login``) va al mismo servidor."""
     loc = r.headers.get("location")
-    return str(r.url.join(loc)) if r.is_redirect and loc else None
+    if not (r.is_redirect and loc):
+        return None
+    url = httpx.URL(loc)
+    if url.scheme and not url.host:
+        url = url.copy_with(host=r.url.host)
+    return str(r.url.join(url) if url.is_relative_url else url)
 
 
 def get_checked(client, url: str, robots: Optional["Robots"], headers: Optional[dict] = None, **kw):

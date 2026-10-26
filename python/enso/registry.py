@@ -47,6 +47,9 @@ todo lo demás, otros feeds incluidos, y el rastreo.
 una medición no pudo leerlo, vale la última lectura de esa red que permitía la
 ruta, hasta ``STALE_DAYS`` (``robots_read``; RFC 9309 §2.4), y un robots.txt en
 contra que nadie volvió a leer en ``STALE_DAYS`` deja de contar.
+``by_url[url]["hop"]``: el destino de una redirección que la medición no siguió
+porque su robots.txt no respondió; quien pida la URL lee el robots.txt de ese
+destino, no solo el de la URL (n8n sigue las redirecciones sin leerlo).
 
 El registro no guarda la hora, el tiempo ni el tamaño de cada medición (siguen
 en ``reachability.json``): solo cambia cuando cambia el alcance.
@@ -448,6 +451,10 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
             by_url[u] = {"status": g["status"], "channels": channels_for(
                 g["status"], g["open_from"], [k for k in ("actions", "n8n") if g.get(k)], n8n=e.n8n),
                 "robots": robots_verdict(u, reach, ref)}
+            hop = next((r["hop"] for rs in _counted(u, reach, ref).values() for r in rs.values()
+                        if r.get("hop") and r.get("robots") == "unreachable"), None)
+            if hop:
+                by_url[u]["hop"] = hop
             if e.reader and g["status"] == "robots-disallowed":
                 by_url[u].update(channels=list(READER_CHANNELS), reader=True)
             if e.only_channels is not None and g["status"] != "robots-disallowed":
@@ -469,7 +476,8 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
                       "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con "
                                 f"reader: solo {'+'.join(READER_CHANNELS)}, como mucho cada {READER_MIN_HOURS} h; "
                                 "by_url robots unknown (nadie pudo leer su robots.txt): n8n no la pide y el pipeline "
-                                "lo lee antes de pedirla",
+                                "lo lee antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió, "
+                                "y quien pida la URL lee también el de ese destino",
                       "n8n": "una fuente con n8n false no va por n8n (ver notes)",
                       "tiers": METHODS, "channels": list(CHANNELS)},
             "sources": sources}
@@ -560,6 +568,8 @@ def validate(reg: dict) -> list[str]:
                 errs.append(f"{sid}: peru-server debe usarse si y solo si {u} está geobloqueada")
             if s.get("by_url") and (r.get("robots") not in ROBOTS or (r.get("robots") == "disallowed") != robots):
                 errs.append(f"{sid}: robots no válido para {u} (disallowed si y solo si robots.txt prohíbe la ruta)")
+            if "hop" in r and not str(r["hop"]).startswith(("http://", "https://")):
+                errs.append(f"{sid}: hop no válido para {u}")
             if s.get("n8n") is False and "n8n" in r.get("channels", []):
                 errs.append(f"{sid}: {u} no va por n8n (la fuente dice n8n: false)")
         if set(by_url) != {s.get("url"), *s.get("alt_urls", [])}:
