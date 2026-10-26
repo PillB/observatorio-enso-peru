@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-26T17:44:25+00:00",
+ "generated_at": "2026-10-26T17:53:15+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n no la pide y el pipeline lo lee antes de pedirla",
@@ -11186,7 +11186,7 @@
     ],
     "us": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11195,7 +11195,7 @@
     },
     "actions": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "dns"
@@ -11267,7 +11267,7 @@
     ],
     "us": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11276,7 +11276,7 @@
     },
     "actions": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11338,12 +11338,12 @@
     "open_from": [],
     "us": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11397,12 +11397,12 @@
     "open_from": [],
     "us": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11451,7 +11451,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11460,7 +11460,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -11514,7 +11514,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11523,7 +11523,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -11574,7 +11574,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11583,7 +11583,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -11634,7 +11634,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11643,7 +11643,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -11691,7 +11691,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11700,7 +11700,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11746,7 +11746,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11755,7 +11755,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11801,7 +11801,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11810,7 +11810,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11856,7 +11856,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11865,7 +11865,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11911,12 +11911,12 @@
     "open_from": [],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -11964,12 +11964,12 @@
     "open_from": [],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
