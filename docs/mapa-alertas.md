@@ -51,12 +51,57 @@ en la consola) se marcan «≈»; los revisados en la consola, «lugar revisado�
   (`levelsFrom`: `copyAt`, `archive`, cuántos avisos trae) y el pie del mapa lo muestra; si la copia tiene
   más de 36 horas, el pie lo advierte y el pipeline anota `senamhi-avisos-stale`. Sin tabla legible anota
   `senamhi-avisos-unread`.
-- Esos avisos siguen sin departamento cuando el texto nombra una región («costa centro y sur»): aparecen
-  en «avisos sin departamento». La capa de precipitaciones de 24 horas de GEOSINPAD (`senamhi-lluvias`)
-  sí trae polígonos: colorea los departamentos con su nivel desde la nube, sin depender del recolector.
+- Los avisos meteorológicos traen regiones («costa norte y sierra»), no departamentos. Los departamentos están
+  en el **PDF** que el COEN enlaza en la página de cada boletín (ver «Del aviso al documento»). El mensaje de
+  Telegram del mismo aviso (mismo año y número, por la tabla del SENAMHI) toma esos departamentos
+  (`geo.via` dice de qué boletín salen). Si ningún canal trae el PDF, se usan los departamentos de las regiones
+  que nombra el aviso (`senamhi_avisos.REGIONS`), con confianza 0,6: el mapa los marca «≈» y la ficha dice
+  «lugares: regiones que nombra el aviso». Un aviso sin región reconocible sigue en «avisos sin departamento».
+  La capa de precipitaciones de 24 horas de GEOSINPAD (`senamhi-lluvias`) trae polígonos y colorea los
+  departamentos con su nivel desde la nube, sin depender del recolector.
 - Un aviso en unos distritos colorea todo el departamento en las versiones A, C y D (el color dice «en
   algún lugar del departamento»). La versión B dibuja cada lugar.
 - El mapa es tan reciente como la última actualización diaria; el pie lo dice.
+
+## Del aviso al documento (`python/enso/documentos.py`)
+
+La página de cada publicación del COEN es una portada con un botón «Descargar archivo»; el detalle está en el
+PDF. Cada corrida baja la página y el PDF de las publicaciones de los últimos 7 días que aún no leyó (como
+mucho 40 por corrida y 3 minutos; los avisos primero, luego los reportes sin distrito; 3 intentos por
+publicación) y lee:
+
+| Publicación | Qué se lee del PDF | Lugar que publica |
+|---|---|---|
+| Aviso meteorológico | «… DEPARTAMENTOS EXPUESTOS: AMAZONAS, ÁNCASH, … Y TUMBES» (o «de posible afectación», con «Prov. Const. del Callao» en cualquiera de sus formas), el tema, la vigencia y el párrafo del aviso | Departamentos |
+| Aviso hidrológico | «…en el departamento de LORETO (Prov. Mariscal Ramón Castilla)» y la fila de la estación («Amazonas Puerto Alegría Yavari 59.54 58.78») | Distrito de la estación (si no se lee, la provincia) |
+| Aviso de corto plazo (lluvias intensas, activación de quebradas) | Tabla «DEPARTAMENTOS · PROVINCIAS EXPUESTAS» y «VIGENCIA: 25-10-2026 (13:00 h) al 26-10-2026 (13:00 h)» | Provincias (por departamento si son más de 25) |
+| Aviso de oleaje | Tramos del litoral (norte, centro, sur) | Departamentos costeros de esos tramos |
+| Reporte de emergencia | Tabla «UBICACIÓN» (departamento, provincia, distrito); si la tabla es una imagen, la descripción («…distrito Challhuahuacho, provincia de Cotabambas.») | Distritos |
+
+pypdf pega y parte las celdas de la tabla («LOCUMBAJORGE BASADRETACNA», «PAMPASAN LUISCARLOS», «PASCO OX
+APAMPA»): los nombres de 4 letras o más se buscan también en el texto sin espacios, pero no dentro de otro nombre
+del gazetteer que también aparece («TOMAS» no es Omas, «CHONGOS» no es Hongos, «ALTO PICHIGUA» no es Pichigua).
+Se aceptan los alias del COEN (Kimbiri, Seclla, Mariscal Gamarra, San Juan de Iscos). Un departamento sin
+provincia ni distrito cuando otro sí los tiene es un centro poblado de ese nombre («… ANDAMARCA HUÁNUCO»).
+
+Si el PDF no es de la publicación (la página del COEN a veces enlaza el de otra: «…Ccapi (Cusco)» con el reporte
+de Huancabamba, Piura; un boletín de corto plazo con un reporte de emergencia), no se usa: queda como
+`no-coincide` en `news/documentos.json`, se reintenta hasta 3 veces por si el COEN corrige la página, y la
+publicación conserva el lugar de su titular. Lima y Callao cuentan como uno al comparar.
+
+Lo leído entra como lugares de campo (confianza 0,95) en `geoHint.geo` y reemplaza la ubicación por el
+titular; el aviso enlaza el PDF (`document`, «informe completo (PDF)») y el mapa lo abre en lugar de la portada.
+Se publica en `news/documentos.json` (21 días) y la corrida siguiente no lo vuelve a pedir; como el histórico
+es de solo anexar, se aplica en memoria a cada publicación, también a las que ya estaban guardadas.
+
+Como el RSS del COEN trae solo sus últimas ~14 publicaciones (unas horas de reportes), sus boletines se leen
+además de la búsqueda de WordPress (`indeci-coen-boletines`, `…/emergencias/feed/?s=boletin+informativo`). Los
+boletines sísmicos y el resumen diario de peligros no son avisos y se omiten.
+
+**Prueba hacia atrás**: `python -m tools.documentos_backtest --items news/items.jsonl --out /tmp/bt --feed
+'https://portal.indeci.gob.pe/emergencias/feed/?s=reporte&paged=5'` compara los lugares del PDF con el
+titular de cada reporte (falsos positivos y negativos) y la aproximación por regiones con los departamentos
+de cada aviso. Resultados (272 publicaciones de agosto a octubre de 2026): `docs/documentos-backtest.md`.
 
 ## Versiones A, B, C y D
 

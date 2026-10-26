@@ -25,10 +25,10 @@ import re
 import threading
 import time
 from typing import Optional
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlparse
 
+import httpx
 from httpx import Client as HTTPClient
-from httpx import TooManyRedirects
 
 #: Marcas de una página de bloqueo o de verificación en lugar del contenido, por familia: las de
 #: ``BLOCK_SIGNATURES`` en n8n/lib/classify.js, que se buscan en minúsculas en los primeros ``SCAN_BYTES`` del
@@ -79,8 +79,6 @@ SCAN_BYTES = 65536
 SMALL_PAGE = 40000
 #: Plazo para leer robots.txt: un servidor que no lo entrega en ese tiempo cuenta como sin respuesta.
 ROBOTS_TIMEOUT_S = 15.0
-#: Redirecciones que ``get_checked`` sigue antes de rendirse.
-MAX_HOPS = 10
 FEEDS = {"rss", "atom", "rdf", "jsonfeed"}
 #: Entidades públicas del Perú. Decisión del responsable del proyecto (26 de octubre de 2026): su información es
 #: pública (Constitución, art. 2.5; Ley 27806; DL 1412), así que su robots.txt se lee pero no decide si se pide una
@@ -242,6 +240,9 @@ def judge(status: Optional[int], body: bytes, content_type: str = "", expect: Op
     return "ok", detected, ""
 
 
+_UNRESERVED = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
+
+
 class RobotRules:
     """Reglas de un robots.txt según la RFC 9309.
 
@@ -276,7 +277,7 @@ class RobotRules:
             elif k in ("allow", "disallow") and agents:
                 in_rules = True
                 if v:  # «Disallow:» vacío no prohíbe nada
-                    rules.append((k == "allow", v))
+                    rules.append((k == "allow", self._canon(v)))
             elif k == "crawl-delay" and agents:
                 in_rules = True
                 try:
@@ -292,6 +293,23 @@ class RobotRules:
         self.crawl_delay = max(delays) if delays else None
 
     @staticmethod
+    def _canon(text: str) -> str:
+        """Ruta o regla en la forma en que se comparan (RFC 9309 §2.2.2): lo que no es ASCII, en UTF-8 con
+        ``%XX``; un ``%XX`` de un carácter no reservado (letras, cifras, ``-._~``), decodificado; los demás, en
+        mayúsculas. Así ``/Señal``, ``/Se%c3%b1al`` y ``/Se%C3%B1al`` son la misma ruta."""
+        out, raw, i = [], text.encode("utf-8"), 0
+        while i < len(raw):
+            c = raw[i]
+            if c == 0x25 and re.fullmatch(rb"[0-9A-Fa-f]{2}", raw[i + 1:i + 3]):
+                v = int(raw[i + 1:i + 3], 16)
+                out.append(chr(v) if chr(v) in _UNRESERVED else f"%{v:02X}")
+                i += 3
+                continue
+            out.append(chr(c) if 0x20 < c < 0x7F else f"%{c:02X}")
+            i += 1
+        return "".join(out)
+
+    @staticmethod
     def _matches(pattern: str, path: str) -> int:
         """Largo de la regla si coincide con la ruta (``*`` comodín, ``$`` fin), o -1."""
         rx = "".join(".*" if c == "*" else re.escape(c) for c in pattern.rstrip("$"))
@@ -303,7 +321,7 @@ class RobotRules:
         if self.allow_all:
             return True
         p = urlparse(url)
-        path = (p.path or "/") + (f"?{p.query}" if p.query else "")
+        path = self._canon((p.path or "/") + (f"?{p.query}" if p.query else ""))
         if path == "/robots.txt":
             return True
         best, allow = -1, True
@@ -312,6 +330,71 @@ class RobotRules:
             if n > best or (n == best and is_allow):
                 best, allow = n, is_allow
         return allow
+
+
+#: Redirecciones que se siguen como mucho, cada una con su robots.txt (``get_checked``, ``Fetcher``).
+MAX_HOPS = 10
+
+
+class RobotsHop(httpx.HTTPError):
+    """Una redirección lleva a una ruta que su robots.txt no permite (``verdict`` ``False``) o a un servidor cuyo
+    robots.txt no respondió (``None``): no se sigue. ``hop`` es la URL que no se pidió."""
+
+    def __init__(self, hop: str, verdict: Optional[bool], why: str, request: Optional[httpx.Request] = None):
+        super().__init__(f"redirige a {hop} y no se pide: {why}")
+        self.hop, self.verdict, self.why = hop, verdict, why
+        if request is not None:
+            self.request = request
+
+
+# Lo que httpx lanza al armar el pedido siguiente con un ``Location`` que no puede usar, aun sin seguir redirecciones:
+# ``InvalidURL`` con «https:servidor/ruta» (protocolo sin ``//`` y ruta sin ``/``) y, con un servidor «xn--…» que idna
+# no decodifica (``https://xn--zz.example/``), ``idna.IDNAError``, que es un ``UnicodeError``. Ninguno es un
+# ``httpx.HTTPError``: quien pide los vuelve ``RemoteProtocolError``, un error del servidor y no de la corrida.
+BAD_LOCATION = (httpx.InvalidURL, UnicodeError)
+
+
+def next_hop(r: httpx.Response) -> Optional[str]:
+    """A dónde redirige ``r``, como lo resuelve httpx: un ``Location`` absoluto sin servidor (``http:///login``) va
+    al mismo servidor. ``None`` si no redirige o si lleva a otro protocolo (``ftp://…``): no se sigue, como en httpx
+    (que ahí falla), y queda la respuesta 3xx, sin leer un robots.txt que no existe."""
+    loc = r.headers.get("location")
+    if not (r.is_redirect and loc):
+        return None
+    try:
+        url = httpx.URL(loc)
+        if url.scheme not in ("", "http", "https"):
+            return None
+        if url.scheme and not url.host:
+            url = url.copy_with(host=r.url.host)
+        return str(r.url.join(url) if url.is_relative_url else url)
+    except BAD_LOCATION as exc:  # como httpx (que falla antes, al armar el pedido siguiente): error del servidor
+        raise httpx.RemoteProtocolError(f"Location no válido: {exc}", request=r.request) from None
+
+
+def get_checked(client, url: str, robots: Optional["Robots"], headers: Optional[dict] = None, **kw):
+    """GET que sigue las redirecciones a mano y consulta robots.txt antes de cada salto, con la misma regla que
+    el pedido: una ruta prohibida o un robots.txt sin respuesta no se piden. El robots.txt de ``url`` lo revisa
+    quien llama. Lo usan todos los que piden con ``httpx`` y respetan robots.txt (``tools.scrape_ladder``, el
+    recolector del Perú y su revisión, la sonda). Antes de cada pedido, el primero incluido, espera el
+    ``Crawl-delay`` de una entidad pública del Perú (``Robots.pace``): quien llama no pausa por su cuenta.
+    Devuelve la respuesta y, si un salto no se pidió, su URL y el veredicto (``False`` prohibido, ``None`` sin
+    respuesta); si no, ``None`` y ``True``."""
+    for _ in range(MAX_HOPS + 1):
+        if robots is not None:
+            robots.pace(url)
+        try:
+            r = client.get(url, headers=headers, follow_redirects=False, **kw)
+        except BAD_LOCATION as exc:  # httpx falla al armar el pedido siguiente (``BAD_LOCATION``)
+            raise httpx.RemoteProtocolError(f"Location no válido: {exc}") from None
+        hop = next_hop(r)
+        if hop is None:
+            return r, None, True
+        verdict = True if robots is None else robots.allowed(hop)
+        if verdict is not True:
+            return r, hop, verdict
+        url = hop
+    raise httpx.TooManyRedirects(f"más de {MAX_HOPS} redirecciones", request=r.request)
 
 
 class Robots:
@@ -451,23 +534,3 @@ class Robots:
         para el motivo de la incidencia; vacío si se leyó o fue una verificación."""
         return self._entry(url)[6]
 
-
-def get_checked(client: HTTPClient, url: str, robots: Optional[Robots], headers: Optional[dict] = None):
-    """GET que sigue las redirecciones a mano y consulta robots.txt antes de cada salto. Devuelve la respuesta y,
-    si un salto no se pudo pedir, su URL y el veredicto de robots.txt (``False`` prohibido, ``None`` sin respuesta).
-    Lo usan todos los que piden con ``httpx`` y respetan robots.txt (``tools.scrape_ladder``, el recolector del
-    Perú y su revisión): con ``follow_redirects=True`` una ruta permitida podía llevar a otra que no lo está.
-    Antes de cada pedido, el primero incluido, espera el Crawl-delay de una entidad pública del Perú
-    (``Robots.pace``): quien llama no pausa por su cuenta."""
-    for _ in range(MAX_HOPS + 1):
-        if robots is not None:
-            robots.pace(url)
-        r = client.get(url, headers=headers, follow_redirects=False)
-        loc = r.headers.get("location")
-        if not (r.is_redirect and loc):
-            return r, None, True
-        url = urljoin(str(r.url), loc)
-        verdict = True if robots is None else robots.allowed(url)
-        if verdict is not True:
-            return r, url, verdict
-    raise TooManyRedirects(f"más de {MAX_HOPS} redirecciones", request=r.request)

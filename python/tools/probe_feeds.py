@@ -37,7 +37,7 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso import feedparse, geo, news  # noqa: E402
-from enso.reach import Robots  # noqa: E402
+from enso.reach import Robots, get_checked  # noqa: E402
 
 UA = ("Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; feed-probe; "
       "+https://github.com/PillB/observatorio-enso-peru)")
@@ -84,7 +84,11 @@ class Probe:
             if wait > 0:
                 time.sleep(wait)
             try:
-                r = self.client.get(url)
+                # Cada redirección con el robots.txt de su destino, como la URL pedida.
+                r, hop, verdict = get_checked(self.client, url, self.robots)
+                if hop:
+                    why = "no permite la ruta" if verdict is False else "no respondió"
+                    return None, b"", "", hop, f"omitido: redirige a {hop} y su robots.txt {why}"
                 return r.status_code, r.content[: feedparse.MAX_FEED_BYTES + 1], r.headers.get("content-type", ""), str(r.url), ""
             except httpx.HTTPError as exc:
                 return None, b"", "", url, f"{type(exc).__name__}: {exc}"[:200]
