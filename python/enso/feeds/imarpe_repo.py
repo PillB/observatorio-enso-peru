@@ -230,11 +230,10 @@ def log_problems(log, problems: list, what: str) -> None:
     """Una advertencia por causa mientras dure (``repository-unreachable`` o ``repository-format``): la incidencia
     queda abierta hasta que el repositorio vuelva a responder bien."""
     for p in problems:
-        code = "repository-format" if p == "formato" else "repository-unreachable"
         hint = (" Revisar la cadena con `openssl s_client -showcerts -connect repositorio.imarpe.gob.pe:443` y "
                 "actualizar python/enso/data/ca-intermedios.pem." if p == "tls" else
                 " La API respondió algo que no es la búsqueda de DSpace: revisar python/enso/feeds/imarpe_repo.py."
                 if p == "formato" else "")
         detail = getattr(p, "detail", "")
-        log.add("warning", "imarpe-repositorio", "fetch", code,
+        log.add("warning", "imarpe-repositorio", "fetch", "repository-format" if p == "formato" else "repository-unreachable",
                 f"El repositorio del IMARPE no sirvió {what} ({p}{f': {detail}' if detail else ''}).{hint}")

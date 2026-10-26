@@ -27,9 +27,11 @@ DOCS = ROOT / "docs"
 #: Carpetas (bajo python/) donde se registran incidencias. Un paquete nuevo que llame a ``log.add`` va aquí.
 SCAN = ("enso", "tools")
 RELEVANT = {"warning", "error", "critical"}
-#: Llamadas cuyo código no es un literal, con de dónde sale: ``i.code`` son los ``Issue(...)`` de reports.py,
-#: que se recogen aparte.
-DYNAMIC = {("enso/reports.py", "i.code")}
+#: Llamadas cuyo código no es un literal, con de dónde sale: ``i.code`` son los ``Issue(...)`` de reports.py (e
+#: ``i['code']``, los mismos del informe publicado que se vuelven a registrar), y ``code`` en observatory.py son los
+#: avisos de un lector (``meta["events"]``, como los de feeds/godas.py), que se registran como advertencias: todos se
+#: recogen aparte.
+DYNAMIC = {("enso/reports.py", "i.code"), ("enso/reports.py", "i['code']"), ("enso/observatory.py", "code")}
 
 
 def _severities(node: ast.expr) -> Optional[set[str]]:
@@ -42,12 +44,16 @@ def _severities(node: ast.expr) -> Optional[set[str]]:
     return None
 
 
-def _code(node: ast.expr) -> Optional[str]:
-    """El código literal o, si es una f-string que empieza con texto fijo, su familia (``late-*``)."""
+def _code(node: ast.expr) -> Optional[list[str]]:
+    """Los códigos literales (los dos de un ``a if … else b``) o, si es una f-string que empieza con texto fijo, su
+    familia (``late-*``)."""
     if isinstance(node, ast.Constant) and isinstance(node.value, str):
-        return node.value
+        return [node.value]
     if isinstance(node, ast.JoinedStr) and node.values and isinstance(node.values[0], ast.Constant):
-        return f"{node.values[0].value}*"
+        return [f"{node.values[0].value}*"]
+    if isinstance(node, ast.IfExp):
+        a, b = _code(node.body), _code(node.orelse)
+        return a + b if a is not None and b is not None else None
     return None
 
 
@@ -72,6 +78,11 @@ def logged_codes(relevant_only: bool = True) -> dict[str, list[str]]:
                     sev, code = node.args[0], node.args[3]
                 elif isinstance(node.func, ast.Name) and node.func.id == "Issue" and len(node.args) >= 2:
                     sev, code = node.args[0], node.args[1]  # validación del informe técnico (reports.py)
+                elif (isinstance(node.func, ast.Attribute) and node.func.attr == "append"
+                      and isinstance(node.func.value, ast.Name) and node.func.value.id == "events"
+                      and len(node.args) == 1 and isinstance(node.args[0], ast.Tuple) and len(node.args[0].elts) == 3):
+                    # (etapa, código, mensaje) de un lector: acquire() lo registra como advertencia.
+                    sev, code = ast.Constant("warning"), node.args[0].elts[1]
                 else:
                     continue
                 sevs = _severities(sev)
@@ -81,7 +92,8 @@ def logged_codes(relevant_only: bool = True) -> dict[str, list[str]]:
                 if c is None:
                     assert (rel, ast.unparse(code)) in DYNAMIC, f"{rel}:{node.lineno}: código no literal «{ast.unparse(code)}»"
                     continue
-                out.setdefault(c, []).append(f"{rel}:{node.lineno}")
+                for one in c:
+                    out.setdefault(one, []).append(f"{rel}:{node.lineno}")
     return out
 
 
@@ -149,7 +161,8 @@ def test_enfen_and_imarpe_access_as_the_code_and_registry_say():
         for name, text in (("catalogo-fuentes.md", cat), ("limitaciones.md", lim), ("app.js", app)):
             assert "repositorio del IMARPE" in text, name
     assert f"hasta {O.PROBE_AHEAD} números" in cat
-    assert "PROBE_AHEAD" in O.enfen_latest.__doc__ and "dos números siguientes" not in O.enfen_latest.__doc__
+    # La regla está en el lector (``_enfen_latest``); ``enfen_latest`` solo agrega la incidencia del repositorio.
+    assert "PROBE_AHEAD" in O._enfen_latest.__doc__ and "dos números siguientes" not in O._enfen_latest.__doc__
 
 
 def test_cloudflare_guide_names_every_function_route_and_binding():

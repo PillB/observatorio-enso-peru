@@ -528,7 +528,7 @@ def _previous_site(fail: int, files: dict[str, bytes]):
 
 
 def _down_source(sid: str = "fuente-x") -> obs.Source:
-    def fetch(fetcher):
+    def fetch(fetcher, prev=None):
         raise FetchError("sin respuesta", [])
 
     return obs.Source(sid, "Institución", "Producto", ["https://fuente.example/x"], parse=lambda r: None,

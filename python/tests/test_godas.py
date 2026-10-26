@@ -241,7 +241,7 @@ def _acquire(f, prev=None):
     log = _Log()
 
     class _Prev(obs.PreviousPublication):
-        def get(self, name, tries=1):
+        def get(self, name, tries=1, carry=False):
             return prev if name == "sources/cpc-godas-d20.json" else None
 
     return obs.acquire(SRC, f, None, _Prev(None), log), log

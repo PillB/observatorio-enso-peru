@@ -557,8 +557,7 @@ def test_reports_and_imarpe_repository_are_in_the_registry():
     from enso import reports
     from enso.feeds import imarpe_repo as repo
 
-    comunicados = repo.listing_url(repo.COMMUNIQUE_QUERY, repo.COMMUNIQUES_SIZE)
-    informes = repo.listing_url(repo.INFORME_QUERY, repo.INFORMES_SIZE)
+    comunicados, informes = repo.listing_urls()
     reg = registry.build(reach={})
     plan = registry.url_channels(reg)
     assert {reports.INFORMES_PAGE, reports.DHN_INFORMES_PAGE, comunicados, informes} <= set(plan)

@@ -8,8 +8,10 @@ Se manda un solo correo por corrida, y solo si algo cambió desde ``--since`` (e
 
 * incidencias nuevas (issue abierto en la corrida), con su detalle y enlace;
 * incidencias resueltas (issue cerrado en la corrida);
-* «La actualización diaria falló» o «El sitio publicado está desactualizado» que vuelven a ocurrir (comentario
-  nuevo en su issue abierto).
+* «La actualización diaria falló», «El sitio publicado está desactualizado» o un recolector que no da señales
+  (el recordatorio diario del vigilante) que vuelven a ocurrir (comentario nuevo en su issue abierto);
+* un ``format-drift`` que volvió a detectarse con su issue abierto (``sync_issues`` lo comenta y deja la marca
+  ``enso-again`` en el cuerpo solo en esa corrida).
 
 Una incidencia que sigue igual que ayer no manda correo (no se repite cada día).
 
@@ -36,8 +38,11 @@ from typing import Optional
 import httpx
 
 LABEL = "incidente-datos"
-#: Issues fijos que se reabren con comentarios en vez de cerrarse (la corrida falló, el sitio está atrasado).
-RECURRING = re.compile(r"<!-- enso-fp:(run-failed|site-stale) -->")
+#: Issues fijos que se reabren con comentarios en vez de cerrarse (la corrida falló, el sitio está atrasado, un
+#: recolector no da señales: ``.github/scripts/watchdog.cjs``).
+RECURRING = re.compile(r"<!-- enso-fp:(run-failed|site-stale|collector-silent-[a-z0-9-]+) -->")
+#: Un ``format-drift`` que volvió con el issue abierto (``tools.sync_issues``): la marca solo queda esa corrida.
+AGAIN = re.compile(r"<!-- enso-again:[^ ]* -->")
 _EMAIL = re.compile(r"^[^@\s,;<>]+@[^@\s,;<>]+\.[^@\s,;<>]+$")
 
 
@@ -61,7 +66,8 @@ def changes(issues: list[dict], since: str) -> dict:
             new.append(i)
         elif i.get("state") == "closed" and (i.get("closed_at") or "") >= since:
             resolved.append(i)
-        elif i.get("state") == "open" and RECURRING.search(i.get("body") or "") and (i.get("updated_at") or "") >= since:
+        elif (i.get("state") == "open" and (RECURRING.search(i.get("body") or "") or AGAIN.search(i.get("body") or ""))
+              and (i.get("updated_at") or "") >= since):
             again.append(i)
     return {"new": new, "resolved": resolved, "again": again}
 

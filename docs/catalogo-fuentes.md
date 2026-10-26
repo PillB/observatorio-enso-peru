@@ -146,7 +146,7 @@ el canal que decide quién la pide, en `registry/sources.json`.
 | IGP (`met.igp.gob.pe`) | Responde | En uso (ICEN) |
 | DHN (comunicados ENFEN) | El listado responde (también a n8n); los PDF piden verificación humana a los servidores, también a n8n y al recolector del Perú | Listado en uso; PDF del repositorio del IMARPE, la consola de documentos o el Internet Archive |
 | ENFEN (`enfen.imarpe.gob.pe`) | No resuelve el nombre (tampoco desde n8n) | Copia del recolector del Perú; réplica DHN, repositorio del IMARPE e Internet Archive |
-| IMARPE, repositorio (`repositorio.imarpe.gob.pe`) | Responde (API DSpace; el intermedio de su certificado va en `enso/data/ca-intermedios.pem`) | En uso: comunicados e informes técnicos del ENFEN y boletín semanal BS-OBP |
+| IMARPE, repositorio (`repositorio.imarpe.gob.pe`) | Desde el 22 de octubre no responde a la corrida diaria en Actions (incidencias `repository-unreachable` y `bsobp-unreachable`, causa «conexión»; el mensaje trae el error de red). Su certificado no trae el intermedio: va en `enso/data/ca-intermedios.pem` | Ruta de los comunicados e informes técnicos del ENFEN y del boletín semanal BS-OBP. Sus tres búsquedas están en el registro (`imarpe-repositorio-enfen`, `imarpe-repositorio-bsobp`, sin n8n): la sonda semanal decide si las pide el recolector del Perú |
 | IMARPE, sitio web (`www.imarpe.gob.pe`) | El feed responde; la portada y la página de sección dan HTTP 403 con verificación anti-robots (se registra, no se evade). Desde n8n responden las tres | Feed en las noticias; las dos páginas las bajan n8n y el recolector del Perú como archivo, sin lector todavía |
 | SENAMHI (avisos, estaciones, boletines) | Tiempo de espera agotado | No disponible desde Actions |
 | ANA (caudales, SNIRH) | Tiempo de espera agotado | No disponible desde Actions |
@@ -155,6 +155,34 @@ el canal que decide quién la pide, en `registry/sources.json`.
 | NASA GPM IMERG | El índice responde; los datos piden cuenta Earthdata | Requiere credencial |
 | CIIFEN, INAMHI, INOCAR, IDEAM | Responden | Candidatos regionales |
 | CPPS (ERFEN), SHOA, DMC Chile | URL probada no válida (404/405) | Por revisar |
+
+## Quién pide cada URL (registro de fuentes)
+
+`registry/sources.json` da, para cada URL, su estado, sus canales y lo que
+se sabe de su robots.txt; lo arma `python -m tools.build_registry` con las
+mediciones de `registry/reachability.json` (sonda semanal desde Actions,
+copias del recolector del Perú y de n8n). Reglas:
+
+- **Canales:** `peru-server` (solo el recolector del Perú) cuando la URL está
+  geobloqueada o se sospecha que lo está; si no, `actions` y `n8n`. Para la red
+  de Actions decide la medición de la corrida diaria (`github-actions`) si la
+  hay. Una medición de más de 45 días (`STALE_DAYS`) no cuenta si su red tiene
+  otra más reciente, y la sonda olvida las URL que salieron del registro y
+  llevan 30 días sin medirse (`PRUNE_DAYS`).
+- **robots.txt por URL** (`by_url[...].robots`): `allowed`, `disallowed` o
+  `unknown` (nadie pudo leerlo: no respondió, dio 429 o 5xx, o pidió una
+  verificación). Cualquier otro 4xx (salvo 429) o 3xx es «todo permitido» (RFC 9309). Con
+  `disallowed` la URL queda sin canales, salvo los feeds de noticias que se leen
+  una vez al día (abajo). n8n no pide ninguna URL `unknown` ni `disallowed`; la
+  corrida diaria lee el robots.txt de una URL `unknown` antes de pedirla, usa
+  primero las copias de los recolectores y no pide nada si el robots.txt no
+  responde.
+- **Fuentes sin n8n** (`"n8n": false`): las búsquedas del repositorio del
+  IMARPE, porque n8n no verifica su certificado sin el intermedio
+  (`NODE_EXTRA_CA_CERTS`). GODAS (`cpc-godas-d20`) solo se lee desde Actions:
+  su lector pide por rangos los archivos GRIB mensuales.
+- El ICEN se pide solo por http (`http://met.igp.gob.pe/datos/ICEN.txt`): la
+  dirección https no responde desde ninguna red.
 
 ## Feeds de noticias
 
