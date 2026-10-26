@@ -660,8 +660,8 @@ def imarpe_repository(client: httpx.Client | Session, fetched: dict[str, dict], 
     (``enso.feeds.imarpe_repo``), porque desde Actions no responde: sus búsquedas de comunicados, informes técnicos
     y boletines BS-OBP; los paquetes de archivos (``bundles``) de los ítems que lee; y el PDF ORIGINAL del
     comunicado y del informe técnico más recientes del repositorio y de los que son meta del ENFEN esta noche (por
-    la búsqueda por número, como ``communique_pdf`` e ``informe_pdf``), y de los ``MAX_NEW`` boletines más
-    recientes. Un PDF del repositorio con el número de una meta del ENFEN la cumple. ``fetched``: lo ya bajado
+    la búsqueda por número, como ``communique_pdf`` e ``informe_pdf``), y de cada boletín listado que el sitio
+    puede no tener. Un PDF del repositorio con el número de una meta del ENFEN la cumple. ``fetched``: lo ya bajado
     esta noche, por URL (una búsqueda que el registro manda a este equipo no se pide dos veces)."""
     from enso.feeds import imarpe_bsobp
     from enso.feeds import imarpe_repo as repo
@@ -718,8 +718,13 @@ def imarpe_repository(client: httpx.Client | Session, fetched: dict[str, dict], 
             get(repo.bundles_url(it["uuid"]), "json")
     for y, n in numbers("informe técnico", informes, repo.informe_id):
         follow(repo.informe_search_url(y, n), repo.informe_id, (y, n), f"informe técnico {n:02d}-{y}")
-    # La actualización diaria lee solo los boletines que no tiene, hasta MAX_NEW por noche, y del primer PDF.
-    for it in imarpe_bsobp.bulletins(weekly)[:imarpe_bsobp.MAX_NEW]:
+    # La actualización diaria lee del primer PDF los boletines que no tiene, hasta MAX_NEW por noche: tras una
+    # pausa se pone al día en varias noches. Este equipo no sabe cuáles leyó; el historial del kit sí los tiene
+    # (y el sitio no los vuelve a pedir), así que se bajan los listados que no están en él (hasta LIST_SIZE).
+    read = {(b.get("year"), b.get("number")) for b in imarpe_bsobp.load_seed()}
+    for it in imarpe_bsobp.bulletins(weekly):
+        if (it["year"], it["number"]) in read:
+            continue
         files = parsed(get(repo.bundles_url(it["uuid"]), "json"), repo.parse_bundles)
         if files:
             get(files[0]["url"], "pdf", MAX_INFORME_BYTES)

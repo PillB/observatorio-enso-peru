@@ -60,9 +60,10 @@ toma de la copia: las búsquedas de comunicados, informes técnicos y
 boletines BS-OBP; los paquetes de archivos (`/bundles?embed=bitstreams`)
 de los ítems que lee; y el PDF del paquete ORIGINAL del comunicado y del
 informe técnico más recientes (los del repositorio y los números que esa
-noche buscó en el ENFEN, por la búsqueda por número) y de los dos boletines
-BS-OBP más recientes (hasta 20 MB cada uno). El boletín BS-OBP no tiene
-otra ruta. Un PDF del repositorio con el número del comunicado o del
+noche buscó en el ENFEN, por la búsqueda por número) y de cada boletín
+BS-OBP listado que no está en el historial del kit (el sitio lee hasta dos
+por noche y, tras una pausa, se pone al día en varias), hasta 20 MB cada
+uno. El boletín BS-OBP no tiene otra ruta. Un PDF del repositorio con el número del comunicado o del
 informe del ENFEN cumple esa meta aunque el portal no lo haya dado. El
 servidor no manda su certificado intermedio: el kit lo trae
 (`enso/data/ca-intermedios.pem`), y con él se miden también las URL del

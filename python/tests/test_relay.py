@@ -1085,7 +1085,7 @@ def _repo_items():
     c = {n: _item(f"c{n}", f"Comunicado Oficial ENFEN N° {n}-2026", f"2026-10-{n - 2:02d}", f"h/c{n}") for n in (17, 18)}
     i18 = _item("i18", "Informe Técnico ENFEN Año 12 N°18, 2026", "2026-10-16", "h/i18")
     b = {n: _item(f"b{n}", f"Boletín Semanal Oceanográfico y Biológico - Pesquero vol. 11, N°{n}, 2026",
-                  f"2026-10-{n - 18}", f"h/b{n}") for n in (41, 42, 43)}
+                  f"2026-10-{n - 18}", f"h/b{n}") for n in (42, 43, 44, 45)}
     return c, i18, b
 
 
@@ -1115,7 +1115,7 @@ def _repository(req: httpx.Request) -> httpx.Response | None:
         if q.startswith(R.INFORME_QUERY):
             return httpx.Response(200, content=_search(i18, noise), headers=hal)
         if q == imarpe_bsobp.QUERY:
-            return httpx.Response(200, content=_search(b[43], noise, b[42], b[41]), headers=hal)
+            return httpx.Response(200, content=_search(b[45], b[44], noise, b[43], b[42]), headers=hal)
         return httpx.Response(200, content=_search(), headers=hal)
     m = re.fullmatch(r"/server/api/core/items/([^/]+)/bundles", path)
     if m and req.url.params.get("embed") == "bitstreams":
@@ -1139,6 +1139,7 @@ def test_collector_follows_the_imarpe_repository_with_the_urls_the_pipeline_asks
     from enso.feeds import imarpe_bsobp
     from enso.feeds import imarpe_repo as R
 
+    monkeypatch.setattr(imarpe_bsobp, "load_seed", lambda: [{"year": 2026, "number": 42}])  # el historial del kit
     idx = _collect(tmp_path, monkeypatch, _peru_with_repository)
     repo = [e for e in idx["entries"] if e["group"] == "imarpe-repo"]
     assert repo and all(pc.usable(e) for e in repo)
@@ -1147,8 +1148,8 @@ def test_collector_follows_the_imarpe_repository_with_the_urls_the_pipeline_asks
     assert len(urls) == len(set(urls))  # nada se pide dos veces
     pdfs = {e["url"].split("/")[-2] for e in repo if e.get("detected") == "pdf"}
     # El comunicado meta del ENFEN (17) y el más reciente del repositorio (18), el informe más reciente y los
-    # MAX_NEW boletines más recientes: el ruido y el boletín 41 no.
-    assert pdfs == {"c17", "c18", "i18", "b43", "b42"}
+    # boletines que el historial del kit no tiene (43 a 45, más que MAX_NEW): el ruido y el 42 (ya leído) no.
+    assert pdfs == {"c17", "c18", "i18", "b45", "b44", "b43"}
     # El PDF del repositorio con el número de la meta del ENFEN la cumple (y la del 18 no existe como meta).
     assert {e.get("goal") for e in repo if e.get("goal")} == {"comunicado 17-2026", "informe técnico 18-2026"}
 
@@ -1166,8 +1167,9 @@ def test_collector_follows_the_imarpe_repository_with_the_urls_the_pipeline_asks
     got = R.informe_pdf(f, 2026, 18, problems)
     assert got is not None and got.body.startswith(b"%PDF-1.7 i18 ")
     listed = imarpe_bsobp._listed(f)
-    assert [b["number"] for b in listed] == [43, 42, 41]
-    for it in listed[:imarpe_bsobp.MAX_NEW]:
+    assert [b["number"] for b in listed] == [45, 44, 43, 42]
+    # Tres boletines sin leer: el sitio lee dos esta noche y el tercero la siguiente, todos desde la copia.
+    for it in listed[:3]:
         files = R.pdfs(f, it["uuid"], problems)
         assert files and R.fetch_pdf(f, files[0]["url"], problems).body.startswith(f"%PDF-1.7 b{it['number']} ".encode())
     assert problems == []
