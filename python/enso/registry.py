@@ -49,8 +49,8 @@ ruta, hasta ``STALE_DAYS`` (``robots_read``; RFC 9309 §2.4), y un robots.txt en
 contra que nadie volvió a leer en ``STALE_DAYS`` deja de contar.
 Excepción, decidida el 26 de octubre de 2026: en los servidores de entidades
 públicas del Perú (``.gob.pe``, ``.mil.pe``: ``reach.public_peru``) robots.txt
-no decide qué se pide (``robots`` es siempre ``allowed``); su ``Crawl-delay``
-y las verificaciones antirobots se siguen respetando.
+no decide qué se pide (``robots`` es ``allowed``, salvo que en lugar del
+robots.txt llegue una verificación antirobots); su ``Crawl-delay`` se respeta.
 
 El registro no guarda la hora, el tiempo ni el tamaño de cada medición (siguen
 en ``reachability.json``): solo cambia cuando cambia el alcance.
@@ -395,9 +395,12 @@ def robots_verdict(url: str, reach: dict, now: Optional[datetime] = None) -> str
     ``allowed`` si alguien lo leyó y permite la ruta (o no existe: un 4xx) o si el recolector del Perú la pidió (lo
     lee antes de cada pedido); ``unknown`` si nadie pudo leerlo (n8n no lo lee). Cuentan las mismas mediciones que
     en ``geoblock`` (con ``now``, sin las viejas): ``disallowed`` va con el estado ``robots-disallowed``."""
-    if public_peru(url):
-        return "allowed"  # entidad pública del Perú: su robots.txt no decide (``reach.PUBLIC_PERU_SUFFIXES``)
     recs = [(g, r) for g, rs in _counted(url, reach, now).items() for r in rs.values()]
+    # Entidad pública del Perú: su robots.txt no decide (``reach.PUBLIC_PERU_SUFFIXES``), salvo que en su lugar
+    # haya llegado una verificación antirobots, que nunca se evade: entonces se sigue la regla de siempre.
+    if public_peru(url) and not any(r.get("class") == "challenge" and r.get("robots") == "unreachable"
+                                    for _, r in recs):
+        return "allowed"
     if any(r.get("class") == "robots" for _, r in recs):
         return "disallowed"
     cutoff = now - timedelta(days=STALE_DAYS) if now else None

@@ -60,3 +60,29 @@ def test_registry_ignores_robots_measurements_for_public_peru():
     assert registry.robots_verdict(u, {u: {"actions": {"github-actions": rec}}}) == "allowed"
     other = "https://example.org/x"
     assert registry.geoblock(other, {other: {"actions": {"github-actions": rec}}})["status"] == "robots-disallowed"
+
+
+def test_registry_keeps_the_challenge_stop_for_public_peru():
+    """Un robots.txt con verificación antirobots en su lugar (como el feed del IMARPE desde Actions) no pasa a
+    ``allowed``: el pipeline no lo pide directo y n8n tampoco, como antes."""
+    u = "https://www.imarpe.gob.pe/feed/"
+    rec = {"class": "challenge", "at": "2026-10-26T16:11:41+00:00", "vantage": "github-actions",
+           "detail": "robots.txt sin respuesta", "robots": "unreachable"}
+    assert registry.robots_verdict(u, {u: {"actions": {"github-actions": rec}}}) == "unknown"
+
+
+def test_scrape_ladder_paces_public_peru_gets(monkeypatch):
+    from tools import scrape_ladder
+
+    def handler(req):
+        if req.url.path == "/robots.txt":
+            return httpx.Response(200, text=RULES)
+        return httpx.Response(200, text="ok")
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    r = Robots(client)
+    slept = []
+    monkeypatch.setattr("enso.reach.time.sleep", slept.append)
+    for _ in range(2):
+        resp, blocked, _ = scrape_ladder.get_checked(client, "https://sigrid.cenepred.gob.pe/arcgis/x", r)
+        assert resp.status_code == 200 and blocked is None
+    assert slept and slept[-1] > 4.9

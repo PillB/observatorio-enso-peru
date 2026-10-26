@@ -1316,7 +1316,7 @@ def test_production_fetchers_read_robots_txt(monkeypatch, tmp_path):
     with pytest.raises(_Built):
         obs.run(tmp_path / "out", None)
     known = registry.url_robots()
-    assert built[0]["robots"] is True and built[0]["robots_known"] == known
+    assert built[0]["robots"] is True and built[0]["robots_known"] == known and "unknown" in known.values()
     for kw in ({"offline": True}, {"fixtures": FIX}):
         built.clear()
         with pytest.raises(_Built):
