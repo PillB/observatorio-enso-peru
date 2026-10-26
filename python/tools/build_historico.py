@@ -501,7 +501,7 @@ def main(argv=None) -> int:
         "cobertura": {**manifest["cobertura"], "anios": [all_years.start, all_years.stop - 1]},
         # El sitio publicado no enlaza al repositorio (tools/prepare_site --hide-repo).
         "fuentes": [{k: (None if k == "url" and REPO in (s.get(k) or "") else s.get(k))
-                     for k in ("id", "nombre", "tipo", "url", "pagina", "licencia", "cobertura", "registros", "nota")}
+                     for k in ("id", "nombre", "tipo", "url", "pagina", "licencia", "cobertura", "registros", "nota", "obtenido")}
                     for s in manifest["fuentes"]],
         "eventoEnCurso": ongoing,
         "grandesNinos": GREAT,
