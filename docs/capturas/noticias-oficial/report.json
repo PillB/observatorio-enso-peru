@@ -12,10 +12,10 @@
     "scrollWidth": 240,
     "innerWidth": 240,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.125,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -32,10 +32,10 @@
     "scrollWidth": 320,
     "innerWidth": 320,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -52,10 +52,10 @@
     "scrollWidth": 375,
     "innerWidth": 375,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -72,10 +72,10 @@
     "scrollWidth": 375,
     "innerWidth": 375,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -92,10 +92,10 @@
     "scrollWidth": 430,
     "innerWidth": 430,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -112,10 +112,10 @@
     "scrollWidth": 360,
     "innerWidth": 360,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -132,10 +132,10 @@
     "scrollWidth": 480,
     "innerWidth": 480,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -152,10 +152,10 @@
     "scrollWidth": 412,
     "innerWidth": 412,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -172,10 +172,10 @@
     "scrollWidth": 360,
     "innerWidth": 360,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -192,10 +192,10 @@
     "scrollWidth": 412,
     "innerWidth": 412,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -212,10 +212,10 @@
     "scrollWidth": 707,
     "innerWidth": 707,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -232,10 +232,10 @@
     "scrollWidth": 656,
     "innerWidth": 656,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -252,10 +252,10 @@
     "scrollWidth": 1366,
     "innerWidth": 1366,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -272,10 +272,10 @@
     "scrollWidth": 1470,
     "innerWidth": 1470,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -292,10 +292,10 @@
     "scrollWidth": 1920,
     "innerWidth": 1920,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.125,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
@@ -312,10 +312,10 @@
     "scrollWidth": 1920,
     "innerWidth": 1920,
     "wide": [],
-    "minTarget": 36,
+    "minTarget": 34,
     "minFont": 13.12,
-    "items": 23,
-    "places": 0
+    "items": 65,
+    "places": 50
    },
    "problems": [],
    "ok": true,
