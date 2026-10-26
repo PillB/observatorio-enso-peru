@@ -6,9 +6,10 @@ Uso (lo corre la sonda semanal, probe-sources.yml, cuando el registro medido no 
 Compara el registro medido (``registry/sources.json``) con el de la rama principal (``BASE_SOURCES``) y busca las
 URL que restringe por robots.txt (``registry.restrictions``). n8n pide sin leer robots.txt lo que el registro de la
 rama principal da por permitido, así que esas restricciones no esperan a que alguien arregle las pruebas. Si hay,
-escribe en ``registry/reachability.json`` la de la rama principal (``BASE_REACH``) con solo las mediciones nuevas
-de esas URL, regenera ``registry/sources.json`` y anota la lista en ARCHIVO (Markdown, para el issue). Así lo que
-llega a la rama principal solo quita pedidos. Sin restricciones no cambia nada ni escribe ARCHIVO.
+escribe en ``registry/reachability.json`` la de la rama principal (``BASE_REACH``) con las mediciones nuevas de esas
+URL (y de las que sigue restringiendo: ``restrict``), regenera ``registry/sources.json`` y anota la lista en ARCHIVO
+(Markdown, para el issue). Así lo que llega a la rama principal solo quita pedidos, salvo lo que la medición de
+esta semana sí permite. Sin restricciones no cambia nada ni escribe ARCHIVO.
 
 Sale con 1 si el registro que resulta no es válido (``registry.validate``): entonces no se escribe en la rama
 principal.
@@ -26,16 +27,47 @@ from enso import registry  # noqa: E402
 from tools import build_registry  # noqa: E402
 
 
+def _by_url(reg: dict) -> dict[str, dict]:
+    return {u: r for s in (reg or {}).get("sources") or [] for u, r in (s.get("by_url") or {}).items()
+            if isinstance(u, str) and isinstance(r, dict)}
+
+
+def _restricted(r: dict) -> bool:
+    """Si el registro restringe la URL por robots.txt: prohibida, sin lectura de robots.txt o con ``hop``."""
+    return r.get("status") == "robots-disallowed" or bool(r.get("hop")) or r.get("robots") in ("disallowed", "unknown")
+
+
+def _relaxed(b: dict, r: dict) -> bool:
+    """``r`` pide más que ``b``: un canal nuevo, ya no ``robots-disallowed``, un robots menos estricto o sin su
+    ``hop``."""
+    rank = {"disallowed": 2, "unknown": 1}
+    return bool(set(r.get("channels") or []) - set(b.get("channels") or [])
+                or (b.get("status") == "robots-disallowed" and r.get("status") != "robots-disallowed")
+                or rank.get(r.get("robots"), 0) < rank.get(b.get("robots"), 0)
+                or (b.get("hop") and r.get("hop") != b["hop"]))
+
+
 def restrict(base_sources: dict, base_reach: dict, measured_reach: dict, measured: dict) -> tuple[dict, dict]:
     """Las URL que la medición restringe (``registry.restrictions``) y la ``reachability.json`` de la rama principal
-    con solo las mediciones nuevas de esas URL (``{}`` si no hay ninguna)."""
+    con las mediciones nuevas de esas URL (``{}`` si no hay ninguna).
+
+    ``registry.build`` cuenta ``STALE_DAYS`` desde la medición más reciente: con las de esta semana, lo de la rama
+    principal de más de ``STALE_DAYS`` (un robots.txt en contra, un ``hop``) dejaría de contar. Por eso llevan también
+    su medición nueva las URL que la medición sigue restringiendo y, hasta que no quede ninguna, las que así
+    quedarían menos restringidas que en la rama principal (su medición de esta semana, que es la que vale)."""
     found = registry.restrictions(base_sources, measured)
     if not found:
         return found, {}
+    new, before = measured_reach.get("urls") or {}, _by_url(base_sources)
     urls = dict(base_reach.get("urls") or {})
-    for u in found:
-        if u in (measured_reach.get("urls") or {}):
-            urls[u] = measured_reach["urls"][u]
+    take = set(found) | {u for u, r in _by_url(measured).items() if _restricted(r)}
+    while True:
+        urls.update({u: new[u] for u in take if u in new})
+        after = _by_url(registry.build(urls))
+        more = {u for u, r in after.items() if u in before and u in new and u not in take and _relaxed(before[u], r)}
+        if not more:
+            break
+        take |= more
     return found, {**base_reach, "schema": measured_reach.get("schema", base_reach.get("schema")),
                    "updated_at": measured_reach.get("updated_at", base_reach.get("updated_at")),
                    "urls": dict(sorted(urls.items()))}

@@ -1060,9 +1060,10 @@ def test_the_weekly_probe_rebuilds_the_n8n_flows_with_the_registry():
     assert build < commit and "git add registry/ n8n/dist" in steps[commit]["run"]
 
 
-def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None):
-    """Corre el paso «Commit» del sondeo en un clon de un «origin» con n8n/ y el registro, después de que en main
-    ``on_main(seed)`` cambiara algo (y reconstruyera dist) mientras se medía. Devuelve (resultado, origin, clon)."""
+def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None, files: Optional[dict] = None):
+    """Corre el paso «Commit» del sondeo en un clon de un «origin» con n8n/ y el registro (y ``files``: ruta →
+    texto), después de que en main ``on_main(seed)`` cambiara algo (y reconstruyera dist) mientras se medía.
+    Devuelve (resultado, origin, clon)."""
     import shutil
     import subprocess
 
@@ -1093,6 +1094,9 @@ def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None):
     shutil.copy(obs.REPO / "n8n" / "build.mjs", seed / "n8n")
     (seed / "registry").mkdir()
     shutil.copy(obs.REPO / "registry" / "sources.json", seed / "registry")
+    for path, text in (files or {}).items():
+        (seed / path).parent.mkdir(parents=True, exist_ok=True)
+        (seed / path).write_text(text, encoding="utf-8")
     git("add", "-A", cwd=seed)
     git("commit", "-q", "-m", "inicio", cwd=seed)
     git("push", "-q", str(origin), "main", cwd=seed)
@@ -1146,7 +1150,9 @@ def _show(origin: Path, ref: str, path: str) -> str:
 def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_path):
     """Revisión: dist lleva un hash de n8n/ y del registro, así que un cambio de n8n/ en main durante el sondeo
     hacía chocar el rebase en dist, y los reintentos fallaban con el rebase a medias: se perdía el registro de la
-    semana. Ahora dist se regenera sobre lo rebasado; si choca el propio registro, se aborta y falla limpio."""
+    semana. Ahora dist se regenera sobre lo rebasado, y registry/sources.json también (sale de reachability.json y
+    del código: un PR que lo regeneró en main no tira la medición); si no se puede regenerar, se aborta y falla
+    limpio."""
     import subprocess
 
     def n8n_change(seed):
@@ -1169,12 +1175,20 @@ def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_p
         reg.write_text(re.sub(r'"generated_at": "[^"]+"', '"generated_at": "2026-10-26T09:30:00+00:00"',
                               reg.read_text(encoding="utf-8"), count=1), encoding="utf-8")
 
-    (tmp_path / "choque").mkdir()
+    (tmp_path / "choque").mkdir()  # sin python/: el registro no se puede regenerar
     r, origin, work = _probe_commit(tmp_path / "choque", registry_change)
     assert r.returncode == 1
     assert not (work / ".git" / "rebase-merge").exists() and not (work / ".git" / "rebase-apply").exists()
     log = subprocess.run(["git", "log", "--format=%s", "main"], cwd=origin, capture_output=True, text=True).stdout
     assert log.split("\n")[0] == "cambio en main"
+
+    # Con build_registry (aquí uno que deja el registro medido tal cual), el choque en el registro se regenera.
+    (tmp_path / "regenera").mkdir()
+    stub = {"python/tools/__init__.py": "", "python/tools/build_registry.py": "raise SystemExit(0)\n"}
+    r, origin, work = _probe_commit(tmp_path / "regenera", registry_change, files=stub)
+    assert r.returncode == 0, r.stdout[-2000:] + r.stderr[-2000:]
+    assert _log(origin)[:2] == ["Update source reachability and registry", "cambio en main"]
+    assert "2026-10-26T09:40:00" in _show(origin, "main", "registry/sources.json")
 
 
 def test_a_registry_that_fails_the_tests_does_not_reach_main(tmp_path):

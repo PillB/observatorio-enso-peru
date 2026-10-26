@@ -494,6 +494,10 @@ def test_robots_restrictions_between_two_registries():
     assert set(got) == {a, b}  # c ya era unknown; d no estaba (nadie la pedía)
     assert got[a] == ["robots.txt no permite la ruta"] and len(got[b]) == 2
     assert registry.restrictions(new, new) == {} and registry.restrictions(new, old) == {}
+    # Un salto nuevo en una que robots.txt ya prohibía no quita pedidos: nadie la pedía.
+    gone = reg(**{a: {"status": "robots-disallowed", "robots": "disallowed", "channels": []}})
+    back = reg(**{a: {"status": "open", "robots": "unknown", "channels": ["n8n"], "hop": "https://cdn.example/f"}})
+    assert registry.restrictions(gone, back) == {}
 
 
 def test_the_probe_writes_only_the_robots_restrictions_when_its_registry_fails(tmp_path):
@@ -539,3 +543,90 @@ def test_the_probe_writes_only_the_robots_restrictions_when_its_registry_fails(t
     assert registry_restrict.main([str(paths["base_sources"]), str(paths["base_reach"]), "--report", str(report),
                                    "--registry", str(paths["registry"]), "--reach", str(paths["reach"])]) == 0
     assert not report.exists() and json.loads(paths["reach"].read_text(encoding="utf-8")) == base_reach
+
+
+def test_the_restricted_registry_does_not_age_out_what_main_still_restricts(tmp_path):
+    """``build`` cuenta ``STALE_DAYS`` desde la medición más reciente: si la sonda lleva semanas sin pasar las pruebas,
+    las mediciones de main tienen más de 45 días frente a las de esta semana. Las URL que la medición sigue
+    restringiendo (un feed de lector, un ``hop``) llevan también su medición nueva y no se liberan en main."""
+    import json
+
+    from enso import registry
+    from tools import registry_restrict
+
+    srcs = registry.build(reach={})["sources"]
+    feeds = [s["url"] for s in srcs if s.get("kind") == "feed" and not s.get("alt_urls")]
+    reader = next(u for u in feeds if registry.urlparse(u).hostname in registry.READER_HOSTS)
+    hopped, newly = [u for u in feeds if registry.urlparse(u).hostname not in registry.READER_HOSTS
+                     and not registry.public_peru(u)][:2]
+    t0, t1 = "2026-09-07T09:00:00+00:00", "2026-10-26T09:00:00+00:00"  # 49 días
+
+    def reach(at):
+        return {"schema": registry.REACH_SCHEMA, "updated_at": at, "urls": {
+            reader: {"actions": {"github-actions": {"class": "robots", "robots": "disallowed", "http": None, "at": at,
+                                                    "vantage": "github-actions"}}},
+            hopped: {"actions": {"github-actions": {"class": "timeout", "http": 302, "robots": "unreachable",
+                                                    "hop": "https://cdn.example/f.xml", "at": at,
+                                                    "vantage": "github-actions"}},
+                     "peru": {"peru-server": {"class": "ok", "http": 200, "robots": "allowed",
+                                              "at": "2026-09-01T05:00:00+00:00", "vantage": "peru-server"}}},
+            newly: {"actions": {"github-actions": {"class": "ok", "http": 200, "robots": "allowed", "at": at,
+                                                   "vantage": "github-actions"}}}}}
+
+    base_reach, measured_reach = reach(t0), reach(t1)
+    measured_reach["urls"][newly]["actions"]["github-actions"] = {"class": "robots", "robots": "disallowed",
+                                                                  "http": None, "at": t1, "vantage": "github-actions"}
+    base, measured = registry.build(base_reach["urls"]), registry.build(measured_reach["urls"])
+    found, written = registry_restrict.restrict(base, base_reach, measured_reach, measured)
+    assert set(found) == {newly}
+    by_url = {u: r for s in registry.build(written["urls"])["sources"] for u, r in s["by_url"].items()}
+    assert by_url[newly]["status"] == "robots-disallowed"
+    assert by_url[reader]["status"] == "robots-disallowed" and by_url[reader].get("reader") is True
+    assert by_url[hopped]["hop"] == "https://cdn.example/f.xml" and by_url[hopped]["robots"] == "unknown"
+    before = {u: r for s in base["sources"] for u, r in s["by_url"].items()}
+    assert not [u for u, r in by_url.items() if u in before and registry_restrict._relaxed(before[u], r)]
+    json.dumps(written)  # se escribe tal cual en reachability.json
+
+
+def test_n8n_reading_of_a_hop_robots_txt_keeps_the_hop():
+    """n8n lee el robots.txt del destino (``hop``) de una URL ``unknown``: si lo prohíbe, el registro juzga por ese
+    servidor. Sin el ``hop`` en su registro, una URL de una entidad pública del Perú perdía ese «prohibido» por la
+    excepción de su propio servidor."""
+    from enso import registry
+    from tools import probe_sources
+
+    srcs = registry.build(reach={})["sources"]
+    url = next(s["url"] for s in srcs if s.get("kind") == "feed" and registry.public_peru(s["url"]))
+    hop = "https://storage.example.org/private/feed.xml"
+    idx = {"collected_at": "2026-10-26T03:00:00+00:00", "collector": {"egress": "n8n-aws"}, "entries": [],
+           "not_requested": [{"url": url, "robots": "disallowed", "hop": hop, "fetched_at": "2026-10-26T03:00:00+00:00"}]}
+    rec = probe_sources.from_n8n_index(idx)[url]
+    assert rec["class"] == "robots" and rec["hop"] == hop
+    reach = {url: {"actions": {"github-actions": {"class": "timeout", "http": 302, "robots": "unreachable", "hop": hop,
+                                                  "at": "2026-10-25T09:00:00+00:00", "vantage": "github-actions"}},
+                   "n8n": {"n8n-aws": rec}}}
+    e = _entry(reach, url)
+    assert e["status"] == "robots-disallowed" and e["channels"] == [] and e["robots"] == "disallowed"
+    # El informe del flujo de validación (--import) también lo trae.
+    rows = [{"url": url, "veredicto": "not_requested", "robots": "disallowed", "hop": hop,
+             "medido": "2026-10-26T03:00:00.000Z"}]
+    assert probe_sources.from_n8n_report(rows, "n8n-aws")[0]["hop"] == hop
+
+
+def test_the_crawl_delay_pause_before_a_hop_is_not_server_time(monkeypatch):
+    """La pausa del ``Crawl-delay`` de una entidad pública del Perú antes de un salto es del observatorio: no gasta el
+    ``max_seconds`` del pedido ni cuenta como un servidor lento."""
+    from enso import fetch as F
+
+    clock = [0.0]
+    monkeypatch.setattr(F.time, "monotonic", lambda: clock[0])
+
+    def handler(req):
+        clock[0] += 0.2
+        if req.url.path == "/robots.txt":
+            return httpx.Response(404)
+        return _to("https://www.example.gob.pe/feed/") if req.url.path == "/feed" else httpx.Response(200, text="ok")
+
+    f = _fetcher(httpx.MockTransport(handler), max_seconds=1.0)
+    monkeypatch.setattr(f.robots, "pace", lambda url: clock.__setitem__(0, clock[0] + 5.0) or 5.0)
+    assert f._request("https://www.example.gob.pe/feed").text == "ok"

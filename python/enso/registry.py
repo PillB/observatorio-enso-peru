@@ -586,7 +586,8 @@ def restrictions(old: Optional[dict], new: dict) -> dict[str, list[str]]:
             why.append("robots.txt no permite la ruta")
         if r.get("robots") == "unknown" and b.get("robots") not in ("unknown", "disallowed"):
             why.append("nadie pudo leer su robots.txt")
-        if r.get("hop") and r["hop"] != b.get("hop"):
+        if r.get("hop") and r["hop"] != b.get("hop") and b.get("status") != "robots-disallowed":
+            # Sobre una que robots.txt ya prohibía (nadie la pedía), un salto nuevo no quita pedidos.
             why.append(f"redirige a {r['hop']}, cuyo robots.txt no respondió")
         if why:
             out[u] = why

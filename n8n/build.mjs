@@ -24,9 +24,9 @@ export function libSource(name) {
 }
 
 const NODE_LIBS = {
-  'fuentes': [],
+  'fuentes': ['robots'],
   'analizar': ['classify', 'robots'],
-  'segunda': ['classify', 'enfen'],
+  'segunda': ['classify', 'enfen', 'robots'],
   'informe': ['relay'],
   'preparar': ['hash', 'classify', 'relay'],
   'arbol': [],
@@ -136,14 +136,24 @@ function loop(name, extra = {}) {
   return node(name, 'n8n-nodes-base.splitInBatches', 3, { batchSize: 1, options: {} }, extra);
 }
 
+// Pausa antes de cada descarga («pause_s», calculada en Fuentes y en Segunda
+// pasada): el intervalo entre peticiones al mismo servidor público del Perú.
+function pause(name, extra = {}) {
+  return node(name, 'n8n-nodes-base.wait', 1.1,
+    { resume: 'timeInterval', amount: '={{ Math.max(0, Number($json.pause_s) || 0) }}', unit: 'seconds' },
+    { webhookId: `enso-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '')}`, ...extra });
+}
+
 function passes(sourceNode) {
   return [
     loop('Una por una'),
+    pause('Pausa'),
     download('Descargar', 40000),
     code('Analizar', 'analizar', { SOURCE_NODE: sourceNode }),
     code('Segunda pasada', 'segunda', {}, { y: 200 }),
     node('Esperar 30 s', 'n8n-nodes-base.wait', 1.1, { resume: 'timeInterval', amount: 30, unit: 'seconds' }, { y: 200, webhookId: 'enso-espera-30s' }),
     loop('Una por una (2.ª pasada)', { y: 200 }),
+    pause('Pausa (2.ª pasada)', { y: 200 }),
     download('Descargar (2.ª pasada)', 60000, { y: 200 }),
     code('Analizar (2.ª pasada)', 'analizar', { SOURCE_NODE: 'Segunda pasada' }, { y: 200 }),
     node('Unir pasadas', 'n8n-nodes-base.merge', 3, {}),
@@ -160,16 +170,17 @@ function chain(names, connections = {}) {
   return connections;
 }
 
-/** Bucle: salida 1 («loop») → descarga → vuelve al bucle; salida 0 («done») → sigue. */
-function loopConnections(c, loopName, body, next) {
-  c[loopName] = { main: [[{ node: next, type: 'main', index: 0 }], [{ node: body, type: 'main', index: 0 }]] };
+/** Bucle: salida 1 («loop») → pausa → descarga → vuelve al bucle; salida 0 («done») → sigue. */
+function loopConnections(c, loopName, wait, body, next) {
+  c[loopName] = { main: [[{ node: next, type: 'main', index: 0 }], [{ node: wait, type: 'main', index: 0 }]] };
+  c[wait] = { main: [[{ node: body, type: 'main', index: 0 }]] };
   c[body] = { main: [[{ node: loopName, type: 'main', index: 0 }]] };
 }
 
 const PASS_CONNECTIONS = (c) => {
-  loopConnections(c, 'Una por una', 'Descargar', 'Analizar');
+  loopConnections(c, 'Una por una', 'Pausa', 'Descargar', 'Analizar');
   chain(['Analizar', 'Segunda pasada', 'Esperar 30 s', 'Una por una (2.ª pasada)'], c);
-  loopConnections(c, 'Una por una (2.ª pasada)', 'Descargar (2.ª pasada)', 'Analizar (2.ª pasada)');
+  loopConnections(c, 'Una por una (2.ª pasada)', 'Pausa (2.ª pasada)', 'Descargar (2.ª pasada)', 'Analizar (2.ª pasada)');
   chain(['Analizar (2.ª pasada)', ['Unir pasadas', 1]], c);
   chain(['Analizar', 'Unir pasadas'], c);
   return c;

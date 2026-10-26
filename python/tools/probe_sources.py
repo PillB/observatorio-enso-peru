@@ -177,22 +177,24 @@ def from_n8n_index(index: dict) -> dict[str, dict]:
             if u:
                 out[u] = rec | {"vantage": vantage}
     for e in index.get("not_requested") or []:
-        rec = _not_requested(e.get("robots"), e.get("reach"), e.get("note")) if isinstance(e, dict) else None
+        rec = _not_requested(e.get("robots"), e.get("reach"), e.get("note"), e.get("hop")) if isinstance(e, dict) else None
         if rec and e.get("url"):
             out[e["url"]] = rec | {"at": e.get("fetched_at") or at, "vantage": vantage}
     return out
 
 
-def _not_requested(robots, reach, note) -> dict | None:
+def _not_requested(robots, reach, note, hop=None) -> dict | None:
     """Una URL que n8n no pidió por su robots.txt, como la mide ``probe``: si lo prohíbe, clase ``robots``; si no
     respondió, la clase de ese robots.txt (``reach`` en el índice, ``alcance`` en el informe). Sin ella no es una
-    medición de la URL."""
+    medición de la URL. Si lo que leyó fue el robots.txt del destino de su redirección (``hop`` del registro), va en
+    ``hop``: el registro juzga por ese servidor (la excepción de las entidades públicas del Perú, ``registry._counted``)."""
+    hop = {"hop": hop} if isinstance(hop, str) and hop.startswith(("http://", "https://")) else {}
     if robots == "disallowed":
         return {"class": "robots", "http": None, "bytes": 0, "detail": "robots.txt no permite la ruta",
-                "robots": "disallowed"}
+                "robots": "disallowed", **hop}
     if robots == "unreachable" and reach in registry.CLASSES and reach not in ("ok", "robots"):
         return {"class": reach, "http": None, "bytes": 0, "detail": str(note or "robots.txt sin respuesta"),
-                "robots": "unreachable"}
+                "robots": "unreachable", **hop}
     return None
 
 
@@ -216,7 +218,7 @@ def from_n8n_report(rows: list, vantage: str) -> list[dict]:
         if not isinstance(r, dict) or r.get("id") == "resumen" or not r.get("url"):
             continue
         if r.get("veredicto") == "not_requested":  # fila «NO PEDIDA»: su robots.txt la prohíbe o no respondió
-            rec = _not_requested(r.get("robots"), r.get("alcance"), r.get("nota"))
+            rec = _not_requested(r.get("robots"), r.get("alcance"), r.get("nota"), r.get("hop"))
             if rec:
                 rec |= {"url": r["url"], "at": _iso(r.get("medido"))}
                 out.append({k: v for k, v in rec.items() if v is not None} | {"vantage": vantage})

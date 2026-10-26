@@ -239,16 +239,22 @@ class Fetcher:
         """Un pedido, con sus redirecciones: antes de cada salto, el destino con la regla de robots.txt de un pedido
         directo (``_robots_rule``). Si no se sigue, ``RobotsHop``; el pedido ya hecho no se repite. ``max_seconds``
         vale para el pedido entero, con sus redirecciones, sin contar la lectura del robots.txt de cada destino (otro
-        servidor); un salto que llega pasado ese plazo, o el de la corrida, no se pide."""
+        servidor) ni la pausa de su ``Crawl-delay``; un salto que llega pasado ese plazo, o el de la corrida, no se
+        pide."""
         limit = time.monotonic() + self.max_seconds if self.max_seconds else None
         for n in range(MAX_HOPS + 1):
+            if n and self.robots is not None:
+                # El Crawl-delay de una entidad pública del Perú (el del primer pedido, en ``_get``): una pausa
+                # propia, que tampoco cuenta como lentitud del servidor.
+                started = time.monotonic()
+                self.robots.pace(url)
+                if limit is not None:
+                    limit += time.monotonic() - started
             ends = [t for t in (limit, self.deadline) if t]
             end = min(ends) if ends else None
             if n and end is not None and time.monotonic() > end:
                 raise TooSlow("la respuesta no terminó de llegar a tiempo"
                               + (f" ({self.max_seconds:g} s por pedido)" if self.max_seconds else ""), request=r.request)
-            if n and self.robots is not None:
-                self.robots.pace(url)  # el Crawl-delay de una entidad pública del Perú; el primero, en ``_get``
             r = self._request_one(url, headers, end)
             hop = next_hop(r)
             if hop is None:
