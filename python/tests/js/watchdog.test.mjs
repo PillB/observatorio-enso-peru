@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 import { describe, it } from 'node:test';
 
 const require = createRequire(import.meta.url);
-const { run, HEARTBEAT_MAX_HOURS } = require('../../../.github/scripts/watchdog.cjs');
+const { run, HEARTBEAT_MAX_HOURS, PROBE_MAX_DAYS } = require('../../../.github/scripts/watchdog.cjs');
 
 const NOW = Date.parse('2026-10-22T12:00:00Z');
 const ago = (h) => new Date(NOW - h * 36e5).toISOString().replace('.000Z', '+00:00');
@@ -19,16 +19,23 @@ function beat(hours, extra = {}) {
   };
 }
 
-// GitHub de mentira: `branches` da el latido de cada rama (un objeto, un Error o nada → 404).
-function fake({ branches = {}, issues = [], runs = [] } = {}) {
+// Corrida de la sonda semanal en main.
+const probeRun = (hours, extra = {}) => ({
+  head_branch: 'main', event: 'schedule', status: 'completed', conclusion: 'success', created_at: ago(hours), ...extra,
+});
+
+// GitHub de mentira: `branches` da el latido de cada rama (un objeto, un Error o nada → 404); `runs`, las corridas
+// de cada flujo (por omisión, una sonda semanal buena de hace 2 días).
+function fake({ branches = {}, issues = [], runs = {} } = {}) {
+  const byWorkflow = { 'probe-sources.yml': [probeRun(48)], ...runs };
   const calls = [];
   const all = issues.map((i) => ({ state: 'open', updated_at: ago(1), ...i }));
   const github = {
     rest: {
       actions: {
         enableWorkflow: async () => {},
-        listWorkflowRuns: async () => ({ data: { workflow_runs: runs } }),
-        createWorkflowDispatch: async (p) => { calls.push(['dispatch', p.ref]); },
+        listWorkflowRuns: async (p) => ({ data: { workflow_runs: byWorkflow[p.workflow_id] || [] } }),
+        createWorkflowDispatch: async (p) => { calls.push(['dispatch', p.ref, p.workflow_id]); },
       },
       issues: {
         listForRepo: async (p) => {
@@ -136,11 +143,21 @@ describe('vigilante: antigüedad del sitio (como antes)', () => {
   it('un sitio de 40 h relanza el flujo diario y abre su issue; los latidos se revisan igual', async () => {
     const f = fake({ branches: { 'data-peru': beat(50) } });
     await go(f, core(), { fetch: site(40) });
-    assert.deepEqual(f.calls.filter((c) => c[0] === 'dispatch'), [['dispatch', 'main']]);
+    assert.deepEqual(f.calls.filter((c) => c[0] === 'dispatch'), [['dispatch', 'main', 'observatory.yml']]);
     const bodies = f.calls.filter((c) => c[0] === 'create').map((c) => c[3]);
     assert.equal(bodies.length, 2);
     assert.ok(bodies[0].includes('enso-fp:site-stale') && bodies[0].includes('se relanzó la actualización'));
     assert.ok(bodies[1].includes('enso-fp:collector-silent-data-peru'));
+  });
+
+  it('una corrida de prueba en otra rama (no despliega) no impide relanzar main', async () => {
+    const branchRun = { head_branch: 'claude/x', event: 'workflow_dispatch', status: 'in_progress', created_at: ago(1) };
+    const f = fake({ runs: { 'observatory.yml': [branchRun] } });
+    await go(f, core(), { fetch: site(40) });
+    assert.deepEqual(f.calls.filter((c) => c[0] === 'dispatch'), [['dispatch', 'main', 'observatory.yml']]);
+    const g = fake({ runs: { 'observatory.yml': [{ ...branchRun, head_branch: 'main' }] } });
+    await go(g, core(), { fetch: site(40) });
+    assert.deepEqual(g.calls.filter((c) => c[0] === 'dispatch'), []);
   });
 
   it('un sitio al día cierra el issue del sitio atrasado', async () => {
@@ -162,5 +179,36 @@ describe('vigilante: antigüedad del sitio (como antes)', () => {
     f.github.rest.actions.listWorkflowRuns = async () => { throw new Error('API caída'); };
     await assert.rejects(go(f, core(), { fetch: site(40) }), /API caída/);
     assert.equal(f.calls.filter((x) => x[0] === 'create' && x[3].includes('collector-silent')).length, 1);
+  });
+});
+
+describe('vigilante: sonda semanal del registro', () => {
+  const dispatched = (f) => f.calls.filter((c) => c[0] === 'dispatch');
+
+  it(`sin sonda buena en main en ${PROBE_MAX_DAYS} días la relanza en main`, async () => {
+    const c = core();
+    const f = fake({ runs: { 'probe-sources.yml': [probeRun(24 * (PROBE_MAX_DAYS + 1))] } });
+    await go(f, c);
+    assert.deepEqual(dispatched(f), [['dispatch', 'main', 'probe-sources.yml']]);
+    assert.ok(c.warnings.some((w) => w.includes('se relanzó')));
+    assert.ok(!f.calls.some((x) => x[0] === 'create'), 'no abre issue');
+  });
+
+  it('una sonda que nunca corrió en main también se relanza; las de otras ramas no cuentan', async () => {
+    const f = fake({ runs: { 'probe-sources.yml': [probeRun(2, { head_branch: 'claude/x', event: 'push' })] } });
+    await go(f);
+    assert.deepEqual(dispatched(f), [['dispatch', 'main', 'probe-sources.yml']]);
+  });
+
+  it('una sonda buena reciente, una en curso o una relanzada hoy no se relanzan', async () => {
+    for (const runs of [[probeRun(24 * (PROBE_MAX_DAYS - 1))],
+      [probeRun(1, { status: 'in_progress', conclusion: null }), probeRun(24 * 30)],
+      [probeRun(3, { event: 'workflow_dispatch', conclusion: 'failure' }), probeRun(24 * 30)]]) {
+      const c = core();
+      const f = fake({ runs: { 'probe-sources.yml': runs } });
+      await go(f, c);
+      assert.deepEqual(dispatched(f), [], JSON.stringify(runs));
+      if (runs[0].conclusion === 'failure') assert.ok(c.warnings.some((w) => w.includes('failure')));
+    }
   });
 });

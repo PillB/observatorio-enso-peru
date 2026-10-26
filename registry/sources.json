@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-26T15:01:01+00:00",
+ "generated_at": "2026-10-26T17:32:57+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n no la pide y el pipeline lo lee antes de pedirla",
@@ -1269,19 +1269,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -1289,7 +1286,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -1297,10 +1293,9 @@
     "https://www.imarpe.gob.pe/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
-     "robots": "allowed"
+     "robots": "unknown"
     }
    }
   },
@@ -5303,13 +5298,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -7577,7 +7572,7 @@
    "notes": "tipo de medio: radio; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "open",
+    "status": "robots-disallowed",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -7593,26 +7588,21 @@
     },
     "peru": null,
     "actions": {
-     "class": "challenge",
-     "http": 403,
-     "robots": "allowed"
+     "class": "robots",
+     "robots": "disallowed"
     },
     "n8n": {
      "class": "ok",
      "http": 200
     }
    },
-   "channels": [
-    "n8n"
-   ],
-   "geoblocked": false,
+   "channels": [],
+   "geoblocked": null,
    "by_url": {
     "https://pachamamaradio.org/feed/": {
-     "status": "open",
-     "channels": [
-      "n8n"
-     ],
-     "robots": "allowed"
+     "status": "robots-disallowed",
+     "channels": [],
+     "robots": "disallowed"
     }
    }
   },
@@ -8139,13 +8129,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -8987,19 +8977,29 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "down",
+    "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "actions",
+     "peru"
+    ],
     "us": {
-     "class": "http-5xx",
-     "robots": "unreachable"
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
-     "class": "http-5xx",
-     "robots": "unreachable"
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -9007,15 +9007,15 @@
     "actions",
     "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://portal.indeci.gob.pe/emergencias/feed/?paged=1": {
-     "status": "down",
+     "status": "open",
      "channels": [
       "actions",
       "n8n"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -9051,13 +9051,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -9109,13 +9109,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -9166,13 +9166,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -9213,27 +9213,45 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "open",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "actions",
+     "peru"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "robots": "absent"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "robots": "absent"
+    },
     "n8n": null
    },
    "channels": [
     "actions",
     "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=1%3D1&outFields=NIVEL,FECHA&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions",
       "n8n"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -9326,13 +9344,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -9384,13 +9402,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -9442,13 +9460,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -9556,13 +9574,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -9613,13 +9631,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -9670,13 +9688,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -9733,13 +9751,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -10150,13 +10168,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": null
    },
@@ -10210,13 +10228,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10273,13 +10291,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10336,13 +10354,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10399,13 +10417,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10462,13 +10480,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10525,13 +10543,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10588,13 +10606,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10651,13 +10669,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10714,13 +10732,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10777,13 +10795,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10840,13 +10858,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10903,13 +10921,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10952,25 +10970,43 @@
    "archive": true,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "open",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "actions",
+     "peru"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "robots": "absent"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "robots": "absent"
+    },
     "n8n": null
    },
    "channels": [
     "actions"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://ftp.cpc.ncep.noaa.gov/godas/monthly/": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -10999,22 +11035,28 @@
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [
      "actions",
-     "n8n"
+     "n8n",
+     "peru"
     ],
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
-    "peru": null,
-    "actions": {
+    "peru": {
      "class": "ok",
      "http": 200,
      "robots": "allowed"
+    },
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -11071,13 +11113,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -11131,19 +11173,26 @@
    "archive": true,
    "tier": 1,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "dns",
      "robots": "unreachable"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "dns",
      "robots": "unreachable"
@@ -11160,18 +11209,18 @@
    "geoblocked": true,
    "by_url": {
     "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     },
     "https://enfen.imarpe.gob.pe/comunicados/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     },
     "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen": {
      "status": "open",
@@ -11208,35 +11257,50 @@
    "archive": true,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "geoblocked",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "peru"
+    ],
+    "us": {
+     "class": "dns",
+     "robots": "unreachable"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "dns",
+     "robots": "unreachable"
+    },
     "n8n": null
    },
    "channels": [
     "actions",
-    "n8n"
+    "n8n",
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://enfen.imarpe.gob.pe/informes-tecnicos/": {
-     "status": "unknown",
+     "status": "geoblocked",
      "channels": [
-      "actions",
-      "n8n"
+      "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     },
     "https://www.dhn.mil.pe/portal/informe-tecnico-enfen": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions",
       "n8n"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11267,30 +11331,38 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "dns",
+     "robots": "unreachable"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "dns",
+     "robots": "unreachable"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Comunicado+Oficial+ENFEN%22&dsoType=ITEM&size=6&sort=dc.date.issued%2CDESC": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "unknown"
     },
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Informe+T%C3%A9cnico+ENFEN%22&dsoType=ITEM&size=4&sort=dc.date.issued%2CDESC": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "unknown"
     }
@@ -11318,23 +11390,31 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "dns",
+     "robots": "unreachable"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "dns",
+     "robots": "unreachable"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Bolet%C3%ADn+Semanal+Oceanogr%C3%A1fico+y+Biol%C3%B3gico%22&dsoType=ITEM&size=8&sort=dc.date.issued%2CDESC": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "unknown"
     }
@@ -11358,19 +11438,26 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "unreachable"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "unreachable"
@@ -11385,11 +11472,11 @@
    "geoblocked": true,
    "by_url": {
     "https://www.senamhi.gob.pe/?p=fenomeno-el-nino": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11414,19 +11501,26 @@
    "notes": "se archiva desde el Perú; da el nivel (amarillo, naranja o rojo) y el inicio y fin a los avisos meteorológicos del SENAMHI que llegan por Telegram y por el COEN (copia de hasta 7 días)",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "unreachable"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "unreachable"
@@ -11441,11 +11535,11 @@
    "geoblocked": true,
    "by_url": {
     "https://www.senamhi.gob.pe/?p=aviso-meteorologico": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11467,19 +11561,26 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "unreachable"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "unreachable"
@@ -11494,11 +11595,11 @@
    "geoblocked": true,
    "by_url": {
     "https://www.senamhi.gob.pe/?p=boletines": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11520,19 +11621,26 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "unreachable"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "unreachable"
@@ -11547,11 +11655,11 @@
    "geoblocked": true,
    "by_url": {
     "https://www.senamhi.gob.pe/mapas/mapa-estaciones-2/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11573,27 +11681,40 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "geoblocked",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "peru"
+    ],
+    "us": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
     "n8n": null
    },
    "channels": [
-    "actions",
-    "n8n"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://observatorio.senamhi.gob.pe/gestion-riesgo-desastres/avisos-meteorologicos": {
-     "status": "unknown",
+     "status": "geoblocked",
      "channels": [
-      "actions",
-      "n8n"
+      "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11615,27 +11736,40 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "geoblocked",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "peru"
+    ],
+    "us": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
     "n8n": null
    },
    "channels": [
-    "actions",
-    "n8n"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities": {
-     "status": "unknown",
+     "status": "geoblocked",
      "channels": [
-      "actions",
-      "n8n"
+      "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11657,27 +11791,40 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "geoblocked",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "peru"
+    ],
+    "us": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
     "n8n": null
    },
    "channels": [
-    "actions",
-    "n8n"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0&typeName=g_100_01:view_aviso_24horas_5dias_ultimos&request=GetFeature&maxFeatures=1000&outputFormat=application/json": {
-     "status": "unknown",
+     "status": "geoblocked",
      "channels": [
-      "actions",
-      "n8n"
+      "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11699,27 +11846,40 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "status": "geoblocked",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
+    "open_from": [
+     "peru"
+    ],
+    "us": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
     "n8n": null
    },
    "channels": [
-    "actions",
-    "n8n"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0&typeName=g_100_01:view_aviso_24horas_5dias_ultimos&request=DescribeFeatureType": {
-     "status": "unknown",
+     "status": "geoblocked",
      "channels": [
-      "actions",
-      "n8n"
+      "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11741,19 +11901,23 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "robots-disallowed",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
      "class": "timeout",
      "robots": "unreachable"
     },
-    "peru": null,
+    "peru": {
+     "class": "robots",
+     "robots": "disallowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "unreachable"
@@ -11762,17 +11926,13 @@
      "class": "timeout"
     }
    },
-   "channels": [
-    "peru-server"
-   ],
-   "geoblocked": true,
+   "channels": [],
+   "geoblocked": null,
    "by_url": {
     "https://snirh.ana.gob.pe/": {
-     "status": "suspected-geoblock",
-     "channels": [
-      "peru-server"
-     ],
-     "robots": "unknown"
+     "status": "robots-disallowed",
+     "channels": [],
+     "robots": "disallowed"
     }
    }
   },
@@ -11794,19 +11954,23 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "robots-disallowed",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
      "class": "timeout",
      "robots": "unreachable"
     },
-    "peru": null,
+    "peru": {
+     "class": "robots",
+     "robots": "disallowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "unreachable"
@@ -11815,17 +11979,13 @@
      "class": "timeout"
     }
    },
-   "channels": [
-    "peru-server"
-   ],
-   "geoblocked": true,
+   "channels": [],
+   "geoblocked": null,
    "by_url": {
     "https://snirh.ana.gob.pe/onrh/": {
-     "status": "suspected-geoblock",
-     "channels": [
-      "peru-server"
-     ],
-     "robots": "unknown"
+     "status": "robots-disallowed",
+     "channels": [],
+     "robots": "disallowed"
     }
    }
   },
@@ -11852,20 +12012,25 @@
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [
-     "n8n"
+     "n8n",
+     "peru"
     ],
     "us": {
      "class": "ok",
      "http": 200
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "challenge",
-     "http": 403,
-     "robots": "allowed"
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -11909,20 +12074,25 @@
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [
-     "n8n"
+     "n8n",
+     "peru"
     ],
     "us": {
      "class": "ok",
      "http": 200
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "challenge",
-     "http": 403,
-     "robots": "allowed"
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -11961,12 +12131,27 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "down",
+    "from": [
+     "github-actions",
+     "peru-server"
+    ],
     "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
+    "us": {
+     "class": "http-4xx",
+     "http": 404,
+     "robots": "absent"
+    },
+    "peru": {
+     "class": "http-4xx",
+     "http": 404,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "http-4xx",
+     "http": 404,
+     "robots": "absent"
+    },
     "n8n": null
    },
    "channels": [
@@ -11976,12 +12161,12 @@
    "geoblocked": null,
    "by_url": {
     "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson": {
-     "status": "unknown",
+     "status": "down",
      "channels": [
       "actions",
       "n8n"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   }

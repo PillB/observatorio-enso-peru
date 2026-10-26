@@ -131,11 +131,17 @@ def from_peru_index(index: dict) -> dict[str, dict]:
     return out
 
 
+#: Lo que una medición dice de robots.txt (como ``probe``): ``absent`` es un 4xx (se permite todo).
+ROBOTS_READ = ("allowed", "disallowed", "absent", "unreachable")
+
+
 def from_n8n_index(index: dict) -> dict[str, dict]:
     """Lo que el recolector de n8n intentó en su última corrida (rama ``data-n8n``, enso-relay/1).
 
     n8n clasifica cada respuesta con las mismas clases (``reach``). Una copia conservada de una corrida
-    anterior (``carried``) no es una medición de hoy: cuenta su último intento, que falló."""
+    anterior (``carried``) no es una medición de hoy: cuenta su último intento, que falló. n8n lee el robots.txt
+    de las URL ``robots: unknown`` antes de pedirlas: la entrada trae lo que leyó (``robots``) y las que no pidió
+    van en ``not_requested`` (``_not_requested``)."""
     col = index.get("collector") or {}
     label = re.sub(r"[^a-z0-9]+", "-", str(col.get("egress") or col.get("host") or "").lower()).strip("-")
     vantage = "n8n" if label in ("", "n8n") else label if label.startswith("n8n") else f"n8n-{label}"
@@ -152,10 +158,29 @@ def from_n8n_index(index: dict) -> dict[str, dict]:
                 e.get("status"), b"x" * int(e.get("bytes") or 0), str(e.get("note") or e.get("block") or ""))
             rec = {"class": cls, "http": e.get("status"), "bytes": e.get("bytes"), "at": e.get("fetched_at") or at,
                    "detail": str(e.get("note") or e.get("block") or "")}
+        if e.get("robots") in ROBOTS_READ:  # n8n leyó robots.txt (las URL que nadie más pudo leer)
+            rec["robots"] = e["robots"]
         for u in [e.get("url"), *(e.get("aliases") or [])]:
             if u:
                 out[u] = rec | {"vantage": vantage}
+    for e in index.get("not_requested") or []:
+        rec = _not_requested(e.get("robots"), e.get("reach"), e.get("note")) if isinstance(e, dict) else None
+        if rec and e.get("url"):
+            out[e["url"]] = rec | {"at": e.get("fetched_at") or at, "vantage": vantage}
     return out
+
+
+def _not_requested(robots, reach, note) -> dict | None:
+    """Una URL que n8n no pidió por su robots.txt, como la mide ``probe``: si lo prohíbe, clase ``robots``; si no
+    respondió, la clase de ese robots.txt (``reach`` en el índice, ``alcance`` en el informe). Sin ella no es una
+    medición de la URL."""
+    if robots == "disallowed":
+        return {"class": "robots", "http": None, "bytes": 0, "detail": "robots.txt no permite la ruta",
+                "robots": "disallowed"}
+    if robots == "unreachable" and reach in registry.CLASSES and reach not in ("ok", "robots"):
+        return {"class": reach, "http": None, "bytes": 0, "detail": str(note or "robots.txt sin respuesta"),
+                "robots": "unreachable"}
+    return None
 
 
 def _iso(at) -> str | None:
@@ -169,14 +194,25 @@ def _iso(at) -> str | None:
 
 def from_n8n_report(rows: list, vantage: str) -> list[dict]:
     """El informe del flujo «ENSO · Validación de fuentes desde n8n» (nodo Informe): una fila por URL con
-    ``alcance`` (la clase del registro, ``reachClass`` en n8n/lib/classify.js), ``http``, ``bytes`` y ``medido``.
-    La primera fila es el resumen. Sirve igual leído del JSON o del CSV (allí todo llega como texto)."""
+    ``alcance`` (la clase del registro, ``reachClass`` en n8n/lib/classify.js), ``http``, ``bytes``, ``medido`` y,
+    si n8n leyó su robots.txt, ``robots``; las filas «NO PEDIDA» (``veredicto: not_requested``) son las URL que su
+    robots.txt prohíbe o cuyo robots.txt no respondió. La primera fila es el resumen. Sirve igual leído del JSON o
+    del CSV (allí todo llega como texto)."""
     out = []
     for r in rows:
-        if not isinstance(r, dict) or r.get("id") == "resumen" or not r.get("url") or r.get("alcance") not in registry.CLASSES:
+        if not isinstance(r, dict) or r.get("id") == "resumen" or not r.get("url"):
+            continue
+        if r.get("veredicto") == "not_requested":  # fila «NO PEDIDA»: su robots.txt la prohíbe o no respondió
+            rec = _not_requested(r.get("robots"), r.get("alcance"), r.get("nota"))
+            if rec:
+                rec |= {"url": r["url"], "at": _iso(r.get("medido"))}
+                out.append({k: v for k, v in rec.items() if v is not None} | {"vantage": vantage})
+            continue
+        if r.get("alcance") not in registry.CLASSES:
             continue
         rec = {"url": r["url"], "class": r["alcance"], "at": _iso(r.get("medido")),
-               "detail": str(r.get("nota") or r.get("bloqueo") or "") or None}  # como from_n8n_index: «aborted» se reconoce
+               "detail": str(r.get("nota") or r.get("bloqueo") or "") or None,  # como from_n8n_index: «aborted» se reconoce
+               "robots": r.get("robots") if r.get("robots") in ROBOTS_READ else None}
         for k in ("http", "bytes"):
             v = r.get(k)
             if isinstance(v, int) or (isinstance(v, str) and v.isdigit()):
@@ -211,9 +247,21 @@ def from_vantage_file(data: dict, vantage: str = "n8n") -> list[dict]:
 
 
 def _put(data: dict, url: str, rec: dict) -> None:
+    """Guarda la medición de una red (reemplaza la anterior de esa misma red). Si no trae una lectura de robots.txt
+    (no respondió, o esta vez no se leyó, como n8n con lo que el registro ya da por permitido), conserva en
+    ``robots_read`` la última de esa red que permitía la ruta: RFC 9309 §2.4 deja usar la copia guardada si robots.txt
+    no responde, y así una verificación de un día no borra lo que se sabía (``registry.robots_verdict``)."""
     rec = {k: v for k, v in rec.items() if k != "url"}
     groups = registry._groups(data["urls"].get(url) or {})
-    groups.setdefault(registry.vantage_group(rec["vantage"]), {})[rec["vantage"]] = rec
+    group = groups.setdefault(registry.vantage_group(rec["vantage"]), {})
+    prev = group.get(rec["vantage"])
+    if prev and rec.get("class") != "robots" and rec.get("robots") not in ("allowed", "absent", "disallowed"):
+        seen = ({"robots": prev["robots"], "at": prev.get("at")}
+                if prev.get("robots") in ("allowed", "absent") and prev.get("class") != "robots"
+                else prev.get("robots_read"))
+        if isinstance(seen, dict):
+            rec["robots_read"] = seen
+    group[rec["vantage"]] = rec
     data["urls"][url] = groups
 
 

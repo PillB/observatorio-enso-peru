@@ -3,8 +3,9 @@
 # diario una vez y abre un issue. Si el flujo diario estaba desactivado
 # por inactividad, lo reactiva. También lee el latido (heartbeat.json) de
 # las ramas data-peru y data-n8n: si un recolector lleva más de 36 horas
-# callado, abre un issue aunque el flujo diario esté fallando. La lógica
-# está en .github/scripts/watchdog.cjs.
+# callado, abre un issue aunque el flujo diario esté fallando. Si la
+# sonda semanal (probe-sources.yml) no terminó bien en main en 8 días, la
+# relanza. La lógica está en .github/scripts/watchdog.cjs.
 name: watchdog
 
 on:

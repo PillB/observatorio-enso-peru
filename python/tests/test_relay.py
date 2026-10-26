@@ -833,6 +833,23 @@ def test_collector_follows_the_newest_listing_not_the_stale_wordpress_api():
     assert not any("-14-2026" in u for u in asked)
 
 
+def test_informes_listing_does_not_carry_the_communique_goal():
+    """Revisión: con el listado de informes en las páginas del ENFEN (el registro lo manda al Perú), si ningún
+    listado de comunicados se leía, la meta «comunicado» quedaba en el de informes (200) y el aviso decía
+    «comunicado (ok, HTTP 200…)» en vez de la causa real. Tampoco se lee como listado de comunicados."""
+    informes = {"url": INFORMES_PAGE, "status": 200, "body": b"<html><body>sin informes</body></html>"}
+    comunicados = {"url": "https://enfen.imarpe.gob.pe/comunicados/", "status": 403, "body": b"challenge"}
+    asked = []
+
+    def handler(req):
+        asked.append(str(req.url))
+        return httpx.Response(404)
+
+    pc.enfen_documents(httpx.Client(transport=httpx.MockTransport(handler)), [comunicados, informes])
+    assert comunicados["goal"] == "comunicado" and "goal" not in informes
+    assert INFORMES_PAGE not in asked  # el listado ya bajado se reutiliza
+
+
 def test_collector_goals_flag_the_newest_documents(tmp_path, monkeypatch):
     """La recolección anota si guardó el PDF del comunicado y del informe más recientes, no solo cuántas URL."""
     idx = _collect(tmp_path, monkeypatch, _peru_only)
@@ -1121,8 +1138,8 @@ def test_url_whose_robots_txt_nobody_read_is_not_requested_while_robots_txt_fail
                 plan={PAGE: ["actions", "n8n"]}, robots_known={PAGE: "unknown"})
     with pytest.raises(Exception) as exc:
         f.get([PAGE], accept=("html",))
-    assert asked == ["https://ana.example.pe/robots.txt"]
-    assert exc.value.attempts[-1] == {"url": PAGE, "error": "robots.txt sin respuesta: no se pide"}
+    assert asked == ["https://ana.example.pe/robots.txt"] * 2  # un 503 se reintenta una vez (``Robots.tries``)
+    assert exc.value.attempts[-1] == {"url": PAGE, "error": "robots.txt sin respuesta: no se pide (HTTP 503)"}
     # Con copia de un recolector, se usa sin pedir nada (tampoco robots.txt).
     asked.clear()
     f = Fetcher(retries=2, polite_delay=0, allow_archive=False, robots=True, relay=_copy(tmp_path / "peru", PAGE),
@@ -1134,6 +1151,25 @@ def test_url_whose_robots_txt_nobody_read_is_not_requested_while_robots_txt_fail
     f = Fetcher(retries=2, polite_delay=0, allow_archive=False, robots=True,
                 plan={PAGE: ["actions", "n8n"]}, robots_known={PAGE: "unknown"})
     assert f.get([PAGE], accept=("html",)).channel == "direct" and asked == ["https://ana.example.pe/robots.txt", PAGE]
+
+
+def test_a_robots_txt_that_fails_on_its_certificate_is_reported_as_tls():
+    """Revisión: el motivo del salto perdía el error de red, y el repositorio del IMARPE (sin robots.txt leído) con
+    un intermedio nuevo se informaba como «conexión», no como «tls» con su pista de ca-intermedios.pem."""
+    from enso.feeds import imarpe_repo
+
+    def net(request):
+        raise httpx.ConnectError("[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed", request=request)
+
+    url = "https://repositorio.imarpe.example.pe/server/api/discover/search/objects?query=x"
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False, robots=True, plan={url: ["peru-server"]},
+                robots_known={url: "unknown"})
+    f.client = f.robots.client = httpx.Client(transport=httpx.MockTransport(net))
+    with pytest.raises(Exception) as exc:
+        f.get([url], archive=False, accept=("json",))
+    assert "CERTIFICATE_VERIFY_FAILED" in exc.value.attempts[-1]["error"]
+    problem = imarpe_repo.cause(exc.value)
+    assert problem == "tls" and "CERTIFICATE_VERIFY_FAILED" in problem.detail
 
 
 def test_news_feed_skipped_by_robots_txt_says_why(monkeypatch):
@@ -1148,8 +1184,8 @@ def test_news_feed_skipped_by_robots_txt_says_why(monkeypatch):
     got = obs.acquire_news(main, None, obs.PreviousPublication(None, main), obs.EventLog(), datetime.now(timezone.utc),
                            None)
     st = next(s for s in got["feeds"]["feeds"] if s["id"] == feed.id)
-    assert st["error"] == "robots.txt sin respuesta: no se pide"
-    assert asked == [f"https://{urlparse(feed.url).hostname}/robots.txt"]
+    assert st["error"] == "robots.txt sin respuesta: no se pide (HTTP 503)"
+    assert asked == [f"https://{urlparse(feed.url).hostname}/robots.txt"] * 2  # el 503 se reintenta una vez
 
 
 def test_url_outside_the_registry_is_checked_against_robots_txt(monkeypatch):
@@ -1176,12 +1212,12 @@ def test_peru_only_url_with_robots_txt_down_is_not_tried_directly(monkeypatch):
     f = Fetcher(retries=3, polite_delay=0, allow_archive=False, robots=True, plan={PAGE: ["peru-server"]})
     with pytest.raises(Exception):
         f.get([PAGE])
-    assert asked == ["https://ana.example.pe/robots.txt"]
+    assert asked == ["https://ana.example.pe/robots.txt"] * 2  # el 503 se reintenta una vez
     # Si la sonda semanal leyó su robots.txt y lo permitía, vale esa lectura (RFC 9309 §2.3.1.4): un intento.
     asked.clear()
     f = Fetcher(retries=3, polite_delay=0, allow_archive=False, robots=True, plan={PAGE: ["peru-server"]},
                 robots_known={PAGE: "allowed"})
-    assert f.get([PAGE]).channel == "direct" and asked == ["https://ana.example.pe/robots.txt", PAGE]
+    assert f.get([PAGE]).channel == "direct" and asked == ["https://ana.example.pe/robots.txt"] * 2 + [PAGE]
 
 
 def test_url_the_weekly_probe_cleared_is_not_rechecked(monkeypatch):
@@ -1220,6 +1256,23 @@ def test_save_page_now_only_where_robots_txt_allows(monkeypatch):
     assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True), PAGE) == []
     assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True), "https://ana.example.pe/datos/") == [
         "https://web.archive.org/save/https://ana.example.pe/datos/"]
+    # Revisión: el comunicado pide la copia nueva por ``archived_copy``, sin pasar por ``get``; la regla es la misma.
+    from enso.observatory import archived_copy
+
+    asked.clear()
+    archived_copy(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True), [PAGE], ("pdf",), save=True)
+    assert not [u for u in asked if "/save/" in u]
+    # Segunda revisión: con robots.txt sin respuesta vale la lectura de la sonda, pero solo en lo que el registro
+    # asigna a Actions; lo que solo alcanza el Perú (el portal del ENFEN) el Internet Archive tampoco lo alcanza.
+    _net(monkeypatch, {"ana.example.pe": (503, "")}, asked)
+    url = "https://ana.example.pe/datos/"
+    for planned, want in ((["peru-server"], []), (["actions", "n8n"], [f"https://web.archive.org/save/{url}"])):
+        f = Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True, plan={url: planned},
+                    robots_known={url: "allowed"})
+        assert saves(f, url) == want, planned
+    # Ni aunque robots.txt lo permita: desde fuera del Perú el Internet Archive no lo alcanza.
+    _net(monkeypatch, {"ana.example.pe": (200, "User-agent: *\nAllow: /\n")}, asked)
+    assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True, plan={url: ["peru-server"]}), url) == []
 
 
 def test_imarpe_repository_search_respects_robots_txt(monkeypatch):

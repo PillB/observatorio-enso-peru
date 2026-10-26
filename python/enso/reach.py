@@ -23,6 +23,7 @@ from __future__ import annotations
 import json
 import re
 import threading
+import time
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -242,7 +243,9 @@ class RobotRules:
         rules: list[tuple[bool, str]] = []
         delay: Optional[float] = None
         in_rules = False
-        for raw in text.splitlines():
+        # Una marca de orden de bytes (BOM) al inicio dejaba la primera línea como «\ufeffuser-agent»: el grupo se
+        # perdía y sus reglas no contaban (el analizador de Google la salta).
+        for raw in text.lstrip("\ufeff").splitlines():
             line = raw.split("#", 1)[0].strip()
             if ":" not in line:
                 continue
@@ -313,13 +316,19 @@ class Robots:
     ``source`` dice qué se leyó: ``rules`` (un archivo), ``absent`` (un 4xx: se
     permite todo) o ``unreachable``. ``timeout``: plazo del pedido de robots.txt
     con un ``httpx.Client`` (otro cliente, como el de plazo corto de
-    ``tools.scrape_ladder``, usa el suyo); ``None``, el del cliente.
+    ``tools.scrape_ladder``, usa el suyo); ``None``, el del cliente. ``tries``:
+    intentos ante un fallo pasajero (429, 5xx o sin conexión; no una
+    verificación), con ``backoff_s`` segundos entre uno y otro: lo que se
+    guarda vale para toda la corrida.
     """
 
-    def __init__(self, client, agent: str = "Observatorio-ENSO-Peru", timeout: Optional[float] = ROBOTS_TIMEOUT_S):
+    def __init__(self, client, agent: str = "Observatorio-ENSO-Peru", timeout: Optional[float] = ROBOTS_TIMEOUT_S,
+                 tries: int = 1, backoff_s: float = 0.0):
         self.client = client
         self.agent = agent
         self.timeout = timeout
+        self.tries = max(1, tries)
+        self.backoff_s = backoff_s
         self._cache: dict[str, tuple] = {}
         self._lock = threading.Lock()
 
@@ -329,10 +338,25 @@ class Robots:
         with self._lock:
             if base in self._cache:
                 return self._cache[base]
+        for attempt in range(self.tries):
+            if attempt:
+                time.sleep(self.backoff_s * attempt)
+            entry = self._read(base)
+            if entry[2] in ("", "challenge"):  # leído, o una verificación: otro intento no cambia nada
+                break
+        with self._lock:
+            self._cache[base] = entry
+        return entry
+
+    def _read(self, base: str) -> tuple:
         rp: Optional[RobotRules] = None
-        status, head, headers, source, fail = None, b"", None, "unreachable", ""
+        status, head, headers, source, fail, error = None, b"", None, "unreachable", "", ""
         try:
-            kw = {"timeout": self.timeout} if self.timeout and isinstance(self.client, HTTPClient) else {}
+            # Las redirecciones de robots.txt se siguen aunque el cliente no las siga (RFC 9309 §2.3.1.2: un
+            # robots.txt movido a https o a otro nombre trae las mismas reglas, no «se permite todo»).
+            kw = {"follow_redirects": True} if isinstance(self.client, HTTPClient) else {}
+            if self.timeout and isinstance(self.client, HTTPClient):
+                kw["timeout"] = self.timeout
             r = self.client.get(f"{base}/robots.txt", **kw)
             status, head, headers = r.status_code, r.content[:SCAN_BYTES], r.headers
             # Un archivo de reglas que nombra «hcaptcha» o «turnstile», aunque llegue como text/html, no es una
@@ -343,17 +367,15 @@ class Robots:
                     == "challenge"):
                 fail = "challenge"
             elif status == 429 or status >= 500:
-                fail = classify(status, head, headers=headers)
+                fail, error = classify(status, head, headers=headers), f"HTTP {status}"
             elif status >= 300:
                 rp, source = RobotRules(allow_all=True), "absent"
             else:
                 rp, source = RobotRules(r.content[:500_000].decode("utf-8", errors="replace"), self.agent), "rules"
         except Exception as exc:  # noqa: BLE001 — sin respuesta: desconocido
-            rp, fail = None, classify(None, b"", f"{type(exc).__name__}: {exc}"[:200])
-        entry = (rp, status, fail, head, headers, source)
-        with self._lock:
-            self._cache[base] = entry
-        return entry
+            error = f"{type(exc).__name__}: {exc}"[:200]
+            rp, fail = None, classify(None, b"", error)
+        return (rp, status, fail, head, headers, source, error)
 
     def known(self, url: str) -> bool:
         """Si ya se leyó (o se intentó leer) el robots.txt del servidor de ``url``."""
@@ -376,3 +398,8 @@ class Robots:
     def failure(self, url: str) -> str:
         """Clase de alcance del intento de leer robots.txt (``timeout``, ``challenge``…), si falló."""
         return self._entry(url)[2]
+
+    def error(self, url: str) -> str:
+        """El error de red o el código con que falló la lectura de robots.txt (``ConnectError: …``, ``HTTP 503``),
+        para el motivo de la incidencia; vacío si se leyó o fue una verificación."""
+        return self._entry(url)[6]

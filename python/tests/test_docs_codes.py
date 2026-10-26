@@ -152,9 +152,17 @@ def test_enfen_and_imarpe_access_as_the_code_and_registry_say():
                          (lim, "ANA e IMARPE no responden"), (app, "se usa la copia del Internet Archive y se indica")):
         assert phrase not in text, phrase
     reg = json.loads((ROOT / "registry" / "sources.json").read_text(encoding="utf-8"))
-    imarpe = [s["id"] for s in reg["sources"] if re.match(r"https://(www|repositorio)\.imarpe\.gob\.pe/", s["url"])
-              and "actions" in s["channels"]]
-    assert imarpe, "el registro ya no da a Actions ninguna URL del IMARPE: revisar estos documentos"
+    repo = [s for s in reg["sources"] if s["url"].startswith("https://repositorio.imarpe.gob.pe/")]
+    assert repo, "el registro ya no tiene las búsquedas del repositorio del IMARPE: revisar estos documentos"
+    # Quién pide el repositorio lo decide la sonda de cada lunes: los documentos no lo dan por alcanzable desde
+    # Actions si el registro no se lo asigna (ni al revés).
+    on_actions = any("actions" in s["channels"] for s in repo)
+    flat = {name: " ".join(text.split()) for name, text in (("catalogo-fuentes.md", cat), ("limitaciones.md", lim))}
+    reachable = ("su repositorio, a GitHub Actions", "API (`/server/api`) responde a GitHub Actions")
+    unreachable = ("el repositorio no responde a GitHub Actions", "API (`/server/api`) no responde a GitHub Actions")
+    for name, text in flat.items():
+        wrong = [p for p in (unreachable if on_actions else reachable) if p in text]
+        assert not wrong, f"{name} dice «{wrong[0]}», pero el registro {'sí' if on_actions else 'no'} asigna el repositorio a Actions"
     for text in (cat, lim):
         assert not re.search(r"IMARPE[^|\n]*\|[^|\n]*\|\s*No disponible", text)
     if "imarpe_repo" in (PY / "enso" / "observatory.py").read_text(encoding="utf-8"):

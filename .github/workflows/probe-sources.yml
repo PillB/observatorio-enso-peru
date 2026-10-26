@@ -72,7 +72,9 @@ jobs:
           git commit -m "Update source reachability and registry"
           # En main el registro medido es el que leen el recolector del Perú y
           # n8n. En otras ramas va a bot/registry/<rama>, nunca a la rama de un PR.
-          if [ "$GITHUB_REF_NAME" = "${{ github.event.repository.default_branch }}" ]; then
+          # Respaldo por si el evento no trae «repository»: la rama principal es main (la corrida programada del
+          # 26 de octubre sí lo trajo y escribió en main).
+          if [ "$GITHUB_REF_NAME" = "${{ github.event.repository.default_branch || 'main' }}" ]; then
             # n8n/dist lleva un hash de n8n/ y del registro: si n8n/ cambió en main mientras se medía, el rebase
             # choca en dist. No se mezcla: se regenera sobre lo rebasado (si también chocó registry/, se aborta).
             for i in 1 2 3; do

@@ -280,6 +280,28 @@ def test_a_carried_day_keeps_the_url_that_gave_the_fingerprint(pub, tmp_path):
                for e in rep["events"])
 
 
+def test_a_communique_copy_that_could_not_be_carried_is_reported_once(pub, tmp_path):
+    """Revisión: si el PDF archivado del comunicado vigente no se pudo arrastrar, su ruta seguía en
+    sources/enfen-comunicados.json y cada corrida siguiente lo buscaba en un sitio que ya no lo tenía:
+    «archive-carry-failed» se repetía hasta el próximo comunicado, diciendo que la anterior sí lo tenía."""
+    prev, _ = pub
+    p1 = tmp_path / "prev"
+    shutil.copytree(prev, p1)
+    rel = json.loads((p1 / "sources" / "enfen-comunicados.json").read_text(encoding="utf-8"))["data"]["latest"]["archive"]
+    assert rel and (p1 / rel).exists()
+    (p1 / rel).unlink()
+    runs = []
+    for k, base in enumerate((p1, None)):
+        out = tmp_path / f"run{k}" / "data"
+        obs.run(out, str(base or runs[-1]), fixtures=FIX)
+        rep = json.loads((out / "run-report.json").read_text(encoding="utf-8"))
+        runs.append(out)
+        ev = [e for e in rep["events"] if e["code"] == "archive-carry-failed" and e["source"] == "enfen-comunicados"]
+        assert len(ev) == (1 if k == 0 else 0), (k, ev)
+    saved = json.loads((runs[0] / "sources" / "enfen-comunicados.json").read_text(encoding="utf-8"))["data"]["latest"]
+    assert saved["archive"] is None and saved["id"]  # el comunicado sigue; solo su copia se perdió
+
+
 def test_an_archived_copy_that_cannot_be_read_again_is_reported(pub, tmp_path):
     """Revisión: si la copia archivada que listaba la publicación anterior ya no se podía leer, el enlace se perdía
     sin aviso. Sigue sin publicarse (no hay archivo que servir), pero queda «archive-carry-failed» con su ruta."""

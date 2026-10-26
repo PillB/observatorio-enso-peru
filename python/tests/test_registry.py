@@ -3,6 +3,7 @@
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from urllib.parse import urlparse
 
 import httpx
 
@@ -193,6 +194,22 @@ def test_news_feeds_barred_by_robots_are_read_like_a_feed_reader():
     other = next(x for x in reg["sources"] if x["kind"] != "feed")
     other["by_url"][other["url"]]["reader"] = True
     assert any(other["id"] in e and "reader" in e for e in registry.validate(reg))
+
+
+def test_the_feed_reader_exception_does_not_grow_by_itself():
+    """Barrido de robots.txt del 26 de octubre de 2026: la sonda semanal encontró que el robots.txt de Pachamama
+    Radio no permite su feed, y el registro lo volvió el feed «reader» número 41 sin que nadie lo decidiera. La
+    excepción es de los tres servicios decididos (``READER_HOSTS``); otro feed así queda sin canales."""
+    reg = registry.build(reach={})
+    feed = next(x for x in reg["sources"] if x["id"] == "news-pachamama-radio")
+    assert urlparse(feed["url"]).netloc not in registry.READER_HOSTS
+    reg = registry.build(reach={feed["url"]: {"us": {"class": "robots", "at": "x", "vantage": "github-actions"}}})
+    got = next(x for x in reg["sources"] if x["id"] == feed["id"])
+    assert got["by_url"][feed["url"]] == {"status": "robots-disallowed", "channels": [], "robots": "disallowed"}
+    assert registry.validate(reg) == [] and feed["url"] not in registry.reader_urls(reg)
+    got["by_url"][feed["url"]].update(channels=["actions"], reader=True)
+    assert any(feed["id"] in e and "reader" in e for e in registry.validate(reg))
+    assert {urlparse(u).netloc for u in registry.reader_urls()} <= registry.READER_HOSTS
 
 
 def test_robots_parser():
@@ -426,18 +443,17 @@ def test_the_registry_says_who_reads_each_peru_only_page():
 
 
 def test_architecture_model_counts_the_peru_pages_the_registry_has():
-    """El diagrama dice cuántas páginas guarda el Perú y cuántas baja también n8n: deben ser las del registro."""
+    """El diagrama dice cuántas páginas del Estado guarda el Perú: las que el código pone en el registro. Cuántas
+    baja también n8n depende de la medición de cada lunes y no se escribe en el diagrama."""
     import re
     from pathlib import Path
 
     root = Path(__file__).resolve().parents[2]
     model = json.loads((root / "docs" / "arquitectura.json").read_text(encoding="utf-8"))
     node = next(n for n in model["full"]["nodes"] if n["id"] == "peru-archive-pages")
-    current = json.loads((root / "registry" / "sources.json").read_text(encoding="utf-8"))  # con lo medido
-    pages = [s for s in current["sources"] if "se archiva desde el Perú" in s.get("notes", "")]
-    n8n = [s for s in pages if "n8n" in (s.get("channels") or [])]
+    pages = [s for s in registry.build(reach={})["sources"] if "se archiva desde el Perú" in s.get("notes", "")]
     assert int(re.search(r"(\d+) URL de la lista fija", node["details_es"])[1]) == len(pages)
-    assert int(re.search(r"Las otras (\d+)", node["details_es"])[1]) == len(n8n)
+    assert not re.search(r"Las otras \d+", node["details_es"]), "lo medido no se escribe en el diagrama"
 
 
 # --- Revisión del 22 de octubre de 2026: robots.txt, red de Actions, rutas de los informes y mediciones viejas ----

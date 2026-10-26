@@ -7,6 +7,10 @@
 //   equipo, el recolector y su último resultado, y lo recuerda una vez al día; lo cierra cuando vuelve a latir. Una
 //   rama que no existe o no tiene latido (404) no se revisa: ese recolector puede no estar instalado todavía.
 //   Así un recolector callado se ve aunque el flujo diario esté fallando y no llegue a sincronizar sus incidencias.
+// * Registro: si la sonda semanal (probe-sources.yml) no terminó bien en la rama principal en PROBE_MAX_DAYS días
+//   (GitHub puede retrasar horas o saltarse una corrida programada; la del 26 de octubre de 2026 empezó 7 h tarde),
+//   la relanza, como mucho una vez al día. Sin ella, las URL nuevas del registro quedan sin medir (robots «unknown»)
+//   y los canales no siguen a los servidores que dejan de responder.
 //
 // Las pruebas (python/tests/js/watchdog.test.mjs) le pasan un `github` de mentira.
 'use strict';
@@ -15,6 +19,9 @@ const LABEL = 'incidente-datos';
 const WORKFLOW = 'observatory.yml';
 const HEARTBEAT_MAX_HOURS = 36;
 const REMIND_HOURS = 24;
+const PROBE = 'probe-sources.yml';
+const PROBE_MAX_DAYS = 8;
+const BUSY = ['queued', 'in_progress', 'waiting', 'pending', 'requested'];
 const COLLECTORS = {
   'data-peru': { title: 'El recolector del Perú', name: 'el recolector del Perú', doc: 'docs/servidor-peru.md' },
   'data-n8n': { title: 'El flujo de n8n', name: 'el flujo de n8n', doc: 'docs/n8n.md' },
@@ -57,12 +64,15 @@ async function checkSite({ github, context, core, fetch, env, now }) {
     if (prev) await closeIssue(github, context, prev, `El sitio vuelve a estar al día (publicación \`${pub}\`). Se cierra automáticamente.`);
     return;
   }
-  const { data: runs } = await github.rest.actions.listWorkflowRuns({ ...context.repo, workflow_id: WORKFLOW, per_page: 5 });
-  const busy = runs.workflow_runs.some((r) => ['queued', 'in_progress', 'waiting', 'pending'].includes(r.status));
-  const recent = runs.workflow_runs.find((r) => r.event === 'workflow_dispatch' && now - Date.parse(r.created_at) < 6 * 36e5);
+  // Solo las corridas de la rama que publica: una de prueba en otra rama no despliega.
+  const branch = context.payload.repository?.default_branch || 'main';
+  const { data } = await github.rest.actions.listWorkflowRuns({ ...context.repo, workflow_id: WORKFLOW, branch, per_page: 5 });
+  const runs = data.workflow_runs.filter((r) => r.head_branch === branch);
+  const busy = runs.some((r) => BUSY.includes(r.status));
+  const recent = runs.find((r) => r.event === 'workflow_dispatch' && now - Date.parse(r.created_at) < 6 * 36e5);
   let action = 'ya hay una corrida en curso';
   if (!busy && !recent) {
-    await github.rest.actions.createWorkflowDispatch({ ...context.repo, workflow_id: WORKFLOW, ref: context.payload.repository?.default_branch || 'main' });
+    await github.rest.actions.createWorkflowDispatch({ ...context.repo, workflow_id: WORKFLOW, ref: branch });
     action = 'se relanzó la actualización';
   } else if (recent && !busy) action = 'ya se relanzó en las últimas 6 horas; se requiere revisión';
   const body = `El sitio en vivo no está al día: ${err ? `no se pudo leer (${err})` : `la publicación \`${pub}\` tiene ${age.toFixed(0)} horas`}. Acción: ${action}.\n\n<!-- enso-fp:site-stale -->`;
@@ -125,13 +135,31 @@ async function checkCollectors({ github, context, core, now }) {
   }
 }
 
-// Revisa el sitio y los recolectores; un error en uno no impide revisar el otro.
+// La sonda semanal en la rama principal: si no terminó bien en PROBE_MAX_DAYS días, se relanza (una vez al día).
+async function checkProbe({ github, context, core, now }) {
+  const branch = context.payload.repository?.default_branch || 'main';
+  const { data } = await github.rest.actions.listWorkflowRuns({ ...context.repo, workflow_id: PROBE, branch, per_page: 20 });
+  const runs = data.workflow_runs.filter((r) => r.head_branch === branch);
+  const ok = runs.find((r) => r.conclusion === 'success');
+  core.info(`${PROBE}: última sonda buena en ${branch}: ${ok ? ok.created_at : 'ninguna'}`);
+  if (ok && hours(now, ok.created_at) <= PROBE_MAX_DAYS * 24) return;
+  if (runs.some((r) => BUSY.includes(r.status))) return;
+  const recent = runs.find((r) => r.event === 'workflow_dispatch' && hours(now, r.created_at) < 24);
+  if (recent) {
+    core.warning(`${PROBE}: sin sonda buena en ${PROBE_MAX_DAYS} días; la relanzada el ${recent.created_at} terminó «${recent.conclusion}»: revisar ${recent.html_url || 'su corrida'}`);
+    return;
+  }
+  await github.rest.actions.createWorkflowDispatch({ ...context.repo, workflow_id: PROBE, ref: branch });
+  core.warning(`${PROBE}: sin sonda buena en ${branch} en ${PROBE_MAX_DAYS} días; se relanzó`);
+}
+
+// Revisa el sitio, los recolectores y la sonda; un error en uno no impide revisar los demás.
 async function run({ github, context, core, fetch = globalThis.fetch, env = process.env, now = Date.now() }) {
   let error = null;
-  for (const check of [checkSite, checkCollectors]) {
+  for (const check of [checkSite, checkCollectors, checkProbe]) {
     try { await check({ github, context, core, fetch, env, now }); } catch (e) { error = error || e; }
   }
   if (error) throw error;
 }
 
-module.exports = { run, checkSite, checkCollectors, HEARTBEAT_MAX_HOURS };
+module.exports = { run, checkSite, checkCollectors, checkProbe, HEARTBEAT_MAX_HOURS, PROBE_MAX_DAYS };

@@ -2,7 +2,8 @@
 
 Uso:
     python -m tools.architecture [--check] [--explorer ruta.html]
-    # --check: falla si los SVG, el texto o el explorador no están al día
+    # --check: falla si los SVG, el texto o el explorador no están al día,
+    #          o si una evidencia cita un archivo, un símbolo o unas líneas que no existen
     # --explorer: además escribe el explorador en un solo archivo, que se abre sin servidor
 
 Escribe ``docs/arquitectura.svg`` (completo), ``docs/arquitectura-simple.svg``
@@ -22,8 +23,10 @@ iPhone, Android, Windows y macOS.
 from __future__ import annotations
 
 import argparse
+import ast
 import heapq
 import json
+import re
 import sys
 from html import escape
 from pathlib import Path
@@ -1318,6 +1321,112 @@ def render_standalone(model: dict, annexes: list) -> str:
     return render_explorer(model, annexes, {"css": css, "js": js, "svgs": svgs})
 
 
+# Cada «evidence» del modelo y de los anexos son ítems separados por «;»:
+#   ruta.py#nombre, #Clase.método   símbolos de primer nivel (o métodos) de un módulo Python
+#   ruta.yml:10-20, 30               líneas de un archivo que no es Python
+#   ruta                             el archivo entero
+#   full edge(s) a→b, c→d            conexiones del diagrama completo (para el simplificado)
+# Una nota entre paréntesis al final de un ítem se permite. En Python se citan símbolos y
+# no líneas porque las líneas se corren con cada cambio y nadie lo nota.
+_EVIDENCE_ITEM = re.compile(
+    r"^(?P<path>[^\s:#()]+)"
+    r"(?:#(?P<syms>[\w.]+(?:,\s*#[\w.]+)*)|:(?P<ranges>\d+(?:-\d+)?(?:,\s*\d+(?:-\d+)?)*))?"
+    r"(?:\s+\((?P<note>[^)]*)\))?$")
+
+
+def _py_symbols(path: Path) -> set[str]:
+    """Nombres de primer nivel de un módulo (def, class, asignaciones) y «Clase.miembro»."""
+    def targets(t):
+        if isinstance(t, ast.Name):
+            yield t.id
+        elif isinstance(t, (ast.Tuple, ast.List)):
+            for e in t.elts:
+                yield from targets(e)
+
+    def names(body) -> set[str]:
+        out: set[str] = set()
+        for st in body:
+            if isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                out.add(st.name)
+            elif isinstance(st, ast.Assign):
+                for t in st.targets:
+                    out.update(targets(t))
+            elif isinstance(st, ast.AnnAssign):
+                out.update(targets(st.target))
+        return out
+
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    found = names(tree.body)
+    for st in tree.body:
+        if isinstance(st, ast.ClassDef):
+            found.update(f"{st.name}.{n}" for n in names(st.body))
+    return found
+
+
+def _evidence_fields(model: dict, annexes: list):
+    """(dónde, texto) de cada «evidence» del modelo y de los anexos."""
+    def walk(o, where):
+        if isinstance(o, dict):
+            if isinstance(o.get("evidence"), str):
+                yield where, o["evidence"]
+            for k, v in o.items():
+                yield from walk(v, f"{where}.{k}")
+        elif isinstance(o, list):
+            for i, v in enumerate(o):
+                tag = v.get("id") or (f"{v['from']}→{v['to']}" if "from" in v and "to" in v else i) if isinstance(v, dict) else i
+                yield from walk(v, f"{where}[{tag}]")
+    yield from walk(model, "modelo")
+    yield from walk({"anexos": annexes}, "")
+
+
+def check_evidence(model: dict, annexes: list, root: Path = ROOT) -> list[str]:
+    """Problemas de las evidencias: archivos que no existen, símbolos que no están, líneas de más."""
+    problems: list[str] = []
+    full_edges = {(e["from"], e["to"]) for e in model["full"]["edges"]}
+    symbols: dict[Path, set[str]] = {}
+    lines: dict[Path, int] = {}
+    for where, text in _evidence_fields(model, annexes):
+        for item in (x.strip() for x in text.split(";")):
+            if not item:
+                problems.append(f"{where}: ítem vacío en {text!r}")
+                continue
+            if item.startswith("full edge"):
+                for pair in item.split(" ", 2)[2].split(","):
+                    a, _, b = pair.strip().partition("→")
+                    if (a, b) not in full_edges:
+                        problems.append(f"{where}: no hay conexión {a}→{b} en el diagrama completo")
+                continue
+            m = _EVIDENCE_ITEM.match(item)
+            if not m:
+                problems.append(f"{where}: no se entiende {item!r}")
+                continue
+            path = root / m["path"]
+            if not path.is_file():
+                problems.append(f"{where}: no existe {m['path']}")
+                continue
+            if m["syms"]:
+                if path.suffix != ".py":
+                    problems.append(f"{where}: {m['path']} no es Python; cita líneas, no símbolos")
+                    continue
+                if path not in symbols:
+                    symbols[path] = _py_symbols(path)
+                for sym in (x.strip().lstrip("#") for x in m["syms"].split(",")):
+                    if sym not in symbols[path]:
+                        problems.append(f"{where}: {m['path']} no define {sym}")
+            elif m["ranges"]:
+                if path.suffix == ".py":
+                    problems.append(f"{where}: {m['path']} es Python; cita símbolos (#nombre), no líneas")
+                    continue
+                if path not in lines:
+                    lines[path] = len(path.read_text(encoding="utf-8").splitlines())
+                for r in (x.strip() for x in m["ranges"].split(",")):
+                    a, _, b = r.partition("-")
+                    start, end = int(a), int(b or a)
+                    if start < 1 or end < start or end > lines[path]:
+                        problems.append(f"{where}: {m['path']}:{r} fuera del archivo ({lines[path]} líneas)")
+    return problems
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", action="store_true")
@@ -1348,10 +1457,12 @@ def main(argv=None) -> int:
         stale = []
         if a.explorer:
             a.explorer.write_text(render_standalone(model, annexes), encoding="utf-8")
+    problems = check_evidence(model, annexes) if a.check else []
+    for msg in problems:
+        print("Evidencia: " + msg)
     if stale:
         print("No están al día (corre python -m tools.architecture): " + ", ".join(str(p.relative_to(ROOT)) for p in stale))
-        return 1
-    return 0
+    return 1 if stale or problems else 0
 
 
 if __name__ == "__main__":

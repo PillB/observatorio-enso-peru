@@ -94,8 +94,11 @@ def test_registry_file_routes_measured_peru_only_sources():
     """El registro publicado: lo que no responde desde ninguna red de EE. UU. lo pide solo el servidor del Perú."""
     reg = json.loads(registry.REGISTRY.read_text(encoding="utf-8"))
     by_id = {s["id"]: s for s in reg["sources"]}
-    for sid in ("ana-onrh", "senamhi-www-senamhi-gob-pe-p-aviso-meteorologico"):
-        assert by_id[sid]["channels"] == ["peru-server"], (sid, by_id[sid]["geoblock"])
+    # Qué URL lo son depende de la medición de cada lunes (ANA pasó a «robots-disallowed» el 26 de octubre de 2026);
+    # la regla no.
+    peru_only = [(s["id"], u, r) for s in reg["sources"] for u, r in s["by_url"].items()
+                 if r["status"] in ("geoblocked", "suspected-geoblock")]
+    assert peru_only and all(r["channels"] == ["peru-server"] for _, _, r in peru_only), peru_only
     enfen = by_id["enfen-comunicados"]
     assert enfen["by_url"][ENFEN]["channels"] == ["peru-server"] and "peru-server" in enfen["channels"]
     # Lo que el pipeline lee a diario no pasa al Perú solo porque n8n no lo alcanzó: hace falta la
@@ -185,6 +188,93 @@ def test_n8n_index_is_a_measurement_from_n8n():
     assert got["https://b.pe/x"]["class"] == "timeout"
     assert got["https://c.pe/y"]["class"] == "challenge"
     assert registry.vantage_group(got["https://a.pe/feed"]["vantage"]) == "n8n"
+    assert "robots" not in got["https://a.pe/feed"]
+
+
+def test_robots_txt_read_by_n8n_gives_the_url_a_verdict():
+    """Revisión: una URL que solo n8n alcanza y cuyo robots.txt Actions no pudo leer (verificación) quedaba
+    «unknown» para siempre: n8n no la pide sin veredicto y nadie más la mide. Si n8n lee robots.txt y lo anota (en
+    su índice o en el informe de validación), cuenta como cualquier otra lectura."""
+    url = "https://www.imarpe.gob.pe/feed/"
+    index = {"collected_at": AT, "collector": {"kind": "n8n", "egress": "aws"}, "entries": [
+        {"url": url, "status": 200, "bytes": 900, "reach": "ok", "fetched_at": AT, "robots": "allowed"}]}
+    n8n = probe_sources.from_n8n_index(index)[url]
+    actions = {"class": "challenge", "robots": "unreachable", "at": AT, "vantage": "github-actions"}
+    assert registry.robots_verdict(url, {url: {"actions": {"github-actions": actions}}}) == "unknown"
+    reach = {url: {"actions": {"github-actions": actions}, "n8n": {n8n["vantage"]: n8n}}}
+    assert registry.robots_verdict(url, reach) == "allowed"
+    row = probe_sources.from_n8n_report([{"url": url, "alcance": "ok", "http": "200", "medido": AT, "robots": "allowed"},
+                                         {"url": "https://x.pe/", "alcance": "ok", "robots": "quizás"}], "n8n-aws")
+    assert row[0]["robots"] == "allowed" and "robots" not in row[1]
+
+
+def test_urls_n8n_did_not_request_for_their_robots_txt_are_measurements():
+    """#52: n8n lee el robots.txt de las URL «unknown» y no pide las que prohíbe o cuyo robots.txt no responde
+    (``not_requested`` en el índice, filas «NO PEDIDA» en el informe). Como en ``probe``: si lo prohíbe, la URL
+    queda sin canales; si no respondió, cuenta la clase de ese robots.txt (sin ella no es una medición)."""
+    no, gone, unread = "https://a.pe/feed", "https://b.pe/feed", "https://c.pe/feed"
+    index = {"collected_at": AT, "collector": {"kind": "n8n", "egress": "aws"}, "entries": [], "not_requested": [
+        {"url": no, "robots": "disallowed", "robots_url": "https://a.pe/robots.txt", "fetched_at": AT},
+        {"url": gone, "robots": "unreachable", "reach": "challenge", "note": "robots.txt no respondió (challenge)"},
+        {"url": unread, "robots": "unreachable", "note": "robots.txt no respondió (sin respuesta)"}, "x"]}
+    got = probe_sources.from_n8n_index(index)
+    assert got[no]["class"] == "robots" and got[no]["robots"] == "disallowed" and got[no]["vantage"] == "n8n-aws"
+    assert got[gone]["class"] == "challenge" and got[gone]["robots"] == "unreachable" and got[gone]["at"] == AT
+    assert unread not in got
+    reach = {no: {"n8n": {"n8n-aws": got[no]}}}
+    assert registry.geoblock(no, reach)["status"] == "robots-disallowed" and registry.robots_verdict(no, reach) == "disallowed"
+    rows = probe_sources.from_n8n_report([
+        {"id": "resumen", "url": ""},
+        {"resultado": "NO PEDIDA", "veredicto": "not_requested", "alcance": "", "url": no, "medido": AT, "robots": "disallowed"},
+        {"resultado": "NO PEDIDA", "veredicto": "not_requested", "alcance": "timeout", "url": gone, "robots": "unreachable"},
+        {"resultado": "NO PEDIDA", "veredicto": "not_requested", "alcance": "", "url": unread, "robots": "unreachable"},
+        {"url": "https://d.pe/", "alcance": "ok", "robots": "allowed"}], "n8n-aws")
+    assert [(r["url"], r["class"]) for r in rows] == [(no, "robots"), (gone, "timeout"), ("https://d.pe/", "ok")]
+    assert rows[0]["at"] == probe_sources._iso(AT) and "at" not in rows[1]
+
+
+def test_a_robots_txt_reading_survives_a_measurement_that_could_not_read_it():
+    """Segunda revisión: cada medición de una red reemplaza la anterior, y una que no leyó robots.txt (una
+    verificación ese día desde Actions, o n8n pidiendo lo que el registro ya daba por permitido) borraba la lectura:
+    el veredicto volvía a «unknown» cada semana. Se conserva la última lectura de esa red hasta STALE_DAYS
+    (RFC 9309 §2.4: si robots.txt no responde, vale la copia guardada)."""
+    url = "https://www.imarpe.gob.pe/feed/"
+    t0 = NOW - timedelta(days=10)
+    data = {"urls": {}}
+    probe_sources._put(data, url, {"class": "ok", "robots": "allowed", "at": t0.isoformat(), "vantage": "github-actions"})
+    probe_sources._put(data, url, {"class": "ok", "robots": "allowed", "at": t0.isoformat(), "vantage": "n8n-aws"})
+    # Una semana después: Actions recibe una verificación en robots.txt y n8n pide sin leerlo.
+    t1 = (NOW - timedelta(days=3)).isoformat()
+    probe_sources._put(data, url, {"class": "challenge", "robots": "unreachable", "detail": "robots.txt sin respuesta",
+                                   "at": t1, "vantage": "github-actions"})
+    probe_sources._put(data, url, {"class": "ok", "at": t1, "vantage": "n8n-aws"})
+    rec = data["urls"][url]["n8n"]["n8n-aws"]
+    assert rec["robots_read"] == {"robots": "allowed", "at": t0.isoformat()} and "robots" not in rec
+    assert data["urls"][url]["actions"]["github-actions"]["robots_read"]["robots"] == "allowed"
+    assert registry.robots_verdict(url, data["urls"], NOW) == "allowed"
+    # Otra semana igual: se sigue arrastrando la misma lectura, con su fecha (no la de la medición).
+    probe_sources._put(data, url, {"class": "ok", "at": NOW.isoformat(), "vantage": "n8n-aws"})
+    assert data["urls"][url]["n8n"]["n8n-aws"]["robots_read"]["at"] == t0.isoformat()
+    # Pasados STALE_DAYS desde la lectura, ya no cuenta: vuelve a leerse antes de pedir.
+    later = t0 + timedelta(days=registry.STALE_DAYS + 1)
+    assert registry.robots_verdict(url, data["urls"], later) == "unknown"
+    # Una lectura en contra no se arrastra ni se tapa.
+    probe_sources._put(data, url, {"class": "robots", "robots": "disallowed", "at": NOW.isoformat(), "vantage": "n8n-aws"})
+    assert "robots_read" not in data["urls"][url]["n8n"]["n8n-aws"]
+    assert registry.robots_verdict(url, data["urls"], NOW) == "disallowed"
+
+
+def test_a_robots_txt_disallow_nobody_read_again_stops_counting_after_stale_days():
+    """Segunda revisión: un robots.txt en contra que solo leyó n8n quedaba para siempre (la URL sin canales, nadie
+    la volvía a medir y la medición más reciente de un grupo nunca vencía). Pasados STALE_DAYS, vuelve a «unknown»
+    y se lee su robots.txt antes de pedirla."""
+    url = "https://www.imarpe.gob.pe/feed/"
+    at = NOW - timedelta(days=registry.STALE_DAYS + 2)
+    reach = {url: {"n8n": {"n8n-aws": {"class": "robots", "robots": "disallowed", "at": at.isoformat(), "vantage": "n8n-aws"}},
+                   "actions": {"github-actions": {"class": "challenge", "at": NOW.isoformat(), "vantage": "github-actions"}}}}
+    assert registry.geoblock(url, reach, at)["status"] == "robots-disallowed"
+    assert registry.geoblock(url, reach, NOW)["status"] != "robots-disallowed"
+    assert registry.robots_verdict(url, reach, NOW) == "unknown"
 
 
 def test_missing_relay_branches_are_reported(tmp_path):
@@ -253,7 +343,7 @@ def test_publication_runs_are_serialized():
     import yaml
 
     wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
-    assert wf["concurrency"] == {"group": "enso-production-publication", "cancel-in-progress": False}
+    assert wf["concurrency"] == {"group": "${{ github.ref == 'refs/heads/main' && 'enso-production-publication' || format('enso-test-{0}', github.ref) }}", "cancel-in-progress": False}
     on = wf[True] if True in wf else wf["on"]  # PyYAML lee «on» como verdadero
     assert on["repository_dispatch"]["types"] == ["enso-refresh"] and "workflow_dispatch" in on
     steps = {s.get("id"): s for s in wf["jobs"]["build"]["steps"] if s.get("id")}
@@ -269,6 +359,40 @@ def _rules(name: str):
     from enso.reach import RobotRules
 
     return RobotRules((ROBOTS / f"robots-{name}.http.txt").read_text(encoding="utf-8"), agent="Observatorio-ENSO-Peru")
+
+
+def test_robots_txt_with_a_byte_order_mark_keeps_its_first_group():
+    """Revisión: con BOM al inicio, la primera línea no era «User-agent» y sus reglas no contaban (todo permitido)."""
+    from enso.reach import RobotRules
+
+    for text in ("\ufeffUser-agent: *\nDisallow: /datos/\n", "User-agent: *\nDisallow: /datos/\n"):
+        rules = RobotRules(text, agent="Observatorio-ENSO-Peru")
+        assert not rules.allowed("https://a.gob.pe/datos/x.csv") and rules.allowed("https://a.gob.pe/otra")
+
+
+def test_the_fetcher_retries_a_transient_robots_txt_failure_once():
+    """Revisión: robots.txt se lee una vez por servidor y corrida; un 503 pasajero dejaba sin pedir, toda la corrida,
+    las URL de ese servidor que el registro no mide (los PDF del comunicado y del informe). Una verificación no se
+    reintenta."""
+    import httpx
+
+    from enso.fetch import Fetcher
+
+    def run(answers):
+        seen = []
+
+        def handler(req):
+            seen.append(req.url.path)
+            return answers[min(len(seen), len(answers)) - 1]
+
+        f = Fetcher(polite_delay=0, robots=True)
+        f.client = f.robots.client = httpx.Client(transport=httpx.MockTransport(handler))
+        return f.robots.allowed("https://www.dhn.mil.pe/Archivos/x.pdf"), len(seen)
+
+    assert run([httpx.Response(503), httpx.Response(200, text="User-agent: *\nAllow: /\n")]) == (True, 2)
+    assert run([httpx.Response(503)]) == (None, 2)
+    assert run([httpx.Response(403, headers={"cf-mitigated": "challenge"})]) == (None, 1)
+    assert run([httpx.Response(404)]) == (True, 1)
 
 
 def test_gobpe_feeds_respect_its_robots_txt():
@@ -618,8 +742,8 @@ def test_a_previous_site_that_does_not_answer_is_asked_once_per_file(monkeypatch
 
 
 def test_a_failed_read_that_is_not_carried_does_not_cut_the_retries(monkeypatch):
-    """Revisión: un pedido de un solo intento sin respuesta (p. ej. imarpe-bsobp.json, justo antes de las noticias, o
-    manual-needed.json, antes de escribir) daba el sitio por caído: news/feeds.json y la copia del comunicado se
+    """Revisión: un pedido de un solo intento sin respuesta (p. ej. manual-needed.json, antes de escribir; el
+    historial imarpe-bsobp.json ahora se lee como arrastrado) daba el sitio por caído: news/feeds.json y la copia del comunicado se
     pedían una sola vez. Solo lo arrastrado decide si el sitio está caído, y las noticias piden siempre sus 3."""
     monkeypatch.setattr(obs.time, "sleep", lambda s: None)
     calls = []
@@ -979,7 +1103,7 @@ def _probe_commit(tmp_path: Path, on_main):
     git("push", "-q", str(origin), "main", cwd=seed)
     wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "probe-sources.yml").read_text(encoding="utf-8"))
     run = next(st for st in wf["jobs"]["probe"]["steps"] if st.get("name") == "Commit")["run"]
-    run = run.replace("${{ github.event.repository.default_branch }}", "main")
+    run = run.replace("${{ github.event.repository.default_branch || 'main' }}", "main")
     fake = tmp_path / "bin"  # sin esperas entre reintentos
     fake.mkdir()
     (fake / "sleep").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")

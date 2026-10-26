@@ -61,7 +61,7 @@ class TooSlow(httpx.TransportError):
 class Response:
     url: str
     body: bytes
-    channel: str  # "direct" | "mirror" | "relay-peru" | "relay-n8n" | "archive" | "archive-fresh"
+    channel: str  # "direct" | "mirror" | "relay-peru" | "relay-n8n" | "relay-manual" | "archive" | "archive-fresh"
     status: int
     content_type: str = ""
     last_modified: str = ""
@@ -214,7 +214,9 @@ class Fetcher:
         self.robots_known = robots_known or {}
         #: robots.txt leído durante la corrida (``enso.reach.Robots``), antes del pedido directo a lo que la sonda
         #: semanal no cubrió y antes de pedir una copia nueva al Internet Archive. Apagado, no se lee.
-        self.robots: Optional[Robots] = Robots(self.client, timeout=ROBOTS_TIMEOUT_S) if robots else None
+        #: Un fallo pasajero al leerlo se reintenta una vez: sin robots.txt no se pide nada a ese servidor en la corrida.
+        self.robots: Optional[Robots] = Robots(self.client, timeout=ROBOTS_TIMEOUT_S, tries=2,
+                                               backoff_s=2 * polite_delay) if robots else None
         self._last: dict[str, float] = {}
 
     def close(self) -> None:
@@ -321,7 +323,9 @@ class Fetcher:
         if allowed is False:
             return "robots.txt no permite la ruta: no se pide"
         if allowed is None and known != "allowed":
-            return "robots.txt sin respuesta: no se pide"
+            # Con el error de red: quien lee el motivo (``imarpe_repo.cause``) distingue un certificado de un corte.
+            why = self.robots.error(url) or self.robots.failure(url)
+            return "robots.txt sin respuesta: no se pide" + (f" ({why})" if why else "")
         return None
 
     def get(self, urls: list[str], *, archive: bool = True, save: bool = False,
@@ -362,11 +366,7 @@ class Fetcher:
                 return got
         if archive and self.allow_archive:
             for url in urls:
-                # Una copia nueva (Save Page Now) la pide el Internet Archive al servidor: no si robots.txt no lo
-                # permite (o no se pudo leer en la corrida).
-                fresh = save and self.allow_save and self.plan.get(url) != [] and (
-                    self.robots is None or self.robots.allowed(url) is True)
-                got = self._from_archive(url, attempts, fresh=fresh)
+                got = self._from_archive(url, attempts, fresh=save and self.allow_save)
                 if got and (not accept or any(a in got.content_type.lower() for a in accept)):
                     return got
                 if got:
@@ -389,10 +389,28 @@ class Fetcher:
         ct = r.headers.get("content-type", "").lower()
         return any(a in ct for a in accept)
 
+    def _may_save(self, url: str) -> bool:
+        """Si se puede pedir una copia nueva (Save Page Now): el Internet Archive le pide la página al servidor en
+        nombre del observatorio, así que no si el registro no le da canales (robots.txt la prohíbe) ni si robots.txt
+        no la permite. Tampoco lo que el registro asigna solo al recolector del Perú: el Internet Archive pide desde
+        fuera del Perú, y ahí (el portal del ENFEN) le falla siempre (HTTP 523) y gasta los intentos que necesita el
+        PDF del comunicado. Si robots.txt no responde en la corrida, vale lo que leyó la sonda (``allowed``), como en
+        ``_robots_skip``, en lo que el registro asigna a Actions."""
+        planned = self.plan.get(url)
+        if planned is not None and not {"actions", "n8n"} & set(planned):
+            return False
+        if self.robots is None:
+            return True
+        allowed = self.robots.allowed(url)
+        return allowed is True or (allowed is None and self.robots_known.get(url) == "allowed"
+                                   and "actions" in (planned or []))
+
     def _from_archive(self, url: str, attempts: list, fresh: bool) -> Optional[Response]:
         """Copia más reciente del Internet Archive; si tiene más de un día y
-        se permite, pide una nueva (Save Page Now) y, si esa falla, devuelve
-        la existente."""
+        se permite (``_may_save``), pide una nueva (Save Page Now) y, si esa
+        falla, devuelve la existente. Todo pedido de copia nueva pasa por aquí
+        (``Fetcher.get`` y ``observatory.archived_copy``)."""
+        fresh = fresh and self._may_save(url)
         cdx = ("https://web.archive.org/cdx/search/cdx?output=json&limit=-1&filter=statuscode:200"
                f"&url={quote(url, safe='')}")
         snap = None
