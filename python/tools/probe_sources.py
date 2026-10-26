@@ -265,7 +265,7 @@ def _put(data: dict, url: str, rec: dict) -> None:
     ``robots_read`` la última de esa red que permitía la ruta: RFC 9309 §2.4 deja usar la copia guardada si robots.txt
     no responde, y así una verificación de un día no borra lo que se sabía (``registry.robots_verdict``). No si lo que
     no respondió fue el robots.txt del destino de una redirección (``hop``): la lectura guardada es la de la URL, no la
-    de ese destino, y n8n sigue las redirecciones sin leerlo."""
+    de ese destino (n8n lee el de ``hop``, ``registry.build``)."""
     rec = {k: v for k, v in rec.items() if k != "url"}
     groups = registry._groups(data["urls"].get(url) or {})
     group = groups.setdefault(registry.vantage_group(rec["vantage"]), {})

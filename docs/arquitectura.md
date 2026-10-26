@@ -993,7 +993,7 @@ se cuentan desde la medición más reciente, no desde el reloj). Una fuente
 con `n8n: false` (las búsquedas del repositorio del IMARPE, cuyo certificado
 n8n no verifica) no va por n8n. Cada URL lleva además lo que se sabe de su
 `robots.txt` (`robots`): `allowed`, `disallowed` o `unknown` (nadie pudo
-leerlo; n8n no lo lee). El pipeline lee el registro en cada corrida:
+leerlo; n8n lo lee antes de pedirla, el del destino si la URL trae `hop`). El pipeline lee el registro en cada corrida:
 
 - una URL que el registro no da a Actions, o cuyo `robots.txt` está
   `unknown`, se lee de la copia del Perú o de n8n; solo si no hay copia se

@@ -43,13 +43,13 @@ lector de feeds, solo desde Actions y como mucho una vez al día
 todo lo demás, otros feeds incluidos, y el rastreo.
 ``by_url[url]["robots"]`` dice lo que se sabe de su robots.txt: ``allowed``
 (alguien lo leyó y permite la ruta, o no existe), ``disallowed`` o ``unknown``
-(nadie pudo leerlo: n8n no la pide y el pipeline lo lee antes de pedirla). Si
+(nadie pudo leerlo: n8n y el pipeline lo leen antes de pedirla). Si
 una medición no pudo leerlo, vale la última lectura de esa red que permitía la
 ruta, hasta ``STALE_DAYS`` (``robots_read``; RFC 9309 §2.4), y un robots.txt en
 contra que nadie volvió a leer en ``STALE_DAYS`` deja de contar.
 ``by_url[url]["hop"]``: el destino de una redirección que la medición no siguió
 porque su robots.txt no respondió; quien pida la URL lee el robots.txt de ese
-destino, no solo el de la URL (n8n sigue las redirecciones sin leerlo).
+destino, no solo el de la URL (n8n lo lee en vez del de la URL).
 
 El registro no guarda la hora, el tiempo ni el tamaño de cada medición (siguen
 en ``reachability.json``): solo cambia cuando cambia el alcance.
@@ -387,7 +387,7 @@ def geoblock(url: str, reach: dict, now: Optional[datetime] = None) -> dict:
 def robots_verdict(url: str, reach: dict, now: Optional[datetime] = None) -> str:
     """Lo que se sabe del robots.txt de ``url``: ``disallowed`` si alguna medición lo encontró en contra;
     ``allowed`` si alguien lo leyó y permite la ruta (o no existe: un 4xx) o si el recolector del Perú la pidió (lo
-    lee antes de cada pedido); ``unknown`` si nadie pudo leerlo (n8n no lo lee). Cuentan las mismas mediciones que
+    lee antes de cada pedido); ``unknown`` si nadie pudo leerlo (n8n y el pipeline lo leen antes de pedirla). Cuentan las mismas mediciones que
     en ``geoblock`` (con ``now``, sin las viejas): ``disallowed`` va con el estado ``robots-disallowed``."""
     recs = [(g, r) for g, rs in _counted(url, reach, now).items() for r in rs.values()]
     if any(r.get("class") == "robots" for _, r in recs):
@@ -475,8 +475,8 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
             "rules": {"peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
                       "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con "
                                 f"reader: solo {'+'.join(READER_CHANNELS)}, como mucho cada {READER_MIN_HOURS} h; "
-                                "by_url robots unknown (nadie pudo leer su robots.txt): n8n no la pide y el pipeline "
-                                "lo lee antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió, "
+                                "by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes "
+                                "de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió, "
                                 "y quien pida la URL lee también el de ese destino",
                       "n8n": "una fuente con n8n false no va por n8n (ver notes)",
                       "tiers": METHODS, "channels": list(CHANNELS)},

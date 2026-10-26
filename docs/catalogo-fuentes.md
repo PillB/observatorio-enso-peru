@@ -188,7 +188,8 @@ copias del recolector del Perú y de n8n). Reglas:
   usa la copia guardada): una verificación de un día no la deja `unknown`. Con
   `disallowed` la URL queda sin canales, salvo los feeds de noticias que se leen
   una vez al día (abajo); un `disallowed` que nadie volvió a leer en 45 días
-  deja de contar y la URL vuelve a medirse. n8n no pide ninguna URL `unknown` ni `disallowed`; la
+  deja de contar y la URL vuelve a medirse. n8n no pide ninguna URL `disallowed`
+  y lee el robots.txt de una `unknown` antes de pedirla (docs/n8n.md); la
   corrida diaria lee el robots.txt de una URL `unknown` antes de pedirla, usa
   primero las copias de los recolectores y no pide nada si el robots.txt no
   responde.
@@ -199,7 +200,7 @@ copias del recolector del Perú y de n8n). Reglas:
   responde, no se piden. La sonda semanal anota esa URL como `robots` (o con
   la falla de su robots.txt y el destino en `hop`, sin arrastrar la lectura
   anterior de la URL), así el registro no la deja `allowed` y n8n, que sigue
-  las redirecciones sin leer robots.txt, no la pide. Tras una redirección que
+  las redirecciones sin leer robots.txt, lee el de ese destino antes de pedirla. Tras una redirección que
   no se siguió, la corrida no le pide al Internet Archive una captura nueva de
   esa URL (la seguiría en nombre del observatorio) y, si el destino está
   prohibido, tampoco usa la copia de un recolector. Un robots.txt que redirige
