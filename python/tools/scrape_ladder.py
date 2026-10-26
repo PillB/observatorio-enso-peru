@@ -348,6 +348,7 @@ def run(cands: list[dict], out: Path, browser_ok: bool = True, client: Optional[
             for c in cands:
                 res: dict = {"id": c["id"], "url": c["url"], "hazard": c.get("hazard"), "institution": c.get("institution"),
                              "steps": [], "answer": None}
+                refused = False  # el navegador encontró una ruta que robots.txt no permite
                 allowed = robots.allowed(c["url"])
                 res["robots"] = {True: "allowed", False: "disallowed", None: "unreachable"}[allowed]
                 if not allowed:
@@ -390,6 +391,7 @@ def run(cands: list[dict], out: Path, browser_ok: bool = True, client: Optional[
                             browser = pw.chromium.launch(executable_path=os.environ.get("PW_CHROMIUM") or None)
                         r3 = browser_step(browser, c["url"], c["expect"], robots, sub_robots)
                         keep("browser", r3)
+                        refused = bool(r3.get("pageBlocked") or r3.get("blockedByRobots") or r3["class"] == "robots")
                         xhr = next((x for x in r3.get("calls", []) if x["found"] and x["robots"] == "allowed"), None)
                         if xhr:
                             res["answer"], res["dataUrl"] = "hidden-api", xhr["url"]
@@ -399,7 +401,9 @@ def run(cands: list[dict], out: Path, browser_ok: bool = True, client: Optional[
                             res["answer"] = "challenge"
                         elif any(x["found"] for x in r3.get("calls", [])):
                             res["answer"] = "robots"  # el dato está, pero en una ruta que robots.txt prohíbe
-                    if res["answer"] is None and key:
+                    # Firecrawl carga la página en nombre del observatorio y nada revisa lo que pide después: solo
+                    # tras un navegador propio que no encontró nada que robots.txt prohíba (barrido de robots.txt).
+                    if res["answer"] is None and key and browser_ok and not refused:
                         r4 = firecrawl_step(client, c["url"], c["expect"], key)
                         keep("firecrawl", r4)
                         if r4["found"]:

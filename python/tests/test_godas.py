@@ -323,6 +323,16 @@ def test_a_month_that_fails_to_read_is_reported(live, bad):
     assert len(ev) == 1 and "2026-10" in ev[0].message and ev[0].severity == "warning"
 
 
+@pytest.mark.parametrize("location", ["https://xn--zz.example/y", "https:a.example/y"])
+def test_a_month_that_redirects_to_a_location_httpx_cannot_build_is_one_unread_month(live, location):
+    """Un ``Location`` con el que httpx no puede armar el pedido siguiente (``reach.BAD_LOCATION``) es un mes sin leer,
+    no una excepción que pierde todos los meses y se anota como error del lector."""
+    redirect = httpx.Response(302, headers={"location": location})
+    acq, log = _acquire(_fetcher(_by_month({"202609": redirect, "202610": httpx.Response(206, content=b"GOOD")})))
+    assert acq.ok and acq.data["d20_nino12"][-1]["period"] == "2026-10"
+    assert log.triples() == [("warning", "parse", "month-unread")]
+
+
 def test_missing_file_for_a_month_that_must_exist_is_reported(live):
     acq, log = _acquire(_fetcher(lambda req: httpx.Response(404)))
     ev = [e for e in log.events if e.code == "unreachable"]
