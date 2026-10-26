@@ -83,9 +83,9 @@ El PDF del comunicado se busca en este orden (`_get_communique` en
    (`data-n8n`, hasta 72 h) o la [consola de documentos](documentos-manuales.md)
    (`data-manual`, hasta 120 días). Una URL que el registro no asigna a
    Actions se lee primero de esas copias.
-2. La copia del Internet Archive de esas mismas URL (y una nueva con Save
-   Page Now si la existente tiene más de un día).
-3. El repositorio del IMARPE.
+2. El repositorio del IMARPE (su búsqueda por número y año).
+3. La copia del Internet Archive de esas mismas URL (y una nueva con Save
+   Page Now si la existente tiene más de un día y robots.txt lo permite).
 4. Cualquier copia en PDF que el Internet Archive tenga de la página de
    descarga del portal.
 
