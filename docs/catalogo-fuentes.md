@@ -67,9 +67,12 @@ un PDF): nunca se intenta pasar la verificación.
 
 El repositorio institucional del IMARPE (`repositorio.imarpe.gob.pe`,
 DSpace; cliente único en `python/enso/feeds/imarpe_repo.py`) recibe cada
-comunicado y cada informe técnico unos 3 días después de publicados, y su
-API (`/server/api`) responde a GitHub Actions: es la ruta oficial sin
-verificación. Su listado se suma al del portal y de la DHN.
+comunicado y cada informe técnico unos 3 días después de publicados: es la
+ruta oficial sin verificación. Su API (`/server/api`) no responde a GitHub
+Actions desde el 22 de octubre de 2026 (el nombre no resuelve) y sí desde el
+Perú, así que la sonda semanal asigna sus búsquedas al recolector del Perú y
+la corrida diaria las lee de esa copia. Su listado se suma al del portal y
+de la DHN.
 
 El PDF del comunicado se busca en este orden (`_get_communique` en
 `python/enso/observatory.py`):
@@ -146,8 +149,8 @@ el canal que decide quién la pide, en `registry/sources.json`.
 | IGP (`met.igp.gob.pe`) | Responde | En uso (ICEN) |
 | DHN (comunicados ENFEN) | El listado responde (también a n8n); los PDF piden verificación humana a los servidores, también a n8n y al recolector del Perú | Listado en uso; PDF del repositorio del IMARPE, la consola de documentos o el Internet Archive |
 | ENFEN (`enfen.imarpe.gob.pe`) | No resuelve el nombre (tampoco desde n8n) | Copia del recolector del Perú; réplica DHN, repositorio del IMARPE e Internet Archive |
-| IMARPE, repositorio (`repositorio.imarpe.gob.pe`) | Desde el 22 de octubre no responde a la corrida diaria en Actions (incidencias `repository-unreachable` y `bsobp-unreachable`, causa «conexión»; el mensaje trae el error de red). Su certificado no trae el intermedio: va en `enso/data/ca-intermedios.pem` | Ruta de los comunicados e informes técnicos del ENFEN y del boletín semanal BS-OBP. Sus tres búsquedas están en el registro (`imarpe-repositorio-enfen`, `imarpe-repositorio-bsobp`, sin n8n): la sonda semanal decide si las pide el recolector del Perú |
-| IMARPE, sitio web (`www.imarpe.gob.pe`) | El feed responde; la portada y la página de sección dan HTTP 403 con verificación anti-robots (se registra, no se evade). Desde n8n responden las tres | Feed en las noticias; las dos páginas las bajan n8n y el recolector del Perú como archivo, sin lector todavía |
+| IMARPE, repositorio (`repositorio.imarpe.gob.pe`) | Desde el 22 de octubre no responde a la corrida diaria en Actions (incidencias `repository-unreachable` y `bsobp-unreachable`, causa «conexión»; el mensaje trae el error de red). Su certificado no trae el intermedio: va en `enso/data/ca-intermedios.pem` | Ruta de los comunicados e informes técnicos del ENFEN y del boletín semanal BS-OBP. Sus tres búsquedas están en el registro (`imarpe-repositorio-enfen`, `imarpe-repositorio-bsobp`, sin n8n): la sonda semanal decide quién las pide; desde el 26 de octubre, el recolector del Perú (`suspected-geoblock`) |
+| IMARPE, sitio web (`www.imarpe.gob.pe`) | La portada y la página de sección dan HTTP 403 con verificación anti-robots (se registra, no se evade); el 26 de octubre también el feed. Desde n8n responden los tres | Feed en las noticias; las dos páginas las bajan n8n y el recolector del Perú como archivo, sin lector todavía |
 | SENAMHI (avisos, estaciones, boletines) | Tiempo de espera agotado | No disponible desde Actions |
 | ANA (caudales, SNIRH) | Tiempo de espera agotado | No disponible desde Actions |
 | INDECI, CENEPRED (SIGRID) | Responden | Candidatos |

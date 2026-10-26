@@ -94,8 +94,11 @@ def test_registry_file_routes_measured_peru_only_sources():
     """El registro publicado: lo que no responde desde ninguna red de EE. UU. lo pide solo el servidor del Perú."""
     reg = json.loads(registry.REGISTRY.read_text(encoding="utf-8"))
     by_id = {s["id"]: s for s in reg["sources"]}
-    for sid in ("ana-onrh", "senamhi-www-senamhi-gob-pe-p-aviso-meteorologico"):
-        assert by_id[sid]["channels"] == ["peru-server"], (sid, by_id[sid]["geoblock"])
+    # Qué URL lo son depende de la medición de cada lunes (ANA pasó a «robots-disallowed» el 26 de octubre de 2026);
+    # la regla no.
+    peru_only = [(s["id"], u, r) for s in reg["sources"] for u, r in s["by_url"].items()
+                 if r["status"] in ("geoblocked", "suspected-geoblock")]
+    assert peru_only and all(r["channels"] == ["peru-server"] for _, _, r in peru_only), peru_only
     enfen = by_id["enfen-comunicados"]
     assert enfen["by_url"][ENFEN]["channels"] == ["peru-server"] and "peru-server" in enfen["channels"]
     # Lo que el pipeline lee a diario no pasa al Perú solo porque n8n no lo alcanzó: hace falta la

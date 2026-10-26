@@ -143,6 +143,11 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
     if planned is not None and "actions" not in planned:
         raise FetchError("robots.txt no permite la ruta de GODAS" if not planned
                          else "el registro asigna GODAS a " + ", ".join(planned), [])
+    # Los rangos de bytes no pasan por ``fetcher.get``: la misma regla de robots.txt que allí (sin medición de la
+    # sonda, se lee en la corrida).
+    skip = getattr(fetcher, "_robots_skip", lambda *a: None)(godas.BASE + "/", planned)
+    if skip:
+        raise FetchError(skip, [{"url": godas.BASE + "/", "error": skip}])
     today = today or _utc_today()
     history = godas.load_history()
     todo = godas.months_to_fetch(history, today)

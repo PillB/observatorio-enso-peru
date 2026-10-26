@@ -267,6 +267,36 @@ def test_plan_and_offline_mode_make_no_request(live, plan_or_offline):
     assert log.triples() == [("warning", "fetch", "unreachable")]
 
 
+def test_godas_follows_the_robots_rule_of_the_fetcher(live):
+    """Los rangos de bytes no pasan por ``Fetcher.get``: sin el robots.txt medido por la sonda, se lee en la
+    corrida y, si prohíbe la ruta o no responde, no se pide ningún GRIB."""
+    url = godas.BASE + "/"
+
+    def run(robots_txt, known):
+        asked = []
+
+        def handler(req):
+            if req.url.path == "/robots.txt":
+                asked.append("robots")
+                return robots_txt
+            asked.append(req.url.path)
+            return httpx.Response(404)
+
+        f = _fetcher(handler, robots=True, plan={url: ["actions"]}, robots_known={url: known})
+        f.robots.client = f.client
+        acq, log = _acquire(f)
+        return asked, acq, log
+
+    asked, acq, log = run(httpx.Response(200, text="User-agent: *\nDisallow: /godas/\n"), "unknown")
+    assert asked == ["robots"] and not acq.ok and ("warning", "fetch", "unreachable") in log.triples()
+    asked, acq, _ = run(httpx.Response(503), "unknown")
+    assert asked == ["robots"] and not acq.ok
+    asked, _, _ = run(httpx.Response(404), "unknown")
+    assert asked[0] == "robots" and len(asked) > 1  # sin robots.txt: se permite todo
+    asked, _, _ = run(httpx.Response(503), "allowed")
+    assert "robots" not in asked and asked  # medido por la sonda: no se vuelve a leer
+
+
 @pytest.mark.parametrize("status", [503, 500, 429, 403])
 def test_server_outage_is_unreachable_not_a_format_change(live, status):
     acq, log = _acquire(_fetcher(lambda req: httpx.Response(status)))

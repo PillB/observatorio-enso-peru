@@ -64,9 +64,10 @@ vigencia de esos avisos en el mapa de alertas ([mapa-alertas](mapa-alertas.md)).
 Sin la copia del Perú, un aviso meteorológico queda «Sin nivel» salvo que
 su texto cite el color, y con la vigencia que diga su texto. Las demás
 páginas del SENAMHI y de la ANA se archivan, pero todavía no alimentan
-indicadores. El IMARPE sí responde: su repositorio, a GitHub Actions; su sitio
-web, a n8n (a Actions solo el feed: la portada le pide una verificación
-anti-robots).
+indicadores. Del IMARPE, el repositorio no responde a GitHub Actions desde
+el 22 de octubre de 2026 y sí desde el Perú: la sonda semanal asigna sus
+búsquedas al recolector del Perú. Su sitio web responde a n8n; a Actions le
+pide una verificación anti-robots (medido el 26 de octubre de 2026).
 
 ## ERSSTv6
 
