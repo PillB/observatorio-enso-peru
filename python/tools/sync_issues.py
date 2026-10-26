@@ -12,7 +12,9 @@ código). Por cada huella:
   comentario que indica la corrida en que dejó de ocurrir;
 * salvo los de ``STICKY`` (un cambio de formato): que ya no aparezca no
   dice que los valores estén bien, así que se comentan una sola vez (marca
-  oculta ``enso-gone`` en el cuerpo) y los cierra una persona.
+  oculta ``enso-gone`` en el cuerpo) y los cierra una persona. Si vuelve a
+  aparecer con el issue aún abierto, se comenta (editar el cuerpo no le
+  avisa a nadie) y esa corrida el cuerpo lleva la marca ``enso-again``.
 
 Con ``--dry-run`` solo lee los issues abiertos e imprime lo que haría.
 
@@ -42,6 +44,7 @@ FP_RE = re.compile(r"<!-- enso-fp:([0-9a-f]+) -->")
 COUNT_RE = re.compile(r"<!-- enso-count:(\d+) -->")
 CODE_RE = re.compile(r"\*\*Código:\*\* `([^`]+)`")
 GONE = "<!-- enso-gone -->"
+AGAIN_RE = re.compile(r"\n?<!-- enso-again:[^ ]* -->")
 
 
 def relevant(events: list[dict]) -> dict[str, list[dict]]:
@@ -53,7 +56,7 @@ def relevant(events: list[dict]) -> dict[str, list[dict]]:
     return out
 
 
-def body_for(fp: str, evs: list[dict], pub: str, run_url: str, count: int, first_seen: str) -> str:
+def body_for(fp: str, evs: list[dict], pub: str, run_url: str, count: int, first_seen: str, again: bool = False) -> str:
     e = evs[0]
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     lines = [
@@ -74,6 +77,7 @@ def body_for(fp: str, evs: list[dict], pub: str, run_url: str, count: int, first
         f"<!-- enso-fp:{fp} -->",
         f"<!-- enso-count:{count} -->",
         f"<!-- enso-first:{first_seen} -->",
+        f"<!-- enso-again:{pub} -->" if again else None,
     ]
     return "\n".join(l for l in lines if l is not None)
 
@@ -122,20 +126,30 @@ def sync(gh: GitHub, report: dict, run_url: str, dry: bool = False) -> dict:
         m = FP_RE.search(i.get("body") or "")
         if m:
             existing[m.group(1)] = i
-    created = updated = closed = noted = 0
+    created = updated = closed = noted = again = 0
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     plan = print if dry else (lambda *a: None)
     for fp, evs in groups.items():
         e = evs[0]
         title = f"[datos] {e['source']}: {e['code']}"
         if fp in existing:
-            body0 = existing[fp].get("body") or ""
+            n, body0 = existing[fp]["number"], existing[fp].get("body") or ""
             cm = COUNT_RE.search(body0)
             first = re.search(r"<!-- enso-first:([^ ]+) -->", body0)
-            body = body_for(fp, evs, pub, run_url, (int(cm.group(1)) if cm else 1) + 1, first.group(1) if first else today)
-            plan(f"actualizar #{existing[fp]['number']} {title}")
+            back = code_of(existing[fp]) in STICKY and GONE in body0
+            body = body_for(fp, evs, pub, run_url, (int(cm.group(1)) if cm else 1) + 1, first.group(1) if first else today,
+                            again=back)
+            if back:
+                # Ya no se veía y vuelve, con el issue abierto: un comentario avisa a quien lo sigue; el cuerpo no.
+                plan(f"comentar #{n} {title} (volvió a aparecer)")
+                if not dry:
+                    gh.req("POST", f"/issues/{n}/comments", json={"body": "\n".join([
+                        f"El cambio de formato volvió a detectarse en la publicación `{pub}`:", "",
+                        *[f"> {x['message']}" for x in evs[:5]], "", run_url]).strip()})
+                again += 1
+            plan(f"actualizar #{n} {title}")
             if not dry:
-                gh.req("PATCH", f"/issues/{existing[fp]['number']}", json={"body": body})
+                gh.req("PATCH", f"/issues/{n}", json={"body": body})
             updated += 1
         else:
             plan(f"abrir {title} ({e['severity']}): {e['message'][:200]}")
@@ -157,7 +171,7 @@ def sync(gh: GitHub, report: dict, run_url: str, dry: bool = False) -> dict:
                     f"El cambio de formato ya no se detectó en la publicación `{pub}`, pero este issue no se cierra "
                     "solo: revise que los valores publicados de la fuente sean coherentes y ciérrelo a mano.\n\n"
                     f"{run_url}")})
-                gh.req("PATCH", f"/issues/{n}", json={"body": f"{body0}\n{GONE}"})
+                gh.req("PATCH", f"/issues/{n}", json={"body": f"{AGAIN_RE.sub('', body0)}\n{GONE}"})
             noted += 1
             continue
         plan(f"cerrar #{n} {issue.get('title')}")
@@ -166,7 +180,7 @@ def sync(gh: GitHub, report: dict, run_url: str, dry: bool = False) -> dict:
                    json={"body": f"La incidencia ya no apareció en la publicación `{pub}`. Se cierra automáticamente.\n\n{run_url}"})
             gh.req("PATCH", f"/issues/{n}", json={"state": "closed", "state_reason": "completed"})
         closed += 1
-    return {"created": created, "updated": updated, "closed": closed, "noted": noted}
+    return {"created": created, "updated": updated, "closed": closed, "noted": noted, "again": again}
 
 
 def main(argv=None) -> int:

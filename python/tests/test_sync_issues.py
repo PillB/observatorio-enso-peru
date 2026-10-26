@@ -51,7 +51,7 @@ def test_format_drift_stays_open_until_a_person_closes_it():
     los valores. Ahora se comenta una sola vez y queda abierto; un aviso común se cierra como siempre."""
     gh = FakeGitHub([_issue(29, DRIFT), _issue(30, STALE)])
     res = S.sync(gh, {"publicationId": "pub-2", "events": []}, "https://run/2")
-    assert res == {"created": 0, "updated": 0, "closed": 1, "noted": 1}
+    assert res == {"created": 0, "updated": 0, "closed": 1, "noted": 1, "again": 0}
     assert gh.issues[29]["state"] == "open" and gh.issues[30]["state"] == "closed"
     comment = next(j["body"] for m, p, j in gh.calls if p == "/issues/29/comments")
     assert "pub-2" in comment and "ciérrelo a mano" in comment and "https://run/2" in comment
@@ -66,6 +66,35 @@ def test_format_drift_stays_open_until_a_person_closes_it():
     gh.calls.clear()
     S.sync(gh, {"publicationId": "pub-5", "events": []}, "")
     assert gh.writes(29) == ["POST", "PATCH"] and gh.issues[29]["state"] == "open"
+    assert "enso-again" not in gh.issues[29]["body"]
+
+
+def test_a_format_drift_that_comes_back_on_an_open_issue_is_commented():
+    """Revisión: un cambio de formato que ya no se veía (marca enso-gone) y vuelve con el issue aún abierto solo
+    editaba el cuerpo, y editar no le avisa a nadie. Ahora se comenta (una vez por regreso) y el cuerpo de esa
+    corrida lleva la marca enso-again; mientras siga apareciendo, no se repite."""
+    gh = FakeGitHub([_issue(29, DRIFT)])
+    S.sync(gh, {"publicationId": "pub-2", "events": []}, "")
+    gh.calls.clear()
+    res = S.sync(gh, {"publicationId": "pub-3", "events": [DRIFT]}, "https://run/3")
+    assert res == {"created": 0, "updated": 1, "closed": 0, "noted": 0, "again": 1}
+    assert [(m, p) for m, p, _ in gh.calls] == [("POST", "/issues/29/comments"), ("PATCH", "/issues/29")]
+    comment = gh.calls[0][2]["body"]
+    assert "volvió a detectarse" in comment and "pub-3" in comment and DRIFT["message"] in comment
+    assert comment.endswith("https://run/3")
+    body = gh.issues[29]["body"]
+    assert S.GONE not in body and "<!-- enso-again:pub-3 -->" in body and "<!-- enso-count:4 -->" in body
+    gh.calls.clear()
+    assert S.sync(gh, {"publicationId": "pub-4", "events": [DRIFT]}, "")["again"] == 0
+    assert gh.writes(29) == ["PATCH"] and "enso-again" not in gh.issues[29]["body"]
+    # Si vuelve y al día siguiente ya no aparece, la marca de regreso no queda en el cuerpo.
+    S.sync(gh, {"publicationId": "pub-5", "events": []}, "")
+    S.sync(gh, {"publicationId": "pub-6", "events": [DRIFT]}, "")
+    S.sync(gh, {"publicationId": "pub-7", "events": []}, "")
+    assert gh.issues[29]["body"].endswith(S.GONE) and "enso-again" not in gh.issues[29]["body"]
+    # Un aviso común que sigue igual no comenta.
+    gh = FakeGitHub([_issue(30, STALE)])
+    assert S.sync(gh, {"publicationId": "pub-2", "events": [STALE]}, "")["again"] == 0 and gh.writes(30) == ["PATCH"]
 
 
 def test_a_new_format_drift_issue_says_it_is_closed_by_hand():
@@ -80,7 +109,7 @@ def test_dry_run_reads_but_never_writes_and_prints_the_plan(capsys):
     gh = FakeGitHub([_issue(29, DRIFT), _issue(30, STALE), _issue(31, _event("igp-icen", "unreachable", "fetch"))])
     report = {"publicationId": "pub-2", "events": [_event("igp-icen", "unreachable", "fetch"), _event("dhn", "nuevo")]}
     res = S.sync(gh, report, "", dry=True)
-    assert res == {"created": 1, "updated": 1, "closed": 1, "noted": 1}
+    assert res == {"created": 1, "updated": 1, "closed": 1, "noted": 1, "again": 0}
     assert gh.calls == []
     out = capsys.readouterr().out
     assert "abrir [datos] dhn: nuevo" in out and "actualizar #31" in out and "cerrar #30" in out
@@ -98,3 +127,11 @@ def test_main_dry_run_does_not_create_the_label(tmp_path, monkeypatch, capsys):
     assert S.main(["--report", str(report), "--dry-run"]) == 0
     assert gh.calls == [] and gh.issues[30]["state"] == "open"
     assert json.loads(capsys.readouterr().out.strip().splitlines()[-1])["closed"] == 1
+
+
+def test_dry_run_shows_a_format_drift_that_comes_back(capsys):
+    gh = FakeGitHub([_issue(29, DRIFT)])
+    gh.issues[29]["body"] += "\n" + S.GONE
+    res = S.sync(gh, {"publicationId": "pub-2", "events": [DRIFT]}, "", dry=True)
+    assert res["again"] == 1 and gh.calls == []
+    assert "comentar #29 [datos] cpc-roni: format-drift (volvió a aparecer)" in capsys.readouterr().out
