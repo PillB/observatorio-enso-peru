@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:02:49 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 26 Oct 2026 18:53:29 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Madre de Dios: dos detenidos durante operativo contra minería ilegal en Tambopata]]></title>
+        <description><![CDATA[El operativo culminó con la destrucción de tres motores de succión, tres campamentos mineros ilegales, ocho generadores de energía eléctrica y otros implementos utilizados para la extracción ilegal de oro.]]></description>
+        <pubDate>Sun, 25 Oct 2026 11:43:03 -0500</pubDate>
+        <link>https://rpp.pe/peru/madre-de-dios/madre-de-dios-dos-detenidos-durante-operativo-contra-mineria-ilegal-en-tambopata-noticia-1714401</link>
+        <guid>1714401</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/25/26-10-25-10-58-03-6989-1922439mp4_1922440.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Madre de Dios, tambopata, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Madre de Dios: PNP destruye equipos y campamentos de la minería ilegal valorizados en más de S/ 1,3 millones]]></title>
         <description><![CDATA[La operación se ejecutó en el sector Balata, distrito de Inambari, provincia de Tambopata, con la participación de la Dirección de Medio Ambiente (Dirmeamb) y otras unidades especializadas de la PNP.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2024/02/24/sborde-2024-02-24-15-04-40-6731-1543867mp4_1543868.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Madre de Dios, río Acre, lluvias, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Indecopi sancionó a siete empresas y personas naturales que concertaron precio de agua embotellada en Puerto Maldonado]]></title>
-        <description><![CDATA[Otros ocho investigados se acogieron al “compromiso de cese” y acordaron entregar bidones de agua a consumidores afectados e instituciones con fines sociales en <a data-mce-href="https://rpp.pe/noticias/madre-de-dios" href="https://rpp.pe/noticias/madre-de-dios">Madre de Dios</a>.]]></description>
-        <pubDate>Wed, 03 Jan 2024 19:51:30 -0500</pubDate>
-        <link>https://rpp.pe/economia/economia/indecopi-sanciono-a-siete-empresas-y-personas-naturales-que-concertaron-precio-de-agua-embotellada-en-puerto-maldonado-noticia-1525437</link>
-        <guid>1525437</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2024/01/03/285428_1520773.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Indecopi, Concertación de precios, Agua embotellada, Puerto Maldonado, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
