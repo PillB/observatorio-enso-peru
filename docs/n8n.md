@@ -55,6 +55,26 @@ documentos que el registro indica seguir (`follow`) y los PDF de los
 comunicados del ENFEN deducidos de sus listados (los dos últimos y los dos
 números siguientes), con el mismo criterio que el pipeline.
 
+### robots.txt
+
+El registro anota, por URL, qué dice su `robots.txt` (`robots`). Si dice
+`disallowed`, n8n no la pide. Si dice `unknown` (nadie pudo leerlo, por
+ejemplo porque a GitHub Actions le responde una verificación), n8n lee ese
+`robots.txt` en la primera pasada, con las reglas de `python/enso/reach.py`
+(RFC 9309; `n8n/lib/robots.js`), y pide la URL en la segunda pasada solo si
+lo permite:
+
+| Respuesta del `robots.txt` | `robots` | ¿Se pide la URL? |
+|---|---|---|
+| 2xx con reglas (gana la más larga; ante un empate, `Allow`) | `allowed` o `disallowed` | Según la regla |
+| 2xx sin reglas (una página HTML), 3xx o 4xx que no sea una verificación | `absent` (o `allowed`) | Sí |
+| 429, 5xx, sin respuesta o una verificación antirobots | `unreachable` | No: sin saber, no se pide nada a ese servidor |
+
+El veredicto queda en la entrada de `index.json` de la URL pedida (`robots`)
+o, si no se pidió, en `not_requested`; en la validación, en la columna
+`robots` (fila `NO PEDIDA` si no se pidió). La medición siguiente lo pasa al
+registro.
+
 ## Paso 1 — Validar (unos 15 minutos, sin credenciales)
 
 Lo hace el colega que administra el n8n:
@@ -106,7 +126,7 @@ sigue funcionando (todo va por la API, nada por `raw.githubusercontent.com`).
    | `api` | `https://api.github.com` | API de GitHub |
    | `data_branch` | `data-n8n` | Rama donde se publican las copias (se crea sola) |
    | `registry_ref`, `registry_path` | `main`, `registry/sources.json` | De dónde se lee el registro. Si no se puede leer, se usa la copia incluida en el flujo |
-   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. En ningún alcance se piden: las URL que `robots.txt` prohíbe o cuyo `robots.txt` nadie pudo leer (`robots: unknown`; el pipeline las toma de las copias), los feeds `reader` (solo Actions, una vez al día), las URL sin canales y las fuentes con `n8n: false` (las búsquedas del repositorio del IMARPE) |
+   | `scope` | `n8n` | `n8n`: solo las fuentes que el registro asigna a n8n; `todas`: también mide las del servidor del Perú. En ningún alcance se piden: las URL que `robots.txt` prohíbe, los feeds `reader` (solo Actions, una vez al día), las URL sin canales y las fuentes con `n8n: false` (las búsquedas del repositorio del IMARPE). Las URL cuyo `robots.txt` nadie pudo leer al medir (`robots: unknown`) se piden solo si n8n lee ese `robots.txt` y lo permite (ver «robots.txt» más arriba) |
    | `host_label`, `egress` | `n8n-aws`, `aws-us-east-1` | Se anotan en cada copia |
    | `carry_hours` | `72` | Si una URL falla, se conserva su última copia válida hasta estas horas |
    | `max_file_mb` | `8` | Respuestas más grandes no se guardan |
@@ -200,7 +220,7 @@ Rama `data-n8n`, reemplazada en cada corrida (un commit sin padre: la rama
 guarda solo la última copia y el repositorio no crece; lo que el sitio usa
 se archiva en `data-archive`):
 
-- `index.json` (`enso-relay/1`): una entrada por URL con `status`, `verdict`, `reach`, `block`, `content_type`, `bytes`, `fetched_at`, `sha256`, `git_blob` y `file`. Las entradas que fallaron también están, con su motivo: es la medición desde AWS.
+- `index.json` (`enso-relay/1`): una entrada por URL con `status`, `verdict`, `reach`, `block`, `content_type`, `bytes`, `fetched_at`, `sha256`, `git_blob` y `file`. Las entradas que fallaron también están, con su motivo: es la medición desde AWS. `robots` en las URL cuyo `robots.txt` leyó n8n, y `not_requested` con las que no pidió por su `robots.txt`.
 - `files/<sha256[:16]>.<ext>`: el cuerpo original de cada respuesta válida.
 - `heartbeat.json` (`enso-relay-heartbeat/1`, el mismo formato que el recolector del Perú): `result` es `ok` si algo respondió en esta corrida y `sin-fuentes` si nada respondió (n8n funciona, las fuentes no).
 

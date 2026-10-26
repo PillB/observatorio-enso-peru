@@ -15,12 +15,18 @@ const add = (t) => {
 };
 for (const it of items) {
   const j = it.json;
-  if (!j.cls.ok && j.cls.transient) add({ id: j.id, group: j.group, name: j.name, url: j.url, expect: j.expect });
+  if (j.role === 'robots') {
+    // Las URL que su robots.txt permite (o que no tiene reglas) se piden ahora; un robots.txt
+    // que no respondió no se reintenta: sin saber, no se pide nada a ese servidor.
+    for (const { pass, ...d } of j.deferred) if (d.robots === 'allowed' || d.robots === 'absent') add(d);
+    continue;
+  }
+  if (!j.cls.ok && j.cls.transient) add({ id: j.id, group: j.group, name: j.name, url: j.url, expect: j.expect, robots: j.robots });
 }
 const pages = [];
 for (let i = 0; i < items.length; i++) {
   const j = items[i].json;
-  if (!j.cls.ok || !items[i].binary || !items[i].binary.data) continue;
+  if (j.role === 'robots' || !j.cls.ok || !items[i].binary || !items[i].binary.data) continue;
   const isEnfen = j.group === 'enfen' || /^enfen-comunicados/.test(j.id);
   if (!isEnfen && !j.follow) continue;
   const text = utf8Decode(new Uint8Array(await this.helpers.getBinaryDataBuffer(i, 'data')));
