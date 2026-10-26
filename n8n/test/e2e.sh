@@ -78,6 +78,15 @@ assert idx["collector"]["kind"] == "n8n"
 assert idx["collector"].get("token_expires_at") == "2027-05-10T00:00:00+00:00", idx["collector"].get("token_expires_at")
 assert hb["collector"].get("token_expires_at") == idx["collector"]["token_expires_at"]
 assert hb["schema"] == "enso-relay-heartbeat/1", hb
+# Las URL «robots: unknown» del filtro: n8n leyó su robots.txt y la pidió (robots en la entrada) o no (not_requested).
+reg = json.loads(Path("registry/sources.json").read_text(encoding="utf-8"))
+unknown = {u for src in reg["sources"] if "enfen" in src["id"] or src.get("group") == "enfen" if src.get("n8n") is not False
+           for u, r in (src.get("by_url") or {}).items()
+           if r.get("robots") == "unknown" and "n8n" in (r.get("channels") or []) and not r.get("reader")}
+decided = {e["url"]: e["robots"] for e in idx["entries"] if e.get("robots")}
+decided |= {e["url"]: e["robots"] for e in idx.get("not_requested") or []}
+assert unknown <= set(decided), f"robots.txt sin leer para: {sorted(unknown - set(decided))}"
+print("robots.txt leído por n8n:", json.dumps(decided))
 missing = [e["url"] for e in ok if relay.get(e["url"]) is None]
 assert not missing, f"el pipeline no lee estas copias: {missing[:5]}"
 s1 = json.loads((work / "stats-1.json").read_text())
