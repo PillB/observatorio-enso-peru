@@ -137,7 +137,8 @@
   <text class="ar-m" x="404" y="183" font-size="10.5">Python 3 · httpx · git · tools.collector_service</text>
   <rect class="ar-col" x="748" y="141" width="300" height="1104.5" rx="10"/>
   <text class="ar-h" x="760" y="166" font-size="15">Fuentes en el Perú</text>
-  <text class="ar-m" x="760" y="183" font-size="10.5">16 URL y los PDF del ENFEN, con robots.txt en vivo</text>
+  <text class="ar-m" x="760" y="183" font-size="10.5">lista fija, URL peru-server y PDF del ENFEN;</text>
+  <text class="ar-m" x="760" y="197" font-size="10.5">robots.txt en vivo</text>
   <rect class="ar-col" x="1104" y="141" width="300" height="1104.5" rx="10"/>
   <text class="ar-h" x="1116" y="166" font-size="15">En GitHub</text>
   <text class="ar-m" x="1116" y="183" font-size="10.5">rama data-peru · repository_dispatch</text>
@@ -453,16 +454,16 @@
     <text class="ar-s" x="770" y="556.7" font-size="11">responde a la nube.</text>
   </g>
   <g class="ar-node-g" id="a2-n-src-pages" data-node="src-pages">
-    <title>SENAMHI, ANA, IMARPE…. Las 13 páginas de su lista fija: 6 solo responden desde el Perú (4 del SENAMHI y 2 de la ANA). La tabla de avisos del SENAMHI da el nivel a sus avisos.</title>
+    <title>SENAMHI, ANA, IMARPE…. Las 13 páginas de su lista fija, guardadas como respaldo; las geobloqueadas según el registro solo llegan por aquí. La tabla de avisos del SENAMHI da el nivel a sus avisos.</title>
     <rect class="ar-node ar-g-sources" x="758" y="600.4" width="280" height="120.7" rx="8"/>
     <rect class="ar-f-sources" x="758" y="608.4" width="4" height="104.7" rx="2"/>
     <rect class="ar-tile ar-f-sources" x="770" y="610.4" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-sources" transform="translate(773 613.4)"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></g>
     <text class="ar-t" x="808" y="629.9" font-size="12.5">SENAMHI, ANA, IMARPE…</text>
-    <text class="ar-s" x="770" y="661.9" font-size="11">Las 13 páginas de su lista fija: 6 solo</text>
-    <text class="ar-s" x="770" y="677" font-size="11">responden desde el Perú (4 del SENAMHI y 2</text>
-    <text class="ar-s" x="770" y="692.2" font-size="11">de la ANA). La tabla de avisos del SENAMHI</text>
-    <text class="ar-s" x="770" y="707.4" font-size="11">da el nivel a sus avisos.</text>
+    <text class="ar-s" x="770" y="661.9" font-size="11">Las 13 páginas de su lista fija, guardadas</text>
+    <text class="ar-s" x="770" y="677" font-size="11">como respaldo; las geobloqueadas según el</text>
+    <text class="ar-s" x="770" y="692.2" font-size="11">registro solo llegan por aquí. La tabla de</text>
+    <text class="ar-s" x="770" y="707.4" font-size="11">avisos del SENAMHI da el nivel a sus avisos.</text>
   </g>
   <g class="ar-node-g" id="a2-n-branch" data-node="branch">
     <title>Rama data-peru. Cada subida reemplaza el contenido; el historial de git guarda las anteriores. El pipeline usa copias de hasta 7 días y avisa a las 36 h. Tecnología: git push, enso-relay/1.</title>

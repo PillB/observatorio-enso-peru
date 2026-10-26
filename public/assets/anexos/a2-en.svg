@@ -137,7 +137,8 @@
   <text class="ar-m" x="404" y="183" font-size="10.5">Python 3 · httpx · git · tools.collector_service</text>
   <rect class="ar-col" x="748" y="141" width="300" height="1119.7" rx="10"/>
   <text class="ar-h" x="760" y="166" font-size="15">Sources in Peru</text>
-  <text class="ar-m" x="760" y="183" font-size="10.5">16 URLs and the ENFEN PDFs, with live robots.txt</text>
+  <text class="ar-m" x="760" y="183" font-size="10.5">fixed list, peru-server URLs and ENFEN PDFs; live</text>
+  <text class="ar-m" x="760" y="197" font-size="10.5">robots.txt</text>
   <rect class="ar-col" x="1104" y="141" width="300" height="1119.7" rx="10"/>
   <text class="ar-h" x="1116" y="166" font-size="15">On GitHub</text>
   <text class="ar-m" x="1116" y="183" font-size="10.5">data-peru branch · repository_dispatch</text>
@@ -453,16 +454,16 @@
     <text class="ar-s" x="770" y="556.7" font-size="11">answer the cloud either.</text>
   </g>
   <g class="ar-node-g" id="a2-n-src-pages" data-node="src-pages">
-    <title>SENAMHI, ANA, IMARPE…. The 13 pages on its fixed list: 6 only answer from Peru (4 from SENAMHI and 2 from ANA). The SENAMHI warning table gives its warnings their level.</title>
+    <title>SENAMHI, ANA, IMARPE…. The 13 pages on its fixed list, kept as a backup; those the registry marks geoblocked only arrive this way. The SENAMHI warning table gives its warnings their level.</title>
     <rect class="ar-node ar-g-sources" x="758" y="600.4" width="280" height="120.7" rx="8"/>
     <rect class="ar-f-sources" x="758" y="608.4" width="4" height="104.7" rx="2"/>
     <rect class="ar-tile ar-f-sources" x="770" y="610.4" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-sources" transform="translate(773 613.4)"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4"/></g>
     <text class="ar-t" x="808" y="629.9" font-size="12.5">SENAMHI, ANA, IMARPE…</text>
-    <text class="ar-s" x="770" y="661.9" font-size="11">The 13 pages on its fixed list: 6 only answer</text>
-    <text class="ar-s" x="770" y="677" font-size="11">from Peru (4 from SENAMHI and 2 from ANA).</text>
-    <text class="ar-s" x="770" y="692.2" font-size="11">The SENAMHI warning table gives its</text>
-    <text class="ar-s" x="770" y="707.4" font-size="11">warnings their level.</text>
+    <text class="ar-s" x="770" y="661.9" font-size="11">The 13 pages on its fixed list, kept as a</text>
+    <text class="ar-s" x="770" y="677" font-size="11">backup; those the registry marks geoblocked</text>
+    <text class="ar-s" x="770" y="692.2" font-size="11">only arrive this way. The SENAMHI warning</text>
+    <text class="ar-s" x="770" y="707.4" font-size="11">table gives its warnings their level.</text>
   </g>
   <g class="ar-node-g" id="a2-n-branch" data-node="branch">
     <title>data-peru branch. Each push replaces the contents; git history keeps the previous ones. The pipeline uses copies up to 7 days old and warns at 36 h. Technology: git push, enso-relay/1.</title>

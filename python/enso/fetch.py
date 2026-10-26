@@ -56,7 +56,7 @@ class TooSlow(httpx.TransportError):
 class Response:
     url: str
     body: bytes
-    channel: str  # "direct" | "mirror" | "relay-peru" | "relay-n8n" | "archive" | "archive-fresh"
+    channel: str  # "direct" | "mirror" | "relay-peru" | "relay-n8n" | "relay-manual" | "archive" | "archive-fresh"
     status: int
     content_type: str = ""
     last_modified: str = ""

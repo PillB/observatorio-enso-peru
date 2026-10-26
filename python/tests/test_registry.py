@@ -301,15 +301,14 @@ def test_the_registry_says_who_reads_each_peru_only_page():
 
 
 def test_architecture_model_counts_the_peru_pages_the_registry_has():
-    """El diagrama dice cuántas páginas guarda el Perú y cuántas baja también n8n: deben ser las del registro."""
+    """El diagrama dice cuántas páginas del Estado guarda el Perú: las que el código pone en el registro. Cuántas
+    baja también n8n depende de la medición de cada lunes y no se escribe en el diagrama."""
     import re
     from pathlib import Path
 
     root = Path(__file__).resolve().parents[2]
     model = json.loads((root / "docs" / "arquitectura.json").read_text(encoding="utf-8"))
     node = next(n for n in model["full"]["nodes"] if n["id"] == "peru-archive-pages")
-    current = json.loads((root / "registry" / "sources.json").read_text(encoding="utf-8"))  # con lo medido
-    pages = [s for s in current["sources"] if "se archiva desde el Perú" in s.get("notes", "")]
-    n8n = [s for s in pages if "n8n" in (s.get("channels") or [])]
+    pages = [s for s in registry.build(reach={})["sources"] if "se archiva desde el Perú" in s.get("notes", "")]
     assert int(re.search(r"(\d+) URL de la lista fija", node["details_es"])[1]) == len(pages)
-    assert int(re.search(r"Las otras (\d+)", node["details_es"])[1]) == len(n8n)
+    assert not re.search(r"Las otras \d+", node["details_es"]), "lo medido no se escribe en el diagrama"
