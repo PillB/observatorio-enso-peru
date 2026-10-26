@@ -1220,6 +1220,12 @@ def test_save_page_now_only_where_robots_txt_allows(monkeypatch):
     assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True), PAGE) == []
     assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True), "https://ana.example.pe/datos/") == [
         "https://web.archive.org/save/https://ana.example.pe/datos/"]
+    # Revisión: el comunicado pide la copia nueva por ``archived_copy``, sin pasar por ``get``; la regla es la misma.
+    from enso.observatory import archived_copy
+
+    asked.clear()
+    archived_copy(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True), [PAGE], ("pdf",), save=True)
+    assert not [u for u in asked if "/save/" in u]
 
 
 def test_imarpe_repository_search_respects_robots_txt(monkeypatch):

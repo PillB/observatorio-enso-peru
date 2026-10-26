@@ -150,6 +150,16 @@ describe('vigilante: antigüedad del sitio (como antes)', () => {
     assert.ok(bodies[1].includes('enso-fp:collector-silent-data-peru'));
   });
 
+  it('una corrida de prueba en otra rama (no despliega) no impide relanzar main', async () => {
+    const branchRun = { head_branch: 'claude/x', event: 'workflow_dispatch', status: 'in_progress', created_at: ago(1) };
+    const f = fake({ runs: { 'observatory.yml': [branchRun] } });
+    await go(f, core(), { fetch: site(40) });
+    assert.deepEqual(f.calls.filter((c) => c[0] === 'dispatch'), [['dispatch', 'main', 'observatory.yml']]);
+    const g = fake({ runs: { 'observatory.yml': [{ ...branchRun, head_branch: 'main' }] } });
+    await go(g, core(), { fetch: site(40) });
+    assert.deepEqual(g.calls.filter((c) => c[0] === 'dispatch'), []);
+  });
+
   it('un sitio al día cierra el issue del sitio atrasado', async () => {
     const f = fake({ issues: [{ number: 3, body: '<!-- enso-fp:site-stale -->' }] });
     await go(f);

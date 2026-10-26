@@ -290,11 +290,14 @@ def test_godas_follows_the_robots_rule_of_the_fetcher(live):
     asked, acq, log = run(httpx.Response(200, text="User-agent: *\nDisallow: /godas/\n"), "unknown")
     assert asked == ["robots"] and not acq.ok and ("warning", "fetch", "unreachable") in log.triples()
     asked, acq, _ = run(httpx.Response(503), "unknown")
-    assert asked == ["robots"] and not acq.ok
+    assert asked == ["robots", "robots"] and not acq.ok  # un fallo pasajero se reintenta una vez
     asked, _, _ = run(httpx.Response(404), "unknown")
     assert asked[0] == "robots" and len(asked) > 1  # sin robots.txt: se permite todo
     asked, _, _ = run(httpx.Response(503), "allowed")
-    assert "robots" not in asked and asked  # medido por la sonda: no se vuelve a leer
+    assert asked[:2] == ["robots", "robots"] and len(asked) > 2  # medido por la sonda: vale aunque no responda
+    # Un robots.txt que prohíbe los GRIB y no el directorio.
+    asked, _, log = run(httpx.Response(200, text="User-agent: *\nDisallow: /godas/monthly/godas.M.\n"), "allowed")
+    assert asked == ["robots"] and ("warning", "fetch", "unreachable") in log.triples()  # se publica el histórico
 
 
 @pytest.mark.parametrize("status", [503, 500, 429, 403])

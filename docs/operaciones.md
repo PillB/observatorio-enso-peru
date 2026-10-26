@@ -20,7 +20,8 @@ las que piden el recolector del Perú (al subir su copia, entre las 21:00 y las
 23:30 de Lima), la consola de documentos (tras cada subida,
 [documentos-manuales](documentos-manuales.md)) o n8n (22:50, si se activa su
 aviso) comparten el grupo de concurrencia `enso-production-publication` sin
-cancelar la que está en curso.
+cancelar la que está en curso. Una corrida a mano en otra rama (que no despliega) va a su propio grupo,
+`enso-test-<rama>`: en el de producción, al quedar en espera, cancelaría la de `main` que esperaba.
 Una copia que llega tarde espera a que termine la publicación y la siguiente
 corrida la usa.
 

@@ -256,7 +256,7 @@ def test_publication_runs_are_serialized():
     import yaml
 
     wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
-    assert wf["concurrency"] == {"group": "enso-production-publication", "cancel-in-progress": False}
+    assert wf["concurrency"] == {"group": "${{ github.ref == 'refs/heads/main' && 'enso-production-publication' || format('enso-test-{0}', github.ref) }}", "cancel-in-progress": False}
     on = wf[True] if True in wf else wf["on"]  # PyYAML lee «on» como verdadero
     assert on["repository_dispatch"]["types"] == ["enso-refresh"] and "workflow_dispatch" in on
     steps = {s.get("id"): s for s in wf["jobs"]["build"]["steps"] if s.get("id")}
@@ -272,6 +272,40 @@ def _rules(name: str):
     from enso.reach import RobotRules
 
     return RobotRules((ROBOTS / f"robots-{name}.http.txt").read_text(encoding="utf-8"), agent="Observatorio-ENSO-Peru")
+
+
+def test_robots_txt_with_a_byte_order_mark_keeps_its_first_group():
+    """Revisión: con BOM al inicio, la primera línea no era «User-agent» y sus reglas no contaban (todo permitido)."""
+    from enso.reach import RobotRules
+
+    for text in ("\ufeffUser-agent: *\nDisallow: /datos/\n", "User-agent: *\nDisallow: /datos/\n"):
+        rules = RobotRules(text, agent="Observatorio-ENSO-Peru")
+        assert not rules.allowed("https://a.gob.pe/datos/x.csv") and rules.allowed("https://a.gob.pe/otra")
+
+
+def test_the_fetcher_retries_a_transient_robots_txt_failure_once():
+    """Revisión: robots.txt se lee una vez por servidor y corrida; un 503 pasajero dejaba sin pedir, toda la corrida,
+    las URL de ese servidor que el registro no mide (los PDF del comunicado y del informe). Una verificación no se
+    reintenta."""
+    import httpx
+
+    from enso.fetch import Fetcher
+
+    def run(answers):
+        seen = []
+
+        def handler(req):
+            seen.append(req.url.path)
+            return answers[min(len(seen), len(answers)) - 1]
+
+        f = Fetcher(polite_delay=0, robots=True)
+        f.client = f.robots.client = httpx.Client(transport=httpx.MockTransport(handler))
+        return f.robots.allowed("https://www.dhn.mil.pe/Archivos/x.pdf"), len(seen)
+
+    assert run([httpx.Response(503), httpx.Response(200, text="User-agent: *\nAllow: /\n")]) == (True, 2)
+    assert run([httpx.Response(503)]) == (None, 2)
+    assert run([httpx.Response(403, headers={"cf-mitigated": "challenge"})]) == (None, 1)
+    assert run([httpx.Response(404)]) == (True, 1)
 
 
 def test_gobpe_feeds_respect_its_robots_txt():
@@ -621,8 +655,8 @@ def test_a_previous_site_that_does_not_answer_is_asked_once_per_file(monkeypatch
 
 
 def test_a_failed_read_that_is_not_carried_does_not_cut_the_retries(monkeypatch):
-    """Revisión: un pedido de un solo intento sin respuesta (p. ej. imarpe-bsobp.json, justo antes de las noticias, o
-    manual-needed.json, antes de escribir) daba el sitio por caído: news/feeds.json y la copia del comunicado se
+    """Revisión: un pedido de un solo intento sin respuesta (p. ej. manual-needed.json, antes de escribir; el
+    historial imarpe-bsobp.json ahora se lee como arrastrado) daba el sitio por caído: news/feeds.json y la copia del comunicado se
     pedían una sola vez. Solo lo arrastrado decide si el sitio está caído, y las noticias piden siempre sus 3."""
     monkeypatch.setattr(obs.time, "sleep", lambda s: None)
     calls = []
@@ -982,7 +1016,7 @@ def _probe_commit(tmp_path: Path, on_main):
     git("push", "-q", str(origin), "main", cwd=seed)
     wf = yaml.safe_load((obs.REPO / ".github" / "workflows" / "probe-sources.yml").read_text(encoding="utf-8"))
     run = next(st for st in wf["jobs"]["probe"]["steps"] if st.get("name") == "Commit")["run"]
-    run = run.replace("${{ github.event.repository.default_branch }}", "main")
+    run = run.replace("${{ github.event.repository.default_branch || 'main' }}", "main")
     fake = tmp_path / "bin"  # sin esperas entre reintentos
     fake.mkdir()
     (fake / "sleep").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")

@@ -34,8 +34,10 @@ on:
 permissions:
   contents: read
 
+# Solo main publica: una corrida de prueba en otra rama (que no despliega) va a su propio grupo; en el de
+# producción, al quedar en espera, cancelaría la corrida de main que esperaba.
 concurrency:
-  group: enso-production-publication
+  group: ${{ github.ref == 'refs/heads/main' && 'enso-production-publication' || format('enso-test-{0}', github.ref) }}
   cancel-in-progress: false
 
 env:

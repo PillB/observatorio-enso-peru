@@ -64,12 +64,15 @@ async function checkSite({ github, context, core, fetch, env, now }) {
     if (prev) await closeIssue(github, context, prev, `El sitio vuelve a estar al día (publicación \`${pub}\`). Se cierra automáticamente.`);
     return;
   }
-  const { data: runs } = await github.rest.actions.listWorkflowRuns({ ...context.repo, workflow_id: WORKFLOW, per_page: 5 });
-  const busy = runs.workflow_runs.some((r) => BUSY.includes(r.status));
-  const recent = runs.workflow_runs.find((r) => r.event === 'workflow_dispatch' && now - Date.parse(r.created_at) < 6 * 36e5);
+  // Solo las corridas de la rama que publica: una de prueba en otra rama no despliega.
+  const branch = context.payload.repository?.default_branch || 'main';
+  const { data } = await github.rest.actions.listWorkflowRuns({ ...context.repo, workflow_id: WORKFLOW, branch, per_page: 5 });
+  const runs = data.workflow_runs.filter((r) => r.head_branch === branch);
+  const busy = runs.some((r) => BUSY.includes(r.status));
+  const recent = runs.find((r) => r.event === 'workflow_dispatch' && now - Date.parse(r.created_at) < 6 * 36e5);
   let action = 'ya hay una corrida en curso';
   if (!busy && !recent) {
-    await github.rest.actions.createWorkflowDispatch({ ...context.repo, workflow_id: WORKFLOW, ref: context.payload.repository?.default_branch || 'main' });
+    await github.rest.actions.createWorkflowDispatch({ ...context.repo, workflow_id: WORKFLOW, ref: branch });
     action = 'se relanzó la actualización';
   } else if (recent && !busy) action = 'ya se relanzó en las últimas 6 horas; se requiere revisión';
   const body = `El sitio en vivo no está al día: ${err ? `no se pudo leer (${err})` : `la publicación \`${pub}\` tiene ${age.toFixed(0)} horas`}. Acción: ${action}.\n\n<!-- enso-fp:site-stale -->`;

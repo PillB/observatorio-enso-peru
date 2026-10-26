@@ -167,6 +167,10 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
         old = godas.month_end(y, m) + timedelta(days=60) < today
         probe = (k in prev_months and old) or ((y, m) == first and today.weekday() != 0)
         skip = fetcher.skip_reason(u)
+        # Cada GRIB con su propia ruta (robots.txt podría prohibir los archivos y no el directorio); que no responda
+        # ya lo decidió el directorio, arriba.
+        if not skip and getattr(fetcher, "robots", None) is not None and fetcher.robots.allowed(u) is False:
+            skip = "robots.txt no permite la ruta: no se pide"
         if skip:
             attempts.append({"url": u, "error": skip})
             http_errors[k] = skip
@@ -1304,13 +1308,21 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     arch = archive.write_sources(aw, acquired, prev_bytes,
                                  (lambda sid: previous.get(f"sources/{sid}.json")) if previous is not None else None,
                                  log=log)
+    # Lo que se guarda en sources/enfen-comunicados.json (la próxima corrida lo lee de ahí): una copia que no se
+    # pudo arrastrar no está en esta publicación, así que tampoco su ruta; si no, la corrida siguiente la buscaría
+    # en un sitio que ya no la tiene y repetiría «archive-carry-failed» hasta el próximo comunicado.
+    saved = (acquired.get("enfen-comunicados").data if acquired.get("enfen-comunicados") is not None else None) or {}
     if official.get("enfen", {}).get("archive"):
         official["enfen"]["archive"] = archive.carry(aw, official["enfen"]["archive"], prev_bytes,
                                                      source="enfen-comunicados", document=True)
+        if official["enfen"]["archive"] is None and isinstance(saved.get("latest"), dict):
+            saved["latest"]["archive"] = None
     inf = (official.get("enfen") or {}).get("informe") or {}
     if inf.get("archive"):
         # El PDF del informe se publica la vez que se lee; después se arrastra la copia anterior.
         inf["archive"] = archive.carry(aw, inf["archive"], prev_bytes, source="enfen-comunicados", document=True)
+        if inf["archive"] is None and isinstance(saved.get("informe"), dict):
+            saved["informe"]["archive"] = None
     for sid, rel in aw.missed:
         # Sin el archivo no hay enlace que publicar, pero no se pierde en silencio.
         log.add("warning", sid, "publish", "archive-carry-failed",
@@ -1618,14 +1630,16 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     elif not offline and not only:
         from .feeds import imarpe_bsobp
 
-        prev_bs = prev.get("imarpe-bsobp.json")
+        # El historial de boletines (un año) es dato arrastrado: se lee con los reintentos de las fuentes. Si aun así
+        # no llega, se reconstruye desde la semilla del repositorio y lo nuevo del listado.
+        prev_bs = prev.get("imarpe-bsobp.json", carry=True)
         try:
             bsobp = imarpe_bsobp.acquire(fetcher, prev_bs, log, today, needs)
         except Exception as exc:  # noqa: BLE001 — el boletín nunca detiene la publicación
             bsobp = prev_bs
             log.add("error", imarpe_bsobp.SOURCE, "parse", "bsobp-exception", f"{type(exc).__name__}: {exc}"[:300])
     elif fixtures is None:
-        bsobp = prev.get("imarpe-bsobp.json")  # corrida parcial o sin red: se conserva lo publicado
+        bsobp = prev.get("imarpe-bsobp.json", carry=True)  # corrida parcial o sin red: se conserva lo publicado
     needs.log(log)
     acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
     b = Builder(acquired, log, today)
