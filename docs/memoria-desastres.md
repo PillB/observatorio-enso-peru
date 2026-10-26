@@ -257,13 +257,12 @@ pytest -q tests/test_historico.py
   del Perú como CSV con columnas y filas ordenadas. La copia vigente es la exportación del IDMC en HDX del
   26-10-2026, con las mismas columnas. Los datos del IDMC son CC BY-NC-SA 3.0 IGO: uso no comercial, con atribución
   y la misma licencia en lo derivado.
-- Las capas de puntos críticos de la ANA y de establecimientos de salud del CENEPRED no se piden al SIGRID
-  (sigrid.cenepred.gob.pe), cuyo robots.txt no deja que un programa consulte `/arcgis/`. Las baja cada semana el
-  recolector del Perú desde sig.cenepred.gob.pe, que solo responde desde el Perú y no tiene robots.txt, con 5 s entre
-  pedidos, y las deja en la rama `data-peru`. En `fuentes.json` tienen `"descarga": "peru"`: el script baja esa rama
-  con git, junta las páginas guardadas de cada capa (las entradas cuya URL empieza con `<capa>/query`, con su
-  SHA-256 verificado) por OBJECTID y anota la fecha en que el Perú las bajó. La copia vigente se bajó del SIGRID el
-  26-10-2026, antes de conocer la regla.
+- Instituciones públicas peruanas (dominios `.gob.pe` y `.mil.pe`): su información es pública por la Ley N° 27806
+  y, por decisión del proyecto del 26-10-2026, un `Disallow` de su robots.txt (o un robots.txt que no responde) no
+  impide pedirla. El script igual lee su robots.txt, respeta su `Crawl-delay` con un mínimo de 5 s entre pedidos y se
+  detiene ante una verificación antirobots, que nunca se evade. Así se consultan las capas de puntos críticos de la
+  ANA y de establecimientos de salud del SIGRID (`sigrid.cenepred.gob.pe`, cuyo robots.txt prohíbe `/arcgis/`). El
+  resto de servidores (HDX, por ejemplo) se respetan como siempre.
 - Cada fuente tiene su SHA-256 en `fuentes.json`. Si cambia, el script se detiene: hay que revisar el cambio y
   repetir con `--aceptar-cambios`, que actualiza el manifiesto. Así un cambio silencioso de una fuente no altera el
   catálogo publicado.

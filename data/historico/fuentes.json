@@ -156,8 +156,8 @@
       "tipo": "contexto",
       "nombre": "ANA, puntos críticos en ríos y quebradas (servicio COEN FEN 2027 del CENEPRED)",
       "lector": "ana-puntos",
-      "descarga": "peru",
-      "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services/sectores/COEN_FEN_2027/MapServer/25",
+      "descarga": "arcgis",
+      "url": "https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/25",
       "pagina": "https://sigrid.cenepred.gob.pe/sigridv3/",
       "archivo": "ana-puntos-criticos.json",
       "licencia": "ANA / CENEPRED, información pública",
@@ -165,17 +165,17 @@
       "sha256": "5eb3917e9121972b1c24a0dc6e44b815ca608fa5a26157e260c1a67accc74f4f",
       "obtenido": "2026-10-26",
       "registros": 536,
-      "formato": "arcgis",
-      "peru": "La baja cada semana el recolector del Perú (tools/peru_collector) desde sig.cenepred.gob.pe, que solo responde desde el Perú y no tiene robots.txt, y la deja en la rama data-peru; el script la lee de allí. El SIGRID (sigrid.cenepred.gob.pe) no deja que un programa consulte /arcgis/.",
-      "nota": "La copia vigente se bajó del SIGRID el 26-10-2026; las siguientes llegan por el recolector del Perú."
+      "nota": "El robots.txt del SIGRID no deja que un programa consulte /arcgis/; como es información pública de una institución peruana (Ley N° 27806), el proyecto no aplica ese «Disallow» y consulta la capa con 5 s entre pedidos.",
+      "campos": "*",
+      "geometria": false
     },
     {
       "id": "ipress-2023",
       "tipo": "contexto",
       "nombre": "Establecimientos de salud afectados en la temporada de lluvias 2022-2023 (COE Salud, servicio COEN FEN 2027 del CENEPRED)",
       "lector": "ipress-2023",
-      "descarga": "peru",
-      "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services/sectores/COEN_FEN_2027/MapServer/9",
+      "descarga": "arcgis",
+      "url": "https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/9",
       "pagina": "https://sigrid.cenepred.gob.pe/sigridv3/",
       "archivo": "ipress-afectadas-2023.json",
       "licencia": "MINSA / CENEPRED, información pública",
@@ -183,9 +183,9 @@
       "sha256": "21523e8c92b707a2ca7aaa12d7282e9a1fffb41f6bb8c61fa8be219787c2d7c5",
       "obtenido": "2026-10-26",
       "registros": 1230,
-      "formato": "arcgis",
-      "peru": "La baja cada semana el recolector del Perú (tools/peru_collector) desde sig.cenepred.gob.pe, que solo responde desde el Perú y no tiene robots.txt, y la deja en la rama data-peru; el script la lee de allí. El SIGRID (sigrid.cenepred.gob.pe) no deja que un programa consulte /arcgis/.",
-      "nota": "La copia vigente se bajó del SIGRID el 26-10-2026; las siguientes llegan por el recolector del Perú."
+      "nota": "El robots.txt del SIGRID no deja que un programa consulte /arcgis/; como es información pública de una institución peruana (Ley N° 27806), el proyecto no aplica ese «Disallow» y consulta la capa con 5 s entre pedidos.",
+      "campos": "*",
+      "geometria": false
     },
     {
       "id": "curado",
@@ -210,5 +210,5 @@
       "tipo": "referencia"
     }
   ],
-  "generado": "2026-10-26T17:23:46Z"
+  "generado": "2026-10-26T17:32:25Z"
 }

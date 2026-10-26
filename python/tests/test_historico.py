@@ -217,7 +217,9 @@ def test_manifest_records_provenance():
 def test_robots_txt_is_respected(monkeypatch, tmp_path):
     import httpx
 
-    robots = {"datos.example": "User-agent: *\nDisallow: /*.csv$\nCrawl-delay: 5\n", "caido.example": None}
+    robots = {"datos.example": "User-agent: *\nDisallow: /*.csv$\nCrawl-delay: 5\n", "caido.example": None,
+              "sigrid.cenepred.gob.pe": "User-agent: *\nDisallow: /arcgis/\n", "www.dhn.mil.pe": None,
+              "caido.gob.pe": "<html><title>Just a moment...</title><body>cf-chl captcha</body></html>"}
 
     def handler(request):
         body = robots.get(request.url.host, "")
@@ -233,6 +235,13 @@ def test_robots_txt_is_respected(monkeypatch, tmp_path):
     with pytest.raises(SystemExit, match="no respondió"):
         B.robots_check("https://caido.example/capa/0")
     assert B.robots_check("https://datos.example/dataset/x") == 5
+    # Instituciones públicas peruanas: su «Disallow» (o un robots.txt caído) no impide pedir, con al menos 5 s
+    # entre pedidos; una verificación antirobots sí.
+    assert B.robots_check("https://sigrid.cenepred.gob.pe/arcgis/rest/services/x/MapServer/25") == 5
+    assert B.robots_check("https://www.dhn.mil.pe/Archivos/x.pdf") == 5
+    with pytest.raises(SystemExit, match="antirobots"):
+        B.robots_check("https://caido.gob.pe/datos")
+    assert not B.peru_public("https://notgob.pe.example/x") and not B.peru_public("https://www.pucp.edu.pe/x")
     # Lo que el robots.txt no permite se descarga a mano y la construcción no lo pide.
     src = {"id": "x", "archivo": "x.csv", "descarga": "manual", "manual": "descárguelo desde la página",
            "url": "https://datos.example/x.csv"}
@@ -240,46 +249,15 @@ def test_robots_txt_is_respected(monkeypatch, tmp_path):
         B.fetch(src, tmp_path, False, False)
 
 
-def test_restricted_sources_are_manual_or_use_the_idmc_api():
+def test_robots_restricted_sources():
     m = json.loads(B.MANIFEST.read_text(encoding="utf-8"))
     by = {s["id"]: s for s in m["fuentes"]}
+    # El SIGRID prohíbe /arcgis/ en su robots.txt, pero es una institución pública peruana (ver robots_check).
     for sid in ("ana-puntos-criticos", "ipress-2023"):
-        assert by[sid]["descarga"] == "peru" and by[sid]["url"].startswith("https://sig.cenepred.gob.pe/"), sid
-        assert "robots.txt" in by[sid]["peru"]
+        assert by[sid]["descarga"] == "arcgis" and B.peru_public(by[sid]["url"]), sid
     for sid in ("idmc-idu", "idmc-eventos"):
         assert by[sid]["descarga"] == "idmc-api" and by[sid]["url"].startswith("https://helix-tools-api.idmcdb.org/")
         assert "client_id" not in json.dumps(by[sid]["url"]) and "IDMC_CLIENT_ID" in by[sid]["clave"]
-
-
-def test_peru_collector_layers_are_merged_from_data_peru(tmp_path):
-    import hashlib
-
-    layer = "https://sig.cenepred.gob.pe/arcgis_server/rest/services/sectores/COEN_FEN_2027/MapServer/25"
-    pages = {
-        "files/00000000000000a1.json": {"objectIdFieldName": "objectid", "features": [
-            {"attributes": {"objectid": 3, "nombre": "c"}}, {"attributes": {"objectid": 1, "nombre": "a"}}]},
-        "files/00000000000000a2.json": {"fields": [{"name": "objectid", "type": "esriFieldTypeOID"}], "features": [
-            {"attributes": {"objectid": 2, "nombre": "b"}}, {"attributes": {"objectid": 3, "nombre": "c"}}]},
-        "files/00000000000000a3.json": {"features": [{"attributes": {"objectid": 9, "nombre": "alterado"}}]},
-        "files/00000000000000a4.json": {"features": [{"attributes": {"objectid": 8, "nombre": "otra capa"}}]},
-    }
-    blobs = {k: json.dumps(v).encode() for k, v in pages.items()}
-    entry = lambda f, url, at: {"url": url, "status": 200, "file": f, "fetched_at": at,  # noqa: E731
-                                "sha256": hashlib.sha256(blobs[f]).hexdigest()}
-    index = {"schema": "enso-relay/1", "entries": [
-        entry("files/00000000000000a1.json", layer + "/query?resultOffset=0&f=json", "2026-11-02T02:00:00+00:00"),
-        entry("files/00000000000000a2.json", layer + "/query?resultOffset=1000&f=json", "2026-11-02T02:01:00+00:00"),
-        {**entry("files/00000000000000a3.json", layer + "/query?resultOffset=2000", "x"), "sha256": "0" * 64},
-        entry("files/00000000000000a4.json", layer[:-2] + "9/query?f=json", "2026-11-02T02:02:00+00:00")]}
-    blobs["index.json"] = json.dumps(index).encode()
-    src = {"id": "ana-puntos-criticos", "url": layer, "descarga": "peru", "archivo": "ana.json", "peru": "lo baja el Perú"}
-    path = B.fetch(src, tmp_path, False, False, peru_reader=lambda: blobs.__getitem__)
-    doc = json.loads(path.read_text(encoding="utf-8"))
-    # Las dos páginas se unen por OBJECTID; la de SHA-256 alterado y la de otra capa no entran.
-    assert [f["attributes"]["nombre"] for f in doc["features"]] == ["a", "b", "c"]
-    assert src["obtenido"] == "2026-11-02" and re.fullmatch(r"[0-9a-f]{64}", src["sha256"])
-    with pytest.raises(SystemExit, match="lo baja el Perú"):
-        B.peru_layer({**src, "url": layer[:-2] + "7"}, blobs.__getitem__)
 
 
 def test_idmc_api_pages_filters_peru_and_hides_the_key(monkeypatch, T, cal):

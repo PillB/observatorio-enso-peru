@@ -38,14 +38,13 @@ import hashlib
 import io
 import json
 import os
-import re
 import shutil
-import subprocess
 import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Optional
+from urllib.parse import urlsplit
 
 import httpx
 import yaml
@@ -170,12 +169,30 @@ def idmc_api(src: dict, delay: float = 1.0) -> bytes:
     return buf.getvalue().encode("utf-8")
 
 
+#: Instituciones públicas peruanas: su información es pública por ley (Ley N° 27806) y, por decisión del
+#: proyecto (26-10-2026), un «Disallow» de su robots.txt no impide pedirla. Se respeta su Crawl-delay (y al
+#: menos PERU_PUBLIC_DELAY entre pedidos) y nunca se evade una verificación antirobots. Los mismos sufijos que
+#: usará ``enso.reach`` (PUBLIC_PERU_SUFFIXES); .edu.pe no, porque no todas son entidades públicas.
+PERU_PUBLIC = (".gob.pe", ".mil.pe")
+PERU_PUBLIC_DELAY = 5.0
+
+
+def peru_public(url: str) -> bool:
+    host = (urlsplit(url).hostname or "").lower()
+    return any(host.endswith(sfx) for sfx in PERU_PUBLIC)
+
+
 def robots_check(url: str) -> float:
-    """Como el resto del observatorio, respeta el robots.txt del servidor (RFC 9309) antes de pedir nada.
-    Devuelve el Crawl-delay que pida el servidor (0 si no pide)."""
+    """Como el resto del observatorio, lee el robots.txt del servidor (RFC 9309) antes de pedir nada y lo
+    respeta, salvo los «Disallow» de instituciones públicas peruanas (``PERU_PUBLIC``). Devuelve la pausa entre
+    pedidos: el Crawl-delay del servidor (0 si no pide; al menos PERU_PUBLIC_DELAY para esas instituciones)."""
     with httpx.Client(follow_redirects=True, timeout=30, headers=UA, verify=ssl_context()) as c:
         robots = Robots(c)
         ok = robots.allowed(url)
+        if peru_public(url):
+            if robots.failure(url) == "challenge":
+                raise SystemExit(f"{url}: el servidor responde con una verificación antirobots; no se pide nada")
+            return max(PERU_PUBLIC_DELAY, robots.crawl_delay(url) or 0.0)
         if ok is None:
             raise SystemExit(f"{url}: el robots.txt del servidor no respondió ({robots.failure(url)}); no se pide nada")
         if not ok:
@@ -183,51 +200,7 @@ def robots_check(url: str) -> float:
         return robots.crawl_delay(url) or 0.0
 
 
-PERU_FILE_RE = re.compile(r"^files/[0-9a-f]{16}\.json$")
-
-
-def data_peru_reader() -> Callable[[str], bytes]:
-    """Lee archivos de la rama ``data-peru`` (copias del recolector del Perú) con git, como el pipeline diario."""
-    ref = "refs/enso/data-peru"
-    git = ["git", "-C", str(ROOT)]
-    done = subprocess.run([*git, "fetch", "--quiet", "--depth", "1", "origin", f"+data-peru:{ref}"],
-                          capture_output=True, text=True)
-    if done.returncode:
-        raise SystemExit(f"no se pudo bajar la rama data-peru: {done.stderr.strip()[:200]}")
-    return lambda name: subprocess.run([*git, "show", f"{ref}:{name}"], capture_output=True, check=True).stdout
-
-
-def peru_layer(src: dict, read: Callable[[str], bytes]) -> bytes:
-    """Una capa de ArcGIS que baja el recolector del Perú: junta las páginas que guardó en ``data-peru`` para
-    ``src["url"]`` (las entradas cuya URL empieza con ``<capa>/query``, con su SHA-256 verificado), une los
-    elementos por su OBJECTID y devuelve el mismo JSON canónico que ``arcgis_dump``. Anota en ``src`` la
-    fecha en que el Perú la bajó."""
-    prefix = src["url"].rstrip("/") + "/query"
-    feats: dict = {}
-    fetched = []
-    for e in json.loads(read("index.json")).get("entries") or []:
-        if e.get("status") != 200 or not (e.get("url") or "").startswith(prefix) or not PERU_FILE_RE.match(e.get("file") or ""):
-            continue
-        body = read(e["file"])
-        if hashlib.sha256(body).hexdigest() != e.get("sha256"):
-            continue
-        d = json.loads(body)
-        oid = d.get("objectIdFieldName") or next((f["name"] for f in d.get("fields") or []
-                                                  if f.get("type") == "esriFieldTypeOID"), "objectid")
-        for f in d.get("features") or []:
-            a = f.get("attributes") or {}
-            key = next((v for k, v in a.items() if k.lower() == oid.lower()), None)
-            feats[key if key is not None else json.dumps(a, sort_keys=True)] = f
-        fetched.append(e.get("fetched_at") or "")
-    if not feats:
-        raise SystemExit(f"{src['id']}: no hay copia de {prefix}… en data-peru. {src['peru']}")
-    src["obtenido"] = max(fetched)[:10] or datetime.now(timezone.utc).date().isoformat()
-    ordered = [feats[k] for k in sorted(feats, key=lambda k: (not isinstance(k, (int, float)), k if isinstance(k, (int, float)) else 0, str(k)))]
-    return json.dumps({"source": src["url"], "where": "1=1", "features": ordered}, ensure_ascii=False,
-                      sort_keys=True, separators=(",", ":")).encode("utf-8")
-
-
-def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool, peru_reader=None) -> Path:
+def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
     path = cache / src["archivo"]
     if not path.exists():
         if offline:
@@ -235,10 +208,6 @@ def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool, peru_read
         if src.get("descarga") == "manual":
             raise SystemExit(f"{src['id']}: falta {path}. Esta fuente se descarga a mano: {src['manual']}")
         path.parent.mkdir(parents=True, exist_ok=True)
-        if src.get("descarga") == "peru":
-            print(f"leyendo {src['url']} en la rama data-peru", file=sys.stderr)
-            path.write_bytes(peru_layer(src, (peru_reader or data_peru_reader)()))
-            return finish(src, path, accept_changes)
         delay = robots_check(src["url"])
         print(f"descargando {src['url']}", file=sys.stderr)
         src["obtenido"] = datetime.now(timezone.utc).date().isoformat()
