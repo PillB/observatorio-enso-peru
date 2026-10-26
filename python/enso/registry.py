@@ -352,11 +352,12 @@ def _recent(recs: dict[str, dict], now: Optional[datetime]) -> dict[str, dict]:
 def _counted(url: str, reach: dict, now: Optional[datetime]) -> dict[str, dict[str, dict]]:
     """Las mediciones de ``url`` que cuentan, por grupo: sin las que no miden la red (``unmeasured``) y, con ``now``,
     sin las de más de ``STALE_DAYS`` si su red tiene otra más reciente (``_recent``)."""
-    # En una entidad pública del Perú (``reach.public_peru``) un robots.txt en contra no cuenta: se pide igual.
-    public = public_peru(url)
+    # En una entidad pública del Perú (``reach.public_peru``) un robots.txt en contra no cuenta: se pide igual. Si
+    # lo prohibido es un salto de una redirección (``hop``), cuenta el servidor de ese salto, no el de la URL.
+    def exempt(r: dict) -> bool:
+        return r.get("class") == "robots" and public_peru(r.get("hop") or url)
     return {g: kept for g, rs in _groups(reach.get(url) or {}).items()
-            if (kept := _recent({v: r for v, r in rs.items()
-                                 if not unmeasured(r) and not (public and r.get("class") == "robots")}, now))}
+            if (kept := _recent({v: r for v, r in rs.items() if not unmeasured(r) and not exempt(r)}, now))}
 
 
 def geoblock(url: str, reach: dict, now: Optional[datetime] = None) -> dict:
@@ -398,8 +399,8 @@ def robots_verdict(url: str, reach: dict, now: Optional[datetime] = None) -> str
     recs = [(g, r) for g, rs in _counted(url, reach, now).items() for r in rs.values()]
     # Entidad pública del Perú: su robots.txt no decide (``reach.PUBLIC_PERU_SUFFIXES``), salvo que en su lugar
     # haya llegado una verificación antirobots, que nunca se evade: entonces se sigue la regla de siempre.
-    if public_peru(url) and not any(r.get("class") == "challenge" and r.get("robots") == "unreachable"
-                                    for _, r in recs):
+    if public_peru(url) and not any(r.get("class") == "robots" or (
+            r.get("class") == "challenge" and r.get("robots") == "unreachable") for _, r in recs):
         return "allowed"
     if any(r.get("class") == "robots" for _, r in recs):
         return "disallowed"

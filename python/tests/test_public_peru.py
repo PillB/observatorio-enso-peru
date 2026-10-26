@@ -86,3 +86,15 @@ def test_scrape_ladder_paces_public_peru_gets(monkeypatch):
         resp, blocked, _ = scrape_ladder.get_checked(client, "https://sigrid.cenepred.gob.pe/arcgis/x", r)
         assert resp.status_code == 200 and blocked is None
     assert slept and slept[-1] > 4.9
+
+
+def test_a_redirect_to_a_non_public_host_keeps_its_disallow():
+    """La sonda anota en ``hop`` el destino prohibido de una redirección: cuenta el servidor de ese destino."""
+    u = "https://www.senamhi.gob.pe/descarga"
+    rec = {"class": "robots", "at": "2026-10-26T01:00:00+00:00", "vantage": "github-actions", "robots": "disallowed",
+           "hop": "https://example.org/archivo.zip"}
+    reach = {u: {"actions": {"github-actions": rec}}}
+    assert registry.geoblock(u, reach)["status"] == "robots-disallowed"
+    assert registry.robots_verdict(u, reach) == "disallowed"
+    public_hop = {u: {"actions": {"github-actions": {**rec, "hop": "https://otra.gob.pe/x"}}}}
+    assert registry.robots_verdict(u, public_hop) == "allowed"
