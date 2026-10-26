@@ -25,9 +25,10 @@ import re
 import threading
 import time
 from typing import Optional
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 
 from httpx import Client as HTTPClient
+from httpx import TooManyRedirects
 
 #: Marcas de una página de bloqueo o de verificación en lugar del contenido, por familia: las de
 #: ``BLOCK_SIGNATURES`` en n8n/lib/classify.js, que se buscan en minúsculas en los primeros ``SCAN_BYTES`` del
@@ -78,6 +79,8 @@ SCAN_BYTES = 65536
 SMALL_PAGE = 40000
 #: Plazo para leer robots.txt: un servidor que no lo entrega en ese tiempo cuenta como sin respuesta.
 ROBOTS_TIMEOUT_S = 15.0
+#: Redirecciones que ``get_checked`` sigue antes de rendirse.
+MAX_HOPS = 10
 FEEDS = {"rss", "atom", "rdf", "jsonfeed"}
 
 
@@ -403,3 +406,20 @@ class Robots:
         """El error de red o el código con que falló la lectura de robots.txt (``ConnectError: …``, ``HTTP 503``),
         para el motivo de la incidencia; vacío si se leyó o fue una verificación."""
         return self._entry(url)[6]
+
+
+def get_checked(client: HTTPClient, url: str, robots: Optional[Robots], headers: Optional[dict] = None):
+    """GET que sigue las redirecciones a mano y consulta robots.txt antes de cada salto. Devuelve la respuesta y,
+    si un salto no se pudo pedir, su URL y el veredicto de robots.txt (``False`` prohibido, ``None`` sin respuesta).
+    Lo usan todos los que piden con ``httpx`` y respetan robots.txt (``tools.scrape_ladder``, el recolector del
+    Perú y su revisión): con ``follow_redirects=True`` una ruta permitida podía llevar a otra que no lo está."""
+    for _ in range(MAX_HOPS + 1):
+        r = client.get(url, headers=headers, follow_redirects=False)
+        loc = r.headers.get("location")
+        if not (r.is_redirect and loc):
+            return r, None, True
+        url = urljoin(str(r.url), loc)
+        verdict = True if robots is None else robots.allowed(url)
+        if verdict is not True:
+            return r, url, verdict
+    raise TooManyRedirects(f"más de {MAX_HOPS} redirecciones", request=r.request)

@@ -704,6 +704,39 @@ def test_robots_txt_is_respected_from_peru(tmp_path, monkeypatch):
     assert probe_sources_urls(idx) >= {e["url"]}  # el registro la marcará «robots-disallowed»
 
 
+def test_each_redirect_hop_is_checked_against_robots_txt_from_peru():
+    """Barrido de robots.txt del 26 de octubre de 2026: el recolector seguía las redirecciones sin mirar robots.txt.
+    Cada salto pasa ahora por el robots.txt de su servidor, como la URL pedida."""
+    asked: list[str] = []
+    routes = {
+        "https://a.gob.pe/robots.txt": httpx.Response(200, text="User-agent: *\nDisallow: /privado/\n"),
+        "https://a.gob.pe/x": httpx.Response(302, headers={"location": "/privado/x.pdf"}),
+        "https://a.gob.pe/y": httpx.Response(301, headers={"location": "https://b.pe/y.pdf"}),
+        "https://b.pe/robots.txt": httpx.Response(503),
+        "https://a.gob.pe/z": httpx.Response(302, headers={"location": "/publico/z.pdf"}),
+        "https://a.gob.pe/publico/z.pdf": httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"}),
+    }
+
+    def handler(req):
+        asked.append(str(req.url))
+        return routes.get(str(req.url), httpx.Response(404))
+
+    with httpx.Client(transport=httpx.MockTransport(handler), follow_redirects=True) as client:
+        s = pc.Session(client)
+        barred = pc.fetch(s, "https://a.gob.pe/x", "pdf")
+        unread = pc.fetch(s, "https://a.gob.pe/y", "pdf")
+        good = pc.fetch(s, "https://a.gob.pe/z", "pdf")
+    assert "https://a.gob.pe/privado/x.pdf" not in asked and "https://b.pe/y.pdf" not in asked
+    assert (barred["skipped"], barred["class"], barred["status"]) == ("robots", "robots", 302)
+    assert barred["hop"] == "https://a.gob.pe/privado/x.pdf" and not barred["body"]
+    assert (unread["skipped"], unread["class"]) == ("robots-sin-respuesta", "http-5xx")
+    assert good["class"] == "ok" and good["body"] == PDF
+    # Lo que el registro anota de esas URL: prohibida, y robots.txt sin respuesta.
+    from tools.probe_sources import from_peru_index
+    got = from_peru_index({"entries": [{k: v for k, v in e.items() if k != "body"} for e in (barred, unread)]})
+    assert got["https://a.gob.pe/x"]["robots"] == "disallowed" and got["https://a.gob.pe/y"]["robots"] == "unreachable"
+
+
 def test_registry_sources_are_fetched_once_and_enfen_pdfs_are_followed(tmp_path, monkeypatch):
     """Con el registro del repositorio: ninguna URL se pide dos veces (lista fija, registro, documentos
     del ENFEN y enlaces ``follow``) y la regla ``follow`` del ENFEN baja los PDF de la API de WordPress."""
@@ -831,6 +864,48 @@ def test_collector_follows_the_newest_listing_not_the_stale_wordpress_api():
     assert any("comunicado-oficial-enfen-n-18-2026" in u for u in asked)
     assert any("comunicado-oficial-enfen-n-19-2026" in u for u in asked)  # sondeo del siguiente
     assert not any("-14-2026" in u for u in asked)
+
+
+def test_collector_probes_ahead_like_the_daily_update():
+    """Revisión del kit: el recolector sondeaba dos números fijos; la actualización diaria sigue hasta
+    ``PROBE_AHEAD`` mientras aparezcan comunicados y corta tras dos ausencias seguidas. Si el listado se atrasó
+    varios números, la copia del Perú debe traer los mismos que pedirá la actualización."""
+    from datetime import date
+
+    from enso.observatory import PROBE_AHEAD, PROBE_MAX_MISSES
+
+    portal = (Path(__file__).parent / "fixtures" / "reports" / "enfen-comunicados-20261021.html").read_bytes()  # N° 18
+    dhn = "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/{:02d}-2026.pdf"
+    page = "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-{:02d}-2026/"
+    asked = []
+
+    def handler(req):
+        u = str(req.url)
+        asked.append(u)
+        if u == dhn.format(19):
+            return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
+        if u == page.format(20):
+            return httpx.Response(200, headers={"content-type": "text/html"}, text=(
+                f'<a href="{page.format(20)}?wpdmdl=2200&amp;refresh=x">Descargar</a>'))
+        if "wpdmdl=2200" in u:
+            return httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"})
+        return httpx.Response(404)
+
+    out = pc.enfen_documents(httpx.Client(transport=httpx.MockTransport(handler)), [{"status": 200, "body": portal}],
+                             today=date(2026, 10, 26))
+    assert page.format(19) not in asked  # hallado en la réplica de la DHN: como la actualización, no se pide la página
+    assert dhn.format(20) in asked and any("wpdmdl=2200" in u for u in asked)
+    assert {dhn.format(21), page.format(21), dhn.format(22), page.format(22)} <= set(asked)
+    assert PROBE_MAX_MISSES == 2 and PROBE_AHEAD >= 5 and not any("-23-2026" in u for u in asked)
+    pdf20 = next(r for r in out if "wpdmdl=2200" in r["url"])
+    assert pdf20["aliases"] == [page.format(20)] and pdf20["class"] == "ok"
+    assert len(asked) == len(set(asked))
+    # En enero, con el listado aún en el año anterior, primero el N° 01 del año nuevo.
+    asked.clear()
+    pc.enfen_documents(httpx.Client(transport=httpx.MockTransport(handler)), [{"status": 200, "body": portal}],
+                       today=date(2027, 1, 5))
+    probes = [u for u in asked if "-2027" in u or any(f"-{n:02d}-2026" in u for n in range(19, 30))]
+    assert probes[0] == dhn.format(1).replace("-2026", "-2027")
 
 
 def test_informes_listing_does_not_carry_the_communique_goal():
