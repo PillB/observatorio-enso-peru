@@ -35,6 +35,8 @@ const ext = (u) => {
 };
 const seen = new Set();
 const out = [];
+// robots.txt que hay que leer antes de pedir las URL «robots: unknown», uno por servidor.
+const robotsByOrigin = new Map();
 for (const s of registry.sources) {
   if (only && !s.id.includes(only) && s.group !== only) continue;
   // Una fuente con «n8n: false» no se pide en ningún alcance: n8n no la
@@ -60,17 +62,42 @@ for (const s of registry.sources) {
     const u = s.by_url && s.by_url[raw] && Array.isArray(s.by_url[raw].channels) ? s.by_url[raw] : sourceRule;
     // Lectores de feeds («reader»): las lee solo el pipeline, como un lector
     // de RSS, y n8n no las pide en ningún alcance. Tampoco lo que robots.txt
-    // no permite ni aquello cuyo robots.txt nadie pudo leer («unknown»): n8n
-    // no lo lee. Se comparan los valores explícitos para que un registro
-    // anterior, sin «robots», siga sirviendo.
+    // no permite: el registro ya aplica la excepción de las entidades públicas
+    // del Perú («allowed»), y lo que sigue «disallowed» en una de ellas es una
+    // redirección a otro servidor que lo prohíbe. Se comparan los valores
+    // explícitos para que un registro anterior, sin «robots», siga sirviendo.
     if (!u.channels.length || u.status === 'robots-disallowed' || u.reader) return;
-    if (u.robots === 'unknown' || u.robots === 'disallowed') return;
+    if (u.robots === 'disallowed') return;
     if (scope === 'n8n' && !u.channels.includes('n8n')) return;
     seen.add(url);
-    out.push({ json: {
+    const target = {
       id: k ? `${s.id}#${k + 1}` : s.id, group: s.group, name: s.name, url, expect,
       follow: k === 0 && s.follow ? s.follow : null, channels: u.channels, pass: 1, registry: origin,
-    } });
+    };
+    if (u.crawl_delay != null) target.crawl_delay = u.crawl_delay;
+    // Nadie pudo leer su robots.txt al medir («unknown»): primero se lee aquí
+    // (nodo «Analizar»), y la URL se pide en la segunda pasada solo si lo permite.
+    // Con «hop» (la URL redirige ahí y el robots.txt de ese servidor no respondió
+    // al medir), se lee el robots.txt del destino y se juzga la ruta del destino.
+    if (u.robots === 'unknown') {
+      if (u.hop) target.hop = u.hop;
+      // Sin «URL»: el nodo Code de n8n no la tiene.
+      const m = /^(https?:\/\/([^/?#]+))/i.exec(u.hop || url);
+      if (!m) return;
+      const base = m[1].toLowerCase();
+      const host = m[2].toLowerCase();
+      let r = robotsByOrigin.get(base);
+      if (!r) {
+        r = { id: `robots:${host}`, group: s.group, name: `robots.txt de ${host}`, url: `${base}/robots.txt`,
+          expect: 'any', role: 'robots', deferred: [], pass: 1, registry: origin };
+        if (u.crawl_delay != null) r.crawl_delay = u.crawl_delay;
+        robotsByOrigin.set(base, r);
+        out.push({ json: r });
+      }
+      r.deferred.push(target);
+      return;
+    }
+    out.push({ json: target });
   });
 }
 // Un registro que cambió de forma podría dejar la corrida sin fuentes y
@@ -78,4 +105,19 @@ for (const s of registry.sources) {
 if (!out.length) {
   throw new Error(`Ninguna fuente para descargar (alcance «${scope}»${only ? `, filtro «${only}»` : ''}; registro: ${origin}). Revisar registry/sources.json o la configuración.`);
 }
-return out;
+// Las URL se bajan de a una: se intercalan los servidores (una de cada uno por
+// vuelta) para no pedir seguido al mismo, y entre dos peticiones al mismo
+// servidor público del Perú se espera su Crawl-delay o 1 s (nodo «Pausa»).
+const hostOf = (u) => ((/^https?:\/\/([^/?#]+)/i.exec(u) || [])[1] || '').toLowerCase();
+const queues = new Map();
+for (const it of out) {
+  const h = hostOf(it.json.url);
+  if (!queues.has(h)) queues.set(h, []);
+  queues.get(h).push(it);
+}
+const spread = [];
+while (spread.length < out.length) {
+  for (const q of queues.values()) if (q.length) spread.push(q.shift());
+}
+pacing(spread.map((it) => it.json)).forEach((p, i) => { spread[i].json.pause_s = p; });
+return spread;

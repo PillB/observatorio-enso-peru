@@ -45,9 +45,7 @@ def test_table_covers_the_cases_that_diverged():
 def test_the_remaining_differences_are_known():
     """Lo que classify.js aún clasifica distinto, y por qué: cada diferencia nueva tiene que anotarse."""
     diff = {r["name"]: r for r in TABLE if "n8n" in r}
-    assert set(diff) == {"página normal con el script de detección de Cloudflare (jsd)",
-                         "x-iinfo de Imperva en una página normal", "x-sucuri-id de Sucuri en una página normal",
-                         "x-datadome en una página normal", "200 con solo espacios"}
+    assert set(diff) == set()
     assert all(r["n8n"] != r["reach"] and "classify.js" in r.get("n8n_fix", "") for r in diff.values())
 
 

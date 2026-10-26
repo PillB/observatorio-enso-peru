@@ -258,15 +258,21 @@ def manual_key(year: int, number: int) -> str:
     return manual.key(SOURCE, f"{year}-{number:02d}")
 
 
-def _listed(fetcher, problems: Optional[list] = None) -> list[dict]:
-    from . import imarpe_repo
-
+def bulletins(items: list[dict]) -> list[dict]:
+    """Los boletines de una búsqueda del repositorio (``imarpe_repo.search``), en su orden, con número y año. El
+    recolector del Perú sigue los mismos."""
     out = []
-    for it in imarpe_repo.search(fetcher, QUERY, LIST_SIZE, problems):
+    for it in items:
         m = _TITLE_NUM.search(it["title"])
         if TITLE_RE.search(it["title"]) and m:
             out.append({**it, "number": int(m.group(1)), "year": int(m.group(2))})
     return out
+
+
+def _listed(fetcher, problems: Optional[list] = None) -> list[dict]:
+    from . import imarpe_repo
+
+    return bulletins(imarpe_repo.search(fetcher, QUERY, LIST_SIZE, problems))
 
 
 def _read(fetcher, item: dict) -> tuple[Optional[dict], Optional[str], Optional[str]]:

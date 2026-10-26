@@ -15,12 +15,19 @@ const add = (t) => {
 };
 for (const it of items) {
   const j = it.json;
-  if (!j.cls.ok && j.cls.transient) add({ id: j.id, group: j.group, name: j.name, url: j.url, expect: j.expect });
+  if (j.role === 'robots') {
+    // Las URL que su robots.txt permite (o que no tiene reglas) se piden ahora, y en una entidad
+    // pública del Perú también las demás salvo detrás de una verificación («fetch», nodo Analizar).
+    // Un robots.txt que no respondió no se reintenta.
+    for (const { pass, fetch, ...d } of j.deferred) if (fetch) add(d);
+    continue;
+  }
+  if (!j.cls.ok && j.cls.transient) add({ id: j.id, group: j.group, name: j.name, url: j.url, expect: j.expect, robots: j.robots, robots_public: j.robots_public, crawl_delay: j.crawl_delay });
 }
 const pages = [];
 for (let i = 0; i < items.length; i++) {
   const j = items[i].json;
-  if (!j.cls.ok || !items[i].binary || !items[i].binary.data) continue;
+  if (j.role === 'robots' || !j.cls.ok || !items[i].binary || !items[i].binary.data) continue;
   const isEnfen = j.group === 'enfen' || /^enfen-comunicados/.test(j.id);
   if (!isEnfen && !j.follow) continue;
   const text = utf8Decode(new Uint8Array(await this.helpers.getBinaryDataBuffer(i, 'data')));
@@ -28,7 +35,10 @@ for (let i = 0; i < items.length; i++) {
   if (j.follow && j.follow.pattern) {
     let rx;
     try { rx = new RegExp(j.follow.pattern, 'gi'); } catch (e) { continue; }
-    const found = [...new Set((text.match(rx) || []).map((u) => u.replace(/&amp;/g, '&')))].slice(0, Number(j.follow.max) || 8);
+    // Solo enlaces del mismo servidor que la página: el robots.txt de otro servidor no se leyó.
+    const host = (u) => ((/^https?:\/\/([^/?#]+)/i.exec(u) || [])[1] || '').toLowerCase();
+    const found = [...new Set((text.match(rx) || []).map((u) => u.replace(/&amp;/g, '&')))]
+      .filter((u) => host(u) === host(j.url)).slice(0, Number(j.follow.max) || 8);
     for (const url of found) {
       add({ id: `${j.id}:enlace`, group: j.group, name: `${j.name} (documento enlazado)`, url, expect: /\.pdf\b/i.test(url) ? 'pdf' : 'any' });
     }
@@ -39,4 +49,6 @@ for (const url of deriveEnfenTargets(pages)) {
   const pdf = /\.pdf(?:[?#]|$)|wpdmdl=/i.test(url);
   add({ id: 'enfen-pdf', group: 'enfen', name: `Comunicado oficial del ENFEN (${pdf ? 'PDF' : 'página'})`, url, expect: pdf ? 'pdf' : 'any' });
 }
+// Intervalo entre peticiones al mismo servidor público del Perú (nodo «Pausa (2.ª pasada)»).
+pacing(out.map((o) => o.json)).forEach((p, i) => { out[i].json.pause_s = p; });
 return out;

@@ -47,6 +47,7 @@ import tempfile
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import nullcontext
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
@@ -412,17 +413,27 @@ def check_write(ctx: dict) -> Result:
                   "Si la subida diaria funciona (ver «ultima-corrida»), ignorar.")
 
 
-def _probe(url: str, expect: Optional[str] = None) -> dict:
+def _probe(url: str, expect: Optional[str] = None, robots=None) -> dict:
     """Una URL, juzgada como en la recolección (``peru_collector.judge``): una
-    página antirobots o un formato distinto del esperado no cuenta."""
+    página antirobots o un formato distinto del esperado no cuenta. Con
+    ``robots`` (``enso.reach.Robots``), cada salto de una redirección pasa por
+    robots.txt como en la recolección (``enso.reach.get_checked``): uno que
+    prohíbe no se pide ni se cuenta (``skip``), y uno cuyo robots.txt no
+    responde cuenta como falla."""
+    from enso.reach import get_checked
     from tools import peru_collector as pc
 
     t0 = time.time()
     try:
         with _client(25.0) as c:
-            r = c.get(url)
-        body = r.content
-        cls, _, why = pc.judge(r.status_code, body, r.headers.get("content-type", ""), expect)
+            r, hop, verdict = get_checked(c, url, robots)
+            body = b"" if hop else r.content
+        if hop:
+            why = "robots.txt no lo permite" if verdict is False else \
+                f"robots.txt sin respuesta ({robots.failure(hop) or 'connect'})"
+            return {"url": url, "ok": False, "why": f"redirige a {hop}: {why}"[:160], "bytes": 0,
+                    "s": time.time() - t0, "skip": verdict is False}
+        cls, _, why = pc.judge(r.status_code, body, r.headers.get("content-type", ""), expect, headers=r.headers)
         ok = cls == "ok"
         if not ok and cls == "challenge":
             why = "pide verificación humana"
@@ -432,17 +443,18 @@ def _probe(url: str, expect: Optional[str] = None) -> dict:
         return {"url": url, "ok": False, "why": f"{type(exc).__name__}: {exc}"[:120], "bytes": 0, "s": time.time() - t0}
 
 
-def _robots_verdicts(urls: list[str]) -> dict[str, str]:
+def _robots_verdicts(urls: list[str], robots=None) -> dict[str, str]:
     """Las URL que la recolección no pediría por robots.txt (``enso.reach.Robots``,
-    RFC 9309), con el motivo. Un robots.txt por servidor, los servidores en paralelo."""
+    RFC 9309), con el motivo. Un robots.txt por servidor, los servidores en
+    paralelo; con ``robots``, los que ya leyó (y lo que lea queda para ``_probe``)."""
     from enso.reach import Robots
 
     hosts: dict[str, list[str]] = {}
     for u in urls:
         hosts.setdefault(urlparse(u).netloc.lower(), []).append(u)
     out: dict[str, str] = {}
-    with _client(20.0) as c:
-        robots = Robots(c)
+    with nullcontext() if robots else _client(20.0) as c:
+        robots = robots or Robots(c)
 
         def one(host_urls: list[str]) -> None:
             for u in host_urls:
@@ -468,19 +480,24 @@ def check_sources(ctx: dict) -> Result:
     groups, _ = pc.plan(registry)
     meta = pc.url_info(registry)
     jobs = [(g, u) for g, urls in groups.items() for u in urls]
-    # Lo que robots.txt no permite (o un robots.txt que no responde) no se pide, como en la recolección.
-    refused = _robots_verdicts([u for _, u in jobs])
+    from enso.reach import Robots
 
-    def one(gu: tuple[str, str]) -> tuple[str, dict]:
-        g, u = gu
-        if u in refused:
-            # Una ruta que robots.txt prohíbe no es una falla del servidor ni del equipo: no se cuenta.
-            return g, {"url": u, "ok": False, "why": refused[u], "bytes": 0, "s": 0.0,
-                       "skip": refused[u] == "robots.txt no lo permite"}
-        return g, _probe(u, meta.get(u, {}).get("expect") or pc.guess_expect(u))
+    with _client(20.0) as rc:
+        # Lo que robots.txt no permite (o un robots.txt que no responde) no se pide, como en la recolección; la
+        # misma lectura vale para los saltos de las redirecciones.
+        robots = Robots(rc)
+        refused = _robots_verdicts([u for _, u in jobs], robots)
 
-    with ThreadPoolExecutor(max_workers=6) as pool:
-        res = list(pool.map(one, jobs))
+        def one(gu: tuple[str, str]) -> tuple[str, dict]:
+            g, u = gu
+            if u in refused:
+                # Una ruta que robots.txt prohíbe no es una falla del servidor ni del equipo: no se cuenta.
+                return g, {"url": u, "ok": False, "why": refused[u], "bytes": 0, "s": 0.0,
+                           "skip": refused[u] == "robots.txt no lo permite"}
+            return g, _probe(u, meta.get(u, {}).get("expect") or pc.guess_expect(u), robots)
+
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            res = list(pool.map(one, jobs))
     lines = [f"{'OK' if r['ok'] else '--' if r.get('skip') else 'NO'}  {g:8} {r['why']:>9} {r['bytes']:>9} B "
              f"{r['s']:5.1f}s  {r['url']}" for g, r in res]
     asked = [(g, r) for g, r in res if not r.get("skip")]

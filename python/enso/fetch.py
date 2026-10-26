@@ -279,6 +279,8 @@ class Fetcher:
             if down >= HOST_ONE_TRY_AFTER and i:
                 break
             self._wait_host(host)
+            if self.robots is not None:
+                self.robots.pace(url)  # el Crawl-delay de una entidad pública del Perú (``reach.Robots.pace``)
             overloaded = False
             try:
                 r = self._request(url)
