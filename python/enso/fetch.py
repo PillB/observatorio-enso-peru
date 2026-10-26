@@ -135,6 +135,8 @@ class Relay:
         self.summary: dict = idx.get("summary") or {}
         #: Metas de la recolección (``tools.peru_collector.goals``): documento → si se guardó su PDF.
         self.goals: dict = idx.get("goals") or {}
+        #: Por qué se logró o no cada meta (``tools.peru_collector.goal_detail``): clase, estado HTTP, motivo.
+        self.goal_detail: dict = idx.get("goal_detail") or {}
         self.heartbeat: dict = read_heartbeat(self.root)
         self.max_age_hours = max_age_hours
         #: Canal con que se marcan las respuestas: «relay-n8n», «relay-manual» (consola de documentos) o «relay-peru».
