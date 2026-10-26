@@ -236,7 +236,7 @@ Rama `data-n8n`, reemplazada en cada corrida (un commit sin padre: la rama
 guarda solo la última copia y el repositorio no crece; lo que el sitio usa
 se archiva en `data-archive`):
 
-- `index.json` (`enso-relay/1`): una entrada por URL con `status`, `verdict`, `reach`, `block`, `content_type`, `bytes`, `fetched_at`, `sha256`, `git_blob` y `file`. Las entradas que fallaron también están, con su motivo: es la medición desde AWS. `robots` en las URL cuyo `robots.txt` leyó n8n, y `not_requested` con las que no pidió por su `robots.txt`.
+- `index.json` (`enso-relay/1`): una entrada por URL con `status`, `verdict`, `reach`, `block`, `content_type`, `bytes`, `fetched_at`, `sha256`, `git_blob` y `file`. Las entradas que fallaron también están, con su motivo: es la medición desde AWS. `robots` en las URL cuyo `robots.txt` leyó n8n, y `not_requested` con las que no pidió por su `robots.txt` (con `hop` si se leyó el del destino de una redirección).
 - `files/<sha256[:16]>.<ext>`: el cuerpo original de cada respuesta válida.
 - `heartbeat.json` (`enso-relay-heartbeat/1`, el mismo formato que el recolector del Perú): `result` es `ok` si algo respondió en esta corrida y `sin-fuentes` si nada respondió (n8n funciona, las fuentes no).
 
