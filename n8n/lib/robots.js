@@ -44,11 +44,10 @@ function ruleLength(pattern, path) {
 }
 
 function robotsAllowed(rules, url) {
-  let path;
-  try {
-    const u = new URL(url);
-    path = (u.pathname || '/') + u.search;
-  } catch (e) { return true; }
+  // Ruta y consulta sin «URL», que el nodo Code de n8n no tiene.
+  const m = /^[a-z][a-z0-9+.-]*:\/\/[^/?#]*([^?#]*)(\?[^#]*)?/i.exec(String(url));
+  if (!m) return false;
+  const path = (m[1] || '/') + (m[2] && m[2].length > 1 ? m[2] : '');
   if (path === '/robots.txt') return true;
   let best = -1;
   let allow = true;

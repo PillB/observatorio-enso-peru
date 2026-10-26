@@ -75,11 +75,14 @@ for (const s of registry.sources) {
     // Nadie pudo leer su robots.txt al medir («unknown»): primero se lee aquí
     // (nodo «Analizar»), y la URL se pide en la segunda pasada solo si lo permite.
     if (u.robots === 'unknown') {
-      let base;
-      try { base = new URL(url).origin; } catch (e) { return; }
+      // Sin «URL»: el nodo Code de n8n no la tiene.
+      const m = /^(https?:\/\/([^/?#]+))/i.exec(url);
+      if (!m) return;
+      const base = m[1].toLowerCase();
+      const host = m[2].toLowerCase();
       let r = robotsByOrigin.get(base);
       if (!r) {
-        r = { id: `robots:${new URL(base).host}`, group: s.group, name: `robots.txt de ${new URL(base).host}`, url: `${base}/robots.txt`,
+        r = { id: `robots:${host}`, group: s.group, name: `robots.txt de ${host}`, url: `${base}/robots.txt`,
           expect: 'any', role: 'robots', deferred: [], pass: 1, registry: origin };
         robotsByOrigin.set(base, r);
         out.push({ json: r });

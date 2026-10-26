@@ -282,8 +282,9 @@ test('si el registro espera HTML y llega texto, se guarda con una nota', () => {
 async function runCode(name, vars, nodes, input = []) {
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
   const $ = (n) => { if (!(n in nodes)) throw new Error(`nodo sin ejecutar: ${n}`); return { first: () => nodes[n][0], all: () => nodes[n] }; };
-  const fn = new AsyncFunction('$', '$input', nodeCode(name, { VERSION: 'test', ...vars }));
-  return fn.call({ helpers: {} }, $, { all: () => input, first: () => input[0] });
+  // Como en el nodo Code de n8n: sin «URL».
+  const fn = new AsyncFunction('$', '$input', 'URL', nodeCode(name, { VERSION: 'test', ...vars }));
+  return fn.call({ helpers: {} }, $, { all: () => input, first: () => input[0] }, undefined);
 }
 
 test('Fuentes: respeta robots.txt y el alcance «n8n»', async () => {
@@ -362,7 +363,7 @@ test('Fuentes: no pide lo que robots.txt no permite ni aquello cuyo robots.txt n
 });
 
 test('robots.txt como python/enso/reach.py: regla más larga, Allow en el empate, grupo propio o «*»', () => {
-  const { robotRules, robotsAllowed } = load('classify', 'robots');
+  const { robotRules, robotsAllowed } = loadWith({ URL: undefined }, 'classify', 'robots');
   const igp = robotRules('User-agent: *\nAllow: /\nDisallow: /api/\n');
   assert.equal(robotsAllowed(igp, 'https://x/api/eventos'), false);
   assert.equal(robotsAllowed(igp, 'https://x/datos/ICEN.txt'), true);
@@ -377,10 +378,12 @@ test('robots.txt como python/enso/reach.py: regla más larga, Allow en el empate
   assert.equal(robotsAllowed(wild, 'https://x/buscar?q=nino'), false);
   assert.equal(robotsAllowed(robotRules('User-agent: *\nDisallow:\n'), 'https://x/'), true);
   assert.equal(robotsAllowed(robotRules('User-agent: *\nDisallow: /\n'), 'https://x/robots.txt'), true);
+  assert.equal(robotsAllowed(robotRules('User-agent: *\nDisallow: /\nAllow: /$\n'), 'https://x'), true);
+  assert.equal(robotsAllowed(robotRules('User-agent: *\nDisallow: /feed\n'), 'https://X.pe:8443/feed/?paged=1#a'), false);
 });
 
 test('qué hace n8n con cada respuesta de robots.txt (RFC 9309)', () => {
-  const { robotsVerdicts } = load('classify', 'robots');
+  const { robotsVerdicts } = loadWith({ URL: undefined }, 'classify', 'robots');
   const urls = ['https://x/feed/', 'https://x/wp-admin/'];
   const v = (r) => robotsVerdicts({ headers: {}, ...r, cls: classify({ url: 'https://x/robots.txt', expect: 'any', headers: r.headers || {}, ...r }) }, urls);
   const rules = v({ status: 200, body: enc('User-agent: *\nDisallow: /wp-admin/\n') });
