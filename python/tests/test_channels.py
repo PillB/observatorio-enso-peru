@@ -188,6 +188,24 @@ def test_n8n_index_is_a_measurement_from_n8n():
     assert got["https://b.pe/x"]["class"] == "timeout"
     assert got["https://c.pe/y"]["class"] == "challenge"
     assert registry.vantage_group(got["https://a.pe/feed"]["vantage"]) == "n8n"
+    assert "robots" not in got["https://a.pe/feed"]
+
+
+def test_robots_txt_read_by_n8n_gives_the_url_a_verdict():
+    """Revisión: una URL que solo n8n alcanza y cuyo robots.txt Actions no pudo leer (verificación) quedaba
+    «unknown» para siempre: n8n no la pide sin veredicto y nadie más la mide. Si n8n lee robots.txt y lo anota (en
+    su índice o en el informe de validación), cuenta como cualquier otra lectura."""
+    url = "https://www.imarpe.gob.pe/feed/"
+    index = {"collected_at": AT, "collector": {"kind": "n8n", "egress": "aws"}, "entries": [
+        {"url": url, "status": 200, "bytes": 900, "reach": "ok", "fetched_at": AT, "robots": "allowed"}]}
+    n8n = probe_sources.from_n8n_index(index)[url]
+    actions = {"class": "challenge", "robots": "unreachable", "at": AT, "vantage": "github-actions"}
+    assert registry.robots_verdict(url, {url: {"actions": {"github-actions": actions}}}) == "unknown"
+    reach = {url: {"actions": {"github-actions": actions}, "n8n": {n8n["vantage"]: n8n}}}
+    assert registry.robots_verdict(url, reach) == "allowed"
+    row = probe_sources.from_n8n_report([{"url": url, "alcance": "ok", "http": "200", "medido": AT, "robots": "allowed"},
+                                         {"url": "https://x.pe/", "alcance": "ok", "robots": "quizás"}], "n8n-aws")
+    assert row[0]["robots"] == "allowed" and "robots" not in row[1]
 
 
 def test_missing_relay_branches_are_reported(tmp_path):

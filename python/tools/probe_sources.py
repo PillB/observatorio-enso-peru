@@ -131,6 +131,10 @@ def from_peru_index(index: dict) -> dict[str, dict]:
     return out
 
 
+#: Lo que una medición dice de robots.txt (como ``probe``): ``absent`` es un 4xx (se permite todo).
+ROBOTS_READ = ("allowed", "disallowed", "absent", "unreachable")
+
+
 def from_n8n_index(index: dict) -> dict[str, dict]:
     """Lo que el recolector de n8n intentó en su última corrida (rama ``data-n8n``, enso-relay/1).
 
@@ -152,6 +156,8 @@ def from_n8n_index(index: dict) -> dict[str, dict]:
                 e.get("status"), b"x" * int(e.get("bytes") or 0), str(e.get("note") or e.get("block") or ""))
             rec = {"class": cls, "http": e.get("status"), "bytes": e.get("bytes"), "at": e.get("fetched_at") or at,
                    "detail": str(e.get("note") or e.get("block") or "")}
+        if e.get("robots") in ROBOTS_READ:  # n8n leyó robots.txt (las URL que nadie más pudo leer)
+            rec["robots"] = e["robots"]
         for u in [e.get("url"), *(e.get("aliases") or [])]:
             if u:
                 out[u] = rec | {"vantage": vantage}
@@ -176,7 +182,8 @@ def from_n8n_report(rows: list, vantage: str) -> list[dict]:
         if not isinstance(r, dict) or r.get("id") == "resumen" or not r.get("url") or r.get("alcance") not in registry.CLASSES:
             continue
         rec = {"url": r["url"], "class": r["alcance"], "at": _iso(r.get("medido")),
-               "detail": str(r.get("nota") or r.get("bloqueo") or "") or None}  # como from_n8n_index: «aborted» se reconoce
+               "detail": str(r.get("nota") or r.get("bloqueo") or "") or None,  # como from_n8n_index: «aborted» se reconoce
+               "robots": r.get("robots") if r.get("robots") in ROBOTS_READ else None}
         for k in ("http", "bytes"):
             v = r.get(k)
             if isinstance(v, int) or (isinstance(v, str) and v.isdigit()):
