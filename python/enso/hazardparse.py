@@ -711,6 +711,14 @@ _COEN_WHERE_RE = re.compile(r"^(?P<que>.+?)\s+EN\s+(?P<donde>(?:EL|LOS)\s+DISTRI
                             r"LAS\s+PROVINCIAS\s+DE\s+.+|LA\s+REGI[ÓO]N\s+.+|EL\s+DEPARTAMENTO\s+DE\s+.+)$", re.I | re.S)
 _COEN_BULLETIN_RE = re.compile(r"^BOLET[ÍI]N\s+INFORMATIVO\s+DE\s+AVISO\s+(?P<kind>METEOROL[ÓO]GICO|HIDROL[ÓO]GICO)\s*"
                                r"N\.?\s*[°º]?\s*(?P<num>\d+)", re.I)
+#: Otros boletines del COEN: avisos de oleaje (de la DHN), avisos de corto plazo (del SENAMHI, para 24 horas) y
+#: boletines que no son avisos (sismos, que llegan del IGP, USGS y la DHN; el resumen diario de peligros).
+_COEN_OLEAJE_RE = re.compile(r"^BOLET[ÍI]N\s+INFORMATIVO\s+DE\s+OLEAJES?\s*N\.?\s*[°º]?\s*(?P<num>\d+)", re.I)
+_COEN_CORTO_RE = re.compile(r"^BOLET[ÍI]N\s+INFORMATIVO\s+DE\s+AVISO\s+DE\s+CORTO\s+PLAZO\s+ANTE\s+(?P<what>.+?)\s*"
+                            r"N\.?\s*[°º]?\s*(?P<num>\d+)", re.I)
+_COEN_NOT_AVISO_RE = re.compile(r"^BOLET[ÍI]N\s+INFORMATIVO\s+(?:S[ÍI]SMICO|(?:DE\s+)?MONITOREO)", re.I)
+_COEN_OLEAJE_TXT_RE = re.compile(r"AVISO\s+ESPECIAL\s+DE\s+OLEAJE\s*N\.?\s*[°º]?\s*(?P<num>\d+)\s*:\s*(?P<what>.+?)\s*"
+                                 r"(?:VIGENCIA\s*:\s*(?P<when>.+?))?\s*$", re.I | re.S)
 _COEN_AVISO_RE = re.compile(r"AVISO\s*N\.?\s*[°º]?\s*(?P<num>\d+)\s*:\s*(?P<what>.+?)\s*(?:VIGENCIA\s*:\s*(?P<when>.+?))?\s*$", re.I | re.S)
 _COEN_FACTS_RE = re.compile(r"HECHOS:\s*Fecha y hora de la ocurrencia\s+Descripci[óo]n\s+(?P<d>\d{1,2}/\d{1,2}/\d{4})\s+"
                             r"(?P<h>\d{1,2}:\d{2})\s*horas\s*(?P<txt>.*)$", re.I | re.S)
@@ -751,14 +759,38 @@ def parse_coen(body: bytes, base_url: str) -> Parsed:
     from .feedparse import parse as parse_feed
 
     p = parse_feed(body, base_url=base_url, default_tz=LIMA)
-    items, human, drills = [], 0, 0
+    items, human, drills, other = [], 0, 0, 0
     for e in p.items:
         title = re.sub(r"\s+", " ", e["title"]).strip()
         summary = e["summary"]
         if SIMULACRO_RE.search(title):
             drills += 1
             continue
+        if _COEN_NOT_AVISO_RE.match(title):
+            other += 1
+            continue
         b = _COEN_BULLETIN_RE.match(title)
+        ol, cp = _COEN_OLEAJE_RE.match(title), _COEN_CORTO_RE.match(title)
+        if ol or cp:
+            # El detalle (vigencia, provincias o tramos del litoral) está en el PDF: lo lee ``documentos``.
+            flat = re.sub(r"\s+", " ", summary)
+            if ol:
+                a = _COEN_OLEAJE_TXT_RE.search(flat)
+                what = _cap(a.group("what")).lower() if a else ""
+                num = a.group("num") if a else ol.group("num")
+                new = f"Aviso especial de oleaje N° {num}" + (f": {what}" if what else "")
+                if a and a.group("when"):
+                    new += f" (vigencia: {a.group('when').strip().lower()})"
+                cats = ["aviso de oleaje", "oleaje"]
+            else:
+                new = f"Aviso de corto plazo ante {_cap(cp.group('what')).lower()} (boletín N° {cp.group('num')} del COEN)"
+                cats = ["aviso de corto plazo"]
+            e = dict(e, title=clean_text(new, 300),
+                     summary=clean_text(f"{flat if not flat.upper().startswith('BOLET') else ''} Difundido por el COEN del "
+                                        f"INDECI en su {title.split(' N')[0].lower()}.", 600),
+                     categories=cats)
+            items.append(e)
+            continue
         m = _COEN_TITLE_RE.match(title)
         if b:  # avisos del SENAMHI que el COEN difunde
             kind = "meteorológico" if b.group("kind").upper().startswith("METEOROL") else "hidrológico"
@@ -793,6 +825,8 @@ def parse_coen(body: bytes, base_url: str) -> Parsed:
         out.repairs.append(f"{human} reportes de emergencias no naturales omitidos (incendios urbanos, accidentes…)")
     if drills:
         out.repairs.append(f"{drills} reportes de simulacro omitidos")
+    if other:
+        out.repairs.append(f"{other} boletines que no son avisos omitidos (sísmicos, monitoreo de peligros)")
     return out
 
 

@@ -54,7 +54,8 @@ function toAlert(it, now) {
   const places = (it.geo?.places || []).filter((p) => p.code && DEP_NAMES[p.code.slice(0, 2)]);
   const deps = [...new Set(places.map((p) => p.code.slice(0, 2)))];
   return {
-    id: it.id, it, title: it.title, inst: it.institution, url: it.url, date: it.date, sev: it.severity || null,
+    // url: el informe (PDF) que ofrece la página de la publicación, si lo hay; es lo que se abre desde el mapa.
+    id: it.id, it, title: it.title, inst: it.institution, url: it.document || it.url, date: it.date, sev: it.severity || null,
     kind: it.kind || null, valid: it.valid || null, occurred: it.occurred || null, phase: phaseOf(it, now), places, deps,
     hazards: it.hazards || [],
   };
@@ -162,7 +163,16 @@ function levelSource(sev) {
 export function itemBadges(it, now = Date.now()) {
   if (!it.kind) return '';
   const a = toAlert(it, now);
-  return html`${levelChip(a, { small: true })} <span class="tag tag-phase ph-${a.phase}">${PHASE[a.phase][0]}</span> <span class="muted small">${phaseText(a)}</span>${levelSource(a.sev)}`;
+  return html`${levelChip(a, { small: true })} <span class="tag tag-phase ph-${a.phase}">${PHASE[a.phase][0]}</span> <span class="muted small">${phaseText(a)}</span>${levelSource(a.sev)}${placeSource(it)}`;
+}
+
+/** El informe completo (el PDF que la página de la publicación ofrece para descargar) y de dónde salen los
+ * lugares cuando no los trae el aviso mismo (el boletín del COEN del mismo aviso, o las regiones que nombra). */
+function placeSource(it) {
+  const doc = it.document ? html` <a class="small" href="${safeUrl(it.document)}" rel="noopener" target="_blank">informe completo (PDF)</a>` : '';
+  const via = it.geo?.via;
+  const viaDoc = via?.document ? html` (<a href="${safeUrl(via.document)}" rel="noopener" target="_blank">PDF</a>)` : '';
+  return html`${doc}${via?.basis ? html` <span class="muted small">lugares: ${via.basis}${viaDoc}</span>` : ''}`;
 }
 
 /** Para el pie del mapa: de qué copia de la tabla del SENAMHI salen los niveles, y si es vieja (más de 36 h,

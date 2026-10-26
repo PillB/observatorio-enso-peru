@@ -135,7 +135,7 @@ class Table:
             if title.startswith("Aviso del SENAMHI") and valid and not valid.get("source"):
                 return self._by_dates_and_words(title, valid)
             return None
-        if feed_id == "indeci-coen":
+        if feed_id in ("indeci-coen", "indeci-coen-boletines"):
             m = _COEN_NUM_RE.match(title)
             when = _when(published)
             if not m or when is None:
@@ -198,3 +198,70 @@ def load(relay) -> tuple[Optional[Table], str]:
 def from_relay(relay) -> Optional[Table]:
     """La tabla de la última copia del recolector del Perú, o ``None`` si no hay copia legible."""
     return load(relay)[0]
+
+
+# ---------------------------------------------------------------------------
+# Regiones que nombran los avisos («costa norte y sierra», «selva centro y sur»)
+# ---------------------------------------------------------------------------
+#: Departamentos de cada región en que el SENAMHI divide sus avisos. Es una aproximación: el aviso no dice en
+#: qué departamentos de la región, y un departamento andino está en la costa, la sierra y a veces la selva.
+#: Solo se usa si no hay nada mejor (el PDF del COEN con los departamentos expuestos, ``documentos``), y el
+#: mapa lo marca «≈» (confianza ``REGION_CONFIDENCE``). Validado con los departamentos expuestos de los avisos
+#: 432, 435 y 440 de 2026 (``tests/test_documentos.py``).
+REGIONS = {
+    ("costa", "norte"): ("Tumbes", "Piura", "Lambayeque", "La Libertad"),
+    ("costa", "centro"): ("Áncash", "Lima", "Callao", "Ica"),
+    ("costa", "sur"): ("Arequipa", "Moquegua", "Tacna"),
+    ("sierra", "norte"): ("Piura", "Lambayeque", "Cajamarca", "La Libertad", "Amazonas"),
+    ("sierra", "centro"): ("Áncash", "Huánuco", "Pasco", "Junín", "Lima", "Huancavelica"),
+    ("sierra", "sur"): ("Ayacucho", "Apurímac", "Cusco", "Arequipa", "Moquegua", "Tacna", "Puno"),
+    ("selva", "norte"): ("Amazonas", "Loreto", "San Martín", "Cajamarca"),
+    ("selva", "centro"): ("Huánuco", "Pasco", "Junín", "Ucayali"),
+    ("selva", "sur"): ("Cusco", "Madre de Dios", "Puno"),
+}
+REGION_CONFIDENCE = 0.6
+_ZONE = {"costa": "costa", "litoral": "costa", "sierra": "sierra", "andes": "sierra", "altoandina": "sierra",
+         "altoandinas": "sierra", "selva": "selva", "amazonia": "selva", "amazonica": "selva"}
+_PART = {"norte": "norte", "centro": "centro", "sur": "sur", "nororiental": "norte", "central": "centro"}
+_GLUE = {"y", "e", "la", "el", "los", "las", "del", "de", "zonas", "zona", ","}
+
+
+def regions_named(text: str) -> list[tuple[str, str]]:
+    """Las regiones que nombra el texto de un aviso. «costa y sierra norte y centro» → costa y sierra, norte y
+    centro; «costa norte y sierra» → costa norte y toda la sierra."""
+    words = re.findall(r"[a-z]+|,", _fold(text).replace(",", " , "))
+    out: list[tuple[str, str]] = []
+    pending: list[str] = []
+    parts: list[str] = []
+
+    def close():
+        for z in pending:
+            for p in parts or ["norte", "centro", "sur"]:
+                if (z, p) not in out:
+                    out.append((z, p))
+
+    run = False
+    for w in words:
+        if w in _ZONE:
+            if parts:  # «costa norte y sierra»: la costa ya tiene sus partes
+                close()
+                pending, parts = [], []
+            pending.append(_ZONE[w])
+            run = True
+        elif w in _PART and run:
+            parts.append(_PART[w])
+        elif w in _GLUE and run:
+            continue
+        elif run:
+            close()
+            pending, parts, run = [], [], False
+    close()
+    return out
+
+
+def region_departments(text: str) -> tuple[list[str], str]:
+    """Nombres de los departamentos de las regiones que nombra el texto, y la frase que las nombra."""
+    regions = regions_named(text)
+    names = list(dict.fromkeys(d for r in regions for d in REGIONS.get(r, ())))
+    m = re.search(r"\b(?:en (?:la|el|los|las) )?(?:costa|sierra|selva|litoral|zonas altoandinas|andes)\b[^.;:()]{0,60}", text, re.I)
+    return names, (m.group(0).strip() if m else "")

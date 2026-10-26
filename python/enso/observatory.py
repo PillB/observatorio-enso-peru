@@ -136,6 +136,7 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
     import httpx
 
     from .fetch import FetchError, Response, TooSlow
+    from .reach import BAD_LOCATION, RobotsHop
 
     if fetcher.offline:
         raise FetchError("modo sin conexión", [])
@@ -180,9 +181,10 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
         try:
             # Con el plazo por pedido y el de la corrida, como cualquier otro pedido de la corrida.
             r = fetcher._request(u, headers={"Range": rng})
-        except httpx.HTTPError as exc:
+        except (httpx.HTTPError, *BAD_LOCATION) as exc:  # también un Location que httpx no puede armar
             attempts.append({"url": u, "range": rng, "error": f"{type(exc).__name__}: {exc}"[:200]})
-            fetcher._down[host] = fetcher._down.get(host, 0) + (2 if isinstance(exc, TooSlow) else 1)
+            if not isinstance(exc, RobotsHop):  # una redirección que no se siguió no es un fallo del servidor
+                fetcher._down[host] = fetcher._down.get(host, 0) + (2 if isinstance(exc, TooSlow) else 1)
             http_errors[k] = f"{type(exc).__name__}: {exc}"[:200]
             continue
         attempts.append({"url": u, "range": rng, "status": r.status_code})
@@ -390,7 +392,9 @@ class PreviousPublication:
                 time.sleep(backoff * attempt)
             try:
                 if self.base.startswith("http"):
-                    r = self.fetcher.client.get(f"{self.base}/{name}", params=None if binary else {"t": int(time.time())})
+                    # El sitio publicado es el del propio observatorio: sus redirecciones se siguen sin más.
+                    r = self.fetcher.client.get(f"{self.base}/{name}", params=None if binary else {"t": int(time.time())},
+                                                follow_redirects=True)
                     if r.status_code >= 500 or r.status_code == 429:
                         continue
                     status, body = r.status_code, (r.content if binary else r.text)
@@ -1399,6 +1403,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         (tmp / "news").mkdir()
         dump("news/feeds.json", news["feeds"])
         dump("news/clusters.json", news["clusters"])
+        if news.get("documents") is not None:
+            dump("news/documentos.json", news["documents"])
         if news.get("geo"):
             (tmp / "geo").mkdir(exist_ok=True)
             for name, val in news["geo"].items():
@@ -1411,7 +1417,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         # anterior, para que la siguiente encuentre el histórico (y las correcciones de lugar de la consola,
         # geo/overrides.json, que se usan si la consola no responde) y no los dé por perdidos.
         carried: dict[str, dict] = {}
-        for name in ("news/feeds.json", "news/clusters.json", "news/items.jsonl", "news/items.csv",
+        for name in ("news/feeds.json", "news/clusters.json", "news/items.jsonl", "news/items.csv", "news/documentos.json",
                      "geo/items.json", "geo/overrides.json", "geo/quality.json", "geo/ubigeo.json"):
             body = previous.get_bytes(name)
             if not body:
@@ -2066,6 +2072,44 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         log.add("warning", "news", "publish", "news-history-large",
                 f"El histórico de noticias publicado pesa {size / 2**20:.1f} MiB; Cloudflare Pages no sirve archivos "
                 f"de más de 25 MiB: hay que dividirlo (docs/operaciones.md).")
+    # Del aviso a su documento: el PDF que enlaza cada publicación del COEN dice los departamentos, provincias o
+    # distritos expuestos, la vigencia y el texto del aviso (``documentos``). Lo leído se publica y la corrida
+    # siguiente no lo vuelve a pedir; se aplica en memoria, también a notas que el histórico ya tenía.
+    from . import documentos as DOC
+    doc_cache = DOC.load_cache(previous.get("news/documentos.json", tries=3) or {})
+    if fixtures is None:
+        from .fetch import Fetcher as _Fetcher
+        # La regla de robots.txt del fetcher diario: el COEN es una entidad pública del Perú (Ley 27806), así que
+        # un «Disallow» no lo detiene pero su Crawl-delay sí se respeta; además, un pedido por segundo y a lo más
+        # ``DOC.MAX_PER_RUN`` publicaciones por corrida.
+        doc_fetcher = _Fetcher(timeout=30.0, retries=1, polite_delay=1.0, plan=getattr(fetcher, "plan", None),
+                               max_seconds=NEWS_REQUEST_MAX_S, robots=getattr(fetcher, "robots", None) is not None,
+                               robots_known=getattr(fetcher, "robots_known", None))
+
+        def fetch_doc(url):
+            try:
+                r = doc_fetcher.get([url], archive=False)
+                return 200, r.body, r.content_type, ""
+            except FetchError as exc:
+                last = exc.attempts[-1] if exc.attempts else {}
+                return last.get("status"), b"", "", last.get("error") or f"HTTP {last.get('status')}"
+            except Exception as exc:  # noqa: BLE001 — redirecciones infinitas, URL inválida…
+                return None, b"", "", f"{type(exc).__name__}: {exc}"[:200]
+
+        try:
+            doc_stats = DOC.follow(items, fetch_doc, doc_cache, N.FEED_BY_ID, now)
+        finally:
+            doc_fetcher.close()
+        if doc_stats["read"] or doc_stats["failed"]:
+            log.add("info", "news", "fetch", "coen-documents",
+                    f"PDF del COEN: {doc_stats['read']} leídos, {doc_stats['failed']} sin leer (se reintentan hasta "
+                    f"{DOC.MAX_TRIES} veces), {doc_stats['pending']} quedan para la próxima corrida.")
+        if doc_stats["failed"] > max(3, doc_stats["read"]):
+            log.add("warning", "indeci-coen", "fetch", "coen-documents-failed",
+                    f"No se pudieron leer {doc_stats['failed']} PDF del COEN: los avisos quedan con los lugares de su "
+                    "titular o sin departamento. Ver news/documentos.json.")
+    DOC.apply(items, doc_cache)
+
     # Todo el histórico se ubica de nuevo y recibe las correcciones de la consola (el JSONL queda como se guardó).
     from . import geo_overrides as GO
     ov_fixture = fixtures / "geo-overrides.json" if fixtures is not None else None
@@ -2115,6 +2159,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
 
     return {
         "jsonl": jsonl, "csv": N.to_csv(items), "items": items, "raw": raw,
+        "documents": DOC.dump_cache(doc_cache, now),
         "live": {i["id"]: i["feed"] for i in found},
         "feeds": {"feeds": status, "history": {"items": len(items), "added": len(added),
                                                "since": min((i["first_seen"] for i in items), default=None),

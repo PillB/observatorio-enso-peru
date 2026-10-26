@@ -69,7 +69,9 @@ def alerts(news_items: list[dict], now: datetime, avisos=None) -> list[dict]:
     since = (now - timedelta(days=ALERTS_DAYS)).isoformat()
     deps = department_names()
     out, seen = [], set()
-    for i in sorted(news_items, key=lambda i: i.get("published") or i["first_seen"], reverse=True):
+    # Con la misma fecha, la nota guardada después primero: si el lector cambió el titular de una publicación,
+    # su enlace llega dos veces al histórico y vale la versión nueva.
+    for i in sorted(news_items, key=lambda i: (i.get("published") or i["first_seen"], i["first_seen"]), reverse=True):
         f = FEED_BY_ID.get(i.get("feed") or "")
         when = i.get("published") or i["first_seen"]
         if not f or not f.covers or when < since or i["link"] in seen:
@@ -87,10 +89,64 @@ def alerts(news_items: list[dict], now: datetime, avisos=None) -> list[dict]:
                     "title": i["title"], "text": i.get("summary") or "", "date": when, "url": i["link"],
                     "archive": news_page(i), "hazards": hz[:3],
                     "where": where, "geo": _geo_brief(i.get("geo")), "stale": False,
+                    **({"document": i["document"]} if i.get("document") else {}),
                     **assess(f.id, i["title"], i.get("summary") or "", when, now, avisos)})
         if len(out) >= ALERTS_MAX:
             break
+    _share_places(out)
     return out
+
+
+def _brief_places(codes: list[str], confidence: float, method: str) -> list[dict]:
+    from .geo import gazetteer
+
+    gz = gazetteer()
+    return [{**{k: v for k, v in gz.label(c).items() if k in ("code", "level", "name", "department")},
+             "confidence": confidence, "method": method} for c in codes if gz.valid(c)]
+
+
+def _share_places(rows: list[dict]) -> None:
+    """Lugares de los avisos meteorológicos del SENAMHI que llegan sin ellos.
+
+    1. El mismo aviso (año y número, de la tabla del SENAMHI) por otro canal: el mensaje de Telegram toma los
+       departamentos expuestos que el COEN publica en el PDF de su boletín (``documentos``).
+    2. Si ningún canal los trae, los departamentos de las regiones que nombra el aviso («costa norte y
+       sierra», ``senamhi_avisos.REGIONS``), con confianza 0,6: el mapa los marca «≈» y la ficha dice de dónde
+       salen. Sin región reconocible, el aviso sigue «sin departamento»."""
+    from .geo import gazetteer
+    from .senamhi_avisos import REGION_CONFIDENCE, region_departments
+
+    gz = gazetteer()
+    by_aviso: dict[tuple, dict] = {}
+    for r in rows:
+        a, g = r.get("aviso"), r.get("geo") or {}
+        if a and g.get("places") and r.get("document"):
+            by_aviso.setdefault((a.get("year"), a.get("num")), r)
+    for r in rows:
+        if r.get("kind") != "pronostico" or (r.get("geo") or {}).get("places"):
+            continue
+        a = r.get("aviso")
+        src = by_aviso.get((a.get("year"), a.get("num"))) if a else None
+        if src is not None:
+            r["geo"] = {**src["geo"], "via": {"url": src["url"], "document": src["document"],
+                                              "basis": f"departamentos del boletín del COEN del aviso N° {a['num']}"}}
+        elif r["source"] in ("news-senamhi-telegram",) or r["source"].startswith("news-indeci-coen"):
+            names, phrase = region_departments(f"{r['title']} {r.get('text') or ''}")
+            codes = [c for c in (_dep_by_name(gz, n) for n in names) if c]
+            if not codes:
+                continue
+            r["geo"] = {"scope": "regional" if len(codes) <= 3 else "nacional", "confidence": REGION_CONFIDENCE,
+                        "method": "region", "places": _brief_places(codes, REGION_CONFIDENCE, "region"),
+                        "reviewed": False,
+                        "via": {"basis": f"regiones que nombra el aviso («{phrase}»), no departamentos de la fuente"}}
+        else:
+            continue
+        r["where"] = [p["name"] for p in r["geo"]["places"]][:3]
+
+
+def _dep_by_name(gz, name: str):
+    hits = gz.find(name, "departamento")
+    return hits[0] if len(hits) == 1 else None
 
 
 def alert_sources(feed_status: Optional[list[dict]]) -> list[dict]:

@@ -241,7 +241,7 @@ PERU_INSTITUTION_RE = re.compile(
 NOTABLE_CAPITALS = {"chosica", "huaycan", "tingo maria", "quillabamba", "la oroya", "cerro de pasco",
                     "puerto maldonado", "tarapoto", "juliaca", "chimbote", "mollendo", "pichanaki"}
 #: Nombres de uso común que el INEI escribe de otra forma, o que la prensa usa para otro distrito.
-ALIASES = {"surco": {"150140"}, "ccatcca": {"081205"}, "kimbiri": {"080907"}, "raimondi": {"250201"}, "tambogrande": {"200114"}, "pichanaki": {"120303"},
+ALIASES = {"surco": {"150140"}, "ccatcca": {"081205"}, "kimbiri": {"080907"}, "seclla": {"090312"}, "san juan de iscos": {"120906"}, "raimondi": {"250201"}, "tambogrande": {"200114"}, "pichanaki": {"120303"},
            "carmen de la legua": {"070103"}, "nasca": {"1103", "110301"}, "nazca": {"1103", "110301"},
            "banos del inca": {"060108"}, "cuzco": {"08"}, "ciudad imperial": {"0801"}, "lima metropolitana": {"1501"},
            "lima provincias": {"15"}, "lima region": {"15"}, "region lima": {"15"},
@@ -870,6 +870,10 @@ def _finish(gz: Gazetteer, places: list[dict], suggested: list[dict], country: O
     }
 
 
+#: El titular refiere el punto al Perú («a 37 km al ESE de Cañaveral, Perú»).
+_NAMES_PERU_RE = re.compile(r"\bPer[uú]\b")
+
+
 def locate_item(entry: dict, feed=None, region: str = "peru") -> Optional[dict]:
     """Ubica una entrada de feed o una nota ya guardada. Devuelve el objeto ``geo`` (ver arquitectura) o ``None``.
 
@@ -896,6 +900,14 @@ def locate_item(entry: dict, feed=None, region: str = "peru") -> Optional[dict]:
         if hit:
             ev = f"{lat:.3f}, {lon:.3f}" + (f" ({hit['note']})" if hit.get("note") else "")
             places.append(_place(gz, hit["code"], hit["confidence"], "coordenadas", ev))
+        elif _NAMES_PERU_RE.search(entry.get("title") or ""):
+            from .limites import near_border
+
+            near = near_border(lat, lon)
+            if near:
+                ev = (f"{lat:.3f}, {lon:.3f} (fuera del Perú, a {near['km']:g} km del límite; la fuente lo refiere "
+                      f"al Perú)")
+                places.append(_place(gz, near["code"], near["confidence"], "coordenadas", ev))
     texts = [entry.get("title") or "", entry.get("summary") or ""]
     outlet = (entry.get("outlet") or "").strip()
     if len(outlet) >= 4:  # Google Noticias pega el nombre del medio al resumen («… Tumbes de Miércoles»)
