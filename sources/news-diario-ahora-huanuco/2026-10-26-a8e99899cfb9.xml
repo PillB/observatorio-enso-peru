@@ -1,0 +1,922 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Mon, 26 Oct 2026 02:06:54 GMT</lastBuildDate>
+    <pubDate>Sun, 25 Oct 2026 03:50:53 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>ANA avanza 12 barreras contra huaicos en Lima y Huarochirí: dos ya están listas</title>
+    <link>https://ahora.com.pe/nacional/ana-barreras-dinamicas-huaicos-lima-huarochiri</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/ana-barreras-dinamicas-huaicos-lima-huarochiri</guid>
+    <pubDate>Sun, 25 Oct 2026 03:50:53 GMT</pubDate>
+    <description><![CDATA[La ANA informó que continúa la instalación de 12 barreras dinámicas de acero flexible en zonas vulnerables de Lima Metropolitana y Huarochirí. Dos ya culminaron y cinco están en ejecución, como medida preventiva ante la próxima temporada de lluvias.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[barreras dinámicas]]></category>
+    <category><![CDATA[huaicos]]></category>
+    <category><![CDATA[ANA]]></category>
+    <category><![CDATA[Huarochirí]]></category>
+    <category><![CDATA[Contraloría]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f308b6c43c60.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f308b6c43c60.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f308b6c43c60.jpg"/>
+    <media:description type="plain"><![CDATA[La Autoridad Nacional del Agua (ANA) informó que continúa con la instalación de 12 barreras dinámicas de acero flexible en zonas vulnerables de Lima Metropolitana y Huarochirí, como parte de las acciones preventivas ante la próxima temporada de lluvias. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Carlos Gruezo fue visto en el Monumental y su fichaje por Universitario toma fuerza</title>
+    <link>https://ahora.com.pe/deportes/carlos-gruezo-universitario-monumental-fichaje-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/carlos-gruezo-universitario-monumental-fichaje-2027</guid>
+    <pubDate>Mon, 26 Oct 2026 02:00:57 GMT</pubDate>
+    <description><![CDATA[Carlos Gruezo asistió al Monumental en el duelo de Universitario ante Juan Pablo II y su fichaje por la &apos;U&apos; para 2027 cobra fuerza, según Gustavo Peralta. El ecuatoriano está libre desde el 9 de setiembre tras rescindir con Santos Laguna.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Carlos Gruezo]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Fabián Bustos]]></category>
+    <category><![CDATA[Gustavo Peralta]]></category>
+    <category><![CDATA[fichajes 2027]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/ba58e29e6709.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/ba58e29e6709.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/ba58e29e6709.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>El Real Madrid gana al Barça en el Clásico y recorta distancias</title>
+    <link>https://ahora.com.pe/deportes/real-madrid-gana-barca-clasico</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/real-madrid-gana-barca-clasico</guid>
+    <pubDate>Mon, 26 Oct 2026 00:20:54 GMT</pubDate>
+    <description><![CDATA[El Real Madrid venció al FC Barcelona en el Clásico, un resultado que deja al Barça líder con tres puntos de ventaja y evidencia problemas en el mediocampo blaugrana, según el análisis de Mundo Deportivo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Clásico]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[La Liga]]></category>
+    <category><![CDATA[Mourinho]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/3a24643c3790.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/3a24643c3790.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/3a24643c3790.webp"/>
+    <media:description type="plain"><![CDATA[Cuando en el <b>Barça </b>existe un exceso de confianza en el entorno, malo. Sólo faltó la baja de <b>Courtois </b>para incrementar la sensación de que el <b>Clásico </b>sería un paseo blaugrana. Y en fútbol, lo que más funciona son las dos H: humildad y hambre. El <b>Madrid </b>llegó con piel de co — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Universitario vs Sport Boys se reprogramó al 4 de noviembre por la procesión</title>
+    <link>https://ahora.com.pe/deportes/universitario-sport-boys-reprogramado-4-noviembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-sport-boys-reprogramado-4-noviembre</guid>
+    <pubDate>Mon, 26 Oct 2026 00:10:53 GMT</pubDate>
+    <description><![CDATA[La Liga de Fútbol Profesional Peruana reprogramó el Universitario vs Sport Boys de la fecha 14 del Torneo Clausura 2026 para el miércoles 4 de noviembre en el Estadio Monumental, debido a la procesión del Señor de los Milagros y a las coordinaciones con la PNP.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Sport Boys]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[LFPP]]></category>
+    <category><![CDATA[Señor de los Milagros]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/b083495b3746.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/b083495b3746.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/b083495b3746.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Cantero marcó a los 87&apos; y Alianza Lima se impuso a CD Moquegua en el Clausura</title>
+    <link>https://ahora.com.pe/deportes/cantero-triunfo-alianza-lima-moquegua-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cantero-triunfo-alianza-lima-moquegua-clausura</guid>
+    <pubDate>Sun, 25 Oct 2026 23:50:55 GMT</pubDate>
+    <description><![CDATA[Alan Cantero anotó a los 87 minutos en el triunfo de Alianza Lima ante CD Moquegua por la fecha 13 del Torneo Clausura 2026 y el equipo llegó a 25 puntos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Alan Cantero]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/695b7f20902a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/695b7f20902a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/695b7f20902a.jpg"/>
+    <media:description type="plain"><![CDATA[Alianza Lima se impuso a CD Moquegua en calidad de visitante con un solitario gol de Alan Cantero cerca al final del partido (87'); de esta manera, los blanquiazules sumaron 25 puntos y siguen expectantes en la pelea por el título del Torneo Clausura. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>50 escolares de Carabayllo ingresan a San Marcos y cinco logran el primer puesto</title>
+    <link>https://ahora.com.pe/educacion/carabayllo-50-escolares-san-marcos-admision-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/educacion/carabayllo-50-escolares-san-marcos-admision-2027</guid>
+    <pubDate>Sun, 25 Oct 2026 23:20:53 GMT</pubDate>
+    <description><![CDATA[Cincuenta estudiantes de quinto de secundaria del colegio Juan Pablo Peregrino, en Carabayllo, ingresaron a San Marcos en las primeras fechas del examen de admisión 2027-I; cinco obtuvieron el primer puesto en sus carreras y seis lograron el segundo o tercer lugar.]]></description>
+    <dc:creator><![CDATA[Ahora Educacion]]></dc:creator>
+    <category><![CDATA[Educación]]></category>
+    <category><![CDATA[San Marcos]]></category>
+    <category><![CDATA[admisión 2027-I]]></category>
+    <category><![CDATA[Carabayllo]]></category>
+    <category><![CDATA[Juan Pablo Peregrino]]></category>
+    <category><![CDATA[ingresantes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/955e64f30d73.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/955e64f30d73.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/955e64f30d73.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Flick alineó su once más potente ante el Real Madrid en el Clásico</title>
+    <link>https://ahora.com.pe/deportes/flick-once-barca-real-madrid-clasico-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/flick-once-barca-real-madrid-clasico-laliga</guid>
+    <pubDate>Sun, 25 Oct 2026 22:40:54 GMT</pubDate>
+    <description><![CDATA[Hansi Flick alineó al Barcelona ante el Real Madrid con Gordon por delante de Adeyemi y Espart en el lateral derecho por las bajas de Eric Garcia y Koundé.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Clásico]]></category>
+    <category><![CDATA[Hansi Flick]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/bd69572646b9.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/bd69572646b9.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/bd69572646b9.webp"/>
+    <media:description type="plain"><![CDATA[El once titular del Barça ante el <b>Real Madrid</b> en el primer Clásico de LaLiga estaba cantado. Las pistas que <b>Hansi Flick</b> ofreció en el partido del PSG sentando a<b> Rodri</b> y las últimas lesiones de <b>Eric</b> <b>Garcia y Koundé</b> inclinaban a un calco en defensa y retoques en la m — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Edison Flores: &apos;Siempre me he preparado al máximo para poder tener minutos&apos;</title>
+    <link>https://ahora.com.pe/deportes/edison-flores-preparacion-minutos-universitario-bustos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/edison-flores-preparacion-minutos-universitario-bustos</guid>
+    <pubDate>Sun, 25 Oct 2026 22:10:53 GMT</pubDate>
+    <description><![CDATA[Edison Flores anotó ante Juan Pablo II y destacó su preparación diaria para sumar minutos en Universitario, además de la paciencia, su relación con Fabián Bustos y su celebración con las manos en las orejas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Edison Flores]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Fabián Bustos]]></category>
+    <category><![CDATA[Juan Pablo II]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/22bc95971a34.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/22bc95971a34.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/22bc95971a34.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima vs. CD Moquegua se detuvo por falla técnica en el VAR</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-moquegua-falla-var-clausura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-moquegua-falla-var-clausura-2026</guid>
+    <pubDate>Sun, 25 Oct 2026 20:30:57 GMT</pubDate>
+    <description><![CDATA[El partido entre Alianza Lima y CD Moquegua, por el Torneo Clausura 2026, se detuvo varios minutos por una falla técnica en el VAR antes de la reanudación del segundo tiempo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <category><![CDATA[VAR]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[CONAR]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/5e45d1cbc8c4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/5e45d1cbc8c4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/5e45d1cbc8c4.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Junín: 47.1% de niños de 6 a 35 meses sufrió anemia en 2025, según Endes</title>
+    <link>https://ahora.com.pe/sociedad/junin-anemia-infantil-2025-endes-comexperu</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/junin-anemia-infantil-2025-endes-comexperu</guid>
+    <pubDate>Sun, 25 Oct 2026 19:20:54 GMT</pubDate>
+    <description><![CDATA[En 2025, el 47.1% de los niños de 6 a 35 meses de Junín tuvo anemia, según la Endes consignada por ComexPerú, 3.4 puntos menos que en 2024. La región es la décimo primera con mayor incidencia. Al cierre del año pasado, 65% de los niños asignados a tamizaje de hemoglobina recibió ambas pruebas oportunamente.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[anemia infantil]]></category>
+    <category><![CDATA[Junín]]></category>
+    <category><![CDATA[Endes]]></category>
+    <category><![CDATA[ComexPerú]]></category>
+    <category><![CDATA[tamizaje de hemoglobina]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f283f395c65f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f283f395c65f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f283f395c65f.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>España activa 500 plazas de reservista voluntario: no es el regreso de la mili</title>
+    <link>https://ahora.com.pe/mundo/espana-reservistas-voluntarios-500-plazas-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/espana-reservistas-voluntarios-500-plazas-2026</guid>
+    <pubDate>Sun, 25 Oct 2026 19:20:53 GMT</pubDate>
+    <description><![CDATA[España autorizó hasta 500 plazas de reservista voluntario para 2026 mediante el Real Decreto 170/2026, publicado en el BOE en marzo. La medida es voluntaria y no supone el retorno del servicio militar obligatorio, suspendido en 2001.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[servicio militar voluntario]]></category>
+    <category><![CDATA[reservistas voluntarios]]></category>
+    <category><![CDATA[España]]></category>
+    <category><![CDATA[BOE]]></category>
+    <category><![CDATA[Real Decreto 170/2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/89eadbc01919.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/89eadbc01919.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/89eadbc01919.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Joe Tsai, de Alibaba: la IA open source es la única vía a la soberanía tecnológica europea</title>
+    <link>https://ahora.com.pe/tecnologia/joe-tsai-alibaba-ia-open-source-soberania-europea</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/joe-tsai-alibaba-ia-open-source-soberania-europea</guid>
+    <pubDate>Sun, 25 Oct 2026 18:20:53 GMT</pubDate>
+    <description><![CDATA[Joe Tsai, presidente y cofundador de Alibaba, sostuvo en el evento Wave en Italia que Europa solo alcanzará la soberanía tecnológica con IA open source entrenada con datos propios, en un contexto de dependencia de EEUU y China.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[Joe Tsai]]></category>
+    <category><![CDATA[Alibaba]]></category>
+    <category><![CDATA[IA open source]]></category>
+    <category><![CDATA[soberanía tecnológica]]></category>
+    <category><![CDATA[Qwen3.8]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7d91673cc352.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7d91673cc352.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7d91673cc352.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima visita a CD Moquegua para acercarse a la cima del Clausura</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-cd-moquegua-clausura-previa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-cd-moquegua-clausura-previa</guid>
+    <pubDate>Sun, 25 Oct 2026 17:10:53 GMT</pubDate>
+    <description><![CDATA[Alianza Lima visita a CD Moquegua por el Torneo Clausura con la obligación de ganar para seguir en la disputa por el título; el equipo de Pablo Guede llega con tres triunfos consecutivos y la baja de Mateo Antoni por lesión.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/db3487139758.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/db3487139758.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/db3487139758.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Sheinbaum mantiene 66% de aprobación pese a 3.277 protestas en CDMX en 2026</title>
+    <link>https://ahora.com.pe/mundo/sheinbaum-aprobacion-protestas-mexico</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/sheinbaum-aprobacion-protestas-mexico</guid>
+    <pubDate>Sun, 25 Oct 2026 16:10:52 GMT</pubDate>
+    <description><![CDATA[México acumula 3.277 protestas en Ciudad de México en 2026 con 11 diarias en promedio, un 18% más que 2025, mientras la aprobación de Claudia Sheinbaum alcanza el 66%, según un análisis de BBC Mundo.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Claudia Sheinbaum]]></category>
+    <category><![CDATA[protestas en México]]></category>
+    <category><![CDATA[Morena]]></category>
+    <category><![CDATA[aprobación presidencial]]></category>
+    <category><![CDATA[Ciudad de México]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f7ce8efd78a2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f7ce8efd78a2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f7ce8efd78a2.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima visita a CD Moquegua con siete bajas confirmadas</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-cd-moquegua-siete-bajas-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-cd-moquegua-siete-bajas-clausura</guid>
+    <pubDate>Sun, 25 Oct 2026 15:30:57 GMT</pubDate>
+    <description><![CDATA[Alianza Lima jugará ante CD Moquegua por la fecha 13 del Torneo Clausura con siete bajas confirmadas, entre ellas las de Paolo Guerrero, Esteban Pavez y Mateo Antoni por lesión.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <category><![CDATA[Paolo Guerrero]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/58869fc4fd40.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/58869fc4fd40.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/58869fc4fd40.jpg"/>
+    <media:description type="plain"><![CDATA[Siete futbolistas de Alianza Lima quedaron descartados para el partido de hoy ante CD Moquegua por la fecha 13 del Torneo Clausura. Conoce quiénes son. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Bad Boys y CESA juegan la ida de los 16avos de la Copa Perú en Ica</title>
+    <link>https://ahora.com.pe/deportes/bad-boys-cesa-ida-16avos-copa-peru-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/bad-boys-cesa-ida-16avos-copa-peru-2026</guid>
+    <pubDate>Sun, 25 Oct 2026 13:50:51 GMT</pubDate>
+    <description><![CDATA[Bad Boys de Ica recibe a CESA de Junín este domingo 25 de octubre a las 18:00 en el Estadio Teobaldo Pinillos Olaechea por la ida de los 16avos de final de la Etapa Nacional de la Copa Perú 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Copa Perú 2026]]></category>
+    <category><![CDATA[Bad Boys]]></category>
+    <category><![CDATA[CESA]]></category>
+    <category><![CDATA[16avos de final]]></category>
+    <category><![CDATA[Etapa Nacional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/27f0f458a492.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/27f0f458a492.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/27f0f458a492.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Courtois causa baja de última hora por gripe y Lunin jugará el Clásico</title>
+    <link>https://ahora.com.pe/deportes/courtois-baja-clasico-lunin</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/courtois-baja-clasico-lunin</guid>
+    <pubDate>Sun, 25 Oct 2026 12:50:51 GMT</pubDate>
+    <description><![CDATA[El Real Madrid confirmó la baja de Thibaut Courtois por un proceso gripal para el Clásico ante el Barcelona de la décima jornada de LaLiga; Andriy Lunin ocupará la portería e Illia Voloshyn se suma a la lista.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Courtois]]></category>
+    <category><![CDATA[Clásico]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Lunin]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/64f0746978c1.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/64f0746978c1.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/64f0746978c1.webp"/>
+    <media:description type="plain"><![CDATA[El Real Madrid pierde a <b>Thibaut Courtois para el Clásico</b> de esta noche ante el Barcelona, correspondiente a la décima jornada de LaLiga. El guardameta belga es baja de última hora debido a un proceso gripal y en su lugar jugará <b>Andriy Lunin</b>.&nbsp;El ucraniano debutará esta campaña, ya — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Agenda deportiva del domingo 25 de octubre: Liga 1, clásico Barcelona vs Real Madrid y más ligas</title>
+    <link>https://ahora.com.pe/deportes/agenda-deportiva-domingo-25-octubre-liga-1-clasico</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/agenda-deportiva-domingo-25-octubre-liga-1-clasico</guid>
+    <pubDate>Sun, 25 Oct 2026 12:10:52 GMT</pubDate>
+    <description><![CDATA[Programación deportiva del domingo 25 de octubre con Liga 1, el clásico Barcelona vs Real Madrid y partidos de Premier League, Serie A, Bundesliga y otras ligas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[Barcelona vs Real Madrid]]></category>
+    <category><![CDATA[clásico español]]></category>
+    <category><![CDATA[agenda deportiva]]></category>
+    <category><![CDATA[partidos del domingo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/fa483c7877f3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/fa483c7877f3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/fa483c7877f3.jpg"/>
+    <media:description type="plain"><![CDATA[Conoce la programación de los partidos de hoy, domingo 25 de octubre, en los que destacan los cotejos de Liga 1 y el clásico Barcelona vs Real Madrid por LaLiga. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Jokic llega a 199 triples-dobles y Denver remonta 23 puntos a Pelicans</title>
+    <link>https://ahora.com.pe/deportes/jokic-199-triples-dobles-denver-remonta-pelicans</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/jokic-199-triples-dobles-denver-remonta-pelicans</guid>
+    <pubDate>Sun, 25 Oct 2026 11:10:51 GMT</pubDate>
+    <description><![CDATA[Nikola Jokic firmó su triple-doble 199 en la NBA y Jamal Murray anotó 42 puntos en la remontada de Denver Nuggets 141-135 sobre New Orleans Pelicans en prórroga.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Nikola Jokic]]></category>
+    <category><![CDATA[triple-doble]]></category>
+    <category><![CDATA[Denver Nuggets]]></category>
+    <category><![CDATA[NBA]]></category>
+    <category><![CDATA[Jamal Murray]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/865d6391010c.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/865d6391010c.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/865d6391010c.webp"/>
+    <media:description type="plain"><![CDATA[El serbio<b> Nikola Jokic </b>firmó este sábado <b>el triple-doble número 199 de su carrera en la temporada regular de la NBA</b>, en la victoria por 141-135 en la prórroga de los <b>Denver Nuggets</b> en casa contra los New Orleans Pelicans tras remontar 23 puntos. — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Las Palmas vence 1-0 al Real Sociedad B con gol de Jesé en LaLiga Hypermotion</title>
+    <link>https://ahora.com.pe/deportes/las-palmas-real-sociedad-b-jornada-11-hypermotion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/las-palmas-real-sociedad-b-jornada-11-hypermotion</guid>
+    <pubDate>Sun, 25 Oct 2026 09:30:55 GMT</pubDate>
+    <description><![CDATA[Las Palmas superó 1-0 al Real Sociedad B con gol de Jesé en la jornada 11 de LaLiga Hypermotion, en un partido entre dos equipos que atravesaban malas rachas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Las Palmas]]></category>
+    <category><![CDATA[Real Sociedad B]]></category>
+    <category><![CDATA[LaLiga Hypermotion]]></category>
+    <category><![CDATA[Jesé]]></category>
+    <category><![CDATA[jornada 11]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/99689ea90f91.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/99689ea90f91.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/99689ea90f91.webp"/>
+    <media:description type="plain"><![CDATA[Buenas tardes y bienvenidos a la narración, en directo, del partido de fútbol de la LaLiga Hypermotion que enfrenta al Las Palmas contra el Real Sociedad B correspondiente a Jornada 11. Desde Mundo Deportivo, te ofrecemos toda la cobertura minuto a minuto, la previa, las alineaciones, las mejores ju — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Carlos Gruezo se perfila como primer fichaje de Universitario para la Liga 1 2027</title>
+    <link>https://ahora.com.pe/deportes/carlos-gruezo-fichaje-universitario-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/carlos-gruezo-fichaje-universitario-2027</guid>
+    <pubDate>Sun, 25 Oct 2026 07:10:50 GMT</pubDate>
+    <description><![CDATA[Carlos Gruezo, seleccionado ecuatoriano, se perfila como el primer fichaje de Universitario de Deportes para la temporada 2027 de la Liga 1, según información divulgada en L1MAX.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Carlos Gruezo]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Liga 1 2027]]></category>
+    <category><![CDATA[fichajes]]></category>
+    <category><![CDATA[selección ecuatoriana]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f9284a45be8f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f9284a45be8f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f9284a45be8f.jpg"/>
+    <media:description type="plain"><![CDATA[Futbolista de la selección ecuatoriana está muy cerca de ser el nuevo fichaje de Universitario de Deportes para la temporada 2027 de la Liga 1. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Policía incauta más de 6.000 artículos falsificados del Barça en Barcelona</title>
+    <link>https://ahora.com.pe/policiales/policia-incauta-articulos-falsificados-barca-barcelona</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/policia-incauta-articulos-falsificados-barca-barcelona</guid>
+    <pubDate>Sun, 25 Oct 2026 06:10:51 GMT</pubDate>
+    <description><![CDATA[La Policía Nacional intervino más de 6.000 artículos falsificados del FC Barcelona en un almacén de la calle Rosselló, en Barcelona, y detuvo a una persona acusada de un delito contra la propiedad intelectual.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Barça]]></category>
+    <category><![CDATA[artículos falsificados]]></category>
+    <category><![CDATA[Policía Nacional]]></category>
+    <category><![CDATA[Sagrada Familia]]></category>
+    <category><![CDATA[propiedad intelectual]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/94395d16b9cd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/94395d16b9cd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/94395d16b9cd.jpg"/>
+    <media:description type="plain"><![CDATA[La Policía Nacional ha intervenido en <b>Barcelona</b> más de 6.000 artículos falsificados del equipo de fútbol del Barça, que iban a ser distribuidos en diferentes establecimientos cercanos al entorno de la Sagrada Familia, y ha detenido a una persona. — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Mariana Brambilla, exvoleibolista de Alianza Lima, sufrió grave lesión de tobillo en la Superliga de Brasil</title>
+    <link>https://ahora.com.pe/deportes/mariana-brambilla-lesion-superliga-brasil-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/mariana-brambilla-lesion-superliga-brasil-2026</guid>
+    <pubDate>Sun, 25 Oct 2026 05:30:53 GMT</pubDate>
+    <description><![CDATA[Mariana Brambilla, exjugadora de Alianza Lima, sufrió una grave lesión de tobillo en la Superliga de Brasil 2026 durante el partido entre Osasco y Mackenzie, que terminó 3-1 para Osasco.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Mariana Brambilla]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Superliga de Brasil 2026]]></category>
+    <category><![CDATA[Osasco]]></category>
+    <category><![CDATA[lesión de tobillo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/48d1c7b5893c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/48d1c7b5893c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/48d1c7b5893c.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Magaly Medina relata episodio con el padre de su hijo en su podcast</title>
+    <link>https://ahora.com.pe/entretenimiento/magaly-medina-episodio-padre-hijo-pamela-lopez</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/magaly-medina-episodio-padre-hijo-pamela-lopez</guid>
+    <pubDate>Sun, 25 Oct 2026 05:10:53 GMT</pubDate>
+    <description><![CDATA[Magaly Medina reveló en su podcast un episodio económico con el padre de su hijo al mudarse a Lima. El testimonio surgió durante una entrevista a Pamela López sobre su separación de Christian Cueva.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Magaly Medina]]></category>
+    <category><![CDATA[Pamela López]]></category>
+    <category><![CDATA[Christian Cueva]]></category>
+    <category><![CDATA[podcast]]></category>
+    <category><![CDATA[separación]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/403cdebb7d58.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/403cdebb7d58.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/403cdebb7d58.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Comando Unificado destruye bienes de minería ilegal valorizados en S/ 9.573.200 en Madre de Dios</title>
+    <link>https://ahora.com.pe/policiales/comando-unificado-mineria-ilegal-madre-de-dios-9-millones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/comando-unificado-mineria-ilegal-madre-de-dios-9-millones</guid>
+    <pubDate>Sun, 25 Oct 2026 05:10:52 GMT</pubDate>
+    <description><![CDATA[El Comando Unificado, con Policía Nacional y Fuerzas Armadas, ejecutó dos operativos contra la minería ilegal en Inambari, Madre de Dios, y destruyó maquinaria y bienes valorizados en S/ 9 millones 573.200. El Mininter anunció que las interdicciones continuarán en la región.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Comando Unificado]]></category>
+    <category><![CDATA[Madre de Dios]]></category>
+    <category><![CDATA[Inambari]]></category>
+    <category><![CDATA[Mininter]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/b41ef7e6929e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/b41ef7e6929e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/b41ef7e6929e.jpg"/>
+    <media:description type="plain"><![CDATA[El Comando Unificado, integrado por las fuerzas combinadas de la Policía Nacional y las Fuerzas Armadas, ejecutaron dos operativos de interdicción contra la minería ilegal en la región Madre de Dios, logrando destruir maquinaria y bienes valorizados en casi S/ 10 millones (nueve millones 573 mil 200 — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Atlético de Madrid sigue al paraguayo Diego Gómez, según medios ingleses</title>
+    <link>https://ahora.com.pe/deportes/atletico-madrid-diego-gomez-brighton</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/atletico-madrid-diego-gomez-brighton</guid>
+    <pubDate>Sun, 25 Oct 2026 04:40:52 GMT</pubDate>
+    <description><![CDATA[El Atlético de Madrid figura entre los clubes que siguen al centrocampista paraguayo Diego Gómez, del Brighton, según publicaciones inglesas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Diego Gómez]]></category>
+    <category><![CDATA[Atlético de Madrid]]></category>
+    <category><![CDATA[Brighton]]></category>
+    <category><![CDATA[Premier League]]></category>
+    <category><![CDATA[fichajes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/9938d334e2d6.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/9938d334e2d6.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/9938d334e2d6.webp"/>
+    <media:description type="plain"><![CDATA[Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Universitario confirma baja de Matías Di Benedetto por lesión muscular</title>
+    <link>https://ahora.com.pe/deportes/universitario-di-benedetto-lesion-clausura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-di-benedetto-lesion-clausura-2026</guid>
+    <pubDate>Sun, 25 Oct 2026 03:50:54 GMT</pubDate>
+    <description><![CDATA[Universitario de Deportes reveló que Matías Di Benedetto sigue recuperándose de una rotura muscular de primer grado y se perderá la fecha 13 del Torneo Clausura 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Matías Di Benedetto]]></category>
+    <category><![CDATA[lesión muscular]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Fabián Bustos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/2b30177511ef.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/2b30177511ef.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/2b30177511ef.jpg"/>
+    <media:description type="plain"><![CDATA[Universitario de Deportes reveló nuevos detalles de la lesión de Matías Di Benedetto de cara a la recta final del Torneo Clausura de la Liga 1 2026. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Araujo: &quot;Que me quede o no en el Liverpool no depende sólo de mí&quot;</title>
+    <link>https://ahora.com.pe/deportes/araujo-liverpool-continuidad-champions</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/araujo-liverpool-continuidad-champions</guid>
+    <pubDate>Sun, 25 Oct 2026 03:00:56 GMT</pubDate>
+    <description><![CDATA[Ronald Araujo habló en The Times sobre su continuidad en el Liverpool, donde es titular con Iraola, y sobre el descanso por salud mental que tomó en el Barcelona.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Ronald Araujo]]></category>
+    <category><![CDATA[Liverpool]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <category><![CDATA[Andoni Iraola]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/697b3671256a.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/697b3671256a.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/697b3671256a.webp"/>
+    <media:description type="plain"><![CDATA[<b>Ronald Araujo</b>, central de 27 años que también juega de lateral derecho de forma habitual, vive sus&nbsp; mejores momentos en el Liverpool, ya titular a las órdenes de <b>Andoni Iraola</b>. Sus estadísticas son especialmente sorprendentes en la Champions League, competición en la que en tres j — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Pablo Míguez elogia a Universitario antes del duelo ante Juan Pablo II</title>
+    <link>https://ahora.com.pe/deportes/pablo-miguez-elogia-universitario-juan-pablo-ii-fecha-13</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/pablo-miguez-elogia-universitario-juan-pablo-ii-fecha-13</guid>
+    <pubDate>Sun, 25 Oct 2026 02:10:53 GMT</pubDate>
+    <description><![CDATA[Pablo Míguez, exjugador de Alianza Lima y actual defensa de Juan Pablo II, elogió a Universitario antes del partido por la fecha 13 del Torneo Clausura y aseguró que su equipo busca mantenerse en la pelea por los primeros lugares.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Pablo Míguez]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Juan Pablo II]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f0f6d705db7f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f0f6d705db7f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f0f6d705db7f.jpg"/>
+    <media:description type="plain"><![CDATA[¡Sorpresivas declaraciones! Un exblanquiazul no dudó en llenar de elogios a Universitario, previo al duelo ante Juan Pablo II por la fecha 13 del Torneo Clausura. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Barcelona vs. Real Madrid: horarios y canales del Clásico de LaLiga</title>
+    <link>https://ahora.com.pe/deportes/clasico-barcelona-real-madrid-spotify-camp-nou</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/clasico-barcelona-real-madrid-spotify-camp-nou</guid>
+    <pubDate>Sun, 25 Oct 2026 01:20:51 GMT</pubDate>
+    <description><![CDATA[FC Barcelona y Real Madrid se enfrentan este domingo 25 de octubre en el Spotify Camp Nou por la Jornada 10 de LaLiga 2026-27. En Perú, la transmisión estará a cargo de DSports y DGO.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Clásico]]></category>
+    <category><![CDATA[LaLiga 2026-27]]></category>
+    <category><![CDATA[Spotify Camp Nou]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/55253b4de7d1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/55253b4de7d1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/55253b4de7d1.jpg"/>
+    <media:description type="plain"><![CDATA[Barcelona vs Real Madrid protagonizarán un emocionante encuentro por la décima jornada de LaLiga. Conoce en qué canal ver el clásico español. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Gobierno asigna S/ 2,500 millones para bonos a damnificados por lluvias y El Niño</title>
+    <link>https://ahora.com.pe/economia/gobierno-bono-damnificados-lluvias-2500-millones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/gobierno-bono-damnificados-lluvias-2500-millones</guid>
+    <pubDate>Sun, 25 Oct 2026 01:20:50 GMT</pubDate>
+    <description><![CDATA[El Ejecutivo oficializó un paquete de S/ 18,000 millones para atender a los damnificados por lluvias, huaicos e inundaciones asociados al Fenómeno El Niño. Incluye S/ 2,500 millones en bonos directos que se pagarán desde diciembre, además de inversión en infraestructura, prevención y subsidios energéticos.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[bonos damnificados]]></category>
+    <category><![CDATA[Fenómeno El Niño]]></category>
+    <category><![CDATA[Keiko Fujimori]]></category>
+    <category><![CDATA[Elmer Cuba]]></category>
+    <category><![CDATA[paquete fiscal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/13ffef948975.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/13ffef948975.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/13ffef948975.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Hinchas de Cristal preparan &apos;lluvia&apos; de billetes con el rostro de Advíncula en el Gallardo</title>
+    <link>https://ahora.com.pe/deportes/hinchas-cristal-protesta-advincula-alberto-gallardo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/hinchas-cristal-protesta-advincula-alberto-gallardo</guid>
+    <pubDate>Sun, 25 Oct 2026 00:30:55 GMT</pubDate>
+    <description><![CDATA[Hinchas de Sporting Cristal preparan protestas contra Luis Advíncula por su fichaje por Alianza Lima antes del partido de la fecha 14 del Torneo Clausura en el estadio Alberto Gallardo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Luis Advíncula]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Alberto Gallardo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/1ae8c54c1989.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/1ae8c54c1989.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/1ae8c54c1989.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Gobierno anuncia bono para damnificados por lluvias y huaicos dentro de paquete de S/ 2,500 millones</title>
+    <link>https://ahora.com.pe/economia/bono-damnificados-lluvias-huaicos-2500-millones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/bono-damnificados-lluvias-huaicos-2500-millones</guid>
+    <pubDate>Sun, 25 Oct 2026 00:20:50 GMT</pubDate>
+    <description><![CDATA[El Ejecutivo oficializó un bono directo para hogares damnificados por lluvias, huaicos e inundaciones, con un presupuesto de S/ 2,500 millones dentro de un paquete fiscal de S/ 18,000 millones. El MEF precisó que el desembolso comenzará en diciembre.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[bono damnificados]]></category>
+    <category><![CDATA[lluvias huaicos]]></category>
+    <category><![CDATA[Fenómeno El Niño]]></category>
+    <category><![CDATA[Keiko Fujimori]]></category>
+    <category><![CDATA[MEF]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/876cb080cc5a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/876cb080cc5a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/876cb080cc5a.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Christian Ramos cuestiona a Mano Menezes: &quot;No veo qué es lo que quiere&quot; en Perú</title>
+    <link>https://ahora.com.pe/deportes/christian-ramos-critica-mano-menezes-seleccion-peruana</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/christian-ramos-critica-mano-menezes-seleccion-peruana</guid>
+    <pubDate>Sat, 24 Oct 2026 23:40:51 GMT</pubDate>
+    <description><![CDATA[Christian Ramos criticó el trabajo de Mano Menezes en la selección peruana y cuestionó que no se vea una idea clara de juego tras la gira por Norteamérica.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Christian Ramos]]></category>
+    <category><![CDATA[Mano Menezes]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Bicolor]]></category>
+    <category><![CDATA[fecha FIFA]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/abf9b57e91eb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/abf9b57e91eb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/abf9b57e91eb.jpg"/>
+    <media:description type="plain"><![CDATA[Christian Ramos, mundialista con Perú en Rusia 2018, cuestionó el trabajo de Mano Menezes y dejó un contundente análisis sobre el presente de la Bicolor. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>San Martín vs. Deportivo Soan: horario, TV y entradas de la fecha 2 de la Liga de Vóley</title>
+    <link>https://ahora.com.pe/deportes/san-martin-deportivo-soan-fecha-2-liga-voley</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/san-martin-deportivo-soan-fecha-2-liga-voley</guid>
+    <pubDate>Sat, 24 Oct 2026 22:50:49 GMT</pubDate>
+    <description><![CDATA[San Martín enfrenta a Deportivo Soan este domingo 25 de octubre por la fecha 2 de la Fase 1 de la Liga Peruana de Vóley 2026-2027 en el Coliseo Lucha Fuentes de Villa El Salvador, con transmisión de Latina.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[San Martín]]></category>
+    <category><![CDATA[Deportivo Soan]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[fecha 2]]></category>
+    <category><![CDATA[Fase 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/6b218683631e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/6b218683631e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/6b218683631e.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Oscar Bobb decide con un golazo y saca al Fulham de Arbeloa del descenso</title>
+    <link>https://ahora.com.pe/deportes/bobb-fulham-arbeloa-victoria-coventry</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/bobb-fulham-arbeloa-victoria-coventry</guid>
+    <pubDate>Sat, 24 Oct 2026 22:00:55 GMT</pubDate>
+    <description><![CDATA[El Fulham de Álvaro Arbeloa venció 0-1 al Coventry City con un gol de Oscar Bobb en el minuto 80 y salió de la zona de descenso con 8 puntos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Fulham]]></category>
+    <category><![CDATA[Oscar Bobb]]></category>
+    <category><![CDATA[Álvaro Arbeloa]]></category>
+    <category><![CDATA[Coventry City]]></category>
+    <category><![CDATA[Premier League]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/6de21771beb9.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/6de21771beb9.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/6de21771beb9.webp"/>
+    <media:description type="plain"><![CDATA[<b>Coventry City </b>y <b>Fulham </b>se enfrentaba este sábado en el <b>Coventry Building Society Arena</b> en un duelo importante para dos equipos que tratan de alejarse de la zona baja de la <b>Premier League</b>. Los de<b> Álvaro Arbeloa</b> consiguieron su segunda victoria consecutiva por 0-1 gr — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Gobierno prevé iniciar en diciembre bonos por El Niño con S/ 2.500 millones</title>
+    <link>https://ahora.com.pe/economia/bonos-el-nino-diciembre-2500-millones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/bonos-el-nino-diciembre-2500-millones</guid>
+    <pubDate>Sat, 24 Oct 2026 21:20:49 GMT</pubDate>
+    <description><![CDATA[El Gobierno destinará S/ 2.500 millones a bonos para hogares expuestos al fenómeno El Niño y para jubilados y adultos mayores. Los pagos podrían comenzar en diciembre de 2026, aunque aún no se definen montos individuales ni requisitos.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[bonos El Niño]]></category>
+    <category><![CDATA[Keiko Fujimori]]></category>
+    <category><![CDATA[Elmer Cuba]]></category>
+    <category><![CDATA[MEF]]></category>
+    <category><![CDATA[Pensión 65]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/037fb05b758a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/037fb05b758a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/037fb05b758a.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>&apos;Pato&apos; Álvarez, portero de Grau, suma 3 goles y acecha el registro de Girotti en la Liga 1</title>
+    <link>https://ahora.com.pe/deportes/pato-alvarez-portero-grau-goles-liga-1</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/pato-alvarez-portero-grau-goles-liga-1</guid>
+    <pubDate>Sat, 24 Oct 2026 21:10:50 GMT</pubDate>
+    <description><![CDATA[Patricio &apos;Pato&apos; Álvarez, portero de Atlético Grau, lleva tres goles en la Liga 1 2026, todos de penal, y está a uno de igualar a Federico Girotti de Alianza Lima.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Pato Álvarez]]></category>
+    <category><![CDATA[Atlético Grau]]></category>
+    <category><![CDATA[Federico Girotti]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/023494ddd031.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/023494ddd031.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/023494ddd031.jpg"/>
+    <media:description type="plain"><![CDATA[¡De no creer! El portero del equipo piurano está siendo uno de los jugadores más influyentes de la temporada, con una cifra goleadora que sorprende al compararla con la de un referente de Alianza Lima. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>El Clásico: Barça favorito ante un Madrid que busca acortar distancias</title>
+    <link>https://ahora.com.pe/deportes/clasico-barca-favorito-madrid-camp-nou</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/clasico-barca-favorito-madrid-camp-nou</guid>
+    <pubDate>Sat, 24 Oct 2026 20:20:52 GMT</pubDate>
+    <description><![CDATA[El Clásico entre Barcelona y Real Madrid se juega en el Camp Nou con el Barça como favorito por su fútbol de control y un Madrid que arriesga quedar a nueve puntos, según el análisis de Mundo Deportivo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Clásico]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[Flick]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7860a8b60ac3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7860a8b60ac3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7860a8b60ac3.jpg"/>
+    <media:description type="plain"><![CDATA[San Martin del Bañado (Catamarca) — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Perú jugará el Mundial Sub 19 de vóley en Kazajistán: Latina transmitirá los partidos</title>
+    <link>https://ahora.com.pe/deportes/peru-mundial-sub-19-voley-kazajistan-latina</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-mundial-sub-19-voley-kazajistan-latina</guid>
+    <pubDate>Sat, 24 Oct 2026 19:30:53 GMT</pubDate>
+    <description><![CDATA[Perú clasificó al Mundial Femenino Sub 19 de vóley tras ser subcampeón del Sudamericano en Venezuela. Kazajistán será sede del 5 al 15 de agosto de 2027 y Latina Televisión emitirá los partidos de la selección peruana.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Mundial Sub 19 vóley]]></category>
+    <category><![CDATA[selección peruana vóley]]></category>
+    <category><![CDATA[Kazajistán 2027]]></category>
+    <category><![CDATA[Latina Televisión]]></category>
+    <category><![CDATA[Sudamericano Sub 19]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/5e39d9411b53.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/5e39d9411b53.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/5e39d9411b53.jpg"/>
+    <media:description type="plain"><![CDATA[La Selección Peruana clasificó al Mundial de Vóley Sub 19 tras un destacado segundo puesto en el Sudamericano. Conoce el canal para ver los partidos de la 'Matadorcitas'. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Oso pardo cantábrico: 17.000 km2 y brecha en su protección, según CSIC</title>
+    <link>https://ahora.com.pe/mundo/oso-pardo-cantabrico-expansion-17000-km2-csic</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/oso-pardo-cantabrico-expansion-17000-km2-csic</guid>
+    <pubDate>Sat, 24 Oct 2026 19:20:50 GMT</pubDate>
+    <description><![CDATA[Un estudio del CSIC documenta la expansión del oso pardo cantábrico hasta 17.000 km² y alerta que los planes de protección no acompañan ese crecimiento territorial.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[oso pardo cantábrico]]></category>
+    <category><![CDATA[CSIC]]></category>
+    <category><![CDATA[Estación Biológica de Doñana]]></category>
+    <category><![CDATA[Cordillera Cantábrica]]></category>
+    <category><![CDATA[conservación]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/be13fa2da36f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/be13fa2da36f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/be13fa2da36f.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Girona vence 3-0 al Celta Fortuna con doblete de Vanat</title>
+    <link>https://ahora.com.pe/deportes/girona-3-0-celta-fortuna-vanat-doblete</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/girona-3-0-celta-fortuna-vanat-doblete</guid>
+    <pubDate>Sat, 24 Oct 2026 18:40:51 GMT</pubDate>
+    <description><![CDATA[El Girona venció 3-0 al Celta Fortuna en el Municipal Montilivi con dos goles de Vanat y uno de Unai Hernández, en un partido marcado por la expulsión de Meixús tras revisión del VAR.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Girona]]></category>
+    <category><![CDATA[Celta Fortuna]]></category>
+    <category><![CDATA[Vladyslav Vanat]]></category>
+    <category><![CDATA[LaLiga Hypermotion]]></category>
+    <category><![CDATA[Montilivi]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/8331e1347155.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/8331e1347155.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/8331e1347155.webp"/>
+    <media:description type="plain"><![CDATA[Buenas tardes y bienvenidos a la narración, en directo, del partido de fútbol de la LaLiga Hypermotion que enfrenta al Girona contra el Celta de Vigo B correspondiente a Jornada 11. Desde Mundo Deportivo, te ofrecemos toda la cobertura minuto a minuto, la previa, las alineaciones, las mejores jugada — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Yaranga: Comando Unificado logra resultados contra minería ilegal y en fronteras</title>
+    <link>https://ahora.com.pe/policiales/yaranga-comando-unificado-mineria-ilegal-fronteras</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/yaranga-comando-unificado-mineria-ilegal-fronteras</guid>
+    <pubDate>Sat, 24 Oct 2026 18:20:51 GMT</pubDate>
+    <description><![CDATA[Pedro Yaranga consideró que el Comando Unificado contra el Crimen Organizado tiene excelentes resultados en la lucha contra la minería ilegal y en las fronteras. Señaló que la estructura requiere apoyo logístico y entrenamiento, y pidió depurar a malos elementos de la Policía, el Ministerio Público y el Poder Judicial.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Comando Unificado]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Pedro Yaranga]]></category>
+    <category><![CDATA[fronteras]]></category>
+    <category><![CDATA[crimen organizado]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/8de127a62930.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/8de127a62930.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/8de127a62930.jpg"/>
+    <media:description type="plain"><![CDATA[El analista en seguridad integral y gestión de riesgos, Pedro Yaranga, consideró que el Comando Unificado contra el Crimen Organizado tiene excelentes resultados en la lucha contra la minería ilegal y contra grupos criminales en la fronteras. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Cómo lavar y conservar blusas y jeans para que no pierdan forma ni color</title>
+    <link>https://ahora.com.pe/tecnologia/como-lavar-y-conservar-blusas-y-jeans-para-que-no-pierdan-forma-ni-color</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/como-lavar-y-conservar-blusas-y-jeans-para-que-no-pierdan-forma-ni-color</guid>
+    <pubDate>Sat, 24 Oct 2026 17:56:52 GMT</pubDate>
+    <description><![CDATA[Descubre cómo lavar y cuidar tus blusas y jeans correctamente para que mantengan su apariencia original por mucho más tiempo.]]></description>
+    <dc:creator><![CDATA[Diario Ahora Huánuco]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[blusas jeans]]></category>
+    <category><![CDATA[forma ni color]]></category>
+    <category><![CDATA[lavar conservar]]></category>
+    <category><![CDATA[apariencia original]]></category>
+    <category><![CDATA[pierdan]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f5a708f0efb7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f5a708f0efb7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f5a708f0efb7.jpg"/>
+  </item>
+  <item>
+    <title>Jean Deza fichó por Domingo Dianderas para la Copa Perú 2026</title>
+    <link>https://ahora.com.pe/deportes/jean-deza-ficho-domingo-dianderas-copa-peru-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/jean-deza-ficho-domingo-dianderas-copa-peru-2026</guid>
+    <pubDate>Sat, 24 Oct 2026 17:50:49 GMT</pubDate>
+    <description><![CDATA[Jean Deza fue anunciado como refuerzo de Domingo Dianderas FC para los dieciseisavos de final de la Etapa Nacional de la Copa Perú 2026, junto a Johan Madrid y Kevin Blanco.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Jean Deza]]></category>
+    <category><![CDATA[Domingo Dianderas]]></category>
+    <category><![CDATA[Copa Perú 2026]]></category>
+    <category><![CDATA[Jorge Luna]]></category>
+    <category><![CDATA[Atlético Torino]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/8c8d8aaef19e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/8c8d8aaef19e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/8c8d8aaef19e.jpg"/>
+    <media:description type="plain"><![CDATA[A través de sus redes sociales, el club del humorista Jorge Luna anunció la llegada de Jean Deza como refuerzo para la Copa Perú 2026, que ya se encuentra en etapa decisiva. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Cyber Wow 2026: cómo prepararte para aprovechar las ofertas sin gastar de más</title>
+    <link>https://ahora.com.pe/economia/cyber-wow-2026-como-prepararte-para-aprovechar-las-ofertas-sin-gastar-de-mas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/cyber-wow-2026-como-prepararte-para-aprovechar-las-ofertas-sin-gastar-de-mas</guid>
+    <pubDate>Sat, 24 Oct 2026 16:28:17 GMT</pubDate>
+    <description><![CDATA[El cyber wow 2026 vuelve a poner sobre la mesa una pregunta bastante habitual: ¿conviene esperar una campaña de descuentos para comprar aquello que necesitamos]]></description>
+    <dc:creator><![CDATA[Diario Ahora Huánuco]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Cyber Wow]]></category>
+    <category><![CDATA[aprovechar las ofertas]]></category>
+    <category><![CDATA[campaña de descuentos]]></category>
+    <category><![CDATA[conviene esperar]]></category>
+    <category><![CDATA[mesa una pregunta]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/760c921f7ca0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/760c921f7ca0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/760c921f7ca0.jpg"/>
+  </item>
+  <item>
+    <title>Alianza Lima visita a CD Moquegua con tres bajas confirmadas por lesión</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-bajas-cd-moquegua-clausura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-bajas-cd-moquegua-clausura-2026</guid>
+    <pubDate>Sat, 24 Oct 2026 16:10:50 GMT</pubDate>
+    <description><![CDATA[Alianza Lima enfrenta a CD Moquegua este domingo 25 de octubre por la fecha 13 del Torneo Clausura 2026 con tres bajas confirmadas por lesión y la duda de Nico Díaz.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <category><![CDATA[Esteban Pavez]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/6f7d63965b25.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/6f7d63965b25.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/6f7d63965b25.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Agricultor egipcio halla por casualidad dos estatuas colosales de Ramsés II</title>
+    <link>https://ahora.com.pe/cultura/agricultor-egipcio-halla-estatuas-ramses-ii</link>
+    <guid isPermaLink="true">https://ahora.com.pe/cultura/agricultor-egipcio-halla-estatuas-ramses-ii</guid>
+    <pubDate>Sat, 24 Oct 2026 15:20:51 GMT</pubDate>
+    <description><![CDATA[Un agricultor encontró un bloque de granito rosa con jeroglíficos en su terreno de Behbeit El Hagar, Egipto, y alertó a las autoridades. La excavación de rescate reveló restos de dos estatuas colosales atribuidas a Ramsés II.]]></description>
+    <dc:creator><![CDATA[Ahora Cultura]]></dc:creator>
+    <category><![CDATA[Cultura]]></category>
+    <category><![CDATA[Ramsés II]]></category>
+    <category><![CDATA[Behbeit El Hagar]]></category>
+    <category><![CDATA[Egipto]]></category>
+    <category><![CDATA[arqueología]]></category>
+    <category><![CDATA[estatuas colosales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/858f78904c47.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/858f78904c47.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/858f78904c47.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Perú empata 2-2 con Bielorrusia en su debut en el Mundial Sub 15 de Azerbaiyán</title>
+    <link>https://ahora.com.pe/deportes/peru-empate-bielorrusia-mundial-sub-15-azerbaiyan</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-empate-bielorrusia-mundial-sub-15-azerbaiyan</guid>
+    <pubDate>Sat, 24 Oct 2026 15:20:49 GMT</pubDate>
+    <description><![CDATA[Perú debutó con empate 2-2 ante Bielorrusia en la Copa Mundial Sub 15 de Azerbaiyán 2026 y marcha tercero en el Grupo O.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Perú Sub 15]]></category>
+    <category><![CDATA[Mundial Sub 15]]></category>
+    <category><![CDATA[Bielorrusia]]></category>
+    <category><![CDATA[Bakú 2026]]></category>
+    <category><![CDATA[Diego Ortiz]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/60f0f768e753.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/60f0f768e753.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/60f0f768e753.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Clarivett Yllescas: Alianza Lima cuida su lesión crónica antes del clásico con Regatas</title>
+    <link>https://ahora.com.pe/deportes/clarivett-yllescas-alianza-lima-regatas-lima-voley</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/clarivett-yllescas-alianza-lima-regatas-lima-voley</guid>
+    <pubDate>Sat, 24 Oct 2026 14:30:52 GMT</pubDate>
+    <description><![CDATA[Alianza Lima enfrenta a Regatas Lima este sábado 24 de octubre por la fecha 2 de la Liga Peruana de Vóley 2026/2027 y la participación de Clarivett Yllescas, con una lesión crónica, sigue en evaluación.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Clarivett Yllescas]]></category>
+    <category><![CDATA[Alianza Lima vóley]]></category>
+    <category><![CDATA[Regatas Lima]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[Alejandro Schneider]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/223a7c1a37a9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/223a7c1a37a9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/223a7c1a37a9.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  </channel>
+</rss>
