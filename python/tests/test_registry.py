@@ -6,6 +6,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import httpx
+import pytest
 
 from enso import registry
 from enso.reach import classify
@@ -497,6 +498,7 @@ def test_robots_verdict_per_url():
     assert any("robots no válido" in x for x in registry.validate(reg))
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_old_robots_record_is_dropped_like_in_geoblock():
     """Revisión: un «robots» de más de STALE_DAYS junto a una medición más reciente de su red dejaba la URL abierta
     con robots «disallowed», y validate() rechazaba el registro (fallaba la sonda semanal y el kit)."""
@@ -715,6 +717,7 @@ def test_probe_from_peru_judges_the_type_the_registry_expects(monkeypatch):
     assert probe_sources.probe([feed], "peru-server", expect={})[feed]["class"] == "ok"
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_peru_index_says_whether_robots_txt_was_read():
     index = {"schema": "enso-relay/1", "collected_at": "2026-10-21T05:00:00Z", "entries": [
         {"url": "https://www.senamhi.gob.pe/a", "status": 200, "bytes": 5000},
