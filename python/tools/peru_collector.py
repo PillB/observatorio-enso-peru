@@ -42,7 +42,7 @@ import sys
 import tempfile
 import time
 from collections import Counter
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 from zoneinfo import ZoneInfo
@@ -53,8 +53,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from enso.feeds import FormatChanged, peru  # noqa: E402
 from enso.fetch import UA, Relay, ssl_context  # noqa: E402
-from enso.observatory import ENFEN_BASE, _clean_wpdm, _communique_urls, merge_enfen_listings  # noqa: E402
-from enso.reach import Robots, classify  # noqa: E402
+from enso.observatory import (ENFEN_BASE, PROBE_AHEAD, PROBE_MAX_MISSES, _clean_wpdm,  # noqa: E402
+                              _communique_urls, merge_enfen_listings)
+# ``judge`` y ``detect`` son los de Actions, n8n y la revisión del equipo (``enso.reach``): un solo criterio.
+from enso.reach import Robots, classify, detect, get_checked, judge  # noqa: E402,F401
 
 LIMA = ZoneInfo("America/Lima")
 REPO = os.environ.get("ENSO_REPO", "PillB/observatorio-enso-peru")
@@ -87,7 +89,9 @@ REGISTRY_OLD_DAYS = 14
 #: ``enso.observatory.MIN_COLLECTOR_CONTRACT`` y avisa que hay que ejecutar ACTUALIZAR en el equipo.
 #: 1: metas de documentos (``goals``) con su causa, la capa de avisos de 5 días de IDESEP, el ICEN por http y
 #: la revisión de los robots.txt que prohibían.
-COLLECTOR_CONTRACT = 1
+#: 2: el repositorio del IMARPE (``imarpe_repository``: búsquedas, paquetes y PDF, que Actions no alcanza) y la
+#: medición de las URL del registro con los certificados intermedios del kit.
+COLLECTOR_CONTRACT = 2
 
 #: Capa de avisos del GeoServer de IDESEP (SENAMHI) que se pide por WFS: los avisos y la lista de campos.
 IDESEP_AVISOS = ("https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0"
@@ -384,81 +388,9 @@ def usable(entry: dict) -> bool:
 
 # --- Descarga y control del contenido ----------------------------------------------
 
-FEEDS = {"rss", "atom", "rdf", "jsonfeed"}
 #: Extensión del archivo guardado según el formato detectado (las que acepta enso.fetch.Relay).
 EXT = {"pdf": ".pdf", "json": ".json", "jsonfeed": ".json", "rss": ".xml", "atom": ".xml", "rdf": ".xml",
        "xml": ".xml", "text": ".txt"}
-
-
-def detect(body: bytes, content_type: str = "") -> str:
-    """Formato del cuerpo, con el mismo criterio que n8n (``detectFormat`` en
-    n8n/lib/classify.js): pdf, json, jsonfeed, rss, atom, rdf, html, xml,
-    text, binary o empty."""
-    if not body:
-        return "empty"
-    if body[:4] == b"%PDF":
-        return "pdf"
-    head = body[:4096].decode("latin-1")
-    head = head.removeprefix("\xef\xbb\xbf")
-    low = head.lstrip(" \t\r\n\x00").lower()
-    if low.startswith(("{", "[")):
-        return "jsonfeed" if re.search(r'"version"\s*:\s*"https://jsonfeed\.org', low) else "json"
-    if re.search(r"<rss[\s>]", low):
-        return "rss"
-    if re.search(r"<feed[\s>]", low) and 'xmlns="http://www.w3.org/2005/atom"' in low:
-        return "atom"
-    if re.search(r"<rdf:rdf[\s>]", low):
-        return "rdf"
-    if re.search(r"<feed[\s>]", low):
-        return "atom"
-    if re.search(r"<!doctype html|<html[\s>]|<head[\s>]|<body[\s>]", low):
-        return "html"
-    if low.startswith("<"):
-        return "html" if "<html" in low else "xml"
-    if "html" in content_type.lower():
-        return "html"
-    n = min(len(body), 2048)
-    ctrl = sum(1 for b in body[:n] if b < 9 or 13 < b < 32)
-    return "binary" if ctrl > n * 0.05 else "text"
-
-
-def judge(status: int | None, body: bytes, content_type: str = "", expect: str | None = None,
-          error: str = "") -> tuple[str, str, str]:
-    """¿Sirve la respuesta? Devuelve (clase, formato, motivo).
-
-    La clase es la del clasificador común de Actions, n8n y el Perú
-    (``enso.reach.classify``: ok, challenge, http-403…). Como en n8n, una
-    respuesta con otro formato que el esperado (``expect`` del registro) cuenta
-    como ``empty``: responde, pero sin contenido útil (suele ser una página de
-    error o de verificación servida con 200). El motivo dice por qué no se guarda."""
-    detected = detect(body, content_type) if status else "empty"
-    cls = classify(status, body, error)
-    if cls == "challenge" and status and 200 <= status < 300 and detected in FEEDS | {"pdf", "json"}:
-        cls = "ok"  # un PDF o un feed que menciona «captcha» no es una verificación
-    if cls != "ok":
-        why = {"challenge": "página de verificación antirobots: no se guarda (no se evade)",
-               "empty": "respuesta vacía"}.get(cls, "")
-        return cls, detected, why
-    exp = {"rss": "feed", "atom": "feed", "csv": "text"}.get(expect or "", expect or "any")
-    wanted = ""
-    if exp == "feed" and detected not in FEEDS:
-        wanted = "un feed"
-    elif exp == "pdf" and detected != "pdf":
-        wanted = "un PDF"
-    elif exp == "json" and detected not in ("json", "jsonfeed"):
-        wanted = "JSON"
-    elif exp == "json":
-        try:
-            json.loads(body.decode("utf-8-sig"))
-        except ValueError:
-            return "empty", detected, "JSON inválido"
-    elif exp == "text" and detected in ("html", "binary"):
-        wanted = "texto"
-    elif exp == "html" and detected in ("html", "xml") and len(body) < 500:
-        return "empty", detected, "HTML casi vacío"
-    if wanted:
-        return "empty", detected, f"se esperaba {wanted} y llegó {detected}"
-    return "ok", detected, ""
 
 
 class Session:
@@ -470,7 +402,8 @@ class Session:
     la corrida termina y sube el latido antes del vigilante de 45 minutos.
     robots.txt se respeta (RFC 9309, ``enso.reach.Robots``): una ruta que
     prohíbe no se pide, y si robots.txt no responde (sin conexión, 5xx o una
-    verificación antirobots en su lugar) no se pide nada a ese servidor."""
+    verificación antirobots en su lugar) no se pide nada a ese servidor. Lo
+    mismo vale para cada salto de una redirección (``enso.reach.get_checked``)."""
 
     def __init__(self, client: httpx.Client, budget_s: float | None = None, robots: bool = True):
         self.client = client
@@ -515,10 +448,9 @@ def fetch(client: httpx.Client | Session, url: str, expect: str | None = None, m
     err = ""
     attempts = 1 if s.down[host] else 3
     for attempt in range(attempts):
-        if s.robots is not None:
-            s.robots.pace(url)  # el Crawl-delay de una entidad pública del Perú (``reach.Robots.pace``)
         try:
-            r = s.client.get(url)
+            # get_checked espera el Crawl-delay de una entidad pública del Perú antes de cada salto (``Robots.pace``).
+            r, hop, verdict = get_checked(s.client, url, s.robots)
         except httpx.HTTPError as exc:
             err = f"{type(exc).__name__}: {exc}"[:200]
             if attempt + 1 < attempts and s.left() > 0:
@@ -526,9 +458,17 @@ def fetch(client: httpx.Client | Session, url: str, expect: str | None = None, m
                 continue
             break
         s.down.pop(host, None)
+        if hop:
+            # Cada salto de una redirección pasa por robots.txt, como la URL pedida: uno que prohíbe, o un
+            # servidor cuyo robots.txt no responde, no se pide.
+            cls = "robots" if verdict is False else (s.robots.failure(hop) or "connect")
+            why = "robots.txt no lo permite" if verdict is False else f"su robots.txt no respondió ({cls})"
+            return {**out, "status": r.status_code, "elapsed_s": round(time.monotonic() - started, 1),
+                    "skipped": "robots" if verdict is False else "robots-sin-respuesta", "class": cls,
+                    "hop": hop, "error": f"redirige a {hop} y no se pide: {why}"[:300]}
         body = r.content
         ct = r.headers.get("content-type", "")
-        cls, detected, why = judge(r.status_code, body, ct, expect)
+        cls, detected, why = judge(r.status_code, body, ct, expect, headers=r.headers)
         out.update({"status": r.status_code, "content_type": ct, "bytes": len(body), "class": cls,
                     "elapsed_s": round(time.monotonic() - started, 1), "fetched_at": _now_iso()})
         if detected != "empty":
@@ -570,13 +510,16 @@ def _pdf_link(html: str, page_url: str) -> str | None:
     return peru.download_button(html, page_url)
 
 
-def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[dict]:
+def enfen_documents(client: httpx.Client | Session, pages: list[dict], today: date | None = None) -> list[dict]:
     """Del listado del ENFEN: el PDF del comunicado más reciente y del
-    anterior, y las páginas de descarga de los dos números siguientes (los
-    mismos sondeos que hace la actualización diaria). Cuando una URL es una
-    página de descarga, también baja el PDF que enlaza y lo registra con la
-    URL de la página como alias, para que la actualización diaria lo
-    encuentre con la misma URL que pide."""
+    anterior, y los sondeos de los números siguientes que hace la
+    actualización diaria (``enso.observatory._probe_communique``): hasta
+    ``PROBE_AHEAD`` (6) números después del último del listado, y en enero el
+    n.º 01 del año nuevo; ``PROBE_MAX_MISSES`` (dos) ausencias seguidas cortan.
+    Cada número se busca como PDF en la réplica de la DHN y, si no está, por su
+    página de descarga. Cuando una URL es una página de descarga, también baja
+    el PDF que enlaza y lo registra con la URL de la página como alias, para
+    que la actualización diaria lo encuentre con la misma URL que pide."""
     from enso import reports
 
     # El listado de informes técnicos (cuando el registro lo manda a este equipo) no es de comunicados: no se lee
@@ -601,30 +544,49 @@ def enfen_documents(client: httpx.Client | Session, pages: list[dict]) -> list[d
     if not oficial:  # ningún listado respondió o se pudo leer: la meta queda declarada, con la causa de cada uno
         for p in pages:
             p["goal"] = "comunicado"
-    targets = [_clean_wpdm(u) for i in oficial[:2] for u in _communique_urls(i)]
     newest = {_clean_wpdm(u) for u in _communique_urls(oficial[0])} if oficial else set()
     goal = f"comunicado {oficial[0]['number']:02d}-{oficial[0]['year']}" if oficial else None
-    if oficial:
-        y, n = oficial[0]["year"], oficial[0]["number"]
-        for k in (1, 2):
-            targets += [f"{peru.DHN_BASE}/Archivos/oceanografia/enfen/comunicado-oficial/{n + k:02d}-{y}.pdf",
-                        f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{n + k:02d}-{y}/"]
-    targets = list(dict.fromkeys(targets))
-    out = []
-    for url in targets:
-        r = fetch(client, url, guess_expect(url))
+    out: list[dict] = []
+    got: dict[str, dict] = {}
+
+    def take(url: str) -> bool:
+        """Pide la URL (y el PDF que enlaza si es una página de descarga), una vez cada una. Dice si trajo un PDF
+        o el enlace a uno: lo que el sondeo de la actualización diaria cuenta como hallado."""
+        if url in got:
+            return False
+        r = got[url] = fetch(client, url, guess_expect(url))
         out.append(r)
         if url in newest:
             r["goal"] = goal
         body = r["body"]
         if r.get("status") == 200 and body and body[:5] != b"%PDF-":
             link = _pdf_link(body.decode("utf-8", "replace"), url)
-            if link and _clean_wpdm(link) != url:
-                pdf = fetch(client, _clean_wpdm(link), "pdf")
-                pdf["aliases"] = [url]
+            link = link and _clean_wpdm(link)
+            if link and link != url:
+                if link not in got:
+                    got[link] = fetch(client, link, "pdf")
+                    out.append(got[link])
+                pdf = got[link]
+                pdf["aliases"] = [*pdf.get("aliases", []), url]
                 if url in newest:
                     pdf["goal"] = goal
-                out.append(pdf)
+            return bool(link)
+        return r.get("class") == "ok" and body[:5] == b"%PDF-"
+
+    for url in [_clean_wpdm(u) for i in oficial[:2] for u in _communique_urls(i)]:
+        take(url)
+    if oficial:
+        y, n = oficial[0]["year"], oficial[0]["number"]
+        today = today or datetime.now(LIMA).date()
+        probes = [(today.year, 1)] if today.month == 1 and y < today.year else []
+        probes += [(y, n + k) for k in range(1, PROBE_AHEAD + 1)]
+        misses = 0
+        for py, pn in probes:
+            if misses >= PROBE_MAX_MISSES:
+                break
+            found = take(f"{peru.DHN_BASE}/Archivos/oceanografia/enfen/comunicado-oficial/{pn:02d}-{py}.pdf") or \
+                take(f"{ENFEN_BASE}/download/comunicado-oficial-enfen-n-{pn:02d}-{py}/")
+            misses = 0 if found else misses + 1
     if goal and not any(r.get("goal") == goal for r in out):  # el comunicado no trae URL que bajar
         out.append({"url": oficial[0].get("url") or "", "goal": goal, "status": None, "body": b"",
                     "error": "sin URL del PDF", "class": "empty", "elapsed_s": 0.0})
@@ -662,6 +624,82 @@ def enfen_informes(client: httpx.Client | Session, keep: int = 2, listing: dict 
     if not entries:
         out.append({"url": reports.INFORMES_PAGE, "goal": "informe técnico", "status": None, "body": b"",
                     "error": "el listado no trae informes", "class": "empty", "elapsed_s": 0.0})
+    return out
+
+
+def imarpe_repository(client: httpx.Client | Session, fetched: dict[str, dict], enfen_goals: set[str]) -> list[dict]:
+    """Del repositorio del IMARPE (DSpace), lo que la actualización diaria le pide, con las mismas URL
+    (``enso.feeds.imarpe_repo``), porque desde Actions no responde: sus búsquedas de comunicados, informes técnicos
+    y boletines BS-OBP; los paquetes de archivos (``bundles``) de los ítems que lee; y el PDF ORIGINAL del
+    comunicado y del informe técnico más recientes del repositorio y de los que son meta del ENFEN esta noche (por
+    la búsqueda por número, como ``communique_pdf`` e ``informe_pdf``), y de cada boletín listado que el sitio
+    puede no tener. Un PDF del repositorio con el número de una meta del ENFEN la cumple. ``fetched``: lo ya bajado
+    esta noche, por URL (una búsqueda que el registro manda a este equipo no se pide dos veces)."""
+    from enso.feeds import imarpe_bsobp
+    from enso.feeds import imarpe_repo as repo
+
+    out: list[dict] = []
+    got = dict(fetched)
+
+    def get(url: str, expect: str, max_bytes: int = MAX_BYTES) -> dict:
+        if url not in got:
+            got[url] = fetch(client, url, expect, max_bytes)
+            out.append(got[url])
+        return got[url]
+
+    def parsed(r: dict, parser) -> list[dict]:
+        if r.get("class") != "ok" or not r.get("body"):
+            return []
+        try:
+            return parser(json.loads(r["body"].decode("utf-8-sig")))
+        except (ValueError, KeyError, TypeError, AttributeError):
+            log(f"AVISO {r['url']}: el JSON no tiene la forma de DSpace (revisar enso/feeds/imarpe_repo.py)")
+            return []
+
+    def pdf(r: dict) -> bool:
+        return r.get("detected") == "pdf" and bool(r.get("body"))
+
+    def follow(search: str, ident, want: tuple[int, int], goal: str) -> None:
+        """El primer PDF que se baja del ítem que es exactamente ``want``, en el orden de la actualización diaria."""
+        for it in parsed(get(search, "json"), repo.parse_search):
+            if ident(it["title"]) != want:
+                continue
+            for f in parsed(get(repo.bundles_url(it["uuid"]), "json"), repo.parse_bundles):
+                r = get(f["url"], "pdf", MAX_INFORME_BYTES)
+                if pdf(r):
+                    if goal in enfen_goals:
+                        r["goal"] = goal
+                    return
+
+    def numbers(prefix: str, items: list[dict], ident) -> list[tuple[int, int]]:
+        """Los números que se siguen: las metas del ENFEN de esta noche y el más reciente del repositorio."""
+        want = [(int(m.group(2)), int(m.group(1))) for g in sorted(enfen_goals)
+                if (m := re.fullmatch(re.escape(prefix) + r" (\d+)-(\d{4})", g))]
+        mine = [x for x in (ident(it["title"]) for it in items) if x]
+        return list(dict.fromkeys(want + ([max(mine)] if mine else [])))
+
+    communique_list, informe_list = repo.listing_urls()
+    communiques = parsed(get(communique_list, "json"), repo.parse_search)
+    informes = parsed(get(informe_list, "json"), repo.parse_search)
+    weekly = parsed(get(repo.search_url(imarpe_bsobp.QUERY, imarpe_bsobp.LIST_SIZE), "json"), repo.parse_search)
+    for y, n in numbers("comunicado", communiques, repo.communique_id):
+        follow(repo.communique_search_url(y, n), repo.communique_id, (y, n), f"comunicado {n:02d}-{y}")
+    # ``informes`` lee los paquetes de todos los informes listados (de ahí saca la URL del PDF y su fecha de corte).
+    for it in informes:
+        if repo.informe_id(it["title"]):
+            get(repo.bundles_url(it["uuid"]), "json")
+    for y, n in numbers("informe técnico", informes, repo.informe_id):
+        follow(repo.informe_search_url(y, n), repo.informe_id, (y, n), f"informe técnico {n:02d}-{y}")
+    # La actualización diaria lee del primer PDF los boletines que no tiene, hasta MAX_NEW por noche: tras una
+    # pausa se pone al día en varias noches. Este equipo no sabe cuáles leyó; el historial del kit sí los tiene
+    # (y el sitio no los vuelve a pedir), así que se bajan los listados que no están en él (hasta LIST_SIZE).
+    read = {(b.get("year"), b.get("number")) for b in imarpe_bsobp.load_seed()}
+    for it in imarpe_bsobp.bulletins(weekly):
+        if (it["year"], it["number"]) in read:
+            continue
+        files = parsed(get(repo.bundles_url(it["uuid"]), "json"), repo.parse_bundles)
+        if files:
+            get(files[0]["url"], "pdf", MAX_INFORME_BYTES)
     return out
 
 
@@ -774,7 +812,13 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
             _log_fetch(r)
             seen.add(r["url"])
         results["enfen-docs"] = docs
-        linked = [d for rs in list(results.values()) for r in rs if r["url"] in follow
+        repo_docs = imarpe_repository(session, {r["url"]: r for rs in results.values() for r in rs},
+                                      {d["goal"] for d in docs if d.get("goal")})
+        for r in repo_docs:
+            _log_fetch(r)
+            seen.add(r["url"])
+        results["imarpe-repo"] = repo_docs
+        linked =[d for rs in list(results.values()) for r in rs if r["url"] in follow
                   for d in follow_links(session, r, follow[r["url"]], seen)]
         for r in linked:
             _log_fetch(r)

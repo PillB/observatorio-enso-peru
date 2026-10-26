@@ -368,7 +368,9 @@ def next_hop(r: httpx.Response) -> Optional[str]:
 def get_checked(client, url: str, robots: Optional["Robots"], headers: Optional[dict] = None, **kw):
     """GET que sigue las redirecciones a mano y consulta robots.txt antes de cada salto, con la misma regla que
     el pedido: una ruta prohibida o un robots.txt sin respuesta no se piden. El robots.txt de ``url`` lo revisa
-    quien llama. Antes de cada pedido, el ``Crawl-delay`` de una entidad pública del Perú (``Robots.pace``).
+    quien llama. Lo usan todos los que piden con ``httpx`` y respetan robots.txt (``tools.scrape_ladder``, el
+    recolector del Perú y su revisión, la sonda). Antes de cada pedido, el primero incluido, espera el
+    ``Crawl-delay`` de una entidad pública del Perú (``Robots.pace``): quien llama no pausa por su cuenta.
     Devuelve la respuesta y, si un salto no se pidió, su URL y el veredicto (``False`` prohibido, ``None`` sin
     respuesta); si no, ``None`` y ``True``."""
     for _ in range(MAX_HOPS + 1):
@@ -521,3 +523,4 @@ class Robots:
         """El error de red o el código con que falló la lectura de robots.txt (``ConnectError: …``, ``HTTP 503``),
         para el motivo de la incidencia; vacío si se leyó o fue una verificación."""
         return self._entry(url)[6]
+
