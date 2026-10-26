@@ -642,6 +642,7 @@ def test_unmeasured_registry_urls_are_measured_from_peru(tmp_path, monkeypatch):
     assert "probes" not in _collect(tmp_path, monkeypatch, peru, PROBE_REGISTRY, name="sin")
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_dead_servers_and_the_time_budget_end_the_run_early(tmp_path, monkeypatch):
     calls = []
 
@@ -688,6 +689,7 @@ def probe_sources_urls(idx: dict) -> set[str]:
     return set(probe_sources.from_peru_index(idx))
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_robots_txt_is_respected_from_peru(tmp_path, monkeypatch):
     asked = []
 
@@ -706,15 +708,19 @@ def test_robots_txt_is_respected_from_peru(tmp_path, monkeypatch):
 
 def test_each_redirect_hop_is_checked_against_robots_txt_from_peru():
     """Barrido de robots.txt del 26 de octubre de 2026: el recolector seguía las redirecciones sin mirar robots.txt.
-    Cada salto pasa ahora por el robots.txt de su servidor, como la URL pedida."""
+    Cada salto pasa ahora por el robots.txt de su servidor, como la URL pedida; el de una entidad pública del Perú
+    se pide aunque lo prohíba (``enso.reach.public_peru``)."""
     asked: list[str] = []
     routes = {
-        "https://a.gob.pe/robots.txt": httpx.Response(200, text="User-agent: *\nDisallow: /privado/\n"),
-        "https://a.gob.pe/x": httpx.Response(302, headers={"location": "/privado/x.pdf"}),
-        "https://a.gob.pe/y": httpx.Response(301, headers={"location": "https://b.pe/y.pdf"}),
+        "https://a.pe/robots.txt": httpx.Response(200, text="User-agent: *\nDisallow: /privado/\n"),
+        "https://a.pe/x": httpx.Response(302, headers={"location": "/privado/x.pdf"}),
+        "https://a.pe/y": httpx.Response(301, headers={"location": "https://b.pe/y.pdf"}),
         "https://b.pe/robots.txt": httpx.Response(503),
-        "https://a.gob.pe/z": httpx.Response(302, headers={"location": "/publico/z.pdf"}),
-        "https://a.gob.pe/publico/z.pdf": httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"}),
+        "https://a.pe/z": httpx.Response(302, headers={"location": "/publico/z.pdf"}),
+        "https://a.pe/publico/z.pdf": httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"}),
+        "https://a.pe/g": httpx.Response(302, headers={"location": "https://c.gob.pe/privado/g.pdf"}),
+        "https://c.gob.pe/robots.txt": httpx.Response(200, text="User-agent: *\nDisallow: /privado/\n"),
+        "https://c.gob.pe/privado/g.pdf": httpx.Response(200, content=PDF, headers={"content-type": "application/pdf"}),
     }
 
     def handler(req):
@@ -723,18 +729,20 @@ def test_each_redirect_hop_is_checked_against_robots_txt_from_peru():
 
     with httpx.Client(transport=httpx.MockTransport(handler), follow_redirects=True) as client:
         s = pc.Session(client)
-        barred = pc.fetch(s, "https://a.gob.pe/x", "pdf")
-        unread = pc.fetch(s, "https://a.gob.pe/y", "pdf")
-        good = pc.fetch(s, "https://a.gob.pe/z", "pdf")
-    assert "https://a.gob.pe/privado/x.pdf" not in asked and "https://b.pe/y.pdf" not in asked
+        barred = pc.fetch(s, "https://a.pe/x", "pdf")
+        unread = pc.fetch(s, "https://a.pe/y", "pdf")
+        good = pc.fetch(s, "https://a.pe/z", "pdf")
+        public = pc.fetch(s, "https://a.pe/g", "pdf")
+    assert "https://a.pe/privado/x.pdf" not in asked and "https://b.pe/y.pdf" not in asked
     assert (barred["skipped"], barred["class"], barred["status"]) == ("robots", "robots", 302)
-    assert barred["hop"] == "https://a.gob.pe/privado/x.pdf" and not barred["body"]
+    assert barred["hop"] == "https://a.pe/privado/x.pdf" and not barred["body"]
     assert (unread["skipped"], unread["class"]) == ("robots-sin-respuesta", "http-5xx")
     assert good["class"] == "ok" and good["body"] == PDF
+    assert public["class"] == "ok" and public["body"] == PDF and "https://c.gob.pe/privado/g.pdf" in asked
     # Lo que el registro anota de esas URL: prohibida, y robots.txt sin respuesta.
     from tools.probe_sources import from_peru_index
     got = from_peru_index({"entries": [{k: v for k, v in e.items() if k != "body"} for e in (barred, unread)]})
-    assert got["https://a.gob.pe/x"]["robots"] == "disallowed" and got["https://a.gob.pe/y"]["robots"] == "unreachable"
+    assert got["https://a.pe/x"]["robots"] == "disallowed" and got["https://a.pe/y"]["robots"] == "unreachable"
 
 
 def test_registry_sources_are_fetched_once_and_enfen_pdfs_are_followed(tmp_path, monkeypatch):
@@ -1082,6 +1090,7 @@ BARRED = {"schema": "enso-source-registry/1", "generated_at": "2026-10-21T00:00:
      "geoblock": {"status": "robots-disallowed"}}]}
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_a_page_the_registry_bars_is_rechecked_against_its_robots_txt(tmp_path, monkeypatch):
     """El registro la daba por prohibida desde una noche: cada noche se vuelve a leer solo su robots.txt."""
     asked = []
@@ -1282,10 +1291,10 @@ def test_repository_pdf_meets_the_enfen_goal_the_portal_missed(tmp_path, monkeyp
     assert idx["goal_detail"]["comunicado 17-2026"]["url"].endswith("/core/bitstreams/c17/content")
 
 
-def test_unreachable_repository_costs_one_robots_request_and_is_measured(tmp_path, monkeypatch):
-    """Si el repositorio tampoco responde desde el Perú, no se le pide nada más que su robots.txt, y sus búsquedas
-    (los tres listados y las de las metas del ENFEN por número) quedan medidas desde el Perú (clase «dns») para el
-    registro."""
+def test_unreachable_repository_is_given_up_after_two_urls_and_measured(tmp_path, monkeypatch):
+    """Si el repositorio tampoco responde desde el Perú, se deja tras dos URL (una entidad pública del Perú se pide
+    aunque su robots.txt no responda: ``enso.reach.public_peru``), y lo que se pidió queda medido desde el Perú
+    (clase «dns») para el registro."""
     from tools.probe_sources import from_peru_index
 
     asked = []
@@ -1298,10 +1307,14 @@ def test_unreachable_repository_costs_one_robots_request_and_is_measured(tmp_pat
 
     idx = _collect(tmp_path, monkeypatch, peru)
     repo = [e for e in idx["entries"] if e["group"] == "imarpe-repo"]
-    assert len(repo) == 5 and all(e["skipped"] == "robots-sin-respuesta" and e["class"] == "dns" for e in repo)
-    assert asked == ["https://repositorio.imarpe.gob.pe/robots.txt"]
+    tried, dropped = repo[:2], repo[2:]
+    assert len(repo) == 5 and all(e["class"] == "dns" and not e.get("skipped") for e in tried)
+    assert all(e["skipped"] == "servidor" for e in dropped)
+    # robots.txt, tres intentos de la primera URL y uno de la segunda; nada más.
+    assert asked[0] == "https://repositorio.imarpe.gob.pe/robots.txt" and len(asked) == 5
+    assert asked[1:] == [tried[0]["url"]] * 3 + [tried[1]["url"]]
     measured = from_peru_index(idx)
-    assert all(measured[e["url"]]["class"] == "dns" for e in repo)
+    assert all(measured[e["url"]]["class"] == "dns" for e in tried)
 
 
 def test_registry_search_routed_to_this_machine_is_not_asked_twice(tmp_path, monkeypatch):
@@ -1426,6 +1439,7 @@ def test_a_robots_txt_that_fails_on_its_certificate_is_reported_as_tls():
     assert problem == "tls" and "CERTIFICATE_VERIFY_FAILED" in problem.detail
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_news_feed_skipped_by_robots_txt_says_why(monkeypatch):
     """Revisión: un feed que no se pidió por robots.txt figuraba en el estado de los feeds como «HTTP None»."""
     from enso import news as N
@@ -1529,6 +1543,7 @@ def test_save_page_now_only_where_robots_txt_allows(monkeypatch):
     assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True, plan={url: ["peru-server"]}), url) == []
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_imarpe_repository_search_respects_robots_txt(monkeypatch):
     """Gap 4: imarpe_repo pedía la API sin leer robots.txt (solo un docstring decía que lo permite)."""
     from enso.feeds import imarpe_repo

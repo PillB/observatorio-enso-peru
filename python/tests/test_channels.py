@@ -191,6 +191,7 @@ def test_n8n_index_is_a_measurement_from_n8n():
     assert "robots" not in got["https://a.pe/feed"]
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_robots_txt_read_by_n8n_gives_the_url_a_verdict():
     """Revisión: una URL que solo n8n alcanza y cuyo robots.txt Actions no pudo leer (verificación) quedaba
     «unknown» para siempre: n8n no la pide sin veredicto y nadie más la mide. Si n8n lee robots.txt y lo anota (en
@@ -233,6 +234,7 @@ def test_urls_n8n_did_not_request_for_their_robots_txt_are_measurements():
     assert rows[0]["at"] == probe_sources._iso(AT) and "at" not in rows[1]
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_a_robots_txt_reading_survives_a_measurement_that_could_not_read_it():
     """Segunda revisión: cada medición de una red reemplaza la anterior, y una que no leyó robots.txt (una
     verificación ese día desde Actions, o n8n pidiendo lo que el registro ya daba por permitido) borraba la lectura:
@@ -264,6 +266,7 @@ def test_a_robots_txt_reading_survives_a_measurement_that_could_not_read_it():
     assert registry.robots_verdict(url, data["urls"], NOW) == "disallowed"
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_a_robots_txt_disallow_nobody_read_again_stops_counting_after_stale_days():
     """Segunda revisión: un robots.txt en contra que solo leyó n8n quedaba para siempre (la URL sin canales, nadie
     la volvía a medir y la medición más reciente de un grupo nunca vencía). Pasados STALE_DAYS, vuelve a «unknown»
@@ -370,6 +373,7 @@ def test_robots_txt_with_a_byte_order_mark_keeps_its_first_group():
         assert not rules.allowed("https://a.gob.pe/datos/x.csv") and rules.allowed("https://a.gob.pe/otra")
 
 
+@pytest.mark.usefixtures("no_public_peru")
 def test_the_fetcher_retries_a_transient_robots_txt_failure_once():
     """Revisión: robots.txt se lee una vez por servidor y corrida; un 503 pasajero dejaba sin pedir, toda la corrida,
     las URL de ese servidor que el registro no mide (los PDF del comunicado y del informe). Una verificación no se

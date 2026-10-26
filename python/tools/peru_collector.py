@@ -449,6 +449,7 @@ def fetch(client: httpx.Client | Session, url: str, expect: str | None = None, m
     attempts = 1 if s.down[host] else 3
     for attempt in range(attempts):
         try:
+            # get_checked espera el Crawl-delay de una entidad pública del Perú antes de cada salto (``Robots.pace``).
             r, hop, verdict = get_checked(s.client, url, s.robots)
         except httpx.HTTPError as exc:
             err = f"{type(exc).__name__}: {exc}"[:200]

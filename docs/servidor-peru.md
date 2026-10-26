@@ -67,8 +67,9 @@ uno. El boletín BS-OBP no tiene otra ruta. Un PDF del repositorio con el númer
 informe del ENFEN cumple esa meta aunque el portal no lo haya dado. El
 servidor no manda su certificado intermedio: el kit lo trae
 (`enso/data/ca-intermedios.pem`), y con él se miden también las URL del
-registro. Si el repositorio no responde desde el Perú, solo se pide su
-`robots.txt` y sus URL quedan medidas como caídas desde aquí.
+registro. Si el repositorio no responde desde el Perú, se deja tras dos
+URL, como cualquier servidor caído, y lo pedido queda medido como caído
+desde aquí.
 
 Un documento que pide verificación antirobots también desde el Perú no lo
 baja el recolector, que no evade esas verificaciones. Cuando eso pasa con
@@ -328,13 +329,21 @@ nadie está mirando.
   (`prohibida`, `sin respuesta` o `permitida`), así un cambio del
   servidor llega al registro. Si robots.txt no responde (sin conexión,
   sin respuesta en 15 segundos, un 429, un error 5xx o una verificación
-  antirobots en su lugar), esa noche no se pide nada a ese servidor: cada URL queda anotada como `robots-sin-respuesta` con la
-  clase del intento (`timeout`, `challenge`…), que cuenta como medición
-  desde el Perú, y se conserva su última copia buena. Un robots.txt que
-  no existe o no se deja leer (cualquier 4xx salvo el 429) o que es una
-  página HTML (un «no encontrado» servido con 200, o una redirección a la
-  portada, como el de INDECI) no tiene reglas: se permite todo. `VERIFICAR`
-  aplica la misma regla, también a las redirecciones.
+  antirobots en su lugar), esa noche no se pide nada a ese servidor: cada
+  URL queda anotada como `robots-sin-respuesta` con la clase del intento
+  (`timeout`, `challenge`…), que cuenta como medición desde el Perú, y se
+  conserva su última copia buena. Un robots.txt que no existe o no se
+  deja leer (cualquier 4xx salvo el 429) o que es una página HTML (un «no
+  encontrado» servido con 200, o una redirección a la portada, como el de
+  INDECI) no tiene reglas: se permite todo. Los servidores de entidades
+  públicas del Perú (`.gob.pe`, `.mil.pe`, `enso.reach.public_peru`) son
+  la excepción: su información es pública, así que se piden aunque su
+  robots.txt prohíba la ruta o no responda, con una pausa antes de cada
+  pedido y cada salto: su `Crawl-delay`, entre 1 y 30 segundos (1 si no
+  lo fija). Una verificación antirobots nunca se evade: en lugar de su
+  robots.txt, no se pide nada a ese servidor; en lugar de la página, se
+  anota y no se guarda. `VERIFICAR` aplica las mismas reglas, también a
+  las redirecciones.
 - **Lo que sube:** `index.json` (cada URL con su estado, clase, formato,
   tamaño, hora y sha256; qué registro de fuentes usó, de dónde y de qué
   fecha; las mediciones de las URL del registro en `probes`; y un

@@ -180,12 +180,16 @@ def browser_step(browser, url: str, expect: str, robots: Robots, sub_robots: Opt
 
     def allowed(u: str) -> Optional[bool]:
         if sub_robots is None or robots.known(u) or sub_robots.known(u):
-            return (robots if sub_robots is None or robots.known(u) else sub_robots).allowed(u)
+            r = robots if sub_robots is None or robots.known(u) else sub_robots
+            # El navegador no espera el Crawl-delay entre los pedidos de una página: la excepción de las entidades
+            # públicas del Perú (``reach.public_peru``) vale para los GET, que sí lo esperan, y no aquí.
+            return False if r.overridden(u) else r.allowed(u)
         if base(u) in gave_up or budget[0] <= 0:
             return None
         started = time.monotonic()
         try:
-            return pool.submit(sub_robots.allowed, u).result(timeout=min(SUB_ROBOTS_TIMEOUT_S, budget[0]))
+            ok = pool.submit(sub_robots.allowed, u).result(timeout=min(SUB_ROBOTS_TIMEOUT_S, budget[0]))
+            return False if ok and sub_robots.overridden(u) else ok
         except FutureTimeout:
             gave_up.add(base(u))
             return None

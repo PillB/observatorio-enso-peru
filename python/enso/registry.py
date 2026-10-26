@@ -47,6 +47,10 @@ todo lo demás, otros feeds incluidos, y el rastreo.
 una medición no pudo leerlo, vale la última lectura de esa red que permitía la
 ruta, hasta ``STALE_DAYS`` (``robots_read``; RFC 9309 §2.4), y un robots.txt en
 contra que nadie volvió a leer en ``STALE_DAYS`` deja de contar.
+Excepción, decidida el 26 de octubre de 2026: en los servidores de entidades
+públicas del Perú (``.gob.pe``, ``.mil.pe``: ``reach.public_peru``) robots.txt
+no decide qué se pide (``robots`` es ``allowed``, salvo que en lugar del
+robots.txt llegue una verificación antirobots); su ``Crawl-delay`` se respeta.
 
 El registro no guarda la hora, el tiempo ni el tamaño de cada medición (siguen
 en ``reachability.json``): solo cambia cuando cambia el alcance.
@@ -62,6 +66,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
+
+from .reach import public_peru
 
 SCHEMA = "enso-source-registry/1"
 REACH_SCHEMA = "enso-reachability/2"  # /2: mediciones por red y punto de medición
@@ -346,8 +352,12 @@ def _recent(recs: dict[str, dict], now: Optional[datetime]) -> dict[str, dict]:
 def _counted(url: str, reach: dict, now: Optional[datetime]) -> dict[str, dict[str, dict]]:
     """Las mediciones de ``url`` que cuentan, por grupo: sin las que no miden la red (``unmeasured``) y, con ``now``,
     sin las de más de ``STALE_DAYS`` si su red tiene otra más reciente (``_recent``)."""
+    # En una entidad pública del Perú (``reach.public_peru``) un robots.txt en contra no cuenta: se pide igual. Si
+    # lo prohibido es un salto de una redirección (``hop``), cuenta el servidor de ese salto, no el de la URL.
+    def exempt(r: dict) -> bool:
+        return r.get("class") == "robots" and public_peru(r.get("hop") or url)
     return {g: kept for g, rs in _groups(reach.get(url) or {}).items()
-            if (kept := _recent({v: r for v, r in rs.items() if not unmeasured(r)}, now))}
+            if (kept := _recent({v: r for v, r in rs.items() if not unmeasured(r) and not exempt(r)}, now))}
 
 
 def geoblock(url: str, reach: dict, now: Optional[datetime] = None) -> dict:
@@ -387,6 +397,11 @@ def robots_verdict(url: str, reach: dict, now: Optional[datetime] = None) -> str
     lee antes de cada pedido); ``unknown`` si nadie pudo leerlo (n8n no lo lee). Cuentan las mismas mediciones que
     en ``geoblock`` (con ``now``, sin las viejas): ``disallowed`` va con el estado ``robots-disallowed``."""
     recs = [(g, r) for g, rs in _counted(url, reach, now).items() for r in rs.values()]
+    # Entidad pública del Perú: su robots.txt no decide (``reach.PUBLIC_PERU_SUFFIXES``), salvo que en su lugar
+    # haya llegado una verificación antirobots, que nunca se evade: entonces se sigue la regla de siempre.
+    if public_peru(url) and not any(r.get("class") == "robots" or (
+            r.get("class") == "challenge" and r.get("robots") == "unreachable") for _, r in recs):
+        return "allowed"
     if any(r.get("class") == "robots" for _, r in recs):
         return "disallowed"
     cutoff = now - timedelta(days=STALE_DAYS) if now else None
