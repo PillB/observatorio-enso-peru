@@ -1075,3 +1075,180 @@ def test_goal_detail_points_at_the_saved_pdf(snapshot):
     for g, ok in idx["goals"].items():
         d = idx["goal_detail"][g]
         assert d["saved"] == ok and (not ok or d["url"].startswith("https://"))
+
+
+# --- Repositorio del IMARPE (DSpace): lo que Actions no alcanza --------------------------------------------------
+
+def _repo_items():
+    from test_imarpe_repo import _item
+
+    c = {n: _item(f"c{n}", f"Comunicado Oficial ENFEN N° {n}-2026", f"2026-10-{n - 2:02d}", f"h/c{n}") for n in (17, 18)}
+    i18 = _item("i18", "Informe Técnico ENFEN Año 12 N°18, 2026", "2026-10-16", "h/i18")
+    b = {n: _item(f"b{n}", f"Boletín Semanal Oceanográfico y Biológico - Pesquero vol. 11, N°{n}, 2026",
+                  f"2026-10-{n - 18}", f"h/b{n}") for n in (41, 42, 43)}
+    return c, i18, b
+
+
+def _repository(req: httpx.Request) -> httpx.Response | None:
+    """El repositorio del IMARPE visto desde el Perú: robots.txt, la búsqueda, los paquetes y los PDF."""
+    import re
+
+    from enso.feeds import imarpe_bsobp
+    from enso.feeds import imarpe_repo as R
+    from test_imarpe_repo import _bundles, _item, _search
+
+    if req.url.host != "repositorio.imarpe.gob.pe":
+        return None
+    path = req.url.path
+    c, i18, b = _repo_items()
+    hal = {"content-type": "application/hal+json;charset=UTF-8"}
+    if path == "/robots.txt":
+        return httpx.Response(200, text="User-agent: *\nDisallow: /search\n")
+    if path == "/server/api/discover/search/objects":
+        q = req.url.params["query"]
+        noise = _item("ruido", "Informe de actividades", "2026-10-20", None)
+        if q == R.COMMUNIQUE_QUERY:
+            return httpx.Response(200, content=_search(c[18], c[17], noise), headers=hal)
+        if q.startswith(R.COMMUNIQUE_QUERY):  # por número: el pedido primero, luego otros parecidos
+            n = int(re.search(r"(\d+)-2026", q).group(1))
+            return httpx.Response(200, content=_search(*[c[k] for k in (n, 17, 18) if k in c][:2], noise), headers=hal)
+        if q.startswith(R.INFORME_QUERY):
+            return httpx.Response(200, content=_search(i18, noise), headers=hal)
+        if q == imarpe_bsobp.QUERY:
+            return httpx.Response(200, content=_search(b[43], noise, b[42], b[41]), headers=hal)
+        return httpx.Response(200, content=_search(), headers=hal)
+    m = re.fullmatch(r"/server/api/core/items/([^/]+)/bundles", path)
+    if m and req.url.params.get("embed") == "bitstreams":
+        uid = m.group(1)
+        return httpx.Response(200, content=_bundles((f"{uid}.pdf", f"{R.API}/core/bitstreams/{uid}/content")),
+                              headers=hal)
+    m = re.fullmatch(r"/server/api/core/bitstreams/([^/]+)/content", path)
+    if m:
+        return httpx.Response(200, content=b"%PDF-1.7 " + m.group(1).encode() + b" " + b"x" * 800,
+                              headers={"content-type": "application/pdf"})
+    return httpx.Response(404)
+
+
+def _peru_with_repository(req: httpx.Request) -> httpx.Response:
+    return _repository(req) or _peru_only(req)
+
+
+def test_collector_follows_the_imarpe_repository_with_the_urls_the_pipeline_asks(tmp_path, monkeypatch):
+    """Las búsquedas, los paquetes y los PDF del repositorio quedan en la copia con la URL exacta que pide
+    ``enso.feeds.imarpe_repo``: desde Actions (sin DNS) el pipeline los lee todos de la copia del Perú."""
+    from enso.feeds import imarpe_bsobp
+    from enso.feeds import imarpe_repo as R
+
+    idx = _collect(tmp_path, monkeypatch, _peru_with_repository)
+    repo = [e for e in idx["entries"] if e["group"] == "imarpe-repo"]
+    assert repo and all(pc.usable(e) for e in repo)
+    assert idx["summary"]["imarpe-repo"] == f"{len(repo)}/{len(repo)}"
+    urls = [e["url"] for e in repo]
+    assert len(urls) == len(set(urls))  # nada se pide dos veces
+    pdfs = {e["url"].split("/")[-2] for e in repo if e.get("detected") == "pdf"}
+    # El comunicado meta del ENFEN (17) y el más reciente del repositorio (18), el informe más reciente y los
+    # MAX_NEW boletines más recientes: el ruido y el boletín 41 no.
+    assert pdfs == {"c17", "c18", "i18", "b43", "b42"}
+    # El PDF del repositorio con el número de la meta del ENFEN la cumple (y la del 18 no existe como meta).
+    assert {e.get("goal") for e in repo if e.get("goal")} == {"comunicado 17-2026", "informe técnico 18-2026"}
+
+    def offshore(req):  # GitHub Actions: ni el ENFEN ni el repositorio resuelven
+        raise httpx.ConnectError("[Errno -2] Name or service not known")
+
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False, relay=Relay(tmp_path / "out"))
+    f.client = httpx.Client(transport=httpx.MockTransport(offshore))
+    problems: list = []
+    assert [c["id"] for c in R.communiques(f, problems=problems)] == ["18-2026", "17-2026"]
+    for n in (17, 18):
+        got = R.communique_pdf(f, 2026, n, problems)
+        assert got is not None and got.body.startswith(f"%PDF-1.7 c{n} ".encode()) and got.channel == "relay-peru"
+    assert [(i["year"], i["n"]) for i in R.informes(f, problems=problems)] == [(2026, 18)]
+    got = R.informe_pdf(f, 2026, 18, problems)
+    assert got is not None and got.body.startswith(b"%PDF-1.7 i18 ")
+    listed = imarpe_bsobp._listed(f)
+    assert [b["number"] for b in listed] == [43, 42, 41]
+    for it in listed[:imarpe_bsobp.MAX_NEW]:
+        files = R.pdfs(f, it["uuid"], problems)
+        assert files and R.fetch_pdf(f, files[0]["url"], problems).body.startswith(f"%PDF-1.7 b{it['number']} ".encode())
+    assert problems == []
+
+
+def test_repository_pdf_meets_the_enfen_goal_the_portal_missed(tmp_path, monkeypatch):
+    """El portal pide verificación para el PDF del comunicado: el mismo número en el repositorio cumple la meta, y
+    goal_detail apunta a esa copia."""
+    def peru(req):
+        u = str(req.url)
+        if "enfen.imarpe.gob.pe" in u and ("/download/" in u or "wp-content" in u) or "dhn.mil.pe/Archivos" in u:
+            return httpx.Response(403, text=CHALLENGE, headers={"content-type": "text/html", "cf-mitigated": "challenge"})
+        return _peru_with_repository(req)
+
+    idx = _collect(tmp_path, monkeypatch, peru)
+    assert idx["goals"]["comunicado 17-2026"] is True
+    assert idx["goal_detail"]["comunicado 17-2026"]["url"].endswith("/core/bitstreams/c17/content")
+
+
+def test_unreachable_repository_costs_one_robots_request_and_is_measured(tmp_path, monkeypatch):
+    """Si el repositorio tampoco responde desde el Perú, no se le pide nada más que su robots.txt, y sus búsquedas
+    (los tres listados y las de las metas del ENFEN por número) quedan medidas desde el Perú (clase «dns») para el
+    registro."""
+    from tools.probe_sources import from_peru_index
+
+    asked = []
+
+    def peru(req):
+        if req.url.host == "repositorio.imarpe.gob.pe":
+            asked.append(str(req.url))
+            raise httpx.ConnectError("[Errno 8] nodename nor servname provided, or not known")
+        return _peru_only(req)
+
+    idx = _collect(tmp_path, monkeypatch, peru)
+    repo = [e for e in idx["entries"] if e["group"] == "imarpe-repo"]
+    assert len(repo) == 5 and all(e["skipped"] == "robots-sin-respuesta" and e["class"] == "dns" for e in repo)
+    assert asked == ["https://repositorio.imarpe.gob.pe/robots.txt"]
+    measured = from_peru_index(idx)
+    assert all(measured[e["url"]]["class"] == "dns" for e in repo)
+
+
+def test_registry_search_routed_to_this_machine_is_not_asked_twice(tmp_path, monkeypatch):
+    """Cuando el registro manda las búsquedas del repositorio a este equipo, se piden una vez (en su grupo) y el
+    seguimiento usa esa respuesta."""
+    from enso.feeds import imarpe_repo as R
+
+    searches = R.listing_urls()
+    registry = {"schema": pc.REGISTRY_SCHEMA, "generated_at": datetime.now(timezone.utc).isoformat(), "sources": [
+        {"id": f"imarpe-repositorio-{k}", "group": "imarpe-repositorio", "url": u, "expect": "json",
+         "channels": ["peru-server"], "by_url": {u: {"status": "suspected-geoblock", "channels": ["peru-server"]}}}
+        for k, u in enumerate(searches)]}
+    asked = []
+
+    def peru(req):
+        asked.append(str(req.url))
+        return _peru_with_repository(req)
+
+    idx = _collect(tmp_path, monkeypatch, peru, registry=registry)
+    by_url = {e["url"]: e for e in idx["entries"]}
+    assert all(by_url[u]["group"] == "imarpe-repositorio" for u in searches)
+    assert all(sum(1 for e in idx["entries"] if e["url"] == u) == 1 for u in searches)
+    assert any(e["url"].endswith("/core/bitstreams/i18/content") for e in idx["entries"])  # siguió esa respuesta
+    assert len([a for a in asked if "discover/search" in a]) == len({a for a in asked if "discover/search" in a})
+
+
+def test_registry_probe_verifies_with_the_bundled_intermediates(monkeypatch):
+    """La sonda mide lo que verá el pipeline: con los intermedios del kit (``ssl_context``), no «tls» a un
+    servidor que no manda el suyo."""
+    import ssl
+
+    from tools import probe_sources
+
+    seen = []
+    real = httpx.Client
+
+    def client(**kw):
+        seen.append(kw.get("verify"))
+        return real(**{"transport": httpx.MockTransport(lambda r: httpx.Response(200, text="ok")), **kw})
+
+    monkeypatch.setattr(probe_sources.httpx, "Client", client)
+    monkeypatch.setattr(probe_sources.time, "sleep", lambda s: None)
+    got = probe_sources.probe(["https://repositorio.imarpe.gob.pe/server/api"], "peru-server")
+    assert got["https://repositorio.imarpe.gob.pe/server/api"]["class"] == "ok"
+    assert seen and isinstance(seen[0], ssl.SSLContext)

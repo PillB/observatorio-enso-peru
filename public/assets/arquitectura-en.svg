@@ -141,7 +141,7 @@
   
   <!-- conexiones -->
   <g class="ar-edge" id="af-e-1" data-edge="1" data-from="peru-official" data-to="peru-collector" tabindex="0">
-    <title>1. ENFEN and IGP: Peru&#x27;s official sources → Peru collector: ENFEN portal and ICEN https. Every night the machine in Peru fetches the ENFEN portal&#x27;s API and listing, the communiqué PDFs and the ICEN over https, none of which answer from the US. That way the official communiqué arrives even though the portal does not answer cloud servers.</title>
+    <title>1. ENFEN and IGP: Peru&#x27;s official sources → Peru collector: ENFEN portal and ICEN https. Every night the machine in Peru fetches the ENFEN portal&#x27;s API and listing, the communiqué PDFs, the ICEN over https and IMARPE&#x27;s repository (searches, bundles and PDFs), none of which answer from the US. That way the official communiqué arrives even though the portal does not answer cloud servers.</title>
     <path class="ar-e ar-e-data" d="M286 192 L366 192 Q372 192 372 198 L372 384 Q372 390 378 390 L399 390" marker-end="url(#af-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="372" cy="291" r="9"/>
     <text class="ar-t" x="372" y="294.8" font-size="10.5" text-anchor="middle">1</text>
@@ -1281,185 +1281,186 @@
   <text class="ar-t" x="50" y="2313.3" font-size="11.5">ENFEN portal and ICEN https</text>
   <text class="ar-m" x="50" y="2327.3" font-size="10.5">ENFEN and IGP: Peru&#x27;s official sources → Peru collector · daily 21:00 Lima, retries until 23:30</text>
   <text class="ar-s" x="50" y="2342.3" font-size="11">Every night the machine in Peru fetches the ENFEN portal&#x27;s API and listing, the communiqué</text>
-  <text class="ar-s" x="50" y="2357.3" font-size="11">PDFs and the ICEN over https, none of which answer from the US. That way the official</text>
-  <text class="ar-s" x="50" y="2372.3" font-size="11">communiqué arrives even though the portal does not answer cloud servers.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2395.3" r="9"/>
-  <text class="ar-t" x="30" y="2399.1" font-size="10.5" text-anchor="middle">2</text>
-  <text class="ar-t" x="50" y="2399.3" font-size="11.5">DHN mirror and ICEN, direct</text>
-  <text class="ar-m" x="50" y="2413.3" font-size="10.5">ENFEN and IGP: Peru&#x27;s official sources → Download in GitHub Actions (Fetcher) · daily 23:37</text>
-  <text class="ar-m" x="50" y="2427.3" font-size="10.5">Lima, first in line</text>
-  <text class="ar-s" x="50" y="2442.3" font-size="11">Actions requests the ICEN over http and the DHN mirror, which answer from the US. For the</text>
-  <text class="ar-s" x="50" y="2457.3" font-size="11">portal API and listing it uses the Peru copy first; with none, it tries once.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2480.3" r="9"/>
-  <text class="ar-t" x="30" y="2484.1" font-size="10.5" text-anchor="middle">3</text>
-  <text class="ar-t" x="50" y="2484.3" font-size="11.5">copy of mirror and ICEN</text>
-  <text class="ar-m" x="50" y="2498.3" font-size="10.5">ENFEN and IGP: Peru&#x27;s official sources → n8n collector (AWS cloud) · daily 22:50 Lima</text>
-  <text class="ar-s" x="50" y="2513.3" font-size="11">n8n fetches the ICEN over http and the DHN mirror with its PDFs, leaving a second copy in</text>
-  <text class="ar-s" x="50" y="2528.3" font-size="11">case Actions gets no valid response.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2551.3" r="9"/>
-  <text class="ar-t" x="30" y="2555.1" font-size="10.5" text-anchor="middle">4</text>
-  <text class="ar-t" x="50" y="2555.3" font-size="11.5">15 products, direct</text>
-  <text class="ar-m" x="50" y="2569.3" font-size="10.5">NOAA (CPC and PSL) → Download in GitHub Actions (Fetcher) · daily 23:37 Lima</text>
-  <text class="ar-s" x="50" y="2584.3" font-size="11">Each night Actions downloads NOAA&#x27;s indices, sea temperature, subsurface heat and ENSO</text>
-  <text class="ar-s" x="50" y="2599.3" font-size="11">discussion. If a critical product fails with no previous value, nothing is deployed.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2622.3" r="9"/>
-  <text class="ar-t" x="30" y="2626.1" font-size="10.5" text-anchor="middle">5</text>
-  <text class="ar-t" x="50" y="2626.3" font-size="11.5">backup copy</text>
-  <text class="ar-m" x="50" y="2640.3" font-size="10.5">NOAA (CPC and PSL) → n8n collector (AWS cloud) · daily 22:50 Lima</text>
-  <text class="ar-s" x="50" y="2655.3" font-size="11">n8n fetches 14 of those URLs nightly; if Actions&#x27; direct request fails, the pipeline uses that</text>
-  <text class="ar-s" x="50" y="2670.3" font-size="11">copy. cpc-godas-d20 has no n8n copy.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2693.3" r="9"/>
-  <text class="ar-t" x="30" y="2697.1" font-size="10.5" text-anchor="middle">6</text>
-  <text class="ar-t" x="50" y="2697.3" font-size="11.5">14 alert sources</text>
-  <text class="ar-m" x="50" y="2711.3" font-size="10.5">Official hazard alerts (14 sources) → Download in GitHub Actions (Fetcher) · daily 23:37 Lima</text>
-  <text class="ar-s" x="50" y="2726.3" font-size="11">Along with the news, Actions reads the INDECI, SENAMHI, DHN, IGP, USGS, PTWC and NASA</text>
-  <text class="ar-s" x="50" y="2741.3" font-size="11">FIRMS warnings, each in its own format (RSS, JSON, HTML, CSV or text).</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2764.3" r="9"/>
-  <text class="ar-t" x="30" y="2768.1" font-size="10.5" text-anchor="middle">7</text>
-  <text class="ar-t" x="50" y="2768.3" font-size="11.5">backup copy</text>
-  <text class="ar-m" x="50" y="2782.3" font-size="10.5">Official hazard alerts (14 sources) → n8n collector (AWS cloud) · daily 22:50 Lima</text>
-  <text class="ar-s" x="50" y="2797.3" font-size="11">n8n keeps a copy of the 14 alert sources in case Actions cannot reach them that night.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2820.3" r="9"/>
-  <text class="ar-t" x="30" y="2824.1" font-size="10.5" text-anchor="middle">8</text>
-  <text class="ar-t" x="50" y="2824.3" font-size="11.5">archive only, from Peru</text>
-  <text class="ar-m" x="50" y="2838.3" font-size="10.5">Government pages kept from Peru → Peru collector · daily 21:00 Lima</text>
-  <text class="ar-s" x="50" y="2853.3" font-size="11">The collector downloads these 13 fixed-list pages nightly to keep the original. 6 of them (4</text>
-  <text class="ar-s" x="50" y="2868.3" font-size="11">SENAMHI web pages, 2 ANA) do not answer from the US.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2891.3" r="9"/>
-  <text class="ar-t" x="30" y="2895.1" font-size="10.5" text-anchor="middle">9</text>
-  <text class="ar-t" x="50" y="2895.3" font-size="11.5">the 7 on n8n</text>
-  <text class="ar-m" x="50" y="2909.3" font-size="10.5">Government pages kept from Peru → n8n collector (AWS cloud) · daily 22:50 Lima</text>
-  <text class="ar-s" x="50" y="2924.3" font-size="11">IMARPE, CENEPRED, the SENAMHI observatory and IDESEP carry the n8n channel by rule</text>
-  <text class="ar-s" x="50" y="2939.3" font-size="11">(open or unmeasured), so n8n downloads them too. The daily run does not request them</text>
-  <text class="ar-s" x="50" y="2954.3" font-size="11">since they have no parser.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2977.3" r="9"/>
-  <text class="ar-t" x="30" y="2981.1" font-size="10.5" text-anchor="middle">10</text>
-  <text class="ar-t" x="50" y="2981.3" font-size="11.5">116 news feeds</text>
-  <text class="ar-m" x="50" y="2995.3" font-size="10.5">Media and government: 116 news feeds → Download in GitHub Actions (Fetcher) · daily 23:37</text>
-  <text class="ar-m" x="50" y="3009.3" font-size="10.5">Lima, after the official sources</text>
-  <text class="ar-s" x="50" y="3024.3" font-size="11">Each night Actions reads the government, national, regional, radio and international feeds,</text>
-  <text class="ar-s" x="50" y="3039.3" font-size="11">one after another per server as a courtesy. UN News and Sin Rodeos are requested as a</text>
-  <text class="ar-s" x="50" y="3054.3" font-size="11">feed reader.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3077.3" r="9"/>
-  <text class="ar-t" x="30" y="3081.1" font-size="10.5" text-anchor="middle">11</text>
-  <text class="ar-t" x="50" y="3081.3" font-size="11.5">backup copy (114)</text>
-  <text class="ar-m" x="50" y="3095.3" font-size="10.5">Media and government: 116 news feeds → n8n collector (AWS cloud) · daily 22:50 Lima</text>
-  <text class="ar-s" x="50" y="3110.3" font-size="11">n8n fetches the same feeds except the 2 reader ones; if one fails from Actions, the pipeline</text>
-  <text class="ar-s" x="50" y="3125.3" font-size="11">uses the newest copy.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3148.3" r="9"/>
-  <text class="ar-t" x="30" y="3152.1" font-size="10.5" text-anchor="middle">12</text>
-  <text class="ar-t" x="50" y="3152.3" font-size="11.5">feed reader, once per 20 h</text>
-  <text class="ar-m" x="50" y="3166.3" font-size="10.5">Google News: 38 searches → Download in GitHub Actions (Fetcher) · at most every 20 h; main</text>
-  <text class="ar-m" x="50" y="3180.3" font-size="10.5">runs only</text>
-  <text class="ar-s" x="50" y="3195.3" font-size="11">Because their robots.txt forbids these 38 feeds, Actions requests them like an RSS reader:</text>
-  <text class="ar-s" x="50" y="3210.3" font-size="11">main only, no retry and at most once every 20 h. Between reads the last one is repeated.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="3233.3" r="9"/>
-  <text class="ar-t" x="30" y="3237.1" font-size="10.5" text-anchor="middle">13</text>
-  <text class="ar-t" x="50" y="3237.3" font-size="11.5">longest rule wins</text>
-  <text class="ar-m" x="50" y="3251.3" font-size="10.5">Each server&#x27;s robots.txt → Weekly reachability probe · Mondays 04:17 Lima</text>
-  <text class="ar-s" x="50" y="3266.3" font-size="11">Each week the probe reads every server&#x27;s robots.txt before measuring. A forbidden path</text>
-  <text class="ar-s" x="50" y="3281.3" font-size="11">becomes robots-disallowed and loses its channels, except reader feeds.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="3304.3" r="9"/>
-  <text class="ar-t" x="30" y="3308.1" font-size="10.5" text-anchor="middle">14</text>
-  <text class="ar-t" x="50" y="3308.3" font-size="11.5">obeyed live</text>
-  <text class="ar-m" x="50" y="3322.3" font-size="10.5">Each server&#x27;s robots.txt → Peru collector · daily 21:00 Lima</text>
-  <text class="ar-s" x="50" y="3337.3" font-size="11">Each night the collector reads robots.txt before requesting. It skips forbidden paths, and if</text>
-  <text class="ar-s" x="50" y="3352.3" font-size="11">robots.txt does not answer it asks nothing of that server.</text>
-  <circle class="ar-badge ar-e-trigger" cx="30" cy="3375.3" r="9"/>
-  <text class="ar-t" x="30" y="3379.1" font-size="10.5" text-anchor="middle">15</text>
-  <text class="ar-t" x="50" y="3379.3" font-size="11.5">measures and rebuilds</text>
-  <text class="ar-m" x="50" y="3393.3" font-size="10.5">Weekly reachability probe → Registry builder · Mondays 04:17 Lima (09:17 UTC)</text>
-  <text class="ar-s" x="50" y="3408.3" font-size="11">The probe writes reachability.json with what Actions, Peru and n8n measured, then runs</text>
-  <text class="ar-s" x="50" y="3423.3" font-size="11">build_registry right away so the channels follow the new measurements.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3446.3" r="9"/>
-  <text class="ar-t" x="30" y="3450.1" font-size="10.5" text-anchor="middle">16</text>
-  <text class="ar-t" x="50" y="3450.3" font-size="11.5">generates and validates</text>
-  <text class="ar-m" x="50" y="3464.3" font-size="10.5">Registry builder → Source registry (registry/) · Mondays 04:17 Lima</text>
-  <text class="ar-s" x="50" y="3479.3" font-size="11">Writes sources.json with status and channels per URL. On main the probe commits registry/;</text>
-  <text class="ar-s" x="50" y="3494.3" font-size="11">on other branches the result goes to bot/registry/&lt;branch&gt;.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3517.3" r="9"/>
-  <text class="ar-t" x="30" y="3521.1" font-size="10.5" text-anchor="middle">17</text>
-  <text class="ar-t" x="50" y="3521.3" font-size="11.5">what Peru measured</text>
-  <text class="ar-m" x="50" y="3535.3" font-size="10.5">data-peru branch → Weekly reachability probe · Mondays 04:17 Lima</text>
-  <text class="ar-s" x="50" y="3550.3" font-size="11">The probe reads Peru&#x27;s index.json: each URL&#x27;s result there plus extra measurements. So the</text>
-  <text class="ar-s" x="50" y="3565.3" font-size="11">registry can confirm a geoblock or an outage; there are no Peru measurements yet.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3588.3" r="9"/>
-  <text class="ar-t" x="30" y="3592.1" font-size="10.5" text-anchor="middle">18</text>
-  <text class="ar-t" x="50" y="3592.3" font-size="11.5">what n8n measured</text>
-  <text class="ar-m" x="50" y="3606.3" font-size="10.5">data-n8n branch → Weekly reachability probe · Mondays 04:17 Lima</text>
-  <text class="ar-s" x="50" y="3621.3" font-size="11">It also adds n8n&#x27;s last attempt on AWS as a measurement for the n8n network. A carried</text>
-  <text class="ar-s" x="50" y="3636.3" font-size="11">copy counts as its last failure, not as today&#x27;s measurement.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="3659.3" r="9"/>
-  <text class="ar-t" x="30" y="3663.1" font-size="10.5" text-anchor="middle">19</text>
-  <text class="ar-t" x="50" y="3663.3" font-size="11.5">per-URL channel plan</text>
-  <text class="ar-m" x="50" y="3677.3" font-size="10.5">Source registry (registry/) → Download in GitHub Actions (Fetcher) · every observatory.yml run</text>
-  <text class="ar-s" x="50" y="3692.3" font-size="11">Each run the pipeline reads who fetches each URL. What the registry does not give to</text>
-  <text class="ar-s" x="50" y="3707.3" font-size="11">Actions is read from the copies (with no copy, it is requested directly once), forbidden URLs</text>
-  <text class="ar-s" x="50" y="3722.3" font-size="11">are not requested and the 40 reader feeds are requested at most every 20 h, only on main.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="3745.3" r="9"/>
-  <text class="ar-t" x="30" y="3749.1" font-size="10.5" text-anchor="middle">20</text>
-  <text class="ar-t" x="50" y="3749.3" font-size="11.5">152 URLs for n8n</text>
-  <text class="ar-m" x="50" y="3763.3" font-size="10.5">Source registry (registry/) → n8n collector (AWS cloud) · daily 22:50 Lima</text>
-  <text class="ar-s" x="50" y="3778.3" font-size="11">At start n8n reads the registry from main on GitHub (or the copy built into the flow) and</text>
-  <text class="ar-s" x="50" y="3793.3" font-size="11">requests only the URLs assigned to n8n.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="3816.3" r="9"/>
-  <text class="ar-t" x="30" y="3820.1" font-size="10.5" text-anchor="middle">21</text>
-  <text class="ar-t" x="50" y="3820.3" font-size="11.5">peru-server URLs and PDFs</text>
-  <text class="ar-m" x="50" y="3834.3" font-size="10.5">Source registry (registry/) → Peru collector · daily 21:00 Lima</text>
-  <text class="ar-s" x="50" y="3849.3" font-size="11">The collector reads the registry from GitHub with its token (or the kit copy), adds the</text>
-  <text class="ar-s" x="50" y="3864.3" font-size="11">peru-server URLs and their PDF-follow rules to its fixed list, and probes up to 60 unknown,</text>
-  <text class="ar-s" x="50" y="3879.3" font-size="11">suspected-geoblock or down URLs this run did not request.</text>
-  <circle class="ar-badge ar-e-human" cx="30" cy="3902.3" r="9"/>
-  <text class="ar-t" x="30" y="3906.1" font-size="10.5" text-anchor="middle">22</text>
-  <text class="ar-t" x="50" y="3906.3" font-size="11.5">verified sources into catalogue</text>
-  <text class="ar-m" x="50" y="3920.3" font-size="10.5">Development tools → Registry builder · by hand</text>
-  <text class="ar-s" x="50" y="3935.3" font-size="11">A person reviews the probe reports and adds the working feeds and parsers to the code;</text>
-  <text class="ar-s" x="50" y="3950.3" font-size="11">from there they enter the registry. That is how the 2026-10-21 catalogue was built.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3973.3" r="9"/>
-  <text class="ar-t" x="30" y="3977.1" font-size="10.5" text-anchor="middle">23</text>
-  <text class="ar-t" x="50" y="3977.3" font-size="11.5">copies, heartbeat, probes</text>
-  <text class="ar-m" x="50" y="3991.3" font-size="10.5">Peru collector → data-peru branch · 21:00 to 23:30 Lima</text>
-  <text class="ar-s" x="50" y="4006.3" font-size="11">When done it pushes index.json, the files, heartbeat.json and its measurements to</text>
-  <text class="ar-s" x="50" y="4021.3" font-size="11">data-peru. If nothing answered, it pushes only the heartbeat and leaves the last good copy</text>
-  <text class="ar-s" x="50" y="4036.3" font-size="11">untouched.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="4059.3" r="9"/>
-  <text class="ar-t" x="30" y="4063.1" font-size="10.5" text-anchor="middle">24</text>
-  <text class="ar-t" x="50" y="4063.3" font-size="11.5">previous copy</text>
-  <text class="ar-m" x="50" y="4077.3" font-size="10.5">data-peru branch → Peru collector · daily 21:00 Lima</text>
-  <text class="ar-s" x="50" y="4092.3" font-size="11">Before pushing, the collector reads its previous copy and keeps for up to 72 h the URLs that</text>
-  <text class="ar-s" x="50" y="4107.3" font-size="11">failed tonight, flagged carried.</text>
-  <circle class="ar-badge ar-e-trigger" cx="30" cy="4130.3" r="9"/>
-  <text class="ar-t" x="30" y="4134.1" font-size="10.5" text-anchor="middle">25</text>
-  <text class="ar-t" x="50" y="4134.3" font-size="11.5">asks to refresh (enso-refresh)</text>
-  <text class="ar-m" x="50" y="4148.3" font-size="10.5">Peru collector → Daily update (observatory.yml) · after pushing a copy (not a heartbeat only)</text>
-  <text class="ar-s" x="50" y="4163.3" font-size="11">After pushing it sends repository_dispatch enso-refresh so the site updates without waiting</text>
-  <text class="ar-s" x="50" y="4178.3" font-size="11">for 23:37. If a run is in progress, it queues. It is on by default in the kit.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="4201.3" r="9"/>
-  <text class="ar-t" x="30" y="4205.1" font-size="10.5" text-anchor="middle">26</text>
-  <text class="ar-t" x="50" y="4205.3" font-size="11.5">commit replaces the branch</text>
-  <text class="ar-m" x="50" y="4219.3" font-size="10.5">n8n collector (AWS cloud) → data-n8n branch · daily 22:50 Lima</text>
-  <text class="ar-s" x="50" y="4234.3" font-size="11">n8n uploads new files via the GitHub API, builds a parentless commit and moves data-n8n.</text>
-  <text class="ar-s" x="50" y="4249.3" font-size="11">index.json and heartbeat.json always go, even if nothing answered.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="4272.3" r="9"/>
-  <text class="ar-t" x="30" y="4276.1" font-size="10.5" text-anchor="middle">27</text>
-  <text class="ar-t" x="50" y="4276.3" font-size="11.5">previous copy</text>
-  <text class="ar-m" x="50" y="4290.3" font-size="10.5">data-n8n branch → n8n collector (AWS cloud) · daily 22:50 Lima</text>
-  <text class="ar-s" x="50" y="4305.3" font-size="11">Its &#x27;Leer copia anterior&#x27; node reads data-n8n&#x27;s index.json and keeps for up to 72 h the URLs</text>
-  <text class="ar-s" x="50" y="4320.3" font-size="11">that failed tonight, flagged carried.</text>
-  <circle class="ar-badge ar-e-human" cx="30" cy="4343.3" r="9"/>
-  <text class="ar-t" x="30" y="4347.1" font-size="10.5" text-anchor="middle">28</text>
-  <text class="ar-t" x="50" y="4347.3" font-size="11.5">kit .zip and VERIFICAR</text>
-  <text class="ar-m" x="50" y="4361.3" font-size="10.5">Collector kit and check → Peru machine operator · when changes to the kit, python/enso/ or the</text>
-  <text class="ar-m" x="50" y="4375.3" font-size="10.5">registry are merged to main (the bot&#x27;s weekly commit does not count)</text>
-  <text class="ar-s" x="50" y="4390.3" font-size="11">The person downloads recolector-peru.zip from the recolector-kit release and runs</text>
-  <text class="ar-s" x="50" y="4405.3" font-size="11">VERIFICAR (the report is saved in logs/ to send in). The machine does not update itself: a</text>
-  <text class="ar-s" x="50" y="4420.3" font-size="11">new kit is installed with ACTUALIZAR.</text>
-  <circle class="ar-badge ar-e-human" cx="30" cy="4443.3" r="9"/>
-  <text class="ar-t" x="30" y="4447.1" font-size="10.5" text-anchor="middle">29</text>
-  <text class="ar-t" x="50" y="4447.3" font-size="11.5">installs, token, task</text>
-  <text class="ar-m" x="50" y="4461.3" font-size="10.5">Peru machine operator → Peru collector</text>
-  <text class="ar-s" x="50" y="4476.3" font-size="11">Running INSTALAR with the token registers the 21:00 scheduled task. The collector shows a</text>
-  <text class="ar-s" x="50" y="4491.3" font-size="11">desktop notice after 2 failures or if the token expires in under 21 days.</text>
+  <text class="ar-s" x="50" y="2357.3" font-size="11">PDFs, the ICEN over https and IMARPE&#x27;s repository (searches, bundles and PDFs), none of</text>
+  <text class="ar-s" x="50" y="2372.3" font-size="11">which answer from the US. That way the official communiqué arrives even though the portal</text>
+  <text class="ar-s" x="50" y="2387.3" font-size="11">does not answer cloud servers.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2410.3" r="9"/>
+  <text class="ar-t" x="30" y="2414.1" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="2414.3" font-size="11.5">DHN mirror and ICEN, direct</text>
+  <text class="ar-m" x="50" y="2428.3" font-size="10.5">ENFEN and IGP: Peru&#x27;s official sources → Download in GitHub Actions (Fetcher) · daily 23:37</text>
+  <text class="ar-m" x="50" y="2442.3" font-size="10.5">Lima, first in line</text>
+  <text class="ar-s" x="50" y="2457.3" font-size="11">Actions requests the ICEN over http and the DHN mirror, which answer from the US. For the</text>
+  <text class="ar-s" x="50" y="2472.3" font-size="11">portal API and listing it uses the Peru copy first; with none, it tries once.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2495.3" r="9"/>
+  <text class="ar-t" x="30" y="2499.1" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="2499.3" font-size="11.5">copy of mirror and ICEN</text>
+  <text class="ar-m" x="50" y="2513.3" font-size="10.5">ENFEN and IGP: Peru&#x27;s official sources → n8n collector (AWS cloud) · daily 22:50 Lima</text>
+  <text class="ar-s" x="50" y="2528.3" font-size="11">n8n fetches the ICEN over http and the DHN mirror with its PDFs, leaving a second copy in</text>
+  <text class="ar-s" x="50" y="2543.3" font-size="11">case Actions gets no valid response.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2566.3" r="9"/>
+  <text class="ar-t" x="30" y="2570.1" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="2570.3" font-size="11.5">15 products, direct</text>
+  <text class="ar-m" x="50" y="2584.3" font-size="10.5">NOAA (CPC and PSL) → Download in GitHub Actions (Fetcher) · daily 23:37 Lima</text>
+  <text class="ar-s" x="50" y="2599.3" font-size="11">Each night Actions downloads NOAA&#x27;s indices, sea temperature, subsurface heat and ENSO</text>
+  <text class="ar-s" x="50" y="2614.3" font-size="11">discussion. If a critical product fails with no previous value, nothing is deployed.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2637.3" r="9"/>
+  <text class="ar-t" x="30" y="2641.1" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="2641.3" font-size="11.5">backup copy</text>
+  <text class="ar-m" x="50" y="2655.3" font-size="10.5">NOAA (CPC and PSL) → n8n collector (AWS cloud) · daily 22:50 Lima</text>
+  <text class="ar-s" x="50" y="2670.3" font-size="11">n8n fetches 14 of those URLs nightly; if Actions&#x27; direct request fails, the pipeline uses that</text>
+  <text class="ar-s" x="50" y="2685.3" font-size="11">copy. cpc-godas-d20 has no n8n copy.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2708.3" r="9"/>
+  <text class="ar-t" x="30" y="2712.1" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="50" y="2712.3" font-size="11.5">14 alert sources</text>
+  <text class="ar-m" x="50" y="2726.3" font-size="10.5">Official hazard alerts (14 sources) → Download in GitHub Actions (Fetcher) · daily 23:37 Lima</text>
+  <text class="ar-s" x="50" y="2741.3" font-size="11">Along with the news, Actions reads the INDECI, SENAMHI, DHN, IGP, USGS, PTWC and NASA</text>
+  <text class="ar-s" x="50" y="2756.3" font-size="11">FIRMS warnings, each in its own format (RSS, JSON, HTML, CSV or text).</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2779.3" r="9"/>
+  <text class="ar-t" x="30" y="2783.1" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="50" y="2783.3" font-size="11.5">backup copy</text>
+  <text class="ar-m" x="50" y="2797.3" font-size="10.5">Official hazard alerts (14 sources) → n8n collector (AWS cloud) · daily 22:50 Lima</text>
+  <text class="ar-s" x="50" y="2812.3" font-size="11">n8n keeps a copy of the 14 alert sources in case Actions cannot reach them that night.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2835.3" r="9"/>
+  <text class="ar-t" x="30" y="2839.1" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="50" y="2839.3" font-size="11.5">archive only, from Peru</text>
+  <text class="ar-m" x="50" y="2853.3" font-size="10.5">Government pages kept from Peru → Peru collector · daily 21:00 Lima</text>
+  <text class="ar-s" x="50" y="2868.3" font-size="11">The collector downloads these 13 fixed-list pages nightly to keep the original. 6 of them (4</text>
+  <text class="ar-s" x="50" y="2883.3" font-size="11">SENAMHI web pages, 2 ANA) do not answer from the US.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2906.3" r="9"/>
+  <text class="ar-t" x="30" y="2910.1" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="50" y="2910.3" font-size="11.5">the 7 on n8n</text>
+  <text class="ar-m" x="50" y="2924.3" font-size="10.5">Government pages kept from Peru → n8n collector (AWS cloud) · daily 22:50 Lima</text>
+  <text class="ar-s" x="50" y="2939.3" font-size="11">IMARPE, CENEPRED, the SENAMHI observatory and IDESEP carry the n8n channel by rule</text>
+  <text class="ar-s" x="50" y="2954.3" font-size="11">(open or unmeasured), so n8n downloads them too. The daily run does not request them</text>
+  <text class="ar-s" x="50" y="2969.3" font-size="11">since they have no parser.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2992.3" r="9"/>
+  <text class="ar-t" x="30" y="2996.1" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="50" y="2996.3" font-size="11.5">116 news feeds</text>
+  <text class="ar-m" x="50" y="3010.3" font-size="10.5">Media and government: 116 news feeds → Download in GitHub Actions (Fetcher) · daily 23:37</text>
+  <text class="ar-m" x="50" y="3024.3" font-size="10.5">Lima, after the official sources</text>
+  <text class="ar-s" x="50" y="3039.3" font-size="11">Each night Actions reads the government, national, regional, radio and international feeds,</text>
+  <text class="ar-s" x="50" y="3054.3" font-size="11">one after another per server as a courtesy. UN News and Sin Rodeos are requested as a</text>
+  <text class="ar-s" x="50" y="3069.3" font-size="11">feed reader.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3092.3" r="9"/>
+  <text class="ar-t" x="30" y="3096.1" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="50" y="3096.3" font-size="11.5">backup copy (114)</text>
+  <text class="ar-m" x="50" y="3110.3" font-size="10.5">Media and government: 116 news feeds → n8n collector (AWS cloud) · daily 22:50 Lima</text>
+  <text class="ar-s" x="50" y="3125.3" font-size="11">n8n fetches the same feeds except the 2 reader ones; if one fails from Actions, the pipeline</text>
+  <text class="ar-s" x="50" y="3140.3" font-size="11">uses the newest copy.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3163.3" r="9"/>
+  <text class="ar-t" x="30" y="3167.1" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="50" y="3167.3" font-size="11.5">feed reader, once per 20 h</text>
+  <text class="ar-m" x="50" y="3181.3" font-size="10.5">Google News: 38 searches → Download in GitHub Actions (Fetcher) · at most every 20 h; main</text>
+  <text class="ar-m" x="50" y="3195.3" font-size="10.5">runs only</text>
+  <text class="ar-s" x="50" y="3210.3" font-size="11">Because their robots.txt forbids these 38 feeds, Actions requests them like an RSS reader:</text>
+  <text class="ar-s" x="50" y="3225.3" font-size="11">main only, no retry and at most once every 20 h. Between reads the last one is repeated.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="3248.3" r="9"/>
+  <text class="ar-t" x="30" y="3252.1" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="50" y="3252.3" font-size="11.5">longest rule wins</text>
+  <text class="ar-m" x="50" y="3266.3" font-size="10.5">Each server&#x27;s robots.txt → Weekly reachability probe · Mondays 04:17 Lima</text>
+  <text class="ar-s" x="50" y="3281.3" font-size="11">Each week the probe reads every server&#x27;s robots.txt before measuring. A forbidden path</text>
+  <text class="ar-s" x="50" y="3296.3" font-size="11">becomes robots-disallowed and loses its channels, except reader feeds.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="3319.3" r="9"/>
+  <text class="ar-t" x="30" y="3323.1" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="50" y="3323.3" font-size="11.5">obeyed live</text>
+  <text class="ar-m" x="50" y="3337.3" font-size="10.5">Each server&#x27;s robots.txt → Peru collector · daily 21:00 Lima</text>
+  <text class="ar-s" x="50" y="3352.3" font-size="11">Each night the collector reads robots.txt before requesting. It skips forbidden paths, and if</text>
+  <text class="ar-s" x="50" y="3367.3" font-size="11">robots.txt does not answer it asks nothing of that server.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="3390.3" r="9"/>
+  <text class="ar-t" x="30" y="3394.1" font-size="10.5" text-anchor="middle">15</text>
+  <text class="ar-t" x="50" y="3394.3" font-size="11.5">measures and rebuilds</text>
+  <text class="ar-m" x="50" y="3408.3" font-size="10.5">Weekly reachability probe → Registry builder · Mondays 04:17 Lima (09:17 UTC)</text>
+  <text class="ar-s" x="50" y="3423.3" font-size="11">The probe writes reachability.json with what Actions, Peru and n8n measured, then runs</text>
+  <text class="ar-s" x="50" y="3438.3" font-size="11">build_registry right away so the channels follow the new measurements.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3461.3" r="9"/>
+  <text class="ar-t" x="30" y="3465.1" font-size="10.5" text-anchor="middle">16</text>
+  <text class="ar-t" x="50" y="3465.3" font-size="11.5">generates and validates</text>
+  <text class="ar-m" x="50" y="3479.3" font-size="10.5">Registry builder → Source registry (registry/) · Mondays 04:17 Lima</text>
+  <text class="ar-s" x="50" y="3494.3" font-size="11">Writes sources.json with status and channels per URL. On main the probe commits registry/;</text>
+  <text class="ar-s" x="50" y="3509.3" font-size="11">on other branches the result goes to bot/registry/&lt;branch&gt;.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3532.3" r="9"/>
+  <text class="ar-t" x="30" y="3536.1" font-size="10.5" text-anchor="middle">17</text>
+  <text class="ar-t" x="50" y="3536.3" font-size="11.5">what Peru measured</text>
+  <text class="ar-m" x="50" y="3550.3" font-size="10.5">data-peru branch → Weekly reachability probe · Mondays 04:17 Lima</text>
+  <text class="ar-s" x="50" y="3565.3" font-size="11">The probe reads Peru&#x27;s index.json: each URL&#x27;s result there plus extra measurements. So the</text>
+  <text class="ar-s" x="50" y="3580.3" font-size="11">registry can confirm a geoblock or an outage; there are no Peru measurements yet.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3603.3" r="9"/>
+  <text class="ar-t" x="30" y="3607.1" font-size="10.5" text-anchor="middle">18</text>
+  <text class="ar-t" x="50" y="3607.3" font-size="11.5">what n8n measured</text>
+  <text class="ar-m" x="50" y="3621.3" font-size="10.5">data-n8n branch → Weekly reachability probe · Mondays 04:17 Lima</text>
+  <text class="ar-s" x="50" y="3636.3" font-size="11">It also adds n8n&#x27;s last attempt on AWS as a measurement for the n8n network. A carried</text>
+  <text class="ar-s" x="50" y="3651.3" font-size="11">copy counts as its last failure, not as today&#x27;s measurement.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="3674.3" r="9"/>
+  <text class="ar-t" x="30" y="3678.1" font-size="10.5" text-anchor="middle">19</text>
+  <text class="ar-t" x="50" y="3678.3" font-size="11.5">per-URL channel plan</text>
+  <text class="ar-m" x="50" y="3692.3" font-size="10.5">Source registry (registry/) → Download in GitHub Actions (Fetcher) · every observatory.yml run</text>
+  <text class="ar-s" x="50" y="3707.3" font-size="11">Each run the pipeline reads who fetches each URL. What the registry does not give to</text>
+  <text class="ar-s" x="50" y="3722.3" font-size="11">Actions is read from the copies (with no copy, it is requested directly once), forbidden URLs</text>
+  <text class="ar-s" x="50" y="3737.3" font-size="11">are not requested and the 40 reader feeds are requested at most every 20 h, only on main.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="3760.3" r="9"/>
+  <text class="ar-t" x="30" y="3764.1" font-size="10.5" text-anchor="middle">20</text>
+  <text class="ar-t" x="50" y="3764.3" font-size="11.5">152 URLs for n8n</text>
+  <text class="ar-m" x="50" y="3778.3" font-size="10.5">Source registry (registry/) → n8n collector (AWS cloud) · daily 22:50 Lima</text>
+  <text class="ar-s" x="50" y="3793.3" font-size="11">At start n8n reads the registry from main on GitHub (or the copy built into the flow) and</text>
+  <text class="ar-s" x="50" y="3808.3" font-size="11">requests only the URLs assigned to n8n.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="3831.3" r="9"/>
+  <text class="ar-t" x="30" y="3835.1" font-size="10.5" text-anchor="middle">21</text>
+  <text class="ar-t" x="50" y="3835.3" font-size="11.5">peru-server URLs and PDFs</text>
+  <text class="ar-m" x="50" y="3849.3" font-size="10.5">Source registry (registry/) → Peru collector · daily 21:00 Lima</text>
+  <text class="ar-s" x="50" y="3864.3" font-size="11">The collector reads the registry from GitHub with its token (or the kit copy), adds the</text>
+  <text class="ar-s" x="50" y="3879.3" font-size="11">peru-server URLs and their PDF-follow rules to its fixed list, and probes up to 60 unknown,</text>
+  <text class="ar-s" x="50" y="3894.3" font-size="11">suspected-geoblock or down URLs this run did not request.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="3917.3" r="9"/>
+  <text class="ar-t" x="30" y="3921.1" font-size="10.5" text-anchor="middle">22</text>
+  <text class="ar-t" x="50" y="3921.3" font-size="11.5">verified sources into catalogue</text>
+  <text class="ar-m" x="50" y="3935.3" font-size="10.5">Development tools → Registry builder · by hand</text>
+  <text class="ar-s" x="50" y="3950.3" font-size="11">A person reviews the probe reports and adds the working feeds and parsers to the code;</text>
+  <text class="ar-s" x="50" y="3965.3" font-size="11">from there they enter the registry. That is how the 2026-10-21 catalogue was built.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3988.3" r="9"/>
+  <text class="ar-t" x="30" y="3992.1" font-size="10.5" text-anchor="middle">23</text>
+  <text class="ar-t" x="50" y="3992.3" font-size="11.5">copies, heartbeat, probes</text>
+  <text class="ar-m" x="50" y="4006.3" font-size="10.5">Peru collector → data-peru branch · 21:00 to 23:30 Lima</text>
+  <text class="ar-s" x="50" y="4021.3" font-size="11">When done it pushes index.json, the files, heartbeat.json and its measurements to</text>
+  <text class="ar-s" x="50" y="4036.3" font-size="11">data-peru. If nothing answered, it pushes only the heartbeat and leaves the last good copy</text>
+  <text class="ar-s" x="50" y="4051.3" font-size="11">untouched.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="4074.3" r="9"/>
+  <text class="ar-t" x="30" y="4078.1" font-size="10.5" text-anchor="middle">24</text>
+  <text class="ar-t" x="50" y="4078.3" font-size="11.5">previous copy</text>
+  <text class="ar-m" x="50" y="4092.3" font-size="10.5">data-peru branch → Peru collector · daily 21:00 Lima</text>
+  <text class="ar-s" x="50" y="4107.3" font-size="11">Before pushing, the collector reads its previous copy and keeps for up to 72 h the URLs that</text>
+  <text class="ar-s" x="50" y="4122.3" font-size="11">failed tonight, flagged carried.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="4145.3" r="9"/>
+  <text class="ar-t" x="30" y="4149.1" font-size="10.5" text-anchor="middle">25</text>
+  <text class="ar-t" x="50" y="4149.3" font-size="11.5">asks to refresh (enso-refresh)</text>
+  <text class="ar-m" x="50" y="4163.3" font-size="10.5">Peru collector → Daily update (observatory.yml) · after pushing a copy (not a heartbeat only)</text>
+  <text class="ar-s" x="50" y="4178.3" font-size="11">After pushing it sends repository_dispatch enso-refresh so the site updates without waiting</text>
+  <text class="ar-s" x="50" y="4193.3" font-size="11">for 23:37. If a run is in progress, it queues. It is on by default in the kit.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="4216.3" r="9"/>
+  <text class="ar-t" x="30" y="4220.1" font-size="10.5" text-anchor="middle">26</text>
+  <text class="ar-t" x="50" y="4220.3" font-size="11.5">commit replaces the branch</text>
+  <text class="ar-m" x="50" y="4234.3" font-size="10.5">n8n collector (AWS cloud) → data-n8n branch · daily 22:50 Lima</text>
+  <text class="ar-s" x="50" y="4249.3" font-size="11">n8n uploads new files via the GitHub API, builds a parentless commit and moves data-n8n.</text>
+  <text class="ar-s" x="50" y="4264.3" font-size="11">index.json and heartbeat.json always go, even if nothing answered.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="4287.3" r="9"/>
+  <text class="ar-t" x="30" y="4291.1" font-size="10.5" text-anchor="middle">27</text>
+  <text class="ar-t" x="50" y="4291.3" font-size="11.5">previous copy</text>
+  <text class="ar-m" x="50" y="4305.3" font-size="10.5">data-n8n branch → n8n collector (AWS cloud) · daily 22:50 Lima</text>
+  <text class="ar-s" x="50" y="4320.3" font-size="11">Its &#x27;Leer copia anterior&#x27; node reads data-n8n&#x27;s index.json and keeps for up to 72 h the URLs</text>
+  <text class="ar-s" x="50" y="4335.3" font-size="11">that failed tonight, flagged carried.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="4358.3" r="9"/>
+  <text class="ar-t" x="30" y="4362.1" font-size="10.5" text-anchor="middle">28</text>
+  <text class="ar-t" x="50" y="4362.3" font-size="11.5">kit .zip and VERIFICAR</text>
+  <text class="ar-m" x="50" y="4376.3" font-size="10.5">Collector kit and check → Peru machine operator · when changes to the kit, python/enso/ or the</text>
+  <text class="ar-m" x="50" y="4390.3" font-size="10.5">registry are merged to main (the bot&#x27;s weekly commit does not count)</text>
+  <text class="ar-s" x="50" y="4405.3" font-size="11">The person downloads recolector-peru.zip from the recolector-kit release and runs</text>
+  <text class="ar-s" x="50" y="4420.3" font-size="11">VERIFICAR (the report is saved in logs/ to send in). The machine does not update itself: a</text>
+  <text class="ar-s" x="50" y="4435.3" font-size="11">new kit is installed with ACTUALIZAR.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="4458.3" r="9"/>
+  <text class="ar-t" x="30" y="4462.1" font-size="10.5" text-anchor="middle">29</text>
+  <text class="ar-t" x="50" y="4462.3" font-size="11.5">installs, token, task</text>
+  <text class="ar-m" x="50" y="4476.3" font-size="10.5">Peru machine operator → Peru collector</text>
+  <text class="ar-s" x="50" y="4491.3" font-size="11">Running INSTALAR with the token registers the 21:00 scheduled task. The collector shows a</text>
+  <text class="ar-s" x="50" y="4506.3" font-size="11">desktop notice after 2 failures or if the token expires in under 21 days.</text>
   <circle class="ar-badge ar-e-human" cx="599.3" cy="2309.3" r="9"/>
   <text class="ar-t" x="599.3" y="2313.1" font-size="10.5" text-anchor="middle">30</text>
   <text class="ar-t" x="619.3" y="2313.3" font-size="11.5">token and kit</text>

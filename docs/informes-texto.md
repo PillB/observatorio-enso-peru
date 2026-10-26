@@ -32,8 +32,10 @@ muestra cada vista.
    en orden: el portal, la réplica de la DHN (`informe-tecnico/NN-AAAA.pdf`), el repositorio del IMARPE, las
    copias del recolector del Perú y de la consola, y el Internet Archive. El repositorio institucional del
    IMARPE (`repositorio.imarpe.gob.pe`, DSpace; cliente único en `python/enso/feeds/imarpe_repo.py`) recibe cada
-   comunicado e informe unos 3 días después de su publicación y su API (`/server/api`, que robots.txt no
-   prohíbe) responde a GitHub Actions; solo se acepta el ítem cuyo título tiene el número y año exactos. El
+   comunicado e informe unos 3 días después de su publicación; su API (`/server/api`, que robots.txt no
+   prohíbe) no responde a GitHub Actions, así que el recolector del Perú guarda sus búsquedas, los paquetes de
+   archivos y los PDF con las mismas URL que pide el sitio; solo se acepta el ítem cuyo título tiene el número
+   y año exactos. El
    servidor no envía el certificado intermedio de Sectigo: va en `python/enso/data/ca-intermedios.pem` (público,
    vence en 2036) y la verificación TLS sigue activa. El comunicado usa la misma ruta después de sus URL. La DHN hoy responde a GitHub Actions y a n8n con una página de verificación
    humana: solo vale un cuerpo que empiece con `%PDF-`, así que esa página no se lee y la búsqueda sigue en

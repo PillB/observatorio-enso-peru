@@ -19,7 +19,7 @@ computadora en el Perú y hacer doble clic en `INSTALAR` y luego en
 
 | Hora (Lima) | Qué pasa |
 |---|---|
-| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), el listado de informes técnicos y los PDF de los dos más recientes (hasta 20 MB cada uno), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, los avisos de los últimos 5 días del GeoServer de IDESEP (capa `g_100_01:view_aviso_24horas_5dias_ultimos` y su lista de campos), el SIG del CENEPRED y el ICEN del IGP (por http: su dirección https no responde ni desde el Perú), y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
+| 21:00 | La tarea programada descarga el listado y los PDF del ENFEN (incluidos los sondeos de los dos números siguientes), el listado de informes técnicos y los PDF de los dos más recientes (hasta 20 MB cada uno), las páginas de SENAMHI, ANA e IMARPE, los avisos del observatorio del SENAMHI, los avisos de los últimos 5 días del GeoServer de IDESEP (capa `g_100_01:view_aviso_24horas_5dias_ultimos` y su lista de campos), el SIG del CENEPRED, el ICEN del IGP (por http: su dirección https no responde ni desde el Perú) y, del repositorio del IMARPE, las búsquedas, los paquetes de archivos y los PDF que lee el sitio, y sube la copia a `data-peru`. Luego mide (sin guardarlas) las URL del registro que nadie midió todavía desde el Perú |
 | 21:00 + unos minutos | Pide a GitHub la actualización del sitio en el momento (`--dispatch`) |
 | 21:30 a 23:30 | Reintentos cada 30 minutos, solo si la de las 21:00 falló |
 | Al encender o iniciar sesión | Si esa noche no hubo copia (equipo apagado o sin internet), la recolecta en ese momento |
@@ -52,6 +52,22 @@ capa anterior `g_aviso:view_aviso`, aunque el SENAMHI emitió los avisos
 N° 431 a 440 en esos días: el servidor no la alimenta, así que el nivel de
 los avisos sale de la tabla y la capa solo se guarda para ver si vuelve a
 traer datos.
+
+El repositorio institucional del IMARPE (`repositorio.imarpe.gob.pe`,
+DSpace) no responde a GitHub Actions. El recolector le pide lo mismo que
+el sitio, con las mismas URL (`enso/feeds/imarpe_repo.py`), y el sitio lo
+toma de la copia: las búsquedas de comunicados, informes técnicos y
+boletines BS-OBP; los paquetes de archivos (`/bundles?embed=bitstreams`)
+de los ítems que lee; y el PDF del paquete ORIGINAL del comunicado y del
+informe técnico más recientes (los del repositorio y los números que esa
+noche buscó en el ENFEN, por la búsqueda por número) y de los dos boletines
+BS-OBP más recientes (hasta 20 MB cada uno). El boletín BS-OBP no tiene
+otra ruta. Un PDF del repositorio con el número del comunicado o del
+informe del ENFEN cumple esa meta aunque el portal no lo haya dado. El
+servidor no manda su certificado intermedio: el kit lo trae
+(`enso/data/ca-intermedios.pem`), y con él se miden también las URL del
+registro. Si el repositorio no responde desde el Perú, solo se pide su
+`robots.txt` y sus URL quedan medidas como caídas desde aquí.
 
 Un documento que pide verificación antirobots también desde el Perú no lo
 baja el recolector, que no evade esas verificaciones. Cuando eso pasa con

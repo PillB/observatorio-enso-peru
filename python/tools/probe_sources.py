@@ -34,12 +34,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from enso import registry  # noqa: E402
 # El User-Agent del pipeline: hay servidores que deciden por él (GDACS respondió 403 a «Mozilla/5.0
 # (compatible; …)» y 200 a curl desde el mismo ejecutor), y la sonda mide lo que verá el pipeline.
-from enso.fetch import UA  # noqa: E402
+# Y sus intermedios (``ssl_context``): un servidor que no manda el suyo (repositorio.imarpe.gob.pe) no es «tls»
+# para la sonda si el pipeline y el recolector del Perú lo leen bien.
+from enso.fetch import UA, ssl_context  # noqa: E402
 from enso.reach import Robots, classify  # noqa: E402
 
 
 def probe(urls: list[str], vantage: str, timeout: float = 25.0) -> dict[str, dict]:
-    client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
+    client = httpx.Client(timeout=timeout, follow_redirects=True, headers={"User-Agent": UA}, verify=ssl_context())
     robots = Robots(client)
     locks: dict[str, threading.Lock] = defaultdict(threading.Lock)
     last: dict[str, float] = {}

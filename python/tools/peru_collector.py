@@ -87,7 +87,9 @@ REGISTRY_OLD_DAYS = 14
 #: ``enso.observatory.MIN_COLLECTOR_CONTRACT`` y avisa que hay que ejecutar ACTUALIZAR en el equipo.
 #: 1: metas de documentos (``goals``) con su causa, la capa de avisos de 5 días de IDESEP, el ICEN por http y
 #: la revisión de los robots.txt que prohibían.
-COLLECTOR_CONTRACT = 1
+#: 2: el repositorio del IMARPE (``imarpe_repository``: búsquedas, paquetes y PDF, que Actions no alcanza) y la
+#: medición de las URL del registro con los certificados intermedios del kit.
+COLLECTOR_CONTRACT = 2
 
 #: Capa de avisos del GeoServer de IDESEP (SENAMHI) que se pide por WFS: los avisos y la lista de campos.
 IDESEP_AVISOS = ("https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0"
@@ -653,6 +655,77 @@ def enfen_informes(client: httpx.Client | Session, keep: int = 2) -> list[dict]:
     return out
 
 
+def imarpe_repository(client: httpx.Client | Session, fetched: dict[str, dict], enfen_goals: set[str]) -> list[dict]:
+    """Del repositorio del IMARPE (DSpace), lo que la actualización diaria le pide, con las mismas URL
+    (``enso.feeds.imarpe_repo``), porque desde Actions no responde: sus búsquedas de comunicados, informes técnicos
+    y boletines BS-OBP; los paquetes de archivos (``bundles``) de los ítems que lee; y el PDF ORIGINAL del
+    comunicado y del informe técnico más recientes del repositorio y de los que son meta del ENFEN esta noche (por
+    la búsqueda por número, como ``communique_pdf`` e ``informe_pdf``), y de los ``MAX_NEW`` boletines más
+    recientes. Un PDF del repositorio con el número de una meta del ENFEN la cumple. ``fetched``: lo ya bajado
+    esta noche, por URL (una búsqueda que el registro manda a este equipo no se pide dos veces)."""
+    from enso.feeds import imarpe_bsobp
+    from enso.feeds import imarpe_repo as repo
+
+    out: list[dict] = []
+    got = dict(fetched)
+
+    def get(url: str, expect: str, max_bytes: int = MAX_BYTES) -> dict:
+        if url not in got:
+            got[url] = fetch(client, url, expect, max_bytes)
+            out.append(got[url])
+        return got[url]
+
+    def parsed(r: dict, parser) -> list[dict]:
+        if r.get("class") != "ok" or not r.get("body"):
+            return []
+        try:
+            return parser(json.loads(r["body"].decode("utf-8-sig")))
+        except (ValueError, KeyError, TypeError, AttributeError):
+            log(f"AVISO {r['url']}: el JSON no tiene la forma de DSpace (revisar enso/feeds/imarpe_repo.py)")
+            return []
+
+    def pdf(r: dict) -> bool:
+        return r.get("detected") == "pdf" and bool(r.get("body"))
+
+    def follow(search: str, ident, want: tuple[int, int], goal: str) -> None:
+        """El primer PDF que se baja del ítem que es exactamente ``want``, en el orden de la actualización diaria."""
+        for it in parsed(get(search, "json"), repo.parse_search):
+            if ident(it["title"]) != want:
+                continue
+            for f in parsed(get(repo.bundles_url(it["uuid"]), "json"), repo.parse_bundles):
+                r = get(f["url"], "pdf", MAX_INFORME_BYTES)
+                if pdf(r):
+                    if goal in enfen_goals:
+                        r["goal"] = goal
+                    return
+
+    def numbers(prefix: str, items: list[dict], ident) -> list[tuple[int, int]]:
+        """Los números que se siguen: las metas del ENFEN de esta noche y el más reciente del repositorio."""
+        want = [(int(m.group(2)), int(m.group(1))) for g in sorted(enfen_goals)
+                if (m := re.fullmatch(re.escape(prefix) + r" (\d+)-(\d{4})", g))]
+        mine = [x for x in (ident(it["title"]) for it in items) if x]
+        return list(dict.fromkeys(want + ([max(mine)] if mine else [])))
+
+    communique_list, informe_list = repo.listing_urls()
+    communiques = parsed(get(communique_list, "json"), repo.parse_search)
+    informes = parsed(get(informe_list, "json"), repo.parse_search)
+    weekly = parsed(get(repo.search_url(imarpe_bsobp.QUERY, imarpe_bsobp.LIST_SIZE), "json"), repo.parse_search)
+    for y, n in numbers("comunicado", communiques, repo.communique_id):
+        follow(repo.communique_search_url(y, n), repo.communique_id, (y, n), f"comunicado {n:02d}-{y}")
+    # ``informes`` lee los paquetes de todos los informes listados (de ahí saca la URL del PDF y su fecha de corte).
+    for it in informes:
+        if repo.informe_id(it["title"]):
+            get(repo.bundles_url(it["uuid"]), "json")
+    for y, n in numbers("informe técnico", informes, repo.informe_id):
+        follow(repo.informe_search_url(y, n), repo.informe_id, (y, n), f"informe técnico {n:02d}-{y}")
+    # La actualización diaria lee solo los boletines que no tiene, hasta MAX_NEW por noche, y del primer PDF.
+    for it in imarpe_bsobp.bulletins(weekly)[:imarpe_bsobp.MAX_NEW]:
+        files = parsed(get(repo.bundles_url(it["uuid"]), "json"), repo.parse_bundles)
+        if files:
+            get(files[0]["url"], "pdf", MAX_INFORME_BYTES)
+    return out
+
+
 def goals(entries: list[dict]) -> dict[str, bool]:
     """Lo que la recolección debe lograr, más allá de cuántas URL respondieron: el PDF del comunicado más
     reciente y el del informe técnico más reciente. «enfen-docs 4/8» no dice si faltó justo uno de esos dos;
@@ -762,7 +835,13 @@ def collect(out: Path, *, budget_min: float | None = None) -> dict:
             _log_fetch(r)
             seen.add(r["url"])
         results["enfen-docs"] = docs
-        linked = [d for rs in list(results.values()) for r in rs if r["url"] in follow
+        repo_docs = imarpe_repository(session, {r["url"]: r for rs in results.values() for r in rs},
+                                      {d["goal"] for d in docs if d.get("goal")})
+        for r in repo_docs:
+            _log_fetch(r)
+            seen.add(r["url"])
+        results["imarpe-repo"] = repo_docs
+        linked =[d for rs in list(results.values()) for r in rs if r["url"] in follow
                   for d in follow_links(session, r, follow[r["url"]], seen)]
         for r in linked:
             _log_fetch(r)

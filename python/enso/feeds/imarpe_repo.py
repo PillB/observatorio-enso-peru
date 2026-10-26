@@ -2,16 +2,19 @@
 verificación humana para los documentos del ENFEN.
 
 El IMARPE (miembro del ENFEN) deposita cada comunicado oficial y cada informe técnico, unos días después de su
-publicación (el comunicado 18-2026, emitido el 16 de octubre, entró el 19). A diferencia del portal del ENFEN (que no
-responde fuera del Perú) y de la réplica de la DHN (que pide verificación humana a los servidores), su API REST
-responde a GitHub Actions. robots.txt prohíbe la búsqueda de la interfaz (``/search``), no la API (``/server/api``).
+publicación (el comunicado 18-2026, emitido el 16 de octubre, entró el 19). A diferencia de la réplica de la DHN,
+su API REST no pide verificación humana; pero, como el portal del ENFEN, no responde a GitHub Actions (las
+incidencias dicen «conexión»). El recolector del Perú (``tools.peru_collector.imarpe_repository``) baja las mismas
+búsquedas, paquetes y PDF, con las URL exactas de este módulo (``search_url``, ``communique_search_url``,
+``informe_search_url``, ``bundles_url`` y la de cada PDF), y el ``Fetcher`` las toma de esa copia cuando la red no
+llega. robots.txt prohíbe la búsqueda de la interfaz (``/search``), no la API (``/server/api``).
 
 El servidor envía solo su certificado, sin el intermedio de Sectigo: ``enso.fetch.ssl_context`` lo agrega.
 
 Es el único cliente del repositorio: lo usan el comunicado y el informe técnico (``enso.observatory``,
-``enso.reports``) y puede usarlo cualquier otro lector con su propia búsqueda (``search``). Todo pasa por el
-``Fetcher`` compartido (plan, tiempo y copias de los recolectores). Lo que se baja de aquí se valida igual que
-cualquier otra copia: el número y el periodo del documento, y que sea un PDF.
+``enso.reports``) y el boletín BS-OBP (``imarpe_bsobp``), y puede usarlo cualquier otro lector con su propia
+búsqueda (``search``). Todo pasa por el ``Fetcher`` compartido (plan, tiempo y copias de los recolectores). Lo que
+se baja de aquí se valida igual que cualquier otra copia: el número y el periodo del documento, y que sea un PDF.
 """
 
 from __future__ import annotations
@@ -86,23 +89,43 @@ INFORME_QUERY = '"Informe Técnico ENFEN"'
 
 
 def listing_urls() -> list[str]:
-    """Las URL de listado que el observatorio pide al repositorio, para el registro de fuentes."""
+    """Las URL de listado que el observatorio pide al repositorio (``communiques`` e ``informes``), para el
+    registro de fuentes y el recolector del Perú."""
     return [search_url(COMMUNIQUE_QUERY, 6), search_url(INFORME_QUERY, 4)]
 
 
-def search(fetcher, query: str, size: int = 10, problems: Optional[list] = None) -> list[dict]:
-    """Ítems más recientes (por fecha de emisión) que responden a ``query``: uuid, título, fecha y su página."""
-    data = _get_json(fetcher, search_url(query, size), problems)
-    if data is None:
-        return []
-    try:
-        objs = data["_embedded"]["searchResult"]["_embedded"]["objects"]
-    except (KeyError, TypeError):
-        # 200 con otro JSON: la API cambió de forma. Una búsqueda sin resultados igual trae esta ruta.
-        _note(problems, "formato")
-        return []
+def communique_id(title: str) -> Optional[tuple[int, int]]:
+    """(año, número) del comunicado oficial que nombra el título de un ítem; ``None`` si no es uno."""
+    m = COMMUNIQUE_TITLE.search(title)
+    return (int(m.group(2)), int(m.group(1))) if m else None
+
+
+def informe_id(title: str) -> Optional[tuple[int, int]]:
+    """(año, número) del informe técnico que nombra el título de un ítem; ``None`` si no es uno."""
+    m = INFORME_TITLE.search(title)
+    return (int(m.group(3)), int(m.group(2))) if m else None
+
+
+def communique_search_url(year: int, number: int) -> str:
+    """La búsqueda con que ``communique_pdf`` encuentra un comunicado (el recolector del Perú pide la misma)."""
+    return search_url(f"{COMMUNIQUE_QUERY} {number:02d}-{year}", 5)
+
+
+def informe_search_url(year: int, number: int) -> str:
+    """La búsqueda con que ``informe_pdf`` encuentra un informe técnico (el recolector del Perú pide la misma)."""
+    return search_url(f"{INFORME_QUERY} N°{number}, {year}", 5)
+
+
+def bundles_url(uuid: str) -> str:
+    """Los paquetes de archivos de un ítem, con sus archivos (``pdfs``)."""
+    return f"{API}/core/items/{uuid}/bundles?embed=bitstreams"
+
+
+def parse_search(data: dict) -> list[dict]:
+    """Los ítems de una respuesta de la búsqueda: uuid, título, fecha y su página. ``KeyError``/``TypeError`` si
+    la respuesta no tiene la forma de la búsqueda de DSpace (una búsqueda sin resultados igual la tiene)."""
     out = []
-    for o in objs:
+    for o in data["_embedded"]["searchResult"]["_embedded"]["objects"]:
         it = (o.get("_embedded") or {}).get("indexableObject") or {}
         if not it.get("uuid"):
             continue
@@ -112,18 +135,11 @@ def search(fetcher, query: str, size: int = 10, problems: Optional[list] = None)
     return out
 
 
-def pdfs(fetcher, uuid: str, problems: Optional[list] = None) -> list[dict]:
-    """Archivos PDF del ítem (paquete ORIGINAL): nombre, tamaño y URL del contenido."""
-    data = _get_json(fetcher, f"{API}/core/items/{uuid}/bundles?embed=bitstreams", problems)
+def parse_bundles(data: dict) -> list[dict]:
+    """Los PDF del paquete ORIGINAL de una respuesta de ``bundles_url``: nombre, tamaño y URL del contenido.
+    ``KeyError``/``TypeError`` si no tiene la forma de DSpace."""
     out = []
-    if data is None:
-        return out
-    try:
-        bundles = data["_embedded"]["bundles"]
-    except (KeyError, TypeError):
-        _note(problems, "formato")
-        return out
-    for b in bundles:
+    for b in data["_embedded"]["bundles"]:
         if b.get("name") != "ORIGINAL":
             continue
         for x in (((b.get("_embedded") or {}).get("bitstreams") or {}).get("_embedded") or {}).get("bitstreams") or []:
@@ -131,6 +147,32 @@ def pdfs(fetcher, uuid: str, problems: Optional[list] = None) -> list[dict]:
             if href and (x.get("name") or "").lower().endswith(".pdf"):
                 out.append({"name": x["name"], "size": x.get("sizeBytes"), "url": href})
     return out
+
+
+def search(fetcher, query: str, size: int = 10, problems: Optional[list] = None, url: Optional[str] = None) -> list[dict]:
+    """Ítems más recientes (por fecha de emisión) que responden a ``query`` (o a la búsqueda ``url``): uuid,
+    título, fecha y su página."""
+    data = _get_json(fetcher, url or search_url(query, size), problems)
+    if data is None:
+        return []
+    try:
+        return parse_search(data)
+    except (KeyError, TypeError, AttributeError):
+        # 200 con otro JSON: la API cambió de forma. Una búsqueda sin resultados igual trae esta ruta.
+        _note(problems, "formato")
+        return []
+
+
+def pdfs(fetcher, uuid: str, problems: Optional[list] = None) -> list[dict]:
+    """Archivos PDF del ítem (paquete ORIGINAL): nombre, tamaño y URL del contenido."""
+    data = _get_json(fetcher, bundles_url(uuid), problems)
+    if data is None:
+        return []
+    try:
+        return parse_bundles(data)
+    except (KeyError, TypeError, AttributeError):
+        _note(problems, "formato")
+        return []
 
 
 def fetch_pdf(fetcher, url: str, problems: Optional[list] = None):
@@ -154,9 +196,9 @@ def communiques(fetcher, size: int = 6, problems: Optional[list] = None) -> list
     """Comunicados oficiales depositados, del más reciente al más antiguo, en el formato del listado del ENFEN."""
     out = []
     for it in search(fetcher, COMMUNIQUE_QUERY, size, problems):
-        m = COMMUNIQUE_TITLE.search(it["title"])
-        if m:
-            n, y = int(m.group(1)), int(m.group(2))
+        got = communique_id(it["title"])
+        if got:
+            y, n = got
             out.append({"year": y, "number": n, "kind": "oficial", "id": f"{n:02d}-{y}", "url": it["page"],
                         "repository": it["uuid"], "issued": it["issued"]})
     return out
@@ -164,9 +206,8 @@ def communiques(fetcher, size: int = 6, problems: Optional[list] = None) -> list
 
 def communique_pdf(fetcher, year: int, number: int, problems: Optional[list] = None):
     """El PDF del comunicado N° ``number``-``year``, solo si el título del ítem es exactamente ese número."""
-    for it in search(fetcher, f'{COMMUNIQUE_QUERY} {number:02d}-{year}', 5, problems):
-        m = COMMUNIQUE_TITLE.search(it["title"])
-        if m and (int(m.group(2)), int(m.group(1))) == (year, number):
+    for it in search(fetcher, "", problems=problems, url=communique_search_url(year, number)):
+        if communique_id(it["title"]) == (year, number):
             for f in pdfs(fetcher, it["uuid"], problems):
                 got = fetch_pdf(fetcher, f["url"], problems)
                 if got:
@@ -191,20 +232,19 @@ def informes(fetcher, size: int = 4, problems: Optional[list] = None) -> list[di
     el formato de ``reports.informe_entries`` (``year``, ``n``, ``dataTo``, ``url``)."""
     out = []
     for it in search(fetcher, INFORME_QUERY, size, problems):
-        m = INFORME_TITLE.search(it["title"])
-        if not m:
+        got = informe_id(it["title"])
+        if not got:
             continue
         for f in pdfs(fetcher, it["uuid"], problems)[:1]:
-            out.append({"url": f["url"], "year": int(m.group(3)), "n": int(m.group(2)), "dataTo": _data_to(f["name"]),
+            out.append({"url": f["url"], "year": got[0], "n": got[1], "dataTo": _data_to(f["name"]),
                         "page": it["page"]})
     return out
 
 
 def informe_pdf(fetcher, year: int, number: int, problems: Optional[list] = None):
     """El PDF del informe técnico N° ``number`` de ``year``, solo si el título es exactamente ese número."""
-    for it in search(fetcher, f'{INFORME_QUERY} N°{number}, {year}', 5, problems):
-        m = INFORME_TITLE.search(it["title"])
-        if m and (int(m.group(3)), int(m.group(2))) == (year, number):
+    for it in search(fetcher, "", problems=problems, url=informe_search_url(year, number)):
+        if informe_id(it["title"]) == (year, number):
             for f in pdfs(fetcher, it["uuid"], problems):
                 got = fetch_pdf(fetcher, f["url"], problems)
                 if got:
