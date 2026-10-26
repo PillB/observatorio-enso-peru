@@ -1,15 +1,15 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-10-25T02:01:36+00:00",
+ "at": "2026-10-26T02:01:39+00:00",
  "result": "ok",
- "reachable": "18/27",
+ "reachable": "17/27",
  "summary": {
   "enfen": "3/4",
   "igp": "1/1",
   "senamhi": "8/8",
   "ana": "0/2",
   "imarpe": "2/2",
-  "cenepred": "1/1",
+  "cenepred": "0/1",
   "enfen-docs": "3/9"
  },
  "failures": [
@@ -27,6 +27,11 @@
    "url": "https://snirh.ana.gob.pe/onrh/",
    "class": "robots",
    "error": "robots.txt no permite la ruta: no se pide"
+  },
+  {
+   "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
+   "status": 404,
+   "class": "http-4xx"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf",
@@ -83,5 +88,6 @@
  },
  "probes": {
   "ok": 3
- }
+ },
+ "carried": 1
 }
