@@ -1,0 +1,1113 @@
+{
+ "generatedAt": "2026-10-26T23:53:52+00:00",
+ "vantage": "github-actions-us",
+ "firecrawl": false,
+ "results": [
+  {
+   "id": "usgs-fdsn-peru",
+   "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minlatitude=-20&maxlatitude=1&minlongitude=-84&maxlongitude=-68&minmagnitude=4&orderby=time&limit=100",
+   "hazard": "sismo",
+   "institution": "USGS",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 11635,
+     "ms": 324,
+     "contentType": "application/json; charset=utf-8",
+     "finalUrl": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minlatitude=-20&maxlatitude=1&minlongitude=-84&maxlongitude=-68&minmagnitude=4&orderby=time&limit=100",
+     "found": true,
+     "file": "usgs-fdsn-peru.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geofon-fdsn-peru",
+   "url": "https://geofon.gfz.de/fdsnws/event/1/query?minlat=-20&maxlat=1&minlon=-84&maxlon=-68&format=text&limit=50",
+   "hazard": "sismo",
+   "institution": "GFZ GEOFON",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 5808,
+     "ms": 10931,
+     "contentType": "text/plain; charset=utf-8",
+     "finalUrl": "https://geofon.gfz.de/fdsnws/event/1/query?minlat=-20&maxlat=1&minlon=-84&maxlon=-68&format=text&limit=50",
+     "found": true,
+     "file": "geofon-fdsn-peru.http.txt"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "igp-ultimosismo",
+   "url": "https://ultimosismo.igp.gob.pe/",
+   "hazard": "sismo",
+   "institution": "IGP (CENSIS)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 2565,
+     "ms": 16,
+     "contentType": "text/html",
+     "finalUrl": "https://ultimosismo.igp.gob.pe/",
+     "found": false,
+     "file": "igp-ultimosismo.http.html"
+    },
+    {
+     "step": "http-headers",
+     "status": 200,
+     "class": "ok",
+     "bytes": 2565,
+     "ms": 1000,
+     "contentType": "text/html",
+     "finalUrl": "https://ultimosismo.igp.gob.pe/",
+     "found": false,
+     "file": "igp-ultimosismo.http-headers.html"
+    },
+    {
+     "step": "browser",
+     "status": 200,
+     "class": "ok",
+     "bytes": 271078,
+     "found": false,
+     "ms": 3094,
+     "calls": [
+      {
+       "url": "https://ultimosismo.igp.gob.pe/_nuxt/builds/meta/5acb2096-2d00-4d2b-90f5-915865f2400e.json",
+       "status": 200,
+       "contentType": "application/json",
+       "bytes": 243,
+       "method": "GET",
+       "found": false,
+       "robots": "allowed"
+      },
+      {
+       "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-4FJJ9VQVN1&gtm=45je6an1h1v9173630009za208zd9173630009xf1&_p=1793058519059&gcd=13l3l3l3l1l1&npa=0&dma=0&cid=64841692.1793058520&frm=0&ngs=1&pscdl=noapi&rcb=5&sr=1280x720&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B8.0.0.0%7CChromium%3B156.0.8078.4%7CHeadlessChrome%3B156.0.8078.4&uam=&uamb=0&uap=Windows&uapv=&uaw=0&ul=es-pe&_s=1&tag_exp=115616985~115938465~115938469~118897920~118897930~120213116~120385422~120469145~120469153~121246026~121246034~121328665&sid=1793058519&sct=1&seg=0&dl=https%3A%2F%2Fultimosismo.igp.gob.pe%2F&dt=Centro%20Sismol%C3%B3gico%20Nacional%20(CENSIS)%20%7C%20Instituto%20Geof%C3%ADsico%20del%20Per%C3%BA&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=797",
+       "status": 204,
+       "contentType": "text/plain",
+       "bytes": 0,
+       "method": "POST",
+       "found": false,
+       "robots": "allowed"
+      }
+     ],
+     "blockedByRobots": [
+      "https://ultimosismo.igp.gob.pe/api/news",
+      "https://ultimosismo.igp.gob.pe/api/ultimo-sismo",
+      "https://ultimosismo.igp.gob.pe/api/ultimo-sismo/inicio",
+      "wss://vgsq5e345rbslkzskqx6efewsu.appsync-realtime-api.us-east-1.amazonaws.com/graphql?header=eyJob3N0IjoidmdzcTVlMzQ1cmJzbGt6c2txeDZlZmV3c3UuYXBwc3luYy1hcGkudXMtZWFzdC0xLmFtYXpvbmF3cy5jb20iLCJ4LWFwaS1rZXkiOiJkYTItZGF1dnA2ZmR0bmd2M3A1NXJ0N2J1dTZyMmUifQ==&payload=e30="
+     ],
+     "file": "igp-ultimosismo.browser.html"
+    }
+   ],
+   "answer": "not-found",
+   "robots": "allowed"
+  },
+  {
+   "id": "gdacs-peru",
+   "url": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH?eventlist=EQ;FL;VO;DR;WF;TC&country=Peru",
+   "hazard": "sismo",
+   "institution": "GDACS",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 1395,
+     "ms": 548,
+     "contentType": "application/json; charset=utf-8",
+     "finalUrl": "https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH?eventlist=EQ;FL;VO;DR;WF;TC&country=Peru",
+     "found": true,
+     "file": "gdacs-peru.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "ptwc-pheb-atom",
+   "url": "https://www.tsunami.gov/events/xml/PHEBAtom.xml",
+   "hazard": "sismo",
+   "institution": "NOAA PTWC",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 1967,
+     "ms": 33,
+     "contentType": "text/xml",
+     "finalUrl": "https://www.tsunami.gov/events/xml/PHEBAtom.xml",
+     "found": true,
+     "file": "ptwc-pheb-atom.http.xml"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "tgftp-wepa40",
+   "url": "https://tgftp.nws.noaa.gov/data/raw/we/wepa40.pheb.tsu.pac.txt",
+   "hazard": "sismo",
+   "institution": "NOAA PTWC",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 2509,
+     "ms": 45,
+     "contentType": "text/plain; charset=utf-8",
+     "finalUrl": "https://tgftp.nws.noaa.gov/data/raw/we/wepa40.pheb.tsu.pac.txt",
+     "found": true,
+     "file": "tgftp-wepa40.http.txt"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "dhn-boletin-sismo-tsunami",
+   "url": "https://www.dhn.mil.pe/portal/boletin-sismo-tsunami",
+   "hazard": "sismo",
+   "institution": "DHN (Centro Nacional de Alerta de Tsunamis)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 645800,
+     "ms": 440,
+     "contentType": "text/html; charset=UTF-8",
+     "finalUrl": "https://www.dhn.mil.pe/portal/boletin-sismo-tsunami",
+     "found": true,
+     "file": "dhn-boletin-sismo-tsunami.http.html"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "dhn-cnat",
+   "url": "https://www.dhn.mil.pe/cnat/",
+   "hazard": "sismo",
+   "institution": "DHN (Centro Nacional de Alerta de Tsunamis)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 152740,
+     "ms": 245,
+     "contentType": "text/html; charset=UTF-8",
+     "finalUrl": "https://www.dhn.mil.pe/cnat/",
+     "found": true,
+     "file": "dhn-cnat.http.html"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "cenvul-boletines",
+   "url": "https://cenvul.igp.gob.pe/productos/boletines-vulcanologicos",
+   "hazard": "volcan",
+   "institution": "IGP (CENVUL)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 216693,
+     "ms": 1141,
+     "contentType": "text/html;charset=utf-8",
+     "finalUrl": "https://cenvul.igp.gob.pe/productos/boletines-vulcanologicos",
+     "found": true,
+     "file": "cenvul-boletines.http.html"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "cenvul-alertas",
+   "url": "https://cenvul.igp.gob.pe/productos/alertas-vulcanologicas",
+   "hazard": "volcan",
+   "institution": "IGP (CENVUL)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 194161,
+     "ms": 745,
+     "contentType": "text/html;charset=utf-8",
+     "finalUrl": "https://cenvul.igp.gob.pe/productos/alertas-vulcanologicas",
+     "found": true,
+     "file": "cenvul-alertas.http.html"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "cenvul-reportes",
+   "url": "https://cenvul.igp.gob.pe/productos/reportes-vulcanologicos-diarios",
+   "hazard": "volcan",
+   "institution": "IGP (CENVUL)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 170662,
+     "ms": 692,
+     "contentType": "text/html;charset=utf-8",
+     "finalUrl": "https://cenvul.igp.gob.pe/productos/reportes-vulcanologicos-diarios",
+     "found": true,
+     "file": "cenvul-reportes.http.html"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "vaac-fvag01",
+   "url": "https://tgftp.nws.noaa.gov/data/raw/fv/fvag01.sabm..txt",
+   "hazard": "volcan",
+   "institution": "VAAC Buenos Aires (vía NOAA)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 592,
+     "ms": 129,
+     "contentType": "text/plain; charset=utf-8",
+     "finalUrl": "https://tgftp.nws.noaa.gov/data/raw/fv/fvag01.sabm..txt",
+     "found": true,
+     "file": "vaac-fvag01.http.txt"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "gvp-weekly",
+   "url": "https://volcano.si.edu/news/WeeklyVolcanoRSS.xml",
+   "hazard": "volcan",
+   "institution": "Smithsonian GVP / USGS",
+   "steps": [
+    {
+     "step": "http",
+     "status": 403,
+     "class": "challenge",
+     "bytes": 24512,
+     "ms": 51,
+     "contentType": "text/html; charset=UTF-8",
+     "finalUrl": "https://volcano.si.edu/news/WeeklyVolcanoRSS.xml",
+     "found": false,
+     "file": "gvp-weekly.http.html"
+    }
+   ],
+   "answer": "challenge",
+   "robots": "allowed"
+  },
+  {
+   "id": "senamhi-telegram",
+   "url": "https://t.me/s/Senamhi_Peru",
+   "hazard": "lluvias",
+   "institution": "SENAMHI (canal público de Telegram)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 121978,
+     "ms": 295,
+     "contentType": "text/html; charset=utf-8",
+     "finalUrl": "https://t.me/s/Senamhi_Peru",
+     "found": true,
+     "file": "senamhi-telegram.http.html"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "senamhi-observatorio-avisos",
+   "url": "https://observatorio.senamhi.gob.pe/gestion-riesgo-desastres/avisos-meteorologicos",
+   "hazard": "lluvias",
+   "institution": "SENAMHI (observatorio)",
+   "steps": [
+    {
+     "step": "http",
+     "status": null,
+     "class": "timeout",
+     "error": "ConnectTimeout: timed out",
+     "ms": 45300,
+     "found": false
+    }
+   ],
+   "answer": "timeout",
+   "robots": "allowed"
+  },
+  {
+   "id": "senamhi-www-avisos",
+   "url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico",
+   "hazard": "lluvias",
+   "institution": "SENAMHI",
+   "steps": [
+    {
+     "step": "http",
+     "status": null,
+     "class": "timeout",
+     "error": "ConnectTimeout: timed out",
+     "ms": 45642,
+     "found": false
+    }
+   ],
+   "answer": "timeout",
+   "robots": "allowed"
+  },
+  {
+   "id": "idesep-wfs-capabilities",
+   "url": "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities",
+   "hazard": "lluvias",
+   "institution": "SENAMHI (IDESEP GeoServer)",
+   "steps": [
+    {
+     "step": "http",
+     "status": null,
+     "class": "timeout",
+     "error": "ConnectTimeout: timed out",
+     "ms": 45195,
+     "found": false
+    }
+   ],
+   "answer": "timeout",
+   "robots": "allowed"
+  },
+  {
+   "id": "idesep-wfs-avisos",
+   "url": "https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0&typeName=g_100_01:view_aviso_24horas_5dias_ultimos&request=GetFeature&maxFeatures=1000&outputFormat=application/json",
+   "hazard": "lluvias",
+   "institution": "SENAMHI (IDESEP GeoServer)",
+   "steps": [
+    {
+     "step": "http",
+     "status": null,
+     "class": "timeout",
+     "error": "ConnectTimeout: timed out",
+     "ms": 45197,
+     "found": false
+    }
+   ],
+   "answer": "timeout",
+   "robots": "allowed"
+  },
+  {
+   "id": "firms-modis-sa-24h",
+   "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/modis-c6.1/csv/MODIS_C6_1_South_America_24h.csv",
+   "hazard": "incendio",
+   "institution": "NASA FIRMS",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 326190,
+     "ms": 258,
+     "contentType": "text/csv",
+     "finalUrl": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/modis-c6.1/csv/MODIS_C6_1_South_America_24h.csv",
+     "found": true,
+     "file": "firms-modis-sa-24h.http.csv"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "firms-viirs-sa-24h",
+   "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/suomi-npp-viirs-c2/csv/SUOMI_VIIRS_C2_South_America_24h.csv",
+   "hazard": "incendio",
+   "institution": "NASA FIRMS",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 1375411,
+     "ms": 358,
+     "contentType": "text/csv",
+     "finalUrl": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/suomi-npp-viirs-c2/csv/SUOMI_VIIRS_C2_South_America_24h.csv",
+     "found": true,
+     "file": "firms-viirs-sa-24h.http.csv"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-servicios",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services?f=pjson",
+   "hazard": "emergencia",
+   "institution": "INDECI (GEOSINPAD, ArcGIS)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 288,
+     "ms": 293,
+     "contentType": "text/plain;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services?f=pjson",
+     "found": true,
+     "file": "geosinpad-servicios.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-senamhi",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer?f=pjson",
+   "hazard": "lluvias",
+   "institution": "INDECI (GEOSINPAD) · copia de los avisos del SENAMHI",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 4001,
+     "ms": 266,
+     "contentType": "text/plain;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer?f=pjson",
+     "found": true,
+     "file": "geosinpad-senamhi.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-aviso-lluvias",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+   "hazard": "lluvias",
+   "institution": "INDECI (GEOSINPAD) · avisos de lluvia del SENAMHI",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 27572,
+     "ms": 579,
+     "contentType": "application/geo+json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+     "found": true,
+     "file": "geosinpad-aviso-lluvias.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-aviso-quebradas",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json",
+   "hazard": "huaico",
+   "institution": "INDECI (GEOSINPAD) · activación de quebradas (SENAMHI)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 3534,
+     "ms": 329,
+     "contentType": "application/json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json",
+     "found": true,
+     "file": "geosinpad-aviso-quebradas.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-aviso-quebradas-muestra",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outFields=*&returnGeometry=false&resultRecordCount=5&f=json",
+   "hazard": "huaico",
+   "institution": "INDECI (GEOSINPAD) · activación de quebradas (SENAMHI)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 4466,
+     "ms": 312,
+     "contentType": "application/json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outFields=*&returnGeometry=false&resultRecordCount=5&f=json",
+     "found": true,
+     "file": "geosinpad-aviso-quebradas-muestra.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-aviso-incendios",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+   "hazard": "incendio",
+   "institution": "INDECI (GEOSINPAD) · riesgo de incendios forestales (SENAMHI, FWI)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 42,
+     "ms": 302,
+     "contentType": "application/geo+json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+     "found": true,
+     "file": "geosinpad-aviso-incendios.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-aviso-hidrologico",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/4/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
+   "hazard": "inundacion",
+   "institution": "INDECI (GEOSINPAD) · avisos hidrológicos (SENAMHI)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 5214,
+     "ms": 326,
+     "contentType": "application/json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/4/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
+     "found": true,
+     "file": "geosinpad-aviso-hidrologico.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "elperuano-normas-ex",
+   "url": "https://busquedas.elperuano.pe/api/v1/normas?fechaIni=20261018&fechaFin=20261021&tipoPublicacion=EX&ci=ONLY&start=0",
+   "hazard": "emergencia",
+   "institution": "El Peruano (normas legales, API de búsqueda)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 12239,
+     "ms": 3190,
+     "contentType": "application/json; charset=utf-8",
+     "finalUrl": "https://busquedas.elperuano.pe/api/v1/normas?fechaIni=20261018&fechaFin=20261021&tipoPublicacion=EX&ci=ONLY&start=0",
+     "found": true,
+     "file": "elperuano-normas-ex.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "cenepred-servicios",
+   "url": "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson",
+   "hazard": "emergencia",
+   "institution": "CENEPRED (ArcGIS)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 247,
+     "ms": 149,
+     "contentType": "text/plain;charset=UTF-8",
+     "finalUrl": "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson",
+     "found": true,
+     "file": "cenepred-servicios.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-limites",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos?f=pjson",
+   "hazard": "emergencia",
+   "institution": "INDECI (GEOSINPAD) · límites administrativos",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 249,
+     "ms": 837,
+     "contentType": "text/plain;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos?f=pjson",
+     "found": true,
+     "file": "geosinpad-limites.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "dhn-avisos-especiales",
+   "url": "https://www.dhn.mil.pe/portal/avisos-especiales",
+   "hazard": "oleaje",
+   "institution": "DHN (avisos especiales de oleaje y de viento)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 2362593,
+     "ms": 1129,
+     "contentType": "text/html; charset=UTF-8",
+     "finalUrl": "https://www.dhn.mil.pe/portal/avisos-especiales",
+     "found": true,
+     "file": "dhn-avisos-especiales.http.html"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "inpe-queimadas-diario",
+   "url": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/diario/America_Sul/",
+   "hazard": "incendio",
+   "institution": "INPE (Brasil) · focos de calor de Sudamérica, con país y departamento",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 11773,
+     "ms": 190,
+     "contentType": "text/html;charset=UTF-8",
+     "finalUrl": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/diario/America_Sul/",
+     "found": true,
+     "file": "inpe-queimadas-diario.http.html"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-limites-capas",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer?f=pjson",
+   "hazard": "emergencia",
+   "institution": "INDECI (GEOSINPAD) · capas de límites administrativos",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 3194,
+     "ms": 829,
+     "contentType": "text/plain;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer?f=pjson",
+     "found": true,
+     "file": "geosinpad-limites-capas.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-limites-0",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+   "hazard": "emergencia",
+   "institution": "INDECI (GEOSINPAD) · límites administrativos, capa 0",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 14,
+     "ms": 298,
+     "contentType": "application/json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+     "found": true,
+     "file": "geosinpad-limites-0.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-limites-1",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/1/query?where=1%3D1&returnCountOnly=true&f=json",
+   "hazard": "emergencia",
+   "institution": "INDECI (GEOSINPAD) · límites administrativos, capa 1",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 13,
+     "ms": 317,
+     "contentType": "application/json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/1/query?where=1%3D1&returnCountOnly=true&f=json",
+     "found": true,
+     "file": "geosinpad-limites-1.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-limites-2",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/2/query?where=1%3D1&returnCountOnly=true&f=json",
+   "hazard": "emergencia",
+   "institution": "INDECI (GEOSINPAD) · límites administrativos, capa 2",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 12,
+     "ms": 297,
+     "contentType": "application/json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/2/query?where=1%3D1&returnCountOnly=true&f=json",
+     "found": true,
+     "file": "geosinpad-limites-2.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-limites-3",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/3/query?where=1%3D1&returnCountOnly=true&f=json",
+   "hazard": "emergencia",
+   "institution": "INDECI (GEOSINPAD) · límites administrativos, capa 3",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 63,
+     "ms": 253,
+     "contentType": "application/json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/3/query?where=1%3D1&returnCountOnly=true&f=json",
+     "found": false,
+     "file": "geosinpad-limites-3.http.json"
+    },
+    {
+     "step": "http-headers",
+     "status": 200,
+     "class": "ok",
+     "bytes": 63,
+     "ms": 999,
+     "contentType": "application/json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/3/query?where=1%3D1&returnCountOnly=true&f=json",
+     "found": false,
+     "file": "geosinpad-limites-3.http-headers.json"
+    },
+    {
+     "step": "browser",
+     "status": 200,
+     "class": "ok",
+     "bytes": 226,
+     "found": false,
+     "ms": 2805,
+     "calls": [],
+     "blockedByRobots": [],
+     "file": "geosinpad-limites-3.browser.html"
+    }
+   ],
+   "answer": "not-found",
+   "robots": "allowed"
+  },
+  {
+   "id": "inpe-queimadas-csv",
+   "url": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/diario/America_Sul/focos_diario_20261020.csv",
+   "hazard": "incendio",
+   "institution": "INPE (Brasil) · focos de calor de Sudamérica del 20 de octubre",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 3349371,
+     "ms": 2381,
+     "contentType": "text/csv",
+     "finalUrl": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/diario/America_Sul/focos_diario_20261020.csv",
+     "found": true,
+     "file": "inpe-queimadas-csv.http.csv"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-departamentos-campos",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/2?f=pjson",
+   "hazard": "emergencia",
+   "institution": "INDECI (GEOSINPAD) · capa de departamentos (campos)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 5547,
+     "ms": 753,
+     "contentType": "text/plain;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/2?f=pjson",
+     "found": true,
+     "file": "geosinpad-departamentos-campos.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "geosinpad-departamentos",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/2/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.01&geometryPrecision=3&f=geojson",
+   "hazard": "emergencia",
+   "institution": "INDECI (GEOSINPAD) · departamentos, polígonos simplificados (~1 km)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 103487,
+     "ms": 1515,
+     "contentType": "application/geo+json;charset=UTF-8",
+     "finalUrl": "https://geosinpad.indeci.gob.pe/indeci/rest/services/LimitesAdministrativos/limitesAdministrativos/MapServer/2/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.01&geometryPrecision=3&f=geojson",
+     "found": true,
+     "file": "geosinpad-departamentos.http.json"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "firms-viirs-noaa20-sa-24h",
+   "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
+   "hazard": "incendio",
+   "institution": "NASA FIRMS · VIIRS NOAA-20, Sudamérica, 24 h",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 1300443,
+     "ms": 476,
+     "contentType": "text/csv",
+     "finalUrl": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
+     "found": true,
+     "file": "firms-viirs-noaa20-sa-24h.http.csv"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "firms-viirs-noaa21-sa-24h",
+   "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-21-viirs-c2/csv/J2_VIIRS_C2_South_America_24h.csv",
+   "hazard": "incendio",
+   "institution": "NASA FIRMS · VIIRS NOAA-21, Sudamérica, 24 h",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 1328678,
+     "ms": 234,
+     "contentType": "text/csv",
+     "finalUrl": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-21-viirs-c2/csv/J2_VIIRS_C2_South_America_24h.csv",
+     "found": true,
+     "file": "firms-viirs-noaa21-sa-24h.http.csv"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "robots-gob-pe",
+   "url": "https://www.gob.pe/robots.txt",
+   "hazard": "registro",
+   "institution": "robots.txt de www.gob.pe (¿permite sus feeds RSS?)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 525,
+     "ms": 138,
+     "contentType": "text/plain",
+     "finalUrl": "https://www.gob.pe/robots.txt",
+     "found": true,
+     "file": "robots-gob-pe.http.txt"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "robots-google-news",
+   "url": "https://news.google.com/robots.txt",
+   "hazard": "registro",
+   "institution": "robots.txt de news.google.com (¿permite sus feeds RSS?)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 515,
+     "ms": 26,
+     "contentType": "text/plain",
+     "finalUrl": "https://news.google.com/robots.txt",
+     "found": true,
+     "file": "robots-google-news.http.txt"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "robots-un-news",
+   "url": "https://news.un.org/robots.txt",
+   "hazard": "registro",
+   "institution": "robots.txt de news.un.org (¿permite sus feeds RSS?)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 5341,
+     "ms": 98,
+     "contentType": "text/plain",
+     "finalUrl": "https://news.un.org/en/robots.txt",
+     "found": true,
+     "file": "robots-un-news.http.txt"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "robots-sinrodeos",
+   "url": "https://sinrodeoscajamarca.com/robots.txt",
+   "hazard": "registro",
+   "institution": "robots.txt de sinrodeoscajamarca.com (¿permite sus feeds RSS?)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 339,
+     "ms": 28,
+     "contentType": "text/plain",
+     "finalUrl": "https://sinrodeoscajamarca.com/robots.txt",
+     "found": true,
+     "file": "robots-sinrodeos.http.txt"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "gobpe-rss-indeci",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sort_by=recent",
+   "hazard": "registro",
+   "institution": "gob.pe · noticias de indeci en RSS sin «sheet» (robots.txt prohíbe ?sheet=)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 71831,
+     "ms": 451,
+     "contentType": "application/rss+xml; charset=utf-8",
+     "finalUrl": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sort_by=recent",
+     "found": true,
+     "file": "gobpe-rss-indeci.http.xml"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "gobpe-rss-regionpiura",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sort_by=recent",
+   "hazard": "registro",
+   "institution": "gob.pe · noticias de regionpiura en RSS sin «sheet» (robots.txt prohíbe ?sheet=)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 69027,
+     "ms": 452,
+     "contentType": "application/rss+xml; charset=utf-8",
+     "finalUrl": "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sort_by=recent",
+     "found": true,
+     "file": "gobpe-rss-regionpiura.http.xml"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "robots-bing",
+   "url": "https://www.bing.com/robots.txt",
+   "hazard": "registro",
+   "institution": "robots.txt de www.bing.com (¿permite sus búsquedas de noticias en RSS?)",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 2676,
+     "ms": 61,
+     "contentType": "text/plain",
+     "finalUrl": "https://www.bing.com/robots.txt",
+     "found": true,
+     "file": "robots-bing.http.txt"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  },
+  {
+   "id": "bing-news-rss-piura",
+   "url": "https://www.bing.com/news/search?q=lluvias+Piura&format=rss&setlang=es-PE&cc=PE",
+   "hazard": "registro",
+   "institution": "Bing News · búsqueda en RSS (su robots.txt permite /news/search): ¿sirve en lugar de Google News por departamento?",
+   "steps": [
+    {
+     "step": "http",
+     "status": 200,
+     "class": "ok",
+     "bytes": 10027,
+     "ms": 300,
+     "contentType": "application/xml; charset=utf-8",
+     "finalUrl": "https://www.bing.com/news/search?q=lluvias+Piura&format=rss&setlang=es-PE&cc=PE",
+     "found": true,
+     "file": "bing-news-rss-piura.http.xml"
+    }
+   ],
+   "answer": "http",
+   "robots": "allowed"
+  }
+ ]
+}
