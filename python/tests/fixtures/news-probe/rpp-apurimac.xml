@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:07:02 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 26 Oct 2026 13:58:58 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,28 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Fuego en Curahuasi: alcalde pide al Gobierno ayuda aérea urgente ante avance de incendio forestal en Apurímac]]></title>
+        <description><![CDATA[El alcalde distrital <strong>Gorky León</strong>, quien se trasladó a la zona afectada junto al comandante de la Compañía de Bomberos de Curahuasi y dirigentes comunales, calificó la situación como crítica.]]></description>
+        <pubDate>Sun, 25 Oct 2026 19:10:17 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/fuego-en-curahuasi-alcalde-pide-al-gobierno-ayuda-aerea-urgente-ante-avance-de-incendio-forestal-en-apurimac-noticia-1714457</link>
+        <guid>1714457</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/25/080808_1922576.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Curahuasi, Incendio forestal en Apurímac, Keiko Fujimori, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Apurímac: reportan otra vez incendio forestal en Larata y Vista Alegre desde hace casi 24 horas [VIDEO]]]></title>
+        <description><![CDATA[<a data-mce-href="https://rpp.pe/rotafono" href="https://rpp.pe/rotafono" target="_blank"><strong><em>Rotafono de RPP</em></strong></a> | Un nuevo <a data-mce-href="https://rpp.pe/noticias/incendio-forestal" href="https://rpp.pe/noticias/incendio-forestal" target="_blank">incendio forestal</a> se registra otra vez en el distrito de Curahuasi, en Abancay, región <strong>Apurímac </strong>y los pobladores de estas comunidades piden ayuda al Gobierno Regional y Central.]]></description>
+        <pubDate>Sun, 25 Oct 2026 14:13:49 -0500</pubDate>
+        <link>https://rpp.pe/rotafono/emergencias/apurimac-reportan-otra-vez-incendio-forestal-en-larata-y-vista-alegre-en-abancay-desde-hace-casi-24-horas-emergencia-bomberos-video-noticia-1714419</link>
+        <guid>1714419</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/25/atsapp-video-2026-10-25-at-125947-pm-1-1922486mp4_1922487.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ curahuasi, Abancay, Incendio forestal, Apurímac, rotafono, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Apurímac: incendio forestal desde hace más de ocho horas en la comunidad de Asillo en Abancay [VIDEO]]]></title>
         <description><![CDATA[<a data-mce-href="https://rpp.pe/rotafono" href="https://rpp.pe/rotafono" target="_blank" rel="noopener"><em><strong>Rotafono de RPP</strong></em></a> | Desde las 5.00 a. m. se registra un <strong>incendio forestal </strong>en el centro poblado de Asillo, en la provincia de Abancay, región <a data-mce-href="https://rpp.pe/noticias/apurimac" href="https://rpp.pe/noticias/apurimac" target="_blank" rel="noopener">Apurímac </a>y pobladores requieren ayuda inmediata.]]></description>
@@ -542,28 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2025/02/12/atsapp-video-2025-02-12-at-61719-pm-1704811mp4_1704812.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ lluvias, deslizamientos, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Apurímac: propietarios de una piscigranja denuncian el envenenamiento de más de 5 mil truchas]]></title>
-        <description><![CDATA[El administrador de la empresa señaló que presume que los responsables serían sus vecinos, quienes los venían amenazando en reiteradas oportunidades.]]></description>
-        <pubDate>Tue, 11 Feb 2025 23:16:32 -0500</pubDate>
-        <link>https://rpp.pe/peru/actualidad/apurimac-propietarios-de-una-piscigranja-denuncian-el-envenenamiento-de-mas-de-5-mil-truchas-noticia-1615662</link>
-        <guid>1615662</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2025/02/11/atsapp-video-2025-02-11-at-104629-pm-1704389mp4_1704390.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ envenenamiento, denuncia, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Disponen medidas de protección para extrabajadora que denunció al alcalde de Andahuaylas por presunta violación sexual]]></title>
-        <description><![CDATA[La jueza <a data-mce-href="https://rpp.pe/peru/apurimac/apurimac-extrabajadora-municipal-denuncio-al-alcalde-de-andahuaylas-por-violacion-sexual-noticia-1611609?ref=rpp" href="https://rpp.pe/peru/apurimac/apurimac-extrabajadora-municipal-denuncio-al-alcalde-de-andahuaylas-por-violacion-sexual-noticia-1611609?ref=rpp" target="_blank" rel="noopener">Arli Contreras Cáceres</a>, del <strong>Primer Juzgado de Familia de Andahuaylas</strong>, prohibió al alcalde <strong>Abel Serna</strong> realizar seguimientos y acosar a la agraviada.]]></description>
-        <pubDate>Sat, 25 Jan 2025 11:00:28 -0500</pubDate>
-        <link>https://rpp.pe/peru/apurimac/disponen-medidas-de-proteccion-para-extrabajadora-que-denuncio-al-alcalde-de-andahuaylas-por-presunta-violacion-sexual-noticia-1612136</link>
-        <guid>1612136</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2025/01/25/215021_1696902.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Andahuaylas, Apurímac, violación sexual, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
