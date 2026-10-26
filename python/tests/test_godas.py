@@ -293,8 +293,10 @@ def test_godas_follows_the_robots_rule_of_the_fetcher(live):
     assert asked == ["robots", "robots"] and not acq.ok  # un fallo pasajero se reintenta una vez
     asked, _, _ = run(httpx.Response(404), "unknown")
     assert asked[0] == "robots" and len(asked) > 1  # sin robots.txt: se permite todo
-    asked, _, _ = run(httpx.Response(503), "allowed")
-    assert asked[:2] == ["robots", "robots"] and len(asked) > 2  # medido por la sonda: vale aunque no responda
+    # La sonda leyó el directorio, no cada GRIB: si robots.txt no responde, no se pide ninguno y se publica el
+    # histórico (barrido de robots.txt del 26 de octubre de 2026).
+    asked, _, log = run(httpx.Response(503), "allowed")
+    assert asked == ["robots", "robots"] and ("warning", "fetch", "unreachable") in log.triples()
     # Un robots.txt que prohíbe los GRIB y no el directorio.
     asked, _, log = run(httpx.Response(200, text="User-agent: *\nDisallow: /godas/monthly/godas.M.\n"), "allowed")
     assert asked == ["robots"] and ("warning", "fetch", "unreachable") in log.triples()  # se publica el histórico

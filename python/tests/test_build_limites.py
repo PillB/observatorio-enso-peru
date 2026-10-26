@@ -44,6 +44,18 @@ def test_a_disallowed_api_is_not_requested_and_the_message_says_how_to_go_on():
     assert "no permite" in str(exc.value) and "--zip" in str(exc.value) and B.DATASET in str(exc.value)
 
 
+def test_a_robots_txt_that_redirects_brings_its_rules():
+    """Barrido de robots.txt del 26 de octubre de 2026: un robots.txt que redirige (a https, a otro nombre) se
+    tomaba como «no existe» y se permitía todo (RFC 9309 §2.3.1.2 pide seguir la redirección)."""
+    asked: list[str] = []
+    moved = "https://www.humdata.org/robots.txt"
+    client = _client({"https://data.humdata.org/robots.txt": httpx.Response(301, headers={"location": moved}),
+                      moved: httpx.Response(200, text="User-agent: *\nDisallow: /api/\n")}, asked)
+    with pytest.raises(SystemExit) as exc:
+        B._download(client)
+    assert asked == ["https://data.humdata.org/robots.txt", moved] and "no permite" in str(exc.value)
+
+
 def test_an_unreachable_robots_txt_stops_before_any_request():
     asked: list[str] = []
     client = _client({"https://data.humdata.org/robots.txt": httpx.Response(503)}, asked)

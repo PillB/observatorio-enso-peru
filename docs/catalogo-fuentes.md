@@ -250,7 +250,10 @@ departamento, las de El Niño en el Perú y en el mundo, la de peligros en el
 Perú y las de medios sin feed propio con `site:`: El Peruano, Radio Nacional,
 Panamericana, TV Perú, Esfera Radio, Chachapoyas Online, Radio Titanka,
 Diario Chaski, Diario HOY y Tumbes de Miércoles), Noticias ONU · Clima y Sin
-Rodeos Cajamarca. La lista sale del registro: `registry.reader_urls()`. Solo
+Rodeos Cajamarca. La lista sale del registro: `registry.reader_urls()`, y
+solo de esos tres servicios (`READER_HOSTS`): otro feed que la sonda semanal
+encuentre prohibido por su robots.txt queda sin canales, como toda fuente
+(el de Pachamama Radio, el 26 de octubre), hasta que se decida otra cosa. Solo
 los piden las corridas de `observatory.yml` en `main` (con `--reader-state`);
 las demás (otra rama, la prueba de `capture-fixtures.yml`, una corrida
 local sin `--reader-state`) los omiten. En `main` cuentan todas: la

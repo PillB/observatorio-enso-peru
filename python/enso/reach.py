@@ -352,7 +352,11 @@ class Robots:
         rp: Optional[RobotRules] = None
         status, head, headers, source, fail, error = None, b"", None, "unreachable", "", ""
         try:
-            kw = {"timeout": self.timeout} if self.timeout and isinstance(self.client, HTTPClient) else {}
+            # Las redirecciones de robots.txt se siguen aunque el cliente no las siga (RFC 9309 §2.3.1.2: un
+            # robots.txt movido a https o a otro nombre trae las mismas reglas, no «se permite todo»).
+            kw = {"follow_redirects": True} if isinstance(self.client, HTTPClient) else {}
+            if self.timeout and isinstance(self.client, HTTPClient):
+                kw["timeout"] = self.timeout
             r = self.client.get(f"{base}/robots.txt", **kw)
             status, head, headers = r.status_code, r.content[:SCAN_BYTES], r.headers
             # Un archivo de reglas que nombra «hcaptcha» o «turnstile», aunque llegue como text/html, no es una

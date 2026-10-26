@@ -138,7 +138,7 @@ def _download(client: httpx.Client) -> dict[str, dict]:
                     f"no respondió ({robots.failure(url) or 'sin respuesta'}) y no se sabe si permite"
                 raise SystemExit(f"El robots.txt de {httpx.URL(url).host} {why} {url}: no se pide. Bajar a mano "
                                  f"el .geojson.zip de {DATASET} y pasarlo con --zip.")
-            r = client.get(url, timeout=timeout)
+            r = client.get(url, timeout=timeout, follow_redirects=False)  # cada salto con su robots.txt
             if not r.is_redirect:
                 return r.raise_for_status()
             url = str(r.next_request.url)

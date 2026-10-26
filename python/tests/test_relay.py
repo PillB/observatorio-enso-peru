@@ -1270,6 +1270,9 @@ def test_save_page_now_only_where_robots_txt_allows(monkeypatch):
         f = Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True, plan={url: planned},
                     robots_known={url: "allowed"})
         assert saves(f, url) == want, planned
+    # Ni aunque robots.txt lo permita: desde fuera del Perú el Internet Archive no lo alcanza.
+    _net(monkeypatch, {"ana.example.pe": (200, "User-agent: *\nAllow: /\n")}, asked)
+    assert saves(Fetcher(retries=1, polite_delay=0, allow_save=True, robots=True, plan={url: ["peru-server"]}), url) == []
 
 
 def test_imarpe_repository_search_respects_robots_txt(monkeypatch):

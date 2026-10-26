@@ -392,12 +392,12 @@ class Fetcher:
     def _may_save(self, url: str) -> bool:
         """Si se puede pedir una copia nueva (Save Page Now): el Internet Archive le pide la página al servidor en
         nombre del observatorio, así que no si el registro no le da canales (robots.txt la prohíbe) ni si robots.txt
-        no la permite. Si no responde en la corrida, vale lo que leyó la sonda (``allowed``), como en
-        ``_robots_skip``, pero solo en lo que el registro asigna a Actions: el Internet Archive pide desde fuera del
-        Perú, y lo que solo alcanza el recolector del Perú (el portal del ENFEN) le falla siempre (HTTP 523) y gasta
-        los intentos que necesita el PDF del comunicado."""
+        no la permite. Tampoco lo que el registro asigna solo al recolector del Perú: el Internet Archive pide desde
+        fuera del Perú, y ahí (el portal del ENFEN) le falla siempre (HTTP 523) y gasta los intentos que necesita el
+        PDF del comunicado. Si robots.txt no responde en la corrida, vale lo que leyó la sonda (``allowed``), como en
+        ``_robots_skip``, en lo que el registro asigna a Actions."""
         planned = self.plan.get(url)
-        if planned == []:
+        if planned is not None and not {"actions", "n8n"} & set(planned):
             return False
         if self.robots is None:
             return True

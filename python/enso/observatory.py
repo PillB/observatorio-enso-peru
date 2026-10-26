@@ -166,11 +166,10 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
         k, u = f"{y:04d}-{m:02d}", godas.url(y, m)
         old = godas.month_end(y, m) + timedelta(days=60) < today
         probe = (k in prev_months and old) or ((y, m) == first and today.weekday() != 0)
-        skip = fetcher.skip_reason(u)
-        # Cada GRIB con su propia ruta (robots.txt podría prohibir los archivos y no el directorio); que no responda
-        # ya lo decidió el directorio, arriba.
-        if not skip and getattr(fetcher, "robots", None) is not None and fetcher.robots.allowed(u) is False:
-            skip = "robots.txt no permite la ruta: no se pide"
+        # Cada GRIB con su propia ruta, leída en la corrida (robots.txt podría prohibir los archivos y no el
+        # directorio). La lectura de la sonda es la del directorio y no vale para el archivo: si robots.txt no
+        # responde, no se pide ningún GRIB y se publican los meses de antes (barrido de robots.txt, 26 de octubre).
+        skip = fetcher.skip_reason(u) or getattr(fetcher, "_robots_skip", lambda *a: None)(u, None)
         if skip:
             attempts.append({"url": u, "error": skip})
             http_errors[k] = skip
