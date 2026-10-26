@@ -1,0 +1,7 @@
+iso3,country_name,year,start_date,start_date_accuracy,end_date,end_date_accuracy,event_name,hazard_category,hazard_category_name,hazard_sub_category,hazard_sub_category_name,hazard_type,hazard_type_name,hazard_sub_type,hazard_subtype_name,new_displacement,new_displacement_rounded,total_displacement,total_displacement_rounded,event_codes
+PER,Peru,2019,2019-01-10,Day,2019-01-15,Day,"Peru: Flood - Junin, Chanchamayo, Pichanaqui - (10/01/2019)",2,Weather related,3,Hydrological,10,Flood,13,,103,100,103,100,
+PER,Peru,2020,2020-01-29,Day,2020-01-29,Day,Peru: Strong Winds - Loreto (Nauta) - 29/01/2020,2,Weather related,4,Meteorological,14,Storm,21,,103,100,103,100,
+PER,Peru,2022,2022-01-01,Month,2022-01-31,Month,Peru: Cold Wave - 7 Departments - January 2022,2,Weather related,4,Meteorological,13,Extreme Temperature,17,,173,170,173,170,
+PER,Peru,2022,2022-01-01,Month,2022-01-31,Month,"Peru: Earthquake - Huánuco, Lima - January 2022",1,Geophysical,1,Geophysical,1,Earthquake,1,,23,23,23,23,
+PER,Peru,2023,2023-03-01,Month,2023-03-31,Month,Peru: Flood - Piura - 01/03/2023,2,Weather related,3,Hydrological,10,Flood,13,,19778,20000,,,
+PER,Peru,2025,2025-01-01,Day,2025-01-01,Day,Peru: Flood - Junín (Chanchamayo) - 01/01/2025,2,Weather related,3,Hydrological,10,Flood,13,,3,3,,,

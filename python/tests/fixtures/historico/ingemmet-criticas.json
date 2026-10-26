@@ -1,0 +1,44 @@
+{
+ "source": "https://geocatmin.ingemmet.gob.pe/arcgis/rest/services/SERV_PELIGROS_GEOLOGICOS/MapServer/2",
+ "features": [
+  {
+   "attributes": {
+    "CD_DIST": "010203",
+    "ELEMENTO": "Personas",
+    "NM_DEPA": "AMAZONAS",
+    "NM_DIST": "COPALLIN",
+    "NM_PROV": "BAGUA",
+    "OBJECTID": 1,
+    "PARAJE": "Caverna Cambiopitec",
+    "PELIGROS_G": "Derrumbe",
+    "URL_BOLETIN": "https://hdl.handle.net/20.500.12544/244"
+   }
+  },
+  {
+   "attributes": {
+    "CD_DIST": "010201",
+    "ELEMENTO": "Viviendas",
+    "NM_DEPA": "AMAZONAS",
+    "NM_DIST": "BAGUA",
+    "NM_PROV": "BAGUA",
+    "OBJECTID": 2,
+    "PARAJE": "La Puntilla, Vista Hermosa",
+    "PELIGROS_G": "Deslizamiento",
+    "URL_BOLETIN": "https://hdl.handle.net/20.500.12544/244"
+   }
+  },
+  {
+   "attributes": {
+    "CD_DIST": "010201",
+    "ELEMENTO": "Viviendas",
+    "NM_DEPA": "AMAZONAS",
+    "NM_DIST": "BAGUA",
+    "NM_PROV": "BAGUA",
+    "OBJECTID": 3,
+    "PARAJE": "Puerto Rentema",
+    "PELIGROS_G": "Deslizamiento",
+    "URL_BOLETIN": "https://hdl.handle.net/20.500.12544/244"
+   }
+  }
+ ]
+}

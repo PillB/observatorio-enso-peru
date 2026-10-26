@@ -1,0 +1,20 @@
+# Revisiones manuales del catálogo histórico. Cada una dice qué registro toca, qué se hace y por qué,
+# con su fuente. Acciones:
+#   excluir       el registro no entra al catálogo (no es un desastre de origen climático)
+#   sin-impactos  el registro queda, pero sus cifras no se suman a los totales (dato dudoso)
+# Las reglas automáticas (causa o descripción que nombran un sismo) están en enso/historico/desinventar.py.
+revisiones:
+  - fecha: "1970-05-31"
+    departamento: "02"
+    accion: excluir
+    motivo: >-
+      Aluviones, aludes y deslizamientos del 31 de mayo de 1970 en Áncash: los desató el terremoto de ese
+      día (alud del Huascarán sobre Yungay y Ranrahirca). Algunas fichas no nombran el sismo en su causa.
+    fuente: https://pubs.usgs.gov/publication/70205589
+  - id: desinventar-43070
+    accion: sin-impactos
+    motivo: >-
+      Carapo (Huanca Sancos), abril de 1997: la ficha no tiene descripción ni fecha de la nota de prensa y
+      declara 141 fallecidos y 2 342 desaparecidos, tanto como toda la población del distrito en 2020 (≈ 2 400). Se marca como dudosa
+      hasta verificarla en El Comercio de esa fecha.
+    fuente: https://www.desinventar.net/DesInventar/profiletab.jsp?countrycode=per

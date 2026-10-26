@@ -1,0 +1,71 @@
+{
+ "source": "https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/25",
+ "features": [
+  {
+   "attributes": {
+    "actividad": "Limpieza, descolmatación y conformación de bordos en la margen derecha del río Piura",
+    "costo_act": 1849270,
+    "cuenca": "Piura",
+    "cultivos": "Maiz, platano, pan llevar",
+    "departamen": "Piura",
+    "distrito": "Catacaos",
+    "estado_val": "OK",
+    "fuente": "Río",
+    "meta": 5.14,
+    "niv_peligr": "Muy Alto",
+    "nombre": "Piura",
+    "objectid": 1,
+    "peligro": "Inundación, Flujo de detritos, Erosión fluvial",
+    "poblacion": "1500.0",
+    "provincia": "Piura",
+    "sector": "La Legua, Palo Parado, Paredones, Monte Castillo",
+    "unidad": "Km",
+    "viviendas": "300.0"
+   }
+  },
+  {
+   "attributes": {
+    "actividad": "Limpieza, descolmatación y conformación de bordos en la margen izquierda y derecha del río Ica",
+    "costo_act": 2819722,
+    "cuenca": "Ica",
+    "cultivos": "Palta, granada, vid",
+    "departamen": "Ica",
+    "distrito": "Santiago",
+    "estado_val": "OK",
+    "fuente": "Río",
+    "meta": 3.97,
+    "niv_peligr": "Muy Alto",
+    "nombre": "Ica",
+    "objectid": 2,
+    "peligro": "Flujo de detritos, Erosión fluvial",
+    "poblacion": "350.0",
+    "provincia": "Ica",
+    "sector": "Santiaguillo",
+    "unidad": "Km",
+    "viviendas": "100.0"
+   }
+  },
+  {
+   "attributes": {
+    "actividad": "Limpieza y descolmatación para el mantenimiento del cauce del río Piura",
+    "costo_act": 7208205,
+    "cuenca": "Piura",
+    "cultivos": " ",
+    "departamen": "Piura",
+    "distrito": "Piura",
+    "estado_val": "OK",
+    "fuente": "Río",
+    "meta": 4.85,
+    "niv_peligr": "Muy Alto",
+    "nombre": "Piura",
+    "objectid": 3,
+    "peligro": "Inundación",
+    "poblacion": "15000.0",
+    "provincia": "Piura",
+    "sector": "Ejidos-Puente Bolognesi",
+    "unidad": "Km",
+    "viviendas": "10000.0"
+   }
+  }
+ ]
+}

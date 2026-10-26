@@ -1,0 +1,1883 @@
+﻿ubigeo,departamento,provincia,distrito,poblacion2020,registros,aniosConEvento,frecuenciaAnual,grandesNinos,nivelAtencion,registrosEventoEnCurso,ingemmetPuntos,ingemmetFlujos,ingemmetDeslizamientos,ingemmetCaidas,zonasCriticasIngemmet,puntosCriticosANA,puntosCriticosANAMuyAlto,poblacionExpuestaANA,viviendasExpuestasANA,costoAccionesANA,establecimientosSaludAfectados2023
+010101,Amazonas,Chachapoyas,Chachapoyas,30977,70,16,0.3556,FEN 1982-83,alto,1,54,6,35,9,8,0,0,0,0,0,1
+010102,Amazonas,Chachapoyas,Asunción,359,10,1,0.0222,,bajo,0,1,0,0,0,0,0,0,0,0,0,0
+010103,Amazonas,Chachapoyas,Balsas,1445,7,1,0.0222,,bajo,0,58,20,14,21,5,0,0,0,0,0,0
+010104,Amazonas,Chachapoyas,Cheto,773,3,0,0.0,,bajo,0,3,2,1,0,1,0,0,0,0,0,0
+010105,Amazonas,Chachapoyas,Chiliquín,980,0,0,,,,0,4,1,3,0,0,0,0,0,0,0,0
+010106,Amazonas,Chachapoyas,Chuquibamba,2205,5,3,0.0667,,bajo,0,41,18,8,8,1,0,0,0,0,0,0
+010107,Amazonas,Chachapoyas,Granada,572,6,1,0.0222,,bajo,0,4,0,1,1,0,0,0,0,0,0,0
+010108,Amazonas,Chachapoyas,Huancas,527,7,0,0.0,,bajo,0,14,2,3,6,1,0,0,0,0,0,0
+010109,Amazonas,Chachapoyas,La Jalca,6109,13,5,0.1111,,medio,0,5,2,1,2,0,0,0,0,0,0,0
+010110,Amazonas,Chachapoyas,Leimebamba,3640,12,3,0.0667,,bajo,1,32,10,7,14,1,0,0,0,0,0,0
+010111,Amazonas,Chachapoyas,Levanto,1142,2,0,0.0,,bajo,0,14,3,6,3,2,0,0,0,0,0,0
+010112,Amazonas,Chachapoyas,Magdalena,977,4,1,0.0222,FEN 1997-98,medio,0,16,5,7,3,2,0,0,0,0,0,0
+010113,Amazonas,Chachapoyas,Mariscal Castilla,1084,3,0,0.0,,bajo,0,5,1,1,3,0,0,0,0,0,0,0
+010114,Amazonas,Chachapoyas,Molinopampa,2627,6,0,0.0,,bajo,0,36,6,24,5,1,0,0,0,0,0,0
+010115,Amazonas,Chachapoyas,Montevideo,759,8,1,0.0222,,bajo,0,3,0,0,3,0,0,0,0,0,0,0
+010116,Amazonas,Chachapoyas,Olleros,470,6,1,0.0222,,bajo,0,7,0,2,3,0,0,0,0,0,0,0
+010117,Amazonas,Chachapoyas,Quinjalca,1023,8,1,0.0222,,bajo,2,13,1,10,2,1,0,0,0,0,0,0
+010118,Amazonas,Chachapoyas,San Francisco de Daguas,350,2,1,0.0222,,bajo,0,26,10,13,1,4,0,0,0,0,0,0
+010119,Amazonas,Chachapoyas,San Isidro de Maino,709,4,0,0.0,,bajo,0,12,0,8,2,0,0,0,0,0,0,0
+010120,Amazonas,Chachapoyas,Soloco,1658,3,0,0.0,,bajo,0,6,4,1,1,0,0,0,0,0,0,0
+010121,Amazonas,Chachapoyas,Sonche,387,0,0,,,,0,15,5,5,3,0,0,0,0,0,0,0
+010201,Amazonas,Bagua,Bagua,27423,33,11,0.2444,FEN 1997-98,medio,0,17,8,8,0,2,0,0,0,0,0,3
+010202,Amazonas,Bagua,Aramango,12396,25,6,0.1333,,medio,1,73,42,17,9,10,0,0,0,0,0,0
+010203,Amazonas,Bagua,Copallín,5694,15,5,0.1111,,medio,2,6,2,3,1,2,0,0,0,0,0,0
+010204,Amazonas,Bagua,El Parco,1719,9,2,0.0444,,bajo,0,1,1,0,0,0,0,0,0,0,0,1
+010205,Amazonas,Bagua,Imaza,40964,36,10,0.2222,,medio,2,45,21,10,13,4,0,0,0,0,0,3
+010206,Amazonas,Bagua,La Peca,9914,17,0,0.0,,bajo,1,0,0,0,0,1,0,0,0,0,0,1
+010301,Amazonas,Bongara,Jumbilla,1213,5,0,0.0,,bajo,0,3,2,1,0,0,0,0,0,0,0,0
+010302,Amazonas,Bongara,Chisquilla,526,3,0,0.0,,bajo,0,6,1,2,2,1,0,0,0,0,0,0
+010303,Amazonas,Bongara,Churuja,382,3,3,0.0667,,bajo,0,7,2,4,0,1,0,0,0,0,0,0
+010304,Amazonas,Bongara,Corosha,991,5,1,0.0222,,bajo,0,2,0,1,1,0,0,0,0,0,0,0
+010305,Amazonas,Bongara,Cuispes,827,3,2,0.0444,,bajo,0,19,1,14,2,0,0,0,0,0,0,0
+010306,Amazonas,Bongara,Florida,6480,8,1,0.0222,,bajo,0,70,3,31,24,2,0,0,0,0,0,1
+010307,Amazonas,Bongara,Jazan,8391,22,7,0.1556,,medio,0,20,4,7,9,3,0,0,0,0,0,0
+010308,Amazonas,Bongara,Recta,341,1,0,0.0,,bajo,0,3,0,1,0,1,0,0,0,0,0,0
+010309,Amazonas,Bongara,San Carlos,515,3,3,0.0667,FEN 1997-98,medio,0,12,8,2,2,1,0,0,0,0,0,0
+010310,Amazonas,Bongara,Shipasbamba,1836,6,1,0.0222,,bajo,0,17,2,4,10,2,0,0,0,0,0,0
+010311,Amazonas,Bongara,Valera,1108,9,1,0.0222,,bajo,0,15,2,3,4,0,0,0,0,0,0,0
+010312,Amazonas,Bongara,Yambrasbamba,6725,11,0,0.0,,bajo,1,37,7,20,6,3,0,0,0,0,0,0
+010401,Amazonas,Condorcanqui,Nieva,37659,60,6,0.1333,,medio,1,9,2,1,5,4,0,0,0,0,0,4
+010402,Amazonas,Condorcanqui,El Cenepa,18082,34,6,0.1333,FEN 1997-98,medio,0,9,5,3,0,0,0,0,0,0,0,0
+010403,Amazonas,Condorcanqui,Río Santiago,20147,13,2,0.0444,,bajo,0,2,0,0,1,0,0,0,0,0,0,0
+010501,Amazonas,Luya,Lámud,2222,21,2,0.0444,,bajo,0,7,0,2,5,0,0,0,0,0,0,0
+010502,Amazonas,Luya,Camporredondo,6846,10,5,0.1111,FEN 1997-98,medio,0,15,6,6,0,0,0,0,0,0,0,0
+010503,Amazonas,Luya,Cocabamba,2326,20,2,0.0444,,bajo,2,24,12,5,6,0,0,0,0,0,0,0
+010504,Amazonas,Luya,Colcamar,2291,6,0,0.0,,bajo,1,23,9,11,2,1,0,0,0,0,0,0
+010505,Amazonas,Luya,Conila,2079,5,0,0.0,,bajo,0,11,2,3,5,0,0,0,0,0,0,0
+010506,Amazonas,Luya,Inguilpata,598,2,0,0.0,,bajo,0,15,4,8,3,0,0,0,0,0,0,0
+010507,Amazonas,Luya,Longuita,1085,7,0,0.0,,bajo,2,6,4,2,0,0,0,0,0,0,0,0
+010508,Amazonas,Luya,Lonya Chico,1020,11,1,0.0222,,bajo,0,10,0,6,3,2,0,0,0,0,0,0
+010509,Amazonas,Luya,Luya,4164,14,5,0.1111,,medio,1,16,1,5,9,0,0,0,0,0,0,0
+010510,Amazonas,Luya,Luya Viejo,490,3,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+010511,Amazonas,Luya,María,1029,2,1,0.0222,,bajo,1,1,0,1,0,0,0,0,0,0,0,0
+010512,Amazonas,Luya,Ocalli,3481,18,2,0.0444,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+010513,Amazonas,Luya,Ocumal,3972,10,0,0.0,,bajo,3,22,4,10,5,0,0,0,0,0,0,0
+010514,Amazonas,Luya,Pisuquia,5852,16,1,0.0222,,bajo,5,18,11,3,4,0,0,0,0,0,0,0
+010515,Amazonas,Luya,Providencia,1620,11,2,0.0444,FEN 1997-98,medio,3,14,7,4,3,0,0,0,0,0,0,0
+010516,Amazonas,Luya,San Cristóbal,715,1,0,0.0,,bajo,0,11,1,2,3,0,0,0,0,0,0,0
+010517,Amazonas,Luya,San Francisco del Yeso,792,3,1,0.0222,,bajo,2,9,5,2,1,1,0,0,0,0,0,0
+010518,Amazonas,Luya,San Jerónimo,899,3,0,0.0,,bajo,3,27,12,4,6,1,0,0,0,0,0,0
+010519,Amazonas,Luya,San Juan de Lopecancha,657,2,0,0.0,,bajo,0,20,6,12,1,0,0,0,0,0,0,0
+010520,Amazonas,Luya,Santa Catalina,2090,9,0,0.0,,bajo,1,3,1,1,1,1,0,0,0,0,0,0
+010521,Amazonas,Luya,Santo Tomás,3679,16,3,0.0667,,bajo,3,2,0,1,1,0,0,0,0,0,0,0
+010522,Amazonas,Luya,Tingo,1493,5,2,0.0444,,bajo,0,21,6,10,5,3,0,0,0,0,0,0
+010523,Amazonas,Luya,Trita,1427,7,0,0.0,,bajo,0,1,0,1,0,0,0,0,0,0,0,0
+010601,Amazonas,Rodríguez de Mendoza,San Nicolás,5439,9,2,0.0444,,bajo,0,26,17,5,4,2,0,0,0,0,0,1
+010602,Amazonas,Rodríguez de Mendoza,Chirimoto,2850,11,1,0.0222,,bajo,0,2,1,1,0,0,0,0,0,0,0,0
+010603,Amazonas,Rodríguez de Mendoza,Cochamal,783,1,0,0.0,,bajo,0,0,0,0,0,2,0,0,0,0,0,0
+010604,Amazonas,Rodríguez de Mendoza,Huambo,2854,9,1,0.0222,,bajo,0,2,1,1,0,0,0,0,0,0,0,0
+010605,Amazonas,Rodríguez de Mendoza,Limabamba,1800,3,2,0.0444,,bajo,0,35,24,7,3,0,0,0,0,0,0,0
+010606,Amazonas,Rodríguez de Mendoza,Longar,1753,8,3,0.0667,,bajo,0,4,2,0,1,0,0,0,0,0,0,0
+010607,Amazonas,Rodríguez de Mendoza,Mariscal Benavides,1942,6,1,0.0222,,bajo,1,19,7,5,3,2,0,0,0,0,0,0
+010608,Amazonas,Rodríguez de Mendoza,Milpuc,743,6,2,0.0444,,bajo,0,2,0,1,1,0,0,0,0,0,0,0
+010609,Amazonas,Rodríguez de Mendoza,Omia,10907,20,2,0.0444,,bajo,0,31,11,11,6,4,0,0,0,0,0,0
+010610,Amazonas,Rodríguez de Mendoza,Santa Rosa,650,2,0,0.0,,bajo,0,3,1,2,0,0,0,0,0,0,0,0
+010611,Amazonas,Rodríguez de Mendoza,Totora,499,3,1,0.0222,,bajo,0,5,2,2,1,3,0,0,0,0,0,0
+010612,Amazonas,Rodríguez de Mendoza,Vista Alegre,3121,4,0,0.0,,bajo,0,0,0,0,0,1,0,0,0,0,0,0
+010701,Amazonas,Utcubamba,Bagua Grande,58444,53,13,0.2889,FEN 1997-98,alto,3,21,9,9,1,7,0,0,0,0,0,0
+010702,Amazonas,Utcubamba,Cajaruro,29838,42,8,0.1778,,medio,0,19,0,18,0,4,0,0,0,0,0,1
+010703,Amazonas,Utcubamba,Cumba,9726,6,4,0.0889,,bajo,0,21,8,8,3,5,0,0,0,0,0,0
+010704,Amazonas,Utcubamba,El Milagro,6166,19,6,0.1333,FEN 1997-98,medio,0,8,4,2,1,3,0,0,0,0,0,0
+010705,Amazonas,Utcubamba,Jamalca,8029,37,5,0.1111,FEN 1997-98,medio,0,20,3,12,3,10,0,0,0,0,0,0
+010706,Amazonas,Utcubamba,Lonya Grande,10786,20,4,0.0889,FEN 1997-98,medio,1,54,21,20,8,1,0,0,0,0,0,0
+010707,Amazonas,Utcubamba,Yamón,3730,3,1,0.0222,,bajo,0,17,6,8,2,2,0,0,0,0,0,0
+020101,Áncash,Huaraz,Huaraz,72240,172,34,0.7556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,1,46,11,18,8,7,0,0,0,0,0,6
+020102,Áncash,Huaraz,Cochabamba,2251,8,2,0.0444,Niño Costero 2017,medio,0,1,0,0,1,0,0,0,0,0,0,2
+020103,Áncash,Huaraz,Colcabamba,356,3,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,6,3,0,3,0,0,0,0,0,0,1
+020104,Áncash,Huaraz,Huanchay,2188,10,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,10,4,1,5,0,0,0,0,0,0,2
+020105,Áncash,Huaraz,Independencia,75817,150,12,0.2667,FEN 1997-98; Niño Costero 2017,muy alto,3,48,14,17,11,2,0,0,0,0,0,13
+020106,Áncash,Huaraz,Jangas,5701,30,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,7,1,5,1,0,0,0,0,0,0,1
+020107,Áncash,Huaraz,La Libertad,1683,14,1,0.0222,Niño Costero 2017,medio,0,1,0,0,0,0,0,0,0,0,0,0
+020108,Áncash,Huaraz,Olleros,3322,18,6,0.1333,Niño Costero 2017,medio,0,5,0,4,1,1,0,0,0,0,0,2
+020109,Áncash,Huaraz,Pampas,1356,17,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,5,5,1,0,4,0,0,0,0,0,0,0
+020110,Áncash,Huaraz,Pariacoto,5647,22,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,6,4,0,2,0,0,0,0,0,0,3
+020111,Áncash,Huaraz,Pira,4828,14,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,16,2,9,4,1,0,0,0,0,0,1
+020112,Áncash,Huaraz,Tarica,7159,12,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,3,1,0,0,0,0,0,0,0,0,4
+020201,Áncash,Aija,Aija,2226,9,4,0.0889,Niño Costero 2017,medio,0,11,1,4,6,1,0,0,0,0,0,1
+020202,Áncash,Aija,Coris,2032,6,2,0.0444,Niño Costero 2017,medio,0,12,5,1,6,0,0,0,0,0,0,2
+020203,Áncash,Aija,Huacllán,556,6,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,6,1,3,1,0,0,0,0,0,0,0
+020204,Áncash,Aija,La Merced,2312,25,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,3,0,0,0,0,0,0,0,0,0,0,1
+020205,Áncash,Aija,Succha,896,9,1,0.0222,Niño Costero 2017,medio,0,2,0,2,0,0,0,0,0,0,0,0
+020301,Áncash,Antonio Raymondi,Llamellín,3182,17,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,2,7,1,1,4,1,0,0,0,0,0,1
+020302,Áncash,Antonio Raymondi,Aczo,2169,8,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,17,2,10,2,4,0,0,0,0,0,0
+020303,Áncash,Antonio Raymondi,Chaccho,1791,2,1,0.0222,,bajo,0,8,0,4,4,0,0,0,0,0,0,0
+020304,Áncash,Antonio Raymondi,Chingas,2035,7,2,0.0444,Niño Costero 2017,medio,0,4,0,3,1,1,0,0,0,0,0,0
+020305,Áncash,Antonio Raymondi,Mirgas,5310,5,1,0.0222,Niño Costero 2017,medio,1,2,1,0,1,0,0,0,0,0,0,1
+020306,Áncash,Antonio Raymondi,San Juan de Rontoy,1546,4,0,0.0,Niño Costero 2017,medio,0,5,0,0,5,1,0,0,0,0,0,0
+020401,Áncash,Asunción,Chacas,4816,17,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,1,14,5,5,3,3,0,0,0,0,0,0
+020402,Áncash,Asunción,Acochaca,3484,9,1,0.0222,FEN 1997-98,medio,1,8,0,6,1,1,0,0,0,0,0,0
+020501,Áncash,Bolognesi,Chiquián,4132,7,3,0.0667,FEN 1997-98,medio,0,22,7,3,8,2,0,0,0,0,0,1
+020502,Áncash,Bolognesi,Abelardo Pardo Lezameta,276,3,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,3,3,0,0,1,0,0,0,0,0,0
+020503,Áncash,Bolognesi,Antonio Raymondi,1328,2,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+020504,Áncash,Bolognesi,Aquia,2352,6,2,0.0444,Niño Costero 2017,medio,0,13,2,2,9,12,0,0,0,0,0,1
+020505,Áncash,Bolognesi,Cajacay,1878,6,1,0.0222,Niño Costero 2017,medio,0,11,1,1,9,2,0,0,0,0,0,0
+020506,Áncash,Bolognesi,Canis,375,3,0,0.0,Niño Costero 2017,medio,0,2,0,0,2,0,0,0,0,0,0,1
+020507,Áncash,Bolognesi,Colquioc,2068,13,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,10,4,0,6,2,0,0,0,0,0,1
+020508,Áncash,Bolognesi,Huallanca,6921,4,2,0.0444,FEN 1997-98,medio,0,34,11,5,9,3,0,0,0,0,0,1
+020509,Áncash,Bolognesi,Huasta,1848,4,2,0.0444,Niño Costero 2017,medio,0,20,6,2,11,3,1,0,0,0,250372,1
+020510,Áncash,Bolognesi,Huayllacayán,1263,6,0,0.0,Niño Costero 2017,medio,0,4,0,1,2,0,0,0,0,0,0,0
+020511,Áncash,Bolognesi,La Primavera,359,3,1,0.0222,Niño Costero 2017,medio,0,3,0,1,2,2,0,0,0,0,0,0
+020512,Áncash,Bolognesi,Mangas,520,2,0,0.0,Niño Costero 2017,medio,0,4,1,1,1,1,0,0,0,0,0,0
+020513,Áncash,Bolognesi,Pacllón,1154,5,2,0.0444,Niño Costero 2017,medio,0,14,3,5,6,1,0,0,0,0,0,1
+020514,Áncash,Bolognesi,San Miguel de Corpanqui,308,5,0,0.0,Niño Costero 2017,medio,0,4,1,0,1,0,0,0,0,0,0,1
+020515,Áncash,Bolognesi,Ticllos,637,5,1,0.0222,Niño Costero 2017,medio,2,15,3,6,6,3,0,0,0,0,0,1
+020601,Áncash,Carhuaz,Carhuaz,16816,49,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,14,4,7,2,2,0,0,0,0,0,2
+020602,Áncash,Carhuaz,Acopampa,2710,7,3,0.0667,Niño Costero 2017,medio,0,2,1,1,0,0,0,0,0,0,0,1
+020603,Áncash,Carhuaz,Amashca,1987,5,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,1,0,1,0,0,0,0,0,0,0,0
+020604,Áncash,Carhuaz,Anta,2988,15,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,3,1,2,0,0,0,0,0,0,0,0
+020605,Áncash,Carhuaz,Ataquero,2046,3,1,0.0222,Niño Costero 2017,medio,0,3,1,1,1,1,0,0,0,0,0,1
+020606,Áncash,Carhuaz,Marcará,11068,20,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,8,4,3,1,1,0,0,0,0,0,1
+020607,Áncash,Carhuaz,Pariahuanca,1704,13,1,0.0222,Niño Costero 2017,medio,0,1,1,0,0,0,0,0,0,0,0,0
+020608,Áncash,Carhuaz,San Miguel de Aco,2971,18,2,0.0444,Niño Costero 2017,medio,1,1,1,0,0,0,0,0,0,0,0,0
+020609,Áncash,Carhuaz,Shilla,4032,8,1,0.0222,Niño Costero 2017,medio,0,8,3,2,3,0,0,0,0,0,0,0
+020610,Áncash,Carhuaz,Tinco,3404,6,1,0.0222,Niño Costero 2017,medio,0,4,3,1,0,1,0,0,0,0,0,0
+020611,Áncash,Carhuaz,Yungar,3550,17,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,1,0,1,0,0,0,0,0,0,0,0
+020701,Áncash,Carlos Fermin Fitzcarrald,San Luis,11387,35,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,56,9,32,5,3,1,1,50,10,311455,5
+020702,Áncash,Carlos Fermin Fitzcarrald,San Nicolás,3940,5,2,0.0444,Niño Costero 2017,medio,0,3,0,2,1,0,0,0,0,0,0,0
+020703,Áncash,Carlos Fermin Fitzcarrald,Yauya,5042,17,1,0.0222,Niño Costero 2017,medio,0,15,1,9,1,3,0,0,0,0,0,3
+020801,Áncash,Casma,Casma,36938,32,10,0.2222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,1,0,0,0,0,0,0
+020802,Áncash,Casma,Buena Vista Alta,5106,4,1,0.0222,FEN 1982-83,medio,0,21,18,0,3,0,0,0,0,0,0,1
+020803,Áncash,Casma,Comandante Noel,2716,4,2,0.0444,Niño Costero 2017,medio,0,2,2,0,0,1,0,0,0,0,0,0
+020804,Áncash,Casma,Yaután,8967,24,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,6,4,0,2,1,2,0,1520,380,959039,2
+020901,Áncash,Corongo,Corongo,1588,5,1,0.0222,Niño Costero 2017,medio,0,13,4,7,1,1,0,0,0,0,0,1
+020902,Áncash,Corongo,Aco,460,3,1,0.0222,Niño Costero 2017,medio,0,5,2,2,1,2,0,0,0,0,0,0
+020903,Áncash,Corongo,Bambas,530,2,1,0.0222,Niño Costero 2017,medio,0,4,1,1,2,0,0,0,0,0,0,0
+020904,Áncash,Corongo,Cusca,2958,5,2,0.0444,Niño Costero 2017,medio,0,8,1,5,0,1,0,0,0,0,0,2
+020905,Áncash,Corongo,La Pampa,1074,3,2,0.0444,,bajo,0,13,4,6,2,2,0,0,0,0,0,0
+020906,Áncash,Corongo,Yánac,833,4,0,0.0,Niño Costero 2017,medio,0,2,1,0,0,0,0,0,0,0,0,0
+020907,Áncash,Corongo,Yupán,386,4,1,0.0222,Niño Costero 2017,medio,0,10,3,1,5,1,0,0,0,0,0,0
+021001,Áncash,Huari,Huari,9457,26,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,4,24,5,8,2,2,0,0,0,0,0,1
+021002,Áncash,Huari,Anra,2635,11,1,0.0222,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,0
+021003,Áncash,Huari,Cajay,4337,11,3,0.0667,Niño Costero 2017,medio,2,7,0,3,1,1,0,0,0,0,0,1
+021004,Áncash,Huari,Chavín de Huántar,9545,23,8,0.1778,FEN 1997-98; Niño Costero 2017,alto,1,14,2,6,4,5,0,0,0,0,0,1
+021005,Áncash,Huari,Huacachi,2689,8,3,0.0667,,bajo,2,2,0,1,1,0,0,0,0,0,0,0
+021006,Áncash,Huari,Huacchis,2112,2,1,0.0222,Niño Costero 2017,medio,0,2,0,1,0,0,0,0,0,0,0,0
+021007,Áncash,Huari,Huachis,5123,4,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,11,0,8,1,2,0,0,0,0,0,0
+021008,Áncash,Huari,Huántar,3206,0,0,,,,0,9,1,5,0,2,0,0,0,0,0,0
+021009,Áncash,Huari,Masín,2005,7,2,0.0444,Niño Costero 2017,medio,0,14,6,4,3,1,0,0,0,0,0,0
+021010,Áncash,Huari,Paucas,2564,11,2,0.0444,Niño Costero 2017,medio,1,4,2,1,1,1,0,0,0,0,0,0
+021011,Áncash,Huari,Ponto,4189,2,0,0.0,,bajo,0,16,4,3,6,0,0,0,0,0,0,0
+021012,Áncash,Huari,Rahuapampa,909,4,1,0.0222,Niño Costero 2017,medio,0,3,1,1,1,0,0,0,0,0,0,1
+021013,Áncash,Huari,Rapayán,2163,3,1,0.0222,,bajo,0,4,1,1,2,0,0,0,0,0,0,0
+021014,Áncash,Huari,San Marcos,22473,37,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,5,4,2,1,1,4,0,0,0,0,0,0
+021015,Áncash,Huari,San Pedro de Chana,4380,0,0,,,,0,1,0,0,0,0,0,0,0,0,0,0
+021016,Áncash,Huari,Uco,1840,0,0,,,,0,7,1,6,0,2,2,0,10,2,695075,0
+021101,Áncash,Huarmey,Huarmey,27490,35,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,29,15,0,14,4,0,0,0,0,0,1
+021102,Áncash,Huarmey,Cochapeti,1025,3,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,3,1,1,1,0,0,0,0,0,0,0
+021103,Áncash,Huarmey,Culebras,2792,16,3,0.0667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,12,11,0,1,2,0,0,0,0,0,1
+021104,Áncash,Huarmey,Huayán,950,4,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,13,4,0,9,0,0,0,0,0,0,1
+021105,Áncash,Huarmey,Malvas,924,5,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,8,3,0,4,0,0,0,0,0,0,2
+021201,Áncash,Huaylas,Caraz,27076,53,14,0.3111,FEN 1997-98; Niño Costero 2017,muy alto,0,13,4,3,5,0,0,0,0,0,0,2
+021202,Áncash,Huaylas,Huallanca,1173,19,7,0.1556,FEN 1997-98; Niño Costero 2017,alto,0,23,4,11,3,2,0,0,0,0,0,1
+021203,Áncash,Huaylas,Huata,1637,3,0,0.0,Niño Costero 2017,medio,0,5,3,2,0,1,0,0,0,0,0,0
+021204,Áncash,Huaylas,Huaylas,1882,6,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,1,0,1,0,0,0,0,0,0,0,0
+021205,Áncash,Huaylas,Mato,2246,3,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,5,3,1,0,0,0,0,0,0,0,1
+021206,Áncash,Huaylas,Pamparomás,9422,5,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,5,1,3,1,0,0,0,0,0,0,3
+021207,Áncash,Huaylas,Pueblo Libre,8590,26,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,2,18,3,9,5,4,0,0,0,0,0,2
+021208,Áncash,Huaylas,Santa Cruz,5659,7,4,0.0889,FEN 1997-98,medio,0,5,1,2,2,1,0,0,0,0,0,1
+021209,Áncash,Huaylas,Santo Toribio,1248,12,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,1
+021210,Áncash,Huaylas,Yuracmarca,2464,10,5,0.1111,Niño Costero 2017,medio,1,10,8,1,1,1,0,0,0,0,0,0
+021301,Áncash,Mariscal Luzuriaga,Piscobamba,3154,9,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,0,18,2,8,1,2,0,0,0,0,0,1
+021302,Áncash,Mariscal Luzuriaga,Casca,4411,4,0,0.0,Niño Costero 2017,medio,0,20,3,7,3,0,0,0,0,0,0,0
+021303,Áncash,Mariscal Luzuriaga,Eleazar Guzman Barron,1440,2,0,0.0,Niño Costero 2017,medio,0,4,2,0,2,0,0,0,0,0,0,0
+021304,Áncash,Mariscal Luzuriaga,Fidel Olivas Escudero,2582,8,1,0.0222,Niño Costero 2017,medio,0,10,2,4,3,0,0,0,0,0,0,2
+021305,Áncash,Mariscal Luzuriaga,Llama,1251,2,1,0.0222,Niño Costero 2017,medio,0,5,2,3,0,0,0,0,0,0,0,1
+021306,Áncash,Mariscal Luzuriaga,Llumpa,6689,5,0,0.0,Niño Costero 2017,medio,0,23,4,10,5,1,0,0,0,0,0,2
+021307,Áncash,Mariscal Luzuriaga,Lucma,3241,13,0,0.0,Niño Costero 2017,medio,1,6,2,0,3,0,3,3,124,32,1230164,2
+021308,Áncash,Mariscal Luzuriaga,Musga,998,7,2,0.0444,Niño Costero 2017,medio,0,5,2,3,0,0,0,0,0,0,0,0
+021401,Áncash,Ocros,Ocros,1269,4,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,16,5,0,9,1,0,0,0,0,0,1
+021402,Áncash,Ocros,Acas,394,2,1,0.0222,Niño Costero 2017,medio,0,9,4,0,5,0,0,0,0,0,0,0
+021403,Áncash,Ocros,Cajamarquilla,189,4,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,3,1,0,2,0,0,0,0,0,0,0
+021404,Áncash,Ocros,Carhuapampa,470,2,1,0.0222,Niño Costero 2017,medio,0,11,4,0,7,3,0,0,0,0,0,0
+021405,Áncash,Ocros,Cochas,1385,4,0,0.0,Niño Costero 2017,medio,0,15,11,0,4,0,0,0,0,0,0,0
+021406,Áncash,Ocros,Congas,1159,20,1,0.0222,Niño Costero 2017,medio,0,2,1,0,1,0,0,0,0,0,0,0
+021407,Áncash,Ocros,Llipa,237,2,0,0.0,Niño Costero 2017,medio,0,4,1,0,3,0,0,0,0,0,0,0
+021408,Áncash,Ocros,San Cristóbal de Rajan,525,5,1,0.0222,Niño Costero 2017,medio,0,2,1,0,1,0,0,0,0,0,0,0
+021409,Áncash,Ocros,San Pedro,884,5,0,0.0,Niño Costero 2017,medio,0,11,3,0,8,0,0,0,0,0,0,0
+021410,Áncash,Ocros,Santiago de Chilcas,408,4,0,0.0,Niño Costero 2017,medio,0,4,2,0,2,0,0,0,0,0,0,0
+021501,Áncash,Pallasca,Cabana,2802,11,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,1,1,0,0,0,0,0,0,0,0,1
+021502,Áncash,Pallasca,Bolognesi,1190,3,0,0.0,Niño Costero 2017,medio,0,7,3,0,4,0,0,0,0,0,0,0
+021503,Áncash,Pallasca,Conchucos,8550,20,9,0.2,FEN 1997-98; Niño Costero 2017,alto,0,19,8,4,6,2,0,0,0,0,0,1
+021504,Áncash,Pallasca,Huacaschuque,628,1,0,0.0,,bajo,0,4,0,4,0,0,0,0,0,0,0,0
+021505,Áncash,Pallasca,Huandoval,1045,6,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,2,0,1,1,0,0,0,0,0,0,0
+021506,Áncash,Pallasca,Lacabamba,622,6,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,6,1,3,2,0,0,0,0,0,0,0
+021507,Áncash,Pallasca,Llapo,641,4,0,0.0,Niño Costero 2017,medio,0,4,0,1,3,0,0,0,0,0,0,1
+021508,Áncash,Pallasca,Pallasca,2712,13,4,0.0889,FEN 1982-83,medio,2,7,0,5,1,1,0,0,0,0,0,1
+021509,Áncash,Pallasca,Pampas,4526,13,1,0.0222,Niño Costero 2017,medio,0,21,5,11,5,1,0,0,0,0,0,3
+021510,Áncash,Pallasca,Santa Rosa,990,8,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,0,33,7,9,15,2,0,0,0,0,0,1
+021511,Áncash,Pallasca,Tauca,2820,9,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,23,6,12,5,0,0,0,0,0,0,2
+021601,Áncash,Pomabamba,Pomabamba,15363,30,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,40,13,10,7,2,3,2,460,92,13525752,4
+021602,Áncash,Pomabamba,Huayllán,3704,22,2,0.0444,Niño Costero 2017,medio,11,10,0,6,1,3,0,0,0,0,0,1
+021603,Áncash,Pomabamba,Parobamba,6851,5,2,0.0444,,bajo,1,22,6,5,6,5,1,1,400,80,406968,4
+021604,Áncash,Pomabamba,Quinuabamba,2520,7,0,0.0,Niño Costero 2017,medio,1,7,0,2,2,2,0,0,0,0,0,0
+021701,Áncash,Recuay,Recuay,6200,26,12,0.2667,FEN 1997-98; Niño Costero 2017,muy alto,0,13,5,3,1,1,0,0,0,0,0,0
+021702,Áncash,Recuay,Cátac,4968,24,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,1,10,5,2,1,1,0,0,0,0,0,0
+021703,Áncash,Recuay,Cotaparaco,688,1,0,0.0,Niño Costero 2017,medio,0,2,0,2,0,0,0,0,0,0,0,0
+021704,Áncash,Recuay,Huayllapampa,872,4,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,1,7,0,3,4,0,0,0,0,0,0,0
+021705,Áncash,Recuay,Llacllín,1127,14,3,0.0667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,7,6,0,1,2,0,0,0,0,0,1
+021706,Áncash,Recuay,Marca,1110,7,2,0.0444,Niño Costero 2017,medio,0,15,4,0,9,1,0,0,0,0,0,0
+021707,Áncash,Recuay,Pampas Chico,1143,5,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,1,0,0,1,0,0,0,0,0,0,0
+021708,Áncash,Recuay,Pararín,1508,5,2,0.0444,Niño Costero 2017,medio,0,7,4,1,2,0,0,0,0,0,0,1
+021709,Áncash,Recuay,Tapacocha,642,7,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,5,0,0,4,0,0,0,0,0,0,0
+021710,Áncash,Recuay,Ticapampa,3069,15,3,0.0667,Niño Costero 2017,medio,0,6,5,0,1,0,0,0,0,0,0,1
+021801,Áncash,Santa,Chimbote,248179,123,34,0.7556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,28,16,1,11,0,23,13,24437,6691,25899751,14
+021802,Áncash,Santa,Cáceres del Perú,5825,13,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,0,14,9,1,4,0,2,1,150,40,1642064,0
+021803,Áncash,Santa,Coishco,18186,6,2,0.0444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,2,1,0,1,0,0,0,0,0,0,0
+021804,Áncash,Santa,Macate,4022,15,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,24,11,4,9,0,0,0,0,0,0,3
+021805,Áncash,Santa,Moro,9539,13,5,0.1111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,13,9,0,4,0,5,1,285,80,4194944,0
+021806,Áncash,Santa,Nepeña,15451,14,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,2,2,0,0,0,6,0,923,187,6338566,1
+021807,Áncash,Santa,Samanco,5217,10,3,0.0667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,2,2,4000,680,8990669,0
+021808,Áncash,Santa,Santa,34870,10,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,4
+021809,Áncash,Santa,Nuevo Chimbote,154351,10,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,7
+021901,Áncash,Sihuas,Sihuas,5598,28,11,0.2444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,13,3,7,1,2,3,0,500,100,3989966,2
+021902,Áncash,Sihuas,Acobamba,1926,11,0,0.0,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,1
+021903,Áncash,Sihuas,Alfonso Ugarte,626,3,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+021904,Áncash,Sihuas,Cashapampa,2683,2,1,0.0222,Niño Costero 2017,medio,0,19,4,12,1,1,0,0,0,0,0,1
+021905,Áncash,Sihuas,Chingalpo,1163,5,0,0.0,Niño Costero 2017,medio,0,2,0,1,0,0,0,0,0,0,0,0
+021906,Áncash,Sihuas,Huayllabamba,4198,2,2,0.0444,,bajo,0,22,2,10,8,2,0,0,0,0,0,2
+021907,Áncash,Sihuas,Quiches,2754,4,0,0.0,Niño Costero 2017,medio,0,5,2,2,1,0,0,0,0,0,0,1
+021908,Áncash,Sihuas,Ragash,3341,1,1,0.0222,,bajo,0,14,3,9,2,1,0,0,0,0,0,1
+021909,Áncash,Sihuas,San Juan,8181,5,0,0.0,Niño Costero 2017,medio,0,12,4,5,3,0,0,0,0,0,0,0
+021910,Áncash,Sihuas,Sicsibamba,1802,3,1,0.0222,Niño Costero 2017,medio,0,16,4,6,3,2,0,0,0,0,0,2
+022001,Áncash,Yungay,Yungay,22506,26,13,0.2889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,1,31,9,6,13,2,0,0,0,0,0,1
+022002,Áncash,Yungay,Cascapara,2291,3,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+022003,Áncash,Yungay,Mancos,7452,7,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,5,0,2,3,1,0,0,0,0,0,0
+022004,Áncash,Yungay,Matacoto,1810,3,0,0.0,Niño Costero 2017,medio,0,5,0,4,1,0,0,0,0,0,0,0
+022005,Áncash,Yungay,Quillo,14478,28,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,1,0,1,0,0,0,0,0,0,0,3
+022006,Áncash,Yungay,Ranrahirca,3416,14,2,0.0444,Niño Costero 2017,medio,0,2,1,1,0,2,0,0,0,0,0,0
+022007,Áncash,Yungay,Shupluy,2740,18,2,0.0444,Niño Costero 2017,medio,2,5,2,2,1,0,0,0,0,0,0,1
+022008,Áncash,Yungay,Yanama,6939,12,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,4,40,8,13,14,2,0,0,0,0,0,0
+030101,Apurímac,Abancay,Abancay,70780,123,17,0.3778,FEN 1997-98,alto,3,34,6,12,15,1,0,0,0,0,0,0
+030102,Apurímac,Abancay,Chacoche,1568,24,1,0.0222,,bajo,0,4,2,1,1,0,0,0,0,0,0,0
+030103,Apurímac,Abancay,Circa,3246,37,1,0.0222,,bajo,0,15,3,6,5,1,0,0,0,0,0,0
+030104,Apurímac,Abancay,Curahuasi,17313,61,12,0.2667,,alto,0,22,3,7,10,0,0,0,0,0,0,1
+030105,Apurímac,Abancay,Huanipaca,4528,45,1,0.0222,,bajo,5,22,2,8,12,0,0,0,0,0,0,0
+030106,Apurímac,Abancay,Lambrama,4271,30,2,0.0444,,bajo,0,17,2,6,9,0,0,0,0,0,0,0
+030107,Apurímac,Abancay,Pichirhua,4508,44,1,0.0222,,bajo,1,29,3,7,19,1,0,0,0,0,0,0
+030108,Apurímac,Abancay,San Pedro de Cachora,3328,17,1,0.0222,,bajo,0,21,4,8,8,1,0,0,0,0,0,0
+030109,Apurímac,Abancay,Tamburco,9682,31,3,0.0667,,bajo,0,11,1,2,4,1,0,0,0,0,0,0
+030201,Apurímac,Andahuaylas,Andahuaylas,45205,104,9,0.2,,medio,3,3,2,0,1,1,0,0,0,0,0,0
+030202,Apurímac,Andahuaylas,Andarapa,7464,48,3,0.0667,,bajo,1,10,2,7,0,0,0,0,0,0,0,0
+030203,Apurímac,Andahuaylas,Chiara,1407,11,2,0.0444,,bajo,0,4,2,0,2,0,0,0,0,0,0,0
+030204,Apurímac,Andahuaylas,Huancarama,5987,14,3,0.0667,,bajo,0,21,1,3,16,0,0,0,0,0,0,0
+030205,Apurímac,Andahuaylas,Huancaray,4488,17,2,0.0444,,bajo,0,10,3,2,4,0,0,0,0,0,0,0
+030206,Apurímac,Andahuaylas,Huayana,935,12,0,0.0,,bajo,0,2,1,0,0,0,0,0,0,0,0,0
+030207,Apurímac,Andahuaylas,Kishuara,8049,30,2,0.0444,,bajo,0,13,3,1,9,0,0,0,0,0,0,0
+030208,Apurímac,Andahuaylas,Pacobamba,5146,12,2,0.0444,,bajo,0,11,2,5,2,1,0,0,0,0,0,0
+030209,Apurímac,Andahuaylas,Pacucha,10158,48,2,0.0444,,bajo,3,4,0,2,2,1,0,0,0,0,0,0
+030210,Apurímac,Andahuaylas,Pampachiri,2788,23,2,0.0444,,bajo,0,1,0,1,0,0,0,0,0,0,0,0
+030211,Apurímac,Andahuaylas,Pomacocha,974,16,2,0.0444,,bajo,1,2,0,0,2,0,0,0,0,0,0,0
+030212,Apurímac,Andahuaylas,San Antonio de Cachi,3285,12,4,0.0889,,bajo,0,6,3,0,3,0,0,0,0,0,0,0
+030213,Apurímac,Andahuaylas,San Jerónimo,23260,25,4,0.0889,,bajo,0,5,2,0,2,0,0,0,0,0,0,0
+030214,Apurímac,Andahuaylas,San Miguel de Chaccrampa,2265,10,2,0.0444,,bajo,0,2,0,0,1,0,0,0,0,0,0,0
+030215,Apurímac,Andahuaylas,Santa María de Chicmo,10178,18,1,0.0222,,bajo,1,13,3,5,5,0,0,0,0,0,0,0
+030216,Apurímac,Andahuaylas,Talavera,21510,46,7,0.1556,FEN 1997-98,medio,0,5,2,2,1,0,0,0,0,0,0,0
+030217,Apurímac,Andahuaylas,Tumay Huaraca,2210,47,2,0.0444,,bajo,1,2,2,0,0,0,0,0,0,0,0,0
+030218,Apurímac,Andahuaylas,Turpo,4522,26,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+030219,Apurímac,Andahuaylas,Kaquiabamba,2416,4,0,0.0,,bajo,0,1,0,1,0,2,0,0,0,0,0,0
+030220,Apurímac,Andahuaylas,José María Arguedas,4675,5,0,0.0,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+030301,Apurímac,Antabamba,Antabamba,3258,82,5,0.1111,,medio,0,15,2,3,7,0,0,0,0,0,0,0
+030302,Apurímac,Antabamba,El Oro,592,8,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+030303,Apurímac,Antabamba,Huaquirca,1821,20,2,0.0444,,bajo,0,7,1,3,2,1,0,0,0,0,0,0
+030304,Apurímac,Antabamba,Juan Espinoza Medrano,2079,34,1,0.0222,,bajo,0,12,3,4,5,0,0,0,0,0,0,0
+030305,Apurímac,Antabamba,Oropesa,2420,35,3,0.0667,,bajo,0,12,8,1,2,1,0,0,0,0,0,0
+030306,Apurímac,Antabamba,Pachaconas,1290,15,1,0.0222,,bajo,0,4,2,1,1,0,0,0,0,0,0,0
+030307,Apurímac,Antabamba,Sabaino,1529,15,0,0.0,,bajo,1,3,1,0,1,0,0,0,0,0,0,0
+030401,Apurímac,Aymaraes,Chalhuanca,4103,42,4,0.0889,,bajo,0,18,5,3,9,3,0,0,0,0,0,0
+030402,Apurímac,Aymaraes,Capaya,693,18,1,0.0222,,bajo,0,1,1,0,0,0,0,0,0,0,0,0
+030403,Apurímac,Aymaraes,Caraybamba,1291,15,0,0.0,,bajo,0,9,3,4,2,0,0,0,0,0,0,0
+030404,Apurímac,Aymaraes,Chapimarca,2360,22,2,0.0444,,bajo,1,4,1,1,2,2,0,0,0,0,0,0
+030405,Apurímac,Aymaraes,Colcabamba,861,14,0,0.0,,bajo,0,2,1,0,1,0,0,0,0,0,0,0
+030406,Apurímac,Aymaraes,Cotaruse,3794,42,3,0.0667,,bajo,0,22,7,6,9,2,0,0,0,0,0,1
+030407,Apurímac,Aymaraes,Huayllo,615,12,1,0.0222,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+030408,Apurímac,Aymaraes,Justo Apu Sahuaraura,830,11,0,0.0,,bajo,0,4,0,3,1,1,0,0,0,0,0,0
+030409,Apurímac,Aymaraes,Lucre,2083,10,2,0.0444,,bajo,1,10,5,3,2,1,0,0,0,0,0,0
+030410,Apurímac,Aymaraes,Pocohuanca,1270,9,0,0.0,,bajo,0,10,3,3,4,1,0,0,0,0,0,0
+030411,Apurímac,Aymaraes,San Juan de Chacña,841,6,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+030412,Apurímac,Aymaraes,Sañayca,1226,31,2,0.0444,,bajo,0,7,2,1,3,0,0,0,0,0,0,0
+030413,Apurímac,Aymaraes,Soraya,784,7,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+030414,Apurímac,Aymaraes,Tapairihua,2523,28,3,0.0667,,bajo,0,13,8,1,4,1,0,0,0,0,0,0
+030415,Apurímac,Aymaraes,Tintay,2981,16,1,0.0222,,bajo,0,11,6,0,5,0,0,0,0,0,0,0
+030416,Apurímac,Aymaraes,Toraya,1553,23,1,0.0222,,bajo,0,2,0,1,1,0,0,0,0,0,0,0
+030417,Apurímac,Aymaraes,Yanaca,1081,9,2,0.0444,,bajo,0,3,2,0,1,0,0,0,0,0,0,0
+030501,Apurímac,Cotabambas,Tambobamba,12833,91,5,0.1111,,medio,9,12,4,4,3,1,0,0,0,0,0,0
+030502,Apurímac,Cotabambas,Cotabambas,4701,15,7,0.1556,,medio,0,22,1,8,12,1,0,0,0,0,0,0
+030503,Apurímac,Cotabambas,Coyllurqui,7955,23,1,0.0222,,bajo,1,9,2,1,5,0,0,0,0,0,0,0
+030504,Apurímac,Cotabambas,Haquira,10317,68,1,0.0222,,bajo,3,14,5,3,6,1,0,0,0,0,0,0
+030505,Apurímac,Cotabambas,Mara,6139,14,2,0.0444,,bajo,0,4,0,2,2,0,0,0,0,0,0,0
+030506,Apurímac,Cotabambas,Challhuahuacho,12502,26,2,0.0444,,bajo,0,7,4,0,2,0,0,0,0,0,0,0
+030601,Apurímac,Chincheros,Chincheros,6013,79,4,0.0889,,bajo,4,35,6,8,21,1,0,0,0,0,0,0
+030602,Apurímac,Chincheros,Anco-huallo,12170,56,4,0.0889,,bajo,0,5,0,2,3,0,0,0,0,0,0,0
+030603,Apurímac,Chincheros,Cocharcas,2093,32,2,0.0444,,bajo,3,9,4,0,5,0,0,0,0,0,0,0
+030604,Apurímac,Chincheros,Huaccana,7658,45,4,0.0889,,bajo,1,21,7,3,11,0,0,0,0,0,0,0
+030605,Apurímac,Chincheros,Ocobamba,7576,46,8,0.1778,,medio,2,9,2,4,2,3,0,0,0,0,0,0
+030606,Apurímac,Chincheros,Ongoy,3486,49,2,0.0444,,bajo,11,5,1,2,2,1,0,0,0,0,0,0
+030607,Apurímac,Chincheros,Uranmarca,3038,27,6,0.1333,,medio,0,7,2,2,3,0,0,0,0,0,0,0
+030608,Apurímac,Chincheros,Ranracancha,4514,20,1,0.0222,,bajo,0,1,1,0,0,0,0,0,0,0,0,0
+030609,Apurímac,Chincheros,Rocchacc,2774,2,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+030610,Apurímac,Chincheros,El Porvenir,1755,3,0,0.0,,bajo,3,0,0,0,0,0,0,0,0,0,0,0
+030611,Apurímac,Chincheros,Los Chankas,1291,5,0,0.0,,bajo,2,0,0,0,0,2,0,0,0,0,0,0
+030612,Apurímac,Chincheros,Ahuayro,,10,0,0.0,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+030701,Apurímac,Grau,Chuquibambilla,5282,54,3,0.0667,,bajo,0,7,2,0,5,1,0,0,0,0,0,0
+030702,Apurímac,Grau,Curpahuasi,2463,11,0,0.0,,bajo,0,7,0,3,4,1,0,0,0,0,0,0
+030703,Apurímac,Grau,Gamarra,3750,14,1,0.0222,,bajo,1,13,5,2,3,1,0,0,0,0,0,0
+030704,Apurímac,Grau,Huayllati,1791,14,3,0.0667,,bajo,0,3,2,0,1,2,0,0,0,0,0,0
+030705,Apurímac,Grau,Mamara,885,7,0,0.0,,bajo,0,5,1,3,1,0,0,0,0,0,0,0
+030706,Apurímac,Grau,Micaela Bastidas,1044,10,1,0.0222,,bajo,4,2,0,1,0,1,0,0,0,0,0,0
+030707,Apurímac,Grau,Pataypampa,1082,4,0,0.0,,bajo,0,10,2,3,2,0,0,0,0,0,0,0
+030708,Apurímac,Grau,Progreso,3810,51,0,0.0,,bajo,2,6,1,4,1,1,0,0,0,0,0,0
+030709,Apurímac,Grau,San Antonio,356,15,0,0.0,,bajo,3,2,0,0,2,0,0,0,0,0,0,0
+030710,Apurímac,Grau,Santa Rosa,725,21,0,0.0,,bajo,1,1,1,0,0,0,0,0,0,0,0,0
+030711,Apurímac,Grau,Turpay,728,11,0,0.0,,bajo,0,4,1,0,3,0,0,0,0,0,0,0
+030712,Apurímac,Grau,Vilcabamba,1128,13,5,0.1111,,medio,0,3,0,1,2,1,0,0,0,0,0,0
+030713,Apurímac,Grau,Virundo,962,15,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+030714,Apurímac,Grau,Curasco,1471,21,0,0.0,,bajo,2,9,0,4,4,0,0,0,0,0,0,0
+040101,Arequipa,Arequipa,Arequipa,92461,160,35,0.7778,FEN 1982-83; FEN 1997-98,muy alto,0,0,0,0,0,2,11,4,1855,437,5613025,3
+040102,Arequipa,Arequipa,Alto Selva Alegre,93686,15,9,0.2,FEN 1982-83; Niño Costero 2017,alto,0,45,13,2,29,11,0,0,0,0,0,3
+040103,Arequipa,Arequipa,Cayma,107721,17,8,0.1778,FEN 1997-98; Niño Costero 2017,alto,0,68,29,0,38,6,21,6,13188,3345,23877170,2
+040104,Arequipa,Arequipa,Cerro Colorado,196808,26,10,0.2222,FEN 1997-98; Niño Costero 2017,alto,0,15,12,0,3,0,0,0,0,0,0,1
+040105,Arequipa,Arequipa,Characato,11844,10,4,0.0889,Niño Costero 2017,medio,0,11,9,0,2,3,0,0,0,0,0,1
+040106,Arequipa,Arequipa,Chiguata,4679,26,11,0.2444,FEN 1982-83; Niño Costero 2017,alto,0,49,36,0,9,2,0,0,0,0,0,0
+040107,Arequipa,Arequipa,Jacobo Hunter,55751,9,4,0.0889,Niño Costero 2017,medio,0,17,12,0,5,0,5,3,1113,273,7597249,2
+040108,Arequipa,Arequipa,La Joya,33163,11,7,0.1556,FEN 1982-83; Niño Costero 2017,alto,0,11,8,1,2,2,0,0,0,0,0,0
+040109,Arequipa,Arequipa,Mariano Melgar,69175,21,10,0.2222,FEN 1997-98; Niño Costero 2017,alto,0,9,4,0,5,0,0,0,0,0,0,3
+040110,Arequipa,Arequipa,Miraflores,68055,13,9,0.2,FEN 1997-98,medio,0,20,10,0,10,7,0,0,0,0,0,0
+040111,Arequipa,Arequipa,Mollebaya,3495,9,4,0.0889,Niño Costero 2017,medio,0,8,6,0,2,4,0,0,0,0,0,1
+040112,Arequipa,Arequipa,Paucarpata,156981,30,16,0.3556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,9,4,1,4,2,0,0,0,0,0,9
+040113,Arequipa,Arequipa,Pocsi,1076,10,5,0.1111,Niño Costero 2017,medio,0,8,8,0,0,0,0,0,0,0,0,0
+040114,Arequipa,Arequipa,Polobaya,1383,18,6,0.1333,Niño Costero 2017,medio,0,12,9,0,3,0,0,0,0,0,0,0
+040115,Arequipa,Arequipa,Quequeña,2102,14,8,0.1778,Niño Costero 2017,medio,0,8,7,0,1,1,0,0,0,0,0,0
+040116,Arequipa,Arequipa,Sabandia,5451,4,2,0.0444,,bajo,0,1,0,0,1,2,0,0,0,0,0,0
+040117,Arequipa,Arequipa,Sachaca,34069,12,7,0.1556,Niño Costero 2017,medio,0,0,0,0,0,0,3,1,585,131,5062383,0
+040118,Arequipa,Arequipa,San Juan de Siguas,1191,9,9,0.2,FEN 1997-98,medio,0,6,0,4,2,1,0,0,0,0,0,0
+040119,Arequipa,Arequipa,San Juan de Tarucani,1682,19,10,0.2222,FEN 1982-83; Niño Costero 2017,alto,0,129,47,27,29,4,0,0,0,0,0,0
+040120,Arequipa,Arequipa,Santa Isabel de Siguas,832,14,7,0.1556,Niño Costero 2017,medio,0,10,3,3,4,0,0,0,0,0,0,0
+040121,Arequipa,Arequipa,Santa Rita de Siguas,7154,10,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,1,0,0,0,0,0,0
+040122,Arequipa,Arequipa,Socabaya,72877,14,8,0.1778,FEN 1982-83; Niño Costero 2017,alto,0,3,0,0,3,2,4,3,1370,265,6946970,2
+040123,Arequipa,Arequipa,Tiabaya,20957,15,8,0.1778,,medio,0,11,2,0,9,2,2,0,10,3,1283929,0
+040124,Arequipa,Arequipa,Uchumayo,19641,28,12,0.2667,FEN 1997-98; Niño Costero 2017,muy alto,0,32,3,0,29,6,2,0,0,0,516192,0
+040125,Arequipa,Arequipa,Vítor,3441,21,10,0.2222,Niño Costero 2017,medio,0,94,26,26,38,4,0,0,0,0,0,0
+040126,Arequipa,Arequipa,Yanahuara,36657,5,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,1,3,3,2220,555,4796602,1
+040127,Arequipa,Arequipa,Yarabamba,2856,9,5,0.1111,Niño Costero 2017,medio,0,4,3,0,1,0,0,0,0,0,0,0
+040128,Arequipa,Arequipa,Yura,30599,18,11,0.2444,Niño Costero 2017,medio,0,81,40,3,35,5,0,0,0,0,0,1
+040129,Arequipa,Arequipa,José Luis Bustamante y Rivero,85551,8,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,2,5,5,3105,810,1521807,2
+040201,Arequipa,Camaná,Camaná,18144,41,15,0.3333,FEN 1982-83; FEN 1997-98,muy alto,0,0,0,0,0,0,0,0,0,0,0,0
+040202,Arequipa,Camaná,José María Quimper,5193,6,3,0.0667,FEN 1982-83,medio,0,0,0,0,0,0,0,0,0,0,0,0
+040203,Arequipa,Camaná,Mariano Nicolás Valcárcel,4277,7,4,0.0889,Niño Costero 2017,medio,0,11,5,0,5,2,0,0,0,0,0,3
+040204,Arequipa,Camaná,Mariscal Cáceres,7655,5,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,6,3,0,3,1,0,0,0,0,0,0
+040205,Arequipa,Camaná,Nicolás de Piérola,8160,10,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,56,38,1,17,2,0,0,0,0,0,0
+040206,Arequipa,Camaná,Ocoña,4609,51,19,0.4222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,31,12,1,18,3,0,0,0,0,0,0
+040207,Arequipa,Camaná,Quilca,1121,6,3,0.0667,Niño Costero 2017,medio,0,19,5,1,13,0,0,0,0,0,0,0
+040208,Arequipa,Camaná,Samuel Pastor,17510,0,0,,,,0,4,1,0,3,1,0,0,0,0,0,0
+040301,Arequipa,Caravelí,Caravelí,3703,14,8,0.1778,FEN 1997-98,medio,0,30,23,0,6,1,0,0,0,0,0,0
+040302,Arequipa,Caravelí,Acarí,4610,12,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,0,4,2,1,0,2,11,5,60,35,6288480,0
+040303,Arequipa,Caravelí,Atico,4881,18,8,0.1778,FEN 1982-83; FEN 1997-98,alto,0,89,63,0,18,4,0,0,0,0,0,0
+040304,Arequipa,Caravelí,Atiquipa,645,6,4,0.0889,FEN 1982-83; FEN 1997-98,alto,0,5,5,0,0,0,0,0,0,0,0,0
+040305,Arequipa,Caravelí,Bella Unión,2538,6,3,0.0667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,14,11,0,1,1,0,0,0,0,0,0
+040306,Arequipa,Caravelí,Cahuacho,797,10,0,0.0,Niño Costero 2017,medio,0,9,9,0,0,1,0,0,0,0,0,0
+040307,Arequipa,Caravelí,Chala,7765,11,5,0.1111,FEN 1982-83; FEN 1997-98,alto,0,0,0,0,0,1,0,0,0,0,0,0
+040308,Arequipa,Caravelí,Chaparra,2575,11,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,30,27,0,2,1,6,2,100,30,1465241,0
+040309,Arequipa,Caravelí,Huanuhuanu,1855,13,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,1,1,0,0,1,0,0,0,0,0,0
+040310,Arequipa,Caravelí,Jaqui,1649,4,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,6,6,0,0,1,4,3,0,0,2159437,0
+040311,Arequipa,Caravelí,Lomas,1318,2,0,0.0,Niño Costero 2017,medio,0,1,1,0,0,0,0,0,0,0,0,0
+040312,Arequipa,Caravelí,Quicacha,1951,5,1,0.0222,Niño Costero 2017,medio,0,18,17,0,0,1,9,6,80,22,1952764,0
+040313,Arequipa,Caravelí,Yauca,1883,5,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,2,2,0,0,1,0,0,0,0,0,0
+040401,Arequipa,Castilla,Aplao,9989,36,11,0.2444,FEN 1997-98; Niño Costero 2017,alto,0,91,67,1,23,6,0,0,0,0,0,2
+040402,Arequipa,Castilla,Andagua,1096,8,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,21,17,1,3,1,0,0,0,0,0,0
+040403,Arequipa,Castilla,Ayo,376,3,0,0.0,Niño Costero 2017,medio,0,22,18,1,3,1,0,0,0,0,0,0
+040404,Arequipa,Castilla,Chachas,2095,10,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,30,10,5,13,1,0,0,0,0,0,1
+040405,Arequipa,Castilla,Chilcaymarca,1159,11,1,0.0222,Niño Costero 2017,medio,0,29,18,0,9,1,0,0,0,0,0,0
+040406,Arequipa,Castilla,Choco,1050,13,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,13,2,8,2,1,0,0,0,0,0,0
+040407,Arequipa,Castilla,Huancarqui,1828,19,7,0.1556,,medio,0,24,16,0,6,2,0,0,0,0,0,1
+040408,Arequipa,Castilla,Machaguay,667,12,7,0.1556,FEN 1997-98; Niño Costero 2017,alto,0,12,2,8,2,0,0,0,0,0,0,0
+040409,Arequipa,Castilla,Orcopampa,5395,7,1,0.0222,Niño Costero 2017,medio,0,30,16,1,11,1,0,0,0,0,0,1
+040410,Arequipa,Castilla,Pampacolca,2401,12,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,14,7,3,4,1,0,0,0,0,0,0
+040411,Arequipa,Castilla,Tipán,454,8,4,0.0889,Niño Costero 2017,medio,0,30,12,7,10,4,0,0,0,0,0,0
+040412,Arequipa,Castilla,Uñón,221,7,2,0.0444,Niño Costero 2017,medio,0,5,3,1,1,0,0,0,0,0,0,0
+040413,Arequipa,Castilla,Uraca,7121,19,7,0.1556,Niño Costero 2017,medio,0,32,15,1,16,0,0,0,0,0,0,0
+040414,Arequipa,Castilla,Viraco,1367,14,7,0.1556,Niño Costero 2017,medio,1,6,1,2,1,0,0,0,0,0,0,0
+040501,Arequipa,Caylloma,Chivay,6851,50,19,0.4222,Niño Costero 2017,alto,0,45,10,18,13,2,0,0,0,0,0,0
+040502,Arequipa,Caylloma,Achoma,1229,17,7,0.1556,Niño Costero 2017,medio,0,22,4,12,6,1,0,0,0,0,0,0
+040503,Arequipa,Caylloma,Cabanaconde,2395,28,8,0.1778,Niño Costero 2017,medio,0,35,7,8,18,3,0,0,0,0,0,1
+040504,Arequipa,Caylloma,Callalli,2017,19,8,0.1778,Niño Costero 2017,medio,0,52,10,12,15,2,0,0,0,0,0,0
+040505,Arequipa,Caylloma,Caylloma,4308,33,18,0.4,Niño Costero 2017,alto,0,25,14,0,4,0,0,0,0,0,0,0
+040506,Arequipa,Caylloma,Coporaque,1155,19,6,0.1333,Niño Costero 2017,medio,0,21,3,6,12,1,0,0,0,0,0,0
+040507,Arequipa,Caylloma,Huambo,899,14,7,0.1556,Niño Costero 2017,medio,0,34,19,3,12,3,0,0,0,0,0,0
+040508,Arequipa,Caylloma,Huanca,1511,18,7,0.1556,Niño Costero 2017,medio,0,22,6,6,10,1,0,0,0,0,0,0
+040509,Arequipa,Caylloma,Ichupampa,875,16,3,0.0667,Niño Costero 2017,medio,1,18,4,7,6,0,0,0,0,0,0,0
+040510,Arequipa,Caylloma,Lari,1274,26,8,0.1778,Niño Costero 2017,medio,0,11,2,8,0,2,0,0,0,0,0,0
+040511,Arequipa,Caylloma,Lluta,1450,19,9,0.2,Niño Costero 2017,medio,0,69,18,28,20,5,0,0,0,0,0,2
+040512,Arequipa,Caylloma,Maca,973,19,12,0.2667,FEN 1997-98,alto,0,27,5,13,9,3,0,0,0,0,0,0
+040513,Arequipa,Caylloma,Madrigal,830,14,5,0.1111,Niño Costero 2017,medio,0,25,2,14,6,0,0,0,0,0,0,0
+040514,Arequipa,Caylloma,San Antonio de Chuca,1188,19,10,0.2222,Niño Costero 2017,medio,0,22,6,4,5,1,0,0,0,0,0,0
+040515,Arequipa,Caylloma,Sibayo,927,28,8,0.1778,Niño Costero 2017,medio,0,21,12,4,3,0,0,0,0,0,0,0
+040516,Arequipa,Caylloma,Tapay,930,10,2,0.0444,Niño Costero 2017,medio,0,10,0,2,6,0,0,0,0,0,0,0
+040517,Arequipa,Caylloma,Tisco,1821,21,8,0.1778,FEN 1982-83; Niño Costero 2017,alto,0,33,8,7,12,1,0,0,0,0,0,1
+040518,Arequipa,Caylloma,Tuti,959,25,5,0.1111,Niño Costero 2017,medio,0,17,5,5,5,1,0,0,0,0,0,0
+040519,Arequipa,Caylloma,Yanque,2646,24,5,0.1111,Niño Costero 2017,medio,0,31,15,6,7,3,0,0,0,0,0,0
+040520,Arequipa,Caylloma,Majes,71020,0,0,,,,0,9,5,3,1,0,0,0,0,0,0,0
+040601,Arequipa,Condesuyos,Chuquibamba,3689,35,11,0.2444,FEN 1997-98; Niño Costero 2017,alto,0,15,8,4,1,0,0,0,0,0,0,1
+040602,Arequipa,Condesuyos,Andaray,651,12,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,4,2,2,0,0,1,0,6,2,231543,0
+040603,Arequipa,Condesuyos,Cayarani,3066,10,5,0.1111,Niño Costero 2017,medio,0,19,6,2,9,1,0,0,0,0,0,0
+040604,Arequipa,Condesuyos,Chichas,703,13,4,0.0889,Niño Costero 2017,medio,1,7,4,0,3,4,0,0,0,0,0,0
+040605,Arequipa,Condesuyos,Iray,771,3,1,0.0222,Niño Costero 2017,medio,0,21,14,2,5,1,0,0,0,0,0,0
+040606,Arequipa,Condesuyos,Río Grande,2580,6,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,16,12,0,4,2,0,0,0,0,0,2
+040607,Arequipa,Condesuyos,Salamanca,888,15,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,1,6,0,1,4,0,0,0,0,0,0,0
+040608,Arequipa,Condesuyos,Yanaquihua,3861,15,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,14,11,0,3,1,0,0,0,0,0,2
+040701,Arequipa,Islay,Mollendo,28116,33,15,0.3333,FEN 1982-83; FEN 1997-98,muy alto,0,10,5,0,5,0,0,0,0,0,0,0
+040702,Arequipa,Islay,Cocachacra,10010,22,9,0.2,FEN 1982-83; Niño Costero 2017,alto,0,16,7,0,9,5,8,2,40,0,6007351,0
+040703,Arequipa,Islay,Dean Valdivia,7337,6,1,0.0222,Niño Costero 2017,medio,0,2,1,0,1,1,0,0,0,0,0,0
+040704,Arequipa,Islay,Islay,5390,10,4,0.0889,FEN 1997-98,medio,0,6,1,0,5,0,0,0,0,0,0,0
+040705,Arequipa,Islay,Mejía,1505,4,4,0.0889,FEN 1982-83,medio,0,1,0,0,1,0,0,0,0,0,0,0
+040706,Arequipa,Islay,Punta de Bombón,7456,16,8,0.1778,FEN 1982-83,medio,0,2,0,0,2,0,0,0,0,0,0,0
+040801,Arequipa,La Unión,Cotahuasi,2765,35,13,0.2889,Niño Costero 2017,alto,0,18,5,2,11,2,0,0,0,0,0,1
+040802,Arequipa,La Unión,Alca,2166,12,3,0.0667,Niño Costero 2017,medio,0,12,7,2,2,0,0,0,0,0,0,1
+040803,Arequipa,La Unión,Charcana,684,7,1,0.0222,Niño Costero 2017,medio,0,15,4,4,4,1,0,0,0,0,0,0
+040804,Arequipa,La Unión,Huaynacotas,2405,13,2,0.0444,Niño Costero 2017,medio,0,24,10,3,7,1,0,0,0,0,0,1
+040805,Arequipa,La Unión,Pampamarca,1732,13,4,0.0889,Niño Costero 2017,medio,0,17,5,3,9,1,0,0,0,0,0,1
+040806,Arequipa,La Unión,Puyca,3216,5,0,0.0,Niño Costero 2017,medio,0,32,14,5,12,1,0,0,0,0,0,0
+040807,Arequipa,La Unión,Quechualla,408,9,4,0.0889,Niño Costero 2017,medio,0,12,4,2,5,1,0,0,0,0,0,0
+040808,Arequipa,La Unión,Sayla,444,10,4,0.0889,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+040809,Arequipa,La Unión,Tauria,353,12,5,0.1111,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+040810,Arequipa,La Unión,Tomepampa,766,18,6,0.1333,Niño Costero 2017,medio,0,5,4,0,1,0,0,0,0,0,0,1
+040811,Arequipa,La Unión,Toro,630,17,7,0.1556,Niño Costero 2017,medio,0,8,0,1,5,1,0,0,0,0,0,0
+050101,Ayacucho,Huamanga,Ayacucho,112457,74,26,0.5778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,48,23,16,5,21,0,0,0,0,0,2
+050102,Ayacucho,Huamanga,Acocro,10229,16,3,0.0667,Niño Costero 2017,medio,0,12,6,4,0,0,0,0,0,0,0,0
+050103,Ayacucho,Huamanga,Acos Vinchos,5891,14,4,0.0889,,bajo,1,11,7,3,1,1,0,0,0,0,0,0
+050104,Ayacucho,Huamanga,Carmen Alto,28262,5,1,0.0222,Niño Costero 2017,medio,0,5,1,3,1,1,0,0,0,0,0,0
+050105,Ayacucho,Huamanga,Chiara,7023,26,3,0.0667,Niño Costero 2017,medio,0,6,2,2,2,0,0,0,0,0,0,0
+050106,Ayacucho,Huamanga,Ocros,6686,24,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,30,8,7,12,2,0,0,0,0,0,2
+050107,Ayacucho,Huamanga,Pacaycasa,3480,13,4,0.0889,,bajo,0,4,0,1,3,1,0,0,0,0,0,0
+050108,Ayacucho,Huamanga,Quinua,6595,25,4,0.0889,,bajo,0,11,1,1,9,0,0,0,0,0,0,0
+050109,Ayacucho,Huamanga,San José de Ticllas,2685,8,2,0.0444,Niño Costero 2017,medio,0,18,5,6,6,0,0,0,0,0,0,0
+050110,Ayacucho,Huamanga,San Juan Bautista,53554,5,1,0.0222,,bajo,0,6,1,1,4,1,0,0,0,0,0,0
+050111,Ayacucho,Huamanga,Santiago de Pischa,1700,18,4,0.0889,Niño Costero 2017,medio,0,35,17,11,6,1,0,0,0,0,0,0
+050112,Ayacucho,Huamanga,Socos,8718,16,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,1,27,3,14,4,3,0,0,0,0,0,0
+050113,Ayacucho,Huamanga,Tambillo,6807,13,4,0.0889,Niño Costero 2017,medio,0,14,6,2,6,1,0,0,0,0,0,0
+050114,Ayacucho,Huamanga,Vinchos,19809,25,6,0.1333,Niño Costero 2017,medio,4,69,15,10,40,1,0,0,0,0,0,1
+050115,Ayacucho,Huamanga,Jesús Nazareno,20840,12,2,0.0444,Niño Costero 2017,medio,0,20,11,1,8,5,0,0,0,0,0,0
+050116,Ayacucho,Huamanga,Andrés Avelino Cáceres Dorregaray,18343,5,0,0.0,,bajo,0,0,0,0,0,1,0,0,0,0,0,2
+050201,Ayacucho,Cangallo,Cangallo,6390,34,4,0.0889,Niño Costero 2017,medio,4,17,9,2,5,2,0,0,0,0,0,3
+050202,Ayacucho,Cangallo,Chuschi,8230,20,4,0.0889,Niño Costero 2017,medio,2,16,6,4,6,0,0,0,0,0,0,0
+050203,Ayacucho,Cangallo,Los Morochucos,9363,7,0,0.0,Niño Costero 2017,medio,0,8,0,1,2,0,0,0,0,0,0,1
+050204,Ayacucho,Cangallo,María Parado de Bellido,2401,5,1,0.0222,,bajo,0,6,0,1,2,0,0,0,0,0,0,0
+050205,Ayacucho,Cangallo,Paras,5901,20,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,21,5,2,12,0,0,0,0,0,0,1
+050206,Ayacucho,Cangallo,Totos,3910,15,3,0.0667,Niño Costero 2017,medio,0,9,4,3,2,0,0,0,0,0,0,0
+050301,Ayacucho,Huanca Sancos,Sancos,3305,13,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,14,5,3,6,0,0,0,0,0,0,1
+050302,Ayacucho,Huanca Sancos,Carapo,2401,12,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,10,7,0,2,1,0,0,0,0,0,0
+050303,Ayacucho,Huanca Sancos,Sacsamarca,1706,8,1,0.0222,Niño Costero 2017,medio,1,12,6,2,4,0,0,0,0,0,0,0
+050304,Ayacucho,Huanca Sancos,Santiago de Lucanamarca,2804,10,1,0.0222,Niño Costero 2017,medio,0,4,1,1,1,0,0,0,0,0,0,1
+050401,Ayacucho,Huanta,Huanta,47242,32,11,0.2444,Niño Costero 2017,medio,0,17,8,2,7,0,0,0,0,0,0,0
+050402,Ayacucho,Huanta,Ayahuanco,2374,12,2,0.0444,Niño Costero 2017,medio,0,2,0,1,1,0,0,0,0,0,0,0
+050403,Ayacucho,Huanta,Huamanguilla,5021,7,2,0.0444,,bajo,0,2,1,1,0,0,0,0,0,0,0,0
+050404,Ayacucho,Huanta,Iguain,3932,5,1,0.0222,,bajo,1,4,1,0,3,0,0,0,0,0,0,0
+050405,Ayacucho,Huanta,Luricocha,7730,13,1,0.0222,Niño Costero 2017,medio,1,19,12,3,4,0,0,0,0,0,0,0
+050406,Ayacucho,Huanta,Santillana,5785,27,0,0.0,Niño Costero 2017,medio,2,14,4,4,5,0,0,0,0,0,0,0
+050407,Ayacucho,Huanta,Sivia,11164,22,4,0.0889,Niño Costero 2017,medio,2,16,7,7,2,2,0,0,0,0,0,2
+050408,Ayacucho,Huanta,Llochegua,10264,15,4,0.0889,Niño Costero 2017,medio,1,10,5,4,1,4,0,0,0,0,0,1
+050409,Ayacucho,Huanta,Canayre,2663,13,0,0.0,Niño Costero 2017,medio,2,0,0,0,0,0,0,0,0,0,0,0
+050410,Ayacucho,Huanta,Uchuraccay,3860,9,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+050411,Ayacucho,Huanta,Pucacolpa,3068,4,0,0.0,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+050412,Ayacucho,Huanta,Chaca,2208,2,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+050501,Ayacucho,La Mar,San Miguel,14246,16,4,0.0889,Niño Costero 2017,medio,2,31,16,8,5,1,0,0,0,0,0,0
+050502,Ayacucho,La Mar,Anco,10466,29,10,0.2222,Niño Costero 2017,medio,0,19,4,0,15,0,0,0,0,0,0,1
+050503,Ayacucho,La Mar,Ayna,10170,25,9,0.2,FEN 1997-98,medio,1,14,4,4,6,2,0,0,0,0,0,1
+050504,Ayacucho,La Mar,Chilcas,2117,6,0,0.0,Niño Costero 2017,medio,0,8,4,4,0,1,0,0,0,0,0,0
+050505,Ayacucho,La Mar,Chungui,5438,22,3,0.0667,Niño Costero 2017,medio,4,3,0,3,0,0,0,0,0,0,0,1
+050506,Ayacucho,La Mar,Luis Carranza,1422,10,1,0.0222,Niño Costero 2017,medio,1,6,4,0,2,0,0,0,0,0,0,0
+050507,Ayacucho,La Mar,Santa Rosa,12830,18,4,0.0889,Niño Costero 2017,medio,0,6,5,1,0,2,0,0,0,0,0,0
+050508,Ayacucho,La Mar,Tambo,14434,26,5,0.1111,Niño Costero 2017,medio,5,17,3,7,3,2,0,0,0,0,0,3
+050509,Ayacucho,La Mar,Samugari,9444,26,0,0.0,Niño Costero 2017,medio,4,0,0,0,0,1,0,0,0,0,0,0
+050510,Ayacucho,La Mar,Anchihuay,4425,10,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,2,0,0,0,0,0,0
+050511,Ayacucho,La Mar,Oronccoy,,6,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+050512,Ayacucho,La Mar,Unión Progreso,,7,0,0.0,,bajo,1,0,0,0,0,1,0,0,0,0,0,0
+050513,Ayacucho,La Mar,Río Magdalena,,5,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+050515,Ayacucho,La Mar,Patibamba,,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+050601,Ayacucho,Lucanas,Puquio,14687,20,2,0.0444,Niño Costero 2017,medio,1,10,0,3,7,1,0,0,0,0,0,0
+050602,Ayacucho,Lucanas,Aucara,2430,4,1,0.0222,Niño Costero 2017,medio,1,2,0,2,0,0,0,0,0,0,0,1
+050603,Ayacucho,Lucanas,Cabana,1095,4,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+050604,Ayacucho,Lucanas,Carmen Salcedo,1208,6,1,0.0222,Niño Costero 2017,medio,0,3,1,2,0,2,0,0,0,0,0,0
+050605,Ayacucho,Lucanas,Chaviña,2260,7,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,1,7,3,3,1,0,0,0,0,0,0,0
+050606,Ayacucho,Lucanas,Chipao,2743,8,0,0.0,Niño Costero 2017,medio,0,2,1,0,1,0,0,0,0,0,0,1
+050607,Ayacucho,Lucanas,Huac-Huas,1439,6,1,0.0222,Niño Costero 2017,medio,2,16,15,0,1,0,0,0,0,0,0,0
+050608,Ayacucho,Lucanas,Laramate,1579,10,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,10,10,0,0,0,0,0,0,0,0,1
+050609,Ayacucho,Lucanas,Leoncio Prado,964,6,2,0.0444,Niño Costero 2017,medio,0,18,9,6,3,0,0,0,0,0,0,0
+050610,Ayacucho,Lucanas,Llauta,1126,5,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,1,24,23,0,1,0,0,0,0,0,0,0
+050611,Ayacucho,Lucanas,Lucanas,3051,6,1,0.0222,Niño Costero 2017,medio,0,10,2,3,3,0,0,0,0,0,0,1
+050612,Ayacucho,Lucanas,Ocaña,2542,7,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,27,21,2,3,0,0,0,0,0,0,0
+050613,Ayacucho,Lucanas,Otoca,1645,11,3,0.0667,Niño Costero 2017,medio,0,22,21,0,1,0,0,0,0,0,0,0
+050614,Ayacucho,Lucanas,Saisa,393,5,0,0.0,Niño Costero 2017,medio,0,3,3,0,0,0,0,0,0,0,0,0
+050615,Ayacucho,Lucanas,San Cristóbal,2216,7,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,6,4,1,1,0,0,0,0,0,0,0
+050616,Ayacucho,Lucanas,San Juan,698,3,0,0.0,Niño Costero 2017,medio,0,4,2,1,1,0,0,0,0,0,0,0
+050617,Ayacucho,Lucanas,San Pedro,3441,9,0,0.0,Niño Costero 2017,medio,1,4,0,2,1,0,0,0,0,0,0,0
+050618,Ayacucho,Lucanas,San Pedro de Palco,1265,10,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+050619,Ayacucho,Lucanas,Sancos,3125,4,0,0.0,Niño Costero 2017,medio,0,2,2,0,0,0,0,0,0,0,0,0
+050620,Ayacucho,Lucanas,Santa Ana de Huaycahuacho,539,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+050621,Ayacucho,Lucanas,Santa Lucía,891,10,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,6,6,0,0,0,0,0,0,0,0,1
+050701,Ayacucho,Parinacochas,Coracora,12208,9,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,25,8,10,6,0,0,0,0,0,0,1
+050702,Ayacucho,Parinacochas,Chumpi,2447,11,0,0.0,Niño Costero 2017,medio,0,7,2,3,2,0,0,0,0,0,0,0
+050703,Ayacucho,Parinacochas,Coronel Castañeda,1034,7,1,0.0222,,bajo,0,14,6,3,5,1,0,0,0,0,0,0
+050704,Ayacucho,Parinacochas,Pacapausa,794,6,2,0.0444,Niño Costero 2017,medio,1,11,2,2,5,2,0,0,0,0,0,0
+050705,Ayacucho,Parinacochas,Pullo,4695,7,1,0.0222,Niño Costero 2017,medio,0,10,6,0,1,2,0,0,0,0,0,0
+050706,Ayacucho,Parinacochas,Puyusca,2321,4,0,0.0,,bajo,0,4,3,0,0,0,0,0,0,0,0,0
+050707,Ayacucho,Parinacochas,San Francisco de Ravacayco,1038,5,0,0.0,,bajo,0,3,0,2,1,0,0,0,0,0,0,0
+050708,Ayacucho,Parinacochas,Upahuacho,1577,11,0,0.0,Niño Costero 2017,medio,0,10,2,3,5,0,0,0,0,0,0,0
+050801,Ayacucho,Paucar del Sara Sara,Pausa,2705,11,1,0.0222,Niño Costero 2017,medio,0,21,8,8,5,2,0,0,0,0,0,0
+050802,Ayacucho,Paucar del Sara Sara,Colta,484,14,0,0.0,Niño Costero 2017,medio,2,3,2,1,0,0,0,0,0,0,0,0
+050803,Ayacucho,Paucar del Sara Sara,Corculla,437,10,1,0.0222,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,0
+050804,Ayacucho,Paucar del Sara Sara,Lampa,1938,10,0,0.0,Niño Costero 2017,medio,3,10,3,0,6,0,0,0,0,0,0,0
+050805,Ayacucho,Paucar del Sara Sara,Marcabamba,538,6,1,0.0222,Niño Costero 2017,medio,0,6,3,0,2,0,0,0,0,0,0,0
+050806,Ayacucho,Paucar del Sara Sara,Oyolo,1194,12,0,0.0,Niño Costero 2017,medio,0,1,0,1,0,0,0,0,0,0,0,0
+050807,Ayacucho,Paucar del Sara Sara,Pararca,466,10,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,1
+050808,Ayacucho,Paucar del Sara Sara,San Javier de Alpabamba,592,4,0,0.0,Niño Costero 2017,medio,0,10,6,2,2,0,0,0,0,0,0,0
+050809,Ayacucho,Paucar del Sara Sara,San José de Ushua,206,7,0,0.0,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,0
+050810,Ayacucho,Paucar del Sara Sara,Sara Sara,573,11,0,0.0,Niño Costero 2017,medio,1,4,2,0,2,0,0,0,0,0,0,0
+050901,Ayacucho,Sucre,Querobamba,2608,17,2,0.0444,Niño Costero 2017,medio,1,10,5,1,2,1,0,0,0,0,0,0
+050902,Ayacucho,Sucre,Belén,296,10,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+050903,Ayacucho,Sucre,Chalcos,577,10,1,0.0222,Niño Costero 2017,medio,0,2,2,0,0,0,0,0,0,0,0,0
+050904,Ayacucho,Sucre,Chilcayoc,622,10,0,0.0,Niño Costero 2017,medio,0,3,0,3,0,0,0,0,0,0,0,0
+050905,Ayacucho,Sucre,Huacaña,428,7,1,0.0222,Niño Costero 2017,medio,0,1,0,0,1,0,0,0,0,0,0,0
+050906,Ayacucho,Sucre,Morcolla,1426,7,1,0.0222,Niño Costero 2017,medio,1,1,1,0,0,0,0,0,0,0,0,0
+050907,Ayacucho,Sucre,Paico,676,10,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+050908,Ayacucho,Sucre,San Pedro de Larcay,897,11,2,0.0444,Niño Costero 2017,medio,2,5,1,0,4,0,0,0,0,0,0,0
+050909,Ayacucho,Sucre,San Salvador de Quije,1321,9,1,0.0222,Niño Costero 2017,medio,0,4,2,0,2,0,0,0,0,0,0,0
+050910,Ayacucho,Sucre,Santiago de Paucaray,698,9,1,0.0222,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+050911,Ayacucho,Sucre,Soras,948,3,0,0.0,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+051001,Ayacucho,Victor Fajardo,Huancapi,2040,22,6,0.1333,Niño Costero 2017,medio,0,13,3,4,6,0,0,0,0,0,0,0
+051002,Ayacucho,Victor Fajardo,Alcamenca,1864,17,1,0.0222,Niño Costero 2017,medio,1,14,6,1,5,1,0,0,0,0,0,0
+051003,Ayacucho,Victor Fajardo,Apongo,873,5,0,0.0,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+051004,Ayacucho,Victor Fajardo,Asquipata,467,12,2,0.0444,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+051005,Ayacucho,Victor Fajardo,Canaria,2987,5,1,0.0222,Niño Costero 2017,medio,0,4,3,0,1,0,0,0,0,0,0,0
+051006,Ayacucho,Victor Fajardo,Cayara,1258,11,1,0.0222,Niño Costero 2017,medio,0,10,2,3,5,0,0,0,0,0,0,0
+051007,Ayacucho,Victor Fajardo,Colca,1305,9,0,0.0,Niño Costero 2017,medio,0,7,5,0,2,1,0,0,0,0,0,0
+051008,Ayacucho,Victor Fajardo,Huamanquiquia,1219,9,0,0.0,Niño Costero 2017,medio,0,4,2,0,2,0,0,0,0,0,0,0
+051009,Ayacucho,Victor Fajardo,Huancaraylla,1716,4,1,0.0222,,bajo,0,8,1,3,3,0,0,0,0,0,0,0
+051010,Ayacucho,Victor Fajardo,Huaya,2256,8,0,0.0,Niño Costero 2017,medio,1,8,1,4,3,1,0,0,0,0,0,0
+051011,Ayacucho,Victor Fajardo,Sarhua,3156,11,2,0.0444,,bajo,0,15,4,5,4,0,0,0,0,0,0,0
+051012,Ayacucho,Victor Fajardo,Vilcanchos,3199,19,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,6,4,0,2,0,0,0,0,0,0,0
+051101,Ayacucho,Vilcas Huamán,Vilcas Huamán,7656,16,4,0.0889,,bajo,0,11,3,2,1,0,0,0,0,0,0,0
+051102,Ayacucho,Vilcas Huamán,Accomarca,1318,12,1,0.0222,Niño Costero 2017,medio,0,9,6,1,1,0,0,0,0,0,0,0
+051103,Ayacucho,Vilcas Huamán,Carhuanca,981,4,1,0.0222,,bajo,0,4,1,2,0,0,0,0,0,0,0,0
+051104,Ayacucho,Vilcas Huamán,Concepción,2668,12,0,0.0,,bajo,3,6,4,0,0,0,0,0,0,0,0,0
+051105,Ayacucho,Vilcas Huamán,Huambalpa,2035,8,0,0.0,Niño Costero 2017,medio,0,13,3,4,4,0,0,0,0,0,0,0
+051106,Ayacucho,Vilcas Huamán,Independencia,1440,14,0,0.0,Niño Costero 2017,medio,0,7,4,1,1,0,0,0,0,0,0,0
+051107,Ayacucho,Vilcas Huamán,Saurama,1270,14,0,0.0,Niño Costero 2017,medio,0,3,1,1,1,0,0,0,0,0,0,0
+051108,Ayacucho,Vilcas Huamán,Vischongo,4456,10,4,0.0889,,bajo,0,11,5,1,3,0,0,0,0,0,0,0
+060101,Cajamarca,Cajamarca,Cajamarca,246604,68,13,0.2889,Niño Costero 2017,alto,3,42,3,23,10,6,0,0,0,0,0,4
+060102,Cajamarca,Cajamarca,Asunción,10211,31,2,0.0444,Niño Costero 2017,medio,0,44,5,23,12,0,0,0,0,0,0,0
+060103,Cajamarca,Cajamarca,Chetilla,4711,9,0,0.0,,bajo,0,3,0,3,0,0,0,0,0,0,0,0
+060104,Cajamarca,Cajamarca,Cospán,8236,36,0,0.0,Niño Costero 2017,medio,5,31,1,12,16,1,0,0,0,0,0,0
+060105,Cajamarca,Cajamarca,Encañada,32431,45,6,0.1333,Niño Costero 2017,medio,0,6,0,3,2,1,0,0,0,0,0,2
+060106,Cajamarca,Cajamarca,Jesús,17865,20,0,0.0,Niño Costero 2017,medio,1,6,4,2,0,1,0,0,0,0,0,0
+060107,Cajamarca,Cajamarca,Llacanora,6229,6,0,0.0,,bajo,1,2,0,1,1,2,0,0,0,0,0,1
+060108,Cajamarca,Cajamarca,Los Baños del Inca,45427,21,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,13,2,8,1,6,0,0,0,0,0,1
+060109,Cajamarca,Cajamarca,Magdalena,11200,14,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,1,73,15,33,24,10,0,0,0,0,0,0
+060110,Cajamarca,Cajamarca,Matara,4744,9,0,0.0,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+060111,Cajamarca,Cajamarca,Namora,12548,13,1,0.0222,Niño Costero 2017,medio,0,2,0,1,1,2,0,0,0,0,0,1
+060112,Cajamarca,Cajamarca,San Juan,5980,26,5,0.1111,FEN 1982-83; Niño Costero 2017,alto,0,41,6,23,11,3,0,0,0,0,0,0
+060201,Cajamarca,Cajabamba,Cajabamba,39207,14,4,0.0889,,bajo,3,8,1,5,2,2,0,0,0,0,0,0
+060202,Cajamarca,Cajabamba,Cachachi,26822,9,0,0.0,,bajo,0,29,8,11,8,6,0,0,0,0,0,0
+060203,Cajamarca,Cajabamba,Condebamba,14272,8,2,0.0444,,bajo,1,11,4,3,1,1,0,0,0,0,0,1
+060204,Cajamarca,Cajabamba,Sitacocha,9694,10,0,0.0,Niño Costero 2017,medio,0,11,2,3,5,0,0,0,0,0,0,0
+060301,Cajamarca,Celendín,Celendín,28668,22,7,0.1556,Niño Costero 2017,medio,0,36,5,21,7,2,0,0,0,0,0,0
+060302,Cajamarca,Celendín,Chumuch,3393,3,0,0.0,Niño Costero 2017,medio,0,10,1,7,2,1,0,0,0,0,0,0
+060303,Cajamarca,Celendín,Cortegana,8825,18,0,0.0,Niño Costero 2017,medio,0,3,2,1,0,0,0,0,0,0,0,0
+060304,Cajamarca,Celendín,Huasmín,13593,4,0,0.0,Niño Costero 2017,medio,0,4,0,1,2,1,0,0,0,0,0,1
+060305,Cajamarca,Celendín,Jorge Chavez,819,2,0,0.0,Niño Costero 2017,medio,1,1,0,1,0,0,0,0,0,0,0,0
+060306,Cajamarca,Celendín,José Gálvez,3311,2,0,0.0,,bajo,0,2,0,1,1,1,0,0,0,0,0,0
+060307,Cajamarca,Celendín,Miguel Iglesias,5188,0,0,,,,0,14,2,10,2,1,0,0,0,0,0,0
+060308,Cajamarca,Celendín,Oxamarca,7451,10,1,0.0222,,bajo,1,4,1,2,1,0,0,0,0,0,0,0
+060309,Cajamarca,Celendín,Sorochuco,11164,2,1,0.0222,,bajo,0,6,0,6,0,0,0,0,0,0,0,0
+060310,Cajamarca,Celendín,Sucre,5906,4,0,0.0,Niño Costero 2017,medio,0,12,1,7,4,0,0,0,0,0,0,0
+060311,Cajamarca,Celendín,Utco,1582,3,0,0.0,,bajo,1,8,2,4,2,2,0,0,0,0,0,0
+060312,Cajamarca,Celendín,La Libertad de Pallán,8050,6,0,0.0,,bajo,1,4,1,1,1,0,0,0,0,0,0,0
+060401,Cajamarca,Chota,Chota,55737,44,5,0.1111,Niño Costero 2017,medio,1,7,0,3,1,1,0,0,0,0,0,2
+060402,Cajamarca,Chota,Anguia,3907,1,1,0.0222,,bajo,0,13,1,8,4,0,0,0,0,0,0,0
+060403,Cajamarca,Chota,Chadín,4596,0,0,,,,0,4,0,3,0,0,0,0,0,0,0,0
+060404,Cajamarca,Chota,Chiguirip,4693,1,0,0.0,,bajo,0,6,1,3,1,1,0,0,0,0,0,0
+060405,Cajamarca,Chota,Chimbán,2887,2,0,0.0,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,0
+060406,Cajamarca,Chota,Choropampa,3224,4,1,0.0222,Niño Costero 2017,medio,0,4,1,0,2,0,0,0,0,0,0,0
+060407,Cajamarca,Chota,Cochabamba,6427,5,2,0.0444,,bajo,0,14,1,4,9,2,0,0,0,0,0,0
+060408,Cajamarca,Chota,Conchán,6408,9,0,0.0,Niño Costero 2017,medio,0,3,0,1,0,0,0,0,0,0,0,0
+060409,Cajamarca,Chota,Huambos,9270,2,0,0.0,Niño Costero 2017,medio,1,13,0,10,2,1,0,0,0,0,0,1
+060410,Cajamarca,Chota,Lajas,14739,9,2,0.0444,Niño Costero 2017,medio,0,7,0,3,3,1,0,0,0,0,0,0
+060411,Cajamarca,Chota,Llama,6421,15,2,0.0444,Niño Costero 2017,medio,0,93,20,38,33,4,0,0,0,0,0,0
+060412,Cajamarca,Chota,Miracosta,4104,6,2,0.0444,,bajo,0,10,3,4,3,0,0,0,0,0,0,1
+060413,Cajamarca,Chota,Paccha,5649,15,1,0.0222,Niño Costero 2017,medio,0,10,2,7,1,2,0,0,0,0,0,0
+060414,Cajamarca,Chota,Pión,1643,1,1,0.0222,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+060415,Cajamarca,Chota,Querocoto,9164,19,2,0.0444,Niño Costero 2017,medio,0,11,0,7,3,1,0,0,0,0,0,0
+060416,Cajamarca,Chota,San Juan de Licupis,1239,14,3,0.0667,Niño Costero 2017,medio,0,26,1,19,6,2,0,0,0,0,0,1
+060417,Cajamarca,Chota,Tacabamba,17819,2,1,0.0222,,bajo,0,24,2,9,5,3,0,0,0,0,0,0
+060418,Cajamarca,Chota,Tocmoche,1115,4,1,0.0222,Niño Costero 2017,medio,0,29,6,14,9,0,0,0,0,0,0,0
+060419,Cajamarca,Chota,Chalamarca,11472,10,0,0.0,Niño Costero 2017,medio,1,23,0,15,1,2,0,0,0,0,0,0
+060501,Cajamarca,Contumazá,Contumazá,8037,14,4,0.0889,Niño Costero 2017,medio,0,39,8,10,18,2,0,0,0,0,0,2
+060502,Cajamarca,Contumazá,Chilete,3133,19,15,0.3333,FEN 1982-83; FEN 1997-98,muy alto,0,30,15,5,10,5,0,0,0,0,0,0
+060503,Cajamarca,Contumazá,Cupisnique,1597,3,0,0.0,Niño Costero 2017,medio,0,7,6,1,0,0,0,0,0,0,0,1
+060504,Cajamarca,Contumazá,Guzmango,2975,8,0,0.0,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,0
+060505,Cajamarca,Contumazá,San Benito,3346,8,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,29,17,6,5,8,0,0,0,0,0,0
+060506,Cajamarca,Contumazá,Santa Cruz de Toledo,1281,4,0,0.0,Niño Costero 2017,medio,0,4,1,1,2,1,0,0,0,0,0,0
+060507,Cajamarca,Contumazá,Tantarica,2618,3,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,8,5,2,1,4,0,0,0,0,0,0
+060508,Cajamarca,Contumazá,Yonan,6654,37,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,42,39,0,3,15,0,0,0,0,0,1
+060601,Cajamarca,Cutervo,Cutervo,56417,40,4,0.0889,Niño Costero 2017,medio,0,18,1,11,3,4,0,0,0,0,0,1
+060602,Cajamarca,Cutervo,Callayuc,10152,13,1,0.0222,Niño Costero 2017,medio,7,26,1,7,14,3,0,0,0,0,0,0
+060603,Cajamarca,Cutervo,Choros,3691,11,1,0.0222,Niño Costero 2017,medio,0,18,5,6,6,7,0,0,0,0,0,0
+060604,Cajamarca,Cutervo,Cujillo,2915,9,1,0.0222,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,0
+060605,Cajamarca,Cutervo,La Ramada,4484,5,0,0.0,Niño Costero 2017,medio,0,1,0,1,0,0,0,0,0,0,0,1
+060606,Cajamarca,Cutervo,Pimpingos,6233,5,0,0.0,,bajo,0,14,0,4,7,1,0,0,0,0,0,1
+060607,Cajamarca,Cutervo,Querocotillo,15209,7,2,0.0444,,bajo,0,6,1,1,4,1,0,0,0,0,0,2
+060608,Cajamarca,Cutervo,San Andrés de Cutervo,5166,11,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+060609,Cajamarca,Cutervo,San Juan de Cutervo,2549,10,0,0.0,Niño Costero 2017,medio,1,0,0,0,0,1,0,0,0,0,0,0
+060610,Cajamarca,Cutervo,San Luis de Lucma,3505,4,1,0.0222,,bajo,0,10,0,3,5,1,0,0,0,0,0,0
+060611,Cajamarca,Cutervo,Santa Cruz,3376,23,2,0.0444,Niño Costero 2017,medio,0,9,2,3,2,2,0,0,0,0,0,0
+060612,Cajamarca,Cutervo,Santo Domingo de La Capilla,6078,9,0,0.0,Niño Costero 2017,medio,0,10,0,1,8,1,0,0,0,0,0,0
+060613,Cajamarca,Cutervo,Santo Tomás,8127,2,1,0.0222,,bajo,0,4,0,2,2,0,0,0,0,0,0,0
+060614,Cajamarca,Cutervo,Socota,10476,20,2,0.0444,Niño Costero 2017,medio,0,9,1,6,1,3,0,0,0,0,0,1
+060615,Cajamarca,Cutervo,Toribio Casanova,1400,2,1,0.0222,,bajo,0,3,1,1,1,2,0,0,0,0,0,0
+060701,Cajamarca,Hualgayoc,Bambamarca,79113,40,5,0.1111,Niño Costero 2017,medio,1,25,4,8,11,3,0,0,0,0,0,0
+060702,Cajamarca,Hualgayoc,Chugur,3921,0,0,,,,0,9,0,7,2,1,0,0,0,0,0,0
+060703,Cajamarca,Hualgayoc,Hualgayoc,16985,7,2,0.0444,,bajo,0,6,0,3,3,1,0,0,0,0,0,1
+060801,Cajamarca,Jaén,Jaén,116937,78,20,0.4444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,20,3,5,10,5,0,0,0,0,0,3
+060802,Cajamarca,Jaén,Bellavista,17496,31,5,0.1111,Niño Costero 2017,medio,0,27,12,8,7,7,0,0,0,0,0,0
+060803,Cajamarca,Jaén,Chontali,11785,16,2,0.0444,Niño Costero 2017,medio,2,4,1,3,0,0,0,0,0,0,0,0
+060804,Cajamarca,Jaén,Colasay,13127,15,1,0.0222,Niño Costero 2017,medio,0,36,11,11,7,2,0,0,0,0,0,0
+060805,Cajamarca,Jaén,Huabal,10428,8,1,0.0222,Niño Costero 2017,medio,0,4,1,3,0,0,0,0,0,0,0,0
+060806,Cajamarca,Jaén,Las Pirias,6495,6,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,3,0,0,3,0,0,0,0,0,0,0
+060807,Cajamarca,Jaén,Pomahuaca,10605,22,5,0.1111,Niño Costero 2017,medio,1,31,13,6,5,1,0,0,0,0,0,0
+060808,Cajamarca,Jaén,Pucará,9088,17,6,0.1333,Niño Costero 2017,medio,0,11,6,0,4,1,0,0,0,0,0,0
+060809,Cajamarca,Jaén,Sallique,8445,17,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,1,6,3,3,0,1,0,0,0,0,0,2
+060810,Cajamarca,Jaén,San Felipe,5622,16,3,0.0667,Niño Costero 2017,medio,1,27,11,1,8,4,0,0,0,0,0,1
+060811,Cajamarca,Jaén,San José del Alto,8842,21,1,0.0222,Niño Costero 2017,medio,2,8,1,4,1,1,0,0,0,0,0,0
+060812,Cajamarca,Jaén,Santa Rosa,12267,21,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,6,0,3,3,3,0,0,0,0,0,0
+060901,Cajamarca,San Ignacio,San Ignacio,40768,23,7,0.1556,Niño Costero 2017,medio,2,15,1,11,3,2,0,0,0,0,0,2
+060902,Cajamarca,San Ignacio,Chirinos,16922,10,3,0.0667,Niño Costero 2017,medio,0,10,2,2,6,6,0,0,0,0,0,0
+060903,Cajamarca,San Ignacio,Huarango,23080,8,1,0.0222,Niño Costero 2017,medio,0,7,0,2,4,0,0,0,0,0,0,1
+060904,Cajamarca,San Ignacio,La Coipa,23460,26,3,0.0667,Niño Costero 2017,medio,3,4,0,4,0,1,0,0,0,0,0,0
+060905,Cajamarca,San Ignacio,Namballe,11062,26,1,0.0222,Niño Costero 2017,medio,0,14,2,5,6,1,0,0,0,0,0,0
+060906,Cajamarca,San Ignacio,San José de Lourdes,20676,22,0,0.0,Niño Costero 2017,medio,1,17,3,10,3,3,0,0,0,0,0,0
+060907,Cajamarca,San Ignacio,Tabaconas,21624,13,1,0.0222,Niño Costero 2017,medio,3,11,5,2,3,2,0,0,0,0,0,0
+061001,Cajamarca,San Marcos,Pedro Gálvez,20794,27,0,0.0,Niño Costero 2017,medio,0,3,0,1,1,4,0,0,0,0,0,4
+061002,Cajamarca,San Marcos,Chancay,3695,0,0,,,,0,12,0,5,6,1,0,0,0,0,0,0
+061003,Cajamarca,San Marcos,Eduardo Villanueva,3008,8,0,0.0,Niño Costero 2017,medio,0,4,1,1,2,0,0,0,0,0,0,1
+061004,Cajamarca,San Marcos,Gregorio Pita,6615,12,0,0.0,Niño Costero 2017,medio,5,0,0,0,0,0,0,0,0,0,0,1
+061005,Cajamarca,San Marcos,Ichocán,2301,25,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,6,5,0,3,2,1,0,0,0,0,0,0
+061006,Cajamarca,San Marcos,José Manuel Quiroz,4334,4,0,0.0,Niño Costero 2017,medio,1,10,0,6,4,1,0,0,0,0,0,1
+061007,Cajamarca,San Marcos,José Sabogal,17178,16,0,0.0,,bajo,0,1,0,1,0,0,0,0,0,0,0,5
+061101,Cajamarca,San Miguel,San Miguel,13233,44,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,18,40,11,19,8,2,0,0,0,0,0,0
+061102,Cajamarca,San Miguel,Bolívar,1411,6,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,2
+061103,Cajamarca,San Miguel,Calquis,4842,11,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,4,13,1,9,3,2,0,0,0,0,0,0
+061104,Cajamarca,San Miguel,Catilluc,3553,4,0,0.0,,bajo,2,15,0,14,1,0,0,0,0,0,0,1
+061105,Cajamarca,San Miguel,El Prado,3296,2,0,0.0,Niño Costero 2017,medio,0,1,0,1,0,0,0,0,0,0,0,0
+061106,Cajamarca,San Miguel,La Florida,2959,3,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,1,1,0,0,0,0,0,0,0,0,1
+061107,Cajamarca,San Miguel,Llapa,5182,1,0,0.0,,bajo,0,9,0,7,1,2,0,0,0,0,0,1
+061108,Cajamarca,San Miguel,Nanchoc,1359,5,0,0.0,Niño Costero 2017,medio,0,9,8,1,0,1,0,0,0,0,0,2
+061109,Cajamarca,San Miguel,Niepos,3728,5,2,0.0444,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,2
+061110,Cajamarca,San Miguel,San Gregorio,2407,10,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,37,34,3,0,3,0,0,0,0,0,2
+061111,Cajamarca,San Miguel,San Silvestre de Cochán,4521,9,0,0.0,Niño Costero 2017,medio,0,12,0,7,2,1,0,0,0,0,0,2
+061112,Cajamarca,San Miguel,Tongod,3212,4,0,0.0,Niño Costero 2017,medio,1,22,0,19,2,1,0,0,0,0,0,1
+061113,Cajamarca,San Miguel,Unión Agua Blanca,3406,5,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,15,9,3,1,2,0,0,0,0,0,0
+061201,Cajamarca,San Pablo,San Pablo,15059,14,0,0.0,Niño Costero 2017,medio,0,53,5,26,12,2,0,0,0,0,0,1
+061202,Cajamarca,San Pablo,San Bernardino,4999,5,0,0.0,Niño Costero 2017,medio,0,25,12,7,6,1,0,0,0,0,0,0
+061203,Cajamarca,San Pablo,San Luis,1579,3,1,0.0222,Niño Costero 2017,medio,0,4,1,3,0,0,0,0,0,0,0,1
+061204,Cajamarca,San Pablo,Tumbadén,4562,2,0,0.0,Niño Costero 2017,medio,0,7,0,2,3,0,0,0,0,0,0,0
+061301,Cajamarca,Santa Cruz,Santa Cruz,9499,8,3,0.0667,Niño Costero 2017,medio,0,19,0,16,2,0,0,0,0,0,0,0
+061302,Cajamarca,Santa Cruz,Andabamba,1829,2,1,0.0222,Niño Costero 2017,medio,0,2,1,0,1,0,0,0,0,0,0,0
+061303,Cajamarca,Santa Cruz,Catache,9592,14,3,0.0667,Niño Costero 2017,medio,1,71,5,46,19,5,0,0,0,0,0,7
+061304,Cajamarca,Santa Cruz,Chancaybaños,4378,6,0,0.0,Niño Costero 2017,medio,0,39,2,33,4,1,0,0,0,0,0,0
+061305,Cajamarca,Santa Cruz,La Esperanza,2839,3,0,0.0,Niño Costero 2017,medio,0,20,1,17,2,1,0,0,0,0,0,0
+061306,Cajamarca,Santa Cruz,Ninabamba,2919,11,2,0.0444,Niño Costero 2017,medio,5,10,1,6,3,0,0,0,0,0,0,0
+061307,Cajamarca,Santa Cruz,Pulán,4727,3,0,0.0,,bajo,0,33,6,21,5,0,0,0,0,0,0,1
+061308,Cajamarca,Santa Cruz,Saucepampa,2202,5,0,0.0,Niño Costero 2017,medio,0,4,0,4,0,0,0,0,0,0,0,0
+061309,Cajamarca,Santa Cruz,Sexi,511,5,2,0.0444,Niño Costero 2017,medio,0,24,3,12,7,1,0,0,0,0,0,1
+061310,Cajamarca,Santa Cruz,Uticyacu,1512,3,0,0.0,Niño Costero 2017,medio,0,8,0,6,2,1,0,0,0,0,0,0
+061311,Cajamarca,Santa Cruz,Yauyucán,3468,5,3,0.0667,Niño Costero 2017,medio,0,11,0,10,1,0,0,0,0,0,0,0
+070101,Callao,Callao,Callao,528275,51,22,0.4889,FEN 1982-83; FEN 1997-98,muy alto,0,0,0,0,0,1,0,0,0,0,0,0
+070102,Callao,Callao,Bellavista,92189,0,0,,,,0,0,0,0,0,0,0,0,0,0,0,1
+070103,Callao,Callao,Carmen de La Legua Reynoso,57926,3,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,2
+070104,Callao,Callao,La Perla,73066,3,3,0.0667,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+070105,Callao,Callao,La Punta,7735,30,15,0.3333,FEN 1982-83; FEN 1997-98,muy alto,0,0,0,0,0,0,0,0,0,0,0,0
+070106,Callao,Callao,Ventanilla,348390,16,12,0.2667,FEN 1997-98,alto,0,12,2,0,10,6,0,0,0,0,0,1
+080101,Cusco,Cusco,Cusco,136698,159,35,0.7778,FEN 1997-98,alto,0,71,3,31,27,6,0,0,0,0,0,1
+080102,Cusco,Cusco,Ccorca,3128,10,1,0.0222,FEN 1997-98,medio,0,18,1,4,5,0,0,0,0,0,0,0
+080103,Cusco,Cusco,Poroy,7776,12,3,0.0667,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+080104,Cusco,Cusco,San Jerónimo,51545,64,16,0.3556,FEN 1997-98,alto,0,66,21,6,29,7,0,0,0,0,0,0
+080105,Cusco,Cusco,San Sebastián,99879,31,15,0.3333,FEN 1997-98,alto,1,73,15,17,36,9,0,0,0,0,0,0
+080106,Cusco,Cusco,Santiago,112844,32,16,0.3556,FEN 1997-98,alto,0,69,1,32,25,5,0,0,0,0,0,2
+080107,Cusco,Cusco,Saylla,5960,19,10,0.2222,FEN 1997-98,medio,0,6,3,1,2,1,0,0,0,0,0,0
+080108,Cusco,Cusco,Wanchaq,85489,4,4,0.0889,,bajo,0,0,0,0,0,1,0,0,0,0,0,1
+080201,Cusco,Acomayo,Acomayo,5414,15,5,0.1111,,medio,0,17,0,7,9,1,0,0,0,0,0,0
+080202,Cusco,Acomayo,Acopia,2744,6,4,0.0889,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+080203,Cusco,Acomayo,Acos,2546,16,2,0.0444,,bajo,0,7,0,3,4,1,0,0,0,0,0,0
+080204,Cusco,Acomayo,Mosoc Llacta,1193,7,0,0.0,,bajo,0,2,0,0,2,0,0,0,0,0,0,0
+080205,Cusco,Acomayo,Pomacanchi,8684,12,4,0.0889,,bajo,0,2,0,0,1,0,0,0,0,0,0,0
+080206,Cusco,Acomayo,Rondocán,2873,6,3,0.0667,FEN 1997-98,medio,0,9,1,6,1,0,0,0,0,0,0,0
+080207,Cusco,Acomayo,Sangarará,3770,9,2,0.0444,,bajo,0,3,1,1,1,0,0,0,0,0,0,0
+080301,Cusco,Anta,Anta,22496,32,8,0.1778,,medio,0,4,0,1,1,0,0,0,0,0,0,0
+080302,Cusco,Anta,Ancahuasi,8177,7,1,0.0222,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+080303,Cusco,Anta,Cachimayo,2754,10,3,0.0667,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+080304,Cusco,Anta,Chinchaypujio,5877,8,4,0.0889,,bajo,0,10,0,3,7,0,0,0,0,0,0,1
+080305,Cusco,Anta,Huarocondo,6444,15,4,0.0889,,bajo,0,17,1,7,9,0,0,0,0,0,0,0
+080306,Cusco,Anta,Limatambo,8973,17,10,0.2222,,medio,0,37,15,9,12,1,0,0,0,0,0,0
+080307,Cusco,Anta,Mollepata,3525,14,5,0.1111,,medio,0,103,10,38,39,1,0,0,0,0,0,0
+080308,Cusco,Anta,Pucyura,4190,13,8,0.1778,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+080309,Cusco,Anta,Zurite,4231,6,3,0.0667,,bajo,0,3,2,1,0,1,0,0,0,0,0,0
+080401,Cusco,Calca,Calca,25053,32,13,0.2889,,alto,0,29,2,12,12,1,0,0,0,0,0,0
+080402,Cusco,Calca,Coya,3975,24,11,0.2444,,medio,0,4,2,1,0,1,0,0,0,0,0,0
+080403,Cusco,Calca,Lamay,6683,14,5,0.1111,,medio,0,1,0,1,0,0,0,0,0,0,0,0
+080404,Cusco,Calca,Lares,8057,39,18,0.4,FEN 1997-98,alto,0,36,7,16,11,0,0,0,0,0,0,0
+080405,Cusco,Calca,Pisac,11463,25,11,0.2444,FEN 1997-98,medio,0,24,1,12,10,2,0,0,0,0,0,0
+080406,Cusco,Calca,San Salvador,6298,6,3,0.0667,,bajo,0,8,4,1,3,0,0,0,0,0,0,0
+080407,Cusco,Calca,Taray,4862,14,6,0.1333,,medio,0,9,0,4,5,1,0,0,0,0,0,0
+080408,Cusco,Calca,Yanatile,10240,32,12,0.2667,FEN 1997-98,alto,0,36,15,14,7,1,0,0,0,0,0,0
+080501,Cusco,Canas,Yanaoca,10348,20,5,0.1111,,medio,0,0,0,0,0,1,0,0,0,0,0,1
+080502,Cusco,Canas,Checca,6692,22,3,0.0667,,bajo,0,8,2,3,3,4,0,0,0,0,0,0
+080503,Cusco,Canas,Kunturkanki,6053,17,1,0.0222,,bajo,0,3,0,2,1,1,0,0,0,0,0,0
+080504,Cusco,Canas,Langui,3032,15,4,0.0889,,bajo,0,11,5,2,4,1,0,0,0,0,0,0
+080505,Cusco,Canas,Layo,6537,38,3,0.0667,,bajo,0,4,4,0,0,1,0,0,0,0,0,0
+080506,Cusco,Canas,Pampamarca,1950,12,5,0.1111,FEN 1982-83,medio,0,1,0,0,1,0,0,0,0,0,0,0
+080507,Cusco,Canas,Quehue,3461,20,4,0.0889,,bajo,2,1,0,0,0,0,0,0,0,0,0,0
+080508,Cusco,Canas,Túpac Amaru,3304,8,3,0.0667,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+080601,Cusco,Canchis,Sicuani,66346,53,12,0.2667,FEN 1982-83,alto,2,9,1,5,3,1,0,0,0,0,0,2
+080602,Cusco,Canchis,Checacupe,5470,10,1,0.0222,,bajo,0,19,5,4,8,1,0,0,0,0,0,0
+080603,Cusco,Canchis,Combapata,5534,16,3,0.0667,,bajo,0,7,2,2,3,0,0,0,0,0,0,0
+080604,Cusco,Canchis,Marangani,11741,22,5,0.1111,,medio,0,9,4,0,2,1,0,0,0,0,0,0
+080605,Cusco,Canchis,Pitumarca,8586,12,2,0.0444,,bajo,0,6,2,0,4,1,0,0,0,0,0,0
+080606,Cusco,Canchis,San Pablo,5543,24,5,0.1111,,medio,1,8,1,2,4,1,0,0,0,0,0,0
+080607,Cusco,Canchis,San Pedro,3331,19,5,0.1111,,medio,0,1,1,0,0,0,0,0,0,0,0,1
+080608,Cusco,Canchis,Tinta,6075,10,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+080701,Cusco,Chumbivilcas,Santo Tomás,23929,50,4,0.0889,,bajo,4,20,11,0,8,1,0,0,0,0,0,0
+080702,Cusco,Chumbivilcas,Capacmarca,5143,17,1,0.0222,,bajo,1,3,1,1,1,0,0,0,0,0,0,0
+080703,Cusco,Chumbivilcas,Chamaca,7899,34,5,0.1111,,medio,0,9,3,0,4,0,0,0,0,0,0,0
+080704,Cusco,Chumbivilcas,Colquemarca,10266,24,3,0.0667,,bajo,2,20,0,0,16,1,0,0,0,0,0,0
+080705,Cusco,Chumbivilcas,Livitaca,13319,35,4,0.0889,,bajo,5,9,1,8,0,1,0,0,0,0,0,0
+080706,Cusco,Chumbivilcas,Llusco,6968,26,1,0.0222,,bajo,1,4,0,2,0,1,0,0,0,0,0,0
+080707,Cusco,Chumbivilcas,Quiñota,4926,10,2,0.0444,,bajo,0,3,0,0,2,0,0,0,0,0,0,0
+080708,Cusco,Chumbivilcas,Velille,9115,12,4,0.0889,,bajo,0,15,8,1,5,1,0,0,0,0,0,0
+080801,Cusco,Espinar,Espinar,32892,38,9,0.2,,medio,1,3,3,0,0,0,0,0,0,0,0,0
+080802,Cusco,Espinar,Condoroma,1072,19,6,0.1333,,medio,0,22,3,1,9,0,0,0,0,0,0,1
+080803,Cusco,Espinar,Coporaque,14971,13,1,0.0222,,bajo,0,3,0,1,2,0,0,0,0,0,0,0
+080804,Cusco,Espinar,Ocoruro,1520,15,3,0.0667,,bajo,0,2,2,0,0,0,0,0,0,0,0,0
+080805,Cusco,Espinar,Pallpata,6618,9,3,0.0667,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+080806,Cusco,Espinar,Pichigua,4757,11,1,0.0222,,bajo,1,5,0,3,2,0,0,0,0,0,0,0
+080807,Cusco,Espinar,Suyckutambo,3008,11,0,0.0,,bajo,0,5,0,0,4,0,0,0,0,0,0,0
+080808,Cusco,Espinar,Alto Pichigua,3013,8,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+080901,Cusco,La Convención,Santa Ana,41573,57,22,0.4889,FEN 1997-98,alto,0,23,4,8,10,5,0,0,0,0,0,2
+080902,Cusco,La Convención,Echarate,45927,80,22,0.4889,FEN 1982-83; FEN 1997-98,muy alto,2,39,15,16,7,4,0,0,0,0,0,0
+080903,Cusco,La Convención,Huayopata,5872,34,11,0.2444,FEN 1997-98,medio,1,25,13,5,7,5,0,0,0,0,0,0
+080904,Cusco,La Convención,Maranura,7384,22,11,0.2444,FEN 1997-98,medio,2,8,2,2,4,1,0,0,0,0,0,0
+080905,Cusco,La Convención,Ocobamba,6029,27,11,0.2444,,medio,0,36,11,8,17,2,0,0,0,0,0,0
+080906,Cusco,La Convención,Quellouno,14306,40,11,0.2444,,medio,0,24,5,10,9,2,0,0,0,0,0,0
+080907,Cusco,La Convención,Quimbiri,20063,19,10,0.2222,,medio,0,6,1,2,2,0,0,0,0,0,0,1
+080908,Cusco,La Convención,Santa Teresa,8295,92,19,0.4222,FEN 1997-98,alto,3,29,6,10,11,4,0,0,0,0,0,0
+080909,Cusco,La Convención,Vilcabamba,13136,42,9,0.2,,medio,0,22,8,11,3,4,0,0,0,0,0,0
+080910,Cusco,La Convención,Pichari,29420,34,3,0.0667,,bajo,6,3,2,0,1,0,0,0,0,0,0,1
+080911,Cusco,La Convención,Inkawasi,4881,6,0,0.0,,bajo,2,0,0,0,0,0,0,0,0,0,0,0
+080912,Cusco,La Convención,Villa Virgen,2067,8,0,0.0,,bajo,2,0,0,0,0,0,0,0,0,0,0,0
+080913,Cusco,La Convención,Villa Kintiarina,2906,16,0,0.0,,bajo,6,0,0,0,0,0,0,0,0,0,0,0
+080914,Cusco,La Convención,Megantoni,,7,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+080915,Cusco,La Convención,Kumpirushiato,,17,0,0.0,,bajo,7,0,0,0,0,0,0,0,0,0,0,0
+080916,Cusco,La Convención,Cielo Punco,,3,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+080917,Cusco,La Convención,Manitea,,5,0,0.0,,bajo,0,0,0,0,0,1,0,0,0,0,0,0
+081001,Cusco,Paruro,Paruro,3649,20,5,0.1111,,medio,0,11,1,4,5,1,0,0,0,0,0,0
+081002,Cusco,Paruro,Accha,3856,12,5,0.1111,,medio,0,4,0,4,0,0,0,0,0,0,0,0
+081003,Cusco,Paruro,Ccapi,4210,13,3,0.0667,,bajo,0,3,1,0,2,0,0,0,0,0,0,0
+081004,Cusco,Paruro,Colcha,1273,8,1,0.0222,,bajo,0,3,1,0,2,0,0,0,0,0,0,0
+081005,Cusco,Paruro,Huanoquite,6373,14,4,0.0889,,bajo,0,4,1,2,1,0,0,0,0,0,0,0
+081006,Cusco,Paruro,Omacha,7009,26,5,0.1111,,medio,0,13,4,4,2,2,0,0,0,0,0,0
+081007,Cusco,Paruro,Paccaritambo,2552,8,1,0.0222,,bajo,0,15,2,4,9,1,0,0,0,0,0,0
+081008,Cusco,Paruro,Pillpinto,1250,5,1,0.0222,,bajo,0,2,0,0,2,0,0,0,0,0,0,0
+081009,Cusco,Paruro,Yaurisque,3253,13,4,0.0889,,bajo,0,13,1,4,7,1,0,0,0,0,0,0
+081101,Cusco,Paucartambo,Paucartambo,15200,32,18,0.4,,alto,0,52,11,25,13,1,0,0,0,0,0,0
+081102,Cusco,Paucartambo,Caicay,3544,10,3,0.0667,,bajo,0,16,6,5,5,2,0,0,0,0,0,1
+081103,Cusco,Paucartambo,Challabamba,10999,25,5,0.1111,,medio,1,69,33,29,7,2,0,0,0,0,0,0
+081104,Cusco,Paucartambo,Colquepata,10443,13,1,0.0222,,bajo,0,36,4,18,12,0,0,0,0,0,0,0
+081105,Cusco,Paucartambo,Huancarani,7884,18,6,0.1333,,medio,1,11,0,2,6,0,0,0,0,0,0,0
+081106,Cusco,Paucartambo,Kosñipata,5642,25,12,0.2667,FEN 1982-83,alto,0,41,7,7,27,0,0,0,0,0,0,0
+081201,Cusco,Quispicanchi,Urcos,14364,26,14,0.3111,,alto,0,29,5,17,6,3,0,0,0,0,0,1
+081202,Cusco,Quispicanchi,Andahuaylillas,6737,28,5,0.1111,,medio,0,2,1,0,1,1,0,0,0,0,0,0
+081203,Cusco,Quispicanchi,Camanti,2833,18,9,0.2,,medio,0,58,16,3,39,2,0,0,0,0,0,0
+081204,Cusco,Quispicanchi,Ccarhuayo,3839,15,2,0.0444,,bajo,0,6,0,5,1,1,0,0,0,0,0,0
+081205,Cusco,Quispicanchi,Ccatca,15125,17,2,0.0444,,bajo,0,21,4,9,6,2,0,0,0,0,0,0
+081206,Cusco,Quispicanchi,Cusipata,5306,7,1,0.0222,,bajo,0,13,3,2,6,1,0,0,0,0,0,0
+081207,Cusco,Quispicanchi,Huaro,4739,15,6,0.1333,,medio,0,6,2,0,3,0,0,0,0,0,0,0
+081208,Cusco,Quispicanchi,Lucre,4922,28,14,0.3111,FEN 1997-98,alto,1,2,0,2,0,1,0,0,0,0,0,1
+081209,Cusco,Quispicanchi,Marcapata,5551,41,11,0.2444,FEN 1997-98,medio,1,56,18,3,34,2,0,0,0,0,0,0
+081210,Cusco,Quispicanchi,Ocongate,19172,32,12,0.2667,,alto,0,48,13,11,19,1,0,0,0,0,0,0
+081211,Cusco,Quispicanchi,Oropesa,9484,23,13,0.2889,FEN 1997-98,alto,1,2,1,1,0,1,0,0,0,0,0,0
+081212,Cusco,Quispicanchi,Quiquijana,12346,21,3,0.0667,,bajo,0,8,1,4,2,3,0,0,0,0,0,0
+081301,Cusco,Urubamba,Urubamba,25730,16,10,0.2222,,medio,0,5,4,0,1,1,0,0,0,0,0,0
+081302,Cusco,Urubamba,Chinchero,12870,11,7,0.1556,FEN 1997-98,medio,0,2,0,2,0,0,0,0,0,0,0,0
+081303,Cusco,Urubamba,Huayllabamba,5830,10,5,0.1111,,medio,0,3,0,2,1,0,0,0,0,0,0,0
+081304,Cusco,Urubamba,Machupicchu,8990,61,26,0.5778,FEN 1997-98,alto,0,19,6,3,10,3,0,0,0,0,0,0
+081305,Cusco,Urubamba,Maras,7681,5,3,0.0667,,bajo,0,12,1,5,5,1,0,0,0,0,0,0
+081306,Cusco,Urubamba,Ollantaytambo,11945,29,18,0.4,,alto,0,42,9,10,20,3,0,0,0,0,0,0
+081307,Cusco,Urubamba,Yucay,3309,5,3,0.0667,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+090101,Huancavelica,Huancavelica,Huancavelica,43975,97,14,0.3111,FEN 1997-98; Niño Costero 2017,muy alto,4,106,18,35,20,4,0,0,0,0,0,1
+090102,Huancavelica,Huancavelica,Acobambilla,2628,19,4,0.0889,Niño Costero 2017,medio,2,32,8,1,19,3,0,0,0,0,0,0
+090103,Huancavelica,Huancavelica,Acoria,24633,66,9,0.2,Niño Costero 2017,medio,3,59,10,21,24,4,0,0,0,0,0,0
+090104,Huancavelica,Huancavelica,Conayca,988,7,0,0.0,Niño Costero 2017,medio,1,5,0,3,2,0,0,0,0,0,0,0
+090105,Huancavelica,Huancavelica,Cuenca,2083,12,1,0.0222,Niño Costero 2017,medio,0,3,0,2,1,2,0,0,0,0,0,0
+090106,Huancavelica,Huancavelica,Huachocolpa,2588,8,0,0.0,Niño Costero 2017,medio,1,21,3,2,12,0,0,0,0,0,0,0
+090107,Huancavelica,Huancavelica,Huayllahuara,754,10,1,0.0222,Niño Costero 2017,medio,1,3,0,0,2,0,0,0,0,0,0,0
+090108,Huancavelica,Huancavelica,Izcuchaca,1229,25,9,0.2,Niño Costero 2017,medio,0,4,0,2,2,0,0,0,0,0,0,0
+090109,Huancavelica,Huancavelica,Laria,1000,12,0,0.0,Niño Costero 2017,medio,2,10,0,1,7,0,0,0,0,0,0,0
+090110,Huancavelica,Huancavelica,Manta,1073,11,2,0.0444,Niño Costero 2017,medio,1,12,5,1,5,0,0,0,0,0,0,0
+090111,Huancavelica,Huancavelica,Mariscal Cáceres,1062,8,2,0.0444,,bajo,0,1,0,1,0,0,0,0,0,0,0,0
+090112,Huancavelica,Huancavelica,Moya,1293,11,3,0.0667,Niño Costero 2017,medio,0,13,4,1,8,0,0,0,0,0,0,1
+090113,Huancavelica,Huancavelica,Nuevo Occoro,2197,21,3,0.0667,Niño Costero 2017,medio,0,10,4,2,3,0,0,0,0,0,0,0
+090114,Huancavelica,Huancavelica,Palca,3029,17,1,0.0222,Niño Costero 2017,medio,5,27,8,2,14,2,0,0,0,0,0,0
+090115,Huancavelica,Huancavelica,Pilchaca,685,9,1,0.0222,Niño Costero 2017,medio,0,2,0,2,0,1,0,0,0,0,0,0
+090116,Huancavelica,Huancavelica,Vilca,2408,18,4,0.0889,FEN 1997-98,medio,4,14,4,3,7,1,0,0,0,0,0,0
+090117,Huancavelica,Huancavelica,Yauli,27367,91,15,0.3333,Niño Costero 2017,alto,1,23,4,7,7,1,0,0,0,0,0,0
+090118,Huancavelica,Huancavelica,Ascensión,13181,35,2,0.0444,Niño Costero 2017,medio,1,17,2,4,6,2,0,0,0,0,0,0
+090119,Huancavelica,Huancavelica,Huando,7729,19,4,0.0889,Niño Costero 2017,medio,0,23,6,5,9,1,0,0,0,0,0,0
+090201,Huancavelica,Acobamba,Acobamba,10540,57,7,0.1556,Niño Costero 2017,medio,4,10,1,5,3,0,0,0,0,0,0,0
+090202,Huancavelica,Acobamba,Andabamba,4147,25,2,0.0444,Niño Costero 2017,medio,0,17,5,9,3,1,0,0,0,0,0,0
+090203,Huancavelica,Acobamba,Anta,6854,24,2,0.0444,Niño Costero 2017,medio,0,2,0,1,1,0,0,0,0,0,0,0
+090204,Huancavelica,Acobamba,Caja,2456,16,1,0.0222,Niño Costero 2017,medio,0,9,2,3,3,0,0,0,0,0,0,0
+090205,Huancavelica,Acobamba,Marcas,2086,17,1,0.0222,Niño Costero 2017,medio,0,18,4,9,5,1,0,0,0,0,0,0
+090206,Huancavelica,Acobamba,Paucara,13169,35,5,0.1111,Niño Costero 2017,medio,2,8,3,2,2,1,0,0,0,0,0,0
+090207,Huancavelica,Acobamba,Pomacocha,3380,10,0,0.0,Niño Costero 2017,medio,1,11,0,5,4,1,0,0,0,0,0,0
+090208,Huancavelica,Acobamba,Rosario,6218,17,1,0.0222,Niño Costero 2017,medio,2,10,4,4,1,1,0,0,0,0,0,0
+090301,Huancavelica,Angaraes,Lircay,28466,24,6,0.1333,Niño Costero 2017,medio,0,54,15,11,24,0,0,0,0,0,0,2
+090302,Huancavelica,Angaraes,Anchonga,8838,14,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,1,0,0,0,0,0,1
+090303,Huancavelica,Angaraes,Callanmarca,893,13,1,0.0222,Niño Costero 2017,medio,1,5,0,0,5,0,0,0,0,0,0,0
+090304,Huancavelica,Angaraes,Ccochaccasa,4086,12,1,0.0222,Niño Costero 2017,medio,1,3,0,0,1,0,0,0,0,0,0,0
+090305,Huancavelica,Angaraes,Chincho,1226,23,1,0.0222,Niño Costero 2017,medio,2,12,6,6,0,2,0,0,0,0,0,0
+090306,Huancavelica,Angaraes,Congalla,4394,19,2,0.0444,Niño Costero 2017,medio,0,5,0,2,3,0,0,0,0,0,0,2
+090307,Huancavelica,Angaraes,Huanca-Huanca,1697,11,1,0.0222,Niño Costero 2017,medio,1,1,0,0,1,0,0,0,0,0,0,0
+090308,Huancavelica,Angaraes,Huayllay Grande,1414,7,0,0.0,Niño Costero 2017,medio,2,3,0,0,3,0,0,0,0,0,0,0
+090309,Huancavelica,Angaraes,Julcamarca,1244,15,1,0.0222,Niño Costero 2017,medio,1,9,1,5,1,0,0,0,0,0,0,1
+090310,Huancavelica,Angaraes,San Antonio de Antaparco,1048,14,2,0.0444,Niño Costero 2017,medio,0,9,4,2,3,1,0,0,0,0,0,0
+090311,Huancavelica,Angaraes,Santo Tomás de Pata,1464,16,2,0.0444,Niño Costero 2017,medio,0,8,5,1,2,0,0,0,0,0,0,0
+090312,Huancavelica,Angaraes,Secclla,3151,11,1,0.0222,Niño Costero 2017,medio,0,9,3,2,1,0,0,0,0,0,0,0
+090401,Huancavelica,Castrovirreyna,Castrovirreyna,3789,76,5,0.1111,Niño Costero 2017,medio,1,41,12,1,24,1,0,0,0,0,0,0
+090402,Huancavelica,Castrovirreyna,Arma,1591,24,8,0.1778,Niño Costero 2017,medio,1,19,4,2,12,0,0,0,0,0,0,0
+090403,Huancavelica,Castrovirreyna,Aurahua,2164,36,4,0.0889,Niño Costero 2017,medio,0,6,1,3,1,1,0,0,0,0,0,0
+090404,Huancavelica,Castrovirreyna,Capillas,1492,15,5,0.1111,Niño Costero 2017,medio,1,20,13,1,6,0,0,0,0,0,0,0
+090405,Huancavelica,Castrovirreyna,Chupamarca,1234,37,9,0.2,FEN 1997-98; Niño Costero 2017,alto,0,12,2,0,9,0,0,0,0,0,0,0
+090406,Huancavelica,Castrovirreyna,Cocas,1077,14,2,0.0444,Niño Costero 2017,medio,0,8,3,0,4,0,0,0,0,0,0,0
+090407,Huancavelica,Castrovirreyna,Huachos,1786,30,3,0.0667,Niño Costero 2017,medio,4,12,5,2,5,0,0,0,0,0,0,0
+090408,Huancavelica,Castrovirreyna,Huamatambo,661,13,1,0.0222,Niño Costero 2017,medio,2,6,2,1,3,0,0,0,0,0,0,0
+090409,Huancavelica,Castrovirreyna,Mollepampa,1339,17,2,0.0444,Niño Costero 2017,medio,0,20,4,4,12,1,0,0,0,0,0,0
+090410,Huancavelica,Castrovirreyna,San Juan,866,17,5,0.1111,Niño Costero 2017,medio,3,25,17,0,8,0,0,0,0,0,0,0
+090411,Huancavelica,Castrovirreyna,Santa Ana,1397,26,2,0.0444,Niño Costero 2017,medio,1,21,5,1,6,0,0,0,0,0,0,0
+090412,Huancavelica,Castrovirreyna,Tantara,911,20,6,0.1333,Niño Costero 2017,medio,0,17,4,2,11,0,0,0,0,0,0,0
+090413,Huancavelica,Castrovirreyna,Ticrapo,1868,27,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,0,29,9,6,14,1,0,0,0,0,0,0
+090501,Huancavelica,Churcampa,Churcampa,6094,41,6,0.1333,Niño Costero 2017,medio,6,22,2,8,11,1,0,0,0,0,0,0
+090502,Huancavelica,Churcampa,Anco,6899,41,3,0.0667,Niño Costero 2017,medio,1,41,10,11,17,0,0,0,0,0,0,1
+090503,Huancavelica,Churcampa,Chinchihuasi,2758,44,1,0.0222,Niño Costero 2017,medio,3,16,1,3,11,0,0,0,0,0,0,1
+090504,Huancavelica,Churcampa,El Carmen,2998,30,4,0.0889,Niño Costero 2017,medio,3,16,4,8,3,1,0,0,0,0,0,0
+090505,Huancavelica,Churcampa,La Merced,782,17,2,0.0444,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,0
+090506,Huancavelica,Churcampa,Locroja,4507,24,3,0.0667,Niño Costero 2017,medio,3,19,8,6,5,1,0,0,0,0,0,1
+090507,Huancavelica,Churcampa,Paucarbamba,5900,59,3,0.0667,Niño Costero 2017,medio,0,14,1,3,9,2,0,0,0,0,0,1
+090508,Huancavelica,Churcampa,San Miguel de Mayocc,890,17,1,0.0222,Niño Costero 2017,medio,0,12,4,5,3,1,0,0,0,0,0,0
+090509,Huancavelica,Churcampa,San Pedro de Coris,3234,16,2,0.0444,Niño Costero 2017,medio,1,8,0,1,7,1,0,0,0,0,0,0
+090510,Huancavelica,Churcampa,Pachamarca,2549,22,1,0.0222,Niño Costero 2017,medio,0,4,0,4,0,0,0,0,0,0,0,0
+090511,Huancavelica,Churcampa,Cosme,3708,27,0,0.0,Niño Costero 2017,medio,2,0,0,0,0,1,0,0,0,0,0,0
+090601,Huancavelica,Huaytará,Huaytará,2214,14,3,0.0667,Niño Costero 2017,medio,0,51,24,4,23,1,0,0,0,0,0,0
+090602,Huancavelica,Huaytará,Ayavi,859,15,1,0.0222,Niño Costero 2017,medio,0,10,3,1,6,0,0,0,0,0,0,1
+090603,Huancavelica,Huaytará,Córdova,1444,15,1,0.0222,Niño Costero 2017,medio,1,1,0,0,1,0,0,0,0,0,0,1
+090604,Huancavelica,Huaytará,Huayacundo Arma,479,12,0,0.0,Niño Costero 2017,medio,1,11,1,6,4,0,0,0,0,0,0,0
+090605,Huancavelica,Huaytará,Laramarca,696,15,1,0.0222,Niño Costero 2017,medio,0,9,3,0,6,0,0,0,0,0,0,1
+090606,Huancavelica,Huaytará,Ocoyo,1218,12,1,0.0222,Niño Costero 2017,medio,0,1,0,0,1,0,0,0,0,0,0,1
+090607,Huancavelica,Huaytará,Pilpichaca,5330,59,2,0.0444,Niño Costero 2017,medio,1,53,14,1,25,0,0,0,0,0,0,0
+090608,Huancavelica,Huaytará,Querco,957,13,2,0.0444,Niño Costero 2017,medio,0,2,0,1,1,0,0,0,0,0,0,1
+090609,Huancavelica,Huaytará,Quito-Arma,946,17,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,25,6,14,4,1,0,0,0,0,0,2
+090610,Huancavelica,Huaytará,San Antonio de Cusicancha,1977,8,0,0.0,Niño Costero 2017,medio,0,6,2,1,3,0,0,0,0,0,0,1
+090611,Huancavelica,Huaytará,San Francisco de Sangayaico,1334,20,0,0.0,Niño Costero 2017,medio,1,2,2,0,0,0,0,0,0,0,0,2
+090612,Huancavelica,Huaytará,San Isidro,817,12,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+090613,Huancavelica,Huaytará,Santiago de Chocorvos,2919,20,1,0.0222,Niño Costero 2017,medio,1,28,16,1,11,0,0,0,0,0,0,1
+090614,Huancavelica,Huaytará,Santiago de Quirahuara,796,15,0,0.0,Niño Costero 2017,medio,1,4,4,0,0,0,0,0,0,0,0,1
+090615,Huancavelica,Huaytará,Santo Domingo de Capillas,1085,25,2,0.0444,Niño Costero 2017,medio,1,2,1,1,0,1,0,0,0,0,0,2
+090616,Huancavelica,Huaytará,Tambo,1035,15,2,0.0444,Niño Costero 2017,medio,0,9,0,2,7,0,0,0,0,0,0,1
+090701,Huancavelica,Tayacaja,Pampas,10604,30,7,0.1556,FEN 1982-83; Niño Costero 2017,alto,4,22,1,6,13,3,0,0,0,0,0,0
+090702,Huancavelica,Tayacaja,Acostambo,4572,22,3,0.0667,Niño Costero 2017,medio,0,13,2,4,7,1,0,0,0,0,0,1
+090703,Huancavelica,Tayacaja,Acraquia,4994,10,1,0.0222,,bajo,1,6,0,1,5,0,0,0,0,0,0,0
+090704,Huancavelica,Tayacaja,Ahuaycha,5132,15,2,0.0444,Niño Costero 2017,medio,2,12,2,1,9,1,0,0,0,0,0,0
+090705,Huancavelica,Tayacaja,Colcabamba,15413,34,14,0.3111,FEN 1982-83; Niño Costero 2017,muy alto,1,98,10,18,70,3,0,0,0,0,0,1
+090706,Huancavelica,Tayacaja,Daniel Hernandez,11082,17,3,0.0667,Niño Costero 2017,medio,1,18,1,1,16,1,0,0,0,0,0,1
+090707,Huancavelica,Tayacaja,Huachocolpa,3504,14,3,0.0667,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+090709,Huancavelica,Tayacaja,Huaribamba,4949,10,2,0.0444,Niño Costero 2017,medio,2,18,3,5,9,0,0,0,0,0,0,0
+090710,Huancavelica,Tayacaja,Ñahuimpuquio,1840,6,2,0.0444,Niño Costero 2017,medio,0,9,0,2,7,0,0,0,0,0,0,0
+090711,Huancavelica,Tayacaja,Pazos,7067,24,2,0.0444,Niño Costero 2017,medio,4,9,3,1,5,3,0,0,0,0,0,0
+090713,Huancavelica,Tayacaja,Quishuar,897,7,1,0.0222,,bajo,2,6,0,1,5,0,0,0,0,0,0,0
+090714,Huancavelica,Tayacaja,Salcabamba,5096,23,3,0.0667,Niño Costero 2017,medio,4,24,6,3,15,1,0,0,0,0,0,0
+090715,Huancavelica,Tayacaja,Salcahuasi,3639,5,2,0.0444,,bajo,0,1,0,1,0,0,0,0,0,0,0,0
+090716,Huancavelica,Tayacaja,San Marcos de Rocchac,3051,18,3,0.0667,Niño Costero 2017,medio,4,19,2,2,13,0,0,0,0,0,0,0
+090717,Huancavelica,Tayacaja,Surcubamba,5494,15,2,0.0444,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,1
+090718,Huancavelica,Tayacaja,Tintay Puncu,3274,19,1,0.0222,Niño Costero 2017,medio,8,2,0,1,0,0,0,0,0,0,0,1
+090719,Huancavelica,Tayacaja,Quichuas,5146,16,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,1,0,0,0,0,0,0
+090720,Huancavelica,Tayacaja,Andaymarca,2637,15,0,0.0,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,0
+090721,Huancavelica,Tayacaja,Roble,1401,7,0,0.0,,bajo,1,0,0,0,0,1,0,0,0,0,0,0
+090722,Huancavelica,Tayacaja,Pichos,2561,5,0,0.0,,bajo,1,0,0,0,0,2,0,0,0,0,0,0
+090723,Huancavelica,Tayacaja,Santiago de Tucuma,,3,0,0.0,,bajo,0,0,0,0,0,1,0,0,0,0,0,0
+090724,Huancavelica,Tayacaja,Lambras,,7,0,0.0,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+090725,Huancavelica,Tayacaja,Cochabamba,,8,0,0.0,,bajo,5,0,0,0,0,0,0,0,0,0,0,0
+100101,Huánuco,Huánuco,Huánuco,99453,32,9,0.2,,medio,4,19,11,3,4,1,0,0,0,0,0,1
+100102,Huánuco,Huánuco,Amarilis,90194,28,7,0.1556,FEN 1997-98,medio,4,23,7,10,2,2,0,0,0,0,0,1
+100103,Huánuco,Huánuco,Chinchao,19463,22,11,0.2444,,medio,1,52,10,26,10,6,0,0,0,0,0,0
+100104,Huánuco,Huánuco,Churubamba,22381,25,2,0.0444,,bajo,3,64,18,36,6,3,0,0,0,0,0,0
+100105,Huánuco,Huánuco,Margos,7506,12,5,0.1111,,medio,2,3,1,0,2,1,0,0,0,0,0,0
+100106,Huánuco,Huánuco,Quisqui,6163,5,1,0.0222,FEN 1997-98,medio,0,15,0,11,3,0,0,0,0,0,0,0
+100107,Huánuco,Huánuco,San Francisco de Cayrán,5888,13,0,0.0,,bajo,1,16,6,8,0,1,0,0,0,0,0,0
+100108,Huánuco,Huánuco,San Pedro de Chaulán,4732,10,0,0.0,,bajo,0,13,2,10,0,1,0,0,0,0,0,0
+100109,Huánuco,Huánuco,Santa María del Valle,24756,33,4,0.0889,,bajo,2,63,25,23,3,3,0,0,0,0,0,0
+100110,Huánuco,Huánuco,Yarumayo,2964,17,0,0.0,,bajo,2,6,2,2,2,2,0,0,0,0,0,0
+100111,Huánuco,Huánuco,Pillco Marca,35516,19,0,0.0,,bajo,5,7,3,3,1,1,0,0,0,0,0,0
+100112,Huánuco,Huánuco,Yacus,3152,14,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+100113,Huánuco,Huánuco,San Pablo de Pillao,8524,13,0,0.0,,bajo,7,0,0,0,0,0,0,0,0,0,0,3
+100201,Huánuco,Ambo,Ambo,20979,34,6,0.1333,FEN 1997-98,medio,6,21,7,4,10,2,0,0,0,0,0,0
+100202,Huánuco,Ambo,Cayna,3943,6,0,0.0,,bajo,2,16,4,2,8,1,0,0,0,0,0,1
+100203,Huánuco,Ambo,Colpas,2964,4,0,0.0,,bajo,0,8,2,5,1,1,0,0,0,0,0,0
+100204,Huánuco,Ambo,Conchamarca,6195,14,1,0.0222,,bajo,4,17,1,10,3,0,0,0,0,0,0,2
+100205,Huánuco,Ambo,Huacar,9103,9,1,0.0222,,bajo,4,17,8,2,7,2,0,0,0,0,0,0
+100206,Huánuco,Ambo,San Francisco,2571,14,1,0.0222,,bajo,1,7,5,1,1,1,0,0,0,0,0,0
+100207,Huánuco,Ambo,San Rafael,11903,40,10,0.2222,FEN 1997-98,medio,0,57,23,3,30,8,0,0,0,0,0,0
+100208,Huánuco,Ambo,Tomay Kichwa,4454,14,4,0.0889,FEN 1997-98,medio,0,21,2,12,0,0,0,0,0,0,0,0
+100301,Huánuco,Dos de Mayo,La Unión,6078,14,5,0.1111,,medio,0,8,4,2,1,1,0,0,0,0,0,0
+100307,Huánuco,Dos de Mayo,Chuquis,4468,7,0,0.0,,bajo,2,10,5,2,2,0,0,0,0,0,0,0
+100311,Huánuco,Dos de Mayo,Marías,7180,18,2,0.0444,FEN 1997-98,medio,1,6,0,5,0,0,0,0,0,0,0,0
+100313,Huánuco,Dos de Mayo,Pachas,7282,5,1,0.0222,,bajo,0,8,2,2,3,1,0,0,0,0,0,0
+100316,Huánuco,Dos de Mayo,Quivilla,1301,2,1,0.0222,,bajo,0,2,1,1,0,0,0,0,0,0,0,0
+100317,Huánuco,Dos de Mayo,Ripan,6739,10,0,0.0,,bajo,1,5,1,2,2,0,0,0,0,0,0,0
+100321,Huánuco,Dos de Mayo,Shunqui,2317,2,0,0.0,,bajo,0,3,1,0,2,0,0,0,0,0,0,0
+100322,Huánuco,Dos de Mayo,Sillapata,3467,9,0,0.0,,bajo,1,7,0,4,3,2,0,0,0,0,0,0
+100323,Huánuco,Dos de Mayo,Yanas,3123,10,0,0.0,,bajo,1,7,2,2,1,0,0,0,0,0,0,0
+100401,Huánuco,Huacaybamba,Huacaybamba,6587,14,1,0.0222,,bajo,1,13,3,8,2,1,0,0,0,0,0,0
+100402,Huánuco,Huacaybamba,Canchabamba,3436,16,1,0.0222,,bajo,2,6,1,4,1,0,0,0,0,0,0,0
+100403,Huánuco,Huacaybamba,Cochabamba,1781,12,1,0.0222,,bajo,3,5,1,3,0,0,0,0,0,0,0,1
+100404,Huánuco,Huacaybamba,Pinra,7294,16,1,0.0222,,bajo,8,11,3,8,0,1,0,0,0,0,0,1
+100501,Huánuco,Huamalies,Llata,14529,8,2,0.0444,,bajo,0,3,0,1,2,1,0,0,0,0,0,0
+100502,Huánuco,Huamalies,Arancay,2132,5,1,0.0222,,bajo,0,2,0,2,0,0,0,0,0,0,0,0
+100503,Huánuco,Huamalies,Chavín de Pariarca,4613,9,0,0.0,,bajo,1,2,0,2,0,1,0,0,0,0,0,0
+100504,Huánuco,Huamalies,Jacas Grande,7282,25,0,0.0,,bajo,4,24,2,11,4,0,0,0,0,0,0,0
+100505,Huánuco,Huamalies,Jircan,1912,6,2,0.0444,FEN 1997-98,medio,0,6,2,2,2,0,0,0,0,0,0,0
+100506,Huánuco,Huamalies,Miraflores,4013,9,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+100507,Huánuco,Huamalies,Monzón,15394,23,7,0.1556,,medio,2,2,0,1,0,1,0,0,0,0,0,0
+100508,Huánuco,Huamalies,Punchao,2390,10,1,0.0222,,bajo,2,0,0,0,0,0,0,0,0,0,0,0
+100509,Huánuco,Huamalies,Puños,5640,19,2,0.0444,,bajo,2,13,0,7,5,0,0,0,0,0,0,0
+100510,Huánuco,Huamalies,Singa,3721,6,1,0.0222,,bajo,1,0,0,0,0,0,0,0,0,0,0,1
+100511,Huánuco,Huamalies,Tantamayo,2406,21,0,0.0,,bajo,2,5,0,5,0,1,0,0,0,0,0,0
+100601,Huánuco,Leoncio Prado,Rupa-rupa,65370,71,26,0.5778,FEN 1997-98,alto,0,2,0,2,0,0,0,0,0,0,0,0
+100602,Huánuco,Leoncio Prado,Daniel Alomias Robles,8697,7,5,0.1111,,medio,0,2,1,1,0,2,0,0,0,0,0,0
+100603,Huánuco,Leoncio Prado,Hermilio Valdizán,4782,17,3,0.0667,FEN 1997-98,medio,5,2,1,1,0,0,0,0,0,0,0,0
+100604,Huánuco,Leoncio Prado,José Crespo y Castillo,28246,28,10,0.2222,,medio,1,4,0,4,0,1,0,0,0,0,0,0
+100605,Huánuco,Leoncio Prado,Luyando,10897,20,5,0.1111,,medio,1,2,0,2,0,1,0,0,0,0,0,1
+100606,Huánuco,Leoncio Prado,Mariano Damaso Beraun,13931,18,5,0.1111,,medio,0,7,3,4,0,2,0,0,0,0,0,0
+100607,Huánuco,Leoncio Prado,Pucayacu,3385,9,0,0.0,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+100608,Huánuco,Leoncio Prado,Castillo Grande,7943,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,1
+100609,Huánuco,Leoncio Prado,Pueblo Nuevo,,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+100610,Huánuco,Leoncio Prado,Santo Domingo de Anda,2414,4,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+100701,Huánuco,Marañón,Huacrachuco,16384,31,3,0.0667,FEN 1997-98,medio,9,43,12,28,1,6,0,0,0,0,0,6
+100702,Huánuco,Marañón,Cholon,7044,25,3,0.0667,,bajo,3,1,1,0,0,0,0,0,0,0,0,0
+100703,Huánuco,Marañón,San Buenaventura,2913,12,1,0.0222,,bajo,3,1,0,1,0,0,0,0,0,0,0,0
+100704,Huánuco,Marañón,La Morada,3043,18,0,0.0,,bajo,2,0,0,0,0,0,0,0,0,0,0,0
+100705,Huánuco,Marañón,Santa Rosa de Alto Yanajanca,2512,6,0,0.0,,bajo,2,0,0,0,0,0,0,0,0,0,0,0
+100801,Huánuco,Pachitea,Panao,23852,22,2,0.0444,,bajo,5,10,0,4,6,0,0,0,0,0,0,1
+100802,Huánuco,Pachitea,Chaglla,12314,25,2,0.0444,,bajo,4,15,3,6,6,0,0,0,0,0,0,0
+100803,Huánuco,Pachitea,Molino,14546,4,1,0.0222,,bajo,1,6,2,3,1,1,0,0,0,0,0,1
+100804,Huánuco,Pachitea,Umari,13139,9,0,0.0,,bajo,2,16,0,13,2,1,0,0,0,0,0,0
+100901,Huánuco,Puerto Inca,Puerto Inca,14668,12,4,0.0889,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+100902,Huánuco,Puerto Inca,Codo del Pozuzo,8429,11,4,0.0889,FEN 1997-98,medio,0,7,2,4,1,0,0,0,0,0,0,0
+100903,Huánuco,Puerto Inca,Honoria,6792,14,5,0.1111,,medio,0,1,0,0,1,0,0,0,0,0,0,0
+100904,Huánuco,Puerto Inca,Tournavista,6505,14,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,1
+100905,Huánuco,Puerto Inca,Yuyapichis,7270,14,6,0.1333,,medio,0,0,0,0,0,0,0,0,0,0,0,0
+101001,Huánuco,Lauricocha,Jesús,5260,18,1,0.0222,,bajo,1,11,3,4,2,3,0,0,0,0,0,0
+101002,Huánuco,Lauricocha,Baños,3259,9,0,0.0,,bajo,2,7,1,2,2,0,0,0,0,0,0,0
+101003,Huánuco,Lauricocha,Jivia,1943,10,2,0.0444,,bajo,1,10,1,7,2,1,0,0,0,0,0,0
+101004,Huánuco,Lauricocha,Queropalca,882,8,1,0.0222,,bajo,0,4,0,1,3,1,0,0,0,0,0,0
+101005,Huánuco,Lauricocha,Rondos,5691,8,1,0.0222,,bajo,1,15,4,8,3,0,0,0,0,0,0,0
+101006,Huánuco,Lauricocha,San Francisco de Asis,2311,9,1,0.0222,,bajo,1,8,0,3,4,1,0,0,0,0,0,0
+101007,Huánuco,Lauricocha,San Miguel de Cauri,5849,11,2,0.0444,FEN 1997-98,medio,0,15,1,1,10,0,0,0,0,0,0,0
+101101,Huánuco,Yarowilca,Chavinillo,7644,12,2,0.0444,FEN 1997-98,medio,0,12,2,4,5,1,0,0,0,0,0,0
+101102,Huánuco,Yarowilca,Cahuac,2217,4,0,0.0,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+101103,Huánuco,Yarowilca,Chacabamba,2423,8,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+101104,Huánuco,Yarowilca,Aparicio Pomares,7473,13,0,0.0,,bajo,1,13,4,7,2,0,0,0,0,0,0,0
+101105,Huánuco,Yarowilca,Jacas Chico,2470,10,1,0.0222,,bajo,0,8,0,5,3,1,0,0,0,0,0,0
+101106,Huánuco,Yarowilca,Obas,6275,9,0,0.0,,bajo,2,3,2,1,0,0,0,0,0,0,0,0
+101107,Huánuco,Yarowilca,Pampamarca,1981,5,1,0.0222,,bajo,1,0,0,0,0,0,0,0,0,0,0,0
+101108,Huánuco,Yarowilca,Choras,3741,5,0,0.0,,bajo,0,2,0,2,0,0,0,0,0,0,0,0
+110101,Ica,Ica,Ica,186298,46,20,0.4444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,0,0,0,0,0,2,2,3000,750,1555890,0
+110102,Ica,Ica,La Tinguiña,40424,10,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,2,2,0,0,1,1,1,2500,1000,337438,0
+110103,Ica,Ica,Los Aquijes,18757,6,3,0.0667,FEN 1982-83; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+110104,Ica,Ica,Ocucaje,5424,10,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,4,0,45,16,1670443,0
+110105,Ica,Ica,Pachacutec,7836,4,0,0.0,Niño Costero 2017,medio,0,1,0,1,0,0,0,0,0,0,0,0
+110106,Ica,Ica,Parcona,54382,10,6,0.1333,FEN 1982-83; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+110107,Ica,Ica,Pueblo Nuevo,6129,2,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+110108,Ica,Ica,Salas,24071,6,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,2,1,1,0,0,0,0,0,0,0,0
+110109,Ica,Ica,San José de Los Molinos,8157,16,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,31,26,1,4,1,10,6,4992,968,9701385,0
+110110,Ica,Ica,San Juan Bautista,7787,9,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,1,0,1236,384,823885,0
+110111,Ica,Ica,Santiago,27947,6,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,10,6,3,0,1,4,4,1094,190,8697952,0
+110112,Ica,Ica,Subtanjalla,28051,3,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+110113,Ica,Ica,Tate,5587,4,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,1,0,0,0,0,0,0
+110114,Ica,Ica,Yauca del Rosario,2517,13,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,36,36,0,0,0,1,1,4500,2000,579713,0
+110201,Ica,Chincha,Chincha Alta,87712,17,8,0.1778,Niño Costero 2017,medio,0,15,15,0,0,0,0,0,0,0,0,0
+110202,Ica,Chincha,Alto Larán,8743,17,4,0.0889,Niño Costero 2017,medio,0,38,33,0,5,1,1,1,215,115,889387,0
+110203,Ica,Chincha,Chavín,3506,9,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,9,7,0,2,0,0,0,0,0,0,0
+110204,Ica,Chincha,Chincha Baja,15336,11,4,0.0889,Niño Costero 2017,medio,0,0,0,0,0,0,1,1,220,70,2056811,0
+110205,Ica,Chincha,El Carmen,14759,14,5,0.1111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,2,1,0,1,1,0,0,0,0,0,0
+110206,Ica,Chincha,Grocio Prado,25941,6,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,5,5,0,0,0,0,0,0,0,0,0
+110207,Ica,Chincha,Pueblo Nuevo,59541,5,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+110208,Ica,Chincha,San Juan de Yánac,1365,13,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,16,15,0,1,0,0,0,0,0,0,0
+110209,Ica,Chincha,San Pedro de Huacarpana,1538,19,7,0.1556,Niño Costero 2017,medio,0,18,9,1,8,0,0,0,0,0,0,0
+110210,Ica,Chincha,Sunampe,27804,6,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+110211,Ica,Chincha,Tambo de Mora,5648,35,15,0.3333,FEN 1997-98; Niño Costero 2017,muy alto,0,1,0,1,0,0,0,0,0,0,0,0
+110301,Ica,Nazca,Nazca,33897,36,8,0.1778,FEN 1997-98; Niño Costero 2017,alto,0,31,28,1,2,2,0,0,0,0,0,0
+110302,Ica,Nazca,Changuillo,2636,8,1,0.0222,Niño Costero 2017,medio,0,1,1,0,0,0,0,0,0,0,0,0
+110303,Ica,Nazca,El Ingenio,3701,14,4,0.0889,Niño Costero 2017,medio,0,20,20,0,0,0,0,0,0,0,0,0
+110304,Ica,Nazca,Marcona,18786,11,6,0.1333,FEN 1997-98,medio,0,1,0,0,1,0,0,0,0,0,0,0
+110305,Ica,Nazca,Vista Alegre,21971,11,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,3,3,0,0,0,0,0,0,0,0,0
+110401,Ica,Palpa,Palpa,9124,17,6,0.1333,FEN 1982-83; Niño Costero 2017,alto,0,16,16,0,0,2,0,0,0,0,0,0
+110402,Ica,Palpa,Llipata,1888,11,4,0.0889,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+110403,Ica,Palpa,Río Grande,3257,9,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,26,24,1,1,0,0,0,0,0,0,0
+110404,Ica,Palpa,Santa Cruz,1378,7,2,0.0444,Niño Costero 2017,medio,0,24,24,0,0,0,0,0,0,0,0,0
+110405,Ica,Palpa,Tibillo,453,6,0,0.0,Niño Costero 2017,medio,0,22,22,0,0,1,0,0,0,0,0,0
+110501,Ica,Pisco,Pisco,74608,59,23,0.5111,FEN 1997-98; Niño Costero 2017,muy alto,1,0,0,0,0,0,2,0,0,0,872857,0
+110502,Ica,Pisco,Huancano,2127,15,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,50,38,0,12,1,10,2,552,249,15457259,0
+110503,Ica,Pisco,Humay,7312,14,9,0.2,FEN 1997-98; Niño Costero 2017,alto,0,27,18,0,9,0,8,0,0,0,13905625,0
+110504,Ica,Pisco,Independencia,14264,16,4,0.0889,Niño Costero 2017,medio,0,1,1,0,0,0,4,0,0,0,6800682,0
+110505,Ica,Pisco,Paracas,7045,11,8,0.1778,,medio,0,6,0,2,4,2,0,0,0,0,0,0
+110506,Ica,Pisco,San Andrés,18200,5,3,0.0667,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+110507,Ica,Pisco,San Clemente,24860,3,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,3,0,0,0,4287942,0
+110508,Ica,Pisco,Túpac Amaru Inca,17492,3,1,0.0222,,bajo,0,0,0,0,0,0,2,0,0,0,2349017,0
+120101,Junín,Huancayo,Huancayo,148729,151,35,0.7778,FEN 1982-83; FEN 1997-98,muy alto,0,25,8,3,13,2,0,0,0,0,0,3
+120104,Junín,Huancayo,Carhuacallanga,399,8,3,0.0667,,bajo,1,1,1,0,0,0,0,0,0,0,0,0
+120105,Junín,Huancayo,Chacapampa,1163,7,3,0.0667,,bajo,0,7,2,3,2,0,0,0,0,0,0,0
+120106,Junín,Huancayo,Chicche,1106,11,4,0.0889,,bajo,0,5,0,1,4,0,0,0,0,0,0,0
+120107,Junín,Huancayo,Chilca,106250,39,23,0.5111,FEN 1997-98; Niño Costero 2017,muy alto,0,2,0,0,2,0,0,0,0,0,0,1
+120108,Junín,Huancayo,Chongos Alto,1550,8,5,0.1111,,medio,0,17,1,3,9,0,0,0,0,0,0,0
+120111,Junín,Huancayo,Chupuro,2640,5,2,0.0444,,bajo,0,6,3,0,3,0,0,0,0,0,0,0
+120112,Junín,Huancayo,Colca,1315,4,2,0.0444,,bajo,0,13,1,3,8,0,0,0,0,0,0,0
+120113,Junín,Huancayo,Cullhuas,2836,5,3,0.0667,FEN 1997-98,medio,0,5,0,0,5,0,0,0,0,0,0,0
+120114,Junín,Huancayo,El Tambo,187329,48,20,0.4444,FEN 1982-83; FEN 1997-98,muy alto,3,17,3,5,7,0,0,0,0,0,0,1
+120116,Junín,Huancayo,Huacrapuquio,1622,8,7,0.1556,FEN 1997-98,medio,0,1,0,0,1,0,0,0,0,0,0,0
+120117,Junín,Huancayo,Hualhuas,5356,6,5,0.1111,,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120119,Junín,Huancayo,Huancán,19783,12,6,0.1333,FEN 1997-98,medio,2,0,0,0,0,1,0,0,0,0,0,0
+120120,Junín,Huancayo,Huasicancha,936,7,2,0.0444,Niño Costero 2017,medio,0,6,2,1,2,1,0,0,0,0,0,0
+120121,Junín,Huancayo,Huayucachi,11488,13,8,0.1778,FEN 1997-98,medio,1,0,0,0,0,0,0,0,0,0,0,0
+120122,Junín,Huancayo,Ingenio,2836,10,4,0.0889,,bajo,0,9,0,2,6,0,0,0,0,0,0,0
+120124,Junín,Huancayo,Pariahuanca,7634,50,20,0.4444,FEN 1997-98; Niño Costero 2017,muy alto,1,36,11,6,18,1,0,0,0,0,0,0
+120125,Junín,Huancayo,Pilcomayo,21604,20,15,0.3333,FEN 1997-98,alto,0,0,0,0,0,0,0,0,0,0,0,0
+120126,Junín,Huancayo,Pucará,6415,10,5,0.1111,FEN 1997-98,medio,0,10,4,1,5,1,0,0,0,0,0,1
+120127,Junín,Huancayo,Quichuay,2164,7,1,0.0222,,bajo,3,2,1,0,0,0,0,0,0,0,0,0
+120128,Junín,Huancayo,Quilcas,5146,6,5,0.1111,,medio,0,3,0,2,1,0,0,0,0,0,0,0
+120129,Junín,Huancayo,San Agustín,15956,10,6,0.1333,,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120130,Junín,Huancayo,San Jerónimo de Tunán,13285,11,9,0.2,,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120132,Junín,Huancayo,Saño,5845,8,4,0.0889,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120133,Junín,Huancayo,Sapallanga,22072,10,4,0.0889,,bajo,0,2,2,0,0,0,0,0,0,0,0,0
+120134,Junín,Huancayo,Sicaya,11274,14,10,0.2222,FEN 1997-98,medio,0,1,0,0,1,1,0,0,0,0,0,0
+120135,Junín,Huancayo,Santo Domingo de Acobamba,7069,36,10,0.2222,Niño Costero 2017,medio,0,27,2,7,18,0,0,0,0,0,0,0
+120136,Junín,Huancayo,Viques,2802,8,6,0.1333,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120201,Junín,Concepción,Concepción,17730,22,11,0.2444,,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120202,Junín,Concepción,Aco,1885,2,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120203,Junín,Concepción,Andamarca,5898,10,4,0.0889,,bajo,0,30,4,5,21,3,0,0,0,0,0,0
+120204,Junín,Concepción,Chambará,3071,10,3,0.0667,Niño Costero 2017,medio,0,7,1,1,4,1,0,0,0,0,0,0
+120205,Junín,Concepción,Cochas,2265,4,3,0.0667,,bajo,0,12,2,4,5,0,0,0,0,0,0,0
+120206,Junín,Concepción,Comas,7514,15,5,0.1111,Niño Costero 2017,medio,0,81,9,20,49,6,0,0,0,0,0,1
+120207,Junín,Concepción,Heroinas Toledo,1434,4,0,0.0,,bajo,0,4,1,1,2,0,0,0,0,0,0,0
+120208,Junín,Concepción,Manzanares,1746,3,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120209,Junín,Concepción,Mariscal Castilla,2064,4,2,0.0444,Niño Costero 2017,medio,0,13,5,3,5,1,0,0,0,0,0,0
+120210,Junín,Concepción,Matahuasi,5665,10,6,0.1333,,medio,0,0,0,0,0,0,0,0,0,0,0,1
+120211,Junín,Concepción,Mito,1489,13,10,0.2222,,medio,0,1,1,0,0,0,0,0,0,0,0,0
+120212,Junín,Concepción,Nueve de Julio,2062,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120213,Junín,Concepción,Orcotuna,5089,20,11,0.2444,FEN 1997-98,medio,2,0,0,0,0,0,0,0,0,0,0,0
+120214,Junín,Concepción,San José de Quero,6779,7,1,0.0222,,bajo,0,17,1,1,13,0,0,0,0,0,0,0
+120215,Junín,Concepción,Santa Rosa de Ocopa,2271,6,3,0.0667,,bajo,0,2,0,1,1,1,0,0,0,0,0,0
+120301,Junín,Chanchamayo,Chanchamayo,34700,124,23,0.5111,FEN 1997-98; Niño Costero 2017,muy alto,1,68,26,2,40,5,0,0,0,0,0,0
+120302,Junín,Chanchamayo,Perené,58542,69,21,0.4667,FEN 1997-98; Niño Costero 2017,muy alto,2,68,20,9,38,4,0,0,0,0,0,1
+120303,Junín,Chanchamayo,Pichanaqui,53888,40,14,0.3111,FEN 1997-98,alto,0,11,2,1,8,0,0,0,0,0,0,2
+120304,Junín,Chanchamayo,San Luis de Shuaro,6756,12,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,1,37,13,4,20,1,0,0,0,0,0,0
+120305,Junín,Chanchamayo,San Ramón,28715,70,24,0.5333,FEN 1997-98; Niño Costero 2017,muy alto,0,52,24,2,26,5,0,0,0,0,0,0
+120306,Junín,Chanchamayo,Vitoc,2662,14,7,0.1556,,medio,0,20,8,2,10,1,0,0,0,0,0,0
+120401,Junín,Jauja,Jauja,17903,24,13,0.2889,FEN 1997-98,alto,0,1,0,1,0,0,0,0,0,0,0,1
+120402,Junín,Jauja,Acolla,7768,18,7,0.1556,FEN 1997-98,medio,0,4,2,1,1,1,0,0,0,0,0,0
+120403,Junín,Jauja,Apata,5435,9,5,0.1111,,medio,0,11,0,5,4,1,0,0,0,0,0,0
+120404,Junín,Jauja,Ataura,1495,11,4,0.0889,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120405,Junín,Jauja,Canchayllo,1759,9,5,0.1111,FEN 1982-83,medio,0,32,4,12,13,0,0,0,0,0,0,0
+120406,Junín,Jauja,Curicaca,1559,8,3,0.0667,,bajo,0,3,0,1,2,0,0,0,0,0,0,0
+120407,Junín,Jauja,El Mantaro,2887,7,5,0.1111,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120408,Junín,Jauja,Huamalí,1909,3,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120409,Junín,Jauja,Huaripampa,1137,9,7,0.1556,,medio,0,1,0,0,1,0,0,0,0,0,0,0
+120410,Junín,Jauja,Huertas,2434,4,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120411,Junín,Jauja,Janjaillo,849,6,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120412,Junín,Jauja,Julcán,1117,2,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120413,Junín,Jauja,Leonor Ordoñez,1722,9,7,0.1556,,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120414,Junín,Jauja,Llocllapampa,1495,14,4,0.0889,,bajo,0,12,3,4,3,0,0,0,0,0,0,0
+120415,Junín,Jauja,Marco,1843,8,2,0.0444,,bajo,0,2,0,0,1,0,0,0,0,0,0,0
+120416,Junín,Jauja,Masma,2250,7,3,0.0667,FEN 1997-98,medio,0,1,1,0,0,0,0,0,0,0,0,0
+120417,Junín,Jauja,Masma Chicche,954,3,0,0.0,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+120418,Junín,Jauja,Molinos,2021,9,3,0.0667,Niño Costero 2017,medio,0,6,2,0,3,0,0,0,0,0,0,0
+120419,Junín,Jauja,Monobamba,1615,11,8,0.1778,Niño Costero 2017,medio,0,21,5,4,11,3,0,0,0,0,0,0
+120420,Junín,Jauja,Muqui,1085,8,7,0.1556,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120421,Junín,Jauja,Muquiyauyo,2529,13,10,0.2222,,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120422,Junín,Jauja,Paca,1150,5,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120423,Junín,Jauja,Paccha,2086,9,4,0.0889,FEN 1997-98,medio,0,1,0,1,0,0,0,0,0,0,0,0
+120424,Junín,Jauja,Pancán,1705,6,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120425,Junín,Jauja,Parco,1595,5,3,0.0667,,bajo,0,1,0,0,0,0,0,0,0,0,0,0
+120426,Junín,Jauja,Pomacancha,1876,5,1,0.0222,,bajo,0,2,2,0,0,0,0,0,0,0,0,0
+120427,Junín,Jauja,Ricrán,1648,5,1,0.0222,Niño Costero 2017,medio,0,6,1,0,0,0,0,0,0,0,0,0
+120428,Junín,Jauja,San Lorenzo,2598,5,3,0.0667,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120429,Junín,Jauja,San Pedro de Chunán,789,5,0,0.0,,bajo,2,0,0,0,0,0,0,0,0,0,0,0
+120430,Junín,Jauja,Sausa,3041,2,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120431,Junín,Jauja,Sincos,4277,27,15,0.3333,FEN 1997-98,alto,0,3,0,1,2,0,0,0,0,0,0,0
+120432,Junín,Jauja,Tunán Marca,1287,3,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120433,Junín,Jauja,Yauli,1477,4,0,0.0,,bajo,2,3,0,1,1,0,0,0,0,0,0,0
+120434,Junín,Jauja,Yauyos,9272,11,5,0.1111,,medio,0,1,1,0,0,0,0,0,0,0,0,0
+120501,Junín,Junín,Junín,11832,30,9,0.2,Niño Costero 2017,medio,0,13,11,0,1,1,0,0,0,0,0,0
+120502,Junín,Junín,Carhuamayo,6012,9,4,0.0889,FEN 1997-98,medio,0,4,4,0,0,0,0,0,0,0,0,0
+120503,Junín,Junín,Ondores,1861,13,7,0.1556,,medio,0,7,1,2,1,0,0,0,0,0,0,0
+120504,Junín,Junín,Ulcumayo,5544,20,8,0.1778,FEN 1997-98,medio,0,27,10,7,10,1,0,0,0,0,0,0
+120601,Junín,Satipo,Satipo,44055,44,17,0.3778,FEN 1997-98; Niño Costero 2017,muy alto,0,23,4,3,16,1,0,0,0,0,0,0
+120602,Junín,Satipo,Coviriali,4887,14,6,0.1333,,medio,0,12,3,2,6,1,0,0,0,0,0,1
+120603,Junín,Satipo,Llaylla,4540,4,2,0.0444,Niño Costero 2017,medio,0,3,0,0,3,0,0,0,0,0,0,0
+120604,Junín,Satipo,Mazamari,26953,21,12,0.2667,FEN 1997-98; Niño Costero 2017,muy alto,1,22,6,1,15,2,0,0,0,0,0,0
+120605,Junín,Satipo,Pampa Hermosa,4873,25,12,0.2667,Niño Costero 2017,alto,0,56,13,5,34,6,0,0,0,0,0,0
+120606,Junín,Satipo,Pangoa,60717,47,13,0.2889,Niño Costero 2017,alto,3,8,1,1,5,0,0,0,0,0,0,0
+120607,Junín,Satipo,Río Negro,25144,32,11,0.2444,,medio,2,31,5,5,21,3,0,0,0,0,0,0
+120608,Junín,Satipo,Río Tambo,32823,47,13,0.2889,FEN 1997-98; Niño Costero 2017,muy alto,5,27,7,2,17,2,0,0,0,0,0,0
+120609,Junín,Satipo,Vizcatan del Ene,3482,8,0,0.0,,bajo,1,0,0,0,0,2,0,0,0,0,0,0
+120701,Junín,Tarma,Tarma,54802,40,20,0.4444,FEN 1997-98; Niño Costero 2017,muy alto,3,12,4,2,6,1,0,0,0,0,0,1
+120702,Junín,Tarma,Acobamba,10558,14,7,0.1556,,medio,1,13,6,5,2,1,0,0,0,0,0,1
+120703,Junín,Tarma,Huaricolca,2402,12,6,0.1333,FEN 1997-98,medio,0,3,0,0,3,0,0,0,0,0,0,0
+120704,Junín,Tarma,Huasahuasi,11021,17,9,0.2,FEN 1982-83; FEN 1997-98,alto,0,46,6,19,21,3,0,0,0,0,0,0
+120705,Junín,Tarma,La Unión,3526,4,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120706,Junín,Tarma,Palca,7187,40,15,0.3333,FEN 1997-98,alto,8,32,3,12,17,1,0,0,0,0,0,0
+120707,Junín,Tarma,Palcamayo,4386,11,6,0.1333,,medio,0,9,5,0,3,2,0,0,0,0,0,0
+120708,Junín,Tarma,San Pedro de Cajas,4187,12,7,0.1556,,medio,0,22,4,5,12,2,0,0,0,0,0,0
+120709,Junín,Tarma,Tapo,4677,16,4,0.0889,Niño Costero 2017,medio,1,8,1,1,6,0,0,0,0,0,0,0
+120801,Junín,Yauli,La Oroya,17911,49,21,0.4667,FEN 1982-83; FEN 1997-98,muy alto,0,38,14,5,16,0,0,0,0,0,0,1
+120802,Junín,Yauli,Chacapalpa,948,14,4,0.0889,,bajo,0,9,1,3,2,0,0,0,0,0,0,0
+120803,Junín,Yauli,Huay-Huay,1397,3,1,0.0222,,bajo,0,7,0,4,3,2,0,0,0,0,0,0
+120804,Junín,Yauli,Marcapomacocha,1010,9,5,0.1111,,medio,0,26,4,7,9,0,0,0,0,0,0,0
+120805,Junín,Yauli,Morococha,4846,30,18,0.4,FEN 1982-83,alto,0,9,1,1,5,1,0,0,0,0,0,0
+120806,Junín,Yauli,Paccha,1812,3,0,0.0,,bajo,0,10,2,0,7,1,0,0,0,0,0,0
+120807,Junín,Yauli,Santa Bárbara de Carhuacayán,831,7,3,0.0667,,bajo,0,22,1,1,12,0,0,0,0,0,0,0
+120808,Junín,Yauli,Santa Rosa de Sacco,8804,4,1,0.0222,,bajo,0,7,0,0,7,0,0,0,0,0,0,0
+120809,Junín,Yauli,Suitucancha,1099,14,3,0.0667,,bajo,1,11,1,4,4,0,0,0,0,0,0,1
+120810,Junín,Yauli,Yauli,3720,7,1,0.0222,,bajo,0,19,6,4,6,1,0,0,0,0,0,0
+120901,Junín,Chupaca,Chupaca,30333,26,12,0.2667,FEN 1997-98,alto,1,1,0,0,1,0,0,0,0,0,0,0
+120902,Junín,Chupaca,Ahuac,8023,9,6,0.1333,FEN 1997-98,medio,0,6,5,0,1,1,0,0,0,0,0,0
+120903,Junín,Chupaca,Chongos Bajo,5284,9,5,0.1111,FEN 1997-98,medio,0,2,1,0,1,0,0,0,0,0,0,0
+120904,Junín,Chupaca,Huáchac,3351,5,4,0.0889,,bajo,0,4,1,0,3,0,0,0,0,0,0,0
+120905,Junín,Chupaca,Huamancaca Chico,6786,26,16,0.3556,FEN 1997-98,alto,0,0,0,0,0,0,0,0,0,0,0,1
+120906,Junín,Chupaca,San Juan de Yscos,2973,6,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+120907,Junín,Chupaca,San Juan de Jarpa,3728,5,2,0.0444,,bajo,0,8,2,2,4,0,0,0,0,0,0,0
+120908,Junín,Chupaca,Tres de Diciembre,3030,7,6,0.1333,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+120909,Junín,Chupaca,Yanacancha,3471,5,1,0.0222,,bajo,1,29,13,0,12,0,0,0,0,0,0,0
+130101,La Libertad,Trujillo,Trujillo,396924,66,19,0.4222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,0,0,0,0,0,0,0,0,0,0,9
+130102,La Libertad,Trujillo,El Porvenir,178162,16,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,2,1,0,1,2,1,1,1128,282,340515,1
+130103,La Libertad,Trujillo,Florencia de Mora,70984,11,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,5
+130104,La Libertad,Trujillo,Huanchaco,72674,16,6,0.1333,FEN 1982-83; Niño Costero 2017,alto,0,5,4,0,0,0,0,0,0,0,0,1
+130105,La Libertad,Trujillo,La Esperanza,190930,15,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,1,1,0,0,0,0,0,0,0,0,3
+130106,La Libertad,Trujillo,Laredo,41502,9,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,13,11,0,2,1,1,0,225,75,528648,2
+130107,La Libertad,Trujillo,Moche,43602,20,12,0.2667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,0,0,0,0,0,0,0,0,0,0,5
+130108,La Libertad,Trujillo,Poroto,4610,12,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,6,4,0,1,0,0,0,0,0,0,1
+130109,La Libertad,Trujillo,Salaverry,19489,21,14,0.3111,FEN 1982-83; FEN 1997-98,muy alto,0,0,0,0,0,0,0,0,0,0,0,2
+130110,La Libertad,Trujillo,Simbal,5259,22,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,26,22,1,1,1,0,0,0,0,0,1
+130111,La Libertad,Trujillo,Victor Larco Herrera,78364,10,8,0.1778,FEN 1982-83; FEN 1997-98,alto,0,0,0,0,0,0,0,0,0,0,0,6
+130201,La Libertad,Ascope,Ascope,8741,3,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,13,13,0,0,1,2,2,320,70,702025,1
+130202,La Libertad,Ascope,Chicama,17312,34,12,0.2667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,29,27,0,1,3,6,6,467,90,4276518,2
+130203,La Libertad,Ascope,Chocope,12601,4,2,0.0444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,2
+130204,La Libertad,Ascope,Magdalena de Cao,2975,4,2,0.0444,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,1
+130205,La Libertad,Ascope,Paiján,28410,8,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,1,1,0,0,0,0,0,0,0,0,2
+130206,La Libertad,Ascope,Razuri,8368,6,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,1,1,0,0,0,0,0,0,0,0,1
+130207,La Libertad,Ascope,Santiago de Cao,20790,3,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,2
+130208,La Libertad,Ascope,Casa Grande,30626,5,3,0.0667,FEN 1982-83; Niño Costero 2017,alto,0,35,35,0,0,0,3,1,1860,600,1687047,4
+130301,La Libertad,Bolívar,Bolívar,4895,25,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,5,10,0,3,5,0,0,0,0,0,0,1
+130302,La Libertad,Bolívar,Bambamarca,4222,13,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+130303,La Libertad,Bolívar,Condormarca,2453,11,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,1,0,0,0,0,1,0,0,0,0,0,0
+130304,La Libertad,Bolívar,Longotea,2183,8,3,0.0667,,bajo,2,6,3,1,2,1,0,0,0,0,0,0
+130305,La Libertad,Bolívar,Uchumarca,2658,7,1,0.0222,Niño Costero 2017,medio,0,3,0,1,1,0,0,0,0,0,0,0
+130306,La Libertad,Bolívar,Ucuncha,1351,6,2,0.0444,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+130401,La Libertad,Chepén,Chepén,58031,23,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,16,14,0,2,10,0,0,0,0,0,2
+130402,La Libertad,Chepén,Pacanga,20171,22,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,8,8,0,0,1,0,0,0,0,0,2
+130403,La Libertad,Chepén,Pueblo Nuevo,14195,20,4,0.0889,Niño Costero 2017,medio,0,4,4,0,0,0,0,0,0,0,0,2
+130501,La Libertad,Julcán,Julcán,14771,17,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,2,0,1,1,0,0,0,0,0,0,3
+130502,La Libertad,Julcán,Calamarca,7310,5,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,1,1,0,1,0,0,0,0,0,0,0,0
+130503,La Libertad,Julcán,Carabamba,8057,10,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+130504,La Libertad,Julcán,Huaso,7121,6,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,2
+130601,La Libertad,Otuzco,Otuzco,32813,22,12,0.2667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,11,3,2,6,4,0,0,0,0,0,1
+130602,La Libertad,Otuzco,Agallpampa,9548,29,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,7,0,3,2,1,0,0,0,0,0,7
+130604,La Libertad,Otuzco,Charat,3035,12,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,10,1,2,5,2,0,0,0,0,0,3
+130605,La Libertad,Otuzco,Huaranchal,6139,13,1,0.0222,Niño Costero 2017,medio,0,4,0,2,1,2,0,0,0,0,0,2
+130606,La Libertad,Otuzco,La Cuesta,957,2,0,0.0,Niño Costero 2017,medio,0,2,0,0,2,1,0,0,0,0,0,1
+130608,La Libertad,Otuzco,Mache,3936,5,0,0.0,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,1
+130610,La Libertad,Otuzco,Paranday,855,0,0,,,,0,1,0,0,1,0,0,0,0,0,0,0
+130611,La Libertad,Otuzco,Salpo,6298,5,0,0.0,Niño Costero 2017,medio,0,7,4,1,2,3,0,0,0,0,0,3
+130613,La Libertad,Otuzco,Sinsicap,9886,7,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,16,11,3,2,4,0,0,0,0,0,3
+130614,La Libertad,Otuzco,Usquil,28636,10,3,0.0667,FEN 1997-98,medio,1,24,5,6,8,4,0,0,0,0,0,1
+130701,La Libertad,Pacasmayo,San Pedro de Lloc,19320,14,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,4,4,0,0,0,0,0,0,0,0,3
+130702,La Libertad,Pacasmayo,Guadalupe,40671,14,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,14,10,0,4,2,3,0,0,0,3910065,3
+130703,La Libertad,Pacasmayo,Jequetepeque,4196,14,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,1,1,0,0,0,0,0,0,0,0,1
+130704,La Libertad,Pacasmayo,Pacasmayo,32915,30,13,0.2889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,1,1,0,0,1,0,0,0,0,0,1
+130705,La Libertad,Pacasmayo,San José,13160,5,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,1,0,0,0,1667842,2
+130801,La Libertad,Pataz,Tayabamba,16081,45,12,0.2667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,5,34,9,13,3,2,0,0,0,0,0,1
+130802,La Libertad,Pataz,Buldibuyo,4477,10,2,0.0444,FEN 1982-83,medio,1,15,0,9,2,2,0,0,0,0,0,1
+130803,La Libertad,Pataz,Chillia,15213,4,1,0.0222,FEN 1997-98,medio,1,7,0,4,1,1,0,0,0,0,0,3
+130804,La Libertad,Pataz,Huancaspata,6590,7,2,0.0444,Niño Costero 2017,medio,0,6,0,3,2,1,0,0,0,0,0,1
+130805,La Libertad,Pataz,Huaylillas,1361,9,2,0.0444,FEN 1982-83,medio,2,6,3,0,3,0,0,0,0,0,0,0
+130806,La Libertad,Pataz,Huayo,4541,4,2,0.0444,FEN 1997-98,medio,1,0,0,0,0,0,0,0,0,0,0,1
+130807,La Libertad,Pataz,Ongón,1878,1,1,0.0222,,bajo,0,3,0,3,0,0,0,0,0,0,0,0
+130808,La Libertad,Pataz,Parcoy,16405,27,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,3,28,5,6,13,2,0,0,0,0,0,5
+130809,La Libertad,Pataz,Pataz,8046,17,13,0.2889,FEN 1982-83; Niño Costero 2017,muy alto,0,12,5,3,4,3,3,1,1320,224,1980401,2
+130810,La Libertad,Pataz,Pias,1736,7,0,0.0,,bajo,1,13,4,3,3,1,0,0,0,0,0,1
+130811,La Libertad,Pataz,Santiago de Challas,2421,9,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+130812,La Libertad,Pataz,Taurija,3149,10,2,0.0444,FEN 1997-98,medio,1,6,4,1,1,0,0,0,0,0,0,0
+130813,La Libertad,Pataz,Urpay,3030,5,2,0.0444,FEN 1997-98,medio,0,2,0,1,1,1,0,0,0,0,0,1
+130901,La Libertad,Sánchez Carrión,Huamachuco,76543,39,15,0.3333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,27,5,9,7,3,7,0,1509,446,1057442,1
+130902,La Libertad,Sánchez Carrión,Chugay,21398,17,2,0.0444,FEN 1997-98,medio,2,18,9,2,3,0,0,0,0,0,0,0
+130903,La Libertad,Sánchez Carrión,Cochorco,11803,39,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,1,9,6,1,1,0,4,4,880,130,2238710,0
+130904,La Libertad,Sánchez Carrión,Curgos,9798,9,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,5,2,1,1,1,0,0,0,0,0,0
+130905,La Libertad,Sánchez Carrión,Marcabal,14751,11,0,0.0,Niño Costero 2017,medio,2,11,3,6,2,0,0,0,0,0,0,0
+130906,La Libertad,Sánchez Carrión,Sanagoran,16690,15,4,0.0889,FEN 1997-98,medio,1,21,7,4,4,2,2,0,136,33,609664,0
+130907,La Libertad,Sánchez Carrión,Sarín,11197,26,2,0.0444,Niño Costero 2017,medio,0,14,4,2,4,4,0,0,0,0,0,0
+130908,La Libertad,Sánchez Carrión,Sartimbamba,16163,8,4,0.0889,Niño Costero 2017,medio,0,12,3,4,5,2,0,0,0,0,0,0
+131001,La Libertad,Santiago de Chuco,Santiago de Chuco,24799,42,9,0.2,Niño Costero 2017,medio,1,27,13,1,12,0,0,0,0,0,0,4
+131002,La Libertad,Santiago de Chuco,Angasmarca,5775,5,1,0.0222,Niño Costero 2017,medio,0,3,0,0,0,2,0,0,0,0,0,0
+131003,La Libertad,Santiago de Chuco,Cachicadan,5664,27,1,0.0222,Niño Costero 2017,medio,1,6,0,2,1,0,0,0,0,0,0,0
+131004,La Libertad,Santiago de Chuco,Mollebamba,2122,1,1,0.0222,,bajo,0,2,0,0,0,0,0,0,0,0,0,1
+131005,La Libertad,Santiago de Chuco,Mollepata,2646,5,3,0.0667,,bajo,2,5,0,2,1,1,0,0,0,0,0,0
+131006,La Libertad,Santiago de Chuco,Quiruvilca,12059,28,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,2,8,0,3,4,0,0,0,0,0,0,3
+131007,La Libertad,Santiago de Chuco,Santa Cruz de Chuca,3304,11,2,0.0444,Niño Costero 2017,medio,1,6,0,3,3,0,0,0,0,0,0,1
+131008,La Libertad,Santiago de Chuco,Sitabamba,4130,6,1,0.0222,,bajo,0,21,2,4,10,2,2,2,140,35,459159,2
+131101,La Libertad,Gran Chimu,Cascas,16331,30,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,31,18,4,7,3,1,1,3825,765,6022457,1
+131102,La Libertad,Gran Chimu,Lucma,5031,18,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,1,22,12,2,3,1,0,0,0,0,0,2
+131103,La Libertad,Gran Chimu,Marmot,2149,18,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,0,13,11,0,2,2,0,0,0,0,0,1
+131104,La Libertad,Gran Chimu,Sayapullo,7615,12,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,0,28,8,9,6,0,0,0,0,0,0,1
+131201,La Libertad,Virú,Virú,64541,27,13,0.2889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,26,24,0,1,1,0,0,0,0,0,11
+131202,La Libertad,Virú,Chao,35811,5,2,0.0444,Niño Costero 2017,medio,0,58,46,1,4,6,26,0,12779,4187,25172630,7
+131203,La Libertad,Virú,Guadalupito,7265,1,0,0.0,Niño Costero 2017,medio,0,3,3,0,0,0,1,0,0,0,1647233,1
+140101,Lambayeque,Chiclayo,Chiclayo,349173,45,14,0.3111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,0,0,0,0,0,0,0,0,0,0,6
+140102,Lambayeque,Chiclayo,Chongoyape,20149,18,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,92,62,3,25,11,2,1,1422,400,3693943,3
+140103,Lambayeque,Chiclayo,Etén,13078,19,11,0.2444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,2,2,0,0,0,0,0,0,0,0,1
+140104,Lambayeque,Chiclayo,Etén Puerto,2704,13,8,0.1778,FEN 1997-98; Niño Costero 2017,alto,0,4,3,0,1,1,0,0,0,0,0,1
+140105,Lambayeque,Chiclayo,José Leonardo Ortiz,198126,7,2,0.0444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,6
+140106,Lambayeque,Chiclayo,La Victoria,97953,2,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,4
+140107,Lambayeque,Chiclayo,Lagunas,10398,9,1,0.0222,Niño Costero 2017,medio,0,11,10,0,1,3,1,1,120,30,321456,4
+140108,Lambayeque,Chiclayo,Monsefú,40703,16,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,1,0,0,1,2,3,0,113,28,4375166,0
+140109,Lambayeque,Chiclayo,Nueva Arica,2619,10,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,7,3,3,1,1,3,1,0,0,4794510,1
+140110,Lambayeque,Chiclayo,Oyotún,8225,10,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,0,38,23,7,4,3,7,1,104,26,6866346,3
+140111,Lambayeque,Chiclayo,Picsi,9430,7,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+140112,Lambayeque,Chiclayo,Pimentel,32303,23,14,0.3111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,1,0,0,1,0,0,0,0,0,0,1
+140113,Lambayeque,Chiclayo,Reque,16250,8,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,5,2,0,3,1,0,0,0,0,0,0
+140114,Lambayeque,Chiclayo,Santa Rosa,13701,13,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,1,0,0,0,0,0,1
+140115,Lambayeque,Chiclayo,Saña,9964,15,5,0.1111,FEN 1982-83; Niño Costero 2017,alto,0,28,15,3,7,3,1,0,24,6,361643,2
+140116,Lambayeque,Chiclayo,Cayaltí,16836,3,0,0.0,Niño Costero 2017,medio,0,5,5,0,0,0,1,1,0,0,2671907,1
+140117,Lambayeque,Chiclayo,Patapo,23374,4,1,0.0222,Niño Costero 2017,medio,0,22,16,2,4,2,1,1,2886,38,254477,1
+140118,Lambayeque,Chiclayo,Pomalca,27538,5,1,0.0222,Niño Costero 2017,medio,0,1,0,0,1,0,0,0,0,0,0,1
+140119,Lambayeque,Chiclayo,Pucalá,8463,7,1,0.0222,Niño Costero 2017,medio,0,28,14,2,11,1,3,0,21,5,9184850,1
+140120,Lambayeque,Chiclayo,Tumán,30467,4,1,0.0222,Niño Costero 2017,medio,0,9,4,0,5,3,1,0,205,50,2244555,0
+140201,Lambayeque,Ferreñafe,Ferreñafe,39863,9,5,0.1111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,0,0,0,0,0,0,0,0,0,0,2
+140202,Lambayeque,Ferreñafe,Cañaris,16747,21,8,0.1778,Niño Costero 2017,medio,1,0,0,0,0,0,0,0,0,0,0,3
+140203,Lambayeque,Ferreñafe,Incahuasi,18674,20,7,0.1556,Niño Costero 2017,medio,1,47,6,20,11,2,2,1,389,119,3952164,8
+140204,Lambayeque,Ferreñafe,Manuel Antonio Mesones Muro,4616,5,0,0.0,Niño Costero 2017,medio,2,26,13,1,11,2,2,2,34873,3130,770010,1
+140205,Lambayeque,Ferreñafe,Pitipo,21944,14,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,46,32,4,9,4,8,0,1200,283,11138240,7
+140206,Lambayeque,Ferreñafe,Pueblo Nuevo,14987,4,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,2
+140301,Lambayeque,Lambayeque,Lambayeque,81098,18,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,0,0,0,0,0,0,0,0,0,0,5
+140302,Lambayeque,Lambayeque,Chochope,2025,9,3,0.0667,Niño Costero 2017,medio,0,10,4,2,3,0,0,0,0,0,0,0
+140303,Lambayeque,Lambayeque,Illimo,11402,23,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,3
+140304,Lambayeque,Lambayeque,Jayanca,19740,19,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,20,10,3,7,2,0,0,0,0,0,1
+140305,Lambayeque,Lambayeque,Mochumi,22047,12,5,0.1111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,1,1,0,0,0,0,0,0,0,0,3
+140306,Lambayeque,Lambayeque,Mórrope,55308,22,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,7,7,0,0,2,1,0,1500,300,1227822,13
+140307,Lambayeque,Lambayeque,Motupe,32049,26,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,5,44,28,10,4,4,1,0,2100,410,3321838,2
+140308,Lambayeque,Lambayeque,Olmos,50598,48,16,0.3556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,1,75,31,27,12,8,6,3,1852,465,11233833,8
+140309,Lambayeque,Lambayeque,Pacora,8500,20,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,0,0,0,0,1,0,0,0,0,0,1
+140310,Lambayeque,Lambayeque,Salas,16925,21,5,0.1111,Niño Costero 2017,medio,1,41,24,8,4,4,1,0,2000,500,2604341,3
+140311,Lambayeque,Lambayeque,San José,17650,9,7,0.1556,FEN 1982-83; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,1
+140312,Lambayeque,Lambayeque,Túcume,27521,17,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,18,13,0,4,0,0,0,0,0,0,2
+150101,Lima,Lima,Lima,397028,74,24,0.5333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,0,0,0,0,2,0,0,0,0,0,10
+150102,Lima,Lima,Ancón,54027,6,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,11,2,0,9,2,0,0,0,0,0,1
+150103,Lima,Lima,Ate,663149,44,22,0.4889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,195,58,0,137,8,1,1,5000,948,1927029,16
+150104,Lima,Lima,Barranco,54982,10,9,0.2,FEN 1982-83,medio,0,4,0,0,4,0,0,0,0,0,0,1
+150105,Lima,Lima,Breña,132522,4,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,1
+150106,Lima,Lima,Carabayllo,311703,18,9,0.2,FEN 1997-98; Niño Costero 2017,alto,0,50,23,0,27,16,0,0,0,0,0,4
+150107,Lima,Lima,Chaclacayo,53073,58,19,0.4222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,37,30,0,7,3,2,2,3350,670,3907700,6
+150108,Lima,Lima,Chorrillos,351480,44,23,0.5111,FEN 1997-98,alto,0,13,0,2,11,2,0,0,0,0,0,17
+150109,Lima,Lima,Cieneguilla,33918,27,11,0.2444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,113,96,0,17,11,1,1,3560,712,2476665,4
+150110,Lima,Lima,Comas,596655,12,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,56,5,0,51,6,0,0,0,0,0,3
+150111,Lima,Lima,El Agustino,232653,11,7,0.1556,Niño Costero 2017,medio,0,12,2,0,10,5,0,0,0,0,0,5
+150112,Lima,Lima,Independencia,241414,8,4,0.0889,FEN 1997-98,medio,0,30,5,0,25,2,0,0,0,0,0,4
+150113,Lima,Lima,Jesús María,145672,4,3,0.0667,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+150114,Lima,Lima,La Molina,211115,11,6,0.1333,FEN 1982-83; FEN 1997-98,alto,0,33,20,0,13,1,0,0,0,0,0,3
+150115,Lima,Lima,La Victoria,262390,6,5,0.1111,FEN 1982-83,medio,0,0,0,0,0,0,0,0,0,0,0,3
+150116,Lima,Lima,Lince,104359,1,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+150117,Lima,Lima,Los Olivos,404117,2,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,4,0,0,4,0,0,0,0,0,0,8
+150118,Lima,Lima,Lurigancho,199956,122,30,0.6667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,378,269,0,109,45,9,8,15500,2750,15508205,14
+150119,Lima,Lima,Lurín,92921,26,9,0.2,FEN 1997-98,medio,0,4,4,0,0,3,8,1,4025,790,2963645,2
+150120,Lima,Lima,Magdalena del Mar,88766,17,12,0.2667,FEN 1982-83,alto,0,1,0,0,1,2,0,0,0,0,0,1
+150121,Lima,Lima,Pueblo Libre,118001,2,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+150122,Lima,Lima,Miraflores,162481,16,9,0.2,FEN 1982-83,medio,0,2,0,0,2,0,0,0,0,0,0,0
+150123,Lima,Lima,Pachacámac,111856,7,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,44,25,0,19,6,9,5,250,70,3688811,8
+150124,Lima,Lima,Pucusana,15687,8,5,0.1111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,1
+150125,Lima,Lima,Puente Piedra,353979,26,11,0.2444,FEN 1997-98; Niño Costero 2017,alto,0,32,1,0,31,1,0,0,0,0,0,4
+150126,Lima,Lima,Punta Hermosa,8625,8,2,0.0444,Niño Costero 2017,medio,0,5,3,0,2,3,0,0,0,0,0,1
+150127,Lima,Lima,Punta Negra,8174,1,1,0.0222,,bajo,0,3,2,0,1,0,0,0,0,0,0,0
+150128,Lima,Lima,Rímac,222981,17,6,0.1333,FEN 1997-98,medio,0,14,1,0,13,2,0,0,0,0,0,9
+150129,Lima,Lima,San Bartolo,8583,6,4,0.0889,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,1
+150130,Lima,Lima,San Borja,151008,3,3,0.0667,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,2
+150131,Lima,Lima,San Isidro,91723,5,3,0.0667,FEN 1982-83,medio,0,0,0,0,0,0,0,0,0,0,0,1
+150132,Lima,Lima,San Juan de Lurigancho,1112394,27,13,0.2889,FEN 1997-98; Niño Costero 2017,muy alto,0,472,220,0,252,38,3,3,8500,2350,2470272,29
+150133,Lima,Lima,San Juan de Miraflores,452124,9,9,0.2,,medio,0,16,2,0,14,2,0,0,0,0,0,9
+150134,Lima,Lima,San Luis,76335,1,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,1
+150135,Lima,Lima,San Martín de Porres,711801,22,11,0.2444,FEN 1997-98; Niño Costero 2017,alto,0,4,0,0,4,4,0,0,0,0,0,9
+150136,Lima,Lima,San Miguel,178264,15,9,0.2,,medio,0,3,0,0,3,0,0,0,0,0,0,1
+150137,Lima,Lima,Santa Anita,265381,2,2,0.0444,FEN 1997-98,medio,0,1,0,0,1,2,0,0,0,0,0,3
+150139,Lima,Lima,Santa Rosa,21775,0,0,,,,0,1,0,0,1,1,0,0,0,0,0,0
+150140,Lima,Lima,Santiago de Surco,421099,17,13,0.2889,FEN 1997-98,alto,0,6,2,0,4,2,0,0,0,0,0,4
+150141,Lima,Lima,Surquillo,122954,2,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,2
+150142,Lima,Lima,Villa El Salvador,468762,15,12,0.2667,FEN 1997-98,alto,0,2,0,0,2,1,0,0,0,0,0,4
+150143,Lima,Lima,Villa María del Triunfo,487189,10,5,0.1111,,medio,0,31,4,0,27,7,0,0,0,0,0,5
+150201,Lima,Barranca,Barranca,77330,5,0,0.0,Niño Costero 2017,medio,0,7,2,0,5,2,1,1,0,0,4584268,3
+150202,Lima,Barranca,Paramonga,25266,5,0,0.0,Niño Costero 2017,medio,0,25,16,0,9,3,0,0,0,0,0,6
+150203,Lima,Barranca,Pativilca,20055,19,9,0.2,FEN 1982-83; Niño Costero 2017,alto,0,4,4,0,0,0,1,1,200,200,2585430,0
+150204,Lima,Barranca,Supe,26638,11,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,8,3,0,5,1,4,4,180,45,5947617,0
+150205,Lima,Barranca,Supe Puerto,13195,8,2,0.0444,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+150301,Lima,Cajatambo,Cajatambo,2277,43,5,0.1111,Niño Costero 2017,medio,1,38,3,9,21,4,0,0,0,0,0,0
+150302,Lima,Cajatambo,Copa,1039,10,1,0.0222,Niño Costero 2017,medio,0,23,9,3,10,2,0,0,0,0,0,0
+150303,Lima,Cajatambo,Gorgor,1995,12,0,0.0,Niño Costero 2017,medio,0,23,5,6,9,1,0,0,0,0,0,1
+150304,Lima,Cajatambo,Huancapón,1172,20,0,0.0,Niño Costero 2017,medio,0,22,7,4,10,2,0,0,0,0,0,0
+150305,Lima,Cajatambo,Manas,1194,19,1,0.0222,Niño Costero 2017,medio,0,26,8,1,17,2,2,0,0,0,1501516,0
+150401,Lima,Canta,Canta,3609,17,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,39,8,23,7,4,0,0,0,0,0,0
+150402,Lima,Canta,Arahuay,698,16,0,0.0,Niño Costero 2017,medio,0,22,6,3,13,2,0,0,0,0,0,0
+150403,Lima,Canta,Huamantanga,867,17,0,0.0,Niño Costero 2017,medio,0,33,9,8,16,2,0,0,0,0,0,0
+150404,Lima,Canta,Huaros,1022,7,1,0.0222,Niño Costero 2017,medio,0,14,4,3,6,2,0,0,0,0,0,0
+150405,Lima,Canta,Lachaqui,1039,16,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,21,3,12,6,0,0,0,0,0,0,0
+150406,Lima,Canta,San Buenaventura,493,3,0,0.0,Niño Costero 2017,medio,0,24,2,13,9,4,0,0,0,0,0,0
+150407,Lima,Canta,Santa Rosa de Quives,7133,37,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,50,41,1,8,12,6,6,396,99,3459698,1
+150501,Lima,Cañete,San Vicente de Cañete,60883,23,10,0.2222,Niño Costero 2017,medio,0,17,8,2,7,3,1,0,0,0,266805,2
+150502,Lima,Cañete,Asia,12232,6,3,0.0667,Niño Costero 2017,medio,0,7,2,0,5,0,0,0,0,0,0,1
+150503,Lima,Cañete,Calango,2453,19,0,0.0,Niño Costero 2017,medio,0,33,19,0,11,1,7,0,2580,521,2136638,0
+150504,Lima,Cañete,Cerro Azul,8840,14,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,0,2,0,0,2,0,0,0,0,0,0,1
+150505,Lima,Cañete,Chilca,18988,8,3,0.0667,FEN 1982-83; Niño Costero 2017,alto,0,13,11,0,2,0,4,4,0,0,891948,0
+150506,Lima,Cañete,Coayllo,1493,4,1,0.0222,Niño Costero 2017,medio,1,24,13,0,11,0,0,0,0,0,0,0
+150507,Lima,Cañete,Imperial,45773,5,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,1
+150508,Lima,Cañete,Lunahuana,4595,17,9,0.2,FEN 1997-98; Niño Costero 2017,alto,0,26,21,0,5,1,0,0,0,0,0,1
+150509,Lima,Cañete,Mala,34569,17,9,0.2,FEN 1997-98; Niño Costero 2017,alto,0,2,1,0,1,0,0,0,0,0,0,1
+150510,Lima,Cañete,Nuevo Imperial,24614,2,0,0.0,Niño Costero 2017,medio,0,16,13,0,3,0,0,0,0,0,0,0
+150511,Lima,Cañete,Pacarán,2020,7,0,0.0,Niño Costero 2017,medio,0,11,9,0,2,0,0,0,0,0,0,0
+150512,Lima,Cañete,Quilmana,17871,3,2,0.0444,Niño Costero 2017,medio,0,1,1,0,0,0,0,0,0,0,0,0
+150513,Lima,Cañete,San Antonio,4256,16,2,0.0444,Niño Costero 2017,medio,0,6,1,0,5,0,0,0,0,0,0,0
+150514,Lima,Cañete,San Luis,14768,5,2,0.0444,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+150515,Lima,Cañete,Santa Cruz de Flores,2944,2,0,0.0,Niño Costero 2017,medio,0,1,0,0,1,0,0,0,0,0,0,0
+150516,Lima,Cañete,Zúñiga,1538,7,3,0.0667,Niño Costero 2017,medio,0,13,7,0,4,1,2,0,0,0,941710,0
+150601,Lima,Huaral,Huaral,116323,12,5,0.1111,Niño Costero 2017,medio,0,20,10,0,10,3,3,3,342,83,5940913,6
+150602,Lima,Huaral,Atavillos Alto,827,11,0,0.0,Niño Costero 2017,medio,1,30,5,9,16,1,0,0,0,0,0,0
+150603,Lima,Huaral,Atavillos Bajo,897,9,0,0.0,Niño Costero 2017,medio,0,24,4,7,13,0,4,0,463,128,359728,0
+150604,Lima,Huaral,Aucallama,17692,11,7,0.1556,FEN 1997-98; Niño Costero 2017,alto,0,25,17,0,8,1,5,3,581,125,8312579,0
+150605,Lima,Huaral,Chancay,63905,8,5,0.1111,Niño Costero 2017,medio,0,3,0,0,3,1,1,1,0,0,574541,0
+150606,Lima,Huaral,Ihuari,2994,10,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,64,22,15,27,8,0,0,0,0,0,0
+150607,Lima,Huaral,Lampián,558,3,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,12,5,0,7,0,0,0,0,0,0,0
+150608,Lima,Huaral,Pacaraos,1034,20,3,0.0667,FEN 1982-83; Niño Costero 2017,alto,0,30,7,12,9,1,0,0,0,0,0,0
+150609,Lima,Huaral,San Miguel de Acos,793,7,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,0,11,4,2,5,0,3,0,325,65,448093,0
+150610,Lima,Huaral,Santa Cruz de Andamarca,430,5,1,0.0222,Niño Costero 2017,medio,0,28,4,9,13,2,0,0,0,0,0,0
+150611,Lima,Huaral,Sumbilca,959,9,0,0.0,Niño Costero 2017,medio,0,44,15,6,21,0,10,3,415,140,1206070,0
+150612,Lima,Huaral,Veintisiete de Noviembre,606,10,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,18,1,5,12,0,0,0,0,0,0,0
+150701,Lima,Huarochirí,Matucana,5918,100,27,0.6,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,63,12,26,22,2,0,0,0,0,0,1
+150702,Lima,Huarochirí,Antioquía,1824,8,1,0.0222,FEN 1997-98; Niño Costero 2017,alto,0,65,43,1,19,1,0,0,0,0,0,0
+150703,Lima,Huarochirí,Callahuanca,949,46,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,5,1,0,4,0,0,0,0,0,0,0
+150704,Lima,Huarochirí,Carampoma,532,20,1,0.0222,Niño Costero 2017,medio,0,42,16,7,16,0,0,0,0,0,0,0
+150705,Lima,Huarochirí,Chicla,2655,77,25,0.5556,Niño Costero 2017,alto,0,40,7,8,25,2,0,0,0,0,0,1
+150706,Lima,Huarochirí,Cuenca,666,5,0,0.0,Niño Costero 2017,medio,0,12,3,0,7,0,0,0,0,0,0,0
+150707,Lima,Huarochirí,Huachupampa,593,28,1,0.0222,Niño Costero 2017,medio,2,33,11,11,11,0,3,3,72,17,1609496,0
+150708,Lima,Huarochirí,Huanza,721,23,0,0.0,Niño Costero 2017,medio,0,20,7,6,7,0,0,0,0,0,0,0
+150709,Lima,Huarochirí,Huarochirí,1772,29,2,0.0444,Niño Costero 2017,medio,1,9,3,0,6,0,0,0,0,0,0,0
+150710,Lima,Huarochirí,Lahuaytambo,701,4,1,0.0222,Niño Costero 2017,medio,0,14,7,2,5,0,0,0,0,0,0,0
+150711,Lima,Huarochirí,Langa,1128,17,1,0.0222,Niño Costero 2017,medio,0,10,4,0,5,0,0,0,0,0,0,1
+150712,Lima,Huarochirí,Laraos,372,27,1,0.0222,Niño Costero 2017,medio,1,16,5,5,6,0,0,0,0,0,0,0
+150713,Lima,Huarochirí,Mariatana,1846,11,1,0.0222,Niño Costero 2017,medio,0,1,1,0,0,0,0,0,0,0,0,1
+150714,Lima,Huarochirí,Ricardo Palma,8389,32,12,0.2667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,19,13,0,6,1,1,1,75,15,492446,0
+150715,Lima,Huarochirí,San Andrés de Tupicocha,1941,8,2,0.0444,Niño Costero 2017,medio,0,9,6,0,1,0,0,0,0,0,0,0
+150716,Lima,Huarochirí,San Antonio,43991,11,2,0.0444,Niño Costero 2017,medio,0,38,18,6,14,0,0,0,0,0,0,1
+150717,Lima,Huarochirí,San Bartolomé,1450,46,8,0.1778,FEN 1982-83; Niño Costero 2017,alto,0,14,6,2,5,0,0,0,0,0,0,0
+150718,Lima,Huarochirí,San Damián,1789,12,1,0.0222,Niño Costero 2017,medio,0,40,19,5,13,0,0,0,0,0,0,0
+150719,Lima,Huarochirí,San Juan de Iris,407,12,1,0.0222,Niño Costero 2017,medio,1,7,2,1,4,0,0,0,0,0,0,0
+150720,Lima,Huarochirí,San Juan de Tantaranche,441,3,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,1
+150721,Lima,Huarochirí,San Lorenzo de Quinti,1448,1,1,0.0222,,bajo,0,11,3,1,7,0,0,0,0,0,0,0
+150722,Lima,Huarochirí,San Mateo,5456,68,21,0.4667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,76,21,12,41,4,1,0,0,0,282030,1
+150723,Lima,Huarochirí,San Mateo de Otao,2155,12,5,0.1111,FEN 1982-83; Niño Costero 2017,alto,0,44,13,13,16,0,0,0,0,0,0,0
+150724,Lima,Huarochirí,San Pedro de Casta,1198,19,5,0.1111,Niño Costero 2017,medio,0,14,6,2,6,0,0,0,0,0,0,0
+150725,Lima,Huarochirí,San Pedro de Huancayre,271,17,0,0.0,Niño Costero 2017,medio,0,3,1,0,2,0,0,0,0,0,0,0
+150726,Lima,Huarochirí,Sangallaya,646,7,0,0.0,Niño Costero 2017,medio,0,17,7,1,9,1,0,0,0,0,0,1
+150727,Lima,Huarochirí,Santa Cruz de Cocachacra,2667,43,16,0.3556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,16,6,1,7,0,3,1,2450,590,1271409,2
+150728,Lima,Huarochirí,Santa Eulalia,14642,43,15,0.3333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,55,27,1,27,1,9,6,4830,1176,5262232,2
+150729,Lima,Huarochirí,Santiago de Anchucaya,496,21,0,0.0,Niño Costero 2017,medio,0,2,0,1,1,1,0,0,0,0,0,0
+150730,Lima,Huarochirí,Santiago de Tuna,617,7,0,0.0,Niño Costero 2017,medio,0,15,5,4,4,0,0,0,0,0,0,0
+150731,Lima,Huarochirí,Santo Domingo de Los Olleros,6038,7,0,0.0,Niño Costero 2017,medio,0,24,11,0,13,0,0,0,0,0,0,0
+150732,Lima,Huarochirí,Surco,1997,62,20,0.4444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,44,14,15,15,0,0,0,0,0,0,0
+150801,Lima,Huaura,Huacho,70114,14,6,0.1333,FEN 1997-98; Niño Costero 2017,alto,0,4,2,1,1,1,0,0,0,0,0,0
+150802,Lima,Huaura,Ámbar,2531,21,3,0.0667,FEN 1997-98; Niño Costero 2017,alto,0,25,11,0,13,0,0,0,0,0,0,0
+150803,Lima,Huaura,Caleta de Carquín,6767,10,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+150804,Lima,Huaura,Checras,999,15,2,0.0444,Niño Costero 2017,medio,0,41,15,10,16,4,10,0,1752,135,17426260,0
+150805,Lima,Huaura,Hualmay,29260,5,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+150806,Lima,Huaura,Huaura,38536,9,1,0.0222,Niño Costero 2017,medio,0,31,18,0,13,14,4,0,0,0,4847263,0
+150807,Lima,Huaura,Leoncio Prado,2438,19,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,46,13,11,22,4,0,0,0,0,0,0
+150808,Lima,Huaura,Paccho,1574,24,3,0.0667,FEN 1982-83; Niño Costero 2017,alto,1,23,10,1,12,8,0,0,0,0,0,0
+150809,Lima,Huaura,Santa Leonor,1162,10,1,0.0222,Niño Costero 2017,medio,0,33,12,9,10,6,0,0,0,0,0,0
+150810,Lima,Huaura,Santa María,39732,9,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,2,3,0,400,80,13961326,1
+150811,Lima,Huaura,Sayán,25109,29,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,93,57,0,36,19,13,0,3082,771,30754634,2
+150812,Lima,Huaura,Vegueta,27154,1,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,1
+150901,Lima,Oyón,Oyón,11152,30,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,0,159,41,18,72,15,2,0,600,150,549426,0
+150902,Lima,Oyón,Andajes,601,8,0,0.0,Niño Costero 2017,medio,1,14,2,7,3,2,0,0,0,0,0,0
+150903,Lima,Oyón,Caujul,621,14,0,0.0,Niño Costero 2017,medio,0,11,5,1,4,5,0,0,0,0,0,0
+150904,Lima,Oyón,Cochamarca,1806,24,0,0.0,Niño Costero 2017,medio,0,17,9,0,8,0,0,0,0,0,0,0
+150905,Lima,Oyón,Naván,953,9,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,15,2,3,10,1,0,0,0,0,0,0
+150906,Lima,Oyón,Pachangara,3198,16,3,0.0667,FEN 1982-83; Niño Costero 2017,alto,0,54,11,15,23,7,0,0,0,0,0,0
+151001,Lima,Yauyos,Yauyos,1877,11,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,29,9,1,19,2,0,0,0,0,0,1
+151002,Lima,Yauyos,Alis,420,9,2,0.0444,Niño Costero 2017,medio,1,28,6,5,17,2,0,0,0,0,0,1
+151003,Lima,Yauyos,Ayauca,1496,5,2,0.0444,Niño Costero 2017,medio,0,20,9,1,10,2,0,0,0,0,0,1
+151004,Lima,Yauyos,Ayaviri,633,12,1,0.0222,Niño Costero 2017,medio,0,4,1,0,3,0,0,0,0,0,0,0
+151005,Lima,Yauyos,Azángaro,728,8,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+151006,Lima,Yauyos,Cacra,584,13,1,0.0222,Niño Costero 2017,medio,1,18,2,1,15,0,0,0,0,0,0,0
+151007,Lima,Yauyos,Carania,247,11,0,0.0,Niño Costero 2017,medio,1,12,2,2,8,1,0,0,0,0,0,0
+151008,Lima,Yauyos,Catahuasi,1371,31,3,0.0667,Niño Costero 2017,medio,1,15,8,0,7,0,0,0,0,0,0,1
+151009,Lima,Yauyos,Chocos,1476,20,2,0.0444,Niño Costero 2017,medio,0,6,3,0,3,0,0,0,0,0,0,1
+151010,Lima,Yauyos,Cochas,174,6,0,0.0,Niño Costero 2017,medio,0,13,3,0,10,0,0,0,0,0,0,0
+151011,Lima,Yauyos,Colonia,1713,3,0,0.0,Niño Costero 2017,medio,0,16,3,1,11,0,0,0,0,0,0,1
+151012,Lima,Yauyos,Hongos,485,5,2,0.0444,Niño Costero 2017,medio,0,7,1,0,6,0,0,0,0,0,0,0
+151013,Lima,Yauyos,Huampara,376,5,2,0.0444,Niño Costero 2017,medio,0,16,3,0,13,0,0,0,0,0,0,0
+151014,Lima,Yauyos,Huancaya,517,12,0,0.0,Niño Costero 2017,medio,0,21,5,2,13,1,0,0,0,0,0,0
+151015,Lima,Yauyos,Huangascar,859,10,1,0.0222,Niño Costero 2017,medio,1,11,2,1,8,0,0,0,0,0,0,0
+151016,Lima,Yauyos,Huantan,960,4,1,0.0222,Niño Costero 2017,medio,0,22,3,0,16,0,0,0,0,0,0,0
+151017,Lima,Yauyos,Huañec,486,5,0,0.0,Niño Costero 2017,medio,0,2,0,0,2,0,0,0,0,0,0,0
+151018,Lima,Yauyos,Laraos,526,6,2,0.0444,Niño Costero 2017,medio,0,36,4,2,28,2,0,0,0,0,0,0
+151019,Lima,Yauyos,Lincha,1236,9,0,0.0,Niño Costero 2017,medio,0,4,1,0,3,0,0,0,0,0,0,0
+151020,Lima,Yauyos,Madean,1037,11,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+151021,Lima,Yauyos,Miraflores,269,16,0,0.0,Niño Costero 2017,medio,2,13,1,3,9,0,0,0,0,0,0,0
+151022,Lima,Yauyos,Omas,771,11,0,0.0,Niño Costero 2017,medio,0,26,9,1,16,1,0,0,0,0,0,0
+151023,Lima,Yauyos,Putinza,823,5,1,0.0222,Niño Costero 2017,medio,0,1,1,0,0,0,0,0,0,0,0,2
+151024,Lima,Yauyos,Quinches,915,32,2,0.0444,Niño Costero 2017,medio,0,11,2,1,8,1,0,0,0,0,0,0
+151025,Lima,Yauyos,Quinocay,657,7,1,0.0222,Niño Costero 2017,medio,0,15,5,0,9,0,0,0,0,0,0,0
+151026,Lima,Yauyos,San Joaquín,191,9,0,0.0,Niño Costero 2017,medio,0,4,2,0,2,0,0,0,0,0,0,0
+151027,Lima,Yauyos,San Pedro de Pilas,401,38,0,0.0,Niño Costero 2017,medio,0,4,1,0,3,0,0,0,0,0,0,0
+151028,Lima,Yauyos,Tanta,694,8,1,0.0222,Niño Costero 2017,medio,0,1,0,0,1,0,0,0,0,0,0,1
+151029,Lima,Yauyos,Tauripampa,786,17,2,0.0444,Niño Costero 2017,medio,0,9,4,1,4,0,0,0,0,0,0,0
+151030,Lima,Yauyos,Tomás,664,12,1,0.0222,Niño Costero 2017,medio,0,15,4,0,10,1,0,0,0,0,0,1
+151031,Lima,Yauyos,Tupe,783,7,1,0.0222,Niño Costero 2017,medio,0,1,0,0,1,1,0,0,0,0,0,0
+151032,Lima,Yauyos,Viñac,2484,31,0,0.0,Niño Costero 2017,medio,0,14,7,2,4,0,0,0,0,0,0,1
+151033,Lima,Yauyos,Vitis,314,5,0,0.0,Niño Costero 2017,medio,0,6,1,0,5,0,0,0,0,0,0,0
+160101,Loreto,Maynas,Iquitos,174521,109,32,0.7111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,0,0,0,0,1,0,0,0,0,0,0
+160102,Loreto,Maynas,Alto Nanay,4637,2,1,0.0222,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160103,Loreto,Maynas,Fernando Lores,18849,8,2,0.0444,Niño Costero 2017,medio,1,0,0,0,0,1,0,0,0,0,0,0
+160104,Loreto,Maynas,Indiana,15162,9,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160105,Loreto,Maynas,Las Amazonas,12388,6,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+160106,Loreto,Maynas,Mazán,18579,4,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160107,Loreto,Maynas,Napo,18581,7,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,1,0,0,0,0,0,0
+160108,Loreto,Maynas,Punchana,102139,26,7,0.1556,Niño Costero 2017,medio,2,0,0,0,0,3,0,0,0,0,0,1
+160110,Loreto,Maynas,Torres Causana,7556,3,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160112,Loreto,Maynas,Belén,80311,15,3,0.0667,Niño Costero 2017,medio,0,0,0,0,0,4,0,0,0,0,0,0
+160113,Loreto,Maynas,San Juan Bautista,134481,21,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,1,0,0,0,0,0,0
+160201,Loreto,Alto Amazonas,Yurimaguas,96294,26,12,0.2667,FEN 1982-83; Niño Costero 2017,muy alto,0,0,0,0,0,3,0,0,0,0,0,1
+160202,Loreto,Alto Amazonas,Balsapuerto,23027,8,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+160205,Loreto,Alto Amazonas,Jeberos,5678,2,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160206,Loreto,Alto Amazonas,Lagunas,15754,2,0,0.0,,bajo,0,0,0,0,0,5,0,0,0,0,0,1
+160210,Loreto,Alto Amazonas,Santa Cruz,5460,3,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,1
+160211,Loreto,Alto Amazonas,Teniente Cesar López Rojas,7668,4,3,0.0667,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+160301,Loreto,Loreto,Nauta,38559,25,8,0.1778,FEN 1982-83; Niño Costero 2017,alto,1,7,0,1,6,9,0,0,0,0,0,0
+160302,Loreto,Loreto,Parinari,8106,5,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,1,0,0,0,0,0,0
+160303,Loreto,Loreto,Tigre,10971,4,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160304,Loreto,Loreto,Trompeteros,11735,3,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160305,Loreto,Loreto,Urarinas,16751,8,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,1,0,0,0,0,1,0,0,0,0,0,0
+160401,Loreto,Mariscal Ramón Castilla,Ramón Castilla,28037,17,7,0.1556,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160402,Loreto,Mariscal Ramón Castilla,Pebas,17259,7,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,1,0,0,0,0,0,0
+160403,Loreto,Mariscal Ramón Castilla,Yavari,17985,8,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,3,0,0,0,0,0,0
+160404,Loreto,Mariscal Ramón Castilla,San Pablo,18469,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+160501,Loreto,Requena,Requena,32674,12,6,0.1333,Niño Costero 2017,medio,0,0,0,0,0,2,0,0,0,0,0,0
+160502,Loreto,Requena,Alto Tapiche,2245,2,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160503,Loreto,Requena,Capelo,3866,3,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160504,Loreto,Requena,Emilio San Martín,8130,2,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160505,Loreto,Requena,Maquia,10024,4,2,0.0444,Niño Costero 2017,medio,0,0,0,0,0,4,0,0,0,0,0,0
+160506,Loreto,Requena,Puinahua,6323,9,3,0.0667,Niño Costero 2017,medio,1,0,0,0,0,5,0,0,0,0,0,0
+160507,Loreto,Requena,Saquena,4457,8,1,0.0222,Niño Costero 2017,medio,1,0,0,0,0,7,0,0,0,0,0,0
+160508,Loreto,Requena,Soplin,1087,2,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160509,Loreto,Requena,Tapiche,1403,2,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160510,Loreto,Requena,Jenaro Herrera,5601,5,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,2,0,0,0,0,0,0
+160511,Loreto,Requena,Yaquerana,3481,1,0,0.0,,bajo,0,0,0,0,0,2,0,0,0,0,0,0
+160601,Loreto,Ucayali,Contamana,31175,38,11,0.2444,Niño Costero 2017,medio,1,3,0,2,1,5,0,0,0,0,0,0
+160602,Loreto,Ucayali,Inahuaya,3124,7,3,0.0667,Niño Costero 2017,medio,0,1,0,1,0,1,0,0,0,0,0,0
+160603,Loreto,Ucayali,Padre Marquez,7054,7,0,0.0,Niño Costero 2017,medio,2,0,0,0,0,1,0,0,0,0,0,0
+160604,Loreto,Ucayali,Pampa Hermosa,7755,4,0,0.0,Niño Costero 2017,medio,1,1,0,1,0,1,0,0,0,0,0,0
+160605,Loreto,Ucayali,Sarayacu,16382,14,2,0.0444,Niño Costero 2017,medio,1,0,0,0,0,4,0,0,0,0,0,0
+160606,Loreto,Ucayali,Vargas Guerra,10244,6,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,2,0,0,0,0,0,0
+160701,Loreto,Datem del Marañón,Barranca,19605,4,2,0.0444,FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+160702,Loreto,Datem del Marañón,Cahuapanas,10759,3,2,0.0444,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160703,Loreto,Datem del Marañón,Manseriche,12488,7,4,0.0889,FEN 1982-83,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160704,Loreto,Datem del Marañón,Morona,11170,1,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+160705,Loreto,Datem del Marañón,Pastaza,10761,1,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+160706,Loreto,Datem del Marañón,Andoas,15023,3,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+160801,Loreto,Putumayo,Putumayo,5571,4,1,0.0222,Niño Costero 2017,medio,0,1,0,1,0,0,0,0,0,0,0,0
+160802,Loreto,Putumayo,Rosa Panduro,545,2,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,0
+160803,Loreto,Putumayo,Teniente Manuel Clavero,3417,2,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+160804,Loreto,Putumayo,Yaguas,1445,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+170101,Madre de Dios,Tambopata,Tambopata,112456,74,20,0.4444,FEN 1982-83; FEN 1997-98,muy alto,0,2,0,1,1,7,0,0,0,0,0,0
+170102,Madre de Dios,Tambopata,Inambari,14943,24,9,0.2,,medio,0,22,15,1,6,3,0,0,0,0,0,0
+170103,Madre de Dios,Tambopata,Las Piedras,12030,15,2,0.0444,,bajo,0,1,1,0,0,0,0,0,0,0,0,0
+170104,Madre de Dios,Tambopata,Laberinto,7364,14,2,0.0444,,bajo,0,1,1,0,0,1,0,0,0,0,0,1
+170201,Madre de Dios,Manu,Manu,3194,20,7,0.1556,,medio,0,31,14,2,15,3,0,0,0,0,0,0
+170202,Madre de Dios,Manu,Fitzcarrald,1480,18,3,0.0667,,bajo,0,0,0,0,0,1,0,0,0,0,0,0
+170203,Madre de Dios,Manu,Madre de Dios,6848,27,9,0.2,,medio,1,2,0,0,2,0,0,0,0,0,0,0
+170204,Madre de Dios,Manu,Huepetuhe,7342,16,4,0.0889,,bajo,0,7,1,2,4,0,0,0,0,0,0,0
+170301,Madre de Dios,Tahuamanu,Iñapari,2098,12,8,0.1778,FEN 1997-98,medio,0,3,0,0,3,1,0,0,0,0,0,0
+170302,Madre de Dios,Tahuamanu,Iberia,6540,9,6,0.1333,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+170303,Madre de Dios,Tahuamanu,Tahuamanu,3276,6,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+180101,Moquegua,Mariscal Nieto,Moquegua,69253,24,14,0.3111,FEN 1982-83,alto,0,76,59,0,16,4,0,0,0,0,0,0
+180102,Moquegua,Mariscal Nieto,Carumas,2991,9,3,0.0667,FEN 1997-98,medio,1,72,34,13,22,2,0,0,0,0,0,1
+180103,Moquegua,Mariscal Nieto,Cuchumbaya,1530,6,1,0.0222,,bajo,0,16,3,5,8,1,0,0,0,0,0,0
+180104,Moquegua,Mariscal Nieto,Samegua,10022,5,1,0.0222,,bajo,0,13,9,1,3,3,0,0,0,0,0,1
+180105,Moquegua,Mariscal Nieto,San Cristóbal,3544,9,2,0.0444,,bajo,0,26,11,2,12,0,0,0,0,0,0,1
+180106,Moquegua,Mariscal Nieto,Torata,8810,13,4,0.0889,,bajo,0,138,78,5,53,6,0,0,0,0,0,1
+180107,Moquegua,Mariscal Nieto,San Antonio,,0,0,,,,0,0,0,0,0,1,0,0,0,0,0,0
+180201,Moquegua,General Sánchez Cerro,Omate,2811,10,4,0.0889,FEN 1997-98,medio,0,31,22,1,8,1,0,0,0,0,0,0
+180202,Moquegua,General Sánchez Cerro,Chojata,1080,8,0,0.0,,bajo,0,34,22,4,7,2,0,0,0,0,0,2
+180203,Moquegua,General Sánchez Cerro,Coalaque,1129,6,2,0.0444,,bajo,0,31,12,6,10,2,0,0,0,0,0,0
+180204,Moquegua,General Sánchez Cerro,Ichuña,2827,18,6,0.1333,FEN 1997-98,medio,0,53,44,3,3,4,0,0,0,0,0,1
+180205,Moquegua,General Sánchez Cerro,La Capilla,723,3,1,0.0222,,bajo,0,30,17,6,7,1,0,0,0,0,0,0
+180206,Moquegua,General Sánchez Cerro,Lloque,688,16,3,0.0667,,bajo,0,19,11,3,4,1,0,0,0,0,0,1
+180207,Moquegua,General Sánchez Cerro,Matalaque,593,12,3,0.0667,FEN 1982-83,medio,0,61,35,4,21,7,0,0,0,0,0,0
+180208,Moquegua,General Sánchez Cerro,Puquina,2408,12,2,0.0444,,bajo,0,44,13,13,18,1,0,0,0,0,0,2
+180209,Moquegua,General Sánchez Cerro,Quinistaquillas,559,2,0,0.0,,bajo,0,39,20,2,16,2,0,0,0,0,0,0
+180210,Moquegua,General Sánchez Cerro,Ubinas,2329,34,11,0.2444,FEN 1982-83,medio,1,79,40,14,23,6,0,0,0,0,0,0
+180211,Moquegua,General Sánchez Cerro,Yunga,740,12,2,0.0444,,bajo,0,14,10,2,2,1,0,0,0,0,0,0
+180301,Moquegua,Ilo,Ilo,77954,12,9,0.2,FEN 1982-83; FEN 1997-98,alto,0,9,4,0,5,0,0,0,0,0,0,0
+180302,Moquegua,Ilo,El Algarrobal,1781,3,0,0.0,,bajo,1,19,7,0,12,1,0,0,0,0,0,0
+180303,Moquegua,Ilo,Pacocha,5850,0,0,,,,0,32,27,0,5,2,0,0,0,0,0,0
+190101,Pasco,Pasco,Chaupimarca,34856,90,19,0.4222,FEN 1997-98,alto,0,1,0,0,1,0,0,0,0,0,0,0
+190102,Pasco,Pasco,Huachón,4793,17,4,0.0889,,bajo,0,34,18,5,11,1,0,0,0,0,0,0
+190103,Pasco,Pasco,Huariaca,7890,57,8,0.1778,FEN 1997-98,medio,1,33,7,10,16,1,0,0,0,0,0,0
+190104,Pasco,Pasco,Huayllay,8577,39,7,0.1556,FEN 1997-98,medio,3,29,3,3,13,1,0,0,0,0,0,0
+190105,Pasco,Pasco,Ninacaca,5377,29,3,0.0667,FEN 1982-83,medio,0,20,9,4,7,1,0,0,0,0,0,0
+190106,Pasco,Pasco,Pallanchacra,2693,39,4,0.0889,,bajo,2,10,3,2,3,2,0,0,0,0,0,0
+190107,Pasco,Pasco,Paucartambo,14348,57,13,0.2889,,alto,2,96,26,16,51,2,0,0,0,0,0,0
+190108,Pasco,Pasco,San Francisco de Asis de Yarusyacán,7092,34,4,0.0889,,bajo,0,16,6,0,8,0,0,0,0,0,0,0
+190109,Pasco,Pasco,Simón Bolívar,14660,27,5,0.1111,,medio,0,15,7,3,3,2,0,0,0,0,0,0
+190110,Pasco,Pasco,Ticlacayán,5037,53,2,0.0444,,bajo,2,19,5,7,7,1,0,0,0,0,0,0
+190111,Pasco,Pasco,Tinyahuarco,7407,26,4,0.0889,,bajo,2,3,1,2,0,0,0,0,0,0,0,0
+190112,Pasco,Pasco,Vicco,4204,22,2,0.0444,,bajo,0,3,3,0,0,1,0,0,0,0,0,0
+190113,Pasco,Pasco,Yanacancha,29328,49,9,0.2,,medio,0,39,4,19,12,1,0,0,0,0,0,0
+190201,Pasco,Daniel Alcides Carrión,Yanahuanca,14326,156,13,0.2889,,alto,6,74,17,11,30,3,0,0,0,0,0,0
+190202,Pasco,Daniel Alcides Carrión,Chacayán,2405,52,1,0.0222,,bajo,1,18,2,5,9,2,0,0,0,0,0,0
+190203,Pasco,Daniel Alcides Carrión,Goyllarisquizga,799,16,0,0.0,,bajo,1,2,0,2,0,1,0,0,0,0,0,0
+190204,Pasco,Daniel Alcides Carrión,Paucar,2860,61,2,0.0444,,bajo,4,21,5,3,12,1,0,0,0,0,0,1
+190205,Pasco,Daniel Alcides Carrión,San Pedro de Pillao,1686,37,0,0.0,,bajo,1,3,0,1,2,0,0,0,0,0,0,0
+190206,Pasco,Daniel Alcides Carrión,Santa Ana de Tusi,7005,53,4,0.0889,FEN 1997-98,medio,0,19,2,8,6,2,0,0,0,0,0,0
+190207,Pasco,Daniel Alcides Carrión,Tapuc,2549,58,1,0.0222,,bajo,6,13,3,5,5,2,0,0,0,0,0,0
+190208,Pasco,Daniel Alcides Carrión,Vilcabamba,1656,48,2,0.0444,,bajo,5,2,0,1,1,0,0,0,0,0,0,0
+190301,Pasco,Oxapampa,Oxapampa,18703,40,15,0.3333,FEN 1982-83; FEN 1997-98,muy alto,1,22,6,1,15,1,0,0,0,0,0,0
+190302,Pasco,Oxapampa,Chontabamba,5304,11,3,0.0667,FEN 1997-98,medio,0,45,13,3,26,1,0,0,0,0,0,0
+190303,Pasco,Oxapampa,Huancabamba,7645,34,11,0.2444,FEN 1982-83; FEN 1997-98,alto,0,50,17,1,30,1,0,0,0,0,0,0
+190304,Pasco,Oxapampa,Palcazu,11465,17,6,0.1333,,medio,0,38,5,2,20,2,0,0,0,0,0,0
+190305,Pasco,Oxapampa,Pozuzo,7624,95,18,0.4,FEN 1982-83,alto,0,33,12,1,16,1,0,0,0,0,0,0
+190306,Pasco,Oxapampa,Puerto Bermúdez,26573,89,8,0.1778,,medio,4,36,12,3,14,1,0,0,0,0,0,0
+190307,Pasco,Oxapampa,Villa Rica,19721,50,14,0.3111,,alto,2,103,29,22,42,4,0,0,0,0,0,0
+190308,Pasco,Oxapampa,Constitución,17797,29,0,0.0,,bajo,7,0,0,0,0,0,0,0,0,0,0,0
+200101,Piura,Piura,Piura,215478,116,28,0.6222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,1,1,0,0,0,6,6,18251,10550,15340124,4
+200104,Piura,Piura,Castilla,165416,54,10,0.2222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,2,2,0,0,1,3,3,1600,620,8059381,4
+200105,Piura,Piura,Catacaos,82327,31,10,0.2222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,5,5,16414,7251,32216393,7
+200107,Piura,Piura,Cura Mori,19804,24,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,1,0,1,0,0,1,1,80,15,1020166,0
+200108,Piura,Piura,El Tallan,6291,17,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,1,1,100,20,2121784,1
+200109,Piura,Piura,La Arena,43574,20,6,0.1333,FEN 1982-83; Niño Costero 2017,alto,0,1,1,0,0,2,2,2,1750,1050,3727716,3
+200110,Piura,Piura,La Unión,45477,24,7,0.1556,FEN 1982-83; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,4
+200111,Piura,Piura,Las Lomas,33373,30,11,0.2444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,18,16,0,2,1,2,0,560,122,3162174,0
+200114,Piura,Piura,Tambo Grande,117847,114,10,0.2222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,8,9,9,0,0,0,1,0,0,0,4305693,16
+200115,Piura,Piura,Veintiseis de Octubre,130512,14,0,0.0,Niño Costero 2017,medio,0,0,0,0,0,0,0,0,0,0,0,6
+200201,Piura,Ayabaca,Ayabaca,40087,49,16,0.3556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,4,167,23,82,57,5,1,0,0,0,1193070,3
+200202,Piura,Ayabaca,Frías,25155,17,3,0.0667,FEN 1982-83; Niño Costero 2017,alto,1,28,16,4,7,0,0,0,0,0,0,5
+200203,Piura,Ayabaca,Jilili,3187,12,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,14,5,2,7,0,0,0,0,0,0,2
+200204,Piura,Ayabaca,Lagunas,7845,23,3,0.0667,FEN 1982-83; Niño Costero 2017,alto,1,17,5,5,3,0,0,0,0,0,0,0
+200205,Piura,Ayabaca,Montero,7218,16,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,23,5,7,7,1,0,0,0,0,0,1
+200206,Piura,Ayabaca,Pacaipampa,27860,34,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,5,65,8,8,49,2,0,0,0,0,0,7
+200207,Piura,Ayabaca,Paimas,11113,21,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,2,15,14,0,1,0,5,0,669,112,3778632,1
+200208,Piura,Ayabaca,Sapillica,13444,19,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,1,8,8,0,0,1,0,0,0,0,0,1
+200209,Piura,Ayabaca,Sicchez,2613,16,3,0.0667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,8,1,4,3,0,0,0,0,0,0,1
+200210,Piura,Ayabaca,Suyo,13784,16,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,21,21,0,0,0,1,0,250,50,1658262,6
+200301,Piura,Huancabamba,Huancabamba,33141,52,19,0.4222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,1,77,6,33,20,1,0,0,0,0,0,6
+200302,Piura,Huancabamba,Canchaque,8747,25,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,26,6,10,6,1,5,5,1714,431,4130599,2
+200303,Piura,Huancabamba,El Carmen de la Frontera,14527,28,6,0.1333,FEN 1982-83; Niño Costero 2017,alto,1,15,12,3,0,0,0,0,0,0,0,4
+200304,Piura,Huancabamba,Huarmaca,42735,38,12,0.2667,FEN 1982-83; Niño Costero 2017,muy alto,0,74,29,16,20,2,4,4,714,227,3617661,21
+200305,Piura,Huancabamba,Lalaquiz,5332,14,6,0.1333,FEN 1982-83; Niño Costero 2017,alto,1,0,0,0,0,0,0,0,0,0,0,3
+200306,Piura,Huancabamba,San Miguel De El Faique,10637,25,7,0.1556,FEN 1982-83; Niño Costero 2017,alto,0,27,7,5,9,1,0,0,0,0,0,9
+200307,Piura,Huancabamba,Sondor,8453,25,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,6,24,4,14,2,1,0,0,0,0,0,4
+200308,Piura,Huancabamba,Sondorillo,12217,21,4,0.0889,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,17,7,7,3,1,0,0,0,0,0,6
+200401,Piura,Morropón,Chulucanas,97679,56,17,0.3778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,2,18,17,0,0,0,2,2,6500,1550,4932179,8
+200402,Piura,Morropón,Buenos Aires,10158,27,10,0.2222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,3,13,11,0,2,2,2,2,216,120,1189904,5
+200403,Piura,Morropón,Chalaco,9192,31,12,0.2667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,8,0,4,4,0,0,0,0,0,0,7
+200404,Piura,Morropón,La Matanza,17141,32,12,0.2667,FEN 1982-83; Niño Costero 2017,muy alto,0,21,20,0,1,0,1,1,600,140,1079019,5
+200405,Piura,Morropón,Morropón,13997,46,18,0.4,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,12,11,0,1,1,2,2,750,0,1233532,4
+200406,Piura,Morropón,Salitral,9674,15,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,15,13,1,1,2,0,0,0,0,0,4
+200407,Piura,Morropón,San Juan de Bigote,7951,20,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,10,10,0,0,1,2,2,2100,725,19880304,2
+200408,Piura,Morropón,Santa Catalina de Mossa,4134,22,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,11,7,2,2,0,2,2,445,150,5999819,5
+200409,Piura,Morropón,Santo Domingo,7563,27,12,0.2667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,1,12,7,1,2,0,0,0,0,0,0,3
+200410,Piura,Morropón,Yamango,10447,17,11,0.2444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,8,6,2,0,0,0,0,0,0,0,6
+200501,Piura,Paita,Paita,94360,57,15,0.3333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,1,14,6,6,2,3,0,0,0,0,0,3
+200502,Piura,Paita,Amotape,2537,24,5,0.1111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,8,8,0,0,0,0,0,0,0,0,0
+200503,Piura,Paita,Arenal,1338,27,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+200504,Piura,Paita,Colán,16403,39,11,0.2444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,3,1,1,1,1,0,0,0,0,0,1
+200505,Piura,Paita,La Huaca,13389,32,11,0.2444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,14,10,1,3,1,1,1,700,200,1573780,2
+200506,Piura,Paita,Tamarindo,5326,15,3,0.0667,FEN 1982-83; Niño Costero 2017,alto,0,4,4,0,0,0,0,0,0,0,0,1
+200507,Piura,Paita,Vichayal,5795,25,6,0.1333,FEN 1982-83; Niño Costero 2017,alto,0,3,2,0,1,1,0,0,0,0,0,1
+200601,Piura,Sullana,Sullana,193589,81,19,0.4222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,0,0,0,0,0,3,2,110,27,11973637,8
+200602,Piura,Sullana,Bellavista,45554,24,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,1
+200603,Piura,Sullana,Ignacio Escudero,21659,22,5,0.1111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,11,11,0,0,1,0,0,0,0,0,3
+200604,Piura,Sullana,Lancones,14691,28,17,0.3778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,17,16,0,1,0,0,0,0,0,0,6
+200605,Piura,Sullana,Marcavelica,30661,47,8,0.1778,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,17,16,0,1,0,0,0,0,0,0,4
+200606,Piura,Sullana,Miguel Checa,9304,25,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,3,3,0,0,0,0,0,0,0,0,1
+200607,Piura,Sullana,Querecotillo,28404,33,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,10,7,0,3,1,2,2,200,0,9010535,2
+200608,Piura,Sullana,Salitral,7432,15,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,1,0,0,0,0,0,1
+200701,Piura,Talara,Pariñas,107500,51,16,0.3556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,0,25,23,0,2,4,0,0,0,0,0,2
+200702,Piura,Talara,El Alto,9128,24,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,10,8,1,1,2,0,0,0,0,0,0
+200703,Piura,Talara,La Brea,14130,14,5,0.1111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,26,25,0,1,4,0,0,0,0,0,2
+200704,Piura,Talara,Lobitos,1537,18,10,0.2222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,11,10,1,0,1,0,0,0,0,0,1
+200705,Piura,Talara,Los Órganos,10858,17,6,0.1333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,10,10,0,0,2,0,0,0,0,0,1
+200706,Piura,Talara,Máncora,12054,35,11,0.2444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,9,8,1,0,1,0,0,0,0,0,1
+200801,Piura,Sechura,Sechura,46950,36,12,0.2667,FEN 1982-83; Niño Costero 2017,muy alto,1,9,9,0,0,1,1,0,15000,3000,414201,3
+200802,Piura,Sechura,Bellavista de la Unión,5270,5,3,0.0667,FEN 1982-83,medio,0,0,0,0,0,0,0,0,0,0,0,2
+200803,Piura,Sechura,Bernal,7997,9,4,0.0889,FEN 1982-83; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+200804,Piura,Sechura,Cristo Nos Valga,4864,10,2,0.0444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+200805,Piura,Sechura,Vice,18930,8,2,0.0444,FEN 1982-83; Niño Costero 2017,alto,0,2,2,0,0,0,0,0,0,0,0,0
+200806,Piura,Sechura,Rinconada Llicuar,3656,5,1,0.0222,FEN 1982-83; Niño Costero 2017,alto,0,0,0,0,0,0,0,0,0,0,0,0
+210101,Puno,Puno,Puno,145841,48,20,0.4444,FEN 1997-98,alto,1,14,2,1,11,2,0,0,0,0,0,0
+210102,Puno,Puno,Acora,23925,33,9,0.2,,medio,0,21,7,0,14,0,0,0,0,0,0,0
+210103,Puno,Puno,Amantani,5283,2,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+210104,Puno,Puno,Atuncolla,5649,3,1,0.0222,,bajo,0,1,0,0,1,1,0,0,0,0,0,0
+210105,Puno,Puno,Capachica,10061,12,4,0.0889,FEN 1982-83,medio,0,2,0,0,2,0,0,0,0,0,0,0
+210106,Puno,Puno,Chucuito,8316,8,4,0.0889,,bajo,0,8,1,0,7,0,0,0,0,0,0,0
+210107,Puno,Puno,Coata,8471,14,6,0.1333,,medio,0,0,0,0,0,1,0,0,0,0,0,0
+210108,Puno,Puno,Huata,3708,2,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+210109,Puno,Puno,Mañazo,5926,11,2,0.0444,,bajo,0,9,7,1,1,0,0,0,0,0,0,0
+210110,Puno,Puno,Paucarcolla,5270,12,4,0.0889,,bajo,0,0,0,0,0,1,0,0,0,0,0,0
+210111,Puno,Puno,Pichacani,6792,14,5,0.1111,,medio,0,7,0,1,6,2,0,0,0,0,0,0
+210112,Puno,Puno,Platería,7779,4,1,0.0222,,bajo,0,6,0,0,5,0,0,0,0,0,0,0
+210113,Puno,Puno,San Antonio,1527,4,2,0.0444,,bajo,0,11,8,0,2,0,0,0,0,0,0,0
+210114,Puno,Puno,Tiquillaca,2718,3,1,0.0222,,bajo,0,3,1,1,1,0,0,0,0,0,0,0
+210115,Puno,Puno,Vilque,3286,9,2,0.0444,,bajo,0,2,1,0,1,0,0,0,0,0,0,0
+210201,Puno,Azángaro,Azángaro,36215,23,6,0.1333,,medio,0,4,0,1,3,0,0,0,0,0,0,0
+210202,Puno,Azángaro,Achaya,4357,4,0,0.0,,bajo,1,0,0,0,0,1,0,0,0,0,0,0
+210203,Puno,Azángaro,Arapa,8557,6,3,0.0667,,bajo,0,6,4,0,2,0,0,0,0,0,0,0
+210204,Puno,Azángaro,Asillo,17230,8,2,0.0444,,bajo,0,3,0,0,1,5,0,0,0,0,0,0
+210205,Puno,Azángaro,Caminaca,4943,3,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+210206,Puno,Azángaro,Chupa,8002,14,0,0.0,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+210207,Puno,Azángaro,José Domingo Choquehuanca,4789,2,0,0.0,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+210208,Puno,Azángaro,Muñani,7479,13,2,0.0444,,bajo,0,7,4,0,2,0,0,0,0,0,0,0
+210209,Puno,Azángaro,Potoni,4183,8,1,0.0222,,bajo,0,9,4,3,2,2,0,0,0,0,0,0
+210210,Puno,Azángaro,Samán,13616,3,2,0.0444,,bajo,0,0,0,0,0,1,0,0,0,0,0,0
+210211,Puno,Azángaro,San Antón,8604,13,4,0.0889,FEN 1997-98,medio,0,24,21,0,1,4,0,0,0,0,0,0
+210212,Puno,Azángaro,San José,5564,8,2,0.0444,,bajo,0,5,4,0,1,2,0,0,0,0,0,0
+210213,Puno,Azángaro,San Juan de Salinas,3832,6,0,0.0,,bajo,0,4,0,1,3,0,0,0,0,0,0,0
+210214,Puno,Azángaro,Santiago de Pupuja,5072,3,0,0.0,,bajo,0,1,0,1,0,0,0,0,0,0,0,0
+210215,Puno,Azángaro,Tirapata,3203,2,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+210301,Puno,Carabaya,Macusani,14629,43,11,0.2444,FEN 1997-98,medio,0,22,7,4,9,1,0,0,0,0,0,0
+210302,Puno,Carabaya,Ajoyani,2564,9,2,0.0444,,bajo,0,8,4,0,0,0,0,0,0,0,0,0
+210303,Puno,Carabaya,Ayapata,6529,24,3,0.0667,,bajo,0,56,21,3,31,1,0,0,0,0,0,0
+210304,Puno,Carabaya,Coasa,7052,16,2,0.0444,,bajo,0,28,11,7,10,0,0,0,0,0,0,0
+210305,Puno,Carabaya,Corani,4698,7,1,0.0222,,bajo,0,31,10,3,13,0,0,0,0,0,0,0
+210306,Puno,Carabaya,Crucero,9148,24,6,0.1333,,medio,0,10,9,0,1,0,0,0,0,0,0,0
+210307,Puno,Carabaya,Ituata,6027,13,3,0.0667,,bajo,0,13,5,1,5,0,0,0,0,0,0,0
+210308,Puno,Carabaya,Ollachea,6822,28,6,0.1333,FEN 1997-98,medio,0,41,16,3,22,2,0,0,0,0,0,0
+210309,Puno,Carabaya,San Gaban,6998,15,5,0.1111,FEN 1997-98,medio,0,40,22,0,16,2,0,0,0,0,0,0
+210310,Puno,Carabaya,Usicayos,3595,16,1,0.0222,,bajo,0,17,2,12,3,2,0,0,0,0,0,0
+210401,Puno,Chucuito,Juli,23565,30,6,0.1333,,medio,0,7,2,2,3,2,0,0,0,0,0,0
+210402,Puno,Chucuito,Desaguadero,12575,16,5,0.1111,,medio,0,0,0,0,0,0,0,0,0,0,0,0
+210403,Puno,Chucuito,Huacullani,4830,6,2,0.0444,,bajo,0,11,2,3,6,0,0,0,0,0,0,0
+210404,Puno,Chucuito,Kelluyo,5245,10,2,0.0444,,bajo,0,1,0,0,1,0,0,0,0,0,0,0
+210405,Puno,Chucuito,Pisacoma,2821,8,4,0.0889,,bajo,0,4,1,0,3,0,0,0,0,0,0,0
+210406,Puno,Chucuito,Pomata,15664,13,5,0.1111,FEN 1997-98,medio,0,7,4,0,3,1,0,0,0,0,0,0
+210407,Puno,Chucuito,Zepita,17384,7,2,0.0444,FEN 1997-98,medio,0,2,0,1,1,0,0,0,0,0,0,0
+210501,Puno,El Collao,Ilave,52439,83,8,0.1778,,medio,0,1,0,0,1,1,0,0,0,0,0,1
+210502,Puno,El Collao,Capazo,808,21,8,0.1778,FEN 1997-98,medio,0,3,2,0,1,0,0,0,0,0,0,0
+210503,Puno,El Collao,Pilcuyo,11185,8,5,0.1111,FEN 1982-83,medio,0,1,0,0,1,0,0,0,0,0,0,0
+210504,Puno,El Collao,Santa Rosa,3758,20,9,0.2,,medio,1,15,9,1,5,0,0,0,0,0,0,0
+210505,Puno,El Collao,Conduriri,2959,15,3,0.0667,,bajo,0,12,10,0,2,2,0,0,0,0,0,0
+210601,Puno,Huancané,Huancané,23079,27,8,0.1778,,medio,0,9,0,0,9,2,0,0,0,0,0,0
+210602,Puno,Huancané,Cojata,4933,7,2,0.0444,,bajo,0,3,0,1,2,0,0,0,0,0,0,0
+210603,Puno,Huancané,Huatasani,2906,11,1,0.0222,,bajo,1,1,0,0,1,0,0,0,0,0,0,0
+210604,Puno,Huancané,Inchupalla,3466,5,1,0.0222,,bajo,0,3,2,0,1,0,0,0,0,0,0,0
+210605,Puno,Huancané,Pusi,5483,4,2,0.0444,FEN 1997-98,medio,0,2,0,1,1,0,0,0,0,0,0,0
+210606,Puno,Huancané,Rosaspata,5809,6,1,0.0222,,bajo,0,2,0,1,1,0,0,0,0,0,0,0
+210607,Puno,Huancané,Taraco,14956,6,4,0.0889,,bajo,0,0,0,0,0,3,0,0,0,0,0,0
+210608,Puno,Huancané,Vilque Chico,10291,11,2,0.0444,,bajo,0,8,1,1,6,0,0,0,0,0,0,0
+210701,Puno,Lampa,Lampa,13380,33,9,0.2,,medio,0,2,0,0,2,0,0,0,0,0,0,0
+210702,Puno,Lampa,Cabanilla,6260,8,2,0.0444,,bajo,0,5,5,0,0,1,0,0,0,0,0,0
+210703,Puno,Lampa,Calapuja,2174,3,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+210704,Puno,Lampa,Nicasio,3243,2,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+210705,Puno,Lampa,Ocuviri,2555,12,3,0.0667,FEN 1997-98,medio,0,8,4,1,2,1,0,0,0,0,0,0
+210706,Puno,Lampa,Palca,2135,10,2,0.0444,,bajo,0,17,9,0,8,0,0,0,0,0,0,0
+210707,Puno,Lampa,Paratia,2584,12,5,0.1111,,medio,0,7,2,0,5,0,0,0,0,0,0,0
+210708,Puno,Lampa,Pucará,6314,7,3,0.0667,,bajo,0,4,1,0,3,0,0,0,0,0,0,0
+210709,Puno,Lampa,Santa Lucía,8039,15,7,0.1556,FEN 1997-98,medio,0,23,13,2,8,0,0,0,0,0,0,0
+210710,Puno,Lampa,Vilavila,1144,7,2,0.0444,,bajo,0,6,0,1,5,0,0,0,0,0,0,0
+210801,Puno,Melgar,Ayaviri,27896,21,10,0.2222,,medio,0,8,3,0,4,1,0,0,0,0,0,0
+210802,Puno,Melgar,Antauta,5845,6,3,0.0667,,bajo,0,19,13,0,6,2,0,0,0,0,0,0
+210803,Puno,Melgar,Cupi,2116,6,1,0.0222,,bajo,0,4,2,0,1,0,0,0,0,0,0,0
+210804,Puno,Melgar,Llalli,3220,5,4,0.0889,,bajo,0,4,0,1,3,3,0,0,0,0,0,0
+210805,Puno,Melgar,Macari,7740,3,0,0.0,,bajo,0,4,2,0,2,1,0,0,0,0,0,0
+210806,Puno,Melgar,Nuñoa,9831,7,3,0.0667,,bajo,0,17,6,1,7,2,0,0,0,0,0,0
+210807,Puno,Melgar,Orurillo,8885,7,3,0.0667,,bajo,0,4,0,0,4,1,0,0,0,0,0,0
+210808,Puno,Melgar,Santa Rosa,6640,8,5,0.1111,,medio,0,27,10,2,10,1,0,0,0,0,0,0
+210809,Puno,Melgar,Umachiri,3722,6,1,0.0222,,bajo,0,2,2,0,0,1,0,0,0,0,0,0
+210901,Puno,Moho,Moho,16308,46,1,0.0222,,bajo,0,14,7,1,6,0,0,0,0,0,0,1
+210902,Puno,Moho,Conima,3865,3,1,0.0222,FEN 1982-83,medio,0,5,3,0,2,1,0,0,0,0,0,0
+210903,Puno,Moho,Huayrapata,3776,16,1,0.0222,,bajo,0,2,1,0,1,0,0,0,0,0,0,0
+210904,Puno,Moho,Tilali,3156,3,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+211001,Puno,San Antonio de Putina,Putina,17133,33,6,0.1333,,medio,0,24,7,8,3,0,0,0,0,0,0,0
+211002,Puno,San Antonio de Putina,Ananea,4944,19,10,0.2222,FEN 1997-98,medio,0,15,5,0,6,2,0,0,0,0,0,0
+211003,Puno,San Antonio de Putina,Pedro Vilca Apaza,2190,5,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+211004,Puno,San Antonio de Putina,Quilcapuncu,5851,12,2,0.0444,,bajo,0,19,12,1,4,0,0,0,0,0,0,0
+211005,Puno,San Antonio de Putina,Sina,1854,6,1,0.0222,,bajo,0,5,3,1,1,0,0,0,0,0,0,0
+211101,Puno,San Román,Juliaca,276597,51,22,0.4889,,alto,0,4,2,0,2,0,0,0,0,0,0,0
+211102,Puno,San Román,Cabana,5171,24,3,0.0667,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+211103,Puno,San Román,Cabanillas,5177,26,5,0.1111,,medio,0,15,6,2,6,0,0,0,0,0,0,0
+211104,Puno,San Román,Caracoto,11097,10,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+211105,Puno,San Román,San Miguel,28545,0,0,,,,0,0,0,0,0,1,0,0,0,0,0,0
+211201,Puno,Sandia,Sandia,13239,59,8,0.1778,,medio,8,31,9,6,16,3,0,0,0,0,0,0
+211202,Puno,Sandia,Cuyocuyo,6631,9,1,0.0222,,bajo,0,28,5,2,16,2,0,0,0,0,0,0
+211203,Puno,Sandia,Limbani,2949,9,3,0.0667,FEN 1997-98,medio,0,12,4,1,6,0,0,0,0,0,0,0
+211204,Puno,Sandia,Patambuco,5187,16,1,0.0222,,bajo,0,9,2,3,4,1,0,0,0,0,0,0
+211205,Puno,Sandia,Phara,5142,6,2,0.0444,,bajo,0,6,2,4,0,0,0,0,0,0,0,0
+211206,Puno,Sandia,Quiaca,2516,2,1,0.0222,,bajo,0,20,5,8,6,2,0,0,0,0,0,0
+211207,Puno,Sandia,San Juan del Oro,4289,18,4,0.0889,,bajo,0,11,4,3,4,0,0,0,0,0,0,0
+211208,Puno,Sandia,Yanahuaya,2324,1,1,0.0222,,bajo,0,4,1,2,1,1,0,0,0,0,0,0
+211209,Puno,Sandia,Alto Inambari,6335,14,2,0.0444,,bajo,3,35,12,4,18,0,0,0,0,0,0,0
+211210,Puno,Sandia,San Pedro de Putina Punco,8865,9,0,0.0,,bajo,4,22,6,4,12,2,0,0,0,0,0,0
+211301,Puno,Yunguyo,Yunguyo,27825,16,4,0.0889,FEN 1997-98,medio,0,0,0,0,0,0,0,0,0,0,0,0
+211302,Puno,Yunguyo,Anapia,1256,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+211303,Puno,Yunguyo,Copani,5443,4,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+211304,Puno,Yunguyo,Cuturapi,1208,4,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+211305,Puno,Yunguyo,Ollaraya,2366,3,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+211306,Puno,Yunguyo,Tinicachi,734,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+211307,Puno,Yunguyo,Unicachi,1178,2,1,0.0222,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+220101,San Martín,Moyobamba,Moyobamba,88436,29,10,0.2222,FEN 1997-98,medio,0,72,6,54,7,4,0,0,0,0,0,0
+220102,San Martín,Moyobamba,Calzada,5340,5,3,0.0667,,bajo,0,4,0,4,0,1,0,0,0,0,0,0
+220103,San Martín,Moyobamba,Habana,2512,1,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+220104,San Martín,Moyobamba,Jepelacio,18912,11,7,0.1556,,medio,0,39,10,26,2,7,0,0,0,0,0,0
+220105,San Martín,Moyobamba,Soritor,28520,7,3,0.0667,,bajo,0,58,9,40,9,10,0,0,0,0,0,0
+220106,San Martín,Moyobamba,Yantalo,4211,1,1,0.0222,,bajo,0,2,0,1,0,3,0,0,0,0,0,0
+220201,San Martín,Bellavista,Bellavista,18798,15,8,0.1778,,medio,0,21,3,15,3,2,0,0,0,0,0,0
+220202,San Martín,Bellavista,Alto Biavo,12030,6,1,0.0222,,bajo,0,146,16,103,26,1,0,0,0,0,0,0
+220203,San Martín,Bellavista,Bajo Biavo,15343,7,3,0.0667,FEN 1982-83,medio,1,60,2,36,5,3,0,0,0,0,0,0
+220204,San Martín,Bellavista,Huallaga,2969,11,2,0.0444,,bajo,0,14,0,6,7,0,0,0,0,0,0,0
+220205,San Martín,Bellavista,San Pablo,9873,12,1,0.0222,,bajo,0,31,5,24,2,3,0,0,0,0,0,0
+220206,San Martín,Bellavista,San Rafael,5934,6,4,0.0889,,bajo,0,0,0,0,0,2,0,0,0,0,0,0
+220301,San Martín,El Dorado,San José de Sisa,18228,16,1,0.0222,,bajo,0,13,2,11,0,4,0,0,0,0,0,0
+220302,San Martín,El Dorado,Agua Blanca,2698,7,0,0.0,,bajo,0,21,2,19,0,2,0,0,0,0,0,0
+220303,San Martín,El Dorado,San Martín,12520,5,1,0.0222,,bajo,0,23,8,14,0,0,0,0,0,0,0,0
+220304,San Martín,El Dorado,Santa Rosa,7933,9,0,0.0,,bajo,0,41,5,34,2,0,0,0,0,0,0,0
+220305,San Martín,El Dorado,Shatoja,3294,3,1,0.0222,,bajo,0,4,1,2,1,0,0,0,0,0,0,0
+220401,San Martín,Huallaga,Saposoa,17177,10,1,0.0222,,bajo,0,33,11,12,10,0,0,0,0,0,0,0
+220402,San Martín,Huallaga,Alto Saposoa,4068,4,0,0.0,,bajo,1,99,27,57,14,1,0,0,0,0,0,0
+220403,San Martín,Huallaga,El Eslabón,2941,3,1,0.0222,,bajo,0,11,4,2,5,0,0,0,0,0,0,0
+220404,San Martín,Huallaga,Piscoyacu,4722,2,1,0.0222,,bajo,0,11,1,8,2,0,0,0,0,0,0,0
+220405,San Martín,Huallaga,Sacanche,2996,8,1,0.0222,,bajo,0,31,1,24,5,2,0,0,0,0,0,0
+220406,San Martín,Huallaga,Tingo de Saposoa,903,7,1,0.0222,,bajo,1,6,0,2,4,2,0,0,0,0,0,0
+220501,San Martín,Lamas,Lamas,16511,15,4,0.0889,FEN 1997-98,medio,2,7,1,4,1,4,0,0,0,0,0,0
+220502,San Martín,Lamas,Alonso de Alvarado,17135,10,2,0.0444,,bajo,1,5,1,4,0,1,0,0,0,0,0,1
+220503,San Martín,Lamas,Barranquita,7669,4,1,0.0222,,bajo,0,41,22,12,7,0,0,0,0,0,0,0
+220504,San Martín,Lamas,Caynarachi,10499,11,2,0.0444,FEN 1997-98,medio,1,34,4,23,7,3,0,0,0,0,0,0
+220505,San Martín,Lamas,Cuñumbuqui,5167,12,1,0.0222,,bajo,1,30,1,21,2,3,0,0,0,0,0,0
+220506,San Martín,Lamas,Pinto Recodo,9734,6,0,0.0,,bajo,1,22,3,16,1,0,0,0,0,0,0,0
+220507,San Martín,Lamas,Rumisapa,3918,0,0,,,,0,3,1,1,1,0,0,0,0,0,0,0
+220508,San Martín,Lamas,San Roque de Cumbaza,1995,8,0,0.0,,bajo,0,22,4,16,2,0,0,0,0,0,0,0
+220509,San Martín,Lamas,Shanao,2890,8,1,0.0222,,bajo,0,6,1,3,1,1,0,0,0,0,0,0
+220510,San Martín,Lamas,Tabalosos,15064,8,4,0.0889,,bajo,0,32,2,24,6,4,0,0,0,0,0,0
+220511,San Martín,Lamas,Zapatero,7083,9,1,0.0222,,bajo,0,48,8,32,5,3,0,0,0,0,0,0
+220601,San Martín,Mariscal Cáceres,Juanjuí,36445,13,10,0.2222,FEN 1982-83,medio,0,49,5,32,10,5,0,0,0,0,0,0
+220602,San Martín,Mariscal Cáceres,Campanilla,14440,13,2,0.0444,,bajo,0,183,39,128,15,0,0,0,0,0,0,0
+220603,San Martín,Mariscal Cáceres,Huicungo,10117,14,5,0.1111,,medio,1,567,89,426,50,3,0,0,0,0,0,0
+220604,San Martín,Mariscal Cáceres,Pachiza,7280,14,5,0.1111,,medio,1,85,5,60,19,2,0,0,0,0,0,0
+220605,San Martín,Mariscal Cáceres,Pajarillo,6856,8,4,0.0889,,bajo,1,36,0,22,13,2,0,0,0,0,0,0
+220701,San Martín,Picota,Picota,11271,21,7,0.1556,FEN 1997-98,medio,0,15,1,8,6,1,0,0,0,0,0,0
+220702,San Martín,Picota,Buenos Aires,4171,5,2,0.0444,FEN 1997-98,medio,0,24,1,8,10,4,0,0,0,0,0,0
+220703,San Martín,Picota,Caspisapa,2360,0,0,,,,0,0,0,0,0,2,0,0,0,0,0,0
+220704,San Martín,Picota,Pilluana,1047,8,0,0.0,,bajo,0,12,2,5,3,1,0,0,0,0,0,0
+220705,San Martín,Picota,Pucacaca,3294,14,3,0.0667,FEN 1982-83,medio,1,8,0,2,6,0,0,0,0,0,0,0
+220706,San Martín,Picota,San Cristóbal,1552,6,3,0.0667,,bajo,0,4,1,1,2,0,0,0,0,0,0,0
+220707,San Martín,Picota,San Hilarion,4290,7,4,0.0889,FEN 1997-98,medio,0,2,0,2,0,2,0,0,0,0,0,0
+220708,San Martín,Picota,Shamboyacu,10444,6,0,0.0,,bajo,0,21,5,14,2,2,0,0,0,0,0,0
+220709,San Martín,Picota,Tingo de Ponasa,5258,8,0,0.0,,bajo,0,17,3,12,2,0,0,0,0,0,0,0
+220710,San Martín,Picota,Tres Unidos,4930,13,0,0.0,,bajo,0,6,4,1,0,0,0,0,0,0,0,0
+220801,San Martín,Rioja,Rioja,29623,10,5,0.1111,,medio,0,7,1,3,1,1,0,0,0,0,0,0
+220802,San Martín,Rioja,Awajun,12892,10,1,0.0222,,bajo,0,23,2,19,2,2,0,0,0,0,0,0
+220803,San Martín,Rioja,Elias Soplin Vargas,20964,7,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+220804,San Martín,Rioja,Nueva Cajamarca,51722,8,3,0.0667,,bajo,0,11,3,7,1,4,0,0,0,0,0,0
+220805,San Martín,Rioja,Pardo Miguel,22291,7,2,0.0444,,bajo,0,89,7,67,11,3,0,0,0,0,0,0
+220806,San Martín,Rioja,Posic,2661,2,0,0.0,,bajo,0,0,0,0,0,1,0,0,0,0,0,0
+220807,San Martín,Rioja,San Fernando,3820,3,2,0.0444,,bajo,0,0,0,0,0,4,0,0,0,0,0,0
+220808,San Martín,Rioja,Yorongos,3349,2,0,0.0,,bajo,0,10,1,5,4,2,0,0,0,0,0,0
+220809,San Martín,Rioja,Yuracyacu,4657,5,1,0.0222,,bajo,0,0,0,0,0,1,0,0,0,0,0,0
+220901,San Martín,San Martín,Tarapoto,90890,36,16,0.3556,FEN 1997-98,alto,1,7,1,4,2,4,0,0,0,0,0,0
+220902,San Martín,San Martín,Alberto Leveau,1175,0,0,,,,0,7,1,2,4,1,0,0,0,0,0,0
+220903,San Martín,San Martín,Cacatachi,3995,6,0,0.0,,bajo,2,6,1,5,0,0,0,0,0,0,0,0
+220904,San Martín,San Martín,Chazuta,11989,16,6,0.1333,FEN 1982-83,medio,0,30,10,15,5,0,0,0,0,0,0,0
+220905,San Martín,San Martín,Chipurana,2933,1,1,0.0222,,bajo,0,2,0,0,2,0,0,0,0,0,0,0
+220906,San Martín,San Martín,El Porvenir,3179,4,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+220907,San Martín,San Martín,Huimbayoc,5629,4,1,0.0222,,bajo,1,44,0,16,28,0,0,0,0,0,0,0
+220908,San Martín,San Martín,Juan Guerra,4132,4,0,0.0,,bajo,0,21,2,10,8,3,0,0,0,0,0,0
+220909,San Martín,San Martín,La Banda de Shilcayo,45298,10,2,0.0444,,bajo,0,39,8,21,9,4,0,0,0,0,0,0
+220910,San Martín,San Martín,Morales,31471,10,1,0.0222,,bajo,1,3,1,2,0,1,0,0,0,0,0,0
+220911,San Martín,San Martín,Papaplaya,2864,5,2,0.0444,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+220912,San Martín,San Martín,San Antonio,1979,6,1,0.0222,,bajo,0,8,1,7,0,0,0,0,0,0,0,1
+220913,San Martín,San Martín,Sauce,7780,3,0,0.0,,bajo,1,18,1,12,5,2,0,0,0,0,0,0
+220914,San Martín,San Martín,Shapaja,2533,6,5,0.1111,,medio,0,42,13,17,12,4,0,0,0,0,0,0
+221001,San Martín,Tocache,Tocache,35177,16,10,0.2222,FEN 1997-98,medio,0,56,15,40,1,0,0,0,0,0,0,0
+221002,San Martín,Tocache,Nuevo Progreso,12545,19,4,0.0889,,bajo,1,8,2,3,3,0,0,0,0,0,0,0
+221003,San Martín,Tocache,Pólvora,12221,11,3,0.0667,,bajo,1,126,67,55,4,0,0,0,0,0,0,0
+221004,San Martín,Tocache,Shunte,3441,3,0,0.0,,bajo,0,74,18,53,3,0,0,0,0,0,0,0
+221005,San Martín,Tocache,Uchiza,22444,12,9,0.2,FEN 1997-98,medio,0,26,3,19,4,0,0,0,0,0,0,0
+230101,Tacna,Tacna,Tacna,130965,19,14,0.3111,FEN 1982-83; FEN 1997-98,muy alto,0,6,6,0,0,0,0,0,0,0,0,0
+230102,Tacna,Tacna,Alto de la Alianza,38758,2,1,0.0222,,bajo,0,8,4,0,4,3,0,0,0,0,0,0
+230103,Tacna,Tacna,Calana,4441,3,1,0.0222,,bajo,0,0,0,0,0,2,0,0,0,0,0,0
+230104,Tacna,Tacna,Ciudad Nueva,39968,2,0,0.0,,bajo,0,4,4,0,0,0,0,0,0,0,0,0
+230105,Tacna,Tacna,Inclan,2985,7,0,0.0,,bajo,0,19,17,0,2,0,0,0,0,0,0,0
+230106,Tacna,Tacna,Pachia,2788,13,2,0.0444,,bajo,0,27,18,1,8,2,0,0,0,0,0,0
+230107,Tacna,Tacna,Palca,1964,26,4,0.0889,,bajo,0,21,11,1,8,1,0,0,0,0,0,0
+230108,Tacna,Tacna,Pocollay,17856,3,0,0.0,,bajo,0,0,0,0,0,3,0,0,0,0,0,0
+230109,Tacna,Tacna,Sama,2747,10,6,0.1333,FEN 1982-83,medio,0,24,20,0,4,3,0,0,0,0,0,0
+230110,Tacna,Tacna,Coronel Gregorio Albarracin Lanchipa,104353,2,0,0.0,,bajo,0,3,3,0,0,1,0,0,0,0,0,0
+230201,Tacna,Candarave,Candarave,2637,17,6,0.1333,,medio,0,56,28,5,23,1,0,0,0,0,0,1
+230202,Tacna,Candarave,Cairani,1222,4,1,0.0222,,bajo,0,12,5,4,3,1,0,0,0,0,0,0
+230203,Tacna,Candarave,Camilaca,1246,9,2,0.0444,,bajo,0,28,12,6,8,5,0,0,0,0,0,0
+230204,Tacna,Candarave,Curibaya,395,5,4,0.0889,,bajo,0,13,6,0,5,3,0,0,0,0,0,0
+230205,Tacna,Candarave,Huanuara,877,8,2,0.0444,FEN 1997-98,medio,0,16,12,2,2,1,0,0,0,0,0,0
+230206,Tacna,Candarave,Quilahuani,939,9,3,0.0667,FEN 1997-98,medio,0,9,2,3,4,4,0,0,0,0,0,0
+230301,Tacna,Jorge Basadre,Locumba,2916,9,4,0.0889,,bajo,0,35,22,0,12,1,0,0,0,0,0,0
+230302,Tacna,Jorge Basadre,Ilabaya,4796,16,6,0.1333,FEN 1997-98,medio,0,107,77,1,24,5,0,0,0,0,0,0
+230303,Tacna,Jorge Basadre,Ite,3393,6,2,0.0444,FEN 1982-83,medio,0,28,22,0,6,1,0,0,0,0,0,0
+230401,Tacna,Tarata,Tarata,3427,18,7,0.1556,FEN 1997-98,medio,0,19,3,2,14,2,0,0,0,0,0,0
+230402,Tacna,Tarata,Heroes Albarracin Chucatamani,669,8,4,0.0889,FEN 1997-98,medio,0,9,4,1,3,2,0,0,0,0,0,0
+230403,Tacna,Tarata,Estique,633,8,2,0.0444,,bajo,0,26,23,0,3,2,0,0,0,0,0,0
+230404,Tacna,Tarata,Estique-Pampa,408,6,1,0.0222,,bajo,0,7,3,0,4,0,0,0,0,0,0,0
+230405,Tacna,Tarata,Sitajara,381,9,3,0.0667,,bajo,0,13,12,0,1,0,0,0,0,0,0,0
+230406,Tacna,Tarata,Susapaya,675,12,1,0.0222,,bajo,0,4,2,1,1,1,0,0,0,0,0,0
+230407,Tacna,Tarata,Tarucachi,656,8,2,0.0444,,bajo,0,2,2,0,0,1,0,0,0,0,0,0
+230408,Tacna,Tarata,Ticaco,942,12,2,0.0444,,bajo,0,6,3,0,3,1,0,0,0,0,0,0
+240101,Tumbes,Tumbes,Tumbes,114606,170,32,0.7111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,1,6,4,0,2,2,0,0,0,0,0,6
+240102,Tumbes,Tumbes,Corrales,25107,50,10,0.2222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,16,10,1,5,2,3,3,885,251,2381306,3
+240103,Tumbes,Tumbes,La Cruz,10012,43,7,0.1556,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,16,8,4,3,1,0,0,0,0,0,1
+240104,Tumbes,Tumbes,Pampas de Hospital,7789,38,10,0.2222,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,13,11,0,2,0,3,2,1450,50,7334543,4
+240105,Tumbes,Tumbes,San Jacinto,9638,54,12,0.2667,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,1,49,24,11,13,6,6,6,5975,0,6109196,5
+240106,Tumbes,Tumbes,San Juan de La Virgen,5201,31,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,1,7,6,0,0,2,2,1,270,40,1419252,3
+240201,Tumbes,Contralmirante Villar,Zorritos,12684,49,9,0.2,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,112,86,12,12,3,0,0,0,0,0,2
+240202,Tumbes,Contralmirante Villar,Casitas,3292,37,11,0.2444,FEN 1982-83; FEN 1997-98; Niño Costero 2017,alto,0,32,24,3,5,0,0,0,0,0,0,2
+240203,Tumbes,Contralmirante Villar,Canoas de Punta Sal,6261,16,1,0.0222,Niño Costero 2017,medio,0,0,0,0,0,3,0,0,0,0,0,1
+240301,Tumbes,Zarumilla,Zarumilla,22983,36,14,0.3111,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,1,2,2,0,0,0,0,0,0,0,0,2
+240302,Tumbes,Zarumilla,Aguas Verdes,20234,69,15,0.3333,FEN 1982-83; FEN 1997-98; Niño Costero 2017,muy alto,2,4,4,0,0,0,0,0,0,0,0,4
+240303,Tumbes,Zarumilla,Matapalo,3620,32,5,0.1111,FEN 1997-98; Niño Costero 2017,alto,1,2,2,0,0,0,1,1,0,0,1580585,1
+240304,Tumbes,Zarumilla,Papayal,6670,33,4,0.0889,FEN 1997-98; Niño Costero 2017,alto,0,7,7,0,0,0,0,0,0,0,0,4
+250101,Ucayali,Coronel Portillo,Calleria,190004,73,19,0.4222,FEN 1982-83; FEN 1997-98,muy alto,2,7,0,4,3,5,0,0,0,0,0,7
+250102,Ucayali,Coronel Portillo,Campoverde,20145,15,4,0.0889,,bajo,0,2,0,2,0,0,0,0,0,0,0,1
+250103,Ucayali,Coronel Portillo,Iparia,18024,11,5,0.1111,FEN 1997-98,medio,0,20,0,0,20,5,0,0,0,0,0,1
+250104,Ucayali,Coronel Portillo,Masisea,17853,21,5,0.1111,,medio,6,5,0,0,5,2,0,0,0,0,0,0
+250105,Ucayali,Coronel Portillo,Yarinacocha,122323,36,4,0.0889,FEN 1997-98,medio,0,3,0,3,0,2,0,0,0,0,0,4
+250106,Ucayali,Coronel Portillo,Nueva Requena,7726,20,2,0.0444,,bajo,0,0,0,0,0,1,0,0,0,0,0,1
+250107,Ucayali,Coronel Portillo,Manantay,101071,23,0,0.0,,bajo,2,0,0,0,0,4,0,0,0,0,0,2
+250201,Ucayali,Atalaya,Raymondi,47094,54,3,0.0667,FEN 1982-83,medio,8,3,2,1,0,5,0,0,0,0,0,0
+250202,Ucayali,Atalaya,Sepahua,8743,7,3,0.0667,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+250203,Ucayali,Atalaya,Tahuania,12864,18,3,0.0667,,bajo,0,3,3,0,0,5,0,0,0,0,0,0
+250301,Ucayali,Padre Abad,Padre Abad,37895,68,15,0.3333,FEN 1997-98,alto,0,66,13,31,20,6,0,0,0,0,0,3
+250302,Ucayali,Padre Abad,Irazola,16239,44,4,0.0889,,bajo,2,21,0,6,15,4,0,0,0,0,0,1
+250303,Ucayali,Padre Abad,Curimaná,11393,11,1,0.0222,,bajo,1,0,0,0,0,4,0,0,0,0,0,0
+250304,Ucayali,Padre Abad,Neshuya,8477,3,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+250305,Ucayali,Padre Abad,Alexander von Humboldt,5372,11,0,0.0,,bajo,0,0,0,0,0,0,0,0,0,0,0,0
+250306,Ucayali,Padre Abad,Huipoca,,5,0,0.0,,bajo,0,0,0,0,0,3,0,0,0,0,0,0
+250307,Ucayali,Padre Abad,Boqueron,,1,0,0.0,,bajo,1,0,0,0,0,13,0,0,0,0,0,0
+250401,Ucayali,Purús,Purús,4997,6,3,0.0667,,bajo,0,20,0,15,5,19,0,0,0,0,0,0
