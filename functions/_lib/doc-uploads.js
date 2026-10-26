@@ -11,7 +11,7 @@
 //   GET  status            pendientes (de data/manual-needed.json), últimas subidas y si esta cuenta puede subir
 //   POST upload?doc=<id>   cuerpo {"encoding":"base64","content":"<PDF en base64>"}, cabecera X-Doc-Sha256
 //
-// El plan gratuito de Workers da 10 ms de CPU por solicitud: el PDF (hasta 25 MB) no se decodifica ni se copia
+// El plan gratuito de Workers da 10 ms de CPU por solicitud: el PDF (hasta 20 MB) no se decodifica ni se copia
 // aquí. El navegador lo codifica en base64 con el formato exacto de la API de blobs de GitHub y esta función lo
 // pasa en flujo a GitHub, mirando solo el principio (%PDF-) y el final (%%EOF). El sha256 lo calcula el
 // navegador; el pipeline lo vuelve a calcular y descarta la copia si no coincide.

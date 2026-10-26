@@ -257,17 +257,17 @@
     <a class="ar-annex" href="a1-en.svg" data-annex="a1"><title>Annex A1: Sources, reachability and registry</title><rect class="ar-tag" x="290.6" y="202" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="304.3" y="214.5" font-size="10.5" text-anchor="middle">A1</text></a>
   </g>
   <g class="ar-node-g" id="a4-n-reader" data-node="reader">
-    <title>Reader-feed state. reader-state.json in the Actions cache: when each of the 40 reader feeds was last requested and its notes not yet published. Restored at the start and saved at the end even if the run fails; main only. at least 20 h between requests. Technology: actions/cache.</title>
+    <title>Reader-feed state. reader-state.json in the Actions cache: when each reader feed was last requested and its notes not yet published. Restored at the start and saved at the end even if the run fails; main only. at least 20 h between requests. Technology: actions/cache.</title>
     <rect class="ar-node ar-g-stores" x="46" y="384.9" width="280" height="178.4" rx="8"/>
     <rect class="ar-f-stores" x="46" y="392.9" width="4" height="162.4" rx="2"/>
     <rect class="ar-tile ar-f-stores" x="58" y="394.9" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-stores" transform="translate(61 397.9)"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 4v4.5H8M12 8v4.5l3 2"/></g>
     <text class="ar-t" x="96" y="414.4" font-size="12.5">Reader-feed state</text>
     <text class="ar-s" x="58" y="446.3" font-size="11">reader-state.json in the Actions cache: when</text>
-    <text class="ar-s" x="58" y="461.5" font-size="11">each of the 40 reader feeds was last</text>
-    <text class="ar-s" x="58" y="476.7" font-size="11">requested and its notes not yet published.</text>
-    <text class="ar-s" x="58" y="491.9" font-size="11">Restored at the start and saved at the end</text>
-    <text class="ar-s" x="58" y="507.1" font-size="11">even if the run fails; main only.</text>
+    <text class="ar-s" x="58" y="461.5" font-size="11">each reader feed was last requested and its</text>
+    <text class="ar-s" x="58" y="476.7" font-size="11">notes not yet published. Restored at the start</text>
+    <text class="ar-s" x="58" y="491.9" font-size="11">and saved at the end even if the run fails;</text>
+    <text class="ar-s" x="58" y="507.1" font-size="11">main only.</text>
     <text class="ar-m" x="58" y="526.2" font-size="10.5">at least 20 h between requests</text>
     <rect class="ar-chip" x="58" y="535.3" width="81" height="17" rx="8.5"/>
     <text class="ar-chip-t" x="64" y="547.3" font-size="10">actions/cache</text>

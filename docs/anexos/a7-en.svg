@@ -366,7 +366,7 @@
     <text class="ar-chip-t" x="762.7" y="853.3" font-size="10">/api/geo/overrides</text>
   </g>
   <g class="ar-node-g" id="a7-n-upload" data-node="upload">
-    <title>Document upload. POST /api/docs/upload: only DOCS_UPLOAD_ROLES (admin). Checks %PDF- and %%EOF and streams the file to GitHub without decoding it (10 ms of CPU per request). up to 25 MB and 10 uploads per hour. Technology: /api/docs/upload.</title>
+    <title>Document upload. POST /api/docs/upload: only DOCS_UPLOAD_ROLES (admin). Checks %PDF- and %%EOF and streams the file to GitHub without decoding it (10 ms of CPU per request). up to 20 MB and 10 uploads per hour. Technology: /api/docs/upload.</title>
     <rect class="ar-node ar-g-operations" x="744.7" y="899.3" width="280" height="178.4" rx="8"/>
     <rect class="ar-f-operations" x="744.7" y="907.3" width="4" height="162.4" rx="2"/>
     <rect class="ar-tile ar-f-operations" x="756.7" y="909.3" width="30" height="30" rx="7"/>
@@ -377,7 +377,7 @@
     <text class="ar-s" x="756.7" y="991.1" font-size="11">%PDF- and %%EOF and streams the file to</text>
     <text class="ar-s" x="756.7" y="1006.3" font-size="11">GitHub without decoding it (10 ms of CPU per</text>
     <text class="ar-s" x="756.7" y="1021.5" font-size="11">request).</text>
-    <text class="ar-m" x="756.7" y="1040.6" font-size="10.5">up to 25 MB and 10 uploads per hour</text>
+    <text class="ar-m" x="756.7" y="1040.6" font-size="10.5">up to 20 MB and 10 uploads per hour</text>
     <rect class="ar-chip" x="756.7" y="1049.7" width="94.6" height="17" rx="8.5"/>
     <text class="ar-chip-t" x="762.7" y="1061.7" font-size="10">/api/docs/upload</text>
   </g>

@@ -4,8 +4,8 @@
    "id": "a1",
    "title_es": "Fuentes, alcance y registro",
    "title_en": "Sources, reachability and registry",
-   "subtitle_es": "Qué vigila el observatorio y cómo se decide, URL por URL, quién la descarga. Cada lunes se mide desde dónde responde cada dirección (GitHub Actions en Azure, n8n en AWS y el equipo en el Perú) y el registro asigna cada una a un recolector. Nadie pide lo que robots.txt prohíbe, salvo 40 feeds de noticias que se leen como un lector.",
-   "subtitle_en": "What the observatory watches and how it is decided, URL by URL, who fetches it. Every Monday it is measured where each address answers from (GitHub Actions on Azure, n8n on AWS and the machine in Peru) and the registry assigns each one to a collector. Nobody requests what robots.txt forbids, except 40 news feeds read as a feed reader.",
+   "subtitle_es": "Qué vigila el observatorio y cómo se decide, URL por URL, quién la descarga. Cada lunes se mide desde dónde responde cada dirección (GitHub Actions en Azure, n8n en AWS y el equipo en el Perú) y el registro asigna cada una a un recolector. Nadie pide lo que robots.txt prohíbe, salvo los feeds de noticias que se leen como un lector.",
+   "subtitle_en": "What the observatory watches and how it is decided, URL by URL, who fetches it. Every Monday it is measured where each address answers from (GitHub Actions on Azure, n8n on AWS and the machine in Peru) and the registry assigns each one to a collector. Nobody requests what robots.txt forbids, except the news feeds read as a feed reader.",
    "desc_es": "Las fuentes oficiales, de alertas y de noticias; el sondeo semanal que mide su alcance desde cada red y el registro que reparte cada URL entre GitHub Actions, n8n y el equipo del Perú.",
    "desc_en": "The official, alert and news sources; the weekly probe that measures their reach from each network and the registry that splits each URL among GitHub Actions, n8n and the Peru machine.",
    "covers": [
@@ -127,8 +127,8 @@
      "group": "sources",
      "name_es": "13 páginas del Perú",
      "name_en": "13 Peru pages",
-     "what_es": "Web del SENAMHI, GeoServer IDESEP, SNIRH de la ANA, IMARPE y CENEPRED: se guardan como respaldo; todavía no tienen lector. 6 solo responden desde el Perú.",
-     "what_en": "SENAMHI web, IDESEP GeoServer, ANA's SNIRH, IMARPE and CENEPRED: kept as a backup; they have no reader yet. 6 only answer from Peru."
+     "what_es": "Web del SENAMHI, GeoServer IDESEP, SNIRH de la ANA, IMARPE y CENEPRED: se guardan como respaldo; de ellas solo se lee la tabla de avisos del SENAMHI. Las geobloqueadas solo las baja el Perú.",
+     "what_en": "SENAMHI web, IDESEP GeoServer, ANA's SNIRH, IMARPE and CENEPRED: kept as a backup; only SENAMHI's warning table is read. Geoblocked ones are fetched only by Peru."
     },
     {
      "id": "alerts",
@@ -226,8 +226,8 @@
      "group": "stores",
      "name_es": "reachability.json",
      "name_en": "reachability.json",
-     "what_es": "Cada medición por red (actions, n8n, peru) y punto de medición, con clase, código HTTP y fecha. 311 URL medidas desde Actions y n8n; todavía ninguna desde el Perú, así que ningún geobloqueo está confirmado.",
-     "what_en": "Every measurement by network (actions, n8n, peru) and vantage point, with class, HTTP code and date. 311 URLs measured from Actions and n8n; none from Peru yet, so no geoblock is confirmed.",
+     "what_es": "Cada medición por red (actions, n8n, peru) y punto de medición, con clase, código HTTP y fecha. Un geobloqueo solo queda confirmado (geoblocked) cuando el Perú mide la URL y responde.",
+     "what_en": "Every measurement by network (actions, n8n, peru) and vantage point, with class, HTTP code and date. A geoblock is only confirmed (geoblocked) when Peru measures the URL and it answers.",
      "tech": [
       "JSON"
      ]
@@ -239,8 +239,8 @@
      "group": "pipeline",
      "name_es": "Armado del registro",
      "name_en": "Registry builder",
-     "what_es": "Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo 40 feeds reader, solo Actions); lo demás, Actions y n8n.",
-     "what_en": "Joins the code's catalogs (168 feeds, 17 ENSO sources, 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except 40 reader feeds, Actions only); the rest, Actions and n8n.",
+     "what_es": "Junta los catálogos del código (168 feeds, 17 fuentes ENSO, 13 páginas del Perú) con las mediciones. Regla: solo el Perú pide lo geobloqueado; nadie pide lo prohibido por robots.txt (salvo los feeds reader, solo Actions); lo demás, Actions y n8n.",
+     "what_en": "Joins the code's catalogs (168 feeds, 17 ENSO sources, 13 Peru pages) with the measurements. Rule: only Peru fetches what is geoblocked; nobody fetches what robots.txt forbids (except reader feeds, Actions only); the rest, Actions and n8n.",
      "meta_es": "--check falla si no está al día",
      "meta_en": "--check fails if out of date",
      "tech": [
@@ -255,8 +255,8 @@
      "group": "stores",
      "name_es": "sources.json",
      "name_en": "sources.json",
-     "what_es": "198 fuentes y 201 URL: 152 para Actions y n8n, 40 solo Actions (reader) y 9 solo el Perú. Estado: 144 abiertas, 40 prohibidas, 9 con geobloqueo sospechado, 7 sin medir y 1 caída.",
-     "what_en": "198 sources and 201 URLs: 152 for Actions and n8n, 40 Actions only (reader) and 9 Peru only. Status: 144 open, 40 forbidden, 9 suspected geoblock, 7 unmeasured and 1 down.",
+     "what_es": "Por URL: estado (abierta, prohibida, geobloqueo confirmado o sospechado, sin medir o caída) y canales. Los números al día salen del propio archivo; el sitio muestra el estado de cada fuente en la última corrida.",
+     "what_en": "Per URL: status (open, forbidden, confirmed or suspected geoblock, unmeasured or down) and channels. Current numbers come from the file itself; the site shows each source's status in the latest run.",
      "meta_es": "commit en main; en otras ramas, a bot/registry/",
      "meta_en": "committed on main; elsewhere, to bot/registry/",
      "tech": [
@@ -358,8 +358,8 @@
      "from": "google",
      "to": "sources-json",
      "kind": "trigger",
-     "label_es": "excepción: 40 feeds reader",
-     "label_en": "exception: 40 reader feeds",
+     "label_es": "excepción: feeds reader",
+     "label_en": "exception: reader feeds",
      "explain_es": "Google Noticias, Noticias ONU y Sin Rodeos quedan solo para Actions, como un lector de feeds: un intento, como mucho cada 20 h.",
      "explain_en": "Google News, UN News and Sin Rodeos stay with Actions only, as a feed reader: one try, at most every 20 h."
     },
@@ -451,8 +451,8 @@
      "w": 300,
      "title_es": "Fuentes en el Perú",
      "title_en": "Sources in Peru",
-     "sub_es": "16 URL y los PDF del ENFEN, con robots.txt en vivo",
-     "sub_en": "16 URLs and the ENFEN PDFs, with live robots.txt"
+     "sub_es": "lista fija, URL peru-server y PDF del ENFEN; robots.txt en vivo",
+     "sub_en": "fixed list, peru-server URLs and ENFEN PDFs; live robots.txt"
     },
     {
      "id": "c4",
@@ -651,8 +651,8 @@
      "group": "sources",
      "name_es": "SENAMHI, ANA, IMARPE…",
      "name_en": "SENAMHI, ANA, IMARPE…",
-     "what_es": "Las 13 páginas de su lista fija: 6 solo responden desde el Perú (4 del SENAMHI y 2 de la ANA). La tabla de avisos del SENAMHI da el nivel a sus avisos.",
-     "what_en": "The 13 pages on its fixed list: 6 only answer from Peru (4 from SENAMHI and 2 from ANA). The SENAMHI warning table gives its warnings their level."
+     "what_es": "Las 13 páginas de su lista fija, guardadas como respaldo; las geobloqueadas según el registro solo llegan por aquí. La tabla de avisos del SENAMHI da el nivel a sus avisos.",
+     "what_en": "The 13 pages on its fixed list, kept as a backup; those the registry marks geoblocked only arrive this way. The SENAMHI warning table gives its warnings their level."
     },
     {
      "id": "branch",
@@ -914,6 +914,7 @@
    "covers": [
     "n8n-collector",
     "data-n8n-branch",
+    "n8n-extractor",
     "n8n-colleague"
    ],
    "simple": [
@@ -1031,8 +1032,6 @@
      "name_en": "Sources",
      "what_es": "Se queda con las URL que el registro da a n8n (y sus réplicas): omite las prohibidas, las reader y las que solo responden desde el Perú.",
      "what_en": "Keeps the URLs the registry gives n8n (and their mirrors): skips the forbidden, the reader and the Peru-only ones.",
-     "meta_es": "152 URL",
-     "meta_en": "152 URLs",
      "tech": [
       "Code"
      ]
@@ -1351,10 +1350,10 @@
      "then_en": "The extractor answers 502 or the pipeline rejects the proposal; the previous report is kept, marked carried."
     },
     {
-     "if_es": "El sitio pasa a Cloudflare",
-     "then_es": "El vigilante tiene la dirección fija: hay que cambiarla a mano en su nodo Configuración.",
-     "if_en": "The site moves to Cloudflare",
-     "then_en": "The watchdog has a fixed address: it must be changed by hand in its Settings node."
+     "if_es": "El sitio cambia de dirección (un dominio propio)",
+     "then_es": "El vigilante viene con https://enso-peru.pages.dev/: se construye con N8N_SITE_URL o se cambia en su nodo Configuración tras cada importación.",
+     "if_en": "The site changes address (a custom domain)",
+     "then_en": "The watchdog ships with https://enso-peru.pages.dev/: build it with N8N_SITE_URL or change it in its Configuración node after each import."
     }
    ]
   },
@@ -1434,8 +1433,8 @@
      "group": "stores",
      "name_es": "Estado de los feeds reader",
      "name_en": "Reader-feed state",
-     "what_es": "reader-state.json en la caché de Actions: cuándo se pidió cada uno de los 40 feeds reader y sus notas aún no publicadas. Se restaura al empezar y se guarda al final aunque la corrida falle; solo en main.",
-     "what_en": "reader-state.json in the Actions cache: when each of the 40 reader feeds was last requested and its notes not yet published. Restored at the start and saved at the end even if the run fails; main only.",
+     "what_es": "reader-state.json en la caché de Actions: cuándo se pidió cada feed reader y sus notas aún no publicadas. Se restaura al empezar y se guarda al final aunque la corrida falle; solo en main.",
+     "what_en": "reader-state.json in the Actions cache: when each reader feed was last requested and its notes not yet published. Restored at the start and saved at the end even if the run fails; main only.",
      "meta_es": "mínimo 20 h entre pedidos",
      "meta_en": "at least 20 h between requests",
      "tech": [
@@ -2575,8 +2574,8 @@
      "from": "feeds",
      "to": "reader",
      "kind": "trigger",
-     "label_es": "40 prohibidos por robots.txt",
-     "label_en": "40 forbidden by robots.txt",
+     "label_es": "prohibidos por robots.txt",
+     "label_en": "forbidden by robots.txt",
      "explain_es": "Los feeds reader siguen su propio ritmo; los demás se piden en cada corrida.",
      "explain_en": "Reader feeds follow their own pace; the rest are requested every run."
     },
@@ -2940,8 +2939,8 @@
      "name_en": "Document upload",
      "what_es": "POST /api/docs/upload: solo roles de DOCS_UPLOAD_ROLES (admin). Comprueba %PDF- y %%EOF y pasa el archivo en flujo a GitHub sin decodificarlo (10 ms de CPU por solicitud).",
      "what_en": "POST /api/docs/upload: only DOCS_UPLOAD_ROLES (admin). Checks %PDF- and %%EOF and streams the file to GitHub without decoding it (10 ms of CPU per request).",
-     "meta_es": "hasta 25 MB y 10 subidas por hora",
-     "meta_en": "up to 25 MB and 10 uploads per hour",
+     "meta_es": "hasta 20 MB y 10 subidas por hora",
+     "meta_en": "up to 20 MB and 10 uploads per hour",
      "tech": [
       "/api/docs/upload"
      ]

@@ -59,9 +59,9 @@
     "name_en": "ENFEN and IGP: Peru's official sources",
     "what_es": "El comunicado oficial del ENFEN (portal y su réplica en la DHN de la Marina), que trae el estado de alerta El Niño o La Niña Costero, y el ICEN mensual del IGP.",
     "what_en": "ENFEN's official communiqué (portal and its mirror at the Navy's DHN), which carries the coastal El Niño or La Niña alert status, and IGP's monthly ICEN.",
-    "details_es": "3 URL del ENFEN: wp-json y /comunicados/ las baja el Perú (su DNS no resuelve desde EE. UU.); sin esa copia, Actions hace un solo intento. La réplica de la DHN pide verificación humana a los servidores. El repositorio del IMARPE (DSpace, /server/api) recibe cada comunicado e informe técnico unos 3 días después y responde a Actions: es la ruta oficial sin verificación (feeds/imarpe_repo.py). Por la misma API se lee cada domingo el boletín semanal del IMARPE (BS-OBP: anomalía subsuperficial frente a Paita y Chicama, con su cita; feeds/imarpe_bsobp.py → imarpe-bsobp.json). La API se quedó en el N° 13-2026 (desde el 14 el ENFEN publica solo el PDF en el listado): su entrada es apenas un candidato, se contrasta con el listado del portal o de la DHN y se sondean los números siguientes al último conocido mientras aparezcan (hasta 6; dos ausencias seguidas cortan). ICEN: http abierto (actions+n8n); el https, igual que el portal del ENFEN. Se piden primero (OFFICIAL_FIRST). Solo el ENFEN usa Save Page Now.",
-    "details_en": "3 ENFEN URLs: Peru fetches wp-json and /comunicados/ (their DNS does not resolve from the US); without that copy, Actions makes one try. The DHN mirror shows servers a human check. IMARPE's repository (DSpace, /server/api) receives each communiqué and technical report about 3 days later and answers Actions: it is the official route with no human check (feeds/imarpe_repo.py). The same API serves IMARPE's weekly bulletin every Sunday (BS-OBP: subsurface anomaly off Paita and Chicama, with its quote; feeds/imarpe_bsobp.py → imarpe-bsobp.json). The API stopped at N° 13-2026 (since 14 ENFEN posts only the PDF in the listing): its post is just a candidate, checked against the portal or DHN listing, and the numbers after the latest known one are probed while they keep appearing (up to 6; two misses in a row end it). ICEN: http is open (actions+n8n); https works like the ENFEN portal. They are requested first (OFFICIAL_FIRST). Only ENFEN uses Save Page Now.",
-    "evidence": "python/enso/observatory.py:172-192, 389-475; registry/sources.json (by_url: 9 URL peru-server); python/enso/registry.py:264-274; python/enso/feeds/imarpe_repo.py:1-162; python/enso/feeds/imarpe_bsobp.py"
+    "details_es": "3 URL del ENFEN: wp-json y /comunicados/ las baja el Perú (su DNS no resuelve desde EE. UU.); sin esa copia, Actions hace un solo intento. Los PDF de la réplica de la DHN piden verificación humana a los servidores (su listado responde): se anota y nunca se evade. El repositorio del IMARPE (DSpace, /server/api) recibe cada comunicado e informe técnico unos 3 días después y responde a Actions: es la ruta oficial sin verificación (feeds/imarpe_repo.py). Por la misma API se lee cada domingo el boletín semanal del IMARPE (BS-OBP: anomalía subsuperficial frente a Paita y Chicama, con su cita; feeds/imarpe_bsobp.py → imarpe-bsobp.json). La API se quedó en el N° 13-2026 (desde el 14 el ENFEN publica solo el PDF en el listado): su entrada es apenas un candidato, se contrasta con el listado del portal o de la DHN y se sondean los números siguientes al último conocido mientras aparezcan (hasta 6; dos ausencias seguidas cortan). ICEN: http abierto (actions+n8n); el https, igual que el portal del ENFEN. Se piden primero (OFFICIAL_FIRST). Solo el ENFEN usa Save Page Now.",
+    "details_en": "3 ENFEN URLs: Peru fetches wp-json and /comunicados/ (their DNS does not resolve from the US); without that copy, Actions makes one try. The DHN mirror's PDFs show servers a human check (its listing answers): it is logged and never evaded. IMARPE's repository (DSpace, /server/api) receives each communiqué and technical report about 3 days later and answers Actions: it is the official route with no human check (feeds/imarpe_repo.py). The same API serves IMARPE's weekly bulletin every Sunday (BS-OBP: subsurface anomaly off Paita and Chicama, with its quote; feeds/imarpe_bsobp.py → imarpe-bsobp.json). The API stopped at N° 13-2026 (since 14 ENFEN posts only the PDF in the listing): its post is just a candidate, checked against the portal or DHN listing, and the numbers after the latest known one are probed while they keep appearing (up to 6; two misses in a row end it). ICEN: http is open (actions+n8n); https works like the ENFEN portal. They are requested first (OFFICIAL_FIRST). Only ENFEN uses Save Page Now.",
+    "evidence": "python/enso/observatory.py#SOURCES, #OFFICIAL_FIRST, #_communique_urls, #_get_communique, #_enfen_latest; python/enso/registry.py#channels_for; python/enso/feeds/imarpe_repo.py#communique_pdf, #informe_pdf; python/enso/feeds/imarpe_bsobp.py; python/enso/manual.py#reason_from; registry/sources.json"
    },
    {
     "id": "noaa",
@@ -71,9 +71,9 @@
     "name_en": "NOAA (CPC and PSL)",
     "what_es": "15 productos de NOAA: OISST semanal y mensual, RONI, ONI, SOI, presión en Tahití y Darwin, vientos a 850 hPa, contenido de calor, D20 calculado de GODAS y la discusión ENSO en HTML (CPC), y ERSSTv6 Niño 1+2 y 3.4 (PSL).",
     "what_en": "15 NOAA products: weekly and monthly OISST, RONI, ONI, SOI, Tahiti and Darwin pressure, 850 hPa winds, heat content, D20 computed from GODAS and the HTML ENSO discussion (CPC), plus ERSSTv6 Niño 1+2 and 3.4 (PSL).",
-    "details_es": "Críticos: cpc-wksst, cpc-roni y cpc-ensodisc. Si uno falla y no hay dato anterior, la corrida termina en critical y no se despliega. Las 15 URL son abiertas; 14 van por actions+n8n. cpc-godas-d20 solo por actions: pide por rangos los GRIB mensuales de GODAS y no tiene copia de n8n, del Perú ni del Internet Archive; si CPC no responde se mantiene el dato anterior o el histórico python/enso/data/godas-d20.json.",
-    "details_en": "Critical: cpc-wksst, cpc-roni and cpc-ensodisc. If one fails and there is no previous value, the run ends critical and nothing is deployed. All 15 URLs are open; 14 go through actions+n8n. cpc-godas-d20 is actions only: it requests byte ranges of the monthly GODAS GRIB files and has no n8n, Peru or Internet Archive copy; if CPC does not answer, the previous value or the history in python/enso/data/godas-d20.json is kept.",
-    "evidence": "python/enso/observatory.py:127-179, 1230-1235"
+    "details_es": "Críticos: cpc-wksst, cpc-roni y cpc-ensodisc. Si uno falla y no hay dato anterior, la corrida termina en critical y no se despliega. cpc-godas-d20 va solo por actions (el registro se lo fija porque tiene su propia descarga): pide por rangos los GRIB mensuales de GODAS y no tiene copia de n8n, del Perú ni del Internet Archive; si CPC no responde se mantiene el dato anterior o el histórico python/enso/data/godas-d20.json.",
+    "details_en": "Critical: cpc-wksst, cpc-roni and cpc-ensodisc. If one fails and there is no previous value, the run ends critical and nothing is deployed. cpc-godas-d20 is actions only (the registry pins it because it has its own download): it requests byte ranges of the monthly GODAS GRIB files and has no n8n, Peru or Internet Archive copy; if CPC does not answer, the previous value or the history in python/enso/data/godas-d20.json is kept.",
+    "evidence": "python/enso/observatory.py#SOURCES, #_fetch_godas; python/enso/registry.py#_source_entries; python/enso/feeds/godas.py; python/enso/data/godas-d20.json"
    },
    {
     "id": "hazard-alerts",
@@ -83,9 +83,9 @@
     "name_en": "Official hazard alerts (14 sources)",
     "what_es": "Avisos del COEN del INDECI, del SENAMHI (Telegram y 4 capas en GEOSINPAD), focos de calor de NASA FIRMS, sismos del USGS, boletines de la DHN, mensajes del PTWC y alertas volcánicas del IGP (CENVUL).",
     "what_en": "Warnings from INDECI's COEN, SENAMHI (Telegram and 4 GEOSINPAD layers), NASA FIRMS hotspots, USGS earthquakes, DHN bulletins, PTWC messages and IGP volcano alerts (CENVUL).",
-    "details_es": "Son 14 de los 168 feeds (los que tienen covers): indeci-coen, senamhi-quebradas, senamhi-hidrologicos, senamhi-incendios, senamhi-lluvias, senamhi-telegram, firms-focos, usgs-sismos, dhn-tsunamis, dhn-avisos, ptwc-mensajes, ptwc-wepa40, igp-cenvul-boletines, igp-cenvul-alertas. Abiertas (actions+n8n). El nivel de los avisos meteorológicos del SENAMHI que llegan por Telegram y por el COEN sale de su tabla de avisos, que solo responde desde el Perú (copia de data-peru de hasta 7 días). Se omiten los simulacros de la DHN y del COEN. Los PDF de boletines de la DHN tienen verificación antirobots y no se piden. En la última medición el robots.txt del INDECI dio 5xx (estado down).",
-    "details_en": "These are 14 of the 168 feeds (the ones with covers): indeci-coen, senamhi-quebradas, senamhi-hidrologicos, senamhi-incendios, senamhi-lluvias, senamhi-telegram, firms-focos, usgs-sismos, dhn-tsunamis, dhn-avisos, ptwc-mensajes, ptwc-wepa40, igp-cenvul-boletines, igp-cenvul-alertas. Open (actions+n8n). The level of SENAMHI weather warnings arriving by Telegram and COEN comes from its warning table, which only answers from Peru (data-peru copy up to 7 days old). DHN and COEN drills are skipped. DHN bulletin PDFs sit behind an anti-bot check and are not requested. In the last measurement INDECI's robots.txt returned 5xx (status down).",
-    "evidence": "python/enso/news.py:399-448; python/enso/hazardparse.py:1-22; registry/sources.json (portal.indeci.gob.pe: down)"
+    "details_es": "Son 14 de los 168 feeds (los que tienen covers): indeci-coen, senamhi-quebradas, senamhi-hidrologicos, senamhi-incendios, senamhi-lluvias, senamhi-telegram, firms-focos, usgs-sismos, dhn-tsunamis, dhn-avisos, ptwc-mensajes, ptwc-wepa40, igp-cenvul-boletines, igp-cenvul-alertas. Las piden los canales que les da el registro. El nivel de los avisos meteorológicos del SENAMHI que llegan por Telegram y por el COEN sale de su tabla de avisos, que solo responde desde el Perú (copia de data-peru de hasta 7 días). Se omiten los simulacros de la DHN y del COEN. Los PDF de boletines de la DHN tienen verificación antirobots y no se piden.",
+    "details_en": "These are 14 of the 168 feeds (the ones with covers): indeci-coen, senamhi-quebradas, senamhi-hidrologicos, senamhi-incendios, senamhi-lluvias, senamhi-telegram, firms-focos, usgs-sismos, dhn-tsunamis, dhn-avisos, ptwc-mensajes, ptwc-wepa40, igp-cenvul-boletines, igp-cenvul-alertas. They are requested by the channels the registry gives them. The level of SENAMHI weather warnings arriving by Telegram and COEN comes from its warning table, which only answers from Peru (data-peru copy up to 7 days old). DHN and COEN drills are skipped. DHN bulletin PDFs sit behind an anti-bot check and are not requested.",
+    "evidence": "python/enso/news.py#FEEDS; python/enso/hazardparse.py; python/enso/senamhi_avisos.py#load; python/enso/registry.py#channels_for"
    },
    {
     "id": "peru-archive-pages",
@@ -95,9 +95,9 @@
     "name_en": "Government pages kept from Peru",
     "what_es": "Web del SENAMHI, el GeoServer IDESEP, el SNIRH de la ANA, dos páginas del IMARPE y el catálogo del CENEPRED. Se guardan como respaldo; de ellas el pipeline solo lee la tabla de avisos del SENAMHI, que da el nivel a sus avisos.",
     "what_en": "SENAMHI's website, the IDESEP GeoServer, ANA's SNIRH, two IMARPE pages and CENEPRED's catalogue. They are kept as a backup; the pipeline only reads SENAMHI's warning table from them, which gives its warnings their level.",
-    "details_es": "13 URL de la lista fija del recolector del Perú. 6 no responden desde EE. UU. y solo las baja el Perú (4 de www.senamhi.gob.pe y 2 de la ANA, suspected-geoblock). Las otras 7 (IMARPE, CENEPRED, observatorio del SENAMHI y 3 de IDESEP: la capa de avisos de 5 días, su lista de campos y el GetCapabilities) son abiertas o sin medir y n8n también las baja. La tabla ?p=aviso-meteorologico la lee enso/senamhi_avisos.py desde data-peru (nivel, inicio y fin de cada aviso); sin ella o con una copia de más de 36 h, el pipeline anota senamhi-avisos-unread o -stale. Las demás no tienen lector y la corrida diaria no las pide; el sondeo semanal sí las mide. Lo que robots.txt prohibía se vuelve a comprobar cada noche (robots_recheck).",
-    "details_en": "13 URLs on the Peru collector's fixed list. 6 do not answer from the US and only Peru fetches them (4 from www.senamhi.gob.pe and 2 from ANA, suspected-geoblock). The other 7 (IMARPE, CENEPRED, the SENAMHI observatory and 3 from IDESEP: the 5-day warning layer, its field list and GetCapabilities) are open or unmeasured and n8n fetches them too. The ?p=aviso-meteorologico table is read by enso/senamhi_avisos.py from data-peru (level, start and end of each warning); without it, or with a copy over 36 h old, the pipeline logs senamhi-avisos-unread or -stale. The rest have no parser and the daily run does not request them; the weekly probe does measure them. What robots.txt forbade is rechecked every night (robots_recheck).",
-    "evidence": "python/tools/peru_collector.py:84-150, 265-285; python/enso/registry.py:160-200; python/enso/senamhi_avisos.py:1-200; python/enso/sourcefeed.py:114-147"
+    "details_es": "13 URL de la lista fija del recolector del Perú. Las que el registro marca geobloqueadas o sospechosas (peru-server) solo las baja el Perú; las abiertas o sin medir llevan también el canal n8n y n8n las baja. Cuáles son hoy lo dice registry/sources.json. La tabla ?p=aviso-meteorologico la lee enso/senamhi_avisos.py desde data-peru (nivel, inicio y fin de cada aviso); sin ella o con una copia de más de 36 h, el pipeline anota senamhi-avisos-unread o -stale. Las demás no tienen lector y la corrida diaria no las pide; el sondeo semanal sí las mide. Lo que robots.txt prohibía se vuelve a comprobar cada noche (robots_recheck).",
+    "details_en": "13 URLs on the Peru collector's fixed list. Those the registry marks geoblocked or suspected (peru-server) only Peru fetches; open or unmeasured ones also carry the n8n channel and n8n fetches them. Which ones they are today is in registry/sources.json. The ?p=aviso-meteorologico table is read by enso/senamhi_avisos.py from data-peru (level, start and end of each warning); without it, or with a copy over 36 h old, the pipeline logs senamhi-avisos-unread or -stale. The rest have no parser and the daily run does not request them; the weekly probe does measure them. What robots.txt forbade is rechecked every night (robots_recheck).",
+    "evidence": "python/tools/peru_collector.py#SOURCES, #plan; python/enso/registry.py#_COLLECTOR_READERS, #_collector_entries, #channels_for; python/enso/senamhi_avisos.py#load, #from_relay; python/enso/sourcefeed.py#levels_table"
    },
    {
     "id": "news-feeds",
@@ -107,9 +107,9 @@
     "name_en": "Media and government: 116 news feeds",
     "what_es": "Feeds RSS del Estado (33, sobre todo búsquedas en gob.pe), medios nacionales (14), medios regionales de 19 departamentos (27), radios (37, 27 de RPP) e internacionales (5).",
     "what_en": "RSS feeds from the government (33, mostly gob.pe searches), national media (14), regional media in 19 departments (27), radio stations (37, 27 from RPP) and international outlets (5).",
-    "details_es": "Medios generales (Andina incluida): la nota cuenta si habla del ENSO o trae el peligro en el titular. Medios locales, del Estado y feeds de peligros del Perú: basta un peligro. Feeds temáticos del mundo: si no tratan del ENSO, solo si nombran al Perú. 2 feeds (Noticias ONU y Sin Rodeos Cajamarca) prohíben robots y se leen como lector de feeds, solo desde Actions. El robots.txt de gob.pe solo prohíbe /admin/ y las URL con sheet=.",
-    "details_en": "General outlets (Andina included): an item counts if it is about ENSO or has the hazard in the headline. Local, government and Peru hazard feeds: one hazard is enough. Worldwide thematic feeds: unless about ENSO, only if they name Peru. 2 feeds (UN News and Sin Rodeos Cajamarca) disallow robots and are read like a feed reader, only from Actions. gob.pe's robots.txt only forbids /admin/ and URLs with sheet=.",
-    "evidence": "python/enso/news.py:82-396, 449-459, 547-580; python/enso/registry.py:35-38"
+    "details_es": "Medios generales (Andina incluida): la nota cuenta si habla del ENSO o trae el peligro en el titular. Medios locales, del Estado y feeds de peligros del Perú: basta un peligro. Feeds temáticos del mundo: si no tratan del ENSO, solo si nombran al Perú. Los que su robots.txt prohíbe (lo dice el registro) se leen como lector de feeds, solo desde Actions. El robots.txt de gob.pe solo prohíbe /admin/ y las URL con sheet=.",
+    "details_en": "General outlets (Andina included): an item counts if it is about ENSO or has the hazard in the headline. Local, government and Peru hazard feeds: one hazard is enough. Worldwide thematic feeds: unless about ENSO, only if they name Peru. Those whose robots.txt forbids them (the registry says which) are read like a feed reader, only from Actions. gob.pe's robots.txt only forbids /admin/ and URLs with sheet=.",
+    "evidence": "python/enso/news.py#FEEDS, #relevance; python/enso/registry.py#_feed_entries, #reader_urls"
    },
    {
     "id": "news-google",
@@ -123,7 +123,7 @@
     "meta_en": "at most every 20 h",
     "details_es": "El robots.txt de news.google.com prohíbe estos feeds. Desde la decisión del 21-10-2026 se leen como un lector de feeds: solo en corridas de main con --reader-state, un intento y como mucho una vez cada 20 h. n8n y el Perú no los piden.",
     "details_en": "news.google.com's robots.txt forbids these feeds. Since the decision of 21 Oct 2026 they are read like a feed reader: only in main runs with --reader-state, one try and at most once every 20 h. n8n and Peru do not request them.",
-    "evidence": "python/enso/news.py:73-154; python/enso/registry.py:35-38, 64-67; python/enso/observatory.py:1362, 1384-1460"
+    "evidence": "python/enso/news.py#_GN, #FEEDS; python/enso/registry.py#READER_MIN_HOURS, #READER_CHANNELS, #reader_urls; python/enso/observatory.py#acquire_news"
    },
    {
     "id": "robots-txt",
@@ -131,11 +131,11 @@
     "col": "sources",
     "name_es": "robots.txt de cada servidor",
     "name_en": "Each server's robots.txt",
-    "what_es": "Las reglas que cada sitio publica para los robots. El observatorio las lee según la RFC 9309 y no pide lo que prohíben, salvo 40 feeds de noticias que lee como lector, cada 20 h o más.",
-    "what_en": "The rules each site publishes for robots. The observatory reads them per RFC 9309 and does not request what they forbid, except 40 news feeds it reads like a feed reader, every 20 h or more.",
+    "what_es": "Las reglas que cada sitio publica para los robots. El observatorio las lee según la RFC 9309 y no pide lo que prohíben, salvo los feeds de noticias que lee como lector, cada 20 h o más.",
+    "what_en": "The rules each site publishes for robots. The observatory reads them per RFC 9309 and does not request what they forbid, except the news feeds it reads like a feed reader, every 20 h or more.",
     "details_es": "Gana la regla más larga y un empate lo gana Allow. Los leen en vivo el sondeo semanal, el recolector del Perú y la escalera de extracción: si el robots.txt da 5xx, no responde o trae una verificación antirobots sin código 4xx, no le piden nada a ese servidor; un 4xx, aunque sea una verificación, cuenta como «todo permitido» (RFC 9309), y la verificación que aparezca después se anota, nunca se evade. La corrida diaria y n8n no los leen: siguen el registro.",
     "details_en": "The longest rule wins and Allow wins a tie. The weekly probe, the Peru collector and the scraping ladder read them live: if robots.txt returns 5xx, does not answer or shows an anti-bot check without a 4xx code, they ask that server nothing; a 4xx, even an anti-bot check, counts as 'everything allowed' (RFC 9309), and any check that appears afterwards is logged, never bypassed. The daily run and n8n do not read them: they follow the registry.",
-    "evidence": "python/enso/reach.py:52-179; python/tools/probe_sources.py:41-54; python/tools/peru_collector.py:440-490; python/tools/scrape_ladder.py:9"
+    "evidence": "python/enso/reach.py#RobotRules, #Robots; python/tools/probe_sources.py#probe; python/tools/peru_collector.py#fetch; python/tools/scrape_ladder.py"
    },
    {
     "id": "registry-builder",
@@ -145,9 +145,9 @@
     "name_en": "Registry builder",
     "what_es": "Junta los catálogos del código (168 feeds, 17 fuentes ENSO y 13 páginas del Perú) con las mediciones y decide el estado y los canales de cada URL.",
     "what_en": "Joins the in-code catalogues (168 feeds, 17 ENSO sources and 13 Peru pages) with the measurements and decides each URL's status and channels.",
-    "details_es": "Regla: peru-server si y solo si la URL está geobloqueada o lo parece; sin canales si robots.txt la prohíbe, salvo los 40 reader (solo actions, cada 20 h o más); en lo demás, actions y n8n, menos la red que no responde cuando la otra sí. tools.build_registry --check falla si el archivo no está al día y una prueba lo exige.",
-    "details_en": "Rule: peru-server if and only if the URL is geoblocked or looks it; no channels if robots.txt forbids it, except the 40 reader feeds (actions only, every 20 h or more); otherwise actions and n8n, minus a network that fails while the other answers. tools.build_registry --check fails if the file is out of date, and a test requires it.",
-    "evidence": "python/enso/registry.py:13-40, 102-180, 237-306, 343-387; python/tools/build_registry.py:1-45; python/tests/test_registry.py:72-73"
+    "details_es": "Regla: peru-server si y solo si la URL está geobloqueada o lo parece; sin canales si robots.txt la prohíbe, salvo los feeds reader (solo actions, cada 20 h o más); en lo demás, actions y n8n, menos la red que no responde cuando la otra sí. tools.build_registry --check falla si el archivo no está al día y una prueba lo exige.",
+    "details_en": "Rule: peru-server if and only if the URL is geoblocked or looks it; no channels if robots.txt forbids it, except reader feeds (actions only, every 20 h or more); otherwise actions and n8n, minus a network that fails while the other answers. tools.build_registry --check fails if the file is out of date, and a test requires it.",
+    "evidence": "python/enso/registry.py#_feed_entries, #_source_entries, #_collector_entries, #geoblock, #channels_for, #build, #validate; python/tools/build_registry.py#main; python/tests/test_registry.py#test_registry_file_is_current"
    },
    {
     "id": "registry",
@@ -157,11 +157,11 @@
     "name_en": "Source registry (registry/)",
     "what_es": "Lista única de qué se descarga y quién lo pide: sources.json da el canal de cada URL (Actions, n8n o Perú) y reachability.json guarda las mediciones de alcance.",
     "what_en": "Single list of what is downloaded and who fetches it: sources.json gives each URL's channel (Actions, n8n or Peru) and reachability.json keeps the reachability measurements.",
-    "meta_es": "201 URL: 152 Actions y n8n, 40 solo Actions, 9 solo Perú",
-    "meta_en": "201 URLs: 152 Actions and n8n, 40 Actions only, 9 Peru only",
-    "details_es": "198 fuentes y 201 URL: 152 actions+n8n, 40 solo actions (feeds reader), 9 solo peru-server. Estado por URL: open 144, robots-disallowed 40, suspected-geoblock 9, unknown 7, down 1. reachability.json: 311 URL medidas desde Actions y n8n, todavía ninguna desde el Perú, así que ningún geobloqueo está confirmado. Generado el 21-10-2026 a las 05:15 UTC.",
-    "details_en": "198 sources and 201 URLs: 152 actions+n8n, 40 actions only (reader feeds), 9 peru-server only. Status per URL: open 144, robots-disallowed 40, suspected-geoblock 9, unknown 7, down 1. reachability.json: 311 URLs measured from Actions and n8n, none from Peru yet, so no geoblock is confirmed. Generated on 21 Oct 2026 at 05:15 UTC.",
-    "evidence": "registry/sources.json:1-10; registry/reachability.json:1-5; python/enso/registry.py:59-67, 309-340 (conteos con registry.url_channels())"
+    "meta_es": "lo regenera el sondeo de cada lunes",
+    "meta_en": "rebuilt by the Monday probe",
+    "details_es": "Por URL: estado (open, robots-disallowed, suspected-geoblock, geoblocked, unknown o down), canales y, en los feeds de noticias que robots.txt prohíbe, la marca reader. Los números al día salen del propio sources.json (by_url de cada fuente) y las mediciones están en reachability.json; el estado de cada fuente en la última publicación lo muestra el sitio en Metodología («Estado de las fuentes») y en Noticias («Estado de los feeds en esta publicación»).",
+    "details_en": "Per URL: status (open, robots-disallowed, suspected-geoblock, geoblocked, unknown or down), channels and, for news feeds robots.txt forbids, the reader flag. Current numbers come from sources.json itself (each source's by_url) and the measurements are in reachability.json; each source's status in the latest publication is shown on the site in Methodology («Estado de las fuentes») and News («Estado de los feeds en esta publicación»).",
+    "evidence": "registry/sources.json; registry/reachability.json; python/enso/registry.py#CHANNELS, #CLASSES, #geoblock, #url_channels, #reader_urls; public/assets/js/app.js:700, 916"
    },
    {
     "id": "peru-collector",
@@ -173,9 +173,9 @@
     "what_en": "A program on a computer inside Peru that every night downloads what does not answer from abroad (ENFEN portal, SENAMHI, ANA, ICEN over https) and pushes it to the data-peru branch.",
     "meta_es": "21:00 Lima; reintentos hasta las 23:30",
     "meta_en": "21:00 Lima; retries until 23:30",
-    "details_es": "Tarea programada (Windows, macOS o Linux): 21:00 Lima, reintentos cada 30 min hasta las 23:30 y al encender; solo recolecta si falta la copia de esa noche. 16 URL (15 de su lista fija y el ICEN https del registro) más los PDF del ENFEN (comunicados y los dos últimos informes técnicos, hasta 20 MB). Usa el mismo clasificador de alcance (reach.py), respeta robots.txt en vivo, no guarda páginas antirobots, conserva 72 h la última copia buena, 25 min de plazo y mide hasta 60 URL sin medición del Perú. Avisa en el escritorio tras 2 fallas o si el token vence en menos de 21 días.",
-    "details_en": "Scheduled task (Windows, macOS or Linux): 21:00 Lima, retries every 30 min until 23:30 and at startup; it only collects if that night's copy is missing. 16 URLs (15 from its fixed list plus the registry's https ICEN) and the ENFEN PDFs (communiqués and the two latest technical reports, up to 20 MB). It uses the same reach classifier (reach.py), honours robots.txt live, never stores anti-bot pages, keeps the last good copy for 72 h, has a 25 min limit and probes up to 60 URLs not yet measured from Peru. It shows a desktop notice after 2 failures or if the token expires in under 21 days.",
-    "evidence": "python/tools/peru_collector.py:1-28, 86-118, 249-321, 400-490, 527-596, 816-909; python/tools/collector_schedule.py:1-12, 46-56; python/tools/collector_service.py:59-62, 320-333, 609-625"
+    "details_es": "Tarea programada (Windows, macOS o Linux): 21:00 Lima, reintentos cada 30 min hasta las 23:30 y al encender; solo recolecta si falta la copia de esa noche. Las 17 URL de su lista fija más las URL peru-server del registro que no estén en ella, y los PDF del ENFEN (comunicados y los dos últimos informes técnicos, hasta 20 MB). Usa el mismo clasificador de alcance (reach.py), respeta robots.txt en vivo, no guarda páginas antirobots, conserva 72 h la última copia buena, 25 min de plazo y mide hasta 60 URL sin medición del Perú. Avisa en el escritorio tras 2 fallas o si el token vence en menos de 21 días.",
+    "details_en": "Scheduled task (Windows, macOS or Linux): 21:00 Lima, retries every 30 min until 23:30 and at startup; it only collects if that night's copy is missing. The 17 URLs on its fixed list plus the registry's peru-server URLs not already on it, and the ENFEN PDFs (communiqués and the two latest technical reports, up to 20 MB). It uses the same reach classifier (reach.py), honours robots.txt live, never stores anti-bot pages, keeps the last good copy for 72 h, has a 25 min limit and probes up to 60 URLs not yet measured from Peru. It shows a desktop notice after 2 failures or if the token expires in under 21 days.",
+    "evidence": "python/tools/peru_collector.py#SOURCES, #plan, #probe_targets, #fetch, #enfen_documents, #probe_registry, #push, #dispatch, #run_once, #CARRY_HOURS, #MAX_PROBES; python/tools/collector_schedule.py#lima_slots, #RETRY_EVERY_MIN; python/tools/collector_service.py#NOTIFY_AFTER, #TOKEN_WARN_DAYS, #is_due, #alert"
    },
    {
     "id": "n8n-collector",
@@ -183,13 +183,13 @@
     "col": "collect",
     "name_es": "Recolector n8n (nube AWS)",
     "name_en": "n8n collector (AWS cloud)",
-    "what_es": "Flujo de n8n en AWS que cada noche baja las 152 URL que el registro asigna a n8n y deja una segunda copia en la rama data-n8n, por si GitHub Actions no obtiene respuesta.",
-    "what_en": "An n8n flow on AWS that every night downloads the 152 URLs the registry assigns to n8n and leaves a second copy on the data-n8n branch, in case GitHub Actions gets no answer.",
-    "meta_es": "22:50 Lima · 152 URL",
-    "meta_en": "22:50 Lima · 152 URLs",
+    "what_es": "Flujo de n8n en AWS que cada noche baja las URL que el registro asigna a n8n y deja una segunda copia en la rama data-n8n, por si GitHub Actions no obtiene respuesta.",
+    "what_en": "An n8n flow on AWS that every night downloads the URLs the registry assigns to n8n and leaves a second copy on the data-n8n branch, in case GitHub Actions gets no answer.",
+    "meta_es": "22:50 Lima · canal n8n del registro",
+    "meta_en": "22:50 Lima · registry's n8n channel",
     "details_es": "Flujo «ENSO · Recolector n8n (fuentes no bloqueadas)», 22:50 Lima (cron 50 22 * * *, zona America/Lima). Lee el registro de main o la copia incluida al construir. Omite las URL sin canales, las robots-disallowed, las reader y las solo peru-server. Baja todo su alcance cada noche, falle o no Actions. Una URL a la vez (40 s), segunda pasada tras 30 s, sigue los PDF del ENFEN, conserva 72 h la copia buena. Su nodo «Avisar al sitio» (enso-refresh) viene desactivado.",
     "details_en": "Flow 'ENSO · Recolector n8n (fuentes no bloqueadas)', 22:50 Lima (cron 50 22 * * *, zone America/Lima). It reads the registry from main or the copy bundled at build time. It skips URLs with no channels, robots-disallowed, reader and peru-server-only URLs. It fetches its whole scope every night, whether Actions fails or not. One URL at a time (40 s), a second pass after 30 s, follows the ENFEN PDFs, keeps the good copy for 72 h. Its 'Avisar al sitio' node (enso-refresh) ships disabled.",
-    "evidence": "n8n/build.mjs:179, 201-242; n8n/nodes/fuentes.js:1-73; n8n/nodes/segunda.js:1-41; n8n/lib/relay.js:1-16"
+    "evidence": "n8n/build.mjs:203-246; n8n/nodes/fuentes.js; n8n/nodes/segunda.js; n8n/lib/relay.js"
    },
    {
     "id": "fetch",
@@ -197,13 +197,27 @@
     "col": "collect",
     "name_es": "Descarga en GitHub Actions (Fetcher)",
     "name_en": "Download in GitHub Actions (Fetcher)",
-    "what_es": "Pide cada fuente desde servidores de GitHub en EE. UU. y anota canal, URL, fecha y sha256. Si falla, busca la copia más reciente del Perú o de n8n, luego la réplica y al final el Internet Archive (GODAS no tiene esas copias: mantiene el dato anterior).",
-    "what_en": "Requests each source from GitHub servers in the US and records channel, URL, date and sha256. On failure it looks for the newest Peru or n8n copy, then the mirror and finally the Internet Archive (GODAS has no such copies: it keeps the previous value).",
+    "what_es": "Pide cada fuente desde servidores de GitHub en EE. UU. y anota canal, URL, fecha y sha256. Si falla, busca la copia más reciente del Perú, de n8n o de la consola de documentos, luego la réplica y al final el Internet Archive (GODAS no tiene esas copias: mantiene el dato anterior).",
+    "what_en": "Requests each source from GitHub servers in the US and records channel, URL, date and sha256. On failure it looks for the newest Peru, n8n or documents-console copy, then the mirror and finally the Internet Archive (GODAS has no such copies: it keeps the previous value).",
     "meta_es": "23:37 Lima · 8 min para las oficiales",
     "meta_en": "23:37 Lima · 8 min for official sources",
-    "details_es": "Canales: direct, mirror, relay-peru, relay-n8n, archive, archive-fresh. Fuentes oficiales: 8 min en total, 5 min por pedido, 3 intentos, 0,8 s entre pedidos al mismo servidor; servidor con 3 fallos: 1 intento, con 5: se omite. Noticias: 8 hilos, en serie por servidor, 60 s por feed, 10 min para empezar. URL que el registro no da a actions: se lee la copia y, solo si no hay, se hace un intento directo. Abre data-peru (hasta 7 días) y data-n8n (hasta 72 h). No usa navegador ni lee robots.txt durante la corrida. TLS: las raíces de siempre más los intermedios públicos de enso/data/ca-intermedios.pem, para servidores que no los envían (el repositorio del IMARPE); la verificación sigue activa.",
-    "details_en": "Channels: direct, mirror, relay-peru, relay-n8n, archive, archive-fresh. Official sources: 8 min in total, 5 min per request, 3 tries, 0.8 s between requests to the same server; a server with 3 failures gets 1 try, with 5 it is skipped. News: 8 threads, one at a time per server, 60 s per feed, 10 min to start. URLs the registry does not give to actions: the copy is read and, only if there is none, one direct try is made. It opens data-peru (up to 7 days) and data-n8n (up to 72 h). It uses no browser and reads no robots.txt during the run. TLS: the usual roots plus the public intermediates in enso/data/ca-intermedios.pem, for servers that do not send them (IMARPE's repository); verification stays on.",
-    "evidence": "python/enso/fetch.py:96-150, 153-302; python/enso/observatory.py:1166-1168, 1243-1258, 1658-1755; python/enso/news.py:898-950; python/enso/data/ca-intermedios.pem"
+    "details_es": "Canales: direct, mirror, relay-peru, relay-n8n, relay-manual, archive, archive-fresh. Fuentes oficiales: 8 min en total, 5 min por pedido, 3 intentos, 0,8 s entre pedidos al mismo servidor; servidor con 3 fallos: 1 intento, con 5: se omite. Noticias: 8 hilos, en serie por servidor, 60 s por feed, 10 min para empezar. URL que el registro no da a actions: se lee la copia y, solo si no hay, se hace un intento directo. Abre data-peru (hasta 7 días), data-n8n (hasta 72 h) y data-manual (hasta 120 días). No usa navegador ni lee robots.txt durante la corrida. TLS: las raíces de siempre más los intermedios públicos de enso/data/ca-intermedios.pem, para servidores que no los envían (el repositorio del IMARPE); la verificación sigue activa.",
+    "details_en": "Channels: direct, mirror, relay-peru, relay-n8n, relay-manual, archive, archive-fresh. Official sources: 8 min in total, 5 min per request, 3 tries, 0.8 s between requests to the same server; a server with 3 failures gets 1 try, with 5 it is skipped. News: 8 threads, one at a time per server, 60 s per feed, 10 min to start. URLs the registry does not give to actions: the copy is read and, only if there is none, one direct try is made. It opens data-peru (up to 7 days), data-n8n (up to 72 h) and data-manual (up to 120 days). It uses no browser and reads no robots.txt during the run. TLS: the usual roots plus the public intermediates in enso/data/ca-intermedios.pem, for servers that do not send them (IMARPE's repository); verification stays on.",
+    "evidence": "python/enso/fetch.py#Response, #Relay, #Fetcher.get, #Fetcher._get, #Fetcher._from_relays, #ssl_context, #HOST_ONE_TRY_AFTER, #HOST_SKIP_AFTER; python/enso/observatory.py#run, #OFFICIAL_BUDGET_S, #load_relay, #load_n8n_relay, #load_manual_relay, #acquire_news; python/enso/manual.py#MAX_AGE_DAYS; python/enso/news.py#collect; python/enso/data/ca-intermedios.pem"
+   },
+   {
+    "id": "n8n-extractor",
+    "group": "channels",
+    "col": "collect",
+    "name_es": "Extractor de informes n8n (opcional)",
+    "name_en": "n8n report extractor (optional)",
+    "what_es": "Flujo «ENSO · Extractor de informes (OpenAI)» que lee con un modelo de OpenAI el texto de un informe técnico o de la perspectiva de un comunicado del ENFEN cuando el lector fijo no puede. Solo propone: nada de lo que responde se publica como dato.",
+    "what_en": "Flow «ENSO · Extractor de informes (OpenAI)» that reads, with an OpenAI model, the text of an ENFEN technical report or communiqué outlook when the fixed parser cannot. It only proposes: nothing it answers is published as data.",
+    "meta_es": "solo si el pipeline lo llama",
+    "meta_en": "only when the pipeline calls it",
+    "details_es": "Webhook POST /webhook/enso-extraer con autenticación por cabecera (credencial «Token del extractor ENSO»: Bearer ENSO_LLM_EXTRACT_TOKEN). Valida kind (enfen-informe o enfen-perspectiva), schema y text; si falta algo responde 400. Pide chat/completions con temperatura 0 y respuesta JSON (credencial «OpenAI ENSO (n8n)»; el modelo se elige en el nodo Configuración), con 3 intentos, y responde {data, model, evidence} o 502. El pipeline manda hasta 120 000 caracteres y espera hasta 120 s.",
+    "details_en": "POST webhook /webhook/enso-extraer with header auth (credential «Token del extractor ENSO»: Bearer ENSO_LLM_EXTRACT_TOKEN). It checks kind (enfen-informe or enfen-perspectiva), schema and text; if anything is missing it answers 400. It calls chat/completions with temperature 0 and a JSON response (credential «OpenAI ENSO (n8n)»; the model is chosen in the Configuración node), with 3 tries, and answers {data, model, evidence} or 502. The pipeline sends up to 120,000 characters and waits up to 120 s.",
+    "evidence": "n8n/dist/enso-n8n-extractor.json; n8n/build.mjs:276-325; n8n/nodes/extraer-pedido.js; n8n/nodes/extraer-respuesta.js; python/enso/reports.py#llm_extract, #llm_unavailable, #reusable_review"
    },
    {
     "id": "data-peru-branch",
@@ -217,7 +231,7 @@
     "meta_en": "valid up to 7 days; warning at 36 h",
     "details_es": "Formato enso-relay/1. Cada subida reemplaza el contenido y el historial de git guarda las anteriores. El pipeline usa copias de hasta 7 días con estado 200 y sha256 verificado, y avisa a las 36 h. Si nada respondió, solo se sube el latido «sin-fuentes».",
     "details_en": "Format enso-relay/1. Each upload replaces the contents and git history keeps the earlier ones. The pipeline uses copies up to 7 days old with status 200 and a verified sha256, and warns at 36 h. If nothing answered, only the 'sin-fuentes' heartbeat is pushed.",
-    "evidence": "python/tools/peru_collector.py:61, 678-871; python/enso/fetch.py:96-150; .github/workflows/observatory.yml:102-116"
+    "evidence": "python/tools/peru_collector.py#BRANCH, #collect, #heartbeat, #push_heartbeat, #carry_forward, #push; python/enso/fetch.py#Relay; python/enso/observatory.py#load_relay; .github/workflows/observatory.yml:98-116"
    },
    {
     "id": "data-n8n-branch",
@@ -231,7 +245,7 @@
     "meta_en": "valid up to 72 h; warning at 36 h",
     "details_es": "index.json y heartbeat.json se publican siempre, aunque nada responda. El pipeline acepta copias de hasta 72 h (canal relay-n8n) y avisa a las 36 h.",
     "details_en": "index.json and heartbeat.json are always published, even if nothing answers. The pipeline accepts copies up to 72 h old (relay-n8n channel) and warns at 36 h.",
-    "evidence": "n8n/nodes/commit.js:1-5; n8n/nodes/rama.js:1-10; python/enso/fetch.py:119-121; python/enso/observatory.py:1722-1755"
+    "evidence": "n8n/nodes/commit.js; n8n/nodes/rama.js; python/enso/fetch.py#Relay.__init__; python/enso/observatory.py#load_n8n_relay"
    },
    {
     "id": "data-manual-branch",
@@ -245,7 +259,7 @@
     "meta_en": "valid for 120 days",
     "details_es": "La crea la primera subida. Cada entrada lleva las URL con que el pipeline busca el documento (la principal y sus alias), el sha256 y quién la subió. Que la rama no exista es lo normal.",
     "details_en": "Created by the first upload. Each entry carries the URLs the pipeline looks the document up by (main and aliases), the sha256 and who uploaded it. A missing branch is normal.",
-    "evidence": "functions/_lib/doc-uploads.js:211-275; python/enso/manual.py:1-40; python/enso/observatory.py:1900-1918"
+    "evidence": "functions/_lib/doc-uploads.js:141-296; python/enso/manual.py#KEY_PREFIX, #MAX_AGE_DAYS, #key; python/enso/observatory.py#load_manual_relay; .github/workflows/observatory.yml:136-154"
    },
    {
     "id": "internet-archive",
@@ -257,7 +271,7 @@
     "what_en": "Last network fallback: the most recent archived copy of an official URL. For the ENFEN communiqué it also requests a fresh copy (Save Page Now) when the existing one is over a day old.",
     "details_es": "Consulta CDX y baja la copia con estado 200 sin cambios (id_). Busca los PDF del ENFEN por prefijo (hasta 4 copias). Save Page Now solo con ENSO_ARCHIVE_SAVE=1, que vale en todas las corridas salvo una manual con archive_save desmarcado. Las noticias nunca lo usan. Pasados los 8 min de las fuentes oficiales ya no se consulta.",
     "details_en": "Queries CDX and downloads the unchanged copy with status 200 (id_). Looks up ENFEN PDFs by prefix (up to 4 copies). Save Page Now only with ENSO_ARCHIVE_SAVE=1, which holds in every run except a manual one with archive_save unticked. News never uses it. Once the 8 official minutes are spent it is no longer queried.",
-    "evidence": "python/enso/fetch.py:3-16, 303-383; python/enso/observatory.py:185, 1168, 1372; .github/workflows/observatory.yml:23-28, 192"
+    "evidence": "python/enso/fetch.py#Fetcher.get, #Fetcher._from_archive, #archive_prefix; python/enso/observatory.py#archived_copy, #_get_communique, #run; .github/workflows/observatory.yml:23-28, 212"
    },
    {
     "id": "reader-state-cache",
@@ -265,11 +279,11 @@
     "col": "copies",
     "name_es": "Caché de Actions: feeds reader",
     "name_en": "Actions cache: reader feeds",
-    "what_es": "Archivo reader-state.json en la caché de GitHub Actions con la última vez que se pidió cada uno de los 40 feeds reader y sus notas todavía no publicadas.",
-    "what_en": "reader-state.json in the GitHub Actions cache with the last time each of the 40 reader feeds was requested and its not-yet-published items.",
+    "what_es": "Archivo reader-state.json en la caché de GitHub Actions con la última vez que se pidió cada feed reader y sus notas todavía no publicadas.",
+    "what_en": "reader-state.json in the GitHub Actions cache with the last time each reader feed was requested and its not-yet-published items.",
     "details_es": "Solo en main: se restaura la clave enso-reader-state-* más reciente y se guarda al final aunque la corrida falle. Mínimo 20 h entre pedidos; notas guardadas hasta 14 días. Fuera de main esos feeds no se piden.",
     "details_en": "Main only: the newest enso-reader-state-* key is restored and it is saved at the end even if the run fails. At least 20 h between requests; items kept up to 14 days. Outside main those feeds are not requested.",
-    "evidence": ".github/workflows/observatory.yml:176-183, 197, 210-216; python/enso/observatory.py:1266-1285, 1384-1460"
+    "evidence": ".github/workflows/observatory.yml:191-203, 237-243; python/enso/observatory.py#read_reader_state, #write_reader_state, #acquire_news"
    },
    {
     "id": "previous-publication",
@@ -281,7 +295,7 @@
     "what_en": "What the previous run published, read over HTTP from the live site. It supplies each source's last valid value, the news history, feed status and place corrections.",
     "details_es": "--previous ${SITE_URL}data. Lee sources/<id>.json, news/items.jsonl y news/feeds.json (3 intentos), geo/overrides.json y archive/sources/. Distingue ok, missing (404/410) y unreachable. El tope de 8 min de las fuentes oficiales no las corta, pero las de sources/ consumen ese tiempo.",
     "details_en": "--previous ${SITE_URL}data. Reads sources/<id>.json, news/items.jsonl and news/feeds.json (3 tries), geo/overrides.json and archive/sources/. Tells ok, missing (404/410) and unreachable apart. The 8 min official cap does not cut them off, but the sources/ reads use up that time.",
-    "evidence": "python/enso/observatory.py:218-296, 299-357; python/enso/archive.py:102-142; .github/workflows/observatory.yml:201"
+    "evidence": "python/enso/observatory.py#PreviousPublication, #acquire; python/enso/archive.py#write_sources, #carry; .github/workflows/observatory.yml:226"
    },
    {
     "id": "data-archive-branch",
@@ -293,7 +307,7 @@
     "what_en": "Permanent corpus of raw responses by source, date and sha256, plus the full copy of the news history. It only grows: it never deletes.",
     "details_es": "sources/<fuente>/<día>-<sha12>.<ext>, sources/news/<día>.jsonl y sources/news/items.jsonl.gz. Solo la escribe el job archive en main. El pipeline solo lee de vuelta items.jsonl.gz; el job archive baja sources/news/ para agregarle.",
     "details_en": "sources/<source>/<day>-<sha12>.<ext>, sources/news/<day>.jsonl and sources/news/items.jsonl.gz. Only the archive job on main writes it. The pipeline reads back only items.jsonl.gz; the archive job checks out sources/news/ to append to it.",
-    "evidence": ".github/workflows/observatory.yml:143-169, 374-459; python/tools/merge_history.py:1-60"
+    "evidence": ".github/workflows/observatory.yml:156-189, 419-504; python/tools/merge_history.py#merge, #LIMIT"
    },
    {
     "id": "reference-data",
@@ -305,7 +319,7 @@
     "what_en": "Fixed files in the repository: INEI UBIGEO codes, IGN district boundaries, INDECI departments, ENFEN's 8 ICEN categories (2024) and the GRD team's threshold table.",
     "details_es": "ubigeo.json (1891 distritos), limites-ign.json.gz (polígonos de 1873 distritos, más provincias y departamentos, límites de 2020), departamentos.geojson (25). Se arman a mano con tools.build_ubigeo, tools.build_limites y (departamentos) tools.scrape_ladder, no en cada corrida. ICEN: Nota Técnica ENFEN 01-2024. La tabla GRD es un borrador transcrito de una imagen recibida el 06-08-2026, no un sistema oficial. godas-d20.json: D20 mensual de GODAS desde 1980 y su climatología 1991–2020, regenerado a mano con tools.godas_d20_climatology; si tiene más de 12 meses de atraso la corrida avisa (history-old).",
     "details_en": "ubigeo.json (1891 districts), limites-ign.json.gz (polygons for 1873 districts, plus provinces and departments, 2020 boundaries), departamentos.geojson (25). Built by hand with tools.build_ubigeo, tools.build_limites and (departments) tools.scrape_ladder, not on every run. ICEN: ENFEN Technical Note 01-2024. The GRD table is a draft transcribed from an image received on 6 Aug 2026, not an official system. godas-d20.json: monthly GODAS D20 since 1980 and its 1991–2020 climatology, regenerated by hand with tools.godas_d20_climatology; when it is more than 12 months behind the run warns (history-old).",
-    "evidence": "python/enso/geo.py:78; python/enso/limites.py:1-39; python/enso/geopoly.py:1-25; python/tools/build_limites.py:1-35; config/threshold-policies/enfen-icen-2024.yaml:1-27; config/threshold-policies/expert-grd-image-v1.yaml:1-35"
+    "evidence": "python/enso/geo.py#DATA; python/enso/limites.py#DATA; python/enso/geopoly.py#DATA; python/tools/build_ubigeo.py; python/tools/build_limites.py; python/tools/godas_d20_climatology.py; python/enso/signals.py#ICEN_TABLE; config/threshold-policies/enfen-icen-2024.yaml; config/threshold-policies/expert-grd-image-v1.yaml:1-35"
    },
    {
     "id": "official-parse",
@@ -315,9 +329,9 @@
     "name_en": "Official source reading",
     "what_es": "Pasa cada respuesta a su lector, valida rangos y compara la huella del formato con la de la publicación anterior. Busca el último comunicado del ENFEN y lee su PDF. Si una fuente falla, reutiliza su último dato válido.",
     "what_en": "Hands each response to its parser, checks ranges and compares the format fingerprint with the previous publication's. It finds the latest ENFEN communiqué and reads its PDF. If a source fails, it reuses its last valid value.",
-    "details_es": "acquire, feeds/cpc.py, feeds/peru.py y enfen_latest. ENFEN, ICEN y la discusión ENSO van primero. Del PDF saca número, estado (Alerta, Vigilancia, No activo), nivel, fechas y resumen. Un dato reutilizado se marca carried con su fecha real. Códigos: format-drift, format-changed, unreachable, carried-forward, probe-found, communique-unread. Del comunicado también lee la perspectiva por región (magnitud y hasta cuándo). Con el comunicado nuevo baja una vez su informe técnico (reports.py; portal, repositorio del IMARPE, réplica de la DHN, copia del Perú o de la consola, o Internet Archive), elegido por fecha y no por número: ICEN temporal y probabilidades mensuales, validados con esquema, sumas al 100 %, saltos y el ICEN del IGP, con la página y la cita de origen; si falla, conserva el último bueno (enfen-informe). Un modelo de lenguaje opcional (ENSO_LLM_EXTRACT_URL) solo deja una propuesta para revisión.",
-    "details_en": "acquire, feeds/cpc.py, feeds/peru.py and enfen_latest. ENFEN, ICEN and the ENSO discussion go first. From the PDF it takes the number, status (Alerta, Vigilancia, No activo), level, dates and summary. A reused value is flagged carried with its real date. Codes: format-drift, format-changed, unreachable, carried-forward, probe-found, communique-unread. From the communiqué it also reads the per-region outlook (magnitude and until when). With a new communiqué it downloads its technical report once (reports.py; portal, IMARPE repository, DHN mirror, Peru or console copy, or Internet Archive), chosen by date rather than number: provisional ICEN and monthly probabilities, validated with a schema, 100 % sums, jumps and IGP's ICEN, with the source page and quote; if it fails it keeps the last good one (enfen-informe). An optional language model (ENSO_LLM_EXTRACT_URL) only leaves a proposal for review.",
-    "evidence": "python/enso/observatory.py:192, 299-357, 421-545; python/enso/feeds/__init__.py:1-82; python/enso/feeds/peru.py:15-245"
+    "details_es": "acquire, feeds/cpc.py, feeds/peru.py y enfen_latest. ENFEN, ICEN y la discusión ENSO van primero. Del PDF saca número, estado (Alerta, Vigilancia, No activo), nivel, fechas y resumen. Un dato reutilizado se marca carried con su fecha real. Códigos: format-drift, format-changed, unreachable, carried-forward, probe-found, communique-unread. Del comunicado también lee la perspectiva por región (magnitud y hasta cuándo). Con el comunicado nuevo baja una vez su informe técnico (reports.py; portal, repositorio del IMARPE, réplica de la DHN, copia del Perú o de la consola, o Internet Archive), elegido por fecha y no por número: ICEN temporal y probabilidades mensuales, validados con esquema, sumas al 100 %, saltos y el ICEN del IGP, con la página y la cita de origen; si falla, conserva el último bueno (enfen-informe). Si el lector fijo no puede con el informe o con la perspectiva y está ENSO_LLM_EXTRACT_URL, le pasa el texto al extractor de n8n, que solo deja una propuesta para revisión.",
+    "details_en": "acquire, feeds/cpc.py, feeds/peru.py and enfen_latest. ENFEN, ICEN and the ENSO discussion go first. From the PDF it takes the number, status (Alerta, Vigilancia, No activo), level, dates and summary. A reused value is flagged carried with its real date. Codes: format-drift, format-changed, unreachable, carried-forward, probe-found, communique-unread. From the communiqué it also reads the per-region outlook (magnitude and until when). With a new communiqué it downloads its technical report once (reports.py; portal, IMARPE repository, DHN mirror, Peru or console copy, or Internet Archive), chosen by date rather than number: provisional ICEN and monthly probabilities, validated with a schema, 100 % sums, jumps and IGP's ICEN, with the source page and quote; if it fails it keeps the last good one (enfen-informe). If the fixed parser cannot read the report or the outlook and ENSO_LLM_EXTRACT_URL is set, it sends the text to the n8n extractor, which only leaves a proposal for review.",
+    "evidence": "python/enso/observatory.py#acquire, #OFFICIAL_FIRST, #enfen_latest, #_enfen_latest; python/enso/feeds/__init__.py#FormatChanged, #fingerprint; python/enso/feeds/peru.py#parse_enfen_communique, #parse_enfen_listing, #parse_enfen_wp_posts, #parse_icen_txt; python/enso/feeds/cpc.py; python/enso/reports.py#acquire_informe, #communique_outlook, #llm_extract"
    },
    {
     "id": "builder",
@@ -329,7 +343,7 @@
     "what_en": "Builds 23 series with latest value and age (20 with a category), weekly data per Niño region, the ENFEN and NOAA statuses and the GRD signal: normal, yellow, red, unclassified or no data.",
     "details_es": "Builder y signals.py. Evento costero: ICEN sobre +0,5 o bajo −0,7 al menos 3 meses seguidos. Las categorías, los estados y la señal GRD salen de Python; el navegador solo agrega ayudas de lectura: colores por umbral o por signo (franja semanal ±0,5, escala del mapa de −2 a +4 °C, minigráficos, áreas de los gráficos y valor del viento), la dirección del viento y N/D si el dato semanal tiene más de 16 días. La termoclina usa la anomalía de D20 que el observatorio calcula con GODAS en Niño 1+2 y Niño 3.4. freshness.py da a cada dato su vigencia (al día, atrasado, vencido, sin dato) según el calendario de su institución y la agrupa por vista en dashboard.json.",
     "details_en": "Builder and signals.py. Coastal event: ICEN above +0.5 or below −0.7 for at least 3 months in a row. Categories, statuses and the GRD signal come from Python; the browser only adds reading aids: colours by threshold or sign (weekly strip ±0.5, map scale from −2 to +4 °C, sparklines, chart areas and the wind value), the wind direction and N/D when the weekly value is over 16 days old. The thermocline uses the D20 anomaly the observatory computes from GODAS in Niño 1+2 and Niño 3.4. freshness.py gives every datum its freshness (on time, late, expired, no data) from its institution's calendar and groups it per view in dashboard.json.",
-    "evidence": "python/enso/observatory.py:622-862; python/enso/signals.py:1-216"
+    "evidence": "python/enso/observatory.py#Builder, #troup_soi; python/enso/signals.py#grd_signals, #icen_events, #icen_category; python/enso/freshness.py#build"
    },
    {
     "id": "news-collect",
@@ -341,7 +355,7 @@
     "what_en": "Reads the 168 feeds, keeps only items about ENSO or about a hazard in Peru, tags them with 13 hazard types and places each one.",
     "details_es": "feedparse lee RSS, Atom, JSON Feed y listados de gob.pe; hazardparse convierte USGS, DHN, PTWC, CENVUL, Telegram, ArcGIS, COEN y FIRMS. Descarta empleo, accidentes, sismos menores de 4 y los simulacros de la DHN y del COEN. Feeds reader: como mucho cada 20 h. Si toda la lectura falla, se usan las alertas de la publicación anterior y las 14 fuentes figuran como no leídas, para que el silencio no parezca calma.",
     "details_en": "feedparse reads RSS, Atom, JSON Feed and gob.pe listings; hazardparse converts USGS, DHN, PTWC, CENVUL, Telegram, ArcGIS, COEN and FIRMS. It drops job ads, accidents, quakes under 4 and DHN and COEN drills. Reader feeds: at most every 20 h. If all reading fails, the previous publication's alerts are used and the 14 sources show as unread, so silence is not taken for calm.",
-    "evidence": "python/enso/observatory.py:1330-1520; python/enso/news.py:464-580, 803-950; python/enso/feedparse.py:1-31; python/enso/hazardparse.py:1-22"
+    "evidence": "python/enso/observatory.py#acquire_news; python/enso/news.py#hazards, #relevance, #collect; python/enso/feedparse.py; python/enso/hazardparse.py"
    },
    {
     "id": "news-history",
@@ -353,7 +367,7 @@
     "what_en": "Takes the previous publication's history and appends the new items, deleting nothing. If it is missing items, it fills them from the data-archive copy.",
     "details_es": "news/items.jsonl, una nota por id (sha256 del enlace y el titular). Si no puede leerlo ni rehacerlo, publica solo las de hoy marcado «restarted». Aviso news-history-large a los 20 MiB (Cloudflare sirve hasta 25 MiB por archivo).",
     "details_en": "news/items.jsonl, one item per id (sha256 of the link and headline). If it can neither read nor rebuild it, it publishes only today's items, flagged 'restarted'. news-history-large warning at 20 MiB (Cloudflare serves up to 25 MiB per file).",
-    "evidence": "python/enso/observatory.py:1295-1327, 1520-1600; python/enso/news.py:635, 760-783"
+    "evidence": "python/enso/observatory.py#read_history_backup, #acquire_news; python/enso/news.py#item_id, #read_jsonl, #new_lines"
    },
    {
     "id": "geo-place",
@@ -365,7 +379,7 @@
     "what_en": "Re-places the whole history with the current rules and applies the console corrections (Cloudflare only), which have the final say. Then it groups the items of the last 14 days.",
     "details_es": "geo.py, limites.py, geopoly.py y geo_overrides.py. Confianza de 0,35 a 0,97 (1 con set o confirm); se publica desde 0,5 y va a revisión lo menor a 0,8. Acciones: set, confirm, none y foreign; gana el rev mayor. Grupos: 3 palabras en común y 60 % del titular más corto.",
     "details_en": "geo.py, limites.py, geopoly.py and geo_overrides.py. Confidence from 0.35 to 0.97 (1 with set or confirm); published from 0.5 and anything under 0.8 goes to review. Actions: set, confirm, none and foreign; the highest rev wins. Clusters: 3 words in common and 60 % of the shorter headline.",
-    "evidence": "python/enso/geo.py:1-83, 842-932; python/enso/geo_overrides.py:1-40, 59-192; python/enso/news.py:690-746; python/enso/observatory.py:1605-1651"
+    "evidence": "python/enso/geo.py#locate_item, #PUBLISH_MIN; python/enso/geo_overrides.py#REVIEW_BELOW, #fetch_overrides, #apply_all, #relocate; python/enso/news.py#cluster; python/enso/observatory.py#acquire_news"
    },
    {
     "id": "event-log",
@@ -375,9 +389,9 @@
     "name_en": "Incident log",
     "what_es": "Cada etapa anota sus problemas con severidad (info, warning, error, critical), fuente, código y una huella. Si una fuente crítica no tiene dato ni anterior, la corrida es critical y no se despliega.",
     "what_en": "Every stage logs its problems with severity (info, warning, error, critical), source, code and a fingerprint. If a critical source has neither fresh nor previous data, the run is critical and nothing is deployed.",
-    "details_es": "Incluye la salud de las copias: relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed (falta el PDF del comunicado o del informe más reciente), relay-token-expiring (menos de 21 días), relay-kit-outdated (el kit no tiene el contrato mínimo) y relay-n8n-missing, -stale y -sources-down. Huella: sha1 de fuente|etapa|código.",
-    "details_en": "Includes copy health: relay-missing, relay-stale (over 36 h), relay-sources-down, relay-goal-missed (the newest comunicado or informe PDF is missing), relay-token-expiring (under 21 days), relay-kit-outdated (the kit lacks the minimum contract) and relay-n8n-missing, -stale and -sources-down. Fingerprint: sha1 of source|stage|code.",
-    "evidence": "python/enso/observatory.py:55-87, 1230-1235, 1658-1755, 1810-1813"
+    "details_es": "Incluye la salud de las copias: relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed (falta el PDF del comunicado o del informe más reciente), relay-token-expiring (menos de 21 días), relay-kit-outdated (el kit no tiene el contrato mínimo) relay-n8n-missing, -stale y -sources-down, y manual-unreadable (la rama data-manual existe pero no se pudo bajar o leer). Huella: sha1 de fuente|etapa|código.",
+    "details_en": "Includes copy health: relay-missing, relay-stale (over 36 h), relay-sources-down, relay-goal-missed (the newest comunicado or informe PDF is missing), relay-token-expiring (under 21 days), relay-kit-outdated (the kit lacks the minimum contract) relay-n8n-missing, -stale and -sources-down, and manual-unreadable (the data-manual branch exists but could not be fetched or read). Fingerprint: sha1 of source|stage|code.",
+    "evidence": "python/enso/observatory.py#Event, #EventLog, #load_relay, #load_n8n_relay, #load_manual_relay, #main"
    },
    {
     "id": "write-publication",
@@ -387,9 +401,9 @@
     "name_en": "Publication write and validation",
     "what_es": "Escribe todos los archivos de data/ en una carpeta temporal con un publicationId común, valida que sean coherentes y reemplaza public/data de una sola vez. Si la validación falla, queda la publicación anterior.",
     "what_en": "Writes every data/ file into a temp folder with one shared publicationId, checks they are consistent and swaps public/data in one move. If validation fails, the previous publication stays.",
-    "details_es": "write_publication y validate_publication. También arma feed.json con sourcefeed.build sin descargar nada, con el estado de las 14 fuentes de alertas, y guarda en raw/ las respuestas nuevas para data-archive (archive_raw).",
-    "details_en": "write_publication and validate_publication. It also builds feed.json with sourcefeed.build without downloading anything, with the status of the 14 alert sources, and saves the new responses for data-archive in raw/ (archive_raw).",
-    "evidence": "python/enso/observatory.py:898-1126, 1134-1149, 1227-1237; python/enso/sourcefeed.py:1-188"
+    "details_es": "write_publication y validate_publication. También arma feed.json con sourcefeed.build sin descargar nada, con el estado de las 14 fuentes de alertas y, en cada aviso, el nivel que dio su institución, su vigencia y su tipo (severity.assess; sin nivel si la fuente no lo da), y guarda en raw/ las respuestas nuevas para data-archive (archive_raw).",
+    "details_en": "write_publication and validate_publication. It also builds feed.json with sourcefeed.build without downloading anything, with the status of the 14 alert sources and, on each warning, the level its agency gave, its validity and its kind (severity.assess; no level if the source gives none), and saves the new responses for data-archive in raw/ (archive_raw).",
+    "evidence": "python/enso/observatory.py#write_publication, #validate_publication, #archive_raw; python/enso/sourcefeed.py#build, #alerts; python/enso/severity.py#assess"
    },
    {
     "id": "publication-data",
@@ -397,11 +411,11 @@
     "col": "site",
     "name_es": "Archivos publicados (data/)",
     "name_en": "Published files (data/)",
-    "what_es": "Lo que se publica: dashboard.json, series y CSV, estado de las 17 fuentes, feed.json, news/, geo/, run-report.json, manifest.json y data/archive/ con las copias archivadas.",
-    "what_en": "What gets published: dashboard.json, series and CSVs, the status of the 17 sources, feed.json, news/, geo/, run-report.json, manifest.json and data/archive/ with the archived copies.",
+    "what_es": "Lo que se publica: dashboard.json, series y CSV, estado de las 17 fuentes, feed.json, news/, geo/, manual-needed.json, imarpe-bsobp.json, run-report.json, manifest.json y data/archive/ con las copias archivadas.",
+    "what_en": "What gets published: dashboard.json, series and CSVs, the status of the 17 sources, feed.json, news/, geo/, manual-needed.json, imarpe-bsobp.json, run-report.json, manifest.json and data/archive/ with the archived copies.",
     "details_es": "Cada JSON propio (no las copias de terceros) lleva schema observatorio-enso/4, publicationId y generatedAt. data/archive/: respuesta original y PDF de cada fuente oficial (archive/sources/; cpc-godas-d20 archiva el D20 calculado por mes en JSON, con las URL de los GRIB leídos), cada feed bajado (archive/feeds/) y una página por día de noticias (60 días); máx. 20 MiB por copia. geo/items.json: 120 días, máx. 4000 notas.",
     "details_en": "Every own JSON (not the third-party copies) carries schema observatorio-enso/4, publicationId and generatedAt. data/archive/: original response and PDF of each official source (archive/sources/; cpc-godas-d20 archives the computed monthly D20 as JSON, with the URLs of the GRIB files read), each downloaded feed (archive/feeds/) and one page per news day (60 days); max 20 MiB per copy. geo/items.json: 120 days, max 4000 items.",
-    "evidence": "python/enso/observatory.py:898-1100; python/enso/archive.py:1-208; python/enso/geo_overrides.py:180-222"
+    "evidence": "python/enso/observatory.py#write_publication; python/enso/archive.py#Writer, #write_sources, #write_feeds, #write_news_days, #MAX_BYTES; python/enso/geo_overrides.py#console_items, #console_gazetteer; python/enso/manual.py#ManualNeeds, #dump"
    },
    {
     "id": "deploy",
@@ -413,7 +427,7 @@
     "what_en": "Adapts the site to its address, tests it in Chromium, publishes it to GitHub Pages (default) or Cloudflare Pages and checks that the live site already serves the new publication.",
     "details_es": "prepare_site.py (con Cloudflare quita los enlaces al repositorio y escribe _headers), pytest -m browser, deploy-pages o wrangler (que sube también functions/), verify_live cada 20 s hasta 10 min. El destino lo fija la variable DEPLOY_TARGET; con Cloudflare, cloudflare_pages.py crea el proyecto si falta.",
     "details_en": "prepare_site.py (with Cloudflare it removes the repository links and writes _headers), pytest -m browser, deploy-pages or wrangler (which also uploads functions/), verify_live every 20 s for up to 10 min. The target is set by the DEPLOY_TARGET variable; with Cloudflare, cloudflare_pages.py creates the project if missing.",
-    "evidence": ".github/workflows/observatory.yml:66-92, 218-316; python/tools/prepare_site.py:1-94; python/tools/verify_live.py:1-45; python/tools/cloudflare_pages.py:1-78"
+    "evidence": ".github/workflows/observatory.yml:66-92, 245-287, 289-343; python/tools/prepare_site.py#prepare; python/tools/verify_live.py#main; python/tools/cloudflare_pages.py#ensure_project"
    },
    {
     "id": "live-site",
@@ -423,9 +437,9 @@
     "name_en": "Live site (SITE_URL)",
     "what_es": "La dirección pública que sirve el sitio y su carpeta data/. Por omisión es https://pillb.github.io/observatorio-enso-peru/.",
     "what_en": "The public address that serves the site and its data/ folder. By default it is https://pillb.github.io/observatorio-enso-peru/.",
-    "details_es": "Con Cloudflare: <proyecto>.pages.dev o SITE_URL, más /api/geo/* y CORS abierto en /data/*. Lo leen el público, la corrida siguiente, verify_live, los dos vigilantes y la consola. Qué destino está activo depende de una variable del repositorio que no está en el código.",
-    "details_en": "With Cloudflare: <project>.pages.dev or SITE_URL, plus /api/geo/* and open CORS on /data/*. Read by the public, the next run, verify_live, both watchdogs and the console. Which target is active depends on a repository variable that is not in the code.",
-    "evidence": ".github/workflows/observatory.yml:39-42, 66-92, 201; python/tools/prepare_site.py:32-51"
+    "details_es": "Con Cloudflare: <proyecto>.pages.dev o SITE_URL, más /api/geo/*, /api/docs/* y /api/ab/* y CORS abierto en /data/*. Lo leen el público, la corrida siguiente, verify_live, los dos vigilantes y las consolas. Qué destino está activo depende de una variable del repositorio que no está en el código.",
+    "details_en": "With Cloudflare: <project>.pages.dev or SITE_URL, plus /api/geo/*, /api/docs/* and /api/ab/* and open CORS on /data/*. Read by the public, the next run, verify_live, both watchdogs and the consoles. Which target is active depends on a repository variable that is not in the code.",
+    "evidence": ".github/workflows/observatory.yml:39-42, 66-92; python/tools/prepare_site.py#HEADERS; functions/api/geo/[[path]].js; functions/api/docs/[[path]].js; functions/api/ab/[[path]].js"
    },
    {
     "id": "site-app",
@@ -433,11 +447,11 @@
     "col": "site",
     "name_es": "Sitio web (10 vistas)",
     "name_en": "Website (10 views)",
-    "what_es": "Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias, Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada.",
-    "what_en": "Static page with no build step: Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, News, Data, Methodology and Assistant. Next to each value it links the live source and the archived copy.",
-    "details_es": "Carga primero dashboard.json; su publicationId es la referencia y no muestra archivos de otra publicación. Avisa si la publicación tiene más de 36 h o si worst es error o critical. El Asistente usa reglas fijas, no un modelo de lenguaje. Metodología muestra el diagrama simplificado y, con un botón, el completo (copias de docs/).",
-    "details_en": "Loads dashboard.json first; its publicationId is the reference and files from another publication are not shown. Warns if the publication is over 36 h old or worst is error or critical. The Assistant uses fixed rules, not a language model. Methodology shows the simplified diagram and, with a button, the full one (copies from docs/).",
-    "evidence": "public/assets/js/app.js:1-47, 248-262, 536-564, 776-852; public/assets/js/assistant.js:1-4; public/index.html:1-65"
+    "what_es": "Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada.",
+    "what_en": "Static page with no build step: Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, News (with the alert map), Data, Methodology and Assistant. Next to each value it links the live source and the archived copy.",
+    "details_es": "Carga primero dashboard.json; su publicationId es la referencia y no muestra archivos de otra publicación. Avisa si la publicación tiene más de 36 h o si worst es error o critical. El Asistente usa reglas fijas, no un modelo de lenguaje. Metodología muestra el diagrama simplificado y, con un botón, el completo (copias de docs/). El mapa de alertas pinta cada departamento con el nivel que dio la institución (severity.py en el pipeline; un aviso sin nivel queda «sin nivel»); el navegador solo calcula si cada aviso está vigente, es próximo o venció según su vigencia (valid). Tiene cuatro versiones (A a D): con Cloudflare, al salir de la página se manda un aviso anónimo a /api/ab/e (contadores por día en D1, sin IP ni cookies; nada con «No rastrear» o Global Privacy Control), y la vista #variantes, fuera del menú, muestra los resultados.",
+    "details_en": "Loads dashboard.json first; its publicationId is the reference and files from another publication are not shown. Warns if the publication is over 36 h old or worst is error or critical. The Assistant uses fixed rules, not a language model. Methodology shows the simplified diagram and, with a button, the full one (copies from docs/). The alert map colours each department with the level its agency gave (severity.py in the pipeline; a warning with no level shows «sin nivel»); the browser only works out whether each warning is current, upcoming or expired from its validity (valid). It has four versions (A to D): with Cloudflare, leaving the page sends one anonymous beacon to /api/ab/e (daily counters in D1, no IP or cookies; nothing with Do Not Track or Global Privacy Control), and the #variantes view, not in the menu, shows the results.",
+    "evidence": "public/assets/js/app.js:1-48, 226-229, 894-1029, 1036, 1059-1068, 1094-1110; public/assets/js/alertmap.js; public/assets/js/ab.js; public/assets/js/assistant.js:1-4; public/index.html; python/enso/severity.py#assess; functions/api/ab/[[path]].js; functions/_lib/ab.js"
    },
    {
     "id": "public",
@@ -447,7 +461,7 @@
     "name_en": "Public",
     "what_es": "Personas, equipos de gestión del riesgo y usuarios de datos abiertos que abren el sitio o descargan los CSV y JSON de data/.",
     "what_en": "People, risk-management teams and open-data users who open the site or download the CSVs and JSON in data/.",
-    "evidence": "public/index.html:1-65; public/assets/js/app.js:465-516"
+    "evidence": "public/index.html; public/assets/js/app.js:640-693"
    },
    {
     "id": "geo-console",
@@ -459,7 +473,7 @@
     "what_en": "A reviewer page with its API on Cloudflare (Pages Function) and a D1 database, where each item's place is confirmed or corrected. Every change is logged with user and time.",
     "details_es": "/api/geo/*: login, corrections, audit y overrides (pública, sin usuarios ni comentarios). Base D1 GEO_DB (nunca borra correcciones) y secreto GEO_USERS con hashes PBKDF2; tools.geo_users crea un admin y revisor01 a revisor10, y el propietario carga el secreto en el panel. Solo funciona con Cloudflare; en GitHub Pages la página existe pero no tiene API.",
     "details_en": "/api/geo/*: login, corrections, audit and overrides (public, with no users or reviewer notes). D1 database GEO_DB (never deletes corrections) and secret GEO_USERS with PBKDF2 hashes; tools.geo_users creates an admin and revisor01 to revisor10, and the owner loads the secret in the dashboard. Works only with Cloudflare; on GitHub Pages the page exists but has no API.",
-    "evidence": "public/admin/index.html:1-60; public/admin/admin.js:1-12, 300-354; functions/api/geo/[[path]].js:1-4; functions/_lib/geo-console.js:1-56, 103-137, 374-435; python/tools/geo_users.py:1-106"
+    "evidence": "public/admin/index.html:30-61; public/admin/admin.js:1-12, 300-324; functions/api/geo/[[path]].js; functions/_lib/geo-console.js:1-56, 103-140, 374-435; python/tools/geo_users.py#build, #main"
    },
    {
     "id": "doc-console",
@@ -471,7 +485,7 @@
     "what_en": "Console page where an administrator uploads the PDF of a document no automatic route brings (DHN asks for a human check). It uses the places console's session and audit log.",
     "details_es": "/api/docs/status y /api/docs/upload. Solo acepta documentos de data/manual-needed.json, PDF que empiezan con %PDF- y terminan con %%EOF, hasta 20 MB y 10 por hora; por omisión solo el rol admin (DOCS_UPLOAD_ROLES). El PDF pasa en flujo a GitHub sin decodificarse (10 ms de CPU del plan gratuito). Secreto DOCS_GITHUB_TOKEN (Contents: Read and write solo en este repositorio).",
     "details_en": "/api/docs/status and /api/docs/upload. It only accepts documents listed in data/manual-needed.json, PDFs that start with %PDF- and end with %%EOF, up to 20 MB and 10 an hour; by default only the admin role (DOCS_UPLOAD_ROLES). The PDF streams to GitHub without being decoded (the free plan's 10 ms of CPU). Secret DOCS_GITHUB_TOKEN (Contents: Read and write on this repository only).",
-    "evidence": "public/admin/documentos.html:1-57; public/admin/documentos.js:1-120; functions/api/docs/[[path]].js:1-4; functions/_lib/doc-uploads.js:1-40, 124-210, 278-330"
+    "evidence": "public/admin/documentos.html; public/admin/documentos.js:59-153; functions/api/docs/[[path]].js; functions/_lib/doc-uploads.js:1-37, 55-140, 297-362"
    },
    {
     "id": "reviewers",
@@ -481,7 +495,7 @@
     "name_en": "Place reviewers",
     "what_es": "Personas autorizadas que en la consola revisan las notas dudosas (p. ej. confianza menor a 0,8) y fijan, confirman o descartan su lugar.",
     "what_en": "Authorized people who review doubtful items in the console (e.g. confidence below 0.8) and set, confirm or reject their place.",
-    "evidence": "python/enso/geo_overrides.py:14-21, 39-40; public/admin/index.html:29-60"
+    "evidence": "python/enso/geo_overrides.py#REVIEW_BELOW, #ACTIONS; public/admin/index.html:30-61"
    },
    {
     "id": "probe-sources",
@@ -495,9 +509,9 @@
     "what_en": "probe-sources.yml measures from Actions which registry URLs answer, with the same classes n8n and Peru use, adds what they measured and rebuilds the registry.",
     "meta_es": "lunes 04:17 Lima",
     "meta_en": "Mondays 04:17 Lima",
-    "details_es": "Lunes 04:17 Lima (cron 17 9 * * 1), a mano o al cambiar el medidor en ramas claude/**. Lee robots.txt antes de medir. Clases: ok, empty, http-403, http-4xx, http-5xx, timeout, connect, dns, tls, challenge, robots; una verificación antirobots se anota y nunca se evade. Las mediciones del flujo de validación de n8n (su CSV, o el JSON que deja n8n.yml los lunes) entran a mano con --import. En main hace commit de registry/; en otras ramas va a bot/registry/<rama>.",
-    "details_en": "Mondays 04:17 Lima (cron 17 9 * * 1), by hand or when the probe changes on claude/** branches. Reads robots.txt before measuring. Classes: ok, empty, http-403, http-4xx, http-5xx, timeout, connect, dns, tls, challenge, robots; an anti-bot check is recorded and never evaded. Measurements from the n8n validation flow (its CSV, or the JSON n8n.yml leaves on Mondays) come in by hand with --import. On main it commits registry/; on other branches it goes to bot/registry/<branch>.",
-    "evidence": ".github/workflows/probe-sources.yml:1-72; python/tools/probe_sources.py:1-191; python/enso/reach.py:1-49; n8n/lib/classify.js:1-2"
+    "details_es": "Lunes 04:17 Lima (cron 17 9 * * 1), a mano o al cambiar el medidor en ramas claude/**. Lee robots.txt antes de medir. Clases: ok, empty, http-403, http-4xx, http-5xx, timeout, connect, dns, tls, challenge, robots; una verificación antirobots se anota y nunca se evade. Las mediciones del flujo «ENSO · Validación de fuentes desde n8n» (su CSV, o el JSON que deja n8n.yml los lunes) entran a mano con --import. En main hace commit de registry/; en otras ramas va a bot/registry/<rama>.",
+    "details_en": "Mondays 04:17 Lima (cron 17 9 * * 1), by hand or when the probe changes on claude/** branches. Reads robots.txt before measuring. Classes: ok, empty, http-403, http-4xx, http-5xx, timeout, connect, dns, tls, challenge, robots; an anti-bot check is recorded and never evaded. Measurements from the «ENSO · Validación de fuentes desde n8n» flow (its CSV, or the JSON n8n.yml leaves on Mondays) come in by hand with --import. On main it commits registry/; on other branches it goes to bot/registry/<branch>.",
+    "evidence": ".github/workflows/probe-sources.yml; python/tools/probe_sources.py#probe, #from_peru_index, #from_n8n_index, #main; python/enso/reach.py#classify, #CHALLENGE_RE; n8n/lib/classify.js:271-288; n8n/build.mjs:187-201"
    },
    {
     "id": "collector-kit",
@@ -511,7 +525,7 @@
     "what_en": "recolector-kit.yml builds a .zip with the code, installers and a backup copy of the registry, test-installs it on Windows, macOS and Linux and publishes it to the recolector-kit release. VERIFY checks the machine.",
     "details_es": "Se publica al fusionar en main cambios del kit, del recolector, de python/enso/, de config/ o de registry/. El commit semanal del registro no lo dispara (lo sube el bot con el token de Actions); no hace falta, porque el recolector lee el registro de GitHub y la copia del kit solo se usa cuando no puede leer el de GitHub (sin token, una respuesta distinta de 200, otro esquema o sin respuesta); avisa si esa copia tiene más de 14 días. El equipo no se actualiza solo: un kit nuevo se instala con ACTUALIZAR. VERIFICAR (collector_check.py) revisa Python, git, token, acceso a las fuentes, la tarea programada y la edad de la última copia en data-peru (aviso a las 36 h); con --probar-tarea dispara la tarea real.",
     "details_en": "Published when changes to the kit, the collector, python/enso/, config/ or registry/ are merged into main. The weekly registry commit does not trigger it (the bot pushes it with the Actions token); it does not need to, because the collector reads the registry from GitHub and the kit copy is used only when it cannot read GitHub's (no token, a response other than 200, another schema or no answer); it warns when that copy is over 14 days old. The machine does not update itself: a new kit is installed with ACTUALIZAR. VERIFICAR (collector_check.py) checks Python, git, the token, access to the sources, the scheduled task and the age of the last copy in data-peru (warning at 36 h); with --probar-tarea it fires the real task.",
-    "evidence": ".github/workflows/recolector-kit.yml:1-249; python/tools/collector_kit.py:1-157; python/tools/collector_check.py:1-30, 200-315, 557-605"
+    "evidence": ".github/workflows/recolector-kit.yml; python/tools/collector_kit.py#kit_files, #fresh_registry, #build; python/tools/collector_check.py#check_internet, #relay_copy_results, #test_scheduled_run"
    },
    {
     "id": "archive-job",
@@ -525,7 +539,7 @@
     "what_en": "After a successful build on main, it adds the new raw responses to data-archive and merges the news history. It rejects any commit that deletes files.",
     "details_es": "Baja el artefacto raw-sources (7 días). No repite fuente + sha12. merge_history.py: una nota por id, límite 90 MiB. 3 intentos de push. Corre en paralelo con el despliegue.",
     "details_en": "Downloads the raw-sources artifact (7 days). Never repeats source + sha12. merge_history.py: one item per id, 90 MiB limit. 3 push attempts. Runs in parallel with the deploy.",
-    "evidence": ".github/workflows/observatory.yml:241-248, 374-459; python/tools/merge_history.py:1-60"
+    "evidence": ".github/workflows/observatory.yml:268-275, 419-504; python/tools/merge_history.py#merge"
    },
    {
     "id": "observatory-workflow",
@@ -539,9 +553,9 @@
     "what_en": "The only workflow that publishes the site: it runs tests, stages the copies, runs the pipeline, deploys and archives. If anything fails before deploy, the previous site stays up.",
     "meta_es": "23:37 Lima (04:37 UTC)",
     "meta_en": "23:37 Lima (04:37 UTC)",
-    "details_es": "23:37 Lima (cron 37 4 * * *, 04:37 UTC), al fusionar en main (salvo .md y docs/), a mano, por enso-refresh y a pedido del vigilante. Una corrida a la vez y una en espera (grupo enso-production-publication; la que está en curso no se cancela). Jobs: build 36 min (pipeline 26), deploy 15, archive, incidents y keepalive, que reactiva 3 flujos programados.",
-    "details_en": "23:37 Lima (cron 37 4 * * *, 04:37 UTC), on merge to main (except .md and docs/), by hand, by enso-refresh and when the watchdog asks. One run at a time and one waiting (group enso-production-publication; the running one is not cancelled). Jobs: build 36 min (pipeline 26), deploy 15, archive, incidents and keepalive, which re-enables 3 scheduled workflows.",
-    "evidence": ".github/workflows/observatory.yml:1-48, 185-208, 262-265, 318-323, 374-381, 461-476"
+    "details_es": "23:37 Lima (cron 37 4 * * *, 04:37 UTC), al fusionar en main (salvo .md y docs/), a mano, por enso-refresh y a pedido del vigilante. Una corrida a la vez y una en espera (grupo enso-production-publication; la que está en curso no se cancela). Jobs: build 36 min (pipeline 26), deploy 15, archive, incidents y keepalive, que reactiva 3 flujos programados. El paso del pipeline recibe los secretos ENSO_LLM_EXTRACT_URL y ENSO_LLM_EXTRACT_TOKEN (opcionales: el extractor de informes de n8n).",
+    "details_en": "23:37 Lima (cron 37 4 * * *, 04:37 UTC), on merge to main (except .md and docs/), by hand, by enso-refresh and when the watchdog asks. One run at a time and one waiting (group enso-production-publication; the running one is not cancelled). Jobs: build 36 min (pipeline 26), deploy 15, archive, incidents and keepalive, which re-enables 3 scheduled workflows. The pipeline step gets the secrets ENSO_LLM_EXTRACT_URL and ENSO_LLM_EXTRACT_TOKEN (optional: the n8n report extractor).",
+    "evidence": ".github/workflows/observatory.yml:17-42, 205-235, 506-521"
    },
    {
     "id": "watchdog",
@@ -557,7 +571,7 @@
     "meta_en": "19:17, 01:17, 07:17 and 13:17 Lima",
     "details_es": "19:17, 01:17, 07:17 y 13:17 Lima (cron 17 */6 * * *). No relanza si hay una corrida en curso o una lanzada a mano o por él en las últimas 6 h. Reactiva observatory, watchdog y probe-sources para que GitHub no los apague tras 60 días sin actividad (el job keepalive del flujo diario hace lo mismo). Con Cloudflare exige la variable SITE_URL.",
     "details_en": "19:17, 01:17, 07:17 and 13:17 Lima (cron 17 */6 * * *). It does not relaunch if a run is in progress or one was dispatched, by hand or by it, in the last 6 h. It re-enables observatory, watchdog and probe-sources so GitHub does not switch them off after 60 idle days (the daily workflow's keepalive job does the same). With Cloudflare it requires the SITE_URL variable.",
-    "evidence": ".github/workflows/watchdog.yml:1-72; .github/workflows/observatory.yml:461-476"
+    "evidence": ".github/workflows/watchdog.yml; .github/workflows/observatory.yml:506-521"
    },
    {
     "id": "dev-tools",
@@ -571,7 +585,7 @@
     "what_en": "Workflows that do not publish: tests (ci.yml, n8n.yml), candidate feed probe, scrape ladder, fixture capture and device screenshots. They leave results on bot/ branches and artifacts.",
     "details_es": "probe-feeds: 170 candidatos. scrape-ladder: 50 candidatos sin feed; prueba robots.txt, GET simple, cabeceras de navegador, Chromium y Firecrawl (si hay clave); consulta robots.txt también en cada redirección y en lo que carga la página (sin pedir imágenes) y se detiene ante cualquier verificación antirobots. device-screens: 16 dispositivos. n8n.yml prueba los flujos en n8n real y corre la validación de fuentes los lunes 08:17 Lima; ese cron no lo reactiva nadie. Ningún paso del pipeline diario los llama.",
     "details_en": "probe-feeds: 170 candidates. scrape-ladder: 50 candidates with no feed; tries robots.txt, a plain GET, browser headers, Chromium and Firecrawl (with a key); it checks robots.txt on every redirect and on what the page loads (requesting no images) and stops at any anti-bot check. device-screens: 16 devices. n8n.yml tests the flows on a real n8n and runs the source validation on Mondays 08:17 Lima; nobody re-enables that cron. No step of the daily pipeline calls them.",
-    "evidence": ".github/workflows/ci.yml:1-51; .github/workflows/n8n.yml:1-118; .github/workflows/probe-feeds.yml:1-56; .github/workflows/scrape-ladder.yml:1-66; .github/workflows/capture-fixtures.yml:1-74; .github/workflows/device-screens.yml:1-68; python/tools/scrape_ladder.py:1-33"
+    "evidence": ".github/workflows/ci.yml; .github/workflows/n8n.yml; .github/workflows/probe-feeds.yml; .github/workflows/scrape-ladder.yml; .github/workflows/capture-fixtures.yml; .github/workflows/device-screens.yml; python/tools/scrape_ladder.py"
    },
    {
     "id": "peru-operator",
@@ -583,7 +597,7 @@
     "name_en": "Peru machine operator",
     "what_es": "Instala el kit con un token de GitHub de grano fino (solo este repositorio), corre VERIFICAR, deja el equipo encendido a la hora de recolección y renueva el token cuando vence.",
     "what_en": "Installs the kit with a fine-grained GitHub token (this repository only), runs VERIFY, keeps the machine on at collection time and renews the token when it expires.",
-    "evidence": "python/tools/peru_collector.py:17-19; python/tools/collector_service.py:609-625; python/tools/collector_check.py:1-30"
+    "evidence": "python/tools/collector_service.py#alert, #TOKEN_WARN_DAYS; python/tools/collector_check.py; collector/LEEME.txt"
    },
    {
     "id": "n8n-colleague",
@@ -595,7 +609,7 @@
     "name_en": "n8n operator (colleague)",
     "what_es": "Importa los 4 flujos de n8n/dist (recolector, vigilante, validación y el extractor opcional de informes) en su n8n de AWS, elige la credencial de GitHub y activa los programados; asignarles un Error workflow es opcional.",
     "what_en": "Imports the 4 n8n/dist flows (collector, watchdog, validation and the optional report extractor) into their AWS n8n, picks the GitHub credential and activates the scheduled ones; assigning an Error workflow is optional.",
-    "evidence": "n8n/README.md:3-21; n8n/build.mjs:1-8, 246-250"
+    "evidence": "n8n/README.md; n8n/build.mjs:1-8, 327-332; docs/n8n.md"
    },
    {
     "id": "github-issues",
@@ -609,7 +623,7 @@
     "what_en": "At the end of each run the incidents job turns each warning, error or critical event in run-report.json into a GitHub issue, one per fingerprint, which closes itself once the problem goes away.",
     "details_es": "tools.sync_issues ignora info y los códigos esperados (archive-channel, carried-forward, probe-found). Avisos de documentos: manual-download-needed y, del boletín del IMARPE, bsobp-unreadable (también en la consola de documentos), bsobp-overdue (12 días sin boletín) y bsobp-unreachable. Al terminar, tools.alert_email manda un correo con lo nuevo, lo repetido y lo resuelto a las direcciones de la variable ALERT_EMAILS (SMTP en secretos). Aparte hay dos issues fijos: «La actualización diaria falló» (build, deploy o archive fallan) y «El sitio publicado está desactualizado» (vigilante).",
     "details_en": "tools.sync_issues ignores info and the expected codes (archive-channel, carried-forward, probe-found). Document alerts: manual-download-needed and, for IMARPE's bulletin, bsobp-unreadable (also in the documents console), bsobp-overdue (12 days without a bulletin) and bsobp-unreachable. At the end, tools.alert_email emails what is new, repeated or resolved to the addresses in the ALERT_EMAILS variable (SMTP in secrets). Separately there are two fixed issues: 'La actualización diaria falló' (build, deploy or archive fail) and 'El sitio publicado está desactualizado' (watchdog).",
-    "evidence": "python/tools/sync_issues.py:1-132; python/tools/alert_email.py; .github/workflows/observatory.yml:318-372; .github/workflows/watchdog.yml:53-72"
+    "evidence": "python/tools/sync_issues.py#IGNORE, #sync; python/tools/alert_email.py; .github/workflows/observatory.yml:345-417; .github/workflows/watchdog.yml:54-74"
    },
    {
     "id": "n8n-watchdog",
@@ -623,9 +637,9 @@
     "what_en": "An n8n flow that reads the site's data/manifest.json every 6 hours. If it does not answer or is over 30 h old, the execution fails and the Error workflow assigned in n8n alerts, even if GitHub is down.",
     "meta_es": "cada 6 h",
     "meta_en": "every 6 h",
-    "details_es": "enso-n8n-vigilante.json. Dirección fija https://pillb.github.io/observatorio-enso-peru/: hay que cambiarla a mano si el sitio pasa a Cloudflare. No relanza nada en GitHub.",
-    "details_en": "enso-n8n-vigilante.json. Fixed address https://pillb.github.io/observatorio-enso-peru/: it must be changed by hand if the site moves to Cloudflare. It relaunches nothing on GitHub.",
-    "evidence": "n8n/nodes/vigilante.js:1-25; n8n/build.mjs:246-271"
+    "details_es": "Flujo «ENSO · Vigilante del sitio publicado» (enso-n8n-vigilante.json). Revisa la dirección de su nodo Configuración: por omisión https://enso-peru.pages.dev/; otra se fija con N8N_SITE_URL al construir o cambiando ese campo tras importarlo. No relanza nada en GitHub.",
+    "details_en": "Flow «ENSO · Vigilante del sitio publicado» (enso-n8n-vigilante.json). It checks the address in its Configuración node: by default https://enso-peru.pages.dev/; another is set with N8N_SITE_URL at build time or by editing that field after import. It relaunches nothing on GitHub.",
+    "evidence": "n8n/nodes/vigilante.js; n8n/build.mjs:248-274; docs/n8n.md:132-145"
    },
    {
     "id": "maintainers",
@@ -637,7 +651,7 @@
     "name_en": "Maintainers and owner",
     "what_es": "Quienes fusionan en main, lanzan flujos a mano, eligen el destino del sitio, crean las cuentas de la consola y revisan los issues y los resultados de las ramas bot/.",
     "what_en": "Those who merge to main, run workflows by hand, choose the site's host, create the console accounts and review the issues and the bot/ branch results.",
-    "evidence": ".github/workflows/observatory.yml:10-14, 20-28; python/tools/geo_users.py:1-15; docs/operaciones.md:47-49"
+    "evidence": ".github/workflows/observatory.yml:10-14, 23-28; .github/workflows/ci.yml:6-10; python/tools/geo_users.py"
    }
   ],
   "edges": [
@@ -651,7 +665,7 @@
     "explain_en": "Every night the machine in Peru fetches the ENFEN portal's API and listing, the communiqué PDFs and the ICEN over https, none of which answer from the US. That way the official communiqué arrives even though the portal does not answer cloud servers.",
     "when_es": "diario 21:00 Lima, reintentos hasta 23:30",
     "when_en": "daily 21:00 Lima, retries until 23:30",
-    "evidence": "registry/sources.json (by_url peru-server); python/tools/peru_collector.py:86-93, 249-269, 527-566"
+    "evidence": "python/tools/peru_collector.py#SOURCES, #plan, #enfen_documents; registry/sources.json"
    },
    {
     "from": "peru-official",
@@ -659,23 +673,23 @@
     "kind": "data",
     "label_es": "réplica DHN e ICEN, directo",
     "label_en": "DHN mirror and ICEN, direct",
-    "explain_es": "Actions pide el ICEN por http y la réplica de la DHN, que responden desde EE. UU. Para el API y el listado del portal usa primero la copia del Perú; si no hay, los pide una vez.",
-    "explain_en": "Actions requests the ICEN over http and the DHN mirror, which answer from the US. For the portal API and listing it uses the Peru copy first; with none, it tries once.",
+    "explain_es": "Actions pide el ICEN por http, el listado de la réplica de la DHN y el repositorio del IMARPE, que responden desde EE. UU. Los PDF de la DHN le devuelven una verificación humana, que se anota y nunca se evade. Para la API y el listado del portal usa primero la copia del Perú; si no hay, los pide una vez.",
+    "explain_en": "Actions requests the ICEN over http, the DHN mirror's listing and IMARPE's repository, which answer from the US. The DHN PDFs return a human check, which is logged and never evaded. For the portal API and listing it uses the Peru copy first; with none, it tries once.",
     "when_es": "diario 23:37 Lima, primeras fuentes",
     "when_en": "daily 23:37 Lima, first in line",
-    "evidence": "python/enso/observatory.py:172-192, 389-475; python/enso/fetch.py:275-302"
+    "evidence": "python/enso/observatory.py#OFFICIAL_FIRST, #_communique_urls, #_get_communique, #_enfen_latest; python/enso/fetch.py#Fetcher.get; python/enso/feeds/imarpe_repo.py#communique_pdf; python/enso/manual.py#reason_from"
    },
    {
     "from": "peru-official",
     "to": "n8n-collector",
     "kind": "data",
-    "label_es": "copia de réplica e ICEN",
-    "label_en": "copy of mirror and ICEN",
-    "explain_es": "n8n baja el ICEN por http y la réplica de la DHN con sus PDF, y deja una segunda copia por si Actions no obtiene una respuesta válida.",
-    "explain_en": "n8n fetches the ICEN over http and the DHN mirror with its PDFs, leaving a second copy in case Actions gets no valid response.",
+    "label_es": "ICEN y listado de la DHN",
+    "label_en": "ICEN and DHN listing",
+    "explain_es": "n8n baja el ICEN por http y el listado de la réplica de la DHN, y deja una segunda copia por si Actions no obtiene una respuesta válida. Los PDF de la DHN le responden con una verificación humana, que se anota y nunca se evade: el PDF llega del Perú, del repositorio del IMARPE, de la consola de documentos o del Internet Archive.",
+    "explain_en": "n8n fetches the ICEN over http and the DHN mirror's listing, leaving a second copy in case Actions gets no valid response. The DHN PDFs answer n8n with a human check, which is logged and never evaded: the PDF comes from Peru, IMARPE's repository, the documents console or the Internet Archive.",
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
-    "evidence": "n8n/nodes/fuentes.js:50-66; n8n/nodes/segunda.js:24-31; n8n/lib/enfen.js:1-6"
+    "evidence": "n8n/nodes/fuentes.js; n8n/nodes/segunda.js; n8n/lib/enfen.js; n8n/lib/classify.js:271-288; python/enso/manual.py"
    },
    {
     "from": "noaa",
@@ -687,7 +701,7 @@
     "explain_en": "Each night Actions downloads NOAA's indices, sea temperature, subsurface heat and ENSO discussion. If a critical product fails with no previous value, nothing is deployed.",
     "when_es": "diario 23:37 Lima",
     "when_en": "daily 23:37 Lima",
-    "evidence": "python/enso/observatory.py:127-179, 1230-1235"
+    "evidence": "python/enso/observatory.py#SOURCES, #acquire, #run"
    },
    {
     "from": "noaa",
@@ -695,11 +709,11 @@
     "kind": "data",
     "label_es": "copia de respaldo",
     "label_en": "backup copy",
-    "explain_es": "n8n baja 14 de esas URL cada noche; si el pedido directo de Actions falla, el pipeline usa esa copia. cpc-godas-d20 no tiene copia de n8n.",
-    "explain_en": "n8n fetches 14 of those URLs nightly; if Actions' direct request fails, the pipeline uses that copy. cpc-godas-d20 has no n8n copy.",
+    "explain_es": "n8n baja cada noche las URL de NOAA que el registro le asigna; si el pedido directo de Actions falla, el pipeline usa esa copia. cpc-godas-d20 nunca: el registro la deja solo en actions y el flujo de validación de n8n solo mide si su listado responde.",
+    "explain_en": "n8n fetches nightly the NOAA URLs the registry assigns it; if Actions' direct request fails, the pipeline uses that copy. Never cpc-godas-d20: the registry keeps it actions-only and n8n's validation flow only measures whether its listing answers.",
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
-    "evidence": "n8n/nodes/fuentes.js:50-66; python/enso/fetch.py:284-302"
+    "evidence": "python/enso/registry.py#_source_entries, #build; n8n/nodes/fuentes.js; n8n/build.mjs:187-201; python/enso/fetch.py#Fetcher.get"
    },
    {
     "from": "hazard-alerts",
@@ -711,7 +725,7 @@
     "explain_en": "Along with the news, Actions reads the INDECI, SENAMHI, DHN, IGP, USGS, PTWC and NASA FIRMS warnings, each in its own format (RSS, JSON, HTML, CSV or text).",
     "when_es": "diario 23:37 Lima",
     "when_en": "daily 23:37 Lima",
-    "evidence": "python/enso/news.py:399-448, 817-841"
+    "evidence": "python/enso/news.py#FEEDS, #collect; python/enso/hazardparse.py"
    },
    {
     "from": "hazard-alerts",
@@ -719,11 +733,11 @@
     "kind": "data",
     "label_es": "copia de respaldo",
     "label_en": "backup copy",
-    "explain_es": "n8n guarda una copia de las 14 fuentes de alertas por si Actions no las alcanza esa noche.",
-    "explain_en": "n8n keeps a copy of the 14 alert sources in case Actions cannot reach them that night.",
+    "explain_es": "n8n guarda una copia de las fuentes de alertas que el registro le asigna, por si Actions no las alcanza esa noche.",
+    "explain_en": "n8n keeps a copy of the alert sources the registry assigns it, in case Actions cannot reach them that night.",
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
-    "evidence": "n8n/nodes/fuentes.js:50-66; registry/sources.json"
+    "evidence": "n8n/nodes/fuentes.js; python/enso/registry.py#channels_for"
    },
    {
     "from": "peru-archive-pages",
@@ -731,23 +745,23 @@
     "kind": "data",
     "label_es": "solo archivo, desde el Perú",
     "label_en": "archive only, from Peru",
-    "explain_es": "Cada noche el recolector baja las 13 páginas de su lista fija para guardar el original. 6 (4 web del SENAMHI y 2 de la ANA) no responden desde EE. UU.",
-    "explain_en": "The collector downloads these 13 fixed-list pages nightly to keep the original. 6 of them (4 SENAMHI web pages, 2 ANA) do not answer from the US.",
+    "explain_es": "Cada noche el recolector baja las 13 páginas de su lista fija para guardar el original. Las que no responden desde EE. UU. (peru-server en el registro) solo llegan por aquí.",
+    "explain_en": "The collector downloads these 13 fixed-list pages nightly to keep the original. Those that do not answer from the US (peru-server in the registry) only arrive this way.",
     "when_es": "diario 21:00 Lima",
     "when_en": "daily 21:00 Lima",
-    "evidence": "python/tools/peru_collector.py:94-118, 249-256; registry/sources.json"
+    "evidence": "python/tools/peru_collector.py#SOURCES, #plan; python/enso/registry.py#channels_for"
    },
    {
     "from": "peru-archive-pages",
     "to": "n8n-collector",
     "kind": "data",
-    "label_es": "las 7 del canal n8n",
-    "label_en": "the 7 on n8n",
-    "explain_es": "IMARPE, CENEPRED, el observatorio del SENAMHI e IDESEP llevan el canal n8n por regla (abiertas o sin medir), así que n8n también las baja. La corrida diaria no las pide porque no tienen lector.",
-    "explain_en": "IMARPE, CENEPRED, the SENAMHI observatory and IDESEP carry the n8n channel by rule (open or unmeasured), so n8n downloads them too. The daily run does not request them since they have no parser.",
+    "label_es": "las del canal n8n",
+    "label_en": "those on n8n",
+    "explain_es": "Las que el registro no marca geobloqueadas (abiertas o sin medir) llevan el canal n8n por regla, así que n8n también las baja. La corrida diaria no las pide: de estas páginas solo la tabla de avisos del SENAMHI tiene lector, y se lee de la copia del Perú.",
+    "explain_en": "Those the registry does not mark geoblocked (open or unmeasured) carry the n8n channel by rule, so n8n downloads them too. The daily run does not request them: of these pages only SENAMHI's warning table has a parser, and it is read from the Peru copy.",
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
-    "evidence": "python/enso/registry.py:160-180, 264-274; n8n/nodes/fuentes.js:56-60"
+    "evidence": "python/enso/registry.py#_collector_entries, #channels_for; n8n/nodes/fuentes.js; python/enso/senamhi_avisos.py#load"
    },
    {
     "from": "news-feeds",
@@ -755,23 +769,23 @@
     "kind": "data",
     "label_es": "116 feeds de noticias",
     "label_en": "116 news feeds",
-    "explain_es": "Actions lee cada noche los feeds del Estado, medios nacionales y regionales, radios e internacionales, uno tras otro por servidor por cortesía. Noticias ONU y Sin Rodeos se piden como lector de feeds.",
-    "explain_en": "Each night Actions reads the government, national, regional, radio and international feeds, one after another per server as a courtesy. UN News and Sin Rodeos are requested as a feed reader.",
+    "explain_es": "Actions lee cada noche los feeds del Estado, medios nacionales y regionales, radios e internacionales, uno tras otro por servidor por cortesía. Los que su robots.txt prohíbe se piden como lector de feeds.",
+    "explain_en": "Each night Actions reads the government, national, regional, radio and international feeds, one after another per server as a courtesy. Those whose robots.txt forbids them are requested as a feed reader.",
     "when_es": "diario 23:37 Lima, tras las fuentes oficiales",
     "when_en": "daily 23:37 Lima, after the official sources",
-    "evidence": "python/enso/news.py:82-396, 449-459, 898-950; python/enso/observatory.py:1359-1372"
+    "evidence": "python/enso/news.py#FEEDS, #collect; python/enso/observatory.py#acquire_news; python/enso/registry.py#reader_urls"
    },
    {
     "from": "news-feeds",
     "to": "n8n-collector",
     "kind": "data",
-    "label_es": "copia de respaldo (114)",
-    "label_en": "backup copy (114)",
-    "explain_es": "n8n baja los mismos feeds menos los 2 de lector de feeds; si uno falla desde Actions, el pipeline usa la copia más reciente.",
-    "explain_en": "n8n fetches the same feeds except the 2 reader ones; if one fails from Actions, the pipeline uses the newest copy.",
+    "label_es": "copia de respaldo",
+    "label_en": "backup copy",
+    "explain_es": "n8n baja los mismos feeds menos los de lector de feeds; si uno falla desde Actions, el pipeline usa la copia más reciente.",
+    "explain_en": "n8n fetches the same feeds except the reader ones; if one fails from Actions, the pipeline uses the newest copy.",
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
-    "evidence": "n8n/nodes/fuentes.js:56-60; python/enso/fetch.py:134-150"
+    "evidence": "n8n/nodes/fuentes.js; python/enso/fetch.py#Relay.get"
    },
    {
     "from": "news-google",
@@ -783,7 +797,7 @@
     "explain_en": "Because their robots.txt forbids these 38 feeds, Actions requests them like an RSS reader: main only, no retry and at most once every 20 h. Between reads the last one is repeated.",
     "when_es": "como mucho cada 20 h; solo corridas de main",
     "when_en": "at most every 20 h; main runs only",
-    "evidence": "python/enso/registry.py:35-38, 64-67; python/enso/observatory.py:1362, 1384-1460; .github/workflows/observatory.yml:176-197"
+    "evidence": "python/enso/registry.py#READER_MIN_HOURS, #READER_CHANNELS; python/enso/observatory.py#acquire_news; .github/workflows/observatory.yml:191-203"
    },
    {
     "from": "robots-txt",
@@ -795,7 +809,7 @@
     "explain_en": "Each week the probe reads every server's robots.txt before measuring. A forbidden path becomes robots-disallowed and loses its channels, except reader feeds.",
     "when_es": "lunes 04:17 Lima",
     "when_en": "Mondays 04:17 Lima",
-    "evidence": "python/tools/probe_sources.py:41-54; python/enso/reach.py:52-119; python/enso/registry.py:249-268"
+    "evidence": "python/tools/probe_sources.py#probe; python/enso/reach.py#RobotRules; python/enso/registry.py#geoblock, #channels_for"
    },
    {
     "from": "robots-txt",
@@ -807,7 +821,7 @@
     "explain_en": "Each night the collector reads robots.txt before requesting. It skips forbidden paths, and if robots.txt does not answer it asks nothing of that server.",
     "when_es": "diario 21:00 Lima",
     "when_en": "daily 21:00 Lima",
-    "evidence": "python/tools/peru_collector.py:440-490; python/enso/reach.py:122-167"
+    "evidence": "python/tools/peru_collector.py#fetch; python/enso/reach.py#Robots"
    },
    {
     "from": "probe-sources",
@@ -819,7 +833,7 @@
     "explain_en": "The probe writes reachability.json with what Actions, Peru and n8n measured, then runs build_registry right away so the channels follow the new measurements.",
     "when_es": "lunes 04:17 Lima (09:17 UTC)",
     "when_en": "Mondays 04:17 Lima (09:17 UTC)",
-    "evidence": ".github/workflows/probe-sources.yml:50-57; python/tools/probe_sources.py:148-186"
+    "evidence": ".github/workflows/probe-sources.yml:50-57; python/tools/probe_sources.py#main"
    },
    {
     "from": "registry-builder",
@@ -831,7 +845,7 @@
     "explain_en": "Writes sources.json with status and channels per URL. On main the probe commits registry/; on other branches the result goes to bot/registry/<branch>.",
     "when_es": "lunes 04:17 Lima",
     "when_en": "Mondays 04:17 Lima",
-    "evidence": "python/tools/build_registry.py:20-45; .github/workflows/probe-sources.yml:58-72"
+    "evidence": "python/tools/build_registry.py#main; .github/workflows/probe-sources.yml:58-72"
    },
    {
     "from": "data-peru-branch",
@@ -839,11 +853,11 @@
     "kind": "data",
     "label_es": "lo medido desde el Perú",
     "label_en": "what Peru measured",
-    "explain_es": "El sondeo lee el index.json del Perú: el resultado de cada URL allá y sus mediciones extra. Así el registro confirma un geobloqueo o una caída; hoy no hay mediciones del Perú.",
-    "explain_en": "The probe reads Peru's index.json: each URL's result there plus extra measurements. So the registry can confirm a geoblock or an outage; there are no Peru measurements yet.",
+    "explain_es": "El sondeo lee el index.json del Perú: el resultado de cada URL allá y sus mediciones extra. Así el registro puede confirmar un geobloqueo o una caída.",
+    "explain_en": "The probe reads Peru's index.json: each URL's result there plus extra measurements. So the registry can confirm a geoblock or an outage.",
     "when_es": "lunes 04:17 Lima",
     "when_en": "Mondays 04:17 Lima",
-    "evidence": "python/tools/probe_sources.py:76-106; .github/workflows/probe-sources.yml:38-43; registry/reachability.json"
+    "evidence": "python/tools/probe_sources.py#from_peru_index; .github/workflows/probe-sources.yml:38-43"
    },
    {
     "from": "data-n8n-branch",
@@ -855,7 +869,7 @@
     "explain_en": "It also adds n8n's last attempt on AWS as a measurement for the n8n network. A carried copy counts as its last failure, not as today's measurement.",
     "when_es": "lunes 04:17 Lima",
     "when_en": "Mondays 04:17 Lima",
-    "evidence": "python/tools/probe_sources.py:109-133; .github/workflows/probe-sources.yml:44-49"
+    "evidence": "python/tools/probe_sources.py#from_n8n_index; .github/workflows/probe-sources.yml:44-49"
    },
    {
     "from": "registry",
@@ -863,23 +877,23 @@
     "kind": "control",
     "label_es": "plan de canales por URL",
     "label_en": "per-URL channel plan",
-    "explain_es": "En cada corrida el pipeline lee quién pide cada URL. Lo que el registro no da a Actions se lee de las copias (sin copia, se pide directo una vez), lo prohibido no se pide y los 40 reader se piden como mucho cada 20 h, solo en main.",
-    "explain_en": "Each run the pipeline reads who fetches each URL. What the registry does not give to Actions is read from the copies (with no copy, it is requested directly once), forbidden URLs are not requested and the 40 reader feeds are requested at most every 20 h, only on main.",
+    "explain_es": "En cada corrida el pipeline lee quién pide cada URL. Lo que el registro no da a Actions se lee de las copias (sin copia, se pide directo una vez), lo prohibido no se pide y los feeds reader se piden como mucho cada 20 h, solo en main.",
+    "explain_en": "Each run the pipeline reads who fetches each URL. What the registry does not give to Actions is read from the copies (with no copy, it is requested directly once), forbidden URLs are not requested and reader feeds are requested at most every 20 h, only on main.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
-    "evidence": "python/enso/registry.py:309-340; python/enso/observatory.py:1790-1791; python/enso/fetch.py:279-290"
+    "evidence": "python/enso/registry.py#url_channels, #reader_urls; python/enso/observatory.py#main; python/enso/fetch.py#Fetcher.get"
    },
    {
     "from": "registry",
     "to": "n8n-collector",
     "kind": "control",
-    "label_es": "152 URL para n8n",
-    "label_en": "152 URLs for n8n",
+    "label_es": "URL del canal n8n",
+    "label_en": "URLs on the n8n channel",
     "explain_es": "Al empezar, n8n lee el registro de main en GitHub (o la copia incluida en el flujo) y pide solo las URL asignadas a n8n.",
     "explain_en": "At start n8n reads the registry from main on GitHub (or the copy built into the flow) and requests only the URLs assigned to n8n.",
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
-    "evidence": "n8n/nodes/fuentes.js:1-66; n8n/build.mjs:209-224"
+    "evidence": "n8n/nodes/fuentes.js; n8n/build.mjs:203-246"
    },
    {
     "from": "registry",
@@ -891,7 +905,7 @@
     "explain_en": "The collector reads the registry from GitHub with its token (or the kit copy), adds the peru-server URLs and their PDF-follow rules to its fixed list, and probes up to 60 unknown, suspected-geoblock or down URLs this run did not request.",
     "when_es": "diario 21:00 Lima",
     "when_en": "daily 21:00 Lima",
-    "evidence": "python/tools/peru_collector.py:162-228, 249-269, 304-321"
+    "evidence": "python/tools/peru_collector.py#load_registry, #plan, #probe_targets, #MAX_PROBES"
    },
    {
     "from": "dev-tools",
@@ -903,7 +917,7 @@
     "explain_en": "A person reviews the probe reports and adds the working feeds and parsers to the code; from there they enter the registry. That is how the 2026-10-21 catalogue was built.",
     "when_es": "a mano",
     "when_en": "by hand",
-    "evidence": "python/enso/news.py:75-81, 399-400; python/enso/registry.py:102-180; .github/workflows/scrape-ladder.yml:49-59"
+    "evidence": "python/enso/news.py#FEEDS; python/enso/registry.py#_feed_entries, #_source_entries; .github/workflows/scrape-ladder.yml:49-66"
    },
    {
     "from": "peru-collector",
@@ -915,7 +929,7 @@
     "explain_en": "When done it pushes index.json, the files, heartbeat.json and its measurements to data-peru. If nothing answered, it pushes only the heartbeat and leaves the last good copy untouched.",
     "when_es": "21:00 a 23:30 Lima",
     "when_en": "21:00 to 23:30 Lima",
-    "evidence": "python/tools/peru_collector.py:678-724, 816-909"
+    "evidence": "python/tools/peru_collector.py#collect, #heartbeat, #push_heartbeat, #push, #run_once"
    },
    {
     "from": "data-peru-branch",
@@ -927,7 +941,7 @@
     "explain_en": "Before pushing, the collector reads its previous copy and keeps for up to 72 h the URLs that failed tonight, flagged carried.",
     "when_es": "diario 21:00 Lima",
     "when_en": "daily 21:00 Lima",
-    "evidence": "python/tools/peru_collector.py:70-72, 737-780, 847-854"
+    "evidence": "python/tools/peru_collector.py#CARRY_HOURS, #carry_forward, #push"
    },
    {
     "from": "peru-collector",
@@ -939,7 +953,7 @@
     "explain_en": "After pushing it sends repository_dispatch enso-refresh so the site updates without waiting for 23:37. If a run is in progress, it queues. It is on by default in the kit.",
     "when_es": "tras subir una copia (no si solo sube el latido)",
     "when_en": "after pushing a copy (not a heartbeat only)",
-    "evidence": "python/tools/peru_collector.py:874-881; python/tools/collector_service.py:548-553, 668; .github/workflows/observatory.yml:29-37"
+    "evidence": "python/tools/peru_collector.py#dispatch; python/tools/collector_service.py#collect_and_push; .github/workflows/observatory.yml:29-37"
    },
    {
     "from": "n8n-collector",
@@ -951,7 +965,7 @@
     "explain_en": "n8n uploads new files via the GitHub API, builds a parentless commit and moves data-n8n. index.json and heartbeat.json always go, even if nothing answered.",
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
-    "evidence": "n8n/build.mjs:224-242; n8n/nodes/commit.js:1-5; n8n/nodes/rama.js:1-10"
+    "evidence": "n8n/build.mjs:203-246; n8n/nodes/commit.js; n8n/nodes/rama.js"
    },
    {
     "from": "data-n8n-branch",
@@ -963,7 +977,7 @@
     "explain_en": "Its 'Leer copia anterior' node reads data-n8n's index.json and keeps for up to 72 h the URLs that failed tonight, flagged carried.",
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
-    "evidence": "n8n/build.mjs:218-239; n8n/lib/relay.js:68-95"
+    "evidence": "n8n/build.mjs:203-246; n8n/lib/relay.js:68-126"
    },
    {
     "from": "collector-kit",
@@ -975,7 +989,7 @@
     "explain_en": "The person downloads recolector-peru.zip from the recolector-kit release and runs VERIFICAR (the report is saved in logs/ to send in). The machine does not update itself: a new kit is installed with ACTUALIZAR.",
     "when_es": "al fusionar en main cambios del kit, python/enso/ o el registro (el commit semanal del bot no cuenta)",
     "when_en": "when changes to the kit, python/enso/ or the registry are merged to main (the bot's weekly commit does not count)",
-    "evidence": ".github/workflows/recolector-kit.yml:222-249; python/tools/collector_check.py:1-30, 631-644"
+    "evidence": ".github/workflows/recolector-kit.yml:222-249; python/tools/collector_check.py#save_report, #main"
    },
    {
     "from": "peru-operator",
@@ -985,7 +999,7 @@
     "label_en": "installs, token, task",
     "explain_es": "Al ejecutar INSTALAR con el token queda registrada la tarea programada de las 21:00. El recolector le avisa en el escritorio tras 2 fallas o si el token vence en menos de 21 días.",
     "explain_en": "Running INSTALAR with the token registers the 21:00 scheduled task. The collector shows a desktop notice after 2 failures or if the token expires in under 21 days.",
-    "evidence": "python/tools/collector_schedule.py:381-401; collector/instalar.sh:12; python/tools/collector_service.py:59-62, 609-625"
+    "evidence": "python/tools/collector_schedule.py#install, #main; collector/instalar.sh; python/tools/collector_service.py#NOTIFY_AFTER, #TOKEN_WARN_DAYS, #alert"
    },
    {
     "from": "maintainers",
@@ -995,7 +1009,7 @@
     "label_en": "token and kit",
     "explain_es": "Le dan un token de GitHub de grano fino (solo este repositorio) y el kit, y uno nuevo cuando el recolector avisa que vence.",
     "explain_en": "They hand over a fine-grained GitHub token (this repository only) and the kit, and a new one when the collector warns it is expiring.",
-    "evidence": "collector/LEEME.txt:8-10; python/tools/collector_service.py:622"
+    "evidence": "collector/LEEME.txt; python/tools/collector_service.py#alert"
    },
    {
     "from": "n8n-colleague",
@@ -1005,7 +1019,7 @@
     "label_en": "imports and activates",
     "explain_es": "La persona importa n8n/dist/enso-n8n-recolector.json en su n8n, elige la credencial de GitHub y lo activa. Los nodos se regeneran con build.mjs, no se editan en n8n.",
     "explain_en": "The person imports n8n/dist/enso-n8n-recolector.json into their n8n, picks the GitHub credential and activates it. Nodes are regenerated with build.mjs, not edited in n8n.",
-    "evidence": "n8n/README.md:3-21; n8n/build.mjs:1-8"
+    "evidence": "n8n/README.md; n8n/build.mjs:1-8, 327-332"
    },
    {
     "from": "maintainers",
@@ -1015,7 +1029,7 @@
     "label_en": "GitHub token",
     "explain_es": "Le dan un token de grano fino (solo este repositorio, Contents de lectura y escritura, 1 año) para la credencial de n8n. n8n no avisa antes de que venza: al vencer, la copia deja de subir y sale relay-n8n-stale.",
     "explain_en": "They hand over a fine-grained token (this repository only, Contents read and write, 1 year) for the n8n credential. n8n gives no warning before it expires: once it does, the copy stops uploading and relay-n8n-stale appears.",
-    "evidence": "docs/n8n.md:73-86, 175; python/enso/observatory.py:1747"
+    "evidence": "docs/n8n.md:74-86, 128; python/enso/observatory.py#load_n8n_relay"
    },
    {
     "from": "observatory-workflow",
@@ -1023,11 +1037,11 @@
     "kind": "trigger",
     "label_es": "lanza el pipeline",
     "label_en": "starts the pipeline",
-    "explain_es": "El paso «Fetch, validate and build» corre python -m enso.observatory con las copias del Perú y de n8n, el histórico y el estado reader ya bajados, con 26 min de límite.",
-    "explain_en": "The «Fetch, validate and build» step runs python -m enso.observatory with the Peru and n8n copies, the history and the reader state already fetched, with a 26-minute limit.",
+    "explain_es": "El paso «Fetch, validate and build» corre python -m enso.observatory con las copias del Perú, de n8n y de la consola de documentos, el histórico y el estado reader ya bajados, con 26 min de límite.",
+    "explain_en": "The «Fetch, validate and build» step runs python -m enso.observatory with the Peru, n8n and documents-console copies, the history and the reader state already fetched, with a 26-minute limit.",
     "when_es": "23:37 Lima (04:37 UTC); push a main; manual; enso-refresh; vigilante",
     "when_en": "23:37 Lima (04:37 UTC); merge to main; by hand; enso-refresh; watchdog",
-    "evidence": ".github/workflows/observatory.yml:17-30, 102-208"
+    "evidence": ".github/workflows/observatory.yml:17-30, 98-235"
    },
    {
     "from": "data-peru-branch",
@@ -1039,7 +1053,7 @@
     "explain_en": "If Actions gets no valid response, or the URL is Peru-only, it uses the data-peru copy: up to 7 days old, status 200 and a verified sha256.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
-    "evidence": ".github/workflows/observatory.yml:102-116; python/enso/fetch.py:96-150, 275-302"
+    "evidence": ".github/workflows/observatory.yml:98-116; python/enso/fetch.py#Relay, #Fetcher.get; python/enso/observatory.py#load_relay"
    },
    {
     "from": "data-n8n-branch",
@@ -1051,7 +1065,7 @@
     "explain_en": "The same with n8n copies, valid up to 72 h. If Peru and n8n both have a copy of the same URL, the newest wins.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
-    "evidence": ".github/workflows/observatory.yml:120-134; python/enso/observatory.py:1243, 1722-1740; python/enso/fetch.py:134-150"
+    "evidence": ".github/workflows/observatory.yml:118-134; python/enso/observatory.py#RELAY_STALE_HOURS, #load_n8n_relay; python/enso/fetch.py#Relay.get, #Fetcher._from_relays"
    },
    {
     "from": "internet-archive",
@@ -1063,7 +1077,7 @@
     "explain_en": "If the URL, the mirror and the copies fail, the latest Wayback copy is used, with its date. For ENFEN (listing and PDF) a fresh one is requested if there is none or the existing one is over a day old.",
     "when_es": "solo si falla todo lo anterior, dentro de los 8 min oficiales",
     "when_en": "only if everything before failed, within the 8 official minutes",
-    "evidence": "python/enso/fetch.py:303-383; python/enso/observatory.py:185, 1168"
+    "evidence": "python/enso/fetch.py#Fetcher.get, #Fetcher._from_archive, #archive_prefix; python/enso/observatory.py#archived_copy, #_get_communique"
    },
    {
     "from": "fetch",
@@ -1073,7 +1087,7 @@
     "label_en": "response with provenance",
     "explain_es": "Cada respuesta llega con cuerpo, canal, URL, fecha de copia, sha256 e intentos; si todo falló, llega el error con los intentos.",
     "explain_en": "Each response arrives with body, channel, URL, copy date, sha256 and attempts; if everything failed, the error arrives with the attempts.",
-    "evidence": "python/enso/fetch.py:55-85; python/enso/observatory.py:299-326"
+    "evidence": "python/enso/fetch.py#Response, #FetchError; python/enso/observatory.py#acquire"
    },
    {
     "from": "previous-publication",
@@ -1085,7 +1099,7 @@
     "explain_en": "The previous publication's sources/<id>.json is read to compare the format fingerprint. If the source fails, that value is reused with its real date, flagged carried.",
     "when_es": "cada corrida",
     "when_en": "every run",
-    "evidence": "python/enso/observatory.py:299-357"
+    "evidence": "python/enso/observatory.py#PreviousPublication, #acquire"
    },
    {
     "from": "official-parse",
@@ -1095,7 +1109,7 @@
     "label_en": "data and communiqué",
     "explain_es": "Los datos de las 17 fuentes, frescos o arrastrados, y el último comunicado del ENFEN pasan a armar las series, el semanal y los estados oficiales.",
     "explain_en": "The data of the 17 sources, fresh or carried, and the latest ENFEN communiqué go on to build the series, the weekly data and the official statuses.",
-    "evidence": "python/enso/observatory.py:781-835, 1176-1195"
+    "evidence": "python/enso/observatory.py#Builder.official, #run"
    },
    {
     "from": "reference-data",
@@ -1105,7 +1119,7 @@
     "label_en": "GRD thresholds",
     "explain_es": "Cada indicador recibe su color GRD según expert-grd-image-v1.yaml. Un valor entre intervalos queda «sin clasificación», nunca normal. Las categorías ICEN están fijas en signals.py.",
     "explain_en": "Each indicator gets its GRD colour from expert-grd-image-v1.yaml. A value between intervals is 'unclassified', never normal. ICEN categories are fixed in signals.py.",
-    "evidence": "python/enso/signals.py:19-33, 78-87, 128-156; config/threshold-policies/expert-grd-image-v1.yaml:1-35"
+    "evidence": "python/enso/signals.py#load_policy, #grd_signals, #ICEN_TABLE, #icen_category; config/threshold-policies/expert-grd-image-v1.yaml:1-35"
    },
    {
     "from": "builder",
@@ -1115,7 +1129,7 @@
     "label_en": "series, statuses, GRD signal",
     "explain_es": "Las series, el semanal, los estados de ENFEN y NOAA, los eventos ICEN y la señal GRD van a series.json, weekly.json, los CSV y dashboard.json.",
     "explain_en": "The series, weekly data, ENFEN and NOAA statuses, ICEN events and the GRD signal go into series.json, weekly.json, the CSVs and dashboard.json.",
-    "evidence": "python/enso/observatory.py:950-1082, 1235"
+    "evidence": "python/enso/observatory.py#write_publication, #run"
    },
    {
     "from": "fetch",
@@ -1127,7 +1141,7 @@
     "explain_en": "Feeds are downloaded with two dedicated clients (normal, and single-try for reader feeds) that share the Peru and n8n copies but never use the Internet Archive.",
     "when_es": "diario 23:37 Lima, tras las fuentes oficiales",
     "when_en": "daily 23:37 Lima, after the official sources",
-    "evidence": "python/enso/observatory.py:1359-1372"
+    "evidence": "python/enso/observatory.py#acquire_news"
    },
    {
     "from": "reader-state-cache",
@@ -1139,7 +1153,7 @@
     "explain_en": "At start it restores when each reader feed was last requested and its unpublished items. Without the cache they are not requested, except on the first publication. Each request is noted before it is made and the state is saved at the end even if the run fails.",
     "when_es": "solo corridas de main",
     "when_en": "main runs only",
-    "evidence": ".github/workflows/observatory.yml:176-183, 210-216; python/enso/observatory.py:1266-1285, 1406-1460"
+    "evidence": ".github/workflows/observatory.yml:191-203, 237-243; python/enso/observatory.py#read_reader_state, #write_reader_state, #acquire_news"
    },
    {
     "from": "previous-publication",
@@ -1149,7 +1163,7 @@
     "label_en": "previous feed status",
     "explain_es": "Se lee news/feeds.json de la publicación anterior (3 intentos): junto con la caché da la hora del último pedido de cada feed reader, para no repetirlo antes de 20 h.",
     "explain_en": "The previous publication's news/feeds.json is read (3 tries): together with the cache it gives each reader feed's last request time, so none is repeated within 20 h.",
-    "evidence": "python/enso/observatory.py:1393-1397, 1450-1458"
+    "evidence": "python/enso/observatory.py#acquire_news"
    },
    {
     "from": "news-collect",
@@ -1159,7 +1173,7 @@
     "label_en": "new placed items",
     "explain_es": "Las notas relevantes de hoy y las de feeds reader que aún no se publicaron, con sus peligros y su lugar, se agregan al final del histórico si su id es nuevo.",
     "explain_en": "Today's relevant items and still-unpublished reader-feed items, with their hazards and place, are appended to the history if their id is new.",
-    "evidence": "python/enso/news.py:852-893; python/enso/observatory.py:1575-1595"
+    "evidence": "python/enso/news.py#new_lines; python/enso/observatory.py#acquire_news"
    },
    {
     "from": "previous-publication",
@@ -1169,7 +1183,7 @@
     "label_en": "previous history",
     "explain_es": "Se lee news/items.jsonl (hasta 3 intentos ante errores del servidor). Si llega, se completa con la copia de data-archive; si no, se rehace con ella o, sin copia, se marca restarted.",
     "explain_en": "news/items.jsonl is read (up to 3 tries on server errors). If it arrives, it is completed from the data-archive copy; if not, it is rebuilt from that copy or, without one, flagged restarted.",
-    "evidence": "python/enso/observatory.py:1394-1400, 1520-1575"
+    "evidence": "python/enso/observatory.py#acquire_news"
    },
    {
     "from": "data-archive-branch",
@@ -1181,7 +1195,7 @@
     "explain_en": "Before the pipeline, sources/news/items.jsonl.gz is downloaded via the GitHub API. It is used to add missing items or rebuild the history if the site did not serve it.",
     "when_es": "al inicio de cada corrida",
     "when_en": "at the start of every run",
-    "evidence": ".github/workflows/observatory.yml:143-169; python/enso/observatory.py:1295-1327"
+    "evidence": ".github/workflows/observatory.yml:156-189; python/enso/observatory.py#read_history_backup"
    },
    {
     "from": "news-history",
@@ -1191,7 +1205,7 @@
     "label_en": "the whole history",
     "explain_es": "El histórico entero, viejo y nuevo, se vuelve a ubicar y a corregir en bloque; el texto JSONL guardado no cambia.",
     "explain_en": "The whole history, old and new, is re-placed and corrected in one go; the stored JSONL text does not change.",
-    "evidence": "python/enso/observatory.py:1595-1606"
+    "evidence": "python/enso/observatory.py#acquire_news"
    },
    {
     "from": "reference-data",
@@ -1201,7 +1215,7 @@
     "label_en": "UBIGEO and boundaries",
     "explain_es": "Con los nombres del INEI se reconoce un lugar en el texto, y con los límites del IGN se sabe en qué distrito, provincia o departamento cae una coordenada.",
     "explain_en": "INEI names let a place be recognised in the text, and IGN boundaries tell which district, province or department a coordinate falls in.",
-    "evidence": "python/enso/geo.py:78, 829-898; python/enso/limites.py:26, 157-165; python/enso/geopoly.py:1-25"
+    "evidence": "python/enso/geo.py#gazetteer, #locate_item; python/enso/limites.py#locate; python/enso/geopoly.py"
    },
    {
     "from": "geo-console",
@@ -1213,7 +1227,7 @@
     "explain_en": "With Cloudflare, the pipeline requests GET /api/geo/overrides (20 s timeout) and applies each item's latest correction. With GitHub Pages there is no console and this step does not happen.",
     "when_es": "cada corrida, solo con DEPLOY_TARGET=cloudflare",
     "when_en": "every run, only with DEPLOY_TARGET=cloudflare",
-    "evidence": "functions/_lib/geo-console.js:375-397; python/enso/geo_overrides.py:140-151; .github/workflows/observatory.yml:78-89"
+    "evidence": "functions/_lib/geo-console.js:374-397; python/enso/geo_overrides.py#fetch_overrides; .github/workflows/observatory.yml:66-92"
    },
    {
     "from": "previous-publication",
@@ -1223,7 +1237,7 @@
     "label_en": "previous corrections",
     "explain_es": "Si la consola no está o no responde, se usan las de geo/overrides.json de la publicación anterior; si tampoco se lee, no se aplica ninguna (siguen guardadas en D1).",
     "explain_en": "If the console is absent or does not answer, the previous publication's geo/overrides.json is used; if that cannot be read either, none is applied (they stay stored in D1).",
-    "evidence": "python/enso/geo_overrides.py:148-155"
+    "evidence": "python/enso/geo_overrides.py#fetch_overrides"
    },
    {
     "from": "geo-place",
@@ -1233,7 +1247,7 @@
     "label_en": "items, clusters, alerts",
     "explain_es": "Pasan el histórico tal como se guardó y, con los lugares corregidos, items.csv, los grupos de 14 días, los avisos de 7 días para feed.json y los archivos geo/ para la consola.",
     "explain_en": "The history goes on as stored and, with corrected places, items.csv, the 14-day clusters, the 7-day alerts for feed.json and the geo/ files for the console.",
-    "evidence": "python/enso/observatory.py:1227-1229, 1640-1657; python/enso/sourcefeed.py:57-89"
+    "evidence": "python/enso/observatory.py#run, #acquire_news; python/enso/sourcefeed.py#alerts"
    },
    {
     "from": "previous-publication",
@@ -1243,7 +1257,7 @@
     "label_en": "previous copies and news",
     "explain_es": "Si una fuente no respondió, se vuelve a publicar la copia archivada que tenía la publicación anterior. Si la lectura de noticias falló, se reusan sus news/ y geo/ con carriedFrom.",
     "explain_en": "If a source did not answer, the archived copy the previous publication had is republished. If news reading failed, its news/ and geo/ are reused with carriedFrom.",
-    "evidence": "python/enso/archive.py:102-142; python/enso/observatory.py:915-922, 997-1035"
+    "evidence": "python/enso/archive.py#write_sources, #carry; python/enso/observatory.py#write_publication"
    },
    {
     "from": "official-parse",
@@ -1253,7 +1267,7 @@
     "label_en": "failures, carries, format",
     "explain_es": "Se anotan unreachable (error si la fuente es crítica), format-drift, format-changed, carried-forward y communique-unread, outlook-unread (la perspectiva del comunicado no se pudo leer) e informe-* (el informe técnico no se bajó, no se pudo leer o una parte no pasó la validación; si no responde ninguna ruta es solo una advertencia). Si el comunicado más reciente o su informe no se pueden bajar por ninguna ruta, manual-download-needed (advertencia) los lista para la consola de documentos.",
     "explain_en": "It logs unreachable (error for critical sources), format-drift, format-changed, carried-forward and communique-unread, outlook-unread (the communiqué outlook could not be read) and informe-* (the technical report was not downloaded, could not be read or part of it failed validation; when no route answers it is only a warning). When the newest communiqué or its report cannot be downloaded by any route, manual-download-needed (warning) lists them for the documents console.",
-    "evidence": "python/enso/observatory.py:321-356, 531-535, 1658-1755; python/enso/reports.py:480, 685; python/enso/observatory.py:594"
+    "evidence": "python/enso/observatory.py#acquire, #_enfen_latest; python/enso/reports.py#validate_informe, #acquire_informe; python/enso/manual.py#ManualNeeds.log"
    },
    {
     "from": "builder",
@@ -1263,7 +1277,7 @@
     "label_en": "stale data and statuses",
     "explain_es": "Se anotan stale-<serie> y stale-weekly (dato fuera de plazo), official-overdue (no llegó el boletín previsto de NOAA o del ENFEN), newer-communique-unparsed (hay un comunicado más nuevo que no se pudo leer), status-unknown (error: no hay estado del ENFEN), informe-icen-mismatch (el ICEN del informe técnico difiere del IGP) y late-<dato> (pasó la fecha en que debía llegar el siguiente).",
     "explain_en": "It logs stale-<series> and stale-weekly (data past its deadline), official-overdue (the expected NOAA or ENFEN bulletin did not arrive), newer-communique-unparsed (a newer communiqué could not be read), status-unknown (error: no ENFEN status), informe-icen-mismatch (the technical report's ICEN differs from IGP's) and late-<item> (the next one was due and has not arrived).",
-    "evidence": "python/enso/observatory.py:657-659, 777, 799, 826-832, 934; python/enso/freshness.py:218"
+    "evidence": "python/enso/observatory.py#Builder.build_series, #Builder.official, #Builder.informe; python/enso/freshness.py#log_late"
    },
    {
     "from": "data-peru-branch",
@@ -1275,7 +1289,7 @@
     "explain_en": "At start the pipeline reads data-peru's index.json and heartbeat.json and logs relay-missing, relay-stale (over 36 h), relay-sources-down, relay-goal-missed, relay-token-expiring or relay-kit-outdated (a kit older than the site needs). That is how a machine that is off becomes an issue.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
-    "evidence": "python/enso/observatory.py:1166-1167, 1658-1720"
+    "evidence": "python/enso/observatory.py#load_relay, #run"
    },
    {
     "from": "data-n8n-branch",
@@ -1287,7 +1301,7 @@
     "explain_en": "The same with data-n8n: relay-n8n-missing, relay-n8n-stale (over 36 h) or relay-n8n-sources-down. That is how a stopped n8n flow becomes an issue.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
-    "evidence": "python/enso/observatory.py:1722-1755"
+    "evidence": "python/enso/observatory.py#load_n8n_relay"
    },
    {
     "from": "news-collect",
@@ -1297,7 +1311,7 @@
     "label_en": "news and history",
     "explain_es": "En la etapa de noticias se anotan feeds-reader-unknown, news-degraded, news-history-missing (error si tampoco hay copia), news-history-restored y news-history-large. También pasan a issues.",
     "explain_en": "The news stage logs feeds-reader-unknown, news-degraded, news-history-missing (error if there is no copy either), news-history-restored and news-history-large. They also become issues.",
-    "evidence": "python/enso/observatory.py:1475, 1558-1578, 1595, 1623"
+    "evidence": "python/enso/observatory.py#acquire_news"
    },
    {
     "from": "geo-place",
@@ -1307,7 +1321,7 @@
     "label_en": "failed corrections",
     "explain_es": "Se anotan overrides-http (la consola respondió con error), overrides-down (no respondió) y overrides-rejected (una corrección trae códigos inválidos).",
     "explain_en": "It logs overrides-http (the console answered with an error), overrides-down (no answer) and overrides-rejected (a correction has invalid codes).",
-    "evidence": "python/enso/geo_overrides.py:148-151; python/enso/observatory.py:1609"
+    "evidence": "python/enso/geo_overrides.py#fetch_overrides; python/enso/observatory.py#acquire_news"
    },
    {
     "from": "event-log",
@@ -1317,7 +1331,7 @@
     "label_en": "incidents and health",
     "explain_es": "Las incidencias, la peor severidad y los conteos van a run-report.json; health.json marca degraded (con error o critical) y dashboard.json guarda la peor severidad.",
     "explain_en": "Incidents, the worst severity and the counts go to run-report.json; health.json marks degraded (on error or critical) and dashboard.json keeps the worst severity.",
-    "evidence": "python/enso/observatory.py:1042, 1049-1055"
+    "evidence": "python/enso/observatory.py#write_publication, #EventLog"
    },
    {
     "from": "event-log",
@@ -1327,7 +1341,7 @@
     "label_en": "critical: no deploy",
     "explain_es": "Con --fail-on critical, si la peor severidad es critical el paso del pipeline sale con 1, el build falla y el despliegue no corre; sigue publicado el sitio anterior.",
     "explain_en": "With --fail-on critical, a critical worst severity makes the pipeline step exit 1, the build fails and deploy does not run; the previous site stays live.",
-    "evidence": "python/enso/observatory.py:1810-1813; .github/workflows/observatory.yml:185-208, 262-263"
+    "evidence": "python/enso/observatory.py#main; .github/workflows/observatory.yml:205-235"
    },
    {
     "from": "write-publication",
@@ -1337,7 +1351,7 @@
     "label_en": "atomic swap of data/",
     "explain_es": "Si la validación pasa (mismo publicationId en todo, series ordenadas, dashboard con official, series y grd), public/data se reemplaza de una vez por la carpeta nueva.",
     "explain_en": "If validation passes (same publicationId everywhere, sorted series, dashboard with official, series and grd), public/data is replaced in one move by the new folder.",
-    "evidence": "python/enso/observatory.py:1090-1126"
+    "evidence": "python/enso/observatory.py#write_publication, #validate_publication"
    },
    {
     "from": "publication-data",
@@ -1347,7 +1361,7 @@
     "label_en": "public/ ready to test",
     "explain_es": "Con data/ escrita, el build adapta las direcciones del sitio, corre las pruebas de navegador en Chromium y sube el sitio; si falla uno de esos pasos, no se despliega.",
     "explain_en": "With data/ written, the build adapts the site's addresses, runs the Chromium browser tests and uploads the site; if one of those steps fails, nothing is deployed.",
-    "evidence": ".github/workflows/observatory.yml:218-260"
+    "evidence": ".github/workflows/observatory.yml:245-287"
    },
    {
     "from": "deploy",
@@ -1359,7 +1373,7 @@
     "explain_en": "Uploads the whole site at once to GitHub Pages or Cloudflare Pages, and verify_live waits up to 10 min until dashboard.json and manifest.json carry the new publicationId.",
     "when_es": "tras cada build exitoso",
     "when_en": "after every successful build",
-    "evidence": ".github/workflows/observatory.yml:262-316; python/tools/verify_live.py:18-43"
+    "evidence": ".github/workflows/observatory.yml:289-343; python/tools/verify_live.py#main"
    },
    {
     "from": "live-site",
@@ -1371,7 +1385,7 @@
     "explain_en": "What the site serves today under data/ is what the next run reads with --previous to carry data over and continue the history.",
     "when_es": "en la corrida siguiente",
     "when_en": "in the next run",
-    "evidence": ".github/workflows/observatory.yml:201; python/enso/observatory.py:218-296"
+    "evidence": ".github/workflows/observatory.yml:226; python/enso/observatory.py#PreviousPublication"
    },
    {
     "from": "live-site",
@@ -1381,7 +1395,7 @@
     "label_en": "serves pages and data",
     "explain_es": "El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y luego cada archivo con el mismo publicationId.",
     "explain_en": "The host serves index.html, assets/ and data/. The page first fetches dashboard.json and then each file with the same publicationId.",
-    "evidence": "public/assets/js/app.js:1-47, 834-852"
+    "evidence": "public/assets/js/app.js:1-48, 1094-1110"
    },
    {
     "from": "public",
@@ -1391,7 +1405,7 @@
     "label_en": "opens the site or downloads",
     "explain_es": "Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada dato puede ir a la fuente en vivo o a la copia archivada.",
     "explain_en": "Anyone opens the page or downloads the CSV and JSON in data/ directly; from each value they can go to the live source or the archived copy.",
-    "evidence": "public/assets/js/app.js:248-262, 465-516"
+    "evidence": "public/assets/js/app.js:226-229, 640-693"
    },
    {
     "from": "observatory-workflow",
@@ -1403,7 +1417,7 @@
     "explain_en": "The build leaves the raw-sources artifact (7 days) with the new raw responses and the news history; the archive job downloads it in parallel with deploy.",
     "when_es": "cada corrida de main cuyo build pasa",
     "when_en": "every main run whose build passes",
-    "evidence": ".github/workflows/observatory.yml:241-248, 374-400; python/enso/observatory.py:1134-1149, 1237"
+    "evidence": ".github/workflows/observatory.yml:268-275, 419-504; python/enso/observatory.py#archive_raw, #run"
    },
    {
     "from": "archive-job",
@@ -1415,7 +1429,7 @@
     "explain_en": "Adds the responses it lacked, appends the day's items and merges the history with merge_history.py. Rejects commits with deletions and tries the push up to 3 times.",
     "when_es": "tras cada build exitoso en main",
     "when_en": "after every successful build on main",
-    "evidence": ".github/workflows/observatory.yml:392-459; python/tools/merge_history.py:1-60"
+    "evidence": ".github/workflows/observatory.yml:419-504; python/tools/merge_history.py#merge"
    },
    {
     "from": "publication-data",
@@ -1427,7 +1441,7 @@
     "explain_en": "The incidents job downloads run-report.json and opens, updates or closes one issue per fingerprint. If build, deploy or archive fail, it also opens 'La actualización diaria falló'.",
     "when_es": "al final de cada corrida, aunque falle",
     "when_en": "at the end of every run, even a failed one",
-    "evidence": ".github/workflows/observatory.yml:232-240, 318-372; python/tools/sync_issues.py:1-132"
+    "evidence": ".github/workflows/observatory.yml:259-267, 345-417; python/tools/sync_issues.py#sync"
    },
    {
     "from": "github-issues",
@@ -1437,7 +1451,7 @@
     "label_en": "alerts to review",
     "explain_es": "Los mantenedores ven las incidencias abiertas con la etiqueta incidente-datos; se cierran solas cuando el problema deja de aparecer.",
     "explain_en": "Maintainers see the open incidents labelled incidente-datos; they close by themselves once the problem stops appearing.",
-    "evidence": "python/tools/sync_issues.py:1-17, 100-132"
+    "evidence": "python/tools/sync_issues.py#LABEL, #sync"
    },
    {
     "from": "live-site",
@@ -1449,7 +1463,7 @@
     "explain_en": "Every 6 hours it fetches data/dashboard.json without cache and computes the publication age from generatedAt.",
     "when_es": "19:17, 01:17, 07:17 y 13:17 Lima",
     "when_en": "19:17, 01:17, 07:17 and 13:17 Lima",
-    "evidence": ".github/workflows/watchdog.yml:8-9, 43-52"
+    "evidence": ".github/workflows/watchdog.yml:7-10, 45-53"
    },
    {
     "from": "watchdog",
@@ -1461,7 +1475,7 @@
     "explain_en": "If the publication is over 30 h old or unreadable, it starts the daily update, unless one is running or one was dispatched, by hand or by it, in the last 6 h.",
     "when_es": "solo si el sitio está atrasado",
     "when_en": "only if the site is behind",
-    "evidence": ".github/workflows/watchdog.yml:52-69"
+    "evidence": ".github/workflows/watchdog.yml:54-74"
    },
    {
     "from": "watchdog",
@@ -1473,7 +1487,7 @@
     "explain_en": "Opens or comments 'El sitio publicado está desactualizado' with the action taken, and closes it once the site is current again.",
     "when_es": "si hay atraso o se recupera",
     "when_en": "if stale or recovered",
-    "evidence": ".github/workflows/watchdog.yml:53-72"
+    "evidence": ".github/workflows/watchdog.yml:54-74"
    },
    {
     "from": "live-site",
@@ -1485,7 +1499,7 @@
     "explain_en": "Every 6 hours, from outside GitHub, n8n fetches data/manifest.json and checks that generatedAt is under 30 h old.",
     "when_es": "cada 6 h (intervalo de n8n)",
     "when_en": "every 6 h (n8n interval)",
-    "evidence": "n8n/nodes/vigilante.js:1-25; n8n/build.mjs:252-268"
+    "evidence": "n8n/nodes/vigilante.js; n8n/build.mjs:248-274"
    },
    {
     "from": "n8n-watchdog",
@@ -1495,7 +1509,7 @@
     "label_en": "Error workflow, if set",
     "explain_es": "Si el colega configuró un Error workflow en n8n (por ejemplo, un correo), una ejecución fallida lo dispara. Sirve aunque GitHub haya apagado sus flujos programados.",
     "explain_en": "If the colleague set up an n8n Error workflow (for example, an email), a failed execution triggers it. It works even if GitHub switched its scheduled workflows off.",
-    "evidence": "n8n/build.mjs:246-250; n8n/nodes/vigilante.js:1-3"
+    "evidence": "n8n/build.mjs:248-253; n8n/nodes/vigilante.js"
    },
    {
     "from": "publication-data",
@@ -1507,7 +1521,7 @@
     "explain_en": "The console loads data/geo/items.json (up to 4000 items, 120 days) and ubigeo.json for its pickers; the API also uses ubigeo.json to reject unknown codes.",
     "when_es": "al abrir la consola",
     "when_en": "when the console opens",
-    "evidence": "public/admin/admin.js:1-12, 300-305; functions/_lib/geo-console.js:265-280, 316-318"
+    "evidence": "public/admin/admin.js:1-12, 300-324; functions/_lib/geo-console.js:267-281, 303-358"
    },
    {
     "from": "maintainers",
@@ -1517,7 +1531,7 @@
     "label_en": "reviewer accounts",
     "explain_es": "tools.geo_users crea usuario y clave para cada revisor; el propietario carga el secreto GEO_USERS y vincula la base D1 GEO_DB en Cloudflare.",
     "explain_en": "tools.geo_users creates each reviewer's username and password; the owner loads the GEO_USERS secret and binds the D1 database GEO_DB in Cloudflare.",
-    "evidence": "python/tools/geo_users.py:1-12; functions/_lib/geo-console.js:3-4"
+    "evidence": "python/tools/geo_users.py; functions/_lib/geo-console.js:1-20"
    },
    {
     "from": "reviewers",
@@ -1527,7 +1541,7 @@
     "label_en": "correct places",
     "explain_es": "Con su usuario fijan, confirman o marcan como nacional o «no es del Perú» cada nota. Cada cambio es una fila nueva en la base D1 y se aplica en la siguiente corrida (la de 23:37 u otra antes).",
     "explain_en": "Logged in, they set, confirm or mark each item as national or 'not in Peru'. Each change is a new row in the D1 database, applied in the next run (23:37 or an earlier one).",
-    "evidence": "public/admin/index.html:29-60; functions/_lib/geo-console.js:14-56, 303-358; python/enso/geo_overrides.py:14-21"
+    "evidence": "public/admin/index.html:30-61; functions/_lib/geo-console.js:39-56, 303-358; python/enso/geo_overrides.py#ACTIONS"
    },
    {
     "from": "maintainers",
@@ -1539,7 +1553,7 @@
     "explain_en": "Each push to main publishes right away (unless only .md or docs/ changed). It can also be run by hand, choosing whether to request fresh Internet Archive copies.",
     "when_es": "al fusionar o a mano",
     "when_en": "on merge or by hand",
-    "evidence": ".github/workflows/observatory.yml:20-28, 192"
+    "evidence": ".github/workflows/observatory.yml:20-28, 212"
    },
    {
     "from": "maintainers",
@@ -1549,7 +1563,7 @@
     "label_en": "PRs, claude/** branches, manual",
     "explain_es": "ci.yml corre en cada PR y push a claude/**; n8n.yml, cuando cambia n8n/. Sondeos y capturas: a mano o al cambiar su herramienta en claude/**. Sus resultados se traen a mano de las ramas bot/.",
     "explain_en": "ci.yml runs on every PR and claude/** push; n8n.yml when n8n/ changes. Probes and captures: by hand or when their tool changes on claude/**. Their results are pulled by hand from the bot/ branches.",
-    "evidence": ".github/workflows/ci.yml:6-10; .github/workflows/probe-feeds.yml:7-14; .github/workflows/capture-fixtures.yml:53-65"
+    "evidence": ".github/workflows/ci.yml:6-10; .github/workflows/n8n.yml; .github/workflows/probe-feeds.yml:7-14; .github/workflows/capture-fixtures.yml:53-65"
    },
    {
     "from": "publication-data",
@@ -1561,7 +1575,7 @@
     "explain_en": "The console shows data/manual-needed.json: each document the run could not download, with links to open it in a browser, the reason and, if an uploaded copy failed, why.",
     "when_es": "al abrir la consola",
     "when_en": "when the console opens",
-    "evidence": "python/enso/manual.py:44-98; python/enso/observatory.py:1198-1201; functions/_lib/doc-uploads.js:52-63"
+    "evidence": "python/enso/manual.py#ManualNeeds.as_json, #dump; python/enso/observatory.py#write_publication; functions/_lib/doc-uploads.js:59-98"
    },
    {
     "from": "maintainers",
@@ -1571,7 +1585,7 @@
     "label_en": "download and upload the PDF",
     "explain_es": "Con el issue manual-download-needed, un administrador abre el documento en su navegador, pasa la verificación humana él mismo (el sistema nunca la evade), guarda el PDF y lo sube.",
     "explain_en": "Prompted by the manual-download-needed issue, an administrator opens the document in their browser, passes the human check themselves (the system never evades it), saves the PDF and uploads it.",
-    "evidence": "public/admin/documentos.js:60-120; python/enso/manual.py:60-75"
+    "evidence": "public/admin/documentos.js:59-120; python/enso/manual.py#ManualNeeds.log"
    },
    {
     "from": "doc-console",
@@ -1583,7 +1597,7 @@
     "explain_en": "Streams the PDF blob, builds a tree with the new index.json, commits and fast-forwards the branch; if another upload moved it, it retries once.",
     "when_es": "en cada subida",
     "when_en": "on each upload",
-    "evidence": "functions/_lib/doc-uploads.js:124-275"
+    "evidence": "functions/_lib/doc-uploads.js:141-296"
    },
    {
     "from": "doc-console",
@@ -1595,7 +1609,7 @@
     "explain_en": "After saving the PDF, the API sends repository_dispatch enso-refresh: the refresh starts right away instead of waiting for 23:37.",
     "when_es": "en cada subida",
     "when_en": "on each upload",
-    "evidence": "functions/_lib/doc-uploads.js:300-310; .github/workflows/observatory.yml:29-30"
+    "evidence": "functions/_lib/doc-uploads.js:297-335; .github/workflows/observatory.yml:29-30"
    },
    {
     "from": "data-manual-branch",
@@ -1607,7 +1621,51 @@
     "explain_en": "The pipeline finds it by the document's own URL (or manual://enfen-informe/<id> when unknown). It is validated like any other copy: another number or period is not published and the document stays pending with the reason.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
-    "evidence": ".github/workflows/observatory.yml:136-147; python/enso/observatory.py:1900-1918; python/enso/reports.py:714-734"
+    "evidence": ".github/workflows/observatory.yml:136-154, 205-235; python/enso/observatory.py#load_manual_relay; python/enso/reports.py#acquire_informe; python/enso/manual.py#key"
+   },
+   {
+    "from": "official-parse",
+    "to": "n8n-extractor",
+    "kind": "fallback",
+    "label_es": "texto sin leer (opcional)",
+    "label_en": "unread text (optional)",
+    "explain_es": "Solo si el lector fijo falla (el informe técnico cambió de formato o la perspectiva del comunicado no se pudo leer) y está el secreto ENSO_LLM_EXTRACT_URL: el pipeline manda kind, el esquema y el texto (hasta 120 000 caracteres) con el token ENSO_LLM_EXTRACT_TOKEN. Del informe, el mismo PDF no se vuelve a consultar si el modelo ya respondió.",
+    "explain_en": "Only if the fixed parser fails (the technical report changed format or the communiqué outlook could not be read) and the ENSO_LLM_EXTRACT_URL secret is set: the pipeline sends the kind, the schema and the text (up to 120,000 characters) with the ENSO_LLM_EXTRACT_TOKEN token. For a report, the same PDF is not asked again once the model has answered.",
+    "when_es": "solo cuando el lector fijo falla",
+    "when_en": "only when the fixed parser fails",
+    "evidence": "python/enso/reports.py#llm_extract, #reusable_review, #acquire_informe; python/enso/observatory.py#_enfen_latest; .github/workflows/observatory.yml:213-215"
+   },
+   {
+    "from": "n8n-extractor",
+    "to": "official-parse",
+    "kind": "data",
+    "label_es": "propuesta para revisión",
+    "label_en": "proposal for review",
+    "explain_es": "La respuesta se vuelve a validar con el esquema y queda como propuesta, con sus errores de esquema, en informe.review u outlookReview de dashboard.json. Nunca reemplaza un dato ni se publica como tal, y el sitio no la muestra. Si el flujo no responde, se anota llm-extract-unavailable.",
+    "explain_en": "The answer is validated again against the schema and kept as a proposal, with its schema errors, in dashboard.json's informe.review or outlookReview. It never replaces a value or gets published as one, and the site does not show it. If the flow does not answer, llm-extract-unavailable is logged.",
+    "evidence": "python/enso/reports.py#llm_extract, #llm_unavailable, #acquire_informe; python/enso/observatory.py#_enfen_latest, #Builder.official, #Builder.informe; n8n/nodes/extraer-respuesta.js"
+   },
+   {
+    "from": "n8n-colleague",
+    "to": "n8n-extractor",
+    "kind": "human",
+    "label_es": "importa y crea credenciales",
+    "label_en": "imports, sets credentials",
+    "explain_es": "Si se usa, la persona importa n8n/dist/enso-n8n-extractor.json, crea las credenciales «Token del extractor ENSO» y «OpenAI ENSO (n8n)» y lo activa; su Production URL y el token van a los secretos ENSO_LLM_EXTRACT_URL y ENSO_LLM_EXTRACT_TOKEN del repositorio.",
+    "explain_en": "If used, the person imports n8n/dist/enso-n8n-extractor.json, creates the «Token del extractor ENSO» and «OpenAI ENSO (n8n)» credentials and activates it; its Production URL and the token go into the repository secrets ENSO_LLM_EXTRACT_URL and ENSO_LLM_EXTRACT_TOKEN.",
+    "evidence": "docs/n8n.md:146-192; n8n/build.mjs:276-286"
+   },
+   {
+    "from": "data-manual-branch",
+    "to": "event-log",
+    "kind": "control",
+    "label_es": "salud de la copia subida",
+    "label_en": "uploaded copy health",
+    "explain_es": "Al empezar, el pipeline abre la rama data-manual: si existe y no se pudo bajar o leer, anota manual-unreadable (advertencia) y las subidas no se usan en esta corrida; si la leyó, manual-ok (info). Que la rama no exista no se anota.",
+    "explain_en": "At start the pipeline opens the data-manual branch: if it exists but could not be fetched or read, it logs manual-unreadable (warning) and the uploads are not used in this run; if it read it, manual-ok (info). A missing branch is not logged.",
+    "when_es": "cada corrida de observatory.yml",
+    "when_en": "every observatory.yml run",
+    "evidence": "python/enso/observatory.py#load_manual_relay; .github/workflows/observatory.yml:136-154"
    },
    {
     "from": "data-peru-branch",
@@ -1619,7 +1677,7 @@
     "explain_en": "SENAMHI's warning table in the Peru copy gives the warnings that arrive by Telegram and COEN their level (yellow, orange or red) and their start and end. The site publishes that copy and each level links to it.",
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
-    "evidence": "python/enso/sourcefeed.py:114-147; python/enso/severity.py:281-288; python/enso/observatory.py:1518-1521, 1960-1979"
+    "evidence": "python/enso/sourcefeed.py#levels_table; python/enso/severity.py#assess; python/enso/senamhi_avisos.py#load; python/enso/observatory.py#archive_levels"
    }
   ]
  },
@@ -1683,7 +1741,8 @@
      "data-n8n-branch",
      "registry",
      "registry-builder",
-     "data-manual-branch"
+     "data-manual-branch",
+     "n8n-extractor"
     ]
    },
    {
@@ -1749,8 +1808,8 @@
     "w": 360,
     "name_es": "Sitio",
     "name_en": "Website",
-    "what_es": "La página pública con 10 vistas y descargas abiertas. Junto a cada dato están el enlace a la fuente original y a su copia archivada.",
-    "what_en": "The public website with 10 views and open downloads. Next to each value are links to the original source and its archived copy.",
+    "what_es": "La página pública con 10 vistas, un mapa de alertas y descargas abiertas. Junto a cada dato están el enlace a la fuente original y a su copia archivada.",
+    "what_en": "The public website with 10 views, an alert map and open downloads. Next to each value are links to the original source and its archived copy.",
     "covers": [
      "live-site",
      "site-app",
@@ -1807,7 +1866,7 @@
     "explain_en": "Every night the collectors download the official data and alerts. What only answers inside the country, like the ENFEN portal, is fetched by the computer in Peru.",
     "when_es": "21:00, 22:50 y 23:37 Lima",
     "when_en": "21:00, 22:50 and 23:37 Lima",
-    "evidence": "full edges peru-official→peru-collector, peru-official→fetch, noaa→fetch, hazard-alerts→fetch; python/tools/collector_schedule.py:8-12; n8n/build.mjs:207; .github/workflows/observatory.yml:18-19"
+    "evidence": "full edges peru-official→peru-collector, peru-official→fetch, noaa→fetch, hazard-alerts→fetch; python/tools/collector_schedule.py#lima_slots; n8n/build.mjs:209; .github/workflows/observatory.yml:18-19"
    },
    {
     "from": "s-noticias",
@@ -1819,7 +1878,7 @@
     "explain_en": "GitHub Actions reads the news on every run and n8n keeps a copy. Google News forbids robots: it is read like a feed reader, at most once a day.",
     "when_es": "cada noche",
     "when_en": "every night",
-    "evidence": "full edges news-feeds→fetch, news-feeds→n8n-collector, news-google→fetch; python/enso/registry.py:35-38"
+    "evidence": "full edges news-feeds→fetch, news-feeds→n8n-collector, news-google→fetch; python/enso/registry.py#READER_MIN_HOURS, #READER_CHANNELS"
    },
    {
     "from": "s-recolectores",
@@ -1839,11 +1898,11 @@
     "kind": "fallback",
     "label_es": "Copia del Internet Archive",
     "label_en": "Internet Archive copy",
-    "explain_es": "Si la fuente, su réplica y las copias del Perú y de n8n fallan, la descarga usa la última copia del Internet Archive, con su fecha.",
-    "explain_en": "If the source, its mirror and the Peru and n8n copies fail, the download uses the latest Internet Archive copy, with its date.",
+    "explain_es": "Si la fuente, su réplica y las copias del Perú, de n8n y de la consola fallan (y, para los documentos del ENFEN, el repositorio del IMARPE), la descarga usa la última copia del Internet Archive, con su fecha.",
+    "explain_en": "If the source, its mirror and the Peru, n8n and console copies fail (and, for ENFEN documents, IMARPE's repository), the download uses the latest Internet Archive copy, with its date.",
     "when_es": "solo si todo lo anterior falla",
     "when_en": "only if everything before fails",
-    "evidence": "full edge internet-archive→fetch; python/enso/fetch.py:274-312"
+    "evidence": "full edges internet-archive→fetch, data-manual-branch→fetch; python/enso/fetch.py#Fetcher.get; python/enso/observatory.py#_get_communique"
    },
    {
     "from": "s-respaldo",
@@ -1905,9 +1964,9 @@
     "kind": "data",
     "label_es": "Notas por revisar",
     "label_en": "Items to review",
-    "explain_es": "La consola trae las noticias de los últimos 120 días y abre con las de lugar dudoso, para que una persona lo confirme o lo corrija.",
-    "explain_en": "The console has the last 120 days of news and opens on doubtful places, so a person can confirm or fix them.",
-    "evidence": "full edge publication-data→geo-console"
+    "explain_es": "La consola trae las noticias de los últimos 120 días y abre con las de lugar dudoso, para que una persona lo confirme o lo corrija. También lista los documentos que la corrida no pudo bajar.",
+    "explain_en": "The console has the last 120 days of news and opens on doubtful places, so a person can confirm or fix them. It also lists the documents the run could not download.",
+    "evidence": "full edges publication-data→geo-console, publication-data→doc-console"
    },
    {
     "from": "s-consola",
@@ -1920,6 +1979,18 @@
     "when_es": "en la corrida siguiente (con Cloudflare)",
     "when_en": "in the next run (with Cloudflare)",
     "evidence": "full edges geo-console→geo-place, previous-publication→geo-place"
+   },
+   {
+    "from": "s-consola",
+    "to": "s-recolectores",
+    "kind": "data",
+    "label_es": "PDF subido a mano",
+    "label_en": "PDF uploaded by hand",
+    "explain_es": "Si ninguna ruta automática trae un documento oficial, un administrador lo sube en la consola: queda en la rama data-manual, la descarga lo usa como una copia más y la actualización empieza enseguida.",
+    "explain_en": "If no automatic route brings an official document, an administrator uploads it in the console: it goes to the data-manual branch, the download uses it as one more copy and the update starts right away.",
+    "when_es": "en cada subida (con Cloudflare)",
+    "when_en": "on each upload (with Cloudflare)",
+    "evidence": "full edges doc-console→data-manual-branch, data-manual-branch→fetch, doc-console→observatory-workflow"
    },
    {
     "from": "s-operacion",
@@ -1973,8 +2044,8 @@
   {
    "title_es": "Qué vigilamos",
    "title_en": "What we watch",
-   "text_es": "El observatorio sigue las fuentes oficiales del ENSO (ENFEN, IGP y NOAA), 14 servicios de alertas de peligros y 154 feeds de noticias. Respeta las reglas de cada sitio para robots, salvo 40 feeds de noticias que lee como un lector, como mucho una vez al día.",
-   "text_en": "The observatory follows the official ENSO sources (ENFEN, IGP and NOAA), 14 hazard-alert services and 154 news feeds. It obeys each site's robot rules, except 40 news feeds it reads like a feed reader, at most once a day.",
+   "text_es": "El observatorio sigue las fuentes oficiales del ENSO (ENFEN, IGP y NOAA), 14 servicios de alertas de peligros y 154 feeds de noticias. Respeta las reglas de cada sitio para robots, salvo los feeds de noticias que lee como un lector, como mucho una vez al día.",
+   "text_en": "The observatory follows the official ENSO sources (ENFEN, IGP and NOAA), 14 hazard-alert services and 154 news feeds. It obeys each site's robot rules, except the news feeds it reads like a feed reader, at most once a day.",
    "nodes": [
     "s-fuentes",
     "s-noticias"
@@ -2004,8 +2075,8 @@
   {
    "title_es": "Cuando algo falla",
    "title_en": "When something fails",
-   "text_es": "Si una fuente no responde, se usa la copia del Perú o de n8n, una copia del Internet Archive o el último dato bueno ya publicado. Cada dato muestra su fecha real, así nada viejo se hace pasar por nuevo.",
-   "text_en": "If a source does not answer, the Peru or n8n copy, an Internet Archive copy or the last good published value is used. Each value shows its real date, so nothing old passes as new.",
+   "text_es": "Si una fuente no responde, se usa la copia del Perú, la de n8n o la que un administrador subió a la consola, una copia del Internet Archive o el último dato bueno ya publicado. Cada dato muestra su fecha real, así nada viejo se hace pasar por nuevo.",
+   "text_en": "If a source does not answer, the Peru or n8n copy, the one an administrator uploaded to the console, an Internet Archive copy or the last good published value is used. Each value shows its real date, so nothing old passes as new.",
    "nodes": [
     "s-respaldo",
     "s-pipeline",
@@ -2022,14 +2093,15 @@
    ]
   },
   {
-   "title_es": "La consola de lugares",
-   "title_en": "The places console",
-   "text_es": "Con el sitio en Cloudflare, cuando el sistema duda dónde ocurrió una noticia, un revisor la corrige en la consola. La corrección se aplica desde la corrida siguiente y queda guardada.",
-   "text_en": "With the site on Cloudflare, when the system is unsure where a news item happened, a reviewer fixes it in the console. The fix applies from the next run and stays stored.",
+   "title_es": "Las consolas de lugares y de documentos",
+   "title_en": "The places and documents consoles",
+   "text_es": "Con el sitio en Cloudflare, cuando el sistema duda dónde ocurrió una noticia, un revisor la corrige en la consola de lugares; la corrección se aplica desde la corrida siguiente y queda guardada. Si ninguna ruta automática trae un documento oficial, un administrador lo baja en su navegador y lo sube en la consola de documentos, y la actualización empieza al momento.",
+   "text_en": "With the site on Cloudflare, when the system is unsure where a news item happened, a reviewer fixes it in the places console; the fix applies from the next run and stays stored. If no automatic route brings an official document, an administrator downloads it in their browser and uploads it in the documents console, and the update starts at once.",
    "nodes": [
     "s-consola",
     "s-publicacion",
-    "s-pipeline"
+    "s-pipeline",
+    "s-recolectores"
    ]
   },
   {
@@ -2045,8 +2117,8 @@
   {
    "title_es": "Lo que ve la gente",
    "title_en": "What people see",
-   "text_es": "El sitio muestra 10 vistas y descargas abiertas, con el enlace a la fuente original y a la copia archivada junto a cada dato. Lo de hoy será el respaldo de mañana.",
-   "text_en": "The site shows 10 views and open downloads, with links to the original source and the archived copy next to each value. Today's data will be tomorrow's backup.",
+   "text_es": "El sitio muestra 10 vistas, un mapa de alertas con el nivel que dio cada institución y descargas abiertas, con el enlace a la fuente original y a la copia archivada junto a cada dato. Lo de hoy será el respaldo de mañana.",
+   "text_en": "The site shows 10 views, an alert map with the level each agency gave and open downloads, with links to the original source and the archived copy next to each value. Today's data will be tomorrow's backup.",
    "nodes": [
     "s-sitio",
     "s-respaldo"

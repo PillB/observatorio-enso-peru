@@ -368,7 +368,7 @@
     <text class="ar-chip-t" x="762.7" y="883.7" font-size="10">/api/geo/overrides</text>
   </g>
   <g class="ar-node-g" id="a7-n-upload" data-node="upload">
-    <title>Subida de documentos. POST /api/docs/upload: solo roles de DOCS_UPLOAD_ROLES (admin). Comprueba %PDF- y %%EOF y pasa el archivo en flujo a GitHub sin decodificarlo (10 ms de CPU por solicitud). hasta 25 MB y 10 subidas por hora. Tecnología: /api/docs/upload.</title>
+    <title>Subida de documentos. POST /api/docs/upload: solo roles de DOCS_UPLOAD_ROLES (admin). Comprueba %PDF- y %%EOF y pasa el archivo en flujo a GitHub sin decodificarlo (10 ms de CPU por solicitud). hasta 20 MB y 10 subidas por hora. Tecnología: /api/docs/upload.</title>
     <rect class="ar-node ar-g-operations" x="744.7" y="929.7" width="280" height="178.4" rx="8"/>
     <rect class="ar-f-operations" x="744.7" y="937.7" width="4" height="162.4" rx="2"/>
     <rect class="ar-tile ar-f-operations" x="756.7" y="939.7" width="30" height="30" rx="7"/>
@@ -379,7 +379,7 @@
     <text class="ar-s" x="756.7" y="1021.5" font-size="11">%PDF- y %%EOF y pasa el archivo en flujo a</text>
     <text class="ar-s" x="756.7" y="1036.6" font-size="11">GitHub sin decodificarlo (10 ms de CPU por</text>
     <text class="ar-s" x="756.7" y="1051.8" font-size="11">solicitud).</text>
-    <text class="ar-m" x="756.7" y="1071" font-size="10.5">hasta 25 MB y 10 subidas por hora</text>
+    <text class="ar-m" x="756.7" y="1071" font-size="10.5">hasta 20 MB y 10 subidas por hora</text>
     <rect class="ar-chip" x="756.7" y="1080.1" width="94.6" height="17" rx="8.5"/>
     <text class="ar-chip-t" x="762.7" y="1092.1" font-size="10">/api/docs/upload</text>
   </g>

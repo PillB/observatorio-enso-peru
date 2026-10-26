@@ -273,6 +273,219 @@ def test_architecture_diagrams_are_drawn_from_the_model():
     assert f"{len(model['simple']['nodes'])} cajas para explicar" in doc
 
 
+def _architecture():
+    from tools import architecture as A
+
+    model = json.loads(A.MODEL.read_text(encoding="utf-8"))
+    return A, model, A.load_annexes()
+
+
+def test_architecture_evidence_resolves():
+    """Cada caja y cada conexión de los diagramas dice en qué parte del código está, y eso existe: el archivo, el
+    símbolo de Python (``ruta.py#nombre``, ``#Clase.método``; nunca líneas, que se corren sin que nadie lo note),
+    las líneas de un archivo que no es Python y las conexiones del completo que cita el simplificado. Lo mismo
+    con las evidencias de los anexos, si las tienen. ``python -m tools.architecture --check`` hace la misma
+    revisión."""
+    A, model, annexes = _architecture()
+    for part in ("full", "simple"):
+        need = model[part]["edges"] + (model[part]["nodes"] if part == "full" else [])
+        assert all(x.get("evidence") for x in need), [x.get("id") or (x["from"], x["to"]) for x in need if not x.get("evidence")]
+    assert A.check_evidence(model, annexes) == []
+
+
+def test_architecture_counts_come_from_the_code():
+    """Los números que escribe el modelo salen del código (catálogos y listas fijas) y se cuentan aquí. Lo que sale
+    de una medición (canales por URL, estados, cuántas responden) no se escribe en el modelo: cambia cada lunes y
+    está en registry/ y en el sitio (Metodología y Noticias)."""
+    import re
+
+    from enso import news, observatory, registry
+    from tools import peru_collector
+
+    A, model, annexes = _architecture()
+    full = {n["id"]: n for n in model["full"]["nodes"]}
+    simple = {n["id"]: n for n in model["simple"]["nodes"]}
+    edge = {(e["from"], e["to"]): e for e in model["full"]["edges"]}
+    annex = {a["id"]: a for a in annexes}
+
+    feeds = news.FEEDS
+    covers = [f for f in feeds if f.covers]
+    google = [f for f in feeds if "news.google.com" in f.url]
+    rest = [f for f in feeds if not f.covers and f not in google]
+    gov = [f for f in rest if f.kind == "gobierno"]
+    radio = [f for f in rest if f.kind == "radio"]
+    world = [f for f in rest if f.region == "mundo" and f not in gov + radio]
+    regional = [f for f in rest if f.department and f not in gov + radio + world]
+    national = [f for f in rest if f not in gov + radio + world + regional]
+    pages = [s for s in registry.build(reach={})["sources"] if "se archiva desde el Perú" in s.get("notes", "")]
+    enfen = observatory.SOURCE_BY_ID["enfen-comunicados"]
+    expected = {
+        "sources": len(observatory.SOURCES),
+        "noaa": sum(1 for s in observatory.SOURCES if s.institution.startswith("NOAA")),
+        "enfen-urls": len(enfen.urls),
+        "feeds": len(feeds), "covers": len(covers), "google": len(google), "rest": len(rest),
+        "not-covers": len(feeds) - len(covers),
+        "gov": len(gov), "national": len(national), "regional": len(regional),
+        "departments": len({f.department for f in regional}), "radio": len(radio),
+        "rpp": sum(1 for f in radio if f.id.startswith("rpp")), "world": len(world),
+        "g-department": sum(1 for f in google if f.kind == "agregador" and f.department),
+        "g-national": sum(1 for f in google if f.kind == "agregador" and not f.department and f.region != "mundo"),
+        "g-world": sum(1 for f in google if f.region == "mundo"),
+        "g-outlets": sum(1 for f in google if f.kind != "agregador"),
+        "pages": len(pages), "fixed-list": sum(len(u) for u in peru_collector.SOURCES.values()),
+    }
+    checks = [
+        (full["publication-data"]["what_es"], r"estado de las (\d+) fuentes", "sources"),
+        (full["publication-data"]["what_en"], r"status of the (\d+) sources", "sources"),
+        (edge[("official-parse", "builder")]["explain_es"], r"datos de las (\d+) fuentes", "sources"),
+        (edge[("official-parse", "builder")]["explain_en"], r"data of the (\d+) sources", "sources"),
+        (full["registry-builder"]["what_es"], r"\((\d+) feeds, (?:\d+) fuentes ENSO", "feeds"),
+        (full["registry-builder"]["what_es"], r"(\d+) fuentes ENSO", "sources"),
+        (full["registry-builder"]["what_es"], r"(\d+) páginas del Perú", "pages"),
+        (full["registry-builder"]["what_en"], r"\((\d+) feeds, ", "feeds"),
+        (full["registry-builder"]["what_en"], r"(\d+) ENSO sources", "sources"),
+        (full["registry-builder"]["what_en"], r"(\d+) Peru pages", "pages"),
+        (full["noaa"]["what_es"], r"(\d+) productos de NOAA", "noaa"),
+        (full["noaa"]["what_en"], r"(\d+) NOAA products", "noaa"),
+        (edge[("noaa", "fetch")]["label_es"], r"(\d+) productos", "noaa"),
+        (edge[("noaa", "fetch")]["label_en"], r"(\d+) products", "noaa"),
+        (simple["s-fuentes"]["what_es"], r"(\d+) productos de NOAA", "noaa"),
+        (simple["s-fuentes"]["what_en"], r"(\d+) NOAA products", "noaa"),
+        (full["peru-official"]["details_es"], r"^(\d+) URL del ENFEN", "enfen-urls"),
+        (full["peru-official"]["details_en"], r"^(\d+) ENFEN URLs", "enfen-urls"),
+        (full["hazard-alerts"]["name_es"], r"\((\d+) fuentes\)", "covers"),
+        (full["hazard-alerts"]["name_en"], r"\((\d+) sources\)", "covers"),
+        (full["hazard-alerts"]["details_es"], r"Son (\d+) de los", "covers"),
+        (full["hazard-alerts"]["details_es"], r"de los (\d+) feeds", "feeds"),
+        (full["hazard-alerts"]["details_en"], r"These are (\d+) of the", "covers"),
+        (full["hazard-alerts"]["details_en"], r"of the (\d+) feeds", "feeds"),
+        (edge[("hazard-alerts", "fetch")]["label_es"], r"(\d+) fuentes de alertas", "covers"),
+        (edge[("hazard-alerts", "fetch")]["label_en"], r"(\d+) alert sources", "covers"),
+        (full["news-collect"]["what_es"], r"Lee los (\d+) feeds", "feeds"),
+        (full["news-collect"]["what_en"], r"Reads the (\d+) feeds", "feeds"),
+        (full["news-collect"]["details_es"], r"las (\d+) fuentes figuran", "covers"),
+        (full["write-publication"]["details_es"], r"las (\d+) fuentes de alertas", "covers"),
+        (full["write-publication"]["details_en"], r"the (\d+) alert sources", "covers"),
+        (simple["s-fuentes"]["what_es"], r"(\d+) servicios de alertas", "covers"),
+        (simple["s-fuentes"]["what_en"], r"(\d+) alert services", "covers"),
+        (full["news-feeds"]["name_es"], r"(\d+) feeds de noticias", "rest"),
+        (full["news-feeds"]["name_en"], r"(\d+) news feeds", "rest"),
+        (edge[("news-feeds", "fetch")]["label_es"], r"(\d+) feeds de noticias", "rest"),
+        (edge[("news-feeds", "fetch")]["label_en"], r"(\d+) news feeds", "rest"),
+        (full["news-feeds"]["what_es"], r"del Estado \((\d+),", "gov"),
+        (full["news-feeds"]["what_es"], r"nacionales \((\d+)\)", "national"),
+        (full["news-feeds"]["what_es"], r"de (\d+) departamentos", "departments"),
+        (full["news-feeds"]["what_es"], r"departamentos \((\d+)\)", "regional"),
+        (full["news-feeds"]["what_es"], r"radios \((\d+),", "radio"),
+        (full["news-feeds"]["what_es"], r"(\d+) de RPP", "rpp"),
+        (full["news-feeds"]["what_es"], r"internacionales \((\d+)\)", "world"),
+        (full["news-feeds"]["what_en"], r"government \((\d+),", "gov"),
+        (full["news-feeds"]["what_en"], r"national media \((\d+)\)", "national"),
+        (full["news-feeds"]["what_en"], r"in (\d+) departments", "departments"),
+        (full["news-feeds"]["what_en"], r"departments \((\d+)\)", "regional"),
+        (full["news-feeds"]["what_en"], r"radio stations \((\d+),", "radio"),
+        (full["news-feeds"]["what_en"], r"(\d+) from RPP", "rpp"),
+        (full["news-feeds"]["what_en"], r"international outlets \((\d+)\)", "world"),
+        (full["news-google"]["name_es"], r"(\d+) búsquedas", "google"),
+        (full["news-google"]["name_en"], r"(\d+) searches", "google"),
+        (edge[("news-google", "fetch")]["explain_es"], r"estos (\d+) feeds", "google"),
+        (edge[("news-google", "fetch")]["explain_en"], r"these (\d+) feeds", "google"),
+        (full["news-google"]["what_es"], r"por departamento \((\d+)\)", "g-department"),
+        (full["news-google"]["what_es"], r"nacionales \((\d+)\)", "g-national"),
+        (full["news-google"]["what_es"], r"mundial \((\d+)\)", "g-world"),
+        (full["news-google"]["what_es"], r"sin feed propio \((\d+),", "g-outlets"),
+        (full["news-google"]["what_en"], r"per department \((\d+)\)", "g-department"),
+        (full["news-google"]["what_en"], r"national \((\d+)\)", "g-national"),
+        (full["news-google"]["what_en"], r"worldwide \((\d+)\)", "g-world"),
+        (full["news-google"]["what_en"], r"own feed \((\d+),", "g-outlets"),
+        (simple["s-noticias"]["what_es"], r"^(\d+) feeds", "not-covers"),
+        (simple["s-noticias"]["what_en"], r"^(\d+) feeds", "not-covers"),
+        (model["walkthrough"][0]["text_es"], r"(\d+) servicios de alertas", "covers"),
+        (model["walkthrough"][0]["text_es"], r"(\d+) feeds de noticias", "not-covers"),
+        (model["walkthrough"][0]["text_en"], r"(\d+) hazard-alert services", "covers"),
+        (model["walkthrough"][0]["text_en"], r"(\d+) news feeds", "not-covers"),
+        (full["peru-archive-pages"]["details_es"], r"(\d+) URL de la lista fija", "pages"),
+        (full["peru-archive-pages"]["details_en"], r"(\d+) URLs on the Peru collector's fixed list", "pages"),
+        (edge[("peru-archive-pages", "peru-collector")]["explain_es"], r"las (\d+) páginas de su lista fija", "pages"),
+        (edge[("peru-archive-pages", "peru-collector")]["explain_en"], r"these (\d+) fixed-list pages", "pages"),
+        (annex["a1"]["nodes"][12]["what_es"], r"(\d+) páginas del Perú", "pages"),
+        (annex["a1"]["nodes"][12]["what_en"], r"(\d+) Peru pages", "pages"),
+        (annex["a2"]["nodes"][14]["what_es"], r"Las (\d+) páginas de su lista fija", "pages"),
+        (annex["a2"]["nodes"][14]["what_en"], r"The (\d+) pages on its fixed list", "pages"),
+        (full["peru-collector"]["details_es"], r"(\d+) URL de su lista fija", "fixed-list"),
+        (full["peru-collector"]["details_en"], r"(\d+) URLs on its fixed list", "fixed-list"),
+    ]
+    for text, pattern, key in checks:
+        found = re.search(pattern, text)
+        assert found, f"el modelo ya no dice {pattern!r}: {text[:120]}…"
+        assert int(found[1]) == expected[key], f"{pattern!r}: el modelo dice {found[1]}, el código da {expected[key]} ({key})"
+
+
+def test_architecture_names_the_n8n_flows_and_the_pipeline_secrets():
+    """Cada flujo de n8n/dist está en el diagrama completo con su nombre, la caja del colega dice cuántos son, y
+    cada secreto que observatory.yml le pasa al paso del pipeline está en la caja de la actualización diaria."""
+    import re
+
+    import yaml
+    from conftest import ROOT
+
+    A, model, _ = _architecture()
+    full = {n["id"]: n for n in model["full"]["nodes"]}
+    dist = sorted((ROOT.parent / "n8n" / "dist").glob("*.json"))
+    assert dist, "faltan los flujos de n8n/dist"
+    names = [json.loads(p.read_text(encoding="utf-8"))["name"] for p in dist]
+    for lang in ("es", "en"):
+        text = " ".join(str(n.get(f"{k}_{lang}", "")) for n in model["full"]["nodes"] for k in ("name", "what", "meta", "details"))
+        for name in names:
+            assert name in text, f"el flujo «{name}» no está en el diagrama completo ({lang})"
+    colleague = full["n8n-colleague"]
+    assert int(re.search(r"(\d+) flujos de n8n/dist", colleague["what_es"])[1]) == len(dist)
+    assert int(re.search(r"(\d+) n8n/dist flows", colleague["what_en"])[1]) == len(dist)
+    wf = yaml.safe_load((ROOT.parent / ".github" / "workflows" / "observatory.yml").read_text(encoding="utf-8"))
+    step = next(s for s in wf["jobs"]["build"]["steps"] if s.get("id") == "pipeline")
+    secrets = set(re.findall(r"secrets\.(\w+)", json.dumps(step)))
+    assert secrets, "el paso del pipeline ya no recibe secretos: revisar esta prueba"
+    for name in secrets:
+        for lang in ("es", "en"):
+            assert name in full["observatory-workflow"][f"details_{lang}"], f"{name} no está en la actualización diaria ({lang})"
+
+
+def test_architecture_module_table_lists_every_module():
+    """La tabla «Pipeline (python/enso/)» de docs/arquitectura.md tiene una fila para cada módulo."""
+    from conftest import ROOT
+
+    A, _, _ = _architecture()
+    doc = A.DOC.read_text(encoding="utf-8")
+    section = doc.split("## Pipeline (`python/enso/`)", 1)[1].split("\n## ", 1)[0]
+    table = "\n".join(line for line in section.splitlines() if line.startswith("| `"))
+    pkg = ROOT / "enso"
+    modules = [p.name for p in pkg.glob("*.py")] + [f"feeds/{p.name}" for p in (pkg / "feeds").glob("*.py")]
+    missing = [m for m in modules if not m.endswith("__init__.py") and f"`{m}`" not in table]
+    assert not missing, f"docs/arquitectura.md: faltan en la tabla de módulos {missing}"
+
+
+def test_architecture_fetch_box_names_every_channel():
+    """La caja de la descarga en Actions nombra cada canal con que fetch.py puede entregar una respuesta."""
+    import ast
+
+    from conftest import ROOT
+
+    A, model, _ = _architecture()
+    fetch = next(n for n in model["full"]["nodes"] if n["id"] == "fetch")
+    tree = ast.parse((ROOT / "enso" / "fetch.py").read_text(encoding="utf-8"))
+    channels = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and getattr(node.func, "id", None) == "Response" and len(node.args) > 2:
+            channels |= {c.value for c in ast.walk(node.args[2]) if isinstance(c, ast.Constant) and isinstance(c.value, str)}
+        if isinstance(node, ast.Assign) and any(isinstance(t, ast.Attribute) and t.attr == "channel" for t in node.targets):
+            channels |= {c.value for c in ast.walk(node.value)
+                         if isinstance(c, ast.Constant) and isinstance(c.value, str) and "-" in c.value}
+    assert {"direct", "relay-peru", "relay-manual", "archive"} <= channels, channels
+    for lang in ("es", "en"):
+        missing = [c for c in sorted(channels) if c not in fetch[f"details_{lang}"]]
+        assert not missing, f"la caja «fetch» no nombra los canales {missing} ({lang})"
+
+
 @pytest.mark.parametrize("feed", N.FEEDS, ids=lambda f: f.id)
 def test_real_feed_captures_parse(feed):
     """Cada feed del catálogo, tal como respondió en la captura en vivo (21 de octubre de 2026)."""
