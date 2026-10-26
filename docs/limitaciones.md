@@ -58,8 +58,13 @@ queda pendiente en la consola de documentos.
 
 Las páginas web del SENAMHI y de la ANA no responden a servidores fuera
 del Perú; el recolector desde el Perú las descarga cada día a las 21:00 si
-está instalado y se guardan, pero todavía no alimentan indicadores del
-sitio. El IMARPE sí responde: su repositorio, a GitHub Actions; su sitio
+está instalado. De ellas el sitio usa hoy solo la tabla de avisos
+meteorológicos del SENAMHI (`?p=aviso-meteorologico`): da el nivel y la
+vigencia de esos avisos en el mapa de alertas ([mapa-alertas](mapa-alertas.md)).
+Sin la copia del Perú, un aviso meteorológico queda «Sin nivel» salvo que
+su texto cite el color, y con la vigencia que diga su texto. Las demás
+páginas del SENAMHI y de la ANA se archivan, pero todavía no alimentan
+indicadores. El IMARPE sí responde: su repositorio, a GitHub Actions; su sitio
 web, a n8n (a Actions solo el feed: la portada le pide una verificación
 anti-robots).
 

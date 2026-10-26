@@ -84,8 +84,10 @@ Solo vale un cuerpo que empiece con `%PDF-` y que sea el comunicado
 buscado. Si ninguna ruta lo da, el número nuevo queda registrado como
 publicado pero no leído, el estado anterior se muestra vencido en lugar de
 vigente y el comunicado queda pendiente en la consola de documentos para
-que una persona lo baje en su navegador y lo suba. El estado publicado
-dice por qué canal llegó. El informe técnico que cita el comunicado (ICEN
+que una persona lo baje en su navegador y lo suba. La tarjeta del estado
+muestra el canal del listado y enlaza la copia archivada del PDF leído; el
+canal del PDF queda en `data.latest.channel` de
+`data/sources/enfen-comunicados.json`. El informe técnico que cita el comunicado (ICEN
 temporal y probabilidades) sigue el mismo orden ([informes-texto.md](informes-texto.md)).
 El listado también reconoce los comunicados extraordinarios, que el ENFEN
 emite durante los eventos con numeración propia.
