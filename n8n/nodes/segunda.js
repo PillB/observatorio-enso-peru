@@ -34,7 +34,10 @@ for (let i = 0; i < items.length; i++) {
   if (j.follow && j.follow.pattern) {
     let rx;
     try { rx = new RegExp(j.follow.pattern, 'gi'); } catch (e) { continue; }
-    const found = [...new Set((text.match(rx) || []).map((u) => u.replace(/&amp;/g, '&')))].slice(0, Number(j.follow.max) || 8);
+    // Solo enlaces del mismo servidor que la página: el robots.txt de otro servidor no se leyó.
+    const host = (u) => ((/^https?:\/\/([^/?#]+)/i.exec(u) || [])[1] || '').toLowerCase();
+    const found = [...new Set((text.match(rx) || []).map((u) => u.replace(/&amp;/g, '&')))]
+      .filter((u) => host(u) === host(j.url)).slice(0, Number(j.follow.max) || 8);
     for (const url of found) {
       add({ id: `${j.id}:enlace`, group: j.group, name: `${j.name} (documento enlazado)`, url, expect: /\.pdf\b/i.test(url) ? 'pdf' : 'any' });
     }

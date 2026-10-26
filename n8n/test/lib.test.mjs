@@ -515,3 +515,13 @@ test('Informe: fila NO PEDIDA con la clase del robots.txt que no respondió', as
   assert.deepEqual([rows[1].resultado, rows[1].url, rows[1].alcance, rows[1].robots], ['NO PEDIDA', 'https://x/feed/', 'timeout', 'unreachable']);
   assert.equal(rows.length, 2);
 });
+
+test('Segunda pasada: «follow» solo sigue enlaces del mismo servidor que la página', async () => {
+  const html = Buffer.from('<a href="https://www.dhn.mil.pe/a/01-2026.pdf">1</a> <a href="https://otro.example/b.pdf">2</a>');
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const fn = new AsyncFunction('$', '$input', 'URL', nodeCode('segunda', { VERSION: 'test' }));
+  const item = { json: { id: 'l', group: 'x', name: 'L', url: 'https://www.dhn.mil.pe/portal/listado', cls: { ok: true }, follow: { pattern: 'https?://[^"\'\\s]+\\.pdf', max: 8 } },
+    binary: { data: {} } };
+  const out = await fn.call({ helpers: { getBinaryDataBuffer: async () => html } }, () => ({}), { all: () => [item] }, undefined);
+  assert.deepEqual(out.map((i) => i.json.url), ['https://www.dhn.mil.pe/a/01-2026.pdf']);
+});
