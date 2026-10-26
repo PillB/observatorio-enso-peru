@@ -501,22 +501,22 @@ def test_check_explains_missing_token(home):
 
 
 def test_check_sources_verdicts(monkeypatch):
-    monkeypatch.setattr(chk, "_robots_verdicts", lambda urls: {})
-    monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": False, "why": "ConnectError", "bytes": 0, "s": 1.0})
+    monkeypatch.setattr(chk, "_robots_verdicts", lambda urls, robots=None: {})
+    monkeypatch.setattr(chk, "_probe", lambda url, expect=None, robots=None: {"url": url, "ok": False, "why": "ConnectError", "bytes": 0, "s": 1.0})
     assert chk.check_sources({}).level == chk.FAIL
-    monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": "senamhi" in url or "ana" in url,
+    monkeypatch.setattr(chk, "_probe", lambda url, expect=None, robots=None: {"url": url, "ok": "senamhi" in url or "ana" in url,
                                                      "why": "HTTP 200", "bytes": 900, "s": 1.0})
     assert chk.check_sources({}).level == chk.WARN  # el ENFEN no responde
-    monkeypatch.setattr(chk, "_probe", lambda url, expect=None: {"url": url, "ok": True, "why": "HTTP 200", "bytes": 900, "s": 1.0})
+    monkeypatch.setattr(chk, "_probe", lambda url, expect=None, robots=None: {"url": url, "ok": True, "why": "HTTP 200", "bytes": 900, "s": 1.0})
     assert chk.check_sources({}).level == chk.OK
     # Lo que robots.txt no permite, o un robots.txt que no responde, no se pide (como en la recolección).
     monkeypatch.setattr(chk, "_robots_verdicts",
-                        lambda urls: {u: "robots.txt sin respuesta (timeout)" for u in urls if "enfen" in u or "ICEN" in u})
+                        lambda urls, robots=None: {u: "robots.txt sin respuesta (timeout)" for u in urls if "enfen" in u or "ICEN" in u})
     r = chk.check_sources({})
     assert r.level == chk.WARN and any(ln.startswith("NO") and "robots.txt sin respuesta" in ln for ln in r.lines)
     # Una ruta que robots.txt prohíbe no se cuenta como falla: «--» en la lista, fuera de la cuenta.
     monkeypatch.setattr(chk, "_robots_verdicts",
-                        lambda urls: {u: "robots.txt no lo permite" for u in urls if "snirh.ana" in u})
+                        lambda urls, robots=None: {u: "robots.txt no lo permite" for u in urls if "snirh.ana" in u})
     r = chk.check_sources({})
     ana = [ln for ln in r.lines if "snirh.ana" in ln]
     asked = len(r.lines) - len(ana)
@@ -539,6 +539,36 @@ def test_robots_verdicts_follow_rfc_9309(monkeypatch):
     monkeypatch.setattr(chk, "_client", lambda timeout=20.0: real(transport=httpx.MockTransport(handler)))
     got = chk._robots_verdicts(["https://a.pe/x/1", "https://a.pe/y", "https://b.pe/z", "https://c.pe/feed/"])
     assert got == {"https://a.pe/x/1": "robots.txt no lo permite", "https://b.pe/z": "robots.txt sin respuesta (timeout)"}
+
+
+def test_check_probe_checks_each_redirect_hop_against_robots_txt(monkeypatch):
+    """Como en la recolección: un salto que robots.txt prohíbe no se pide ni cuenta como falla; uno cuyo
+    robots.txt no responde cuenta como falla."""
+    import httpx
+
+    from enso.reach import Robots
+
+    asked: list[str] = []
+    routes = {"https://a.pe/robots.txt": httpx.Response(200, text="User-agent: *\nDisallow: /privado/\n"),
+              "https://a.pe/x": httpx.Response(302, headers={"location": "/privado/x"}),
+              "https://a.pe/y": httpx.Response(302, headers={"location": "https://b.pe/y"}),
+              "https://b.pe/robots.txt": httpx.Response(429),
+              "https://a.pe/z": httpx.Response(302, headers={"location": "/z.json"}),
+              "https://a.pe/z.json": httpx.Response(200, json={"a": 1})}
+
+    def handler(req):
+        asked.append(str(req.url))
+        return routes.get(str(req.url), httpx.Response(404))
+
+    real = httpx.Client
+    monkeypatch.setattr(chk, "_client", lambda timeout=20.0: real(transport=httpx.MockTransport(handler),
+                                                                   follow_redirects=True))
+    robots = Robots(chk._client())
+    barred, unread, good = (chk._probe(u, "json", robots) for u in ("https://a.pe/x", "https://a.pe/y", "https://a.pe/z"))
+    assert "https://a.pe/privado/x" not in asked and "https://b.pe/y" not in asked
+    assert barred["skip"] and not barred["ok"] and "robots.txt no lo permite" in barred["why"]
+    assert not unread["skip"] and not unread["ok"] and "robots.txt sin respuesta" in unread["why"]
+    assert good["ok"] and good["why"] == "HTTP 200"
 
 
 def test_check_flags_tampered_or_missing_kit_files(home):

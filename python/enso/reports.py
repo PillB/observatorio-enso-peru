@@ -874,7 +874,7 @@ def _informe_pdf(fetcher, url: str, FetchError, archive_prefix, problems: Option
     humana (la DHN la sirve a GitHub Actions y a n8n) o de error no se lee y no corta la búsqueda.
 
     Orden (el documentado): el portal y la réplica de la DHN con las copias de los recolectores; el repositorio
-    del IMARPE (oficial, alcanzable desde Actions); y solo al final el Internet Archive. ``problems`` recibe la
+    del IMARPE (oficial; desde Actions, por la copia del Perú); y solo al final el Internet Archive. ``problems`` recibe la
     causa si el repositorio falla."""
     from .observatory import archived_copy
 
@@ -902,7 +902,7 @@ def _informe_pdf(fetcher, url: str, FetchError, archive_prefix, problems: Option
             pass
     ref = informe_ref(url) or _dhn_ref(url)
     if ref and "repositorio.imarpe.gob.pe" not in url:
-        # El mismo informe (número y año) en el repositorio del IMARPE, alcanzable desde Actions.
+        # El mismo informe (número y año) en el repositorio del IMARPE (desde Actions, por la copia del Perú).
         got = pdf(imarpe_repo.informe_pdf(fetcher, ref["year"], ref["n"], problems))
         if got:
             return got
@@ -1012,7 +1012,7 @@ def _acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional
         except FetchError:
             hit = None
         if hit is None:
-            # El repositorio del IMARPE: responde a GitHub Actions y el nombre del PDF trae la fecha de corte.
+            # El repositorio del IMARPE (directo o por la copia del Perú): el nombre del PDF trae la fecha de corte.
             try:
                 hit = pick_informe(imarpe_repo.informes(fetcher, problems=repo_problems), latest)
             except Exception:  # noqa: BLE001 — una ruta más nunca detiene la corrida
