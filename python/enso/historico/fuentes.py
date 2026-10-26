@@ -1,17 +1,19 @@
 """Lectores de las fuentes de 2016 en adelante y de las capas de contexto distrital.
 
 DesInventar (``desinventar.py``) es la serie homogénea 1970-2015. Después de 2015 no hay una base
-pública equivalente, así que el catálogo junta las que se pueden descargar sin permisos especiales
+pública equivalente con impactos, así que el catálogo junta las que se pueden descargar sin permisos especiales
 (``docs/memoria-desastres.md``, «Fuentes»):
 
 * **SINPAD 2016-2018**: emergencias del SINPAD (INDECI) en una copia pública de ArcGIS Online. Tiene el
   código SINPAD, el fenómeno, el distrito por nombre y un punto, pero no las cifras de daños. Cubre el
   Niño Costero 2017 con más de 7 000 emergencias.
+* **SINPAD desde 2019**: la consulta pública del portal del SINPAD (INDECI): cada emergencia con su código, el
+  peligro principal, el distrito por nombre, la fecha, el nivel y el estado. Sin descripción, punto ni daños.
 * **IDMC, eventos de desplazamiento (IDU) 2025-2026**: el Observatorio de Desplazamiento Interno (IDMC)
   publica en HDX cada emergencia del INDECI que dejó viviendas destruidas o inhabitables, por distrito y
   con coordenadas. Cubre la temporada 2025 y el Niño costero de 2026.
 * **IDMC, eventos por departamento y mes 2019-2024**: la misma fuente, más gruesa (casi siempre un
-  departamento y un mes). Llena 2023 (ciclón Yaku y Niño costero 2023-24) a escala departamental.
+  departamento y un mes), con las personas desplazadas del ciclón Yaku y el Niño costero 2023-24.
 * **NASA, catálogo global de deslizamientos (GLC)**: deslizamientos de 2016 a 2020 con la noticia que los
   reportó.
 
@@ -44,7 +46,9 @@ LIMA = timezone(timedelta(hours=-5))  # el Perú no usa horario de verano
 
 SINPAD_URL = "https://services8.arcgis.com/2qDHoDLqu6VOlf1y/arcgis/rest/services/Emergencias/FeatureServer/0"
 SINPAD_LICENSE = "Datos del SINPAD (INDECI), información pública; copia en ArcGIS Online de un tercero"
-IDMC_PAGE = IDMC_EVENTS_PAGE = "https://www.internal-displacement.org/database/displacement-data/"
+SINPAD_API_URL = "https://prod4.indeci.gob.pe/portal-sinpad/api/v1/public/emergencias"
+SINPAD_API_LICENSE = "SINPAD (INDECI), información pública (Ley N° 27806)"
+IDMC_PAGE = IDMC_EVENTS_PAGE ="https://www.internal-displacement.org/database/displacement-data/"
 IDMC_LICENSE = "IDMC con datos del INDECI, CC BY-NC-SA 3.0 IGO"
 #: Columnas de la API del IDMC con otro nombre en sus exportaciones CSV (las de HDX): el lector usa estas.
 IDMC_ALIASES = {"standard_popup_text": "description", "hazard_sub_type_name": "hazard_subtype_name"}
@@ -65,6 +69,45 @@ SINPAD_TYPES = {
     "OTROS DE GEODINAMICA EXTERNA": None, "OTRO FENOM. MET.  O HIDROL.": None,
     "EPIDEMIAS": "Epidemia", "PLAGAS": "Plaga",
 }
+#: Peligro principal del portal del SINPAD (desde 2019; los 89 nombres que usa, en ``esquema.key``) →
+#: DangerType. ``None``: el peligro fue climático pero no se sabe cuál («otros», colapsos de estructuras «por
+#: agente climático», deglaciación) y no entra. Epidemias y plagas tampoco: el portal no trae la descripción para
+#: saber si las causó el clima. Lo que no está no es de origen climático: incendios urbanos e industriales,
+#: sismos, vulcanismo y lahares, derrumbes y colapsos de viviendas o estructuras, aniegos (casi siempre de
+#: tuberías), embalses, contaminación, derrames, accidentes, conflictos.
+SINPAD_API_TYPES = {
+    "lluvias intensas": "Lluvias intensas",
+    "inundacion por desborde de rio": "Inundacion fluvial",
+    "inundacion por colapso de defensa riberena": "Desborde de rio",
+    "inundacion por saturacion del suelo para drenaje (pluvial)": "Inundacion pluvial",
+    "inundacion por desborde de canales": "Inundacion",
+    "inundacion por desborde lago o laguna": "Inundacion",
+    "inundacion por desborde en la ruptura de diques": "Inundacion",
+    "huaico": "Huayco/Alud", "aluvion": "Huayco/Alud", "aluviones": "Huayco/Alud", "alud": "Huayco/Alud",
+    "aludes": "Huayco/Alud", "avalancha": "Huayco/Alud",
+    "deslizamiento": "Deslizamiento", "derrumbe cerros": "Deslizamiento", "derrumbe de rocas": "Deslizamiento",
+    "reptacion": "Deslizamiento",
+    "erosion": "Erosion", "erosion fluvial": "Erosion",
+    "oleaje anomalo": "Oleaje anomalo", "oleajes anomalos": "Oleaje anomalo", "maretazo (marejadas)": "Oleaje anomalo",
+    "vientos fuertes": "Vientos fuertes", "temporales (vientos con lluvias)": "Tormenta",
+    "tempestades electricas": "Tormenta electrica", "tormentas electricas": "Tormenta electrica",
+    "granizadas": "Granizada", "nevadas": "Nevada", "nevada": "Nevada",
+    "heladas": "Helada/Friaje", "helada": "Helada/Friaje", "friaje": "Helada/Friaje",
+    "descenso de temperatura": "Helada/Friaje", "bajas temperaturas": "Helada/Friaje",
+    "olas de calor": "Ola de calor",
+    "sequias": "Sequias", "sequia": "Sequias", "deficit hidrico": "Sequias",
+    "incendios forestales": "Incendio forestal",
+    "epidemias": "Epidemia", "epidemia dengue": "Epidemia", "epidemia covid-19": "Epidemia",
+    "plaga": "Plaga", "plagas": "Plaga",
+    "otros": None, "colapso de estructura por agente climatico": None, "deglaciacion": None, "desglaciacion": None,
+}
+#: El portal registra cada emergencia, también las pequeñas de atención local. Para no confundir una temporada de
+#: lluvias normal con un gran Niño, una emergencia cuenta para un Niño o una Niña del ICEN (por su fecha) solo
+#: desde este nivel: atención regional o nacional. Los eventos con nombre (Ciclón Yaku 2023) cuentan siempre.
+SINPAD_ICEN_LEVEL = 3
+#: Niveles de emergencia del SINAGERD (Reglamento de la Ley N° 29664, art. 43): quién la atiende.
+SINPAD_LEVELS = {1: "atención local", 2: "atención local", 3: "atención regional",
+                 4: "intervención del gobierno nacional", 5: "gran magnitud"}
 #: Subtipo del IDMC → DangerType. «Storm» junta lluvia, viento y rayos (el IDMC no dice cuál): queda
 #: «Tormenta». «Mixed disasters» (varios peligros a la vez) y los sismos no entran.
 IDMC_TYPES = {
@@ -114,7 +157,7 @@ def inside(territory, code: str, loc: Optional[dict]) -> bool:
         return False
     if loc["code"].startswith(code):
         return True
-    return len(code) == 6 and territory.point(code)[0] is None and loc["code"][:4] == code[:4]
+    return len(code) == 6 and not territory.has_capital(code) and loc["code"][:4] == code[:4]
 
 
 def place(territory, dep: str, prov: str, dist: str, lat, lon, code: str = "") -> tuple[Optional[str], Optional[tuple], str]:
@@ -221,6 +264,62 @@ def sinpad(doc: dict, territory, calendar, since: str = "2016-01-01", until: str
                    cite=f"SINPAD (INDECI), emergencia {cod}: «{desc}» ({fen.lower()}; {names})",
                    description=f"{_sentence(desc)}. Emergencia registrada en el SINPAD como «{fen.lower()}»{_edan(a.get('EDANOS'))}.{note}",
                    place=_place_name(desc), source_type=fen, danger_method=method, latlon=latlon)
+
+
+# ---------------------------------------------------------------------------
+# SINPAD desde 2019 (portal público del INDECI)
+# ---------------------------------------------------------------------------
+def sinpad_api_type(fen: str) -> tuple[Optional[str], str]:
+    """(DangerType, método) del peligro principal de una emergencia del portal, o (None, motivo)."""
+    k = E.key(fen)
+    if k not in SINPAD_API_TYPES:
+        return None, "no climático"
+    dt = SINPAD_API_TYPES[k]
+    if dt in ("Epidemia", "Plaga"):
+        return None, "sin causa climática"
+    return (dt, "fuente") if dt else (None, "sin tipo")
+
+
+def _level(n) -> str:
+    return f", nivel {n} ({SINPAD_LEVELS[n]})" if n in SINPAD_LEVELS else ", sin nivel asignado"
+
+
+def sinpad_api(doc: dict, territory, calendar, since: str = "2019-01-01",
+               skipped: Optional[Counter] = None) -> Iterator[dict]:
+    """Emergencias de origen climático del portal público del SINPAD. Desde 2019, porque 2016-2018 viene de
+    la copia de ArcGIS Online (con descripción y punto) y la consulta del portal empieza el 01-01-2019. El
+    portal solo da el peligro, el distrito, la fecha, el nivel y el estado: sin descripción ni daños."""
+    skipped = skipped if skipped is not None else Counter()
+    base = doc.get("source") or SINPAD_API_URL
+    for it in doc["items"]:
+        when = (it.get("fechaHoraEvento") or "").strip()
+        try:
+            day = datetime.strptime(when[:10], "%d/%m/%Y").date().isoformat()
+        except ValueError:
+            skipped["sin fecha"] += 1
+            continue
+        if day < since:
+            continue
+        fen = re.sub(r"\s+", " ", it.get("peligroPrincipal") or "").strip()
+        dt, method = sinpad_api_type(fen)
+        if not dt:
+            skipped[method] += 1
+            continue
+        names = (it.get("dptoProvDistr") or "").split("/")
+        dep, prov, dist = (names + ["", "", ""])[:3] if len(names) <= 3 else (names[0], names[1], "/".join(names[2:]))
+        code, _, _ = place(territory, dep, prov, dist, None, None)
+        if not code:
+            skipped["sin lugar"] += 1
+            continue
+        cod = str(it.get("codigoSinpad") or "").strip()
+        state = (it.get("estado") or "").strip().lower()
+        where = " / ".join(x.strip() for x in reversed(names) if x.strip())
+        yield make(territory, calendar, code=code, day=day, precision="dia", danger=dt, origin="sinpad",
+                   source_id=cod, url=f"{base}?codigoSinpad={cod}", license=SINPAD_API_LICENSE,
+                   cite=f"SINPAD (INDECI), emergencia {cod}: {fen.lower()} en {where}, {when}",
+                   description=(f"Emergencia por {fen.lower()} registrada en el SINPAD con el código {cod}"
+                                f"{_level(it.get('nivel'))}." + (f" Estado en el SINPAD: {state}." if state else "")),
+                   source_type=fen, danger_method=method, icen=(it.get("nivel") or 0) >= SINPAD_ICEN_LEVEL)
 
 
 # ---------------------------------------------------------------------------

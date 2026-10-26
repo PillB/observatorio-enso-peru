@@ -241,7 +241,8 @@ function legendHtml(scale, metric) {
 // ---------------------------------------------------------------------------
 function timeline(D, recs, { compact = false, from = 1970, to = null } = {}) {
   const by = M.byYear(recs);
-  const last = to || Math.max(...D.recs.map((r) => r.hy));
+  // Sin «Math.max(...recs)»: con 146 000 registros desborda la pila de llamadas.
+  const last = to || D.recs.reduce((m, r) => (r.hy > m ? r.hy : m), from);
   const years = [];
   for (let y = from; y <= last; y++) years.push(y);
   const max = Math.max(1, ...years.map((y) => by.get(y)?.da.size || 0));
@@ -279,7 +280,7 @@ export const memoriaView = {
     let D;
     try { D = await loadAll(); } catch (e) {
       console.error(e);
-      root.innerHTML = String(html`<div class="notice notice-warn">${raw(ICON.triangle)}<p>No se pudo cargar el catálogo histórico. Puede descargarlo directamente en <a href="${BASE}eventos.csv" download>CSV</a>.</p></div>`);
+      root.innerHTML = String(html`<div class="notice notice-warn">${raw(ICON.triangle)}<p>No se pudo cargar el catálogo histórico. Puede descargarlo directamente: <a href="${BASE}eventos.zip" download>CSV (en un ZIP)</a>.</p></div>`);
       return;
     }
     mount(root, D);
@@ -353,7 +354,7 @@ function page(D, s) {
     </section>
     <section class="card hz-card" aria-labelledby="hz-tl-h">
       <div class="section-head"><h2 id="hz-tl-h">Lugares con daños en cada temporada de lluvias</h2></div>
-      <p class="muted small">Cada barra es una temporada (julio a junio): cuántos lugares distintos tuvieron registros con los filtros elegidos. Franja rosada: hubo El Niño costero en diciembre–abril (ICEN). Las fuentes cambian con el tiempo y las barras no se comparan directamente: DesInventar hasta 2015 (menos registros antes de 1990), el SINPAD en 2016-2018 (más denso), casi solo departamentos en 2019-2024 y, en 2025-2026, solo emergencias con viviendas inhabitables (IDMC). Ver «Límites».</p>
+      <p class="muted small">Cada barra es una temporada (julio a junio): cuántos lugares distintos tuvieron registros con los filtros elegidos. Franja rosada: hubo El Niño costero en diciembre–abril (ICEN). Las fuentes cambian con el tiempo y las barras no se comparan directamente: DesInventar hasta 2015 (menos registros antes de 1990) y, desde 2016, el SINPAD del INDECI, que registra muchas más emergencias por año. Ver «Límites».</p>
       ${raw(timeline(D, recs))}
     </section>
     ${greatSection(D, s)}
@@ -559,7 +560,7 @@ function methodSection(D) {
       <div>
         <h3 class="hz-h3">Descargas</h3>
         <ul class="link-list">
-          <li><a href="${BASE}eventos.csv" download>Catálogo completo (CSV, ${n0(S.registros)} registros)</a> <span class="muted small">Las 13 primeras columnas son las del tablero del equipo de prevención: Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud.</span></li>
+          <li><a href="${BASE}eventos.zip" download>Catálogo completo (CSV en un ZIP, ${n0(S.registros)} registros)</a> <span class="muted small">Las 13 primeras columnas son las del tablero del equipo de prevención: Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud.</span></li>
           <li><a href="${BASE}eventos.json">Versión compacta (JSON)</a> · <a href="${BASE}resumen.json">Resumen, cobertura y atributos (JSON)</a> · <a href="${BASE}contexto.json">Peligro identificado hoy por distrito (JSON)</a></li>
           <li><a href="${BASE}contexto-distrito.csv">Historial y peligro actual por distrito (CSV)</a> · <a href="${BASE}indicadores-distrito.csv">indicadores por distrito</a>, <a href="${BASE}indicadores-provincia.csv">provincia</a> y <a href="${BASE}indicadores-departamento.csv">departamento</a></li>
         </ul>
@@ -574,7 +575,7 @@ function methodSection(D) {
           <li><strong>1 de cada X años</strong> y <strong>probabilidad en 5 años</strong>: frecuencia histórica; suponen que el clima y la exposición no cambian. No son pronósticos.</li>
           <li><strong>Cuánto más daño con Niño</strong>: lugares-año con daños por año en temporadas con Niño costero (ICEN, diciembre–abril) dividido entre los de las demás temporadas, con intervalo de Poisson al 95 %.</li>
           <li><strong>Nivel de atención</strong> (no es un índice oficial de riesgo): muy alto = registros en 2 o más grandes Niños y daños en al menos 1 de cada 4 años; alto = una de las dos; medio = 1 gran Niño o daños en 1 de cada 10 años; bajo = otros con registros.</li>
-          <li><strong>TipoEvento</strong>: los eventos con nombre (Niño Costero 2017 en los 13 departamentos del Plan de Reconstrucción; Ciclón Yaku 2023 en la costa norte y Lima), solo para lluvias, inundaciones, huaycos, oleaje y viento, y los Niños y Niñas costeros del ICEN por la fecha del registro. Que un registro caiga dentro de un Niño no prueba que el Niño lo causó.</li>
+          <li><strong>TipoEvento</strong>: los eventos con nombre (Niño Costero 2017 en los 13 departamentos del Plan de Reconstrucción; Ciclón Yaku 2023 en la costa norte y Lima), solo para lluvias, inundaciones, huaycos, oleaje y viento, y los Niños y Niñas costeros del ICEN por la fecha del registro (del SINPAD desde 2019, solo las emergencias de nivel 3 o más, las que necesitaron al gobierno regional o al nacional). Que un registro caiga dentro de un Niño no prueba que el Niño lo causó.</li>
         </ul>
         <h3 class="hz-h3">Límites</h3>
         <ul class="hz-method">
@@ -582,7 +583,7 @@ function methodSection(D) {
           <li>DesInventar se arma con prensa nacional e informes del INDECI: hay más registros de ciudades y lugares accesibles, y menos antes de los años 90. Una zona sin registros no es una zona sin peligro.</li>
           <li>Las cifras de impacto son las que publicó cada fuente; un vacío significa «no reportado», no cero. Las fuentes discrepan entre sí (Huggel et al., 2015).</li>
           <li>Los distritos se ubican con su UBIGEO o, si el nombre de la fuente está abreviado, con el punto de la fuente dentro de los límites del IGN; las coordenadas son las de la fuente si caen en el distrito asignado y, si no, las de la capital del distrito.</li>
-          <li>Entre 2019 y 2024 no hay una fuente pública por distrito: el SINPAD completo solo se obtiene pidiéndolo al INDECI. En esos años el catálogo tiene casi solo registros por departamento.</li>
+          <li>Desde 2019 el SINPAD se lee del portal público del INDECI, que da el peligro, el distrito, la fecha, el nivel y el estado de cada emergencia, pero no su descripción ni sus daños. Por eso esas fichas se ubican en la capital del distrito y no aportan impactos; las del IDMC, que salen de las mismas emergencias, sí traen personas desplazadas y viviendas.</li>
         </ul>
       </div>
     </div>

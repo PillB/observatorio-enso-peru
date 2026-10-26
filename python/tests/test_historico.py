@@ -8,9 +8,11 @@ INGEMMET, salud 2023, recortadas de las descargas de octubre de 2026). El catál
 from __future__ import annotations
 
 import csv
+import io
 import json
 import re
 import subprocess
+import zipfile
 from collections import Counter
 from pathlib import Path
 
@@ -72,6 +74,20 @@ def test_territory_resolves_codes_names_and_legacy(T):
     assert T.resolve(code="160109") == "160801"  # Putumayo pasó a su propia provincia
     assert T.resolve("LA LIBERTAD", "STGO. DE CHUCO", "STGO. DE CHUCO") == "13"  # abreviado: solo el departamento
     assert T.names("200105") == ("Piura", "Piura", "Catacaos")
+
+
+def test_territory_disambiguates_by_province_and_spelling(T):
+    # Un nombre repetido en el departamento se decide por la provincia.
+    assert T.resolve("PUNO", "MELGAR", "SANTA ROSA") == "210808"
+    assert T.resolve("PUNO", "EL COLLAO", "SANTA ROSA") == "210504"
+    # Grafías del SINPAD: «Lima Provincia» y «Lima Metropolitana», guion bajo, paréntesis, nombres truncados.
+    assert T.resolve("LIMA PROVINCIA", "CANTA", "CANTA") == "150401"
+    assert T.resolve("LIMA METROPOLITANA", "LIMA METROPOLITANA", "LURIGANCHO-CHOSICA") == "150118"
+    assert T.resolve("APURÍMAC", "CHINCHEROS", "ANCO_HUALLO") == "030602"
+    assert T.resolve("HUÁNUCO", "HUÁNUCO", "QUISQUI (KICHKI)") == "100106"
+    assert T.resolve("CAJAMARCA", "CONTUMAZÁ", "SANTA CRUZ DE TOLED") == "060506"
+    # Un truncado que coincide con dos distritos de la provincia se queda en la provincia.
+    assert T.resolve("LIMA", "LIMA", "SAN JUAN DE") == "1501"
 
 
 def test_place_uses_the_point_when_names_are_abbreviated(T):
@@ -258,6 +274,92 @@ def test_robots_restricted_sources():
     for sid in ("idmc-idu", "idmc-eventos"):
         assert by[sid]["descarga"] == "idmc-api" and by[sid]["url"].startswith("https://helix-tools-api.idmcdb.org/")
         assert "client_id" not in json.dumps(by[sid]["url"]) and "IDMC_CLIENT_ID" in by[sid]["clave"]
+    # El portal del SINPAD (INDECI) no tiene robots.txt; igual va al menos a 5 s entre pedidos.
+    assert by["sinpad-api"]["descarga"] == "sinpad-api" and B.peru_public(by["sinpad-api"]["url"])
+
+
+def _emergency(code, hazard, place, when, nivel=1, estado="CERRADO"):
+    return {"codigoSinpad": code, "peligroPrincipal": hazard, "dptoProvDistr": place, "fechaHoraEvento": when,
+            "nivel": nivel, "estado": estado, "version": 0}
+
+
+def test_sinpad_api_pages_by_month_resumes_and_stops_politely(monkeypatch, tmp_path, T, cal):
+    import httpx
+    from datetime import date
+
+    jan = [_emergency(30, "INUNDACIÓN POR DESBORDE DE RIO", "PIURA/PIURA/CASTILLA", "20/01/2019 06:00", 2),
+           _emergency(20, "INCENDIOS URBANOS", "LIMA/LIMA/BREÑA", "12/01/2019 22:10"),
+           _emergency(10, "LLUVIAS INTENSAS", "JUNÍN/CHANCHAMAYO/PICHANAQUI", "02/01/2019 15:00", 4, "ACTIVO")]
+    feb = [_emergency(40, "OTROS", "CUSCO/CUSCO/CUSCO", "05/02/2019 10:00", 0)]
+    calls, fail_once = [], {"503": True}
+
+    def handler(request):
+        q = dict(request.url.params)
+        calls.append((q["fechaInicio"], q["pageNumber"]))
+        assert q["pageSize"] == "2" and request.url.host == "prod4.indeci.gob.pe"
+        if q["fechaInicio"] == "01/01/2019":
+            if fail_once.pop("503", False):
+                return httpx.Response(503)
+            # Entre la página 1 y la 2 se registró una emergencia nueva: la 2 repite una fila.
+            items = jan[:2] if q["pageNumber"] == "1" else jan[1:]
+            total = 3
+        else:
+            assert (q["fechaInicio"], q["fechaFin"]) == ("01/02/2019", "10/02/2019")
+            items, total = feb, 1
+        return httpx.Response(200, json={"status": 200, "message": "OK", "data": {
+            "items": items, "page": {"size": 2, "totalElements": total, "totalPages": -(-total // 2),
+                                     "number": int(q["pageNumber"])}}})
+
+    real = httpx.Client
+    mock = lambda h: (lambda **kw: real(transport=httpx.MockTransport(h), **{k: v for k, v in kw.items() if k != "verify"}))  # noqa: E731
+    monkeypatch.setattr(B.httpx, "Client", mock(handler))
+    src = {**{s["id"]: s for s in json.loads(B.MANIFEST.read_text(encoding="utf-8"))["fuentes"]}["sinpad-api"],
+           "parametros": {"desde": "2019-01-01", "pageSize": 2}}
+    parts = tmp_path / "partes"
+    doc = json.loads(B.sinpad_api(src, parts, delay=0, until=date(2019, 2, 10)))
+    assert [x["codigoSinpad"] for x in doc["items"]] == [10, 20, 30, 40]
+    assert (doc["desde"], doc["hasta"]) == ("2019-01-01", "2019-02-10") and not parts.exists()
+    assert calls == [("01/01/2019", "1"), ("01/01/2019", "1"), ("01/01/2019", "2"), ("01/02/2019", "1")]
+
+    # Una descarga cortada sigue donde quedó, con la misma fecha de corte.
+    parts.mkdir()
+    (parts / "corte.json").write_text('{"hasta": "2019-02-10"}', encoding="utf-8")
+    (parts / "2019-01.json").write_text(json.dumps(jan), encoding="utf-8")
+    calls.clear()
+    assert json.loads(B.sinpad_api(src, parts, delay=0)) == doc
+    assert calls == [("01/02/2019", "1")]
+
+    sk = Counter()
+    rows = list(F.sinpad_api(doc, T, cal, skipped=sk))
+    assert [(r["IdFuente"], r["Ubigeo"], r["DangerType"]) for r in rows] == [
+        ("10", "120303", "Lluvias intensas"), ("30", "200104", "Inundacion fluvial")]
+    assert sk == {"no climático": 1, "sin tipo": 1}
+    r = rows[0]
+    assert (r["Date"], r["Origen"], r["Confianza"]) == ("2019-01-02", "sinpad", "alta")
+    assert r["Fuente"] == "https://prod4.indeci.gob.pe/portal-sinpad/api/v1/public/emergencias?codigoSinpad=10"
+    assert "nivel 4 (intervención del gobierno nacional)" in r["Descripción"] and "activo" in r["Descripción"]
+    # Enero de 2019 cae en el Niño costero 2018-19 del ICEN: cuenta la emergencia de nivel 4, no la de nivel 2.
+    assert [(x["TipoEvento"], x["AtribucionENSO"]) for x in rows] == [
+        ("FEN costero 2018-19", "ventana-icen"), ("Temporada de lluvias", "ninguna")]
+
+    # Si a un mes le faltan filas, se pide otra vez y luego se detiene; ante una página que no es JSON
+    # (una verificación antirobots) no se insiste.
+    def short(request):
+        return httpx.Response(200, json={"status": 200, "data": {"items": jan[:1], "page": {"totalElements": 5, "totalPages": 1}}})
+
+    monkeypatch.setattr(B.httpx, "Client", mock(short))
+    with pytest.raises(SystemExit, match="anunció 5"):
+        B.sinpad_api(src, tmp_path / "p2", delay=0, until=date(2019, 1, 31))
+    calls.clear()
+
+    def challenge(request):
+        calls.append(1)
+        return httpx.Response(200, text="<html>Just a moment...</html>")
+
+    monkeypatch.setattr(B.httpx, "Client", mock(challenge))
+    with pytest.raises(SystemExit, match="antirobots"):
+        B.sinpad_api(src, tmp_path / "p3", delay=0, until=date(2019, 1, 31))
+    assert calls == [1]
 
 
 def test_idmc_api_pages_filters_peru_and_hides_the_key(monkeypatch, T, cal):
@@ -317,8 +419,12 @@ def test_idmc_api_pages_filters_peru_and_hides_the_key(monkeypatch, T, cal):
 
 
 def test_published_catalog():
-    with (OUT / "eventos.csv").open(encoding="utf-8-sig") as fh:
-        reader = csv.DictReader(fh)
+    # El CSV completo va en un ZIP: cada archivo del sitio debe quedar bajo los 25 MiB de Cloudflare Pages.
+    assert not (OUT / "eventos.csv").exists()
+    assert all(f.stat().st_size < 25 * 2**20 for f in OUT.rglob("*") if f.is_file())
+    with zipfile.ZipFile(OUT / "eventos.zip") as z:
+        assert z.namelist() == ["eventos.csv"]
+        reader = csv.DictReader(io.TextIOWrapper(z.open("eventos.csv"), encoding="utf-8-sig"))
         assert reader.fieldnames[:13] == E.TEAM_COLUMNS
         rows = list(reader)
     summary = json.loads((OUT / "resumen.json").read_text(encoding="utf-8"))

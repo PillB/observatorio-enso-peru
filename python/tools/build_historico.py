@@ -6,13 +6,13 @@ Pasos (todos reproducibles; ``docs/memoria-desastres.md``):
    su SHA-256. Si la fuente cambió, se avisa y no se sigue sin ``--aceptar-cambios`` (que actualiza el
    manifiesto): así un cambio silencioso de la fuente no altera el catálogo publicado.
 2. Lee cada fuente con su lector (``enso.historico.desinventar`` para 1970-2015,
-   ``enso.historico.fuentes`` para SINPAD 2016-2018, IDMC 2019-2026 y NASA, registros curados en
+   ``enso.historico.fuentes`` para el SINPAD desde 2016, IDMC 2019-2026 y NASA, registros curados en
    ``data/historico/curado/*.yaml``) y normaliza todo a ``enso.historico.esquema.COLUMNS``. Las capas de
    contexto (INGEMMET, ANA, establecimientos de salud) no son eventos: se resumen por distrito.
 3. Ubica cada registro en su UBIGEO vigente y le asigna la fase ENSO del mes (ICEN y ONI).
 4. Escribe:
-   * ``public/assets/historico/eventos.csv``: el catálogo completo, con las 13 columnas del equipo de
-     prevención primero (UTF-8 con BOM para que Excel lea las tildes).
+   * ``public/assets/historico/eventos.zip``: el catálogo completo en ``eventos.csv``, con las 13 columnas
+     del equipo de prevención primero (UTF-8 con BOM para que Excel lea las tildes).
    * ``public/assets/historico/eventos.json``: versión compacta para el navegador.
    * ``public/assets/historico/detalle/<departamento>.json``: descripción, lugar y fuente de cada registro,
      que el sitio pide solo al abrir un área.
@@ -40,8 +40,9 @@ import json
 import os
 import shutil
 import sys
+import zipfile
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 from urllib.parse import urlsplit
@@ -72,6 +73,7 @@ UA = {"User-Agent": f"observatorio-enso-peru (catalogo historico; https://{REPO}
 READERS = {
     "desinventar": lambda path, t, c, sk: desinventar.records(desinventar.read_export(path), t, c),
     "sinpad": lambda path, t, c, sk: F.sinpad(json.loads(path.read_text(encoding="utf-8")), t, c, skipped=sk),
+    "sinpad-api": lambda path, t, c, sk: F.sinpad_api(json.loads(path.read_text(encoding="utf-8")), t, c, skipped=sk),
     "idmc-idu": lambda path, t, c, sk: F.idmc_idu(path.read_text(encoding="utf-8"), t, c, skipped=sk),
     "idmc-eventos": lambda path, t, c, sk: F.idmc_events(path.read_text(encoding="utf-8"), t, c, skipped=sk),
     "nasa-glc": lambda path, t, c, sk: F.glc(json.loads(path.read_text(encoding="utf-8")), t, c, skipped=sk),
@@ -169,6 +171,93 @@ def idmc_api(src: dict, delay: float = 1.0) -> bytes:
     return buf.getvalue().encode("utf-8")
 
 
+def _months(start: date, end: date):
+    """(primer día, último día) de cada mes entre ``start`` y ``end``, recortados a ese intervalo."""
+    a = start
+    while a <= end:
+        nxt = date(a.year + a.month // 12, a.month % 12 + 1, 1)
+        yield a, min(end, nxt - timedelta(days=1))
+        a = nxt
+
+
+def sinpad_api(src: dict, parts: Path, delay: float = 5.0, until: Optional[date] = None) -> bytes:
+    """Emergencias del portal público del SINPAD (INDECI) desde ``parametros.desde``, mes por mes y en
+    páginas de 100 (lo más que ofrece el portal), como JSON canónico ordenado por código: el SHA-256 solo
+    cambia si cambian los datos.
+
+    Son unas 1 400 páginas, así que cada mes terminado se guarda en ``parts`` y una descarga cortada sigue
+    donde quedó (con la misma fecha de corte). Las páginas van de la emergencia más nueva a la más vieja:
+    una registrada mientras se pagina solo repite una fila, que se descarta. Si a un mes le faltan filas
+    respecto del total que anunció, se pide de nuevo una vez y, si siguen faltando, se detiene."""
+    import time
+
+    p = src.get("parametros", {})
+    size = int(p.get("pageSize", 100))
+    parts.mkdir(parents=True, exist_ok=True)
+    state = parts / "corte.json"
+    if state.exists():
+        end = date.fromisoformat(json.loads(state.read_text(encoding="utf-8"))["hasta"])
+    else:
+        end = until or datetime.now(F.LIMA).date()
+        state.write_text(json.dumps({"hasta": end.isoformat()}), encoding="utf-8")
+    start = date.fromisoformat(p.get("desde", "2019-01-01"))
+    last = [0.0]
+
+    def get(c: httpx.Client, params: dict) -> dict:
+        for attempt in range(4):
+            time.sleep(max(0.0, last[0] + delay * (1 + 2 * attempt) - time.monotonic()))
+            last[0] = time.monotonic()
+            try:
+                r = c.get(src["url"], params=params)
+            except httpx.HTTPError as e:
+                why = type(e).__name__
+            else:
+                if r.status_code != 200:
+                    why = f"HTTP {r.status_code}"
+                    if r.status_code != 429 and r.status_code < 500:
+                        break
+                else:
+                    try:
+                        d = r.json()
+                    except ValueError:
+                        why = "una página que no es JSON (¿verificación antirobots?)"
+                        break  # no se insiste ante una verificación
+                    if d.get("status") == 200:
+                        return d["data"]
+                    why = f"estado {d.get('status')}"
+            print(f"  {src['id']}: {why}, se reintenta", file=sys.stderr)
+        raise SystemExit(f"{src['id']}: el SINPAD respondió {why} a {params}")
+
+    items: dict[int, dict] = {}
+    with httpx.Client(follow_redirects=True, timeout=120, headers=UA, verify=ssl_context()) as c:
+        for a, b in _months(start, end):
+            part = parts / f"{a:%Y-%m}.json"
+            if part.exists():
+                got = {x["codigoSinpad"]: x for x in json.loads(part.read_text(encoding="utf-8"))}
+            else:
+                for _ in range(2):
+                    got, page, pages, total = {}, 1, 1, None
+                    while page <= pages:
+                        d = get(c, {"fechaInicio": f"{a:%d/%m/%Y}", "fechaFin": f"{b:%d/%m/%Y}",
+                                    "pageNumber": page, "pageSize": size})
+                        total = d["page"]["totalElements"] if total is None else total
+                        pages = d["page"]["totalPages"]
+                        got.update((x["codigoSinpad"], x) for x in d["items"])
+                        page += 1
+                    if len(got) >= total:
+                        break
+                else:
+                    raise SystemExit(f"{src['id']}: {a:%Y-%m} anunció {total} emergencias y llegaron {len(got)}")
+                part.write_text(json.dumps(list(got.values()), ensure_ascii=False), encoding="utf-8")
+                print(f"  {src['id']}: {a:%Y-%m}: {len(got)} emergencias", file=sys.stderr)
+            items.update(got)
+    out = json.dumps({"source": src["url"], "desde": start.isoformat(), "hasta": end.isoformat(),
+                      "items": [items[k] for k in sorted(items)]},
+                     ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    shutil.rmtree(parts)
+    return out
+
+
 #: Instituciones públicas peruanas: su información es pública por ley (Ley N° 27806) y, por decisión del
 #: proyecto (26-10-2026), un «Disallow» de su robots.txt no impide pedirla. Se respeta su Crawl-delay (y al
 #: menos PERU_PUBLIC_DELAY entre pedidos) y nunca se evade una verificación antirobots. Los mismos sufijos que
@@ -216,6 +305,8 @@ def fetch(src: dict, cache: Path, accept_changes: bool, offline: bool) -> Path:
                                          src.get("consulta", "1=1"), delay=max(0.5, delay)))
         elif src.get("descarga") == "idmc-api":
             path.write_bytes(idmc_api(src, delay=max(1.0, delay)))
+        elif src.get("descarga") == "sinpad-api":
+            path.write_bytes(sinpad_api(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
         else:
             with httpx.Client(follow_redirects=True, timeout=180, headers=UA, verify=ssl_context()) as c:
                 r = c.get(src["url"])
@@ -318,13 +409,24 @@ def mark_duplicate_impacts(records: list[dict]) -> None:
 # ---------------------------------------------------------------------------
 # Salidas
 # ---------------------------------------------------------------------------
-def write_csv(records: list[dict], path: Path) -> None:
+def catalog_csv(records: list[dict]) -> bytes:
+    """El catálogo como CSV UTF-8 con BOM (para que Excel lea las tildes)."""
     buf = io.StringIO()
     w = csv.writer(buf, lineterminator="\n")
     w.writerow(E.COLUMNS)
     for r in records:
         w.writerow([csv_safe("" if r.get(c) is None else r.get(c)) for c in E.COLUMNS])
-    path.write_text("\ufeff" + buf.getvalue(), encoding="utf-8")
+    return ("\ufeff" + buf.getvalue()).encode("utf-8")
+
+
+def write_zip(records: list[dict], path: Path, name: str = "eventos.csv") -> None:
+    """El CSV dentro de un ZIP: sin comprimir pasa de los 25 MiB que acepta Cloudflare Pages por archivo
+    (y de lo que conviene versionar en git). Fecha fija y orden estable: el ZIP solo cambia si cambian
+    los datos."""
+    info = zipfile.ZipInfo(name, date_time=(2000, 1, 1, 0, 0, 0))
+    info.compress_type, info.external_attr = zipfile.ZIP_DEFLATED, 0o644 << 16
+    with zipfile.ZipFile(path, "w") as z:
+        z.writestr(info, catalog_csv(records), compresslevel=9)
 
 
 def _n(v) -> int:
@@ -513,7 +615,8 @@ def main(argv=None) -> int:
 
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "detalle").mkdir(exist_ok=True)
-    write_csv(records, args.out / "eventos.csv")
+    write_zip(records, args.out / "eventos.zip")
+    (args.out / "eventos.csv").unlink(missing_ok=True)
     payload, detail = web_payload(records)
     generated = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     payload["generatedAt"] = generated

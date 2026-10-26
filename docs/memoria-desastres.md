@@ -49,6 +49,7 @@ obtuvieron, el número de registros que aportan, los que se descartaron y por qu
 |---|---|---|---|---|
 | [DesInventar Perú](https://www.desinventar.net/DesInventar/profiletab.jsp?countrycode=per) (Corporación OSSO, LA RED, UNDRR) | 1970-2015 | Distrito | La serie homogénea: fichas de prensa (El Comercio, La República, Expreso) y del INDECI, con impactos. 14 114 fichas de peligros de origen climático | Uso libre con atribución |
 | SINPAD (INDECI), [copia pública en ArcGIS Online](https://services8.arcgis.com/2qDHoDLqu6VOlf1y/arcgis/rest/services/Emergencias/FeatureServer/0) | 2016-2018 | Distrito y punto | 14 124 emergencias, entre ellas más de 4 000 del Niño Costero 2017. Sin cifras de daños | Información pública del INDECI; la copia no es oficial |
+| SINPAD (INDECI), [portal público del SINPAD](https://sinpad.indeci.gob.pe/portal/), por la consulta de emergencias que usa el portal | 2019-2026 | Distrito | 112 170 emergencias de origen climático con su código, peligro, fecha, nivel y estado. Sin descripción, punto ni cifras de daños | Información pública del INDECI (Ley N° 27806) |
 | [IDMC, actualizaciones de desplazamiento (IDU)](https://www.internal-displacement.org/database/displacement-data/), con datos del INDECI, por la API del IDMC | 2025-2026 | Distrito y punto | 4 895 emergencias que dejaron viviendas destruidas o inhabitables, con las personas desplazadas | CC BY-NC-SA 3.0 IGO |
 | [IDMC, desplazamientos por desastres (GIDD)](https://www.internal-displacement.org/database/displacement-data/), por la API del IDMC | 2019-2024 | Casi siempre departamento y mes | 1 015 eventos; cubre el ciclón Yaku y el Niño costero 2023-24 por departamento | CC BY-NC-SA 3.0 IGO |
 | [NASA, Global Landslide Catalog](https://gpm.nasa.gov/landslides/data.html) (copia en ArcGIS Online) | 2016-2020 | Punto | 22 deslizamientos y huaycos con la noticia que los reportó | Dominio público, con cita |
@@ -66,18 +67,15 @@ obtuvieron, el número de registros que aportan, los que se descartaron y por qu
 
 ### Fuentes que no se pudieron usar
 
-- **El SINPAD completo de 2019 en adelante.** El portal del INDECI lo sirve desde una API pública con más de 135 000
-  emergencias, pero descargarla en bloque no es un uso previsto del portal. La vía correcta es pedir la serie al
-  INDECI (o que se publique en la Plataforma Nacional de Datos Abiertos), y agregarla como una fuente más en
-  `fuentes.json`. Mientras tanto, 2019-2024 queda casi solo por departamento.
 - **datosabiertos.gob.pe** responde con un muro antibots (HTTP 418); no se intentó saltarlo.
 - **Decretos de emergencia de 2017 y 2023**: no hay una tabla de los distritos declarados; están en anexos en PDF.
 - **EM-DAT** pide registro; **DFO** y **GDACS** son demasiado gruesos para el nivel distrital.
 
 ## Columnas del catálogo
 
-`public/assets/historico/eventos.csv` (UTF-8 con BOM, para que Excel lea las tildes). Las 13 primeras son las del
-tablero del equipo de prevención, con sus nombres exactos:
+`eventos.csv`, dentro de `public/assets/historico/eventos.zip` (UTF-8 con BOM, para que Excel lea las tildes; va
+comprimido porque sin comprimir pasa de los 25 MiB que acepta Cloudflare Pages por archivo). Las 13 primeras son las
+del tablero del equipo de prevención, con sus nombres exactos:
 
 | Columna | Contenido |
 |---|---|
@@ -139,6 +137,13 @@ urbanos, derrames, contaminación. Tampoco los deslizamientos o aludes que desat
 La atribución es temporal: que un registro caiga dentro de un Niño no prueba que el Niño lo causó.
 `AtribucionENSO` dice de dónde sale (curado, ventana-icen, fuente o ninguna).
 
+Desde 2019 el SINPAD registra cada emergencia, también las pequeñas que atiende el distrito. Contadas todas, casi
+todos los distritos del país tendrían «registros del FEN 2023-24» por las lluvias normales de la sierra entre enero y
+abril de 2024 (1 650 distritos, frente a 332 con el criterio que sigue). Por eso una emergencia del portal del SINPAD
+cuenta para un Niño o una Niña del ICEN (pasos 2 y 4) solo si fue de nivel 3 o más: la que necesitó al gobierno
+regional o al nacional. Las de nivel 0 a 2 pasan al paso 5. Los eventos con nombre (paso 1) cuentan con cualquier
+nivel.
+
 ## Indicadores
 
 Se calculan igual en Python (`enso/historico/indicadores.py`, para los CSV) y en el navegador
@@ -158,8 +163,8 @@ DesInventar en el área:
 | Nivel de atención | Muy alto: registros en ≥ 2 grandes Niños y daños en ≥ 1 de cada 4 años; alto: una de las dos; medio: 1 gran Niño o daños en ≥ 1 de cada 10 años; bajo: el resto con registros | Una regla transparente para ordenar, no un índice oficial de riesgo |
 | Registros intensivos | Fichas con ≥ 30 fallecidos o ≥ 600 viviendas destruidas (umbral del GAR 2015 de UNDRR) | Separa los desastres grandes de los daños frecuentes y pequeños |
 
-**Solo DesInventar entra a la frecuencia.** SINPAD 2016-2018 tiene más de diez veces los registros por año de
-DesInventar; IDMC 2025-2026 solo incluye emergencias con viviendas inhabitables. Mezclarlas cambiaría la frecuencia
+**Solo DesInventar entra a la frecuencia.** El SINPAD (2016 en adelante) tiene más de diez veces los registros por
+año de DesInventar; IDMC 2025-2026 solo incluye emergencias con viviendas inhabitables. Mezclarlas cambiaría la frecuencia
 por un cambio de fuente, no del clima. Las fuentes posteriores sí cuentan para los registros, los impactos, los
 grandes Niños y el mapa.
 
@@ -168,10 +173,10 @@ Resultados principales (catálogo de octubre de 2026):
 - **El Niño multiplica los daños en el norte.** Distritos con daños por año en temporadas de Niño costero frente a las
   demás: Piura 2,4 veces (IC 95 %: 2,0–2,8), Tumbes 1,8 (1,3–2,3), Lambayeque 1,7 (1,3–2,2), La Libertad 1,6
   (1,3–1,9), Áncash 1,6 (1,3–1,8). En Puno es 0,8 (0,7–1,0): menos daños con Niño.
-- **Los mismos lugares se repiten.** 108 de 196 provincias tienen nivel de atención muy alto (registros en dos o más
-  grandes Niños y daños en al menos uno de cada cuatro años). Piura, Tumbes, Lambayeque, La Libertad, Áncash y Cajamarca
-  tienen registros en los cinco grandes Niños.
-- **El peligro de hoy coincide con la historia.** 66 distritos con nivel de atención alto o muy alto tienen además
+- **Los mismos lugares se repiten.** 127 de 196 provincias tienen nivel de atención muy alto (registros en dos o más
+  grandes Niños y daños en al menos uno de cada cuatro años). Piura, Tumbes, Lambayeque, La Libertad, Áncash,
+  Cajamarca, Lima e Ica tienen registros en los cinco grandes Niños.
+- **El peligro de hoy coincide con la historia.** 80 distritos con nivel de atención alto o muy alto tienen además
   puntos críticos de peligro muy alto según la ANA (por ejemplo Chimbote, Arequipa, Ica, Chicama, Olmos o Catacaos).
 
 ## Peligro identificado hoy (contexto)
@@ -224,8 +229,14 @@ cada una con su fuente (`public/assets/js/historico-evidencia.js`). El veredicto
 - **Sesgo de las fuentes.** DesInventar se arma con prensa nacional e informes del INDECI: hay más registros de
   ciudades y lugares accesibles, y menos antes de los años 90. Una zona sin registros no es una zona sin peligro.
 - **Cambio de fuentes en el tiempo.** Las barras de la línea de tiempo y los mapas de cada gran Niño no se comparan
-  en cantidad: 2017 viene del SINPAD (más denso), 2019-2024 casi solo por departamento, 2025-2026 solo de emergencias
-  con viviendas inhabitables. Por eso los mapas de los grandes Niños muestran presencia y no cantidad.
+  en cantidad: hasta 2015 vienen de DesInventar y desde 2016 del SINPAD, mucho más denso. Por eso los mapas de los
+  grandes Niños muestran presencia y no cantidad.
+- **El SINPAD desde 2019 no trae descripción ni daños.** El portal da el peligro principal, el distrito, la fecha, el
+  nivel y el estado de cada emergencia: esas fichas se ubican en la capital del distrito y su tipo es el que nombra
+  el SINPAD. Las cifras de esos años (personas desplazadas, viviendas) vienen del IDMC, que parte de las mismas
+  emergencias del INDECI; por eso una emergencia puede aparecer una vez por cada fuente. Quedan fuera las que el
+  SINPAD llama «otros», las epidemias y plagas (sin descripción no se sabe si las causó el clima), y los derrumbes
+  de viviendas y los aniegos, que casi siempre no son climáticos.
 - **Los impactos** son los que publicó cada fuente; las fuentes discrepan (Huggel et al., 2015). Un registro curado
   que resume un área ya detallada por otra fuente con cifras no suma sus impactos dos veces (`ImpactoEnTotales`).
 - **Ubicación.** Los registros se ubican por el UBIGEO o el nombre de la fuente; si el nombre está abreviado
@@ -263,6 +274,13 @@ pytest -q tests/test_historico.py
   detiene ante una verificación antirobots, que nunca se evade. Así se consultan las capas de puntos críticos de la
   ANA y de establecimientos de salud del SIGRID (`sigrid.cenepred.gob.pe`, cuyo robots.txt prohíbe `/arcgis/`). El
   resto de servidores (HDX, por ejemplo) se respetan como siempre.
+- El SINPAD desde 2019 se pide a la consulta pública que usa el portal del INDECI
+  (`prod4.indeci.gob.pe/portal-sinpad/api/v1/public/emergencias`, sin robots.txt), mes por mes desde el 01-01-2019
+  (la fecha más antigua que ofrece el portal) y en páginas de 100, lo más que ofrece el portal: unas 1 400 páginas con
+  5 s entre pedidos, unas dos horas y media. Cada mes terminado queda en la caché y una descarga cortada sigue donde
+  quedó, con la misma fecha de corte. Si a un mes le faltan filas respecto del total que anuncia la consulta, se pide
+  de nuevo una vez y luego se detiene. El enlace de cada ficha es esa misma consulta filtrada por el código SINPAD
+  (los reportes en PDF del portal llevan una clave en la dirección y no se enlazan).
 - Cada fuente tiene su SHA-256 en `fuentes.json`. Si cambia, el script se detiene: hay que revisar el cambio y
   repetir con `--aceptar-cambios`, que actualiza el manifiesto. Así un cambio silencioso de una fuente no altera el
   catálogo publicado.

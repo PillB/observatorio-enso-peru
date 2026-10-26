@@ -19,7 +19,7 @@ Definiciones (``docs/memoria-desastres.md`` las explica con ejemplos). Con T = a
 * **Impactos**: sumas de lo que las fuentes reportan (vacío ≠ cero).
 * **Fuente homogénea**: frecuencia, periodo de retorno, distrito-años y razón de tasas se calculan solo con
   los registros de la fuente sistemática del periodo de cobertura (``homogeneous``: DesInventar). Las
-  demás fuentes (SINPAD 2016-18, IDMC, curados) suman registros, impactos y grandes Niños, pero no
+  demás fuentes (SINPAD desde 2016, IDMC, curados) suman registros, impactos y grandes Niños, pero no
   cambian la frecuencia: tienen otra densidad y la mezclarían.
 * **Muestra pequeña**: Y < 5: el sitio muestra la cifra, pero marcada y sin calificarla.
 * **Nivel de atención** (solo distritos y provincias; regla transparente, no es un índice oficial de

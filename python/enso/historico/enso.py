@@ -96,8 +96,10 @@ class EnsoCalendar:
         return Phase("El Niño costero" if e["phase"] == "warm" else "La Niña costera", long, short,
                      self.icen[period], self.oni.get(period))
 
-    def tipo_evento(self, date: str, month_known: bool, danger: str, dep: str, source_cause: str) -> tuple[str, str]:
-        """(TipoEvento, AtribucionENSO) de un registro."""
+    def tipo_evento(self, date: str, month_known: bool, danger: str, dep: str, source_cause: str,
+                    icen: bool = True) -> tuple[str, str]:
+        """(TipoEvento, AtribucionENSO) de un registro. ``icen=False``: el registro no se atribuye a un Niño o una
+        Niña solo porque su fecha cae en la ventana del ICEN (las emergencias menores del SINPAD)."""
         period = date[:7]
         for a, b, name, deps in NAMED:
             if month_known and a <= date <= b and (deps is None or dep in deps) and danger in NAMED_TYPES:
@@ -105,13 +107,13 @@ class EnsoCalendar:
         ph = self.phase(period) if month_known else Phase("", "", "", None, None)
         climate = danger in RAIN_TYPES or danger in {"Sequias", "Oleaje anomalo", "Erosion costera", "Epidemia", "Plaga",
                                                      "Vientos fuertes", "Ola de calor", "Incendio forestal"}
-        if ph.phase == "El Niño costero" and climate:
+        if ph.phase == "El Niño costero" and climate and icen:
             return ph.short, "ventana-icen"
         if source_cause == "El Niño":
             return (ph.short or "FEN (según la fuente)"), "fuente"
         if source_cause == "La Niña":
             return (ph.short or "La Niña (según la fuente)"), "fuente"
-        if ph.phase == "La Niña costera" and climate:
+        if ph.phase == "La Niña costera" and climate and icen:
             return ph.short, "ventana-icen"
         month = int(date[5:7]) if month_known else 0
         if danger in RAIN_TYPES and month in (11, 12, 1, 2, 3, 4):

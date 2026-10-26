@@ -8,7 +8,7 @@
     "origenes": [
       "desinventar"
     ],
-    "nota": "Frecuencia, periodo de retorno y razón de tasas usan solo DesInventar, la única fuente sistemática a escala distrital, en los años hidrológicos (julio a junio) que cubre completos: 1970-71 a 2014-15. SINPAD 2016-2018, IDMC 2019-2026, NASA y los registros curados entran al mapa, a los impactos y a los grandes Niños, pero no a la frecuencia: tienen otra densidad y la sesgarían. Entre 2019 y 2024 solo hay datos por departamento (IDMC); el SINPAD completo de esos años no es descargable sin un convenio con el INDECI."
+    "nota": "Frecuencia, periodo de retorno y razón de tasas usan solo DesInventar, la única fuente sistemática a escala distrital en los años hidrológicos (julio a junio) que cubre completos: 1970-71 a 2014-15. El SINPAD (2016 en adelante), el IDMC, NASA y los registros curados entran al mapa, a los impactos y a los grandes Niños, pero no a la frecuencia: tienen otra densidad y la sesgarían. Desde 2019 el SINPAD del portal del INDECI no trae descripción ni daños: las cifras de impacto de esos años vienen del IDMC."
   },
   "fuentes": [
     {
@@ -46,6 +46,31 @@
         "sin tipo": 50,
         "sin causa climática": 42,
         "sismo": 6
+      }
+    },
+    {
+      "id": "sinpad-api",
+      "tipo": "eventos",
+      "nombre": "Emergencias del SINPAD (INDECI) desde 2019, portal público del SINPAD",
+      "lector": "sinpad-api",
+      "descarga": "sinpad-api",
+      "url": "https://prod4.indeci.gob.pe/portal-sinpad/api/v1/public/emergencias",
+      "pagina": "https://sinpad.indeci.gob.pe/portal/",
+      "parametros": {
+        "desde": "2019-01-01",
+        "pageSize": 100
+      },
+      "archivo": "sinpad-api-emergencias.json",
+      "licencia": "INDECI, información pública (Ley N° 27806)",
+      "cobertura": "2019 en adelante: emergencias de origen climático por distrito, con peligro, fecha, nivel y estado; sin descripción, coordenadas ni cifras de daños",
+      "nota": "Es la consulta que usa el portal del SINPAD (desde el 01-01-2019), mes por mes y en páginas de 100, con 5 s entre pedidos. Cada registro enlaza a su emergencia en esa consulta (por código SINPAD).",
+      "sha256": "cba8960013915bedd877b83ad420e953b57ab0ae89d6d3bda036ddf2b93045ea",
+      "obtenido": "2026-10-26",
+      "registros": 112170,
+      "descartados": {
+        "no climático": 19706,
+        "sin causa climática": 2535,
+        "sin tipo": 1591
       }
     },
     {
@@ -210,5 +235,5 @@
       "tipo": "referencia"
     }
   ],
-  "generado": "2026-10-26T17:32:25Z"
+  "generado": "2026-10-26T20:00:29Z"
 }

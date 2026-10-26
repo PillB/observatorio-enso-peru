@@ -18,8 +18,10 @@ LEVEL = {2: "departamento", 4: "provincia", 6: "distrito"}
 def make(territory, calendar, *, code: str, day: str, precision: str, danger: str, origin: str, source_id: str,
          url: str, cite: str, license: str, description: str = "", place: str = "", duration: Optional[int] = None,
          source_type: str = "", danger_method: str = "fuente", cause: str = "", latlon: Optional[tuple] = None,
-         impacts: Optional[dict] = None, tipo: Optional[str] = None, confidence: Optional[str] = None) -> dict:
-    """``day`` es «AAAA-MM-DD» (con «-01» si solo se sabe el mes, «-01-01» si solo el año)."""
+         impacts: Optional[dict] = None, tipo: Optional[str] = None, confidence: Optional[str] = None,
+         icen: bool = True) -> dict:
+    """``day`` es «AAAA-MM-DD» (con «-01» si solo se sabe el mes, «-01-01» si solo el año). ``icen=False``: no se
+    atribuye a un Niño o una Niña del ICEN solo por la fecha (``EnsoCalendar.tipo_evento``)."""
     y, m = int(day[:4]), int(day[5:7])
     month_known = precision in ("dia", "mes")
     dep, prov, dist = territory.names(code)
@@ -30,7 +32,7 @@ def make(territory, calendar, *, code: str, day: str, precision: str, danger: st
     if tipo:
         attrib = "curado"
     else:
-        tipo, attrib = calendar.tipo_evento(day, month_known, danger, code[:2], cause)
+        tipo, attrib = calendar.tipo_evento(day, month_known, danger, code[:2], cause, icen=icen)
     end = ""
     if duration and precision == "dia":
         end = (date.fromisoformat(day) + timedelta(days=duration - 1)).isoformat()

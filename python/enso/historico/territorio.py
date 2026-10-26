@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Optional
@@ -27,6 +28,27 @@ ATTRS = ROOT / "data" / "historico" / "ref" / "distritos.csv"
 LEGACY = {
     "160109": "160801",  # Putumayo: de Maynas a la provincia de Putumayo (Ley 30186, 2014)
 }
+
+#: Nombres que usan las fuentes para un departamento (en ``key``): el SINPAD separa «Lima Metropolitana» y
+#: «Lima Provincia» (las provincias fuera de Lima), que en el UBIGEO son el mismo departamento.
+DEP_ALIASES = {"lima provincia": "lima", "lima provincias": "lima", "lima region": "lima", "region lima": "lima",
+               "lima metropolitana": "lima"}
+#: Otras grafías de provincias y distritos (en ``key``, sin lo que va entre paréntesis).
+NAME_ALIASES = {"nasca": "nazca", "kimbiri": "quimbiri", "daniel alomia robles": "daniel alomias robles",
+                "ihuayllo": "huayllo", "pampas grande": "pampas", "hualla": "huaya", "allauca": "ayauca",
+                "san juan de iscos": "san juan de yscos", "caspizapa": "caspisapa", "lima metropolitana": "lima",
+                "lurigancho-chosica": "lurigancho"}
+
+
+def _name(s: str) -> str:
+    k = key(re.sub(r"\(.*?\)", " ", s or ""))
+    return NAME_ALIASES.get(k, k)
+
+
+def _loose(k: str) -> str:
+    """Sin espacios, guiones ni signos: «anco_huallo» y «anco-huallo» son lo mismo."""
+    return re.sub(r"[^a-z0-9]", "", k)
+
 
 #: Macrorregiones del INEI con su nombre legible.
 REGIONS = {"NORTE": "Norte", "CENTRO": "Centro", "SUR": "Sur", "ORIENTE": "Oriente",
@@ -73,21 +95,35 @@ class Territory:
         c = self.normalize(code)
         if c and len(c) == 6:
             return c
-        dk, pk, sk = key(dep), key(prov), key(dist)
+        dk, pk, sk = key(dep), _name(prov), _name(dist)
+        dk = DEP_ALIASES.get(dk, dk)
+        pc = None
+        if prov and not (c and len(c) >= 4):
+            hit = self._by_name.get(("prov", dk, pk))
+            pc = hit[0] if hit and len(hit) == 1 else None
+        base = c[:4] if c and len(c) >= 4 else pc
         if dist:
-            if c and len(c) >= 4:
-                hit = self._by_name.get(("dist-prov", c[:4], sk))
+            if base:
+                hit = self._by_name.get(("dist-prov", base, sk))
                 if hit and len(hit) == 1:
                     return hit[0]
             hit = self._by_name.get(("dist", dk, sk))
             if hit and len(hit) == 1:
                 return hit[0]
+            if pc:
+                # Grafía distinta («ANCO_HUALLO») o nombre truncado por la fuente («SANTA CRUZ DE TOLED»), pero
+                # solo si dentro de su provincia hay un único distrito que coincida.
+                loose = _loose(sk)
+                names = {code: _loose(key(d["name"])) for code, d in self.dist.items() if code[:4] == pc}
+                hit = [code for code, n in names.items() if n == loose]
+                if not hit and len(loose) >= 8:
+                    hit = [code for code, n in names.items() if n.startswith(loose)]
+                if len(hit) == 1:
+                    return hit[0]
         if c and len(c) == 4:
             return c
-        if prov:
-            hit = self._by_name.get(("prov", dk, pk))
-            if hit and len(hit) == 1:
-                return hit[0]
+        if pc:
+            return pc
         if c:
             return c
         hit = self._by_name.get(("dep", dk))
@@ -101,13 +137,18 @@ class Territory:
         return d, p, s
 
     def point(self, code: str) -> tuple[Optional[float], Optional[float], str]:
-        """Coordenadas de la capital del nivel más fino conocido (lat, lon, precisión)."""
-        for table, label in ((self.dist, "capital-distrito"), (self.prov, "capital-provincia"),
-                             (self.dep, "capital-departamento")):
-            rec = table.get(code)
+        """Coordenadas de la capital del nivel más fino conocido (lat, lon, precisión). Un distrito creado
+        después del nomenclátor (Kumpirushiato, 2016) no tiene capital ahí: va la de su provincia."""
+        for n, table, label in ((6, self.dist, "capital-distrito"), (4, self.prov, "capital-provincia"),
+                                (2, self.dep, "capital-departamento")):
+            rec = table.get(code[:n]) if len(code) >= n else None
             if rec and rec.get("lat") is not None:
                 return rec["lat"], rec["lon"], label
         return None, None, ""
+
+    def has_capital(self, code: str) -> bool:
+        """Si el distrito tiene capital (y polígono) en el nomenclátor y los límites del IGN."""
+        return self.dist.get(code, {}).get("lat") is not None
 
     def region(self, code: str) -> str:
         """Macrorregión del INEI; para provincia o departamento, la de su capital."""
