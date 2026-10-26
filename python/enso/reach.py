@@ -52,8 +52,8 @@ BLOCK_SIGNATURES = (
     ("geo", ("not available in your country", "no está disponible en tu país", "no disponible en su país",
              "access from your country", "geo-restricted")),
 )
-#: Cabeceras de una verificación (nombre, valor que contiene; vacío: basta con que esté). No van las que n8n
-#: también cuenta y que llevan todas las respuestas de esos servicios (``x-iinfo``, ``x-sucuri-id``, ``x-datadome``).
+#: Cabeceras de una verificación (nombre, valor que contiene; vacío: basta con que esté). No van las que llevan
+#: todas las respuestas de esos servicios (``x-iinfo``, ``x-sucuri-id``, ``x-datadome``); n8n tampoco las cuenta.
 BLOCK_HEADERS = (("cloudflare-challenge", "cf-mitigated", "challenge"), ("aws-waf", "x-amzn-waf-action", ""))
 #: Lo que sigue a esas dos marcas en el script de detección de Cloudflare, que va también en páginas normales.
 _NOT_JSD = {"challenge-platform": r"(?!/(?:h/\w+/)?scripts/jsd)",

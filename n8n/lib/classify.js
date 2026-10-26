@@ -7,19 +7,22 @@
 // informa como bloqueo, nunca como «sin datos».
 
 /** Firmas de páginas de bloqueo o verificación. Se buscan en minúsculas en
- * los primeros 64 KB del cuerpo y en las cabeceras. */
+ * los primeros 64 KB del cuerpo y en las cabeceras. Como en
+ * python/enso/reach.py: no cuentan x-iinfo, x-sucuri-id ni x-datadome, que
+ * van en todas las respuestas de Imperva, Sucuri y DataDome (sus páginas de
+ * bloqueo se reconocen por el cuerpo). */
 const BLOCK_SIGNATURES = [
   { block: 'cloudflare-challenge', body: ['just a moment...', 'cf-chl-', 'challenge-platform', '/cdn-cgi/challenge'], header: { 'cf-mitigated': 'challenge' } },
   { block: 'cloudflare-block', body: ['attention required! | cloudflare', 'cf-error-code', 'sorry, you have been blocked', 'error 1020'] },
   { block: 'human-verification', body: ['verificación de seguridad', 'verificacion de seguridad', 'comprobación de seguridad', 'security check', 'verify you are human', 'verifica que eres humano', 'are you a robot', 'checking your browser'] },
   { block: 'captcha', body: ['g-recaptcha', 'grecaptcha', 'h-captcha', 'hcaptcha.com', 'cf-turnstile', 'px-captcha', 'captcha-delivery.com'] },
-  { block: 'imperva', body: ['incapsula incident', '_incapsula_resource', 'request unsuccessful. incapsula'], header: { 'x-iinfo': '' } },
+  { block: 'imperva', body: ['incapsula incident', '_incapsula_resource', 'request unsuccessful. incapsula'] },
   { block: 'akamai', body: ['reference&#32;&#35;', 'you don\'t have permission to access', 'errors.edgesuite.net'] },
-  { block: 'sucuri', body: ['sucuri website firewall', 'access denied - sucuri'], header: { 'x-sucuri-id': '' } },
+  { block: 'sucuri', body: ['sucuri website firewall', 'access denied - sucuri'] },
   { block: 'aws-waf', body: ['awswaf', 'aws-waf-token'], header: { 'x-amzn-waf-action': '' } },
   { block: 'f5-asm', body: ['the requested url was rejected. please consult with your administrator', 'your support id is'] },
   { block: 'fortinet', body: ['fortiguard', 'web page blocked', 'fortigate'] },
-  { block: 'datadome', body: ['datadome'], header: { 'x-datadome': '' } },
+  { block: 'datadome', body: ['datadome'] },
   { block: 'google-consent', body: ['consent.google.com', 'before you continue to google', 'antes de ir a google'] },
   { block: 'geo', body: ['not available in your country', 'no está disponible en tu país', 'no disponible en su país', 'access from your country', 'geo-restricted'] },
 ];
@@ -146,12 +149,21 @@ function newestDate(values) {
   return best === null ? null : new Date(best).toISOString();
 }
 
+/** El script de detección de Cloudflare (/cdn-cgi/challenge-platform/…/scripts/jsd)
+ * va también en páginas normales: esas dos marcas no cuentan si lo siguen. */
+const NOT_JSD = {
+  'challenge-platform': /challenge-platform(?!\/(?:h\/\w+\/)?scripts\/jsd)/,
+  '/cdn-cgi/challenge': /\/cdn-cgi\/challenge(?!-platform\/(?:h\/\w+\/)?scripts\/jsd)/,
+};
+
 function findBlock(scanLow, headers) {
   for (const sig of BLOCK_SIGNATURES) {
     for (const [h, v] of Object.entries(sig.header || {})) {
       if (h in headers && (!v || headers[h].toLowerCase().includes(v))) return sig.block;
     }
-    for (const s of sig.body || []) if (scanLow.includes(s)) return sig.block;
+    for (const s of sig.body || []) {
+      if (NOT_JSD[s] ? NOT_JSD[s].test(scanLow) : scanLow.includes(s)) return sig.block;
+    }
   }
   return null;
 }
@@ -220,7 +232,8 @@ function classifyRaw(r) {
     out.block = block;
     return out;
   }
-  if (!bytes.length) { out.verdict = 'empty'; out.transient = true; return out; }
+  // Solo espacios es vacío, como body.strip() en python/enso/reach.py.
+  if (bytes.every((b) => b === 0x20 || (b >= 0x09 && b <= 0x0d))) { out.verdict = 'empty'; out.transient = true; return out; }
 
   // El registro dice «rss» para cualquier feed y «csv» para tablas de texto.
   const expect = ({ rss: 'feed', atom: 'feed', csv: 'text' })[(r.expect || 'any').toLowerCase()] || (r.expect || 'any').toLowerCase();
