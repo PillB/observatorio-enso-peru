@@ -356,7 +356,7 @@ def next_hop(r: httpx.Response) -> Optional[str]:
         return None
     try:
         url = httpx.URL(loc)
-    except httpx.InvalidURL as exc:  # como httpx: un error del servidor, no de quien pide
+    except httpx.InvalidURL as exc:  # como httpx (que falla antes, al armar el pedido siguiente): error del servidor
         raise httpx.RemoteProtocolError(f"Location no válido: {exc}", request=r.request) from None
     if url.scheme not in ("", "http", "https"):
         return None
@@ -376,7 +376,10 @@ def get_checked(client, url: str, robots: Optional["Robots"], headers: Optional[
     for _ in range(MAX_HOPS + 1):
         if robots is not None:
             robots.pace(url)
-        r = client.get(url, headers=headers, follow_redirects=False, **kw)
+        try:
+            r = client.get(url, headers=headers, follow_redirects=False, **kw)
+        except httpx.InvalidURL as exc:  # «Location: https:servidor/ruta»: httpx falla al armar el pedido siguiente
+            raise httpx.RemoteProtocolError(f"Location no válido: {exc}") from None
         hop = next_hop(r)
         if hop is None:
             return r, None, True

@@ -125,6 +125,30 @@ def test_get_checked_reports_the_refused_hop():
     assert (r.status_code, hop, verdict) == (302, "https://b.example/y", False) and "https://b.example/y" not in asked
 
 
+def test_a_location_httpx_cannot_build_is_a_server_error(monkeypatch):
+    """``Location: https:servidor/ruta`` (protocolo sin ``//`` y ruta sin ``/``): httpx falla con ``InvalidURL``, que
+    no es un ``HTTPError``, al armar el pedido siguiente aunque no siga redirecciones. Era un error de quien pide y
+    cortaba la corrida entera del recolector del Perú y de la sonda; ahora es un error del servidor."""
+    from tools import peru_collector as pc
+    from tools import probe_sources
+
+    bad, good = "https://a.example/x", "https://a.example/ok.xml"
+    asked: list[str] = []
+    rss = httpx.Response(200, text="<rss><channel><item><title>t</title></item></channel></rss>",
+                         headers={"content-type": "application/rss+xml"})
+    transport = _net({"a.example": (200, ALLOW_ALL)}, {bad: _to("https:a.example/y"), good: rss}, asked)
+    client = httpx.Client(transport=transport)
+    with pytest.raises(httpx.RemoteProtocolError, match="Location no válido"):
+        get_checked(client, bad, Robots(client))
+    monkeypatch.setattr(pc.time, "sleep", lambda s: None)
+    got = pc.fetch(pc.Session(client), bad, "rss")
+    assert got["class"] == "connect" and "Location no válido" in got["error"]
+    real = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": transport}))
+    recs = probe_sources.probe([bad, good], "github-actions", expect={bad: "rss", good: "rss"})
+    assert recs[bad]["class"] == "connect" and recs[good]["class"] == "ok"
+
+
 def test_the_weekly_probe_does_not_store_allowed_for_a_url_behind_a_refused_hop(monkeypatch):
     from tools import probe_sources
 
@@ -547,8 +571,8 @@ def test_the_probe_writes_only_the_robots_restrictions_when_its_registry_fails(t
 
 def test_the_restricted_registry_does_not_age_out_what_main_still_restricts(tmp_path):
     """``build`` cuenta ``STALE_DAYS`` desde la medición más reciente: si la sonda lleva semanas sin pasar las pruebas,
-    las mediciones de main tienen más de 45 días frente a las de esta semana. Las URL que la medición sigue
-    restringiendo (un feed de lector, un ``hop``) llevan también su medición nueva y no se liberan en main."""
+    las mediciones de main tienen más de 45 días frente a las de esta semana. Las URL que así dejarían de estar
+    restringidas (un feed de lector, un ``hop``) llevan también su medición nueva y no se liberan en main."""
     import json
 
     from enso import registry
@@ -586,6 +610,43 @@ def test_the_restricted_registry_does_not_age_out_what_main_still_restricts(tmp_
     before = {u: r for s in base["sources"] for u, r in s["by_url"].items()}
     assert not [u for u, r in by_url.items() if u in before and registry_restrict._relaxed(before[u], r)]
     json.dumps(written)  # se escribe tal cual en reachability.json
+
+
+def test_the_restricted_registry_does_not_loosen_what_main_disallows(tmp_path):
+    """Una URL que main tiene prohibida por robots.txt y cuyo robots.txt no respondió esta semana (o que redirige a un
+    servidor sin respuesta) queda como en main cuando otra URL sí trae una restricción nueva: lo que llega a main
+    sin pasar las pruebas solo quita pedidos."""
+    from enso import registry
+    from tools import registry_restrict
+
+    srcs = registry.build(reach={})["sources"]
+    feeds = [s["url"] for s in srcs if s.get("kind") == "feed" and not s.get("alt_urls")
+             and registry.urlparse(s["url"]).hostname not in registry.READER_HOSTS and not registry.public_peru(s["url"])]
+    closed, newly = feeds[:2]
+    t0, t1 = "2026-10-19T09:00:00+00:00", "2026-10-26T09:00:00+00:00"
+    old_n8n = {"n8n": {"n8n-aws": {"class": "ok", "http": 200, "robots": "allowed", "at": "2026-10-01T03:00:00+00:00",
+                                   "vantage": "n8n-aws"}}}
+
+    def gha(rec, at):
+        return {"actions": {"github-actions": {**rec, "at": at, "vantage": "github-actions"}}}
+
+    ok = {"class": "ok", "http": 200, "robots": "allowed"}
+    base_reach = {"schema": registry.REACH_SCHEMA, "updated_at": t0, "urls": {
+        closed: {**gha({"class": "robots", "robots": "disallowed", "http": None}, t0), **old_n8n},
+        newly: gha(ok, t0)}}
+    for measured_closed in ({"class": "timeout", "http": None, "robots": "unreachable"},
+                            {"class": "timeout", "http": 302, "robots": "unreachable", "hop": "https://cdn.example/f"}):
+        measured_reach = {"schema": registry.REACH_SCHEMA, "updated_at": t1, "urls": {
+            closed: {**gha(measured_closed, t1), **old_n8n},
+            newly: gha({"class": "robots", "robots": "disallowed", "http": None}, t1)}}
+        base, measured = registry.build(base_reach["urls"]), registry.build(measured_reach["urls"])
+        assert _entry(measured_reach["urls"], closed)["status"] != "robots-disallowed"  # la medición sola lo abriría
+        found, written = registry_restrict.restrict(base, base_reach, measured_reach, measured)
+        assert set(found) == {newly}
+        assert written["urls"][closed] == base_reach["urls"][closed]
+        by_url = {u: r for s in registry.build(written["urls"])["sources"] for u, r in s["by_url"].items()}
+        assert by_url[closed]["status"] == "robots-disallowed" and by_url[closed]["channels"] == []
+        assert by_url[newly]["status"] == "robots-disallowed"
 
 
 def test_n8n_reading_of_a_hop_robots_txt_keeps_the_hop():

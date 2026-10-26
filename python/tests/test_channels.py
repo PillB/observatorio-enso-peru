@@ -1062,8 +1062,8 @@ def test_the_weekly_probe_rebuilds_the_n8n_flows_with_the_registry():
 
 def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None, files: Optional[dict] = None):
     """Corre el paso «Commit» del sondeo en un clon de un «origin» con n8n/ y el registro (y ``files``: ruta →
-    texto), después de que en main ``on_main(seed)`` cambiara algo (y reconstruyera dist) mientras se medía.
-    Devuelve (resultado, origin, clon)."""
+    texto; sin ``files``, un build_registry que deja el registro tal cual), después de que en main ``on_main(seed)``
+    cambiara algo (y reconstruyera dist) mientras se medía. Devuelve (resultado, origin, clon)."""
     import shutil
     import subprocess
 
@@ -1094,7 +1094,9 @@ def _probe_commit(tmp_path: Path, on_main, env: Optional[dict] = None, files: Op
     shutil.copy(obs.REPO / "n8n" / "build.mjs", seed / "n8n")
     (seed / "registry").mkdir()
     shutil.copy(obs.REPO / "registry" / "sources.json", seed / "registry")
-    for path, text in (files or {}).items():
+    if files is None:
+        files = {"python/tools/__init__.py": "", "python/tools/build_registry.py": "raise SystemExit(0)\n"}
+    for path, text in files.items():
         (seed / path).parent.mkdir(parents=True, exist_ok=True)
         (seed / path).write_text(text, encoding="utf-8")
     git("add", "-A", cwd=seed)
@@ -1176,7 +1178,7 @@ def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_p
                               reg.read_text(encoding="utf-8"), count=1), encoding="utf-8")
 
     (tmp_path / "choque").mkdir()  # sin python/: el registro no se puede regenerar
-    r, origin, work = _probe_commit(tmp_path / "choque", registry_change)
+    r, origin, work = _probe_commit(tmp_path / "choque", registry_change, files={})
     assert r.returncode == 1
     assert not (work / ".git" / "rebase-merge").exists() and not (work / ".git" / "rebase-apply").exists()
     log = subprocess.run(["git", "log", "--format=%s", "main"], cwd=origin, capture_output=True, text=True).stdout
@@ -1184,11 +1186,43 @@ def test_the_probe_commit_rebuilds_dist_when_n8n_changed_on_main_meanwhile(tmp_p
 
     # Con build_registry (aquí uno que deja el registro medido tal cual), el choque en el registro se regenera.
     (tmp_path / "regenera").mkdir()
-    stub = {"python/tools/__init__.py": "", "python/tools/build_registry.py": "raise SystemExit(0)\n"}
-    r, origin, work = _probe_commit(tmp_path / "regenera", registry_change, files=stub)
+    r, origin, work = _probe_commit(tmp_path / "regenera", registry_change)
     assert r.returncode == 0, r.stdout[-2000:] + r.stderr[-2000:]
     assert _log(origin)[:2] == ["Update source reachability and registry", "cambio en main"]
     assert "2026-10-26T09:40:00" in _show(origin, "main", "registry/sources.json")
+
+
+def test_the_probe_commit_rebuilds_the_registry_after_a_code_only_change_on_main(tmp_path):
+    """Revisión: un PR que solo cambia el código del registro (``enso/registry.py``) no cambia el sources.json de
+    main, así que el rebase no choca y el registro medido seguía armado con el código anterior: las pruebas de lo
+    rebasado (``build_registry --check``) fallaban y la medición no llegaba a main. Ahora, si main cambió, se
+    regenera con el código de main antes de probarlo otra vez."""
+    import subprocess
+
+    # build_registry simulado: escribe en el registro la fecha que dice su «código» (rule.txt).
+    stub = {"python/tools/__init__.py": "", "python/tools/rule.txt": "2026-10-26T09:40:00+00:00\n",
+            "python/tools/build_registry.py": (
+                "import pathlib, re\n"
+                "rule = pathlib.Path(__file__).with_name('rule.txt').read_text().strip()\n"
+                "p = pathlib.Path('../registry/sources.json')\n"
+                "p.write_text(re.sub(r'\"generated_at\": \"[^\"]+\"', f'\"generated_at\": \"{rule}\"', p.read_text(),"
+                " count=1))\n")}
+
+    def code_change(seed):
+        (seed / "python" / "tools" / "rule.txt").write_text("2026-10-26T09:45:00+00:00\n", encoding="utf-8")
+
+    # Las pruebas de lo rebasado: como build_registry --check, fallan si el registro no salió del código de main.
+    gate = tmp_path / "check-gate.sh"
+    gate.write_text(f'echo gate >> "{tmp_path}/ran"\ngrep -q 2026-10-26T09:45:00 registry/sources.json\n',
+                    encoding="utf-8")
+    r, origin, work = _probe_commit(tmp_path, code_change, env={"GATE_SCRIPT": str(gate)}, files=stub)
+    assert r.returncode == 0, r.stdout[-2000:] + r.stderr[-2000:]
+    assert _log(origin)[:3] == ["Update source reachability and registry", "cambio en main", "inicio"]
+    assert _ran(tmp_path) == ["gate"]
+    assert "2026-10-26T09:45:00" in _show(origin, "main", "registry/sources.json")
+    check = tmp_path / "check"
+    subprocess.run(["git", "clone", "-q", f"file://{origin}", str(check)], check=True, capture_output=True)
+    assert subprocess.run(["node", "n8n/build.mjs", "--check"], cwd=check, capture_output=True).returncode == 0
 
 
 def test_a_registry_that_fails_the_tests_does_not_reach_main(tmp_path):
