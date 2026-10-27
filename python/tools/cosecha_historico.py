@@ -11,7 +11,9 @@ queda en la caché (``actions/cache``) y la corrida siguiente sigue donde quedó
   sumarían); los servidores van en paralelo, primero los de las cosechas largas.
 * ``cosecha-estado.json``, en la caché, lleva la fecha en que empezó la cosecha y, de cada fuente, los intentos, los
   fallos seguidos y el último error. Una fuente que falla en ``--fallos`` corridas seguidas (no por el plazo) deja de
-  esperarse: el catálogo se construye sin ella y el PR lo dice. Se sigue intentando en las corridas siguientes.
+  esperarse: el catálogo se construye sin ella y el PR lo dice. Se sigue intentando en las corridas siguientes. Las
+  que el catálogo necesita (``needed``: las de eventos y las capas de contexto) no dejan de esperarse nunca, porque
+  sin ellas no se construye.
 * Cuando no falta nada, escribe ``estado=completa`` en ``$GITHUB_OUTPUT``: el flujo construye el catálogo sin red y
   abre el PR. Con el PR ya anotado (``--pr``, en ``cosecha-pr.json``) no baja nada: ``estado=hecha``.
 
@@ -54,6 +56,11 @@ MIN_LEFT = 30
 
 def today() -> str:
     return datetime.now(timezone.utc).date().isoformat()
+
+
+def needed(src: dict) -> bool:
+    """Si ``build_historico`` no se construye sin esta fuente (con ``--parcial`` solo salta las de la segunda ronda)."""
+    return src.get("lector") in {**B.READERS, **B.CONTEXT}
 
 
 def harvestable(manifest: dict) -> list[dict]:
@@ -222,7 +229,7 @@ def harvest(manifest: dict, cache: Path, minutes: float, only: Optional[set] = N
             st.pop("error", None)
         st["avance"] = progress(s, cache)
     missing = [s["id"] for s in sources if not (cache / s["archivo"]).exists()
-               and state["fuentes"][s["id"]]["fallos"] < fails]
+               and (state["fuentes"][s["id"]]["fallos"] < fails or needed(s))]
     state["faltan"] = missing
     state["sin_esperar"] = [s["id"] for s in sources if not (cache / s["archivo"]).exists() and s["id"] not in missing]
     save_state(cache, state)

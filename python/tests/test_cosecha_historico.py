@@ -69,6 +69,16 @@ def test_a_run_downloads_until_the_deadline_and_counts_failures(monkeypatch, tmp
     assert H.harvest(m, tmp_path, minutes=1, command=_script("raise SystemExit('no debía correr')"))["estado"] == "hecha"
 
 
+def test_sources_the_build_needs_are_never_given_up(monkeypatch, tmp_path):
+    monkeypatch.setattr(H, "MIN_LEFT", 0)
+    m = _manifest({"id": "sinpad", "lector": "sinpad-api"}, {"id": "nota", "lector": "prensa", "host": "b.pe"})
+    for _ in range(3):
+        st = H.harvest(m, tmp_path, minutes=1, command=_script("sys.exit(src + ': HTTP 503')"))
+    # Sin el SINPAD el catálogo no se construye: sigue esperándose; la prensa, no.
+    assert (st["estado"], st["faltan"], st["sin_esperar"]) == ("sigue", ["sinpad"], ["nota"])
+    assert st["fuentes"]["sinpad"]["fallos"] == 3
+
+
 def test_progress_reads_the_parts_of_each_long_harvest(tmp_path):
     coen = {"id": "coen", "archivo": "coen.json", "descarga": "indeci-coen"}
     assert H.progress(coen, tmp_path) == "sin empezar"
