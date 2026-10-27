@@ -265,7 +265,11 @@ def test_robots_challenge_or_429_is_unreachable_not_allow_all():
               "auth2.pe": (401, {}, b"Unauthorized"),
               # Un robots.txt servido como text/html que nombra una marca es un archivo de reglas.
               "html.pe": (200, {"content-type": "text/html; charset=UTF-8"},
-                          b"User-agent: *\nDisallow: /cdn-cgi/challenge-platform/\n")}
+                          b"User-agent: *\nDisallow: /cdn-cgi/challenge-platform/\n"),
+              # AWS WAF: el 202 vacío de su verificación (data.humdata.org, 27-10-2026) no es un robots.txt sin reglas,
+              # ni el 405 de su CAPTCHA es «no hay robots.txt».
+              "waf.pe": (202, {"x-amzn-waf-action": "challenge", "content-type": "text/html; charset=UTF-8"}, b""),
+              "captcha.pe": (405, {"x-amzn-waf-action": "captcha", "content-type": "text/html"}, b"<html></html>")}
 
     def handler(req):
         asked.append((req.url.host, req.extensions.get("timeout")))
@@ -273,7 +277,7 @@ def test_robots_challenge_or_429_is_unreachable_not_allow_all():
         return httpx.Response(code, headers=headers, content=body)
 
     r = Robots(httpx.Client(transport=httpx.MockTransport(handler)), timeout=15.0)
-    for host in ("cf.pe", "page.pe"):
+    for host in ("cf.pe", "page.pe", "waf.pe", "captcha.pe"):
         assert r.allowed(f"https://{host}/x") is None and r.failure(f"https://{host}/x") == "challenge", host
         assert r.source(f"https://{host}/x") == "unreachable"
     assert r.allowed("https://rate.pe/x") is None and r.source("https://rate.pe/x") == "unreachable"

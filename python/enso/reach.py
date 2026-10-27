@@ -461,11 +461,13 @@ class Robots:
             r = self.client.get(f"{base}/robots.txt", **kw)
             status, head, headers = r.status_code, r.content[:SCAN_BYTES], r.headers
             # Un archivo de reglas que nombra «hcaptcha» o «turnstile», aunque llegue como text/html, no es una
-            # verificación: en un 2xx solo cuenta un cuerpo HTML.
+            # verificación: en un 2xx solo cuenta un cuerpo HTML, salvo el 202 de AWS WAF (vacío, con la cabecera
+            # x-amzn-waf-action), que no trae reglas. Con otro código, lo que ``classify`` llama verificación (el
+            # 405 del CAPTCHA de AWS WAF, por ejemplo), como en n8n/lib/robots.js.
+            cls = classify(status, r.content, headers=headers)
             if "challenge" in header(headers, "cf-mitigated").lower() or (
                     status in (401, 403, 407) and block_mark(r.content, headers)) or (
-                    200 <= status < 300 and detect(head) == "html" and classify(status, r.content, headers=headers)
-                    == "challenge"):
+                    cls == "challenge" and (not 200 <= status < 300 or status == 202 or detect(head) == "html")):
                 fail = "challenge"
             elif status == 429 or status >= 500:
                 fail, error = classify(status, head, headers=headers), f"HTTP {status}"
