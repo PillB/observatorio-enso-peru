@@ -1,0 +1,1367 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYCF2RMJBW"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-PYCF2RMJBW');
+    </script>
+    <meta charset="utf-8" /><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	Observatorio Nacional de Recursos Hídricos
+</title><link href="Imagenes/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="Scripts/FxComun.min.js?ver=2025.05.28"></script>
+    
+    <link type="text/css" href="Content/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <script src="Scripts/bootstrap/bootstrap.bundle.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" /><link type="text/css" rel="stylesheet" href="Content/style-graficos.css" media="screen,projection" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700%7CRoboto:400,500,700" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Muli:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" /><link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&amp;display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&amp;display=swap" rel="stylesheet" />   
+    <script src="Scripts/General/generalSNIRH.min.js?ver=2025.05.28"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    
+    <style>
+       #iframe h3.linea {
+            position: relative;
+            z-index: 1;
+        }
+
+        #iframe h3.linea:before {
+            border-top: 2px solid #004178;
+            content: "";
+            margin: 0 auto;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 95%;
+            z-index: -1;
+        }
+
+        #iframe h3.linea span {
+            background: #fff;
+            padding: 0 15px;
+        }
+
+        .tituloIframeGis {
+            font: 33px sans-serif;
+            margin-top: 30px;
+            text-align: center;
+        }
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+        /* Carousel base class */
+        .carousel {
+          margin-bottom: 1rem;
+        }
+        /* Since positioning the image, we need to help out the caption */
+        .carousel-caption {
+          bottom: 3rem;
+          z-index: 10;
+        }
+
+        /* Declare heights because of positioning of img element */
+        .carousel-item {
+          height: 22rem;
+        }
+        .carousel-item > img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          min-width: 100%;
+          height: 22rem;
+        }
+
+        .banner_video {
+            position: absolute;
+            width: 60%;
+            -webkit-mask-image: linear-gradient(100deg,#000 20%,transparent 90%);
+
+        }
+
+        .banner_imagen  {
+            position: absolute;    
+            width: 60%;
+            -webkit-mask-image: linear-gradient(100deg,#000 20%,transparent 90%);
+    
+        }
+
+        .banner_imagen img {
+            height: 360px;
+            width: -webkit-fill-available;
+        }
+
+        .banner_imagen2 {
+            position: absolute;
+            width: 50%;
+            -webkit-mask-image: linear-gradient(100deg,#000 20%,transparent 90%);
+        }
+
+        .banner_imagen2 img {
+            height: 400px;
+            width: -webkit-fill-available;
+        }
+        /*Index*/
+        .header2{    
+            background-color: #0b60a7;
+            top: 60px;
+            position: sticky;
+            z-index: 50;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        header.header2 div.container>ul>li>a:hover, .active {
+            background-color: #0072bb;
+            border-color: #fff;
+            color: #ffffff;
+            /* border-radius: 5px; */
+            text-decoration: none;
+        }
+
+        .btn-ana{
+            border-radius: 4px;
+            border: 0.5px solid #233c81;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #233c81;
+            transition: opacity .15s ease 0s;
+            opacity: 1;
+        }
+        .btn-ana:hover{
+            border-radius: 4px;
+            border: 0.5px solid #233c81;
+            background: #0b60a7;            
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #fff;
+            transition: opacity .15s ease 0s;
+            opacity: 1;
+        }
+        #carousel-inner div.container div.carousel-caption p>a {
+            border-radius: 4px;
+            border: 0.5px solid #233c81;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #233c81;
+            transition: opacity .15s ease 0s;
+            opacity: 1;
+        }
+
+       #carousel-inner div.container div.carousel-caption p>a:hover {
+            border-radius: 4px;
+            border: 0.5px solid #233c81;
+            /*background: #233c81;*/
+            background: #0b60a7;            
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #fff;
+            transition: opacity .15s ease 0s;
+            opacity: 1;
+        }
+        /*fin index*/
+       
+       #listItems.desktop {
+            width: 100%;/*73.4375%;*/
+            max-width: 100%;/*73.4375%;*/
+            /*float: left;*/
+            height: 720px;/*550px;100vh; 582px*/
+            /*position: relative;*/
+            /*left: 50%;*//*nuevo*/
+            /*transform: translateX(-18.5%);*//*transform: translateX(-74.7980%);*//*nuevo*/    /*Modificacion*/
+            //transform: translateX(-2%);
+        }
+
+       #listItems.desktop * {
+            transition: all .15s ease 0s;
+        }
+
+       #listItems.desktop div.item {
+            float: right;
+            height: 720px;/*550px;100vh;582px*/
+            /*width: 12.5%;*/
+            width: 19%; 
+            margin-right:1%;
+            position: relative;
+            /*box-shadow: 0 0 0 0 transparent;
+                */
+            box-shadow: 0 0 18px 0 rgb(0 0 0 / 7%);
+        }
+
+       
+       
+       
+       /*#listItems.desktop div.item:nth-child(4) {
+            background-image: radial-gradient(circle at 50% 0,#bbe0ff,#fff 100%);
+        }
+      
+       #listItems.desktop div.item:nth-child(3) {
+            background-image: radial-gradient(circle at 50% 0,#9bcbf5,#fff 100%);
+        }
+               #listItems.desktop div.item:nth-child(2) {
+            background-image: radial-gradient(circle at 50% 0,#7ab4e5,#fff 100%);
+        }
+               #listItems.desktop div.item:nth-child(1) {
+            background-image: radial-gradient(circle at 50% 0,#5e9cd1,#fff 100%);
+        }*/
+
+       /**/
+       #listItems.desktop div.item:nth-child(5) {
+            /*background-image: radial-gradient(circle at 50% 0,#51a6ed,#fff 100%);*/
+        }
+        #listItems.desktop div.item:nth-child(4) {
+            /*background-image: radial-gradient(circle at 50% 0,#51a6ed,#fff 100%);*/
+        }
+      
+       #listItems.desktop div.item:nth-child(3) {
+            /*background-image: radial-gradient(circle at 50% 0,#51a6ed,#fff 100%);*/
+        }
+        #listItems.desktop div.item:nth-child(2) {
+            /*background-image: radial-gradient(circle at 50% 0,#51a6ed,#fff 100%);*/
+        }
+        #listItems.desktop div.item:nth-child(1) {
+            /*background-image: radial-gradient(circle at 50% 0,#51a6ed,#fff 100%);*/
+        }
+
+        #listItems.desktop div.item:hover {
+            /*width: 22.16%;*/
+            width: 19%;
+            box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.18);
+            z-index: 15;      
+             
+        }
+
+         #listItems.desktop div.item:hover  div.hover  {
+           
+                opacity: 1;
+                z-index: 10;
+         }
+
+          #listItems.desktop div.item:hover  div.init  {
+           
+                opacity: 0;
+                z-index: 5;
+         }
+        /*#listItems.desktop div.item:hover:nth-child(1) {
+             background-image: radial-gradient(circle at 50% 0, #bbe0ff, #ffffff 59%);
+        }
+        */
+        #listItems.desktop div.item:hover:nth-child(1) {
+             background-image: radial-gradient(circle at 50% 0, #51a6ed, #ffffff 59%);
+        }
+        #listItems.desktop div.item:hover:nth-child(2) {
+             background-image: radial-gradient(circle at 50% 0, #6bb5f2, #ffffff 59%);
+        }
+        #listItems.desktop div.item:hover:nth-child(3) {
+             background-image: radial-gradient(circle at 50% 0, #7cbdf2, #ffffff 59%);
+        }
+        #listItems.desktop div.item:hover:nth-child(4) {
+             background-image: radial-gradient(circle at 50% 0, #51a6ed, #ffffff 59%);
+        }
+       #listItems.desktop div.item:hover:nth-child(5) {
+             background-image: radial-gradient(circle at 50% 0, #51a6ed, #ffffff 59%);
+        }
+
+       #listItems.desktop div.item div.init {
+            overflow: hidden;
+            opacity: 1;
+            z-index: 10;
+        }
+
+       #listItems.desktop div.item div.active, #listItems.desktop div.item div.hover, #listItems.desktop div.item div.init {
+            width: 100%;
+            height: 720px;/*550px;100vh;582px*/
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+       #listItems.desktop div.item.ler-o-conjuntura div.init:before {
+           /* 
+           background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOwAAAHiCAMAAADccNDiAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAByUExURdLS/NLO+8fH+9fW/EdwTM7L+8vH+8vL+87O+////9bS/ICAnExsoylPjT5YkjBOij5cjzFNjS9RkHSA6oGL7mp35mBu4sXE+Xq3+YKu7Hez9Hah36Wq87e595Ga8JCp5FJov2t44dDO/2Ny1snI+cfH9oHN8HsAAAAmdFJOU0REREQARERERAFEAgMTBhAIDQtEREREQjAeJxVDQ0MMHzlELDcomRGDLwAAHT5JREFUeNrs3A93myAQAHCCRYix+adKrICp1e//FQdoEo1obJttarjtLVvXNfm9O46D9A28/TzWKt5mFOAXzpIWtCiy+ZjBD5CXOLk5zkGRtj64DOz6Pt4+IZaRo6T7V7PGrrvhlxTryPPSX8/CC35IXWdFjl1cc0vTZ8wRuzZGQnPXvWB7tOuZYbvFmyVJWZZFrqxXLDJW8uS04HvSsnDzHKGKesNKbpFMXwvGN6RUS91m3LDYodn/0G6TNPsG1s+yNN30LM1rO5JSCDB23T4szpN/vW71YOOsVuXYpwFJQSl07yaD5ovNFFSuUexC6A5gV8Xmn2hbXzxdAeA4ycjnA1/MxdDN3TJTkabNYtxmshkVUC1SRRvG5sV2/Ze13a2eOEBqSTbuOcFXHDCouJRSCJFLi/LyT1MKscroJR5gP7frv6k1bfWKqlJbjJtqJDaOQwZriHzIES2S7LqVNmIQi9jndvPXsKYvm9LKqrjjphqNjWMuJdegeU6LtOy0oyEs4oHEbv7SsjVaydUKvFU25olrrMCwFap8O7bBzIpIY43cv0CVrelmlZGNKaoaG0EXdmM8FrH4gn261mwFHhiBXZuwMce/wSIa3LAG7vOtpG310lHYc4Vlv8OKOGpgn6k1zzioVcPAccr1CC3wB+p4LBbRSManv+nVPtlK21ap7dvkW08NNm/ZV19qR2NZHEVx5vdrn2l9u+yvjSqWqd2Mwco4SG74mzIOJfbs+/3aZ+ZVzsOgE46XPk6txm7ePuOYuj/GQt2efL/JfQZ23bPpAEP0nLoM2M3ZWMffwaa+P6B9otUvHGDUlptHE1yFXR/jWKAb6rtrlkdfvv8zbbPvyFg/iM2mNFuBg7NHu3yF9f3POGKc1vHtNZuLvd/RDmDvcuVn+qqH4hyV22HqJgF9oVI7rAWa6m/q2ULvQsz99gRVbP3h1PYXZ6qUBDgOAITkgJZJ1mi81R8yv5LKTwb9WJo92OXBpnqBB4P1OxNUuh2V2s6OmRTEyXNyi9zx6lOXPE8n1EGFzDmWH0rVHQJxwIA22WyybEAL6te3vqQ2bAyO4zMLyu12O6w1d1YImlIdK+A5tCiTrCwcoP6gD+g6PLAasDooy2iR9Q81F6yfVlTWnKTGY3O6N2hNF7Gp7ELb61n7HNAVMYSuasdbVVF9qPo9GEptkTCH9Gsv2O1etijBXfyzUw/GKrXbwdT6iazHHCNMaSFrsyxl6SecDMSqiV09xMoaoALitHdgvWbW/2IUuz894mHsltmQVi5OirwcY0RInufqhXmEFpQ8Eau4kPMySVLfqK2xW39f5O7Pz7MyPFrujcvWV9eT1AM5Qkhib6HUT8Z6XrW41crtasHHh26k2zL/zeFdr1tQZHep1beTBc1BniOE7rGIPIifYGuuSbsGaXo6lWVS/uaId706pklTu06pLNgr9F9hPU8fcA3rFsjFpC6c8t9dy+DrW7Wy3V60iZvjtu6fYetx6h5LjcwfYlUtu7QoZLNN0hLn+H9hHZgYejLop/4Iq9Or2i3wAML/Ces4PEwNmx+AT8fexX/AEi5EYtjql4hdMQFfBOsAyrkIE8MUtzwsZcoapoaZdWFYhzAJFSyUme1qF4YFgjGGHCDC1HD4WhTW81hIOHS4CD/3hqPmkrAOYYFwXKEK+ZSUZXJfyMvBOh4VQkDIGeNY32zQ7C61S8E6gDIRcgcLVB3yHDVYZFlLuwysB7hgHDLGYahaFCeECb6S5LKpXQLWW0EWMkiAJCuqUBFyjCmlpyxN06w+3C4A63FOWIiJmog5URUMCFZLV6k5AY7noaIokzSdP9bhTDKlTaYXObe7Cn0/2Y7ZYx3MmAghV+nlzvXwDrwmeylYrlcp45yzcOFYwhnUZ3XBMWccr5aM5dwBAHhMEEIYd8iCsR5n+gEKjhkLoecNlrE3aywSzFHbLGeQhkGIncE1C8WMsR5gAZcPmHLdnxijFA1geThXrOdhTjkEAEBGOSfqTS0OIenHchHOEuutoLp5oY5HKBOMkuqqmDgDa5aH4SyxhFIWBCEDAKtZotYBSEA/loh5YolenxDi6mh3HaUg73TjCxVxEbJ5ljF2MfC8zpAMQ0Zu+dQPhGJKuRqyZM0TvqBrGRIG9bxIKMeeQwkVobqjCYUH4SJmY1D3LIkVgkMIEdVlrg54YR3MW8hBgDDoAQARwYxfv7tcuTjElGkqXsypB/PqgXEMmt244mF1L7WcI16VTY/obwfrdGMimLMkrPmd9xoLQ/w6WM6dl8F6HLwQFjgvhHUs1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt1mIt9oWx7ithOXRfBxtHgr4ONo4Dml9fubt0bBwwznn1H3lz2PAuEtuMQHAXuy+CjeMoZBwr2itgKy/F2H0NrPIKDhFeGPYz7o1q+S4J+/5+HvIyekvvErDv5zjq50aCu2hB2Pfz16eMLxWmLF+61TKwrTB5I7169YS1LKxOtDG91aBRE/A8sTuj15DeIAqqCMOQcenFM8ysSft+HmrS9Zzloplhd33aavn29ulIecXcsH3S6/KNTNJIc4PZYWW894tVOUedpNa/zhP7PsDV3SoyZTaaJXa4lt/1SBmZMgtniX2k1atX/ai9kU5uzOaJHVy4N7L6eZahGpcCczJP7Ahrt1FHHM0TOy65LW8UCzIj7OHwC+5ZYtGssG3tbnDBzh97z919J7Nsdth77WjvzBrU8dDD3T3YgvQD43hOW8/x2M992K/O4vEpb1qZvWqN3N3Q2PwVh/MqY6Ud5vZ7zyOmiomVcYvb5931YB/uPVPCJrsOt9+7M2DDGWE/Th/JocMdWc9fI24rpoTdH1LpTQ8Vd4y3AVaZDeiMsHspTE7S2+UeHnHPI84908LulTeVXrl8Dx3vYbCcz1EUzw2ruEdVzsp7HOO9cM+fMUNuhZo+dru/cS/L99AF90yT8tfPIAyFDEbN3Elht1eu9qrl+34c5a2456i+gQsEh2Ty2Db3uKu7c7egjVqFrUJ7MUETxza42lt1q+Ox27C6XNmRI32RrL1RyCAiE8fee/XqPZq8He0lsY30uo3lO01sk1tvvomONElVvBu5skPdEntJb8A4upTzVLH33vTjEqePk4wkNXAl1hQhowhPHNv26gVc1XBV2tK7u+d+qXzGjczWEQj9fvWUsL6/7fceb2CN3mlvW/uu3yFQ7xG0UyuLmU8Pa+S283sFywx/fNzV8m1S/rrjshUhaGrYHq+hoFXf+uheWjXe7Ytahcw4XpHJYXu4265WYi87kekm8r6cQ8EhmlpmR3hvmR3Sdso5Dt3JZXZMfrX2tGtca/TcMrfTK8gUsduHy1fPktXcPKhtlzMnk8zs43Z1lP14jFbdUF07FZwGdmOgPtiOjqd0nPaWW0amgd1s/L7o0+qGPEIrUxu0U/v/sT1eY4J1ZpPkNmQMam8Lt+5Rk8B+I79S+5HsR2qv4IBOCjuQ33vtR7r/hlZdQU4QO5DgJjY9pfs77e6RdmJlPORtpvcPdXe69CqqhQFYM+yoX+KEKUEcY3L/t7gF1KCCmsQxp6q76lT/6KcXIiDr3WRP31wtD2szEG0VKxvQ7JfAwDb7tCJudtnEbKzrf6O87+LaAcQCbW9xobIRLPmNA1fFxZ9q0+djQ9hR3ndxUWB+pEWP87awUrCguDgwB7TNPZ+/RazE29Em0PxE+zLO28SKwS2tDe2O1u0espa/QD1vGDvALZgwMSXadnEtbhBvFCvwNrQlltc6sqH8VM6bx3a8/FAOsDlKa92s9wO7bWzLy2ERDIIABQjbIi3PRdp5N9gG941NMKbfvCAMktZXg9YuiB/E28fyXP6xLV9C5CKG2zOUs1DbFbar5XdBNvuUKxnKt+we7gsrqC0p7LWcosyEbPuweChn76PFnWAl2vfZhck+7wmGcnbnx/EusLpsdcGdTNU3ExrajPv4sRfsGK1tlRdPHG7xmEXqnrE9Wlpe3Fgq7242Hqc1RSfoVg4ibX9YvWfLx2vJVz5Oe8u8w66xf43Ti7aWLDNwrb1l9/cXy/1g9b+xtSXvIXo/nWHfXyz3if2TfjIo75tgBGGNjdX9YfWBkyl+00c+4yKitbI7t6zYEVaXHzt2tK57Iy8hp7le3Cv2T/o1qL7sCcljm+5zguo7uzAFWocOZCuLdorVB4+U35+sXdcir1wHPc47xepDR8qNgUyumjiv/WL1gSPlhpaWFl203WLHa1lpndQ7bOXVczqdftWKNgZlacmGPr179TZvfezvXJnWgo7jpPd7vfPZAvZjr1zbvENEtnspvfV1fjSw2kNVH6thP/WO0dKrcE7KLkJFBxJzdynreYhIvDA1rIP9zCvT8qdS9EpnWl1gZFF3tJfNA4D8H14h9tW1sB+B+7X1oUUq7A65g+qmX7gm9ltup7TsQqd7qy4wctAq1LD43cFhVezptw19hUUB/UxgpxloQKsxXf3Cx6rY01dTVedOjcOunru3DMgrC+6xui72q6mqiU1gecPRcR0rb5eWryw4qCtjf9YGyK6xjpNTI6to23qP9oTVBVgEm/1tadZsgSHxwtm9fxwvh/1BSwdxYjab+RzW2sV62arUIUIuuJJ37U6wNsT1zoeNY6e8YtG9/pYXpV29sl+8gepxHASmECu8snoH3q6wughrirACbb4J7OlrbKG1zdZDK8WmwLvsEMvNUEF5BbuDtQRBrJJF1LLY0zTT8dA4zoD3T9kzNkD8DDVQWgA8kuihaKqmKqqmqKtgT989tGRhbL9nqKFxXJSWrK1Ia7F2iOI4/KfuCHu9QmR2Xj69pWW7PY9s68mmfhXsaG773dPCuv1tbNzulv0iZRXs6StsQi/p2s1xLG+2Be1fvBL29NUMhaqHVlhaq7OIav/8lbCnL2aociBLS9tuG+9gQ2Ul7OmbNRQdyO9cgP7GrjRrWb3DWpUdpe1saVEgKK1Ea5EEk3Zh18KO4HawuIUVXapvd9pmIMupm4SXrIc9fXxaQfsI7M5A7tFadZZwflgXe/r45dPq/RFqJYmzr6O2LnaI28LSR7YxkMVaIfeprI7t57awfa0/g9xoC9jT2Ie2bNfrasdxn8ctYPu4jdLiwBRoXWlwdCv++6BsAivnNkprV8O4pR1X3MyLlG1gZdzmywdB3Lx17bqd6kq5ZFmhKeomsGJvE/uH2Z62y5WGoDd28yD2VWUj2GHtNYGBWDvMLfd50Vawp0HslR2otgKW+rlcZelGbyvY0+DXvKuJIMI4wUmSuPUl8wBhSz5T8ZUFIDQmw6p+NClW73Z14TqOk/0KKUYQwiBAlpjbqKx3mQyrRN4sWK603A2Lorx1Jg1GiDQAOTJtvb+NlImwShRPjNV7ujFJx14j6Y/cvZYXN6v2tRNhQ8+bGSvIk+K0VTqaeFvPTmq880TYyPPCibH6UC8Mz2XXpGSHGFaaAY+N4ymwh9g/zoX9GwgLs6sLcJListCHfDrsUbtEs2H/+sLCSi7E0l55q4qyD6fCHkNvaqw+ojuk5iLErSCFWTz5hJX9bTY+fdDDJqwuhn2nGGx1MRn24E2P1fvywtrc+q6U9BNJtunK9mg71bUtKDi0aa4utvLMDmP/BnL+EugOaNPJKluM4xmw+rgoOKqFid2ntW4vRd02Vh9M+ntjsfD4saLi12U6bJTPgtXHBv29vwcJtPj1VI+P6fazz9siWHl1bYhtkZZQL8ejOuVJxVxYfTj3roq+o3/gVdWWWb2AivHrHx8Tny7Ohh3BrYqboABChGnjOEQYvZ7Pp385Tn9uPCN2RMxfNZRp8BCpMDm0UY/kX/Yxw22Zf2g+rP43NsWR/tifvJE8jdluuBmvGbHD3NZBhoORb8x4nc+fFTuquhU2efkXRZnz7uJPJxWfXCwZarlNUDH9Pma9qPnjCuqz2289Tag2eirK3LdSo2WwfU2oZE5Gz4cy/33jcDmsdA2ZFFU1Frg2/+t+9rcWY/atD/mGskjjYegtixXs/tBDWaJZWDlEnhcvjG3v7LH2WKINXAu92IuzH7E/aa/Xl/9Youc9iklHtodWxOr4qTwWaPBXyWceUljrV+zp+8K+NGWJNAOfldWL8/Ww19djiegGjZWVVDb9HXv61qpos4dy0G935S/ObmthqXVu7FEJmZP+D1nOstimdWYsWTPVP5hbzgTYL6IPzKehzZ4tc1Tj9xBOLWslLH4a8wfplGOYzk057VF28ATY02dWHfnK/KlBRyOs65rSE3eM4BTYj9qckuKVM39EEjc3ZTfLuiEI43iSyn5wYqHjp6HNnwdlHEP+abVuOCXB2tNgR59GvS7KEuFXlbV8Wi0Lw2CaCWp8I0zyUh5LJH0d/dKa3kpsCh0HWxNhR52qJk/lQprb569sXFvryloBhFNhhw/M9YQdCqvaufrDhqfCGk1stUh8W60buS05HfY0XNeHzzaWcXTWzhNitbNxNDhsuXJKyd2iEusUWmhNhx34pmc+w7gOSop9dTqscYlJw/yxwpaFpb1f1Rd8xwkC7EyI7f8QnzQioUCkTbcROEaADJeCy3Z1cW2tC1tgsetOie29Y+G0ks3inqC6D7HGhehAHF4oNuxYCRZOje27GJV0sr5ifyrsgU1IIDxWgzi/dbHOAthyU5d0s/l6cvk+w1Zb9PjIrHF2a1sdFLjzY6ttXcKlL9Z/C9UpJqhjCBg2OvKTUxNrQWcxrJkwYfFXku9VRnwBv3T8gDXUqBrFSrl06g5iMo6nxvY0hCR3cM/y1EkS18rvdTDfhawywlgcWTcK68esrqFfWUWFda3lsNdrkqdWHVyO6/72A/23JaHAX2HJ6SHwQJrHB3pbnJ2ZCqzOAtjO98nqBkVV3DAK2ZgOD8rHWEOJaFlBGihHpaqrYHYqsDfoLorlEultkzWz3EEVS3j3ws5YHsAaZ/JKLbTgZRwVJfLkg5j0mrhoXqwkRZXFCVHu/R0nA7zwoqjjsWrkAQ9U71flvYUVFbbAYrgg1uzks+etsMmCe6gvZg5hjYglCAMvNIzjJRZbq8KSxPB5sbLo47rpv5uy4oVRVA/nXuyZPK6AWmk7lvCBrQvrulPuZ0dgu53SDpuV740EYNInPBx+ZUTlSqKw+rEHGtbWIKZZvCiOF8DKkuhZqjUtZztZJjwPpBkYxsUD5RjW6kPTjrUcxJSbxLNWVhbyzDdJEyxEGDcH9D2+KL0974cwBvQ/U6RF5aJiwOoiaCtrFtZ1nTzzED03aeUGeSS/Too1CDCOwzAK31SxlUldEqO9IFYwiF0HQYidsvkhbw3mOPRLbxtraDGINeMc1c8qNw8LrS5tNFFWGcVlWSmVa/Zoc0FM22e7WL9AXoq/sMe2sZboWMv5CQe2OTtW+tq5IXLD2Gr2aOXdqUqEjch/B4+nZgNW2nqxOLYaxZQq6r7L2ylYgmc2BICtEytufhuw0hzIVbDUaslj3fJGvpkAS6fiN7Uu69vafGBJz7k5J7b3kcXkSEgeT8hHE4ZdrFYpK6rVa3UCiGg+yFLY5ihGrANcntfHvYjuzRUGO3PK8swrqTmXFCa0YohsFpcxN1ZUWAxZl3BfOCGfX+dF3AqDFDYG6S1rzktya0Ai/lfDIohGJDGSqHba9E5fQQdFeWMjDxTPNSlqehuyYvbHlZsrYQPouKOwtL78VrfEajFZK+X1gqnH6rCyVpkvi2MD6EoyNoVhbvXEHNXYCHg5eSMPWzEMXM66NNYOAnnqpDCnL/fKx7YaxloMCDYdtpZlra0LY11qHRUo2oiGIrlfFTYEAKTtf0hgdWDgNK3LYm0Y9McwSgayd6hnY3oYA6RWh7Mit2W9LolNIGrmiboDCZtVet2l7kI06Or/f3l3tuMmDIUBeKRarSgEDHMxXqZxo3n/dyw2mwGvBB+cKb2plAnRp0PAPiY/j2PW6g1otKhiymmN4/JEh+1jyiWUw4n33VHcGKzdeGpaWZNjteDuIa4P+xI2DfGaA/bt989PNSL+OmgFwwoyJZzh/YHs0d4VVvWJ1fj/r9fKjFYoLF2S+oyRk858TVlZtST0vi+scdhksSbEal9aeQhX9eE40c8fb2+/PseR47qwjWn+SonZmh5bDpGEpscsuwInNW5z//j4c59nBcZZjm7lpMVGKwSWE27oke/yguzceT7wvr7smK2dnNEZrQBYTkRV1aLfIvM1m9smhFF+YR9W6mTlpLNY02MFESqvgDBCeGS+5pxLOH9fv7ZWSm9ra7ea56ysKbGFurtAhS1yPGRSMGHM12w7F7eZQxgNvSZ6J4TydePfZi1TYxmjQg/Y5HFpooo7VFYrq/4qYZwRwpppT0tfYmdNjq3KYlmerSprcV3cx7qs+kttcyNt23JGmOKqKaSR2ltTY/f5mnTmbrR2rmw3DWXdFr1p2xuRMaRtoxogmBNhtybFmvM1O0ZoHcX9+3h87Z2DtZG5nOqNhEsrtx3C0Njl8VtsH6/p5N7Uvz1V3m3Kpssr91nTYq1popuRctDBbLY2U3YjZVh4rGXa+41tmSNiTGen/DB3eJ0SpsraMMJbQt1WKGy5CQtSCV/yGsw20biB3OE12W1vx/WNtvNaE2Ot+ZqC1LWc9mF9Sm8MpDdxxxd64jjyp3Jlnfmsl2DV9ZaMlyC5PuC57G687VRWprKv5cIRxpzQ2mctUv9GwJaeI0Q3pQUxQoWXu92aMfhaLX4OVuyzQmKtaaI9l8VxG07Y3AnvMGaE++t6KvZIvqZW3S6C20xl7ShpccuIY9i0WNNji7AARlldRnltug5tvbLJNHabZAeG2k7DW2uR/hdb3gDG3qvGVZxTQs1jyAWs/t+QZrZyYjuEd1YArCdecyyvisCqhX7d1S5C3fqaxNi8zsxWZXVbIbBFQLzm3KBi09P01lfdecFVjZrIWF8ir1vhVhCsP01UT08l3MidNzkwbDinjNzVqnq4tYD7lWVodVXjgdu5TEVvkp5K11SvFQjrj9dcVVdyKDZzW9K2hHLZ18KR1gLox8JB8Zp6b5kTIrDJy0nXyUali2qxgmEtWkckPSW4xlsv7ijD3X3o+cda4bB2ri0+lVFt9jdvjGKu1q3qaCsk1q41x6eK1exv2gjHYku1Wi/EOrTG+FRKunrL7ciuqsFWWGwsd9dTx5iyrTTcCo0NO5aXa+7SU9fi6Y9a4bFx3M2UpqbESXVbr8AGXoeqee63NEj3hR1OaWHWi7ABScDLaVmbmlPmKqvPeik2YAaojtz5ayuIcJTVa80A6+hmSArTgIw6yuq3ZoK19m4wY/X8U1RO1lT7eTg19kmtuecqCF3OVXypsWF+GGDNB2ss7mgdHlU8nomXle1Ya0ZYg7ZkfK4xI6LSvsoH6potdroLkFbL7YBVvS9olDUn7F5bDFjZdBSVYyvBsWdry6myNSPcUtE4a17YnZZRdYONSxphLSCSvo4Pp4aVzQjqK2PLSripUdYCItbsKW0U1W3NDhvYTzdTPVgEkOH2/MSvDKR6rC+C3XnNf+OxotThV+dp/ZvPejb2Ui049kKt13o+9jKt35oAe43Ws79k2Cu0QdYk2CRDqWesabGw2iLQmgp7/uz2BGs6LJA2YDcIAHtyw/GwFQp7bvP8kFS3psc+C36SqlthsKdzw9+MLsCeyY15J7oGe8JiUPx70GXYc8aRT1hhscBcdDEWkouux0J5TR98BRaCi/LBpgZbPvI6bEIwyhKbhotyxSJA6/fDuj7rm2Hdn3U5FsFZM8AiKGoWWAREzQOLYKjfBRv4OVlgEQj1W2DRi2ERiPX1sej1sAjCmg0WAVjzwaL/CouSW3PCotTWrLAoLTUzbBQXvTwWJaTmhw3jHtx1flgv9/iOc8Q6vM/tNVOsgXzC/v4BKdHC6n2zwKsAAAAASUVORK5CYII=);
+           
+           background-image: url(Imagenes/mapPeru.png);
+           
+           background-image: url('data:image/png;base64,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');
+           */
+           background-image: url('data:image/png;base64,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');
+
+               top: 4.49vh;
+               opacity: 0.4;
+        }
+        #listItems.desktop div.item.gestion-cantidad div.init:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/gestion_cantidad.png);
+            top: 4.49vh;
+        }
+
+        #listItems.desktop div.item.gestion-calidad div.init:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/gestion_calidad.png);
+            top: 4.49vh;
+        }
+        #listItems.desktop div.item.gestion-oportunidad div.init:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/gestion_oportunidad.png);
+            top: 4.49vh;
+        }
+        #listItems.desktop div.item.eventos-extremos div.init:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/eventos_extremos.png);
+            top: 4.49vh;
+        }
+        #listItems.desktop div.item.inventarios div.init:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/inventario.png);
+            top: 4.49vh;
+        }
+       
+       #listItems.desktop div.item div.init:before {
+            content: " ";
+            display: block;
+            width: 100%;
+            background-size: contain;
+            background-position: top;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 250px;
+            opacity: 1;
+        }
+
+       #listItems.desktop div.item div.init h3 {
+            /*transform: translateX(-50%) translateY(-50%) rotate(-90deg);*/
+            transform: translateX(-50%) translateY(37%) rotate(-90deg);
+            font-size: 24px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1em;
+            letter-spacing: normal;
+            color: #233c81;
+            display: block;
+            position: absolute;
+            left: 50%;
+            bottom: 178px;
+            width: 300px;
+            opacity: 1;
+        }
+
+       #listItems.desktop div.item.ler-o-conjuntura div.hover {
+            padding-top: 2.52vh;/*42.02vh;4.02vh;*/
+        }
+       #listItems.desktop div.item.gestion-oportunidad div.hover {
+            padding-top: 2.52vh;/*42.02vh;*/
+        }
+       #listItems.desktop div.item.gestion-cantidad div.hover {
+            padding-top: 2.52vh;/*42.02vh;*/
+        }
+       #listItems.desktop div.item.gestion-calidad div.hover {
+            padding-top: 2.52vh;/*42.02vh;*/
+        }
+       #listItems.desktop div.item.eventos-extremos div.hover {
+            padding-top: 2.52vh;/*42.02vh;*/
+        }
+       #listItems.desktop div.item.inventarios div.hover {
+            padding-top: 2.52vh;/*42.02vh;*/
+            max-height: 550px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+       #listItems.desktop div.item.inventarios div.hover::-webkit-scrollbar{
+           width:7px;
+       }
+
+       #listItems.desktop div.item.inventarios div.hover::-webkit-scrollbar-thumb{
+           background-color: #7DB8E4;
+           border-radius:5px;
+       }
+
+
+
+       #listItems.desktop div.item div.hover {
+            display: block;
+            opacity: 1;     
+            background-image: radial-gradient(circle at 50% 100%, #51a6ed, #ffffff 56%);
+        }
+
+       #listItems.desktop div.item div.hover h3 {
+            font-size: 17px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: #233c81;
+            margin: 0 0 10px;
+            padding: 0 11.5%;
+        }
+
+       #listItems.desktop div.item div.hover h3> a{
+            text-decoration:none;            
+            color: #233c81;     
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+       /*#listItems.desktop div.item div.hover h3> a:hover{           
+            color: #2EB2EE;           
+        }*/
+
+       #listItems.desktop div.item div.hover h3 strong {
+            font-weight: 700;
+        }
+
+       #listItems.desktop div.item div.hover div.summary {
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.43;
+            letter-spacing: normal;
+            color: #737373;
+            margin: 0 0 24px;
+            padding: 0 11.5%;
+        }
+
+
+
+       #listItems.desktop div.item div.hover div.summary>* {
+            font: inherit;
+            color: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            display: block;
+        }
+
+        #listItems.desktop div.item div.hover div.valor {
+            display: block;
+            font-size: 41px;
+            font-weight: 400;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.03;
+            letter-spacing: normal;
+            color: #737373;
+            margin: 0 0 24px;
+            padding: 0 11.5%;
+        }
+
+       #listItems.desktop div.item div.hover>button {
+            width: 77%;
+            padding: 0;
+            position: absolute;
+            bottom: 48px;
+            left: 11.5%;
+            height: 36px;
+            border-radius: 4px;
+            border: 0.5px solid #233c81;
+            background: #fff;
+            cursor: pointer;
+            transition: opacity .15s ease 0s;
+            opacity: 1;
+            font-size: 14px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #233c81;
+        }
+
+       #listItems.desktop div.item.ler-o-conjuntura:hover div.hover:before {
+            width: 140%;
+        }
+       #listItems.desktop div.item.gestion-cantidad:hover div.hover:before {
+            width: 140%;
+        }
+       #listItems.desktop div.item.gestion-calidad:hover div.hover:before {
+            width: 140%;
+        }
+       #listItems.desktop div.item.gestion-oportunidad:hover div.hover:before {
+            width: 140%;
+        }
+       #listItems.desktop div.item.eventos-extremos:hover div.hover:before {
+            width: 140%;
+        }
+       #listItems.desktop div.item.inventarios:hover div.hover:before {
+            width: 140%;
+        }
+       /*#listItems.desktop div.item.ler-o-conjuntura div.hover:before {
+            background-image: url(	https://www.snirh.gov.br/static/media/ico-ler-o-conjuntura-open.057bf12e.png);
+            height: 22.75vh;/*42.75vh;*/
+            /*top: 1.44vh;
+        }*/
+
+       #listItems.desktop div.item div.hover:before {
+            content: " ";
+            display: block;
+            width: 100%;
+            background-size: contain;
+            background-position: top;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            position: absolute;
+            left: 50%;
+            right: 0;
+            height: 600px;
+            transform: translateX(-50%);
+        }
+       #title  {
+           background-color:#fff;
+           
+       }
+       #title div.title h1 {
+           color: #1B4494; /*#045697;*/
+           
+       }
+
+       #listItems.desktop div.item div.active {
+            overflow: hidden;
+            display: block;
+            opacity: 0;
+            padding: 28.69vh 5.43% 0 11.8%;
+        }
+
+       #listItems.desktop div.item.ler-o-conjuntura div.active {
+            padding: 32vh 5.43% 0 11.8%;
+        }
+
+       #listItems.desktop div.item.ler-o-conjuntura div.active:before {
+            background-image: url(https://www.snirh.gov.br/static/media/ico-ler-o-conjuntura-open.057bf12e.png);
+            height: 44vh;
+            top: 1.85vh;
+            right: 3.4%;
+            width: 47%;
+        }
+       #listItems.desktop div.item div.active:before {
+            content: " ";
+            display: block;
+            background-size: contain;
+            background-position: top;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            position: absolute;
+        }
+
+       #listItems.desktop div.item div.active .bt-close {
+            background: url(data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 6.827 6.827' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff'%3E%3Cpath d='M5.91 1.218a.213.213 0 00-.3-.302L.915 5.609a.213.213 0 00.301.302l4.694-4.693z'/%3E%3Cpath d='M1.218.916a.213.213 0 00-.302.301l4.693 4.694a.213.213 0 00.302-.302L1.218.916z'/%3E%3C/g%3E%3C/svg%3E) no-repeat 50%;
+            background-size: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            border: 0.5px solid #fff;
+            cursor: pointer;
+            transition: opacity .15s ease 0s;
+            opacity: 1;
+            text-indent: -999em;
+            overflow: hidden;
+            display: block;
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            padding: 0;
+            z-index: 15;
+        }
+
+       #footer {
+            background: #004a99;
+            padding: 0 0 30px 0;
+            color: #eee;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        #footer .footer-top {
+            background: #0b60a7;
+            padding: 60px 0 30px 0;
+        }
+
+        #footer .copyright {
+            text-align: center;
+            padding-top: 30px;
+        }
+        #footer .footer-top .footer-qr {
+            list-style: none;
+            padding: 0;
+            margin-right: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        #footer .footer-top .footer-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #footer .footer-top .footer-links ul a {
+            color: #ecf5ff;
+            text-decoration: none;
+            transition: 0.5s;
+        }
+        #footer .footer-top .social-links a {
+            font-size: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #007bff;
+            color: #fff;
+            margin-right: 4px;
+            border-radius: 50%;
+            text-align: center;
+            width: 36px;
+            height: 36px;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+        header div img:hover {
+            opacity: 0.75
+        }
+         #footer .footer-top .social-links a:hover {
+            box-shadow: 4px 5px 16px -4px #b2c0cf;
+            -webkit-box-shadow: 4px 5px 16px -4px #b2c0cf;
+            -moz-box-shadow: 4px 5px 16px -4px #b2c0cf;
+            transition: color .2s ease;
+            -webkit-transition: color .2s ease;
+            -moz-transition: color .2s ease
+        }
+        .carousel-color{
+            background: #418ecf;/*#2C90CF rgb(16, 99, 141) #51a6ed*/
+        }
+        /*Phone*/
+        #listItemsPhone.smartphone div.card  ul.list-group-flush li>a {
+            /*border-radius: 4px;
+            border: 0.5px solid #233c81;*/
+            background: #fff;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #233c81;
+            transition: opacity .15s ease 0s;
+            opacity: 1;
+        }
+
+        #listItemsPhone.smartphone div.card div.card-header.item.gestion-cantidad div.inicial:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/gestion_cantidad.png);
+            top: -0.9vh;
+        }
+
+        #listItemsPhone.smartphone div.card div.card-header.item.gestion-calidad div.inicial:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/gestion_calidad.png);
+            top: -0.9vh;
+        }
+        #listItemsPhone.smartphone div.card div.item.gestion-oportunidad div.inicial:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/gestion_oportunidad.png);
+            top: -0.9vh;
+        }
+        #listItemsPhone.smartphone div.card div.item.eventos-extremos div.inicial:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/eventos_extremos.png);
+            top: -0.9vh;
+        }
+        #listItemsPhone.smartphone div.card div.item.inventarios div.inicial:before {
+            background-image: url(https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/inventario.png);
+            top: -0.9vh;
+        }
+        #listItemsPhone.smartphone div.item div.inicial:before {
+            content: " ";
+            display: block;
+            width: 100%;
+            background-size: contain;
+            background-position: top;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 100px;
+            opacity: 1;
+            position:relative
+        }
+
+        .card-header{
+                color: #233c81;
+        }
+        .card{
+            box-shadow: 0 0 18px 0 rgb(0 0 0 / 7%);
+        }
+        /*End Phone*/
+
+        .nav-link {            
+            padding: 0.5rem 0.8rem;            
+        }
+
+    .centered-div {
+      width: 100%;
+      height: 100px;
+      display: flex;
+      flex-direction:row;
+      align-items: center;
+      justify-content: space-evenly;
+      text-align:center;
+      background-color:white;
+    }
+
+    .styled-span {
+      font-weight: bold;
+      font-size: 1.0rem;
+    }
+
+    .styled-p {
+        font-size: 2.0rem;
+    }
+    
+    #alert-dialog::backdrop {
+            background: linear-gradient(#000d, #000a);
+    }
+    
+    .titleCab{
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+    }
+
+    </style>
+    <link href="Content/site.css" rel="stylesheet" /></head>
+<body>  
+    
+        <div style="background-color:#fff" class="titleCab">
+            <div class="navbar-header float-end hidden-xs" style="margin-right: 20px;">
+                <ul class="nav navbar-nav pull-left">
+                    <li class="dropdown" id="ds-language-selection">
+                        <a class="nav-link link-light dropdown-toggle d-none d-sm-block" style="color:#0d6efd" data-bs-toggle="dropdown" role="button" href="#" id="language-dropdown-toggle"><span class="hidden-xs">Español&nbsp;<b class="caret"></b></span></a>
+                        <ul data-no-collapse="true" aria-labelledby="language-dropdown-toggle" role="menu" class="dropdown-menu ">
+                            <li role="presentation">
+                                <a class="dropdown-item" href="?locale-attribute=es">Español</a>
+                            </li>
+                            <li role="presentation" class="disabled">
+                                <a class="dropdown-item" href="?locale-attribute=en">Ingles</a>
+                            </li>
+                            <li role="presentation" class="disabled">
+                                <a class="dropdown-item" href="?locale-attribute=qe">Quechua</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>            
+            </div>
+            <div class="site-cab container text-center p-1">                  
+                  <img class="cab-midagri" src="Imagenes/logo_midagri.png" />
+                  <span class="nom-snirh" style="">
+                      Observatorio Nacional de Recursos Hídricos
+                  </span>
+                 <img class="cab-ana"  src="Imagenes/logANA1.png" />
+                 <img class="cab-bp"  src="Imagenes/logo-PREMIO-2025.jpg" />
+            </div>
+        </div>
+    <main> <!--main--> 
+        <!--<header class="py-2 sticky-top" id="title">
+            <div class="navbar-header float-end hidden-xs" style="margin-right: 20px;">
+                <ul class="nav navbar-nav pull-left">
+                    <li class="dropdown" id="ds-language-selection">
+                        <a class="nav-link link-light dropdown-toggle d-none d-sm-block" style="color:#0d6efd" data-bs-toggle="dropdown" role="button" href="#" id="language-dropdown-toggle"><span class="hidden-xs">Español&nbsp;<b class="caret"></b></span></a>
+                        <ul data-no-collapse="true" aria-labelledby="language-dropdown-toggle" role="menu" class="dropdown-menu ">
+                            <li role="presentation">
+                                <a class="dropdown-item" href="?locale-attribute=es">Español</a>
+                            </li>
+                            <li role="presentation" class="disabled">
+                                <a class="dropdown-item" href="?locale-attribute=en">Ingles</a>
+                            </li>
+                            <li role="presentation" class="disabled">
+                                <a class="dropdown-item" href="?locale-attribute=qe">Quechua</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>            
+            </div>
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="#" class="d-flex align-items-center col-sm-12 col-md-3 col-lg-3 mb-md-0 text-dark text-decoration-none justify-content-center">                
+                        <img class="img-fluid" src="Imagenes/logo_midagri.png" alt="Logo midagri" height="30" width="230" />                
+                    </a>
+
+                    <div class="nav col-lg-6 col-md-auto justify-content-center mb-md-0 text-center title">
+                        <h1 class="nom-snirh" id="tituloIndex">Observatorio del Agua</h1>
+                    </div>            
+            
+                    <div class="col-lg-3 col-md-12 col-sm-12 text-center">                
+                        <img class="cab-ana" src="Imagenes/logANA1.png" alt="Logo ana"/>
+                    </div>
+                    <div class="nav col-6 col-md-auto mb-2 justify-content-center mb-md-0 text-center d-none">
+                        <h1 class="h2">ONRH</h1>
+                    </div>
+                </div>                
+            </div>
+        </header>  -->
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between header2 ">
+           
+            <div class="container collapse navbar-collapse" id="menuPrincipalEs">  
+                
+            </div>
+            <div class="container" id="menuPrincipalEn">            
+                <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                    <li class="px-2"><a href="Index2.aspx" class="nav-link link-light">Home</a></li>
+                    <li class="px-2"><a href="Index2.aspx?IdVar=39" class="nav-link link-light">Emergencies</a></li> 
+                    <li class="px-2"><a href="Index2.aspx?IdVar=233" class="nav-link link-light">Conflicts</a></li>
+                    <li class="px-2">
+                        <a href="#" class="nav-link link-light dropdown-toggle " role="button" id="dropdownMenuReporte" data-bs-toggle="dropdown" aria-expanded="false">Reports</a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuReporte">
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PRIOS">Hydrological</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PLAGOS">Lake Titicaca monitoring</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PEMBALSES">Reservoir volume</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PPUNTOCRITICO">Critical points</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PFAJAMARGINAL">Fringe girdles</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PDERECHOS">Water use rights</a></li>
+                        </ul>
+                    </li>
+                    <li class="px-2">
+                        <a href="#" class="nav-link link-light dropdown-toggle" role="button" id="dropdownMenuMapaTematico" data-bs-toggle="dropdown" aria-expanded="false">Thematic Maps</a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuMapaTematico">
+                        <li><a class="dropdown-item" href="MapaTematicoAAA.aspx">Map of Administrative Water Authorities - AAA</a></li>
+                        <li><a class="dropdown-item" href="MapaTematicoALA.aspx">Map of Local Water Administrations - ALA</a></li>
+                        <li><a class="dropdown-item" href="MapaTematicoSTCRHC.aspx">Basin Water Resources Council Map – CRHC</a></li>
+                        <li><a class="dropdown-item" href="MapaTematicoRios.aspx">Map of vulnerable populations in rivers 2023</a></li>
+                        <li><a class="dropdown-item" href="MapaTematicoQuebradas.aspx">Map of vulnerable populations due to activation of streams 2023</a></li>
+                        </ul>
+                    </li>
+                    <li class="px-2"><a target="_blank" href="https://geosnirh.ana.gob.pe/portal/apps/webappviewer/index.html?id=927f97e5c7fc4c28965976a69a3f71f5" class="nav-link link-light">Satellite images</a></li>
+                    <li class="px-2">
+                        <a href="#" class="nav-link link-light dropdown-toggle" role="button" id="dropdownMenuEstadisticas" data-bs-toggle="dropdown" aria-expanded="false">Water Statistics</a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuEstadisticas">
+                        <li><a class="dropdown-item" target="_blank" href="https://geosnirh.ana.gob.pe/portal/apps/opsdashboard/index.html#/d18caa0272884d36b35c4e251987527e">Renewable Water</a></li>
+                        
+                        <li><a class="dropdown-item" href="#">Water Quality - ICARHS</a></li>
+                        </ul>
+                    </li>
+                    <li class="px-2"><a target="_blank" href="https://snirh.ana.gob.pe/VisorPorCuenca/" class="nav-link link-light">Viewfinder</a></li>
+                </ul>
+            </div>
+            <div class="container" id="menuPrincipalQe">            
+                <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                    <li class="px-2"><a href="Index2.aspx" class="nav-link link-light">Qallariy</a></li>
+                    <li class="px-2"><a href="Index2.aspx?IdVar=39" class="nav-link link-light">Sasachasqa</a></li> 
+                    <li class="px-2"><a href="Index2.aspx?IdVar=233" class="nav-link link-light">Awqanakuy</a></li>
+                    <li class="px-2">
+                        <a href="#" class="nav-link link-light dropdown-toggle " role="button" id="dropdownMenuReporte" data-bs-toggle="dropdown" aria-expanded="false">Willarikuy</a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuReporte">
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PRIOS">Yaku unumanta</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PLAGOS">Titiqaqa quchamanta</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PEMBALSES">Hayk’a yanu unu kasqanmanta</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PPUNTOCRITICO">Yaku unu sasachakuymanta</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PFAJAMARGINAL">Mayu-qucha-yarqa-pukyuq patankunamanta</a></li>
+                        <li><a class="dropdown-item" href="Reportes.aspx?R=PDERECHOS">Yaku unu aypanamanta</a></li>
+                        </ul>
+                    </li>
+                    <li class="px-2">
+                        <a href="#" class="nav-link link-light dropdown-toggle" role="button" id="dropdownMenuMapaTematico" data-bs-toggle="dropdown" aria-expanded="false">Mapas Temáticos</a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuMapaTematico">
+                            <li><a class="dropdown-item" href="MapaTematicoUH.aspx">Mapa de Unidades Hidrográficas nisqamanta</a></li>
+                        <li><a class="dropdown-item" href="MapaTematicoAAA.aspx">AAA Autoridad Adiminitrativa del Agua umalliqkunamanta</a></li>
+                        <li><a class="dropdown-item" href="MapaTematicoALA.aspx">ALA Administración Local del Agua Umalliqkunamanta</a></li>
+                        <li><a class="dropdown-item" href="MapaTematicoSTCRHC.aspx">Consejo de Recursos Hídricos de Cuenca – CRHC nisqamanta</a></li>
+                        <li><a class="dropdown-item" href="MapaTematicoRios.aspx">Mayu patakunapi tiyaq ayllukunamanta 2023</a></li>
+                        <li><a class="dropdown-item" href="MapaTematicoQuebradas.aspx">Wayqukunapi ayllukunaq tiyanan lluqlla apasqanmanta 2023</a></li>
+                        </ul>
+                    </li>
+                    <li class="px-2"><a target="_blank" href="https://geosnirh.ana.gob.pe/portal/apps/webappviewer/index.html?id=927f97e5c7fc4c28965976a69a3f71f5" class="nav-link link-light">Imágenes Satelitales nisqamnanta</a></li>
+                    <li class="px-2">
+                        <a href="#" class="nav-link link-light dropdown-toggle" role="button" id="dropdownMenuEstadisticas" data-bs-toggle="dropdown" aria-expanded="false">Estadísticas Hídricas nisqamanta</a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuEstadisticas">
+                        <li><a class="dropdown-item" target="_blank" href="https://geosnirh.ana.gob.pe/portal/apps/opsdashboard/index.html#/d18caa0272884d36b35c4e251987527e">Yaku unu kaq kaqmanta rikhurimuq</a></li>
+                        
+                        <li><a class="dropdown-item" href="#">Yaku unu calidad-ICARHS nisqamanta</a></li>
+                        </ul>
+                    </li>
+                    <li class="px-2"><a target="_blank" href="https://snirh.ana.gob.pe/VisorPorCuenca/" class="nav-link link-light">Qawaq</a></li>
+                </ul>
+            </div>
+        </header>
+        <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+        
+            
+
+            
+        </div> 
+    <div id="myAviso"> </div> 
+    
+        
+         <!--carrusel multiples items 1-->
+    
+        <div class="container desktop d-none d-xl-block d-md-none d-lg-block" id="listItems">    
+            
+        </div>
+        <div id="listItemsPhone" class="d-block d-sm-block d-lg-none smartphone container">
+
+            </div>
+        <!-- <div class="container" id="iframe" style="scroll-margin-top: 145px;scroll-behavior: smooth ">
+            <h3 class="tituloIframeGis linea CarruselEs"><span class="spanTituloIframeGis">Ríos Monitoreados</span></h3>
+            <h3 class="tituloIframeGis linea CarruselEn"><span class="spanTituloIframeGis">Monitored Rivers</span></h3>
+            <h3 class="tituloIframeGis linea CarruselQe"><span class="spanTituloIframeGis">Mayukuna qawarikusqanmanta</span></h3>
+            <a target="_blank" href="https://snirh.ana.gob.pe/VisorPorCuenca/" class="btn btn-primary btn-sm mb-1 btn-ana CarruselEs">Ver más</a>
+            <a target="_blank" href="https://snirh.ana.gob.pe/VisorPorCuenca/" class="btn btn-primary btn-sm mb-1 btn-ana CarruselEn">See more</a>
+            <a target="_blank" href="https://snirh.ana.gob.pe/VisorPorCuenca/" class="btn btn-primary btn-sm mb-1 btn-ana CarruselQe">Astaway qawariy</a>
+          <iframe id="iframeGis" name="iframeGis" style="border:none " height="900" width="100%" title="Mapa_Areas_Agricolas_afectadas_por_Inundaciones" src="https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=228" allowfullscreen="allowfullscreen"></iframe>          
+        </div>-->
+    </main>
+               
+ <footer id="footer">
+    <div class="footer-top">
+        <div class="">
+            <div class="d-flex flex-wrap justify-content-center">  
+                <div class="pt-2 col-lg-2 col-md-4 col-sm-6 footer-qr CarruselEs">
+                    <!--h4>Observatorio Móvil</h4>
+                    <div id="qrcode"></div-->
+                </div>
+                <div class="pt-2 col-lg-2 col-md-4 col-sm-6 footer-links CarruselEs">
+                    <h4>Enlaces útiles</h4>
+                    <ul class="text-white">
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Sobre nosotros</a></li>
+                    
+                    <li><a href="#">Terminos de referencia</a></li>
+                    <li><a href="#">Politica de privacidad</a></li>
+                    </ul>
+                </div>
+                <div class="pt-2 col-lg-2 col-md-4 col-sm-6 footer-links CarruselEn">
+                    <h4>Helpful Links</h4>
+                    <ul class="text-white">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About us</a></li>
+                    
+                    <li><a href="#">Terms of reference</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="pt-2 col-lg-2 col-md-4 col-sm-6 footer-links CarruselQe">
+                    <h4>Enlaces nisqa</h4>
+                    <ul class="text-white">
+                    <li><a href="#">Qallariy</a></li>
+                    <li><a href="#">Nuqaykumanta</a></li>
+                    
+                    <li><a href="#">Términos de Referencia nisqa</a></li>
+                    <li><a href="#">Política de Privacidad nisqa</a></li>
+                    </ul>
+                </div>
+                <div class="pt-2 col-lg-2 col-md-4 col-sm-6 footer-contact CarruselEs">
+                    <h4>Contacto</h4>
+                    <p><i class="fa-solid fa-location-dot"></i>
+                    Calle Los Petirrojos 355 Urb, San Isidro 15036<br/>
+                    <strong> <i class="fa-solid fa-phone"></i> Teléfono director:</strong> 224-3298, Anexo 1600<br/>
+                    <strong> <i class="fa-solid fa-phone"></i> Teléfono contacto:</strong> 224-3298, Anexo 1601<br/>
+                    <strong> <i class="fa-solid fa-envelope"></i> Email:</strong> snirh@ana.gob.pe <br/>
+                    </p>
+  
+                    <div class="social-links">
+                    <a href="https://twitter.com/ANAPeru" class="twitter" target="_blank"><i class="fa-brands fa-twitter" ></i></a>
+                    <a href="https://es-la.facebook.com/autoridadnacionaldelagua/" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/midagri_ana/?hl=es" class="instagram" ><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://youtube.com/user/ANAtvagua" class="youtube" ><i class="fa-brands fa-youtube"></i></a>
+                    </div>  
+                </div>
+                 <div class="pt-2 col-lg-2 col-md-4 col-sm-6 footer-contact CarruselEn">
+                    <h4>Contacto</h4>
+                    <p><i class="fa-solid fa-location-dot"></i>
+                    Calle Los Petirrojos 355 Urb, San Isidro 15036<br/>
+                    <strong> <i class="fa-solid fa-phone"></i> Director phone:</strong> 224-3298, Anexo 1600<br/>
+                    <strong> <i class="fa-solid fa-phone"></i> Contact phone:</strong> 224-3298, Anexo 1601<br/>
+                    <strong> <i class="fa-solid fa-envelope"></i> E-mail:</strong> snirh@ana.gob.pe <br/>
+                    </p>
+  
+                    <div class="social-links">
+                    <a href="https://twitter.com/ANAPeru" class="twitter" target="_blank"><i class="fa-brands fa-twitter" ></i></a>
+                    <a href="https://es-la.facebook.com/autoridadnacionaldelagua/" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/midagri_ana/?hl=es" class="instagram" ><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://youtube.com/user/ANAtvagua" class="youtube" ><i class="fa-brands fa-youtube"></i></a>
+                    </div>  
+                </div>               
+                <div class="pt-2 col-lg-2 col-md-4 col-sm-6 footer-contact CarruselQe">
+                    <h4>Kaypi tariwankiku</h4>
+                    <p><i class="fa-solid fa-location-dot"></i>
+                    Calle Los Petirrojos 355 Urb, San Isidro 15036<br/>
+                    <strong> <i class="fa-solid fa-phone"></i> Teléfono director:</strong> 224-3298, Anexo 1600<br/>
+                    <strong> <i class="fa-solid fa-phone"></i> Teléfono contacto:</strong> 224-3298, Anexo 1601<br/>
+                    <strong> <i class="fa-solid fa-envelope"></i> Email:</strong> snirh@ana.gob.pe <br/>
+                    </p>
+  
+                    <div class="social-links">
+                    <a href="https://twitter.com/ANAPeru" class="twitter" target="_blank"><i class="fa-brands fa-twitter" ></i></a>
+                    <a href="https://es-la.facebook.com/autoridadnacionaldelagua/" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/midagri_ana/?hl=es" class="instagram" ><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://youtube.com/user/ANAtvagua" class="youtube" ><i class="fa-brands fa-youtube"></i></a>
+                    </div>  
+                </div>
+            </div>
+        </div>  
+        <div class="container">
+            <div class="copyright CarruselEs">
+                Copyright © 2023 <strong>ANA</strong>. Todos los derechos reservados.
+            </div> 
+            <div class="copyright CarruselEn">
+                Copyright © 2023 <strong>ANA</strong>. All rights reserved.
+            </div> 
+            <div class="copyright CarruselQe">
+                Copyright © 2023 <strong>ANA</strong>. Kay qillqasqan Derechos Reservados nisqayu.
+            </div>         
+        </div>
+    </div>
+</footer>    
+    <script>
+        $(function () {
+
+        let urlParams = new URLSearchParams(window.location.search);
+            CodReporte = urlParams.get('IdVar');
+            let Lon = urlParams.get('Lon');
+            let Lat = urlParams.get('Lat');
+            let _Tipo = urlParams.get('Tipo');
+            CodReporte = CodReporte ? CodReporte : '';
+                       
+
+            Idioma = urlParams.get('locale-attribute');
+              
+        switch (Idioma) {
+            case 'qe':
+                $('#language-dropdown-toggle').html('Quechua');
+                $('#tituloIndex').html('Yaku Unu Qawarina');
+                $('#menuPrincipalEn').hide();
+                $('#menuPrincipalEs').hide();
+                $('#menuPrincipalQe').show();
+                $('.CarruselEs').hide();
+                $('.CarruselEn').hide();
+                $('.CarruselQe').show();  
+                cargarCarrusel('qe'); 
+                cargarTematicas('qe')
+                break;
+            case 'en':
+                $('#language-dropdown-toggle').html('Ingles');
+                $('#tituloIndex').html('Water Observatory');
+                $('#menuPrincipalQe').hide();
+                $('#menuPrincipalEs').hide();
+                $('#menuPrincipalEn').show();
+                $('.CarruselQe').hide();
+                $('.CarruselEs').hide();
+                $('.CarruselEn').show();
+                cargarCarrusel('en'); 
+                cargarTematicas('en')
+                break;
+            case 'es':
+            default:
+                $('#language-dropdown-toggle').html('Español');                
+                $('#tituloIndex').html('Observatorio Nacional de Recursos Hídricos');
+                $('#menuPrincipalQe').hide();
+                $('#menuPrincipalEn').hide();
+                $('#menuPrincipalEs').show();
+                $('.CarruselEs').show()
+                $('.CarruselEn').hide()
+                $('.CarruselQe').hide()
+                cargarCarrusel('es'); 
+                cargarTematicas('es')
+                break;
+        }
+
+        let CodAAA = urlParams.get('AAA');
+        let CodALA = urlParams.get('ALA');
+
+        CodAAA = CodAAA ? CodAAA : '00';        
+        CodALA = CodALA ? CodALA : '00';
+        
+        switch (CodReporte) {
+            case '228':
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = 'Ríos Monitoreados';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/index.aspx?IdVar=" + CodReporte + "&Lon=" + Lon + "&Lat=" + Lat + "";
+                break;
+            case '46':
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = 'Monitoreo embalses';
+                document.getElementById('iframe').scrollIntoView();
+                if (Lon != undefined && Lat != undefined) {
+                    document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/index.aspx?IdVar=" + CodReporte + "&Lon=" + Lon + "&Lat=" + Lat + "";
+                } else {                    
+                    document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/index.aspx?IdVar=" + CodReporte;
+                }                    
+                break;
+            case '39':
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = 'Emergencias';
+                document.getElementById('iframe').scrollIntoView();
+                if (Lon != undefined && Lat!= undefined)
+                    document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte + "&Lon=" + Lon + "&Lat=" + Lat + "";
+                else
+                    document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte;
+                break;            
+            case '230':             
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = 'Delimitación de fajas marginales';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte + "&AAA=" + CodAAA + "&ALA=" + CodALA + "" + "&TIPO=" + _Tipo + "";
+                break;
+            case '233':
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = 'Conflictos';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte;
+                break;
+            case '239':
+                //Derechos de Uso de Agua--
+                let CodTIPO= urlParams.get('TIPO');
+                CodTIPO = CodTIPO ? CodTIPO : 0; 
+                let CodGRUPO = urlParams.get('GRUPO');
+                CodGRUPO = CodGRUPO ? CodGRUPO : 0; 
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = 'Derechos de Uso de Agua';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte + "&AAA=" + CodAAA + "&ALA=" + CodALA + "&TIPO=" + CodTIPO + "&GRUPO=" + CodGRUPO;
+                break;
+            case '240':             
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = 'Identificación de Puntos Críticos';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte + "&AAA=" + CodAAA + "&ALA=" + CodALA + "";
+                break;
+            case '257':             
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = ' Calidad de Agua - ICARHS';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte;
+                break;  
+            case '263':
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = ' Estaciones Hidrométricas';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte;
+                break;  
+            case '47':
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = ' Estaciones Pluviométricas';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte;
+                break;  
+            case '106':
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = ' SAMAQ';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte;
+                break;  
+            case '267':
+                document.getElementsByClassName('spanTituloIframeGis')[0].innerHTML = ' Estaciones Pluviométricas';
+                document.getElementById('iframe').scrollIntoView();
+                document.getElementById('iframeGis').src = "https://snirh.ana.gob.pe/VisorPorCuenca/?IdVar=" + CodReporte;
+                break;  
+
+        }
+            
+        });
+        
+        function cargarCarrusel(pIdioma) {
+            AjaxPOST({
+                url: "ServicioPrincipal.asmx/listarCarrusel",
+                data: '{pIdioma:"' + pIdioma + '"}',
+                success: function (res) {
+                    let phtml = '';
+                    let objCarruselRes = JSON.parse(res.d).obj;
+                    phtml += '<div class="carousel-indicators">';
+                    phtml += '  <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>';
+                    phtml += '  <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>';
+                    phtml += '  <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>';
+                    phtml += '  <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3" aria-label="Slide 4" class=""></button>';
+                    phtml += '  <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="4" aria-label="Slide 5" class=""></button>';
+                    phtml += '</div>';
+                    phtml += '<div class="carousel-inner" id="carousel-inner">';
+                    $.each(objCarruselRes, function (j, item) {
+                        let activado = (j === 0) ? 'active' : '';
+                        phtml += '  <div class="carousel-item carousel-color ' + activado + '">';
+                        let classBanner = (j === 0) ? 'banner_video' : (j === 2 ? 'banner_imagen2' : 'banner_imagen');
+                        phtml += '      <div class="' + classBanner + '">';             
+                        if (j === 0) {
+                            phtml += '          <video src="'+JSON.parse(item.RESP).link_img+'" autoplay="autoplay" loop="loop" muted="muted"></video>';
+                        } else {
+                            phtml += '          <img src="'+JSON.parse(item.RESP).link_img+'" alt="'+JSON.parse(item.RESP).alt+'" />';
+                        }                       
+                        phtml += '      </div>';             
+                        phtml += '      <div class="container CarruselEs">';
+                        phtml += '          <div class="carousel-caption text-end">';                   
+                        phtml += '              <h1>' + JSON.parse(item.RESP).titulo + '</h1>';
+                        phtml += '              <p>' + JSON.parse(item.RESP).descripcion + '</p>';   
+                        if(JSON.parse(item.RESP).boton == 1)
+                            phtml += '              <p><a class="btn btn-lg btn-primary" target="_blank" href="'+JSON.parse(item.RESP).link+'">'+JSON.parse(item.RESP).textoBoton+'</a></p>';   
+                        phtml += '          </div>';
+                        phtml += '      </div>';
+                        phtml += '  </div>';
+                    });
+                    phtml += '</div>';
+                    phtml += '<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">';
+                    phtml += '  <span class="carousel-control-prev-icon" aria-hidden="true"></span>';
+                    phtml += '  <span class="visually-hidden">Previous</span>';
+                    phtml += '</button>';
+                    phtml += '<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">';
+                    phtml += '  <span class="carousel-control-next-icon" aria-hidden="true"></span>';
+                    phtml += '  <span class="visually-hidden">Next</span>';
+                    phtml += '</button>';
+                    $('#myCarousel').html(phtml);
+
+                    let phtml1 = '';
+                    phtml1 +='<dialog id="alert-dialog" class="dialogo-ejemplo">';
+                    phtml1 +=  '<center><h3> A V I S O </h3></center>';
+                    phtml1 +=  '</br>';
+                    phtml1 += '<p text-align="justify">El día viernes 02 de febrero del 2024, por razones de mantenimiento</p>';
+                    phtml1 += '<p text-align="justify"> de los servidores geográficos, algunos servicios GIS no estarán disponibles.</p>';
+                    phtml1 +=  '</br>';
+                    phtml1 +=  '<button onClick="this.parentElement.close()">Cerrar</button>';
+                    phtml1 +='</dialog>';
+                    $('#myAviso').html(phtml1);
+                   // const alertDialog = document.querySelector("#alert-dialog");
+                    //alertDialog.showModal();
+                }
+            });
+        }
+
+        function cargarTematicas(pIdioma) {
+
+            /*
+            const ico_var = [
+                'https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/inventario_v2.png',
+                'https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/eventos_extremos_v2.png',
+                'https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/gestion_oportunidad_v2.png',
+                'https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/gestion_calidad_v2.png',
+                'https://snirh.ana.gob.pe/RepositorioFps03/SNIRH/ONRH/gestion_cantidad_v2.png'
+            ]
+
+            */
+            const ico_var = [
+                'Imagenes/tematica/inventario.png',
+                'Imagenes/tematica/evento_extremo.png',
+                'Imagenes/tematica/uso_multisectorial_agua.png',
+                'Imagenes/tematica/calida_agua.png',
+                'Imagenes/tematica/cantidad_agua.png'
+            ]
+
+            AjaxPOST({
+                url: "ServicioPrincipal.asmx/MostrarGruposItems",
+                data: '{pIdioma:"' + pIdioma + '"}',
+                success: function (res) {
+                
+                    var objRes = JSON.parse(res.d).obj;
+                    
+                    $("#listItems").html('<img src="Content/loading.svg">');
+                    var phtml = '';
+                    $.each(objRes, function (j, item) {
+                        
+                        var objTematicas = JSON.parse(item.RESP).Tematicas;
+                        
+                        /*phtml += '<div class="item '+JSON.parse(item.RESP).class+'">';
+                        phtml += '    <div class="init">';
+                        phtml += '<h3>'+JSON.parse(item.RESP).name+'</h3>';
+                       
+                        phtml += '    </div>';*/
+                        phtml += '<div class="item">'
+                        //phtml += '    <div class="hover">';  
+                        phtml += '    <div class="hover">'; 
+                        //pthml += '<div>';
+                        phtml += `<div class="centered-div"><img src=${ico_var[j]} height=50px /><span class="styled-span">` + JSON.parse(item.RESP).name + '</span></div>';
+                        //pthml += '</div>';
+                        phtml += '<hr/>';
+                        $.each(objTematicas, function (k, detalleItem) {
+                            phtml += '       <div class="text-center">';  
+                            phtml += '<h3><a target="iframeGis" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="'+detalleItem.TEXTOTOOLTIP+'" onclick="redireccionar(\''+detalleItem.DESCRIPCION+'\');" href="'+detalleItem.URLGIS+'">'+detalleItem.DESCRIPCION+'</a></h3>';                                                        
+                            phtml += '            <div class="valor">';
+                            phtml += '                <p class="styled-p">'+detalleItem.VALOR+'</p>';
+                            phtml += '            </div>';
+                            phtml += '        </div>';
+                        });
+                        phtml += '    </div>';       
+                        phtml += '</div>';
+                    });
+
+                    $('#listItems').html(phtml);
+                    /*Phone*/
+                    var phtmlPhone = '';
+
+                    $.each(objRes, function (j, itemPhone) {
+
+                        var objTematicasPhone = JSON.parse(itemPhone.RESP).Tematicas;
+
+                        phtmlPhone += '<div class="card mt-3 text-center">';
+                        phtmlPhone += '    <div class="card-header item ' + JSON.parse(itemPhone.RESP).class + '">';
+                        phtmlPhone += '     <h3 class="mb-0">' + JSON.parse(itemPhone.RESP).name + '</h3>';
+                        phtmlPhone += '      <div class="inicial" style="height:50px;">';
+                        phtmlPhone += '      </div>';
+                        phtmlPhone += '    </div>';
+                        phtmlPhone += '    <ul class="list-group list-group-flush">';
+                        $.each(objTematicasPhone, function (k, detalleItemPhone) {
+                            phtmlPhone += '  <li class="list-group-item">';
+                            phtmlPhone += '       <a target="iframeGis" class="btn" onclick="redireccionar(\'' + detalleItemPhone.DESCRIPCION + '\');" href="' + detalleItemPhone.URLGIS + '">' + detalleItemPhone.DESCRIPCION + ' »</a>';
+                            phtmlPhone += '<br/>';
+                            phtmlPhone += '<p style="font-size: 41px;color: #737373;" class="mb-0">' + detalleItemPhone.VALOR + '</p>';
+                            phtmlPhone += '  </li>';
+                        });
+                        phtmlPhone += '    </ul>';
+                        phtmlPhone += '</div>';
+                    });
+
+                    $('#listItemsPhone').html(phtmlPhone);
+
+                    /*End Phone*/
+                },
+                done: function (res) {
+                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+
+                    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                        return new bootstrap.Tooltip(tooltipTriggerEl, {
+                            container: 'body',
+                            trigger: 'hover'
+                        });
+
+                    });
+                }
+            });
+        }
+        function redireccionar(pStringTematica) {    
+            let StringTematica = pStringTematica.replace("<br></a>", " ").replace("<br/>", " ");   
+            $('.spanTituloIframeGis').html(StringTematica);
+            document.getElementById('iframe').scrollIntoView();    
+        }
+
+        
+    </script>
+    
+    <script>
+        const pwaUrl = `https://onrh.ana.gob.pe/onrhmovil`
+        const qrcode = new QRCode(document.getElementById('qrcode'), {
+            text: pwaUrl,
+            width: 128,
+            height: 128,
+            colorDark: '#000',
+            colorLight: '#fff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    </script>
+    <script src="Scripts/Index/scriptMenu.min.js?ver=2025.05.28"></script>
+</body>
+</html>

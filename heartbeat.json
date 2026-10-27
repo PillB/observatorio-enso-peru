@@ -1,37 +1,78 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-10-26T02:01:39+00:00",
+ "at": "2026-10-27T04:10:09+00:00",
  "result": "ok",
- "reachable": "17/27",
+ "reachable": "37/53",
  "summary": {
-  "enfen": "3/4",
+  "enfen": "4/4",
   "igp": "1/1",
-  "senamhi": "8/8",
-  "ana": "0/2",
-  "imarpe": "2/2",
+  "senamhi": "9/9",
+  "ana": "3/3",
+  "imarpe": "5/5",
   "cenepred": "0/1",
-  "enfen-docs": "3/9"
+  "archive": "0/1",
+  "bnp": "1/3",
+  "indeci": "0/2",
+  "minjus": "0/1",
+  "contraloria": "1/1",
+  "arcc": "0/1",
+  "midagri": "1/1",
+  "irtp": "0/2",
+  "unsa": "1/1",
+  "enfen-docs": "2/8",
+  "imarpe-repo": "9/9"
  },
  "failures": [
-  {
-   "url": "https://met.igp.gob.pe/datos/ICEN.txt",
-   "class": "timeout",
-   "error": "robots.txt sin respuesta (timeout): no se pide nada a este servidor"
-  },
-  {
-   "url": "https://snirh.ana.gob.pe/",
-   "class": "robots",
-   "error": "robots.txt no permite la ruta: no se pide"
-  },
-  {
-   "url": "https://snirh.ana.gob.pe/onrh/",
-   "class": "robots",
-   "error": "robots.txt no permite la ruta: no se pide"
-  },
   {
    "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
    "status": 404,
    "class": "http-4xx"
+  },
+  {
+   "url": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
+   "class": "timeout",
+   "error": "ReadTimeout: The read operation timed out"
+  },
+  {
+   "url": "https://repositorio.bnp.gob.pe/",
+   "class": "dns",
+   "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known"
+  },
+  {
+   "url": "https://catalogo.bnp.gob.pe/",
+   "class": "dns",
+   "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known"
+  },
+  {
+   "url": "https://www.indeci.gob.pe/",
+   "class": "dns",
+   "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known"
+  },
+  {
+   "url": "https://bvpad.indeci.gob.pe/",
+   "class": "dns",
+   "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known"
+  },
+  {
+   "url": "https://spij.minjus.gob.pe/",
+   "status": 200,
+   "class": "empty",
+   "error": "HTML casi vacío"
+  },
+  {
+   "url": "https://www.rcc.gob.pe/",
+   "class": "dns",
+   "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known"
+  },
+  {
+   "url": "https://www.tvperu.gob.pe/",
+   "status": 403,
+   "class": "http-403"
+  },
+  {
+   "url": "https://www.radionacional.gob.pe/",
+   "status": 403,
+   "class": "http-403"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf",
@@ -71,9 +112,9 @@
  "collector": {
   "host": "Pablos-MacBook-Pro.local",
   "tz": "America/Lima",
-  "contract": 1,
+  "contract": 2,
   "runner": "collector_service/1",
-  "kit": "2026.10.22-680089e",
+  "kit": "2026.10.26-53f8c73",
   "os": "macOS-26.6.2",
   "python": "3.12.15",
   "git": "2.50.1 (Apple Git-155)",
@@ -82,12 +123,9 @@
  },
  "registry": {
   "origin": "github",
-  "generated_at": "2026-10-22T01:56:06+00:00",
-  "sources": 198,
-  "peru_server": 8
- },
- "probes": {
-  "ok": 3
+  "generated_at": "2026-10-27T01:55:34+00:00",
+  "sources": 219,
+  "peru_server": 29
  },
  "carried": 1
 }

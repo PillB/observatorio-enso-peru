@@ -1,0 +1,1340 @@
+{
+  "id" : null,
+  "scope" : null,
+  "query" : "\"Comunicado Oficial ENFEN\"",
+  "appliedFilters" : null,
+  "sort" : {
+    "by" : "dc.date.issued",
+    "order" : "DESC"
+  },
+  "configuration" : null,
+  "type" : "discover",
+  "_links" : {
+    "self" : {
+      "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM"
+    }
+  },
+  "_embedded" : {
+    "searchResult" : {
+      "_embedded" : {
+        "objects" : [ {
+          "hitHighlights" : {
+            "dc.title" : [ "<em>Comunicado</em> <em>Oficial</em> <em>ENFEN</em> N° 18-2026" ]
+          },
+          "type" : "discover",
+          "_links" : {
+            "indexableObject" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7"
+            }
+          },
+          "_embedded" : {
+            "indexableObject" : {
+              "id" : "0980a018-d5e0-4583-b028-7bebbbb8e7d7",
+              "uuid" : "0980a018-d5e0-4583-b028-7bebbbb8e7d7",
+              "name" : "Comunicado Oficial ENFEN N° 18-2026",
+              "handle" : "20.500.12958/11356",
+              "metadata" : {
+                "dc.contributor.author" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.accessioned" : [ {
+                  "value" : "2026-10-19T00:02:36Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.available" : [ {
+                  "value" : "2026-10-19T00:02:36Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.issued" : [ {
+                  "value" : "2026-10-16",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.description.abstract" : [ {
+                  "value" : "La Temperatura Superficial del Mar del Pacifico continúa presentando anomalías positivas con tendencia ascendente. Frente a la costa peruana (región Niño 1+2) es más probable que calentamiento del mar (El Niño costero) se mantenga con una magnitud de extraordinaria hasta enero de 2027, para luego disminuir a fuerte hasta inicios del otoño de 2027. Asimismo, en el Pacífico central (región Niño 3.4) la temperatura del mar se mantendría con una magnitud de muy fuerte hasta febrero de 2027, reduciendo su magnitud hacia el otoño de dicho año.",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.format" : [ {
+                  "value" : "application/pdf",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.identifier.uri" : [ {
+                  "value" : "https://hdl.handle.net/20.500.12958/11356",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.language.iso" : [ {
+                  "value" : "spa",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher.country" : [ {
+                  "value" : "PE",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights" : [ {
+                  "value" : "http://purl.org/coar/access_right/c_abf2",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights.uri" : [ {
+                  "value" : "https://creativecommons.org/licenses/by/4.0/",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.subject" : [ {
+                  "value" : "Fenómeno El Niño",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                }, {
+                  "value" : "Oceanografía",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 1
+                }, {
+                  "value" : "Temperatura del mar",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 2
+                } ],
+                "dc.subject.ocde" : [ {
+                  "value" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "Comunicado Oficial ENFEN N° 18-2026",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.type" : [ {
+                  "value" : "https://purl.org/coar/resource_type/c_93fc",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "inArchive" : true,
+              "discoverable" : true,
+              "withdrawn" : false,
+              "lastModified" : "2026-10-19T04:01:47.710+00:00",
+              "entityType" : null,
+              "type" : "item",
+              "_links" : {
+                "accessStatus" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/accessStatus"
+                },
+                "bundles" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/bundles"
+                },
+                "identifiers" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/identifiers"
+                },
+                "mappedCollections" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/mappedCollections"
+                },
+                "owningCollection" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/owningCollection"
+                },
+                "relationships" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/relationships"
+                },
+                "version" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/version"
+                },
+                "templateItemOf" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/templateItemOf"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7"
+                }
+              }
+            }
+          }
+        }, {
+          "hitHighlights" : {
+            "dc.title" : [ "<em>Comunicado</em> <em>Oficial</em> <em>ENFEN</em> N° 17-2026" ]
+          },
+          "type" : "discover",
+          "_links" : {
+            "indexableObject" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e"
+            }
+          },
+          "_embedded" : {
+            "indexableObject" : {
+              "id" : "68500b24-8399-42de-a117-e8f2cd07559e",
+              "uuid" : "68500b24-8399-42de-a117-e8f2cd07559e",
+              "name" : "Comunicado Oficial ENFEN N° 17-2026",
+              "handle" : "20.500.12958/11355",
+              "metadata" : {
+                "dc.contributor.author" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.accessioned" : [ {
+                  "value" : "2026-10-18T23:57:24Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.available" : [ {
+                  "value" : "2026-10-18T23:57:24Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.issued" : [ {
+                  "value" : "2026-09-28",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.description.abstract" : [ {
+                  "value" : "El Niño Costero (región Niño 1+2) se mantendría con una magnitud extraordinaria, respecto al calentamiento del mar, hasta enero 2027, reduciendo su magnitud hacia el otoño de 2027.\nPor otro lado, El Niño (región Niño 3.4) se mantendría con una magnitud muy fuerte hasta enero de 2027, reduciendo su magnitud hacia el otoño de dicho año.",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.format" : [ {
+                  "value" : "application/pdf",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.identifier.uri" : [ {
+                  "value" : "https://hdl.handle.net/20.500.12958/11355",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.language.iso" : [ {
+                  "value" : "spa",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher.country" : [ {
+                  "value" : "PE",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights" : [ {
+                  "value" : "http://purl.org/coar/access_right/c_abf2",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights.uri" : [ {
+                  "value" : "https://creativecommons.org/licenses/by/4.0/",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.subject" : [ {
+                  "value" : "Fenómeno El Niño",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                }, {
+                  "value" : "Oceanografía",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 1
+                }, {
+                  "value" : "Temperatura del mar",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 2
+                } ],
+                "dc.subject.ocde" : [ {
+                  "value" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "Comunicado Oficial ENFEN N° 17-2026",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.type" : [ {
+                  "value" : "https://purl.org/coar/resource_type/c_93fc",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "inArchive" : true,
+              "discoverable" : true,
+              "withdrawn" : false,
+              "lastModified" : "2026-10-19T04:01:48.293+00:00",
+              "entityType" : null,
+              "type" : "item",
+              "_links" : {
+                "accessStatus" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e/accessStatus"
+                },
+                "bundles" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e/bundles"
+                },
+                "identifiers" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e/identifiers"
+                },
+                "mappedCollections" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e/mappedCollections"
+                },
+                "owningCollection" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e/owningCollection"
+                },
+                "relationships" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e/relationships"
+                },
+                "version" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e/version"
+                },
+                "templateItemOf" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e/templateItemOf"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/68500b24-8399-42de-a117-e8f2cd07559e"
+                }
+              }
+            }
+          }
+        }, {
+          "hitHighlights" : {
+            "dc.title" : [ "<em>Comunicado</em> <em>Oficial</em> <em>ENFEN</em> N° 16-2026" ]
+          },
+          "type" : "discover",
+          "_links" : {
+            "indexableObject" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1"
+            }
+          },
+          "_embedded" : {
+            "indexableObject" : {
+              "id" : "d1eadaba-d087-487e-a0a2-9f894e37a9f1",
+              "uuid" : "d1eadaba-d087-487e-a0a2-9f894e37a9f1",
+              "name" : "Comunicado Oficial ENFEN N° 16-2026",
+              "handle" : "20.500.12958/11229",
+              "metadata" : {
+                "dc.contributor.author" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.accessioned" : [ {
+                  "value" : "2026-09-15T04:21:03Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.available" : [ {
+                  "value" : "2026-09-15T04:21:03Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.issued" : [ {
+                  "value" : "2026-09-14",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.description.abstract" : [ {
+                  "value" : "ENFEN sostiene que El Niño Costero (región Niño 1+2) continuaría hasta mediados de otoño de 2027,\ncon la más alta probabilidad de una magnitud extraordinaria de setiembre 2026 a enero de 2027.\nEl Niño (región Niño 3.4) presentaría una magnitud muy fuerte de setiembre de 2026 a enero de 2027.\nEntre febrero y marzo, cambiaría a fuerte, para continuar debilitándose durante el otoño hacia una\ncondición neutra.\nPara el trimestre setiembre–noviembre se prevé que las temperaturas del aire se mantengan muy\nsuperiores a las habituales en la costa peruana, registrando nuevos récords. Con relación a las lluvias,\nse esperan condiciones por encima de lo normal en la costa norte, con posibles episodios de lluvias de\nmoderada a fuerte intensidad desde noviembre. En la sierra sur y sectores de la Amazonía se prevé\ncondiciones de lluvias de normal a inferior.\nLos ríos en la región hidrográfica del Pacífico presentarían en promedio caudales sobre lo normal en el\nnorte principalmente desde noviembre, mientras que, las zonas centro y sur, incluyendo las regiones\nhidrográficas del Amazonas y Titicaca, predominaría condiciones de normal a inferior.\nEn relación a los recursos pesqueros, se espera que en las próximas semanas la anchoveta de la región\nnorte centro permanezca profundizada y replegada en la zona costera. Frente a la costa central, se\nmantendrá la disponibilidad de especies asociadas a aguas ecuatoriales (peces sierra y samasa) y\noceánicas (perico, barrilete, melva y atún aleta amarilla), entre otros.\nSe recomienda a los tomadores de decisiones tener en cuenta los escenarios de riesgo basados en los\navisos meteorológicos y pronósticos estacionales vigentes a fin de adoptar las medidas para la reducción\ndel riesgo de desastres, así como acciones para la respuesta ante peligros inminentes.",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.format" : [ {
+                  "value" : "application/pdf",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.identifier.uri" : [ {
+                  "value" : "https://hdl.handle.net/20.500.12958/11229",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.language.iso" : [ {
+                  "value" : "spa",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher.country" : [ {
+                  "value" : "PE",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights" : [ {
+                  "value" : "http://purl.org/coar/access_right/c_abf2",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights.uri" : [ {
+                  "value" : "https://creativecommons.org/licenses/by/4.0/",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.subject" : [ {
+                  "value" : "Fenómeno El Niño",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                }, {
+                  "value" : "Oceanografía",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 1
+                }, {
+                  "value" : "Temperatura del mar",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 2
+                } ],
+                "dc.subject.ocde" : [ {
+                  "value" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "Comunicado Oficial ENFEN N° 16-2026",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.type" : [ {
+                  "value" : "https://purl.org/coar/resource_type/c_93fc",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "inArchive" : true,
+              "discoverable" : true,
+              "withdrawn" : false,
+              "lastModified" : "2026-09-16T04:01:46.177+00:00",
+              "entityType" : null,
+              "type" : "item",
+              "_links" : {
+                "accessStatus" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1/accessStatus"
+                },
+                "bundles" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1/bundles"
+                },
+                "identifiers" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1/identifiers"
+                },
+                "mappedCollections" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1/mappedCollections"
+                },
+                "owningCollection" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1/owningCollection"
+                },
+                "relationships" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1/relationships"
+                },
+                "version" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1/version"
+                },
+                "templateItemOf" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1/templateItemOf"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/d1eadaba-d087-487e-a0a2-9f894e37a9f1"
+                }
+              }
+            }
+          }
+        }, {
+          "hitHighlights" : {
+            "dc.title" : [ "<em>Comunicado</em> <em>Oficial</em> <em>ENFEN</em> N° 15-2026" ]
+          },
+          "type" : "discover",
+          "_links" : {
+            "indexableObject" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432"
+            }
+          },
+          "_embedded" : {
+            "indexableObject" : {
+              "id" : "935c0da7-774d-43d0-94c4-f5415cb76432",
+              "uuid" : "935c0da7-774d-43d0-94c4-f5415cb76432",
+              "name" : "Comunicado Oficial ENFEN N° 15-2026",
+              "handle" : "20.500.12958/11099",
+              "metadata" : {
+                "dc.contributor.author" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.accessioned" : [ {
+                  "value" : "2026-08-31T13:25:02Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.available" : [ {
+                  "value" : "2026-08-31T13:25:02Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.issued" : [ {
+                  "value" : "2026-08-28",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.description.abstract" : [ {
+                  "value" : "ENFEN mantiene el estado de “Alerta de El Niño Costero”. En la región Niño 1+2, se mantiene una alta\nprobabilidad de que El Niño Costero persista hasta el verano de 2027, con una magnitud extraordinaria de\nsetiembre 2026 a enero de 2027 (≥ 62%), y entre fuerte y extraordinaria en febrero y marzo de 2027.\nEn la región Niño 3.4 (Pacífico ecuatorial central), se mantiene una alta probabilidad de que El Niño alcance\nuna magnitud muy fuerte de setiembre 2026 a enero de 2027 (≥ 58%).\nPara el trimestre setiembre–noviembre, se prevé la persistencia de temperaturas del aire muy por encima\nde lo normal en toda la costa, con una alta probabilidad de nuevos récords. Es la costa norte se\npresentarían lluvias con valores superiores a lo normal, con probables precipitaciones de débil a moderada\nintensidad desde noviembre.\nSe espera que los ríos de la región del Pacífico mantengan caudales dentro de sus rangos normales.\nEn las próximas semanas, se espera que el stock norte-centro de anchoveta permanezca replegado hacia\nla franja costera. En la costa central se mantendrán ejemplares asociados a aguas ecuatoriales y oceánicas\ny las especies litorales de la zona norte, continuarían desplazadas hacia el sur de su distribución normal.\nSe recomienda a los tomadores de decisiones tener en cuenta los escenarios de riesgo basados en los\navisos meteorológicos y pronósticos estacionales vigentes a fin de adoptar las medidas para la reducción\ndel riesgo de desastres, así como acciones para la respuesta ante peligros inminentes.",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.format" : [ {
+                  "value" : "application/pdf",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.identifier.uri" : [ {
+                  "value" : "https://hdl.handle.net/20.500.12958/11099",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.language.iso" : [ {
+                  "value" : "spa",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher.country" : [ {
+                  "value" : "PE",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights" : [ {
+                  "value" : "http://purl.org/coar/access_right/c_abf2",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights.uri" : [ {
+                  "value" : "https://creativecommons.org/licenses/by/4.0/",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.subject" : [ {
+                  "value" : "Fenómeno El Niño",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                }, {
+                  "value" : "Oceanografía",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 1
+                }, {
+                  "value" : "Temperatura del mar",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 2
+                } ],
+                "dc.subject.ocde" : [ {
+                  "value" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "Comunicado Oficial ENFEN N° 15-2026",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.type" : [ {
+                  "value" : "https://purl.org/coar/resource_type/c_93fc",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "inArchive" : true,
+              "discoverable" : true,
+              "withdrawn" : false,
+              "lastModified" : "2026-09-01T04:01:42.475+00:00",
+              "entityType" : null,
+              "type" : "item",
+              "_links" : {
+                "accessStatus" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432/accessStatus"
+                },
+                "bundles" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432/bundles"
+                },
+                "identifiers" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432/identifiers"
+                },
+                "mappedCollections" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432/mappedCollections"
+                },
+                "owningCollection" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432/owningCollection"
+                },
+                "relationships" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432/relationships"
+                },
+                "version" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432/version"
+                },
+                "templateItemOf" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432/templateItemOf"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/935c0da7-774d-43d0-94c4-f5415cb76432"
+                }
+              }
+            }
+          }
+        }, {
+          "hitHighlights" : {
+            "dc.title" : [ "<em>Comunicado</em> <em>Oficial</em> <em>ENFEN</em> N° 14-2026" ]
+          },
+          "type" : "discover",
+          "_links" : {
+            "indexableObject" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298"
+            }
+          },
+          "_embedded" : {
+            "indexableObject" : {
+              "id" : "0dcd1a45-072d-4407-9065-981e9ae6c298",
+              "uuid" : "0dcd1a45-072d-4407-9065-981e9ae6c298",
+              "name" : "Comunicado Oficial ENFEN N° 14-2026",
+              "handle" : "20.500.12958/11061",
+              "metadata" : {
+                "dc.contributor.author" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.accessioned" : [ {
+                  "value" : "2026-08-21T17:04:18Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.available" : [ {
+                  "value" : "2026-08-21T17:04:18Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.issued" : [ {
+                  "value" : "2026-08-14",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.description.abstract" : [ {
+                  "value" : "ENFEN mantiene el estado de “Alerta de El Niño Costero”. En la región Niño 1+2, se prevé la continuación\nde El Niño Costero con una magnitud más probable entre fuerte y extraordinaria hasta el verano.\nPara la región Niño 3.4 (Pacífico ecuatorial central), se prevé que El Niño se extienda hasta inicios de otoño\n2027. Sus magnitudes más probables serían fuertes de agosto a setiembre y de fuerte a muy fuerte entre\noctubre y febrero de 2027.\nPara el trimestre agosto–octubre se prevé la continuidad de temperaturas del aire muy por encima de lo\nnormal en toda la costa.\nSe espera que en los ríos de la Región Hidrográfica del Pacífico se registren, predominantemente, caudales\ndentro de sus valores normales.\nEn relación a los recursos pesqueros, se prevé que el stock norte-centro de la anchoveta se mantenga\nreplegada frente a la costa central, dentro de las 10 millas náuticas y a profundidades mayores a su promedio\nhabitual. Frente a la costa central persistiría la presencia de pez sierra, samasa, perico, barrilete y atún aleta\namarilla. Asimismo, especies litorales propias de la zona norte, como el machete, continuarían desplazadas\nal sur de su distribución normal.\nSe recomienda a los tomadores de decisiones tener en cuenta los escenarios de riesgo basados en los\navisos meteorológicos y pronósticos estacionales vigentes a fin de adoptar las medidas para la reducción\ndel riesgo de desastres, así como acciones para la respuesta ante peligros inminentes",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.format" : [ {
+                  "value" : "application/pdf",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.identifier.uri" : [ {
+                  "value" : "https://hdl.handle.net/20.500.12958/11061",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.language.iso" : [ {
+                  "value" : "spa",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher.country" : [ {
+                  "value" : "PE",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights" : [ {
+                  "value" : "http://purl.org/coar/access_right/c_abf2",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights.uri" : [ {
+                  "value" : "https://creativecommons.org/licenses/by/4.0/",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.subject" : [ {
+                  "value" : "Fenómeno El Niño",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                }, {
+                  "value" : "Oceanografía",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 1
+                }, {
+                  "value" : "Temperatura del mar",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 2
+                } ],
+                "dc.subject.ocde" : [ {
+                  "value" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "Comunicado Oficial ENFEN N° 14-2026",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.type" : [ {
+                  "value" : "https://purl.org/coar/resource_type/c_93fc",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "inArchive" : true,
+              "discoverable" : true,
+              "withdrawn" : false,
+              "lastModified" : "2026-08-22T04:01:41.209+00:00",
+              "entityType" : null,
+              "type" : "item",
+              "_links" : {
+                "accessStatus" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298/accessStatus"
+                },
+                "bundles" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298/bundles"
+                },
+                "identifiers" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298/identifiers"
+                },
+                "mappedCollections" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298/mappedCollections"
+                },
+                "owningCollection" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298/owningCollection"
+                },
+                "relationships" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298/relationships"
+                },
+                "version" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298/version"
+                },
+                "templateItemOf" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298/templateItemOf"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/0dcd1a45-072d-4407-9065-981e9ae6c298"
+                }
+              }
+            }
+          }
+        }, {
+          "hitHighlights" : {
+            "dc.title" : [ "<em>Comunicado</em> <em>Oficial</em> <em>ENFEN</em> N° 13-2026" ]
+          },
+          "type" : "discover",
+          "_links" : {
+            "indexableObject" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb"
+            }
+          },
+          "_embedded" : {
+            "indexableObject" : {
+              "id" : "3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb",
+              "uuid" : "3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb",
+              "name" : "Comunicado Oficial ENFEN N° 13-2026",
+              "handle" : "20.500.12958/11026",
+              "metadata" : {
+                "dc.contributor.author" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.accessioned" : [ {
+                  "value" : "2026-08-07T17:09:17Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.available" : [ {
+                  "value" : "2026-08-07T17:09:17Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.issued" : [ {
+                  "value" : "2026-07-17",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.description.abstract" : [ {
+                  "value" : "ENFEN mantiene el estado de “Alerta de El Niño Costero”. En la región Niño 1+2, es probable la\ncontinuación de El Niño Costero hasta abril de 2027, por lo pronto. Asimismo, es más probable que\nel evento continúe de magnitud fuerte; sin embargo, no se descarta la magnitud extraordinaria, hacia\nfinales de 2026.\nPara la región Niño 3.4 (Pacífico ecuatorial central), El Niño podría extenderse hasta abril de 2027 y\nalcanzaría la magnitud muy fuerte en noviembre y diciembre de 2026. Para el próximo verano\n(diciembre 2026 – marzo 2027) es más probable que el evento alcance una magnitud fuerte.\nPara el trimestre julio–septiembre las temperaturas del aire se mantendrían muy por encima de sus\nvalores habituales en toda la costa. La costa norte presentaría lluvias de normales a por encima de\nlo normal, con episodios localizados.\nEn cuanto al pronóstico hidrológico, los ríos de la vertiente del Pacífico mantendrían caudales dentro\nde sus rangos normales.\nEn relación a los recursos pesqueros, de mantenerse las condiciones cálidas anómalas, para las\npróximas semanas se espera que la anchoveta siga replegada hacia el litoral y más profunda que lo\nnormal, con un mayor gasto de sus reservas energéticas. Se prevé que continúen ingresando\nespecies indicadoras de aguas ecuatoriales, como pez sierra, ayamarca, samasa, así como de aguas\noceánicas como barrilete, atún aleta amarilla, melva, picudos y tiburones.\nSe recomienda a los tomadores de decisiones tener en cuenta los escenarios de riesgo basados en\nlos avisos meteorológicos y pronósticos estacionales vigentes a fin de adoptar las medidas para la\nreducción del riesgo de desastres, así como acciones de preparación para la respuesta ante peligros\ninminentes, debido a la continuidad de El Niño Costero y el desarrollo de El Niño (Pacífico ecuatorial\ncentral), ante la próxima temporada de lluvias (setiembre 2026 a abril 2027). Se exhorta a las\nautoridades y población en general a mantenerse informados por las entidades competentes oficiales\ndel ENFEN y organismos del Sistema Nacional de Gestión del Riesgo de Desastres (SINAGERD).",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.format" : [ {
+                  "value" : "application/pdf",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.identifier.uri" : [ {
+                  "value" : "https://hdl.handle.net/20.500.12958/11026",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.language.iso" : [ {
+                  "value" : "spa",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher" : [ {
+                  "value" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher.country" : [ {
+                  "value" : "PE",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights" : [ {
+                  "value" : "http://purl.org/coar/access_right/c_abf2",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights.uri" : [ {
+                  "value" : "https://creativecommons.org/licenses/by/4.0/",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.subject" : [ {
+                  "value" : "Fenómeno El Niño",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                }, {
+                  "value" : "Oceanografía",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 1
+                }, {
+                  "value" : "Temperatura del mar",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 2
+                } ],
+                "dc.subject.ocde" : [ {
+                  "value" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "Comunicado Oficial ENFEN N° 13-2026",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.type" : [ {
+                  "value" : "https://purl.org/coar/resource_type/c_93fc",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "inArchive" : true,
+              "discoverable" : true,
+              "withdrawn" : false,
+              "lastModified" : "2026-08-08T04:01:40.316+00:00",
+              "entityType" : null,
+              "type" : "item",
+              "_links" : {
+                "accessStatus" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb/accessStatus"
+                },
+                "bundles" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb/bundles"
+                },
+                "identifiers" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb/identifiers"
+                },
+                "mappedCollections" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb/mappedCollections"
+                },
+                "owningCollection" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb/owningCollection"
+                },
+                "relationships" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb/relationships"
+                },
+                "version" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb/version"
+                },
+                "templateItemOf" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb/templateItemOf"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/3a1f9ed7-60c5-46ef-85c2-d35aa8d774cb"
+                }
+              }
+            }
+          }
+        } ]
+      },
+      "page" : {
+        "number" : 0,
+        "size" : 6,
+        "totalPages" : 43,
+        "totalElements" : 255
+      },
+      "_links" : {
+        "next" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM&sort=dc.date.issued,DESC&page=1&size=6"
+        },
+        "last" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM&sort=dc.date.issued,DESC&page=42&size=6"
+        },
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM&sort=dc.date.issued,DESC&size=6"
+        }
+      }
+    },
+    "facets" : [ {
+      "name" : "author",
+      "facetType" : "text",
+      "facetLimit" : 5,
+      "minValue" : "Aarestrup, Kim",
+      "maxValue" : "Zuzunaga, Jorge",
+      "page" : {
+        "number" : 0,
+        "size" : 5
+      },
+      "_links" : {
+        "next" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/facets/author?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM&page=1&size=5"
+        },
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/facets/author?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM&size=5"
+        }
+      },
+      "_embedded" : {
+        "values" : [ {
+          "label" : "Comisión Multisectorial Encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN)",
+          "count" : 193,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.author=Comisi%C3%B3n%20Multisectorial%20Encargada%20del%20Estudio%20Nacional%20del%20Fen%C3%B3meno%20%E2%80%9CEl%20Ni%C3%B1o%E2%80%9D%20(ENFEN),equals"
+            }
+          }
+        }, {
+          "label" : "Instituto del Mar del Perú",
+          "count" : 12,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.author=Instituto%20del%20Mar%20del%20Per%C3%BA,equals"
+            }
+          }
+        }, {
+          "label" : "Correa Chilon, David",
+          "count" : 5,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.author=Correa%20Chilon,%20David,equals"
+            }
+          }
+        }, {
+          "label" : "Gutiérrez Aguilar, Dimitri",
+          "count" : 5,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.author=Guti%C3%A9rrez%20Aguilar,%20Dimitri,equals"
+            }
+          }
+        }, {
+          "label" : "Orosco, Ximena",
+          "count" : 4,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.author=Orosco,%20Ximena,equals"
+            }
+          }
+        } ]
+      }
+    }, {
+      "name" : "subject",
+      "facetType" : "hierarchical",
+      "facetLimit" : 5,
+      "page" : {
+        "number" : 0,
+        "size" : 5
+      },
+      "_links" : {
+        "next" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/facets/subject?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM&page=1&size=5"
+        },
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/facets/subject?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM&size=5"
+        }
+      },
+      "_embedded" : {
+        "values" : [ {
+          "label" : "Oceanografía",
+          "count" : 209,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.subject=Oceanograf%C3%ADa,equals"
+            }
+          }
+        }, {
+          "label" : "Fenómeno El Niño",
+          "count" : 201,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.subject=Fen%C3%B3meno%20El%20Ni%C3%B1o,equals"
+            }
+          }
+        }, {
+          "label" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
+          "count" : 200,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.subject=http://purl.org/pe-repo/ocde/ford%231.05.11,equals"
+            }
+          }
+        }, {
+          "label" : "Temperatura del mar",
+          "count" : 192,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.subject=Temperatura%20del%20mar,equals"
+            }
+          }
+        }, {
+          "label" : "Condiciones meteorológicas",
+          "count" : 157,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.subject=Condiciones%20meteorol%C3%B3gicas,equals"
+            }
+          }
+        } ]
+      }
+    }, {
+      "name" : "dateIssued",
+      "facetType" : "date",
+      "facetLimit" : 5,
+      "minValue" : "07-01-2016",
+      "maxValue" : "ene-2012",
+      "page" : {
+        "number" : 0,
+        "size" : 5
+      },
+      "_links" : {
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/facets/dateIssued?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM&size=5"
+        }
+      },
+      "_embedded" : {
+        "values" : [ {
+          "label" : "2010 - 2027",
+          "count" : 255,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.dateIssued=%5B2010%20TO%202027%5D,equals"
+            }
+          }
+        } ]
+      }
+    }, {
+      "name" : "has_content_in_original_bundle",
+      "facetType" : "standard",
+      "facetLimit" : 2,
+      "page" : {
+        "number" : 0,
+        "size" : 2
+      },
+      "_links" : {
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/facets/has_content_in_original_bundle?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM&size=2"
+        }
+      },
+      "_embedded" : {
+        "values" : [ {
+          "label" : "true",
+          "count" : 255,
+          "authorityKey" : null,
+          "type" : "discover",
+          "_links" : {
+            "search" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%2522Comunicado%2520Oficial%2520ENFEN%2522&dsoType=ITEM&f.has_content_in_original_bundle=true,equals"
+            }
+          }
+        } ]
+      }
+    }, {
+      "name" : "entityType",
+      "facetType" : "text",
+      "facetLimit" : 5,
+      "_links" : {
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/discover/facets/entityType?query=%22Comunicado%20Oficial%20ENFEN%22&dsoType=ITEM"
+        }
+      },
+      "_embedded" : {
+        "values" : [ ]
+      }
+    } ]
+  }
+}
