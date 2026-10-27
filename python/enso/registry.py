@@ -232,6 +232,45 @@ def _report_entries() -> list[Entry]:
     ]
 
 
+#: Servidores con archivos de desastres pasados (pestaña «Memoria de desastres») que no responden fuera del Perú:
+#: se registran sin intérprete ni copia publicada para que el recolector del Perú los mida (``probe_targets``) y se
+#: sepa a cuáles conviene escribirles un script de cosecha (``tools/build_historico.py``). Se quitan cuando exista.
+_MEMORIA_HOSTS = (
+    ("archive", "Internet Archive", "Wayback Machine: índice de notas de 1997-98",
+     "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json", "json"),
+    ("commoncrawl", "Common Crawl", "Common Crawl: índice de colecciones", "https://index.commoncrawl.org/collinfo.json",
+     "json"),
+    ("bnp", "BNP", "Biblioteca digital de la BNP", "https://bibliotecadigital.bnp.gob.pe/", "html"),
+    ("bnp", "BNP", "Repositorio de la BNP", "https://repositorio.bnp.gob.pe/", "html"),
+    ("bnp", "BNP", "Catálogo de la BNP", "https://catalogo.bnp.gob.pe/", "html"),
+    ("indeci", "INDECI", "INDECI: portal anterior (informes de emergencia 2003-2018)", "https://www.indeci.gob.pe/",
+     "html"),
+    ("indeci", "INDECI", "Biblioteca virtual de prevención y atención de desastres (BVPAD)",
+     "https://bvpad.indeci.gob.pe/", "html"),
+    ("ana", "ANA", "Repositorio de la ANA", "https://repositorio.ana.gob.pe/", "html"),
+    ("senamhi", "SENAMHI", "Repositorio del SENAMHI", "https://repositorio.senamhi.gob.pe/", "html"),
+    ("minjus", "MINJUS", "SPIJ: decretos de emergencia 2000-2012", "https://spij.minjus.gob.pe/", "html"),
+    ("contraloria", "Contraloría", "Contraloría: informes de control de la reconstrucción",
+     "https://apps.contraloria.gob.pe/", "html"),
+    ("arcc", "ARCC", "Reconstrucción con Cambios: intervenciones por distrito", "https://www.rcc.gob.pe/", "html"),
+    ("midagri", "MIDAGRI", "SIEA: daños agrarios por evento", "https://siea.midagri.gob.pe/portal/", "html"),
+    ("irtp", "IRTP", "TV Perú: notas", "https://www.tvperu.gob.pe/", "html"),
+    ("irtp", "IRTP", "Radio Nacional: notas", "https://www.radionacional.gob.pe/", "html"),
+    ("pucp", "PUCP", "Tesis PUCP (prensa de 1925, 1983 y 1998)", "https://tesis.pucp.edu.pe/", "html"),
+    ("unsa", "UNSA", "Repositorio de la UNSA", "https://repositorio.unsa.edu.pe/", "html"),
+)
+
+
+def _memoria_entries() -> list[Entry]:
+    """Los servidores de ``_MEMORIA_HOSTS``: sin intérprete (el pipeline no los lee) ni copia publicada, ni por n8n."""
+    return [Entry(id=f"memoria-{group}-{_slug(urlparse(url).netloc + urlparse(url).path)}", group=group, name=name,
+                  institution=inst, url=url, expect=expect, method="api" if expect == "json" else "html",
+                  kind="dataset" if expect == "json" else "page", home=url, hazards=[], archive=False, n8n=False,
+                  notes="solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya "
+                        "script de cosecha (tools/build_historico.py)")
+            for group, inst, name, url, expect in _MEMORIA_HOSTS]
+
+
 #: Por qué n8n no pide las búsquedas del repositorio del IMARPE.
 _REPO_NO_N8N = ("n8n no la pide: el servidor no envía el intermedio de Sectigo y n8n no verifica su certificado "
                 "sin NODE_EXTRA_CA_CERTS (python/enso/data/ca-intermedios.pem)")
@@ -471,7 +510,7 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
     medición más reciente (no el reloj): así el registro no cambia solo con el paso de los días."""
     reach = load_reachability() if reach is None else reach
     ref = now or newest_at(reach)
-    entries = _feed_entries() + _source_entries() + _report_entries()
+    entries = _feed_entries() + _source_entries() + _report_entries() + _memoria_entries()
     known = {e.url for e in entries} | {u for e in entries for u in e.alt_urls}
     entries += _collector_entries(known)
     sources = []

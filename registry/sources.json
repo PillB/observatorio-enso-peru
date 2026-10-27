@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-26T23:42:38+00:00",
+ "generated_at": "2026-10-27T00:40:27+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -11467,6 +11467,703 @@
       "peru-server"
      ],
      "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-archive-web-archive-org-cdx-search-cdx",
+   "group": "archive",
+   "name": "Wayback Machine: índice de notas de 1997-98",
+   "institution": "Internet Archive",
+   "url": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
+   "expect": "json",
+   "method": "api",
+   "kind": "dataset",
+   "home": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "unknown"
+    }
+   }
+  },
+  {
+   "id": "memoria-commoncrawl-index-commoncrawl-org-collinfo-json",
+   "group": "commoncrawl",
+   "name": "Common Crawl: índice de colecciones",
+   "institution": "Common Crawl",
+   "url": "https://index.commoncrawl.org/collinfo.json",
+   "expect": "json",
+   "method": "api",
+   "kind": "dataset",
+   "home": "https://index.commoncrawl.org/collinfo.json",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://index.commoncrawl.org/collinfo.json": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "unknown"
+    }
+   }
+  },
+  {
+   "id": "memoria-bnp-bibliotecadigital-bnp-gob-pe",
+   "group": "bnp",
+   "name": "Biblioteca digital de la BNP",
+   "institution": "BNP",
+   "url": "https://bibliotecadigital.bnp.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://bibliotecadigital.bnp.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://bibliotecadigital.bnp.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-bnp-repositorio-bnp-gob-pe",
+   "group": "bnp",
+   "name": "Repositorio de la BNP",
+   "institution": "BNP",
+   "url": "https://repositorio.bnp.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://repositorio.bnp.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://repositorio.bnp.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-bnp-catalogo-bnp-gob-pe",
+   "group": "bnp",
+   "name": "Catálogo de la BNP",
+   "institution": "BNP",
+   "url": "https://catalogo.bnp.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://catalogo.bnp.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://catalogo.bnp.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-indeci-www-indeci-gob-pe",
+   "group": "indeci",
+   "name": "INDECI: portal anterior (informes de emergencia 2003-2018)",
+   "institution": "INDECI",
+   "url": "https://www.indeci.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://www.indeci.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://www.indeci.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-indeci-bvpad-indeci-gob-pe",
+   "group": "indeci",
+   "name": "Biblioteca virtual de prevención y atención de desastres (BVPAD)",
+   "institution": "INDECI",
+   "url": "https://bvpad.indeci.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://bvpad.indeci.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://bvpad.indeci.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-ana-repositorio-ana-gob-pe",
+   "group": "ana",
+   "name": "Repositorio de la ANA",
+   "institution": "ANA",
+   "url": "https://repositorio.ana.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://repositorio.ana.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://repositorio.ana.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-senamhi-repositorio-senamhi-gob-pe",
+   "group": "senamhi",
+   "name": "Repositorio del SENAMHI",
+   "institution": "SENAMHI",
+   "url": "https://repositorio.senamhi.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://repositorio.senamhi.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://repositorio.senamhi.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-minjus-spij-minjus-gob-pe",
+   "group": "minjus",
+   "name": "SPIJ: decretos de emergencia 2000-2012",
+   "institution": "MINJUS",
+   "url": "https://spij.minjus.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://spij.minjus.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://spij.minjus.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-contraloria-apps-contraloria-gob-pe",
+   "group": "contraloria",
+   "name": "Contraloría: informes de control de la reconstrucción",
+   "institution": "Contraloría",
+   "url": "https://apps.contraloria.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://apps.contraloria.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://apps.contraloria.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-arcc-www-rcc-gob-pe",
+   "group": "arcc",
+   "name": "Reconstrucción con Cambios: intervenciones por distrito",
+   "institution": "ARCC",
+   "url": "https://www.rcc.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://www.rcc.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://www.rcc.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-midagri-siea-midagri-gob-pe-portal",
+   "group": "midagri",
+   "name": "SIEA: daños agrarios por evento",
+   "institution": "MIDAGRI",
+   "url": "https://siea.midagri.gob.pe/portal/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://siea.midagri.gob.pe/portal/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://siea.midagri.gob.pe/portal/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-irtp-www-tvperu-gob-pe",
+   "group": "irtp",
+   "name": "TV Perú: notas",
+   "institution": "IRTP",
+   "url": "https://www.tvperu.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://www.tvperu.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://www.tvperu.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-irtp-www-radionacional-gob-pe",
+   "group": "irtp",
+   "name": "Radio Nacional: notas",
+   "institution": "IRTP",
+   "url": "https://www.radionacional.gob.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://www.radionacional.gob.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://www.radionacional.gob.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "memoria-pucp-tesis-pucp-edu-pe",
+   "group": "pucp",
+   "name": "Tesis PUCP (prensa de 1925, 1983 y 1998)",
+   "institution": "PUCP",
+   "url": "https://tesis.pucp.edu.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://tesis.pucp.edu.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://tesis.pucp.edu.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "unknown"
+    }
+   }
+  },
+  {
+   "id": "memoria-unsa-repositorio-unsa-edu-pe",
+   "group": "unsa",
+   "name": "Repositorio de la UNSA",
+   "institution": "UNSA",
+   "url": "https://repositorio.unsa.edu.pe/",
+   "expect": "html",
+   "method": "html",
+   "kind": "page",
+   "home": "https://repositorio.unsa.edu.pe/",
+   "alt_urls": [],
+   "hazards": [],
+   "interval_minutes": 1440,
+   "needs_browser": false,
+   "archive": false,
+   "notes": "solo se mide desde el Perú, para la memoria de desastres; se quita cuando haya script de cosecha (tools/build_historico.py)",
+   "n8n": false,
+   "tier": 2,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://repositorio.unsa.edu.pe/": {
+     "status": "unknown",
+     "channels": [
+      "actions"
+     ],
+     "robots": "unknown"
     }
    }
   },

@@ -1,0 +1,65 @@
+{
+ "source": "https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/9",
+ "features": [
+  {
+   "attributes": {
+    "categoria": "I-1",
+    "codigo_ún": "00003777",
+    "distrito": "SIVIA",
+    "fecha_de_r": "AFECTADO OPERATIVO",
+    "latitud": 0.0,
+    "longitud": 0.0,
+    "nombre_ipr": "GUAYAQUIL",
+    "objectid": 1,
+    "objectid_1": 1,
+    "provincia": "HUANTA",
+    "región": "AYACUCHO",
+    "temporada": "BAJAS TEMPERATURAS 2023",
+    "tipo_de_ev": "LLUVIAS INTENSAS",
+    "ubigeo": "050407",
+    "x": 617837.765479,
+    "y": 8617222.22418
+   }
+  },
+  {
+   "attributes": {
+    "categoria": "I-2",
+    "codigo_ún": "00002535",
+    "distrito": "MARCAPATA",
+    "fecha_de_r": "AFECTADO OPERATIVO",
+    "latitud": 0.0,
+    "longitud": 0.0,
+    "nombre_ipr": "MARCAPATA",
+    "objectid": 2,
+    "objectid_1": 2,
+    "provincia": "QUISPICANCHI",
+    "región": "CUSCO",
+    "temporada": "BAJAS TEMPERATURAS 2023",
+    "tipo_de_ev": "VIENTOS FUERTES",
+    "ubigeo": "081209",
+    "x": 286454.736121,
+    "y": 8496532.41483
+   }
+  },
+  {
+   "attributes": {
+    "categoria": "I-1",
+    "codigo_ún": "00002320",
+    "distrito": "MOSOC LLACTA",
+    "fecha_de_r": "AFECTADO OPERATIVO",
+    "latitud": 0.0,
+    "longitud": 0.0,
+    "nombre_ipr": "MOSOCLLACTA",
+    "objectid": 3,
+    "objectid_1": 3,
+    "provincia": "ACOMAYO",
+    "región": "CUSCO",
+    "temporada": "BAJAS TEMPERATURAS 2023",
+    "tipo_de_ev": "NEVADAS",
+    "ubigeo": "080204",
+    "x": 232975.759271,
+    "y": 8437575.42374
+   }
+  }
+ ]
+}
