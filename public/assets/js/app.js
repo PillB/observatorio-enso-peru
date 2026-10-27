@@ -725,7 +725,7 @@ VIEWS.metodologia = {
         <p class="muted">De las fuentes al sitio: quién baja cada dato, qué respaldo se usa si una fuente no responde, cómo se publica y quién vigila. Toca una caja o una conexión (letra o número) para leer qué es.</p>
         <figure class="arch-figure" id="arch-fig"><a href="assets/arquitectura-simple.svg" rel="noopener" target="_blank">Ver el diagrama de arquitectura</a></figure>
         <p class="arch-note" id="arch-note" aria-live="polite" hidden></p>
-        <p class="small"><a href="arquitectura.html">Explorar los diagramas y sus anexos A1 a A10</a> (cómo funciona cada parte, con su tecnología y sus respaldos) · <a id="arch-open" href="assets/arquitectura-simple.svg" rel="noopener" target="_blank">Abrir el diagrama en otra pestaña</a></p>
+        <p class="small"><a href="arquitectura.html">Explorar los diagramas y sus anexos A1 a A11</a> (cómo funciona cada parte, con su tecnología y sus respaldos) · <a id="arch-open" href="assets/arquitectura-simple.svg" rel="noopener" target="_blank">Abrir el diagrama en otra pestaña</a></p>
       </section>
       <section class="card prose" aria-labelledby="met-h">
         <h2 id="met-h">Cómo funciona</h2>
@@ -764,7 +764,7 @@ VIEWS.metodologia = {
     };
     $$('[data-arch]').forEach((b) => b.addEventListener('click', () => showArch(b.dataset.arch)));
     // En el teléfono no hay «hover»: al tocar una caja o una conexión, su explicación (el <title> del SVG) aparece debajo.
-    // Las etiquetas A1 a A10 de las cajas abren su anexo en el explorador de la arquitectura.
+    // Las etiquetas A1 a A11 de las cajas abren su anexo en el explorador de la arquitectura.
     $('#arch-fig').addEventListener('click', (ev) => {
       const link = ev.target.closest?.('a[data-annex]');
       if (link) {

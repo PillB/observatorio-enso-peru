@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1259.5" role="img" aria-labelledby="a9-t a9-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
   <title id="a9-t">Anexo A9 · El sitio en el navegador</title>
-  <desc id="a9-d">Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 10 vistas con la procedencia de cada valor y quién lo usa.</desc>
+  <desc id="a9-d">Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 11 vistas con la procedencia de cada valor y quién lo usa.</desc>
   <style>
     .ar-node { stroke-width: 1.5; }
     .ar-h { font-weight: 700; }
@@ -118,7 +118,7 @@
   <a class="ar-annex" href="../arquitectura.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Volver al diagrama completo</text></a>
   <text class="ar-s" x="20" y="60" font-size="12">El sitio es una página estática, sin compilación ni servidor propio: todo lo que muestra sale de los archivos de data/ de una misma publicación. El navegador comprueba que cada archivo sea de esa publicación y, si no puede, lo dice</text>
   <text class="ar-s" x="20" y="77" font-size="12">en vez de mezclar datos.</text>
-  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: Sitio en vivo (SITE_URL), Sitio web (10 vistas), Público.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: Sitio en vivo (SITE_URL), Sitio web (11 vistas), Público.</text>
   <text class="ar-t" x="20" y="121" font-size="11.5">Líneas:</text>
   <path class="ar-e ar-e-data" d="M78.5 117 L112.5 117" marker-end="url(#a9-m-data)"/>
   <text class="ar-s" x="120.5" y="121" font-size="11.5">datos</text>
@@ -167,43 +167,43 @@
     <text class="ar-t" x="358" y="453.8" font-size="10.5" text-anchor="middle">4</text>
   </g>
   <g class="ar-edge" id="a9-e-5" data-edge="5" data-from="checks" data-to="views" tabindex="0">
-    <title>5. Coherencia de la publicación → 10 vistas: datos coherentes.</title>
+    <title>5. Coherencia de la publicación → 11 vistas: datos coherentes.</title>
     <path class="ar-e ar-e-data" d="M695.3 420 L756 420 Q762 420 762 414 L762 234 Q762 228 768 228 L784.7 228" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="762" cy="324" r="9"/>
     <text class="ar-t" x="762" y="327.8" font-size="10.5" text-anchor="middle">5</text>
   </g>
   <g class="ar-edge" id="a9-e-6" data-edge="6" data-from="a11y" data-to="views" tabindex="0">
-    <title>6. Accesibilidad y vigencia → 10 vistas: vigencia y accesibilidad.</title>
+    <title>6. Accesibilidad y vigencia → 11 vistas: vigencia y accesibilidad.</title>
     <path class="ar-e ar-e-control" d="M695.3 576 L750 576 Q756 576 756 570 L756 312 Q756 306 762 306 L784.7 306" stroke-dasharray="2 3" marker-end="url(#a9-m-control)"/>
     <circle class="ar-badge ar-e-control" cx="756" cy="441" r="9"/>
     <text class="ar-t" x="756" y="444.8" font-size="10.5" text-anchor="middle">6</text>
   </g>
   <g class="ar-edge" id="a9-e-7" data-edge="7" data-from="views" data-to="provenance" tabindex="0">
-    <title>7. 10 vistas → Procedencia de cada valor: cada valor.</title>
+    <title>7. 11 vistas → Procedencia de cada valor: cada valor.</title>
     <path class="ar-e ar-e-data" d="M924 339.7 L924 369.7" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="924" cy="354.7" r="9"/>
     <text class="ar-t" x="924" y="358.5" font-size="10.5" text-anchor="middle">7</text>
   </g>
   <g class="ar-edge" id="a9-e-8" data-edge="8" data-from="views" data-to="assistant" tabindex="0">
-    <title>8. 10 vistas → Asistente de datos: misma publicación.</title>
+    <title>8. 11 vistas → Asistente de datos: misma publicación.</title>
     <path class="ar-e ar-e-data" d="M1064.7 270 L1080 270 Q1086 270 1086 276 L1086 570 Q1086 576 1080 576 L1064.7 576" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="1086" cy="423" r="9"/>
     <text class="ar-t" x="1086" y="426.8" font-size="10.5" text-anchor="middle">8</text>
   </g>
   <g class="ar-edge" id="a9-e-9" data-edge="9" data-from="views" data-to="method" tabindex="0">
-    <title>9. 10 vistas → Metodología y arquitectura: diagramas.</title>
+    <title>9. 11 vistas → Metodología y arquitectura: diagramas.</title>
     <path class="ar-e ar-e-data" d="M1064.7 306 L1086 306 Q1092 306 1092 312 L1092 726 Q1092 732 1086 732 L1064.7 732" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="1092" cy="519" r="9"/>
     <text class="ar-t" x="1092" y="522.8" font-size="10.5" text-anchor="middle">9</text>
   </g>
   <g class="ar-edge" id="a9-e-10" data-edge="10" data-from="views" data-to="ab" tabindex="0">
-    <title>10. 10 vistas → Analítica A/B del mapa: versión del mapa y eventos. Una sola solicitud al salir de la página; en GitHub Pages no se manda nada.</title>
+    <title>10. 11 vistas → Analítica A/B del mapa: versión del mapa y eventos. Una sola solicitud al salir de la página; en GitHub Pages no se manda nada.</title>
     <path class="ar-e ar-e-data" d="M784.7 270 L720 270 Q714 270 714 276 L714 666 Q714 672 708 672 L354 672 Q348 672 348 666 L348 576 Q348 570 342 570 L326 570" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="714" cy="471" r="9"/>
     <text class="ar-t" x="714" y="474.8" font-size="10.5" text-anchor="middle">10</text>
   </g>
   <g class="ar-edge" id="a9-e-11" data-edge="11" data-from="views" data-to="public" tabindex="0">
-    <title>11. 10 vistas → Público: consultan.</title>
+    <title>11. 11 vistas → Público: consultan.</title>
     <path class="ar-e ar-e-human" d="M1064.7 228 L1122 228 Q1128 228 1128 234 L1128 240 Q1128 246 1134 246 L1154 246" stroke-dasharray="8 3 2 3" marker-end="url(#a9-m-human)"/>
     <circle class="ar-badge ar-e-human" cx="1096.3" cy="228" r="9"/>
     <text class="ar-t" x="1096.3" y="231.8" font-size="10.5" text-anchor="middle">11</text>
@@ -301,16 +301,16 @@
     <text class="ar-chip-t" x="433.3" y="634" font-size="10">Playwright</text>
   </g>
   <g class="ar-node-g" id="a9-n-views" data-node="views">
-    <title>10 vistas. Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una. Tecnología: app.js, tour.js.</title>
+    <title>11 vistas. Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una. Tecnología: app.js, tour.js.</title>
     <rect class="ar-node ar-g-site" x="784.7" y="195" width="280" height="144.7" rx="8"/>
     <rect class="ar-f-site" x="784.7" y="203" width="4" height="128.7" rx="2"/>
     <rect class="ar-tile ar-f-site" x="796.7" y="205" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-site" transform="translate(799.7 208)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
-    <text class="ar-t" x="834.7" y="224.5" font-size="12.5">10 vistas</text>
+    <text class="ar-t" x="834.7" y="224.5" font-size="12.5">11 vistas</text>
     <text class="ar-s" x="796.7" y="256.4" font-size="11">Resumen, El Niño Costero, Pacífico, Océano y</text>
-    <text class="ar-s" x="796.7" y="271.6" font-size="11">atmósfera, Mapa, Historia, Noticias, Datos,</text>
-    <text class="ar-s" x="796.7" y="286.8" font-size="11">Metodología y Asistente; una visita guiada</text>
-    <text class="ar-s" x="796.7" y="302" font-size="11">explica cada una.</text>
+    <text class="ar-s" x="796.7" y="271.6" font-size="11">atmósfera, Mapa, Historia, Memoria de</text>
+    <text class="ar-s" x="796.7" y="286.8" font-size="11">desastres, Noticias, Datos, Metodología y</text>
+    <text class="ar-s" x="796.7" y="302" font-size="11">Asistente; una visita guiada explica cada una.</text>
     <rect class="ar-chip" x="796.7" y="311.7" width="42" height="17" rx="8.5"/>
     <text class="ar-chip-t" x="802.7" y="323.7" font-size="10">app.js</text>
     <rect class="ar-chip" x="843.7" y="311.7" width="43.7" height="17" rx="8.5"/>
@@ -342,7 +342,7 @@
     <text class="ar-chip-t" x="802.7" y="634" font-size="10">assistant.js</text>
   </g>
   <g class="ar-node-g" id="a9-n-method" data-node="method">
-    <title>Metodología y arquitectura. Explica los métodos y muestra estos diagramas; cada caja explica su parte y las etiquetas A1 a A10 abren su anexo.</title>
+    <title>Metodología y arquitectura. Explica los métodos y muestra estos diagramas; cada caja explica su parte y las etiquetas A1 a A11 abren su anexo.</title>
     <rect class="ar-node ar-g-site" x="784.7" y="680" width="280" height="105.5" rx="8"/>
     <rect class="ar-f-site" x="784.7" y="688" width="4" height="89.5" rx="2"/>
     <rect class="ar-tile ar-f-site" x="796.7" y="690" width="30" height="30" rx="7"/>
@@ -350,7 +350,7 @@
     <text class="ar-t" x="834.7" y="709.5" font-size="12.5">Metodología y arquitectura</text>
     <text class="ar-s" x="796.7" y="741.4" font-size="11">Explica los métodos y muestra estos</text>
     <text class="ar-s" x="796.7" y="756.6" font-size="11">diagramas; cada caja explica su parte y las</text>
-    <text class="ar-s" x="796.7" y="771.8" font-size="11">etiquetas A1 a A10 abren su anexo.</text>
+    <text class="ar-s" x="796.7" y="771.8" font-size="11">etiquetas A1 a A11 abren su anexo.</text>
   </g>
   <g class="ar-node-g" id="a9-n-public" data-node="public">
     <title>Público. Personas, equipos de gestión del riesgo y medios que consultan el estado de El Niño y sus fuentes.</title>
@@ -397,32 +397,32 @@
   <circle class="ar-badge ar-e-data" cx="506" cy="897.5" r="9"/>
   <text class="ar-t" x="506" y="901.3" font-size="10.5" text-anchor="middle">5</text>
   <text class="ar-t" x="526" y="901.5" font-size="11.5">datos coherentes</text>
-  <text class="ar-m" x="526" y="915.5" font-size="10.5">Coherencia de la publicación → 10 vistas</text>
+  <text class="ar-m" x="526" y="915.5" font-size="10.5">Coherencia de la publicación → 11 vistas</text>
   <circle class="ar-badge ar-e-control" cx="506" cy="938.5" r="9"/>
   <text class="ar-t" x="506" y="942.3" font-size="10.5" text-anchor="middle">6</text>
   <text class="ar-t" x="526" y="942.5" font-size="11.5">vigencia y accesibilidad</text>
-  <text class="ar-m" x="526" y="956.5" font-size="10.5">Accesibilidad y vigencia → 10 vistas</text>
+  <text class="ar-m" x="526" y="956.5" font-size="10.5">Accesibilidad y vigencia → 11 vistas</text>
   <circle class="ar-badge ar-e-data" cx="506" cy="979.5" r="9"/>
   <text class="ar-t" x="506" y="983.3" font-size="10.5" text-anchor="middle">7</text>
   <text class="ar-t" x="526" y="983.5" font-size="11.5">cada valor</text>
-  <text class="ar-m" x="526" y="997.5" font-size="10.5">10 vistas → Procedencia de cada valor</text>
+  <text class="ar-m" x="526" y="997.5" font-size="10.5">11 vistas → Procedencia de cada valor</text>
   <circle class="ar-badge ar-e-data" cx="506" cy="1020.5" r="9"/>
   <text class="ar-t" x="506" y="1024.3" font-size="10.5" text-anchor="middle">8</text>
   <text class="ar-t" x="526" y="1024.5" font-size="11.5">misma publicación</text>
-  <text class="ar-m" x="526" y="1038.5" font-size="10.5">10 vistas → Asistente de datos</text>
+  <text class="ar-m" x="526" y="1038.5" font-size="10.5">11 vistas → Asistente de datos</text>
   <circle class="ar-badge ar-e-data" cx="982" cy="897.5" r="9"/>
   <text class="ar-t" x="982" y="901.3" font-size="10.5" text-anchor="middle">9</text>
   <text class="ar-t" x="1002" y="901.5" font-size="11.5">diagramas</text>
-  <text class="ar-m" x="1002" y="915.5" font-size="10.5">10 vistas → Metodología y arquitectura</text>
+  <text class="ar-m" x="1002" y="915.5" font-size="10.5">11 vistas → Metodología y arquitectura</text>
   <circle class="ar-badge ar-e-data" cx="982" cy="938.5" r="9"/>
   <text class="ar-t" x="982" y="942.3" font-size="10.5" text-anchor="middle">10</text>
   <text class="ar-t" x="1002" y="942.5" font-size="11.5">versión del mapa y eventos</text>
-  <text class="ar-m" x="1002" y="956.5" font-size="10.5">10 vistas → Analítica A/B del mapa</text>
+  <text class="ar-m" x="1002" y="956.5" font-size="10.5">11 vistas → Analítica A/B del mapa</text>
   <text class="ar-s" x="1002" y="971.5" font-size="11">Una sola solicitud al salir de la página; en GitHub Pages no se manda nada.</text>
   <circle class="ar-badge ar-e-human" cx="982" cy="994.5" r="9"/>
   <text class="ar-t" x="982" y="998.3" font-size="10.5" text-anchor="middle">11</text>
   <text class="ar-t" x="1002" y="998.5" font-size="11.5">consultan</text>
-  <text class="ar-m" x="1002" y="1012.5" font-size="10.5">10 vistas → Público</text>
+  <text class="ar-m" x="1002" y="1012.5" font-size="10.5">11 vistas → Público</text>
   <circle class="ar-badge ar-e-human" cx="982" cy="1035.5" r="9"/>
   <text class="ar-t" x="982" y="1039.3" font-size="10.5" text-anchor="middle">12</text>
   <text class="ar-t" x="1002" y="1039.5" font-size="11.5">CSV y JSON</text>

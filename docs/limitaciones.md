@@ -78,3 +78,14 @@ NOAA dejó de actualizar ERSSTv5 en 2026. Las series mensuales largas de
 Niño 1+2 y 3.4 usan ERSSTv6 de PSL llevado a la base 1991–2020, que no es
 idéntico a lo que usa ENFEN para el ICEN; por eso no se publica un ICEN
 propio.
+
+## Memoria de desastres
+
+Los límites del catálogo de desastres y de sus indicadores están en
+[`memoria-desastres.md`](memoria-desastres.md#límites). Los principales:
+un lugar sin registros no es un lugar sin peligro (las fuentes registran
+más donde hay más gente y acceso); las fuentes cambian en 2016 y no se
+comparan en cantidad; «1 de cada X años» y «probabilidad en 5 años» son
+frecuencias del pasado que anticipan poco por distrito (AUC 0,55) y mejor
+por provincia (0,75), y la razón de El Niño cuenta lugares con daños, no
+la magnitud del daño.

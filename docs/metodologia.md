@@ -197,3 +197,16 @@ Cada fuente tiene una cadencia y una antigüedad máxima aceptable del
 último periodo observado (por ejemplo, 16 días para el semanal OISST y
 100 días para el ICEN, que se publica con un trimestre de retraso). Pasado
 ese límite el valor se marca vencido y se registra una incidencia.
+
+## 10. Memoria de desastres
+
+La pestaña «Memoria de desastres» tiene su propio método, en
+[`memoria-desastres.md`](memoria-desastres.md): un catálogo de desastres de
+origen climático desde 1559, ubicado por distrito y con su fuente; las
+reglas de calidad; los indicadores por área (años con daños con intervalo
+de Wilson, periodo de retorno y probabilidad en 5 años con su intervalo,
+razón de El Niño con intervalo cuasi-Poisson y dosis-respuesta por grado
+del ICEN); la validación fuera de muestra con las emergencias de 2016 a
+2025, y cómo usar e interpretar cada cifra. Las temporadas con Niño costero
+se definen con el ICEN del ENFEN (media de enero a marzo mayor que
++0,5 °C), el mismo índice que usa el resto del observatorio.

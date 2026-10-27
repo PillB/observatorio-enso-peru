@@ -1,8 +1,8 @@
-// Explorador de la arquitectura (arquitectura.html): los dos diagramas principales y sus anexos A1 a A10.
+// Explorador de la arquitectura (arquitectura.html): los dos diagramas principales y sus anexos A1 a A11.
 //
-// La dirección dice qué se ve: #simple, #full o #a1 … #a10, con «-en» para la versión en inglés (#a4-en).
+// La dirección dice qué se ve: #simple, #full o #a1 … #a11, con «-en» para la versión en inglés (#a4-en).
 // Al tocar una caja de un diagrama principal se abre su anexo (o se elige entre sus anexos); las etiquetas
-// A1 a A10, los enlaces «ver A5» de los anexos y «Volver al diagrama completo» navegan dentro de esta página.
+// A1 a A11, los enlaces «ver A5» de los anexos y «Volver al diagrama completo» navegan dentro de esta página.
 // Los SVG se piden a assets/ o, en la copia que se abre sin servidor, se leen de las <template> de la página.
 (() => {
   const $ = (s, r = document) => r.querySelector(s);

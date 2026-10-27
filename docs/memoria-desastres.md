@@ -16,15 +16,18 @@ prevención: cuántas de esas emergencias ocurrieron donde el Estado ya tenía e
 3. [Columnas del catálogo](#columnas-del-catálogo)
 4. [Clasificación del peligro y del evento](#clasificación-del-peligro-y-del-evento)
 5. [Fuentes que cuentan el mismo evento](#fuentes-que-cuentan-el-mismo-evento)
-6. [Indicadores](#indicadores)
-7. [Peligro identificado hoy (contexto)](#peligro-identificado-hoy-contexto)
-8. [¿Se sabía antes? Peligros documentados y emergencias](#se-sabía-antes-peligros-documentados-y-emergencias)
-9. [La pestaña](#la-pestaña)
-10. [Evidencia sobre la prevención desde los años 90](#evidencia-sobre-la-prevención-desde-los-años-90)
-11. [Límites](#límites)
-12. [Reproducir y actualizar](#reproducir-y-actualizar)
-13. [Cosecha en GitHub Actions](#cosecha-en-github-actions)
-14. [Registros curados y revisiones](#registros-curados-y-revisiones)
+6. [Reglas de calidad](#reglas-de-calidad)
+7. [Indicadores](#indicadores)
+8. [Validación](#validación)
+9. [Cómo usar los indicadores](#cómo-usar-los-indicadores)
+10. [Peligro identificado hoy (contexto)](#peligro-identificado-hoy-contexto)
+11. [¿Se sabía antes? Peligros documentados y emergencias](#se-sabía-antes-peligros-documentados-y-emergencias)
+12. [La pestaña](#la-pestaña)
+13. [Evidencia sobre la prevención desde los años 90](#evidencia-sobre-la-prevención-desde-los-años-90)
+14. [Límites](#límites)
+15. [Reproducir y actualizar](#reproducir-y-actualizar)
+16. [Cosecha en GitHub Actions](#cosecha-en-github-actions)
+17. [Registros curados y revisiones](#registros-curados-y-revisiones)
 
 ## Qué pregunta responde
 
@@ -35,7 +38,7 @@ saber **dónde golpeó cada Niño** y **con qué frecuencia se repiten los daño
 catálogo, con una respuesta para cada distrito, provincia y departamento:
 
 - ¿En cuántos años de 1970 a 2015 hubo daños aquí? ¿Cada cuántos años, en promedio?
-- ¿Cuánto más daño hay en los años de Niño costero que en los demás?
+- ¿Cuántos más lugares con daños hay en las temporadas con Niño costero que en las demás?
 - ¿Cuáles de los grandes Niños (1982-83, 1997-98, 2017, Yaku 2023, 2023-24) dejaron registros aquí?
 - ¿Qué peligros fueron, en qué meses, con qué impactos y según qué fuente?
 - ¿Qué identifican hoy las instituciones como peligro aquí (puntos críticos de ríos y quebradas, zonas críticas)?
@@ -43,6 +46,7 @@ catálogo, con una respuesta para cada distrito, provincia y departamento:
   declaratoria por peligro inminente)? ¿Y aun así la emergencia ocurrió?
 - ¿Qué pasaba en esos mismos lugares antes de 1970 (actas coloniales, aluviones de lagunas glaciares)?
 - ¿Ya hay registros del Niño costero en curso (2026)?
+- ¿Qué tan bien anticipó esa historia lo que pasó después, de 2016 a 2025? ([Validación](#validación))
 
 ## Fuentes
 
@@ -129,10 +133,10 @@ del tablero del equipo de prevención, con sus nombres exactos:
 | `Distrito`, `Provincia`, `Departamento` | Nombres oficiales del INEI, con tildes |
 | `Descripción` | Qué pasó, con la causa y los daños que describe la fuente |
 | `DuraciónEvento` | Días, si la fuente los da |
-| `Ubigeo` | Código vigente del INEI: 6 dígitos (distrito), 4 (provincia) o 2 (departamento) |
-| `TipoEvento` | FEN 1982-83, FEN 1997-98, Niño Costero 2017, Ciclón Yaku 2023, FEN 2023-24, FEN 2026, La Niña costera…, Temporada de lluvias, Temporada de heladas y friaje, Sin asociación ENSO |
-| `Fuente` | URL del registro o de la fuente |
-| `Latitud`, `Longitud` | Punto de la fuente si cae en el distrito asignado; si no, la capital del distrito |
+| `Ubigeo` | Código vigente del INEI: 6 dígitos (distrito), 4 (provincia) o 2 (departamento). Es texto: al importarlo, léalo como texto para no perder el cero inicial («010101») |
+| `TipoEvento` | FEN 1982-83, FEN 1997-98, Niño Costero 2017, Ciclón Yaku 2023, FEN 2023-24, FEN 2026, La Niña costera…, Temporada de lluvias, Temporada de heladas y friaje, Sin asociación ENSO, ICEN pendiente (meses después del último ICEN publicado) |
+| `Fuente` | URL del registro o, si la fuente no tiene una página por registro (DesInventar, las capas de ArcGIS), de la fuente |
+| `Latitud`, `Longitud` | Punto de la fuente si cae en el distrito asignado; si no, la capital del distrito. En las filas de provincia o de departamento, la capital de la provincia o del departamento (`PrecisionGeo` lo dice): en un mapa de puntos parecen agrupadas en las capitales |
 
 Y 45 columnas más para análisis y trazabilidad: `Id` estable (`<origen>-<id en la fuente>`), `Origen`, `IdFuente`,
 `FechaFin`, `PrecisionFecha`, `FechaTipo` (de qué es la fecha: `evento`; `informe`, la del primer reporte del COEN
@@ -142,17 +146,23 @@ tipo como lo nombra la fuente), `DangerTypeMetodo` (fuente, texto, causa o por-o
 `AtribucionENSO`, catorce columnas de impactos (fallecidos, desaparecidos, heridos, afectados, damnificados,
 evacuados, reubicados, desplazados, viviendas destruidas y afectadas, hectáreas de cultivo, km de vías, centros
 educativos y de salud, pérdidas en US$), `ImpactoReportado`, `ImpactoEnTotales`, `FuenteCita` (la cita original
-legible), `Licencia`, `Confianza` (alta, media o baja según la precisión de fecha, lugar y tipo), `Corroboracion`
+legible), `Licencia`, `Confianza` (alta, media o baja según la precisión de fecha, lugar y tipo; nunca alta si la fecha es
+la de un reporte o una publicación), `Corroboracion`
 (cuántos reportes o notas de otras fuentes cuentan el mismo evento), `OrigenesCorroboran` y `FuentesAdicionales`
 (sus enlaces, separados por « | », hasta 10).
 
-Un impacto vacío significa «la fuente no lo reporta», no cero.
+Un impacto vacío significa «la fuente no lo reporta», no cero. `ImpactoEnTotales` es «no» solo cuando otra fila del
+mismo evento ya detalla esas cifras (un registro curado que resume un área); el resto suma a los totales.
+
+`diccionario.csv` (en `data/historico/` y en la pestaña) describe cada una de las 58 columnas: grupo, tipo, contenido,
+valores posibles y el porcentaje de filas que traen el dato, en total y por fuente. Se genera con el catálogo desde
+`enso/historico/esquema.py` (`COLUMN_DOCS`), así que no se desfasa.
 
 Otros archivos:
 
 - `data/historico/indicadores-{departamento,provincia,distrito,region}.csv`: los indicadores de cada área.
-- `data/historico/contexto-distrito.csv`: por distrito, el historial (registros, años con daños, grandes Niños,
-  nivel de atención, registros del Niño en curso) junto al peligro identificado hoy (puntos del INGEMMET, zonas
+- `data/historico/contexto-distrito.csv`: por distrito, el historial (registros, años con daños y su intervalo, grandes
+  Niños, registros del Niño en curso) junto al peligro identificado hoy (puntos del INGEMMET, zonas
   críticas, puntos críticos de la ANA con la población, las viviendas y el costo de las acciones, establecimientos de
   salud afectados en 2023). Es la tabla para priorizar.
 - `data/historico/prevencion-distrito.csv`: por distrito, las declaratorias, los informes técnicos, los puntos de
@@ -185,6 +195,9 @@ urbanos, derrames, contaminación. Tampoco los deslizamientos o aludes que desat
 5. *Temporada de lluvias* (noviembre a abril), *Temporada de heladas y friaje* (mayo a setiembre) o *Sin asociación
    ENSO*.
 
+Entre los pasos 1 y 2: si el mes es posterior al último ICEN publicado, el registro queda como *ICEN pendiente*
+(todavía no se sabe si fue un mes de Niño), salvo que la fuente lo atribuya a El Niño o La Niña.
+
 La atribución es temporal: que un registro caiga dentro de un Niño no prueba que el Niño lo causó.
 `AtribucionENSO` dice de dónde sale (curado, ventana-icen, fuente o ninguna).
 
@@ -211,10 +224,12 @@ lluvias causan: inundaciones, huaycos, deslizamientos) y de una fecha compatible
 | COEN sin nada de lo anterior | Una emergencia del SINPAD del mismo distrito y grupo hasta 30 días alrededor |
 | GLOF | ±3 días con el día; el mismo mes con solo el mes; con solo el año no se une |
 | Nota de prensa | Un evento de hasta 10 días antes de la publicación (o del día siguiente); si el texto cita la fecha del evento («el pasado 14 de marzo», hasta 60 días antes), de 3 días antes de esa fecha al día siguiente de la publicación; con solo el mes, ese mes o el anterior |
+| Fila distrital del IDMC | La emergencia del SINPAD del mismo distrito a ±1 día (preferida la del mismo grupo de peligro). El IDMC recopila las mismas emergencias del INDECI: sus personas desplazadas, viviendas y duración pasan a la fila del SINPAD, que no trae daños desde 2019, y la fila del IDMC se quita (4 934 en el catálogo de octubre de 2026) |
 | Página de periódico antiguo | Un evento de hasta 45 días antes de la publicación (un cable o la carta de un cónsul tardaban semanas en llegar y los semanarios los reproducían después); si no, una fila de ese mes o ese año que solo tiene el mes o el año (los archivos curados). Una página que solo nombra el departamento vale para cualquier lugar del departamento |
 
 Si la encuentra, la fila suma uno a `Corroboracion`, el enlace en `FuentesAdicionales` y el origen en
-`OrigenesCorroboran`; las cifras de daños del COEN pasan a la fila solo si la fila no trae ninguna. Si no la
+`OrigenesCorroboran`; las cifras de daños del COEN pasan a la fila solo si la fila no trae ninguna (las de la base de
+GLOF y de la prensa no pasan: quedan en su enlace). Si no la
 encuentra, el reporte o la nota queda como **fila propia**: un evento que ninguna otra fuente registró (el COEN marca
 algunos como «no registrada en el SINPAD»), y las notas siguientes del mismo evento se suman a esa fila. El orden es
 COEN, GLOF, prensa y periódicos antiguos. Cuántos se unieron por cada regla queda en `enlace` de `fuentes.json`.
@@ -240,40 +255,146 @@ entra por no tener lugar, en vez de quedar en Lima. La fecha es la de publicaci�
 (`FechaTipo = publicacion`) y la confianza, baja: el OCR tiene errores («lea» por Ica) y una página que no se pudo
 ubicar no entra.
 
+## Reglas de calidad
+
+Las aplica `tidy` de `tools/build_historico.py` a todo el catálogo, en la construcción completa y con
+`--desde-catalogo`. Las encontró la revisión independiente de octubre de 2026 (ver [Validación](#validación)); cuántas
+filas tocó cada una queda en `calidad` de `fuentes.json` y de `resumen.json`.
+
+| Regla | Por qué | Filas (oct. 2026) |
+|---|---|---|
+| Una fila distrital del IDMC con una emergencia del SINPAD del mismo distrito a ±1 día se une a ella | Es la misma emergencia del INDECI contada dos veces | 4 934 |
+| Las fechas del SINPAD 2016-2018 se leen en hora de Lima | La copia guarda la hora de Lima como si fuera UTC: las emergencias de la noche quedaban un día después | 2 630 |
+| Confianza alta → media si la fecha es la de un reporte o una publicación | Esa fecha no es la del evento | 3 416 |
+| DesInventar con fecha 1 de enero → precisión de mes | DesInventar pone el 1 de enero cuando no sabe el día: hay cinco veces más de lo esperable | 197 |
+| Meses después del último ICEN → «ICEN pendiente» | Todavía no se sabe si fue un mes de Niño | 2 858 |
+| Notas de prensa cuyo titular trata de bonos, reconstrucción, donaciones, expedientes técnicos o crímenes → fuera | No cuentan un desastre | 15 |
+| `ImpactoEnTotales` vacío → «si» | Las cifras del IDMC y de otras fuentes no sumaban a los totales | todas |
+
+Otras correcciones están en los lectores y entran con la próxima cosecha completa: los títulos del COEN con «Niño» o
+«Niños» en la dirección y los que nombran varios lugares (solo se separan si el título está en plural), nombres
+antiguos o mal escritos (Raimondi, El Arenal, Ccapacmarca, San Miguel del Faique), las fechas de la base de GLOF que
+solo dan una ventana de satélite (el año si la ventana cae en un año; el mes del medio si dura menos de un año), la
+duración de un día de las filas del IDMC y más palabras para descartar notas de prensa que no son un evento.
+
 ## Indicadores
 
 Se calculan igual en Python (`enso/historico/indicadores.py`, para los CSV) y en el navegador
 (`public/assets/js/historico-model.js`, para los filtros de cada persona); una prueba compara ambos.
 
-Con T = años hidrológicos (julio a junio) de 1970-71 a 2014-15 (45) y Y = años con al menos un registro de
+Con T = temporadas (julio a junio) de 1970-71 a 2014-15 (45) e Y = temporadas con al menos un registro de
 DesInventar en el área:
 
 | Indicador | Definición | Para qué sirve |
 |---|---|---|
-| Años con daños | Y de T, con intervalo de Wilson al 95 % | Cuenta años, no fichas: un Niño deja decenas de fichas en un distrito |
-| 1 de cada X años | T / Y | Frecuencia histórica. No es un pronóstico: supone clima y exposición constantes |
-| Probabilidad en 5 años | 1 − (1 − Y/T)^5 | Lo mismo, dicho como probabilidad |
-| Distrito-años | Pares (distrito, año) con daños | En provincias y departamentos, cuántos de sus distritos sufren cada año |
-| Cuánto más daño con Niño | (distrito-años con Niño / años con Niño) ÷ (distrito-años en otros años / otros años), con intervalo de Poisson al 95 % | Dónde El Niño costero multiplica los daños, y dónde no (en la sierra sur suele traer sequía) |
+| Años con daños | Y de T, con intervalo de Wilson al 95 % (Wilson, 1927; Brown, Cai y DasGupta, 2001), que funciona con muestras pequeñas y con 0 o T. «Como mínimo» es su límite inferior | Cuenta temporadas, no fichas: un Niño deja decenas de fichas en un distrito. El límite inferior ordena las áreas con pocos años sin premiar al azar |
+| 1 de cada X años | T / Y, con intervalo [1 / superior, 1 / inferior] del de Wilson | La misma frecuencia, dicha como periodo de retorno |
+| Probabilidad en 5 años | 1 − (1 − Y/T)^5, con intervalo [1 − (1 − inferior)^5, 1 − (1 − superior)^5] | Lo mismo, dicho como probabilidad; supone temporadas independientes |
+| Lugares-años | Pares (distrito, temporada) con daños | En provincias y departamentos, cuántos de sus distritos sufren cada temporada |
+| Razón de El Niño | (lugares-años en temporadas con Niño costero / esas temporadas) ÷ (lugares-años en las demás / las demás), con intervalo al 95 % cuasi-Poisson | Dónde El Niño costero aumenta los lugares con daños, y dónde no |
 | Grandes Niños | Cuáles de FEN 1982-83, FEN 1997-98, Niño Costero 2017, Ciclón Yaku 2023 y FEN 2023-24 dejaron registros | La pregunta del especialista: ¿se repite? |
-| Nivel de atención | Muy alto: registros en ≥ 2 grandes Niños y daños en ≥ 1 de cada 4 años; alto: una de las dos; medio: 1 gran Niño o daños en ≥ 1 de cada 10 años; bajo: el resto con registros | Una regla transparente para ordenar, no un índice oficial de riesgo |
-| Registros intensivos | Fichas con ≥ 30 fallecidos o ≥ 600 viviendas destruidas (umbral del GAR 2015 de UNDRR) | Separa los desastres grandes de los daños frecuentes y pequeños |
+| Registros intensivos | Fichas con ≥ 30 fallecidos o ≥ 600 viviendas destruidas (umbral del GAR 2015 de UNDRR) | Separa los desastres grandes de los daños frecuentes y pequeños (en los CSV) |
+
+Los tres primeros suponen que el clima y la exposición no cambian: son frecuencias del pasado, no pronósticos.
+
+**Temporada con Niño costero.** La media del ICEN de enero a marzo, el pico de lluvias de la costa norte, supera
++0,5 °C, el umbral de condición cálida del ENFEN (Nota Técnica 01-2024). De 1970-71 a 2014-15 son seis: 1971-72,
+1972-73, 1982-83, 1986-87, 1991-92 y 1997-98. La regla anterior («algún mes de diciembre a abril en Niño costero»)
+marcaba 16 temporadas, muchas con un Niño débil o que empezó en abril, y diluía el efecto: con ella solo Piura y
+Tumbes quedan claramente sobre 1. Sigue en los datos (`nino_hydro_years_any`) para la prueba de sensibilidad.
+
+**Distritos que no son independientes.** Un Niño golpea a muchos distritos en la misma temporada, así que los
+lugares-años varían más de lo que supone Poisson. El intervalo de la razón multiplica la varianza de Poisson por la
+dispersión φ = χ² de Pearson de los lugares-años por temporada / (T − 2), con mínimo 1 (cuasi-Poisson; McCullagh y
+Nelder, 1989). Con φ = 5 el intervalo es √5 ≈ 2,2 veces más ancho. φ queda en la columna `dispersionNino` de los CSV.
+
+**Dosis-respuesta.** Como prueba que no depende de un umbral, un modelo de Poisson log μ = a + b · ICEN de enero a
+marzo (Newton-Raphson; intervalo de Wald multiplicado por √φ) da cuánto cambian los lugares con daños por cada grado
+del ICEN (`dose_response`).
 
 **Solo DesInventar entra a la frecuencia.** El SINPAD (2016 en adelante) tiene más de diez veces los registros por
 año de DesInventar; IDMC 2025-2026 solo incluye emergencias con viviendas inhabitables. Mezclarlas cambiaría la frecuencia
 por un cambio de fuente, no del clima. Las fuentes posteriores sí cuentan para los registros, los impactos, los
-grandes Niños y el mapa.
+grandes Niños y el mapa, y sirven para la validación.
+
+**Se quitó el nivel de atención.** La regla anterior (muy alto, alto, medio o bajo según los grandes Niños y la
+frecuencia) no tenía validación y marcaba muy alto a 127 de 196 provincias: no ordenaba. La revisión independiente
+recomendó quitarla. El ranking ordena ahora por la frecuencia o por su límite inferior, cuya capacidad de ordenar sí se
+midió (ver [Validación](#validación)).
 
 Resultados principales (catálogo de octubre de 2026):
 
-- **El Niño multiplica los daños en el norte.** Distritos con daños por año en temporadas de Niño costero frente a las
-  demás: Piura 2,4 veces (IC 95 %: 2,0–2,8), Tumbes 1,8 (1,3–2,3), Lambayeque 1,7 (1,3–2,2), La Libertad 1,6
-  (1,3–1,9), Áncash 1,6 (1,3–1,8). En Puno es 0,8 (0,7–1,0): menos daños con Niño.
-- **Los mismos lugares se repiten.** 127 de 196 provincias tienen nivel de atención muy alto (registros en dos o más
-  grandes Niños y daños en al menos uno de cada cuatro años). Piura, Tumbes, Lambayeque, La Libertad, Áncash,
-  Cajamarca, Lima e Ica tienen registros en los cinco grandes Niños.
-- **El peligro de hoy coincide con la historia.** 80 distritos con nivel de atención alto o muy alto tienen además
-  puntos críticos de peligro muy alto según la ANA (por ejemplo Chimbote, Arequipa, Ica, Chicama, Olmos o Catacaos).
+- **El Niño costero aumenta los lugares con daños en la costa norte y centro.** Lugares con daños por temporada con
+  Niño costero frente a las demás: Piura 3,6 veces (IC 95 %: 2,3–5,4), Lambayeque 3,1 (1,9–5,1), La Libertad 2,7
+  (1,6–4,8), Áncash 2,7 (1,6–4,6), Tumbes 2,5 (1,6–3,9), Ica 2,2 (1,3–3,6), Lima 1,9 (1,3–2,8) y Arequipa 1,9
+  (1,4–2,7); el Perú, 1,6 (1,1–2,2). Los mismos ocho tienen también una dosis-respuesta claramente positiva. En los
+  demás departamentos el intervalo incluye 1: no hay diferencia clara.
+- **Los mismos lugares se repiten.** Piura, Tumbes, Lambayeque, La Libertad, Áncash, Cajamarca, Lima e Ica tienen
+  registros en los cinco grandes Niños. En la costa norte, el 98 % de los distritos golpeados en 1982-83 y en 1997-98
+  volvió a tener registros en 2017.
+- **El peligro de hoy coincide con la historia.** 81 de los 90 distritos con puntos críticos de peligro muy alto de la
+  ANA tienen registros en dos o más grandes Niños (Chimbote, Lurigancho, Chicama, Piura y otros). La capa de la ANA
+  cubre sobre todo la costa.
+
+## Validación
+
+El equipo pidió que cada cifra de la pestaña salga de los datos con un método establecido y que se ponga a prueba de
+forma independiente. Se hizo en dos partes.
+
+**1. Revisión independiente.** Dos revisores, sin ver el trabajo del otro, revisaron el método y los datos (fila por
+fila en muestras). Encontraron cifras de impacto del IDMC que no sumaban a los totales, fechas del SINPAD 2016-2018
+corridas un día, emergencias del IDMC contadas dos veces con su gemela del SINPAD, notas de prensa sobre bonos o
+reconstrucción tomadas como eventos, una regla de temporada de Niño demasiado amplia, intervalos que suponían
+distritos independientes, un «nivel de atención» sin validar y frases que decían más de lo que mostraban los datos.
+Todo se corrigió (ver [Reglas de calidad](#reglas-de-calidad) e [Indicadores](#indicadores)).
+
+**2. Prueba fuera de muestra**, como se verifica un pronóstico. Los indicadores usan solo DesInventar de 1970-71 a
+2014-15; las emergencias del SINPAD de 2016-17 a 2025-26 no entran a ningún indicador, así que sirven para ponerlos a
+prueba con datos que el método no vio (`enso/historico/validacion.py`). Los resultados quedan en `resumen.json`
+(`validacion`) y en la sección «¿La historia anticipa lo que vino después?» de la pestaña.
+
+| Pregunta | Método | Resultado (catálogo de octubre de 2026) |
+|---|---|---|
+| ¿La frecuencia del pasado ordena bien las áreas? | AUC (área bajo la curva ROC; Hanley y McNeil, 1982): la probabilidad de que un área-temporada con emergencias en 2016-2025 tenga más frecuencia histórica que una sin emergencias. Intervalo al 95 % por remuestreo de áreas (bootstrap por conglomerados, 500 réplicas). Solo el orden es comparable: el SINPAD registra muchas más emergencias por año que DesInventar | Provincias: 0,75 (0,62–0,86) con todos los peligros; heladas y friaje 0,81, huaycos y deslizamientos 0,72, inundaciones 0,64. Distritos: 0,55 (0,53–0,56), casi como el azar; heladas 0,63 |
+| ¿Se repitió el efecto de El Niño? | Razón de El Niño de 2016-2025 (temporadas con Niño costero: 2016-17, 2018-19, 2022-23 y 2023-24) en las áreas donde la de 1970-2015 fue claramente mayor que 1 y en las demás; correlación de Spearman entre el orden de las áreas en los dos periodos | Departamentos: 1,21 (0,92–1,61) donde la histórica era mayor que 1, frente a 1,00 (0,84–1,19); Spearman 0,71. Provincias: 1,28 (0,93–1,76) frente a 1,02 (0,86–1,22); Spearman 0,43. Va en la dirección esperada; con solo cuatro temporadas de Niño, los intervalos incluyen 1 |
+| ¿Acierta la probabilidad de daños? | Con la misma fuente: la frecuencia de DesInventar 1970-1999 como probabilidad de daños en cada bloque de cinco años de 2000-2014 (1 891 distritos). Puntaje de Brier y su habilidad frente a decir siempre la tasa base (Wilks, 2011), diagrama de confiabilidad y la misma frecuencia suavizada por Bayes empírico (beta-binomial por momentos) | Habilidad 0,05 sin suavizar y 0,10 suavizada: mejora poco sobre la tasa base (31 %). Exagera en los extremos: donde da 0 %, el 17 % de los distritos tuvo daños; donde da más de 80 %, el 76 % |
+| ¿Vuelven los grandes Niños a los mismos lugares? | Frecuencia condicional: de los distritos golpeados en 1982-83 y 1997-98, en uno de los dos o en ninguno, cuántos tuvieron registros en 2017 | Costa norte (Tumbes, Piura, Lambayeque y La Libertad): 98 % de los golpeados en los dos, frente a 82 % en uno y 83 % en ninguno (90 % en total). 13 departamentos del Plan de Reconstrucción: 91 % frente a 76 % y 75 % |
+| ¿Depende la razón de El Niño de la regla elegida? | Sensibilidad: la regla de temporada, la regla anterior y la dosis-respuesta por grado de ICEN | Los ocho departamentos con razón claramente mayor que 1 también la tienen por grado de ICEN; con la regla anterior, solo Piura y Tumbes |
+
+Qué quiere decir:
+
+- Para decidir dónde mirar primero, la historia sirve **por provincia y por peligro**, no por distrito. Por distrito,
+  el peligro identificado hoy (puntos del INGEMMET y de la ANA, en cada ficha) anticipa mejor las emergencias: el
+  68 % de las emergencias desde 2016 ocurrió donde el peligro ya estaba documentado (ver
+  [¿Se sabía antes?](#se-sabía-antes-peligros-documentados-y-emergencias)).
+- El efecto de El Niño es firme en la costa norte y centro: aparece con las tres formas de medirlo y se repitió en la
+  misma dirección después de 2016.
+- «1 de cada X años» y «probabilidad en 5 años» son frecuencias del pasado: anticipan poco y exageran en los extremos.
+  Por eso la pestaña siempre las muestra con su intervalo.
+- Los grandes Niños sí vuelven a los mismos lugares: en la costa norte, casi todos los distritos golpeados en 1983 y
+  1998 volvieron a tener registros en 2017.
+
+Las pruebas (`tests/test_historico.py`) comprueban cada método con datos de resultado conocido (el AUC, una
+dosis-respuesta exacta, una predicción perfecta y una que falla en la calibración, la repetición de los grandes Niños,
+los intervalos de Wilson y cuasi-Poisson), que Python y el navegador den lo mismo, y que la validación publicada tenga
+todas sus partes.
+
+## Cómo usar los indicadores
+
+La pestaña lo resume en «Cómo usar esta pestaña», abierto al entrar.
+
+| Para | Use | No concluya |
+|---|---|---|
+| Saber qué pasó y dónde | La lista de registros de cada ficha, con su fuente y las otras fuentes que cuentan lo mismo | Que un lugar sin registros no tiene peligro: DesInventar se armó con prensa e informes, y hay más registros donde hay más gente y acceso |
+| Elegir provincias que mirar primero | «Años con daños» o «Años con daños, como mínimo», por peligro | Que el orden por distrito es confiable: casi como el azar (AUC 0,55) |
+| Prepararse para un Niño fuerte | La razón de El Niño donde su intervalo queda sobre 1, los mapas de los grandes Niños y «Si se repite un gran Niño» en cada ficha | Que la razón mide la magnitud del daño: cuenta lugares con registros. Tampoco compare grandes Niños en cantidad: cada uno viene de fuentes con densidad distinta |
+| Saber qué se conocía antes de cada emergencia | «¿Se sabía antes?», comparado con el azar | Que «documentado» quiere decir «evitable»: el inventario marca puntos de peligro, no obras |
+| Cifras de daños | Los totales que reportó cada fuente | Que un vacío es cero: es «no reportado» |
+
+Una frecuencia de 0 de 45 años tiene intervalo 0–8 %: quiere decir «sin registros en DesInventar», no «sin peligro»;
+uno de cada seis distritos así tuvo daños en los cinco años siguientes. La «alerta según la historia» del aviso del
+Niño en curso nombra solo los departamentos con razón de El Niño claramente mayor que 1; las alertas oficiales son
+las del ENFEN, el SENAMHI y el INDECI.
 
 ## Peligro identificado hoy (contexto)
 
@@ -305,43 +426,58 @@ Resultados (catálogo del 26-10-2026, con las descargas de El Peruano y de los i
   o evaluado.
 - **Declaratorias**: hasta ahora hay muchas más por impacto (respuesta) y prórrogas que por peligro inminente
   (prevención); la cifra crecerá con la descarga.
+- **Comparado con el azar.** Casi todos los distritos tienen algún peligro inventariado, así que la mayoría de las
+  emergencias caería en un distrito «documentado» aunque la documentación no tuviera relación con ellas. La
+  construcción completa calcula cuántas lo estarían si las mismas emergencias, con su fecha y su peligro, cayeran en
+  un distrito al azar: uniforme y según la población (`eventosConAvisoAzar` y `eventosConAvisoAzarPob` de cada año en
+  `prevencion.json`; es una prueba de permutación, como en Bar-Hillel, 1980). La diferencia con lo observado es lo
+  que la documentación anticipa. La revisión independiente la estimó: entre 64 % y 66 % al azar, solo 2 a 4 puntos
+  menos que el 68 % observado.
 
 Cómo leerlo:
 
 - *Documentado* no quiere decir *evitable*. Quiere decir que el Estado tenía el peligro identificado en ese distrito
-  antes de la emergencia. El inventario marca puntos de peligro, no obras.
+  antes de la emergencia. El inventario marca puntos de peligro, no obras. Esta cifra no mide cuánta prevención se
+  hizo ni si se pudo evitar el daño: para eso hace falta comparar lugares con y sin obras, antes y después
+  (diferencias en diferencias).
 - La proporción se compara entre años, no la cantidad: desde 2016 el SINPAD registra diez veces más emergencias por
   año que DesInventar antes, y el inventario del INGEMMET creció mucho entre 2003 y 2013.
 - La prensa y los registros curados no entran a esta cuenta.
 
-En la pestaña, la sección «¿Se sabía antes?» muestra la proporción por año, la tabla por año, los llamamientos de la
-Cruz Roja y estos avisos; la ficha de cada área, su propio recuento.
+En la pestaña, la sección «¿Se sabía antes?» muestra la proporción por año, la comparación con el azar, la tabla por
+año, los llamamientos de la Cruz Roja y estos avisos; la ficha de cada área, su propio recuento.
 
 ## La pestaña
 
-- **Aviso del Niño en curso**, con el último ICEN.
+- **Aviso del Niño en curso**, con el último ICEN (y si es preliminar), y la **alerta según la historia**: los
+  departamentos donde las temporadas con Niño costero tuvieron claramente más lugares con daños (intervalo de la
+  razón sobre 1).
+- **Cómo usar esta pestaña**: para qué sirve y qué no concluir, con las cifras de la validación.
 - **Mapa** por departamento, provincia o distrito, con filtros de evento (grandes Niños, uno en particular, el Niño
-  en curso, cualquier Niño, La Niña, años neutros), de peligro y de periodo, y la métrica a pintar: años con daños,
-  grandes Niños, cuánto más daño con Niño, nivel de atención, registros, fallecidos, afectados o viviendas
-  destruidas. Los cortes de «años con daños» cambian con el nivel (un departamento casi siempre tiene daños; un
-  distrito, rara vez). Todo el estado queda en la dirección (`#/memoria?nivel=distrito&area=200105`) para compartir
-  una vista.
-- **Ficha** de cada área: nivel de atención, años con daños, 1 de cada X años, probabilidad en 5 años, grandes Niños,
-  registros del Niño en curso, «si se repite un gran Niño», peligro identificado hoy, «¿se sabía antes?», impactos,
-  peligros, temporadas con daños y la lista de registros con su descripción, su fuente y las otras fuentes que
-  cuentan lo mismo («También lo cuentan…», con enlace a cada reporte o nota).
+  en curso, cualquier Niño, La Niña, años neutros), de peligro y de temporadas, y la métrica a pintar: años con daños,
+  años con daños como mínimo (el límite inferior del intervalo), grandes Niños, lugares con daños con Niño (las áreas
+  cuyo intervalo incluye 1 van en gris), registros, fallecidos, afectados o viviendas destruidas. Los cortes de «años
+  con daños» cambian con el nivel (un departamento casi siempre tiene daños; un distrito, rara vez). Con un filtro de
+  evento la razón de El Niño no se muestra: compararía un evento con sus propias temporadas. Todo el estado queda en
+  la dirección (`#/memoria?nivel=distrito&area=200105`) para compartir una vista.
+- **Ficha** de cada área: años con daños, 1 de cada X años y probabilidad en 5 años, cada uno con su intervalo;
+  grandes Niños, registros del Niño en curso, «si se repite un gran Niño» (con cuántos de sus lugares golpeados antes
+  volvieron a tener registros), peligro identificado hoy, «¿se sabía antes?», impactos, peligros, temporadas con daños
+  y la lista de registros con su descripción, su fuente y las otras fuentes que cuentan lo mismo («También lo
+  cuentan…», con enlace a cada reporte o nota).
 - **Línea de tiempo** de lugares con daños por temporada, con las temporadas de Niño costero marcadas.
 - **Los grandes Niños uno al lado del otro** (dónde dejó registros cada uno) y la **tabla de lugares golpeados en dos
   o más**.
-- **Ranking** (la versión en tabla del mapa).
-- **¿Se sabía antes?** (arriba) y **antes de 1970**: los lugares con registros de archivo y de lagunas glaciares, con
-  sus años.
-- **Evidencia** sobre la prevención desde los años 90 (abajo) y **fuentes, método, límites y descargas**.
+- **Ranking** (la versión en tabla del mapa), con la frecuencia y su intervalo.
+- **¿La historia anticipa lo que vino después?**: la [validación](#validación), con su lectura.
+- **¿Se sabía antes?** y **antes de 1970**: los lugares con registros de archivo y de lagunas glaciares, con sus años.
+- **Evidencia** sobre la prevención desde los años 90 y **fuentes, método, límites y descargas** (catálogo, CSV de
+  indicadores, contexto y prevención, y el diccionario de datos).
 
 El diseño sigue las prácticas de los tableros de riesgo de referencia (DesInventar, el Índice de Riesgo INFORM, el
 SIGRID del CENEPRED): mapa coroplético con tabla equivalente, colores de una sola tonalidad para magnitudes y
-divergentes centrados en 1 para la razón de tasas, estados con icono y texto (no solo color), cifras siempre con su
-fuente y su incertidumbre, y avisos claros de lo que el dato no dice.
+divergentes centrados en 1 para la razón de tasas, estados con icono y texto (no solo color), cifras con su fuente,
+frecuencias y razones con su intervalo, y avisos claros de lo que el dato no dice.
 
 ## Evidencia sobre la prevención desde los años 90
 
@@ -349,13 +485,16 @@ La sección «¿Se ha hecho poca prevención desde los años 90?» de la pestañ
 cada una con su fuente (`public/assets/js/historico-evidencia.js`). El veredicto es **en parte cierto**:
 
 - **Sí se hizo**: el SINAGERD (2011), el CENEPRED y un programa presupuestal de prevención; alertas y pronósticos
-  mejores. Los fallecidos por evento bajaron: 512 (1982-83), unos 374 (1997-98), 162 (2017), 84 (2023).
+  mejores. Los fallecidos reportados por evento bajaron: 512 (1982-83), unos 374 (1997-98), 162 (2017), 84 (2023);
+  también por millón de habitantes (unos 28, 15, 5 y 2,5). Son cuatro eventos de intensidad distinta, contados por
+  fuentes distintas: muestran menos muertes, no prueban una tendencia.
 - **Sigue pendiente**: en 2017 el Plan Integral de Reconstrucción prometió soluciones definitivas en 17 ríos, el
   drenaje de cuatro ciudades y cuatro quebradas; en 2023 el Contralor dijo que la reconstrucción «ha fracasado» y a
   mayo de 2026 solo 9 de 102 soluciones integrales estaban terminadas. El río Piura conduce hoy cerca de la mitad del
   caudal pico de 1998.
 - **Conclusión para la preparación**: si se repite un Niño fuerte, lo esperable es que vuelvan los daños a viviendas
-  e infraestructura en los mismos lugares del norte; repetir la mortalidad de 1983 es menos probable.
+  e infraestructura en los mismos lugares del norte (en la costa norte, el 98 % de los distritos golpeados en 1983 y
+  1998 tuvo registros en 2017). Que la mortalidad de 1983 no se repita es un juicio de expertos, no una estimación.
 
 ## Límites
 
@@ -367,14 +506,29 @@ cada una con su fuente (`public/assets/js/historico-evidencia.js`). El veredicto
 - **El SINPAD desde 2019 no trae descripción ni daños.** El portal da el peligro principal, el distrito, la fecha, el
   nivel y el estado de cada emergencia: esas fichas se ubican en la capital del distrito y su tipo es el que nombra
   el SINPAD. Las cifras de esos años (personas desplazadas, viviendas) vienen del IDMC, que parte de las mismas
-  emergencias del INDECI; por eso una emergencia puede aparecer una vez por cada fuente. Quedan fuera las que el
+  emergencias del INDECI: una fila distrital del IDMC se une a su emergencia del SINPAD (mismo distrito, ±1 día) y le
+  pasa sus cifras. Las filas del IDMC por departamento y mes son resúmenes de desplazamiento, no eventos aparte; no
+  tienen gemela y siguen como filas propias. Quedan fuera las que el
   SINPAD llama «otros», las epidemias y plagas (sin descripción no se sabe si las causó el clima), y los derrumbes
   de viviendas y los aniegos, que casi siempre no son climáticos.
 - **Los impactos** son los que publicó cada fuente; las fuentes discrepan (Huggel et al., 2015). Un registro curado
   que resume un área ya detallada por otra fuente con cifras no suma sus impactos dos veces (`ImpactoEnTotales`).
 - **Ubicación.** Los registros se ubican por el UBIGEO o el nombre de la fuente; si el nombre está abreviado
   («S. J. DE LURIGANCHO»), por el punto de la fuente dentro de los límites del IGN. Los distritos creados después de
-  esos límites no tienen polígono: cuentan para su provincia y su departamento.
+  esos límites no tienen polígono: cuentan para su provincia y su departamento. Las filas sin punto llevan las
+  coordenadas de la capital del distrito, de la provincia o del departamento: en un mapa de puntos se agrupan en las
+  capitales, y no deben leerse como el lugar exacto.
+- **Fechas.** La fecha de una fila propia del COEN cuyo PDF no se leyó es la de su primer reporte, y la de una nota
+  de prensa, la de su publicación (`FechaTipo`): pueden ir días después del evento. Esas filas nunca tienen confianza
+  alta. DesInventar pone el 1 de enero cuando no conoce el día; esas fichas quedan con precisión de mes.
+- **Tipo de peligro.** Donde la fuente dice solo «inundación» y el texto no da pistas, queda *Inundacion (sin
+  detalle)*: no se sabe si fue fluvial o pluvial.
+- **Eventos con nombre.** *Niño Costero 2017* y *Ciclón Yaku 2023* se asignan a todo registro de lluvias,
+  inundaciones, huaycos, deslizamientos, oleaje o viento de esos meses en sus departamentos, aunque algún daño se
+  deba a otra causa. Lo mismo vale para los Niños del ICEN: la atribución es temporal.
+- **Más registros con el tiempo.** DesInventar tiene menos fichas antes de 1990 y más en los años 2000, y los
+  registros se ubicaron mejor con los años: la frecuencia mezcla el clima con cómo se registraba. Por eso la
+  validación compara el orden de las áreas y no los conteos.
 - **La copia del SINPAD 2015-2018 no es oficial** (la subió una cuenta de terceros a ArcGIS Online). Si el INDECI
   publica la serie, debe reemplazarla.
 - **Prensa.** Hay más notas de las ciudades con medios en línea y de los últimos años (los archivos en línea de la
@@ -405,11 +559,22 @@ python -m tools.build_historico --sin-red          # solo con la caché
 python -m tools.build_historico --aceptar-cambios  # tras revisar que una fuente cambió
 python -m tools.build_historico --sin-red --parcial --cache ~/.cache/enso-historico --cache OTRA/CACHE
                                                    # con lo bajado hasta ahora de las descargas largas
+python -m tools.build_historico --desde-catalogo   # rehace indicadores, validación y archivos desde eventos.zip
+python -m tools.build_historico --indices-al-dia CARPETA
+                                                   # con el ICEN y el ONI descargados al día en CARPETA
 python -m tools.build_historico_mapa               # polígonos de provincias y distritos (solo si cambian los límites)
 node --test tests/js/historico.test.mjs            # paridad Python/navegador
 pytest -q tests/test_historico.py
 ```
 
+- `--desde-catalogo` no descarga ni vuelve a leer las fuentes: parte del catálogo publicado (`eventos.zip`, que se lee
+  de vuelta sin pérdida), vuelve a leer los registros curados y, de la caché, las fechas del SINPAD 2016-2018 si
+  están, y aplica las [reglas de calidad](#reglas-de-calidad) antes de calcular los indicadores, la validación y los
+  archivos del sitio. Sirve cuando cambia el método y no las fuentes. La comparación de prevención con el azar
+  necesita la evidencia de la caché y solo se calcula si está; `generado` de `fuentes.json` no cambia.
+- `--indices-al-dia CARPETA` descarga el ICEN (IGP) y el ONI (NOAA CPC) vigentes en CARPETA; si una descarga falla o
+  trae menos meses que la copia de las pruebas, usa esa copia. `resumen.json` (`indicesENSO`) dice qué archivo se usó,
+  su SHA-256 y su último mes. La cosecha de GitHub Actions lo usa.
 - Como el resto del observatorio, el script lee el robots.txt de cada servidor antes de pedir nada (RFC 9309, con
   `enso.reach.Robots`) y respeta su `Crawl-delay`; si el robots.txt no responde, no pide nada a ese servidor.
 - El IDMC se pide a su propia API (su robots.txt la permite; el de HDX no deja que un programa baje sus CSV). La API
@@ -475,7 +640,8 @@ horas `python -m tools.cosecha_historico`, que:
    construye sin ella y el PR lo dice; se sigue intentando en las corridas siguientes. Las fuentes de eventos y las
    capas de contexto no dejan de esperarse nunca, porque sin ellas el catálogo no se construye.
 4. Guarda la caché (siempre, aunque algo falle) y borra las anteriores de la misma rama.
-5. Cuando no falta nada, construye el catálogo sin red (`build_historico --sin-red --parcial --aceptar-cambios`), lo
+5. Cuando no falta nada, construye el catálogo sin red (`build_historico --sin-red --parcial --aceptar-cambios
+   --indices-al-dia`, con el ICEN y el ONI del día), lo
    sube a la rama `bot/memoria-desastres/<inicio>` y abre un PR con lo que cambió en cada fuente y en el total. Un PR
    abierto por Actions no lanza flujos, así que lanza `ci.yml` en esa rama. Si el repositorio no deja que Actions
    abra PR, abre un issue con el enlace para abrirlo. Con el PR anotado (`cosecha-pr.json`), las corridas siguientes

@@ -22,7 +22,7 @@ pytestmark = pytest.mark.browser
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
-ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "noticias", "datos", "metodologia", "asistente"]
+ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "noticias", "datos", "metodologia", "asistente"]
 VIEWPORTS = {"telefono-320": (320, 640), "telefono-390": (390, 844), "tableta": (820, 1180), "escritorio": (1366, 900)}
 
 

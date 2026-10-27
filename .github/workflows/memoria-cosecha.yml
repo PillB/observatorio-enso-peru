@@ -95,7 +95,8 @@ jobs:
           mkdir -p "$RUNNER_TEMP/antes"
           git show HEAD:data/historico/fuentes.json > "$RUNNER_TEMP/antes/fuentes.json"
           git show HEAD:public/assets/historico/resumen.json > "$RUNNER_TEMP/antes/resumen.json"
-          python -m tools.build_historico --sin-red --parcial --aceptar-cambios
+          # El calendario ENSO de hoy (ICEN del IGP y ONI de la NOAA); si no responden, la copia de las pruebas.
+          python -m tools.build_historico --sin-red --parcial --aceptar-cambios --indices-al-dia "$RUNNER_TEMP/indices"
           python -m tools.cosecha_historico --informe "$RUNNER_TEMP/antes" > "$RUNNER_TEMP/pr.md"
 
       - name: Open or update the pull request

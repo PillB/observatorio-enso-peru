@@ -10,6 +10,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import math
 import re
 import subprocess
 import zipfile
@@ -21,8 +22,10 @@ import pytest
 from conftest import FIX
 from enso.historico import desinventar, esquema as E, fuentes as F
 from enso.historico.enso import GREAT, PIRCC_2017, EnsoCalendar
-from enso.historico.indicadores import rate_ratio, summarize, wilson
+from enso.historico.indicadores import (dispersion, dose_response, prob5_ci, rate_ratio, return_period_ci, summarize,
+                                        wilson)
 from enso.historico.territorio import territory
+from enso.historico import validacion as V
 from test_geo_console import JS, _need_node
 from tools import build_historico as B
 
@@ -86,6 +89,10 @@ def test_territory_disambiguates_by_province_and_spelling(T):
     assert T.resolve("APURÍMAC", "CHINCHEROS", "ANCO_HUALLO") == "030602"
     assert T.resolve("HUÁNUCO", "HUÁNUCO", "QUISQUI (KICHKI)") == "100106"
     assert T.resolve("CAJAMARCA", "CONTUMAZÁ", "SANTA CRUZ DE TOLED") == "060506"
+    # Grafías oficiales del INDECI y de los reportes que difieren del nomenclátor (auditoría de octubre de 2026).
+    assert T.resolve("LIMA", "HUAROCHIRÍ", "SAN PEDRO DE LARAOS") == "150712"
+    assert T.resolve("LIMA", "YAUYOS", "LARAOS") == "151018"
+    assert T.resolve("ÁNCASH", "ANTONIO RAIMONDI", "SAN JUAN DE RONTOY") == "020306"
     # Un truncado que coincide con dos distritos de la provincia se queda en la provincia.
     assert T.resolve("LIMA", "LIMA", "SAN JUAN DE") == "1501"
 
@@ -126,7 +133,8 @@ def test_sinpad_reader(T, cal):
     assert skipped["no climático"] == 2  # incendios urbanos
     assert not any(r["Date"] < "2016-01-01" for r in rows.values())  # 2015 ya está en DesInventar
     nauta = rows["00087516"]
-    assert (nauta["Ubigeo"], nauta["DangerType"], nauta["Date"]) == ("160301", "Lluvias intensas", "2017-04-11")
+    # La capa guarda la hora de Lima como UTC (04:00 del 12): no se convierte, o caería el 11.
+    assert (nauta["Ubigeo"], nauta["DangerType"], nauta["Date"]) == ("160301", "Lluvias intensas", "2017-04-12")
     assert nauta["TipoEvento"] == "Niño Costero 2017"  # Loreto está en el Plan de Reconstrucción
     assert nauta["Fuente"].startswith(F.SINPAD_URL + "/query?where=COD_EMERGE%3D%2700087516%27")
     assert rows["00080357"]["Ubicacion"] == ""  # «sector agropecuario» no es un lugar
@@ -189,6 +197,139 @@ def test_wilson_and_rate_ratio():
     rr, lo, hi = rate_ratio(20, 10, 20, 20)
     assert rr == 2 and lo < 2 < hi
     assert rate_ratio(0, 10, 5, 20) == (None, None, None)
+
+
+def test_overdispersion_widens_the_el_nino_interval_only_when_years_cluster():
+    years, nino = range(10), {2, 7}
+    assert dispersion({y: 4 for y in years}, years, nino) == 1.0  # conteos parejos: el intervalo de Poisson
+    clustered = {0: 1, 1: 20, 3: 2, 4: 15, 5: 1, 6: 18, 8: 2, 9: 1, 2: 9, 7: 11}
+    phi = dispersion(clustered, years, nino)
+    assert phi > 5
+    # φ = Σ (y − μ)²/μ / (n − grupos), con la media de cada grupo.
+    others = [v for y, v in clustered.items() if y not in nino]
+    mu_o = sum(others) / len(others)
+    chi = sum((v - mu_o) ** 2 for v in others) / mu_o + sum((v - 10) ** 2 for v in (9, 11)) / 10
+    assert phi == round(chi / 8, 4)
+    rr, lo, hi = rate_ratio(20, 2, 60, 8, phi)
+    _, lo1, hi1 = rate_ratio(20, 2, 60, 8)
+    assert rr == round((20 / 2) / (60 / 8), 3) and lo < lo1 < rr < hi1 < hi
+    assert abs(math.log(hi / rr) / math.log(hi1 / rr) - math.sqrt(phi)) < 0.01
+    assert dispersion({}, years, nino) == 1.0 and dispersion({0: 3}, range(1), set()) == 1.0
+
+
+def test_return_period_and_five_year_intervals_follow_wilson():
+    lo, hi = wilson(9, 45)
+    assert return_period_ci(lo, hi) == [round(1 / hi, 1), round(1 / lo, 1)]
+    assert return_period_ci(*wilson(0, 45))[1] is None  # sin años con daños no hay cota superior
+    p5 = prob5_ci(lo, hi)
+    assert p5[0] < 1 - (1 - 9 / 45) ** 5 < p5[1]
+    s = summarize([{"Origen": "desinventar", "Ubigeo": "200105", "AnioHidrologico": f"{y}-{str(y + 1)[2:]}",
+                    "TipoEvento": "", "DangerType": "Lluvias intensas", "Date": f"{y}-12-01", "Anio": y}
+                   for y in range(1970, 2015, 5)], range(1970, 2015), {1972, 1982, 1997})
+    assert s["periodoRetornoIC"] == return_period_ci(*s["frecuenciaIC"])
+    assert s["prob5AniosIC"][0] < s["prob5Anios"] < s["prob5AniosIC"][1]
+    assert s["dispersionNino"] >= 1
+
+
+def test_out_of_sample_auc_and_validation():
+    assert V.auc([3, 2], [1, 0]) == 1.0 and V.auc([1], [1]) == 0.5 and V.auc([], [1]) is None
+    assert V.auc([0, 2], [1, 3]) == 0.25
+    # Pesos: un área con 3 temporadas con emergencia y 1 sin ella cuenta como 3 positivos y 1 negativo.
+    d = V.discrimination({"a": 0.5, "b": 0.1, "c": 0.0}, {"a": 3, "b": 1}, 4)
+    assert d["auc"] == V.auc([0.5] * 3 + [0.1], [0.5] + [0.1] * 3 + [0.0] * 4)
+    assert d["aucIC"][0] <= d["auc"] <= d["aucIC"][1] and d["tasaBase"] == round(4 / 12, 3)
+    assert V.spearman([1, 2, 3, 4], [10, 20, 30, 40]) == 1.0 and V.spearman([1, 2, 3], [3, 2, 1]) == -1.0
+
+    def rec(origin, code, y, danger="Lluvias intensas"):
+        return {"Origen": origin, "Ubigeo": code, "AnioHidrologico": f"{y}-{str(y + 1)[2:]}", "DangerType": danger}
+    # 200101 tuvo daños casi todos los años de 1970-2014 y siguió teniéndolos; 200102, pocos y ninguno después.
+    recs = [rec("desinventar", "200101", y) for y in range(1970, 2015)] + [rec("desinventar", "200102", 1983)]
+    recs += [rec("sinpad", "200101", y) for y in range(2016, 2026)] + [rec("sinpad", "2001", 2017, "Huayco/Alud")]
+    recs += [rec("sinpad", "200103", 2020)]
+    out = V.validate(recs, ["200101", "200102", "200103"], range(1970, 2015), range(2016, 2026), {2016, 2023}, {})
+    dist = next(x for x in out["discriminacion"] if x["nivel"] == "distrito" and x["peligros"] == "todos")
+    assert dist["areas"] == 3 and dist["auc"] > 0.8
+    assert (out["entrenamiento"], out["prueba"], out["aniosNinoPrueba"]) == ([1970, 2014], [2016, 2025], [2016, 2023])
+    # El registro provincial cuenta para la provincia, como en los indicadores.
+    prov = next(x for x in out["discriminacion"] if x["nivel"] == "provincia" and x["peligros"] == "huaycos y deslizamientos")
+    assert prov["tasaBase"] == 0.1
+
+
+def test_dose_response_recovers_a_known_rate_and_needs_enough_seasons():
+    # Conteos exactos μ = 10·e^(0,5·x): el ajuste de Poisson debe devolver e^0,5 por grado y φ = 1 (sin sobredispersión).
+    x = {1970 + i: -1 + 0.2 * i for i in range(20)}
+    counts = {y: 10 * math.exp(0.5 * v) for y, v in x.items()}
+    rr, lo, hi = dose_response(counts, x)
+    assert rr == round(math.exp(0.5), 3) and lo < rr < hi
+    # Sin relación con el ICEN, la razón por grado es 1; con menos de 10 temporadas no se estima.
+    assert dose_response({y: 7 for y in x}, x)[0] == 1.0
+    assert dose_response(counts, dict(list(x.items())[:9])) == (None, None, None)
+    # Temporadas que se agrupan (sobredispersión) ensanchan el intervalo, no lo mueven.
+    noisy = {y: c * (1.6 if i % 2 else 0.4) for i, (y, c) in enumerate(counts.items())}
+    rr2, lo2, hi2 = dose_response(noisy, x)
+    assert hi2 / lo2 > hi / lo
+
+
+def test_calibration_scores_a_perfect_forecast_and_its_reliability():
+    def rec(code, y):
+        return {"Origen": "desinventar", "Ubigeo": code, "AnioHidrologico": f"{y}-{str(y + 1)[2:]}"}
+    # 200101: daños todas las temporadas (probabilidad 1, y los tuvo en cada bloque); 200102: nunca (0, y nunca).
+    recs = [rec("200101", y) for y in range(1970, 2015)]
+    out = V.calibration(recs, ["200101", "200102"])
+    raw = out["cruda"]
+    assert (raw["brier"], raw["habilidad"], raw["auc"], out["tasaBase"]) == (0.0, 1.0, 1.0, 0.5)
+    assert [(b["rango"], b["predicha"], b["observada"]) for b in raw["confiabilidad"]] == [("0 %", 0.0, 0.0), ("80 % o más", 1.0, 1.0)]
+    # Un distrito más con la misma frecuencia pero sin daños después baja la habilidad: la calibración lo detecta.
+    recs += [rec("200103", y) for y in range(1970, 2000)]
+    worse = V.calibration(recs, ["200101", "200102", "200103"])
+    assert worse["cruda"]["habilidad"] < 1.0 and worse["cruda"]["confiabilidad"][-1]["observada"] == 0.5
+
+
+def test_great_repeat_compares_places_hit_before_with_the_rest():
+    def rec(code, ev):
+        return {"Ubigeo": code, "TipoEvento": ev}
+    recs = [rec("200101", "FEN 1982-83"), rec("200101", "FEN 1997-98"), rec("200101", "Niño Costero 2017"),
+            rec("200102", "FEN 1997-98"), rec("200103", "Niño Costero 2017"), rec("20", "Niño Costero 2017")]
+    out = V.great_repeat(recs, ["200101", "200102", "200103", "200104"], regions={"norte": {"20"}})[0]
+    assert out["distritos"] == 4 and out["tasaBase"] == 0.5  # el registro departamental no cuenta para un distrito
+    assert [(g["golpeados"], g["distritos"], g["conRegistros"]) for g in out["grupos"]] == [
+        ("en los dos", 1, 1.0), ("en uno", 1, 0.0), ("en ninguno", 2, 0.5)]
+
+
+def test_quality_rules_fix_known_defects_and_are_idempotent(cal):
+    def row(origin, rid, date, **kw):
+        base = {"Origen": origin, "Id": f"{origin}-{rid}", "Date": date, "PrecisionFecha": "dia", "FechaFin": date,
+                "Ubigeo": "200101", "GrupoPeligro": "hidrometeorologico", "Fuente": f"https://ejemplo.pe/{rid}",
+                "FuenteCita": origin, "Descripción": "", "Confianza": "alta", "FechaTipo": "evento",
+                "AtribucionENSO": "fuente", "TipoEvento": "FEN 1997-98", "ImpactoEnTotales": "", "ImpactoReportado": "no",
+                "Corroboracion": 0, "FuentesAdicionales": "", "OrigenesCorroboran": "", "DuraciónEvento": ""}
+        return {**base, **kw}
+    recs = [
+        row("desinventar", "1", "1998-01-01"),                                  # 1 de enero: no se sabe el día
+        row("coen", "2", "2023-03-10", FechaTipo="informe"),                    # fecha del reporte, no del evento
+        row("prensa", "3", "2023-03-12", Descripción="«Entregan bonos a damnificados» y más texto"),
+        row("sinpad", "4", "2025-02-10", ImpactoReportado="no"),
+        row("idmc", "5", "2025-02-11", Desplazados=40, ViviendasDestruidas=8, DuraciónEvento=1),  # gemela del SINPAD
+        row("idmc", "6", "2025-02-20", Desplazados=5),                          # a 10 días: otra emergencia
+        row("sinpad", "7", "2099-01-15", AtribucionENSO="ninguna", TipoEvento="Temporada de lluvias"),
+    ]
+    q = Counter()
+    out = B.tidy([dict(r) for r in recs], cal, q)
+    by = {r["Id"]: r for r in out}
+    assert "prensa-3" not in by and "idmc-5" not in by and "idmc-6" in by
+    assert (by["desinventar-1"]["PrecisionFecha"], by["desinventar-1"]["Confianza"]) == ("mes", "media")
+    assert by["coen-2"]["Confianza"] == "media"
+    twin = by["sinpad-4"]
+    assert (twin["Desplazados"], twin["ViviendasDestruidas"], twin["ImpactoReportado"]) == (40, 8, "si")
+    assert twin["Corroboracion"] == 1 and twin["OrigenesCorroboran"] == "idmc"
+    assert by["sinpad-7"]["TipoEvento"] == "ICEN pendiente"
+    assert all(r["ImpactoEnTotales"] == "si" for r in out)
+    assert q == Counter({"DesInventar 1 de enero → precisión de mes": 1, "confianza alta → media (fecha de reporte o "
+                         "publicación)": 1, "nota de prensa que no es un evento": 1, "idmc unidas a su emergencia del SINPAD": 1,
+                         "ICEN pendiente": 1})
+    # Sobre un catálogo ya limpio no cambia nada: por eso --desde-catalogo suma los recuentos guardados en el manifiesto.
+    again = Counter()
+    assert B.tidy([dict(r) for r in out], cal, again) == out and not again
 
 
 def test_frequency_uses_only_the_homogeneous_source():
@@ -446,6 +587,59 @@ def test_published_catalog():
     # «Niño Costero 2017» solo en los 13 departamentos del Plan de Reconstrucción.
     assert {r["Ubigeo"][:2] for r in rows if r["TipoEvento"] == "Niño Costero 2017"} <= PIRCC_2017
     assert summary["eventoEnCurso"] == "FEN 2026"
+
+
+def test_published_validation_and_dictionary():
+    summary = json.loads((OUT / "resumen.json").read_text(encoding="utf-8"))
+    v = summary["validacion"]
+    assert v["entrenamiento"] == summary["cobertura"]["homogenea"] and v["prueba"][0] > v["entrenamiento"][1]
+    assert v["fuenteEntrenamiento"] == summary["cobertura"]["origenes"] and v["fuentePrueba"] == "sinpad"
+    assert {(d["nivel"], d["peligros"]) for d in v["discriminacion"]} == {
+        (lvl, g) for lvl in ("distrito", "provincia") for g in V.HAZARD_GROUPS}
+    for d in v["discriminacion"]:
+        assert 0 <= d["aucIC"][0] <= d["auc"] <= d["aucIC"][1] <= 1, d
+    assert v["nino"]["departamento"]["areasComparadas"] >= 20
+    with open(OUT / "diccionario.csv", encoding="utf-8-sig", newline="") as f:
+        rows = list(csv.DictReader(f))
+    assert [r["columna"] for r in rows] == E.COLUMNS
+    assert all(r["descripcion"] and r["tipo"] for r in rows)
+    fill = {r["columna"]: float(r["conDato_pct"]) for r in rows}
+    assert fill["Date"] == fill["DangerType"] == fill["Ubigeo"] == fill["Fuente"] == fill["Latitud"] == 100.0
+    assert (OUT / "diccionario.csv").read_bytes() == (ROOT / "data" / "historico" / "diccionario.csv").read_bytes()
+
+
+def test_catalog_round_trip_for_rebuilding_indicators(tmp_path, T, cal):
+    from enso.historico.registro import make
+    r = make(T, cal, code="200105", day="1998-02-10", precision="dia", danger="Huayco/Alud", origin="desinventar",
+             source_id="1", url="https://example.org/1", cite="x", license="y", description="-Huayco en =la quebrada")
+    B.write_zip([r], tmp_path / "eventos.zip")
+    back = B.read_catalog(tmp_path / "eventos.zip")
+    assert back[0]["Descripción"] == r["Descripción"] and back[0]["Ubigeo"] == "200105"
+    assert back[0]["AnioHidrologico"] == "1997-98"
+
+
+def test_fresh_indices_fall_back_to_the_test_copies(monkeypatch, tmp_path):
+    import httpx
+
+    def fail(*a, **k):
+        raise httpx.ConnectError("sin red")
+    monkeypatch.setattr(httpx.Client, "get", fail)
+    assert B.fresh_indices(tmp_path) == (B.INDICES["icen"][1], B.INDICES["oni"][1])
+
+    class Resp:
+        content = b"<html>mantenimiento</html>"
+
+        def raise_for_status(self):
+            pass
+    monkeypatch.setattr(httpx.Client, "get", lambda self, url: Resp())
+    assert B.fresh_indices(tmp_path) == (B.INDICES["icen"][1], B.INDICES["oni"][1])
+    good = {B.INDICES[k][0]: B.INDICES[k][1].read_bytes() for k in B.INDICES}
+
+    class Ok(Resp):
+        def __init__(self, url):
+            self.content = good[url]
+    monkeypatch.setattr(httpx.Client, "get", lambda self, url: Ok(url))
+    assert B.fresh_indices(tmp_path) == (tmp_path / "icen.txt", tmp_path / "oni.txt")
 
 
 def test_browser_model_matches_python_with_node():

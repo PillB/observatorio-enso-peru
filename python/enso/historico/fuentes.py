@@ -243,7 +243,9 @@ def sinpad(doc: dict, territory, calendar, since: str = "2016-01-01", until: str
         if not ms:
             skipped["sin fecha"] += 1
             continue
-        day = datetime.fromtimestamp(ms / 1000, timezone.utc).astimezone(LIMA).date().isoformat()
+        # La capa guarda la hora de Lima como si fuera UTC: convertirla a Lima movía al día anterior las emergencias de
+        # 00:00 a 04:59 (comprobado con las fechas que cita la descripción).
+        day = datetime.fromtimestamp(int(ms) / 1000, timezone.utc).date().isoformat()
         if not (since <= day <= until):
             continue
         fen, desc = (a.get("DES_FENOME") or "").strip(), (a.get("DES_EMERGE") or "").strip()
@@ -383,7 +385,7 @@ def idmc_idu(text: str, territory, calendar, skipped: Optional[Counter] = None) 
                    source_id=r["id"], url=IDMC_PAGE, license=IDMC_LICENSE,
                    cite=f"IDMC, evento {r.get('event_id')} «{r.get('event_name')}», con datos del INDECI",
                    description=f"{summary} Texto del IDMC: {r.get('description', '').strip()}",
-                   place=", ".join(p for p in (re.sub(r"^Province of |\s+Province$", "", x) for x in parts) if p and p != "Peru"), duration=dur if dur and dur > 1 else None,
+                   place=", ".join(p for p in (re.sub(r"^Province of |\s+Province$", "", x) for x in parts) if p and p != "Peru"), duration=dur,
                    source_type=f"{r.get('type')} / {r.get('subtype')}", impacts=imp, latlon=latlon)
 
 
