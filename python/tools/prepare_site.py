@@ -73,7 +73,7 @@ def prepare(site_dir: Path, site_url: str, hide_repo: bool, cloudflare: bool) ->
     if hide_repo:
         p = site_dir / "assets" / "js" / "content.js"
         s = orig = p.read_text(encoding="utf-8")
-        s = re.sub(r"(\n\s*(?:repo|issues): )'[^']*'", r"\1''", s)
+        s = re.sub(r"(\n\s*(?:repo|issues|githubSponsors): )'[^']*'", r"\1''", s)
         if s != orig:
             p.write_text(s, encoding="utf-8")
             changed.append("assets/js/content.js")

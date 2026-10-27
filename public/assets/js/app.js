@@ -9,7 +9,7 @@
 import { html, raw, esc, safeUrl, $, $$, storage } from './lib/dom.js';
 import * as F from './lib/format.js';
 import { timeChart, toXY, sparkline, dataTable } from './lib/charts.js';
-import { SITE, DISCLAIMER, OFFICIAL_LINKS, PERU_IMPACTS, PAST_IMPACTS, GLOSSARY } from './content.js';
+import { SITE, SUPPORT, DISCLAIMER, OFFICIAL_LINKS, PERU_IMPACTS, PAST_IMPACTS, GLOSSARY } from './content.js';
 import { mapView } from './map.js';
 import { Tour } from './tour.js';
 import { assistantView } from './assistant.js';
@@ -680,7 +680,8 @@ VIEWS.datos = {
         </ul>
         <h3>Por serie</h3><ul class="link-list cols">${csvs}</ul>
         <p class="muted small">Los valores de texto que empiezan con =, +, − o @ se protegen para evitar fórmulas en hojas de cálculo.</p>
-      </section>`;
+      </section>
+      <p class="muted small support-note">Los datos son libres y seguirán siéndolo. Si le sirvieron en su trabajo, <a href="#/apoyar">puede apoyar al observatorio</a>.</p>`;
   },
   async after() {
     const sel = $('#ex-sel'), from = $('#ex-from'), to = $('#ex-to');
@@ -1045,6 +1046,47 @@ VIEWS.variantes = {
     };
     $$('[data-days]').forEach((b) => b.addEventListener('click', () => load(b.dataset.days)));
     await load('30');
+  },
+};
+
+// Aportes voluntarios: una página a la que se llega desde el pie y desde
+// Datos, nunca desde un aviso, una ventana emergente ni la navegación.
+VIEWS.apoyar = {
+  title: 'Apoyar',
+  render() {
+    const ways = [];
+    if (SUPPORT.yapeQr) ways.push(html`
+      <section class="card support-way" aria-labelledby="sp-yape">
+        <h2 id="sp-yape">Desde el Perú, con Yape</h2>
+        <img class="support-qr" src="${SUPPORT.yapeQr}" width="200" height="200" alt="Código QR de Yape para aportar al observatorio">
+        <p>Escanee el código desde Yape y elija el monto.${SUPPORT.yapeName ? html` Antes de confirmar verá el nombre <strong>${SUPPORT.yapeName}</strong>.` : ''}</p>
+        <p class="muted small">Sin comisión para usted ni para el observatorio.</p>
+      </section>`);
+    if (SUPPORT.kofi) ways.push(html`
+      <section class="card support-way" aria-labelledby="sp-kofi">
+        <h2 id="sp-kofi">Con tarjeta o PayPal, desde cualquier país</h2>
+        <p>Un aporte único en Ko-fi, sin crear cuenta. Ko-fi no cobra comisión sobre las donaciones; solo PayPal descuenta la suya.</p>
+        <p><a class="btn ghost" href="${safeUrl(SUPPORT.kofi)}" rel="noopener" target="_blank">Aportar en Ko-fi</a></p>
+      </section>`);
+    if (SUPPORT.githubSponsors) ways.push(html`
+      <section class="card support-way" aria-labelledby="sp-gh">
+        <h2 id="sp-gh">Si usa GitHub</h2>
+        <p>Aporte único o mensual con GitHub Sponsors. GitHub no cobra comisión en los aportes de cuentas personales.</p>
+        <p><a class="btn ghost" href="${safeUrl(SUPPORT.githubSponsors)}" rel="noopener" target="_blank">Aportar en GitHub Sponsors</a></p>
+      </section>`);
+    return html`
+      <div class="page-head"><div class="eyebrow">Proyecto</div><h1>Apoyar al observatorio</h1>
+        <p>El Observatorio ENSO Perú es gratuito y lo seguirá siendo: sin publicidad, sin muros de pago y sin rastrear a quien lo visita. Los aportes voluntarios ayudan a cubrir el alojamiento, el recolector que baja los datos desde el Perú y el tiempo de revisar fuentes y corregir errores.</p></div>
+      ${ways.length ? html`<div class="grid support-ways">${ways}</div>` : ''}
+      <section class="card prose support-other" aria-labelledby="sp-other">
+        <h2 id="sp-other">Otras formas de ayudar</h2>
+        <ul>
+          <li>Compártalo con quien trabaja en gestión del riesgo, en su municipio, su escuela o su gremio.</li>
+          <li>${SITE.issues ? html`Si ve un dato raro, una fuente caída o un texto confuso, <a href="${SITE.issues}" rel="noopener" target="_blank">avísenos</a>.` : 'Si ve un dato raro, una fuente caída o un texto confuso, avísenos.'} Cada corrección mejora el sitio para todos.</li>
+          <li>Si su institución publica datos útiles para El Niño en el Perú, cuéntenos dónde encontrarlos.</li>
+        </ul>
+        <p class="muted small">Los aportes no compran influencia: no cambian lo que el observatorio publica, cómo clasifica los datos ni qué fuentes cita. Ante una emergencia, siga a INDECI, SENAMHI y a su gobierno regional o local.</p>
+      </section>`;
   },
 };
 

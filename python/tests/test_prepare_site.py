@@ -51,3 +51,11 @@ def test_code_leak_fails(site):
     (site / "assets" / "extra.js").write_text("// https://github.com/PillB/observatorio-enso-peru", encoding="utf-8")
     with pytest.raises(RuntimeError, match="extra.js"):
         prepare(site, "https://observatorio-enso.pages.dev/", hide_repo=True, cloudflare=False)
+
+
+def test_sponsors_link_is_dropped_with_the_repo(site):
+    js = site / "assets" / "js" / "content.js"
+    js.write_text(js.read_text(encoding="utf-8").replace("githubSponsors: ''", "githubSponsors: 'https://github.com/sponsors/PillB'"), encoding="utf-8")
+    prepare(site, "https://observatorio-enso.pages.dev/", hide_repo=True, cloudflare=False)
+    text = js.read_text(encoding="utf-8")
+    assert "githubSponsors: ''" in text and "github.com/sponsors" not in text
