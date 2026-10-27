@@ -64,6 +64,8 @@ obtuvieron, el número de registros que aportan, los que se descartaron y por qu
 | Prensa: 44 medios regionales y nacionales (radios, diarios y portales de Piura, Tumbes, Lambayeque, La Libertad, Áncash, Lima, Arequipa, Cusco, Puno, Junín, Huánuco, Loreto, San Martín y otros), por su API de WordPress, su mapa del sitio o su archivo | 2007-2026 | Distrito o provincia | Titular, fecha, extracto de hasta 200 caracteres y enlace. 4 048 notas corroboran una fila; 1 380 son filas propias | La nota es del medio; se cita con enlace (D. Leg. 822, art. 44) |
 | [Base mundial de desbordes de lagunas glaciares (GLOF)](https://zenodo.org/records/23370149), Lützow y Veh, v4.2 | 1883-2025 | Punto (la laguna) | 58 aluviones por desborde de lagunas glaciares con fecha, sobre todo de la Cordillera Blanca: laguna, mecanismo, detonante y fallecidos. No entran los que desató un sismo (1725, 1970) | CC BY 4.0 |
 | [Cronología de El Niño en Trujillo y el norte](https://www.ncei.noaa.gov/pub/data/paleo/historical/southamerica/peru/trujillo2008.xls) (García-Herrera et al., 2008, actas del Cabildo de Trujillo y otros archivos; NOAA NCEI) | 1559-1899 | Ciudad o valle | 58 años con lluvias o inundaciones de El Niño en Trujillo, Chicama, Saña, Lambayeque, Piura y Paita, con la evaluación de los autores | Libre uso citando el artículo (NOAA WDC Paleoclimatology) |
+| [«Las lluvias en Piura»](https://archive.org/details/boletndelasocied4189soci) (Víctor Eguiguren, Boletín de la Sociedad Geográfica de Lima, tomo IV, 1894; copia de Internet Archive) | 1728-1891 | Ciudad | 11 años de lluvias extraordinarias o grandes crecientes del río en Piura, Paita y el despoblado de Sechura, los que la cronología de Trujillo no tiene para Piura | Dominio público |
+| [Chronicling America](https://www.loc.gov/collections/chronicling-america/) (Biblioteca del Congreso de EE. UU.), periódicos digitalizados, por la API JSON de loc.gov | 1836-1963 | Distrito, provincia o departamento | Páginas de periódicos de EE. UU. que reproducían cables y cartas de cónsules sobre inundaciones, lluvias, huaicos y aludes en el Perú: fecha de publicación, periódico, extracto del texto OCR de hasta 200 caracteres y enlace a la página. Se unen entre sí (el mismo cable en varios periódicos) y a las filas de archivo del mismo año | Dominio público o sin restricciones conocidas (Biblioteca del Congreso); se cita con enlace |
 | Registros curados ([`data/historico/curado/`](../data/historico/curado/)) | 2017 | Distrito | Los diez distritos con más viviendas inhabitables o colapsadas en 2017 según el Plan Integral de Reconstrucción con Cambios | Cada registro cita su fuente |
 
 ### Contexto (no son eventos)
@@ -102,6 +104,16 @@ obtuvieron, el número de registros que aportan, los que se descartaron y por qu
   Noticias SER, El Nuevo Diario, Pro & Contra y Diario Uno): no se descargan.
 - **ReliefWeb** y **YouTube** (noticieros de radio y televisión) piden una clave o un nombre de aplicación
   registrado; quedan para cuando el proyecto los tenga.
+- **Hemerotecas digitales** (periódicos antiguos escaneados), además de Chronicling America:
+  - **Biblioteca Nacional del Perú** (hemeroteca digital, El Comercio y El Peruano antiguos): solo responde desde el
+    Perú; va por el recolector del Perú con el registro de fuentes.
+  - **Gallica** (Biblioteca Nacional de Francia: Le Temps, Journal des débats y otros, que informaban del Perú en el
+    siglo XIX), **HathiTrust** y **Papers Past** (Nueva Zelanda): responden con una verificación antirobots; no se
+    intentó saltarla.
+  - **Hemeroteca Digital de la Biblioteca Nacional de España**, la API de **Trove** (Australia) y el **archivo de
+    Google Noticias**: su robots.txt no deja que un programa los consulte.
+  - Los estudios de la época que ya resumieron la prensa y los archivos (Eguiguren, 1894; García-Herrera et al.,
+    2008) entran como registros curados.
 
 ## Columnas del catálogo
 
@@ -185,7 +197,7 @@ nivel.
 
 ## Fuentes que cuentan el mismo evento
 
-El COEN, la prensa y la base de GLOF casi siempre cuentan una emergencia que el SINPAD o DesInventar ya registran.
+El COEN, la prensa, los periódicos antiguos y la base de GLOF casi siempre cuentan una emergencia que el SINPAD o DesInventar ya registran.
 Para no contarla dos veces, cada reporte o nota busca una fila del mismo lugar (el distrito; una nota que solo da la
 provincia vale para cualquiera de sus distritos), del mismo grupo de peligro (las lluvias valen para lo que las
 lluvias causan: inundaciones, huaycos, deslizamientos) y de una fecha compatible
@@ -199,17 +211,30 @@ lluvias causan: inundaciones, huaycos, deslizamientos) y de una fecha compatible
 | COEN sin nada de lo anterior | Una emergencia del SINPAD del mismo distrito y grupo hasta 30 días alrededor |
 | GLOF | ±3 días con el día; el mismo mes con solo el mes; con solo el año no se une |
 | Nota de prensa | Un evento de hasta 10 días antes de la publicación (o del día siguiente); si el texto cita la fecha del evento («el pasado 14 de marzo», hasta 60 días antes), de 3 días antes de esa fecha al día siguiente de la publicación; con solo el mes, ese mes o el anterior |
+| Página de periódico antiguo | Un evento de hasta 45 días antes de la publicación (un cable o la carta de un cónsul tardaban semanas en llegar y los semanarios los reproducían después); si no, una fila de ese mes o ese año que solo tiene el mes o el año (los archivos curados). Una página que solo nombra el departamento vale para cualquier lugar del departamento |
 
 Si la encuentra, la fila suma uno a `Corroboracion`, el enlace en `FuentesAdicionales` y el origen en
 `OrigenesCorroboran`; las cifras de daños del COEN pasan a la fila solo si la fila no trae ninguna. Si no la
 encuentra, el reporte o la nota queda como **fila propia**: un evento que ninguna otra fuente registró (el COEN marca
 algunos como «no registrada en el SINPAD»), y las notas siguientes del mismo evento se suman a esa fila. El orden es
-COEN, GLOF y prensa. Cuántos se unieron por cada regla queda en `enlace` de `fuentes.json`.
+COEN, GLOF, prensa y periódicos antiguos. Cuántos se unieron por cada regla queda en `enlace` de `fuentes.json`.
 
 La prensa pasa antes por filtros: se descartan las notas de sismos, desagües, incendios urbanos, crímenes, calles
 que se llaman como un peligro, y las de obras, limpiezas, simulacros y otras actividades de prevención; el lugar lo pone el mismo ubicador de noticias del
 observatorio y el peligro, el texto. Solo se guarda el titular, la fecha, un extracto de hasta 200 caracteres y el
 enlace: el texto completo es del medio.
+
+Los **periódicos antiguos** se buscan en Chronicling America con unas 40 consultas en inglés sobre el texto OCR
+(«floods in peru», «peru AND piura AND flood», «ranrahirca»…, en `parametros.consultas` de `fuentes.json`); de cada
+página se guarda el fragmento donde aparecen los términos (`tools.build_historico.loc_chronam`). El fragmento junta
+varias notas de la página, así que se lee solo el texto alrededor de cada mención del Perú, y se descartan los Perú
+y las Lima de EE. UU. (las inundaciones del Wabash en Peru, Indiana, en 1913, llenan las búsquedas), la geografía de
+los libros de texto («it never rains in Peru»), los sismos, maremotos y volcanes (el alud de Yungay de 1970 lo desató
+un sismo) y lo que no dice que algo pasó. El lugar es el primero que nombra la nota, con el mismo ubicador (los nombres
+de la época, como Huaras o Payta, se cambian por los de hoy, y «town of» por «ciudad de»); el del encabezado del cable
+(«LIMA, Peru, March 20») no cuenta, porque dice desde dónde se envió. La fecha es la de publicación
+(`FechaTipo = publicacion`) y la confianza, baja: el OCR tiene errores («lea» por Ica) y una página que no se pudo
+ubicar no entra.
 
 ## Indicadores
 
@@ -354,8 +379,10 @@ cada una con su fuente (`public/assets/js/historico-evidencia.js`). El veredicto
   entre 4 y 6 no eran un evento nuevo (ayuda que llega semanas después, un pedido de los vecinos, un aniego por
   redes de desagüe, un tipo de peligro mal puesto). La prensa corrobora; no entra a la frecuencia ni a la
   prevención.
-- **Archivos antes de 1970.** La cronología de Trujillo registra años con lluvias o inundaciones, no cada evento, y
-  se ubica en la ciudad o el valle que nombra. La base de GLOF registra los aluviones que alguien estudió; hay más
+- **Archivos antes de 1970.** La cronología de Trujillo y el estudio de Eguiguren registran años con lluvias o
+  inundaciones, no cada evento, y se ubican en la ciudad o el valle que nombran. Los periódicos antiguos son sobre
+  todo de EE. UU.: cuentan lo que llegaba por cable (Lima, Callao, la costa norte, los ferrocarriles), no lo de cada
+  distrito. La base de GLOF registra los aluviones que alguien estudió; hay más
   en la Cordillera Blanca porque ahí se estudiaron más.
 - **Descargas a medias.** Los PDF del COEN, los decretos de El Peruano, los informes del INGEMMET y algunos medios se
   descargan despacio (5 s o más entre pedidos) y siguen en curso, en GitHub Actions
@@ -439,7 +466,7 @@ horas `python -m tools.cosecha_historico`, que:
    plazo corta los procesos: lo bajado queda en las partes.
 3. Anota en `cosecha-estado.json` (en la caché) cuándo empezó la cosecha y, de cada fuente, los intentos, los fallos
    seguidos, el último error y el avance (páginas del listado del COEN, PDF leídos, meses de El Peruano, días de RPP,
-   fichas del INGEMMET, términos de cada medio). El resumen de la corrida queda en la página de la corrida en
+   fichas del INGEMMET, términos de cada medio, consultas y fragmentos de Chronicling America). El resumen de la corrida queda en la página de la corrida en
    Actions. Una fuente que falla en tres corridas seguidas (no por el plazo) deja de esperarse: el catálogo se
    construye sin ella y el PR lo dice; se sigue intentando en las corridas siguientes.
 4. Guarda la caché (siempre, aunque algo falle) y borra las anteriores de la misma rama.
@@ -466,7 +493,9 @@ informes oficiales, artículos científicos o prensa. Cada registro necesita `Id
 `FuenteCita`; puede llevar `Descripción`, `Ubicacion`, `DuraciónEvento`, `TipoEvento`, `Latitud`/`Longitud`, las
 columnas de impacto y `Confianza`. Lo que va en `comun` se aplica a todos los registros del archivo.
 `trujillo-1550-1900.yaml` trae la cronología de García-Herrera et al. (2008): un registro por año y lugar, con
-confianza media si los autores la evalúan como segura (2) y baja si como posible (1). Un lugar que no
+confianza media si los autores la evalúan como segura (2) y baja si como posible (1). `eguiguren-piura-1728-1891.yaml`
+trae los años de lluvias extraordinarias o grandes crecientes en Piura y Paita del estudio de Eguiguren (1894), con su
+cuadro de lluvias de 1791 a 1890, salvo los que la cronología de Trujillo ya tiene para Piura. Un lugar que no
 se resuelve o un tipo fuera del vocabulario detienen la construcción.
 
 **Revisiones** (`data/historico/revisiones.yaml`): exclusiones y cifras dudosas, cada una con su motivo y su fuente.

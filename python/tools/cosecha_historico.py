@@ -45,7 +45,7 @@ from tools import build_historico as B  # noqa: E402
 STATE = "cosecha-estado.json"
 PR = "cosecha-pr.json"
 #: Descargas largas y reanudables: sus servidores empiezan primero, para que tengan todo el plazo.
-LONG = ("indeci-coen", "elperuano", "dspace", "rpp", "sinpad-api", "sitemaps", "wp-rest")
+LONG = ("indeci-coen", "elperuano", "dspace", "rpp", "sinpad-api", "loc-chronam", "sitemaps", "wp-rest")
 #: Fallos seguidos (no por el plazo) tras los que una fuente deja de esperarse.
 FAILS = 3
 #: Segundos de plazo por debajo de los que una fuente ya no empieza.
@@ -118,6 +118,10 @@ def progress(src: dict, cache: Path) -> str:
     if kind == "wp-rest":
         terms = src.get("parametros", {}).get("terminos", B.NEWS_TERMS)
         return f"{sum((parts / B._wp_part(t)).exists() for t in terms)} de {len(terms)} términos"
+    if kind == "loc-chronam":
+        queries = src.get("parametros", {}).get("consultas", [])
+        return (f"{sum((parts / B._loc_part(q)).exists() for q in queries)} de {len(queries)} consultas; "
+                f"{_count(parts / 'fragmentos')} fragmentos leídos")
     return f"{_count(parts)} partes"
 
 

@@ -10,6 +10,9 @@ mismo lugar, del mismo grupo de peligro (o lluvias con lo que las lluvias causan
 * Prensa con fecha de publicación: un evento de hasta 10 días antes (o del día siguiente); si la nota cita la fecha
   del evento, de 3 días antes de esa fecha hasta el día siguiente a la publicación; con solo el mes, del mismo mes
   o del anterior. Una nota de provincia corrobora cualquier distrito de esa provincia.
+* Periódicos antiguos (hemeroteca): un evento de hasta 45 días antes de la publicación (un cable o la carta de un
+  cónsul tardaban semanas y los semanarios los reproducían después), o una fila de ese mes o ese año que solo
+  tiene el mes o el año (archivos curados). Una página de departamento corrobora cualquier lugar del departamento.
 * Otras fuentes con fecha propia (desbordes de lagunas glaciares): ±3 días con el día; el mismo mes con solo el
   mes; con solo el año no se unen.
 
@@ -39,6 +42,8 @@ from . import esquema as E
 MAX_LINKS = 10
 #: Grupos de peligro que las lluvias causan (una nota de «lluvias» corrobora un huaico y al revés).
 RAIN_GROUPS = {"hidrometeorologico", "geologico-hidro"}
+#: Hasta cuántos días antes de su publicación puede haber ocurrido lo que cuenta una página de periódico antiguo.
+ARCHIVE_DAYS = 45
 
 
 def _ord(day: str) -> int:
@@ -54,7 +59,7 @@ def compatible(a: str, b: str) -> bool:
 
 
 class _Index:
-    """Filas por lugar (distrito y provincia), ordenadas por fecha."""
+    """Filas por lugar (distrito, provincia y departamento), ordenadas por fecha."""
 
     def __init__(self, rows: list[dict]):
         self.rows = rows
@@ -67,7 +72,7 @@ class _Index:
 
     def add(self, i: int, r: dict, sort: bool = True) -> None:
         code, d = r["Ubigeo"], _ord(r["Date"])
-        keys = [code] + ([code[:4]] if len(code) == 6 else [])
+        keys = [code] + ([code[:4]] if len(code) == 6 else []) + ([code[:2]] if len(code) > 2 else [])
         for k in keys:
             if sort:
                 bisect.insort(self.by[k], (d, i))
@@ -77,16 +82,19 @@ class _Index:
             self.sinpad.setdefault(str(r["IdFuente"]), i)
 
     def find(self, code: str, lo: int, hi: int, danger: str, center: int,
-             origins: Optional[set] = None) -> Optional[int]:
-        """La fila de ``code`` (distrito, o cualquier distrito si ``code`` es una provincia) con fecha en [lo, hi] y
-        peligro compatible más cercana a ``center`` (y del mismo DangerType si hay empate)."""
+             origins: Optional[set] = None, precisions: Optional[set] = None, whole: bool = False) -> Optional[int]:
+        """La fila de ``code`` (distrito, o cualquier distrito si ``code`` es una provincia, o con ``whole`` cualquier
+        lugar si es un departamento) con fecha en [lo, hi] y peligro compatible más cercana a ``center`` (y del mismo
+        DangerType si hay empate)."""
         best = None
         rows = self.by.get(code, [])
         for d, i in rows[bisect.bisect_left(rows, (lo, -1)):bisect.bisect_right(rows, (hi, len(self.rows)))]:
             r = self.rows[i]
             if origins is not None and r["Origen"] not in origins:
                 continue
-            if len(code) == 2 or not compatible(r["DangerType"], danger):
+            if precisions is not None and r["PrecisionFecha"] not in precisions:
+                continue
+            if (len(code) == 2 and not whole) or not compatible(r["DangerType"], danger):
                 continue
             if len(code) == 6 and r["Ubigeo"] != code:
                 continue
@@ -150,6 +158,17 @@ def link(records: list[dict], candidates: Iterable[dict], stats: Optional[Counte
                 hit, how = idx.find(c["Ubigeo"], d - 10, d + 1, c["DangerType"], d), "lugar y fecha"
             if hit is None and c.get("_sinpad") is not None:
                 hit, how = idx.find(c["Ubigeo"], d - 30, d + 30, c["DangerType"], d, origins={"sinpad"}), "lugar y mes"
+        elif c["Origen"] == "hemeroteca":
+            whole = len(c["Ubigeo"]) == 2
+            hit, how = idx.find(c["Ubigeo"], d - ARCHIVE_DAYS, d + 1, c["DangerType"], d, whole=whole), "lugar y fecha"
+            if hit is None:
+                month = date.fromisoformat(c["Date"][:8] + "01").toordinal()
+                hit, how = idx.find(c["Ubigeo"], month, month, c["DangerType"], d, precisions={"mes"}, whole=whole), \
+                    "lugar y mes"
+            if hit is None:
+                year = date(int(c["Date"][:4]), 1, 1).toordinal()
+                hit, how = idx.find(c["Ubigeo"], year, year, c["DangerType"], d, precisions={"anio"}, whole=whole), \
+                    "lugar y año"
         elif c["Origen"] != "prensa":  # otra fuente de eventos con fecha propia (GLOF)
             if c["PrecisionFecha"] == "dia":
                 hit, how = idx.find(c["Ubigeo"], d - 3, d + 3, c["DangerType"], d), "lugar y fecha"

@@ -1,7 +1,7 @@
 # Cosecha larga del catálogo histórico de la pestaña «Memoria de desastres» (python/tools/cosecha_historico.py).
 # Varias fuentes toman días a la pausa de cortesía de 5 s (los reportes del COEN, los decretos de El Peruano, las
-# fichas del INGEMMET, el archivo de RPP): cada corrida baja hasta su plazo, guarda lo bajado en la caché de Actions
-# y la siguiente sigue donde quedó. Cuando no falta nada, construye el catálogo sin red (tools/build_historico) y
+# fichas del INGEMMET, el archivo de RPP, las páginas de Chronicling America): cada corrida baja hasta su plazo,
+# guarda lo bajado en la caché de Actions y la siguiente sigue donde quedó. Cuando no falta nada, construye el catálogo sin red (tools/build_historico) y
 # abre un PR desde bot/memoria-desastres/<inicio>, con ci.yml lanzado en él (un PR abierto por Actions no lanza
 # flujos). Con el PR abierto, las corridas siguientes no bajan nada: solo mantienen viva la caché (Actions borra la
 # que pasa 7 días sin uso), por si hay que reconstruir. Cada 6 horas, o a mano:
@@ -81,7 +81,7 @@ jobs:
         working-directory: python
         timeout-minutes: 320
         env:
-          # Sin la clave, las dos fuentes del IDMC se bajan de su copia en HDX (data/historico/fuentes.json, «respaldo»).
+          # Sin la clave, las dos fuentes del IDMC usan la copia guardada en el repositorio (data/historico/semillas).
           IDMC_CLIENT_ID: ${{ secrets.IDMC_CLIENT_ID }}
           SOLO: ${{ inputs.solo }}
           MINUTOS: ${{ github.event_name == 'push' && '12' || inputs.minutos || '300' }}

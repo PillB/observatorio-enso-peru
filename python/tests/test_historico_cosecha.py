@@ -209,6 +209,53 @@ def test_press_keeps_events_and_drops_the_rest(T, cal):
         T.resolve("Junin", "Jauja", "Marco")
 
 
+def _page(text, fecha="1962-03-01", n=None):
+    n = n or hashlib.sha1(text.encode()).hexdigest()[:8]
+    return {"url": f"https://www.loc.gov/resource/sn{n}/{fecha}/ed-1/?sp=1", "fecha": fecha,
+            "periodico": "evening star (washington, d.c.) 1854-1972", "lugar": "washington, district of columbia",
+            "consulta": "floods in peru", "fragmento": text}
+
+
+def test_hemeroteca_keeps_peru_disasters_and_drops_the_rest(T, cal):
+    doc = {"paginas": [
+        _page("... to 100 Die In Peruvian [[tag]]Avalanche[[/tag]] LIMA, [[tag]]Peru[[/tag]], March 1 (AP). —Rescue and "
+              "relief teams hurried to the remote Andean town of Conchucos today where from 60 to 100 persons were "
+              "reported killed by an [[tag]]avalanche[[/tag]], said Acting Prefect Oscar Barrios from the town of "
+              "Huaras, far south of Conchucos."),
+        _page("Washington, June 22.—The Cousul at Lambayeque writes to the Department of State that the extraordinary "
+              "[[tag]]rains[[/tag]] in [[tag]]Peru[[/tag]] of the past quarter have been destructive to agriculture. "
+              "The country around Lambayeque has been almost entirely inundated, railroads being washed away.",
+              fecha="1878-06-24"),
+        _page("... damage was done by the [[tag]]Floods[[/tag]] In [[tag]]Peru[[/tag]], Ind., nearby. With the Wabash "
+              "river three feet over the danger line, 2,000 persons were driven from their homes.", fecha="1913-03-28"),
+        _page("No [[tag]]Rain[[/tag]] in [[tag]]Peru[[/tag]]! It never [[tag]]rains[[/tag]] in Peru. All agriculture "
+              "is the result of artificial irrigation.", fecha="1854-02-22"),
+        _page("LIMA, Peru, May 31.—An earthquake shook northern [[tag]]Peru[[/tag]] and an [[tag]]avalanche[[/tag]] "
+              "from Huascaran buried the town of Yungay, killing thousands.", fecha="1970-06-01"),
+        _page("Serious [[tag]]Floods[[/tag]] in [[tag]]Peru[[/tag]]. LIMA. Peru. March 20.—Heavy rains have resulted in "
+              "serious floods in various parts of the republic, entailing considerable damage.", fecha="1909-03-21"),
+        _page("However, there are no disastrous [[tag]]rains[[/tag]] in [[tag]]Peru[[/tag]] and adobe buildings "
+              "stand there today.", fecha="1931-03-21"),
+        _page("Fire at Santiago, Chile, caused a loss of $1,000,000.", fecha="1909-04-10"),
+        {**_page("x", fecha="1925-03-23"), "fragmento": None},
+    ]}
+    sk = Counter()
+    rows = list(C.hemeroteca(doc, T, cal, archive="Chronicling America", skipped=sk))
+    assert sk == {"Perú o Lima de EE. UU.": 1, "descripción general del país": 1, "sismo, maremoto o volcán": 1,
+                  "sin lugar": 1, "no dice que algo pasó": 1, "no nombra el Perú": 1, "fragmento aún no leído": 1}
+    a, b = rows
+    # El primer lugar que nombra la nota (Conchucos), no el del prefecto (Huaraz) ni el del cable (Lima).
+    assert (a["Ubigeo"], a["DangerType"], a["Date"]) == (T.resolve("Ancash", "Pallasca", "Conchucos"), "Huayco/Alud",
+                                                        "1962-03-01")
+    assert (a["Origen"], a["FechaTipo"], a["Confianza"], a["_publicado"]) == ("hemeroteca", "publicacion", "baja",
+                                                                              "1962-03-01")
+    assert a["Fuente"].startswith("https://www.loc.gov/resource/") and a["_medio"] == "Evening Star"
+    assert a["FuenteCita"] == "Evening Star (Washington, District Of Columbia), 1962-03-01, vía Chronicling America"
+    excerpt = a["Descripción"].split("»")[0][1:]
+    assert len(excerpt) <= C.PRESS_EXCERPT + 1 and "[[tag]]" not in a["Descripción"]
+    assert (b["Ubigeo"], b["NivelUbigeo"], b["Date"]) == ("14", "departamento", "1878-06-24")
+
+
 # ---------------------------------------------------------------------------
 # GLOF, llamamientos e inventarios
 # ---------------------------------------------------------------------------
@@ -318,6 +365,28 @@ def test_link_corroborates_or_adds(T, cal):
     assert stats == {"coen: corrobora (código SINPAD)": 1, "prensa: corrobora (lugar y fecha)": 2,
                      "glof: corrobora (lugar y fecha)": 1, "prensa: fila propia": 1}
     assert not enlace.compatible("Granizada", "Huayco/Alud") and enlace.compatible("Lluvias intensas", "Huayco/Alud")
+
+
+def test_link_joins_reprints_of_an_old_cable(T, cal):
+    records = [_row(T, cal, "curado", "egu1891-paita", "1891-01-01", "Lluvias intensas", "200501", precision="anio"),
+               _row(T, cal, "sinpad", "x", "1891-03-10", "Granizada", "1301")]
+    h = lambda sid, day, danger, code: _row(T, cal, "hemeroteca", sid, day, danger, code,  # noqa: E731
+                                            FechaTipo="publicacion")
+    cands = [h("a", "1891-03-20", "Inundacion", "200501"),  # la fila del año de Eguiguren
+             h("b", "1925-03-23", "Lluvias intensas", "1301"),
+             h("c", "1925-04-30", "Huayco/Alud", "1301"),  # 38 días después: el mismo cable en un semanario
+             h("d", "1925-06-01", "Lluvias intensas", "1301"),  # 70 días: otro evento
+             h("e", "1878-06-24", "Inundacion", "14"),
+             h("f", "1878-07-10", "Lluvias intensas", "1401")]  # una provincia de ese departamento
+    stats = Counter()
+    added = enlace.link(records, cands, stats)
+    assert [r["Id"] for r in added] == ["hemeroteca-b", "hemeroteca-d", "hemeroteca-e", "hemeroteca-f"]
+    assert records[0]["OrigenesCorroboran"] == "hemeroteca" and added[0]["Corroboracion"] == 1
+    assert stats == {"hemeroteca: corrobora (lugar y año)": 1, "hemeroteca: corrobora (lugar y fecha)": 1,
+                     "hemeroteca: fila propia": 4}
+    # La página del departamento corrobora la de su provincia que vino después, no al revés.
+    late = h("g", "1878-07-20", "Inundacion", "14")
+    assert enlace.link(records + added, [late], Counter()) == [] and added[3]["Corroboracion"] == 1
 
 
 def test_prevention_indicators(T, cal):

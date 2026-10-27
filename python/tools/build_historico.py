@@ -10,9 +10,10 @@ Pasos (todos reproducibles; ``docs/memoria-desastres.md``):
    ``data/historico/curado/*.yaml``) y normaliza todo a ``enso.historico.esquema.COLUMNS``. Las capas de
    contexto (INGEMMET, ANA, establecimientos de salud) no son eventos: se resumen por distrito.
 3. Ubica cada registro en su UBIGEO vigente y le asigna la fase ENSO del mes (ICEN y ONI).
-3b. Une a esas filas los reportes del COEN, los desbordes de lagunas glaciares y las notas de prensa que cuentan
-   el mismo evento (``enso.historico.enlace.link``, en el orden de ``LINK_ORDER``: suman su enlace y, del COEN,
-   las cifras de daños); los que no corresponden a ninguna quedan como filas propias. Junta las declaratorias de
+3b. Une a esas filas los reportes del COEN, los desbordes de lagunas glaciares, las notas de prensa y las páginas de
+   periódicos antiguos digitalizados que cuentan el mismo evento (``enso.historico.enlace.link``, en el orden de
+   ``LINK_ORDER``: suman su enlace y, del COEN, las cifras de daños); los que no corresponden a ninguna quedan como
+   filas propias. Junta las declaratorias de
    emergencia (El Peruano), las evaluaciones técnicas del peligro (INGEMMET, IGP), el inventario de peligros con
    fecha (INGEMMET) y los llamamientos de la Cruz Roja para los indicadores de prevención (``enlace.prevention``).
 4. Escribe:
@@ -95,9 +96,12 @@ CANDIDATES = {
     "prensa": lambda path, t, c, sk, src: C.press(json.loads(path.read_text(encoding="utf-8")), t, c, outlet=src["medio"],
                                                departments=src.get("departamentos"), skipped=sk),
     "glof": lambda path, t, c, sk, src: C.glof(C.ods_rows(path.read_bytes()), t, c, url=src["pagina"], skipped=sk),
+    "hemeroteca": lambda path, t, c, sk, src: C.hemeroteca(json.loads(path.read_text(encoding="utf-8")), t, c,
+                                                           archive=src["medio"], skipped=sk),
 }
-#: Orden de la unión: el COEN y los GLOF antes que la prensa, para que una nota corrobore lo que solo ellos registran.
-LINK_ORDER = ("coen", "glof", "prensa")
+#: Orden de la unión: el COEN y los GLOF antes que la prensa, para que una nota corrobore lo que solo ellos registran;
+#: los periódicos antiguos al final (sus páginas reimprimen el mismo cable: la primera queda, las demás corroboran).
+LINK_ORDER = ("coen", "glof", "prensa", "hemeroteca")
 #: Evidencia para los indicadores de prevención: declaratorias de emergencia y evaluaciones del peligro.
 EVIDENCE = {
     "decretos": lambda doc, t, src: C.decrees(doc, t),
@@ -722,6 +726,94 @@ def turbo_stream(page: str):
     return dec(0)
 
 
+def _loc_part(q: str) -> str:
+    """El archivo de ``parts`` con las páginas de una consulta de Chronicling America."""
+    return f"q-{hashlib.sha256(q.encode()).hexdigest()[:16]}.json"
+
+
+def _loc_snippet(url: str) -> str:
+    """El archivo de ``parts/fragmentos`` con el fragmento de una página."""
+    return hashlib.sha256(url.encode()).hexdigest()[:20] + ".json"
+
+
+def loc_chronam(src: dict, parts: Path, delay: float = 5.0) -> bytes:
+    """Páginas de periódicos de EE. UU. digitalizados por la Biblioteca del Congreso (Chronicling America, 1836-1963)
+    que responden a las consultas de ``parametros.consultas`` (una frase entre comillas o términos unidos con AND, sobre
+    el texto OCR), por la API JSON de loc.gov (160 por página), con el fragmento del texto donde aparecen los términos
+    (``word_coordinates_url``, servicio de texto de loc.gov). Solo metadatos y el fragmento, con enlace a la página.
+    Cada consulta terminada y cada fragmento leído quedan en ``parts``. JSON canónico ordenado por dirección."""
+    from urllib.parse import urlencode
+
+    p = src.get("parametros", {})
+    parts.mkdir(parents=True, exist_ok=True)
+    (parts / "fragmentos").mkdir(exist_ok=True)
+    get = _paced_get(src, delay)
+
+    def doc(r: Optional[httpx.Response], what: str):
+        if r is None:
+            raise SystemExit(f"{src['id']}: {what} no responde")
+        try:
+            return r.json()
+        except ValueError:
+            raise SystemExit(f"{src['id']}: {what} respondió algo que no es JSON (¿verificación antirobots?)") from None
+
+    pages: dict[str, dict] = {}
+    with httpx.Client(follow_redirects=True, timeout=120, headers=UA, verify=ssl_context()) as c:
+        for q in p["consultas"]:
+            part = parts / _loc_part(q)
+            if not part.exists():
+                got, page = [], 1
+                while True:
+                    d = doc(get(c, f"{src['url']}?" + urlencode({"q": q, "fo": "json", "c": 160, "sp": page,
+                                                                 "at": "results,pagination"})), f"la búsqueda «{q}»")
+                    for it in d.get("results", []):
+                        url = (it.get("id") or "").replace("http://", "https://", 1)
+                        if not url:
+                            continue
+                        got.append({"url": url, "fecha": it.get("date") or "",
+                                    "periodico": (it.get("partof_title") or [""])[0],
+                                    "lugar": ", ".join(dict.fromkeys(x for k in ("location_city", "location_state")
+                                                                     for x in (it.get(k) or [])[:1])),
+                                    "texto": it.get("word_coordinates_url") or ""})
+                    if not (d.get("pagination") or {}).get("next"):
+                        break
+                    page += 1
+                write_atomic(part, json.dumps({"consulta": q, "paginas": got}, ensure_ascii=False))
+                print(f"  {src['id']}: «{q}»: {len(got)} páginas", file=sys.stderr)
+            for it in json.loads(part.read_text(encoding="utf-8"))["paginas"]:
+                pages.setdefault(it["url"], {**it, "consulta": q})
+        for i, (url, it) in enumerate(sorted(pages.items())):
+            f = parts / "fragmentos" / _loc_snippet(url)
+            if f.exists() or not it["texto"]:
+                continue
+            r = get(c, it["texto"])  # None: la página no tiene texto (404); queda sin fragmento
+            d = doc(r, "el servicio de texto") if r is not None else {}
+            seg = next(iter(d.values()), {}) if isinstance(d, dict) and d else {}
+            snippet = seg.get("relevant_snippet") if isinstance(seg, dict) else ""
+            write_atomic(f, json.dumps({"fragmento": (snippet or "")[:1000]}, ensure_ascii=False))
+            if i % 100 == 0:
+                print(f"  {src['id']}: fragmento {i + 1} de {len(pages)}", file=sys.stderr)
+    return loc_assemble(parts, src)
+
+
+def loc_assemble(parts: Path, src: dict) -> bytes:
+    """El JSON de ``loc_chronam`` con lo que hay en ``parts`` (sin red), también a medias: cada página con la primera
+    consulta que la trajo y su fragmento, o sin fragmento si aún no se leyó."""
+    pages: dict[str, dict] = {}
+    for q in src.get("parametros", {}).get("consultas", []):
+        part = parts / _loc_part(q)
+        if part.exists():
+            for it in json.loads(part.read_text(encoding="utf-8"))["paginas"]:
+                pages.setdefault(it["url"], {**it, "consulta": q})
+    out = []
+    for url, it in sorted(pages.items()):
+        f = parts / "fragmentos" / _loc_snippet(url)
+        frag = json.loads(f.read_text(encoding="utf-8"))["fragmento"] if f.exists() else None
+        out.append({**{k: v for k, v in it.items() if k != "texto"}, "fragmento": frag})
+    return json.dumps({"source": src["url"], "consultas": src.get("parametros", {}).get("consultas", []), "paginas": out},
+                      ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
 #: Sumilla de un decreto que declara o prorroga un estado de emergencia.
 EMERGENCY_DECREE = re.compile(r"(?:declara|prorroga)\w*\s+(?:el\s+)?estado\s+de\s+emergencia", re.I)
 
@@ -982,6 +1074,7 @@ ASSEMBLE = {
     "dspace": lambda src, parts: dspace_assemble(parts, src["url"]),
     "rpp": lambda src, parts: rpp_assemble(parts, src),
     "wp-rest": lambda src, parts: wp_assemble(parts, src),
+    "loc-chronam": lambda src, parts: loc_assemble(parts, src),
 }
 
 
@@ -1063,6 +1156,8 @@ def fetch(src: dict, cache, accept_changes: bool, offline: bool) -> Path:
             data = sitemap_news(src, parts, delay=peru)
         elif kind == "dspace":
             data = dspace_items(src, parts, delay=peru)
+        elif kind == "loc-chronam":
+            data = loc_chronam(src, parts, delay=peru)
         else:
             with httpx.Client(follow_redirects=True, timeout=180, headers=UA, verify=ssl_context()) as c:
                 r = c.get(src["url"])

@@ -1,0 +1,49 @@
+# Las lluvias y crecientes del río en Piura y Paita, 1728–1891, según «Las lluvias en Piura» de Víctor Eguiguren,
+# presidente del Centro Geográfico de Piura (Boletín de la Sociedad Geográfica de Lima, 1894). El estudio junta lo
+# que cuentan Alcedo (1788), Santiago Távara (1854) y el cosmógrafo Paredes (1829) con un cuadro propio de las
+# lluvias de cada año de 1791 a 1890 en cinco clases (0 años secos, 1 ligeras lluvias, 2 regulares, 3 buenos y 4
+# extraordinarios). Aquí van los años en que el estudio cuenta daños de las lluvias o crecientes del río, o que el
+# cuadro marca como extraordinarios con crecientes que el texto menciona, salvo los que la cronología de
+# García-Herrera et al. (trujillo-1550-1900.yaml) ya tiene para Piura (1804, 1821, 1845, 1864 y 1871). Quedan fuera
+# los años «buenos» (clase 3: 1817, 1819, 1824, 1832, 1837, 1844), porque el estudio dice que llovió bastante pero
+# no que causara daños, y 1814, cuyos daños fueron del sismo del 1 de febrero. Las citas entre comillas son del
+# estudio, con su ortografía modernizada.
+#
+# Formato: docs/memoria-desastres.md, «Registros curados».
+comun:
+  Fuente: https://archive.org/details/boletndelasocied4189soci
+  FuenteCita: >-
+    Eguiguren, V. (1894). Las lluvias en Piura. Estudio presentado a la Sociedad Geográfica de Lima. Boletín de la
+    Sociedad Geográfica de Lima, tomo IV (1894-1895), pp. 241-258 (cuadro de las lluvias de 1791 a 1890 en la p. 251).
+    Copia digitalizada en Internet Archive.
+  Licencia: Dominio público (publicado en 1894)
+  CausaFuente: Lluvias
+  PeligroFuente: Lluvias extraordinarias o gran creciente del río (Eguiguren, 1894)
+registros:
+  - {Id: egu1894-1728-piura, Date: "1728", DangerType: Desborde de rio, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: media,
+     Ubicacion: "Río Piura, frente a la ciudad",
+     Descripción: "«El río rompió la represa y tajamar que existía frente a la ciudad de Piura y arrastró todas las manzanas de la calle de San Francisco del lado del río, hasta la Merced»; el cura de Catacaos rehízo la obra (Santiago Távara, 1854, citado por Eguiguren)."}
+  - {Id: egu1894-1728-paita, Date: "1728", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Paita, Distrito: Paita, Confianza: media,
+     Descripción: "«En Payta nunca llueve, y habiendo sucedido el fenómeno raro de llover en 1728, se arruinó la mayor parte» del pueblo (Alcedo, Diccionario histórico geográfico, 1788, citado por Eguiguren)."}
+  - {Id: egu1894-1791-piura, Date: "1791", DangerType: Desborde de rio, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: media,
+     Ubicacion: "Río Piura, frente a la ciudad",
+     Descripción: "Entre 1790 y 1791, con la gente sobre la nueva obra de defensa mirando la creciente, el río «rompió la pared y se arrastró a los que estaban colocados encima de ella; hubo muertos de golpe y ahogados», y se llevó parte de las dos manzanas de la plaza para abajo (Távara, 1854). Año de lluvias extraordinarias en el cuadro (clase 4)."}
+  - {Id: egu1894-1828-piura, Date: "1828-03", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: media,
+     Descripción: "De mediados a fines de marzo, de Trujillo a Piura, «inmensas lluvias, tempestades de relámpagos y truenos, desbordes de ríos e inundaciones»; «en Piura llovió 14 días, con ruina de algunos edificios y graves daños» (el cosmógrafo Paredes, 1829). Para Eguiguren, las primeras lluvias que por su intensidad dañaron directamente las poblaciones. Año extraordinario en el cuadro (clase 4)."}
+  - {Id: egu1894-1828-sechura, Date: "1828-03", DangerType: Inundacion pluvial, Departamento: Piura, Provincia: Sechura, Distrito: Sechura, Confianza: baja,
+     Ubicacion: "Despoblado de Sechura, hacia Cabo Verde",
+     Descripción: "Con las lluvias de marzo de 1828 «se formó un nuevo y caudaloso río que detuvo el paso a los transeúntes algunos días», y otros se extraviaron porque las aguas transformaron el terreno (Paredes, 1829, citado por Eguiguren)."}
+  - {Id: egu1894-1877-piura, Date: "1877", DangerType: Inundacion fluvial, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: baja,
+     Descripción: "Año de lluvias extraordinarias en Piura (clase 4 del cuadro), el primero de dos seguidos (1877 y 1878). Una de las «grandes crecientes de cuatro años» que, según el estudio, resistió el puente de Piura construido en 1870 (los años de grandes lluvias después de 1870 son 1871, 1877, 1878 y 1884)."}
+  - {Id: egu1894-1878-piura, Date: "1878", DangerType: Inundacion fluvial, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: baja,
+     Descripción: "Segundo año seguido de lluvias extraordinarias en Piura (clase 4 del cuadro). Una de las «grandes crecientes de cuatro años» que resistió el puente de Piura construido en 1870."}
+  - {Id: egu1894-1884-paita, Date: "1884", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Paita, Distrito: Paita, Confianza: media,
+     Descripción: "«Terribles tempestades» y «lluvias torrenciales, como las de 1884 y 1891, que tantos daños hicieron en la ciudad» de Paita. Año extraordinario en el cuadro (clase 4)."}
+  - {Id: egu1894-1884-piura, Date: "1884", DangerType: Inundacion fluvial, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: baja,
+     Descripción: "Año de lluvias extraordinarias en Piura (clase 4 del cuadro), más abundante que los anteriores. La última de las «grandes crecientes de cuatro años» que resistió el puente de Piura construido en 1870."}
+  - {Id: egu1894-1891-piura, Date: "1891-04-07", DangerType: Desborde de rio, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: media,
+     CausaFuente: El Niño, Ubicacion: "Puente de Piura",
+     Descripción: "Las lluvias empezaron a mediados de febrero y siguieron hasta abril, más de 60 días; el 7 de abril el río arrastró el puente de Piura, construido en 1870, y «las ciudades de Piura y Payta y casi todas las poblaciones del departamento quedaron semiarruinadas». El estudio atribuye el verano de 1891 a la contracorriente cálida del golfo de Guayaquil (el Niño)."}
+  - {Id: egu1894-1891-paita, Date: "1891", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Paita, Distrito: Paita, Confianza: media,
+     CausaFuente: El Niño,
+     Descripción: "Lluvias torrenciales «que tantos daños hicieron en la ciudad» de Paita, que quedó semiarruinada como Piura. El estudio atribuye las lluvias a la contracorriente cálida del golfo de Guayaquil (el Niño)."}

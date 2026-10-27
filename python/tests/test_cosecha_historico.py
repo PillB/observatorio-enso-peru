@@ -17,10 +17,12 @@ def _manifest(*sources):
     return {"fuentes": [{"archivo": f"{s['id']}.json", "url": f"https://{s.pop('host', 'a.pe')}/x", **s} for s in sources]}
 
 
+_CLIENT = httpx.Client
+
+
 def _mock(monkeypatch, handler):
-    real = httpx.Client
-    monkeypatch.setattr(B.httpx, "Client", lambda **kw: real(transport=httpx.MockTransport(handler),
-                                                             **{k: v for k, v in kw.items() if k != "verify"}))
+    monkeypatch.setattr(B.httpx, "Client", lambda **kw: _CLIENT(transport=httpx.MockTransport(handler),
+                                                                **{k: v for k, v in kw.items() if k != "verify"}))
 
 
 def test_groups_by_server_with_long_harvests_first():
@@ -164,3 +166,59 @@ def test_report_lists_changes_and_what_could_not_be_downloaded(monkeypatch, tmp_
     md = H.report(before, state)
     assert "**Registros:** 100 → 130." in md and "| a | 40 | 9 | 10 / 2 (a medias) |" in md
     assert "| b |" not in md and "`c`: c: el robots.txt" in md and "**A medias o pendientes:** `c`" in md
+
+
+def test_loc_chronam_keeps_the_snippet_of_each_page_and_resumes(monkeypatch, tmp_path):
+    base = "https://www.loc.gov/collections/chronicling-america/"
+    asked = []
+
+    def item(n, date):
+        return {"id": f"http://www.loc.gov/resource/sn{n}/{date}/ed-1/?sp=1", "date": date,
+                "partof_title": [f"the daily {n} (washington, d.c.) 1890-1920"], "location_city": ["washington"],
+                "location_state": ["district of columbia"], "word_coordinates_url": f"https://text.loc.gov/{n}.json"}
+
+    searches = {("floods in peru", "1"): ([item(1, "1909-03-21"), item(2, "1909-03-26")], f"{base}?sp=2"),
+                ("floods in peru", "2"): ([item(3, "1925-03-23")], None),
+                ("peru AND huaras AND avalanche", "1"): ([item(2, "1909-03-26"), item(4, "1962-01-12")], None)}
+
+    def handler(request):
+        url = str(request.url)
+        asked.append(url)
+        if url.startswith(base):
+            got, nxt = searches[(request.url.params["q"], request.url.params["sp"])]
+            assert request.url.params["fo"] == "json"
+            return httpx.Response(200, json={"results": got, "pagination": {"next": nxt}})
+        n = url.rsplit("/", 1)[1].split(".")[0]
+        if n == "3":
+            return httpx.Response(404)
+        return httpx.Response(200, json={"segment": {"relevant_snippet": f"[[tag]]Floods[[/tag]] in Peru {n}"}})
+
+    _mock(monkeypatch, handler)
+    src = {"id": "loc", "url": base, "parametros": {"consultas": ["floods in peru", "peru AND huaras AND avalanche"]}}
+    full = json.loads(B.loc_chronam(src, tmp_path / "p-partes", delay=0))
+    assert [(p["url"][-25:], p["consulta"], p["fragmento"]) for p in full["paginas"]] == [
+        ("sn1/1909-03-21/ed-1/?sp=1", "floods in peru", "[[tag]]Floods[[/tag]] in Peru 1"),
+        ("sn2/1909-03-26/ed-1/?sp=1", "floods in peru", "[[tag]]Floods[[/tag]] in Peru 2"),
+        ("sn3/1925-03-23/ed-1/?sp=1", "floods in peru", ""),
+        ("sn4/1962-01-12/ed-1/?sp=1", "peru AND huaras AND avalanche", "[[tag]]Floods[[/tag]] in Peru 4")]
+    p = full["paginas"][0]
+    assert p["url"].startswith("https://") and p["periodico"].startswith("the daily 1") and "texto" not in p
+    assert p["lugar"] == "washington, district of columbia" and p["fecha"] == "1909-03-21"
+    assert len(asked) == 3 + 4  # tres búsquedas y un fragmento por página (la repetida, una vez)
+
+    # Cortada en la segunda consulta: la siguiente pide solo esa y los fragmentos que faltan.
+    (tmp_path / "p-partes" / B._loc_part("peru AND huaras AND avalanche")).unlink()
+    (tmp_path / "p-partes" / "fragmentos" / B._loc_snippet(full["paginas"][3]["url"])).unlink()
+    asked.clear()
+    partial = json.loads(B.ASSEMBLE["loc-chronam"](src, tmp_path / "p-partes"))
+    assert [p["url"][-25:-11] for p in partial["paginas"]] == ["sn1/1909-03-21", "sn2/1909-03-26", "sn3/1925-03-23"]
+    loc = {"id": "loc", "archivo": "p.json", "descarga": "loc-chronam", "parametros": src["parametros"]}
+    assert H.progress(loc, tmp_path) == "1 de 2 consultas; 3 fragmentos leídos"
+    assert json.loads(B.loc_chronam(src, tmp_path / "p-partes", delay=0)) == full
+    assert [u.split("?")[0] for u in asked] == [base, "https://text.loc.gov/4.json"]
+
+    # Una página que no es JSON (una verificación antirobots) corta la descarga sin escribir nada.
+    _mock(monkeypatch, lambda request: httpx.Response(200, text="<html>captcha</html>"))
+    with pytest.raises(SystemExit, match="antirobots"):
+        B.loc_chronam(src, tmp_path / "q", delay=0)
+    assert not list((tmp_path / "q").glob("q-*.json"))
