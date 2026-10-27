@@ -60,6 +60,21 @@ def test_coen_title_and_first_report():
     assert C.coen_first_report(future, "REPORTE N° 5789 - 8/7/2022 / COEN")["fecha"] == "2022-07-08"
 
 
+@pytest.mark.parametrize("tail, places, prov, dep", [
+    ("DESLIZAMIENTO EN EL DISTRITO DE JOSÉ CRESPO Y CASTILLO – HUÁNUCO", ["JOSÉ CRESPO Y CASTILLO"], "", "HUÁNUCO"),
+    ("LLUVIAS INTENSAS EN EL DISTRITO DE QUITO – ARMA – HUANCAVELICA", ["QUITO-ARMA"], "", "HUANCAVELICA"),
+    ("HELADA EN EL DISTRITO DE HUANCA – HUANCA – HUANCAVELICA", ["HUANCA-HUANCA"], "", "HUANCAVELICA"),
+    ("HELADA EN EL DISTRITO DE HUAY-HUAY – YAULI – JUNÍN", ["HUAY-HUAY"], "YAULI", "JUNÍN"),
+    ("LLUVIAS INTENSAS EN LOS DISTRITOS DE PAMPAS Y COLCABAMBA – HUANCAVELICA", ["PAMPAS", "COLCABAMBA"], "", "HUANCAVELICA"),
+    ("INUNDACIÓN EN LOS DISTRITOS DE RUPA-RUPA Y JOSÉ CRESPO Y CASTILLO - HUÁNUCO", ["RUPA-RUPA", "JOSÉ CRESPO Y CASTILLO"], "",
+     "HUÁNUCO"),
+])
+def test_coen_title_keeps_place_names_with_y_or_a_hyphen(tail, places, prov, dep):
+    # Nombres del nomenclátor con «Y» o guion no se parten como si fueran una lista o «distrito – provincia».
+    t = C.coen_title(f"REPORTE PRELIMINAR N° 10 - 2/2/2026 / COEN - INDECI / 10:00 HORAS (Reporte N° 1) {tail}")
+    assert (t["lugares"], t["provincia"], t["departamento"]) == (places, prov, dep)
+
+
 def test_coen_pdf_sections():
     d = C.coen_pdf((HF / "coen-helada-yauli-2026.txt").read_text(encoding="utf-8"))
     assert d["fecha"] == "2026-07-01" and d["sinpad"] == "266584"
@@ -315,7 +330,7 @@ def test_glof_reader(T, cal):
     assert sk == {"detonado por un sismo": 1, "sin fecha (ventana de varios años o década)": 1}
     assert [(r["Date"], r["PrecisionFecha"], r["Departamento"], r["DangerType"]) for r in got] == [
         ("2020-02-23", "dia", "Cusco", "Huayco/Alud"), ("1939-04-01", "mes", "Áncash", "Huayco/Alud"),
-        ("2019-01-01", "anio", "Cusco", "Huayco/Alud"), ("2015-03-10", "dia", "Áncash", "Huayco/Alud"),
+        ("2019-02-01", "mes", "Cusco", "Huayco/Alud"), ("2015-03-10", "dia", "Áncash", "Huayco/Alud"),
         ("1941-12-13", "dia", "Áncash", "Huayco/Alud")]
     h, u, w, rgi, hz = got
     assert rgi["Ubicacion"] == "laguna glaciar" and "RGI" not in rgi["Descripción"] + rgi["Ubicacion"]

@@ -245,3 +245,25 @@ Rules (S2 §8, S3 §5–7):
 - S7 opening run-on sentence ("TheVP has asked for a blurb...") is the owner's framing of the VP deliverable; the VP blurb/brief is a one-off report, not a site feature.
 - Worklog material: GitHub device-auth codes, VLM ratings ("8/10"), test counts, commit hashes.
 - Duplicate pastes: 15 of 21 text files are byte-identical copies.
+
+## 15. Disaster memory ("Memoria de desastres", added October 2026)
+
+Requirements from the owner's thread on past climate disasters (relayed 2026-10-26/27). The method, sources and
+limits are in [`memoria-desastres.md`](memoria-desastres.md); the source register is
+[`catalogo-fuentes.md`](catalogo-fuentes.md) and the licences, [`atribucion-licencias.md`](atribucion-licencias.md).
+
+| ID | Requirement (owner's words, condensed) | Status | Where it is met |
+|---|---|---|---|
+| M1 | Map every past climate disaster in Peru, exhaustively, from every kind of source: academic work, news, forums and social posts, images, newspaper and magazine archives (also scanned old newspapers), radio, research centres, think tanks, institutions and datasets | PARTIAL | 146 795 records from DesInventar, SINPAD, COEN, IDMC, NASA GLC, GLOF, 44 news outlets, Chronicling America (US newspapers 1836-1963) and curated archives back to 1559 (`memoria-desastres.md` §Fuentes). Not used, with the reason: forums and social networks, radio and TV archives (need keys or registered apps), paywalled or bot-walled archives (never bypassed), outlets that refuse AI use, and Peru-only servers (Biblioteca Nacional), which go to the Peru collector |
+| M2 | Test the expert's claim that Peru has done little prevention since the 1990s | DONE | «¿Se sabía antes?» (emergencies where the hazard was already documented, compared with chance) and the evidence section with its verdict «en parte cierto» (`memoria-desastres.md` §¿Se sabía antes?, §Evidencia) |
+| M3 | Every record georeferenced and with its provenance | DONE | `Ubigeo`, `Latitud`/`Longitud`, `PrecisionGeo`; `Fuente`, `FuenteCita`, `Licencia`, `FuentesAdicionales`; per-source URL, licence, date and SHA-256 in `data/historico/fuentes.json` |
+| M4 | The prevention team's dashboard columns (Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud) plus metadata | DONE | The first 13 columns of `eventos.csv`, with their exact names, plus 45 metadata columns; `diccionario.csv` documents all 58 with their fill rate per source |
+| M5 | A historical tab with insights, predictions and risk alerts per city, district, province, department and region | DONE, with a caveat | `#/memoria`: map, area profiles, ranking and «alerta según la historia»; indicator CSVs per district, province, department and macro-region (cities are their districts). "Predictions" are past frequencies with their intervals, validated out of sample, not forecasts; the official alerts remain ENFEN's, SENAMHI's and INDECI's (P0 in §1) |
+| M6 | Plan, research, validate, root-cause analysis and edge cases, in several exhaustive rounds | DONE | Two independent review rounds; their findings became the quality rules and reader fixes (`memoria-desastres.md` §Reglas de calidad) |
+| M7 | Research best practices and reference dashboards for the tab | DONE | Design after DesInventar, INFORM and SIGRID (`memoria-desastres.md` §La pestaña) |
+| M8 | Sources, source handling, documentation and architecture diagrams homologated across threads, scripts, docs and code | DONE | `fuentes.json` → `catalogo-fuentes.md` and `atribucion-licencias.md`; architecture annexes A9 and A11; `python -m tools.build_registry --check` and `python -m tools.architecture --check` in CI |
+| M9 | Reliability and methodology validated with established, science-based methods and independent red teaming; interpretation and how to use the risk tab, so every figure comes from the data with a valid method | DONE | Wilson, quasi-Poisson and Poisson dose-response; out-of-sample AUC with cluster bootstrap, El Niño replication, Brier skill and reliability, great-Niño repetition, sensitivity (`memoria-desastres.md` §Validación, §Cómo usar los indicadores); in the tab, «Cómo usar esta pestaña» and «¿La historia anticipa lo que vino después?» |
+| M10 | Manual steps go to the Peru server process | DONE | Peru-only servers are in the source registry for the Peru collector (`servidor-peru.md`) |
+| M11 | Request frequency: follow each site's guidelines; Peruvian public institutions (.gob.pe, .mil.pe) exempt from robots.txt `Disallow` | DONE | `enso.reach.Robots`; at least 5 s between requests and the site's `Crawl-delay`; other hosts' robots.txt respected (`memoria-desastres.md` §Reproducir y actualizar) |
+| M12 | IDMC through its own API | DONE | `IDMC_CLIENT_ID` secret; without it, the HDX export seed |
+| M13 | Long downloads run as a GitHub Actions job | DONE | `.github/workflows/memoria-cosecha.yml` (`memoria-desastres.md` §Cosecha en GitHub Actions) |

@@ -1,5 +1,6 @@
 // Memoria de desastres: dónde golpearon antes los Niños, las lluvias, los huaycos, las sequías y las
-// heladas, con qué frecuencia, y qué esperar si se repiten.
+// heladas, con qué frecuencia, cuánto cambia con El Niño y qué tan bien esa historia anticipó lo que vino después
+// (resumen.json → validacion).
 //
 // Datos: assets/historico/ (python -m tools.build_historico). El catálogo y los indicadores se
 // explican en docs/memoria-desastres.md. Toda cifra de impacto es la que reporta la fuente; el
@@ -61,9 +62,9 @@ async function detail(dep) {
 // ---------------------------------------------------------------------------
 const DEFAULTS = { nivel: 'provincia', evento: '', peligro: '', desde: '', hasta: '', metrica: 'anios', area: '' };
 const METRICS = [
-  ['anios', 'Años con daños (1970-2015)'], ['grandes', 'Grandes Niños que lo golpearon'], ['razon', 'Cuánto más daño en años de Niño'],
-  ['atencion', 'Nivel de atención'], ['registros', 'Registros'], ['muertos', 'Fallecidos y desaparecidos'],
-  ['afectados', 'Afectados y damnificados'], ['viviendas', 'Viviendas destruidas'],
+  ['anios', 'Años con daños (1970-2015)'], ['minimo', 'Años con daños, como mínimo (IC 95 %)'], ['grandes', 'Grandes Niños que lo golpearon'],
+  ['razon', 'Cuántos más lugares con daños en años de Niño'], ['registros', 'Registros'], ['muertos', 'Fallecidos y desaparecidos'],
+  ['afectados', 'Afectados, damnificados y desplazados'], ['viviendas', 'Viviendas destruidas'],
 ];
 const LEVEL_NAMES = [['departamento', 'Departamento'], ['provincia', 'Provincia'], ['distrito', 'Distrito']];
 const HAZARD_GROUPS = {
@@ -99,7 +100,6 @@ const corrLinks = (links) => {
   const a = (u, t) => html`<a href="${safeUrl(u)}" rel="noopener" target="_blank">${t}</a>`;
   return [...by.entries()].map(([h, us], k) => html`${k ? ', ' : ''}${us.length === 1 ? a(us[0], h) : html`${h} (${us.map((u, j) => html`${j ? ', ' : ''}${a(u, `nota ${j + 1}`)}`)})`}`);
 };
-const ATTN = { 'muy alto': ['Muy alto', 'octagon', 4], alto: ['Alto', 'triangle', 3], medio: ['Medio', 'info', 2], bajo: ['Bajo', 'dash', 1] };
 
 export function readState() {
   const q = new URLSearchParams(location.hash.split('?')[1] || '');
@@ -124,6 +124,39 @@ function writeState(s) {
 const n0 = (v) => F.fmtNumber(v, 0);
 const pct = (v) => (v === null || v === undefined ? 'N/D' : `${F.fmtNumber(v * 100, 0)} %`);
 const x1 = (v) => (v === null || v === undefined ? 'N/D' : `${F.fmtNumber(v, 1)}×`);
+/** Rango «a–b» de un intervalo; sin cota superior, «a o más». */
+/** Intervalo «a–b»; si los dos extremos se escriben igual, una sola cifra (no «100–100 %»). */
+function span(lo, hi, fmt) {
+  if (lo === null || lo === undefined) return 'N/D';
+  if (hi === null || hi === undefined) return `${fmt(lo)} o más`;
+  const a = fmt(lo), b = fmt(hi);
+  return a === b ? a : `${a}–${b}`;
+}
+const pctRange = (ic) => (ic[0] >= 0.995 ? 'más del 99 %' : `${span(ic[0], ic[1], (v) => F.fmtNumber(v * 100, 0))} %`);
+/** Periodo de retorno con un decimal bajo 10 años: «1 de cada 1,1» y no «1 de cada 1» cuando hubo daños en 40 de 45 años. */
+const rp = (v) => F.fmtNumber(v, v < 10 ? 1 : 0);
+/** 1 si el intervalo de la razón de El Niño queda entero sobre 1, −1 si bajo 1, 0 si lo incluye. */
+const rrSign = (st) => (st?.razonNino ? (st.razonNinoIC[0] > 1 ? 1 : st.razonNinoIC[1] < 1 ? -1 : 0) : null);
+
+/**
+ * Indicadores por área con los filtros elegidos. Con un filtro de evento la razón de El Niño no aplica: compararía los
+ * registros de un evento con sus propias temporadas.
+ */
+function statsFor(D, s, recs, years, level = s.nivel) {
+  const stats = M.byArea(recs, level, years, D.nino, D.great, D.hom);
+  if (s.evento) for (const st of stats.values()) dropRR(st);
+  return stats;
+}
+function dropRR(st) { st.razonNino = null; st.razonNinoIC = [null, null]; return st; }
+
+/** Indicadores sin filtros (para las alertas): por departamento y provincia, calculados una vez. */
+function baseline(D) {
+  if (!D.base) {
+    const years = M.coverageYears(D.sum.cobertura.homogenea, 0, 0);
+    D.base = { departamento: M.byArea(D.recs, 'departamento', years, D.nino, D.great, D.hom), provincia: M.byArea(D.recs, 'provincia', years, D.nino, D.great, D.hom) };
+  }
+  return D.base;
+}
 /** Fecha con la precisión que trae el registro: «1998», «marzo de 1998» o «12 de marzo de 1998». */
 const when = (d) => (d.length === 4 ? d : F.fmtDate(d));
 
@@ -141,10 +174,11 @@ function population(D, code) {
   return tot || null;
 }
 
-function attnChip(level) {
-  const a = ATTN[level];
-  if (!a) return html`<span class="hz-attn hz-attn-0">Sin registros</span>`;
-  return html`<span class="hz-attn hz-attn-${a[2]}">${raw(ICON[a[1]])}${a[0]}</span>`;
+/** La frecuencia histórica con su intervalo, como etiqueta de la ficha. */
+function freqChip(st) {
+  if (!st?.aniosCobertura) return html`<span class="hz-attn hz-attn-0">Fuera del periodo 1970-2015</span>`;
+  if (!st.aniosConEvento) return html`<span class="hz-attn hz-attn-0">Sin registros en DesInventar 1970-2015</span>`;
+  return html`<span class="hz-attn hz-attn-2">${raw(ICON.info)}Daños en ${pctRange(st.frecuenciaIC)} de los años</span>`;
 }
 
 /** Valor de la métrica para un área (número para colorear o null). */
@@ -152,9 +186,9 @@ function metricValue(st, metric) {
   if (!st) return null;
   switch (metric) {
     case 'anios': return st.aniosCobertura ? st.frecuenciaAnual : null;
+    case 'minimo': return st.aniosCobertura ? st.frecuenciaIC[0] : null;
     case 'grandes': return st.grandesNinos.length;
     case 'razon': return st.razonNino;
-    case 'atencion': return ATTN[st.nivelAtencion]?.[2] || 0;
     case 'registros': return st.registros;
     case 'muertos': return st.muertos;
     case 'afectados': return st.afectados;
@@ -166,13 +200,13 @@ function metricValue(st, metric) {
 function metricText(st, metric) {
   if (!st) return 'Sin registros';
   switch (metric) {
-    case 'anios': return st.aniosCobertura ? `${st.aniosConEvento} de ${st.aniosCobertura} años (${pct(st.frecuenciaAnual)})${st.muestraPequena ? ' · muestra pequeña' : ''}` : 'Fuera del periodo 1970-2015';
+    case 'anios': return st.aniosCobertura ? `${st.aniosConEvento} de ${st.aniosCobertura} años en DesInventar (IC 95 %: ${pctRange(st.frecuenciaIC)})${st.muestraPequena ? ' · muestra pequeña' : ''}` : 'Fuera del periodo 1970-2015';
+    case 'minimo': return st.aniosCobertura ? `al menos ${pct(st.frecuenciaIC[0])} de los años (${st.aniosConEvento} de ${st.aniosCobertura})` : 'Fuera del periodo 1970-2015';
     case 'grandes': return st.grandesNinos.length ? `${st.grandesNinos.length}: ${st.grandesNinos.join(', ')}` : 'Ninguno registrado';
-    case 'razon': return st.razonNino ? `${x1(st.razonNino)} (IC 95 %: ${F.fmtNumber(st.razonNinoIC[0], 1)}–${F.fmtNumber(st.razonNinoIC[1], 1)})` : 'Datos insuficientes';
-    case 'atencion': return ATTN[st.nivelAtencion]?.[0] || 'Sin registros';
+    case 'razon': return st.razonNino ? `${x1(st.razonNino)} (IC 95 %: ${F.fmtNumber(st.razonNinoIC[0], 1)}–${F.fmtNumber(st.razonNinoIC[1], 1)})${rrSign(st) === 0 ? ' · sin diferencia clara' : ''}` : 'No aplica o datos insuficientes';
     case 'registros': return `${n0(st.registros)} registros`;
     case 'muertos': return `${n0(st.muertos)} fallecidos y desaparecidos`;
-    case 'afectados': return `${n0(st.afectados)} afectados y damnificados`;
+    case 'afectados': return `${n0(st.afectados)} afectados, damnificados o desplazados`;
     case 'viviendas': return `${n0(st.viviendas)} viviendas destruidas`;
     default: return '';
   }
@@ -185,25 +219,28 @@ const YEAR_BREAKS = { departamento: [0.6, 0.75, 0.9, 0.98, 1.01], provincia: [0.
 
 function scaleFor(metric, values, level = 'provincia') {
   if (metric === 'razon') {
+    // Solo se colorea lo que el intervalo distingue de 1; el resto, gris (con cientos de áreas, muchas razones
+    // grandes son ruido de muestras pequeñas).
     const br = [0.67, 0.9, 1.11, 1.5, 2];
-    const lab = ['Menos de 0,67×', '0,67–0,9×', '0,9–1,1× (igual)', '1,1–1,5×', '1,5–2×', 'Más de 2×'];
-    const cls = (v) => (v === null || v === undefined ? 'na' : `d${br.findIndex((b) => v < b) === -1 ? 5 : br.findIndex((b) => v < b)}`);
-    return { cls, legend: [...lab.map((l, i) => [`d${i}`, l]), ['na', 'Datos insuficientes']], diverging: true };
+    const lab = ['Menos de 0,67×', '0,67–0,9×', 'Sin diferencia clara (el IC incluye 1)', '1,1–1,5×', '1,5–2×', 'Más de 2×'];
+    const cls = (v, st) => {
+      if (v === null || v === undefined) return 'na';
+      if (st && rrSign(st) === 0) return 'd2';
+      const i = br.findIndex((b) => v < b);
+      return `d${i === -1 ? 5 : i}`;
+    };
+    return { cls, legend: [...lab.map((l, i) => [`d${i}`, l]), ['na', 'No aplica o datos insuficientes']], diverging: true };
   }
   if (metric === 'grandes') {
     const cls = (v) => (v ? `q${Math.min(4, v - 1)}` : 'none');
     return { cls, legend: [['none', 'Ninguno'], ['q0', '1'], ['q1', '2'], ['q2', '3'], ['q3', '4'], ['q4', '5']] };
   }
-  if (metric === 'atencion') {
-    const cls = (v) => (v ? `q${[0, 0, 1, 3, 4][v]}` : 'none');
-    return { cls, legend: [['none', 'Sin registros'], ['q0', 'Bajo'], ['q1', 'Medio'], ['q3', 'Alto'], ['q4', 'Muy alto']] };
-  }
-  if (metric === 'anios') {
+  if (metric === 'anios' || metric === 'minimo') {
     const br = YEAR_BREAKS[level] || YEAR_BREAKS.provincia;
     const p = (v) => F.fmtNumber(v * 100, 0);
     const lab = br.map((b, i) => (i === 0 ? `Menos del ${p(b)} % de los años` : i === br.length - 1 ? `${p(br[i - 1])} % de los años o más` : `${p(br[i - 1])}–${p(b)} %`));
     const cls = (v) => (v === null || v === undefined ? 'na' : v <= 0 ? 'none' : `q${br.findIndex((b) => v < b)}`);
-    return { cls, legend: [['none', 'Sin daños registrados'], ...lab.map((l, i) => [`q${i}`, l]), ['na', 'Fuera de cobertura']] };
+    return { cls, legend: [['none', metric === 'minimo' ? 'Cero o sin registros en DesInventar' : 'Sin registros en DesInventar 1970-2015'], ...lab.map((l, i) => [`q${i}`, l]), ['na', 'Fuera de cobertura']] };
   }
   const br = M.quantileBreaks(values, 5);
   const off = 5 - br.length; // con pocos valores distintos, las clases que quedan son las más oscuras
@@ -243,7 +280,7 @@ function mapSvg(D, s, stats, scale, { small = false, label = '' } = {}) {
   const focusable = s.nivel === 'departamento' && !small;
   const paths = shapes.map(([code, d]) => {
     const st = stats.get(code);
-    const cls = scale.cls(metricValue(st, s.metrica));
+    const cls = scale.cls(metricValue(st, s.metrica), st);
     const sel = s.area && (code === s.area || s.area.startsWith(code) || code.startsWith(s.area)) ? ' sel' : '';
     return `<path class="hz-a hz-${cls}${sel}" d="${d}" data-code="${code}"${focusable ? ` tabindex="0" role="button" aria-label="${esc(shortName(D, code))}: ${esc(metricText(st, s.metrica))}"` : ''}></path>`;
   }).join('');
@@ -269,20 +306,31 @@ function timeline(D, recs, { compact = false, from = 1970, to = null } = {}) {
   const max = Math.max(1, ...years.map((y) => by.get(y)?.da.size || 0));
   // El SVG se estira a lo ancho (preserveAspectRatio="none"): un ancho lógico cercano al real evita que las
   // etiquetas se deformen (la ficha lateral mide unos 500 px; la línea principal, unos 1 100).
-  const W = compact ? 500 : 1000, H = compact ? 90 : 150, bw = W / years.length;
+  const W = compact ? 500 : 1000, H = compact ? 74 : 124, bw = W / years.length;
   const named = new Map([[1982, '1982-83'], [1997, '1997-98'], [2016, '2017'], [2022, '2023'], [1972, '1972-73'], [2025, '2026']]);
   const bars = years.map((y, i) => {
     const o = by.get(y);
     const v = o ? o.da.size : 0;
-    const h = (v / max) * (H - 22);
-    const nino = D.nino.has(y) || D.sum.eventosICEN.some((e) => e.fase === 'warm' && e.inicio <= `${y + 1}-04` && e.fin >= `${y}-12`);
-    const label = `Temporada ${y}-${String(y + 1).slice(2)}: ${v} lugares con daños, ${o ? o.n : 0} registros${o?.muertos ? `, ${o.muertos} fallecidos y desaparecidos` : ''}${nino ? '. Hubo Niño costero en la temporada de lluvias' : ''}`;
-    return `${nino ? `<rect class="hz-tl-nino" x="${(i * bw).toFixed(1)}" y="0" width="${bw.toFixed(1)}" height="${H - 16}"></rect>` : ''}<rect class="hz-tl-bar" x="${(i * bw + bw * 0.15).toFixed(1)}" y="${(H - 16 - h).toFixed(1)}" width="${(bw * 0.7).toFixed(1)}" height="${h.toFixed(1)}" data-tip="${esc(label)}"><title>${esc(label)}</title></rect>`;
+    const h = (v / max) * (H - 2);
+    const nino = D.nino.has(y);
+    const label = `Temporada ${y}-${String(y + 1).slice(2)}: ${v} lugares con daños, ${o ? o.n : 0} registros${o?.muertos ? `, ${o.muertos} fallecidos y desaparecidos` : ''}${nino ? '. Niño costero en el pico de lluvias (enero a marzo)' : ''}`;
+    return `${nino ? `<rect class="hz-tl-nino" x="${(i * bw).toFixed(1)}" y="0" width="${bw.toFixed(1)}" height="${H}"></rect>` : ''}<rect class="hz-tl-bar" x="${(i * bw + bw * 0.15).toFixed(1)}" y="${(H - h).toFixed(1)}" width="${(bw * 0.7).toFixed(1)}" height="${h.toFixed(1)}" data-tip="${esc(label)}"><title>${esc(label)}</title></rect>`;
   }).join('');
   // La primera etiqueta va alineada a la izquierda para que no se corte en el borde.
-  const ticks = years.filter((y) => y % 10 === 0).map((y) => `<text class="hz-tl-x" x="${y === from ? 0 : ((y - from) * bw + bw / 2).toFixed(1)}" y="${H - 3}"${y === from ? ' data-a="start"' : ''}>${y}</text>`).join('');
-  const names = compact ? '' : years.filter((y) => named.has(y) && (by.get(y)?.da.size || 0) > 0).map((y) => `<text class="hz-tl-n" x="${((y - from) * bw + bw / 2).toFixed(1)}" y="11">${named.get(y)}</text>`).join('');
-  return `<svg class="hz-tl${compact ? ' hz-tl-c' : ''}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Lugares con daños por temporada de lluvias, ${from}-${last}. Las franjas marcan temporadas con El Niño costero.">${bars}${ticks}${names}</svg>`;
+  const at = (y) => (((y - from) + 0.5) / years.length) * 100;
+  const ticks = years.filter((y) => y % 10 === 0).map((y) => (y === from ? { x: 0, text: y, edge: 'start' } : { x: at(y), text: y }));
+  // En pantallas angostas se ocultan los nombres secundarios (1972-73 y 2026) para que no se encimen.
+  const names = compact ? [] : years.filter((y) => named.has(y) && (by.get(y)?.da.size || 0) > 0)
+    .map((y) => ({ x: at(y), text: named.get(y), top: true, minor: y === 1972 || y === 2025 }));
+  const svg = `<svg class="hz-tl${compact ? ' hz-tl-c' : ''}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Lugares con daños por temporada de lluvias, ${from}-${last}. Las franjas marcan temporadas con El Niño costero de enero a marzo.">${bars}</svg>`;
+  return labelled(svg, [...ticks, ...names], { compact, names: names.length > 0 });
+}
+
+/** Etiquetas en HTML encima de un SVG estirado a lo ancho: el texto no se deforma con el ancho de la pantalla.
+ *  ``x`` va en porcentaje del ancho; ``edge`` alinea la etiqueta al borde izquierdo o derecho. */
+function labelled(svg, labels, { compact = false, names = false } = {}) {
+  const spans = labels.map(({ x, text, top, edge, minor }) => `<span class="hz-tl-l${top ? ' hz-tl-n' : ' hz-tl-x'}${minor ? ' hz-tl-minor' : ''}"${edge ? ` data-a="${edge}"` : ''} style="left:${x.toFixed(2)}%" aria-hidden="true">${esc(String(text))}</span>`).join('');
+  return `<div class="hz-tlw${compact ? ' hz-tlw-c' : ''}${names ? ' hz-tlw-n' : ''}">${svg}${spans}</div>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -293,7 +341,7 @@ export const memoriaView = {
   render() {
     return html`
       <div class="page-head"><div class="eyebrow">Memoria de desastres · 1559–2026</div><h1>Dónde golpearon antes El Niño, las lluvias y los huaycos</h1>
-        <p>Catálogo de inundaciones, desbordes, huaycos, deslizamientos, lluvias intensas, oleajes, sequías, heladas y otros desastres de origen climático en el Perú, ubicados por distrito y con su fuente. Sirve para prepararse: si un Niño como los anteriores vuelve, lo más probable es que vuelva a golpear donde ya golpeó.</p></div>
+        <p>Catálogo de inundaciones, desbordes, huaycos, deslizamientos, lluvias intensas, oleajes, sequías, heladas y otros desastres de origen climático en el Perú, ubicados por distrito y con su fuente. Sirve para prepararse con evidencia: con qué frecuencia golpearon antes, cuánto aumentan con El Niño costero y qué tan bien esa historia anticipó los daños de 2016 a 2025, que se muestra abajo.</p></div>
       <div id="hz-root" data-tour-id="memoria"><div class="skeleton" aria-hidden="true"></div><p class="muted">Cargando el catálogo histórico…</p></div>`;
   },
   async after() {
@@ -341,25 +389,27 @@ function page(D, s) {
   const f = currentFilter(D, s);
   const recs = M.filter(D.recs, f);
   const years = M.coverageYears(D.sum.cobertura.homogenea, f.from, f.to);
-  const stats = M.byArea(recs, s.nivel, years, D.nino, D.great, D.hom);
+  const stats = statsFor(D, s, recs, years);
   const vals = [...stats.values()].map((st) => metricValue(st, s.metrica)).filter((v) => v !== null);
   const scale = scaleFor(s.metrica, vals, s.nivel);
   const evOpts = [['', 'Todos los registros'], ['grandes', 'Solo los grandes Niños'], ...D.great.map((g) => [g, g]), ...(D.ongoing ? [[D.ongoing, `${D.ongoing} (en curso)`]] : []), ['nino', 'Cualquier Niño costero'], ['nina', 'La Niña costera'], ['neutro', 'Años neutros']];
   const yMin = D.sum.cobertura.anios[0], yMax = D.sum.cobertura.anios[1];
   const label = `Mapa por ${s.nivel}: ${METRICS.find(([k]) => k === s.metrica)[1]}`;
-  const nat = M.summarize(recs, years, D.nino, D.great, false, D.hom);
+  const nat = M.summarize(recs, years, D.nino, D.great, D.hom);
+  if (s.evento) dropRR(nat);
   return html`
     ${contextBanner(D)}
+    ${howToSection(D)}
     <section class="card hz-card" aria-labelledby="hz-map-h">
       <div class="section-head"><h2 id="hz-map-h">Mapa de la memoria</h2><span class="muted small">${n0(recs.length)} de ${n0(D.recs.length)} registros</span></div>
       <form class="hz-filters" id="hz-filters" aria-label="Filtros del mapa">
         <label class="hz-f"><span>Evento</span><select class="input" name="evento">${evOpts.map(([v, t]) => html`<option value="${v}" ${v === s.evento ? raw('selected') : ''}>${t}</option>`)}</select></label>
         <label class="hz-f"><span>Peligro</span><select class="input" name="peligro"><option value="">Todos</option>${Object.entries(HAZARD_GROUPS).map(([k, [t]]) => html`<option value="${k}" ${k === s.peligro ? raw('selected') : ''}>${t}</option>`)}
           <optgroup label="Un tipo">${Object.keys(DANGER_LABEL).map((t) => html`<option value="${t}" ${t === s.peligro ? raw('selected') : ''}>${dl(t)}</option>`)}</optgroup></select></label>
-        <label class="hz-f hz-f-s"><span>Desde</span><input class="input" name="desde" type="number" inputmode="numeric" min="${yMin}" max="${yMax}" placeholder="${yMin}" value="${s.desde}"></label>
-        <label class="hz-f hz-f-s"><span>Hasta</span><input class="input" name="hasta" type="number" inputmode="numeric" min="${yMin}" max="${yMax}" placeholder="${yMax}" value="${s.hasta}"></label>
+        <label class="hz-f hz-f-s" title="Temporadas de julio a junio por su año de inicio: 1997 es julio de 1997 a junio de 1998"><span>Desde temporada</span><input class="input" name="desde" type="number" inputmode="numeric" min="${yMin}" max="${yMax}" placeholder="${yMin}" value="${s.desde}"></label>
+        <label class="hz-f hz-f-s" title="Temporadas de julio a junio por su año de inicio: 1997 es julio de 1997 a junio de 1998"><span>Hasta temporada</span><input class="input" name="hasta" type="number" inputmode="numeric" min="${yMin}" max="${yMax}" placeholder="${yMax}" value="${s.hasta}"></label>
         <label class="hz-f"><span>Mostrar</span><select class="input" name="metrica">${METRICS.map(([v, t]) => html`<option value="${v}" ${v === s.metrica ? raw('selected') : ''}>${t}</option>`)}</select></label>
-        <div class="hz-f"><span id="hz-lvl-l">Nivel</span><div class="seg" role="group" aria-labelledby="hz-lvl-l">${LEVEL_NAMES.map(([v, t]) => html`<button type="button" data-nivel="${v}" aria-pressed="${String(v === s.nivel)}">${t}</button>`)}</div></div>
+        <div class="hz-f hz-f-lvl"><span id="hz-lvl-l">Nivel</span><div class="seg" role="group" aria-labelledby="hz-lvl-l">${LEVEL_NAMES.map(([v, t]) => html`<button type="button" data-nivel="${v}" aria-pressed="${String(v === s.nivel)}">${t}</button>`)}</div></div>
         <div class="hz-f hz-search"><label for="hz-q"><span>Buscar lugar</span></label><input class="input" id="hz-q" list="hz-places" placeholder="Distrito, provincia o departamento" autocomplete="off"><datalist id="hz-places"></datalist></div>
         ${s.evento || s.peligro || s.desde || s.hasta || s.area ? html`<button type="button" class="btn ghost hz-clear" data-clear>Quitar filtros</button>` : ''}
       </form>
@@ -369,22 +419,28 @@ function page(D, s) {
           <div class="hz-tip" role="tooltip" hidden></div>
           ${s.area && s.nivel !== 'departamento' ? html`<button type="button" class="btn ghost hz-zoomout" data-area="">${raw(ICON.globe)}<span>Ver todo el Perú</span></button>` : ''}
           ${legendHtml(scale, s.metrica)}
-          <p class="muted small">${s.nivel === 'departamento' ? 'Toque un departamento para ver su ficha.' : 'Toque un área para ver su ficha y acercar el mapa a su departamento. También puede buscarla arriba o elegirla en la tabla.'} Los registros a escala de departamento no se pintan en provincias ni distritos.</p>
+          <p class="muted small">${s.nivel === 'departamento' ? 'Toque un departamento para ver su ficha.' : 'Toque un área para ver su ficha y acercar el mapa a su departamento. También puede buscarla arriba o elegirla en la tabla.'} Los registros a escala de departamento no se pintan en provincias ni distritos. Desde y hasta son temporadas de julio a junio (1997 = 1997-98).${s.evento ? ' Con un filtro de evento, «años con daños» cuenta solo los años con registros de ese evento y la razón de El Niño no aplica.' : ''}</p>
         </div>
-        <aside class="hz-side" id="hz-side" aria-live="polite">${s.area ? profileShell(D, s, recs, years) : nationalCard(D, nat, recs, years)}</aside>
+        <aside class="hz-side" id="hz-side" aria-live="polite">${s.area ? profileShell(D, s, recs, years) : nationalCard(D, nat, recs, years, s)}</aside>
       </div>
     </section>
     <section class="card hz-card" aria-labelledby="hz-tl-h">
       <div class="section-head"><h2 id="hz-tl-h">Lugares con daños en cada temporada de lluvias</h2></div>
-      <p class="muted small">Cada barra es una temporada (julio a junio): cuántos lugares distintos tuvieron registros con los filtros elegidos. Franja rosada: hubo El Niño costero en diciembre–abril (ICEN). Las fuentes cambian con el tiempo y las barras no se comparan directamente: DesInventar hasta 2015 (menos registros antes de 1990) y, desde 2016, el SINPAD del INDECI, que registra muchas más emergencias por año. Ver «Límites».</p>
+      <p class="muted small">Cada barra es una temporada (julio a junio): cuántos lugares distintos tuvieron registros con los filtros elegidos. Franja rosada: Niño costero en el pico de lluvias (ICEN medio de enero a marzo mayor que +0,5 °C, el umbral de condición cálida del ENFEN). Las fuentes cambian con el tiempo y las barras no se comparan directamente: DesInventar hasta 2015 (menos registros antes de 1990) y, desde 2016, el SINPAD del INDECI, que registra muchas más emergencias por año. Ver «Límites».</p>
       ${raw(timeline(D, recs))}
     </section>
     ${greatSection(D, s)}
     ${rankingSection(D, s, stats)}
-    <section class="card hz-card" id="hz-prev" aria-labelledby="hz-prev-h"><div class="section-head"><h2 id="hz-prev-h">¿Se sabía antes? Peligros documentados y emergencias que igual ocurrieron</h2></div><p class="muted">Cargando declaratorias, evaluaciones e inventarios…</p></section>
+    ${validationSection(D)}
+    <section class="card hz-card" id="hz-prev" aria-labelledby="hz-prev-h"><div class="section-head"><h2 id="hz-prev-h">¿Se sabía antes? Peligros documentados antes de cada emergencia</h2></div><p class="muted">Cargando declaratorias, evaluaciones e inventarios…</p></section>
     ${pastSection(D)}
     ${evidenceSection(D)}
     ${methodSection(D)}`;
+}
+
+/** Departamentos donde, en 1970-2015, las temporadas con Niño costero tuvieron claramente más lugares con daños. */
+function ninoHotspots(D) {
+  return [...baseline(D).departamento.entries()].filter(([, st]) => rrSign(st) === 1).sort((a, b) => b[1].razonNino - a[1].razonNino);
 }
 
 function contextBanner(D) {
@@ -392,25 +448,59 @@ function contextBanner(D) {
   const last = D.sum.icenUltimo;
   if (!cur || !cur.enCurso) return '';
   const strong = ['fuerte', 'extraordinaria'].includes(cur.magnitud);
+  const hot = ninoHotspots(D);
   return html`<div class="notice ${strong ? 'notice-alert' : 'notice-warn'} hz-context" role="note">${raw(ICON.triangle)}
     <p><strong>El Niño costero está en curso desde ${F.fmtMonth(cur.inicio)}${last ? html`; el ICEN de ${F.fmtMonth(last[0])} fue ${F.fmtValue(last[1], 'degC')}, magnitud ${cur.magnitud}` : ''}.</strong>
-    ${strong ? 'Es la misma categoría que alcanzaron 1982-83 y 1997-98.' : ''} Use «Solo los grandes Niños» en el mapa para ver dónde golpearon los eventos anteriores. Las alertas oficiales son las del ENFEN, el SENAMHI y el INDECI.</p></div>`;
+    ${strong ? 'Con el ICEN preliminar de los últimos meses, es la misma categoría que alcanzaron 1982-83 y 1997-98.' : ''}
+    ${hot.length ? html`<strong>Alerta según la historia:</strong> en 1970-2015, las temporadas con Niño costero tuvieron claramente más lugares con daños por año en ${hot.map(([c, st], i) => html`${i ? (i === hot.length - 1 ? ' y ' : ', ') : ''}<button type="button" class="linkish" data-area="${c}">${shortName(D, c)}</button> (${x1(st.razonNino)})`)}; el efecto se repitió en 2016-2025 (ver «¿La historia anticipa lo que vino después?»).` : ''}
+    Use «Solo los grandes Niños» en el mapa para ver dónde golpearon los eventos anteriores. Las alertas oficiales son las del ENFEN, el SENAMHI y el INDECI.</p></div>`;
 }
 
-function nationalCard(D, st, recs, years) {
-  const byDep = M.byArea(recs, 'departamento', years, D.nino, D.great, D.hom);
-  const top = [...byDep.entries()].filter(([, v]) => v.razonNino && v.razonNinoIC[0] > 1).sort((a, b) => b[1].razonNino - a[1].razonNino).slice(0, 6);
+/** Guía de lectura: qué dice cada cifra, para qué sirve y qué no se puede concluir de ella. */
+function howToSection(D) {
+  const v = D.sum.validacion;
+  const prov = v?.discriminacion?.find((d) => d.nivel === 'provincia' && d.peligros === 'todos');
+  const dist = v?.discriminacion?.find((d) => d.nivel === 'distrito' && d.peligros === 'todos');
+  const auc = (d) => (d ? F.fmtNumber(d.auc, 2) : 'N/D');
+  return html`<details class="card hz-card hz-howto" open><summary><h2 class="hz-howto-h">Cómo usar esta pestaña</h2></summary>
+    <div class="grid g2">
+      <div>
+        <h3 class="hz-h3">Para qué sirve</h3>
+        <ul class="hz-method">
+          <li><strong>Saber qué pasó y dónde.</strong> Cada registro tiene fecha, lugar, peligro y fuente. Es la parte más sólida: hechos documentados.</li>
+          <li><strong>Comparar provincias y peligros.</strong> Los años con daños de 1970-2015 ordenan bien las provincias según lo que vino después (AUC ${auc(prov)}; 0,5 es azar), sobre todo para heladas y huaycos. Úselos para decidir dónde mirar primero.</li>
+          <li><strong>Saber dónde El Niño costero empeora las cosas.</strong> La razón de El Niño dice cuántos más lugares con daños por año hubo en temporadas con Niño. Donde su intervalo queda sobre 1, el efecto es claro y se repitió en 2016-2025.</li>
+          <li><strong>Ver qué se conocía.</strong> El peligro identificado hoy (INGEMMET, ANA) y las declaratorias complementan la historia: los puntos de peligro del INGEMMET anticipan las emergencias graves mejor que la frecuencia histórica.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="hz-h3">Qué no concluir</h3>
+        <ul class="hz-method">
+          <li><strong>Un distrito sin registros no es un distrito sin peligro.</strong> DesInventar se armó con prensa e informes: hay más registros donde hay más gente y acceso.</li>
+          <li><strong>«1 de cada X años» y «probabilidad en 5 años» no son pronósticos.</strong> Son frecuencias del pasado con su intervalo. Por distrito anticipan poco (AUC ${auc(dist)}) y exageran en los extremos: donde marcan 0 %, uno de cada seis distritos tuvo daños en los 5 años siguientes.</li>
+          <li><strong>La razón de El Niño cuenta lugares con registros, no la magnitud del daño.</strong> Y no compara grandes Niños entre sí: cada uno viene de fuentes con densidad distinta.</li>
+          <li><strong>Las cifras de impacto son las reportadas.</strong> Un vacío es «no reportado», no cero.</li>
+          <li><strong>Las alertas oficiales son del ENFEN, el SENAMHI y el INDECI.</strong> Esta pestaña da contexto histórico.</li>
+        </ul>
+      </div>
+    </div>
+  </details>`;
+}
+
+function nationalCard(D, st, recs, years, s) {
+  const byDep = statsFor(D, s, recs, years, 'departamento');
+  const top = [...byDep.entries()].filter(([, v]) => rrSign(v) === 1).sort((a, b) => b[1].razonNino - a[1].razonNino).slice(0, 8);
   return html`<div class="hz-prof">
     <h3 class="hz-prof-h">Todo el Perú</h3>
     <div class="hz-tiles">
       <div class="hz-tile"><span class="hz-tile-v">${n0(st.registros)}</span><span class="hz-tile-l">registros con los filtros elegidos</span></div>
       <div class="hz-tile"><span class="hz-tile-v">${n0(st.muertos)}</span><span class="hz-tile-l">fallecidos y desaparecidos reportados</span></div>
       <div class="hz-tile"><span class="hz-tile-v">${n0(st.viviendas)}</span><span class="hz-tile-l">viviendas destruidas reportadas</span></div>
-      <div class="hz-tile"><span class="hz-tile-v">${st.razonNino ? x1(st.razonNino) : 'N/D'}</span><span class="hz-tile-l">más lugares dañados por año cuando hay Niño costero (1970-2015)</span></div>
+      <div class="hz-tile"><span class="hz-tile-v">${st.razonNino ? x1(st.razonNino) : 'N/D'}</span><span class="hz-tile-l">${st.razonNino ? `lugares con daños por año en temporadas con Niño costero frente a las demás (1970-2015; IC 95 %: ${F.fmtNumber(st.razonNinoIC[0], 1)}–${F.fmtNumber(st.razonNinoIC[1], 1)}${rrSign(st) === 0 ? ', sin diferencia clara' : ''})` : 'razón de El Niño: no aplica con un filtro de evento o faltan datos'}</span></div>
     </div>
-    ${top.length ? html`<h4 class="hz-h4">Donde El Niño más multiplica los daños</h4>
+    ${top.length ? html`<h4 class="hz-h4">Donde El Niño costero aumentó claramente los lugares con daños</h4>
       <ol class="hz-bars">${top.map(([c, v]) => html`<li><button type="button" class="linkish" data-area="${c}">${shortName(D, c)}</button><span class="hz-bar"><span style="width:${Math.min(100, (v.razonNino / top[0][1].razonNino) * 100).toFixed(0)}%"></span></span><span class="hz-bar-v">${x1(v.razonNino)}</span></li>`)}</ol>
-      <p class="muted small">Razón entre los lugares con daños por año en temporadas con Niño costero y en las demás, con intervalo de confianza al 95 % por encima de 1.</p>` : ''}
+      <p class="muted small">Razón entre los lugares con daños por año en temporadas con Niño costero (enero a marzo) y en las demás, solo donde todo su intervalo al 95 % queda sobre 1. El intervalo tiene en cuenta que los distritos de un mismo año no son independientes (cuasi-Poisson).</p>` : ''}
     <p class="muted small">Elija un área en el mapa, en la tabla o con el buscador para ver su historia, sus indicadores y qué esperar si se repite un gran Niño.</p>
   </div>`;
 }
@@ -419,7 +509,8 @@ function profileShell(D, s, recs, years) {
   const code = s.area;
   const mine = recs.filter((r) => r.u.startsWith(code));
   const lvl = code.length === 6 ? 'distrito' : code.length === 4 ? 'provincia' : 'departamento';
-  const st = M.summarize(mine, years, D.nino, D.great, lvl !== 'departamento', D.hom);
+  const st = M.summarize(mine, years, D.nino, D.great, D.hom);
+  if (s.evento) dropRR(st);
   const pop = population(D, code);
   const a = code.length === 6 ? D.attrs.get(code) : null;
   const months = new Array(12).fill(0);
@@ -433,17 +524,19 @@ function profileShell(D, s, recs, years) {
   const hz = st.peligros.slice(0, 6);
   const maxHz = hz[0]?.[1] || 1;
   const parents = code.length > 2 ? html`<p class="muted small">${code.length === 6 ? html`Provincia de <button type="button" class="linkish" data-area="${code.slice(0, 4)}">${D.sum.nombres.provincia[code.slice(0, 4)]}</button> · ` : ''}Departamento de <button type="button" class="linkish" data-area="${code.slice(0, 2)}">${D.sum.nombres.departamento[code.slice(0, 2)]}</button></p>` : '';
+  const rep = repeatEvidence(D, code, st);
+  const sign = rrSign(st);
   const expect = st.registros ? html`<div class="hz-expect"><h4 class="hz-h4">Si se repite un gran Niño</h4><p>${greatRecs.length
-    ? html`En ${st.grandesNinos.join(', ')} hubo registros aquí, sobre todo de ${greatTypes.join(', ').toLowerCase()}. Un evento parecido probablemente vuelva a afectar este lugar.`
-    : 'Los grandes Niños no dejaron registros aquí en las fuentes del catálogo; eso no garantiza que no ocurra (la cobertura es incompleta).'} ${peakM.length ? `Los meses con más registros son ${peakM.join(' y ')}.` : ''} ${st.razonNino ? (st.razonNinoIC[0] > 1 ? `Con Niño costero, los daños por año son ${x1(st.razonNino)} los de otros años.` : st.razonNinoIC[1] < 1 ? 'Aquí los daños son menos frecuentes en años de Niño costero (en la sierra sur el Niño suele traer sequía en lugar de lluvias).' : 'Aquí la frecuencia de daños no cambia de forma clara con El Niño costero.') : ''}</p></div>` : '';
+    ? html`En ${st.grandesNinos.join(', ')} hubo registros aquí, sobre todo de ${greatTypes.join(', ').toLowerCase()}.`
+    : 'Los grandes Niños no dejaron registros aquí en las fuentes del catálogo; eso no garantiza que no ocurra (la cobertura es incompleta).'} ${rep} ${peakM.length ? `Los meses con más registros son ${peakM.join(' y ')}.` : ''} ${sign === 1 ? `En temporadas con Niño costero hubo ${x1(st.razonNino)} lugares con daños por año que en las demás (IC 95 %: ${F.fmtNumber(st.razonNinoIC[0], 1)}–${F.fmtNumber(st.razonNinoIC[1], 1)}).` : sign === -1 ? 'Aquí los daños fueron menos frecuentes en temporadas con Niño costero (en la sierra sur el Niño suele traer sequía en lugar de lluvias).' : sign === 0 ? 'Aquí la frecuencia de daños no cambia de forma clara con El Niño costero (el intervalo incluye 1).' : ''}</p></div>` : '';
   return html`<div class="hz-prof">
     <div class="hz-prof-top"><h3 class="hz-prof-h">${shortName(D, code)} <span class="muted small">(${lvl})</span></h3><button type="button" class="icon-btn" data-area="" aria-label="Cerrar la ficha">${raw(ICON.close)}</button></div>
     ${parents}
-    <p class="hz-prof-meta">${attnChip(st.nivelAtencion)} ${pop ? html`<span class="muted small">Población 2020 ≈ ${n0(pop)}${a?.[1] ? ` · pobreza ${F.fmtNumber(a[1], 0)} %` : ''}${a?.[3] ? ` · ${n0(a[3])} m s. n. m.` : ''}</span>` : ''}</p>
+    <p class="hz-prof-meta">${freqChip(st)} ${pop ? html`<span class="muted small">Población 2020 ≈ ${n0(pop)}${a?.[1] ? ` · pobreza ${F.fmtNumber(a[1], 0)} %` : ''}${a?.[3] ? ` · ${n0(a[3])} m s. n. m.` : ''}</span>` : ''}</p>
     <div class="hz-tiles">
-      <div class="hz-tile"><span class="hz-tile-v">${st.aniosConEvento} <small>de ${st.aniosCobertura}</small></span><span class="hz-tile-l">años con daños (1970-2015)${st.muestraPequena ? ' · muestra pequeña' : ''}</span></div>
-      <div class="hz-tile"><span class="hz-tile-v">${st.periodoRetorno ? `1 de cada ${F.fmtNumber(st.periodoRetorno, 1)}` : 'N/D'}</span><span class="hz-tile-l">años, en promedio (frecuencia histórica, no pronóstico)</span></div>
-      <div class="hz-tile"><span class="hz-tile-v">${st.prob5Anios !== null ? pct(st.prob5Anios) : 'N/D'}</span><span class="hz-tile-l">de probabilidad histórica de al menos un año con daños en 5 años</span></div>
+      <div class="hz-tile"><span class="hz-tile-v">${st.aniosConEvento} <small>de ${st.aniosCobertura}</small></span><span class="hz-tile-l">años con registros en DesInventar (1970-2015)${st.aniosCobertura ? `; IC 95 %: ${pctRange(st.frecuenciaIC)} de los años` : ''}${st.muestraPequena ? ' · muestra pequeña' : ''}</span></div>
+      <div class="hz-tile"><span class="hz-tile-v">${st.periodoRetorno ? `1 de cada ${rp(st.periodoRetorno)}` : st.aniosCobertura ? 'Ninguno' : 'N/D'}</span><span class="hz-tile-l">${st.aniosCobertura ? `años, en promedio; con el intervalo, 1 de cada ${span(st.periodoRetornoIC[0], st.periodoRetornoIC[1], rp)} (frecuencia del pasado, no pronóstico)` : 'fuera del periodo con frecuencia'}</span></div>
+      <div class="hz-tile"><span class="hz-tile-v">${st.aniosCobertura ? pctRange(st.prob5AniosIC) : 'N/D'}</span><span class="hz-tile-l">de probabilidad de al menos un año con daños en 5 años si se repitiera la frecuencia de 1970-2015 (intervalo al 95 %; ver «¿La historia anticipa…?»)</span></div>
       <div class="hz-tile"><span class="hz-tile-v">${st.grandesNinos.length} <small>de ${D.great.length}</small></span><span class="hz-tile-l">grandes Niños con registros aquí</span></div>
     </div>
     <ul class="hz-great">${D.great.map((g) => html`<li class="${st.grandesNinos.includes(g) ? 'hit' : ''}">${raw(st.grandesNinos.includes(g) ? ICON.check : ICON.dash)}<span>${g}</span></li>`)}</ul>
@@ -451,13 +544,24 @@ function profileShell(D, s, recs, years) {
     ${expect}
     <div id="hz-ctx"></div>
     <div id="hz-prevbox"></div>
-    <dl class="hz-kv"><div><dt>Fallecidos y desaparecidos</dt><dd>${n0(st.muertos)}</dd></div><div><dt>Afectados y damnificados</dt><dd>${n0(st.afectados)}</dd></div><div><dt>Viviendas destruidas</dt><dd>${n0(st.viviendas)}</dd></div><div><dt>Cuánto más daño con Niño</dt><dd>${metricText(st, 'razon')}</dd></div></dl>
+    <dl class="hz-kv"><div><dt>Fallecidos y desaparecidos</dt><dd>${n0(st.muertos)}</dd></div><div><dt>Afectados, damnificados o desplazados</dt><dd>${n0(st.afectados)}</dd></div><div><dt>Viviendas destruidas</dt><dd>${n0(st.viviendas)}</dd></div><div><dt>Lugares con daños por año con Niño costero</dt><dd>${metricText(st, 'razon')}</dd></div></dl>
     ${hz.length ? html`<h4 class="hz-h4">Peligros registrados</h4><ol class="hz-bars">${hz.map(([t, v]) => html`<li><span>${dl(t)}</span><span class="hz-bar"><span style="width:${((v / maxHz) * 100).toFixed(0)}%"></span></span><span class="hz-bar-v">${n0(v)}</span></li>`)}</ol>` : ''}
     <h4 class="hz-h4">Temporadas con daños aquí</h4>
     ${raw(timeline(D, mine, { compact: true }))}
     <h4 class="hz-h4">Registros (${n0(mine.length)})</h4>
     <div id="hz-list"><p class="muted small">Cargando descripciones y fuentes…</p></div>
   </div>`;
+}
+
+/** Lo que pasó en 2017 con los distritos de la misma región según cuántos grandes Niños los golpearon antes. */
+function repeatEvidence(D, code, st) {
+  const R = D.sum.validacion?.grandesNinos || [];
+  const dep = code.slice(0, 2);
+  const reg = R.find((r) => r.region.startsWith('costa norte') && ['24', '20', '14', '13'].includes(dep)) || R.find((r) => !r.region.startsWith('costa norte') && D.sum.eventosNombrados.find((e) => e.nombre === r.despues)?.departamentos?.includes(dep));
+  if (!reg || code.length !== 6) return '';
+  const both = reg.grupos.find((g) => g.golpeados === 'en los dos'), none = reg.grupos.find((g) => g.golpeados === 'en ninguno');
+  const hit = ['FEN 1982-83', 'FEN 1997-98'].filter((g) => st.grandesNinos.includes(g)).length;
+  return `En ${reg.region.startsWith('costa') ? 'la' : 'los'} ${reg.region}, de los distritos golpeados en 1982-83 y en 1997-98, el ${pct(both.conRegistros)} volvió a tener registros en el Niño Costero 2017, frente al ${pct(none.conRegistros)} de los que no tuvieron registros en ninguno de los dos (${n0(both.distritos)} y ${n0(none.distritos)} distritos). Este distrito tuvo registros en ${hit === 2 ? 'los dos' : hit === 1 ? 'uno de los dos' : 'ninguno de los dos'}.`;
 }
 
 async function fillDetail(root, D, s) {
@@ -526,8 +630,7 @@ const objs = (t) => (t?.rows || []).map((r) => Object.fromEntries(t.cols.map((c,
 function prevChart(A) {
   const rows = A.filter((a) => a.anio >= 2003 && a.eventos > 0);
   if (!rows.length) return '';
-  // Alto lógico igual al de la hoja de estilos (150 px) para que las etiquetas solo se estiren a lo ancho.
-  const W = 1000, H = 150, top = 6, base = H - 26, bw = W / rows.length, gap = 2;
+  const W = 1000, H = 124, top = 2, base = H, bw = W / rows.length, gap = 2;
   const bars = rows.map((a, i) => {
     const share = a.eventosConAviso / a.eventos;
     const h = base - top, hA = share * h;
@@ -537,13 +640,11 @@ function prevChart(A) {
   }).join('');
   // Primer y último año pegados a los bordes; los quinquenios demasiado cerca de ellos se omiten para no encimarse.
   const last = rows.length - 1;
-  const ticks = rows.map((a, i) => ({ a, i })).filter(({ a, i }) => i === 0 || i === last || (a.anio % 5 === 0 && i > 2 && i < last - 2)).map(({ a, i }) => {
-    const x = i === 0 ? 0 : i === last ? W : i * bw + bw / 2;
-    const anchor = i === 0 ? ' data-a="start"' : i === last ? ' data-a="end"' : '';
-    return `<text class="hz-tl-x" x="${x.toFixed(1)}" y="${H - 4}"${anchor}>${a.anio}</text>`;
-  }).join('');
+  const ticks = rows.map((a, i) => ({ a, i })).filter(({ a, i }) => i === 0 || i === last || (a.anio % 5 === 0 && i > 2 && i < last - 2))
+    .map(({ a, i }) => ({ x: i === 0 ? 0 : i === last ? 100 : ((i + 0.5) / rows.length) * 100, text: a.anio, edge: i === 0 ? 'start' : i === last ? 'end' : '' }));
   const grid = [0.5, 1].map((v) => `<line class="hz-pv-grid" x1="0" x2="${W}" y1="${(base - v * (base - top)).toFixed(1)}" y2="${(base - v * (base - top)).toFixed(1)}"></line>`).join('');
-  return `<svg class="hz-tl hz-pv" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Parte de las emergencias oficiales de cada año ocurridas donde el peligro ya estaba documentado, ${rows[0].anio}-${rows.at(-1).anio}">${grid}${bars}${ticks}</svg>`;
+  const svg = `<svg class="hz-tl hz-pv" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Parte de las emergencias oficiales de cada año ocurridas donde el peligro ya estaba documentado, ${rows[0].anio}-${rows.at(-1).anio}">${grid}${bars}</svg>`;
+  return labelled(svg, ticks);
 }
 
 async function fillPrevention(root, D) {
@@ -551,16 +652,24 @@ async function fillPrevention(root, D) {
   if (!box) return;
   const P = await prevention();
   if (!box.isConnected) return;
-  const head = '<div class="section-head"><h2 id="hz-prev-h">¿Se sabía antes? Peligros documentados y emergencias que igual ocurrieron</h2></div>';
+  const head = '<div class="section-head"><h2 id="hz-prev-h">¿Se sabía antes? Peligros documentados antes de cada emergencia</h2></div>';
   if (!P) { box.innerHTML = `${head}<p class="muted">No se pudo cargar prevencion.json.</p>`; return; }
   const A = objs({ cols: P.columnasAnual, rows: P.anual });
   const sum = (rows, k) => rows.reduce((t, a) => t + (a[k] || 0), 0);
   const recent = A.filter((a) => a.anio >= 2016);
   const ev = sum(recent, 'eventos'), aviso = sum(recent, 'eventosConAviso');
+  // Base de comparación: lo esperable si las mismas emergencias hubieran caído en distritos al azar (la construcción
+  // la calcula con la evidencia cosechada); sin ella, la parte de todos los distritos con algún peligro documentado.
+  const chance = P.columnasAnual.includes('eventosConAvisoAzar') ? sum(recent, 'eventosConAvisoAzar') / ev : null;
+  const chancePop = P.columnasAnual.includes('eventosConAvisoAzarPob') ? sum(recent, 'eventosConAvisoAzarPob') / ev : null;
   const c = (k) => P.columnas.indexOf(k);
+  const allDists = Object.keys(D.sum.nombres.distrito).length;
+  const lastYear = recent.at(-1)?.anio || 2026;
+  const docBy = (y) => Object.values(P.distritos).filter((v) => (v[c('inventarioDesde')] && v[c('inventarioDesde')] < y) || (v[c('primeraEvaluacion')] && v[c('primeraEvaluacion')] < y)).length / allDists;
   const dists = Object.values(P.distritos);
   const repeat = dists.filter((v) => v[c('aniosConEvento')] >= 5);
   const repeatKnown = repeat.filter((v) => v[c('inventarioDesde')] || v[c('primeraEvaluacion')]).length;
+  const docAll = dists.filter((v) => v[c('inventarioDesde')] || v[c('primeraEvaluacion')]).length / allDists;
   const appeals = objs(P.llamamientos).filter((a) => a.clima);
   const decI = sum(A, 'decretosInminente'), decD = sum(A, 'decretosImpacto'), decP = sum(A, 'prorrogas');
   const elp = D.sum.fuentes.find((f) => f.id === 'elperuano-emergencias');
@@ -568,8 +677,8 @@ async function fillPrevention(root, D) {
   box.innerHTML = String(html`${raw(head)}
     <p>Para cada emergencia oficial (SINPAD, DesInventar y COEN, con la fecha del evento) se mira qué se sabía antes en su distrito: si INGEMMET ya había inventariado ahí un peligro del mismo tipo, si había un informe técnico de INGEMMET o del IGP de un año anterior, o si estaba vigente una declaratoria de emergencia por peligro inminente.</p>
     <div class="hz-tiles hz-tiles-4">
-      <div class="hz-tile"><span class="hz-tile-v">${ev ? pct(aviso / ev) : 'N/D'}</span><span class="hz-tile-l">de las ${n0(ev)} emergencias oficiales desde 2016 ocurrieron donde el peligro ya estaba documentado</span></div>
-      <div class="hz-tile"><span class="hz-tile-v">${n0(repeat.length)}</span><span class="hz-tile-l">distritos con emergencias en 5 o más temporadas desde 2003; en ${n0(repeatKnown)} el peligro ya estaba inventariado o evaluado</span></div>
+      <div class="hz-tile"><span class="hz-tile-v">${ev ? pct(aviso / ev) : 'N/D'}</span><span class="hz-tile-l">de las ${n0(ev)} emergencias oficiales desde 2016 ocurrieron donde el peligro ya estaba documentado; ${chance !== null ? `al azar se esperaría ${pct(chance)} (${pct(chancePop)} según la población)` : `en ${lastYear} el ${pct(docBy(lastYear))} de todos los distritos ya tenía algún peligro inventariado o evaluado`}</span></div>
+      <div class="hz-tile"><span class="hz-tile-v">${n0(repeat.length)}</span><span class="hz-tile-l">distritos con emergencias en 5 o más temporadas desde 2003; en ${n0(repeatKnown)} (${pct(repeatKnown / (repeat.length || 1))}) el peligro ya estaba inventariado o evaluado, frente al ${pct(docAll)} de todos los distritos</span></div>
       <div class="hz-tile"><span class="hz-tile-v">${n0(appeals.length)}</span><span class="hz-tile-l">llamamientos de ayuda internacional de la Cruz Roja por desastres climáticos (desde ${appeals[0]?.fecha.slice(0, 4) || '—'})</span></div>
       <div class="hz-tile"><span class="hz-tile-v">${n0(decI)} <small>/ ${n0(decD)}</small></span><span class="hz-tile-l">declaratorias por peligro inminente (prevención) frente a declaratorias por impacto (respuesta)${pending ? ', leídas hasta ahora' : ''}</span></div>
     </div>
@@ -582,6 +691,7 @@ async function fillPrevention(root, D) {
     ${appeals.length ? html`<details class="more"><summary>Llamamientos internacionales por desastres climáticos (${n0(appeals.length)})</summary><ul class="hz-ctxlist">${[...appeals].reverse().map((a) => html`<li><strong>${F.fmtDate(a.fecha)}</strong> · ${a.nombre} <span class="tag">${a.modalidad}</span>${a.montoCHF ? ` · CHF ${n0(a.montoCHF)} pedidos` : ''}${a.beneficiarios ? ` · ${n0(a.beneficiarios)} personas` : ''} · <a href="${safeUrl(a.url)}" rel="noopener" target="_blank">IFRC GO</a></li>`)}</ul></details>` : ''}
     <h3 class="hz-h3">Cómo leerlo</h3>
     <ul class="hz-method">
+      <li><strong>Compárelo con el azar.</strong> Casi todos los distritos tienen algún peligro inventariado por el INGEMMET, así que la mayoría de las emergencias caería en un distrito «documentado» aunque la documentación no tuviera relación con ellas. ${chance !== null ? `Si las mismas emergencias (con su fecha y su peligro) hubieran caído en distritos al azar, el ${pct(chance)} habría ocurrido donde el peligro ya estaba documentado; la diferencia con el ${pct(aviso / ev)} observado es lo que la documentación anticipa.` : 'La comparación exacta con el azar (las mismas emergencias en distritos elegidos al azar) se calcula en la próxima construcción completa del catálogo; una revisión independiente la estimó entre 64 % y 66 %, solo 2 a 4 puntos menos que lo observado.'} Esta cifra no mide cuánta prevención se hizo ni si se pudo evitar el daño; para eso hace falta comparar lugares con y sin obras (diferencias en diferencias).</li>
       <li>«Documentado» no quiere decir que se pudiera evitar, sino que el Estado tenía el peligro identificado en ese distrito antes de la emergencia. El inventario de INGEMMET marca puntos de peligro (caídas, deslizamientos, huaycos, erosión, inundación) con la fecha en que los inventarió; el mismo grupo de peligro cuenta (un inventario de huaycos vale para una emergencia por lluvias intensas).</li>
       <li>Las notas de prensa y las páginas de periódicos antiguos no entran a esta cuenta; sí corroboran las fichas en la lista de cada área. Los reportes del COEN entran con la fecha del evento cuando su PDF ya se leyó.</li>
       <li>Las declaratorias de emergencia se leen del diario oficial El Peruano (sumilla y texto del decreto). Una declaratoria de toda una provincia o un departamento cuenta para cada uno de sus distritos.${pending ? ' La descarga sigue en curso y por ahora hay pocas: esa columna crecerá.' : ''} Prórrogas en total: ${n0(decP)}.</li>
@@ -668,9 +778,61 @@ function rankingSection(D, s, stats) {
     .sort((a, b) => b[2] - a[2] || b[1].registros - a[1].registros).slice(0, 40);
   return html`<section class="card hz-card" aria-labelledby="hz-rank-h">
     <div class="section-head"><h2 id="hz-rank-h">Ranking por ${LEVEL_NAMES.find(([k]) => k === s.nivel)[1].toLowerCase()}: ${METRICS.find(([k]) => k === s.metrica)[1].toLowerCase()}</h2></div>
-    <p class="muted small">Los 40 primeros con los filtros elegidos. Es también la versión en tabla del mapa. «Muestra pequeña»: menos de 5 años con daños, la frecuencia es poco confiable.</p>
-    <div class="table-wrap"><table class="hz-table"><thead><tr><th scope="col">Lugar</th><th scope="col">Valor</th><th scope="col" class="num">Años con daños</th><th scope="col" class="num">Grandes Niños</th><th scope="col">Atención</th><th scope="col">Peligro principal</th><th scope="col">Último registro</th></tr></thead>
-    <tbody>${rows.map(([c, st]) => html`<tr><th scope="row"><button type="button" class="linkish" data-area="${c}">${areaName(D, c)}</button></th><td>${metricText(st, s.metrica)}</td><td class="num">${st.aniosConEvento}${st.muestraPequena ? html` <span class="tag" title="Menos de 5 años con daños">muestra pequeña</span>` : ''}</td><td class="num">${st.grandesNinos.length}</td><td>${attnChip(st.nivelAtencion)}</td><td>${st.peligros[0] ? dl(st.peligros[0][0]) : ''}</td><td>${st.ultimo ? when(st.ultimo.d) : ''}</td></tr>`)}</tbody></table></div>
+    <p class="muted small">Los 40 primeros con los filtros elegidos. Es también la versión en tabla del mapa. «Muestra pequeña»: menos de 5 años con daños, la frecuencia es poco confiable; para ordenar áreas con pocos años, use «Años con daños, como mínimo», el límite inferior del intervalo.</p>
+    <div class="table-wrap"><table class="hz-table"><thead><tr><th scope="col">Lugar</th><th scope="col">Valor</th><th scope="col" class="num">Años con daños</th><th scope="col">Frecuencia (IC 95 %)</th><th scope="col" class="num">Grandes Niños</th><th scope="col">Peligro principal</th><th scope="col">Último registro</th></tr></thead>
+    <tbody>${rows.map(([c, st]) => html`<tr><th scope="row"><button type="button" class="linkish" data-area="${c}">${areaName(D, c)}</button></th><td>${rankText(st, s.metrica)}</td><td class="num">${st.aniosConEvento}${st.muestraPequena ? html` <span class="tag" title="Menos de 5 años con daños">muestra pequeña</span>` : ''}</td><td>${st.aniosCobertura ? pctRange(st.frecuenciaIC) : ''}</td><td class="num">${st.grandesNinos.length}</td><td>${st.peligros[0] ? dl(st.peligros[0][0]) : ''}</td><td>${st.ultimo ? when(st.ultimo.d) : ''}</td></tr>`)}</tbody></table></div>
+  </section>`;
+}
+
+/** Valor de la métrica en el ranking. Para las frecuencias, solo la estimación: los años y el intervalo tienen su columna. */
+function rankText(st, metric) {
+  if (metric === 'anios') return st.aniosCobertura ? `${pct(st.frecuenciaAnual)} de los años` : 'Fuera del periodo 1970-2015';
+  if (metric === 'minimo') return st.aniosCobertura ? `al menos ${pct(st.frecuenciaIC[0])} de los años` : 'Fuera del periodo 1970-2015';
+  return metricText(st, metric);
+}
+
+/** Lectura del AUC (Hosmer y Lemeshow, 2000): 0,5 es azar y 1, perfecto. */
+const aucWord = (a) => (a === null ? 'N/D' : a < 0.6 ? 'casi como el azar' : a < 0.7 ? 'débil' : a < 0.8 ? 'aceptable' : 'excelente');
+/** Dos decimales fijos (0,60 y no 0,6): en una tabla de métricas, la cifra sola no debe parecer menos precisa. */
+const f2 = (v) => (v === null || v === undefined ? 'N/D' : v.toLocaleString('es', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+/** ¿La historia anticipa lo que vino después? Validación fuera de muestra (resumen.json → validacion). */
+function validationSection(D) {
+  const v = D.sum.validacion;
+  if (!v) return '';
+  const G = { todos: 'Todos los peligros', inundaciones: 'Inundaciones y desbordes', 'huaycos y deslizamientos': 'Huaycos y deslizamientos', 'heladas, friaje y nevadas': 'Heladas, friaje y nevadas' };
+  const cal = v.calibracion, nino = v.nino || {};
+  const ninoRows = ['departamento', 'provincia'].filter((l) => nino[l]).flatMap((l) => nino[l].grupos.map((g) => [l, g, nino[l].spearman]));
+  const sens = (v.sensibilidadNino || []).filter((r) => r.razon !== null);
+  return html`<section class="card hz-card" aria-labelledby="hz-val-h">
+    <div class="section-head"><h2 id="hz-val-h">¿La historia anticipa lo que vino después?</h2></div>
+    <p>Los indicadores usan solo DesInventar de ${v.entrenamiento[0]}-${String(v.entrenamiento[0] + 1).slice(2)} a ${v.entrenamiento[1]}-${String(v.entrenamiento[1] + 1).slice(2)}. Las emergencias del SINPAD de las temporadas ${v.prueba[0]}-${String(v.prueba[0] + 1).slice(2)} a ${v.prueba[1]}-${String(v.prueba[1] + 1).slice(2)} no entran a ningún indicador, así que sirven para ponerlos a prueba, como se verifica un pronóstico: con datos que el método no vio.</p>
+    <h3 class="hz-h3">1. ¿Ordena bien las áreas la frecuencia del pasado?</h3>
+    <p class="muted small">AUC: la probabilidad de que un área-temporada con emergencias tenga más frecuencia histórica que una sin emergencias (0,5 es azar; 0,7–0,8, aceptable; desde 0,8, excelente). Intervalo al 95 % por remuestreo de áreas. No se mide si los porcentajes aciertan, porque el SINPAD registra muchas más emergencias por año que DesInventar: solo el orden es comparable.</p>
+    <div class="table-wrap"><table class="hz-table"><thead><tr><th scope="col">Nivel</th><th scope="col">Peligros</th><th scope="col" class="num">AUC (IC 95 %)</th><th scope="col">Lectura</th><th scope="col" class="num">Área-temporadas con emergencias</th></tr></thead>
+      <tbody>${v.discriminacion.map((d) => html`<tr><th scope="row">${d.nivel === 'distrito' ? 'Distrito' : 'Provincia'}</th><td>${G[d.peligros] || d.peligros}</td><td class="num">${f2(d.auc)} (${f2(d.aucIC[0])}–${f2(d.aucIC[1])})</td><td>${aucWord(d.auc)}</td><td class="num">${pct(d.tasaBase)}</td></tr>`)}</tbody></table></div>
+    <h3 class="hz-h3">2. ¿Se repitió el efecto de El Niño?</h3>
+    <p class="muted small">Razón de El Niño de ${v.prueba[0]}-${v.prueba[1]} (SINPAD; temporadas con Niño costero: ${v.aniosNinoPrueba.join(', ') || 'ninguna'}) en las áreas donde la de 1970-2015 fue claramente mayor que 1 y en las demás. Spearman: correlación entre el orden de las áreas en ambos periodos (1 = mismo orden).</p>
+    <div class="table-wrap"><table class="hz-table"><thead><tr><th scope="col">Nivel</th><th scope="col">En 1970-2015, la razón de El Niño fue</th><th scope="col" class="num">Áreas</th><th scope="col" class="num">Razón en ${v.prueba[0]}-${v.prueba[1]} (IC 95 %)</th><th scope="col" class="num">Spearman</th></tr></thead>
+      <tbody>${ninoRows.map(([l, g, rho]) => html`<tr><th scope="row">${l === 'departamento' ? 'Departamento' : 'Provincia'}</th><td>${g.clase === 'mayor' ? 'claramente mayor que 1' : g.clase === 'menor' ? 'claramente menor que 1' : 'sin diferencia clara'}</td><td class="num">${n0(g.areas)}</td><td class="num">${f2(g.rrPrueba)}× (${f2(g.rrPruebaIC[0])}–${f2(g.rrPruebaIC[1])})</td><td class="num">${f2(rho)}</td></tr>`)}</tbody></table></div>
+    ${cal ? html`<h3 class="hz-h3">3. ¿Acierta la «probabilidad en 5 años»?</h3>
+    <p class="muted small">Con la misma fuente: la probabilidad calculada con DesInventar ${cal.entrenamiento[0]}-${cal.entrenamiento[1]}, frente a lo que DesInventar registró en ${cal.bloques.map((b) => `${b[0]}-${b[1]}`).join(', ')} (${n0(cal.distritos)} distritos). Habilidad de Brier: cuánto mejora sobre decir siempre la tasa base (${pct(cal.tasaBase)}); 0 es igual y 1, perfecto. AUC ${f2(cal.cruda.auc)} (${f2(cal.cruda.aucIC[0])}–${f2(cal.cruda.aucIC[1])}).</p>
+    <div class="grid g2"><div><div class="table-wrap"><table class="hz-table"><caption class="small">Diagrama de confiabilidad (frecuencia sin suavizar)</caption><thead><tr><th scope="col">Probabilidad calculada</th><th scope="col" class="num">Promedio calculado</th><th scope="col" class="num">Ocurrió</th><th scope="col" class="num">Distrito-bloques</th></tr></thead>
+      <tbody>${cal.cruda.confiabilidad.map((b) => html`<tr><th scope="row">${b.rango}</th><td class="num">${pct(b.predicha)}</td><td class="num">${pct(b.observada)}</td><td class="num">${n0(b.n)}</td></tr>`)}</tbody></table></div></div>
+      <div><ul class="hz-method"><li>Habilidad de la frecuencia sin suavizar: <strong>${f2(cal.cruda.habilidad)}</strong>; suavizada por Bayes empírico: <strong>${f2(cal.suavizada.habilidad)}</strong>. Las dos mejoran poco sobre la tasa base.</li><li>Exagera en los extremos: donde da 0 %, ${pct(cal.cruda.confiabilidad[0]?.observada)} de los distritos tuvo daños; donde da más de 80 %, ${pct(cal.cruda.confiabilidad.at(-1)?.observada)}. Por eso el sitio muestra el intervalo y no un número solo.</li></ul></div></div>` : ''}
+    ${v.grandesNinos?.length ? html`<h3 class="hz-h3">4. ¿Vuelven los grandes Niños a los mismos lugares?</h3>
+    <div class="table-wrap"><table class="hz-table"><thead><tr><th scope="col">Región</th><th scope="col">Distritos con registros en 1982-83 y 1997-98</th><th scope="col" class="num">Distritos</th><th scope="col" class="num">Con registros en 2017</th></tr></thead>
+      <tbody>${v.grandesNinos.flatMap((r) => r.grupos.map((g, i) => html`<tr>${i ? '' : html`<th scope="rowgroup" rowspan="${r.grupos.length}">${r.region}<br><span class="muted small">en total, ${pct(r.tasaBase)}</span></th>`}<td>${g.golpeados}</td><td class="num">${n0(g.distritos)}</td><td class="num">${pct(g.conRegistros)}</td></tr>`))}</tbody></table></div>` : ''}
+    ${sens.length ? html`<details class="more"><summary>Sensibilidad de la razón de El Niño por departamento</summary>
+      <p class="muted small">La razón publicada (temporada con Niño si el ICEN medio de enero a marzo supera +0,5 °C), la que daría la regla anterior (cualquier mes de diciembre a abril dentro de un Niño costero) y la respuesta a la intensidad: cuánto cambian los lugares con daños por año por cada grado más de ICEN, sin umbral. Las tres señalan los mismos departamentos.</p>
+      <div class="table-wrap"><table class="hz-table"><thead><tr><th scope="col">Departamento</th><th scope="col" class="num">Razón (IC 95 %)</th><th scope="col" class="num">Regla anterior</th><th scope="col" class="num">Por cada +1 °C de ICEN</th></tr></thead>
+        <tbody>${sens.map((r) => html`<tr><th scope="row">${r.nombre}</th><td class="num">${x1(r.razon)} (${F.fmtNumber(r.razonIC[0], 1)}–${F.fmtNumber(r.razonIC[1], 1)})</td><td class="num">${r.razonReglaAnterior ? html`${x1(r.razonReglaAnterior)} (${F.fmtNumber(r.razonReglaAnteriorIC[0], 1)}–${F.fmtNumber(r.razonReglaAnteriorIC[1], 1)})` : 'N/D'}</td><td class="num">${r.porGradoICEN ? html`${f2(r.porGradoICEN)}× (${f2(r.porGradoICENIC[0])}–${f2(r.porGradoICENIC[1])})` : 'N/D'}</td></tr>`)}</tbody></table></div></details>` : ''}
+    <h3 class="hz-h3">Qué quiere decir</h3>
+    <ul class="hz-method">
+      <li>Para elegir dónde mirar primero, la historia sirve más por provincia y por peligro que por distrito. Por distrito, el peligro identificado hoy (puntos del INGEMMET y de la ANA, en cada ficha) anticipa mejor las emergencias graves.</li>
+      <li>El efecto de El Niño costero es lo más firme: en los mismos departamentos de la costa norte y centro, con cualquiera de las tres formas de medirlo, y se repitió después de 2015.</li>
+      <li>Las cifras de 2016 en adelante vienen de otra fuente (SINPAD), con otra densidad; por eso se compara el orden de las áreas y la razón dentro de cada periodo, no los conteos.</li>
+    </ul>
   </section>`;
 }
 
@@ -718,6 +880,7 @@ function methodSection(D) {
           <li><a href="${BASE}eventos.json">Versión compacta (JSON)</a> · <a href="${BASE}resumen.json">Resumen, cobertura y atributos (JSON)</a> · <a href="${BASE}contexto.json">Peligro identificado hoy por distrito (JSON)</a></li>
           <li><a href="${BASE}contexto-distrito.csv">Historial y peligro actual por distrito (CSV)</a> · <a href="${BASE}indicadores-distrito.csv">indicadores por distrito</a>, <a href="${BASE}indicadores-provincia.csv">provincia</a> y <a href="${BASE}indicadores-departamento.csv">departamento</a></li>
           <li><a href="${BASE}prevencion-distrito.csv">Prevención por distrito (CSV)</a> · <a href="${BASE}prevencion.json">declaratorias, evaluaciones y llamamientos (JSON)</a></li>
+          <li><a href="${BASE}diccionario.csv">Diccionario de datos (CSV)</a> <span class="muted small">Tipo, contenido y regla de cada columna del catálogo, con el porcentaje de filas que traen el dato por fuente. Lea Ubigeo e IdFuente como texto (llevan ceros a la izquierda).</span></li>
         </ul>
         ${[['eventos', 'Fuentes de eventos'], ['emergencias', 'Reportes de emergencia del COEN (se unen a las fichas del SINPAD)'], ['prensa', 'Prensa regional y nacional (cada nota se une al evento que cuenta)'], ['hemeroteca', 'Periódicos antiguos digitalizados (cada página se une al evento que cuenta)'], ['prevencion', 'Prevención: declaratorias, evaluaciones, inventarios y llamamientos'], ['contexto', 'Peligro identificado hoy (contexto, no eventos)'], ['referencia', 'Referencias territoriales']].map(([k, t]) => html`<h3 class="hz-h3">${t}</h3>
         ${k === 'prensa' ? html`<details class="more"><summary>${n0(S.fuentes.filter((f) => f.tipo === k).length)} medios</summary>${srcList(S, k)}</details>` : srcList(S, k)}`)}
@@ -726,10 +889,10 @@ function methodSection(D) {
       <div>
         <h3 class="hz-h3">Cómo leer los indicadores</h3>
         <ul class="hz-method">
-          <li><strong>Años con daños</strong>: temporadas (julio a junio) de 1970-71 a 2014-15 con al menos un registro de DesInventar en el lugar, con intervalo de Wilson al 95 %. Se cuentan años y no registros porque un mismo Niño deja decenas de fichas. Las fuentes posteriores no entran a esta cuenta porque tienen otra densidad.</li>
-          <li><strong>1 de cada X años</strong> y <strong>probabilidad en 5 años</strong>: frecuencia histórica; suponen que el clima y la exposición no cambian. No son pronósticos.</li>
-          <li><strong>Cuánto más daño con Niño</strong>: lugares-año con daños por año en temporadas con Niño costero (ICEN, diciembre–abril) dividido entre los de las demás temporadas, con intervalo de Poisson al 95 %.</li>
-          <li><strong>Nivel de atención</strong> (no es un índice oficial de riesgo): muy alto = registros en 2 o más grandes Niños y daños en al menos 1 de cada 4 años; alto = una de las dos; medio = 1 gran Niño o daños en 1 de cada 10 años; bajo = otros con registros.</li>
+          <li><strong>Años con daños</strong>: temporadas (julio a junio) de 1970-71 a 2014-15 con al menos un registro de DesInventar en el lugar, con intervalo de Wilson al 95 % (válido con muestras pequeñas). Se cuentan años y no registros porque un mismo Niño deja decenas de fichas. Las fuentes posteriores no entran a esta cuenta porque tienen otra densidad. «Como mínimo» es el límite inferior del intervalo: ordena mejor las áreas con pocos años.</li>
+          <li><strong>1 de cada X años</strong> y <strong>probabilidad en 5 años</strong>: la misma frecuencia dicha de otra forma, con el intervalo que sale del de Wilson; suponen que el clima y la exposición no cambian. No son pronósticos (ver la validación).</li>
+          <li><strong>Lugares con daños por año con Niño</strong>: lugares-año con daños por año en temporadas con Niño costero dividido entre los de las demás. Temporada con Niño: ICEN medio de enero a marzo mayor que +0,5 °C (umbral de condición cálida del ENFEN, en el pico de lluvias). El intervalo al 95 % se ensancha por la sobredispersión (cuasi-Poisson): los distritos de un mismo año no son independientes. Un lugar-año es un distrito, o una provincia o un departamento cuando la fuente no da el distrito.</li>
+          <li><strong>Grandes Niños</strong>: cuáles de los cinco eventos (1982-83, 1997-98, 2017, 2023 y 2023-24) dejaron registros en el lugar. Vienen de fuentes con densidad distinta: no se suman en un puntaje.</li>
           <li><strong>TipoEvento</strong>: los eventos con nombre (Niño Costero 2017 en los 13 departamentos del Plan de Reconstrucción; Ciclón Yaku 2023 en la costa norte y Lima), solo para lluvias, inundaciones, huaycos, oleaje y viento, y los Niños y Niñas costeros del ICEN por la fecha del registro (del SINPAD desde 2019, solo las emergencias de nivel 3 o más, las que necesitaron al gobierno regional o al nacional). Que un registro caiga dentro de un Niño no prueba que el Niño lo causó.</li>
         </ul>
         <h3 class="hz-h3">Límites</h3>
@@ -738,7 +901,9 @@ function methodSection(D) {
           <li>DesInventar se arma con prensa nacional e informes del INDECI: hay más registros de ciudades y lugares accesibles, y menos antes de los años 90. Una zona sin registros no es una zona sin peligro.</li>
           <li>Las cifras de impacto son las que publicó cada fuente; un vacío significa «no reportado», no cero. Las fuentes discrepan entre sí (Huggel et al., 2015).</li>
           <li>Los distritos se ubican con su UBIGEO o, si el nombre de la fuente está abreviado, con el punto de la fuente dentro de los límites del IGN; las coordenadas son las de la fuente si caen en el distrito asignado y, si no, las de la capital del distrito.</li>
-          <li>Desde 2019 el SINPAD se lee del portal público del INDECI, que da el peligro, el distrito, la fecha, el nivel y el estado de cada emergencia, pero no su descripción ni sus daños. Por eso esas fichas se ubican en la capital del distrito y no aportan impactos; las del IDMC, que salen de las mismas emergencias, sí traen personas desplazadas y viviendas.</li>
+          <li>Desde 2019 el SINPAD se lee del portal público del INDECI, que da el peligro, el distrito, la fecha, el nivel y el estado de cada emergencia, pero no su descripción ni sus daños. Por eso esas fichas se ubican en la capital del distrito. El IDMC recopila las mismas emergencias: cuando una fila del IDMC coincide con una del SINPAD (mismo distrito, ±1 día), sus personas desplazadas y viviendas pasan a la fila del SINPAD y el IDMC queda como corroboración; las filas del IDMC por departamento son resúmenes de desplazamiento, no eventos aparte.</li>
+          <li>Las filas ubicadas solo por provincia o departamento llevan las coordenadas de su capital (columna PrecisionGeo): en un mapa de puntos parecen agrupadas en las capitales.</li>
+          <li>La fecha de una fila del COEN es la de su primer reporte encontrado y la de una nota, la de su publicación (columna FechaTipo): su confianza nunca es alta.</li>
         </ul>
       </div>
     </div>
@@ -790,7 +955,7 @@ function wire(root, D, s, set) {
   const f = currentFilter(D, s);
   const recs = M.filter(D.recs, f);
   const years = M.coverageYears(D.sum.cobertura.homogenea, f.from, f.to);
-  const stats = M.byArea(recs, s.nivel, years, D.nino, D.great, D.hom);
+  const stats = statsFor(D, s, recs, years);
   const show = (el, x, y) => {
     const code = el?.dataset?.code;
     if (!code || !tip) return;
