@@ -83,7 +83,7 @@
       "archivo": "idmc-idu-per.csv",
       "licencia": "CC BY-NC-SA 3.0 IGO (IDMC)",
       "cobertura": "2025-2026: emergencias con viviendas destruidas o inhabitables, por distrito y con coordenadas",
-      "nota": "Solo entran emergencias que dejaron personas sin vivienda: las de daños menores no están. Se excluyen los sismos y los eventos «Mixed disasters» (el IDMC no dice qué peligros fueron). La copia vigente es la exportación del IDMC publicada en HDX (26-10-2026), con las mismas columnas; las siguientes se piden a la API del IDMC.",
+      "nota": "Solo entran emergencias que dejaron personas sin vivienda: las de daños menores no están. Se excluyen los sismos y los eventos «Mixed disasters» (el IDMC no dice qué peligros fueron). Se pide a la API del IDMC con la clave IDMC_CLIENT_ID; sin ella se usa la semilla del repositorio, la exportación del IDMC publicada en HDX el 26-10-2026, con las mismas columnas (campo «copia»).",
       "sha256": "a8811abb3e14b19d999bfe192e66be266aacb7f8e4537fd5ea3fe40765abc765",
       "obtenido": "2026-10-26",
       "registros": 4895,
@@ -93,7 +93,9 @@
         "Earthquake": 29
       },
       "descarga": "idmc-api",
-      "clave": "La API del IDMC pide una clave gratuita (client_id): se solicita una vez por correo a ch.datainfo@idmc.ch con el uso que se le dará, y se guarda en la variable de entorno IDMC_CLIENT_ID (nunca en el repositorio)."
+      "clave": "La API del IDMC pide una clave gratuita (client_id): se solicita una vez por correo a ch.datainfo@idmc.ch con el uso que se le dará, y se guarda en la variable de entorno IDMC_CLIENT_ID (nunca en el repositorio).",
+      "copia": "semilla",
+      "semilla": "data/historico/semillas/idmc-idu-per.csv.gz"
     },
     {
       "id": "idmc-eventos",
@@ -105,7 +107,7 @@
       "archivo": "idmc-desplazamientos-desastres-per.csv",
       "licencia": "CC BY-NC-SA 3.0 IGO (IDMC)",
       "cobertura": "2019-2024: casi siempre un departamento y un mes; cubre el ciclón Yaku y el Niño costero 2023-24 a escala departamental",
-      "nota": "Se omiten los eventos que juntan varios departamentos y los de 2025 en adelante (los da la fuente IDU con más detalle). La copia vigente es la exportación del IDMC publicada en HDX (26-10-2026), con las mismas columnas; las siguientes se piden a la API del IDMC.",
+      "nota": "Se omiten los eventos que juntan varios departamentos y los de 2025 en adelante (los da la fuente IDU con más detalle). Se pide a la API del IDMC con la clave IDMC_CLIENT_ID; sin ella se usa la semilla del repositorio, la exportación del IDMC publicada en HDX el 26-10-2026, con las mismas columnas (campo «copia»).",
       "sha256": "e4b7541d8aab8a7f3234e42aca4e1cab778c359b6f0e1073d9d87836d9b540f9",
       "obtenido": "2026-10-26",
       "registros": 1015,
@@ -121,7 +123,9 @@
         "release_environment": "RELEASE",
         "limit": 1000
       },
-      "clave": "La API del IDMC pide una clave gratuita (client_id): se solicita una vez por correo a ch.datainfo@idmc.ch con el uso que se le dará, y se guarda en la variable de entorno IDMC_CLIENT_ID (nunca en el repositorio)."
+      "clave": "La API del IDMC pide una clave gratuita (client_id): se solicita una vez por correo a ch.datainfo@idmc.ch con el uso que se le dará, y se guarda en la variable de entorno IDMC_CLIENT_ID (nunca en el repositorio).",
+      "copia": "semilla",
+      "semilla": "data/historico/semillas/idmc-desplazamientos-desastres-per.csv.gz"
     },
     {
       "id": "nasa-glc",
