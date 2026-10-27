@@ -324,6 +324,14 @@ dialog::backdrop { background: rgba(5, 12, 20, 0.5); }
 .footer-inner h2 { font-size: 0.9rem; margin-bottom: 6px; color: var(--fg); }
 .footer-inner p { margin: 0 0 6px; }
 
+/* Apoyar */
+.support-ways { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); margin-bottom: 16px; }
+.support-ways > section + section { margin-top: 0; }
+.support-way h2 { font-size: 1.05rem; margin-top: 0; }
+.prose.support-other h2 { margin-top: 0; }
+.support-qr { display: block; width: 200px; max-width: 100%; height: auto; margin: 4px 0 10px; border-radius: 8px; background: #fff; padding: 8px; border: 1px solid var(--line); }
+.support-note { margin-top: 16px; }
+
 /* Carga */
 .skeleton { background: linear-gradient(90deg, var(--bg-sunk), var(--line-2), var(--bg-sunk)); background-size: 200% 100%; animation: sk 1.4s ease infinite; border-radius: 8px; min-height: 120px; }
 @keyframes sk { to { background-position: -200% 0; } }
