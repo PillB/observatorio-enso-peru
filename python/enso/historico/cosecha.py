@@ -84,27 +84,45 @@ _COEN_TITLE = re.compile(
     r"(?P<haz>[A-ZÁÉÍÓÚÑÜ][^()]*?)\s+(?:EN\s+)?(?:EL|LA|LOS|LAS)\s+"
     r"(?P<lvl>DISTRITOS?|PROVINCIAS?|DEPARTAMENTOS?)\s+(?:DE\s+)?(?P<place>.+)$", re.I)
 _COEN_SLUG = re.compile(r"/emergencias/(?:reporte|informe)-(?P<kind>preliminar|complementario|de-emergencia)?-?"
-                        r"n-(?:o-)?(?P<num>\d+)-(?P<d>\d{1,2})-(?P<m>\d{1,2})-(?P<y>20\d\d)(?!\d)")
+                        r"n(?:o|ro)?-(?:o-)?(?P<num>\d+)-(?P<d>\d{1,2})-(?P<m>\d{1,2})-(?P<y>20\d\d)(?!\d)")
 _COEN_TITLE_DATE = re.compile(r"N[.°º\s]*\s*(?P<num>\d+)\s*[–-]\s*(?P<d>\d{1,2})/(?P<m>\d{1,2})/(?P<y>20\d\d)(?!\d)")
 _DASH = re.compile(r"\s+[–—-]\s+|\s*[–—]\s*")
 _LIST = re.compile(r"\s*,\s*|\s+Y\s+", re.I)
+#: Nombres del nomenclátor con «Y» o guion, que _LIST y _DASH partirían («JOSÉ CRESPO Y CASTILLO», «QUITO – ARMA»): se
+#: pegan antes de partir el título y se restituyen después (auditoría de georreferenciación, octubre de 2026).
+_JOINED = ("ANCO-HUALLO", "ESTIQUE-PAMPA", "HUAC-HUAS", "HUANCA-HUANCA", "HUAY-HUAY", "JOSE CRESPO Y CASTILLO",
+           "JOSE LUIS BUSTAMANTE Y RIVERO", "QUITO-ARMA", "RUPA-RUPA")
+_ACC = {"A": "AÁ", "E": "EÉ", "I": "IÍ", "O": "OÓ", "U": "UÚ"}
+_JOINED_RE = re.compile(r"(?<!\w)(?:" + "|".join(
+    r"\s*[–—-]\s*".join(r"\s+Y\s+".join("".join(f"[{_ACC[c]}]" if c in _ACC else re.escape(c) for c in w)
+                                        for w in part.split(" Y ")) for part in n.split("-")) for n in _JOINED) + r")(?!\w)", re.I)
+
+
+def _glue(m: re.Match) -> str:
+    return re.sub(r"\s*[–—-]\s*", "\u2011", re.sub(r"\s+(Y)\s+", r"_\1_", m.group(0), flags=re.I))
+
+
+def _unglue(name: str) -> str:
+    return re.sub(r"_(Y)_", r" \1 ", name.strip(), flags=re.I).replace("\u2011", "-")
 
 
 def coen_title(title: str) -> Optional[dict]:
     """Peligro, nivel y lugares del título de un reporte del COEN («… LLUVIAS INTENSAS EN EL DISTRITO DE PÁUCAR –
     PASCO»): {"peligro", "nivel", "lugares": [nombre, …], "departamento"}, o None si no tiene esa forma (boletines,
     sismos con epicentro en el mar)."""
-    m = _COEN_TITLE.search(re.sub(r"\s+", " ", title or "").strip())
+    m = _COEN_TITLE.search(_JOINED_RE.sub(_glue, re.sub(r"\s+", " ", title or "").strip()))
     if not m:
         return None
     haz = re.sub(r"^\(?(?:REPORTE|INFORME)\s*N[^)]*\)\s*", "", m.group("haz").strip(), flags=re.I)
     parts = [p.strip(" .") for p in _DASH.split(m.group("place")) if p.strip(" .")]
     if len(parts) < 2:
         return None
+    plural = m.group("lvl").upper().endswith("S")
     lvl = m.group("lvl").lower().rstrip("s")
-    places = [n.strip() for n in _LIST.split(parts[0]) if n.strip()]
-    return {"peligro": haz, "nivel": lvl, "lugares": places, "provincia": parts[1] if len(parts) > 2 else "",
-            "departamento": parts[-1]}
+    # «DISTRITOS DE A, B Y C» son varios; «DISTRITO DE JOSÉ CRESPO Y CASTILLO» es uno solo.
+    places = [_unglue(n) for n in (_LIST.split(parts[0]) if plural else [parts[0]]) if n.strip()]
+    return {"peligro": _unglue(haz), "nivel": lvl, "lugares": places, "provincia": _unglue(parts[1]) if len(parts) > 2 else "",
+            "departamento": _unglue(parts[-1])}
 
 
 def coen_first_report(url: str, title: str = "") -> Optional[dict]:
@@ -542,6 +560,8 @@ _NOT_EVENT = re.compile(
     r"\bno (?:se )?(?:registr|report|hubo|dej)|\bsin (?:da[ñn]os|afectad|v[ií]ctimas)|"
     r"\b(?:minsa|ministerio)\b.*\b(?:recomienda|recomendaciones)|c[oó]mo (?:protegerse|prepararse)|consejos", re.I)
 _OFF = re.compile(r"\bcovid|coronavirus|vacun|elecci|candidat|congres|f[uú]tbol|selecci[oó]n peruana|concierto|"
+                  r"reconstrucci|reconstruir|\bbonos?\b|\bdona\b|donaci[oó]n|expediente t[eé]cnico|rehabilitaci[oó]n de|"
+                  r"feminicid|homicid|violaci|"
                   r"aguas? servidas|aguas residuales|aguas negras|aguas pestilentes|desag[üu]es?\b|alcantarill|"
                   r"\bbuz[oó]n|tuber[ií]a|matriz de agua|\bsismo|terremoto|temblor|relaves?\b|derrame de (?:petr|crudo)|colapso de (?:las )?redes|"
                   r"\blluvias? de (?!granizo|nieve|agua)\w+|"
@@ -1136,8 +1156,10 @@ def _glof_date(d: dict) -> tuple[Optional[str], str]:
     mid = a + (b - a) / 2
     if span <= 62:
         return mid.replace(day=1).isoformat(), "mes"
-    if span <= 366:
-        return f"{mid.year}-01-01", "anio"
+    if span <= 366 and a.year == b.year:
+        return f"{a.year}-01-01", "anio"
+    if span <= 366:  # entre dos años no vale «solo el año»: el mes del centro de la ventana (misma temporada de lluvias)
+        return mid.replace(day=1).isoformat(), "mes"
     return None, ""
 
 

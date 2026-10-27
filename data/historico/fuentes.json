@@ -1768,7 +1768,7 @@
       "url": "https://github.com/PillB/observatorio-enso-peru/tree/main/data/historico/curado",
       "licencia": "Cada registro cita su fuente",
       "cobertura": "1559-2017: la cronología de El Niño de García-Herrera et al. (2008) para Trujillo y el norte, los años de lluvias extraordinarias en Piura y Paita del estudio de Eguiguren (1894) y los 10 distritos con más viviendas afectadas en 2017 según el Plan Integral de la Reconstrucción con Cambios (cuadro 27); se amplía con data/historico/curado/*.yaml",
-      "registros": 68,
+      "registros": 79,
       "tipo": "eventos"
     },
     {
@@ -1794,5 +1794,13 @@
     "prensa: corrobora (lugar y fecha)": 3641,
     "prensa: corrobora (lugar y mes)": 59,
     "prensa: fila propia": 1380
+  },
+  "calidad": {
+    "DesInventar 1 de enero → precisión de mes": 197,
+    "ICEN pendiente": 2858,
+    "SINPAD 2016-2018: fecha corregida (hora de Lima)": 2630,
+    "confianza alta → media (fecha de reporte o publicación)": 3416,
+    "idmc unidas a su emergencia del SINPAD": 4934,
+    "nota de prensa que no es un evento": 15
   }
 }

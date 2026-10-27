@@ -27,6 +27,10 @@ inventario de peligros del INGEMMET con su fecha, y los eventos oficiales que oc
 peligro del mismo grupo estaba inventariado, evaluado o declarado inminente. Una declaratoria de toda una
 provincia o un departamento cuenta para cada uno de sus distritos. Por país, los llamamientos de la Cruz Roja
 (IFRC). Es la evidencia para la pregunta del experto: si el Perú supo del peligro y aun así el daño se repitió.
+
+Esa parte sola no dice mucho si casi todos los distritos ya tienen algún peligro documentado, así que se compara con
+lo esperable al azar (Bar-Hillel, 1980): las mismas emergencias, con su fecha y su peligro, en un distrito elegido al
+azar (``eventosConAvisoAzar``) o con probabilidad proporcional a su población (``eventosConAvisoAzarPob``).
 """
 
 from __future__ import annotations
@@ -104,7 +108,8 @@ class _Index:
         return best[1] if best else None
 
 
-def _attach(target: dict, cand: dict) -> None:
+def attach(target: dict, cand: dict) -> None:
+    """Suma ``cand`` como corroboración de ``target`` (enlace, origen y conteo; del COEN, también sus cifras de daños)."""
     target["Corroboracion"] = int(target.get("Corroboracion") or 0) + 1
     links = [u for u in (target.get("FuentesAdicionales") or "").split(" | ") if u]
     if cand["Fuente"] not in links and len(links) < MAX_LINKS and cand["Fuente"] != target["Fuente"]:
@@ -188,7 +193,7 @@ def link(records: list[dict], candidates: Iterable[dict], stats: Optional[Counte
             else:
                 hit, how = idx.find(c["Ubigeo"], d - 10, d + 1, c["DangerType"], d), "lugar y fecha"
         if hit is not None:
-            _attach(pool[hit], c)
+            attach(pool[hit], c)
             stats[f"{c['Origen']}: corrobora ({how})"] += 1
             continue
         stats[f"{c['Origen']}: fila propia"] += 1
@@ -210,7 +215,7 @@ IMMINENT_DAYS = 365
 
 
 def prevention(records: list[dict], decrees: list[dict], evaluations: list[dict], appeals: Optional[list[dict]] = None,
-               since: int = 2003, origins: Optional[set] = None) -> dict:
+               since: int = 2003, origins: Optional[set] = None, districts: Optional[dict[str, float]] = None) -> dict:
     """Indicadores de prevención por distrito y por año.
 
     * ``distritos``: {ubigeo: [decretosInminente, decretosImpacto, prorrogas, evaluaciones, primeraEvaluacion,
@@ -219,7 +224,9 @@ def prevention(records: list[dict], decrees: list[dict], evaluations: list[dict]
     * ``anual``: por año, decretos por peligro inminente, por impacto y prórrogas; evaluaciones técnicas; puntos
       inventariados; llamamientos internacionales por desastres climáticos (IFRC); eventos (de ``origins``, por
       defecto las fuentes oficiales con fecha de evento) y cuántos ocurrieron cuando el peligro del distrito ya
-      estaba evaluado, inventariado o declarado inminente.
+      estaba evaluado, inventariado o declarado inminente. Con ``districts`` (todos los distritos y su población),
+      también cuántos se esperarían si cada evento hubiera caído en un distrito al azar, uniforme o según la
+      población (la marca de peligro inminente que trae el COEN en la propia ficha no entra a esa cuenta).
 
     Las declaratorias de una provincia o un departamento entero cuentan para cada uno de sus distritos.
 
@@ -263,6 +270,29 @@ def prevention(records: list[dict], decrees: list[dict], evaluations: list[dict]
     def covers(eg: str, g: str, danger: str) -> bool:
         return not eg or eg == g or (danger == "Lluvias intensas" and eg in RAIN_GROUPS)
 
+    # Base al azar: qué distritos tenían el peligro documentado para cada (año, grupo, tipo) y cuáles una declaratoria
+    # inminente compatible vigente en cada (fecha, tipo).
+    weights = districts or {}
+    total_w = sum(weights.values()) or 1.0
+    known: dict[tuple, tuple[set, float]] = {}
+    windows: dict[tuple, set] = {}
+    timeline = sorted((dd, dp, area) for area, lst in imminent.items() for dd, dp in lst)
+    stamps = [t[0] for t in timeline]
+
+    def documented(y: int, g: str, dt: str) -> tuple[set, float]:
+        if (y, g, dt) not in known:
+            got = {c for src in (reports, inventory) for c, lst in src.items()
+                   if c in weights and any(ey < y and covers(eg, g, dt) for ey, eg in lst)}
+            known[(y, g, dt)] = (got, sum(weights[c] for c in got))
+        return known[(y, g, dt)]
+
+    def declared(d: int, dt: str) -> set:
+        if (d, dt) not in windows:
+            lo, hi = bisect.bisect_left(stamps, d - IMMINENT_DAYS), bisect.bisect_right(stamps, d)
+            areas = {a for _, dp, a in timeline[lo:hi] if not dp or compatible(dp, dt)}
+            windows[(d, dt)] = {c for c in weights if c in areas or c[:4] in areas or c[:2] in areas} if areas else set()
+        return windows[(d, dt)]
+
     years_with = defaultdict(set)
     for r in records:
         if r["Origen"] not in origins or r.get("FechaTipo", "evento") != "evento" or len(r["Ubigeo"]) != 6:
@@ -286,6 +316,11 @@ def prevention(records: list[dict], decrees: list[dict], evaluations: list[dict]
             if v:
                 dist[code][k] += 1
                 yearly[y][k] += 1
+        if weights:
+            doc, doc_w = documented(y, g, dt)
+            extra = declared(d, dt) - doc
+            yearly[y]["eventosConAvisoAzar"] += (len(doc) + len(extra)) / len(weights)
+            yearly[y]["eventosConAvisoAzarPob"] += (doc_w + sum(weights[c] for c in extra)) / total_w
     for code, ys in years_with.items():
         dist[code]["aniosConEvento"] = len(ys)
     # Una declaratoria de toda una provincia o un departamento cubre a cada uno de sus distritos.
@@ -299,9 +334,11 @@ def prevention(records: list[dict], decrees: list[dict], evaluations: list[dict]
             "eventosConAviso", "aniosConEvento"]
     acols = ["decretosInminente", "decretosImpacto", "prorrogas", "evaluaciones", "puntosInventario", "llamamientosClima",
              "eventos", "eventosTrasEvaluacion", "eventosTrasInventario", "eventosTrasInminente", "eventosConAviso"]
+    if weights:
+        acols += ["eventosConAvisoAzar", "eventosConAvisoAzarPob"]
     return {
         "columnas": cols,
         "distritos": {c: [v.get(k, 0) or 0 for k in cols] for c, v in sorted(dist.items())},
         "columnasAnual": ["anio"] + acols,
-        "anual": [[y] + [yearly[y].get(k, 0) for k in acols] for y in sorted(yearly)],
+        "anual": [[y] + [round(yearly[y].get(k, 0), 1) for k in acols] for y in sorted(yearly)],
     }

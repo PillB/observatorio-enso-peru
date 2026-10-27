@@ -138,6 +138,18 @@
     "evidence": "python/enso/reach.py#RobotRules, #Robots, #ROBOTS_TIMEOUT_S, #PUBLIC_PERU_SUFFIXES, #public_peru; python/tools/probe_sources.py#probe; python/tools/peru_collector.py#fetch; python/tools/scrape_ladder.py; python/enso/fetch.py#Fetcher._robots_skip; python/enso/registry.py#robots_verdict; n8n/nodes/fuentes.js"
    },
    {
+    "id": "memoria-sources",
+    "group": "sources",
+    "col": "sources",
+    "name_es": "Archivos de desastres pasados (66 fuentes)",
+    "name_en": "Past-disaster archives (66 sources)",
+    "what_es": "DesInventar, el SINPAD y los reportes del COEN del INDECI, el IDMC, El Peruano, el INGEMMET, el IGP, la ANA, la Cruz Roja, 44 medios en línea y periódicos antiguos digitalizados, más registros curados de estudios históricos.",
+    "what_en": "DesInventar, INDECI's SINPAD and COEN reports, IDMC, El Peruano, INGEMMET, IGP, ANA, the Red Cross, 44 online media and digitised old newspapers, plus curated records from historical studies.",
+    "details_es": "La lista está en data/historico/fuentes.json: URL, licencia, cobertura, lector y forma de descarga de cada una, y el SHA-256 de lo bajado. Los servidores del Estado peruano que solo responden desde el Perú (Biblioteca Nacional, BVPAD del INDECI, SPIJ, Contraloría) están en el registro y se miden desde el recolector del Perú hasta que tengan un script de cosecha.",
+    "details_en": "The list is in data/historico/fuentes.json: each one's URL, licence, coverage, reader and download method, and the SHA-256 of what was fetched. The Peruvian government servers that only answer from Peru (National Library, INDECI's BVPAD, SPIJ, Comptroller) are in the registry and are measured from the Peru collector until they have a harvest script.",
+    "evidence": "data/historico/fuentes.json; python/enso/registry.py#_memoria_entries; docs/memoria-desastres.md"
+   },
+   {
     "id": "registry-builder",
     "group": "pipeline",
     "col": "sources",
@@ -218,6 +230,20 @@
     "details_es": "Webhook POST /webhook/enso-extraer con autenticación por cabecera (credencial «Token del extractor ENSO»: Bearer ENSO_LLM_EXTRACT_TOKEN). Valida kind (enfen-informe o enfen-perspectiva), schema y text; si falta algo responde 400. Pide chat/completions con temperatura 0 y respuesta JSON (credencial «OpenAI ENSO (n8n)»; el modelo se elige en el nodo Configuración), con 3 intentos, y responde {data, model, evidence} o 502. El pipeline manda hasta 120 000 caracteres y espera hasta 120 s.",
     "details_en": "POST webhook /webhook/enso-extraer with header auth (credential «Token del extractor ENSO»: Bearer ENSO_LLM_EXTRACT_TOKEN). It checks kind (enfen-informe or enfen-perspectiva), schema and text; if anything is missing it answers 400. It calls chat/completions with temperature 0 and a JSON response (credential «OpenAI ENSO (n8n)»; the model is chosen in the Configuración node), with 3 tries, and answers {data, model, evidence} or 502. The pipeline sends up to 120,000 characters and waits up to 120 s.",
     "evidence": "n8n/dist/enso-n8n-extractor.json; n8n/build.mjs:276-325; n8n/nodes/extraer-pedido.js; n8n/nodes/extraer-respuesta.js; python/enso/reports.py#llm_extract, #llm_unavailable, #reusable_review"
+   },
+   {
+    "id": "memoria-harvest",
+    "group": "channels",
+    "col": "collect",
+    "name_es": "Cosecha del catálogo histórico (memoria-cosecha.yml)",
+    "name_en": "Historical catalogue harvest (memoria-cosecha.yml)",
+    "what_es": "Baja lo que falta de cada fuente de la memoria de desastres, en paralelo por servidor y en serie dentro de cada uno, hasta 300 min por corrida, y guarda lo bajado en la caché de Actions para seguir en la corrida siguiente.",
+    "what_en": "Fetches what is missing from each disaster-memory source, in parallel by server and one after another within each, for up to 300 min per run, and keeps what it fetched in the Actions cache to continue in the next run.",
+    "meta_es": "cada 6 h (minuto 41)",
+    "meta_en": "every 6 h (minute 41)",
+    "details_es": "Cada fuente corre en su propio proceso (tools/cosecha_historico.py) y las descargas largas siguen donde quedaron. Una fuente de segunda ronda que falla tres corridas seguidas deja de esperarse; las que el catálogo necesita, nunca. Cuando no falta nada, construye el catálogo sin red y abre un PR desde bot/memoria-desastres/<inicio>; con ese PR abierto no baja nada.",
+    "details_en": "Each source runs in its own process (tools/cosecha_historico.py) and long downloads resume where they stopped. A second-round source that fails three runs in a row stops being waited for; the ones the catalogue needs, never. When nothing is missing it builds the catalogue offline and opens a PR from bot/memoria-desastres/<start>; while that PR is open it fetches nothing.",
+    "evidence": ".github/workflows/memoria-cosecha.yml; python/tools/cosecha_historico.py#harvest; python/tools/cosecha_historico.py#needed"
    },
    {
     "id": "data-peru-branch",
@@ -382,6 +408,18 @@
     "evidence": "python/enso/geo.py#locate_item, #PUBLISH_MIN; python/enso/geo_overrides.py#REVIEW_BELOW, #fetch_overrides, #apply_all, #relocate; python/enso/news.py#cluster; python/enso/observatory.py#acquire_news"
    },
    {
+    "id": "memoria-build",
+    "group": "pipeline",
+    "col": "pipeline",
+    "name_es": "Catálogo histórico e indicadores (build_historico)",
+    "name_en": "Historical catalogue and indicators (build_historico)",
+    "what_es": "Lee cada fuente, clasifica el peligro y el evento ENSO, ubica cada registro por UBIGEO, une los reportes y las notas que cuentan el mismo evento y calcula los indicadores de recurrencia y de El Niño por área.",
+    "what_en": "Reads each source, classifies the hazard and the ENSO event, places each record by UBIGEO, joins the reports and news that tell the same event and computes the recurrence and El Niño indicators per area.",
+    "details_es": "Escribe public/assets/historico/ (eventos.zip con las 13 columnas del tablero del equipo de prevención y 45 de metadatos, la versión para el navegador, el detalle por departamento, el contexto y la prevención) y data/historico/indicadores-*.csv. Corre en la cosecha, no en la actualización diaria: el catálogo llega al sitio cuando se fusiona su PR.",
+    "details_en": "Writes public/assets/historico/ (eventos.zip with the prevention team's 13 dashboard columns and 45 metadata columns, the browser version, the per-department detail, the context and the prevention files) and data/historico/indicadores-*.csv. It runs in the harvest, not in the daily update: the catalogue reaches the site when its PR is merged.",
+    "evidence": "python/tools/build_historico.py#main; python/enso/historico/esquema.py; python/enso/historico/enlace.py#link; python/enso/historico/indicadores.py#summarize"
+   },
+   {
     "id": "event-log",
     "group": "pipeline",
     "col": "pipeline",
@@ -445,10 +483,10 @@
     "id": "site-app",
     "group": "site",
     "col": "site",
-    "name_es": "Sitio web (10 vistas)",
-    "name_en": "Website (10 views)",
-    "what_es": "Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada.",
-    "what_en": "Static page with no build step: Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, News (with the alert map), Data, Methodology and Assistant. Next to each value it links the live source and the archived copy.",
+    "name_es": "Sitio web (11 vistas)",
+    "name_en": "Website (11 views)",
+    "what_es": "Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada.",
+    "what_en": "Static page with no build step: Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, News (with the alert map), Data, Methodology and Assistant. Next to each value it links the live source and the archived copy.",
     "details_es": "Carga primero dashboard.json; su publicationId es la referencia y no muestra archivos de otra publicación. Avisa si la publicación tiene más de 36 h o si worst es error o critical. El Asistente usa reglas fijas, no un modelo de lenguaje. Metodología muestra el diagrama simplificado y, con un botón, el completo (copias de docs/). El mapa de alertas pinta cada departamento con el nivel que dio la institución (severity.py en el pipeline; un aviso sin nivel queda «sin nivel»); el navegador solo calcula si cada aviso está vigente, es próximo o venció según su vigencia (valid). Tiene cuatro versiones (A a D): con Cloudflare, al salir de la página se manda un aviso anónimo a /api/ab/e (contadores por día en D1, sin IP ni cookies; nada con «No rastrear» o Global Privacy Control), y la vista #variantes, fuera del menú, muestra los resultados.",
     "details_en": "Loads dashboard.json first; its publicationId is the reference and files from another publication are not shown. Warns if the publication is over 36 h old or worst is error or critical. The Assistant uses fixed rules, not a language model. Methodology shows the simplified diagram and, with a button, the full one (copies from docs/). The alert map colours each department with the level its agency gave (severity.py in the pipeline; a warning with no level shows «sin nivel»); the browser only works out whether each warning is current, upcoming or expired from its validity (valid). It has four versions (A to D): with Cloudflare, leaving the page sends one anonymous beacon to /api/ab/e (daily counters in D1, no IP or cookies; nothing with Do Not Track or Global Privacy Control), and the #variantes view, not in the menu, shows the results.",
     "evidence": "public/assets/js/app.js:1-48, 236-239, 911-1046, 1053, 1076-1085, 1111-1127; public/assets/js/alertmap.js; public/assets/js/ab.js; public/assets/js/assistant.js:1-4; public/index.html; python/enso/severity.py#assess; functions/api/ab/[[path]].js; functions/_lib/ab.js"
@@ -1726,6 +1764,46 @@
     "when_es": "cada corrida de observatory.yml",
     "when_en": "every observatory.yml run",
     "evidence": "python/enso/sourcefeed.py#levels_table; python/enso/severity.py#assess; python/enso/senamhi_avisos.py#load; python/enso/observatory.py#archive_levels"
+   },
+   {
+    "from": "memoria-sources",
+    "to": "memoria-harvest",
+    "kind": "data",
+    "label_es": "descargas largas, con pausa",
+    "label_en": "long downloads, paced",
+    "explain_es": "Con al menos 5 s entre pedidos a cada servidor (o su Crawl-delay, si es mayor) y respetando su robots.txt, salvo los Disallow de las instituciones públicas peruanas, que autorizaron la descarga. Nunca se salta una verificación antirobots, un muro de pago ni un inicio de sesión.",
+    "explain_en": "With at least 5 s between requests to each server (or its Crawl-delay, if longer) and following its robots.txt, except the Disallow rules of Peruvian public institutions, which authorised the download. A bot check, paywall or login is never bypassed.",
+    "evidence": "python/tools/build_historico.py#robots_check; python/tools/build_historico.py#fetch"
+   },
+   {
+    "from": "memoria-harvest",
+    "to": "memoria-build",
+    "kind": "data",
+    "label_es": "lo bajado, desde la caché",
+    "label_en": "what was fetched, from the cache",
+    "explain_es": "Cuando no falta ninguna fuente, build_historico --sin-red --parcial lee los archivos de la caché, compara su SHA-256 con el manifiesto y anota en el PR qué cambió en cada fuente.",
+    "explain_en": "When no source is missing, build_historico --sin-red --parcial reads the cached files, compares their SHA-256 with the manifest and notes in the PR what changed in each source.",
+    "evidence": ".github/workflows/memoria-cosecha.yml; python/tools/build_historico.py#snapshot"
+   },
+   {
+    "from": "memoria-build",
+    "to": "deploy",
+    "kind": "data",
+    "label_es": "catálogo por PR a main",
+    "label_en": "catalogue via a PR to main",
+    "explain_es": "El PR de la cosecha cambia public/assets/historico/ y data/historico/; al fusionarlo, el despliegue lo publica y la vista Memoria de desastres lo lee (historico.js).",
+    "explain_en": "The harvest PR changes public/assets/historico/ and data/historico/; once merged, the deploy publishes it and the Disaster memory view reads it (historico.js).",
+    "evidence": ".github/workflows/memoria-cosecha.yml; public/assets/js/historico.js:26-42"
+   },
+   {
+    "from": "maintainers",
+    "to": "memoria-harvest",
+    "kind": "human",
+    "label_es": "revisan y fusionan el PR del catálogo",
+    "label_en": "review and merge the catalogue PR",
+    "explain_es": "Una persona revisa la tabla de cambios por fuente del PR antes de fusionarlo. También puede pedir a mano «reconstruir» (PR con lo bajado hasta ahora) o «renovar» (cosecha nueva desde cero).",
+    "explain_en": "A person reviews the PR's per-source change table before merging it. They can also ask by hand to «rebuild» (a PR with what has been fetched so far) or «renew» (a fresh harvest from scratch).",
+    "evidence": ".github/workflows/memoria-cosecha.yml"
    }
   ]
  },
@@ -1856,8 +1934,8 @@
     "w": 360,
     "name_es": "Sitio",
     "name_en": "Website",
-    "what_es": "La página pública con 10 vistas, un mapa de alertas y descargas abiertas. Junto a cada dato están el enlace a la fuente original y a su copia archivada.",
-    "what_en": "The public website with 10 views, an alert map and open downloads. Next to each value are links to the original source and its archived copy.",
+    "what_es": "La página pública con 11 vistas, un mapa de alertas y descargas abiertas. Junto a cada dato están el enlace a la fuente original y a su copia archivada.",
+    "what_en": "The public website with 11 views, an alert map and open downloads. Next to each value are links to the original source and its archived copy.",
     "covers": [
      "live-site",
      "site-app",
@@ -1900,6 +1978,22 @@
      "geo-console",
      "reviewers",
      "doc-console"
+    ]
+   },
+   {
+    "id": "s-memoria",
+    "group": "pipeline",
+    "x": 900,
+    "y": 970,
+    "w": 280,
+    "name_es": "Memoria de desastres",
+    "name_en": "Disaster memory",
+    "what_es": "Un catálogo de los desastres de origen climático desde 1970 por distrito (y registros de archivo desde 1550), armado de 66 fuentes por una cosecha en GitHub Actions cada 6 horas. Llega al sitio por un PR que revisa una persona.",
+    "what_en": "A catalogue of climate-related disasters since 1970 by district (and archive records since 1550), built from 66 sources by a GitHub Actions harvest every 6 hours. It reaches the site through a PR a person reviews.",
+    "covers": [
+     "memoria-sources",
+     "memoria-harvest",
+     "memoria-build"
     ]
    }
   ],
@@ -2085,6 +2179,18 @@
     "when_es": "al final de cada corrida",
     "when_en": "at the end of every run",
     "evidence": "full edges publication-data→github-issues, github-issues→maintainers"
+   },
+   {
+    "from": "s-memoria",
+    "to": "s-sitio",
+    "kind": "data",
+    "label_es": "Catálogo e indicadores por PR",
+    "label_en": "Catalogue and indicators via PR",
+    "explain_es": "Cuando la cosecha termina, abre un PR con el catálogo y sus indicadores; al fusionarlo, el sitio los publica en la vista Memoria de desastres.",
+    "explain_en": "When the harvest finishes it opens a PR with the catalogue and its indicators; once merged, the site publishes them in the Disaster memory view.",
+    "when_es": "al terminar la cosecha",
+    "when_en": "when the harvest finishes",
+    "evidence": "full edges memoria-sources→memoria-harvest, memoria-harvest→memoria-build, memoria-build→deploy; .github/workflows/memoria-cosecha.yml"
    }
   ]
  },
@@ -2181,6 +2287,16 @@
     "s-operacion",
     "s-sitio",
     "s-pipeline"
+   ]
+  },
+  {
+   "title_es": "La memoria de desastres",
+   "title_en": "The disaster memory",
+   "text_es": "Aparte de la corrida diaria, una cosecha cada 6 horas junta los desastres pasados de 66 fuentes, los ubica por distrito y calcula cada cuánto se repiten y cuánto más daño trae El Niño. El resultado entra al sitio por un PR que revisa una persona.",
+   "text_en": "Apart from the daily run, a harvest every 6 hours gathers past disasters from 66 sources, places them by district and works out how often they recur and how much more damage El Niño brings. The result reaches the site through a PR a person reviews.",
+   "nodes": [
+    "s-memoria",
+    "s-sitio"
    ]
   }
  ]

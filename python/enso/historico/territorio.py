@@ -39,7 +39,10 @@ NAME_ALIASES = {"nasca": "nazca", "kimbiri": "quimbiri", "daniel alomia robles":
                 "san juan de iscos": "san juan de yscos", "caspizapa": "caspisapa", "lima metropolitana": "lima",
                 "lurigancho-chosica": "lurigancho", "lurigancho chosica": "lurigancho", "echarati": "echarate",
                 "ccatcca": "ccatca", "mariscal gamarra": "gamarra", "la encanada": "encanada",
-                "san francisco de asis yarusyacan": "san francisco de asis de yarusyacan", "zana": "sana"}
+                "san francisco de asis yarusyacan": "san francisco de asis de yarusyacan", "zana": "sana",
+                "el arenal": "arenal", "raimondi": "raymondi", "antonio raimondi": "antonio raymondi",
+                "san miguel del faique": "san miguel de el faique", "ccapacmarca": "capacmarca",
+                "san pedro de laraos": "laraos"}
 
 
 def _name(s: str) -> str:
@@ -153,7 +156,8 @@ class Territory:
                                 (2, self.dep, "capital-departamento")):
             rec = table.get(code[:n]) if len(code) >= n else None
             if rec and rec.get("lat") is not None:
-                return rec["lat"], rec["lon"], label
+                # Un distrito sin capital en el nomenclátor lleva un punto dentro de su polígono («point»: «interior»).
+                return rec["lat"], rec["lon"], "interior-distrito" if rec.get("point") == "interior" else label
         return None, None, ""
 
     def has_capital(self, code: str) -> bool:

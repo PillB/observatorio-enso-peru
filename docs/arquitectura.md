@@ -2,7 +2,7 @@
 
 ## Vista general
 
-Hay dos diagramas principales y diez anexos, y todos se dibujan desde
+Hay dos diagramas principales y once anexos, y todos se dibujan desde
 dos modelos: `docs/arquitectura.json` (los principales) y
 `docs/arquitectura-anexos.json` (los anexos). Cada caja y cada conexión
 tiene ahí su texto en español e inglés, cuándo ocurre y en qué parte del
@@ -26,21 +26,21 @@ listas fijas) y una prueba los vuelve a contar; lo que sale de una medición
 (cuántas URL responden o qué canal tiene cada una) no se escribe: está en
 `registry/` y el sitio lo muestra en Metodología y en Noticias.
 
-- **Simplificado** (`arquitectura-simple.svg`): 9 cajas para explicar el
+- **Simplificado** (`arquitectura-simple.svg`): 10 cajas para explicar el
   sistema a cualquier persona, de arriba abajo. Las cajas llevan el número
   del paso del recorrido que las presenta y las líneas una letra con lo que
   viaja por ellas.
-- **Completo** (`arquitectura.svg`): 47 cajas y 95 conexiones numeradas,
+- **Completo** (`arquitectura.svg`): 50 cajas y 99 conexiones numeradas,
   en seis bloques (fuentes, recolectores, copias y respaldo, pipeline,
   publicación y sitio, y debajo operación, vigilancia y personas). Debajo
   del dibujo, cada número dice qué viaja, cuándo y por qué.
-- **Anexos A1 a A10** (`anexos/a1.svg` … `anexos/a10.svg`): el detalle de
+- **Anexos A1 a A11** (`anexos/a1.svg` … `anexos/a11.svg`): el detalle de
   cada parte, con el mismo estilo: dónde corre cada paso (GitHub Actions,
   n8n en AWS, el equipo en el Perú, Cloudflare, el navegador), con qué
   tecnología (Python, n8n, git, D1…), las conexiones numeradas y, abajo,
   qué pasa y qué respaldo entra si algo falla. Cada caja del completo está
   en exactamente un anexo; en los dos diagramas principales, la etiqueta
-  A1 a A10 de cada caja abre su anexo, y cada anexo tiene un enlace para
+  A1 a A11 de cada caja abre su anexo, y cada anexo tiene un enlace para
   volver al completo y etiquetas hacia los anexos vecinos.
 - **Explorador** (`public/arquitectura.html`, en el sitio como
   `arquitectura.html`): recorre los diagramas y los anexos con un clic.
@@ -60,7 +60,7 @@ muestra su explicación completa.
 
 ### Diagrama completo
 
-![Arquitectura completa: 47 partes y 95 conexiones numeradas](arquitectura.svg)
+![Arquitectura completa: 50 partes y 99 conexiones numeradas](arquitectura.svg)
 
 ### Cómo se recorre
 
@@ -77,6 +77,7 @@ muestra su explicación completa.
 7. **Publicar sin romper nada.** Todos los archivos se arman y validan juntos, el sitio se prueba en un navegador y se sube completo. Si hay un problema grave, se queda el sitio de ayer. _Cajas: Publicación (7), Sitio (8)._
 8. **Lo que ve la gente.** El sitio muestra 10 vistas, un mapa de alertas con el nivel que dio cada institución y descargas abiertas, con el enlace a la fuente original y a la copia archivada junto a cada dato. Lo de hoy será el respaldo de mañana. _Cajas: Sitio (8), Respaldo (4)._
 9. **Vigilancia y avisos.** Dos vigilantes revisan el sitio cada 6 horas; el de GitHub relanza la actualización si se atrasa y avisa si un recolector deja de dar señales. Cada problema se vuelve un aviso en GitHub que se cierra solo al resolverse, salvo un cambio de formato, que cierra una persona tras revisar los valores. _Cajas: Operación y vigilancia (9), Sitio (8), Pipeline diario (5)._
+10. **La memoria de desastres.** Aparte de la corrida diaria, una cosecha cada 6 horas junta los desastres pasados de 66 fuentes, los ubica por distrito y calcula cada cuánto se repiten y cuánto más daño trae El Niño. El resultado entra al sitio por un PR que revisa una persona. _Cajas: Memoria de desastres (10), Sitio (8)._
 
 **Conexiones del diagrama simplificado:**
 
@@ -98,6 +99,7 @@ muestra su explicación completa.
 | N | Sitio → Operación y vigilancia | **Vigilancia cada 6 horas.** Dos vigilantes, uno en GitHub y otro en n8n, revisan cada 6 horas que el sitio tenga menos de 30 horas. |
 | O | Operación y vigilancia → Pipeline diario | **Relanza o corre a mano.** Si el sitio está atrasado, el vigilante relanza la actualización. Las personas también la lanzan al aprobar cambios o a mano. |
 | P | Publicación → Operación y vigilancia | **Avisos de problemas.** Cada problema de la corrida se vuelve un aviso en GitHub, que se cierra solo cuando el problema desaparece; un cambio de formato lo cierra una persona tras revisar los valores. |
+| Q | Memoria de desastres → Sitio | **Catálogo e indicadores por PR.** Cuando la cosecha termina, abre un PR con el catálogo y sus indicadores; al fusionarlo, el sitio los publica en la vista Memoria de desastres. |
 
 **Qué cubre cada caja del simplificado en el completo:**
 
@@ -107,11 +109,12 @@ muestra su explicación completa.
 - **Respaldo:** Internet Archive (Wayback), Publicación anterior (data/ en vivo), Rama data-archive, Job archive.
 - **Pipeline diario:** Actualización diaria (observatory.yml), Lectura de fuentes oficiales, Series, estados y señal GRD, Noticias y alertas: lectura y filtro, Histórico de noticias (solo anexar), Ubicación y correcciones de lugar, Registro de incidencias, Datos de referencia: lugares y umbrales, Caché de Actions: feeds reader.
 - **Publicación:** Escritura y validación de la publicación, Archivos publicados (data/), Despliegue y verificación.
-- **Sitio:** Sitio en vivo (SITE_URL), Sitio web (10 vistas), Público.
+- **Sitio:** Sitio en vivo (SITE_URL), Sitio web (11 vistas), Público.
 - **Operación y vigilancia:** Vigilante de GitHub (watchdog.yml), Vigilante n8n (fuera de GitHub), Issues de incidencias (incidente-datos), Sondeo semanal de alcance, Herramientas de desarrollo, Kit y verificación del recolector, Mantenedores y propietario, Responsable del equipo en el Perú, Colega que opera n8n.
 - **Consola de lugares y documentos:** Consola de lugares (/admin/), Revisores de lugares, Consola de documentos (/admin/documentos.html).
+- **Memoria de desastres:** Archivos de desastres pasados (66 fuentes), Cosecha del catálogo histórico (memoria-cosecha.yml), Catálogo histórico e indicadores (build_historico).
 
-<details><summary>Las 95 conexiones del diagrama completo, en texto</summary>
+<details><summary>Las 99 conexiones del diagrama completo, en texto</summary>
 
 | N.º | De → a | Cuándo | Qué viaja y por qué |
 |---|---|---|---|
@@ -181,8 +184,8 @@ muestra su explicación completa.
 | 64 | Archivos publicados (data/) → Despliegue y verificación |  | **public/ listo para probar.** Con data/ escrita, el build adapta las direcciones del sitio, corre las pruebas de navegador en Chromium y sube el sitio; si falla uno de esos pasos, no se despliega. |
 | 65 | Despliegue y verificación → Sitio en vivo (SITE_URL) | tras cada build exitoso | **publica y verifica en vivo.** Sube todo el sitio de una vez a GitHub Pages o Cloudflare Pages, y verify_live espera hasta 10 min a que dashboard.json y manifest.json traigan el publicationId nuevo. |
 | 66 | Sitio en vivo (SITE_URL) → Publicación anterior (data/ en vivo) | en la corrida siguiente | **hoy es la anterior de mañana.** Lo que el sitio sirve hoy en data/ es lo que la corrida siguiente lee con --previous para arrastrar datos y seguir el histórico. |
-| 67 | Sitio en vivo (SITE_URL) → Sitio web (10 vistas) |  | **sirve páginas y datos.** El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y luego cada archivo con el mismo publicationId. |
-| 68 | Público → Sitio web (10 vistas) |  | **abre el sitio o descarga.** Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada dato puede ir a la fuente en vivo o a la copia archivada. |
+| 67 | Sitio en vivo (SITE_URL) → Sitio web (11 vistas) |  | **sirve páginas y datos.** El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y luego cada archivo con el mismo publicationId. |
+| 68 | Público → Sitio web (11 vistas) |  | **abre el sitio o descarga.** Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada dato puede ir a la fuente en vivo o a la copia archivada. |
 | 69 | Actualización diaria (observatory.yml) → Job archive | cada corrida de main cuyo build pasa | **tras build exitoso en main.** El build deja el artefacto raw-sources (7 días) con las respuestas originales nuevas y el histórico de noticias; el job archive lo baja en paralelo al despliegue. |
 | 70 | Job archive → Rama data-archive | tras cada build exitoso en main | **solo agrega, nunca borra.** Agrega las respuestas que no tenía, suma las notas del día y une el histórico con merge_history.py. Rechaza commits con borrados e intenta el push hasta 3 veces. |
 | 71 | Archivos publicados (data/) → Issues de incidencias (incidente-datos) | al final de cada corrida, aunque falle (fuera de main, solo el plan) | **run-report a issues.** El job incidents baja run-report.json y abre, actualiza o cierra un issue por huella; un format-drift no lo cierra: lo comenta una vez y espera a una persona. Si build, deploy o archive fallan, abre además «La actualización diaria falló». Todo esto solo en main; en otra rama muestra lo que haría. |
@@ -210,10 +213,14 @@ muestra su explicación completa.
 | 93 | Colega que opera n8n → Extractor de informes n8n (opcional) |  | **importa y crea credenciales.** Si se usa, la persona importa n8n/dist/enso-n8n-extractor.json, crea las credenciales «Token del extractor ENSO» y «OpenAI ENSO (n8n)» y lo activa; su Production URL y el token van a los secretos ENSO_LLM_EXTRACT_URL y ENSO_LLM_EXTRACT_TOKEN del repositorio. |
 | 94 | Rama data-manual → Registro de incidencias | cada corrida de observatory.yml | **salud de la copia subida.** Al empezar, el pipeline abre la rama data-manual: si existe y no se pudo bajar o leer, anota manual-unreadable (advertencia) y las subidas no se usan en esta corrida; si la leyó, manual-ok (info). Que la rama no exista no se anota. |
 | 95 | Rama data-peru → Noticias y alertas: lectura y filtro | cada corrida de observatory.yml | **nivel de los avisos del SENAMHI.** La tabla de avisos del SENAMHI de la copia del Perú da el nivel (amarillo, naranja o rojo) y el inicio y fin a los avisos que llegan por Telegram y por el COEN. El sitio publica esa copia y cada nivel la enlaza. |
+| 96 | Archivos de desastres pasados (66 fuentes) → Cosecha del catálogo histórico (memoria-cosecha.yml) |  | **descargas largas, con pausa.** Con al menos 5 s entre pedidos a cada servidor (o su Crawl-delay, si es mayor) y respetando su robots.txt, salvo los Disallow de las instituciones públicas peruanas, que autorizaron la descarga. Nunca se salta una verificación antirobots, un muro de pago ni un inicio de sesión. |
+| 97 | Cosecha del catálogo histórico (memoria-cosecha.yml) → Catálogo histórico e indicadores (build_historico) |  | **lo bajado, desde la caché.** Cuando no falta ninguna fuente, build_historico --sin-red --parcial lee los archivos de la caché, compara su SHA-256 con el manifiesto y anota en el PR qué cambió en cada fuente. |
+| 98 | Catálogo histórico e indicadores (build_historico) → Despliegue y verificación |  | **catálogo por PR a main.** El PR de la cosecha cambia public/assets/historico/ y data/historico/; al fusionarlo, el despliegue lo publica y la vista Memoria de desastres lo lee (historico.js). |
+| 99 | Mantenedores y propietario → Cosecha del catálogo histórico (memoria-cosecha.yml) |  | **revisan y fusionan el PR del catálogo.** Una persona revisa la tabla de cambios por fuente del PR antes de fusionarlo. También puede pedir a mano «reconstruir» (PR con lo bajado hasta ahora) o «renovar» (cosecha nueva desde cero). |
 
 </details>
 
-<details><summary>Las 47 cajas del diagrama completo, en texto</summary>
+<details><summary>Las 50 cajas del diagrama completo, en texto</summary>
 
 **1 · Fuentes**
 
@@ -226,6 +233,7 @@ muestra su explicación completa.
 | **Medios y Estado: 116 feeds de noticias** | Feeds RSS del Estado (33, sobre todo búsquedas en gob.pe), medios nacionales (14), medios regionales de 19 departamentos (27), radios (37, 27 de RPP) e internacionales (5). | Medios generales (Andina incluida): la nota cuenta si habla del ENSO o trae el peligro en el titular. Medios locales, del Estado y feeds de peligros del Perú: basta un peligro. Feeds temáticos del mundo: si no tratan del ENSO, solo si nombran al Perú. Si su robots.txt lo prohíbe (lo dice el registro), un feed queda sin canales, salvo Google Noticias, Noticias ONU y Sin Rodeos: se leen como lector de feeds, solo desde Actions. El robots.txt de gob.pe solo prohíbe /admin/ y las URL con sheet=. |
 | **Google Noticias: 38 búsquedas** | Búsquedas RSS por departamento (25), nacionales (2), mundial (1) y de medios sin feed propio (10, como El Peruano, Radio Nacional o TV Perú). _como mucho cada 20 h._ | El robots.txt de news.google.com prohíbe estos feeds. Desde la decisión del 21-10-2026 se leen como un lector de feeds: solo en corridas de main con --reader-state, un intento y como mucho una vez cada 20 h. n8n y el Perú no los piden. |
 | **robots.txt de cada servidor** | Las reglas que cada sitio publica para los robots. El observatorio las lee según la RFC 9309 y no pide lo que prohíben, salvo los feeds de Google Noticias, Noticias ONU y Sin Rodeos, que lee como lector, cada 20 h o más, y los servidores de entidades públicas del Perú (.gob.pe, .mil.pe), cuya información es pública: allí solo respeta su Crawl-delay. | Gana la regla más larga y un empate lo gana Allow. Los leen en vivo el sondeo semanal, el recolector del Perú, la escalera de extracción y la corrida diaria (esta, solo para lo que la sonda no leyó). Un 4xx salvo 429 cuenta como «todo permitido» (RFC 9309), aunque la página de error traiga un formulario con reCAPTCHA, salvo una página de verificación con 401, 403 o 407. Un 429, un 5xx, la falta de respuesta (15 s) o una verificación antirobots en su lugar lo dejan sin leer: no se le pide nada a ese servidor. Una verificación que aparezca después se anota y nunca se evade. El registro guarda por URL lo que se sabe (allowed, disallowed o unknown); n8n no lee robots.txt y no pide lo disallowed ni lo unknown. |
+| **Archivos de desastres pasados (66 fuentes)** | DesInventar, el SINPAD y los reportes del COEN del INDECI, el IDMC, El Peruano, el INGEMMET, el IGP, la ANA, la Cruz Roja, 44 medios en línea y periódicos antiguos digitalizados, más registros curados de estudios históricos. | La lista está en data/historico/fuentes.json: URL, licencia, cobertura, lector y forma de descarga de cada una, y el SHA-256 de lo bajado. Los servidores del Estado peruano que solo responden desde el Perú (Biblioteca Nacional, BVPAD del INDECI, SPIJ, Contraloría) están en el registro y se miden desde el recolector del Perú hasta que tengan un script de cosecha. |
 | **Armado del registro** | Junta los catálogos del código (169 feeds, 17 fuentes ENSO, 3 listados de documentos del ENFEN y del IMARPE y 13 páginas del Perú) con las mediciones y decide el estado y los canales de cada URL. | Regla: peru-server si y solo si la URL está geobloqueada o lo parece; sin canales si robots.txt la prohíbe, salvo los feeds reader (solo actions, cada 20 h o más); en lo demás, actions y n8n, menos la red que no responde cuando la otra sí. Una fuente con n8n: false no va por n8n (las búsquedas del repositorio del IMARPE: n8n no verifica su certificado) y una con only_channels se limita a esos canales (GODAS, solo actions). Por URL anota también lo que se sabe de su robots.txt: allowed, disallowed o unknown (nadie pudo leerlo). En la red de Actions cuenta la medición del sondeo semanal desde Actions (github-actions) si la hay (la corrida diaria no cambia el registro), y una medición de más de 45 días no cuenta si su red tiene otra más reciente (contados desde la medición más reciente, no desde el reloj). tools.build_registry --check falla si el archivo no está al día y una prueba lo exige. |
 
 **2 · Recolectores**
@@ -237,6 +245,7 @@ muestra su explicación completa.
 | **Recolector n8n (nube AWS)** | Flujo de n8n en AWS que cada noche baja las URL que el registro asigna a n8n y deja una segunda copia en la rama data-n8n, por si GitHub Actions no obtiene respuesta. _22:50 Lima · canal n8n del registro._ | Flujo «ENSO · Recolector n8n (fuentes no bloqueadas)», 22:50 Lima (cron 50 22 * * *, zona America/Lima). Lee el registro de main o la copia incluida al construir. Omite las URL sin canales, las robots-disallowed, las de robots unknown (n8n no lee robots.txt), las reader, las solo peru-server y las fuentes con n8n: false. Baja todo su alcance cada noche, falle o no Actions. Una URL a la vez (40 s), segunda pasada tras 30 s, sigue los PDF del ENFEN, conserva 72 h la copia buena. Anota en index.json cuándo vence su credencial de GitHub (collector.token_expires_at). Su nodo «Avisar al sitio» (enso-refresh) viene desactivado. |
 | **Descarga en GitHub Actions (Fetcher)** | Pide cada fuente desde servidores de GitHub en EE. UU. y anota canal, URL, fecha y sha256. Si falla, busca la copia más reciente del Perú, de n8n o de la consola de documentos, luego la réplica y al final el Internet Archive (GODAS no tiene esas copias: mantiene el dato anterior). _23:37 Lima · 8 min para las oficiales._ | Canales: direct, mirror, relay-peru, relay-n8n, relay-manual, archive, archive-fresh. Fuentes oficiales: 8 min en total, 5 min por pedido, 3 intentos, 0,8 s entre pedidos al mismo servidor; servidor con 3 fallos: 1 intento, con 5: se omite. Noticias: 8 hilos, en serie por servidor, 60 s por feed, 10 min para empezar. URL que el registro no da a actions: se lee la copia y, solo si no hay, se hace un intento directo. Abre data-peru (hasta 7 días), data-n8n (hasta 72 h) y data-manual (hasta 120 días). No usa navegador. Antes del pedido directo a una URL cuyo robots.txt no leyó la sonda semanal (fuera del registro, asignada a otro canal o unknown) lo lee en vivo (15 s; un reintento ante un fallo pasajero): si no permite la ruta, o no responde y el registro no la daba por permitida, no la pide. Una URL unknown se lee primero de las copias. Save Page Now, solo si robots.txt lo permite. Los feeds reader no lo consultan. TLS: las raíces de siempre más los intermedios públicos de enso/data/ca-intermedios.pem, para servidores que no los envían (el repositorio del IMARPE); la verificación sigue activa. |
 | **Extractor de informes n8n (opcional)** | Flujo «ENSO · Extractor de informes (OpenAI)» que lee con un modelo de OpenAI el texto de un informe técnico o de la perspectiva de un comunicado del ENFEN cuando el lector fijo no puede. Solo propone: nada de lo que responde se publica como dato. _solo si el pipeline lo llama._ | Webhook POST /webhook/enso-extraer con autenticación por cabecera (credencial «Token del extractor ENSO»: Bearer ENSO_LLM_EXTRACT_TOKEN). Valida kind (enfen-informe o enfen-perspectiva), schema y text; si falta algo responde 400. Pide chat/completions con temperatura 0 y respuesta JSON (credencial «OpenAI ENSO (n8n)»; el modelo se elige en el nodo Configuración), con 3 intentos, y responde {data, model, evidence} o 502. El pipeline manda hasta 120 000 caracteres y espera hasta 120 s. |
+| **Cosecha del catálogo histórico (memoria-cosecha.yml)** | Baja lo que falta de cada fuente de la memoria de desastres, en paralelo por servidor y en serie dentro de cada uno, hasta 300 min por corrida, y guarda lo bajado en la caché de Actions para seguir en la corrida siguiente. _cada 6 h (minuto 41)._ | Cada fuente corre en su propio proceso (tools/cosecha_historico.py) y las descargas largas siguen donde quedaron. Una fuente de segunda ronda que falla tres corridas seguidas deja de esperarse; las que el catálogo necesita, nunca. Cuando no falta nada, construye el catálogo sin red y abre un PR desde bot/memoria-desastres/&lt;inicio>; con ese PR abierto no baja nada. |
 
 **3 · Copias y respaldo**
 
@@ -260,6 +269,7 @@ muestra su explicación completa.
 | **Noticias y alertas: lectura y filtro** | Lee los 169 feeds, guarda solo las notas sobre el ENSO o sobre un peligro en el Perú, las etiqueta con 13 tipos de peligro y ubica cada una en su lugar. | feedparse lee RSS, Atom, JSON Feed y listados de gob.pe; hazardparse convierte USGS, DHN, PTWC, CENVUL, Telegram, ArcGIS, COEN y FIRMS. Descarta empleo, accidentes, sismos menores de 4 y los simulacros de la DHN y del COEN. Feeds reader: como mucho cada 20 h. Si toda la lectura falla, se usan las alertas de la publicación anterior y las 15 fuentes figuran como no leídas, para que el silencio no parezca calma. |
 | **Histórico de noticias (solo anexar)** | Toma el histórico de la publicación anterior y le agrega al final las notas nuevas, sin borrar nada. Si le faltan notas, las completa con la copia de data-archive. | news/items.jsonl, una nota por id (sha256 del enlace y el titular). Si no puede leerlo ni rehacerlo, publica solo las de hoy marcado «restarted». Aviso news-history-large a los 20 MiB (Cloudflare sirve hasta 25 MiB por archivo). |
 | **Ubicación y correcciones de lugar** | Vuelve a ubicar todo el histórico con las reglas actuales y aplica las correcciones de la consola (solo con Cloudflare), que tienen la última palabra. Luego agrupa las notas de los últimos 14 días. | geo.py, limites.py, geopoly.py y geo_overrides.py. Confianza de 0,35 a 0,97 (1 con set o confirm); se publica desde 0,5 y va a revisión lo menor a 0,8. Acciones: set, confirm, none y foreign; gana el rev mayor. Grupos: 3 palabras en común y 60 % del titular más corto. |
+| **Catálogo histórico e indicadores (build_historico)** | Lee cada fuente, clasifica el peligro y el evento ENSO, ubica cada registro por UBIGEO, une los reportes y las notas que cuentan el mismo evento y calcula los indicadores de recurrencia y de El Niño por área. | Escribe public/assets/historico/ (eventos.zip con las 13 columnas del tablero del equipo de prevención y 45 de metadatos, la versión para el navegador, el detalle por departamento, el contexto y la prevención) y data/historico/indicadores-*.csv. Corre en la cosecha, no en la actualización diaria: el catálogo llega al sitio cuando se fusiona su PR. |
 | **Registro de incidencias** | Cada etapa anota sus problemas con severidad (info, warning, error, critical), fuente, código y una huella. Si una fuente crítica no tiene dato ni anterior, la corrida es critical y no se despliega. | Incluye la salud de las copias: relay-missing, relay-stale (más de 36 h), relay-sources-down, relay-goal-missed (falta el PDF del comunicado o del informe más reciente; dice por qué, según lo que anotó el recolector), relay-kit-outdated (el kit no tiene el contrato mínimo), relay-n8n-missing, -stale y -sources-down, relay-token-expiring (el token del Perú o la credencial de n8n vencen en menos de 21 días), y manual-unreadable (la rama data-manual existe pero no se pudo bajar o leer). Huella: sha1 de fuente\|etapa\|código. |
 | **Escritura y validación de la publicación** | Escribe todos los archivos de data/ en una carpeta temporal con un publicationId común, valida que sean coherentes y reemplaza public/data de una sola vez. Si la validación falla, queda la publicación anterior. | write_publication y validate_publication. También arma feed.json con sourcefeed.build sin descargar nada, con el estado de las 15 fuentes de alertas y, en cada aviso, el nivel que dio su institución, su vigencia y su tipo (severity.assess; sin nivel si la fuente no lo da), y guarda en raw/ las respuestas nuevas para data-archive (archive_raw). |
 
@@ -270,7 +280,7 @@ muestra su explicación completa.
 | **Archivos publicados (data/)** | Lo que se publica: dashboard.json, series y CSV, estado de las 17 fuentes, feed.json, news/, geo/, manual-needed.json, imarpe-bsobp.json, run-report.json, manifest.json y data/archive/ con las copias archivadas. | Cada JSON propio (no las copias de terceros) lleva schema observatorio-enso/4, publicationId y generatedAt. data/archive/: respuesta original y PDF de cada fuente oficial (archive/sources/; cpc-godas-d20 archiva el D20 calculado por mes en JSON, con las URL de los GRIB leídos), cada feed bajado (archive/feeds/) y una página por día de noticias (60 días); máx. 20 MiB por copia. geo/items.json: 120 días, máx. 4000 notas. |
 | **Despliegue y verificación** | Adapta el sitio a su dirección, lo prueba en Chromium, lo publica en GitHub Pages (por omisión) o Cloudflare Pages y comprueba que el sitio en vivo ya sirve la publicación nueva. | prepare_site.py (con Cloudflare quita los enlaces al repositorio y escribe _headers), pytest -m browser, deploy-pages o wrangler (que sube también functions/), verify_live cada 20 s hasta 10 min. El destino lo fija la variable DEPLOY_TARGET; con Cloudflare, cloudflare_pages.py crea el proyecto si falta. Solo desde main: una corrida de prueba en otra rama construye y prueba, pero no despliega. |
 | **Sitio en vivo (SITE_URL)** | La dirección pública que sirve el sitio y su carpeta data/. Por omisión es https://pillb.github.io/observatorio-enso-peru/. | Con Cloudflare: &lt;proyecto>.pages.dev o SITE_URL, más /api/geo/*, /api/docs/* y /api/ab/* y CORS abierto en /data/*. Lo leen el público, la corrida siguiente, verify_live, los dos vigilantes y las consolas. Qué destino está activo depende de una variable del repositorio que no está en el código. |
-| **Sitio web (10 vistas)** | Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada. | Carga primero dashboard.json; su publicationId es la referencia y no muestra archivos de otra publicación. Avisa si la publicación tiene más de 36 h o si worst es error o critical. El Asistente usa reglas fijas, no un modelo de lenguaje. Metodología muestra el diagrama simplificado y, con un botón, el completo (copias de docs/). El mapa de alertas pinta cada departamento con el nivel que dio la institución (severity.py en el pipeline; un aviso sin nivel queda «sin nivel»); el navegador solo calcula si cada aviso está vigente, es próximo o venció según su vigencia (valid). Tiene cuatro versiones (A a D): con Cloudflare, al salir de la página se manda un aviso anónimo a /api/ab/e (contadores por día en D1, sin IP ni cookies; nada con «No rastrear» o Global Privacy Control), y la vista #variantes, fuera del menú, muestra los resultados. |
+| **Sitio web (11 vistas)** | Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada. | Carga primero dashboard.json; su publicationId es la referencia y no muestra archivos de otra publicación. Avisa si la publicación tiene más de 36 h o si worst es error o critical. El Asistente usa reglas fijas, no un modelo de lenguaje. Metodología muestra el diagrama simplificado y, con un botón, el completo (copias de docs/). El mapa de alertas pinta cada departamento con el nivel que dio la institución (severity.py en el pipeline; un aviso sin nivel queda «sin nivel»); el navegador solo calcula si cada aviso está vigente, es próximo o venció según su vigencia (valid). Tiene cuatro versiones (A a D): con Cloudflare, al salir de la página se manda un aviso anónimo a /api/ab/e (contadores por día en D1, sin IP ni cookies; nada con «No rastrear» o Global Privacy Control), y la vista #variantes, fuera del menú, muestra los resultados. |
 | **Público** | Personas, equipos de gestión del riesgo y usuarios de datos abiertos que abren el sitio o descargan los CSV y JSON de data/. |  |
 | **Consola de lugares (/admin/)** | Página para revisores con su API en Cloudflare (Pages Function) y una base D1, donde se confirma o corrige el lugar de cada nota. Cada cambio queda con usuario y hora. | /api/geo/*: login, corrections, audit y overrides (pública, sin usuarios ni comentarios). Base D1 GEO_DB (nunca borra correcciones) y secreto GEO_USERS con hashes PBKDF2; tools.geo_users crea un admin y revisor01 a revisor10, y el propietario carga el secreto en el panel. Solo funciona con Cloudflare; en GitHub Pages la página existe pero no tiene API. |
 | **Consola de documentos (/admin/documentos.html)** | Página de la consola donde un administrador sube el PDF de un documento que ninguna ruta automática trae (la DHN pide verificación humana). Usa la sesión y el registro de la consola de lugares. | /api/docs/status y /api/docs/upload. Solo acepta documentos de data/manual-needed.json, PDF que empiezan con %PDF- y terminan con %%EOF, hasta 20 MB y 10 por hora; por omisión solo el rol admin (DOCS_UPLOAD_ROLES). El PDF pasa en flujo a GitHub sin decodificarse (10 ms de CPU del plan gratuito). Secreto DOCS_GITHUB_TOKEN (Contents: Read and write solo en este repositorio). |
@@ -310,8 +320,9 @@ muestra su explicación completa.
 | [A6 · Noticias y alertas: lectura, filtro, histórico y lugar](#a6) | Las noticias y alertas en la corrida diaria: descarga, lectura tolerante, filtro de relevancia y peligros, histórico de solo anexar con su copia y ubicación por UBIGEO con las correcciones de la consola. | Noticias y alertas: lectura y filtro, Histórico de noticias (solo anexar), Ubicación y correcciones de lugar | Noticias, Pipeline diario |
 | [A7 · Consolas de revisión en Cloudflare](#a7) | Cuentas y sesión, correcciones de lugares guardadas en D1 y leídas por el pipeline, y la subida de PDF a la rama data-manual con su aviso de actualización. | Consola de lugares (/admin/), Consola de documentos (/admin/documentos.html), Revisores de lugares, Rama data-manual | Consola de lugares y documentos |
 | [A8 · Publicación, despliegue y archivo](#a8) | Escritura y validación de data/, pruebas en el navegador, artefactos, despliegue y verificación, y el job archive que solo agrega a data-archive. | Escritura y validación de la publicación, Archivos publicados (data/), Despliegue y verificación, Job archive, Rama data-archive | Publicación, Respaldo |
-| [A9 · El sitio en el navegador](#a9) | Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 10 vistas con la procedencia de cada valor y quién lo usa. | Sitio en vivo (SITE_URL), Sitio web (10 vistas), Público | Sitio |
+| [A9 · El sitio en el navegador](#a9) | Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 11 vistas con la procedencia de cada valor y quién lo usa. | Sitio en vivo (SITE_URL), Sitio web (11 vistas), Público | Sitio |
 | [A10 · Vigilancia, avisos y mantenimiento](#a10) | Informe de la corrida, latido de los recolectores, issues por huella, vigilantes, correo, mantenimiento de los flujos programados y las herramientas de desarrollo. | Vigilante de GitHub (watchdog.yml), Vigilante n8n (fuera de GitHub), Issues de incidencias (incidente-datos), Herramientas de desarrollo, Mantenedores y propietario | Operación y vigilancia |
+| [A11 · Memoria de desastres: catálogo histórico, indicadores y pestaña](#a11) | Fuentes de desastres pasados, cosecha reanudable en GitHub Actions, lectura, clasificación, ubicación y enlace de registros, indicadores por área, archivos publicados y la pestaña. | Archivos de desastres pasados (66 fuentes), Cosecha del catálogo histórico (memoria-cosecha.yml), Catálogo histórico e indicadores (build_historico) | Memoria de desastres |
 
 <a id="a1"></a>
 
@@ -818,10 +829,10 @@ _In English: [anexos/a9-en.svg](anexos/a9-en.svg)._
 | **Arranque** | Carga en el navegador | Lee dashboard.json sin caché y muestra «Actualizado: … · Publicación …». Si no puede, explica que los datos están en validación y enlaza al ENFEN. | app.js, fetch |
 | **Coherencia de la publicación** | Carga en el navegador | Si un archivo trae otro publicationId lo vuelve a pedir sin caché; si sigue distinto, no lo usa y avisa con un aviso visible. |  |
 | **Accesibilidad y vigencia** | Carga en el navegador | Teclado, roles ARIA y tema claro u oscuro, probados con Playwright en Chromium, WebKit y Firefox. Cada dato muestra su periodo y se marca si está vencido. | Playwright |
-| **10 vistas** | Vistas | Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una. | app.js, tour.js |
+| **11 vistas** | Vistas | Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una. | app.js, tour.js |
 | **Procedencia de cada valor** | Vistas | Junto a cada dato: la fuente en vivo y la copia archivada en data/archive/, por si la fuente cambia o cae. |  |
 | **Asistente de datos** | Vistas | No es un modelo de lenguaje: reconoce la pregunta con reglas y responde solo con valores de la publicación, citando serie, periodo, fuente y publicación. | assistant.js |
-| **Metodología y arquitectura** | Vistas | Explica los métodos y muestra estos diagramas; cada caja explica su parte y las etiquetas A1 a A10 abren su anexo. |  |
+| **Metodología y arquitectura** | Vistas | Explica los métodos y muestra estos diagramas; cada caja explica su parte y las etiquetas A1 a A11 abren su anexo. |  |
 | **Público** | Personas | Personas, equipos de gestión del riesgo y medios que consultan el estado de El Niño y sus fuentes. |  |
 | **Usuarios de datos abiertos** | Personas | Descargan los CSV y JSON de data/ o los leen desde sus programas; manifest.json lista cada archivo. |  |
 
@@ -831,13 +842,13 @@ _In English: [anexos/a9-en.svg](anexos/a9-en.svg)._
 | 2 | Publicación (data/) → Arranque | **dashboard.json.** |
 | 3 | Arranque → Coherencia de la publicación | **publicationId.** |
 | 4 | Publicación (data/) → Coherencia de la publicación | **archivos de cada vista.** Cada vista pide solo los archivos que necesita, cuando se abre. |
-| 5 | Coherencia de la publicación → 10 vistas | **datos coherentes.** |
-| 6 | Accesibilidad y vigencia → 10 vistas | **vigencia y accesibilidad.** |
-| 7 | 10 vistas → Procedencia de cada valor | **cada valor.** |
-| 8 | 10 vistas → Asistente de datos | **misma publicación.** |
-| 9 | 10 vistas → Metodología y arquitectura | **diagramas.** |
-| 10 | 10 vistas → Analítica A/B del mapa | **versión del mapa y eventos.** Una sola solicitud al salir de la página; en GitHub Pages no se manda nada. |
-| 11 | 10 vistas → Público | **consultan.** |
+| 5 | Coherencia de la publicación → 11 vistas | **datos coherentes.** |
+| 6 | Accesibilidad y vigencia → 11 vistas | **vigencia y accesibilidad.** |
+| 7 | 11 vistas → Procedencia de cada valor | **cada valor.** |
+| 8 | 11 vistas → Asistente de datos | **misma publicación.** |
+| 9 | 11 vistas → Metodología y arquitectura | **diagramas.** |
+| 10 | 11 vistas → Analítica A/B del mapa | **versión del mapa y eventos.** Una sola solicitud al salir de la página; en GitHub Pages no se manda nada. |
+| 11 | 11 vistas → Público | **consultan.** |
 | 12 | Publicación (data/) → Usuarios de datos abiertos | **CSV y JSON.** |
 
 **Si algo falla:**
@@ -909,6 +920,65 @@ _In English: [anexos/a10-en.svg](anexos/a10-en.svg)._
 - **GitHub se salta el sondeo semanal.** Sin una sonda buena en main en 8 días, el vigilante la relanza, como mucho una vez al día; mientras tanto vale el registro anterior.
 - **El repositorio pasa 60 días sin actividad.** keepalive y el vigilante reactivan los flujos programados y reinician el plazo.
 - **Falla el envío del correo o no hay SMTP.** Se anota en la corrida y no la detiene; los issues siguen llegando por GitHub.
+
+</details>
+
+<a id="a11"></a>
+
+#### Anexo A11 · Memoria de desastres: catálogo histórico, indicadores y pestaña
+
+Una cosecha cada 6 horas baja lo que falta de 66 fuentes de desastres pasados, arma un catálogo por distrito con las columnas del tablero del equipo de prevención, une las fuentes que cuentan el mismo evento, calcula los indicadores de cada área y abre un PR. Al fusionarlo, la pestaña Memoria de desastres lo publica.
+
+![Anexo A11: Memoria de desastres: catálogo histórico, indicadores y pestaña](anexos/a11.svg)
+
+_In English: [anexos/a11-en.svg](anexos/a11-en.svg)._
+
+<details><summary>A11 en texto: 15 pasos, 16 conexiones y 5 casos de falla</summary>
+
+| Paso | Dónde | Qué hace | Tecnología |
+|---|---|---|---|
+| **Fuentes de eventos** | Fuentes | DesInventar (1970-2015), el SINPAD (2015-2026), los reportes del COEN, el IDMC, el inventario de deslizamientos de la NASA y las lagunas glaciares desbordadas. Ver [A1](#a1). |  |
+| **Prensa y periódicos antiguos** | Fuentes | 44 medios en línea (la API pública de WordPress, el archivo de RPP y sitemaps) y Chronicling America (periódicos de EE. UU. de 1836 a 1963 que reproducían cables del Perú). |  |
+| **Prevención y peligro identificado** | Fuentes | Declaratorias de emergencia de El Peruano, evaluaciones e inventarios del INGEMMET y del IGP, puntos críticos de la ANA, establecimientos de salud afectados en 2023 y llamamientos de la Cruz Roja. |  |
+| **Registros curados** | Fuentes | Eventos de estudios históricos (García-Herrera et al. desde 1550, Eguiguren 1728-1891, el PIRCC 2017), cada uno con su cita, y las correcciones a mano de revisiones.yaml. |  |
+| **memoria-cosecha.yml** | Cosecha | Cada 6 horas: un proceso por fuente, en paralelo por servidor y en serie dentro de cada uno, con 300 min de plazo y al menos 5 s entre pedidos al mismo servidor. | cosecha_historico.py, build_historico.py |
+| **Caché de Actions** | Cosecha | Las partes de cada descarga larga y el estado de la cosecha (avance, fallos seguidos, último error): la corrida siguiente sigue donde quedó. |  |
+| **PR del catálogo** | Cosecha | Cuando no falta nada: el catálogo se construye sin red y se abre un PR desde bot/memoria-desastres/&lt;inicio> con lo que cambió en cada fuente; ci.yml corre sus pruebas. |  |
+| **Lectura y clasificación** | Catálogo | Cada lector pasa su fuente al mismo esquema: tipo de peligro del vocabulario del equipo (con su código IRDR), fecha y su precisión, impactos y evento ENSO según el ICEN. | fuentes.py, desinventar.py, cosecha.py, esquema.py |
+| **Ubicación** | Catálogo | UBIGEO vigente del INEI por código o por nombre; si el nombre no alcanza, el punto de la fuente dentro de los límites del IGN; en texto libre, el ubicador de noticias. | territorio.py, geo.py |
+| **Enlace de fuentes** | Catálogo | Los reportes del COEN, las lagunas glaciares, las notas de prensa y las páginas de periódicos antiguos se unen al evento que cuentan (lugar, peligro compatible y fecha); el evento guarda cuántas fuentes lo corroboran y sus enlaces. | enlace.py |
+| **Reglas de calidad** | Catálogo | Unen cada fila del IDMC a su emergencia del SINPAD, corrigen fechas (hora de Lima, el 1 de enero de DesInventar), bajan la confianza de las fechas de reporte o publicación, marcan «ICEN pendiente» y quitan notas que no son un evento. También al rehacer desde el catálogo. | build_historico.tidy |
+| **Indicadores por área** | Catálogo | Años con daños (intervalo de Wilson), periodo de retorno y probabilidad en 5 años con su intervalo, razón de El Niño (cuasi-Poisson), grandes Niños y «¿se sabía antes?» comparado con el azar, por distrito, provincia, departamento y macrorregión, con su validación fuera de muestra (2016-2025); el navegador recalcula con los mismos métodos. | indicadores.py, historico-model.js, validacion.py |
+| **Archivos publicados** | Publicación y uso | eventos.zip (las 13 columnas del tablero y 45 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador. |  |
+| **Pestaña Memoria de desastres** | Publicación y uso | Cómo usarla, mapa y ficha de cada área con intervalos, línea de tiempo, los grandes Niños uno al lado del otro, ranking, la validación, «¿se sabía antes?», antes de 1970, la evidencia sobre la prevención y el método con sus límites. Ver [A9](#a9). | historico.js, historico-model.js, historico-evidencia.js |
+| **Equipo de prevención y público** | Publicación y uso | El equipo carga eventos.csv en su tablero con sus columnas; cualquiera consulta la pestaña o baja los archivos, cada registro con su fuente. |  |
+
+| N.º | De → a | Qué viaja, cuándo y por qué |
+|---|---|---|
+| 1 | Fuentes de eventos → memoria-cosecha.yml | **API, ArcGIS y PDF.** Las descargas largas (SINPAD mes por mes, los PDF del COEN, El Peruano, el INGEMMET) se guardan por partes. |
+| 2 | Prensa y periódicos antiguos → memoria-cosecha.yml | **búsquedas por término.** Solo metadatos, un extracto de hasta 200 caracteres y el enlace: el texto de los medios no se redistribuye. |
+| 3 | Prevención y peligro identificado → memoria-cosecha.yml | **decretos, informes y capas.** Evidencia de qué se sabía antes de cada emergencia: no son eventos. |
+| 4 | memoria-cosecha.yml → Caché de Actions | **partes y estado.** Se guardan al final de cada corrida, terminada o no. |
+| 5 | Caché de Actions → memoria-cosecha.yml | **sigue donde quedó.** La corrida siguiente lee las partes y pide solo lo que falta. |
+| 6 | memoria-cosecha.yml → Lectura y clasificación | **cuando no falta nada.** build_historico --sin-red --parcial --indices-al-dia: todo sale de la caché, con su SHA-256 comparado con el manifiesto, salvo el ICEN y el ONI, que se bajan al día. |
+| 7 | Registros curados → Lectura y clasificación | **YAML del repositorio.** Los registros curados y las revisiones van en el repositorio y se leen en cada construcción. |
+| 8 | Lectura y clasificación → Ubicación | **registros.** Un registro sin lugar reconocible no entra. |
+| 9 | Ubicación → Enlace de fuentes | **registros ubicados.** Los candidatos que no se unen a un evento existente entran como registros propios, si tienen lugar y fecha. |
+| 10 | Enlace de fuentes → Reglas de calidad | **catálogo.** Cuántas filas tocó cada regla queda en «calidad» de fuentes.json y de resumen.json. |
+| 11 | Reglas de calidad → Indicadores por área | **catálogo limpio.** La frecuencia usa solo la fuente homogénea del periodo (DesInventar); las demás suman registros e impactos. |
+| 12 | Indicadores por área → PR del catálogo | **archivos nuevos.** El PR muestra qué cambió por fuente; una persona lo revisa y lo fusiona. |
+| 13 | PR del catálogo → Archivos publicados | **al fusionar en main.** El despliegue de main publica public/assets/historico/ (anexo A8). |
+| 14 | Archivos publicados → Pestaña Memoria de desastres | **lee y recalcula.** La pestaña carga el resumen y, al abrir un departamento, su detalle. |
+| 15 | Archivos publicados → Equipo de prevención y público | **eventos.csv y CSV.** UTF-8 con BOM para que Excel lea las tildes; un impacto vacío es «no reportado», no cero. |
+| 16 | Pestaña Memoria de desastres → Equipo de prevención y público | **consulta.** Cada cifra con su fuente, su intervalo y lo que no dice. |
+
+**Si algo falla:**
+
+- **Un servidor no responde o corta la descarga.** La descarga sigue donde quedó en la corrida siguiente; la tabla de la cosecha muestra el avance y el último error.
+- **Una fuente que el catálogo necesita falla una y otra vez.** Nunca deja de esperarse: el PR no se abre sin ella y la tabla de la cosecha lo dice en cada corrida.
+- **Una fuente de segunda ronda (prensa, evidencia) falla tres corridas seguidas.** Deja de esperarse y el catálogo se construye sin ella (--parcial); el PR lo indica.
+- **Lo que devuelve una fuente cambió.** Se acepta, se actualiza su SHA-256 en el manifiesto y el PR muestra la diferencia de registros de esa fuente.
+- **Un sitio pide verificación antirobots, un login o rechaza el uso por IA.** Se anota y no se evade; la fuente queda documentada como no usable, con el motivo.
 
 </details>
 

@@ -24,7 +24,8 @@ pytestmark = pytest.mark.skipif(NODE is None, reason="hace falta Node para armar
 
 FEED = FIX.parent / "news-probe" / "andina.xml"
 ONI = FIX / "cpc-oni.txt"
-PDF = next((FIX.parent / "live-run" / "raw" / "enfen-comunicados").glob("*.pdf"))
+# El comunicado 17-2026 por su nombre: glob() no tiene orden fijo y la carpeta también tiene el 18-2026.
+PDF = FIX.parent / "live-run" / "raw" / "enfen-comunicados" / "2026-10-20-ee9a5de1ec58.pdf"
 U_FEED = "https://andina.pe/agencia/rss/3.xml"
 U_ONI = "https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt"
 U_PDF = "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165"

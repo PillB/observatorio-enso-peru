@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1259.5" role="img" aria-labelledby="a9-t a9-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
   <title id="a9-t">Annex A9 · The site in the browser</title>
-  <desc id="a9-d">Where it is hosted, how it loads the data and checks its consistency, its 10 views with each value&#x27;s provenance and who uses it.</desc>
+  <desc id="a9-d">Where it is hosted, how it loads the data and checks its consistency, its 11 views with each value&#x27;s provenance and who uses it.</desc>
   <style>
     .ar-node { stroke-width: 1.5; }
     .ar-h { font-weight: 700; }
@@ -118,7 +118,7 @@
   <a class="ar-annex" href="../arquitectura-en.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Back to the full diagram</text></a>
   <text class="ar-s" x="20" y="60" font-size="12">The site is a static page, with no build step or server of its own: everything it shows comes from the data/ files of one publication. The browser checks each file belongs to that publication and, if it cannot, says so instead of mixing</text>
   <text class="ar-s" x="20" y="77" font-size="12">data.</text>
-  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: Live site (SITE_URL), Website (10 views), Public.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Details these boxes of the full diagram: Live site (SITE_URL), Website (11 views), Public.</text>
   <text class="ar-t" x="20" y="121" font-size="11.5">Lines:</text>
   <path class="ar-e ar-e-data" d="M70.7 117 L104.7 117" marker-end="url(#a9-m-data)"/>
   <text class="ar-s" x="112.7" y="121" font-size="11.5">data</text>
@@ -167,43 +167,43 @@
     <text class="ar-t" x="358" y="471.8" font-size="10.5" text-anchor="middle">4</text>
   </g>
   <g class="ar-edge" id="a9-e-5" data-edge="5" data-from="checks" data-to="views" tabindex="0">
-    <title>5. Publication consistency → 10 views: consistent data.</title>
+    <title>5. Publication consistency → 11 views: consistent data.</title>
     <path class="ar-e ar-e-data" d="M695.3 432 L756 432 Q762 432 762 426 L762 234 Q762 228 768 228 L784.7 228" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="762" cy="330" r="9"/>
     <text class="ar-t" x="762" y="333.8" font-size="10.5" text-anchor="middle">5</text>
   </g>
   <g class="ar-edge" id="a9-e-6" data-edge="6" data-from="a11y" data-to="views" tabindex="0">
-    <title>6. Accessibility and freshness → 10 views: freshness and accessibility.</title>
+    <title>6. Accessibility and freshness → 11 views: freshness and accessibility.</title>
     <path class="ar-e ar-e-control" d="M695.3 594 L750 594 Q756 594 756 588 L756 312 Q756 306 762 306 L784.7 306" stroke-dasharray="2 3" marker-end="url(#a9-m-control)"/>
     <circle class="ar-badge ar-e-control" cx="756" cy="450" r="9"/>
     <text class="ar-t" x="756" y="453.8" font-size="10.5" text-anchor="middle">6</text>
   </g>
   <g class="ar-edge" id="a9-e-7" data-edge="7" data-from="views" data-to="provenance" tabindex="0">
-    <title>7. 10 views → Each value&#x27;s provenance: each value.</title>
+    <title>7. 11 views → Each value&#x27;s provenance: each value.</title>
     <path class="ar-e ar-e-data" d="M924 339.7 L924 369.7" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="924" cy="354.7" r="9"/>
     <text class="ar-t" x="924" y="358.5" font-size="10.5" text-anchor="middle">7</text>
   </g>
   <g class="ar-edge" id="a9-e-8" data-edge="8" data-from="views" data-to="assistant" tabindex="0">
-    <title>8. 10 views → Data assistant: same publication.</title>
+    <title>8. 11 views → Data assistant: same publication.</title>
     <path class="ar-e ar-e-data" d="M1064.7 270 L1080 270 Q1086 270 1086 276 L1086 570 Q1086 576 1080 576 L1064.7 576" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="1086" cy="423" r="9"/>
     <text class="ar-t" x="1086" y="426.8" font-size="10.5" text-anchor="middle">8</text>
   </g>
   <g class="ar-edge" id="a9-e-9" data-edge="9" data-from="views" data-to="method" tabindex="0">
-    <title>9. 10 views → Methodology and architecture: diagrams.</title>
+    <title>9. 11 views → Methodology and architecture: diagrams.</title>
     <path class="ar-e ar-e-data" d="M1064.7 306 L1086 306 Q1092 306 1092 312 L1092 726 Q1092 732 1086 732 L1064.7 732" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="1092" cy="519" r="9"/>
     <text class="ar-t" x="1092" y="522.8" font-size="10.5" text-anchor="middle">9</text>
   </g>
   <g class="ar-edge" id="a9-e-10" data-edge="10" data-from="views" data-to="ab" tabindex="0">
-    <title>10. 10 views → Map A/B analytics: map version and events. A single request when leaving the page; on GitHub Pages nothing is sent.</title>
+    <title>10. 11 views → Map A/B analytics: map version and events. A single request when leaving the page; on GitHub Pages nothing is sent.</title>
     <path class="ar-e ar-e-data" d="M784.7 270 L720 270 Q714 270 714 276 L714 678 Q714 684 708 684 L354 684 Q348 684 348 678 L348 594 Q348 588 342 588 L326 588" marker-end="url(#a9-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="714" cy="477" r="9"/>
     <text class="ar-t" x="714" y="480.8" font-size="10.5" text-anchor="middle">10</text>
   </g>
   <g class="ar-edge" id="a9-e-11" data-edge="11" data-from="views" data-to="public" tabindex="0">
-    <title>11. 10 views → Public: consult.</title>
+    <title>11. 11 views → Public: consult.</title>
     <path class="ar-e ar-e-human" d="M1064.7 228 L1122 228 Q1128 228 1128 234 L1128 240 Q1128 246 1134 246 L1154 246" stroke-dasharray="8 3 2 3" marker-end="url(#a9-m-human)"/>
     <circle class="ar-badge ar-e-human" cx="1096.3" cy="228" r="9"/>
     <text class="ar-t" x="1096.3" y="231.8" font-size="10.5" text-anchor="middle">11</text>
@@ -303,16 +303,16 @@
     <text class="ar-chip-t" x="433.3" y="649.2" font-size="10">Playwright</text>
   </g>
   <g class="ar-node-g" id="a9-n-views" data-node="views">
-    <title>10 views. Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, News, Data, Methodology and Assistant; a guided tour explains each one. Technology: app.js, tour.js.</title>
+    <title>11 views. Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, News, Data, Methodology and Assistant; a guided tour explains each one. Technology: app.js, tour.js.</title>
     <rect class="ar-node ar-g-site" x="784.7" y="195" width="280" height="144.7" rx="8"/>
     <rect class="ar-f-site" x="784.7" y="203" width="4" height="128.7" rx="2"/>
     <rect class="ar-tile ar-f-site" x="796.7" y="205" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-site" transform="translate(799.7 208)"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
-    <text class="ar-t" x="834.7" y="224.5" font-size="12.5">10 views</text>
+    <text class="ar-t" x="834.7" y="224.5" font-size="12.5">11 views</text>
     <text class="ar-s" x="796.7" y="256.4" font-size="11">Summary, Coastal El Niño, Pacific, Ocean and</text>
-    <text class="ar-s" x="796.7" y="271.6" font-size="11">atmosphere, Map, History, News, Data,</text>
-    <text class="ar-s" x="796.7" y="286.8" font-size="11">Methodology and Assistant; a guided tour</text>
-    <text class="ar-s" x="796.7" y="302" font-size="11">explains each one.</text>
+    <text class="ar-s" x="796.7" y="271.6" font-size="11">atmosphere, Map, History, Disaster memory,</text>
+    <text class="ar-s" x="796.7" y="286.8" font-size="11">News, Data, Methodology and Assistant; a</text>
+    <text class="ar-s" x="796.7" y="302" font-size="11">guided tour explains each one.</text>
     <rect class="ar-chip" x="796.7" y="311.7" width="42" height="17" rx="8.5"/>
     <text class="ar-chip-t" x="802.7" y="323.7" font-size="10">app.js</text>
     <rect class="ar-chip" x="843.7" y="311.7" width="43.7" height="17" rx="8.5"/>
@@ -344,7 +344,7 @@
     <text class="ar-chip-t" x="802.7" y="634" font-size="10">assistant.js</text>
   </g>
   <g class="ar-node-g" id="a9-n-method" data-node="method">
-    <title>Methodology and architecture. Explains the methods and shows these diagrams; each box explains its part and the A1 to A10 tags open its annex.</title>
+    <title>Methodology and architecture. Explains the methods and shows these diagrams; each box explains its part and the A1 to A11 tags open its annex.</title>
     <rect class="ar-node ar-g-site" x="784.7" y="680" width="280" height="105.5" rx="8"/>
     <rect class="ar-f-site" x="784.7" y="688" width="4" height="89.5" rx="2"/>
     <rect class="ar-tile ar-f-site" x="796.7" y="690" width="30" height="30" rx="7"/>
@@ -352,7 +352,7 @@
     <text class="ar-t" x="834.7" y="709.5" font-size="12.5">Methodology and architecture</text>
     <text class="ar-s" x="796.7" y="741.4" font-size="11">Explains the methods and shows these</text>
     <text class="ar-s" x="796.7" y="756.6" font-size="11">diagrams; each box explains its part and the</text>
-    <text class="ar-s" x="796.7" y="771.8" font-size="11">A1 to A10 tags open its annex.</text>
+    <text class="ar-s" x="796.7" y="771.8" font-size="11">A1 to A11 tags open its annex.</text>
   </g>
   <g class="ar-node-g" id="a9-n-public" data-node="public">
     <title>Public. People, risk-management teams and media checking the state of El Niño and its sources.</title>
@@ -398,32 +398,32 @@
   <circle class="ar-badge ar-e-data" cx="506" cy="897.5" r="9"/>
   <text class="ar-t" x="506" y="901.3" font-size="10.5" text-anchor="middle">5</text>
   <text class="ar-t" x="526" y="901.5" font-size="11.5">consistent data</text>
-  <text class="ar-m" x="526" y="915.5" font-size="10.5">Publication consistency → 10 views</text>
+  <text class="ar-m" x="526" y="915.5" font-size="10.5">Publication consistency → 11 views</text>
   <circle class="ar-badge ar-e-control" cx="506" cy="938.5" r="9"/>
   <text class="ar-t" x="506" y="942.3" font-size="10.5" text-anchor="middle">6</text>
   <text class="ar-t" x="526" y="942.5" font-size="11.5">freshness and accessibility</text>
-  <text class="ar-m" x="526" y="956.5" font-size="10.5">Accessibility and freshness → 10 views</text>
+  <text class="ar-m" x="526" y="956.5" font-size="10.5">Accessibility and freshness → 11 views</text>
   <circle class="ar-badge ar-e-data" cx="506" cy="979.5" r="9"/>
   <text class="ar-t" x="506" y="983.3" font-size="10.5" text-anchor="middle">7</text>
   <text class="ar-t" x="526" y="983.5" font-size="11.5">each value</text>
-  <text class="ar-m" x="526" y="997.5" font-size="10.5">10 views → Each value&#x27;s provenance</text>
+  <text class="ar-m" x="526" y="997.5" font-size="10.5">11 views → Each value&#x27;s provenance</text>
   <circle class="ar-badge ar-e-data" cx="506" cy="1020.5" r="9"/>
   <text class="ar-t" x="506" y="1024.3" font-size="10.5" text-anchor="middle">8</text>
   <text class="ar-t" x="526" y="1024.5" font-size="11.5">same publication</text>
-  <text class="ar-m" x="526" y="1038.5" font-size="10.5">10 views → Data assistant</text>
+  <text class="ar-m" x="526" y="1038.5" font-size="10.5">11 views → Data assistant</text>
   <circle class="ar-badge ar-e-data" cx="982" cy="897.5" r="9"/>
   <text class="ar-t" x="982" y="901.3" font-size="10.5" text-anchor="middle">9</text>
   <text class="ar-t" x="1002" y="901.5" font-size="11.5">diagrams</text>
-  <text class="ar-m" x="1002" y="915.5" font-size="10.5">10 views → Methodology and architecture</text>
+  <text class="ar-m" x="1002" y="915.5" font-size="10.5">11 views → Methodology and architecture</text>
   <circle class="ar-badge ar-e-data" cx="982" cy="938.5" r="9"/>
   <text class="ar-t" x="982" y="942.3" font-size="10.5" text-anchor="middle">10</text>
   <text class="ar-t" x="1002" y="942.5" font-size="11.5">map version and events</text>
-  <text class="ar-m" x="1002" y="956.5" font-size="10.5">10 views → Map A/B analytics</text>
+  <text class="ar-m" x="1002" y="956.5" font-size="10.5">11 views → Map A/B analytics</text>
   <text class="ar-s" x="1002" y="971.5" font-size="11">A single request when leaving the page; on GitHub Pages nothing is sent.</text>
   <circle class="ar-badge ar-e-human" cx="982" cy="994.5" r="9"/>
   <text class="ar-t" x="982" y="998.3" font-size="10.5" text-anchor="middle">11</text>
   <text class="ar-t" x="1002" y="998.5" font-size="11.5">consult</text>
-  <text class="ar-m" x="1002" y="1012.5" font-size="10.5">10 views → Public</text>
+  <text class="ar-m" x="1002" y="1012.5" font-size="10.5">11 views → Public</text>
   <circle class="ar-badge ar-e-human" cx="982" cy="1035.5" r="9"/>
   <text class="ar-t" x="982" y="1039.3" font-size="10.5" text-anchor="middle">12</text>
   <text class="ar-t" x="1002" y="1039.5" font-size="11.5">CSV y JSON</text>

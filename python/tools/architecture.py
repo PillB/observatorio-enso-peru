@@ -8,7 +8,7 @@ Uso:
 
 Escribe ``docs/arquitectura.svg`` (completo), ``docs/arquitectura-simple.svg``
 (simplificado), sus versiones en inglés (``-en.svg``) y sus copias en
-``public/assets/``; los anexos A1 a A10 de ``docs/arquitectura-anexos.json``
+``public/assets/``; los anexos A1 a A11 de ``docs/arquitectura-anexos.json``
 en ``docs/anexos/`` y ``public/assets/anexos/``; el explorador
 ``public/arquitectura.html`` y el texto de ``docs/arquitectura.md``. Las cajas
 y las conexiones salen del modelo; las líneas se trazan solas (rutas
@@ -1213,18 +1213,18 @@ EXPLORER = ROOT / "public" / "arquitectura.html"
 EXPLORER_UI = {
     "es": {"page": "Arquitectura del Observatorio ENSO Perú", "simple": "Diagrama simplificado", "full": "Diagrama completo",
            "simple_lead": "El sistema en {ns} cajas, de las fuentes al sitio. Toca una caja para abrir el anexo que la detalla.",
-           "full_lead": "Las {nf} partes del sistema y sus conexiones numeradas. Toca una caja o su etiqueta A1 a A10 "
+           "full_lead": "Las {nf} partes del sistema y sus conexiones numeradas. Toca una caja o su etiqueta A1 a A{na} "
                         "para abrir su anexo: los pasos, la tecnología de cada uno y qué pasa si algo falla.",
-           "hint": "Toca una caja o una conexión para leer qué es; las etiquetas A1 a A10 abren el anexo de cada parte.",
+           "hint": "Toca una caja o una conexión para leer qué es; las etiquetas A1 a A{na} abren el anexo de cada parte.",
            "diagrams": "Diagramas", "annexes": "Anexos", "open": "Abrir", "zoom": "Tamaño real", "lang": "Idioma",
            "svg": "Abrir este SVG", "site": "Volver al sitio", "nav": "Diagramas y anexos",
            "error": "No se pudo cargar este diagrama. Intente de nuevo en unos minutos.",
            "foot": "Se dibujan con python -m tools.architecture desde docs/arquitectura.json y docs/arquitectura-anexos.json."},
     "en": {"page": "ENSO Peru Observatory architecture", "simple": "Simplified diagram", "full": "Full diagram",
            "simple_lead": "The system in {ns} boxes, from the sources to the site. Tap a box to open the annex that details it.",
-           "full_lead": "The system's {nf} parts and their numbered connections. Tap a box or its A1 to A10 tag to open "
+           "full_lead": "The system's {nf} parts and their numbered connections. Tap a box or its A1 to A{na} tag to open "
                         "its annex: the steps, each one's technology and what happens if something fails.",
-           "hint": "Tap a box or a connection to read what it is; the A1 to A10 tags open each part's annex.",
+           "hint": "Tap a box or a connection to read what it is; the A1 to A{na} tags open each part's annex.",
            "diagrams": "Diagrams", "annexes": "Annexes", "open": "Open", "zoom": "Actual size", "lang": "Language",
            "svg": "Open this SVG", "site": "Back to the site", "nav": "Diagrams and annexes",
            "error": "This diagram could not be loaded. Please try again in a few minutes.",
@@ -1237,7 +1237,7 @@ def render_explorer(model: dict, annexes: list, inline: dict | None = None) -> s
 
     Con ``inline`` ({"css": ..., "js": ..., "svgs": {archivo: svg}}) sale una sola página que se abre sin servidor:
     estilos, código y dibujos van dentro."""
-    counts = {"ns": len(model["simple"]["nodes"]), "nf": len(model["full"]["nodes"])}
+    counts = {"ns": len(model["simple"]["nodes"]), "nf": len(model["full"]["nodes"]), "na": len(annexes)}
     ui = {lang: {k: v.format(**counts) if "{" in v else v for k, v in d.items()} for lang, d in EXPLORER_UI.items()}
     U = ui["es"]
     meta = {"base": "assets/", "ui": ui,
@@ -1269,7 +1269,7 @@ def render_explorer(model: dict, annexes: list, inline: dict | None = None) -> s
         '  <meta charset="utf-8">',
         '  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
         f"  <title>{escape(U['page'])}</title>",
-        '  <meta name="description" content="Diagramas de arquitectura del Observatorio ENSO Perú y sus anexos A1 a A10: de dónde sale cada dato, qué tecnología lo procesa y qué respaldo entra si algo falla.">',
+        f'  <meta name="description" content="Diagramas de arquitectura del Observatorio ENSO Perú y sus anexos A1 a A{len(annexes)}: de dónde sale cada dato, qué tecnología lo procesa y qué respaldo entra si algo falla.">',
         *head,
         "</head>",
         "<body>",

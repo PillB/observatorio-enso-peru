@@ -38,6 +38,8 @@ Uso:
     python -m tools.build_historico --aceptar-cambios    # tras revisar un cambio de una fuente
     python -m tools.build_historico --cache A --cache B  # busca cada archivo en varias cachés
     python -m tools.build_historico --parcial            # usa lo bajado de una cosecha larga que sigue a medias
+    python -m tools.build_historico --indices-al-dia D   # con el ICEN y el ONI de hoy (si no, los de las pruebas)
+    python -m tools.build_historico --desde-catalogo     # solo recalcula indicadores, validación y diccionario
 """
 
 from __future__ import annotations
@@ -64,7 +66,8 @@ import yaml
 from enso.fetch import ssl_context
 from enso.historico import cosecha as C, desinventar, enlace, esquema as E, fuentes as F
 from enso.historico.enso import GREAT, NAMED, PIRCC_2017_URL, EnsoCalendar
-from enso.historico.indicadores import by_area, nino_hydro_years
+from enso.historico import validacion as V
+from enso.historico.indicadores import by_area, nino_hydro_years, nino_hydro_years_any, peak_icen
 from enso.historico.registro import make
 from enso.historico.territorio import Territory
 from enso.observatory import csv_safe
@@ -79,6 +82,9 @@ FIX = ROOT / "python" / "tests" / "fixtures" / "sources"
 CACHE = Path.home() / ".cache" / "enso-historico"
 REPO = "github.com/PillB/observatorio-enso-peru"
 UA = {"User-Agent": f"observatorio-enso-peru (catalogo historico; https://{REPO})"}  # solo ASCII
+#: Índices ENSO vigentes (los mismos que lee el observatorio, ``enso.observatory``) y su copia en las pruebas.
+INDICES = {"icen": ("http://met.igp.gob.pe/datos/ICEN.txt", FIX / "igp-icen.txt"),  # por https no responde
+           "oni": ("https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt", FIX / "cpc-oni.txt")}
 
 #: Lectores de eventos: (archivo descargado, territorio, calendario, contador de descartes) → filas.
 READERS = {
@@ -1182,6 +1188,31 @@ def finish(src: dict, path: Path, accept_changes: bool) -> Path:
     return path
 
 
+def fresh_indices(dest: Path) -> tuple[Path, Path]:
+    """El ICEN y el ONI vigentes, descargados en ``dest``. Si una descarga falla, no se puede leer o trae menos meses
+    que la copia de las pruebas, se usan las dos copias de las pruebas (un calendario ENSO a medias es peor)."""
+    got = {}
+    for name, (url, _) in INDICES.items():
+        try:
+            with httpx.Client(follow_redirects=True, timeout=60, headers=UA, verify=ssl_context()) as c:
+                r = c.get(url)
+                r.raise_for_status()
+            got[name] = dest / f"{name}.txt"
+            write_atomic(got[name], r.content)
+        except httpx.HTTPError as e:
+            print(f"{name}: no se pudo descargar ({e}); se usan los índices de las pruebas", file=sys.stderr)
+            return INDICES["icen"][1], INDICES["oni"][1]
+    try:
+        new = EnsoCalendar.from_files(got["icen"], got["oni"])
+        old = EnsoCalendar.from_files(INDICES["icen"][1], INDICES["oni"][1])
+        if max(new.icen) < max(old.icen):
+            raise ValueError(f"el ICEN descargado llega a {max(new.icen)} y la copia de las pruebas a {max(old.icen)}")
+    except (ValueError, KeyError) as e:
+        print(f"índices descargados inservibles ({e}); se usan los de las pruebas", file=sys.stderr)
+        return INDICES["icen"][1], INDICES["oni"][1]
+    return got["icen"], got["oni"]
+
+
 def curated_records(territory: Territory, calendar: EnsoCalendar) -> list[dict]:
     """Registros curados a mano: cada uno con su fuente (URL) y su cita textual."""
     out = []
@@ -1218,8 +1249,9 @@ def normalize_curated(it: dict, territory: Territory, calendar: EnsoCalendar, fn
                 tipo=it.get("TipoEvento"), confidence=it.get("Confianza"))
 
 
-def apply_reviews(records: list[dict], path: Path = DATA / "revisiones.yaml") -> list[dict]:
-    """Aplica ``data/historico/revisiones.yaml`` (exclusiones y cifras dudosas, cada una con su motivo)."""
+def apply_reviews(records: list[dict], path: Path = DATA / "revisiones.yaml", strict: bool = True) -> list[dict]:
+    """Aplica ``data/historico/revisiones.yaml`` (exclusiones y cifras dudosas, cada una con su motivo). ``strict``: cada
+    revisión debe coincidir con algún registro (con ``--desde-catalogo`` solo se aplican a los curados, que se releen)."""
     revs = (yaml.safe_load(path.read_text(encoding="utf-8")) or {}).get("revisiones", []) if path.exists() else []
     used = [0] * len(revs)
     out = []
@@ -1239,7 +1271,7 @@ def apply_reviews(records: list[dict], path: Path = DATA / "revisiones.yaml") ->
             r["Descripción"] = (r["Descripción"] + f" [Revisión del observatorio: {' '.join(action['motivo'].split())}]").strip()
         out.append(r)
     for v, n in zip(revs, used):
-        if not n:
+        if strict and not n:
             raise SystemExit(f"revisiones.yaml: la revisión {v.get('id') or v.get('fecha')} no coincide con ningún registro")
     return out
 
@@ -1263,6 +1295,105 @@ def mark_duplicate_impacts(records: list[dict]) -> None:
 # ---------------------------------------------------------------------------
 # Salidas
 # ---------------------------------------------------------------------------
+#: Impactos que una fila del IDMC pasa a su emergencia gemela del SINPAD.
+IDMC_TWIN_DAYS = 1
+
+
+def merge_idmc_twins(records: list[dict], stats: Counter) -> list[dict]:
+    """El IDMC recopila las mismas emergencias del INDECI que el SINPAD: una fila distrital del IDMC con una emergencia del
+    SINPAD en el mismo distrito y a ±1 día es la misma emergencia. Sus personas desplazadas, viviendas y duración pasan a
+    la fila del SINPAD (que no trae daños desde 2019), el IDMC queda como corroboración y la fila del IDMC se quita. El
+    tipo de peligro es el del SINPAD (el IDMC solo dice «Flood» o «Storm»). Las filas del IDMC por departamento y mes no
+    tienen gemela: se quedan como resumen de desplazamiento (``docs/memoria-desastres.md``)."""
+    by: dict[str, list[dict]] = defaultdict(list)
+    for r in records:
+        if r["Origen"] == "sinpad" and r["PrecisionFecha"] == "dia":
+            by[r["Ubigeo"]].append(r)
+    drop = set()
+    for r in records:
+        if r["Origen"] != "idmc" or len(r["Ubigeo"]) != 6 or r["PrecisionFecha"] != "dia":
+            continue
+        day = date.fromisoformat(r["Date"])
+        near = [(abs((date.fromisoformat(s["Date"]) - day).days), s["GrupoPeligro"] != r["GrupoPeligro"], s["Id"], s)
+                for s in by.get(r["Ubigeo"], [])]
+        near = [x for x in near if x[0] <= IDMC_TWIN_DAYS]
+        if not near:
+            continue
+        t = min(near, key=lambda x: x[:3])[3]
+        for k in E.IMPACT_COLUMNS:
+            if r.get(k) not in (None, ""):
+                t[k] = _n(t.get(k)) + _n(r[k]) if t.get(k) not in (None, "") else r[k]
+        if r.get("DuraciónEvento") and not t.get("DuraciónEvento"):
+            t["DuraciónEvento"] = r["DuraciónEvento"]
+            if t["PrecisionFecha"] == "dia":
+                t["FechaFin"] = (date.fromisoformat(t["Date"]) + timedelta(days=int(r["DuraciónEvento"]) - 1)).isoformat()
+        if any(t.get(k) not in (None, "", 0) for k in E.IMPACT_COLUMNS):
+            t["ImpactoReportado"] = "si"
+        enlace.attach(t, r)
+        # Lo que ya corroboraba a la fila del IDMC (notas, reportes) pasa a la del SINPAD.
+        links = [u for u in (t.get("FuentesAdicionales") or "").split(" | ") if u]
+        links += [u for u in (r.get("FuentesAdicionales") or "").split(" | ") if u and u not in links]
+        t["FuentesAdicionales"] = " | ".join(links[:enlace.MAX_LINKS])
+        origins = set(filter(None, (t.get("OrigenesCorroboran") or "").split(","))) | set(
+            filter(None, (r.get("OrigenesCorroboran") or "").split(",")))
+        t["OrigenesCorroboran"] = ",".join(sorted(origins))
+        t["Corroboracion"] = int(t.get("Corroboracion") or 0) + int(r.get("Corroboracion") or 0)
+        drop.add(r["Id"])
+    if drop:
+        stats["idmc unidas a su emergencia del SINPAD"] += len(drop)
+    return [r for r in records if r["Id"] not in drop]
+
+
+def tidy(records: list[dict], calendar: EnsoCalendar, stats: Counter) -> list[dict]:
+    """Reglas de calidad para todo el catálogo, también con ``--desde-catalogo`` (las halló la revisión independiente de
+    octubre de 2026; ``docs/memoria-desastres.md``, «Validación»)."""
+    last_icen = max(calendar.icen) if calendar.icen else ""
+    keep = []
+    for r in records:
+        # Los impactos de toda fila cuentan salvo que otra fila del mismo evento ya los detalle («no»).
+        r["ImpactoEnTotales"] = r.get("ImpactoEnTotales") or "si"
+        # Notas de prensa que no cuentan un desastre (bonos, reconstrucción, donaciones, crímenes): el titular manda.
+        if r["Origen"] == "prensa" and C._OFF.search(re.match(r"«?([^»]*)", r.get("Descripción") or "").group(1)):
+            stats["nota de prensa que no es un evento"] += 1
+            continue
+        # La fecha de un reporte del COEN o de una nota no es la del evento: nunca confianza alta.
+        if r.get("FechaTipo") in ("informe", "publicacion") and r.get("Confianza") == "alta":
+            r["Confianza"] = "media"
+            stats["confianza alta → media (fecha de reporte o publicación)"] += 1
+        # DesInventar pone el 1 de enero cuando no sabe el día (hay 5 veces más de lo esperable): mes, no día.
+        if r["Origen"] == "desinventar" and r["PrecisionFecha"] == "dia" and r["Date"].endswith("-01-01"):
+            r["PrecisionFecha"], r["FechaFin"] = "mes", ""
+            if r.get("Confianza") == "alta":
+                r["Confianza"] = "media"
+            stats["DesInventar 1 de enero → precisión de mes"] += 1
+        # Después del último mes con ICEN no se sabe la fase: «ICEN pendiente», no «sin asociación».
+        if (last_icen and r["PrecisionFecha"] != "anio" and r["Date"][:7] > last_icen and r.get("AtribucionENSO") == "ninguna"):
+            r["TipoEvento"], r["AtribucionENSO"] = "ICEN pendiente", "pendiente"
+            stats["ICEN pendiente"] += 1
+        keep.append(r)
+    return merge_idmc_twins(keep, stats)
+
+
+def redate(records: list[dict], manifest: dict, caches: list[Path], territory: Territory, calendar: EnsoCalendar,
+           stats: Counter) -> None:
+    """Con ``--desde-catalogo``: vuelve a leer de la caché las fuentes cuyo lector cambió las fechas (el SINPAD de
+    2016-2018, por la hora de Lima guardada como UTC) y corrige la fecha y lo que depende de ella en las filas del
+    mismo Id, sin tocar sus enlaces de corroboración."""
+    fields = ("Date", "FechaFin", "PrecisionFecha", "Anio", "Mes", "AnioHidrologico", "FaseENSO", "EventoENSO", "ICEN",
+              "ONI", "TipoEvento", "AtribucionENSO")
+    by_id = {r["Id"]: r for r in records}
+    for src in manifest["fuentes"]:
+        if src.get("lector") != "sinpad" or not any((c / src["archivo"]).exists() for c in caches):
+            continue
+        path = fetch(src, caches, False, True)
+        for new in READERS["sinpad"](path, territory, calendar, Counter()):
+            old = by_id.get(new["Id"])
+            if old and old["Date"] != new["Date"]:
+                for k in fields:
+                    old[k] = "" if new.get(k) is None else str(new[k])
+                stats["SINPAD 2016-2018: fecha corregida (hora de Lima)"] += 1
+
+
 def catalog_csv(records: list[dict]) -> bytes:
     """El catálogo como CSV UTF-8 con BOM (para que Excel lea las tildes)."""
     buf = io.StringIO()
@@ -1302,7 +1433,7 @@ def web_payload(records: list[dict]) -> tuple[dict, dict[str, dict]]:
 
     rows, detail = [], defaultdict(dict)
     for i, r in enumerate(records):
-        count = r.get("ImpactoEnTotales", "si") == "si"
+        count = r.get("ImpactoEnTotales") != "no"
         date = r["Date"][:4] if r["PrecisionFecha"] == "anio" else r["Date"][:7] if r["PrecisionFecha"] == "mes" else r["Date"]
         rows.append([
             date, idx("DangerType", r["DangerType"]), r["Ubigeo"], idx("TipoEvento", r["TipoEvento"]),
@@ -1341,10 +1472,11 @@ def area_attrs(t: Territory) -> dict:
 
 
 INDICATOR_COLS = ["nivel", "codigo", "nombre", "departamento", "registros", "aniosConEvento", "aniosCobertura",
-                  "frecuenciaAnual", "frecuenciaIC_inf", "frecuenciaIC_sup", "periodoRetorno", "prob5Anios",
-                  "distritoAnios", "distritoAniosPorAnio",
-                  "razonNino", "razonNinoIC_inf", "razonNinoIC_sup", "grandesNinos", "nGrandesNinos",
-                  "muestraPequena", "nivelAtencion", "peligroPrincipal", "ultimoEvento", "Fallecidos",
+                  "frecuenciaAnual", "frecuenciaIC_inf", "frecuenciaIC_sup", "periodoRetorno", "periodoRetornoIC_inf",
+                  "periodoRetornoIC_sup", "prob5Anios", "prob5AniosIC_inf", "prob5AniosIC_sup",
+                  "distritoAnios", "distritoAniosPorAnio", "razonNino", "razonNinoIC_inf", "razonNinoIC_sup",
+                  "dispersionNino", "grandesNinos", "nGrandesNinos",
+                  "muestraPequena", "registrosIntensivos", "peligroPrincipal", "ultimoEvento", "Fallecidos",
                   "Desaparecidos", "Afectados", "Damnificados", "Desplazados", "ViviendasDestruidas", "poblacion2020"]
 
 
@@ -1360,10 +1492,11 @@ def write_indicators(ind: dict, t: Territory, path_for) -> None:
             name = names.get(level, {}).get(code, code)
             dep = names["departamento"].get(code[:2], "") if level != "region" else ""
             w.writerow([level, code, name, dep, s["registros"], s["aniosConEvento"], s["aniosCobertura"],
-                        s["frecuenciaAnual"], *s["frecuenciaIC"], s["periodoRetorno"], s["prob5Anios"],
-                        s["distritoAnios"], s["distritoAniosPorAnio"],
-                        s["razonNino"], *s["razonNinoIC"], "; ".join(s["grandesNinos"]), len(s["grandesNinos"]),
-                        "si" if s["muestraPequena"] else "no", s["nivelAtencion"],
+                        s["frecuenciaAnual"], *s["frecuenciaIC"], s["periodoRetorno"], *s["periodoRetornoIC"],
+                        s["prob5Anios"], *s["prob5AniosIC"], s["distritoAnios"], s["distritoAniosPorAnio"],
+                        s["razonNino"], *s["razonNinoIC"], s["dispersionNino"], "; ".join(s["grandesNinos"]),
+                        len(s["grandesNinos"]),
+                        "si" if s["muestraPequena"] else "no", s["registrosIntensivos"],
                         s["peligros"][0][0] if s["peligros"] else "", (s["ultimo"] or {}).get("Date", ""),
                         s["impactos"].get("Fallecidos", 0), s["impactos"].get("Desaparecidos", 0),
                         s["impactos"].get("Afectados", 0), s["impactos"].get("Damnificados", 0),
@@ -1372,9 +1505,56 @@ def write_indicators(ind: dict, t: Territory, path_for) -> None:
         path_for(level).write_text("\ufeff" + buf.getvalue(), encoding="utf-8")
 
 
+#: Primera temporada de la validación fuera de muestra: la primera completa del SINPAD (el de 2015-16 empieza en enero).
+VALIDATION_FROM = 2016
+
+
+def validation(records: list[dict], t: Territory, calendar: EnsoCalendar, years: range, ind: dict) -> Optional[dict]:
+    """Prueba fuera de muestra de los indicadores (``enso.historico.validacion``) con las temporadas completas del SINPAD
+    posteriores al periodo homogéneo: de ``VALIDATION_FROM`` a la última que terminó (en junio) antes del último
+    registro."""
+    last = max((r["Date"] for r in records if r.get("Origen") == "sinpad" and len(r["Date"]) >= 7), default="")
+    if not last:
+        return None
+    y, m = int(last[:4]), int(last[5:7])
+    test = range(VALIDATION_FROM, (y - 1 if m >= 7 else y - 2) + 1)
+    if len(test) < 3:
+        return None
+    names = area_names(t)
+    out = V.validate(records, t.dist, years, test, nino_hydro_years(calendar, test), ind, names)
+    out["calibracion"] = V.calibration(records, t.dist)
+    out["grandesNinos"] = V.great_repeat(records, t.dist)
+    peak = {y: v for y in years if (v := peak_icen(calendar, y)) is not None}
+    out["sensibilidadNino"] = V.sensitivity(records, years, nino_hydro_years(calendar, years),
+                                            nino_hydro_years_any(calendar, years), peak, ind, names)
+    out["icenPico"] = {str(y): round(v, 2) for y, v in sorted(peak.items())}
+    return out
+
+
+def write_dictionary(records: list[dict], path: Path) -> None:
+    """``diccionario.csv``: tipo, contenido y regla de cada columna del catálogo (``esquema.COLUMN_DOCS``), con el
+    porcentaje de filas que traen el dato, en total y por origen (los vacíos dicen qué no reporta cada fuente)."""
+    origins = [o for o, _ in Counter(r["Origen"] for r in records).most_common()]
+    rows_by = defaultdict(list)
+    for r in records:
+        rows_by[r["Origen"]].append(r)
+
+    def pct(rows: list[dict], c: str) -> float:
+        return round(100 * sum(1 for r in rows if r.get(c) not in (None, "")) / len(rows), 1) if rows else 0.0
+
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(["columna", "grupo", "tipo", "descripcion", "valores", "conDato_pct"] + [f"conDato_pct_{o}" for o in origins])
+    for c in E.COLUMNS:
+        tipo, desc, rule = E.COLUMN_DOCS[c]
+        w.writerow([c, "equipo de prevención" if c in E.TEAM_COLUMNS else "adicional", tipo, desc, rule, pct(records, c),
+                    *(pct(rows_by[o], c) for o in origins)])
+    path.write_text("\ufeff" + buf.getvalue(), encoding="utf-8")
+
+
 CONTEXT_COLS = ["ubigeo", "departamento", "provincia", "distrito", "poblacion2020", "registros", "aniosConEvento",
-                "frecuenciaAnual", "grandesNinos", "nivelAtencion", "registrosEventoEnCurso", "ingemmetPuntos",
-                "ingemmetFlujos", "ingemmetDeslizamientos", "ingemmetCaidas", "zonasCriticasIngemmet", "puntosCriticosANA",
+                "frecuenciaAnual", "frecuenciaIC_inf", "frecuenciaIC_sup", "grandesNinos", "registrosEventoEnCurso",
+                "ingemmetPuntos", "ingemmetFlujos", "ingemmetDeslizamientos", "ingemmetCaidas", "zonasCriticasIngemmet", "puntosCriticosANA",
                 "puntosCriticosANAMuyAlto", "poblacionExpuestaANA", "viviendasExpuestasANA", "costoAccionesANA",
                 "establecimientosSaludAfectados2023"]
 ING_ORDER = ["total", "flujos", "deslizamientos", "caidas", "complejos", "reptacion", "otros"]
@@ -1410,7 +1590,7 @@ def write_context(context: dict, ind: dict, records: list[dict], ongoing: Option
         a = d.get("ana", [])
         w.writerow([code, dep, prov, name, t.population(code) or "",
                     s["registros"] if s else 0, s["aniosConEvento"] if s else 0, s["frecuenciaAnual"] if s else "",
-                    "; ".join(s["grandesNinos"]) if s else "", s["nivelAtencion"] if s else "", now.get(code, 0),
+                    *(s["frecuenciaIC"] if s else ("", "")), "; ".join(s["grandesNinos"]) if s else "", now.get(code, 0),
                     *(d.get("ing", [0] * 7)[:4]), len(d.get("zc", [])), len(a), sum(1 for x in a if x[3] == "Muy Alto"),
                     round(sum(x[4] or 0 for x in a)), round(sum(x[5] or 0 for x in a)), round(sum(x[7] or 0 for x in a)),
                     len(d.get("ips", []))])
@@ -1446,35 +1626,22 @@ def write_prevention(prev: dict, evidence: dict, t: Territory, path_json: Path, 
     path_csv.write_text(buf.getvalue(), encoding="utf-8")
 
 
-def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--cache", type=Path, action="append", help="caché de descargas (puede repetirse; por omisión "
-                    "~/.cache/enso-historico)")
-    ap.add_argument("--aceptar-cambios", action="store_true")
-    ap.add_argument("--sin-red", action="store_true", help="no descargar: usar solo la caché")
-    ap.add_argument("--parcial", action="store_true", help="usar lo bajado de las cosechas largas que siguen a medias")
-    ap.add_argument("--icen", type=Path, default=FIX / "igp-icen.txt")
-    ap.add_argument("--oni", type=Path, default=FIX / "cpc-oni.txt")
-    ap.add_argument("--out", type=Path, default=OUT)
-    args = ap.parse_args(argv)
-
-    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    territory = Territory()
-    calendar = EnsoCalendar.from_files(args.icen, args.oni)
-    caches = args.cache or [CACHE]
-
+def harvest(manifest: dict, territory: Territory, calendar: EnsoCalendar, caches: list[Path], parcial: bool,
+            offline: bool, accept_changes: bool) -> tuple[list[dict], dict, dict]:
+    """Pasos 1 a 3b: lee todas las fuentes y devuelve los registros (ordenados), las capas de contexto y la evidencia de
+    prevención. Anota en ``manifest`` lo que salió de cada fuente."""
     def obtain(src: dict) -> Optional[Path]:
         """El archivo de la fuente; con ``--parcial``, lo bajado hasta ahora, o nada si la cosecha (de la segunda ronda)
         aún no empezó o no se puede retomar: esa fuente se salta y queda anotada como pendiente."""
-        got = snapshot(src, caches) if args.parcial else None
+        got = snapshot(src, caches) if parcial else None
         if got:
             return got
-        if args.parcial and args.sin_red and src.get("lector") in {**CANDIDATES, **EVIDENCE} \
+        if parcial and offline and src.get("lector") in {**CANDIDATES, **EVIDENCE} \
                 and not any((c / src["archivo"]).exists() for c in caches):
             print(f"{src['id']}: cosecha pendiente, se salta", file=sys.stderr)
             src["parcial"] = "pendiente"
             return None
-        return fetch(src, caches, args.aceptar_cambios, args.sin_red)
+        return fetch(src, caches, accept_changes, offline)
 
     records: list[dict] = []
     context: dict[str, dict] = {}
@@ -1535,10 +1702,78 @@ def main(argv=None) -> int:
     dup = [k for k, v in ids.items() if v > 1]
     if dup:
         raise SystemExit(f"Id repetidos: {dup[:5]}")
-    for r in records:
-        r.setdefault("ImpactoEnTotales", "si")
+    records.sort(key=lambda r: (r["Date"], r["Ubigeo"], r["Id"]))
+    return records, context, evidence
+
+
+def read_catalog(path: Path) -> list[dict]:
+    """Las filas del ``eventos.zip`` publicado, como las escribió ``catalog_csv`` (sin el apóstrofo de ``csv_safe``)."""
+    with zipfile.ZipFile(path) as z, z.open("eventos.csv") as f:
+        rows = list(csv.DictReader(io.TextIOWrapper(f, encoding="utf-8-sig", newline="")))
+    for r in rows:
+        for k, v in r.items():
+            if v[:1] == "'" and v[1:2] in ("=", "+", "-", "@"):
+                r[k] = v[1:]
+    return rows
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--cache", type=Path, action="append", help="caché de descargas (puede repetirse; por omisión "
+                    "~/.cache/enso-historico)")
+    ap.add_argument("--aceptar-cambios", action="store_true")
+    ap.add_argument("--sin-red", action="store_true", help="no descargar: usar solo la caché")
+    ap.add_argument("--parcial", action="store_true", help="usar lo bajado de las cosechas largas que siguen a medias")
+    ap.add_argument("--icen", type=Path, default=INDICES["icen"][1])
+    ap.add_argument("--oni", type=Path, default=INDICES["oni"][1])
+    ap.add_argument("--indices-al-dia", type=Path, metavar="CARPETA",
+                    help="descargar el ICEN y el ONI vigentes en CARPETA (aunque se use --sin-red) en lugar de --icen/--oni")
+    ap.add_argument("--out", type=Path, default=OUT)
+    ap.add_argument("--desde-catalogo", action="store_true",
+                    help="no leer las fuentes de eventos: rehacer los archivos publicados a partir del eventos.zip "
+                         "publicado (con las capas de contexto de la caché); la prevención, que necesita la evidencia "
+                         "cosechada, no cambia")
+    args = ap.parse_args(argv)
+
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    territory = Territory()
+    if args.indices_al_dia:
+        args.indices_al_dia.mkdir(parents=True, exist_ok=True)
+        args.icen, args.oni = fresh_indices(args.indices_al_dia)
+    calendar = EnsoCalendar.from_files(args.icen, args.oni)
+    caches = args.cache or [CACHE]
+    quality: Counter = Counter()
+    if args.desde_catalogo:
+        records = read_catalog(args.out / "eventos.zip")
+        # El catálogo publicado ya pasó por las reglas de calidad y el manifiesto guarda cuántas filas tocó cada una: se
+        # suman a las de esta corrida (que sobre un catálogo ya limpio son 0) para que el recuento no se pierda.
+        quality.update(manifest.get("calidad") or {})
+        last_icen = max(calendar.icen) if calendar.icen else ""
+        stale = sum(1 for r in records if r.get("TipoEvento") == "ICEN pendiente" and r["Date"][:7] <= last_icen)
+        if stale:
+            # Clasificar de nuevo el evento ENSO necesita las fuentes (nivel del SINPAD, causa): solo la construcción completa.
+            raise SystemExit(f"{stale} registros con «ICEN pendiente» ya tienen ICEN (hasta {last_icen}): haga la "
+                             "construcción completa en lugar de --desde-catalogo")
+        redate(records, manifest, caches, territory, calendar, quality)
+        # Los registros curados se leen de nuevo (los YAML del repositorio pueden ser más nuevos que el catálogo).
+        cur = apply_reviews(curated_records(territory, calendar), strict=False)
+        records = [r for r in records if r["Origen"] != "curado"] + cur
+        for src in manifest["fuentes"]:
+            if src.get("lector") == "curado":
+                src["registros"] = len(cur)
+        context = {s["lector"]: CONTEXT[s["lector"]](json.loads(fetch(s, caches, False, True).read_text(encoding="utf-8")),
+                                                     territory)
+                   for s in manifest["fuentes"] if s.get("lector") in CONTEXT}
+        evidence = None
+        generated = json.loads((args.out / "resumen.json").read_text(encoding="utf-8"))["generatedAt"]
+    else:
+        records, context, evidence = harvest(manifest, territory, calendar, caches, args.parcial, args.sin_red,
+                                             args.aceptar_cambios)
+        generated = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    records = tidy(records, calendar, quality)
     mark_duplicate_impacts(records)
     records.sort(key=lambda r: (r["Date"], r["Ubigeo"], r["Id"]))
+    manifest["calidad"] = dict(sorted(quality.items()))
 
     first, last = manifest["cobertura"]["homogenea"]
     years = range(first, last + 1)
@@ -1553,7 +1788,6 @@ def main(argv=None) -> int:
     write_zip(records, args.out / "eventos.zip")
     (args.out / "eventos.csv").unlink(missing_ok=True)
     payload, detail = web_payload(records)
-    generated = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     payload["generatedAt"] = generated
     (args.out / "eventos.json").write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     for dep, d in detail.items():
@@ -1578,16 +1812,28 @@ def main(argv=None) -> int:
         "nombres": area_names(territory),
         "atributos": {"cols": ["poblacion2020", "pobrezaPct", "idh2019", "altitud", "region"], "distritos": area_attrs(territory)},
         "columnas": E.COLUMNS,
+        "calidad": manifest["calidad"],
+        # De dónde salió el calendario ENSO (el ICEN de los últimos meses es preliminar).
+        "indicesENSO": {k: {"archivo": p.name, "sha256": sha256(p), "ultimoMes": last_month}
+                        for k, p, last_month in (("icen", args.icen, max(calendar.icen) if calendar.icen else None),
+                                                 ("oni", args.oni, max(calendar.oni) if calendar.oni else None))},
+        "validacion": validation(records, territory, calendar, years, ind),
     }
     (args.out / "resumen.json").write_text(json.dumps(summary, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    prev = enlace.prevention(records, evidence["decretos"], evidence["evaluaciones"], evidence["llamamientos"])
-    write_prevention(prev, evidence, territory, args.out / "prevencion.json", DATA / "prevencion-distrito.csv", generated)
+    if evidence is not None:
+        prev = enlace.prevention(records, evidence["decretos"], evidence["evaluaciones"], evidence["llamamientos"],
+                                 districts={c: territory.population(c) or 0.0 for c in territory.dist})
+        write_prevention(prev, evidence, territory, args.out / "prevencion.json", DATA / "prevencion-distrito.csv",
+                         generated)
     write_indicators(ind, territory, lambda lvl: DATA / f"indicadores-{lvl}.csv")
     write_context(context, ind, records, ongoing, territory, args.out / "contexto.json", DATA / "contexto-distrito.csv", generated)
+    write_dictionary(records, DATA / "diccionario.csv")
     # Copias en el sitio para descargarlas sin pasar por el repositorio.
-    for name in [f"indicadores-{lvl}.csv" for lvl in ind if lvl != "pais"] + ["contexto-distrito.csv", "prevencion-distrito.csv"]:
+    for name in [f"indicadores-{lvl}.csv" for lvl in ind if lvl != "pais"] + ["contexto-distrito.csv",
+                                                                             "prevencion-distrito.csv", "diccionario.csv"]:
         shutil.copyfile(DATA / name, args.out / name)
-    manifest["generado"] = generated
+    if not args.desde_catalogo:
+        manifest["generado"] = generated
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"{len(records)} registros · {Counter(r['Origen'] for r in records)} · "
           f"{(args.out / 'eventos.json').stat().st_size / 1024:.0f} KB web")

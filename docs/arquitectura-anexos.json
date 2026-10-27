@@ -3574,8 +3574,8 @@
    "title_en": "The site in the browser",
    "subtitle_es": "El sitio es una página estática, sin compilación ni servidor propio: todo lo que muestra sale de los archivos de data/ de una misma publicación. El navegador comprueba que cada archivo sea de esa publicación y, si no puede, lo dice en vez de mezclar datos.",
    "subtitle_en": "The site is a static page, with no build step or server of its own: everything it shows comes from the data/ files of one publication. The browser checks each file belongs to that publication and, if it cannot, says so instead of mixing data.",
-   "desc_es": "Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 10 vistas con la procedencia de cada valor y quién lo usa.",
-   "desc_en": "Where it is hosted, how it loads the data and checks its consistency, its 10 views with each value's provenance and who uses it.",
+   "desc_es": "Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 11 vistas con la procedencia de cada valor y quién lo usa.",
+   "desc_en": "Where it is hosted, how it loads the data and checks its consistency, its 11 views with each value's provenance and who uses it.",
    "covers": [
     "live-site",
     "site-app",
@@ -3702,10 +3702,10 @@
      "col": "c3",
      "icon": "layers",
      "group": "site",
-     "name_es": "10 vistas",
-     "name_en": "10 views",
-     "what_es": "Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una.",
-     "what_en": "Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, News, Data, Methodology and Assistant; a guided tour explains each one.",
+     "name_es": "11 vistas",
+     "name_en": "11 views",
+     "what_es": "Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una.",
+     "what_en": "Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, News, Data, Methodology and Assistant; a guided tour explains each one.",
      "tech": [
       "app.js",
       "tour.js"
@@ -3741,8 +3741,8 @@
      "group": "site",
      "name_es": "Metodología y arquitectura",
      "name_en": "Methodology and architecture",
-     "what_es": "Explica los métodos y muestra estos diagramas; cada caja explica su parte y las etiquetas A1 a A10 abren su anexo.",
-     "what_en": "Explains the methods and shows these diagrams; each box explains its part and the A1 to A10 tags open its annex."
+     "what_es": "Explica los métodos y muestra estos diagramas; cada caja explica su parte y las etiquetas A1 a A11 abren su anexo.",
+     "what_en": "Explains the methods and shows these diagrams; each box explains its part and the A1 to A11 tags open its annex."
     },
     {
      "id": "public",
@@ -4307,6 +4307,423 @@
      "then_es": "Se anota en la corrida y no la detiene; los issues siguen llegando por GitHub.",
      "if_en": "Sending the email fails or there is no SMTP",
      "then_en": "It is noted in the run and does not stop it; issues keep arriving through GitHub."
+    }
+   ]
+  },
+  {
+   "id": "a11",
+   "title_es": "Memoria de desastres: catálogo histórico, indicadores y pestaña",
+   "title_en": "Disaster memory: historical catalogue, indicators and tab",
+   "subtitle_es": "Una cosecha cada 6 horas baja lo que falta de 66 fuentes de desastres pasados, arma un catálogo por distrito con las columnas del tablero del equipo de prevención, une las fuentes que cuentan el mismo evento, calcula los indicadores de cada área y abre un PR. Al fusionarlo, la pestaña Memoria de desastres lo publica.",
+   "subtitle_en": "A harvest every 6 hours fetches what is missing from 66 past-disaster sources, builds a catalogue by district with the prevention team's dashboard columns, joins the sources that tell the same event, computes each area's indicators and opens a PR. Once merged, the Disaster memory tab publishes it.",
+   "desc_es": "Fuentes de desastres pasados, cosecha reanudable en GitHub Actions, lectura, clasificación, ubicación y enlace de registros, indicadores por área, archivos publicados y la pestaña.",
+   "desc_en": "Past-disaster sources, resumable harvest in GitHub Actions, reading, classification, placement and linking of records, per-area indicators, published files and the tab.",
+   "covers": [
+    "memoria-sources",
+    "memoria-harvest",
+    "memoria-build"
+   ],
+   "simple": [
+    "s-memoria"
+   ],
+   "columns": [
+    {
+     "id": "c1",
+     "w": 300,
+     "title_es": "Fuentes",
+     "title_en": "Sources",
+     "sub_es": "data/historico/fuentes.json · curado/*.yaml",
+     "sub_en": "data/historico/fuentes.json · curado/*.yaml"
+    },
+    {
+     "id": "c2",
+     "w": 300,
+     "title_es": "Cosecha",
+     "title_en": "Harvest",
+     "sub_es": "memoria-cosecha.yml · cosecha_historico.py",
+     "sub_en": "memoria-cosecha.yml · cosecha_historico.py"
+    },
+    {
+     "id": "c3",
+     "w": 300,
+     "title_es": "Catálogo",
+     "title_en": "Catalogue",
+     "sub_es": "build_historico.py · enso/historico/",
+     "sub_en": "build_historico.py · enso/historico/"
+    },
+    {
+     "id": "c4",
+     "w": 300,
+     "title_es": "Publicación y uso",
+     "title_en": "Publication and use",
+     "sub_es": "public/assets/historico/ · historico.js",
+     "sub_en": "public/assets/historico/ · historico.js"
+    }
+   ],
+   "nodes": [
+    {
+     "id": "events",
+     "col": "c1",
+     "icon": "database",
+     "group": "sources",
+     "name_es": "Fuentes de eventos",
+     "name_en": "Event sources",
+     "what_es": "DesInventar (1970-2015), el SINPAD (2015-2026), los reportes del COEN, el IDMC, el inventario de deslizamientos de la NASA y las lagunas glaciares desbordadas.",
+     "what_en": "DesInventar (1970-2015), SINPAD (2015-2026), COEN reports, IDMC, NASA's landslide catalogue and glacial lake outburst floods.",
+     "see": [
+      "a1"
+     ]
+    },
+    {
+     "id": "press",
+     "col": "c1",
+     "icon": "rss",
+     "group": "sources",
+     "name_es": "Prensa y periódicos antiguos",
+     "name_en": "Press and old newspapers",
+     "what_es": "44 medios en línea (la API pública de WordPress, el archivo de RPP y sitemaps) y Chronicling America (periódicos de EE. UU. de 1836 a 1963 que reproducían cables del Perú).",
+     "what_en": "44 online media (the public WordPress API, RPP's archive and sitemaps) and Chronicling America (US newspapers from 1836 to 1963 that reprinted cables from Peru)."
+    },
+    {
+     "id": "prevention",
+     "col": "c1",
+     "icon": "shield",
+     "group": "sources",
+     "name_es": "Prevención y peligro identificado",
+     "name_en": "Prevention and identified hazard",
+     "what_es": "Declaratorias de emergencia de El Peruano, evaluaciones e inventarios del INGEMMET y del IGP, puntos críticos de la ANA, establecimientos de salud afectados en 2023 y llamamientos de la Cruz Roja.",
+     "what_en": "Emergency declarations from El Peruano, INGEMMET and IGP assessments and inventories, ANA critical points, health facilities hit in 2023 and Red Cross appeals."
+    },
+    {
+     "id": "curated",
+     "col": "c1",
+     "icon": "archive",
+     "group": "sources",
+     "name_es": "Registros curados",
+     "name_en": "Curated records",
+     "what_es": "Eventos de estudios históricos (García-Herrera et al. desde 1550, Eguiguren 1728-1891, el PIRCC 2017), cada uno con su cita, y las correcciones a mano de revisiones.yaml.",
+     "what_en": "Events from historical studies (García-Herrera et al. since 1550, Eguiguren 1728-1891, the 2017 PIRCC), each with its citation, and the hand corrections in revisiones.yaml."
+    },
+    {
+     "id": "harvest",
+     "col": "c2",
+     "icon": "refresh",
+     "group": "operations",
+     "name_es": "memoria-cosecha.yml",
+     "name_en": "memoria-cosecha.yml",
+     "what_es": "Cada 6 horas: un proceso por fuente, en paralelo por servidor y en serie dentro de cada uno, con 300 min de plazo y al menos 5 s entre pedidos al mismo servidor.",
+     "what_en": "Every 6 hours: one process per source, in parallel by server and one after another within each, with a 300-minute limit and at least 5 s between requests to the same server.",
+     "tech": [
+      "cosecha_historico.py",
+      "build_historico.py"
+     ]
+    },
+    {
+     "id": "cache",
+     "col": "c2",
+     "icon": "database",
+     "group": "stores",
+     "name_es": "Caché de Actions",
+     "name_en": "Actions cache",
+     "what_es": "Las partes de cada descarga larga y el estado de la cosecha (avance, fallos seguidos, último error): la corrida siguiente sigue donde quedó.",
+     "what_en": "The parts of each long download and the harvest state (progress, consecutive failures, last error): the next run continues where it stopped."
+    },
+    {
+     "id": "pr",
+     "col": "c2",
+     "icon": "merge",
+     "group": "publication",
+     "name_es": "PR del catálogo",
+     "name_en": "Catalogue PR",
+     "what_es": "Cuando no falta nada: el catálogo se construye sin red y se abre un PR desde bot/memoria-desastres/<inicio> con lo que cambió en cada fuente; ci.yml corre sus pruebas.",
+     "what_en": "When nothing is missing: the catalogue is built offline and a PR is opened from bot/memoria-desastres/<start> with what changed in each source; ci.yml runs its tests."
+    },
+    {
+     "id": "read",
+     "col": "c3",
+     "icon": "filter",
+     "group": "pipeline",
+     "name_es": "Lectura y clasificación",
+     "name_en": "Reading and classification",
+     "what_es": "Cada lector pasa su fuente al mismo esquema: tipo de peligro del vocabulario del equipo (con su código IRDR), fecha y su precisión, impactos y evento ENSO según el ICEN.",
+     "what_en": "Each reader maps its source to the same schema: hazard type from the team's vocabulary (with its IRDR code), date and its precision, impacts and ENSO event from the ICEN.",
+     "tech": [
+      "fuentes.py",
+      "desinventar.py",
+      "cosecha.py",
+      "esquema.py"
+     ]
+    },
+    {
+     "id": "place",
+     "col": "c3",
+     "icon": "pin",
+     "group": "pipeline",
+     "name_es": "Ubicación",
+     "name_en": "Placement",
+     "what_es": "UBIGEO vigente del INEI por código o por nombre; si el nombre no alcanza, el punto de la fuente dentro de los límites del IGN; en texto libre, el ubicador de noticias.",
+     "what_en": "Current INEI UBIGEO by code or by name; if the name is not enough, the source's point within IGN's boundaries; in free text, the news place finder.",
+     "tech": [
+      "territorio.py",
+      "geo.py"
+     ]
+    },
+    {
+     "id": "link",
+     "col": "c3",
+     "icon": "link",
+     "group": "pipeline",
+     "name_es": "Enlace de fuentes",
+     "name_en": "Source linking",
+     "what_es": "Los reportes del COEN, las lagunas glaciares, las notas de prensa y las páginas de periódicos antiguos se unen al evento que cuentan (lugar, peligro compatible y fecha); el evento guarda cuántas fuentes lo corroboran y sus enlaces.",
+     "what_en": "COEN reports, glacial lakes, news and old newspaper pages are joined to the event they tell (place, compatible hazard and date); the event keeps how many sources corroborate it and their links.",
+     "tech": [
+      "enlace.py"
+     ]
+    },
+    {
+     "id": "quality",
+     "col": "c3",
+     "icon": "check",
+     "group": "pipeline",
+     "name_es": "Reglas de calidad",
+     "name_en": "Quality rules",
+     "what_es": "Unen cada fila del IDMC a su emergencia del SINPAD, corrigen fechas (hora de Lima, el 1 de enero de DesInventar), bajan la confianza de las fechas de reporte o publicación, marcan «ICEN pendiente» y quitan notas que no son un evento. También al rehacer desde el catálogo.",
+     "what_en": "They join each IDMC row to its SINPAD emergency, fix dates (Lima time, DesInventar's 1 January), lower the confidence of report or publication dates, mark «ICEN pending» and drop news items that are not an event. Also when rebuilding from the catalogue.",
+     "tech": [
+      "build_historico.tidy"
+     ]
+    },
+    {
+     "id": "indicators",
+     "col": "c3",
+     "icon": "chart",
+     "group": "pipeline",
+     "name_es": "Indicadores por área",
+     "name_en": "Per-area indicators",
+     "what_es": "Años con daños (intervalo de Wilson), periodo de retorno y probabilidad en 5 años con su intervalo, razón de El Niño (cuasi-Poisson), grandes Niños y «¿se sabía antes?» comparado con el azar, por distrito, provincia, departamento y macrorregión, con su validación fuera de muestra (2016-2025); el navegador recalcula con los mismos métodos.",
+     "what_en": "Years with damage (Wilson interval), return period and 5-year probability with their intervals, El Niño ratio (quasi-Poisson), great Niños and «was it known before?» compared with chance, by district, province, department and macro-region, with their out-of-sample validation (2016-2025); the browser recomputes with the same methods.",
+     "tech": [
+      "indicadores.py",
+      "historico-model.js",
+      "validacion.py"
+     ]
+    },
+    {
+     "id": "files",
+     "col": "c4",
+     "icon": "download",
+     "group": "publication",
+     "name_es": "Archivos publicados",
+     "name_en": "Published files",
+     "what_es": "eventos.zip (las 13 columnas del tablero y 45 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador.",
+     "what_en": "eventos.zip (the 13 dashboard columns and 45 metadata columns), the indicators, the per-district context, the prevention files and the data dictionary and browser versions."
+    },
+    {
+     "id": "tab",
+     "col": "c4",
+     "icon": "map",
+     "group": "site",
+     "name_es": "Pestaña Memoria de desastres",
+     "name_en": "Disaster memory tab",
+     "what_es": "Cómo usarla, mapa y ficha de cada área con intervalos, línea de tiempo, los grandes Niños uno al lado del otro, ranking, la validación, «¿se sabía antes?», antes de 1970, la evidencia sobre la prevención y el método con sus límites.",
+     "what_en": "How to use it, map and profile of each area with intervals, timeline, the great Niños side by side, ranking, the validation, «was it known before?», before 1970, the evidence on prevention and the method with its limits.",
+     "tech": [
+      "historico.js",
+      "historico-model.js",
+      "historico-evidencia.js"
+     ],
+     "see": [
+      "a9"
+     ]
+    },
+    {
+     "id": "team",
+     "col": "c4",
+     "icon": "users",
+     "group": "people",
+     "name_es": "Equipo de prevención y público",
+     "name_en": "Prevention team and public",
+     "what_es": "El equipo carga eventos.csv en su tablero con sus columnas; cualquiera consulta la pestaña o baja los archivos, cada registro con su fuente.",
+     "what_en": "The team loads eventos.csv into its dashboard with its columns; anyone can use the tab or download the files, each record with its source."
+    }
+   ],
+   "edges": [
+    {
+     "from": "events",
+     "to": "harvest",
+     "kind": "data",
+     "label_es": "API, ArcGIS y PDF",
+     "label_en": "API, ArcGIS and PDF",
+     "explain_es": "Las descargas largas (SINPAD mes por mes, los PDF del COEN, El Peruano, el INGEMMET) se guardan por partes.",
+     "explain_en": "Long downloads (SINPAD month by month, COEN PDFs, El Peruano, INGEMMET) are saved in parts."
+    },
+    {
+     "from": "press",
+     "to": "harvest",
+     "kind": "data",
+     "label_es": "búsquedas por término",
+     "label_en": "searches by term",
+     "explain_es": "Solo metadatos, un extracto de hasta 200 caracteres y el enlace: el texto de los medios no se redistribuye.",
+     "explain_en": "Only metadata, an excerpt of up to 200 characters and the link: the media's text is not redistributed."
+    },
+    {
+     "from": "prevention",
+     "to": "harvest",
+     "kind": "data",
+     "label_es": "decretos, informes y capas",
+     "label_en": "decrees, reports and layers",
+     "explain_es": "Evidencia de qué se sabía antes de cada emergencia: no son eventos.",
+     "explain_en": "Evidence of what was known before each emergency: they are not events."
+    },
+    {
+     "from": "harvest",
+     "to": "cache",
+     "kind": "data",
+     "label_es": "partes y estado",
+     "label_en": "parts and state",
+     "explain_es": "Se guardan al final de cada corrida, terminada o no.",
+     "explain_en": "Saved at the end of every run, finished or not."
+    },
+    {
+     "from": "cache",
+     "to": "harvest",
+     "kind": "fallback",
+     "label_es": "sigue donde quedó",
+     "label_en": "resumes",
+     "explain_es": "La corrida siguiente lee las partes y pide solo lo que falta.",
+     "explain_en": "The next run reads the parts and requests only what is missing."
+    },
+    {
+     "from": "harvest",
+     "to": "read",
+     "kind": "trigger",
+     "label_es": "cuando no falta nada",
+     "label_en": "when nothing is missing",
+     "explain_es": "build_historico --sin-red --parcial --indices-al-dia: todo sale de la caché, con su SHA-256 comparado con el manifiesto, salvo el ICEN y el ONI, que se bajan al día.",
+     "explain_en": "build_historico --sin-red --parcial --indices-al-dia: everything comes from the cache, its SHA-256 checked against the manifest, except the ICEN and the ONI, fetched up to date."
+    },
+    {
+     "from": "curated",
+     "to": "read",
+     "kind": "data",
+     "label_es": "YAML del repositorio",
+     "label_en": "YAML in the repository",
+     "explain_es": "Los registros curados y las revisiones van en el repositorio y se leen en cada construcción.",
+     "explain_en": "Curated records and reviews live in the repository and are read on every build."
+    },
+    {
+     "from": "read",
+     "to": "place",
+     "kind": "data",
+     "label_es": "registros",
+     "label_en": "records",
+     "explain_es": "Un registro sin lugar reconocible no entra.",
+     "explain_en": "A record without a recognisable place is left out."
+    },
+    {
+     "from": "place",
+     "to": "link",
+     "kind": "data",
+     "label_es": "registros ubicados",
+     "label_en": "placed records",
+     "explain_es": "Los candidatos que no se unen a un evento existente entran como registros propios, si tienen lugar y fecha.",
+     "explain_en": "Candidates that join no existing event enter as records of their own, if they have a place and a date."
+    },
+    {
+     "from": "link",
+     "to": "quality",
+     "kind": "data",
+     "label_es": "catálogo",
+     "label_en": "catalogue",
+     "explain_es": "Cuántas filas tocó cada regla queda en «calidad» de fuentes.json y de resumen.json.",
+     "explain_en": "How many rows each rule touched is kept in «calidad» of fuentes.json and resumen.json."
+    },
+    {
+     "from": "quality",
+     "to": "indicators",
+     "kind": "data",
+     "label_es": "catálogo limpio",
+     "label_en": "clean catalogue",
+     "explain_es": "La frecuencia usa solo la fuente homogénea del periodo (DesInventar); las demás suman registros e impactos.",
+     "explain_en": "Frequency uses only the period's homogeneous source (DesInventar); the others add records and impacts."
+    },
+    {
+     "from": "indicators",
+     "to": "pr",
+     "kind": "data",
+     "label_es": "archivos nuevos",
+     "label_en": "new files",
+     "explain_es": "El PR muestra qué cambió por fuente; una persona lo revisa y lo fusiona.",
+     "explain_en": "The PR shows what changed per source; a person reviews and merges it."
+    },
+    {
+     "from": "pr",
+     "to": "files",
+     "kind": "data",
+     "label_es": "al fusionar en main",
+     "label_en": "on merge to main",
+     "explain_es": "El despliegue de main publica public/assets/historico/ (anexo A8).",
+     "explain_en": "The main deploy publishes public/assets/historico/ (annex A8)."
+    },
+    {
+     "from": "files",
+     "to": "tab",
+     "kind": "data",
+     "label_es": "lee y recalcula",
+     "label_en": "reads and recomputes",
+     "explain_es": "La pestaña carga el resumen y, al abrir un departamento, su detalle.",
+     "explain_en": "The tab loads the summary and, when a department is opened, its detail."
+    },
+    {
+     "from": "files",
+     "to": "team",
+     "kind": "data",
+     "label_es": "eventos.csv y CSV",
+     "label_en": "eventos.csv and CSVs",
+     "explain_es": "UTF-8 con BOM para que Excel lea las tildes; un impacto vacío es «no reportado», no cero.",
+     "explain_en": "UTF-8 with BOM so Excel reads accents; an empty impact means «not reported», not zero."
+    },
+    {
+     "from": "tab",
+     "to": "team",
+     "kind": "human",
+     "label_es": "consulta",
+     "label_en": "consults",
+     "explain_es": "Cada cifra con su fuente, su intervalo y lo que no dice.",
+     "explain_en": "Each figure with its source, its interval and what it does not say."
+    }
+   ],
+   "fails": [
+    {
+     "if_es": "Un servidor no responde o corta la descarga",
+     "then_es": "La descarga sigue donde quedó en la corrida siguiente; la tabla de la cosecha muestra el avance y el último error.",
+     "if_en": "A server does not answer or cuts the download",
+     "then_en": "The download resumes where it stopped in the next run; the harvest table shows the progress and the last error."
+    },
+    {
+     "if_es": "Una fuente que el catálogo necesita falla una y otra vez",
+     "then_es": "Nunca deja de esperarse: el PR no se abre sin ella y la tabla de la cosecha lo dice en cada corrida.",
+     "if_en": "A source the catalogue needs fails again and again",
+     "then_en": "It is never given up: the PR does not open without it and the harvest table says so on every run."
+    },
+    {
+     "if_es": "Una fuente de segunda ronda (prensa, evidencia) falla tres corridas seguidas",
+     "then_es": "Deja de esperarse y el catálogo se construye sin ella (--parcial); el PR lo indica.",
+     "if_en": "A second-round source (press, evidence) fails three runs in a row",
+     "then_en": "It stops being waited for and the catalogue is built without it (--parcial); the PR says so."
+    },
+    {
+     "if_es": "Lo que devuelve una fuente cambió",
+     "then_es": "Se acepta, se actualiza su SHA-256 en el manifiesto y el PR muestra la diferencia de registros de esa fuente.",
+     "if_en": "What a source returns changed",
+     "then_en": "It is accepted, its SHA-256 is updated in the manifest and the PR shows that source's change in records."
+    },
+    {
+     "if_es": "Un sitio pide verificación antirobots, un login o rechaza el uso por IA",
+     "then_es": "Se anota y no se evade; la fuente queda documentada como no usable, con el motivo.",
+     "if_en": "A site asks for a bot check or a login, or rejects AI use",
+     "then_en": "It is noted and not bypassed; the source is documented as unusable, with the reason."
     }
    ]
   }
