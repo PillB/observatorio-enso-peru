@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:30:22 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 26 Oct 2026 18:58:37 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.0 remeció la región Loreto esta tarde]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 125 kilómetros al noroeste de Andoas, en la provincia del <strong>Datem del Marañón</strong>, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Fri, 23 Oct 2026 13:45:15 -0500</pubDate>
+        <link>https://rpp.pe/peru/loreto/loreto-sismo-de-magnitud-40-remecio-la-region-esta-tarde-noticia-1714153</link>
+        <guid>1714153</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/23/494949_1921851.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Loreto, Sismo, IGP, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Iquitos: intervienen a 150 ciudadanos extranjeros durante operativo de control migratorio]]></title>
         <description><![CDATA[El operativo se realizó en distintos puntos de <a data-mce-href="https://rpp.pe/noticias/iquitos" href="https://rpp.pe/noticias/iquitos" target="_blank" rel="noopener"><strong>Iquitos</strong></a>, donde las autoridades identificaron a tres extranjeros que habían excedido el tiempo de permanencia permitido en el país.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/01/25/port-rpp-20260125-120716-1832489mp4_1832490.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Iquitos, Loreto, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Loreto: 65 casas destruidas y 110 damnificados deja desborde del río Ucayali tras fuertes lluvias]]></title>
-        <description><![CDATA[Desde la semana pasada, el caudal del <strong>río Amazonas</strong> está registrando un <strong>crecimiento acelerado</strong>, debido a <a href="https://rpp.pe/peru/actualidad/senamhi-alerto-sobre-lluvias-de-moderada-a-fuerte-intensidad-en-la-selva-noticia-1671317" data-mrf-link="https://rpp.pe/peru/actualidad/senamhi-alerto-sobre-lluvias-de-moderada-a-fuerte-intensidad-en-la-selva-noticia-1671317" data-mce-href="https://rpp.pe/peru/actualidad/senamhi-alerto-sobre-lluvias-de-moderada-a-fuerte-intensidad-en-la-selva-noticia-1671317">las fuertes lluvias que están cayendo</a> durante la temporada.]]></description>
-        <pubDate>Mon, 19 Jan 2026 18:39:52 -0500</pubDate>
-        <link>https://rpp.pe/peru/loreto/loreto-65-casas-destruidas-y-110-damnificados-deja-desborde-del-rio-ucayali-tras-fuertes-lluvias-noticia-1672227</link>
-        <guid>1672227</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/01/19/543454_1830839.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Loreto, Lluvias, COER, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
