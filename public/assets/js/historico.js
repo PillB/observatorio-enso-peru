@@ -275,6 +275,23 @@ function viewBoxFor(D, s) {
   return `${(x0 + w / 2 - side / 2).toFixed(1)} ${(y0 + h / 2 - (side / 0.75) / 2).toFixed(1)} ${side.toFixed(1)} ${(side / 0.75).toFixed(1)}`;
 }
 
+// Contorno del área elegida con su propia forma: un distrito, una provincia
+// entera aunque el mapa muestre distritos, o un departamento. Si falta su
+// forma (distritos creados después del mapa base), usa la de quien la contiene.
+function areaShape(D, code) {
+  for (const c of [code, code.slice(0, 4), code.slice(0, 2)]) {
+    const d = c.length === 2 ? D.peru.departments.find((x) => x.code === c)?.d : (c.length === 4 ? D.map.provinces : D.map.districts)[c]?.d;
+    if (d) return d;
+  }
+  return '';
+}
+
+// Va al final del SVG para que ningún borde vecino ni el contorno de los
+// departamentos lo tape.
+function selRing(d) {
+  return d ? `<g class="sel-ring" aria-hidden="true"><path class="sel-glow" d="${d}"></path><path class="sel-case" d="${d}"></path><path class="sel-line" d="${d}"></path></g>` : '';
+}
+
 function mapSvg(D, s, stats, scale, { small = false, label = '' } = {}) {
   const shapes = shapesFor(D, s.nivel);
   const focusable = s.nivel === 'departamento' && !small;
@@ -285,8 +302,9 @@ function mapSvg(D, s, stats, scale, { small = false, label = '' } = {}) {
     return `<path class="hz-a hz-${cls}${sel}" d="${d}" data-code="${code}"${focusable ? ` tabindex="0" role="button" aria-label="${esc(shortName(D, code))}: ${esc(metricText(st, s.metrica))}"` : ''}></path>`;
   }).join('');
   const outline = s.nivel === 'departamento' ? '' : `<g class="hz-out" aria-hidden="true">${D.peru.departments.map((d) => `<path d="${d.d}"></path>`).join('')}</g>`;
+  const ring = s.area && !small ? selRing(areaShape(D, s.area)) : '';
   const vb = small ? `0 0 ${D.peru.width} ${D.peru.height}` : viewBoxFor(D, s);
-  return `<svg class="hz-svg${small ? ' hz-small' : ''}" viewBox="${vb}" role="${small ? 'img' : 'group'}" aria-label="${esc(label)}" preserveAspectRatio="xMidYMid meet"><g>${paths}</g>${outline}</svg>`;
+  return `<svg class="hz-svg${small ? ' hz-small' : ''}" viewBox="${vb}" role="${small ? 'img' : 'group'}" aria-label="${esc(label)}" preserveAspectRatio="xMidYMid meet"><g>${paths}</g>${outline}${ring}</svg>`;
 }
 
 function legendHtml(scale, metric) {

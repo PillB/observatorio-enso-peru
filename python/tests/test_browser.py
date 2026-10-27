@@ -633,6 +633,51 @@ def test_news_fits_every_reference_device(site, engine):
         pytest.skip(f"ningún dispositivo de referencia usa {name}")
 
 
+# Anillo del área elegida: va después de todas las áreas y bordes del SVG (ningún vecino lo tapa), dibuja la
+# forma esperada, deja pasar el clic al área de abajo y su brillo late salvo que se pida menos movimiento.
+RING_CHECK = """({ svg, shape, d }) => {
+  const root = document.querySelector(svg), ring = root.querySelector('.sel-ring');
+  if (!ring) return null;
+  const line = ring.querySelector('.sel-line'), want = d || root.querySelector(shape).getAttribute('d');
+  const below = [...root.querySelectorAll('path:not(.sel-ring *)')];
+  const p = line.getPointAtLength(0), m = line.getScreenCTM(), x = m.a * p.x + m.c * p.y + m.e, y = m.b * p.x + m.d * p.y + m.f;
+  return {
+    above: below.every((e) => e.compareDocumentPosition(ring) & Node.DOCUMENT_POSITION_FOLLOWING),
+    shape: line.getAttribute('d') === want,
+    clickThrough: !document.elementFromPoint(x, y)?.closest('.sel-ring'),
+    glow: getComputedStyle(ring.querySelector('.sel-glow')).animationName,
+  };
+}"""
+RING_OK = {"above": True, "shape": True, "clickThrough": True, "glow": "sel-glow"}
+
+
+def test_memory_map_ring_marks_the_selected_area_above_every_border(site, browser):
+    """Mapa de la memoria: el área elegida lleva un anillo encima de los bordes vecinos y del contorno de los
+    departamentos, con su propia forma aunque el mapa muestre un nivel más fino (una provincia entre distritos),
+    y se queda quieto si se pide menos movimiento."""
+    base, root = site
+    geo = json.loads((root / "assets" / "historico" / "mapa.json").read_text(encoding="utf-8"))
+    deps = {d["code"]: d["d"] for d in json.loads((root / "assets" / "peru-map.json").read_text(encoding="utf-8"))["departments"]}
+    cases = [("1501", "distrito", geo["provinces"]["1501"]["d"]), ("1501", "provincia", geo["provinces"]["1501"]["d"]),
+             ("20", "departamento", deps["20"]), ("200101", "distrito", geo["districts"]["200101"]["d"])]
+    for motion in ("no-preference", "reduce"):
+        ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE", reduced_motion=motion)
+        pg = ctx.new_page()
+        errors = []
+        pg.on("pageerror", lambda e: errors.append(str(e)))
+        try:
+            for area, nivel, d in cases:
+                pg.goto(f"{base}#/memoria?area={area}&nivel={nivel}")
+                expect(pg.locator(".hz-mapbox .sel-ring")).to_have_count(1)
+                got = pg.evaluate(RING_CHECK, {"svg": ".hz-mapbox .hz-svg", "d": d})
+                assert got == {**RING_OK, "glow": "none" if motion == "reduce" else "sel-glow"}, (area, nivel, got)
+            pg.locator(".hz-prof-top [data-area='']").click()
+            expect(pg.locator(".hz-mapbox .sel-ring")).to_have_count(0)
+            assert not errors, errors
+        finally:
+            ctx.close()
+
+
 @pytest.mark.parametrize("variant", ["A", "B", "C", "D"])
 def test_alert_map_filters_the_news_and_remembers_the_version(site, browser, variant):
     """Mapa de alertas sobre las noticias: cada versión se dibuja sin errores ni desbordes en un teléfono, un
@@ -662,10 +707,12 @@ def test_alert_map_filters_the_news_and_remembers_the_version(site, browser, var
                 pg.keyboard.press("Enter")
                 expect(pg).to_have_url(re.compile(rf"dep={dep}"))
                 expect(pg.locator(".amap-filtered")).to_contain_text("según el filtro del mapa")
+                assert pg.evaluate(RING_CHECK, {"svg": ".amap-svg", "shape": f'path.dep[data-dep="{dep}"]'}) == RING_OK
                 n = pg.locator("#fg-alertas-list .feed-item").count()
                 assert 1 <= n <= len(alerts)
                 pg.locator(".amap-filtered [data-clear-map]").click()
                 expect(pg.locator(".amap-filtered")).to_have_count(0)
+                expect(pg.locator(".amap-svg .sel-ring")).to_have_count(0)
                 pg.select_option("#amap-ver", "C" if variant != "C" else "A")
                 pg.reload()
                 expect(pg.locator("#amap-ver")).to_have_value("C" if variant != "C" else "A")
