@@ -1,0 +1,49 @@
+{
+ "source": "https://geocatmin.ingemmet.gob.pe/arcgis/rest/services/SERV_PELIGROS_GEOLOGICOS/MapServer/0",
+ "features": [
+  {
+   "attributes": {
+    "NM_DIST": "Santa Rosa",
+    "NM_DPTO": "Puno",
+    "NM_PROV": "El Collao",
+    "OBJECTID": 2,
+    "REGISTRO": "Publicable",
+    "TIP_PELIGRO": "1000|1300",
+    "UBIGEO": "210504"
+   }
+  },
+  {
+   "attributes": {
+    "NM_DIST": "Pomata",
+    "NM_DPTO": "Puno",
+    "NM_PROV": "Chucuito",
+    "OBJECTID": 3,
+    "REGISTRO": "Publicable",
+    "TIP_PELIGRO": "1000|1100",
+    "UBIGEO": "210406"
+   }
+  },
+  {
+   "attributes": {
+    "NM_DIST": "Huacullani",
+    "NM_DPTO": "Puno",
+    "NM_PROV": "Chucuito",
+    "OBJECTID": 4,
+    "REGISTRO": "Publicable",
+    "TIP_PELIGRO": "1000|1100",
+    "UBIGEO": "210403"
+   }
+  },
+  {
+   "attributes": {
+    "NM_DIST": null,
+    "NM_DPTO": null,
+    "NM_PROV": null,
+    "OBJECTID": 5,
+    "REGISTRO": "Publicable",
+    "TIP_PELIGRO": "1000|1100",
+    "UBIGEO": " "
+   }
+  }
+ ]
+}

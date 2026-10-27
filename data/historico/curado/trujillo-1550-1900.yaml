@@ -1,0 +1,148 @@
+# El Niño en el norte del Perú, 1550–1900, según documentos de archivo: la cronología de García-Herrera et al.
+# (2008), tabla 1, archivada por NOAA (World Data Center for Paleoclimatology). La tabla lista, por año, la
+# evidencia de las actas del Cabildo y otros fondos del Archivo Regional de La Libertad (Trujillo), del
+# Archivo General de Indias (Sevilla) y del Archivo General de la Nación (Lima), y una evaluación: 1 = Niño
+# posible, 2 = Niño probable. Aquí van solo los años en que los documentos cuentan daños por lluvias o
+# crecidas (no los que solo hablan de la pesca o de agua abundante para las cosechas), con el lugar que
+# nombran. La fecha es el año de la tabla, o el mes cuando el documento lo dice. Las descripciones resumen en
+# castellano la evidencia de la tabla (que está en inglés); las citas entre comillas son de los documentos.
+#
+# Formato: docs/memoria-desastres.md, «Registros curados».
+comun:
+  Fuente: https://www.ncei.noaa.gov/pub/data/paleo/historical/southamerica/peru/trujillo2008.xls
+  FuenteCita: >-
+    García-Herrera, R., Díaz, H. F., García, R. R., Prieto, M. R., Barriopedro, D., Moyano, R. y Hernández, E.
+    (2008). A Chronology of El Niño Events from Primary Documentary Sources in Northern Peru. Journal of Climate
+    21(9): 1948-1962, doi:10.1175/2007JCLI1830.1. Tabla 1, archivada en NOAA/WDC Paleoclimatology (contribución
+    2008-089, «Northern Peru Documentary El Niño Data»).
+  Licencia: NOAA/WDC Paleoclimatology, datos de libre uso citando la referencia original
+  CausaFuente: El Niño
+  PeligroFuente: Niño documentado en archivos (lluvias y crecidas)
+registros:
+  - {Id: gh2008-1559-trujillo, Date: "1559", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Ubicacion: "Ríos Pacasmayo y Chicama",
+     Descripción: "Las actas del Cabildo de Trujillo registran que las crecidas de los ríos Pacasmayo y Chicama se llevaron los puentes, y ríos caudalosos y peligrosos de cruzar. Niño posible (evaluación 1)."}
+  - {Id: gh2008-1570-trujillo, Date: "1570", DangerType: Inundacion, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Las actas del Cabildo piden balsas para cruzar los ríos «donde no hay puentes», secar las ciénagas que forman las aguas de la ciudad y rehacer un puente antes de la siguiente temporada de lluvias. Niño posible (evaluación 1)."}
+  - {Id: gh2008-1575-trujillo, Date: "1575", DangerType: Inundacion, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Un juicio de residencia de 1576 menciona repetidamente ciénagas y caminos inundados en 1575. Niño posible (evaluación 1)."}
+  - {Id: gh2008-1578-trujillo, Date: "1578", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "«El año de las lluvias»: documentos de 1578 y 1580 hablan de las «muchas aguas que han caído en los valles de Trujillo», acequias dañadas y plagas en los cultivos (los indios de Moro). Es el «diluvio de 1578». Niño probable (evaluación 2)."}
+  - {Id: gh2008-1594-trujillo, Date: "1594", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Reginaldo de Lizárraga (1594): de cuando en cuando llueve en estos valles «y con tanta abundancia que los ríos salen de madre y destruyen los valles, pastos y sementeras», como hace 16 años (1578) y hace un año (1593). Niño posible (evaluación 1)."}
+  - {Id: gh2008-1596-paita, Date: "1596", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Paita, Distrito: Paita, Confianza: baja,
+     Descripción: "Fray Diego de Ocaña (1605) describe un «gran aguacero en el puerto de Paita». Niño posible (evaluación 1)."}
+  - {Id: gh2008-1618-chicama, Date: "1618", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Ascope, Distrito: Chicama, Confianza: baja,
+     Ubicacion: "Valle de Chicama",
+     Descripción: "Lluvias fuertes ese año causaron inundaciones y una plaga de insectos (grillos y langostas) entre mayo y agosto en el valle de Chicama; las siembras de trigo se perdieron una y otra vez. Parte de un Niño largo (1617-1620; evaluación 1)."}
+  - {Id: gh2008-1620-trujillo, Date: "1620", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Un documento del Archivo General de Indias (26/03/1620) habla de la «inclemencia del cielo» y de «aguas continuas», algo «nunca visto en estos llanos». Niño largo 1617-1620 (evaluación 1)."}
+  - {Id: gh2008-1624-trujillo, Date: "1624", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Bernabé Cobo (1653) registra lluvias copiosas e inundaciones en Saña y Trujillo. Niño largo 1623-1626 (evaluación 1)."}
+  - {Id: gh2008-1624-zana, Date: "1624", DangerType: Lluvias intensas, Departamento: Lambayeque, Provincia: Chiclayo, Distrito: Zaña, Confianza: baja,
+     Descripción: "Bernabé Cobo (1653) registra lluvias copiosas e inundaciones en Saña y Trujillo. Niño largo 1623-1626 (evaluación 1)."}
+  - {Id: gh2008-1626-trujillo, Date: "1626", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "«Llovió en todas partes» (Archivo General de Indias, 12/04/1626) y las actas del Cabildo registran acequias dañadas. Niño largo 1623-1626 (evaluación 1)."}
+  - {Id: gh2008-1634-trujillo, Date: "1634", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Ubicacion: "Trujillo y valles de Chicama, Chimo y Saña",
+     Descripción: "«En esta ciudad y el valle de Chicama ha habido grandes aguaceros y crecientes de ríos»; «muchas aguas en estos valles en el presente año»; pérdida de cosechas por inundaciones y acequias dañadas. Niño probable (evaluación 2)."}
+  - {Id: gh2008-1645-trujillo, Date: "1645", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Ríos tan crecidos que eran «imposibles de cruzar en balsa ni de otro modo»; casas derrumbadas y daños e inundaciones por acequias desbordadas, a las que se atribuyen «las enfermedades de esta ciudad». Niño posible (evaluación 1)."}
+  - {Id: gh2008-1661-trujillo, Date: "1661", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "La iglesia parroquial de Santiago quedó «arruinada por lluvias inusuales» de 1661 (Archivo General de Indias, 1675); las actas del Cabildo registran inundación y una acequia dañada, y hubo plaga de langostas. Niño probable (evaluación 2)."}
+  - {Id: gh2008-1686-piura, Date: "1686", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: media,
+     Descripción: "Vecinos de Piura declaran en 1690 que en 1686 subieron los precios de los alimentos «por las muchas lluvias que hubo en toda la jurisdicción», que inundaron los caminos; caminos y puentes intransitables. Niño probable (evaluación 2)."}
+  - {Id: gh2008-1689-trujillo, Date: "1689", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Ubicacion: "Río Chicama",
+     Descripción: "Un informe de marzo de 1689 registra lluvias, falta de pesca y la inundación del río Chicama. Niño probable (evaluación 2)."}
+  - {Id: gh2008-1701-trujillo, Date: "1701", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "«Lluvias del año pasado de 1701»: daños por la crecida del río Chicama, cosechas perdidas por exceso de lluvia y daños en la muralla de la ciudad «a consecuencia de la humedad». Niño probable (evaluación 2)."}
+  - {Id: gh2008-1713-trujillo, Date: "1713", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Ubicacion: "Acequia de la Mochica",
+     Descripción: "La acequia de la Mochica, que abastece a Trujillo, se dañó al recibir mucha agua de ríos crecidos (febrero de 1713). Niño posible (evaluación 1)."}
+  - {Id: gh2008-1718-trujillo, Date: "1718", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "Los materiales para la muralla de la ciudad «no pudieron traerse del pueblo de Simbal por las muchas aguas» (31/03/1718). Niño largo 1717-1720 (evaluación 2)."}
+  - {Id: gh2008-1719-trujillo, Date: "1719", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "Muchas casas de Trujillo dañadas por «las humedades que se están experimentando» y una acequia por limpiar para reducir las inundaciones (actas del 12/07/1719). Niño largo 1717-1720 (evaluación 2)."}
+  - {Id: gh2008-1720-trujillo, Date: "1720", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "«En los años 1701, 1720 y 1728 cayeron espantosos aguaceros nunca esperados ni vistos en aquel lugar»; inundación en el valle de Chicama y lluvias en la sierra que cortaron el envío de harina. Niño largo 1717-1720 (evaluación 2)."}
+  - {Id: gh2008-1720-zana, Date: "1720", DangerType: Inundacion, Departamento: Lambayeque, Provincia: Chiclayo, Distrito: Zaña, Confianza: media,
+     Descripción: "Lluvias, inundación, daños en las casas y epidemia en Saña en 1720 (también inundación en el pueblo de Lambayeque), según el Archivo Regional de La Libertad y el Mercurio Peruano (1793). Niño largo 1717-1720 (evaluación 2)."}
+  - {Id: gh2008-1726-trujillo, Date: "1726", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Una fuente secundaria (Geografía del Perú, 1876) registra 40 días de lluvia en 1726. Niño posible (evaluación 1)."}
+  - {Id: gh2008-1728-trujillo, Date: "1728", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "Lluvias generalizadas e inundación: «lluvias continuas y nunca antes vistas», «11 o 12 días de lluvia»; la inundación destruyó la acequia de la Mochica e hizo perder documentos del Cabildo. Niño probable (evaluación 2)."}
+  - {Id: gh2008-1728-zana, Date: "1728", DangerType: Inundacion, Departamento: Lambayeque, Provincia: Chiclayo, Distrito: Zaña, Confianza: media,
+     Descripción: "El pueblo de Saña quedó «arruinado en 1728» por las lluvias e inundaciones de ese año. Niño probable (evaluación 2)."}
+  - {Id: gh2008-1731-trujillo, Date: "1731", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Un documento del Archivo General de Indias (1744) menciona las lluvias «del invierno de 1731». Niño posible (evaluación 1)."}
+  - {Id: gh2008-1738-chicama, Date: "1738", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Ascope, Distrito: Chicama, Confianza: baja,
+     Ubicacion: "Río Chicama",
+     Descripción: "Inundación del río Chicama (enero de 1738) y grandes «humedades» en Trujillo. Niño posible (evaluación 1)."}
+  - {Id: gh2008-1766-santiago-de-challas, Date: "1766", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Pataz, Distrito: Santiago de Challas, Confianza: baja,
+     Descripción: "«Un invierno muy severo de más de ocho meses» en Santiago de Challas, con daños generalizados por inundaciones. Niño posible (evaluación 1)."}
+  - {Id: gh2008-1787-trujillo, Date: "1787", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "Lluvias abundantes, daños por las lluvias y por «las lluvias pasadas» e inundaciones (Intendencia de Trujillo, marzo-noviembre de 1787). Niño probable (evaluación 2)."}
+  - {Id: gh2008-1791-trujillo, Date: "1791-03", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "«General tempestad de agua» (12/03/1791), daños por las lluvias, inundación en marzo de 1791 y «ruinas e inundaciones en 1791». Niño probable (evaluación 2)."}
+  - {Id: gh2008-1794-santiago-de-cao, Date: "1794-03", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Ascope, Distrito: Santiago de Cao, Confianza: baja,
+     Ubicacion: "Santiago, Chocope y Paiján",
+     Descripción: "«Fuertes avenidas de agua en el pueblo de Santiago» (10/03/1794); en Chocope las crecidas hicieron intransitables los caminos y hubo inundaciones en Paiján. Niño posible (evaluación 1)."}
+  - {Id: gh2008-1800-trujillo, Date: "1800", DangerType: Inundacion, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "«Se han formado lagunas y ciénagas por la gran abundancia de agua» y una «enfermedad de la que han muerto muchos» (18/04/1800); las aguas impidieron llegar a Trujillo e hubo inundaciones por acequias desbordadas. Niño probable (evaluación 2)."}
+  - {Id: gh2008-1803-trujillo, Date: "1803-01", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "Río en avenida (18/01/1803) y abundancia de agua. Niño largo 1802-1804 (evaluación 2)."}
+  - {Id: gh2008-1804-piura, Date: "1804", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: media,
+     Descripción: "«Los dos últimos inviernos [1802-03 y 1803-04] han mostrado lluvias abundantes, que han dañado excesivamente los cimientos de la iglesia de este pueblo» (Archivo Arzobispal de Trujillo, 24/09/1804). Niño largo 1802-1804 (evaluación 2)."}
+  - {Id: gh2008-1812-trujillo, Date: "1812", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "«Muchas lluvias y notoria enfermedad» (Intendencia de Trujillo, 16/11/1812). Niño largo 1811-1814 (evaluación 2)."}
+  - {Id: gh2008-1814-trujillo, Date: "1814-02", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Descripción: "«Aguas continuas y abundantes»; las crecientes de febrero rompieron la toma de Bracamonte y el río Chicama se desbordó; la abundancia de aguas de febrero y marzo causó grandes daños. Niño largo 1811-1814 (evaluación 2)."}
+  - {Id: gh2008-1814-santiago-de-cao, Date: "1814-02", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Ascope, Distrito: Santiago de Cao, Confianza: media,
+     Descripción: "Una inspección judicial ante el alcalde de Santiago de Cao comprueba «la ruina que hizo en este fundo la abundancia de agua» de febrero y marzo de 1814. Niño largo 1811-1814 (evaluación 2)."}
+  - {Id: gh2008-1817-trujillo, Date: "1817-01", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "En enero de 1817 los ríos, entre ellos el Chicama, estaban en crecida; puentes dañados e «inundaciones generalizadas de todas las acequias». Niño largo 1816-1819 (evaluación 1)."}
+  - {Id: gh2008-1818-trujillo, Date: "1818", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "En noviembre y diciembre de 1818, «abundancia de aguas», caminos inundados, acequias y puentes dañados y caminos intransitables; en mayo de 1819, crecida de los ríos. Niño largo 1816-1819 (evaluación 1)."}
+  - {Id: gh2008-1821-piura, Date: "1821", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: baja,
+     Descripción: "«1821 fue abundante en lluvias y las cosechas de 1822 compensaron los daños causados por la guerra» (prensa republicana del siglo XIX); lluvias abundantes en Piura (Eguiguren, 1894). Niño posible (evaluación 1)."}
+  - {Id: gh2008-1828-trujillo, Date: "1828", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Ubicacion: "Río Moche",
+     Descripción: "Daños por la crecida del río Moche en 1828 y puentes y caminos por reparar (actas del Cabildo). Niño posible (evaluación 1)."}
+  - {Id: gh2008-1834-trujillo, Date: "1834", DangerType: Inundacion, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "«Abundantes aniegos» en varias calles de la ciudad y al pie de la muralla, y puentes «totalmente destruidos» (actas del Cabildo, enero-junio de 1834). Niño posible (evaluación 1)."}
+  - {Id: gh2008-1838-lambayeque, Date: "1838", DangerType: Inundacion fluvial, Departamento: Lambayeque, Provincia: Lambayeque, Distrito: Lambayeque, Confianza: baja,
+     Descripción: "«En 1838 el río Lambayeque inundó el pueblo del mismo nombre, destruyendo muchas casas y el hospital de Belén» (citado por Huertas, 1993). Niño posible (evaluación 1)."}
+  - {Id: gh2008-1845-piura, Date: "1845-03", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: baja,
+     Descripción: "Lluvias torrenciales en Piura el 21 de febrero y del 13 al 23 de marzo de 1845 (El Comercio): «no hay casa sin daños» y el río subió tanto que «solo se ven las copas de los árboles». Niño posible (evaluación 1)."}
+  - {Id: gh2008-1845-lambayeque, Date: "1845", DangerType: Inundacion fluvial, Departamento: Lambayeque, Provincia: Lambayeque, Distrito: Lambayeque, Confianza: baja,
+     Descripción: "Fuertes crecidas de los ríos Eten, La Leche, Motupe, Lambayeque y Olmos; no hubo procesión de Semana Santa porque se inundó la plaza de Lambayeque. Niño posible (evaluación 1)."}
+  - {Id: gh2008-1862-trujillo, Date: "1862", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Caminos públicos «muy obstruidos por las lluvias», obras en la acequia de la Mochica «para salvar a esta capital y su valle del inminente peligro de inundación», campos inundados por el río y puentes y caminos dañados (abril de 1862). Niño largo 1861-1864 (evaluación 1)."}
+  - {Id: gh2008-1863-trujillo, Date: "1863", DangerType: Inundacion, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "«Fuerte inundación este año»; una «nunca vista abundancia de aguas» en la barranca de Santa Ana causó inundaciones, y la abundancia de aguas hizo intransitables los caminos. Niño largo 1861-1864 (evaluación 1)."}
+  - {Id: gh2008-1864-piura, Date: "1864", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: baja,
+     Descripción: "Lluvias extraordinarias en Piura (Eguiguren, 1894). Niño largo 1861-1864 (evaluación 1)."}
+  - {Id: gh2008-1870-trujillo, Date: "1870", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Daños por «la reciente abundancia de aguas» (08/03/1870); el puente de El Arco fue destruido por «las grandes avenidas de 1870». Niño largo 1869-1871 (evaluación 1)."}
+  - {Id: gh2008-1871-lambayeque, Date: "1871-03", DangerType: Inundacion fluvial, Departamento: Lambayeque, Provincia: Lambayeque, Distrito: Lambayeque, Confianza: baja,
+     Descripción: "La iglesia de Lambayeque estuvo inundada más de ocho semanas y el 13 de marzo el agua pasó de un metro; crecidas de los ríos Chira, Piura y Lambayeque; la gente se refugió en los médanos como en 1758; puentes destruidos en Zaña. Niño largo 1869-1871 (evaluación 1)."}
+  - {Id: gh2008-1871-piura, Date: "1871", DangerType: Lluvias intensas, Departamento: Piura, Provincia: Piura, Distrito: Piura, Confianza: baja,
+     Descripción: "Año muy lluvioso en Piura, con crecidas de los ríos Chira y Piura (Mabres et al., 1993; Huertas, 1993). Niño largo 1869-1871 (evaluación 1)."}
+  - {Id: gh2008-1877-trujillo, Date: "1877-03", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Ubicacion: "Ríos Moche y Chicama",
+     Descripción: "Peligro para los puentes por la crecida de los ríos Moche y Chicama (07/03/1877) y una «creciente epidemia en la costa». Niño probable (evaluación 2)."}
+  - {Id: gh2008-1878-trujillo, Date: "1878-03", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Ubicacion: "Ríos Moche y Chicama, ferrocarril Salaverry-Trujillo",
+     Descripción: "«En 1878 sobrevino una avenida extraordinaria de los ríos Moche y Chicama», desde febrero y con crecidas el 15 de marzo: destruyó chacras y dañó el ferrocarril de Salaverry a Trujillo; los daños se valorizaron en 101 060 soles billetes (Anales de las Obras Públicas del Perú). Niño probable (evaluación 2)."}
+  - {Id: gh2008-1884-trujillo, Date: "1884-04", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: media,
+     Ubicacion: "Ríos Moche y Chicama",
+     Descripción: "El tren entre Trujillo y el valle de Chicama se interrumpió por la crecida de los ríos Moche y Chicama (14/04/1884); el camino a Moche se inundó. Niño probable (evaluación 2)."}
+  - {Id: gh2008-1889-trujillo, Date: "1889", DangerType: Desborde de rio, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "«Abundancia de aguas», avenidas que «amenazan la ciudad», el camino de Pedregal al puente de El Arco destruido por fuertes crecidas del río y el camino de Paiján inundado. Niño largo 1888-1891 (evaluación 1)."}
+  - {Id: gh2008-1891-trujillo, Date: "1891-03", DangerType: Lluvias intensas, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "«Fuertes lluvias en marzo y abril» y «fuertes inundaciones los días 15, 16 y 25» de marzo de 1891, que interrumpieron el tráfico y la actividad; una casa del Concejo dañada por las lluvias. Niño largo 1888-1891 (evaluación 1)."}
+  - {Id: gh2008-1897-trujillo, Date: "1897-01", DangerType: Inundacion, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Inundación en la ciudad (14/01/1897) y el camino a Moche inundado. Niño posible (evaluación 1)."}
+  - {Id: gh2008-1899-trujillo, Date: "1899-11", DangerType: Inundacion, Departamento: La Libertad, Provincia: Trujillo, Distrito: Trujillo, Confianza: baja,
+     Descripción: "Inundaciones en la ciudad de Trujillo (actas del Cabildo de noviembre y diciembre de 1899). Niño posible (evaluación 1)."}

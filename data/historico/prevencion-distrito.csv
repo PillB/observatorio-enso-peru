@@ -1,0 +1,1890 @@
+ubigeo,departamento,provincia,distrito,decretosInminente,decretosImpacto,prorrogas,evaluaciones,primeraEvaluacion,puntosInventario,inventarioDesde,eventos,eventosTrasEvaluacion,eventosTrasInventario,eventosTrasInminente,eventosConAviso,aniosConEvento
+010101,Amazonas,Chachapoyas,Chachapoyas,1,0,1,2,2023,65,2007,225,54,152,8,152,16
+010102,Amazonas,Chachapoyas,Asunción,1,0,1,0,0,1,2008,36,0,27,3,27,10
+010103,Amazonas,Chachapoyas,Balsas,1,0,1,2,2022,65,2007,49,26,47,1,47,10
+010104,Amazonas,Chachapoyas,Cheto,1,0,1,1,2020,3,2007,34,25,29,2,29,8
+010105,Amazonas,Chachapoyas,Chiliquín,1,0,1,0,0,4,2008,27,0,20,1,20,8
+010106,Amazonas,Chachapoyas,Chuquibamba,1,0,1,0,0,43,2007,58,0,41,3,41,9
+010107,Amazonas,Chachapoyas,Granada,1,0,1,0,0,4,2008,52,0,41,0,41,9
+010108,Amazonas,Chachapoyas,Huancas,1,0,1,0,0,14,2007,30,0,15,0,15,9
+010109,Amazonas,Chachapoyas,La Jalca,1,0,1,0,0,8,2007,93,0,79,3,79,16
+010110,Amazonas,Chachapoyas,Leimebamba,1,0,1,0,0,38,2007,67,0,52,2,52,14
+010111,Amazonas,Chachapoyas,Levanto,1,0,1,0,0,14,2007,21,0,12,0,12,8
+010112,Amazonas,Chachapoyas,Magdalena,1,0,1,3,2020,17,2007,35,15,24,2,24,9
+010113,Amazonas,Chachapoyas,Mariscal Castilla,1,0,1,0,0,6,2007,33,0,27,0,27,8
+010114,Amazonas,Chachapoyas,Molinopampa,1,0,1,0,0,45,2007,55,0,51,2,51,12
+010115,Amazonas,Chachapoyas,Montevideo,1,0,1,0,0,3,2007,41,0,36,2,36,10
+010116,Amazonas,Chachapoyas,Olleros,1,0,1,0,0,7,2007,46,0,36,3,36,10
+010117,Amazonas,Chachapoyas,Quinjalca,1,0,1,0,0,15,2007,26,0,19,0,19,10
+010118,Amazonas,Chachapoyas,San Francisco de Daguas,1,0,1,2,2021,29,2007,45,26,39,4,39,9
+010119,Amazonas,Chachapoyas,San Isidro de Maino,1,0,1,0,0,12,2007,47,0,35,0,35,10
+010120,Amazonas,Chachapoyas,Soloco,1,0,1,1,2024,7,2007,61,29,49,1,49,9
+010121,Amazonas,Chachapoyas,Sonche,1,0,1,0,0,15,2007,12,0,8,0,8,5
+010201,Amazonas,Bagua,Bagua,0,0,1,4,2022,23,2007,98,35,88,0,88,16
+010202,Amazonas,Bagua,Aramango,0,0,1,0,0,78,2007,129,0,124,0,124,14
+010203,Amazonas,Bagua,Copallín,0,0,1,1,2017,7,2007,66,52,60,0,60,10
+010204,Amazonas,Bagua,El Parco,0,0,1,0,0,2,2007,56,0,45,0,45,13
+010205,Amazonas,Bagua,Imaza,0,0,1,1,2025,59,2007,130,3,124,0,124,18
+010206,Amazonas,Bagua,La Peca,0,0,1,9,2021,2,2023,116,50,30,0,50,12
+010301,Amazonas,Bongara,Jumbilla,0,0,1,0,0,3,2008,42,0,29,0,29,11
+010302,Amazonas,Bongara,Chisquilla,0,0,1,2,2023,7,2007,24,9,17,0,17,5
+010303,Amazonas,Bongara,Churuja,0,0,1,2,1998,7,2007,5,3,3,0,3,4
+010304,Amazonas,Bongara,Corosha,0,0,1,0,0,2,2007,15,0,10,0,10,10
+010305,Amazonas,Bongara,Cuispes,0,0,1,0,0,21,2007,17,0,16,0,16,5
+010306,Amazonas,Bongara,Florida,0,0,1,0,0,71,2007,117,0,104,0,104,10
+010307,Amazonas,Bongara,Jazan,0,0,1,2,2021,23,2007,74,38,66,0,66,15
+010308,Amazonas,Bongara,Recta,0,0,1,2,2021,3,2007,11,6,9,0,9,6
+010309,Amazonas,Bongara,San Carlos,0,0,1,1,1998,12,2007,13,10,9,0,10,5
+010310,Amazonas,Bongara,Shipasbamba,0,0,1,0,0,18,2007,42,0,33,0,33,9
+010311,Amazonas,Bongara,Valera,0,0,1,1,2021,15,2007,50,23,34,0,34,7
+010312,Amazonas,Bongara,Yambrasbamba,0,0,1,1,2015,45,2007,97,84,87,0,87,10
+010401,Amazonas,Condorcanqui,Nieva,0,1,3,0,0,38,2007,126,0,123,14,123,16
+010402,Amazonas,Condorcanqui,El Cenepa,0,1,3,0,0,10,2008,119,0,119,2,119,11
+010403,Amazonas,Condorcanqui,Río Santiago,0,1,3,0,0,18,2008,37,0,37,2,37,10
+010501,Amazonas,Luya,Lámud,0,0,1,0,0,10,2007,59,0,41,0,41,9
+010502,Amazonas,Luya,Camporredondo,0,0,1,0,0,16,2007,36,0,29,0,29,12
+010503,Amazonas,Luya,Cocabamba,0,0,1,1,2025,24,2008,89,18,76,0,76,11
+010504,Amazonas,Luya,Colcamar,0,0,1,1,2021,25,2007,47,23,35,0,35,10
+010505,Amazonas,Luya,Conila,0,0,1,0,0,11,2008,78,0,57,0,57,9
+010506,Amazonas,Luya,Inguilpata,0,0,1,0,0,15,2007,34,0,24,0,24,8
+010507,Amazonas,Luya,Longuita,0,0,1,0,0,6,2007,64,0,56,0,56,9
+010508,Amazonas,Luya,Lonya Chico,0,0,1,0,0,15,2007,66,0,53,0,53,10
+010509,Amazonas,Luya,Luya,0,0,1,0,0,18,2007,46,0,39,0,39,12
+010510,Amazonas,Luya,Luya Viejo,0,0,1,0,0,0,0,14,0,0,0,0,7
+010511,Amazonas,Luya,María,0,0,1,0,0,2,2007,40,0,36,0,36,9
+010512,Amazonas,Luya,Ocalli,0,0,1,0,0,0,0,49,0,0,0,0,9
+010513,Amazonas,Luya,Ocumal,0,0,1,0,0,22,2008,79,0,65,0,65,10
+010514,Amazonas,Luya,Pisuquia,0,0,1,0,0,20,2008,55,0,53,0,53,9
+010515,Amazonas,Luya,Providencia,0,0,1,0,0,14,2008,46,0,40,0,40,10
+010516,Amazonas,Luya,San Cristóbal,0,0,1,0,0,11,2007,16,0,12,0,12,4
+010517,Amazonas,Luya,San Francisco del Yeso,0,0,1,0,0,9,2007,32,0,25,0,25,8
+010518,Amazonas,Luya,San Jerónimo,0,0,1,0,0,27,2007,58,0,47,0,47,8
+010519,Amazonas,Luya,San Juan de Lopecancha,0,0,1,0,0,20,2007,19,0,17,0,17,7
+010520,Amazonas,Luya,Santa Catalina,0,0,1,0,0,3,2007,69,0,59,0,59,10
+010521,Amazonas,Luya,Santo Tomás,0,0,1,0,0,3,2007,109,0,98,0,98,13
+010522,Amazonas,Luya,Tingo,0,0,1,0,0,24,2007,47,0,37,0,37,10
+010523,Amazonas,Luya,Trita,0,0,1,0,0,4,2007,23,0,13,0,13,7
+010601,Amazonas,Rodríguez de Mendoza,San Nicolás,0,0,1,0,0,27,2007,42,0,38,0,38,11
+010602,Amazonas,Rodríguez de Mendoza,Chirimoto,0,0,1,0,0,2,2008,44,0,34,0,34,11
+010603,Amazonas,Rodríguez de Mendoza,Cochamal,0,0,1,0,0,1,2007,39,0,31,0,31,8
+010604,Amazonas,Rodríguez de Mendoza,Huambo,0,0,1,0,0,5,2007,35,0,32,0,32,9
+010605,Amazonas,Rodríguez de Mendoza,Limabamba,0,0,1,0,0,35,2008,57,0,21,0,21,9
+010606,Amazonas,Rodríguez de Mendoza,Longar,0,0,1,0,0,4,2007,28,0,21,0,21,8
+010607,Amazonas,Rodríguez de Mendoza,Mariscal Benavides,0,0,1,0,0,20,2007,49,0,44,0,44,9
+010608,Amazonas,Rodríguez de Mendoza,Milpuc,0,0,1,0,0,3,2007,20,0,16,0,16,6
+010609,Amazonas,Rodríguez de Mendoza,Omia,0,0,1,0,0,31,2007,104,0,86,0,86,12
+010610,Amazonas,Rodríguez de Mendoza,Santa Rosa,0,0,1,0,0,3,2007,23,0,16,0,16,7
+010611,Amazonas,Rodríguez de Mendoza,Totora,0,0,1,0,0,7,2007,10,0,8,0,8,5
+010612,Amazonas,Rodríguez de Mendoza,Vista Alegre,0,0,1,2,2021,0,0,14,10,0,0,10,6
+010701,Amazonas,Utcubamba,Bagua Grande,0,2,5,6,2023,30,2007,220,103,206,27,206,17
+010702,Amazonas,Utcubamba,Cajaruro,0,2,5,17,2019,17,2007,149,77,145,16,145,15
+010703,Amazonas,Utcubamba,Cumba,0,2,5,2,2024,30,2007,55,18,52,7,52,11
+010704,Amazonas,Utcubamba,El Milagro,0,2,5,0,0,16,2007,97,0,95,11,95,12
+010705,Amazonas,Utcubamba,Jamalca,0,2,5,15,1998,24,2007,124,87,111,13,113,16
+010706,Amazonas,Utcubamba,Lonya Grande,0,2,5,2,2024,59,2007,108,34,82,7,82,14
+010707,Amazonas,Utcubamba,Yamón,0,2,5,0,0,19,2007,59,0,56,2,56,7
+020101,Áncash,Huaraz,Huaraz,2,2,3,7,2015,86,2007,343,241,274,29,274,18
+020102,Áncash,Huaraz,Cochabamba,2,2,3,0,0,1,2022,41,0,32,2,34,8
+020103,Áncash,Huaraz,Colcabamba,2,2,3,0,0,6,2007,7,0,7,0,7,5
+020104,Áncash,Huaraz,Huanchay,2,2,3,0,0,21,2007,12,0,11,1,11,8
+020105,Áncash,Huaraz,Independencia,2,2,3,4,2021,70,2007,669,263,538,59,542,14
+020106,Áncash,Huaraz,Jangas,2,2,3,1,2010,11,2007,89,60,63,19,64,10
+020107,Áncash,Huaraz,La Libertad,2,2,3,0,0,1,2007,24,0,21,2,21,5
+020108,Áncash,Huaraz,Olleros,2,2,3,4,2020,10,2007,44,17,36,9,36,11
+020109,Áncash,Huaraz,Pampas,2,2,3,0,0,9,2007,44,0,39,3,41,10
+020110,Áncash,Huaraz,Pariacoto,2,2,3,3,2022,8,2007,41,25,37,3,39,10
+020111,Áncash,Huaraz,Pira,2,2,3,1,2017,26,2007,82,56,63,3,63,10
+020112,Áncash,Huaraz,Tarica,2,2,3,1,2019,11,2007,174,85,90,4,92,10
+020201,Áncash,Aija,Aija,2,2,3,1,2021,11,2007,79,40,55,4,57,10
+020202,Áncash,Aija,Coris,2,2,3,0,0,14,2007,26,0,22,0,22,6
+020203,Áncash,Aija,Huacllán,2,2,3,0,0,6,2007,11,0,8,0,8,3
+020204,Áncash,Aija,La Merced,2,2,3,0,0,0,0,105,0,0,4,4,10
+020205,Áncash,Aija,Succha,2,2,3,0,0,2,2022,33,0,23,0,23,6
+020301,Áncash,Antonio Raymondi,Llamellín,2,2,3,0,0,11,2007,77,0,60,2,60,10
+020302,Áncash,Antonio Raymondi,Aczo,2,2,3,1,2020,22,2007,51,35,50,3,50,10
+020303,Áncash,Antonio Raymondi,Chaccho,2,2,3,0,0,11,2007,53,0,46,2,46,9
+020304,Áncash,Antonio Raymondi,Chingas,2,2,3,0,0,4,2007,26,0,21,0,21,9
+020305,Áncash,Antonio Raymondi,Mirgas,2,2,3,0,0,3,2007,53,0,46,2,46,11
+020306,Áncash,Antonio Raymondi,San Juan de Rontoy,2,2,3,0,0,8,2007,28,0,21,1,21,9
+020401,Áncash,Asunción,Chacas,2,2,3,3,2002,15,2007,140,94,94,5,96,9
+020402,Áncash,Asunción,Acochaca,2,2,3,2,2002,10,2007,63,40,44,2,44,9
+020501,Áncash,Bolognesi,Chiquián,2,2,3,0,0,29,2003,62,0,46,2,48,10
+020502,Áncash,Bolognesi,Abelardo Pardo Lezameta,2,2,3,0,0,4,2003,20,0,20,0,20,6
+020503,Áncash,Bolognesi,Antonio Raymondi,2,2,3,0,0,1,2007,22,0,13,4,14,8
+020504,Áncash,Bolognesi,Aquia,2,2,3,2,2021,16,2003,68,42,45,5,50,9
+020505,Áncash,Bolognesi,Cajacay,2,2,3,0,0,13,2003,30,0,26,1,26,7
+020506,Áncash,Bolognesi,Canis,2,2,3,0,0,3,2003,16,0,13,0,13,5
+020507,Áncash,Bolognesi,Colquioc,2,2,3,0,0,18,2003,13,0,13,0,13,4
+020508,Áncash,Bolognesi,Huallanca,2,2,3,3,2014,35,2007,63,49,49,5,50,10
+020509,Áncash,Bolognesi,Huasta,2,2,3,1,2018,22,2003,52,36,40,2,42,8
+020510,Áncash,Bolognesi,Huayllacayán,2,2,3,0,0,5,2003,8,0,7,0,7,3
+020511,Áncash,Bolognesi,La Primavera,2,2,3,0,0,9,2003,23,0,19,0,19,6
+020512,Áncash,Bolognesi,Mangas,2,2,3,0,0,7,2003,47,0,41,3,43,9
+020513,Áncash,Bolognesi,Pacllón,2,2,3,0,0,14,2003,44,0,35,1,35,9
+020514,Áncash,Bolognesi,San Miguel de Corpanqui,2,2,3,2,2025,7,2003,35,5,33,1,33,7
+020515,Áncash,Bolognesi,Ticllos,2,2,3,0,0,19,2003,60,0,50,2,51,9
+020601,Áncash,Carhuaz,Carhuaz,2,2,3,3,2020,22,2007,206,101,155,23,159,12
+020602,Áncash,Carhuaz,Acopampa,2,2,3,0,0,5,2007,26,0,14,2,14,9
+020603,Áncash,Carhuaz,Amashca,2,2,3,1,2021,3,2007,43,28,31,3,32,9
+020604,Áncash,Carhuaz,Anta,2,2,3,0,0,9,2007,51,0,43,6,44,11
+020605,Áncash,Carhuaz,Ataquero,2,2,3,1,2016,10,2007,21,19,19,1,19,7
+020606,Áncash,Carhuaz,Marcará,2,2,3,3,2008,16,2007,107,83,83,16,90,11
+020607,Áncash,Carhuaz,Pariahuanca,2,2,3,0,0,5,2007,44,0,37,7,38,10
+020608,Áncash,Carhuaz,San Miguel de Aco,2,2,3,0,0,3,2007,55,0,43,10,47,9
+020609,Áncash,Carhuaz,Shilla,2,2,3,0,0,10,2007,55,0,43,2,45,9
+020610,Áncash,Carhuaz,Tinco,2,2,3,0,0,8,2007,31,0,27,3,27,11
+020611,Áncash,Carhuaz,Yungar,2,2,3,1,2025,3,2007,44,5,31,6,31,9
+020701,Áncash,Carlos Fermin Fitzcarrald,San Luis,2,2,3,5,1996,59,2007,154,113,122,16,125,11
+020702,Áncash,Carlos Fermin Fitzcarrald,San Nicolás,2,2,3,0,0,4,2007,81,0,68,4,68,10
+020703,Áncash,Carlos Fermin Fitzcarrald,Yauya,2,2,3,3,2012,20,2007,55,45,45,7,46,10
+020801,Áncash,Casma,Casma,2,2,3,0,0,2,2023,26,0,5,3,8,13
+020802,Áncash,Casma,Buena Vista Alta,2,2,3,0,0,25,2007,15,0,5,0,5,7
+020803,Áncash,Casma,Comandante Noel,2,2,3,0,0,4,2007,15,0,7,0,7,7
+020804,Áncash,Casma,Yaután,2,2,3,2,2022,10,2007,20,4,14,2,14,10
+020901,Áncash,Corongo,Corongo,2,2,3,0,0,15,2007,30,0,18,1,19,8
+020902,Áncash,Corongo,Aco,2,2,3,0,0,6,2007,13,0,9,0,9,7
+020903,Áncash,Corongo,Bambas,2,2,3,0,0,6,2007,10,0,8,0,8,6
+020904,Áncash,Corongo,Cusca,2,2,3,0,0,8,2007,41,0,27,3,30,10
+020905,Áncash,Corongo,La Pampa,2,2,3,0,0,16,2007,21,0,9,1,10,7
+020906,Áncash,Corongo,Yánac,2,2,3,0,0,2,2007,23,0,17,0,17,7
+020907,Áncash,Corongo,Yupán,2,2,3,1,2017,12,2007,20,14,15,0,15,8
+021001,Áncash,Huari,Huari,2,2,3,4,2019,25,2007,192,91,160,21,161,12
+021002,Áncash,Huari,Anra,2,2,3,0,0,1,2007,32,0,25,1,25,8
+021003,Áncash,Huari,Cajay,2,2,3,2,2020,7,2007,70,25,47,4,49,11
+021004,Áncash,Huari,Chavín de Huántar,2,2,3,11,2022,15,2007,91,48,66,3,67,12
+021005,Áncash,Huari,Huacachi,2,2,3,0,0,3,2007,47,0,41,4,44,8
+021006,Áncash,Huari,Huacchis,2,2,3,0,0,2,2007,22,0,16,0,16,6
+021007,Áncash,Huari,Huachis,2,2,3,3,2016,12,2007,44,33,34,1,35,8
+021008,Áncash,Huari,Huántar,2,2,3,4,2013,9,2007,24,18,18,1,19,7
+021009,Áncash,Huari,Masín,2,2,3,0,0,18,2007,60,0,49,5,49,9
+021010,Áncash,Huari,Paucas,2,2,3,0,0,4,2007,37,0,28,0,28,8
+021011,Áncash,Huari,Ponto,2,2,3,2,2021,22,2007,68,60,65,1,65,7
+021012,Áncash,Huari,Rahuapampa,2,2,3,1,2025,4,2007,54,16,51,0,51,8
+021013,Áncash,Huari,Rapayán,2,2,3,1,2012,4,2007,20,16,16,1,17,8
+021014,Áncash,Huari,San Marcos,2,2,3,7,2022,6,2007,211,102,171,2,172,12
+021015,Áncash,Huari,San Pedro de Chana,2,2,3,3,2023,2,2023,58,26,26,1,27,7
+021016,Áncash,Huari,Uco,2,2,3,2,2023,9,2007,50,32,36,0,36,5
+021101,Áncash,Huarmey,Huarmey,2,2,3,1,2017,41,2003,39,5,31,9,35,10
+021102,Áncash,Huarmey,Cochapeti,2,2,3,0,0,3,2007,34,0,27,2,28,8
+021103,Áncash,Huarmey,Culebras,2,2,3,0,0,23,2007,21,0,19,0,19,5
+021104,Áncash,Huarmey,Huayán,2,2,3,0,0,14,2007,15,0,14,0,14,5
+021105,Áncash,Huarmey,Malvas,2,2,3,0,0,12,2007,16,0,15,0,15,6
+021201,Áncash,Huaylas,Caraz,2,3,5,3,2001,40,2007,111,61,71,21,82,11
+021202,Áncash,Huaylas,Huallanca,2,3,5,1,2013,21,2007,56,50,50,11,50,11
+021203,Áncash,Huaylas,Huata,2,3,5,0,0,14,2007,8,0,6,2,6,6
+021204,Áncash,Huaylas,Huaylas,2,3,5,0,0,1,2007,32,0,23,0,23,7
+021205,Áncash,Huaylas,Mato,2,3,5,0,0,9,2007,19,0,10,3,12,7
+021206,Áncash,Huaylas,Pamparomás,2,3,5,1,2018,9,2007,52,41,43,3,43,8
+021207,Áncash,Huaylas,Pueblo Libre,2,3,5,3,2020,27,2007,82,48,57,8,62,11
+021208,Áncash,Huaylas,Santa Cruz,2,3,5,0,0,6,2007,24,0,12,0,12,7
+021209,Áncash,Huaylas,Santo Toribio,2,3,5,0,0,0,0,32,0,0,2,2,5
+021210,Áncash,Huaylas,Yuracmarca,2,3,5,0,0,11,2007,34,0,27,5,28,7
+021301,Áncash,Mariscal Luzuriaga,Piscobamba,2,2,3,2,2015,18,2007,106,72,74,3,75,10
+021302,Áncash,Mariscal Luzuriaga,Casca,2,2,3,0,0,22,2007,63,0,49,3,51,10
+021303,Áncash,Mariscal Luzuriaga,Eleazar Guzman Barron,2,2,3,0,0,6,2007,36,0,29,2,30,8
+021304,Áncash,Mariscal Luzuriaga,Fidel Olivas Escudero,2,2,3,2,2020,11,2007,57,32,49,0,49,10
+021305,Áncash,Mariscal Luzuriaga,Llama,2,2,3,0,0,6,2007,46,0,33,0,33,6
+021306,Áncash,Mariscal Luzuriaga,Llumpa,2,2,3,0,0,26,2007,61,0,52,3,52,10
+021307,Áncash,Mariscal Luzuriaga,Lucma,2,2,3,0,0,9,2007,56,0,49,4,49,10
+021308,Áncash,Mariscal Luzuriaga,Musga,2,2,3,3,2012,7,2007,55,34,34,2,34,9
+021401,Áncash,Ocros,Ocros,2,2,3,0,0,22,2003,40,0,32,1,32,9
+021402,Áncash,Ocros,Acas,2,2,3,0,0,17,2003,11,0,8,0,8,7
+021403,Áncash,Ocros,Cajamarquilla,2,2,3,0,0,5,2003,13,0,10,1,11,8
+021404,Áncash,Ocros,Carhuapampa,2,2,3,0,0,16,2003,12,0,12,0,12,6
+021405,Áncash,Ocros,Cochas,2,2,3,0,0,20,2003,9,0,9,0,9,5
+021406,Áncash,Ocros,Congas,2,2,3,0,0,2,2003,47,0,43,9,44,9
+021407,Áncash,Ocros,Llipa,2,2,3,0,0,6,2003,26,0,24,1,24,8
+021408,Áncash,Ocros,San Cristóbal de Rajan,2,2,3,0,0,4,2003,22,0,21,1,21,8
+021409,Áncash,Ocros,San Pedro,2,2,3,1,2019,18,2003,22,14,22,0,22,7
+021410,Áncash,Ocros,Santiago de Chilcas,2,2,3,0,0,8,2003,25,0,19,0,19,5
+021501,Áncash,Pallasca,Cabana,2,2,3,0,0,2,2007,48,0,32,4,35,11
+021502,Áncash,Pallasca,Bolognesi,2,2,3,0,0,10,2007,27,0,16,1,17,7
+021503,Áncash,Pallasca,Conchucos,2,2,3,0,0,19,2007,54,0,46,4,49,11
+021504,Áncash,Pallasca,Huacaschuque,2,2,3,0,0,6,2007,7,0,5,1,5,4
+021505,Áncash,Pallasca,Huandoval,2,2,3,0,0,5,2007,37,0,32,1,32,8
+021506,Áncash,Pallasca,Lacabamba,2,2,3,0,0,6,2007,54,0,39,2,41,8
+021507,Áncash,Pallasca,Llapo,2,2,3,0,0,5,2007,19,0,13,0,13,7
+021508,Áncash,Pallasca,Pallasca,2,2,3,0,0,9,2007,61,0,54,1,54,11
+021509,Áncash,Pallasca,Pampas,2,2,3,1,2025,23,2007,126,10,85,6,89,12
+021510,Áncash,Pallasca,Santa Rosa,2,2,3,0,0,43,2007,40,0,39,2,40,11
+021511,Áncash,Pallasca,Tauca,2,2,3,0,0,28,2007,49,0,34,1,35,8
+021601,Áncash,Pomabamba,Pomabamba,2,2,7,3,2020,42,2007,125,52,77,17,81,13
+021602,Áncash,Pomabamba,Huayllán,2,2,7,2,2019,11,2007,105,62,72,4,73,10
+021603,Áncash,Pomabamba,Parobamba,2,2,7,6,2008,27,2007,83,62,72,5,72,10
+021604,Áncash,Pomabamba,Quinuabamba,2,2,7,2,2019,9,2007,63,35,50,6,51,10
+021701,Áncash,Recuay,Recuay,2,2,3,1,2025,26,2007,135,29,117,8,117,12
+021702,Áncash,Recuay,Cátac,2,2,3,1,2025,20,2003,100,16,78,13,78,11
+021703,Áncash,Recuay,Cotaparaco,2,2,3,0,0,3,2007,33,0,29,3,30,9
+021704,Áncash,Recuay,Huayllapampa,2,2,3,0,0,8,2003,21,0,19,0,19,6
+021705,Áncash,Recuay,Llacllín,2,2,3,0,0,15,2003,18,0,18,0,18,5
+021706,Áncash,Recuay,Marca,2,2,3,1,2020,18,2003,8,6,7,0,7,4
+021707,Áncash,Recuay,Pampas Chico,2,2,3,0,0,1,2007,17,0,13,1,14,9
+021708,Áncash,Recuay,Pararín,2,2,3,0,0,10,2003,17,0,17,0,17,4
+021709,Áncash,Recuay,Tapacocha,2,2,3,0,0,5,2003,27,0,17,0,17,8
+021710,Áncash,Recuay,Ticapampa,2,2,3,1,2025,13,2007,66,8,60,2,60,11
+021801,Áncash,Santa,Chimbote,2,2,3,0,0,46,2007,66,0,41,1,41,18
+021802,Áncash,Santa,Cáceres del Perú,2,2,3,0,0,26,2007,28,0,26,0,26,7
+021803,Áncash,Santa,Coishco,2,2,3,0,0,3,2007,5,0,3,0,3,3
+021804,Áncash,Santa,Macate,2,2,3,0,0,30,2007,27,0,22,2,23,11
+021805,Áncash,Santa,Moro,2,2,3,0,0,20,2007,19,0,10,2,12,8
+021806,Áncash,Santa,Nepeña,2,2,3,0,0,3,2007,14,0,13,0,13,6
+021807,Áncash,Santa,Samanco,2,2,3,0,0,1,2007,10,0,5,0,5,5
+021808,Áncash,Santa,Santa,2,2,3,0,0,1,2023,8,0,1,1,2,6
+021809,Áncash,Santa,Nuevo Chimbote,2,2,3,0,0,1,2023,58,0,3,1,4,9
+021901,Áncash,Sihuas,Sihuas,2,2,3,1,2025,17,2007,100,17,90,7,90,12
+021902,Áncash,Sihuas,Acobamba,2,2,3,0,0,1,2007,54,0,47,1,48,7
+021903,Áncash,Sihuas,Alfonso Ugarte,2,2,3,0,0,0,0,20,0,0,1,1,6
+021904,Áncash,Sihuas,Cashapampa,2,2,3,4,2015,22,2007,18,13,13,1,13,9
+021905,Áncash,Sihuas,Chingalpo,2,2,3,0,0,2,2007,24,0,22,0,22,6
+021906,Áncash,Sihuas,Huayllabamba,2,2,3,0,0,25,2007,35,0,24,0,24,7
+021907,Áncash,Sihuas,Quiches,2,2,3,0,0,5,2007,53,0,38,0,38,9
+021908,Áncash,Sihuas,Ragash,2,2,3,0,0,16,2007,45,0,39,0,39,8
+021909,Áncash,Sihuas,San Juan,2,2,3,0,0,13,2007,100,0,85,1,85,10
+021910,Áncash,Sihuas,Sicsibamba,2,2,3,0,0,19,2007,40,0,36,1,36,10
+022001,Áncash,Yungay,Yungay,2,2,3,1,2023,46,2007,166,37,106,16,113,11
+022002,Áncash,Yungay,Cascapara,2,2,3,0,0,3,2007,20,0,16,0,16,8
+022003,Áncash,Yungay,Mancos,2,2,3,5,2015,12,2007,105,58,58,11,63,11
+022004,Áncash,Yungay,Matacoto,2,2,3,0,0,14,2007,67,0,44,3,45,10
+022005,Áncash,Yungay,Quillo,2,2,3,0,0,1,2007,71,0,57,6,58,10
+022006,Áncash,Yungay,Ranrahirca,2,2,3,4,2021,2,2007,49,21,44,2,44,8
+022007,Áncash,Yungay,Shupluy,2,2,3,0,0,7,2007,58,0,44,5,44,10
+022008,Áncash,Yungay,Yanama,2,2,3,0,0,43,2007,63,0,42,1,42,11
+030101,Apurímac,Abancay,Abancay,4,3,2,4,2022,36,2003,480,112,263,61,293,17
+030102,Apurímac,Abancay,Chacoche,4,3,2,0,0,5,2003,101,0,54,15,65,13
+030103,Apurímac,Abancay,Circa,4,3,2,0,0,19,2003,175,0,143,25,147,13
+030104,Apurímac,Abancay,Curahuasi,4,3,2,1,2024,26,2003,287,31,152,40,164,14
+030105,Apurímac,Abancay,Huanipaca,4,3,2,0,0,25,2003,198,0,92,14,102,12
+030106,Apurímac,Abancay,Lambrama,4,3,2,0,0,20,2003,213,0,151,35,155,12
+030107,Apurímac,Abancay,Pichirhua,4,3,2,0,0,32,2003,247,0,158,18,164,12
+030108,Apurímac,Abancay,San Pedro de Cachora,4,3,2,0,0,23,2003,140,0,42,15,53,12
+030109,Apurímac,Abancay,Tamburco,4,3,2,4,1997,11,2003,170,94,94,22,101,14
+030201,Apurímac,Andahuaylas,Andahuaylas,4,4,2,3,2022,9,2003,247,37,201,42,208,15
+030202,Apurímac,Andahuaylas,Andarapa,4,4,2,5,2020,11,2003,210,60,98,31,115,12
+030203,Apurímac,Andahuaylas,Chiara,4,4,2,0,0,5,2003,55,0,24,2,25,13
+030204,Apurímac,Andahuaylas,Huancarama,4,4,2,4,2019,23,2003,109,29,34,11,43,13
+030205,Apurímac,Andahuaylas,Huancaray,4,4,2,0,0,15,2003,77,0,48,12,49,11
+030206,Apurímac,Andahuaylas,Huayana,4,4,2,0,0,3,2012,105,0,38,13,44,12
+030207,Apurímac,Andahuaylas,Kishuara,4,4,2,0,0,17,2003,115,0,80,19,84,12
+030208,Apurímac,Andahuaylas,Pacobamba,4,4,2,1,2020,11,2003,65,33,34,7,40,11
+030209,Apurímac,Andahuaylas,Pacucha,4,4,2,0,0,9,2003,185,0,125,16,128,12
+030210,Apurímac,Andahuaylas,Pampachiri,4,4,2,0,0,2,2003,74,0,25,10,32,13
+030211,Apurímac,Andahuaylas,Pomacocha,4,4,2,0,0,3,2003,100,0,24,17,36,13
+030212,Apurímac,Andahuaylas,San Antonio de Cachi,4,4,2,0,0,8,2003,122,0,52,8,59,13
+030213,Apurímac,Andahuaylas,San Jerónimo,4,4,2,0,0,6,2003,67,0,15,7,20,11
+030214,Apurímac,Andahuaylas,San Miguel de Chaccrampa,4,4,2,0,0,4,2003,78,0,17,5,21,13
+030215,Apurímac,Andahuaylas,Santa María de Chicmo,4,4,2,1,1997,14,2003,124,55,95,14,98,13
+030216,Apurímac,Andahuaylas,Talavera,4,4,2,1,1997,8,2003,191,82,130,17,130,13
+030217,Apurímac,Andahuaylas,Tumay Huaraca,4,4,2,0,0,3,2012,123,0,28,23,45,13
+030218,Apurímac,Andahuaylas,Turpo,4,4,2,0,0,0,0,141,0,0,17,17,11
+030219,Apurímac,Andahuaylas,Kaquiabamba,4,4,2,2,2022,1,2012,46,11,21,8,25,10
+030220,Apurímac,Andahuaylas,José María Arguedas,4,4,2,0,0,0,0,95,0,0,12,12,8
+030301,Apurímac,Antabamba,Antabamba,4,3,2,0,0,16,2003,294,0,119,28,136,15
+030302,Apurímac,Antabamba,El Oro,4,3,2,0,0,0,0,43,0,0,5,5,10
+030303,Apurímac,Antabamba,Huaquirca,4,3,2,0,0,9,2003,88,0,57,12,61,13
+030304,Apurímac,Antabamba,Juan Espinoza Medrano,4,3,2,0,0,13,2003,167,0,59,17,73,13
+030305,Apurímac,Antabamba,Oropesa,4,3,2,1,2011,22,2003,136,41,106,8,108,14
+030306,Apurímac,Antabamba,Pachaconas,4,3,2,1,2022,5,2003,79,10,33,10,39,13
+030307,Apurímac,Antabamba,Sabaino,4,3,2,0,0,4,2003,103,0,57,22,65,12
+030401,Apurímac,Aymaraes,Chalhuanca,4,3,2,2,2021,25,2003,136,43,105,13,106,12
+030402,Apurímac,Aymaraes,Capaya,4,3,2,0,0,2,2020,62,0,14,8,21,12
+030403,Apurímac,Aymaraes,Caraybamba,4,3,2,0,0,10,2003,65,0,25,10,32,12
+030404,Apurímac,Aymaraes,Chapimarca,4,3,2,2,1963,5,2003,75,27,49,8,53,12
+030405,Apurímac,Aymaraes,Colcabamba,4,3,2,0,0,3,2003,56,0,42,12,42,10
+030406,Apurímac,Aymaraes,Cotaruse,4,3,2,1,2021,23,2003,128,29,86,16,92,13
+030407,Apurímac,Aymaraes,Huayllo,4,3,2,0,0,0,0,60,0,0,2,2,11
+030408,Apurímac,Aymaraes,Justo Apu Sahuaraura,4,3,2,0,0,4,2011,48,0,30,1,31,10
+030409,Apurímac,Aymaraes,Lucre,4,3,2,0,0,10,2003,115,0,57,7,62,12
+030410,Apurímac,Aymaraes,Pocohuanca,4,3,2,1,2020,10,2003,68,26,34,4,37,11
+030411,Apurímac,Aymaraes,San Juan de Chacña,4,3,2,0,0,0,0,72,0,0,4,4,9
+030412,Apurímac,Aymaraes,Sañayca,4,3,2,0,0,8,2003,85,0,58,13,61,13
+030413,Apurímac,Aymaraes,Soraya,4,3,2,0,0,0,0,69,0,0,3,3,12
+030414,Apurímac,Aymaraes,Tapairihua,4,3,2,0,0,15,2003,95,0,83,7,85,15
+030415,Apurímac,Aymaraes,Tintay,4,3,2,0,0,13,2003,127,0,91,3,91,11
+030416,Apurímac,Aymaraes,Toraya,4,3,2,0,0,2,2003,85,0,34,14,43,12
+030417,Apurímac,Aymaraes,Yanaca,4,3,2,0,0,3,2003,23,0,11,0,11,10
+030501,Apurímac,Cotabambas,Tambobamba,4,3,2,1,2024,17,2003,429,29,370,56,375,15
+030502,Apurímac,Cotabambas,Cotabambas,4,3,2,0,0,27,2003,86,0,31,4,34,14
+030503,Apurímac,Cotabambas,Coyllurqui,4,3,2,0,0,10,2003,135,0,51,10,58,13
+030504,Apurímac,Cotabambas,Haquira,4,3,2,3,2009,15,2003,294,71,218,32,221,13
+030505,Apurímac,Cotabambas,Mara,4,3,2,0,0,6,2003,216,0,69,18,82,13
+030506,Apurímac,Cotabambas,Challhuahuacho,4,3,2,1,2023,12,2003,272,25,213,47,221,14
+030601,Apurímac,Chincheros,Chincheros,4,4,2,2,2023,36,2003,338,44,141,43,169,14
+030602,Apurímac,Chincheros,Anco-huallo,4,4,2,0,0,5,2003,200,0,63,16,78,14
+030603,Apurímac,Chincheros,Cocharcas,4,4,2,0,0,9,2003,181,0,101,25,109,13
+030604,Apurímac,Chincheros,Huaccana,4,4,2,0,0,22,2003,178,0,89,22,102,15
+030605,Apurímac,Chincheros,Ocobamba,4,4,2,1,2025,9,2003,267,31,131,23,139,16
+030606,Apurímac,Chincheros,Ongoy,4,4,2,3,2022,5,2003,181,87,107,17,116,13
+030607,Apurímac,Chincheros,Uranmarca,4,4,2,0,0,7,2003,131,0,54,16,63,15
+030608,Apurímac,Chincheros,Ranracancha,4,4,2,0,0,1,2003,128,0,60,7,66,13
+030609,Apurímac,Chincheros,Rocchacc,4,4,2,0,0,0,0,87,0,0,8,8,9
+030610,Apurímac,Chincheros,El Porvenir,4,4,2,0,0,0,0,67,0,0,7,7,8
+030611,Apurímac,Chincheros,Los Chankas,4,4,2,1,2025,0,0,142,8,0,14,22,8
+030612,Apurímac,Chincheros,Ahuayro,4,4,2,1,2024,0,0,46,14,0,0,14,6
+030701,Apurímac,Grau,Chuquibambilla,4,3,2,0,0,8,2003,277,0,231,19,235,14
+030702,Apurímac,Grau,Curpahuasi,4,3,2,2,2023,9,2003,74,20,56,6,57,12
+030703,Apurímac,Grau,Gamarra,4,3,2,0,0,15,2003,92,0,74,21,76,11
+030704,Apurímac,Grau,Huayllati,4,3,2,0,0,3,2012,97,0,55,12,63,13
+030705,Apurímac,Grau,Mamara,4,3,2,0,0,5,2003,21,0,4,2,5,10
+030706,Apurímac,Grau,Micaela Bastidas,4,3,2,0,0,5,2003,69,0,21,4,24,11
+030707,Apurímac,Grau,Pataypampa,4,4,2,2,2022,11,2003,42,4,8,3,10,11
+030708,Apurímac,Grau,Progreso,4,3,2,0,0,11,2003,196,0,160,29,161,12
+030709,Apurímac,Grau,San Antonio,4,3,2,0,0,2,2003,58,0,29,3,30,10
+030710,Apurímac,Grau,Santa Rosa,4,3,2,0,0,2,2003,82,0,34,7,38,12
+030711,Apurímac,Grau,Turpay,4,3,2,0,0,4,2003,48,0,19,8,24,12
+030712,Apurímac,Grau,Vilcabamba,4,4,2,0,0,3,2003,57,0,28,4,28,14
+030713,Apurímac,Grau,Virundo,4,3,2,0,0,0,0,61,0,0,6,6,13
+030714,Apurímac,Grau,Curasco,4,3,2,0,0,13,2003,107,0,82,14,84,12
+040101,Arequipa,Arequipa,Arequipa,3,2,12,0,0,1,2009,34,0,24,3,26,14
+040102,Arequipa,Arequipa,Alto Selva Alegre,3,2,12,8,2011,53,2003,26,22,23,8,23,9
+040103,Arequipa,Arequipa,Cayma,3,2,12,4,2017,90,2003,23,8,15,4,15,11
+040104,Arequipa,Arequipa,Cerro Colorado,3,2,12,2,2022,18,2003,44,14,38,18,38,14
+040105,Arequipa,Arequipa,Characato,3,2,12,1,2017,15,2009,29,13,15,2,15,11
+040106,Arequipa,Arequipa,Chiguata,3,2,12,1,2015,67,2003,62,26,30,10,30,14
+040107,Arequipa,Arequipa,Jacobo Hunter,3,2,12,0,0,17,2009,29,0,23,13,26,12
+040108,Arequipa,Arequipa,La Joya,3,2,12,3,2020,24,2003,21,11,17,5,17,13
+040109,Arequipa,Arequipa,Mariano Melgar,3,2,12,1,2016,11,2009,18,14,17,6,17,8
+040110,Arequipa,Arequipa,Miraflores,3,2,12,1,2019,23,2003,23,15,18,11,19,8
+040111,Arequipa,Arequipa,Mollebaya,3,2,12,0,0,18,2009,16,0,15,8,15,8
+040112,Arequipa,Arequipa,Paucarpata,3,2,12,2,2014,12,2003,42,39,41,18,41,11
+040113,Arequipa,Arequipa,Pocsi,3,2,12,0,0,10,2009,25,0,15,7,15,12
+040114,Arequipa,Arequipa,Polobaya,3,2,12,0,0,21,2009,32,0,21,11,22,13
+040115,Arequipa,Arequipa,Quequeña,3,2,12,0,0,13,2003,27,0,25,10,25,12
+040116,Arequipa,Arequipa,Sabandia,3,2,12,0,0,9,2009,26,0,21,1,21,6
+040117,Arequipa,Arequipa,Sachaca,3,2,12,2,2016,0,0,18,14,0,8,16,8
+040118,Arequipa,Arequipa,San Juan de Siguas,4,2,12,0,0,14,2003,25,0,22,8,22,7
+040119,Arequipa,Arequipa,San Juan de Tarucani,3,2,12,0,0,180,2003,66,0,41,14,45,13
+040120,Arequipa,Arequipa,Santa Isabel de Siguas,3,2,12,2,2020,23,2003,38,17,36,9,36,10
+040121,Arequipa,Arequipa,Santa Rita de Siguas,3,2,12,0,0,2,2003,6,0,5,3,5,4
+040122,Arequipa,Arequipa,Socabaya,3,2,12,0,0,12,2009,28,0,25,8,25,8
+040123,Arequipa,Arequipa,Tiabaya,3,2,12,0,0,11,2003,13,0,9,4,9,5
+040124,Arequipa,Arequipa,Uchumayo,3,2,12,0,0,35,2003,12,0,11,7,11,6
+040125,Arequipa,Arequipa,Vítor,3,2,12,9,2016,104,2003,31,15,30,8,30,11
+040126,Arequipa,Arequipa,Yanahuara,3,2,12,1,2023,5,2003,19,3,14,8,14,10
+040127,Arequipa,Arequipa,Yarabamba,3,2,12,0,0,7,2003,42,0,32,5,32,9
+040128,Arequipa,Arequipa,Yura,3,2,12,4,2015,103,2003,59,41,41,31,44,15
+040129,Arequipa,Arequipa,José Luis Bustamante y Rivero,3,2,12,0,0,0,0,8,0,0,2,2,5
+040201,Arequipa,Camaná,Camaná,3,2,9,1,2023,0,0,5,0,0,3,3,5
+040202,Arequipa,Camaná,José María Quimper,3,2,9,0,0,3,2003,22,0,13,11,15,10
+040203,Arequipa,Camaná,Mariano Nicolás Valcárcel,3,2,9,2,2023,27,2003,32,10,31,10,31,11
+040204,Arequipa,Camaná,Mariscal Cáceres,3,2,9,0,0,6,2003,26,0,14,3,14,9
+040205,Arequipa,Camaná,Nicolás de Piérola,3,2,9,0,0,59,2003,36,0,31,16,32,9
+040206,Arequipa,Camaná,Ocoña,3,2,9,0,0,52,2003,70,0,65,17,65,15
+040207,Arequipa,Camaná,Quilca,3,2,9,0,0,20,2003,34,0,9,14,22,7
+040208,Arequipa,Camaná,Samuel Pastor,3,2,9,3,2023,6,2003,14,2,13,5,13,7
+040301,Arequipa,Caravelí,Caravelí,3,2,9,2,2022,34,2003,28,15,21,3,21,10
+040302,Arequipa,Caravelí,Acarí,3,2,9,0,0,6,2003,24,0,20,4,20,10
+040303,Arequipa,Caravelí,Atico,3,2,9,0,0,99,2003,23,0,19,1,19,7
+040304,Arequipa,Caravelí,Atiquipa,3,2,9,0,0,8,2013,15,0,7,6,8,10
+040305,Arequipa,Caravelí,Bella Unión,3,2,9,1,2018,21,2003,23,13,18,3,18,9
+040306,Arequipa,Caravelí,Cahuacho,3,2,9,0,0,10,2011,47,0,31,9,34,12
+040307,Arequipa,Caravelí,Chala,3,2,9,1,2013,1,2013,13,9,9,0,9,7
+040308,Arequipa,Caravelí,Chaparra,3,2,9,0,0,39,2003,22,0,17,6,17,10
+040309,Arequipa,Caravelí,Huanuhuanu,3,2,9,0,0,2,2003,31,0,26,6,26,12
+040310,Arequipa,Caravelí,Jaqui,3,2,9,0,0,11,2003,23,0,23,3,23,8
+040311,Arequipa,Caravelí,Lomas,3,2,9,0,0,3,2013,11,0,5,2,6,6
+040312,Arequipa,Caravelí,Quicacha,3,2,9,0,0,20,2003,28,0,19,9,21,10
+040313,Arequipa,Caravelí,Yauca,3,2,9,0,0,7,2003,17,0,13,3,13,8
+040401,Arequipa,Castilla,Aplao,3,2,9,2,2019,106,2003,25,8,21,4,21,11
+040402,Arequipa,Castilla,Andagua,3,2,9,0,0,28,2003,72,0,57,14,57,12
+040403,Arequipa,Castilla,Ayo,3,2,9,4,2023,24,2003,48,24,41,8,41,10
+040404,Arequipa,Castilla,Chachas,3,2,9,1,2018,34,2003,63,28,43,10,44,13
+040405,Arequipa,Castilla,Chilcaymarca,3,2,9,0,0,32,2003,53,0,34,10,34,13
+040406,Arequipa,Castilla,Choco,3,2,9,1,2024,16,2003,70,27,45,6,45,16
+040407,Arequipa,Castilla,Huancarqui,3,2,9,0,0,32,2003,22,0,22,5,22,7
+040408,Arequipa,Castilla,Machaguay,3,2,9,2,2023,13,2003,37,16,26,4,26,12
+040409,Arequipa,Castilla,Orcopampa,3,2,9,0,0,36,2003,79,0,53,18,54,12
+040410,Arequipa,Castilla,Pampacolca,3,2,9,2,2021,18,2003,60,27,35,6,35,10
+040411,Arequipa,Castilla,Tipán,3,2,9,4,2008,35,2003,47,38,41,7,41,12
+040412,Arequipa,Castilla,Uñón,3,2,9,1,2021,9,2003,30,21,28,3,28,9
+040413,Arequipa,Castilla,Uraca,3,2,9,0,0,36,2003,48,0,48,24,48,12
+040414,Arequipa,Castilla,Viraco,3,2,9,2,2024,6,2003,33,13,25,3,25,9
+040501,Arequipa,Caylloma,Chivay,3,3,12,5,2021,45,2003,91,21,45,18,48,17
+040502,Arequipa,Caylloma,Achoma,3,3,12,7,2017,21,2003,45,22,24,10,25,12
+040503,Arequipa,Caylloma,Cabanaconde,3,3,12,0,0,38,2003,70,0,34,9,35,15
+040504,Arequipa,Caylloma,Callalli,3,3,12,0,0,63,2003,82,0,55,14,56,14
+040505,Arequipa,Caylloma,Caylloma,3,3,12,3,2016,26,2003,101,27,73,29,74,17
+040506,Arequipa,Caylloma,Coporaque,3,3,12,0,0,22,2003,49,0,20,11,21,16
+040507,Arequipa,Caylloma,Huambo,3,3,12,0,0,49,2003,54,0,39,14,39,10
+040508,Arequipa,Caylloma,Huanca,3,3,12,1,2019,26,2003,36,19,27,15,28,12
+040509,Arequipa,Caylloma,Ichupampa,3,3,12,0,0,22,2003,68,0,42,8,42,15
+040510,Arequipa,Caylloma,Lari,3,3,12,3,2009,12,2003,59,27,28,9,34,13
+040511,Arequipa,Caylloma,Lluta,3,3,12,2,2019,89,2003,40,17,30,11,31,12
+040512,Arequipa,Caylloma,Maca,3,3,12,11,2012,31,2003,38,28,28,6,28,12
+040513,Arequipa,Caylloma,Madrigal,3,3,12,1,2017,25,2003,38,18,20,8,21,12
+040514,Arequipa,Caylloma,San Antonio de Chuca,3,3,12,0,0,27,2003,67,0,47,19,48,18
+040515,Arequipa,Caylloma,Sibayo,3,3,12,0,0,27,2003,61,0,40,13,42,14
+040516,Arequipa,Caylloma,Tapay,3,3,12,0,0,10,2003,38,0,23,5,24,14
+040517,Arequipa,Caylloma,Tisco,3,3,12,1,2021,47,2003,89,23,65,15,66,16
+040518,Arequipa,Caylloma,Tuti,3,3,12,1,2011,16,2003,70,31,32,22,40,14
+040519,Arequipa,Caylloma,Yanque,3,3,12,0,0,35,2003,66,0,47,12,48,14
+040520,Arequipa,Caylloma,Majes,3,3,12,7,2016,15,2003,5,2,4,1,4,3
+040601,Arequipa,Condesuyos,Chuquibamba,3,2,9,3,2022,18,2003,47,13,32,11,32,13
+040602,Arequipa,Condesuyos,Andaray,3,2,9,2,2024,6,2003,49,9,30,10,31,13
+040603,Arequipa,Condesuyos,Cayarani,3,2,9,2,2021,21,2003,91,39,26,25,65,14
+040604,Arequipa,Condesuyos,Chichas,3,2,9,0,0,14,2003,50,0,34,16,36,16
+040605,Arequipa,Condesuyos,Iray,3,2,9,0,0,28,2003,22,0,19,5,20,7
+040606,Arequipa,Condesuyos,Río Grande,3,2,9,0,0,16,2003,48,0,33,10,40,9
+040607,Arequipa,Condesuyos,Salamanca,3,2,9,0,0,7,2003,75,0,39,15,45,15
+040608,Arequipa,Condesuyos,Yanaquihua,3,2,9,0,0,16,2003,81,0,50,17,52,13
+040701,Arequipa,Islay,Mollendo,4,2,10,0,0,15,2003,12,0,4,2,5,9
+040702,Arequipa,Islay,Cocachacra,4,2,10,0,0,30,2003,37,0,33,13,33,11
+040703,Arequipa,Islay,Dean Valdivia,4,2,10,0,0,4,2010,16,0,7,4,11,8
+040704,Arequipa,Islay,Islay,3,2,9,1,2016,9,2003,12,8,10,0,10,7
+040705,Arequipa,Islay,Mejía,4,2,10,0,0,1,2013,6,0,4,0,4,3
+040706,Arequipa,Islay,Punta de Bombón,4,2,10,0,0,2,2003,20,0,6,7,12,7
+040801,Arequipa,La Unión,Cotahuasi,3,2,9,6,2014,22,2003,84,54,65,11,65,17
+040802,Arequipa,La Unión,Alca,3,2,9,0,0,12,2003,76,0,55,12,56,13
+040803,Arequipa,La Unión,Charcana,3,2,9,1,2024,21,2003,61,17,45,14,46,12
+040804,Arequipa,La Unión,Huaynacotas,3,2,9,0,0,29,2003,78,0,58,17,59,14
+040805,Arequipa,La Unión,Pampamarca,3,2,9,2,2017,23,2003,75,51,59,15,60,16
+040806,Arequipa,La Unión,Puyca,3,2,9,2,2024,37,2003,61,18,44,8,46,10
+040807,Arequipa,La Unión,Quechualla,3,2,9,0,0,14,2010,62,0,56,7,57,13
+040808,Arequipa,La Unión,Sayla,3,2,9,0,0,0,0,40,0,0,10,10,15
+040809,Arequipa,La Unión,Tauria,3,2,9,0,0,2,2011,36,0,23,7,25,12
+040810,Arequipa,La Unión,Tomepampa,3,2,9,1,2015,7,2003,58,33,52,7,52,10
+040811,Arequipa,La Unión,Toro,3,2,9,0,0,10,2003,112,0,81,14,84,15
+050101,Ayacucho,Huamanga,Ayacucho,2,4,4,4,2020,109,2003,139,88,131,10,131,17
+050102,Ayacucho,Huamanga,Acocro,2,4,4,1,2025,18,2003,175,7,72,19,86,13
+050103,Ayacucho,Huamanga,Acos Vinchos,2,4,4,0,0,14,2003,71,0,57,4,57,13
+050104,Ayacucho,Huamanga,Carmen Alto,2,4,4,0,0,11,2003,57,0,38,14,38,10
+050105,Ayacucho,Huamanga,Chiara,2,4,4,0,0,9,2003,251,0,112,27,128,13
+050106,Ayacucho,Huamanga,Ocros,2,4,4,0,0,33,2003,113,0,66,5,67,12
+050107,Ayacucho,Huamanga,Pacaycasa,2,4,4,0,0,7,2003,39,0,26,0,26,10
+050108,Ayacucho,Huamanga,Quinua,2,4,4,0,0,29,2003,96,0,75,9,75,12
+050109,Ayacucho,Huamanga,San José de Ticllas,2,4,4,0,0,31,2003,104,0,84,11,84,13
+050110,Ayacucho,Huamanga,San Juan Bautista,2,4,4,0,0,13,2003,38,0,35,5,35,8
+050111,Ayacucho,Huamanga,Santiago de Pischa,2,4,4,0,0,58,2003,72,0,58,10,58,12
+050112,Ayacucho,Huamanga,Socos,2,4,4,6,2022,36,2003,86,36,49,5,51,9
+050113,Ayacucho,Huamanga,Tambillo,2,4,4,0,0,46,2003,74,0,51,1,51,13
+050114,Ayacucho,Huamanga,Vinchos,2,4,4,0,0,91,2003,271,0,160,4,160,12
+050115,Ayacucho,Huamanga,Jesús Nazareno,2,4,4,0,0,30,2003,35,0,35,9,35,13
+050116,Ayacucho,Huamanga,Andrés Avelino Cáceres Dorregaray,2,4,4,0,0,0,0,34,0,0,6,6,9
+050201,Ayacucho,Cangallo,Cangallo,1,4,3,1,2013,34,2003,258,119,198,10,198,13
+050202,Ayacucho,Cangallo,Chuschi,1,4,3,0,0,22,2003,147,0,98,8,98,13
+050203,Ayacucho,Cangallo,Los Morochucos,1,4,3,0,0,10,2003,109,0,47,5,51,11
+050204,Ayacucho,Cangallo,María Parado de Bellido,1,4,3,0,0,13,2003,63,0,31,2,33,10
+050205,Ayacucho,Cangallo,Paras,1,4,3,0,0,24,2003,137,0,71,7,75,13
+050206,Ayacucho,Cangallo,Totos,1,4,3,0,0,10,2003,84,0,60,2,60,12
+050301,Ayacucho,Huanca Sancos,Sancos,1,4,3,0,0,17,2003,65,0,52,3,52,12
+050302,Ayacucho,Huanca Sancos,Carapo,1,4,3,0,0,15,2003,103,0,78,8,78,12
+050303,Ayacucho,Huanca Sancos,Sacsamarca,1,4,3,0,0,16,2003,96,0,73,7,73,10
+050304,Ayacucho,Huanca Sancos,Santiago de Lucanamarca,1,4,3,1,2020,9,2003,58,34,45,2,45,11
+050401,Ayacucho,Huanta,Huanta,1,6,6,0,0,21,2003,136,0,100,28,100,17
+050402,Ayacucho,Huanta,Ayahuanco,1,6,6,0,0,3,2003,103,0,82,38,85,11
+050403,Ayacucho,Huanta,Huamanguilla,1,6,6,0,0,2,2003,121,0,43,23,52,11
+050404,Ayacucho,Huanta,Iguain,1,6,6,0,0,7,2011,70,0,30,9,30,10
+050405,Ayacucho,Huanta,Luricocha,1,6,6,0,0,23,2003,108,0,75,22,75,11
+050406,Ayacucho,Huanta,Santillana,1,6,6,0,0,18,2003,107,0,70,22,80,10
+050407,Ayacucho,Huanta,Sivia,1,6,6,3,2011,19,2003,185,175,179,54,179,14
+050408,Ayacucho,Huanta,Llochegua,1,6,6,9,2010,14,2003,152,119,150,39,150,16
+050409,Ayacucho,Huanta,Canayre,1,6,6,0,0,0,0,125,0,0,35,35,11
+050410,Ayacucho,Huanta,Uchuraccay,1,6,6,0,0,0,0,170,0,0,24,24,12
+050411,Ayacucho,Huanta,Pucacolpa,1,6,6,0,0,0,0,127,0,0,36,36,10
+050412,Ayacucho,Huanta,Chaca,1,6,6,1,2024,0,0,77,22,0,7,29,9
+050413,Ayacucho,Huanta,Putis,1,6,6,0,0,0,0,17,0,0,0,0,3
+050501,Ayacucho,La Mar,San Miguel,1,4,4,0,0,44,2003,217,0,144,45,144,13
+050502,Ayacucho,La Mar,Anco,1,4,4,1,2021,20,2003,177,88,151,31,151,17
+050503,Ayacucho,La Mar,Ayna,1,4,4,7,2012,15,2003,147,124,140,22,140,14
+050504,Ayacucho,La Mar,Chilcas,1,4,4,0,0,14,2003,57,0,46,5,46,11
+050505,Ayacucho,La Mar,Chungui,1,4,4,0,0,3,2003,127,0,92,22,93,12
+050506,Ayacucho,La Mar,Luis Carranza,1,4,4,0,0,9,2003,111,0,68,4,68,11
+050507,Ayacucho,La Mar,Santa Rosa,1,4,4,1,2019,9,2003,145,70,140,36,140,15
+050508,Ayacucho,La Mar,Tambo,1,4,4,2,2018,25,2003,192,113,140,14,140,14
+050509,Ayacucho,La Mar,Samugari,1,4,4,3,2019,0,0,258,204,0,66,215,10
+050510,Ayacucho,La Mar,Anchihuay,1,4,4,1,2019,0,0,140,105,0,48,110,12
+050511,Ayacucho,La Mar,Oronccoy,1,4,4,0,0,0,0,104,0,0,19,19,10
+050512,Ayacucho,La Mar,Unión Progreso,1,4,4,1,2025,0,0,82,14,0,0,14,5
+050513,Ayacucho,La Mar,Río Magdalena,1,4,4,0,0,0,0,91,0,0,0,0,5
+050514,Ayacucho,La Mar,Ninabamba,1,4,4,1,2018,0,0,74,41,0,0,41,6
+050515,Ayacucho,La Mar,Patibamba,1,4,4,0,0,0,0,29,0,0,0,0,5
+050601,Ayacucho,Lucanas,Puquio,1,6,3,2,2014,11,2003,76,60,60,5,61,12
+050602,Ayacucho,Lucanas,Aucara,1,6,3,0,0,2,2003,63,0,44,6,46,10
+050603,Ayacucho,Lucanas,Cabana,1,6,3,0,0,1,2003,71,0,52,10,52,12
+050604,Ayacucho,Lucanas,Carmen Salcedo,1,6,3,3,2011,3,2003,32,22,22,1,23,11
+050605,Ayacucho,Lucanas,Chaviña,1,6,3,0,0,14,2003,88,0,64,7,64,11
+050606,Ayacucho,Lucanas,Chipao,1,6,3,0,0,2,2003,87,0,57,1,57,12
+050607,Ayacucho,Lucanas,Huac-Huas,1,6,3,0,0,17,2003,60,0,51,1,51,11
+050608,Ayacucho,Lucanas,Laramate,1,6,3,0,0,13,2003,58,0,50,2,50,11
+050609,Ayacucho,Lucanas,Leoncio Prado,1,6,3,3,2018,20,2003,70,64,66,1,66,12
+050610,Ayacucho,Lucanas,Llauta,1,6,3,0,0,24,2003,30,0,22,0,22,7
+050611,Ayacucho,Lucanas,Lucanas,1,6,3,0,0,10,2003,98,0,77,14,78,12
+050612,Ayacucho,Lucanas,Ocaña,1,6,3,0,0,30,2003,40,0,33,1,33,9
+050613,Ayacucho,Lucanas,Otoca,1,6,3,0,0,26,2003,66,0,53,0,53,11
+050614,Ayacucho,Lucanas,Saisa,1,6,3,0,0,3,2003,25,0,19,0,19,10
+050615,Ayacucho,Lucanas,San Cristóbal,1,6,3,0,0,7,2003,47,0,32,7,32,9
+050616,Ayacucho,Lucanas,San Juan,1,6,3,0,0,4,2003,36,0,32,7,32,10
+050617,Ayacucho,Lucanas,San Pedro,1,6,3,0,0,5,2003,79,0,56,6,56,10
+050618,Ayacucho,Lucanas,San Pedro de Palco,1,6,3,0,0,0,0,71,0,0,7,7,12
+050619,Ayacucho,Lucanas,Sancos,1,6,3,0,0,2,2003,80,0,63,24,64,11
+050620,Ayacucho,Lucanas,Santa Ana de Huaycahuacho,1,6,3,0,0,2,2003,21,0,15,1,15,7
+050621,Ayacucho,Lucanas,Santa Lucía,1,6,3,0,0,8,2003,38,0,33,1,33,10
+050701,Ayacucho,Parinacochas,Coracora,1,4,3,0,0,29,2003,60,0,30,8,35,11
+050702,Ayacucho,Parinacochas,Chumpi,1,4,3,4,2022,9,2003,96,37,71,17,72,11
+050703,Ayacucho,Parinacochas,Coronel Castañeda,1,4,3,0,0,18,2011,63,0,53,0,53,7
+050704,Ayacucho,Parinacochas,Pacapausa,1,4,3,0,0,13,2011,57,0,45,5,46,8
+050705,Ayacucho,Parinacochas,Pullo,1,4,3,0,0,11,2003,61,0,44,5,47,11
+050706,Ayacucho,Parinacochas,Puyusca,1,4,3,0,0,5,2003,62,0,48,0,48,10
+050707,Ayacucho,Parinacochas,San Francisco de Ravacayco,1,4,3,0,0,5,2011,59,0,48,12,49,10
+050708,Ayacucho,Parinacochas,Upahuacho,1,4,3,0,0,12,2011,128,0,75,13,81,10
+050801,Ayacucho,Paucar del Sara Sara,Pausa,1,5,5,1,2010,32,2003,108,87,87,16,87,13
+050802,Ayacucho,Paucar del Sara Sara,Colta,1,5,5,3,2024,6,2011,108,19,84,28,84,11
+050803,Ayacucho,Paucar del Sara Sara,Corculla,1,5,5,0,0,0,0,54,0,0,9,9,12
+050804,Ayacucho,Paucar del Sara Sara,Lampa,1,5,5,0,0,11,2011,86,0,53,8,54,11
+050805,Ayacucho,Paucar del Sara Sara,Marcabamba,1,5,5,2,2024,8,2003,67,12,54,22,59,11
+050806,Ayacucho,Paucar del Sara Sara,Oyolo,1,5,5,0,0,2,2010,114,0,77,34,82,11
+050807,Ayacucho,Paucar del Sara Sara,Pararca,1,5,5,1,2024,3,2011,80,15,63,18,63,12
+050808,Ayacucho,Paucar del Sara Sara,San Javier de Alpabamba,1,5,5,0,0,11,2011,56,0,43,8,43,12
+050809,Ayacucho,Paucar del Sara Sara,San José de Ushua,1,5,5,0,0,0,0,27,0,0,0,0,8
+050810,Ayacucho,Paucar del Sara Sara,Sara Sara,1,5,5,0,0,4,2011,65,0,53,14,54,11
+050901,Ayacucho,Sucre,Querobamba,1,4,3,2,2023,22,2003,113,45,84,5,85,13
+050902,Ayacucho,Sucre,Belén,1,4,3,0,0,1,2003,48,0,35,1,36,12
+050903,Ayacucho,Sucre,Chalcos,1,4,3,0,0,2,2003,63,0,44,2,45,11
+050904,Ayacucho,Sucre,Chilcayoc,1,4,3,0,0,3,2003,43,0,32,4,33,10
+050905,Ayacucho,Sucre,Huacaña,1,4,3,0,0,1,2003,31,0,14,1,14,9
+050906,Ayacucho,Sucre,Morcolla,1,4,3,0,0,1,2003,69,0,42,2,42,12
+050907,Ayacucho,Sucre,Paico,1,4,3,0,0,0,0,64,0,0,4,4,12
+050908,Ayacucho,Sucre,San Pedro de Larcay,1,4,3,0,0,5,2003,64,0,27,2,28,14
+050909,Ayacucho,Sucre,San Salvador de Quije,1,4,3,0,0,5,2003,99,0,62,8,64,11
+050910,Ayacucho,Sucre,Santiago de Paucaray,1,4,3,0,0,0,0,49,0,0,0,0,12
+050911,Ayacucho,Sucre,Soras,1,4,3,0,0,1,2012,47,0,24,1,25,12
+051001,Ayacucho,Victor Fajardo,Huancapi,1,4,3,1,2016,18,2003,56,27,41,3,41,12
+051002,Ayacucho,Victor Fajardo,Alcamenca,1,4,3,0,0,25,2003,60,0,53,2,53,13
+051003,Ayacucho,Victor Fajardo,Apongo,1,4,3,0,0,0,0,34,0,0,1,1,8
+051004,Ayacucho,Victor Fajardo,Asquipata,1,4,3,0,0,0,0,51,0,0,2,2,11
+051005,Ayacucho,Victor Fajardo,Canaria,1,4,3,0,0,12,2003,34,0,23,1,23,10
+051006,Ayacucho,Victor Fajardo,Cayara,1,4,3,0,0,13,2003,63,0,36,1,36,12
+051007,Ayacucho,Victor Fajardo,Colca,1,4,3,2,2022,14,2003,52,27,39,4,39,7
+051008,Ayacucho,Victor Fajardo,Huamanquiquia,1,4,3,0,0,5,2003,62,0,49,7,49,11
+051009,Ayacucho,Victor Fajardo,Huancaraylla,1,4,3,0,0,8,2003,74,0,37,5,39,11
+051010,Ayacucho,Victor Fajardo,Huaya,1,4,3,0,0,10,2003,87,0,44,8,49,12
+051011,Ayacucho,Victor Fajardo,Sarhua,1,4,3,0,0,17,2003,78,0,55,5,55,14
+051012,Ayacucho,Victor Fajardo,Vilcanchos,1,4,3,3,2020,7,2003,100,55,80,4,80,12
+051101,Ayacucho,Vilcas Huamán,Vilcas Huamán,1,4,3,0,0,14,2003,208,0,78,20,89,13
+051102,Ayacucho,Vilcas Huamán,Accomarca,1,4,3,0,0,19,2003,69,0,42,4,44,11
+051103,Ayacucho,Vilcas Huamán,Carhuanca,1,4,3,0,0,5,2003,19,0,13,0,13,5
+051104,Ayacucho,Vilcas Huamán,Concepción,1,4,3,2,2023,8,2003,114,45,84,10,87,12
+051105,Ayacucho,Vilcas Huamán,Huambalpa,1,4,3,0,0,17,2003,134,0,119,7,119,12
+051106,Ayacucho,Vilcas Huamán,Independencia,1,4,3,1,2023,12,2003,58,23,37,4,40,10
+051107,Ayacucho,Vilcas Huamán,Saurama,1,4,3,2,2019,3,2019,82,44,44,2,45,12
+051108,Ayacucho,Vilcas Huamán,Vischongo,1,4,3,0,0,16,2003,152,0,124,20,124,14
+060101,Cajamarca,Cajamarca,Cajamarca,1,1,3,9,2017,64,2007,264,168,235,47,235,15
+060102,Cajamarca,Cajamarca,Asunción,1,1,3,1,2025,49,2007,157,3,151,27,152,10
+060103,Cajamarca,Cajamarca,Chetilla,1,1,3,1,2024,3,2007,95,41,68,5,71,10
+060104,Cajamarca,Cajamarca,Cospán,1,1,3,0,0,38,2007,96,0,88,0,88,9
+060105,Cajamarca,Cajamarca,Encañada,1,1,3,2,2019,8,2007,169,65,113,19,117,14
+060106,Cajamarca,Cajamarca,Jesús,1,1,3,5,2020,7,2007,92,55,64,2,66,9
+060107,Cajamarca,Cajamarca,Llacanora,1,1,3,2,2022,3,2007,37,19,28,3,28,8
+060108,Cajamarca,Cajamarca,Los Baños del Inca,1,1,3,4,2019,17,2007,81,43,70,3,70,11
+060109,Cajamarca,Cajamarca,Magdalena,1,1,3,0,0,85,2007,75,0,71,4,72,8
+060110,Cajamarca,Cajamarca,Matara,1,1,3,0,0,4,2007,48,0,39,2,39,9
+060111,Cajamarca,Cajamarca,Namora,1,1,3,0,0,4,2007,58,0,49,4,49,10
+060112,Cajamarca,Cajamarca,San Juan,1,1,3,1,2021,42,2007,106,55,79,5,81,12
+060201,Cajamarca,Cajabamba,Cajabamba,1,1,3,4,2019,7,2007,118,94,95,21,98,9
+060202,Cajamarca,Cajabamba,Cachachi,1,1,3,6,2019,38,2007,116,89,95,5,96,9
+060203,Cajamarca,Cajabamba,Condebamba,1,1,3,2,2019,17,2007,112,73,98,26,98,7
+060204,Cajamarca,Cajabamba,Sitacocha,1,1,3,0,0,11,2007,136,0,92,19,96,9
+060301,Cajamarca,Celendín,Celendín,1,1,3,4,2022,39,2007,202,100,191,21,191,14
+060302,Cajamarca,Celendín,Chumuch,1,1,3,0,0,10,2007,91,0,78,8,79,8
+060303,Cajamarca,Celendín,Cortegana,1,1,3,4,2022,4,2008,124,75,100,8,101,11
+060304,Cajamarca,Celendín,Huasmín,1,1,3,2,2022,4,2007,93,48,67,10,71,11
+060305,Cajamarca,Celendín,Jorge Chavez,1,1,3,0,0,1,2007,87,0,79,12,81,9
+060306,Cajamarca,Celendín,José Gálvez,1,1,3,0,0,5,2007,68,0,55,11,56,8
+060307,Cajamarca,Celendín,Miguel Iglesias,1,1,3,0,0,15,2007,40,0,35,5,35,7
+060308,Cajamarca,Celendín,Oxamarca,1,1,3,1,2025,7,2007,136,21,117,20,118,9
+060309,Cajamarca,Celendín,Sorochuco,1,1,3,0,0,6,2007,108,0,89,21,94,10
+060310,Cajamarca,Celendín,Sucre,1,1,3,0,0,14,2007,70,0,53,14,56,8
+060311,Cajamarca,Celendín,Utco,1,1,3,0,0,10,2007,97,0,85,4,85,9
+060312,Cajamarca,Celendín,La Libertad de Pallán,1,1,3,0,0,4,2007,116,0,51,11,55,9
+060401,Cajamarca,Chota,Chota,1,1,2,3,2007,8,2007,150,114,114,0,114,14
+060402,Cajamarca,Chota,Anguia,1,1,2,0,0,13,2007,23,0,19,0,19,6
+060403,Cajamarca,Chota,Chadín,1,1,2,0,0,4,2007,58,0,46,0,46,6
+060404,Cajamarca,Chota,Chiguirip,1,1,2,3,2009,7,2007,41,35,35,0,35,6
+060405,Cajamarca,Chota,Chimbán,1,1,2,0,0,0,0,58,0,0,0,0,9
+060406,Cajamarca,Chota,Choropampa,1,1,2,0,0,4,2007,43,0,39,0,39,10
+060407,Cajamarca,Chota,Cochabamba,1,1,2,0,0,20,2007,79,0,73,0,73,7
+060408,Cajamarca,Chota,Conchán,1,1,2,0,0,3,2007,23,0,16,1,17,7
+060409,Cajamarca,Chota,Huambos,1,1,2,2,2006,17,2007,73,55,55,0,55,10
+060410,Cajamarca,Chota,Lajas,1,1,2,4,2022,8,2007,130,72,113,0,113,11
+060411,Cajamarca,Chota,Llama,1,1,2,0,0,109,2007,79,0,77,0,77,10
+060412,Cajamarca,Chota,Miracosta,1,1,2,0,0,12,2007,104,0,93,0,93,10
+060413,Cajamarca,Chota,Paccha,1,1,2,0,0,10,2007,43,0,39,0,39,7
+060414,Cajamarca,Chota,Pión,1,1,2,0,0,0,0,13,0,0,0,0,4
+060415,Cajamarca,Chota,Querocoto,1,1,2,3,1999,12,2007,93,70,70,0,70,10
+060416,Cajamarca,Chota,San Juan de Licupis,1,1,2,2,2018,40,2007,34,19,29,0,29,9
+060417,Cajamarca,Chota,Tacabamba,1,1,2,4,2022,24,2007,107,22,90,2,92,9
+060418,Cajamarca,Chota,Tocmoche,1,1,2,0,0,35,2007,24,0,22,0,22,7
+060419,Cajamarca,Chota,Chalamarca,1,1,2,0,0,23,2007,53,0,35,0,35,8
+060501,Cajamarca,Contumazá,Contumazá,1,1,3,1,2023,47,2007,206,91,175,6,186,12
+060502,Cajamarca,Contumazá,Chilete,1,1,3,1,2024,36,2007,67,31,64,0,64,8
+060503,Cajamarca,Contumazá,Cupisnique,1,1,3,0,0,8,2007,26,0,23,1,24,9
+060504,Cajamarca,Contumazá,Guzmango,1,1,3,0,0,2,2007,74,0,63,7,64,9
+060505,Cajamarca,Contumazá,San Benito,1,1,3,0,0,35,2007,68,0,66,0,66,6
+060506,Cajamarca,Contumazá,Santa Cruz de Toledo,1,1,3,0,0,5,2007,53,0,51,0,51,6
+060507,Cajamarca,Contumazá,Tantarica,1,1,3,0,0,10,2007,75,0,74,1,74,9
+060508,Cajamarca,Contumazá,Yonan,1,1,3,0,0,50,2007,71,0,71,0,71,9
+060601,Cajamarca,Cutervo,Cutervo,1,1,3,2,2018,21,2007,136,63,99,2,99,12
+060602,Cajamarca,Cutervo,Callayuc,1,1,3,1,2024,29,2007,179,70,169,4,169,11
+060603,Cajamarca,Cutervo,Choros,1,1,3,2,2015,24,2007,67,47,63,6,63,9
+060604,Cajamarca,Cutervo,Cujillo,1,1,3,1,2025,2,2007,38,9,33,1,33,9
+060605,Cajamarca,Cutervo,La Ramada,1,1,3,0,0,1,2007,45,0,40,2,40,8
+060606,Cajamarca,Cutervo,Pimpingos,1,1,3,1,2019,14,2007,84,67,69,2,69,9
+060607,Cajamarca,Cutervo,Querocotillo,1,1,3,2,2022,6,2007,91,52,66,11,67,11
+060608,Cajamarca,Cutervo,San Andrés de Cutervo,1,1,3,0,0,0,0,33,0,0,1,1,10
+060609,Cajamarca,Cutervo,San Juan de Cutervo,1,1,3,2,2022,0,0,54,39,0,4,43,10
+060610,Cajamarca,Cutervo,San Luis de Lucma,1,1,3,1,2010,10,2007,54,44,46,4,47,8
+060611,Cajamarca,Cutervo,Santa Cruz,1,1,3,0,0,9,2007,84,0,69,1,69,10
+060612,Cajamarca,Cutervo,Santo Domingo de La Capilla,1,1,3,2,2023,11,2007,56,34,51,2,51,10
+060613,Cajamarca,Cutervo,Santo Tomás,1,1,3,0,0,7,2007,25,0,15,1,15,10
+060614,Cajamarca,Cutervo,Socota,1,1,3,1,2022,9,2007,68,23,53,6,54,11
+060615,Cajamarca,Cutervo,Toribio Casanova,1,1,3,2,2015,8,2007,15,11,12,1,12,8
+060701,Cajamarca,Hualgayoc,Bambamarca,1,1,2,1,2025,27,2007,174,10,143,0,143,13
+060702,Cajamarca,Hualgayoc,Chugur,1,1,2,2,2022,9,2007,10,6,9,0,9,5
+060703,Cajamarca,Hualgayoc,Hualgayoc,1,1,2,0,0,6,2007,90,0,62,0,62,10
+060801,Cajamarca,Jaén,Jaén,1,1,4,2,2021,22,2007,157,44,115,25,119,17
+060802,Cajamarca,Jaén,Bellavista,1,1,4,0,0,35,2007,156,0,147,10,147,13
+060803,Cajamarca,Jaén,Chontali,1,1,4,0,0,4,2007,125,0,98,7,102,9
+060804,Cajamarca,Jaén,Colasay,1,1,4,4,2022,38,2007,167,113,115,15,149,10
+060805,Cajamarca,Jaén,Huabal,1,1,4,0,0,4,2007,94,0,84,7,85,10
+060806,Cajamarca,Jaén,Las Pirias,1,1,4,0,0,3,2007,93,0,81,16,84,7
+060807,Cajamarca,Jaén,Pomahuaca,1,1,4,0,0,37,2007,105,0,93,17,93,10
+060808,Cajamarca,Jaén,Pucará,1,1,4,0,0,15,2007,52,0,41,1,41,11
+060809,Cajamarca,Jaén,Sallique,1,1,4,3,2016,9,2007,80,63,66,6,66,10
+060810,Cajamarca,Jaén,San Felipe,1,1,4,4,2022,36,2007,121,58,97,15,97,9
+060811,Cajamarca,Jaén,San José del Alto,1,1,4,0,0,8,2007,147,0,114,10,116,11
+060812,Cajamarca,Jaén,Santa Rosa,1,1,4,1,2019,8,2007,144,102,133,13,133,10
+060901,Cajamarca,San Ignacio,San Ignacio,1,2,3,3,2020,18,2007,215,130,165,30,169,11
+060902,Cajamarca,San Ignacio,Chirinos,1,1,3,7,2013,11,2007,84,64,79,13,79,11
+060903,Cajamarca,San Ignacio,Huarango,1,1,3,3,2022,7,2007,161,80,127,13,128,10
+060904,Cajamarca,San Ignacio,La Coipa,1,1,3,2,2020,5,2007,181,132,146,12,147,11
+060905,Cajamarca,San Ignacio,Namballe,1,1,3,1,2019,16,2007,257,132,247,2,247,10
+060906,Cajamarca,San Ignacio,San José de Lourdes,1,1,3,5,2017,18,2007,183,146,175,34,175,11
+060907,Cajamarca,San Ignacio,Tabaconas,1,1,3,0,0,13,2007,107,0,75,13,77,10
+061001,Cajamarca,San Marcos,Pedro Gálvez,1,1,3,0,0,6,2007,133,0,106,9,106,12
+061002,Cajamarca,San Marcos,Chancay,1,1,3,0,0,15,2007,42,0,27,8,29,9
+061003,Cajamarca,San Marcos,Eduardo Villanueva,1,1,3,0,0,4,2007,83,0,68,9,72,10
+061004,Cajamarca,San Marcos,Gregorio Pita,1,1,3,0,0,0,0,112,0,0,10,10,11
+061005,Cajamarca,San Marcos,Ichocán,1,1,3,0,0,6,2007,63,0,62,2,62,8
+061006,Cajamarca,San Marcos,José Manuel Quiroz,1,1,3,0,0,12,2007,47,0,41,6,41,10
+061007,Cajamarca,San Marcos,José Sabogal,1,1,3,0,0,2,2007,293,0,258,56,271,11
+061101,Cajamarca,San Miguel,San Miguel,1,1,3,1,2024,49,2006,183,80,172,5,172,9
+061102,Cajamarca,San Miguel,Bolívar,1,1,3,0,0,0,0,41,0,0,4,4,8
+061103,Cajamarca,San Miguel,Calquis,1,1,3,2,2001,16,2006,99,77,77,3,78,11
+061104,Cajamarca,San Miguel,Catilluc,1,1,3,0,0,18,2007,37,0,30,2,31,5
+061105,Cajamarca,San Miguel,El Prado,1,1,3,0,0,1,2007,32,0,28,0,28,7
+061106,Cajamarca,San Miguel,La Florida,1,1,3,2,2023,3,2008,11,3,10,0,10,5
+061107,Cajamarca,San Miguel,Llapa,1,1,3,2,2022,9,2006,40,22,33,3,33,8
+061108,Cajamarca,San Miguel,Nanchoc,1,1,3,0,0,13,2007,52,0,52,2,52,9
+061109,Cajamarca,San Miguel,Niepos,1,1,3,0,0,0,0,69,0,0,4,4,10
+061110,Cajamarca,San Miguel,San Gregorio,1,1,3,0,0,39,2007,37,0,37,2,37,8
+061111,Cajamarca,San Miguel,San Silvestre de Cochán,1,1,3,1,2022,13,2006,42,30,39,1,39,8
+061112,Cajamarca,San Miguel,Tongod,1,1,3,2,2023,25,2007,76,20,70,7,71,9
+061113,Cajamarca,San Miguel,Unión Agua Blanca,1,1,3,3,2023,17,2007,35,13,28,0,28,6
+061201,Cajamarca,San Pablo,San Pablo,1,1,2,2,2017,58,2007,135,60,67,0,67,10
+061202,Cajamarca,San Pablo,San Bernardino,1,1,2,0,0,31,2007,75,0,75,0,75,8
+061203,Cajamarca,San Pablo,San Luis,1,1,2,2,2022,5,2007,47,36,47,0,47,9
+061204,Cajamarca,San Pablo,Tumbadén,1,1,2,0,0,8,2007,100,0,91,1,92,11
+061301,Cajamarca,Santa Cruz,Santa Cruz,1,1,3,0,0,28,2007,47,0,33,0,33,10
+061302,Cajamarca,Santa Cruz,Andabamba,1,1,3,0,0,2,2007,27,0,26,2,26,7
+061303,Cajamarca,Santa Cruz,Catache,1,1,3,2,2005,85,2007,57,43,53,4,53,9
+061304,Cajamarca,Santa Cruz,Chancaybaños,1,1,3,0,0,57,2007,42,0,41,4,41,8
+061305,Cajamarca,Santa Cruz,La Esperanza,1,1,3,1,2019,23,2007,89,76,78,11,79,8
+061306,Cajamarca,Santa Cruz,Ninabamba,1,1,3,0,0,10,2007,46,0,44,1,44,7
+061307,Cajamarca,Santa Cruz,Pulán,1,1,3,2,1999,35,2007,18,11,11,0,11,4
+061308,Cajamarca,Santa Cruz,Saucepampa,1,1,3,3,2013,5,2007,33,31,31,2,31,6
+061309,Cajamarca,Santa Cruz,Sexi,1,1,3,0,0,37,2007,9,0,7,1,7,6
+061310,Cajamarca,Santa Cruz,Uticyacu,1,1,3,0,0,8,2007,16,0,14,4,14,5
+061311,Cajamarca,Santa Cruz,Yauyucán,1,1,3,0,0,13,2007,24,0,23,6,23,6
+070101,Callao,Callao,Callao,0,0,0,0,0,3,2003,8,0,7,0,7,6
+070102,Callao,Callao,Bellavista,0,0,0,0,0,0,0,2,0,0,0,0,2
+070103,Callao,Callao,Carmen de La Legua Reynoso,0,0,0,0,0,1,2003,1,0,1,0,1,1
+070104,Callao,Callao,La Perla,0,0,0,1,2025,1,2003,3,0,2,0,2,3
+070105,Callao,Callao,La Punta,0,0,0,0,0,1,2003,5,0,5,0,5,5
+070106,Callao,Callao,Ventanilla,0,0,0,4,1997,24,2003,40,17,17,0,18,13
+070107,Callao,Callao,Mi Perú,0,0,0,0,0,0,0,9,0,0,0,0,3
+080101,Cusco,Cusco,Cusco,0,0,1,4,2020,112,2003,100,32,72,4,72,20
+080102,Cusco,Cusco,Ccorca,0,0,1,1,2021,19,2003,77,22,28,4,29,12
+080103,Cusco,Cusco,Poroy,0,0,1,2,2020,1,2020,71,19,19,3,26,13
+080104,Cusco,Cusco,San Jerónimo,0,0,1,3,2011,142,2003,89,13,25,1,25,16
+080105,Cusco,Cusco,San Sebastián,0,0,1,6,2011,153,2003,135,39,59,4,59,14
+080106,Cusco,Cusco,Santiago,0,0,1,7,2010,97,2003,56,26,28,1,29,15
+080107,Cusco,Cusco,Saylla,0,0,1,6,2001,15,2003,30,13,18,2,18,11
+080108,Cusco,Cusco,Wanchaq,0,0,1,0,0,1,2019,1,0,0,0,0,1
+080201,Cusco,Acomayo,Acomayo,0,0,1,0,0,24,2003,115,0,77,9,77,15
+080202,Cusco,Acomayo,Acopia,0,0,1,0,0,1,2013,33,0,4,0,4,12
+080203,Cusco,Acomayo,Acos,0,0,1,0,0,10,2003,42,0,19,3,19,12
+080204,Cusco,Acomayo,Mosoc Llacta,0,0,1,0,0,3,2003,40,0,23,5,23,11
+080205,Cusco,Acomayo,Pomacanchi,0,0,1,0,0,2,2003,130,0,21,3,24,12
+080206,Cusco,Acomayo,Rondocán,0,0,1,0,0,15,2003,52,0,37,2,37,11
+080207,Cusco,Acomayo,Sangarará,0,0,1,0,0,5,2003,42,0,17,1,17,11
+080301,Cusco,Anta,Anta,0,0,1,3,2011,8,2003,119,18,18,8,22,16
+080302,Cusco,Anta,Ancahuasi,0,0,1,0,0,2,2003,57,0,11,6,17,10
+080303,Cusco,Anta,Cachimayo,0,0,1,0,0,2,2003,30,0,6,2,8,11
+080304,Cusco,Anta,Chinchaypujio,0,0,1,1,2025,15,2003,35,0,7,1,7,11
+080305,Cusco,Anta,Huarocondo,0,0,1,2,2023,22,2003,92,17,47,5,47,13
+080306,Cusco,Anta,Limatambo,0,0,1,2,2010,45,2003,159,59,84,7,84,13
+080307,Cusco,Anta,Mollepata,0,0,1,0,0,124,2003,62,0,36,0,36,13
+080308,Cusco,Anta,Pucyura,0,0,1,1,2025,1,2003,33,2,7,0,7,9
+080309,Cusco,Anta,Zurite,0,0,1,4,2010,3,2013,58,15,15,1,16,11
+080401,Cusco,Calca,Calca,0,0,1,2,2010,36,2003,128,52,89,15,89,15
+080402,Cusco,Calca,Coya,0,0,1,0,0,8,2003,65,0,27,4,27,14
+080403,Cusco,Calca,Lamay,0,0,1,0,0,1,2013,45,0,5,1,6,11
+080404,Cusco,Calca,Lares,0,0,1,0,0,42,2003,121,0,87,6,87,13
+080405,Cusco,Calca,Pisac,0,0,1,12,2003,31,2003,64,9,28,4,28,13
+080406,Cusco,Calca,San Salvador,0,0,1,1,2014,12,2003,42,8,23,2,23,12
+080407,Cusco,Calca,Taray,0,0,1,3,2010,10,2003,42,7,14,4,14,13
+080408,Cusco,Calca,Yanatile,0,0,1,0,0,42,2003,289,0,221,5,221,16
+080501,Cusco,Canas,Yanaoca,0,0,1,1,2018,0,0,189,24,0,10,31,14
+080502,Cusco,Canas,Checca,0,0,1,0,0,10,2003,162,0,94,17,94,14
+080503,Cusco,Canas,Kunturkanki,0,0,1,0,0,4,2003,186,0,110,5,110,11
+080504,Cusco,Canas,Langui,0,0,1,0,0,11,2003,81,0,9,6,13,12
+080505,Cusco,Canas,Layo,0,0,1,0,0,4,2003,203,0,37,6,42,12
+080506,Cusco,Canas,Pampamarca,0,0,1,0,0,1,2003,64,0,12,4,14,12
+080507,Cusco,Canas,Quehue,0,0,1,0,0,2,2003,169,0,33,23,51,14
+080508,Cusco,Canas,Túpac Amaru,0,0,1,0,0,4,2003,97,0,71,8,71,14
+080601,Cusco,Canchis,Sicuani,0,0,1,0,0,15,2003,261,0,122,8,122,13
+080602,Cusco,Canchis,Checacupe,0,0,1,0,0,32,2003,109,0,63,2,63,12
+080603,Cusco,Canchis,Combapata,0,0,1,2,2020,13,2003,88,16,51,2,51,13
+080604,Cusco,Canchis,Marangani,0,0,1,0,0,12,2003,159,0,91,15,91,13
+080605,Cusco,Canchis,Pitumarca,0,0,1,0,0,12,2003,82,0,51,2,51,12
+080606,Cusco,Canchis,San Pablo,0,0,1,1,2018,14,2003,132,69,82,5,82,12
+080607,Cusco,Canchis,San Pedro,0,0,1,0,0,2,2003,87,0,31,6,31,12
+080608,Cusco,Canchis,Tinta,0,0,1,0,0,2,2003,61,0,23,5,23,11
+080701,Cusco,Chumbivilcas,Santo Tomás,0,1,5,0,0,25,2003,340,0,216,20,216,13
+080702,Cusco,Chumbivilcas,Capacmarca,0,1,5,0,0,4,2003,135,0,33,13,45,12
+080703,Cusco,Chumbivilcas,Chamaca,0,1,5,2,2023,11,2003,219,12,147,38,147,15
+080704,Cusco,Chumbivilcas,Colquemarca,0,1,5,0,0,21,2003,154,0,29,1,30,12
+080705,Cusco,Chumbivilcas,Livitaca,0,1,5,2,2021,13,2003,278,37,162,11,162,14
+080706,Cusco,Chumbivilcas,Llusco,0,1,5,3,2018,5,2003,138,49,105,5,105,12
+080707,Cusco,Chumbivilcas,Quiñota,0,1,5,0,0,3,2003,122,0,36,5,41,12
+080708,Cusco,Chumbivilcas,Velille,0,1,5,1,2019,17,2003,196,27,117,5,117,11
+080801,Cusco,Espinar,Espinar,0,0,1,0,0,6,2003,189,0,85,10,85,12
+080802,Cusco,Espinar,Condoroma,0,0,1,0,0,23,2003,53,0,35,3,35,14
+080803,Cusco,Espinar,Coporaque,0,0,1,0,0,13,2003,220,0,109,2,109,11
+080804,Cusco,Espinar,Ocoruro,0,0,1,0,0,3,2003,96,0,6,0,6,11
+080805,Cusco,Espinar,Pallpata,0,0,1,0,0,0,0,87,0,0,3,3,13
+080806,Cusco,Espinar,Pichigua,0,0,1,0,0,7,2003,101,0,41,3,41,11
+080807,Cusco,Espinar,Suyckutambo,0,0,1,0,0,7,2003,64,0,31,1,31,10
+080808,Cusco,Espinar,Alto Pichigua,0,0,1,0,0,0,0,59,0,0,1,1,13
+080901,Cusco,La Convención,Santa Ana,0,2,11,3,2021,28,2003,121,31,65,14,65,18
+080902,Cusco,La Convención,Echarate,0,2,11,9,2002,54,2003,361,273,292,62,293,15
+080903,Cusco,La Convención,Huayopata,0,2,11,4,2018,26,2003,184,104,111,21,118,16
+080904,Cusco,La Convención,Maranura,0,2,11,0,0,13,2003,106,0,69,21,69,16
+080905,Cusco,La Convención,Ocobamba,0,2,11,4,2013,44,2003,139,73,89,38,89,16
+080906,Cusco,La Convención,Quellouno,0,2,11,0,0,31,2003,266,0,206,28,206,15
+080907,Cusco,La Convención,Quimbiri,0,2,11,3,2001,7,2003,251,149,167,67,190,18
+080908,Cusco,La Convención,Santa Teresa,0,2,11,11,2013,31,2003,226,167,172,52,180,17
+080909,Cusco,La Convención,Vilcabamba,0,2,11,10,2011,24,2003,232,171,193,97,193,16
+080910,Cusco,La Convención,Pichari,0,2,11,6,2021,6,2003,239,94,181,56,181,14
+080911,Cusco,La Convención,Inkawasi,0,2,11,3,2023,1,2023,297,199,199,32,231,9
+080912,Cusco,La Convención,Villa Virgen,0,2,11,1,2024,1,2024,81,32,32,6,38,8
+080913,Cusco,La Convención,Villa Kintiarina,0,2,11,0,0,0,0,147,0,0,39,39,10
+080914,Cusco,La Convención,Megantoni,0,2,11,0,0,0,0,25,0,0,6,6,6
+080915,Cusco,La Convención,Kumpirushiato,0,2,11,2,2022,0,0,167,164,0,0,164,5
+080916,Cusco,La Convención,Cielo Punco,0,2,11,0,0,0,0,66,0,0,0,0,5
+080917,Cusco,La Convención,Manitea,0,2,11,0,0,0,0,78,0,0,1,1,6
+080918,Cusco,La Convención,Unión Asháninka,0,2,11,0,0,0,0,139,0,0,2,2,6
+081001,Cusco,Paruro,Paruro,0,0,2,4,2018,13,2003,96,32,39,12,42,14
+081002,Cusco,Paruro,Accha,0,0,2,0,0,5,2003,99,0,32,6,34,13
+081003,Cusco,Paruro,Ccapi,0,0,2,0,0,5,2003,120,0,68,8,68,13
+081004,Cusco,Paruro,Colcha,0,0,2,0,0,6,2003,34,0,21,0,21,12
+081005,Cusco,Paruro,Huanoquite,0,0,2,0,0,7,2003,122,0,100,1,100,11
+081006,Cusco,Paruro,Omacha,0,0,2,0,0,14,2003,152,0,39,10,47,15
+081007,Cusco,Paruro,Paccaritambo,0,0,2,2,2022,19,2003,68,25,31,3,32,10
+081008,Cusco,Paruro,Pillpinto,0,0,2,1,2024,3,2003,38,6,21,0,21,9
+081009,Cusco,Paruro,Yaurisque,0,0,2,2,2022,15,2003,54,2,10,7,15,10
+081101,Cusco,Paucartambo,Paucartambo,0,1,1,0,0,68,2003,108,0,63,2,63,19
+081102,Cusco,Paucartambo,Caicay,0,1,1,0,0,17,2003,56,0,20,3,21,12
+081103,Cusco,Paucartambo,Challabamba,0,1,1,0,0,72,2003,163,0,85,8,85,15
+081104,Cusco,Paucartambo,Colquepata,0,1,1,1,2025,53,2003,208,9,165,0,165,12
+081105,Cusco,Paucartambo,Huancarani,0,1,1,0,0,12,2003,134,0,63,8,66,14
+081106,Cusco,Paucartambo,Kosñipata,0,1,1,0,0,55,2003,70,0,66,2,66,14
+081201,Cusco,Quispicanchi,Urcos,0,0,2,0,0,37,2001,111,0,63,12,63,12
+081202,Cusco,Quispicanchi,Andahuaylillas,0,0,2,4,2015,5,2003,97,10,42,2,42,14
+081203,Cusco,Quispicanchi,Camanti,0,0,2,0,0,78,2003,26,0,21,3,21,13
+081204,Cusco,Quispicanchi,Ccarhuayo,0,0,2,2,2018,9,2003,107,45,75,13,75,14
+081205,Cusco,Quispicanchi,Ccatca,0,0,2,3,2013,33,2003,159,53,106,9,106,11
+081206,Cusco,Quispicanchi,Cusipata,0,0,2,2,2021,18,2003,72,9,27,2,27,12
+081207,Cusco,Quispicanchi,Huaro,0,0,2,0,0,10,2003,50,0,29,7,29,13
+081208,Cusco,Quispicanchi,Lucre,0,0,2,2,2018,4,2003,53,3,24,1,24,14
+081209,Cusco,Quispicanchi,Marcapata,0,0,2,1,2024,64,2003,187,51,142,3,142,15
+081210,Cusco,Quispicanchi,Ocongate,0,0,2,2,2022,72,2003,242,33,200,9,200,14
+081211,Cusco,Quispicanchi,Oropesa,0,0,2,0,0,6,2003,93,0,33,4,33,14
+081212,Cusco,Quispicanchi,Quiquijana,0,0,2,3,2021,13,2003,126,17,74,10,74,12
+081301,Cusco,Urubamba,Urubamba,0,0,1,2,2010,7,2003,54,7,12,1,12,13
+081302,Cusco,Urubamba,Chinchero,0,0,1,0,0,4,2003,73,0,12,2,13,10
+081303,Cusco,Urubamba,Huayllabamba,0,0,1,0,0,7,2003,27,0,9,0,9,12
+081304,Cusco,Urubamba,Machupicchu,0,0,1,5,1999,20,2003,101,59,66,1,67,22
+081305,Cusco,Urubamba,Maras,0,0,1,1,2020,13,2003,34,10,11,3,13,10
+081306,Cusco,Urubamba,Ollantaytambo,0,0,1,7,2005,56,2003,118,26,46,4,46,18
+081307,Cusco,Urubamba,Yucay,0,0,1,0,0,0,0,5,0,0,0,0,4
+090101,Huancavelica,Huancavelica,Huancavelica,2,5,2,6,2010,112,2003,567,333,501,25,501,18
+090102,Huancavelica,Huancavelica,Acobambilla,2,5,2,0,0,40,2003,186,0,133,3,133,13
+090103,Huancavelica,Huancavelica,Acoria,2,5,2,4,2019,76,2003,346,118,267,13,267,18
+090104,Huancavelica,Huancavelica,Conayca,2,5,2,0,0,7,2003,50,0,23,1,23,11
+090105,Huancavelica,Huancavelica,Cuenca,2,5,2,2,2014,5,2003,69,31,54,1,54,12
+090106,Huancavelica,Huancavelica,Huachocolpa,2,5,2,0,0,29,2003,224,0,172,0,172,12
+090107,Huancavelica,Huancavelica,Huayllahuara,2,5,2,0,0,3,2003,52,0,30,0,30,13
+090108,Huancavelica,Huancavelica,Izcuchaca,2,5,2,3,2012,7,2003,79,42,53,3,53,15
+090109,Huancavelica,Huancavelica,Laria,2,5,2,0,0,11,2003,121,0,87,2,87,11
+090110,Huancavelica,Huancavelica,Manta,2,5,2,0,0,14,2003,70,0,51,1,52,12
+090111,Huancavelica,Huancavelica,Mariscal Cáceres,2,5,2,0,0,1,2011,38,0,26,3,28,11
+090112,Huancavelica,Huancavelica,Moya,2,5,2,0,0,14,2003,66,0,31,1,31,13
+090113,Huancavelica,Huancavelica,Nuevo Occoro,2,5,2,0,0,10,2003,124,0,47,5,50,13
+090114,Huancavelica,Huancavelica,Palca,2,5,2,0,0,30,2003,160,0,127,4,127,12
+090115,Huancavelica,Huancavelica,Pilchaca,2,5,2,2,2014,2,2003,85,38,38,0,38,11
+090116,Huancavelica,Huancavelica,Vilca,2,5,2,0,0,19,2003,132,0,104,4,104,11
+090117,Huancavelica,Huancavelica,Yauli,2,5,2,2,2019,27,2003,452,123,375,31,375,19
+090118,Huancavelica,Huancavelica,Ascensión,2,5,2,0,0,21,2003,253,0,206,13,206,14
+090119,Huancavelica,Huancavelica,Huando,2,5,2,2,2011,25,2003,179,100,101,4,103,14
+090201,Huancavelica,Acobamba,Acobamba,1,4,1,2,2022,12,2003,280,94,142,6,147,16
+090202,Huancavelica,Acobamba,Andabamba,1,4,1,2,1975,18,2003,155,84,84,5,86,12
+090203,Huancavelica,Acobamba,Anta,1,4,1,1,2018,2,2022,108,37,30,3,40,13
+090204,Huancavelica,Acobamba,Caja,1,4,1,0,0,11,2003,148,0,86,3,87,13
+090205,Huancavelica,Acobamba,Marcas,1,4,1,1,2024,39,2003,132,30,109,4,109,13
+090206,Huancavelica,Acobamba,Paucara,1,4,1,0,0,11,2003,179,0,150,3,150,15
+090207,Huancavelica,Acobamba,Pomacocha,1,4,1,0,0,13,2003,72,0,42,1,42,12
+090208,Huancavelica,Acobamba,Rosario,1,4,1,2,2012,10,2003,200,114,114,1,115,13
+090301,Huancavelica,Angaraes,Lircay,1,5,1,8,2010,66,2003,212,126,162,2,162,16
+090302,Huancavelica,Angaraes,Anchonga,1,5,1,0,0,0,0,154,0,0,0,0,12
+090303,Huancavelica,Angaraes,Callanmarca,1,5,1,0,0,5,2003,62,0,34,0,34,11
+090304,Huancavelica,Angaraes,Ccochaccasa,1,5,1,2,2011,4,2003,171,94,94,1,95,13
+090305,Huancavelica,Angaraes,Chincho,1,5,1,3,2000,18,2003,99,64,81,4,81,13
+090306,Huancavelica,Angaraes,Congalla,1,5,1,0,0,5,2003,151,0,78,0,78,11
+090307,Huancavelica,Angaraes,Huanca-Huanca,1,5,1,0,0,1,2003,76,0,36,4,38,12
+090308,Huancavelica,Angaraes,Huayllay Grande,1,5,1,0,0,3,2003,50,0,31,1,31,11
+090309,Huancavelica,Angaraes,Julcamarca,1,5,1,0,0,11,2003,122,0,83,1,83,11
+090310,Huancavelica,Angaraes,San Antonio de Antaparco,1,5,1,0,0,14,2003,87,0,70,3,70,14
+090311,Huancavelica,Angaraes,Santo Tomás de Pata,1,5,1,0,0,11,2003,132,0,69,1,70,11
+090312,Huancavelica,Angaraes,Secclla,1,5,1,0,0,9,2003,157,0,86,1,87,10
+090401,Huancavelica,Castrovirreyna,Castrovirreyna,1,4,1,1,2024,52,2003,287,25,239,28,239,15
+090402,Huancavelica,Castrovirreyna,Arma,1,4,1,0,0,26,2003,95,0,68,3,68,14
+090403,Huancavelica,Castrovirreyna,Aurahua,1,4,1,3,2015,6,2003,129,87,87,4,88,12
+090404,Huancavelica,Castrovirreyna,Capillas,1,4,1,0,0,24,2003,86,0,66,0,66,12
+090405,Huancavelica,Castrovirreyna,Chupamarca,1,4,1,0,0,12,2003,99,0,61,1,62,14
+090406,Huancavelica,Castrovirreyna,Cocas,1,4,1,0,0,11,2003,110,0,84,2,84,14
+090407,Huancavelica,Castrovirreyna,Huachos,1,4,1,3,2009,15,2003,125,84,92,4,92,13
+090408,Huancavelica,Castrovirreyna,Huamatambo,1,4,1,1,2016,8,2003,46,34,34,0,34,11
+090409,Huancavelica,Castrovirreyna,Mollepampa,1,4,1,0,0,29,2003,68,0,51,5,51,11
+090410,Huancavelica,Castrovirreyna,San Juan,1,4,1,0,0,34,2003,90,0,78,1,78,14
+090411,Huancavelica,Castrovirreyna,Santa Ana,1,4,1,0,0,29,2003,82,0,49,2,49,14
+090412,Huancavelica,Castrovirreyna,Tantara,1,4,1,0,0,20,2003,58,0,41,1,41,15
+090413,Huancavelica,Castrovirreyna,Ticrapo,1,4,1,3,2011,39,2003,162,122,143,5,143,16
+090501,Huancavelica,Churcampa,Churcampa,1,5,1,2,2015,27,2003,209,84,130,2,130,14
+090502,Huancavelica,Churcampa,Anco,1,5,1,1,2012,42,2003,260,128,129,6,134,14
+090503,Huancavelica,Churcampa,Chinchihuasi,1,5,1,0,0,19,2003,173,0,82,11,91,13
+090504,Huancavelica,Churcampa,El Carmen,1,5,1,1,2019,18,2003,154,50,112,8,112,15
+090505,Huancavelica,Churcampa,La Merced,1,5,1,0,0,4,2003,78,0,45,1,45,12
+090506,Huancavelica,Churcampa,Locroja,1,5,1,1,2013,23,2003,144,87,87,2,88,14
+090507,Huancavelica,Churcampa,Paucarbamba,1,5,1,1,2021,15,2003,225,86,127,19,132,14
+090508,Huancavelica,Churcampa,San Miguel de Mayocc,1,5,1,0,0,23,2003,63,0,48,5,48,12
+090509,Huancavelica,Churcampa,San Pedro de Coris,1,5,1,0,0,10,2003,121,0,67,1,68,12
+090510,Huancavelica,Churcampa,Pachamarca,1,5,1,0,0,4,2003,132,0,84,2,84,13
+090511,Huancavelica,Churcampa,Cosme,1,5,1,0,0,0,0,156,0,0,0,0,11
+090601,Huancavelica,Huaytará,Huaytará,1,4,1,2,2023,58,2003,79,37,55,1,55,12
+090602,Huancavelica,Huaytará,Ayavi,1,4,1,0,0,17,2003,64,0,39,0,39,11
+090603,Huancavelica,Huaytará,Córdova,1,4,1,0,0,1,2003,78,0,43,0,43,12
+090604,Huancavelica,Huaytará,Huayacundo Arma,1,4,1,0,0,12,2003,70,0,43,0,43,11
+090605,Huancavelica,Huaytará,Laramarca,1,4,1,0,0,11,2003,68,0,36,1,37,12
+090606,Huancavelica,Huaytará,Ocoyo,1,4,1,0,0,2,2003,64,0,39,0,39,11
+090607,Huancavelica,Huaytará,Pilpichaca,1,4,1,0,0,66,2003,225,0,175,15,175,14
+090608,Huancavelica,Huaytará,Querco,1,4,1,1,2023,6,2003,70,23,39,0,39,12
+090609,Huancavelica,Huaytará,Quito-Arma,1,4,1,2,2018,27,2003,94,58,66,1,66,11
+090610,Huancavelica,Huaytará,San Antonio de Cusicancha,1,4,1,0,0,7,2003,65,0,43,0,43,11
+090611,Huancavelica,Huaytará,San Francisco de Sangayaico,1,4,1,0,0,3,2003,94,0,62,1,63,11
+090612,Huancavelica,Huaytará,San Isidro,1,4,1,0,0,1,2012,73,0,47,0,47,12
+090613,Huancavelica,Huaytará,Santiago de Chocorvos,1,4,1,0,0,40,2003,113,0,85,2,85,12
+090614,Huancavelica,Huaytará,Santiago de Quirahuara,1,4,1,0,0,6,2003,60,0,42,0,42,12
+090615,Huancavelica,Huaytará,Santo Domingo de Capillas,1,4,1,1,2021,2,2021,121,62,62,0,62,12
+090616,Huancavelica,Huaytará,Tambo,1,4,1,0,0,11,2003,53,0,32,0,32,13
+090701,Huancavelica,Tayacaja,Pampas,1,5,1,2,2012,27,2003,213,126,127,8,130,15
+090702,Huancavelica,Tayacaja,Acostambo,1,5,1,1,2017,17,2003,106,59,64,5,65,14
+090703,Huancavelica,Tayacaja,Acraquia,1,5,1,0,0,6,2003,106,0,51,3,52,11
+090704,Huancavelica,Tayacaja,Ahuaycha,1,5,1,0,0,13,2003,132,0,74,1,74,14
+090705,Huancavelica,Tayacaja,Colcabamba,1,5,1,1,2012,107,2003,131,66,94,7,94,15
+090706,Huancavelica,Tayacaja,Daniel Hernandez,1,5,1,0,0,19,2003,202,0,138,3,138,14
+090707,Huancavelica,Tayacaja,Huachocolpa,1,5,1,0,0,0,0,85,0,0,0,0,11
+090709,Huancavelica,Tayacaja,Huaribamba,1,5,1,0,0,19,2003,143,0,81,1,81,11
+090710,Huancavelica,Tayacaja,Ñahuimpuquio,1,5,1,0,0,11,2003,24,0,4,1,5,10
+090711,Huancavelica,Tayacaja,Pazos,1,5,1,4,2015,11,2003,200,120,120,9,122,13
+090713,Huancavelica,Tayacaja,Quishuar,1,5,1,0,0,6,2003,60,0,34,0,34,10
+090714,Huancavelica,Tayacaja,Salcabamba,1,5,1,1,2018,27,2003,181,117,120,2,120,12
+090715,Huancavelica,Tayacaja,Salcahuasi,1,5,1,0,0,2,2011,135,0,106,0,106,10
+090716,Huancavelica,Tayacaja,San Marcos de Rocchac,1,5,1,0,0,25,2003,162,0,141,1,141,13
+090717,Huancavelica,Tayacaja,Surcubamba,1,5,1,0,0,0,0,171,0,0,0,0,12
+090718,Huancavelica,Tayacaja,Tintay Puncu,1,5,1,2,2023,3,2019,157,59,94,1,95,12
+090719,Huancavelica,Tayacaja,Quichuas,1,5,1,2,2019,0,0,156,83,0,3,86,11
+090720,Huancavelica,Tayacaja,Andaymarca,1,5,1,0,0,0,0,141,0,0,6,6,10
+090721,Huancavelica,Tayacaja,Roble,1,5,1,0,0,0,0,172,0,0,2,2,10
+090722,Huancavelica,Tayacaja,Pichos,1,5,1,1,2019,0,0,124,69,0,0,69,8
+090723,Huancavelica,Tayacaja,Santiago de Tucuma,1,5,1,0,0,0,0,26,0,0,0,0,8
+090724,Huancavelica,Tayacaja,Lambras,1,5,1,0,0,0,0,70,0,0,0,0,6
+090725,Huancavelica,Tayacaja,Cochabamba,1,5,1,1,2024,1,2023,110,39,60,0,60,6
+100101,Huánuco,Huánuco,Huánuco,1,4,4,4,2005,281,2008,100,81,81,5,81,11
+100102,Huánuco,Huánuco,Amarilis,1,4,4,3,2023,131,2003,103,48,83,12,83,13
+100103,Huánuco,Huánuco,Chinchao,1,4,4,0,0,54,2008,99,0,72,16,75,14
+100104,Huánuco,Huánuco,Churubamba,1,4,4,2,2023,264,2008,173,64,143,31,143,13
+100105,Huánuco,Huánuco,Margos,1,4,4,0,0,6,2003,64,0,28,5,30,11
+100106,Huánuco,Huánuco,Quisqui,1,4,4,0,0,16,2008,73,0,37,3,39,12
+100107,Huánuco,Huánuco,San Francisco de Cayrán,1,4,4,2,2023,168,2008,96,24,62,12,62,12
+100108,Huánuco,Huánuco,San Pedro de Chaulán,1,4,4,2,2014,13,2008,93,33,33,7,38,12
+100109,Huánuco,Huánuco,Santa María del Valle,1,4,4,4,2018,417,2008,155,85,119,8,119,13
+100110,Huánuco,Huánuco,Yarumayo,1,4,4,0,0,7,2008,95,0,68,10,68,11
+100111,Huánuco,Huánuco,Pillco Marca,1,4,4,1,2025,91,2003,76,7,57,9,57,11
+100112,Huánuco,Huánuco,Yacus,1,4,4,0,0,0,0,81,0,0,12,12,12
+100113,Huánuco,Huánuco,San Pablo de Pillao,1,4,4,0,0,0,0,127,0,0,17,17,8
+100201,Huánuco,Ambo,Ambo,1,5,5,11,2005,40,2003,135,110,110,27,110,14
+100202,Huánuco,Ambo,Cayna,1,5,5,0,0,19,2003,78,0,58,18,58,10
+100203,Huánuco,Ambo,Colpas,1,5,5,0,0,8,2003,110,0,50,26,61,11
+100204,Huánuco,Ambo,Conchamarca,1,5,5,3,2004,158,2003,83,37,50,9,50,10
+100205,Huánuco,Ambo,Huacar,1,5,5,0,0,39,2003,64,0,45,9,45,10
+100206,Huánuco,Ambo,San Francisco,1,5,5,7,2022,9,2003,61,28,46,8,46,10
+100207,Huánuco,Ambo,San Rafael,1,5,5,4,2011,88,2003,94,41,64,16,64,14
+100208,Huánuco,Ambo,Tomay Kichwa,1,5,5,6,2010,98,2003,60,37,41,12,41,10
+100301,Huánuco,Dos de Mayo,La Unión,3,4,7,0,0,12,2008,81,0,55,13,55,10
+100307,Huánuco,Dos de Mayo,Chuquis,3,4,7,0,0,11,2008,74,0,59,8,59,10
+100311,Huánuco,Dos de Mayo,Marías,3,4,7,1,2024,6,2008,71,12,33,10,37,12
+100313,Huánuco,Dos de Mayo,Pachas,3,4,7,0,0,8,2008,74,0,45,9,47,10
+100316,Huánuco,Dos de Mayo,Quivilla,3,4,7,0,0,2,2008,30,0,10,0,10,10
+100317,Huánuco,Dos de Mayo,Ripan,3,4,7,0,0,9,2008,89,0,65,13,65,11
+100321,Huánuco,Dos de Mayo,Shunqui,3,4,7,2,2023,3,2008,50,20,23,6,28,10
+100322,Huánuco,Dos de Mayo,Sillapata,3,4,7,4,2019,8,2008,44,17,23,11,29,11
+100323,Huánuco,Dos de Mayo,Yanas,3,4,7,0,0,7,2008,70,0,24,7,27,11
+100401,Huánuco,Huacaybamba,Huacaybamba,1,4,4,0,0,16,2008,110,0,71,10,73,13
+100402,Huánuco,Huacaybamba,Canchabamba,1,4,4,1,2021,9,2008,103,46,73,17,74,13
+100403,Huánuco,Huacaybamba,Cochabamba,1,4,4,1,2024,8,2008,41,22,31,4,31,8
+100404,Huánuco,Huacaybamba,Pinra,1,4,4,0,0,18,2008,65,0,53,8,53,10
+100501,Huánuco,Huamalies,Llata,1,4,4,2,2023,6,2008,132,58,116,12,116,11
+100502,Huánuco,Huamalies,Arancay,1,4,4,0,0,2,2008,48,0,32,6,32,12
+100503,Huánuco,Huamalies,Chavín de Pariarca,1,4,4,0,0,2,2008,57,0,41,2,41,11
+100504,Huánuco,Huamalies,Jacas Grande,1,4,4,3,2021,25,2008,155,79,88,8,91,11
+100505,Huánuco,Huamalies,Jircan,1,4,4,0,0,6,2008,58,0,44,9,44,8
+100506,Huánuco,Huamalies,Miraflores,1,4,4,0,0,1,2024,63,0,21,2,23,8
+100507,Huánuco,Huamalies,Monzón,1,4,4,0,0,3,2008,151,0,98,34,108,13
+100508,Huánuco,Huamalies,Punchao,1,4,4,0,0,0,0,45,0,0,3,3,9
+100509,Huánuco,Huamalies,Puños,1,4,4,0,0,13,2008,65,0,34,7,38,11
+100510,Huánuco,Huamalies,Singa,1,4,4,1,2024,1,2024,38,7,7,9,16,10
+100511,Huánuco,Huamalies,Tantamayo,1,4,4,1,2025,7,2008,71,16,46,3,47,9
+100601,Huánuco,Leoncio Prado,Rupa-rupa,2,5,4,0,0,4,2008,116,0,94,16,97,21
+100602,Huánuco,Leoncio Prado,Daniel Alomias Robles,3,5,4,1,2020,2,2008,93,40,53,25,60,14
+100603,Huánuco,Leoncio Prado,Hermilio Valdizán,2,5,4,1,2024,4,2008,118,49,94,8,95,12
+100604,Huánuco,Leoncio Prado,José Crespo y Castillo,2,5,4,0,0,8,2008,111,0,102,23,102,16
+100605,Huánuco,Leoncio Prado,Luyando,3,5,4,1,2020,3,2008,98,57,87,13,88,11
+100606,Huánuco,Leoncio Prado,Mariano Damaso Beraun,2,5,4,0,0,10,2008,108,0,102,24,102,15
+100607,Huánuco,Leoncio Prado,Pucayacu,2,5,4,0,0,0,0,90,0,0,19,19,10
+100608,Huánuco,Leoncio Prado,Castillo Grande,2,5,4,0,0,0,0,71,0,0,20,20,8
+100609,Huánuco,Leoncio Prado,Pueblo Nuevo,2,5,4,0,0,0,0,84,0,0,15,15,8
+100610,Huánuco,Leoncio Prado,Santo Domingo de Anda,2,5,4,0,0,0,0,50,0,0,7,7,9
+100701,Huánuco,Marañón,Huacrachuco,1,4,4,1,2009,45,2008,128,69,99,16,99,13
+100702,Huánuco,Marañón,Cholon,1,4,4,0,0,2,2008,92,0,67,3,67,13
+100703,Huánuco,Marañón,San Buenaventura,1,4,4,0,0,1,2022,50,0,19,5,24,12
+100704,Huánuco,Marañón,La Morada,1,4,4,0,0,0,0,79,0,0,14,14,10
+100705,Huánuco,Marañón,Santa Rosa de Alto Yanajanca,1,4,4,0,0,0,0,36,0,0,4,4,9
+100801,Huánuco,Pachitea,Panao,1,4,4,0,0,11,2003,122,0,103,3,103,12
+100802,Huánuco,Pachitea,Chaglla,1,4,4,2,2024,17,2003,104,32,69,14,71,12
+100803,Huánuco,Pachitea,Molino,1,4,4,2,2021,9,2008,100,42,83,14,83,10
+100804,Huánuco,Pachitea,Umari,1,4,4,1,2021,15,2008,59,23,30,6,31,11
+100901,Huánuco,Puerto Inca,Puerto Inca,1,4,4,1,2011,2,2008,72,57,57,10,59,12
+100902,Huánuco,Puerto Inca,Codo del Pozuzo,1,4,4,1,2011,11,2008,57,24,54,15,54,14
+100903,Huánuco,Puerto Inca,Honoria,1,4,4,0,0,2,2007,42,0,33,10,33,13
+100904,Huánuco,Puerto Inca,Tournavista,1,4,4,0,0,0,0,34,0,0,6,6,12
+100905,Huánuco,Puerto Inca,Yuyapichis,1,4,4,0,0,1,2008,46,0,41,5,41,13
+101001,Huánuco,Lauricocha,Jesús,1,4,4,1,2020,22,2003,124,41,74,5,74,12
+101002,Huánuco,Lauricocha,Baños,1,4,4,0,0,15,2003,57,0,35,3,35,12
+101003,Huánuco,Lauricocha,Jivia,1,4,4,0,0,14,2003,59,0,36,7,36,12
+101004,Huánuco,Lauricocha,Queropalca,1,4,4,0,0,4,2003,44,0,14,6,16,11
+101005,Huánuco,Lauricocha,Rondos,1,4,4,0,0,21,2003,95,0,67,6,67,12
+101006,Huánuco,Lauricocha,San Francisco de Asis,1,4,4,0,0,9,2003,56,0,34,6,35,12
+101007,Huánuco,Lauricocha,San Miguel de Cauri,1,4,4,0,0,17,2003,117,0,30,15,41,12
+101101,Huánuco,Yarowilca,Chavinillo,1,4,4,0,0,12,2008,84,0,34,9,38,10
+101102,Huánuco,Yarowilca,Cahuac,1,4,4,0,0,1,2008,33,0,16,3,16,10
+101103,Huánuco,Yarowilca,Chacabamba,1,4,4,0,0,1,2008,38,0,14,4,16,10
+101104,Huánuco,Yarowilca,Aparicio Pomares,1,4,4,0,0,13,2008,119,0,55,10,61,12
+101105,Huánuco,Yarowilca,Jacas Chico,1,4,4,0,0,8,2008,62,0,29,4,29,11
+101106,Huánuco,Yarowilca,Obas,1,4,4,1,2025,5,2008,80,8,39,9,45,12
+101107,Huánuco,Yarowilca,Pampamarca,1,4,4,1,2015,0,0,75,39,0,18,46,10
+101108,Huánuco,Yarowilca,Choras,1,4,4,0,0,3,2008,54,0,17,5,18,11
+110101,Ica,Ica,Ica,1,2,1,0,0,5,2003,35,0,35,3,35,14
+110102,Ica,Ica,La Tinguiña,1,2,1,0,0,6,2003,15,0,13,2,13,9
+110103,Ica,Ica,Los Aquijes,1,2,1,1,2024,0,0,22,6,0,2,8,10
+110104,Ica,Ica,Ocucaje,1,2,1,0,0,1,2003,32,0,24,0,24,10
+110105,Ica,Ica,Pachacutec,1,2,1,0,0,1,2022,9,0,5,1,6,6
+110106,Ica,Ica,Parcona,1,2,1,0,0,0,0,12,0,0,2,2,10
+110107,Ica,Ica,Pueblo Nuevo,1,2,1,0,0,0,0,10,0,0,1,1,7
+110108,Ica,Ica,Salas,1,2,1,0,0,8,2003,8,0,7,1,7,6
+110109,Ica,Ica,San José de Los Molinos,1,2,1,0,0,40,2003,22,0,20,3,20,10
+110110,Ica,Ica,San Juan Bautista,1,2,1,0,0,1,2003,11,0,11,2,11,9
+110111,Ica,Ica,Santiago,1,2,1,0,0,10,2003,21,0,11,3,12,10
+110112,Ica,Ica,Subtanjalla,1,2,1,0,0,0,0,6,0,0,1,1,6
+110113,Ica,Ica,Tate,1,2,1,0,0,0,0,8,0,0,0,0,6
+110114,Ica,Ica,Yauca del Rosario,1,2,1,0,0,40,2003,32,0,23,1,23,11
+110201,Ica,Chincha,Chincha Alta,1,2,1,0,0,16,2003,13,0,13,0,13,8
+110202,Ica,Chincha,Alto Larán,1,2,1,0,0,48,2003,39,0,37,3,37,12
+110203,Ica,Chincha,Chavín,1,2,1,0,0,14,2003,29,0,10,1,10,10
+110204,Ica,Chincha,Chincha Baja,1,2,1,0,0,4,2003,12,0,8,0,8,5
+110205,Ica,Chincha,El Carmen,1,2,1,0,0,4,2003,20,0,19,0,19,6
+110206,Ica,Chincha,Grocio Prado,1,2,1,0,0,5,2012,6,0,2,0,2,4
+110207,Ica,Chincha,Pueblo Nuevo,1,2,1,0,0,0,0,9,0,0,1,1,5
+110208,Ica,Chincha,San Juan de Yánac,1,2,1,0,0,22,2003,47,0,27,10,27,12
+110209,Ica,Chincha,San Pedro de Huacarpana,1,2,1,0,0,21,2003,34,0,14,1,14,14
+110210,Ica,Chincha,Sunampe,1,2,1,0,0,0,0,7,0,0,0,0,3
+110211,Ica,Chincha,Tambo de Mora,1,2,1,0,0,7,2003,15,0,12,1,12,8
+110301,Ica,Nazca,Nazca,1,1,0,0,0,36,2003,61,0,54,4,54,14
+110302,Ica,Nazca,Changuillo,1,2,0,0,0,9,2003,29,0,28,2,28,10
+110303,Ica,Nazca,El Ingenio,1,2,0,1,2009,21,2012,35,17,33,2,33,10
+110304,Ica,Nazca,Marcona,1,1,0,0,0,2,2012,8,0,4,0,4,6
+110305,Ica,Nazca,Vista Alegre,1,1,0,0,0,3,2012,29,0,11,1,11,10
+110401,Ica,Palpa,Palpa,1,1,0,0,0,18,2003,18,0,17,0,17,8
+110402,Ica,Palpa,Llipata,1,1,0,0,0,0,0,20,0,0,2,2,10
+110403,Ica,Palpa,Río Grande,1,1,0,0,0,31,2003,24,0,22,1,22,8
+110404,Ica,Palpa,Santa Cruz,1,1,0,0,0,24,2012,21,0,18,2,18,9
+110405,Ica,Palpa,Tibillo,1,1,0,0,0,23,2003,20,0,15,1,15,8
+110501,Ica,Pisco,Pisco,1,1,0,0,0,1,2003,26,0,23,5,23,14
+110502,Ica,Pisco,Huancano,1,1,1,0,0,59,2003,38,0,32,1,32,11
+110503,Ica,Pisco,Humay,1,1,0,0,0,40,2003,32,0,28,0,28,10
+110504,Ica,Pisco,Independencia,1,1,0,0,0,4,2003,29,0,27,0,27,10
+110505,Ica,Pisco,Paracas,1,1,0,0,0,13,2003,12,0,11,0,11,10
+110506,Ica,Pisco,San Andrés,1,1,0,0,0,1,2003,26,0,0,0,0,9
+110507,Ica,Pisco,San Clemente,1,1,0,0,0,4,2003,6,0,5,0,5,5
+110508,Ica,Pisco,Túpac Amaru Inca,1,1,0,0,0,2,2003,3,0,2,0,2,3
+120101,Junín,Huancayo,Huancayo,1,2,2,0,0,34,2003,58,0,52,2,52,16
+120104,Junín,Huancayo,Carhuacallanga,1,2,2,0,0,2,2003,19,0,7,1,8,8
+120105,Junín,Huancayo,Chacapampa,1,2,2,0,0,8,2003,46,0,11,1,11,12
+120106,Junín,Huancayo,Chicche,1,2,2,0,0,5,2003,16,0,0,1,1,10
+120107,Junín,Huancayo,Chilca,1,2,2,0,0,3,2003,45,0,39,1,39,14
+120108,Junín,Huancayo,Chongos Alto,1,2,2,0,0,20,2003,40,0,16,0,16,11
+120111,Junín,Huancayo,Chupuro,1,2,2,1,2026,10,2003,26,0,10,1,11,11
+120112,Junín,Huancayo,Colca,1,2,2,0,0,17,2003,17,0,3,1,4,9
+120113,Junín,Huancayo,Cullhuas,1,2,2,0,0,6,2003,14,0,5,1,6,7
+120114,Junín,Huancayo,El Tambo,1,2,2,0,0,23,2003,75,0,59,9,59,14
+120116,Junín,Huancayo,Huacrapuquio,1,2,2,0,0,1,2003,6,0,1,0,1,5
+120117,Junín,Huancayo,Hualhuas,1,2,2,0,0,1,2003,12,0,4,0,4,8
+120119,Junín,Huancayo,Huancán,1,2,2,0,0,1,2003,52,0,39,0,39,11
+120120,Junín,Huancayo,Huasicancha,1,2,2,0,0,8,2003,25,0,11,1,12,9
+120121,Junín,Huancayo,Huayucachi,1,2,2,0,0,1,2003,17,0,16,3,16,10
+120122,Junín,Huancayo,Ingenio,1,2,2,0,0,10,2003,31,0,15,3,15,12
+120124,Junín,Huancayo,Pariahuanca,1,2,2,0,0,51,2003,91,0,76,4,76,14
+120125,Junín,Huancayo,Pilcomayo,1,2,2,0,0,1,2003,20,0,14,1,15,9
+120126,Junín,Huancayo,Pucará,1,2,2,0,0,16,2003,69,0,32,0,32,11
+120127,Junín,Huancayo,Quichuay,1,2,2,0,0,4,2003,40,0,21,0,21,9
+120128,Junín,Huancayo,Quilcas,1,2,2,0,0,6,2003,19,0,6,0,6,7
+120129,Junín,Huancayo,San Agustín,1,2,2,0,0,2,2003,30,0,17,1,17,10
+120130,Junín,Huancayo,San Jerónimo de Tunán,1,2,2,0,0,5,2003,25,0,13,1,13,10
+120132,Junín,Huancayo,Saño,1,2,2,0,0,0,0,20,0,0,2,2,7
+120133,Junín,Huancayo,Sapallanga,1,2,2,0,0,4,2003,49,0,35,2,35,13
+120134,Junín,Huancayo,Sicaya,1,2,2,0,0,3,2003,28,0,16,0,16,8
+120135,Junín,Huancayo,Santo Domingo de Acobamba,1,2,2,0,0,30,2003,167,0,107,12,114,17
+120136,Junín,Huancayo,Viques,1,2,2,0,0,0,0,18,0,0,1,1,8
+120201,Junín,Concepción,Concepción,1,2,2,2,2021,0,0,55,30,0,2,32,13
+120202,Junín,Concepción,Aco,1,2,2,0,0,0,0,10,0,0,0,0,7
+120203,Junín,Concepción,Andamarca,1,2,2,4,2013,35,2003,112,61,84,4,84,14
+120204,Junín,Concepción,Chambará,1,2,2,0,0,17,2003,38,0,27,0,27,9
+120205,Junín,Concepción,Cochas,1,2,2,0,0,17,2003,52,0,43,0,43,7
+120206,Junín,Concepción,Comas,1,2,2,2,2025,90,2003,97,24,76,0,76,12
+120207,Junín,Concepción,Heroinas Toledo,1,2,2,0,0,5,2012,10,0,1,0,1,6
+120208,Junín,Concepción,Manzanares,1,2,2,0,0,0,0,14,0,0,1,1,8
+120209,Junín,Concepción,Mariscal Castilla,1,2,2,0,0,20,2003,43,0,37,0,37,10
+120210,Junín,Concepción,Matahuasi,1,2,2,0,0,2,2003,31,0,20,2,20,10
+120211,Junín,Concepción,Mito,1,2,2,0,0,3,2003,16,0,2,1,3,6
+120212,Junín,Concepción,Nueve de Julio,1,2,2,0,0,0,0,2,0,0,0,0,2
+120213,Junín,Concepción,Orcotuna,1,2,2,0,0,4,2003,22,0,13,0,13,6
+120214,Junín,Concepción,San José de Quero,1,2,2,0,0,30,2003,56,0,36,1,36,9
+120215,Junín,Concepción,Santa Rosa de Ocopa,1,2,2,0,0,5,2003,19,0,12,0,12,8
+120301,Junín,Chanchamayo,Chanchamayo,1,4,2,6,2015,85,2003,250,170,226,48,226,20
+120302,Junín,Chanchamayo,Perené,1,4,2,1,1997,97,2003,287,184,265,11,265,20
+120303,Junín,Chanchamayo,Pichanaqui,1,4,2,0,0,16,2003,181,0,175,16,175,18
+120304,Junín,Chanchamayo,San Luis de Shuaro,1,4,2,0,0,46,2003,109,0,100,5,100,10
+120305,Junín,Chanchamayo,San Ramón,1,4,2,2,2007,62,2003,111,69,104,17,104,20
+120306,Junín,Chanchamayo,Vitoc,1,4,2,5,2014,23,2003,99,81,94,7,94,13
+120401,Junín,Jauja,Jauja,1,2,3,0,0,3,2003,20,0,15,1,15,9
+120402,Junín,Jauja,Acolla,1,2,3,0,0,11,2003,37,0,17,2,19,12
+120403,Junín,Jauja,Apata,1,2,3,0,0,13,2003,36,0,5,0,5,12
+120404,Junín,Jauja,Ataura,1,2,3,0,0,1,2003,32,0,17,2,17,10
+120405,Junín,Jauja,Canchayllo,1,2,3,0,0,45,2003,13,0,5,0,5,7
+120406,Junín,Jauja,Curicaca,1,2,3,0,0,6,2003,25,0,13,0,13,10
+120407,Junín,Jauja,El Mantaro,1,2,3,0,0,0,0,8,0,0,0,0,6
+120408,Junín,Jauja,Huamalí,1,2,3,0,0,2,2011,7,0,2,0,2,7
+120409,Junín,Jauja,Huaripampa,1,2,3,0,0,2,2003,21,0,7,1,7,9
+120410,Junín,Jauja,Huertas,1,2,3,0,0,1,2003,15,0,6,0,6,8
+120411,Junín,Jauja,Janjaillo,1,2,3,0,0,0,0,20,0,0,0,0,9
+120412,Junín,Jauja,Julcán,1,2,3,0,0,0,0,21,0,0,0,0,8
+120413,Junín,Jauja,Leonor Ordoñez,1,2,3,0,0,2,2003,17,0,7,1,7,9
+120414,Junín,Jauja,Llocllapampa,1,2,3,0,0,13,2003,39,0,13,1,14,12
+120415,Junín,Jauja,Marco,1,2,3,0,0,4,2003,43,0,18,1,19,10
+120416,Junín,Jauja,Masma,1,2,3,1,2013,2,2003,29,9,15,4,16,10
+120417,Junín,Jauja,Masma Chicche,1,2,3,0,0,2,2003,20,0,7,3,7,7
+120418,Junín,Jauja,Molinos,1,2,3,0,0,11,2003,38,0,28,2,28,12
+120419,Junín,Jauja,Monobamba,1,2,3,5,2019,28,2003,52,36,45,9,45,13
+120420,Junín,Jauja,Muqui,1,2,3,0,0,1,2011,11,0,0,0,0,8
+120421,Junín,Jauja,Muquiyauyo,1,2,3,0,0,1,2003,12,0,4,1,4,7
+120422,Junín,Jauja,Paca,1,2,3,0,0,0,0,22,0,0,0,0,9
+120423,Junín,Jauja,Paccha,1,2,3,0,0,6,2003,27,0,10,2,12,10
+120424,Junín,Jauja,Pancán,1,2,3,0,0,0,0,40,0,0,3,3,9
+120425,Junín,Jauja,Parco,1,2,3,0,0,3,2003,17,0,8,0,8,7
+120426,Junín,Jauja,Pomacancha,1,2,3,0,0,3,2018,16,0,3,0,3,8
+120427,Junín,Jauja,Ricrán,1,2,3,2,2021,12,2003,41,11,29,11,29,10
+120428,Junín,Jauja,San Lorenzo,1,2,3,0,0,2,2003,8,0,1,0,1,6
+120429,Junín,Jauja,San Pedro de Chunán,1,2,3,0,0,2,2012,20,0,8,0,8,10
+120430,Junín,Jauja,Sausa,1,2,3,0,0,0,0,16,0,0,0,0,6
+120431,Junín,Jauja,Sincos,1,2,3,0,0,6,2003,40,0,17,4,17,12
+120432,Junín,Jauja,Tunán Marca,1,2,3,0,0,2,2003,23,0,9,0,9,7
+120433,Junín,Jauja,Yauli,1,2,3,0,0,5,2003,40,0,21,0,21,10
+120434,Junín,Jauja,Yauyos,1,2,3,0,0,6,2003,6,0,3,1,4,5
+120501,Junín,Junín,Junín,1,2,2,0,0,17,2003,63,0,38,0,38,17
+120502,Junín,Junín,Carhuamayo,1,2,2,0,0,4,2011,40,0,14,1,15,12
+120503,Junín,Junín,Ondores,1,2,2,1,2018,12,2003,49,15,22,0,22,13
+120504,Junín,Junín,Ulcumayo,1,2,2,0,0,44,2003,72,0,50,1,50,17
+120601,Junín,Satipo,Satipo,1,3,2,1,2024,31,2003,67,17,62,3,62,18
+120602,Junín,Satipo,Coviriali,1,3,2,1,2016,15,2003,58,24,55,12,55,13
+120603,Junín,Satipo,Llaylla,1,3,2,0,0,3,2003,76,0,53,10,56,9
+120604,Junín,Satipo,Mazamari,1,3,2,0,0,29,2003,121,0,113,0,113,14
+120605,Junín,Satipo,Pampa Hermosa,1,3,2,6,2016,63,2003,57,44,51,8,51,16
+120606,Junín,Satipo,Pangoa,1,3,2,0,0,15,2003,123,0,111,3,111,21
+120607,Junín,Satipo,Río Negro,1,3,2,5,2016,35,2003,119,110,116,30,116,16
+120608,Junín,Satipo,Río Tambo,1,4,2,6,2015,51,2003,120,51,94,1,94,17
+120609,Junín,Satipo,Vizcatan del Ene,1,3,2,2,2019,0,0,125,119,0,4,119,10
+120701,Junín,Tarma,Tarma,1,2,2,0,0,24,2003,84,0,58,1,58,17
+120702,Junín,Tarma,Acobamba,1,2,2,1,1995,18,2003,35,14,19,1,19,8
+120703,Junín,Tarma,Huaricolca,1,2,2,0,0,7,2003,27,0,12,0,12,10
+120704,Junín,Tarma,Huasahuasi,1,2,2,0,0,49,2003,26,0,9,0,9,10
+120705,Junín,Tarma,La Unión,1,2,2,0,0,3,2003,43,0,13,0,13,11
+120706,Junín,Tarma,Palca,1,2,2,0,0,36,2003,95,0,72,3,72,16
+120707,Junín,Tarma,Palcamayo,1,2,2,0,0,12,2003,19,0,3,1,3,11
+120708,Junín,Tarma,San Pedro de Cajas,1,2,2,0,0,23,2003,33,0,15,1,15,12
+120709,Junín,Tarma,Tapo,1,2,2,2,2023,11,2003,80,46,50,0,50,11
+120801,Junín,Yauli,La Oroya,1,2,2,0,0,54,2003,35,0,19,0,19,15
+120802,Junín,Yauli,Chacapalpa,1,2,2,0,0,11,2003,80,0,41,0,41,11
+120803,Junín,Yauli,Huay-Huay,1,2,2,0,0,10,2003,70,0,52,0,52,9
+120804,Junín,Yauli,Marcapomacocha,1,2,2,0,0,29,2003,38,0,13,6,16,11
+120805,Junín,Yauli,Morococha,1,2,2,3,2012,12,2003,29,3,4,0,4,13
+120806,Junín,Yauli,Paccha,1,2,2,0,0,12,2003,32,0,17,3,17,9
+120807,Junín,Yauli,Santa Bárbara de Carhuacayán,1,2,2,0,0,27,2003,38,0,22,0,22,12
+120808,Junín,Yauli,Santa Rosa de Sacco,1,2,2,1,2016,8,2003,26,11,12,0,12,9
+120809,Junín,Yauli,Suitucancha,1,2,2,0,0,13,2003,69,0,36,1,36,13
+120810,Junín,Yauli,Yauli,1,2,2,0,0,24,2003,37,0,27,0,27,8
+120901,Junín,Chupaca,Chupaca,1,4,3,1,2024,5,2003,22,3,18,2,18,9
+120902,Junín,Chupaca,Ahuac,1,4,3,0,0,9,2003,24,0,7,2,9,11
+120903,Junín,Chupaca,Chongos Bajo,1,4,3,0,0,3,2003,6,0,2,0,2,4
+120904,Junín,Chupaca,Huáchac,1,4,3,0,0,9,2003,10,0,4,0,4,5
+120905,Junín,Chupaca,Huamancaca Chico,1,4,3,1,2025,4,2003,14,1,8,3,9,8
+120906,Junín,Chupaca,San Juan de Yscos,1,4,3,0,0,1,2003,18,0,8,1,9,9
+120907,Junín,Chupaca,San Juan de Jarpa,1,4,3,0,0,14,2003,28,0,12,0,12,11
+120908,Junín,Chupaca,Tres de Diciembre,1,4,3,0,0,0,0,7,0,0,0,0,5
+120909,Junín,Chupaca,Yanacancha,1,4,3,0,0,35,2003,35,0,17,0,17,10
+130101,La Libertad,Trujillo,Trujillo,1,2,3,1,2023,0,0,32,6,0,1,7,16
+130102,La Libertad,Trujillo,El Porvenir,1,2,3,1,2019,3,2008,19,7,12,2,12,12
+130103,La Libertad,Trujillo,Florencia de Mora,1,2,3,0,0,0,0,14,0,0,1,1,9
+130104,La Libertad,Trujillo,Huanchaco,1,2,3,1,2020,8,2008,29,8,25,4,25,12
+130105,La Libertad,Trujillo,La Esperanza,1,2,3,0,0,1,2023,13,0,3,1,4,9
+130106,La Libertad,Trujillo,Laredo,1,2,3,1,2019,15,2008,16,9,14,1,14,7
+130107,La Libertad,Trujillo,Moche,1,2,3,1,2020,1,2008,16,5,15,4,15,8
+130108,La Libertad,Trujillo,Poroto,1,2,3,0,0,7,2008,11,0,10,2,10,7
+130109,La Libertad,Trujillo,Salaverry,1,2,3,0,0,2,2008,9,0,6,0,6,6
+130110,La Libertad,Trujillo,Simbal,1,2,3,0,0,26,2008,23,0,22,2,22,3
+130111,La Libertad,Trujillo,Victor Larco Herrera,1,2,3,1,2019,1,2008,34,7,8,0,8,12
+130201,La Libertad,Ascope,Ascope,1,2,3,0,0,14,2008,13,0,13,0,13,7
+130202,La Libertad,Ascope,Chicama,1,2,3,0,0,35,2008,32,0,29,6,29,12
+130203,La Libertad,Ascope,Chocope,1,2,3,0,0,0,0,13,0,0,1,1,6
+130204,La Libertad,Ascope,Magdalena de Cao,1,2,3,0,0,0,0,10,0,0,1,1,7
+130205,La Libertad,Ascope,Paiján,1,2,3,0,0,2,2008,6,0,4,1,4,5
+130206,La Libertad,Ascope,Razuri,1,2,3,1,2008,4,2008,9,3,7,0,7,7
+130207,La Libertad,Ascope,Santiago de Cao,1,2,3,0,0,1,2008,8,0,8,4,8,6
+130208,La Libertad,Ascope,Casa Grande,1,2,3,0,0,36,2008,6,0,4,1,4,6
+130301,La Libertad,Bolívar,Bolívar,1,2,3,0,0,10,2008,132,0,106,14,106,11
+130302,La Libertad,Bolívar,Bambamarca,1,2,3,0,0,0,0,82,0,0,9,9,10
+130303,La Libertad,Bolívar,Condormarca,1,2,3,0,0,0,0,55,0,0,9,9,10
+130304,La Libertad,Bolívar,Longotea,1,2,3,0,0,8,2008,56,0,54,4,54,10
+130305,La Libertad,Bolívar,Uchumarca,1,2,3,0,0,3,2008,45,0,38,0,38,5
+130306,La Libertad,Bolívar,Ucuncha,1,2,3,0,0,0,0,32,0,0,1,1,7
+130401,La Libertad,Chepén,Chepén,1,2,3,0,0,21,2007,20,0,20,5,20,9
+130402,La Libertad,Chepén,Pacanga,1,2,3,0,0,16,2007,29,0,28,6,28,9
+130403,La Libertad,Chepén,Pueblo Nuevo,1,2,3,0,0,7,2007,31,0,31,3,31,8
+130501,La Libertad,Julcán,Julcán,1,2,3,0,0,3,2008,47,0,35,13,36,13
+130502,La Libertad,Julcán,Calamarca,1,2,3,1,2021,1,2020,59,35,37,3,40,10
+130503,La Libertad,Julcán,Carabamba,1,2,3,0,0,0,0,69,0,0,13,13,11
+130504,La Libertad,Julcán,Huaso,1,2,3,0,0,0,0,55,0,0,8,8,11
+130601,La Libertad,Otuzco,Otuzco,1,2,3,3,2008,15,2008,120,68,68,17,68,13
+130602,La Libertad,Otuzco,Agallpampa,1,2,3,2,2025,7,2008,179,7,92,33,94,12
+130604,La Libertad,Otuzco,Charat,1,2,3,0,0,12,2008,36,0,30,3,30,8
+130605,La Libertad,Otuzco,Huaranchal,1,2,3,0,0,5,2008,47,0,46,4,46,7
+130606,La Libertad,Otuzco,La Cuesta,1,2,3,0,0,4,2008,18,0,18,3,18,7
+130608,La Libertad,Otuzco,Mache,1,2,3,0,0,0,0,49,0,0,8,8,10
+130610,La Libertad,Otuzco,Paranday,1,2,3,0,0,1,2009,33,0,24,4,24,9
+130611,La Libertad,Otuzco,Salpo,1,2,3,1,2019,8,2008,52,23,43,7,43,10
+130613,La Libertad,Otuzco,Sinsicap,1,2,3,0,0,17,2009,41,0,38,11,38,8
+130614,La Libertad,Otuzco,Usquil,1,2,3,3,2021,27,2008,86,37,68,27,68,9
+130701,La Libertad,Pacasmayo,San Pedro de Lloc,1,2,3,2,2022,12,2007,10,5,10,2,10,4
+130702,La Libertad,Pacasmayo,Guadalupe,1,2,3,0,0,15,2007,14,0,12,3,12,6
+130703,La Libertad,Pacasmayo,Jequetepeque,1,2,3,0,0,3,2007,11,0,4,1,4,5
+130704,La Libertad,Pacasmayo,Pacasmayo,1,2,3,0,0,1,2007,18,0,11,3,11,9
+130705,La Libertad,Pacasmayo,San José,1,2,3,0,0,4,2007,4,0,4,1,4,3
+130801,La Libertad,Pataz,Tayabamba,1,2,3,3,2003,38,2008,306,274,291,10,292,14
+130802,La Libertad,Pataz,Buldibuyo,1,2,3,3,2019,19,2008,189,158,181,42,181,10
+130803,La Libertad,Pataz,Chillia,1,2,3,1,2025,10,2008,36,8,35,5,35,7
+130804,La Libertad,Pataz,Huancaspata,1,2,3,1,2023,7,2008,83,29,64,12,65,13
+130805,La Libertad,Pataz,Huaylillas,1,2,3,1,2021,5,2008,43,26,35,7,35,8
+130806,La Libertad,Pataz,Huayo,1,2,3,0,0,0,0,60,0,0,2,2,8
+130807,La Libertad,Pataz,Ongón,1,2,3,1,2023,3,2020,63,36,46,12,58,7
+130808,La Libertad,Pataz,Parcoy,1,2,3,6,2006,37,2008,93,83,86,14,86,12
+130809,La Libertad,Pataz,Pataz,1,2,3,10,2019,18,2008,128,108,126,13,126,13
+130810,La Libertad,Pataz,Pias,1,2,3,0,0,16,2008,113,0,113,0,113,8
+130811,La Libertad,Pataz,Santiago de Challas,1,2,3,0,0,1,2008,60,0,57,9,57,10
+130812,La Libertad,Pataz,Taurija,1,2,3,0,0,6,2008,31,0,26,0,26,6
+130813,La Libertad,Pataz,Urpay,1,2,3,0,0,2,2008,48,0,43,8,43,7
+130901,La Libertad,Sánchez Carrión,Huamachuco,1,2,3,1,2025,35,2008,61,6,48,14,48,17
+130902,La Libertad,Sánchez Carrión,Chugay,1,2,3,2,2023,20,2008,236,77,222,7,222,9
+130903,La Libertad,Sánchez Carrión,Cochorco,1,2,3,3,2009,11,2008,129,96,124,18,124,9
+130904,La Libertad,Sánchez Carrión,Curgos,1,2,3,0,0,7,2008,32,0,26,6,27,9
+130905,La Libertad,Sánchez Carrión,Marcabal,1,2,3,0,0,12,2008,126,0,103,19,104,9
+130906,La Libertad,Sánchez Carrión,Sanagoran,1,2,3,1,1997,28,2007,88,50,77,3,77,9
+130907,La Libertad,Sánchez Carrión,Sarín,1,2,3,1,2025,15,2008,83,3,78,18,78,12
+130908,La Libertad,Sánchez Carrión,Sartimbamba,1,2,3,1,2009,15,2008,94,81,92,32,92,12
+131001,La Libertad,Santiago de Chuco,Santiago de Chuco,2,2,5,0,0,30,2007,197,0,141,29,141,13
+131002,La Libertad,Santiago de Chuco,Angasmarca,2,2,5,0,0,4,2008,67,0,50,5,51,10
+131003,La Libertad,Santiago de Chuco,Cachicadan,2,2,5,0,0,7,2008,142,0,109,18,111,12
+131004,La Libertad,Santiago de Chuco,Mollebamba,2,2,5,0,0,2,2008,42,0,37,2,38,7
+131005,La Libertad,Santiago de Chuco,Mollepata,2,2,5,0,0,6,2008,26,0,24,3,24,7
+131006,La Libertad,Santiago de Chuco,Quiruvilca,2,2,5,3,2023,9,2008,147,56,100,19,104,14
+131007,La Libertad,Santiago de Chuco,Santa Cruz de Chuca,2,2,5,0,0,7,2008,56,0,39,8,42,11
+131008,La Libertad,Santiago de Chuco,Sitabamba,2,2,5,2,2021,22,2008,103,71,89,13,89,9
+131101,La Libertad,Gran Chimu,Cascas,1,2,3,0,0,38,2007,116,0,110,11,110,12
+131102,La Libertad,Gran Chimu,Lucma,1,2,3,2,2021,24,2007,60,33,52,11,52,9
+131103,La Libertad,Gran Chimu,Marmot,1,2,3,1,2002,13,2009,41,38,38,7,38,6
+131104,La Libertad,Gran Chimu,Sayapullo,1,2,3,2,2020,30,2009,73,41,63,12,63,8
+131201,La Libertad,Virú,Virú,1,2,3,0,0,31,2008,21,0,19,0,19,9
+131202,La Libertad,Virú,Chao,1,2,3,0,0,64,2007,20,0,20,1,20,8
+131203,La Libertad,Virú,Guadalupito,1,2,3,0,0,3,2008,11,0,3,0,3,5
+140101,Lambayeque,Chiclayo,Chiclayo,1,1,2,1,2008,0,0,23,15,0,1,15,13
+140102,Lambayeque,Chiclayo,Chongoyape,1,1,2,0,0,126,2007,11,0,8,0,8,7
+140103,Lambayeque,Chiclayo,Etén,1,1,2,0,0,5,2007,7,0,7,0,7,6
+140104,Lambayeque,Chiclayo,Etén Puerto,1,1,2,0,0,6,2007,24,0,13,1,13,13
+140105,Lambayeque,Chiclayo,José Leonardo Ortiz,1,1,2,0,0,0,0,15,0,0,0,0,7
+140106,Lambayeque,Chiclayo,La Victoria,1,1,2,0,0,0,0,7,0,0,0,0,4
+140107,Lambayeque,Chiclayo,Lagunas,1,1,2,0,0,30,2007,18,0,16,1,16,9
+140108,Lambayeque,Chiclayo,Monsefú,1,1,2,0,0,11,2007,7,0,7,0,7,4
+140109,Lambayeque,Chiclayo,Nueva Arica,1,1,2,0,0,14,2008,17,0,16,0,16,8
+140110,Lambayeque,Chiclayo,Oyotún,1,1,2,0,0,57,2007,18,0,17,0,17,9
+140111,Lambayeque,Chiclayo,Picsi,1,1,2,0,0,1,2007,9,0,8,0,8,5
+140112,Lambayeque,Chiclayo,Pimentel,1,1,2,0,0,6,2007,28,0,24,1,24,12
+140113,Lambayeque,Chiclayo,Reque,1,1,2,0,0,12,2007,16,0,14,0,14,8
+140114,Lambayeque,Chiclayo,Santa Rosa,1,1,2,0,0,6,2007,10,0,10,0,10,8
+140115,Lambayeque,Chiclayo,Saña,1,1,2,0,0,36,2007,13,0,12,1,12,10
+140116,Lambayeque,Chiclayo,Cayaltí,1,1,2,0,0,6,2008,12,0,9,1,10,7
+140117,Lambayeque,Chiclayo,Patapo,1,1,2,0,0,28,2007,9,0,8,0,8,5
+140118,Lambayeque,Chiclayo,Pomalca,1,1,2,0,0,4,2007,10,0,8,0,8,7
+140119,Lambayeque,Chiclayo,Pucalá,1,1,2,0,0,34,2007,49,0,15,5,18,12
+140120,Lambayeque,Chiclayo,Tumán,1,1,2,0,0,16,2007,13,0,11,0,11,8
+140201,Lambayeque,Ferreñafe,Ferreñafe,1,1,2,0,0,0,0,12,0,0,1,1,8
+140202,Lambayeque,Ferreñafe,Cañaris,1,1,2,1,2024,1,2023,67,13,16,1,17,16
+140203,Lambayeque,Ferreñafe,Incahuasi,1,1,2,0,0,52,2008,49,0,33,0,33,13
+140204,Lambayeque,Ferreñafe,Manuel Antonio Mesones Muro,1,1,2,0,0,33,2007,14,0,9,0,9,6
+140205,Lambayeque,Ferreñafe,Pitipo,1,1,2,0,0,65,2007,23,0,18,2,18,10
+140206,Lambayeque,Ferreñafe,Pueblo Nuevo,1,1,2,0,0,0,0,8,0,0,0,0,6
+140301,Lambayeque,Lambayeque,Lambayeque,1,1,2,0,0,16,2007,17,0,14,0,14,6
+140302,Lambayeque,Lambayeque,Chochope,1,1,2,0,0,14,2008,22,0,20,0,20,7
+140303,Lambayeque,Lambayeque,Illimo,1,1,2,0,0,0,0,27,0,0,0,0,11
+140304,Lambayeque,Lambayeque,Jayanca,1,1,2,0,0,39,2008,37,0,34,5,34,10
+140305,Lambayeque,Lambayeque,Mochumi,1,1,2,0,0,5,2008,20,0,19,0,19,7
+140306,Lambayeque,Lambayeque,Mórrope,1,1,2,0,0,20,2007,22,0,20,0,20,7
+140307,Lambayeque,Lambayeque,Motupe,1,1,2,0,0,73,2008,28,0,25,0,25,7
+140308,Lambayeque,Lambayeque,Olmos,1,1,2,0,0,130,2008,72,0,58,1,58,16
+140309,Lambayeque,Lambayeque,Pacora,1,1,2,0,0,2,2008,21,0,18,0,18,8
+140310,Lambayeque,Lambayeque,Salas,1,1,2,2,1999,52,2008,39,16,29,4,29,12
+140311,Lambayeque,Lambayeque,San José,1,1,2,0,0,4,2007,35,0,19,0,19,9
+140312,Lambayeque,Lambayeque,Túcume,1,1,2,0,0,23,2007,13,0,12,0,12,5
+150101,Lima,Lima,Lima,4,4,4,2,2009,1,2003,36,28,10,13,32,13
+150102,Lima,Lima,Ancón,4,4,4,0,0,21,2003,7,0,4,1,4,7
+150103,Lima,Lima,Ate,4,4,4,1,2008,207,2003,28,19,25,4,26,15
+150104,Lima,Lima,Barranco,4,4,4,2,2020,3,2003,9,2,4,0,4,8
+150105,Lima,Lima,Breña,4,4,4,0,0,0,0,1,0,0,0,0,1
+150106,Lima,Lima,Carabayllo,4,4,4,3,2010,63,2003,17,9,16,0,16,9
+150107,Lima,Lima,Chaclacayo,4,4,4,3,2023,41,2003,18,2,16,2,16,8
+150108,Lima,Lima,Chorrillos,4,4,4,4,2011,16,2003,33,8,30,0,30,15
+150109,Lima,Lima,Cieneguilla,4,4,4,1,2022,122,2003,13,3,12,1,13,6
+150110,Lima,Lima,Comas,4,4,4,2,2010,60,2003,15,11,14,0,14,7
+150111,Lima,Lima,El Agustino,4,4,4,4,2002,18,2003,10,10,7,2,10,7
+150112,Lima,Lima,Independencia,4,4,4,0,0,30,2003,12,0,10,4,10,7
+150113,Lima,Lima,Jesús María,4,4,4,0,0,0,0,1,0,0,0,0,1
+150114,Lima,Lima,La Molina,4,4,4,0,0,34,2003,7,0,1,1,1,4
+150115,Lima,Lima,La Victoria,4,4,4,0,0,0,0,3,0,0,1,1,3
+150116,Lima,Lima,Lince,4,4,4,0,0,0,0,1,0,0,0,0,1
+150117,Lima,Lima,Los Olivos,4,4,4,0,0,4,2003,3,0,2,0,2,3
+150118,Lima,Lima,Lurigancho,4,4,4,6,2018,439,2003,54,16,46,8,46,17
+150119,Lima,Lima,Lurín,4,4,4,0,0,22,2003,17,0,6,1,6,5
+150120,Lima,Lima,Magdalena del Mar,4,4,4,1,2019,1,2003,1,0,0,0,0,1
+150121,Lima,Lima,Pueblo Libre,4,4,4,0,0,0,0,1,0,0,0,0,1
+150122,Lima,Lima,Miraflores,4,4,4,0,0,2,2003,12,0,8,1,8,8
+150123,Lima,Lima,Pachacámac,4,4,4,2,2008,52,2003,12,2,11,1,11,11
+150124,Lima,Lima,Pucusana,4,4,4,0,0,1,2003,8,0,1,0,1,5
+150125,Lima,Lima,Puente Piedra,4,4,4,1,2019,38,2003,19,5,19,2,19,11
+150126,Lima,Lima,Punta Hermosa,4,4,4,3,2019,11,2003,8,1,8,1,8,4
+150127,Lima,Lima,Punta Negra,4,4,4,1,2016,4,2003,1,1,1,0,1,1
+150128,Lima,Lima,Rímac,4,4,4,0,0,15,2003,10,0,10,6,10,6
+150129,Lima,Lima,San Bartolo,4,4,4,2,2023,4,2003,3,0,3,0,3,3
+150130,Lima,Lima,San Borja,4,4,4,0,0,0,0,2,0,0,0,0,2
+150131,Lima,Lima,San Isidro,4,4,4,0,0,0,0,3,0,0,0,0,2
+150132,Lima,Lima,San Juan de Lurigancho,4,4,4,3,2008,506,2003,29,20,28,1,28,13
+150133,Lima,Lima,San Juan de Miraflores,4,4,4,14,2004,16,2003,24,19,19,0,19,9
+150135,Lima,Lima,San Martín de Porres,4,4,4,2,2022,5,2003,9,1,7,5,7,4
+150136,Lima,Lima,San Miguel,4,4,4,0,0,5,2003,4,0,4,0,4,3
+150137,Lima,Lima,Santa Anita,4,4,4,1,2019,2,2021,2,1,1,0,1,2
+150138,Lima,Lima,Santa María del Mar,4,4,4,0,0,0,0,1,0,0,0,0,1
+150139,Lima,Lima,Santa Rosa,4,4,4,2,2021,3,2003,3,1,3,0,3,2
+150140,Lima,Lima,Santiago de Surco,4,4,4,1,2023,6,2003,3,0,1,0,1,3
+150141,Lima,Lima,Surquillo,4,4,4,0,0,0,0,2,0,0,0,0,2
+150142,Lima,Lima,Villa El Salvador,4,4,4,5,2009,6,2003,17,6,7,0,7,11
+150143,Lima,Lima,Villa María del Triunfo,4,4,4,30,2005,32,2003,23,17,17,1,18,12
+150201,Lima,Barranca,Barranca,3,4,4,4,2012,14,2003,19,3,19,2,19,8
+150202,Lima,Barranca,Paramonga,3,4,4,2,2014,36,2003,10,5,10,2,10,6
+150203,Lima,Barranca,Pativilca,3,4,4,3,2014,7,2003,22,12,21,2,21,9
+150204,Lima,Barranca,Supe,3,4,4,3,2014,20,2003,12,7,11,1,11,5
+150205,Lima,Barranca,Supe Puerto,3,4,4,0,0,0,0,9,0,0,2,2,4
+150301,Lima,Cajatambo,Cajatambo,3,3,3,6,2008,53,2003,87,66,71,7,73,12
+150302,Lima,Cajatambo,Copa,3,3,3,1,1981,32,2003,40,32,32,5,32,10
+150303,Lima,Cajatambo,Gorgor,3,3,3,1,2002,28,2003,43,32,33,1,33,10
+150304,Lima,Cajatambo,Huancapón,3,3,3,2,2007,30,2003,70,58,62,11,62,10
+150305,Lima,Cajatambo,Manas,3,3,3,1,2021,33,2003,54,30,52,2,52,10
+150401,Lima,Canta,Canta,4,4,4,4,2002,48,2003,79,69,71,9,71,8
+150402,Lima,Canta,Arahuay,4,4,4,0,0,27,2003,49,0,40,3,40,10
+150403,Lima,Canta,Huamantanga,4,4,4,0,0,42,2003,43,0,37,3,37,8
+150404,Lima,Canta,Huaros,4,4,4,0,0,23,2003,56,0,46,10,47,11
+150405,Lima,Canta,Lachaqui,4,4,4,0,0,26,2003,65,0,56,6,56,11
+150406,Lima,Canta,San Buenaventura,4,4,4,0,0,38,2003,23,0,19,2,19,8
+150407,Lima,Canta,Santa Rosa de Quives,4,4,4,1,2023,83,2003,54,9,49,6,49,10
+150501,Lima,Cañete,San Vicente de Cañete,3,4,4,2,2015,24,2003,43,5,37,1,37,12
+150502,Lima,Cañete,Asia,3,4,4,0,0,11,2003,19,0,19,0,19,7
+150503,Lima,Cañete,Calango,3,4,4,0,0,39,2003,57,0,52,10,52,10
+150504,Lima,Cañete,Cerro Azul,3,4,4,0,0,4,2003,17,0,14,1,14,12
+150505,Lima,Cañete,Chilca,3,4,4,0,0,14,2003,13,0,13,0,13,5
+150506,Lima,Cañete,Coayllo,3,4,4,0,0,26,2003,18,0,14,2,14,8
+150507,Lima,Cañete,Imperial,3,4,4,0,0,0,0,4,0,0,0,0,2
+150508,Lima,Cañete,Lunahuana,3,4,4,0,0,36,2003,28,0,24,0,24,8
+150509,Lima,Cañete,Mala,3,4,4,0,0,5,2003,20,0,20,0,20,8
+150510,Lima,Cañete,Nuevo Imperial,3,4,4,0,0,18,2003,7,0,7,0,7,6
+150511,Lima,Cañete,Pacarán,3,4,4,0,0,14,2003,7,0,7,2,7,2
+150512,Lima,Cañete,Quilmana,3,4,4,0,0,1,2012,3,0,2,0,2,3
+150513,Lima,Cañete,San Antonio,3,4,4,0,0,9,2003,41,0,28,8,31,10
+150514,Lima,Cañete,San Luis,3,4,4,0,0,0,0,19,0,0,1,1,5
+150515,Lima,Cañete,Santa Cruz de Flores,3,4,4,0,0,3,2003,21,0,3,0,3,7
+150516,Lima,Cañete,Zúñiga,3,4,4,3,2012,19,2003,19,14,18,0,18,5
+150601,Lima,Huaral,Huaral,3,4,4,2,2021,31,2003,11,4,10,0,10,4
+150602,Lima,Huaral,Atavillos Alto,3,4,4,1,2024,41,2003,89,29,69,16,69,12
+150603,Lima,Huaral,Atavillos Bajo,3,4,4,2,2023,42,2003,64,25,58,12,58,11
+150604,Lima,Huaral,Aucallama,3,4,4,0,0,35,2003,20,0,17,0,17,5
+150605,Lima,Huaral,Chancay,3,4,4,1,2020,5,2003,3,0,3,0,3,2
+150606,Lima,Huaral,Ihuari,3,4,4,1,1999,99,2003,43,37,37,6,37,10
+150607,Lima,Huaral,Lampián,3,4,4,0,0,17,2003,20,0,17,0,17,9
+150608,Lima,Huaral,Pacaraos,3,4,4,2,2022,37,2003,64,28,55,10,55,11
+150609,Lima,Huaral,San Miguel de Acos,3,4,4,0,0,16,2003,41,0,34,3,34,11
+150610,Lima,Huaral,Santa Cruz de Andamarca,3,4,4,3,2024,44,2003,42,21,35,2,35,10
+150611,Lima,Huaral,Sumbilca,3,4,4,1,2023,62,2003,54,27,44,4,44,10
+150612,Lima,Huaral,Veintisiete de Noviembre,3,4,4,0,0,26,2003,46,0,41,4,41,11
+150701,Lima,Huarochirí,Matucana,4,4,4,2,2005,85,2003,63,44,47,3,47,13
+150702,Lima,Huarochirí,Antioquía,4,4,4,1,2012,93,2003,25,20,22,1,22,6
+150703,Lima,Huarochirí,Callahuanca,4,4,4,0,0,10,2003,75,0,73,12,74,11
+150704,Lima,Huarochirí,Carampoma,4,4,4,0,0,57,2003,52,0,43,8,44,10
+150705,Lima,Huarochirí,Chicla,4,4,4,3,2009,59,2003,90,60,74,10,78,15
+150706,Lima,Huarochirí,Cuenca,4,4,4,0,0,16,2003,31,0,27,4,27,9
+150707,Lima,Huarochirí,Huachupampa,4,4,4,0,0,39,2003,65,0,61,8,62,12
+150708,Lima,Huarochirí,Huanza,4,4,4,0,0,25,2003,72,0,62,12,63,12
+150709,Lima,Huarochirí,Huarochirí,4,4,4,0,0,14,2003,67,0,51,5,52,11
+150710,Lima,Huarochirí,Lahuaytambo,4,4,4,0,0,18,2003,51,0,43,11,43,9
+150711,Lima,Huarochirí,Langa,4,4,4,0,0,11,2003,38,0,29,3,29,6
+150712,Lima,Huarochirí,Laraos,4,4,4,0,0,22,2003,71,0,53,8,53,13
+150713,Lima,Huarochirí,Mariatana,4,4,4,0,0,1,2003,32,0,25,10,27,10
+150714,Lima,Huarochirí,Ricardo Palma,4,4,4,0,0,23,2003,12,0,8,0,8,9
+150715,Lima,Huarochirí,San Andrés de Tupicocha,4,4,4,0,0,12,2003,33,0,22,2,22,10
+150716,Lima,Huarochirí,San Antonio,4,4,4,0,0,53,2003,27,0,25,4,25,12
+150717,Lima,Huarochirí,San Bartolomé,4,4,4,0,0,26,2003,34,0,33,8,33,9
+150718,Lima,Huarochirí,San Damián,4,4,4,1,2022,46,2003,42,19,29,8,30,8
+150719,Lima,Huarochirí,San Juan de Iris,4,4,4,0,0,9,2003,53,0,40,7,41,12
+150720,Lima,Huarochirí,San Juan de Tantaranche,4,4,4,0,0,1,2003,38,0,21,3,21,11
+150721,Lima,Huarochirí,San Lorenzo de Quinti,4,4,4,0,0,15,2003,48,0,30,7,30,10
+150722,Lima,Huarochirí,San Mateo,4,4,4,7,2007,105,2003,49,31,38,1,38,16
+150723,Lima,Huarochirí,San Mateo de Otao,4,4,4,0,0,64,2003,43,0,34,8,34,11
+150724,Lima,Huarochirí,San Pedro de Casta,4,4,4,2,2012,18,2003,50,38,43,12,43,12
+150725,Lima,Huarochirí,San Pedro de Huancayre,4,4,4,0,0,3,2003,42,0,27,7,30,11
+150726,Lima,Huarochirí,Sangallaya,4,4,4,0,0,23,2003,26,0,17,1,18,12
+150727,Lima,Huarochirí,Santa Cruz de Cocachacra,4,4,4,1,2016,25,2003,33,20,28,2,28,14
+150728,Lima,Huarochirí,Santa Eulalia,4,4,4,1,2015,72,2003,33,9,25,1,25,10
+150729,Lima,Huarochirí,Santiago de Anchucaya,4,4,4,1,2012,3,2003,55,40,48,13,48,10
+150730,Lima,Huarochirí,Santiago de Tuna,4,4,4,0,0,18,2003,15,0,13,5,13,5
+150731,Lima,Huarochirí,Santo Domingo de Los Olleros,4,4,4,0,0,31,2003,14,0,14,1,14,4
+150732,Lima,Huarochirí,Surco,4,4,4,0,0,57,2003,41,0,35,5,35,15
+150801,Lima,Huaura,Huacho,3,4,4,2,2007,9,2003,18,5,5,3,6,12
+150802,Lima,Huaura,Ámbar,3,4,4,0,0,32,2003,26,0,18,1,18,8
+150803,Lima,Huaura,Caleta de Carquín,3,4,4,0,0,0,0,17,0,0,3,3,9
+150804,Lima,Huaura,Checras,3,4,4,3,2009,58,2003,55,42,44,11,44,12
+150805,Lima,Huaura,Hualmay,3,4,4,0,0,1,2003,10,0,9,1,9,5
+150806,Lima,Huaura,Huaura,3,4,4,0,0,39,2003,24,0,24,5,24,8
+150807,Lima,Huaura,Leoncio Prado,3,4,4,0,0,61,2003,76,0,67,16,67,10
+150808,Lima,Huaura,Paccho,3,4,4,1,2024,38,2003,131,41,122,45,122,10
+150809,Lima,Huaura,Santa Leonor,3,4,4,0,0,36,2003,47,0,39,7,39,9
+150810,Lima,Huaura,Santa María,3,4,4,0,0,9,2003,23,0,19,3,19,9
+150811,Lima,Huaura,Sayán,3,4,4,1,1998,132,2003,29,19,27,0,27,6
+150812,Lima,Huaura,Vegueta,3,4,4,0,0,0,0,14,0,0,0,0,7
+150901,Lima,Oyón,Oyón,3,4,4,6,2022,177,2003,143,41,127,17,127,11
+150902,Lima,Oyón,Andajes,3,4,4,4,2003,24,2003,63,49,54,11,54,12
+150903,Lima,Oyón,Caujul,3,4,4,0,0,18,2003,35,0,27,6,27,10
+150904,Lima,Oyón,Cochamarca,3,4,4,0,0,19,2003,77,0,70,19,70,12
+150905,Lima,Oyón,Naván,3,4,4,0,0,24,2003,17,0,14,1,14,7
+150906,Lima,Oyón,Pachangara,3,4,4,4,2009,75,2003,72,57,66,3,66,11
+151001,Lima,Yauyos,Yauyos,3,4,4,1,2024,40,2003,51,15,40,4,40,11
+151002,Lima,Yauyos,Alis,3,4,4,1,2025,33,2003,37,6,31,5,32,9
+151003,Lima,Yauyos,Ayauca,3,4,4,2,1997,34,2003,36,30,34,7,34,9
+151004,Lima,Yauyos,Ayaviri,3,4,4,0,0,4,2003,34,0,27,11,28,11
+151005,Lima,Yauyos,Azángaro,3,4,4,0,0,0,0,31,0,0,4,4,10
+151006,Lima,Yauyos,Cacra,3,4,4,0,0,22,2003,41,0,29,6,30,11
+151007,Lima,Yauyos,Carania,3,4,4,0,0,13,2003,29,0,18,3,18,10
+151008,Lima,Yauyos,Catahuasi,3,4,4,0,0,22,2003,58,0,50,7,51,10
+151009,Lima,Yauyos,Chocos,3,4,4,1,2018,7,2003,37,14,27,4,29,11
+151010,Lima,Yauyos,Cochas,3,4,4,0,0,15,2003,39,0,27,8,27,10
+151011,Lima,Yauyos,Colonia,3,4,4,2,2024,25,2003,40,16,32,4,32,10
+151012,Lima,Yauyos,Hongos,3,4,4,1,2024,8,2003,27,4,17,3,17,9
+151013,Lima,Yauyos,Huampara,3,4,4,0,0,19,2003,20,0,17,4,17,10
+151014,Lima,Yauyos,Huancaya,3,4,4,0,0,23,2003,47,0,33,4,34,10
+151015,Lima,Yauyos,Huangascar,3,4,4,1,2024,14,2003,28,6,19,3,19,10
+151016,Lima,Yauyos,Huantan,3,4,4,0,0,25,2003,23,0,15,4,16,8
+151017,Lima,Yauyos,Huañec,3,4,4,0,0,3,2003,23,0,17,5,17,9
+151018,Lima,Yauyos,Laraos,3,4,4,2,2009,39,2003,18,8,8,0,8,9
+151019,Lima,Yauyos,Lincha,3,4,4,0,0,4,2003,54,0,39,11,39,11
+151020,Lima,Yauyos,Madean,3,4,4,0,0,0,0,40,0,0,6,6,11
+151021,Lima,Yauyos,Miraflores,3,4,4,0,0,15,2003,42,0,30,11,33,10
+151022,Lima,Yauyos,Omas,3,4,4,0,0,31,2003,31,0,28,5,29,9
+151023,Lima,Yauyos,Putinza,3,4,4,0,0,4,2003,30,0,28,1,28,9
+151024,Lima,Yauyos,Quinches,3,4,4,1,2008,17,2003,67,61,61,22,62,11
+151025,Lima,Yauyos,Quinocay,3,4,4,1,2020,22,2003,43,24,37,5,37,10
+151026,Lima,Yauyos,San Joaquín,3,4,4,0,0,4,2003,32,0,25,5,25,11
+151027,Lima,Yauyos,San Pedro de Pilas,3,4,4,0,0,4,2003,53,0,47,17,48,8
+151028,Lima,Yauyos,Tanta,3,4,4,0,0,1,2008,23,0,11,5,14,10
+151029,Lima,Yauyos,Tauripampa,3,4,4,1,2020,13,2003,52,18,46,6,46,8
+151030,Lima,Yauyos,Tomás,3,4,4,0,0,18,2003,47,0,33,5,34,10
+151031,Lima,Yauyos,Tupe,3,4,4,0,0,4,2003,26,0,23,1,23,8
+151032,Lima,Yauyos,Viñac,3,4,4,0,0,15,2003,83,0,65,5,65,11
+151033,Lima,Yauyos,Vitis,3,4,4,0,0,8,2003,34,0,23,4,24,11
+160101,Loreto,Maynas,Iquitos,2,0,0,0,0,5,2009,43,0,32,6,33,17
+160102,Loreto,Maynas,Alto Nanay,2,0,0,0,0,1,2022,7,0,2,0,2,5
+160103,Loreto,Maynas,Fernando Lores,2,0,0,1,2023,13,2009,18,6,12,2,12,7
+160104,Loreto,Maynas,Indiana,2,0,0,0,0,9,2009,16,0,9,4,12,10
+160105,Loreto,Maynas,Las Amazonas,2,0,0,0,0,29,2009,12,0,7,0,7,9
+160106,Loreto,Maynas,Mazán,2,0,0,0,0,0,0,14,0,0,3,3,7
+160107,Loreto,Maynas,Napo,2,0,0,2,2022,1,2024,10,0,0,2,2,8
+160108,Loreto,Maynas,Punchana,2,0,0,0,0,10,2009,71,0,68,6,68,13
+160110,Loreto,Maynas,Torres Causana,2,0,0,0,0,1,2022,5,0,1,2,3,4
+160112,Loreto,Maynas,Belén,2,0,0,0,0,9,2009,36,0,32,8,33,12
+160113,Loreto,Maynas,San Juan Bautista,2,0,0,0,0,10,2009,65,0,62,12,62,11
+160201,Loreto,Alto Amazonas,Yurimaguas,2,0,1,2,2020,21,2009,79,50,67,8,67,15
+160202,Loreto,Alto Amazonas,Balsapuerto,2,0,1,0,0,2,2022,28,0,16,2,18,10
+160205,Loreto,Alto Amazonas,Jeberos,2,0,1,0,0,2,2009,6,0,3,0,3,2
+160206,Loreto,Alto Amazonas,Lagunas,2,0,1,1,2019,19,2009,12,2,10,0,11,8
+160210,Loreto,Alto Amazonas,Santa Cruz,2,0,1,0,0,7,2009,12,0,9,1,10,8
+160211,Loreto,Alto Amazonas,Teniente Cesar López Rojas,2,0,1,1,2020,6,2009,13,8,9,0,9,8
+160301,Loreto,Loreto,Nauta,2,0,0,0,0,39,2009,74,0,73,4,73,9
+160302,Loreto,Loreto,Parinari,2,0,0,2,2019,10,2009,17,5,11,1,15,8
+160303,Loreto,Loreto,Tigre,2,0,0,0,0,1,2022,10,0,1,2,3,8
+160304,Loreto,Loreto,Trompeteros,2,0,0,0,0,1,2022,9,0,2,1,3,7
+160305,Loreto,Loreto,Urarinas,2,0,0,0,0,14,2009,29,0,19,2,21,10
+160401,Loreto,Mariscal Ramón Castilla,Ramón Castilla,2,0,0,0,0,22,2009,49,0,39,1,39,9
+160402,Loreto,Mariscal Ramón Castilla,Pebas,2,0,0,0,0,13,2009,28,0,26,1,26,10
+160403,Loreto,Mariscal Ramón Castilla,Yavari,2,0,0,1,2018,9,2009,20,8,13,4,13,11
+160404,Loreto,Mariscal Ramón Castilla,San Pablo,2,0,0,0,0,12,2009,32,0,31,0,31,8
+160501,Loreto,Requena,Requena,2,1,1,0,0,21,2009,31,0,25,0,25,10
+160502,Loreto,Requena,Alto Tapiche,2,1,1,0,0,0,0,4,0,0,0,0,4
+160503,Loreto,Requena,Capelo,2,1,1,0,0,10,2009,7,0,4,4,6,5
+160504,Loreto,Requena,Emilio San Martín,2,1,1,0,0,19,2009,7,0,5,1,5,6
+160505,Loreto,Requena,Maquia,2,1,1,0,0,34,2009,20,0,12,0,12,8
+160506,Loreto,Requena,Puinahua,2,1,1,0,0,17,2009,29,0,10,2,11,9
+160507,Loreto,Requena,Saquena,2,1,1,1,2020,12,2009,23,6,13,7,17,8
+160508,Loreto,Requena,Soplin,2,1,1,0,0,1,2022,8,0,2,1,3,6
+160509,Loreto,Requena,Tapiche,2,1,1,0,0,1,2009,5,0,3,0,3,3
+160510,Loreto,Requena,Jenaro Herrera,2,1,1,0,0,7,2009,16,0,15,1,15,7
+160511,Loreto,Requena,Yaquerana,2,1,1,0,0,0,0,4,0,0,0,0,4
+160601,Loreto,Ucayali,Contamana,2,0,2,2,2009,46,2009,55,23,46,6,46,15
+160602,Loreto,Ucayali,Inahuaya,2,0,2,0,0,6,2009,14,0,7,3,9,9
+160603,Loreto,Ucayali,Padre Marquez,2,0,2,1,2026,22,2007,18,0,12,1,12,8
+160604,Loreto,Ucayali,Pampa Hermosa,2,0,2,2,2019,10,2009,17,1,12,2,12,8
+160605,Loreto,Ucayali,Sarayacu,2,0,2,0,0,43,2009,37,0,11,4,14,10
+160606,Loreto,Ucayali,Vargas Guerra,2,0,2,0,0,8,2009,14,0,11,3,12,9
+160701,Loreto,Datem del Marañón,Barranca,2,0,0,0,0,0,0,11,0,0,1,1,7
+160702,Loreto,Datem del Marañón,Cahuapanas,2,0,0,0,0,0,0,7,0,0,0,0,5
+160703,Loreto,Datem del Marañón,Manseriche,2,0,0,0,0,2,2022,30,0,9,1,10,10
+160704,Loreto,Datem del Marañón,Morona,2,0,0,0,0,0,0,8,0,0,0,0,6
+160705,Loreto,Datem del Marañón,Pastaza,2,0,0,0,0,1,2022,13,0,5,0,5,7
+160706,Loreto,Datem del Marañón,Andoas,2,0,0,0,0,2,2020,13,0,8,1,9,9
+160801,Loreto,Putumayo,Putumayo,1,0,1,0,0,3,2022,13,0,2,1,3,7
+160802,Loreto,Putumayo,Rosa Panduro,1,0,1,0,0,0,0,6,0,0,1,1,5
+160803,Loreto,Putumayo,Teniente Manuel Clavero,1,0,1,0,0,0,0,10,0,0,1,1,6
+160804,Loreto,Putumayo,Yaguas,1,0,1,0,0,0,0,6,0,0,1,1,4
+170101,Madre de Dios,Tambopata,Tambopata,0,0,0,2,2019,35,2003,108,21,66,0,66,19
+170102,Madre de Dios,Tambopata,Inambari,0,0,0,1,2019,50,2003,65,20,60,0,60,14
+170103,Madre de Dios,Tambopata,Las Piedras,0,0,0,0,0,21,2003,83,0,35,0,35,13
+170104,Madre de Dios,Tambopata,Laberinto,0,0,0,0,0,6,2003,63,0,42,0,42,13
+170201,Madre de Dios,Manu,Manu,0,0,0,0,0,54,2003,92,0,86,0,86,12
+170202,Madre de Dios,Manu,Fitzcarrald,0,0,0,0,0,14,2014,72,0,52,0,52,13
+170203,Madre de Dios,Manu,Madre de Dios,0,0,0,0,0,2,2003,68,0,24,0,24,13
+170204,Madre de Dios,Manu,Huepetuhe,0,0,0,1,2020,8,2003,31,6,28,0,28,11
+170301,Madre de Dios,Tahuamanu,Iñapari,0,0,0,0,0,15,2003,41,0,19,0,19,12
+170302,Madre de Dios,Tahuamanu,Iberia,0,0,0,0,0,8,2003,55,0,21,0,21,13
+170303,Madre de Dios,Tahuamanu,Tahuamanu,0,0,0,0,0,7,2003,26,0,19,0,19,9
+180101,Moquegua,Mariscal Nieto,Moquegua,0,1,3,1,2018,86,2003,47,12,29,3,29,14
+180102,Moquegua,Mariscal Nieto,Carumas,0,1,3,0,0,93,2003,76,0,54,1,54,11
+180103,Moquegua,Mariscal Nieto,Cuchumbaya,0,1,3,1,2024,18,2003,48,14,29,1,29,11
+180104,Moquegua,Mariscal Nieto,Samegua,0,1,3,0,0,15,2013,28,0,14,4,14,11
+180105,Moquegua,Mariscal Nieto,San Cristóbal,0,2,5,0,0,35,2003,51,0,27,1,27,13
+180106,Moquegua,Mariscal Nieto,Torata,0,1,3,3,2018,198,2003,63,30,41,3,41,15
+180107,Moquegua,Mariscal Nieto,San Antonio,0,1,3,0,0,0,0,30,0,0,0,0,5
+180201,Moquegua,General Sánchez Cerro,Omate,1,2,4,0,0,35,2003,89,0,32,3,32,11
+180202,Moquegua,General Sánchez Cerro,Chojata,1,1,3,2,2023,52,2003,67,12,46,6,46,12
+180203,Moquegua,General Sánchez Cerro,Coalaque,1,1,3,4,2011,39,2003,70,34,43,6,43,12
+180204,Moquegua,General Sánchez Cerro,Ichuña,1,1,3,0,0,67,2003,81,0,55,3,55,13
+180205,Moquegua,General Sánchez Cerro,La Capilla,1,1,3,3,2022,41,2003,22,9,18,2,18,12
+180206,Moquegua,General Sánchez Cerro,Lloque,1,2,4,0,0,23,2003,57,0,41,5,41,13
+180207,Moquegua,General Sánchez Cerro,Matalaque,1,1,3,4,2017,70,2003,62,32,37,5,38,14
+180208,Moquegua,General Sánchez Cerro,Puquina,1,2,4,0,0,52,2003,96,0,31,4,33,12
+180209,Moquegua,General Sánchez Cerro,Quinistaquillas,1,1,3,1,2022,45,2003,25,13,25,6,25,10
+180210,Moquegua,General Sánchez Cerro,Ubinas,1,1,3,24,2008,97,2003,82,38,63,6,63,15
+180211,Moquegua,General Sánchez Cerro,Yunga,1,1,3,0,0,19,2003,61,0,37,5,37,13
+180301,Moquegua,Ilo,Ilo,0,0,1,0,0,14,2013,22,0,16,0,16,10
+180302,Moquegua,Ilo,El Algarrobal,0,1,2,0,0,26,2013,19,0,12,0,12,10
+180303,Moquegua,Ilo,Pacocha,0,1,2,1,2020,34,2003,23,4,11,3,11,8
+190101,Pasco,Pasco,Chaupimarca,2,2,2,2,2009,4,2003,181,97,148,25,148,18
+190102,Pasco,Pasco,Huachón,2,2,2,3,2015,43,2003,203,141,169,69,169,13
+190103,Pasco,Pasco,Huariaca,2,2,2,1,2019,45,2003,194,80,131,17,131,16
+190104,Pasco,Pasco,Huayllay,2,2,2,0,0,32,2003,245,0,111,49,128,14
+190105,Pasco,Pasco,Ninacaca,2,2,2,0,0,24,2003,108,0,60,14,60,13
+190106,Pasco,Pasco,Pallanchacra,2,2,2,0,0,21,2003,176,0,120,24,120,16
+190107,Pasco,Pasco,Paucartambo,2,2,2,0,0,111,2003,320,0,258,67,258,16
+190108,Pasco,Pasco,San Francisco de Asis de Yarusyacán,2,2,2,0,0,27,2003,127,0,95,24,95,13
+190109,Pasco,Pasco,Simón Bolívar,2,2,2,0,0,17,2003,139,0,93,25,93,13
+190110,Pasco,Pasco,Ticlacayán,2,2,2,2,2009,23,2003,242,144,144,23,157,14
+190111,Pasco,Pasco,Tinyahuarco,2,2,2,0,0,4,2003,137,0,92,12,92,13
+190112,Pasco,Pasco,Vicco,2,2,2,0,0,4,2003,96,0,47,5,47,12
+190113,Pasco,Pasco,Yanacancha,2,2,2,2,2011,44,2003,182,91,135,26,135,17
+190201,Pasco,Daniel Alcides Carrión,Yanahuanca,2,1,2,3,2012,98,2003,491,262,401,41,401,17
+190202,Pasco,Daniel Alcides Carrión,Chacayán,2,1,2,4,2019,19,2003,232,83,169,28,169,12
+190203,Pasco,Daniel Alcides Carrión,Goyllarisquizga,2,1,2,0,0,2,2011,79,0,36,15,44,12
+190204,Pasco,Daniel Alcides Carrión,Paucar,2,1,2,1,2016,32,2003,291,155,210,44,210,14
+190205,Pasco,Daniel Alcides Carrión,San Pedro de Pillao,2,1,2,0,0,3,2003,186,0,96,29,107,12
+190206,Pasco,Daniel Alcides Carrión,Santa Ana de Tusi,2,1,2,0,0,28,2003,214,0,170,27,170,13
+190207,Pasco,Daniel Alcides Carrión,Tapuc,2,1,2,0,0,21,2003,203,0,149,21,149,13
+190208,Pasco,Daniel Alcides Carrión,Vilcabamba,2,1,2,0,0,3,2018,179,0,101,17,109,13
+190301,Pasco,Oxapampa,Oxapampa,2,1,4,2,2019,27,2003,84,51,73,4,73,15
+190302,Pasco,Oxapampa,Chontabamba,2,1,4,0,0,50,2003,181,0,158,36,158,13
+190303,Pasco,Oxapampa,Huancabamba,2,1,4,0,0,70,2003,217,0,172,23,172,16
+190304,Pasco,Oxapampa,Palcazu,2,1,4,0,0,55,2003,117,0,114,13,114,15
+190305,Pasco,Oxapampa,Pozuzo,2,1,4,0,0,56,2003,230,0,221,25,221,18
+190306,Pasco,Oxapampa,Puerto Bermúdez,2,1,4,3,2024,56,2003,225,45,219,39,219,15
+190307,Pasco,Oxapampa,Villa Rica,2,1,4,7,2016,130,2003,175,127,161,30,161,17
+190308,Pasco,Oxapampa,Constitución,2,1,4,0,0,0,0,177,0,0,11,11,10
+200101,Piura,Piura,Piura,1,1,9,0,0,3,2009,54,0,42,9,42,13
+200104,Piura,Piura,Castilla,1,1,9,1,2025,4,2009,84,10,76,10,76,12
+200105,Piura,Piura,Catacaos,1,1,9,0,0,3,2009,40,0,35,3,35,13
+200107,Piura,Piura,Cura Mori,1,1,9,0,0,3,2009,68,0,63,2,63,8
+200108,Piura,Piura,El Tallan,1,1,9,0,0,1,2009,21,0,18,2,18,8
+200109,Piura,Piura,La Arena,1,1,9,0,0,3,2009,28,0,26,5,26,9
+200110,Piura,Piura,La Unión,1,1,9,0,0,2,2009,22,0,19,5,19,9
+200111,Piura,Piura,Las Lomas,1,1,9,3,2024,13,2002,73,15,46,12,50,13
+200114,Piura,Piura,Tambo Grande,1,1,9,3,2022,14,2009,312,37,287,64,287,14
+200115,Piura,Piura,Veintiseis de Octubre,1,1,9,0,0,0,0,42,0,0,11,11,12
+200201,Piura,Ayabaca,Ayabaca,1,1,10,5,1999,47,2002,137,80,111,23,111,18
+200202,Piura,Ayabaca,Frías,1,1,10,0,0,34,2003,67,0,48,12,50,13
+200203,Piura,Ayabaca,Jilili,1,1,10,2,2020,9,2002,44,27,43,10,43,13
+200204,Piura,Ayabaca,Lagunas,1,1,10,0,0,12,2002,76,0,57,25,61,13
+200205,Piura,Ayabaca,Montero,1,1,10,4,2021,12,2002,61,28,44,12,44,13
+200206,Piura,Ayabaca,Pacaipampa,1,1,10,2,2021,19,2002,191,89,157,26,157,13
+200207,Piura,Ayabaca,Paimas,1,1,10,7,2020,13,2002,55,31,43,14,46,13
+200208,Piura,Ayabaca,Sapillica,1,1,10,2,2024,8,2002,49,9,37,8,39,11
+200209,Piura,Ayabaca,Sicchez,1,1,10,1,2021,3,2009,61,33,50,14,50,12
+200210,Piura,Ayabaca,Suyo,1,1,10,2,2021,19,2002,54,20,39,18,45,12
+200301,Piura,Huancabamba,Huancabamba,1,3,11,1,2020,87,2003,92,48,82,12,82,17
+200302,Piura,Huancabamba,Canchaque,1,3,11,4,2021,27,2009,62,24,46,11,48,12
+200303,Piura,Huancabamba,El Carmen de la Frontera,1,3,11,0,0,15,2009,72,0,49,22,54,13
+200304,Piura,Huancabamba,Huarmaca,1,3,11,2,2022,103,2007,97,27,76,20,76,15
+200305,Piura,Huancabamba,Lalaquiz,1,3,11,0,0,0,0,41,0,0,8,8,11
+200306,Piura,Huancabamba,San Miguel De El Faique,1,3,12,2,2022,30,2009,80,24,38,13,44,14
+200307,Piura,Huancabamba,Sondor,1,3,11,0,0,32,2009,81,0,61,9,63,12
+200308,Piura,Huancabamba,Sondorillo,1,3,11,1,2021,30,2009,113,49,80,28,85,11
+200401,Piura,Morropón,Chulucanas,1,1,12,0,0,31,2009,88,0,71,8,71,14
+200402,Piura,Morropón,Buenos Aires,1,1,12,1,2024,17,2009,46,12,41,4,41,11
+200403,Piura,Morropón,Chalaco,1,1,12,0,0,2,2009,69,0,52,8,52,12
+200404,Piura,Morropón,La Matanza,1,1,12,0,0,23,2008,63,0,52,17,52,11
+200405,Piura,Morropón,Morropón,1,1,12,0,0,18,2009,56,0,49,5,49,14
+200406,Piura,Morropón,Salitral,1,1,12,1,2022,19,2008,36,15,33,9,33,11
+200407,Piura,Morropón,San Juan de Bigote,1,1,12,1,2023,12,2009,40,12,36,10,36,13
+200408,Piura,Morropón,Santa Catalina de Mossa,1,1,12,3,2021,12,2009,67,31,64,22,64,11
+200409,Piura,Morropón,Santo Domingo,1,1,12,1,2024,12,2009,41,14,32,6,33,12
+200410,Piura,Morropón,Yamango,1,1,12,0,0,9,2009,36,0,32,4,32,9
+200501,Piura,Paita,Paita,1,1,9,2,2022,13,2009,63,10,25,13,32,13
+200502,Piura,Paita,Amotape,1,1,9,0,0,2,2002,12,0,11,2,11,6
+200503,Piura,Paita,Arenal,1,1,9,0,0,0,0,33,0,0,4,4,9
+200504,Piura,Paita,Colán,1,1,9,0,0,2,2009,31,0,12,2,12,10
+200505,Piura,Paita,La Huaca,1,1,9,1,2022,10,2002,25,6,12,5,17,8
+200506,Piura,Paita,Tamarindo,1,1,9,0,0,0,0,15,0,0,2,2,6
+200507,Piura,Paita,Vichayal,1,1,9,0,0,2,2002,32,0,19,2,19,7
+200601,Piura,Sullana,Sullana,1,1,10,1,2019,0,0,73,38,0,19,56,15
+200602,Piura,Sullana,Bellavista,1,1,10,0,0,0,0,33,0,0,4,4,11
+200603,Piura,Sullana,Ignacio Escudero,1,1,10,0,0,6,2002,18,0,13,1,13,6
+200604,Piura,Sullana,Lancones,1,1,10,0,0,16,2002,56,0,46,8,46,14
+200605,Piura,Sullana,Marcavelica,1,1,10,1,2022,11,2002,101,9,89,8,89,13
+200606,Piura,Sullana,Miguel Checa,1,1,10,0,0,3,2002,27,0,14,4,18,9
+200607,Piura,Sullana,Querecotillo,1,1,10,0,0,5,2002,59,0,37,7,40,12
+200608,Piura,Sullana,Salitral,1,1,10,0,0,0,0,26,0,0,2,2,11
+200701,Piura,Talara,Pariñas,1,1,9,0,0,29,2009,44,0,24,0,24,11
+200702,Piura,Talara,El Alto,1,1,9,0,0,11,2008,40,0,25,2,25,9
+200703,Piura,Talara,La Brea,1,1,9,2,2022,19,2002,34,24,30,2,31,9
+200704,Piura,Talara,Lobitos,1,1,9,0,0,12,2009,18,0,12,1,12,9
+200705,Piura,Talara,Los Órganos,1,1,9,0,0,13,2009,21,0,18,2,18,7
+200706,Piura,Talara,Máncora,1,1,9,0,0,11,2009,35,0,21,7,23,14
+200801,Piura,Sechura,Sechura,1,1,9,1,2021,16,2009,54,10,45,3,45,12
+200802,Piura,Sechura,Bellavista de la Unión,1,1,9,0,0,0,0,7,0,0,0,0,3
+200803,Piura,Sechura,Bernal,1,1,9,0,0,2,2009,18,0,16,5,16,8
+200804,Piura,Sechura,Cristo Nos Valga,1,1,9,1,2009,2,2009,34,27,33,3,33,9
+200805,Piura,Sechura,Vice,1,1,9,0,0,3,2009,27,0,12,4,15,10
+200806,Piura,Sechura,Rinconada Llicuar,1,1,9,0,0,0,0,18,0,0,1,1,6
+210101,Puno,Puno,Puno,1,3,4,0,0,18,2003,95,0,42,8,42,16
+210102,Puno,Puno,Acora,1,3,4,0,0,25,2003,144,0,63,5,63,15
+210103,Puno,Puno,Amantani,1,3,4,0,0,0,0,3,0,0,0,0,2
+210104,Puno,Puno,Atuncolla,1,3,4,0,0,3,2003,44,0,23,8,23,10
+210105,Puno,Puno,Capachica,1,3,4,0,0,3,2003,30,0,10,1,10,9
+210106,Puno,Puno,Chucuito,1,3,4,0,0,8,2003,36,0,6,1,7,12
+210107,Puno,Puno,Coata,1,3,4,0,0,0,0,26,0,0,2,2,11
+210108,Puno,Puno,Huata,1,3,4,0,0,2,2003,11,0,7,3,7,5
+210109,Puno,Puno,Mañazo,1,3,4,0,0,11,2003,83,0,54,15,54,13
+210110,Puno,Puno,Paucarcolla,1,3,4,0,0,1,2003,44,0,14,0,14,11
+210111,Puno,Puno,Pichacani,1,3,4,0,0,8,2003,61,0,25,4,25,13
+210112,Puno,Puno,Platería,1,3,4,0,0,6,2003,45,0,2,1,3,9
+210113,Puno,Puno,San Antonio,1,3,4,0,0,16,2003,47,0,29,6,29,11
+210114,Puno,Puno,Tiquillaca,1,3,4,0,0,7,2011,45,0,3,4,7,11
+210115,Puno,Puno,Vilque,1,3,4,0,0,3,2003,51,0,23,4,23,11
+210201,Puno,Azángaro,Azángaro,1,2,3,0,0,15,2003,84,0,36,0,36,13
+210202,Puno,Azángaro,Achaya,1,2,3,0,0,0,0,41,0,0,3,3,8
+210203,Puno,Azángaro,Arapa,1,2,3,0,0,8,2003,27,0,19,1,19,8
+210204,Puno,Azángaro,Asillo,1,2,3,0,0,7,2003,66,0,35,4,35,11
+210205,Puno,Azángaro,Caminaca,1,2,3,0,0,1,2003,28,0,13,0,13,6
+210206,Puno,Azángaro,Chupa,1,2,3,0,0,4,2003,33,0,22,0,22,9
+210207,Puno,Azángaro,José Domingo Choquehuanca,1,2,3,0,0,2,2003,25,0,12,4,12,9
+210208,Puno,Azángaro,Muñani,1,2,3,0,0,12,2003,40,0,24,0,24,7
+210209,Puno,Azángaro,Potoni,1,2,3,0,0,12,2003,76,0,48,4,48,12
+210210,Puno,Azángaro,Samán,1,2,3,0,0,3,2003,24,0,18,2,18,6
+210211,Puno,Azángaro,San Antón,1,2,3,0,0,31,2003,86,0,50,2,50,13
+210212,Puno,Azángaro,San José,1,2,3,0,0,6,2013,17,0,8,0,8,10
+210213,Puno,Azángaro,San Juan de Salinas,1,2,3,0,0,4,2003,28,0,4,0,4,8
+210214,Puno,Azángaro,Santiago de Pupuja,1,2,3,0,0,4,2003,40,0,2,4,6,9
+210215,Puno,Azángaro,Tirapata,1,2,3,0,0,1,2003,17,0,6,0,6,6
+210301,Puno,Carabaya,Macusani,1,3,10,0,0,28,2003,89,0,66,7,66,15
+210302,Puno,Carabaya,Ajoyani,1,3,10,0,0,11,2003,63,0,39,13,39,13
+210303,Puno,Carabaya,Ayapata,1,3,10,2,2009,63,2003,71,26,44,7,44,12
+210304,Puno,Carabaya,Coasa,1,3,10,1,2014,33,2003,78,19,43,8,43,13
+210305,Puno,Carabaya,Corani,1,3,10,1,2024,42,2003,56,1,37,18,37,12
+210306,Puno,Carabaya,Crucero,1,3,10,0,0,12,2003,66,0,34,3,34,16
+210307,Puno,Carabaya,Ituata,1,3,10,2,2024,15,2003,75,16,36,11,41,13
+210308,Puno,Carabaya,Ollachea,1,3,10,1,2012,44,2003,47,17,23,3,23,16
+210309,Puno,Carabaya,San Gaban,1,3,10,1,2021,46,2003,41,15,33,6,33,12
+210310,Puno,Carabaya,Usicayos,1,3,10,0,0,17,2013,48,0,21,7,25,13
+210401,Puno,Chucuito,Juli,1,2,3,1,2011,14,2003,233,51,150,19,150,14
+210402,Puno,Chucuito,Desaguadero,1,2,3,0,0,0,0,49,0,0,4,4,14
+210403,Puno,Chucuito,Huacullani,1,2,3,2,2011,11,2003,83,5,5,2,5,12
+210404,Puno,Chucuito,Kelluyo,1,2,3,0,0,2,2013,61,0,4,2,6,12
+210405,Puno,Chucuito,Pisacoma,1,2,3,0,0,9,2003,73,0,49,10,49,13
+210406,Puno,Chucuito,Pomata,1,2,3,0,0,8,2003,53,0,32,1,32,13
+210407,Puno,Chucuito,Zepita,1,2,3,0,0,2,2003,129,0,6,6,11,11
+210501,Puno,El Collao,Ilave,1,2,3,0,0,5,2003,154,0,112,5,112,16
+210502,Puno,El Collao,Capazo,1,2,3,0,0,4,2003,30,0,13,0,13,14
+210503,Puno,El Collao,Pilcuyo,1,2,3,0,0,1,2013,44,0,5,0,5,12
+210504,Puno,El Collao,Santa Rosa,1,2,3,0,0,22,2003,45,0,20,0,20,15
+210505,Puno,El Collao,Conduriri,1,2,3,0,0,15,2003,79,0,38,1,38,14
+210601,Puno,Huancané,Huancané,1,2,3,0,0,13,2003,118,0,70,11,70,14
+210602,Puno,Huancané,Cojata,1,2,3,0,0,3,2003,21,0,2,2,4,10
+210603,Puno,Huancané,Huatasani,1,2,3,0,0,3,2003,44,0,14,0,14,9
+210604,Puno,Huancané,Inchupalla,1,2,3,0,0,9,2003,23,0,8,2,8,8
+210605,Puno,Huancané,Pusi,1,2,3,0,0,2,2003,79,0,15,14,25,9
+210606,Puno,Huancané,Rosaspata,1,2,3,0,0,3,2003,36,0,22,0,22,11
+210607,Puno,Huancané,Taraco,1,2,3,0,0,4,2003,42,0,27,2,27,9
+210608,Puno,Huancané,Vilque Chico,1,2,3,0,0,17,2003,41,0,22,0,22,10
+210701,Puno,Lampa,Lampa,1,2,3,0,0,10,2003,115,0,54,12,54,14
+210702,Puno,Lampa,Cabanilla,1,2,3,0,0,7,2013,102,0,12,7,18,12
+210703,Puno,Lampa,Calapuja,1,2,3,0,0,6,2003,19,0,6,0,6,9
+210704,Puno,Lampa,Nicasio,1,2,3,0,0,1,2003,32,0,18,0,18,6
+210705,Puno,Lampa,Ocuviri,1,2,3,0,0,15,2003,102,0,69,11,69,13
+210706,Puno,Lampa,Palca,1,2,3,0,0,25,2003,37,0,20,2,20,13
+210707,Puno,Lampa,Paratia,1,2,3,2,2020,11,2003,82,12,61,17,61,16
+210708,Puno,Lampa,Pucará,1,2,3,0,0,5,2003,49,0,30,4,30,12
+210709,Puno,Lampa,Santa Lucía,1,2,3,0,0,27,2003,91,0,58,5,58,14
+210710,Puno,Lampa,Vilavila,1,2,3,0,0,7,2003,67,0,46,12,46,13
+210801,Puno,Melgar,Ayaviri,1,2,3,0,0,16,2003,156,0,91,13,91,13
+210802,Puno,Melgar,Antauta,1,2,3,0,0,27,2003,49,0,22,7,22,11
+210803,Puno,Melgar,Cupi,1,2,3,0,0,4,2003,82,0,13,9,20,12
+210804,Puno,Melgar,Llalli,1,2,3,0,0,5,2003,55,0,32,6,32,11
+210805,Puno,Melgar,Macari,1,2,3,0,0,10,2003,57,0,28,2,28,11
+210806,Puno,Melgar,Nuñoa,1,2,3,0,0,28,2003,194,0,139,35,139,13
+210807,Puno,Melgar,Orurillo,1,2,3,0,0,9,2003,92,0,41,6,41,12
+210808,Puno,Melgar,Santa Rosa,1,2,3,0,0,29,2003,122,0,79,12,79,13
+210809,Puno,Melgar,Umachiri,1,2,3,0,0,6,2003,45,0,24,2,24,12
+210901,Puno,Moho,Moho,1,2,4,0,0,18,2003,140,0,80,19,80,13
+210902,Puno,Moho,Conima,1,2,4,0,0,7,2003,18,0,14,2,14,8
+210903,Puno,Moho,Huayrapata,1,2,4,0,0,3,2003,31,0,18,2,18,12
+210904,Puno,Moho,Tilali,1,2,4,0,0,0,0,16,0,0,0,0,6
+211001,Puno,San Antonio de Putina,Putina,1,2,3,1,2025,33,2003,83,0,53,6,53,14
+211002,Puno,San Antonio de Putina,Ananea,1,2,3,3,2006,18,2003,42,5,22,3,22,16
+211003,Puno,San Antonio de Putina,Pedro Vilca Apaza,1,2,3,0,0,2,2003,36,0,24,3,24,12
+211004,Puno,San Antonio de Putina,Quilcapuncu,1,2,3,0,0,26,2003,47,0,28,6,28,13
+211005,Puno,San Antonio de Putina,Sina,1,2,3,0,0,7,2003,34,0,26,2,26,10
+211101,Puno,San Román,Juliaca,1,2,3,1,2025,8,2003,101,6,49,4,49,17
+211102,Puno,San Román,Cabana,1,2,3,0,0,1,2003,93,0,60,7,60,13
+211103,Puno,San Román,Cabanillas,1,2,3,0,0,28,2003,91,0,50,4,50,14
+211104,Puno,San Román,Caracoto,1,2,3,0,0,1,2018,60,0,29,2,29,11
+211105,Puno,San Román,San Miguel,1,2,3,0,0,0,0,15,0,0,1,1,9
+211201,Puno,Sandia,Sandia,1,3,3,7,2007,35,2003,178,126,144,20,144,14
+211202,Puno,Sandia,Cuyocuyo,1,3,3,1,2012,31,2003,36,15,20,0,20,10
+211203,Puno,Sandia,Limbani,1,3,3,0,0,15,2003,34,0,24,3,24,11
+211204,Puno,Sandia,Patambuco,1,3,3,2,2014,11,2003,99,24,44,3,44,13
+211205,Puno,Sandia,Phara,1,3,3,0,0,7,2003,20,0,5,2,5,12
+211206,Puno,Sandia,Quiaca,1,3,3,1,2021,20,2003,42,20,26,4,27,8
+211207,Puno,Sandia,San Juan del Oro,1,3,3,1,2016,13,2003,103,62,90,16,90,11
+211208,Puno,Sandia,Yanahuaya,1,3,3,0,0,4,2003,41,0,28,3,28,8
+211209,Puno,Sandia,Alto Inambari,1,3,3,1,2007,36,2003,92,70,87,6,87,12
+211210,Puno,Sandia,San Pedro de Putina Punco,1,4,5,3,2014,25,2003,95,69,89,19,89,9
+211301,Puno,Yunguyo,Yunguyo,1,2,3,0,0,1,2013,86,0,14,1,15,10
+211302,Puno,Yunguyo,Anapia,1,2,3,0,0,0,0,9,0,0,0,0,6
+211303,Puno,Yunguyo,Copani,1,2,3,0,0,2,2003,14,0,10,0,10,6
+211304,Puno,Yunguyo,Cuturapi,1,2,3,0,0,0,0,8,0,0,0,0,4
+211305,Puno,Yunguyo,Ollaraya,1,2,3,0,0,0,0,8,0,0,1,1,7
+211306,Puno,Yunguyo,Tinicachi,1,2,3,0,0,0,0,2,0,0,0,0,2
+211307,Puno,Yunguyo,Unicachi,1,2,3,0,0,0,0,13,0,0,0,0,6
+220101,San Martín,Moyobamba,Moyobamba,0,3,3,2,2007,103,2007,78,24,69,2,69,14
+220102,San Martín,Moyobamba,Calzada,0,3,3,1,2025,9,2007,23,2,18,4,18,11
+220103,San Martín,Moyobamba,Habana,0,3,3,0,0,1,2007,14,0,14,1,14,6
+220104,San Martín,Moyobamba,Jepelacio,0,3,3,3,2013,49,2007,30,12,25,5,25,12
+220105,San Martín,Moyobamba,Soritor,0,4,4,6,2007,68,2007,24,11,24,3,24,10
+220106,San Martín,Moyobamba,Yantalo,0,4,4,0,0,8,2007,10,0,9,3,9,5
+220201,San Martín,Bellavista,Bellavista,0,2,2,0,0,26,2007,27,0,25,1,25,10
+220202,San Martín,Bellavista,Alto Biavo,0,2,2,0,0,170,2007,17,0,15,2,15,11
+220203,San Martín,Bellavista,Bajo Biavo,0,2,2,2,2023,73,2007,23,3,22,6,22,10
+220204,San Martín,Bellavista,Huallaga,0,2,2,0,0,16,2007,37,0,34,4,34,11
+220205,San Martín,Bellavista,San Pablo,0,2,2,0,0,38,2007,39,0,37,4,37,12
+220206,San Martín,Bellavista,San Rafael,0,2,2,0,0,2,2007,23,0,22,3,22,11
+220301,San Martín,El Dorado,San José de Sisa,0,2,2,1,2023,16,2007,47,5,43,4,43,12
+220302,San Martín,El Dorado,Agua Blanca,0,2,2,0,0,26,2007,31,0,28,2,28,9
+220303,San Martín,El Dorado,San Martín,0,2,2,0,0,23,2008,36,0,15,5,18,11
+220304,San Martín,El Dorado,Santa Rosa,0,2,2,1,2023,41,2007,37,5,7,7,13,10
+220305,San Martín,El Dorado,Shatoja,0,2,2,0,0,6,2007,12,0,11,1,11,8
+220401,San Martín,Huallaga,Saposoa,0,2,2,0,0,35,2007,36,0,33,2,33,10
+220402,San Martín,Huallaga,Alto Saposoa,0,2,2,1,2024,102,2007,22,6,20,5,20,8
+220403,San Martín,Huallaga,El Eslabón,0,2,2,0,0,13,2007,5,0,5,1,5,3
+220404,San Martín,Huallaga,Piscoyacu,0,2,2,0,0,12,2008,9,0,5,1,5,5
+220405,San Martín,Huallaga,Sacanche,0,2,2,0,0,33,2007,19,0,13,2,13,7
+220406,San Martín,Huallaga,Tingo de Saposoa,0,2,2,0,0,10,2007,11,0,9,1,9,8
+220501,San Martín,Lamas,Lamas,0,3,4,0,0,9,2007,35,0,29,5,29,10
+220502,San Martín,Lamas,Alonso de Alvarado,0,3,4,0,0,5,2008,32,0,10,6,14,11
+220503,San Martín,Lamas,Barranquita,0,3,4,0,0,45,2008,18,0,18,2,18,8
+220504,San Martín,Lamas,Caynarachi,0,3,4,1,2022,43,2007,37,9,36,8,36,9
+220505,San Martín,Lamas,Cuñumbuqui,0,3,4,0,0,32,2007,35,0,32,2,32,11
+220506,San Martín,Lamas,Pinto Recodo,0,3,4,0,0,23,2007,34,0,32,5,32,8
+220507,San Martín,Lamas,Rumisapa,0,3,4,0,0,6,2007,9,0,8,2,8,6
+220508,San Martín,Lamas,San Roque de Cumbaza,0,3,4,0,0,24,2007,19,0,19,4,19,9
+220509,San Martín,Lamas,Shanao,0,3,4,0,0,6,2007,19,0,5,2,7,9
+220510,San Martín,Lamas,Tabalosos,0,3,4,2,2023,35,2007,30,6,27,5,27,11
+220511,San Martín,Lamas,Zapatero,0,3,4,3,2020,51,2007,39,17,37,5,37,11
+220601,San Martín,Mariscal Cáceres,Juanjuí,0,2,2,0,0,56,2007,30,0,22,2,22,10
+220602,San Martín,Mariscal Cáceres,Campanilla,0,2,2,0,0,187,2007,31,0,28,4,28,10
+220603,San Martín,Mariscal Cáceres,Huicungo,0,2,2,1,2022,575,2007,33,14,31,1,31,11
+220604,San Martín,Mariscal Cáceres,Pachiza,0,2,2,0,0,90,2007,32,0,27,1,27,12
+220605,San Martín,Mariscal Cáceres,Pajarillo,0,2,2,0,0,44,2007,26,0,23,2,23,11
+220701,San Martín,Picota,Picota,0,2,2,0,0,22,2007,44,0,42,6,42,15
+220702,San Martín,Picota,Buenos Aires,0,2,2,0,0,25,2007,18,0,16,1,16,9
+220703,San Martín,Picota,Caspisapa,0,2,2,0,0,2,2007,8,0,7,2,7,5
+220704,San Martín,Picota,Pilluana,0,2,2,0,0,14,2007,15,0,14,0,14,7
+220705,San Martín,Picota,Pucacaca,0,2,2,0,0,11,2007,39,0,36,3,36,12
+220706,San Martín,Picota,San Cristóbal,0,2,2,0,0,6,2008,19,0,18,3,18,12
+220707,San Martín,Picota,San Hilarion,0,2,3,0,0,7,2007,29,0,27,4,27,13
+220708,San Martín,Picota,Shamboyacu,0,2,2,6,2007,26,2007,50,23,47,8,47,10
+220709,San Martín,Picota,Tingo de Ponasa,0,2,2,0,0,23,2007,39,0,37,4,37,10
+220710,San Martín,Picota,Tres Unidos,0,2,2,2,2012,7,2007,28,8,13,0,13,11
+220801,San Martín,Rioja,Rioja,0,3,3,1,2005,11,2007,26,7,20,4,20,13
+220802,San Martín,Rioja,Awajun,0,3,3,0,0,27,2007,41,0,31,0,31,8
+220803,San Martín,Rioja,Elias Soplin Vargas,0,3,3,0,0,3,2007,15,0,15,3,15,6
+220804,San Martín,Rioja,Nueva Cajamarca,0,3,3,0,0,17,2007,23,0,21,4,21,10
+220805,San Martín,Rioja,Pardo Miguel,0,3,3,1,2016,97,2007,28,2,26,10,26,10
+220806,San Martín,Rioja,Posic,0,3,3,0,0,1,2007,7,0,6,4,7,5
+220807,San Martín,Rioja,San Fernando,0,3,3,0,0,7,2007,13,0,13,1,13,8
+220808,San Martín,Rioja,Yorongos,0,3,3,0,0,17,2007,14,0,11,3,11,10
+220809,San Martín,Rioja,Yuracyacu,0,3,3,0,0,3,2007,24,0,23,4,23,10
+220901,San Martín,San Martín,Tarapoto,0,3,2,0,0,17,2007,35,0,32,3,32,14
+220902,San Martín,San Martín,Alberto Leveau,0,2,2,0,0,8,2007,4,0,2,1,2,4
+220903,San Martín,San Martín,Cacatachi,0,2,2,0,0,11,2007,22,0,21,1,21,9
+220904,San Martín,San Martín,Chazuta,0,2,3,0,0,36,2007,36,0,35,5,35,11
+220905,San Martín,San Martín,Chipurana,0,2,2,0,0,5,2008,13,0,12,1,12,7
+220906,San Martín,San Martín,El Porvenir,0,2,3,1,2020,3,2008,19,15,18,2,18,8
+220907,San Martín,San Martín,Huimbayoc,0,2,2,0,0,57,2008,18,0,17,1,17,5
+220908,San Martín,San Martín,Juan Guerra,0,2,2,0,0,27,2007,16,0,15,0,15,9
+220909,San Martín,San Martín,La Banda de Shilcayo,0,3,2,0,0,44,2007,32,0,28,2,28,9
+220910,San Martín,San Martín,Morales,0,2,2,0,0,10,2007,28,0,23,2,23,9
+220911,San Martín,San Martín,Papaplaya,0,2,3,0,0,1,2008,16,0,15,2,15,9
+220912,San Martín,San Martín,San Antonio,0,2,2,2,2020,10,2007,18,4,14,2,14,10
+220913,San Martín,San Martín,Sauce,0,2,3,3,2019,20,2007,15,8,9,2,11,8
+220914,San Martín,San Martín,Shapaja,0,2,2,0,0,47,2007,13,0,11,0,11,6
+221001,San Martín,Tocache,Tocache,0,2,4,0,0,65,2008,44,0,42,3,42,12
+221002,San Martín,Tocache,Nuevo Progreso,0,2,4,1,2023,17,2008,60,13,57,5,57,13
+221003,San Martín,Tocache,Pólvora,0,2,4,0,0,136,2008,46,0,44,2,44,11
+221004,San Martín,Tocache,Shunte,0,2,4,0,0,75,2008,11,0,11,0,11,6
+221005,San Martín,Tocache,Uchiza,0,2,4,0,0,31,2008,57,0,50,9,50,12
+221006,San Martín,Tocache,Santa Lucía,0,2,4,0,0,0,0,14,0,0,0,0,5
+230101,Tacna,Tacna,Tacna,2,2,6,0,0,12,2015,21,0,12,3,12,11
+230102,Tacna,Tacna,Alto de la Alianza,2,2,6,1,2016,9,2015,8,4,6,3,6,6
+230103,Tacna,Tacna,Calana,2,2,6,0,0,3,2015,12,0,7,2,7,7
+230104,Tacna,Tacna,Ciudad Nueva,2,2,6,2,2017,6,2015,14,4,4,2,4,6
+230105,Tacna,Tacna,Inclan,2,2,6,0,0,27,2003,38,0,30,4,30,8
+230106,Tacna,Tacna,Pachia,2,2,6,0,0,33,2003,40,0,21,3,21,12
+230107,Tacna,Tacna,Palca,2,2,6,3,2019,27,2003,53,12,15,2,15,14
+230108,Tacna,Tacna,Pocollay,2,2,6,0,0,5,2015,15,0,7,2,7,8
+230109,Tacna,Tacna,Sama,2,2,6,0,0,40,2003,58,0,35,9,35,10
+230110,Tacna,Tacna,Coronel Gregorio Albarracin Lanchipa,2,2,6,0,0,5,2015,16,0,14,3,14,9
+230111,Tacna,Tacna,La Yarada los Palos,2,2,6,0,0,0,0,7,0,0,1,1,5
+230201,Tacna,Candarave,Candarave,2,2,6,0,0,64,2003,55,0,36,5,36,13
+230202,Tacna,Candarave,Cairani,2,2,6,0,0,13,2003,27,0,11,4,11,13
+230203,Tacna,Candarave,Camilaca,2,2,6,3,2001,34,2003,36,14,20,4,20,13
+230204,Tacna,Candarave,Curibaya,2,2,6,0,0,14,2003,18,0,8,4,9,9
+230205,Tacna,Candarave,Huanuara,2,2,6,0,0,17,2003,27,0,15,3,15,11
+230206,Tacna,Candarave,Quilahuani,2,2,6,2,2018,14,2003,45,24,33,2,33,14
+230301,Tacna,Jorge Basadre,Locumba,2,2,12,1,2019,44,2003,32,4,22,4,22,12
+230302,Tacna,Jorge Basadre,Ilabaya,2,2,12,9,2016,129,2003,43,22,27,6,27,14
+230303,Tacna,Jorge Basadre,Ite,2,2,12,0,0,36,2003,27,0,22,5,22,9
+230401,Tacna,Tarata,Tarata,2,2,6,0,0,23,2003,60,0,34,12,34,14
+230402,Tacna,Tarata,Heroes Albarracin Chucatamani,2,2,6,0,0,12,2003,40,0,33,5,33,9
+230403,Tacna,Tarata,Estique,2,2,6,0,0,34,2003,22,0,11,3,11,11
+230404,Tacna,Tarata,Estique-Pampa,2,2,6,0,0,8,2015,23,0,12,4,12,13
+230405,Tacna,Tarata,Sitajara,2,2,6,0,0,13,2003,25,0,9,1,9,12
+230406,Tacna,Tarata,Susapaya,2,2,6,0,0,5,2015,46,0,20,2,21,12
+230407,Tacna,Tarata,Tarucachi,2,2,6,0,0,3,2015,32,0,13,4,13,13
+230408,Tacna,Tarata,Ticaco,2,2,6,0,0,8,2015,45,0,18,5,18,13
+240101,Tumbes,Tumbes,Tumbes,10,2,6,0,0,17,2007,132,0,124,31,124,24
+240102,Tumbes,Tumbes,Corrales,10,2,6,0,0,33,2007,67,0,66,18,66,15
+240103,Tumbes,Tumbes,La Cruz,10,2,6,0,0,17,1998,80,0,70,12,72,15
+240104,Tumbes,Tumbes,Pampas de Hospital,10,2,6,0,0,25,2007,129,0,113,21,116,16
+240105,Tumbes,Tumbes,San Jacinto,10,2,6,0,0,74,2007,191,0,182,59,183,17
+240106,Tumbes,Tumbes,San Juan de La Virgen,10,2,6,0,0,18,2007,77,0,77,11,77,16
+240201,Tumbes,Contralmirante Villar,Zorritos,10,2,6,0,0,138,1998,71,0,61,15,65,13
+240202,Tumbes,Contralmirante Villar,Casitas,10,2,6,0,0,43,1998,133,0,123,14,123,13
+240203,Tumbes,Contralmirante Villar,Canoas de Punta Sal,10,2,6,1,2022,0,0,48,15,0,9,24,11
+240301,Tumbes,Zarumilla,Zarumilla,10,2,6,0,0,5,1998,93,0,91,20,91,15
+240302,Tumbes,Zarumilla,Aguas Verdes,10,2,6,0,0,7,1998,75,0,74,5,74,12
+240303,Tumbes,Zarumilla,Matapalo,10,2,6,0,0,8,1998,70,0,68,19,68,13
+240304,Tumbes,Zarumilla,Papayal,10,2,6,0,0,21,1998,77,0,76,13,76,13
+250101,Ucayali,Coronel Portillo,Calleria,0,1,1,0,0,48,2007,131,0,103,3,103,14
+250102,Ucayali,Coronel Portillo,Campoverde,0,1,1,0,0,8,2007,300,0,103,8,103,13
+250103,Ucayali,Coronel Portillo,Iparia,0,1,1,0,0,49,2007,41,0,38,2,38,10
+250104,Ucayali,Coronel Portillo,Masisea,0,1,1,0,0,22,2007,54,0,53,2,53,12
+250105,Ucayali,Coronel Portillo,Yarinacocha,0,1,1,0,0,23,2007,137,0,81,12,81,13
+250106,Ucayali,Coronel Portillo,Nueva Requena,0,1,1,0,0,21,2007,114,0,65,1,65,13
+250107,Ucayali,Coronel Portillo,Manantay,0,1,1,0,0,0,0,116,0,0,4,4,11
+250201,Ucayali,Atalaya,Raymondi,0,0,0,0,0,19,2007,247,0,186,0,186,14
+250202,Ucayali,Atalaya,Sepahua,0,0,0,1,2020,0,0,31,5,0,0,5,7
+250203,Ucayali,Atalaya,Tahuania,0,0,0,0,0,43,2007,63,0,56,0,56,12
+250204,Ucayali,Atalaya,Yurua,0,0,0,0,0,0,0,2,0,0,0,0,1
+250301,Ucayali,Padre Abad,Padre Abad,0,0,0,1,2008,141,2007,143,57,139,0,139,20
+250302,Ucayali,Padre Abad,Irazola,0,0,0,0,0,36,2007,121,0,116,0,116,14
+250303,Ucayali,Padre Abad,Curimaná,0,0,0,0,0,16,2007,103,0,67,0,67,10
+250304,Ucayali,Padre Abad,Neshuya,0,0,0,0,0,0,0,92,0,0,0,0,8
+250305,Ucayali,Padre Abad,Alexander von Humboldt,0,0,0,0,0,0,0,100,0,0,0,0,9
+250306,Ucayali,Padre Abad,Huipoca,0,0,0,1,2018,0,0,43,16,0,0,16,4
+250307,Ucayali,Padre Abad,Boqueron,0,0,0,1,2018,0,0,35,20,0,0,20,5
+250401,Ucayali,Purús,Purús,0,0,0,0,0,57,2007,49,0,49,0,49,8

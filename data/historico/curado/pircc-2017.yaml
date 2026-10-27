@@ -1,0 +1,40 @@
+# Niño Costero 2017: los diez distritos con más viviendas inhabitables o colapsadas según el Plan Integral
+# de Reconstrucción con Cambios (versión para consulta del 18 de agosto de 2017, tabla 27, con datos del
+# Ministerio de Vivienda al 8 de agosto de 2017). «Viviendas» = inhabitables (daños estructurales
+# recuperables) + colapsadas (daños irreparables); el plan no las separa por distrito.
+#
+# Formato (docs/memoria-desastres.md, «Registros curados»): cada registro necesita Id, Date, DangerType,
+# el lugar (Ubigeo o nombres), Fuente (https) y FuenteCita; lo que va en «comun» se aplica a todos.
+comun:
+  Date: "2017-03"
+  PrecisionFecha: mes
+  DangerType: Inundacion
+  PeligroFuente: "El Niño Costero (inundaciones y movimientos en masa)"
+  Fuente: https://elregionalpiura.com.pe/web-pdf/Plan-Integral-de-Reconstruccion-con-Cambios-18082017.pdf
+  FuenteCita: >-
+    Autoridad para la Reconstrucción con Cambios, Plan Integral de Reconstrucción con Cambios, versión para
+    consulta de gobiernos regionales y locales (18 de agosto de 2017), tabla 27 «Distritos más afectados a
+    nivel nacional» (fuente: Ministerio de Vivienda, Construcción y Saneamiento, al 08/08/2017). Copia
+    publicada por El Regional de Piura.
+  Licencia: Documento público del Estado peruano
+registros:
+  - {Id: pircc-2017-catacaos, Departamento: Piura, Provincia: Piura, Distrito: Catacaos, ViviendasAfectadas: 2996,
+     Descripción: "Niño Costero 2017: 2 996 viviendas inhabitables o colapsadas, el distrito con más daños de vivienda del país (inversión estimada S/ 86,9 millones)."}
+  - {Id: pircc-2017-morrope, Departamento: Lambayeque, Provincia: Lambayeque, Distrito: Mórrope, ViviendasAfectadas: 1554,
+     Descripción: "Niño Costero 2017: 1 554 viviendas inhabitables o colapsadas (inversión estimada S/ 55,6 millones)."}
+  - {Id: pircc-2017-castilla, Departamento: Piura, Provincia: Piura, Distrito: Castilla, ViviendasAfectadas: 1650,
+     Descripción: "Niño Costero 2017: 1 650 viviendas inhabitables o colapsadas (inversión estimada S/ 55,4 millones)."}
+  - {Id: pircc-2017-mochumi, Departamento: Lambayeque, Provincia: Lambayeque, Distrito: Mochumí, ViviendasAfectadas: 1418,
+     Descripción: "Niño Costero 2017: 1 418 viviendas inhabitables o colapsadas (inversión estimada S/ 50,1 millones)."}
+  - {Id: pircc-2017-chulucanas, Departamento: Piura, Provincia: Morropón, Distrito: Chulucanas, ViviendasAfectadas: 1407,
+     Descripción: "Niño Costero 2017: 1 407 viviendas inhabitables o colapsadas (inversión estimada S/ 46,2 millones)."}
+  - {Id: pircc-2017-paita, Departamento: Piura, Provincia: Paita, Distrito: Paita, ViviendasAfectadas: 1371,
+     Descripción: "Niño Costero 2017: 1 371 viviendas inhabitables o colapsadas (inversión estimada S/ 46,0 millones)."}
+  - {Id: pircc-2017-jlo, Departamento: Lambayeque, Provincia: Chiclayo, Distrito: José Leonardo Ortiz, ViviendasAfectadas: 1211,
+     Descripción: "Niño Costero 2017: 1 211 viviendas inhabitables o colapsadas (inversión estimada S/ 42,2 millones)."}
+  - {Id: pircc-2017-jayanca, Departamento: Lambayeque, Provincia: Lambayeque, Distrito: Jayanca, ViviendasAfectadas: 1150,
+     Descripción: "Niño Costero 2017: 1 150 viviendas inhabitables o colapsadas (inversión estimada S/ 40,8 millones)."}
+  - {Id: pircc-2017-monsefu, Departamento: Lambayeque, Provincia: Chiclayo, Distrito: Monsefú, ViviendasAfectadas: 1083,
+     Descripción: "Niño Costero 2017: 1 083 viviendas inhabitables o colapsadas (inversión estimada S/ 38,4 millones)."}
+  - {Id: pircc-2017-tucume, Departamento: Lambayeque, Provincia: Lambayeque, Distrito: Túcume, ViviendasAfectadas: 1071,
+     Descripción: "Niño Costero 2017: 1 071 viviendas inhabitables o colapsadas (inversión estimada S/ 37,3 millones)."}
