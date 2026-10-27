@@ -230,9 +230,13 @@ página se guarda el fragmento donde aparecen los términos (`tools.build_histor
 varias notas de la página, así que se lee solo el texto alrededor de cada mención del Perú, y se descartan los Perú
 y las Lima de EE. UU. (las inundaciones del Wabash en Peru, Indiana, en 1913, llenan las búsquedas), la geografía de
 los libros de texto («it never rains in Peru»), los sismos, maremotos y volcanes (el alud de Yungay de 1970 lo desató
-un sismo) y lo que no dice que algo pasó. El lugar es el primero que nombra la nota, con el mismo ubicador (los nombres
-de la época, como Huaras o Payta, se cambian por los de hoy, y «town of» por «ciudad de»); el del encabezado del cable
-(«LIMA, Peru, March 20») no cuenta, porque dice desde dónde se envió. La fecha es la de publicación
+un sismo), los derrumbes dentro de minas sin lluvias de por medio (Morococha, 1928) y lo que no dice que algo pasó.
+El lugar es el primero que nombra la nota, con el mismo ubicador (los nombres de la época, como Huaras o Payta, y los
+del OCR, como Pavta, se cambian por los de hoy, y «town of» por «ciudad de»). No cuentan el encabezado del cable
+(«LIMA, Peru, March 20», «Lima Peru Fob 28», «LIMA, Peru (AP)»), porque dice desde dónde se envió, ni Lima o el Callao
+como quien informa («advices from Lima», «reports reaching Lima»), porque por ahí pasaban todos los cables; sin fecha
+ni agencia, «Piura, Peru» es un lugar de la nota. Así, «landslides in the interior… reports reaching Lima said» no
+entra por no tener lugar, en vez de quedar en Lima. La fecha es la de publicación
 (`FechaTipo = publicacion`) y la confianza, baja: el OCR tiene errores («lea» por Ica) y una página que no se pudo
 ubicar no entra.
 

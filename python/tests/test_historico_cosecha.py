@@ -238,12 +238,31 @@ def test_hemeroteca_keeps_peru_disasters_and_drops_the_rest(T, cal):
               "stand there today.", fecha="1931-03-21"),
         _page("Fire at Santiago, Chile, caused a loss of $1,000,000.", fecha="1909-04-10"),
         {**_page("x", fecha="1925-03-23"), "fragmento": None},
+        # El encabezado sin comas y con el mes deformado por el OCR también es del cable.
+        _page("... caught by a [[tag]]Landslide[[/tag]] Lima [[tag]]Peru[[/tag]] Fob 28 Forty officers were caught "
+              "by a landslide near Matucana and their train was cut off.", fecha="1908-02-28"),
+        # Lima solo como quien informa: sin lugar.
+        _page("[[tag]]Landslides[[/tag]] in Peru LIMA. [[tag]]Peru[[/tag]], Feb. 24 (AP).— Landslides caused by heavy "
+              "rains in the interior have taken 14 lives, reports reaching Lima yesterday said.", fecha="1958-02-24"),
+        _page("TERRIBLE [[tag]]INUNDATION[[/tag]] IN [[tag]]PERU[[/tag]]. Pavta, Pern, March 16.—It has rained heavier "
+              "than ever. In the towns of Pavta, San Jose and Lambayeque it has done an immense amount of damage.",
+              fecha="1871-04-29"),
+        # «Piura, Peru» sin fecha es el lugar de la nota, no un encabezado.
+        _page("The town of Piura, [[tag]]Peru[[/tag]], was [[tag]]flooded[[/tag]] and many houses were destroyed.",
+              fecha="1925-03-30"),
+        _page("Eighty miners were reported killed when a gallery of the mine under Lake San Francisco, near Morococha, "
+              "[[tag]]Peru[[/tag]], collapsed. The slope caved in, bringing a rush of muddy debris "
+              "([[tag]]landslide[[/tag]]).", fecha="1928-12-08"),
     ]}
     sk = Counter()
     rows = list(C.hemeroteca(doc, T, cal, archive="Chronicling America", skipped=sk))
     assert sk == {"Perú o Lima de EE. UU.": 1, "descripción general del país": 1, "sismo, maremoto o volcán": 1,
-                  "sin lugar": 1, "no dice que algo pasó": 1, "no nombra el Perú": 1, "fragmento aún no leído": 1}
-    a, b = rows
+                  "sin lugar": 2, "no dice que algo pasó": 1, "no nombra el Perú": 1, "fragmento aún no leído": 1,
+                  "accidente minero": 1}
+    a, b, c, d, e = rows
+    assert c["Ubigeo"] == T.resolve("Lima", "Huarochiri", "Matucana")
+    assert d["Ubigeo"] == T.resolve("Piura", "Paita")  # «ciudad de Paita»: el ubicador da la provincia
+    assert (e["Ubigeo"], e["DangerType"]) == (T.resolve("Piura", "Piura"), "Inundacion")
     # El primer lugar que nombra la nota (Conchucos), no el del prefecto (Huaraz) ni el del cable (Lima).
     assert (a["Ubigeo"], a["DangerType"], a["Date"]) == (T.resolve("Ancash", "Pallasca", "Conchucos"), "Huayco/Alud",
                                                         "1962-03-01")

@@ -758,7 +758,8 @@ ARCHIVE_HAZARDS = [
 #: Algo pasó: daño, muertes, gente sin casa, el tren detenido.
 _ARCHIVE_DAMAGE = re.compile(
     r"damag|destroy|destruct|devastat|disast|havoc|\bruin|wreck|swept away|washed away|carried away|wiped out|"
-    r"\bkill|\bdead\b|\bdeaths?\b|\bdied\b|perish|drown|lives (?:were )?lost|loss of life|victims|injur|missing|"
+    r"\bkill|\bdead\b|\bdeaths?\b|\bdied\b|perish|drown|lives (?:were )?lost|(?:took|taken|claimed) [^.]{0,15}\blives\b|"
+    r"loss of life|victims|injur|missing|"
     r"homeless|refugees|\bfled\b|buried|inundated|flooded|\blosses\b|\bloss\b|estimated at|wiped off|survivors|"
     r"common grave|\bbodies\b|rescue|relief|sufferers|distress|"
     r"traffic|interrupt|suspended|cut off|isolated|blocked|washouts?|washed out|famine|starv|"
@@ -767,19 +768,31 @@ _ARCHIVE_DAMAGE = re.compile(
 _ARCHIVE_STRONG = re.compile(r"destroy|swept away|washed away|wiped out|\bkill|\bdead\b|drown|perish|homeless|buried", re.I)
 _ARCHIVE_NOT = re.compile(r"\bno (?:serious |great |disastrous |destructive )?(?:damage|rains?|floods?)\b|"
                           r"without (?:any )?damage", re.I)
-#: Encabezado del cable («LIMA, Peru, March 20.—»): dice desde dónde se envió, no dónde pasó.
-_DATELINE = re.compile(r"\b[A-Z][A-Za-z]+(?:\s+[A-Z][a-z]+)?[,.]\s*(?:Peru|PERU|P[ée]rou)\b[,.]?\s*"
-                       r"(?:\((?:AP|UP|UPI|INS)\)\.?\s*)?(?:(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s*\d{1,2}"
-                       r"(?:\s*\((?:AP|UP|UPI|INS)\))?)?[.,:]?\s*[-—–]*")
+#: Encabezado del cable («LIMA, Peru, March 20.—», «Lima Peru Fob 28», «LIMA, Peru (AP) —»): dice desde dónde se
+#: envió, no dónde pasó. Sin fecha ni agencia, «Piura, Peru» es un lugar de la nota y se queda. El mes va como
+#: cualquier palabra con mayúscula porque el OCR lo deforma («Fob»), y «Pern» es el Perú del OCR.
+_AGENCY = r"\((?:AP|UP|UPI|INS)\)"
+_DATELINE = re.compile(r"\b[A-Z][A-Za-z]+(?:\s+[A-Z][a-z]+)?[,.]?\s*(?:Peru|PERU|Pern|P[ée]rou)\b[,.]?\s*"
+                       rf"(?:{_AGENCY}|(?:{_AGENCY}\.?\s*)?[A-Z][A-Za-z]{{2,8}}\.?\s*\d{{1,2}}\b(?:\s*{_AGENCY})?)"
+                       r"[.,:]?\s*[-—–]*")
+#: Quién lo cuenta desde la capital («advices from Lima», «reports reaching Lima»): los cables y las cartas pasaban
+#: por Lima y el Callao, que casi nunca son el lugar del evento.
+_REPORTED = re.compile(r"\b(?:advices|news|reports?|dispatch(?:es)?|despatch(?:es)?|cables?|cablegrams?|letters?|"
+                       r"telegrams?|messages?|word|mail)\b[^.;:]{0,40}?\b(?:from|reaching|reached|"
+                       r"(?:received|arriving)\s+(?:at|in))\s+(?:Lima|Callao)\b(?:,?\s+Peru\b)?", re.I)
+#: Derrumbes dentro de minas (Morococha, 1928): accidentes mineros, salvo que la nota hable de lluvias o crecidas.
+_MINE = re.compile(r"\bmin(?:e|es|ers|ing)\b|\bgallery\b|\bshaft\b", re.I)
+_MINE_COLLAPSE = re.compile(r"collaps|cave-?in|caved in", re.I)
+_WEATHER = re.compile(r"\brain|flood|storm|thaw|torrent|aluvi|huayco|huaico|overflow", re.I)
 #: Nombres de la época o en inglés → los de hoy, para el ubicador.
 _OLD_NAMES = [(re.compile(p, re.I), n) for p, n in (
-    (r"\bHuaras\b", "Huaraz"), (r"\bTruxillo\b", "Trujillo"), (r"\bPayta\b", "Paita"), (r"\bTumbez\b", "Tumbes"),
+    (r"\bHuaras\b", "Huaraz"), (r"\bTruxillo\b", "Trujillo"), (r"\bPa[yv]ta\b", "Paita"), (r"\bTumbez\b", "Tumbes"),
     (r"\bCuzco\b", "Cusco"), (r"(?<!La )\bOroya\b", "La Oroya"), (r"\bHuanuco\b", "Huánuco"),
     (r"\bFerrenafe\b", "Ferreñafe"), (r"\bSana\b(?= valley)", "Saña"),
     # Las palabras de nivel que el ubicador entiende («town of Conchucos» es «ciudad de Conchucos»).
     (r"\b(?:the\s+)?department\s+of\b|\bd[ée]partement\s+de\b", "departamento de"),
     (r"\bprovince\s+(?:of|de)\b", "provincia de"), (r"\bdistrict\s+of\b", "distrito de"),
-    (r"\b(?:the\s+)?(?:town|city|village|port)\s+of\b|\b(?:ville|port)\s+de\b", "ciudad de"))]
+    (r"\b(?:the\s+)?(?:towns?|city|cities|villages?|ports?)\s+of\b|\b(?:villes?|ports?)\s+de\b", "ciudad de"))]
 
 
 def archive_hazard(text: str) -> Optional[str]:
@@ -830,6 +843,8 @@ def hemeroteca(doc: dict, territory, calendar, archive: str = "Chronicling Ameri
                 why = "descripción general del país"
             elif _SEISMIC.search(w):
                 why = "sismo, maremoto o volcán"
+            elif _MINE.search(w) and _MINE_COLLAPSE.search(w) and not _WEATHER.search(w):
+                why = "accidente minero"
             elif not (dt := archive_hazard(w)):
                 why = "sin peligro climático"
             elif not _ARCHIVE_DAMAGE.search(w) or (_ARCHIVE_NOT.search(w) and not _ARCHIVE_STRONG.search(w)):
@@ -844,7 +859,7 @@ def hemeroteca(doc: dict, territory, calendar, archive: str = "Chronicling Ameri
         if dt == "Inundacion":
             dt = "Desborde de rio" if re.search(r"\briver\b[^.;]{0,40}\b(?:rose|overflow)|out of its banks", w, re.I) \
                 else "Inundacion fluvial" if re.search(r"\brivers?\b", w, re.I) else dt
-        clean = _DATELINE.sub(" ", w)
+        clean = _REPORTED.sub(" ", _DATELINE.sub(" ", w))
         for pat, new in _OLD_NAMES:
             clean = pat.sub(new, clean)
         geo = locate_item({"title": "", "summary": clean}, feed)
