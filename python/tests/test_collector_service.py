@@ -501,6 +501,8 @@ def test_check_explains_missing_token(home):
 
 
 def test_check_sources_verdicts(monkeypatch):
+    # El registro del repositorio, como en la CI: con un token se leería el de GitHub (otra versión).
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
     monkeypatch.setattr(chk, "_robots_verdicts", lambda urls, robots=None: {})
     monkeypatch.setattr(chk, "_probe", lambda url, expect=None, robots=None: {"url": url, "ok": False, "why": "ConnectError", "bytes": 0, "s": 1.0})
     assert chk.check_sources({}).level == chk.FAIL
@@ -514,11 +516,12 @@ def test_check_sources_verdicts(monkeypatch):
                         lambda urls, robots=None: {u: "robots.txt sin respuesta (timeout)" for u in urls if "enfen" in u or "ICEN" in u})
     r = chk.check_sources({})
     assert r.level == chk.WARN and any(ln.startswith("NO") and "robots.txt sin respuesta" in ln for ln in r.lines)
-    # Una ruta que robots.txt prohíbe no se cuenta como falla: «--» en la lista, fuera de la cuenta.
+    # Una ruta que robots.txt prohíbe no se cuenta como falla: «--» en la lista, fuera de la cuenta. Todas las de la
+    # ANA (el SNIRH y las que la sonda mida geobloqueadas, como su repositorio), para que el grupo entero no se pida.
     monkeypatch.setattr(chk, "_robots_verdicts",
-                        lambda urls, robots=None: {u: "robots.txt no lo permite" for u in urls if "snirh.ana" in u})
+                        lambda urls, robots=None: {u: "robots.txt no lo permite" for u in urls if ".ana.gob.pe" in u})
     r = chk.check_sources({})
-    ana = [ln for ln in r.lines if "snirh.ana" in ln]
+    ana = [ln for ln in r.lines if ".ana.gob.pe" in ln]
     asked = len(r.lines) - len(ana)
     assert ana and all(ln.startswith("--") for ln in ana)
     assert r.level == chk.OK and r.title == f"{asked}/{asked} fuentes responden ({len(ana)} no se piden: su robots.txt no lo permite)"
