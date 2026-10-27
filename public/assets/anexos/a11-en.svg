@@ -423,14 +423,14 @@
     <text class="ar-chip-t" x="776" y="1203.2" font-size="10">validacion.py</text>
   </g>
   <g class="ar-node-g" id="a11-n-files" data-node="files">
-    <title>Published files. eventos.zip (the 13 dashboard columns and 45 metadata columns), the indicators, the per-district context, the prevention files and the data dictionary and browser versions.</title>
+    <title>Published files. eventos.zip (the 13 dashboard columns and 50 metadata columns), the indicators, the per-district context, the prevention files and the data dictionary and browser versions.</title>
     <rect class="ar-node ar-g-publication" x="1114" y="195" width="280" height="120.7" rx="8"/>
     <rect class="ar-f-publication" x="1114" y="203" width="4" height="104.7" rx="2"/>
     <rect class="ar-tile ar-f-publication" x="1126" y="205" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-publication" transform="translate(1129 208)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
     <text class="ar-t" x="1164" y="224.5" font-size="12.5">Published files</text>
     <text class="ar-s" x="1126" y="256.4" font-size="11">eventos.zip (the 13 dashboard columns and</text>
-    <text class="ar-s" x="1126" y="271.6" font-size="11">45 metadata columns), the indicators, the</text>
+    <text class="ar-s" x="1126" y="271.6" font-size="11">50 metadata columns), the indicators, the</text>
     <text class="ar-s" x="1126" y="286.8" font-size="11">per-district context, the prevention files and</text>
     <text class="ar-s" x="1126" y="302" font-size="11">the data dictionary and browser versions.</text>
   </g>

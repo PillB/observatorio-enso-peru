@@ -382,9 +382,9 @@
   </g>
   <g class="ar-edge" id="af-e-41" data-edge="41" data-from="reference-data" data-to="builder" tabindex="0">
     <title>41. Reference data: places and thresholds → Series, statuses and GRD signal: GRD thresholds. Each indicator gets its GRD colour from expert-grd-image-v1.yaml. A value between intervals is &#x27;unclassified&#x27;, never normal. ICEN categories are fixed in signals.py.</title>
-    <path class="ar-e ar-e-data" d="M976 1302 L1008 1302 Q1014 1302 1014 1296 L1014 426 Q1014 420 1020 420 L1089 420" marker-end="url(#af-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="1014" cy="861" r="9"/>
-    <text class="ar-t" x="1014" y="864.8" font-size="10.5" text-anchor="middle">41</text>
+    <path class="ar-e ar-e-data" d="M976 1308 L1008 1308 Q1014 1308 1014 1302 L1014 426 Q1014 420 1020 420 L1089 420" marker-end="url(#af-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1014" cy="864" r="9"/>
+    <text class="ar-t" x="1014" y="867.8" font-size="10.5" text-anchor="middle">41</text>
   </g>
   <g class="ar-edge" id="af-e-42" data-edge="42" data-from="builder" data-to="write-publication" tabindex="0">
     <title>42. Series, statuses and GRD signal → Publication write and validation: series, statuses, GRD signal. The series, weekly data, ENFEN and NOAA statuses, ICEN events and the GRD signal go into series.json, weekly.json, the CSVs and dashboard.json.</title>
@@ -436,9 +436,9 @@
   </g>
   <g class="ar-edge" id="af-e-50" data-edge="50" data-from="reference-data" data-to="geo-place" tabindex="0">
     <title>50. Reference data: places and thresholds → Placement and place corrections: UBIGEO and boundaries. INEI names let a place be recognised in the text, and IGN boundaries tell which district, province or department a coordinate falls in.</title>
-    <path class="ar-e ar-e-data" d="M976 1368 L1056 1368 Q1062 1368 1062 1362 L1062 924 Q1062 918 1068 918 L1089 918" marker-end="url(#af-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="1062" cy="1143" r="9"/>
-    <text class="ar-t" x="1062" y="1146.8" font-size="10.5" text-anchor="middle">50</text>
+    <path class="ar-e ar-e-data" d="M976 1380 L1056 1380 Q1062 1380 1062 1374 L1062 924 Q1062 918 1068 918 L1089 918" marker-end="url(#af-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1062" cy="1149" r="9"/>
+    <text class="ar-t" x="1062" y="1152.8" font-size="10.5" text-anchor="middle">50</text>
   </g>
   <g class="ar-edge" id="af-e-51" data-edge="51" data-from="geo-console" data-to="geo-place" tabindex="0">
     <title>51. Places console (/admin/) → Placement and place corrections: current corrections. With Cloudflare, the pipeline requests GET /api/geo/overrides (20 s timeout) and applies each item&#x27;s latest correction. With GitHub Pages there is no console and this step does not happen.</title>
@@ -453,7 +453,7 @@
     <text class="ar-t" x="1022" y="1065.8" font-size="10.5" text-anchor="middle">52</text>
   </g>
   <g class="ar-edge" id="af-e-53" data-edge="53" data-from="geo-place" data-to="write-publication" tabindex="0">
-    <title>53. Placement and place corrections → Publication write and validation: items, clusters, alerts. The history goes on as stored and, with corrected places, items.csv, the 14-day clusters, the 7-day alerts for feed.json and the geo/ files for the console.</title>
+    <title>53. Placement and place corrections → Publication write and validation: items, clusters, alerts. The history goes on as stored and, with corrected places, items.csv, the 14-day clusters, the 7-day alerts for feed.json (with their map detail: zones, ravine districts, stations, epicentres, volcanoes, fires and populated places) and the geo/ files for the console.</title>
     <path class="ar-e ar-e-data" d="M1321 930 L1350 930 Q1356 930 1356 936 L1356 1464 Q1356 1470 1350 1470 L1321 1470" marker-end="url(#af-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="1356" cy="1200" r="9"/>
     <text class="ar-t" x="1356" y="1203.8" font-size="10.5" text-anchor="middle">53</text>
@@ -556,9 +556,9 @@
   </g>
   <g class="ar-edge" id="af-e-70" data-edge="70" data-from="archive-job" data-to="data-archive-branch" tabindex="0">
     <title>70. archive job → data-archive branch: append only, never deletes. Adds the responses it lacked, appends the day&#x27;s items and merges the history with merge_history.py. Rejects commits with deletions and tries the push up to 3 times.</title>
-    <path class="ar-e ar-e-data" d="M858 1941.1 L858 1440 Q858 1434 864 1434 L996 1434 Q1002 1434 1002 1428 L1002 1212 Q1002 1206 996 1206 L976 1206" marker-end="url(#af-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="858" cy="1687.6" r="9"/>
-    <text class="ar-t" x="858" y="1691.4" font-size="10.5" text-anchor="middle">70</text>
+    <path class="ar-e ar-e-data" d="M858 1941.1 L858 1452 Q858 1446 864 1446 L996 1446 Q1002 1446 1002 1440 L1002 1212 Q1002 1206 996 1206 L976 1206" marker-end="url(#af-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="858" cy="1693.6" r="9"/>
+    <text class="ar-t" x="858" y="1697.4" font-size="10.5" text-anchor="middle">70</text>
   </g>
   <g class="ar-edge" id="af-e-71" data-edge="71" data-from="publication-data" data-to="github-issues" tabindex="0">
     <title>71. Published files (data/) → Incident issues (incidente-datos): run-report to issues. The incidents job downloads run-report.json and opens, updates or closes one issue per fingerprint; a format-drift is not closed: it is commented once and waits for a person. If build, deploy or archive fail, it also opens &#x27;La actualización diaria falló&#x27;. All of this only on main; on another branch it shows what it would do.</title>
@@ -718,9 +718,9 @@
   </g>
   <g class="ar-edge" id="af-e-97" data-edge="97" data-from="memoria-harvest" data-to="memoria-build" tabindex="0">
     <title>97. Historical catalogue harvest (memoria-cosecha.yml) → Historical catalogue and indicators (build_historico): what was fetched, from the cache. When no source is missing, build_historico --sin-red --parcial reads the cached files, compares their SHA-256 with the manifest and notes in the PR what changed in each source.</title>
-    <path class="ar-e ar-e-data" d="M631 1194 L720 1194 Q726 1194 726 1200 L726 1434 Q726 1440 732 1440 L1050 1440 Q1056 1440 1056 1434 L1056 1074 Q1056 1068 1062 1068 L1089 1068" marker-end="url(#af-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="891" cy="1440" r="9"/>
-    <text class="ar-t" x="891" y="1443.8" font-size="10.5" text-anchor="middle">97</text>
+    <path class="ar-e ar-e-data" d="M631 1194 L720 1194 Q726 1194 726 1188 L726 1116 Q726 1110 732 1110 L1050 1110 Q1056 1110 1056 1104 L1056 1074 Q1056 1068 1062 1068 L1089 1068" marker-end="url(#af-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="726" cy="1152" r="9"/>
+    <text class="ar-t" x="726" y="1155.8" font-size="10.5" text-anchor="middle">97</text>
   </g>
   <g class="ar-edge" id="af-e-98" data-edge="98" data-from="memoria-build" data-to="deploy" tabindex="0">
     <title>98. Historical catalogue and indicators (build_historico) → Deploy and verification: catalogue via a PR to main. The harvest PR changes public/assets/historico/ and data/historico/; once merged, the deploy publishes it and the Disaster memory view reads it (historico.js).</title>
@@ -1047,17 +1047,18 @@
     <a class="ar-annex" href="anexos/a8-en.svg" data-annex="a8"><title>Annex A8: Publication, deployment and archive</title><rect class="ar-tag" x="940.6" y="1136.2" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="954.3" y="1148.7" font-size="10.5" text-anchor="middle">A8</text></a>
   </g>
   <g class="ar-node-g" id="af-n-reference-data" data-node="reference-data">
-    <title>Reference data: places and thresholds. Fixed files in the repository: INEI UBIGEO codes, INDECI district boundaries (GEOSINPAD), INDECI departments, ENFEN&#x27;s 8 ICEN categories (2024) and the GRD team&#x27;s threshold table.</title>
-    <rect class="ar-node ar-g-sources" x="744" y="1261.9" width="232" height="149.6" rx="8"/>
-    <rect class="ar-f-sources" x="744" y="1269.9" width="4" height="133.6" rx="2"/>
+    <title>Reference data: places and thresholds. Fixed files in the repository: INEI UBIGEO codes, INDECI district boundaries (GEOSINPAD), INDECI departments, populated places (INEI, IGN, SDOT) and ANA watersheds, ENFEN&#x27;s 8 ICEN categories (2024) and the GRD team&#x27;s threshold table.</title>
+    <rect class="ar-node ar-g-sources" x="744" y="1261.9" width="232" height="164.8" rx="8"/>
+    <rect class="ar-f-sources" x="744" y="1269.9" width="4" height="148.8" rx="2"/>
     <text class="ar-t" x="756" y="1286.4" font-size="12.5">Reference data: places</text>
     <text class="ar-t" x="756" y="1302.7" font-size="12.5">and thresholds</text>
     <text class="ar-s" x="756" y="1321.8" font-size="11">Fixed files in the repository: INEI</text>
     <text class="ar-s" x="756" y="1337" font-size="11">UBIGEO codes, INDECI district</text>
     <text class="ar-s" x="756" y="1352.2" font-size="11">boundaries (GEOSINPAD), INDECI</text>
-    <text class="ar-s" x="756" y="1367.4" font-size="11">departments, ENFEN&#x27;s 8 ICEN</text>
-    <text class="ar-s" x="756" y="1382.6" font-size="11">categories (2024) and the GRD</text>
-    <text class="ar-s" x="756" y="1397.7" font-size="11">team&#x27;s threshold table.</text>
+    <text class="ar-s" x="756" y="1367.4" font-size="11">departments, populated places (INEI,</text>
+    <text class="ar-s" x="756" y="1382.6" font-size="11">IGN, SDOT) and ANA watersheds,</text>
+    <text class="ar-s" x="756" y="1397.7" font-size="11">ENFEN&#x27;s 8 ICEN categories (2024)</text>
+    <text class="ar-s" x="756" y="1412.9" font-size="11">and the GRD team&#x27;s threshold table.</text>
     <a class="ar-annex" href="anexos/a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="940.6" y="1268.9" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="954.3" y="1281.4" font-size="10.5" text-anchor="middle">A5</text></a>
   </g>
   <g class="ar-node-g" id="af-n-official-parse" data-node="official-parse">
@@ -1779,104 +1780,105 @@
   <text class="ar-t" x="619.3" y="4090.2" font-size="11.5">items, clusters, alerts</text>
   <text class="ar-m" x="619.3" y="4104.1" font-size="10.5">Placement and place corrections → Publication write and validation</text>
   <text class="ar-s" x="619.3" y="4119.1" font-size="11">The history goes on as stored and, with corrected places, items.csv, the 14-day clusters, the</text>
-  <text class="ar-s" x="619.3" y="4134.1" font-size="11">7-day alerts for feed.json and the geo/ files for the console.</text>
-  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="4157.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4160.9" font-size="10.5" text-anchor="middle">54</text>
-  <text class="ar-t" x="619.3" y="4161.1" font-size="11.5">previous copies and news</text>
-  <text class="ar-m" x="619.3" y="4175.1" font-size="10.5">Previous publication (live data/) → Publication write and validation</text>
-  <text class="ar-s" x="619.3" y="4190.1" font-size="11">If a source did not answer, the archived copy the previous publication had is republished. If</text>
-  <text class="ar-s" x="619.3" y="4205.1" font-size="11">news reading failed, its news/ and geo/ are reused with carriedFrom. If a copy could not be</text>
-  <text class="ar-s" x="619.3" y="4220.1" font-size="11">read, archive-carry-failed is logged and it goes out without that link; the communiqué and</text>
-  <text class="ar-s" x="619.3" y="4235.1" font-size="11">the report also drop its path, so the next run does not look for it.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4258.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4261.9" font-size="10.5" text-anchor="middle">55</text>
-  <text class="ar-t" x="619.3" y="4262.1" font-size="11.5">failures, carries, format</text>
-  <text class="ar-m" x="619.3" y="4276.1" font-size="10.5">Official source reading → Incident log</text>
-  <text class="ar-s" x="619.3" y="4291.1" font-size="11">It logs unreachable (error for critical sources), format-drift, format-changed, carried-forward</text>
-  <text class="ar-s" x="619.3" y="4306.1" font-size="11">and communique-unread, outlook-unread (the communiqué outlook could not be read) and</text>
-  <text class="ar-s" x="619.3" y="4321.1" font-size="11">informe-* (the technical report was not downloaded, could not be read or part of it failed</text>
-  <text class="ar-s" x="619.3" y="4336.1" font-size="11">validation; when no route answers it is only a warning). When the newest communiqué or</text>
-  <text class="ar-s" x="619.3" y="4351.1" font-size="11">its report cannot be downloaded by any route, manual-download-needed (warning) lists</text>
-  <text class="ar-s" x="619.3" y="4366.1" font-size="11">them for the documents console.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4389.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4392.9" font-size="10.5" text-anchor="middle">56</text>
-  <text class="ar-t" x="619.3" y="4393.1" font-size="11.5">stale data and statuses</text>
-  <text class="ar-m" x="619.3" y="4407.1" font-size="10.5">Series, statuses and GRD signal → Incident log</text>
-  <text class="ar-s" x="619.3" y="4422.1" font-size="11">It logs stale-&lt;series&gt; and stale-weekly (data past its deadline), official-overdue (the</text>
-  <text class="ar-s" x="619.3" y="4437.1" font-size="11">expected NOAA or ENFEN bulletin did not arrive), newer-communique-unparsed (a newer</text>
-  <text class="ar-s" x="619.3" y="4452.1" font-size="11">communiqué could not be read), status-unknown (error: no ENFEN status),</text>
-  <text class="ar-s" x="619.3" y="4467.1" font-size="11">informe-icen-mismatch (the technical report&#x27;s ICEN differs from IGP&#x27;s) and late-&lt;item&gt; (the</text>
-  <text class="ar-s" x="619.3" y="4482.1" font-size="11">next one was due and has not arrived).</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4505.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4508.9" font-size="10.5" text-anchor="middle">57</text>
-  <text class="ar-t" x="619.3" y="4509.1" font-size="11.5">Peru copy health</text>
-  <text class="ar-m" x="619.3" y="4523.1" font-size="10.5">data-peru branch → Incident log · every observatory.yml run</text>
-  <text class="ar-s" x="619.3" y="4538.1" font-size="11">At start the pipeline reads data-peru&#x27;s index.json and heartbeat.json and logs relay-missing,</text>
-  <text class="ar-s" x="619.3" y="4553.1" font-size="11">relay-stale (over 36 h), relay-sources-down, relay-goal-missed (with each document&#x27;s</text>
-  <text class="ar-s" x="619.3" y="4568.1" font-size="11">cause), relay-token-expiring or relay-kit-outdated (a kit older than the site needs). That is</text>
-  <text class="ar-s" x="619.3" y="4583.1" font-size="11">how a machine that is off becomes an issue.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4606.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4609.9" font-size="10.5" text-anchor="middle">58</text>
-  <text class="ar-t" x="619.3" y="4610.1" font-size="11.5">n8n copy health</text>
-  <text class="ar-m" x="619.3" y="4624.1" font-size="10.5">data-n8n branch → Incident log · every observatory.yml run</text>
-  <text class="ar-s" x="619.3" y="4639.1" font-size="11">The same with data-n8n: relay-n8n-missing, relay-n8n-stale (over 36 h),</text>
-  <text class="ar-s" x="619.3" y="4654.1" font-size="11">relay-n8n-sources-down or relay-token-expiring (n8n&#x27;s GitHub credential expires in under 21</text>
-  <text class="ar-s" x="619.3" y="4669.1" font-size="11">days). That is how a stopped n8n flow becomes an issue.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4692.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4695.9" font-size="10.5" text-anchor="middle">59</text>
-  <text class="ar-t" x="619.3" y="4696.1" font-size="11.5">news and history</text>
-  <text class="ar-m" x="619.3" y="4710.1" font-size="10.5">News and alerts: reading and filtering → Incident log</text>
-  <text class="ar-s" x="619.3" y="4725.1" font-size="11">The news stage logs feeds-reader-unknown, news-degraded, news-history-missing (error if</text>
-  <text class="ar-s" x="619.3" y="4740.1" font-size="11">there is no copy either), news-history-restored and news-history-large. They also become</text>
-  <text class="ar-s" x="619.3" y="4755.1" font-size="11">issues.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4778.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4781.9" font-size="10.5" text-anchor="middle">60</text>
-  <text class="ar-t" x="619.3" y="4782.1" font-size="11.5">failed corrections</text>
-  <text class="ar-m" x="619.3" y="4796.1" font-size="10.5">Placement and place corrections → Incident log</text>
-  <text class="ar-s" x="619.3" y="4811.1" font-size="11">It logs overrides-http (the console answered with an error), overrides-down (no answer) and</text>
-  <text class="ar-s" x="619.3" y="4826.1" font-size="11">overrides-rejected (a correction has invalid codes).</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="4849.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4852.9" font-size="10.5" text-anchor="middle">61</text>
-  <text class="ar-t" x="619.3" y="4853.1" font-size="11.5">incidents and health</text>
-  <text class="ar-m" x="619.3" y="4867.1" font-size="10.5">Incident log → Publication write and validation</text>
-  <text class="ar-s" x="619.3" y="4882.1" font-size="11">Incidents, the worst severity and the counts go to run-report.json; health.json marks</text>
-  <text class="ar-s" x="619.3" y="4897.1" font-size="11">degraded (on error or critical) and dashboard.json keeps the worst severity.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4920.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4923.9" font-size="10.5" text-anchor="middle">62</text>
-  <text class="ar-t" x="619.3" y="4924.1" font-size="11.5">critical: no deploy</text>
-  <text class="ar-m" x="619.3" y="4938.1" font-size="10.5">Incident log → Deploy and verification</text>
-  <text class="ar-s" x="619.3" y="4953.1" font-size="11">With --fail-on critical, a critical worst severity makes the pipeline step exit 1, the build fails</text>
-  <text class="ar-s" x="619.3" y="4968.1" font-size="11">and deploy does not run; the previous site stays live.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="4991.1" r="9"/>
-  <text class="ar-t" x="599.3" y="4994.9" font-size="10.5" text-anchor="middle">63</text>
-  <text class="ar-t" x="619.3" y="4995.1" font-size="11.5">atomic swap of data/</text>
-  <text class="ar-m" x="619.3" y="5009.1" font-size="10.5">Publication write and validation → Published files (data/)</text>
-  <text class="ar-s" x="619.3" y="5024.1" font-size="11">If validation passes (same publicationId everywhere, sorted series, dashboard with official,</text>
-  <text class="ar-s" x="619.3" y="5039.1" font-size="11">series and grd), public/data is replaced in one move by the new folder.</text>
-  <circle class="ar-badge ar-e-trigger" cx="599.3" cy="5062.1" r="9"/>
-  <text class="ar-t" x="599.3" y="5065.9" font-size="10.5" text-anchor="middle">64</text>
-  <text class="ar-t" x="619.3" y="5066.1" font-size="11.5">public/ ready to test</text>
-  <text class="ar-m" x="619.3" y="5080.1" font-size="10.5">Published files (data/) → Deploy and verification</text>
-  <text class="ar-s" x="619.3" y="5095.1" font-size="11">With data/ written, the build adapts the site&#x27;s addresses, runs the Chromium browser tests</text>
-  <text class="ar-s" x="619.3" y="5110.1" font-size="11">and uploads the site; if one of those steps fails, nothing is deployed.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="5133.1" r="9"/>
-  <text class="ar-t" x="599.3" y="5136.9" font-size="10.5" text-anchor="middle">65</text>
-  <text class="ar-t" x="619.3" y="5137.1" font-size="11.5">publishes, verifies live</text>
-  <text class="ar-m" x="619.3" y="5151.1" font-size="10.5">Deploy and verification → Live site (SITE_URL) · after every successful build</text>
-  <text class="ar-s" x="619.3" y="5166.1" font-size="11">Uploads the whole site at once to GitHub Pages or Cloudflare Pages, and verify_live waits up</text>
-  <text class="ar-s" x="619.3" y="5181.1" font-size="11">to 10 min until dashboard.json and manifest.json carry the new publicationId.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="5204.1" r="9"/>
-  <text class="ar-t" x="599.3" y="5207.9" font-size="10.5" text-anchor="middle">66</text>
-  <text class="ar-t" x="619.3" y="5208.1" font-size="11.5">today&#x27;s is tomorrow&#x27;s previous</text>
-  <text class="ar-m" x="619.3" y="5222.1" font-size="10.5">Live site (SITE_URL) → Previous publication (live data/) · in the next run</text>
-  <text class="ar-s" x="619.3" y="5237.1" font-size="11">What the site serves today under data/ is what the next run reads with --previous to carry</text>
-  <text class="ar-s" x="619.3" y="5252.1" font-size="11">data over and continue the history.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="5275.1" r="9"/>
-  <text class="ar-t" x="599.3" y="5278.9" font-size="10.5" text-anchor="middle">67</text>
-  <text class="ar-t" x="619.3" y="5279.1" font-size="11.5">serves pages and data</text>
-  <text class="ar-m" x="619.3" y="5293.1" font-size="10.5">Live site (SITE_URL) → Website (11 views)</text>
-  <text class="ar-s" x="619.3" y="5308.1" font-size="11">The host serves index.html, assets/ and data/. The page first fetches dashboard.json and</text>
-  <text class="ar-s" x="619.3" y="5323.1" font-size="11">then each file with the same publicationId.</text>
+  <text class="ar-s" x="619.3" y="4134.1" font-size="11">7-day alerts for feed.json (with their map detail: zones, ravine districts, stations, epicentres,</text>
+  <text class="ar-s" x="619.3" y="4149.1" font-size="11">volcanoes, fires and populated places) and the geo/ files for the console.</text>
+  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="4172.1" r="9"/>
+  <text class="ar-t" x="599.3" y="4175.9" font-size="10.5" text-anchor="middle">54</text>
+  <text class="ar-t" x="619.3" y="4176.1" font-size="11.5">previous copies and news</text>
+  <text class="ar-m" x="619.3" y="4190.1" font-size="10.5">Previous publication (live data/) → Publication write and validation</text>
+  <text class="ar-s" x="619.3" y="4205.1" font-size="11">If a source did not answer, the archived copy the previous publication had is republished. If</text>
+  <text class="ar-s" x="619.3" y="4220.1" font-size="11">news reading failed, its news/ and geo/ are reused with carriedFrom. If a copy could not be</text>
+  <text class="ar-s" x="619.3" y="4235.1" font-size="11">read, archive-carry-failed is logged and it goes out without that link; the communiqué and</text>
+  <text class="ar-s" x="619.3" y="4250.1" font-size="11">the report also drop its path, so the next run does not look for it.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4273.1" r="9"/>
+  <text class="ar-t" x="599.3" y="4276.9" font-size="10.5" text-anchor="middle">55</text>
+  <text class="ar-t" x="619.3" y="4277.1" font-size="11.5">failures, carries, format</text>
+  <text class="ar-m" x="619.3" y="4291.1" font-size="10.5">Official source reading → Incident log</text>
+  <text class="ar-s" x="619.3" y="4306.1" font-size="11">It logs unreachable (error for critical sources), format-drift, format-changed, carried-forward</text>
+  <text class="ar-s" x="619.3" y="4321.1" font-size="11">and communique-unread, outlook-unread (the communiqué outlook could not be read) and</text>
+  <text class="ar-s" x="619.3" y="4336.1" font-size="11">informe-* (the technical report was not downloaded, could not be read or part of it failed</text>
+  <text class="ar-s" x="619.3" y="4351.1" font-size="11">validation; when no route answers it is only a warning). When the newest communiqué or</text>
+  <text class="ar-s" x="619.3" y="4366.1" font-size="11">its report cannot be downloaded by any route, manual-download-needed (warning) lists</text>
+  <text class="ar-s" x="619.3" y="4381.1" font-size="11">them for the documents console.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4404.1" r="9"/>
+  <text class="ar-t" x="599.3" y="4407.9" font-size="10.5" text-anchor="middle">56</text>
+  <text class="ar-t" x="619.3" y="4408.1" font-size="11.5">stale data and statuses</text>
+  <text class="ar-m" x="619.3" y="4422.1" font-size="10.5">Series, statuses and GRD signal → Incident log</text>
+  <text class="ar-s" x="619.3" y="4437.1" font-size="11">It logs stale-&lt;series&gt; and stale-weekly (data past its deadline), official-overdue (the</text>
+  <text class="ar-s" x="619.3" y="4452.1" font-size="11">expected NOAA or ENFEN bulletin did not arrive), newer-communique-unparsed (a newer</text>
+  <text class="ar-s" x="619.3" y="4467.1" font-size="11">communiqué could not be read), status-unknown (error: no ENFEN status),</text>
+  <text class="ar-s" x="619.3" y="4482.1" font-size="11">informe-icen-mismatch (the technical report&#x27;s ICEN differs from IGP&#x27;s) and late-&lt;item&gt; (the</text>
+  <text class="ar-s" x="619.3" y="4497.1" font-size="11">next one was due and has not arrived).</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4520.1" r="9"/>
+  <text class="ar-t" x="599.3" y="4523.9" font-size="10.5" text-anchor="middle">57</text>
+  <text class="ar-t" x="619.3" y="4524.1" font-size="11.5">Peru copy health</text>
+  <text class="ar-m" x="619.3" y="4538.1" font-size="10.5">data-peru branch → Incident log · every observatory.yml run</text>
+  <text class="ar-s" x="619.3" y="4553.1" font-size="11">At start the pipeline reads data-peru&#x27;s index.json and heartbeat.json and logs relay-missing,</text>
+  <text class="ar-s" x="619.3" y="4568.1" font-size="11">relay-stale (over 36 h), relay-sources-down, relay-goal-missed (with each document&#x27;s</text>
+  <text class="ar-s" x="619.3" y="4583.1" font-size="11">cause), relay-token-expiring or relay-kit-outdated (a kit older than the site needs). That is</text>
+  <text class="ar-s" x="619.3" y="4598.1" font-size="11">how a machine that is off becomes an issue.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4621.1" r="9"/>
+  <text class="ar-t" x="599.3" y="4624.9" font-size="10.5" text-anchor="middle">58</text>
+  <text class="ar-t" x="619.3" y="4625.1" font-size="11.5">n8n copy health</text>
+  <text class="ar-m" x="619.3" y="4639.1" font-size="10.5">data-n8n branch → Incident log · every observatory.yml run</text>
+  <text class="ar-s" x="619.3" y="4654.1" font-size="11">The same with data-n8n: relay-n8n-missing, relay-n8n-stale (over 36 h),</text>
+  <text class="ar-s" x="619.3" y="4669.1" font-size="11">relay-n8n-sources-down or relay-token-expiring (n8n&#x27;s GitHub credential expires in under 21</text>
+  <text class="ar-s" x="619.3" y="4684.1" font-size="11">days). That is how a stopped n8n flow becomes an issue.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4707.1" r="9"/>
+  <text class="ar-t" x="599.3" y="4710.9" font-size="10.5" text-anchor="middle">59</text>
+  <text class="ar-t" x="619.3" y="4711.1" font-size="11.5">news and history</text>
+  <text class="ar-m" x="619.3" y="4725.1" font-size="10.5">News and alerts: reading and filtering → Incident log</text>
+  <text class="ar-s" x="619.3" y="4740.1" font-size="11">The news stage logs feeds-reader-unknown, news-degraded, news-history-missing (error if</text>
+  <text class="ar-s" x="619.3" y="4755.1" font-size="11">there is no copy either), news-history-restored and news-history-large. They also become</text>
+  <text class="ar-s" x="619.3" y="4770.1" font-size="11">issues.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4793.1" r="9"/>
+  <text class="ar-t" x="599.3" y="4796.9" font-size="10.5" text-anchor="middle">60</text>
+  <text class="ar-t" x="619.3" y="4797.1" font-size="11.5">failed corrections</text>
+  <text class="ar-m" x="619.3" y="4811.1" font-size="10.5">Placement and place corrections → Incident log</text>
+  <text class="ar-s" x="619.3" y="4826.1" font-size="11">It logs overrides-http (the console answered with an error), overrides-down (no answer) and</text>
+  <text class="ar-s" x="619.3" y="4841.1" font-size="11">overrides-rejected (a correction has invalid codes).</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="4864.1" r="9"/>
+  <text class="ar-t" x="599.3" y="4867.9" font-size="10.5" text-anchor="middle">61</text>
+  <text class="ar-t" x="619.3" y="4868.1" font-size="11.5">incidents and health</text>
+  <text class="ar-m" x="619.3" y="4882.1" font-size="10.5">Incident log → Publication write and validation</text>
+  <text class="ar-s" x="619.3" y="4897.1" font-size="11">Incidents, the worst severity and the counts go to run-report.json; health.json marks</text>
+  <text class="ar-s" x="619.3" y="4912.1" font-size="11">degraded (on error or critical) and dashboard.json keeps the worst severity.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4935.1" r="9"/>
+  <text class="ar-t" x="599.3" y="4938.9" font-size="10.5" text-anchor="middle">62</text>
+  <text class="ar-t" x="619.3" y="4939.1" font-size="11.5">critical: no deploy</text>
+  <text class="ar-m" x="619.3" y="4953.1" font-size="10.5">Incident log → Deploy and verification</text>
+  <text class="ar-s" x="619.3" y="4968.1" font-size="11">With --fail-on critical, a critical worst severity makes the pipeline step exit 1, the build fails</text>
+  <text class="ar-s" x="619.3" y="4983.1" font-size="11">and deploy does not run; the previous site stays live.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="5006.1" r="9"/>
+  <text class="ar-t" x="599.3" y="5009.9" font-size="10.5" text-anchor="middle">63</text>
+  <text class="ar-t" x="619.3" y="5010.1" font-size="11.5">atomic swap of data/</text>
+  <text class="ar-m" x="619.3" y="5024.1" font-size="10.5">Publication write and validation → Published files (data/)</text>
+  <text class="ar-s" x="619.3" y="5039.1" font-size="11">If validation passes (same publicationId everywhere, sorted series, dashboard with official,</text>
+  <text class="ar-s" x="619.3" y="5054.1" font-size="11">series and grd), public/data is replaced in one move by the new folder.</text>
+  <circle class="ar-badge ar-e-trigger" cx="599.3" cy="5077.1" r="9"/>
+  <text class="ar-t" x="599.3" y="5080.9" font-size="10.5" text-anchor="middle">64</text>
+  <text class="ar-t" x="619.3" y="5081.1" font-size="11.5">public/ ready to test</text>
+  <text class="ar-m" x="619.3" y="5095.1" font-size="10.5">Published files (data/) → Deploy and verification</text>
+  <text class="ar-s" x="619.3" y="5110.1" font-size="11">With data/ written, the build adapts the site&#x27;s addresses, runs the Chromium browser tests</text>
+  <text class="ar-s" x="619.3" y="5125.1" font-size="11">and uploads the site; if one of those steps fails, nothing is deployed.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="5148.1" r="9"/>
+  <text class="ar-t" x="599.3" y="5151.9" font-size="10.5" text-anchor="middle">65</text>
+  <text class="ar-t" x="619.3" y="5152.1" font-size="11.5">publishes, verifies live</text>
+  <text class="ar-m" x="619.3" y="5166.1" font-size="10.5">Deploy and verification → Live site (SITE_URL) · after every successful build</text>
+  <text class="ar-s" x="619.3" y="5181.1" font-size="11">Uploads the whole site at once to GitHub Pages or Cloudflare Pages, and verify_live waits up</text>
+  <text class="ar-s" x="619.3" y="5196.1" font-size="11">to 10 min until dashboard.json and manifest.json carry the new publicationId.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="5219.1" r="9"/>
+  <text class="ar-t" x="599.3" y="5222.9" font-size="10.5" text-anchor="middle">66</text>
+  <text class="ar-t" x="619.3" y="5223.1" font-size="11.5">today&#x27;s is tomorrow&#x27;s previous</text>
+  <text class="ar-m" x="619.3" y="5237.1" font-size="10.5">Live site (SITE_URL) → Previous publication (live data/) · in the next run</text>
+  <text class="ar-s" x="619.3" y="5252.1" font-size="11">What the site serves today under data/ is what the next run reads with --previous to carry</text>
+  <text class="ar-s" x="619.3" y="5267.1" font-size="11">data over and continue the history.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="5290.1" r="9"/>
+  <text class="ar-t" x="599.3" y="5293.9" font-size="10.5" text-anchor="middle">67</text>
+  <text class="ar-t" x="619.3" y="5294.1" font-size="11.5">serves pages and data</text>
+  <text class="ar-m" x="619.3" y="5308.1" font-size="10.5">Live site (SITE_URL) → Website (11 views)</text>
+  <text class="ar-s" x="619.3" y="5323.1" font-size="11">The host serves index.html, assets/ and data/. The page first fetches dashboard.json and</text>
+  <text class="ar-s" x="619.3" y="5338.1" font-size="11">then each file with the same publicationId.</text>
   <circle class="ar-badge ar-e-human" cx="1168.7" cy="2591.2" r="9"/>
   <text class="ar-t" x="1168.7" y="2595" font-size="10.5" text-anchor="middle">68</text>
   <text class="ar-t" x="1188.7" y="2595.2" font-size="11.5">opens the site or downloads</text>

@@ -427,13 +427,13 @@
     <text class="ar-chip-t" x="776" y="1218.4" font-size="10">validacion.py</text>
   </g>
   <g class="ar-node-g" id="a11-n-files" data-node="files">
-    <title>Archivos publicados. eventos.zip (las 13 columnas del tablero y 45 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador.</title>
+    <title>Archivos publicados. eventos.zip (las 13 columnas del tablero y 50 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador.</title>
     <rect class="ar-node ar-g-publication" x="1114" y="195" width="280" height="120.7" rx="8"/>
     <rect class="ar-f-publication" x="1114" y="203" width="4" height="104.7" rx="2"/>
     <rect class="ar-tile ar-f-publication" x="1126" y="205" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-publication" transform="translate(1129 208)"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></g>
     <text class="ar-t" x="1164" y="224.5" font-size="12.5">Archivos publicados</text>
-    <text class="ar-s" x="1126" y="256.4" font-size="11">eventos.zip (las 13 columnas del tablero y 45</text>
+    <text class="ar-s" x="1126" y="256.4" font-size="11">eventos.zip (las 13 columnas del tablero y 50</text>
     <text class="ar-s" x="1126" y="271.6" font-size="11">de metadatos), los indicadores, el contexto</text>
     <text class="ar-s" x="1126" y="286.8" font-size="11">por distrito, la prevención y el diccionario de</text>
     <text class="ar-s" x="1126" y="302" font-size="11">datos y las versiones para el navegador.</text>

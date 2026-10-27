@@ -802,7 +802,8 @@ class Gazetteer:
     # -- campos estructurados -------------------------------------------------
     def find(self, name: str, level: str, within: Optional[str] = None) -> list[str]:
         """Códigos cuyo nombre (o capital, o alias) es ``name`` en el nivel dado, dentro de ``within``."""
-        k = key(re.sub(r"^(?:dist|prov|depa?)\.?\s*", "", name or "", flags=re.I))
+        # «Dist. X», «PROV X»; no «Providencia» (el prefijo va con punto o espacio).
+        k = key(re.sub(r"^(?:dist|prov|depa?)(?:\.\s*|\s+)", "", name or "", flags=re.I))
         n = {"departamento": 2, "provincia": 4, "distrito": 6}[level]
         src = {2: self.deps, 4: self.provs, 6: self.dists}[n]
         hits = [c for c, x in src.items() if key(x["name"]) == k and (not within or c.startswith(within))]

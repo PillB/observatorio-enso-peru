@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-27T01:55:34+00:00",
+ "generated_at": "2026-10-27T22:23:13+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -9082,7 +9082,7 @@
    "group": "senamhi",
    "name": "SENAMHI · avisos de activación de quebradas (servidor GEOSINPAD del INDECI)",
    "institution": "SENAMHI",
-   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json",
+   "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CNOMBPROV%2CNOMBDIST%2CFECHA&f=json",
    "expect": "json",
    "method": "api",
    "kind": "feed",
@@ -9101,7 +9101,7 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "claude-cloud-us"
     ],
     "open_from": [
      "actions"
@@ -9125,7 +9125,7 @@
    ],
    "geoblocked": false,
    "by_url": {
-    "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json": {
+    "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CNOMBPROV%2CNOMBDIST%2CFECHA&f=json": {
      "status": "open",
      "channels": [
       "actions",

@@ -11,6 +11,10 @@
 | Natural Earth | Línea de costa del mapa | Dominio público |
 | INDECI, GEOSINPAD (límites administrativos) | Límites de distritos, provincias y departamentos para ubicar coordenadas (`python/enso/data/limites-ign.json.gz`, simplificados), dibujar el mapa de alertas (`public/assets/peru-map.json`) y el de la memoria de desastres (`public/assets/historico/mapa.json`), y dar un punto interior a los distritos sin capital en el nomenclátor | Información pública del Estado peruano (Ley N° 27806); se cita «INDECI (GEOSINPAD)» |
 | INEI, compilado por J. M. Castagnetto (`ubigeo-peru-aumentado`) | Códigos UBIGEO, nombres y capitales (`python/enso/data/ubigeo.json`) | MIT; DOI 10.5281/zenodo.4589185 |
+| INEI (Censos Nacionales 2017), IGN y SDOT-PCM, vía el geoportal de la IDEP (PCM) | Centros poblados con su punto, categoría y código, para ubicar un aviso o un registro dentro de su distrito (`python/enso/data/lugares.json.gz`) | Información pública del Estado peruano (Ley N° 27806); se cita la institución y la capa de la IDEP |
+| ANA, vía el geoportal de la IDEP (PCM) | Unidades hidrográficas (metodología Pfafstetter, R.M. N° 033-2008-AG) para la cuenca de cada punto y la capa de cuencas de los dos mapas (`python/enso/data/cuencas.json.gz`, `public/assets/cuencas-mapa.json`) | Información pública (Ley N° 27806); se cita «ANA» |
+| SENAMHI, vía GEOSINPAD (INDECI) | Polígonos de los avisos de precipitación y de peligro de incendios, quebradas por distrito y estaciones hidrológicas, dibujados en el mapa de alertas | Información pública (Ley N° 27806); cada aviso enlaza su consulta a la capa |
+| Global Volcanism Program, Smithsonian Institution | Coordenadas de la cumbre de 14 volcanes del sur del Perú (`python/enso/hazardparse.py`, `VOLCANO_POINTS`) | Se cita «Global Volcanism Program, Volcanoes of the World (Smithsonian Institution)» con el enlace a la ficha de cada volcán |
 
 Dónde aparece la atribución:
 

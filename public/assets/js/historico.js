@@ -57,10 +57,17 @@ async function detail(dep) {
   return DETAIL.get(dep);
 }
 
+/** Unidades hidrográficas de la ANA con su trazo y la cuenca de cada distrito (python -m tools.build_cuencas_mapa). */
+let BASINS = null;
+function basins() {
+  if (!BASINS) BASINS = getJSON('assets/cuencas-mapa.json').catch(() => ({ units: {}, districts: {} }));
+  return BASINS;
+}
+
 // ---------------------------------------------------------------------------
 // Estado (en la dirección: #/memoria?nivel=distrito&evento=grandes&area=200104)
 // ---------------------------------------------------------------------------
-const DEFAULTS = { nivel: 'provincia', evento: '', peligro: '', desde: '', hasta: '', metrica: 'anios', area: '' };
+const DEFAULTS = { nivel: 'provincia', evento: '', peligro: '', desde: '', hasta: '', metrica: 'anios', area: '', cuencas: '' };
 const METRICS = [
   ['anios', 'Años con daños (1970-2015)'], ['minimo', 'Años con daños, como mínimo (IC 95 %)'], ['grandes', 'Grandes Niños que lo golpearon'],
   ['razon', 'Cuántos más lugares con daños en años de Niño'], ['registros', 'Registros'], ['muertos', 'Fallecidos y desaparecidos'],
@@ -108,6 +115,7 @@ export function readState() {
   if (!LEVEL_NAMES.some(([k]) => k === s.nivel)) s.nivel = DEFAULTS.nivel;
   if (!METRICS.some(([k]) => k === s.metrica)) s.metrica = DEFAULTS.metrica;
   if (s.area && !/^\d{2}(\d{2}){0,2}$/.test(s.area)) s.area = '';
+  if (s.cuencas !== '1') s.cuencas = '';
   return s;
 }
 
@@ -383,6 +391,7 @@ function mount(root, D) {
     wire(root, D, s, set);
     if (focusSel) $(focusSel, root)?.focus({ preventScroll: true });
     if (s.area) { fillDetail(root, D, s); fillContext(root, D, s); fillPrevArea(root, D, s); }
+    fillLayers(root, D, s);
     fillPrevention(root, D);
   };
   // Clic delegado en rankings, enlaces de área y cierre del perfil. root sobrevive a cada redibujo, así que se
@@ -437,6 +446,8 @@ function page(D, s) {
           <div class="hz-tip" role="tooltip" hidden></div>
           ${s.area && s.nivel !== 'departamento' ? html`<button type="button" class="btn ghost hz-zoomout" data-area="">${raw(ICON.globe)}<span>Ver todo el Perú</span></button>` : ''}
           ${legendHtml(scale, s.metrica)}
+          <div class="hz-layers" role="group" aria-label="Capas del mapa"><button type="button" class="kind-chip" data-layer="cuencas" aria-pressed="${String(s.cuencas === '1')}"><span class="hz-sw-basin" aria-hidden="true"></span>Cuencas (ANA)</button>
+            <span class="muted small" id="hz-pts-note">${s.area ? 'Cargando los puntos de los registros…' : 'Elija un área para ver sus registros como puntos: el punto de campo de la fuente o el centro poblado que nombran.'}</span></div>
           <p class="muted small">${s.nivel === 'departamento' ? 'Toque un departamento para ver su ficha.' : 'Toque un área para ver su ficha y acercar el mapa a su departamento. También puede buscarla arriba o elegirla en la tabla.'} Los registros a escala de departamento no se pintan en provincias ni distritos. Desde y hasta son temporadas de julio a junio (1997 = 1997-98).${s.evento ? ' Con un filtro de evento, «años con daños» cuenta solo los años con registros de ese evento y la razón de El Niño no aplica.' : ''}</p>
         </div>
         <aside class="hz-side" id="hz-side" aria-live="polite">${s.area ? profileShell(D, s, recs, years) : nationalCard(D, nat, recs, years, s)}</aside>
@@ -589,14 +600,25 @@ async function fillDetail(root, D, s) {
   const mine = M.filter(D.recs, f).filter((r) => r.u.startsWith(s.area));
   const sorted = [...mine].sort((a, b) => (b.muertos + b.viv / 10 + (D.great.includes(b.e) ? 1000 : 0)) - (a.muertos + a.viv / 10 + (D.great.includes(a.e) ? 1000 : 0)) || b.d.localeCompare(a.d));
   const det = await detail(s.area.slice(0, 2));
+  const B = await basins();
   if (!box.isConnected) return;
   let shown = 12;
+  /** Dónde, más fino que el distrito: el centro poblado o el punto de la fuente, y la cuenca (la del punto, o la del
+   * distrito si el 80 % o más de él está en una). */
+  const fine = (r, g) => {
+    const basin = B.units[(g && g[5]) || B.districts[r.u]]?.n;
+    const where = g && g[2] === 1 ? `centro poblado ${g[3]} (±${F.fmtNumber(g[4], g[4] % 1 ? 1 : 0)} km)`
+      : g && g[2] === 0 ? `punto de campo de la fuente${g[3] ? `, en ${g[3]}` : ''}` : g && g[3] ? `nombra ${g[3]}` : '';
+    return [where, basin].filter(Boolean).join(' · ');
+  };
   const item = (r) => {
     const d = det[String(r.i)] || [];
     const [desc, , cite, url, dur] = d;
     const more = d[10] || 0, links = d[11] || [], kind = DATE_KIND[d[12]];
+    const place = fine(r, d[13]);
     return html`<li class="hz-ev"><div class="hz-ev-top"><span class="hz-ev-d">${when(r.d)}</span>${kind ? html`<span class="muted small">(${kind})</span>` : ''}<span class="tag">${dl(r.t)}</span>${r.e && !/^(Sin asociación|Temporada)/.test(r.e) ? html`<span class="tag tag-warm">${r.e}</span>` : ''}${r.o === 'curado' ? html`<span class="tag">curado</span>` : ''}${r.e === D.ongoing ? html`<span class="tag tag-warm">en curso</span>` : ''}</div>
       <p class="hz-ev-where">${areaName(D, r.u)}${dur ? ` · ${dur} día${dur > 1 ? 's' : ''}` : ''}</p>
+      ${place ? html`<p class="small hz-ev-fine">${raw(ICON.pin)}<span>${place}</span></p>` : ''}
       ${desc ? html`<p class="hz-ev-t">${desc.length > 420 ? `${desc.slice(0, 420)}…` : desc}</p>` : ''}
       ${r.muertos || r.afect || r.viv ? html`<p class="small">${[r.muertos ? `${n0(r.muertos)} fallecidos o desaparecidos` : '', r.afect ? `${n0(r.afect)} afectados o damnificados` : '', r.viv ? `${n0(r.viv)} viviendas destruidas` : ''].filter(Boolean).join(' · ')}</p>` : ''}
       <p class="muted small">Fuente: ${cite || 'ver enlace'} ${url ? html`· <a href="${safeUrl(url)}" rel="noopener" target="_blank">${SOURCE_LINK[r.o] || 'documento'}</a>` : ''}</p>
@@ -607,6 +629,74 @@ async function fillDetail(root, D, s) {
     $('#hz-more', box)?.addEventListener('click', () => { shown += 30; paint(); });
   };
   paint();
+}
+
+// ---------------------------------------------------------------------------
+// Capas del mapa: cuencas y puntos de los registros
+// ---------------------------------------------------------------------------
+const SVG_NS = 'http://www.w3.org/2000/svg';
+/** Cómo se ubicó el punto de un registro (posición 13 del detalle, tools.build_historico._web_place). */
+const POINT_KIND = ['punto de campo de la fuente', 'centro poblado que nombra el registro', 'capital del distrito'];
+
+/** Proyección de peru-map.json (tools.build_peru_map): grados → coordenadas del SVG. */
+function project(D, lat, lon) {
+  const p = D.peru.lonLat;
+  return [(lon - p.lon0) * p.cos * p.k, (p.lat1 - lat) * p.k];
+}
+
+/** Agrega una capa al mapa debajo del anillo del área elegida, que siempre va al final para que nada lo tape. */
+function addLayer(svg, cls, markup) {
+  svg.querySelector(`g.${cls}`)?.remove();
+  const g = document.createElementNS(SVG_NS, 'g');
+  g.setAttribute('class', cls);
+  g.innerHTML = markup;
+  svg.insertBefore(g, svg.querySelector(':scope > .sel-ring'));
+}
+
+/** Las cuencas (si se pidieron) y, con un área elegida, sus registros ubicados más fino que el distrito. */
+async function fillLayers(root, D, s) {
+  const svg = $('.hz-mapbox .hz-svg', root);
+  if (!svg) return;
+  const vb = svg.viewBox.baseVal;
+  const unit = Math.max(vb.width, vb.height * 0.75) / 507;  // 1 en el mapa de todo el Perú, menos al acercarse
+  if (s.cuencas === '1') {
+    const B = await basins();
+    if (!svg.isConnected) return;
+    addLayer(svg, 'hz-basins', Object.entries(B.units).map(([c, u]) => `<path d="${u.d}" data-tip="${esc(`${u.n}\nUnidad hidrográfica ${c} de la ANA (Pfafstetter)`)}"></path>`).join(''));
+  }
+  const note = $('#hz-pts-note', root);
+  if (!s.area) return;
+  const det = await detail(s.area.slice(0, 2));
+  const B = await basins();
+  if (!svg.isConnected) return;
+  const mine = M.filter(D.recs, currentFilter(D, s)).filter((r) => r.u.startsWith(s.area));
+  const at = new Map();
+  let n0_ = 0, n1 = 0;
+  for (const r of mine) {
+    const g = (det[String(r.i)] || [])[13];
+    if (!g || g[0] === null || g[2] > 1) continue;
+    g[2] ? n1++ : n0_++;
+    const k = `${g[0].toFixed(3)},${g[1].toFixed(3)},${g[2]}`;
+    const spot = at.get(k) || { g, recs: [] };
+    spot.recs.push(r);
+    at.set(k, spot);
+  }
+  const spots = [...at.values()].sort((a, b) => b.recs.length - a.recs.length);
+  addLayer(svg, 'hz-pts', spots.map(({ g, recs }) => {
+    const [x, y] = project(D, g[0], g[1]);
+    const r = unit * (2.2 + 1.3 * Math.sqrt(recs.length - 1));
+    const basin = g[5] && B.units[g[5]] ? B.units[g[5]].n : '';
+    const years = [...new Set(recs.map((q) => q.y))].sort();
+    const tipText = [g[3] || (g[2] ? 'Centro poblado' : 'Punto de la fuente'),
+      `${recs.length} registro${recs.length > 1 ? 's' : ''} (${years.length > 1 ? `${years[0]}–${years.at(-1)}` : years[0]}): ${[...new Set(recs.map((q) => dl(q.t)))].slice(0, 3).join(', ')}`,
+      `${POINT_KIND[g[2]]}${g[4] ? `, ±${F.fmtNumber(g[4], g[4] % 1 ? 1 : 0)} km` : ''}`, basin].filter(Boolean).join('\n');
+    return `<circle class="${g[2] ? 'hz-pt hz-pt-cp' : 'hz-pt'}" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r.toFixed(2)}" data-tip="${esc(tipText)}"></circle>`;
+  }).join(''));
+  if (note) {
+    note.textContent = n0_ + n1
+      ? `${n0(n0_ + n1)} de los ${n0(mine.length)} registros de esta área tienen un punto más fino que su distrito: ${n0(n0_)} con el punto de campo de la fuente (punto lleno) y ${n0(n1)} en el centro poblado que nombran (anillo). Los demás solo se conocen por distrito.`
+      : `Ninguno de los ${n0(mine.length)} registros de esta área tiene un punto más fino que su distrito.`;
+  }
 }
 
 /** Lo que las instituciones identificaron hoy como peligro en el área (no son eventos con fecha). */
@@ -918,7 +1008,7 @@ function methodSection(D) {
           <li>${S.cobertura.nota}</li>
           <li>DesInventar se arma con prensa nacional e informes del INDECI: hay más registros de ciudades y lugares accesibles, y menos antes de los años 90. Una zona sin registros no es una zona sin peligro.</li>
           <li>Las cifras de impacto son las que publicó cada fuente; un vacío significa «no reportado», no cero. Las fuentes discrepan entre sí (Huggel et al., 2015).</li>
-          <li>Los distritos se ubican con su UBIGEO o, si el nombre de la fuente está abreviado, con el punto de la fuente dentro de los límites vigentes del INDECI; las coordenadas son las de la fuente si caen en el distrito asignado y, si no, las de la capital del distrito (o un punto dentro del distrito si no se conoce su capital).</li>
+          <li>Los distritos se ubican con su UBIGEO o, si el nombre de la fuente está abreviado, con el punto de la fuente dentro de los límites vigentes del INDECI; las coordenadas son las de la fuente si caen en el distrito asignado y no son un punto por defecto (la capital, o el mismo punto para todo el distrito); si no, las del centro poblado oficial que nombra el registro (INEI, IGN o SDOT, con su incertidumbre en km); y si no, las de la capital del distrito (o un punto dentro del distrito si no se conoce su capital). La cuenca es la unidad hidrográfica de la ANA del punto, o la del distrito si el 80 % o más de él está en una. Solo 1 de cada 18 registros tiene un punto más fino que el distrito.</li>
           <li>Desde 2019 el SINPAD se lee del portal público del INDECI, que da el peligro, el distrito, la fecha, el nivel y el estado de cada emergencia, pero no su descripción ni sus daños. Por eso esas fichas se ubican en la capital del distrito. El IDMC recopila las mismas emergencias: cuando una fila del IDMC coincide con una del SINPAD (mismo distrito, ±1 día), sus personas desplazadas y viviendas pasan a la fila del SINPAD y el IDMC queda como corroboración; las filas del IDMC por departamento son resúmenes de desplazamiento, no eventos aparte.</li>
           <li>Las filas ubicadas solo por provincia o departamento llevan las coordenadas de su capital (columna PrecisionGeo): en un mapa de puntos parecen agrupadas en las capitales.</li>
           <li>La fecha de una fila del COEN es la de su primer reporte encontrado y la de una nota, la de su publicación (columna FechaTipo): su confianza nunca es alta.</li>
@@ -947,6 +1037,7 @@ function wire(root, D, s, set) {
     set({ nivel: lvl, area }, `[data-nivel="${lvl}"]`);
   }));
   $('[data-clear]', root)?.addEventListener('click', () => set({ evento: '', peligro: '', desde: '', hasta: '', area: '' }, '#hz-map-h'));
+  $('[data-layer="cuencas"]', root)?.addEventListener('click', () => set({ cuencas: s.cuencas === '1' ? '' : '1' }, '[data-layer="cuencas"]'));
 
   // Buscador de lugares (datalist con los tres niveles).
   const q = $('#hz-q', root), list = $('#hz-places', root);
@@ -976,9 +1067,15 @@ function wire(root, D, s, set) {
   const stats = statsFor(D, s, recs, years);
   const show = (el, x, y) => {
     const code = el?.dataset?.code;
-    if (!code || !tip) return;
-    const st = stats.get(code);
-    tip.innerHTML = String(html`<strong>${areaName(D, code)}</strong><p>${metricText(st, s.metrica)}</p>${st ? html`<p class="muted small">${n0(st.registros)} registros · ${st.aniosConEvento} años con daños · ${st.grandesNinos.length} grandes Niños</p>` : ''}`);
+    if (!tip || !(code || el?.dataset?.tip)) return;
+    if (code) {
+      const st = stats.get(code);
+      tip.innerHTML = String(html`<strong>${areaName(D, code)}</strong><p>${metricText(st, s.metrica)}</p>${st ? html`<p class="muted small">${n0(st.registros)} registros · ${st.aniosConEvento} años con daños · ${st.grandesNinos.length} grandes Niños</p>` : ''}`);
+    } else {
+      // Un punto de registros o una cuenca: su texto ya viene armado (y escapado) en data-tip.
+      const [head, ...rest] = el.dataset.tip.split('\n');
+      tip.innerHTML = String(html`<strong>${head}</strong>${rest.map((t) => html`<p class="muted small">${t}</p>`)}`);
+    }
     tip.hidden = false;
     const tw = tip.offsetWidth, th = tip.offsetHeight;
     let left = x + 16, top = Math.max(8, Math.min(innerHeight - th - 8, y - th / 2));
@@ -987,7 +1084,7 @@ function wire(root, D, s, set) {
     tip.style.top = `${top}px`;
   };
   const hide = () => { if (tip) tip.hidden = true; };
-  svg.addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') show(e.target.closest('[data-code]'), e.clientX, e.clientY); });
+  svg.addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') show(e.target.closest('[data-tip]') || e.target.closest('[data-code]'), e.clientX, e.clientY); });
   svg.addEventListener('pointerleave', hide);
   const pick = (code) => { hide(); set({ area: s.area === code ? '' : code }, '#hz-side'); };
   svg.addEventListener('click', (e) => { const t = e.target.closest('[data-code]'); if (t) pick(t.dataset.code); });

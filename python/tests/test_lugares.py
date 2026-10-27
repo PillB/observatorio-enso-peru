@@ -23,6 +23,7 @@ from enso.lugares import (MAX_SPREAD_KM, Match, Place, _km, basin_at, basins, ca
 
 ROOT = Path(__file__).resolve().parents[2]
 UBIGEO = json.loads((ROOT / "python" / "enso" / "data" / "ubigeo.json").read_text(encoding="utf-8"))
+FIXTURES = ROOT / "python" / "tests" / "fixtures" / "sources"
 
 
 @pytest.fixture(scope="module")
@@ -99,15 +100,15 @@ def _polys(x, y, p):
     return _in_polys(x, y, p)
 
 
-@pytest.mark.parametrize("station,lat,lon,code", [
-    # Estaciones hidrológicas del SENAMHI (capa AvisoHidrologico24H del GEOSINPAD, 27 de octubre de 2026): cada una
-    # trae la cuenca en que está. La de la ANA en ese punto debe ser la misma.
-    ("BELLAVISTA (río Napo, Mazán)", -3.482, -73.073, "4978"),
-    ("BORJA (río Marañón, Manseriche)", -4.4702, -77.5477, "49877"),
-    ("LAGARTO IRD (río Ucayali, Raimondi)", -10.608, -73.871, "4993"),
-])
-def test_senamhi_stations_fall_in_the_watershed_senamhi_names(station, lat, lon, code):
-    assert basin_at(lat, lon)["code"] == code, station
+def test_senamhi_stations_fall_in_the_watershed_senamhi_names():
+    # Las estaciones hidrológicas del SENAMHI (capa AvisoHidrologico24H del GEOSINPAD, captura del 21 de octubre de
+    # 2026) traen cada una la cuenca en que están: la de la ANA en ese punto debe ser la misma, en todas.
+    rows = json.loads((FIXTURES / "news-senamhi-hidrologicos.json").read_text(encoding="utf-8"))["features"]
+    seen = {}
+    for f in rows:
+        a = f["attributes"]
+        seen[a["NOM_ESTACI"]] = (basin_at(a["LATITUD"], a["LONGITUD"]) or {}).get("code"), a["COD_CUENCA"]
+    assert len(seen) >= 8 and all(got == want for got, want in seen.values()), seen
 
 
 def test_district_watershed_only_when_most_of_the_district_is_in_one():

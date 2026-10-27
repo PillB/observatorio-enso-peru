@@ -4516,8 +4516,8 @@
      "group": "publication",
      "name_es": "Archivos publicados",
      "name_en": "Published files",
-     "what_es": "eventos.zip (las 13 columnas del tablero y 45 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador.",
-     "what_en": "eventos.zip (the 13 dashboard columns and 45 metadata columns), the indicators, the per-district context, the prevention files and the data dictionary and browser versions."
+     "what_es": "eventos.zip (las 13 columnas del tablero y 50 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador.",
+     "what_en": "eventos.zip (the 13 dashboard columns and 50 metadata columns), the indicators, the per-district context, the prevention files and the data dictionary and browser versions."
     },
     {
      "id": "tab",

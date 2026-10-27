@@ -200,3 +200,73 @@ def _sampled(rings: list[Ring], areas: list[Area]) -> dict[str, float]:
     total = sum(hits.values())
     area = ring_area(ext)
     return {c: area * n / total for c, n in hits.items()} if total else {}
+
+
+# --- Formas para el mapa de alertas ---------------------------------------------------------------------------------
+
+#: Las formas de los avisos se publican con 2 decimales (~1 km), simplificadas a ``SHAPE_TOLERANCE`` grados, sin las
+#: partes de menos de ``SHAPE_MIN_AREA`` grados² (~2 km²) y con hasta ``SHAPE_MAX_POINTS`` vértices por aviso.
+SHAPE_TOLERANCE = 0.02
+SHAPE_MIN_AREA = 0.0002
+SHAPE_MAX_POINTS = 4000
+
+
+def _simplify(ring: Ring, tol: float) -> Ring:
+    """Douglas-Peucker sobre un anillo cerrado (sin recursión)."""
+    if len(ring) <= 4:
+        return ring
+    keep = [False] * len(ring)
+    keep[0] = keep[-1] = True
+    stack = [(0, len(ring) - 1)]
+    while stack:
+        a, b = stack.pop()
+        best, idx = 0.0, -1
+        for i in range(a + 1, b):
+            d = _seg_dist(*ring[i], *ring[a], *ring[b])
+            if d > best:
+                best, idx = d, i
+        if idx >= 0 and best > tol:
+            keep[idx] = True
+            stack += [(a, idx), (idx, b)]
+    return [p for p, k in zip(ring, keep) if k]
+
+
+def shape_rings(geom: dict, tol: float = SHAPE_TOLERANCE, min_area: float = SHAPE_MIN_AREA) -> list[list[list[float]]]:
+    """Los anillos de un (multi)polígono GeoJSON para dibujarlo: [[lon, lat], …] con 2 decimales, simplificados.
+    Los huecos se conservan (el mapa los pinta con la regla par-impar)."""
+    out = []
+    for rings in _polygons(geom):
+        for ring in rings:
+            if ring_area(ring) < min_area:
+                continue
+            pts = []
+            for x, y in _simplify(ring, tol):
+                p = [round(x, 2), round(y, 2)]
+                if not pts or p != pts[-1]:
+                    pts.append(p)
+            if len(pts) >= 4:
+                out.append(pts)
+    return out
+
+
+def cap_rings(rings: list[list[list[float]]], max_points: int = SHAPE_MAX_POINTS) -> list[list[list[float]]]:
+    """Los anillos más grandes que caben en ``max_points`` vértices (los chicos no se ven a la escala del mapa)."""
+    out, n = [], 0
+    for r in sorted(rings, key=lambda r: -ring_area([tuple(p) for p in r])):
+        if n + len(r) > max_points:
+            continue
+        out.append(r)
+        n += len(r)
+    return out
+
+
+def grid_points(points: list[tuple[float, float]], step: float = 0.1, limit: int = 400) -> list[dict]:
+    """Puntos (lat, lon) agrupados en celdas de ``step`` grados (~11 km): el centro de cada celda y cuántos caen en
+    ella, las ``limit`` celdas con más puntos."""
+    cells: dict[tuple[int, int], int] = {}
+    for lat, lon in points:
+        k = (int((lat + 90) // step), int((lon + 180) // step))
+        cells[k] = cells.get(k, 0) + 1
+    top = sorted(cells.items(), key=lambda kv: (-kv[1], kv[0]))[:limit]
+    return [{"lat": round((i + 0.5) * step - 90, 3), "lon": round((j + 0.5) * step - 180, 3), "n": n}
+            for (i, j), n in top]

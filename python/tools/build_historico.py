@@ -1479,7 +1479,7 @@ def relocate(records: list[dict], territory: Territory, stats: Counter, places=N
                 stats["punto de la fuente fuera del área asignada: capital"] += 1
         # La capital del distrito que nombra la fuente («Puerto Maldonado») no es más fina que el distrito.
         pt = match.point() if match and not all(_is_capital(p, territory) for p in match.places) else None
-        if pt and not _inside_district(code, pt[0], pt[1]):
+        if pt and not LG.inside_district(code, pt[0], pt[1]):
             # Un centro poblado a metros del límite (los límites se simplifican a unos 110 m): el punto publicado
             # siempre cae en su distrito, así que queda la capital (y el nombre en Lugar).
             if r.get("PrecisionGeo") == "centro-poblado":
@@ -1505,15 +1505,6 @@ def relocate(records: list[dict], territory: Territory, stats: Counter, places=N
             if r["PrecisionGeo"] not in ("coordenada-fuente", "centro-poblado"):
                 stats[f"punto del nomenclátor actualizado ({geo})"] += 1
             r["Latitud"], r["Longitud"], r["PrecisionGeo"] = lat, lon, geo
-
-
-def _inside_district(code: str, lat: float, lon: float) -> bool:
-    from enso.limites import limits
-
-    lim = limits()
-    d = lim.levels[6].get(code)
-    x, y = lon * lim.scale, lat * lim.scale
-    return bool(d) and lim.containing(6, x, y, code) == code
 
 
 def _is_capital(place, territory: Territory) -> bool:
@@ -1604,7 +1595,32 @@ def web_payload(records: list[dict]) -> tuple[dict, dict[str, dict]]:
             int(r.get("Corroboracion") or 0), [u for u in (r.get("FuentesAdicionales") or "").split(" | ") if u],
             r.get("FechaTipo") or "evento",
         ]
+        place = _web_place(r)
+        if place:
+            detail[r["Ubigeo"][:2]][str(i)].append(place)
     return {"cols": WEB_COLS, "dict": dicts, "rows": rows}, detail
+
+
+#: Cómo se ubicó el punto de un registro en la ficha del sitio (posición 13 del detalle): 0, el punto de la fuente;
+#: 1, el centro poblado que nombra; 2, la capital del distrito (el lugar que nombra quedó al otro lado del límite).
+WEB_POINT_KIND = {"coordenada-fuente": 0, "centro-poblado": 1}
+
+
+def _web_place(r: dict) -> Optional[list]:
+    """[lat, lon, cómo, lugar, radio en km, código de cuenca] de un registro ubicado más fino que su distrito (o que
+    nombra un centro poblado), para los puntos del mapa y la ficha; None si no lo está. La cuenca de los demás es la
+    de su distrito (``public/assets/cuencas-mapa.json``)."""
+    kind = WEB_POINT_KIND.get(r.get("PrecisionGeo") or "")
+    if kind is None and not r.get("Lugar"):
+        return None
+    try:
+        lat, lon = round(float(r["Latitud"]), 4), round(float(r["Longitud"]), 4)
+    except (TypeError, ValueError, KeyError):
+        return None
+    if kind is None:
+        return [None, None, 2, r["Lugar"], 0, r.get("CuencaCodigo") or ""]
+    radius = round(float(r["RadioKm"]), 1) if r.get("RadioKm") not in (None, "") else 0
+    return [lat, lon, kind, r.get("Lugar") or "", radius, r.get("CuencaCodigo") or ""]
 
 
 def area_names(t: Territory) -> dict:

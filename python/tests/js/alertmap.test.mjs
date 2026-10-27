@@ -69,3 +69,47 @@ it('los lugares que no trae el aviso dicen de dónde salen', () => {
     document: 'https://portal.indeci.gob.pe/wp-content/uploads/x.pdf' } } };
   assert.match(String(itemBadges(shared, NOW)), /boletín del COEN del aviso N° 435 \(<a href="https:\/\/portal\.indeci\.gob\.pe\/wp-content\/uploads\/x\.pdf"/);
 });
+
+const { project, detailMarkup, basinsMarkup } = await import('../../../public/assets/js/alertmap.js');
+const GEO = { lonLat: { lon0: -81.45, lat1: 0.05, k: 40, cos: 0.986286 } };
+
+it('los puntos y las formas caen donde los pone la proyección del mapa (peru-map.json)', () => {
+  const [x, y] = project(GEO, -77.03, -12.05);  // Lima
+  assert.ok(Math.abs(x - (-77.03 + 81.45) * 0.986286 * 40) < 1e-9 && Math.abs(y - 12.1 * 40) < 1e-9);
+  assert.deepEqual(project(GEO, -81.45, 0.05), [0, 0]);
+});
+
+it('el detalle de los avisos: formas y distritos de los vigentes, del nivel más bajo al más alto, y puntos de todos', () => {
+  const ring = [[-80, -5], [-79, -5], [-79, -6], [-80, -6], [-80, -5]];
+  const item = (id, rank, detail, extra = {}) => ({ ...RATED, id, title: `Aviso ${id}`, severity: { ...RATED.severity, rank },
+    geo: { places: [{ code: '20', level: 'departamento', name: 'Piura', confidence: 0.95, method: 'campo' }] }, detail, ...extra });
+  const feed = { groups: [{ id: 'alertas', items: [
+    item('rojo', 3, { shapes: [{ rings: [ring] }], areas: [{ code: '200201', name: 'Ayabaca', n: 17 }] }),
+    item('amarillo', 1, { shapes: [{ rings: [ring] }], areas: [{ code: '200201', name: 'Ayabaca', n: 4 }, { code: '200101', name: 'Piura', n: 2 }] }),
+    item('pasado', 2, { shapes: [{ rings: [ring] }], areas: [{ code: '200301', n: 1 }],
+      points: [{ name: 'Estación Chulucanas', lat: -5.1, lon: -80.16, kind: 'estacion', basin: { code: '13951', name: 'Cuenca Piura' } }] },
+    { valid: { from: '2026-10-01T05:00:00Z', until: '2026-10-02T04:59:00Z' } }),
+  ] }] };
+  const m = prepare(feed, NOW);
+  const districts = { 200201: { d: 'M1 1h2v2z' }, 200101: { d: 'M5 5h2v2z' }, 200301: { d: 'M9 9h2v2z' } };
+  const out = detailMarkup(GEO, m.alerts, {}, { districts });
+  // Las zonas: la del aviso vencido no se dibuja; la amarilla va antes que la roja (el rojo queda arriba).
+  const shapes = [...out.matchAll(/class="amap-shape s-(r\d)/g)].map((x) => x[1]);
+  assert.deepEqual(shapes, ['r1', 'r3']);
+  // Ayabaca sale una sola vez, con el nivel más alto, y su cuadro dice las quebradas de cada aviso.
+  const areas = [...out.matchAll(/<path class="amap-area s-(r\d)[^"]*" d="([^"]+)"[^>]*data-tip="([^"]+)"/g)];
+  assert.deepEqual(areas.map((x) => [x[1], x[2]]), [['r1', 'M5 5h2v2z'], ['r3', 'M1 1h2v2z']]);
+  assert.match(areas[1][3], /^Ayabaca: quebradas con probable activación\n17 quebradas · Aviso rojo\n4 quebradas · Aviso amarillo$/);
+  assert.doesNotMatch(out, /M9 9h2v2z/);
+  // El punto de la estación del aviso vencido sí aparece, como referencia (s-rep), con su cuenca sin repetir «cuenca».
+  const [x, y] = project(GEO, -80.16, -5.1);
+  assert.match(out, new RegExp(`<rect class="amap-pt k-estacion s-rep"[^>]*transform="rotate\\(45 ${x.toFixed(1)} ${y.toFixed(1)}\\)"[^>]*data-tip="Estación Chulucanas\\nAviso pasado\\nCuenca Piura"`));
+  // Sin detalle no hay capa.
+  assert.equal(detailMarkup(GEO, prepare({ groups: [{ id: 'alertas', items: [RATED] }] }, NOW).alerts, {}, { districts }), '');
+});
+
+it('las cuencas de la ANA, cada una con su nombre y su código', () => {
+  const out = basinsMarkup({ units: { 13951: { n: 'Cuenca Piura', l: 5, d: 'M1 1h1z', c: [1, 1] } } });
+  assert.equal(out, '<g class="amap-basins" aria-hidden="true"><path d="M1 1h1z" data-tip="Cuenca Piura\nUnidad hidrográfica 13951 de la ANA"></path></g>');
+  assert.equal(basinsMarkup(null), '');
+});

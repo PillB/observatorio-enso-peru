@@ -77,6 +77,14 @@ def name_key(name: str) -> str:
     return re.sub(r"\s+", " ", t).strip()
 
 
+_CONNECTORS = re.compile(r"\b(?:de|del|la|las|los|el)\b")
+
+
+def loose_key(name: str) -> str:
+    """Clave sin artículos ni «de»: «San Antonio Matibamba» y «San Antonio de Matibamba» son el mismo lugar."""
+    return re.sub(r"\s+", " ", _CONNECTORS.sub(" ", name_key(name))).strip()
+
+
 def title(name: str) -> str:
     small = {"de", "del", "la", "las", "los", "el", "y", "e", "en"}
     words = (name or "").lower().split()
@@ -144,15 +152,20 @@ class Lugares:
         self.rows = data["districts"]
         self.basins = basins
         self._index: dict[str, dict[str, list[list]]] = {}
+        self._loose: dict[str, dict[str, list[list]]] = {}
 
     def index(self, district: str) -> dict[str, list[list]]:
         if district not in self._index:
             idx: dict[str, list[list]] = {}
+            loose: dict[str, list[list]] = {}
             for row in self.rows.get(district, []):
                 k = name_key(row[0])
                 if len(k) >= 3:
                     idx.setdefault(k, []).append(row)
+                    if len(loose_key(k)) >= 4:
+                        loose.setdefault(loose_key(k), []).append(row)
             self._index[district] = idx
+            self._loose[district] = loose
         return self._index[district]
 
     def _place(self, rows: list[list], district: str, evidence: str) -> Optional[Place]:
@@ -185,7 +198,8 @@ class Lugares:
             if k in seen or k in skip or k in GENERIC or _GENERIC_PHRASE.match(k) or len(k) < 3 or k.isdigit():
                 continue
             seen.add(k)
-            rows = idx.get(k)
+            # Sin el nombre exacto, el mismo sin artículos ni «de» («San Antonio Matibamba» → San Antonio de Matibamba).
+            rows = idx.get(k) or (self._loose[district].get(loose_key(k)) if len(loose_key(k)) >= 4 else None)
             if not rows:
                 continue
             p = self._place(rows, district, ev)
@@ -247,6 +261,32 @@ class Basins:
             b = parts[0][0]
             return {"code": b, "name": self.units[b]["name"], "share": parts[0][1]}
         return None
+
+
+def inside_district(code: str, lat: float, lon: float) -> bool:
+    """El punto cae en el polígono del distrito (``enso.limites``, a unos 110 m)."""
+    from .limites import limits
+
+    lim = limits()
+    x, y = lon * lim.scale, lat * lim.scale
+    return bool(lim.levels[6].get(code)) and lim.containing(6, x, y, code) == code
+
+
+def localities(codes: list[str], text: str, field: bool = False, limit: int = 3) -> list[dict]:
+    """Los centros poblados que el texto nombra en esos distritos (hasta ``limit`` distritos), como puntos para el
+    mapa: nombre, punto, radio, código del INEI, distrito y cuenca. Solo los que caen en su distrito."""
+    from .geo import gazetteer
+
+    gz = gazetteer()
+    out = []
+    for code in [c for c in codes if len(c or "") == 6][:limit]:
+        lab = gz.label(code) if gz.valid(code) else {}
+        names = (lab.get("name", ""), lab.get("province", ""), lab.get("department", ""),
+                 (gz.dists.get(code) or {}).get("capital", ""))
+        for p in lugares().find(code, text, field=field, exclude=names).places:
+            if inside_district(code, p.lat, p.lon):
+                out.append({**p.as_dict(), "kind": "centro-poblado", "district": code})
+    return out
 
 
 @lru_cache(maxsize=1)
