@@ -78,7 +78,12 @@ publicación) y lee:
 | Aviso de oleaje | Tramos del litoral (norte, centro, sur) | Departamentos costeros de esos tramos |
 | Reporte de emergencia | Tabla «UBICACIÓN» (departamento, provincia, distrito); si la tabla es una imagen, la descripción («…distrito Challhuahuacho, provincia de Cotabambas.») | Distritos |
 
-pypdf pega y parte las celdas de la tabla («LOCUMBAJORGE BASADRETACNA», «PAMPASAN LUISCARLOS», «PASCO OX
+En los boletines de corto plazo, pypdf corta la celda de cada departamento en líneas, a veces en medio de un
+nombre («Carlos / Fermin Fitzcarrald», «San / Pablo», «Santiago de / Chuco»): se une la celda antes de separar
+por comas («*Callao» en la fila de Lima es la Provincia Constitucional). Antes se perdían de 1 a 3 provincias por
+boletín.
+
+En los reportes, pypdf pega y parte las celdas de la tabla («LOCUMBAJORGE BASADRETACNA», «PAMPASAN LUISCARLOS», «PASCO OX
 APAMPA»): los nombres de 4 letras o más se buscan también en el texto sin espacios, pero no dentro de otro nombre
 del gazetteer que también aparece («TOMAS» no es Omas, «CHONGOS» no es Hongos, «ALTO PICHIGUA» no es Pichigua).
 Se aceptan los alias del COEN (Kimbiri, Seclla, Mariscal Gamarra, San Juan de Iscos). Un departamento sin
@@ -128,7 +133,8 @@ Resultados: `https://<sitio>/#/variantes` (no está en el menú) o `GET /api/ab/
 
 ## Mantenimiento
 
-- `public/assets/peru-map.json` se regenera con `python -m tools.build_peru_map` (límites del IGN, vía OCHA
-  HDX, CC BY-IGO).
+- `public/assets/peru-map.json` se regenera con `python -m tools.build_peru_map` (límites del INDECI,
+  GEOSINPAD). Tiene un punto por cada provincia y cada distrito del nomenclátor; si un aviso nombra un código
+  sin punto, la versión B lo dibuja en su provincia o su departamento, nunca lo omite.
 - Pruebas: `tests/test_severity.py`, `tests/test_alert_map.py` (incluye la API con `node --test`) y
   `test_alert_map_filters_the_news_and_remembers_the_version` en los recorridos de navegador.

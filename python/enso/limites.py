@@ -1,14 +1,17 @@
 """Ubica un punto (latitud, longitud) en el distrito, la provincia o el departamento del Perú que lo contiene.
 
-Usa los límites del IGN (``data/limites-ign.json.gz``, construido por ``tools.build_limites``) y responde
-con el nivel más fino que el punto permite afirmar:
+Usa los límites administrativos vigentes del INDECI (``data/limites-ign.json.gz``, construido por
+``tools.build_limites`` desde el GEOSINPAD, con los 1 891 distritos) y responde con el nivel más fino que el
+punto permite afirmar:
 
 - Si la fuente da la incertidumbre del punto (``accuracy_km``: el epicentro de un sismo se conoce con
   unos km de error), y el punto está más cerca que eso del borde del distrito, se sube a la provincia;
   si también está cerca del borde de la provincia, al departamento.
-- Los distritos creados después de los límites de la fuente no tienen polígono: el punto cae en el
-  distrito del que se separaron. En esas provincias el distrito sale con confianza menor y una nota.
-- Donde la fuente une distritos (``120699`` Mazamari - Pangoa) se devuelve la provincia.
+- Si el nomenclátor tiene un distrito sin polígono en los límites (uno creado después de ellos), el punto
+  cae en el distrito del que se separó: en esa provincia el distrito sale con confianza menor y una nota.
+  Con los límites del INDECI de 2026 no hay ninguno; la regla queda para cuando se cree el próximo.
+- Donde una fuente une distritos (``120699`` Mazamari - Pangoa en los límites de 2020 del IGN) se devuelve
+  la provincia.
 - Los sismos frente a la costa no caen en ningún polígono: si el punto está en el mar (al oeste o
   suroeste de la costa) a menos de ``max_km``, se devuelve el departamento más cercano con la distancia.
   En el lago Titicaca, del lado peruano, se devuelve Puno.

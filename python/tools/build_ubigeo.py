@@ -4,6 +4,12 @@ Fuente: códigos UBIGEO del INEI con nombres, capitales y coordenadas,
 compilados por Jesús M. Castagnetto (licencia MIT,
 https://github.com/jmcastagnetto/ubigeo-peru-aumentado, DOI 10.5281/zenodo.4589185).
 
+Se contrasta con los límites vigentes del INDECI (``enso/data/limites-ign.json.gz``, ver
+``tools.build_limites``): una fila de la fuente que no es un distrito se quita (``NOT_DISTRICTS``), un distrito
+vigente que la fuente aún no trae se agrega con su ley de creación (``NEW_DISTRICTS``), y un distrito sin
+coordenadas de su capital en la fuente recibe un punto interior de su polígono, marcado ``"point": "interior"``
+(no es la capital: es un punto dentro del distrito, lejos de sus bordes).
+
 Uso:
     python -m tools.build_ubigeo [--src DIR]   # DIR con los tres CSV ya descargados
 """
@@ -53,7 +59,7 @@ def _norm(s: str) -> str:
 #: Palabras que ninguna capital trae con tilde (apellidos de próceres, ríos).
 ACCENT_SUPPLEMENT = {
     "convencion": "convención", "sanchez": "sánchez", "carrion": "carrión", "roman": "román", "purus": "purús",
-    "maranon": "marañón", "pierola": "piérola", "valcarcel": "valcárcel", "galvez": "gálvez", "belaunde": "belaúnde",
+    "maranon": "marañón", "boqueron": "boquerón", "pierola": "piérola", "valcarcel": "valcárcel", "galvez": "gálvez", "belaunde": "belaúnde",
     "huanuco": "huánuco", "junin": "junín", "rimac": "rímac", "apurimac": "apurímac", "peru": "perú", "simon": "simón",
     "bolivar": "bolívar", "mendez": "méndez", "ramirez": "ramírez", "perez": "pérez", "gonzalez": "gonzález",
     "lopez": "lópez", "jimenez": "jiménez", "fernandez": "fernández", "rodriguez": "rodríguez", "martinez": "martínez",
@@ -122,6 +128,53 @@ def _fill_codes(rows: list[dict], provs: list[dict]) -> None:
                 r[k] = ""
 
 
+#: Filas de la fuente que no son distritos.
+NOT_DISTRICTS = {
+    # Centro poblado del distrito de Lurigancho; la Ley N° 30888 (2018) solo declaró de interés nacional crear el
+    # distrito. Ni el INDECI ni el RENIEC tienen ese código.
+    "150144": "Santa María de Huachipa",
+}
+#: Distritos vigentes que la fuente aún no trae, con el código del INDECI (GEOSINPAD) y su ley de creación.
+NEW_DISTRICTS = [
+    {"ubigeo": "130112", "name": "Alto Trujillo", "capital": "Alto Trujillo", "law": "Ley N° 31644 (2022)"},
+]
+
+
+def _limits() -> dict:
+    import gzip
+
+    path = Path(__file__).resolve().parents[1] / "enso" / "data" / "limites-ign.json.gz"
+    return json.loads(gzip.decompress(path.read_bytes()))
+
+
+def interior_point(polys: list[list[list[int]]], scale: int) -> tuple[float, float]:
+    """(lat, lon) de un punto bien adentro del polígono más grande (el de mayor distancia al borde)."""
+    from tools.build_peru_map import _area, interior
+
+    rings = [[(p[0][i], p[0][i + 1]) for i in range(0, len(p[0]), 2)] for p in polys]
+    x, y = interior(max(rings, key=_area), 24)
+    return round(y / scale, 4), round(x / scale, 4)
+
+
+def reconcile(data: dict, limits: dict) -> dict:
+    """Quita lo que no es distrito, agrega los distritos nuevos y da un punto interior a los que no tienen
+    coordenadas, con los límites del INDECI."""
+    dists = [d for d in data["districts"] if d["ubigeo"] not in NOT_DISTRICTS]
+    have = {d["ubigeo"] for d in dists}
+    for n in NEW_DISTRICTS:
+        if n["ubigeo"] not in have:
+            dists.append({"ubigeo": n["ubigeo"], "name": n["name"], "capital": n["capital"], "lat": None, "lon": None})
+    for d in dists:
+        poly = limits["districts"].get(d["ubigeo"])
+        if poly:
+            d.pop("provisional", None)  # el INDECI tiene el distrito con ese código: ya no es provisional
+        if d.get("lat") is None and poly:
+            d["lat"], d["lon"] = interior_point(poly["polys"], limits["scale"])
+            d["point"] = "interior"
+    data["districts"] = sorted(dists, key=lambda d: d["ubigeo"])
+    return data
+
+
 def build(src: dict[str, str]) -> dict:
     rows = {k: list(csv.DictReader(io.StringIO(v))) for k, v in src.items()}
     _fill_codes(rows["dist"], rows["prov"])
@@ -167,7 +220,7 @@ def main(argv=None) -> int:
     else:
         with httpx.Client(headers={"User-Agent": UA}, timeout=60) as client:
             src = _download(client)
-    data = build(src)
+    data = reconcile(build(src), _limits())
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     print(f"{OUT}: {len(data['departments'])} departamentos, {len(data['provinces'])} provincias, "
           f"{len(data['districts'])} distritos")

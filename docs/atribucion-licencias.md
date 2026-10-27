@@ -9,7 +9,8 @@
 | IGP (Perú) | ICEN | Se cita «ENFEN / IGP» con `met.igp.gob.pe/datos/ICEN.txt` |
 | Bureau of Meteorology (Australia) | SOI archivado, solo para validar | No se republica |
 | Natural Earth | Línea de costa del mapa | Dominio público |
-| Instituto Geográfico Nacional (IGN), vía OCHA HDX (`cod-ab-per`) | Límites de distritos, provincias y departamentos para ubicar coordenadas (`python/enso/data/limites-ign.json.gz`, simplificados) y dibujar el mapa de alertas (`public/assets/peru-map.json`) | CC BY-IGO; se cita «IGN, vía OCHA HDX» |
+| INDECI, GEOSINPAD (límites administrativos) | Límites de distritos, provincias y departamentos para ubicar coordenadas (`python/enso/data/limites-ign.json.gz`, simplificados), dibujar el mapa de alertas (`public/assets/peru-map.json`) y dar un punto interior a los distritos sin capital en el nomenclátor | Información pública del Estado peruano (Ley N° 27806); se cita «INDECI (GEOSINPAD)» |
+| Instituto Geográfico Nacional (IGN), vía OCHA HDX (`cod-ab-per`) | Límites de 2020 que se usaban antes; el mapa de la memoria de desastres hasta su próxima regeneración | CC BY-IGO; se cita «IGN, vía OCHA HDX» |
 | INEI, compilado por J. M. Castagnetto (`ubigeo-peru-aumentado`) | Códigos UBIGEO, nombres y capitales (`python/enso/data/ubigeo.json`) | MIT; DOI 10.5281/zenodo.4589185 |
 
 Dónde aparece la atribución:
