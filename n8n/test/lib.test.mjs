@@ -516,6 +516,18 @@ test('Informe: fila NO PEDIDA con la clase del robots.txt que no respondió', as
   assert.match(rows[0].resultado, /^RESUMEN: 0\/0/);
   assert.deepEqual([rows[1].resultado, rows[1].url, rows[1].alcance, rows[1].robots], ['NO PEDIDA', 'https://x/feed/', 'timeout', 'unreachable']);
   assert.equal(rows.length, 2);
+  assert.deepEqual(Object.keys(rows[0]), Object.keys(rows[1]));
+});
+
+test('not_requested e Informe llevan el «hop» cuyo robots.txt se leyó', async () => {
+  const robots = { id: 'robots:y', group: 'g', url: 'https://y.org/robots.txt', role: 'robots', fetched_at: '2026-10-26T03:50:00+00:00',
+    cls: { ok: true, verdict: 'ok', reach: 'ok' },
+    deferred: [{ id: 'f', group: 'g', url: 'https://www.x.gob.pe/feed/', hop: 'https://y.org/feed/', robots: 'disallowed', fetch: false }] };
+  const rows = (await runCode('informe', {}, {}, [{ json: robots }])).map((i) => i.json);
+  assert.deepEqual([rows[1].resultado, rows[1].hop], ['NO PEDIDA', 'https://y.org/feed/']);
+  assert.equal(rows[0].hop, '');
+  const { notRequested } = loadWith({ URL: undefined }, 'hash', 'classify', 'relay');
+  assert.equal(notRequested([robots])[0].hop, 'https://y.org/feed/');
 });
 
 test('Segunda pasada: «follow» solo sigue enlaces del mismo servidor que la página', async () => {

@@ -53,7 +53,11 @@ function notRequested(results) {
       if (d.fetch || (d.fetch === undefined && (d.robots === 'allowed' || d.robots === 'absent'))) continue;
       const why = d.robots === 'disallowed' ? 'robots.txt no lo permite' : `robots.txt no respondió (${(r.cls && r.cls.reach) || 'sin respuesta'})`;
       // reach: la clase del pedido de robots.txt (timeout, challenge…), como Robots.failure en python/enso/reach.py.
-      out.push({ url: d.url, id: d.id, group: d.group, robots: d.robots, reach: (r.cls && r.cls.reach) || '', robots_url: r.url, fetched_at: r.fetched_at, note: why });
+      const e = { url: d.url, id: d.id, group: d.group, robots: d.robots, reach: (r.cls && r.cls.reach) || '', robots_url: r.url, fetched_at: r.fetched_at, note: why };
+      // hop: el destino de la redirección cuyo robots.txt se leyó; la excepción de las entidades públicas
+      // del Perú se juzga por ese servidor (probe_sources._not_requested).
+      if (d.hop) e.hop = d.hop;
+      out.push(e);
     }
   }
   return out;

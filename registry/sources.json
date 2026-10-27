@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-26T23:42:49+00:00",
+ "generated_at": "2026-10-27T00:40:27+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -12861,15 +12861,15 @@
    }
   },
   {
-   "id": "cenepred-arcgis-server-rest-services-f-pjson",
+   "id": "cenepred-arcgis-rest-services-f-pjson",
    "group": "cenepred",
-   "name": "CENEPRED: arcgis_server/rest/services?f=pjson",
+   "name": "CENEPRED: arcgis/rest/services?f=pjson",
    "institution": "CENEPRED",
-   "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
+   "url": "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson",
    "expect": "json",
    "method": "api",
    "kind": "dataset",
-   "home": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
+   "home": "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson",
    "alt_urls": [],
    "hazards": [],
    "interval_minutes": 1440,
@@ -12878,27 +12878,12 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "down",
-    "from": [
-     "github-actions",
-     "peru-server"
-    ],
+    "status": "unknown",
+    "from": [],
     "open_from": [],
-    "us": {
-     "class": "http-4xx",
-     "http": 404,
-     "robots": "absent"
-    },
-    "peru": {
-     "class": "http-4xx",
-     "http": 404,
-     "robots": "allowed"
-    },
-    "actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "robots": "absent"
-    },
+    "us": null,
+    "peru": null,
+    "actions": null,
     "n8n": null
    },
    "channels": [
@@ -12907,8 +12892,8 @@
    ],
    "geoblocked": null,
    "by_url": {
-    "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson": {
-     "status": "down",
+    "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson": {
+     "status": "unknown",
      "channels": [
       "actions",
       "n8n"

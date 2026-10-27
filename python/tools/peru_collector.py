@@ -138,7 +138,9 @@ SOURCES: dict[str, list[str]] = {
         "https://www.imarpe.gob.pe/imarpe/index.php?id_seccion=I0178070000000000000000",
     ],
     "cenepred": [
-        "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",  # SIG del CENEPRED
+        # SIGRID del CENEPRED (servicios ArcGIS; la carpeta FEN trae los escenarios de riesgo por El Niño).
+        # sig.cenepred.gob.pe/arcgis_server respondía 404 desde el Perú y desde EE. UU. (25-10-2026).
+        "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson",
     ],
 }
 
@@ -150,7 +152,7 @@ EXPECT: dict[str, str] = {
     IDESEP_FEATURES: "json",
     IDESEP_SCHEMA: "text",  # esquema XML de la capa
     ICEN: "text",
-    "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson": "json",
+    "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson": "json",
 }
 
 
