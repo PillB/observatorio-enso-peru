@@ -17,7 +17,8 @@ import pytest
 
 from enso.geo import gazetteer, key, locate_item
 from enso.historico.territorio import territory
-from enso.limites import limits
+from enso.historico import fuentes as F
+from enso.limites import CREATED_AFTER_2020, limits
 
 ROOT = Path(__file__).resolve().parents[2]
 OFFICIAL = Path(__file__).parent / "geo" / "indeci-distritos.csv"
@@ -70,8 +71,7 @@ def test_every_official_spelling_reaches_its_district():
         name = re.sub(r"\(.*?\)", " ", r["distrito"])
         if c not in ("060506", "070101", "150101"):  # truncado por la fuente («TOLED»); Callao y Lima: la provincia
             assert c in gz.names.get(key(name), ()), r
-        if c not in ("150712", "250201"):  # «SAN PEDRO DE LARAOS», «RAIMONDI»: alias de territorio.NAME_ALIASES
-            assert t.resolve(r["departamento"], r["provincia"], r["distrito"]) == c, r
+        assert t.resolve(r["departamento"], r["provincia"], r["distrito"]) == c, r
 
 
 def test_non_districts_and_new_districts():
@@ -168,3 +168,71 @@ def test_every_district_with_its_province_and_department():
 ])
 def test_known_homonyms_and_spellings(title, code):
     assert [p["code"] for p in locate_item({"title": title})["places"]] == [code]
+
+
+# --- El catálogo de la memoria de desastres ------------------------------------------------------------------------
+
+def _catalog() -> list[dict]:
+    import io
+    import zipfile
+
+    with zipfile.ZipFile(ROOT / "public" / "assets" / "historico" / "eventos.zip") as z:
+        return list(csv.DictReader(io.TextIOWrapper(z.open("eventos.csv"), encoding="utf-8-sig")))
+
+
+def test_every_published_point_lies_in_its_area_and_names_match_the_code():
+    """Cada fila del catálogo: nombres = los del UBIGEO, y su punto (de la fuente, capital o interior) dentro del
+    área asignada. Antes, 1 117 filas de 16 distritos sin capital en el nomenclátor llevaban la capital de su
+    provincia, hasta a 126 km de su distrito."""
+    t, lim = territory(), limits()
+    far = []
+    for r in _catalog():
+        code = r["Ubigeo"]
+        assert t.normalize(code) == code, r["Id"]
+        assert (r["Departamento"], r["Provincia"], r["Distrito"]) == t.names(code), r["Id"]
+        x, y = float(r["Longitud"]) * lim.scale, float(r["Latitud"]) * lim.scale
+        if lim.containing(len(code), x, y) != code:
+            km = lim._edge(x, y, lim.levels[len(code)][code]["polys"])[0]
+            if r["PrecisionGeo"] == "coordenada-fuente" or km > EDGE.get(code, 0.15):
+                far.append((r["Id"], code, r["PrecisionGeo"], round(km, 2)))
+    assert not far, far[:20]
+
+
+def test_a_source_point_in_a_district_created_later_takes_its_code():
+    loc = {"code": "250307"}  # Boquerón (2021), dentro de Padre Abad
+    assert F.newer_sibling("250301", loc) == "250307"
+    assert F.newer_sibling("250307", loc) is None
+    assert F.newer_sibling("250101", loc) is None  # otra provincia: no
+    assert F.newer_sibling("010509", {"code": "010523"}) is None  # vecino antiguo (Trita): no
+    assert "130112" in CREATED_AFTER_2020 and not {"120604", "120606"} & CREATED_AFTER_2020
+    t = territory()
+    code, pt, how = F.place(t, "UCAYALI", "PADRE ABAD", "PADRE ABAD", -9.0152, -75.7691)
+    assert (code, how) == ("250307", "punto") and pt
+
+
+def test_relocate_is_idempotent_and_fixes_points():
+    from tools.build_historico import relocate
+    from collections import Counter
+
+    t = territory()
+    rows = [
+        # Punto de la fuente en Boquerón con el distrito que nombró la fuente (Padre Abad).
+        {"Ubigeo": "250301", "PrecisionGeo": "coordenada-fuente", "Latitud": "-9.0152", "Longitud": "-75.7691",
+         "Departamento": "Ucayali", "Provincia": "Padre Abad", "Distrito": "Padre Abad", "Region": "", "AltitudCapital": ""},
+        # Putis con la capital de su provincia (Huanta), como antes.
+        {"Ubigeo": "050413", "PrecisionGeo": "capital-provincia", "Latitud": "-12.9394", "Longitud": "-74.2481"},
+        # Punto de la fuente fuera de su distrito y no en un distrito nuevo: la capital.
+        {"Ubigeo": "150101", "PrecisionGeo": "coordenada-fuente", "Latitud": "-13.5", "Longitud": "-71.9"},
+    ]
+    for r in rows[1:]:
+        r["Departamento"], r["Provincia"], r["Distrito"] = t.names(r["Ubigeo"])
+    q = Counter()
+    relocate(rows, t, q)
+    assert rows[0]["Ubigeo"] == "250307" and rows[0]["Distrito"] == "Boquerón" and rows[0]["PrecisionGeo"] == "coordenada-fuente"
+    assert rows[1]["PrecisionGeo"] == "interior-distrito" and (rows[1]["Latitud"], rows[1]["Longitud"]) == t.point("050413")[:2]
+    assert rows[2]["PrecisionGeo"] == "capital-distrito"
+    assert sum(q.values()) == 3
+    again = Counter()
+    before = [dict(r) for r in rows]
+    relocate(rows, t, again)
+    assert rows == before and not again

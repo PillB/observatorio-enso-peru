@@ -42,6 +42,12 @@ PERU_BOX = (-82.5, -19.5, -68.0, 0.5)
 TITICACA = (-70.1, -16.4, -69.3, -15.2)
 #: Departamentos con costa: solo frente a ellos un punto fuera de los límites puede estar en el mar.
 COASTAL = {"24", "20", "14", "13", "02", "15", "07", "11", "04", "18", "23"}
+#: Distritos que no tenían polígono en los límites de 2020 del IGN (creados después, o que esos límites no
+#: separaban de su vecino): una fuente que nombró al distrito del que se separaron puede traer un punto que hoy cae
+#: en ellos (``historico.fuentes.newer_sibling``). Mazamari y Pangoa no están: existían antes, unidos en esa fuente.
+CREATED_AFTER_2020 = frozenset({
+    "030612", "050413", "050512", "050513", "050514", "050515", "080915", "080916", "080917", "080918", "090724",
+    "090725", "130112", "180107", "221006", "250306", "250307"})
 #: Error de los bordes simplificados (``tools.build_limites``): más cerca que esto, el distrito es dudoso.
 EDGE_KM = 0.15
 
