@@ -23,7 +23,8 @@ prevención: cuántas de esas emergencias ocurrieron donde el Estado ya tenía e
 10. [Evidencia sobre la prevención desde los años 90](#evidencia-sobre-la-prevención-desde-los-años-90)
 11. [Límites](#límites)
 12. [Reproducir y actualizar](#reproducir-y-actualizar)
-13. [Registros curados y revisiones](#registros-curados-y-revisiones)
+13. [Cosecha en GitHub Actions](#cosecha-en-github-actions)
+14. [Registros curados y revisiones](#registros-curados-y-revisiones)
 
 ## Qué pregunta responde
 
@@ -63,6 +64,8 @@ obtuvieron, el número de registros que aportan, los que se descartaron y por qu
 | Prensa: 44 medios regionales y nacionales (radios, diarios y portales de Piura, Tumbes, Lambayeque, La Libertad, Áncash, Lima, Arequipa, Cusco, Puno, Junín, Huánuco, Loreto, San Martín y otros), por su API de WordPress, su mapa del sitio o su archivo | 2007-2026 | Distrito o provincia | Titular, fecha, extracto de hasta 200 caracteres y enlace. 4 048 notas corroboran una fila; 1 380 son filas propias | La nota es del medio; se cita con enlace (D. Leg. 822, art. 44) |
 | [Base mundial de desbordes de lagunas glaciares (GLOF)](https://zenodo.org/records/23370149), Lützow y Veh, v4.2 | 1883-2025 | Punto (la laguna) | 58 aluviones por desborde de lagunas glaciares con fecha, sobre todo de la Cordillera Blanca: laguna, mecanismo, detonante y fallecidos. No entran los que desató un sismo (1725, 1970) | CC BY 4.0 |
 | [Cronología de El Niño en Trujillo y el norte](https://www.ncei.noaa.gov/pub/data/paleo/historical/southamerica/peru/trujillo2008.xls) (García-Herrera et al., 2008, actas del Cabildo de Trujillo y otros archivos; NOAA NCEI) | 1559-1899 | Ciudad o valle | 58 años con lluvias o inundaciones de El Niño en Trujillo, Chicama, Saña, Lambayeque, Piura y Paita, con la evaluación de los autores | Libre uso citando el artículo (NOAA WDC Paleoclimatology) |
+| [«Las lluvias en Piura»](https://archive.org/details/boletndelasocied4189soci) (Víctor Eguiguren, Boletín de la Sociedad Geográfica de Lima, tomo IV, 1894; copia de Internet Archive) | 1728-1891 | Ciudad | 11 años de lluvias extraordinarias o grandes crecientes del río en Piura, Paita y el despoblado de Sechura, los que la cronología de Trujillo no tiene para Piura | Dominio público |
+| [Chronicling America](https://www.loc.gov/collections/chronicling-america/) (Biblioteca del Congreso de EE. UU.), periódicos digitalizados, por la API JSON de loc.gov | 1836-1963 | Distrito, provincia o departamento | Páginas de periódicos de EE. UU. que reproducían cables y cartas de cónsules sobre inundaciones, lluvias, huaicos y aludes en el Perú: fecha de publicación, periódico, extracto del texto OCR de hasta 200 caracteres y enlace a la página. Se unen entre sí (el mismo cable en varios periódicos) y a las filas de archivo del mismo año | Dominio público o sin restricciones conocidas (Biblioteca del Congreso); se cita con enlace |
 | Registros curados ([`data/historico/curado/`](../data/historico/curado/)) | 2017 | Distrito | Los diez distritos con más viviendas inhabitables o colapsadas en 2017 según el Plan Integral de Reconstrucción con Cambios | Cada registro cita su fuente |
 
 ### Contexto (no son eventos)
@@ -101,6 +104,16 @@ obtuvieron, el número de registros que aportan, los que se descartaron y por qu
   Noticias SER, El Nuevo Diario, Pro & Contra y Diario Uno): no se descargan.
 - **ReliefWeb** y **YouTube** (noticieros de radio y televisión) piden una clave o un nombre de aplicación
   registrado; quedan para cuando el proyecto los tenga.
+- **Hemerotecas digitales** (periódicos antiguos escaneados), además de Chronicling America:
+  - **Biblioteca Nacional del Perú** (hemeroteca digital, El Comercio y El Peruano antiguos): solo responde desde el
+    Perú; va por el recolector del Perú con el registro de fuentes.
+  - **Gallica** (Biblioteca Nacional de Francia: Le Temps, Journal des débats y otros, que informaban del Perú en el
+    siglo XIX), **HathiTrust** y **Papers Past** (Nueva Zelanda): responden con una verificación antirobots; no se
+    intentó saltarla.
+  - **Hemeroteca Digital de la Biblioteca Nacional de España**, la API de **Trove** (Australia) y el **archivo de
+    Google Noticias**: su robots.txt no deja que un programa los consulte.
+  - Los estudios de la época que ya resumieron la prensa y los archivos (Eguiguren, 1894; García-Herrera et al.,
+    2008) entran como registros curados.
 
 ## Columnas del catálogo
 
@@ -184,7 +197,7 @@ nivel.
 
 ## Fuentes que cuentan el mismo evento
 
-El COEN, la prensa y la base de GLOF casi siempre cuentan una emergencia que el SINPAD o DesInventar ya registran.
+El COEN, la prensa, los periódicos antiguos y la base de GLOF casi siempre cuentan una emergencia que el SINPAD o DesInventar ya registran.
 Para no contarla dos veces, cada reporte o nota busca una fila del mismo lugar (el distrito; una nota que solo da la
 provincia vale para cualquiera de sus distritos), del mismo grupo de peligro (las lluvias valen para lo que las
 lluvias causan: inundaciones, huaycos, deslizamientos) y de una fecha compatible
@@ -198,17 +211,34 @@ lluvias causan: inundaciones, huaycos, deslizamientos) y de una fecha compatible
 | COEN sin nada de lo anterior | Una emergencia del SINPAD del mismo distrito y grupo hasta 30 días alrededor |
 | GLOF | ±3 días con el día; el mismo mes con solo el mes; con solo el año no se une |
 | Nota de prensa | Un evento de hasta 10 días antes de la publicación (o del día siguiente); si el texto cita la fecha del evento («el pasado 14 de marzo», hasta 60 días antes), de 3 días antes de esa fecha al día siguiente de la publicación; con solo el mes, ese mes o el anterior |
+| Página de periódico antiguo | Un evento de hasta 45 días antes de la publicación (un cable o la carta de un cónsul tardaban semanas en llegar y los semanarios los reproducían después); si no, una fila de ese mes o ese año que solo tiene el mes o el año (los archivos curados). Una página que solo nombra el departamento vale para cualquier lugar del departamento |
 
 Si la encuentra, la fila suma uno a `Corroboracion`, el enlace en `FuentesAdicionales` y el origen en
 `OrigenesCorroboran`; las cifras de daños del COEN pasan a la fila solo si la fila no trae ninguna. Si no la
 encuentra, el reporte o la nota queda como **fila propia**: un evento que ninguna otra fuente registró (el COEN marca
 algunos como «no registrada en el SINPAD»), y las notas siguientes del mismo evento se suman a esa fila. El orden es
-COEN, GLOF y prensa. Cuántos se unieron por cada regla queda en `enlace` de `fuentes.json`.
+COEN, GLOF, prensa y periódicos antiguos. Cuántos se unieron por cada regla queda en `enlace` de `fuentes.json`.
 
 La prensa pasa antes por filtros: se descartan las notas de sismos, desagües, incendios urbanos, crímenes, calles
 que se llaman como un peligro, y las de obras, limpiezas, simulacros y otras actividades de prevención; el lugar lo pone el mismo ubicador de noticias del
 observatorio y el peligro, el texto. Solo se guarda el titular, la fecha, un extracto de hasta 200 caracteres y el
 enlace: el texto completo es del medio.
+
+Los **periódicos antiguos** se buscan en Chronicling America con unas 40 consultas en inglés sobre el texto OCR
+(«floods in peru», «peru AND piura AND flood», «ranrahirca»…, en `parametros.consultas` de `fuentes.json`); de cada
+página se guarda el fragmento donde aparecen los términos (`tools.build_historico.loc_chronam`). El fragmento junta
+varias notas de la página, así que se lee solo el texto alrededor de cada mención del Perú, y se descartan los Perú
+y las Lima de EE. UU. (las inundaciones del Wabash en Peru, Indiana, en 1913, llenan las búsquedas), la geografía de
+los libros de texto («it never rains in Peru»), los sismos, maremotos y volcanes (el alud de Yungay de 1970 lo desató
+un sismo), los derrumbes dentro de minas sin lluvias de por medio (Morococha, 1928) y lo que no dice que algo pasó.
+El lugar es el primero que nombra la nota, con el mismo ubicador (los nombres de la época, como Huaras o Payta, y los
+del OCR, como Pavta, se cambian por los de hoy, y «town of» por «ciudad de»). No cuentan el encabezado del cable
+(«LIMA, Peru, March 20», «Lima Peru Fob 28», «LIMA, Peru (AP)»), porque dice desde dónde se envió, ni Lima o el Callao
+como quien informa («advices from Lima», «reports reaching Lima»), porque por ahí pasaban todos los cables; sin fecha
+ni agencia, «Piura, Peru» es un lugar de la nota. Así, «landslides in the interior… reports reaching Lima said» no
+entra por no tener lugar, en vez de quedar en Lima. La fecha es la de publicación
+(`FechaTipo = publicacion`) y la confianza, baja: el OCR tiene errores («lea» por Ica) y una página que no se pudo
+ubicar no entra.
 
 ## Indicadores
 
@@ -353,12 +383,15 @@ cada una con su fuente (`public/assets/js/historico-evidencia.js`). El veredicto
   entre 4 y 6 no eran un evento nuevo (ayuda que llega semanas después, un pedido de los vecinos, un aniego por
   redes de desagüe, un tipo de peligro mal puesto). La prensa corrobora; no entra a la frecuencia ni a la
   prevención.
-- **Archivos antes de 1970.** La cronología de Trujillo registra años con lluvias o inundaciones, no cada evento, y
-  se ubica en la ciudad o el valle que nombra. La base de GLOF registra los aluviones que alguien estudió; hay más
+- **Archivos antes de 1970.** La cronología de Trujillo y el estudio de Eguiguren registran años con lluvias o
+  inundaciones, no cada evento, y se ubican en la ciudad o el valle que nombran. Los periódicos antiguos son sobre
+  todo de EE. UU.: cuentan lo que llegaba por cable (Lima, Callao, la costa norte, los ferrocarriles), no lo de cada
+  distrito. La base de GLOF registra los aluviones que alguien estudió; hay más
   en la Cordillera Blanca porque ahí se estudiaron más.
 - **Descargas a medias.** Los PDF del COEN, los decretos de El Peruano, los informes del INGEMMET y algunos medios se
-  descargan despacio (5 s o más entre pedidos) y siguen en curso. `fuentes.json` marca esas fuentes con `parcial` y
-  la pestaña lo avisa; las cifras de prevención y de corroboración van a cambiar.
+  descargan despacio (5 s o más entre pedidos) y siguen en curso, en GitHub Actions
+  ([Cosecha en GitHub Actions](#cosecha-en-github-actions)). `fuentes.json` marca esas fuentes con `parcial` y la
+  pestaña lo avisa; las cifras de prevención y de corroboración van a cambiar.
 - **Frecuencia no es pronóstico.** Suponer que el pasado se repite ignora el cambio climático y el crecimiento de la
   exposición (más gente en riberas y quebradas), que empujan el riesgo hacia arriba.
 
@@ -381,10 +414,12 @@ pytest -q tests/test_historico.py
   `enso.reach.Robots`) y respeta su `Crawl-delay`; si el robots.txt no responde, no pide nada a ese servidor.
 - El IDMC se pide a su propia API (su robots.txt la permite; el de HDX no deja que un programa baje sus CSV). La API
   pide una clave gratuita (`client_id`) que se solicita una vez por correo a ch.datainfo@idmc.ch, con el uso que se le
-  dará, y se guarda en la variable de entorno `IDMC_CLIENT_ID`, nunca en el repositorio. El script guarda las filas
-  del Perú como CSV con columnas y filas ordenadas. La copia vigente es la exportación del IDMC en HDX del
-  26-10-2026, con las mismas columnas. Los datos del IDMC son CC BY-NC-SA 3.0 IGO: uso no comercial, con atribución
-  y la misma licencia en lo derivado.
+  dará, y se guarda en la variable de entorno `IDMC_CLIENT_ID` (en GitHub Actions, el secreto del mismo nombre),
+  nunca en el repositorio. El script guarda las filas del Perú como CSV con columnas y filas ordenadas. Sin la clave
+  usa la semilla del repositorio (`data/historico/semillas/`, campo `semilla` de `fuentes.json`): la exportación del
+  IDMC en HDX del 26-10-2026, con las mismas columnas, comprimida. `fuentes.json` dice cuál se usó (`copia`: `API` o
+  `semilla`). Los datos del IDMC son CC BY-NC-SA 3.0 IGO: uso no comercial, con atribución y la misma licencia en lo
+  derivado, también la semilla.
 - Instituciones públicas peruanas (dominios `.gob.pe` y `.mil.pe`): su información es pública por la Ley N° 27806
   y, por decisión del proyecto del 26-10-2026, un `Disallow` de su robots.txt (o un robots.txt que no responde) no
   impide pedirla. El script igual lee su robots.txt, respeta su `Crawl-delay` con un mínimo de 5 s entre pedidos y se
@@ -405,10 +440,13 @@ pytest -q tests/test_historico.py
   canónico (claves ordenadas), para que el SHA-256 solo cambie si cambian los datos.
 - El servidor del INGEMMET no envía su certificado intermedio; `enso/data/ca-intermedios.pem` lo agrega (Sectigo
   Public Server Authentication CA OV R36) y la verificación TLS sigue completa.
-- Las descargas largas (PDF del COEN, El Peruano, repositorios, archivos de prensa) se pueden cortar y seguir: cada
-  una guarda lo bajado en `<archivo>-partes/` dentro de la caché. Con `--parcial`, el script arma lo que haya en un
-  `<archivo>.parcial.json`, marca la fuente como `parcial` en `fuentes.json` y salta (como `pendiente`) las que aún
-  no tienen nada. `--cache` se puede repetir para buscar en varias cachés.
+- Las descargas largas (PDF del COEN, El Peruano, repositorios, archivos de prensa, también la búsqueda en cada medio
+  con WordPress, término por término) se pueden cortar en cualquier momento y seguir: cada una guarda lo bajado en
+  `<archivo>-partes/` dentro de la caché. Cada parte y el archivo final se escriben de una vez (un temporal y
+  `os.replace`), y las partes se borran solo después de escribir el archivo final: un corte no deja nada a medias.
+  Con `--parcial`, el script arma lo que haya en un `<archivo>.parcial.json`, marca la fuente como `parcial` en
+  `fuentes.json` y salta (como `pendiente`) las que aún no tienen nada. `--cache` se puede repetir para buscar en
+  varias cachés.
 - Los servidores que solo responden desde el Perú (Biblioteca Nacional, BVPAD del INDECI, SPIJ, Contraloría, TV Perú,
   Radio Nacional, repositorios de tesis y otros) están en el registro de fuentes para que el recolector del proyecto
   en el Perú los mida; con lo medido se decide a cuáles escribirles una descarga.
@@ -419,6 +457,39 @@ pytest -q tests/test_historico.py
   una fuente que corrobora (COEN, prensa, GLOF), un lector de candidatos en `enso/historico/cosecha.py` y una entrada
   en `CANDIDATES` y `LINK_ORDER`; para una de prevención, en `EVIDENCE`.
 
+## Cosecha en GitHub Actions
+
+Las descargas largas no caben en una corrida de GitHub Actions (6 h como máximo) ni en un contenedor que se reinicia:
+los PDF del COEN son unos 20 000 pedidos a 5 s, más de un día. `.github/workflows/memoria-cosecha.yml` corre cada 6
+horas `python -m tools.cosecha_historico`, que:
+
+1. Restaura la caché de la corrida anterior (`actions/cache`, clave `memoria-cosecha-…`) en `~/.cache/enso-historico`.
+2. Baja lo que falte de cada fuente de `fuentes.json` con `build_historico.fetch`, cada una en un proceso propio, hasta
+   un plazo de 300 minutos. Las fuentes de un mismo servidor van una tras otra (la pausa entre pedidos es de cada
+   fuente: en paralelo se sumarían); los servidores van en paralelo, primero los de las descargas largas. Al vencer el
+   plazo corta los procesos: lo bajado queda en las partes.
+3. Anota en `cosecha-estado.json` (en la caché) cuándo empezó la cosecha y, de cada fuente, los intentos, los fallos
+   seguidos, el último error y el avance (páginas del listado del COEN, PDF leídos, meses de El Peruano, días de RPP,
+   fichas del INGEMMET, términos de cada medio, consultas y fragmentos de Chronicling America). El resumen de la corrida queda en la página de la corrida en
+   Actions. Una fuente que falla en tres corridas seguidas (no por el plazo) deja de esperarse: el catálogo se
+   construye sin ella y el PR lo dice; se sigue intentando en las corridas siguientes. Las fuentes de eventos y las
+   capas de contexto no dejan de esperarse nunca, porque sin ellas el catálogo no se construye.
+4. Guarda la caché (siempre, aunque algo falle) y borra las anteriores de la misma rama.
+5. Cuando no falta nada, construye el catálogo sin red (`build_historico --sin-red --parcial --aceptar-cambios`), lo
+   sube a la rama `bot/memoria-desastres/<inicio>` y abre un PR con lo que cambió en cada fuente y en el total. Un PR
+   abierto por Actions no lanza flujos, así que lanza `ci.yml` en esa rama. Si el repositorio no deja que Actions
+   abra PR, abre un issue con el enlace para abrirlo. Con el PR anotado (`cosecha-pr.json`), las corridas siguientes
+   no bajan nada: solo mantienen viva la caché, que Actions borra tras 7 días sin uso.
+
+A mano (Actions → memoria-cosecha → Run workflow): `solo` (ids de fuentes), `minutos`, `reconstruir` (construye y abre
+o actualiza el PR con lo bajado hasta ahora, con lo que falta como «a medias») y `renovar` (vacía la caché y empieza
+una cosecha nueva). En una rama `claude/**`, al cambiar la herramienta o el flujo, corre 12 minutos sin PR: muestra qué
+servidores responden desde Actions. Los que solo responden desde el Perú fallan ahí y quedan para el recolector del
+Perú.
+
+La caché guarda titulares y extractos de prensa de hasta 500 caracteres (el catálogo publica 200) y el texto de los
+reportes del COEN y de los decretos. Solo la leen los flujos de este repositorio; no se publica.
+
 ## Registros curados y revisiones
 
 **Registros curados** (`data/historico/curado/*.yaml`): para eventos o cifras que no están en las bases, sacados de
@@ -427,7 +498,9 @@ informes oficiales, artículos científicos o prensa. Cada registro necesita `Id
 `FuenteCita`; puede llevar `Descripción`, `Ubicacion`, `DuraciónEvento`, `TipoEvento`, `Latitud`/`Longitud`, las
 columnas de impacto y `Confianza`. Lo que va en `comun` se aplica a todos los registros del archivo.
 `trujillo-1550-1900.yaml` trae la cronología de García-Herrera et al. (2008): un registro por año y lugar, con
-confianza media si los autores la evalúan como segura (2) y baja si como posible (1). Un lugar que no
+confianza media si los autores la evalúan como segura (2) y baja si como posible (1). `eguiguren-piura-1728-1891.yaml`
+trae los años de lluvias extraordinarias o grandes crecientes en Piura y Paita del estudio de Eguiguren (1894), con su
+cuadro de lluvias de 1791 a 1890, salvo los que la cronología de Trujillo ya tiene para Piura. Un lugar que no
 se resuelve o un tipo fuera del vocabulario detienen la construcción.
 
 **Revisiones** (`data/historico/revisiones.yaml`): exclusiones y cifras dudosas, cada una con su motivo y su fuente.

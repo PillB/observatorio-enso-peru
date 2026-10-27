@@ -1,0 +1,157 @@
+# Cosecha larga del catálogo histórico de la pestaña «Memoria de desastres» (python/tools/cosecha_historico.py).
+# Varias fuentes toman días a la pausa de cortesía de 5 s (los reportes del COEN, los decretos de El Peruano, las
+# fichas del INGEMMET, el archivo de RPP, las páginas de Chronicling America): cada corrida baja hasta su plazo,
+# guarda lo bajado en la caché de Actions y la siguiente sigue donde quedó. Cuando no falta nada, construye el catálogo sin red (tools/build_historico) y
+# abre un PR desde bot/memoria-desastres/<inicio>, con ci.yml lanzado en él (un PR abierto por Actions no lanza
+# flujos). Con el PR abierto, las corridas siguientes no bajan nada: solo mantienen viva la caché (Actions borra la
+# que pasa 7 días sin uso), por si hay que reconstruir. Cada 6 horas, o a mano:
+#   reconstruir: construye y abre o actualiza el PR con lo bajado hasta ahora, aunque falte (lo que falta va «a medias»).
+#   renovar: vacía la caché y empieza una cosecha nueva.
+# En una rama claude/**, al cambiar la herramienta o este flujo, una corrida corta de prueba (sin PR) muestra qué
+# servidores responden desde Actions. La caché la leen solo los flujos de este repositorio: guarda titulares y
+# extractos de prensa, que no se publican (docs/memoria-desastres.md).
+name: memoria-cosecha
+
+on:
+  workflow_dispatch:
+    inputs:
+      solo:
+        description: 'ids de fuentes separados por comas (vacío: todas las que falten)'
+        type: string
+        default: ''
+      minutos:
+        description: 'plazo de la descarga en minutos'
+        type: string
+        default: '300'
+      reconstruir:
+        description: 'construir y abrir o actualizar el PR con lo bajado hasta ahora'
+        type: boolean
+        default: false
+      renovar:
+        description: 'vaciar la caché y empezar una cosecha nueva'
+        type: boolean
+        default: false
+  schedule:
+    - cron: '41 */6 * * *'
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'python/tools/cosecha_historico.py'
+      - '.github/workflows/memoria-cosecha.yml'
+
+permissions:
+  contents: write       # la rama del PR
+  pull-requests: write  # el PR
+  issues: write         # el aviso si Actions no puede abrir el PR
+  actions: write        # borrar las cachés viejas y lanzar ci.yml en el PR
+
+concurrency:
+  group: memoria-cosecha-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  cosecha:
+    runs-on: ubuntu-latest
+    # El máximo de Actions es 360: la descarga para a los 300 (o antes, si termina) y deja tiempo para construir,
+    # abrir el PR y guardar la caché.
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: python/requirements*.txt
+      - run: pip install -r python/requirements.txt
+      - name: pdftotext (texto de los PDF del COEN y de El Peruano)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+
+      - name: Restore the harvest
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.cache/enso-historico
+          key: memoria-cosecha-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: memoria-cosecha-
+      - name: Start over
+        if: inputs.renovar
+        run: rm -rf "$HOME/.cache/enso-historico"
+
+      - name: Download what is missing
+        id: cosecha
+        working-directory: python
+        timeout-minutes: 320
+        env:
+          # Sin la clave, las dos fuentes del IDMC usan la copia guardada en el repositorio (data/historico/semillas).
+          IDMC_CLIENT_ID: ${{ secrets.IDMC_CLIENT_ID }}
+          SOLO: ${{ inputs.solo }}
+          MINUTOS: ${{ github.event_name == 'push' && '12' || inputs.minutos || '300' }}
+        run: python -m tools.cosecha_historico --minutos "$MINUTOS" ${SOLO:+--solo "$SOLO"}
+
+      - name: Build the catalogue
+        id: build
+        if: github.event_name != 'push' && (steps.cosecha.outputs.estado == 'completa' || (inputs.reconstruir && steps.cosecha.outputs.estado != ''))
+        working-directory: python
+        run: |
+          mkdir -p "$RUNNER_TEMP/antes"
+          git show HEAD:data/historico/fuentes.json > "$RUNNER_TEMP/antes/fuentes.json"
+          git show HEAD:public/assets/historico/resumen.json > "$RUNNER_TEMP/antes/resumen.json"
+          python -m tools.build_historico --sin-red --parcial --aceptar-cambios
+          python -m tools.cosecha_historico --informe "$RUNNER_TEMP/antes" > "$RUNNER_TEMP/pr.md"
+
+      - name: Open or update the pull request
+        if: steps.build.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INICIO: ${{ steps.cosecha.outputs.inicio }}
+          ESTADO: ${{ steps.cosecha.outputs.estado }}
+          MAIN: ${{ github.event.repository.default_branch || 'main' }}
+        run: |
+          branch="bot/memoria-desastres/$INICIO"
+          mark() { [ "$ESTADO" = reconstruir ] || (cd python && python -m tools.cosecha_historico --pr "$1"); }
+          [ "$ESTADO" = sigue ] && ESTADO=reconstruir  # a medias: la cosecha sigue y abrirá el PR completo al terminar
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add data/historico public/assets/historico
+          if git diff --cached --quiet; then
+            echo "::notice::El catálogo reconstruido es igual al publicado: no hay PR"
+            [ "$ESTADO" = completa ] && mark "sin cambios"
+            exit 0
+          fi
+          git commit -q -m "Memoria de desastres: catálogo con la cosecha que empezó el $INICIO"
+          git push --force origin "HEAD:refs/heads/$branch"
+          title="Memoria de desastres: catálogo con la cosecha que empezó el $INICIO"
+          [ "$ESTADO" = reconstruir ] && title="$title (a medias)"
+          url=$(gh pr list --head "$branch" --state open --json url --jq '.[0].url // empty')
+          if [ -n "$url" ]; then
+            gh pr edit "$url" --title "$title" --body-file "$RUNNER_TEMP/pr.md"
+          elif ! url=$(gh pr create --base "$MAIN" --head "$branch" --title "$title" --body-file "$RUNNER_TEMP/pr.md"); then
+            # El repositorio no deja que Actions abra PR (Settings → Actions → General): se avisa con un issue, una vez.
+            compare="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/compare/$MAIN...$branch?expand=1"
+            { echo "El catálogo reconstruido está en la rama \`$branch\`, pero GitHub Actions no tiene permiso para abrir PR en este repositorio. Abrirlo desde $compare (o permitirlo en Settings → Actions → General → «Allow GitHub Actions to create and approve pull requests» y volver a correr el flujo con «reconstruir»)."; echo; cat "$RUNNER_TEMP/pr.md"; } > "$RUNNER_TEMP/issue.md"
+            issue=$(gh issue create --title "[datos] $title: abrir el PR" --body-file "$RUNNER_TEMP/issue.md")
+            echo "::warning::Actions no pudo abrir el PR: $issue"
+            mark "$issue"
+            exit 0
+          fi
+          echo "::notice::PR $url"
+          # Las pruebas del PR: ci.yml no corre solo en un PR abierto por Actions.
+          gh workflow run ci.yml --ref "$branch" || echo "::warning::No se pudo lanzar ci.yml en $branch"
+          mark "$url"
+
+      - name: Save the harvest
+        id: save
+        if: always() && steps.cosecha.outputs.estado != 'hecha'
+        uses: actions/cache/save@v6
+        with:
+          path: ~/.cache/enso-historico
+          key: memoria-cosecha-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Delete older harvest caches
+        if: always() && steps.save.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KEEP: memoria-cosecha-${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/caches?key=memoria-cosecha-&ref=$GITHUB_REF&per_page=100" \
+            --jq '.actions_caches[] | select(.key != env.KEEP) | .id' |
+            while read -r id; do gh api -X DELETE "repos/$GITHUB_REPOSITORY/actions/caches/$id" > /dev/null; done

@@ -318,13 +318,12 @@ def test_sinpad_api_pages_by_month_resumes_and_stops_politely(monkeypatch, tmp_p
     parts = tmp_path / "partes"
     doc = json.loads(B.sinpad_api(src, parts, delay=0, until=date(2019, 2, 10)))
     assert [x["codigoSinpad"] for x in doc["items"]] == [10, 20, 30, 40]
-    assert (doc["desde"], doc["hasta"]) == ("2019-01-01", "2019-02-10") and not parts.exists()
+    # Las partes quedan: las borra fetch() después de escribir el archivo final.
+    assert (doc["desde"], doc["hasta"]) == ("2019-01-01", "2019-02-10") and (parts / "2019-02.json").exists()
     assert calls == [("01/01/2019", "1"), ("01/01/2019", "1"), ("01/01/2019", "2"), ("01/02/2019", "1")]
 
     # Una descarga cortada sigue donde quedó, con la misma fecha de corte.
-    parts.mkdir()
-    (parts / "corte.json").write_text('{"hasta": "2019-02-10"}', encoding="utf-8")
-    (parts / "2019-01.json").write_text(json.dumps(jan), encoding="utf-8")
+    (parts / "2019-02.json").unlink()
     calls.clear()
     assert json.loads(B.sinpad_api(src, parts, delay=0)) == doc
     assert calls == [("01/02/2019", "1")]

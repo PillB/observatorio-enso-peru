@@ -10,9 +10,10 @@ Pasos (todos reproducibles; ``docs/memoria-desastres.md``):
    ``data/historico/curado/*.yaml``) y normaliza todo a ``enso.historico.esquema.COLUMNS``. Las capas de
    contexto (INGEMMET, ANA, establecimientos de salud) no son eventos: se resumen por distrito.
 3. Ubica cada registro en su UBIGEO vigente y le asigna la fase ENSO del mes (ICEN y ONI).
-3b. Une a esas filas los reportes del COEN, los desbordes de lagunas glaciares y las notas de prensa que cuentan
-   el mismo evento (``enso.historico.enlace.link``, en el orden de ``LINK_ORDER``: suman su enlace y, del COEN,
-   las cifras de daños); los que no corresponden a ninguna quedan como filas propias. Junta las declaratorias de
+3b. Une a esas filas los reportes del COEN, los desbordes de lagunas glaciares, las notas de prensa y las páginas de
+   periódicos antiguos digitalizados que cuentan el mismo evento (``enso.historico.enlace.link``, en el orden de
+   ``LINK_ORDER``: suman su enlace y, del COEN, las cifras de daños); los que no corresponden a ninguna quedan como
+   filas propias. Junta las declaratorias de
    emergencia (El Peruano), las evaluaciones técnicas del peligro (INGEMMET, IGP), el inventario de peligros con
    fecha (INGEMMET) y los llamamientos de la Cruz Roja para los indicadores de prevención (``enlace.prevention``).
 4. Escribe:
@@ -95,9 +96,12 @@ CANDIDATES = {
     "prensa": lambda path, t, c, sk, src: C.press(json.loads(path.read_text(encoding="utf-8")), t, c, outlet=src["medio"],
                                                departments=src.get("departamentos"), skipped=sk),
     "glof": lambda path, t, c, sk, src: C.glof(C.ods_rows(path.read_bytes()), t, c, url=src["pagina"], skipped=sk),
+    "hemeroteca": lambda path, t, c, sk, src: C.hemeroteca(json.loads(path.read_text(encoding="utf-8")), t, c,
+                                                           archive=src["medio"], skipped=sk),
 }
-#: Orden de la unión: el COEN y los GLOF antes que la prensa, para que una nota corrobore lo que solo ellos registran.
-LINK_ORDER = ("coen", "glof", "prensa")
+#: Orden de la unión: el COEN y los GLOF antes que la prensa, para que una nota corrobore lo que solo ellos registran;
+#: los periódicos antiguos al final (sus páginas reimprimen el mismo cable: la primera queda, las demás corroboran).
+LINK_ORDER = ("coen", "glof", "prensa", "hemeroteca")
 #: Evidencia para los indicadores de prevención: declaratorias de emergencia y evaluaciones del peligro.
 EVIDENCE = {
     "decretos": lambda doc, t, src: C.decrees(doc, t),
@@ -129,6 +133,15 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: fh.read(1 << 20), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def write_atomic(path: Path, data) -> None:
+    """Escribe ``path`` de una vez (un archivo temporal al lado y ``os.replace``): una descarga cortada en medio de
+    una escritura (la cosecha de GitHub Actions corta las suyas al vencer su plazo) no deja un archivo a medias, que
+    al retomarla no se podría leer."""
+    tmp = path.with_name(f".{path.name}.tmp")
+    tmp.write_bytes(data.encode("utf-8") if isinstance(data, str) else data)
+    os.replace(tmp, path)
 
 
 def arcgis_dump(url: str, fields: str = "*", geometry: bool = True, where: str = "1=1", delay: float = 0.5) -> bytes:
@@ -230,7 +243,7 @@ def sinpad_api(src: dict, parts: Path, delay: float = 5.0, until: Optional[date]
         end = date.fromisoformat(json.loads(state.read_text(encoding="utf-8"))["hasta"])
     else:
         end = until or datetime.now(F.LIMA).date()
-        state.write_text(json.dumps({"hasta": end.isoformat()}), encoding="utf-8")
+        write_atomic(state, json.dumps({"hasta": end.isoformat()}))
     start = date.fromisoformat(p.get("desde", "2019-01-01"))
     last = [0.0]
 
@@ -279,13 +292,12 @@ def sinpad_api(src: dict, parts: Path, delay: float = 5.0, until: Optional[date]
                         break
                 else:
                     raise SystemExit(f"{src['id']}: {a:%Y-%m} anunció {total} emergencias y llegaron {len(got)}")
-                part.write_text(json.dumps(list(got.values()), ensure_ascii=False), encoding="utf-8")
+                write_atomic(part, json.dumps(list(got.values()), ensure_ascii=False))
                 print(f"  {src['id']}: {a:%Y-%m}: {len(got)} emergencias", file=sys.stderr)
             items.update(got)
     out = json.dumps({"source": src["url"], "desde": start.isoformat(), "hasta": end.isoformat(),
                       "items": [items[k] for k in sorted(items)]},
                      ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    shutil.rmtree(parts)
     return out
 
 
@@ -399,7 +411,7 @@ def dspace_items(src: dict, parts: Path, delay: float = 5.0) -> bytes:
                 handles += [h for h in found if h not in handles]
                 offset += 100
                 print(f"  {src['id']}: lista {len(handles)} de {total}", file=sys.stderr)
-            listing.write_text(json.dumps(handles), encoding="utf-8")
+            write_atomic(listing, json.dumps(handles))
         field = re.compile(r'<label class="metadataFieldLabel">([a-z.]+)(?: <span>[^<]*</span>)?</label>'
                            r'<div class="metadataFieldValue">(.*?)</div></div>', re.S)
         for i, h in enumerate(handles):
@@ -413,13 +425,11 @@ def dspace_items(src: dict, parts: Path, delay: float = 5.0) -> bytes:
                 if v:
                     md[k].append(v)
             pdfs = sorted(set(re.findall(r'href="(/bitstream/[^"]+\.pdf)', t, re.I)))
-            part.write_text(json.dumps({"handle": h, "url": root + h, "pdf": [root + p for p in pdfs], "dc": md},
-                                       ensure_ascii=False), encoding="utf-8")
+            write_atomic(part, json.dumps({"handle": h, "url": root + h, "pdf": [root + p for p in pdfs], "dc": md},
+                                          ensure_ascii=False))
             if i % 50 == 0:
                 print(f"  {src['id']}: ficha {i + 1} de {len(handles)}", file=sys.stderr)
-    out = dspace_assemble(parts, base)
-    shutil.rmtree(parts)
-    return out
+    return dspace_assemble(parts, base)
 
 
 def dspace_assemble(parts: Path, base: str) -> bytes:
@@ -469,21 +479,25 @@ NEWS_TERMS = ["huaico", "huayco", "inundación", "inundaciones", "desborde", "de
               "vientos fuertes", "damnificados", "estado de emergencia", "Niño costero", "Fenómeno El Niño", "ciclón Yaku"]
 
 
-def wp_rest(src: dict, delay: float = 5.0) -> bytes:
+def wp_rest(src: dict, parts: Path, delay: float = 5.0) -> bytes:
     """Notas de un medio con WordPress (``src["url"]`` = su ``/wp-json/wp/v2/posts``) que responden a ``NEWS_TERMS`` (o a
     ``parametros.terminos``), por su API REST pública (``/wp-json/wp/v2/posts?search=``, 100 por página): id,
     fecha, enlace, titular y un extracto. Solo metadatos y un extracto corto, con enlace a la nota (derecho de
-    cita, D. Leg. 822, art. 44). JSON canónico ordenado por id."""
+    cita, D. Leg. 822, art. 44). Cada término terminado se guarda en ``parts`` y una descarga cortada sigue con el
+    siguiente. JSON canónico ordenado por id."""
     import html as H
     import time
 
     p = src.get("parametros", {})
     api = src["url"]  # …/wp-json/wp/v2/posts
-    posts: dict[int, dict] = {}
+    parts.mkdir(parents=True, exist_ok=True)
     last = [0.0]
-    errors = []
     with httpx.Client(follow_redirects=True, timeout=60, headers=UA, verify=ssl_context()) as c:
         for term in p.get("terminos", NEWS_TERMS):
+            part = parts / _wp_part(term)
+            if part.exists():
+                continue
+            got, errors = [], []
             page, pages = 1, 1
             while page <= pages:
                 params = {"search": term, "per_page": 100, "page": page, "orderby": "date", "order": "asc",
@@ -512,16 +526,34 @@ def wp_rest(src: dict, delay: float = 5.0) -> bytes:
                     break
                 pages = int(r.headers.get("X-WP-TotalPages") or 1)
                 for it in items:
-                    pid = it.get("id")
                     title = H.unescape(re.sub(r"<[^>]+>", "", (it.get("title") or {}).get("rendered", ""))).strip()
                     exc = H.unescape(re.sub(r"<[^>]+>", " ", (it.get("excerpt") or {}).get("rendered", "")))
-                    rec = posts.setdefault(pid, {"id": pid, "fecha": it.get("date"), "url": it.get("link"),
-                                                 "titulo": re.sub(r"\s+", " ", title),
-                                                 "extracto": re.sub(r"\s+", " ", exc).strip()[:500], "terminos": []})
-                    rec["terminos"].append(term)
+                    got.append({"id": it.get("id"), "fecha": it.get("date"), "url": it.get("link"),
+                                "titulo": re.sub(r"\s+", " ", title), "extracto": re.sub(r"\s+", " ", exc).strip()[:500]})
                 page += 1
-            print(f"  {src['id']}: «{term}»: {len(posts)} notas", file=sys.stderr)
-    return json.dumps({"source": api, "errores": errors, "notas": [posts[k] for k in sorted(posts)]},
+            write_atomic(part, json.dumps({"termino": term, "notas": got, "errores": errors}, ensure_ascii=False))
+            print(f"  {src['id']}: «{term}»: {len(got)} notas", file=sys.stderr)
+    return wp_assemble(parts, src)
+
+
+def _wp_part(term: str) -> str:
+    return hashlib.sha256(term.encode("utf-8")).hexdigest()[:16] + ".json"
+
+
+def wp_assemble(parts: Path, src: dict) -> bytes:
+    """El JSON de ``wp_rest`` con los términos que hay en ``parts`` (sin red), también a medias. Una nota que responde a
+    varios términos queda una vez, con la lista de términos, en el orden de la búsqueda."""
+    posts: dict[int, dict] = {}
+    errors = []
+    for term in src.get("parametros", {}).get("terminos", NEWS_TERMS):
+        part = parts / _wp_part(term)
+        if not part.exists():
+            continue
+        got = json.loads(part.read_text(encoding="utf-8"))
+        errors += got["errores"]
+        for it in got["notas"]:
+            posts.setdefault(it["id"], {**it, "terminos": []})["terminos"].append(term)
+    return json.dumps({"source": src["url"], "errores": errors, "notas": [posts[k] for k in sorted(posts)]},
                       ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
@@ -566,7 +598,7 @@ def rpp_archivo(src: dict, parts: Path, delay: float = 5.0) -> bytes:
         end = date.fromisoformat(json.loads(state.read_text(encoding="utf-8"))["hasta"])
     else:
         end = datetime.now(F.LIMA).date() - timedelta(days=1)
-        state.write_text(json.dumps({"hasta": end.isoformat()}), encoding="utf-8")
+        write_atomic(state, json.dumps({"hasta": end.isoformat()}))
     get = _paced_get(src, delay)
     with httpx.Client(follow_redirects=True, timeout=60, headers=UA, verify=ssl_context()) as c:
         day = date.fromisoformat(p.get("desde", "2021-01-01"))
@@ -581,13 +613,11 @@ def rpp_archivo(src: dict, parts: Path, delay: float = 5.0) -> bytes:
                         if h:
                             got.append({"url": h.group(1), "fecha": day.isoformat(), "seccion": sec,
                                         "titulo": re.sub(r"\s+", " ", H.unescape(re.sub(r"<[^>]+>", "", h.group(2)))).strip()})
-                part.write_text(json.dumps(got, ensure_ascii=False), encoding="utf-8")
+                write_atomic(part, json.dumps(got, ensure_ascii=False))
                 if day.day == 1:
                     print(f"  {src['id']}: {day:%Y-%m}", file=sys.stderr)
             day += timedelta(days=1)
-    data = rpp_assemble(parts, src)
-    shutil.rmtree(parts)
-    return data
+    return rpp_assemble(parts, src)
 
 
 def rpp_assemble(parts: Path, src: dict) -> bytes:
@@ -627,7 +657,7 @@ def sitemap_news(src: dict, parts: Path, delay: float = 5.0) -> bytes:
             if r is None or b"<!ENTITY" in r.content[:4096]:
                 raise SystemExit(f"{src['id']}: el índice de sitemaps no responde")
             maps = sorted(m for m in re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", r.text) if want.search(m))
-            idx.write_text(json.dumps(maps), encoding="utf-8")
+            write_atomic(idx, json.dumps(maps))
         for i, m in enumerate(maps):
             part = parts / (hashlib.sha256(m.encode()).hexdigest()[:16] + ".json")
             if not part.exists():
@@ -642,14 +672,13 @@ def sitemap_news(src: dict, parts: Path, delay: float = 5.0) -> bytes:
                         title = re.search(r"<news:title>\s*(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?\s*</news:title>", u, re.S)
                         got.append({"url": H.unescape(loc.group(1)), "fecha": when.group(1) if when else "",
                                     "titulo": H.unescape(title.group(1)).strip() if title else "", "sitemap": m})
-                part.write_text(json.dumps(got, ensure_ascii=False), encoding="utf-8")
+                write_atomic(part, json.dumps(got, ensure_ascii=False))
                 if i % 20 == 0:
                     print(f"  {src['id']}: sitemap {i + 1} de {len(maps)}", file=sys.stderr)
             for n in json.loads(part.read_text(encoding="utf-8")):
                 notes.setdefault(n["url"], n)
     data = json.dumps({"source": p["indice"], "notas": [notes[k] for k in sorted(notes)]}, ensure_ascii=False,
                       sort_keys=True, separators=(",", ":")).encode("utf-8")
-    shutil.rmtree(parts)
     return data
 
 
@@ -697,6 +726,94 @@ def turbo_stream(page: str):
     return dec(0)
 
 
+def _loc_part(q: str) -> str:
+    """El archivo de ``parts`` con las páginas de una consulta de Chronicling America."""
+    return f"q-{hashlib.sha256(q.encode()).hexdigest()[:16]}.json"
+
+
+def _loc_snippet(url: str) -> str:
+    """El archivo de ``parts/fragmentos`` con el fragmento de una página."""
+    return hashlib.sha256(url.encode()).hexdigest()[:20] + ".json"
+
+
+def loc_chronam(src: dict, parts: Path, delay: float = 5.0) -> bytes:
+    """Páginas de periódicos de EE. UU. digitalizados por la Biblioteca del Congreso (Chronicling America, 1836-1963)
+    que responden a las consultas de ``parametros.consultas`` (una frase entre comillas o términos unidos con AND, sobre
+    el texto OCR), por la API JSON de loc.gov (160 por página), con el fragmento del texto donde aparecen los términos
+    (``word_coordinates_url``, servicio de texto de loc.gov). Solo metadatos y el fragmento, con enlace a la página.
+    Cada consulta terminada y cada fragmento leído quedan en ``parts``. JSON canónico ordenado por dirección."""
+    from urllib.parse import urlencode
+
+    p = src.get("parametros", {})
+    parts.mkdir(parents=True, exist_ok=True)
+    (parts / "fragmentos").mkdir(exist_ok=True)
+    get = _paced_get(src, delay)
+
+    def doc(r: Optional[httpx.Response], what: str):
+        if r is None:
+            raise SystemExit(f"{src['id']}: {what} no responde")
+        try:
+            return r.json()
+        except ValueError:
+            raise SystemExit(f"{src['id']}: {what} respondió algo que no es JSON (¿verificación antirobots?)") from None
+
+    pages: dict[str, dict] = {}
+    with httpx.Client(follow_redirects=True, timeout=120, headers=UA, verify=ssl_context()) as c:
+        for q in p["consultas"]:
+            part = parts / _loc_part(q)
+            if not part.exists():
+                got, page = [], 1
+                while True:
+                    d = doc(get(c, f"{src['url']}?" + urlencode({"q": q, "fo": "json", "c": 160, "sp": page,
+                                                                 "at": "results,pagination"})), f"la búsqueda «{q}»")
+                    for it in d.get("results", []):
+                        url = (it.get("id") or "").replace("http://", "https://", 1)
+                        if not url:
+                            continue
+                        got.append({"url": url, "fecha": it.get("date") or "",
+                                    "periodico": (it.get("partof_title") or [""])[0],
+                                    "lugar": ", ".join(dict.fromkeys(x for k in ("location_city", "location_state")
+                                                                     for x in (it.get(k) or [])[:1])),
+                                    "texto": it.get("word_coordinates_url") or ""})
+                    if not (d.get("pagination") or {}).get("next"):
+                        break
+                    page += 1
+                write_atomic(part, json.dumps({"consulta": q, "paginas": got}, ensure_ascii=False))
+                print(f"  {src['id']}: «{q}»: {len(got)} páginas", file=sys.stderr)
+            for it in json.loads(part.read_text(encoding="utf-8"))["paginas"]:
+                pages.setdefault(it["url"], {**it, "consulta": q})
+        for i, (url, it) in enumerate(sorted(pages.items())):
+            f = parts / "fragmentos" / _loc_snippet(url)
+            if f.exists() or not it["texto"]:
+                continue
+            r = get(c, it["texto"])  # None: la página no tiene texto (404); queda sin fragmento
+            d = doc(r, "el servicio de texto") if r is not None else {}
+            seg = next(iter(d.values()), {}) if isinstance(d, dict) and d else {}
+            snippet = seg.get("relevant_snippet") if isinstance(seg, dict) else ""
+            write_atomic(f, json.dumps({"fragmento": (snippet or "")[:1000]}, ensure_ascii=False))
+            if i % 100 == 0:
+                print(f"  {src['id']}: fragmento {i + 1} de {len(pages)}", file=sys.stderr)
+    return loc_assemble(parts, src)
+
+
+def loc_assemble(parts: Path, src: dict) -> bytes:
+    """El JSON de ``loc_chronam`` con lo que hay en ``parts`` (sin red), también a medias: cada página con la primera
+    consulta que la trajo y su fragmento, o sin fragmento si aún no se leyó."""
+    pages: dict[str, dict] = {}
+    for q in src.get("parametros", {}).get("consultas", []):
+        part = parts / _loc_part(q)
+        if part.exists():
+            for it in json.loads(part.read_text(encoding="utf-8"))["paginas"]:
+                pages.setdefault(it["url"], {**it, "consulta": q})
+    out = []
+    for url, it in sorted(pages.items()):
+        f = parts / "fragmentos" / _loc_snippet(url)
+        frag = json.loads(f.read_text(encoding="utf-8"))["fragmento"] if f.exists() else None
+        out.append({**{k: v for k, v in it.items() if k != "texto"}, "fragmento": frag})
+    return json.dumps({"source": src["url"], "consultas": src.get("parametros", {}).get("consultas", []), "paginas": out},
+                      ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
 #: Sumilla de un decreto que declara o prorroga un estado de emergencia.
 EMERGENCY_DECREE = re.compile(r"(?:declara|prorroga)\w*\s+(?:el\s+)?estado\s+de\s+emergencia", re.I)
 
@@ -719,7 +836,7 @@ def elperuano_normas(src: dict, parts: Path, delay: float = 5.0) -> bytes:
         end = date.fromisoformat(json.loads(state.read_text(encoding="utf-8"))["hasta"])
     else:
         end = datetime.now(F.LIMA).date()
-        state.write_text(json.dumps({"hasta": end.isoformat()}), encoding="utf-8")
+        write_atomic(state, json.dumps({"hasta": end.isoformat()}))
     last = [0.0]
 
     def get(c: httpx.Client, url: str, pdf: bool = False) -> Optional[httpx.Response]:
@@ -762,7 +879,7 @@ def elperuano_normas(src: dict, parts: Path, delay: float = 5.0) -> bytes:
                     start += res.get("paginatedBy") or 20
                     if not res["hits"]:
                         break
-                part.write_text(json.dumps(got, ensure_ascii=False), encoding="utf-8")
+                write_atomic(part, json.dumps(got, ensure_ascii=False))
                 print(f"  {src['id']}: {a:%Y-%m}: {len(got)} decretos de {total} resultados", file=sys.stderr)
             hits.update((h["op"], h) for h in json.loads(part.read_text(encoding="utf-8")) if h.get("op"))
         texts = parts / "textos"
@@ -772,12 +889,10 @@ def elperuano_normas(src: dict, parts: Path, delay: float = 5.0) -> bytes:
             if f.exists() or not h.get("urlPDF"):
                 continue
             r = get(c, base + h["urlPDF"], pdf=True)
-            f.write_bytes(gzip.compress(pdf_text(r.content).encode("utf-8") if r is not None else b"", mtime=0))
+            write_atomic(f, gzip.compress(pdf_text(r.content).encode("utf-8") if r is not None else b"", mtime=0))
             if i % 100 == 0:
                 print(f"  {src['id']}: texto {i + 1} de {len(hits)}", file=sys.stderr)
-    data = elperuano_assemble(parts, src)
-    shutil.rmtree(parts)
-    return data
+    return elperuano_assemble(parts, src)
 
 
 def elperuano_assemble(parts: Path, src: dict) -> bytes:
@@ -869,10 +984,10 @@ def indeci_coen(src: dict, parts: Path, delay: float = 5.0) -> bytes:
                 m = re.findall(r"/page/(\d+)/", t)
                 done["paginas"] = max(map(int, m)) if m else 1
             got = items(t)
-            (parts / f"lista-{page:05d}.json").write_text(json.dumps(got, ensure_ascii=False), encoding="utf-8")
+            write_atomic(parts / f"lista-{page:05d}.json", json.dumps(got, ensure_ascii=False))
             entries.update((e["url"], e) for e in got)
             done["pagina"] = page
-            state.write_text(json.dumps(done), encoding="utf-8")
+            write_atomic(state, json.dumps(done))
             if page % 50 == 0:
                 print(f"  {src['id']}: listado {page} de {done['paginas']} ({len(entries)} entradas)", file=sys.stderr)
             page += 1
@@ -893,12 +1008,10 @@ def indeci_coen(src: dict, parts: Path, delay: float = 5.0) -> bytes:
             if f.exists():
                 continue
             r = get(c, e["pdf"], "pdf")
-            f.write_bytes(gzip.compress(pdf_text(r.content).encode("utf-8") if r is not None else b"", mtime=0))
+            write_atomic(f, gzip.compress(pdf_text(r.content).encode("utf-8") if r is not None else b"", mtime=0))
             if i % 100 == 0:
                 print(f"  {src['id']}: PDF {i + 1} de {len(todo)}", file=sys.stderr)
-    data = coen_assemble(parts, base)
-    shutil.rmtree(parts)
-    return data
+    return coen_assemble(parts, base)
 
 
 def coen_assemble(parts: Path, base: str) -> bytes:
@@ -960,6 +1073,8 @@ ASSEMBLE = {
     "elperuano": lambda src, parts: elperuano_assemble(parts, src),
     "dspace": lambda src, parts: dspace_assemble(parts, src["url"]),
     "rpp": lambda src, parts: rpp_assemble(parts, src),
+    "wp-rest": lambda src, parts: wp_assemble(parts, src),
+    "loc-chronam": lambda src, parts: loc_assemble(parts, src),
 }
 
 
@@ -976,7 +1091,7 @@ def snapshot(src: dict, caches: list[Path]) -> Optional[Path]:
             return None
         if parts.is_dir():
             out = path.with_name(path.stem + ".parcial.json")
-            out.write_bytes(ASSEMBLE[src["descarga"]](src, parts))
+            write_atomic(out, ASSEMBLE[src["descarga"]](src, parts))
             src["parcial"] = True
             src["obtenido"] = datetime.now(timezone.utc).date().isoformat()
             return finish(src, out, accept_changes=True)
@@ -984,6 +1099,8 @@ def snapshot(src: dict, caches: list[Path]) -> Optional[Path]:
 
 
 def fetch(src: dict, cache, accept_changes: bool, offline: bool) -> Path:
+    """El archivo de ``src`` en la caché, descargado si falta. Lo descargado se escribe de una vez (``write_atomic``) y
+    solo después se borran las partes de una cosecha larga: si se corta antes, la próxima sigue con ellas."""
     caches = cache if isinstance(cache, list) else [cache]
     stem = Path(src["archivo"]).stem
     cache = next((c for c in caches if (c / src["archivo"]).exists()), None)
@@ -992,41 +1109,63 @@ def fetch(src: dict, cache, accept_changes: bool, offline: bool) -> Path:
     else:  # una cosecha a medias sigue en la caché donde están sus partes
         cache = next((c for c in caches if (c / f"{stem}-partes").is_dir()), caches[0])
     path = cache / src["archivo"]
+    origin = path.with_name(path.name + ".origen")  # de dónde salió una fuente con semilla (la API o la semilla)
+    if path.exists() and origin.exists():
+        src["copia"] = origin.read_text(encoding="utf-8").strip()
     if not path.exists():
         if offline:
             raise SystemExit(f"{src['id']}: falta {path} y se pidió --sin-red")
-        if src.get("descarga") == "manual":
+        kind = src.get("descarga")
+        if kind == "manual":
             raise SystemExit(f"{src['id']}: falta {path}. Esta fuente se descarga a mano: {src['manual']}")
         path.parent.mkdir(parents=True, exist_ok=True)
-        delay = robots_check(src.get("url_robots", src["url"]))  # p. ej. la URL con la consulta que se hará
-        print(f"descargando {src['url']}", file=sys.stderr)
+        parts = cache / f"{path.stem}-partes"
         src["obtenido"] = datetime.now(timezone.utc).date().isoformat()
-        if src.get("descarga") == "arcgis":
-            path.write_bytes(arcgis_dump(src["url"], src.get("campos", "*"), src.get("geometria", True),
-                                         src.get("consulta", "1=1"), delay=max(0.5, delay)))
-        elif src.get("descarga") == "idmc-api":
-            path.write_bytes(idmc_api(src, delay=max(1.0, delay)))
-        elif src.get("descarga") == "sinpad-api":
-            path.write_bytes(sinpad_api(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
-        elif src.get("descarga") == "oai-pmh":
-            path.write_bytes(oai_pmh(src, delay=max(PERU_PUBLIC_DELAY, delay)))
-        elif src.get("descarga") == "indeci-coen":
-            path.write_bytes(indeci_coen(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
-        elif src.get("descarga") == "elperuano":
-            path.write_bytes(elperuano_normas(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
-        elif src.get("descarga") == "wp-rest":
-            path.write_bytes(wp_rest(src, delay=max(PERU_PUBLIC_DELAY, delay)))
-        elif src.get("descarga") == "rpp":
-            path.write_bytes(rpp_archivo(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
-        elif src.get("descarga") == "sitemaps":
-            path.write_bytes(sitemap_news(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
-        elif src.get("descarga") == "dspace":
-            path.write_bytes(dspace_items(src, cache / f"{path.stem}-partes", delay=max(PERU_PUBLIC_DELAY, delay)))
+        if kind == "idmc-api" and not os.environ.get("IDMC_CLIENT_ID", "").strip() and src.get("semilla"):
+            # Sin la clave de la API, la copia guardada en el repositorio (el robots.txt de HDX, donde el IDMC publica
+            # sus exportaciones, no deja que un programa baje sus CSV).
+            import gzip
+
+            print(f"{src['id']}: sin IDMC_CLIENT_ID, se usa la copia de {src['semilla']}", file=sys.stderr)
+            write_atomic(path, gzip.decompress((ROOT / src["semilla"]).read_bytes()))
+            write_atomic(origin, "semilla")
+            src["copia"] = "semilla"
+            return finish(src, path, accept_changes)
+        delay = robots_check(src.get("url_robots", src["url"]))  # p. ej. la URL con la consulta que se hará
+        peru = max(PERU_PUBLIC_DELAY, delay)
+        print(f"descargando {src['url']}", file=sys.stderr)
+        if kind == "arcgis":
+            data = arcgis_dump(src["url"], src.get("campos", "*"), src.get("geometria", True), src.get("consulta", "1=1"),
+                               delay=max(0.5, delay))
+        elif kind == "idmc-api":
+            data = idmc_api(src, delay=max(1.0, delay))
+            write_atomic(origin, "API")
+        elif kind == "sinpad-api":
+            data = sinpad_api(src, parts, delay=peru)
+        elif kind == "oai-pmh":
+            data = oai_pmh(src, delay=peru)
+        elif kind == "indeci-coen":
+            data = indeci_coen(src, parts, delay=peru)
+        elif kind == "elperuano":
+            data = elperuano_normas(src, parts, delay=peru)
+        elif kind == "wp-rest":
+            data = wp_rest(src, parts, delay=peru)
+        elif kind == "rpp":
+            data = rpp_archivo(src, parts, delay=peru)
+        elif kind == "sitemaps":
+            data = sitemap_news(src, parts, delay=peru)
+        elif kind == "dspace":
+            data = dspace_items(src, parts, delay=peru)
+        elif kind == "loc-chronam":
+            data = loc_chronam(src, parts, delay=peru)
         else:
             with httpx.Client(follow_redirects=True, timeout=180, headers=UA, verify=ssl_context()) as c:
                 r = c.get(src["url"])
                 r.raise_for_status()
-                path.write_bytes(r.content)
+                data = r.content
+        write_atomic(path, data)
+        if parts.is_dir():
+            shutil.rmtree(parts)
     return finish(src, path, accept_changes)
 
 

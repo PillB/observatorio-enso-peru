@@ -13,6 +13,8 @@ enlace, y sus cifras de daños si la fila no las tiene) o si es un evento que ni
   aparte (``decrees``): «por peligro inminente» es prevención; «por impacto de daños», respuesta.
 * **Prensa**: titular, fecha y extracto de notas de medios regionales y nacionales. El lugar lo pone el mismo
   ubicador de noticias del observatorio (``enso.geo.locate_item``) y el peligro, el texto.
+* **Periódicos antiguos digitalizados** (``hemeroteca``): páginas de Chronicling America (Biblioteca del Congreso
+  de EE. UU., 1836-1963) que cuentan inundaciones, lluvias, huaicos o aludes en el Perú, con el mismo ubicador.
 * **Evaluaciones de peligros** (INGEMMET, IGP): informes técnicos de un lugar. Son evidencia de que el peligro
   se conocía, no eventos (``evaluations``).
 * **Inventario de peligros del INGEMMET con fecha** (``inventory_dated``): cuántos puntos de cada grupo de peligro
@@ -720,6 +722,172 @@ def press(doc: dict, territory, calendar, outlet: str, departments: Optional[lis
         rec["FechaTipo"] = "texto" if told else "publicacion"
         rec["_publicado"] = when
         rec["_medio"] = outlet
+        yield rec
+
+
+# ---------------------------------------------------------------------------
+# Hemerotecas: periódicos antiguos digitalizados
+# ---------------------------------------------------------------------------
+ARCHIVE_LICENSE = ("Página de periódico digitalizada por la Biblioteca del Congreso de EE. UU. (Chronicling America); "
+                   "extracto de hasta 200 caracteres del texto OCR con enlace a la página")
+#: Las menciones del Perú anclan el texto que se lee: el fragmento de la página junta varias notas.
+_PERU = re.compile(r"\bper[uú]\b|\bperuvian|\bp[eé]rou\b|\bp[eé]ruvien", re.I)
+#: Caracteres que se leen antes y después de cada mención del Perú.
+ARCHIVE_BEFORE, ARCHIVE_AFTER = 200, 500
+#: Los Perú y las Lima de EE. UU. («floods in Peru, Ind.» son las del río Wabash en 1913).
+_US_PERU = re.compile(r"\bperu,?\s+(?:ind|ill|indiana|illinois|neb|nebr|nebraska|n\.\s?y|vt|vermont|kan|kans|kansas|mass|"
+                      r"me|maine|iowa|mo|ohio|wis|pa)\b|\blima,?\s+(?:o|ohio|n\.\s?y|pa|ind)\b|\bwabash\b|\bindiana\b|"
+                      r"\billinois\b|\bmiami county\b", re.I)
+#: La geografía de los libros de texto, no un evento («it never rains in Peru»).
+_GENERIC = re.compile(r"never rains|rain is unknown|no rain|seldom rains|rarely rains|rainless|il ne pleut", re.I)
+#: Sismos, maremotos y volcanes: no son climáticos, aunque el sismo desate un alud (Yungay, 1970).
+_SEISMIC = re.compile(r"earthquake|quake|tremor|seismic|tidal wave|tsunami|volcan|eruption|tremblement de terre|"
+                      r"s[eé]isme|terremoto|\bsismo|temblor", re.I)
+#: Peligro del texto (inglés, francés o castellano) → DangerType, en orden de prioridad.
+ARCHIVE_HAZARDS = [
+    (r"avalanche|alluvion|aluvi[oó]n|huayco|huaico|mud ?slides?|mud ?flows?|torrents? of mud|lave torrentielle", "Huayco/Alud"),
+    (r"overflow|out of (?:its|their) banks|burst (?:its|their) banks|d[ée]bord", "Desborde de rio"),
+    (r"\bflood|inundat|freshet|deluge|inond|\bcrues?\b|inundaci", "Inundacion"),
+    (r"land ?slides?|land ?slips?|\bslides?\b|glissements? de terrain|[ée]boulement|derrumbe|deslizamiento", "Deslizamiento"),
+    (r"drought|s[ée]cheresse|sequ[ií]a", "Sequias"),
+    (r"\bhail(?:storms?|stones?|s)?\b|gr[êe]le|granizo", "Granizada"),
+    (r"snow ?storm|blizzard|heavy snow|snowfall|nevada", "Nevada"),
+    (r"\bfrosts?\b|cold wave|helada|gel[ée]es?\b", "Helada/Friaje"),
+    (r"cloud-?burst|\brain|downpour|washouts?|washed out|pluies?\b|\borages?\b|lluvia|aguacero", "Lluvias intensas"),
+]
+#: Algo pasó: daño, muertes, gente sin casa, el tren detenido.
+_ARCHIVE_DAMAGE = re.compile(
+    r"damag|destroy|destruct|devastat|disast|havoc|\bruin|wreck|swept away|washed away|carried away|wiped out|"
+    r"\bkill|\bdead\b|\bdeaths?\b|\bdied\b|perish|drown|lives (?:were )?lost|(?:took|taken|claimed) [^.]{0,15}\blives\b|"
+    r"loss of life|victims|injur|missing|"
+    r"homeless|refugees|\bfled\b|buried|inundated|flooded|\blosses\b|\bloss\b|estimated at|wiped off|survivors|"
+    r"common grave|\bbodies\b|rescue|relief|sufferers|distress|"
+    r"traffic|interrupt|suspended|cut off|isolated|blocked|washouts?|washed out|famine|starv|"
+    r"d[ée]g[âa]ts|d[ée]trui|victimes|\bmorts?\b|noy[ée]s|ravag|sinistr|"
+    r"da[ñn]os|destru|muert|v[ií]ctimas|damnificad|arras", re.I)
+_ARCHIVE_STRONG = re.compile(r"destroy|swept away|washed away|wiped out|\bkill|\bdead\b|drown|perish|homeless|buried", re.I)
+_ARCHIVE_NOT = re.compile(r"\bno (?:serious |great |disastrous |destructive )?(?:damage|rains?|floods?)\b|"
+                          r"without (?:any )?damage", re.I)
+#: Encabezado del cable («LIMA, Peru, March 20.—», «Lima Peru Fob 28», «LIMA, Peru (AP) —»): dice desde dónde se
+#: envió, no dónde pasó. Sin fecha ni agencia, «Piura, Peru» es un lugar de la nota y se queda. El mes va como
+#: cualquier palabra con mayúscula porque el OCR lo deforma («Fob»), y «Pern» es el Perú del OCR.
+_AGENCY = r"\((?:AP|UP|UPI|INS)\)"
+_DATELINE = re.compile(r"\b[A-Z][A-Za-z]+(?:\s+[A-Z][a-z]+)?[,.]?\s*(?:Peru|PERU|Pern|P[ée]rou)\b[,.]?\s*"
+                       rf"(?:{_AGENCY}|(?:{_AGENCY}\.?\s*)?[A-Z][A-Za-z]{{2,8}}\.?\s*\d{{1,2}}\b(?:\s*{_AGENCY})?)"
+                       r"[.,:]?\s*[-—–]*")
+#: Quién lo cuenta desde la capital («advices from Lima», «reports reaching Lima»): los cables y las cartas pasaban
+#: por Lima y el Callao, que casi nunca son el lugar del evento.
+_REPORTED = re.compile(r"\b(?:advices|news|reports?|dispatch(?:es)?|despatch(?:es)?|cables?|cablegrams?|letters?|"
+                       r"telegrams?|messages?|word|mail)\b[^.;:]{0,40}?\b(?:from|reaching|reached|"
+                       r"(?:received|arriving)\s+(?:at|in))\s+(?:Lima|Callao)\b(?:,?\s+Peru\b)?", re.I)
+#: Derrumbes dentro de minas (Morococha, 1928): accidentes mineros, salvo que la nota hable de lluvias o crecidas.
+_MINE = re.compile(r"\bmin(?:e|es|ers|ing)\b|\bgallery\b|\bshaft\b", re.I)
+_MINE_COLLAPSE = re.compile(r"collaps|cave-?in|caved in", re.I)
+_WEATHER = re.compile(r"\brain|flood|storm|thaw|torrent|aluvi|huayco|huaico|overflow", re.I)
+#: Nombres de la época o en inglés → los de hoy, para el ubicador.
+_OLD_NAMES = [(re.compile(p, re.I), n) for p, n in (
+    (r"\bHuaras\b", "Huaraz"), (r"\bTruxillo\b", "Trujillo"), (r"\bPa[yv]ta\b", "Paita"), (r"\bTumbez\b", "Tumbes"),
+    (r"\bCuzco\b", "Cusco"), (r"(?<!La )\bOroya\b", "La Oroya"), (r"\bHuanuco\b", "Huánuco"),
+    (r"\bFerrenafe\b", "Ferreñafe"), (r"\bSana\b(?= valley)", "Saña"),
+    # Las palabras de nivel que el ubicador entiende («town of Conchucos» es «ciudad de Conchucos»).
+    (r"\b(?:the\s+)?department\s+of\b|\bd[ée]partement\s+de\b", "departamento de"),
+    (r"\bprovince\s+(?:of|de)\b", "provincia de"), (r"\bdistrict\s+of\b", "distrito de"),
+    (r"\b(?:the\s+)?(?:towns?|city|cities|villages?|ports?)\s+of\b|\b(?:villes?|ports?)\s+de\b", "ciudad de"))]
+
+
+def archive_hazard(text: str) -> Optional[str]:
+    for pat, dt in ARCHIVE_HAZARDS:
+        if re.search(pat, text, re.I):
+            return dt
+    return None
+
+
+def _windows(text: str) -> list[str]:
+    """Los tramos del fragmento alrededor de cada mención del Perú (unidos si se tocan)."""
+    spans: list[list[int]] = []
+    for m in _PERU.finditer(text):
+        a, b = max(0, m.start() - ARCHIVE_BEFORE), min(len(text), m.end() + ARCHIVE_AFTER)
+        if spans and a <= spans[-1][1]:
+            spans[-1][1] = b
+        else:
+            spans.append([a, b])
+    return [text[a:b] for a, b in spans]
+
+
+def hemeroteca(doc: dict, territory, calendar, archive: str = "Chronicling America (Biblioteca del Congreso de EE. UU.)",
+               skipped: Optional[Counter] = None) -> Iterator[dict]:
+    """Candidatos de páginas de periódicos antiguos digitalizados (``tools.build_historico.loc_chronam``): el
+    fragmento del texto OCR donde la página nombra el Perú y cuenta que un peligro climático causó daños en un
+    lugar que el ubicador de noticias reconoce (distrito, provincia o departamento; el lugar del encabezado del cable
+    no cuenta). Las páginas son sobre todo de periódicos de EE. UU. que reproducían cables y cartas de cónsules: la
+    fecha es la de publicación (``FechaTipo = publicacion``) y el evento pudo ser semanas antes; la confianza, baja."""
+    from ..geo import PUBLISH_MIN, key, locate_item
+
+    skipped = skipped if skipped is not None else Counter()
+    feed = SimpleNamespace(department=None, kind="digital")
+    for p in doc.get("paginas", []):
+        url, when = p.get("url") or "", (p.get("fecha") or "")[:10]
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", when):
+            skipped["sin fecha"] += 1
+            continue
+        if p.get("fragmento") is None:
+            skipped["fragmento aún no leído"] += 1
+            continue
+        text = re.sub(r"\s+", " ", re.sub(r"\[\[/?tag\]\]", "", p["fragmento"])).strip()
+        found = None
+        why = "no nombra el Perú"
+        for w in _windows(text):
+            if _US_PERU.search(w):
+                why = "Perú o Lima de EE. UU."
+            elif _GENERIC.search(w):
+                why = "descripción general del país"
+            elif _SEISMIC.search(w):
+                why = "sismo, maremoto o volcán"
+            elif _MINE.search(w) and _MINE_COLLAPSE.search(w) and not _WEATHER.search(w):
+                why = "accidente minero"
+            elif not (dt := archive_hazard(w)):
+                why = "sin peligro climático"
+            elif not _ARCHIVE_DAMAGE.search(w) or (_ARCHIVE_NOT.search(w) and not _ARCHIVE_STRONG.search(w)):
+                why = "no dice que algo pasó"
+            else:
+                found = (w, dt)
+                break
+        if not found:
+            skipped[why] += 1
+            continue
+        w, dt = found
+        if dt == "Inundacion":
+            dt = "Desborde de rio" if re.search(r"\briver\b[^.;]{0,40}\b(?:rose|overflow)|out of its banks", w, re.I) \
+                else "Inundacion fluvial" if re.search(r"\brivers?\b", w, re.I) else dt
+        clean = _REPORTED.sub(" ", _DATELINE.sub(" ", w))
+        for pat, new in _OLD_NAMES:
+            clean = pat.sub(new, clean)
+        geo = locate_item({"title": "", "summary": clean}, feed)
+        places = [x for x in (geo or {}).get("places", []) if x["confidence"] >= PUBLISH_MIN and x["method"] != "medio"
+                  and x["level"] in ("distrito", "provincia", "departamento")]
+        if not places:
+            skipped["sin lugar"] += 1
+            continue
+        # El primer lugar que nombra la nota: el del evento suele ir antes que los de quienes lo informan («hacia
+        # el pueblo de Conchucos… dijo el prefecto desde Huaraz»).
+        k = key(clean)
+        best = min(places, key=lambda x: (k.find(key(x["name"])) % (len(k) + 1), -x["confidence"], -len(x["code"])))
+        code = territory.normalize(best["code"])
+        if not code:
+            skipped["sin lugar"] += 1
+            continue
+        paper = re.sub(r"\s*\(.*$|\s+\d{4}-.*$", "", p.get("periodico") or "").strip().title() or "periódico sin nombre"
+        where = p.get("lugar") or ""
+        excerpt = _excerpt(w)
+        rec = make(territory, calendar, code=code, day=when, precision="dia", danger=dt, origin="hemeroteca",
+                   source_id=f"loc-{hashlib.sha1(url.encode()).hexdigest()[:12]}", url=url, license=ARCHIVE_LICENSE,
+                   cite=f"{paper}" + (f" ({where.title()})" if where else "") + f", {when}, vía {archive}",
+                   description=(f"«{excerpt}» (página de {paper} publicada el {when}; el evento pudo ser semanas antes; "
+                                f"lugar según el texto: {best.get('evidence', '')}; texto OCR de la página digitalizada)"),
+                   source_type=dt, danger_method="texto", icen=False, confidence="baja")
+        rec["FechaTipo"] = "publicacion"
+        rec["_publicado"] = when
+        rec["_medio"] = paper
         yield rec
 
 

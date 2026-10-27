@@ -84,7 +84,7 @@ const DANGER_LABEL = {
   Sequias: 'Sequía', 'Incendio forestal': 'Incendio forestal', Erosion: 'Erosión', Epidemia: 'Epidemia', Plaga: 'Plaga',
 };
 const dl = (t) => DANGER_LABEL[t] || t;
-const SOURCE_LINK = { desinventar: 'DesInventar', sinpad: 'SINPAD', idmc: 'IDMC', 'nasa-glc': 'noticia', coen: 'reporte del COEN', prensa: 'nota de prensa', glof: 'base de GLOF' };
+const SOURCE_LINK = { desinventar: 'DesInventar', sinpad: 'SINPAD', idmc: 'IDMC', 'nasa-glc': 'noticia', coen: 'reporte del COEN', prensa: 'nota de prensa', hemeroteca: 'página de periódico', glof: 'base de GLOF' };
 /** Qué fecha trae el registro cuando no es la del evento. */
 const DATE_KIND = { informe: 'fecha del primer reporte del COEN', publicacion: 'fecha de publicación de la nota', texto: 'fecha que cita la nota' };
 const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return 'enlace'; } };
@@ -583,7 +583,7 @@ async function fillPrevention(root, D) {
     <h3 class="hz-h3">Cómo leerlo</h3>
     <ul class="hz-method">
       <li>«Documentado» no quiere decir que se pudiera evitar, sino que el Estado tenía el peligro identificado en ese distrito antes de la emergencia. El inventario de INGEMMET marca puntos de peligro (caídas, deslizamientos, huaycos, erosión, inundación) con la fecha en que los inventarió; el mismo grupo de peligro cuenta (un inventario de huaycos vale para una emergencia por lluvias intensas).</li>
-      <li>Las notas de prensa no entran a esta cuenta; sí corroboran las fichas en la lista de cada área. Los reportes del COEN entran con la fecha del evento cuando su PDF ya se leyó.</li>
+      <li>Las notas de prensa y las páginas de periódicos antiguos no entran a esta cuenta; sí corroboran las fichas en la lista de cada área. Los reportes del COEN entran con la fecha del evento cuando su PDF ya se leyó.</li>
       <li>Las declaratorias de emergencia se leen del diario oficial El Peruano (sumilla y texto del decreto). Una declaratoria de toda una provincia o un departamento cuenta para cada uno de sus distritos.${pending ? ' La descarga sigue en curso y por ahora hay pocas: esa columna crecerá.' : ''} Prórrogas en total: ${n0(decP)}.</li>
     </ul>`);
 }
@@ -629,13 +629,13 @@ function pastSection(D) {
     const o = by.get(k);
     o.years.add(r.y);
     o.types.set(r.t, (o.types.get(r.t) || 0) + 1);
-    o.src.add(r.o === 'glof' ? 'base de GLOF' : r.o === 'curado' ? 'archivos' : r.o);
+    o.src.add(r.o === 'glof' ? 'base de GLOF' : r.o === 'curado' ? 'archivos' : r.o === 'hemeroteca' ? 'periódicos antiguos' : r.o);
   }
   const rows = [...by.entries()].sort((a, b) => b[1].years.size - a[1].years.size || a[0].localeCompare(b[0]));
   const first = Math.min(...old.map((r) => r.y));
   return html`<section class="card hz-card" aria-labelledby="hz-past-h">
     <div class="section-head"><h2 id="hz-past-h">Antes de 1970: los mismos lugares, una y otra vez</h2><span class="muted small">${n0(old.length)} registros desde ${first}</span></div>
-    <p class="muted small">Las actas del Cabildo de Trujillo y otros archivos (cronología de García-Herrera et al., 2008) registran lluvias e inundaciones de El Niño en Trujillo, Chicama, Saña, Lambayeque y Piura desde el siglo XVI; la base mundial de desbordes de lagunas glaciares registra los aluviones de la Cordillera Blanca y otras cordilleras. Son los mismos lugares que vuelven a aparecer en 1983, 1998, 2017 y 2023.</p>
+    <p class="muted small">Las actas del Cabildo de Trujillo y otros archivos (cronología de García-Herrera et al., 2008) registran lluvias e inundaciones de El Niño en Trujillo, Chicama, Saña, Lambayeque y Piura desde el siglo XVI, y el estudio de Eguiguren (1894), las de Piura y Paita desde 1728; los periódicos antiguos digitalizados cuentan las de los siglos XIX y XX, y la base mundial de desbordes de lagunas glaciares, los aluviones de la Cordillera Blanca y otras cordilleras. Son los mismos lugares que vuelven a aparecer en 1983, 1998, 2017 y 2023.</p>
     <div class="table-wrap"><table class="hz-table"><thead><tr><th scope="col">Lugar</th><th scope="col" class="num">Años</th><th scope="col">Cuándo</th><th scope="col">Peligro</th><th scope="col">Fuente</th></tr></thead>
       <tbody>${rows.slice(0, 30).map(([code, o]) => html`<tr><th scope="row"><button type="button" class="linkish" data-area="${code}">${areaName(D, code)}</button></th><td class="num">${o.years.size}</td><td class="small">${[...o.years].sort((a, b) => a - b).join(', ')}</td><td class="small">${[...o.types.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => dl(t)).join(', ')}</td><td class="small">${[...o.src].join(', ')}</td></tr>`)}</tbody></table></div>
   </section>`;
@@ -702,7 +702,7 @@ function evidenceSection(D) {
 }
 
 function srcList(S, k) {
-  const unit = { eventos: 'registros', emergencias: 'registros propios', prensa: 'registros propios', prevencion: 'elementos' }[k] || 'elementos';
+  const unit = { eventos: 'registros', emergencias: 'registros propios', prensa: 'registros propios', hemeroteca: 'registros propios', prevencion: 'elementos' }[k] || 'elementos';
   return html`<ul class="link-list">${S.fuentes.filter((f) => (f.tipo || 'eventos') === k).map((f) => html`<li>${f.pagina || f.url ? html`<a href="${safeUrl(f.pagina || f.url)}" rel="noopener" target="_blank">${f.nombre}</a>` : f.nombre} <span class="muted small">${f.cobertura || ''}${f.registros ? ` · ${n0(f.registros)} ${unit}` : ''}${f.corroboran ? ` · corroboran ${n0(f.corroboran)}` : ''}${f.parcial ? ' · descarga en curso' : ''}${f.obtenido ? ` · copia del ${F.fmtDate(f.obtenido)}` : ''} · ${f.licencia || ''}</span>${f.nota ? html`<br><span class="muted small">${f.nota}</span>` : ''}</li>`)}</ul>`;
 }
 
@@ -719,7 +719,7 @@ function methodSection(D) {
           <li><a href="${BASE}contexto-distrito.csv">Historial y peligro actual por distrito (CSV)</a> · <a href="${BASE}indicadores-distrito.csv">indicadores por distrito</a>, <a href="${BASE}indicadores-provincia.csv">provincia</a> y <a href="${BASE}indicadores-departamento.csv">departamento</a></li>
           <li><a href="${BASE}prevencion-distrito.csv">Prevención por distrito (CSV)</a> · <a href="${BASE}prevencion.json">declaratorias, evaluaciones y llamamientos (JSON)</a></li>
         </ul>
-        ${[['eventos', 'Fuentes de eventos'], ['emergencias', 'Reportes de emergencia del COEN (se unen a las fichas del SINPAD)'], ['prensa', 'Prensa regional y nacional (cada nota se une al evento que cuenta)'], ['prevencion', 'Prevención: declaratorias, evaluaciones, inventarios y llamamientos'], ['contexto', 'Peligro identificado hoy (contexto, no eventos)'], ['referencia', 'Referencias territoriales']].map(([k, t]) => html`<h3 class="hz-h3">${t}</h3>
+        ${[['eventos', 'Fuentes de eventos'], ['emergencias', 'Reportes de emergencia del COEN (se unen a las fichas del SINPAD)'], ['prensa', 'Prensa regional y nacional (cada nota se une al evento que cuenta)'], ['hemeroteca', 'Periódicos antiguos digitalizados (cada página se une al evento que cuenta)'], ['prevencion', 'Prevención: declaratorias, evaluaciones, inventarios y llamamientos'], ['contexto', 'Peligro identificado hoy (contexto, no eventos)'], ['referencia', 'Referencias territoriales']].map(([k, t]) => html`<h3 class="hz-h3">${t}</h3>
         ${k === 'prensa' ? html`<details class="more"><summary>${n0(S.fuentes.filter((f) => f.tipo === k).length)} medios</summary>${srcList(S, k)}</details>` : srcList(S, k)}`)}
         <p class="muted small">Catálogo generado el ${F.fmtDate(S.generatedAt.slice(0, 10))}. Límites: IGN vía OCHA HDX (CC BY-IGO). Población, pobreza e IDH por distrito: INEI y PNUD vía ubigeo-peru-aumentado (MIT).</p>
       </div>
