@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:35:25 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 26 Oct 2026 19:05:07 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,28 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.6 remeció la región Tumbes esta tarde]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 43 kilómetros al sureste de <strong>Zorritos</strong>, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Sat, 24 Oct 2026 17:15:20 -0500</pubDate>
+        <link>https://rpp.pe/peru/tumbes/tumbes-sismo-de-magnitud-46-remecio-la-region-esta-tarde-noticia-1714348</link>
+        <guid>1714348</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/24/531453_1922301.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Tumbes, Instituto Geofísico del Perú, Sismo, IGP, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Tumbes: Senamhi advierte lluvia extrema en la región para este fin de semana]]></title>
+        <description><![CDATA[Según la institución, las provincias de<strong> Tumbes y Zarumilla </strong>podrían registrar acumulados de lluvia de hasta 80 milímetros por día, una cifra muy superior a los valores habituales de octubre.]]></description>
+        <pubDate>Fri, 23 Oct 2026 15:26:21 -0500</pubDate>
+        <link>https://rpp.pe/peru/tumbes/tumbes-senamhi-advierte-lluvia-extrema-en-la-region-para-este-fin-de-semana-noticia-1714164</link>
+        <guid>1714164</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/23/591259_1921907.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Tumbes, Senamhi, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Tumbes: joven que sufrió quemaduras tras accidente de tránsito requiere traslado urgente a un hospital en Lima [VIDEO]]]></title>
         <description><![CDATA[<a data-mce-href="https://rpp.pe/rotafono" href="https://rpp.pe/rotafono" target="_blank"><strong><em>Rotafono de RPP </em></strong></a>| Paciente de 26 años era uno de los pasajeros de la mototaxi que chocó con una moto lineal y está en UCI del <a data-mce-href="https://rpp.pe/noticias/tumbes" href="https://rpp.pe/noticias/tumbes" target="_blank">Hospital Regional II-2 Jamo de Tumbes</a>, pero urge ser llevado a <strong>Lima</strong>.]]></description>
@@ -542,28 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2025/09/18/atsapp-video-2025-09-17-at-234245-1792921mp4_1792922.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Tumbes, Bellavista, Inseguridad Ciudadana, Ataque, Explosivo, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Un sismo de magnitud 4.1 remeció la región Tumbes esta mañana]]></title>
-        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 13 kilómetros al oeste de <strong>Zorritos</strong>, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
-        <pubDate>Tue, 16 Sep 2025 11:45:41 -0500</pubDate>
-        <link>https://rpp.pe/peru/tumbes/tumbes-sismo-de-magnitud-41-remecio-la-region-esta-manana-noticia-1655394</link>
-        <guid>1655394</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2025/09/16/135013_1792255.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ IGP, Tumbes, Instituto Geofísico del Perú, Sismo, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Un sismo de magnitud 4.3 remeció la región Tumbes esta madrugada]]></title>
-        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 45 kilómetros al norte de Zarumilla, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
-        <pubDate>Thu, 11 Sep 2025 05:05:14 -0500</pubDate>
-        <link>https://rpp.pe/peru/tumbes/tumbes-sismo-de-magnitud-43-remecio-la-region-esta-madrugada-noticia-1654622</link>
-        <guid>1654622</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2025/09/11/571057_1790486.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ IGP, Tumbes, Sismo, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
