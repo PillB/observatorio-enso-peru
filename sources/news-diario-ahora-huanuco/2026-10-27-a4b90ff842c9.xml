@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Tue, 27 Oct 2026 10:06:31 GMT</lastBuildDate>
+    <pubDate>Mon, 26 Oct 2026 16:50:59 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Diresa Huánuco alerta brote de dengue en José Crespo y Castillo y 1 018 casos autóctonos</title>
+    <link>https://ahora.com.pe/regional/diresa-huanuco-alerta-brote-dengue-1018-casos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/diresa-huanuco-alerta-brote-dengue-1018-casos</guid>
+    <pubDate>Mon, 26 Oct 2026 16:50:59 GMT</pubDate>
+    <description><![CDATA[Huánuco registra 1 018 casos autóctonos de dengue hasta la semana epidemiológica 41, con brote en el distrito selvático de José Crespo y Castillo, según la Diresa. La especialista Elsa Palacios atribuyó el aumento al calor, las lluvias y El Niño, y advirtió la circulación del serotipo 3.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[dengue Huánuco]]></category>
+    <category><![CDATA[Diresa Huánuco]]></category>
+    <category><![CDATA[José Crespo y Castillo]]></category>
+    <category><![CDATA[serotipo 3]]></category>
+    <category><![CDATA[El Niño]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/188b94428da3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/188b94428da3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/188b94428da3.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Keiko Fujimori viaja a El Salvador y España: Galarreta asume la Presidencia</title>
+    <link>https://ahora.com.pe/politica/keiko-fujimori-viaje-el-salvador-espana-encargan-despachos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/keiko-fujimori-viaje-el-salvador-espana-encargan-despachos</guid>
+    <pubDate>Tue, 27 Oct 2026 09:41:00 GMT</pubDate>
+    <description><![CDATA[El Poder Ejecutivo encargó el Despacho de la Presidencia de la República a Luis Fernando Galarreta Velarde, primer vicepresidente, durante la ausencia de Keiko Fujimori, quien viajará a El Salvador y España. Rafael Belaunde Llosa, ministro de Defensa, asumirá la Presidencia del Consejo de Ministros en el mismo periodo.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Keiko Fujimori]]></category>
+    <category><![CDATA[Luis Galarreta]]></category>
+    <category><![CDATA[Rafael Belaunde]]></category>
+    <category><![CDATA[Resolución Suprema 307-2026-PCM]]></category>
+    <category><![CDATA[Cumbre Iberoamericana]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7db41795826c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7db41795826c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7db41795826c.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Gordon y Rodri reciben elogios en la Gala del Balón de Oro en Londres</title>
+    <link>https://ahora.com.pe/deportes/gordon-rodri-elogios-gala-balon-de-oro</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/gordon-rodri-elogios-gala-balon-de-oro</guid>
+    <pubDate>Tue, 27 Oct 2026 09:11:04 GMT</pubDate>
+    <description><![CDATA[Anthony Gordon y Rodri, jugadores del FC Barcelona, fueron elogiados por Rafa Benítez y Patrick Vieira en la alfombra roja de la Gala del Balón de Oro en Londres.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Balón de Oro]]></category>
+    <category><![CDATA[Anthony Gordon]]></category>
+    <category><![CDATA[Rodri]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Rafa Benítez]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/1c502cee5e6c.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/1c502cee5e6c.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/1c502cee5e6c.webp"/>
+    <media:description type="plain"><![CDATA[Antes de celebrarse la<b> Gala del Balón de Oro</b>, por la alfombra roja del teatro<b> Palladium de Londres</b> desfilaron un sinfín celebridades del mundo del fútbol. Jugadores, ex jugadores, técnicos y ex técnicos de diferentes épocas se dieron cita en la 'City' para celebrar una de las fiestas m — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>León de Huánuco cae en amistoso</title>
+    <link>https://ahora.com.pe/deportes/leon-de-huanuco-cae-en-amistoso</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/leon-de-huanuco-cae-en-amistoso</guid>
+    <pubDate>Tue, 27 Oct 2026 09:05:14 GMT</pubDate>
+    <description><![CDATA[León de Huánuco dejó más dudas que certezas en su presentación oficial ante sus hinchas, tras caer por 1-0 frente al Municipal de Chacos en un encuentro amistoso que permitió observar por primera vez]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[León de Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/477c5d40bf21.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/477c5d40bf21.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/477c5d40bf21.jpg"/>
+    <media:description type="plain"><![CDATA[León de Huánuco cae en amistoso — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Súper Balón de Oro podría regresar</title>
+    <link>https://ahora.com.pe/deportes/super-balon-de-oro-podria-regresar</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/super-balon-de-oro-podria-regresar</guid>
+    <pubDate>Tue, 27 Oct 2026 09:05:08 GMT</pubDate>
+    <description><![CDATA[El Súper Balón de Oro, uno de los reconocimientos más exclusivos en la historia del fútbol mundial, vuelve a despertar interés ante las versiones sobre una posible segunda edición.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Súper Balón de Oro]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/726154ea4d8d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/726154ea4d8d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/726154ea4d8d.jpg"/>
+    <media:description type="plain"><![CDATA[Súper Balón de Oro podría regresar — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Jean Deza pone en duda su continuidad</title>
+    <link>https://ahora.com.pe/deportes/jean-deza-pone-en-duda-su-continuidad</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/jean-deza-pone-en-duda-su-continuidad</guid>
+    <pubDate>Tue, 27 Oct 2026 09:05:04 GMT</pubDate>
+    <description><![CDATA[La reciente incorporación de Jean Deza al club Domingo Dianderas de Chincha podría terminar antes de lo esperado.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Jean Deza]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/1566bc3f2263.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/1566bc3f2263.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/1566bc3f2263.jpg"/>
+    <media:description type="plain"><![CDATA[Jean Deza pone en duda su continuidad — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Cartagena advierte dificultades por la altura</title>
+    <link>https://ahora.com.pe/deportes/cartagena-advierte-dificultades-por-la-altura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cartagena-advierte-dificultades-por-la-altura</guid>
+    <pubDate>Tue, 27 Oct 2026 09:04:56 GMT</pubDate>
+    <description><![CDATA[La posibilidad de que la selección peruana dispute partidos en ciudades de altura continúa generando opiniones entre los futbolistas nacionales.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Cartagena]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/68710497e74b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/68710497e74b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/68710497e74b.jpg"/>
+    <media:description type="plain"><![CDATA[Cartagena advierte dificultades por la altura — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Harry Kane conquista el Balón de Oro</title>
+    <link>https://ahora.com.pe/deportes/harry-kane-conquista-el-balon-de-oro</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/harry-kane-conquista-el-balon-de-oro</guid>
+    <pubDate>Tue, 27 Oct 2026 09:04:52 GMT</pubDate>
+    <description><![CDATA[El delantero inglés Harry Kane conquistó el Balón de Oro 2026, reconocimiento que entrega France Football en colaboración con la UEFA, durante una gran ceremonia celebrada el 26 de octubre en el]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Harry Kane]]></category>
+    <category><![CDATA[Balón de Oro]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/fb32ff8f4a2a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/fb32ff8f4a2a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/fb32ff8f4a2a.jpg"/>
+    <media:description type="plain"><![CDATA[Harry Kane conquista el Balón de Oro — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Unión Minas afronta denuncia por desacato</title>
+    <link>https://ahora.com.pe/deportes/union-minas-afronta-denuncia-por-desacato</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/union-minas-afronta-denuncia-por-desacato</guid>
+    <pubDate>Tue, 27 Oct 2026 09:04:46 GMT</pubDate>
+    <description><![CDATA[La Comisión Disciplinaria de la Liga 2 abrió un expediente contra Unión Minas, luego de una denuncia presentada por siete clubes por el presunto ingreso de espectadores al estadio Daniel Alcides]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Unión Minas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/c83c3fe1903a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/c83c3fe1903a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/c83c3fe1903a.jpg"/>
+    <media:description type="plain"><![CDATA[Unión Minas afronta denuncia por desacato — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco conquista oro, plata y triunfos</title>
+    <link>https://ahora.com.pe/deportes/huanuco-conquista-oro-plata-y-triunfos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/huanuco-conquista-oro-plata-y-triunfos</guid>
+    <pubDate>Tue, 27 Oct 2026 09:04:40 GMT</pubDate>
+    <description><![CDATA[Los representantes de Huánuco comenzaron con resultados alentadores su participación en la etapa nacional de los Juegos Deportivos y Paradeportivos Escolares, al conquistar dos medallas en gimnasia y]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0a68da224768.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0a68da224768.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0a68da224768.jpg"/>
+    <media:description type="plain"><![CDATA[Huánuco conquista oro, plata y triunfos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Dictan nueve meses de prisión preventiva a investigado por violación de una menor</title>
+    <link>https://ahora.com.pe/policiales/dictan-nueve-meses-de-prision-preventiva-a-investigado-por-violacion-de-una</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/dictan-nueve-meses-de-prision-preventiva-a-investigado-por-violacion-de-una</guid>
+    <pubDate>Tue, 27 Oct 2026 09:04:34 GMT</pubDate>
+    <description><![CDATA[El Juzgado de Investigación Preparatoria de Ambo ordenó nueve meses de prisión preventiva contra Javier Retis, de 37 años, investigado por la presunta violación sexual de una menor de doce años.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/02ddb5de0141.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/02ddb5de0141.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/02ddb5de0141.jpg"/>
+    <media:description type="plain"><![CDATA[Dictan nueve meses de prisión preventiva a investigado por violación de una menor — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Obrero muere sepultado en zanja y familiares denuncian presunta falta de equipos de seguridad</title>
+    <link>https://ahora.com.pe/policiales/obrero-muere-sepultado-en-zanja-y-familiares-denuncian-presunta-falta-de-equipos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/obrero-muere-sepultado-en-zanja-y-familiares-denuncian-presunta-falta-de-equipos</guid>
+    <pubDate>Tue, 27 Oct 2026 09:04:30 GMT</pubDate>
+    <description><![CDATA[Samuel Olimbo Mena murió tras quedar sepultado por un desprendimiento de tierra mientras trabajaba en una obra de agua potable y alcantarillado en el poblado de Mesapata, distrito de Jacas Grande]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/5c4bb9f84f00.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/5c4bb9f84f00.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/5c4bb9f84f00.jpg"/>
+    <media:description type="plain"><![CDATA[Obrero muere sepultado en zanja y familiares denuncian presunta falta de equipos de seguridad — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Recuperan moto hurtada en una vivienda: tío y sobrino son investigados por distintos delitos</title>
+    <link>https://ahora.com.pe/policiales/recuperan-moto-hurtada-en-una-vivienda-tio-y-sobrino-son-investigados-por</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/recuperan-moto-hurtada-en-una-vivienda-tio-y-sobrino-son-investigados-por</guid>
+    <pubDate>Tue, 27 Oct 2026 09:04:20 GMT</pubDate>
+    <description><![CDATA[Un video permitió identificar al presunto autor del hurto. La Policía encontró el vehículo en un inmueble del jirón Espinar.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/1e745bb0d257.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/1e745bb0d257.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/1e745bb0d257.jpg"/>
+    <media:description type="plain"><![CDATA[Recuperan moto hurtada en una vivienda: tío y sobrino son investigados por distintos delitos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Investigan muerte de una osa de anteojos y sus dos crías en Churubamba</title>
+    <link>https://ahora.com.pe/policiales/investigan-muerte-de-una-osa-de-anteojos-y-sus-dos-crias-en-churubamba</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/investigan-muerte-de-una-osa-de-anteojos-y-sus-dos-crias-en-churubamba</guid>
+    <pubDate>Tue, 27 Oct 2026 09:04:13 GMT</pubDate>
+    <description><![CDATA[Fiscalía Ambiental ordenó identificar a los presuntos responsables y recuperar los animales o sus restos en Marcapuyán y Riscupa.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Churubamba]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/3bd033cab212.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/3bd033cab212.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/3bd033cab212.jpg"/>
+    <media:description type="plain"><![CDATA[Investigan muerte de una osa de anteojos y sus dos crías en Churubamba — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Asesinan a joven de 23 años a puñaladas cuando salía de una reunión</title>
+    <link>https://ahora.com.pe/policiales/asesinan-a-joven-de-23-anos-a-punaladas-cuando-salia-de-una-reunion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/asesinan-a-joven-de-23-anos-a-punaladas-cuando-salia-de-una-reunion</guid>
+    <pubDate>Tue, 27 Oct 2026 09:04:08 GMT</pubDate>
+    <description><![CDATA[Javier Guillermo Nieto murió durante su traslado al hospital. La Policía investiga el ataque y la posterior quema de un vehículo vinculado a un sospechoso]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/fefa32c0f39f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/fefa32c0f39f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/fefa32c0f39f.jpg"/>
+    <media:description type="plain"><![CDATA[Asesinan a joven de 23 años a puñaladas cuando salía de una reunión — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Francia mantiene protestas contra el Gobierno tras enfrentamientos registrados en París y Marsella</title>
+    <link>https://ahora.com.pe/mundo/francia-mantiene-protestas-contra-el-gobierno-tras-enfrentamientos-registrados</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/francia-mantiene-protestas-contra-el-gobierno-tras-enfrentamientos-registrados</guid>
+    <pubDate>Tue, 27 Oct 2026 09:03:57 GMT</pubDate>
+    <description><![CDATA[Francia afronta una semana de movilizaciones contra el encarecimiento de la vida y el deterioro de los servicios públicos, después de las marchas del sábado 24 de octubre, que terminaron con]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Gobierno]]></category>
+    <category><![CDATA[París]]></category>
+    <category><![CDATA[Marsella]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/5b6d5dc08e6e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/5b6d5dc08e6e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/5b6d5dc08e6e.jpg"/>
+    <media:description type="plain"><![CDATA[Francia mantiene protestas contra el Gobierno tras enfrentamientos registrados en París y Marsella — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Lluvias amenazan Piura y Ejército asumirá custodia de motobombas para responder a inundaciones</title>
+    <link>https://ahora.com.pe/nacional/lluvias-amenazan-piura-y-ejercito-asumira-custodia-de-motobombas-para-responder</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/lluvias-amenazan-piura-y-ejercito-asumira-custodia-de-motobombas-para-responder</guid>
+    <pubDate>Tue, 27 Oct 2026 09:03:51 GMT</pubDate>
+    <description><![CDATA[El Servicio Nacional de Meteorología e Hidrología advirtió que este lunes 26 de octubre continuarían las lluvias en la costa norte, con acumulados de hasta 40 milímetros por día.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Piura]]></category>
+    <category><![CDATA[Ejército]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/568b2e28df4b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/568b2e28df4b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/568b2e28df4b.jpg"/>
+    <media:description type="plain"><![CDATA[Lluvias amenazan Piura y Ejército asumirá custodia de motobombas para responder a inundaciones — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Ejecutivo lanza operativo contra 43 antenas clandestinas y 48 estaciones ilegales cerca de penales</title>
+    <link>https://ahora.com.pe/policiales/ejecutivo-lanza-operativo-contra-43-antenas-clandestinas-y-48-estaciones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/ejecutivo-lanza-operativo-contra-43-antenas-clandestinas-y-48-estaciones</guid>
+    <pubDate>Tue, 27 Oct 2026 09:03:45 GMT</pubDate>
+    <description><![CDATA[El Ejecutivo inició este lunes 26 de octubre un operativo simultáneo para intervenir 43 antenas clandestinas y 48 estaciones ilegales de telecomunicaciones ubicadas en los alrededores de]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Ejecutivo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0cf892226d1c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0cf892226d1c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0cf892226d1c.jpg"/>
+    <media:description type="plain"><![CDATA[Ejecutivo lanza operativo contra 43 antenas clandestinas y 48 estaciones ilegales cerca de penales — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Capeco alerta: menos de un tercio de puntos críticos recibió intervención ante El Niño</title>
+    <link>https://ahora.com.pe/economia/capeco-alerta-menos-de-un-tercio-de-puntos-criticos-recibio-intervencion-ante-el</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/capeco-alerta-menos-de-un-tercio-de-puntos-criticos-recibio-intervencion-ante-el</guid>
+    <pubDate>Tue, 27 Oct 2026 09:03:40 GMT</pubDate>
+    <description><![CDATA[El gremio propone identificar viviendas vulnerables y movilizar recursos privados para atender emergencias y reconstruir hogares]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Capeco]]></category>
+    <category><![CDATA[Niño]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/5eb4c94034ab.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/5eb4c94034ab.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/5eb4c94034ab.jpg"/>
+    <media:description type="plain"><![CDATA[Capeco alerta: menos de un tercio de puntos críticos recibió intervención ante El Niño — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Productores huanuqueños agotan su oferta en la ExpoAmazónica, según Gorehco</title>
+    <link>https://ahora.com.pe/regional/productores-huanuquenos-agotan-su-oferta-en-la-expoamazonica-segun-gorehco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/productores-huanuquenos-agotan-su-oferta-en-la-expoamazonica-segun-gorehco</guid>
+    <pubDate>Tue, 27 Oct 2026 09:03:34 GMT</pubDate>
+    <description><![CDATA[Según el Gobierno Regional de Huánuco, los 18 productores de la delegación vendieron S/ 64 581 y agotaron sus productos en la última jornada de la feria, en Yarinacocha.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[ExpoAmazónica]]></category>
+    <category><![CDATA[Gorehco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/c4a939b94e7d.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/c4a939b94e7d.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/c4a939b94e7d.png"/>
+    <media:description type="plain"><![CDATA[Productores huanuqueños agotan su oferta en la ExpoAmazónica, según Gorehco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Vía Monopampa–Chorropampa solo espera resolución del MTC, según Raúl Cabello</title>
+    <link>https://ahora.com.pe/regional/via-monopampachorropampa-solo-espera-resolucion-del-mtc-segun-raul-cabello</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/via-monopampachorropampa-solo-espera-resolucion-del-mtc-segun-raul-cabello</guid>
+    <pubDate>Tue, 27 Oct 2026 09:03:02 GMT</pubDate>
+    <description><![CDATA[Según Cabello, la resolución llegaría en 15 a 20 días y el viaje bajaría de uno o dos días a cinco horas.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Monopampa]]></category>
+    <category><![CDATA[Chorropampa]]></category>
+    <category><![CDATA[MTC]]></category>
+    <category><![CDATA[Raúl Cabello]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/21983c2e711f.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/21983c2e711f.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/21983c2e711f.png"/>
+    <media:description type="plain"><![CDATA[Vía Monopampa–Chorropampa solo espera resolución del MTC, según Raúl Cabello — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Enfermeros de Huánuco denuncian exclusión en cargos directivos de EsSalud y exigen revisión</title>
+    <link>https://ahora.com.pe/regional/enfermeros-de-huanuco-denuncian-exclusion-en-cargos-directivos-de-essalud-y</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/enfermeros-de-huanuco-denuncian-exclusion-en-cargos-directivos-de-essalud-y</guid>
+    <pubDate>Tue, 27 Oct 2026 09:02:54 GMT</pubDate>
+    <description><![CDATA[Colegio profesional cuestiona los requisitos establecidos para puestos de dirección y gerencia, y solicita la intervención del Congreso para garantizar igualdad de oportunidades.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Enfermeros de Huánuco]]></category>
+    <category><![CDATA[EsSalud]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/813e44949418.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/813e44949418.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/813e44949418.jpg"/>
+    <media:description type="plain"><![CDATA[Enfermeros de Huánuco denuncian exclusión en cargos directivos de EsSalud y exigen revisión — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Gorehco: Plaza de Chavinillo, de más de S/ 2,5 millones, está por terminar</title>
+    <link>https://ahora.com.pe/regional/gorehco-plaza-de-chavinillo-de-mas-de-s-2-5-millones-esta-por-terminar</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/gorehco-plaza-de-chavinillo-de-mas-de-s-2-5-millones-esta-por-terminar</guid>
+    <pubDate>Tue, 27 Oct 2026 09:02:48 GMT</pubDate>
+    <description><![CDATA[La obra en la capital de Yarowilca tendrá réplicas del Complejo Arqueológico de Garu, una pileta y una cascada; la nota de prensa no trae código de obra ni fecha de entrega.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Chavinillo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/9c524ecfc12f.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/9c524ecfc12f.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/9c524ecfc12f.png"/>
+    <media:description type="plain"><![CDATA[Gorehco: Plaza de Chavinillo, de más de S/ 2,5 millones, está por terminar — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Balneario Las Pavas es faja marginal, sostiene Peter Dueñas, del Castur, ante familia López Pérez</title>
+    <link>https://ahora.com.pe/regional/balneario-las-pavas-es-faja-marginal-sostiene-peter-duenas-del-castur-ante</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/balneario-las-pavas-es-faja-marginal-sostiene-peter-duenas-del-castur-ante</guid>
+    <pubDate>Tue, 27 Oct 2026 09:02:42 GMT</pubDate>
+    <description><![CDATA[Peter Dueñas Santillán, contratado por el comité, sostiene que el terreno es faja marginal y bien público, y pide a la municipalidad, la subprefectura y la Policía actuar contra la familia.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Pavas]]></category>
+    <category><![CDATA[Peter Dueñas]]></category>
+    <category><![CDATA[Castur]]></category>
+    <category><![CDATA[López Pérez]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/115f391329fb.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/115f391329fb.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/115f391329fb.png"/>
+    <media:description type="plain"><![CDATA[Balneario Las Pavas es faja marginal, sostiene Peter Dueñas, del Castur, ante familia López Pérez — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Franklin Yánac propone pozos tubulares para llevar agua a todo Colpa Baja</title>
+    <link>https://ahora.com.pe/regional/franklin-yanac-propone-pozos-tubulares-para-llevar-agua-a-todo-colpa-baja</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/franklin-yanac-propone-pozos-tubulares-para-llevar-agua-a-todo-colpa-baja</guid>
+    <pubDate>Tue, 27 Oct 2026 09:02:35 GMT</pubDate>
+    <description><![CDATA[El candidato de Reconstrucción Colpina dice que un estudio ya encontró acuíferos junto al río Huallaga, pero que la perforación aún requiere otro estudio y el permiso de la Autoridad Nacional del Agua. También pide declarar el centro poblado en emergencia por los deslizamientos y dice que renunció a la dieta de alcalde.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Franklin Yánac]]></category>
+    <category><![CDATA[Colpa Baja]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/99d66a132e27.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/99d66a132e27.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/99d66a132e27.png"/>
+    <media:description type="plain"><![CDATA[Franklin Yánac propone pozos tubulares para llevar agua a todo Colpa Baja — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Más de 30 incendios forestales en Huánuco entre agosto y octubre, según Gorehco</title>
+    <link>https://ahora.com.pe/regional/mas-de-30-incendios-forestales-en-huanuco-entre-agosto-y-octubre-segun-gorehco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/mas-de-30-incendios-forestales-en-huanuco-entre-agosto-y-octubre-segun-gorehco</guid>
+    <pubDate>Tue, 27 Oct 2026 09:02:31 GMT</pubDate>
+    <description><![CDATA[El fuego en el cerro del Colegio de Alto Rendimiento no se pudo controlar; también hubo incendios en Margos y Huacaybamba. El director regional de Agricultura, Otto Chávez Olivera, pidió denunciar a quienes queman y dijo que las quemas no le competen directamente a su sector.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[Gorehco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/28de044a6b92.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/28de044a6b92.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/28de044a6b92.png"/>
+    <media:description type="plain"><![CDATA[Más de 30 incendios forestales en Huánuco entre agosto y octubre, según Gorehco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Granizadas dañan cultivos e intensas lluvias inundan viviendas en zonas de Huánuco</title>
+    <link>https://ahora.com.pe/regional/granizadas-danan-cultivos-e-intensas-lluvias-inundan-viviendas-en-zonas-de</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/granizadas-danan-cultivos-e-intensas-lluvias-inundan-viviendas-en-zonas-de</guid>
+    <pubDate>Tue, 27 Oct 2026 09:02:24 GMT</pubDate>
+    <description><![CDATA[Las precipitaciones afectaron sembríos en Sillapata y provocaron inundaciones en El Porvenir, Huamalíes, donde unas 20 a 25 familias podrían estar perjudicadas. Autoridades locales solicitan apoyo y evaluación de daños.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/dfad6f02b502.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/dfad6f02b502.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/dfad6f02b502.png"/>
+    <media:description type="plain"><![CDATA[Granizadas dañan cultivos e intensas lluvias inundan viviendas en zonas de Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>País para Todos desiste en Tingo María y sigue en Chuquis y Huamalíes</title>
+    <link>https://ahora.com.pe/regional/pais-para-todos-desiste-en-tingo-maria-y-sigue-en-chuquis-y-huamalies</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/pais-para-todos-desiste-en-tingo-maria-y-sigue-en-chuquis-y-huamalies</guid>
+    <pubDate>Tue, 27 Oct 2026 09:02:18 GMT</pubDate>
+    <description><![CDATA[Su personero legal, Paolo Pastrana Salinas, dice que el JNE no resuelve desde el 14 de octubre el pedido de Perú Primero contra un acta de Chuquis. En Tingo María, el partido no seguirá impugnando.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[País]]></category>
+    <category><![CDATA[Tingo María]]></category>
+    <category><![CDATA[Chuquis]]></category>
+    <category><![CDATA[Huamalíes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/54d3de5f2923.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/54d3de5f2923.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/54d3de5f2923.png"/>
+    <media:description type="plain"><![CDATA[País para Todos desiste en Tingo María y sigue en Chuquis y Huamalíes — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Agricultura reporta 26 300 vehículos intervenidos en controles forestales de Huánuco durante 2025-2026</title>
+    <link>https://ahora.com.pe/regional/agricultura-reporta-26-300-vehiculos-intervenidos-en-controles-forestales-de</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/agricultura-reporta-26-300-vehiculos-intervenidos-en-controles-forestales-de</guid>
+    <pubDate>Tue, 27 Oct 2026 09:02:11 GMT</pubDate>
+    <description><![CDATA[La Dirección Regional de Agricultura y la UGFFS dicen que inmovilizaron 90 unidades y que entregaron 174 contratos de cesión en uso agroforestal; la Semana Forestal será del 1 al 13 de noviembre.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Agricultura]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/1295aa3cae84.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/1295aa3cae84.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/1295aa3cae84.jpg"/>
+    <media:description type="plain"><![CDATA[Agricultura reporta 26 300 vehículos intervenidos en controles forestales de Huánuco durante 2025-2026 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Diresa advierte de máscaras de Halloween con pintura de plomo y pide exigir autorización sanitaria</title>
+    <link>https://ahora.com.pe/regional/diresa-advierte-de-mascaras-de-halloween-con-pintura-de-plomo-y-pide-exigir</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/diresa-advierte-de-mascaras-de-halloween-con-pintura-de-plomo-y-pide-exigir</guid>
+    <pubDate>Tue, 27 Oct 2026 09:02:05 GMT</pubDate>
+    <description><![CDATA[El director de Salud Ambiental dijo que los operativos con la Fiscalía y la Municipalidad Provincial de Huánuco se replicarán en Amarilis, Pillco Marca, Leoncio Prado y, quizá, Ambo. Hasta ahora, afirmó, no ubicaron productos tóxicos.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Diresa]]></category>
+    <category><![CDATA[Halloween]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/36a337a4a9c0.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/36a337a4a9c0.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/36a337a4a9c0.png"/>
+    <media:description type="plain"><![CDATA[Diresa advierte de máscaras de Halloween con pintura de plomo y pide exigir autorización sanitaria — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>El obispo Pedro Bustamante pide paciencia a transportistas por la procesión del Señor de Burgos</title>
+    <link>https://ahora.com.pe/regional/el-obispo-pedro-bustamante-pide-paciencia-a-transportistas-por-la-procesion-del</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/el-obispo-pedro-bustamante-pide-paciencia-a-transportistas-por-la-procesion-del</guid>
+    <pubDate>Tue, 27 Oct 2026 09:01:57 GMT</pubDate>
+    <description><![CDATA[Pedro Alberto Bustamante López dijo que la procesión pasa por La Merced, Amarilis y San Sebastián. También convocó a cerca de 200 jóvenes voluntarios.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Pedro Bustamante]]></category>
+    <category><![CDATA[Señor de Burgos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/514fd8a8d24e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/514fd8a8d24e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/514fd8a8d24e.jpg"/>
+    <media:description type="plain"><![CDATA[El obispo Pedro Bustamante pide paciencia a transportistas por la procesión del Señor de Burgos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Agricultura pide a ganaderos ensilar y almacenar alimento ante El Niño</title>
+    <link>https://ahora.com.pe/regional/agricultura-pide-a-ganaderos-ensilar-y-almacenar-alimento-ante-el-nino</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/agricultura-pide-a-ganaderos-ensilar-y-almacenar-alimento-ante-el-nino</guid>
+    <pubDate>Tue, 27 Oct 2026 09:01:48 GMT</pubDate>
+    <description><![CDATA[La Dirección Regional de Agricultura recomienda a los ganaderos almacenar alimentos secos, hacer ensilados, dar sombra al ganado y dosificar el agua. Otto Chávez, de esa dirección, dijo que se verifica una compra de apoyo que «no va a ser muy excesiva».]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Agricultura]]></category>
+    <category><![CDATA[Niño]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/a07af215612e.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/a07af215612e.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/a07af215612e.png"/>
+    <media:description type="plain"><![CDATA[Agricultura pide a ganaderos ensilar y almacenar alimento ante El Niño — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Sporting Cristal rindió homenaje al Señor de los Milagros antes del duelo por el Clausura</title>
+    <link>https://ahora.com.pe/deportes/sporting-cristal-homenaje-senor-milagros-las-nazarenas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sporting-cristal-homenaje-senor-milagros-las-nazarenas</guid>
+    <pubDate>Tue, 27 Oct 2026 09:01:05 GMT</pubDate>
+    <description><![CDATA[Sporting Cristal participó en la misa en honor al Señor de los Milagros en la iglesia Las Nazarenas, junto a directivos y exjugadores, en la previa de su compromiso ante Alianza Lima por el Clausura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Señor de los Milagros]]></category>
+    <category><![CDATA[Las Nazarenas]]></category>
+    <category><![CDATA[Clausura 2026]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/24206b860a73.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/24206b860a73.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/24206b860a73.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>KPMG: Perú necesita reformas regulatorias para diversificar su matriz energética</title>
+    <link>https://ahora.com.pe/economia/kpmg-reformas-matriz-energetica-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/kpmg-reformas-matriz-energetica-peru</guid>
+    <pubDate>Tue, 27 Oct 2026 07:50:58 GMT</pubDate>
+    <description><![CDATA[Marilynn Montero, socia de Energía y Hidrocarburos de KPMG en el Perú, plantea modernizar la tramitología, flexibilizar contratos y acelerar licitaciones de transmisión para integrar energías renovables. La matriz eléctrica peruana depende en cerca del 90% de la hidroelectricidad y el gas natural.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[matriz energética]]></category>
+    <category><![CDATA[KPMG Perú]]></category>
+    <category><![CDATA[gas natural de Camisea]]></category>
+    <category><![CDATA[energías renovables]]></category>
+    <category><![CDATA[transición energética]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/8d4ed5870757.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/8d4ed5870757.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/8d4ed5870757.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima: Arosemena habla del futuro de Paolo, Guede y los Navarro</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-arosemena-futuro-paolo-guede-navarro</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-arosemena-futuro-paolo-guede-navarro</guid>
+    <pubDate>Tue, 27 Oct 2026 07:20:57 GMT</pubDate>
+    <description><![CDATA[Alfredo Arosemena, administrador de Alianza Lima, se refirió al futuro de Paolo Guerrero, Pablo Guede y los Navarro, y a la posibilidad de vender jugadores en diciembre.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Paolo Guerrero]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <category><![CDATA[Alfredo Arosemena]]></category>
+    <category><![CDATA[Clausura 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/9078b822a575.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/9078b822a575.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/9078b822a575.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Lamine Yamal gana por tercer año consecutivo el premio &apos;Mejor Talento&apos; en la Gala del Balón de Oro</title>
+    <link>https://ahora.com.pe/deportes/lamine-yamal-tercer-trofeo-kopa-balon-oro</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/lamine-yamal-tercer-trofeo-kopa-balon-oro</guid>
+    <pubDate>Tue, 27 Oct 2026 06:01:01 GMT</pubDate>
+    <description><![CDATA[Lamine Yamal fue galardonado por tercera vez consecutiva como &apos;Mejor Talento&apos; en la Gala del Balón de Oro celebrada en Londres, un hito histórico en el premio que distingue al mejor futbolista menor de 21 años.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Lamine Yamal]]></category>
+    <category><![CDATA[Balón de Oro]]></category>
+    <category><![CDATA[Trofeo Kopa]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Pau Cubarsí]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/743b3571dfc1.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/743b3571dfc1.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/743b3571dfc1.webp"/>
+    <media:description type="plain"><![CDATA[<b>Lamine Yamal</b> fue múltiple protagonista en la Gala del Balón de Oro en Londres. Además de ser uno de los grandes aspirantes a llevarse el premio gordo optaba a su tercer galardón a mejor Talento joven del año. Por tercera vez consecutiva, el delantero del FC Barcelona logró a sus 19 años este — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Winston Reátegui pide que los árbitros peruanos visiten al Señor de los Milagros</title>
+    <link>https://ahora.com.pe/deportes/winston-reategui-arbitros-senor-milagros</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/winston-reategui-arbitros-senor-milagros</guid>
+    <pubDate>Tue, 27 Oct 2026 05:40:58 GMT</pubDate>
+    <description><![CDATA[Winston Reátegui, expresidente de la CONAR, se mostró a favor de que los árbitros peruanos visiten el santuario de Las Nazarenas y respaldó a Kevin Ortega para el clásico del Torneo Clausura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Winston Reátegui]]></category>
+    <category><![CDATA[árbitros peruanos]]></category>
+    <category><![CDATA[Señor de los Milagros]]></category>
+    <category><![CDATA[Kevin Ortega]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/d7fbfd44e5f4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/d7fbfd44e5f4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/d7fbfd44e5f4.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>SNMPE pide mayor presencia del Estado en Cajamarca frente a minería ilegal</title>
+    <link>https://ahora.com.pe/economia/snmpe-alerta-mineria-ilegal-cajamarca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/snmpe-alerta-mineria-ilegal-cajamarca</guid>
+    <pubDate>Tue, 27 Oct 2026 05:11:00 GMT</pubDate>
+    <description><![CDATA[La SNMPE alertó sobre el avance de la minería ilegal en Cajamarca y reclamó presencia integral del Estado. Julia Torreblanca planteó controlar las plantas de beneficio y auditar el origen del mineral en la futura Ley MAPE.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[SNMPE]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Cajamarca]]></category>
+    <category><![CDATA[Reinfo]]></category>
+    <category><![CDATA[Ley MAPE]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/a39a541d0beb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/a39a541d0beb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/a39a541d0beb.jpg"/>
+    <media:description type="plain"><![CDATA[La Sociedad Nacional de Minería, Petróleo y Energía (SNMPE) hizo un llamado para incrementar la presencia del Estado en la región Cajamarca, advirtiendo sobre el peligro del avance de la minería ilegal. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Lula agradece felicitación de Fujimori y plantea fortalecer integración Perú-Brasil</title>
+    <link>https://ahora.com.pe/politica/lula-agradece-fujimori-integracion-peru-brasil</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/lula-agradece-fujimori-integracion-peru-brasil</guid>
+    <pubDate>Tue, 27 Oct 2026 04:51:00 GMT</pubDate>
+    <description><![CDATA[Lula da Silva agradeció a Keiko Fujimori su felicitación por su reelección y planteó fortalecer la integración regional con una agenda de desarrollo sostenible en la Amazonía, de cara a los 200 años de asociación entre Perú y Brasil en 2027.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Lula da Silva]]></category>
+    <category><![CDATA[Keiko Fujimori]]></category>
+    <category><![CDATA[Perú Brasil]]></category>
+    <category><![CDATA[integración regional]]></category>
+    <category><![CDATA[Amazonía]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/53bad2babf1f.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/53bad2babf1f.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/53bad2babf1f.webp"/>
+    <media:description type="plain"><![CDATA[El presidente de Brasil, Luiz Inácio Lula da Silva, expresó su agradecimiento a la mandataria peruana, Keiko Fujimori, quien le envió ayer domingo un mensaje de felicitación tras conocerse su victoria en las elecciones generales en dicho país. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Madre de Dios: destruyen más de 30 campamentos de minería ilegal en Tambopata</title>
+    <link>https://ahora.com.pe/nacional/destruyen-campamentos-mineria-ilegal-tambopata</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/destruyen-campamentos-mineria-ilegal-tambopata</guid>
+    <pubDate>Tue, 27 Oct 2026 04:50:58 GMT</pubDate>
+    <description><![CDATA[Un operativo conjunto del Ejército, la Policía Nacional y el Ministerio Público destruyó más de 30 campamentos de minería ilegal en la zona de amortiguamiento de la Reserva Nacional de Tambopata, en el distrito de Inambari, Madre de Dios. Las autoridades incautaron un equipo de radio que presuntos mineros usaban para alertar sobre los desplazamientos de las fuerzas del orden.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Tambopata]]></category>
+    <category><![CDATA[Inambari]]></category>
+    <category><![CDATA[Madre de Dios]]></category>
+    <category><![CDATA[operativo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/71a0851fa7d6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/71a0851fa7d6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/71a0851fa7d6.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima recibe a Juan Aurich por la fecha 2 de la Fase Final de la Liga 3</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-juan-aurich-fecha-2-liga-3-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-juan-aurich-fecha-2-liga-3-2026</guid>
+    <pubDate>Tue, 27 Oct 2026 04:20:57 GMT</pubDate>
+    <description><![CDATA[Alianza Lima, líder del Grupo B con 5 puntos, enfrenta este miércoles 28 de octubre a Juan Aurich, tercero con 1 punto, por la segunda fecha de la Fase Final de la Liga 3 2026 en el Complejo Esther Grande de Bentín.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Juan Aurich]]></category>
+    <category><![CDATA[Liga 3 2026]]></category>
+    <category><![CDATA[Fase Final]]></category>
+    <category><![CDATA[Complejo Esther Grande de Bentín]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/8dc778d42d94.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/8dc778d42d94.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/8dc778d42d94.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Liga Peruana de Vóley: fecha 3 se juega el 31 de octubre y 1 de noviembre en Villa El Salvador</title>
+    <link>https://ahora.com.pe/deportes/liga-peruana-voley-fecha-3-programacion-horarios</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/liga-peruana-voley-fecha-3-programacion-horarios</guid>
+    <pubDate>Tue, 27 Oct 2026 04:01:08 GMT</pubDate>
+    <description><![CDATA[La fecha 3 de la Liga Peruana de Vóley 2026-27 se disputa el sábado 31 de octubre y el domingo 1 de noviembre en el Polideportivo Lucha Fuentes de Villa El Salvador, con seis partidos y Universitario y San Martín como líderes.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[fecha 3]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Villa El Salvador]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/10186bf29e40.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/10186bf29e40.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/10186bf29e40.jpg"/>
+    <media:description type="plain"><![CDATA[La Liga Peruana de Vóley 2026-27 continúa con vibrantes encuentros este fin de semana. Universitario de Deportes lidera el certamen y Alianza Lima también está en racha. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Xiomy Kanashiro celebra los 42 años de Jefferson Farfán con cena y mensaje</title>
+    <link>https://ahora.com.pe/entretenimiento/xiomy-kanashiro-celebra-42-anos-jefferson-farfan</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/xiomy-kanashiro-celebra-42-anos-jefferson-farfan</guid>
+    <pubDate>Tue, 27 Oct 2026 03:50:58 GMT</pubDate>
+    <description><![CDATA[Xiomy Kanashiro festejó los 42 años de Jefferson Farfán con una cena familiar y un mensaje en redes sociales. La madre de la bailarina dijo que quiere ser abuela y el padre contó que conversó con el exfutbolista antes de aprobar la relación.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Xiomy Kanashiro]]></category>
+    <category><![CDATA[Jefferson Farfán]]></category>
+    <category><![CDATA[cumpleaños 42]]></category>
+    <category><![CDATA[América Hoy]]></category>
+    <category><![CDATA[familia]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7c2e8a22a6b7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7c2e8a22a6b7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7c2e8a22a6b7.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Cata Coll gana el Trofeo Yashin femenino 2026 a la mejor portera</title>
+    <link>https://ahora.com.pe/deportes/cata-coll-trofeo-yashin-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cata-coll-trofeo-yashin-2026</guid>
+    <pubDate>Tue, 27 Oct 2026 02:50:57 GMT</pubDate>
+    <description><![CDATA[Cata Coll, portera del FC Barcelona, recibió el Trofeo Yashin femenino 2026 en la Gala del Balón de Oro y terminó en el puesto 15 del Balón de Oro.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Cata Coll]]></category>
+    <category><![CDATA[Trofeo Yashin]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Balón de Oro]]></category>
+    <category><![CDATA[fútbol femenino]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f448e7d138d6.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f448e7d138d6.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f448e7d138d6.webp"/>
+    <media:description type="plain"><![CDATA[<b>Cata Coll</b>, portera del <b>FC Barcelona</b>, fue reconocida en la Gala del Balón de Oro con el <b>Trofeo Yashin</b> femenino a la mejor guardameta de 2026 después de su gran temporada individual y colectiva como azulgrana. La balear fue clave en las conquistas de la Champions League, Liga F Mo — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Perú promueve inversiones en Nueva York: Cuba y Velarde se reúnen con fondos globales</title>
+    <link>https://ahora.com.pe/economia/peru-promueve-inversiones-nueva-york-cuba-velarde</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/peru-promueve-inversiones-nueva-york-cuba-velarde</guid>
+    <pubDate>Tue, 27 Oct 2026 01:50:58 GMT</pubDate>
+    <description><![CDATA[El ministro de Economía, Elmer Cuba, y el presidente del BCRP, Julio Velarde, presentaron las fortalezas macroeconómicas del Perú en el roadshow inPerú en Nueva York. Se reunieron con gestores de inversión como BlackRock, Morgan Stanley y JP Morgan para atraer capitales.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[inversiones]]></category>
+    <category><![CDATA[Elmer Cuba]]></category>
+    <category><![CDATA[Julio Velarde]]></category>
+    <category><![CDATA[inPerú]]></category>
+    <category><![CDATA[Nueva York]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/92d479e75e14.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/92d479e75e14.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/92d479e75e14.jpg"/>
+    <media:description type="plain"><![CDATA[El Gobierno continúa impulsando acciones para posicionar al Perú como un destino atractivo para la inversión internacional, fortalecer la confianza de los mercados y generar condiciones favorables para el crecimiento económico y la creación de empleo. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Expediente Judicial Electrónico Penal prevé operar en Lima durante el 2027</title>
+    <link>https://ahora.com.pe/nacional/expediente-judicial-electronico-penal-lima-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/expediente-judicial-electronico-penal-lima-2027</guid>
+    <pubDate>Tue, 27 Oct 2026 01:20:57 GMT</pubDate>
+    <description><![CDATA[El Expediente Judicial Electrónico Penal prevé iniciar operaciones en Lima durante el 2027, según el director ejecutivo del EJE Penal, Joel Segura Alania. El sistema, con soporte del BID, integrará módulos de mesa de partes, despacho penal y gestión de audiencias, y permitirá el acceso digital a expedientes.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Expediente Judicial Electrónico Penal]]></category>
+    <category><![CDATA[EJE Penal]]></category>
+    <category><![CDATA[Joel Segura Alania]]></category>
+    <category><![CDATA[BID]]></category>
+    <category><![CDATA[Poder Judicial]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/605c88c96294.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/605c88c96294.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/605c88c96294.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Defensor Patibamba pide a la LINFA revisar el estadio de Fuerabamba antes de la vuelta</title>
+    <link>https://ahora.com.pe/deportes/defensor-patibamba-linfa-estadio-fuerabamba-copa-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/defensor-patibamba-linfa-estadio-fuerabamba-copa-peru</guid>
+    <pubDate>Tue, 27 Oct 2026 00:40:57 GMT</pubDate>
+    <description><![CDATA[Defensor Patibamba solicitó a la LINFA verificar las condiciones y autorizaciones del Estadio Nueva Fuerabamba, sede de la vuelta de los dieciseisavos de final de la Etapa Nacional de la Copa Perú 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Defensor Patibamba]]></category>
+    <category><![CDATA[Unión Minas Pamputa]]></category>
+    <category><![CDATA[Copa Perú 2026]]></category>
+    <category><![CDATA[LINFA]]></category>
+    <category><![CDATA[Estadio Nueva Fuerabamba]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/2a270932bab0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/2a270932bab0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/2a270932bab0.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Servir y Canadá comparten experiencias para fortalecer el servicio civil peruano</title>
+    <link>https://ahora.com.pe/nacional/servir-canada-mision-servicio-civil</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/servir-canada-mision-servicio-civil</guid>
+    <pubDate>Tue, 27 Oct 2026 00:20:57 GMT</pubDate>
+    <description><![CDATA[Servir y la Comisión de la Función Pública de Canadá iniciaron una misión de asistencia técnica que se extiende del 26 al 30 de octubre en la ENAP. La cooperación da continuidad al proyecto Modserv, ejecutado entre 2022 y 2025 con financiamiento canadiense.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Servir]]></category>
+    <category><![CDATA[servicio civil]]></category>
+    <category><![CDATA[Canadá]]></category>
+    <category><![CDATA[Modserv]]></category>
+    <category><![CDATA[gestión pública]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/c47bbdc64ede.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/c47bbdc64ede.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/c47bbdc64ede.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alexia Putellas gana su tercer Balón de Oro e iguala a Aitana Bonmatí</title>
+    <link>https://ahora.com.pe/deportes/alexia-putellas-tercer-balon-de-oro</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alexia-putellas-tercer-balon-de-oro</guid>
+    <pubDate>Mon, 26 Oct 2026 23:31:01 GMT</pubDate>
+    <description><![CDATA[Alexia Putellas conquistó su tercer Balón de Oro en Londres e igualó a Aitana Bonmatí en el palmarés, mientras el FC Barcelona certifica seis premios femeninos consecutivos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alexia Putellas]]></category>
+    <category><![CDATA[Balón de Oro]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Aitana Bonmatí]]></category>
+    <category><![CDATA[fútbol femenino]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/a7fdfb9d874a.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/a7fdfb9d874a.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/a7fdfb9d874a.webp"/>
+    <media:description type="plain"><![CDATA[<b>Alexia Putellas</b> vuelve a ser la mejor jugadora del mundo tras conquistar su tercer <b>Balón de Oro</b>, un reconocimiento que confirma su regreso a la cima del fútbol femenino mundial. La exfutbolista del <b>FC Barcelona</b> y actual capitana del <b>London City</b> se vistió de gala en <b>Lon — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Balón de Oro 2026: la gala se emite hoy en exclusiva por Movistar Plus</title>
+    <link>https://ahora.com.pe/deportes/balon-de-oro-2026-gala-movistar-plus</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/balon-de-oro-2026-gala-movistar-plus</guid>
+    <pubDate>Mon, 26 Oct 2026 21:50:55 GMT</pubDate>
+    <description><![CDATA[Movistar Plus emite en exclusiva la gala del Balón de Oro 2026 desde el London Palladium de Londres, con cobertura previa desde las 19:30 y la ceremonia a las 21:00.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Balón de Oro 2026]]></category>
+    <category><![CDATA[Movistar Plus]]></category>
+    <category><![CDATA[gala Balón de Oro]]></category>
+    <category><![CDATA[Lamine Yamal]]></category>
+    <category><![CDATA[London Palladium]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7b3f2156af71.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7b3f2156af71.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7b3f2156af71.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  </channel>
+</rss>
