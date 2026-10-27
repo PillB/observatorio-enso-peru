@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-27T00:40:27+00:00",
+ "generated_at": "2026-10-27T01:55:34+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -2140,18 +2140,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "http-5xx",
+     "http": 523,
      "robots": "allowed"
     },
     "n8n": {
@@ -2160,7 +2158,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -2168,7 +2165,6 @@
     "https://www.noticiasser.pe/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -9045,22 +9041,34 @@
    "notes": "tipo de medio: gobierno; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
+    "status": "open",
+    "from": [
+     "github-actions"
+    ],
+    "open_from": [
+     "actions"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
     "actions",
     "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://portal.indeci.gob.pe/emergencias/feed/?s=boletin+informativo": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions",
       "n8n"
@@ -11236,7 +11244,7 @@
     ],
     "us": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11245,7 +11253,7 @@
     },
     "actions": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "dns"
@@ -11317,7 +11325,7 @@
     ],
     "us": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -11326,7 +11334,7 @@
     },
     "actions": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11388,12 +11396,12 @@
     "open_from": [],
     "us": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11447,12 +11455,12 @@
     "open_from": [],
     "us": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "dns",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -11489,25 +11497,33 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "timeout",
+     "robots": "absent"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "timeout",
+     "robots": "absent"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11530,25 +11546,37 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
+    "status": "open",
+    "from": [
+     "github-actions"
+    ],
+    "open_from": [
+     "actions"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
     "actions"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://index.commoncrawl.org/collinfo.json": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -11571,23 +11599,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://bibliotecadigital.bnp.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11612,23 +11648,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://repositorio.bnp.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11653,23 +11697,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://catalogo.bnp.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11694,23 +11746,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://www.indeci.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11735,23 +11795,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://bvpad.indeci.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11776,23 +11844,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://repositorio.ana.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11817,23 +11893,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://repositorio.senamhi.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11858,23 +11942,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://spij.minjus.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11899,23 +11991,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://apps.contraloria.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11940,23 +12040,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://www.rcc.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -11981,23 +12089,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "timeout",
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://siea.midagri.gob.pe/portal/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -12022,23 +12138,33 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "http-403",
+     "http": 403,
+     "robots": "absent"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "http-403",
+     "http": 403,
+     "robots": "absent"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://www.tvperu.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -12063,23 +12189,33 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "http-403",
+     "http": 403,
+     "robots": "absent"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "http-403",
+     "http": 403,
+     "robots": "absent"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://www.radionacional.gob.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -12104,25 +12240,37 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
+    "status": "open",
+    "from": [
+     "github-actions"
+    ],
+    "open_from": [
+     "actions"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
     "actions"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://tesis.pucp.edu.pe/": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -12145,23 +12293,31 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
+    "status": "suspected-geoblock",
+    "from": [
+     "github-actions"
+    ],
     "open_from": [],
-    "us": null,
+    "us": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "timeout",
+     "robots": "unreachable"
+    },
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://repositorio.unsa.edu.pe/": {
-     "status": "unknown",
+     "status": "suspected-geoblock",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "unknown"
     }
@@ -12198,7 +12354,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12207,7 +12363,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -12261,7 +12417,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12270,7 +12426,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -12321,7 +12477,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12330,7 +12486,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -12381,7 +12537,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12390,7 +12546,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -12438,7 +12594,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12447,7 +12603,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -12493,7 +12649,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12502,7 +12658,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -12548,7 +12704,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12557,7 +12713,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -12603,7 +12759,7 @@
     ],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12612,7 +12768,7 @@
     },
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": null
    },
@@ -12658,12 +12814,12 @@
     "open_from": [],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -12711,12 +12867,12 @@
     "open_from": [],
     "us": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "timeout",
-     "robots": "unreachable"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "timeout"
@@ -12878,22 +13034,34 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
+    "status": "open",
+    "from": [
+     "github-actions"
+    ],
+    "open_from": [
+     "actions"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "peru": null,
-    "actions": null,
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "n8n": null
    },
    "channels": [
     "actions",
     "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions",
       "n8n"
