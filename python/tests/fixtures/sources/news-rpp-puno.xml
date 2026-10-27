@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:35:17 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 26 Oct 2026 23:59:54 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,83 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Puno: Choque de varias camionetas en la vía Juliaca - Azángaro dejó un fallecido]]></title>
+        <description><![CDATA[El fallecido fue identificado como <strong>Paulino Flavio Ccahuina</strong>, de 76 años, mientras que los heridos fueron trasladados al Hospital de Azángaro.]]></description>
+        <pubDate>Sun, 25 Oct 2026 16:34:27 -0500</pubDate>
+        <link>https://rpp.pe/peru/puno/puno-choque-de-varias-camionetas-en-la-via-juliaca-azangaro-dejo-un-fallecido-noticia-1714431</link>
+        <guid>1714431</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/25/375937_1922523.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Puno, Accidente de tránsito, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Puno: provincia de San Román festeja sus 100 años con diferentes actividades [FOTOS]]]></title>
+        <description><![CDATA[La provincia de <strong>San Román</strong>, en <a data-mce-href="https://rpp.pe/peru/puno" href="https://rpp.pe/peru/puno" target="_blank" rel="noopener"><strong>Puno</strong></a>, celebra su centenario con actividades culturales, religiosas y cívico-militares. La jornada comenzó con la tradicional gran <strong>Tocoreada</strong> en la <strong>Plaza de Armas de Juliaca</strong>, mientras una docente destacó el esfuerzo de la población y pidió a las autoridades atender las necesidades de la ciudad.]]></description>
+        <pubDate>Sat, 24 Oct 2026 07:50:46 -0500</pubDate>
+        <link>https://rpp.pe/peru/puno/puno-provincia-de-san-roman-festeja-sus-100-anos-con-diferentes-actividades-fotos-noticia-1714243</link>
+        <guid>1714243</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/24/portada_4008833.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Puno, San Román, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Prisión preventiva para alcalde de Tuquina investigado por el presunto asesinato de otro alcalde en Pomata]]></title>
+        <description><![CDATA[La Corte Superior de Justicia de <a data-mce-href="https://rpp.pe/peru/puno" href="https://rpp.pe/peru/puno">Puno</a> dictó nueve meses de prisión preventiva contra <strong>Charles Mamani Díaz </strong>por la muerte del alcalde de Collini, Wilfredo Mamani Nina.]]></description>
+        <pubDate>Fri, 23 Oct 2026 00:27:11 -0500</pubDate>
+        <link>https://rpp.pe/peru/puno/prision-preventiva-en-puno-9-meses-de-carcel-para-alcalde-de-tuquina-por-homicidio-de-autoridad-de-collini-noticia-1714031</link>
+        <guid>1714031</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/23/343134_1921597.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Puno, Tuquina, Pomata, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Puno: incendio cerca de Los Uros dejó cuatro hospedajes flotantes afectados y totorales quemados]]></title>
+        <description><![CDATA[Carlos Quispe Pacompia, presidente de la comunidad de <a href="https://rpp.pe/peru/puno/coen-indeci-reporta-que-incendio-forestal-cerca-a-las-islas-de-los-uros-fue-extinguido-noticia-1713836" data-mce-href="https://rpp.pe/peru/puno/coen-indeci-reporta-que-incendio-forestal-cerca-a-las-islas-de-los-uros-fue-extinguido-noticia-1713836"><strong>Los Uros</strong></a>, señaló que el fuego consumió varios kilómetros de totorales, sogas y quesanas hechas de la misma totora.]]></description>
+        <pubDate>Thu, 22 Oct 2026 12:43:38 -0500</pubDate>
+        <link>https://rpp.pe/peru/puno/puno-incendio-cerca-de-los-uros-dejo-cuatro-hospedajes-flotantes-afectados-y-totorales-quemados-noticia-1713924</link>
+        <guid>1713924</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/22/26-10-22-12-30-13-17100-1921359mp4_1921360.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Puno, los uros, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[COEN-Indeci reporta que incendio forestal cerca a las islas de los Uros fue extinguido]]></title>
+        <description><![CDATA[De acuerdo al reporte, el fuego fue extinguido aproximadamente a las 8:50 p.m. de este miércoles, sin reportarse daños a la vida y salud de las personas en esta zona de <a data-mce-href="https://rpp.pe/peru/puno?ref=rpp" href="https://rpp.pe/peru/puno?ref=rpp">Puno</a>.]]></description>
+        <pubDate>Wed, 21 Oct 2026 23:32:53 -0500</pubDate>
+        <link>https://rpp.pe/peru/puno/coen-indeci-reporta-que-incendio-forestal-cerca-a-las-islas-de-los-uros-fue-extinguido-noticia-1713836</link>
+        <guid>1713836</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/22/491849_1921228.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Puno, Incendio, Indeci, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Marina de Guerra despliega patrullera para atender incendio cerca de las islas de Los Uros]]></title>
+        <description><![CDATA[La embarcación<strong> LP Ramis </strong>se dirige a la zona afectada con seis tripulantes y equipos especializados <a data-mce-href="https://rpp.pe/peru/puno/puno-incendio-en-totorales-de-las-islas-de-los-uros-noticia-1713804" href="https://rpp.pe/peru/puno/puno-incendio-en-totorales-de-las-islas-de-los-uros-noticia-1713804" target="_blank" rel="noopener">para reforzar las labores de extinción del fuego</a>.]]></description>
+        <pubDate>Wed, 21 Oct 2026 19:01:50 -0500</pubDate>
+        <link>https://rpp.pe/peru/puno/marina-de-guerra-despliega-patrullera-para-atender-incendio-cerca-de-las-islas-de-los-uros-noticia-1713814</link>
+        <guid>1713814</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/21/345834_1921169.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Ministerio de Defensa, Marina de Guerra del Perú, isla de los uros, Puno, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Puno: incendio se registra en totorales cerca de las islas de Los Uros [VIDEO]]]></title>
+        <description><![CDATA[Personal de la <strong>Dirección General de Capitanías y Guardacostas del Perú (DICAPI) </strong>ya acudió al lugar para atender la emergencia.]]></description>
+        <pubDate>Wed, 21 Oct 2026 18:30:02 -0500</pubDate>
+        <link>https://rpp.pe/peru/puno/puno-incendio-en-totorales-de-las-islas-de-los-uros-noticia-1713804</link>
+        <guid>1713804</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/21/335033_1921154.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Puno, Isla Los Uros, Videos más vistos, Marina de Guerra, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Juliaca: caen 'Las Terribles de Cahuide' con 52 celulares durante operativo policial]]></title>
         <description><![CDATA[La<strong> <a data-mce-href="https://rpp.pe/noticias/policia-nacional-del-peru" href="https://rpp.pe/noticias/policia-nacional-del-peru" target="_blank" rel="noopener">Policía Nacional</a></strong> también incautó maquetas de celulares utilizadas para engaños bajo la modalidad del ‘cambiazo’ y billetes bolivianos.]]></description>
@@ -487,83 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/08/08/384638_1894552.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Puno, Mina Pomasi, Palca, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Juliaca: hallan dos revólveres y 11 municiones ocultos en cementerio de San Miguel]]></title>
-        <description><![CDATA[Los efectivos al llegar hasta el lugar encontraron un <a data-mce-href="https://rpp.pe/lima/policiales/cercado-de-lima-pnp-desarticula-una-banda-que-habria-estafado-a-aseguradoras-por-mas-de-s-20-millones-noticia-1700568" href="https://rpp.pe/lima/policiales/cercado-de-lima-pnp-desarticula-una-banda-que-habria-estafado-a-aseguradoras-por-mas-de-s-20-millones-noticia-1700568">revólver negro con la serie borrada </a>y una munición en el tambor, un segundo revólver cromado también con serie erradicada, y 11 municiones. Todo estaba oculto en la zona del cementerio.]]></description>
-        <pubDate>Fri, 07 Aug 2026 21:32:46 -0500</pubDate>
-        <link>https://rpp.pe/peru/puno/juliaca-hallan-dos-revolveres-y-11-municiones-ocultos-en-cementerio-de-san-miguel-noticia-1700623</link>
-        <guid>1700623</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/07/no-despacho-policia-1894324mp3_1894325.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Juliaca, Puno, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Puno: niño de nueve años falleció y tres adultos resultaron heridos tras choque entre trimoto y auto en Desaguadero]]></title>
-        <description><![CDATA[El fatal accidente ocurrió en la <a data-mce-href="https://rpp.pe/politica/judiciales/caso-interoceanica-sur-admiten-a-tramite-pedido-de-procuraduria-para-que-westfield-capital-sea-incorporada-como-tercero-civil-responsable-noticia-1656374" href="https://rpp.pe/politica/judiciales/caso-interoceanica-sur-admiten-a-tramite-pedido-de-procuraduria-para-que-westfield-capital-sea-incorporada-como-tercero-civil-responsable-noticia-1656374">carretera Interoceánica Sur.</a> Los sobrevivientes fueron trasladados de urgencia al <strong>hospital de Juli</strong>, mientras que la <strong>Policía</strong> y la <strong>Fiscalía</strong> intensifican la búsqueda del conductor del vehículo mayor, quien se dio a la fuga tras el impacto.]]></description>
-        <pubDate>Fri, 07 Aug 2026 12:20:25 -0500</pubDate>
-        <link>https://rpp.pe/peru/puno/puno-nino-de-nueve-anos-fallecio-y-tres-adultos-resultaron-heridos-tras-choque-entre-trimoto-y-auto-en-desaguadero-noticia-1700527</link>
-        <guid>1700527</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/07/094309_1894114.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Puno, Desaguadero, Accidente, Tránsit, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Puno: condenan a 35 años de cárcel para hombre que asesinó a ciudadana alemana en Isla Cota en 2008]]></title>
-        <description><![CDATA[El <a data-mce-href="https://rpp.pe/noticias/poder-judicial" href="https://rpp.pe/noticias/poder-judicial">Poder Judicial </a>condenó a 35 años de prisión a Olguin Pacompia Calsin, por robo agravado con subsecuente muerte a la ciudadana alemana Aune Hartmann, en el año 2008. El hecho ocurrió en la comunidad de<strong> Isla Cota</strong>.]]></description>
-        <pubDate>Thu, 06 Aug 2026 19:49:41 -0500</pubDate>
-        <link>https://rpp.pe/peru/puno/puno-condenan-a-35-anos-de-carcel-para-hombre-que-asesino-a-ciudadana-alemana-en-isla-cota-en-2008-noticia-1700430</link>
-        <guid>1700430</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/06/213821_1893953.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Puno, isla cota, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Puno: la Policía Nacional capturó a tres hombres que llevaban 49 paquetes de droga en una camioneta]]></title>
-        <description><![CDATA[Los detenidos fueron identificados como<strong> Brayan Choquehuanca Apaza</strong>, <strong>Yeffer Yony Huancco Yupa </strong>y <strong>Eusebio Orozco Mamani. </strong>]]></description>
-        <pubDate>Wed, 05 Aug 2026 21:35:19 -0500</pubDate>
-        <link>https://rpp.pe/peru/puno/puno-la-policia-nacional-capturo-a-tres-hombres-que-llevaban-49-paquetes-de-droga-en-una-camioneta-noticia-1700319</link>
-        <guid>1700319</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/05/292929_1893717.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Puno, Policía Nacional, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Puno: Dos muertos deja un choque entre un auto con un camión en la vía Interoceánica]]></title>
-        <description><![CDATA[La <strong>Policía Nacional</strong> informó que el conductor del camión, identificado como Bernardo Paja Aliaga, de 31 años, fue detenido como parte de las investigaciones.]]></description>
-        <pubDate>Tue, 04 Aug 2026 18:17:13 -0500</pubDate>
-        <link>https://rpp.pe/peru/puno/puno-dos-muertos-deja-un-choque-entre-un-auto-con-un-camion-en-la-via-interoceanica-noticia-1700118</link>
-        <guid>1700118</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/04/460446_1893312.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Puno, Policía Nacional, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Fiscalía de Puno ubica tres sitios de entierro de víctimas de desaparición forzada de 1992]]></title>
-        <description><![CDATA[Según las indagaciones, en dichos espacios fueron enterrados cuatro jóvenes que perdieron la vida durante un enfrentamiento armado entre el Ejército y el grupo terrorista <strong>MRTA</strong>.]]></description>
-        <pubDate>Mon, 03 Aug 2026 17:23:33 -0500</pubDate>
-        <link>https://rpp.pe/peru/actualidad/fiscalia-de-puno-ubica-tres-sitios-de-entierro-de-victimas-de-desaparicion-forzada-de-1992-noticia-1699973</link>
-        <guid>1699973</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/08/03/251325_1892991.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Fiscalía, Puno, Desaparición forzada, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Puno: un muerto y once heridos deja choque entre dos vehículos en la vía Juliaca-Arequipa]]></title>
-        <description><![CDATA[La <strong>Policía Nacional </strong>detuvo al conductor de la minivan y sería investigado por presunto homicidio culposo.]]></description>
-        <pubDate>Mon, 27 Jul 2026 22:22:26 -0500</pubDate>
-        <link>https://rpp.pe/peru/puno/puno-un-muerto-y-once-heridos-deja-choque-entre-dos-vehiculos-en-la-via-juliaca-arequipa-noticia-1699071</link>
-        <guid>1699071</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/07/27/581658_1890973.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Puno, Accidente de tránsito, Juliaca, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
