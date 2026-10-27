@@ -436,9 +436,9 @@
   </g>
   <g class="ar-edge" id="af-e-50" data-edge="50" data-from="reference-data" data-to="geo-place" tabindex="0">
     <title>50. Reference data: places and thresholds → Placement and place corrections: UBIGEO and boundaries. INEI names let a place be recognised in the text, and IGN boundaries tell which district, province or department a coordinate falls in.</title>
-    <path class="ar-e ar-e-data" d="M976 1356 L1056 1356 Q1062 1356 1062 1350 L1062 924 Q1062 918 1068 918 L1089 918" marker-end="url(#af-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="1062" cy="1137" r="9"/>
-    <text class="ar-t" x="1062" y="1140.8" font-size="10.5" text-anchor="middle">50</text>
+    <path class="ar-e ar-e-data" d="M976 1368 L1056 1368 Q1062 1368 1062 1362 L1062 924 Q1062 918 1068 918 L1089 918" marker-end="url(#af-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1062" cy="1143" r="9"/>
+    <text class="ar-t" x="1062" y="1146.8" font-size="10.5" text-anchor="middle">50</text>
   </g>
   <g class="ar-edge" id="af-e-51" data-edge="51" data-from="geo-console" data-to="geo-place" tabindex="0">
     <title>51. Places console (/admin/) → Placement and place corrections: current corrections. With Cloudflare, the pipeline requests GET /api/geo/overrides (20 s timeout) and applies each item&#x27;s latest correction. With GitHub Pages there is no console and this step does not happen.</title>
@@ -556,9 +556,9 @@
   </g>
   <g class="ar-edge" id="af-e-70" data-edge="70" data-from="archive-job" data-to="data-archive-branch" tabindex="0">
     <title>70. archive job → data-archive branch: append only, never deletes. Adds the responses it lacked, appends the day&#x27;s items and merges the history with merge_history.py. Rejects commits with deletions and tries the push up to 3 times.</title>
-    <path class="ar-e ar-e-data" d="M858 1941.1 L858 1422 Q858 1416 864 1416 L996 1416 Q1002 1416 1002 1410 L1002 1212 Q1002 1206 996 1206 L976 1206" marker-end="url(#af-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="858" cy="1678.6" r="9"/>
-    <text class="ar-t" x="858" y="1682.4" font-size="10.5" text-anchor="middle">70</text>
+    <path class="ar-e ar-e-data" d="M858 1941.1 L858 1440 Q858 1434 864 1434 L996 1434 Q1002 1434 1002 1428 L1002 1212 Q1002 1206 996 1206 L976 1206" marker-end="url(#af-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="858" cy="1687.6" r="9"/>
+    <text class="ar-t" x="858" y="1691.4" font-size="10.5" text-anchor="middle">70</text>
   </g>
   <g class="ar-edge" id="af-e-71" data-edge="71" data-from="publication-data" data-to="github-issues" tabindex="0">
     <title>71. Published files (data/) → Incident issues (incidente-datos): run-report to issues. The incidents job downloads run-report.json and opens, updates or closes one issue per fingerprint; a format-drift is not closed: it is commented once and waits for a person. If build, deploy or archive fail, it also opens &#x27;La actualización diaria falló&#x27;. All of this only on main; on another branch it shows what it would do.</title>
@@ -718,9 +718,9 @@
   </g>
   <g class="ar-edge" id="af-e-97" data-edge="97" data-from="memoria-harvest" data-to="memoria-build" tabindex="0">
     <title>97. Historical catalogue harvest (memoria-cosecha.yml) → Historical catalogue and indicators (build_historico): what was fetched, from the cache. When no source is missing, build_historico --sin-red --parcial reads the cached files, compares their SHA-256 with the manifest and notes in the PR what changed in each source.</title>
-    <path class="ar-e ar-e-data" d="M631 1194 L720 1194 Q726 1194 726 1200 L726 1416 Q726 1422 732 1422 L1050 1422 Q1056 1422 1056 1416 L1056 1074 Q1056 1068 1062 1068 L1089 1068" marker-end="url(#af-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="891" cy="1422" r="9"/>
-    <text class="ar-t" x="891" y="1425.8" font-size="10.5" text-anchor="middle">97</text>
+    <path class="ar-e ar-e-data" d="M631 1194 L720 1194 Q726 1194 726 1200 L726 1434 Q726 1440 732 1440 L1050 1440 Q1056 1440 1056 1434 L1056 1074 Q1056 1068 1062 1068 L1089 1068" marker-end="url(#af-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="891" cy="1440" r="9"/>
+    <text class="ar-t" x="891" y="1443.8" font-size="10.5" text-anchor="middle">97</text>
   </g>
   <g class="ar-edge" id="af-e-98" data-edge="98" data-from="memoria-build" data-to="deploy" tabindex="0">
     <title>98. Historical catalogue and indicators (build_historico) → Deploy and verification: catalogue via a PR to main. The harvest PR changes public/assets/historico/ and data/historico/; once merged, the deploy publishes it and the Disaster memory view reads it (historico.js).</title>
@@ -1047,16 +1047,17 @@
     <a class="ar-annex" href="anexos/a8-en.svg" data-annex="a8"><title>Annex A8: Publication, deployment and archive</title><rect class="ar-tag" x="940.6" y="1136.2" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="954.3" y="1148.7" font-size="10.5" text-anchor="middle">A8</text></a>
   </g>
   <g class="ar-node-g" id="af-n-reference-data" data-node="reference-data">
-    <title>Reference data: places and thresholds. Fixed files in the repository: INEI UBIGEO codes, IGN district boundaries, INDECI departments, ENFEN&#x27;s 8 ICEN categories (2024) and the GRD team&#x27;s threshold table.</title>
-    <rect class="ar-node ar-g-sources" x="744" y="1261.9" width="232" height="134.4" rx="8"/>
-    <rect class="ar-f-sources" x="744" y="1269.9" width="4" height="118.4" rx="2"/>
+    <title>Reference data: places and thresholds. Fixed files in the repository: INEI UBIGEO codes, INDECI district boundaries (GEOSINPAD), INDECI departments, ENFEN&#x27;s 8 ICEN categories (2024) and the GRD team&#x27;s threshold table.</title>
+    <rect class="ar-node ar-g-sources" x="744" y="1261.9" width="232" height="149.6" rx="8"/>
+    <rect class="ar-f-sources" x="744" y="1269.9" width="4" height="133.6" rx="2"/>
     <text class="ar-t" x="756" y="1286.4" font-size="12.5">Reference data: places</text>
     <text class="ar-t" x="756" y="1302.7" font-size="12.5">and thresholds</text>
     <text class="ar-s" x="756" y="1321.8" font-size="11">Fixed files in the repository: INEI</text>
-    <text class="ar-s" x="756" y="1337" font-size="11">UBIGEO codes, IGN district</text>
-    <text class="ar-s" x="756" y="1352.2" font-size="11">boundaries, INDECI departments,</text>
-    <text class="ar-s" x="756" y="1367.4" font-size="11">ENFEN&#x27;s 8 ICEN categories (2024)</text>
-    <text class="ar-s" x="756" y="1382.6" font-size="11">and the GRD team&#x27;s threshold table.</text>
+    <text class="ar-s" x="756" y="1337" font-size="11">UBIGEO codes, INDECI district</text>
+    <text class="ar-s" x="756" y="1352.2" font-size="11">boundaries (GEOSINPAD), INDECI</text>
+    <text class="ar-s" x="756" y="1367.4" font-size="11">departments, ENFEN&#x27;s 8 ICEN</text>
+    <text class="ar-s" x="756" y="1382.6" font-size="11">categories (2024) and the GRD</text>
+    <text class="ar-s" x="756" y="1397.7" font-size="11">team&#x27;s threshold table.</text>
     <a class="ar-annex" href="anexos/a5-en.svg" data-annex="a5"><title>Annex A5: Daily update: official sources, series and signals</title><rect class="ar-tag" x="940.6" y="1268.9" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="954.3" y="1281.4" font-size="10.5" text-anchor="middle">A5</text></a>
   </g>
   <g class="ar-node-g" id="af-n-official-parse" data-node="official-parse">

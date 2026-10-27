@@ -150,8 +150,8 @@ def locate_point(lat, lon) -> tuple[Optional[dict], Optional[tuple]]:
 
 
 def inside(territory, code: str, loc: Optional[dict]) -> bool:
-    """Si el punto ubicado cae en el área ``code``. Un distrito creado después de los límites del IGN no tiene
-    polígono ni capital en el nomenclátor: su punto cae en el distrito del que se separó, y basta con que esté
+    """Si el punto ubicado cae en el área ``code``. Un distrito sin polígono en los límites (uno más nuevo que ellos) no
+    tiene polígono ni capital en el nomenclátor: su punto cae en el distrito del que se separó, y basta con que esté
     en la misma provincia."""
     if not loc or not code:
         return False
@@ -160,15 +160,29 @@ def inside(territory, code: str, loc: Optional[dict]) -> bool:
     return len(code) == 6 and not territory.has_capital(code) and loc["code"][:4] == code[:4]
 
 
+def newer_sibling(code: str, loc: Optional[dict]) -> Optional[str]:
+    """El distrito creado después de 2020 en el que cae el punto de una fuente que nombró a otro distrito de la misma
+    provincia (el SINPAD de 2017 dice Padre Abad y el punto está en lo que hoy es Boquerón): el UBIGEO vigente es el
+    del punto."""
+    from ..limites import CREATED_AFTER_2020
+
+    c = (loc or {}).get("code", "")
+    if len(code) == 6 and len(c) == 6 and c != code and c[:4] == code[:4] and c in CREATED_AFTER_2020:
+        return c
+    return None
+
+
 def place(territory, dep: str, prov: str, dist: str, lat, lon, code: str = "") -> tuple[Optional[str], Optional[tuple], str]:
     """(UBIGEO, coordenadas de la fuente si son coherentes, método).
 
     Primero los nombres (o el código) de la fuente; si no alcanzan para el distrito, el punto de la fuente
-    dentro de los límites del IGN, siempre que caiga en la provincia o el departamento que dicen los
+    dentro de los límites del INDECI, siempre que caiga en la provincia o el departamento que dicen los
     nombres. Las coordenadas de la fuente se conservan solo si caen en el área asignada."""
     named = territory.resolve(dep or "", prov or "", dist or "", code or "")
     loc, pt = locate_point(lat, lon)
     if named and len(named) == 6:
+        if newer_sibling(named, loc):
+            return loc["code"], pt, "punto"
         return named, (pt if inside(territory, named, loc) else None), "nombre"
     if loc and len(loc["code"]) == 6 and (not named or loc["code"].startswith(named)):
         return loc["code"], pt, "punto"

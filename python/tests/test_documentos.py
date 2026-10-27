@@ -7,8 +7,11 @@ aviso 432 es el que adjuntaron quienes probaron el sitio); los reportes, sus pri
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+import pytest
 
 from enso import documentos as D
 from enso.geo import locate_item
@@ -69,6 +72,38 @@ def test_short_term_warnings_list_exposed_provinces():
     assert v == {"from": "2026-10-25T18:00:00Z", "until": "2026-10-26T18:00:00Z", "basis": "vigencia del boletín del COEN"}
     q = D.read(text("corto-plazo-quebradas-199.txt"), "Aviso de corto plazo ante posible activación de quebradas")
     assert {"0201", "0218"} <= set(q["codes"]) and "Activación de Quebradas" in q["source"]
+
+
+@pytest.mark.parametrize("name,wrapped", [
+    # Nombres que pypdf corta al final de una línea de la celda («Víctor / Fajardo», «San / Pablo»).
+    ("corto-plazo-lluvias-297.txt", {"0510", "0611", "1310", "0207"}),
+    ("corto-plazo-quebradas-199.txt", {"0508", "0612", "2110"}),
+    ("corto-plazo-lluvias-298.txt", {"0207", "0612", "1310", "0701"}),  # 0701: «*Callao» en la fila de Lima
+])
+def test_short_term_warnings_keep_every_province_of_the_table(name, wrapped):
+    """Cada provincia de la tabla, comparada con una lectura independiente: el texto de la tabla en una sola
+    línea, cortado por los nombres de los departamentos y luego por comas."""
+    from enso.geo import gazetteer, key
+
+    raw = text(name)
+    codes = set(D.read(raw, "Aviso de corto plazo ante lluvias intensas")["codes"])
+    assert wrapped <= codes
+    gz = gazetteer()
+    table = re.search(r"DEPARTAMENTOS\s+PROVINCIAS\s+EXPUESTAS(.+?)(?:\n\s*(?:INDECI|INTERPRETACI|NIVELES|Fuente|"
+                      r"PERSPECTIVAS)|\Z)", raw, re.S).group(1)
+    flat = re.sub(r"\s+", " ", table).split(" * ")[0]
+    deps = {d["name"].upper(): c for c, d in gz.deps.items()}
+    parts = re.split("(" + "|".join(sorted(map(re.escape, deps), key=len, reverse=True)) + r")(?= \*?[A-ZÁÉÍÓÚ][a-z])", flat)
+    expected = set()
+    for dep, body in zip(parts[1::2], parts[2::2]):
+        for n in re.split(r"\s*,\s*|\s+y\s+", body.strip(" .")):
+            n = n.strip(" .")
+            hit = [c for c, p in gz.provs.items() if c[:2] == deps[dep] and key(p["name"]) == key(n)]
+            if n.startswith("*") and key(n.lstrip("*")) == "callao":
+                hit = ["0701"]
+            assert len(hit) == 1, (dep, n)
+            expected |= set(hit)
+    assert codes == expected
 
 
 def test_swell_bulletin_maps_the_coast():

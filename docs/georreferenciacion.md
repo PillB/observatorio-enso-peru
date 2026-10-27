@@ -46,7 +46,7 @@ Cada nota (`news/items.jsonl`, `geo/items.json`) y cada aviso de
 | Método | De dónde sale | Confianza |
 |---|---|---|
 | `campo` | La fuente trae UBIGEO o «distrito de X, provincia de Y, departamento de Z» (SENAMHI, INDECI, FIRMS, DHN), o el PDF del COEN los lista (`documentos.py`, ver `mapa-alertas.md`) | 0,95–0,97 |
-| `coordenadas` | Punto dentro de los límites del IGN (sismos de USGS, focos de calor) | 0,95 distrito; 0,9 provincia o departamento; 0,75 en el mar |
+| `coordenadas` | Punto dentro de los límites del INDECI (sismos de USGS, focos de calor) | 0,95 distrito; 0,9 provincia o departamento; 0,75 en el mar |
 | `texto` | El titular o el resumen nombran el lugar | 0,55–0,95 según la regla |
 | `medio` | Un medio regional que no nombra lugar: su departamento | 0,5 (0,6 gobiernos regionales; 0,35 búsquedas de Google Noticias, que no se publica) |
 | `correccion` | Una persona en la consola | 1,0 |
@@ -86,13 +86,16 @@ medio, o noticias de impactos sin lugar.
 
 ## Coordenadas (`python/enso/limites.py`)
 
-Límites del IGN (OCHA HDX `cod-ab-per`, CC BY-IGO), simplificados a unos
-110 m (`python/enso/data/limites-ign.json.gz`, 1,5 MB; se regenera con
-`python -m tools.build_limites`, que respeta el robots.txt de HDX: como
-prohíbe su API, el `.geojson.zip` se baja a mano de la página del conjunto y
-se pasa con `--zip`). Frente a los límites completos, 3 500
-puntos al azar dan 99,9 % de acuerdo (4 diferencias, todas en bordes
-departamentales a metros de distancia).
+Límites administrativos vigentes del INDECI (GEOSINPAD, capas `SDE.DISTRITOS`,
+`SDE.PROVINCIAS` y `SDE.DEPARTAMENTOS`: los 1 891 distritos con su UBIGEO, la
+misma cartografía con la que el INDECI ubica los reportes del COEN y el SINPAD),
+simplificados a unos 110 m (`python/enso/data/limites-ign.json.gz`, 1,4 MB; se
+regenera con `python -m tools.build_limites`, que respeta el robots.txt del
+servidor). Hasta octubre de 2026 se usaban los del IGN vía OCHA HDX
+(`cod-ab-per`, límites de 2020, 1 873 distritos; `--zip` los sigue leyendo):
+sobre 8 000 puntos al azar ambos dan el mismo distrito en el 98,8 %; la
+diferencia son los distritos creados después de 2020 (0,9 %) y límites
+interdepartamentales en controversia.
 
 - **Incertidumbre del punto**: el epicentro preliminar de USGS se conoce
   con unos 10 km de error (5 km si lo revisó un sismólogo). Si el punto
@@ -105,11 +108,32 @@ departamentales a metros de distancia).
   peruano, Puno. Puntos en Chile, Ecuador o Bolivia quedan sin lugar, salvo que la fuente los refiera al Perú («a 37 km al ESE
   de Cañaveral, Perú») y estén a 25 km o menos del límite: el departamento más cercano, con confianza 0,55
   («≈», va a revisión).
-- **Distritos nuevos**: la fuente tiene los límites de 2020; en las
-  provincias con distritos creados después (Huachipa en Lima, Kumpirushiato
-  en La Convención…) el distrito sale con confianza 0,75 y queda para
-  revisión. Mazamari y Pangoa, unidos en la fuente, quedan como
-  provincia de Satipo.
+- **Distritos nuevos**: los límites del INDECI tienen todos los distritos del
+  nomenclátor, también los creados después de 2020 (Putis, Unión Asháninka,
+  Boquerón, Alto Trujillo…) y Mazamari y Pangoa por separado. Si el
+  nomenclátor llegara a tener un distrito sin polígono (uno recién creado), en
+  su provincia el distrito sale con confianza 0,75 y queda para revisión.
+
+## Exactitud geográfica: cómo se verifica
+
+`tests/test_geolocalizacion.py` contrasta todo con la lista oficial de distritos del INDECI
+(`tests/geo/indeci-distritos.csv`):
+
+- El nomenclátor (`ubigeo.json`) y los límites tienen exactamente los 1 891 distritos oficiales: Alto Trujillo
+  (130112, Ley N° 31644) se agrega aunque la fuente del INEI aún no lo traiga, y Santa María de Huachipa, que
+  esa fuente lista como distrito, es un centro poblado de Lurigancho (la Ley N° 30888 solo declara de interés su
+  creación): se quita (`tools/build_ubigeo.py`, `NOT_DISTRICTS` y `NEW_DISTRICTS`).
+- Cada grafía oficial («IHUAYLLO», «SAN PEDRO DE LARAOS», «HEROES ALBARRACIN») llega a su distrito.
+- La capital de cada distrito, provincia y departamento cae dentro de su polígono (5 capitales a metros del
+  borde se toleran así de cerca). Los 17 distritos sin coordenadas de su capital en la fuente reciben un punto
+  interior de su polígono, marcado `"point": "interior"`.
+- Los puntos del mapa de alertas caen en su provincia o distrito.
+- **Homónimos**: «Huaico en el distrito de X (Departamento)», como titula el COEN, para los 1 891 distritos,
+  y lo mismo con la provincia: el resultado es el distrito o algo que lo contiene, nunca otro lugar. Cuando el
+  nombre se repite en el departamento (Santa Rosa en Puno, Sancos en Ayacucho, Huallanca en Áncash, San
+  Antonio en Lima) sin provincia, queda el departamento. «(Lima)» acota al departamento, no a Lima
+  Metropolitana. Dos excepciones documentadas en la prueba: Surco (Huarochirí) sin provincia y Buenos Aires
+  (Picota), que no se ubica.
 
 ## Calidad medida
 

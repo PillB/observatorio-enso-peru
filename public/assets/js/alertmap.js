@@ -256,7 +256,9 @@ function pings(geo, alerts, f) {
   for (const a of alerts) {
     for (const p of a.places) {
       const dep = geo.departments.find((d) => d.code === p.code.slice(0, 2));
-      const xy = p.code.length > 2 ? geo.points[p.code] : dep?.label;
+      // Un código sin punto propio (un distrito más nuevo que el mapa) va al de su provincia o su
+      // departamento: el aviso se dibuja igual, nunca se pierde.
+      const xy = (p.code.length > 2 && (geo.points[p.code] || geo.points[p.code.slice(0, 4)])) || dep?.label;
       if (!xy) continue;
       const k = p.code;
       const spot = (at[k] ||= { code: k, xy, name: p.level === 'departamento' ? p.name : `${p.name} (${DEP_NAMES[p.code.slice(0, 2)]})`, dep: p.code.slice(0, 2), alerts: [], approx: true });
@@ -439,7 +441,7 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
       ${filtersHtml(f, model.alerts)}
       ${national(model.alerts, f)}
       ${depList(geo, by)}
-      <p class="amap-foot muted small">El nivel y la vigencia son los que publica cada institución (SENAMHI, INDECI, IGP, DHN, USGS); el observatorio no asigna niveles. ${levelsNote(model.levels)}${model.sources.total ? `${model.sources.ok} de ${model.sources.total} fuentes de alertas respondieron en la actualización ${model.generatedAt ? `del ${when(model.generatedAt)}` : ''}.` : ''} ${pubAge > 30 ? html`<strong>Esa actualización tiene ${Math.round(pubAge / 24)} días: pueden faltar avisos recientes.</strong>` : 'Los avisos emitidos después llegan con la siguiente actualización.'} Sin avisos no quiere decir sin peligro: ante una emergencia, siga a INDECI, al SENAMHI y a su gobierno local. Límites: IGN, vía OCHA HDX (CC BY-IGO).</p>
+      <p class="amap-foot muted small">El nivel y la vigencia son los que publica cada institución (SENAMHI, INDECI, IGP, DHN, USGS); el observatorio no asigna niveles. ${levelsNote(model.levels)}${model.sources.total ? `${model.sources.ok} de ${model.sources.total} fuentes de alertas respondieron en la actualización ${model.generatedAt ? `del ${when(model.generatedAt)}` : ''}.` : ''} ${pubAge > 30 ? html`<strong>Esa actualización tiene ${Math.round(pubAge / 24)} días: pueden faltar avisos recientes.</strong>` : 'Los avisos emitidos después llegan con la siguiente actualización.'} Sin avisos no quiere decir sin peligro: ante una emergencia, siga a INDECI, al SENAMHI y a su gobierno local. Límites: INDECI (GEOSINPAD).</p>
     </section>`);
     wire(el, f, by);
     if (refocus) (el.querySelector(refocus) || $('#amap-h', el))?.focus?.({ preventScroll: true });

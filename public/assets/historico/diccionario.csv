@@ -2,8 +2,8 @@
 Date,equipo de prevención,fecha AAAA-MM-DD,"Fecha de inicio del evento (o de publicación, ver FechaTipo)","Si la fuente solo da el mes, el día 01; si solo el año, el 01-01 (ver PrecisionFecha)",100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0
 DangerType,equipo de prevención,texto,"Tipo de peligro, con el vocabulario del tablero del equipo",Uno de los valores de DANGER_TYPES; «Inundacion» = la fuente no dice si fue fluvial o pluvial,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0
 Ubicacion,equipo de prevención,texto,"El lugar más fino que da la fuente (sector, caserío, localidad, punto crítico)",Vacío si la fuente solo da el distrito (el SINPAD desde 2019 no da más),8.0,2.5,53.9,0.0,0.0,100.0,19.0,100.0,100.0
-Distrito,equipo de prevención,texto,Nombre oficial del INEI,Vacío si el registro es de provincia o departamento,97.2,99.9,83.9,87.9,79.0,1.7,100.0,96.6,81.8
-Provincia,equipo de prevención,texto,Nombre oficial del INEI,Vacío si el registro es de todo un departamento,98.6,100.0,95.8,88.0,100.0,2.7,100.0,100.0,81.8
+Distrito,equipo de prevención,texto,Nombre oficial del INEI,Vacío si el registro es de provincia o departamento,97.2,99.9,83.9,87.9,79.0,1.1,100.0,96.6,81.8
+Provincia,equipo de prevención,texto,Nombre oficial del INEI,Vacío si el registro es de todo un departamento,98.6,100.0,95.8,88.0,100.0,2.1,100.0,100.0,81.8
 Departamento,equipo de prevención,texto,Nombre oficial del INEI,Siempre lleno,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0
 Descripción,equipo de prevención,texto,"Qué pasó, con la causa y los daños que describe la fuente",Las notas de prensa traen un extracto de hasta 200 caracteres y el enlace,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0
 DuraciónEvento,equipo de prevención,entero (días),Duración del evento,Solo si la fuente la da; vacío si no (no se estima),5.0,0.0,51.7,0.0,0.0,0.0,0.0,0.0,0.0
@@ -27,7 +27,7 @@ CausaFuente,adicional,texto,La causa tal como la nombra la fuente,,9.7,0.0,100.0
 NivelUbigeo,adicional,texto,Nivel del área del registro,"distrito, provincia o departamento",100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0
 PrecisionGeo,adicional,texto,De dónde salen Latitud y Longitud,"coordenada-fuente, capital-distrito, interior-distrito (un punto dentro del distrito, lejos de sus bordes: el nomenclátor no trae su capital), capital-provincia o capital-departamento",100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0
 Region,adicional,texto,Macrorregión del INEI,"Norte, Centro, Sur, Oriente, Lima Metropolitana",100.0,100.0,100.0,99.9,100.0,100.0,100.0,100.0,100.0
-AltitudCapital,adicional,entero (m s. n. m.),Altitud de la capital del distrito,,96.5,99.1,83.9,87.3,78.8,1.7,100.0,96.6,81.8
+AltitudCapital,adicional,entero (m s. n. m.),Altitud de la capital del distrito,,96.4,99.0,83.9,87.3,78.8,1.1,100.0,96.6,81.8
 FaseENSO,adicional,texto,Fase costera del mes según el ICEN,"El Niño costero, La Niña costera, Neutro",98.0,97.9,100.0,95.2,99.0,100.0,12.7,39.7,100.0
 EventoENSO,adicional,texto,Evento del ICEN en curso ese mes,«El Niño costero 1997-98 (extraordinario)»,46.8,46.4,46.0,59.2,50.8,56.8,12.7,22.4,86.4
 ICEN,adicional,decimal (°C),Índice Costero El Niño del mes (ENFEN/IGP),Vacío si solo se sabe el año,98.0,97.9,100.0,95.2,99.0,100.0,12.7,39.7,100.0
@@ -42,7 +42,7 @@ Evacuados,adicional,entero,Evacuados según la fuente,Vacío = la fuente no lo r
 Reubicados,adicional,entero,Reubicados según la fuente,Vacío = la fuente no lo reporta (no es cero),0.0,0.0,0.2,0.0,0.0,0.0,0.0,0.0,0.0
 Desplazados,adicional,entero,Personas desplazadas según el IDMC (calculadas de las viviendas inhabitables del INDECI),Vacío = la fuente no lo reporta,4.0,3.9,0.0,0.0,0.0,100.0,0.0,0.0,0.0
 ViviendasDestruidas,adicional,entero,ViviendasDestruidas según la fuente,Vacío = la fuente no lo reporta (no es cero),1.6,0.7,10.4,0.0,0.0,0.0,0.0,0.0,0.0
-ViviendasAfectadas,adicional,entero,ViviendasAfectadas según la fuente,Vacío = la fuente no lo reporta (no es cero),3.9,3.2,11.9,0.0,0.0,1.4,12.7,0.0,0.0
+ViviendasAfectadas,adicional,entero,ViviendasAfectadas según la fuente,Vacío = la fuente no lo reporta (no es cero),3.9,3.2,11.9,0.0,0.0,0.8,12.7,0.0,0.0
 HectareasCultivo,adicional,decimal,Hectáreas de cultivo o cobertura natural dañadas,Vacío = la fuente no lo reporta,1.1,0.0,11.1,0.0,0.0,0.0,0.0,0.0,0.0
 KmVias,adicional,decimal,Kilómetros de vías dañadas,Vacío = la fuente no lo reporta,0.6,0.0,5.8,0.0,0.0,0.0,0.0,0.0,0.0
 CentrosEducativos,adicional,entero,CentrosEducativos según la fuente,Vacío = la fuente no lo reporta (no es cero),0.3,0.0,2.7,0.0,0.0,0.0,0.0,0.0,0.0
@@ -55,5 +55,5 @@ Licencia,adicional,texto,Condiciones de uso de la fuente,Ver docs/atribucion-lic
 Confianza,adicional,texto,"Resumen de la calidad de fecha, lugar y tipo","alta (distrito, día y tipo de la fuente o del texto), media (provincia o mejor y mes), baja (el resto); nunca alta si la fecha es la de un reporte o una publicación (FechaTipo)",100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0
 FechaTipo,adicional,texto,De qué es la fecha Date,evento; informe (primer reporte del COEN); publicacion (de la nota); texto (la que cita la nota),100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0
 Corroboracion,adicional,entero,Cuántos reportes o notas de otras fuentes cuentan el mismo evento,,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0
-OrigenesCorroboran,adicional,texto,De qué fuentes son esos reportes o notas,Separados por coma,14.2,16.1,0.3,7.7,11.4,0.0,0.0,0.0,4.5
-FuentesAdicionales,adicional,texto,Sus enlaces,"Separados por « | », hasta 10",14.2,16.1,0.3,7.7,11.4,0.0,0.0,0.0,4.5
+OrigenesCorroboran,adicional,texto,De qué fuentes son esos reportes o notas,Separados por coma,14.2,16.2,0.3,7.7,11.4,0.0,0.0,0.0,4.5
+FuentesAdicionales,adicional,texto,Sus enlaces,"Separados por « | », hasta 10",14.2,16.2,0.3,7.7,11.4,0.0,0.0,0.0,4.5

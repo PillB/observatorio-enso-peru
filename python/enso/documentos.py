@@ -145,31 +145,40 @@ def _unique(codes: list[str]) -> Optional[str]:
 
 def province_table(text: str) -> list[str]:
     """Tabla «DEPARTAMENTOS · PROVINCIAS EXPUESTAS» de un aviso de corto plazo → códigos de provincia (o del
-    departamento, si una provincia no se reconoce)."""
+    departamento, si una provincia no se reconoce).
+
+    pypdf corta la celda de cada departamento en líneas, a veces en medio de un nombre («Carlos / Fermin
+    Fitzcarrald», «San / Pablo», «Santiago de / Chuco»): se une todo lo que sigue a un departamento hasta el
+    siguiente y recién ahí se separa por comas. «*Callao» en la fila de Lima es la Provincia Constitucional."""
     m = re.search(r"DEPARTAMENTOS\s+PROVINCIAS\s+EXPUESTAS(?P<t>.+?)(?:\n\s*(?:INDECI|INTERPRETACI|NIVELES|Fuente|PERSPECTIVAS)|\Z)",
                   text, re.S)
     if not m:
         return []
     gz = _gz()
-    out: list[str] = []
-    dep = None
+    blocks: list[tuple[str, str]] = []
     for chunk in re.split(r"\n", m.group("t")):
         chunk = chunk.strip()
         if not chunk:
             continue
-        head = re.match(r"^([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]+?)(?=\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]|\s*$)", chunk)
+        head = re.match(r"^([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]+?)(?=\s+\*?[A-ZÁÉÍÓÚÑ][a-záéíóúñ]|\s*$)", chunk)
         if head and _dep_code(head.group(1)):
-            dep = _dep_code(head.group(1))
-            if dep not in out:
-                out.append(dep)
-            chunk = chunk[head.end():]
-        if not dep:
-            continue
-        for name in re.split(r"\s*,\s*|\s+y\s+", chunk.strip(" .")):
+            blocks.append((_dep_code(head.group(1)), chunk[head.end():]))
+        elif blocks:
+            blocks[-1] = (blocks[-1][0], blocks[-1][1] + " " + chunk)
+    out: list[str] = []
+    for dep, body in blocks:
+        if dep not in out:
+            out.append(dep)
+        # Lo que sigue al punto final de la celda es otra cosa (la nota «* Provincia Constitucional del Callao»).
+        body = re.split(r"\.\s", body + " ", maxsplit=1)[0]
+        for name in re.split(r"\s*,\s*|\s+y\s+", _flat(body).strip(" .")):
             name = name.strip(" .")
             if not name:
                 continue
-            c = _unique(gz.find(name, "provincia", dep))
+            if name.startswith("*") and _dep_code(name.strip("* ")) == "07":
+                c = "0701"
+            else:
+                c = _unique(gz.find(name, "provincia", dep))
             if c and c not in out:
                 out.append(c)
     # Sin el departamento si ya está una de sus provincias.

@@ -15,3 +15,11 @@ Frente a los departamentos que el INPE asigna a sus focos de calor del 20 de
 octubre de 2026, `enso.geopoly.department_at` coincide en 399 de 401 y no ubica
 en el Perú ninguno de los 259 focos de países vecinos del recuadro
 (`tests/test_geopoly.py`).
+
+# Límites distritales y provinciales
+
+`limites-ign.json.gz` (el nombre se conserva por compatibilidad): distritos, provincias y departamentos de las
+capas `SDE.DISTRITOS`, `SDE.PROVINCIAS` y `SDE.DEPARTAMENTOS` del mismo servicio del INDECI, bajadas por
+páginas con `python -m tools.build_limites` el 27 de octubre de 2026 (desde el contenedor de desarrollo, que esta
+vez sí respondió; robots.txt: 404, sin reglas). 1 891 distritos, 196 provincias y 25 departamentos, simplificados
+a unos 110 m. Información pública del Estado peruano.

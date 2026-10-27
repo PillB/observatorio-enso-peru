@@ -241,7 +241,7 @@ PERU_INSTITUTION_RE = re.compile(
 NOTABLE_CAPITALS = {"chosica", "huaycan", "tingo maria", "quillabamba", "la oroya", "cerro de pasco",
                     "puerto maldonado", "tarapoto", "juliaca", "chimbote", "mollendo", "pichanaki"}
 #: Nombres de uso común que el INEI escribe de otra forma, o que la prensa usa para otro distrito.
-ALIASES = {"surco": {"150140"}, "ccatcca": {"081205"}, "kimbiri": {"080907"}, "seclla": {"090312"}, "san juan de iscos": {"120906"}, "raimondi": {"250201"}, "tambogrande": {"200114"}, "pichanaki": {"120303"},
+ALIASES = {"surco": {"150140", "150732"}, "ccatcca": {"081205"}, "kimbiri": {"080907"}, "seclla": {"090312"}, "san juan de iscos": {"120906"}, "raimondi": {"250201"}, "tambogrande": {"200114"}, "pichanaki": {"120303"},
            "carmen de la legua": {"070103"}, "nasca": {"1103", "110301"}, "nazca": {"1103", "110301"},
            "banos del inca": {"060108"}, "cuzco": {"08"}, "ciudad imperial": {"0801"}, "lima metropolitana": {"1501"},
            "lima provincias": {"15"}, "lima region": {"15"}, "region lima": {"15"},
@@ -250,6 +250,11 @@ ALIASES = {"surco": {"150140"}, "ccatcca": {"081205"}, "kimbiri": {"080907"}, "s
            "rupa rupa": {"100601"}, "huaycan": {"150103"}, "vitarte": {"150103"}, "ate vitarte": {"150103"},
            "sjl": {"150132"}, "smp": {"150135"}, "vmt": {"150143"}, "ves": {"150142"},
            "cercado de lima": {"150101"}, "lima cercado": {"150101"}, "cusco ciudad": {"080101"},
+           # El COEN escribe «Fidel Oliva Escudero»; Santa María de Huachipa es un centro poblado de Lurigancho.
+           "fidel oliva escudero": {"021304"}, "santa maria de huachipa": {"150118"},
+           # Grafías del INDECI (GEOSINPAD, SINPAD) distintas de las del INEI.
+           "ihuayllo": {"030407"}, "hualla": {"051010"}, "kichki": {"100106"}, "quisqui kichki": {"100106"},
+           "san pedro de laraos": {"150712"}, "heroes albarracin": {"230402"},
            # «Lima» y «Callao»: la provincia (Lima Metropolitana, Callao) y no el departamento ni el distrito.
            "lima": {"1501"}, "callao": {"0701"}}
 #: Lugares geográficos que caen enteros en un departamento o provincia: ubican la nota aunque no
@@ -463,6 +468,10 @@ class Gazetteer:
                 cue = "head"  # «Sullana: …», «Chosica – …»
             elif start in starts:
                 cue = "start"  # el nombre abre la oración: «Chosica en peligro por…»
+            if not lv and re.search(r"\(\s*$", before) and re.match(r"\s*\)", after) and self.dep_by_key.get(name):
+                # «Colonia (Lima)», «San Antonio (Lima)»: el departamento que acota lo anterior, no su provincia
+                # (el alias de «Lima» es Lima Metropolitana).
+                codes, hint = {self.dep_by_key[name]}, "dep"
             qualifier, chain_hint = False, None
             if chained and prev is not None:
                 if prev.qualifier:

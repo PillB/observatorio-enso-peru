@@ -1374,6 +1374,47 @@ def tidy(records: list[dict], calendar: EnsoCalendar, stats: Counter) -> list[di
     return merge_idmc_twins(keep, stats)
 
 
+def relocate(records: list[dict], territory: Territory, stats: Counter) -> None:
+    """Puntos y lugares con los límites y el nomenclátor vigentes, también con ``--desde-catalogo``; idempotente.
+
+    - Un punto de la fuente que cae en un distrito creado después de 2020, en la misma provincia que el distrito que
+      nombró la fuente, lleva el UBIGEO del punto (``fuentes.newer_sibling``).
+    - Un punto de la fuente que no cae en el área asignada se reemplaza por la capital (como en ``fuentes.place``).
+    - Los nombres son los del nomenclátor para el UBIGEO.
+    - La capital (o el punto interior) de los demás se toma del nomenclátor: un distrito que no tenía coordenadas
+      llevaba la capital de su provincia, a veces a más de 100 km."""
+    for r in records:
+        code = r["Ubigeo"]
+        names = territory.names(code)
+        if (r.get("Departamento"), r.get("Provincia"), r.get("Distrito")) != names:
+            r["Departamento"], r["Provincia"], r["Distrito"] = names  # el nomenclátor corrigió una grafía («Boquerón»)
+            stats["nombres del nomenclátor actualizados"] += 1
+        if r["PrecisionGeo"] == "coordenada-fuente":
+            loc = F.locate_point(r["Latitud"], r["Longitud"])[0]
+            if F.inside(territory, code, loc):
+                continue
+            sib = F.newer_sibling(code, loc)
+            if sib:
+                r["Ubigeo"] = sib
+                r["Departamento"], r["Provincia"], r["Distrito"] = territory.names(sib)
+                r["Region"], r["AltitudCapital"] = territory.region(sib), territory.altitude(sib)
+                stats["punto de la fuente en un distrito creado después de 2020: UBIGEO del punto"] += 1
+                continue
+            stats["punto de la fuente fuera del área asignada: capital"] += 1
+        lat, lon, geo = territory.point(code)
+        if lat is None:
+            continue
+        old = (r.get("Latitud"), r.get("Longitud"))
+        try:
+            same = (round(float(old[0]), 5), round(float(old[1]), 5)) == (lat, lon) and r["PrecisionGeo"] == geo
+        except (TypeError, ValueError):
+            same = False
+        if not same:
+            if r["PrecisionGeo"] != "coordenada-fuente":
+                stats[f"punto del nomenclátor actualizado ({geo})"] += 1
+            r["Latitud"], r["Longitud"], r["PrecisionGeo"] = lat, lon, geo
+
+
 def redate(records: list[dict], manifest: dict, caches: list[Path], territory: Territory, calendar: EnsoCalendar,
            stats: Counter) -> None:
     """Con ``--desde-catalogo``: vuelve a leer de la caché las fuentes cuyo lector cambió las fechas (el SINPAD de
@@ -1770,6 +1811,7 @@ def main(argv=None) -> int:
         records, context, evidence = harvest(manifest, territory, calendar, caches, args.parcial, args.sin_red,
                                              args.aceptar_cambios)
         generated = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    relocate(records, territory, quality)
     records = tidy(records, calendar, quality)
     mark_duplicate_impacts(records)
     records.sort(key=lambda r: (r["Date"], r["Ubigeo"], r["Id"]))

@@ -1,7 +1,7 @@
 """Construye ``public/assets/historico/mapa.json``: provincias y distritos del Perú para la pestaña
 «Memoria de desastres».
 
-Usa los mismos límites del IGN (``enso/data/limites-ign.json.gz``, CC BY-IGO) y la misma proyección que
+Usa los mismos límites del INDECI (``enso/data/limites-ign.json.gz``, GEOSINPAD) y la misma proyección que
 ``public/assets/peru-map.json`` (``tools.build_peru_map``), así los dos mapas se superponen y los
 departamentos se toman de aquel archivo. Los distritos se simplifican más (0,02°, unos 2 km): a la
 escala del mapa un distrito pequeño mide pocos píxeles y lo que importa es su color, no su borde.

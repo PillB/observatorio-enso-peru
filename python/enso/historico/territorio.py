@@ -161,7 +161,7 @@ class Territory:
         return None, None, ""
 
     def has_capital(self, code: str) -> bool:
-        """Si el distrito tiene capital (y polígono) en el nomenclátor y los límites del IGN."""
+        """Si el distrito tiene capital (y polígono) en el nomenclátor y los límites del INDECI."""
         return self.dist.get(code, {}).get("lat") is not None
 
     def region(self, code: str) -> str:

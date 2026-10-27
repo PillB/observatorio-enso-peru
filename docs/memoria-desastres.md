@@ -514,10 +514,13 @@ cada una con su fuente (`public/assets/js/historico-evidencia.js`). El veredicto
 - **Los impactos** son los que publicó cada fuente; las fuentes discrepan (Huggel et al., 2015). Un registro curado
   que resume un área ya detallada por otra fuente con cifras no suma sus impactos dos veces (`ImpactoEnTotales`).
 - **Ubicación.** Los registros se ubican por el UBIGEO o el nombre de la fuente; si el nombre está abreviado
-  («S. J. DE LURIGANCHO»), por el punto de la fuente dentro de los límites del IGN. Los distritos creados después de
-  esos límites no tienen polígono: cuentan para su provincia y su departamento. Las filas sin punto llevan las
-  coordenadas de la capital del distrito, de la provincia o del departamento: en un mapa de puntos se agrupan en las
-  capitales, y no deben leerse como el lugar exacto.
+  («S. J. DE LURIGANCHO»), por el punto de la fuente dentro de los límites vigentes del INDECI (los 1 891 distritos,
+  también los creados después de 2020). Un punto de la fuente que cae en un distrito creado después de 2020, en la
+  misma provincia que el distrito que nombró la fuente (el SINPAD de 2017 dice Padre Abad y el punto está en lo que
+  hoy es Boquerón), lleva el UBIGEO del punto: el código es el vigente. Las filas sin punto llevan las coordenadas
+  de la capital del distrito, de la provincia o del departamento (`interior-distrito`: un punto dentro del distrito
+  cuando el nomenclátor no trae su capital): en un mapa de puntos se agrupan en las capitales, y no deben leerse
+  como el lugar exacto. `tests/test_geolocalizacion.py` comprueba que cada punto publicado cae en su área.
 - **Fechas.** La fecha de una fila propia del COEN cuyo PDF no se leyó es la de su primer reporte, y la de una nota
   de prensa, la de su publicación (`FechaTipo`): pueden ir días después del evento. Esas filas nunca tienen confianza
   alta. DesInventar pone el 1 de enero cuando no conoce el día; esas fichas quedan con precisión de mes.
