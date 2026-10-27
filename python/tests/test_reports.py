@@ -597,7 +597,7 @@ def test_outlook_subject_before_the_region():
 def test_outlook_unread_detects_one_reworded_region_and_other_wordings():
     from enso.feeds import peru
 
-    pdf = next((Path(__file__).parent / "fixtures" / "live-run" / "raw" / "enfen-comunicados").glob("*.pdf")).read_bytes()
+    pdf = (Path(__file__).parent / "fixtures" / "live-run" / "raw" / "enfen-comunicados" / "2026-10-20-ee9a5de1ec58.pdf").read_bytes()
     text = peru.pdf_text(pdf)
     assert R.outlook_unread(text, R.communique_outlook(text, "x")) == []
     reworded = text.replace("magnitud de extraordinaria", "categoría extraordinaria").replace(

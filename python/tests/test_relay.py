@@ -19,7 +19,9 @@ from tools import peru_collector as pc
 INFORME18 = "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166"
 
 LISTING = (FIX / "history" / "enfen-comunicados-20261014125242.html").read_text(encoding="utf-8")
-PDF = next((FIX.parent / "live-run" / "raw" / "enfen-comunicados").glob("*.pdf")).read_bytes()
+# El comunicado oficial 17-2026. La carpeta tiene también el 18-2026, y el orden de glob() depende del sistema de
+# archivos: en un runner salía primero el 18 y cuatro pruebas fallaban (27 de octubre de 2026).
+PDF = (FIX.parent / "live-run" / "raw" / "enfen-comunicados" / "2026-10-20-ee9a5de1ec58.pdf").read_bytes()
 
 
 def _peru_only(req: httpx.Request) -> httpx.Response:
