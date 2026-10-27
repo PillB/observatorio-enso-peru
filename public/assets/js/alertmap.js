@@ -230,6 +230,15 @@ async function geometry() {
 const DEFS = html`<defs>${[1, 2, 3].map((r) => html`<pattern id="amap-soon-r${r}" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" class="pt-bg"/><rect width="3.2" height="7" class="pt-r${r}"/></pattern>`)}
   <pattern id="amap-soon-un" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" class="pt-bg"/><rect width="3.2" height="7" class="pt-un"/></pattern></defs>`;
 
+// Anillo del departamento elegido. Va después de todas las formas para que
+// ningún borde vecino lo tape; en el Callao rodea también su círculo.
+function selRing(geo, code) {
+  const d = code && geo.departments.find((x) => x.code === code);
+  if (!d) return '';
+  const dot = (k) => (code === '07' ? html`<circle class="${k}" cx="${d.label[0] - 4}" cy="${d.label[1]}" r="6"></circle>` : '');
+  return html`<g class="sel-ring" aria-hidden="true">${['sel-glow', 'sel-case', 'sel-line'].map((k) => html`<path class="${k}" d="${d.d}"></path>${dot(k)}`)}</g>`;
+}
+
 function depShapes(geo, by, f, { badges = false } = {}) {
   const shapes = geo.departments.map((d) => {
     const list = by[d.code] || [];
@@ -248,7 +257,7 @@ function depShapes(geo, by, f, { badges = false } = {}) {
     const [x, y] = d.code === '07' ? [d.label[0] - 16, d.label[1] - 10] : d.label;
     return html`<g class="badge${f.dep && f.dep !== d.code ? ' dim' : ''}" transform="translate(${x} ${y})" aria-hidden="true"><circle r="${n > 9 ? 10 : 8.5}"></circle><text dy="3.6">${n}</text></g>`;
   }) : '';
-  return html`${shapes}${callao}${counts}`;
+  return html`${shapes}${callao}${selRing(geo, f.dep)}${counts}`;
 }
 
 function pings(geo, alerts, f) {

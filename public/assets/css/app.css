@@ -550,7 +550,6 @@ table.grd .chip { white-space: normal; }
 .amap-svg .pt-r2 { fill: var(--amap-r2); }
 .amap-svg .pt-r3 { fill: var(--amap-r3); }
 .amap-svg .dep:hover, .amap-svg .dep:focus-visible { filter: brightness(0.93) saturate(1.1); stroke: var(--fg); stroke-width: 1.6; }
-.amap-svg .dep.sel { stroke: var(--fg); stroke-width: 2.6; paint-order: stroke; }
 .amap-svg .dim { opacity: 0.38; }
 .amap-svg .dep:focus-visible { stroke: var(--focus); stroke-width: 3; }
 .amap-svg .badge circle { fill: var(--bg-elev); stroke: var(--fg-2); stroke-width: 1.2; }
@@ -567,6 +566,15 @@ table.grd .chip { white-space: normal; }
 .amap-svg .pulse { fill: none; stroke: var(--amap-r3); stroke-width: 2; transform-origin: center; transform-box: fill-box; animation: amap-pulse 2.4s ease-out infinite; pointer-events: none; }
 @keyframes amap-pulse { from { transform: scale(1); opacity: 0.9; } to { transform: scale(2.4); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .amap-svg .pulse { animation: none; opacity: 0.6; transform: scale(1.5); } }
+/* Anillo del área elegida, en el mapa de avisos y en el de la memoria. Se dibuja al final del SVG,
+   encima de todos los bordes; un trazo claro y otro oscuro lo hacen legible sobre cualquier color, y
+   el brillo sube y baja para atraer la mirada. Queda quieto si se pide menos movimiento. */
+.sel-ring { pointer-events: none; }
+.sel-ring path, .sel-ring circle { fill: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.sel-ring .sel-glow { stroke: var(--brand-2); stroke-width: 9; stroke-opacity: 0.5; animation: sel-glow 1.8s ease-in-out infinite alternate; }
+.sel-ring .sel-case { stroke: var(--bg-elev); stroke-width: 4.5; }
+.sel-ring .sel-line { stroke: var(--fg); stroke-width: 2; }
+@keyframes sel-glow { from { stroke-width: 4; stroke-opacity: 0.25; } to { stroke-width: 14; stroke-opacity: 0.8; } }
 .amap-tip { position: fixed; z-index: 50; width: min(300px, calc(100vw - 16px)); padding: 10px 12px; border-radius: 10px; background: var(--bg-elev); border: 1px solid var(--line); box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18); font-size: 0.84rem; pointer-events: none; }
 .amap-tip ul, .amap-sel ul { list-style: none; margin: 6px 0 0; padding: 0; }
 .amap-tip li, .amap-sel li { padding: 5px 0; border-top: 1px solid var(--line-2); display: flex; flex-direction: column; gap: 2px; }
@@ -738,7 +746,6 @@ table.grd .chip { white-space: normal; }
 .hz-svg { display: block; width: 100%; height: auto; max-height: 640px; touch-action: manipulation; }
 .hz-svg .hz-a { stroke: var(--hz-stroke); stroke-width: 0.35; cursor: pointer; outline: none; vector-effect: non-scaling-stroke; }
 .hz-svg .hz-a:hover, .hz-svg .hz-a:focus-visible { stroke: var(--fg); stroke-width: 1.6; }
-.hz-svg .hz-a.sel { stroke: var(--fg); stroke-width: 2.2; paint-order: stroke; }
 .hz-svg .hz-out path { fill: none; stroke: color-mix(in srgb, var(--fg) 45%, transparent); stroke-width: 0.8; vector-effect: non-scaling-stroke; pointer-events: none; }
 .hz-small .hz-a { cursor: default; stroke-width: 0.25; }
 .hz-none { fill: var(--hz-none); background: var(--hz-none); }
