@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Diario Voces</title>
+	<atom:link href="https://diariovoces.com.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://diariovoces.com.pe/</link>
+	<description>Periodismo profesional a su servicio</description>
+	<lastBuildDate>Mon, 26 Oct 2026 12:44:54 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.1.3</generator>
+
+<image>
+	<url>https://diariovoces.com.pe/wp-content/uploads/2025/10/imagen-icono-voces-150x150.png</url>
+	<title>Diario Voces</title>
+	<link>https://diariovoces.com.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>El Niño agrava la crisis ambiental de San Martín: ¿estamos preparados para proteger el agua?</title>
+		<link>https://diariovoces.com.pe/el-nino-agrava-la-crisis-ambiental-de-san-martin-estamos-preparados-para-proteger-el-agua/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 13:30:00 +0000</pubDate>
+				<category><![CDATA[Opinión]]></category>
+		<category><![CDATA[Mario Ríos Vela]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326609</guid>
+
+					<description><![CDATA[<p>Por Mario Ríos Vela &#124; Biólogo I Especialista en Gestión Ambiental, Cuencas Hidrográficas y Gobernanza Territorial La crisis ambiental de San Martín no es un problema aislado ni exclusivamente ecológico. Es también un desafío de gestión pública, planificación territorial y acceso a la información. Cuando El Niño altera, aún más, los patrones de lluvia, intensifica [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/el-nino-agrava-la-crisis-ambiental-de-san-martin-estamos-preparados-para-proteger-el-agua/">El Niño agrava la crisis ambiental de San Martín: ¿estamos preparados para proteger el agua?</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><strong><em>Por Mario Ríos Vela | Biólogo</em> <em>I Especialista en Gestión Ambiental, Cuencas Hidrográficas y Gobernanza Territorial</em></strong></p>
+
+
+
+<p class="wp-block-paragraph">La crisis ambiental de San Martín no es un problema aislado ni exclusivamente ecológico. Es también un desafío de gestión pública, planificación territorial y acceso a la información. Cuando El Niño altera, aún más, los patrones de lluvia, intensifica las sequías o favorece precipitaciones extremas, sus efectos pueden agravar la presión sobre las fuentes de agua, los bosques y los ecosistemas regionales. Ejemplos hay varios: los ríos Yuracyacu, Gera, Cumbaza y Sisa, etc.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>El riesgo no depende únicamente de la intensidad del fenómeno climático, sino también de nuestra capacidad para anticiparnos, proteger las cabeceras de cuenca, ordenar el territorio y tomar decisiones oportunas. La deforestación, la expansión agropecuaria desordenada, la ocupación de zonas vulnerables &#8211; rurales y urbanas &#8211; y la contaminación hídrica reducen la capacidad de los ecosistemas para responder. Esto puede traducirse en menor disponibilidad de agua, deterioro de su calidad, afectación de la producción y mayores tensiones entre quienes dependen de este recurso: conflictos que tenemos en ciernes en la cuenca del Cumbaza.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Una investigación que desarrollé sobre la gestión ambiental regional y la prevención de conflictos socioambientales en San Martín, en 2025, revela señales preocupantes. De los 54 funcionarios y técnicos consultados, el 65 % calificó la gestión ambiental como deficiente y el 69 % consideró bajo el nivel de prevención de conflictos socioambientales. Asimismo, se encontró una relación estadísticamente significativa entre ambas variables.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Estos resultados evidencian una debilidad que debemos atender: predomina una respuesta reactiva frente a los problemas ambientales, cuando necesitamos una gestión preventiva, articulada y sustentada en información confiable.</strong></p>
+
+
+
+<p class="wp-block-paragraph">En este escenario, los geoportales adquieren importancia estratégica. No son simples páginas web con mapas: permiten integrar y consultar información geoespacial sobre fuentes de agua, cobertura boscosa, áreas degradadas, riesgos, uso del suelo y actividades que presionan los ecosistemas.</p>
+
+
+
+<p class="wp-block-paragraph">La investigación encontró una relación positiva entre la gestión de datos y geoportales y la prevención de conflictos socioambientales. Esto refuerza la importancia de contar con información territorial organizada, actualizada y compartida para mejorar las decisiones públicas.</p>
+
+
+
+<p class="wp-block-paragraph">Pero hay una condición fundamental: la información debe ser accesible no solo técnicamente, sino también intelectualmente. No basta con publicar mapas complejos o bases de datos que solo los especialistas pueden interpretar. La ciudadanía necesita explicaciones claras, indicadores comprensibles y herramientas que respondan preguntas concretas: ¿de dónde proviene el agua que consumimos?, ¿qué amenazas afectan nuestras fuentes?, ¿qué zonas requieren protección prioritaria? y ¿qué hace el Estado para prevenir los riesgos?</p>
+
+
+
+<p class="wp-block-paragraph"><strong>San Martín necesita fortalecer su geoportal y su infraestructura de datos espaciales, articulando a los gobiernos locales, las entidades sectoriales, la academia y la ciudadanía. La información debe contribuir a planificar cuencas, vigilar el ambiente, prevenir riesgos climáticos y transparentar las decisiones que afectan al territorio.</strong></p>
+
+
+
+<p class="wp-block-paragraph"><strong>El Niño nos recuerda que la prevención no puede improvisarse cuando la emergencia ya está presente. Proteger el agua exige conservar los ecosistemas, planificar con anticipación y convertir los datos en decisiones oportunas.</strong></p>
+
+
+
+<p class="wp-block-paragraph">La seguridad hídrica de San Martín no se garantizará únicamente construyendo infraestructura gris. También requiere instituciones capaces de comprender el territorio, compartir información y actuar coordinadamente. Frente a una crisis climática cada vez más desafiante, gobernar con información accesible es gobernar con responsabilidad; prevenir hoy es proteger el agua y el futuro de nuestra región.</p>
+<p>La entrada <a href="https://diariovoces.com.pe/el-nino-agrava-la-crisis-ambiental-de-san-martin-estamos-preparados-para-proteger-el-agua/">El Niño agrava la crisis ambiental de San Martín: ¿estamos preparados para proteger el agua?</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>La vejez no es patente de corso para la perversión</title>
+		<link>https://diariovoces.com.pe/la-vejez-no-es-patente-de-corso-para-la-perversion/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 13:20:00 +0000</pubDate>
+				<category><![CDATA[Opinión]]></category>
+		<category><![CDATA[Ana Karina Roncal Alva]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326607</guid>
+
+					<description><![CDATA[<p>Hay miserias que apestan más que cualquier cloaca. Y no existe perfume capaz de disimularlas. Hay noticias que revuelven el estómago y otras que nos obligan a preguntarnos si todavía queda algo de humanidad debajo de tanta piel. La de un anciano captado en video abusando sexualmente de su perrita pertenece a la segunda categoría. [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/la-vejez-no-es-patente-de-corso-para-la-perversion/">La vejez no es patente de corso para la perversión</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><em>Hay miserias que apestan más que cualquier cloaca. Y no existe perfume capaz de disimularlas.</em></p>
+
+
+
+<p class="wp-block-paragraph"><strong>Hay noticias que revuelven el estómago y otras que nos obligan a preguntarnos si todavía queda algo de humanidad debajo de tanta piel.</strong> La de un anciano captado en video abusando sexualmente de su perrita pertenece a la segunda categoría. Y el debate sobre la posible reducción de una sanción por razón de su edad termina de encender la indignación.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>¿Desde cuándo las canas funcionan como atenuante moral? ¿En qué momento cumplir años se convirtió en una especie de salvoconducto para la perversión? ¿Acaso la vejez transforma la barbarie en una travesura tardía que debemos contemplar con indulgencia?</strong></p>
+
+
+
+<p class="wp-block-paragraph">¡Qué conveniente sería la justicia si bastara envejecer para negociar con la decencia!</p>
+
+
+
+<p class="wp-block-paragraph">Que quede claro: las garantías legales deben respetarse y cualquier sanción corresponde determinarse conforme a la ley. Pero una cosa es reconocer derechos y otra, muy distinta, convertir la edad en una coartada moral. <strong>Envejecer no purifica la perversión, así como la indefensión de una víctima no disminuye la gravedad del abuso.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Y no, el horror no comienza con este video. <strong>Hace tiempo que convivimos con una crueldad tan cotidiana que algunos ya la confunden con paisaje.</strong></p>
+
+
+
+<p class="wp-block-paragraph"><strong>El perro callejero que recibe una patada porque estorba. El gato envenenado porque alguien decidió que sobraba. Las crías arrojadas al río como si fueran basura. El animal atropellado cuyo cuerpo queda abandonado</strong> <strong>en la pista mientras el conductor huye,</strong> quizá más preocupado por el parachoques que por la vida que acaba de destrozar.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>¡Qué especie tan extraordinaria la nuestra!</strong> Construimos satélites, desarrollamos inteligencia artificial, publicamos frases sobre el amor y la empatía, pero todavía hay quienes necesitan descargar su miseria sobre un ser que no puede defenderse.</p>
+
+
+
+<p class="wp-block-paragraph">Fotografiamos atardeceres, repartimos corazones en las redes sociales y proclamamos nuestro amor por la vida; después, <strong>pasamos de largo frente a un animal agonizante. Tenemos miles de seguidores y, en ocasiones, ni un gramo de compasión.</strong></p>
+
+
+
+<p class="wp-block-paragraph"><strong>Somos modernos para la tecnología y cavernarios para la conciencia.</strong></p>
+
+
+
+<p class="wp-block-paragraph"><strong>Pero esta vez la crueldad atraviesa otra frontera: el abuso sexual contra un animal.</strong> Y todavía habrá quien pretenda suavizarlo, buscarle explicaciones o esconderlo detrás de la edad del agresor. Como si el calendario pudiera absolver lo que la conciencia condena.</p>
+
+
+
+<p class="wp-block-paragraph">Habrá quienes digan que no se puede comparar a un perro con un niño. Naturalmente, no son lo mismo; sus derechos y necesidades tienen particularidades distintas. Pero ambos pueden sufrir, y ninguno puede consentir libremente una agresión sexual de esta naturaleza. <strong>Defender la dignidad animal no le resta dignidad humana a nadie; nos recuerda que la vulnerabilidad jamás debe convertirse en permiso para abusar.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Tampoco afirmemos, sin pruebas, que quien maltrata a un animal necesariamente agredirá a un niño. No necesitamos fabricar conclusiones para reconocer una atrocidad. <strong>Basta entender que la violencia contra los indefensos merece investigación, protección y sanciones proporcionales, no excusas ni indiferencia.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Porque el animal no comparecerá ante un juez para narrar su miedo. No dará entrevistas, no escribirá columnas, no publicará denuncias. <strong>No tiene voz en nuestros tribunales, aunque su silencio esté lleno de dolor.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Por eso nuestra responsabilidad es mayor, no menor.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>¿Y qué decir de quienes consideran exagerada la indignación?</strong> De quienes piden calma ante la barbarie, como si la mesura consistiera en bajar la voz mientras alguien pisotea la dignidad de un ser indefenso.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>La prudencia es una virtud. La indiferencia disfrazada de prudencia es complicidad con la insensibilidad.</strong></p>
+
+
+
+<p class="wp-block-paragraph">No todo merece comprensión. No toda conducta necesita una excusa. <strong>Hay actos que exigen investigación rigurosa, consecuencias legales y una condena moral sin ambigüedades.</strong></p>
+
+
+
+<p class="wp-block-paragraph">El problema no es que los animales no sepan hablar. <strong>El problema es que nosotros, teniendo palabras, leyes, conciencia y razón, hemos encontrado demasiadas formas de justificar a quienes los hacen sufrir.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Y eso tiene nombre: <strong>deshumanización</strong>.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Esta taza de café se enfría mientras escribo, pero la indignación sigue hirviendo.</strong> Porque una sociedad no demuestra su grandeza por sus edificios, sus discursos ni sus avances tecnológicos, sino también por la manera en que trata a quienes no tienen poder para defenderse.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Que nadie pretenda convertir la vejez en patente de corso para la perversión.</strong> Que nadie confunda compasión con impunidad ni tolerancia con cobardía.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Cuando una sociedad busca excusas para el verdugo antes de conmoverse por el silencio de la víctima, la barbarie ya no es solamente obra de quien la comete: también es síntoma de todo lo que hemos dejado de sentir.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Y mientras terminamos este café amargo, queda una pregunta que no admite azúcar ni edulcorantes: <strong>¿en qué momento dejamos de proteger la vida para empezar a negociar con la crueldad?</strong></p>
+
+
+
+<p class="wp-block-paragraph"><em><strong>Con Aroma a Café.</strong></em><strong></strong></p>
+<p>La entrada <a href="https://diariovoces.com.pe/la-vejez-no-es-patente-de-corso-para-la-perversion/">La vejez no es patente de corso para la perversión</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Historias de Tarapoto, 92</title>
+		<link>https://diariovoces.com.pe/historias-de-tarapoto-92/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 13:10:00 +0000</pubDate>
+				<category><![CDATA[Opinión]]></category>
+		<category><![CDATA[Willian Gallegos Arévalo]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326558</guid>
+
+					<description><![CDATA[<p>Por Willian Gallegos Arévalo El periodista Julio Alberto Quevedo Chávez escribió un interesante libro sobre la historia de la Universidad Nacional de San Martín &#8211;publicación que no he podido conseguir&#8211;, y a cuya presentación asistí. Quien hizo la presentación de la obra fue el doctor Lionel Bardales del Águila, culto y reconocido intelectual y político [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/historias-de-tarapoto-92/">Historias de Tarapoto, 92</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><strong>Por Willian Gallegos Arévalo</strong></p>
+
+
+
+<p class="wp-block-paragraph">El periodista Julio Alberto Quevedo Chávez escribió un interesante libro sobre la historia de la Universidad Nacional de San Martín &#8211;publicación que no he podido conseguir&#8211;, y a cuya presentación asistí. Quien hizo la presentación de la obra fue el doctor Lionel Bardales del Águila, culto y reconocido intelectual y político de izquierda.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Revisando la revista EXPERIENCIAS, REALIDADES Y ESPERANZAS, de mi gran amigo, el maestro Amílcar Rodríguez del Águila (+), encuentro un dato interesante y es el referido a que el primer ingeniero civil egresado de la Universidad Nacional de San Martín fue el riojano Jorge Vásquez Chichipe, siendo rector el Dr. Jorge Gonzales Ramírez (+). Y traigo a colación este hecho porque la Universidad Nacional de San Martín forma excelentes profesionales y cuenta con una plana profesional muy solvente –con sus dramáticas excepciones, claro&#8211;. El ingeniero Chichipe es hermano de mi gran amigo César, que fue miembro del directorio de la Caja Rural de Ahorro y Crédito de la Región San Martín, desaparecida hace más de quince años.</strong></p>
+
+
+
+<p class="wp-block-paragraph">La revista EXPERIENCIAS, REALIDADES Y ESPERANZAS, tenía algo del estilo de la desparecida revista norteamericana LIFE, que mi tío Víctor Hugo Arévalo Tenazoa nunca dejaba de adquirir y formaba parte de su copiosa biblioteca en su fundo “Progreso”, en Chazuta.</p>
+
+
+
+<p class="wp-block-paragraph">Con esta revista, Selecciones del Reader´s Digest, Caretas y los diarios limeños inicié mi formación para alegría de mis amigos y la incomodidad de algunos zafios. Y debo confesar, dentro de mi humilde posición de comentarista, que la revista de don Amílcar se ha convertido ya en una fuente imprescindible para la construcción de la historia sanmartinense y, por esta razón, le pedí formalmente a la alcaldesa Lluni Perea Pinedo, para que tome acciones inmediatas y rescatar el valor documental y testimonial de los trabajos de don Amílcar. También le pedí al gobernador Walter Grundel Jiménez, para el caso de los archivos históricos. Y no sé si la dama y el señor han estado muy ocupados en el desarrollo regional que la cultura y la historia no les interesó, o por cuestiones mecánicas no me atendieron.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>La revista que comento era de construcción familiar donde la esposa e hijos ponían sus capacidades y entusiasmo para obtener una publicación bien lograda y cuyos datos constituyen fuentes invalorables. En el número que refiero encuentro referencias a Luis Tafur Ruíz, Pardo Miguel Moncada Mori, Josefina Grández Castro de Quiñe, así como notas biográficas de Hildebrando López Pérez, Ángel Arce Maicelo, Zelmira de Belén García Crossett, Alfredo Rojas Valdivieso, Juan Clímaco Vela Rojas (Moyobamba), todos ellos que fueron ciudadanos valiosos y cuyas historias no deben perderse.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Comunicando Bosque y Cultura, dentro de sus posibilidades, irá rescatando la historia de Tarapoto y de la región San Martín. Se ha logrado conseguir testimonios orales de los mismos protagonistas. (Comunicando Bosque y Cultura).</p>
+<p>La entrada <a href="https://diariovoces.com.pe/historias-de-tarapoto-92/">Historias de Tarapoto, 92</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Decretos de urgencia deberán blindar la Amazonía ante el sicariato, la extorsión y el embate de El Niño</title>
+		<link>https://diariovoces.com.pe/decretos-de-urgencia-deberan-blindar-la-amazonia-ante-el-sicariato-la-extorsion-y-el-embate-de-el-nino/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 13:00:00 +0000</pubDate>
+				<category><![CDATA[Actualidad]]></category>
+		<category><![CDATA[Nacional]]></category>
+		<category><![CDATA[Amazonía]]></category>
+		<category><![CDATA[El Niño]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326557</guid>
+
+					<description><![CDATA[<p>Las facultades delegadas al Ejecutivo abren un frente decisivo para pacificar nuestras provincias y proteger la infraestructura productiva, en un esfuerzo que exige la máxima articulación de las autoridades locales y regionales. La promulgación de la Ley n.º 32743, publicada el jueves 22 de octubre de 2026 en el diario oficial El Peruano, marca un [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/decretos-de-urgencia-deberan-blindar-la-amazonia-ante-el-sicariato-la-extorsion-y-el-embate-de-el-nino/">Decretos de urgencia deberán blindar la Amazonía ante el sicariato, la extorsión y el embate de El Niño</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><strong>Las facultades delegadas al Ejecutivo abren un frente decisivo para pacificar nuestras provincias y proteger la infraestructura productiva, en un esfuerzo que exige la máxima articulación de las autoridades locales y regionales.</strong></p>
+
+
+
+<p class="wp-block-paragraph">La promulgación de la <strong>Ley n.º 32743</strong>, publicada el jueves <strong>22 de octubre de 2026</strong> en el diario oficial <strong>El Peruano</strong>, marca un punto de quiebre en la lucha nacional contra la criminalidad organizada y los desastres naturales, con un impacto directo en la región <strong>San Martín</strong>. Otorgando al <strong>Poder Ejecutivo</strong> un plazo de <strong>90 días calendario</strong> para emitir decretos legislativos clave, la norma prioriza la reforma de la <strong>regulación migratoria</strong> para acelerar los procesos de <strong>expulsión de extranjeros</strong> implicados en delitos o en situación irregular, la reestructuración del <strong>sistema penitenciario</strong> mediante la intervención de las <strong>Fuerzas Armadas</strong> en los <strong>penales</strong>, y el combate frontal a flagelos urbanos que vienen golpeando a ciudades como Tarapoto, Moyobamba y Tocache, entre ellos el <strong>sicariato</strong>, la <strong>extorsión</strong> y el tráfico ilícito de <strong>armas</strong>. Asimismo, la delegación legislativa faculta al <strong>Gobierno</strong> a optimizar los mecanismos de contratación para obras de mitigación frente a las amenazas del <strong>fenómeno El Niño</strong> y a ajustar las leyes sobre la <strong>responsabilidad penal de adolescentes</strong> e inteligencia nacional.</p>
+
+
+
+<p class="wp-block-paragraph">Para que este paquete normativo responda eficazmente a la realidad del nororiente peruano, los diversos sectores deben articular acciones inmediatas:</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Sector Seguridad e Interior:</strong> Fortalecer los operativos de la <strong>Policía Nacional del Perú (PNP)</strong> e <strong>Inmigraciones</strong> en las carreteras de ingreso a <strong>San Martín</strong>, fiscalizando el tránsito irregular de ciudadanos extranjeros y neutralizando las redes delictivas del <strong>«gota a gota».</strong></p>
+
+
+
+<p class="wp-block-paragraph"><strong>Sector Justicia y Penales:</strong><strong>Reforzar los protocolos de seguridad en los establecimientos penitenciarios regionales</strong> para impedir que desde su interior se sigan coordinando extorsiones a comerciantes y empresarios locales.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Sector Infraestructura y Riesgos:</strong> Utilizar los procedimientos agilizados por la nueva ley para acelerar la descolmatación de cauces y la construcción de defensas ribereñas en las cuencas vulnerables del <strong>Huallaga</strong> y el <strong>mayo</strong> frente a las lluvias de <strong>El Niño</strong>.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Sector Comercio y Producción:</strong> Brindar respaldo y canales seguros de denuncia a las <strong>cooperativas agrarias</strong> y <strong>pequeños comerciantes</strong> hostigados por la delincuencia, resguardando la reactivación económica del departamento.</p>
+
+
+
+<p class="wp-block-paragraph"><strong><em>El verdadero éxito de estas medidas legislativas no se medirá en el papel de las normas, sino en la paz devolviéndoles las calles a las familias sanmartinenses y en la seguridad de nuestras cosechas frente a la fuerza del clima.</em></strong></p>
+<p>La entrada <a href="https://diariovoces.com.pe/decretos-de-urgencia-deberan-blindar-la-amazonia-ante-el-sicariato-la-extorsion-y-el-embate-de-el-nino/">Decretos de urgencia deberán blindar la Amazonía ante el sicariato, la extorsión y el embate de El Niño</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Vacuna contra el dengue: Qué cambia y por qué importa en San Martín</title>
+		<link>https://diariovoces.com.pe/vacuna-contra-el-dengue-que-cambia-y-por-que-importa-en-san-martin/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 12:50:00 +0000</pubDate>
+				<category><![CDATA[Regional]]></category>
+		<category><![CDATA[Salud]]></category>
+		<category><![CDATA[San Martín]]></category>
+		<category><![CDATA[Vacunación]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326556</guid>
+
+					<description><![CDATA[<p>El Ministerio de Salud (Minsa) modificó la norma técnica de vacunación contra el dengue mediante la Resolución Ministerial N.° 946-2026/MINSA, con el objetivo de ampliar el acceso a la vacuna y facilitar su aplicación en las zonas priorizadas. La vacuna es tetravalente, es decir, protege contra los cuatro serotipos del virus y puede administrarse incluso [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/vacuna-contra-el-dengue-que-cambia-y-por-que-importa-en-san-martin/">Vacuna contra el dengue: Qué cambia y por qué importa en San Martín</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">El Ministerio de Salud (Minsa) modificó la norma técnica de vacunación contra el dengue mediante la Resolución Ministerial N.° 946-2026/MINSA, con el objetivo de <strong>ampliar el acceso a la vacuna y facilitar su aplicación</strong> en las zonas priorizadas.</p>
+
+
+
+<p class="wp-block-paragraph">La vacuna es tetravalente, es decir, protege contra los cuatro serotipos del virus y puede administrarse incluso a personas que nunca han padecido la enfermedad. El esquema contempla <strong>dos dosis separadas por tres meses</strong>. Según el CDC Perú, reduce hasta en 70 % el riesgo de enfermar y entre 70 % y 80 % el riesgo de complicaciones graves o muerte. Por ello, quienes recibieron la primera dosis deben regresar para completar su protección.</p>
+
+
+
+<p class="wp-block-paragraph">La estrategia está dirigida a <strong>niñas, niños, adolescentes y jóvenes de 10 a 20 años de las zonas priorizadas</strong>, además del personal de salud, las Fuerzas Armadas y la Policía Nacional. En San Martín, la región recibió <strong>30 000 dosis</strong> para avanzar con la inmunización de la población objetivo.</p>
+
+
+
+<p class="wp-block-paragraph">Entre los principales cambios, los establecimientos de EsSalud también podrán vacunar, facilitando el acceso de sus asegurados. Asimismo, las brigadas escolares podrán administrar en una misma visita las vacunas contra el dengue y el virus del papiloma humano (VPH), previa autorización de los padres. Además, el cuestionario previo a la vacunación se redujo de 15 a 11 preguntas para agilizar la atención.</p>
+
+
+
+<p class="wp-block-paragraph">Sin embargo, existen precauciones importantes. <strong>Por tratarse de una vacuna de virus vivos atenuados, no debe administrarse a gestantes, madres que dan de lactar ni personas con defensas muy disminuidas.</strong> Las adolescentes y jóvenes vacunadas deben evitar un embarazo durante al menos un mes después de cada dosis. Por ello, es fundamental recibir orientación del personal de salud.</p>
+
+
+
+<p class="wp-block-paragraph">La vacunación debe complementarse con medidas preventivas en los hogares. Ante las lluvias y el riesgo asociado al fenómeno El Niño, se recomienda <strong>tapar los recipientes con agua, cepillarlos y eliminar los criaderos del zancudo</strong>.</p>
+
+
+
+<p class="wp-block-paragraph">Si aparecen fiebre, dolor abdominal intenso, vómitos persistentes o sangrado, se debe acudir inmediatamente a un establecimiento de salud y evitar la automedicación.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Completar las dos dosis y eliminar los criaderos son acciones fundamentales para reducir el impacto del dengue en San Martín.</strong></p>
+<p>La entrada <a href="https://diariovoces.com.pe/vacuna-contra-el-dengue-que-cambia-y-por-que-importa-en-san-martin/">Vacuna contra el dengue: Qué cambia y por qué importa en San Martín</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Indignante recorte: Despojan a la Fuerza Aérea del Perú de presupuesto para equipar helicópteros contra incendios forestales en plena emergencia climática</title>
+		<link>https://diariovoces.com.pe/indignante-recorte-despojan-a-la-fuerza-aerea-del-peru-de-presupuesto-para-equipar-helicopteros-contra-incendios-forestales-en-plena-emergencia-climatica/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 12:40:00 +0000</pubDate>
+				<category><![CDATA[Actualidad]]></category>
+		<category><![CDATA[Nacional]]></category>
+		<category><![CDATA[Fuerza Aérea]]></category>
+		<category><![CDATA[Recorte]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326555</guid>
+
+					<description><![CDATA[<p>Una maraña burocrática y reclamos infundados truncaron la adquisición vital de equipos“Bambi Bucket”, dejando a la institución castrense desarmada frente a una crisis ambiental que ya arrasa miles de hectáreas en todo el país. Según da cuenta un informe del Diario La República, una grave controversia sacude al sector defensa tras revelarse que el Gobierno [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/indignante-recorte-despojan-a-la-fuerza-aerea-del-peru-de-presupuesto-para-equipar-helicopteros-contra-incendios-forestales-en-plena-emergencia-climatica/">Indignante recorte: Despojan a la Fuerza Aérea del Perú de presupuesto para equipar helicópteros contra incendios forestales en plena emergencia climática</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><strong>Una maraña burocrática y reclamos infundados truncaron la adquisición vital de equipos</strong><strong>“Bambi Bucket”</strong>, <strong>dejando a la institución castrense desarmada frente a una crisis ambiental que ya arrasa miles de hectáreas en todo el país.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Según da cuenta un informe del Diario La República, una grave controversia sacude al sector defensa tras revelarse que <strong>el Gobierno quitó el dinero destinado a la Fuerza Aérea del Perú (FAP) para la adquisición de equipamiento para la extinción de incendios forestales</strong>, dejando a la institución con <strong>solo 4 helicópteros acondicionados con sistemas «Bambi Bucket» cuando necesita al menos 10 para enfrentar la ola de incendios forestales</strong>.</p>
+
+
+
+<p class="wp-block-paragraph">Según una investigación periodística y firmada por <strong>Ángel Páez</strong>, el proyecto inicial contemplaba dotar de estos sistemas a <strong>7 helicópteros rusos Mi-17 y Mi-171-Sh y a 3 aeronaves norteamericanas Bell 212/412</strong> adscritas al <strong>Grupo Aéreo N°3</strong>, ubicado en la <strong>Base Aérea Mayor General FAP Armando Revoredo Iglesias</strong>, en el <strong>Callao</strong>. La debacle en el proceso de compras comenzó cuando la <strong>Agencia de Compras de las Fuerzas Armadas (ACFFAA)</strong> convocó a una licitación internacional que otorgó la buena pro a la empresa canadiense <strong>SEI Industries</strong> por un monto de <strong>US$1.676.379</strong>, superando a sus competidoras <strong>AG-AIR Systems</strong> y <strong>JA2 Company</strong>. Sin embargo, el <strong>15 de julio</strong>, la empresa <strong>SEI Industries</strong> presentó un reclamo infundado ante la <strong>ACFFAA</strong> y, al no obtener respuesta, acudió el <strong>16 de agosto</strong> al <strong>Organismo Supervisor de las Contrataciones Públicas (OSCE)</strong>, organismo que el <strong>19 de agosto</strong> declaró fundada la queja de forma temporal pese a la falta de sustento técnico. Aunque el <strong>Comité de Selección de la ACFFAA</strong> determinó que el reclamo era infundado y se aprestaba a firmar el contrato el <strong>9 de julio</strong>, la presión burocrática y los enredos normativos terminaron por desbaratar la adquisición.</p>
+
+
+
+<p class="wp-block-paragraph">En un giro alarmante, el <strong>16 de julio</strong> el gobierno de la presidenta <strong>Keiko Fujimori</strong> reencauzó los recursos asignados para la compra mediante el <strong>Decreto Supremo N°155-2026-EF</strong>, transfiriendo los fondos a la <strong>Reserva de Contingencia</strong> del <strong>Año Fiscal 2026</strong>, desprotegiendo por completo a la <strong>FAP</strong>. La gravedad de esta decisión administrativa contrasta dramáticamente con la realidad en campo: de acuerdo con el <strong>Instituto Nacional de Defensa Civil (INDECI)</strong> y el <strong>Centro de Operaciones de Emergencia Nacional (COEN)</strong>, en lo que va del <strong>2026</strong> se han reportado <strong>437 incendios forestales con daños</strong>, registrándose <strong>11 incendios activos y 13 controlados</strong>, con una pérdida devastadora de <strong>1.178 hectáreas de cultivos</strong> y <strong>11.779 hectáreas de pastos</strong>. Ante esta crítica situación, resulta impostergable que el <strong>Poder Ejecutivo</strong> y el <strong>Ministerio de Economía y Finanzas (MEF)</strong> restituyan de manera urgente los fondos presupuestales recortados a la <strong>FAP</strong>, dejando sin efecto la transferencia a la <strong>Reserva de Contingencia</strong> para viabilizar la compra inmediata de los <strong>10 sistemas «Bambi Bucket»</strong> requeridos.</p>
+
+
+
+<p class="wp-block-paragraph">Asimismo, la <strong>Agencia de Compras de las Fuerzas Armadas (ACFFAA)</strong> debe agilizar los procesos de adjudicación directa bajo regímenes de excepción por emergencia nacional, blindando los contratos frente a recursos burocráticos dilatorios, mientras que el <strong>Organismo Supervisor de las Contrataciones Públicas (OSCE)</strong> tiene el deber de establecer filtros estrictos para inadmitir recursos impugnatorios carentes de sustento técnico que pongan en riesgo la vida y los recursos naturales. Por su parte, el <strong>Centro de Operaciones de Emergencia Nacional (COEN)</strong> y el <strong>Instituto Nacional de Defensa Civil (INDECI)</strong> deben potenciar el monitoreo satelital en tiempo real para guiar de forma eficiente a los <strong>4 helicópteros</strong> operativos con los que actualmente cuenta la <strong>FAP</strong> mientras se adquiere el equipamiento faltante.</p>
+
+
+
+<p class="wp-block-paragraph"><strong><em>La ineptitud burocrática y el recorte presupuestal no solo vulneran la capacidad operativa de nuestras fuerzas del orden, sino que condenan a la indolencia a nuestros bosques y agricultores, demostrando que la verdadera catástrofe a veces no nace en la naturaleza, sino en los escritorios del Estado.</em></strong></p>
+<p>La entrada <a href="https://diariovoces.com.pe/indignante-recorte-despojan-a-la-fuerza-aerea-del-peru-de-presupuesto-para-equipar-helicopteros-contra-incendios-forestales-en-plena-emergencia-climatica/">Indignante recorte: Despojan a la Fuerza Aérea del Perú de presupuesto para equipar helicópteros contra incendios forestales en plena emergencia climática</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Shanao ganó 2-0 y ahora enfrenta un nuevo desafío: La altura de Puno</title>
+		<link>https://diariovoces.com.pe/shanao-gano-2-0-y-ahora-enfrenta-un-nuevo-desafio-la-altura-de-puno/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 12:30:00 +0000</pubDate>
+				<category><![CDATA[Deportes]]></category>
+		<category><![CDATA[Shanao]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326554</guid>
+
+					<description><![CDATA[<p>El equipo sanmartinense venció a Leones de Anccaca en el estadio Municipal de Lamas y buscará sellar su clasificación a los 16avos de final de la Copa Perú en el partido de vuelta. Shanao consiguió una importante victoria por 2-0 ante Leones de Anccaca, en el estadio Municipal de Lamas, por el partido de ida [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/shanao-gano-2-0-y-ahora-enfrenta-un-nuevo-desafio-la-altura-de-puno/">Shanao ganó 2-0 y ahora enfrenta un nuevo desafío: La altura de Puno</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><strong>El equipo sanmartinense venció a Leones de Anccaca en el estadio Municipal de Lamas y buscará sellar su clasificación a los 16avos de final de la Copa Perú en el partido de vuelta.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Shanao consiguió una importante victoria por <strong>2-0 ante Leones de Anccaca</strong>, en el estadio Municipal de Lamas, por el partido de ida de la eliminatoria. El conjunto local cumplió con el objetivo de ganar, aunque pudo ampliar la diferencia por las ocasiones de gol que generó.</p>
+
+
+
+<p class="wp-block-paragraph">El equipo dominó buena parte del encuentro y dispuso de oportunidades claras, pero sus delanteros no estuvieron precisos frente al arco rival. Ahora deberá afrontar un exigente compromiso en territorio puneño para continuar en carrera.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>La revancha se disputará en el estadio Universitario de Puno, ubicado a 3,827 metros sobre el nivel del mar.</strong> Leones de Anccaca buscará aprovechar su condición de local y las exigencias físicas de la altura para remontar el marcador y conseguir la clasificación.</p>
+
+
+
+<p class="wp-block-paragraph">Para Shanao, el desafío será tanto futbolístico como físico. El plantel deberá prepararse para jugar en condiciones de altitud, mientras que el cuerpo técnico tendrá la tarea de diseñar una estrategia que permita controlar el encuentro y reducir el desgaste de sus jugadores.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>La clasificación sigue en disputa.</strong> Shanao deberá mantener la concentración y la eficacia para superar a un rival que saldrá decidido a remontar ante su público. El equipo sanmartinense buscará imponerse en un escenario complicado y asegurar su pase a los 16avos de final de la Copa Perú.</p>
+<p>La entrada <a href="https://diariovoces.com.pe/shanao-gano-2-0-y-ahora-enfrenta-un-nuevo-desafio-la-altura-de-puno/">Shanao ganó 2-0 y ahora enfrenta un nuevo desafío: La altura de Puno</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Café Ramoncito: “Nuestra meta es producir café de calidad con menos deforestación”</title>
+		<link>https://diariovoces.com.pe/cafe-ramoncito-nuestra-meta-es-producir-cafe-de-calidad-con-menos-deforestacion/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 12:20:00 +0000</pubDate>
+				<category><![CDATA[Regional]]></category>
+		<category><![CDATA[Café]]></category>
+		<category><![CDATA[San Martín]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326553</guid>
+
+					<description><![CDATA[<p>Miller Moreto proyecta exportar 500 kilos de café tostado y molido a Estados Unidos en enero de 2027. El emprendimiento familiar obtuvo la licencia de uso de la marca San Martín y apuesta por la innovación y la producción sostenible. El café de San Martín continúa abriéndose camino hacia mercados internacionales. Café Ramoncito, emprendimiento familiar [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/cafe-ramoncito-nuestra-meta-es-producir-cafe-de-calidad-con-menos-deforestacion/">Café Ramoncito: “Nuestra meta es producir café de calidad con menos deforestación”</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><strong>Miller Moreto proyecta exportar 500 kilos de café tostado y molido a Estados Unidos en enero de 2027. El emprendimiento familiar obtuvo la licencia de uso de la marca San Martín y apuesta por la innovación y la producción sostenible.</strong></p>
+
+
+
+<p class="wp-block-paragraph">El café de San Martín continúa abriéndose camino hacia mercados internacionales. <strong>Café Ramoncito</strong>, emprendimiento familiar liderado por Miller Moreto, productor del sector Lejía, en el Alto Mayo, se prepara para concretar su primera exportación a Estados Unidos con un envío de <strong>500 kilos de café tostado y molido con valor agregado</strong>.</p>
+
+
+
+<p class="wp-block-paragraph">Durante una entrevista en el programa <em>Voces en Vivo</em>, Moreto destacó que este logro es resultado de años de esfuerzo familiar, participación en ferias comerciales y mejoras en la producción y presentación de sus productos. También resaltó su participación en la Expoalimentaria 2026, donde conoció nuevas oportunidades de negocio y amplió su visión sobre el potencial del café regional.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Primera exportación a Estados Unidos</strong></p>
+
+
+
+<p class="wp-block-paragraph">El productor explicó que durante los últimos ocho meses ha trabajado con una empresa de Colorado, Estados Unidos, que asumirá el papel de agente comercial y exportador. Como parte del proceso, avanzaron en los requisitos de registro ante la Administración de Alimentos y Medicamentos de Estados Unidos (FDA) y en el diseño del empaque, que incluirá información en inglés.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>El primer envío será de café de la variedad Catimor</strong>, seleccionada por sus notas achocolatadas y frutales, además de su menor acidez. Según Moreto, las muestras enviadas fueron evaluadas favorablemente por la empresa compradora. La visita de sus representantes está prevista para enero de 2027.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Marca San Martín y oportunidades comerciales</strong></p>
+
+
+
+<p class="wp-block-paragraph">Moreto informó que obtuvo la resolución que lo acredita como <strong>beneficiario licenciatario de la marca San Martín</strong>, un avance para posicionar su producto. También destacó el apoyo de iniciativas como Procompite y el proyecto de oferta exportable, que le permitieron participar en ferias y actividades comerciales.</p>
+
+
+
+<p class="wp-block-paragraph">Sin embargo, consideró necesario fortalecer las asociaciones de productores en localidades y centros poblados para facilitar el acceso a proyectos, mejorar la calidad y alcanzar mercados que reconozcan el valor del café regional.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Innovación y compromiso ambiental</strong></p>
+
+
+
+<p class="wp-block-paragraph">Además del Catimor, el emprendedor presentó una producción experimental limitada de café Geisha cultivado en su parcela y formatos de café filtrante que facilitan su preparación.</p>
+
+
+
+<p class="wp-block-paragraph">Moreto subrayó que el crecimiento productivo debe ir acompañado de la conservación ambiental. Por ello, su familia trabaja en la renovación de parcelas y en mejoras de sus sistemas de cultivo para incrementar la producción sin ampliar la deforestación.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>“Queremos más producción con menos deforestación”</strong>, enfatizó.</p>
+
+
+
+<p class="wp-block-paragraph">La historia de Café Ramoncito comenzó con el padre de Miller Moreto, quien llegó desde Piura y vendía café puerta a puerta en Tarapoto. Hoy, la familia busca consolidar ese legado y llevar el café sanmartinense al mercado estadounidense, combinando tradición, innovación y sostenibilidad.</p>
+<p>La entrada <a href="https://diariovoces.com.pe/cafe-ramoncito-nuestra-meta-es-producir-cafe-de-calidad-con-menos-deforestacion/">Café Ramoncito: “Nuestra meta es producir café de calidad con menos deforestación”</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Huachitas, lunes 26 de octubre 2026</title>
+		<link>https://diariovoces.com.pe/huachitas-lunes-26-de-octubre-2026/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 12:10:00 +0000</pubDate>
+				<category><![CDATA[Deportes]]></category>
+		<category><![CDATA[Huachitas]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326552</guid>
+
+					<description><![CDATA[<p>*** Iniciando la última semana de este octubre, aquí listo para darles a conocer los acontecimientos deportivos que se produjeron el pasado fin de semana, donde nuestros dos representantes iniciaron con pie derecho sus participaciones en la segunda fase nacional de la Copa Perú, dándonos de esta manera una tremenda esperanza de clasificarnos y de [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/huachitas-lunes-26-de-octubre-2026/">Huachitas, lunes 26 de octubre 2026</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">*** Iniciando la última semana de este octubre, aquí listo para darles a conocer los acontecimientos deportivos que se produjeron el pasado fin de semana, donde nuestros dos representantes iniciaron con pie derecho sus participaciones en la segunda fase nacional de la Copa Perú, dándonos de esta manera una tremenda esperanza de clasificarnos y de esta manera seguir participando en este campeonato “lagartija” teniendo así la posibilidad de llegar un de ellos a la Liga 2 y el otro a la Liga 3, nos gustó el accionar de los jugadores de ambos equipos que olvidándose de los problemas que tienen con sus bolcillos, ayer se sacaron al ancho en defensa de los colores de nuestro departamento, ahora vienen los partidos de vuelta, donde esperamos que concreten su continuidad en esta fase nacional de la Copa Perú.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>*** Tal como se esperaba, los partidos de la Liga1del Clausura, sigue poniéndose interesante luego de los resultados que se obtuvieron en la fecha pasada, donde el Sport Huancayo es contra todos los pronósticos ahora el único líder del campeonato, seguido por Universitario de Deportes y luego vienen otros equipos que una mínima ventaje en cuanto a los puntos se refiere. Vamos entonces con los resultados que se dieron: UTC 1 – 2 FBC MELGAR, ATLETICO GRAU 1 – 1 ADT, CUSCO FC 3 -1 SORTING CRISTAL, UNIVERSITARIO 3 – 0 JUAN PABLO II, COMERCIANTES UNIDOS 3 – 1 CIENCIANO, C.D. MOQUEGUA 0 – 1 ALIANZA LIMA, SPORT BOYS 4 -2 F.C. CAJAMARCA y DEPORTIVO GARCILASO 4 – 1 LOS CHANKAS. En nuestras próximas ediciones estaremos dando a conocer la ubicación de los equipos para que ustedes miren las posibilidades de los que deben clasificarse a la Libertadores y Sudamericana del próximo año, indicándoles que mañana martes 27, se estará iniciando la fecha 14, donde los que están arriba no deben perder y los que están abajo buscarán su continuidad en la Liga 1.</strong></p>
+
+
+
+<p class="wp-block-paragraph">*** Recién hoy culminará la programación de la fecha 5 (penúltima) de la fase final de la Liga 2, cuando a partir de las 11 de esta mañana estarán enfrentándose los equipos de PIRATA FC Vs. UNION COMERCIO que con un empate seguirá manteniendo la primera ubicación, pero si gana el equipo Pirata, nos estarán empatando en la tabla de colocaciones, aquí los resultados que se dieron: DEPORTIVO LLACUABAMBA 1- 1 ADA JAEN, UNION MINAS 1 – 2 AYACUCHO FC, SAN MARTIN 1 &#8211; 2 CARLOS A. MANJUCCI, BENTIN TACNA 1- 0 ALIANZA UDH y SPORT HUANCAYO 2 – 2 COMERCIANTES FC. Así está la tabla de colocaciones:</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Grupo “A” (Faltando el partido entre Pirata FC y Comercio)</strong></p>
+
+
+
+<p class="wp-block-paragraph">1.- UNION COMERCIO&nbsp; 9</p>
+
+
+
+<p class="wp-block-paragraph">2.- UNION MINAS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7</p>
+
+
+
+<p class="wp-block-paragraph">3.- AYACUCHO FC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7</p>
+
+
+
+<p class="wp-block-paragraph">4.- PIRATA FC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Grupo “B”</strong></p>
+
+
+
+<p class="wp-block-paragraph">1.- S. HUANCAYO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8</p>
+
+
+
+<p class="wp-block-paragraph">2.- ADA JAEN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8</p>
+
+
+
+<p class="wp-block-paragraph">3.- LLACUABAMBA&nbsp; 7</p>
+
+
+
+<p class="wp-block-paragraph">4.- COMERCIANTES&nbsp; 6</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Grupo “C”</strong></p>
+
+
+
+<p class="wp-block-paragraph">1.- MANUCCI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 13</p>
+
+
+
+<p class="wp-block-paragraph">2.- SAN MARTIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9</p>
+
+
+
+<p class="wp-block-paragraph">3.- BENTIN TACNA&nbsp;&nbsp; 6</p>
+
+
+
+<p class="wp-block-paragraph">4.- ALIANZA UDH&nbsp;&nbsp;&nbsp;&nbsp; 3</p>
+
+
+
+<p class="wp-block-paragraph">*** Reconociendo la identificación y esfuerzo que pusieron ayer nuestros dos representantes que empezaron bien en el partido de ida, la segunda fase nacional de la Copa Perú y teniendo en cuanta de que ya se conocen, tenemos la esperanza de decir que los dos deben pasar a la siguiente fase, como ya todos conocemos, en Lamas SHANAO FC le ganó 2 a 0 a los LEONES de Anccaca, demostrando estos Leones que tienen solo el nombre ya que los nuestros ganaron merecidamente, de esta manera el campeón departamental, sacó ese maleficio que tenía de no poder ganar en Lamas y esperamos que en el partido de vuelta nuevamente los jugadores saquen esa identificación mostrada ayer. En tanto que, en San José de Sisa, SPORT HUAJA, le goleó 5 a 0 al ADEVIL, la goleada prácticamente le da la clasificación al equipo de Huaja que aprovechó al máximo las oportunidades presentadas y goleó a un equipo que sencillamente todo lo dicho fue una guerra psicológica nada más. Repito los triunfos que ayer nos “regalaron” nuestros muchachos, nos dan esperanzas de seguir avanzando, todo dependerá de los jugadores, que ya conocen a sus rivales.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>*** El pasado sábado estuvimos celebrando 26 años de nuestra ahora Radio KARICIA que empezó a funcionar un 24 de octubre del año 2000 con el nombre de Radio A&amp;W durante 12 años es decir hasta el año 2014, luego le cambiamos el nombre por Radio Karicia un 1º de abril del 2015 con la que seguimos en nuestra señal de los 107.5 FM, durante 14 años, cumpliendo justamente el pasado 24 de octubre, 26 años al servicio de la cultura y el deporte, solo decirles a nuestros oyentes:¡Gracias por su preferencia¡.</strong></p>
+
+
+
+<p class="wp-block-paragraph">*** Hasta aquí mi KARICIA, regreso si Dios así lo permite mañana, chao.</p>
+<p>La entrada <a href="https://diariovoces.com.pe/huachitas-lunes-26-de-octubre-2026/">Huachitas, lunes 26 de octubre 2026</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Comic, lunes 26 de octubre 2026</title>
+		<link>https://diariovoces.com.pe/comic-lunes-26-de-octubre-2026/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 12:00:00 +0000</pubDate>
+				<category><![CDATA[Sin categoría]]></category>
+		<category><![CDATA[COMIC - VOCES]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326551</guid>
+
+					<description><![CDATA[<p>COMIC &#8211; VOCES</p>
+<p>La entrada <a href="https://diariovoces.com.pe/comic-lunes-26-de-octubre-2026/">Comic, lunes 26 de octubre 2026</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<h4 class="wp-block-heading">COMIC &#8211; VOCES</h4>
+<p>La entrada <a href="https://diariovoces.com.pe/comic-lunes-26-de-octubre-2026/">Comic, lunes 26 de octubre 2026</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Tarapoto no puede seguir en el abandono: Ordenaremos la ciudad con decisión política y de la mano con el vecino</title>
+		<link>https://diariovoces.com.pe/tarapoto-no-puede-seguir-en-el-abandono-ordenaremos-la-ciudad-con-decision-politica-y-de-la-mano-con-el-vecino/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 11:50:00 +0000</pubDate>
+				<category><![CDATA[Local]]></category>
+		<category><![CDATA[Política]]></category>
+		<category><![CDATA[Tarapoto]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326550</guid>
+
+					<description><![CDATA[<p>Carlos Enrique Chung Rojas, primer regidor electo de la Municipalidad Provincial de San Martín, propone recuperar el orden urbano mediante el diálogo, la participación ciudadana y una gestión municipal con autoridad. En una entrevista para el programa Voces en Vivo, el docente de la Universidad Nacional de San Martín y primer regidor electo, Carlos Enrique [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/tarapoto-no-puede-seguir-en-el-abandono-ordenaremos-la-ciudad-con-decision-politica-y-de-la-mano-con-el-vecino/">Tarapoto no puede seguir en el abandono: Ordenaremos la ciudad con decisión política y de la mano con el vecino</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><strong>Carlos Enrique Chung Rojas, primer regidor electo de la Municipalidad Provincial de San Martín, propone recuperar el orden urbano mediante el diálogo, la participación ciudadana y una gestión municipal con autoridad.</strong></p>
+
+
+
+<p class="wp-block-paragraph">En una entrevista para el programa <em>Voces en Vivo</em>, el docente de la Universidad Nacional de San Martín y primer regidor electo, <strong>Carlos Enrique Chung Rojas</strong>, expuso los principales problemas de Tarapoto y planteó una gestión basada en autoridad, diálogo social y participación vecinal.</p>
+
+
+
+<p class="wp-block-paragraph">Chung Rojas calificó de preocupante la situación de la ciudad por el abandono de las calles, la acumulación de basura, el desorden del comercio ambulatorio y la falta de una política de tránsito para los motocarros. Consideró que revertir este panorama requiere decisión política y organización.</p>
+
+
+
+<p class="wp-block-paragraph">Sobre el comercio ambulatorio, informó que iniciaron conversaciones con <strong>250 comerciantes independientes</strong> que trabajan los fines de semana en los alrededores del mercado. La nueva gestión buscará empadronarlos y reubicarlos en un espacio adecuado, permitiéndoles continuar con sus actividades sin ocupar las veredas del centro de Tarapoto.</p>
+
+
+
+<p class="wp-block-paragraph">Asimismo, anunció que, tras recibir las credenciales correspondientes, solicitarán un corte administrativo en la municipalidad para revisar los movimientos económicos e inspeccionar las unidades móviles, debido a que varias se encontrarían inoperativas.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Participación ciudadana y recuperación urbana</strong></p>
+
+
+
+<p class="wp-block-paragraph">El regidor electo aseguró que ingresarán a la municipalidad con autoridad, pero sin atropellar a la población. Recordó su experiencia como exgerente de Infraestructura durante las gestiones de Víctor Daniel Coral Pérez y Marina Aguilar, cuando impulsaron mejoras en los mercados 2 y 3, además del asfaltado participativo de los jirones San Martín, Leoncio Prado y Alfonso Ugarte.</p>
+
+
+
+<p class="wp-block-paragraph">En esa línea, propuso involucrar a los vecinos en el cuidado de cunetas, parques y jardines, así como garantizar el mantenimiento de las áreas verdes, incluido el jirón Martínez de Compañón.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Transporte y coordinación institucional</strong></p>
+
+
+
+<p class="wp-block-paragraph">Respecto al transporte, planteó <strong>capacitar a los motocarristas y mejorar la presentación e higiene de sus vehículos</strong>, especialmente ante la posibilidad de ampliar el aeropuerto Cadete FAP Guillermo del Castillo Paredes como terminal internacional.</p>
+
+
+
+<p class="wp-block-paragraph">También indicó que el alcalde electo viajará a Lima para coordinar proyectos de inversión con los congresistas de San Martín.</p>
+
+
+
+<p class="wp-block-paragraph">Finalmente, reafirmó que la futura gestión mantendrá sus puertas abiertas y rendirá cuentas ante los medios de comunicación. Además, rindió homenaje al gestor periodístico y luchador social Julio Cueva Chávez, recordado por sus torneos de <em>pelota de trapo</em>.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Chung Rojas agradeció la confianza ciudadana y aseguró que dejarán de lado los colores partidarios para trabajar por el desarrollo de Tarapoto</strong>, con el compromiso de recuperar el orden, la limpieza y la calidad de vida de sus habitantes.</p>
+<p>La entrada <a href="https://diariovoces.com.pe/tarapoto-no-puede-seguir-en-el-abandono-ordenaremos-la-ciudad-con-decision-politica-y-de-la-mano-con-el-vecino/">Tarapoto no puede seguir en el abandono: Ordenaremos la ciudad con decisión política y de la mano con el vecino</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>El Gobierno declara días no laborables compensables en el país ante la histórica visita del papa León XIV</title>
+		<link>https://diariovoces.com.pe/el-gobierno-declara-dias-no-laborables-compensables-en-el-pais-ante-la-historica-visita-del-papa-leon-xiv/</link>
+		
+		<dc:creator><![CDATA[Rosali Rosali]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 11:40:00 +0000</pubDate>
+				<category><![CDATA[Actualidad]]></category>
+		<category><![CDATA[Nacional]]></category>
+		<category><![CDATA[Papa León XIV]]></category>
+		<guid isPermaLink="false">https://diariovoces.com.pe/?p=326549</guid>
+
+					<description><![CDATA[<p>Un hito de trascendencia espiritual y social que exige una articulación multisectorial impecable para transformar el feriado en una oportunidad de unión, orden y desarrollo regional. El Gobierno oficializó este viernes 23 de octubre la declaración de días no laborables compensables para los trabajadores del sector público y del sector privado en el marco de [&#8230;]</p>
+<p>La entrada <a href="https://diariovoces.com.pe/el-gobierno-declara-dias-no-laborables-compensables-en-el-pais-ante-la-historica-visita-del-papa-leon-xiv/">El Gobierno declara días no laborables compensables en el país ante la histórica visita del papa León XIV</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><strong>Un hito de trascendencia espiritual y social que exige una articulación multisectorial impecable para transformar el feriado en una oportunidad de unión, orden y desarrollo regional.</strong></p>
+
+
+
+<p class="wp-block-paragraph">El <strong>Gobierno</strong> oficializó este viernes <strong>23 de octubre</strong> la declaración de <strong>días no laborables compensables</strong> para los trabajadores del <strong>sector público</strong> y del <strong>sector privado</strong> en el marco de la histórica visita apostólica del papa <strong>León XIV</strong> al <strong>Perú</strong>, programada del <strong>11 al 16 de noviembre de 2026</strong>. La norma, publicada en el diario oficial <strong>El Peruano</strong> mediante <strong>decreto supremo</strong>, alcanza a todas las regiones que forman parte del itinerario del sumo pontífice. Según precisa la normativa, las jornadas no laboradas deberán ser recuperadas en los días posteriores conforme al acuerdo entre empleadores y trabajadores, contando con las firmas de la presidenta <strong>Keiko Fujimori</strong>, el presidente del <strong>Consejo de Ministros (PCM)</strong>, <strong>Luis Galarreta</strong>, y el ministro de <strong>Trabajo</strong>, <strong>Juan Sheput</strong>.</p>
+
+
+
+<p class="wp-block-paragraph">La llegada del jefe de la <strong>Iglesia Católica</strong> movilizará a millones de fieles y generará una intensa actividad en las ciudades receptoras, lo que demanda tomar acciones inmediatas en diversos sectores clave para garantizar el orden y la seguridad pública:</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Sector Trabajo y Productivo:</strong> Las <strong>empresas privadas</strong> y las <strong>entidades públicas</strong> deberán coordinar con anticipación los esquemas de compensación de horas para no afectar la productividad ni la atención al ciudadano, garantizando la operatividad de los servicios esenciales.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Sector Transportes y Comunicaciones:</strong> Implementar planes de contingencia para la <strong>fluidez vehicular</strong>, el control de la <strong>red vial nacional</strong> y el reforzamiento de la <strong>frecuencia de vuelos y buses interprovinciales</strong> ante el masivo desplazamiento de feligreses.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Sector Seguridad e Interior:</strong> Desplegar un operativo extraordinario de la <strong>Policía Nacional del Perú (PNP)</strong> y del <strong>Serenazgo</strong> para el resguardo de las comitivas, las plazas públicas y los puntos de concentración masiva.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Sector Turismo y Comercio:</strong> Optimizar los <strong>protocolos de atención en hoteles, restaurantes y comercios locales</strong>, asegurando un trato justo y de calidad a los visitantes nacionales e internacionales que dinamizarán la economía regional.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Sector Salud:</strong> Declarar en <strong>alerta verde o amarilla</strong> los establecimientos de salud, disponiendo de <strong>puestos de auxilio rápido</strong>, <strong>ambulancias</strong> y <strong>personal médico</strong> preparado para atender cualquier emergencia durante los actos multitudinarios.</p>
+<p>La entrada <a href="https://diariovoces.com.pe/el-gobierno-declara-dias-no-laborables-compensables-en-el-pais-ante-la-historica-visita-del-papa-leon-xiv/">El Gobierno declara días no laborables compensables en el país ante la histórica visita del papa León XIV</a> se publicó primero en <a href="https://diariovoces.com.pe">Diario Voces</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>
