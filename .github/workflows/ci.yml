@@ -1,6 +1,8 @@
 # Pruebas en cada pull request: lectores contra copias históricas de las
 # fuentes, pipeline completo sin red (fixtures) y recorridos de usuario en
-# el navegador sobre el sitio construido con esos datos.
+# el navegador sobre el sitio construido con esos datos. A mano en una rama:
+# memoria-cosecha.yml lo lanza en el PR que abre (un PR abierto por Actions no
+# lanza flujos solo).
 name: ci
 
 on:
@@ -8,6 +10,7 @@ on:
   push:
     branches: ['claude/**']
     paths-ignore: ['python/tests/fixtures/sources/**']
+  workflow_dispatch:
 
 permissions:
   contents: read

@@ -23,7 +23,8 @@ prevención: cuántas de esas emergencias ocurrieron donde el Estado ya tenía e
 10. [Evidencia sobre la prevención desde los años 90](#evidencia-sobre-la-prevención-desde-los-años-90)
 11. [Límites](#límites)
 12. [Reproducir y actualizar](#reproducir-y-actualizar)
-13. [Registros curados y revisiones](#registros-curados-y-revisiones)
+13. [Cosecha en GitHub Actions](#cosecha-en-github-actions)
+14. [Registros curados y revisiones](#registros-curados-y-revisiones)
 
 ## Qué pregunta responde
 
@@ -357,8 +358,9 @@ cada una con su fuente (`public/assets/js/historico-evidencia.js`). El veredicto
   se ubica en la ciudad o el valle que nombra. La base de GLOF registra los aluviones que alguien estudió; hay más
   en la Cordillera Blanca porque ahí se estudiaron más.
 - **Descargas a medias.** Los PDF del COEN, los decretos de El Peruano, los informes del INGEMMET y algunos medios se
-  descargan despacio (5 s o más entre pedidos) y siguen en curso. `fuentes.json` marca esas fuentes con `parcial` y
-  la pestaña lo avisa; las cifras de prevención y de corroboración van a cambiar.
+  descargan despacio (5 s o más entre pedidos) y siguen en curso, en GitHub Actions
+  ([Cosecha en GitHub Actions](#cosecha-en-github-actions)). `fuentes.json` marca esas fuentes con `parcial` y la
+  pestaña lo avisa; las cifras de prevención y de corroboración van a cambiar.
 - **Frecuencia no es pronóstico.** Suponer que el pasado se repite ignora el cambio climático y el crecimiento de la
   exposición (más gente en riberas y quebradas), que empujan el riesgo hacia arriba.
 
@@ -381,10 +383,12 @@ pytest -q tests/test_historico.py
   `enso.reach.Robots`) y respeta su `Crawl-delay`; si el robots.txt no responde, no pide nada a ese servidor.
 - El IDMC se pide a su propia API (su robots.txt la permite; el de HDX no deja que un programa baje sus CSV). La API
   pide una clave gratuita (`client_id`) que se solicita una vez por correo a ch.datainfo@idmc.ch, con el uso que se le
-  dará, y se guarda en la variable de entorno `IDMC_CLIENT_ID`, nunca en el repositorio. El script guarda las filas
-  del Perú como CSV con columnas y filas ordenadas. La copia vigente es la exportación del IDMC en HDX del
-  26-10-2026, con las mismas columnas. Los datos del IDMC son CC BY-NC-SA 3.0 IGO: uso no comercial, con atribución
-  y la misma licencia en lo derivado.
+  dará, y se guarda en la variable de entorno `IDMC_CLIENT_ID` (en GitHub Actions, el secreto del mismo nombre),
+  nunca en el repositorio. El script guarda las filas del Perú como CSV con columnas y filas ordenadas. Sin la clave
+  usa la semilla del repositorio (`data/historico/semillas/`, campo `semilla` de `fuentes.json`): la exportación del
+  IDMC en HDX del 26-10-2026, con las mismas columnas, comprimida. `fuentes.json` dice cuál se usó (`copia`: `API` o
+  `semilla`). Los datos del IDMC son CC BY-NC-SA 3.0 IGO: uso no comercial, con atribución y la misma licencia en lo
+  derivado, también la semilla.
 - Instituciones públicas peruanas (dominios `.gob.pe` y `.mil.pe`): su información es pública por la Ley N° 27806
   y, por decisión del proyecto del 26-10-2026, un `Disallow` de su robots.txt (o un robots.txt que no responde) no
   impide pedirla. El script igual lee su robots.txt, respeta su `Crawl-delay` con un mínimo de 5 s entre pedidos y se
@@ -405,10 +409,13 @@ pytest -q tests/test_historico.py
   canónico (claves ordenadas), para que el SHA-256 solo cambie si cambian los datos.
 - El servidor del INGEMMET no envía su certificado intermedio; `enso/data/ca-intermedios.pem` lo agrega (Sectigo
   Public Server Authentication CA OV R36) y la verificación TLS sigue completa.
-- Las descargas largas (PDF del COEN, El Peruano, repositorios, archivos de prensa) se pueden cortar y seguir: cada
-  una guarda lo bajado en `<archivo>-partes/` dentro de la caché. Con `--parcial`, el script arma lo que haya en un
-  `<archivo>.parcial.json`, marca la fuente como `parcial` en `fuentes.json` y salta (como `pendiente`) las que aún
-  no tienen nada. `--cache` se puede repetir para buscar en varias cachés.
+- Las descargas largas (PDF del COEN, El Peruano, repositorios, archivos de prensa, también la búsqueda en cada medio
+  con WordPress, término por término) se pueden cortar en cualquier momento y seguir: cada una guarda lo bajado en
+  `<archivo>-partes/` dentro de la caché. Cada parte y el archivo final se escriben de una vez (un temporal y
+  `os.replace`), y las partes se borran solo después de escribir el archivo final: un corte no deja nada a medias.
+  Con `--parcial`, el script arma lo que haya en un `<archivo>.parcial.json`, marca la fuente como `parcial` en
+  `fuentes.json` y salta (como `pendiente`) las que aún no tienen nada. `--cache` se puede repetir para buscar en
+  varias cachés.
 - Los servidores que solo responden desde el Perú (Biblioteca Nacional, BVPAD del INDECI, SPIJ, Contraloría, TV Perú,
   Radio Nacional, repositorios de tesis y otros) están en el registro de fuentes para que el recolector del proyecto
   en el Perú los mida; con lo medido se decide a cuáles escribirles una descarga.
@@ -418,6 +425,38 @@ pytest -q tests/test_historico.py
   `registro.make`, una entrada en `READERS` o `CONTEXT` de `tools/build_historico.py` y otra en `fuentes.json`. Para
   una fuente que corrobora (COEN, prensa, GLOF), un lector de candidatos en `enso/historico/cosecha.py` y una entrada
   en `CANDIDATES` y `LINK_ORDER`; para una de prevención, en `EVIDENCE`.
+
+## Cosecha en GitHub Actions
+
+Las descargas largas no caben en una corrida de GitHub Actions (6 h como máximo) ni en un contenedor que se reinicia:
+los PDF del COEN son unos 20 000 pedidos a 5 s, más de un día. `.github/workflows/memoria-cosecha.yml` corre cada 6
+horas `python -m tools.cosecha_historico`, que:
+
+1. Restaura la caché de la corrida anterior (`actions/cache`, clave `memoria-cosecha-…`) en `~/.cache/enso-historico`.
+2. Baja lo que falte de cada fuente de `fuentes.json` con `build_historico.fetch`, cada una en un proceso propio, hasta
+   un plazo de 300 minutos. Las fuentes de un mismo servidor van una tras otra (la pausa entre pedidos es de cada
+   fuente: en paralelo se sumarían); los servidores van en paralelo, primero los de las descargas largas. Al vencer el
+   plazo corta los procesos: lo bajado queda en las partes.
+3. Anota en `cosecha-estado.json` (en la caché) cuándo empezó la cosecha y, de cada fuente, los intentos, los fallos
+   seguidos, el último error y el avance (páginas del listado del COEN, PDF leídos, meses de El Peruano, días de RPP,
+   fichas del INGEMMET, términos de cada medio). El resumen de la corrida queda en la página de la corrida en
+   Actions. Una fuente que falla en tres corridas seguidas (no por el plazo) deja de esperarse: el catálogo se
+   construye sin ella y el PR lo dice; se sigue intentando en las corridas siguientes.
+4. Guarda la caché (siempre, aunque algo falle) y borra las anteriores de la misma rama.
+5. Cuando no falta nada, construye el catálogo sin red (`build_historico --sin-red --parcial --aceptar-cambios`), lo
+   sube a la rama `bot/memoria-desastres/<inicio>` y abre un PR con lo que cambió en cada fuente y en el total. Un PR
+   abierto por Actions no lanza flujos, así que lanza `ci.yml` en esa rama. Si el repositorio no deja que Actions
+   abra PR, abre un issue con el enlace para abrirlo. Con el PR anotado (`cosecha-pr.json`), las corridas siguientes
+   no bajan nada: solo mantienen viva la caché, que Actions borra tras 7 días sin uso.
+
+A mano (Actions → memoria-cosecha → Run workflow): `solo` (ids de fuentes), `minutos`, `reconstruir` (construye y abre
+o actualiza el PR con lo bajado hasta ahora, con lo que falta como «a medias») y `renovar` (vacía la caché y empieza
+una cosecha nueva). En una rama `claude/**`, al cambiar la herramienta o el flujo, corre 12 minutos sin PR: muestra qué
+servidores responden desde Actions. Los que solo responden desde el Perú fallan ahí y quedan para el recolector del
+Perú.
+
+La caché guarda titulares y extractos de prensa de hasta 500 caracteres (el catálogo publica 200) y el texto de los
+reportes del COEN y de los decretos. Solo la leen los flujos de este repositorio; no se publica.
 
 ## Registros curados y revisiones
 
