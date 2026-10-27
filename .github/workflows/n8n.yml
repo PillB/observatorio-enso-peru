@@ -35,10 +35,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - run: pip install -r python/requirements-dev.txt
@@ -60,10 +60,10 @@ jobs:
         image: ['n8nio/n8n:2.44.4', 'n8nio/n8n:1.123.85']
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - run: pip install -r python/requirements.txt
@@ -76,7 +76,7 @@ jobs:
         run: n8n/test/e2e-extractor.sh "${{ matrix.image }}" "$RUNNER_TEMP/extractor"
       - name: Collector end to end (ENFEN sources, two runs, fake GitHub API)
         run: n8n/test/e2e.sh "${{ matrix.image }}" "$RUNNER_TEMP/e2e" enfen
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: n8n-e2e-${{ strategy.job-index }}
@@ -113,7 +113,7 @@ jobs:
             echo "|---|---|---|---|---|---|---|"
             jq -r '.[1:][] | select(.resultado != "OK") | "| \(.veredicto) | \(.alcance) | \(.bloqueo) | \(.http) | \(.id) | \(.url) | \(.nota | gsub("\\|"; "/") | .[0:80]) |"' validacion-actions.json
           } >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: n8n-validacion-actions
           path: validacion-actions.json

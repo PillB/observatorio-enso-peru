@@ -39,7 +39,7 @@ CHECK_JS = """() => {
   const wide = [...document.querySelectorAll('main *')].filter((e) => {
     const r = e.getBoundingClientRect();
     return r.width > 0 && r.right > innerWidth + 1 && getComputedStyle(e).position !== 'fixed'
-      && !e.closest('.table-wrap, .kind-chips, .arch-figure, pre');
+      && !e.closest('.table-wrap, .kind-chips, .amap-fg, .amap-matrix-wrap, .arch-figure, pre');  // se desplazan solos
   }).slice(0, 5).map((e) => `${e.tagName.toLowerCase()}.${[...e.classList].join('.')}`);
   const chips = [...document.querySelectorAll('.kind-chip, .seg button, #news-dep')].map((e) => e.getBoundingClientRect().height);
   const fonts = [...document.querySelectorAll('.feed-text, .feed-title, .feed-meta')].map((e) => parseFloat(getComputedStyle(e).fontSize));
@@ -149,7 +149,8 @@ def main(argv=None) -> int:
             page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
             page.goto(f"{base}#/{a.route}")
             page.wait_for_selector("main h1", timeout=20000)
-            page.wait_for_function("!document.querySelector('main .skeleton')", timeout=20000)
+            # Con selector y no con wait_for_function: la CSP del sitio bloquea el eval() que esa usa en Firefox.
+            page.wait_for_selector("main .skeleton", state="detached", timeout=20000)
             page.wait_for_timeout(400)
             m = page.evaluate(CHECK_JS)
             if a.anchor and not a.full_page:

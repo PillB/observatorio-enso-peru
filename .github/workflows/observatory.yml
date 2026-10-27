@@ -56,14 +56,14 @@ jobs:
       site_url: ${{ steps.site.outputs.url }}
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: python/requirements*.txt
       - run: pip install -r python/requirements-dev.txt
       # Node 22 (node:sqlite) para las pruebas de la consola de lugares (functions/).
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -200,7 +200,7 @@ jobs:
       - name: Restore the reader-feed state
         if: github.ref == 'refs/heads/main'
         continue-on-error: true
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: ${{ runner.temp }}/reader-state.json
           key: enso-reader-state-${{ github.run_id }}-${{ github.run_attempt }}
@@ -241,7 +241,7 @@ jobs:
       - name: Save the reader-feed state
         if: always() && github.ref == 'refs/heads/main'
         continue-on-error: true
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: ${{ runner.temp }}/reader-state.json
           key: enso-reader-state-${{ github.run_id }}-${{ github.run_attempt }}
@@ -260,7 +260,7 @@ jobs:
 
       # Las dos subidas auxiliares no detienen el despliegue de los datos oficiales si fallan: el job
       # «archive» avisa si le falta raw-sources, y «incidents» sigue sin informe.
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         continue-on-error: true
         with:
@@ -269,7 +269,7 @@ jobs:
             public/data/run-report.json
             public/data/sources.json
           if-no-files-found: ignore
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: success()
         continue-on-error: true
         with:
@@ -279,11 +279,11 @@ jobs:
           retention-days: 7
       - uses: actions/configure-pages@v5
         if: env.DEPLOY_TARGET == 'github-pages'
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         if: env.DEPLOY_TARGET == 'github-pages'
         with:
           path: public
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: env.DEPLOY_TARGET == 'cloudflare'
         with:
           name: site
@@ -317,7 +317,7 @@ jobs:
           sparse-checkout: |
             python
             functions
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - run: pip install httpx
@@ -329,7 +329,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: python -m tools.cloudflare_pages --project "$CF_PROJECT"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         if: env.DEPLOY_TARGET == 'cloudflare'
         with:
           name: site
@@ -363,11 +363,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           sparse-checkout: python
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - run: pip install httpx
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: run-report
           path: report
@@ -448,7 +448,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         id: raw
         with:
           name: raw-sources

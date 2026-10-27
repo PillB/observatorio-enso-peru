@@ -968,8 +968,8 @@ def test_history_backup_is_fetched_every_run():
     pipeline = next(s for s in steps if s.get("id") == "pipeline")
     assert "--history-absent" in pipeline["run"] and "--reader-state" in pipeline["run"]
     # El estado de los feeds «reader» se guarda aunque la corrida falle después de leerlos.
-    names = [s.get("uses", "") for s in steps]
-    restore, save = names.index("actions/cache/restore@v4"), names.index("actions/cache/save@v4")
+    names = [s.get("uses", "").split("@")[0] for s in steps]  # la versión la sube Dependabot
+    restore, save = names.index("actions/cache/restore"), names.index("actions/cache/save")
     assert restore < steps.index(pipeline) < save and steps[save]["if"].startswith("always()")
     # Solo en main: la caché de otra rama no la ve main, que volvería a pedir los feeds antes de 20 h.
     main = "github.ref == 'refs/heads/main'"

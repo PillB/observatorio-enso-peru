@@ -49,7 +49,7 @@ jobs:
         if: always() && vars.ALERT_EMAILS != ''
         with:
           sparse-checkout: python
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         if: always() && vars.ALERT_EMAILS != ''
         with:
           python-version: '3.12'
