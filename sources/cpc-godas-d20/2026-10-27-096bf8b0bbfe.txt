@@ -1,0 +1,1 @@
+{"behind": 1, "errors": {}, "grib": [], "months": {"2026-09": {"d20_180w100w": {"d20": 147.0, "outcrop": 0.0}, "d20_nino12": {"d20": 104.8, "outcrop": 0.0}, "d20_nino34": {"d20": 153.5, "outcrop": 0.0}}}, "reused": ["2026-09"], "unreached": false}
