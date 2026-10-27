@@ -36,7 +36,11 @@ EXTRA_COLUMNS = [
     "DangerTypeMetodo",    # fuente | texto | causa | por-omision
     "CausaFuente",         # la causa tal como la nombra la fuente
     "NivelUbigeo",         # distrito | provincia | departamento
-    "PrecisionGeo",        # capital-distrito | capital-provincia | capital-departamento | coordenada-fuente
+    "PrecisionGeo",        # coordenada-fuente | centro-poblado | capital-distrito | interior-distrito | capital-provincia | capital-departamento
+    "Lugar",               # centro(s) poblado(s) oficiales (INEI, IGN) que nombra la fuente, dentro del distrito
+    "LugarCodigo",         # código de centro poblado del INEI (10 dígitos) del primero
+    "RadioKm",             # incertidumbre del punto de un centro poblado
+    "Cuenca", "CuencaCodigo",  # unidad hidrográfica de la ANA (Pfafstetter) del punto, o del distrito si cae casi entero en una
     "Region",              # macrorregión INEI (Norte, Centro, Sur, Oriente, Lima Metropolitana)
     "AltitudCapital",      # m s. n. m. de la capital del distrito
     "FaseENSO",            # El Niño costero | La Niña costera | Neutro (ICEN del mes)
@@ -85,7 +89,8 @@ COLUMN_DOCS = {
                    "publicado y la fuente no atribuye el evento a El Niño o La Niña (ver AtribucionENSO)"),
     "Fuente": ("URL", "Enlace al registro en su fuente o a la fuente",
                "Siempre lleno; enlaza a la fuente cuando no tiene una página por registro (DesInventar, capas de ArcGIS)"),
-    "Latitud": ("decimal (grados)", "Punto de la fuente si cae en el distrito asignado; si no, la capital del área",
+    "Latitud": ("decimal (grados)", "Punto de la fuente si cae en el distrito asignado y no es un punto por defecto; "
+                "si no, el centro poblado que nombra la fuente; si no, la capital del área",
                 "Ver PrecisionGeo. Las filas de provincia o departamento llevan la capital de la provincia o del "
                 "departamento: en un mapa de puntos se agrupan en las capitales y no son el lugar exacto"),
     "Longitud": ("decimal (grados)", "Igual que Latitud", "Ver PrecisionGeo"),
@@ -107,8 +112,22 @@ COLUMN_DOCS = {
     "CausaFuente": ("texto", "La causa tal como la nombra la fuente", ""),
     "NivelUbigeo": ("texto", "Nivel del área del registro", "distrito, provincia o departamento"),
     "PrecisionGeo": ("texto", "De dónde salen Latitud y Longitud",
-                     "coordenada-fuente, capital-distrito, interior-distrito (un punto dentro del distrito, lejos de "
-                     "sus bordes: el nomenclátor no trae su capital), capital-provincia o capital-departamento"),
+                     "coordenada-fuente (el punto que da la fuente, dentro del distrito; no la capital ni un punto que la "
+                     "fuente repite para todo el distrito), centro-poblado (el centro poblado que nombra la fuente: INEI "
+                     "2017 o IGN, ver Lugar y RadioKm), capital-distrito, interior-distrito (un punto dentro del distrito, "
+                     "lejos de sus bordes: el nomenclátor no trae su capital), capital-provincia o capital-departamento"),
+    "Lugar": ("texto", "Centro(s) poblado(s) oficiales que nombra la fuente (Ubicacion o Descripción), dentro del distrito",
+              "Nombre del INEI o del IGN; varios separados por « · ». Vacío si la fuente no nombra uno que exista en el "
+              "distrito, o si el nombre se repite en el distrito (homónimos: no se adivina)"),
+    "LugarCodigo": ("texto (10 dígitos)", "Código de centro poblado del INEI del primer Lugar",
+                    "Léalo como texto. Vacío si el lugar viene solo del IGN, sin código"),
+    "RadioKm": ("decimal (km)", "Incertidumbre del punto cuando PrecisionGeo es centro-poblado",
+                "1 km (5 km si el INEI y el IGN ubican ese centro poblado a más de 5 km); con varios lugares, la distancia "
+                "del punto medio al más lejano más 1 km"),
+    "Cuenca": ("texto", "Unidad hidrográfica de la ANA (cuenca o intercuenca, Pfafstetter)",
+               "La del punto si PrecisionGeo es coordenada-fuente o centro-poblado; si no, la del distrito cuando el 80 % "
+               "o más de él está en una sola; vacío en las demás"),
+    "CuencaCodigo": ("texto", "Código Pfafstetter de la ANA de la Cuenca", "Léalo como texto"),
     "Region": ("texto", "Macrorregión del INEI", "Norte, Centro, Sur, Oriente, Lima Metropolitana"),
     "AltitudCapital": ("entero (m s. n. m.)", "Altitud de la capital del distrito", ""),
     "FaseENSO": ("texto", "Fase costera del mes según el ICEN", "El Niño costero, La Niña costera, Neutro"),
