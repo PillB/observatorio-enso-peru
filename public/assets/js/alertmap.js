@@ -166,6 +166,15 @@ export function itemBadges(it, now = Date.now()) {
   return html`${levelChip(a, { small: true })} <span class="tag tag-phase ph-${a.phase}">${PHASE[a.phase][0]}</span> <span class="muted small">${phaseText(a)}</span>${levelSource(a.sev)}${placeSource(it)}`;
 }
 
+/** Lo que ubica un aviso más fino que su distrito, como etiquetas de la lista: el centro poblado, el río o la
+ * quebrada que nombra (dentro de su distrito) y las cuencas de la ANA de sus puntos. */
+export function fineTags(it) {
+  const pts = it.detail?.points || [];
+  const names = [...new Set(pts.filter((p) => p.kind === 'centro-poblado' || p.kind === 'cuerpo-de-agua').map((p) => p.name).filter(Boolean))].slice(0, 3);
+  const basins = [...new Set(pts.map((p) => p.basin?.name).filter(Boolean))].slice(0, 2);
+  return html`${names.map((n) => html`<span class="tag tag-place tag-fine" title="Lugar que nombra el aviso, dentro de su distrito">${raw(ICON.pin)}${n}</span> `)}${basins.map((b) => html`<span class="tag tag-basin" title="Unidad hidrográfica de la ANA">${b}</span> `)}`;
+}
+
 /** El informe completo (el PDF que la página de la publicación ofrece para descargar) y de dónde salen los
  * lugares cuando no los trae el aviso mismo (el boletín del COEN del mismo aviso, o las regiones que nombra). */
 function placeSource(it) {
@@ -271,7 +280,7 @@ export function project(geo, lon, lat) {
 
 const ringPath = (geo, ring) => `M${ring.map(([lon, lat]) => project(geo, lon, lat).map((v) => v.toFixed(1)).join(' ')).join('L')}Z`;
 const levelCls = (a) => (rankOf(a) ? `r${rankOf(a)}` : 'un');
-const POINT_KIND = { estacion: 'Estación hidrológica', epicentro: 'Epicentro', volcan: 'Volcán', focos: 'Focos de calor', 'centro-poblado': 'Centro poblado' };
+const POINT_KIND = { estacion: 'Estación hidrológica', epicentro: 'Epicentro', volcan: 'Volcán', focos: 'Focos de calor', 'centro-poblado': 'Centro poblado', 'cuerpo-de-agua': 'Río, quebrada o laguna' };
 
 /** Texto del cuadro de un punto: qué es, el aviso y, si se sabe, el río, la cuenca y la incertidumbre. */
 function pointTip(p, a) {
@@ -299,9 +308,9 @@ export function detailMarkup(geo, alerts, f, { districts = null, unit = 1 } = {}
       }
       for (const ar of (districts && d.areas) || []) {
         if (!districts[ar.code]) continue;
-        const at = (area[ar.code] ||= { code: ar.code, name: ar.name, a, dim: dim(a), lines: [] });
+        const at = (area[ar.code] ||= { code: ar.code, name: ar.name, kind: ar.kind || 'quebradas', a, dim: dim(a), lines: [] });
         if (rankOf(a) >= rankOf(at.a)) Object.assign(at, { a, dim: at.dim && dim(a) });
-        at.lines.push(`${ar.n} quebrada${ar.n > 1 ? 's' : ''} · ${shortTitle(a.title, 140)}`);
+        at.lines.push(ar.kind === 'provincia' ? shortTitle(a.title, 140) : `${ar.n} quebrada${ar.n > 1 ? 's' : ''} · ${shortTitle(a.title, 140)}`);
       }
     }
     for (const p of d.points || []) {
@@ -313,6 +322,10 @@ export function detailMarkup(geo, alerts, f, { districts = null, unit = 1 } = {}
       const r = (p.kind === 'focos' ? 1.3 + Math.min(3, Math.sqrt(p.n || 1) * 0.6) : 3.4) * unit;
       if (p.kind === 'volcan') {
         points.push(`<path class="${cls}" d="M${x.toFixed(1)} ${(y - r * 1.3).toFixed(1)}l${(r * 1.2).toFixed(1)} ${(r * 2.1).toFixed(1)}h${(-r * 2.4).toFixed(1)}z" data-dep="${dep}" data-tip="${tip}"></path>`);
+      } else if (p.kind === 'cuerpo-de-agua') {
+        // Un tramo de río o quebrada: el círculo de su radio, sin relleno, y el punto del cauce.
+        const rr = Math.max(r, ((p.radiusKm || 0) / 111) * geo.lonLat.k);
+        points.push(`<g class="${cls}" data-dep="${dep}" data-tip="${tip}"><circle class="amap-reach" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rr.toFixed(1)}"></circle><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r * 0.7).toFixed(1)}"></circle></g>`);
       } else if (p.kind === 'estacion') {
         points.push(`<rect class="${cls}" x="${(x - r).toFixed(1)}" y="${(y - r).toFixed(1)}" width="${(2 * r).toFixed(1)}" height="${(2 * r).toFixed(1)}" transform="rotate(45 ${x.toFixed(1)} ${y.toFixed(1)})" data-dep="${dep}" data-tip="${tip}"></rect>`);
       } else {
@@ -320,10 +333,12 @@ export function detailMarkup(geo, alerts, f, { districts = null, unit = 1 } = {}
       }
     }
   }
-  const areas = Object.values(area).sort((x, y) => rankOf(x.a) - rankOf(y.a)).map((at) => {
+  // Las provincias (más grandes) primero, para que los distritos con quebradas queden encima.
+  const areas = Object.values(area).sort((x, y) => (x.code.length - y.code.length) || (rankOf(x.a) - rankOf(y.a))).map((at) => {
     const g = districts[at.code];
-    const head = `${at.name ? `${at.name}: ` : ''}quebradas con probable activación`;
-    return `<path class="amap-area s-${levelCls(at.a)}${at.dim}" d="${g.d}" data-dep="${esc(at.code.slice(0, 2))}" data-tip="${esc([head, ...at.lines.reverse()].join('\n'))}"></path>`;
+    const head = at.kind === 'provincia' ? `Provincia de ${at.name || at.code}: expuesta según el aviso de corto plazo`
+      : `${at.name ? `${at.name}: ` : ''}quebradas con probable activación`;
+    return `<path class="amap-area${at.kind === 'provincia' ? ' amap-prov' : ''} s-${levelCls(at.a)}${at.dim}" d="${g.d}" data-dep="${esc(at.code.slice(0, 2))}" data-tip="${esc([head, ...at.lines.reverse()].join('\n'))}"></path>`;
   });
   if (!shapes.length && !areas.length && !points.length) return '';
   return `<g class="amap-detail" aria-hidden="true">${shapes.join('')}${areas.join('')}${points.join('')}</g>`;
@@ -478,10 +493,11 @@ function depList(geo, by) {
 // ---------------------------------------------------------------------------
 // Montaje
 // ---------------------------------------------------------------------------
-/** Trazos de los distritos (los del mapa de la memoria), para los avisos de quebradas; se piden solo si hacen falta. */
+/** Trazos de los distritos y las provincias (los del mapa de la memoria), para los avisos de quebradas y las provincias
+ * expuestas de un aviso de corto plazo; se piden solo si hacen falta. */
 let DISTRICTS = null;
 function districtShapes() {
-  if (!DISTRICTS) DISTRICTS = fetch('assets/historico/mapa.json').then((r) => (r.ok ? r.json() : null)).then((m) => m?.districts || null).catch(() => null);
+  if (!DISTRICTS) DISTRICTS = fetch('assets/historico/mapa.json').then((r) => (r.ok ? r.json() : null)).then((m) => (m ? { ...(m.provinces || {}), ...(m.districts || {}) } : null)).catch(() => null);
   return DISTRICTS;
 }
 let BASINS = null;
@@ -493,10 +509,12 @@ function basinShapes() {
 function layersHtml(layers, alerts) {
   const kinds = new Set(alerts.flatMap((a) => (a.detail?.points || []).map((p) => p.kind)));
   const shapes = alerts.some((a) => ACTIVE.has(a.phase) && a.detail?.shapes?.length);
-  const areas = alerts.some((a) => ACTIVE.has(a.phase) && a.detail?.areas?.length);
-  const key = [shapes ? html`<li><span class="sw sw-shape"></span>Zona de un aviso del SENAMHI</li>` : '', areas ? html`<li><span class="sw sw-area"></span>Distritos con quebradas en aviso</li>` : '',
+  const areaKinds = new Set(alerts.filter((a) => ACTIVE.has(a.phase)).flatMap((a) => (a.detail?.areas || []).map((ar) => ar.kind || 'quebradas')));
+  const key = [shapes ? html`<li><span class="sw sw-shape"></span>Zona de un aviso del SENAMHI</li>` : '', areaKinds.has('quebradas') ? html`<li><span class="sw sw-area"></span>Distritos con quebradas en aviso</li>` : '',
+    areaKinds.has('provincia') ? html`<li><span class="sw sw-area sw-prov"></span>Provincias expuestas (aviso de corto plazo)</li>` : '',
     ...[['estacion', 'sw-k-estacion', 'Estación hidrológica'], ['epicentro', 'sw-k-epicentro', 'Epicentro'], ['volcan', 'sw-k-volcan', 'Volcán'],
-      ['focos', 'sw-k-focos', 'Focos de calor (celdas de ~11 km)'], ['centro-poblado', 'sw-k-cp', 'Centro poblado del reporte']]
+      ['focos', 'sw-k-focos', 'Focos de calor (celdas de ~11 km)'], ['centro-poblado', 'sw-k-cp', 'Centro poblado del reporte'],
+      ['cuerpo-de-agua', 'sw-k-agua', 'Río, quebrada o laguna del reporte (con su tramo)']]
       .filter(([k]) => kinds.has(k)).map(([, c, t]) => html`<li><span class="sw ${c}"></span>${t}</li>`)].filter(Boolean);
   return html`<div class="amap-layers" role="group" aria-label="Capas del mapa">
     <button type="button" class="kind-chip" data-layer="detalle" aria-pressed="${String(layers.detalle)}">Formas y puntos</button>

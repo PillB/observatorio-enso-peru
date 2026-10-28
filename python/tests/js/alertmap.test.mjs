@@ -113,3 +113,35 @@ it('las cuencas de la ANA, cada una con su nombre y su código', () => {
   assert.equal(out, '<g class="amap-basins" aria-hidden="true"><path d="M1 1h1z" data-tip="Cuenca Piura\nUnidad hidrográfica 13951 de la ANA"></path></g>');
   assert.equal(basinsMarkup(null), '');
 });
+
+it('un río o una quebrada del reporte: su punto y el círculo de su tramo; una provincia expuesta: su trazo, debajo de los distritos', () => {
+  const item = { ...RATED, id: 'coen', title: 'Aviso de corto plazo', severity: { ...RATED.severity, rank: 2 },
+    geo: { places: [{ code: '20', level: 'departamento', name: 'Piura', confidence: 0.95, method: 'campo' }] },
+    detail: {
+      areas: [{ code: '200201', name: 'Ayabaca', n: 3 }, { code: '2002', name: 'Ayabaca', kind: 'provincia' }],
+      points: [{ name: 'Quebrada Jicamarca', lat: -11.98, lon: -76.896, kind: 'cuerpo-de-agua', radiusKm: 10,
+        basin: { code: '137554', name: 'Cuenca Rímac' } }],
+    } };
+  const m = prepare({ groups: [{ id: 'alertas', items: [item] }] }, NOW);
+  const out = detailMarkup(GEO, m.alerts, {}, { districts: { 200201: { d: 'M1 1h2v2z' }, 2002: { d: 'M0 0h9v9z' } } });
+  const [x, y] = project(GEO, -76.896, -11.98);
+  const reach = ((10 / 111) * 40).toFixed(1);
+  assert.match(out, new RegExp(`<g class="amap-pt k-cuerpo-de-agua s-r2"[^>]*data-tip="Quebrada Jicamarca\\nAviso de corto plazo\\nCuenca Rímac · ±10 km"><circle class="amap-reach" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${reach}">`));
+  const areas = [...out.matchAll(/<path class="amap-area([^"]*)" d="([^"]+)"[^>]*data-tip="([^"]+)"/g)];
+  assert.deepEqual(areas.map((a) => a[2]), ['M0 0h9v9z', 'M1 1h2v2z']);
+  assert.match(areas[0][1], /amap-prov s-r2/);
+  assert.match(areas[0][3], /^Provincia de Ayabaca: expuesta según el aviso de corto plazo\nAviso de corto plazo$/);
+});
+
+it('la lista de alertas nombra el centro poblado, el río y la cuenca del aviso', async () => {
+  const { fineTags } = await import('../../../public/assets/js/alertmap.js');
+  const item = { detail: { points: [
+    { kind: 'centro-poblado', name: 'Panamá', basin: { name: 'Cuenca Crisnejas' } },
+    { kind: 'cuerpo-de-agua', name: 'Quebrada Jicamarca', basin: { name: 'Cuenca Rímac' } },
+    { kind: 'estacion', name: 'Estación Chulucanas', basin: { name: 'Cuenca Piura' } },
+  ] } };
+  const out = String(fineTags(item));
+  assert.deepEqual([...out.matchAll(/tag-fine"[^>]*>(?:<svg[\s\S]*?<\/svg>)?([^<]+)</g)].map((x) => x[1]), ['Panamá', 'Quebrada Jicamarca']);
+  assert.deepEqual([...out.matchAll(/tag-basin"[^>]*>([^<]+)</g)].map((x) => x[1]), ['Cuenca Crisnejas', 'Cuenca Rímac']);
+  assert.equal(String(fineTags({})).trim(), '');
+});

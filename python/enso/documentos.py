@@ -649,6 +649,8 @@ def apply(items: list[dict], cache: dict) -> int:
         if isinstance(doc.get("localidades"), list):
             it["localities"] = [p for p in doc["localidades"] if isinstance(p, dict)][:12]
         codes = [c for c in doc.get("codes") or [] if isinstance(c, str)]
+        if doc.get("basis") == "provincias expuestas del boletín del COEN":
+            it["provinces"] = [c for c in codes if len(c) == 4]  # el mapa de alertas dibuja cada provincia
         if len(codes) > MAX_PLACES:  # un aviso de corto plazo nombra cien provincias: basta su departamento
             codes = list(dict.fromkeys(c[:2] for c in codes))
         if codes:

@@ -145,6 +145,46 @@ el centro poblado que nombran queda a una mediana de 0,34 km de ese punto (81 % 
 5 km). Los volcanes van en el punto de su cumbre según el Global Volcanism Program del Smithsonian, que cae en la
 provincia que nombra el IGP.
 
+## Ríos, quebradas y lagunas (`python/enso/aguas.py`)
+
+Muchos reportes no nombran un caserío sino el cauce: «crecida del río Chiguata», «huaico en la quebrada Pedregal»,
+«desborde de la laguna…». Para esos hay una tercera tabla, `python/enso/data/aguas.json.gz` (700 kB), armada a mano
+con `python -m tools.build_aguas` desde la Carta Nacional 1:100 000 del IGN en el geoportal de la IDEP
+(`PERU_100K`, capas «Río Lineal», «Lago y Laguna» y «Toponimia»; su robots.txt responde 404, sin reglas):
+
+- **47 mil nombres por distrito**: 38 mil ríos y quebradas, 8 800 lagunas, 540 nevados, 28 volcanes y 108 abras.
+  Cada tramo con nombre se densifica (un punto cada 400 m) y cada punto va al distrito que lo contiene. Por distrito
+  y nombre, el **punto** es el del cauce más cercano al centro de su tramo en el distrito (siempre sobre el agua), el
+  **radio** es la distancia al punto más lejano del tramo y la **cuenca** es la de la ANA donde cae la mayor parte del
+  tramo. Un río y una quebrada del mismo nombre en un distrito son un mismo curso (el IGN llama «Quebrada» al tramo de
+  arriba). Una laguna en el límite de dos distritos queda en cada uno con la parte de su orilla que cae en él.
+- **Los nombres de la Carta se corrigen** donde la errata cambia la clave: «¥» por «ñ» («Le¥a» → «Leña»), «R¡o»,
+  comillas y signos sueltos, mayúsculas con tilde dentro de una palabra («GavilÁn»), palabras pegadas («RioTirutaña»),
+  abreviaturas («Qda.», «Lag.»). Los nombres alternativos que trae la Carta («Río Chili (Sumbay)», «Río Salla o
+  Cotacucho», «Volcán Yucamane (Ver Yucamani)») también se reconocen (`alias`).
+
+`Aguas.find` busca un nombre **solo detrás de la palabra que dice qué es** («río», «quebrada», «qda.», «riachuelo»,
+«laguna», «nevado», «volcán», «abra»…), solo en el distrito ya ubicado y solo con esa clase (una «laguna X» no es la
+quebrada X). Reglas para no confundir:
+
+- Un nombre que también es adjetivo («Seca», «Honda», «Grande», «Negra») solo cuenta con mayúscula en un texto que
+  no está todo en mayúsculas, o en un campo de lugar: «la quebrada seca» describe, «la quebrada Seca» nombra.
+- De varias palabras se toma el nombre más largo que existe; uno más corto solo si lo que sigue no puede ser parte
+  del nombre: «río Santa Eulalia» no es el río Santa.
+- Una lista («ríos Moche y Chicama») con un nombre que no está en el distrito no da punto: el lugar no es solo el
+  tramo del otro.
+- El nombre da **punto** solo si su radio es de 10 km o menos y menor que tres cuartos del radio del distrito; si no
+  (un río que cruza el distrito de punta a punta), da solo la **cuenca**, si el 60 % o más del tramo está en una.
+  Al radio se le suma un margen (2 km para un cauce, 1 km para una laguna, un nevado o un abra): el daño está cerca
+  del cauce, no sobre él.
+- Si la fuente también nombra un centro poblado, aunque sea la capital del distrito («inundación en Aucayacu por
+  desborde del río Huallaga»), el lugar es ese y no el tramo del río.
+
+Validación (`python/tests/test_aguas.py`): cada nombre es válido y su cuenca existe; 1 de cada 25 puntos cae en su
+distrito; los casos de arriba; y, contra las fichas del SINPAD con punto de campo que nombran un río o una quebrada
+con tramo corto (49), el punto del nombre queda a una mediana de 2,6 km del medido (la capital del distrito, a 11,5
+km), el 73 % dentro del radio y el 84 % más cerca que la capital.
+
 ## Exactitud geográfica: cómo se verifica
 
 `tests/test_geolocalizacion.py` contrasta todo con la lista oficial de distritos del INDECI
@@ -319,6 +359,7 @@ comprimido) una vez por sesión y luego lo revalida (304 si no cambió).
 | `python/enso/geo.py` | Nomenclátor, reglas del texto, `locate_item` y el objeto `geo` |
 | `python/enso/limites.py` | Punto en polígono con incertidumbre, mar y lago |
 | `python/enso/lugares.py` | Centros poblados y cuencas dentro del distrito |
+| `python/enso/aguas.py`, `python/tools/build_aguas.py` | Ríos, quebradas, lagunas, nevados y abras dentro del distrito, y su regeneración desde la Carta Nacional del IGN |
 | `python/tools/build_lugares.py`, `build_cuencas_mapa.py` | Regeneran los centros poblados, las cuencas y su trazo para los mapas (`public/assets/cuencas-mapa.json`) |
 | `python/enso/geo_overrides.py` | Reubica el histórico, aplica correcciones y publica `geo/*.json` |
 | `python/tools/geo_eval.py` | Mide la precisión sobre los conjuntos etiquetados |

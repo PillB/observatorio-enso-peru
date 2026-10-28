@@ -50,10 +50,13 @@ precisión. Viene en `detail` de cada alerta de `feed.json` (`sourcefeed._detail
 | **Volcán** (triángulo) | La cumbre según el Global Volcanism Program del Smithsonian (`hazardparse.VOLCANO_POINTS`), con su enlace | |
 | **Focos de calor** (punto chico) | FIRMS agrupado en celdas de 0,1° (unos 11 km); el tamaño crece con los focos | |
 | **Centro poblado** (anillo) | Los que nombra el reporte del COEN o su PDF, buscados solo dentro del distrito del reporte (`lugares.localities`, `documentos.table_localities`); un nombre repetido en el distrito no se elige | |
+| **Río, quebrada o laguna** (círculo con borde punteado) | El que nombra el reporte («activación de la quebrada Pedregal»), con la palabra que dice qué es, buscado solo dentro del distrito del reporte en la Carta Nacional del IGN (`aguas.waters`) cuando no nombra un centro poblado. Solo si su tramo en el distrito es corto (10 km o menos y menos de tres cuartos del radio del distrito): un río que cruza el distrito no dice dónde fue | El círculo punteado es su tramo (el radio) |
+| **Provincia expuesta** (trazo de la provincia) | Las provincias que el COEN lista como expuestas en su boletín de avisos de corto plazo (`documentos`, `sourcefeed._detail`) | Con el color del nivel, debajo de los distritos |
 
 Las formas van del nivel más bajo al más alto (el rojo queda arriba) y debajo del anillo del departamento elegido.
 Pasar el cursor por una forma o un punto muestra qué es, el aviso y, si se sabe, el río, la cuenca y la
-incertidumbre. La capa «Cuencas (ANA)» (apagada al abrir) dibuja las 231 cuencas e intercuencas de la ANA
+incertidumbre. En la lista de alertas, cada aviso con un centro poblado, un río o una cuenca lo dice con una etiqueta
+(`alertmap.fineTags`). La capa «Cuencas (ANA)» (apagada al abrir) dibuja las 231 cuencas e intercuencas de la ANA
 (`public/assets/cuencas-mapa.json`, `python -m tools.build_cuencas_mapa`). Para no pesar, `feed.json` lleva hasta
 400 puntos y 600 distritos por aviso.
 

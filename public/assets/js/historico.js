@@ -447,7 +447,7 @@ function page(D, s) {
           ${s.area && s.nivel !== 'departamento' ? html`<button type="button" class="btn ghost hz-zoomout" data-area="">${raw(ICON.globe)}<span>Ver todo el Perú</span></button>` : ''}
           ${legendHtml(scale, s.metrica)}
           <div class="hz-layers" role="group" aria-label="Capas del mapa"><button type="button" class="kind-chip" data-layer="cuencas" aria-pressed="${String(s.cuencas === '1')}"><span class="hz-sw-basin" aria-hidden="true"></span>Cuencas (ANA)</button>
-            <span class="muted small" id="hz-pts-note">${s.area ? 'Cargando los puntos de los registros…' : 'Elija un área para ver sus registros como puntos: el punto de campo de la fuente o el centro poblado que nombran.'}</span></div>
+            <span class="muted small" id="hz-pts-note">${s.area ? 'Cargando los puntos de los registros…' : 'Elija un área para ver sus registros como puntos: el punto de campo de la fuente, el centro poblado o el río que nombran.'}</span></div>
           <p class="muted small">${s.nivel === 'departamento' ? 'Toque un departamento para ver su ficha.' : 'Toque un área para ver su ficha y acercar el mapa a su departamento. También puede buscarla arriba o elegirla en la tabla.'} Los registros a escala de departamento no se pintan en provincias ni distritos. Desde y hasta son temporadas de julio a junio (1997 = 1997-98).${s.evento ? ' Con un filtro de evento, «años con daños» cuenta solo los años con registros de ese evento y la razón de El Niño no aplica.' : ''}</p>
         </div>
         <aside class="hz-side" id="hz-side" aria-live="polite">${s.area ? profileShell(D, s, recs, years) : nationalCard(D, nat, recs, years, s)}</aside>
@@ -603,13 +603,18 @@ async function fillDetail(root, D, s) {
   const B = await basins();
   if (!box.isConnected) return;
   let shown = 12;
-  /** Dónde, más fino que el distrito: el centro poblado o el punto de la fuente, y la cuenca (la del punto, o la del
-   * distrito si el 80 % o más de él está en una). */
+  /** Dónde, más fino que el distrito: el punto de la fuente, el centro poblado o el río que nombra, y la cuenca (la
+   * del punto, la del río que nombra o la del distrito si el 80 % o más de él está en una). Si la fuente dio un punto
+   * por defecto (la capital, o uno que repite en todo el distrito), se dice. */
   const fine = (r, g) => {
     const basin = B.units[(g && g[5]) || B.districts[r.u]]?.n;
-    const where = g && g[2] === 1 ? `centro poblado ${g[3]} (±${F.fmtNumber(g[4], g[4] % 1 ? 1 : 0)} km)`
-      : g && g[2] === 0 ? `punto de campo de la fuente${g[3] ? `, en ${g[3]}` : ''}` : g && g[3] ? `nombra ${g[3]}` : '';
-    return [where, basin].filter(Boolean).join(' · ');
+    const km = (v) => `±${F.fmtNumber(v, v % 1 ? 1 : 0)} km`;
+    const water = g && g[6] && g[2] !== 3 ? `nombra ${g[6]}` : '';
+    const where = g && g[2] === 1 ? `centro poblado ${g[3]} (${km(g[4])})`
+      : g && g[2] === 3 ? `${g[6]} (su tramo en el distrito, ${km(g[4])})`
+        : g && g[2] === 0 ? `punto de campo de la fuente${g[3] ? `, en ${g[3]}` : ''}` : g && g[3] ? `nombra ${g[3]}` : '';
+    const dropped = g && g[7] ? DROPPED[g[7]] : '';
+    return [where, water, basin, dropped].filter(Boolean).join(' · ');
   };
   const item = (r) => {
     const d = det[String(r.i)] || [];
@@ -636,7 +641,9 @@ async function fillDetail(root, D, s) {
 // ---------------------------------------------------------------------------
 const SVG_NS = 'http://www.w3.org/2000/svg';
 /** Cómo se ubicó el punto de un registro (posición 13 del detalle, tools.build_historico._web_place). */
-const POINT_KIND = ['punto de campo de la fuente', 'centro poblado que nombra el registro', 'capital del distrito'];
+const POINT_KIND = ['punto de campo de la fuente', 'centro poblado que nombra el registro', 'capital del distrito', 'río, quebrada o laguna que nombra el registro (su tramo en el distrito)'];
+/** Por qué no se usó el punto que dio la fuente (posición 7 del lugar). */
+const DROPPED = { capital: 'el punto de la fuente era la capital (uno por defecto)', repetido: 'el punto de la fuente era uno que repite en todo el distrito', fuera: 'el punto de la fuente caía fuera del área' };
 
 /** Proyección de peru-map.json (tools.build_peru_map): grados → coordenadas del SVG. */
 function project(D, lat, lon) {
@@ -671,11 +678,11 @@ async function fillLayers(root, D, s) {
   if (!svg.isConnected) return;
   const mine = M.filter(D.recs, currentFilter(D, s)).filter((r) => r.u.startsWith(s.area));
   const at = new Map();
-  let n0_ = 0, n1 = 0;
+  let n0_ = 0, n1 = 0, n3 = 0;
   for (const r of mine) {
     const g = (det[String(r.i)] || [])[13];
-    if (!g || g[0] === null || g[2] > 1) continue;
-    g[2] ? n1++ : n0_++;
+    if (!g || g[0] === null || g[2] === 2) continue;
+    if (g[2] === 3) n3++; else if (g[2]) n1++; else n0_++;
     const k = `${g[0].toFixed(3)},${g[1].toFixed(3)},${g[2]}`;
     const spot = at.get(k) || { g, recs: [] };
     spot.recs.push(r);
@@ -687,14 +694,19 @@ async function fillLayers(root, D, s) {
     const r = unit * (2.2 + 1.3 * Math.sqrt(recs.length - 1));
     const basin = g[5] && B.units[g[5]] ? B.units[g[5]].n : '';
     const years = [...new Set(recs.map((q) => q.y))].sort();
-    const tipText = [g[3] || (g[2] ? 'Centro poblado' : 'Punto de la fuente'),
+    const tipText = [(g[2] === 3 ? g[6] : g[3]) || (g[2] ? 'Centro poblado' : 'Punto de la fuente'),
       `${recs.length} registro${recs.length > 1 ? 's' : ''} (${years.length > 1 ? `${years[0]}–${years.at(-1)}` : years[0]}): ${[...new Set(recs.map((q) => dl(q.t)))].slice(0, 3).join(', ')}`,
       `${POINT_KIND[g[2]]}${g[4] ? `, ±${F.fmtNumber(g[4], g[4] % 1 ? 1 : 0)} km` : ''}`, basin].filter(Boolean).join('\n');
+    if (g[2] === 3) {
+      // El tramo del río o la quebrada: su círculo sin relleno y el punto del cauce.
+      const reach = Math.max(r, ((g[4] || 0) / 111) * D.peru.lonLat.k);
+      return `<g class="hz-pt hz-pt-agua" data-tip="${esc(tipText)}"><circle class="hz-reach" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${reach.toFixed(2)}"></circle><circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r.toFixed(2)}"></circle></g>`;
+    }
     return `<circle class="${g[2] ? 'hz-pt hz-pt-cp' : 'hz-pt'}" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r.toFixed(2)}" data-tip="${esc(tipText)}"></circle>`;
   }).join(''));
   if (note) {
-    note.textContent = n0_ + n1
-      ? `${n0(n0_ + n1)} de los ${n0(mine.length)} registros de esta área tienen un punto más fino que su distrito: ${n0(n0_)} con el punto de campo de la fuente (punto lleno) y ${n0(n1)} en el centro poblado que nombran (anillo). Los demás solo se conocen por distrito.`
+    note.textContent = n0_ + n1 + n3
+      ? `${n0(n0_ + n1 + n3)} de los ${n0(mine.length)} registros de esta área tienen un punto más fino que su distrito: ${n0(n0_)} con el punto de campo de la fuente (punto lleno), ${n0(n1)} en el centro poblado que nombran (anillo) y ${n0(n3)} sobre el río, la quebrada o la laguna que nombran (círculo punteado: su tramo en el distrito). Los demás solo se conocen por distrito.`
       : `Ninguno de los ${n0(mine.length)} registros de esta área tiene un punto más fino que su distrito.`;
   }
 }
@@ -972,7 +984,7 @@ function evidenceSection(D) {
 }
 
 function srcList(S, k) {
-  const unit = { eventos: 'registros', emergencias: 'registros propios', prensa: 'registros propios', hemeroteca: 'registros propios', prevencion: 'elementos' }[k] || 'elementos';
+  const unit = { eventos: 'registros', complemento: 'fichas unidas', emergencias: 'registros propios', prensa: 'registros propios', hemeroteca: 'registros propios', prevencion: 'elementos' }[k] || 'elementos';
   return html`<ul class="link-list">${S.fuentes.filter((f) => (f.tipo || 'eventos') === k).map((f) => html`<li>${f.pagina || f.url ? html`<a href="${safeUrl(f.pagina || f.url)}" rel="noopener" target="_blank">${f.nombre}</a>` : f.nombre} <span class="muted small">${f.cobertura || ''}${f.registros ? ` · ${n0(f.registros)} ${unit}` : ''}${f.corroboran ? ` · corroboran ${n0(f.corroboran)}` : ''}${f.parcial ? ' · descarga en curso' : ''}${f.obtenido ? ` · copia del ${F.fmtDate(f.obtenido)}` : ''} · ${f.licencia || ''}</span>${f.nota ? html`<br><span class="muted small">${f.nota}</span>` : ''}</li>`)}</ul>`;
 }
 
@@ -990,9 +1002,9 @@ function methodSection(D) {
           <li><a href="${BASE}prevencion-distrito.csv">Prevención por distrito (CSV)</a> · <a href="${BASE}prevencion.json">declaratorias, evaluaciones y llamamientos (JSON)</a></li>
           <li><a href="${BASE}diccionario.csv">Diccionario de datos (CSV)</a> <span class="muted small">Tipo, contenido y regla de cada columna del catálogo, con el porcentaje de filas que traen el dato por fuente. Lea Ubigeo e IdFuente como texto (llevan ceros a la izquierda).</span></li>
         </ul>
-        ${[['eventos', 'Fuentes de eventos'], ['emergencias', 'Reportes de emergencia del COEN (se unen a las fichas del SINPAD)'], ['prensa', 'Prensa regional y nacional (cada nota se une al evento que cuenta)'], ['hemeroteca', 'Periódicos antiguos digitalizados (cada página se une al evento que cuenta)'], ['prevencion', 'Prevención: declaratorias, evaluaciones, inventarios y llamamientos'], ['contexto', 'Peligro identificado hoy (contexto, no eventos)'], ['referencia', 'Referencias territoriales']].map(([k, t]) => html`<h3 class="hz-h3">${t}</h3>
+        ${[['eventos', 'Fuentes de eventos'], ['complemento', 'Complementos de las fichas del SINPAD (cifras de daños y punto; no agregan registros)'], ['emergencias', 'Reportes de emergencia del COEN (se unen a las fichas del SINPAD)'], ['prensa', 'Prensa regional y nacional (cada nota se une al evento que cuenta)'], ['hemeroteca', 'Periódicos antiguos digitalizados (cada página se une al evento que cuenta)'], ['prevencion', 'Prevención: declaratorias, evaluaciones, inventarios y llamamientos'], ['contexto', 'Peligro identificado hoy (contexto, no eventos)'], ['referencia', 'Referencias territoriales']].map(([k, t]) => html`<h3 class="hz-h3">${t}</h3>
         ${k === 'prensa' ? html`<details class="more"><summary>${n0(S.fuentes.filter((f) => f.tipo === k).length)} medios</summary>${srcList(S, k)}</details>` : srcList(S, k)}`)}
-        <p class="muted small">Catálogo generado el ${F.fmtDate(S.generatedAt.slice(0, 10))}. Límites: INDECI (GEOSINPAD). Población, pobreza e IDH por distrito: INEI y PNUD vía ubigeo-peru-aumentado (MIT).</p>
+        <p class="muted small">Catálogo generado el ${F.fmtDate(S.generatedAt.slice(0, 10))}. Límites: INDECI (GEOSINPAD). Centros poblados: INEI (censo 2017), IGN y SDOT; ríos, quebradas, lagunas y nevados: IGN, Carta Nacional 1:100 000; cuencas: ANA (los tres vía el geoportal de la IDEP, PCM). Población, pobreza e IDH por distrito: INEI y PNUD vía ubigeo-peru-aumentado (MIT).</p>
       </div>
       <div>
         <h3 class="hz-h3">Cómo leer los indicadores</h3>
@@ -1008,8 +1020,8 @@ function methodSection(D) {
           <li>${S.cobertura.nota}</li>
           <li>DesInventar se arma con prensa nacional e informes del INDECI: hay más registros de ciudades y lugares accesibles, y menos antes de los años 90. Una zona sin registros no es una zona sin peligro.</li>
           <li>Las cifras de impacto son las que publicó cada fuente; un vacío significa «no reportado», no cero. Las fuentes discrepan entre sí (Huggel et al., 2015).</li>
-          <li>Los distritos se ubican con su UBIGEO o, si el nombre de la fuente está abreviado, con el punto de la fuente dentro de los límites vigentes del INDECI; las coordenadas son las de la fuente si caen en el distrito asignado y no son un punto por defecto (la capital, o el mismo punto para todo el distrito); si no, las del centro poblado oficial que nombra el registro (INEI, IGN o SDOT, con su incertidumbre en km); y si no, las de la capital del distrito (o un punto dentro del distrito si no se conoce su capital). La cuenca es la unidad hidrográfica de la ANA del punto, o la del distrito si el 80 % o más de él está en una. Solo 1 de cada 18 registros tiene un punto más fino que el distrito.</li>
-          <li>Desde 2019 el SINPAD se lee del portal público del INDECI, que da el peligro, el distrito, la fecha, el nivel y el estado de cada emergencia, pero no su descripción ni sus daños. Por eso esas fichas se ubican en la capital del distrito. El IDMC recopila las mismas emergencias: cuando una fila del IDMC coincide con una del SINPAD (mismo distrito, ±1 día), sus personas desplazadas y viviendas pasan a la fila del SINPAD y el IDMC queda como corroboración; las filas del IDMC por departamento son resúmenes de desplazamiento, no eventos aparte.</li>
+          <li>Los distritos se ubican con su UBIGEO o, si el nombre de la fuente está abreviado, con el punto de la fuente dentro de los límites vigentes del INDECI; las coordenadas son las de la fuente si caen en el distrito asignado y no son un punto por defecto (la capital, o el mismo punto para todo el distrito); si no, las del centro poblado oficial que nombra el registro (INEI, IGN o SDOT, con su incertidumbre en km); si no, las del río, la quebrada o la laguna que nombra, si su tramo en el distrito es corto (Carta Nacional del IGN, con su tramo en km); y si no, las de la capital del distrito (o un punto dentro del distrito si no se conoce su capital). La cuenca es la unidad hidrográfica de la ANA del punto, la del río que nombra el registro o la del distrito si el 80 % o más de él está en una. Solo 1 de cada 17 registros tiene un punto más fino que el distrito.</li>
+          <li>Desde 2019 el SINPAD se lee del portal público del INDECI, que da el peligro, el distrito, la fecha, el nivel y el estado de cada emergencia, pero no su descripción ni sus daños. Las cifras de daños (la evaluación EDAN de cada emergencia, también las de 2016-2018) y un punto vienen de la capa de emergencias del GEOSINPAD, unida por el código SINPAD; casi todos esos puntos son la capital o un mismo punto para todo el distrito, así que la mayoría de esas fichas sigue en la capital del distrito. El IDMC recopila las mismas emergencias: cuando una fila del IDMC coincide con una del SINPAD (mismo distrito, ±1 día), sus personas desplazadas y viviendas pasan a la fila del SINPAD y el IDMC queda como corroboración; las filas del IDMC por departamento son resúmenes de desplazamiento, no eventos aparte.</li>
           <li>Las filas ubicadas solo por provincia o departamento llevan las coordenadas de su capital (columna PrecisionGeo): en un mapa de puntos parecen agrupadas en las capitales.</li>
           <li>La fecha de una fila del COEN es la de su primer reporte encontrado y la de una nota, la de su publicación (columna FechaTipo): su confianza nunca es alta.</li>
         </ul>

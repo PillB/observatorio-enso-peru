@@ -585,6 +585,11 @@ table.grd .chip { white-space: normal; }
 .amap-svg .amap-pt.s-rep { fill: var(--bg-elev); }
 .amap-svg .amap-pt.k-focos { fill: var(--warm); stroke: none; fill-opacity: 0.8; }
 .amap-svg .amap-pt.k-centro-poblado { fill: var(--bg-elev); stroke-width: 2; }
+/* Un río o una quebrada del reporte: el punto del cauce y, sin relleno, el círculo de su tramo en el distrito. */
+.amap-svg .amap-pt.k-cuerpo-de-agua { stroke: var(--cool); stroke-width: 2; }
+.amap-svg .amap-pt.k-cuerpo-de-agua .amap-reach { fill: none; stroke: var(--cool); stroke-width: 1.2; stroke-dasharray: 3 2; pointer-events: none; }
+/* Provincias expuestas de un aviso de corto plazo: más tenues que los distritos con quebradas, que van encima. */
+.amap-svg .amap-area.amap-prov { fill-opacity: 0.45; stroke-width: 0.8; }
 .amap-svg .amap-pt:hover, .amap-svg .amap-area:hover { stroke: var(--focus); stroke-width: 2.4; }
 .amap-svg .amap-detail .dim { opacity: 0.3; }
 .amap-layers { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 8px; }
@@ -597,6 +602,9 @@ table.grd .chip { white-space: normal; }
 .sw.sw-k-volcan { width: 0; height: 0; border-radius: 0; background: none; border: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 11px solid var(--fg-2); }
 .sw.sw-k-focos { width: 8px; height: 8px; border-radius: 50%; background: var(--warm); border: 0; }
 .sw.sw-k-cp { width: 11px; height: 11px; border-radius: 50%; background: var(--bg-elev); border: 2px solid var(--fg); }
+.sw.sw-k-agua { width: 13px; height: 13px; border-radius: 50%; background: var(--amap-r2); border: 1.5px dashed var(--cool); box-shadow: inset 0 0 0 3px var(--bg-elev); }
+.sw.sw-area.sw-prov { opacity: 0.55; }
+.tag-basin { border-style: dashed; }
 /* Anillo del área elegida, en el mapa de avisos y en el de la memoria. Se dibuja al final del SVG,
    encima de todos los bordes; un trazo claro y otro oscuro lo hacen legible sobre cualquier color, y
    el brillo sube y baja para atraer la mirada. Queda quieto si se pide menos movimiento. */
@@ -785,6 +793,8 @@ table.grd .chip { white-space: normal; }
 .hz-svg .hz-basins path:hover, .amap-svg .amap-basins path:hover { stroke-width: 2.4; stroke-dasharray: none; }
 .hz-svg .hz-pt { fill: var(--fg); stroke: var(--bg-elev); stroke-width: 1.2; vector-effect: non-scaling-stroke; fill-opacity: 0.88; }
 .hz-svg .hz-pt-cp { fill: color-mix(in srgb, var(--bg-elev) 35%, transparent); stroke: var(--fg); stroke-width: 1.8; }
+.hz-svg .hz-pt-agua { fill: color-mix(in srgb, var(--cool) 70%, var(--bg-elev)); stroke: var(--fg); stroke-width: 1.4; }
+.hz-svg .hz-pt-agua .hz-reach { fill: none; stroke: var(--cool); stroke-width: 1.2; stroke-dasharray: 3 2; pointer-events: none; }
 .hz-svg .hz-pt:hover { stroke: var(--focus); stroke-width: 2.4; }
 .hz-layers { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 6px 0; }
 .hz-sw-basin { display: inline-block; width: 18px; height: 0; border-top: 2px dashed var(--cool); vertical-align: middle; margin-right: 6px; }

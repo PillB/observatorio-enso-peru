@@ -14,7 +14,7 @@ prevención: cuántas de esas emergencias ocurrieron donde el Estado ya tenía e
 1. [Qué pregunta responde](#qué-pregunta-responde)
 2. [Fuentes](#fuentes)
 3. [Columnas del catálogo](#columnas-del-catálogo)
-   - [Más fino que el distrito: centros poblados y cuencas](#más-fino-que-el-distrito-centros-poblados-y-cuencas)
+   - [Más fino que el distrito: centros poblados, ríos y cuencas](#más-fino-que-el-distrito-centros-poblados-ríos-y-cuencas)
 4. [Clasificación del peligro y del evento](#clasificación-del-peligro-y-del-evento)
 5. [Fuentes que cuentan el mismo evento](#fuentes-que-cuentan-el-mismo-evento)
 6. [Reglas de calidad](#reglas-de-calidad)
@@ -60,8 +60,9 @@ obtuvieron, el número de registros que aportan, los que se descartaron y por qu
 | Fuente | Años | Escala | Qué aporta | Licencia |
 |---|---|---|---|---|
 | [DesInventar Perú](https://www.desinventar.net/DesInventar/profiletab.jsp?countrycode=per) (Corporación OSSO, LA RED, UNDRR) | 1970-2015 | Distrito | La serie homogénea: fichas de prensa (El Comercio, La República, Expreso) y del INDECI, con impactos. 14 114 fichas de peligros de origen climático | Uso libre con atribución |
-| SINPAD (INDECI), [copia pública en ArcGIS Online](https://services8.arcgis.com/2qDHoDLqu6VOlf1y/arcgis/rest/services/Emergencias/FeatureServer/0) | 2016-2018 | Distrito y punto | 14 124 emergencias, entre ellas más de 4 000 del Niño Costero 2017. Sin cifras de daños | Información pública del INDECI; la copia no es oficial |
-| SINPAD (INDECI), [portal público del SINPAD](https://sinpad.indeci.gob.pe/portal/), por la consulta de emergencias que usa el portal | 2019-2026 | Distrito | 112 170 emergencias de origen climático con su código, peligro, fecha, nivel y estado. Sin descripción, punto ni cifras de daños | Información pública del INDECI (Ley N° 27806) |
+| SINPAD (INDECI), [copia pública en ArcGIS Online](https://services8.arcgis.com/2qDHoDLqu6VOlf1y/arcgis/rest/services/Emergencias/FeatureServer/0) | 2016-2018 | Distrito y punto | 14 124 emergencias, entre ellas más de 4 000 del Niño Costero 2017. Las cifras de daños vienen de la capa del GEOSINPAD (fila siguiente) | Información pública del INDECI; la copia no es oficial |
+| SINPAD (INDECI), [portal público del SINPAD](https://sinpad.indeci.gob.pe/portal/), por la consulta de emergencias que usa el portal | 2019-2026 | Distrito | 112 170 emergencias de origen climático con su código, peligro, fecha, nivel y estado. Sin descripción; las cifras de daños y el punto vienen de la capa del GEOSINPAD (fila siguiente) | Información pública del INDECI (Ley N° 27806) |
+| SINPAD (INDECI), [capa de emergencias del GEOSINPAD](https://geosinpad.indeci.gob.pe/indeci/rest/services/Emergencias/EMERGENCIAS_SINPAD/MapServer/0) (`SDE.EMERGENCIAS_TOTAL`) | 2016-2026 | Punto | No agrega fichas: completa las del SINPAD, unidas por código SINPAD con la misma provincia y la misma fecha (±1 día; 119 054 de 126 294). Trae la evaluación de daños (EDAN) de cada emergencia: fallecidos, desaparecidos, heridos, afectados, damnificados, viviendas, cultivos, locales educativos y de salud (55 382 fichas con cifras; las de vías no se usan porque mezclan metros y kilómetros). Desde 2019 da también un punto, casi siempre la capital o un mismo punto para todo el distrito: esos no se usan (`PuntoFuente`) | Información pública del INDECI (Ley N° 27806) |
 | [IDMC, actualizaciones de desplazamiento (IDU)](https://www.internal-displacement.org/database/displacement-data/), con datos del INDECI, por la API del IDMC | 2025-2026 | Distrito y punto | 4 895 emergencias que dejaron viviendas destruidas o inhabitables, con las personas desplazadas | CC BY-NC-SA 3.0 IGO |
 | [IDMC, desplazamientos por desastres (GIDD)](https://www.internal-displacement.org/database/displacement-data/), por la API del IDMC | 2019-2024 | Casi siempre departamento y mes | 1 015 eventos; cubre el ciclón Yaku y el Niño costero 2023-24 por departamento | CC BY-NC-SA 3.0 IGO |
 | [NASA, Global Landslide Catalog](https://gpm.nasa.gov/landslides/data.html) (copia en ArcGIS Online) | 2016-2020 | Punto | 22 deslizamientos y huaycos con la noticia que los reportó | Dominio público, con cita |
@@ -137,14 +138,16 @@ del tablero del equipo de prevención, con sus nombres exactos:
 | `Ubigeo` | Código vigente del INEI: 6 dígitos (distrito), 4 (provincia) o 2 (departamento). Es texto: al importarlo, léalo como texto para no perder el cero inicial («010101») |
 | `TipoEvento` | FEN 1982-83, FEN 1997-98, Niño Costero 2017, Ciclón Yaku 2023, FEN 2023-24, FEN 2026, La Niña costera…, Temporada de lluvias, Temporada de heladas y friaje, Sin asociación ENSO, ICEN pendiente (meses después del último ICEN publicado) |
 | `Fuente` | URL del registro o, si la fuente no tiene una página por registro (DesInventar, las capas de ArcGIS), de la fuente |
-| `Latitud`, `Longitud` | El punto de la fuente si cae en el distrito asignado y no es un punto por defecto; si no, el centro poblado que nombra la fuente; si no, la capital del distrito. En las filas de provincia o de departamento, la capital de la provincia o del departamento (`PrecisionGeo` lo dice, y [Más fino que el distrito](#más-fino-que-el-distrito-centros-poblados-y-cuencas) explica cada caso): en un mapa de puntos las de capital parecen agrupadas en las capitales |
+| `Latitud`, `Longitud` | El punto de la fuente si cae en el distrito asignado y no es un punto por defecto; si no, el centro poblado que nombra la fuente; si no, el río, la quebrada o la laguna que nombra, si su tramo en el distrito es corto; si no, la capital del distrito. En las filas de provincia o de departamento, la capital de la provincia o del departamento (`PrecisionGeo` lo dice, y [Más fino que el distrito](#más-fino-que-el-distrito-centros-poblados-ríos-y-cuencas) explica cada caso): en un mapa de puntos las de capital parecen agrupadas en las capitales |
 
-Y 50 columnas más para análisis y trazabilidad: `Id` estable (`<origen>-<id en la fuente>`), `Origen`, `IdFuente`,
+Y 52 columnas más para análisis y trazabilidad: `Id` estable (`<origen>-<id en la fuente>`), `Origen`, `IdFuente`,
 `FechaFin`, `PrecisionFecha`, `FechaTipo` (de qué es la fecha: `evento`; `informe`, la del primer reporte del COEN
 cuando su PDF no se leyó; `publicacion`, la de la nota de prensa; `texto`, la que cita la nota), `Anio`, `Mes`, `AnioHidrologico` (julio a junio), `GrupoPeligro`, `PeligroFuente` (el
 tipo como lo nombra la fuente), `DangerTypeMetodo` (fuente, texto, causa o por-omision), `CausaFuente`,
-`NivelUbigeo`, `PrecisionGeo`, `Lugar` (el centro poblado oficial que nombra la fuente), `LugarCodigo` (su código
-del INEI), `RadioKm` (la incertidumbre del punto del centro poblado), `Cuenca` y `CuencaCodigo` (la unidad
+`NivelUbigeo`, `PrecisionGeo`, `PuntoFuente` (qué se hizo con el punto de la fuente: `en-el-lugar`, o por qué no se usó:
+`por-defecto-capital`, `por-defecto-repetido`, `fuera-del-area`), `Lugar` (el centro poblado oficial que nombra la fuente),
+`LugarCodigo` (su código del INEI), `CuerpoAgua` (el río, la quebrada, la laguna o el nevado que nombra la fuente,
+según la Carta Nacional del IGN), `RadioKm` (la incertidumbre del punto del centro poblado o del tramo), `Cuenca` y `CuencaCodigo` (la unidad
 hidrográfica de la ANA), `Region` (macrorregión), `AltitudCapital`, `FaseENSO`, `EventoENSO`, `ICEN`, `ONI`,
 `AtribucionENSO`, catorce columnas de impactos (fallecidos, desaparecidos, heridos, afectados, damnificados,
 evacuados, reubicados, desplazados, viviendas destruidas y afectadas, hectáreas de cultivo, km de vías, centros
@@ -154,48 +157,73 @@ la de un reporte o una publicación), `Corroboracion`
 (cuántos reportes o notas de otras fuentes cuentan el mismo evento), `OrigenesCorroboran` y `FuentesAdicionales`
 (sus enlaces, separados por « | », hasta 10).
 
-### Más fino que el distrito: centros poblados y cuencas
+### Más fino que el distrito: centros poblados, ríos y cuencas
 
-El UBIGEO llega al distrito, que en la sierra y la selva puede medir cientos de km². Tres columnas dicen dónde fue,
-cuando la fuente lo dice (`tools/build_historico.py`, con el nomenclátor de `enso/lugares.py`):
+El UBIGEO llega al distrito, que en la sierra y la selva puede medir cientos de km². Las columnas de abajo dicen dónde
+fue, cuando la fuente lo dice (`tools/build_historico.py`, con `enso/lugares.py` y `enso/aguas.py`):
 
 | `PrecisionGeo` | De dónde sale el punto | Filas (oct. 2026) |
 |---|---|---|
-| `coordenada-fuente` | El punto que da la fuente (SINPAD, puntos del INGEMMET, la ANA), si cae dentro del distrito y no es un punto por defecto (abajo) | 6 904 |
-| `centro-poblado` | El centro poblado oficial que nombra la fuente en `Ubicacion` o `Descripción` («sector Panamá», «C.P. Pampamarca», «caserío La Pared»), si existe en ese distrito: su punto del INEI (censo 2017) o del IGN. Con varios, su punto medio. `Lugar` lo nombra y `RadioKm` da la incertidumbre: 1 km, 5 km si el INEI y el IGN lo ubican a más de 5 km uno del otro, o la distancia al lugar más lejano más 1 km si son varios | 1 491 |
-| `capital-distrito`, `interior-distrito`, `capital-provincia`, `capital-departamento` | Sin nada de lo anterior: la capital del área | 138 394 |
+| `coordenada-fuente` | El punto que da la fuente (SINPAD, puntos del INGEMMET, la ANA), si cae dentro del distrito y no es un punto por defecto (abajo) | 6 905 |
+| `centro-poblado` | El centro poblado oficial que nombra la fuente en `Ubicacion` o `Descripción` («sector Panamá», «C.P. Pampamarca», «caserío La Pared»), si existe en ese distrito: su punto del INEI (censo 2017) o del IGN. Con varios, su punto medio. `Lugar` lo nombra y `RadioKm` da la incertidumbre: 1 km, 5 km si el INEI y el IGN lo ubican a más de 5 km uno del otro, o la distancia al lugar más lejano más 1 km si son varios | 1 493 |
+| `cuerpo-de-agua` | Sin centro poblado: el río, la quebrada, la laguna o el nevado que nombra la fuente con la palabra que dice qué es («desborde del río Chiguata», «huaico en la quebrada Pedregal»), si existe en ese distrito en la Carta Nacional 1:100 000 del IGN y su tramo en el distrito es corto (radio de 10 km o menos y menor que tres cuartos del radio del distrito). `CuerpoAgua` lo nombra y `RadioKm` es su tramo más un margen (2 km para un cauce, 1 km para una laguna o un nevado). Si la fuente nombra la capital del distrito («inundación en Aucayacu por desborde del río Huallaga»), queda la capital | 366 |
+| `capital-distrito`, `interior-distrito`, `capital-provincia`, `capital-departamento` | Sin nada de lo anterior: la capital del área | 138 025 |
+
+`CuerpoAgua` también va lleno cuando el río nombrado es largo y no da punto (1 811 filas en total): entonces da solo la
+cuenca. Las reglas para no confundir un nombre (adjetivos como «Seca» u «Honda», «río Santa Eulalia» no es el río
+Santa, listas con un río de otro distrito) están en [georreferenciación](georreferenciacion.md#ríos-quebradas-y-lagunas-pythonensoaguaspy).
 
 **Puntos por defecto.** Muchas fichas del SINPAD traen como punto la capital del distrito, o el mismo punto para todas
 las emergencias de un distrito: no es el lugar del evento. Un punto a 0,5 km o menos de la capital del distrito, de la
 provincia o del departamento, o de su centro poblado capital del censo, o que se repite en 5 o más filas del mismo
-distrito sin un centro poblado que no sea la capital a 0,3 km, no cuenta como `coordenada-fuente` (6 744 y 467 filas
-en octubre de 2026). La fila pasa a `centro-poblado` si nombra uno, o queda en la capital.
+distrito (antes de 2019, sin un centro poblado que no sea la capital a 0,3 km; desde 2019, los de la capa del GEOSINPAD,
+siempre), no cuenta como `coordenada-fuente`. `PuntoFuente` dice qué pasó con cada punto de la fuente:
+`en-el-lugar` (6 905), `por-defecto-capital` (101 052), `por-defecto-repetido` (8 890) o `fuera-del-area` (2 393, el
+punto cae fuera del distrito que nombra la fuente). La fila pasa a `centro-poblado` o `cuerpo-de-agua` si nombra uno,
+o queda en la capital.
 
 **El nomenclátor** (`enso/data/lugares.json.gz`, 103 mil centros poblados con su distrito) junta los centros
 poblados del censo 2017 del INEI, los del IGN y los del SDOT, del geoportal de la IDEP. Un nombre que se repite en el
 distrito (dos «Tuen» en Chachapoyas) no se elige: la fila queda en la capital. Las palabras de, del, la, los no
 cuentan («San Antonio Matibamba» es «San Antonio de Matibamba»), y no valen el nombre del distrito, de la provincia, del
-departamento ni de la capital del distrito, que ya son el punto por defecto.
+departamento ni de la capital del distrito, que ya son el punto por defecto. **Los ríos** (`enso/data/aguas.json.gz`,
+47 mil ríos, quebradas, lagunas, nevados y abras con nombre, por distrito) salen de la Carta Nacional del IGN, del
+mismo geoportal.
 
 **Cuenca.** `Cuenca` y `CuencaCodigo` son la unidad hidrográfica de la ANA (las 231 cuencas e intercuencas de la
-metodología Pfafstetter, `enso/data/cuencas.json.gz`) en la que cae el punto, si es `coordenada-fuente` o
-`centro-poblado`; si no, la del distrito cuando el 80 % o más de su área está en una sola (84 % de las filas tiene
+metodología Pfafstetter, `enso/data/cuencas.json.gz`) en la que cae el punto, si es `coordenada-fuente`,
+`centro-poblado` o `cuerpo-de-agua`; si no, la del río que nombra la fuente, si el 60 % o más de su tramo en el
+distrito está en una; si no, la del distrito cuando el 80 % o más de su área está en una sola (84 % de las filas tiene
 cuenca). Así los registros de una misma cuenca se pueden sumar aunque estén en distritos o departamentos distintos.
 
-**Cómo se comprobó** (`tests/test_lugares.py`): con las filas cuyo punto de la fuente es bueno y que nombran un centro
-poblado, el punto del nomenclátor queda a una mediana de 0,34 km del de la fuente (81 % a menos de 2 km, 93 % a menos
-de 5 km); las 8 estaciones hidrológicas del SENAMHI caen en la cuenca de la ANA que el SENAMHI les asigna; ninguna
-fila `coordenada-fuente` está en una capital ni repite un punto por defecto, y cada punto cae en su distrito
-(`tests/test_geolocalizacion.py`).
+**Cifras de daños del SINPAD.** Las fichas del SINPAD de la copia de ArcGIS (2016-2018) y del portal (desde 2019) no
+traen daños. La capa de emergencias del GEOSINPAD sí: la evaluación de daños (EDAN) de cada emergencia, que se une a la
+ficha por su código, su provincia y su fecha (`fuentes.sinpad_edan`). Sus cifras reemplazan las de la fila (las del
+COEN o del IDMC eran de la misma evaluación, tomadas antes); la descripción lo dice («Daños según la evaluación (EDAN)
+del SINPAD: …») y `FuenteCita` cita la capa. Antes, 4 904 fichas del SINPAD desde 2019 tenían daños (las que el COEN o
+el IDMC corroboraban) y ninguna de 2016-2018; ahora, 46 322 y 9 442. Es un complemento: si la cosecha no pudo bajar la
+capa, el catálogo se construye sin ella (con `--desde-catalogo`, con las cifras que ya tenía) y la fuente queda como
+pendiente.
 
-En la pestaña, la ficha de cada registro dice su centro poblado (con ±km) o el punto de la fuente y su cuenca; el mapa
-dibuja los registros con un punto más fino que el distrito al elegir un área (punto lleno: el de la fuente; anillo: el
-centro poblado) y, con el botón «Cuencas (ANA)», los límites de las cuencas.
+**Cómo se comprobó** (`tests/test_lugares.py`, `tests/test_aguas.py`, `tests/test_sinpad_edan.py`): con las filas
+cuyo punto de la fuente es bueno y que nombran un centro poblado, el punto del nomenclátor queda a una mediana de 0,34
+km del de la fuente (81 % a menos de 2 km, 93 % a menos de 5 km); con las que nombran un río o una quebrada de tramo
+corto (49), a una mediana de 2,6 km (la capital del distrito, a 11,5 km), el 73 % dentro de su radio y el 84 % más
+cerca que la capital; las 8 estaciones hidrológicas del SENAMHI caen en la cuenca de la ANA que el SENAMHI les asigna;
+ninguna fila `coordenada-fuente` está en una capital ni repite un punto por defecto, y cada punto cae en su distrito
+(`tests/test_geolocalizacion.py`). Las cifras del SINPAD de enero a mayo de 2017 (166 fallecidos, 504 heridos, 19
+desaparecidos, 288 827 damnificados) quedan a menos del 3 % del balance oficial del INDECI del Niño Costero (162, 500,
+19 y unos 286 000, [agosto de 2017](https://elcomercio.pe/somos/nino-costero-estragos-tragedia-siguen-presentes-noticia-483625-noticia/)).
+
+En la pestaña, la ficha de cada registro dice su centro poblado o su río (con ±km), o el punto de la fuente, por qué no
+se usó el de la fuente si era uno por defecto, y su cuenca; el mapa dibuja los registros con un punto más fino que el
+distrito al elegir un área (punto lleno: el de la fuente; anillo: el centro poblado; círculo punteado: el tramo del
+río) y, con el botón «Cuencas (ANA)», los límites de las cuencas.
 
 Un impacto vacío significa «la fuente no lo reporta», no cero. `ImpactoEnTotales` es «no» solo cuando otra fila del
 mismo evento ya detalla esas cifras (un registro curado que resume un área); el resto suma a los totales.
 
-`diccionario.csv` (en `data/historico/` y en la pestaña) describe cada una de las 63 columnas: grupo, tipo, contenido,
+`diccionario.csv` (en `data/historico/` y en la pestaña) describe cada una de las 65 columnas: grupo, tipo, contenido,
 valores posibles y el porcentaje de filas que traen el dato, en total y por fuente. Se genera con el catálogo desde
 `enso/historico/esquema.py` (`COLUMN_DOCS`), así que no se desfasa.
 

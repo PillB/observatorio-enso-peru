@@ -13,6 +13,7 @@
 | INEI, compilado por J. M. Castagnetto (`ubigeo-peru-aumentado`) | Códigos UBIGEO, nombres y capitales (`python/enso/data/ubigeo.json`) | MIT; DOI 10.5281/zenodo.4589185 |
 | INEI (Censos Nacionales 2017), IGN y SDOT-PCM, vía el geoportal de la IDEP (PCM) | Centros poblados con su punto, categoría y código, para ubicar un aviso o un registro dentro de su distrito (`python/enso/data/lugares.json.gz`) | Información pública del Estado peruano (Ley N° 27806); se cita la institución y la capa de la IDEP |
 | ANA, vía el geoportal de la IDEP (PCM) | Unidades hidrográficas (metodología Pfafstetter, R.M. N° 033-2008-AG) para la cuenca de cada punto y la capa de cuencas de los dos mapas (`python/enso/data/cuencas.json.gz`, `public/assets/cuencas-mapa.json`) | Información pública (Ley N° 27806); se cita «ANA» |
+| IGN, Carta Nacional 1:100 000, vía el geoportal de la IDEP (PCM) | Ríos, quebradas, lagunas, nevados, volcanes y abras con nombre (capas «Río Lineal», «Lago y Laguna» y «Toponimia» de `PERU_100K`), para ubicar un aviso o un registro que nombra uno de ellos dentro de su distrito y dar su cuenca (`python/enso/data/aguas.json.gz`) | Información pública del Estado peruano (Ley N° 27806); se cita «IGN, Carta Nacional 1:100 000» y la capa de la IDEP |
 | SENAMHI, vía GEOSINPAD (INDECI) | Polígonos de los avisos de precipitación y de peligro de incendios, quebradas por distrito y estaciones hidrológicas, dibujados en el mapa de alertas | Información pública (Ley N° 27806); cada aviso enlaza su consulta a la capa |
 | Global Volcanism Program, Smithsonian Institution | Coordenadas de la cumbre de 14 volcanes del sur del Perú (`python/enso/hazardparse.py`, `VOLCANO_POINTS`) | Se cita «Global Volcanism Program, Volcanoes of the World (Smithsonian Institution)» con el enlace a la ficha de cada volcán |
 
@@ -35,7 +36,7 @@ con su enlace en `Fuente` y la cita legible en `FuenteCita`.
 | Institución o fuente | Productos usados | Condición |
 |---|---|---|
 | DesInventar Sendai (UNDRR / Corporación OSSO) | Base de pérdidas del Perú, 1970-2015 | Uso libre con atribución |
-| INDECI | SINPAD (portal público desde 2019 y la copia 2015-2018 subida por terceros a ArcGIS Online, no oficial) y reportes del COEN | Información pública (Ley N° 27806); se cita el INDECI con el enlace a cada emergencia o reporte |
+| INDECI | SINPAD (portal público desde 2019 y la copia 2015-2018 subida por terceros a ArcGIS Online, no oficial), la capa de emergencias del GEOSINPAD (cifras de la evaluación de daños, EDAN, y punto de cada emergencia desde 2016) y reportes del COEN | Información pública (Ley N° 27806); se cita el INDECI con el enlace a cada emergencia o reporte, y «evaluación (EDAN) del SINPAD, capa de emergencias del GEOSINPAD (INDECI)» en cada fila que trae sus cifras |
 | IDMC | Desplazamientos por desastres (IDU y eventos) | **CC BY-NC-SA 3.0 IGO**: las filas con `Origen = idmc` no se pueden usar con fines comerciales y lo que se derive de ellas se comparte con la misma licencia |
 | El Peruano | Declaratorias de emergencia y sus prórrogas | Normas legales, dominio público (D. Leg. 822, art. 9) |
 | INGEMMET, IGP, ANA, MINSA (vía CENEPRED) | Inventarios y zonas críticas, informes técnicos, puntos críticos, establecimientos de salud afectados en 2023 | Información pública (Ley N° 27806) |
