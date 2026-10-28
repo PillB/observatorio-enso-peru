@@ -76,6 +76,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Tutorial guiado](docs/tutorial-guiado.md): un recorrido interactivo por pestaña, que nunca tapa lo que muestra, y sus pruebas
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
+- [Privacy Policy y Terms of Use](docs/legal.md): de qué plantillas salen, qué se llenó y qué falta aprobar
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)
 
 ## Licencia

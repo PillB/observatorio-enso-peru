@@ -1053,3 +1053,12 @@ table.grd .chip { white-space: normal; }
 .hz-corr { display: flex; gap: 6px; align-items: flex-start; color: var(--fg-2); }
 .hz-corr svg { flex: none; width: 14px; height: 14px; margin-top: 2px; color: var(--ok, var(--fg-2)); }
 @media (max-width: 900px) { .hz-tiles-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Privacy Policy y Terms of Use (privacy.html, terms.html) */
+.legal { max-width: 860px; }
+.legal-doc { line-height: 1.6; overflow-wrap: anywhere; }
+.legal-doc h2 { font-size: 1.2rem; margin: 1.6em 0 0.5em; }
+.legal-doc h3, .legal-doc h4 { font-size: 1rem; margin: 1.2em 0 0.4em; }
+.legal-doc table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 0.9rem; display: block; overflow-x: auto; }
+.legal-doc th, .legal-doc td { border: 1px solid var(--line); padding: 6px 8px; vertical-align: top; text-align: left; }
+.legal-doc mark.pending { background: var(--watch-bg); color: var(--watch); padding: 0 2px; border-radius: 3px; }
+.legal-nav { margin: 16px 0 0; color: var(--fg-2); font-size: 0.9rem; }
