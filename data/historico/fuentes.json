@@ -36,7 +36,7 @@
       "pagina": "https://services8.arcgis.com/2qDHoDLqu6VOlf1y/arcgis/rest/services/Emergencias/FeatureServer/0",
       "archivo": "sinpad-emergencias-2015-2018.json",
       "licencia": "Información pública del INDECI; la copia la subió una cuenta de terceros (no oficial)",
-      "cobertura": "2016-2018 (las de 2015 ya están en DesInventar): emergencias de origen climático con distrito y punto, sin cifras de daños",
+      "cobertura": "2016-2018 (las de 2015 ya están en DesInventar): emergencias de origen climático con distrito y punto; las cifras de daños vienen de la capa de emergencias del GEOSINPAD (complemento)",
       "nota": "Cada registro enlaza a su emergencia en el servicio (consulta por código SINPAD). La copia no es oficial: si el INDECI publica la serie, debe reemplazarla.",
       "sha256": "8827cb0db4a4e73400937948ced73aeae9bd512f1dbfb9d35462be76f86259a0",
       "obtenido": "2026-10-26",
@@ -62,7 +62,7 @@
       },
       "archivo": "sinpad-api-emergencias.json",
       "licencia": "INDECI, información pública (Ley N° 27806)",
-      "cobertura": "2019 en adelante: emergencias de origen climático por distrito, con peligro, fecha, nivel y estado; sin descripción, coordenadas ni cifras de daños",
+      "cobertura": "2019 en adelante: emergencias de origen climático por distrito, con peligro, fecha, nivel y estado; sin descripción. Las cifras de daños y el punto vienen de la capa de emergencias del GEOSINPAD (complemento)",
       "nota": "Es la consulta que usa el portal del SINPAD (desde el 01-01-2019), mes por mes y en páginas de 100, con 5 s entre pedidos. Cada registro enlaza a su emergencia en esa consulta (por código SINPAD).",
       "sha256": "cba8960013915bedd877b83ad420e953b57ab0ae89d6d3bda036ddf2b93045ea",
       "obtenido": "2026-10-26",
@@ -71,6 +71,30 @@
         "no climático": 19706,
         "sin causa climática": 2535,
         "sin tipo": 1591
+      }
+    },
+    {
+      "id": "sinpad-geosinpad",
+      "tipo": "complemento",
+      "nombre": "Emergencias del SINPAD (INDECI) con su evaluación de daños y su punto, capa del GEOSINPAD",
+      "lector": "sinpad-edan",
+      "descarga": "arcgis",
+      "url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Emergencias/EMERGENCIAS_SINPAD/MapServer/0",
+      "pagina": "https://geosinpad.indeci.gob.pe/",
+      "archivo": "sinpad-geosinpad-emergencias.json",
+      "licencia": "INDECI, información pública (Ley N° 27806)",
+      "cobertura": "2016 en adelante: las cifras de la evaluación de daños (EDAN) de cada emergencia y, desde 2019, su punto; se unen por código SINPAD a las fichas del SINPAD (no agrega fichas)",
+      "nota": "Capa SDE.EMERGENCIAS_TOTAL del GEOSINPAD (robots.txt: 404, sin reglas), en bloques de 1 000 con 1 s entre pedidos. Las cifras de vías (carreteras y caminos) mezclan metros y kilómetros, así que no se usan. La mayoría de los puntos son la capital o un mismo punto para todo el distrito: esos no se usan como punto de campo (columna PuntoFuente).",
+      "campos": "OBJECTID,IDE_SINPAD,FECHA,ANHO,COD_UBIGEO,FENOMENO,SAFECTA,SDAMNI,SFALLE,SLESI,SDESA,SDESTRUVIVI,SINHABIVIVI,SAFECTAVIVI,SAREACULTI_AFECTA,SAREACULTI_PERDIDO,SCARRE_AFECTA,SCARRE_DESTRU,SCAMIRURAL_AFECTA,SCAMIRURAL_DESTRU,SCCEE_AFECTA,SCEE_DESTRU,SAFECTA_SALUD,SDESTRU_SALUD,SINHABI_SALUD,NUM_POSX,NUM_POSY,FLG_SITUACION",
+      "consulta": "ANHO >= '2016'",
+      "geometria": false,
+      "sha256": "82e2030ccea255e11fb67943f6956b119677909cee42d58997d21f4cc115a5c9",
+      "obtenido": "2026-10-28",
+      "registros": 119054,
+      "detalle": {
+        "con cifras de daños": 55382,
+        "sin par en la capa": 7240,
+        "unidas": 119054
       }
     },
     {
@@ -1804,10 +1828,11 @@
     "nombres del nomenclátor actualizados": 40,
     "nota de prensa que no es un evento": 15,
     "punto de la fuente en un distrito creado después de 2020: UBIGEO del punto": 52,
-    "punto de la fuente fuera del área asignada: capital": 27,
-    "punto del centro poblado que nombra la fuente": 1491,
+    "punto de la fuente fuera del área asignada: capital": 2420,
+    "punto del centro poblado que nombra la fuente": 1715,
     "punto del nomenclátor actualizado (interior-distrito)": 1117,
-    "punto por defecto de la fuente (capital): no es el lugar del evento": 6744,
-    "punto por defecto de la fuente (repetido): no es el lugar del evento": 467
+    "punto del río, la quebrada o la laguna que nombra la fuente": 365,
+    "punto por defecto de la fuente (capital): no es el lugar del evento": 107796,
+    "punto por defecto de la fuente (repetido): no es el lugar del evento": 9357
   }
 }
