@@ -1,14 +1,16 @@
-# Privacy Policy y Terms of Use
+# Política de Privacidad y Términos de Uso
 
-El sitio publica dos páginas legales, enlazadas desde el pie de página y el sitemap:
+El sitio publica cuatro páginas legales, enlazadas desde el pie de página y el sitemap:
 
-- [`public/privacy.html`](../public/privacy.html): *Privacy Policy (GDPR Enhanced)*, que cubre las leyes de
-  privacidad de los estados de EE. UU. y, en su «Notice to European users», el RGPD de la UE y el UK GDPR.
-- [`public/terms.html`](../public/terms.html): *Website Terms of Use*.
+| Página | Contenido |
+|---|---|
+| [`public/privacidad.html`](../public/privacidad.html) · [`public/privacy.html`](../public/privacy.html) | Política de Privacidad / *Privacy Policy*: leyes de privacidad de los estados de EE. UU., RGPD de la UE y UK GDPR, y la Ley N° 29733 del Perú |
+| [`public/terminos.html`](../public/terminos.html) · [`public/terms.html`](../public/terms.html) | Términos de Uso / *Terms of Use* |
 
-Son **borradores**: el texto es la plantilla tal cual, con solo los datos del sitio llenados. Lo que falta decidir
-se ve resaltado en la página (`<mark class="pending">`) y se lista abajo. No se publican hasta que el propietario
-apruebe los cambios.
+Las cuatro se generan con `python3 scripts/legal/build.py` a partir de su texto en
+[`scripts/legal/src/`](../scripts/legal/src/); `tests/test_legal_pages.py` falla si una página no coincide con su
+fuente. Los datos que el propietario todavía no ha dado se ven resaltados en la página (`<mark class="pending">`) y
+se listan al final.
 
 ## De dónde sale el texto
 
@@ -38,10 +40,10 @@ de una empresa):
   reglamento D.S. N° 016-2024-JUS) publica la *Guía práctica para la observancia del deber de informar*
   (R.D. N° 80-2019-JUS/DGTAIPD), que dice qué informar y exige hacerlo en castellano, pero no trae un texto modelo.
 
-## Qué se llenó
+## Primera versión: la plantilla con los datos llenados
 
-Solo campos para llenar y las elecciones que la propia plantilla plantea («A / B», «select one and delete the
-other»):
+La primera versión (commit `f8b7931`, solo en inglés) era la plantilla tal cual, con solo los campos para llenar y
+las elecciones que la propia plantilla plantea («A / B», «select one and delete the other»):
 
 | Campo | Valor |
 |---|---|
@@ -62,42 +64,62 @@ Además, solo de presentación: el encabezado de borrador de la plantilla («TEM
 la línea de fecha, los enlaces del índice apuntan al título correcto (la conversión del `.docx` los desplazaba), los
 títulos bajan un nivel bajo el `<h1>` de la página y se quitaron los anchos de columna en línea que la CSP bloquea.
 
-Los pasos están en [`scripts/legal/`](../scripts/legal/): `fill.py` (campos) y `wrap.py` (página). Necesitan
-`pandoc` para convertir los `.docx`:
+Esa versión se reproduce con `scripts/legal/fill.py` (campos) y `wrap.py` (página), que necesitan `pandoc` para
+convertir los `.docx`:
 
 ```bash
 git clone https://github.com/General-Legal/legal-templates /tmp/gl && cd /tmp/gl && git checkout 6d68054 && cd -
 for f in privacy-policy-gdpr-enhanced terms-of-use; do pandoc /tmp/gl/docx-originals/$f.docx -t html5 --wrap=none -o /tmp/$f.html; done
 python3 scripts/legal/fill.py /tmp /tmp
-python3 scripts/legal/wrap.py /tmp public /tmp/gl/templates/terms-of-use/template.md
+mkdir -p /tmp/legal-v1 && python3 scripts/legal/wrap.py /tmp /tmp/legal-v1 /tmp/gl/templates/terms-of-use/template.md
 ```
+
+## Cambios aprobados por el propietario (28 de octubre de 2026)
+
+El propietario aprobó adaptar las plantillas al sitio y traducirlas al castellano. Sobre la primera versión:
+
+1. **Datos que no se recogen.** Se quitaron de la Política de Privacidad los datos de contacto, perfil, transacciones,
+   marketing, finanzas, documentos de identidad, pagos, concursos y datos de terceros; la publicidad por intereses,
+   el marketing directo, los eventos, el chat y la IA (el asistente del sitio es determinista), el inicio de sesión
+   con redes sociales, la geolocalización, las invitaciones y los perfiles públicos; y en los Términos, la publicidad
+   de terceros y la interacción entre usuarios.
+2. **Lo que sí ocurre.** Se describe, con el texto de la plantilla donde servía: los datos de comunicaciones, las
+   cuentas de las consolas de revisión (usuario, hash de la contraseña, sesión y registro de acciones con su IP), las
+   fuentes públicas que el sitio vuelve a publicar, los registros del alojamiento, que el sitio público no usa
+   cookies, las preferencias en `localStorage` y los contadores anónimos de los mapas (`ab.js`), que no se envían con
+   «No rastrear» o Global Privacy Control. La plantilla decía «We currently do not respond to Do Not Track
+   signals», que aquí no es cierto.
+3. **Sede.** «Headquartered in the United States» y «U.S.-based company» pasan a «estamos en el Perú», con los
+   proveedores de alojamiento (GitHub Pages y Cloudflare Pages) en EE. UU.
+4. **Tabla CCPA, representantes del RGPD (art. 27) y DPO.** Se quitaron, junto con los formularios y teléfonos para
+   ejercer derechos (todo va al correo de contacto) y los avisos de Nevada, Texas y «Shine the Light» de California.
+   La tabla de bases jurídicas del RGPD quedó con las finalidades reales. Las transferencias a EE. UU. citan el Marco
+   de Privacidad de Datos UE-EE. UU. (decisión de adecuación del 10 de julio de 2023), que la plantilla no
+   mencionaba: decía que EE. UU. no tiene decisión de adecuación.
+5. **Perú.** Nueva sección «Aviso para usuarios en el Perú» (Ley N° 29733 y su reglamento, D.S. N° 016-2024-JUS):
+   titular y banco de datos, finalidades, datos obligatorios y consecuencia de no darlos, transferencias,
+   conservación, derechos ARCO gratuitos y reclamación ante la ANPD.
+6. **Licencia.** En los Términos, las secciones 2.1 y 2.2 (uso personal y no comercial; prohibido copiar,
+   redistribuir y hacer obras derivadas) pasan a una licencia que remite a la MIT del código y a las condiciones de
+   cada fuente de datos; «All rights reserved» se quitó.
+7. **Ley y disputas.** Ley peruana y tribunales de Lima, sin perjuicio de los derechos imperativos del consumidor en
+   su país; se quitaron el arbitraje JAMS, la renuncia a acciones colectivas y al jurado, la renuncia a la sección
+   1542 del Código Civil de California, la cláusula de control de exportaciones de EE. UU. y el tope de
+   responsabilidad atado a «lo pagado» (el sitio es gratuito: queda en 50 dólares).
+8. **Avisos por estado de EE. UU., cuentas y edad mínima.** Se quitaron la sección 9 de los Términos (sus derechos de
+   privacidad siguen en la Política) y el requisito de tener 18 años; las cuentas se limitan a las consolas de
+   revisión. En la Política, «menores de edad» deja de fijar 18 años y dice que el sitio no está dirigido a menores.
+9. **Castellano.** `privacidad.html` y `terminos.html` traducen fielmente las versiones en inglés adaptadas. La
+   nota al pie de General Legal se conserva en inglés en las cuatro páginas.
+
+Además se corrigieron enlaces muertos de la plantilla: la lista de autoridades de protección de datos del EDPB y el
+texto del UK GDPR (ahora en legislation.gov.uk).
 
 ## Pendiente
 
-Datos que tiene que dar el propietario: nombre legal de quien opera el sitio, correo de contacto (privacidad,
-accesibilidad, disputas), dirección postal y, si se quiere, teléfono; y la ley y los tribunales aplicables (la
-plantilla pide un estado de EE. UU.).
+Datos que tiene que dar el propietario y que siguen resaltados en las cuatro páginas:
 
-Cambios de fondo que la plantilla necesita para describir este sitio y que **requieren aprobación** (no se hizo
-ninguno):
-
-1. **Privacy Policy, datos que no se recogen.** La plantilla describe datos de contacto, perfil, pagos,
-   documentos de identidad, concursos, publicidad por intereses, marketing directo, chat e IA, inicio de sesión con
-   redes y geolocalización. El sitio no tiene nada de eso: no hay cuentas públicas, ni cookies en el sitio público, ni publicidad; el
-   asistente es determinista y no usa un modelo de IA.
-2. **Privacy Policy, lo que sí ocurre.** Registros técnicos del alojamiento (GitHub Pages o Cloudflare Pages),
-   contadores diarios anónimos de las versiones de los mapas (`ab.js`, que no envía nada con «No rastrear» o Global
-   Privacy Control), preferencias guardadas en `localStorage` (tema, versión del mapa, tutorial) y las cuentas de
-   las consolas de revisión, solo para el equipo, con su cookie de sesión.
-3. **Privacy Policy, sede.** «We are headquartered in the United States» y «We are a U.S.-based company» no
-   corresponden a un proyecto del Perú.
-4. **Privacy Policy, tabla CCPA, representantes del RGPD (art. 27) y DPO.** Llenar o quitar.
-5. **Privacy Policy, Perú.** Agregar lo que pide la Ley N° 29733: derechos ARCO, reclamo ante la ANPD, banco de
-   datos y plazo de conservación.
-6. **Terms of Use, licencia.** Las secciones 2.1 (uso personal y no comercial), 2.2 (prohíbe copiar, redistribuir y
-   hacer obras derivadas) y 10.7 («All rights reserved») contradicen la licencia MIT del código y las licencias de
-   los datos ([atribucion-licencias](atribucion-licencias.md)).
-7. **Terms of Use, ley y disputas.** Ley de un estado de EE. UU., arbitraje JAMS y renuncia a acciones colectivas;
-   para un operador en el Perú corresponde la ley y los tribunales peruanos.
-8. **Terms of Use, avisos por estado de EE. UU., cuentas y edad mínima de 18 años.** Revisar si se mantienen.
-9. **Versión en castellano** de ambas páginas (la guía de la ANPD exige informar en castellano).
+- nombre legal de quien opera el sitio (responsable y titular del banco de datos);
+- correo de contacto (privacidad, derechos ARCO y del RGPD, accesibilidad);
+- dirección postal;
+- nombre y código de inscripción del banco de datos personales ante la ANPD, si está inscrito.

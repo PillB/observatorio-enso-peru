@@ -1061,4 +1061,5 @@ table.grd .chip { white-space: normal; }
 .legal-doc table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 0.9rem; display: block; overflow-x: auto; }
 .legal-doc th, .legal-doc td { border: 1px solid var(--line); padding: 6px 8px; vertical-align: top; text-align: left; }
 .legal-doc mark.pending { background: var(--watch-bg); color: var(--watch); padding: 0 2px; border-radius: 3px; }
+.legal-credit { font-size: 0.82rem; color: var(--fg-3); }
 .legal-nav { margin: 16px 0 0; color: var(--fg-2); font-size: 0.9rem; }

@@ -610,7 +610,8 @@ def test_legal_pages_open_from_the_footer(site, browser, w):
     errors = []
     pg.on("pageerror", lambda e: errors.append(str(e)))
     pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
-    for link, title in (("Privacy Policy", "Privacy Policy"), ("Terms of Use", "Terms of Use")):
+    for link, title in (("Política de Privacidad", "Política de Privacidad"), ("Términos de Uso", "Términos de Uso"),
+                        ("Privacy Policy", "Privacy Policy"), ("Terms of Use", "Terms of Use")):
         go(pg, base)
         pg.locator(".site-footer").get_by_role("link", name=link).click()
         expect(pg.locator("main h1")).to_have_text(title)
