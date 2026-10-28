@@ -253,7 +253,7 @@ svg.chart:focus-visible { outline-offset: 4px; }
 .legend li { display: flex; align-items: center; gap: 6px; }
 .chart-empty { padding: 40px 0; text-align: center; color: var(--fg-3); }
 .chart-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; padding: 2px; background: var(--bg-sunk); }
+.seg { display: inline-flex; flex-wrap: wrap; max-width: 100%; border: 1px solid var(--line); border-radius: 9px; padding: 2px; background: var(--bg-sunk); }
 .seg button { border: 0; background: none; padding: 6px 11px; min-height: 36px; border-radius: 7px; font-size: 0.85rem; font-weight: 600; color: var(--fg-2); cursor: pointer; }
 .seg button[aria-pressed='true'] { background: var(--bg-elev); color: var(--fg); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
 details.more { margin-top: 12px; }
@@ -522,7 +522,6 @@ table.grd .chip { white-space: normal; }
   .brand svg { width: 24px; height: 24px; }
   main { padding: 12px 8px 24px; }
   .card { padding: 10px; }
-  .seg { flex-wrap: wrap; max-width: 100%; }
   main table { display: block; overflow-x: auto; }
 }
 /* Nombres de medios o enlaces largos sin espacios no deben ensanchar la página */
@@ -1034,6 +1033,8 @@ table.grd .chip { white-space: normal; }
   .hz-f select.input, .hz-search .input { max-width: none; width: 100%; }
   .hz-f-s { flex: 1 1 80px; }
   .hz-f-lvl { flex: 1 1 100%; }
+  .hz-f-lvl .seg { display: flex; }
+  .hz-f-lvl .seg button { flex: 1 1 auto; padding-inline: 8px; }
   .hz-f-s .input { width: 100%; }
   .hz-svg { max-height: 70vh; }
   .hz-bars li { grid-template-columns: minmax(6em, 8em) 1fr auto; }

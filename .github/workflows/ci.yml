@@ -22,7 +22,8 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    # Pruebas ~7 min + navegador en tres motores ~18 min desde los recorridos guiados (#70); 25 ya no alcanzaba.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v7

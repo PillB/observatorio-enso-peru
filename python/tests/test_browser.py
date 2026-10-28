@@ -98,6 +98,28 @@ def go(page, base, route=""):
     expect(page.locator("main .skeleton")).to_have_count(0, timeout=15000)
 
 
+# Las letras del sistema cambian de una máquina a otra: el runner de la corrida diaria cae en DejaVu Sans, más
+# ancha que la del contenedor de ci.yml, y el selector de nivel de la memoria se salía 16 px a 320 px (issue #63)
+# aunque aquí pasaba. Con algo de espacio entre letras, cualquier máquina ve un texto tan ancho como ese.
+WIDE_TEXT = "html, html * { letter-spacing: 0.06em !important; }"
+
+
+@pytest.mark.parametrize("w", [320, 360])
+def test_phone_layout_survives_wider_system_fonts(site, browser, w):
+    base, _ = site
+    ctx = browser.new_context(viewport={"width": w, "height": 800})
+    ctx.add_init_script(f"addEventListener('DOMContentLoaded', () => document.head.append(Object.assign("
+                        f"document.createElement('style'), {{textContent: {json.dumps(WIDE_TEXT)}}})));")
+    pg = ctx.new_page()
+    try:
+        for r in ROUTES:
+            go(pg, base, r)
+            overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            assert overflow <= 1, f"desbordamiento horizontal de {overflow}px en #{r} a {w}px con letras más anchas"
+    finally:
+        ctx.close()
+
+
 @pytest.mark.parametrize("vp", VIEWPORTS, ids=list(VIEWPORTS))
 def test_every_section_renders_without_errors_or_overflow(site, browser, vp):
     base, _ = site
