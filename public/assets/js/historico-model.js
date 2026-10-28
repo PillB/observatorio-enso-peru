@@ -9,14 +9,21 @@ export const LEVELS = { departamento: 2, provincia: 4, distrito: 6 };
 
 /** eventos.json → registros con campos cortos. */
 export function decode(ev) {
-  const D = ev.dict;
+  const D = ev.dict, AP = ev.areaCifras || {};
   return ev.rows.map((r) => {
     const [d, t, u, e, f, o, c, muertos, afect, viv, i] = r;
     // La fecha trae solo lo que se sabe: «1998-03-12», «1998-03» (mes) o «1998» (año).
     const y = +d.slice(0, 4), m = d.length >= 7 ? +d.slice(5, 7) : 0;
-    return { d, y, m, hy: m ? (m >= 7 ? y : y - 1) : null, t: D.DangerType[t], u, e: D.TipoEvento[e], f: D.FaseENSO[f], o: D.Origen[o], c: D.Confianza[c], muertos, afect, viv, i };
+    // ap: el área de las cifras de personas y viviendas cuando es mayor que la del registro (una provincia, un
+    // departamento): se cuentan en ella y en las que la contienen, no en las menores (conciliacion.counts_at).
+    return { d, y, m, hy: m ? (m >= 7 ? y : y - 1) : null, t: D.DangerType[t], u, e: D.TipoEvento[e], f: D.FaseENSO[f], o: D.Origen[o], c: D.Confianza[c], muertos, afect, viv, i, ap: AP[i] || '' };
   });
 }
+
+/** Si las personas y viviendas de un registro cuentan en un área de n dígitos (2, 4, 6; null para el país o una
+ * macrorregión, que contienen cualquier área; Infinity para una cuenca, un río o un lugar, que no contienen una
+ * provincia ni un departamento). */
+export const countsAt = (r, n) => !r.ap || n === null || n <= r.ap.length;
 
 /** Código del área de un registro en un nivel, o null si el registro es más grueso que ese nivel. */
 export function areaOf(u, level) {
@@ -98,9 +105,9 @@ export function coverageYears(hom, from, to) {
 /**
  * Indicadores de un grupo de registros (misma definición que indicadores.summarize). La frecuencia, los
  * distrito-años y la razón de tasas usan solo los registros de la fuente homogénea (hom: Set de Origen;
- * null = todos); registros, impactos y grandes Niños usan todos.
+ * null = todos); registros, impactos y grandes Niños usan todos. n: los dígitos del área del grupo (countsAt).
  */
-export function summarize(recs, years, ninoYears, great, hom = null) {
+export function summarize(recs, years, ninoYears, great, hom = null, n = null) {
   const yr = new Set(years), T = years.length;
   const tn = years.filter((y) => ninoYears.has(y)).length, to = T - tn;
   const ys = new Set(), da = new Set(), perYear = new Map();
@@ -119,7 +126,8 @@ export function summarize(recs, years, ninoYears, great, hom = null) {
   const hz = new Map();
   let last = null;
   for (const r of recs) {
-    muertos += r.muertos; afect += r.afect; viv += r.viv;
+    muertos += r.muertos;
+    if (countsAt(r, n)) { afect += r.afect; viv += r.viv; }
     hz.set(r.t, (hz.get(r.t) || 0) + 1);
     if (!last || r.d > last.d) last = r;
   }
@@ -143,7 +151,7 @@ export function byArea(recs, level, years, ninoYears, great, hom = null) {
     groups.get(c).push(r);
   }
   const out = new Map();
-  for (const [c, rs] of groups) out.set(c, summarize(rs, years, ninoYears, great, hom));
+  for (const [c, rs] of groups) out.set(c, summarize(rs, years, ninoYears, great, hom, LEVELS[level] ?? null));
   return out;
 }
 

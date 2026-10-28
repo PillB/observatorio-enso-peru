@@ -23,6 +23,9 @@ from ..geo import key
 ROOT = Path(__file__).resolve().parents[3]
 UBIGEO = Path(__file__).resolve().parents[1] / "data" / "ubigeo.json"
 ATTRS = ROOT / "data" / "historico" / "ref" / "distritos.csv"
+#: Población oficial del INEI por distrito: estimaciones 1990-2005, censo 2017 y proyecciones 2018-2020
+#: (``tools.build_poblacion``).
+POPULATION = ROOT / "data" / "historico" / "ref" / "poblacion-inei.csv"
 
 #: Códigos de distrito que cambiaron (código antiguo → actual).
 LEGACY = {
@@ -61,15 +64,28 @@ REGIONS = {"NORTE": "Norte", "CENTRO": "Centro", "SUR": "Sur", "ORIENTE": "Orien
 
 
 class Territory:
-    def __init__(self, ubigeo: Path = UBIGEO, attrs: Path = ATTRS):
+    def __init__(self, ubigeo: Path = UBIGEO, attrs: Path = ATTRS, population: Path = POPULATION):
         u = json.loads(ubigeo.read_text(encoding="utf-8"))
         self.dep = {d["ubigeo"]: d for d in u["departments"]}
         self.prov = {d["ubigeo"]: d for d in u["provinces"]}
         self.dist = {d["ubigeo"]: d for d in u["districts"]}
         self.attrs: dict[str, dict] = {}
+        self._surface: dict[str, Optional[float]] = {}
         if attrs.exists():
             with attrs.open(encoding="utf-8") as fh:
                 self.attrs = {r["ubigeo"]: r for r in csv.DictReader(fh)}
+        #: {distrito: {año: población del INEI}} (``population_at``).
+        self.series: dict[str, dict[int, int]] = {}
+        if population.exists():
+            # La población 2020 de distritos.csv es densidad × superficie y se aleja de la oficial hasta 7 veces: manda
+            # la proyección del INEI (la de 2021 para los distritos creados ese año).
+            with population.open(encoding="utf-8") as fh:
+                for r in csv.DictReader(fh):
+                    a = self.attrs.setdefault(r["ubigeo"], {"ubigeo": r["ubigeo"]})
+                    a["poblacion_2020"] = r["poblacion_2020"] or r["poblacion_2021"] or a.get("poblacion_2020", "")
+                    a["poblacion_2017"] = r["poblacion_2017"]
+                    self.series[r["ubigeo"]] = {int(k[10:]): int(v) for k, v in r.items()
+                                                if k[:10] == "poblacion_" and k[10:].isdigit() and v}
         self._by_name: dict[tuple, list[str]] = {}
         for code, d in self.dist.items():
             self._by_name.setdefault(("dist", key(self.dep[code[:2]]["name"]), key(d["name"])), []).append(code)
@@ -181,7 +197,8 @@ class Territory:
         return (code + "0101")[:6] if len(code) == 2 else (code + "01")[:6]
 
     def population(self, code: str) -> Optional[float]:
-        """Población 2020 estimada (densidad × superficie) sumada sobre los distritos del código."""
+        """Población 2020 (proyección del INEI; ver ``POPULATION``) sumada sobre los distritos del código; los creados
+        en 2021, con la de 2021."""
         tot, seen = 0.0, False
         for c, a in self.attrs.items():
             if c.startswith(code):
@@ -191,6 +208,50 @@ class Territory:
                 except (KeyError, ValueError):
                     pass
         return round(tot) if seen else None
+
+    def surface(self, code: str) -> Optional[float]:
+        """Superficie del área en km², sumada sobre sus distritos (``ATTRS``); None si no hay ninguna."""
+        if code not in self._surface:
+            vals = [float(a["superficie_km2"]) for c, a in self.attrs.items()
+                    if c.startswith(code) and len(c) == 6 and a.get("superficie_km2")]
+            self._surface[code] = sum(vals) if vals else None
+        return self._surface[code]
+
+    def population_at(self, code: str, year: int) -> Optional[int]:
+        """Población oficial del área en el año de un evento, sumada sobre sus distritos, para comparar con ella las
+        personas de una fila (``conciliacion``): la estimación del INEI de ese año (1990-2005, 2018-2022); en 2017, el
+        censo o la proyección de 2018, la mayor (el INEI hizo las proyecciones con el censo corregido por omisión: San
+        Antonio de Huarochirí tiene 1 021 censados y 5 736 proyectados en 2018); entre 2006 y 2016, la mayor de 2005 y
+        2017, porque no se sabe cuándo cambió la población en esos doce años (distritos que se dividieron, migración);
+        antes de 1990, la de 1990, y después de 2022, la de 2022. Un distrito creado después de 2001 no tiene cifras
+        antes de 2006: si el área es él mismo, vale su primera cifra (la del censo); si es su provincia o su
+        departamento, no suma (su gente estaba en la del distrito del que se separó); lo mismo para uno creado en 2021
+        antes de 2021. None si no hay ninguna cifra."""
+        tot, seen = 0, False
+        for c, ys in self.series.items():
+            if not c.startswith(code) or not ys:
+                continue
+            v = _at(ys, year)
+            if v is None and c == code:
+                v = ys[min(ys)]
+            if v is not None:
+                tot += v
+                seen = True
+        return tot if seen else None
+
+
+def _at(ys: dict[int, int], year: int) -> Optional[int]:
+    """La cifra de un año de una serie {año: población} con huecos (ver ``Territory.population_at``)."""
+    y = min(max(year, 1990), max(ys))
+    if y == 2017 and 2017 in ys:
+        return max(ys[2017], ys.get(2018) or 0)
+    if y in ys:
+        return ys[y]
+    lo = max((k for k in ys if k < y), default=None)
+    hi = min((k for k in ys if k > y), default=None)
+    if lo is None or hi is None:
+        return None
+    return max(ys[lo], _at(ys, hi))
 
 
 @lru_cache(maxsize=1)

@@ -98,8 +98,8 @@ function add(e, r, great) {
   e.registros++;
   e.seasons.add(M.seasonOf(r));
   e.muertos += r.muertos;
-  e.afectados += r.afect;
-  e.viviendas += r.viv;
+  // Una cuenca, un río o un lugar no contiene una provincia: sus cifras de personas y viviendas no se le suman.
+  if (M.countsAt(r, Infinity)) { e.afectados += r.afect; e.viviendas += r.viv; }
   if (great.includes(r.e)) e.grandes.add(r.e);
   e.types.set(r.t, (e.types.get(r.t) || 0) + 1);
   e.places.set(r.u, (e.places.get(r.u) || 0) + 1);
@@ -183,7 +183,7 @@ export function named(recs, X, kind, great = [], R = null) {
     for (const name of new Set(parts)) {
       const reach = kind === 'agua' ? R?.byName?.get(`${r.u}|${norm(name)}`) : null;
       const basin = reach ? reach.b : kind === 'agua' ? basinOf(X, r) : '';
-      const where = reach ? (reach.b || `u${reach.u[0]}`) : basin || r.u;
+      const where = reach ? (reach.b || reach.u[0]) : basin || r.u;
       const key = reach ? reachKey(reach) : `${kind === 'agua' ? 'r' : 'l'}:${kind === 'agua' && !basin ? 'u' : ''}${where}:${norm(name)}`;
       let g = groups.get(key);
       if (!g) groups.set(key, (g = { key, where, basin, names: new Map(), ...blank() }));
@@ -313,8 +313,10 @@ function groupProfile(ctx, g, { title, sub = '', close, extra = '' }) {
   const places = topEntries(g.places, 8).map(([c, v]) => ({ id: c, label: H.shortName(D, c) + (c.length === 6 ? ` (${D.sum.nombres.provincia[c.slice(0, 4)] || ''})` : ''), v }));
   const waters = X ? named(g.recs, X, 'agua', [], R).filter((w) => w.key !== g.key).slice(0, 6).map((w) => ({ id: w.key, label: w.name, v: w.registros })) : [];
   const lugares = X ? named(g.recs, X, 'lugar').filter((w) => w.key !== g.key).slice(0, 6).map((w) => ({ id: w.key, label: `${w.name} (${H.shortName(D, w.where)})`, v: w.registros })) : [];
-  const worst = [...g.recs].sort((a, b) => (b.muertos + b.viv / 10) - (a.muertos + a.viv / 10) || b.d.localeCompare(a.d)).slice(0, 6);
-  const st = M.summarize(g.recs, ctx.years, D.nino, D.great, D.hom);
+  // Solo los que reportan daños: fallecidos primero, luego viviendas destruidas y personas afectadas.
+  const own = (r) => (M.countsAt(r, Infinity) ? r : { ...r, afect: 0, viv: 0 });
+  const worst = g.recs.map(own).filter((r) => r.muertos || r.viv || r.afect).sort((a, b) => b.muertos - a.muertos || b.viv - a.viv || b.afect - a.afect || b.d.localeCompare(a.d)).slice(0, 6);
+  const st = M.summarize(g.recs, ctx.years, D.nino, D.great, D.hom, Infinity);
   const pct = (v) => `${F.fmtNumber(v * 100, 0)} %`;
   return html`<div class="hz-prof">
     <div class="hz-prof-top"><h3 class="hz-prof-h">${title}</h3><button type="button" class="icon-btn" ${raw(close)} aria-label="Cerrar la ficha">${raw(ICON.close)}</button></div>
@@ -330,7 +332,7 @@ function groupProfile(ctx, g, { title, sub = '', close, extra = '' }) {
     ${places.length ? html`<h4 class="hz-h4">Distritos con más registros</h4>${bars(places, { attr: 'data-area' })}` : ''}
     ${waters.length ? html`<h4 class="hz-h4">Ríos, quebradas y lagunas que también nombran</h4>${bars(waters, { attr: 'data-foco' })}` : ''}
     ${lugares.length ? html`<h4 class="hz-h4">Centros poblados que nombran</h4>${bars(lugares, { attr: 'data-foco' })}` : ''}
-    ${worst.length ? html`<h4 class="hz-h4">Registros con más daños</h4><ul class="hz-mini">${worst.map((r) => html`<li><button type="button" class="linkish" data-area="${r.u}">${H.areaName(D, r.u)}</button> <span class="muted small">${H.when(r.d)} · ${H.dl(r.t)}${r.muertos ? ` · ${n0(r.muertos)} fallecidos o desaparecidos` : ''}${r.viv ? ` · ${n0(r.viv)} viviendas destruidas` : ''}</span></li>`)}</ul>
+    ${worst.length ? html`<h4 class="hz-h4">Registros con más daños</h4><ul class="hz-mini">${worst.map((r) => html`<li><button type="button" class="linkish" data-area="${r.u}">${H.areaName(D, r.u)}</button> <span class="muted small">${H.when(r.d)} · ${H.dl(r.t)}${r.muertos ? ` · ${n0(r.muertos)} fallecidos o desaparecidos` : ''}${r.viv ? ` · ${n0(r.viv)} viviendas destruidas` : ''}${r.afect ? ` · ${n0(r.afect)} afectados o damnificados` : ''}</span></li>`)}</ul>
       <p class="muted small">La descripción y la fuente de cada registro están en la ficha de su distrito.</p>` : ''}
   </div>`;
 }
@@ -349,10 +351,12 @@ function riverLayer(R, { basin = '', focus = '', min = 1 } = {}) {
   if (!R?.reaches?.length) return '';
   const max = Math.max(...R.reaches.map((r) => r.r));
   const w = (n) => (0.8 + 2.2 * Math.sqrt(n / max)).toFixed(2);
-  const rows = R.reaches.filter((r) => r.r >= min && (!basin || r.b === basin));
+  const isOn = (r) => Boolean(focus) && (reachKey(r) === focus || (!r.b && r.u.some((u) => `r:u${u}:${r.k}` === focus)));
+  // El del foco siempre, aunque lo nombren menos registros que el mínimo del mapa o sea de otra cuenca.
+  const rows = R.reaches.filter((r) => (r.r >= min && (!basin || r.b === basin)) || isOn(r));
   return `<g class="hz-rivers">${[...rows].reverse().map((r) => {
     const key = reachKey(r);
-    const on = focus && (key === focus || (!r.b && r.u.some((u) => `r:u${u}:${r.k}` === focus)));
+    const on = isOn(r);
     return `<path class="hz-river${r.c === 'laguna' ? ' hz-lake' : ''}${on ? ' on' : ''}" d="${r.d}" style="stroke-width:${on ? 4 : w(r.r)}px" data-foco="${esc(key)}" data-tip="${esc(`${r.n}\n${n0(r.r)} registro${r.r > 1 ? 's' : ''} lo nombran en ${r.u.length} distrito${r.u.length > 1 ? 's' : ''}\nTrazo: Carta Nacional 1:100 000 (IGN)`)}"></path>`;
   }).join('')}</g>`;
 }
@@ -365,7 +369,7 @@ export function basinView(ctx) {
   const metric = BASIN_METRICS.some(([k]) => k === s.dm) ? s.dm : 'anios';
   const mlabel = BASIN_METRICS.find(([k]) => k === metric)[1];
   const agg = byBasin(recs, X, D.great);
-  for (const e of agg.values()) e.st = M.summarize(e.recs, ctx.years, D.nino, D.great, D.hom);
+  for (const e of agg.values()) e.st = M.summarize(e.recs, ctx.years, D.nino, D.great, D.hom, Infinity);
   const value = (code) => (metric === 'anios' && !ctx.years.length ? null : basinValue(agg.get(code), metric, basinArea(B, code)));
   const vals = Object.keys(B.units).map(value).filter((v) => v !== null);
   const scale = metric === 'anios' ? H.scaleFor('anios', vals, 'provincia') : H.scaleFor(metric === 'grandes' ? 'grandes' : 'registros', vals);

@@ -41,6 +41,9 @@ con su enlace en `Fuente` y la cita legible en `FuenteCita`.
 | IDMC | Desplazamientos por desastres (IDU y eventos) | **CC BY-NC-SA 3.0 IGO**: las filas con `Origen = idmc` no se pueden usar con fines comerciales y lo que se derive de ellas se comparte con la misma licencia |
 | El Peruano | Declaratorias de emergencia y sus prórrogas | Normas legales, dominio público (D. Leg. 822, art. 9) |
 | INGEMMET, IGP, ANA, MINSA (vía CENEPRED) | Inventarios y zonas críticas, informes técnicos, puntos críticos, establecimientos de salud afectados en 2023 | Información pública (Ley N° 27806) |
+| INEI | Población por distrito y año: estimaciones 1990-2005 (Boletín Especial N° 16), censo 2017 y proyecciones 2018-2022 (Boletín Especial N° 27), en `data/historico/ref/poblacion-inei.csv`, para conciliar las cifras de personas y viviendas | Información pública (Ley N° 27806); se cita el INEI y cada boletín |
+| Banco Mundial (World Development Indicators) | PBI del Perú en dólares (`NY.GDP.MKTP.CD`), como tope de las pérdidas en dólares al conciliarlas | CC BY 4.0; se cita «Banco Mundial, World Development Indicators» |
+| UNDRR / Corporación OSSO, *DesInventar Methodological Guide 8.1.9* (2009) | Unidades de cada columna de DesInventar (por ejemplo, las vías en metros), citadas en la conciliación | Se cita la guía con su enlace; no se redistribuye |
 | NASA | Global Landslide Catalog | Dominio público; se cita Kirschbaum et al. (2010, 2015) |
 | Lützow y Veh (Zenodo) | Glacial Lake Outburst Flood Database v4.2 | CC BY 4.0; doi:10.5281/zenodo.23370149 |
 | IFRC GO | Llamamientos y DREF | Datos públicos; se cita a la Federación Internacional de la Cruz Roja |

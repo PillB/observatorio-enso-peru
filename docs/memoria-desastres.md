@@ -18,17 +18,18 @@ prevención: cuántas de esas emergencias ocurrieron donde el Estado ya tenía e
 4. [Clasificación del peligro y del evento](#clasificación-del-peligro-y-del-evento)
 5. [Fuentes que cuentan el mismo evento](#fuentes-que-cuentan-el-mismo-evento)
 6. [Reglas de calidad](#reglas-de-calidad)
-7. [Indicadores](#indicadores)
-8. [Validación](#validación)
-9. [Cómo usar los indicadores](#cómo-usar-los-indicadores)
-10. [Peligro identificado hoy (contexto)](#peligro-identificado-hoy-contexto)
-11. [¿Se sabía antes? Peligros documentados y emergencias](#se-sabía-antes-peligros-documentados-y-emergencias)
-12. [La pestaña](#la-pestaña)
-13. [Evidencia sobre la prevención desde los años 90](#evidencia-sobre-la-prevención-desde-los-años-90)
-14. [Límites](#límites)
-15. [Reproducir y actualizar](#reproducir-y-actualizar)
-16. [Cosecha en GitHub Actions](#cosecha-en-github-actions)
-17. [Registros curados y revisiones](#registros-curados-y-revisiones)
+7. [Conciliación de cifras](#conciliación-de-cifras)
+8. [Indicadores](#indicadores)
+9. [Validación](#validación)
+10. [Cómo usar los indicadores](#cómo-usar-los-indicadores)
+11. [Peligro identificado hoy (contexto)](#peligro-identificado-hoy-contexto)
+12. [¿Se sabía antes? Peligros documentados y emergencias](#se-sabía-antes-peligros-documentados-y-emergencias)
+13. [La pestaña](#la-pestaña)
+14. [Evidencia sobre la prevención desde los años 90](#evidencia-sobre-la-prevención-desde-los-años-90)
+15. [Límites](#límites)
+16. [Reproducir y actualizar](#reproducir-y-actualizar)
+17. [Cosecha en GitHub Actions](#cosecha-en-github-actions)
+18. [Registros curados y revisiones](#registros-curados-y-revisiones)
 
 ## Qué pregunta responde
 
@@ -83,6 +84,7 @@ obtuvieron, el número de registros que aportan, los que se descartaron y por qu
 | [ANA, puntos críticos](https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/25) (servicio del SIGRID, CENEPRED) | 536 puntos críticos de ríos y quebradas de la costa con nivel de peligro, población y viviendas expuestas, acción recomendada y costo |
 | [Establecimientos de salud afectados en 2022-23](https://sigrid.cenepred.gob.pe/arcgis/rest/services/sectores/COEN_FEN_2027/MapServer/9) (COE Salud, SIGRID) | 1 230 establecimientos afectados por las lluvias de 2022-2023 |
 | [ubigeo-peru-aumentado](https://github.com/jmcastagnetto/ubigeo-peru-aumentado) (INEI y PNUD) | Población 2020, superficie, altitud, IDH 2019 y pobreza por distrito |
+| INEI: [estimaciones 1990-2005](https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib0467/Libro.pdf) (Boletín Especial N° 16), [censo 2017](https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib1673/) y [proyecciones 2018-2022](https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib1860/) (Boletín Especial N° 27) | Población de cada distrito por año (`data/historico/ref/poblacion-inei.csv`, `tools.build_poblacion`): con ella se concilian las cifras de personas ([Conciliación de cifras](#conciliación-de-cifras)) |
 
 ### Prevención (qué se sabía antes; no son eventos)
 
@@ -140,7 +142,7 @@ del tablero del equipo de prevención, con sus nombres exactos:
 | `Fuente` | URL del registro o, si la fuente no tiene una página por registro (DesInventar, las capas de ArcGIS), de la fuente |
 | `Latitud`, `Longitud` | El punto de la fuente si cae en el distrito asignado y no es un punto por defecto; si no, el centro poblado que nombra la fuente; si no, el río, la quebrada o la laguna que nombra, si su tramo en el distrito es corto; si no, la capital del distrito. En las filas de provincia o de departamento, la capital de la provincia o del departamento (`PrecisionGeo` lo dice, y [Más fino que el distrito](#más-fino-que-el-distrito-centros-poblados-ríos-y-cuencas) explica cada caso): en un mapa de puntos las de capital parecen agrupadas en las capitales |
 
-Y 52 columnas más para análisis y trazabilidad: `Id` estable (`<origen>-<id en la fuente>`), `Origen`, `IdFuente`,
+Y 55 columnas más para análisis y trazabilidad: `Id` estable (`<origen>-<id en la fuente>`), `Origen`, `IdFuente`,
 `FechaFin`, `PrecisionFecha`, `FechaTipo` (de qué es la fecha: `evento`; `informe`, la del primer reporte del COEN
 cuando su PDF no se leyó; `publicacion`, la de la nota de prensa; `texto`, la que cita la nota), `Anio`, `Mes`, `AnioHidrologico` (julio a junio), `GrupoPeligro`, `PeligroFuente` (el
 tipo como lo nombra la fuente), `DangerTypeMetodo` (fuente, texto, causa o por-omision), `CausaFuente`,
@@ -151,7 +153,8 @@ según la Carta Nacional del IGN), `RadioKm` (la incertidumbre del punto del cen
 hidrográfica de la ANA), `Region` (macrorregión), `AltitudCapital`, `FaseENSO`, `EventoENSO`, `ICEN`, `ONI`,
 `AtribucionENSO`, catorce columnas de impactos (fallecidos, desaparecidos, heridos, afectados, damnificados,
 evacuados, reubicados, desplazados, viviendas destruidas y afectadas, hectáreas de cultivo, km de vías, centros
-educativos y de salud, pérdidas en US$), `ImpactoReportado`, `ImpactoEnTotales`, `FuenteCita` (la cita original
+educativos y de salud, pérdidas en US$), `ImpactoReportado`, `ImpactoEnTotales`, `AreaCifras`, `Conciliacion` y
+`CifrasFuente` (ver [Conciliación de cifras](#conciliación-de-cifras)), `FuenteCita` (la cita original
 legible), `Licencia`, `Confianza` (alta, media o baja según la precisión de fecha, lugar y tipo; nunca alta si la fecha es
 la de un reporte o una publicación), `Corroboracion`
 (cuántos reportes o notas de otras fuentes cuentan el mismo evento), `OrigenesCorroboran` y `FuentesAdicionales`
@@ -221,9 +224,15 @@ distrito al elegir un área (punto lleno: el de la fuente; anillo: el centro pob
 río) y, con el botón «Cuencas (ANA)», los límites de las cuencas.
 
 Un impacto vacío significa «la fuente no lo reporta», no cero. `ImpactoEnTotales` es «no» solo cuando otra fila del
-mismo evento ya detalla esas cifras (un registro curado que resume un área); el resto suma a los totales.
+mismo evento ya cuenta esas cifras (un registro curado que resume un área, o la misma ficha registrada dos veces: ver
+[Conciliación de cifras](#conciliación-de-cifras)); la fila conserva sus cifras y el resto suma a los totales. Los km
+de vías de DesInventar se publican en km: la fuente los guarda en metros aunque el campo se llame «kmvias» («Routes
+affected: the length of transport networks destroyed and/or rendered unusable, in metres», [DesInventar Methodological
+Guide 8.1.9](https://preparecenter.org/wp-content/uploads/2021/04/DesInventar_MethodologicalGuide_8.1.9.pdf), 2009; San
+Hilarión, 1996: «7 kms de la Carretera Marginal», `kmvias` = 7000). Hasta octubre de 2026 el catálogo los tenía mil
+veces mayores.
 
-`diccionario.csv` (en `data/historico/` y en la pestaña) describe cada una de las 65 columnas: grupo, tipo, contenido,
+`diccionario.csv` (en `data/historico/` y en la pestaña) describe cada una de las 68 columnas: grupo, tipo, contenido,
 valores posibles y el porcentaje de filas que traen el dato, en total y por fuente. Se genera con el catálogo desde
 `enso/historico/esquema.py` (`COLUMN_DOCS`), así que no se desfasa.
 
@@ -238,6 +247,10 @@ Otros archivos:
   inventario con fecha, las emergencias desde 2003 y cuántas ocurrieron con el peligro ya documentado (ver
   [¿Se sabía antes?](#se-sabía-antes-peligros-documentados-y-emergencias)). `public/assets/historico/prevencion.json`
   trae lo mismo, más la serie por año, la lista de decretos e informes y los llamamientos de la Cruz Roja.
+- `data/historico/conciliaciones.csv`: cada fila cuyas cifras se conciliaron, con la ruta, las cifras de la fuente y
+  las conciliadas, el área de las cifras, la población del área en el año del evento y de dónde sale, la razón entre
+  personas y habitantes, el motivo, la evidencia y la nota que lleva la descripción (ver
+  [Conciliación de cifras](#conciliación-de-cifras)).
 - `public/assets/historico/eventos.json`, `resumen.json`, `contexto.json`, `mapa.json` y `detalle/<dep>.json`:
   versiones para el navegador. Los CSV de `data/historico/` se copian en `public/assets/historico/` para descargarlos desde la
   pestaña: el sitio publicado no enlaza al repositorio.
@@ -347,6 +360,75 @@ Otras correcciones están en los lectores y entran con la próxima cosecha compl
 antiguos o mal escritos (Raimondi, El Arenal, Ccapacmarca, San Miguel del Faique), las fechas de la base de GLOF que
 solo dan una ventana de satélite (el año si la ventana cae en un año; el mes del medio si dura menos de un año), la
 duración de un día de las filas del IDMC y más palabras para descartar notas de prensa que no son un evento.
+
+
+## Conciliación de cifras
+
+Ninguna fila puede tener más personas que habitantes en su área, más hectáreas que su superficie, ni repetir las
+cifras de otra. Cuando pasa, la cifra no se borra ni se deja fuera de las sumas: se investiga de dónde sale y se
+corrige por una ruta que queda en la fila y en `conciliaciones.csv` (`enso/historico/conciliacion.py`). Las
+encontró la revisión de octubre de 2026: 18,3 millones de personas afectadas en el país bajaron a 16,4 millones al
+contar una vez lo repetido y llevar al tope lo imposible.
+
+**Con qué se compara.** La población de cada área en el año del evento (`Territory.population_at`, sumada sobre sus
+distritos): la estimación del INEI de ese año (1990-2005, Boletín Especial N° 16), el censo de 2017 y las proyecciones
+de 2018-2022 (Boletín Especial N° 27). En 2017 vale la mayor del censo y la proyección de 2018: el INEI proyectó con el
+censo corregido por omisión (San Antonio de Huarochirí tiene 1 021 censados y 5 736 proyectados). Entre 2006 y 2016
+vale la mayor de 2005 y 2017, porque no se sabe cuándo cambió la población (distritos divididos, migración); antes de
+1990, la de 1990; después de 2022, la de 2022. Un distrito creado después de 2001 no suma a su provincia antes de su
+creación (su gente estaba en el distrito del que se separó). Las viviendas se comparan con la mayor población que tuvo el
+área hasta el año del evento, porque se quedan cuando la gente se va (Santiago de Quirahuara: 822 habitantes en 2005,
+311 en 2022 y 314 viviendas afectadas en 2025). Las hectáreas, con la superficie del área.
+
+**Rutas investigadas** (`data/historico/conciliaciones.yaml`, cada una con su motivo y su evidencia). Se revisaron una
+por una las 128 filas de prensa que pasaban la población de su área, con su texto, las fichas de los mismos días en el
+área, la población de cada nivel y, si hizo falta, otras fuentes (INGEMMET, Andina, IDMC, el PBI del Banco Mundial):
+
+| Ruta | Qué pasó | Qué se hace | Ejemplo |
+|---|---|---|---|
+| `cifra-de-area` | La cifra es de la provincia o el departamento | Queda en la fila; `AreaCifras` dice de qué área es y se suma en ella y en las que la contienen, no en las menores | «Unos ochenta mil pobladores … quedaron aislados» en Santa Rosa (Pallasca, 1 578 habitantes): son de Áncash |
+| `homonimo` | La fuente nombró un departamento o una provincia y se ubicó en el distrito del mismo nombre | La fila pasa a esa área, con su capital | «Ola de frío en Junín» en el distrito de Junín |
+| `duplicado` | La cifra repite la de otra fila que la consolida | Se quita de esta fila (`CifrasFuente` la guarda) | Los 852 000 damnificados de la sequía de Puno de 1983 en Pilcuyo |
+| `consolidado` | La fila es el total de un área cuyas partes tienen filas | Cuenta el resto | El total de Puno menos sus siete provincias |
+| `transcripcion` | La cifra contradice la propia fila | Se corrige con ella | 200 800 afectados por 200 viviendas en Caleta Cruz: 800 |
+| `tope-poblacion` | Una ficha investigada pasa la población | Se cuenta toda la población | Recta (Bongará), 3 509 desplazados del IDMC para 215 habitantes |
+
+Las pérdidas en US$ de DesInventar se revisaron con el tipo de cambio de cada mes que usa la propia fuente (pérdida en
+soles del texto / `PerdidasUSD` en sus otras fichas: 1 030 soles por dólar en enero de 1983, 1 870 en agosto) y con
+el PBI del Perú (Banco Mundial, `NY.GDP.MKTP.CD`): diez fichas se apartaban de su propio texto por 10, 100 o 1 000, o
+pasaban lo posible (la sequía de Puno de 1983 tenía 43 961 millones de dólares, 2,5 veces el PBI de ese año).
+
+**Reglas automáticas**, para lo que queda después de las investigadas, en este orden:
+
+1. `duplicado`: dos fichas de la misma fuente, día, distrito y peligro con las mismas cifras en todas las columnas de
+   impacto, cuando no puede ser casualidad (la misma nota de prensa, o tres columnas o más, 20 personas, 10 viviendas
+   o 50 hectáreas). El SINPAD registró algunas emergencias dos veces con la misma evaluación (Colán, 20 de febrero de
+   2017: fichas 82062 y 83459, 2 147 afectados cada una) y DesInventar repite el total de una nota en cada lugar que
+   nombra. Cuenta la primera que registró la fuente; las demás quedan con `ImpactoEnTotales` = «no» y sus cifras. Dos
+   fichas del SINPAD con una vivienda y cuatro personas son dos familias: se cuentan las dos.
+2. `cifra-de-area`: más hectáreas que la superficie del área («valles de Lambayeque» en Monsefú): se suman en la menor
+   área que la contiene y puede tenerlas.
+3. `tope-poblacion`: una ficha con más personas que habitantes se lleva a toda la población del área (primero los
+   damnificados, luego los afectados; los evacuados, reubicados y desplazados, cada uno). Son casi todas fichas del
+   SINPAD de un distrito: el INDECI registra cada emergencia en uno.
+4. `duplicado`: fichas del mismo día, peligro y distrito que juntas pasan la población se solapan (dos evaluaciones
+   de la misma emergencia): cuenta la mayor.
+
+La construcción se detiene si después de todo queda una fila, o un día de un peligro en un área, por encima de su
+población o su superficie: hay que investigarla y anotarla en `conciliaciones.yaml`. Todo se deshace y se vuelve a
+hacer en cada construcción, también con `--desde-catalogo` (`CifrasFuente` guarda el valor de la fuente), así que un
+cambio en la población o en el YAML se aplica entero. La descripción de cada fila conciliada termina con una nota
+«[Conciliación del observatorio: …]» que dice qué cambió y por qué. `resumen.json` (`conciliacion`) cuenta las filas
+de cada ruta.
+
+En la pestaña, una cifra de un área mayor se suma en esa área (y en el departamento y el país), no en el distrito, la
+cuenca ni el río del registro, y la ficha del registro lo dice («cifras de Áncash»).
+
+Una sola ficha no tiene cifra correcta con qué conciliarla: Carapo (Huanca Sancos), 12 de abril de 1997, con 141
+fallecidos y 2 342 desaparecidos para 2 697 habitantes. Ningún cruce la confirma (la cita sin fecha, la causa
+«Contaminación», dígitos de teclado, 3 434 reubicados, cargada aparte del compendio del INDECI de ese año, sin rastro
+en el INGEMMET ni en la prensa), así que queda como registro con `sin-impactos` en `revisiones.yaml`, con esa
+evidencia.
 
 ## Indicadores
 
@@ -688,9 +770,10 @@ python -m tools.build_historico_mapa               # polígonos de provincias y 
 python -m tools.build_aguas --keep CARPETA         # las páginas de la Carta Nacional (una vez)
 python -m tools.build_capas_mapa --aguas CARPETA --manzanas OTRA
                                                    # ríos nombrados y manzanas del CENEPRED de las vistas de detalle
+python -m tools.build_poblacion --cache CARPETA    # población del INEI por distrito y año (solo si el INEI publica más)
 node --test tests/js/historico.test.mjs tests/js/historico-detalle.test.mjs
                                                    # paridad Python/navegador
-pytest -q tests/test_historico.py tests/test_capas_mapa.py
+pytest -q tests/test_historico.py tests/test_historico_conciliacion.py tests/test_capas_mapa.py
 ```
 
 - `tools.build_capas_mapa` se corre a mano cuando el catálogo nombra ríos nuevos (un río nuevo se dibuja al volver a

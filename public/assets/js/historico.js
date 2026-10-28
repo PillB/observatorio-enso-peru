@@ -124,7 +124,7 @@ export function readState() {
   if (!DT.VIEWS.some(([k]) => k === s.vista)) s.vista = DEFAULTS.vista;
   if (!/^\d{1,8}$/.test(s.cuenca)) s.cuenca = '';
   if (!/^[rl]:u?\d{1,8}:.{1,80}$/.test(s.foco)) s.foco = '';
-  if (!DT.BASIN_METRICS.some(([k]) => k === s.dm)) s.dm = '';
+  if (s.dm === 'anios' || !DT.BASIN_METRICS.some(([k]) => k === s.dm)) s.dm = '';
   if (s.mz !== '0') s.mz = '';
   if (!/^[012]{2}$/.test(s.celda)) s.celda = '';
   return s;
@@ -184,6 +184,12 @@ function areaName(D, code) {
   if (code.length === 2) return N.departamento[code] || code;
   if (code.length === 4) return `${N.provincia[code] || code} (${N.departamento[code.slice(0, 2)]})`;
   return `${N.distrito[code] || code} (${N.provincia[code.slice(0, 4)]}, ${N.departamento[code.slice(0, 2)]})`;
+}
+/** Los daños de un registro; los de personas y viviendas de un área mayor (AreaCifras) dicen de cuál son, no los
+ * fallecidos, que son del lugar del registro. */
+function damages(D, r) {
+  const area = [r.afect ? `${n0(r.afect)} afectados o damnificados` : '', r.viv ? `${n0(r.viv)} viviendas destruidas` : ''].filter(Boolean).join(' · ');
+  return [r.muertos ? `${n0(r.muertos)} fallecidos o desaparecidos` : '', area && r.ap ? `${area} (cifras de ${areaName(D, r.ap)})` : area].filter(Boolean).join(' · ');
 }
 const shortName = (D, code) => (code.length === 2 ? D.sum.nombres.departamento[code] : code.length === 4 ? D.sum.nombres.provincia[code] : D.sum.nombres.distrito[code]) || code;
 
@@ -403,6 +409,9 @@ let SESSION = null;
 
 async function mount(root, D) {
   let s = readState();
+  // Un código con la forma de un ubigeo pero que no existe (un enlace mal copiado) no abre una ficha vacía.
+  const N = D.sum.nombres;
+  if (s.area && !(N.departamento[s.area] || N.provincia[s.area] || N.distrito[s.area])) s.area = '';
   await abReady();
   const session = (SESSION = ab('memoria'));
   // La vista: la del enlace; si el enlace trae filtros pero no la vista (un enlace de antes de las vistas), el
@@ -461,7 +470,9 @@ async function mount(root, D) {
     const area = b.dataset.area;
     if (area) session.mark('detail');
     const nivel = b.dataset.nivelGo || (area && area.length === 6 && s.nivel !== 'distrito' ? 'distrito' : area && area.length === 4 && s.nivel === 'departamento' ? 'provincia' : s.nivel);
-    set({ area, nivel }, '#hz-side');
+    // Un distrito elegido desde la ficha de una cuenca, un río o un centro poblado abre la ficha del distrito: la otra
+    // se cierra (si no, seguiría encima).
+    set({ area, nivel, ...(area ? { cuenca: '', foco: '' } : {}) }, '#hz-side');
     if (area) toMap();
   });
   draw();
@@ -631,7 +642,7 @@ function profileShell(D, s, recs, years) {
   const code = s.area;
   const mine = recs.filter((r) => r.u.startsWith(code));
   const lvl = code.length === 6 ? 'distrito' : code.length === 4 ? 'provincia' : 'departamento';
-  const st = M.summarize(mine, years, D.nino, D.great, D.hom);
+  const st = M.summarize(mine, years, D.nino, D.great, D.hom, code.length);
   if (s.evento) dropRR(st);
   const pop = population(D, code);
   const a = code.length === 6 ? D.attrs.get(code) : null;
@@ -718,7 +729,7 @@ async function fillDetail(root, D, s) {
       <p class="hz-ev-where">${areaName(D, r.u)}${dur ? ` · ${dur} día${dur > 1 ? 's' : ''}` : ''}</p>
       ${place ? html`<p class="small hz-ev-fine">${raw(ICON.pin)}<span>${place}</span></p>` : ''}
       ${desc ? html`<p class="hz-ev-t">${desc.length > 420 ? `${desc.slice(0, 420)}…` : desc}</p>` : ''}
-      ${r.muertos || r.afect || r.viv ? html`<p class="small">${[r.muertos ? `${n0(r.muertos)} fallecidos o desaparecidos` : '', r.afect ? `${n0(r.afect)} afectados o damnificados` : '', r.viv ? `${n0(r.viv)} viviendas destruidas` : ''].filter(Boolean).join(' · ')}</p>` : ''}
+      ${r.muertos || r.afect || r.viv ? html`<p class="small">${damages(D, r)}</p>` : ''}
       <p class="muted small">Fuente: ${cite || 'ver enlace'} ${url ? html`· <a href="${safeUrl(url)}" rel="noopener" target="_blank">${SOURCE_LINK[r.o] || 'documento'}</a>` : ''}</p>
       ${more ? html`<p class="small hz-corr">${raw(ICON.check)}<span>También lo ${more > 1 ? `cuentan ${n0(more)} reportes o notas` : 'cuenta otro reporte o nota'}${links.length ? ': ' : '.'}${corrLinks(links)}</span></p>` : ''}</li>`;
   };
@@ -1134,6 +1145,7 @@ function wire(root, D, s, set) {
     if (!t.name) return;
     let v = t.value.trim();
     if ((t.name === 'desde' || t.name === 'hasta') && v && !/^\d{4}$/.test(v)) v = '';
+    if (t.name === 'dm' && v === 'anios') v = '';  // la métrica por defecto no va en el enlace
     set({ [t.name]: v }, `[name="${t.name}"]`);
   });
   $$('[data-nivel]', root).forEach((b) => b.addEventListener('click', () => {

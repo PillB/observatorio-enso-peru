@@ -68,7 +68,7 @@ import httpx
 import yaml
 
 from enso.fetch import ssl_context
-from enso.historico import cosecha as C, desinventar, enlace, esquema as E, fuentes as F
+from enso.historico import cosecha as C, conciliacion as CO, desinventar, enlace, esquema as E, fuentes as F
 from enso.historico.enso import GREAT, NAMED, PIRCC_2017_URL, EnsoCalendar
 from enso.historico import validacion as V
 from enso.historico.indicadores import by_area, nino_hydro_years, nino_hydro_years_any, peak_icen
@@ -1434,7 +1434,7 @@ def place_names(r: dict, territory: Territory, places):
     names = territory.names(code)
     m = places.find(code, r.get("Ubicacion") or "", field=True, exclude=names) if (r.get("Ubicacion") or "").strip() else None
     if not (m and m.places):
-        m = places.find(code, r.get("Descripción") or "", exclude=names)
+        m = places.find(code, CO.without_note(r.get("Descripción")), exclude=names)
     return m if m.places else None
 
 
@@ -1446,7 +1446,7 @@ def water_names(r: dict, waters):
         return None
     m = waters.find(code, r.get("Ubicacion") or "", field=True) if (r.get("Ubicacion") or "").strip() else None
     if not (m and m.waters):
-        m = waters.find(code, r.get("Descripción") or "")
+        m = waters.find(code, CO.without_note(r.get("Descripción")))
     return m if m.waters else None
 
 
@@ -1653,7 +1653,9 @@ def web_payload(records: list[dict]) -> tuple[dict, dict[str, dict]]:
         place = _web_place(r)
         if place:
             detail[r["Ubigeo"][:2]][str(i)].append(place)
-    return {"cols": WEB_COLS, "dict": dicts, "rows": rows}, detail
+    # El área de las cifras de personas y viviendas cuando es mayor que la de la fila (``conciliacion.counts_at``).
+    area = {str(i): r["AreaCifras"] for i, r in enumerate(records) if r.get("AreaCifras")}
+    return {"cols": WEB_COLS, "dict": dicts, "rows": rows, "areaCifras": area}, detail
 
 
 def fine_payload(records: list[dict]) -> dict:
@@ -1945,15 +1947,20 @@ def write_prevention(prev: dict, evidence: dict, t: Territory, path_json: Path, 
                                      "evaluaciones": {"cols": ["anio", "institucion", "titulo", "url", "ubigeos"], "rows": evals},
                                      "llamamientos": {"cols": appeal_cols, "rows": appeals}},
                                     ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    write_prevention_csv(prev, t, path_csv)
+
+
+def write_prevention_csv(prev: dict, t: Territory, path: Path) -> None:
+    """El CSV de prevención por distrito: todos los distritos (los que no tuvieron declaratorias, evaluaciones ni
+    eventos, en cero), con BOM como los demás CSV para que Excel lea las tildes."""
     buf = io.StringIO()
     w = csv.writer(buf, lineterminator="\n")
     w.writerow(PREVENTION_COLS + prev["columnas"])
-    for code, vals in prev["distritos"].items():
-        if len(code) != 6:
-            continue
+    zero = [0] * len(prev["columnas"])
+    for code in sorted(set(t.dist) | {c for c in prev["distritos"] if len(c) == 6}):
         dep, prov, dist = t.names(code)
-        w.writerow([code, dep, prov, dist, *vals])
-    path_csv.write_text(buf.getvalue(), encoding="utf-8")
+        w.writerow([code, dep, prov, dist, *prev["distritos"].get(code, zero)])
+    path.write_text("\ufeff" + buf.getvalue(), encoding="utf-8")
 
 
 def harvest(manifest: dict, territory: Territory, calendar: EnsoCalendar, caches: list[Path], parcial: bool,
@@ -2036,6 +2043,18 @@ def harvest(manifest: dict, territory: Territory, calendar: EnsoCalendar, caches
     return records, context, evidence
 
 
+def write_conciliations(records: list[dict], territory: Territory, path: Path) -> None:
+    """``conciliaciones.csv``: cada fila cuyas cifras se conciliaron (con la población o la superficie de su área, con
+    el tipo de cambio de la fuente o con otra fila), con la ruta, las cifras de la fuente y las conciliadas, la
+    población, la razón entre ambas, el motivo, la evidencia y la nota."""
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(CO.LOG_COLUMNS)
+    for row in CO.log(records, territory):
+        w.writerow([csv_safe(v) for v in row])
+    path.write_text("\ufeff" + buf.getvalue(), encoding="utf-8")
+
+
 def read_catalog(path: Path) -> list[dict]:
     """Las filas del ``eventos.zip`` publicado, como las escribió ``catalog_csv`` (sin el apóstrofo de ``csv_safe``)."""
     with zipfile.ZipFile(path) as z, z.open("eventos.csv") as f:
@@ -2045,6 +2064,27 @@ def read_catalog(path: Path) -> list[dict]:
             if v[:1] == "'" and v[1:2] in ("=", "+", "-", "@"):
                 r[k] = v[1:]
     return rows
+
+
+def _roads_in_km(r: dict) -> None:
+    # DesInventar guarda las vías en metros (``desinventar._km``): el catálogo las tenía como kilómetros.
+    if r["Origen"] == "desinventar" and r.get("KmVias") not in (None, ""):
+        r["KmVias"] = desinventar._km(r["KmVias"])
+
+
+#: Correcciones de los lectores que el catálogo publicado necesita una vez (``migrate``): quedan en el manifiesto.
+MIGRATIONS = {"kmvias-desinventar-metros": _roads_in_km}
+
+
+def migrate(records: list[dict], manifest: dict) -> None:
+    """Aplica al catálogo publicado (``--desde-catalogo``) las correcciones de los lectores que aún no tiene: la
+    construcción completa ya las hace al leer las fuentes."""
+    done = manifest.setdefault("migraciones", [])
+    for name, fix in MIGRATIONS.items():
+        if name not in done:
+            for r in records:
+                fix(r)
+            done.append(name)
 
 
 def main(argv=None) -> int:
@@ -2075,6 +2115,9 @@ def main(argv=None) -> int:
     quality: Counter = Counter()
     if args.desde_catalogo:
         records = read_catalog(args.out / "eventos.zip")
+        migrate(records, manifest)
+        # Las conciliaciones se hacen de nuevo en cada corrida, con la población y conciliaciones.yaml vigentes.
+        CO.restore(records, territory)
         # El catálogo publicado ya pasó por las reglas de calidad y el manifiesto guarda cuántas filas tocó cada una: se
         # suman a las de esta corrida (que sobre un catálogo ya limpio son 0) para que el recuento no se pierda.
         quality.update(manifest.get("calidad") or {})
@@ -2114,9 +2157,20 @@ def main(argv=None) -> int:
             got = F.sinpad_edan(records, json.loads(path.read_text(encoding="utf-8")))
             src["registros"] = got["unidas"]
             src["detalle"] = {k: v for k, v in sorted(got.items()) if k != "punto nuevo (desde 2019)"}
+    concil = CO.apply(records, territory)
     relocate(records, territory, quality)
     records = tidy(records, calendar, quality)
     mark_duplicate_impacts(records)
+    # Después de unir las filas del IDMC (sus personas desplazadas pasan a la ficha del SINPAD).
+    concil["duplicado (automática)"] = CO.duplicates(records)
+    concil["cifra-de-area (automática)"] = CO.surfaces(records, territory)
+    concil["tope-poblacion"] = CO.cap(records, territory, auto=False)
+    concil["tope-poblacion (automática)"] = CO.cap(records, territory)
+    concil["duplicado (automática)"] += CO.overlaps(records, territory)
+    left = CO.inconsistent(records, territory)
+    if left:
+        raise SystemExit(f"{len(left)} filas o días con más personas o viviendas que habitantes después de conciliar "
+                         f"(investigar y anotar en conciliaciones.yaml): {'; '.join(left[:10])}")
     records.sort(key=lambda r: (r["Date"], r["Ubigeo"], r["Id"]))
     manifest["calidad"] = dict(sorted(quality.items()))
 
@@ -2162,6 +2216,7 @@ def main(argv=None) -> int:
         "atributos": {"cols": ["poblacion2020", "pobrezaPct", "idh2019", "altitud", "region"], "distritos": area_attrs(territory)},
         "columnas": E.COLUMNS,
         "calidad": manifest["calidad"],
+        "conciliacion": dict(sorted(concil.items())),
         # De dónde salió el calendario ENSO (el ICEN de los últimos meses es preliminar).
         "indicesENSO": {k: {"archivo": p.name, "sha256": sha256(p), "ultimoMes": last_month}
                         for k, p, last_month in (("icen", args.icen, max(calendar.icen) if calendar.icen else None),
@@ -2174,12 +2229,19 @@ def main(argv=None) -> int:
                                  districts={c: territory.population(c) or 0.0 for c in territory.dist})
         write_prevention(prev, evidence, territory, args.out / "prevencion.json", DATA / "prevencion-distrito.csv",
                          generated)
+    elif (args.out / "prevencion.json").exists():
+        # Sin las fuentes, los indicadores de prevención son los de la última construcción completa: el CSV se escribe
+        # de nuevo desde ellos para que siga el formato de los demás.
+        write_prevention_csv(json.loads((args.out / "prevencion.json").read_text(encoding="utf-8")), territory,
+                             DATA / "prevencion-distrito.csv")
     write_indicators(ind, territory, lambda lvl: DATA / f"indicadores-{lvl}.csv")
     write_context(context, ind, records, ongoing, territory, args.out / "contexto.json", DATA / "contexto-distrito.csv", generated)
     write_dictionary(records, DATA / "diccionario.csv")
+    write_conciliations(records, territory, DATA / "conciliaciones.csv")
     # Copias en el sitio para descargarlas sin pasar por el repositorio.
     for name in [f"indicadores-{lvl}.csv" for lvl in ind if lvl != "pais"] + ["contexto-distrito.csv",
-                                                                             "prevencion-distrito.csv", "diccionario.csv"]:
+                                                                             "prevencion-distrito.csv", "diccionario.csv",
+                                                                             "conciliaciones.csv"]:
         shutil.copyfile(DATA / name, args.out / name)
     if not args.desde_catalogo:
         manifest["generado"] = generated

@@ -891,6 +891,29 @@ def test_memory_detail_views_open_from_the_map_header(site, browser, w):
         ctx.close()
 
 
+def test_memory_area_figures_count_in_their_area_not_in_the_district(site, browser):
+    """Una cifra de un área mayor (``AreaCifras``: DesInventar puso en Ica-Tate los 10 000 afectados de la provincia
+    de Ica en 1976) no se suma al distrito, y su registro dice de qué área es."""
+    base, root = site
+    ev = json.loads((root / "assets" / "historico" / "eventos.json").read_text(encoding="utf-8"))
+    cols = {c: i for i, c in enumerate(ev["cols"])}
+    rows = [r for r in ev["rows"] if r[cols["Ubigeo"]] == "110112"]
+    mine = sum(r[cols["Afectados"]] for r in rows if str(r[cols["i"]]) not in ev["areaCifras"])
+    theirs = [r for r in rows if ev["areaCifras"].get(str(r[cols["i"]])) == "1101"]
+    assert theirs and mine
+    ctx = browser.new_context(viewport={"width": 1366, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = _errors(pg)
+    try:
+        pg.goto(f"{base}#/memoria?nivel=distrito&area=110112")
+        kv = pg.locator(".hz-kv div", has_text="Afectados, damnificados o desplazados").locator("dd")
+        expect(kv).to_have_text(re.compile(rf"^{mine // 1000}\D?{mine % 1000:03d}$"))
+        expect(pg.locator(".hz-ev", has_text="cifras de Ica")).to_have_count(len(theirs))
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
 @pytest.mark.parametrize("w", [320, 1366])
 def test_news_detail_views_show_alerts_by_basin_and_district_with_their_history(site, browser, w):
     """Mapa de Noticias, vistas de detalle: avisos por cuenca y distritos en aviso con su memoria de desastres. Se

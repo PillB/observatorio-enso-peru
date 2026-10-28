@@ -55,6 +55,9 @@ EXTRA_COLUMNS = [
     "CentrosSalud", "PerdidasUSD",
     "ImpactoReportado",    # si | no
     "ImpactoEnTotales",    # si | no (resumen curado de un área y evento que otra fuente ya detalla: no se suma dos veces)
+    "AreaCifras",          # UBIGEO del área mayor de la que son las cifras de daños, no las de víctimas (conciliacion.py)
+    "Conciliacion",        # cifra-de-area | homonimo | duplicado | consolidado | transcripcion | tope-poblacion («; »)
+    "CifrasFuente",        # el valor de la fuente de lo que cambió la conciliación («Afectados=11705»)
     "FuenteCita",          # la cita original (periódico y fecha, INDECI…) en texto legible
     "Licencia",
     "Confianza",           # alta | media | baja (resumen de la calidad de fecha, lugar y tipo)
@@ -162,7 +165,26 @@ COLUMN_DOCS = {
     "PerdidasUSD": ("decimal", "Pérdidas en dólares según la fuente", "Vacío = la fuente no lo reporta"),
     "ImpactoReportado": ("texto", "Si la fuente reporta algún impacto", "si o no"),
     "ImpactoEnTotales": ("texto", "Si los impactos de la fila entran a las sumas",
-                         "si; no = resumen curado de un área y evento que otra fuente ya detalla (no se suma dos veces)"),
+                         "si; no = resumen curado de un área y evento que otra fuente ya detalla, o ficha con las "
+                         "mismas cifras que otra (Conciliacion = duplicado): no se suma dos veces"),
+    "AreaCifras": ("texto (UBIGEO)", "Área a la que corresponden las cifras de daños de la fila (personas, viviendas, "
+                   "hectáreas, vías, locales y pérdidas; no fallecidos, desaparecidos ni heridos), si es mayor que la "
+                   "de la fila (la fuente dio la cifra de la provincia, del departamento o de un valle en un distrito)",
+                   "Vacío = la de la fila. Al sumar por área, esas cifras cuentan en AreaCifras y en las áreas que la "
+                   "contienen, no en las menores; ver conciliaciones.csv"),
+    "Conciliacion": ("texto", "Cómo se concilió una cifra que no cuadraba: más personas que la población del área en "
+                     "el año del evento (INEI), más viviendas que su mayor población, más hectáreas que su superficie, "
+                     "pérdidas en dólares que no cuadran con el tipo de cambio de la propia fuente, o la misma cifra "
+                     "en otra fila",
+                     "cifra-de-area (la cifra es del área de AreaCifras), homonimo (la fila pasó al departamento o la "
+                     "provincia del mismo nombre), duplicado (la cifra está en otra fila: se cuenta una vez), "
+                     "consolidado (total cuyas partes tienen filas: cuenta el resto), transcripcion (error de copia, "
+                     "corregido con la propia fuente) o tope-poblacion (se cuenta toda la población); varias se separan "
+                     "con «; »; vacío = no hizo falta. Unas las investigó el proyecto (conciliaciones.yaml) y otras "
+                     "las aplica una regla; el método, el motivo y la evidencia de cada fila están en "
+                     "conciliaciones.csv"),
+    "CifrasFuente": ("texto", "El valor de la fuente de lo que cambió la conciliación",
+                     "«Columna=valor» separados por «; » (Ubigeo si la fila cambió de área); vacío = nada cambió"),
     "FuenteCita": ("texto", "La cita original legible (institución, periódico y fecha…)", ""),
     "Licencia": ("texto", "Condiciones de uso de la fuente", "Ver docs/atribucion-licencias.md"),
     "Confianza": ("texto", "Resumen de la calidad de fecha, lugar y tipo",

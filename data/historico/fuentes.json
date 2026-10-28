@@ -1830,9 +1830,14 @@
     "punto de la fuente en un distrito creado después de 2020: UBIGEO del punto": 52,
     "punto de la fuente fuera del área asignada: capital": 2420,
     "punto del centro poblado que nombra la fuente": 1715,
+    "punto del nomenclátor actualizado (capital-departamento)": 2,
+    "punto del nomenclátor actualizado (capital-provincia)": 2,
     "punto del nomenclátor actualizado (interior-distrito)": 1117,
     "punto del río, la quebrada o la laguna que nombra la fuente": 365,
     "punto por defecto de la fuente (capital): no es el lugar del evento": 107796,
     "punto por defecto de la fuente (repetido): no es el lugar del evento": 9357
-  }
+  },
+  "migraciones": [
+    "kmvias-desinventar-metros"
+  ]
 }
