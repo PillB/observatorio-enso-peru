@@ -22,6 +22,10 @@ Pasos (todos reproducibles; ``docs/memoria-desastres.md``):
    * ``public/assets/historico/eventos.json``: versión compacta para el navegador.
    * ``public/assets/historico/detalle/<departamento>.json``: descripción, lugar y fuente de cada registro,
      que el sitio pide solo al abrir un área.
+   * ``public/assets/historico/finos.json``: la cuenca, el punto fino y el centro poblado o el río de cada registro,
+     para la vista de detalle del mapa (``fine_payload``).
+   * ``public/assets/historico/historia.json``: la memoria de cada distrito, provincia y cuenca en una fila, para el
+     mapa de Noticias (``history_payload``).
    * ``public/assets/historico/resumen.json``: cobertura, fuentes, calendario ENSO, nombres y atributos
      de cada área.
    * ``public/assets/historico/contexto.json`` y ``data/historico/contexto-distrito.csv``: peligro
@@ -1652,6 +1656,104 @@ def web_payload(records: list[dict]) -> tuple[dict, dict[str, dict]]:
     return {"cols": WEB_COLS, "dict": dicts, "rows": rows}, detail
 
 
+def fine_payload(records: list[dict]) -> dict:
+    """``finos.json``: lo que la vista de detalle del mapa necesita de cada registro, en el orden de ``eventos.json``
+    (la posición ``i``), sin pedir las fichas de los 25 departamentos:
+
+    - ``cuenca``: índice + 1 en ``cuencas`` de la cuenca de la ANA de cada registro (0: sin cuenca).
+    - ``puntos``: ``[i, lat, lon, cómo, radio]`` de los registros con un punto más fino que su distrito (cómo: 0, el
+      punto de la fuente; 1, el centro poblado; 3, el río, la quebrada o la laguna).
+    - ``lugar`` y ``agua``: ``[i, nombre]`` (índice en ``nombres``) de los registros que nombran un centro poblado o un
+      cuerpo de agua, aunque no den punto.
+    """
+    basins: list[str] = []
+    names: list[str] = []
+    bidx: dict[str, int] = {}
+    nidx: dict[str, int] = {}
+
+    def name(v: str) -> int:
+        if v not in nidx:
+            nidx[v] = len(names)
+            names.append(v)
+        return nidx[v]
+
+    cuenca, points, places, waters = [], [], [], []
+    for i, r in enumerate(records):
+        code = r.get("CuencaCodigo") or ""
+        if code and code not in bidx:
+            bidx[code] = len(basins)
+            basins.append(code)
+        cuenca.append(bidx[code] + 1 if code else 0)
+        kind = WEB_POINT_KIND.get(r.get("PrecisionGeo") or "")
+        if kind is not None:
+            try:
+                lat, lon = round(float(r["Latitud"]), 4), round(float(r["Longitud"]), 4)
+                radius = round(float(r["RadioKm"]), 1) if r.get("RadioKm") not in (None, "") else 0
+                points.append([i, lat, lon, kind, radius])
+            except (TypeError, ValueError, KeyError):
+                pass
+        if r.get("Lugar"):
+            places.append([i, name(r["Lugar"])])
+        if r.get("CuerpoAgua"):
+            waters.append([i, name(r["CuerpoAgua"])])
+    return {"cuencas": basins, "nombres": names, "cuenca": cuenca, "puntos": points, "lugar": places, "agua": waters}
+
+
+#: Columnas de ``historia.json`` por distrito, provincia y cuenca.
+HISTORY_COLS = ["registros", "aniosConEvento", "aniosCobertura", "grandesNinos", "ultimo", "muertos", "peligro", "desde",
+                "poblacion", "nombre"]
+
+
+def history_payload(records: list[dict], ind: dict, t: Optional[Territory] = None) -> dict:
+    """``historia.json``: la memoria de cada distrito, provincia y cuenca en una fila corta, para el mapa de Noticias
+    (que no carga los 146 000 registros). Distritos y provincias: los indicadores de ``indicadores-*.csv`` (años con
+    daños sobre los años de DesInventar 1970-2015). Cuencas (la ``CuencaCodigo`` de cada registro): sin años de
+    cobertura (una cuenca no es un área de DesInventar); ``aniosConEvento`` son las temporadas de julio a junio con
+    algún registro, de todas las fuentes. ``peligro``: índice en ``peligros`` del tipo con más registros. Con ``t``,
+    la población 2020 y el nombre de cada distrito y provincia (las cuencas los toman de ``cuencas-mapa.json``)."""
+    names = area_names(t) if t else {}
+    hazards: list[str] = []
+    hidx: dict[str, int] = {}
+
+    def hz(v: str) -> int:
+        if v not in hidx:
+            hidx[v] = len(hazards)
+            hazards.append(v)
+        return hidx[v]
+
+    def area_row(level: str, code: str, s: dict) -> list:
+        imp = s["impactos"]
+        return [s["registros"], s["aniosConEvento"], s["aniosCobertura"], len(s["grandesNinos"]),
+                (s["ultimo"] or {}).get("Date", "")[:10], _n(imp.get("Fallecidos")) + _n(imp.get("Desaparecidos")),
+                hz(s["peligros"][0][0]) if s["peligros"] else -1, "", t.population(code) if t else None,
+                names.get(level, {}).get(code, "")]
+
+    acc: dict[str, dict] = {}
+    for r in records:
+        code = r.get("CuencaCodigo") or ""
+        if not code:
+            continue
+        e = acc.setdefault(code, {"n": 0, "seasons": set(), "great": set(), "last": "", "dead": 0, "types": Counter(),
+                                  "first": 9999})
+        d = r["Date"]
+        y = int(d[:4])
+        season = (y if int(d[5:7]) >= 7 else y - 1) if len(d) >= 7 and r.get("PrecisionFecha") != "anio" else y
+        e["n"] += 1
+        e["seasons"].add(season)
+        if r.get("TipoEvento") in GREAT:
+            e["great"].add(r["TipoEvento"])
+        e["last"] = max(e["last"], d[:10])
+        if r.get("ImpactoEnTotales") != "no":
+            e["dead"] += _n(r.get("Fallecidos")) + _n(r.get("Desaparecidos"))
+        e["types"][r["DangerType"]] += 1
+        e["first"] = min(e["first"], y)
+    basins = {c: [e["n"], len(e["seasons"]), None, len(e["great"]), e["last"], e["dead"],
+                  hz(e["types"].most_common(1)[0][0]), e["first"], None, ""] for c, e in sorted(acc.items())}
+    return {"cols": HISTORY_COLS, "distritos": {c: area_row("distrito", c, s) for c, s in sorted(ind["distrito"].items())},
+            "provincias": {c: area_row("provincia", c, s) for c, s in sorted(ind["provincia"].items())}, "cuencas": basins,
+            "peligros": hazards}
+
+
 #: Cómo se ubicó el punto de un registro en la ficha del sitio (posición 13 del detalle): 0, el punto de la fuente;
 #: 1, el centro poblado que nombra; 3, el río, la quebrada o la laguna que nombra; 2, la capital del distrito (el lugar
 #: que nombra quedó al otro lado del límite, o su tramo de río es largo, o el punto de la fuente era uno por defecto).
@@ -2035,6 +2137,10 @@ def main(argv=None) -> int:
     (args.out / "eventos.json").write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     for dep, d in detail.items():
         (args.out / "detalle" / f"{dep}.json").write_text(json.dumps(d, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    fine = {"generatedAt": generated, **fine_payload(records)}
+    (args.out / "finos.json").write_text(json.dumps(fine, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    hist = {"generatedAt": generated, **history_payload(records, ind, territory)}
+    (args.out / "historia.json").write_text(json.dumps(hist, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     all_years = range(min(int(r["Anio"]) for r in records), max(int(r["Anio"]) for r in records) + 1)
     summary = {
         "generatedAt": generated, "registros": len(records),
