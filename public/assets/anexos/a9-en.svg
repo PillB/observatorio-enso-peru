@@ -174,9 +174,9 @@
   </g>
   <g class="ar-edge" id="a9-e-6" data-edge="6" data-from="a11y" data-to="views" tabindex="0">
     <title>6. Accessibility and freshness → 11 views: freshness and accessibility.</title>
-    <path class="ar-e ar-e-control" d="M695.3 594 L750 594 Q756 594 756 588 L756 312 Q756 306 762 306 L784.7 306" stroke-dasharray="2 3" marker-end="url(#a9-m-control)"/>
-    <circle class="ar-badge ar-e-control" cx="756" cy="450" r="9"/>
-    <text class="ar-t" x="756" y="453.8" font-size="10.5" text-anchor="middle">6</text>
+    <path class="ar-e ar-e-control" d="M695.3 594 L750 594 Q756 594 756 588 L756 276 Q756 270 762 270 L784.7 270" stroke-dasharray="2 3" marker-end="url(#a9-m-control)"/>
+    <circle class="ar-badge ar-e-control" cx="756" cy="432" r="9"/>
+    <text class="ar-t" x="756" y="435.8" font-size="10.5" text-anchor="middle">6</text>
   </g>
   <g class="ar-edge" id="a9-e-7" data-edge="7" data-from="views" data-to="provenance" tabindex="0">
     <title>7. 11 views → Each value&#x27;s provenance: each value.</title>
@@ -198,9 +198,9 @@
   </g>
   <g class="ar-edge" id="a9-e-10" data-edge="10" data-from="views" data-to="ab" tabindex="0">
     <title>10. 11 views → Map A/B analytics: map version and events. A single request when leaving the page; on GitHub Pages nothing is sent.</title>
-    <path class="ar-e ar-e-data" d="M784.7 270 L720 270 Q714 270 714 276 L714 678 Q714 684 708 684 L354 684 Q348 684 348 678 L348 594 Q348 588 342 588 L326 588" marker-end="url(#a9-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="714" cy="477" r="9"/>
-    <text class="ar-t" x="714" y="480.8" font-size="10.5" text-anchor="middle">10</text>
+    <path class="ar-e ar-e-data" d="M784.7 306 L720 306 Q714 306 714 312 L714 678 Q714 684 708 684 L354 684 Q348 684 348 678 L348 606 Q348 600 342 600 L326 600" marker-end="url(#a9-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="714" cy="495" r="9"/>
+    <text class="ar-t" x="714" y="498.8" font-size="10.5" text-anchor="middle">10</text>
   </g>
   <g class="ar-edge" id="a9-e-11" data-edge="11" data-from="views" data-to="public" tabindex="0">
     <title>11. 11 views → Public: consult.</title>
@@ -246,19 +246,21 @@
     <text class="ar-s" x="58" y="476.7" font-size="11">so two publications are never mixed.</text>
   </g>
   <g class="ar-node-g" id="a9-n-ab" data-node="ab">
-    <title>Map A/B analytics. Only on Cloudflare: /api/ab adds 1 per day, version (A to D) and event. No IP, cookies or identifier. Technology: Pages Functions, D1.</title>
-    <rect class="ar-node ar-g-operations" x="46" y="520.4" width="280" height="129.5" rx="8"/>
-    <rect class="ar-f-operations" x="46" y="528.4" width="4" height="113.5" rx="2"/>
+    <title>Map A/B analytics. Only on Cloudflare: /api/ab adds 1 per day, experiment (alert map version A to D, view of the News and disaster memory maps), version and event, and gives the most used one. No IP, cookies or identifier. Technology: Pages Functions, D1.</title>
+    <rect class="ar-node ar-g-operations" x="46" y="520.4" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-operations" x="46" y="528.4" width="4" height="143.9" rx="2"/>
     <rect class="ar-tile ar-f-operations" x="58" y="530.4" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-operations" transform="translate(61 533.4)"><path d="M4 4v16h16"/><path d="M7 15l4-5 3 3 5-6"/></g>
     <text class="ar-t" x="96" y="549.9" font-size="12.5">Map A/B analytics</text>
     <text class="ar-s" x="58" y="581.9" font-size="11">Only on Cloudflare: /api/ab adds 1 per day,</text>
-    <text class="ar-s" x="58" y="597" font-size="11">version (A to D) and event. No IP, cookies or</text>
-    <text class="ar-s" x="58" y="612.2" font-size="11">identifier.</text>
-    <rect class="ar-chip" x="58" y="622" width="93.3" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="64" y="634" font-size="10">Pages Functions</text>
-    <rect class="ar-chip" x="156.3" y="622" width="26.1" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="162.3" y="634" font-size="10">D1</text>
+    <text class="ar-s" x="58" y="597" font-size="11">experiment (alert map version A to D, view of</text>
+    <text class="ar-s" x="58" y="612.2" font-size="11">the News and disaster memory maps),</text>
+    <text class="ar-s" x="58" y="627.4" font-size="11">version and event, and gives the most used</text>
+    <text class="ar-s" x="58" y="642.6" font-size="11">one. No IP, cookies or identifier.</text>
+    <rect class="ar-chip" x="58" y="652.3" width="93.3" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="64" y="664.3" font-size="10">Pages Functions</text>
+    <rect class="ar-chip" x="156.3" y="652.3" width="26.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="162.3" y="664.3" font-size="10">D1</text>
   </g>
   <g class="ar-node-g" id="a9-n-boot" data-node="boot">
     <title>Start-up. Reads dashboard.json without cache and shows “Updated: … · Publication …”. If it cannot, it explains the data is being validated and links to ENFEN. Technology: app.js, fetch.</title>

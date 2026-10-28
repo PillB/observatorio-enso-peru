@@ -3653,8 +3653,8 @@
      "group": "operations",
      "name_es": "Analítica A/B del mapa",
      "name_en": "Map A/B analytics",
-     "what_es": "Solo en Cloudflare: /api/ab suma 1 por día, versión (A a D) y evento. Sin IP, sin cookies ni identificador.",
-     "what_en": "Only on Cloudflare: /api/ab adds 1 per day, version (A to D) and event. No IP, cookies or identifier.",
+     "what_es": "Solo en Cloudflare: /api/ab suma 1 por día, experimento (versión A a D del mapa de alertas, vista de los mapas de Noticias y de la memoria), versión y evento, y da la que más se usa. Sin IP, sin cookies ni identificador.",
+     "what_en": "Only on Cloudflare: /api/ab adds 1 per day, experiment (alert map version A to D, view of the News and disaster memory maps), version and event, and gives the most used one. No IP, cookies or identifier.",
      "tech": [
       "Pages Functions",
       "D1"
@@ -4516,8 +4516,8 @@
      "group": "publication",
      "name_es": "Archivos publicados",
      "name_en": "Published files",
-     "what_es": "eventos.zip (las 13 columnas del tablero y 50 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador.",
-     "what_en": "eventos.zip (the 13 dashboard columns and 50 metadata columns), the indicators, the per-district context, the prevention files and the data dictionary and browser versions."
+     "what_es": "eventos.zip (las 13 columnas del tablero y 50 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador (con finos.json e historia.json, y los ríos nombrados y las manzanas del CENEPRED de tools.build_capas_mapa, para las vistas de detalle).",
+     "what_en": "eventos.zip (the 13 dashboard columns and 50 metadata columns), the indicators, the per-district context, the prevention files and the data dictionary and browser versions (with finos.json and historia.json, and the named rivers and CENEPRED blocks from tools.build_capas_mapa, for the detail views)."
     },
     {
      "id": "tab",
@@ -4526,12 +4526,13 @@
      "group": "site",
      "name_es": "Pestaña Memoria de desastres",
      "name_en": "Disaster memory tab",
-     "what_es": "Cómo usarla, mapa y ficha de cada área con intervalos, línea de tiempo, los grandes Niños uno al lado del otro, ranking, la validación, «¿se sabía antes?», antes de 1970, la evidencia sobre la prevención y el método con sus límites.",
-     "what_en": "How to use it, map and profile of each area with intervals, timeline, the great Niños side by side, ranking, the validation, «was it known before?», before 1970, the evidence on prevention and the method with its limits.",
+     "what_es": "Cómo usarla, mapa y ficha de cada área con intervalos y, arriba del mapa, sus vistas de detalle (cuencas, ríos y lugares, daños y pobreza con las manzanas en riesgo del CENEPRED), línea de tiempo, los grandes Niños uno al lado del otro, ranking, la validación, «¿se sabía antes?», antes de 1970, la evidencia sobre la prevención y el método con sus límites.",
+     "what_en": "How to use it, map and profile of each area with intervals and, above the map, its detail views (watersheds, rivers and places, damage and poverty with CENEPRED's at-risk blocks), timeline, the great Niños side by side, ranking, the validation, «was it known before?», before 1970, the evidence on prevention and the method with its limits.",
      "tech": [
       "historico.js",
       "historico-model.js",
-      "historico-evidencia.js"
+      "historico-evidencia.js",
+      "historico-detalle.js"
      ],
      "see": [
       "a9"

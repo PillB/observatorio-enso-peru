@@ -444,3 +444,8 @@ def test_prevention_indicators(T, cal):
     y = {row[0]: dict(zip(p["columnasAnual"], row)) for row in p["anual"]}
     assert (y[2023]["decretosInminente"], y[2023]["llamamientosClima"], y[2023]["eventos"]) == (1, 1, 1)
     assert y[2003]["puntosInventario"] == 3 and y[2010]["evaluaciones"] == 1
+    # Con todos los distritos, uno sin eventos ni informes tiene su fila con la declaratoria de su departamento.
+    p = enlace.prevention(records, decrees, evals, appeals, districts={"200104": 1.0, "200105": 1.0, "200106": 1.0})
+    d = {code: dict(zip(p["columnas"], v)) for code, v in p["distritos"].items()}
+    assert set(d) == {"200104", "200105", "200106"}
+    assert (d["200106"]["decretosInminente"], d["200106"]["eventos"], d["200106"]["primeraEvaluacion"]) == (1, 0, 0)

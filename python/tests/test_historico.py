@@ -644,6 +644,7 @@ def test_fresh_indices_fall_back_to_the_test_copies(monkeypatch, tmp_path):
 
 def test_browser_model_matches_python_with_node():
     node = _need_node()
-    r = subprocess.run([node, "--test", str(JS / "historico.test.mjs")], capture_output=True, text=True, timeout=300)
+    r = subprocess.run([node, "--test", str(JS / "historico.test.mjs"), str(JS / "historico-detalle.test.mjs")],
+                       capture_output=True, text=True, timeout=300)
     assert r.returncode == 0, r.stdout[-4000:] + r.stderr[-2000:]
     assert re.search(r"# fail 0", r.stdout), r.stdout[-2000:]

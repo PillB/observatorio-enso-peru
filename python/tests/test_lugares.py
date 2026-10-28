@@ -230,11 +230,12 @@ def test_no_source_point_is_a_capital_or_a_repeated_default(catalog):
 
 
 def test_place_rows_carry_their_place_radius_and_watershed(catalog):
-    from tools.build_historico import place_names
+    from enso.aguas import aguas, district_radius_km
+    from tools.build_historico import place_names, water_names
 
-    t, L = territory(), lugares()
+    t, L, A, B = territory(), lugares(), aguas(), basins()
     kinds = Counter(r["PrecisionGeo"] for r in catalog)
-    assert kinds["centro-poblado"] > 1000 and kinds["coordenada-fuente"] > 5000
+    assert kinds["centro-poblado"] > 1000 and kinds["coordenada-fuente"] > 5000 and kinds["cuerpo-de-agua"] > 300
     seen = 0
     for i, r in enumerate(catalog):
         geo = r["PrecisionGeo"]
@@ -244,13 +245,20 @@ def test_place_rows_carry_their_place_radius_and_watershed(catalog):
                 lat, lon, radius = place_names(r, t, L).point()
                 assert (round(lat, 5), round(lon, 5), radius) == \
                     (float(r["Latitud"]), float(r["Longitud"]), float(r["RadioKm"])), r["Id"]
+        elif geo == "cuerpo-de-agua":
+            # Sin centro poblado: el río o la quebrada que nombra, con un tramo corto en el distrito.
+            assert r["CuerpoAgua"] and 0.5 <= float(r["RadioKm"]) <= 10 and not place_names(r, t, L), r["Id"]
+            lat, lon, radius = water_names(r, A).point(district_radius_km(r["Ubigeo"]))
+            assert (round(lat, 5), round(lon, 5), radius) == \
+                (float(r["Latitud"]), float(r["Longitud"]), float(r["RadioKm"])), r["Id"]
         else:
             assert not r["RadioKm"], r["Id"]
-        if geo in ("centro-poblado", "coordenada-fuente"):
+        if geo in ("centro-poblado", "coordenada-fuente", "cuerpo-de-agua"):
             b = basin_at(float(r["Latitud"]), float(r["Longitud"]))
             seen += 1
-        else:
-            b = district_basin(r["Ubigeo"])
+        else:  # la del río que nombra (si su tramo cae casi entero en una) o la del distrito
+            w = water_names(r, A) if r["CuerpoAgua"] else None
+            b = (w.basin(B.units) if w else None) or district_basin(r["Ubigeo"])
         assert r["CuencaCodigo"] == (b["code"] if b else "") and r["Cuenca"] == (b["name"] if b else ""), r["Id"]
     assert seen > 6000
     with_basin = sum(1 for r in catalog if r["CuencaCodigo"])
@@ -282,7 +290,9 @@ def test_relocate_moves_to_the_named_place_and_drops_default_points():
     assert rows[0]["Cuenca"] == "Cuenca Crisnejas" and rows[0]["CuencaCodigo"] == "49898"
     assert rows[1]["PrecisionGeo"] == "capital-distrito" and (rows[1]["Latitud"], rows[1]["Longitud"]) == (lat0, lon0)
     assert rows[1]["Lugar"] == "" and rows[1]["Cuenca"] == "Cuenca Crisnejas"
+    assert rows[1]["PuntoFuente"] == "por-defecto-capital"
     assert rows[2]["PrecisionGeo"] == "coordenada-fuente" and rows[2]["Latitud"] == -7.53 and rows[2]["Lugar"] == "Panama"
+    assert rows[2]["PuntoFuente"] == "en-el-lugar" and not rows[0].get("PuntoFuente")
     assert q["punto por defecto de la fuente (capital): no es el lugar del evento"] == 1
     before = [dict(r) for r in rows]
     again = Counter()

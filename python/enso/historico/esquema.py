@@ -36,10 +36,12 @@ EXTRA_COLUMNS = [
     "DangerTypeMetodo",    # fuente | texto | causa | por-omision
     "CausaFuente",         # la causa tal como la nombra la fuente
     "NivelUbigeo",         # distrito | provincia | departamento
-    "PrecisionGeo",        # coordenada-fuente | centro-poblado | capital-distrito | interior-distrito | capital-provincia | capital-departamento
+    "PrecisionGeo",        # coordenada-fuente | centro-poblado | cuerpo-de-agua | capital-distrito | interior-distrito | capital-provincia | capital-departamento
+    "PuntoFuente",         # qué se hizo con el punto de la fuente: en-el-lugar | por-defecto-capital | por-defecto-repetido | fuera-del-area
     "Lugar",               # centro(s) poblado(s) oficiales (INEI, IGN) que nombra la fuente, dentro del distrito
     "LugarCodigo",         # código de centro poblado del INEI (10 dígitos) del primero
-    "RadioKm",             # incertidumbre del punto de un centro poblado
+    "CuerpoAgua",          # río(s), quebrada(s), laguna(s), nevado(s) o abra(s) de la Carta Nacional del IGN que nombra la fuente, dentro del distrito
+    "RadioKm",             # incertidumbre del punto de un centro poblado o de un cuerpo de agua
     "Cuenca", "CuencaCodigo",  # unidad hidrográfica de la ANA (Pfafstetter) del punto, o del distrito si cae casi entero en una
     "Region",              # macrorregión INEI (Norte, Centro, Sur, Oriente, Lima Metropolitana)
     "AltitudCapital",      # m s. n. m. de la capital del distrito
@@ -53,6 +55,9 @@ EXTRA_COLUMNS = [
     "CentrosSalud", "PerdidasUSD",
     "ImpactoReportado",    # si | no
     "ImpactoEnTotales",    # si | no (resumen curado de un área y evento que otra fuente ya detalla: no se suma dos veces)
+    "AreaCifras",          # UBIGEO del área mayor de la que son las cifras de daños, no las de víctimas (conciliacion.py)
+    "Conciliacion",        # cifra-de-area | homonimo | duplicado | consolidado | transcripcion | tope-poblacion («; »)
+    "CifrasFuente",        # el valor de la fuente de lo que cambió la conciliación («Afectados=11705»)
     "FuenteCita",          # la cita original (periódico y fecha, INDECI…) en texto legible
     "Licencia",
     "Confianza",           # alta | media | baja (resumen de la calidad de fecha, lugar y tipo)
@@ -90,7 +95,8 @@ COLUMN_DOCS = {
     "Fuente": ("URL", "Enlace al registro en su fuente o a la fuente",
                "Siempre lleno; enlaza a la fuente cuando no tiene una página por registro (DesInventar, capas de ArcGIS)"),
     "Latitud": ("decimal (grados)", "Punto de la fuente si cae en el distrito asignado y no es un punto por defecto; "
-                "si no, el centro poblado que nombra la fuente; si no, la capital del área",
+                "si no, el centro poblado que nombra la fuente; si no, el río, la quebrada o la laguna que nombra (si su "
+                "tramo en el distrito es corto); si no, la capital del área",
                 "Ver PrecisionGeo. Las filas de provincia o departamento llevan la capital de la provincia o del "
                 "departamento: en un mapa de puntos se agrupan en las capitales y no son el lugar exacto"),
     "Longitud": ("decimal (grados)", "Igual que Latitud", "Ver PrecisionGeo"),
@@ -114,18 +120,30 @@ COLUMN_DOCS = {
     "PrecisionGeo": ("texto", "De dónde salen Latitud y Longitud",
                      "coordenada-fuente (el punto que da la fuente, dentro del distrito; no la capital ni un punto que la "
                      "fuente repite para todo el distrito), centro-poblado (el centro poblado que nombra la fuente: INEI "
-                     "2017 o IGN, ver Lugar y RadioKm), capital-distrito, interior-distrito (un punto dentro del distrito, "
-                     "lejos de sus bordes: el nomenclátor no trae su capital), capital-provincia o capital-departamento"),
+                     "2017 o IGN, ver Lugar y RadioKm), cuerpo-de-agua (el río, la quebrada, la laguna, el nevado o el "
+                     "abra que nombra la fuente, sobre su tramo en el distrito: Carta Nacional 1:100 000 del IGN, ver "
+                     "CuerpoAgua y RadioKm), capital-distrito, interior-distrito (un punto dentro del distrito, lejos de "
+                     "sus bordes: el nomenclátor no trae su capital), capital-provincia o capital-departamento"),
+    "PuntoFuente": ("texto", "Qué se hizo con el punto (coordenadas) que dio la fuente",
+                    "en-el-lugar (se usa: PrecisionGeo = coordenada-fuente), por-defecto-capital (era la capital del "
+                    "distrito, la provincia o el departamento: la fuente lo pone cuando no hay un punto de campo), "
+                    "por-defecto-repetido (la fuente repite ese punto en 5 filas o más del distrito sin que sea un centro "
+                    "poblado), fuera-del-area (no cae en el área del registro); vacío si la fuente no da un punto"),
     "Lugar": ("texto", "Centro(s) poblado(s) oficiales que nombra la fuente (Ubicacion o Descripción), dentro del distrito",
               "Nombre del INEI o del IGN; varios separados por « · ». Vacío si la fuente no nombra uno que exista en el "
               "distrito, o si el nombre se repite en el distrito (homónimos: no se adivina)"),
     "LugarCodigo": ("texto (10 dígitos)", "Código de centro poblado del INEI del primer Lugar",
                     "Léalo como texto. Vacío si el lugar viene solo del IGN, sin código"),
-    "RadioKm": ("decimal (km)", "Incertidumbre del punto cuando PrecisionGeo es centro-poblado",
-                "1 km (5 km si el INEI y el IGN ubican ese centro poblado a más de 5 km); con varios lugares, la distancia "
-                "del punto medio al más lejano más 1 km"),
+    "CuerpoAgua": ("texto", "Río(s), quebrada(s), laguna(s), nevado(s) o abra(s) que nombra la fuente, dentro del distrito",
+                   "Nombre de la Carta Nacional 1:100 000 del IGN; varios separados por « · ». Solo si el texto lo "
+                   "presenta como tal («río», «quebrada», «laguna»…) y existe en el distrito"),
+    "RadioKm": ("decimal (km)", "Incertidumbre del punto cuando PrecisionGeo es centro-poblado o cuerpo-de-agua",
+                "Centro poblado: 1 km (5 km si el INEI y el IGN lo ubican a más de 5 km); con varios lugares, la distancia "
+                "del punto medio al más lejano más 1 km. Cuerpo de agua: la distancia del punto al extremo más lejano de "
+                "su tramo en el distrito (hasta 10 km)"),
     "Cuenca": ("texto", "Unidad hidrográfica de la ANA (cuenca o intercuenca, Pfafstetter)",
-               "La del punto si PrecisionGeo es coordenada-fuente o centro-poblado; si no, la del distrito cuando el 80 % "
+               "La del punto si PrecisionGeo es coordenada-fuente, centro-poblado o cuerpo-de-agua; si no, la del río o la "
+               "quebrada que nombra la fuente (si el 60 % o más de su tramo en el distrito está en una), o la del distrito cuando el 80 % "
                "o más de él está en una sola; vacío en las demás"),
     "CuencaCodigo": ("texto", "Código Pfafstetter de la ANA de la Cuenca", "Léalo como texto"),
     "Region": ("texto", "Macrorregión del INEI", "Norte, Centro, Sur, Oriente, Lima Metropolitana"),
@@ -147,7 +165,26 @@ COLUMN_DOCS = {
     "PerdidasUSD": ("decimal", "Pérdidas en dólares según la fuente", "Vacío = la fuente no lo reporta"),
     "ImpactoReportado": ("texto", "Si la fuente reporta algún impacto", "si o no"),
     "ImpactoEnTotales": ("texto", "Si los impactos de la fila entran a las sumas",
-                         "si; no = resumen curado de un área y evento que otra fuente ya detalla (no se suma dos veces)"),
+                         "si; no = resumen curado de un área y evento que otra fuente ya detalla, o ficha con las "
+                         "mismas cifras que otra (Conciliacion = duplicado): no se suma dos veces"),
+    "AreaCifras": ("texto (UBIGEO)", "Área a la que corresponden las cifras de daños de la fila (personas, viviendas, "
+                   "hectáreas, vías, locales y pérdidas; no fallecidos, desaparecidos ni heridos), si es mayor que la "
+                   "de la fila (la fuente dio la cifra de la provincia, del departamento o de un valle en un distrito)",
+                   "Vacío = la de la fila. Al sumar por área, esas cifras cuentan en AreaCifras y en las áreas que la "
+                   "contienen, no en las menores; ver conciliaciones.csv"),
+    "Conciliacion": ("texto", "Cómo se concilió una cifra que no cuadraba: más personas que la población del área en "
+                     "el año del evento (INEI), más viviendas que su mayor población, más hectáreas que su superficie, "
+                     "pérdidas en dólares que no cuadran con el tipo de cambio de la propia fuente, o la misma cifra "
+                     "en otra fila",
+                     "cifra-de-area (la cifra es del área de AreaCifras), homonimo (la fila pasó al departamento o la "
+                     "provincia del mismo nombre), duplicado (la cifra está en otra fila: se cuenta una vez), "
+                     "consolidado (total cuyas partes tienen filas: cuenta el resto), transcripcion (error de copia, "
+                     "corregido con la propia fuente) o tope-poblacion (se cuenta toda la población); varias se separan "
+                     "con «; »; vacío = no hizo falta. Unas las investigó el proyecto (conciliaciones.yaml) y otras "
+                     "las aplica una regla; el método, el motivo y la evidencia de cada fila están en "
+                     "conciliaciones.csv"),
+    "CifrasFuente": ("texto", "El valor de la fuente de lo que cambió la conciliación",
+                     "«Columna=valor» separados por «; » (Ubigeo si la fila cambió de área); vacío = nada cambió"),
     "FuenteCita": ("texto", "La cita original legible (institución, periódico y fecha…)", ""),
     "Licencia": ("texto", "Condiciones de uso de la fuente", "Ver docs/atribucion-licencias.md"),
     "Confianza": ("texto", "Resumen de la calidad de fecha, lugar y tipo",

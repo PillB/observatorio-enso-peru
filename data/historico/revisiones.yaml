@@ -14,7 +14,16 @@ revisiones:
   - id: desinventar-43070
     accion: sin-impactos
     motivo: >-
-      Carapo (Huanca Sancos), abril de 1997: la ficha no tiene descripción ni fecha de la nota de prensa y
-      declara 141 fallecidos y 2 342 desaparecidos, tanto como toda la población del distrito en 2020 (≈ 2 400). Se marca como dudosa
-      hasta verificarla en El Comercio de esa fecha.
+      Carapo (Huanca Sancos), 12 de abril de 1997: la ficha declara 141 fallecidos y 2 342 desaparecidos, el 92 % de
+      los 2 697 habitantes del distrito ese año (INEI, Boletín Especial N° 16); sería el desastre climático más
+      mortal del Perú desde Yungay (1970) y no deja rastro en ninguna otra fuente. Se buscó con cinco cruces y
+      ninguno la confirma: 1) cita «El Comercio» sin el día de la nota, como solo 7 de las 11 907 fichas de
+      DesInventar que citan ese diario, y no trae descripción; 2) su causa es «Contaminación», que no corresponde a un aluvión; 3) sus cifras repiten
+      dígitos de teclado (34 heridos, 334 evacuados, 3 434 reubicados, 2 342 desaparecidos, 23 locales, 35 ha,
+      122 m de vías), y 3 434 reubicados son más que los habitantes; 4) su número de serie (1997-00645) va antes de
+      las fichas cargadas del Compendio Estadístico del INDECI de 1997 (1997-00646 en adelante), pero su número de
+      fila (43070) está lejos del de ellas (44173 a 44229): se cargó aparte, y el compendio no la tiene; 5) ni el
+      inventario de peligros del INGEMMET ni la prensa en línea registran un aluvión en Carapo en 1997 (sí los de
+      2024, Andina). No hay cifra correcta con qué reemplazarlas: la ficha queda como registro del evento, pero
+      sus cifras no se suman. Se revisará si aparece la nota de El Comercio de esa fecha.
     fuente: https://www.desinventar.net/DesInventar/profiletab.jsp?countrycode=per

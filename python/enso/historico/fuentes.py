@@ -339,6 +339,86 @@ def sinpad_api(doc: dict, territory, calendar, since: str = "2019-01-01",
 
 
 # ---------------------------------------------------------------------------
+# SINPAD: evaluación de daños y punto de cada emergencia (capa del GEOSINPAD)
+# ---------------------------------------------------------------------------
+#: Columna del catálogo ← campos de la capa SDE.EMERGENCIAS_TOTAL que se suman. Las vías (SCARRE_*, SCAMIRURAL_*) no:
+#: mezclan metros y kilómetros (la mediana de las carreteras afectadas es 70 y el máximo, 613 000).
+SINPAD_EDAN = {
+    "Fallecidos": ("SFALLE",), "Desaparecidos": ("SDESA",), "Heridos": ("SLESI",), "Afectados": ("SAFECTA",),
+    "Damnificados": ("SDAMNI",), "ViviendasDestruidas": ("SDESTRUVIVI",),
+    "ViviendasAfectadas": ("SAFECTAVIVI", "SINHABIVIVI"), "HectareasCultivo": ("SAREACULTI_AFECTA", "SAREACULTI_PERDIDO"),
+    "CentrosEducativos": ("SCCEE_AFECTA", "SCEE_DESTRU"), "CentrosSalud": ("SAFECTA_SALUD", "SDESTRU_SALUD", "SINHABI_SALUD"),
+}
+EDAN_NOTE = "Daños según la evaluación (EDAN) del SINPAD"
+EDAN_CITE = "cifras de daños: evaluación (EDAN) del SINPAD, capa de emergencias del GEOSINPAD (INDECI)"
+#: Desde cuándo las fichas del SINPAD no traen punto (el portal público); las de 2016-2018 traen el de la copia de ArcGIS.
+SINPAD_NO_POINT_SINCE = "2019-01-01"
+
+
+def _edan_number(v: float):
+    return int(v) if v == int(v) else round(v, 2)
+
+
+def sinpad_edan(records: list[dict], doc: dict) -> Counter:
+    """Completa las fichas del SINPAD con lo que la capa de emergencias del GEOSINPAD trae de cada una (unidas por código
+    SINPAD, con la misma fecha y la misma provincia): las cifras de la evaluación de daños (EDAN), que reemplazan las de
+    la fila (las del COEN o del IDMC eran de la misma evaluación, tomadas antes o derivadas de ella; las personas
+    desplazadas del IDMC se quedan), y, en las fichas desde 2019 que no tienen punto, el punto de la emergencia, que
+    ``relocate`` usa solo si cae en el distrito y no es un punto por defecto. Idempotente. Devuelve las cuentas:
+    fichas unidas, con cifras, con punto nuevo y sin par en la capa."""
+    stats: Counter = Counter()
+    idx: dict[int, list[dict]] = defaultdict(list)
+    for f in doc.get("features") or []:
+        a = f.get("attributes") or {}
+        try:
+            idx[int(a["IDE_SINPAD"])].append(a)
+        except (KeyError, TypeError, ValueError):
+            continue
+    for r in records:
+        if r.get("Origen") != "sinpad":
+            continue
+        try:
+            cands = idx.get(int(r.get("IdFuente") or ""), [])
+        except ValueError:
+            continue
+        a = next((a for a in cands if a.get("FECHA") is not None and str(a.get("COD_UBIGEO") or "")[:4] == r["Ubigeo"][:4]
+                  and abs((datetime.fromtimestamp(a["FECHA"] / 1000, timezone.utc).date()
+                           - date.fromisoformat(r["Date"])).days) <= 1), None)
+        if a is None:
+            stats["sin par en la capa"] += 1
+            continue
+        stats["unidas"] += 1
+        imp = {col: sum(float(a.get(f) or 0) for f in fields) for col, fields in SINPAD_EDAN.items()}
+        imp = {k: _edan_number(v) for k, v in imp.items() if v > 0}
+        if imp:
+            for col in SINPAD_EDAN:
+                r[col] = imp.get(col, "")
+            r["ImpactoReportado"] = "si"
+            cite = re.sub(r"; cifras de daños: .*$", "", r.get("FuenteCita") or "")
+            r["FuenteCita"] = f"{cite}; {EDAN_CITE}"
+            facts = ", ".join(f"{E.IMPACT_LABELS.get(k, k)} {_edan_fmt(v)}" for k, v in imp.items())
+            desc = _EDAN_SENTENCE.sub("", r.get("Descripción") or "")
+            r["Descripción"] = f"{desc} {EDAN_NOTE}: {facts}.".strip()
+            stats["con cifras de daños"] += 1
+        x, y = a.get("NUM_POSX"), a.get("NUM_POSY")
+        if r["Date"] >= SINPAD_NO_POINT_SINCE and r.get("PrecisionGeo") != "coordenada-fuente" and \
+                not r.get("PuntoFuente") and isinstance(x, (int, float)) and isinstance(y, (int, float)) and \
+                -82.5 < x < -68 and -18.5 < y < 0.5:
+            r["Latitud"], r["Longitud"], r["PrecisionGeo"] = round(y, 5), round(x, 5), "coordenada-fuente"
+            stats["punto nuevo (desde 2019)"] += 1
+    return stats
+
+
+_EDAN_SENTENCE = re.compile(r"\s*" + re.escape(EDAN_NOTE) + r": [^.]*\.")
+
+
+def _edan_fmt(v) -> str:
+    """Cifra con espacio de miles y coma decimal (la oración no lleva otro punto que el final)."""
+    return f"{v:,}".replace(",", " ") if isinstance(v, int) else \
+        f"{v:,.2f}".replace(",", " ").replace(".", ",")
+
+
+# ---------------------------------------------------------------------------
 # IDMC
 # ---------------------------------------------------------------------------
 _HOUSES = re.compile(r"(destroyed|made uninhabitable or destroyed|made uninhabitable)\s+(one|\d[\d,]*)\s+(?:house|home)", re.I)

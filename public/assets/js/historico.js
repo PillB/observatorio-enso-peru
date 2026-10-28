@@ -11,6 +11,8 @@ import * as F from './lib/format.js';
 import { ICON } from './icons.js';
 import * as M from './historico-model.js';
 import * as EV from './historico-evidencia.js';
+import * as DT from './historico-detalle.js';
+import { ab, abReady } from './ab.js';
 
 const BASE = 'assets/historico/';
 let CACHE = null;
@@ -67,7 +69,10 @@ function basins() {
 // ---------------------------------------------------------------------------
 // Estado (en la dirección: #/memoria?nivel=distrito&evento=grandes&area=200104)
 // ---------------------------------------------------------------------------
-const DEFAULTS = { nivel: 'provincia', evento: '', peligro: '', desde: '', hasta: '', metrica: 'anios', area: '', cuencas: '' };
+// vista: resumen o un detalle (historico-detalle.js); cuenca y foco (un río «r:cuenca:nombre» o un centro poblado
+// «l:distrito:nombre») eligen una ficha del detalle; dm: la métrica de las cuencas; mz=0 apaga las manzanas del
+// CENEPRED; celda: una casilla del bivariado («22»: daños frecuentes y pobreza alta).
+const DEFAULTS = { nivel: 'provincia', evento: '', peligro: '', desde: '', hasta: '', metrica: 'anios', area: '', cuencas: '', vista: 'resumen', cuenca: '', foco: '', dm: '', mz: '', celda: '' };
 const METRICS = [
   ['anios', 'Años con daños (1970-2015)'], ['minimo', 'Años con daños, como mínimo (IC 95 %)'], ['grandes', 'Grandes Niños que lo golpearon'],
   ['razon', 'Cuántos más lugares con daños en años de Niño'], ['registros', 'Registros'], ['muertos', 'Fallecidos y desaparecidos'],
@@ -116,6 +121,12 @@ export function readState() {
   if (!METRICS.some(([k]) => k === s.metrica)) s.metrica = DEFAULTS.metrica;
   if (s.area && !/^\d{2}(\d{2}){0,2}$/.test(s.area)) s.area = '';
   if (s.cuencas !== '1') s.cuencas = '';
+  if (!DT.VIEWS.some(([k]) => k === s.vista)) s.vista = DEFAULTS.vista;
+  if (!/^\d{1,8}$/.test(s.cuenca)) s.cuenca = '';
+  if (!/^[rl]:u?\d{1,8}:.{1,80}$/.test(s.foco)) s.foco = '';
+  if (s.dm === 'anios' || !DT.BASIN_METRICS.some(([k]) => k === s.dm)) s.dm = '';
+  if (s.mz !== '0') s.mz = '';
+  if (!/^[012]{2}$/.test(s.celda)) s.celda = '';
   return s;
 }
 
@@ -173,6 +184,12 @@ function areaName(D, code) {
   if (code.length === 2) return N.departamento[code] || code;
   if (code.length === 4) return `${N.provincia[code] || code} (${N.departamento[code.slice(0, 2)]})`;
   return `${N.distrito[code] || code} (${N.provincia[code.slice(0, 4)]}, ${N.departamento[code.slice(0, 2)]})`;
+}
+/** Los daños de un registro; los de personas y viviendas de un área mayor (AreaCifras) dicen de cuál son, no los
+ * fallecidos, que son del lugar del registro. */
+function damages(D, r) {
+  const area = [r.afect ? `${n0(r.afect)} afectados o damnificados` : '', r.viv ? `${n0(r.viv)} viviendas destruidas` : ''].filter(Boolean).join(' · ');
+  return [r.muertos ? `${n0(r.muertos)} fallecidos o desaparecidos` : '', area && r.ap ? `${area} (cifras de ${areaName(D, r.ap)})` : area].filter(Boolean).join(' · ');
 }
 const shortName = (D, code) => (code.length === 2 ? D.sum.nombres.departamento[code] : code.length === 4 ? D.sum.nombres.provincia[code] : D.sum.nombres.distrito[code]) || code;
 
@@ -382,27 +399,81 @@ export const memoriaView = {
   },
 };
 
-function mount(root, D) {
+/** Lo que necesita la vista de detalle (historico-detalle.js), cuando ya llegó. */
+let DETAIL_DATA = null;
+function detailData() {
+  return Promise.all([DT.fine(), DT.rivers(), DT.blocks(), basins()]).then(([X, R, K, B]) => (DETAIL_DATA = { X, R, K, B }));
+}
+/** La sesión del experimento de la vista (ab.js «memoria»): cuenta qué vista abre la gente y cuál usa. */
+let SESSION = null;
+
+async function mount(root, D) {
   let s = readState();
+  // Un código con la forma de un ubigeo pero que no existe (un enlace mal copiado) no abre una ficha vacía.
+  const N = D.sum.nombres;
+  if (s.area && !(N.departamento[s.area] || N.provincia[s.area] || N.distrito[s.area])) s.area = '';
+  await abReady();
+  const session = (SESSION = ab('memoria'));
+  // La vista: la del enlace; si el enlace trae filtros pero no la vista (un enlace de antes de las vistas), el
+  // resumen; si no trae nada, la de esta persona (al azar, la que más se usa o la que eligió). Una vista distinta de
+  // la suya (un enlace que le pasaron) se muestra sin contarla.
+  const q = new URLSearchParams(location.hash.split('?')[1] || '');
+  if (!q.has('vista')) s.vista = [...q.keys()].length ? 'resumen' : session.own;
+  session.show(s.vista);
   const set = (partial, sel) => { s = { ...s, ...partial }; draw(sel); };
   const draw = (focusSel) => {
     writeState(s);
+    if (s.vista !== 'resumen' && !DETAIL_DATA) {
+      detailData().then(() => { if (root.isConnected) draw(focusSel); }).catch((e) => {
+        console.error(e);
+        session.show('resumen');
+        s = { ...s, vista: 'resumen' };
+        if (root.isConnected) draw(focusSel);
+      });
+    }
     root.innerHTML = String(page(D, s));
     wire(root, D, s, set);
     if (focusSel) $(focusSel, root)?.focus({ preventScroll: true });
-    if (s.area) { fillDetail(root, D, s); fillContext(root, D, s); fillPrevArea(root, D, s); }
-    fillLayers(root, D, s);
+    if (s.area && $('#hz-list', root)) { fillDetail(root, D, s); fillContext(root, D, s); fillPrevArea(root, D, s); }
+    if (s.vista === 'resumen') fillLayers(root, D, s);
     fillPrevention(root, D);
+    session.mark('view');
   };
-  // Clic delegado en rankings, enlaces de área y cierre del perfil. root sobrevive a cada redibujo, así que se
-  // registra una sola vez por montaje (en wire se sumaría un manejador por redibujo).
+  const toMap = () => $('#hz-map-h', root)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  // Clic delegado en la vista, los rankings, los enlaces de área y el cierre de las fichas. root sobrevive a cada
+  // redibujo, así que se registra una sola vez por montaje (en wire se sumaría un manejador por redibujo).
   root.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-area]');
+    const v = e.target.closest('[data-vista]');
+    if (v) {
+      const vista = v.dataset.vista;
+      if (vista === s.vista) return;
+      session.choose(vista);
+      // Lo elegido pasa a la vista que también lo muestra (un río, de cuencas a ríos y lugares); si no, se suelta.
+      set({ vista, celda: '', foco: vista === 'cuencas' || vista === 'puntos' ? s.foco : '', cuenca: vista === 'cuencas' ? s.cuenca : '' }, `[data-vista="${vista}"]`);
+      return;
+    }
+    if (e.target.closest('[data-zoom-out]')) { set({ area: '', cuenca: '', foco: '' }, '#hz-map-h'); return; }
+    const b = e.target.closest('[data-area], [data-cuenca], [data-foco]');
     if (!b || b.closest('svg')) return;
+    if (b.dataset.cuenca !== undefined) {
+      if (b.dataset.cuenca) session.mark('detail');
+      set({ cuenca: b.dataset.cuenca, foco: '', area: '' }, '#hz-side');
+      if (b.dataset.cuenca) toMap();
+      return;
+    }
+    if (b.dataset.foco !== undefined) {
+      if (b.dataset.foco) session.mark('detail');
+      set({ foco: b.dataset.foco, area: '' }, '#hz-side');
+      if (b.dataset.foco) toMap();
+      return;
+    }
     const area = b.dataset.area;
+    if (area) session.mark('detail');
     const nivel = b.dataset.nivelGo || (area && area.length === 6 && s.nivel !== 'distrito' ? 'distrito' : area && area.length === 4 && s.nivel === 'departamento' ? 'provincia' : s.nivel);
-    set({ area, nivel }, '#hz-side');
-    if (area) $('#hz-map-h', root)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    // Un distrito elegido desde la ficha de una cuenca, un río o un centro poblado abre la ficha del distrito: la otra
+    // se cierra (si no, seguiría encima).
+    set({ area, nivel, ...(area ? { cuenca: '', foco: '' } : {}) }, '#hz-side');
+    if (area) toMap();
   });
   draw();
 }
@@ -412,10 +483,39 @@ function currentFilter(D, s) {
   return { types, event: s.evento, from: +s.desde || 0, to: +s.hasta || 0, great: D.great };
 }
 
+/** Un botón de la vista del mapa (cabecera del mapa). */
+const viewButton = (s, [k, t]) => html`<button type="button" data-vista="${k}" aria-pressed="${String(k === s.vista)}" title="${DT.VIEW_HINT[k]}">${t}</button>`;
+
+/** Lo que historico-detalle.js necesita de esta vista. */
+const HELPERS = { timeline, areaName, shortName, dl, when, scaleFor, statsFor, viewBoxFor, selRing, areaShape };
+
+function detailView(D, s, recs, years) {
+  if (!DETAIL_DATA) return null;
+  const ctx = { D, s, recs, years, H: HELPERS, ...DETAIL_DATA };
+  return s.vista === 'cuencas' ? DT.basinView(ctx) : s.vista === 'puntos' ? DT.pointsView(ctx) : DT.riskView(ctx);
+}
+
+/** El mapa y la ficha de una vista de detalle; sin datos todavía, el aviso de carga. */
+function detailBox(D, s, V, recs, years) {
+  const zoomed = s.area || s.cuenca || s.foco;
+  const hint = { cuencas: 'Toque una cuenca o un río para ver su ficha.', puntos: 'Toque un hexágono para acercarse a su departamento, un punto para ver su distrito o un río para ver sus registros.', riesgo: 'Toque un distrito para ver su ficha y acercar el mapa a su departamento.' }[s.vista];
+  const side = !V ? '' : V.side || (s.area ? html`${V.extra}${profileShell(D, s, recs, years)}` : '');
+  return html`<div class="hz-mapbox">
+      ${V ? raw(V.svg) : html`<div class="skeleton" aria-hidden="true"></div><p class="muted">Cargando el detalle: cuencas, puntos y ríos de los registros…</p>`}
+      <div class="hz-tip" role="tooltip" hidden></div>
+      ${V && zoomed ? html`<button type="button" class="btn ghost hz-zoomout" data-zoom-out>${raw(ICON.globe)}<span>Ver todo el Perú</span></button>` : ''}
+      ${V ? V.legend : ''}
+      <p class="muted small">${hint} Los filtros de arriba (evento, peligro y temporadas) también valen aquí.</p>
+    </div>
+    <aside class="hz-side" id="hz-side" aria-live="polite">${side}</aside>`;
+}
+
 function page(D, s) {
   const f = currentFilter(D, s);
   const recs = M.filter(D.recs, f);
   const years = M.coverageYears(D.sum.cobertura.homogenea, f.from, f.to);
+  const det = s.vista !== 'resumen';
+  const V = det ? detailView(D, s, recs, years) : null;
   const stats = statsFor(D, s, recs, years);
   const vals = [...stats.values()].map((st) => metricValue(st, s.metrica)).filter((v) => v !== null);
   const scale = scaleFor(s.metrica, vals, s.nivel);
@@ -428,29 +528,33 @@ function page(D, s) {
     ${contextBanner(D)}
     ${howToSection(D)}
     <section class="card hz-card" aria-labelledby="hz-map-h">
-      <div class="section-head"><h2 id="hz-map-h">Mapa de la memoria</h2><span class="muted small">${n0(recs.length)} de ${n0(D.recs.length)} registros</span></div>
+      <div class="section-head hz-head"><h2 id="hz-map-h">Mapa de la memoria</h2>
+        <div class="hz-views" role="group" aria-label="Vista del mapa">
+          <div class="seg">${viewButton(s, DT.VIEWS[0])}</div><span class="hz-views-l" aria-hidden="true">Detalle</span><div class="seg">${DT.VIEWS.slice(1).map((v) => viewButton(s, v))}</div>
+        </div>
+        <span class="muted small">${n0(recs.length)} de ${n0(D.recs.length)} registros</span></div>
       <form class="hz-filters" id="hz-filters" aria-label="Filtros del mapa">
         <label class="hz-f"><span>Evento</span><select class="input" name="evento">${evOpts.map(([v, t]) => html`<option value="${v}" ${v === s.evento ? raw('selected') : ''}>${t}</option>`)}</select></label>
         <label class="hz-f"><span>Peligro</span><select class="input" name="peligro"><option value="">Todos</option>${Object.entries(HAZARD_GROUPS).map(([k, [t]]) => html`<option value="${k}" ${k === s.peligro ? raw('selected') : ''}>${t}</option>`)}
           <optgroup label="Un tipo">${Object.keys(DANGER_LABEL).map((t) => html`<option value="${t}" ${t === s.peligro ? raw('selected') : ''}>${dl(t)}</option>`)}</optgroup></select></label>
         <label class="hz-f hz-f-s" title="Temporadas de julio a junio por su año de inicio: 1997 es julio de 1997 a junio de 1998"><span>Desde temporada</span><input class="input" name="desde" type="number" inputmode="numeric" min="${yMin}" max="${yMax}" placeholder="${yMin}" value="${s.desde}"></label>
         <label class="hz-f hz-f-s" title="Temporadas de julio a junio por su año de inicio: 1997 es julio de 1997 a junio de 1998"><span>Hasta temporada</span><input class="input" name="hasta" type="number" inputmode="numeric" min="${yMin}" max="${yMax}" placeholder="${yMax}" value="${s.hasta}"></label>
-        <label class="hz-f"><span>Mostrar</span><select class="input" name="metrica">${METRICS.map(([v, t]) => html`<option value="${v}" ${v === s.metrica ? raw('selected') : ''}>${t}</option>`)}</select></label>
-        <div class="hz-f hz-f-lvl"><span id="hz-lvl-l">Nivel</span><div class="seg" role="group" aria-labelledby="hz-lvl-l">${LEVEL_NAMES.map(([v, t]) => html`<button type="button" data-nivel="${v}" aria-pressed="${String(v === s.nivel)}">${t}</button>`)}</div></div>
+        ${det ? (V?.control || '') : html`<label class="hz-f"><span>Mostrar</span><select class="input" name="metrica">${METRICS.map(([v, t]) => html`<option value="${v}" ${v === s.metrica ? raw('selected') : ''}>${t}</option>`)}</select></label>
+        <div class="hz-f hz-f-lvl"><span id="hz-lvl-l">Nivel</span><div class="seg" role="group" aria-labelledby="hz-lvl-l">${LEVEL_NAMES.map(([v, t]) => html`<button type="button" data-nivel="${v}" aria-pressed="${String(v === s.nivel)}">${t}</button>`)}</div></div>`}
         <div class="hz-f hz-search"><label for="hz-q"><span>Buscar lugar</span></label><input class="input" id="hz-q" list="hz-places" placeholder="Distrito, provincia o departamento" autocomplete="off"><datalist id="hz-places"></datalist></div>
         ${s.evento || s.peligro || s.desde || s.hasta || s.area ? html`<button type="button" class="btn ghost hz-clear" data-clear>Quitar filtros</button>` : ''}
       </form>
       <div class="hz-grid">
-        <div class="hz-mapbox">
+        ${det ? detailBox(D, s, V, recs, years) : html`<div class="hz-mapbox">
           ${raw(mapSvg(D, s, stats, scale, { label }))}
           <div class="hz-tip" role="tooltip" hidden></div>
           ${s.area && s.nivel !== 'departamento' ? html`<button type="button" class="btn ghost hz-zoomout" data-area="">${raw(ICON.globe)}<span>Ver todo el Perú</span></button>` : ''}
           ${legendHtml(scale, s.metrica)}
           <div class="hz-layers" role="group" aria-label="Capas del mapa"><button type="button" class="kind-chip" data-layer="cuencas" aria-pressed="${String(s.cuencas === '1')}"><span class="hz-sw-basin" aria-hidden="true"></span>Cuencas (ANA)</button>
-            <span class="muted small" id="hz-pts-note">${s.area ? 'Cargando los puntos de los registros…' : 'Elija un área para ver sus registros como puntos: el punto de campo de la fuente o el centro poblado que nombran.'}</span></div>
+            <span class="muted small" id="hz-pts-note">${s.area ? 'Cargando los puntos de los registros…' : 'Elija un área para ver sus registros como puntos: el punto de campo de la fuente, el centro poblado o el río que nombran.'}</span></div>
           <p class="muted small">${s.nivel === 'departamento' ? 'Toque un departamento para ver su ficha.' : 'Toque un área para ver su ficha y acercar el mapa a su departamento. También puede buscarla arriba o elegirla en la tabla.'} Los registros a escala de departamento no se pintan en provincias ni distritos. Desde y hasta son temporadas de julio a junio (1997 = 1997-98).${s.evento ? ' Con un filtro de evento, «años con daños» cuenta solo los años con registros de ese evento y la razón de El Niño no aplica.' : ''}</p>
         </div>
-        <aside class="hz-side" id="hz-side" aria-live="polite">${s.area ? profileShell(D, s, recs, years) : nationalCard(D, nat, recs, years, s)}</aside>
+        <aside class="hz-side" id="hz-side" aria-live="polite">${s.area ? profileShell(D, s, recs, years) : nationalCard(D, nat, recs, years, s)}</aside>`}
       </div>
     </section>
     <section class="card hz-card" aria-labelledby="hz-tl-h">
@@ -538,7 +642,7 @@ function profileShell(D, s, recs, years) {
   const code = s.area;
   const mine = recs.filter((r) => r.u.startsWith(code));
   const lvl = code.length === 6 ? 'distrito' : code.length === 4 ? 'provincia' : 'departamento';
-  const st = M.summarize(mine, years, D.nino, D.great, D.hom);
+  const st = M.summarize(mine, years, D.nino, D.great, D.hom, code.length);
   if (s.evento) dropRR(st);
   const pop = population(D, code);
   const a = code.length === 6 ? D.attrs.get(code) : null;
@@ -603,13 +707,18 @@ async function fillDetail(root, D, s) {
   const B = await basins();
   if (!box.isConnected) return;
   let shown = 12;
-  /** Dónde, más fino que el distrito: el centro poblado o el punto de la fuente, y la cuenca (la del punto, o la del
-   * distrito si el 80 % o más de él está en una). */
+  /** Dónde, más fino que el distrito: el punto de la fuente, el centro poblado o el río que nombra, y la cuenca (la
+   * del punto, la del río que nombra o la del distrito si el 80 % o más de él está en una). Si la fuente dio un punto
+   * por defecto (la capital, o uno que repite en todo el distrito), se dice. */
   const fine = (r, g) => {
     const basin = B.units[(g && g[5]) || B.districts[r.u]]?.n;
-    const where = g && g[2] === 1 ? `centro poblado ${g[3]} (±${F.fmtNumber(g[4], g[4] % 1 ? 1 : 0)} km)`
-      : g && g[2] === 0 ? `punto de campo de la fuente${g[3] ? `, en ${g[3]}` : ''}` : g && g[3] ? `nombra ${g[3]}` : '';
-    return [where, basin].filter(Boolean).join(' · ');
+    const km = (v) => `±${F.fmtNumber(v, v % 1 ? 1 : 0)} km`;
+    const water = g && g[6] && g[2] !== 3 ? `nombra ${g[6]}` : '';
+    const where = g && g[2] === 1 ? `centro poblado ${g[3]} (${km(g[4])})`
+      : g && g[2] === 3 ? `${g[6]} (su tramo en el distrito, ${km(g[4])})`
+        : g && g[2] === 0 ? `punto de campo de la fuente${g[3] ? `, en ${g[3]}` : ''}` : g && g[3] ? `nombra ${g[3]}` : '';
+    const dropped = g && g[7] ? DROPPED[g[7]] : '';
+    return [where, water, basin, dropped].filter(Boolean).join(' · ');
   };
   const item = (r) => {
     const d = det[String(r.i)] || [];
@@ -620,13 +729,13 @@ async function fillDetail(root, D, s) {
       <p class="hz-ev-where">${areaName(D, r.u)}${dur ? ` · ${dur} día${dur > 1 ? 's' : ''}` : ''}</p>
       ${place ? html`<p class="small hz-ev-fine">${raw(ICON.pin)}<span>${place}</span></p>` : ''}
       ${desc ? html`<p class="hz-ev-t">${desc.length > 420 ? `${desc.slice(0, 420)}…` : desc}</p>` : ''}
-      ${r.muertos || r.afect || r.viv ? html`<p class="small">${[r.muertos ? `${n0(r.muertos)} fallecidos o desaparecidos` : '', r.afect ? `${n0(r.afect)} afectados o damnificados` : '', r.viv ? `${n0(r.viv)} viviendas destruidas` : ''].filter(Boolean).join(' · ')}</p>` : ''}
+      ${r.muertos || r.afect || r.viv ? html`<p class="small">${damages(D, r)}</p>` : ''}
       <p class="muted small">Fuente: ${cite || 'ver enlace'} ${url ? html`· <a href="${safeUrl(url)}" rel="noopener" target="_blank">${SOURCE_LINK[r.o] || 'documento'}</a>` : ''}</p>
       ${more ? html`<p class="small hz-corr">${raw(ICON.check)}<span>También lo ${more > 1 ? `cuentan ${n0(more)} reportes o notas` : 'cuenta otro reporte o nota'}${links.length ? ': ' : '.'}${corrLinks(links)}</span></p>` : ''}</li>`;
   };
   const paint = () => {
     box.innerHTML = String(html`<ol class="hz-evs">${sorted.slice(0, shown).map(item)}</ol>${sorted.length > shown ? html`<button type="button" class="btn ghost" id="hz-more">Ver ${Math.min(30, sorted.length - shown)} más (quedan ${n0(sorted.length - shown)})</button>` : ''}`);
-    $('#hz-more', box)?.addEventListener('click', () => { shown += 30; paint(); });
+    $('#hz-more', box)?.addEventListener('click', () => { SESSION?.mark('detail'); shown += 30; paint(); });
   };
   paint();
 }
@@ -636,7 +745,9 @@ async function fillDetail(root, D, s) {
 // ---------------------------------------------------------------------------
 const SVG_NS = 'http://www.w3.org/2000/svg';
 /** Cómo se ubicó el punto de un registro (posición 13 del detalle, tools.build_historico._web_place). */
-const POINT_KIND = ['punto de campo de la fuente', 'centro poblado que nombra el registro', 'capital del distrito'];
+const POINT_KIND = ['punto de campo de la fuente', 'centro poblado que nombra el registro', 'capital del distrito', 'río, quebrada o laguna que nombra el registro (su tramo en el distrito)'];
+/** Por qué no se usó el punto que dio la fuente (posición 7 del lugar). */
+const DROPPED = { capital: 'el punto de la fuente era la capital (uno por defecto)', repetido: 'el punto de la fuente era uno que repite en todo el distrito', fuera: 'el punto de la fuente caía fuera del área' };
 
 /** Proyección de peru-map.json (tools.build_peru_map): grados → coordenadas del SVG. */
 function project(D, lat, lon) {
@@ -671,11 +782,11 @@ async function fillLayers(root, D, s) {
   if (!svg.isConnected) return;
   const mine = M.filter(D.recs, currentFilter(D, s)).filter((r) => r.u.startsWith(s.area));
   const at = new Map();
-  let n0_ = 0, n1 = 0;
+  let n0_ = 0, n1 = 0, n3 = 0;
   for (const r of mine) {
     const g = (det[String(r.i)] || [])[13];
-    if (!g || g[0] === null || g[2] > 1) continue;
-    g[2] ? n1++ : n0_++;
+    if (!g || g[0] === null || g[2] === 2) continue;
+    if (g[2] === 3) n3++; else if (g[2]) n1++; else n0_++;
     const k = `${g[0].toFixed(3)},${g[1].toFixed(3)},${g[2]}`;
     const spot = at.get(k) || { g, recs: [] };
     spot.recs.push(r);
@@ -687,14 +798,19 @@ async function fillLayers(root, D, s) {
     const r = unit * (2.2 + 1.3 * Math.sqrt(recs.length - 1));
     const basin = g[5] && B.units[g[5]] ? B.units[g[5]].n : '';
     const years = [...new Set(recs.map((q) => q.y))].sort();
-    const tipText = [g[3] || (g[2] ? 'Centro poblado' : 'Punto de la fuente'),
+    const tipText = [(g[2] === 3 ? g[6] : g[3]) || (g[2] ? 'Centro poblado' : 'Punto de la fuente'),
       `${recs.length} registro${recs.length > 1 ? 's' : ''} (${years.length > 1 ? `${years[0]}–${years.at(-1)}` : years[0]}): ${[...new Set(recs.map((q) => dl(q.t)))].slice(0, 3).join(', ')}`,
       `${POINT_KIND[g[2]]}${g[4] ? `, ±${F.fmtNumber(g[4], g[4] % 1 ? 1 : 0)} km` : ''}`, basin].filter(Boolean).join('\n');
+    if (g[2] === 3) {
+      // El tramo del río o la quebrada: su círculo sin relleno y el punto del cauce.
+      const reach = Math.max(r, ((g[4] || 0) / 111) * D.peru.lonLat.k);
+      return `<g class="hz-pt hz-pt-agua" data-tip="${esc(tipText)}"><circle class="hz-reach" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${reach.toFixed(2)}"></circle><circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r.toFixed(2)}"></circle></g>`;
+    }
     return `<circle class="${g[2] ? 'hz-pt hz-pt-cp' : 'hz-pt'}" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${r.toFixed(2)}" data-tip="${esc(tipText)}"></circle>`;
   }).join(''));
   if (note) {
-    note.textContent = n0_ + n1
-      ? `${n0(n0_ + n1)} de los ${n0(mine.length)} registros de esta área tienen un punto más fino que su distrito: ${n0(n0_)} con el punto de campo de la fuente (punto lleno) y ${n0(n1)} en el centro poblado que nombran (anillo). Los demás solo se conocen por distrito.`
+    note.textContent = n0_ + n1 + n3
+      ? `${n0(n0_ + n1 + n3)} de los ${n0(mine.length)} registros de esta área tienen un punto más fino que su distrito: ${n0(n0_)} con el punto de campo de la fuente (punto lleno), ${n0(n1)} en el centro poblado que nombran (anillo) y ${n0(n3)} sobre el río, la quebrada o la laguna que nombran (círculo punteado: su tramo en el distrito). Los demás solo se conocen por distrito.`
       : `Ninguno de los ${n0(mine.length)} registros de esta área tiene un punto más fino que su distrito.`;
   }
 }
@@ -972,7 +1088,7 @@ function evidenceSection(D) {
 }
 
 function srcList(S, k) {
-  const unit = { eventos: 'registros', emergencias: 'registros propios', prensa: 'registros propios', hemeroteca: 'registros propios', prevencion: 'elementos' }[k] || 'elementos';
+  const unit = { eventos: 'registros', complemento: 'fichas unidas', emergencias: 'registros propios', prensa: 'registros propios', hemeroteca: 'registros propios', prevencion: 'elementos' }[k] || 'elementos';
   return html`<ul class="link-list">${S.fuentes.filter((f) => (f.tipo || 'eventos') === k).map((f) => html`<li>${f.pagina || f.url ? html`<a href="${safeUrl(f.pagina || f.url)}" rel="noopener" target="_blank">${f.nombre}</a>` : f.nombre} <span class="muted small">${f.cobertura || ''}${f.registros ? ` · ${n0(f.registros)} ${unit}` : ''}${f.corroboran ? ` · corroboran ${n0(f.corroboran)}` : ''}${f.parcial ? ' · descarga en curso' : ''}${f.obtenido ? ` · copia del ${F.fmtDate(f.obtenido)}` : ''} · ${f.licencia || ''}</span>${f.nota ? html`<br><span class="muted small">${f.nota}</span>` : ''}</li>`)}</ul>`;
 }
 
@@ -990,9 +1106,9 @@ function methodSection(D) {
           <li><a href="${BASE}prevencion-distrito.csv">Prevención por distrito (CSV)</a> · <a href="${BASE}prevencion.json">declaratorias, evaluaciones y llamamientos (JSON)</a></li>
           <li><a href="${BASE}diccionario.csv">Diccionario de datos (CSV)</a> <span class="muted small">Tipo, contenido y regla de cada columna del catálogo, con el porcentaje de filas que traen el dato por fuente. Lea Ubigeo e IdFuente como texto (llevan ceros a la izquierda).</span></li>
         </ul>
-        ${[['eventos', 'Fuentes de eventos'], ['emergencias', 'Reportes de emergencia del COEN (se unen a las fichas del SINPAD)'], ['prensa', 'Prensa regional y nacional (cada nota se une al evento que cuenta)'], ['hemeroteca', 'Periódicos antiguos digitalizados (cada página se une al evento que cuenta)'], ['prevencion', 'Prevención: declaratorias, evaluaciones, inventarios y llamamientos'], ['contexto', 'Peligro identificado hoy (contexto, no eventos)'], ['referencia', 'Referencias territoriales']].map(([k, t]) => html`<h3 class="hz-h3">${t}</h3>
+        ${[['eventos', 'Fuentes de eventos'], ['complemento', 'Complementos de las fichas del SINPAD (cifras de daños y punto; no agregan registros)'], ['emergencias', 'Reportes de emergencia del COEN (se unen a las fichas del SINPAD)'], ['prensa', 'Prensa regional y nacional (cada nota se une al evento que cuenta)'], ['hemeroteca', 'Periódicos antiguos digitalizados (cada página se une al evento que cuenta)'], ['prevencion', 'Prevención: declaratorias, evaluaciones, inventarios y llamamientos'], ['contexto', 'Peligro identificado hoy (contexto, no eventos)'], ['referencia', 'Referencias territoriales']].map(([k, t]) => html`<h3 class="hz-h3">${t}</h3>
         ${k === 'prensa' ? html`<details class="more"><summary>${n0(S.fuentes.filter((f) => f.tipo === k).length)} medios</summary>${srcList(S, k)}</details>` : srcList(S, k)}`)}
-        <p class="muted small">Catálogo generado el ${F.fmtDate(S.generatedAt.slice(0, 10))}. Límites: INDECI (GEOSINPAD). Población, pobreza e IDH por distrito: INEI y PNUD vía ubigeo-peru-aumentado (MIT).</p>
+        <p class="muted small">Catálogo generado el ${F.fmtDate(S.generatedAt.slice(0, 10))}. Límites: INDECI (GEOSINPAD). Centros poblados: INEI (censo 2017), IGN y SDOT; ríos, quebradas, lagunas y nevados: IGN, Carta Nacional 1:100 000; cuencas: ANA (los tres vía el geoportal de la IDEP, PCM). Población, pobreza e IDH por distrito: INEI y PNUD vía ubigeo-peru-aumentado (MIT).</p>
       </div>
       <div>
         <h3 class="hz-h3">Cómo leer los indicadores</h3>
@@ -1008,8 +1124,8 @@ function methodSection(D) {
           <li>${S.cobertura.nota}</li>
           <li>DesInventar se arma con prensa nacional e informes del INDECI: hay más registros de ciudades y lugares accesibles, y menos antes de los años 90. Una zona sin registros no es una zona sin peligro.</li>
           <li>Las cifras de impacto son las que publicó cada fuente; un vacío significa «no reportado», no cero. Las fuentes discrepan entre sí (Huggel et al., 2015).</li>
-          <li>Los distritos se ubican con su UBIGEO o, si el nombre de la fuente está abreviado, con el punto de la fuente dentro de los límites vigentes del INDECI; las coordenadas son las de la fuente si caen en el distrito asignado y no son un punto por defecto (la capital, o el mismo punto para todo el distrito); si no, las del centro poblado oficial que nombra el registro (INEI, IGN o SDOT, con su incertidumbre en km); y si no, las de la capital del distrito (o un punto dentro del distrito si no se conoce su capital). La cuenca es la unidad hidrográfica de la ANA del punto, o la del distrito si el 80 % o más de él está en una. Solo 1 de cada 18 registros tiene un punto más fino que el distrito.</li>
-          <li>Desde 2019 el SINPAD se lee del portal público del INDECI, que da el peligro, el distrito, la fecha, el nivel y el estado de cada emergencia, pero no su descripción ni sus daños. Por eso esas fichas se ubican en la capital del distrito. El IDMC recopila las mismas emergencias: cuando una fila del IDMC coincide con una del SINPAD (mismo distrito, ±1 día), sus personas desplazadas y viviendas pasan a la fila del SINPAD y el IDMC queda como corroboración; las filas del IDMC por departamento son resúmenes de desplazamiento, no eventos aparte.</li>
+          <li>Los distritos se ubican con su UBIGEO o, si el nombre de la fuente está abreviado, con el punto de la fuente dentro de los límites vigentes del INDECI; las coordenadas son las de la fuente si caen en el distrito asignado y no son un punto por defecto (la capital, o el mismo punto para todo el distrito); si no, las del centro poblado oficial que nombra el registro (INEI, IGN o SDOT, con su incertidumbre en km); si no, las del río, la quebrada o la laguna que nombra, si su tramo en el distrito es corto (Carta Nacional del IGN, con su tramo en km); y si no, las de la capital del distrito (o un punto dentro del distrito si no se conoce su capital). La cuenca es la unidad hidrográfica de la ANA del punto, la del río que nombra el registro o la del distrito si el 80 % o más de él está en una. Solo 1 de cada 17 registros tiene un punto más fino que el distrito.</li>
+          <li>Desde 2019 el SINPAD se lee del portal público del INDECI, que da el peligro, el distrito, la fecha, el nivel y el estado de cada emergencia, pero no su descripción ni sus daños. Las cifras de daños (la evaluación EDAN de cada emergencia, también las de 2016-2018) y un punto vienen de la capa de emergencias del GEOSINPAD, unida por el código SINPAD; casi todos esos puntos son la capital o un mismo punto para todo el distrito, así que la mayoría de esas fichas sigue en la capital del distrito. El IDMC recopila las mismas emergencias: cuando una fila del IDMC coincide con una del SINPAD (mismo distrito, ±1 día), sus personas desplazadas y viviendas pasan a la fila del SINPAD y el IDMC queda como corroboración; las filas del IDMC por departamento son resúmenes de desplazamiento, no eventos aparte.</li>
           <li>Las filas ubicadas solo por provincia o departamento llevan las coordenadas de su capital (columna PrecisionGeo): en un mapa de puntos parecen agrupadas en las capitales.</li>
           <li>La fecha de una fila del COEN es la de su primer reporte encontrado y la de una nota, la de su publicación (columna FechaTipo): su confianza nunca es alta.</li>
         </ul>
@@ -1029,6 +1145,7 @@ function wire(root, D, s, set) {
     if (!t.name) return;
     let v = t.value.trim();
     if ((t.name === 'desde' || t.name === 'hasta') && v && !/^\d{4}$/.test(v)) v = '';
+    if (t.name === 'dm' && v === 'anios') v = '';  // la métrica por defecto no va en el enlace
     set({ [t.name]: v }, `[name="${t.name}"]`);
   });
   $$('[data-nivel]', root).forEach((b) => b.addEventListener('click', () => {
@@ -1038,6 +1155,8 @@ function wire(root, D, s, set) {
   }));
   $('[data-clear]', root)?.addEventListener('click', () => set({ evento: '', peligro: '', desde: '', hasta: '', area: '' }, '#hz-map-h'));
   $('[data-layer="cuencas"]', root)?.addEventListener('click', () => set({ cuencas: s.cuencas === '1' ? '' : '1' }, '[data-layer="cuencas"]'));
+  $('[data-mz]', root)?.addEventListener('click', () => set({ mz: s.mz === '0' ? '' : '0' }, '[data-mz]'));
+  $$('[data-celda]', root).forEach((b) => b.addEventListener('click', () => { SESSION?.mark('select'); set({ celda: s.celda === b.dataset.celda ? '' : b.dataset.celda }, `[data-celda="${b.dataset.celda}"]`); }));
 
   // Buscador de lugares (datalist con los tres niveles).
   const q = $('#hz-q', root), list = $('#hz-places', root);
@@ -1064,7 +1183,8 @@ function wire(root, D, s, set) {
   const f = currentFilter(D, s);
   const recs = M.filter(D.recs, f);
   const years = M.coverageYears(D.sum.cobertura.homogenea, f.from, f.to);
-  const stats = statsFor(D, s, recs, years);
+  const stats = s.vista === 'resumen' ? statsFor(D, s, recs, years) : new Map();
+  let hovered = false;
   const show = (el, x, y) => {
     const code = el?.dataset?.code;
     if (!tip || !(code || el?.dataset?.tip)) return;
@@ -1077,6 +1197,7 @@ function wire(root, D, s, set) {
       tip.innerHTML = String(html`<strong>${head}</strong>${rest.map((t) => html`<p class="muted small">${t}</p>`)}`);
     }
     tip.hidden = false;
+    if (!hovered) { hovered = true; SESSION?.mark('hover'); }
     const tw = tip.offsetWidth, th = tip.offsetHeight;
     let left = x + 16, top = Math.max(8, Math.min(innerHeight - th - 8, y - th / 2));
     if (left + tw > innerWidth - 8) left = Math.max(8, x - tw - 16);
@@ -1086,8 +1207,22 @@ function wire(root, D, s, set) {
   const hide = () => { if (tip) tip.hidden = true; };
   svg.addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') show(e.target.closest('[data-tip]') || e.target.closest('[data-code]'), e.clientX, e.clientY); });
   svg.addEventListener('pointerleave', hide);
-  const pick = (code) => { hide(); set({ area: s.area === code ? '' : code }, '#hz-side'); };
-  svg.addEventListener('click', (e) => { const t = e.target.closest('[data-code]'); if (t) pick(t.dataset.code); });
+  const pick = (code) => { hide(); SESSION?.mark('select'); set({ area: s.area === code ? '' : code, foco: '' }, '#hz-side'); };
+  svg.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-foco], [data-basin], [data-code]');
+    if (!t) return;
+    if (t.dataset.foco) {
+      // Un río: su ficha (en la vista de cuencas, dentro de su cuenca).
+      hide();
+      SESSION?.mark('select');
+      const basin = t.dataset.foco.split(':')[1].replace(/^u.*/, '');  // «r:u<distrito>:…»: un río sin cuenca
+      set({ foco: t.dataset.foco, area: '', ...(s.vista === 'cuencas' && basin ? { cuenca: basin } : {}) }, '#hz-side');
+    } else if (t.dataset.basin) {
+      hide();
+      SESSION?.mark('select');
+      set({ cuenca: s.cuenca === t.dataset.basin ? '' : t.dataset.basin, foco: '', area: '' }, '#hz-side');
+    } else pick(t.dataset.code);
+  });
   svg.addEventListener('keydown', (e) => { const t = e.target.closest('[data-code]'); if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(t.dataset.code); } });
   svg.addEventListener('focusin', (e) => { const t = e.target.closest('[data-code]'); if (t) { const r = t.getBoundingClientRect(); show(t, r.left + r.width / 2, r.top + r.height / 2); } });
   svg.addEventListener('focusout', hide);

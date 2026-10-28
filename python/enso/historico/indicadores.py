@@ -25,7 +25,9 @@ Definiciones (``docs/memoria-desastres.md`` las explica con ejemplos). Con T = a
   distritos de un mismo año no son independientes: el mismo temporal los golpea juntos. Sin registros en uno de
   los dos grupos, no se calcula.
 * **Grandes Niños**: cuáles de los eventos históricos (``enso.GREAT``) dejaron registros en el área.
-* **Impactos**: sumas de lo que las fuentes reportan (vacío ≠ cero).
+* **Impactos**: sumas de lo que las fuentes reportan (vacío ≠ cero). Las cifras de personas y viviendas de una fila
+  con ``AreaCifras`` (la cifra es de la provincia o del departamento: ``conciliacion``) cuentan en esa área y en las
+  que la contienen, no en las menores.
 * **Fuente homogénea**: frecuencia, periodo de retorno, distrito-años y razón de tasas se calculan solo con
   los registros de la fuente sistemática del periodo de cobertura (``homogeneous``: DesInventar). Las
   demás fuentes (SINPAD desde 2016, IDMC, curados) suman registros, impactos y grandes Niños, pero no
@@ -45,6 +47,7 @@ import math
 from collections import Counter, defaultdict
 from typing import Iterable, Optional
 
+from .conciliacion import AREA_COLUMNS, counts_at
 from .enso import GREAT
 
 Z = 1.959964
@@ -132,9 +135,14 @@ def _num(v) -> float:
         return 0.0
 
 
+#: Dígitos de UBIGEO de cada nivel (la macrorregión y el país contienen cualquier área).
+LEVEL_DIGITS = {"departamento": 2, "provincia": 4, "distrito": 6}
+
+
 def summarize(records: Iterable[dict], years: range, nino_years: set[int],
-              homogeneous: Optional[set[str]] = None) -> dict:
-    """Indicadores de un conjunto de registros de una misma área (ya filtrados)."""
+              homogeneous: Optional[set[str]] = None, level: Optional[int] = None) -> dict:
+    """Indicadores de un conjunto de registros de una misma área (ya filtrados). ``level``: dígitos de UBIGEO del área
+    (None: macrorregión o país), para no sumar en ella las cifras de un área mayor (``conciliacion.counts_at``)."""
     recs = list(records)
     hom = [r for r in recs if homogeneous is None or r.get("Origen") in homogeneous]
     T = len(years)
@@ -156,10 +164,13 @@ def summarize(records: Iterable[dict], years: range, nino_years: set[int],
     for r in recs:
         if r.get("ImpactoEnTotales") == "no":  # solo «no» excluye (resumen curado que otra fila ya detalla)
             continue
+        here = counts_at(r, level)
         for k in ("Fallecidos", "Desaparecidos", "Afectados", "Damnificados", "Desplazados", "ViviendasDestruidas",
                   "ViviendasAfectadas", "HectareasCultivo", "KmVias"):
-            imp[k] += _num(r.get(k))
-        if _num(r.get("Fallecidos")) >= INTENSIVE_DEATHS or _num(r.get("ViviendasDestruidas")) >= INTENSIVE_HOUSES:
+            if here or k not in AREA_COLUMNS:
+                imp[k] += _num(r.get(k))
+        if _num(r.get("Fallecidos")) >= INTENSIVE_DEATHS or \
+                (here and _num(r.get("ViviendasDestruidas")) >= INTENSIVE_HOUSES):
             intensive += 1
     hazards = Counter(r["DangerType"] for r in recs)
     last = max(recs, key=lambda r: r["Date"]) if recs else None
@@ -186,7 +197,7 @@ def by_area(records: list[dict], years: range, nino_years: set[int],
             groups[(lvl, code)].append(r)
     out: dict[str, dict[str, dict]] = defaultdict(dict)
     for (lvl, code), rs in groups.items():
-        out[lvl][code] = summarize(rs, years, nino_years, homogeneous=homogeneous)
+        out[lvl][code] = summarize(rs, years, nino_years, homogeneous=homogeneous, level=LEVEL_DIGITS.get(lvl))
     return out
 
 

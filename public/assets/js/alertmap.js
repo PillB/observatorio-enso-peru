@@ -7,11 +7,14 @@
 // (valid) con la hora actual. Los lugares son los publicados (confianza ≥ 0,5); los aproximados (< 0,8) se
 // marcan con «≈». Las sugerencias de la consola de lugares no llegan a feed.json.
 //
-// Hay cuatro versiones del mapa (ab.js); comparten los datos, el resumen, los filtros y la lista accesible.
+// Hay cuatro versiones del mapa (ab.js); comparten los datos, el resumen, los filtros y la lista accesible. Además
+// del resumen, dos vistas de detalle (botones en la cabecera del mapa) cruzan los avisos con la memoria de desastres:
+// los avisos por cuenca de la ANA y los distritos en aviso con su historia (assets/historico/historia.json).
 
 import { html, raw, esc, safeUrl, $, $$ } from './lib/dom.js';
 import { ICON } from './icons.js';
-import { ab, VARIANTS } from './ab.js';
+import { ab, abReady, EXPERIMENTS, VARIANTS } from './ab.js';
+import { fmtDate, fmtNumber } from './lib/format.js';
 
 export const DEP_NAMES = { '01': 'Amazonas', '02': 'Áncash', '03': 'Apurímac', '04': 'Arequipa', '05': 'Ayacucho', '06': 'Cajamarca', '07': 'Callao', '08': 'Cusco', '09': 'Huancavelica', 10: 'Huánuco', 11: 'Ica', 12: 'Junín', 13: 'La Libertad', 14: 'Lambayeque', 15: 'Lima', 16: 'Loreto', 17: 'Madre de Dios', 18: 'Moquegua', 19: 'Pasco', 20: 'Piura', 21: 'Puno', 22: 'San Martín', 23: 'Tacna', 24: 'Tumbes', 25: 'Ucayali' };
 
@@ -166,6 +169,15 @@ export function itemBadges(it, now = Date.now()) {
   return html`${levelChip(a, { small: true })} <span class="tag tag-phase ph-${a.phase}">${PHASE[a.phase][0]}</span> <span class="muted small">${phaseText(a)}</span>${levelSource(a.sev)}${placeSource(it)}`;
 }
 
+/** Lo que ubica un aviso más fino que su distrito, como etiquetas de la lista: el centro poblado, el río o la
+ * quebrada que nombra (dentro de su distrito) y las cuencas de la ANA de sus puntos. */
+export function fineTags(it) {
+  const pts = it.detail?.points || [];
+  const names = [...new Set(pts.filter((p) => p.kind === 'centro-poblado' || p.kind === 'cuerpo-de-agua').map((p) => p.name).filter(Boolean))].slice(0, 3);
+  const basins = [...new Set(pts.map((p) => p.basin?.name).filter(Boolean))].slice(0, 2);
+  return html`${names.map((n) => html`<span class="tag tag-place tag-fine" title="Lugar que nombra el aviso, dentro de su distrito">${raw(ICON.pin)}${n}</span> `)}${basins.map((b) => html`<span class="tag tag-basin" title="Unidad hidrográfica de la ANA">${b}</span> `)}`;
+}
+
 /** El informe completo (el PDF que la página de la publicación ofrece para descargar) y de dónde salen los
  * lugares cuando no los trae el aviso mismo (el boletín del COEN del mismo aviso, o las regiones que nombra). */
 function placeSource(it) {
@@ -198,12 +210,13 @@ function summary(m, alerts) {
   return html`${parts[0]}, ${parts[1]} y ${parts[2]}.${topTxt}`;
 }
 
-function depLabel(code, list) {
+function stateText(list) {
   const st = depState(list);
   const n = (ph) => list.filter((a) => ph.includes(a.phase)).length;
   const lvl = st.rank > 0 ? `nivel ${RANK_NAME[st.rank]}${st.soon ? ' próximo' : ''}` : st.rank === 0 ? 'avisos sin nivel' : list.length ? 'solo reportes' : 'sin avisos';
-  return `${DEP_NAMES[code]}: ${lvl}. ${n(['vigente', 'en-curso'])} vigentes, ${n(['proxima'])} próximos, ${n(['ocurrido', 'reciente', 'vencida'])} reportes o pasados.`;
+  return `${lvl}. ${n(['vigente', 'en-curso'])} vigentes, ${n(['proxima'])} próximos, ${n(['ocurrido', 'reciente', 'vencida'])} reportes o pasados.`;
 }
+const depLabel = (code, list) => `${DEP_NAMES[code]}: ${stateText(list)}`;
 
 function tipHtml(title, list, { foot = 'Clic o Enter: ver sus avisos y noticias abajo' } = {}) {
   const items = [...list].sort(byPrio);
@@ -271,7 +284,7 @@ export function project(geo, lon, lat) {
 
 const ringPath = (geo, ring) => `M${ring.map(([lon, lat]) => project(geo, lon, lat).map((v) => v.toFixed(1)).join(' ')).join('L')}Z`;
 const levelCls = (a) => (rankOf(a) ? `r${rankOf(a)}` : 'un');
-const POINT_KIND = { estacion: 'Estación hidrológica', epicentro: 'Epicentro', volcan: 'Volcán', focos: 'Focos de calor', 'centro-poblado': 'Centro poblado' };
+const POINT_KIND = { estacion: 'Estación hidrológica', epicentro: 'Epicentro', volcan: 'Volcán', focos: 'Focos de calor', 'centro-poblado': 'Centro poblado', 'cuerpo-de-agua': 'Río, quebrada o laguna' };
 
 /** Texto del cuadro de un punto: qué es, el aviso y, si se sabe, el río, la cuenca y la incertidumbre. */
 function pointTip(p, a) {
@@ -299,9 +312,9 @@ export function detailMarkup(geo, alerts, f, { districts = null, unit = 1 } = {}
       }
       for (const ar of (districts && d.areas) || []) {
         if (!districts[ar.code]) continue;
-        const at = (area[ar.code] ||= { code: ar.code, name: ar.name, a, dim: dim(a), lines: [] });
+        const at = (area[ar.code] ||= { code: ar.code, name: ar.name, kind: ar.kind || 'quebradas', a, dim: dim(a), lines: [] });
         if (rankOf(a) >= rankOf(at.a)) Object.assign(at, { a, dim: at.dim && dim(a) });
-        at.lines.push(`${ar.n} quebrada${ar.n > 1 ? 's' : ''} · ${shortTitle(a.title, 140)}`);
+        at.lines.push(ar.kind === 'provincia' ? shortTitle(a.title, 140) : `${ar.n} quebrada${ar.n > 1 ? 's' : ''} · ${shortTitle(a.title, 140)}`);
       }
     }
     for (const p of d.points || []) {
@@ -313,6 +326,10 @@ export function detailMarkup(geo, alerts, f, { districts = null, unit = 1 } = {}
       const r = (p.kind === 'focos' ? 1.3 + Math.min(3, Math.sqrt(p.n || 1) * 0.6) : 3.4) * unit;
       if (p.kind === 'volcan') {
         points.push(`<path class="${cls}" d="M${x.toFixed(1)} ${(y - r * 1.3).toFixed(1)}l${(r * 1.2).toFixed(1)} ${(r * 2.1).toFixed(1)}h${(-r * 2.4).toFixed(1)}z" data-dep="${dep}" data-tip="${tip}"></path>`);
+      } else if (p.kind === 'cuerpo-de-agua') {
+        // Un tramo de río o quebrada: el círculo de su radio, sin relleno, y el punto del cauce.
+        const rr = Math.max(r, ((p.radiusKm || 0) / 111) * geo.lonLat.k);
+        points.push(`<g class="${cls}" data-dep="${dep}" data-tip="${tip}"><circle class="amap-reach" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rr.toFixed(1)}"></circle><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r * 0.7).toFixed(1)}"></circle></g>`);
       } else if (p.kind === 'estacion') {
         points.push(`<rect class="${cls}" x="${(x - r).toFixed(1)}" y="${(y - r).toFixed(1)}" width="${(2 * r).toFixed(1)}" height="${(2 * r).toFixed(1)}" transform="rotate(45 ${x.toFixed(1)} ${y.toFixed(1)})" data-dep="${dep}" data-tip="${tip}"></rect>`);
       } else {
@@ -320,10 +337,12 @@ export function detailMarkup(geo, alerts, f, { districts = null, unit = 1 } = {}
       }
     }
   }
-  const areas = Object.values(area).sort((x, y) => rankOf(x.a) - rankOf(y.a)).map((at) => {
+  // Las provincias (más grandes) primero, para que los distritos con quebradas queden encima.
+  const areas = Object.values(area).sort((x, y) => (x.code.length - y.code.length) || (rankOf(x.a) - rankOf(y.a))).map((at) => {
     const g = districts[at.code];
-    const head = `${at.name ? `${at.name}: ` : ''}quebradas con probable activación`;
-    return `<path class="amap-area s-${levelCls(at.a)}${at.dim}" d="${g.d}" data-dep="${esc(at.code.slice(0, 2))}" data-tip="${esc([head, ...at.lines.reverse()].join('\n'))}"></path>`;
+    const head = at.kind === 'provincia' ? `Provincia de ${at.name || at.code}: expuesta según el aviso de corto plazo`
+      : `${at.name ? `${at.name}: ` : ''}quebradas con probable activación`;
+    return `<path class="amap-area${at.kind === 'provincia' ? ' amap-prov' : ''} s-${levelCls(at.a)}${at.dim}" d="${g.d}" data-dep="${esc(at.code.slice(0, 2))}" data-tip="${esc([head, ...at.lines.reverse()].join('\n'))}"></path>`;
   });
   if (!shapes.length && !areas.length && !points.length) return '';
   return `<g class="amap-detail" aria-hidden="true">${shapes.join('')}${areas.join('')}${points.join('')}</g>`;
@@ -476,12 +495,171 @@ function depList(geo, by) {
 }
 
 // ---------------------------------------------------------------------------
+// Vistas de detalle: los avisos por cuenca y los distritos en aviso con su historia
+// ---------------------------------------------------------------------------
+export const VISTAS = EXPERIMENTS.noticias.variants;
+const VISTA_LABEL = { resumen: 'Resumen', cuencas: 'Por cuenca', distritos: 'Distritos y su historia' };
+const VISTA_HINT = { resumen: 'Avisos por departamento (versión A–D)', cuencas: 'Avisos por cuenca de la ANA, con lo que pasó antes en cada una', distritos: 'Distritos en aviso, coloreados por cuántas veces tuvieron daños antes' };
+
+let HISTORY = null;
+/** La memoria de cada distrito, provincia y cuenca en una fila (python -m tools.build_historico → history_payload). */
+function historyRows() {
+  if (!HISTORY) {
+    HISTORY = fetch('assets/historico/historia.json').then((r) => (r.ok ? r.json() : null)).then((h) => {
+      if (!h) return null;
+      const col = Object.fromEntries(h.cols.map((c, i) => [c, i]));
+      const wrap = (rows) => new Map(Object.entries(rows).map(([c, v]) => [c, Object.fromEntries(Object.entries(col).map(([k, i]) => [k, v[i]]))]));
+      return { distritos: wrap(h.distritos), provincias: wrap(h.provincias), cuencas: wrap(h.cuencas), peligros: h.peligros };
+    }).catch(() => null);
+  }
+  return HISTORY;
+}
+
+/** Punto dentro de un anillo (regla par-impar). */
+export function inRing(x, y, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i], [xj, yj] = ring[j];
+    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+const TOUCH = new Map();
+/**
+ * Los distritos que toca un aviso, más finos que su departamento: Map(código → cómo). «lugar»: el distrito que nombra;
+ * «provincia»: los distritos de una provincia que nombra o que expone un aviso de corto plazo; «quebradas»: los
+ * distritos con quebradas en aviso; «punto»: el de un centro poblado o un río que nombra; «zona»: los distritos cuyo
+ * centro cae dentro de la zona de un aviso del SENAMHI. Un aviso que solo nombra departamentos no toca ninguno.
+ */
+export function alertDistricts(a, geo, codes) {
+  const key = `${a.id}|${a.phase}`;
+  if (TOUCH.has(key)) return TOUCH.get(key);
+  const out = new Map();
+  const put = (c, how) => { if (!out.has(c)) out.set(c, how); };
+  const prov = (p) => codes.filter((c) => c.startsWith(p)).forEach((c) => put(c, 'provincia'));
+  for (const p of a.places) {
+    if (p.code.length === 6) put(p.code, 'lugar');
+    else if (p.code.length === 4) prov(p.code);
+  }
+  const d = a.detail || {};
+  for (const ar of d.areas || []) {
+    if (ar.code?.length === 6) put(ar.code, 'quebradas');
+    else if (ar.code?.length === 4) prov(ar.code);
+  }
+  for (const p of d.points || []) if (p.district && (p.kind === 'centro-poblado' || p.kind === 'cuerpo-de-agua')) put(p.district, 'punto');
+  if (ACTIVE.has(a.phase)) {
+    const rings = (d.shapes || []).flatMap((sh) => (sh.rings || []).filter((r) => r.length >= 4).map((r) => r.map(([lon, lat]) => project(geo, lon, lat))));
+    if (rings.length) {
+      for (const c of codes) {
+        const xy = geo.points[c];
+        if (xy && rings.some((r) => inRing(xy[0], xy[1], r))) put(c, 'zona');
+      }
+    }
+  }
+  TOUCH.set(key, out);
+  return out;
+}
+
+/** Avisos por distrito y por cuenca; ``coarse``: los que solo nombran departamentos. */
+export function alertUnits(alerts, geo, codes, basinOf) {
+  const dist = new Map(), basin = new Map(), coarse = [];
+  const push = (m, k, a) => { if (!m.has(k)) m.set(k, []); if (!m.get(k).includes(a)) m.get(k).push(a); };
+  for (const a of alerts) {
+    const ds = alertDistricts(a, geo, codes);
+    if (!ds.size && !(a.detail?.points || []).some((p) => p.basin?.code)) { if (a.deps.length) coarse.push(a); continue; }
+    for (const c of ds.keys()) {
+      push(dist, c, a);
+      const b = basinOf[c];
+      if (b) push(basin, b, a);
+    }
+    for (const p of a.detail?.points || []) if (p.basin?.code && (p.kind === 'centro-poblado' || p.kind === 'cuerpo-de-agua')) push(basin, p.basin.code, a);
+  }
+  return { dist, basin, coarse };
+}
+
+const HOW = { lugar: 'el aviso nombra el distrito', provincia: 'el aviso nombra su provincia', quebradas: 'quebradas con probable activación', punto: 'el aviso nombra un lugar del distrito', zona: 'su centro está en la zona del aviso' };
+const YEAR_BREAKS = [0.05, 0.1, 0.2, 0.35];
+const freqCls = (h) => (!h || !h.aniosCobertura ? 'na' : !h.aniosConEvento ? 'none' : `q${Math.min(4, YEAR_BREAKS.filter((b) => h.aniosConEvento / h.aniosCobertura >= b).length)}`);
+const pct0 = (v) => `${Math.round(v * 100)} %`;
+function memoryLine(h, H, { basin = false } = {}) {
+  if (!h) return 'Sin registros en la memoria de desastres.';
+  const hz = h.peligro >= 0 ? (H.peligros[h.peligro] || '') : '';
+  const freq = h.aniosCobertura ? `daños en ${h.aniosConEvento} de ${h.aniosCobertura} años (1970-2015)` : `${h.aniosConEvento} temporadas con registros${h.desde ? ` desde ${h.desde}` : ''}`;
+  const great = h.grandesNinos === 1 ? ', 1 gran Niño' : h.grandesNinos ? `, ${h.grandesNinos} grandes Niños` : '';
+  const last = h.ultimo ? (h.ultimo.length === 4 ? h.ultimo : fmtDate(h.ultimo)) : '';
+  return `Memoria: ${fmtNumber(h.registros)} registros, ${freq}${great}${h.muertos ? `, ${fmtNumber(h.muertos)} fallecidos o desaparecidos` : ''}${hz ? `; lo más frecuente: ${hz.toLowerCase().replace('/', ' o ')}` : ''}${!basin && last ? `; último registro: ${last}` : ''}.`;
+}
+
+/** Mapa y panel de una vista de detalle. ``sel``: la cuenca o el distrito elegido. */
+export function detailView(kind, geo, vis, f, ctx, sel = '') {
+  const { districts, B, H } = ctx;
+  const codes = Object.keys(districts).filter((c) => c.length === 6);
+  const U = alertUnits(vis, geo, codes, B.districts || {});
+  const deps = html`<g class="amap-deps" aria-hidden="true">${geo.departments.map((d) => html`<path d="${d.d}"></path>`)}</g>`;
+  const label = kind === 'cuencas' ? 'Cuencas de la ANA con avisos' : 'Distritos con avisos y su historia de daños';
+  const memo = (code) => (kind === 'cuencas' ? H.cuencas.get(code) : H.distritos.get(code));
+  const nameOf = (code) => (kind === 'cuencas' ? B.units[code]?.n || code : `${memo(code)?.nombre || code} (${DEP_NAMES[code.slice(0, 2)]})`);
+  const link = (code) => (kind === 'cuencas' ? `#/memoria?vista=cuencas&cuenca=${code}` : `#/memoria?nivel=distrito&area=${code}`);
+  const map = kind === 'cuencas' ? U.basin : U.dist;
+  let shapes;
+  if (kind === 'cuencas') {
+    shapes = Object.entries(B.units).map(([code, u]) => {
+      const list = map.get(code) || [];
+      const st = depState(list);
+      const fill = st.soon && st.rank >= 0 ? `url(#amap-soon-${st.rank > 0 ? `r${st.rank}` : 'un'})` : '';
+      const tip = `${u.n}\n${list.length ? `${list.filter((a) => ACTIVE.has(a.phase)).length} avisos vigentes o próximos, ${list.filter((a) => !ACTIVE.has(a.phase)).length} reportes o pasados` : 'Sin avisos con este filtro'}\n${memoryLine(memo(code), H, { basin: true })}`;
+      return `<path class="bas d-${st.cls}${sel === code ? ' sel' : ''}${f.dep && list.length && !list.some((a) => a.deps.includes(f.dep)) ? ' dim' : ''}" d="${u.d}" data-basin="${code}" data-tip="${esc(tip)}"${fill ? ` style="fill:${fill}"` : ''}></path>`;
+    }).join('');
+  } else {
+    shapes = [...map.entries()].filter(([c]) => districts[c]).map(([code, list]) => {
+      const st = depState(list);
+      const h = memo(code);
+      const how = [...new Set(list.map((a) => alertDistricts(a, geo, codes).get(code)))].map((k) => HOW[k]).join('; ');
+      const tip = `${nameOf(code)}\n${list.filter((a) => ACTIVE.has(a.phase)).length} avisos vigentes o próximos (${how})\n${memoryLine(h, H)}`;
+      return `<path class="dist hz-${freqCls(h)} s-${st.cls}${sel === code ? ' sel' : ''}${f.dep && f.dep !== code.slice(0, 2) ? ' dim' : ''}" d="${districts[code].d}" data-dist="${code}" data-tip="${esc(tip)}"></path>`;
+    }).join('');
+  }
+  const ring = sel && (kind === 'cuencas' ? B.units[sel]?.d : districts[sel]?.d);
+  const svg = html`<svg class="amap-svg amap-det amap-det-${kind}" viewBox="0 0 ${geo.width} ${geo.height}" role="group" aria-label="${label}" preserveAspectRatio="xMidYMid meet">${DEFS}${kind === 'distritos' ? deps : ''}${raw(shapes)}${kind === 'cuencas' ? deps : ''}${ring ? html`<g class="sel-ring" aria-hidden="true">${['sel-glow', 'sel-case', 'sel-line'].map((k) => html`<path class="${k}" d="${ring}"></path>`)}</g>` : ''}</svg>`;
+  // Panel: lo elegido, o el ranking (primero el nivel más alto vigente; entre iguales, el que más daños tuvo antes).
+  const score = (code) => { const h = memo(code); return h ? (h.aniosCobertura ? h.aniosConEvento / h.aniosCobertura : h.aniosConEvento / 60) : 0; };
+  const rows = [...map.entries()].map(([code, list]) => ({ code, list, st: depState(list), act: list.filter((a) => ACTIVE.has(a.phase)).length }))
+    .filter((r) => r.act || f.fase)
+    .sort((x, y) => y.st.rank - x.st.rank || score(y.code) - score(x.code) || y.list.length - x.list.length);
+  const unit = kind === 'cuencas' ? 'cuencas' : 'distritos';
+  let side;
+  if (sel) {
+    const list = map.get(sel) || [];
+    side = html`<div class="amap-sel"><div class="amap-sel-top"><h3 class="amap-h3">${nameOf(sel)}</h3><button type="button" class="icon-btn" data-${kind === 'cuencas' ? 'basin' : 'dist'}="" aria-label="Cerrar">${raw(ICON.close)}</button></div>
+      <p class="amap-memo">${raw(ICON.clock)}<span>${memoryLine(memo(sel), H, { basin: kind === 'cuencas' })} <a href="${link(sel)}" data-memoria>Ver su memoria de desastres</a></span></p>
+      ${tipHtml('', list, { foot: 'Los avisos y noticias están en la lista de abajo.' })}</div>`;
+  } else {
+    side = html`<div class="amap-sel"><h3 class="amap-h3">${kind === 'cuencas' ? 'Cuencas con avisos' : 'Distritos en aviso que más daños tuvieron antes'}</h3>
+      <p class="muted small">${rows.length} ${unit} con avisos ${f.fase ? 'con este filtro' : 'vigentes o próximos'}. ${U.coarse.length ? `${U.coarse.length} avisos solo nombran departamentos y no entran en este detalle (están en el resumen).` : ''}</p>
+      ${rows.length ? html`<ol class="amap-rank amap-rank-det">${rows.slice(0, 12).map(({ code, list, st }) => {
+        const h = memo(code);
+        const freq = h ? (h.aniosCobertura ? `${pct0(h.aniosConEvento / h.aniosCobertura)} de los años con daños` : `${h.aniosConEvento} temporadas con registros`) : 'sin registros';
+        return html`<li><button type="button" class="rank-row" data-${kind === 'cuencas' ? 'basin' : 'dist'}="${code}" aria-label="${nameOf(code)}: ${stateText(list)} Memoria: ${freq}.">
+          <span class="rank-name">${nameOf(code)}<small class="muted">${freq}</small></span><span class="lvl-dot d-${st.cls}" aria-hidden="true"></span><span class="rank-n">${list.length}</span></button></li>`;
+      })}</ol>${rows.length > 12 ? html`<p class="muted small">y ${rows.length - 12} ${unit} más.</p>` : ''}` : html`<p class="muted small">Ningún aviso de este filtro nombra un lugar más fino que el departamento.</p>`}
+      <p class="muted small">${kind === 'cuencas' ? 'Color: el nivel más alto de los avisos que tocan la cuenca (sus distritos, si el 80 % o más de cada uno cae en ella, o los lugares que nombran).' : 'Relleno: la parte de los años de DesInventar (1970-2015) con daños en el distrito; borde: el nivel más alto de sus avisos.'} La memoria es lo que pasó antes, no un pronóstico.</p></div>`;
+  }
+  const legend = kind === 'cuencas'
+    ? html`<div class="amap-legend-box"><ul class="amap-legend"><li><span class="sw sw-r3"></span>Rojo</li><li><span class="sw sw-r2"></span>Naranja</li><li><span class="sw sw-r1"></span>Amarillo</li><li><span class="sw sw-un"></span>Sin nivel en la fuente</li><li><span class="sw sw-rep"></span>Solo reportes o pasados</li><li><span class="sw sw-r2 sw-striped"></span>Rayado: próximo</li></ul></div>`
+    : html`<div class="amap-legend-box"><ul class="amap-legend"><li><span class="sw hz-none"></span>Sin daños registrados</li><li><span class="sw hz-q0"></span>Menos del 5 % de los años</li><li><span class="sw hz-q1"></span>5–10 %</li><li><span class="sw hz-q2"></span>10–20 %</li><li><span class="sw hz-q3"></span>20–35 %</li><li><span class="sw hz-q4"></span>35 % o más</li></ul>
+      <ul class="amap-legend"><li><span class="sw sw-ring r3"></span>Borde rojo</li><li><span class="sw sw-ring r2"></span>Naranja</li><li><span class="sw sw-ring r1"></span>Amarillo</li><li><span class="sw sw-ring un"></span>Sin nivel</li></ul></div>`;
+  return { svg, side, legend };
+}
+
+// ---------------------------------------------------------------------------
 // Montaje
 // ---------------------------------------------------------------------------
-/** Trazos de los distritos (los del mapa de la memoria), para los avisos de quebradas; se piden solo si hacen falta. */
+/** Trazos de los distritos y las provincias (los del mapa de la memoria), para los avisos de quebradas y las provincias
+ * expuestas de un aviso de corto plazo; se piden solo si hacen falta. */
 let DISTRICTS = null;
 function districtShapes() {
-  if (!DISTRICTS) DISTRICTS = fetch('assets/historico/mapa.json').then((r) => (r.ok ? r.json() : null)).then((m) => m?.districts || null).catch(() => null);
+  if (!DISTRICTS) DISTRICTS = fetch('assets/historico/mapa.json').then((r) => (r.ok ? r.json() : null)).then((m) => (m ? { ...(m.provinces || {}), ...(m.districts || {}) } : null)).catch(() => null);
   return DISTRICTS;
 }
 let BASINS = null;
@@ -493,10 +671,12 @@ function basinShapes() {
 function layersHtml(layers, alerts) {
   const kinds = new Set(alerts.flatMap((a) => (a.detail?.points || []).map((p) => p.kind)));
   const shapes = alerts.some((a) => ACTIVE.has(a.phase) && a.detail?.shapes?.length);
-  const areas = alerts.some((a) => ACTIVE.has(a.phase) && a.detail?.areas?.length);
-  const key = [shapes ? html`<li><span class="sw sw-shape"></span>Zona de un aviso del SENAMHI</li>` : '', areas ? html`<li><span class="sw sw-area"></span>Distritos con quebradas en aviso</li>` : '',
+  const areaKinds = new Set(alerts.filter((a) => ACTIVE.has(a.phase)).flatMap((a) => (a.detail?.areas || []).map((ar) => ar.kind || 'quebradas')));
+  const key = [shapes ? html`<li><span class="sw sw-shape"></span>Zona de un aviso del SENAMHI</li>` : '', areaKinds.has('quebradas') ? html`<li><span class="sw sw-area"></span>Distritos con quebradas en aviso</li>` : '',
+    areaKinds.has('provincia') ? html`<li><span class="sw sw-area sw-prov"></span>Provincias expuestas (aviso de corto plazo)</li>` : '',
     ...[['estacion', 'sw-k-estacion', 'Estación hidrológica'], ['epicentro', 'sw-k-epicentro', 'Epicentro'], ['volcan', 'sw-k-volcan', 'Volcán'],
-      ['focos', 'sw-k-focos', 'Focos de calor (celdas de ~11 km)'], ['centro-poblado', 'sw-k-cp', 'Centro poblado del reporte']]
+      ['focos', 'sw-k-focos', 'Focos de calor (celdas de ~11 km)'], ['centro-poblado', 'sw-k-cp', 'Centro poblado del reporte'],
+      ['cuerpo-de-agua', 'sw-k-agua', 'Río, quebrada o laguna del reporte (con su tramo)']]
       .filter(([k]) => kinds.has(k)).map(([, c, t]) => html`<li><span class="sw ${c}"></span>${t}</li>`)].filter(Boolean);
   return html`<div class="amap-layers" role="group" aria-label="Capas del mapa">
     <button type="button" class="kind-chip" data-layer="detalle" aria-pressed="${String(layers.detalle)}">Formas y puntos</button>
@@ -506,8 +686,18 @@ function layersHtml(layers, alerts) {
 
 export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
   if (!el) return null;
-  const geo = await geometry();
+  const [geo] = await Promise.all([geometry(), abReady()]);
   const session = ab();
+  // La vista (ab.js «noticias»): la del enlace (?vista=, sin contarla si no es la suya) o la de esta persona.
+  const vsession = ab('noticias');
+  const VIDS = VISTAS.map(([k]) => k);
+  let vista = VIDS.includes(getFilter().vista) ? getFilter().vista : vsession.own;
+  vsession.show(vista);
+  let sel = '';
+  let det = null;  // {districts, B, H} de las vistas de detalle, cuando llegan
+  const loadDet = () => Promise.all([districtShapes(), basinShapes(), historyRows()]).then(([districts, B, H]) => {
+    det = districts && B && H ? { districts, B, H } : false;
+  });
   let model = prepare(feed);
   if (!geo || !model.alerts.length && !model.sources.total) {
     el.innerHTML = '';
@@ -524,7 +714,7 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
     const v = session.variant;
     const vis = model.alerts.filter((a) => matches(a, f, { ignore: ['dep'] }));
     const by = aggregate(vis);
-    const sel = f.dep ? (by[f.dep] || []) : null;
+    const depSel = f.dep ? (by[f.dep] || []) : null;
     const label = 'Mapa del Perú por departamento con los avisos oficiales';
     // El detalle va debajo del anillo del departamento elegido (depShapes lo pone al final).
     const overlay = raw((layers.cuencas ? basinsMarkup(basinsGeo) : '') + (layers.detalle ? detailMarkup(geo, vis, f, { districts }) : ''));
@@ -541,17 +731,24 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
         <div class="amap-side"><h3 class="amap-h3">Vigencia de los avisos: ayer, hoy y los próximos días</h3>${timeline(model.alerts, f, Date.now())}${legend('D')}</div></div>`;
     } else {
       body = html`<div class="amap-grid amap-grid-a"><div class="amap-mapbox">${svgMap(geo, depShapes(geo, by, f, { badges: true, overlay }), label)}${tipBox}</div>
-        <div class="amap-side">${legend('A')}${sel ? html`<div class="amap-sel"><h3 class="amap-h3">${DEP_NAMES[f.dep]}</h3>${tipHtml('', sel, { foot: 'Sus avisos y noticias están en la lista de abajo.' })}</div>` : html`<p class="muted small">Pase el cursor o toque un departamento para ver sus avisos; haga clic para filtrar las noticias.</p>`}</div></div>`;
+        <div class="amap-side">${legend('A')}${depSel ? html`<div class="amap-sel"><h3 class="amap-h3">${DEP_NAMES[f.dep]}</h3>${tipHtml('', depSel, { foot: 'Sus avisos y noticias están en la lista de abajo.' })}</div>` : html`<p class="muted small">Pase el cursor o toque un departamento para ver sus avisos; haga clic para filtrar las noticias.</p>`}</div></div>`;
+    }
+    if (vista !== 'resumen') {
+      if (det === null) loadDet().then(() => { if (det === false) { vsession.show('resumen'); vista = 'resumen'; } draw(); });
+      const D = det ? detailView(vista, geo, vis, f, det, sel) : null;
+      body = html`<div class="amap-grid amap-grid-det"><div class="amap-mapbox">${D ? D.svg : html`<div class="skeleton" aria-hidden="true"></div><p class="muted">Cargando las cuencas, los distritos y la memoria de desastres…</p>`}<div class="amap-tip" role="tooltip" hidden></div>${D ? D.legend : ''}</div>
+        <div class="amap-side">${D ? D.side : ''}</div></div>`;
     }
     const pubAge = model.generatedAt ? (Date.now() - Date.parse(model.generatedAt)) / H : 0;
     // Al redibujar, el foco vuelve al mismo control (un departamento, un filtro) para el teclado.
     const act = el.contains(document.activeElement) ? document.activeElement : null;
     const refocus = act && (act.dataset.dep && !act.dataset.f ? `[data-dep="${act.dataset.dep}"]${act.classList.contains('dep') ? '.dep' : act.dataset.spot ? `[data-spot="${act.dataset.spot}"]` : `.${act.classList[0]}`}`
       : act.dataset.f ? `[data-f="${act.dataset.f}"][data-v="${act.dataset.v}"]` : act.id ? `#${act.id}` : act.dataset.fase ? `.cell[data-fase="${act.dataset.fase}"][data-nivel="${act.dataset.nivel}"]` : '');
-    el.innerHTML = String(html`<section class="card amap amap-v${v}" aria-labelledby="amap-h" data-tour-id="alert-map">
+    el.innerHTML = String(html`<section class="card amap amap-v${vista === 'resumen' ? v : vista}" aria-labelledby="amap-h" data-tour-id="alert-map">
       <div class="amap-head"><div><h2 id="amap-h">Mapa de alertas y avisos oficiales</h2>
         <p class="amap-sum" aria-live="polite">${summary(model, vis.filter((a) => !f.dep || a.deps.includes(f.dep)))}</p></div>
-        <label class="amap-ver"><span>Versión del mapa</span><select id="amap-ver">${VARIANTS.map(([k, l]) => html`<option value="${k}" ${k === v ? 'selected' : ''}>Versión ${k}: ${l}</option>`)}</select></label></div>
+        <div class="amap-tools"><div class="hz-views amap-views" role="group" aria-label="Vista del mapa"><div class="seg">${viewBtn('resumen')}</div><span class="hz-views-l" aria-hidden="true">Detalle</span><div class="seg">${VIDS.slice(1).map(viewBtn)}</div></div>
+        ${vista === 'resumen' ? html`<label class="amap-ver"><span>Versión del mapa</span><select id="amap-ver">${VARIANTS.map(([k, l]) => html`<option value="${k}" ${k === v ? 'selected' : ''}>Versión ${k}: ${l}</option>`)}</select></label>` : ''}</div></div>
       ${model.sources.total && !model.sources.ok ? html`<p class="notice notice-alert">${raw(ICON.octagon)}<span>Ninguna fuente de alertas respondió en la última actualización: el mapa muestra los últimos avisos conocidos y puede faltar lo más reciente. Consulte directamente al SENAMHI y al INDECI.</span></p>` : ''}
       ${!model.hasLevels && model.alerts.length ? html`<p class="notice notice-info">${raw(ICON.info)}<span>Esta publicación es anterior al mapa: los niveles y la vigencia de cada aviso aparecerán con la próxima actualización diaria.</span></p>` : ''}
       ${body}
@@ -562,10 +759,14 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
     </section>`);
     wire(el, f, by);
     if (refocus) (el.querySelector(refocus) || $('#amap-h', el))?.focus?.({ preventScroll: true });
-    session.mark('view');
+    if (vista === 'resumen') session.mark('view');
+    vsession.mark('view');
   };
+  const viewBtn = (k) => html`<button type="button" data-vista="${k}" aria-pressed="${String(k === vista)}" title="${VISTA_HINT[k]}">${VISTA_LABEL[k]}</button>`;
+  // Las marcas de uso van a la versión A–D en el resumen y siempre a la vista.
+  const mark = (e) => { if (vista === 'resumen') session.mark(e); vsession.mark(e); };
 
-  const setF = (partial) => { session.mark('select'); onFilter(partial); };
+  const setF = (partial) => { mark('select'); onFilter(partial); };
 
   function wire(root, f, by) {
       const tip = $('.amap-tip', root);
@@ -590,6 +791,7 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
         tip.innerHTML = String(html`<div class="amap-tip-h"><strong>${head}</strong></div>${rest.map((t) => html`<p class="muted">${t}</p>`)}`);
         tip.hidden = false;
         place(x, y);
+        if (!hovered && det.closest('.amap-det')) { hovered = true; mark('hover'); }
         return;
       }
       const spot = target.closest('[data-spot]');
@@ -608,7 +810,7 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
       tip.innerHTML = String(tipHtml(title, list));
       tip.hidden = false;
       place(x, y);
-      if (!hovered) { hovered = true; session.mark('hover'); }
+      if (!hovered) { hovered = true; mark('hover'); }
     };
     const hideTip = () => { if (tip) tip.hidden = true; };
     const svg = $('.amap-svg', root);
@@ -616,6 +818,15 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
       svg.addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') showTip(e.target, e.clientX, e.clientY); });
       svg.addEventListener('pointerleave', hideTip);
       svg.addEventListener('click', (e) => {
+        const u = e.target.closest('[data-basin], [data-dist]');
+        if (u) {
+          hideTip();
+          const code = u.dataset.basin ?? u.dataset.dist;
+          mark('select');
+          sel = sel === code ? '' : code;
+          draw();
+          return;
+        }
         const t = e.target.closest('[data-dep]');
         if (!t) return;
         const dep = t.dataset.dep;
@@ -642,12 +853,29 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
       const on = f.fase === b.dataset.fase && f.nivel === b.dataset.nivel;
       setF({ fase: on ? '' : b.dataset.fase, nivel: on ? '' : b.dataset.nivel });
     }));
-    $$('.rank-row, .amap-a11y [data-dep]', root).forEach((b) => b.addEventListener('click', () => setF({ dep: f.dep === b.dataset.dep ? '' : b.dataset.dep })));
+    $$('.rank-row[data-dep], .amap-a11y [data-dep]', root).forEach((b) => b.addEventListener('click', () => setF({ dep: f.dep === b.dataset.dep ? '' : b.dataset.dep })));
     $$('.tl-row', root).forEach((b) => b.addEventListener('click', () => {
       if (b.dataset.dep) setF({ dep: f.dep === b.dataset.dep ? '' : b.dataset.dep });
-      else { const a = model.alerts.find((x) => x.id === b.dataset.id); if (a?.url) { session.mark('detail'); window.open(safeUrl(a.url), '_blank', 'noopener'); } }
+      else { const a = model.alerts.find((x) => x.id === b.dataset.id); if (a?.url) { mark('detail'); window.open(safeUrl(a.url), '_blank', 'noopener'); } }
     }));
-    $$('[data-detail]', root).forEach((a) => a.addEventListener('click', () => session.mark('detail')));
+    $$('[data-detail]', root).forEach((a) => a.addEventListener('click', () => mark('detail')));
+    $$('[data-memoria]', root).forEach((a) => a.addEventListener('click', () => mark('detail')));
+    $$('[data-vista]', root).forEach((b) => b.addEventListener('click', () => {
+      const k = b.dataset.vista;
+      if (k === vista) return;
+      vsession.choose(k);
+      vista = k;
+      sel = '';
+      onFilter({ vista: k === 'resumen' ? '' : k });
+      $(`[data-vista="${k}"]`, el)?.focus();
+    }));
+    $$('.amap-side [data-basin], .amap-side [data-dist]', root).forEach((b) => b.addEventListener('click', () => {
+      const code = b.dataset.basin ?? b.dataset.dist;
+      if (code) mark('detail');
+      sel = code;
+      draw();
+      $('.amap-side .amap-h3', el)?.focus?.();
+    }));
     $$('[data-layer]', root).forEach((b) => b.addEventListener('click', async () => {
       const k = b.dataset.layer;
       layers[k] = !layers[k];
@@ -664,22 +892,46 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
   }
 
   draw();
-  return { update: draw, markDetail: () => session.mark('detail') };
+  return { update: draw, markDetail: () => mark('detail') };
 }
 
 // ---------------------------------------------------------------------------
 // Resultados de las versiones (#/variantes)
 // ---------------------------------------------------------------------------
+const EXP_TITLE = {
+  mapa: ['Versión del mapa de alertas', 'Noticias, vista Resumen: las cuatro formas de dibujar los avisos por departamento.'],
+  memoria: ['Vista con que abre el mapa de la memoria', 'Memoria de desastres: el resumen por área o uno de sus tres detalles.'],
+  noticias: ['Vista con que abre el mapa de Noticias', 'Noticias: el resumen (con su versión A–D) o uno de sus dos detalles.'],
+};
+
 export function statsHtml(s) {
   if (!s) return html`<p>No se pudo leer la analítica. Solo funciona en el sitio publicado en Cloudflare Pages.</p>`;
   if (!s.available) return html`<p>La base de datos no está vinculada en este despliegue (GEO_DB): no hay datos.</p>`;
   const pct = (a, b) => (b ? `${Math.round((100 * a) / b)} %` : '—');
-  const rows = VARIANTS.map(([v, name]) => {
-    const t = s.totals[v] || {};
-    return html`<tr><th scope="row">Versión ${v}<div class="muted small">${name}</div></th>
-      <td class="num">${t.view || 0}</td><td class="num">${pct(t.hover || 0, t.view)}</td><td class="num">${pct(t.select || 0, t.view)}</td><td class="num">${pct(t.detail || 0, t.view)}</td>
-      <td class="num">${t.choose || 0}</td><td class="num">${t.leave || 0}</td><td class="num">${t.keep || 0}</td><td class="num">${pct(t.chosen || 0, t.view)}</td></tr>`;
-  });
-  return html`<div class="table-wrap"><table class="grd"><thead><tr><th scope="col">Versión</th><th scope="col">Visitas</th><th scope="col">Pasaron el cursor</th><th scope="col">Filtraron desde el mapa</th><th scope="col">Abrieron un aviso</th><th scope="col">La eligieron</th><th scope="col">La dejaron</th><th scope="col">Volvieron con ella elegida</th><th scope="col">Visitas con ella elegida</th></tr></thead><tbody>${rows}</tbody></table></div>
-    <p class="muted small">Últimos ${s.days} días (desde el ${s.since}). Cada visita cuenta una vez por evento. «Volvieron con ella elegida»: visitas de otro día de personas que eligieron esa versión y la mantienen. Las versiones se asignan al azar en la primera visita; elegir otra en el selector la deja como predeterminada en ese navegador. No se guarda ningún dato personal: solo contadores por día.</p>`;
+  const exps = s.experiments || { mapa: { totals: s.totals } };
+  const block = (x) => {
+    const e = exps[x];
+    if (!e) return '';
+    const dec = e.decision;
+    const byV = Object.fromEntries((dec?.rows || []).map((r) => [r.v, r]));
+    const rows = EXPERIMENTS[x].variants.map(([v, name]) => {
+      const t = e.totals?.[v] || {};
+      const d = byV[v];
+      const use = d && d.view ? html`${pct(d.use, d.view)}<div class="muted small">${Math.round(d.lo * 100)}–${Math.round(d.hi * 100)} %</div>` : '—';
+      return html`<tr><th scope="row">${x === 'mapa' ? `Versión ${v}` : name}${dec?.winner === v ? html` <span class="chip chip-ok">Ganadora</span>` : ''}<div class="muted small">${x === 'mapa' ? name : v}</div></th>
+        <td class="num">${t.view || 0}</td><td class="num">${use}</td><td class="num">${pct(t.hover || 0, t.view)}</td><td class="num">${pct(t.select || 0, t.view)}</td><td class="num">${pct(t.detail || 0, t.view)}</td>
+        <td class="num">${t.choose || 0}</td><td class="num">${t.leave || 0}</td><td class="num">${t.keep || 0}</td><td class="num">${pct(t.chosen || 0, t.view)}</td></tr>`;
+    });
+    const need = dec ? dec.rows.filter((r) => r.view < dec.minViews) : [];
+    const verdict = !dec ? ''
+      : dec.winner ? `Gana «${dec.winner}»: el límite inferior de su tasa de uso supera el límite superior de todas las demás. Se muestra a 4 de cada 5 personas que llegan por primera vez; el resto recibe otra al azar.`
+        : need.length ? `Aún sin ganadora: cada versión necesita al menos ${dec.minViews} visitas medidas (faltan en ${need.map((r) => `«${r.v}», ${r.view}`).join('; ')}). Mientras tanto, cada versión sale con la misma probabilidad.`
+          : 'Aún sin ganadora: los intervalos de las versiones se cruzan. Cada versión sigue saliendo con la misma probabilidad.';
+    const [title, sub] = EXP_TITLE[x];
+    return html`<h3 class="amap-h3">${title}</h3><p class="muted small">${sub}</p>
+      <div class="table-wrap"><table class="grd"><thead><tr><th scope="col">${x === 'mapa' ? 'Versión' : 'Vista'}</th><th scope="col">Visitas</th><th scope="col">Usaron el mapa</th><th scope="col">Pasaron el cursor</th><th scope="col">Filtraron o eligieron</th><th scope="col">Abrieron algo</th><th scope="col">La eligieron</th><th scope="col">La dejaron</th><th scope="col">Volvieron con ella elegida</th><th scope="col">Visitas con ella elegida</th></tr></thead><tbody>${rows}</tbody></table></div>
+      ${verdict ? html`<p class="small"><strong>${verdict}</strong></p>` : ''}`;
+  };
+  return html`${Object.keys(EXPERIMENTS).map(block)}
+    <p class="muted small">Últimos ${s.days} días (desde el ${s.since}). Cada visita cuenta una vez por evento. «Usaron el mapa»: visitas en las que la persona filtró, eligió un área o abrió algo desde el mapa, con su intervalo de Wilson al 95 %; es la tasa que decide, con los últimos ${s.decideDays || 60} días${s.decideDays && s.decideDays !== s.days ? ' (no con el periodo elegido)' : ''}. «Volvieron con ella elegida»: visitas de otro día de personas que eligieron esa versión y la mantienen. Las versiones se asignan al azar en la primera visita (o la ganadora, si la hay); elegir otra la deja como predeterminada en ese navegador. No se guarda ningún dato personal: solo contadores por día.</p>`;
 }

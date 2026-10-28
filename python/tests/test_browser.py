@@ -45,6 +45,31 @@ def site(request):
 
 # ``playwright`` y ``browser`` están en conftest.py (los comparte la consola de lugares).
 
+# Los mapas de la memoria y de Noticias abren con una vista sorteada (ab.js): las pruebas que no son de las vistas
+# de detalle fijan el resumen, salvo que la página ya tenga una elegida (una prueba que la cambia y recarga).
+PIN_VIEWS = ("for (const k of ['enso-vista-memoria', 'enso-vista-noticias']) if (!localStorage.getItem(k)) "
+             "localStorage.setItem(k, JSON.stringify({v: 'resumen', chosen: false, at: '2000-01-01'}));")
+
+
+class _Pinned:
+    """Un navegador cuyos contextos abren los mapas en el resumen."""
+
+    def __init__(self, b):
+        self._b = b
+
+    def __getattr__(self, k):
+        return getattr(self._b, k)
+
+    def new_context(self, **kw):
+        ctx = self._b.new_context(**kw)
+        ctx.add_init_script(PIN_VIEWS)
+        return ctx
+
+
+@pytest.fixture(scope="session")
+def browser(browser):
+    return _Pinned(browser)
+
 
 @pytest.fixture
 def page(browser, request):
@@ -600,7 +625,7 @@ def engine(request, playwright, browser):
         if os.environ.get("CI"):  # en CI se instalan los tres motores: si uno no arranca, es una falla
             raise
         pytest.skip(f"{name} no está instalado: {str(exc).splitlines()[0]}")
-    yield playwright, b
+    yield playwright, _Pinned(b)
     b.close()
 
 
@@ -778,3 +803,184 @@ def test_variant_results_view_without_backend(page, site):
     base, _ = site
     page.goto(f"{base}#/variantes")
     expect(page.locator("#ab-stats")).to_contain_text("No se pudo leer la analítica")
+
+
+def _errors(pg):
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    return errors
+
+
+def _overflow(pg):
+    return pg.evaluate("document.scrollingElement.scrollWidth - document.documentElement.clientWidth")
+
+
+def _view(pg, key):
+    return pg.evaluate(f"JSON.parse(localStorage.getItem('{key}') || 'null')")
+
+
+@pytest.mark.parametrize("w", [320, 1366])
+def test_memory_detail_views_open_from_the_map_header(site, browser, w):
+    """Mapa de la memoria, vistas de detalle: se abren con los botones de arriba del mapa (no hay otro tablero
+    debajo), cada una se dibuja sin errores ni desbordes, lo que se toca abre su ficha y queda en la URL, y la vista
+    elegida es la que abre la próxima visita."""
+    base, root = site
+    units = json.loads((root / "assets" / "cuencas-mapa.json").read_text(encoding="utf-8"))["units"]
+    ctx = browser.new_context(viewport={"width": w, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = _errors(pg)
+    try:
+        pg.goto(f"{base}#/memoria")
+        views = pg.locator("section[aria-labelledby='hz-map-h'] .hz-views")
+        expect(views.locator("[data-vista='resumen']")).to_have_attribute("aria-pressed", "true")
+        cards = pg.locator("main section.card").count()
+
+        views.locator("[data-vista='cuencas']").click()
+        expect(pg).to_have_url(re.compile(r"vista=cuencas"))
+        expect(pg.locator(".hz-mapbox svg.hz-det path[data-basin]")).to_have_count(len(units))
+        assert pg.locator(".hz-mapbox .hz-rivers path").count() > 50
+        assert pg.locator("main section.card").count() == cards  # el detalle cambia el mapa, no agrega tableros
+        assert _overflow(pg) <= 1
+        pg.locator("#hz-side [data-cuenca]").first.click()
+        expect(pg).to_have_url(re.compile(r"cuenca=\d+"))
+        expect(pg.locator(".hz-mapbox .sel-ring")).to_have_count(1)
+        river = pg.locator("#hz-side [data-foco^='r:']").first
+        if river.count():
+            river.click()
+            expect(pg).to_have_url(re.compile(r"foco=r"))
+            expect(pg.locator(".hz-mapbox .hz-river.on")).to_have_count(1)
+            pg.locator("#hz-side [data-foco='']").first.click()
+            expect(pg).not_to_have_url(re.compile(r"foco="))
+        pg.locator("#hz-side [data-cuenca='']").first.click()
+        expect(pg).not_to_have_url(re.compile(r"cuenca="))
+
+        views.locator("[data-vista='puntos']").click()
+        expect(pg).to_have_url(re.compile(r"vista=puntos"))
+        assert pg.locator(".hz-mapbox .hz-hx").count() > 100
+        expect(pg.locator("#hz-side")).to_contain_text("registros tienen un punto")
+        assert _overflow(pg) <= 1
+        pg.locator("#hz-side [data-foco^='r:']").first.click()
+        expect(pg).to_have_url(re.compile(r"foco=r"))
+        expect(pg.locator(".hz-mapbox .hz-river.on")).to_have_count(1)
+        expect(pg.locator("#hz-side .hz-prof-h").first).to_be_visible()
+
+        views.locator("[data-vista='riesgo']").click()
+        expect(pg).to_have_url(re.compile(r"vista=riesgo"))
+        expect(pg).not_to_have_url(re.compile(r"foco="))
+        expect(pg.locator("[data-celda]")).to_have_count(9)
+        assert pg.locator(".hz-mapbox .hz-mz").count() > 0
+        assert _overflow(pg) <= 1
+        pg.locator("[data-celda='22']").click()
+        expect(pg).to_have_url(re.compile(r"celda=22"))
+        expect(pg.locator("[data-celda='22']")).to_have_attribute("aria-pressed", "true")
+        pg.locator("[data-mz]").click()
+        expect(pg).to_have_url(re.compile(r"mz=0"))
+        expect(pg.locator(".hz-mapbox .hz-mz")).to_have_count(0)
+
+        assert _view(pg, "enso-vista-memoria")["v"] == "riesgo" and _view(pg, "enso-vista-memoria")["chosen"]
+        pg.goto(f"{base}#/historia")
+        pg.goto(f"{base}#/memoria")
+        expect(views.locator("[data-vista='riesgo']")).to_have_attribute("aria-pressed", "true")
+        # Un enlace con otros filtros (un área) abre el resumen, sin cambiar la vista elegida.
+        pg.goto(f"{base}#/memoria?nivel=distrito&area=200101")
+        expect(views.locator("[data-vista='resumen']")).to_have_attribute("aria-pressed", "true")
+        assert _view(pg, "enso-vista-memoria")["v"] == "riesgo"
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+def test_memory_area_figures_count_in_their_area_not_in_the_district(site, browser):
+    """Una cifra de un área mayor (``AreaCifras``: DesInventar puso en Subtanjalla los 10 000 afectados de la provincia
+    de Ica en 1976) no se suma al distrito, y su registro dice de qué área es."""
+    base, root = site
+    ev = json.loads((root / "assets" / "historico" / "eventos.json").read_text(encoding="utf-8"))
+    cols = {c: i for i, c in enumerate(ev["cols"])}
+    rows = [r for r in ev["rows"] if r[cols["Ubigeo"]] == "110112"]
+    mine = sum(r[cols["Afectados"]] for r in rows if str(r[cols["i"]]) not in ev["areaCifras"])
+    theirs = [r for r in rows if ev["areaCifras"].get(str(r[cols["i"]])) == "1101"]
+    assert theirs and mine
+    ctx = browser.new_context(viewport={"width": 1366, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = _errors(pg)
+    try:
+        pg.goto(f"{base}#/memoria?nivel=distrito&area=110112")
+        kv = pg.locator(".hz-kv div", has_text="Afectados, damnificados o desplazados").locator("dd")
+        expect(kv).to_have_text(re.compile(rf"^{mine // 1000}\D?{mine % 1000:03d}$"))
+        expect(pg.locator(".hz-ev", has_text="cifras de Ica")).to_have_count(len(theirs))
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+@pytest.mark.parametrize("w", [320, 1366])
+def test_news_detail_views_show_alerts_by_basin_and_district_with_their_history(site, browser, w):
+    """Mapa de Noticias, vistas de detalle: avisos por cuenca y distritos en aviso con su memoria de desastres. Se
+    abren desde la cabecera del mapa, sin errores ni desbordes; una cuenca o un distrito abre su ficha con el enlace
+    a su memoria, y la vista elegida se recuerda."""
+    base, root = site
+    feed = json.loads((root / "data" / "feed.json").read_text(encoding="utf-8"))
+    alerts = next((g["items"] for g in feed["groups"] if g["id"] == "alertas"), [])
+    if not alerts:
+        pytest.skip("la publicación no trae avisos")
+    last = max(datetime.fromisoformat(a["date"].replace("Z", "+00:00")) for a in alerts if a.get("date"))
+    units = json.loads((root / "assets" / "cuencas-mapa.json").read_text(encoding="utf-8"))["units"]
+    ctx = browser.new_context(viewport={"width": w, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = _errors(pg)
+    try:
+        pg.clock.install(time=last + timedelta(minutes=90))
+        pg.goto(f"{base}#/noticias")
+        expect(pg.locator(".amap .amap-views [data-vista='resumen']")).to_have_attribute("aria-pressed", "true")
+        expect(pg.locator("#amap-ver")).to_be_visible()
+        for vista, attr in (("cuencas", "data-basin"), ("distritos", "data-dist")):
+            pg.locator(f".amap .amap-views [data-vista='{vista}']").click()
+            expect(pg).to_have_url(re.compile(rf"vista={vista}"))
+            expect(pg.locator(f".amap.amap-v{vista} svg.amap-det")).to_be_visible()
+            expect(pg.locator("#amap-ver")).to_have_count(0)  # la versión A–D es del resumen
+            if vista == "cuencas":
+                expect(pg.locator(f".amap-det path[{attr}]")).to_have_count(len(units))
+            assert _overflow(pg) <= 1, f"{vista} a {w}px"
+            rows = pg.locator(f".amap-side .rank-row[{attr}]")
+            if rows.count():
+                rows.first.click()
+                expect(pg.locator(".amap-det .sel-ring")).to_have_count(1)
+                expect(pg.locator(".amap-side .amap-memo")).to_contain_text("Memoria")
+                link = pg.locator(".amap-side .amap-memo a[data-memoria]")
+                expect(link).to_have_attribute("href", re.compile(r"^#/memoria\?(vista=cuencas&cuenca=\d+|nivel=distrito&area=\d{6})$"))
+                pg.locator(f".amap-side .amap-sel-top [{attr}='']").click()
+                expect(pg.locator(".amap-det .sel-ring")).to_have_count(0)
+            else:
+                expect(pg.locator(".amap-side")).to_contain_text("Ningún aviso de este filtro")
+        assert _view(pg, "enso-vista-noticias") == {"v": "distritos", "chosen": True, "at": _view(pg, "enso-vista-noticias")["at"]}
+        pg.goto(f"{base}#/datos")
+        pg.goto(f"{base}#/noticias")
+        expect(pg.locator(".amap.amap-vdistritos")).to_be_visible()
+        pg.locator(".amap .amap-views [data-vista='resumen']").click()
+        expect(pg.locator(".amap .amap-svg path.dep")).to_have_count(25)
+        expect(pg).not_to_have_url(re.compile(r"vista="))
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+def test_a_shared_link_shows_its_view_without_changing_the_chosen_one(site, browser):
+    """Un enlace con ?vista= (alguien lo compartió) muestra esa vista sin cambiar la que la persona eligió."""
+    base, _ = site
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = _errors(pg)
+    try:
+        pg.goto(f"{base}#/memoria?vista=puntos")
+        expect(pg.locator(".hz-views [data-vista='puntos']")).to_have_attribute("aria-pressed", "true")
+        assert _view(pg, "enso-vista-memoria")["v"] == "resumen"
+        pg.goto(f"{base}#/noticias?vista=cuencas")
+        expect(pg.locator(".amap.amap-vcuencas")).to_be_visible()
+        assert _view(pg, "enso-vista-noticias")["v"] == "resumen"
+        pg.goto(f"{base}#/datos")
+        pg.goto(f"{base}#/noticias")
+        expect(pg.locator(".amap .amap-views [data-vista='resumen']")).to_have_attribute("aria-pressed", "true")
+        assert not errors, errors
+    finally:
+        ctx.close()

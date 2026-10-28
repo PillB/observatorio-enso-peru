@@ -78,6 +78,29 @@ for (const [level, file] of [['departamento', 'indicadores-departamento.csv'], [
   });
 }
 
+for (const [level, file] of [['departamento', 'indicadores-departamento.csv'], ['provincia', 'indicadores-provincia.csv'], ['distrito', 'indicadores-distrito.csv']]) {
+  it(`fallecidos y viviendas destruidas por ${level}: los mismos que en Python`, () => {
+    const py = csv(file);
+    for (const [code, st] of M.byArea(recs, level, years, nino, sum.grandesNinos, hom)) {
+      const p = py.get(code);
+      assert.ok(Math.abs(st.muertos - (+p.Fallecidos + +p.Desaparecidos)) <= 1, `${code}: ${st.muertos}`);
+      assert.ok(Math.abs(st.viviendas - +p.ViviendasDestruidas) <= 1, `${code}: ${st.viviendas} ≠ ${p.ViviendasDestruidas}`);
+    }
+  });
+}
+
+it('las cifras de un área mayor cuentan en ella y en las que la contienen, no en las menores', () => {
+  const r = recs.find((x) => x.ap.length === 2 && x.u.length === 6 && x.afect > 0);
+  assert.ok(r, 'hay cifras de un departamento puestas en un distrito');
+  assert.deepEqual([6, 4, 2, null, Infinity].map((n) => M.countsAt(r, n)), [false, false, true, true, false]);
+  const at = (n) => M.summarize([r], years, nino, sum.grandesNinos, hom, n);
+  assert.equal(at(6).afectados, 0);
+  assert.equal(at(2).afectados, r.afect);
+  assert.equal(at(6).muertos, r.muertos); // los fallecidos son del lugar
+  assert.equal(M.byArea([r], 'distrito', years, nino, sum.grandesNinos, hom).get(r.u).afectados, 0);
+  assert.equal(M.byArea([r], 'departamento', years, nino, sum.grandesNinos, hom).get(r.ap).afectados, r.afect);
+});
+
 it('los filtros por evento, peligro y periodo', () => {
   const great = M.filter(recs, { event: 'grandes', great: sum.grandesNinos });
   assert.ok(great.length > 1000 && great.every((r) => sum.grandesNinos.includes(r.e)));

@@ -22,6 +22,10 @@ Pasos (todos reproducibles; ``docs/memoria-desastres.md``):
    * ``public/assets/historico/eventos.json``: versión compacta para el navegador.
    * ``public/assets/historico/detalle/<departamento>.json``: descripción, lugar y fuente de cada registro,
      que el sitio pide solo al abrir un área.
+   * ``public/assets/historico/finos.json``: la cuenca, el punto fino y el centro poblado o el río de cada registro,
+     para la vista de detalle del mapa (``fine_payload``).
+   * ``public/assets/historico/historia.json``: la memoria de cada distrito, provincia y cuenca en una fila, para el
+     mapa de Noticias (``history_payload``).
    * ``public/assets/historico/resumen.json``: cobertura, fuentes, calendario ENSO, nombres y atributos
      de cada área.
    * ``public/assets/historico/contexto.json`` y ``data/historico/contexto-distrito.csv``: peligro
@@ -64,7 +68,7 @@ import httpx
 import yaml
 
 from enso.fetch import ssl_context
-from enso.historico import cosecha as C, desinventar, enlace, esquema as E, fuentes as F
+from enso.historico import cosecha as C, conciliacion as CO, desinventar, enlace, esquema as E, fuentes as F
 from enso.historico.enso import GREAT, NAMED, PIRCC_2017_URL, EnsoCalendar
 from enso.historico import validacion as V
 from enso.historico.indicadores import by_area, nino_hydro_years, nino_hydro_years_any, peak_icen
@@ -1320,8 +1324,11 @@ def merge_idmc_twins(records: list[dict], stats: Counter) -> list[dict]:
         if not near:
             continue
         t = min(near, key=lambda x: x[:3])[3]
+        # Con la evaluación de daños del SINPAD (``fuentes.sinpad_edan``), las viviendas del IDMC son las mismas: solo
+        # suma lo que la EDAN no trae (las personas desplazadas).
+        edan = F.EDAN_NOTE in (t.get("Descripción") or "")
         for k in E.IMPACT_COLUMNS:
-            if r.get(k) not in (None, ""):
+            if r.get(k) not in (None, "") and not (edan and k in F.SINPAD_EDAN):
                 t[k] = _n(t.get(k)) + _n(r[k]) if t.get(k) not in (None, "") else r[k]
         if r.get("DuraciónEvento") and not t.get("DuraciónEvento"):
             t["DuraciónEvento"] = r["DuraciónEvento"]
@@ -1409,6 +1416,10 @@ def default_point(r: dict, territory: Territory, repeats: Counter, places) -> st
     if any(_km(lat, lon, row[2] / sc, row[1] / sc) <= DEFAULT_CAPITAL_KM for row in capital):
         return "capital"
     if repeats[(code, _point_key(r))] >= DEFAULT_REPEATS:
+        # Desde 2019 (la capa del GEOSINPAD) un punto repetido es siempre uno por defecto, aunque caiga en un centro
+        # poblado: 1 403 fichas en 41 puntos, como las 138 de Los Chankas a 6 km de su capital.
+        if r.get("Origen") == "sinpad" and r["Date"] >= F.SINPAD_NO_POINT_SINCE:
+            return "repetido"
         if not any(_km(lat, lon, row[2] / sc, row[1] / sc) <= DEFAULT_PLACE_KM for row in rows if row not in capital):
             return "repetido"
     return ""
@@ -1423,11 +1434,27 @@ def place_names(r: dict, territory: Territory, places):
     names = territory.names(code)
     m = places.find(code, r.get("Ubicacion") or "", field=True, exclude=names) if (r.get("Ubicacion") or "").strip() else None
     if not (m and m.places):
-        m = places.find(code, r.get("Descripción") or "", exclude=names)
+        m = places.find(code, CO.without_note(r.get("Descripción")), exclude=names)
     return m if m.places else None
 
 
-def relocate(records: list[dict], territory: Territory, stats: Counter, places=None, basins=None) -> None:
+def water_names(r: dict, waters):
+    """Los ríos, quebradas, lagunas, nevados y abras del distrito que nombra la fila (``enso.aguas``): su Ubicacion o,
+    si no, su descripción."""
+    code = r["Ubigeo"]
+    if len(code) != 6:
+        return None
+    m = waters.find(code, r.get("Ubicacion") or "", field=True) if (r.get("Ubicacion") or "").strip() else None
+    if not (m and m.waters):
+        m = waters.find(code, CO.without_note(r.get("Descripción")))
+    return m if m.waters else None
+
+
+#: PuntoFuente: qué se hizo con el punto de la fuente.
+SOURCE_POINT = {"": "en-el-lugar", "capital": "por-defecto-capital", "repetido": "por-defecto-repetido"}
+
+
+def relocate(records: list[dict], territory: Territory, stats: Counter, places=None, basins=None, waters=None) -> None:
     """Puntos y lugares con los límites y el nomenclátor vigentes, también con ``--desde-catalogo``; idempotente.
 
     - Un punto de la fuente que cae en un distrito creado después de 2020, en la misma provincia que el distrito que
@@ -1435,18 +1462,25 @@ def relocate(records: list[dict], territory: Territory, stats: Counter, places=N
     - Un punto de la fuente que no cae en el área asignada se reemplaza por la capital (como en ``fuentes.place``).
     - Un punto de la fuente que es la capital del distrito, la provincia o el departamento, o que la fuente repite en
       ``DEFAULT_REPEATS`` filas o más del distrito sin que sea un centro poblado, es un punto por defecto (el SINPAD lo
-      pone cuando no hay uno de campo): vale como la capital.
+      pone cuando no hay uno de campo): vale como la capital. ``PuntoFuente`` guarda qué se hizo con él (también en
+      las corridas siguientes, cuando la fila ya no tiene el punto de la fuente).
     - Sin punto de la fuente, el centro poblado que nombra la fila (``enso.lugares``), dentro de su distrito:
       ``centro-poblado``, con su radio.
+    - Si no nombra un centro poblado, el río, la quebrada, la laguna, el nevado o el abra que nombra (``enso.aguas``),
+      sobre su tramo en el distrito, si ese tramo es corto: ``cuerpo-de-agua``, con su radio. El nombre queda en
+      ``CuerpoAgua`` aunque el punto sea otro.
     - Los nombres son los del nomenclátor para el UBIGEO.
     - La capital (o el punto interior) de los demás se toma del nomenclátor: un distrito que no tenía coordenadas
       llevaba la capital de su provincia, a veces a más de 100 km.
-    - La cuenca (ANA) es la del punto si es de la fuente o de un centro poblado; si no, la del distrito cuando el 80 %
-      o más de él cae en una."""
+    - La cuenca (ANA) es la del punto si es de la fuente, de un centro poblado o de un cuerpo de agua; si no, la del río
+      o la quebrada que nombra la fila (``aguas.WaterMatch.basin``); si no, la del distrito cuando el 80 % o más de él
+      cae en una."""
+    from enso import aguas as AG
     from enso import lugares as LG
 
     places = places or LG.lugares()
     basins = basins or LG.basins()
+    waters = waters or AG.aguas()
     repeats = Counter((r["Ubigeo"], _point_key(r)) for r in records if r.get("PrecisionGeo") == "coordenada-fuente")
     for r in records:
         code = r["Ubigeo"]
@@ -1454,15 +1488,21 @@ def relocate(records: list[dict], territory: Territory, stats: Counter, places=N
         if (r.get("Departamento"), r.get("Provincia"), r.get("Distrito")) != names:
             r["Departamento"], r["Provincia"], r["Distrito"] = names  # el nomenclátor corrigió una grafía («Boquerón»)
             stats["nombres del nomenclátor actualizados"] += 1
-        r["Lugar"] = r["LugarCodigo"] = r["RadioKm"] = r["Cuenca"] = r["CuencaCodigo"] = ""
+        r["Lugar"] = r["LugarCodigo"] = r["CuerpoAgua"] = r["RadioKm"] = r["Cuenca"] = r["CuencaCodigo"] = ""
+        if r.get("PrecisionGeo") == "coordenada-fuente" or (r.get("PuntoFuente") or "") == "en-el-lugar":
+            r["PuntoFuente"] = ""  # se decide de nuevo abajo
         match = place_names(r, territory, places)
         if match:
             r["Lugar"] = " · ".join(dict.fromkeys(p.name for p in match.places))
             r["LugarCodigo"] = match.places[0].code
+        water = water_names(r, waters)
+        if water:
+            r["CuerpoAgua"] = water.names
         if r.get("PrecisionGeo") == "coordenada-fuente":
             loc = F.locate_point(r["Latitud"], r["Longitud"])[0]
             if F.inside(territory, code, loc):
                 why = default_point(r, territory, repeats, places)
+                r["PuntoFuente"] = SOURCE_POINT[why]
                 if not why:
                     _basin(r, basins.at(r["Latitud"], r["Longitud"]))
                     continue
@@ -1473,9 +1513,11 @@ def relocate(records: list[dict], territory: Territory, stats: Counter, places=N
                     r["Ubigeo"] = code = sib
                     r["Departamento"], r["Provincia"], r["Distrito"] = territory.names(sib)
                     r["Region"], r["AltitudCapital"] = territory.region(sib), territory.altitude(sib)
+                    r["PuntoFuente"] = "en-el-lugar"
                     stats["punto de la fuente en un distrito creado después de 2020: UBIGEO del punto"] += 1
                     _basin(r, basins.at(r["Latitud"], r["Longitud"]))
                     continue
+                r["PuntoFuente"] = "fuera-del-area"
                 stats["punto de la fuente fuera del área asignada: capital"] += 1
         # La capital del distrito que nombra la fuente («Puerto Maldonado») no es más fina que el distrito.
         pt = match.point() if match and not all(_is_capital(p, territory) for p in match.places) else None
@@ -1492,8 +1534,21 @@ def relocate(records: list[dict], territory: Territory, stats: Counter, places=N
             r["Latitud"], r["Longitud"], r["PrecisionGeo"], r["RadioKm"] = lat, lon, "centro-poblado", radius
             _basin(r, basins.at(lat, lon))
             continue
+        # Un río solo si la fuente no nombra un lugar: «inundación en Aucayacu por desborde del río Huallaga» fue en
+        # Aucayacu (la capital), no en cualquier punto del tramo del Huallaga.
+        wpt = water.point(AG.district_radius_km(code)) if water and not match else None
+        if wpt and not LG.inside_district(code, wpt[0], wpt[1]):
+            wpt = None  # el punto medio de dos tramos puede caer fuera de un distrito angosto
+        if wpt:
+            lat, lon, radius = round(wpt[0], 5), round(wpt[1], 5), wpt[2]
+            if (r.get("PrecisionGeo") != "cuerpo-de-agua" or _point_key(r) != (round(lat, 4), round(lon, 4))) and \
+                    r.get("Origen") != "curado":  # los curados se releen en cada corrida: no se cuentan de nuevo
+                stats["punto del río, la quebrada o la laguna que nombra la fuente"] += 1
+            r["Latitud"], r["Longitud"], r["PrecisionGeo"], r["RadioKm"] = lat, lon, "cuerpo-de-agua", radius
+            _basin(r, basins.at(lat, lon))
+            continue
         lat, lon, geo = territory.point(code)
-        _basin(r, LG.district_basin(code))
+        _basin(r, (water.basin(basins.units) if water else None) or LG.district_basin(code))
         if lat is None:
             continue
         old = (r.get("Latitud"), r.get("Longitud"))
@@ -1502,7 +1557,7 @@ def relocate(records: list[dict], territory: Territory, stats: Counter, places=N
         except (TypeError, ValueError):
             same = False
         if not same:
-            if r["PrecisionGeo"] not in ("coordenada-fuente", "centro-poblado"):
+            if r["PrecisionGeo"] not in ("coordenada-fuente", "centro-poblado", "cuerpo-de-agua"):
                 stats[f"punto del nomenclátor actualizado ({geo})"] += 1
             r["Latitud"], r["Longitud"], r["PrecisionGeo"] = lat, lon, geo
 
@@ -1598,29 +1653,135 @@ def web_payload(records: list[dict]) -> tuple[dict, dict[str, dict]]:
         place = _web_place(r)
         if place:
             detail[r["Ubigeo"][:2]][str(i)].append(place)
-    return {"cols": WEB_COLS, "dict": dicts, "rows": rows}, detail
+    # El área de las cifras de personas y viviendas cuando es mayor que la de la fila (``conciliacion.counts_at``).
+    area = {str(i): r["AreaCifras"] for i, r in enumerate(records) if r.get("AreaCifras")}
+    return {"cols": WEB_COLS, "dict": dicts, "rows": rows, "areaCifras": area}, detail
+
+
+def fine_payload(records: list[dict]) -> dict:
+    """``finos.json``: lo que la vista de detalle del mapa necesita de cada registro, en el orden de ``eventos.json``
+    (la posición ``i``), sin pedir las fichas de los 25 departamentos:
+
+    - ``cuenca``: índice + 1 en ``cuencas`` de la cuenca de la ANA de cada registro (0: sin cuenca).
+    - ``puntos``: ``[i, lat, lon, cómo, radio]`` de los registros con un punto más fino que su distrito (cómo: 0, el
+      punto de la fuente; 1, el centro poblado; 3, el río, la quebrada o la laguna).
+    - ``lugar`` y ``agua``: ``[i, nombre]`` (índice en ``nombres``) de los registros que nombran un centro poblado o un
+      cuerpo de agua, aunque no den punto.
+    """
+    basins: list[str] = []
+    names: list[str] = []
+    bidx: dict[str, int] = {}
+    nidx: dict[str, int] = {}
+
+    def name(v: str) -> int:
+        if v not in nidx:
+            nidx[v] = len(names)
+            names.append(v)
+        return nidx[v]
+
+    cuenca, points, places, waters = [], [], [], []
+    for i, r in enumerate(records):
+        code = r.get("CuencaCodigo") or ""
+        if code and code not in bidx:
+            bidx[code] = len(basins)
+            basins.append(code)
+        cuenca.append(bidx[code] + 1 if code else 0)
+        kind = WEB_POINT_KIND.get(r.get("PrecisionGeo") or "")
+        if kind is not None:
+            try:
+                lat, lon = round(float(r["Latitud"]), 4), round(float(r["Longitud"]), 4)
+                radius = round(float(r["RadioKm"]), 1) if r.get("RadioKm") not in (None, "") else 0
+                points.append([i, lat, lon, kind, radius])
+            except (TypeError, ValueError, KeyError):
+                pass
+        if r.get("Lugar"):
+            places.append([i, name(r["Lugar"])])
+        if r.get("CuerpoAgua"):
+            waters.append([i, name(r["CuerpoAgua"])])
+    return {"cuencas": basins, "nombres": names, "cuenca": cuenca, "puntos": points, "lugar": places, "agua": waters}
+
+
+#: Columnas de ``historia.json`` por distrito, provincia y cuenca.
+HISTORY_COLS = ["registros", "aniosConEvento", "aniosCobertura", "grandesNinos", "ultimo", "muertos", "peligro", "desde",
+                "poblacion", "nombre"]
+
+
+def history_payload(records: list[dict], ind: dict, t: Optional[Territory] = None) -> dict:
+    """``historia.json``: la memoria de cada distrito, provincia y cuenca en una fila corta, para el mapa de Noticias
+    (que no carga los 146 000 registros). Distritos y provincias: los indicadores de ``indicadores-*.csv`` (años con
+    daños sobre los años de DesInventar 1970-2015). Cuencas (la ``CuencaCodigo`` de cada registro): sin años de
+    cobertura (una cuenca no es un área de DesInventar); ``aniosConEvento`` son las temporadas de julio a junio con
+    algún registro, de todas las fuentes. ``peligro``: índice en ``peligros`` del tipo con más registros. Con ``t``,
+    la población 2020 y el nombre de cada distrito y provincia (las cuencas los toman de ``cuencas-mapa.json``)."""
+    names = area_names(t) if t else {}
+    hazards: list[str] = []
+    hidx: dict[str, int] = {}
+
+    def hz(v: str) -> int:
+        if v not in hidx:
+            hidx[v] = len(hazards)
+            hazards.append(v)
+        return hidx[v]
+
+    def area_row(level: str, code: str, s: dict) -> list:
+        imp = s["impactos"]
+        return [s["registros"], s["aniosConEvento"], s["aniosCobertura"], len(s["grandesNinos"]),
+                (s["ultimo"] or {}).get("Date", "")[:10], _n(imp.get("Fallecidos")) + _n(imp.get("Desaparecidos")),
+                hz(s["peligros"][0][0]) if s["peligros"] else -1, "", t.population(code) if t else None,
+                names.get(level, {}).get(code, "")]
+
+    acc: dict[str, dict] = {}
+    for r in records:
+        code = r.get("CuencaCodigo") or ""
+        if not code:
+            continue
+        e = acc.setdefault(code, {"n": 0, "seasons": set(), "great": set(), "last": "", "dead": 0, "types": Counter(),
+                                  "first": 9999})
+        d = r["Date"]
+        y = int(d[:4])
+        season = (y if int(d[5:7]) >= 7 else y - 1) if len(d) >= 7 and r.get("PrecisionFecha") != "anio" else y
+        e["n"] += 1
+        e["seasons"].add(season)
+        if r.get("TipoEvento") in GREAT:
+            e["great"].add(r["TipoEvento"])
+        e["last"] = max(e["last"], d[:10])
+        if r.get("ImpactoEnTotales") != "no":
+            e["dead"] += _n(r.get("Fallecidos")) + _n(r.get("Desaparecidos"))
+        e["types"][r["DangerType"]] += 1
+        e["first"] = min(e["first"], y)
+    basins = {c: [e["n"], len(e["seasons"]), None, len(e["great"]), e["last"], e["dead"],
+                  hz(e["types"].most_common(1)[0][0]), e["first"], None, ""] for c, e in sorted(acc.items())}
+    return {"cols": HISTORY_COLS, "distritos": {c: area_row("distrito", c, s) for c, s in sorted(ind["distrito"].items())},
+            "provincias": {c: area_row("provincia", c, s) for c, s in sorted(ind["provincia"].items())}, "cuencas": basins,
+            "peligros": hazards}
 
 
 #: Cómo se ubicó el punto de un registro en la ficha del sitio (posición 13 del detalle): 0, el punto de la fuente;
-#: 1, el centro poblado que nombra; 2, la capital del distrito (el lugar que nombra quedó al otro lado del límite).
-WEB_POINT_KIND = {"coordenada-fuente": 0, "centro-poblado": 1}
+#: 1, el centro poblado que nombra; 3, el río, la quebrada o la laguna que nombra; 2, la capital del distrito (el lugar
+#: que nombra quedó al otro lado del límite, o su tramo de río es largo, o el punto de la fuente era uno por defecto).
+WEB_POINT_KIND = {"coordenada-fuente": 0, "centro-poblado": 1, "cuerpo-de-agua": 3}
+#: PuntoFuente en la ficha (posición 7 del lugar): por qué no se usó el punto de la fuente.
+WEB_SOURCE_POINT = {"por-defecto-capital": "capital", "por-defecto-repetido": "repetido", "fuera-del-area": "fuera"}
 
 
 def _web_place(r: dict) -> Optional[list]:
-    """[lat, lon, cómo, lugar, radio en km, código de cuenca] de un registro ubicado más fino que su distrito (o que
-    nombra un centro poblado), para los puntos del mapa y la ficha; None si no lo está. La cuenca de los demás es la
+    """[lat, lon, cómo, lugar, radio en km, código de cuenca, cuerpo de agua, punto de la fuente descartado] de un
+    registro ubicado más fino que su distrito (o que nombra un centro poblado o un cuerpo de agua, o cuyo punto de la
+    fuente se descartó), para los puntos del mapa y la ficha; None si no hay nada de eso. La cuenca de los demás es la
     de su distrito (``public/assets/cuencas-mapa.json``)."""
     kind = WEB_POINT_KIND.get(r.get("PrecisionGeo") or "")
-    if kind is None and not r.get("Lugar"):
+    dropped = WEB_SOURCE_POINT.get(r.get("PuntoFuente") or "", "")
+    if kind is None and not r.get("Lugar") and not r.get("CuerpoAgua") and not dropped:
         return None
     try:
         lat, lon = round(float(r["Latitud"]), 4), round(float(r["Longitud"]), 4)
     except (TypeError, ValueError, KeyError):
         return None
+    tail = [r.get("CuerpoAgua") or "", dropped]
     if kind is None:
-        return [None, None, 2, r["Lugar"], 0, r.get("CuencaCodigo") or ""]
+        return [None, None, 2, r.get("Lugar") or "", 0, r.get("CuencaCodigo") or "", *tail]
     radius = round(float(r["RadioKm"]), 1) if r.get("RadioKm") not in (None, "") else 0
-    return [lat, lon, kind, r.get("Lugar") or "", radius, r.get("CuencaCodigo") or ""]
+    return [lat, lon, kind, r.get("Lugar") or "", radius, r.get("CuencaCodigo") or "", *tail]
 
 
 def area_names(t: Territory) -> dict:
@@ -1786,15 +1947,20 @@ def write_prevention(prev: dict, evidence: dict, t: Territory, path_json: Path, 
                                      "evaluaciones": {"cols": ["anio", "institucion", "titulo", "url", "ubigeos"], "rows": evals},
                                      "llamamientos": {"cols": appeal_cols, "rows": appeals}},
                                     ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    write_prevention_csv(prev, t, path_csv)
+
+
+def write_prevention_csv(prev: dict, t: Territory, path: Path) -> None:
+    """El CSV de prevención por distrito: todos los distritos (los que no tuvieron declaratorias, evaluaciones ni
+    eventos, en cero), con BOM como los demás CSV para que Excel lea las tildes."""
     buf = io.StringIO()
     w = csv.writer(buf, lineterminator="\n")
     w.writerow(PREVENTION_COLS + prev["columnas"])
-    for code, vals in prev["distritos"].items():
-        if len(code) != 6:
-            continue
+    zero = [0] * len(prev["columnas"])
+    for code in sorted(set(t.dist) | {c for c in prev["distritos"] if len(c) == 6}):
         dep, prov, dist = t.names(code)
-        w.writerow([code, dep, prov, dist, *vals])
-    path_csv.write_text(buf.getvalue(), encoding="utf-8")
+        w.writerow([code, dep, prov, dist, *prev["distritos"].get(code, zero)])
+    path.write_text("\ufeff" + buf.getvalue(), encoding="utf-8")
 
 
 def harvest(manifest: dict, territory: Territory, calendar: EnsoCalendar, caches: list[Path], parcial: bool,
@@ -1877,6 +2043,18 @@ def harvest(manifest: dict, territory: Territory, calendar: EnsoCalendar, caches
     return records, context, evidence
 
 
+def write_conciliations(records: list[dict], territory: Territory, path: Path) -> None:
+    """``conciliaciones.csv``: cada fila cuyas cifras se conciliaron (con la población o la superficie de su área, con
+    el tipo de cambio de la fuente o con otra fila), con la ruta, las cifras de la fuente y las conciliadas, la
+    población, la razón entre ambas, el motivo, la evidencia y la nota."""
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(CO.LOG_COLUMNS)
+    for row in CO.log(records, territory):
+        w.writerow([csv_safe(v) for v in row])
+    path.write_text("\ufeff" + buf.getvalue(), encoding="utf-8")
+
+
 def read_catalog(path: Path) -> list[dict]:
     """Las filas del ``eventos.zip`` publicado, como las escribió ``catalog_csv`` (sin el apóstrofo de ``csv_safe``)."""
     with zipfile.ZipFile(path) as z, z.open("eventos.csv") as f:
@@ -1886,6 +2064,27 @@ def read_catalog(path: Path) -> list[dict]:
             if v[:1] == "'" and v[1:2] in ("=", "+", "-", "@"):
                 r[k] = v[1:]
     return rows
+
+
+def _roads_in_km(r: dict) -> None:
+    # DesInventar guarda las vías en metros (``desinventar._km``): el catálogo las tenía como kilómetros.
+    if r["Origen"] == "desinventar" and r.get("KmVias") not in (None, ""):
+        r["KmVias"] = desinventar._km(r["KmVias"])
+
+
+#: Correcciones de los lectores que el catálogo publicado necesita una vez (``migrate``): quedan en el manifiesto.
+MIGRATIONS = {"kmvias-desinventar-metros": _roads_in_km}
+
+
+def migrate(records: list[dict], manifest: dict) -> None:
+    """Aplica al catálogo publicado (``--desde-catalogo``) las correcciones de los lectores que aún no tiene: la
+    construcción completa ya las hace al leer las fuentes."""
+    done = manifest.setdefault("migraciones", [])
+    for name, fix in MIGRATIONS.items():
+        if name not in done:
+            for r in records:
+                fix(r)
+            done.append(name)
 
 
 def main(argv=None) -> int:
@@ -1916,6 +2115,9 @@ def main(argv=None) -> int:
     quality: Counter = Counter()
     if args.desde_catalogo:
         records = read_catalog(args.out / "eventos.zip")
+        migrate(records, manifest)
+        # Las conciliaciones se hacen de nuevo en cada corrida, con la población y conciliaciones.yaml vigentes.
+        CO.restore(records, territory)
         # El catálogo publicado ya pasó por las reglas de calidad y el manifiesto guarda cuántas filas tocó cada una: se
         # suman a las de esta corrida (que sobre un catálogo ya limpio son 0) para que el recuento no se pierda.
         quality.update(manifest.get("calidad") or {})
@@ -1941,9 +2143,34 @@ def main(argv=None) -> int:
         records, context, evidence = harvest(manifest, territory, calendar, caches, args.parcial, args.sin_red,
                                              args.aceptar_cambios)
         generated = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    for src in manifest["fuentes"]:
+        if src.get("lector") == "sinpad-edan":  # las cifras de daños y el punto de cada ficha del SINPAD
+            offline = args.sin_red or args.desde_catalogo
+            if offline and (args.parcial or args.desde_catalogo) and \
+                    not any((c / src["archivo"]).exists() for c in caches):
+                # Un complemento: sin él el catálogo se construye igual (con --desde-catalogo, con las cifras que ya
+                # tenía) y queda anotado como pendiente.
+                print(f"{src['id']}: no está en la caché, se salta", file=sys.stderr)
+                src["parcial"] = "pendiente"
+                continue
+            path = fetch(src, caches, args.aceptar_cambios, offline)
+            got = F.sinpad_edan(records, json.loads(path.read_text(encoding="utf-8")))
+            src["registros"] = got["unidas"]
+            src["detalle"] = {k: v for k, v in sorted(got.items()) if k != "punto nuevo (desde 2019)"}
+    concil = CO.apply(records, territory)
     relocate(records, territory, quality)
     records = tidy(records, calendar, quality)
     mark_duplicate_impacts(records)
+    # Después de unir las filas del IDMC (sus personas desplazadas pasan a la ficha del SINPAD).
+    concil["duplicado (automática)"] = CO.duplicates(records)
+    concil["cifra-de-area (automática)"] = CO.surfaces(records, territory)
+    concil["tope-poblacion"] = CO.cap(records, territory, auto=False)
+    concil["tope-poblacion (automática)"] = CO.cap(records, territory)
+    concil["duplicado (automática)"] += CO.overlaps(records, territory)
+    left = CO.inconsistent(records, territory)
+    if left:
+        raise SystemExit(f"{len(left)} filas o días con más personas o viviendas que habitantes después de conciliar "
+                         f"(investigar y anotar en conciliaciones.yaml): {'; '.join(left[:10])}")
     records.sort(key=lambda r: (r["Date"], r["Ubigeo"], r["Id"]))
     manifest["calidad"] = dict(sorted(quality.items()))
 
@@ -1964,6 +2191,10 @@ def main(argv=None) -> int:
     (args.out / "eventos.json").write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     for dep, d in detail.items():
         (args.out / "detalle" / f"{dep}.json").write_text(json.dumps(d, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    fine = {"generatedAt": generated, **fine_payload(records)}
+    (args.out / "finos.json").write_text(json.dumps(fine, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    hist = {"generatedAt": generated, **history_payload(records, ind, territory)}
+    (args.out / "historia.json").write_text(json.dumps(hist, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     all_years = range(min(int(r["Anio"]) for r in records), max(int(r["Anio"]) for r in records) + 1)
     summary = {
         "generatedAt": generated, "registros": len(records),
@@ -1985,6 +2216,7 @@ def main(argv=None) -> int:
         "atributos": {"cols": ["poblacion2020", "pobrezaPct", "idh2019", "altitud", "region"], "distritos": area_attrs(territory)},
         "columnas": E.COLUMNS,
         "calidad": manifest["calidad"],
+        "conciliacion": dict(sorted(concil.items())),
         # De dónde salió el calendario ENSO (el ICEN de los últimos meses es preliminar).
         "indicesENSO": {k: {"archivo": p.name, "sha256": sha256(p), "ultimoMes": last_month}
                         for k, p, last_month in (("icen", args.icen, max(calendar.icen) if calendar.icen else None),
@@ -1997,12 +2229,19 @@ def main(argv=None) -> int:
                                  districts={c: territory.population(c) or 0.0 for c in territory.dist})
         write_prevention(prev, evidence, territory, args.out / "prevencion.json", DATA / "prevencion-distrito.csv",
                          generated)
+    elif (args.out / "prevencion.json").exists():
+        # Sin las fuentes, los indicadores de prevención son los de la última construcción completa: el CSV se escribe
+        # de nuevo desde ellos para que siga el formato de los demás.
+        write_prevention_csv(json.loads((args.out / "prevencion.json").read_text(encoding="utf-8")), territory,
+                             DATA / "prevencion-distrito.csv")
     write_indicators(ind, territory, lambda lvl: DATA / f"indicadores-{lvl}.csv")
     write_context(context, ind, records, ongoing, territory, args.out / "contexto.json", DATA / "contexto-distrito.csv", generated)
     write_dictionary(records, DATA / "diccionario.csv")
+    write_conciliations(records, territory, DATA / "conciliaciones.csv")
     # Copias en el sitio para descargarlas sin pasar por el repositorio.
     for name in [f"indicadores-{lvl}.csv" for lvl in ind if lvl != "pais"] + ["contexto-distrito.csv",
-                                                                             "prevencion-distrito.csv", "diccionario.csv"]:
+                                                                             "prevencion-distrito.csv", "diccionario.csv",
+                                                                             "conciliaciones.csv"]:
         shutil.copyfile(DATA / name, args.out / name)
     if not args.desde_catalogo:
         manifest["generado"] = generated

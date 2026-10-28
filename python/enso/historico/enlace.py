@@ -323,7 +323,10 @@ def prevention(records: list[dict], decrees: list[dict], evaluations: list[dict]
             yearly[y]["eventosConAvisoAzarPob"] += (doc_w + sum(weights[c] for c in extra)) / total_w
     for code, ys in years_with.items():
         dist[code]["aniosConEvento"] = len(ys)
-    # Una declaratoria de toda una provincia o un departamento cubre a cada uno de sus distritos.
+    # Una declaratoria de toda una provincia o un departamento cubre a cada uno de sus distritos, también a los que no
+    # tuvieron nada más (con ``districts``, todos los distritos tienen su fila).
+    for code in weights:
+        dist[code]
     areas = {c: dist.pop(c) for c in [c for c in dist if len(c) < 6]}
     for code, v in dist.items():
         for area in (code[:4], code[:2]):
