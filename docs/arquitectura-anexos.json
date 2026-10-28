@@ -3704,11 +3704,13 @@
      "group": "site",
      "name_es": "11 vistas",
      "name_en": "11 views",
-     "what_es": "Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una.",
-     "what_en": "Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, News, Data, Methodology and Assistant; a guided tour explains each one.",
+     "what_es": "Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias, Datos, Metodología y Asistente; cada una tiene un recorrido guiado que la usa delante de la persona.",
+     "what_en": "Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, News, Data, Methodology and Assistant; each has a guided tour that uses it in front of the reader.",
      "tech": [
       "app.js",
-      "tour.js"
+      "tour.js",
+      "tour-pasos.js",
+      "tour-geo.js"
      ]
     },
     {

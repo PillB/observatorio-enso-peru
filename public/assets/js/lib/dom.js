@@ -54,3 +54,22 @@ export function storage(key, value) {
   } catch { /* modo privado o almacenamiento bloqueado */ }
   return null;
 }
+
+/**
+ * Un tooltip de mapa que cae encima de la ventana del tutorial (tour.js) se muda al otro lado del punto (debajo,
+ * encima o a un costado), dentro de la pantalla. La ventana del tutorial no se mueve por él: el tutorial la puso
+ * junto a lo que explica.
+ */
+export function clearOfTour(tip, x, y) {
+  const pop = document.querySelector('.tour-pop:not(.tour-moving)');
+  if (!pop || tip.hidden) return;
+  const P = pop.getBoundingClientRect();
+  const hit = (l, t, w, h) => l < P.right && P.left < l + w && t < P.bottom && P.top < t + h;
+  const tw = tip.offsetWidth, th = tip.offsetHeight, vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+  const cur = [parseFloat(tip.style.left) || 0, parseFloat(tip.style.top) || 0];
+  if (!hit(cur[0], cur[1], tw, th)) return;
+  const cx = Math.max(8, Math.min(vw - tw - 8, x - tw / 2)), cy = Math.max(8, Math.min(vh - th - 8, y - th / 2));
+  const spots = [[cx, y + 24], [cx, y - th - 24], [x + 18, cy], [x - tw - 18, cy]];
+  const ok = spots.find(([l, t]) => l >= 8 && t >= 8 && l + tw <= vw - 8 && t + th <= vh - 8 && !hit(l, t, tw, th));
+  if (ok) { tip.style.left = `${ok[0]}px`; tip.style.top = `${ok[1]}px`; }
+}

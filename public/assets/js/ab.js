@@ -132,7 +132,7 @@ class Session {
 
   /** Marca un evento de esta visita (cada uno cuenta una vez por visita). */
   mark(e) {
-    if (this.preview) return;
+    if (this.preview || byTour()) return;
     if (e === 'view') {
       if (this.viewed) return;
       this.viewed = true;
@@ -144,6 +144,8 @@ class Session {
 
   choose(v) {
     if (!ids(this.exp).includes(v) || v === this.variant) return;
+    // El tutorial muestra una vista: se ve como un enlace compartido, sin cambiar la de la persona ni contarla.
+    if (byTour()) { this.show(v); return; }
     const old = this.state.v;
     this.preview = null;
     if (old !== v) send(this.exp, old, ['leave']);
@@ -161,6 +163,9 @@ class Session {
     this.flags.clear();
   }
 }
+
+/** Lo pulsó el tutorial (tour.js), no la persona: no se cuenta ni cambia su versión. */
+const byTour = () => typeof document !== 'undefined' && document.documentElement.dataset.tourDemo === '1';
 
 const sessions = {};
 export function ab(exp = 'mapa') {

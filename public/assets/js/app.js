@@ -1128,6 +1128,7 @@ async function boot() {
   const tour = new Tour({ getData: () => S.dash, navigate: (r) => { if (location.hash !== r) location.hash = r; } });
   $('#help-btn').addEventListener('click', () => tour.openMenu());
   tour.maybeResume();
+  tour.decorate();
 }
 
 boot();

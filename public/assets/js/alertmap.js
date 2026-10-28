@@ -11,7 +11,7 @@
 // del resumen, dos vistas de detalle (botones en la cabecera del mapa) cruzan los avisos con la memoria de desastres:
 // los avisos por cuenca de la ANA y los distritos en aviso con su historia (assets/historico/historia.json).
 
-import { html, raw, esc, safeUrl, $, $$ } from './lib/dom.js';
+import { html, raw, esc, safeUrl, $, $$, clearOfTour } from './lib/dom.js';
 import { ICON } from './icons.js';
 import { ab, abReady, EXPERIMENTS, VARIANTS } from './ab.js';
 import { fmtDate, fmtNumber } from './lib/format.js';
@@ -782,6 +782,7 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
       }
       tip.style.left = `${left}px`;
       tip.style.top = `${top}px`;
+      clearOfTour(tip, x, y);
     };
     const showTip = (target, x, y) => {
       if (!tip) return;
