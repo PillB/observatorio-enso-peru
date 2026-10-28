@@ -300,14 +300,60 @@ tbody tr:hover { background: color-mix(in srgb, var(--brand) 4%, transparent); }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--brand); background: var(--brand); color: var(--brand-ink); font-weight: 700; cursor: pointer; text-decoration: none; }
 .btn.ghost { background: transparent; color: var(--brand); }
 
-/* Tutorial */
-.tour-backdrop { position: fixed; inset: 0; background: rgba(5, 12, 20, 0.45); z-index: 80; }
-.tour-highlight { position: relative; z-index: 81; outline: 3px solid var(--focus); outline-offset: 4px; border-radius: 10px; }
-.tour-pop { position: fixed; z-index: 90; width: min(400px, calc(100vw - 24px)); background: var(--bg-elev); color: var(--fg); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35); padding: 18px; }
-.tour-pop h2 { font-size: 1.05rem; }
-.tour-pop .tour-progress { height: 4px; background: var(--bg-sunk); border-radius: 2px; margin: 10px 0 14px; overflow: hidden; }
+/* Tutorial (tour.js). El resaltado es un marco fijo sobre el elemento cuya sombra oscurece el resto: no toma clics,
+   la página sigue usable. La ventana va siempre al lado del marco, nunca encima (tour-geo.js). */
+:root { --tour-dim: rgba(5, 12, 20, 0.42); --tour-halo: rgba(255, 255, 255, 0.92); }
+:root[data-theme='dark'] { --tour-dim: rgba(0, 0, 0, 0.62); --tour-halo: rgba(8, 18, 29, 0.95); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) { --tour-dim: rgba(0, 0, 0, 0.62); --tour-halo: rgba(8, 18, 29, 0.95); } }
+.tour-ui { position: relative; z-index: 85; }
+.tour-ring { position: fixed; z-index: 85; pointer-events: none; border-radius: 12px; box-shadow: 0 0 0 3px var(--focus), 0 0 0 6px var(--tour-halo), 0 0 0 200vmax var(--tour-dim); }
+.tour-on .hz-tip, .tour-on .amap-tip { z-index: 88; }
+.tour-ptr { position: fixed; left: 0; top: 0; z-index: 95; margin: -3px 0 0 -5px; color: var(--fg); pointer-events: none; transition: transform .6s cubic-bezier(.3, .7, .3, 1); filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .35)); }
+.tour-ptr::after { content: ''; position: absolute; left: -11px; top: -13px; width: 30px; height: 30px; border-radius: 50%; border: 3px solid var(--focus); opacity: 0; transform: scale(.4); }
+.tour-ptr.tap::after { animation: tour-tap .3s ease-out; }
+@keyframes tour-tap { 0% { opacity: .9; transform: scale(.4); } 100% { opacity: 0; transform: scale(1.4); } }
+.tour-pop { position: fixed; z-index: 90; left: 8px; top: 8px; display: flex; flex-direction: column; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px); background: var(--bg-elev); color: var(--fg); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.32); padding: 14px 16px 12px; transition: opacity .15s ease; }
+.tour-pop.tour-moving { opacity: 0; pointer-events: none; }
+.tour-pop h2 { font-size: 1.05rem; margin: 0 0 4px; }
+.tour-pop .tour-body { overflow: auto; min-height: 0; }
+.tour-pop .tour-body p { margin: 0 0 6px; }
+.tour-pop .tour-doing { color: var(--brand); font-weight: 600; min-height: 0; }
+.tour-pop .tour-doing:empty { display: none; }
+.tour-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; }
+.tour-head .icon-btn { min-width: 36px; min-height: 36px; padding: 0; }
+.tour-count { color: var(--fg-3); font-size: 0.8rem; }
+.tour-pop .tour-progress { flex: none; height: 4px; background: var(--bg-sunk); border-radius: 2px; margin: 6px 0 10px; overflow: hidden; }
 .tour-pop .tour-progress span { display: block; height: 100%; background: var(--brand); }
-.tour-pop .row { justify-content: flex-end; }
+.tour-actions { flex: none; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
+.tour-actions .tour-sp { flex: 1 1 auto; }
+.tour-actions .btn { min-height: 40px; padding: 0 12px; }
+.tour-pill-bar { display: none; }
+.tour-pop.tour-pill { flex-direction: row; padding: 6px 6px 6px 12px; max-width: min(420px, calc(100vw - 16px)); border-radius: 999px; }
+.tour-pop.tour-pill > :not(.tour-pill-bar) { display: none; }
+.tour-pop.tour-pill .tour-pill-bar { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.tour-pill-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; font-size: 0.9rem; }
+.tour-pill-bar .btn { min-height: 36px; flex: none; }
+.tour-pill-bar [data-act="pill-next"] { min-width: 36px; padding: 0 10px; font-size: 1.1rem; }
+.tour-spacer-top, .tour-spacer-bottom { pointer-events: none; }
+.page-head .tab-tour { margin-top: 12px; min-height: 40px; }
+.tour-menu-h { font-size: 0.95rem; margin: 16px 0 8px; }
+.tour-here .btn { width: 100%; }
+.tour-menu .here { border-color: var(--brand); }
+@media (max-width: 420px) { .tour-pop { padding: 12px 12px 10px; } .tour-pop h2 { font-size: 1rem; } .tour-pop .tour-body { font-size: 0.94rem; } }
+/* Pantallas muy bajas (KaiOS, la pantalla externa de un plegable, un teléfono acostado): la ventana se compacta
+   para dejar ver más del elemento; el texto se desplaza por dentro y los botones caben en una fila. */
+@media (max-height: 520px) {
+  .tour-pop { padding: 8px 10px; border-radius: 12px; }
+  .tour-head { margin-bottom: 0; }
+  .tour-head .icon-btn { min-width: 32px; min-height: 32px; }
+  .tour-pop h2 { font-size: 0.95rem; margin-bottom: 2px; }
+  .tour-pop .tour-body { font-size: 0.9rem; }
+  .tour-pop .tour-progress { margin: 4px 0 6px; }
+  .tour-actions { gap: 6px; }
+  .tour-actions .btn { min-height: 34px; padding: 0 10px; }
+  .tour-replay span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+@media print { .tour-ui, .tab-tour, .tour-spacer-top, .tour-spacer-bottom { display: none !important; } }
 .tour-menu { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
 .tour-menu button { width: 100%; text-align: left; border: 1px solid var(--line); background: var(--bg-elev); border-radius: 10px; padding: 12px 14px; cursor: pointer; min-height: 56px; }
 .tour-menu button:hover { border-color: var(--brand); }
@@ -377,8 +423,6 @@ blockquote { margin: 0 0 10px; padding: 8px 14px; border-left: 3px solid var(--b
 .map-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 10px; }
 .map-controls input[type='range'] { flex: 1 1 180px; accent-color: var(--brand); min-height: 44px; }
 .map .country-label { font-size: 11px; font-weight: 700; fill: var(--fg-2); letter-spacing: 0.1em; }
-.tour-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
-.tour-head .icon-btn { min-width: 36px; min-height: 36px; padding: 0; }
 .tour-reset { margin-top: 14px; justify-content: flex-end; }
 .btn[disabled] { opacity: 0.45; cursor: not-allowed; }
 .notfound { min-height: 60vh; justify-content: center; }

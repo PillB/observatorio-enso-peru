@@ -6,7 +6,7 @@
 // explican en docs/memoria-desastres.md. Toda cifra de impacto es la que reporta la fuente; el
 // navegador solo cuenta y filtra (historico-model.js, el mismo cálculo que los CSV del equipo).
 
-import { html, raw, esc, safeUrl, $, $$ } from './lib/dom.js';
+import { html, raw, esc, safeUrl, $, $$, clearOfTour } from './lib/dom.js';
 import * as F from './lib/format.js';
 import { ICON } from './icons.js';
 import * as M from './historico-model.js';
@@ -1203,6 +1203,7 @@ function wire(root, D, s, set) {
     if (left + tw > innerWidth - 8) left = Math.max(8, x - tw - 16);
     tip.style.left = `${left}px`;
     tip.style.top = `${top}px`;
+    clearOfTour(tip, x, y);
   };
   const hide = () => { if (tip) tip.hidden = true; };
   svg.addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') show(e.target.closest('[data-tip]') || e.target.closest('[data-code]'), e.clientX, e.clientY); });

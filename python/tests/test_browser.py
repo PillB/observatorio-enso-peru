@@ -265,7 +265,7 @@ def test_tutorial_start_pause_resume_and_clear(site, page):
     expect(pop.get_by_text("paso 1 de")).to_be_visible()
     pop.get_by_role("button", name="Siguiente").click()
     expect(pop.get_by_text("paso 2 de")).to_be_visible()
-    pop.get_by_role("button", name="Pausar").click()
+    pop.get_by_role("button", name=re.compile("^Cerrar el tutorial")).click()
     expect(pop).to_have_count(0)
     page.reload()
     go(page, base)
@@ -283,10 +283,10 @@ def test_full_tour_visits_every_target(site, page):
     go(page, base)
     page.get_by_role("button", name="Ayuda y tutorial").click()
     page.get_by_role("button", name=re.compile("^Recorrido completo")).click()
-    for _ in range(9):
+    for _ in range(11):
         pop = page.locator(".tour-pop")
-        expect(pop).to_be_visible()
-        assert pop.get_by_text("Este elemento no está visible").count() == 0, pop.inner_text()
+        expect(pop).to_have_attribute("data-state", "ready", timeout=30000)
+        assert pop.get_by_text("no está disponible en esta publicación").count() == 0, pop.inner_text()
         pop.get_by_role("button", name=re.compile("Siguiente|Terminar")).click()
     expect(page.locator(".tour-pop")).to_have_count(0)
 

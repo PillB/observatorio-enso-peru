@@ -829,7 +829,7 @@ _In English: [anexos/a9-en.svg](anexos/a9-en.svg)._
 | **Arranque** | Carga en el navegador | Lee dashboard.json sin caché y muestra «Actualizado: … · Publicación …». Si no puede, explica que los datos están en validación y enlaza al ENFEN. | app.js, fetch |
 | **Coherencia de la publicación** | Carga en el navegador | Si un archivo trae otro publicationId lo vuelve a pedir sin caché; si sigue distinto, no lo usa y avisa con un aviso visible. |  |
 | **Accesibilidad y vigencia** | Carga en el navegador | Teclado, roles ARIA y tema claro u oscuro, probados con Playwright en Chromium, WebKit y Firefox. Cada dato muestra su periodo y se marca si está vencido. | Playwright |
-| **11 vistas** | Vistas | Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias, Datos, Metodología y Asistente; una visita guiada explica cada una. | app.js, tour.js |
+| **11 vistas** | Vistas | Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias, Datos, Metodología y Asistente; cada una tiene un recorrido guiado que la usa delante de la persona. | app.js, tour.js, tour-pasos.js, tour-geo.js |
 | **Procedencia de cada valor** | Vistas | Junto a cada dato: la fuente en vivo y la copia archivada en data/archive/, por si la fuente cambia o cae. |  |
 | **Asistente de datos** | Vistas | No es un modelo de lenguaje: reconoce la pregunta con reglas y responde solo con valores de la publicación, citando serie, periodo, fuente y publicación. | assistant.js |
 | **Metodología y arquitectura** | Vistas | Explica los métodos y muestra estos diagramas; cada caja explica su parte y las etiquetas A1 a A11 abren su anexo. |  |
