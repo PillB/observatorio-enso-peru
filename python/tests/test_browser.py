@@ -602,6 +602,26 @@ def test_data_failure_shows_containment_text(site, page):
     page.wait_for_selector("text=Datos actuales en proceso de validación")
 
 
+@pytest.mark.parametrize("w", [320, 1280])
+def test_legal_pages_open_from_the_footer(site, browser, w):
+    base, _ = site
+    ctx = browser.new_context(viewport={"width": w, "height": 800}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    for link, title in (("Política de Privacidad", "Política de Privacidad"), ("Términos de Uso", "Términos de Uso"),
+                        ("Privacy Policy", "Privacy Policy"), ("Terms of Use", "Terms of Use")):
+        go(pg, base)
+        pg.locator(".site-footer").get_by_role("link", name=link).click()
+        expect(pg.locator("main h1")).to_have_text(title)
+        assert pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), f"{title} ensancha la página a {w}px"
+        pg.get_by_role("link", name="Volver al sitio").click()
+        expect(pg.locator(".site-footer")).to_be_visible()
+    assert not errors, errors
+    ctx.close()
+
+
 def test_no_inline_scripts_and_strict_csp(site):
     _, root = site
     html = (root / "index.html").read_text(encoding="utf-8")
