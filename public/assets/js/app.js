@@ -826,7 +826,7 @@ const HAZARD_LABEL = { lluvias: 'Lluvias', inundacion: 'Inundaciones', huaico: '
 function newsParams() {
   const q = new URLSearchParams(location.hash.split('?')[1] || '');
   return { tab: q.get('tab') || 'oficial', tipo: q.get('tipo') || '', dep: q.get('dep') || '', peligro: q.get('peligro') || '',
-    fase: q.get('fase') || '', nivel: q.get('nivel') || '', edad: q.get('edad') || '' };
+    fase: q.get('fase') || '', nivel: q.get('nivel') || '', edad: q.get('edad') || '', vista: q.get('vista') || '' };
 }
 
 function placeLabel(p, deps) {
@@ -1030,11 +1030,11 @@ VIEWS.noticias = {
   },
 };
 
-// Resultados de las versiones del mapa de alertas (no está en el menú: es para el equipo).
+// Resultados de las versiones y las vistas de los mapas (no está en el menú: es para el equipo).
 VIEWS.variantes = {
-  title: 'Versiones del mapa',
-  render: () => html`<div class="page-head"><div class="eyebrow">Analítica anónima</div><h1>Versiones del mapa de alertas</h1>
-    <p>Qué versión del mapa de Noticias ve la gente, cuál usa y cuál deja como predeterminada.</p></div>
+  title: 'Versiones de los mapas',
+  render: () => html`<div class="page-head"><div class="eyebrow">Analítica anónima</div><h1>Versiones de los mapas</h1>
+    <p>Qué versión del mapa de alertas y qué vista de los mapas de Noticias y de la memoria ve la gente, cuál usa y cuál deja como predeterminada.</p></div>
     <section class="card" aria-labelledby="ab-h"><div class="section-head"><h2 id="ab-h">Resultados</h2>
       <div class="seg" role="group" aria-label="Periodo">${[['7', '7 días'], ['30', '30 días'], ['90', '90 días']].map(([k, l]) => html`<button type="button" data-days="${k}" aria-pressed="${String(k === '30')}">${l}</button>`)}</div></div>
       <div id="ab-stats"><div class="skeleton"></div></div></section>`,
@@ -1072,7 +1072,8 @@ async function render() {
   document.title = `${view.title} · ${SITE.name}`;
   if (S.navigated) { main.focus({ preventScroll: true }); window.scrollTo(0, 0); }
   S.navigated = true;
-  try { if (view.after && my === rendering) await view.after(); } catch (e) { console.error(e); }
+  // Si la persona ya se fue a otra sección, lo que falle al terminar esta (un gráfico que ya no está) no es un error.
+  try { if (view.after && my === rendering) await view.after(); } catch (e) { if (my === rendering) console.error(e); }
   document.dispatchEvent(new CustomEvent('view:ready', { detail: name }));
 }
 

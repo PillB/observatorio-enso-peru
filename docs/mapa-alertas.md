@@ -132,6 +132,31 @@ boletines sísmicos y el resumen diario de peligros no son avisos y se omiten.
 titular de cada reporte (falsos positivos y negativos) y la aproximación por regiones con los departamentos
 de cada aviso. Resultados (272 publicaciones de agosto a octubre de 2026): `docs/documentos-backtest.md`.
 
+## Vistas de detalle: por cuenca y distritos con su historia
+
+Arriba del mapa, junto al título, un selector cambia lo que dibuja el mismo mapa (no agrega tableros debajo):
+**Resumen** (la versión A–D de abajo) o uno de dos **detalles**. El estado queda en la dirección
+(`#/noticias?vista=cuencas`).
+
+- **Por cuenca**: las 231 unidades hidrográficas de la ANA (`assets/cuencas-mapa.json`), coloreadas con el nivel más
+  alto de los avisos que las tocan; rayado si ese nivel es solo de un aviso próximo. Un aviso toca una cuenca por
+  sus distritos (el distrito de una cuenca es el que tiene el 80 % o más de su superficie en ella, como en la memoria
+  de desastres) o por el centro poblado o el río que nombra. Al lado, las cuencas con avisos vigentes o próximos,
+  primero el nivel más alto y, entre iguales, la que más daños tuvo antes; cada una abre su ficha con sus avisos y su
+  memoria («1 351 registros, 56 temporadas con registros desde 1970…») y un enlace a su vista en la memoria de
+  desastres (`#/memoria?vista=cuencas&cuenca=…`).
+- **Distritos y su historia**: los distritos en aviso, rellenos con la parte de los años de DesInventar (1970-2015)
+  con daños en cada uno (la misma escala que la memoria) y con el borde del nivel de sus avisos. Un aviso toca un
+  distrito si lo nombra, si nombra su provincia (o la expone un aviso de corto plazo), si tiene quebradas en aviso,
+  si nombra un centro poblado o un río del distrito, o, para un aviso vigente o próximo del SENAMHI con zona, si el
+  centro del distrito cae dentro de ella. La ficha dice por cuál de esas razones está y enlaza su ficha en la memoria.
+
+Un aviso que solo nombra departamentos no entra en los detalles (el panel dice cuántos hay: siguen en el resumen).
+La memoria es lo que pasó antes, no un pronóstico; el panel lo dice. Los datos de la memoria vienen de
+`assets/historico/historia.json` (una fila por distrito, provincia y cuenca, de `python -m tools.build_historico`) y
+se piden solo al abrir un detalle. Funciones: `alertDistricts`, `alertUnits` y `detailView` en
+`public/assets/js/alertmap.js`.
+
 ## Versiones A, B, C y D
 
 | Versión | Qué muestra |
@@ -141,24 +166,45 @@ de cada aviso. Resultados (272 publicaciones de agosto a octubre de 2026): `docs
 | C · Panel | Mapa, matriz nivel × momento (cada celda filtra) y ranking de departamentos |
 | D · Cronología | Mapa y línea de tiempo de la vigencia de cada aviso, de ayer a cuatro días adelante |
 
-La primera visita recibe una versión al azar; quien elige otra en «Versión del mapa» la deja como
-predeterminada en su navegador. `#/noticias?version=B` muestra una versión sin cambiar la elegida.
+La versión (y la vista: resumen o detalle) de una primera visita se sortea: al azar mientras no haya una ganadora y,
+cuando la hay, la ganadora para 4 de cada 5 personas y otra al azar para el resto, para seguir midiendo. Quien elige
+otra en «Versión del mapa» o en el selector de vistas la deja como predeterminada en su navegador.
+`#/noticias?version=B` y `#/noticias?vista=distritos` muestran una versión o una vista sin cambiar la elegida.
 
-### Analítica anónima
+### Analítica anónima y decisión
 
-`functions/_lib/ab.js` (ruta `/api/ab/*`) suma contadores por **día, versión y evento** en la tabla
-`ab_daily` de la base D1 `GEO_DB` (la de la consola). No guarda IP, identificadores ni cookies. Cada visita
-manda, al salir, un solo aviso con lo que hizo: `view`, `chosen` (la vio siendo su versión elegida),
-`hover`, `select` (filtró desde el mapa), `detail` (abrió un aviso), `choose`, `leave` y `keep` (volvió otro
-día con la versión elegida). Con «No rastrear» o Global Privacy Control no se manda nada. Hay un tope de
-20 000 sumas por día para no gastar las escrituras de la consola.
+Hay tres experimentos, cada uno con su clave en el navegador (`public/assets/js/ab.js`):
 
-Resultados: `https://<sitio>/#/variantes` (no está en el menú) o `GET /api/ab/stats?days=30`.
+| Experimento | Qué se sortea | Versiones |
+|---|---|---|
+| `mapa` | La versión del mapa de alertas en el resumen | A, B, C, D |
+| `noticias` | La vista con que abre el mapa de Noticias | resumen, cuencas, distritos |
+| `memoria` | La vista con que abre el mapa de la memoria de desastres | resumen, cuencas, puntos, riesgo |
+
+`functions/_lib/ab.js` (ruta `/api/ab/*`) suma contadores por **día, experimento, versión y evento** en la tabla
+`ab_exp` de la base D1 `GEO_DB` (la de la consola; la tabla `ab_daily` de antes, solo del mapa A–D, se sigue leyendo).
+No guarda IP, identificadores ni cookies. Cada visita manda, al salir, un aviso por experimento con lo que hizo:
+`view`, `chosen` (la vio siendo su versión elegida), `hover`, `select` (filtró o eligió un área desde el mapa),
+`detail` (abrió un aviso, una ficha o un registro), `use` (hizo `select` o `detail`), `choose`, `leave` y `keep`
+(volvió otro día con la versión elegida). Con «No rastrear» o Global Privacy Control no se manda nada. Hay un tope
+de 20 000 sumas por día para no gastar las escrituras de la consola.
+
+**Decisión** (`decide`): la tasa de uso de cada versión (visitas con `use` sobre visitas con `view`, en los últimos
+60 días) con su intervalo de Wilson al 95 %. Gana una versión solo si todas tienen al menos 200 visitas medidas y el
+límite inferior de su intervalo supera el límite superior de todas las demás; así una diferencia que puede ser azar no
+cambia lo que ve la gente. `GET /api/ab/defaults` devuelve la ganadora de cada experimento (o `null`) y se guarda una
+hora en el borde; el navegador la pide una vez al día y nunca espera más de 1,2 s antes de dibujar el mapa. Las
+visitas del mapa A–D anteriores a este cambio no traen `use`: cuentan en los totales, no en la decisión.
+
+Resultados: `https://<sitio>/#/variantes` (no está en el menú: los tres experimentos con su tasa de uso, su intervalo
+y la decisión) o `GET /api/ab/stats?days=30`.
 
 ## Mantenimiento
 
 - `public/assets/peru-map.json` se regenera con `python -m tools.build_peru_map` (límites del INDECI,
   GEOSINPAD). Tiene un punto por cada provincia y cada distrito del nomenclátor; si un aviso nombra un código
   sin punto, la versión B lo dibuja en su provincia o su departamento, nunca lo omite.
-- Pruebas: `tests/test_severity.py`, `tests/test_alert_map.py` (incluye la API con `node --test`) y
-  `test_alert_map_filters_the_news_and_remembers_the_version` en los recorridos de navegador.
+- Pruebas: `tests/test_severity.py`, `tests/test_alert_map.py` (incluye la API, la decisión y las vistas de
+  detalle con `node --test`) y, en los recorridos de navegador, `test_alert_map_filters_the_news_and_remembers_the_version`,
+  `test_news_detail_views_show_alerts_by_basin_and_district_with_their_history` y
+  `test_a_shared_link_shows_its_view_without_changing_the_chosen_one`.

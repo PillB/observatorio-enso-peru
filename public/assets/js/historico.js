@@ -11,6 +11,8 @@ import * as F from './lib/format.js';
 import { ICON } from './icons.js';
 import * as M from './historico-model.js';
 import * as EV from './historico-evidencia.js';
+import * as DT from './historico-detalle.js';
+import { ab, abReady } from './ab.js';
 
 const BASE = 'assets/historico/';
 let CACHE = null;
@@ -67,7 +69,10 @@ function basins() {
 // ---------------------------------------------------------------------------
 // Estado (en la dirección: #/memoria?nivel=distrito&evento=grandes&area=200104)
 // ---------------------------------------------------------------------------
-const DEFAULTS = { nivel: 'provincia', evento: '', peligro: '', desde: '', hasta: '', metrica: 'anios', area: '', cuencas: '' };
+// vista: resumen o un detalle (historico-detalle.js); cuenca y foco (un río «r:cuenca:nombre» o un centro poblado
+// «l:distrito:nombre») eligen una ficha del detalle; dm: la métrica de las cuencas; mz=0 apaga las manzanas del
+// CENEPRED; celda: una casilla del bivariado («22»: daños frecuentes y pobreza alta).
+const DEFAULTS = { nivel: 'provincia', evento: '', peligro: '', desde: '', hasta: '', metrica: 'anios', area: '', cuencas: '', vista: 'resumen', cuenca: '', foco: '', dm: '', mz: '', celda: '' };
 const METRICS = [
   ['anios', 'Años con daños (1970-2015)'], ['minimo', 'Años con daños, como mínimo (IC 95 %)'], ['grandes', 'Grandes Niños que lo golpearon'],
   ['razon', 'Cuántos más lugares con daños en años de Niño'], ['registros', 'Registros'], ['muertos', 'Fallecidos y desaparecidos'],
@@ -116,6 +121,12 @@ export function readState() {
   if (!METRICS.some(([k]) => k === s.metrica)) s.metrica = DEFAULTS.metrica;
   if (s.area && !/^\d{2}(\d{2}){0,2}$/.test(s.area)) s.area = '';
   if (s.cuencas !== '1') s.cuencas = '';
+  if (!DT.VIEWS.some(([k]) => k === s.vista)) s.vista = DEFAULTS.vista;
+  if (!/^\d{1,8}$/.test(s.cuenca)) s.cuenca = '';
+  if (!/^[rl]:u?\d{1,8}:.{1,80}$/.test(s.foco)) s.foco = '';
+  if (!DT.BASIN_METRICS.some(([k]) => k === s.dm)) s.dm = '';
+  if (s.mz !== '0') s.mz = '';
+  if (!/^[012]{2}$/.test(s.celda)) s.celda = '';
   return s;
 }
 
@@ -382,27 +393,76 @@ export const memoriaView = {
   },
 };
 
-function mount(root, D) {
+/** Lo que necesita la vista de detalle (historico-detalle.js), cuando ya llegó. */
+let DETAIL_DATA = null;
+function detailData() {
+  return Promise.all([DT.fine(), DT.rivers(), DT.blocks(), basins()]).then(([X, R, K, B]) => (DETAIL_DATA = { X, R, K, B }));
+}
+/** La sesión del experimento de la vista (ab.js «memoria»): cuenta qué vista abre la gente y cuál usa. */
+let SESSION = null;
+
+async function mount(root, D) {
   let s = readState();
+  await abReady();
+  const session = (SESSION = ab('memoria'));
+  // La vista: la del enlace; si el enlace trae filtros pero no la vista (un enlace de antes de las vistas), el
+  // resumen; si no trae nada, la de esta persona (al azar, la que más se usa o la que eligió). Una vista distinta de
+  // la suya (un enlace que le pasaron) se muestra sin contarla.
+  const q = new URLSearchParams(location.hash.split('?')[1] || '');
+  if (!q.has('vista')) s.vista = [...q.keys()].length ? 'resumen' : session.own;
+  session.show(s.vista);
   const set = (partial, sel) => { s = { ...s, ...partial }; draw(sel); };
   const draw = (focusSel) => {
     writeState(s);
+    if (s.vista !== 'resumen' && !DETAIL_DATA) {
+      detailData().then(() => { if (root.isConnected) draw(focusSel); }).catch((e) => {
+        console.error(e);
+        session.show('resumen');
+        s = { ...s, vista: 'resumen' };
+        if (root.isConnected) draw(focusSel);
+      });
+    }
     root.innerHTML = String(page(D, s));
     wire(root, D, s, set);
     if (focusSel) $(focusSel, root)?.focus({ preventScroll: true });
-    if (s.area) { fillDetail(root, D, s); fillContext(root, D, s); fillPrevArea(root, D, s); }
-    fillLayers(root, D, s);
+    if (s.area && $('#hz-list', root)) { fillDetail(root, D, s); fillContext(root, D, s); fillPrevArea(root, D, s); }
+    if (s.vista === 'resumen') fillLayers(root, D, s);
     fillPrevention(root, D);
+    session.mark('view');
   };
-  // Clic delegado en rankings, enlaces de área y cierre del perfil. root sobrevive a cada redibujo, así que se
-  // registra una sola vez por montaje (en wire se sumaría un manejador por redibujo).
+  const toMap = () => $('#hz-map-h', root)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  // Clic delegado en la vista, los rankings, los enlaces de área y el cierre de las fichas. root sobrevive a cada
+  // redibujo, así que se registra una sola vez por montaje (en wire se sumaría un manejador por redibujo).
   root.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-area]');
+    const v = e.target.closest('[data-vista]');
+    if (v) {
+      const vista = v.dataset.vista;
+      if (vista === s.vista) return;
+      session.choose(vista);
+      // Lo elegido pasa a la vista que también lo muestra (un río, de cuencas a ríos y lugares); si no, se suelta.
+      set({ vista, celda: '', foco: vista === 'cuencas' || vista === 'puntos' ? s.foco : '', cuenca: vista === 'cuencas' ? s.cuenca : '' }, `[data-vista="${vista}"]`);
+      return;
+    }
+    if (e.target.closest('[data-zoom-out]')) { set({ area: '', cuenca: '', foco: '' }, '#hz-map-h'); return; }
+    const b = e.target.closest('[data-area], [data-cuenca], [data-foco]');
     if (!b || b.closest('svg')) return;
+    if (b.dataset.cuenca !== undefined) {
+      if (b.dataset.cuenca) session.mark('detail');
+      set({ cuenca: b.dataset.cuenca, foco: '', area: '' }, '#hz-side');
+      if (b.dataset.cuenca) toMap();
+      return;
+    }
+    if (b.dataset.foco !== undefined) {
+      if (b.dataset.foco) session.mark('detail');
+      set({ foco: b.dataset.foco, area: '' }, '#hz-side');
+      if (b.dataset.foco) toMap();
+      return;
+    }
     const area = b.dataset.area;
+    if (area) session.mark('detail');
     const nivel = b.dataset.nivelGo || (area && area.length === 6 && s.nivel !== 'distrito' ? 'distrito' : area && area.length === 4 && s.nivel === 'departamento' ? 'provincia' : s.nivel);
     set({ area, nivel }, '#hz-side');
-    if (area) $('#hz-map-h', root)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    if (area) toMap();
   });
   draw();
 }
@@ -412,10 +472,39 @@ function currentFilter(D, s) {
   return { types, event: s.evento, from: +s.desde || 0, to: +s.hasta || 0, great: D.great };
 }
 
+/** Un botón de la vista del mapa (cabecera del mapa). */
+const viewButton = (s, [k, t]) => html`<button type="button" data-vista="${k}" aria-pressed="${String(k === s.vista)}" title="${DT.VIEW_HINT[k]}">${t}</button>`;
+
+/** Lo que historico-detalle.js necesita de esta vista. */
+const HELPERS = { timeline, areaName, shortName, dl, when, scaleFor, statsFor, viewBoxFor, selRing, areaShape };
+
+function detailView(D, s, recs, years) {
+  if (!DETAIL_DATA) return null;
+  const ctx = { D, s, recs, years, H: HELPERS, ...DETAIL_DATA };
+  return s.vista === 'cuencas' ? DT.basinView(ctx) : s.vista === 'puntos' ? DT.pointsView(ctx) : DT.riskView(ctx);
+}
+
+/** El mapa y la ficha de una vista de detalle; sin datos todavía, el aviso de carga. */
+function detailBox(D, s, V, recs, years) {
+  const zoomed = s.area || s.cuenca || s.foco;
+  const hint = { cuencas: 'Toque una cuenca o un río para ver su ficha.', puntos: 'Toque un hexágono para acercarse a su departamento, un punto para ver su distrito o un río para ver sus registros.', riesgo: 'Toque un distrito para ver su ficha y acercar el mapa a su departamento.' }[s.vista];
+  const side = !V ? '' : V.side || (s.area ? html`${V.extra}${profileShell(D, s, recs, years)}` : '');
+  return html`<div class="hz-mapbox">
+      ${V ? raw(V.svg) : html`<div class="skeleton" aria-hidden="true"></div><p class="muted">Cargando el detalle: cuencas, puntos y ríos de los registros…</p>`}
+      <div class="hz-tip" role="tooltip" hidden></div>
+      ${V && zoomed ? html`<button type="button" class="btn ghost hz-zoomout" data-zoom-out>${raw(ICON.globe)}<span>Ver todo el Perú</span></button>` : ''}
+      ${V ? V.legend : ''}
+      <p class="muted small">${hint} Los filtros de arriba (evento, peligro y temporadas) también valen aquí.</p>
+    </div>
+    <aside class="hz-side" id="hz-side" aria-live="polite">${side}</aside>`;
+}
+
 function page(D, s) {
   const f = currentFilter(D, s);
   const recs = M.filter(D.recs, f);
   const years = M.coverageYears(D.sum.cobertura.homogenea, f.from, f.to);
+  const det = s.vista !== 'resumen';
+  const V = det ? detailView(D, s, recs, years) : null;
   const stats = statsFor(D, s, recs, years);
   const vals = [...stats.values()].map((st) => metricValue(st, s.metrica)).filter((v) => v !== null);
   const scale = scaleFor(s.metrica, vals, s.nivel);
@@ -428,20 +517,24 @@ function page(D, s) {
     ${contextBanner(D)}
     ${howToSection(D)}
     <section class="card hz-card" aria-labelledby="hz-map-h">
-      <div class="section-head"><h2 id="hz-map-h">Mapa de la memoria</h2><span class="muted small">${n0(recs.length)} de ${n0(D.recs.length)} registros</span></div>
+      <div class="section-head hz-head"><h2 id="hz-map-h">Mapa de la memoria</h2>
+        <div class="hz-views" role="group" aria-label="Vista del mapa">
+          <div class="seg">${viewButton(s, DT.VIEWS[0])}</div><span class="hz-views-l" aria-hidden="true">Detalle</span><div class="seg">${DT.VIEWS.slice(1).map((v) => viewButton(s, v))}</div>
+        </div>
+        <span class="muted small">${n0(recs.length)} de ${n0(D.recs.length)} registros</span></div>
       <form class="hz-filters" id="hz-filters" aria-label="Filtros del mapa">
         <label class="hz-f"><span>Evento</span><select class="input" name="evento">${evOpts.map(([v, t]) => html`<option value="${v}" ${v === s.evento ? raw('selected') : ''}>${t}</option>`)}</select></label>
         <label class="hz-f"><span>Peligro</span><select class="input" name="peligro"><option value="">Todos</option>${Object.entries(HAZARD_GROUPS).map(([k, [t]]) => html`<option value="${k}" ${k === s.peligro ? raw('selected') : ''}>${t}</option>`)}
           <optgroup label="Un tipo">${Object.keys(DANGER_LABEL).map((t) => html`<option value="${t}" ${t === s.peligro ? raw('selected') : ''}>${dl(t)}</option>`)}</optgroup></select></label>
         <label class="hz-f hz-f-s" title="Temporadas de julio a junio por su año de inicio: 1997 es julio de 1997 a junio de 1998"><span>Desde temporada</span><input class="input" name="desde" type="number" inputmode="numeric" min="${yMin}" max="${yMax}" placeholder="${yMin}" value="${s.desde}"></label>
         <label class="hz-f hz-f-s" title="Temporadas de julio a junio por su año de inicio: 1997 es julio de 1997 a junio de 1998"><span>Hasta temporada</span><input class="input" name="hasta" type="number" inputmode="numeric" min="${yMin}" max="${yMax}" placeholder="${yMax}" value="${s.hasta}"></label>
-        <label class="hz-f"><span>Mostrar</span><select class="input" name="metrica">${METRICS.map(([v, t]) => html`<option value="${v}" ${v === s.metrica ? raw('selected') : ''}>${t}</option>`)}</select></label>
-        <div class="hz-f hz-f-lvl"><span id="hz-lvl-l">Nivel</span><div class="seg" role="group" aria-labelledby="hz-lvl-l">${LEVEL_NAMES.map(([v, t]) => html`<button type="button" data-nivel="${v}" aria-pressed="${String(v === s.nivel)}">${t}</button>`)}</div></div>
+        ${det ? (V?.control || '') : html`<label class="hz-f"><span>Mostrar</span><select class="input" name="metrica">${METRICS.map(([v, t]) => html`<option value="${v}" ${v === s.metrica ? raw('selected') : ''}>${t}</option>`)}</select></label>
+        <div class="hz-f hz-f-lvl"><span id="hz-lvl-l">Nivel</span><div class="seg" role="group" aria-labelledby="hz-lvl-l">${LEVEL_NAMES.map(([v, t]) => html`<button type="button" data-nivel="${v}" aria-pressed="${String(v === s.nivel)}">${t}</button>`)}</div></div>`}
         <div class="hz-f hz-search"><label for="hz-q"><span>Buscar lugar</span></label><input class="input" id="hz-q" list="hz-places" placeholder="Distrito, provincia o departamento" autocomplete="off"><datalist id="hz-places"></datalist></div>
         ${s.evento || s.peligro || s.desde || s.hasta || s.area ? html`<button type="button" class="btn ghost hz-clear" data-clear>Quitar filtros</button>` : ''}
       </form>
       <div class="hz-grid">
-        <div class="hz-mapbox">
+        ${det ? detailBox(D, s, V, recs, years) : html`<div class="hz-mapbox">
           ${raw(mapSvg(D, s, stats, scale, { label }))}
           <div class="hz-tip" role="tooltip" hidden></div>
           ${s.area && s.nivel !== 'departamento' ? html`<button type="button" class="btn ghost hz-zoomout" data-area="">${raw(ICON.globe)}<span>Ver todo el Perú</span></button>` : ''}
@@ -450,7 +543,7 @@ function page(D, s) {
             <span class="muted small" id="hz-pts-note">${s.area ? 'Cargando los puntos de los registros…' : 'Elija un área para ver sus registros como puntos: el punto de campo de la fuente, el centro poblado o el río que nombran.'}</span></div>
           <p class="muted small">${s.nivel === 'departamento' ? 'Toque un departamento para ver su ficha.' : 'Toque un área para ver su ficha y acercar el mapa a su departamento. También puede buscarla arriba o elegirla en la tabla.'} Los registros a escala de departamento no se pintan en provincias ni distritos. Desde y hasta son temporadas de julio a junio (1997 = 1997-98).${s.evento ? ' Con un filtro de evento, «años con daños» cuenta solo los años con registros de ese evento y la razón de El Niño no aplica.' : ''}</p>
         </div>
-        <aside class="hz-side" id="hz-side" aria-live="polite">${s.area ? profileShell(D, s, recs, years) : nationalCard(D, nat, recs, years, s)}</aside>
+        <aside class="hz-side" id="hz-side" aria-live="polite">${s.area ? profileShell(D, s, recs, years) : nationalCard(D, nat, recs, years, s)}</aside>`}
       </div>
     </section>
     <section class="card hz-card" aria-labelledby="hz-tl-h">
@@ -631,7 +724,7 @@ async function fillDetail(root, D, s) {
   };
   const paint = () => {
     box.innerHTML = String(html`<ol class="hz-evs">${sorted.slice(0, shown).map(item)}</ol>${sorted.length > shown ? html`<button type="button" class="btn ghost" id="hz-more">Ver ${Math.min(30, sorted.length - shown)} más (quedan ${n0(sorted.length - shown)})</button>` : ''}`);
-    $('#hz-more', box)?.addEventListener('click', () => { shown += 30; paint(); });
+    $('#hz-more', box)?.addEventListener('click', () => { SESSION?.mark('detail'); shown += 30; paint(); });
   };
   paint();
 }
@@ -1050,6 +1143,8 @@ function wire(root, D, s, set) {
   }));
   $('[data-clear]', root)?.addEventListener('click', () => set({ evento: '', peligro: '', desde: '', hasta: '', area: '' }, '#hz-map-h'));
   $('[data-layer="cuencas"]', root)?.addEventListener('click', () => set({ cuencas: s.cuencas === '1' ? '' : '1' }, '[data-layer="cuencas"]'));
+  $('[data-mz]', root)?.addEventListener('click', () => set({ mz: s.mz === '0' ? '' : '0' }, '[data-mz]'));
+  $$('[data-celda]', root).forEach((b) => b.addEventListener('click', () => { SESSION?.mark('select'); set({ celda: s.celda === b.dataset.celda ? '' : b.dataset.celda }, `[data-celda="${b.dataset.celda}"]`); }));
 
   // Buscador de lugares (datalist con los tres niveles).
   const q = $('#hz-q', root), list = $('#hz-places', root);
@@ -1076,7 +1171,8 @@ function wire(root, D, s, set) {
   const f = currentFilter(D, s);
   const recs = M.filter(D.recs, f);
   const years = M.coverageYears(D.sum.cobertura.homogenea, f.from, f.to);
-  const stats = statsFor(D, s, recs, years);
+  const stats = s.vista === 'resumen' ? statsFor(D, s, recs, years) : new Map();
+  let hovered = false;
   const show = (el, x, y) => {
     const code = el?.dataset?.code;
     if (!tip || !(code || el?.dataset?.tip)) return;
@@ -1089,6 +1185,7 @@ function wire(root, D, s, set) {
       tip.innerHTML = String(html`<strong>${head}</strong>${rest.map((t) => html`<p class="muted small">${t}</p>`)}`);
     }
     tip.hidden = false;
+    if (!hovered) { hovered = true; SESSION?.mark('hover'); }
     const tw = tip.offsetWidth, th = tip.offsetHeight;
     let left = x + 16, top = Math.max(8, Math.min(innerHeight - th - 8, y - th / 2));
     if (left + tw > innerWidth - 8) left = Math.max(8, x - tw - 16);
@@ -1098,8 +1195,22 @@ function wire(root, D, s, set) {
   const hide = () => { if (tip) tip.hidden = true; };
   svg.addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') show(e.target.closest('[data-tip]') || e.target.closest('[data-code]'), e.clientX, e.clientY); });
   svg.addEventListener('pointerleave', hide);
-  const pick = (code) => { hide(); set({ area: s.area === code ? '' : code }, '#hz-side'); };
-  svg.addEventListener('click', (e) => { const t = e.target.closest('[data-code]'); if (t) pick(t.dataset.code); });
+  const pick = (code) => { hide(); SESSION?.mark('select'); set({ area: s.area === code ? '' : code, foco: '' }, '#hz-side'); };
+  svg.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-foco], [data-basin], [data-code]');
+    if (!t) return;
+    if (t.dataset.foco) {
+      // Un río: su ficha (en la vista de cuencas, dentro de su cuenca).
+      hide();
+      SESSION?.mark('select');
+      const basin = t.dataset.foco.split(':')[1].replace(/^u.*/, '');  // «r:u<distrito>:…»: un río sin cuenca
+      set({ foco: t.dataset.foco, area: '', ...(s.vista === 'cuencas' && basin ? { cuenca: basin } : {}) }, '#hz-side');
+    } else if (t.dataset.basin) {
+      hide();
+      SESSION?.mark('select');
+      set({ cuenca: s.cuenca === t.dataset.basin ? '' : t.dataset.basin, foco: '', area: '' }, '#hz-side');
+    } else pick(t.dataset.code);
+  });
   svg.addEventListener('keydown', (e) => { const t = e.target.closest('[data-code]'); if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(t.dataset.code); } });
   svg.addEventListener('focusin', (e) => { const t = e.target.closest('[data-code]'); if (t) { const r = t.getBoundingClientRect(); show(t, r.left + r.width / 2, r.top + r.height / 2); } });
   svg.addEventListener('focusout', hide);

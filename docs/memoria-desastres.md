@@ -534,6 +534,9 @@ año, los llamamientos de la Cruz Roja y estos avisos; la ficha de cada área, s
   poblado que nombran; más grande cuantos más registros); el botón «Cuencas (ANA)» dibuja las 231 cuencas e
   intercuencas. Todo el estado queda en la dirección (`#/memoria?nivel=distrito&area=200105&cuencas=1`) para
   compartir una vista.
+- **Vistas de detalle**, en la cabecera del mapa (`Resumen | Detalle: Cuencas · Ríos y lugares · Daños y pobreza`):
+  cambian lo que dibuja el mismo mapa y su panel, sin agregar tableros debajo, y usan los filtros de evento, peligro
+  y temporadas. Ver [Vistas de detalle del mapa](#vistas-de-detalle-del-mapa).
 - **Ficha** de cada área: años con daños, 1 de cada X años y probabilidad en 5 años, cada uno con su intervalo;
   grandes Niños, registros del Niño en curso, «si se repite un gran Niño» (con cuántos de sus lugares golpeados antes
   volvieron a tener registros), peligro identificado hoy, «¿se sabía antes?», impactos, peligros, temporadas con daños
@@ -552,6 +555,46 @@ El diseño sigue las prácticas de los tableros de riesgo de referencia (DesInve
 SIGRID del CENEPRED): mapa coroplético con tabla equivalente, colores de una sola tonalidad para magnitudes y
 divergentes centrados en 1 para la razón de tasas, estados con icono y texto (no solo color), cifras con su fuente,
 frecuencias y razones con su intervalo, y avisos claros de lo que el dato no dice.
+
+## Vistas de detalle del mapa
+
+Lo que el catálogo sabe más fino que el distrito (la cuenca de cada registro, el río, la quebrada, la laguna o el
+centro poblado que nombra, su punto) y lo que dice el CENEPRED de cada manzana, en tres vistas del mismo mapa. La
+vista con que abre el mapa se sortea y se mide (ver [Mapa de alertas](mapa-alertas.md#analítica-anónima-y-decisión),
+experimento `memoria`): con el tiempo, la que más se usa queda como la de la mayoría. El estado queda en la dirección
+(`#/memoria?vista=cuencas&cuenca=137554&foco=r:137554:rio rimac`).
+
+- **Cuencas**: las 231 unidades hidrográficas de la ANA, pintadas por defecto con la parte de los años 1970-2015 con
+  daños en la cuenca (la misma frecuencia que las áreas, `summarize`), o por registros cada 1 000 km² (la superficie
+  sale del trazo de cada cuenca: las 231 suman 1 303 455 km², 1,4 % más que la superficie oficial del Perú por la
+  simplificación de la costa), registros, grandes Niños, fallecidos, afectados o viviendas. Una cuenca grande junta
+  más registros solo por su tamaño: por eso no se pinta por defecto con los registros. Con una cuenca elegida, el
+  mapa se acerca a ella y dibuja sus ríos nombrados; la ficha da sus indicadores, sus peligros, sus temporadas, sus
+  distritos, sus ríos y centros poblados más nombrados y sus registros con más daños.
+- **Ríos y lugares**: los 8 764 registros con un punto propio (6 905 de campo, 1 493 en un centro poblado y 366 sobre
+  un río, una quebrada o una laguna), en hexágonos de unos 15 km en el mapa entero (cada punto en el hexágono de
+  centro más cercano) y como puntos al acercarse; encima, los ríos que nombran los registros, más gruesos cuantos más
+  registros los nombran. Al lado, los ríos y los centros poblados más nombrados; cada uno abre su ficha.
+- **Daños y pobreza**: un mapa bivariado por distrito, con la frecuencia de daños y la pobreza monetaria del INEI en
+  terciles (3 × 3 colores; tocar una casilla de la leyenda deja solo esos distritos), y las manzanas que el CENEPRED
+  evaluó con riesgo ante El Niño 2026-2027 en Piura, Tumbes y Lambayeque, con su población del censo 2017. No es un
+  índice de riesgo oficial: muestra dónde coinciden dos cosas.
+
+Archivos (se piden solo al abrir un detalle):
+
+| Archivo | Qué trae | De dónde sale |
+|---|---|---|
+| `historico/finos.json` | Por registro, en el orden de `eventos.json`: su cuenca, su punto fino si lo tiene (`[i, lat, lon, cómo, radio]`) y el centro poblado y el cuerpo de agua que nombra | `python -m tools.build_historico` (`fine_payload`) |
+| `historico/historia.json` | Una fila por distrito, provincia y cuenca: registros, años con daños sobre años de cobertura (las cuencas cuentan temporadas), grandes Niños, último registro, fallecidos, peligro más frecuente, primer año, población y nombre. La usa el mapa de Noticias | `python -m tools.build_historico` (`history_payload`) |
+| `capas/rios-mapa.json` | El trazo de cada río, quebrada o laguna nombrado, juntado por cuenca y nombre: los tramos de la Carta Nacional con ese nombre que pasan por un distrito donde un registro lo nombra, enteros (la Carta corta los cauces en confluencias y bordes de hoja). Los nevados, volcanes y abras son puntos, no trazos | `python -m tools.build_capas_mapa` |
+| `capas/manzanas-riesgo.json` | Las manzanas en riesgo del CENEPRED: punto central, distrito, centro poblado, nivel, población y viviendas | `python -m tools.build_capas_mapa --manzanas` |
+
+Validación (pruebas en `tests/test_capas_mapa.py` y `tests/js/historico-detalle.test.mjs`): los 659 nombres de agua
+por distrito del catálogo tienen trazo; cada trazo junta en la página los mismos registros que en Python (la página
+une cada registro con su trazo por distrito y nombre, la cuenca la da el trazo); los trazos caen en sus distritos y
+cuencas; ningún punto fino cae a más de 3 km de su distrito (635 de 8 728 caen fuera, cerca del borde, por los
+límites simplificados del mapa); las filas de `historia.json` cuentan lo
+mismo que `eventos.json`; las manzanas caen en los tres departamentos y en distritos del mapa.
 
 ## Evidencia sobre la prevención desde los años 90
 
@@ -642,9 +685,18 @@ python -m tools.build_historico --desde-catalogo   # rehace indicadores, validac
 python -m tools.build_historico --indices-al-dia CARPETA
                                                    # con el ICEN y el ONI descargados al día en CARPETA
 python -m tools.build_historico_mapa               # polígonos de provincias y distritos (solo si cambian los límites)
-node --test tests/js/historico.test.mjs            # paridad Python/navegador
-pytest -q tests/test_historico.py
+python -m tools.build_aguas --keep CARPETA         # las páginas de la Carta Nacional (una vez)
+python -m tools.build_capas_mapa --aguas CARPETA --manzanas OTRA
+                                                   # ríos nombrados y manzanas del CENEPRED de las vistas de detalle
+node --test tests/js/historico.test.mjs tests/js/historico-detalle.test.mjs
+                                                   # paridad Python/navegador
+pytest -q tests/test_historico.py tests/test_capas_mapa.py
 ```
+
+- `tools.build_capas_mapa` se corre a mano cuando el catálogo nombra ríos nuevos (un río nuevo se dibuja al volver a
+  correrlo) o cuando el CENEPRED actualiza su escenario. Del SIGRID pide solo seis campos de las capas de manzanas
+  (`objectid, ubigeo, nomccpp, nriesgo, pob_total, viv_part_p`), nunca las capas con datos de personas, con 5 s entre
+  pedidos y leyendo antes su robots.txt (que prohíbe `/arcgis/`; ver la regla de las instituciones públicas abajo).
 
 - `--desde-catalogo` no descarga ni vuelve a leer las fuentes: parte del catálogo publicado (`eventos.zip`, que se lee
   de vuelta sin pérdida), vuelve a leer los registros curados y, de la caché, las fechas del SINPAD 2016-2018 si

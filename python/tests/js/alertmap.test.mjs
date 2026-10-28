@@ -145,3 +145,96 @@ it('la lista de alertas nombra el centro poblado, el río y la cuenca del aviso'
   assert.deepEqual([...out.matchAll(/tag-basin"[^>]*>([^<]+)</g)].map((x) => x[1]), ['Cuenca Crisnejas', 'Cuenca Rímac']);
   assert.equal(String(fineTags({})).trim(), '');
 });
+
+// ---------------------------------------------------------------------------
+// Vistas de detalle: avisos por cuenca y distritos en aviso con su historia
+// ---------------------------------------------------------------------------
+const { inRing, alertDistricts, alertUnits, detailView } = await import('../../../public/assets/js/alertmap.js');
+
+it('punto dentro de un anillo, también en uno cóncavo', () => {
+  const sq = [[0, 0], [10, 0], [10, 10], [0, 10]];
+  assert.equal(inRing(5, 5, sq), true);
+  assert.equal(inRing(11, 5, sq), false);
+  const u = [[0, 0], [9, 0], [9, 9], [6, 9], [6, 3], [3, 3], [3, 9], [0, 9]];  // una «U»
+  assert.equal(inRing(4.5, 6, u), false);
+  assert.equal(inRing(1.5, 6, u), true);
+});
+
+// Un aviso vigente de Piura con todo lo que lo hace más fino que el departamento.
+const RING = [[-80.2, -4.9], [-79.4, -4.9], [-79.4, -5.4], [-80.2, -5.4], [-80.2, -4.9]];
+const FINE = { ...RATED, id: 'fino-1', title: 'Aviso fino', severity: { ...RATED.severity, rank: 2 },
+  geo: { places: [{ code: '20', level: 'departamento', name: 'Piura', confidence: 0.95, method: 'campo' },
+    { code: '200401', level: 'distrito', name: 'Huancabamba', confidence: 0.9, method: 'texto' },
+    { code: '2007', level: 'provincia', name: 'Talara', confidence: 0.9, method: 'texto' }] },
+  detail: { shapes: [{ rings: [RING] }], areas: [{ code: '200201', name: 'Ayabaca', n: 3 }],
+    points: [{ kind: 'centro-poblado', name: 'Tambogrande', district: '200111', basin: { code: '13952', name: 'Cuenca Chira' } },
+      { kind: 'estacion', name: 'Estación', district: '200301', basin: { code: '13951' } }] } };
+const GEO2 = { ...GEO, width: 507, height: 740, departments: [{ d: 'M0 0h9v9z' }], points: {
+  200101: project(GEO, -80.63, -5.19), 200105: project(GEO, -79.9, -5.1), 200111: project(GEO, -80.34, -4.91),
+  200201: project(GEO, -79.71, -4.64), 200301: project(GEO, -80.16, -5.1), 200401: project(GEO, -79.45, -5.24),
+  200701: project(GEO, -81.27, -4.58), 200702: project(GEO, -81.1, -4.2), 150101: project(GEO, -77.03, -12.05) } };
+const CODES = Object.keys(GEO2.points);
+
+it('los distritos de un aviso: el que nombra, su provincia, sus quebradas, sus lugares y su zona; una estación no', () => {
+  const [a] = prepare({ groups: [{ id: 'alertas', items: [FINE] }] }, NOW).alerts;
+  const got = Object.fromEntries(alertDistricts(a, GEO2, CODES));
+  assert.deepEqual(got, { 200401: 'lugar', 200701: 'provincia', 200702: 'provincia', 200201: 'quebradas', 200111: 'punto', 200105: 'zona', 200301: 'zona' });
+  // Un aviso pasado no extiende su zona; uno que solo nombra el departamento no toca ningún distrito.
+  const [old] = prepare({ groups: [{ id: 'alertas', items: [{ ...FINE, id: 'fino-2', valid: { from: '2026-10-01T05:00:00Z', until: '2026-10-02T04:59:00Z' } }] }] }, NOW).alerts;
+  assert.ok(![...alertDistricts(old, GEO2, CODES).values()].includes('zona'));
+  const [dep] = prepare({ groups: [{ id: 'alertas', items: [{ ...RATED, id: 'dep-1', geo: { places: [{ code: '20', level: 'departamento', name: 'Piura' }] } }] }] }, NOW).alerts;
+  assert.equal(alertDistricts(dep, GEO2, CODES).size, 0);
+  const U = alertUnits([a, dep], GEO2, CODES, { 200401: '13951', 200201: '13952' });
+  assert.deepEqual(U.coarse.map((x) => x.id), ['dep-1']);
+  assert.deepEqual([...U.basin.keys()].sort(), ['13951', '13952']);  // por sus distritos y por el centro poblado; la estación no
+  assert.equal(U.dist.get('200111')[0].id, 'fino-1');
+});
+
+it('el detalle por cuenca y por distrito: color del aviso, memoria y enlace a la memoria', () => {
+  const alerts = prepare({ groups: [{ id: 'alertas', items: [{ ...FINE, id: 'fino-3' }] }] }, NOW).alerts;
+  const row = (registros, con, cob, extra = {}) => ({ registros, aniosConEvento: con, aniosCobertura: cob, grandesNinos: 1, ultimo: '2017-03-14', muertos: 0, peligro: 0, desde: 1972, poblacion: 0, nombre: 'Huancabamba', ...extra });
+  const ctx = {
+    districts: Object.fromEntries(CODES.map((c) => [c, { d: `M${c.slice(-2)} 0h1v1z` }])),
+    B: { units: { 13951: { n: 'Cuenca Piura', d: 'M0 0h5v5z' }, 13952: { n: 'Cuenca Chira', d: 'M5 0h5v5z' }, 1376: { n: 'Cuenca Santa', d: 'M9 9h1v1z' } },
+      districts: { 200401: '13951', 200201: '13952' } },
+    H: { peligros: ['Lluvia/Inundación'], distritos: new Map([['200401', row(40, 18, 45)]]), provincias: new Map(),
+      cuencas: new Map([['13951', row(900, 50, 0, { nombre: 'Cuenca Piura', desde: 1925 })]]) },
+  };
+  const C = detailView('cuencas', GEO2, alerts, {}, ctx);
+  assert.match(String(C.svg), /class="bas d-r2" d="M0 0h5v5z" data-basin="13951"/);
+  assert.match(String(C.svg), /class="bas d-base" d="M9 9h1v1z" data-basin="1376"/);
+  assert.match(String(C.side), /Cuenca Piura/);
+  assert.match(String(C.side), /50 temporadas con registros/);
+  const sel = detailView('cuencas', GEO2, alerts, {}, ctx, '13951');
+  assert.match(String(sel.side), /href="#\/memoria\?vista=cuencas&amp;cuenca=13951"/);
+  assert.match(String(sel.side), /Memoria: 900 registros, 50 temporadas con registros desde 1925, 1 gran Niño; lo más frecuente: lluvia o inundación\./);
+  assert.match(String(sel.svg), /class="sel-ring"/);
+  const D = detailView('distritos', GEO2, alerts, {}, ctx, '200401');
+  // 18 de 45 años: 40 %, en el quinto tramo (35 % o más) de la escala de la memoria.
+  assert.match(String(D.svg), /class="dist hz-q4 s-r2 sel"[^>]*data-dist="200401"/);
+  assert.match(String(D.side), /daños en 18 de 45 años \(1970-2015\), 1 gran Niño[^<]*último registro: 14 de marzo de 2017/);
+  assert.match(String(D.side), /href="#\/memoria\?nivel=distrito&amp;area=200401"/);
+  // Un distrito sin memoria se dice sin registros.
+  assert.match(String(D.svg), /class="dist hz-na s-r2"[^>]*data-dist="200111"[^>]*data-tip="[^"]*Sin registros en la memoria de desastres\./);
+});
+
+it('#/variantes: los tres experimentos con su tasa de uso, su intervalo y la decisión', async () => {
+  const { statsHtml } = await import('../../../public/assets/js/alertmap.js');
+  const { decide, EXPERIMENTS } = await import('../../../functions/_lib/ab.js');
+  const t = (view, use) => ({ view, use, hover: 0, select: use, detail: 0, choose: 0, leave: 0, keep: 0, chosen: 0 });
+  const totals = {
+    mapa: { A: t(10, 1), B: t(10, 2), C: t(10, 3), D: t(10, 4) },
+    memoria: { resumen: t(300, 60), cuencas: t(300, 180), puntos: t(300, 70), riesgo: t(300, 65) },
+    noticias: { resumen: t(50, 10), cuencas: t(250, 50), distritos: t(250, 60) },
+  };
+  const experiments = Object.fromEntries(Object.entries(EXPERIMENTS).map(([x, vs]) => [x, { variants: vs, totals: totals[x], decision: decide(vs, totals[x]) }]));
+  const out = String(statsHtml({ available: true, days: 30, decideDays: 60, since: '2026-09-29', totals: totals.mapa, experiments }));
+  assert.equal((out.match(/<table/g) || []).length, 3);
+  assert.match(out, /Gana «cuencas»/);
+  assert.match(out, /Detalle: cuencas <span class="chip chip-ok">Ganadora<\/span>/);
+  assert.match(out, /60 %<div class="muted small">54–65 %<\/div>/);  // 180 de 300, con su intervalo de Wilson
+  assert.match(out, /faltan en «A», 10; «B», 10; «C», 10; «D», 10/);
+  assert.match(out, /faltan en «resumen», 50\)/);
+  assert.match(out, /\(no con el periodo elegido\)/);
+  assert.match(String(statsHtml(null)), /No se pudo leer la analítica/);
+});
