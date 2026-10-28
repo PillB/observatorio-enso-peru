@@ -219,6 +219,26 @@ def test_tour_leaves_the_map_versions_and_their_analytics_alone(site, browser):
         ctx.close()
 
 
+def test_closing_mid_demo_cancels_the_rest_of_it(site, browser):
+    """Esc mientras el tutorial escribe en el asistente: deja de escribir y no envía la pregunta."""
+    base, _ = site
+    ctx, pg = _ctx(browser, 1280, 900, motion="no-preference")
+    try:
+        _start(pg, base, "asistente")
+        box = pg.locator("#qa-in")
+        expect(box).not_to_have_value("", timeout=15000)
+        pg.keyboard.press("Escape")
+        expect(pg.locator(".tour-pop")).to_have_count(0)
+        typed = box.input_value()
+        pg.wait_for_timeout(1500)
+        assert box.input_value() == typed
+        assert typed != "¿Cuál es el último ICEN?"
+        assert pg.locator("#qa-log .qa-a").count() == 0
+        assert not pg.errors, pg.errors
+    finally:
+        ctx.close()
+
+
 def test_tour_keys_pause_and_resume(site, browser):
     """Esc pausa; las flechas sobre un gráfico son del gráfico, no del tutorial; irse a otra pestaña pausa; al
     reanudar vuelve al mismo paso (también tras recargar)."""

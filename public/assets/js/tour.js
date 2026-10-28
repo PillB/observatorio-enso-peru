@@ -414,7 +414,11 @@ export class Tour {
   async act(a, { visible, el = null }) {
     el = el || find(a.click || a.select || a.type || a.hover || a.open);
     if (!el) return;
+    // Si la persona cierra el tutorial o cambia de paso mientras el puntero viaja o se escribe, la acción se cancela.
+    const my = this.gen;
+    const live = () => my === this.gen && this.ui;
     if (visible && !a.open) await this.point(el, a.at);
+    if (!live()) return;
     // Lo que el tutorial pulsa no es una elección de la persona: ab.js no lo cuenta.
     const H = document.documentElement;
     H.dataset.tourDemo = '1';
@@ -434,7 +438,12 @@ export class Tour {
         for (const ch of a.text) {
           el.value += ch;
           el.dispatchEvent(new Event('input', { bubbles: true }));
-          if (visible && !reduced()) await sleep(28);
+          if (visible && !reduced()) {
+            delete H.dataset.tourDemo;
+            await sleep(28);
+            if (!live()) return;
+            H.dataset.tourDemo = '1';
+          }
         }
         if (a.submit) el.form?.requestSubmit();
       } else if (a.hover) {
