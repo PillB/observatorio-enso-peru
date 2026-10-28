@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Wed, 28 Oct 2026 14:41:41 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Comisión Especial de Análisis Técnico Legislativo de Piura presenta informe al Minedu sobre observaciones a la reforma de los lineamientos de disciplina escolar</title>
+		<link>https://www.cutivalu.pe/comision-especial-de-analisis-tecnico-legislativo-de-piura-presenta-informe-al-minedu-sobre-observaciones-a-la-reforma-de-los-lineamientos-de-disciplina-escolar/</link>
+		
+		<dc:creator><![CDATA[Gabriela Campos]]></dc:creator>
+		<pubDate>Wed, 28 Oct 2026 14:41:25 +0000</pubDate>
+				<category><![CDATA[Featured]]></category>
+		<category><![CDATA[Piura]]></category>
+		<category><![CDATA[Región]]></category>
+		<category><![CDATA[COMISIÓN ESPECIAL DE ANÁLISIS TÉCNICO LEGISLATIVO]]></category>
+		<category><![CDATA[DISCIPLINA ESCOLAR LINEAMIENTOS DE LA REFORMA]]></category>
+		<category><![CDATA[informe]]></category>
+		<category><![CDATA[JOHNNY SOSA]]></category>
+		<category><![CDATA[mINEDU]]></category>
+		<category><![CDATA[MIULLER ALBERCA]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=194912</guid>
+
+					<description><![CDATA[<p>La Comisión Especial de Análisis Técnico Legislativo, liderada por el abogado Miuller Alberca como presidente de la mesa de trabajo e integrada por el director escolar Johnny Sosa, presentarán formalmente al Ministerio de Educación (Minedu) un paquete de observaciones técnicas para los nuevos lineamientos de convivencia escolar. El equipo técnico —que contó con el respaldo [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/comision-especial-de-analisis-tecnico-legislativo-de-piura-presenta-informe-al-minedu-sobre-observaciones-a-la-reforma-de-los-lineamientos-de-disciplina-escolar/">Comisión Especial de Análisis Técnico Legislativo de Piura presenta informe al Minedu sobre observaciones a la reforma de los lineamientos de disciplina escolar</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
