@@ -892,7 +892,7 @@ def test_memory_detail_views_open_from_the_map_header(site, browser, w):
 
 
 def test_memory_area_figures_count_in_their_area_not_in_the_district(site, browser):
-    """Una cifra de un área mayor (``AreaCifras``: DesInventar puso en Ica-Tate los 10 000 afectados de la provincia
+    """Una cifra de un área mayor (``AreaCifras``: DesInventar puso en Subtanjalla los 10 000 afectados de la provincia
     de Ica en 1976) no se suma al distrito, y su registro dice de qué área es."""
     base, root = site
     ev = json.loads((root / "assets" / "historico" / "eventos.json").read_text(encoding="utf-8"))
