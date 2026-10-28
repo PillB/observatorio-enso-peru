@@ -1,6 +1,6 @@
 {
  "schema": "enso-reachability/2",
- "updated_at": "2026-10-27T01:55:34+00:00",
+ "updated_at": "2026-10-27T22:23:09+00:00",
  "urls": {
   "http://met.igp.gob.pe/datos/ICEN.txt": {
    "n8n": {
@@ -1621,6 +1621,20 @@
      "robots": "absent",
      "at": "2026-10-27T01:51:18+00:00",
      "vantage": "github-actions"
+    }
+   }
+  },
+  "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CNOMBPROV%2CNOMBDIST%2CFECHA&f=json": {
+   "actions": {
+    "claude-cloud-us": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 58471,
+     "ms": 445,
+     "detail": "",
+     "robots": "absent",
+     "at": "2026-10-27T22:23:09+00:00",
+     "vantage": "claude-cloud-us"
     }
    }
   },

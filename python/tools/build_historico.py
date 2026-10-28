@@ -1374,34 +1374,126 @@ def tidy(records: list[dict], calendar: EnsoCalendar, stats: Counter) -> list[di
     return merge_idmc_twins(keep, stats)
 
 
-def relocate(records: list[dict], territory: Territory, stats: Counter) -> None:
+#: Un punto de la fuente a esta distancia o menos de la capital del distrito, la provincia o el departamento es esa
+#: capital (el punto que el SINPAD pone cuando no hay uno de campo), no el lugar del evento.
+DEFAULT_CAPITAL_KM = 0.5
+#: El mismo punto (4 decimales, unos 11 m) en tantas filas o más de un distrito es un punto por defecto de la fuente,
+#: salvo que esté en un centro poblado (``DEFAULT_PLACE_KM``): entonces es ese pueblo, que la fuente repite.
+DEFAULT_REPEATS = 5
+DEFAULT_PLACE_KM = 0.3
+
+
+def _point_key(r: dict) -> Optional[tuple[float, float]]:
+    try:
+        return round(float(r["Latitud"]), 4), round(float(r["Longitud"]), 4)
+    except (TypeError, ValueError, KeyError):
+        return None
+
+
+def default_point(r: dict, territory: Territory, repeats: Counter, places) -> str:
+    """Por qué el punto de la fuente no es el lugar del evento («capital», «repetido»), o "" si lo es."""
+    from enso.lugares import _km
+
+    lat, lon = float(r["Latitud"]), float(r["Longitud"])
+    code = r["Ubigeo"]
+    for table, n in ((territory.dist, 6), (territory.prov, 4), (territory.dep, 2)):
+        rec = table.get(code[:n]) if len(code) >= n else None
+        if rec and rec.get("lat") is not None and rec.get("point") != "interior" and \
+                _km(lat, lon, rec["lat"], rec["lon"]) <= DEFAULT_CAPITAL_KM:
+            return "capital"
+    # El centro poblado capital del distrito: el INEI y el IGN lo ubican a veces a cientos de metros del nomenclátor
+    # (Santo Tomás, a 0,5 km), y el SINPAD usa también ese punto por defecto.
+    sc = places.scale
+    rows = places.rows.get(code, [])
+    capital = [row for row in rows if row[3] == "capital de distrito" or row[4].endswith("0001")]
+    if any(_km(lat, lon, row[2] / sc, row[1] / sc) <= DEFAULT_CAPITAL_KM for row in capital):
+        return "capital"
+    if repeats[(code, _point_key(r))] >= DEFAULT_REPEATS:
+        if not any(_km(lat, lon, row[2] / sc, row[1] / sc) <= DEFAULT_PLACE_KM for row in rows if row not in capital):
+            return "repetido"
+    return ""
+
+
+def place_names(r: dict, territory: Territory, places):
+    """Los centros poblados del distrito que nombra la fila: su Ubicacion (un campo de lugar) o, si no, su
+    descripción (con una palabra que presente el lugar)."""
+    code = r["Ubigeo"]
+    if len(code) != 6:
+        return None
+    names = territory.names(code)
+    m = places.find(code, r.get("Ubicacion") or "", field=True, exclude=names) if (r.get("Ubicacion") or "").strip() else None
+    if not (m and m.places):
+        m = places.find(code, r.get("Descripción") or "", exclude=names)
+    return m if m.places else None
+
+
+def relocate(records: list[dict], territory: Territory, stats: Counter, places=None, basins=None) -> None:
     """Puntos y lugares con los límites y el nomenclátor vigentes, también con ``--desde-catalogo``; idempotente.
 
     - Un punto de la fuente que cae en un distrito creado después de 2020, en la misma provincia que el distrito que
       nombró la fuente, lleva el UBIGEO del punto (``fuentes.newer_sibling``).
     - Un punto de la fuente que no cae en el área asignada se reemplaza por la capital (como en ``fuentes.place``).
+    - Un punto de la fuente que es la capital del distrito, la provincia o el departamento, o que la fuente repite en
+      ``DEFAULT_REPEATS`` filas o más del distrito sin que sea un centro poblado, es un punto por defecto (el SINPAD lo
+      pone cuando no hay uno de campo): vale como la capital.
+    - Sin punto de la fuente, el centro poblado que nombra la fila (``enso.lugares``), dentro de su distrito:
+      ``centro-poblado``, con su radio.
     - Los nombres son los del nomenclátor para el UBIGEO.
     - La capital (o el punto interior) de los demás se toma del nomenclátor: un distrito que no tenía coordenadas
-      llevaba la capital de su provincia, a veces a más de 100 km."""
+      llevaba la capital de su provincia, a veces a más de 100 km.
+    - La cuenca (ANA) es la del punto si es de la fuente o de un centro poblado; si no, la del distrito cuando el 80 %
+      o más de él cae en una."""
+    from enso import lugares as LG
+
+    places = places or LG.lugares()
+    basins = basins or LG.basins()
+    repeats = Counter((r["Ubigeo"], _point_key(r)) for r in records if r.get("PrecisionGeo") == "coordenada-fuente")
     for r in records:
         code = r["Ubigeo"]
         names = territory.names(code)
         if (r.get("Departamento"), r.get("Provincia"), r.get("Distrito")) != names:
             r["Departamento"], r["Provincia"], r["Distrito"] = names  # el nomenclátor corrigió una grafía («Boquerón»)
             stats["nombres del nomenclátor actualizados"] += 1
-        if r["PrecisionGeo"] == "coordenada-fuente":
+        r["Lugar"] = r["LugarCodigo"] = r["RadioKm"] = r["Cuenca"] = r["CuencaCodigo"] = ""
+        match = place_names(r, territory, places)
+        if match:
+            r["Lugar"] = " · ".join(dict.fromkeys(p.name for p in match.places))
+            r["LugarCodigo"] = match.places[0].code
+        if r.get("PrecisionGeo") == "coordenada-fuente":
             loc = F.locate_point(r["Latitud"], r["Longitud"])[0]
             if F.inside(territory, code, loc):
-                continue
-            sib = F.newer_sibling(code, loc)
-            if sib:
-                r["Ubigeo"] = sib
-                r["Departamento"], r["Provincia"], r["Distrito"] = territory.names(sib)
-                r["Region"], r["AltitudCapital"] = territory.region(sib), territory.altitude(sib)
-                stats["punto de la fuente en un distrito creado después de 2020: UBIGEO del punto"] += 1
-                continue
-            stats["punto de la fuente fuera del área asignada: capital"] += 1
+                why = default_point(r, territory, repeats, places)
+                if not why:
+                    _basin(r, basins.at(r["Latitud"], r["Longitud"]))
+                    continue
+                stats[f"punto por defecto de la fuente ({why}): no es el lugar del evento"] += 1
+            else:
+                sib = F.newer_sibling(code, loc)
+                if sib:
+                    r["Ubigeo"] = code = sib
+                    r["Departamento"], r["Provincia"], r["Distrito"] = territory.names(sib)
+                    r["Region"], r["AltitudCapital"] = territory.region(sib), territory.altitude(sib)
+                    stats["punto de la fuente en un distrito creado después de 2020: UBIGEO del punto"] += 1
+                    _basin(r, basins.at(r["Latitud"], r["Longitud"]))
+                    continue
+                stats["punto de la fuente fuera del área asignada: capital"] += 1
+        # La capital del distrito que nombra la fuente («Puerto Maldonado») no es más fina que el distrito.
+        pt = match.point() if match and not all(_is_capital(p, territory) for p in match.places) else None
+        if pt and not LG.inside_district(code, pt[0], pt[1]):
+            # Un centro poblado a metros del límite (los límites se simplifican a unos 110 m): el punto publicado
+            # siempre cae en su distrito, así que queda la capital (y el nombre en Lugar).
+            if r.get("PrecisionGeo") == "centro-poblado":
+                stats["centro poblado al otro lado del límite del distrito: capital"] += 1
+            pt = None
+        if pt:
+            lat, lon, radius = round(pt[0], 5), round(pt[1], 5), pt[2]
+            if r.get("PrecisionGeo") != "centro-poblado" or _point_key(r) != (round(lat, 4), round(lon, 4)):
+                stats["punto del centro poblado que nombra la fuente"] += 1
+            r["Latitud"], r["Longitud"], r["PrecisionGeo"], r["RadioKm"] = lat, lon, "centro-poblado", radius
+            _basin(r, basins.at(lat, lon))
+            continue
         lat, lon, geo = territory.point(code)
+        _basin(r, LG.district_basin(code))
         if lat is None:
             continue
         old = (r.get("Latitud"), r.get("Longitud"))
@@ -1410,9 +1502,22 @@ def relocate(records: list[dict], territory: Territory, stats: Counter) -> None:
         except (TypeError, ValueError):
             same = False
         if not same:
-            if r["PrecisionGeo"] != "coordenada-fuente":
+            if r["PrecisionGeo"] not in ("coordenada-fuente", "centro-poblado"):
                 stats[f"punto del nomenclátor actualizado ({geo})"] += 1
             r["Latitud"], r["Longitud"], r["PrecisionGeo"] = lat, lon, geo
+
+
+def _is_capital(place, territory: Territory) -> bool:
+    from enso.lugares import _km, name_key
+
+    rec = territory.dist.get(place.district, {})
+    return place.code.endswith("0001") or place.category == "capital de distrito" or \
+        name_key(place.name) == name_key(rec.get("capital", "")) or \
+        (rec.get("lat") is not None and _km(place.lat, place.lon, rec["lat"], rec["lon"]) <= DEFAULT_CAPITAL_KM)
+
+
+def _basin(r: dict, basin: Optional[dict]) -> None:
+    r["Cuenca"], r["CuencaCodigo"] = (basin["name"], basin["code"]) if basin else ("", "")
 
 
 def redate(records: list[dict], manifest: dict, caches: list[Path], territory: Territory, calendar: EnsoCalendar,
@@ -1490,7 +1595,32 @@ def web_payload(records: list[dict]) -> tuple[dict, dict[str, dict]]:
             int(r.get("Corroboracion") or 0), [u for u in (r.get("FuentesAdicionales") or "").split(" | ") if u],
             r.get("FechaTipo") or "evento",
         ]
+        place = _web_place(r)
+        if place:
+            detail[r["Ubigeo"][:2]][str(i)].append(place)
     return {"cols": WEB_COLS, "dict": dicts, "rows": rows}, detail
+
+
+#: Cómo se ubicó el punto de un registro en la ficha del sitio (posición 13 del detalle): 0, el punto de la fuente;
+#: 1, el centro poblado que nombra; 2, la capital del distrito (el lugar que nombra quedó al otro lado del límite).
+WEB_POINT_KIND = {"coordenada-fuente": 0, "centro-poblado": 1}
+
+
+def _web_place(r: dict) -> Optional[list]:
+    """[lat, lon, cómo, lugar, radio en km, código de cuenca] de un registro ubicado más fino que su distrito (o que
+    nombra un centro poblado), para los puntos del mapa y la ficha; None si no lo está. La cuenca de los demás es la
+    de su distrito (``public/assets/cuencas-mapa.json``)."""
+    kind = WEB_POINT_KIND.get(r.get("PrecisionGeo") or "")
+    if kind is None and not r.get("Lugar"):
+        return None
+    try:
+        lat, lon = round(float(r["Latitud"]), 4), round(float(r["Longitud"]), 4)
+    except (TypeError, ValueError, KeyError):
+        return None
+    if kind is None:
+        return [None, None, 2, r["Lugar"], 0, r.get("CuencaCodigo") or ""]
+    radius = round(float(r["RadioKm"]), 1) if r.get("RadioKm") not in (None, "") else 0
+    return [lat, lon, kind, r.get("Lugar") or "", radius, r.get("CuencaCodigo") or ""]
 
 
 def area_names(t: Territory) -> dict:

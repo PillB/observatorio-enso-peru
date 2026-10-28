@@ -114,6 +114,37 @@ interdepartamentales en controversia.
   nomenclátor llegara a tener un distrito sin polígono (uno recién creado), en
   su provincia el distrito sale con confianza 0,75 y queda para revisión.
 
+## Más fino que el distrito: centros poblados y cuencas (`python/enso/lugares.py`)
+
+El objeto `geo` llega al distrito. Para ubicar un aviso o un registro dentro del distrito hay dos tablas más, que se
+arman a mano (`python -m tools.build_lugares`, desde el geoportal de la IDEP de la PCM) y no en cada corrida:
+
+- **Centros poblados** (`python/enso/data/lugares.json.gz`, 2,5 MB): 103 mil, con su nombre, su punto, su
+  categoría, su código y su población. Juntan los del censo 2017 del INEI (`CENTROS_POBLADOS_DISPERSOS/0`), los del
+  IGN (`CENTROS_POBLADOS/3`) y los de la SDOT (`CENTROS_POBLADOS_DISPERSOS/1`). Cada uno va al distrito en que cae
+  su punto según los límites del INDECI; uno que cae en otra provincia que la de su código, o fuera del Perú, se
+  descarta (858). Si el INEI y el IGN ubican el mismo código a más de 5 km (2 844), el lugar lleva un radio de 5 km.
+- **Cuencas** (`python/enso/data/cuencas.json.gz`, 320 kB): las 231 unidades hidrográficas de la ANA (cuencas e
+  intercuencas, metodología Pfafstetter, R.M. N° 033-2008-AG, `INSTITUCIONALES/ANA_WMS/7`), simplificadas a unos 220 m, con la parte
+  de cada distrito que cae en cada una.
+
+`lugares.candidates` saca del texto los nombres que suelen ir antes de un centro poblado («sector», «caserío»,
+«anexo», «C.P.», «localidad de», «comunidad campesina», «A.H.») y `Lugares.find` los busca **solo dentro del
+distrito** ya ubicado: así un nombre común (hay cientos de «San Juan») no lleva a otro lado. Un nombre que se repite
+dentro del distrito no se elige. Las palabras de, del, la, los no cuentan. `localities` hace lo mismo con todo el
+texto, para los reportes del COEN (en el campo «UBICACIÓN» de su tabla los nombres van pegados: se buscan entre los
+del distrito, `documentos.table_localities`).
+
+`basin_at(lat, lon)` da la cuenca de un punto; `district_basin(code)`, la del distrito si el 80 % o más de su área
+está en una sola (1 588 de los 1 891).
+
+Validación (`python/tests/test_lugares.py`): con 1 de cada 40 lugares, que cada uno cae a 1,15 km o menos de su
+distrito; las cuencas no se superponen y cubren el país; las 8 estaciones hidrológicas del SENAMHI caen en la
+cuenca que el SENAMHI les asigna; y, con los registros de la memoria de desastres cuyo punto de la fuente es bueno,
+el centro poblado que nombran queda a una mediana de 0,34 km de ese punto (81 % a menos de 2 km, 93 % a menos de
+5 km). Los volcanes van en el punto de su cumbre según el Global Volcanism Program del Smithsonian, que cae en la
+provincia que nombra el IGP.
+
 ## Exactitud geográfica: cómo se verifica
 
 `tests/test_geolocalizacion.py` contrasta todo con la lista oficial de distritos del INDECI
@@ -287,6 +318,8 @@ comprimido) una vez por sesión y luego lo revalida (304 si no cambió).
 |---|---|
 | `python/enso/geo.py` | Nomenclátor, reglas del texto, `locate_item` y el objeto `geo` |
 | `python/enso/limites.py` | Punto en polígono con incertidumbre, mar y lago |
+| `python/enso/lugares.py` | Centros poblados y cuencas dentro del distrito |
+| `python/tools/build_lugares.py`, `build_cuencas_mapa.py` | Regeneran los centros poblados, las cuencas y su trazo para los mapas (`public/assets/cuencas-mapa.json`) |
 | `python/enso/geo_overrides.py` | Reubica el histórico, aplica correcciones y publica `geo/*.json` |
 | `python/tools/geo_eval.py` | Mide la precisión sobre los conjuntos etiquetados |
 | `python/tools/build_limites.py`, `build_ubigeo.py` | Regeneran los datos geográficos |

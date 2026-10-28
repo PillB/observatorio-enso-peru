@@ -13,6 +13,7 @@ import json
 import os
 import re
 import threading
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -719,6 +720,57 @@ def test_alert_map_filters_the_news_and_remembers_the_version(site, browser, var
             assert not errors, errors
         finally:
             ctx.close()
+
+
+def test_maps_draw_what_is_known_finer_than_the_area(site, browser):
+    """Los dos mapas dibujan lo que se sabe más fino que el departamento o el distrito: en el de alertas, las zonas,
+    los distritos con quebradas y los puntos de los avisos (con su cuadro); en el de la memoria, los registros con
+    punto propio o de centro poblado. La capa de cuencas de la ANA se prende y se apaga, y nada tapa el anillo."""
+    base, root = site
+    feed = json.loads((root / "data" / "feed.json").read_text(encoding="utf-8"))
+    alerts = next((g["items"] for g in feed["groups"] if g["id"] == "alertas"), [])
+    if not any(a.get("detail") for a in alerts):
+        pytest.skip("la publicación no trae avisos con detalle")
+    # El reloj, poco después del último aviso: así los avisos de la publicación siguen vigentes o recientes.
+    last = max(datetime.fromisoformat(a["date"].replace("Z", "+00:00")) for a in alerts if a.get("date"))
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    try:
+        pg.clock.install(time=last + timedelta(minutes=90))
+        pg.goto(f"{base}#/noticias")
+        expect(pg.locator(".amap-svg .amap-detail")).to_have_count(1)
+        assert pg.locator(".amap-svg .amap-pt").count() > 0
+        pt = pg.locator(".amap-svg .amap-pt").first
+        pt.hover(force=True)
+        expect(pg.locator(".amap-tip")).to_be_visible()
+        expect(pg.locator(".amap-tip strong").first).to_have_text(re.compile(r"\S"))
+        pg.locator('.amap [data-layer="cuencas"]').click()
+        expect(pg.locator(".amap-svg .amap-basins path")).to_have_count(231)
+        pg.locator('.amap [data-layer="detalle"]').click()
+        expect(pg.locator(".amap-svg .amap-detail")).to_have_count(0)
+        dep = next(a["geo"]["places"][0]["code"][:2] for a in alerts if (a.get("geo") or {}).get("places"))
+        pg.locator(f'path.dep[data-dep="{dep}"]').focus()
+        pg.keyboard.press("Enter")
+        assert pg.evaluate(RING_CHECK, {"svg": ".amap-svg", "shape": f'path.dep[data-dep="{dep}"]'}) == RING_OK
+
+        pg.goto(f"{base}#/memoria?nivel=distrito&area=20&cuencas=1")
+        expect(pg.locator(".hz-mapbox .hz-basins path")).to_have_count(231)
+        expect(pg.locator(".hz-mapbox .hz-pts circle").first).to_be_attached()
+        expect(pg.locator("#hz-pts-note")).to_contain_text("registros de esta área tienen un punto más fino que su distrito")
+        layers = pg.evaluate("[...document.querySelector('.hz-mapbox .hz-svg').children].map((e) => e.getAttribute('class'))")
+        assert layers[-3:] == ["hz-basins", "hz-pts", "sel-ring"], layers
+        deps = {d["code"]: d["d"] for d in json.loads((root / "assets" / "peru-map.json").read_text(encoding="utf-8"))["departments"]}
+        assert pg.evaluate(RING_CHECK, {"svg": ".hz-mapbox .hz-svg", "d": deps["20"]}) == RING_OK
+        assert pg.locator(".hz-ev-fine").count() > 0
+        pg.locator('.hz-layers [data-layer="cuencas"]').click()
+        expect(pg.locator(".hz-mapbox .hz-basins")).to_have_count(0)
+        expect(pg).not_to_have_url(re.compile(r"cuencas=1"))
+        assert not errors, errors
+    finally:
+        ctx.close()
 
 
 def test_variant_results_view_without_backend(page, site):

@@ -566,6 +566,37 @@ table.grd .chip { white-space: normal; }
 .amap-svg .pulse { fill: none; stroke: var(--amap-r3); stroke-width: 2; transform-origin: center; transform-box: fill-box; animation: amap-pulse 2.4s ease-out infinite; pointer-events: none; }
 @keyframes amap-pulse { from { transform: scale(1); opacity: 0.9; } to { transform: scale(2.4); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .amap-svg .pulse { animation: none; opacity: 0.6; transform: scale(1.5); } }
+/* Detalle de los avisos, encima del color del departamento: zonas de los avisos del SENAMHI (contorno oscuro y
+   relleno tenue), distritos con quebradas (el color del nivel, oscurecido para que se distinga del departamento) y
+   puntos con borde oscuro. Las zonas grandes no capturan el puntero: el departamento debajo sigue respondiendo. */
+.amap-svg .amap-detail { pointer-events: none; }
+.amap-svg .amap-shape { fill-opacity: 0.28; stroke: var(--fg-2); stroke-width: 1.3; stroke-dasharray: 5 3; vector-effect: non-scaling-stroke; fill-rule: evenodd; }
+.amap-svg .amap-shape.soon { fill-opacity: 0.12; }
+.amap-svg .amap-area { fill-opacity: 0.95; stroke: var(--amap-stroke); stroke-width: 0.5; vector-effect: non-scaling-stroke; pointer-events: visiblePainted; cursor: pointer; }
+.amap-svg .amap-shape.s-r1, .amap-svg .amap-pt.s-r1 { fill: var(--amap-r1); }
+.amap-svg .amap-shape.s-r2, .amap-svg .amap-pt.s-r2 { fill: var(--amap-r2); }
+.amap-svg .amap-shape.s-r3, .amap-svg .amap-pt.s-r3 { fill: var(--amap-r3); }
+.amap-svg .amap-shape.s-un, .amap-svg .amap-pt.s-un { fill: var(--amap-un); }
+.amap-svg .amap-area.s-r1 { fill: color-mix(in srgb, var(--amap-r1) 62%, var(--fg)); }
+.amap-svg .amap-area.s-r2 { fill: color-mix(in srgb, var(--amap-r2) 62%, var(--fg)); }
+.amap-svg .amap-area.s-r3 { fill: color-mix(in srgb, var(--amap-r3) 62%, var(--fg)); }
+.amap-svg .amap-area.s-un { fill: color-mix(in srgb, var(--amap-un) 62%, var(--fg)); }
+.amap-svg .amap-pt { stroke: var(--fg); stroke-width: 1.3; vector-effect: non-scaling-stroke; pointer-events: visiblePainted; cursor: pointer; }
+.amap-svg .amap-pt.s-rep { fill: var(--bg-elev); }
+.amap-svg .amap-pt.k-focos { fill: var(--warm); stroke: none; fill-opacity: 0.8; }
+.amap-svg .amap-pt.k-centro-poblado { fill: var(--bg-elev); stroke-width: 2; }
+.amap-svg .amap-pt:hover, .amap-svg .amap-area:hover { stroke: var(--focus); stroke-width: 2.4; }
+.amap-svg .amap-detail .dim { opacity: 0.3; }
+.amap-layers { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 8px; }
+.amap-legend-detail { width: 100%; margin: 2px 0 0; }
+.sw.sw-shape { background: color-mix(in srgb, var(--amap-r2) 28%, transparent); border: 1.5px dashed var(--fg-2); }
+.sw.sw-area { background: color-mix(in srgb, var(--amap-r2) 62%, var(--fg)); }
+.sw.sw-basin, .sw-basin { width: 16px; height: 0; border: 0; border-top: 2px dashed var(--cool); border-radius: 0; background: none; align-self: center; }
+.sw.sw-k-estacion { width: 10px; height: 10px; transform: rotate(45deg); background: var(--amap-r2); border: 1.3px solid var(--fg); border-radius: 1px; }
+.sw.sw-k-epicentro { width: 11px; height: 11px; border-radius: 50%; background: var(--amap-r1); border: 1.3px solid var(--fg); }
+.sw.sw-k-volcan { width: 0; height: 0; border-radius: 0; background: none; border: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 11px solid var(--fg-2); }
+.sw.sw-k-focos { width: 8px; height: 8px; border-radius: 50%; background: var(--warm); border: 0; }
+.sw.sw-k-cp { width: 11px; height: 11px; border-radius: 50%; background: var(--bg-elev); border: 2px solid var(--fg); }
 /* Anillo del área elegida, en el mapa de avisos y en el de la memoria. Se dibuja al final del SVG,
    encima de todos los bordes; un trazo claro y otro oscuro lo hacen legible sobre cualquier color, y
    el brillo sube y baja para atraer la mirada. Queda quieto si se pide menos movimiento. */
@@ -748,6 +779,17 @@ table.grd .chip { white-space: normal; }
 .hz-svg .hz-a:hover, .hz-svg .hz-a:focus-visible { stroke: var(--fg); stroke-width: 1.6; }
 .hz-svg .hz-out path { fill: none; stroke: color-mix(in srgb, var(--fg) 45%, transparent); stroke-width: 0.8; vector-effect: non-scaling-stroke; pointer-events: none; }
 .hz-small .hz-a { cursor: default; stroke-width: 0.25; }
+/* Capas: cuencas de la ANA (trazo azul que no tapa el color del área) y registros con punto propio (punto lleno: el
+   de campo de la fuente; anillo: el centro poblado que nombran). El borde claro los separa de cualquier color. */
+.hz-svg .hz-basins path, .amap-svg .amap-basins path { fill: none; stroke: var(--cool); stroke-width: 1; stroke-opacity: 0.85; stroke-dasharray: 4 2; vector-effect: non-scaling-stroke; pointer-events: stroke; }
+.hz-svg .hz-basins path:hover, .amap-svg .amap-basins path:hover { stroke-width: 2.4; stroke-dasharray: none; }
+.hz-svg .hz-pt { fill: var(--fg); stroke: var(--bg-elev); stroke-width: 1.2; vector-effect: non-scaling-stroke; fill-opacity: 0.88; }
+.hz-svg .hz-pt-cp { fill: color-mix(in srgb, var(--bg-elev) 35%, transparent); stroke: var(--fg); stroke-width: 1.8; }
+.hz-svg .hz-pt:hover { stroke: var(--focus); stroke-width: 2.4; }
+.hz-layers { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 6px 0; }
+.hz-sw-basin { display: inline-block; width: 18px; height: 0; border-top: 2px dashed var(--cool); vertical-align: middle; margin-right: 6px; }
+.hz-ev-fine { display: flex; gap: 6px; align-items: flex-start; color: var(--fg-2); margin: 2px 0; }
+.hz-ev-fine svg { width: 14px; height: 14px; flex: none; margin-top: 2px; }
 .hz-none { fill: var(--hz-none); background: var(--hz-none); }
 .hz-na { fill: var(--hz-na); background: repeating-linear-gradient(45deg, var(--hz-na) 0 3px, var(--hz-none) 3px 6px); }
 .hz-svg .hz-na { fill: var(--hz-na); }

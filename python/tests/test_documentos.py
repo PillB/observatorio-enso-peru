@@ -128,6 +128,32 @@ def test_emergency_reports_give_the_exact_district():
     assert "15" not in D.location_rows(text("reporte-14898-huaraz.txt"))
 
 
+def test_emergency_reports_give_the_populated_place():
+    """El centro poblado del hecho (``enso.lugares``): el que nombra la descripción y, si no se lee (pypdf parte
+    «s ector de Panamá»), el de la columna de localidad de la tabla de ubicación, aunque esté pegado a otras celdas."""
+    tal = D.read(text("reporte-talavera.txt"))["localidades"]
+    assert [(p["name"], p["evidence"], p["district"]) for p in tal] == [("Sachapuna", "comunidad de sachapuna", "030216")]
+    cond = D.read(text("reporte-condebamba.txt"))["localidades"]
+    assert [(p["name"], p["code"], p["evidence"]) for p in cond] == [
+        ("Panama", "0602030021", "tabla de ubicación del reporte: Panama")]
+    assert cond[0]["basin"] == {"code": "49898", "name": "Cuenca Crisnejas"} and cond[0]["radiusKm"] == 1.0
+    # «UROS CHULLUNI / CHIMUPUNOPUNOPUNO»: hay dos Chimu en el distrito de Puno, a más de 2 km: no se adivina.
+    assert "localidades" not in D.read(text("reporte-puno.txt"))
+    # Barrio Villón (Huaraz) y el cruce de calles de Moquegua no están en el nomenclátor de centros poblados.
+    assert "localidades" not in D.read(text("reporte-14898-huaraz.txt"))
+    assert "localidades" not in D.read(text("reporte-moquegua.txt"))
+    regs = {r["title"]: r for r in json.loads((FIX / "regresiones.json").read_text(encoding="utf-8"))}
+    got = {t: [p["name"] for p in D.read(r["text"], t).get("localidades") or []] for t, r in regs.items()}
+    named = {t: v for t, v in got.items() if v}
+    assert ["Pedregal"] in named.values() and ["Chipta"] in named.values()  # «LOCUMBAJORGE BASADRETACNA PEDREGAL»
+    assert len(named) >= 8, got
+    # Cada punto, en su distrito.
+    from enso.lugares import inside_district
+    for t, r in regs.items():
+        for p in D.read(r["text"], t).get("localidades") or []:
+            assert inside_district(p["district"], p["lat"], p["lon"]), (t, p)
+
+
 def test_backtest_regressions_from_real_reports():
     """Los casos que la prueba hacia atrás (``tools.documentos_backtest``, agosto–octubre de 2026) leía mal:
     celdas pegadas o partidas («LOCUMBAJORGE BASADRETACNA», «PAMPASAN LUISCARLOS», «PASCO OX APAMPA»), nombres

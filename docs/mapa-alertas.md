@@ -36,6 +36,27 @@ es una vigencia de la fuente y el sitio lo dibuja distinto.
 **Lugar**: los publicados por la georreferenciación (confianza ≥ 0,5). Los aproximados (< 0,8, sin revisar
 en la consola) se marcan «≈»; los revisados en la consola, «lugar revisado».
 
+## Formas y puntos (más fino que el departamento)
+
+Encima de los departamentos, la capa «Formas y puntos» (encendida al abrir) dibuja lo que cada aviso dice con más
+precisión. Viene en `detail` de cada alerta de `feed.json` (`sourcefeed._detail`):
+
+| Qué | De dónde | Cómo se dibuja |
+|---|---|---|
+| **Zona del aviso** (`shapes`) | Polígonos de las capas del SENAMHI en GEOSINPAD: precipitaciones de 24 horas y peligro de incendios forestales (FWI), simplificados a unos 2 km | Con el color de su nivel, solo si el aviso está vigente o es próximo |
+| **Distritos con quebradas** (`areas`) | La capa de activación de quebradas trae cada quebrada (unas decenas de hectáreas); la consulta las cuenta por nivel, fecha y distrito | El trazo del distrito con el color del nivel. Un distrito en avisos de varios niveles se dibuja una vez, con el más alto, y su cuadro dice cuántas quebradas trae cada aviso |
+| **Estación hidrológica** (`points`, rombo) | `LATITUD` y `LONGITUD` de la estación en la capa de avisos hidrológicos, con su río y la cuenca que le asigna el SENAMHI | En todas las fases |
+| **Epicentro** (círculo) | El punto de USGS, con su magnitud, su profundidad y la incertidumbre (5 km si lo revisó un sismólogo, si no 10 km) | |
+| **Volcán** (triángulo) | La cumbre según el Global Volcanism Program del Smithsonian (`hazardparse.VOLCANO_POINTS`), con su enlace | |
+| **Focos de calor** (punto chico) | FIRMS agrupado en celdas de 0,1° (unos 11 km); el tamaño crece con los focos | |
+| **Centro poblado** (anillo) | Los que nombra el reporte del COEN o su PDF, buscados solo dentro del distrito del reporte (`lugares.localities`, `documentos.table_localities`); un nombre repetido en el distrito no se elige | |
+
+Las formas van del nivel más bajo al más alto (el rojo queda arriba) y debajo del anillo del departamento elegido.
+Pasar el cursor por una forma o un punto muestra qué es, el aviso y, si se sabe, el río, la cuenca y la
+incertidumbre. La capa «Cuencas (ANA)» (apagada al abrir) dibuja las 231 cuencas e intercuencas de la ANA
+(`public/assets/cuencas-mapa.json`, `python -m tools.build_cuencas_mapa`). Para no pesar, `feed.json` lleva hasta
+400 puntos y 600 distritos por aviso.
+
 ## Limitaciones conocidas
 
 - Los avisos meteorológicos del SENAMHI llegan por su canal de Telegram y por el COEN sin nivel. El nivel

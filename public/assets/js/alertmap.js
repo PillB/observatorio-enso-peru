@@ -57,7 +57,7 @@ function toAlert(it, now) {
     // url: el informe (PDF) que ofrece la página de la publicación, si lo hay; es lo que se abre desde el mapa.
     id: it.id, it, title: it.title, inst: it.institution, url: it.document || it.url, date: it.date, sev: it.severity || null,
     kind: it.kind || null, valid: it.valid || null, occurred: it.occurred || null, phase: phaseOf(it, now), places, deps,
-    hazards: it.hazards || [],
+    hazards: it.hazards || [], detail: it.detail || null,
   };
 }
 
@@ -239,7 +239,7 @@ function selRing(geo, code) {
   return html`<g class="sel-ring" aria-hidden="true">${['sel-glow', 'sel-case', 'sel-line'].map((k) => html`<path class="${k}" d="${d.d}"></path>${dot(k)}`)}</g>`;
 }
 
-function depShapes(geo, by, f, { badges = false } = {}) {
+function depShapes(geo, by, f, { badges = false, overlay = '' } = {}) {
   const shapes = geo.departments.map((d) => {
     const list = by[d.code] || [];
     const st = depState(list);
@@ -257,7 +257,82 @@ function depShapes(geo, by, f, { badges = false } = {}) {
     const [x, y] = d.code === '07' ? [d.label[0] - 16, d.label[1] - 10] : d.label;
     return html`<g class="badge${f.dep && f.dep !== d.code ? ' dim' : ''}" transform="translate(${x} ${y})" aria-hidden="true"><circle r="${n > 9 ? 10 : 8.5}"></circle><text dy="3.6">${n}</text></g>`;
   }) : '';
-  return html`${shapes}${callao}${selRing(geo, f.dep)}${counts}`;
+  return html`${shapes}${callao}${overlay}${selRing(geo, f.dep)}${counts}`;
+}
+
+// ---------------------------------------------------------------------------
+// Detalle más fino que el departamento: formas, distritos y puntos de cada aviso
+// ---------------------------------------------------------------------------
+/** Grados → coordenadas del SVG (la proyección de peru-map.json, tools.build_peru_map). */
+export function project(geo, lon, lat) {
+  const p = geo.lonLat;
+  return [(lon - p.lon0) * p.cos * p.k, (p.lat1 - lat) * p.k];
+}
+
+const ringPath = (geo, ring) => `M${ring.map(([lon, lat]) => project(geo, lon, lat).map((v) => v.toFixed(1)).join(' ')).join('L')}Z`;
+const levelCls = (a) => (rankOf(a) ? `r${rankOf(a)}` : 'un');
+const POINT_KIND = { estacion: 'Estación hidrológica', epicentro: 'Epicentro', volcan: 'Volcán', focos: 'Focos de calor', 'centro-poblado': 'Centro poblado' };
+
+/** Texto del cuadro de un punto: qué es, el aviso y, si se sabe, el río, la cuenca y la incertidumbre. */
+function pointTip(p, a) {
+  const what = p.kind === 'focos' ? `${p.n} foco${p.n > 1 ? 's' : ''} de calor en esta celda de unos 11 km`
+    : p.kind === 'epicentro' ? `Epicentro${p.mag !== undefined ? ` · magnitud ${p.mag}` : ''}${p.depthKm !== undefined ? ` · ${p.depthKm} km de profundidad` : ''}`
+      : p.name || POINT_KIND[p.kind] || 'Lugar';
+  return [what, shortTitle(a.title, 140), [p.river, p.basin?.name, p.radiusKm ? `±${p.radiusKm} km` : ''].filter(Boolean).join(' · ')].filter(Boolean).join('\n');
+}
+
+/** Formas de los avisos vigentes o próximos (polígonos del SENAMHI), los distritos con quebradas (de
+ * ``districts``: el trazo de cada distrito, assets/historico/mapa.json) y los puntos de todos los avisos visibles.
+ * Las formas van del nivel más bajo al más alto, así el rojo queda arriba; un distrito con quebradas en avisos de
+ * varios niveles se dibuja una sola vez, con el más alto (y su cuadro dice cuántas trae cada uno). */
+export function detailMarkup(geo, alerts, f, { districts = null, unit = 1 } = {}) {
+  const dim = (a) => (f.dep && !a.deps.includes(f.dep) ? ' dim' : '');
+  const shapes = [], area = {}, points = [];
+  for (const a of [...alerts].sort((x, y) => rankOf(x) - rankOf(y))) {
+    const d = a.detail;
+    if (!d) continue;
+    const act = ACTIVE.has(a.phase);
+    if (act) {
+      for (const sh of d.shapes || []) {
+        const dd = (sh.rings || []).filter((r) => r.length >= 4).map((r) => ringPath(geo, r)).join('');
+        if (dd) shapes.push(`<path class="amap-shape s-${levelCls(a)}${a.phase === 'proxima' ? ' soon' : ''}${dim(a)}" d="${dd}" data-dep="${esc(a.deps[0] || '')}" data-tip="${esc(`${shortTitle(a.title, 140)}\nZona del aviso`)}"></path>`);
+      }
+      for (const ar of (districts && d.areas) || []) {
+        if (!districts[ar.code]) continue;
+        const at = (area[ar.code] ||= { code: ar.code, name: ar.name, a, dim: dim(a), lines: [] });
+        if (rankOf(a) >= rankOf(at.a)) Object.assign(at, { a, dim: at.dim && dim(a) });
+        at.lines.push(`${ar.n} quebrada${ar.n > 1 ? 's' : ''} · ${shortTitle(a.title, 140)}`);
+      }
+    }
+    for (const p of d.points || []) {
+      if (typeof p.lat !== 'number' || typeof p.lon !== 'number') continue;
+      const [x, y] = project(geo, p.lon, p.lat);
+      const cls = `amap-pt k-${esc(p.kind || 'lugar')} s-${act ? levelCls(a) : 'rep'}${dim(a)}`;
+      const tip = esc(pointTip(p, a));
+      const dep = esc(a.deps[0] || '');
+      const r = (p.kind === 'focos' ? 1.3 + Math.min(3, Math.sqrt(p.n || 1) * 0.6) : 3.4) * unit;
+      if (p.kind === 'volcan') {
+        points.push(`<path class="${cls}" d="M${x.toFixed(1)} ${(y - r * 1.3).toFixed(1)}l${(r * 1.2).toFixed(1)} ${(r * 2.1).toFixed(1)}h${(-r * 2.4).toFixed(1)}z" data-dep="${dep}" data-tip="${tip}"></path>`);
+      } else if (p.kind === 'estacion') {
+        points.push(`<rect class="${cls}" x="${(x - r).toFixed(1)}" y="${(y - r).toFixed(1)}" width="${(2 * r).toFixed(1)}" height="${(2 * r).toFixed(1)}" transform="rotate(45 ${x.toFixed(1)} ${y.toFixed(1)})" data-dep="${dep}" data-tip="${tip}"></rect>`);
+      } else {
+        points.push(`<circle class="${cls}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" data-dep="${dep}" data-tip="${tip}"></circle>`);
+      }
+    }
+  }
+  const areas = Object.values(area).sort((x, y) => rankOf(x.a) - rankOf(y.a)).map((at) => {
+    const g = districts[at.code];
+    const head = `${at.name ? `${at.name}: ` : ''}quebradas con probable activación`;
+    return `<path class="amap-area s-${levelCls(at.a)}${at.dim}" d="${g.d}" data-dep="${esc(at.code.slice(0, 2))}" data-tip="${esc([head, ...at.lines.reverse()].join('\n'))}"></path>`;
+  });
+  if (!shapes.length && !areas.length && !points.length) return '';
+  return `<g class="amap-detail" aria-hidden="true">${shapes.join('')}${areas.join('')}${points.join('')}</g>`;
+}
+
+/** Las cuencas de la ANA (assets/cuencas-mapa.json), debajo del detalle. */
+export function basinsMarkup(B) {
+  if (!B?.units) return '';
+  return `<g class="amap-basins" aria-hidden="true">${Object.entries(B.units).map(([c, u]) => `<path d="${u.d}" data-tip="${esc(`${u.n}\nUnidad hidrográfica ${c} de la ANA`)}"></path>`).join('')}</g>`;
 }
 
 function pings(geo, alerts, f) {
@@ -403,6 +478,32 @@ function depList(geo, by) {
 // ---------------------------------------------------------------------------
 // Montaje
 // ---------------------------------------------------------------------------
+/** Trazos de los distritos (los del mapa de la memoria), para los avisos de quebradas; se piden solo si hacen falta. */
+let DISTRICTS = null;
+function districtShapes() {
+  if (!DISTRICTS) DISTRICTS = fetch('assets/historico/mapa.json').then((r) => (r.ok ? r.json() : null)).then((m) => m?.districts || null).catch(() => null);
+  return DISTRICTS;
+}
+let BASINS = null;
+function basinShapes() {
+  if (!BASINS) BASINS = fetch('assets/cuencas-mapa.json').then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  return BASINS;
+}
+
+function layersHtml(layers, alerts) {
+  const kinds = new Set(alerts.flatMap((a) => (a.detail?.points || []).map((p) => p.kind)));
+  const shapes = alerts.some((a) => ACTIVE.has(a.phase) && a.detail?.shapes?.length);
+  const areas = alerts.some((a) => ACTIVE.has(a.phase) && a.detail?.areas?.length);
+  const key = [shapes ? html`<li><span class="sw sw-shape"></span>Zona de un aviso del SENAMHI</li>` : '', areas ? html`<li><span class="sw sw-area"></span>Distritos con quebradas en aviso</li>` : '',
+    ...[['estacion', 'sw-k-estacion', 'Estación hidrológica'], ['epicentro', 'sw-k-epicentro', 'Epicentro'], ['volcan', 'sw-k-volcan', 'Volcán'],
+      ['focos', 'sw-k-focos', 'Focos de calor (celdas de ~11 km)'], ['centro-poblado', 'sw-k-cp', 'Centro poblado del reporte']]
+      .filter(([k]) => kinds.has(k)).map(([, c, t]) => html`<li><span class="sw ${c}"></span>${t}</li>`)].filter(Boolean);
+  return html`<div class="amap-layers" role="group" aria-label="Capas del mapa">
+    <button type="button" class="kind-chip" data-layer="detalle" aria-pressed="${String(layers.detalle)}">Formas y puntos</button>
+    <button type="button" class="kind-chip" data-layer="cuencas" aria-pressed="${String(layers.cuencas)}"><span class="sw sw-basin"></span>Cuencas (ANA)</button>
+    ${layers.detalle && key.length ? html`<ul class="amap-legend amap-legend-detail">${key}</ul>` : ''}</div>`;
+}
+
 export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
   if (!el) return null;
   const geo = await geometry();
@@ -412,6 +513,10 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
     el.innerHTML = '';
     return null;
   }
+  // Capas: el detalle de cada aviso (formas, distritos con quebradas, puntos) y las cuencas de la ANA.
+  const layers = { detalle: true, cuencas: false };
+  let districts = model.alerts.some((a) => a.detail?.areas?.length) ? await districtShapes() : null;
+  let basinsGeo = null;
   const tick = setInterval(() => { model = prepare(feed); draw(); }, 5 * 60 * 1000);  // las fases avanzan con el reloj
   const draw = () => {
     if (!el.isConnected) { clearInterval(tick); return; }
@@ -421,18 +526,21 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
     const by = aggregate(vis);
     const sel = f.dep ? (by[f.dep] || []) : null;
     const label = 'Mapa del Perú por departamento con los avisos oficiales';
+    // El detalle va debajo del anillo del departamento elegido (depShapes lo pone al final).
+    const overlay = raw((layers.cuencas ? basinsMarkup(basinsGeo) : '') + (layers.detalle ? detailMarkup(geo, vis, f, { districts }) : ''));
+    const tipBox = html`<div class="amap-tip" role="tooltip" hidden></div>${layersHtml(layers, vis)}`;
     let body;
     if (v === 'B') {
-      body = html`<div class="amap-grid"><div class="amap-mapbox">${svgMap(geo, html`<g class="outline">${depShapes(geo, {}, f)}</g>${pings(geo, vis, f)}`, label)}<div class="amap-tip" role="tooltip" hidden></div></div>
+      body = html`<div class="amap-grid"><div class="amap-mapbox">${svgMap(geo, html`<g class="outline">${depShapes(geo, {}, f, { overlay })}</g>${pings(geo, vis, f)}`, label)}${tipBox}</div>
         <div class="amap-side">${legend('B')}${depRanking(model.alerts, f, 6)}</div></div>`;
     } else if (v === 'C') {
-      body = html`<div class="amap-grid amap-grid-c"><div class="amap-mapbox">${svgMap(geo, depShapes(geo, by, f), label)}<div class="amap-tip" role="tooltip" hidden></div></div>
+      body = html`<div class="amap-grid amap-grid-c"><div class="amap-mapbox">${svgMap(geo, depShapes(geo, by, f, { overlay }), label)}${tipBox}</div>
         <div class="amap-side">${matrix(model.alerts, f)}<h3 class="amap-h3">Departamentos con más avisos</h3>${depRanking(model.alerts, f)}${legend('C')}</div></div>`;
     } else if (v === 'D') {
-      body = html`<div class="amap-grid amap-grid-d"><div class="amap-mapbox">${svgMap(geo, depShapes(geo, by, f), label)}<div class="amap-tip" role="tooltip" hidden></div></div>
+      body = html`<div class="amap-grid amap-grid-d"><div class="amap-mapbox">${svgMap(geo, depShapes(geo, by, f, { overlay }), label)}${tipBox}</div>
         <div class="amap-side"><h3 class="amap-h3">Vigencia de los avisos: ayer, hoy y los próximos días</h3>${timeline(model.alerts, f, Date.now())}${legend('D')}</div></div>`;
     } else {
-      body = html`<div class="amap-grid amap-grid-a"><div class="amap-mapbox">${svgMap(geo, depShapes(geo, by, f, { badges: true }), label)}<div class="amap-tip" role="tooltip" hidden></div></div>
+      body = html`<div class="amap-grid amap-grid-a"><div class="amap-mapbox">${svgMap(geo, depShapes(geo, by, f, { badges: true, overlay }), label)}${tipBox}</div>
         <div class="amap-side">${legend('A')}${sel ? html`<div class="amap-sel"><h3 class="amap-h3">${DEP_NAMES[f.dep]}</h3>${tipHtml('', sel, { foot: 'Sus avisos y noticias están en la lista de abajo.' })}</div>` : html`<p class="muted small">Pase el cursor o toque un departamento para ver sus avisos; haga clic para filtrar las noticias.</p>`}</div></div>`;
     }
     const pubAge = model.generatedAt ? (Date.now() - Date.parse(model.generatedAt)) / H : 0;
@@ -462,8 +570,28 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
   function wire(root, f, by) {
       const tip = $('.amap-tip', root);
     let hovered = false;
+    const place = (x, y) => {
+      // Posición fija en la ventana, a un lado del cursor, para no tapar el mapa ni salirse de la pantalla.
+      const tw = tip.offsetWidth, th = tip.offsetHeight, vw = innerWidth, vh = innerHeight;
+      let left = x + 18, top = Math.max(8, Math.min(vh - th - 8, y - th / 2));
+      if (left + tw > vw - 8) left = x - tw - 18;
+      if (left < 8) {  // pantalla angosta: encima o debajo del punto
+        left = Math.max(8, Math.min(vw - tw - 8, x - tw / 2));
+        top = y + 24 + th < vh ? y + 24 : Math.max(8, y - th - 24);
+      }
+      tip.style.left = `${left}px`;
+      tip.style.top = `${top}px`;
+    };
     const showTip = (target, x, y) => {
       if (!tip) return;
+      const det = target.closest('[data-tip]');
+      if (det) {  // una forma, un distrito, un punto o una cuenca: su texto viene en data-tip
+        const [head, ...rest] = det.dataset.tip.split('\n');
+        tip.innerHTML = String(html`<div class="amap-tip-h"><strong>${head}</strong></div>${rest.map((t) => html`<p class="muted">${t}</p>`)}`);
+        tip.hidden = false;
+        place(x, y);
+        return;
+      }
       const spot = target.closest('[data-spot]');
       const dep = target.closest('[data-dep]')?.dataset.dep;
       if (!dep) return;
@@ -479,16 +607,7 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
       }
       tip.innerHTML = String(tipHtml(title, list));
       tip.hidden = false;
-      // Posición fija en la ventana, a un lado del cursor, para no tapar el mapa ni salirse de la pantalla.
-      const tw = tip.offsetWidth, th = tip.offsetHeight, vw = innerWidth, vh = innerHeight;
-      let left = x + 18, top = Math.max(8, Math.min(vh - th - 8, y - th / 2));
-      if (left + tw > vw - 8) left = x - tw - 18;
-      if (left < 8) {  // pantalla angosta: encima o debajo del punto
-        left = Math.max(8, Math.min(vw - tw - 8, x - tw / 2));
-        top = y + 24 + th < vh ? y + 24 : Math.max(8, y - th - 24);
-      }
-      tip.style.left = `${left}px`;
-      tip.style.top = `${top}px`;
+      place(x, y);
       if (!hovered) { hovered = true; session.mark('hover'); }
     };
     const hideTip = () => { if (tip) tip.hidden = true; };
@@ -529,6 +648,14 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
       else { const a = model.alerts.find((x) => x.id === b.dataset.id); if (a?.url) { session.mark('detail'); window.open(safeUrl(a.url), '_blank', 'noopener'); } }
     }));
     $$('[data-detail]', root).forEach((a) => a.addEventListener('click', () => session.mark('detail')));
+    $$('[data-layer]', root).forEach((b) => b.addEventListener('click', async () => {
+      const k = b.dataset.layer;
+      layers[k] = !layers[k];
+      if (k === 'cuencas' && layers.cuencas && !basinsGeo) basinsGeo = await basinShapes();
+      if (k === 'detalle' && layers.detalle && !districts && model.alerts.some((a) => a.detail?.areas?.length)) districts = await districtShapes();
+      draw();
+      $(`[data-layer="${k}"]`, el)?.focus();
+    }));
     $('#amap-ver', root)?.addEventListener('change', (e) => {
       session.choose(e.target.value);
       draw();

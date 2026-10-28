@@ -14,6 +14,7 @@ prevención: cuántas de esas emergencias ocurrieron donde el Estado ya tenía e
 1. [Qué pregunta responde](#qué-pregunta-responde)
 2. [Fuentes](#fuentes)
 3. [Columnas del catálogo](#columnas-del-catálogo)
+   - [Más fino que el distrito: centros poblados y cuencas](#más-fino-que-el-distrito-centros-poblados-y-cuencas)
 4. [Clasificación del peligro y del evento](#clasificación-del-peligro-y-del-evento)
 5. [Fuentes que cuentan el mismo evento](#fuentes-que-cuentan-el-mismo-evento)
 6. [Reglas de calidad](#reglas-de-calidad)
@@ -136,13 +137,15 @@ del tablero del equipo de prevención, con sus nombres exactos:
 | `Ubigeo` | Código vigente del INEI: 6 dígitos (distrito), 4 (provincia) o 2 (departamento). Es texto: al importarlo, léalo como texto para no perder el cero inicial («010101») |
 | `TipoEvento` | FEN 1982-83, FEN 1997-98, Niño Costero 2017, Ciclón Yaku 2023, FEN 2023-24, FEN 2026, La Niña costera…, Temporada de lluvias, Temporada de heladas y friaje, Sin asociación ENSO, ICEN pendiente (meses después del último ICEN publicado) |
 | `Fuente` | URL del registro o, si la fuente no tiene una página por registro (DesInventar, las capas de ArcGIS), de la fuente |
-| `Latitud`, `Longitud` | Punto de la fuente si cae en el distrito asignado; si no, la capital del distrito. En las filas de provincia o de departamento, la capital de la provincia o del departamento (`PrecisionGeo` lo dice): en un mapa de puntos parecen agrupadas en las capitales |
+| `Latitud`, `Longitud` | El punto de la fuente si cae en el distrito asignado y no es un punto por defecto; si no, el centro poblado que nombra la fuente; si no, la capital del distrito. En las filas de provincia o de departamento, la capital de la provincia o del departamento (`PrecisionGeo` lo dice, y [Más fino que el distrito](#más-fino-que-el-distrito-centros-poblados-y-cuencas) explica cada caso): en un mapa de puntos las de capital parecen agrupadas en las capitales |
 
-Y 45 columnas más para análisis y trazabilidad: `Id` estable (`<origen>-<id en la fuente>`), `Origen`, `IdFuente`,
+Y 50 columnas más para análisis y trazabilidad: `Id` estable (`<origen>-<id en la fuente>`), `Origen`, `IdFuente`,
 `FechaFin`, `PrecisionFecha`, `FechaTipo` (de qué es la fecha: `evento`; `informe`, la del primer reporte del COEN
 cuando su PDF no se leyó; `publicacion`, la de la nota de prensa; `texto`, la que cita la nota), `Anio`, `Mes`, `AnioHidrologico` (julio a junio), `GrupoPeligro`, `PeligroFuente` (el
 tipo como lo nombra la fuente), `DangerTypeMetodo` (fuente, texto, causa o por-omision), `CausaFuente`,
-`NivelUbigeo`, `PrecisionGeo`, `Region` (macrorregión), `AltitudCapital`, `FaseENSO`, `EventoENSO`, `ICEN`, `ONI`,
+`NivelUbigeo`, `PrecisionGeo`, `Lugar` (el centro poblado oficial que nombra la fuente), `LugarCodigo` (su código
+del INEI), `RadioKm` (la incertidumbre del punto del centro poblado), `Cuenca` y `CuencaCodigo` (la unidad
+hidrográfica de la ANA), `Region` (macrorregión), `AltitudCapital`, `FaseENSO`, `EventoENSO`, `ICEN`, `ONI`,
 `AtribucionENSO`, catorce columnas de impactos (fallecidos, desaparecidos, heridos, afectados, damnificados,
 evacuados, reubicados, desplazados, viviendas destruidas y afectadas, hectáreas de cultivo, km de vías, centros
 educativos y de salud, pérdidas en US$), `ImpactoReportado`, `ImpactoEnTotales`, `FuenteCita` (la cita original
@@ -151,10 +154,48 @@ la de un reporte o una publicación), `Corroboracion`
 (cuántos reportes o notas de otras fuentes cuentan el mismo evento), `OrigenesCorroboran` y `FuentesAdicionales`
 (sus enlaces, separados por « | », hasta 10).
 
+### Más fino que el distrito: centros poblados y cuencas
+
+El UBIGEO llega al distrito, que en la sierra y la selva puede medir cientos de km². Tres columnas dicen dónde fue,
+cuando la fuente lo dice (`tools/build_historico.py`, con el nomenclátor de `enso/lugares.py`):
+
+| `PrecisionGeo` | De dónde sale el punto | Filas (oct. 2026) |
+|---|---|---|
+| `coordenada-fuente` | El punto que da la fuente (SINPAD, puntos del INGEMMET, la ANA), si cae dentro del distrito y no es un punto por defecto (abajo) | 6 904 |
+| `centro-poblado` | El centro poblado oficial que nombra la fuente en `Ubicacion` o `Descripción` («sector Panamá», «C.P. Pampamarca», «caserío La Pared»), si existe en ese distrito: su punto del INEI (censo 2017) o del IGN. Con varios, su punto medio. `Lugar` lo nombra y `RadioKm` da la incertidumbre: 1 km, 5 km si el INEI y el IGN lo ubican a más de 5 km uno del otro, o la distancia al lugar más lejano más 1 km si son varios | 1 491 |
+| `capital-distrito`, `interior-distrito`, `capital-provincia`, `capital-departamento` | Sin nada de lo anterior: la capital del área | 138 394 |
+
+**Puntos por defecto.** Muchas fichas del SINPAD traen como punto la capital del distrito, o el mismo punto para todas
+las emergencias de un distrito: no es el lugar del evento. Un punto a 0,5 km o menos de la capital del distrito, de la
+provincia o del departamento, o de su centro poblado capital del censo, o que se repite en 5 o más filas del mismo
+distrito sin un centro poblado que no sea la capital a 0,3 km, no cuenta como `coordenada-fuente` (6 744 y 467 filas
+en octubre de 2026). La fila pasa a `centro-poblado` si nombra uno, o queda en la capital.
+
+**El nomenclátor** (`enso/data/lugares.json.gz`, 103 mil centros poblados con su distrito) junta los centros
+poblados del censo 2017 del INEI, los del IGN y los del SDOT, del geoportal de la IDEP. Un nombre que se repite en el
+distrito (dos «Tuen» en Chachapoyas) no se elige: la fila queda en la capital. Las palabras de, del, la, los no
+cuentan («San Antonio Matibamba» es «San Antonio de Matibamba»), y no valen el nombre del distrito, de la provincia, del
+departamento ni de la capital del distrito, que ya son el punto por defecto.
+
+**Cuenca.** `Cuenca` y `CuencaCodigo` son la unidad hidrográfica de la ANA (las 231 cuencas e intercuencas de la
+metodología Pfafstetter, `enso/data/cuencas.json.gz`) en la que cae el punto, si es `coordenada-fuente` o
+`centro-poblado`; si no, la del distrito cuando el 80 % o más de su área está en una sola (84 % de las filas tiene
+cuenca). Así los registros de una misma cuenca se pueden sumar aunque estén en distritos o departamentos distintos.
+
+**Cómo se comprobó** (`tests/test_lugares.py`): con las filas cuyo punto de la fuente es bueno y que nombran un centro
+poblado, el punto del nomenclátor queda a una mediana de 0,34 km del de la fuente (81 % a menos de 2 km, 93 % a menos
+de 5 km); las 8 estaciones hidrológicas del SENAMHI caen en la cuenca de la ANA que el SENAMHI les asigna; ninguna
+fila `coordenada-fuente` está en una capital ni repite un punto por defecto, y cada punto cae en su distrito
+(`tests/test_geolocalizacion.py`).
+
+En la pestaña, la ficha de cada registro dice su centro poblado (con ±km) o el punto de la fuente y su cuenca; el mapa
+dibuja los registros con un punto más fino que el distrito al elegir un área (punto lleno: el de la fuente; anillo: el
+centro poblado) y, con el botón «Cuencas (ANA)», los límites de las cuencas.
+
 Un impacto vacío significa «la fuente no lo reporta», no cero. `ImpactoEnTotales` es «no» solo cuando otra fila del
 mismo evento ya detalla esas cifras (un registro curado que resume un área); el resto suma a los totales.
 
-`diccionario.csv` (en `data/historico/` y en la pestaña) describe cada una de las 58 columnas: grupo, tipo, contenido,
+`diccionario.csv` (en `data/historico/` y en la pestaña) describe cada una de las 63 columnas: grupo, tipo, contenido,
 valores posibles y el porcentaje de filas que traen el dato, en total y por fuente. Se genera con el catálogo desde
 `enso/historico/esquema.py` (`COLUMN_DOCS`), así que no se desfasa.
 
@@ -270,6 +311,8 @@ filas tocó cada una queda en `calidad` de `fuentes.json` y de `resumen.json`.
 | Meses después del último ICEN → «ICEN pendiente» | Todavía no se sabe si fue un mes de Niño | 2 858 |
 | Notas de prensa cuyo titular trata de bonos, reconstrucción, donaciones, expedientes técnicos o crímenes → fuera | No cuentan un desastre | 15 |
 | `ImpactoEnTotales` vacío → «si» | Las cifras del IDMC y de otras fuentes no sumaban a los totales | todas |
+| Un punto de la fuente en la capital del distrito (a 0,5 km de ella o de su centro poblado capital del censo) o repetido 5 o más veces en el mismo distrito → no es `coordenada-fuente` | La fuente puso el punto por defecto, no el del evento | 6 744 y 467 |
+| Una fila con capital y un centro poblado oficial nombrado en su texto → el punto de ese centro poblado (`centro-poblado`) | Es más fino que la capital | 1 491 |
 
 Otras correcciones están en los lectores y entran con la próxima cosecha completa: los títulos del COEN con «Niño» o
 «Niños» en la dirección y los que nombran varios lugares (solo se separan si el título está en plural), nombres
@@ -458,8 +501,11 @@ año, los llamamientos de la Cruz Roja y estos avisos; la ficha de cada área, s
   años con daños como mínimo (el límite inferior del intervalo), grandes Niños, lugares con daños con Niño (las áreas
   cuyo intervalo incluye 1 van en gris), registros, fallecidos, afectados o viviendas destruidas. Los cortes de «años
   con daños» cambian con el nivel (un departamento casi siempre tiene daños; un distrito, rara vez). Con un filtro de
-  evento la razón de El Niño no se muestra: compararía un evento con sus propias temporadas. Todo el estado queda en
-  la dirección (`#/memoria?nivel=distrito&area=200105`) para compartir una vista.
+  evento la razón de El Niño no se muestra: compararía un evento con sus propias temporadas. Con un área elegida, el
+  mapa dibuja sus registros con un punto más fino que el distrito (punto lleno: el de la fuente; anillo: el centro
+  poblado que nombran; más grande cuantos más registros); el botón «Cuencas (ANA)» dibuja las 231 cuencas e
+  intercuencas. Todo el estado queda en la dirección (`#/memoria?nivel=distrito&area=200105&cuencas=1`) para
+  compartir una vista.
 - **Ficha** de cada área: años con daños, 1 de cada X años y probabilidad en 5 años, cada uno con su intervalo;
   grandes Niños, registros del Niño en curso, «si se repite un gran Niño» (con cuántos de sus lugares golpeados antes
   volvieron a tener registros), peligro identificado hoy, «¿se sabía antes?», impactos, peligros, temporadas con daños
@@ -517,10 +563,12 @@ cada una con su fuente (`public/assets/js/historico-evidencia.js`). El veredicto
   («S. J. DE LURIGANCHO»), por el punto de la fuente dentro de los límites vigentes del INDECI (los 1 891 distritos,
   también los creados después de 2020). Un punto de la fuente que cae en un distrito creado después de 2020, en la
   misma provincia que el distrito que nombró la fuente (el SINPAD de 2017 dice Padre Abad y el punto está en lo que
-  hoy es Boquerón), lleva el UBIGEO del punto: el código es el vigente. Las filas sin punto llevan las coordenadas
-  de la capital del distrito, de la provincia o del departamento (`interior-distrito`: un punto dentro del distrito
-  cuando el nomenclátor no trae su capital): en un mapa de puntos se agrupan en las capitales, y no deben leerse
-  como el lugar exacto. `tests/test_geolocalizacion.py` comprueba que cada punto publicado cae en su área.
+  hoy es Boquerón), lleva el UBIGEO del punto: el código es el vigente. Las filas sin punto propio llevan el del
+  centro poblado que nombran (con su `RadioKm`) o las coordenadas de la capital del distrito, de la provincia o del
+  departamento (`interior-distrito`: un punto dentro del distrito cuando el nomenclátor no trae su capital): las de
+  capital se agrupan en las capitales en un mapa de puntos, y no deben leerse como el lugar exacto. Un punto que la
+  fuente pone en la capital o repite para todo el distrito tampoco es el lugar del evento y no cuenta como
+  `coordenada-fuente`. Solo 1 de cada 18 filas tiene un punto más fino que el distrito. `tests/test_geolocalizacion.py` comprueba que cada punto publicado cae en su área.
 - **Fechas.** La fecha de una fila propia del COEN cuyo PDF no se leyó es la de su primer reporte, y la de una nota
   de prensa, la de su publicación (`FechaTipo`): pueden ir días después del evento. Esas filas nunca tienen confianza
   alta. DesInventar pone el 1 de enero cuando no conoce el día; esas fichas quedan con precisión de mes.
