@@ -18,7 +18,7 @@
       "url": "https://www.desinventar.net/DesInventar/download/DI_export_per.zip",
       "pagina": "https://www.desinventar.net/DesInventar/profiletab.jsp?countrycode=per",
       "archivo": "DI_export_per.zip",
-      "sha256": "e569d9eefc1e61571f81c3a7dce2fc44943f11de672c7fd85c9c0eae57446c0a",
+      "sha256": "9b462f097fc247839b32c97a58a870f21a0731b16674e6a4f68529d13ab4dc5d",
       "obtenido": "2026-10-26",
       "licencia": "Uso libre con atribución (DesInventar Sendai, UNDRR / Corporación OSSO)",
       "cobertura": "1970-2015, 23 657 fichas a escala distrital (se usan las de peligros de origen climático)",
@@ -40,11 +40,11 @@
       "nota": "Cada registro enlaza a su emergencia en el servicio (consulta por código SINPAD). La copia no es oficial: si el INDECI publica la serie, debe reemplazarla.",
       "sha256": "8827cb0db4a4e73400937948ced73aeae9bd512f1dbfb9d35462be76f86259a0",
       "obtenido": "2026-10-26",
-      "registros": 14124,
+      "registros": 14203,
       "descartados": {
-        "no climático": 2903,
+        "no climático": 2905,
         "sin tipo": 50,
-        "sin causa climática": 42,
+        "sin causa climática": 43,
         "sismo": 6
       }
     },
@@ -64,13 +64,13 @@
       "licencia": "INDECI, información pública (Ley N° 27806)",
       "cobertura": "2019 en adelante: emergencias de origen climático por distrito, con peligro, fecha, nivel y estado; sin descripción. Las cifras de daños y el punto vienen de la capa de emergencias del GEOSINPAD (complemento)",
       "nota": "Es la consulta que usa el portal del SINPAD (desde el 01-01-2019), mes por mes y en páginas de 100, con 5 s entre pedidos. Cada registro enlaza a su emergencia en esa consulta (por código SINPAD).",
-      "sha256": "cba8960013915bedd877b83ad420e953b57ab0ae89d6d3bda036ddf2b93045ea",
+      "sha256": "c9955597824eee7fa372baefb40990a0a5ebc5871b7e305e2188b51355af3a0d",
       "obtenido": "2026-10-26",
-      "registros": 112170,
+      "registros": 112253,
       "descartados": {
-        "no climático": 19706,
+        "no climático": 19729,
         "sin causa climática": 2535,
-        "sin tipo": 1591
+        "sin tipo": 1594
       }
     },
     {
@@ -90,11 +90,11 @@
       "geometria": false,
       "sha256": "82e2030ccea255e11fb67943f6956b119677909cee42d58997d21f4cc115a5c9",
       "obtenido": "2026-10-28",
-      "registros": 119054,
+      "registros": 119133,
       "detalle": {
-        "con cifras de daños": 55382,
-        "sin par en la capa": 7240,
-        "unidas": 119054
+        "con cifras de daños": 55460,
+        "sin par en la capa": 7323,
+        "unidas": 119133
       }
     },
     {
@@ -253,19 +253,19 @@
       "archivo": "coen-reportes.json",
       "nota": "Cada emergencia con el título de su último reporte; de las de origen climático se lee el PDF (fecha de ocurrencia, código SINPAD, cuadro de daños, decreto vigente). Se une a la emergencia del SINPAD con el mismo código o del mismo distrito, peligro y fecha; las que el SINPAD no registra quedan como filas propias.",
       "parcial": true,
-      "obtenido": "2026-10-26",
-      "sha256": "fdeaae1f0d9c23d06c646ffd4808172e2ca9888d6c47852f62b9e880ffbc1f3e",
-      "candidatos": 19663,
+      "obtenido": "2026-10-29",
+      "sha256": "3d8f8bfe17405c9ffde99d82c718bd7e33965f1a908880619fdc47c3653d85b0",
+      "candidatos": 22333,
       "descartados": {
-        "no climático": 7749,
-        "sin peligro ni lugar en el título": 1947,
-        "sin tipo": 115,
-        "sin fecha": 46,
-        "sin lugar": 21,
-        "sin causa climática": 17
+        "no climático": 9696,
+        "sin peligro ni lugar en el título": 6309,
+        "sin tipo": 116,
+        "sin lugar": 30,
+        "sin causa climática": 17,
+        "sin fecha": 15
       },
-      "registros": 3887,
-      "corroboran": 15776
+      "registros": 4183,
+      "corroboran": 18150
     },
     {
       "id": "elperuano-emergencias",
@@ -283,10 +283,9 @@
       },
       "archivo": "elperuano-emergencias.json",
       "nota": "Declaratorias y prórrogas de origen climático con sus distritos (anexo del decreto). «Por peligro inminente» es prevención; «por impacto de daños», respuesta. No son eventos: entran a los indicadores de prevención.",
-      "parcial": true,
       "obtenido": "2026-10-26",
-      "sha256": "f7343f930af503d4ce2c80fd37e1aeee29c371a1d8e478870340fd14ffc30ed4",
-      "registros": 235
+      "sha256": "7204211ab559073d59d78749f878d0dd0fc323875fb2416308770ff140494d56",
+      "registros": 475
     },
     {
       "id": "ingemmet-informes-tecnicos",
@@ -301,10 +300,9 @@
       "institucion": "INGEMMET",
       "archivo": "ingemmet-informes-tecnicos.json",
       "nota": "Evaluaciones e inspecciones de un lugar (deslizamientos, huaicos, inundaciones): evidencia de que el peligro se conocía. No son eventos.",
-      "parcial": true,
       "obtenido": "2026-10-26",
-      "sha256": "bd0a88398b723bcbb3ea643dd2e5ce2119092aebdb852fc79e57356f5deda6a2",
-      "registros": 1098
+      "sha256": "c808b2fc44f91d18303918e00e729f0039db7e15dfd4634fdfb5bf00a9010b6a",
+      "registros": 1351
     },
     {
       "id": "ingemmet-evaluaciones",
@@ -340,7 +338,7 @@
       "institucion": "IGP",
       "archivo": "igp-repositorio.json",
       "nota": "Solo los informes con un lugar y un peligro climático en el título.",
-      "sha256": "21c6cfb627b250c0db1b894c9cc87bf3584e9dc72a6f92466fdc06a05a44ddd7",
+      "sha256": "49e6589bc692dff5aa4e948060f75391d1c37f24c7a2142bdf5fc4643f03c428",
       "obtenido": "2026-10-26",
       "registros": 74
     },
@@ -358,18 +356,18 @@
       "medio": "Caretas",
       "archivo": "prensa/caretas.json",
       "nota": "Búsqueda de la API pública de WordPress del medio con 27 términos de peligro; quedan las notas cuyo titular dice que un peligro climático causó algo en un distrito o provincia.",
-      "sha256": "84bb1c7c3f7a8977869a0f8dd1f622cc672b66f66c6b3e1df185514d9cf7eddc",
+      "sha256": "78cfec6bbd72c54c54ac4dafd8186516744c1ab36c82d84f609aa9c92147a87a",
       "obtenido": "2026-10-26",
-      "candidatos": 39,
+      "candidatos": 40,
       "descartados": {
-        "sin peligro climático en el titular": 2323,
-        "otro tema": 748,
-        "no dice que algo pasó": 291,
-        "sin lugar (distrito o provincia)": 78,
+        "sin peligro climático en el titular": 2308,
+        "otro tema": 768,
+        "no dice que algo pasó": 292,
+        "sin lugar (distrito o provincia)": 76,
         "sin causa climática a la vista": 3
       },
       "registros": 3,
-      "corroboran": 36
+      "corroboran": 37
     },
     {
       "id": "prensa-radio-santa-rosa",
@@ -387,15 +385,15 @@
       "nota": "Búsqueda de la API pública de WordPress del medio con 27 términos de peligro; quedan las notas cuyo titular dice que un peligro climático causó algo en un distrito o provincia.",
       "sha256": "94d20246b790844ee96d5013654f605492efc3004ed4ea188a53331a9b76c9bd",
       "obtenido": "2026-10-26",
-      "candidatos": 14,
+      "candidatos": 13,
       "descartados": {
-        "sin peligro climático en el titular": 190,
-        "otro tema": 56,
+        "sin peligro climático en el titular": 188,
+        "otro tema": 60,
         "no dice que algo pasó": 39,
-        "sin lugar (distrito o provincia)": 13,
+        "sin lugar (distrito o provincia)": 12,
         "sin causa climática a la vista": 1
       },
-      "registros": 3,
+      "registros": 2,
       "corroboran": 11
     },
     {
@@ -416,9 +414,9 @@
       "obtenido": "2026-10-26",
       "candidatos": 2,
       "descartados": {
-        "sin peligro climático en el titular": 585,
-        "otro tema": 108,
-        "no dice que algo pasó": 20,
+        "sin peligro climático en el titular": 543,
+        "otro tema": 151,
+        "no dice que algo pasó": 19,
         "sin lugar (distrito o provincia)": 8,
         "sin causa climática a la vista": 1
       },
@@ -459,13 +457,13 @@
       "medio": "Actualidad Ambiental",
       "archivo": "prensa/actualidad-ambiental.json",
       "nota": "Búsqueda de la API pública de WordPress del medio con 27 términos de peligro; quedan las notas cuyo titular dice que un peligro climático causó algo en un distrito o provincia.",
-      "sha256": "3bd4644ed077362370c03554ac467bf89b59edcff5e432d41428818fb8085cbb",
+      "sha256": "604780f3a337854471211dd17cfdd2a479863e616160995d24492f7c80ff0d9a",
       "obtenido": "2026-10-26",
       "candidatos": 13,
       "descartados": {
-        "sin peligro climático en el titular": 1249,
-        "otro tema": 216,
-        "no dice que algo pasó": 134,
+        "sin peligro climático en el titular": 1243,
+        "otro tema": 224,
+        "no dice que algo pasó": 133,
         "sin lugar (distrito o provincia)": 48
       },
       "registros": 6,
@@ -485,9 +483,9 @@
       "medio": "Inforegión",
       "archivo": "prensa/inforegion.json",
       "nota": "Búsqueda de la API pública de WordPress del medio con 27 términos de peligro; quedan las notas cuyo titular dice que un peligro climático causó algo en un distrito o provincia.",
-      "sha256": "03aa87004ebb5d416b065e65a8abb1527f8bc6150f8b1d2f144e9364c15cecbe",
+      "sha256": "a6cee12a761996220399a62c165a37042d14400417555b3e7fa8052b2c417852",
       "obtenido": "2026-10-26",
-      "candidatos": 386,
+      "candidatos": 0,
       "descartados": {
         "sin peligro climático en el titular": 4082,
         "no dice que algo pasó": 1347,
@@ -496,8 +494,8 @@
         "sin causa climática a la vista": 13,
         "recuerda un evento de otro año": 1
       },
-      "registros": 148,
-      "corroboran": 238
+      "registros": 0,
+      "corroboran": 0
     },
     {
       "id": "prensa-altavoz",
@@ -513,18 +511,18 @@
       "medio": "Altavoz",
       "archivo": "prensa/altavoz.json",
       "nota": "Búsqueda de la API pública de WordPress del medio con 27 términos de peligro; quedan las notas cuyo titular dice que un peligro climático causó algo en un distrito o provincia.",
-      "sha256": "8418e6243d2ee9e50629a5e3fa2f796525964bea378b5d4fcb277e0fd9230ac1",
+      "sha256": "253d6f5df338998f8bb38cc298fab329c3333f3992664479f882b727ad8337d9",
       "obtenido": "2026-10-26",
-      "candidatos": 37,
+      "candidatos": 39,
       "descartados": {
-        "sin peligro climático en el titular": 2004,
-        "otro tema": 849,
-        "no dice que algo pasó": 292,
-        "sin lugar (distrito o provincia)": 121,
+        "sin peligro climático en el titular": 2941,
+        "otro tema": 1101,
+        "no dice que algo pasó": 293,
+        "sin lugar (distrito o provincia)": 117,
         "sin causa climática a la vista": 11
       },
-      "registros": 4,
-      "corroboran": 33
+      "registros": 5,
+      "corroboran": 34
     },
     {
       "id": "prensa-cutivalu",
@@ -543,20 +541,20 @@
       "departamentos": [
         "20"
       ],
-      "sha256": "05e12551a7af2f56c580bb3b6563b4488ac52ecf5abee1bef223750add8cd205",
+      "sha256": "ad82dade8dbc43377cbebd6b8d6d03fbeb62d326187362460debdb202ed8c588",
       "obtenido": "2026-10-26",
-      "candidatos": 311,
+      "candidatos": 310,
       "descartados": {
-        "sin peligro climático en el titular": 4356,
-        "no dice que algo pasó": 806,
-        "otro tema": 588,
-        "sin lugar (distrito o provincia)": 171,
+        "sin peligro climático en el titular": 3914,
+        "otro tema": 1056,
+        "no dice que algo pasó": 795,
+        "sin lugar (distrito o provincia)": 161,
         "sin causa climática a la vista": 24,
         "recuerda un evento de otro año": 2,
         "resumen del año": 1
       },
       "registros": 77,
-      "corroboran": 234
+      "corroboran": 233
     },
     {
       "id": "prensa-walac",
@@ -575,19 +573,19 @@
       "departamentos": [
         "20"
       ],
-      "sha256": "cbeadea3edf437d7b9fc9a940232b6a7a2489bb20f9209e4b5a7e6028ff4253e",
+      "sha256": "0330a87817faaf472c59bae67cffc9ee10c03950538d2b1cd7c00ec7059620c4",
       "obtenido": "2026-10-26",
-      "candidatos": 214,
+      "candidatos": 209,
       "descartados": {
-        "sin peligro climático en el titular": 5209,
-        "otro tema": 815,
-        "no dice que algo pasó": 678,
-        "sin lugar (distrito o provincia)": 181,
+        "sin peligro climático en el titular": 4831,
+        "otro tema": 1214,
+        "no dice que algo pasó": 675,
+        "sin lugar (distrito o provincia)": 169,
         "sin causa climática a la vista": 24,
         "recuerda un evento de otro año": 2
       },
-      "registros": 40,
-      "corroboran": 174
+      "registros": 36,
+      "corroboran": 173
     },
     {
       "id": "prensa-eltiempo-piura",
@@ -607,18 +605,18 @@
         "20",
         "24"
       ],
-      "sha256": "d36a5bc7e209589d04c0c951417cd2e0d3dac83755bf9fcbb4276531d79d543d",
+      "sha256": "5b8a33d11aa75cd1a702eb90473ca4a1c649279eb2558d3e3a7710e49280abd2",
       "obtenido": "2026-10-26",
-      "candidatos": 154,
+      "candidatos": 150,
       "descartados": {
-        "sin peligro climático en el titular": 5164,
-        "otro tema": 1120,
-        "no dice que algo pasó": 844,
-        "sin lugar (distrito o provincia)": 174,
+        "sin peligro climático en el titular": 4584,
+        "otro tema": 1799,
+        "no dice que algo pasó": 771,
+        "sin lugar (distrito o provincia)": 164,
         "sin causa climática a la vista": 17
       },
-      "registros": 24,
-      "corroboran": 130
+      "registros": 22,
+      "corroboran": 128
     },
     {
       "id": "prensa-lodicelagente",
@@ -641,10 +639,10 @@
       "obtenido": "2026-10-26",
       "candidatos": 10,
       "descartados": {
-        "sin peligro climático en el titular": 399,
+        "sin peligro climático en el titular": 391,
         "no dice que algo pasó": 76,
-        "otro tema": 61,
-        "sin lugar (distrito o provincia)": 10,
+        "otro tema": 70,
+        "sin lugar (distrito o provincia)": 9,
         "sin causa climática a la vista": 1
       },
       "registros": 4,
@@ -668,17 +666,17 @@
         "13",
         "14"
       ],
-      "sha256": "9cd9d27cc8eb001077c2abedba47b1be7d583b357202e8a2c2f556c0286e1798",
+      "sha256": "727f37e01c25c5f52f4f31e2ab33d51509bffdd37729bde72857e8dc6925a27f",
       "obtenido": "2026-10-26",
-      "candidatos": 221,
+      "candidatos": 218,
       "descartados": {
-        "sin peligro climático en el titular": 2140,
-        "no dice que algo pasó": 310,
-        "otro tema": 263,
-        "sin lugar (distrito o provincia)": 35,
+        "sin peligro climático en el titular": 2019,
+        "otro tema": 393,
+        "no dice que algo pasó": 308,
+        "sin lugar (distrito o provincia)": 32,
         "sin causa climática a la vista": 22
       },
-      "registros": 49,
+      "registros": 46,
       "corroboran": 172
     },
     {
@@ -698,19 +696,19 @@
       "departamentos": [
         "13"
       ],
-      "sha256": "51d52aad485d4e8a8bb676465e404f9d46383792f9d2f1cdde3fbc888a878e82",
+      "sha256": "21f790064b1e24f3c045556cdb14a71a3f03f04f8754644288010dacf387721e",
       "obtenido": "2026-10-26",
-      "candidatos": 152,
+      "candidatos": 149,
       "descartados": {
-        "sin peligro climático en el titular": 1238,
-        "otro tema": 284,
-        "no dice que algo pasó": 261,
-        "sin lugar (distrito o provincia)": 30,
+        "sin peligro climático en el titular": 1194,
+        "otro tema": 339,
+        "no dice que algo pasó": 262,
+        "sin lugar (distrito o provincia)": 25,
         "sin causa climática a la vista": 22,
         "recuerda un evento de otro año": 1
       },
-      "registros": 35,
-      "corroboran": 117
+      "registros": 34,
+      "corroboran": 115
     },
     {
       "id": "prensa-sientetrujillo",
@@ -733,9 +731,9 @@
       "obtenido": "2026-10-26",
       "candidatos": 4,
       "descartados": {
-        "sin peligro climático en el titular": 395,
-        "otro tema": 47,
-        "no dice que algo pasó": 37,
+        "sin peligro climático en el titular": 378,
+        "otro tema": 65,
+        "no dice que algo pasó": 36,
         "sin lugar (distrito o provincia)": 4
       },
       "registros": 1,
@@ -758,9 +756,9 @@
       "departamentos": [
         "13"
       ],
-      "sha256": "63f56c866c4bbff4ca71fed49e77fd46de69aff3da4247dd01e5d8f04f9b8fb7",
+      "sha256": "7f43c4a569ffb97068f8dd04ca7fce16db03093d6b7938b32993701976a497d3",
       "obtenido": "2026-10-26",
-      "candidatos": 39,
+      "candidatos": 0,
       "descartados": {
         "sin peligro climático en el titular": 677,
         "otro tema": 128,
@@ -768,8 +766,8 @@
         "sin lugar (distrito o provincia)": 20,
         "sin causa climática a la vista": 3
       },
-      "registros": 8,
-      "corroboran": 31
+      "registros": 0,
+      "corroboran": 0
     },
     {
       "id": "prensa-soltvperu",
@@ -792,19 +790,19 @@
         "02",
         "06"
       ],
-      "sha256": "26b0ea51958d3828ffe0cd347d85c2e1a6183e276620a88d7890645c3937b010",
+      "sha256": "4ab408d996b84e6274612bd8560f887a9aaea0a2300564142b3b5264645e8d42",
       "obtenido": "2026-10-26",
-      "candidatos": 284,
+      "candidatos": 281,
       "descartados": {
-        "sin peligro climático en el titular": 2120,
-        "no dice que algo pasó": 585,
-        "otro tema": 485,
-        "sin lugar (distrito o provincia)": 107,
+        "sin peligro climático en el titular": 2089,
+        "no dice que algo pasó": 583,
+        "otro tema": 525,
+        "sin lugar (distrito o provincia)": 108,
         "sin causa climática a la vista": 32,
         "recuerda un evento de otro año": 1
       },
-      "registros": 40,
-      "corroboran": 244
+      "registros": 39,
+      "corroboran": 242
     },
     {
       "id": "prensa-larotativa",
@@ -823,9 +821,9 @@
       "departamentos": [
         "06"
       ],
-      "sha256": "3855e4b279f799d2182ec443e6052956375558b8aa4c61c94b0ab03b0a344100",
+      "sha256": "67b8a5c0cf21cd2a1fedd2e0ae884d47d65d91ca33ed83aaddafc97427b37248",
       "obtenido": "2026-10-26",
-      "candidatos": 42,
+      "candidatos": 0,
       "descartados": {
         "sin peligro climático en el titular": 315,
         "otro tema": 66,
@@ -833,8 +831,8 @@
         "sin lugar (distrito o provincia)": 22,
         "sin causa climática a la vista": 4
       },
-      "registros": 8,
-      "corroboran": 34
+      "registros": 0,
+      "corroboran": 0
     },
     {
       "id": "prensa-radiomaranon",
@@ -854,18 +852,18 @@
         "06",
         "01"
       ],
-      "sha256": "acfacffd676c17d666693803966d605a7fb8b9f91d6712c2b8523018f05cca0a",
+      "sha256": "e00921655b2d78e238c45d68a2a2d2c14573ae62e1f3b5d43a53d5488c10ed8d",
       "obtenido": "2026-10-26",
       "candidatos": 88,
       "descartados": {
-        "sin peligro climático en el titular": 463,
-        "no dice que algo pasó": 117,
-        "otro tema": 115,
-        "sin lugar (distrito o provincia)": 17,
+        "sin peligro climático en el titular": 451,
+        "otro tema": 130,
+        "no dice que algo pasó": 118,
+        "sin lugar (distrito o provincia)": 16,
         "sin causa climática a la vista": 4
       },
-      "registros": 2,
-      "corroboran": 86
+      "registros": 3,
+      "corroboran": 85
     },
     {
       "id": "prensa-diariohechicera",
@@ -888,15 +886,15 @@
       "obtenido": "2026-10-26",
       "candidatos": 101,
       "descartados": {
-        "sin peligro climático en el titular": 1658,
-        "otro tema": 424,
-        "no dice que algo pasó": 230,
-        "sin lugar (distrito o provincia)": 80,
+        "sin peligro climático en el titular": 1612,
+        "otro tema": 474,
+        "no dice que algo pasó": 228,
+        "sin lugar (distrito o provincia)": 78,
         "sin causa climática a la vista": 4,
         "recuerda un evento de otro año": 1
       },
-      "registros": 35,
-      "corroboran": 66
+      "registros": 33,
+      "corroboran": 68
     },
     {
       "id": "prensa-elnorteno",
@@ -915,7 +913,7 @@
       "departamentos": [
         "14"
       ],
-      "sha256": "c90b2090e145e78b0376d31aa250e5aa2ee40648efbfa45caf99f47152fc2ba2",
+      "sha256": "a11368c3fc7a94e40af708859f064a27e91061eb6831cb496444fd0f1401f78b",
       "obtenido": "2026-10-26",
       "candidatos": 0,
       "descartados": {
@@ -942,9 +940,18 @@
       "departamentos": [
         "02"
       ],
-      "parcial": "pendiente",
-      "registros": 0,
-      "corroboran": 0
+      "registros": 31,
+      "corroboran": 401,
+      "sha256": "3410b611a91e59972f7bfe22cc993af3facb6fe7bd707eaf119fd5d552d73eb9",
+      "obtenido": "2026-10-29",
+      "candidatos": 432,
+      "descartados": {
+        "sin peligro climático en el titular": 7565,
+        "otro tema": 1231,
+        "no dice que algo pasó": 482,
+        "sin lugar (distrito o provincia)": 129,
+        "sin causa climática a la vista": 15
+      }
     },
     {
       "id": "prensa-huaraznoticias",
@@ -963,9 +970,9 @@
       "departamentos": [
         "02"
       ],
-      "sha256": "1441188d5caa5eb35616ea014a2c44ff955aa648b64c31af1ca8bbc96b7760a3",
+      "sha256": "32fdfe4a8bd7bcb30674284f7068fab0fc68e36b2c1f124c1839ba77c2c9e49c",
       "obtenido": "2026-10-26",
-      "candidatos": 62,
+      "candidatos": 0,
       "descartados": {
         "sin peligro climático en el titular": 478,
         "no dice que algo pasó": 129,
@@ -973,8 +980,8 @@
         "otro tema": 36,
         "sin causa climática a la vista": 2
       },
-      "registros": 9,
-      "corroboran": 53
+      "registros": 0,
+      "corroboran": 0
     },
     {
       "id": "prensa-prensahuaraz",
@@ -1024,16 +1031,16 @@
       ],
       "sha256": "46b1cff21f8bdcdb32829eba5fef616ef97cc6c6e574141ed1fb9b24f49ebd3c",
       "obtenido": "2026-10-26",
-      "candidatos": 143,
+      "candidatos": 142,
       "descartados": {
-        "sin peligro climático en el titular": 1488,
-        "otro tema": 337,
-        "no dice que algo pasó": 288,
-        "sin lugar (distrito o provincia)": 57,
+        "sin peligro climático en el titular": 1412,
+        "otro tema": 418,
+        "no dice que algo pasó": 285,
+        "sin lugar (distrito o provincia)": 56,
         "sin causa climática a la vista": 17
       },
       "registros": 69,
-      "corroboran": 74
+      "corroboran": 73
     },
     {
       "id": "prensa-radiouno",
@@ -1054,19 +1061,19 @@
         "18",
         "21"
       ],
-      "sha256": "b0410bbb3d77419fa2f9ee9c6269828969a843a93b93291e478f8f6c827904eb",
+      "sha256": "7ee5a1ec6c0245c44ff3964649e4bf3aad5bcfae085e3be0a902e0108e88516b",
       "obtenido": "2026-10-26",
       "candidatos": 251,
       "descartados": {
-        "sin peligro climático en el titular": 4079,
-        "otro tema": 902,
+        "sin peligro climático en el titular": 4012,
+        "otro tema": 975,
         "no dice que algo pasó": 857,
-        "sin lugar (distrito o provincia)": 245,
+        "sin lugar (distrito o provincia)": 242,
         "sin causa climática a la vista": 22,
         "recuerda un evento de otro año": 3
       },
-      "registros": 102,
-      "corroboran": 149
+      "registros": 101,
+      "corroboran": 150
     },
     {
       "id": "prensa-elbuho",
@@ -1085,19 +1092,19 @@
       "departamentos": [
         "04"
       ],
-      "sha256": "d0583039120ee1753f4caadd1fc80a67958bae4badb0e570d8dbe8791877a248",
+      "sha256": "c5c3645c2f30b95368cd37438bf1daf8f43f3c848695bc45fba5adc2f7537f19",
       "obtenido": "2026-10-26",
-      "candidatos": 235,
+      "candidatos": 236,
       "descartados": {
-        "sin peligro climático en el titular": 3199,
-        "otro tema": 748,
-        "no dice que algo pasó": 679,
+        "sin peligro climático en el titular": 3142,
+        "otro tema": 811,
+        "no dice que algo pasó": 680,
         "sin lugar (distrito o provincia)": 199,
         "sin causa climática a la vista": 13,
         "recuerda un evento de otro año": 1
       },
       "registros": 40,
-      "corroboran": 195
+      "corroboran": 196
     },
     {
       "id": "prensa-diarioelpueblo",
@@ -1116,17 +1123,17 @@
       "departamentos": [
         "04"
       ],
-      "sha256": "85c08c9780d989637e10d871f7ea679f961a49c2d77d31586e41b0beab1e7273",
+      "sha256": "e313629c3f9dc446ec3d149efa37af7519b95f7b90078c30cd5924ee91085338",
       "obtenido": "2026-10-26",
-      "candidatos": 192,
+      "candidatos": 193,
       "descartados": {
-        "sin peligro climático en el titular": 3792,
-        "no dice que algo pasó": 1011,
-        "otro tema": 496,
-        "sin lugar (distrito o provincia)": 293,
+        "sin peligro climático en el titular": 3778,
+        "no dice que algo pasó": 1013,
+        "otro tema": 536,
+        "sin lugar (distrito o provincia)": 289,
         "sin causa climática a la vista": 14
       },
-      "registros": 22,
+      "registros": 23,
       "corroboran": 170
     },
     {
@@ -1149,18 +1156,18 @@
         "21",
         "18"
       ],
-      "sha256": "02183f5830b3a3132a4ffc9cff6bb50078b0876cf6d5b8900d871f1d14c0810e",
+      "sha256": "a2a24c40ac6c877be39fff4ccb142bf7f69256338ac436949f9c73ef391f5400",
       "obtenido": "2026-10-26",
       "candidatos": 162,
       "descartados": {
-        "sin peligro climático en el titular": 2226,
+        "sin peligro climático en el titular": 2192,
         "no dice que algo pasó": 500,
-        "otro tema": 369,
-        "sin lugar (distrito o provincia)": 149,
+        "otro tema": 408,
+        "sin lugar (distrito o provincia)": 147,
         "sin causa climática a la vista": 21
       },
-      "registros": 38,
-      "corroboran": 124
+      "registros": 37,
+      "corroboran": 125
     },
     {
       "id": "prensa-radioyaravi",
@@ -1179,18 +1186,18 @@
       "departamentos": [
         "04"
       ],
-      "sha256": "aecccc7df9f738452836994015a3991f548a265a917df38a9ad868cab3ec79c9",
+      "sha256": "318d9fe0819382dbadb1b233b1f7e2649b8fe530ff61cf38dbed9da0f79797f2",
       "obtenido": "2026-10-26",
-      "candidatos": 103,
+      "candidatos": 102,
       "descartados": {
-        "sin peligro climático en el titular": 1055,
-        "otro tema": 276,
-        "no dice que algo pasó": 257,
-        "sin lugar (distrito o provincia)": 70,
+        "sin peligro climático en el titular": 1030,
+        "otro tema": 307,
+        "no dice que algo pasó": 255,
+        "sin lugar (distrito o provincia)": 68,
         "sin causa climática a la vista": 4
       },
       "registros": 20,
-      "corroboran": 83
+      "corroboran": 82
     },
     {
       "id": "prensa-hbanoticias",
@@ -1209,18 +1216,18 @@
       "departamentos": [
         "04"
       ],
-      "sha256": "f7f8210b24ba037bbf2bb821674c17ec10d9964375e467e1f82c9031d3566ebf",
+      "sha256": "20eddb9729407c655b2252409a4d85af508104ce9e5ce0fd66fd7846037f751f",
       "obtenido": "2026-10-26",
       "candidatos": 103,
       "descartados": {
-        "sin peligro climático en el titular": 988,
-        "no dice que algo pasó": 235,
-        "otro tema": 214,
+        "sin peligro climático en el titular": 972,
+        "no dice que algo pasó": 236,
+        "otro tema": 231,
         "sin lugar (distrito o provincia)": 54,
         "sin causa climática a la vista": 8
       },
-      "registros": 16,
-      "corroboran": 87
+      "registros": 15,
+      "corroboran": 88
     },
     {
       "id": "prensa-prensaregional-moquegua",
@@ -1239,18 +1246,18 @@
       "departamentos": [
         "18"
       ],
-      "sha256": "77f76653397bbbbbcfb72a5690bcb241c1c33b50cd0ad4158cdcbccc9e33c585",
+      "sha256": "00e8ef3b493b83896a68622b43dbf048685aa48c669b7cd2c908415a458c124c",
       "obtenido": "2026-10-26",
       "candidatos": 161,
       "descartados": {
-        "sin peligro climático en el titular": 3489,
-        "otro tema": 490,
-        "no dice que algo pasó": 421,
+        "sin peligro climático en el titular": 3443,
+        "otro tema": 542,
+        "no dice que algo pasó": 420,
         "sin lugar (distrito o provincia)": 92,
-        "sin causa climática a la vista": 24
+        "sin causa climática a la vista": 23
       },
-      "registros": 46,
-      "corroboran": 115
+      "registros": 45,
+      "corroboran": 116
     },
     {
       "id": "prensa-lalupa",
@@ -1269,9 +1276,9 @@
       "departamentos": [
         "11"
       ],
-      "sha256": "922687c5d1f4f69f48ecfd670f4cec65dbcb7bc27d3f5261f47f1a3854b1f630",
+      "sha256": "7a7c88aa42e8d4e248431e894ed1a1c1e2c5ca42c31aca8872ad82c8fbef93e9",
       "obtenido": "2026-10-26",
-      "candidatos": 111,
+      "candidatos": 0,
       "descartados": {
         "sin peligro climático en el titular": 832,
         "otro tema": 281,
@@ -1279,8 +1286,8 @@
         "sin lugar (distrito o provincia)": 51,
         "sin causa climática a la vista": 7
       },
-      "registros": 23,
-      "corroboran": 88
+      "registros": 0,
+      "corroboran": 0
     },
     {
       "id": "prensa-diariolaopinion",
@@ -1299,12 +1306,12 @@
       "departamentos": [
         "11"
       ],
-      "sha256": "cf123a4c818f572395f5d8ce2b71359c8e97bdc8bd20d91ff7be636994a95c68",
+      "sha256": "e4d796235006eeca10e8a076015cb31f0798600cc531ce2940f06e59f76f38ed",
       "obtenido": "2026-10-26",
       "candidatos": 26,
       "descartados": {
-        "sin peligro climático en el titular": 850,
-        "otro tema": 163,
+        "sin peligro climático en el titular": 840,
+        "otro tema": 177,
         "no dice que algo pasó": 134,
         "sin lugar (distrito o provincia)": 20,
         "sin causa climática a la vista": 3,
@@ -1330,18 +1337,18 @@
       "departamentos": [
         "21"
       ],
-      "sha256": "0849c4128251da3eadff3fabe10908232178006761169925ec8b9bc7db98cbc3",
+      "sha256": "a9ae55b2dc4a751eb94a048504789c0cadb826448ec976b8de8ef5c7dfa66cdc",
       "obtenido": "2026-10-26",
-      "candidatos": 78,
+      "candidatos": 79,
       "descartados": {
-        "sin peligro climático en el titular": 810,
+        "sin peligro climático en el titular": 804,
         "no dice que algo pasó": 177,
-        "otro tema": 83,
-        "sin lugar (distrito o provincia)": 37,
+        "otro tema": 94,
+        "sin lugar (distrito o provincia)": 36,
         "sin causa climática a la vista": 11
       },
       "registros": 17,
-      "corroboran": 61
+      "corroboran": 62
     },
     {
       "id": "prensa-radioondaazul",
@@ -1360,18 +1367,18 @@
       "departamentos": [
         "21"
       ],
-      "sha256": "050d76a51e56b47e84fe38dc658e3a80d14f0b3fabddab5d18adb794f81b681c",
+      "sha256": "34dbd2803ce677e47473e552bbf0ed1f7f0fb74ad65945f085db97238438fea7",
       "obtenido": "2026-10-26",
       "candidatos": 327,
       "descartados": {
-        "sin peligro climático en el titular": 2354,
+        "sin peligro climático en el titular": 2316,
         "no dice que algo pasó": 1098,
-        "otro tema": 351,
-        "sin lugar (distrito o provincia)": 108,
+        "otro tema": 393,
+        "sin lugar (distrito o provincia)": 107,
         "sin causa climática a la vista": 27
       },
-      "registros": 74,
-      "corroboran": 253
+      "registros": 75,
+      "corroboran": 252
     },
     {
       "id": "prensa-pachamamaradio",
@@ -1392,14 +1399,14 @@
       ],
       "registros": 49,
       "corroboran": 221,
-      "sha256": "07cd430bc4d88c5f53870a984fb9364e71c407297df3407a2d7d90e259d36e2f",
+      "sha256": "738634483df1d92ff62ebfc316ad2ba194bf70480e4c4c5e7322267b8c5da9bf",
       "obtenido": "2026-10-26",
       "candidatos": 270,
       "descartados": {
-        "sin peligro climático en el titular": 1717,
-        "no dice que algo pasó": 1042,
-        "otro tema": 248,
-        "sin lugar (distrito o provincia)": 140,
+        "sin peligro climático en el titular": 1702,
+        "no dice que algo pasó": 1039,
+        "otro tema": 271,
+        "sin lugar (distrito o provincia)": 139,
         "sin causa climática a la vista": 18
       }
     },
@@ -1420,18 +1427,18 @@
       "departamentos": [
         "03"
       ],
-      "sha256": "c354c6ca933ce12e0b467cdb51544c276cddd420968a3bfbd5acf6fe72dcb58e",
+      "sha256": "69b7266331f5ceedb990df106a9c30ed59e7ef2f9c5bcbbdca3872ca38d48dc6",
       "obtenido": "2026-10-26",
       "candidatos": 140,
       "descartados": {
-        "sin peligro climático en el titular": 1206,
+        "sin peligro climático en el titular": 1190,
         "no dice que algo pasó": 213,
-        "otro tema": 127,
+        "otro tema": 146,
         "sin lugar (distrito o provincia)": 35,
         "sin causa climática a la vista": 23
       },
-      "registros": 39,
-      "corroboran": 101
+      "registros": 38,
+      "corroboran": 102
     },
     {
       "id": "prensa-tudiariohuanuco",
@@ -1450,16 +1457,16 @@
       "departamentos": [
         "10"
       ],
-      "registros": 52,
-      "corroboran": 181,
-      "sha256": "ed8ad4a3f53a246298b609d7eabe7c25219e528e0bf410de4149607cc54ddb50",
+      "registros": 47,
+      "corroboran": 180,
+      "sha256": "7c7fa9010c8732e98d9e1ab89c9fcfeb99630863e188e5328c6a6d18f542c15a",
       "obtenido": "2026-10-26",
-      "candidatos": 233,
+      "candidatos": 227,
       "descartados": {
-        "sin peligro climático en el titular": 2370,
-        "otro tema": 491,
-        "no dice que algo pasó": 337,
-        "sin lugar (distrito o provincia)": 90,
+        "sin peligro climático en el titular": 2327,
+        "otro tema": 544,
+        "no dice que algo pasó": 338,
+        "sin lugar (distrito o provincia)": 89,
         "sin causa climática a la vista": 18
       }
     },
@@ -1486,10 +1493,10 @@
       "obtenido": "2026-10-26",
       "candidatos": 46,
       "descartados": {
-        "sin peligro climático en el titular": 205,
+        "sin peligro climático en el titular": 203,
         "no dice que algo pasó": 78,
         "sin lugar (distrito o provincia)": 47,
-        "otro tema": 30,
+        "otro tema": 32,
         "sin causa climática a la vista": 2
       },
       "registros": 8,
@@ -1512,16 +1519,16 @@
       "departamentos": [
         "01"
       ],
-      "registros": 31,
-      "corroboran": 105,
+      "registros": 30,
+      "corroboran": 106,
       "sha256": "a707f501449ffb08b27a562d905028ecc6af7aa10cbb6d0033302f3199ed825a",
       "obtenido": "2026-10-26",
       "candidatos": 136,
       "descartados": {
-        "sin peligro climático en el titular": 2650,
-        "otro tema": 540,
-        "no dice que algo pasó": 384,
-        "sin lugar (distrito o provincia)": 101,
+        "sin peligro climático en el titular": 2579,
+        "otro tema": 621,
+        "no dice que algo pasó": 381,
+        "sin lugar (distrito o provincia)": 94,
         "sin causa climática a la vista": 14
       }
     },
@@ -1542,16 +1549,16 @@
       "departamentos": [
         "22"
       ],
-      "registros": 165,
-      "corroboran": 155,
-      "sha256": "7e2a59cc625e0d8019bd6424d41076a2d315d97f860bc2e82b87121372633274",
+      "registros": 163,
+      "corroboran": 154,
+      "sha256": "1b590f47048b77da250ea342be5dc561c8592cde4559b85764e501dd3e16c6a0",
       "obtenido": "2026-10-26",
-      "candidatos": 320,
+      "candidatos": 317,
       "descartados": {
-        "sin peligro climático en el titular": 4163,
-        "otro tema": 582,
-        "no dice que algo pasó": 503,
-        "sin lugar (distrito o provincia)": 114,
+        "sin peligro climático en el titular": 4094,
+        "otro tema": 658,
+        "no dice que algo pasó": 501,
+        "sin lugar (distrito o provincia)": 115,
         "sin causa climática a la vista": 23
       }
     },
@@ -1574,17 +1581,17 @@
         "22",
         "25"
       ],
-      "registros": 37,
-      "corroboran": 55,
-      "sha256": "655925db8b53ce7acc8455da8fd0b18b59d327330c68618cb33cd68bf3dfb390",
+      "registros": 34,
+      "corroboran": 58,
+      "sha256": "c88c799d5f3000625e98f7cb93d34e07cb74b58eacf79d153a476373603d826a",
       "obtenido": "2026-10-26",
       "candidatos": 92,
       "descartados": {
-        "sin peligro climático en el titular": 1867,
+        "sin peligro climático en el titular": 1816,
+        "otro tema": 311,
         "no dice que algo pasó": 272,
-        "otro tema": 258,
         "sin lugar (distrito o provincia)": 95,
-        "sin causa climática a la vista": 9
+        "sin causa climática a la vista": 8
       }
     },
     {
@@ -1608,19 +1615,19 @@
       },
       "archivo": "prensa/rpp.json",
       "nota": "Titular y fecha de cada nota del archivo diario; quedan las que dicen que un peligro climático causó algo en un distrito o provincia.",
-      "parcial": true,
       "obtenido": "2026-10-26",
-      "sha256": "a49393a60942a8d40c59946e55bdeaa6ad702bb57edd2dbf530bf45130dcd4f9",
-      "candidatos": 55,
+      "sha256": "4fd61939e0fdb22c87b1f66a0609b0b019ba30228337c4e4b23628bd8ada9c9d",
+      "candidatos": 398,
       "descartados": {
-        "sin peligro climático en el titular": 11049,
-        "otro tema": 5984,
-        "no dice que algo pasó": 124,
-        "sin lugar (distrito o provincia)": 51,
-        "sin causa climática a la vista": 4
+        "sin peligro climático en el titular": 36064,
+        "otro tema": 14543,
+        "no dice que algo pasó": 1139,
+        "sin lugar (distrito o provincia)": 394,
+        "sin causa climática a la vista": 32,
+        "recuerda un evento de otro año": 2
       },
-      "registros": 14,
-      "corroboran": 41
+      "registros": 72,
+      "corroboran": 326
     },
     {
       "id": "prensa-exitosa",
@@ -1639,18 +1646,18 @@
       },
       "archivo": "prensa/exitosa.json",
       "nota": "Solo la dirección de cada nota (el titular sale de ella) y el mes del sitemap: precisión de mes.",
-      "sha256": "f91160a1bb366a2c4d8a35218bc258b85e68d14124ebf9dec54c91efed9b2a50",
+      "sha256": "0968be5cf209f79359b7da8c8f4ec5af3e0fc4f0e62bf486e29f11a45455a2b4",
       "obtenido": "2026-10-26",
-      "candidatos": 70,
+      "candidatos": 68,
       "descartados": {
-        "sin peligro climático en el titular": 3062,
-        "no dice que algo pasó": 1752,
-        "otro tema": 941,
-        "sin lugar (distrito o provincia)": 741,
+        "sin peligro climático en el titular": 3011,
+        "no dice que algo pasó": 1749,
+        "otro tema": 1019,
+        "sin lugar (distrito o provincia)": 727,
         "sin causa climática a la vista": 34
       },
       "registros": 11,
-      "corroboran": 59
+      "corroboran": 57
     },
     {
       "id": "hemeroteca-loc",
@@ -1711,7 +1718,21 @@
           "peru AND puno AND drought"
         ]
       },
-      "parcial": "pendiente"
+      "sha256": "c410236eddd2f036e47b62a11e002c89b3395ab944ceb47ae75ded4dfbefdf33",
+      "obtenido": "2026-10-29",
+      "candidatos": 95,
+      "descartados": {
+        "sin peligro climático": 1361,
+        "no nombra el Perú": 937,
+        "sin lugar": 152,
+        "sismo, maremoto o volcán": 150,
+        "no dice que algo pasó": 148,
+        "Perú o Lima de EE. UU.": 65,
+        "descripción general del país": 30,
+        "accidente minero": 1
+      },
+      "registros": 63,
+      "corroboran": 32
     },
     {
       "id": "glof-base-mundial",
@@ -1731,8 +1752,8 @@
         "sin fecha (ventana de varios años o década)": 63,
         "detonado por un sismo": 7
       },
-      "registros": 58,
-      "corroboran": 4
+      "registros": 56,
+      "corroboran": 6
     },
     {
       "id": "ingemmet-inventario-fechas",
@@ -1782,7 +1803,7 @@
       "cobertura": "1946-2025: cada llamamiento con su fecha, tipo de desastre, monto pedido y personas a asistir",
       "nota": "Solo los metadatos de cada llamamiento; no se guardan los informes de campo ni sus contactos. Cuenta cuántas veces el Perú pidió ayuda internacional por desastres climáticos.",
       "obtenido": "2026-10-26",
-      "sha256": "6737db858114cafa614f4fda806670621368643688cc2c5ce84c4088bd9ce83d",
+      "sha256": "4c2f46ac73c9e0f8f09dbb9cb873fd3565f76c9a38809d00c3bd29738bcab135",
       "registros": 36
     },
     {
@@ -1808,34 +1829,31 @@
       "tipo": "referencia"
     }
   ],
-  "generado": "2026-10-26T23:23:25Z",
+  "generado": "2026-10-29T06:27:41Z",
   "enlace": {
-    "coen: corrobora (lugar y fecha)": 15776,
-    "coen: fila propia": 3887,
+    "coen: corrobora (código SINPAD)": 5733,
+    "coen: corrobora (lugar y fecha)": 12379,
+    "coen: corrobora (lugar y mes)": 38,
+    "coen: fila propia": 4183,
     "glof: corrobora (lugar y fecha)": 4,
-    "glof: fila propia": 58,
-    "prensa: corrobora (lugar y fecha del texto)": 348,
-    "prensa: corrobora (lugar y fecha)": 3641,
-    "prensa: corrobora (lugar y mes)": 59,
-    "prensa: fila propia": 1380
+    "glof: corrobora (lugar y mes)": 2,
+    "glof: fila propia": 56,
+    "hemeroteca: corrobora (lugar y fecha)": 32,
+    "hemeroteca: fila propia": 63,
+    "prensa: corrobora (lugar y fecha del texto)": 388,
+    "prensa: corrobora (lugar y fecha)": 3844,
+    "prensa: corrobora (lugar y mes)": 57,
+    "prensa: fila propia": 1247
   },
   "calidad": {
     "DesInventar 1 de enero → precisión de mes": 197,
-    "ICEN pendiente": 2858,
-    "SINPAD 2016-2018: fecha corregida (hora de Lima)": 2630,
-    "confianza alta → media (fecha de reporte o publicación)": 3416,
+    "confianza alta → media (fecha de reporte o publicación)": 3146,
     "idmc unidas a su emergencia del SINPAD": 4940,
-    "nombres del nomenclátor actualizados": 40,
-    "nota de prensa que no es un evento": 15,
-    "punto de la fuente en un distrito creado después de 2020: UBIGEO del punto": 52,
-    "punto de la fuente fuera del área asignada: capital": 2420,
-    "punto del centro poblado que nombra la fuente": 1715,
-    "punto del nomenclátor actualizado (capital-departamento)": 2,
-    "punto del nomenclátor actualizado (capital-provincia)": 2,
-    "punto del nomenclátor actualizado (interior-distrito)": 1117,
-    "punto del río, la quebrada o la laguna que nombra la fuente": 365,
-    "punto por defecto de la fuente (capital): no es el lugar del evento": 107796,
-    "punto por defecto de la fuente (repetido): no es el lugar del evento": 9357
+    "punto de la fuente fuera del área asignada: capital": 2366,
+    "punto del centro poblado que nombra la fuente": 5175,
+    "punto del río, la quebrada o la laguna que nombra la fuente": 394,
+    "punto por defecto de la fuente (capital): no es el lugar del evento": 104358,
+    "punto por defecto de la fuente (repetido): no es el lugar del evento": 9893
   },
   "migraciones": [
     "kmvias-desinventar-metros"
