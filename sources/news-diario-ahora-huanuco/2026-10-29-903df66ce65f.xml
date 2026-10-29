@@ -1,0 +1,820 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Thu, 29 Oct 2026 02:13:13 GMT</lastBuildDate>
+    <pubDate>Wed, 28 Oct 2026 01:50:06 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>ANA prevé terminar 12 barreras dinámicas en quebradas de Lima antes del 12 de diciembre</title>
+    <link>https://ahora.com.pe/nacional/ana-barreras-dinamicas-quebradas-lima-diciembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/ana-barreras-dinamicas-quebradas-lima-diciembre</guid>
+    <pubDate>Wed, 28 Oct 2026 01:50:06 GMT</pubDate>
+    <description><![CDATA[La Autoridad Nacional del Agua prevé culminar entre el 10 y el 12 de diciembre la instalación de 12 barreras dinámicas en 10 quebradas de Lima, para reducir el riesgo de huaicos en Chaclacayo, Chosica y Santa Eulalia.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[ANA]]></category>
+    <category><![CDATA[barreras dinámicas]]></category>
+    <category><![CDATA[Fenómeno El Niño]]></category>
+    <category><![CDATA[huaicos]]></category>
+    <category><![CDATA[Chaclacayo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0d9c0bdc4f85.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0d9c0bdc4f85.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0d9c0bdc4f85.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Mbappé: tres marcas chinas rompen contratos y CCTV suspende LaLiga</title>
+    <link>https://ahora.com.pe/deportes/mbappe-marcas-chinas-rompen-contratos-laliga-cctv</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/mbappe-marcas-chinas-rompen-contratos-laliga-cctv</guid>
+    <pubDate>Thu, 29 Oct 2026 00:40:09 GMT</pubDate>
+    <description><![CDATA[Tres empresas chinas rompieron sus acuerdos comerciales con Kylian Mbappé por un meme sobre Mao Zedong, mientras el Grupo de Medios de China suspendió las emisiones de LaLiga y Migu retiró un partido del Real Madrid. El Real Madrid y LaLiga pidieron disculpas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Kylian Mbappé]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[China]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[patrocinios]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/d76916db4824.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/d76916db4824.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/d76916db4824.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Eder Sarabia es oficializado como nuevo entrenador del Espanyol hasta 2028</title>
+    <link>https://ahora.com.pe/deportes/eder-sarabia-nuevo-entrenador-espanyol-2028</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/eder-sarabia-nuevo-entrenador-espanyol-2028</guid>
+    <pubDate>Thu, 29 Oct 2026 00:40:07 GMT</pubDate>
+    <description><![CDATA[El Espanyol oficializó a Eder Sarabia como su nuevo entrenador hasta junio de 2028, en reemplazo de Manolo González. Sergio García dirigirá de forma interina ante el Villarreal.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Eder Sarabia]]></category>
+    <category><![CDATA[Espanyol]]></category>
+    <category><![CDATA[Monchi]]></category>
+    <category><![CDATA[Manolo González]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f92daa1c4ae2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f92daa1c4ae2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f92daa1c4ae2.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Arosemena elogia el proyecto de la FPF y destaca labor de Ferrari y Barreto</title>
+    <link>https://ahora.com.pe/deportes/arosemena-elogia-proyecto-fpf-ferrari-barreto</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/arosemena-elogia-proyecto-fpf-ferrari-barreto</guid>
+    <pubDate>Wed, 28 Oct 2026 23:30:11 GMT</pubDate>
+    <description><![CDATA[Alfredo Arosemena, administrador de Alianza Lima, elogió el trabajo de Jean Ferrari y Manuel Barreto en la FPF y pidió un sistema unificado para volver al Mundial 2030.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Alfredo Arosemena]]></category>
+    <category><![CDATA[FPF]]></category>
+    <category><![CDATA[Jean Ferrari]]></category>
+    <category><![CDATA[Manuel Barreto]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/2bdc4883012e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/2bdc4883012e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/2bdc4883012e.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Velazco: la llegada de Bustos a la &apos;U&apos; &quot;ha sido importante&quot; para retomar el camino</title>
+    <link>https://ahora.com.pe/deportes/velazco-llegada-bustos-universitario-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/velazco-llegada-bustos-universitario-clausura</guid>
+    <pubDate>Wed, 28 Oct 2026 23:00:12 GMT</pubDate>
+    <description><![CDATA[Franco Velazco, administrador de Universitario, se refirió a la incorporación de Fabián Bustos desde Millonarios y al momento decisivo del equipo en el Torneo Clausura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Fabián Bustos]]></category>
+    <category><![CDATA[Franco Velazco]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/544ee54314f6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/544ee54314f6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/544ee54314f6.jpg"/>
+    <media:description type="plain"><![CDATA[Franco Velazco se refirió a la llegada de una figura importante para este Torneo Clausura y destacó su relevancia. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Delegación de Alianza Lima rindió homenaje al Señor de los Milagros antes del clásico</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-homenaje-senor-milagros-antes-cristal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-homenaje-senor-milagros-antes-cristal</guid>
+    <pubDate>Wed, 28 Oct 2026 21:20:08 GMT</pubDate>
+    <description><![CDATA[Una delegación de Alianza Lima, encabezada por Alfredo Arosemena, Franco Navarro y Waldir Sáenz, participó en la procesión del Señor de los Milagros. El primer equipo no asistió para priorizar la concentración de cara al clásico ante Sporting Cristal por la fecha 14 del Torneo Clausura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Señor de los Milagros]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[clásico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/54ee3770c480.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/54ee3770c480.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/54ee3770c480.png"/>
+    <media:description type="plain"><![CDATA[Delegación de Alianza Lima sale al Campo de los Sports de Ñuñoa en la previa de un partido contra Deportes Magallanes en la tarde del 17 de noviembre de 1935, iniciando así una gira por Chile. Alzan el brazo Valdivieso, el directivo Juan Huertas, Jorge Koochoi, Orestes Jordán, Alejandro Villanueva y el arquero suplente Manuel Pedreros — Foto: Unknown authorUnknown author (wikimedia-public domain)]]></media:description>
+  </item>
+  <item>
+    <title>Valverde difunde mensajes de familiares tras la tragedia ferroviaria de Urda</title>
+    <link>https://ahora.com.pe/mundo/valverde-tragedia-urda-real-madrid</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/valverde-tragedia-urda-real-madrid</guid>
+    <pubDate>Wed, 28 Oct 2026 21:20:07 GMT</pubDate>
+    <description><![CDATA[Fede Valverde, capitán del Real Madrid, usó su cuenta de Instagram para difundir mensajes de familiares que buscan a allegados tras el choque de trenes en Urda (Toledo). La RFEF aplazó la jornada de la Copa del Rey y los clubes suspendieron actos.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Fede Valverde]]></category>
+    <category><![CDATA[tragedia de Urda]]></category>
+    <category><![CDATA[accidente ferroviario Toledo]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Copa del Rey]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/3ee579a81d04.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/3ee579a81d04.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/3ee579a81d04.webp"/>
+    <media:description type="plain"><![CDATA[Tras la terrible tragedia del accidente de tren en Urda (Toledo), que ha dejado por el momento 68 fallecidos y decenas de heridos, el mundo del fútbol se ha unido para mostrar su solidaridad y apoyo con los afectados. La RFEF ha anunciado el aplazamiento de los encuentros de la Copa del Rey programa — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>País para Todos lleva al JNE su pedido por el acta de Chuquis y espera respuesta</title>
+    <link>https://ahora.com.pe/regional/pais-para-todos-jne-acta-chuquis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/pais-para-todos-jne-acta-chuquis</guid>
+    <pubDate>Wed, 28 Oct 2026 20:50:07 GMT</pubDate>
+    <description><![CDATA[País para Todos presentó acciones legales ante el JNE para que resuelva el pedido de Perú Primero de anular un acta de Chuquis, en Dos de Mayo. El partido también apeló en Huamalíes y desistió en Tingo María.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[País para Todos]]></category>
+    <category><![CDATA[JNE]]></category>
+    <category><![CDATA[Chuquis]]></category>
+    <category><![CDATA[Huamalíes]]></category>
+    <category><![CDATA[elecciones]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/bdb9e1b16f9b.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/bdb9e1b16f9b.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/bdb9e1b16f9b.webp"/>
+    <media:description type="plain"><![CDATA[<p>Las copas de los árboles se entrelazan sobre el cauce y forman una especie de bó...</p>
+<p>La entrada <a href="https://inforegion.pe/cuevas-de-las-pavas-el-paraiso-natural-de-tingo-maria-que-sorprende-con-sus-pozas-cristalinas-senderos-rodeados-de-vegetacion-y-una-leyenda-ancestral/">Cuevas de la — Foto: Inforegión]]></media:description>
+  </item>
+  <item>
+    <title>Jean Franco Trujillo, la promesa de Universitario que anotó para Perú Sub-15 ante Italia</title>
+    <link>https://ahora.com.pe/deportes/jean-franco-trujillo-peru-sub-15-italia-mundial</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/jean-franco-trujillo-peru-sub-15-italia-mundial</guid>
+    <pubDate>Wed, 28 Oct 2026 19:50:06 GMT</pubDate>
+    <description><![CDATA[Jean Franco Trujillo, delantero de Universitario de 15 años, marcó el gol de Perú ante Italia en los dieciseisavos del Mundial Sub-15 de Azerbaiyán 2026, donde la Bicolor cayó en penales y seguirá en el Nivel A.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Jean Franco Trujillo]]></category>
+    <category><![CDATA[Perú Sub-15]]></category>
+    <category><![CDATA[Mundial Sub-15 Azerbaiyán 2026]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/c0b29b7aebd9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/c0b29b7aebd9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/c0b29b7aebd9.jpg"/>
+    <media:description type="plain"><![CDATA[Jean Franco Trujillo, jugador de Universitario, marcó el 1-0 de Perú ante Italia en el Mundial Sub-15. Conoce quién es la promesa crema de la selección peruana. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Atlético Nacional de Iquitos denuncia racismo ante la LINFA por la Copa Perú 2026</title>
+    <link>https://ahora.com.pe/deportes/atletico-nacional-iquitos-denuncia-racismo-linfa-copa-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/atletico-nacional-iquitos-denuncia-racismo-linfa-copa-peru</guid>
+    <pubDate>Wed, 28 Oct 2026 16:30:12 GMT</pubDate>
+    <description><![CDATA[Atlético Nacional de Iquitos denunció ante la LINFA presuntos ataques racistas durante el partido de ida de los dieciseisavos de final de la Copa Perú 2026 ante CEFUT Juliaca, en el estadio Guillermo Briceño Rosamedina.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Atlético Nacional de Iquitos]]></category>
+    <category><![CDATA[CEFUT Juliaca]]></category>
+    <category><![CDATA[Copa Perú 2026]]></category>
+    <category><![CDATA[LINFA]]></category>
+    <category><![CDATA[racismo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/4238d80084b8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/4238d80084b8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/4238d80084b8.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Consejo de la UE propone que la IA entrene con datos personales sin pedir permiso</title>
+    <link>https://ahora.com.pe/tecnologia/consejo-ue-rgpd-ia-datos-sin-permiso</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/consejo-ue-rgpd-ia-datos-sin-permiso</guid>
+    <pubDate>Wed, 28 Oct 2026 16:30:10 GMT</pubDate>
+    <description><![CDATA[El Consejo de la UE fijó postura para negociar el Digital Omnibus, que permitiría entrenar modelos de IA con datos personales amparados en el interés legítimo y sin consentimiento. La propuesta aún no es ley.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[RGPD]]></category>
+    <category><![CDATA[inteligencia artificial]]></category>
+    <category><![CDATA[Digital Omnibus]]></category>
+    <category><![CDATA[Consejo de la UE]]></category>
+    <category><![CDATA[protección de datos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/e02f1c24bf71.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/e02f1c24bf71.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/e02f1c24bf71.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Contraloría halla indicios de cobro indebido a docente de la Unheval por tesis</title>
+    <link>https://ahora.com.pe/regional/contraloria-docente-unheval-cobro-indebido-tesis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/contraloria-docente-unheval-cobro-indebido-tesis</guid>
+    <pubDate>Wed, 28 Oct 2026 16:20:06 GMT</pubDate>
+    <description><![CDATA[La Contraloría detectó indicios de que un docente de la Unheval cobró a una bachiller para favorecer la aprobación de su tesis. La facultad le impuso 30 días de suspensión, sanción que el órgano de control consideró no proporcional.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Unheval]]></category>
+    <category><![CDATA[Contraloría]]></category>
+    <category><![CDATA[tesis]]></category>
+    <category><![CDATA[cobro indebido]]></category>
+    <category><![CDATA[docente]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/ab36dc044c04.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/ab36dc044c04.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/ab36dc044c04.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Discord abrirá a Google los mensajes de sus servidores públicos desde diciembre</title>
+    <link>https://ahora.com.pe/tecnologia/discord-mensajes-servidores-publicos-google</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/discord-mensajes-servidores-publicos-google</guid>
+    <pubDate>Wed, 28 Oct 2026 15:20:06 GMT</pubDate>
+    <description><![CDATA[Discord anunció que los servidores descubribles tendrán páginas web públicas desde el 16 de noviembre y que sus mensajes podrán aparecer en buscadores a mediados de diciembre, con opciones para excluir canales y ocultar mensajes.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[Discord]]></category>
+    <category><![CDATA[motores de búsqueda]]></category>
+    <category><![CDATA[privacidad]]></category>
+    <category><![CDATA[servidores descubribles]]></category>
+    <category><![CDATA[indexación]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/5fe499188e7b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/5fe499188e7b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/5fe499188e7b.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>CD Moquegua denuncia llamadas y mensajes intimidatorios contra sus futbolistas</title>
+    <link>https://ahora.com.pe/deportes/cd-moquegua-denuncia-intimidaciones-jugadores</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cd-moquegua-denuncia-intimidaciones-jugadores</guid>
+    <pubDate>Wed, 28 Oct 2026 15:00:13 GMT</pubDate>
+    <description><![CDATA[CD Moquegua denunció llamadas y mensajes intimidatorios dirigidos a sus futbolistas y anunció que acudirá a las autoridades para identificar a los responsables, antes del partido ante ADT por el Torneo Clausura 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[ADT]]></category>
+    <category><![CDATA[intimidación futbolistas]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7e17a68b4364.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7e17a68b4364.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7e17a68b4364.jpg"/>
+    <media:description type="plain"><![CDATA[A través de un comunicado en sus redes sociales, el CD Moquegua denunció que sus jugadores vienen recibiendo llamadas y mensajes para persuadirlos en la recta final del campeonato. — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>EL MURO DE CONTENCIÓN BRASILEÑO</title>
+    <link>https://ahora.com.pe/opinion/el-muro-de-contencion-brasileno</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/el-muro-de-contencion-brasileno</guid>
+    <pubDate>Wed, 28 Oct 2026 14:18:16 GMT</pubDate>
+    <description><![CDATA[Lo que parecía a todas luces ya una derrota segura y la toma final de América Latina en manos del anglosionismo se convirtió, en cuestión de, en el muro de contención más importante frente a la ultraderecha y, si no, en el primer clavo del ataúd de su existencia. Luis Ignacio Lula Da Silva, del Part]]></description>
+    <dc:creator><![CDATA[Diario Ahora]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[MURO DE CONTENCIÓN]]></category>
+    <category><![CDATA[abstención alcanzó]]></category>
+    <category><![CDATA[abstencionistas un fuerte]]></category>
+    <category><![CDATA[abstenerse Lula]]></category>
+    <category><![CDATA[accede la presidencia]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/ad661298228d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/ad661298228d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/ad661298228d.jpg"/>
+  </item>
+  <item>
+    <title>El agua no puede esperar al OTASS</title>
+    <link>https://ahora.com.pe/noticia/el-agua-no-puede-esperar-al-otass</link>
+    <guid isPermaLink="true">https://ahora.com.pe/noticia/el-agua-no-puede-esperar-al-otass</guid>
+    <pubDate>Wed, 28 Oct 2026 14:14:04 GMT</pubDate>
+    <description><![CDATA[El agua no puede esperar al OTASS]]></description>
+    <dc:creator><![CDATA[Diario Ahora]]></dc:creator>
+    <category><![CDATA[esperar al OTASS]]></category>
+    <category><![CDATA[agua]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/953d5c419b5a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/953d5c419b5a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/953d5c419b5a.jpg"/>
+  </item>
+  <item>
+    <title>Frosinone, sexto con 14 puntos, recibe a Lecce en la fecha 9 de la Serie A</title>
+    <link>https://ahora.com.pe/deportes/frosinone-lecce-fecha-9-serie-a</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/frosinone-lecce-fecha-9-serie-a</guid>
+    <pubDate>Wed, 28 Oct 2026 13:20:06 GMT</pubDate>
+    <description><![CDATA[Frosinone, sexto con 14 puntos, recibe a Lecce, duodécimo con 9, en la fecha 9 de la Serie A. El local viene de empatar 4-4 con Atalanta y la visita de perder 0-2 ante Juventus. El árbitro será Rosario Abisso.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Frosinone]]></category>
+    <category><![CDATA[Lecce]]></category>
+    <category><![CDATA[Serie A]]></category>
+    <category><![CDATA[fecha 9]]></category>
+    <category><![CDATA[Rosario Abisso]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/64d6fa7369c1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/64d6fa7369c1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/64d6fa7369c1.jpg"/>
+    <media:description type="plain"><![CDATA[Palpitamos la previa del choque entre Frosinone y Lecce. Cuándo, dónde y a qué hora juegan, con el arbitraje de Rosario Abisso. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>La RFEF suspende los 24 partidos de Copa del Rey por el accidente de tren en Toledo</title>
+    <link>https://ahora.com.pe/deportes/rfe-suspende-jornada-copa-del-rey-accidente-toledo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/rfe-suspende-jornada-copa-del-rey-accidente-toledo</guid>
+    <pubDate>Wed, 28 Oct 2026 13:10:06 GMT</pubDate>
+    <description><![CDATA[La Real Federación Española de Fútbol suspendió los 24 encuentros de la primera ronda de la Copa del Rey previstos para este miércoles por el accidente de tren en Toledo, que dejó al menos 50 muertos y más de 179 heridos, según Protección Civil. La RFEF aún debe reubicar los partidos y definir la jornada del jueves.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Copa del Rey]]></category>
+    <category><![CDATA[RFEF]]></category>
+    <category><![CDATA[accidente de tren Toledo]]></category>
+    <category><![CDATA[suspensión partidos]]></category>
+    <category><![CDATA[fútbol español]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/b8d724f1b4d6.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/b8d724f1b4d6.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/b8d724f1b4d6.webp"/>
+    <media:description type="plain"><![CDATA[La Real Federación Española de Fútbol acaba de confirmar que ha decidido suspender todos los partidos que estaban previstos para este miércoles correspondientes a la primera jornada de la Copa del Rey Mapfre. Suspensión&nbsp;<a href="https://www.mundodeportivo.com/actualidad/20261028/1004244146/dos- — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima: Mateo Antoni prácticamente descartado para el duelo ante Sporting Cristal</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-mateo-antoni-descartado-sporting-cristal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-mateo-antoni-descartado-sporting-cristal</guid>
+    <pubDate>Wed, 28 Oct 2026 11:40:08 GMT</pubDate>
+    <description><![CDATA[Alianza Lima afronta el duelo ante Sporting Cristal por la fecha 14 del Torneo Clausura 2026 con Mateo Antoni prácticamente descartado por molestias en la rodilla, según RPP. Paolo Guerrero y Esteban Pavez tampoco están disponibles.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Mateo Antoni]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Alberto Gallardo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0dfea430e1d0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0dfea430e1d0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0dfea430e1d0.jpg"/>
+    <media:description type="plain"><![CDATA[Alianza Lima afina detalles para el compromiso clave ante Cristal por la fecha 14 del Torneo Clausura 2026. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Jean Deza cuestiona a Eryc Castillo: &quot;No sabe terminar las jugadas&quot;</title>
+    <link>https://ahora.com.pe/deportes/jean-deza-critica-eryc-castillo-alianza-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/jean-deza-critica-eryc-castillo-alianza-lima</guid>
+    <pubDate>Wed, 28 Oct 2026 10:00:11 GMT</pubDate>
+    <description><![CDATA[Jean Deza criticó el rendimiento de Eryc Castillo en Alianza Lima y afirmó que el extremo ecuatoriano no termina bien las jugadas, pese a sus 17 goles y 5 asistencias en la Liga 1 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Jean Deza]]></category>
+    <category><![CDATA[Eryc Castillo]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <category><![CDATA[Enfocados]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/b75b7067043a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/b75b7067043a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/b75b7067043a.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco pisa fuerte en la nacional</title>
+    <link>https://ahora.com.pe/deportes/huanuco-pisa-fuerte-en-la-nacional</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/huanuco-pisa-fuerte-en-la-nacional</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:37 GMT</pubDate>
+    <description><![CDATA[Los representantes de Huánuco continúan destacando en la etapa nacional de los Juegos Deportivos Escolares, donde los equipos de fútbol masculino y femenino de la categoría B (14 años) consiguieron]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7497d17999b0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7497d17999b0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7497d17999b0.jpg"/>
+    <media:description type="plain"><![CDATA[Huánuco pisa fuerte en la nacional — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Perú Sub-15 avanza y Ferrari destaca resultados</title>
+    <link>https://ahora.com.pe/deportes/peru-sub-15-avanza-y-ferrari-destaca-resultados</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-sub-15-avanza-y-ferrari-destaca-resultados</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:34 GMT</pubDate>
+    <description><![CDATA[La selección peruana Sub-15 avanzó como líder de su grupo a la siguiente ronda del Mundial y Festival de la categoría, disputado en Azerbaiyán.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sub]]></category>
+    <category><![CDATA[Ferrari]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/855eb9dd4721.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/855eb9dd4721.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/855eb9dd4721.jpg"/>
+    <media:description type="plain"><![CDATA[Perú Sub-15 avanza y Ferrari destaca resultados — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Liga 1 define calendario de finales</title>
+    <link>https://ahora.com.pe/deportes/liga-1-define-calendario-de-finales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/liga-1-define-calendario-de-finales</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:31 GMT</pubDate>
+    <description><![CDATA[La definición de la Liga 1 2026 podría extenderse hasta diciembre si los resultados del Torneo Clausura obligan a disputar semifinales y finales.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Liga]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/25e5352b588b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/25e5352b588b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/25e5352b588b.jpg"/>
+    <media:description type="plain"><![CDATA[Liga 1 define calendario de finales — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Carabalí podría regresar a Universitario en 2027</title>
+    <link>https://ahora.com.pe/deportes/carabali-podria-regresar-a-universitario-en-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/carabali-podria-regresar-a-universitario-en-2027</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:28 GMT</pubDate>
+    <description><![CDATA[José Carabalí aparece nuevamente entre las alternativas que evalúa Universitario de Deportes para la temporada 2027.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Carabalí]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0ecb65d0c02e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0ecb65d0c02e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0ecb65d0c02e.jpg"/>
+    <media:description type="plain"><![CDATA[Carabalí podría regresar a Universitario en 2027 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Távara desafía a Alianza Lima</title>
+    <link>https://ahora.com.pe/deportes/tavara-desafia-a-alianza-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/tavara-desafia-a-alianza-lima</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:24 GMT</pubDate>
+    <description><![CDATA[Martín Távara respondió a las críticas contra Sporting Cristal después de su reciente derrota y afirmó que el plantel está preparado para enfrentar a Alianza Lima.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Távara]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/07933cf3bf29.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/07933cf3bf29.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/07933cf3bf29.jpg"/>
+    <media:description type="plain"><![CDATA[Távara desafía a Alianza Lima — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Gimnastas huanuqueños brillan con nuevas medallas</title>
+    <link>https://ahora.com.pe/deportes/gimnastas-huanuquenos-brillan-con-nuevas-medallas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/gimnastas-huanuquenos-brillan-con-nuevas-medallas</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:21 GMT</pubDate>
+    <description><![CDATA[La gimnasia volvió a sumar resultados destacados para Huánuco en la etapa nacional de los Juegos Deportivos Escolares.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0d562891e5f9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0d562891e5f9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0d562891e5f9.jpg"/>
+    <media:description type="plain"><![CDATA[Gimnastas huanuqueños brillan con nuevas medallas — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Huanuqueños conquistan medallas en taekwondo nacional</title>
+    <link>https://ahora.com.pe/deportes/huanuquenos-conquistan-medallas-en-taekwondo-nacional</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/huanuquenos-conquistan-medallas-en-taekwondo-nacional</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:18 GMT</pubDate>
+    <description><![CDATA[Cinco deportistas de Huánuco participaron en el V Ranking Nacional de Taekwondo Lima 2026, certamen desarrollado la semana pasada bajo la organización de la Federación Peruana de esta disciplina.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/49f8c9e350cb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/49f8c9e350cb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/49f8c9e350cb.jpg"/>
+    <media:description type="plain"><![CDATA[Huanuqueños conquistan medallas en taekwondo nacional — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Salazar deja Atlético Evza tras derrota</title>
+    <link>https://ahora.com.pe/deportes/salazar-deja-atletico-evza-tras-derrota</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/salazar-deja-atletico-evza-tras-derrota</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:14 GMT</pubDate>
+    <description><![CDATA[Marcial Salazar dejó la dirección técnica de Atlético Evza después de la derrota sufrida el domingo frente a Deportivo El Inca, resultado que complicó las posibilidades del campeón huanuqueño de]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Salazar]]></category>
+    <category><![CDATA[Atlético Evza]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7e6ca3f64379.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7e6ca3f64379.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7e6ca3f64379.jpg"/>
+    <media:description type="plain"><![CDATA[Salazar deja Atlético Evza tras derrota — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Nueve meses de prisión preventiva por asalto armado a grifo en José Crespo y Castillo</title>
+    <link>https://ahora.com.pe/policiales/nueve-meses-de-prision-preventiva-por-asalto-armado-a-grifo-en-jose-crespo-y</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/nueve-meses-de-prision-preventiva-por-asalto-armado-a-grifo-en-jose-crespo-y</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:10 GMT</pubDate>
+    <description><![CDATA[Roosebelt Bocanegra es investigado por robo agravado. Serenos lo encontraron oculto en San Francisco; el segundo implicado permanece prófugo.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[José Crespo]]></category>
+    <category><![CDATA[Castillo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/c25c33f97352.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/c25c33f97352.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/c25c33f97352.jpg"/>
+    <media:description type="plain"><![CDATA[Nueve meses de prisión preventiva por asalto armado a grifo en José Crespo y Castillo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Fiscalía pedirá nueve meses de prisión para detenidos por muerte de joven en Huánuco</title>
+    <link>https://ahora.com.pe/policiales/fiscalia-pedira-nueve-meses-de-prision-para-detenidos-por-muerte-de-joven-en</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/fiscalia-pedira-nueve-meses-de-prision-para-detenidos-por-muerte-de-joven-en</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:07 GMT</pubDate>
+    <description><![CDATA[Franklin Mora y Nelson Vilca serán sometidos a reconocimiento en rueda. Las diligencias buscan precisar la presunta participación de cada uno en los hechos.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Fiscalía]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/11fa37f05571.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/11fa37f05571.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/11fa37f05571.jpg"/>
+    <media:description type="plain"><![CDATA[Fiscalía pedirá nueve meses de prisión para detenidos por muerte de joven en Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>¡Tragedia en Puerto Inca! Reportan hallazgo sin vida de dos hermanos secuestrados</title>
+    <link>https://ahora.com.pe/policiales/tragedia-en-puerto-inca-reportan-hallazgo-sin-vida-de-dos-hermanos-secuestrados</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/tragedia-en-puerto-inca-reportan-hallazgo-sin-vida-de-dos-hermanos-secuestrados</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:04 GMT</pubDate>
+    <description><![CDATA[La versión preliminar sitúa los cuerpos cerca de Maquisapayo. Policías y marinos habían buscado a Levi Barrí y Fernando Roly Padilla Evangelista en el caserío Los Ángeles]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Puerto Inca]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/d2d7b876388c.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/d2d7b876388c.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/d2d7b876388c.png"/>
+    <media:description type="plain"><![CDATA[¡Tragedia en Puerto Inca! Reportan hallazgo sin vida de dos hermanos secuestrados — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Hombre de 32 años muere en Supte pese a media hora de reanimación</title>
+    <link>https://ahora.com.pe/policiales/hombre-de-32-anos-muere-en-supte-pese-a-media-hora-de-reanimacion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/hombre-de-32-anos-muere-en-supte-pese-a-media-hora-de-reanimacion</guid>
+    <pubDate>Wed, 28 Oct 2026 09:02:00 GMT</pubDate>
+    <description><![CDATA[El SAMU intentó salvarlo tras encontrarlo inconsciente y sin respiración. La Policía realizó diligencias para esclarecer lo ocurrido en este sector de Tingo María.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Supte]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/6387d5c973ea.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/6387d5c973ea.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/6387d5c973ea.jpg"/>
+    <media:description type="plain"><![CDATA[Hombre de 32 años muere en Supte pese a media hora de reanimación — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Hallan cadáver de varón en el Marañón y lo trasladan a la morgue de Huánuco</title>
+    <link>https://ahora.com.pe/policiales/hallan-cadaver-de-varon-en-el-maranon-y-lo-trasladan-a-la-morgue-de-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/hallan-cadaver-de-varon-en-el-maranon-y-lo-trasladan-a-la-morgue-de-huanuco</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:56 GMT</pubDate>
+    <description><![CDATA[El cuerpo fue recuperado cerca del puente Quipas, en Chuquis. Policías, serenos y pobladores participaron en la intervención; la víctima permanece sin identificar.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Marañón]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/13a574a5f3f4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/13a574a5f3f4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/13a574a5f3f4.jpg"/>
+    <media:description type="plain"><![CDATA[Hallan cadáver de varón en el Marañón y lo trasladan a la morgue de Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Identifican a presunto autor del ataque que mató al DJ huanuqueño «Picuyo» en Pasco</title>
+    <link>https://ahora.com.pe/policiales/identifican-a-presunto-autor-del-ataque-que-mato-al-dj-huanuqueno-picuyo-en</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/identifican-a-presunto-autor-del-ataque-que-mato-al-dj-huanuqueno-picuyo-en</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:53 GMT</pubDate>
+    <description><![CDATA[El joven habría intervenido para defender a un compañero que era golpeado. Minutos después, el agresor habría regresado con un cuchillo y lo atacó en el escenario]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Pasco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7d3747e1f175.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7d3747e1f175.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7d3747e1f175.jpg"/>
+    <media:description type="plain"><![CDATA[Identifican a presunto autor del ataque que mató al DJ huanuqueño «Picuyo» en Pasco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Elecciones en Israel y Estados Unidos pueden redefinir el escenario mundial</title>
+    <link>https://ahora.com.pe/mundo/elecciones-en-israel-y-estados-unidos-pueden-redefinir-el-escenario-mundial</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/elecciones-en-israel-y-estados-unidos-pueden-redefinir-el-escenario-mundial</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:50 GMT</pubDate>
+    <description><![CDATA[El liderazgo israelí y la próxima composición del Congreso estadounidense tendrán implicaciones para Medio Oriente y la economía internacional.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Israel]]></category>
+    <category><![CDATA[Estados Unidos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/95b4522add45.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/95b4522add45.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/95b4522add45.jpg"/>
+    <media:description type="plain"><![CDATA[Elecciones en Israel y Estados Unidos pueden redefinir el escenario mundial — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Flávio Bolsonaro llega a Estados Unidos tras perder las elecciones ante Lula</title>
+    <link>https://ahora.com.pe/mundo/flavio-bolsonaro-llega-a-estados-unidos-tras-perder-las-elecciones-ante-lula</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/flavio-bolsonaro-llega-a-estados-unidos-tras-perder-las-elecciones-ante-lula</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:47 GMT</pubDate>
+    <description><![CDATA[El senador brasileño viajó después de recibir una orden para entregar sus pasaportes. Washington anunció visas para él y su familia]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Flávio Bolsonaro]]></category>
+    <category><![CDATA[Estados Unidos]]></category>
+    <category><![CDATA[Lula]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/0857a55bff93.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/0857a55bff93.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/0857a55bff93.jpg"/>
+    <media:description type="plain"><![CDATA[Flávio Bolsonaro llega a Estados Unidos tras perder las elecciones ante Lula — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Minería peruana exportaría US$79.497 millones en 2026</title>
+    <link>https://ahora.com.pe/economia/mineria-peruana-exportaria-us-79-497-millones-en-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/mineria-peruana-exportaria-us-79-497-millones-en-2026</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:44 GMT</pubDate>
+    <description><![CDATA[La CCL prevé un crecimiento cercano al 32%. El plomo tendría el mayor avance porcentual, mientras el cobre mantendría el liderazgo en valor.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Minería]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/6cefcc40c69e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/6cefcc40c69e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/6cefcc40c69e.jpg"/>
+    <media:description type="plain"><![CDATA[Minería peruana exportaría US$79.497 millones en 2026 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Dos de Mayo da cinco días hábiles para desalojar corrales de cerdos en Ripán</title>
+    <link>https://ahora.com.pe/regional/dos-de-mayo-da-cinco-dias-habiles-para-desalojar-corrales-de-cerdos-en-ripan</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/dos-de-mayo-da-cinco-dias-habiles-para-desalojar-corrales-de-cerdos-en-ripan</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:34 GMT</pubDate>
+    <description><![CDATA[La Municipalidad Provincial de Dos de Mayo afirma que los corrales ocupan un predio de su propiedad en la ex Base Rayo y que no tienen autorización. Vencido el plazo, ingresará maquinaria pesada e incautará el ganado.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Dos de Mayo]]></category>
+    <category><![CDATA[Ripán]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/e10d0a209168.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/e10d0a209168.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/e10d0a209168.jpg"/>
+    <media:description type="plain"><![CDATA[Dos de Mayo da cinco días hábiles para desalojar corrales de cerdos en Ripán — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Seda Huánuco afirma haber invertido más de S/ 10 millones, a una semana del paro</title>
+    <link>https://ahora.com.pe/regional/seda-huanuco-afirma-haber-invertido-mas-de-s-10-millones-a-una-semana-del-paro</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/seda-huanuco-afirma-haber-invertido-mas-de-s-10-millones-a-una-semana-del-paro</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:29 GMT</pubDate>
+    <description><![CDATA[La empresa difundió un balance de seis obras culminadas entre 2025 y 2026 y de mejoras en sus indicadores. El documento no menciona el canal de conducción que la Contraloría advirtió que podría colapsar]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Seda Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/2d0c18dcbe92.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/2d0c18dcbe92.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/2d0c18dcbe92.jpg"/>
+    <media:description type="plain"><![CDATA[Seda Huánuco afirma haber invertido más de S/ 10 millones, a una semana del paro — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Jesús Cristóbal Campos, candidato en Yanag: «Para un centro poblado, ya colapsó»</title>
+    <link>https://ahora.com.pe/regional/jesus-cristobal-campos-candidato-en-yanag-para-un-centro-poblado-ya-colapso</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/jesus-cristobal-campos-candidato-en-yanag-para-un-centro-poblado-ya-colapso</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:23 GMT</pubDate>
+    <description><![CDATA[El candidato a la alcaldía del centro poblado Corazón de Jesús de Yanag propone agua y desagüe, un puesto policial, la creación del distrito y anular la condición de zona residencial.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Jesús Cristóbal Campos]]></category>
+    <category><![CDATA[Yanag]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7de7143b4b94.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7de7143b4b94.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7de7143b4b94.jpg"/>
+    <media:description type="plain"><![CDATA[Jesús Cristóbal Campos, candidato en Yanag: «Para un centro poblado, ya colapsó» — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Canal de Seda Huánuco sigue con riesgos advertidos desde 2024, afirma Contraloría</title>
+    <link>https://ahora.com.pe/regional/canal-de-seda-huanuco-sigue-con-riesgos-advertidos-desde-2024-afirma-contraloria</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/canal-de-seda-huanuco-sigue-con-riesgos-advertidos-desde-2024-afirma-contraloria</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:20 GMT</pubDate>
+    <description><![CDATA[El informe, notificado el 12 de octubre al gerente general Mirko Felix Jurado Dueñas, describe un bypass apoyado en maderas y la obra de gaviones suspendida.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Seda Huánuco]]></category>
+    <category><![CDATA[Contraloría]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/e5c9a16c3181.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/e5c9a16c3181.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/e5c9a16c3181.jpg"/>
+    <media:description type="plain"><![CDATA[Canal de Seda Huánuco sigue con riesgos advertidos desde 2024, afirma Contraloría — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Escolares de Roosevelt viajan a Chiclayo para representar a Huánuco en Eureka 2026</title>
+    <link>https://ahora.com.pe/regional/alumnas-del-roosevelt-school-representan-a-huanuco-en-la-etapa-nacional-de-la</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/alumnas-del-roosevelt-school-representan-a-huanuco-en-la-etapa-nacional-de-la</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:07 GMT</pubDate>
+    <description><![CDATA[Génesis García y Gabriela Vásquez participarán en la etapa nacional de la feria científica, acompañadas por el profesor Mark Almeida.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Roosevelt School]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[Eureka]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/f131e191c7fb.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/f131e191c7fb.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/f131e191c7fb.png"/>
+    <media:description type="plain"><![CDATA[Alumnas del Roosevelt School representan a Huánuco en la etapa nacional de la feria Eureka — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Cuestionan que el Gorehco pase a la ANIN fondos del oncológico: Consejero Dante Tarazona</title>
+    <link>https://ahora.com.pe/regional/cuestionan-que-el-gorehco-pase-a-la-anin-fondos-del-oncologico-consejero-dante</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/cuestionan-que-el-gorehco-pase-a-la-anin-fondos-del-oncologico-consejero-dante</guid>
+    <pubDate>Wed, 28 Oct 2026 09:01:01 GMT</pubDate>
+    <description><![CDATA[Dante Oliver Tarazona Reyes dice que S/ 275 millones del Foncor pasaron a la Autoridad Nacional de Infraestructura. También critica obras paralizadas y los viajes del gobernador Antonio Pulgar Lucas.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Gorehco]]></category>
+    <category><![CDATA[ANIN]]></category>
+    <category><![CDATA[Dante Tarazona]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/2f2898922237.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/2f2898922237.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/2f2898922237.jpg"/>
+    <media:description type="plain"><![CDATA[Cuestionan que el Gorehco pase a la ANIN fondos del oncológico: Consejero Dante Tarazona — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Invasión de viviendas estrechan la vía de La Unión a Huánuco Pampa</title>
+    <link>https://ahora.com.pe/regional/invasion-de-viviendas-estrechan-la-via-de-la-union-a-huanuco-pampa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/invasion-de-viviendas-estrechan-la-via-de-la-union-a-huanuco-pampa</guid>
+    <pubDate>Wed, 28 Oct 2026 09:00:54 GMT</pubDate>
+    <description><![CDATA[Kenny Rosado Salazar dice que en el barrio de Huallanay se construye casi sobre la vía principal. El virtual alcalde Diego Palacios ofreció una vía alterna por Chacamayo]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Unión]]></category>
+    <category><![CDATA[Huánuco Pampa]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/c55ecdaff9ec.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/c55ecdaff9ec.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/c55ecdaff9ec.jpg"/>
+    <media:description type="plain"><![CDATA[Invasión de viviendas estrechan la vía de La Unión a Huánuco Pampa — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Alerta roja por lluvias en Huánuco y otros 10 departamentos hasta el jueves</title>
+    <link>https://ahora.com.pe/regional/alerta-roja-por-lluvias-en-huanuco-y-otros-10-departamentos-hasta-el-jueves</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/alerta-roja-por-lluvias-en-huanuco-y-otros-10-departamentos-hasta-el-jueves</guid>
+    <pubDate>Wed, 28 Oct 2026 09:00:51 GMT</pubDate>
+    <description><![CDATA[El aviso N.º 440 rige desde el martes 27 hasta el jueves 29 de octubre y alcanza a 11 departamentos. Un nuevo friaje en la selva comienza el miércoles 28, según el Senamhi.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/42fa8a0fceb9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/42fa8a0fceb9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/42fa8a0fceb9.jpg"/>
+    <media:description type="plain"><![CDATA[Alerta roja por lluvias en Huánuco y otros 10 departamentos hasta el jueves — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Plan Cero Colas: el Valdizán da citas en dos turnos</title>
+    <link>https://ahora.com.pe/regional/plan-cero-colas-el-valdizan-da-citas-en-dos-turnos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/plan-cero-colas-el-valdizan-da-citas-en-dos-turnos</guid>
+    <pubDate>Wed, 28 Oct 2026 09:00:45 GMT</pubDate>
+    <description><![CDATA[El director y el jefe de Estadística lo explicaron en una transmisión del Gobierno Regional, sin cifras de espera de antes y después.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Plan Cero Colas]]></category>
+    <category><![CDATA[Valdizán]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/7fd2629bb740.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/7fd2629bb740.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/7fd2629bb740.png"/>
+    <media:description type="plain"><![CDATA[Plan Cero Colas: el Valdizán da citas en dos turnos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Escolares de Huánuco crean una app para que los estudiantes no pierdan el tiempo</title>
+    <link>https://ahora.com.pe/regional/escolares-de-huanuco-crean-una-app-para-que-los-estudiantes-no-pierdan-el-tiempo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/escolares-de-huanuco-crean-una-app-para-que-los-estudiantes-no-pierdan-el-tiempo</guid>
+    <pubDate>Wed, 28 Oct 2026 09:00:41 GMT</pubDate>
+    <description><![CDATA[Cinco alumnos de primero de secundaria del colegio Seminario San Luis Gonzaga diseñaron RFocuses, que convierte las tareas en un juego. El proyecto representará a Huánuco en la etapa nacional del concurso Crea y Emprende.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/8021011da506.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/8021011da506.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/8021011da506.png"/>
+    <media:description type="plain"><![CDATA[Escolares de Huánuco crean una app para que los estudiantes no pierdan el tiempo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Fiscalía de lavado de activos cita a Limber Rodríguez por su denuncia contra Enrique Pulgar</title>
+    <link>https://ahora.com.pe/regional/fiscalia-de-lavado-de-activos-cita-a-limber-rodriguez-por-su-denuncia-contra</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/fiscalia-de-lavado-de-activos-cita-a-limber-rodriguez-por-su-denuncia-contra</guid>
+    <pubDate>Wed, 28 Oct 2026 09:00:36 GMT</pubDate>
+    <description><![CDATA[La Segunda Fiscalía Supraprovincial especializada en lavado de activos abrió la Carpeta Fiscal 98-2026 y convocó al activista a una entrevista virtual este viernes 30. Quiere que aclare el video en el que acusa al hermano del gobernador regional de presunto enriquecimiento irregular.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Fiscalía]]></category>
+    <category><![CDATA[Limber Rodríguez]]></category>
+    <category><![CDATA[Enrique Pulgar]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/e3b7630a88fd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/e3b7630a88fd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/e3b7630a88fd.jpg"/>
+    <media:description type="plain"><![CDATA[Fiscalía de lavado de activos cita a Limber Rodríguez por su denuncia contra Enrique Pulgar — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Ambulancias del Gorehco llegarán a centros de salud en 2027, según Loarte</title>
+    <link>https://ahora.com.pe/regional/ambulancias-del-gorehco-llegaran-a-centros-de-salud-en-2027-segun-loarte</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/ambulancias-del-gorehco-llegaran-a-centros-de-salud-en-2027-segun-loarte</guid>
+    <pubDate>Wed, 28 Oct 2026 09:00:29 GMT</pubDate>
+    <description><![CDATA[Dos de los tres paquetes de 103 ambulancias llevan 60 % a 70 % de avance; el tercero sigue en convocatoria, según el gerente.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Gorehco]]></category>
+    <category><![CDATA[Loarte]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/86295e89785b.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/86295e89785b.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/86295e89785b.png"/>
+    <media:description type="plain"><![CDATA[Ambulancias del Gorehco llegarán a centros de salud en 2027, según Loarte — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Sedimentador de San Luis, en alto riesgo y con un parche: exdirector de EMAPA advierte que puede colapsar con las lluvias</title>
+    <link>https://ahora.com.pe/regional/sedimentador-de-san-luis-en-alto-riesgo-y-con-un-parche-exdirector-de-emapa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sedimentador-de-san-luis-en-alto-riesgo-y-con-un-parche-exdirector-de-emapa</guid>
+    <pubDate>Wed, 28 Oct 2026 09:00:23 GMT</pubDate>
+    <description><![CDATA[La estructura del cerro San Cristóbal tiene 32 años. Según Rosendo Esteban Bonifacio, la municipalidad de Amarilis la declaró en alto riesgo pero no autorizó reemplazarla, y la empresa la revistió con una geomembrana de la que no se conoce si es apta para agua potable]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[San Luis]]></category>
+    <category><![CDATA[EMAPA]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/10/c2c6349a10c2.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/10/c2c6349a10c2.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/10/c2c6349a10c2.png"/>
+    <media:description type="plain"><![CDATA[Sedimentador de San Luis, en alto riesgo y con un parche: exdirector de EMAPA advierte que puede colapsar con las lluvias — Licencia: propia]]></media:description>
+  </item>
+  </channel>
+</rss>

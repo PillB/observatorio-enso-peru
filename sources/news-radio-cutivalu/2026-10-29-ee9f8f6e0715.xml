@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Wed, 28 Oct 2026 18:03:41 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Sembrando Libertad fortalece la convivencia escolar y la prevención de la violencia en 88 estudiantes de Morropón</title>
+		<link>https://www.cutivalu.pe/sembrando-libertad-fortalece-la-convivencia-escolar-y-la-prevencion-de-la-violencia-en-88-estudiantes-de-morropon/</link>
+		
+		<dc:creator><![CDATA[Cruzanny Crespo]]></dc:creator>
+		<pubDate>Wed, 28 Oct 2026 18:03:40 +0000</pubDate>
+				<category><![CDATA[Piura]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=194934</guid>
+
+					<description><![CDATA[<p>En el marco del proyecto Sembrando Libertad, se presentaron los resultados de los talleres sobre igualdad, respeto y prevención de la violencia, durante una jornada que reunió a madres, padres, docentes y estudiantes de la I.E. Almirante Miguel Grau. Un total de 88 estudiantes de tercero, cuarto y quinto grado de secundaria de la Institución [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/sembrando-libertad-fortalece-la-convivencia-escolar-y-la-prevencion-de-la-violencia-en-88-estudiantes-de-morropon/">Sembrando Libertad fortalece la convivencia escolar y la prevención de la violencia en 88 estudiantes de Morropón</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
