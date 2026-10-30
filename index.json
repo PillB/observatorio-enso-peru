@@ -1,6 +1,6 @@
 {
  "schema": "enso-relay/1",
- "collected_at": "2026-10-29T02:03:26+00:00",
+ "collected_at": "2026-10-30T02:02:21+00:00",
  "collector": {
   "host": "Pablos-MacBook-Pro.local",
   "tz": "America/Lima",
@@ -22,43 +22,35 @@
  "entries": [
   {
    "url": "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado",
-   "status": 200,
-   "fetched_at": "2026-10-29T02:00:19+00:00",
+   "status": null,
+   "fetched_at": "2026-10-30T02:00:17+00:00",
    "expect": "json",
-   "content_type": "application/json; charset=UTF-8",
-   "bytes": 76569,
-   "class": "ok",
-   "elapsed_s": 7.0,
-   "detected": "json",
+   "error": "ConnectError: ('“*.imarpe.gob.pe” certificate has expired',)",
+   "class": "tls",
+   "elapsed_s": 10.0,
    "source": "enfen-comunicados",
-   "file": "files/cb6ba95b1734144e.json",
-   "sha256": "cb6ba95b1734144ebb4cea5786aba6695d3e9d75116ff775ab3c39a73d5ecdf9",
    "group": "enfen"
   },
   {
    "url": "https://enfen.imarpe.gob.pe/comunicados/",
-   "status": 200,
-   "fetched_at": "2026-10-29T02:00:19+00:00",
+   "status": null,
+   "fetched_at": "2026-10-30T02:00:18+00:00",
    "expect": "html",
-   "content_type": "text/html; charset=UTF-8",
-   "bytes": 73862,
-   "class": "ok",
-   "elapsed_s": 0.7,
-   "detected": "html",
+   "error": "ConnectError: ('“*.imarpe.gob.pe” certificate has expired',)",
+   "class": "tls",
+   "elapsed_s": 1.1,
    "source": "enfen-comunicados",
-   "file": "files/f71990e80e23cb9c.html",
-   "sha256": "f71990e80e23cb9c6bd65a14429c78fa0171aec810e6e37c57a15bca1f0a8f6c",
    "group": "enfen"
   },
   {
    "url": "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:22+00:00",
+   "fetched_at": "2026-10-30T02:00:21+00:00",
    "expect": "html",
    "content_type": "text/html; charset=UTF-8",
    "bytes": 268509,
    "class": "ok",
-   "elapsed_s": 2.3,
+   "elapsed_s": 3.0,
    "detected": "html",
    "source": "enfen-comunicados",
    "file": "files/38c8fca13eb730ca.html",
@@ -78,17 +70,22 @@
    "source": "enfen-informes",
    "file": "files/6a074084e68ebda9.html",
    "sha256": "6a074084e68ebda92700f79198e76fd484f57dc54159978eb1ba7a62b1bb0a27",
-   "group": "enfen"
+   "group": "enfen",
+   "carried": true,
+   "last_attempt": {
+    "at": "2026-10-30T02:00:21+00:00",
+    "error": "no se pidió: el servidor no respondió a las URL anteriores"
+   }
   },
   {
    "url": "http://met.igp.gob.pe/datos/ICEN.txt",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:22+00:00",
+   "fetched_at": "2026-10-30T02:00:21+00:00",
    "expect": "text",
    "content_type": "text/plain; charset=UTF-8",
    "bytes": 15853,
    "class": "ok",
-   "elapsed_s": 0.2,
+   "elapsed_s": 0.1,
    "detected": "text",
    "source": "igp-icen",
    "file": "files/d2d3a6036ebdd693.txt",
@@ -98,87 +95,87 @@
   {
    "url": "https://www.senamhi.gob.pe/?p=fenomeno-el-nino",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:23+00:00",
+   "fetched_at": "2026-10-30T02:00:21+00:00",
    "expect": "html",
    "content_type": "text/html; charset=UTF-8",
-   "bytes": 73463,
+   "bytes": 73454,
    "class": "ok",
-   "elapsed_s": 0.9,
+   "elapsed_s": 0.6,
    "detected": "html",
    "source": "senamhi-www-senamhi-gob-pe-p-fenomeno-el-nino",
-   "file": "files/39f740c413d05f6c.html",
-   "sha256": "39f740c413d05f6c2b573deca9ee7e1953994ff155e9f7b979a65d76d860c20c",
+   "file": "files/72a300444d8d80f8.html",
+   "sha256": "72a300444d8d80f8e24682eee1e76c7901615a29bd62e1fc3040a576265a17c8",
    "group": "senamhi"
   },
   {
    "url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:26+00:00",
+   "fetched_at": "2026-10-30T02:00:24+00:00",
    "expect": "html",
    "content_type": "text/html; charset=UTF-8",
-   "bytes": 1276768,
+   "bytes": 1276515,
    "class": "ok",
-   "elapsed_s": 2.9,
+   "elapsed_s": 3.1,
    "detected": "html",
    "source": "senamhi-www-senamhi-gob-pe-p-aviso-meteorologico",
-   "file": "files/4218973151066261.html",
-   "sha256": "421897315106626104245a0f3138deffa0fa803b691961b53d485745172c270c",
+   "file": "files/ead4bcb3364f122d.html",
+   "sha256": "ead4bcb3364f122d849b8ea03eb1a0d0661de7731d717f95b038d3dea5fff3cc",
    "group": "senamhi"
   },
   {
    "url": "https://www.senamhi.gob.pe/?p=boletines",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:27+00:00",
+   "fetched_at": "2026-10-30T02:00:25+00:00",
    "expect": "html",
    "content_type": "text/html; charset=UTF-8",
-   "bytes": 291459,
+   "bytes": 291450,
    "class": "ok",
-   "elapsed_s": 0.9,
+   "elapsed_s": 0.7,
    "detected": "html",
    "source": "senamhi-www-senamhi-gob-pe-p-boletines",
-   "file": "files/11241199e927c11b.html",
-   "sha256": "11241199e927c11ba250d5292b49c0cfe307b4cac7d04983367a0b7777e93269",
+   "file": "files/e91f1cd7bb44817c.html",
+   "sha256": "e91f1cd7bb44817c2a6f3bc5654bceb72ac9117eac7a316405f0b0cc22362be2",
    "group": "senamhi"
   },
   {
    "url": "https://www.senamhi.gob.pe/mapas/mapa-estaciones-2/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:29+00:00",
+   "fetched_at": "2026-10-30T02:00:30+00:00",
    "expect": "html",
    "content_type": "text/html; charset=UTF-8",
-   "bytes": 126833,
+   "bytes": 127106,
    "class": "ok",
-   "elapsed_s": 1.7,
+   "elapsed_s": 4.6,
    "detected": "html",
    "source": "senamhi-mapas-mapa-estaciones-2",
-   "file": "files/fe513fd0c0d7e5d3.html",
-   "sha256": "fe513fd0c0d7e5d3a362dca8850b72baccdedf230d3cb9417565977e57d6ffe1",
+   "file": "files/7f6af5f5e0c6fa8b.html",
+   "sha256": "7f6af5f5e0c6fa8b51a4f97510992fd2b6cbcf2b39bb9e086035110b5dc14bb4",
    "group": "senamhi"
   },
   {
    "url": "https://observatorio.senamhi.gob.pe/gestion-riesgo-desastres/avisos-meteorologicos",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:31+00:00",
+   "fetched_at": "2026-10-30T02:00:32+00:00",
    "expect": "html",
    "content_type": "text/html",
-   "bytes": 205635,
+   "bytes": 204696,
    "class": "ok",
-   "elapsed_s": 2.5,
+   "elapsed_s": 2.2,
    "detected": "html",
    "source": "senamhi-gestion-riesgo-desastres-avisos-meteorol",
-   "file": "files/4d6ddd904a1dff01.html",
-   "sha256": "4d6ddd904a1dff01b10e9ecad997d992ceff43c7db689208700072f7da674e46",
+   "file": "files/2ded3c9ff72a6c71.html",
+   "sha256": "2ded3c9ff72a6c719e482857a23b2d987631c1c04c6ce95f9d4beb1d0797609c",
    "group": "senamhi"
   },
   {
    "url": "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:32+00:00",
+   "fetched_at": "2026-10-30T02:00:32+00:00",
    "expect": "text",
    "content_type": "application/xml",
    "bytes": 669326,
    "class": "ok",
-   "elapsed_s": 1.0,
+   "elapsed_s": 0.3,
    "detected": "xml",
    "source": "senamhi-geoserver-ows-service-wfs-version-2-0-0-",
    "file": "files/80ba713d81c7bfaf.xml",
@@ -188,12 +185,12 @@
   {
    "url": "https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0&typeName=g_100_01:view_aviso_24horas_5dias_ultimos&request=GetFeature&maxFeatures=1000&outputFormat=application/json",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:33+00:00",
+   "fetched_at": "2026-10-30T02:00:33+00:00",
    "expect": "json",
    "content_type": "application/json;charset=UTF-8",
    "bytes": 71,
    "class": "ok",
-   "elapsed_s": 0.7,
+   "elapsed_s": 1.0,
    "detected": "json",
    "features": 0,
    "total": 0,
@@ -205,12 +202,12 @@
   {
    "url": "https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0&typeName=g_100_01:view_aviso_24horas_5dias_ultimos&request=DescribeFeatureType",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:34+00:00",
+   "fetched_at": "2026-10-30T02:00:34+00:00",
    "expect": "text",
    "content_type": "text/xml",
    "bytes": 1646,
    "class": "ok",
-   "elapsed_s": 1.1,
+   "elapsed_s": 1.0,
    "detected": "xml",
    "source": "senamhi-geoserver-g-100-01-ows-service-wfs-versi-248fde",
    "file": "files/ae38c62a75455e3a.xml",
@@ -220,27 +217,27 @@
   {
    "url": "https://repositorio.senamhi.gob.pe/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:35+00:00",
+   "fetched_at": "2026-10-30T02:00:35+00:00",
    "expect": "html",
    "content_type": "text/html;charset=utf-8",
-   "bytes": 40275,
+   "bytes": 40414,
    "class": "ok",
-   "elapsed_s": 1.4,
+   "elapsed_s": 0.8,
    "detected": "html",
    "source": "memoria-senamhi-repositorio-senamhi-gob-pe",
-   "file": "files/3874be6ad97d0857.html",
-   "sha256": "3874be6ad97d0857f8928d671af258adc61830cdf815c91ee56e6722ecb8faa0",
+   "file": "files/350cdac76eca7028.html",
+   "sha256": "350cdac76eca7028b4e85de24a33d3db5ecead9f94aa09a52902fce25901eb4b",
    "group": "senamhi"
   },
   {
    "url": "https://snirh.ana.gob.pe/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:37+00:00",
+   "fetched_at": "2026-10-30T02:00:35+00:00",
    "expect": "html",
    "content_type": "text/html",
    "bytes": 1560,
    "class": "ok",
-   "elapsed_s": 1.6,
+   "elapsed_s": 0.1,
    "detected": "html",
    "source": "ana-snirh-ana-gob-pe",
    "file": "files/1421c9d7fe468ff6.html",
@@ -250,12 +247,12 @@
   {
    "url": "https://snirh.ana.gob.pe/onrh/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:38+00:00",
+   "fetched_at": "2026-10-30T02:00:37+00:00",
    "expect": "html",
    "content_type": "text/html; charset=utf-8",
    "bytes": 91814,
    "class": "ok",
-   "elapsed_s": 1.2,
+   "elapsed_s": 1.5,
    "detected": "html",
    "source": "ana-onrh",
    "file": "files/11407005c56b363c.html",
@@ -265,12 +262,12 @@
   {
    "url": "https://repositorio.ana.gob.pe/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:39+00:00",
+   "fetched_at": "2026-10-30T02:00:37+00:00",
    "expect": "html",
    "content_type": "text/html",
    "bytes": 737,
    "class": "ok",
-   "elapsed_s": 0.5,
+   "elapsed_s": 0.2,
    "detected": "html",
    "source": "memoria-ana-repositorio-ana-gob-pe",
    "file": "files/c2de2a8482a311f3.html",
@@ -280,31 +277,31 @@
   {
    "url": "https://www.imarpe.gob.pe/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:41+00:00",
+   "fetched_at": "2026-10-30T02:00:41+00:00",
    "expect": "html",
    "content_type": "text/html; charset=UTF-8",
-   "bytes": 301517,
+   "bytes": 301693,
    "class": "ok",
-   "elapsed_s": 2.7,
+   "elapsed_s": 4.0,
    "detected": "html",
    "source": "imarpe-www-imarpe-gob-pe",
-   "file": "files/7d47bc13b8b3e2d2.html",
-   "sha256": "7d47bc13b8b3e2d22402dba82b750375f187563781c1dbbbb89813fe4ab94664",
+   "file": "files/fcf07656fbee7195.html",
+   "sha256": "fcf07656fbee71955e837d2dfbc07beb541c66e8efd36b8652fb070b49434524",
    "group": "imarpe"
   },
   {
    "url": "https://www.imarpe.gob.pe/imarpe/index.php?id_seccion=I0178070000000000000000",
    "status": 200,
-   "fetched_at": "2026-10-29T02:00:51+00:00",
+   "fetched_at": "2026-10-30T02:00:50+00:00",
    "expect": "html",
    "content_type": "text/html; charset=UTF-8",
-   "bytes": 223945,
+   "bytes": 224121,
    "class": "ok",
-   "elapsed_s": 9.3,
+   "elapsed_s": 8.8,
    "detected": "html",
    "source": "imarpe-imarpe-index-php-id-seccion-i01780700000",
-   "file": "files/134d0295e5da39e0.html",
-   "sha256": "134d0295e5da39e0cbdc1736dfba3b87e7903061e63acaa999f8315fbb5985c3",
+   "file": "files/cb5fa56551785a0f.html",
+   "sha256": "cb5fa56551785a0f63473d91e86de836868d4d84388061d0aac349456024184a",
    "group": "imarpe"
   },
   {
@@ -320,7 +317,13 @@
    "source": "imarpe-repositorio-enfen",
    "file": "files/a234909a51a13dc0.json",
    "sha256": "a234909a51a13dc041a09d238e8144ae61da8024ce07170574865137236dcadb",
-   "group": "imarpe"
+   "group": "imarpe",
+   "carried": true,
+   "last_attempt": {
+    "at": "2026-10-30T02:00:59+00:00",
+    "class": "tls",
+    "error": "ConnectError: ('“*.imarpe.gob.pe” certificate has expired',)"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Informe+T%C3%A9cnico+ENFEN%22&dsoType=ITEM&size=4&sort=dc.date.issued%2CDESC",
@@ -335,7 +338,13 @@
    "source": "imarpe-repositorio-enfen",
    "file": "files/e7e1a44dc9051fea.json",
    "sha256": "e7e1a44dc9051feaae4f1acd9590c8c6b04035c4f5ade3c9118dbb6521541b63",
-   "group": "imarpe"
+   "group": "imarpe",
+   "carried": true,
+   "last_attempt": {
+    "at": "2026-10-30T02:01:01+00:00",
+    "class": "tls",
+    "error": "ConnectError: ('“*.imarpe.gob.pe” certificate has expired',)"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Bolet%C3%ADn+Semanal+Oceanogr%C3%A1fico+y+Biol%C3%B3gico%22&dsoType=ITEM&size=8&sort=dc.date.issued%2CDESC",
@@ -350,29 +359,34 @@
    "source": "imarpe-repositorio-bsobp",
    "file": "files/a634872081808976.json",
    "sha256": "a634872081808976659dbc2c83474186fec31b475390a6821fa3663951f11245",
-   "group": "imarpe"
+   "group": "imarpe",
+   "carried": true,
+   "last_attempt": {
+    "at": "2026-10-30T02:01:01+00:00",
+    "error": "no se pidió: el servidor no respondió a las URL anteriores"
+   }
   },
   {
    "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
    "status": 404,
-   "fetched_at": "2026-10-29T02:00:57+00:00",
+   "fetched_at": "2026-10-30T02:01:01+00:00",
    "expect": "json",
    "content_type": "text/html",
    "bytes": 1245,
    "class": "http-4xx",
-   "elapsed_s": 0.5,
+   "elapsed_s": 0.2,
    "detected": "html",
    "group": "cenepred"
   },
   {
    "url": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
    "status": 200,
-   "fetched_at": "2026-10-29T02:01:19+00:00",
+   "fetched_at": "2026-10-30T02:01:21+00:00",
    "expect": "json",
    "content_type": "application/json",
    "bytes": 3,
    "class": "ok",
-   "elapsed_s": 22.8,
+   "elapsed_s": 20.5,
    "detected": "json",
    "source": "memoria-archive-web-archive-org-cdx-search-cdx",
    "file": "files/37517e5f3dc66819.json",
@@ -382,12 +396,12 @@
   {
    "url": "https://bibliotecadigital.bnp.gob.pe/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:01:20+00:00",
+   "fetched_at": "2026-10-30T02:01:22+00:00",
    "expect": "html",
    "content_type": "text/html",
    "bytes": 3663,
    "class": "ok",
-   "elapsed_s": 0.8,
+   "elapsed_s": 0.3,
    "detected": "html",
    "source": "memoria-bnp-bibliotecadigital-bnp-gob-pe",
    "file": "files/7f2ad9ed98c21227.html",
@@ -397,56 +411,56 @@
   {
    "url": "https://repositorio.bnp.gob.pe/",
    "status": null,
-   "fetched_at": "2026-10-29T02:01:29+00:00",
+   "fetched_at": "2026-10-30T02:01:31+00:00",
    "expect": "html",
    "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
    "class": "dns",
-   "elapsed_s": 9.3,
+   "elapsed_s": 9.2,
    "source": "memoria-bnp-repositorio-bnp-gob-pe",
    "group": "bnp"
   },
   {
    "url": "https://catalogo.bnp.gob.pe/",
    "status": null,
-   "fetched_at": "2026-10-29T02:01:39+00:00",
+   "fetched_at": "2026-10-30T02:01:40+00:00",
    "expect": "html",
    "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
    "class": "dns",
-   "elapsed_s": 9.5,
+   "elapsed_s": 9.2,
    "source": "memoria-bnp-catalogo-bnp-gob-pe",
    "group": "bnp"
   },
   {
    "url": "https://www.indeci.gob.pe/",
    "status": null,
-   "fetched_at": "2026-10-29T02:01:49+00:00",
+   "fetched_at": "2026-10-30T02:01:49+00:00",
    "expect": "html",
    "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
    "class": "dns",
-   "elapsed_s": 9.8,
+   "elapsed_s": 9.2,
    "source": "memoria-indeci-www-indeci-gob-pe",
    "group": "indeci"
   },
   {
    "url": "https://bvpad.indeci.gob.pe/",
    "status": null,
-   "fetched_at": "2026-10-29T02:01:58+00:00",
+   "fetched_at": "2026-10-30T02:01:58+00:00",
    "expect": "html",
    "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
    "class": "dns",
-   "elapsed_s": 9.6,
+   "elapsed_s": 9.1,
    "source": "memoria-indeci-bvpad-indeci-gob-pe",
    "group": "indeci"
   },
   {
    "url": "https://spij.minjus.gob.pe/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:01:59+00:00",
+   "fetched_at": "2026-10-30T02:01:59+00:00",
    "expect": "html",
    "content_type": "text/html; charset=UTF-8",
    "bytes": 172,
    "class": "empty",
-   "elapsed_s": 1.0,
+   "elapsed_s": 0.2,
    "detected": "html",
    "error": "HTML casi vacío",
    "source": "memoria-minjus-spij-minjus-gob-pe",
@@ -455,53 +469,53 @@
   {
    "url": "https://apps.contraloria.gob.pe/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:02:02+00:00",
+   "fetched_at": "2026-10-30T02:02:00+00:00",
    "expect": "html",
    "content_type": "text/html; charset=utf-8",
-   "bytes": 295564,
+   "bytes": 293210,
    "class": "ok",
-   "elapsed_s": 2.3,
+   "elapsed_s": 1.8,
    "detected": "html",
    "source": "memoria-contraloria-apps-contraloria-gob-pe",
-   "file": "files/ca1844a9652a8cdf.html",
-   "sha256": "ca1844a9652a8cdf49017fd5a5a63e053ba1b3edb57ccca5d4ebe8c8fc2c9aa4",
+   "file": "files/50247bfa019b3b2d.html",
+   "sha256": "50247bfa019b3b2db7f08ba5d97642ca0c8a70979f884284fdd0b0c9af0b7266",
    "group": "contraloria"
   },
   {
    "url": "https://www.rcc.gob.pe/",
    "status": null,
-   "fetched_at": "2026-10-29T02:02:11+00:00",
+   "fetched_at": "2026-10-30T02:02:10+00:00",
    "expect": "html",
    "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
    "class": "dns",
-   "elapsed_s": 9.6,
+   "elapsed_s": 9.2,
    "source": "memoria-arcc-www-rcc-gob-pe",
    "group": "arcc"
   },
   {
    "url": "https://siea.midagri.gob.pe/portal/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:02:13+00:00",
+   "fetched_at": "2026-10-30T02:02:11+00:00",
    "expect": "html",
    "content_type": "text/html; charset=utf-8",
-   "bytes": 111528,
+   "bytes": 111858,
    "class": "ok",
-   "elapsed_s": 2.0,
+   "elapsed_s": 1.5,
    "detected": "html",
    "source": "memoria-midagri-siea-midagri-gob-pe-portal",
-   "file": "files/5dda3855d0dba2e5.html",
-   "sha256": "5dda3855d0dba2e57b56bd8f7befde80c4b3df6002c3fd2a1aa4225579bb57ef",
+   "file": "files/62d649e01a7ae2b4.html",
+   "sha256": "62d649e01a7ae2b45e0ab61b43f3ff8c1a6798e9a3637952e425823a425ca7ff",
    "group": "midagri"
   },
   {
    "url": "https://www.tvperu.gob.pe/",
    "status": 403,
-   "fetched_at": "2026-10-29T02:02:14+00:00",
+   "fetched_at": "2026-10-30T02:02:12+00:00",
    "expect": "html",
    "content_type": "text/html",
    "bytes": 118,
    "class": "http-403",
-   "elapsed_s": 0.8,
+   "elapsed_s": 0.6,
    "detected": "html",
    "source": "memoria-irtp-www-tvperu-gob-pe",
    "group": "irtp"
@@ -509,12 +523,12 @@
   {
    "url": "https://www.radionacional.gob.pe/",
    "status": 403,
-   "fetched_at": "2026-10-29T02:02:15+00:00",
+   "fetched_at": "2026-10-30T02:02:12+00:00",
    "expect": "html",
    "content_type": "text/html",
    "bytes": 118,
    "class": "http-403",
-   "elapsed_s": 0.8,
+   "elapsed_s": 0.7,
    "detected": "html",
    "source": "memoria-irtp-www-radionacional-gob-pe",
    "group": "irtp"
@@ -522,41 +536,27 @@
   {
    "url": "https://repositorio.unsa.edu.pe/",
    "status": 200,
-   "fetched_at": "2026-10-29T02:02:16+00:00",
+   "fetched_at": "2026-10-30T02:02:13+00:00",
    "expect": "html",
    "content_type": "text/html; charset=utf-8",
-   "bytes": 384195,
+   "bytes": 391648,
    "class": "ok",
-   "elapsed_s": 0.9,
+   "elapsed_s": 1.0,
    "detected": "html",
    "source": "memoria-unsa-repositorio-unsa-edu-pe",
-   "file": "files/8766d4c827647e01.html",
-   "sha256": "8766d4c827647e0153c2cdd9f317ab032e286795bb7834e4d9dac3033f9e6838",
+   "file": "files/1555006628981700.html",
+   "sha256": "1555006628981700cefb1eaa65a99bf59a20ea36b95be0646bc0ba0e59ff04ef",
    "group": "unsa"
-  },
-  {
-   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165",
-   "status": 200,
-   "fetched_at": "2026-10-29T02:02:30+00:00",
-   "content_type": "application/pdf",
-   "bytes": 765408,
-   "class": "ok",
-   "elapsed_s": 13.7,
-   "detected": "pdf",
-   "goal": "comunicado 18-2026",
-   "file": "files/e0f3bc0d75891f55.pdf",
-   "sha256": "e0f3bc0d75891f5528f9679206b825609915e103ad24a9d5136f20e5ddb77dc2",
-   "group": "enfen-docs"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf",
    "status": 200,
-   "fetched_at": "2026-10-29T02:02:31+00:00",
+   "fetched_at": "2026-10-30T02:02:15+00:00",
    "expect": "pdf",
    "content_type": "text/html; charset=UTF-8",
    "bytes": 3117,
    "class": "challenge",
-   "elapsed_s": 1.4,
+   "elapsed_s": 1.2,
    "detected": "html",
    "error": "página de verificación antirobots: no se guarda (no se evade)",
    "goal": "comunicado 18-2026",
@@ -565,7 +565,20 @@
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/17-2026.pdf",
    "status": 200,
-   "fetched_at": "2026-10-29T02:02:33+00:00",
+   "fetched_at": "2026-10-30T02:02:17+00:00",
+   "expect": "pdf",
+   "content_type": "text/html; charset=UTF-8",
+   "bytes": 3117,
+   "class": "challenge",
+   "elapsed_s": 1.9,
+   "detected": "html",
+   "error": "página de verificación antirobots: no se guarda (no se evade)",
+   "group": "enfen-docs"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
+   "status": 200,
+   "fetched_at": "2026-10-30T02:02:19+00:00",
    "expect": "pdf",
    "content_type": "text/html; charset=UTF-8",
    "bytes": 3117,
@@ -576,66 +589,34 @@
    "group": "enfen-docs"
   },
   {
-   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
-   "status": 200,
-   "fetched_at": "2026-10-29T02:02:36+00:00",
-   "expect": "pdf",
-   "content_type": "text/html; charset=UTF-8",
-   "bytes": 3117,
-   "class": "challenge",
-   "elapsed_s": 2.3,
-   "detected": "html",
-   "error": "página de verificación antirobots: no se guarda (no se evade)",
-   "group": "enfen-docs"
-  },
-  {
    "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-19-2026/",
-   "status": 404,
-   "fetched_at": "2026-10-29T02:02:42+00:00",
-   "content_type": "text/html; charset=UTF-8",
-   "bytes": 66839,
-   "class": "http-4xx",
-   "elapsed_s": 6.8,
-   "detected": "html",
+   "status": null,
+   "fetched_at": "2026-10-30T02:02:19+00:00",
+   "elapsed_s": 0.0,
+   "skipped": "servidor",
+   "error": "no se pidió: el servidor no respondió a las URL anteriores",
    "group": "enfen-docs"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/20-2026.pdf",
    "status": 200,
-   "fetched_at": "2026-10-29T02:02:44+00:00",
+   "fetched_at": "2026-10-30T02:02:21+00:00",
    "expect": "pdf",
    "content_type": "text/html; charset=UTF-8",
    "bytes": 3117,
    "class": "challenge",
-   "elapsed_s": 1.4,
+   "elapsed_s": 2.0,
    "detected": "html",
    "error": "página de verificación antirobots: no se guarda (no se evade)",
    "group": "enfen-docs"
   },
   {
    "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-20-2026/",
-   "status": 404,
-   "fetched_at": "2026-10-29T02:02:45+00:00",
-   "content_type": "text/html; charset=UTF-8",
-   "bytes": 66840,
-   "class": "http-4xx",
-   "elapsed_s": 0.7,
-   "detected": "html",
-   "group": "enfen-docs"
-  },
-  {
-   "url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166",
-   "status": 200,
-   "fetched_at": "2026-10-29T02:03:02+00:00",
-   "expect": "pdf",
-   "content_type": "application/pdf",
-   "bytes": 17555279,
-   "class": "ok",
-   "elapsed_s": 17.4,
-   "detected": "pdf",
-   "goal": "informe técnico 18-2026",
-   "file": "files/91c2a58f96edbdc2.pdf",
-   "sha256": "91c2a58f96edbdc2fd02d6c88c0a63707f1dba507dcea2406d39d0f78f8cb059",
+   "status": null,
+   "fetched_at": "2026-10-30T02:02:21+00:00",
+   "elapsed_s": 0.0,
+   "skipped": "servidor",
+   "error": "no se pidió: el servidor no respondió a las URL anteriores",
    "group": "enfen-docs"
   },
   {
@@ -650,7 +631,49 @@
    "detected": "json",
    "file": "files/2911e3381107ed72.json",
    "sha256": "2911e3381107ed722e8227e979c0c09bd1787f0adf72bc27fa0f6f9907f6c3d6",
-   "group": "imarpe-repo"
+   "group": "imarpe-repo",
+   "carried": true,
+   "last_attempt": {
+    "at": "2026-10-30T02:02:21+00:00",
+    "error": "no se pidió: el servidor no respondió a las URL anteriores"
+   }
+  },
+  {
+   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165",
+   "status": 200,
+   "fetched_at": "2026-10-29T02:02:30+00:00",
+   "content_type": "application/pdf",
+   "bytes": 765408,
+   "class": "ok",
+   "elapsed_s": 13.7,
+   "detected": "pdf",
+   "goal": "comunicado 18-2026",
+   "file": "files/e0f3bc0d75891f55.pdf",
+   "sha256": "e0f3bc0d75891f5528f9679206b825609915e103ad24a9d5136f20e5ddb77dc2",
+   "group": "enfen-docs",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
+  },
+  {
+   "url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166",
+   "status": 200,
+   "fetched_at": "2026-10-29T02:03:02+00:00",
+   "expect": "pdf",
+   "content_type": "application/pdf",
+   "bytes": 17555279,
+   "class": "ok",
+   "elapsed_s": 17.4,
+   "detected": "pdf",
+   "goal": "informe técnico 18-2026",
+   "file": "files/91c2a58f96edbdc2.pdf",
+   "sha256": "91c2a58f96edbdc2fd02d6c88c0a63707f1dba507dcea2406d39d0f78f8cb059",
+   "group": "enfen-docs",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/core/items/0980a018-d5e0-4583-b028-7bebbbb8e7d7/bundles?embed=bitstreams",
@@ -664,7 +687,11 @@
    "detected": "json",
    "file": "files/dfb80c91eaf2c1a0.json",
    "sha256": "dfb80c91eaf2c1a049476f742101d1a96200aeb075aec66930d0e3a61aa7e69c",
-   "group": "imarpe-repo"
+   "group": "imarpe-repo",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/092f63e0-c287-4ea3-aa83-27fbeb082700/content",
@@ -679,7 +706,11 @@
    "goal": "comunicado 18-2026",
    "file": "files/f0df5749689dac54.pdf",
    "sha256": "f0df5749689dac547eea9ac9ecc988e7f60df653ad3ec9edf94aa36857c5c172",
-   "group": "imarpe-repo"
+   "group": "imarpe-repo",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/core/items/f379fb0d-b212-43e8-b67e-2121b8fab461/bundles?embed=bitstreams",
@@ -693,7 +724,11 @@
    "detected": "json",
    "file": "files/ecc24d7e1a5fdc00.json",
    "sha256": "ecc24d7e1a5fdc007563b079425bf9027ad0ceb05bb181835111a32adc2951e8",
-   "group": "imarpe-repo"
+   "group": "imarpe-repo",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/core/items/0f77c5b1-25cd-4d89-9a6a-66a1639d1d36/bundles?embed=bitstreams",
@@ -707,7 +742,11 @@
    "detected": "json",
    "file": "files/0eb07005238d2fa2.json",
    "sha256": "0eb07005238d2fa2a35c5ec91930b1965c24f0b6f58012c6065b3d7f015b4a55",
-   "group": "imarpe-repo"
+   "group": "imarpe-repo",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/core/items/20a9d19f-632c-4b3d-93c9-a9e62c78d624/bundles?embed=bitstreams",
@@ -721,7 +760,11 @@
    "detected": "json",
    "file": "files/ad12edaad48e6240.json",
    "sha256": "ad12edaad48e62408d97290c058b71082494f9da1b6d0d298d30033fb9a7ebaa",
-   "group": "imarpe-repo"
+   "group": "imarpe-repo",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/core/items/5828c0e3-c286-4405-a648-5ade34098f1e/bundles?embed=bitstreams",
@@ -735,7 +778,11 @@
    "detected": "json",
    "file": "files/a33dfc86d27714a4.json",
    "sha256": "a33dfc86d27714a43ea78437abe32d73051724445e9f2b93abf08853bcc209f8",
-   "group": "imarpe-repo"
+   "group": "imarpe-repo",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Informe+T%C3%A9cnico+ENFEN%22+N%C2%B018%2C+2026&dsoType=ITEM&size=5&sort=dc.date.issued%2CDESC",
@@ -749,7 +796,11 @@
    "detected": "json",
    "file": "files/71ce8739f6d05d70.json",
    "sha256": "71ce8739f6d05d708a02118b63880ca35152cdf5b71906394ea51194293547f7",
-   "group": "imarpe-repo"
+   "group": "imarpe-repo",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
   },
   {
    "url": "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/108ee2ac-9d82-458e-8cbf-2ee36b29b624/content",
@@ -764,15 +815,19 @@
    "goal": "informe técnico 18-2026",
    "file": "files/91c2a58f96edbdc2.pdf",
    "sha256": "91c2a58f96edbdc2fd02d6c88c0a63707f1dba507dcea2406d39d0f78f8cb059",
-   "group": "imarpe-repo"
+   "group": "imarpe-repo",
+   "carried": true,
+   "last_attempt": {
+    "note": "no se pidió esta noche"
+   }
   }
  ],
  "summary": {
-  "enfen": "4/4",
+  "enfen": "1/4",
   "igp": "1/1",
   "senamhi": "9/9",
   "ana": "3/3",
-  "imarpe": "5/5",
+  "imarpe": "2/5",
   "cenepred": "0/1",
   "archive": "1/1",
   "bnp": "1/3",
@@ -783,27 +838,28 @@
   "midagri": "1/1",
   "irtp": "0/2",
   "unsa": "1/1",
-  "enfen-docs": "2/8",
-  "imarpe-repo": "9/9"
+  "enfen-docs": "0/6",
+  "imarpe-repo": "0/1"
  },
  "goals": {
-  "comunicado 18-2026": true,
-  "informe técnico 18-2026": true
+  "informe técnico": false,
+  "comunicado 18-2026": false
  },
  "goal_detail": {
-  "comunicado 18-2026": {
-   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165",
-   "saved": true,
-   "class": "ok",
-   "status": 200,
-   "bytes": 765408
+  "informe técnico": {
+   "url": "https://enfen.imarpe.gob.pe/informes-tecnicos/",
+   "saved": false,
+   "error": "no se pidió: el servidor no respondió a las URL anteriores",
+   "skipped": "servidor"
   },
-  "informe técnico 18-2026": {
-   "url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166",
-   "saved": true,
-   "class": "ok",
+  "comunicado 18-2026": {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf",
+   "saved": false,
+   "class": "challenge",
    "status": 200,
-   "bytes": 17555279
+   "error": "página de verificación antirobots: no se guarda (no se evade)",
+   "bytes": 3117
   }
- }
+ },
+ "carried": 15
 }

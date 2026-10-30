@@ -1,14 +1,14 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-10-29T02:03:26+00:00",
+ "at": "2026-10-30T02:02:21+00:00",
  "result": "ok",
- "reachable": "38/53",
+ "reachable": "21/43",
  "summary": {
-  "enfen": "4/4",
+  "enfen": "1/4",
   "igp": "1/1",
   "senamhi": "9/9",
   "ana": "3/3",
-  "imarpe": "5/5",
+  "imarpe": "2/5",
   "cenepred": "0/1",
   "archive": "1/1",
   "bnp": "1/3",
@@ -19,10 +19,38 @@
   "midagri": "1/1",
   "irtp": "0/2",
   "unsa": "1/1",
-  "enfen-docs": "2/8",
-  "imarpe-repo": "9/9"
+  "enfen-docs": "0/6",
+  "imarpe-repo": "0/1"
  },
  "failures": [
+  {
+   "url": "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado",
+   "class": "tls",
+   "error": "ConnectError: ('“*.imarpe.gob.pe” certificate has expired',)"
+  },
+  {
+   "url": "https://enfen.imarpe.gob.pe/comunicados/",
+   "class": "tls",
+   "error": "ConnectError: ('“*.imarpe.gob.pe” certificate has expired',)"
+  },
+  {
+   "url": "https://enfen.imarpe.gob.pe/informes-tecnicos/",
+   "error": "no se pidió: el servidor no respondió a las URL anteriores"
+  },
+  {
+   "url": "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Comunicado+Oficial+ENFEN%22&dsoType=ITEM&size=6&sort=dc.date.issued%2CDESC",
+   "class": "tls",
+   "error": "ConnectError: ('“*.imarpe.gob.pe” certificate has expired',)"
+  },
+  {
+   "url": "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Informe+T%C3%A9cnico+ENFEN%22&dsoType=ITEM&size=4&sort=dc.date.issued%2CDESC",
+   "class": "tls",
+   "error": "ConnectError: ('“*.imarpe.gob.pe” certificate has expired',)"
+  },
+  {
+   "url": "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Bolet%C3%ADn+Semanal+Oceanogr%C3%A1fico+y+Biol%C3%B3gico%22&dsoType=ITEM&size=8&sort=dc.date.issued%2CDESC",
+   "error": "no se pidió: el servidor no respondió a las URL anteriores"
+  },
   {
    "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
    "status": 404,
@@ -89,8 +117,7 @@
   },
   {
    "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-19-2026/",
-   "status": 404,
-   "class": "http-4xx"
+   "error": "no se pidió: el servidor no respondió a las URL anteriores"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/20-2026.pdf",
@@ -100,8 +127,11 @@
   },
   {
    "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-20-2026/",
-   "status": 404,
-   "class": "http-4xx"
+   "error": "no se pidió: el servidor no respondió a las URL anteriores"
+  },
+  {
+   "url": "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Comunicado+Oficial+ENFEN%22+18-2026&dsoType=ITEM&size=5&sort=dc.date.issued%2CDESC",
+   "error": "no se pidió: el servidor no respondió a las URL anteriores"
   }
  ],
  "collector": {
@@ -121,5 +151,6 @@
   "generated_at": "2026-10-27T22:23:13+00:00",
   "sources": 219,
   "peru_server": 29
- }
+ },
+ "carried": 15
 }
