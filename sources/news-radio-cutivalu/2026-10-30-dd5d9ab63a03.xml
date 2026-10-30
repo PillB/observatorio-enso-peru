@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Thu, 29 Oct 2026 17:50:23 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Karolay Saldarriaga: Fiscalía busca nueve meses de prisión preventiva contra presunto agresor por intento de feminicidio</title>
+		<link>https://www.cutivalu.pe/karolay-saldarriaga-fiscalia-busca-nueve-meses-de-prision-preventiva-contra-presunto-agresor-por-intento-de-feminicidio/</link>
+		
+		<dc:creator><![CDATA[Gabriela Campos]]></dc:creator>
+		<pubDate>Thu, 29 Oct 2026 17:50:22 +0000</pubDate>
+				<category><![CDATA[Featured]]></category>
+		<category><![CDATA[Piura]]></category>
+		<category><![CDATA[Región]]></category>
+		<category><![CDATA[agresión]]></category>
+		<category><![CDATA[feminicidio]]></category>
+		<category><![CDATA[Fiscalía]]></category>
+		<category><![CDATA[KAROLAY SALDARRIAGA]]></category>
+		<category><![CDATA[prisión preventiva]]></category>
+		<category><![CDATA[Unidad de Flagrancia]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=194959</guid>
+
+					<description><![CDATA[<p>La Fiscalía solicitó nueve meses de prisión preventiva contra el presunto agresor de la influencer piurana Karolay Saldarriaga, investigado por el presunto delito de tentativa de feminicidio. El pedido se formuló luego de que se incorporaran nuevos elementos médicos a la investigación por la agresión que sufrió la joven el pasado lunes. Según la información [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/karolay-saldarriaga-fiscalia-busca-nueve-meses-de-prision-preventiva-contra-presunto-agresor-por-intento-de-feminicidio/">Karolay Saldarriaga: Fiscalía busca nueve meses de prisión preventiva contra presunto agresor por intento de feminicidio</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
