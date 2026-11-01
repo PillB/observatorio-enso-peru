@@ -1,6 +1,6 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-10-31T02:05:12+00:00",
+ "at": "2026-11-01T02:07:10+00:00",
  "result": "ok",
  "reachable": "40/56",
  "summary": {
@@ -30,8 +30,8 @@
   },
   {
    "url": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
-   "status": 503,
-   "class": "http-5xx"
+   "class": "timeout",
+   "error": "ReadTimeout: The read operation timed out"
   },
   {
    "url": "https://repositorio.bnp.gob.pe/",
@@ -127,5 +127,5 @@
   "sources": 219,
   "peru_server": 29
  },
- "carried": 2
+ "carried": 1
 }
