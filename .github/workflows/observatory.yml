@@ -55,7 +55,7 @@ jobs:
       worst: ${{ steps.pipeline.outputs.worst }}
       site_url: ${{ steps.site.outputs.url }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
@@ -312,7 +312,7 @@ jobs:
       # functions/ y wrangler.toml (si existen) viajan con la subida directa:
       # wrangler los toma del directorio de trabajo (Pages Functions y sus
       # vínculos D1/KV). El modo cono incluye siempre los archivos de la raíz.
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: |
             python
@@ -360,7 +360,7 @@ jobs:
     steps:
       - name: Note when the job started (for the alert email)
         run: echo "ALERT_SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: python
       - uses: actions/setup-python@v7
@@ -447,7 +447,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
         id: raw
         with:

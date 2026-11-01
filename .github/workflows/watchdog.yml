@@ -32,7 +32,7 @@ jobs:
       - name: Note when the job started (for the alert email)
         run: echo "ALERT_SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
       # Solo el módulo del vigilante (el modo cono trae también los archivos de la raíz).
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: .github/scripts
       - uses: actions/github-script@v8
@@ -45,7 +45,7 @@ jobs:
             await run({ github, context, core });
       # Correo a las direcciones de ALERT_EMAILS si el vigilante abrió o cerró sus issues, o comentó el del sitio
       # atrasado o el recordatorio diario de un recolector callado (ver tools/alert_email.py).
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         if: always() && vars.ALERT_EMAILS != ''
         with:
           sparse-checkout: python
