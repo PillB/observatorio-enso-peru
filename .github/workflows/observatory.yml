@@ -277,7 +277,7 @@ jobs:
           path: ${{ runner.temp }}/raw
           if-no-files-found: ignore
           retention-days: 7
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         if: env.DEPLOY_TARGET == 'github-pages'
       - uses: actions/upload-pages-artifact@v5
         if: env.DEPLOY_TARGET == 'github-pages'
