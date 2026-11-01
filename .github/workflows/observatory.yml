@@ -308,7 +308,7 @@ jobs:
     steps:
       - id: deploy
         if: env.DEPLOY_TARGET == 'github-pages'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
       # functions/ y wrangler.toml (si existen) viajan con la subida directa:
       # wrangler los toma del directorio de trabajo (Pages Functions y sus
       # vínculos D1/KV). El modo cono incluye siempre los archivos de la raíz.
