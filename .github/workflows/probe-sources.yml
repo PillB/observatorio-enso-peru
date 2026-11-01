@@ -180,7 +180,7 @@ jobs:
       # Solo en main: es el registro que leen el recolector del Perú y n8n.
       - name: Open an issue when the new registry fails the tests
         if: always() && (steps.gate.outcome == 'failure' || steps.commit.outputs.gate == 'failure') && github.ref_name == (github.event.repository.default_branch || 'main')
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
@@ -196,7 +196,7 @@ jobs:
             else await github.rest.issues.create({ ...context.repo, title, body, labels: ['incidente-datos'] });
       - name: Close the registry issue after a registry that passes
         if: success() && steps.gate.outcome == 'success' && github.ref_name == (github.event.repository.default_branch || 'main')
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });

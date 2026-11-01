@@ -399,7 +399,7 @@ jobs:
       # «cancelled» también: un job que pasa su límite de tiempo termina así, y el sitio queda igual de atrasado.
       - name: Open an issue when the run itself failed
         if: always() && github.ref == 'refs/heads/main' && (contains(fromJSON('["failure","cancelled"]'), needs.build.result) || contains(fromJSON('["failure","cancelled"]'), needs.deploy.result) || contains(fromJSON('["failure","cancelled"]'), needs.archive.result))
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const title = '[datos] La actualización diaria falló';
@@ -411,7 +411,7 @@ jobs:
             else await github.rest.issues.create({ ...context.repo, title, body, labels: ['incidente-datos'] });
       - name: Close the run-failure issue after a good run
         if: always() && github.ref == 'refs/heads/main' && needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
@@ -532,7 +532,7 @@ jobs:
     permissions:
       actions: write
     steps:
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         with:
           script: |
             for (const id of ['observatory.yml', 'watchdog.yml', 'probe-sources.yml']) {
