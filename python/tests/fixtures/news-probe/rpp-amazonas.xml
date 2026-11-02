@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:02:25 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 02 Nov 2026 17:34:16 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,28 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Amazonas: 64 estudiantes sufren intoxicación tras consumir alimentos de comedor universitario]]></title>
+        <description><![CDATA[Según el Hospital Regional Virgen de Fátima, los estudiantes presentaron síntomas como diarrea, náuseas, dolor abdominal, fiebre, dolor de cabeza y malestar general.]]></description>
+        <pubDate>Fri, 30 Oct 2026 23:00:55 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/amazonas-64-estudiantes-sufren-intoxicacion-tras-consumir-alimentos-de-comedor-universitario-noticia-1715298</link>
+        <guid>1715298</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/30/385838_1924304.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Amazonas, Intoxicación, Universidad Nacional Toribio Rodríguez de Mendoza, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Adulta mayor que sufrió quemaduras tras explosión de balón de gas urge traslado urgente al hospital Loayza [VIDEO]]]></title>
+        <description><![CDATA[<a data-mce-href="https://rpp.pe/rotafono" href="https://rpp.pe/rotafono" target="_blank" rel="noopener"><em>Rotafono de RPP</em></a> | Un <strong>incendio </strong>se registró en la casa de la señora de 67 años en <a data-mce-href="https://rpp.pe/noticias/amazonas" href="https://rpp.pe/noticias/amazonas" target="_blank" rel="noopener">Amazonas </a>y tres personas resultaron heridas. Padre e hijo fueron llevados a <strong>Chiclayo</strong>, pero este último falleció tras ser trasladado.]]></description>
+        <pubDate>Fri, 30 Oct 2026 10:02:51 -0500</pubDate>
+        <link>https://rpp.pe/rotafono/servicios-publicos/amazonas-adulta-mayor-que-sufrio-quemaduras-tras-explosion-de-balon-de-gas-requiere-traslado-al-hospital-loayza-en-lima-minsa-ministerio-de-salud-video-noticia-1715024</link>
+        <guid>1715024</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/30/26-10-29-14-03-53-24387-1924054mp4_1924055.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Chiclayo, Amazonas, hospital casimiro ulloa, hospital Loayza, traslado a lima, Incendio, rotafono, Ministerio de Salud, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Caso Sharol Cortez Cruz: dictan 9 meses de prisión preventiva para investigado por presunto feminicidio en Bagua Grande]]></title>
         <description><![CDATA[El Primer Juzgado de Investigación Preparatoria de Utcubamba dispuso el internamiento de Junior Rodríguez Arista por el presunto feminicidio de Sharol Cortez Cruz en Bagua Grande.]]></description>
@@ -542,28 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2025/09/04/031103_1788233.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Romer Orrego, Provincia de Condorcanqui, Amazonas, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Amazonas: ¿por qué existe desconfianza de la población awajún hacia el personal de salud en Cenepa?]]></title>
-        <description><![CDATA[<a data-mce-href="https://rpp.pe/peru/amazonas/amazonas-trabajadores-de-salud-paralizan-sus-actividades-porque-temen-que-etnia-awajun-los-procesen-por-brujeria-noticia-1652949" href="https://rpp.pe/peru/amazonas/amazonas-trabajadores-de-salud-paralizan-sus-actividades-porque-temen-que-etnia-awajun-los-procesen-por-brujeria-noticia-1652949">En las comunidades nativas del Cenepa</a> muchos aún atribuyen las muertes a la brujería y no a causas naturales. Esta cosmovisión, sumada a la<a data-mce-href="https://rpp.pe/peru/amazonas/trabajadores-de-salud-en-la-region-amazonas-realizan-protesta-por-temor-a-ser-procesados-por-brujeria-por-un-grupo-awajun-noticia-1653192" href="https://rpp.pe/peru/amazonas/trabajadores-de-salud-en-la-region-amazonas-realizan-protesta-por-temor-a-ser-procesados-por-brujeria-por-un-grupo-awajun-noticia-1653192"> precariedad de los servicios de salud </a>y la ausencia del<strong> Estado</strong>, alimenta la desconfianza hacia médicos y técnicos que llegan a la zona.]]></description>
-        <pubDate>Tue, 02 Sep 2025 15:57:10 -0500</pubDate>
-        <link>https://rpp.pe/peru/amazonas/amazonas-desconfianza-de-la-poblacion-awajun-hacia-el-personal-de-salud-en-cenepa-noticia-1653327</link>
-        <guid>1653327</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2025/09/02/591659_1787473.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Amazonas, Cenepa, Brujería, Personal de salud, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Amazonas: ¿qué se sabe de la protesta de trabajadores de salud por temor a ser "procesados por brujería" por un grupo awajún?]]></title>
-        <description><![CDATA[Personal de la microred de <strong>Huampami</strong> denuncia agresiones y acusaciones de "<strong>brujería"</strong> por parte de un sector <strong>awajún</strong>, por lo que piden garantías para continuar atendiendo en esta zona fronteriza de la región <a data-mce-href="https://rpp.pe/peru/amazonas/amazonas-trabajadores-de-salud-paralizan-sus-actividades-porque-temen-que-etnia-awajun-los-procesen-por-brujeria-noticia-1652949" href="https://rpp.pe/peru/amazonas/amazonas-trabajadores-de-salud-paralizan-sus-actividades-porque-temen-que-etnia-awajun-los-procesen-por-brujeria-noticia-1652949">Amazonas</a>.]]></description>
-        <pubDate>Mon, 01 Sep 2025 15:52:09 -0500</pubDate>
-        <link>https://rpp.pe/peru/amazonas/trabajadores-de-salud-en-la-region-amazonas-realizan-protesta-por-temor-a-ser-procesados-por-brujeria-por-un-grupo-awajun-noticia-1653192</link>
-        <guid>1653192</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2025/09/01/111711_1787187.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Huampami, Brujeria, Awajún, Amazonas, personal de salud, Videos mas vistos, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>

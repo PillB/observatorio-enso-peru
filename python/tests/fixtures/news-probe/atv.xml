@@ -12,7 +12,7 @@
 	<atom:link href="https://www.atv.pe/feed/" rel="self" type="application/rss+xml" />
 	<link>https://www.atv.pe/</link>
 	<description>Disfruta de la programación del canal con mayor cobertura del Perú. Estamos en vivo en todas las plataformas digitales con las últimas noticias.</description>
-	<lastBuildDate>Mon, 28 Sep 2026 12:29:22 +0000</lastBuildDate>
+	<lastBuildDate>Sat, 31 Oct 2026 18:09:16 +0000</lastBuildDate>
 	<language>es-PE</language>
 	<sy:updatePeriod>
 	hourly	</sy:updatePeriod>
@@ -28,6 +28,25 @@
 	<height>32</height>
 </image> 
 	<item>
+		<title>Día de la Canción Criolla: 6 platos peruanos que no pueden faltar en tu celebración</title>
+		<link>https://www.atv.pe/platos-dia-cancion-criolla-peru/</link>
+		
+		<dc:creator><![CDATA[ATV - Atrevámonos]]></dc:creator>
+		<pubDate>Sat, 31 Oct 2026 18:08:22 +0000</pubDate>
+				<category><![CDATA[Actualidad]]></category>
+		<category><![CDATA[comida criolla]]></category>
+		<category><![CDATA[Día de la Canción Criolla]]></category>
+		<category><![CDATA[gastronomía peruana]]></category>
+		<guid isPermaLink="false">https://www.atv.pe/?p=1156863</guid>
+
+					<description><![CDATA[<p>Conoce seis platos tradicionales de la gastronomía peruana para disfrutar este 31 de octubre.</p>
+<p>La entrada <a href="https://www.atv.pe/platos-dia-cancion-criolla-peru/">Día de la Canción Criolla: 6 platos peruanos que no pueden faltar en tu celebración</a> se publicó primero en <a href="https://www.atv.pe">ATV - Atrevámonos</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+		<item>
 		<title>Universitario: horas claves para definir el futuro de Héctor Cúper en el cuadro crema</title>
 		<link>https://www.atv.pe/universitario-horas-claves-futuro-hector-cuper/</link>
 		
@@ -384,26 +403,7 @@
 		
 		
 			</item>
-		<item>
-		<title>Sergio Peña llegó a Grecia para sumarse al PAOK Salónica FC</title>
-		<link>https://www.atv.pe/sergio-pena-llego-a-grecia-para-sumarse-al-paok-salonica-fc/</link>
-		
-		<dc:creator><![CDATA[ATV - Atrevámonos]]></dc:creator>
-		<pubDate>Fri, 10 Jan 2025 17:05:22 +0000</pubDate>
-				<category><![CDATA[Deportes]]></category>
-		<category><![CDATA[PAOK Salónica FC]]></category>
-		<category><![CDATA[Peruanos en el extranjero]]></category>
-		<category><![CDATA[Sergio Peña]]></category>
-		<guid isPermaLink="false">https://www.atv.pe/?p=640968</guid>
-
-					<description><![CDATA[<p>El volante de 29 se convertirá en el sexto peruano que vista la camiseta del PAOK. </p>
-<p>La entrada <a href="https://www.atv.pe/sergio-pena-llego-a-grecia-para-sumarse-al-paok-salonica-fc/">Sergio Peña llegó a Grecia para sumarse al PAOK Salónica FC</a> se publicó primero en <a href="https://www.atv.pe">ATV - Atrevámonos</a>.</p>
-]]></description>
-		
-		
-		
-			</item>
 	</channel>
 </rss>
 
-<!-- plugin=object-cache-pro client=phpredis metric#hits=2948 metric#misses=196 metric#hit-ratio=93.8 metric#bytes=1352753 metric#prefetches=259 metric#store-reads=190 metric#store-writes=9 metric#store-hits=277 metric#store-misses=174 metric#sql-queries=17 metric#ms-total=197.72 metric#ms-cache=17.88 metric#ms-cache-avg=0.0903 metric#ms-cache-ratio=9.0 -->
+<!-- plugin=object-cache-pro client=phpredis metric#hits=2922 metric#misses=194 metric#hit-ratio=93.8 metric#bytes=1389609 metric#prefetches=259 metric#store-reads=190 metric#store-writes=9 metric#store-hits=277 metric#store-misses=174 metric#sql-queries=17 metric#ms-total=341.02 metric#ms-cache=22.35 metric#ms-cache-avg=0.1129 metric#ms-cache-ratio=6.6 -->
