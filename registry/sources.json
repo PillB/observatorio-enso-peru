@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-10-27T22:23:13+00:00",
+ "generated_at": "2026-11-02T19:35:29+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -108,10 +108,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -124,7 +126,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -165,10 +170,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -181,7 +188,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -414,10 +424,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -430,7 +442,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -713,10 +728,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -729,7 +746,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -768,10 +788,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -784,7 +806,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -823,10 +848,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -839,7 +866,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -878,10 +908,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -894,7 +926,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -933,10 +968,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -949,7 +986,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -988,10 +1028,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -1004,7 +1046,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -1043,10 +1088,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -1059,7 +1106,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -1098,10 +1148,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -1114,7 +1166,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -1153,10 +1208,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -1169,7 +1226,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -1208,10 +1268,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -1224,7 +1286,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -1269,23 +1334,28 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "challenge",
-     "robots": "unreachable"
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
     },
     "n8n": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -1293,9 +1363,10 @@
     "https://www.imarpe.gob.pe/feed/": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -2140,16 +2211,18 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "http-5xx",
-     "http": 523,
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -2158,6 +2231,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -2165,6 +2239,7 @@
     "https://www.noticiasser.pe/feed/": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -2193,10 +2268,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -2209,7 +2286,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -2737,10 +2817,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -2753,7 +2835,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -3096,10 +3181,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -3112,7 +3199,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -3463,10 +3553,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -3479,7 +3571,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -3948,10 +4043,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -3964,7 +4061,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -4252,10 +4352,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -4268,7 +4370,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -4556,10 +4661,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -4572,7 +4679,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -4797,10 +4907,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -4813,7 +4925,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -5408,10 +5523,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -5424,7 +5541,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -5649,10 +5769,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -5665,7 +5787,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -5890,10 +6015,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -5906,7 +6033,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -6068,10 +6198,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -6084,7 +6216,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -6309,10 +6444,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -6325,7 +6462,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -6365,10 +6505,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -6381,7 +6523,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -6606,10 +6751,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -6622,7 +6769,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -6847,10 +6997,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -6863,7 +7015,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -7088,10 +7243,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -7104,7 +7261,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -7455,10 +7615,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -7471,7 +7633,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -7876,10 +8041,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -7892,7 +8059,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -8424,10 +8594,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -8440,7 +8612,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -8661,10 +8836,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -8677,7 +8854,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -8976,10 +9156,12 @@
     "status": "open",
     "from": [
      "github-actions",
+     "n8n-aws-us-east-1",
      "peru-server"
     ],
     "open_from": [
      "actions",
+     "n8n",
      "peru"
     ],
     "us": {
@@ -8997,7 +9179,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9043,10 +9228,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9059,7 +9246,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9101,10 +9291,13 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "claude-cloud-us"
+     "claude-cloud-us",
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9117,7 +9310,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9159,10 +9355,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9175,7 +9373,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9216,10 +9417,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9232,7 +9435,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9274,10 +9480,12 @@
     "status": "open",
     "from": [
      "github-actions",
+     "n8n-aws-us-east-1",
      "peru-server"
     ],
     "open_from": [
      "actions",
+     "n8n",
      "peru"
     ],
     "us": {
@@ -9295,7 +9503,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9336,10 +9547,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9352,7 +9565,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9394,10 +9610,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9410,7 +9628,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9452,10 +9673,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9468,7 +9691,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9510,10 +9736,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9526,7 +9754,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9567,10 +9798,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9583,7 +9816,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9624,10 +9860,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9640,7 +9878,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9681,10 +9922,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9697,7 +9940,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9738,10 +9984,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9754,7 +10002,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9801,10 +10052,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -9817,7 +10070,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -9976,7 +10232,7 @@
    "notes": "tipo de medio: organismo; alcance: hazard",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
+    "status": "open",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -9992,8 +10248,9 @@
     },
     "peru": null,
     "actions": {
-     "class": "robots",
-     "robots": "disallowed"
+     "class": "http-4xx",
+     "http": 404,
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10001,17 +10258,16 @@
     }
    },
    "channels": [
-    "actions"
+    "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://news.un.org/feed/subscribe/es/news/topic/climate-change/feed/rss.xml": {
-     "status": "robots-disallowed",
+     "status": "open",
      "channels": [
-      "actions"
+      "n8n"
      ],
-     "robots": "disallowed",
-     "reader": true
+     "robots": "allowed"
     }
    }
   },
@@ -10036,10 +10292,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -10052,7 +10310,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -10218,10 +10479,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -10234,7 +10497,10 @@
      "http": 200,
      "robots": "absent"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
@@ -11389,16 +11655,23 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "dns",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "dns",
      "robots": "allowed"
@@ -11411,14 +11684,14 @@
    "geoblocked": true,
    "by_url": {
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Comunicado+Oficial+ENFEN%22&dsoType=ITEM&size=6&sort=dc.date.issued%2CDESC": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
      "robots": "allowed"
     },
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Informe+T%C3%A9cnico+ENFEN%22&dsoType=ITEM&size=4&sort=dc.date.issued%2CDESC": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -11448,16 +11721,23 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "dns",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "dns",
      "robots": "allowed"
@@ -11470,7 +11750,7 @@
    "geoblocked": true,
    "by_url": {
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Bolet%C3%ADn+Semanal+Oceanogr%C3%A1fico+y+Biol%C3%B3gico%22&dsoType=ITEM&size=8&sort=dc.date.issued%2CDESC": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -11497,16 +11777,23 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "absent"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "absent"
@@ -11519,7 +11806,7 @@
    "geoblocked": true,
    "by_url": {
     "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -11599,16 +11886,23 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "allowed"
@@ -11621,7 +11915,7 @@
    "geoblocked": true,
    "by_url": {
     "https://bibliotecadigital.bnp.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -11648,16 +11942,20 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "down",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
      "class": "dns",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "actions": {
      "class": "dns",
      "robots": "allowed"
@@ -11665,14 +11963,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://repositorio.bnp.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -11697,16 +11995,20 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "down",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
      "class": "dns",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "actions": {
      "class": "dns",
      "robots": "allowed"
@@ -11714,14 +12016,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://catalogo.bnp.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -11746,16 +12048,20 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "down",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
      "class": "dns",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "actions": {
      "class": "dns",
      "robots": "allowed"
@@ -11763,14 +12069,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://www.indeci.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -11795,16 +12101,20 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "down",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
      "class": "dns",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "actions": {
      "class": "dns",
      "robots": "allowed"
@@ -11812,14 +12122,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://bvpad.indeci.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -11844,16 +12154,23 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "allowed"
@@ -11866,7 +12183,7 @@
    "geoblocked": true,
    "by_url": {
     "https://repositorio.ana.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -11893,16 +12210,23 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "allowed"
@@ -11915,7 +12239,7 @@
    "geoblocked": true,
    "by_url": {
     "https://repositorio.senamhi.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -11942,16 +12266,21 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "down",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
      "class": "timeout",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "empty",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "allowed"
@@ -11959,14 +12288,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://spij.minjus.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -11991,16 +12320,23 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "allowed"
@@ -12013,7 +12349,7 @@
    "geoblocked": true,
    "by_url": {
     "https://apps.contraloria.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -12040,16 +12376,20 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "down",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
      "class": "dns",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "dns",
+     "robots": "allowed"
+    },
     "actions": {
      "class": "dns",
      "robots": "allowed"
@@ -12057,14 +12397,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://www.rcc.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -12089,16 +12429,23 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "allowed"
@@ -12111,7 +12458,7 @@
    "geoblocked": true,
    "by_url": {
     "https://siea.midagri.gob.pe/portal/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -12138,9 +12485,10 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "down",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
@@ -12148,7 +12496,11 @@
      "http": 403,
      "robots": "absent"
     },
-    "peru": null,
+    "peru": {
+     "class": "http-403",
+     "http": 403,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "http-403",
      "http": 403,
@@ -12157,14 +12509,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://www.tvperu.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -12189,9 +12541,10 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "down",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
     "open_from": [],
     "us": {
@@ -12199,7 +12552,11 @@
      "http": 403,
      "robots": "absent"
     },
-    "peru": null,
+    "peru": {
+     "class": "http-403",
+     "http": 403,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "http-403",
      "http": 403,
@@ -12208,14 +12565,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://www.radionacional.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -12293,16 +12650,23 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
-     "github-actions"
+     "github-actions",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "unreachable"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "unreachable"
@@ -12315,11 +12679,11 @@
    "geoblocked": true,
    "by_url": {
     "https://repositorio.unsa.edu.pe/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
-     "robots": "unknown"
+     "robots": "allowed"
     }
    }
   },
@@ -12804,19 +13168,26 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "allowed"
@@ -12831,7 +13202,7 @@
    "geoblocked": true,
    "by_url": {
     "https://snirh.ana.gob.pe/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -12857,19 +13228,26 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "suspected-geoblock",
+    "status": "geoblocked",
     "from": [
      "github-actions",
      "n8n-actions-azure",
      "n8n-aws",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "timeout",
      "robots": "allowed"
@@ -12884,7 +13262,7 @@
    "geoblocked": true,
    "by_url": {
     "https://snirh.ana.gob.pe/onrh/": {
-     "status": "suspected-geoblock",
+     "status": "geoblocked",
      "channels": [
       "peru-server"
      ],
@@ -12919,12 +13297,14 @@
      "peru-server"
     ],
     "open_from": [
+     "actions",
      "n8n",
      "peru"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12932,8 +13312,9 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "challenge",
-     "robots": "unreachable"
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
     },
     "n8n": {
      "class": "ok",
@@ -12941,6 +13322,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -12948,6 +13330,7 @@
     "https://www.imarpe.gob.pe/": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -12981,12 +13364,14 @@
      "peru-server"
     ],
     "open_from": [
+     "actions",
      "n8n",
      "peru"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": {
      "class": "ok",
@@ -12994,8 +13379,9 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "challenge",
-     "robots": "unreachable"
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
     },
     "n8n": {
      "class": "ok",
@@ -13003,6 +13389,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -13010,6 +13397,7 @@
     "https://www.imarpe.gob.pe/imarpe/index.php?id_seccion=I0178070000000000000000": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -13036,10 +13424,12 @@
    "geoblock": {
     "status": "open",
     "from": [
-     "github-actions"
+     "github-actions",
+     "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions"
+     "actions",
+     "n8n"
     ],
     "us": {
      "class": "ok",
@@ -13052,7 +13442,10 @@
      "http": 200,
      "robots": "allowed"
     },
-    "n8n": null
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
