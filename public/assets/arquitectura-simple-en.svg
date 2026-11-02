@@ -324,13 +324,13 @@
     <a class="ar-annex" href="anexos/a8-en.svg" data-annex="a8"><title>Annex A8: Publication, deployment and archive</title><rect class="ar-tag" x="744.6" y="865" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="758.3" y="877.5" font-size="10.5" text-anchor="middle">A8</text></a>
   </g>
   <g class="ar-node-g" id="as-n-s-sitio" data-node="s-sitio">
-    <title>Website. The public website with 11 views, an alert map and open downloads. Next to each value are links to the original source and its archived copy.</title>
+    <title>Website. The public website with 12 views, an alert map and open downloads. Next to each value are links to the original source and its archived copy.</title>
     <rect class="ar-node ar-g-site" x="420" y="1098" width="360" height="95.7" rx="8"/>
     <rect class="ar-f-site" x="420" y="1106" width="4" height="79.7" rx="2"/>
     <circle class="ar-step" cx="441" cy="1119" r="10"/>
     <text class="ar-step-n" x="441" y="1123.2" font-size="12" text-anchor="middle">8</text>
     <text class="ar-t" x="458" y="1124" font-size="14">Website</text>
-    <text class="ar-s" x="432" y="1146.4" font-size="12">The public website with 11 views, an alert map and</text>
+    <text class="ar-s" x="432" y="1146.4" font-size="12">The public website with 12 views, an alert map and</text>
     <text class="ar-s" x="432" y="1162.9" font-size="12">open downloads. Next to each value are links to the</text>
     <text class="ar-s" x="432" y="1179.5" font-size="12">original source and its archived copy.</text>
     <a class="ar-annex" href="anexos/a9-en.svg" data-annex="a9"><title>Annex A9: The site in the browser</title><rect class="ar-tag" x="744.6" y="1105" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="758.3" y="1117.5" font-size="10.5" text-anchor="middle">A9</text></a>

@@ -330,13 +330,13 @@
     <a class="ar-annex" href="anexos/a8.svg" data-annex="a8"><title>Anexo A8: Publicación, despliegue y archivo</title><rect class="ar-tag" x="744.6" y="865" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="758.3" y="877.5" font-size="10.5" text-anchor="middle">A8</text></a>
   </g>
   <g class="ar-node-g" id="as-n-s-sitio" data-node="s-sitio">
-    <title>Sitio. La página pública con 11 vistas, un mapa de alertas y descargas abiertas. Junto a cada dato están el enlace a la fuente original y a su copia archivada.</title>
+    <title>Sitio. La página pública con 12 vistas, un mapa de alertas y descargas abiertas. Junto a cada dato están el enlace a la fuente original y a su copia archivada.</title>
     <rect class="ar-node ar-g-site" x="420" y="1098" width="360" height="95.7" rx="8"/>
     <rect class="ar-f-site" x="420" y="1106" width="4" height="79.7" rx="2"/>
     <circle class="ar-step" cx="441" cy="1119" r="10"/>
     <text class="ar-step-n" x="441" y="1123.2" font-size="12" text-anchor="middle">8</text>
     <text class="ar-t" x="458" y="1124" font-size="14">Sitio</text>
-    <text class="ar-s" x="432" y="1146.4" font-size="12">La página pública con 11 vistas, un mapa de alertas y</text>
+    <text class="ar-s" x="432" y="1146.4" font-size="12">La página pública con 12 vistas, un mapa de alertas y</text>
     <text class="ar-s" x="432" y="1162.9" font-size="12">descargas abiertas. Junto a cada dato están el enlace a</text>
     <text class="ar-s" x="432" y="1179.5" font-size="12">la fuente original y a su copia archivada.</text>
     <a class="ar-annex" href="anexos/a9.svg" data-annex="a9"><title>Anexo A9: El sitio en el navegador</title><rect class="ar-tag" x="744.6" y="1105" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="758.3" y="1117.5" font-size="10.5" text-anchor="middle">A9</text></a>

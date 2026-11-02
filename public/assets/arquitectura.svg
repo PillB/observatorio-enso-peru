@@ -537,13 +537,13 @@
     <text class="ar-t" x="1386" y="801.8" font-size="10.5" text-anchor="middle">66</text>
   </g>
   <g class="ar-edge" id="af-e-67" data-edge="67" data-from="live-site" data-to="site-app" tabindex="0">
-    <title>67. Sitio en vivo (SITE_URL) → Sitio web (11 vistas): sirve páginas y datos. El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y luego cada archivo con el mismo publicationId.</title>
+    <title>67. Sitio en vivo (SITE_URL) → Sitio web (12 vistas): sirve páginas y datos. El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y luego cada archivo con el mismo publicationId.</title>
     <path class="ar-e ar-e-data" d="M1548 637.1 L1548 663.1" marker-end="url(#af-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="1548" cy="650.1" r="9"/>
     <text class="ar-t" x="1548" y="653.9" font-size="10.5" text-anchor="middle">67</text>
   </g>
   <g class="ar-edge" id="af-e-68" data-edge="68" data-from="public" data-to="site-app" tabindex="0">
-    <title>68. Público → Sitio web (11 vistas): abre el sitio o descarga. Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada dato puede ir a la fuente en vivo o a la copia archivada.</title>
+    <title>68. Público → Sitio web (12 vistas): abre el sitio o descarga. Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada dato puede ir a la fuente en vivo o a la copia archivada.</title>
     <path class="ar-e ar-e-human" d="M1548 856.5 L1548 830.5" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
     <circle class="ar-badge ar-e-human" cx="1548" cy="843.5" r="9"/>
     <text class="ar-t" x="1548" y="847.3" font-size="10.5" text-anchor="middle">68</text>
@@ -1216,18 +1216,18 @@
     <a class="ar-annex" href="anexos/a9.svg" data-annex="a9"><title>Anexo A9: El sitio en el navegador</title><rect class="ar-tag" x="1630.6" y="537.3" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1644.3" y="549.8" font-size="10.5" text-anchor="middle">A9</text></a>
   </g>
   <g class="ar-node-g" id="af-n-site-app" data-node="site-app">
-    <title>Sitio web (11 vistas). Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada.</title>
+    <title>Sitio web (12 vistas). Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Mi zona, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada.</title>
     <rect class="ar-node ar-g-site" x="1434" y="663.1" width="232" height="167.4" rx="8"/>
     <rect class="ar-f-site" x="1434" y="671.1" width="4" height="151.4" rx="2"/>
-    <text class="ar-t" x="1446" y="687.6" font-size="12.5">Sitio web (11 vistas)</text>
+    <text class="ar-t" x="1446" y="687.6" font-size="12.5">Sitio web (12 vistas)</text>
     <text class="ar-s" x="1446" y="710.5" font-size="11">Página estática sin compilación:</text>
     <text class="ar-s" x="1446" y="725.7" font-size="11">Resumen, El Niño Costero, Pacífico,</text>
     <text class="ar-s" x="1446" y="740.8" font-size="11">Océano y atmósfera, Mapa, Historia,</text>
-    <text class="ar-s" x="1446" y="756" font-size="11">Memoria de desastres, Noticias (con</text>
-    <text class="ar-s" x="1446" y="771.2" font-size="11">el mapa de alertas), Datos,</text>
-    <text class="ar-s" x="1446" y="786.4" font-size="11">Metodología y Asistente. Junto a cada</text>
-    <text class="ar-s" x="1446" y="801.6" font-size="11">dato enlaza la fuente en vivo y la</text>
-    <text class="ar-s" x="1446" y="816.7" font-size="11">copia archivada.</text>
+    <text class="ar-s" x="1446" y="756" font-size="11">Memoria de desastres, Mi zona,</text>
+    <text class="ar-s" x="1446" y="771.2" font-size="11">Noticias (con el mapa de alertas),</text>
+    <text class="ar-s" x="1446" y="786.4" font-size="11">Datos, Metodología y Asistente. Junto</text>
+    <text class="ar-s" x="1446" y="801.6" font-size="11">a cada dato enlaza la fuente en vivo</text>
+    <text class="ar-s" x="1446" y="816.7" font-size="11">y la copia archivada.</text>
     <a class="ar-annex" href="anexos/a9.svg" data-annex="a9"><title>Anexo A9: El sitio en el navegador</title><rect class="ar-tag" x="1630.6" y="670.1" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1644.3" y="682.6" font-size="10.5" text-anchor="middle">A9</text></a>
   </g>
   <g class="ar-node-g" id="af-n-public" data-node="public">
@@ -1895,13 +1895,13 @@
   <circle class="ar-badge ar-e-data" cx="599.3" cy="5299.8" r="9"/>
   <text class="ar-t" x="599.3" y="5303.6" font-size="10.5" text-anchor="middle">67</text>
   <text class="ar-t" x="619.3" y="5303.8" font-size="11.5">sirve páginas y datos</text>
-  <text class="ar-m" x="619.3" y="5317.8" font-size="10.5">Sitio en vivo (SITE_URL) → Sitio web (11 vistas)</text>
+  <text class="ar-m" x="619.3" y="5317.8" font-size="10.5">Sitio en vivo (SITE_URL) → Sitio web (12 vistas)</text>
   <text class="ar-s" x="619.3" y="5332.8" font-size="11">El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y</text>
   <text class="ar-s" x="619.3" y="5347.8" font-size="11">luego cada archivo con el mismo publicationId.</text>
   <circle class="ar-badge ar-e-human" cx="1168.7" cy="2585.8" r="9"/>
   <text class="ar-t" x="1168.7" y="2589.6" font-size="10.5" text-anchor="middle">68</text>
   <text class="ar-t" x="1188.7" y="2589.8" font-size="11.5">abre el sitio o descarga</text>
-  <text class="ar-m" x="1188.7" y="2603.8" font-size="10.5">Público → Sitio web (11 vistas)</text>
+  <text class="ar-m" x="1188.7" y="2603.8" font-size="10.5">Público → Sitio web (12 vistas)</text>
   <text class="ar-s" x="1188.7" y="2618.8" font-size="11">Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada</text>
   <text class="ar-s" x="1188.7" y="2633.8" font-size="11">dato puede ir a la fuente en vivo o a la copia archivada.</text>
   <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="2656.8" r="9"/>
