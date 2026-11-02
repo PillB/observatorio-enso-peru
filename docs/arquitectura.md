@@ -1154,6 +1154,7 @@ si no coinciden, muestra un aviso en lugar de mezclar datos.
 | `news/clusters.json` | Notas de los últimos 14 días agrupadas por similitud del titular: titular más temprano, medios, resumen y enlaces |
 | `news/items.jsonl` | Histórico de noticias de solo anexar: cada corrida agrega las notas nuevas al final y nunca reescribe las anteriores |
 | `news/items.csv` | El mismo histórico en CSV, protegido contra fórmulas |
+| `news/eventos-noticias.csv` | Las notas con un peligro de clima y un lugar, en el esquema del equipo de prevención: una fila por nota y UBIGEO, con las 13 columnas del tablero (Date … Longitud), los metadatos del catálogo histórico y los de la nota (`NoticiaId`, `Medio`, `Relevancia`…). La fecha es la de la nota (`FechaTipo = publicacion`); sin duración, dirección ni punto fino, porque una nota no los da. Lo arma `python/enso/news_equipo.py` |
 | `geo/items.json`, `geo/ubigeo.json` | Notas recientes con su lugar (hasta 120 días y 4000 notas) y el nomenclátor de departamentos, provincias y distritos, para la consola de lugares |
 | `geo/overrides.json`, `geo/quality.json` | Correcciones de lugar aplicadas (sin nombres de revisores) y cuántas notas tienen lugar, con qué método y confianza ([georreferenciacion](georreferenciacion.md)) |
 | `archive/sources/<fuente>/<sha12>.<ext>` | La respuesta original de cada fuente oficial y los PDF de los comunicados, byte por byte. Excepción: cpc-godas-d20 archiva el D20 calculado por mes (JSON); las URL de los GRIB leídos quedan en `grib` y en attempts |

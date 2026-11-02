@@ -1285,6 +1285,20 @@ def _is_number(s: str) -> bool:
         return False
 
 
+def _team_news_csv(items: list, icen: Optional["Acquired"], log: EventLog) -> str:
+    """``news/eventos-noticias.csv``: las notas en el esquema del equipo de prevención (ver ``news_equipo``). Si falla,
+    la publicación sigue sin ese archivo: es un derivado del histórico, no un dato propio."""
+    try:
+        from . import news_equipo
+        from .historico.enso import EnsoCalendar
+        from .historico.territorio import territory
+        text = icen.raw.decode("utf-8", errors="replace") if icen is not None and icen.raw else ""
+        return news_equipo.to_csv(items, territory(), EnsoCalendar(text))
+    except Exception as exc:  # noqa: BLE001
+        log.add("warning", "news", "export", "team-csv-failed", f"No se pudo armar eventos-noticias.csv: {type(exc).__name__}: {exc}"[:300])
+        return ""
+
+
 def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, official: dict, weekly, grd: dict,
                       log: EventLog, started: datetime, news: Optional[dict] = None,
                       feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None,
@@ -1411,13 +1425,16 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                 dump(f"geo/{name}.json", val)
         (tmp / "news" / "items.jsonl").write_text(news["jsonl"], encoding="utf-8")
         (tmp / "news" / "items.csv").write_text(news["csv"], encoding="utf-8")
+        team_csv = _team_news_csv(news.get("items") or [], acquired.get("igp-icen"), log)
+        if team_csv:
+            (tmp / "news" / "eventos-noticias.csv").write_text(team_csv, encoding="utf-8")
         news_dash = (news["feeds"], news["clusters"])
     elif previous is not None:
         # Corrida sin noticias (su lectura falló, o --offline/--only): se sirven las de la publicación
         # anterior, para que la siguiente encuentre el histórico (y las correcciones de lugar de la consola,
         # geo/overrides.json, que se usan si la consola no responde) y no los dé por perdidos.
         carried: dict[str, dict] = {}
-        for name in ("news/feeds.json", "news/clusters.json", "news/items.jsonl", "news/items.csv", "news/documentos.json",
+        for name in ("news/feeds.json", "news/clusters.json", "news/items.jsonl", "news/items.csv", "news/eventos-noticias.csv", "news/documentos.json",
                      "geo/items.json", "geo/overrides.json", "geo/quality.json", "geo/ubigeo.json"):
             body = previous.get_bytes(name)
             if not body:
