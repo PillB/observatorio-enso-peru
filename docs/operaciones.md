@@ -169,6 +169,7 @@ código que registra el pipeline esté en esta tabla. `archive-channel`,
 | `history-old` | GODAS: el histórico `python/enso/data/godas-d20.json` tiene más de 12 meses de atraso | Regenerarlo (ver «Histórico de D20» abajo) |
 | `bsobp-exception` | La lectura del boletín semanal falló por un error de programa; se conserva lo publicado | Revisar la traza y `python/enso/feeds/imarpe_bsobp.py` |
 | `news-degraded` | Menos de la mitad de los feeds de noticias pedidos están activos | Revisar `news/feeds.json` (qué falló en cada uno) |
+| `team-csv-failed` | No se pudo armar `news/eventos-noticias.csv` (las notas en el esquema del equipo de prevención); la publicación sigue sin ese archivo | Ver el error en el mensaje; suele ser el ICEN del IGP sin texto o un cambio en `news_equipo.py` |
 | `alerts-places` | Sin noticias en esta corrida, las alertas de la publicación anterior no se pudieron volver a ubicar: quedan con el lugar con que se guardaron | Ninguna si es aislada; si se repite, revisar la traza |
 | `overrides-http`, `overrides-down` | La consola de lugares (`/api/geo/overrides`) respondió con error o no respondió: se usan las correcciones de la publicación anterior | Revisar la Function y `GEO_OVERRIDES_URL` ([despliegue-cloudflare](despliegue-cloudflare.md)) |
 | `overrides-rejected` | Algunas correcciones de lugar de la consola traen códigos inválidos y no se aplicaron | Revisarlas en la consola de lugares ([georreferenciacion](georreferenciacion.md)) |
