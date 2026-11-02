@@ -140,6 +140,47 @@ def test_wp_rest_resumes_with_the_next_term(monkeypatch, tmp_path):
     assert json.loads(B.ASSEMBLE["wp-rest"](src, tmp_path / "p")) == full
 
 
+def test_wp_rest_fails_when_the_site_answers_with_errors_or_nothing(monkeypatch, tmp_path):
+    """Desde GitHub Actions, cinco medios respondían a cada término con error o sin notas, y la cosecha los daba por
+    completos con 0 notas: el catálogo perdía en silencio lo que tenía de ellos. Ahora es un fallo, y lo que sí se
+    bajó se guarda para la corrida siguiente."""
+    src = {"id": "wp", "url": "https://x.pe/wp-json/wp/v2/posts", "parametros": {"terminos": ["huaico", "helada"]}}
+    note = [{"id": 1, "date": "2023-03-10T08:00:00", "link": "https://x.pe/1", "title": {"rendered": "Huaico"},
+             "excerpt": {"rendered": ""}}]
+
+    _mock(monkeypatch, lambda r: httpx.Response(200, json=note) if r.url.params["search"] == "huaico"
+          else httpx.Response(403, text="bloqueado"))
+    with pytest.raises(SystemExit, match="1 términos con error.*helada p. 1: HTTP 403"):
+        B.wp_rest(src, tmp_path / "p", delay=0)
+    assert (tmp_path / "p" / B._wp_part("huaico")).exists() and not (tmp_path / "p" / B._wp_part("helada")).exists()
+
+    _mock(monkeypatch, lambda r: httpx.Response(200, text="<html>verificando</html>"))
+    with pytest.raises(SystemExit, match="no es JSON"):
+        B.wp_rest(src, tmp_path / "q", delay=0)
+
+    _mock(monkeypatch, lambda r: httpx.Response(200, json=[]))
+    with pytest.raises(SystemExit, match="ningún término devolvió notas"):
+        B.wp_rest(src, tmp_path / "r", delay=0)
+    assert not (tmp_path / "r").exists()  # la corrida siguiente vuelve a preguntar todo
+
+
+def test_blank_press_downloads_in_the_cache_are_asked_again(monkeypatch, tmp_path):
+    """Una caché con medios guardados sin notas (antes del arreglo) los vuelve a pedir, aunque el PR ya esté anotado:
+    el PR siguiente dice cuáles no responden a Actions en lugar de publicarlos vacíos."""
+    monkeypatch.setattr(H, "MIN_LEFT", 0)
+    m = _manifest({"id": "vacio", "descarga": "wp-rest"}, {"id": "lleno", "descarga": "wp-rest", "host": "b.pe"},
+                  {"id": "otro", "host": "c.pe"})
+    (tmp_path / "vacio.json").write_text('{"errores": [], "notas": [], "source": "x"}')
+    (tmp_path / "lleno.json").write_text('{"errores": [], "notas": [{"id": 1}], "source": "x"}')
+    (tmp_path / "otro.json").write_text("{}")
+    H.main(["--cache", str(tmp_path), "--pr", "https://github.com/x/y/issues/1"])
+    st = H.harvest(m, tmp_path, minutes=1, command=_script("sys.exit(src + ': ningún término devolvió notas')"))
+    assert list(st["resultado"]) == ["vacio"] and st["resultado"]["vacio"][0] == "falló"
+    assert (st["estado"], st["faltan"]) == ("sigue", ["vacio"])
+    assert (tmp_path / "lleno.json").exists() and (tmp_path / "otro.json").exists()
+    assert not (tmp_path / H.PR).exists()
+
+
 def test_idmc_without_key_uses_the_seed_in_the_repository(monkeypatch, tmp_path):
     def handler(request):
         raise AssertionError(f"no debía pedir {request.url}")

@@ -852,7 +852,11 @@ horas `python -m tools.cosecha_historico`, que:
    fichas del INGEMMET, términos de cada medio, consultas y fragmentos de Chronicling America). El resumen de la corrida queda en la página de la corrida en
    Actions. Una fuente que falla en tres corridas seguidas (no por el plazo) deja de esperarse: el catálogo se
    construye sin ella y el PR lo dice; se sigue intentando en las corridas siguientes. Las fuentes de eventos y las
-   capas de contexto no dejan de esperarse nunca, porque sin ellas el catálogo no se construye.
+   capas de contexto no dejan de esperarse nunca, porque sin ellas el catálogo no se construye. Un medio con
+   WordPress cuya API responde con error, o sin ninguna nota en ningún término, cuenta como fallo y no como descarga
+   completa (cinco medios no responden a los servidores de Actions y se daban por completos con 0 notas, con lo que
+   el catálogo perdía en silencio sus registros). Si la caché ya tiene un medio guardado sin notas, se borra y se vuelve
+   a pedir, aunque el PR ya esté anotado: el PR siguiente dice cuáles fallaron.
 4. Guarda la caché (siempre, aunque algo falle) y borra las anteriores de la misma rama.
 5. Cuando no falta nada, construye el catálogo sin red (`build_historico --sin-red --parcial --aceptar-cambios
    --indices-al-dia`, con el ICEN y el ONI del día), lo
