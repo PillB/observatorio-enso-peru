@@ -10,6 +10,7 @@ import * as F from './lib/format.js';
 import { ICON } from './icons.js';
 import * as M from './historico-model.js';
 import { loadAll } from './historico.js';
+import { phaseOf } from './alertmap.js';
 
 const CODE_RE = /^\d{2}(\d{2}){0,2}$/;
 const LEVEL = { 2: 'departamento', 4: 'provincia', 6: 'distrito' };
@@ -51,10 +52,12 @@ export function seasonality(recs) {
 /** Clase de color 0 a 4 de una cuenta respecto del máximo de su fila (0 = ninguno). */
 export const heat = (v, max) => (v > 0 && max > 0 ? Math.min(4, 1 + Math.floor((3.999 * v) / max)) : 0);
 
-/** CSV de los registros del lugar (columnas de equipo, con el código como texto). El catálogo completo, con todas
- * las columnas, está en eventos.zip. */
+/** CSV de los registros del lugar (las columnas de equipo que trae el archivo compacto, con el código como texto). Las
+ * cifras son las agregadas de ese archivo, no las columnas originales: personas fallecidas y desaparecidas juntas,
+ * afectadas y damnificadas juntas (o desplazadas si no hay), y viviendas destruidas; por eso llevan otro nombre. El
+ * catálogo completo, con cada columna original, está en eventos.zip. */
 export function toCsv(recs, names) {
-  const head = ['Date', 'DangerType', 'Departamento', 'Provincia', 'Distrito', 'Ubigeo', 'TipoEvento', 'FaseENSO', 'Origen', 'Confianza', 'Fallecidos', 'Afectados', 'ViviendasAfectadas'];
+  const head = ['Date', 'DangerType', 'Departamento', 'Provincia', 'Distrito', 'Ubigeo', 'TipoEvento', 'FaseENSO', 'Origen', 'Confianza', 'FallecidosYDesaparecidos', 'AfectadosYDamnificados', 'ViviendasDestruidas'];
   const q = (v) => { const s = v === null || v === undefined ? '' : String(v); return /^[=+\-@\t\r]/.test(s) ? `'${s}` : /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const rows = [...recs].sort((a, b) => (a.d < b.d ? 1 : -1)).map((r) => [
     r.d, r.t, names.departamento[r.u.slice(0, 2)] || '', names.provincia[r.u.slice(0, 4)] || '', names.distrito[r.u] || '', r.u,
@@ -67,13 +70,27 @@ function readArea() {
   return CODE_RE.test(a) ? a : '';
 }
 
-function alertsCard(items, now) {
-  const live = items.filter((a) => a.valid?.until ? new Date(a.valid.until).getTime() >= now - DAY : (now - new Date(a.date).getTime()) < 3 * DAY);
-  if (!live.length) return html`<p class="muted">Ninguna fuente oficial tiene un aviso vigente que toque este lugar en los últimos días. Eso no quiere decir que no haya peligro: revise también el departamento y las <a href="#/noticias">noticias</a>.</p>`;
-  return html`<ul class="link-list">${live.slice(0, 8).map((a) => html`<li>
+/** Avisos que tocan el lugar, separados con las mismas reglas de vigencia que el mapa de alertas (``phaseOf``):
+ * vigentes o en curso, y próximos. Los vencidos y los reportes pasados no se muestran aquí. */
+export function currentAlerts(items, now) {
+  const withPhase = items.map((a) => ({ a, phase: phaseOf(a, now) }));
+  return {
+    now: withPhase.filter((x) => x.phase === 'vigente' || x.phase === 'en-curso').map((x) => x.a),
+    soon: withPhase.filter((x) => x.phase === 'proxima').map((x) => x.a),
+  };
+}
+
+function alertList(list) {
+  return html`<ul class="link-list">${list.slice(0, 8).map((a) => html`<li>
     <strong>${a.institution}</strong>${a.severity ? html` · <span class="lvl lvl-r${a.severity.rank}" title="${a.severity.scaleLabel}">${a.severity.label}</span>` : html` · <span class="muted">sin nivel</span>`}
     — <a href="${safeUrl(a.url)}" rel="noopener" target="_blank">${a.title}</a> <span class="muted small">${F.fmtDate(a.date)}</span></li>`)}</ul>
-    ${live.length > 8 ? html`<p class="muted small">Y ${live.length - 8} más en <a href="#/noticias">Noticias</a>.</p>` : ''}`;
+    ${list.length > 8 ? html`<p class="muted small">Y ${list.length - 8} más en <a href="#/noticias">Noticias</a>.</p>` : ''}`;
+}
+
+function alertsCard(items, now) {
+  const { now: live, soon } = currentAlerts(items, now);
+  if (!live.length && !soon.length) return html`<p class="muted">Ninguna fuente oficial tiene un aviso vigente ni próximo que toque este lugar. Eso no quiere decir que no haya peligro: revise también el departamento y las <a href="#/noticias">noticias</a>.</p>`;
+  return html`${live.length ? html`<h4>Vigentes ahora</h4>${alertList(live)}` : ''}${soon.length ? html`<h4>Próximos</h4>${alertList(soon)}` : ''}`;
 }
 
 function statCard(label, value, note) {
@@ -116,7 +133,7 @@ function report(D, feed, area, now) {
     <section class="card" aria-labelledby="zn-des"><h2 id="zn-des">Seguir</h2>
       <ul class="link-list">
         <li><a href="#/memoria?area=${area}">Ficha completa en Memoria de desastres</a> (mapa, ríos, cuencas, declaratorias)</li>
-        <li><button type="button" id="zn-csv" class="btn">Descargar los ${F.fmtNumber(recs.length)} registros de este lugar (CSV)</button> <span class="muted small">Con las columnas del equipo de prevención. El catálogo completo está en <a href="assets/historico/eventos.zip" download>eventos.zip</a>.</span></li>
+        <li><button type="button" id="zn-csv" class="btn">Descargar los ${F.fmtNumber(recs.length)} registros de este lugar (CSV)</button> <span class="muted small">Con las cifras agregadas del archivo compacto (fallecidos y desaparecidos juntos, afectados y damnificados juntos, viviendas destruidas). Las columnas originales están en <a href="assets/historico/eventos.zip" download>eventos.zip</a>.</span></li>
       </ul></section>
     <p class="muted small">Esto es la historia del catálogo, no un pronóstico: dice con qué frecuencia pasó, no cuándo volverá a pasar. Los avisos de arriba son los que emiten las instituciones.</p>`;
 }

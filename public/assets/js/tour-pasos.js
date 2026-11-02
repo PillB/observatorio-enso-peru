@@ -210,7 +210,7 @@ export const TOURS = [
       { route: '#/zona?area=150110', target: '#zn-root .grid', title: 'Qué pasó antes', text: 'Cuántos años hubo daños, cada cuánto tiempo, la probabilidad en los próximos 5 años y cuánto cambia con El Niño costero, con su intervalo de confianza. Es historia, no pronóstico.' },
       { route: '#/zona?area=150110', target: '#zn-hoy', title: 'Hoy', text: 'La fase del ENSO y los avisos oficiales vigentes que tocan este lugar, con el nivel que dio cada institución.' },
       { route: '#/zona?area=150110', target: '.zn-season', title: 'Meses críticos', text: 'Cuántos registros hubo de cada peligro en cada mes: los más oscuros son los peores meses de ese peligro en este lugar.' },
-      { route: '#/zona?area=150110', target: '#zn-csv', title: 'Descargar', text: 'Los registros del lugar en CSV, con las columnas del equipo de prevención.' },
+      { route: '#/zona?area=150110', target: '#zn-csv', title: 'Descargar', text: 'Los registros del lugar en CSV; el catálogo completo, con todas las columnas del equipo de prevención, está en Memoria de desastres.' },
     ],
   },
   {

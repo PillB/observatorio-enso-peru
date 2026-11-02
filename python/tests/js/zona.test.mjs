@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import { it } from 'node:test';
 
-import { heat, placeLabels, placeName, seasonality, toCsv, touches } from '../../../public/assets/js/zona.js';
+import { currentAlerts, heat, placeLabels, placeName, seasonality, toCsv, touches } from '../../../public/assets/js/zona.js';
 
 const names = {
   departamento: { 15: 'Lima', 20: 'Piura' },
@@ -51,6 +51,25 @@ it('el CSV lleva los códigos como texto y protege las celdas contra fórmulas',
   const out = toCsv([{ d: '2020-02-01', t: 'Huayco/Alud', u: '150110', e: '=SUMA(1)', f: 'Neutro', o: 'sinpad', c: 'alta', muertos: 0, afect: 12, viv: 0 }], names);
   const [head, row] = out.replace(/^﻿/, '').trim().split('\n');
   assert.ok(head.startsWith('Date,DangerType,Departamento'));
+  // las cifras agregadas no se hacen pasar por las columnas originales del equipo
+  assert.ok(head.endsWith('FallecidosYDesaparecidos,AfectadosYDamnificados,ViviendasDestruidas'));
+  assert.ok(!head.split(',').some((c) => ['Fallecidos', 'Afectados', 'ViviendasAfectadas'].includes(c)));
   assert.ok(row.includes(",150110,'=SUMA(1),"));
   assert.ok(row.includes('Comas'));
+});
+
+it('separa los avisos vigentes y los próximos con las reglas del mapa y deja fuera los vencidos y cancelados', () => {
+  const now = Date.parse('2026-11-02T12:00:00Z');
+  const fc = (from, until, extra = {}) => ({ kind: 'pronostico', date: from, valid: { from, until }, ...extra });
+  const items = [
+    fc('2026-11-02T00:00:00Z', '2026-11-03T00:00:00Z'), // vigente
+    fc('2026-11-04T00:00:00Z', '2026-11-05T00:00:00Z'), // próximo
+    fc('2026-10-30T00:00:00Z', '2026-11-01T11:00:00Z'), // vencido
+    fc('2026-11-02T00:00:00Z', '2026-11-03T00:00:00Z', { aviso: { cancelled: true } }), // cancelado
+    { kind: 'deteccion', date: '2026-10-30T00:00:00Z', currentHours: 24 }, // detección vieja
+    { kind: 'deteccion', date: '2026-11-02T06:00:00Z', currentHours: 24 }, // detección de hoy
+  ];
+  const r = currentAlerts(items, now);
+  assert.equal(r.now.length, 2);
+  assert.equal(r.soon.length, 1);
 });

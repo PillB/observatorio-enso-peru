@@ -7,9 +7,9 @@ lo que la plataforma ya sabe de ese lugar. No calcula nada propio.
 |---|---|
 | Registros, años con daños, «uno cada X años», probabilidad en 5 años, razón con El Niño costero, último registro | `historico-model.js` (`summarize`), el mismo cálculo que los CSV `indicadores-*.csv`, sobre los registros del lugar y las temporadas homogéneas de DesInventar |
 | Evento ENSO en curso e ICEN | `resumen.json` (`eventoEnCurso`, `icenUltimo`) |
-| Avisos oficiales que tocan el lugar | `feed.json`, grupo `alertas`: un aviso toca el lugar si uno de sus códigos es el lugar, lo contiene o está dentro de él (un aviso de departamento toca todos sus distritos); con el nivel que dio la institución |
+| Avisos oficiales que tocan el lugar | `feed.json`, grupo `alertas`, con la vigencia de `phaseOf` del mapa de alertas (vigentes y próximos; los vencidos y cancelados no se muestran): un aviso toca el lugar si uno de sus códigos es el lugar, lo contiene o está dentro de él (un aviso de departamento toca todos sus distritos); con el nivel que dio la institución |
 | Meses críticos | Registros del lugar con mes conocido, por peligro y mes; cada fila se colorea respecto de su propio máximo |
-| Descarga | CSV con las columnas del equipo de prevención y los registros del lugar; el catálogo completo, con todas las columnas, está en `eventos.zip` ([memoria-desastres](memoria-desastres.md)) |
+| Descarga | CSV con los registros del lugar. Las cifras son las agregadas del archivo compacto (`FallecidosYDesaparecidos`, `AfectadosYDamnificados`, `ViviendasDestruidas`) y por eso llevan otro nombre que en el catálogo; el catálogo completo, con cada columna original, está en `eventos.zip` ([memoria-desastres](memoria-desastres.md)) |
 
 Los datos se piden con los mismos archivos que Memoria de desastres (`eventos.json`, `resumen.json`), así que la
 primera visita a una de las dos pestañas abre la otra sin descargar de nuevo.
