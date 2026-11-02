@@ -11,11 +11,14 @@ from __future__ import annotations
 
 import csv
 import io
+import re
 from datetime import datetime, timezone
 from typing import Iterable, Optional
 
 from .historico import esquema as E
+from .geo import key
 from .historico.registro import make
+from .news import hazards
 
 NEWS_EXTRA = ["NoticiaId", "Medio", "Relevancia", "PeligrosNota", "MetodoLugar", "ConfianzaLugar", "Primera_vez"]
 FIELDS = E.COLUMNS + NEWS_EXTRA
@@ -39,16 +42,45 @@ PRIORITY = ("huaico", "inundacion", "lluvias", "oleaje", "viento", "frio", "calo
 LICENSE = "Titular y resumen citados con enlace a la nota; los derechos son del medio"
 
 
+_FOREST_RE = re.compile(r"forestal|pastizal|vegetacion|bosque|quema agricola|quemas agricolas|cobertura vegetal|wildfire")
+_FROST_RE = re.compile(r"helada|friaje|bajas temperaturas|ola de frio|descenso de (?:la )?temperatura")
+_HAIL_RE = re.compile(r"granizo|granizada|aguanieve")
+_SNOW_RE = re.compile(r"nevada|nieve")
+_DEBRIS_RE = re.compile(r"huaico|huayco|aluvi|lloclla|flujo de (?:lodo|detritos)|quebrada")
+_SLIDE_RE = re.compile(r"deslizamiento|derrumbe|landslide|mudslide")
+
+
+def _specific(h: str, text: str) -> Optional[str]:
+    """DangerType de un peligro de la nota. Las etiquetas de ``news.HAZARDS`` son más anchas que las del catálogo
+    (los deslizamientos van con los huaicos, el granizo y la nieve con las heladas, todo incendio con los forestales),
+    así que el tipo fino sale del texto; ``None`` si la nota no es de un peligro de clima (un incendio de vivienda)."""
+    if h == "incendio":
+        return "Incendio forestal" if _FOREST_RE.search(text) else None
+    if h == "huaico":
+        return "Deslizamiento" if _SLIDE_RE.search(text) and not _DEBRIS_RE.search(text) else "Huayco/Alud"
+    if h == "frio":
+        return ("Helada/Friaje" if _FROST_RE.search(text) else "Granizada" if _HAIL_RE.search(text)
+                else "Nevada" if _SNOW_RE.search(text) else "Helada/Friaje")
+    return HAZARD_DANGER[h]
+
+
 def danger_of(item: dict) -> Optional[tuple[str, str, str]]:
-    """(DangerType, método, peligro de la nota) de una nota, o ``None`` si no trae un peligro de clima."""
-    hz = [h for h in PRIORITY if h in (item.get("hazards") or [])]
-    if not hz:
-        return None
-    h = hz[0]
-    if h == "inundacion":
-        dt, method = E.classify_flood([item.get("title") or "", item.get("summary") or ""], "")
-        return dt, method, h
-    return HAZARD_DANGER[h], "texto", h
+    """(DangerType, método, peligro de la nota) de una nota, o ``None`` si no trae un peligro de clima.
+
+    Las notas guardadas antes de que existiera ``hazards`` no lo traen: se calcula del titular y el resumen."""
+    title, summary = item.get("title") or "", item.get("summary") or ""
+    tags = item["hazards"] if "hazards" in item else hazards(title, summary)
+    text = key(f"{title} {summary}")
+    for h in PRIORITY:
+        if h not in tags:
+            continue
+        if h == "inundacion":
+            dt, method = E.classify_flood([title, summary], "")
+            return dt, method, h
+        dt = _specific(h, text)
+        if dt:
+            return dt, "texto", h
+    return None
 
 
 def _day(item: dict) -> str:

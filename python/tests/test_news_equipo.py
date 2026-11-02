@@ -55,3 +55,27 @@ def test_csv_is_safe_for_spreadsheets_and_keeps_ubigeo_as_text():
     assert out.startswith("﻿")
     (r,) = list(csv.DictReader(io.StringIO(out.lstrip("﻿"))))
     assert r["Descripción"].startswith("'=") and r["Ubigeo"] == "150110"
+
+
+def _danger(**kw):
+    (r,) = NE.rows([_item(**kw)], territory(), _cal())
+    return r["DangerType"]
+
+
+def test_notes_saved_before_the_hazards_field_get_it_from_their_text():
+    item = _item(title="Huaico bloquea la carretera en Chosica", summary="")
+    del item["hazards"]
+    assert _danger(**{k: v for k, v in item.items() if k != "hazards"}) == "Huayco/Alud"
+
+
+def test_specific_dangers_come_from_the_text_not_the_broad_tag():
+    assert _danger(hazards=["huaico"], title="Deslizamiento de tierra bloquea la vía", summary="") == "Deslizamiento"
+    assert _danger(hazards=["huaico"], title="Huaico y deslizamiento en Chosica", summary="") == "Huayco/Alud"
+    assert _danger(hazards=["frio"], title="Granizada en Puno", summary="") == "Granizada"
+    assert _danger(hazards=["frio"], title="Nevada cubre Tacna", summary="") == "Nevada"
+    assert _danger(hazards=["frio"], title="Heladas en Cusco", summary="") == "Helada/Friaje"
+
+
+def test_only_forest_fires_enter():
+    assert not NE.rows([_item(hazards=["incendio"], title="Incendio destruye una vivienda en Comas", summary="")], territory(), _cal())
+    assert _danger(hazards=["incendio"], title="Incendio forestal en Cusco", summary="") == "Incendio forestal"
