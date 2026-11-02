@@ -42,6 +42,17 @@ from enso.reach import Robots, get_checked  # noqa: E402
 UA = ("Mozilla/5.0 (compatible; Observatorio-ENSO-Peru/4.0; feed-probe; "
       "+https://github.com/PillB/observatorio-enso-peru)")
 CANDIDATES = Path(__file__).resolve().parent / "feed_candidates.json"
+#: Claves que algunos medios dejan en el HTML de sus notas (p. ej. un token de Mapbox en un mapa incrustado). Una
+#: captura que las guarde no se puede subir: la protección de secretos de GitHub rechaza el push del bot.
+SECRETS = re.compile(rb"\b(?:[ps]k\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}|AIza[0-9A-Za-z_-]{35}|AKIA[0-9A-Z]{16}"
+                     rb"|gh[pousr]_[A-Za-z0-9]{36,}|github_pat_[A-Za-z0-9_]{40,}|xox[abprs]-[A-Za-z0-9-]{10,})")
+
+
+def redact(body: bytes) -> bytes:
+    """La captura sin las claves de terceros que traiga (cada una queda como ``REDACTED``)."""
+    return SECRETS.sub(b"REDACTED", body)
+
+
 COMMON_PATHS = ["/feed/", "/rss", "/rss.xml", "/feed", "/feed.xml", "/arcio/rss/", "/index.xml",
                 "/?feed=rss2", "/rss/", "/feeds/posts/default?alt=rss", "/noticias/feed/"]
 #: Portales donde probar rutas habituales no tiene sentido (una sola plataforma para todo).
@@ -147,7 +158,7 @@ def probe_one(pr: Probe, cand: dict, now: datetime, out: Path) -> dict:
             return False
         res.update(ev, ok=True, url=final)
         if len(body) <= MAX_SAVE:
-            (out / f"{cand['id']}.xml").write_bytes(body)
+            (out / f"{cand['id']}.xml").write_bytes(redact(body))
         return True
 
     for u in cand.get("feeds", []):
@@ -164,7 +175,7 @@ def probe_one(pr: Probe, cand: dict, now: datetime, out: Path) -> dict:
                     res["discovered"] = True
                     return res
             if cand.get("savehtml"):
-                (out / f"{cand['id']}.html").write_bytes(body[:800_000])
+                (out / f"{cand['id']}.html").write_bytes(redact(body[:800_000]))
         base = f"{urlparse(final or home).scheme}://{urlparse(final or home).netloc}"
         if urlparse(base).netloc in NO_GUESS or code != 200:
             return res

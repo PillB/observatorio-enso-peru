@@ -598,3 +598,16 @@ def test_probe_feeds_only_replaces_what_it_probes(tmp_path, monkeypatch):
     rep = _json.loads((out / "report.json").read_text())
     assert [r["id"] for r in rep["results"]] == ["a", "b"] and rep["ok"] == 1
     assert P.main(["--out", str(out), "--candidates", str(cands)]) == 1  # ninguno respondió
+
+
+def test_probe_feeds_redacts_third_party_keys_before_saving():
+    """La Lupa (Ica) deja un token de Mapbox en el HTML de una nota de su feed: guardado tal cual, la protección de
+    secretos de GitHub rechazaba el push del bot de probe-feeds."""
+    from tools import probe_feeds
+
+    mapbox = b"sk" + b".eyJ" + b"x" * 30 + b"." + b"y" * 22  # partido: que la protección de secretos no lo tome
+    google = b"AIza" + b"x" * 35
+    body = b"<item><description>&lt;div data-token='" + mapbox + b"' key=" + google + b"&gt;</description></item>"
+    out = probe_feeds.redact(body)
+    assert mapbox not in out and google not in out and out.count(b"REDACTED") == 2
+    assert probe_feeds.redact(b"<title>Huaico en Chosica: pk. 12</title>") == b"<title>Huaico en Chosica: pk. 12</title>"
