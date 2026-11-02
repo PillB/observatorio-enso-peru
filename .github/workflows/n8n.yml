@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: '22'
@@ -59,7 +59,7 @@ jobs:
       matrix:
         image: ['n8nio/n8n:2.44.4', 'n8nio/n8n:1.123.85']
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: '22'
@@ -92,7 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Validation workflow in n8n against every registry source
         run: |
           mkdir -p "$RUNNER_TEMP/v" && chmod 777 "$RUNNER_TEMP/v"
