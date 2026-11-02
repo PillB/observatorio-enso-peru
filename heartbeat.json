@@ -1,8 +1,8 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-01T02:07:10+00:00",
+ "at": "2026-11-02T04:18:58+00:00",
  "result": "ok",
- "reachable": "40/56",
+ "reachable": "42/57",
  "summary": {
   "enfen": "4/4",
   "igp": "1/1",
@@ -10,7 +10,7 @@
   "ana": "3/3",
   "imarpe": "5/5",
   "cenepred": "0/1",
-  "archive": "0/1",
+  "archive": "1/1",
   "bnp": "1/3",
   "indeci": "0/2",
   "minjus": "0/1",
@@ -20,18 +20,13 @@
   "irtp": "0/2",
   "unsa": "1/1",
   "enfen-docs": "2/8",
-  "imarpe-repo": "12/12"
+  "imarpe-repo": "13/13"
  },
  "failures": [
   {
    "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
    "class": "timeout",
    "error": "ConnectTimeout: timed out"
-  },
-  {
-   "url": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
-   "class": "timeout",
-   "error": "ReadTimeout: The read operation timed out"
   },
   {
    "url": "https://repositorio.bnp.gob.pe/",
