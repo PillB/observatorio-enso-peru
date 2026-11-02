@@ -928,6 +928,7 @@ VIEWS.noticias = {
         <p class="muted small">El histórico de noticias solo crece: cada corrida agrega las notas nuevas y nunca reescribe las anteriores. Solo se guarda lo que cada medio publica en su feed (titular, resumen, fecha y enlace).</p>
         <ul class="link-list cols">
           <li><a href="${DATA}news/items.csv" download>Histórico de noticias (CSV)</a></li>
+          <li><a href="${DATA}news/eventos-noticias.csv" download>Noticias en el esquema del equipo de prevención (CSV)</a> <span class="muted small">Una fila por nota y UBIGEO, con las columnas del tablero: Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud, y los metadatos de la nota. Lea Ubigeo como texto.</span></li>
           <li><a href="${DATA}news/items.jsonl" download>Histórico de noticias (JSON Lines, solo anexar)</a></li>
           <li><a href="${DATA}news/clusters.json">Noticias agrupadas de los últimos 14 días (JSON)</a></li>
           <li><a href="${DATA}feed.json">Novedades de las fuentes oficiales (JSON)</a></li>
