@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:media="http://search.yahoo.com/mrss/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Diario Jornada</title>
+	<atom:link href="https://jornada.com.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://jornada.com.pe</link>
+	<description>iÚnete a nuestra comunidad de lectores y mantente informado con Diario Jornada! • EI diario judicial de la región de Ayacucho • Contáctenos: +51 944 233 745</description>
+	<lastBuildDate>Mon, 02 Nov 2026 16:58:04 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.1.3</generator>
+
+<image>
+	<url>https://jornada.com.pe/wp-content/uploads/2024/06/cropped-logoRedondeadoJORNADA-150x150.webp</url>
+	<title>Diario Jornada</title>
+	<link>https://jornada.com.pe</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Ayacucho afrontará lluvias, granizo y ráfagas de viento de hasta 50 km/h</title>
+		<link>https://jornada.com.pe/ayacucho-afrontara-lluvias-granizo-y-rafagas-de-viento-de-hasta-50-km-h/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 16:58:04 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105178</guid>
+
+					<description><![CDATA[<p>Senamhi advierte lluvias, granizo, descargas eléctricas y vientos de hasta 50 km/h en Ayacucho para el 2 y 3 de noviembre</p>
+<p>The post <a href="https://jornada.com.pe/ayacucho-afrontara-lluvias-granizo-y-rafagas-de-viento-de-hasta-50-km-h/">Ayacucho afrontará lluvias, granizo y ráfagas de viento de hasta 50 km/h</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>El Servicio Nacional de Meteorología e Hidrología del Perú (Senamhi) advirtió sobre la ocurrencia de <a href="https://jornada.com.pe/precipitaciones-continuaran-en-la-sierra-de-ayacucho-los-dias-24-y-25-de-marzo/">precipitaciones</a> de moderada a fuerte intensidad en Ayacucho y otras zonas de la sierra, entre el 2 y 3 de noviembre. El aviso meteorológico contempla lluvias, granizo, aguanieve y nieve, acompañados de descargas eléctricas y ráfagas de viento cercanas a los 50 kilómetros por hora.</p>
+<p>De acuerdo con el pronóstico, las precipitaciones podrían presentarse con mayor intensidad en localidades ubicadas por encima de los 2800 metros sobre el nivel del mar, donde se prevé la caída de granizo. Asimismo, en zonas que superan los 3800 metros de altitud podrían registrarse nevadas.</p>
+<p>El fenómeno meteorológico también estará acompañado de descargas eléctricas y vientos fuertes, condiciones que podrían incrementar los riesgos durante las actividades al aire libre, especialmente en localidades expuestas a estos eventos.</p>
+<p>El aviso del SENAMHI tiene una vigencia de 71 horas y comprende del 1 al 3 de noviembre. Sin embargo, para Ayacucho, el periodo de atención se centra en los días 2 y 3 de noviembre, cuando se mantendrían las condiciones previstas.</p>
+<p>Ante este escenario, la entidad recomienda a la población mantenerse informada sobre la evolución de las condiciones meteorológicas y cumplir las indicaciones de las autoridades para reducir los riesgos.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/ayacucho-afrontara-lluvias-granizo-y-rafagas-de-viento-de-hasta-50-km-h/">Ayacucho afrontará lluvias, granizo y ráfagas de viento de hasta 50 km/h</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/02/02-11-Ayacucho-afrontara-lluvias-granizo-y-rafagas-de-viento-de-hasta-50-kmh.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Proponen instalar grifos que extraigan agua de pozos subterráneos para combatir incendios forestales en los bosques</title>
+		<link>https://jornada.com.pe/proponen-instalar-grifos-que-extraigan-agua-de-pozos-subterraneos-para-combatir-incendios-forestales-en-los-bosques/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 16:45:18 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<category><![CDATA[agua subterránea]]></category>
+		<category><![CDATA[areas naturales protegidas]]></category>
+		<category><![CDATA[Cenepred]]></category>
+		<category><![CDATA[energía solar]]></category>
+		<category><![CDATA[grifos forestales]]></category>
+		<category><![CDATA[Incendios forestales]]></category>
+		<category><![CDATA[Indecopi]]></category>
+		<category><![CDATA[pozos tubulares]]></category>
+		<category><![CDATA[prevención de incendios]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105167</guid>
+
+					<description><![CDATA[<p>Una propuesta plantea instalar 5.000 grifos con agua de pozos subterráneos y energía solar para combatir incendios forestales en el Perú.</p>
+<p>The post <a href="https://jornada.com.pe/proponen-instalar-grifos-que-extraigan-agua-de-pozos-subterraneos-para-combatir-incendios-forestales-en-los-bosques/">Proponen instalar grifos que extraigan agua de pozos subterráneos para combatir incendios forestales en los bosques</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p data-pm-slice="1 1 []">La propuesta contempla extraer agua mediante pozos tubulares y distribuirla en puntos de auxilio ubicados en zonas boscosas. Su promotor estima que cada instalación costaría US$40.000, por lo que implementar los 5.000 grifos requeriría una inversión aproximada de US$200 millones.</p>
+<p>La iniciativa fue presentada por Segundo Miguel López Aybar, quien explicó que el sistema utilizaría bombas sumergibles accionadas con paneles solares para extraer agua del subsuelo y conducirla hasta puntos de abastecimiento instalados en zonas boscosas. Estos grifos permitirían conectar mangueras y equipos de emergencia para disponer de agua durante los incendios, incluso en lugares sin acceso a energía eléctrica convencional.</p>
+<p>El planteamiento considera ubicar los grifos en sectores estratégicos, de acuerdo con la extensión de los bosques y el alcance de cada instalación. López Aybar también propone incorporar sensores térmicos y herramientas de monitoreo satelital para identificar áreas expuestas al fuego y facilitar la activación del sistema. Según sus estimaciones, se necesitarían al menos 5.000 grifos para proteger áreas naturales protegidas, aunque no presentó un estudio que sustente esa cantidad ni determine su distribución.</p>
+<p>La propuesta surge frente a un escenario de riesgo que afecta a distintas regiones del país. De acuerdo con el Centro Nacional de Estimación, Prevención y Reducción del Riesgo de Desastres (Cenepred), 520 distritos del Perú se encuentran en nivel de riesgo muy alto por incendios forestales y otros 304 en riesgo alto, según el escenario de riesgo correspondiente al periodo 2025-2027. Estas condiciones exponen a bosques, ecosistemas y poblaciones a los efectos de estos eventos.</p>
+<p>En cuanto a su implementación, López Aybar plantea comenzar con proyectos piloto en diferentes territorios para evaluar el funcionamiento de los grifos. El costo de cada instalación, según su cálculo, rondaría los US$40.000, aunque reconoció que las condiciones geográficas y la dificultad de acceso podrían elevar la inversión. El sistema también podría utilizarse para actividades agrícolas durante las temporadas de sequía, siempre que exista disponibilidad de agua y se cuente con las autorizaciones correspondientes para su aprovechamiento.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/proponen-instalar-grifos-que-extraigan-agua-de-pozos-subterraneos-para-combatir-incendios-forestales-en-los-bosques/">Proponen instalar grifos que extraigan agua de pozos subterráneos para combatir incendios forestales en los bosques</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/02/02-11-Proponen-instalar-grifos-que-extraigan-agua-de-pozos-subterraneos-para-combatir-incendios-forestales-en-los-bosques.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Chofer y pareja de esposos mueren en accidente de camioneta cuando iban a votar en Pangoa, Satipo</title>
+		<link>https://jornada.com.pe/chofer-y-pareja-de-esposos-mueren-en-accidente-de-camioneta-cuando-iban-a-votar-en-pangoa-satipo/</link>
+		
+		<dc:creator><![CDATA[La Red de Medios]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 16:26:39 +0000</pubDate>
+				<category><![CDATA[RED DE MEDIOS REGIONALES]]></category>
+		<category><![CDATA[#Junín]]></category>
+		<category><![CDATA[Elecciones de centros poblados]]></category>
+		<category><![CDATA[Satipo]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/chofer-y-pareja-de-esposos-mueren-en-accidente-de-camioneta-cuando-iban-a-votar-en-pangoa-satipo/</guid>
+
+					<description><![CDATA[<p>Tres pobladores del anexo Los Ángeles de Edén, en el distrito de Mazamari, Satipo, murieron cuando la camioneta en la que viajaban se despistó y terminó entre los matorrales. Se dirigían al centro poblado Naylamp de Sonomoro, en el distrito de San Martín de Pangoa, para participar en las elecciones de autoridades municipales de centros [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/chofer-y-pareja-de-esposos-mueren-en-accidente-de-camioneta-cuando-iban-a-votar-en-pangoa-satipo/">Chofer y pareja de esposos mueren en accidente de camioneta cuando iban a votar en Pangoa, Satipo</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>Tres pobladores del anexo Los Ángeles de Edén, en el distrito de Mazamari, Satipo, murieron cuando la camioneta en la que viajaban se despistó y terminó entre los matorrales. Se dirigían al <strong>centro poblado Naylamp de Sonomoro</strong>, en el distrito de San Martín de Pangoa, para participar en las elecciones de autoridades municipales de centros poblados, realizadas este domingo 1 de noviembre.</p>
+<p>El accidente ocurrió alrededor de las 7:40 de la mañana, a la altura del paraje Santa Fe Palomar. Los comuneros viajaban en una camioneta Toyota Hilux 4&#215;4 blanca cuando, por una falla en los frenos, el conductor perdió el control. La unidad salió de la carretera y terminó entre los arbustos tras dar dos vueltas de tonel.</p>
+<p>El conductor fue identificado como <strong>Jaider Rusbel Juscammayta Caisahuana</strong>, de 21 años. Su madre, Dora Caisahuana Bravo, quien también viajaba en la camioneta, contó que el joven habría intentado esquivar una motocicleta en una pendiente cuando se produjo la falla en los frenos. El vehículo terminó fuera de la vía y el conductor fue trasladado al hospital de Pangoa, pero llegó sin vida.</p>
+<h3><strong>Esposos</strong></h3>
+<p>Las otras dos víctimas fueron identificadas como <strong>Julio César Santos Caja</strong>, de 46 años, y <strong>Celina Mili Marcos Cabello</strong>, de 40. Ambos eran esposos, vivían en Los Ángeles de Edén y tenían seis hijos. Según testigos, viajaban en la tolva de la camioneta.</p>
+<p>En total, once personas iban a bordo: siete en la cabina y cuatro en la parte posterior. Algunos sobrevivientes recibieron atención médica en el mismo lugar del accidente por parte del personal de salud que llegó para atender la emergencia.</p>
+<h3><strong>Pésima carretera</strong></h3>
+<p>Tras el accidente, pobladores expresaron su preocupación por el mal estado de las carreteras en la selva central. A través de las redes sociales, cuestionaron las condiciones de la vía afirmada por donde transitaba la camioneta y advirtieron que varios tramos se encuentran en pésimo estado, <strong>justo cuando se aproxima la temporada de lluvias</strong>.</p>
+<p>También reclamaron por la falta de mantenimiento de los caminos rurales y pidieron a las autoridades distritales, provinciales y regionales que atiendan este problema. Entre los cuestionamientos, preguntaron qué pasó con el pool de maquinaria del <strong>Gobierno Regional de Junín</strong>, que debería realizar trabajos de mantenimiento en estas vías.</p>
+<p>Lea la nota original <a href="https://hytimes.pe?p=76375">aquí</a> o visita el medio <a href="https://hytimes.pe">HYTIMES.PE</a></p>
+<p>&nbsp;</p><p>The post <a href="https://jornada.com.pe/chofer-y-pareja-de-esposos-mueren-en-accidente-de-camioneta-cuando-iban-a-votar-en-pangoa-satipo/">Chofer y pareja de esposos mueren en accidente de camioneta cuando iban a votar en Pangoa, Satipo</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://jornada.com.pe/wp-content/uploads/2026/11/accidente.jpg" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Cusco exporta gas de Camisea, pero el 22 % de sus hogares todavía cocina con leña</title>
+		<link>https://jornada.com.pe/cusco-exporta-gas-de-camisea-pero-el-22-de-sus-hogares-todavia-cocina-con-lena/</link>
+		
+		<dc:creator><![CDATA[La Red de Medios]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 16:23:19 +0000</pubDate>
+				<category><![CDATA[RED DE MEDIOS REGIONALES]]></category>
+		<category><![CDATA[#Cusco]]></category>
+		<category><![CDATA[gas de Camisea]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/cusco-exporta-gas-de-camisea-pero-el-22-de-sus-hogares-todavia-cocina-con-lena/</guid>
+
+					<description><![CDATA[<p>Cusco es una pieza clave de la producción de gas natural del Perú. En su territorio se encuentra el lote 88 de Camisea, que abastece al mercado nacional. Sin embargo, esa riqueza energética todavía no llega a buena parte de los hogares de la región. Según los datos del Censo Nacional 2025 citados por el [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/cusco-exporta-gas-de-camisea-pero-el-22-de-sus-hogares-todavia-cocina-con-lena/">Cusco exporta gas de Camisea, pero el 22 % de sus hogares todavía cocina con leña</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>Cusco es una pieza clave de la producción de gas natural del Perú. En su territorio se encuentra el lote 88 de Camisea, que abastece al mercado nacional. Sin embargo, esa riqueza energética todavía no llega a buena parte de los hogares de la región. Según los datos del Censo Nacional 2025 citados por el Instituto Peruano de Economía (IPE), el 22 % de las viviendas cusqueñas cocina exclusivamente con combustibles sólidos, como leña y bosta. La brecha es más profunda en las zonas rurales. En Ccorca, el 69,7 % de los hogares cocina con leña. En Accha, la cifra llega al 67,2 %, y en Rondocán, al 63,2 %. En cambio, en la provincia de Cusco solo el 3 % de los hogares usa este combustible. En la capital regional, el 75 % de la población ya tiene acceso al gas licuado de petróleo (GLP). Víctor Fuentes Campos, gerente central de Economía del Instituto Peruano de Economía (IPE), expuso estas diferencias y puso en evidencia la desigualdad en el acceso a la energía entre las zonas urbanas y rurales.&nbsp;</p>
+<p><strong>Tres propuestas para llevar gas al sur</strong>&nbsp;</p>
+<p>Para reducir esta brecha, al menos tres propuestas buscan ampliar el acceso al gas natural en el sur del país. Una de ellas es el Sistema Integrado de Transporte de Gas (SIT Gas), conocido también como Gasoducto Sur Peruano. El proyecto contempla un ducto que atravesaría la sierra y requiere una inversión estimada de USD 7.000 millones, según los datos proporcionados para este artículo. Otra alternativa es el Gasoducto Regional Cusco, que necesita una inversión de USD 780 millones para llevar gas a Cusco, Anta y Quillabamba. La tercera propuesta plantea distribuir gas mediante camiones y construir redes en 15 ciudades, a través de la adenda vinculada a Cálidda. En Cusco, autoridades y sectores de la población respaldan el SIT Gas. Consideran que el proyecto podría abastecer de energía a las regiones del sur e impulsar la industria y la actividad económica. También esperan que conecte la selva cusqueña con los puertos del litoral. Sin embargo, el proyecto todavía se encuentra en la etapa de estudios y necesita decisiones políticas para avanzar hacia su adjudicación definitiva. <figure id="attachment_48526" aria-describedby="caption-attachment-48526" style="width: 495px" class="wp-caption alignnone"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=75&resize=75&ssl=1 75w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=100&resize=100&ssl=1 100w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=150&resize=150&ssl=1 150w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=240&resize=240&ssl=1 240w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=320&resize=320&ssl=1 320w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=500&resize=500&ssl=1 500w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=640&resize=640&ssl=1 640w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=800&resize=800&ssl=1 800w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=1024&resize=1024&ssl=1 1024w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=1280&resize=1280&ssl=1 1280w, https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1&w=1600&resize=1600&ssl=1 1600w" fifu-data-src="https://i2.wp.com/cuscopost.pe/wp-content/uploads/2026/11/lena-dstritos.jpeg?ssl=1" alt=""><figcaption id="caption-attachment-48526" class="wp-caption-text">Estos son los seis distritos que más y menos acceso a gas tienen, según una investigación del IPE.</figcaption></figure>&nbsp;</p>
+<p><strong>Millones de soles en canon</strong>&nbsp;</p>
+<p>Entre 2016 y 2025, Cusco recibió cerca de S/21.000 millones por canon gasífero. De ese monto, el 75 % (más de S/15.750 millones) se transfirió a los gobiernos locales. La provincia de La Convención, donde se encuentra el yacimiento de Camisea, concentró una parte importante de esos recursos. Según las cifras proporcionadas, sus municipalidades recibieron más de S/9.000 millones, incluidos más de S/7.500 millones registrados en la categoría “otros”. Pese a estos ingresos, varios distritos mantienen grandes brechas en servicios básicos y desarrollo humano. El Índice de Desarrollo Humano (IDH) muestra diferencias marcadas dentro de la región. Mientras Wanchaq registra un índice de 0,75, Omacha alcanza 0,39 y Paccaritambo, 0,41. El acceso a los servicios básicos también refleja esta desigualdad. En Megantoni, distrito de La Convención, solo el 6,1 % de las viviendas cuenta con agua, desagüe y electricidad. En Langui, la proporción llega apenas al 7,2 %. Las carencias también afectan a las escuelas rurales. En Quellouno, solo el 9,6 % de los locales educativos cuenta con los servicios básicos señalados; en Kumpirushiato, la cifra alcanza el 10,3 %. Cusco lleva dos décadas esperando que la riqueza del gas impulse el desarrollo de sus zonas más alejadas. Sin embargo, los ingresos del canon no han cerrado las brechas que enfrentan muchas comunidades. Ahora, la región espera que el SIT Gas permita ampliar el acceso al recurso y dinamizar la economía del sur. Pero construir un ducto no resolverá por sí solo las desigualdades. También será necesario asegurar que los recursos públicos se traduzcan en servicios básicos y mejores condiciones de vida. Mientras el gobierno discute qué proyecto priorizar, miles de familias cusqueñas siguen cocinando con leña y bosta. Y nadie sabe cuánto más tendrán que esperar para que ese combustible limpio y barato llegue hasta sus hogares.</p>
+<p>Lea la nota original <a href="https://cuscopost.pe?p=48524">aquí</a> o visita el medio <a href="https://cuscopost.pe">Cusco Post</a></p>
+<p>&nbsp;</p><p>The post <a href="https://jornada.com.pe/cusco-exporta-gas-de-camisea-pero-el-22-de-sus-hogares-todavia-cocina-con-lena/">Cusco exporta gas de Camisea, pero el 22 % de sus hogares todavía cocina con leña</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://jornada.com.pe/wp-content/uploads/2026/11/lena.jpeg" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Solo 2 mil 300 electores eligieron a nuevas autoridades en Alto Puno mientras 10 mil quedaron fuera de los comicios</title>
+		<link>https://jornada.com.pe/solo-2-mil-300-electores-eligieron-a-nuevas-autoridades-en-alto-puno-mientras-10-mil-quedaron-fuera-de-los-comicios/</link>
+		
+		<dc:creator><![CDATA[La Red de Medios]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 16:21:35 +0000</pubDate>
+				<category><![CDATA[RED DE MEDIOS REGIONALES]]></category>
+		<category><![CDATA[centros poblados]]></category>
+		<category><![CDATA[Puno]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/solo-2-mil-300-electores-eligieron-a-nuevas-autoridades-en-alto-puno-mientras-10-mil-quedaron-fuera-de-los-comicios/</guid>
+
+					<description><![CDATA[<p>Un total de 2 mil 228 electores sufragaron este primero de noviembre en el centro poblado de Alto Puno (Puno) para elegir a sus nuevas autoridades, mientras que más de 10 mil ciudadanos quedaron excluidos de los comicios pese a que la población supera los 20 mil habitantes, según las denuncias recogidas en la institución [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/solo-2-mil-300-electores-eligieron-a-nuevas-autoridades-en-alto-puno-mientras-10-mil-quedaron-fuera-de-los-comicios/">Solo 2 mil 300 electores eligieron a nuevas autoridades en Alto Puno mientras 10 mil quedaron fuera de los comicios</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>Un total de 2 mil 228 electores sufragaron este primero de noviembre en el centro poblado de Alto Puno (Puno) para elegir a sus nuevas autoridades, mientras que más de 10 mil ciudadanos quedaron excluidos de los comicios pese a que la población supera los 20 mil habitantes, según las denuncias recogidas en la institución educativa Mirador.</p>
+<p>La exclusión del padrón electoral se concentra en vecinos con documentos de identidad que consignan direcciones del centro poblado como la avenida Alto Puno, pero que el sistema de la Reniec no reconoce como electores.</p>
+<p>Un vecino denunció que su nombre y el de su esposo no figuran en el padrón pese a haber votado en todas las elecciones anteriores, situación que calificó como una forma de discriminación contra los residentes antiguos.</p>
+<p>El presidente del Frente de Intereses del Centro Poblado de Alto Puno, Electorio Coyllory Ruiz calificó de indignante la situación y advirtió que el padrón bajó de cerca de 5.000 electores a solo 2 mil 228.</p>
+<p>Cutipa estimó que el 80% de la población no votó y denunció que hay vecinos que figuran en el padrón físico pero no en el sistema. Advirtió que las elecciones podrían haber sido “direccionadas o manipuladas”, por lo que no descartó solicitar su anulación ante la municipalidad provincial, y añadió que el comité electoral se encuentra desinformado y que solo dos o tres personeros del Jurado Nacional de Elecciones actúan como veedores.</p>
+<p>Lea la nota original <a href="https://pachamamaradio.org?p=196590">aquí</a> o visita el medio <a href="https://pachamamaradio.org">Pachamama Radio</a></p>
+<p><p>The post <a href="https://jornada.com.pe/solo-2-mil-300-electores-eligieron-a-nuevas-autoridades-en-alto-puno-mientras-10-mil-quedaron-fuera-de-los-comicios/">Solo 2 mil 300 electores eligieron a nuevas autoridades en Alto Puno mientras 10 mil quedaron fuera de los comicios</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://jornada.com.pe/wp-content/uploads/2026/11/Solo-2-mil-300-electores-eligieron-a-nuevas-autoridades-en-Alto-Puno-DF.jpg" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Arequipa: sujetos con cascos y armas de fuego atacan penal de Socabaya con explosivos</title>
+		<link>https://jornada.com.pe/arequipa-sujetos-con-cascos-y-armas-de-fuego-atacan-penal-de-socabaya-con-explosivos/</link>
+		
+		<dc:creator><![CDATA[La Red de Medios]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 16:17:46 +0000</pubDate>
+				<category><![CDATA[RED DE MEDIOS REGIONALES]]></category>
+		<category><![CDATA[#Seguridad Ciudadana]]></category>
+		<category><![CDATA[Instituto Nacional Penitenciario (INPE)]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/arequipa-sujetos-con-cascos-y-armas-de-fuego-atacan-penal-de-socabaya-con-explosivos/</guid>
+
+					<description><![CDATA[<p>La tranquilidad de la mañana dominical se vio interrumpida en los exteriores del Establecimiento Penitenciario de Arequipa, ubicado en el distrito de Socabaya, tras la detonación de un artefacto explosivo. El saldo del atentado fue de dos personas lesionadas y una inmediata alteración en las medidas de seguridad del recinto. El estallido, registrado a las [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/arequipa-sujetos-con-cascos-y-armas-de-fuego-atacan-penal-de-socabaya-con-explosivos/">Arequipa: sujetos con cascos y armas de fuego atacan penal de Socabaya con explosivos</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>La tranquilidad de la mañana dominical se vio interrumpida en los exteriores del Establecimiento Penitenciario de Arequipa, ubicado en el distrito de Socabaya, tras la detonación de un artefacto explosivo.<strong> El saldo del atentado fue de dos personas lesionadas y una inmediata alteración en las medidas de seguridad del recinto.</strong></p>
+<p>El estallido, registrado a las 11:24 horas del 1 de noviembre, <strong>tuvo como blanco directo la garita de control de ingreso. </strong>Según las primeras hipótesis difundidas, dos individuos a bordo de un vehículo y portando cascos y armas de fuego se aproximaron al puesto de vigilancia.<strong> Tras amenazar al personal de turno, procedieron a arrojar el dispositivo, el cual detonó a escasos metros de la caseta antes de que los atacantes se dieran a la fuga.</strong></p>
+<h2>Consecuencias inmediatas y respuesta institucional</h2>
+<p>Producto de la onda expansiva, un agente penitenciario que cumplía labores de servicio y una ciudadana que había acudido al centro de reclusión para realizar una visita resultaron heridos. <strong>Ambos fueron evacuados de urgencia a diferentes centros de salud de la ciudad para recibir la atención médica correspondiente.</strong></p>
+<p>Frente a esta situación, el Instituto Nacional Penitenciario (<a href="https://elbuho.pe/tema/inpe/">INPE</a>) activó sus protocolos de emergencia. El director regional de la entidad se constituyó de inmediato en el penal para supervisar las acciones de control operativo.<strong> Como medida preventiva, se ordenó la suspensión temporal de todas las visitas y se dispuso el refuerzo de la seguridad en la zona de ingreso con la incorporación de cuatro agentes adicionales.</strong></p>
+<h2>Investigación y esclarecimiento de los hechos</h2>
+<p>Las autoridades han iniciado las diligencias para identificar y capturar a los responsables de este ataque. La Policía Nacional del Perú (PNP) desplegó personal especializado en la zona, no solo para las pesquisas,<strong> sino también para descartar la presencia de un segundo artefacto explosivo en los alrededores del establecimiento.</strong></p>
+<p>El INPE confirmó que ha puesto en conocimiento de la Fiscalía y de la PNP lo sucedido, brindando todas las facilidades para el desarrollo de las investigaciones. Asimismo, la institución reafirmó su compromiso de mantener las medidas de seguridad necesarias para resguardar la integridad de su personal, de los visitantes y de la población penal en <strong>Arequipa</strong>.</p>
+<p>Lea la nota original <a href="https://elbuho.pe?p=441594">aquí</a> o visita el medio <a href="https://elbuho.pe">El Búho</a></p>
+<p>&nbsp;</p><p>The post <a href="https://jornada.com.pe/arequipa-sujetos-con-cascos-y-armas-de-fuego-atacan-penal-de-socabaya-con-explosivos/">Arequipa: sujetos con cascos y armas de fuego atacan penal de Socabaya con explosivos</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://jornada.com.pe/wp-content/uploads/2026/11/penal-Socabaya.jpg" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Hasta 10 mil personas visitan el Cementerio General de Ayacucho por el Día de los Difuntos</title>
+		<link>https://jornada.com.pe/hasta-10-mil-personas-visitan-el-cementerio-general-de-ayacucho-por-el-dia-de-los-difuntos/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 15:49:05 +0000</pubDate>
+				<category><![CDATA[LOCAL]]></category>
+		<category><![CDATA[2 de noviembre]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[Cementerio General de Ayacucho]]></category>
+		<category><![CDATA[Día de los Difuntos]]></category>
+		<category><![CDATA[Feria de Todos los Santos]]></category>
+		<category><![CDATA[flores]]></category>
+		<category><![CDATA[responsos]]></category>
+		<category><![CDATA[tradiciones ayacuchanas]]></category>
+		<category><![CDATA[visita a cementerios]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105164</guid>
+
+					<description><![CDATA[<p>Familias acudieron al Cementerio General de Ayacucho con flores y ofrendas. La asistencia podría alcanzar los 10 mil visitantes durante el 1 y 2 de noviembre</p>
+<p>The post <a href="https://jornada.com.pe/hasta-10-mil-personas-visitan-el-cementerio-general-de-ayacucho-por-el-dia-de-los-difuntos/">Hasta 10 mil personas visitan el Cementerio General de Ayacucho por el Día de los Difuntos</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p data-pm-slice="1 1 []">El Cementerio General de Ayacucho recibió una masiva llegada de familias durante el Día de los Difuntos. Ciudadanos acudieron al camposanto con arreglos florales, adornos y otros elementos para visitar las tumbas de sus familiares y recordar a sus seres queridos.</p>
+<p>La afluencia de visitantes comenzó desde las primeras horas y se esperaba un mayor movimiento durante el transcurso de la jornada. Según información recogida en el cementerio y tomando como referencia la asistencia registrada en años anteriores, alrededor de 10 mil personas podrían acudir al camposanto durante el 1 y 2 de noviembre.</p>
+<p>Familias enteras llegaron con flores naturales y artificiales para colocarlas en las tumbas. En distintos sectores también se observó la realización de responsos, así como servicios de limpieza y mantenimiento de sepulturas, prácticas que forman parte de las actividades que acompañan esta fecha en Ayacucho.</p>
+<p>El movimiento de visitantes también generó una mayor actividad comercial en los exteriores del Cementerio General. La tradicional Feria de Todos los Santos reunió a vendedores de flores, floreros, adornos, alimentos y otros productos destinados tanto a quienes visitan el camposanto como al público que recorre la zona.</p>
+<p>La demanda de flores aumentó durante la jornada, con puestos instalados en los alrededores del cementerio para atender a las familias. Comerciantes procedentes de distintas provincias y otras regiones también participaron en la feria, que se extendió por las calles cercanas al camposanto.</p>
+<p>La presencia policial se mantuvo dentro y en los alrededores del Cementerio General durante la jornada, en medio de la concentración de visitantes. El despliegue coincidió con una de las fechas de mayor concurrencia en los camposantos del país, donde miles de familias acuden cada año para recordar a sus familiares fallecidos.</p>
+<p>En Ayacucho, la celebración también coincidió con altas temperaturas durante el día. Muchos visitantes acudieron con sombrillas y gorras mientras recorrían el cementerio y los espacios comerciales instalados en los exteriores.</p>
+<p>La Feria de Todos los Santos permaneció instalada durante la fecha y estuvo acompañada de restricciones y desvíos vehiculares en las vías cercanas. Las autoridades locales difundieron rutas alternas para el transporte ante la concentración de personas y comerciantes en los alrededores del Cementerio General.</p>
+<p>El 2 de noviembre, Día de los Difuntos, concentra en distintas regiones del Perú una de las principales jornadas de visita a los cementerios. En Ayacucho, la masiva presencia de familias volvió a convertir los alrededores del Cementerio General en uno de los principales puntos de concentración durante la conmemoración.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/hasta-10-mil-personas-visitan-el-cementerio-general-de-ayacucho-por-el-dia-de-los-difuntos/">Hasta 10 mil personas visitan el Cementerio General de Ayacucho por el Día de los Difuntos</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/02/02-11-Hasta-10-mil-personas-visitan-el-Cementerio-General-de-Ayacucho-por-el-Dia-de-los-Difuntos.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Estudiantes cuestionan abandono de infraestructura deportiva de la UNSCH</title>
+		<link>https://jornada.com.pe/estudiantes-cuestionan-abandono-de-infraestructura-deportiva-de-la-unsch/</link>
+		
+		<dc:creator><![CDATA[Imasumacc Vargas Ruíz]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 15:39:53 +0000</pubDate>
+				<category><![CDATA[LOCAL]]></category>
+		<category><![CDATA[#Estudiantes]]></category>
+		<category><![CDATA[#Unsch]]></category>
+		<category><![CDATA[Abandono]]></category>
+		<category><![CDATA[infraestructura deportiva]]></category>
+		<category><![CDATA[residencia universitaria]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105157</guid>
+
+					<description><![CDATA[<p>La Federación Universitaria de San Cristóbal de Huamanga (FUSCH) cuestionó las condiciones de la residencia universitaria de la UNSCH, donde se desarrollarán las Olimpiadas Interescuelas 2026. Los representantes estudiantiles advirtieron que las instalaciones presentan deficiencias para recibir a los participantes de las 31 escuelas profesionales. Destacan S/33 millones para obras de la Unsch, pero advierte [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/estudiantes-cuestionan-abandono-de-infraestructura-deportiva-de-la-unsch/">Estudiantes cuestionan abandono de infraestructura deportiva de la UNSCH</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>La <strong>Federación Universitaria de San Cristóbal de Huamanga (FUSCH)</strong> cuestionó las condiciones de la residencia universitaria de la UNSCH, donde se desarrollarán las Olimpiadas Interescuelas 2026. Los representantes estudiantiles advirtieron que las instalaciones presentan deficiencias para recibir a los participantes de<strong> las 31 escuelas profesionales.</strong></p>
+<blockquote class="wp-embedded-content" data-secret="YFIZyh7rvY"><p><a href="https://jornada.com.pe/destacan-s-33-millones-para-obras-de-la-unsch-pero-advierte-necesidades-pendientes-en-laboratorios/">Destacan S/33 millones para obras de la Unsch, pero advierte necesidades pendientes en laboratorios</a></p></blockquote>
+<p><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted"  title="«Destacan S/33 millones para obras de la Unsch, pero advierte necesidades pendientes en laboratorios» — Diario Jornada" src="https://jornada.com.pe/destacan-s-33-millones-para-obras-de-la-unsch-pero-advierte-necesidades-pendientes-en-laboratorios/embed/#?secret=n2sMA3kXdL#?secret=YFIZyh7rvY" data-secret="YFIZyh7rvY" width="600" height="338" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></p>
+<p>Según señalaron, las autoridades universitarias iniciaron trabajos de limpieza y acondicionamiento de las graderías recién después de que la Federación emitiera pronunciamientos sobre el estado de las instalaciones.</p>
+<p><em>“Lamentablemente, las autoridades esperan que nosotros saquemos pronunciamientos. Una vez que sacamos, recién empezaron a limpiar la residencia”, manifestaron.</em></p>
+<h4 style="text-align: center;"><span style="color: #000080;">Inauguración y final se realizarán en otro estadio</span></h4>
+<p>Ante la falta de condiciones adecuadas, la FUSCH y los centros de estudiantes gestionaron el uso del estadio Las Américas para la inauguración y la final de fútbol.</p>
+<p>Los representantes también advirtieron que las deficiencias de infraestructura podrían comprometer la seguridad de los deportistas y recordaron que en anteriores ediciones las competencias se realizaron en espacios expuestos al sol y al polvo.</p>
+<p>Las Olimpiadas Intraescuelas 2026 se desarrollarán del 7 al 15 de noviembre. La Federación convocó a los estudiantes a participar y anunció que continuará supervisando los espacios deportivos habilitados.</p>
+<ul>
+<li><strong>Versión resumida, lee la información completa en la edición impresa y la edición digital de <a href="https://pro.jornada.com.pe/"><em>Jornada</em></a></strong></li>
+</ul>
+<p>Jornada – Redes sociales</p>
+<table class="lt-social">
+<caption> </caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/estudiantes-cuestionan-abandono-de-infraestructura-deportiva-de-la-unsch/">Estudiantes cuestionan abandono de infraestructura deportiva de la UNSCH</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/02/2-11-Estudiantes-cuestionan-abandono-de-infraestructura-deportiva-de-la-Unsch.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Más de 50 distritos de Ayacucho enfrentan estrés hídrico y próxima gestión deberá atender la crisis</title>
+		<link>https://jornada.com.pe/mas-de-50-distritos-de-ayacucho-enfrentan-estres-hidrico-y-proxima-gestion-debera-atender-la-crisis/</link>
+		
+		<dc:creator><![CDATA[Imasumacc Vargas Ruíz]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 15:35:26 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<category><![CDATA[Agua]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[distritos]]></category>
+		<category><![CDATA[estrés hídrico]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105153</guid>
+
+					<description><![CDATA[<p>Más de 50 distritos de Ayacucho se encuentran en situación de estrés hídrico, un problema que deberá afrontar la próxima gestión regional junto con los posibles efectos del fenómeno El Niño. La nueva administración asumirá funciones en enero de 2027 y tendrá entre sus principales desafíos garantizar la disponibilidad de agua en la región. La [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/mas-de-50-distritos-de-ayacucho-enfrentan-estres-hidrico-y-proxima-gestion-debera-atender-la-crisis/">Más de 50 distritos de Ayacucho enfrentan estrés hídrico y próxima gestión deberá atender la crisis</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>Más de 50 distritos de Ayacucho se encuentran en situación de <strong>estrés hídrico</strong>, un problema que deberá afrontar la próxima gestión regional junto con los posibles efectos del fenómeno El Niño. La nueva administración asumirá funciones en enero de 2027 y tendrá entre sus principales desafíos garantizar la disponibilidad de agua en la región.</p>
+<p>La preocupación también alcanza a las zonas altoandinas, donde los impactos climáticos requieren atención y medidas preventivas. Aunque las alertas por El Niño suelen concentrarse en la costa, Ayacucho ya enfrenta dificultades relacionadas con el acceso al recurso hídrico.</p>
+<h4 style="text-align: center;"><span style="color: #000080;">Transferencia de gestión bajo evaluación</span></h4>
+<p>A la emergencia hídrica se suman las deudas pendientes, las limitaciones presupuestales y las acciones que no habrían sido ejecutadas por la actual administración. Estos aspectos deberán revisarse durante el proceso de transferencia para conocer las condiciones en las que se recibirá el Gobierno Regional.</p>
+<p>La próxima gestión tendrá que definir prioridades y estrategias para atender la crisis del agua y otros problemas regionales. La coordinación entre el gobernador y la vicegobernadora electos será parte de la organización para afrontar estos desafíos.</p>
+<ul>
+<li><strong>Versión resumida, lee la información completa en la edición impresa y la edición digital de <a href="https://pro.jornada.com.pe/"><em>Jornada</em></a></strong></li>
+</ul>
+<table class="lt-social">
+<caption>Jornada – Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/mas-de-50-distritos-de-ayacucho-enfrentan-estres-hidrico-y-proxima-gestion-debera-atender-la-crisis/">Más de 50 distritos de Ayacucho enfrentan estrés hídrico y próxima gestión deberá atender la crisis</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/02/2-11-Mas-de-50-distritos-de-Ayacucho-enfrentan-estres-hidrico-y-proxima-gestion-debera-atender-la-crisis.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Marmanillo cuestiona a autoridades que atribuyen inacción ambiental a falta de presupuesto</title>
+		<link>https://jornada.com.pe/marmanillo-cuestiona-a-autoridades-que-atribuyen-inaccion-ambiental-a-falta-de-presupuesto/</link>
+		
+		<dc:creator><![CDATA[Imasumacc Vargas Ruíz]]></dc:creator>
+		<pubDate>Mon, 02 Nov 2026 15:24:17 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<category><![CDATA[#Presupuesto]]></category>
+		<category><![CDATA[inacción ambiental]]></category>
+		<category><![CDATA[incendio forestal]]></category>
+		<category><![CDATA[reforestación]]></category>
+		<category><![CDATA[Sulema Marmanillo]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105150</guid>
+
+					<description><![CDATA[<p>La vicegobernadora electa de Ayacucho, Sulema Marmanillo, sostuvo que la falta de capacidad de gestión de las autoridades, más que la ausencia de presupuesto, frena las acciones de prevención y recuperación ambiental en la región. Sulema Marmanillo plantea priorizar protección de cabeceras de cuenca y recursos hídricos Durante sus declaraciones, cuestionó la respuesta de los [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/marmanillo-cuestiona-a-autoridades-que-atribuyen-inaccion-ambiental-a-falta-de-presupuesto/">Marmanillo cuestiona a autoridades que atribuyen inacción ambiental a falta de presupuesto</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>La <a href="https://jornada.com.pe/sulema-marmanillo-plantea-priorizar-proteccion-de-cabeceras-de-cuenca-y-recursos-hidricos/">vicegobernadora electa de Ayacucho, Sulema Marmanillo,</a> sostuvo que la falta de capacidad de gestión de las autoridades, más que la ausencia de presupuesto, frena las acciones de prevención y recuperación ambiental en la región.</p>
+<blockquote class="wp-embedded-content" data-secret="Hq4gtiwp7E"><p><a href="https://jornada.com.pe/sulema-marmanillo-plantea-priorizar-proteccion-de-cabeceras-de-cuenca-y-recursos-hidricos/">Sulema Marmanillo plantea priorizar protección de cabeceras de cuenca y recursos hídricos</a></p></blockquote>
+<p><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted"  title="«Sulema Marmanillo plantea priorizar protección de cabeceras de cuenca y recursos hídricos» — Diario Jornada" src="https://jornada.com.pe/sulema-marmanillo-plantea-priorizar-proteccion-de-cabeceras-de-cuenca-y-recursos-hidricos/embed/#?secret=mjl4YoBsb8#?secret=Hq4gtiwp7E" data-secret="Hq4gtiwp7E" width="600" height="338" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></p>
+<p>Durante sus declaraciones, cuestionó la respuesta de los gobiernos locales y regionales frente a los incendios forestales y señaló que existen mecanismos de financiamiento para impulsar proyectos de protección ambiental, como iniciativas de infraestructura verde.</p>
+<p><em>“Sí hay presupuesto, lo que no hay es gestión; no saben gestionar, no saben buscar la manera”, manifestó</em> al referirse a la falta de intervención oportuna cuando los incendios ya afectan los cerros y las cabeceras de cuenca.</p>
+<h4 style="text-align: center;"><span style="color: #000080;">Plantea fortalecer la reforestación</span></h4>
+<p>Marmanillo también consideró necesario impulsar la reforestación con criterios técnicos y diferenciar el uso de especies nativas de las exóticas, estas últimas destinadas principalmente a fines comerciales.</p>
+<p>Asimismo, señaló que se requieren funcionarios con conocimientos especializados para diseñar y ejecutar proyectos ambientales. Finalmente, pidió mayor participación ciudadana para proteger los territorios y exigir acciones concretas a las autoridades.</p>
+<ul>
+<li><strong>Versión resumida, lee la información completa en la edición impresa y la edición digital de <a href="https://pro.jornada.com.pe/"><em>Jornada</em></a></strong></li>
+</ul>
+<table class="lt-social">
+<caption>Jornada – Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/marmanillo-cuestiona-a-autoridades-que-atribuyen-inaccion-ambiental-a-falta-de-presupuesto/">Marmanillo cuestiona a autoridades que atribuyen inacción ambiental a falta de presupuesto</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/02/2-11-Marmanillo-cuestiona-a-autoridades-que-atribuyen-inaccion-ambiental-a-falta-de-presupuesto.webp" medium="image"></media:content>
+	</item>
+	</channel>
+</rss>

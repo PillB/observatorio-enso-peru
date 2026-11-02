@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:35:27 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 02 Nov 2026 17:40:48 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,39 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Ucayali: huaico en el sector Santa Rosa causa bloqueo temporal de la carretera Federico Basadre]]></title>
+        <description><![CDATA[El <strong>Ministerio de Transportes</strong> envió maquinaria para liberar la vía en la provincia de Padre Abad.]]></description>
+        <pubDate>Sun, 01 Nov 2026 16:05:40 -0500</pubDate>
+        <link>https://rpp.pe/peru/ucayali/ucayali-huaico-en-el-sector-santa-rosa-causa-bloqueo-temporal-de-la-carretera-federico-basadre-noticia-1715471</link>
+        <guid>1715471</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/11/01/475847_1924759.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Ucayali, MTC, Ministerio de Transportes y Comunicaciones, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Vuelos a Cusco y Pucallpa el 15 de noviembre se suspenderán por bloques de horas debido a llegada del papa León XIV]]></title>
+        <description><![CDATA[El <strong>MTC</strong> informó que estas suspensiones durarán ocho horas. La medida en Cusco iniciará por la mañana, mientras que en<strong> Pucallpa</strong> se dará desde la tarde.]]></description>
+        <pubDate>Fri, 30 Oct 2026 15:49:39 -0500</pubDate>
+        <link>https://rpp.pe/peru/ucayali/papa-leon-xiv-vuelos-con-destino-a-pucallpa-y-cusco-para-el-15-de-noviembre-seran-suspendidos-por-la-visita-del-pontifice-noticia-1715235</link>
+        <guid>1715235</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/30/583258_1924182.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Ucayali, Cusco, Pucallpa, Papa León XIV, Videos más vistos, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.6 remeció la región Ucayali esta madrugada]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 27 kilómetros al sureste de <strong>Pucallpa</strong>, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Thu, 29 Oct 2026 05:05:33 -0500</pubDate>
+        <link>https://rpp.pe/peru/ucayali/ucayali-sismo-de-magnitud-46-remecio-la-region-esta-madrugada-noticia-1714962</link>
+        <guid>1714962</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/10/29/030503_1923611.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Ucayali, IGP, Sismo, Pucallpa, Instituto Geofísico del Perú, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Apus de Purús denuncian que el gobernador regional de Ucayali no atiende a las comunidades]]></title>
         <description><![CDATA[En <em>Ampliación de Noticias</em>, el dirigente <strong>José Tachiana</strong> señaló que se encuentran en <a data-mce-href="https://rpp.pe/noticias/lima" href="https://rpp.pe/noticias/lima">la capital</a>, para buscar un diálogo directo con representantes del <strong>Poder Ejecutivo </strong>y del <strong>Congreso de la República</strong>.]]></description>
@@ -531,39 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2026/05/28/portada_4538660.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ crisis arrocera, Ucayali, gobernador regional, Manuel Gambini, firmes, medidas de lucha, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Estudiantes toman la Universidad Nacional de Ucayali y exigen residencia estudiantil y más raciones en el comedor]]></title>
-        <description><![CDATA[Federación de Estudiantes del centro universitario señaló que la toma será indefinida hasta que las autoridades respondan a sus exigencias.]]></description>
-        <pubDate>Tue, 26 May 2026 12:30:26 -0500</pubDate>
-        <link>https://rpp.pe/peru/ucayali/estudiantes-toman-la-universidad-nacional-de-ucayali-y-exigen-residencia-estudiantil-y-mas-raciones-en-el-comedor-noticia-1690151</link>
-        <guid>1690151</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/05/26/26-05-26-11-55-37-30193-1871423mp4_1871424.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Ucayali, Universidad Nacional de Ucayali, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Ucayali: piden reforzar toda la estructura del colegio Ashaninka Tzinque B de Atalaya [VIDEO]]]></title>
-        <description><![CDATA[<a rel="nofollow noopener" data-mce-href="https://rotafono.pe/" href="https://rotafono.pe/" target="_blank"><strong><em>Rotafono de RPP </em></strong></a>| Este colegio se ubica en el distrito de Raimondi, en <a rel="nofollow noopener" data-mce-href="https://rotafono.pe/tag/ucayali?label=Ucayali" href="https://rotafono.pe/tag/ucayali?label=Ucayali" target="_blank">Ucayali </a>y estudiantes vienen de distintas comunidades. Los padres de familia exigen que aulas se construyan con material noble.]]></description>
-        <pubDate>Mon, 11 May 2026 15:45:53 -0500</pubDate>
-        <link>https://rpp.pe/rotafono/servicios-a-la-comunidad/ucayali-piden-reforzar-toda-la-estructura-del-colegio-ashaninka-tzinque-b-de-atalaya-minedu-clases-escolares-educacion-video-noticia-1687636</link>
-        <guid>1687636</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/05/08/deo-1865555mp4_1865556.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Ucayali, Minedu, Ministerio de Educación, Colegio en mal estado, rotafono, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Caso Saweto: Policía captura a sentenciado prófugo por el asesinato de defensores ambientales]]></title>
-        <description><![CDATA[<strong>José Estrada Huayta</strong> fue condenado por este caso a 28 años de prisión por el Poder Judicial. Esta persona es quien dio la orden de asesinar a las víctimas en el 2014.]]></description>
-        <pubDate>Mon, 04 May 2026 18:05:01 -0500</pubDate>
-        <link>https://rpp.pe/peru/ucayali/caso-saweto-policia-captura-a-sentenciado-profugo-por-el-asesinato-de-defensores-ambientales-noticia-1686975</link>
-        <guid>1686975</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2026/05/04/b55dd3-08e4-4933-8715-0f1f2a861219-video-1863913mp4_1863914.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Ucayali, Caso Saweto, Videos más vistos, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
