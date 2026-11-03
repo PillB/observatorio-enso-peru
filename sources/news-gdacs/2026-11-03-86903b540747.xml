@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+	GDACS Admin section
+</title><link href="/Content/bootstrap.min.css" rel="stylesheet" /><link href="/Styles/gdacs_2.0.css" rel="stylesheet" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="stylesheet" media="(min-width: 768px) and (max-width: 991px)" href="../Styles/gdacs_device_2.0.css" /><link rel="stylesheet" media="(max-width: 768px)" href="../Styles/gdacs_minidevice_2.0.css" />
+    <script type="text/javascript" src="../Scripts/jquery-3.6.4.min.js"></script>
+    <script type="text/javascript" src="../Scripts/bootstrap.bundle.min.js"></script>
+    <script src="https://webtools.europa.eu/load.js" defer="defer"></script>
+    <script type="application/json">
+    {
+        "utility":"analytics",
+        "siteID":"770a3ada-ebea-420b-923a-c6490acb21ab",
+        "sitePath":["www.gdacs.org"],
+        "instance":"ec",
+        "mode":"manual"
+    }
+    </script>
+	<script type="application/json">
+	{
+		"utility" : "cck",
+		"url": {
+			"en": "https://commission.europa.eu/cookies-policy_en",
+			"de": "https://commission.europa.eu/cookies-policy_de"
+		}
+	}
+	</script>
+    
+
+
+
+  <style type="text/css">
+        .navbar-header{color: #9bc1ce; background-color:#69A7C3; }
+        .navbar-footer{color: #9bc1ce; background-color:transparent;border:none; border-bottom:none;border-color:transparent; }
+        .navbar-report{color: #6d9baf; border-bottom:1px solid; border-color:#6d9baf;min-height: 40px;margin-bottom:15px}
+        .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover{color: #ffffff; text-decoration: underline;}
+        .navbar-light .navbar-nav .nav-link{color:#c5d5d8}
+        .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {background-color:transparent;text-decoration:underline;color:white;}
+        .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .activereport > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.activereport {background-color:transparent;text-decoration:underline;color:#125172;margin: 0px 20px 0 15px}
+        .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .report-link> .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.report-link {color: #6d9baf;margin: 0px 20px 0 15px}
+        .report-link {color: #6d9baf;}
+        #footer_home {background-color:#125172;}
+
+    </style>
+
+   <!--<script type="text/javascript">
+       if ($wt.analytics.isTrackable()) {
+           $wt.trackPageView();
+       }
+   </script>-->
+    <link href="../Styles/gdacs_2.0_bootstrap4to5.css" rel="stylesheet" />
+        
+<!-- Piwik 
+   <script type="text/javascript">
+       if ($wt.cookie.consent.is.choiceMade() && $wt.cookie.consent.is.allAccepted()) {
+           var _paq = _paq || [];
+               /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+                  _paq.push(['trackPageView']);
+                  _paq.push(['enableLinkTracking']);
+                  (function() {
+                  var u="//stats.jrc.ec.europa.eu/";
+                  _paq.push(['setTrackerUrl', u+'piwik.php']);
+                  _paq.push(['setSiteId', '319']);
+                  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                  g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+                  })();
+      }
+   </script>
+ End Piwik Code -->
+</head>
+<body>
+    <div id="wrapper_anniversary">
+            
+            <div id="header" class="container-fluid">
+            <div id="top_menu">
+                                <style>
+                    @media screen (min-width: 992px) {#main_alert_content .navbar-expand-lg {height:40px;}}
+                </style>
+                <div  class="container">
+                    <!--<div class="float-right gdacs_top_menu_content"><a href="https://www.gdacs.org/admin" target="_blank">admin</a></div>-->
+                    <div class="float-end gdacs_top_menu_content"><a href="https://www.gdacs.org/gdacsregister" target="_blank">register/login</a></div>
+                    <div class="float-end gdacs_top_menu_content"><a href="https://www.gdacs.org/About/contactus.aspx" >contact us</a></div>
+                    <div class="float-end gdacs_top_menu_content"><a href="https://www.gdacs.org/About/termofuse.aspx" >term of use</a></div>
+
+                </div>
+            </div>
+            <div id="heading" class="container">
+                <div id="rowhead" class="row">
+                    <div id="gd_logo" class="col-lg-3 gdacs_logo">
+						<img id="gdacs_logo_image" src="https://www.gdacs.org/images/gdacs_logo_ecs_medium3.png" />
+					</div>
+                    <div id="gd_statement" class="d-none d-lg-block col-lg-6 gdacs_statement"> GDACS is a cooperation framework between the United Nations, the European Commission and disaster managers worldwide to improve awareness, information exchange and coordination in the first phase after major sudden-onset disasters.</div>
+                    <div id="gd_uneu" class="d-none d-lg-block col-lg-3 gdacs_uneu">
+						<img src="https://www.gdacs.org/images/un_eu.png" />
+					</div>
+                </div>
+            </div>
+            
+        </div>
+        <div id="nopadding" class="container">
+            
+            <div id="topmenu" >
+                <nav class="navbar navbar-expand-lg navbar-light navbar-header navbar-fixed-top">
+
+                  <button class="navbar-toggler" style="font-size:18px; color:white; font-weight:bold" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon" style="color:white;"></span>
+                      MENU
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link active" href="https://www.gdacs.org/default.aspx">HOME</a>
+                        <a class="nav-item nav-link" href="https://www.gdacs.org/Alerts/default.aspx">GDACS EVENTS</a>
+                        <a class="nav-item nav-link" href="http://vosocc.unocha.org">VIRTUAL OSOCC</a>
+                        <a class="nav-item nav-link" href="https://smcs.unosat.org/home" target="_blank">MAPS & SATELLITE IMAGERY</a>                      
+                        <a class="nav-item nav-link" href="https://www.gdacs.org/Knowledge/overview.aspx">KNOWLEDGE</a>
+                        <a class="nav-item nav-link" href="https://www.gdacs.org/About/overview.aspx">ABOUT</a>
+                    </div>
+                  </div>
+                            <a class="nav-item nav-link" href="https://new.gdacs.org" target="_blank">
+                                <img src="../images/2025_GDACS_logo_plain_resize48_CLICK2.png" alt="Gdacs New Website" />
+                            </a>
+                </nav>
+            </div>
+    	    
+            <div id="main_alert_content" class="col-lg-12">
+                
+                <form name="aspnetForm" method="post" action="./rss.xml?404%3bhttp%3a%2f%2fwww.gdacs.org%3a80%2fxml%2frss.xml" id="aspnetForm">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="4nmTV5+JS71LLnorPt3rUOGqYJNk2ohbTm8gmD/P4Mx/S/TSRsNPJkESLTmStmuBVOlL+riS2LQxt9k0BG8tFLeRRdpwhgPLcE6R60VzDTs=" />
+
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="05594B02" />
+                    
+    <div class="row">
+        <div class="col-lg-12">
+            <br />
+            <h2>GDACS Error</h2>
+            <div class="row">
+				<div class="col-lg-12">
+                    <h3>Error 404</h3><p class="p_summary">Error occoured visiting the page , please contact the administrator</p>
+				</div>
+            </div>
+        </div>
+    </div>
+
+                </form>
+            </div><!-- end main_alert_content-->
+
+            
+            <div id="footer_home" >
+                <nav class="navbar navbar-expand-lg navbar-light navbar-footer col-12">
+                  <button class="navbar-toggler" style="font-size:18px; color:white; font-weight:bold" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon" style="color:white;"></span>
+                      MENU
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNavAltMarkupFooter">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link " href="default.aspx" >HOME</a><a class="nav-item nav-link " href="Alerts/default.aspx" >GDACS EVENTS</a><a class="nav-item nav-link " href="http://vosocc.unocha.org" >VIRTUAL OSOCC</a><a class="nav-item nav-link " href="https://smcs.unosat.org/home"  target="_blank">MAPS & SATELLITE IMAGERY</a><a class="nav-item nav-link " href="Knowledge/overview.aspx" >KNOWLEDGE</a><a class="nav-item nav-link " href="About/overview.aspx" >ABOUT</a>
+                    </div>
+                  </div>
+                </nav>
+                <div id="footer_disclaimer" class="col-12">
+                    <!--<div class="float-left gdacs_bottom_menu_content" ><a href="https://ec.europa.eu/info/brexit-content-disclaimer" target="_blank">Brexit content disclaimer</a></div>-->
+                    <div class="float-end gdacs_bottom_menu_content" ><a href="https://www.gdacs.org/About/cookies.aspx" target="_blank" >cookies</a></div>
+                    <p><b><span class="gdacs_bottom_menu_content" ><a href="https://ec.europa.eu/info/legal-notice_en" target="_blank" >Disclaimer</a></span></b>   -   <b><span class="gdacs_bottom_menu_content" ><a href="https://commission.europa.eu/legal-notice_en#copyright-notice" target="_blank" >Copyright</a></span></b><br />
+                    While we try everything to ensure accuracy, this information is purely indicative and should not be used for any decision making without alternate sources of information. 
+                    <br />The JRC is not responsible for any damage or loss resulting from use of the information presented on this website.</p> 
+                    <br />The designations employed and the presentation of material on the map do not imply the expression of any opinion whatsoever on the part of the European Union concerning the legal status of any country, territory or area or of its authorities, or concerning the delimitation of its frontiers or boundaries.
+                </div>
+                <div id="footer_logo" class="d-none d-lg-block">
+                    <div class="footerlogo_item d-none d-lg-block"><img src="https://www.gdacs.org/images/gdacs_icons/partners/ec.png" width="90" height="70"  alt=""/></div>
+                    <div class="footerlogo_item d-none d-lg-block"><img src="https://www.gdacs.org/images/gdacs_icons/partners/ocha.png" width="90" height="70"  alt=""/></div>
+                    <div class="footerlogo_item d-none d-lg-block"><img src="https://www.gdacs.org/images/gdacs_icons/partners/unitar.png" width="90" height="70"  alt=""/></div>
+                    <div class="footerlogo_item d-none d-lg-block"><img src="https://www.gdacs.org/images/gdacs_icons/partners/unosat.png" width="90" height="70"  alt=""/></div>
+                </div>
+	        </div>
+                                
+
+        </div>
+    </div>
+<script type="text/javascript">
+
+
+     $(function() {
+         if (window.innerWidth < 991) {
+             $("#nopadding").addClass('container-fluid').removeClass('container');
+             $("#send").attr("style", "text-align:left");
+             $("#name").attr("style", "text-align: left");
+             $("#mail").attr("style", "text-align: left");
+             $("#txtmail").attr("style", "text-align: left");
+
+              var x = document.getElementsByClassName("alert_item_name");
+              var i;
+              for (i = 0; i < x.length; i++) {
+                x[i].style.paddingLeft = "0px";
+              }
+
+                $("div.alert_item_name").each(function (o, elt) {
+                  var newElt = $("<span class='alert_item_name'/>");
+                  Array.prototype.slice.call(elt.attributes).forEach(function(a) {
+                    newElt.attr(a.name, a.value);
+                  });
+                  $(elt).wrapInner(newElt).children(0).unwrap();
+             });
+
+                $("div.alert_item_attribute").each(function (o, elt) {
+                  var newElt = $("<span class='alert_item_attribute'/>");
+                  Array.prototype.slice.call(elt.attributes).forEach(function(a) {
+                    newElt.attr(a.name, a.value);
+                  });
+                  $(elt).wrapInner(newElt).children(0).unwrap();
+             });
+
+
+             }
+        });
+
+    $(window).resize(function () {
+
+        if (window.innerWidth < 991) {
+            $("#nopadding").addClass('container-fluid').removeClass('container');
+             $("#send").attr("style", "text-align:left");
+             $("#name").attr("style", "text-align: left");
+             $("#mail").attr("style", "text-align: left");
+             $("#txtmail").attr("style", "text-align: left");
+            //function myFunction() {
+              var x = document.getElementsByClassName("alert_item_name");
+              var i;
+              for (i = 0; i < x.length; i++) {
+                x[i].style.paddingLeft = "0px";
+              }
+            //}
+
+            $("div.alert_item_name").each(function (o, elt) {
+                var newElt = $("<span class='alert_item_name'/>");
+                Array.prototype.slice.call(elt.attributes).forEach(function (a) {
+                    newElt.attr(a.name, a.value);
+                });
+                $(elt).wrapInner(newElt).children(0).unwrap();
+            });
+
+            $("div.alert_item_attribute").each(function (o, elt) {
+                var newElt = $("<span class='alert_item_attribute'/>");
+                Array.prototype.slice.call(elt.attributes).forEach(function (a) {
+                    newElt.attr(a.name, a.value);
+                });
+                $(elt).wrapInner(newElt).children(0).unwrap();
+            });
+
+            if (document.getElementById("#eventMenu") != null) { (document.getElementById("#eventMenu").style.paddingLeft = '0px') };
+            if (document.getElementById("#eventMenuDrop") != null) { (document.getElementById("#eventMenuDrop").style.paddingLeft = '0px') };
+
+        }
+        else {
+            $("#nopadding").addClass('container').removeClass('container-fluid');
+            $("#send").attr("style", "text-align: right");
+            $("#name").attr("style", "text-align: right");
+            $("#mail").attr("style", "text-align: right");
+            $("#txtmail").attr("style", "text-align: right");
+
+            $("span.alert_item_name").each(function (o, elt) {
+                var newElt = $("<div class='alert_item_name' />");
+                Array.prototype.slice.call(elt.attributes).forEach(function (a) {
+                    newElt.attr(a.name, a.value);
+                });
+                $(elt).wrapInner(newElt).children(0).unwrap();
+            });
+
+            $("span.alert_item_attribute").each(function (o, elt) {
+                var newElt = $("<div class='alert_item_attribute' />");
+                Array.prototype.slice.call(elt.attributes).forEach(function (a) {
+                    newElt.attr(a.name, a.value);
+                });
+                $(elt).wrapInner(newElt).children(0).unwrap();
+            });
+
+            if (document.getElementById("#eventMenu") != null) { (document.getElementById("#eventMenu").style.paddingLeft = '15px') };
+            if (document.getElementById("#eventMenuDrop") != null) { (document.getElementById("#eventMenuDrop").style.paddingLeft = '0px') };
+        }
+    });
+</script>
+        
+<!--
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-298127-1");
+pageTracker._setDomainName(".gdacs.org");
+pageTracker._setLocalRemoteServerMode();
+pageTracker._trackPageview();
+} catch(err) {}</script>
+-->
+    <script type="text/javascript">
+        const observer = new MutationObserver((mutations) => {
+            if (document.contains(document.querySelector("div.analytics.wt.wt-analytics"))) {
+                observer.disconnect()
+                setTimeout(() => {
+                    if ($wt.analytics.isTrackable()) {
+                        $wt.trackPageView()
+                    }
+                }, 200)
+            }
+        })
+        observer.observe(document, { attributes: false, childList: true, characterData: false, subtree: true })
+    </script>
+</body>
+</html>
