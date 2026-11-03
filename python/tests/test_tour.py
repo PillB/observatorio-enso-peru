@@ -18,10 +18,10 @@ pytestmark = pytest.mark.browser
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
-TOURS = ["inicio", "completo", "resumen", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "noticias",
+TOURS = ["inicio", "completo", "resumen", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "zona", "noticias",
          "datos", "metodologia", "asistente"]
 TAB_OF = {"resumen": "", "costero": "costero", "pacifico": "pacifico", "oceano": "oceano", "mapa": "mapa",
-          "historia": "historia", "memoria": "memoria", "noticias": "noticias", "datos": "datos",
+          "historia": "historia", "memoria": "memoria", "zona": "zona", "noticias": "noticias", "datos": "datos",
           "metodologia": "metodologia", "asistente": "asistente"}
 
 # Los mapas abren en el resumen (como en test_browser.py) y el vigilante de cada cuadro.
