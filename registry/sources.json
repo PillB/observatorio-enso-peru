@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-11-02T23:10:49+00:00",
+ "generated_at": "2026-11-03T13:56:14+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -1350,8 +1350,7 @@
     },
     "n8n": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     }
    },
    "channels": [
@@ -7192,13 +7191,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -10296,17 +10295,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
+     "class": "empty",
      "http": 200,
      "robots": "allowed"
     },
@@ -10316,7 +10313,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -10324,7 +10320,6 @@
     "https://www.gdacs.org/xml/rss.xml": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -11777,21 +11772,19 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "geoblocked",
+    "status": "down",
     "from": [
      "github-actions",
      "peru-server"
     ],
-    "open_from": [
-     "peru"
-    ],
+    "open_from": [],
     "us": {
      "class": "timeout",
      "robots": "absent"
     },
     "peru": {
-     "class": "ok",
-     "http": 200,
+     "class": "http-5xx",
+     "http": 503,
      "robots": "allowed"
     },
     "actions": {
@@ -11801,14 +11794,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json": {
-     "status": "geoblocked",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -12266,20 +12259,22 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "down",
+    "status": "geoblocked",
     "from": [
      "github-actions",
      "peru-server"
     ],
-    "open_from": [],
+    "open_from": [
+     "peru"
+    ],
     "us": {
      "class": "timeout",
      "robots": "allowed"
     },
     "peru": {
-     "class": "empty",
+     "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "actions": {
      "class": "timeout",
@@ -12288,14 +12283,14 @@
     "n8n": null
    },
    "channels": [
-    "actions"
+    "peru-server"
    ],
-   "geoblocked": null,
+   "geoblocked": true,
    "by_url": {
     "https://spij.minjus.gob.pe/": {
-     "status": "down",
+     "status": "geoblocked",
      "channels": [
-      "actions"
+      "peru-server"
      ],
      "robots": "allowed"
     }
@@ -12499,7 +12494,7 @@
     "peru": {
      "class": "http-403",
      "http": 403,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "actions": {
      "class": "http-403",
@@ -12555,7 +12550,7 @@
     "peru": {
      "class": "http-403",
      "http": 403,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "actions": {
      "class": "http-403",
