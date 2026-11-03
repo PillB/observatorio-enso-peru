@@ -75,6 +75,7 @@ export const TOURS = [
       { route: '#/mapa', target: '#map-svg', title: 'Mapa', text: 'Las regiones Niño con su anomalía semanal. Con «Reproducir» se ve la evolución de las últimas 52 semanas.' },
       { route: '#/historia', target: '[data-tour-id="events"] .section-head', title: 'Historia', text: 'Todos los eventos desde 1950 identificados con la definición operacional del ENFEN.' },
       { route: '#/memoria?vista=resumen', target: HZ_MAP, ensure: hzResumen, title: 'Memoria de desastres', text: 'Dónde golpearon antes las inundaciones, los huaycos y las sequías, y cuánto más con El Niño costero. Toque un área para ver su ficha.' },
+      { route: '#/zona?area=150110', target: '#zn-q', title: 'Mi zona', text: 'Elija un departamento, una provincia o un distrito: la página junta lo que pasó antes, los meses más peligrosos y los avisos de hoy.' },
       { route: '#/noticias', target: `${AM} .amap-head`, title: 'Noticias', text: 'Los avisos oficiales vigentes en un mapa y las noticias de cada departamento, agrupadas cuando varios medios cuentan lo mismo.' },
       { route: '#/datos', target: '[data-tour-id="explorer"] .row', title: 'Datos', text: 'Cada serie completa en tabla y gráfico, y en CSV para descargar.' },
       { route: '#/metodologia', target: '[data-tour-id="sources-health"] .section-head', title: 'Metodología', text: 'El estado de cada fuente en la última corrida diaria, las incidencias y los umbrales que se usan.' },
@@ -159,7 +160,7 @@ export const TOURS = [
     ],
   },
   {
-    id: 'memoria', tab: 'memoria', next: 'noticias', title: 'Memoria de desastres', desc: 'El mapa de los desastres pasados: filtros, fichas y vistas de detalle.',
+    id: 'memoria', tab: 'memoria', next: 'zona', title: 'Memoria de desastres', desc: 'El mapa de los desastres pasados: filtros, fichas y vistas de detalle.',
     steps: [
       { route: '#/memoria?vista=resumen', target: '.hz-context', ensure: hzResumen, optional: true, title: 'Lo que dice la historia ahora', text: 'Si hay un Niño costero en curso, aquí aparece qué departamentos tuvieron claramente más daños en temporadas con Niño. Cada nombre abre su ficha.' },
       { route: '#/memoria?vista=resumen', target: '.hz-views', ensure: hzResumen, title: 'Resumen y detalle', text: '«Resumen» colorea departamentos, provincias o distritos. Las vistas de detalle muestran cuencas, ríos y lugares, o daños frente a pobreza.' },
@@ -200,6 +201,16 @@ export const TOURS = [
       { route: '#/memoria?vista=resumen', target: '[aria-labelledby="hz-great-h"] .hz-sms', ensure: hzResumen, title: 'Los grandes Niños', text: 'Un mapa por cada gran Niño, uno al lado del otro, con la misma escala, y su tabla de daños reportados.' },
       { route: '#/memoria?vista=resumen', target: '[aria-labelledby="hz-val-h"] .section-head', ensure: hzResumen, title: '¿La historia anticipa?', text: 'Se probó con 2016-2025: qué tan bien la frecuencia de 1970-2015 ordenó los lugares con daños después. Léalo antes de usar las cifras.' },
       { route: '#/memoria?vista=resumen', target: '#hz-m-h', ensure: hzResumen, title: 'Fuentes y descargas', text: 'De dónde sale cada registro, cómo se ubicó, sus límites y el catálogo completo para descargar.' },
+    ],
+  },
+  {
+    id: 'zona', tab: 'zona', next: 'noticias', title: 'Mi zona', desc: 'La historia, los meses críticos y los avisos de un lugar.',
+    steps: [
+      { route: '#/zona?area=150110', target: '#zn-q', title: 'Elija su lugar', text: 'Escriba el nombre de un distrito, una provincia o un departamento y elija uno de la lista.' },
+      { route: '#/zona?area=150110', target: '#zn-root .grid', title: 'Qué pasó antes', text: 'Cuántos años hubo daños, cada cuánto tiempo, la probabilidad en los próximos 5 años y cuánto cambia con El Niño costero, con su intervalo de confianza. Es historia, no pronóstico.' },
+      { route: '#/zona?area=150110', target: '#zn-hoy', title: 'Hoy', text: 'La fase del ENSO y los avisos oficiales vigentes que tocan este lugar, con el nivel que dio cada institución.' },
+      { route: '#/zona?area=150110', target: '.zn-season', title: 'Meses críticos', text: 'Cuántos registros hubo de cada peligro en cada mes: los más oscuros son los peores meses de ese peligro en este lugar.' },
+      { route: '#/zona?area=150110', target: '#zn-csv', title: 'Descargar', text: 'Los registros del lugar en CSV; el catálogo completo, con todas las columnas del equipo de prevención, está en Memoria de desastres.' },
     ],
   },
   {

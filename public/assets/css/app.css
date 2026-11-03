@@ -1054,3 +1054,12 @@ table.grd .chip { white-space: normal; }
 .hz-corr { display: flex; gap: 6px; align-items: flex-start; color: var(--fg-2); }
 .hz-corr svg { flex: none; width: 14px; height: 14px; margin-top: 2px; color: var(--ok, var(--fg-2)); }
 @media (max-width: 900px) { .hz-tiles-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Mi zona: calendario de peligros por mes */
+.zn-season td { text-align: center; min-width: 34px; }
+.zn-h0 { color: var(--fg-3); }
+.zn-h1 { background: color-mix(in srgb, var(--brand-2) 14%, transparent); }
+.zn-h2 { background: color-mix(in srgb, var(--brand-2) 30%, transparent); }
+.zn-h3 { background: color-mix(in srgb, var(--brand-2) 50%, transparent); }
+.zn-h4 { background: color-mix(in srgb, var(--brand) 72%, transparent); color: var(--brand-ink); font-weight: 700; }
+#zn-root > * + * { margin-top: 16px; }

@@ -537,13 +537,13 @@
     <text class="ar-t" x="1344" y="684.8" font-size="10.5" text-anchor="middle">66</text>
   </g>
   <g class="ar-edge" id="af-e-67" data-edge="67" data-from="live-site" data-to="site-app" tabindex="0">
-    <title>67. Live site (SITE_URL) → Website (11 views): serves pages and data. The host serves index.html, assets/ and data/. The page first fetches dashboard.json and then each file with the same publicationId.</title>
+    <title>67. Live site (SITE_URL) → Website (12 views): serves pages and data. The host serves index.html, assets/ and data/. The page first fetches dashboard.json and then each file with the same publicationId.</title>
     <path class="ar-e ar-e-data" d="M1548 596.9 L1548 622.9" marker-end="url(#af-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="1548" cy="609.9" r="9"/>
     <text class="ar-t" x="1548" y="613.7" font-size="10.5" text-anchor="middle">67</text>
   </g>
   <g class="ar-edge" id="af-e-68" data-edge="68" data-from="public" data-to="site-app" tabindex="0">
-    <title>68. Public → Website (11 views): opens the site or downloads. Anyone opens the page or downloads the CSV and JSON in data/ directly; from each value they can go to the live source or the archived copy.</title>
+    <title>68. Public → Website (12 views): opens the site or downloads. Anyone opens the page or downloads the CSV and JSON in data/ directly; from each value they can go to the live source or the archived copy.</title>
     <path class="ar-e ar-e-human" d="M1548 816.3 L1548 790.3" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
     <circle class="ar-badge ar-e-human" cx="1548" cy="803.3" r="9"/>
     <text class="ar-t" x="1548" y="807.1" font-size="10.5" text-anchor="middle">68</text>
@@ -1208,15 +1208,15 @@
     <a class="ar-annex" href="anexos/a9-en.svg" data-annex="a9"><title>Annex A9: The site in the browser</title><rect class="ar-tag" x="1630.6" y="497.2" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1644.3" y="509.7" font-size="10.5" text-anchor="middle">A9</text></a>
   </g>
   <g class="ar-node-g" id="af-n-site-app" data-node="site-app">
-    <title>Website (11 views). Static page with no build step: Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, News (with the alert map), Data, Methodology and Assistant. Next to each value it links the live source and the archived copy.</title>
+    <title>Website (12 views). Static page with no build step: Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, My area, News (with the alert map), Data, Methodology and Assistant. Next to each value it links the live source and the archived copy.</title>
     <rect class="ar-node ar-g-site" x="1434" y="622.9" width="232" height="167.4" rx="8"/>
     <rect class="ar-f-site" x="1434" y="630.9" width="4" height="151.4" rx="2"/>
-    <text class="ar-t" x="1446" y="647.4" font-size="12.5">Website (11 views)</text>
+    <text class="ar-t" x="1446" y="647.4" font-size="12.5">Website (12 views)</text>
     <text class="ar-s" x="1446" y="670.3" font-size="11">Static page with no build step:</text>
     <text class="ar-s" x="1446" y="685.5" font-size="11">Summary, Coastal El Niño, Pacific,</text>
     <text class="ar-s" x="1446" y="700.7" font-size="11">Ocean and atmosphere, Map,</text>
-    <text class="ar-s" x="1446" y="715.8" font-size="11">History, Disaster memory, News</text>
-    <text class="ar-s" x="1446" y="731" font-size="11">(with the alert map), Data,</text>
+    <text class="ar-s" x="1446" y="715.8" font-size="11">History, Disaster memory, My area,</text>
+    <text class="ar-s" x="1446" y="731" font-size="11">News (with the alert map), Data,</text>
     <text class="ar-s" x="1446" y="746.2" font-size="11">Methodology and Assistant. Next to</text>
     <text class="ar-s" x="1446" y="761.4" font-size="11">each value it links the live source</text>
     <text class="ar-s" x="1446" y="776.6" font-size="11">and the archived copy.</text>
@@ -1876,13 +1876,13 @@
   <circle class="ar-badge ar-e-data" cx="599.3" cy="5290.1" r="9"/>
   <text class="ar-t" x="599.3" y="5293.9" font-size="10.5" text-anchor="middle">67</text>
   <text class="ar-t" x="619.3" y="5294.1" font-size="11.5">serves pages and data</text>
-  <text class="ar-m" x="619.3" y="5308.1" font-size="10.5">Live site (SITE_URL) → Website (11 views)</text>
+  <text class="ar-m" x="619.3" y="5308.1" font-size="10.5">Live site (SITE_URL) → Website (12 views)</text>
   <text class="ar-s" x="619.3" y="5323.1" font-size="11">The host serves index.html, assets/ and data/. The page first fetches dashboard.json and</text>
   <text class="ar-s" x="619.3" y="5338.1" font-size="11">then each file with the same publicationId.</text>
   <circle class="ar-badge ar-e-human" cx="1168.7" cy="2591.2" r="9"/>
   <text class="ar-t" x="1168.7" y="2595" font-size="10.5" text-anchor="middle">68</text>
   <text class="ar-t" x="1188.7" y="2595.2" font-size="11.5">opens the site or downloads</text>
-  <text class="ar-m" x="1188.7" y="2609.2" font-size="10.5">Public → Website (11 views)</text>
+  <text class="ar-m" x="1188.7" y="2609.2" font-size="10.5">Public → Website (12 views)</text>
   <text class="ar-s" x="1188.7" y="2624.2" font-size="11">Anyone opens the page or downloads the CSV and JSON in data/ directly; from each value</text>
   <text class="ar-s" x="1188.7" y="2639.2" font-size="11">they can go to the live source or the archived copy.</text>
   <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="2662.2" r="9"/>
