@@ -1006,3 +1006,57 @@ def test_a_shared_link_shows_its_view_without_changing_the_chosen_one(site, brow
         assert not errors, errors
     finally:
         ctx.close()
+
+
+def test_memory_records_table_follows_the_filter_and_downloads_it(site, browser, tmp_path):
+    """Tabla de registros al final de la memoria: sigue el filtro del mapa, muestra 25 filas y agrega más sin cambiar
+    de página, ordena con aria-sort, pide las fichas solo de los departamentos visibles y descarga el filtro con las
+    columnas del equipo, con los mismos valores que eventos.csv."""
+    import csv
+    import io
+    import zipfile
+
+    base, root = site
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE", accept_downloads=True)
+    pg = ctx.new_page()
+    errors, asked = [], []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("request", lambda r: asked.append(r.url.rsplit("/", 2)[-2:]))
+    try:
+        pg.goto(f"{base}#/memoria?vista=resumen&nivel=distrito&area=200101&peligro=agua")
+        sec = pg.locator("#hz-tbl")
+        expect(sec.locator(".section-head")).to_contain_text("Piura")
+        # Las coordenadas se piden recién al acercarse a la tabla (la ficha del área ya pidió la de su departamento).
+        pg.wait_for_load_state("networkidle")
+        assert not any(a[1] == "coordenadas.json" for a in asked)
+        sec.scroll_into_view_if_needed()
+        expect(sec.locator("tbody tr")).to_have_count(25)
+        expect(sec.locator("[aria-label=cargando]")).to_have_count(0)
+        assert {a[1] for a in asked if a[0] == "detalle"} == {"20.json"}
+        n = int(re.search(r"de (\d+) registros", sec.locator(".hz-tbl-foot").inner_text().replace(".", "")).group(1))
+        sec.locator("[data-tbl-more]").first.click()
+        expect(sec.locator("tbody tr")).to_have_count(min(n, 50))
+        sec.locator("[data-sort='muertos']").click()
+        expect(sec.locator("th[aria-sort]")).to_have_count(1)
+        expect(sec.locator("th[aria-sort='descending']")).to_contain_text("Fallecidos")
+        with pg.expect_download() as dl:
+            sec.locator("[data-tbl-dl]").click()
+        out = tmp_path / "filtro.csv"
+        dl.value.save_as(out)
+        assert dl.value.suggested_filename.startswith("memoria-desastres_piura-piura-piura_agua_")
+        expect(pg.locator("#hz-tbl-st")).to_contain_text("Listo")
+        rows = list(csv.DictReader(io.StringIO(out.read_text(encoding="utf-8-sig"))))
+        assert len(rows) == n and list(rows[0])[:3] == ["Date", "DangerType", "Ubicacion"]
+        with zipfile.ZipFile(root / "assets" / "historico" / "eventos.zip") as z:
+            ref = {r["Id"]: r for r in csv.DictReader(io.TextIOWrapper(z.open("eventos.csv"), encoding="utf-8-sig"))}
+        for r in rows:
+            o = ref[r["Id"]]
+            assert o["Ubigeo"] == "200101" and o["DangerType"] in {"Inundacion fluvial", "Inundacion pluvial", "Inundacion", "Desborde de rio"}
+            assert {k: v for k, v in r.items() if k not in ("HectareasCultivo", "KmVias", "PerdidasUSD")} == {k: o[k] for k in r if k not in ("HectareasCultivo", "KmVias", "PerdidasUSD")}
+        # Sin filtros no se arma nada en el navegador: el botón es el del ZIP.
+        pg.goto(f"{base}#/memoria?vista=resumen")
+        expect(pg.locator("#hz-tbl [data-tbl-dl]")).to_have_count(0)
+        expect(pg.locator("#hz-tbl a[href$='eventos.zip']")).to_contain_text("todo el catálogo")
+        assert not errors, errors
+    finally:
+        ctx.close()

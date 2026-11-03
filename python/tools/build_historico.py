@@ -1661,7 +1661,8 @@ def web_payload(records: list[dict]) -> tuple[dict, dict[str, dict]]:
         detail[r["Ubigeo"][:2]][str(i)] = [
             r["Descripción"], r["Ubicacion"], r["FuenteCita"], r["Fuente"], r["DuraciónEvento"] or "",
             r["PrecisionFecha"], r["Id"], r["DangerTypeMetodo"], r["AtribucionENSO"],
-            {k: r[k] for k in E.IMPACT_COLUMNS if r.get(k)},
+            # Un cero reportado es un dato (la tabla de la pestaña lo escribe como eventos.csv); vacío, «no reportado».
+            {k: r[k] for k in E.IMPACT_COLUMNS if r.get(k) not in (None, "")},
             int(r.get("Corroboracion") or 0), [u for u in (r.get("FuentesAdicionales") or "").split(" | ") if u],
             r.get("FechaTipo") or "evento",
         ]
@@ -1714,6 +1715,31 @@ def fine_payload(records: list[dict]) -> dict:
         if r.get("CuerpoAgua"):
             waters.append([i, name(r["CuerpoAgua"])])
     return {"cuencas": basins, "nombres": names, "cuenca": cuenca, "puntos": points, "lugar": places, "agua": waters}
+
+
+def coords_payload(records: list[dict]) -> dict:
+    """``coordenadas.json``: Latitud y Longitud de cada registro escritas como en ``eventos.csv``, para que la tabla de
+    la pestaña arme en el navegador las columnas del equipo de un filtro sin pedir el ZIP:
+
+    - ``areas``: ``{ubigeo: [lat, lon]}`` de los registros ubicados en la capital de su distrito, provincia o
+      departamento (``[lat, lon, 1]`` si es un punto dentro del distrito porque no se conoce su capital). Todas las
+      filas de un mismo ubigeo ubicadas así tienen el mismo punto.
+    - ``puntos``: ``{i: [lat, lon]}`` (``i``, la posición en ``eventos.json``) de los registros con un punto propio,
+      con todos sus decimales (``detalle/`` los redondea a cuatro para el mapa).
+    """
+    text = lambda v: "" if v is None else str(v)  # lo que escribe csv.writer
+    areas: dict[str, list] = {}
+    points: dict[str, list] = {}
+    for i, r in enumerate(records):
+        lat, lon = text(r.get("Latitud")), text(r.get("Longitud"))
+        if not lat or not lon:
+            continue
+        geo = r.get("PrecisionGeo") or ""
+        if geo in WEB_POINT_KIND:
+            points[str(i)] = [lat, lon]
+        else:
+            areas.setdefault(r["Ubigeo"], [lat, lon, *([1] if geo == "interior-distrito" else [])])
+    return {"areas": dict(sorted(areas.items())), "puntos": points}
 
 
 #: Columnas de ``historia.json`` por distrito, provincia y cuenca.
@@ -2208,6 +2234,8 @@ def main(argv=None) -> int:
         (args.out / "detalle" / f"{dep}.json").write_text(json.dumps(d, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     fine = {"generatedAt": generated, **fine_payload(records)}
     (args.out / "finos.json").write_text(json.dumps(fine, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    coords = {"generatedAt": generated, **coords_payload(records)}
+    (args.out / "coordenadas.json").write_text(json.dumps(coords, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     hist = {"generatedAt": generated, **history_payload(records, ind, territory)}
     (args.out / "historia.json").write_text(json.dumps(hist, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     all_years = range(min(int(r["Anio"]) for r in records), max(int(r["Anio"]) for r in records) + 1)
