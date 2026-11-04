@@ -9,7 +9,7 @@ import { html, raw, esc, safeUrl, $, $$ } from './lib/dom.js';
 import * as F from './lib/format.js';
 import { ICON } from './icons.js';
 import * as M from './historico-model.js';
-import { loadAll } from './historico.js';
+import { loadAll, downloadTeamCsv } from './historico.js';
 import { phaseOf } from './alertmap.js';
 
 const CODE_RE = /^\d{2}(\d{2}){0,2}$/;
@@ -51,19 +51,6 @@ export function seasonality(recs) {
 
 /** Clase de color 0 a 4 de una cuenta respecto del máximo de su fila (0 = ninguno). */
 export const heat = (v, max) => (v > 0 && max > 0 ? Math.min(4, 1 + Math.floor((3.999 * v) / max)) : 0);
-
-/** CSV de los registros del lugar (las columnas de equipo que trae el archivo compacto, con el código como texto). Las
- * cifras son las agregadas de ese archivo, no las columnas originales: personas fallecidas y desaparecidas juntas,
- * afectadas y damnificadas juntas (o desplazadas si no hay), y viviendas destruidas; por eso llevan otro nombre. El
- * catálogo completo, con cada columna original, está en eventos.zip. */
-export function toCsv(recs, names) {
-  const head = ['Date', 'DangerType', 'Departamento', 'Provincia', 'Distrito', 'Ubigeo', 'TipoEvento', 'FaseENSO', 'Origen', 'Confianza', 'FallecidosYDesaparecidos', 'AfectadosYDamnificados', 'ViviendasDestruidas'];
-  const q = (v) => { const s = v === null || v === undefined ? '' : String(v); return /^[=+\-@\t\r]/.test(s) ? `'${s}` : /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
-  const rows = [...recs].sort((a, b) => (a.d < b.d ? 1 : -1)).map((r) => [
-    r.d, r.t, names.departamento[r.u.slice(0, 2)] || '', names.provincia[r.u.slice(0, 4)] || '', names.distrito[r.u] || '', r.u,
-    r.e, r.f, r.o, r.c, r.muertos || '', r.afect || '', r.viv || ''].map(q).join(','));
-  return `﻿${head.join(',')}\n${rows.join('\n')}\n`;
-}
 
 function readArea() {
   const a = new URLSearchParams(location.hash.split('?')[1] || '').get('area') || '';
@@ -133,7 +120,7 @@ function report(D, feed, area, now) {
     <section class="card" aria-labelledby="zn-des"><h2 id="zn-des">Seguir</h2>
       <ul class="link-list">
         <li><a href="#/memoria?area=${area}">Ficha completa en Memoria de desastres</a> (mapa, ríos, cuencas, declaratorias)</li>
-        <li><button type="button" id="zn-csv" class="btn">Descargar los ${F.fmtNumber(recs.length)} registros de este lugar (CSV)</button> <span class="muted small">Con las cifras agregadas del archivo compacto (fallecidos y desaparecidos juntos, afectados y damnificados juntos, viviendas destruidas). Las columnas originales están en <a href="assets/historico/eventos.zip" download>eventos.zip</a>.</span></li>
+        <li><button type="button" id="zn-csv" class="btn">Descargar los ${F.fmtNumber(recs.length)} registros de este lugar (CSV)</button> <span class="muted small">En el esquema del tablero del equipo de prevención (Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud) y los metadatos de la Memoria, con los mismos valores que <a href="assets/historico/eventos.zip" download>el catálogo completo</a>.</span><span class="small" id="zn-csv-st" role="status" aria-live="polite"></span></li>
       </ul></section>
     <p class="muted small">Esto es la historia del catálogo, no un pronóstico: dice con qué frecuencia pasó, no cuándo volverá a pasar. Los avisos de arriba son los que emiten las instituciones.</p>`;
 }
@@ -172,13 +159,17 @@ export const zonaView = {
       q.value = byCode.get(area);
       msg.textContent = `${placeName(D.sum.nombres, area)} · ${LEVEL[area.length]}`;
       root.innerHTML = String(report(D, feed, area, Date.now()));
-      $('#zn-csv', root)?.addEventListener('click', () => {
-        const recs = D.recs.filter((r) => r.u.startsWith(area));
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(new Blob([toCsv(recs, D.sum.nombres)], { type: 'text/csv;charset=utf-8' }));
-        a.download = `mi-zona-${area}.csv`;
-        a.click();
-        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      $('#zn-csv', root)?.addEventListener('click', async (e) => {
+        const btn = e.currentTarget;
+        if (btn.disabled) return;
+        btn.disabled = true;
+        // El mismo archivo que la tabla de la Memoria con este lugar elegido, del más reciente al más antiguo.
+        const recs = [...D.recs.filter((r) => r.u.startsWith(area))].sort((a, b) => (b.d < a.d ? -1 : b.d > a.d ? 1 : b.i - a.i));
+        try {
+          await downloadTeamCsv(D, recs, `mi-zona-${area}.csv`, $('#zn-csv-st', root), () => btn.isConnected);
+        } finally {
+          btn.disabled = false;
+        }
       });
     };
     q.addEventListener('change', () => {

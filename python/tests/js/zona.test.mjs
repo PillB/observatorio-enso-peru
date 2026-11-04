@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import { it } from 'node:test';
 
-import { currentAlerts, heat, placeLabels, placeName, seasonality, toCsv, touches } from '../../../public/assets/js/zona.js';
+import { currentAlerts, heat, placeLabels, placeName, seasonality, touches } from '../../../public/assets/js/zona.js';
 
 const names = {
   departamento: { 15: 'Lima', 20: 'Piura' },
@@ -45,17 +45,6 @@ it('colorea de 0 a 4 respecto del máximo de la fila', () => {
   assert.equal(heat(1, 5), 1);
   assert.equal(heat(5, 5), 4);
   assert.equal(heat(3, 0), 0);
-});
-
-it('el CSV lleva los códigos como texto y protege las celdas contra fórmulas', () => {
-  const out = toCsv([{ d: '2020-02-01', t: 'Huayco/Alud', u: '150110', e: '=SUMA(1)', f: 'Neutro', o: 'sinpad', c: 'alta', muertos: 0, afect: 12, viv: 0 }], names);
-  const [head, row] = out.replace(/^﻿/, '').trim().split('\n');
-  assert.ok(head.startsWith('Date,DangerType,Departamento'));
-  // las cifras agregadas no se hacen pasar por las columnas originales del equipo
-  assert.ok(head.endsWith('FallecidosYDesaparecidos,AfectadosYDamnificados,ViviendasDestruidas'));
-  assert.ok(!head.split(',').some((c) => ['Fallecidos', 'Afectados', 'ViviendasAfectadas'].includes(c)));
-  assert.ok(row.includes(",150110,'=SUMA(1),"));
-  assert.ok(row.includes('Comas'));
 });
 
 it('separa los avisos vigentes y los próximos con las reglas del mapa y deja fuera los vencidos y cancelados', () => {
