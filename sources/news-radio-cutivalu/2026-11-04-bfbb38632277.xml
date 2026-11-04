@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Tue, 03 Nov 2026 21:30:10 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>MUJERES DE AMUCAL FORTALECEN SU ORGANIZACIÓN Y LIDERAZGO PARA PROMOVER SUS DERECHOS EN EL ALTO PIURA</title>
+		<link>https://www.cutivalu.pe/mujeres-de-amucal-fortalecen-su-organizacion-y-liderazgo-para-promover-sus-derechos-en-el-alto-piura/</link>
+		
+		<dc:creator><![CDATA[Esthefany Azcarate]]></dc:creator>
+		<pubDate>Tue, 03 Nov 2026 17:54:55 +0000</pubDate>
+				<category><![CDATA[Alto Piura]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=194990</guid>
+
+					<description><![CDATA[<p>Las integrantes de la Asociación de Mujeres Unidas por el Cambio (AMUCAL) participaron en una asamblea de reencuentro y relanzamiento de su organización, un espacio para reconocer el camino recorrido, compartir experiencias y construir propuestas que fortalezcan el liderazgo y la participación de las mujeres en sus comunidades. La jornada, denominada “Juntas retomamos el camino”, [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/mujeres-de-amucal-fortalecen-su-organizacion-y-liderazgo-para-promover-sus-derechos-en-el-alto-piura/">MUJERES DE AMUCAL FORTALECEN SU ORGANIZACIÓN Y LIDERAZGO PARA PROMOVER SUS DERECHOS EN EL ALTO PIURA</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
