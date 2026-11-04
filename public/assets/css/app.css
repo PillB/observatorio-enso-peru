@@ -955,6 +955,24 @@ table.grd .chip { white-space: normal; }
 .hz-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
 .hz-table th, .hz-table td { padding: 6px 8px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
 .hz-table thead th { font-size: 0.78rem; color: var(--fg-2); }
+/* Tabla de registros de la Memoria (historico-tabla.js) */
+.hz-tbl-dl { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin: 10px 0 4px; }
+.hz-tbl-wrap { max-height: 70vh; overflow: auto; }
+.hz-tbl-wrap:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.hz-tbl { min-width: 1500px; }
+.hz-tbl thead th { position: sticky; top: 0; z-index: 1; background: var(--bg-sunk); white-space: nowrap; }
+.hz-tbl tbody th { font-weight: 600; }
+.hz-tbl td, .hz-tbl tbody th { overflow-wrap: break-word; min-width: 7.5em; }
+.hz-tbl td.num { min-width: 0; }
+.hz-t-d, .hz-t-mono { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.hz-t-place { min-width: 170px; }
+.hz-t-desc { min-width: 280px; max-width: 420px; }
+.hz-t-desc summary { cursor: pointer; }
+.hz-sort { font: inherit; font-weight: 700; color: inherit; background: none; border: 0; padding: 4px 2px; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; min-height: 32px; }
+.hz-sort:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.hz-sort-i { font-size: 0.7rem; opacity: 0.7; }
+.hz-tbl-foot { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 10px; }
+.hz-tbl tbody tr:focus { outline: 2px solid var(--focus); outline-offset: -2px; }
 .hz-th-g { font-size: 0.72rem; writing-mode: horizontal-tb; max-width: 6.5em; }
 .hz-td-g { text-align: center; }
 .hz-dot { color: var(--warm); font-size: 1rem; }

@@ -2271,8 +2271,8 @@
   {
    "title_es": "Lo que ve la gente",
    "title_en": "What people see",
-   "text_es": "El sitio muestra 10 vistas, un mapa de alertas con el nivel que dio cada institución y descargas abiertas, con el enlace a la fuente original y a la copia archivada junto a cada dato. Lo de hoy será el respaldo de mañana.",
-   "text_en": "The site shows 10 views, an alert map with the level each agency gave and open downloads, with links to the original source and the archived copy next to each value. Today's data will be tomorrow's backup.",
+   "text_es": "El sitio muestra 12 vistas, un mapa de alertas con el nivel que dio cada institución y descargas abiertas, con el enlace a la fuente original y a la copia archivada junto a cada dato. Lo de hoy será el respaldo de mañana.",
+   "text_en": "The site shows 12 views, an alert map with the level each agency gave and open downloads, with links to the original source and the archived copy next to each value. Today's data will be tomorrow's backup.",
    "nodes": [
     "s-sitio",
     "s-respaldo"

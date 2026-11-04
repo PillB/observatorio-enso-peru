@@ -435,7 +435,7 @@
   <circle class="ar-step" cx="30" cy="1809.4" r="10"/>
   <text class="ar-step-n" x="30" y="1813.6" font-size="11.5" text-anchor="middle">8</text>
   <text class="ar-t" x="50" y="1813.4" font-size="11.5">Lo que ve la gente</text>
-  <text class="ar-s" x="50" y="1828.4" font-size="11">El sitio muestra 10 vistas, un mapa de alertas con el nivel que dio cada institución y descargas</text>
+  <text class="ar-s" x="50" y="1828.4" font-size="11">El sitio muestra 12 vistas, un mapa de alertas con el nivel que dio cada institución y descargas</text>
   <text class="ar-s" x="50" y="1843.4" font-size="11">abiertas, con el enlace a la fuente original y a la copia archivada junto a cada dato. Lo de hoy</text>
   <text class="ar-s" x="50" y="1858.4" font-size="11">será el respaldo de mañana.</text>
   <circle class="ar-step" cx="30" cy="1881.4" r="10"/>

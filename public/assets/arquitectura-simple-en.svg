@@ -429,7 +429,7 @@
   <circle class="ar-step" cx="30" cy="1809.4" r="10"/>
   <text class="ar-step-n" x="30" y="1813.6" font-size="11.5" text-anchor="middle">8</text>
   <text class="ar-t" x="50" y="1813.4" font-size="11.5">What people see</text>
-  <text class="ar-s" x="50" y="1828.4" font-size="11">The site shows 10 views, an alert map with the level each agency gave and open downloads,</text>
+  <text class="ar-s" x="50" y="1828.4" font-size="11">The site shows 12 views, an alert map with the level each agency gave and open downloads,</text>
   <text class="ar-s" x="50" y="1843.4" font-size="11">with links to the original source and the archived copy next to each value. Today&#x27;s data will be</text>
   <text class="ar-s" x="50" y="1858.4" font-size="11">tomorrow&#x27;s backup.</text>
   <circle class="ar-step" cx="30" cy="1881.4" r="10"/>

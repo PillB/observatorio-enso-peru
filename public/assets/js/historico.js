@@ -12,6 +12,7 @@ import { ICON } from './icons.js';
 import * as M from './historico-model.js';
 import * as EV from './historico-evidencia.js';
 import * as DT from './historico-detalle.js';
+import * as TB from './historico-tabla.js';
 import { ab, abReady } from './ab.js';
 
 const BASE = 'assets/historico/';
@@ -57,6 +58,13 @@ function prevention() {
 async function detail(dep) {
   if (!DETAIL.has(dep)) DETAIL.set(dep, getJSON(`${BASE}detalle/${dep}.json`).catch(() => ({})));
   return DETAIL.get(dep);
+}
+
+/** Latitud y Longitud de cada registro como en eventos.csv (coordenadas.json); se pide al acercarse a la tabla. */
+let COORDS = null;
+function coords() {
+  if (!COORDS) COORDS = getJSON(`${BASE}coordenadas.json`).catch((e) => { console.error(e); COORDS = null; return null; });
+  return COORDS;
 }
 
 /** Unidades hidrográficas de la ANA con su trazo y la cuenca de cada distrito (python -m tools.build_cuencas_mapa). */
@@ -437,6 +445,7 @@ async function mount(root, D) {
     if (s.area && $('#hz-list', root)) { fillDetail(root, D, s); fillContext(root, D, s); fillPrevArea(root, D, s); }
     if (s.vista === 'resumen') fillLayers(root, D, s);
     fillPrevention(root, D);
+    fillTable(root, D, s);
     session.mark('view');
   };
   const toMap = () => $('#hz-map-h', root)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
@@ -568,7 +577,8 @@ function page(D, s) {
     <section class="card hz-card" id="hz-prev" aria-labelledby="hz-prev-h"><div class="section-head"><h2 id="hz-prev-h">¿Se sabía antes? Peligros documentados antes de cada emergencia</h2></div><p class="muted">Cargando declaratorias, evaluaciones e inventarios…</p></section>
     ${pastSection(D)}
     ${evidenceSection(D)}
-    ${methodSection(D)}`;
+    ${methodSection(D)}
+    ${tableSection(D, s)}`;
 }
 
 /** Departamentos donde, en 1970-2015, las temporadas con Niño costero tuvieron claramente más lugares con daños. */
@@ -1132,6 +1142,145 @@ function methodSection(D) {
       </div>
     </div>
   </section>`;
+}
+
+// ---------------------------------------------------------------------------
+// Tabla de registros y descargas (historico-tabla.js)
+// ---------------------------------------------------------------------------
+/** Los filtros que sigue la tabla, en palabras. */
+function filterWords(D, s) {
+  const ev = { grandes: 'solo los grandes Niños', nino: 'cualquier Niño costero', nina: 'La Niña costera', neutro: 'años neutros' }[s.evento] || s.evento;
+  const hz = s.peligro ? (HAZARD_GROUPS[s.peligro]?.[0] || dl(s.peligro)) : '';
+  const parts = [s.area && areaName(D, s.area), hz, ev, (s.desde || s.hasta) && `temporadas ${s.desde || 'desde el inicio'} a ${s.hasta || 'hoy'}`].filter(Boolean);
+  return parts.length ? parts.join(' · ') : 'sin filtros: todo el catálogo';
+}
+
+const tableRows = (D, s) => TB.inArea(M.filter(D.recs, currentFilter(D, s)), s.area);
+
+function tableSection(D, s) {
+  const n = tableRows(D, s).length;
+  const all = n === D.recs.length;
+  return html`<section class="card hz-card" id="hz-tbl" aria-labelledby="hz-tbl-h">
+    <div class="section-head"><h2 id="hz-tbl-h">Registros del catálogo</h2><span class="muted small">${n0(n)} de ${n0(D.recs.length)} registros · ${filterWords(D, s)}</span></div>
+    <p class="muted small">Los registros que suman el mapa, con sus filtros: evento, peligro, temporadas y el área elegida. Primero los más recientes; toque un encabezado para ordenar.</p>
+    <div class="hz-tbl-dl">
+      ${n && !all ? html`<button type="button" class="btn" data-tbl-dl>${raw(ICON.download || '')}<span>Descargar los ${n0(n)} registros del filtro (CSV)</span></button>` : ''}
+      <a class="btn ghost" href="${BASE}eventos.zip" download>${all ? 'Descargar todo el catálogo' : 'Catálogo completo'} (ZIP, ${n0(D.sum.registros)} registros)</a>
+      <a href="${BASE}diccionario.csv">Diccionario de datos</a>
+    </div>
+    <details class="more"><summary>Qué trae la tabla y cada descarga</summary><ul class="hz-method">
+      <li>La tabla sigue los filtros de arriba; las casillas y las fichas de las vistas de detalle no la filtran. Fecha: solo lo que se sabe (año, mes o día). Daños: fallecidos y desaparecidos, afectados y damnificados (o desplazados) y viviendas destruidas que reporta la fuente; vacío es «no reportado». Latitud y longitud: ver PrecisionGeo en el diccionario (la mayoría es la capital del distrito).</li>
+      <li>El CSV del filtro trae las 13 columnas del tablero del equipo de prevención (Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud) y ${TB.EXTRA.length} de la Memoria (Id, Origen, precisión de fecha y lugar, fase ENSO, cifras de impacto por tipo, cita de la fuente, confianza y corroboración), con los mismos valores que el catálogo completo y en el orden de la tabla. Se arma en su navegador con las fichas de los departamentos del filtro (de 50 a 800 KB cada una).</li>
+      <li>El ZIP es el catálogo entero con todas sus columnas. En los dos, lea Ubigeo como texto (lleva ceros a la izquierda).</li></ul></details>
+    <p class="small" id="hz-tbl-st" role="status" aria-live="polite"></p>
+    <div id="hz-tbl-body">${n ? '' : html`<p class="muted">Ningún registro con estos filtros. Pruebe con otro peligro, otras temporadas o «Quitar filtros».</p>`}</div>
+  </section>`;
+}
+
+/** Estado de la tabla entre redibujos: orden, filas visibles y si la persona pidió las fichas de muchos departamentos. */
+const TBL = { key: 'd', dir: -1, shown: TB.PAGE, sig: '', sorted: null, full: false };
+/** Las fichas ya resueltas, por departamento (null si no llegó). */
+const FICHAS = new Map();
+
+function fillTable(root, D, s) {
+  const sec = $('#hz-tbl', root), body = $('#hz-tbl-body', root), status = $('#hz-tbl-st', root);
+  if (!sec || !body) return;
+  const sig = [s.evento, s.peligro, s.desde, s.hasta, s.area].join('|');
+  if (sig !== TBL.sig) Object.assign(TBL, { sig, shown: TB.PAGE, sorted: null });
+  const placeName = (u) => areaName(D, u);
+  const rows = () => (TBL.sorted ||= TB.sortRows(tableRows(D, s), TBL.key, TBL.dir, placeName));
+  if (!rows().length) return;
+  let C = null, near = false;
+  const visibleDeps = () => TB.depsOf(rows().slice(0, TBL.shown));
+  const wantDetail = () => TBL.full || visibleDeps().length <= TB.AUTO_DEPS;
+  const caption = `Registros del catálogo (${filterWords(D, s)}), ordenados por ${TB.SORTS[TBL.key][0].toLowerCase()}`;
+  const paint = (focusSel) => {
+    // Si el foco estaba en la tabla (una fila, un orden, un botón), vuelve al mismo lugar después de redibujar: las
+    // fichas llegan después y redibujan sin que la persona haga nada.
+    const act = document.activeElement;
+    if (focusSel === undefined && act && body.contains(act)) {
+      const rowAt = $$('tbody tr', body).indexOf(act);
+      focusSel = rowAt >= 0 ? rowAt : act.dataset.sort ? `[data-sort="${act.dataset.sort}"]` : act.matches('[data-tbl-more]') ? '[data-tbl-more]' : '.hz-tbl-wrap';
+    }
+    const deps = visibleDeps();
+    const lacking = deps.filter((d) => !FICHAS.has(d));
+    body.innerHTML = String(html`${TB.tableHtml(rows(), TBL, { caption, placeName, label: dl, sourceName: (o) => SOURCE_LINK[o] || o, fichas: FICHAS, C, wantDetail: wantDetail() })}
+      ${!wantDetail() && lacking.length ? html`<p class="small hz-tbl-load"><button type="button" class="btn ghost" data-tbl-detail>Cargar descripción, ubicación, duración y fuente</button> <span class="muted">Las filas visibles son de ${lacking.length} departamentos: se piden sus fichas (de 50 a 800 KB cada una).</span></p>` : ''}`);
+    if (typeof focusSel === 'number') {
+      const row = $$('tbody tr', body)[focusSel];
+      if (row) { row.tabIndex = -1; row.focus({ preventScroll: false }); }
+    } else if (focusSel) ($(focusSel, body) || $('.hz-tbl-wrap', body))?.focus({ preventScroll: true });
+  };
+  const load = async () => {
+    if (!near) return;
+    if (!C) { C = await coords(); if (!sec.isConnected) return; paint(); }
+    if (!wantDetail()) return;
+    const lacking = visibleDeps().filter((d) => !FICHAS.has(d));
+    if (!lacking.length) return;
+    await Promise.all(lacking.map((d) => detail(d).then((det) => FICHAS.set(d, Object.keys(det).length ? det : null))));
+    if (sec.isConnected) paint();
+  };
+  paint();
+  // Las coordenadas y las fichas se piden solo cuando la tabla está por verse.
+  const io = new IntersectionObserver((es) => { if (!sec.isConnected) { io.disconnect(); return; } if (es.some((e) => e.isIntersecting)) { io.disconnect(); near = true; load(); } }, { rootMargin: '600px 0px' });
+  io.observe(sec);
+
+  sec.addEventListener('click', async (e) => {
+    const sort = e.target.closest('[data-sort]');
+    if (sort) {
+      const key = sort.dataset.sort;
+      Object.assign(TBL, key === TBL.key ? { dir: -TBL.dir } : { key, dir: TB.SORTS[key][1] }, { sorted: null });
+      paint(`[data-sort="${key}"]`);
+      status.textContent = `Ordenado por ${TB.SORTS[key][0].toLowerCase()}, ${TBL.dir < 0 ? (key === 'd' ? 'de la más reciente' : 'de mayor a menor') : (key === 'd' ? 'de la más antigua' : key === 't' || key === 'u' ? 'de la A a la Z' : 'de menor a mayor')}.`;
+      load();
+      return;
+    }
+    const more = e.target.closest('[data-tbl-more]');
+    if (more) {
+      const before = TBL.shown;
+      TBL.shown += +more.dataset.tblMore;
+      // El foco va a la primera fila nueva, para seguir leyendo desde ahí.
+      paint(before);
+      status.textContent = `Mostrando ${n0(Math.min(TBL.shown, rows().length))} de ${n0(rows().length)} registros.`;
+      load();
+      return;
+    }
+    if (e.target.closest('[data-tbl-detail]')) { TBL.full = true; near = true; paint(); load(); return; }
+    const btn = e.target.closest('[data-tbl-dl]');
+    if (btn && !btn.disabled) {
+      btn.disabled = true;
+      const list = rows();
+      const deps = TB.depsOf(list);
+      // Pocas fichas quedan guardadas para la tabla; muchas se leen y se sueltan (no dejan 80 MB en memoria).
+      const keep = deps.length <= TB.AUTO_DEPS;
+      const loadDep = (dep) => (keep || FICHAS.has(dep) || DETAIL.has(dep) ? detail(dep) : getJSON(`${BASE}detalle/${dep}.json`).catch(() => null));
+      status.textContent = 'Preparando el archivo…';
+      try {
+        const coordsDoc = await coords();
+        const out = await TB.buildCsv(list, {
+          C: coordsDoc, sum: D.sum, load: loadDep, alive: () => sec.isConnected,
+          progress: (a, b) => { status.textContent = `Preparando el archivo: ${a} de ${b} departamentos…`; },
+        });
+        if (!out) return;
+        const name = TB.fileName(s, placeName, D.generatedAt);
+        const blob = new Blob(out.parts, { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        document.body.append(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 30000);
+        const warn = [out.missing.length ? `faltaron las fichas de ${out.missing.map((d) => D.sum.nombres.departamento[d] || d).join(', ')} (sus filas van sin descripción, ubicación ni fuente; vuelva a intentarlo o use el ZIP)` : '', coordsDoc ? '' : 'no llegaron las coordenadas (Latitud y Longitud van vacías)'].filter(Boolean);
+        status.textContent = `Listo: ${name} (${n0(list.length)} registros, ${blob.size < 1e6 ? `${F.fmtNumber(Math.max(1, blob.size / 1e3), 0)} KB` : `${F.fmtNumber(blob.size / 1e6, 1)} MB`}).${warn.length ? ` Atención: ${warn.join('; ')}.` : ''}`;
+      } catch (err) {
+        console.error(err);
+        status.textContent = 'No se pudo armar el archivo. Vuelva a intentarlo o descargue el catálogo completo (ZIP).';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  });
 }
 
 // ---------------------------------------------------------------------------
