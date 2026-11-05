@@ -392,7 +392,15 @@ export const memoriaView = {
   render() {
     return html`
       <div class="page-head"><div class="eyebrow">Memoria de desastres · 1559–2026</div><h1>Dónde golpearon antes El Niño, las lluvias y los huaycos</h1>
-        <p>Catálogo de inundaciones, desbordes, huaycos, deslizamientos, lluvias intensas, oleajes, sequías, heladas y otros desastres de origen climático en el Perú, ubicados por distrito y con su fuente. Sirve para prepararse con evidencia: con qué frecuencia golpearon antes, cuánto aumentan con El Niño costero y qué tan bien esa historia anticipó los daños de 2016 a 2025, que se muestra abajo.</p></div>
+        <p>Catálogo de inundaciones, desbordes, huaycos, deslizamientos, lluvias intensas, oleajes, sequías, heladas y otros desastres de origen climático en el Perú, ubicados por distrito y con su fuente. Sirve para prepararse con evidencia: con qué frecuencia golpearon antes, cuánto aumentan con El Niño costero y qué tan bien esa historia anticipó los daños de 2016 a 2025, que se muestra abajo.</p>
+        <div class="hz-get" id="hz-get"><h2 class="hz-get-h" id="hz-get-h">${raw(ICON.download)}<span>Descargar los datos</span></h2>
+          <p>Todo en el esquema del tablero del equipo de prevención: primero las 13 columnas Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud y Longitud; después los metadatos (origen, precisión, fase ENSO, cifras de impacto, confianza). Lea Ubigeo como texto.</p>
+          <ul>
+            <li><strong>Completo</strong>: <a href="${BASE}eventos.zip" download>el catálogo entero (CSV en un ZIP)</a>, con todas sus columnas<span id="hz-get-date"></span>.</li>
+            <li><strong>Filtrado</strong>: elija evento, peligro, temporadas o un lugar en el mapa y use «Descargar los registros del filtro» en la <button type="button" class="linkish" data-go-table>tabla de registros, al final de la página</button>. Trae las mismas columnas y los mismos valores que el completo.</li>
+            <li><strong>Lo más nuevo</strong>: el catálogo se actualiza con cada cosecha de las fuentes; los eventos que salen en las noticias, cada día, están en <a href="data/news/eventos-noticias.csv" download>las noticias en el mismo esquema (CSV)</a>, una fila por nota y lugar.</li>
+          </ul>
+          <p class="muted small">Qué dice cada columna: <a href="${BASE}diccionario.csv">diccionario de datos (CSV)</a>.</p></div></div>
       <div id="hz-root" data-tour-id="memoria"><div class="skeleton" aria-hidden="true"></div><p class="muted">Cargando el catálogo histórico…</p></div>`;
   },
   async after() {
@@ -403,6 +411,15 @@ export const memoriaView = {
       root.innerHTML = String(html`<div class="notice notice-warn">${raw(ICON.triangle)}<p>No se pudo cargar el catálogo histórico. Puede descargarlo directamente: <a href="${BASE}eventos.zip" download>CSV (en un ZIP)</a>.</p></div>`);
       return;
     }
+    const date = $('#hz-get-date');
+    if (date && D.sum.generatedAt) date.textContent = `, al ${F.fmtDate(D.sum.generatedAt.slice(0, 10))}`;
+    $('[data-go-table]')?.addEventListener('click', () => {
+      const h = $('#hz-tbl-h');
+      if (!h) return;
+      h.tabIndex = -1;
+      h.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      h.focus({ preventScroll: true });
+    });
     mount(root, D);
   },
 };
@@ -1249,38 +1266,46 @@ function fillTable(root, D, s) {
     const btn = e.target.closest('[data-tbl-dl]');
     if (btn && !btn.disabled) {
       btn.disabled = true;
-      const list = rows();
-      const deps = TB.depsOf(list);
-      // Pocas fichas quedan guardadas para la tabla; muchas se leen y se sueltan (no dejan 80 MB en memoria).
-      const keep = deps.length <= TB.AUTO_DEPS;
-      const loadDep = (dep) => (keep || FICHAS.has(dep) || DETAIL.has(dep) ? detail(dep) : getJSON(`${BASE}detalle/${dep}.json`).catch(() => null));
-      status.textContent = 'Preparando el archivo…';
       try {
-        const coordsDoc = await coords();
-        const out = await TB.buildCsv(list, {
-          C: coordsDoc, sum: D.sum, load: loadDep, alive: () => sec.isConnected,
-          progress: (a, b) => { status.textContent = `Preparando el archivo: ${a} de ${b} departamentos…`; },
-        });
-        if (!out) return;
-        const name = TB.fileName(s, placeName, D.generatedAt);
-        const blob = new Blob(out.parts, { type: 'text/csv;charset=utf-8' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = name;
-        document.body.append(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(a.href), 30000);
-        const warn = [out.missing.length ? `faltaron las fichas de ${out.missing.map((d) => D.sum.nombres.departamento[d] || d).join(', ')} (sus filas van sin descripción, ubicación ni fuente; vuelva a intentarlo o use el ZIP)` : '', coordsDoc ? '' : 'no llegaron las coordenadas (Latitud y Longitud van vacías)'].filter(Boolean);
-        status.textContent = `Listo: ${name} (${n0(list.length)} registros, ${blob.size < 1e6 ? `${F.fmtNumber(Math.max(1, blob.size / 1e3), 0)} KB` : `${F.fmtNumber(blob.size / 1e6, 1)} MB`}).${warn.length ? ` Atención: ${warn.join('; ')}.` : ''}`;
-      } catch (err) {
-        console.error(err);
-        status.textContent = 'No se pudo armar el archivo. Vuelva a intentarlo o descargue el catálogo completo (ZIP).';
+        await downloadTeamCsv(D, rows(), TB.fileName(s, placeName, D.generatedAt), status, () => sec.isConnected);
       } finally {
         btn.disabled = false;
       }
     }
   });
+}
+
+/** Descarga unos registros con las 13 columnas del equipo de prevención y las de la Memoria (historico-tabla.js), con
+ * los mismos valores que eventos.csv. La usan la tabla de la Memoria y Mi zona. status: un elemento role=status donde
+ * se cuenta el avance y el resultado; alive: si la página sigue abierta. */
+export async function downloadTeamCsv(D, list, name, status, alive = () => true) {
+  const deps = TB.depsOf(list);
+  // Pocas fichas quedan guardadas para la tabla; muchas se leen y se sueltan (no dejan 80 MB en memoria).
+  const keep = deps.length <= TB.AUTO_DEPS;
+  const loadDep = (dep) => (keep || DETAIL.has(dep) ? detail(dep) : getJSON(`${BASE}detalle/${dep}.json`).catch(() => null));
+  const say = (t) => { if (status) status.textContent = t; };
+  say('Preparando el archivo…');
+  try {
+    const coordsDoc = await coords();
+    const out = await TB.buildCsv(list, {
+      C: coordsDoc, sum: D.sum, load: loadDep, alive,
+      progress: (a, b) => say(`Preparando el archivo: ${a} de ${b} departamentos…`),
+    });
+    if (!out) return;
+    const blob = new Blob(out.parts, { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 30000);
+    const warn = [out.missing.length ? `faltaron las fichas de ${out.missing.map((d) => D.sum.nombres.departamento[d] || d).join(', ')} (sus filas van sin descripción, ubicación ni fuente; vuelva a intentarlo o use el ZIP)` : '', coordsDoc ? '' : 'no llegaron las coordenadas (Latitud y Longitud van vacías)'].filter(Boolean);
+    say(`Listo: ${name} (${n0(list.length)} registros, ${blob.size < 1e6 ? `${F.fmtNumber(Math.max(1, blob.size / 1e3), 0)} KB` : `${F.fmtNumber(blob.size / 1e6, 1)} MB`}).${warn.length ? ` Atención: ${warn.join('; ')}.` : ''}`);
+  } catch (err) {
+    console.error(err);
+    say('No se pudo armar el archivo. Vuelva a intentarlo o descargue el catálogo completo (ZIP).');
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -604,6 +604,11 @@ año, los llamamientos de la Cruz Roja y estos avisos; la ficha de cada área, s
 
 ## La pestaña
 
+- **Descargar los datos**, en la cabecera: las tres formas de bajar los datos en el esquema del tablero del equipo de
+  prevención (las 13 columnas primero, luego los metadatos): el catálogo completo (`eventos.zip`, con su fecha), el
+  filtro del mapa (la [tabla de registros](#tabla-de-registros-y-descargas), al final) y lo más nuevo
+  (`data/news/eventos-noticias.csv`, las noticias de cada día en el mismo esquema). Noticias y Mi zona dicen lo mismo:
+  Mi zona descarga los registros del lugar con el mismo archivo que la tabla.
 - **Aviso del Niño en curso**, con el último ICEN (y si es preliminar), y la **alerta según la historia**: los
   departamentos donde las temporadas con Niño costero tuvieron claramente más lugares con daños (intervalo de la
   razón sobre 1).

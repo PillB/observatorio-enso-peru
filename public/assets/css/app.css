@@ -145,6 +145,8 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 20px 20px 48px; min-heig
 @media (max-width: 560px) { main { padding: 14px 14px 40px; } .banner { padding: 0 14px; } }
 .page-head { margin: 8px 0 20px; }
 .page-head p { color: var(--fg-2); max-width: 70ch; margin: 0; }
+.page-head p + p { margin-top: 8px; }
+.page-head p > svg { vertical-align: -4px; }
 .eyebrow { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); font-weight: 700; margin-bottom: 6px; }
 section + section { margin-top: 28px; }
 .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -955,6 +957,13 @@ table.grd .chip { white-space: normal; }
 .hz-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
 .hz-table th, .hz-table td { padding: 6px 8px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
 .hz-table thead th { font-size: 0.78rem; color: var(--fg-2); }
+/* «Descargar los datos» en la cabecera de la Memoria */
+.hz-get { margin-top: 14px; max-width: 78ch; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-s); background: var(--bg-elev); }
+.hz-get-h { display: flex; align-items: center; gap: 8px; font-size: 1rem; margin: 0 0 6px; }
+.hz-get-h svg { width: 18px; height: 18px; flex: none; }
+.hz-get ul { margin: 6px 0; padding-left: 20px; color: var(--fg-2); }
+.hz-get li + li { margin-top: 4px; }
+.hz-get .linkish { padding: 0; }
 /* Tabla de registros de la Memoria (historico-tabla.js) */
 .hz-tbl-dl { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin: 10px 0 4px; }
 .hz-tbl-wrap { max-height: 70vh; overflow: auto; }
