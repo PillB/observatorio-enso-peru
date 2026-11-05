@@ -1,8 +1,8 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-03T02:40:38+00:00",
+ "at": "2026-11-05T02:05:05+00:00",
  "result": "ok",
- "reachable": "41/49",
+ "reachable": "42/49",
  "summary": {
   "enfen": "4/4",
   "igp": "1/1",
@@ -10,7 +10,7 @@
   "ana": "3/3",
   "imarpe": "5/5",
   "cenepred": "0/1",
-  "archive": "0/1",
+  "archive": "1/1",
   "bnp": "1/1",
   "contraloria": "1/1",
   "midagri": "1/1",
@@ -23,11 +23,6 @@
    "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
    "class": "timeout",
    "error": "ConnectTimeout: timed out"
-  },
-  {
-   "url": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
-   "status": 503,
-   "class": "http-5xx"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
@@ -73,7 +68,7 @@
   "os": "macOS-26.6.2",
   "python": "3.12.15",
   "git": "2.50.1 (Apple Git-155)",
-  "consecutive_failures": 0,
+  "consecutive_failures": 1,
   "token_expires_at": "2027-05-10T05:00:00+00:00"
  },
  "registry": {
@@ -86,6 +81,5 @@
   "dns": 5,
   "http-403": 2,
   "ok": 1
- },
- "carried": 2
+ }
 }
