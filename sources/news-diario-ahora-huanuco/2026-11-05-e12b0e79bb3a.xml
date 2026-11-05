@@ -1,0 +1,802 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Thu, 05 Nov 2026 12:50:50 GMT</lastBuildDate>
+    <pubDate>Wed, 04 Nov 2026 22:50:06 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Suprema confirma condena a exmilitares por violencia sexual en Manta y Vilca</title>
+    <link>https://ahora.com.pe/policiales/suprema-confirma-condena-exmilitares-manta-vilca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/suprema-confirma-condena-exmilitares-manta-vilca</guid>
+    <pubDate>Wed, 04 Nov 2026 22:50:06 GMT</pubDate>
+    <description><![CDATA[La Corte Suprema confirmó la condena contra cinco exmilitares por violencia sexual contra mujeres campesinas en Manta y Vilca (Huancavelica) durante el conflicto armado. El tribunal declaró que los hechos son crímenes de lesa humanidad imprescriptibles e inaplicó las leyes 32107 y 32419 por incompatibilidad con la Convención Americana.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Corte Suprema]]></category>
+    <category><![CDATA[violencia sexual]]></category>
+    <category><![CDATA[Manta y Vilca]]></category>
+    <category><![CDATA[lesa humanidad]]></category>
+    <category><![CDATA[exmilitares]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a83c69d0a424.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a83c69d0a424.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a83c69d0a424.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Domingo Dianderas vs Bella Esperanza: hora y sede de la ida por octavos de la Copa Perú</title>
+    <link>https://ahora.com.pe/deportes/domingo-dianderas-bella-esperanza-octavos-copa-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/domingo-dianderas-bella-esperanza-octavos-copa-peru</guid>
+    <pubDate>Thu, 05 Nov 2026 11:50:07 GMT</pubDate>
+    <description><![CDATA[Domingo Dianderas y Bella Esperanza juegan la ida de octavos de la Copa Perú este domingo en el Estadio Félix Castillo Tardío de Chincha.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Copa Perú]]></category>
+    <category><![CDATA[Domingo Dianderas]]></category>
+    <category><![CDATA[Bella Esperanza]]></category>
+    <category><![CDATA[octavos de final]]></category>
+    <category><![CDATA[Chincha]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8688ad46d248.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8688ad46d248.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8688ad46d248.jpg"/>
+    <media:description type="plain"><![CDATA[Copa Uruguay (Perú) trophy — Foto: Ericbaudouin (wikimedia-cc0)]]></media:description>
+  </item>
+  <item>
+    <title>Lluvias inundan más de 70 viviendas en Villa El Salvador por colapso del desagüe</title>
+    <link>https://ahora.com.pe/nacional/villa-el-salvador-lluvias-inundan-70-viviendas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/villa-el-salvador-lluvias-inundan-70-viviendas</guid>
+    <pubDate>Thu, 05 Nov 2026 11:40:09 GMT</pubDate>
+    <description><![CDATA[Las intensas lluvias colapsaron el alcantarillado en el sector uno, grupo uno, de Villa El Salvador, afectando a más de 70 viviendas. Los residentes exigen a la Municipalidad una solución definitiva a un problema que arrastran desde hace diez años y piden retomar la obra de un colector paralizada por falta de pago.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Villa El Salvador]]></category>
+    <category><![CDATA[inundaciones]]></category>
+    <category><![CDATA[lluvias]]></category>
+    <category><![CDATA[colapso del desagüe]]></category>
+    <category><![CDATA[colector]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/31a24463e4e8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/31a24463e4e8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/31a24463e4e8.jpg"/>
+    <media:description type="plain"><![CDATA[La persistente llovizna registrada en la capital provocó inundaciones en vías de Villa María del Triunfo y el rebalse de aguas servidas en viviendas de Villa El Salvador. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Casavalle, el barrio vulnerable de Montevideo que espera al papa León XIV</title>
+    <link>https://ahora.com.pe/mundo/casavalle-espera-papa-leon-xiv</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/casavalle-espera-papa-leon-xiv</guid>
+    <pubDate>Thu, 05 Nov 2026 11:30:16 GMT</pubDate>
+    <description><![CDATA[El papa León XIV visitará este fin de semana el barrio Casavalle, en la periferia de Montevideo, donde el sacerdote Pablo Coimbra impulsa un proyecto de viviendas que el pontífice bendecirá. El asentamiento es uno de los más vulnerables de la capital uruguaya.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Casavalle]]></category>
+    <category><![CDATA[papa León XIV]]></category>
+    <category><![CDATA[Montevideo]]></category>
+    <category><![CDATA[Pablo Coimbra]]></category>
+    <category><![CDATA[Uruguay]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/853885dab91e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/853885dab91e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/853885dab91e.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Madre de Dios: destruyen logística de minería ilegal valorizada en más de S/ 8 millones</title>
+    <link>https://ahora.com.pe/policiales/madre-de-dios-destruyen-logistica-mineria-ilegal-8-millones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/madre-de-dios-destruyen-logistica-mineria-ilegal-8-millones</guid>
+    <pubDate>Thu, 05 Nov 2026 11:20:10 GMT</pubDate>
+    <description><![CDATA[Las Fuerzas Armadas y la Policía destruyeron bienes y logística de la minería ilegal valorizados en S/ 8 246 650 en el distrito de Inambari, provincia de Tambopata, Madre de Dios. El operativo incluyó 13 balsas traca, 17 motores sumergidores y 16 campamentos rústicos.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Madre de Dios]]></category>
+    <category><![CDATA[Inambari]]></category>
+    <category><![CDATA[Comando Unificado]]></category>
+    <category><![CDATA[interdicción]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7fed10b08989.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7fed10b08989.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7fed10b08989.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>BCR evalúa exigir más ciberseguridad a bancos que se conecten a sistemas de pago</title>
+    <link>https://ahora.com.pe/economia/bcr-ciberseguridad-bancos-sistemas-pago-felaban</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/bcr-ciberseguridad-bancos-sistemas-pago-felaban</guid>
+    <pubDate>Thu, 05 Nov 2026 11:20:09 GMT</pubDate>
+    <description><![CDATA[El BCR evalúa requisitos adicionales de ciberseguridad para entidades financieras que se conecten a los sistemas de pago, según Julio Velarde en la Asamblea de Felaban 2026. La SBS sostuvo que el Perú está listo para bancos 100% digitales.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[BCR]]></category>
+    <category><![CDATA[ciberseguridad]]></category>
+    <category><![CDATA[Felaban 2026]]></category>
+    <category><![CDATA[Julio Velarde]]></category>
+    <category><![CDATA[SBS]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fd608df54b78.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fd608df54b78.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fd608df54b78.jpg"/>
+    <media:description type="plain"><![CDATA[El presidente del Banco Central de Reserva (BCR), Julio Velarde, advirtió que el avance de los servicios financieros digitales estará acompañado de mayores riesgos de ciberseguridad que podrían afectar la competencia entre las entidades del sistema financiero. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Simulacro de sismo y tsunami activó alerta Sismate en el litoral peruano</title>
+    <link>https://ahora.com.pe/nacional/simulacro-sismo-tsunami-sismate-litoral-peruano</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/simulacro-sismo-tsunami-sismate-litoral-peruano</guid>
+    <pubDate>Thu, 05 Nov 2026 10:50:05 GMT</pubDate>
+    <description><![CDATA[El Simulacro por Sismo seguido de Tsunami &apos;Elige Prepararte&apos; se ejecutó el miércoles 4 de noviembre en distritos costeros del Perú. A las 10:05 a. m., el Sismate emitió una alerta sonora de tsunami en celulares. El ejercicio buscó fortalecer la preparación ante desastres.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[simulacro de tsunami]]></category>
+    <category><![CDATA[Sismate]]></category>
+    <category><![CDATA[Indeci]]></category>
+    <category><![CDATA[alerta temprana]]></category>
+    <category><![CDATA[tsunami Perú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ca8312753634.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ca8312753634.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ca8312753634.jpg"/>
+    <media:description type="plain"><![CDATA[CULMINÓ SEGUNDO DÍA DE SIMULACRO DE SISMO Y TSUNAMI EN AREQUIPA CON EJERCICIOS EN VITOR Y MATARANI — Foto: Galería de fotografías del Ministerio de Defensa (openverse-by)]]></media:description>
+  </item>
+  <item>
+    <title>Lapadula recibe patada en el rostro en Universitario vs Sport Boys por el Clausura</title>
+    <link>https://ahora.com.pe/deportes/lapadula-patada-rostro-universitario-sport-boys</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/lapadula-patada-rostro-universitario-sport-boys</guid>
+    <pubDate>Thu, 05 Nov 2026 10:20:06 GMT</pubDate>
+    <description><![CDATA[Gianluca Lapadula recibió una patada en el rostro de Hansell Riojas en el partido Universitario vs Sport Boys por la fecha 15 del Torneo Clausura 2026; el árbitro no amonestó al defensor.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Gianluca Lapadula]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Sport Boys]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Hansell Riojas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/44997d71786c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/44997d71786c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/44997d71786c.jpg"/>
+    <media:description type="plain"><![CDATA[Gianluca Lapadula arrancó las acciones en el choque entre Universitario de Deportes y Sport Boys en el Torneo Clausura 2026. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Valverde sella la remontada del Real Madrid en Atenas y Rodri estará un mes de baja</title>
+    <link>https://ahora.com.pe/deportes/valverde-remontada-real-madrid-rodri-lesion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/valverde-remontada-real-madrid-rodri-lesion</guid>
+    <pubDate>Thu, 05 Nov 2026 09:50:07 GMT</pubDate>
+    <description><![CDATA[El Real Madrid remontó 3-2 al AEK Atenas en la Champions League con gol de Fede Valverde en el minuto 92, en una jornada marcada por la lesión de Rodri, baja un mes.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <category><![CDATA[Fede Valverde]]></category>
+    <category><![CDATA[Rodri]]></category>
+    <category><![CDATA[AEK Atenas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/dd74b391c85a.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/dd74b391c85a.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/dd74b391c85a.webp"/>
+    <media:description type="plain"><![CDATA[Como cada mañana, los medios deportivos, tanto nacionales como internacionales, llegan a los quioscos cargados de exclusivas: fichajes, renovaciones... A continuación, te dejamos las portadas de hoy, <b>jueves 5 de noviembre de 2026. </b>Desliza hacia la derecha para no perderte ninguna. — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Torneo Copera inicia con dificultades</title>
+    <link>https://ahora.com.pe/deportes/torneo-copera-inicia-con-dificultades</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/torneo-copera-inicia-con-dificultades</guid>
+    <pubDate>Thu, 05 Nov 2026 09:02:20 GMT</pubDate>
+    <description><![CDATA[La segunda fecha del Torneo Tradición Copera se disputará este domingo 8 de noviembre en medio de una serie de inconvenientes administrativos y organizativos que han marcado el inicio de la]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Torneo Copera]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/948e67916eb6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/948e67916eb6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/948e67916eb6.jpg"/>
+    <media:description type="plain"><![CDATA[Torneo Copera inicia con dificultades — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Barcos revela detalles de incidente con Guede</title>
+    <link>https://ahora.com.pe/deportes/barcos-revela-detalles-de-incidente-con-guede</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/barcos-revela-detalles-de-incidente-con-guede</guid>
+    <pubDate>Thu, 05 Nov 2026 09:02:17 GMT</pubDate>
+    <description><![CDATA[Hernán Barcos ofreció su versión sobre el altercado verbal que protagonizó con Pablo Guede durante el reciente enfrentamiento entre Sporting Cristal y Alianza Lima.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barcos]]></category>
+    <category><![CDATA[Guede]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3fa4b52d0a46.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3fa4b52d0a46.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3fa4b52d0a46.jpg"/>
+    <media:description type="plain"><![CDATA[Barcos revela detalles de incidente con Guede — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Perú anunciará convocados para enfrentar a Bolivia</title>
+    <link>https://ahora.com.pe/deportes/peru-anunciara-convocados-para-enfrentar-a-bolivia</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-anunciara-convocados-para-enfrentar-a-bolivia</guid>
+    <pubDate>Thu, 05 Nov 2026 09:02:13 GMT</pubDate>
+    <description><![CDATA[La selección peruana anunciará este jueves 5 de noviembre, desde el mediodía, la lista de convocados para el amistoso frente a Bolivia, programado para el viernes 13.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Perú]]></category>
+    <category><![CDATA[Bolivia]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/5658395df8d0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/5658395df8d0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/5658395df8d0.jpg"/>
+    <media:description type="plain"><![CDATA[Perú anunciará convocados para enfrentar a Bolivia — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Tres equipos igualados lideran pelea del Clausura</title>
+    <link>https://ahora.com.pe/deportes/tres-equipos-igualados-lideran-pelea-del-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/tres-equipos-igualados-lideran-pelea-del-clausura</guid>
+    <pubDate>Thu, 05 Nov 2026 09:02:09 GMT</pubDate>
+    <description><![CDATA[El empate 2-2 entre Universitario y Sport Boys modificó la parte alta de la clasificación del Torneo Clausura 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Clausura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2ac245bd777a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2ac245bd777a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2ac245bd777a.jpg"/>
+    <media:description type="plain"><![CDATA[Tres equipos igualados lideran pelea del Clausura — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Universitario salvó empate agónico ante Boys</title>
+    <link>https://ahora.com.pe/deportes/universitario-salvo-empate-agonico-ante-boys</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-salvo-empate-agonico-ante-boys</guid>
+    <pubDate>Thu, 05 Nov 2026 09:02:06 GMT</pubDate>
+    <description><![CDATA[Universitario rescató un empate 2-2 frente a Sport Boys en el Estadio Monumental, por el encuentro pendiente de la fecha 14 del Torneo Clausura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Boys]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cfd5148c5075.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cfd5148c5075.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cfd5148c5075.jpg"/>
+    <media:description type="plain"><![CDATA[Universitario salvó empate agónico ante Boys — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco recibe al voleibol nacional U13</title>
+    <link>https://ahora.com.pe/deportes/huanuco-recibe-al-voleibol-nacional-u13</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/huanuco-recibe-al-voleibol-nacional-u13</guid>
+    <pubDate>Thu, 05 Nov 2026 09:02:03 GMT</pubDate>
+    <description><![CDATA[Huánuco recibió la inauguración del IV Campeonato Nacional de Voleibol Femenino U13, realizado la noche del miércoles en el coliseo del colegio La Barquera.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/48916fd5b647.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/48916fd5b647.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/48916fd5b647.jpg"/>
+    <media:description type="plain"><![CDATA[Huánuco recibe al voleibol nacional U13 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>León busca refuerzos para la Tradición Copera</title>
+    <link>https://ahora.com.pe/deportes/leon-busca-refuerzos-para-la-tradicion-copera</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/leon-busca-refuerzos-para-la-tradicion-copera</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:59 GMT</pubDate>
+    <description><![CDATA[La posibilidad de incorporar futbolistas que terminaron su participación en la etapa nacional de la Copa Perú ha abierto nuevas opciones para los clubes del Torneo Tradición Copera.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[León]]></category>
+    <category><![CDATA[Tradición Copera]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1c2694a44d55.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1c2694a44d55.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1c2694a44d55.jpg"/>
+    <media:description type="plain"><![CDATA[León busca refuerzos para la Tradición Copera — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Jóvenes talentos buscan la gloria distrital</title>
+    <link>https://ahora.com.pe/deportes/jovenes-talentos-buscan-la-gloria-distrital</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/jovenes-talentos-buscan-la-gloria-distrital</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:57 GMT</pubDate>
+    <description><![CDATA[La etapa distrital del torneo Creciendo con el Fútbol llegará a su definición este sábado 7 de noviembre en Huánuco.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/af439a6096a7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/af439a6096a7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/af439a6096a7.jpg"/>
+    <media:description type="plain"><![CDATA[Jóvenes talentos buscan la gloria distrital — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Dictan nueve meses de prisión preventiva para hermanos investigados por violación en Ambo</title>
+    <link>https://ahora.com.pe/policiales/dictan-nueve-meses-de-prision-preventiva-para-hermanos-investigados-por</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/dictan-nueve-meses-de-prision-preventiva-para-hermanos-investigados-por</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:53 GMT</pubDate>
+    <description><![CDATA[El requerimiento fue sustentado con una pericia de ADN, certificados médicos, informes ecográficos y declaraciones testimoniales.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Ambo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d1c86e6e3689.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d1c86e6e3689.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d1c86e6e3689.png"/>
+    <media:description type="plain"><![CDATA[Dictan nueve meses de prisión preventiva para hermanos investigados por violación en Ambo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Asaltantes armados roban cerca de S/4000 y celulares en botica de Huánuco</title>
+    <link>https://ahora.com.pe/policiales/asaltantes-armados-roban-cerca-de-s-4000-y-celulares-en-botica-de-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/asaltantes-armados-roban-cerca-de-s-4000-y-celulares-en-botica-de-huanuco</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:49 GMT</pubDate>
+    <description><![CDATA[Uno ingresó con casco y amenazó a la trabajadora; su cómplice lo esperaba en una motocicleta negra para huir del lugar]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bde15cb34931.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bde15cb34931.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bde15cb34931.jpg"/>
+    <media:description type="plain"><![CDATA[Asaltantes armados roban cerca de S/4000 y celulares en botica de Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Detienen a hombre acusado de retener y amenazar a joven en Pachas</title>
+    <link>https://ahora.com.pe/policiales/detienen-a-hombre-acusado-de-retener-y-amenazar-a-joven-en-pachas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/detienen-a-hombre-acusado-de-retener-y-amenazar-a-joven-en-pachas</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:45 GMT</pubDate>
+    <description><![CDATA[La denunciante señaló que le impidieron bajar de una camioneta y exigieron relaciones sexuales para devolverle su celular; investigan presunto secuestro]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Pachas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b07e240f2547.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b07e240f2547.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b07e240f2547.jpg"/>
+    <media:description type="plain"><![CDATA[Detienen a hombre acusado de retener y amenazar a joven en Pachas — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Vecinos reportan un fallecido tras accidente vehicular en Callagán Manzano</title>
+    <link>https://ahora.com.pe/policiales/vecinos-reportan-un-fallecido-tras-accidente-vehicular-en-callagan-manzano</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/vecinos-reportan-un-fallecido-tras-accidente-vehicular-en-callagan-manzano</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:41 GMT</pubDate>
+    <description><![CDATA[Un vehículo blanco estuvo involucrado en el siniestro registrado en el sector Rinco, distrito de Molino, provincia de Pachitea.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Callagán Manzano]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/5aadd093cd3e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/5aadd093cd3e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/5aadd093cd3e.jpg"/>
+    <media:description type="plain"><![CDATA[Vecinos reportan un fallecido tras accidente vehicular en Callagán Manzano — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Un patrullero se retira ante un niño tendido</title>
+    <link>https://ahora.com.pe/policiales/un-patrullero-se-retira-ante-un-nino-tendido</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/un-patrullero-se-retira-ante-un-nino-tendido</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:37 GMT</pubDate>
+    <description><![CDATA[Un niño quedó tendido en el suelo frente a Seda Huánuco, en el jirón Abtao con Dámaso Beraún, durante el paro regional por el agua del miércoles 4.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/26772548fb0f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/26772548fb0f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/26772548fb0f.jpg"/>
+    <media:description type="plain"><![CDATA[Un patrullero se retira ante un niño tendido — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Ordenan internación preventiva para dos adolescentes por presunto robo en Tingo María</title>
+    <link>https://ahora.com.pe/policiales/ordenan-internacion-preventiva-para-dos-adolescentes-por-presunto-robo-en-tingo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/ordenan-internacion-preventiva-para-dos-adolescentes-por-presunto-robo-en-tingo</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:34 GMT</pubDate>
+    <description><![CDATA[Ambos tienen 17 años y son investigados por una tentativa de robo agravado contra una joven en la avenida Alameda Perú]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Tingo María]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e5d52427c90d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e5d52427c90d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e5d52427c90d.jpg"/>
+    <media:description type="plain"><![CDATA[Ordenan internación preventiva para dos adolescentes por presunto robo en Tingo María — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Los demócratas toman el Congreso de EE. UU.</title>
+    <link>https://ahora.com.pe/mundo/los-democratas-toman-el-congreso-de-ee-uu</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/los-democratas-toman-el-congreso-de-ee-uu</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:30 GMT</pubDate>
+    <description><![CDATA[El Partido Demócrata ganó las dos cámaras en las elecciones de medio mandato del martes 3. Los recuentos en tres estados siguen abiertos.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Congreso de EE]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ddd91b5af5b6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ddd91b5af5b6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ddd91b5af5b6.jpg"/>
+    <media:description type="plain"><![CDATA[Los demócratas toman el Congreso de EE. UU. — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Brasil emplea a reclusos para reforestar y planta 4,5 millones de árboles</title>
+    <link>https://ahora.com.pe/mundo/brasil-emplea-a-reclusos-para-reforestar-y-planta-4-5-millones-de-arboles</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/brasil-emplea-a-reclusos-para-reforestar-y-planta-4-5-millones-de-arboles</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:26 GMT</pubDate>
+    <description><![CDATA[El programa Replantando Vida combina trabajo remunerado, capacitación y reducción de condenas con la recuperación de bosques y fuentes de agua]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/861f58eb553b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/861f58eb553b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/861f58eb553b.jpg"/>
+    <media:description type="plain"><![CDATA[Brasil emplea a reclusos para reforestar y planta 4,5 millones de árboles — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Senamhi alerta lluvias extremas en el norte y Lima registra aniegos</title>
+    <link>https://ahora.com.pe/nacional/senamhi-alerta-lluvias-extremas-en-el-norte-y-lima-registra-aniegos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/senamhi-alerta-lluvias-extremas-en-el-norte-y-lima-registra-aniegos</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:23 GMT</pubDate>
+    <description><![CDATA[Piura y Tumbes podrían acumular hasta 60 milímetros diarios; precipitaciones también alcanzarán Cajamarca, mientras la capital afronta intensas lloviznas.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Senamhi]]></category>
+    <category><![CDATA[Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0b9847981cce.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0b9847981cce.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0b9847981cce.jpg"/>
+    <media:description type="plain"><![CDATA[Senamhi alerta lluvias extremas en el norte y Lima registra aniegos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Visita del papa León XIV movería más de S/300 millones en Perú</title>
+    <link>https://ahora.com.pe/economia/visita-del-papa-leon-xiv-moveria-mas-de-s-300-millones-en-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/visita-del-papa-leon-xiv-moveria-mas-de-s-300-millones-en-peru</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:20 GMT</pubDate>
+    <description><![CDATA[Mincetur prevé desplazamientos de turistas nacionales y extranjeros y anuncia orientación para los viajeros que asistirán a las actividades religiosas.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[León XIV]]></category>
+    <category><![CDATA[Perú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a890dfc35bd1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a890dfc35bd1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a890dfc35bd1.jpg"/>
+    <media:description type="plain"><![CDATA[Visita del papa León XIV movería más de S/300 millones en Perú — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>El Niño Costero alcanzaría su máxima intensidad entre diciembre y enero</title>
+    <link>https://ahora.com.pe/nacional/el-nino-costero-alcanzaria-su-maxima-intensidad-entre-diciembre-y-enero</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/el-nino-costero-alcanzaria-su-maxima-intensidad-entre-diciembre-y-enero</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:17 GMT</pubDate>
+    <description><![CDATA[Senamhi advierte que el calentamiento podría prolongarse hasta febrero, mientras el norte afrontaría mayores precipitaciones durante el verano]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Niño Costero]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/047ef9a08831.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/047ef9a08831.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/047ef9a08831.jpg"/>
+    <media:description type="plain"><![CDATA[El Niño Costero alcanzaría su máxima intensidad entre diciembre y enero — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco celebra su 13.o Festival de Cine con películas, invitados internacionales y nuevos proyectos</title>
+    <link>https://ahora.com.pe/regional/huanuco-celebra-su-13-o-festival-de-cine-con-peliculas-invitados-internacionales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/huanuco-celebra-su-13-o-festival-de-cine-con-peliculas-invitados-internacionales</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:12 GMT</pubDate>
+    <description><![CDATA[Del 2 al 6 de noviembre, la ciudad reúne a cineastas, actores y productores de distintos países. Este año, el festival incorpora un mercado audiovisual que busca abrir nuevas oportunidades para el cine peruano]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[Festival de Cine]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0c86fdd728c4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0c86fdd728c4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0c86fdd728c4.jpg"/>
+    <media:description type="plain"><![CDATA[Huánuco celebra su 13.º Festival de Cine con películas, invitados internacionales y nuevos proyectos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Huamalíes: Militantes viajan a Lima y piden al JNE ratificar rechazo de nulidad</title>
+    <link>https://ahora.com.pe/regional/huamalies-militantes-viajan-a-lima-y-piden-al-jne-ratificar-rechazo-de-nulidad</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/huamalies-militantes-viajan-a-lima-y-piden-al-jne-ratificar-rechazo-de-nulidad</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:09 GMT</pubDate>
+    <description><![CDATA[Militantes de Ahora Nación viajaron más de doce horas a Lima y protestaron el jueves 5, tras la audiencia del JNE sobre la nulidad de una mesa.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huamalíes]]></category>
+    <category><![CDATA[Militantes]]></category>
+    <category><![CDATA[Lima]]></category>
+    <category><![CDATA[JNE]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8b43c0dd1990.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8b43c0dd1990.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8b43c0dd1990.png"/>
+    <media:description type="plain"><![CDATA[Huamalíes: Militantes viajan a Lima y piden al JNE ratificar rechazo de nulidad — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Tingo María espera la emergencia y las máquinas</title>
+    <link>https://ahora.com.pe/regional/tingo-maria-espera-la-emergencia-y-las-maquinas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/tingo-maria-espera-la-emergencia-y-las-maquinas</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:04 GMT</pubDate>
+    <description><![CDATA[Según la autoridad de salud, el hospital de Tingo María se quedó sin camas en los últimos días por el dengue.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Tingo María]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f2f498a5ab13.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f2f498a5ab13.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f2f498a5ab13.jpg"/>
+    <media:description type="plain"><![CDATA[Tingo María espera la emergencia y las máquinas — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Castillo Grande vuelve a obra a dos meses de cambio de gestión en el Gorehco</title>
+    <link>https://ahora.com.pe/regional/castillo-grande-vuelve-a-obra-a-dos-meses-de-cambio-de-gestion-en-el-gorehco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/castillo-grande-vuelve-a-obra-a-dos-meses-de-cambio-de-gestion-en-el-gorehco</guid>
+    <pubDate>Thu, 05 Nov 2026 09:01:01 GMT</pubDate>
+    <description><![CDATA[El gobernador Antonio Pulgar Lucas dijo el miércoles 4 que el puente de Tingo María, parado cinco años, vuelve a obra en diez días. Él se va en diciembre.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Castillo Grande]]></category>
+    <category><![CDATA[Gorehco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/651bccf4d3d8.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/651bccf4d3d8.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/651bccf4d3d8.png"/>
+    <media:description type="plain"><![CDATA[Castillo Grande vuelve a obra a dos meses de cambio de gestión en el Gorehco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>La Muyuna, Castillo Grande y la pista de Tingo María suman otra fecha</title>
+    <link>https://ahora.com.pe/regional/la-muyuna-castillo-grande-y-la-pista-de-tingo-maria-suman-otra-fecha</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/la-muyuna-castillo-grande-y-la-pista-de-tingo-maria-suman-otra-fecha</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:58 GMT</pubDate>
+    <description><![CDATA[El gobernador recorrió el miércoles 4 los dos puentes y la pista del aeropuerto. El Castillo Grande, cuyo reinicio anunció para noviembre, tiene un año de obra por delante.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Muyuna]]></category>
+    <category><![CDATA[Castillo Grande]]></category>
+    <category><![CDATA[Tingo María]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2a108694f606.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2a108694f606.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2a108694f606.png"/>
+    <media:description type="plain"><![CDATA[La Muyuna, Castillo Grande y la pista de Tingo María suman otra fecha — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Once asentamientos de Aparicio Pomares reúnen 480 mil soles para traer agua desde Lanja</title>
+    <link>https://ahora.com.pe/regional/once-asentamientos-de-aparicio-pomares-reunen-480-mil-soles-para-traer-agua</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/once-asentamientos-de-aparicio-pomares-reunen-480-mil-soles-para-traer-agua</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:55 GMT</pubDate>
+    <description><![CDATA[Familias de las partes altas de Aparicio Pomares tienden con su dinero 25 kilómetros de manguera desde San Pablo de Lanjas: no tienen red de agua]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Aparicio Pomares]]></category>
+    <category><![CDATA[Lanja]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/eec69694d2e7.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/eec69694d2e7.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/eec69694d2e7.png"/>
+    <media:description type="plain"><![CDATA[Once asentamientos de Aparicio Pomares reúnen 480 mil soles para traer agua desde Lanja — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Roger Hidalgo inicia un parque de 60 días; le quedan 56 en la alcaldía</title>
+    <link>https://ahora.com.pe/regional/roger-hidalgo-inicia-un-parque-de-60-dias-le-quedan-56-en-la-alcaldia</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/roger-hidalgo-inicia-un-parque-de-60-dias-le-quedan-56-en-la-alcaldia</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:50 GMT</pubDate>
+    <description><![CDATA[El alcalde Roger Hidalgo Panduro inició el martes 3 el Parque Las Piritas, valorizado en más de un millón de soles, y entrega el cargo el 31 de diciembre.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Roger Hidalgo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/991695974dfe.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/991695974dfe.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/991695974dfe.png"/>
+    <media:description type="plain"><![CDATA[Roger Hidalgo inicia un parque de 60 días; le quedan 56 en la alcaldía — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Mercado Modelo: Recibo de agua subió casi cuatro veces lo anunciado</title>
+    <link>https://ahora.com.pe/regional/mercado-modelo-recibo-de-agua-subio-casi-cuatro-veces-lo-anunciado</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/mercado-modelo-recibo-de-agua-subio-casi-cuatro-veces-lo-anunciado</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:46 GMT</pubDate>
+    <description><![CDATA[El recibo de agua del Mercado Modelo de Huánuco llega a 12 500 soles al mes, según su dirigente. El rector de la Unheval y el gobernador regional también reclaman a Seda.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Mercado Modelo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/dd9a9ffb18a5.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/dd9a9ffb18a5.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/dd9a9ffb18a5.jpg"/>
+    <media:description type="plain"><![CDATA[Mercado Modelo: Recibo de agua subió casi cuatro veces lo anunciado — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>El Niño: Amarilis entra en emergencia por lluvias con un sedimentador de 32 años en uso</title>
+    <link>https://ahora.com.pe/regional/el-nino-amarilis-entra-en-emergencia-por-lluvias-con-un-sedimentador-de-32-anos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/el-nino-amarilis-entra-en-emergencia-por-lluvias-con-un-sedimentador-de-32-anos</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:43 GMT</pubDate>
+    <description><![CDATA[El decreto publicado el martes 3 incluye a Amarilis, donde EMAPA San Luis opera un sedimentador de 32 años que su exdirector da por riesgoso.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Niño]]></category>
+    <category><![CDATA[Amarilis]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/086086221648.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/086086221648.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/086086221648.png"/>
+    <media:description type="plain"><![CDATA[Diario Ahora - Regional — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Paro en Huánuco: Cerca de 5000 personas marcharon contra el OTASS</title>
+    <link>https://ahora.com.pe/regional/paro-en-huanuco-cerca-de-5000-personas-marcharon-contra-el-otass</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/paro-en-huanuco-cerca-de-5000-personas-marcharon-contra-el-otass</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:41 GMT</pubDate>
+    <description><![CDATA[Cerca de 5000 personas marcharon el miércoles 4, según la estimación de Diario Ahora en seis puntos y la plaza. La fecha del ministro, el 17, llegó por teléfono]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[OTASS]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fab9e80ea784.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fab9e80ea784.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fab9e80ea784.jpg"/>
+    <media:description type="plain"><![CDATA[Paro en Huánuco: Cerca de 5000 personas marcharon contra el OTASS — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Universitarios y comerciantes de Marabamba se sumaron al paro contra Seda Huánuco</title>
+    <link>https://ahora.com.pe/regional/universitarios-y-comerciantes-de-marabamba-se-sumaron-al-paro-contra-seda</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/universitarios-y-comerciantes-de-marabamba-se-sumaron-al-paro-contra-seda</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:37 GMT</pubDate>
+    <description><![CDATA[El centro poblado de Marabamba quiere agua potable, y su próximo alcalde dice que desde enero eso será una emergencia declarada.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Marabamba]]></category>
+    <category><![CDATA[Seda Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9a727b14201a.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9a727b14201a.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9a727b14201a.png"/>
+    <media:description type="plain"><![CDATA[Universitarios y comerciantes de Marabamba se sumaron al paro contra Seda Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Dengue al alza y Tingo María fuera de la emergencia vigente</title>
+    <link>https://ahora.com.pe/regional/dengue-al-alza-y-tingo-maria-fuera-de-la-emergencia-vigente</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/dengue-al-alza-y-tingo-maria-fuera-de-la-emergencia-vigente</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:31 GMT</pubDate>
+    <description><![CDATA[Los casos de dengue pasaron de 1318 a 1396, dijo el gobernador regional el miércoles 4 en Tingo María, cuyo hospital se quedó sin camas]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Tingo María]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c0e30c4570dc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c0e30c4570dc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c0e30c4570dc.jpg"/>
+    <media:description type="plain"><![CDATA[Dengue al alza y Tingo María fuera de la emergencia vigente — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Ministro de Vivienda llegaría a Huánuco el 17 de noviembre</title>
+    <link>https://ahora.com.pe/regional/ministro-de-vivienda-llegaria-a-huanuco-el-17-de-noviembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/ministro-de-vivienda-llegaria-a-huanuco-el-17-de-noviembre</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:27 GMT</pubDate>
+    <description><![CDATA[El senador Luján dijo a Diario Ahora que el ministro vendrá el martes 17 a una mesa en la Unheval, con 200 asientos]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Vivienda]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b55cce15c048.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b55cce15c048.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b55cce15c048.jpg"/>
+    <media:description type="plain"><![CDATA[Ministro de Vivienda llegaría a Huánuco el 17 de noviembre — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Canal de Canchán: Comisión técnica propone tubería en vez del canal</title>
+    <link>https://ahora.com.pe/regional/canal-de-canchan-comision-tecnica-propone-tuberia-en-vez-del-canal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/canal-de-canchan-comision-tecnica-propone-tuberia-en-vez-del-canal</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:23 GMT</pubDate>
+    <description><![CDATA[El arquitecto Walter Bruno dijo a Diario Ahora que la comisión halló 15 puntos críticos y pide medidas provisionales para un par de meses.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Canchán]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f052e9a5de4c.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f052e9a5de4c.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f052e9a5de4c.png"/>
+    <media:description type="plain"><![CDATA[Diario Ahora - Regional — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco paró y renuncian dos gerentes y el OTASS se queda</title>
+    <link>https://ahora.com.pe/regional/huanuco-paro-y-renuncian-dos-gerentes-y-el-otass-se-queda</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/huanuco-paro-y-renuncian-dos-gerentes-y-el-otass-se-queda</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:21 GMT</pubDate>
+    <description><![CDATA[El miércoles 4, día del paro, el organismo confirmó la salida de dos gerentes de Seda Huánuco y anunció que seguirá al frente.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[OTASS]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/eaa5dfd5e24a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/eaa5dfd5e24a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/eaa5dfd5e24a.jpg"/>
+    <media:description type="plain"><![CDATA[Huánuco paró y renuncian dos gerentes y el OTASS se queda — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco cruzó a pie sus puentes cerrados</title>
+    <link>https://ahora.com.pe/regional/huanuco-cruzo-a-pie-sus-puentes-cerrados</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/huanuco-cruzo-a-pie-sus-puentes-cerrados</guid>
+    <pubDate>Thu, 05 Nov 2026 09:00:17 GMT</pubDate>
+    <description><![CDATA[Dos puentes amanecieron bloqueados el miércoles y la ciudad caminó al trabajo. El comité de lucha decide este jueves qué plazo da al ministro de Vivienda.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/381d0bf36027.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/381d0bf36027.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/381d0bf36027.jpg"/>
+    <media:description type="plain"><![CDATA[Huánuco cruzó a pie sus puentes cerrados — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Universitario empató 2-2 con Sport Boys en los descuentos y no alcanza la punta del Clausura</title>
+    <link>https://ahora.com.pe/deportes/universitario-empate-sport-boys-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-empate-sport-boys-clausura</guid>
+    <pubDate>Thu, 05 Nov 2026 08:40:09 GMT</pubDate>
+    <description><![CDATA[Universitario empató 2-2 con Sport Boys en el Monumental de Ate por el Clausura. Con 31 puntos, comparte la punta con Sporting Cristal y Sport Huancayo, pero no logró el triunfo que lo habría dejado solo arriba.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Sport Boys]]></category>
+    <category><![CDATA[Clausura]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/12a2fc550eab.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/12a2fc550eab.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/12a2fc550eab.jpg"/>
+    <media:description type="plain"><![CDATA[A punta de garra, Universitario de Deportes empató esta noche a dos goles con el Sport Boys del Callao, en los descuentos de un partido que perdía por 2-0 hasta el minuto 88, en el estadio Monumental de Ate. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Simulacro por sismo y tsunami activó alerta Sismate en celulares del litoral peruano</title>
+    <link>https://ahora.com.pe/regional/simulacro-sismo-tsunami-sismate-4-noviembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/simulacro-sismo-tsunami-sismate-4-noviembre</guid>
+    <pubDate>Thu, 05 Nov 2026 08:30:10 GMT</pubDate>
+    <description><![CDATA[El Simulacro por Sismo seguido de Tsunami &apos;Elige Prepararte&apos; se realizó el miércoles 4 de noviembre a las 10:00 a. m. en distritos costeros del Perú. El Sismate emitió una alerta de tsunami cinco minutos después del inicio del ejercicio, con mensaje de evacuación inmediata.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[simulacro]]></category>
+    <category><![CDATA[tsunami]]></category>
+    <category><![CDATA[Sismate]]></category>
+    <category><![CDATA[Indeci]]></category>
+    <category><![CDATA[Áncash]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b7811bf9fdfb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b7811bf9fdfb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b7811bf9fdfb.jpg"/>
+    <media:description type="plain"><![CDATA[SIMULACRO DE SISMOS SEGUIDO DE TSUNAMI EN LA PUNTA — Foto: GORE Callao (wikimedia-public domain)]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco acata paro de 24 horas por cortes de agua potable</title>
+    <link>https://ahora.com.pe/regional/huanuco-paro-24-horas-agua-potable</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/huanuco-paro-24-horas-agua-potable</guid>
+    <pubDate>Thu, 05 Nov 2026 08:10:09 GMT</pubDate>
+    <description><![CDATA[La ciudad de Huánuco acató un paro de 24 horas en protesta por los constantes cortes de agua potable. Los manifestantes exigen una planta de tratamiento y la salida de la OTASS, informó El Comercio.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[paro en Huánuco]]></category>
+    <category><![CDATA[agua potable]]></category>
+    <category><![CDATA[OTASS]]></category>
+    <category><![CDATA[planta de tratamiento]]></category>
+    <category><![CDATA[saneamiento]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/41b1f6c68e07.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/41b1f6c68e07.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/41b1f6c68e07.jpg"/>
+    <media:description type="plain"><![CDATA[protestas en lima, perú por el golpe de estado del gobierno del ex presidente manuel merino
+
+protests in lima, perú against the ilegal government of the ex president  manuel merino — Foto: Alvaro Palacios (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Ocho proyectores para armar una sala de cine en casa</title>
+    <link>https://ahora.com.pe/tecnologia/ocho-proyectores-cine-casa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/ocho-proyectores-cine-casa</guid>
+    <pubDate>Thu, 05 Nov 2026 08:10:07 GMT</pubDate>
+    <description><![CDATA[El mercado ofrece proyectores portátiles con Android, wifi y Bluetooth para recrear la experiencia del cine en casa. Las resoluciones y los tamaños de pantalla varían según el modelo, y la selección no detalla precios ni fechas de disponibilidad.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[proyectores]]></category>
+    <category><![CDATA[cine en casa]]></category>
+    <category><![CDATA[streaming]]></category>
+    <category><![CDATA[Full HD]]></category>
+    <category><![CDATA[proyector portátil]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1dcad71dc86f.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1dcad71dc86f.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1dcad71dc86f.webp"/>
+    <media:description type="plain"><![CDATA[Si por mi fuera, iría todas las semanas al cine. Siempre que voy a ver una película intento sea el día del espectador, pero muchas veces no cuento con el tiempo suficiente. Por eso, hace un tiempo decidí optar por un <b>proyector</b>&nbsp;para poder disfrutar de las series, films y partidos de fútbo — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Ortiz Bisso plantea fixture flexible en Liga 1 ante riesgo de huaicos por El Niño</title>
+    <link>https://ahora.com.pe/deportes/ortiz-bisso-fixture-flexible-liga-1-el-nino</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/ortiz-bisso-fixture-flexible-liga-1-el-nino</guid>
+    <pubDate>Thu, 05 Nov 2026 07:00:10 GMT</pubDate>
+    <description><![CDATA[Pedro Ortiz Bisso propone un fixture flexible en la Liga 1 para evitar que El Niño afecte el desarrollo del campeonato y recuerda su experiencia en Piura en 1998.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[Fenómeno del Niño]]></category>
+    <category><![CDATA[Pedro Ortiz Bisso]]></category>
+    <category><![CDATA[fixture flexible]]></category>
+    <category><![CDATA[huaicos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bc2f5fae8b03.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bc2f5fae8b03.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bc2f5fae8b03.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Mr Peet califica de &quot;bochornoso&quot; gesto de Horacio Melgarejo ante hinchas de Alianza Lima</title>
+    <link>https://ahora.com.pe/deportes/mr-peet-horacio-melgarejo-gestos-alianza-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/mr-peet-horacio-melgarejo-gestos-alianza-lima</guid>
+    <pubDate>Thu, 05 Nov 2026 06:30:09 GMT</pubDate>
+    <description><![CDATA[Mr Peet criticó los gestos de Horacio Melgarejo, DT de Cienciano, hacia la hinchada de Alianza Lima en Matute; la Liga 1 evaluaría abrirle un expediente disciplinario.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Horacio Melgarejo]]></category>
+    <category><![CDATA[Mr Peet]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Cienciano]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bde00e7ae4f6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bde00e7ae4f6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bde00e7ae4f6.jpg"/>
+    <media:description type="plain"><![CDATA[Mr Peet se pronunció sobre los polémicos gestos de Horacio Melgarejo, DT de Cienciano, contra los hinchas de Alianza Lima y no dudó en dejar una severa crítica contra el técnico. — Foto: Líbero]]></media:description>
+  </item>
+  </channel>
+</rss>
