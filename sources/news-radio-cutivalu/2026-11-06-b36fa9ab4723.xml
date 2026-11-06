@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Thu, 05 Nov 2026 16:44:14 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Vecinos de la Urb. La Planicie alertan riesgos sanitarios por inundaciones y falta de agua potable y exigen soluciones ante las lluvias por el FEN</title>
+		<link>https://www.cutivalu.pe/vecinos-de-la-urb-la-planicie-alertan-riesgos-sanitarios-por-inundaciones-y-falta-de-agua-potable-y-exigen-soluciones-ante-las-lluvias-por-el-fen/</link>
+		
+		<dc:creator><![CDATA[Gabriela Campos]]></dc:creator>
+		<pubDate>Thu, 05 Nov 2026 16:44:13 +0000</pubDate>
+				<category><![CDATA[Featured]]></category>
+		<category><![CDATA[Piura]]></category>
+		<category><![CDATA[Región]]></category>
+		<category><![CDATA[Veintiséis de Octubre]]></category>
+		<category><![CDATA[falta de agua]]></category>
+		<category><![CDATA[FEN]]></category>
+		<category><![CDATA[Fenómeno El Niño]]></category>
+		<category><![CDATA[inundaciones]]></category>
+		<category><![CDATA[Lluvias]]></category>
+		<category><![CDATA[RIESGOS SANITARIOS]]></category>
+		<category><![CDATA[URB. LA PLANICIE]]></category>
+		<category><![CDATA[VEINTISEIS DE OCTUBRE]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=195015</guid>
+
+					<description><![CDATA[<p>Vecinos de la urbanización La Planicie y sectores aledaños, en Veintiséis de Octubre, protestaron para exigir soluciones ante las inundaciones y la falta de agua potable. Denunciaron que una cancha deportiva permanece cubierta de aguas estancadas desde hace más de 10 días, situación que favorece la proliferación de zancudos. Castillo Hidalgo León, dirigente de la [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/vecinos-de-la-urb-la-planicie-alertan-riesgos-sanitarios-por-inundaciones-y-falta-de-agua-potable-y-exigen-soluciones-ante-las-lluvias-por-el-fen/">Vecinos de la Urb. La Planicie alertan riesgos sanitarios por inundaciones y falta de agua potable y exigen soluciones ante las lluvias por el FEN</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
