@@ -191,13 +191,112 @@
           }
         }
       }
+    }, {
+      "uuid" : "d5c7bfcb-2daf-4d7b-a82a-1388c7e421e6",
+      "name" : "THUMBNAIL",
+      "handle" : null,
+      "metadata" : {
+        "dc.title" : [ {
+          "value" : "THUMBNAIL",
+          "language" : null,
+          "authority" : null,
+          "confidence" : -1,
+          "place" : 0
+        } ]
+      },
+      "type" : "bundle",
+      "_links" : {
+        "item" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/d5c7bfcb-2daf-4d7b-a82a-1388c7e421e6/item"
+        },
+        "bitstreams" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/d5c7bfcb-2daf-4d7b-a82a-1388c7e421e6/bitstreams"
+        },
+        "primaryBitstream" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/d5c7bfcb-2daf-4d7b-a82a-1388c7e421e6/primaryBitstream"
+        },
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/d5c7bfcb-2daf-4d7b-a82a-1388c7e421e6"
+        }
+      },
+      "_embedded" : {
+        "bitstreams" : {
+          "_embedded" : {
+            "bitstreams" : [ {
+              "id" : "0c2a3980-237b-42c8-95fb-806582c52154",
+              "uuid" : "0c2a3980-237b-42c8-95fb-806582c52154",
+              "name" : "BSOBP_2026_N°44.pdf.jpg",
+              "handle" : null,
+              "metadata" : {
+                "dc.description" : [ {
+                  "value" : "Generated Thumbnail",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.source" : [ {
+                  "value" : "Written by FormatFilter org.dspace.app.mediafilter.PDFBoxThumbnail on 2026-11-06T03:00:48Z (GMT).",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "BSOBP_2026_N°44.pdf.jpg",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "bundleName" : "THUMBNAIL",
+              "sizeBytes" : 6469,
+              "checkSum" : {
+                "checkSumAlgorithm" : "MD5",
+                "value" : "00216ff85d2f31c92a2edc1670c4e786"
+              },
+              "sequenceId" : 3,
+              "type" : "bitstream",
+              "_links" : {
+                "content" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/0c2a3980-237b-42c8-95fb-806582c52154/content"
+                },
+                "bundle" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/0c2a3980-237b-42c8-95fb-806582c52154/bundle"
+                },
+                "format" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/0c2a3980-237b-42c8-95fb-806582c52154/format"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/0c2a3980-237b-42c8-95fb-806582c52154/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/0c2a3980-237b-42c8-95fb-806582c52154"
+                }
+              }
+            } ]
+          },
+          "page" : {
+            "number" : 0,
+            "size" : 20,
+            "totalPages" : 1,
+            "totalElements" : 1
+          },
+          "_links" : {
+            "self" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/d5c7bfcb-2daf-4d7b-a82a-1388c7e421e6/bitstreams"
+            }
+          }
+        }
+      }
     } ]
   },
   "page" : {
     "number" : 0,
     "size" : 20,
     "totalPages" : 1,
-    "totalElements" : 2
+    "totalElements" : 3
   },
   "_links" : {
     "self" : {

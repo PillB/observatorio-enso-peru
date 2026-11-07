@@ -1,10 +1,10 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-06T02:06:26+00:00",
+ "at": "2026-11-07T04:25:43+00:00",
  "result": "ok",
- "reachable": "43/51",
+ "reachable": "43/52",
  "summary": {
-  "enfen": "4/4",
+  "enfen": "3/4",
   "igp": "1/1",
   "senamhi": "9/9",
   "ana": "3/3",
@@ -15,10 +15,15 @@
   "contraloria": "1/1",
   "midagri": "1/1",
   "unsa": "1/1",
-  "enfen-docs": "2/8",
+  "enfen-docs": "3/9",
   "imarpe-repo": "15/15"
  },
  "failures": [
+  {
+   "url": "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen",
+   "class": "dns",
+   "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known"
+  },
   {
    "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
    "class": "timeout",
