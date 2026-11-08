@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Sun, 08 Nov 2026 11:36:25 GMT</lastBuildDate>
+    <pubDate>Sun, 08 Nov 2026 11:30:12 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Sismo de magnitud 3.8 se registró en Tumbes, según el IGP</title>
+    <link>https://ahora.com.pe/policiales/sismo-magnitud-3-8-tumbes-igp</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/sismo-magnitud-3-8-tumbes-igp</guid>
+    <pubDate>Sun, 08 Nov 2026 11:30:12 GMT</pubDate>
+    <description><![CDATA[Un sismo de magnitud 3.8 remeció la madrugada del sábado 7 de noviembre en Tumbes, con epicentro a 57 km al este de Zarumilla, según el IGP. El movimiento tuvo una profundidad de 38 km e intensidad II-III. Indeci recomienda mantener lista la mochila de emergencia.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[sismo Tumbes]]></category>
+    <category><![CDATA[IGP]]></category>
+    <category><![CDATA[Zarumilla]]></category>
+    <category><![CDATA[mochila de emergencia]]></category>
+    <category><![CDATA[Indeci]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/691c34291c65.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/691c34291c65.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/691c34291c65.jpg"/>
+    <media:description type="plain"><![CDATA[Peru-27 — Foto: archer10 (Dennis) (openverse-by-sa)]]></media:description>
+  </item>
+  <item>
+    <title>Mbappé anota el tercer gol del Real Madrid ante Valencia en Mestalla</title>
+    <link>https://ahora.com.pe/deportes/mbappe-tercer-gol-real-madrid-valencia-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/mbappe-tercer-gol-real-madrid-valencia-laliga</guid>
+    <pubDate>Sun, 08 Nov 2026 11:20:07 GMT</pubDate>
+    <description><![CDATA[Kylian Mbappé marcó el tercer gol del Real Madrid ante Valencia en Mestalla, por la fecha 12 de LaLiga 2026-2027, tras asistencia de Arda Güler. La fuente no confirma el resultado final ni los autores de los dos primeros tantos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Kylian Mbappé]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Valencia]]></category>
+    <category><![CDATA[LaLiga 2026-2027]]></category>
+    <category><![CDATA[Mestalla]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/aa396dc4d304.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/aa396dc4d304.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/aa396dc4d304.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Frijaje 15 trae vientos de hasta 44 km/h a la selva: Huánuco entre las regiones alertadas</title>
+    <link>https://ahora.com.pe/regional/friaje-15-vientos-44-kmh-selva-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/friaje-15-vientos-44-kmh-selva-huanuco</guid>
+    <pubDate>Sun, 08 Nov 2026 11:00:13 GMT</pubDate>
+    <description><![CDATA[El decimoquinto friaje de la temporada provocará vientos de hasta 44 km/h en la selva sur y 31 km/h en la selva centro, según el Senamhi. Huánuco figura entre los seis departamentos comprendidos en el aviso meteorológico N.° 461, con alerta naranja. El Indeci pidió a los gobiernos locales y regionales inspeccionar edificaciones y asegurar techos y embarcaciones.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[friaje]]></category>
+    <category><![CDATA[Senamhi]]></category>
+    <category><![CDATA[vientos]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[alerta naranja]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3e52fdbf4f61.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3e52fdbf4f61.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3e52fdbf4f61.webp"/>
+    <media:description type="plain"><![CDATA[Vientos con velocidades cercanas a los 44 kilómetros por hora (km/h) en la selva sur y próximos a los 31 km/h en la selva centro, se registrarán debido al decimoquinto friaje que empieza hoy y continuará hasta mañana lunes 9 de 
+noviembre, informó el Servicio Nacional de Meteorología e Hidrología (S — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Ley de Bienestar Animal en España prohíbe usar perros y gatos como reclamo ambulante</title>
+    <link>https://ahora.com.pe/mundo/ley-bienestar-animal-espana-prohibe-reclamo-ambulante</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/ley-bienestar-animal-espana-prohibe-reclamo-ambulante</guid>
+    <pubDate>Sun, 08 Nov 2026 10:30:11 GMT</pubDate>
+    <description><![CDATA[La Ley de Bienestar Animal de España, aprobada y en vigor desde 2023, prohíbe usar perros y gatos de forma ambulante como reclamo en la vía pública. El artículo 25 veta emplear animales como herramienta visual o emocional para obtener beneficio económico, comercial o publicitario. Las sanciones van de 500 a 200.000 euros según la gravedad.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Ley de Bienestar Animal]]></category>
+    <category><![CDATA[España]]></category>
+    <category><![CDATA[perros y gatos]]></category>
+    <category><![CDATA[reclamo ambulante]]></category>
+    <category><![CDATA[multas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/408052a6bdd6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/408052a6bdd6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/408052a6bdd6.jpg"/>
+    <media:description type="plain"><![CDATA[dog sitting next to dogs prohibited on wharf signage — Foto: Daniel Chicchon (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Sporting Cristal empata 1-1 con ADT y definirá el Clausura en la última fecha</title>
+    <link>https://ahora.com.pe/deportes/sporting-cristal-empate-adt-clausura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sporting-cristal-empate-adt-clausura-2026</guid>
+    <pubDate>Sun, 08 Nov 2026 09:40:16 GMT</pubDate>
+    <description><![CDATA[Sporting Cristal empató 1-1 con ADT en Tarma por la fecha 16 del Torneo Clausura 2026 y definirá el título en la última jornada ante Cienciano, a la espera de los resultados de Sport Huancayo y Universitario.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[ADT de Tarma]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4933a451ab64.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4933a451ab64.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4933a451ab64.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Fabián Ruiz, del Palacios al PSG: el sueño blaugrana que nunca se concretó</title>
+    <link>https://ahora.com.pe/deportes/fabian-ruiz-palacios-psg-sueno-barca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fabian-ruiz-palacios-psg-sueno-barca</guid>
+    <pubDate>Sun, 08 Nov 2026 07:40:06 GMT</pubDate>
+    <description><![CDATA[Fabián Ruiz, nacido en Los Palacios y Villafranca, repasa su carrera del Betis al PSG, donde es bicampeón de la Champions, y su frustrado fichaje por el Barcelona.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Fabián Ruiz]]></category>
+    <category><![CDATA[PSG]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Los Palacios]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/acbb4c690e2a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/acbb4c690e2a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/acbb4c690e2a.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Novorizontino de Jhilmar Lora asciende por primera vez a la Serie A de Brasil</title>
+    <link>https://ahora.com.pe/deportes/novorizontino-jhilmar-lora-ascenso-brasileirao-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/novorizontino-jhilmar-lora-ascenso-brasileirao-2027</guid>
+    <pubDate>Sun, 08 Nov 2026 06:20:08 GMT</pubDate>
+    <description><![CDATA[Novorizontino, club donde milita el peruano Jhilmar Lora, logró un histórico ascenso a la Serie A de Brasil tras vencer 2-1 a Fortaleza en la penúltima fecha de la segunda división y asegurar el boleto sin depender de otros resultados.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Jhilmar Lora]]></category>
+    <category><![CDATA[Novorizontino]]></category>
+    <category><![CDATA[Brasileirao]]></category>
+    <category><![CDATA[Serie B]]></category>
+    <category><![CDATA[ascenso]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3f2124f88e2f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3f2124f88e2f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3f2124f88e2f.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Pacto contra la Anemia se aplicará en 19 distritos de cinco regiones</title>
+    <link>https://ahora.com.pe/sociedad/pacto-contra-anemia-19-distritos-cinco-regiones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/pacto-contra-anemia-19-distritos-cinco-regiones</guid>
+    <pubDate>Sun, 08 Nov 2026 05:10:11 GMT</pubDate>
+    <description><![CDATA[El Gobierno firmó el Pacto Multisectorial para Prevenir y Reducir la Anemia Materno-Infantil, que se implementará en 19 distritos de Cajamarca, Ayacucho, Lima, Loreto y Puno. La estrategia prioriza a 59 855 niños menores de 12 meses y 19 609 gestantes, con 62 proyectos de infraestructura por más de S/ 1400 millones.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[anemia]]></category>
+    <category><![CDATA[Midis]]></category>
+    <category><![CDATA[Pacto contra la Anemia]]></category>
+    <category><![CDATA[agua potable]]></category>
+    <category><![CDATA[saneamiento]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cb137cc071da.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cb137cc071da.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cb137cc071da.jpg"/>
+    <media:description type="plain"><![CDATA[Tras la firma del Pacto Multisectorial para Prevenir y Reducir la Anemia Materno-Infantil, el Ministerio de Desarrollo e Inclusión Social (Midis) informó que esta estrategia se implementará prioritariamente en 19 distritos de cinco regiones que presentan brechas de acceso a agua potable y redes públ — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Autopsia de Jesús de Miguel: traumatismo torácico accidental, según informe preliminar</title>
+    <link>https://ahora.com.pe/policiales/autopsia-jesus-de-miguel-traumatismo-accidental</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/autopsia-jesus-de-miguel-traumatismo-accidental</guid>
+    <pubDate>Sun, 08 Nov 2026 05:10:09 GMT</pubDate>
+    <description><![CDATA[La autopsia preliminar de Jesús de Miguel, futbolista del Tenerife, determinó que su muerte se debió a un traumatismo torácico de carácter accidental tras el choque con el arquero Jesús Owono. Faltan pruebas complementarias.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Jesús de Miguel]]></category>
+    <category><![CDATA[autopsia]]></category>
+    <category><![CDATA[Tenerife]]></category>
+    <category><![CDATA[Jesús Owono]]></category>
+    <category><![CDATA[traumatismo torácico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7381311a7dd7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7381311a7dd7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7381311a7dd7.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Miguel Tudela gana la serie 1 y abre el Mundial de Surf en Punta Rocas</title>
+    <link>https://ahora.com.pe/deportes/miguel-tudela-gana-serie-1-mundial-surf-punta-rocas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/miguel-tudela-gana-serie-1-mundial-surf-punta-rocas</guid>
+    <pubDate>Sun, 08 Nov 2026 05:10:08 GMT</pubDate>
+    <description><![CDATA[Miguel Tudela ganó la serie 1 del ISA World Surfing Games en Punta Rocas con 10,8 puntos. El certamen reúne a 293 tablistas de 53 países y reparte plazas para Los Ángeles 2028.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Miguel Tudela]]></category>
+    <category><![CDATA[Mundial de Surf]]></category>
+    <category><![CDATA[Punta Rocas]]></category>
+    <category><![CDATA[ISA World Surfing Games]]></category>
+    <category><![CDATA[Los Ángeles 2028]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2513c459239c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2513c459239c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2513c459239c.jpg"/>
+    <media:description type="plain"><![CDATA[Miguel Tudela, surfista nacional, comenzó con un estilo muy sólido para ganar la serie 1 de los ISA World Surfing Games con la que se dio inicio oficial a la competencia que se disputa en la playa Punta Rocas con la presencia de más de 50 países, que buscan una plaza directa a los próximos Juegos Ol — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima visita a Los Chankas en Andahuaylas por la fecha 16 del Clausura</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-los-chankas-fecha-16-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-los-chankas-fecha-16-clausura</guid>
+    <pubDate>Sun, 08 Nov 2026 04:40:06 GMT</pubDate>
+    <description><![CDATA[Alianza Lima enfrenta a Los Chankas este domingo 8 de noviembre en el estadio Los Chankas de Andahuaylas por la fecha 16 del Torneo Clausura, con transmisión de L1 MAX. Los blanquiazules necesitan un triunfo para seguir en la pelea por el título; el local busca un lugar entre los ocho primeros de la Tabla Acumulada.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Los Chankas]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[L1 MAX]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a6774d41d51c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a6774d41d51c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a6774d41d51c.jpg"/>
+    <media:description type="plain"><![CDATA[Sigue EN VIVO el partido entre Alianza Lima vs Los Chankas por la penúltima fecha del Torneo Clausura vía L1 MAX. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Ministro Tangherlini descarta desabastecimiento de combustible en Ucayali y anuncia reapertura de vía</title>
+    <link>https://ahora.com.pe/politica/tangherlini-descarta-desabastecimiento-ucayali-reapertura-federico-basadre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/tangherlini-descarta-desabastecimiento-ucayali-reapertura-federico-basadre</guid>
+    <pubDate>Sun, 08 Nov 2026 04:20:10 GMT</pubDate>
+    <description><![CDATA[El ministro de Transportes, José Tangherlini, desmintió versiones sobre falta de combustible en el aeropuerto de Pucallpa y anunció el restablecimiento del tránsito en la carretera Federico Basadre tras el deslizamiento en Santa Rosa, Ucayali.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[José Tangherlini]]></category>
+    <category><![CDATA[carretera Federico Basadre]]></category>
+    <category><![CDATA[Ucayali]]></category>
+    <category><![CDATA[Pucallpa]]></category>
+    <category><![CDATA[papa León XIV]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ee54c7ec1c2c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ee54c7ec1c2c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ee54c7ec1c2c.jpg"/>
+    <media:description type="plain"><![CDATA[El ministro de Transportes y Comunicaciones, José Tangherlini, descartó la ausencia de combustibles en la región Ucayali y anunció el restablecimiento del tránsito en la carretera Federico Basadre, afectada por un deslizamiento en la localidad de Santa Rosa, provincia de Padre Abad de dicha región. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Marruecos construye el estadio más grande del mundo: 115 mil asientos para el Mundial 2030</title>
+    <link>https://ahora.com.pe/deportes/marruecos-estadio-hassan-ii-115-mil-mundial-2030</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/marruecos-estadio-hassan-ii-115-mil-mundial-2030</guid>
+    <pubDate>Sun, 08 Nov 2026 04:20:07 GMT</pubDate>
+    <description><![CDATA[Marruecos construye el Gran Estadio Hassan II, con capacidad para 115 mil espectadores, diseñado por Populous y previsto para 2028, con la final del Mundial 2030 en el horizonte.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Gran Estadio Hassan II]]></category>
+    <category><![CDATA[Marruecos]]></category>
+    <category><![CDATA[Mundial 2030]]></category>
+    <category><![CDATA[Populous]]></category>
+    <category><![CDATA[Casablanca]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/dd688d6851ca.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/dd688d6851ca.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/dd688d6851ca.jpg"/>
+    <media:description type="plain"><![CDATA[A modern stadium surrounded by dense city buildings — Foto: Sheila C (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Manchester United vs Aston Villa: pronósticos y cuotas de la Jornada 10</title>
+    <link>https://ahora.com.pe/deportes/manchester-united-vs-aston-villa-pronosticos-cuotas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/manchester-united-vs-aston-villa-pronosticos-cuotas</guid>
+    <pubDate>Sun, 08 Nov 2026 02:40:06 GMT</pubDate>
+    <description><![CDATA[Manchester United y Aston Villa se enfrentan este 8 de noviembre en Old Trafford por la Jornada 10 de la Premier League, con pronósticos que apuntan a un partido de defensas vulnerables.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Manchester United]]></category>
+    <category><![CDATA[Aston Villa]]></category>
+    <category><![CDATA[Premier League]]></category>
+    <category><![CDATA[pronósticos]]></category>
+    <category><![CDATA[cuotas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0b56eca311f3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0b56eca311f3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0b56eca311f3.jpg"/>
+    <media:description type="plain"><![CDATA[Aston Villa se mide ante Manchester United en el estadio Old Trafford el domingo 8 de noviembre a las 11:30 horas. El partido será supervisado por Chris Kavanagh. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Barcelona y Atlético definen alineaciones para duelo clave en LaLiga</title>
+    <link>https://ahora.com.pe/deportes/alineaciones-barcelona-atletico-laliga-fecha-12</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alineaciones-barcelona-atletico-laliga-fecha-12</guid>
+    <pubDate>Sun, 08 Nov 2026 01:20:07 GMT</pubDate>
+    <description><![CDATA[Barcelona y Atlético de Madrid se enfrentan este domingo 8 de noviembre en el Riyadh Air Metropolitano por la fecha 12 de LaLiga, con alineaciones confirmadas por Flick y Simeone.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Atlético de Madrid]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[alineaciones]]></category>
+    <category><![CDATA[Lamine Yamal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/313342707ff0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/313342707ff0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/313342707ff0.jpg"/>
+    <media:description type="plain"><![CDATA[Conoce las alineaciones para el partido de Barcelona vs Atlético de Madrid en el Riyadh Air Metropolitano por la fecha 12 de LaLiga. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Real Madrid gana 0-3 en Mestalla y se coloca segundo provisional de LaLiga</title>
+    <link>https://ahora.com.pe/deportes/real-madrid-gana-0-3-mestalla-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/real-madrid-gana-0-3-mestalla-laliga</guid>
+    <pubDate>Sat, 07 Nov 2026 23:20:10 GMT</pubDate>
+    <description><![CDATA[El Real Madrid venció 0-3 en Mestalla con goles de Valverde, Arda Güler y Mbappé, y se coloca segundo provisional de LaLiga con 30 puntos, igualando el registro del Barcelona y superando al Atlético por dos unidades.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[Mestalla]]></category>
+    <category><![CDATA[Mbappé]]></category>
+    <category><![CDATA[clasificación]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/07cf4987a020.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/07cf4987a020.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/07cf4987a020.webp"/>
+    <media:description type="plain"><![CDATA[El Real Madrid sumó su cuarto seguido en Liga con un claro 0-3 en Mestalla y se sitúa de forma provisional en el segundo lugar de la clasificación de Laliga con 30 puntos, superando por 2 puntos al Atlético de Madrid e igualando el registro del líder, el Barcelona, ambos con un encuentro menos. — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Brighton y Brentford chocan en The Amex por la fecha 10 de la Premier League</title>
+    <link>https://ahora.com.pe/deportes/brighton-brentford-fecha-10-premier-league</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/brighton-brentford-fecha-10-premier-league</guid>
+    <pubDate>Sat, 07 Nov 2026 22:00:11 GMT</pubDate>
+    <description><![CDATA[Brighton and Hove, tercero con 19 puntos, recibe a Brentford, sexto con 14, en The Amex por la fecha 10 de la Premier League, con arbitraje de Michael Oliver.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Brighton]]></category>
+    <category><![CDATA[Brentford]]></category>
+    <category><![CDATA[Premier League]]></category>
+    <category><![CDATA[The Amex]]></category>
+    <category><![CDATA[Michael Oliver]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e974522d9e59.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e974522d9e59.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e974522d9e59.jpg"/>
+    <media:description type="plain"><![CDATA[Todos los detalles de la previa del partido entre Brighton and Hove y Brentford, que se jugará el domingo 8 de noviembre desde las 09:00 horas en The Amex. Dirige Michael Oliver. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>FMI proyecta que Perú superaría a Chile como cuarta economía de Sudamérica en 2027</title>
+    <link>https://ahora.com.pe/economia/peru-superaria-chile-cuarta-economia-sudamerica-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/peru-superaria-chile-cuarta-economia-sudamerica-2027</guid>
+    <pubDate>Sat, 07 Nov 2026 21:40:06 GMT</pubDate>
+    <description><![CDATA[Según el FMI, el Perú superaría a Chile como cuarta economía de Sudamérica en 2027, con un PBI de US$ 413,597 millones frente a US$ 413,443 millones. Brasil y Colombia mantienen el primer y tercer lugar, respectivamente.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[FMI]]></category>
+    <category><![CDATA[PBI Perú]]></category>
+    <category><![CDATA[economía sudamericana]]></category>
+    <category><![CDATA[Chile]]></category>
+    <category><![CDATA[World Economic Outlook]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2e04ddf2ae3d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2e04ddf2ae3d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2e04ddf2ae3d.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Ross Lynch confirma que se casó en privado y mantiene en reserva a su esposa</title>
+    <link>https://ahora.com.pe/entretenimiento/ross-lynch-confirma-matrimonio-privado</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/ross-lynch-confirma-matrimonio-privado</guid>
+    <pubDate>Sat, 07 Nov 2026 20:30:10 GMT</pubDate>
+    <description><![CDATA[Ross Lynch confirmó en la premiere de Heartland, en Nueva York, que está casado. El actor de Austin &amp; Ally explicó que su esposa prefiere mantenerse fuera de la fama y no precisó cuándo se realizó la boda.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Ross Lynch]]></category>
+    <category><![CDATA[matrimonio]]></category>
+    <category><![CDATA[Austin & Ally]]></category>
+    <category><![CDATA[Heartland]]></category>
+    <category><![CDATA[Netflix]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/838ce780db35.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/838ce780db35.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/838ce780db35.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Hernán Barcos anota de cabeza y pone el 1-0 de Sporting Cristal sobre ADT</title>
+    <link>https://ahora.com.pe/deportes/hernan-barcos-gol-sporting-cristal-adt</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/hernan-barcos-gol-sporting-cristal-adt</guid>
+    <pubDate>Sat, 07 Nov 2026 20:20:07 GMT</pubDate>
+    <description><![CDATA[Hernán Barcos anotó de cabeza el 1-0 de Sporting Cristal ante ADT a los 46 minutos, su sexto gol en el Torneo Clausura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Hernán Barcos]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[ADT]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[gol de cabeza]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2bd62334464b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2bd62334464b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2bd62334464b.jpg"/>
+    <media:description type="plain"><![CDATA[Cuando faltaban segundos para el final del primer tiempo, apareció el delantero argentino, quien, tras un gran centro de Santiago González, logró conectar el balón y abrir el marcador. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>El Atlético ya conoce fechas y horarios de sus partidos ante Elche y Barcelona</title>
+    <link>https://ahora.com.pe/deportes/atletico-madrid-fechas-horarios-elche-barcelona</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/atletico-madrid-fechas-horarios-elche-barcelona</guid>
+    <pubDate>Sat, 07 Nov 2026 20:00:10 GMT</pubDate>
+    <description><![CDATA[El Atlético de Madrid ya tiene programados sus partidos ante Elche y Barcelona, con fechas y horarios confirmados hasta el 2 de diciembre.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Atlético de Madrid]]></category>
+    <category><![CDATA[Elche]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[Supercopa de España]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6e58a644d4e3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6e58a644d4e3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6e58a644d4e3.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Diputado opositor y tres policías mueren en ataque armado en Zacapa, Guatemala</title>
+    <link>https://ahora.com.pe/mundo/diputado-tres-policias-muertos-ataque-guatemala</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/diputado-tres-policias-muertos-ataque-guatemala</guid>
+    <pubDate>Sat, 07 Nov 2026 19:00:11 GMT</pubDate>
+    <description><![CDATA[El diputado opositor guatemalteco Julio César Portillo Paz y tres agentes de la Policía Nacional Civil murieron en un ataque armado en Río Hondo, Zacapa, zona de fuerte presencia del narcotráfico. El Ministerio Público investiga el caso.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Guatemala]]></category>
+    <category><![CDATA[Zacapa]]></category>
+    <category><![CDATA[Julio Portillo]]></category>
+    <category><![CDATA[ataque armado]]></category>
+    <category><![CDATA[narcotráfico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6ce81b2609e5.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6ce81b2609e5.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6ce81b2609e5.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Fiorentina y Juventus se miden por la fecha 11 de la Serie A</title>
+    <link>https://ahora.com.pe/deportes/fiorentina-juventus-fecha-11-serie-a</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fiorentina-juventus-fecha-11-serie-a</guid>
+    <pubDate>Sat, 07 Nov 2026 18:40:06 GMT</pubDate>
+    <description><![CDATA[Fiorentina y Juventus se enfrentan por la fecha 11 de la Serie A: el local suma 8 puntos y el visitante 17. Andrea Colombo será el árbitro del partido.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Fiorentina]]></category>
+    <category><![CDATA[Juventus]]></category>
+    <category><![CDATA[Serie A]]></category>
+    <category><![CDATA[fecha 11]]></category>
+    <category><![CDATA[Andrea Colombo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6309539892f6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6309539892f6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6309539892f6.jpg"/>
+    <media:description type="plain"><![CDATA[Palpitamos la previa del choque entre Fiorentina y Juventus. Cuándo, dónde y a qué hora juegan, con el arbitraje de Andrea Colombo. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Domingo Dianderas y Bella Esperanza abren este domingo la llave de octavos en Chincha</title>
+    <link>https://ahora.com.pe/deportes/domingo-dianderas-bella-esperanza-octavos-ida-copa-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/domingo-dianderas-bella-esperanza-octavos-ida-copa-peru</guid>
+    <pubDate>Sat, 07 Nov 2026 17:00:11 GMT</pubDate>
+    <description><![CDATA[Domingo Dianderas, campeón departamental de Ica, recibe a Bella Esperanza, campeón de Lima, en el partido de ida de los octavos de final de la Copa Perú 2026 en el Estadio Félix Castillo Tardío de Chincha.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Copa Perú 2026]]></category>
+    <category><![CDATA[Domingo Dianderas]]></category>
+    <category><![CDATA[Bella Esperanza]]></category>
+    <category><![CDATA[octavos de final]]></category>
+    <category><![CDATA[Estadio Félix Castillo Tardío]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ed51d4914058.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ed51d4914058.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ed51d4914058.jpg"/>
+    <media:description type="plain"><![CDATA[Copa Uruguay (Perú) trophy — Foto: Ericbaudouin (wikimedia-cc0)]]></media:description>
+  </item>
+  <item>
+    <title>Mijatovic: &quot;Suker nos hizo mucho daño porque empezó a salir con Ana Obregón&quot;</title>
+    <link>https://ahora.com.pe/entretenimiento/mijatovic-suker-ana-obregon-madrid</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/mijatovic-suker-ana-obregon-madrid</guid>
+    <pubDate>Sat, 07 Nov 2026 16:40:07 GMT</pubDate>
+    <description><![CDATA[Pedja Mijatovic contó en &apos;El Larguero&apos; de la Cadena SER que la relación de Davor Suker con Ana Obregón afectó al grupo y que los paparazzi seguían a diario a los jugadores del Real Madrid.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Pedja Mijatovic]]></category>
+    <category><![CDATA[Davor Suker]]></category>
+    <category><![CDATA[Ana Obregón]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[El Larguero]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ba503f804b59.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ba503f804b59.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ba503f804b59.webp"/>
+    <media:description type="plain"><![CDATA[El exjugador del<b> Real Madrid,&nbsp;Pedja Mijatovic</b>, recordó durante <b>'El Larguero'</b> de la <b>'Cadena SER' </b>algunos de los episodios que vivió durante su etapa de futbolista en el conjunto blanco. — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Mashue, la comunidad chilena que autogestiona un fondo para restaurar sus bosques</title>
+    <link>https://ahora.com.pe/mundo/mashue-comunidad-chilena-fondo-restauracion-bosques</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/mashue-comunidad-chilena-fondo-restauracion-bosques</guid>
+    <pubDate>Sat, 07 Nov 2026 16:00:12 GMT</pubDate>
+    <description><![CDATA[La comunidad de Mashue, en el sur de Chile, conformó un Comité de Agua Potable Rural y autogestiona un fondo mediante un cobro por servicio ecosistémico, pionero en el país, para restaurar el bosque nativo y adoptar la agroecología.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Mashue]]></category>
+    <category><![CDATA[servicio ecosistémico]]></category>
+    <category><![CDATA[agua potable rural]]></category>
+    <category><![CDATA[restauración bosque nativo]]></category>
+    <category><![CDATA[Chile]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1f31ce8b5258.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1f31ce8b5258.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1f31ce8b5258.jpg"/>
+    <media:description type="plain"><![CDATA[Encantador paisaje rural con casas situadas entre árboles en Araucanía, Chile. — Foto: Alan Cabello (pexels-free)]]></media:description>
+  </item>
+  <item>
+    <title>Expectativas empresariales caen a 49,5 puntos y entran a terreno pesimista</title>
+    <link>https://ahora.com.pe/economia/expectativas-empresariales-caen-49-5-puntos-octubre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/expectativas-empresariales-caen-49-5-puntos-octubre</guid>
+    <pubDate>Sat, 07 Nov 2026 15:30:12 GMT</pubDate>
+    <description><![CDATA[Las expectativas empresariales sobre la economía peruana a tres meses cayeron a 49,5 puntos en octubre, según el BCRP, mientras BBVA Research advierte que El Niño restaría 1,3 puntos al PBI de 2027.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[expectativas empresariales]]></category>
+    <category><![CDATA[BCRP]]></category>
+    <category><![CDATA[El Niño costero]]></category>
+    <category><![CDATA[PBI 2027]]></category>
+    <category><![CDATA[BBVA Research]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/81b0f1c22594.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/81b0f1c22594.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/81b0f1c22594.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Genoa recibe a Milan por la fecha 11 de la Serie A en el Luigi Ferraris</title>
+    <link>https://ahora.com.pe/deportes/genoa-milan-fecha-11-serie-a-previa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/genoa-milan-fecha-11-serie-a-previa</guid>
+    <pubDate>Sat, 07 Nov 2026 15:20:07 GMT</pubDate>
+    <description><![CDATA[Genoa y Milan se enfrentan el domingo 8 de noviembre por la fecha 11 de la Serie A en el estadio Luigi Ferraris, con arbitraje de Davide Massa. Genoa es undécimo con 13 puntos y Milan quinto con 21.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Genoa]]></category>
+    <category><![CDATA[Milan]]></category>
+    <category><![CDATA[Serie A]]></category>
+    <category><![CDATA[Luigi Ferraris]]></category>
+    <category><![CDATA[Davide Massa]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/898ce1cf8371.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/898ce1cf8371.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/898ce1cf8371.jpg"/>
+    <media:description type="plain"><![CDATA[Todo lo que tienes que saber en la previa de Genoa vs Milan. El duelo, a disputarse  en el estadio Luigi Ferraris el domingo 8 de noviembre, comenzará  a las 09:00 horas y será dirigido por Davide Massa. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>El protocolo del Heliodoro no prevé que la ambulancia entre al campo</title>
+    <link>https://ahora.com.pe/deportes/protocolo-heliodoro-ambulancia-jesus-de-miguel</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/protocolo-heliodoro-ambulancia-jesus-de-miguel</guid>
+    <pubDate>Sat, 07 Nov 2026 15:00:12 GMT</pubDate>
+    <description><![CDATA[El protocolo del estadio Heliodoro Rodríguez López establece que la ambulancia solo entra al campo si los médicos activan la inmovilización absoluta, un supuesto que no se dio en la atención a Jesús de Miguel, fallecido tras un choque con el portero del Andorra.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Jesús de Miguel]]></category>
+    <category><![CDATA[Tenerife]]></category>
+    <category><![CDATA[protocolo emergencias]]></category>
+    <category><![CDATA[ambulancia]]></category>
+    <category><![CDATA[Heliodoro Rodríguez López]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/16ee58318035.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/16ee58318035.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/16ee58318035.webp"/>
+    <media:description type="plain"><![CDATA[La muerte de<b> Jesús de Miguel </b>hace cuatro días en el Heliodoro Rodríguez López de Tenerife,<a href="https://www.mundodeportivo.com/futbol/tenerife/20261103/1004246522/muere-jesus-miguel-rotos-dolor.html" target="_blank"> tras un fatal choque con el portero del Andorra Jesús Owono</a>, deja alg — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Elejalder Godos cuestiona a Diego Romero en la selección: &quot;¿Qué hace ahí?&quot;</title>
+    <link>https://ahora.com.pe/deportes/elejalder-godos-critica-convocatoria-diego-romero-seleccion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/elejalder-godos-critica-convocatoria-diego-romero-seleccion</guid>
+    <pubDate>Sat, 07 Nov 2026 13:40:07 GMT</pubDate>
+    <description><![CDATA[Elejalder Godos criticó la convocatoria de Diego Romero a la selección peruana para el amistoso ante Bolivia, señalando que el arquero es suplente en Universitario y no atraviesa un buen momento.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Diego Romero]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Elejalder Godos]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Mano Menezes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7b7d077e1c61.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7b7d077e1c61.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7b7d077e1c61.jpg"/>
+    <media:description type="plain"><![CDATA[Elejalder Godos criticó el llamado de Diego Romero a la selección peruana y recordó que el arquero dejó de ser titular en Universitario. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Real Sociedad recibe a Rayo Vallecano por la fecha 12 de LaLiga en Anoeta</title>
+    <link>https://ahora.com.pe/deportes/real-sociedad-rayo-vallecano-fecha-12-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/real-sociedad-rayo-vallecano-fecha-12-laliga</guid>
+    <pubDate>Sat, 07 Nov 2026 12:00:12 GMT</pubDate>
+    <description><![CDATA[Real Sociedad, quinto con 19 puntos, recibe a Rayo Vallecano, duodécimo con 12, este domingo 8 de noviembre en Anoeta por la fecha 12 de LaLiga.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Sociedad]]></category>
+    <category><![CDATA[Rayo Vallecano]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[Anoeta]]></category>
+    <category><![CDATA[fecha 12]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/5037c9c68e07.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/5037c9c68e07.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/5037c9c68e07.jpg"/>
+    <media:description type="plain"><![CDATA[En la previa de Real Sociedad vs Rayo Vallecano, todo lo que tienes que saber de la cita que está prevista para este domingo 8 de noviembre desde las 10:15 horas en Anoeta. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Unión Europea exige nuevo paquete educativo desde 2027 con foco en IA y capacidades básicas</title>
+    <link>https://ahora.com.pe/educacion/union-europea-paquete-educativo-2027-ia</link>
+    <guid isPermaLink="true">https://ahora.com.pe/educacion/union-europea-paquete-educativo-2027-ia</guid>
+    <pubDate>Sat, 07 Nov 2026 11:50:06 GMT</pubDate>
+    <description><![CDATA[La Comisión Europea presentó un paquete de educación con cuatro prioridades: capacidades básicas, herramientas digitales e IA, profesión docente y formación profesional. El certificado de alfabetización en IA estaría disponible en el curso 2027/2028.]]></description>
+    <dc:creator><![CDATA[Ahora Educacion]]></dc:creator>
+    <category><![CDATA[Educación]]></category>
+    <category><![CDATA[Unión Europea]]></category>
+    <category><![CDATA[paquete educativo]]></category>
+    <category><![CDATA[alfabetización en IA]]></category>
+    <category><![CDATA[capacidades básicas]]></category>
+    <category><![CDATA[formación profesional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/84290f90b30c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/84290f90b30c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/84290f90b30c.jpg"/>
+    <media:description type="plain"><![CDATA[Tras detectar un <b>declive en las capacidades básicas de los alumnos</b> de los Estados miembros, cosa que incluye a España, parece que la Unión Europea ha empezado a mover ficha. Buena prueba de ello es el<b> nuevo paquete de educación y capacidades</b> que la Comisión Europea presentaba esta mism — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Fermín: &quot;El Atlético nos hizo daño y debemos controlar los detalles&quot;</title>
+    <link>https://ahora.com.pe/deportes/fermin-atletico-dano-controlar-detalles</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fermin-atletico-dano-controlar-detalles</guid>
+    <pubDate>Sat, 07 Nov 2026 11:40:07 GMT</pubDate>
+    <description><![CDATA[Fermín López analiza en una entrevista exclusiva a Mundo Deportivo la visita del Barça al Atlético de Madrid, un duelo marcado por las eliminaciones de la temporada pasada.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Fermín López]]></category>
+    <category><![CDATA[Barça]]></category>
+    <category><![CDATA[Atlético de Madrid]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <category><![CDATA[Primera División]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/507d6dd5c053.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/507d6dd5c053.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/507d6dd5c053.webp"/>
+    <media:description type="plain"><![CDATA[<b>Fermín López,</b> de 23 años, alcanzó los 150 partidos con la camiseta del <b>Barça </b>el pasado martes contra el <b>Aston Villa </b>(3-0) en la <b>Champions League</b>, uno de los retos de la temporada, pero ahora toca la visita al <b>Atlético de Madrid,</b> con cuentas pendientes de la pasada — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Monza busca cortar su mala racha ante Atalanta por la fecha 11 de la Serie A</title>
+    <link>https://ahora.com.pe/deportes/monza-atalanta-fecha-11-serie-a</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/monza-atalanta-fecha-11-serie-a</guid>
+    <pubDate>Sat, 07 Nov 2026 10:20:06 GMT</pubDate>
+    <description><![CDATA[Monza, penúltimo con 7 puntos, recibe a Atalanta, decimotercero con 11, en la fecha 11 de la Serie A. Ambos llegan tras derrotas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Monza]]></category>
+    <category><![CDATA[Atalanta]]></category>
+    <category><![CDATA[Serie A]]></category>
+    <category><![CDATA[fecha 11]]></category>
+    <category><![CDATA[Brianteo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4900a1e4be48.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4900a1e4be48.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4900a1e4be48.jpg"/>
+    <media:description type="plain"><![CDATA[Atalanta se mide ante Monza en el estadio Brianteo el domingo 8 de noviembre a las 09:00 horas. El partido será supervisado por Claudio Allegretta. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Luis de la Fuente mantiene el entrenamiento abierto al público en Las Rozas</title>
+    <link>https://ahora.com.pe/deportes/espana-entrenamiento-abierto-las-rozas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/espana-entrenamiento-abierto-las-rozas</guid>
+    <pubDate>Sat, 07 Nov 2026 10:00:12 GMT</pubDate>
+    <description><![CDATA[España arranca su concentración en Las Rozas con un entrenamiento abierto al público que Luis de la Fuente considera intocable tras ganar la segunda estrella en julio.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[selección española]]></category>
+    <category><![CDATA[Luis de la Fuente]]></category>
+    <category><![CDATA[Las Rozas]]></category>
+    <category><![CDATA[entrenamiento abierto]]></category>
+    <category><![CDATA[Liga de Naciones]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f0f9cd65b3a1.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f0f9cd65b3a1.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f0f9cd65b3a1.webp"/>
+    <media:description type="plain"><![CDATA[Este lunes la afición española podrá volver a ver a sus ídolos y los flamantes campeones del mundo en directo. Será aprovechando el primero de los entrenamientos que la <b>selección española </b>realizará el próximo lunes en la Ciudad del Fútbol.&nbsp;Sesión que tendrá lugar apenas horas después del — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Lazio visita a Napoli por la fecha 11 con el liderato de la Serie A en disputa</title>
+    <link>https://ahora.com.pe/deportes/lazio-visita-napoli-fecha-11-serie-a</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/lazio-visita-napoli-fecha-11-serie-a</guid>
+    <pubDate>Sat, 07 Nov 2026 08:40:06 GMT</pubDate>
+    <description><![CDATA[Lazio, líder de la Serie A con 28 puntos, visita a Napoli por la fecha 11 en el estadio Diego Armando Maradona, con Luca Pairetto como árbitro designado.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Lazio]]></category>
+    <category><![CDATA[Napoli]]></category>
+    <category><![CDATA[Serie A]]></category>
+    <category><![CDATA[fecha 11]]></category>
+    <category><![CDATA[Diego Armando Maradona]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e84d470d529d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e84d470d529d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e84d470d529d.jpg"/>
+    <media:description type="plain"><![CDATA[Napoli y Lazio se miden  en el estadio Diego Armando Maradona el domingo 8 de noviembre a las 06:30 horas y Luca Pairetto es el elegido para dirigir el partido. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Suboficial PNP y campeón del Mundialito de El Porvenir muere al chocar su moto contra una cúster en Comas</title>
+    <link>https://ahora.com.pe/policiales/suboficial-pnp-campeon-mundialito-muere-comas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/suboficial-pnp-campeon-mundialito-muere-comas</guid>
+    <pubDate>Sat, 07 Nov 2026 08:10:06 GMT</pubDate>
+    <description><![CDATA[El suboficial PNP Joel André Bustamante Cano, de 33 años y campeón del Mundialito de El Porvenir, murió al chocar su moto contra una cúster en Comas.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Joel Bustamante Cano]]></category>
+    <category><![CDATA[Comas]]></category>
+    <category><![CDATA[Mundialito de El Porvenir]]></category>
+    <category><![CDATA[Policía Nacional]]></category>
+    <category><![CDATA[accidente de tránsito]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a58bcb69798d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a58bcb69798d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a58bcb69798d.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Sunass orienta a vecinos de Lima Sur afectados por aniegos para reclamar daños</title>
+    <link>https://ahora.com.pe/regional/sunass-orienta-vecinos-afectados-aniegos-lima-sur</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sunass-orienta-vecinos-afectados-aniegos-lima-sur</guid>
+    <pubDate>Sat, 07 Nov 2026 07:00:12 GMT</pubDate>
+    <description><![CDATA[Sunass monitorea la atención a vecinos afectados por aniegos tras lluvias en Lima Sur y los orienta para formalizar denuncias y activar la póliza de seguros de Sedapal.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Sunass]]></category>
+    <category><![CDATA[Lima Sur]]></category>
+    <category><![CDATA[aniegos]]></category>
+    <category><![CDATA[Sedapal]]></category>
+    <category><![CDATA[póliza de seguros]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/24f2b94c38f8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/24f2b94c38f8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/24f2b94c38f8.jpg"/>
+    <media:description type="plain"><![CDATA[Límites: OCHA/IGN Perú · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Universitario recibe a Deportivo Moquegua por la fecha 16 del Clausura</title>
+    <link>https://ahora.com.pe/deportes/universitario-deportivo-moquegua-fecha-16-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-deportivo-moquegua-fecha-16-clausura</guid>
+    <pubDate>Sat, 07 Nov 2026 07:00:11 GMT</pubDate>
+    <description><![CDATA[Universitario de Deportes recibe este domingo a Deportivo Moquegua en el Estadio Monumental por la jornada 16 del Torneo Clausura 2026, con los cremas en la lucha por el título y los sureños urgidos de puntos para evitar el descenso.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Deportivo Moquegua]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[Estadio Monumental]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f40e0e202e15.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f40e0e202e15.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f40e0e202e15.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Protesta por falta de agua en Huánuco termina con gases lacrimógenos y dos ancianos afectados</title>
+    <link>https://ahora.com.pe/regional/protesta-agua-huanuco-gases-lacrimogenos-ancianos-afectados</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/protesta-agua-huanuco-gases-lacrimogenos-ancianos-afectados</guid>
+    <pubDate>Sat, 07 Nov 2026 06:40:07 GMT</pubDate>
+    <description><![CDATA[Una protesta por el desabastecimiento de agua potable, los elevados cobros y la presunta distribución de agua no apta para consumo humano se realizó este miércoles en Huánuco. La Policía lanzó bombas lacrimógenas frente a las instalaciones de Seda Huánuco y al menos dos adultos mayores resultaron afectados. Tras la movilización, dos gerentes de la empresa presentaron su renuncia.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[protesta Huánuco]]></category>
+    <category><![CDATA[Seda Huánuco]]></category>
+    <category><![CDATA[falta de agua]]></category>
+    <category><![CDATA[gases lacrimógenos]]></category>
+    <category><![CDATA[adultos mayores afectados]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bc13d318b0d9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bc13d318b0d9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bc13d318b0d9.jpg"/>
+    <media:description type="plain"><![CDATA[Límites: OCHA/IGN Perú · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Francesco Andrealli, capitán del Como juvenil, llega a Lima para unirse a la Selección Peruana</title>
+    <link>https://ahora.com.pe/deportes/francesco-andrealli-seleccion-peruana-como-juvenil</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/francesco-andrealli-seleccion-peruana-como-juvenil</guid>
+    <pubDate>Sat, 07 Nov 2026 06:40:06 GMT</pubDate>
+    <description><![CDATA[Francesco Andrealli, capitán del Como juvenil y convocado por primera vez a la Selección Peruana Mayor, llega a Lima el 10 de noviembre para unirse al equipo de cara al partido ante Bolivia y al Sudamericano Sub20.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Francesco Andrealli]]></category>
+    <category><![CDATA[Selección Peruana]]></category>
+    <category><![CDATA[Como juvenil]]></category>
+    <category><![CDATA[Sudamericano Sub20]]></category>
+    <category><![CDATA[Manuel Barreto]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c6add3bae25f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c6add3bae25f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c6add3bae25f.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>EEUU lanzó 480 millones de agujas al espacio en 1963: aún orbitan la Tierra</title>
+    <link>https://ahora.com.pe/tecnologia/proyecto-west-ford-agujas-espacio-1963</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/proyecto-west-ford-agujas-espacio-1963</guid>
+    <pubDate>Sat, 07 Nov 2026 06:30:09 GMT</pubDate>
+    <description><![CDATA[En plena Guerra Fría, Estados Unidos lanzó 480 millones de agujas de cobre al espacio para crear una antena artificial. Aunque el cinturón se disipó en semanas, una parte quedó agrupada y sigue orbitando la Tierra seis décadas después.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[Proyecto West Ford]]></category>
+    <category><![CDATA[Guerra Fría]]></category>
+    <category><![CDATA[basura espacial]]></category>
+    <category><![CDATA[agujas de cobre]]></category>
+    <category><![CDATA[ionosfera artificial]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0e90bebcda46.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0e90bebcda46.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0e90bebcda46.jpg"/>
+    <media:description type="plain"><![CDATA[Banderas de dominio público · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco: identifican a presuntos responsables de matar a una osa de anteojos y sus dos crías</title>
+    <link>https://ahora.com.pe/regional/huanuco-identifican-presuntos-responsables-muerte-osa-anteojos-crias</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/huanuco-identifican-presuntos-responsables-muerte-osa-anteojos-crias</guid>
+    <pubDate>Sat, 07 Nov 2026 06:00:09 GMT</pubDate>
+    <description><![CDATA[La Policía de Huánuco identificó a presuntos responsables de la muerte de una osa de anteojos y sus dos crías en Churubamba, tras la difusión de fotografías en redes sociales. Un testigo protegido señaló a al menos tres pobladores y las diligencias continúan.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[oso de anteojos]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[Churubamba]]></category>
+    <category><![CDATA[Policía Nacional]]></category>
+    <category><![CDATA[especie protegida]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/80618a5079fe.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/80618a5079fe.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/80618a5079fe.jpg"/>
+    <media:description type="plain"><![CDATA[Límites: OCHA/IGN Perú · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Juntos por el Perú propone ampliar el Reinfo hasta diciembre de 2028</title>
+    <link>https://ahora.com.pe/politica/juntos-por-el-peru-ampliar-reinfo-2028</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/juntos-por-el-peru-ampliar-reinfo-2028</guid>
+    <pubDate>Sat, 07 Nov 2026 05:50:07 GMT</pubDate>
+    <description><![CDATA[Juntos por el Perú presentó un proyecto para ampliar el Reinfo hasta el 31 de diciembre del 2028, según El Comercio. La propuesta lleva el sello de la bancada que preside la Comisión de Energía y Minas.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Reinfo]]></category>
+    <category><![CDATA[Juntos por el Perú]]></category>
+    <category><![CDATA[Yenifer Paredes]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[formalización minera]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fb14339bd35c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fb14339bd35c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fb14339bd35c.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Ejecutivo busca calificar como grupos hostiles a cinco bandas criminales</title>
+    <link>https://ahora.com.pe/politica/ejecutivo-grupos-hostiles-cinco-bandas-criminales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/ejecutivo-grupos-hostiles-cinco-bandas-criminales</guid>
+    <pubDate>Sat, 07 Nov 2026 05:50:06 GMT</pubDate>
+    <description><![CDATA[El Poder Ejecutivo busca calificar como grupos hostiles a Los Pulpos, La Jauría, Tren de Aragua, Los Choneros y Comando Vermelho. La categoría ampliaría la intervención de las Fuerzas Armadas. Un especialista en seguridad cuestionó la falta de medidas concretas.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[grupos hostiles]]></category>
+    <category><![CDATA[Los Pulpos]]></category>
+    <category><![CDATA[Tren de Aragua]]></category>
+    <category><![CDATA[La Jauría]]></category>
+    <category><![CDATA[Comando Vermelho]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/763495c06998.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/763495c06998.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/763495c06998.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Operativo en Tambopata halla 20 dragas y 18 campamentos de minería ilegal</title>
+    <link>https://ahora.com.pe/policiales/tambopata-operativo-dragas-campamentos-mineria-ilegal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/tambopata-operativo-dragas-campamentos-mineria-ilegal</guid>
+    <pubDate>Sat, 07 Nov 2026 05:50:05 GMT</pubDate>
+    <description><![CDATA[Un operativo conjunto de la FEMA y la Marina de Guerra del Perú halló 20 dragas y al menos 18 campamentos mineros en casi 20 kilómetros de la Reserva Nacional Tambopata, en Madre de Dios. El fiscal Frank Almanza sostuvo que la minería ilegal lejos de disminuir está en aumento.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Tambopata]]></category>
+    <category><![CDATA[Madre de Dios]]></category>
+    <category><![CDATA[FEMA]]></category>
+    <category><![CDATA[operativo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3d5983dbf1bd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3d5983dbf1bd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3d5983dbf1bd.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Expovida Huánuco 2026 reunirá a 40 organizaciones y emprendimientos</title>
+    <link>https://ahora.com.pe/regional/expovida-huanuco-2026-40-organizaciones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/expovida-huanuco-2026-40-organizaciones</guid>
+    <pubDate>Sat, 07 Nov 2026 05:40:05 GMT</pubDate>
+    <description><![CDATA[Expovida Huánuco 2026 reunirá a 40 organizaciones de productores y emprendimientos del 12 al 15 de noviembre en la Plaza de Armas de Huánuco. La feria incluye degustaciones, cóctel empresarial y una subasta de cafés especiales, impulsada por Devida.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Expovida Huánuco]]></category>
+    <category><![CDATA[Devida]]></category>
+    <category><![CDATA[cafés especiales]]></category>
+    <category><![CDATA[productores]]></category>
+    <category><![CDATA[feria]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6e1ebbf6733b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6e1ebbf6733b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6e1ebbf6733b.jpg"/>
+    <media:description type="plain"><![CDATA[Límites: OCHA/IGN Perú · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>La tragedia de Ángel Avilés: el infarto que enlutó al fútbol peruano en 1975</title>
+    <link>https://ahora.com.pe/deportes/tragedia-angel-aviles-estadio-nacional-1975</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/tragedia-angel-aviles-estadio-nacional-1975</guid>
+    <pubDate>Sat, 07 Nov 2026 05:30:09 GMT</pubDate>
+    <description><![CDATA[Ángel Avilés Bolaños, de 28 años, falleció por un infarto masivo al miocardio mientras jugaba por el Deportivo Junín ante Atlético Chalaco en el Estadio Nacional, en diciembre de 1975. El partido se suspendió y el país guardó silencio en su memoria.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Ángel Avilés Bolaños]]></category>
+    <category><![CDATA[Deportivo Junín]]></category>
+    <category><![CDATA[Estadio Nacional]]></category>
+    <category><![CDATA[infarto al miocardio]]></category>
+    <category><![CDATA[Jesús de Miguel]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/41ef5220ab6e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/41ef5220ab6e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/41ef5220ab6e.jpg"/>
+    <media:description type="plain"><![CDATA[The National Stadium in Lima Peru from Andrés Avelino Cáceres Park in Jesus Maria — Foto: Kieran Proctor (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>FPV falla a favor de Alianza Lima por cuatro extranjeras de Regatas: 3-0</title>
+    <link>https://ahora.com.pe/deportes/fpv-fallo-alianza-lima-regatas-cuatro-extranjeras</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fpv-fallo-alianza-lima-regatas-cuatro-extranjeras</guid>
+    <pubDate>Sat, 07 Nov 2026 05:20:06 GMT</pubDate>
+    <description><![CDATA[La FPV resolvió el reclamo de Alianza Lima por la alineación indebida de cuatro extranjeras en Regatas y modificó el resultado del clásico a 3-0. Regatas puede apelar hasta el sábado 7 de noviembre.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Regatas Lima]]></category>
+    <category><![CDATA[FPV]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[cuatro extranjeras]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b3c9eb6511ee.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b3c9eb6511ee.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b3c9eb6511ee.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>ANA limpia ríos y quebradas en seis regiones ante El Niño con S/ 179 millones</title>
+    <link>https://ahora.com.pe/sociedad/ana-limpieza-rios-quebradas-fenomeno-nino-179-millones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/ana-limpieza-rios-quebradas-fenomeno-nino-179-millones</guid>
+    <pubDate>Sat, 07 Nov 2026 05:20:05 GMT</pubDate>
+    <description><![CDATA[La Autoridad Nacional del Agua ejecuta trabajos de limpieza y descolmatación en seis regiones del país con un presupuesto cercano a S/ 179 millones. Hasta ahora retiró 2.64 millones de metros cúbicos de material y destinó más de S/ 50 millones a barreras dinámicas en Lima y Huarochirí.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[ANA]]></category>
+    <category><![CDATA[Fenómeno El Niño]]></category>
+    <category><![CDATA[descolmatación de ríos]]></category>
+    <category><![CDATA[barreras dinámicas]]></category>
+    <category><![CDATA[huaicos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8b6feb676a3a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8b6feb676a3a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8b6feb676a3a.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  </channel>
+</rss>
