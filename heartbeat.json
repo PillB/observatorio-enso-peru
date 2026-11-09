@@ -1,38 +1,23 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-07T04:25:43+00:00",
+ "at": "2026-11-09T03:58:15+00:00",
  "result": "ok",
- "reachable": "43/52",
+ "reachable": "36/44",
  "summary": {
-  "enfen": "3/4",
+  "enfen": "4/4",
   "igp": "1/1",
-  "senamhi": "9/9",
-  "ana": "3/3",
+  "senamhi": "8/8",
+  "ana": "2/2",
   "imarpe": "5/5",
   "cenepred": "0/1",
-  "archive": "0/1",
-  "bnp": "1/1",
-  "contraloria": "1/1",
-  "midagri": "1/1",
-  "unsa": "1/1",
-  "enfen-docs": "3/9",
+  "enfen-docs": "1/8",
   "imarpe-repo": "15/15"
  },
  "failures": [
   {
-   "url": "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen",
-   "class": "dns",
-   "error": "ConnectError: [Errno 8] nodename nor servname provided, or not known"
-  },
-  {
    "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
    "class": "timeout",
    "error": "ConnectTimeout: timed out"
-  },
-  {
-   "url": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
-   "class": "timeout",
-   "error": "ReadTimeout: The read operation timed out"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
@@ -67,6 +52,11 @@
    "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-21-2026/",
    "status": 404,
    "class": "http-4xx"
+  },
+  {
+   "url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n19-al-28-de-octubre-de-2026/?wpdmdl=2202",
+   "class": "timeout",
+   "error": "ReadTimeout: The read operation timed out"
   }
  ],
  "collector": {
@@ -78,19 +68,16 @@
   "os": "macOS-26.6.2",
   "python": "3.12.15",
   "git": "2.50.1 (Apple Git-155)",
-  "consecutive_failures": 0,
+  "consecutive_failures": 1,
   "token_expires_at": "2027-05-10T05:00:00+00:00"
  },
  "registry": {
-  "origin": "github",
-  "generated_at": "2026-11-02T23:10:49+00:00",
-  "sources": 219,
-  "peru_server": 21
+  "origin": "kit",
+  "generated_at": "2026-10-26T17:52:39+00:00",
+  "sources": 201,
+  "peru_server": 14,
+  "age_days": 13,
+  "note": "GitHub no respondió (RemoteProtocolError)"
  },
- "probes": {
-  "dns": 5,
-  "http-403": 2,
-  "ok": 1
- },
- "carried": 1
+ "carried": 8
 }
