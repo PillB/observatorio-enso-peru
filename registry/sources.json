@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-11-02T23:10:49+00:00",
+ "generated_at": "2026-11-09T20:02:44+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -1152,18 +1152,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "allowed"
     },
     "n8n": {
@@ -1172,7 +1169,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -1180,7 +1176,6 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=pcm&sort_by=recent": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -1350,8 +1345,7 @@
     },
     "n8n": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     }
    },
    "channels": [
@@ -2272,18 +2266,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "allowed"
     },
     "n8n": {
@@ -2292,7 +2283,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -2300,7 +2290,6 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sort_by=recent": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -4301,13 +4290,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -5527,18 +5516,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "allowed"
     },
     "n8n": {
@@ -5547,7 +5533,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -5555,7 +5540,6 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sort_by=recent": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -5773,18 +5757,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "allowed"
     },
     "n8n": {
@@ -5793,7 +5774,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -5801,7 +5781,6 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sort_by=recent": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -6202,18 +6181,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "allowed"
     },
     "n8n": {
@@ -6222,7 +6198,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -6230,7 +6205,6 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionloreto&sort_by=recent": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -6755,18 +6729,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "allowed"
     },
     "n8n": {
@@ -6775,7 +6746,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -6783,7 +6753,6 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sort_by=recent": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -7192,13 +7161,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "n8n": {
      "class": "ok",
@@ -7247,18 +7216,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "allowed"
     },
     "n8n": {
@@ -7267,7 +7233,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -7275,7 +7240,6 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sort_by=recent": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -8840,18 +8804,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "allowed"
     },
     "n8n": {
@@ -8860,7 +8821,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -8868,7 +8828,6 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionucayali&sort_by=recent": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
