@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Mon, 09 Nov 2026 13:23:15 GMT</lastBuildDate>
+    <pubDate>Sun, 08 Nov 2026 11:30:12 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Sismo de magnitud 3.8 se registró en Tumbes, según el IGP</title>
+    <link>https://ahora.com.pe/nacional/sismo-magnitud-3-8-tumbes-igp</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/sismo-magnitud-3-8-tumbes-igp</guid>
+    <pubDate>Sun, 08 Nov 2026 11:30:12 GMT</pubDate>
+    <description><![CDATA[Un sismo de magnitud 3.8 remeció la madrugada del sábado 7 de noviembre en Tumbes, con epicentro a 57 km al este de Zarumilla, según el IGP. El movimiento tuvo una profundidad de 38 km e intensidad II-III. Indeci recomienda mantener lista la mochila de emergencia.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[sismo Tumbes]]></category>
+    <category><![CDATA[IGP]]></category>
+    <category><![CDATA[Zarumilla]]></category>
+    <category><![CDATA[mochila de emergencia]]></category>
+    <category><![CDATA[Indeci]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/691c34291c65.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/691c34291c65.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/691c34291c65.jpg"/>
+    <media:description type="plain"><![CDATA[Peru-27 — Foto: archer10 (Dennis) (openverse-by-sa)]]></media:description>
+  </item>
+  <item>
+    <title>El Ceuta atribuye a la &quot;invasión&quot; de julio los problemas para fichar esta temporada</title>
+    <link>https://ahora.com.pe/deportes/ceuta-invasion-julio-problemas-fichajes</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/ceuta-invasion-julio-problemas-fichajes</guid>
+    <pubDate>Mon, 09 Nov 2026 13:20:06 GMT</pubDate>
+    <description><![CDATA[El Ceuta denuncia que la &quot;invasión&quot; de emigrantes de finales de julio condicionó la confección de su plantilla y complicó los fichajes de la temporada, según su director deportivo, Eduardo Villegas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Ceuta]]></category>
+    <category><![CDATA[Eduardo Villegas]]></category>
+    <category><![CDATA[Sergio Lobera]]></category>
+    <category><![CDATA[José Juan Romero]]></category>
+    <category><![CDATA[fichajes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e0509474113c.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e0509474113c.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e0509474113c.webp"/>
+    <media:description type="plain"><![CDATA[El <b>Ceuta </b>ha destacado este lunes que la "invasión" sufrida por la ciudad por parte de miles de emigrantes a finales del pasado mes de julio ha condicionado la confección de la plantilla para esta temporada y causado "muchísimos problemas", ante la decisión de muchos futbolistas de no firmar p — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Ministro Cuba buscará reunirse con todas las bancadas para explicar medidas frente al FEN</title>
+    <link>https://ahora.com.pe/politica/elmer-cuba-reuniones-bancadas-medidas-fen</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/elmer-cuba-reuniones-bancadas-medidas-fen</guid>
+    <pubDate>Mon, 09 Nov 2026 12:50:06 GMT</pubDate>
+    <description><![CDATA[El ministro de Economía y Finanzas, Elmer Cuba, adelantó que se reunirá con todas las bancadas para explicar las medidas frente al fenómeno El Niño y escuchar sus planteamientos, en un contexto de diálogo entre Ejecutivo y Congreso por créditos suplementarios y el presupuesto nacional.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Elmer Cuba]]></category>
+    <category><![CDATA[fenómeno El Niño]]></category>
+    <category><![CDATA[bancadas del Congreso]]></category>
+    <category><![CDATA[Ministerio de Economía y Finanzas]]></category>
+    <category><![CDATA[OCDE]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8fe27f4e1446.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8fe27f4e1446.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8fe27f4e1446.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Fenpetrol cuestiona entrega de Talara a privados y pide fiscalizar crédito de US$475 millones</title>
+    <link>https://ahora.com.pe/economia/fenpetrol-cuestiona-talara-credito-petroperu</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/fenpetrol-cuestiona-talara-credito-petroperu</guid>
+    <pubDate>Mon, 09 Nov 2026 12:10:06 GMT</pubDate>
+    <description><![CDATA[La Federación Nacional de Trabajadores Petroleros cuestiona la falta de información sobre la eventual administración privada de la refinería de Talara, que concentra el 65% de las ventas de Petroperú, y pide fiscalizar el crédito de US$475 millones y la deuda de US$3.650 millones.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Petroperú]]></category>
+    <category><![CDATA[Talara]]></category>
+    <category><![CDATA[Fenpetrol]]></category>
+    <category><![CDATA[ProInversión]]></category>
+    <category><![CDATA[Contraloría]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ab6923680265.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ab6923680265.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ab6923680265.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima empató con Los Chankas en Andahuaylas y los memes invadieron las redes</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-empate-los-chankas-andahuaylas-memes</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-empate-los-chankas-andahuaylas-memes</guid>
+    <pubDate>Mon, 09 Nov 2026 12:10:05 GMT</pubDate>
+    <description><![CDATA[Alianza Lima igualó ante Los Chankas en Andahuaylas con su pase a la final nacional ya asegurado, y el resultado generó una ola de memes en redes sociales.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Los Chankas]]></category>
+    <category><![CDATA[Andahuaylas]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[memes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/54d73617b835.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/54d73617b835.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/54d73617b835.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Inter vence 2-0 al Como y corta su racha de seis triunfos</title>
+    <link>https://ahora.com.pe/deportes/inter-2-0-como-serie-a</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/inter-2-0-como-serie-a</guid>
+    <pubDate>Mon, 09 Nov 2026 10:10:05 GMT</pubDate>
+    <description><![CDATA[El Inter derrotó 2-0 al Como en San Siro con goles de Francesco Pio Esposito y Marcus Thuram, poniendo fin a la racha de seis victorias consecutivas del equipo de Cesc Fàbregas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Inter]]></category>
+    <category><![CDATA[Como]]></category>
+    <category><![CDATA[Cesc Fàbregas]]></category>
+    <category><![CDATA[Serie A]]></category>
+    <category><![CDATA[San Siro]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2adadf776d91.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2adadf776d91.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2adadf776d91.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Papa León XIV llega al Perú este miércoles para gira apostólica de seis días</title>
+    <link>https://ahora.com.pe/regional/papa-leon-xiv-visita-peru-noviembre-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/papa-leon-xiv-visita-peru-noviembre-2026</guid>
+    <pubDate>Mon, 09 Nov 2026 09:20:07 GMT</pubDate>
+    <description><![CDATA[El papa León XIV inicia el miércoles 11 de noviembre una visita apostólica de seis días al Perú, con escalas en Lima, Chiclayo, Cajamarca, Cusco y Pucallpa, y un despliegue de más de 15 000 efectivos de seguridad.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[papa León XIV]]></category>
+    <category><![CDATA[visita apostólica Perú]]></category>
+    <category><![CDATA[Callao]]></category>
+    <category><![CDATA[Pucallpa]]></category>
+    <category><![CDATA[seguridad papal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/703d0fe11a20.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/703d0fe11a20.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/703d0fe11a20.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima vs San Martín: fecha 5 del vóley se juega el sábado 14 desde las 7 p.m.</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-san-martin-fecha-5-liga-voley</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-san-martin-fecha-5-liga-voley</guid>
+    <pubDate>Mon, 09 Nov 2026 08:50:06 GMT</pubDate>
+    <description><![CDATA[Alianza Lima y San Martín se enfrentan el sábado 14 de noviembre a las 7 p.m. por la fecha 5 de la Liga Peruana de Vóley 2026-27, con transmisión de Latina y entradas desde S/ 25 en Joinnus.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[San Martín]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[fecha 5]]></category>
+    <category><![CDATA[Latina]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/865e7ecfd4b8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/865e7ecfd4b8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/865e7ecfd4b8.jpg"/>
+    <media:description type="plain"><![CDATA[¡Se viene el nuevo clásico del vóley nacional! Alianza Lima se medirá ante la San Martín por la Liga Peruana de Vóley. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>COATI: nuevo método reconstruye trayectorias acopladas de ARN y cromatina</title>
+    <link>https://ahora.com.pe/tecnologia/coati-reconstruye-trayectorias-arn-cromatina</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/coati-reconstruye-trayectorias-arn-cromatina</guid>
+    <pubDate>Mon, 09 Nov 2026 08:30:08 GMT</pubDate>
+    <description><![CDATA[Investigadores presentan COATI, un método de transporte óptimo que reconstruye trayectorias acopladas de ARN y cromatina a partir de datos de secuenciación de células individuales en distintos estadios del desarrollo.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[COATI]]></category>
+    <category><![CDATA[transporte óptimo]]></category>
+    <category><![CDATA[ARN de célula única]]></category>
+    <category><![CDATA[cromatina]]></category>
+    <category><![CDATA[desarrollo celular]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b1004e2b75b7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b1004e2b75b7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b1004e2b75b7.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima empató 1-1 con Los Chankas en Andahuaylas y mantiene su invicto en altura</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-empato-1-1-chankas-andahuaylas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-empato-1-1-chankas-andahuaylas</guid>
+    <pubDate>Mon, 09 Nov 2026 07:10:06 GMT</pubDate>
+    <description><![CDATA[Alianza Lima empató 1-1 con Los Chankas en Andahuaylas, mantuvo su invicto en altura y ahora se prepara para las finales de la Liga 1.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Los Chankas]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[invicto en altura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a82d4c3896af.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a82d4c3896af.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a82d4c3896af.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Conor Gallagher, en la órbita del Crystal Palace, Leeds y Everton</title>
+    <link>https://ahora.com.pe/deportes/gallagher-crystal-palace-leeds-everton</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/gallagher-crystal-palace-leeds-everton</guid>
+    <pubDate>Mon, 09 Nov 2026 06:50:06 GMT</pubDate>
+    <description><![CDATA[Crystal Palace, Leeds United y Everton siguen al centrocampista inglés Conor Gallagher, cuyo espacio en el Tottenham se habría reducido tras las incorporaciones de Sandro Tonali y Mateus Fernandes, según Football Insider.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Conor Gallagher]]></category>
+    <category><![CDATA[Tottenham]]></category>
+    <category><![CDATA[Crystal Palace]]></category>
+    <category><![CDATA[Leeds United]]></category>
+    <category><![CDATA[Everton]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1daf3829e5c6.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1daf3829e5c6.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1daf3829e5c6.webp"/>
+    <media:description type="plain"><![CDATA[Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Barcelona remonta 2-1 al Atlético en el Metropolitano y sigue líder de LaLiga</title>
+    <link>https://ahora.com.pe/deportes/barcelona-remonta-atletico-madrid-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/barcelona-remonta-atletico-madrid-laliga</guid>
+    <pubDate>Mon, 09 Nov 2026 05:30:08 GMT</pubDate>
+    <description><![CDATA[Barcelona venció 2-1 al Atlético de Madrid en el Riyadh Air Metropolitano por la fecha 12 de LaLiga. Fermín López marcó un doblete y el conjunto azulgrana se mantiene como único líder con 33 puntos, según La República.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Atlético de Madrid]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[Fermín López]]></category>
+    <category><![CDATA[Hansi Flick]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1f39dc45fc04.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1f39dc45fc04.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1f39dc45fc04.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>El Metropolitano recordó a Jesús de Miguel antes del Atlético-Barcelona</title>
+    <link>https://ahora.com.pe/deportes/homenaje-jesus-de-miguel-metropolitano</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/homenaje-jesus-de-miguel-metropolitano</guid>
+    <pubDate>Mon, 09 Nov 2026 05:10:06 GMT</pubDate>
+    <description><![CDATA[El Atlético de Madrid y el Barcelona homenajearon a Jesús de Miguel, delantero del Tenerife fallecido hace unos días, con camisetas conmemorativas, minuto de silencio y aplausos en el Metropolitano.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Jesús de Miguel]]></category>
+    <category><![CDATA[Metropolitano]]></category>
+    <category><![CDATA[Atlético de Madrid]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9cf5c386f774.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9cf5c386f774.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9cf5c386f774.jpg"/>
+    <media:description type="plain"><![CDATA[Jesus Christ — Foto: Alessandro Bellone (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima avanza a la final del Clausura femenino pero pierde a Estefanía González por lesión</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-final-clausura-femenino-lesion-estefania-gonzalez</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-final-clausura-femenino-lesion-estefania-gonzalez</guid>
+    <pubDate>Mon, 09 Nov 2026 04:00:14 GMT</pubDate>
+    <description><![CDATA[Alianza Lima derrotó 1-0 a Sporting Cristal y clasificó a la final del Torneo Clausura 2026 de la Liga Femenina, pero perdió a Estefanía González por una lesión de tobillo sufrida al minuto 60, de acuerdo con la información difundida.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Estefanía González]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Liga Femenina]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2e8ead942479.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2e8ead942479.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2e8ead942479.jpg"/>
+    <media:description type="plain"><![CDATA[A los 60 minutos, la futbolista de Alianza Lima sufrió una escalofriante lesión y tuvo que ser llevada a una clínica local. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Villarreal y Getafe disputan la jornada 12 en La Cerámica</title>
+    <link>https://ahora.com.pe/deportes/villarreal-getafe-jornada-12-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/villarreal-getafe-jornada-12-laliga</guid>
+    <pubDate>Mon, 09 Nov 2026 02:00:10 GMT</pubDate>
+    <description><![CDATA[Villarreal y Getafe disputan la jornada 12 de LaLiga EA Sports en La Cerámica con un minuto de silencio y homenaje a Jesús de Miguel; el local domina la posesión pero no ha marcado en el arranque.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Villarreal]]></category>
+    <category><![CDATA[Getafe]]></category>
+    <category><![CDATA[LaLiga EA Sports]]></category>
+    <category><![CDATA[La Cerámica]]></category>
+    <category><![CDATA[jornada 12]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7ebc056d43e0.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7ebc056d43e0.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7ebc056d43e0.webp"/>
+    <media:description type="plain"><![CDATA[<b>Villarreal - Getafe | LaLiga EA Sports</b> — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Pucallpa ultima preparativos para la visita del papa León XIV</title>
+    <link>https://ahora.com.pe/politica/papa-leon-xiv-pucallpa-visita-preparativos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/papa-leon-xiv-pucallpa-visita-preparativos</guid>
+    <pubDate>Mon, 09 Nov 2026 01:00:12 GMT</pubDate>
+    <description><![CDATA[El papa León XIV visitará Pucallpa el domingo 15 de noviembre, en la última escala de su gira por Perú. Un deslizamiento en la carretera Federico Basadre retrasó el montaje del escenario para el encuentro con pueblos indígenas.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Papa León XIV]]></category>
+    <category><![CDATA[Pucallpa]]></category>
+    <category><![CDATA[visita papal]]></category>
+    <category><![CDATA[Yarinacocha]]></category>
+    <category><![CDATA[pueblos indígenas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ad6cf14a86fa.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ad6cf14a86fa.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ad6cf14a86fa.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Municipalidad de Lima clausura temporalmente el Estadio San Marcos</title>
+    <link>https://ahora.com.pe/deportes/clausura-temporal-estadio-san-marcos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/clausura-temporal-estadio-san-marcos</guid>
+    <pubDate>Mon, 09 Nov 2026 01:00:11 GMT</pubDate>
+    <description><![CDATA[La Municipalidad de Lima clausuró temporalmente el Estadio San Marcos tras el concierto del 8 de noviembre por incumplir normas de organización y seguridad. La UNMSM debe subsanar las observaciones para reabrir. Los conciertos de The Strokes, Agua Marina y Robbie Williams quedan en duda.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Estadio San Marcos]]></category>
+    <category><![CDATA[Municipalidad de Lima]]></category>
+    <category><![CDATA[clausura temporal]]></category>
+    <category><![CDATA[UNMSM]]></category>
+    <category><![CDATA[conciertos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/180366976b36.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/180366976b36.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/180366976b36.jpg"/>
+    <media:description type="plain"><![CDATA[La comuna capitalina informó que el recinto no podrá albergar eventos deportivos o artísticos hasta que no subsanen las medidas de organización y seguridad, especialmenteen el control de accesos como salidas. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Chankas reclamó penal en el último minuto ante Alianza Lima en Andahuaylas</title>
+    <link>https://ahora.com.pe/deportes/chankas-penal-var-alianza-lima-andahuaylas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/chankas-penal-var-alianza-lima-andahuaylas</guid>
+    <pubDate>Mon, 09 Nov 2026 00:40:05 GMT</pubDate>
+    <description><![CDATA[Los Chankas y Alianza Lima igualaban 1-1 en Andahuaylas por la penúltima fecha del Torneo Clausura 2026, con un penal reclamado en el último minuto tras una supuesta falta de Advíncula sobre Ayarza.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Los Chankas]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[VAR]]></category>
+    <category><![CDATA[Abdiel Ayarza]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/318cb54cc766.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/318cb54cc766.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/318cb54cc766.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Jankauskas vuelve a Anoeta y recibe la camiseta 22 de manos de Xabi Prieto</title>
+    <link>https://ahora.com.pe/deportes/jankauskas-vuelve-anoeta-camiseta-22</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/jankauskas-vuelve-anoeta-camiseta-22</guid>
+    <pubDate>Mon, 09 Nov 2026 00:20:06 GMT</pubDate>
+    <description><![CDATA[Edgaras Jankauskas, exjugador de la Real Sociedad, visitó Anoeta para presenciar el partido ante el Lyon y recibió una camiseta con el dorsal 22 de parte de Xabi Prieto.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Jankauskas]]></category>
+    <category><![CDATA[Real Sociedad]]></category>
+    <category><![CDATA[Anoeta]]></category>
+    <category><![CDATA[Xabi Prieto]]></category>
+    <category><![CDATA[Lyon]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3caf7beb0c4e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3caf7beb0c4e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3caf7beb0c4e.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Municipalidad de Lima clausura temporalmente el Estadio San Marcos por fallas de seguridad</title>
+    <link>https://ahora.com.pe/regional/clausura-temporal-estadio-san-marcos-fallas-seguridad</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/clausura-temporal-estadio-san-marcos-fallas-seguridad</guid>
+    <pubDate>Sun, 08 Nov 2026 23:30:10 GMT</pubDate>
+    <description><![CDATA[La Municipalidad de Lima clausuró de forma temporal el Estadio San Marcos mediante el Acta de Clausura Temporal n.° 0002336, tras detectar incumplimientos en seguridad y control de accesos durante un concierto. La medida afecta eventos deportivos y no deportivos, incluidos los conciertos previstos para noviembre. La comuna exhortó a la Universidad Nacional Mayor de San Marcos a subsanar las observaciones.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Estadio San Marcos]]></category>
+    <category><![CDATA[clausura temporal]]></category>
+    <category><![CDATA[Municipalidad de Lima]]></category>
+    <category><![CDATA[conciertos noviembre]]></category>
+    <category><![CDATA[seguridad]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b7bc5c87593f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b7bc5c87593f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b7bc5c87593f.jpg"/>
+    <media:description type="plain"><![CDATA[La comuna capitalina informó que el recinto no podrá albergar eventos deportivos o artísticos hasta que no subsanen las medidas de organización y seguridad, especialmenteen el control de accesos como salidas. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>El CE Sabadell cederá su camiseta a la campaña solidaria por Jesús de Miguel</title>
+    <link>https://ahora.com.pe/deportes/sabadell-camiseta-homenaje-jesus-de-miguel</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sabadell-camiseta-homenaje-jesus-de-miguel</guid>
+    <pubDate>Sun, 08 Nov 2026 22:40:05 GMT</pubDate>
+    <description><![CDATA[El CE Sabadell dedicará su próximo partido en la Nova Creu Alta a Jesús de Miguel y cederá el espacio de su patrocinador principal a la campaña solidaria porjesus.es para ayudar a la familia del futbolista.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[CE Sabadell]]></category>
+    <category><![CDATA[Jesús de Miguel]]></category>
+    <category><![CDATA[porjesus.es]]></category>
+    <category><![CDATA[Tenerife]]></category>
+    <category><![CDATA[homenaje]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/44c5f7bfc588.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/44c5f7bfc588.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/44c5f7bfc588.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>CRA no descarta acción judicial por exigencias de trazabilidad Visec</title>
+    <link>https://ahora.com.pe/mundo/cra-accion-judicial-visec</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/cra-accion-judicial-visec</guid>
+    <pubDate>Sun, 08 Nov 2026 22:30:09 GMT</pubDate>
+    <description><![CDATA[Confederaciones Rurales Argentinas evalúa denunciar ante Defensa de la Competencia y accionar judicialmente por el sistema Visec, que según la entidad impone descuentos a ganaderos no adheridos.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Visec]]></category>
+    <category><![CDATA[CRA]]></category>
+    <category><![CDATA[trazabilidad]]></category>
+    <category><![CDATA[exportaciones]]></category>
+    <category><![CDATA[Unión Europea]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7ba0f24fda2e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7ba0f24fda2e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7ba0f24fda2e.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>El guanaco vuelve al Chaco argentino tras 110 años y 3.200 kilómetros de viaje</title>
+    <link>https://ahora.com.pe/mundo/guanaco-vuelve-chaco-argentina-110-anos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/guanaco-vuelve-chaco-argentina-110-anos</guid>
+    <pubDate>Sun, 08 Nov 2026 21:00:10 GMT</pubDate>
+    <description><![CDATA[Cinco guanacos fueron reintroducidos en el Parque Nacional El Impenetrable, en el Chaco Seco argentino, tras un traslado terrestre de 3.200 kilómetros desde la Patagonia. La especie había desaparecido de la región hace más de 110 años.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[guanaco]]></category>
+    <category><![CDATA[Rewilding Argentina]]></category>
+    <category><![CDATA[Parque Nacional El Impenetrable]]></category>
+    <category><![CDATA[Chaco Seco]]></category>
+    <category><![CDATA[reintroducción de fauna]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/62460d26759c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/62460d26759c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/62460d26759c.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Netflix expande el universo de Crepúsculo con una serie animada</title>
+    <link>https://ahora.com.pe/entretenimiento/netflix-serie-animada-crepusculo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/netflix-serie-animada-crepusculo</guid>
+    <pubDate>Sun, 08 Nov 2026 20:30:11 GMT</pubDate>
+    <description><![CDATA[Netflix anunció la expansión del universo de Crepúsculo con una serie animada basada en la novela de Stephenie Meyer. La producción, que girará en torno a Edward Cullen y Bella Swan, tendrá varias temporadas. Aún no se conoce la fecha de estreno.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Netflix]]></category>
+    <category><![CDATA[Crepúsculo]]></category>
+    <category><![CDATA[serie animada]]></category>
+    <category><![CDATA[Stephenie Meyer]]></category>
+    <category><![CDATA[Edward Cullen]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8497d43dbc3a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8497d43dbc3a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8497d43dbc3a.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima pierde tres figuras para visitar a Los Chankas en Andahuaylas</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-bajas-los-chankas-andahuaylas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-bajas-los-chankas-andahuaylas</guid>
+    <pubDate>Sun, 08 Nov 2026 19:40:06 GMT</pubDate>
+    <description><![CDATA[Alianza Lima confirmó las bajas por lesión de Renzo Garcés, Jairo Vélez y Marco Huamán para enfrentar a Los Chankas en Andahuaylas por la penúltima fecha del Torneo Clausura 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Los Chankas]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Renzo Garcés]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d73be5b45d8a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d73be5b45d8a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d73be5b45d8a.jpg"/>
+    <media:description type="plain"><![CDATA[Alianza Lima buscará un triunfo clave en Andahuaylas, pero en las últimas horas se confirmó que el plantel tendrá dos importantes ausencias para este compromiso. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Keiko Fujimori nombra a Miguel Rodríguez Mackay embajador en Marruecos</title>
+    <link>https://ahora.com.pe/politica/rodriguez-mackay-embajador-marruecos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/rodriguez-mackay-embajador-marruecos</guid>
+    <pubDate>Sun, 08 Nov 2026 19:30:10 GMT</pubDate>
+    <description><![CDATA[El Gobierno de Keiko Fujimori nombró a Miguel Ángel Rodríguez Mackay como embajador extraordinario y plenipotenciario del Perú en Marruecos. La designación se oficializó con la Resolución Suprema 179-2026-RE, que lleva las firmas de la presidenta y del ministro de Energía y Minas, Guillermo Shinno.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Miguel Rodríguez Mackay]]></category>
+    <category><![CDATA[embajador en Marruecos]]></category>
+    <category><![CDATA[Keiko Fujimori]]></category>
+    <category><![CDATA[Resolución Suprema 179-2026-RE]]></category>
+    <category><![CDATA[Cancillería]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b6914cba1b48.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b6914cba1b48.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b6914cba1b48.jpg"/>
+    <media:description type="plain"><![CDATA[El internacionalista Miguel Ángel Rodríguez Mackay lideró la Cancillería entre agosto y septiembre de 2022. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Celta y Levante, en directo: igualdad y gol anulado en Balaídos</title>
+    <link>https://ahora.com.pe/deportes/celta-levante-directo-jornada-12</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/celta-levante-directo-jornada-12</guid>
+    <pubDate>Sun, 08 Nov 2026 19:20:07 GMT</pubDate>
+    <description><![CDATA[Celta y Levante disputaban en Balaídos un partido de la jornada 12 de LaLiga EA Sports, con un gol anulado al Celta y un homenaje a De Miguel en los primeros minutos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Celta de Vigo]]></category>
+    <category><![CDATA[Levante]]></category>
+    <category><![CDATA[LaLiga EA Sports]]></category>
+    <category><![CDATA[Balaídos]]></category>
+    <category><![CDATA[jornada 12]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/065baed87509.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/065baed87509.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/065baed87509.webp"/>
+    <media:description type="plain"><![CDATA[<b>Celta de Vigo - Levante | LaLiga EA Sports</b> — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Comité de Lucha fija plazo al 12 de noviembre para que el ministro Arnillas llegue a Huánuco</title>
+    <link>https://ahora.com.pe/regional/comite-lucha-plazo-ministro-arnillas-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/comite-lucha-plazo-ministro-arnillas-huanuco</guid>
+    <pubDate>Sun, 08 Nov 2026 18:40:07 GMT</pubDate>
+    <description><![CDATA[El Comité de Lucha por el Agua de Huánuco dio plazo hasta el jueves 12 de noviembre para que el ministro de Vivienda, Mauricio Arnillas, viaje a la región y atienda el reclamo por agua potable y la salida del OTASS de Seda Huánuco. El organismo regulador informó que mantiene su labor en la empresa.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Comité de Lucha Huánuco]]></category>
+    <category><![CDATA[Mauricio Arnillas]]></category>
+    <category><![CDATA[OTASS]]></category>
+    <category><![CDATA[Seda Huánuco]]></category>
+    <category><![CDATA[agua potable]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8f3bee081923.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8f3bee081923.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8f3bee081923.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>MEF habilita recálculo complementario de bonos de la Deuda Agraria: trámite es a pedido</title>
+    <link>https://ahora.com.pe/regional/mef-recalculo-bonos-deuda-agraria</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/mef-recalculo-bonos-deuda-agraria</guid>
+    <pubDate>Sun, 08 Nov 2026 18:20:07 GMT</pubDate>
+    <description><![CDATA[El MEF publicó la RM 508-2026-EF/52 que fija el procedimiento para recalcular los Bonos de la Deuda Agraria y determinar un monto complementario en dólares, solo a solicitud del tenedor y con plazos de hasta 30 días hábiles.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Deuda Agraria]]></category>
+    <category><![CDATA[MEF]]></category>
+    <category><![CDATA[bonos]]></category>
+    <category><![CDATA[recálculo]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/abbc333d9da8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/abbc333d9da8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/abbc333d9da8.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Atlético y Barcelona se miden en el Metropolitano con el liderato en juego</title>
+    <link>https://ahora.com.pe/deportes/atletico-barcelona-jornada-12-laliga-metropolitano</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/atletico-barcelona-jornada-12-laliga-metropolitano</guid>
+    <pubDate>Sun, 08 Nov 2026 18:00:13 GMT</pubDate>
+    <description><![CDATA[Atlético de Madrid y FC Barcelona se enfrentan este domingo en el Riyadh Air Metropolitano por la jornada 12 de LaLiga EA Sports 2026-27, con el liderato en juego y dos puntos de diferencia entre ambos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Atlético de Madrid]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[LaLiga EA Sports]]></category>
+    <category><![CDATA[Riyadh Air Metropolitano]]></category>
+    <category><![CDATA[jornada 12]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7824c7cab032.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7824c7cab032.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7824c7cab032.jpg"/>
+    <media:description type="plain"><![CDATA[Revisa dónde ver Barcelona — Atlético de Madrid EN VIVO y EN DIRECTO hoy por la jornada 12 de LaLiga EA Sports desde el Estadio Riyadh Air Metropolitano. — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Arteta confirma que Saka estará varias semanas fuera por lesión en el cuádriceps</title>
+    <link>https://ahora.com.pe/deportes/arteta-saka-fuera-varias-semanas-lesion-arsenal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/arteta-saka-fuera-varias-semanas-lesion-arsenal</guid>
+    <pubDate>Sun, 08 Nov 2026 17:40:05 GMT</pubDate>
+    <description><![CDATA[Mikel Arteta confirmó que Bukayo Saka estará varias semanas de baja por la lesión en el cuádriceps sufrida ante el Bayern de Múnich. El Arsenal, líder de la Premier League, afronta el tramo sin su extremo titular.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Bukayo Saka]]></category>
+    <category><![CDATA[Arsenal]]></category>
+    <category><![CDATA[Mikel Arteta]]></category>
+    <category><![CDATA[lesión cuádriceps]]></category>
+    <category><![CDATA[Premier League]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ebf61d6f705a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ebf61d6f705a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ebf61d6f705a.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Milena Zárate anuncia salsa urbana &apos;Llegaste tú&apos; y seis canciones en cola</title>
+    <link>https://ahora.com.pe/entretenimiento/milena-zarate-salsa-urbana-llegaste-tu</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/milena-zarate-salsa-urbana-llegaste-tu</guid>
+    <pubDate>Sun, 08 Nov 2026 17:30:12 GMT</pubDate>
+    <description><![CDATA[Milena Zárate reveló que lanzará pronto la salsa urbana &apos;Llegaste tú&apos; y tiene seis canciones en cola, en medio de su ruptura con Carlos Mendoza.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Milena Zárate]]></category>
+    <category><![CDATA[Llegaste tú]]></category>
+    <category><![CDATA[salsa urbana]]></category>
+    <category><![CDATA[Carlos Mendoza]]></category>
+    <category><![CDATA[cumbia]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e260812e55bd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e260812e55bd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e260812e55bd.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Universitario depende de sí mismo para ganar el Clausura tras empate de Cristal</title>
+    <link>https://ahora.com.pe/deportes/universitario-depende-de-si-mismo-clausura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-depende-de-si-mismo-clausura-2026</guid>
+    <pubDate>Sun, 08 Nov 2026 16:20:07 GMT</pubDate>
+    <description><![CDATA[Universitario depende de sí mismo para ser campeón del Torneo Clausura 2026 luego del empate de Sporting Cristal ante ADT. Debe vencer a CD Moquegua y a Sport Huancayo para asegurar el primer lugar.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/aec54b9e0da2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/aec54b9e0da2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/aec54b9e0da2.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Real Sociedad y Rayo Vallecano se miden en Anoeta por la jornada 12 de LaLiga</title>
+    <link>https://ahora.com.pe/deportes/real-sociedad-rayo-vallecano-anoeta-jornada-12</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/real-sociedad-rayo-vallecano-anoeta-jornada-12</guid>
+    <pubDate>Sun, 08 Nov 2026 16:00:12 GMT</pubDate>
+    <description><![CDATA[Real Sociedad y Rayo Vallecano se enfrentan en Anoeta por la jornada 12 de LaLiga EA Sports, con el equipo local buscando su tercera victoria seguida en casa y el visitante intentando mantener su buen momento tras la goleada al Celta.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Sociedad]]></category>
+    <category><![CDATA[Rayo Vallecano]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[Anoeta]]></category>
+    <category><![CDATA[jornada 12]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/31fb063e185d.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/31fb063e185d.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/31fb063e185d.webp"/>
+    <media:description type="plain"><![CDATA[Buenas tardes y bienvenidos a la narración, en directo, del partido de fútbol de la <b>LaLiga</b> <b>EA</b> <b>Sports</b> que enfrenta al <b>Real</b> <b>Sociedad</b> contra el <b>Rayo</b> <b>Vallecano</b> correspondiente a Jornada 12. Desde <b>Mundo</b> <b>Deportivo</b>, te ofrecemos toda la cobertu — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Friaje 15 enciende alerta naranja en la selva: vientos de hasta 44 km/h y ráfagas de 55 km/h</title>
+    <link>https://ahora.com.pe/sociedad/friaje-15-alerta-naranja-selva-vientos-44-kmh</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/friaje-15-alerta-naranja-selva-vientos-44-kmh</guid>
+    <pubDate>Sun, 08 Nov 2026 15:30:11 GMT</pubDate>
+    <description><![CDATA[El décimo quinto friaje del año activó la alerta naranja del Senamhi en seis departamentos de la selva peruana, entre ellos Huánuco, con vientos de hasta 44 km/h y ráfagas que podrían superar los 55 km/h. Indeci pidió inspecciones en edificaciones y asegurar techos y embarcaciones.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[friaje]]></category>
+    <category><![CDATA[Senamhi]]></category>
+    <category><![CDATA[alerta naranja]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[vientos fuertes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6e6b450dd9a3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6e6b450dd9a3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6e6b450dd9a3.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Restablecen el tránsito en la carretera Federico Basadre tras huaico en Aguaytía</title>
+    <link>https://ahora.com.pe/policiales/restablecen-transito-federico-basadre-huaico-aguaytia</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/restablecen-transito-federico-basadre-huaico-aguaytia</guid>
+    <pubDate>Sun, 08 Nov 2026 15:30:10 GMT</pubDate>
+    <description><![CDATA[El tránsito vehicular en la carretera Federico Basadre quedó restablecido desde la madrugada de este domingo tras el huaico que bloqueó un tramo en Aguaytía, Ucayali. Efectivos de la Comisaría de Aguaytía dirigen la circulación para evitar congestiones.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[carretera Federico Basadre]]></category>
+    <category><![CDATA[huaico en Aguaytía]]></category>
+    <category><![CDATA[tránsito restablecido]]></category>
+    <category><![CDATA[Pucallpa]]></category>
+    <category><![CDATA[Provías Nacional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6f8ac228b82a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6f8ac228b82a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6f8ac228b82a.jpg"/>
+    <media:description type="plain"><![CDATA[This was the street on our way from Arequipa to Chivay. — Foto: Thomas Gaertner (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>IPE: el Papa regresa a una Lambayeque que lideró el crecimiento regional en el segundo trimestre de 2026</title>
+    <link>https://ahora.com.pe/opinion/ipe-el-papa-regresa-a-una-lambayeque-que-lidero-el-crecimiento-regional-en-el</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/ipe-el-papa-regresa-a-una-lambayeque-que-lidero-el-crecimiento-regional-en-el</guid>
+    <pubDate>Sun, 08 Nov 2026 15:10:08 GMT</pubDate>
+    <description><![CDATA[El Papa León XIV visitará Chiclayo, la diócesis que dirigió como obispo.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f907692439fe.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f907692439fe.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f907692439fe.jpg"/>
+  </item>
+  <item>
+    <title>Carolina Trivelli: reducir anemia a la mitad en cinco años es una meta ambiciosa</title>
+    <link>https://ahora.com.pe/sociedad/trivelli-meta-anemia-ambiciosa-pacto</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/trivelli-meta-anemia-ambiciosa-pacto</guid>
+    <pubDate>Sun, 08 Nov 2026 15:00:14 GMT</pubDate>
+    <description><![CDATA[Carolina Trivelli calificó de ambiciosa la meta del Pacto contra la Anemia de reducirla en 50% en cinco años, al señalar que en la última década no bajó. Pidió coordinación multisectorial, agua y saneamiento, y apoyo a las familias en un contexto de inflación.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Carolina Trivelli]]></category>
+    <category><![CDATA[Pacto contra la Anemia]]></category>
+    <category><![CDATA[anemia]]></category>
+    <category><![CDATA[Midis]]></category>
+    <category><![CDATA[agua y saneamiento]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/99d8b9395c84.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/99d8b9395c84.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/99d8b9395c84.webp"/>
+    <media:description type="plain"><![CDATA[La lucha contra la anemia demanda no solo la acción articulada del Estado y de todos los niveles de gobierno, particularmente de las autoridades locales, sino también la participación de la sociedad civil y del sector privado, afirmó la exministra de Desarrollo e Inclusión Social, Carolina Trivelli. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Sport Huancayo lidera el Clausura tras vencer 1-2 a Cienciano en Cusco</title>
+    <link>https://ahora.com.pe/deportes/sport-huancayo-lider-clausura-victoria-cienciano</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sport-huancayo-lider-clausura-victoria-cienciano</guid>
+    <pubDate>Sun, 08 Nov 2026 14:40:08 GMT</pubDate>
+    <description><![CDATA[Sport Huancayo venció 1-2 a Cienciano y es líder en solitario del Clausura con 34 puntos. Sporting Cristal empató 1-1 con ADT y quedó con 32; Universitario (31) cierra la fecha 16 ante CD Moquegua.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f96190a50e82.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f96190a50e82.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f96190a50e82.jpg"/>
+    <media:description type="plain"><![CDATA[La lucha por el primer lugar del Torneo Clausura, a una fecha de su final, está expectante porque ya se jugaron cinco partidos e la fecha 16 y se dieron los resultados para mover la parte se arriba, donde Sporting Cristal pierde piso y Sport Huancayo se consolida. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>San Martín, invicto y líder, se alista para el duelo ante Alianza Lima</title>
+    <link>https://ahora.com.pe/deportes/san-martin-invicto-lider-paola-rivera-alianza-lima-fecha-5</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/san-martin-invicto-lider-paola-rivera-alianza-lima-fecha-5</guid>
+    <pubDate>Sun, 08 Nov 2026 14:20:16 GMT</pubDate>
+    <description><![CDATA[San Martín superó 3-0 a Deportivo Wanka y, con Paola Rivera como figura, llega como líder invicto al duelo ante Alianza Lima por la quinta fecha de la Liga Peruana de Vóley.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[San Martín]]></category>
+    <category><![CDATA[Paola Rivera]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[Deportivo Wanka]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e93d0bd8f3f9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e93d0bd8f3f9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e93d0bd8f3f9.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Alpine A390 GT: el eléctrico de 2.199 kg que se siente ligero en curva</title>
+    <link>https://ahora.com.pe/deportes/alpine-a390-gt-prueba-electrico-401-cv</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alpine-a390-gt-prueba-electrico-401-cv</guid>
+    <pubDate>Sun, 08 Nov 2026 12:40:07 GMT</pubDate>
+    <description><![CDATA[El Alpine A390 GT, eléctrico de 401 CV y 2.199 kg, destaca por su comportamiento ágil gracias al Alpine Active Torque Vectoring, aunque con consumos altos y recarga limitada a 190 kW.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alpine A390 GT]]></category>
+    <category><![CDATA[coche eléctrico]]></category>
+    <category><![CDATA[Alpine Active Torque Vectoring]]></category>
+    <category><![CDATA[consumo eléctrico]]></category>
+    <category><![CDATA[Android Automotive]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f346a2097eab.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f346a2097eab.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f346a2097eab.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Condenan a policía de tránsito por recibir S/3.000 para no multar a chofer ebrio en SJM</title>
+    <link>https://ahora.com.pe/policiales/condenan-policia-cohecho-san-juan-de-miraflores</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/condenan-policia-cohecho-san-juan-de-miraflores</guid>
+    <pubDate>Sun, 08 Nov 2026 11:50:05 GMT</pubDate>
+    <description><![CDATA[Un efectivo de tránsito de la PNP fue condenado a cinco años de prisión por recibir S/3.000 para no multar a un conductor ebrio en San Juan de Miraflores. La Fiscalía lo intervino en flagrancia y el Poder Judicial fijó S/9.000 de reparación civil.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[cohecho pasivo propio]]></category>
+    <category><![CDATA[Policía Nacional del Perú]]></category>
+    <category><![CDATA[San Juan de Miraflores]]></category>
+    <category><![CDATA[condena]]></category>
+    <category><![CDATA[corrupción policial]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bf91f1aaa4d7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bf91f1aaa4d7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bf91f1aaa4d7.jpg"/>
+    <media:description type="plain"><![CDATA[Un oficial de policía emitiendo una multa a un conductor durante un control de tráfico. — Foto: Kindel Media (pexels-free)]]></media:description>
+  </item>
+  <item>
+    <title>Mbappé anota el tercer gol del Real Madrid ante Valencia en Mestalla</title>
+    <link>https://ahora.com.pe/deportes/mbappe-tercer-gol-real-madrid-valencia-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/mbappe-tercer-gol-real-madrid-valencia-laliga</guid>
+    <pubDate>Sun, 08 Nov 2026 11:20:07 GMT</pubDate>
+    <description><![CDATA[Kylian Mbappé marcó el tercer gol del Real Madrid ante Valencia en Mestalla, por la fecha 12 de LaLiga 2026-2027, tras asistencia de Arda Güler. La fuente no confirma el resultado final ni los autores de los dos primeros tantos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Kylian Mbappé]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Valencia]]></category>
+    <category><![CDATA[LaLiga 2026-2027]]></category>
+    <category><![CDATA[Mestalla]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/aa396dc4d304.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/aa396dc4d304.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/aa396dc4d304.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Frijaje 15 trae vientos de hasta 44 km/h a la selva: Huánuco entre las regiones alertadas</title>
+    <link>https://ahora.com.pe/regional/friaje-15-vientos-44-kmh-selva-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/friaje-15-vientos-44-kmh-selva-huanuco</guid>
+    <pubDate>Sun, 08 Nov 2026 11:00:13 GMT</pubDate>
+    <description><![CDATA[El decimoquinto friaje de la temporada provocará vientos de hasta 44 km/h en la selva sur y 31 km/h en la selva centro, según el Senamhi. Huánuco figura entre los seis departamentos comprendidos en el aviso meteorológico N.° 461, con alerta naranja. El Indeci pidió a los gobiernos locales y regionales inspeccionar edificaciones y asegurar techos y embarcaciones.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[friaje]]></category>
+    <category><![CDATA[Senamhi]]></category>
+    <category><![CDATA[vientos]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[alerta naranja]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3e52fdbf4f61.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3e52fdbf4f61.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3e52fdbf4f61.webp"/>
+    <media:description type="plain"><![CDATA[Vientos con velocidades cercanas a los 44 kilómetros por hora (km/h) en la selva sur y próximos a los 31 km/h en la selva centro, se registrarán debido al decimoquinto friaje que empieza hoy y continuará hasta mañana lunes 9 de 
+noviembre, informó el Servicio Nacional de Meteorología e Hidrología (S — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Ley de Bienestar Animal en España prohíbe usar perros y gatos como reclamo ambulante</title>
+    <link>https://ahora.com.pe/mundo/ley-bienestar-animal-espana-prohibe-reclamo-ambulante</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/ley-bienestar-animal-espana-prohibe-reclamo-ambulante</guid>
+    <pubDate>Sun, 08 Nov 2026 10:30:11 GMT</pubDate>
+    <description><![CDATA[La Ley de Bienestar Animal de España, aprobada y en vigor desde 2023, prohíbe usar perros y gatos de forma ambulante como reclamo en la vía pública. El artículo 25 veta emplear animales como herramienta visual o emocional para obtener beneficio económico, comercial o publicitario. Las sanciones van de 500 a 200.000 euros según la gravedad.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Ley de Bienestar Animal]]></category>
+    <category><![CDATA[España]]></category>
+    <category><![CDATA[perros y gatos]]></category>
+    <category><![CDATA[reclamo ambulante]]></category>
+    <category><![CDATA[multas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/408052a6bdd6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/408052a6bdd6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/408052a6bdd6.jpg"/>
+    <media:description type="plain"><![CDATA[dog sitting next to dogs prohibited on wharf signage — Foto: Daniel Chicchon (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Sporting Cristal empata 1-1 con ADT y definirá el Clausura en la última fecha</title>
+    <link>https://ahora.com.pe/deportes/sporting-cristal-empate-adt-clausura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sporting-cristal-empate-adt-clausura-2026</guid>
+    <pubDate>Sun, 08 Nov 2026 09:40:16 GMT</pubDate>
+    <description><![CDATA[Sporting Cristal empató 1-1 con ADT en Tarma por la fecha 16 del Torneo Clausura 2026 y definirá el título en la última jornada ante Cienciano, a la espera de los resultados de Sport Huancayo y Universitario.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[ADT de Tarma]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4933a451ab64.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4933a451ab64.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4933a451ab64.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Fabián Ruiz, del Palacios al PSG: el sueño blaugrana que nunca se concretó</title>
+    <link>https://ahora.com.pe/deportes/fabian-ruiz-palacios-psg-sueno-barca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fabian-ruiz-palacios-psg-sueno-barca</guid>
+    <pubDate>Sun, 08 Nov 2026 07:40:06 GMT</pubDate>
+    <description><![CDATA[Fabián Ruiz, nacido en Los Palacios y Villafranca, repasa su carrera del Betis al PSG, donde es bicampeón de la Champions, y su frustrado fichaje por el Barcelona.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Fabián Ruiz]]></category>
+    <category><![CDATA[PSG]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Los Palacios]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/acbb4c690e2a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/acbb4c690e2a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/acbb4c690e2a.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Novorizontino de Jhilmar Lora asciende por primera vez a la Serie A de Brasil</title>
+    <link>https://ahora.com.pe/deportes/novorizontino-jhilmar-lora-ascenso-brasileirao-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/novorizontino-jhilmar-lora-ascenso-brasileirao-2027</guid>
+    <pubDate>Sun, 08 Nov 2026 06:20:08 GMT</pubDate>
+    <description><![CDATA[Novorizontino, club donde milita el peruano Jhilmar Lora, logró un histórico ascenso a la Serie A de Brasil tras vencer 2-1 a Fortaleza en la penúltima fecha de la segunda división y asegurar el boleto sin depender de otros resultados.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Jhilmar Lora]]></category>
+    <category><![CDATA[Novorizontino]]></category>
+    <category><![CDATA[Brasileirao]]></category>
+    <category><![CDATA[Serie B]]></category>
+    <category><![CDATA[ascenso]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3f2124f88e2f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3f2124f88e2f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3f2124f88e2f.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Pacto contra la Anemia se aplicará en 19 distritos de cinco regiones</title>
+    <link>https://ahora.com.pe/sociedad/pacto-contra-anemia-19-distritos-cinco-regiones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/pacto-contra-anemia-19-distritos-cinco-regiones</guid>
+    <pubDate>Sun, 08 Nov 2026 05:10:11 GMT</pubDate>
+    <description><![CDATA[El Gobierno firmó el Pacto Multisectorial para Prevenir y Reducir la Anemia Materno-Infantil, que se implementará en 19 distritos de Cajamarca, Ayacucho, Lima, Loreto y Puno. La estrategia prioriza a 59 855 niños menores de 12 meses y 19 609 gestantes, con 62 proyectos de infraestructura por más de S/ 1400 millones.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[anemia]]></category>
+    <category><![CDATA[Midis]]></category>
+    <category><![CDATA[Pacto contra la Anemia]]></category>
+    <category><![CDATA[agua potable]]></category>
+    <category><![CDATA[saneamiento]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cb137cc071da.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cb137cc071da.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cb137cc071da.jpg"/>
+    <media:description type="plain"><![CDATA[Tras la firma del Pacto Multisectorial para Prevenir y Reducir la Anemia Materno-Infantil, el Ministerio de Desarrollo e Inclusión Social (Midis) informó que esta estrategia se implementará prioritariamente en 19 distritos de cinco regiones que presentan brechas de acceso a agua potable y redes públ — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Autopsia de Jesús de Miguel: traumatismo torácico accidental, según informe preliminar</title>
+    <link>https://ahora.com.pe/policiales/autopsia-jesus-de-miguel-traumatismo-accidental</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/autopsia-jesus-de-miguel-traumatismo-accidental</guid>
+    <pubDate>Sun, 08 Nov 2026 05:10:09 GMT</pubDate>
+    <description><![CDATA[La autopsia preliminar de Jesús de Miguel, futbolista del Tenerife, determinó que su muerte se debió a un traumatismo torácico de carácter accidental tras el choque con el arquero Jesús Owono. Faltan pruebas complementarias.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Jesús de Miguel]]></category>
+    <category><![CDATA[autopsia]]></category>
+    <category><![CDATA[Tenerife]]></category>
+    <category><![CDATA[Jesús Owono]]></category>
+    <category><![CDATA[traumatismo torácico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7381311a7dd7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7381311a7dd7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7381311a7dd7.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  </channel>
+</rss>
