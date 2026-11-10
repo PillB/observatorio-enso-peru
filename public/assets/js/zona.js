@@ -360,7 +360,9 @@ export const zonaView = {
       fill(sel.dist, 'dist', sel.prov.value, area.length === 6 ? area : '');
     };
     const go = (code) => { if (code) location.hash = `#/zona?area=${code}`; };
-    sel.dep.addEventListener('change', () => (sel.dep.value ? go(sel.dep.value) : syncPick('')));
+    // «Elija…» quita el lugar de la ruta, no solo de las listas: así volver a elegir el mismo departamento cambia la
+    // ruta y la página se arma de nuevo.
+    sel.dep.addEventListener('change', () => { location.hash = sel.dep.value ? `#/zona?area=${sel.dep.value}` : '#/zona'; });
     sel.prov.addEventListener('change', () => go(sel.prov.value || sel.dep.value));
     sel.dist.addEventListener('change', () => go(sel.dist.value || sel.prov.value));
     const show = () => {

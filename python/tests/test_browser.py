@@ -1155,6 +1155,15 @@ def test_zona_step_by_step_lists_follow_and_set_the_place(site, page):
     # Volver un nivel: «Toda la provincia».
     page.select_option("#zn-dist", "")
     expect(page).to_have_url(re.compile(r"area=2001$"))
+    # «Elija…» quita el lugar de la página y de la ruta, y el mismo departamento se puede volver a elegir.
+    page.select_option("#zn-dep", "")
+    expect(page).to_have_url(re.compile(r"#/zona$"))
+    expect(page.locator("#zn-root")).to_be_empty(timeout=20000)
+    expect(page.locator("#zn-prov")).to_be_disabled()
+    expect(page.locator("#zn-q")).to_have_value("")
+    page.select_option("#zn-dep", "20")
+    expect(page).to_have_url(re.compile(r"area=20$"))
+    expect(page.locator("#zn-prov")).to_be_enabled(timeout=20000)
     # Un enlace directo deja las tres listas en su lugar.
     _zona(page, base, "150110")
     expect(page.locator("#zn-dep")).to_have_value("15")
