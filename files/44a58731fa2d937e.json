@@ -19,6 +19,182 @@
       "_embedded" : {
         "objects" : [ {
           "hitHighlights" : {
+            "dc.title" : [ "<em>Boletín</em> <em>Semanal</em> <em>Oceanográfico</em> <em>y</em> <em>Biológico</em> - Pesquero vol. 11, N°45, 2026" ]
+          },
+          "type" : "discover",
+          "_links" : {
+            "indexableObject" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d"
+            }
+          },
+          "_embedded" : {
+            "indexableObject" : {
+              "id" : "dc6e3c6f-98e2-45c6-a568-c4531b54949d",
+              "uuid" : "dc6e3c6f-98e2-45c6-a568-c4531b54949d",
+              "name" : "Boletín Semanal Oceanográfico y Biológico - Pesquero vol. 11, N°45, 2026",
+              "handle" : "20.500.12958/11385",
+              "metadata" : {
+                "dc.contributor.author" : [ {
+                  "value" : "Instituto del Mar del Perú. Dirección General de Investigaciones Oceanográficas y Cambio Climático",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.accessioned" : [ {
+                  "value" : "2026-11-10T13:41:43Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.available" : [ {
+                  "value" : "2026-11-10T13:41:43Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.date.issued" : [ {
+                  "value" : "2026-11-08",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.description.abstract" : [ {
+                  "value" : "» En la región Niño 1+2, las anomalías de la temperatura superficial del mar (TSM) continuaron incrementándose a valores de +5,92 °C, mientras que, en la región Niño 3.4 disminuyeron levemente a +3,27 °C, según el producto OSTIA (Figura 1). Frente a la costa peruana, la velocidad del viento (VV), con dirección sudeste mantuvo magnitudes en el rango moderado (4,1 a 6,8 m/s) a fuerte (6,8 a 10,4 m/s) con anomalías predominantemente positivas desde Paita a San Juan (Figura 2). Dentro de las 60 mn adyacentes a la costa, las anomalías positivas del nivel del mar (ANM) disminuyeron a lo largo del litoral evidenciando la finalización del paso de una de las ondas del tren de ondas Kelvin (OK) cálidas. Las anomalías de TSM superiores a +8 °C entre Punta Falsa y Huanchaco tendieron a disminuir, favorecidas por la intensificación del viento costero (Figura 6). \n» La TSM continuó incrementándose frente a la costa peruana, principalmente al sur de Huanchaco. Los mayores aumentos se registraron en el sector oceánico central y frente a Quilca, respecto a la semana anterior. Estos incrementos estuvieron asociados al desplazamiento de la isoterma de 26 °C hasta la zona oceánica frente a Chimbote y la expansión de las aguas de 22 a 23 °C desde San Juan hacia la costa norte de Chile (Figura 4b). En promedio, las anomalías de TSM superiores a +8 °C prevalecieron frente a Piura y Chimbote, con un máximo de +8,9 °C (Bayóvar). De acuerdo al modelo Mercator Ocean, las Aguas Ecuatoriales Superficiales (AES; 33,8<S35,1) hasta Punta Falsa. Hacia el sur, las ASS mantuvieron su proximidad a la costa con valores de salinidad de hasta 35,5 (Figuras 3 y 11b). Al 07 de noviembre, el área bajo condiciones de ola de calor marina (OCM) en las primeras 150 mn entre 4°S y 18°30′S abarcó 438 625 km² (100 %), con anomalías superiores a +4 °C que abarcaron desde el extremo norte hasta Atico (Figura 5). \n» La información recolectada por el IMARPE los días 4 y 5 de noviembre en los puntos fijos de Chicama (15 mn) y Paita (7 mn), respectivamente, evidenció el ascenso de las isotermas de 25 a 27 °C hacia las capas superficiales en Paita, luego de su aparición en la semana anterior. En Chicama, destacaron el ascenso de las isotermas de 23 a 24 °C y una ligera disminución de la influencia de las ASS. Pese a estos cambios, persistieron anomalías térmicas de +9,4 °C en Paita y anomalías de +7,5 °C en Chicama, por encima de los 100 m de profundidad en ambas localidades (Figura 7). Durante la última semana, la información recolectada por el glider Mochica (Figura 8) dentro de las 50-75 mn frente a Callao indicaron anomalías de hasta +8 °C sobre los 100 m, asociado a la presencia inusual de las ASS y temperaturas entre 22 y 24 °C. Hacia el sur, el “Crucero de Evaluación del Calamar Gigante (Pota)” (Figura 9) a nivel superficial y dentro de las 20 mn de Callao a Ilo, indicó ASS con TSM y anomalías térmicas que disminuyeron hacia el sur de 24 a 22 °C y de +7 a +2 °C, respectivamente. Asimismo, entre el 6 y 9 de noviembre evaluó el perfil Ilo dentro de las 170 mn y reportó ASS con anomalías entre +4 a +5 °C (~30 mn) sobre los 100 m. Los perfiladores Argo (Figura 10) dentro de las 105 mn entre Punta Falsa y Chimbote registraron anomalías de +4 a +10 °C sobre los 170 m, mientras que la boya frente a Atico reportó anomalías de hasta +6 °C y temperaturas de hasta 23 °C sobre los 100 m. \n» La región Norte-Centro (hasta 16°S) continuó sin registrar actividad extractiva industrial de anchoveta tras la finalización de la Primera Temporada de Pesca 2026, del mismo modo, en la región sur, pese a mantenerse vigente la temporada (Figura 11a)",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.format" : [ {
+                  "value" : "application/pdf",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.identifier.uri" : [ {
+                  "value" : "https://hdl.handle.net/20.500.12958/11385",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.language.iso" : [ {
+                  "value" : "spa",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher" : [ {
+                  "value" : "Instituto del Mar del Perú",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.publisher.country" : [ {
+                  "value" : "PE",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights" : [ {
+                  "value" : "https://purl.org/coar/access_right/c_abf2",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.rights.uri" : [ {
+                  "value" : "https://creativecommons.org/licenses/by/4.0/",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.subject" : [ {
+                  "value" : "Oceanografía",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                }, {
+                  "value" : "Temperatura del mar",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 1
+                } ],
+                "dc.subject.ocde" : [ {
+                  "value" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "Boletín Semanal Oceanográfico y Biológico - Pesquero vol. 11, N°45, 2026",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.type" : [ {
+                  "value" : "https://purl.org/coar/resource_type/c_93fc",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "inArchive" : true,
+              "discoverable" : true,
+              "withdrawn" : false,
+              "lastModified" : "2026-11-10T13:42:48.483+00:00",
+              "entityType" : null,
+              "type" : "item",
+              "_links" : {
+                "accessStatus" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/accessStatus"
+                },
+                "bundles" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/bundles"
+                },
+                "identifiers" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/identifiers"
+                },
+                "mappedCollections" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/mappedCollections"
+                },
+                "owningCollection" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/owningCollection"
+                },
+                "relationships" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/relationships"
+                },
+                "version" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/version"
+                },
+                "templateItemOf" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/templateItemOf"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d"
+                }
+              }
+            }
+          }
+        }, {
+          "hitHighlights" : {
             "dc.title" : [ "<em>Boletín</em> <em>Semanal</em> <em>Oceanográfico</em> <em>y</em> <em>Biológico</em> - Pesquero vol. 11, N°44, 2026" ]
           },
           "type" : "discover",
@@ -1249,189 +1425,13 @@
               }
             }
           }
-        }, {
-          "hitHighlights" : {
-            "dc.title" : [ "<em>Boletín</em> <em>Semanal</em> <em>Oceanográfico</em> <em>y</em> <em>Biológico</em> - Pesquero vol. 11, N°37, 2026" ]
-          },
-          "type" : "discover",
-          "_links" : {
-            "indexableObject" : {
-              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046"
-            }
-          },
-          "_embedded" : {
-            "indexableObject" : {
-              "id" : "c6d36b3a-b2f6-41a9-9570-c7a0ef23a046",
-              "uuid" : "c6d36b3a-b2f6-41a9-9570-c7a0ef23a046",
-              "name" : "Boletín Semanal Oceanográfico y Biológico - Pesquero vol. 11, N°37, 2026",
-              "handle" : "20.500.12958/11283",
-              "metadata" : {
-                "dc.contributor.author" : [ {
-                  "value" : "Instituto del Mar del Perú. Dirección General de Investigaciones Oceanográficas y Cambio Climático",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.date.accessioned" : [ {
-                  "value" : "2026-09-22T16:36:11Z",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.date.available" : [ {
-                  "value" : "2026-09-22T16:36:11Z",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.date.issued" : [ {
-                  "value" : "2026-09-13",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.description.abstract" : [ {
-                  "value" : "» En las regiones Niño 1+2 y Niño 3.4, las anomalías de la temperatura superficial del mar (TSM) aumentaron y alcanzaron valores de +5,11 °C y +2,87 °C, respectivamente, según el producto OSTIA (Figura 1). Frente a la costa peruana, el viento de dirección del sudeste, presentó velocidades (VV) entre moderadas (4,1-6,8 m/s) a fuertes (>6,8 m/s), con anomalías entre el rango neutro a positivo, con una fuerte intensidad frente a Paita y a Pisco-San Juan (Figura 2). Dentro de las 60 mn adyacentes a la costa, en la zona norte predominaron altas anomalías positivas del nivel del mar (ANM) y de la TSM, asociadas al paso de la onda Kelvin (OK) cálida, mientras que, en la zona centro y sur, las ANM y las anomalías de la TSM tendieron a disminuir levemente, debido a la intensificación de la VV (Figura 6). \n» La TSM (Figura 4b) se incrementó desde Chicama hacia el sector ecuatorial respecto a la semana anterior, con un máximo de 1,5 °C (Pimentel), debido al acercamiento de las aguas cálidas con TSM > 24 °C frente a este sector. Las anomalías de TSM en gran parte de la costa peruana variaron entre +3 °C y +7 °C, aunque frente a Paita variaron entre +7 °C y +8,3 °C (Paita). La influencia de las Aguas Ecuatoriales Superficiales (AES; 33,8 < S < 34,8) se amplió desde Talara hasta Paita, generando mezcla con las Aguas Subtropicales Superficiales (ASS; S > 35,1) frente a la costa norte. Las ASS continuaron ejerciendo una amplia influencia frente a la costa centro y sur, en especial entre San Juan y Atico (Figura 3, 8b). El área bajo condiciones de ola de calor marina (OCM), dentro de la banda de 150 mn comprendida entre 4°S y 18°30′S fue de 438 625 km², manteniéndose en el 100 % del área evaluada y casi la totalidad del sector norte y centro de la banda presentó una anomalía superior a +4 °C, al 12 de septiembre (Figura 5).\n » La información in situ registrada por los perfiladores ARGO (Figura 7) ubicados entre las 60-80 mn frente a San José y entre Huarmey-Huacho, indicaron anomalías cálidas entre +2 °C y +7 °C sobre los 200-250 m de profundidad; con un incremento y profundización del calentamiento anómalo, evidenciado por las isotermas entre 20 y 24 °C. En el sur, otro perfilador cerca de Chala indicó la expansión de las anomalías de +3 °C sobre los 100 m de profundidad. \n» Durante la semana, en la región Norte-Centro (hasta los 16°S) no se registró actividad extractiva debido a la culminación de la Primera Temporada Pesca 2026 del recurso anchoveta (Engraulis ringens) y anchoveta blanca (Anchoa nasus) conforme a la RM N°00285-2026-PRODUCE, emitida el 19 de agosto. En la región sur, tampoco se registró actividad extractiva de la flota industrial (Figura 8a). El factor de condición durante lo que va de septiembre presenta anomalías negativas de efecto fuerte (Figura 8c).",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.format" : [ {
-                  "value" : "application/pdf",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.identifier.uri" : [ {
-                  "value" : "https://hdl.handle.net/20.500.12958/11283",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.language.iso" : [ {
-                  "value" : "spa",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.publisher" : [ {
-                  "value" : "Instituto del Mar del Perú",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.publisher.country" : [ {
-                  "value" : "PE",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.rights" : [ {
-                  "value" : "https://purl.org/coar/access_right/c_abf2",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.rights.uri" : [ {
-                  "value" : "https://creativecommons.org/licenses/by/4.0/",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.subject" : [ {
-                  "value" : "Oceanografía",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                }, {
-                  "value" : "Temperatura del mar",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 1
-                } ],
-                "dc.subject.ocde" : [ {
-                  "value" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.title" : [ {
-                  "value" : "Boletín Semanal Oceanográfico y Biológico - Pesquero vol. 11, N°37, 2026",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ],
-                "dc.type" : [ {
-                  "value" : "https://purl.org/coar/resource_type/c_93fc",
-                  "language" : null,
-                  "authority" : null,
-                  "confidence" : -1,
-                  "place" : 0
-                } ]
-              },
-              "inArchive" : true,
-              "discoverable" : true,
-              "withdrawn" : false,
-              "lastModified" : "2026-09-23T03:02:29.546+00:00",
-              "entityType" : null,
-              "type" : "item",
-              "_links" : {
-                "accessStatus" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046/accessStatus"
-                },
-                "bundles" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046/bundles"
-                },
-                "identifiers" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046/identifiers"
-                },
-                "mappedCollections" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046/mappedCollections"
-                },
-                "owningCollection" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046/owningCollection"
-                },
-                "relationships" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046/relationships"
-                },
-                "version" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046/version"
-                },
-                "templateItemOf" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046/templateItemOf"
-                },
-                "thumbnail" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046/thumbnail"
-                },
-                "self" : {
-                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/c6d36b3a-b2f6-41a9-9570-c7a0ef23a046"
-                }
-              }
-            }
-          }
         } ]
       },
       "page" : {
         "number" : 0,
         "size" : 8,
         "totalPages" : 82,
-        "totalElements" : 649
+        "totalElements" : 650
       },
       "_links" : {
         "next" : {
@@ -1473,7 +1473,7 @@
           }
         }, {
           "label" : "Instituto del Mar del Perú. Dirección General de Investigaciones Oceanográficas y Cambio Climático",
-          "count" : 258,
+          "count" : 259,
           "authorityKey" : null,
           "type" : "discover",
           "_links" : {
@@ -1499,7 +1499,7 @@
       "_embedded" : {
         "values" : [ {
           "label" : "http://purl.org/pe-repo/ocde/ford#1.05.11",
-          "count" : 649,
+          "count" : 650,
           "authorityKey" : null,
           "type" : "discover",
           "_links" : {
@@ -1509,7 +1509,7 @@
           }
         }, {
           "label" : "Oceanografía",
-          "count" : 648,
+          "count" : 649,
           "authorityKey" : null,
           "type" : "discover",
           "_links" : {
@@ -1519,7 +1519,7 @@
           }
         }, {
           "label" : "Temperatura del mar",
-          "count" : 648,
+          "count" : 649,
           "authorityKey" : null,
           "type" : "discover",
           "_links" : {
@@ -1567,7 +1567,7 @@
       "_embedded" : {
         "values" : [ {
           "label" : "2010 - 2027",
-          "count" : 649,
+          "count" : 650,
           "authorityKey" : null,
           "type" : "discover",
           "_links" : {
@@ -1593,7 +1593,7 @@
       "_embedded" : {
         "values" : [ {
           "label" : "true",
-          "count" : 649,
+          "count" : 650,
           "authorityKey" : null,
           "type" : "discover",
           "_links" : {

@@ -1,0 +1,207 @@
+{
+  "_embedded" : {
+    "bundles" : [ {
+      "uuid" : "2b5994c4-73b4-40f2-9bc5-7c1c5e86eb6d",
+      "name" : "ORIGINAL",
+      "handle" : null,
+      "metadata" : {
+        "dc.title" : [ {
+          "value" : "ORIGINAL",
+          "language" : null,
+          "authority" : null,
+          "confidence" : -1,
+          "place" : 0
+        } ]
+      },
+      "type" : "bundle",
+      "_links" : {
+        "item" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/2b5994c4-73b4-40f2-9bc5-7c1c5e86eb6d/item"
+        },
+        "bitstreams" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/2b5994c4-73b4-40f2-9bc5-7c1c5e86eb6d/bitstreams"
+        },
+        "primaryBitstream" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/2b5994c4-73b4-40f2-9bc5-7c1c5e86eb6d/primaryBitstream"
+        },
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/2b5994c4-73b4-40f2-9bc5-7c1c5e86eb6d"
+        }
+      },
+      "_embedded" : {
+        "bitstreams" : {
+          "_embedded" : {
+            "bitstreams" : [ {
+              "id" : "88894737-47ea-45ab-860b-6fc38936a14c",
+              "uuid" : "88894737-47ea-45ab-860b-6fc38936a14c",
+              "name" : "BSOBP_2026_N°45.pdf",
+              "handle" : null,
+              "metadata" : {
+                "dc.source" : [ {
+                  "value" : "BSOBP_2026_N°45.pdf",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "BSOBP_2026_N°45.pdf",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "bundleName" : "ORIGINAL",
+              "sizeBytes" : 5131323,
+              "checkSum" : {
+                "checkSumAlgorithm" : "MD5",
+                "value" : "e3ad71728f718cbc038adf3084114a8f"
+              },
+              "sequenceId" : 1,
+              "type" : "bitstream",
+              "_links" : {
+                "content" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/88894737-47ea-45ab-860b-6fc38936a14c/content"
+                },
+                "bundle" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/88894737-47ea-45ab-860b-6fc38936a14c/bundle"
+                },
+                "format" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/88894737-47ea-45ab-860b-6fc38936a14c/format"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/88894737-47ea-45ab-860b-6fc38936a14c/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/88894737-47ea-45ab-860b-6fc38936a14c"
+                }
+              }
+            } ]
+          },
+          "page" : {
+            "number" : 0,
+            "size" : 20,
+            "totalPages" : 1,
+            "totalElements" : 1
+          },
+          "_links" : {
+            "self" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/2b5994c4-73b4-40f2-9bc5-7c1c5e86eb6d/bitstreams"
+            }
+          }
+        }
+      }
+    }, {
+      "uuid" : "245cd985-95b7-437e-b48c-c51d332689f2",
+      "name" : "LICENSE",
+      "handle" : null,
+      "metadata" : {
+        "dc.title" : [ {
+          "value" : "LICENSE",
+          "language" : null,
+          "authority" : null,
+          "confidence" : -1,
+          "place" : 0
+        } ]
+      },
+      "type" : "bundle",
+      "_links" : {
+        "item" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/245cd985-95b7-437e-b48c-c51d332689f2/item"
+        },
+        "bitstreams" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/245cd985-95b7-437e-b48c-c51d332689f2/bitstreams"
+        },
+        "primaryBitstream" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/245cd985-95b7-437e-b48c-c51d332689f2/primaryBitstream"
+        },
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/245cd985-95b7-437e-b48c-c51d332689f2"
+        }
+      },
+      "_embedded" : {
+        "bitstreams" : {
+          "_embedded" : {
+            "bitstreams" : [ {
+              "id" : "b3756276-8557-4cd0-808d-e106a558aedc",
+              "uuid" : "b3756276-8557-4cd0-808d-e106a558aedc",
+              "name" : "license.txt",
+              "handle" : null,
+              "metadata" : {
+                "dc.source" : [ {
+                  "value" : "Written by org.dspace.content.LicenseUtils",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "license.txt",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dcterms.accessRights" : [ {
+                  "value" : "2026-11-10T13:41:42Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "bundleName" : "LICENSE",
+              "sizeBytes" : 154,
+              "checkSum" : {
+                "checkSumAlgorithm" : "MD5",
+                "value" : "7e08e12fba452b4dc35f7eca793a0d47"
+              },
+              "sequenceId" : 2,
+              "type" : "bitstream",
+              "_links" : {
+                "content" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/b3756276-8557-4cd0-808d-e106a558aedc/content"
+                },
+                "bundle" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/b3756276-8557-4cd0-808d-e106a558aedc/bundle"
+                },
+                "format" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/b3756276-8557-4cd0-808d-e106a558aedc/format"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/b3756276-8557-4cd0-808d-e106a558aedc/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/b3756276-8557-4cd0-808d-e106a558aedc"
+                }
+              }
+            } ]
+          },
+          "page" : {
+            "number" : 0,
+            "size" : 20,
+            "totalPages" : 1,
+            "totalElements" : 1
+          },
+          "_links" : {
+            "self" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/245cd985-95b7-437e-b48c-c51d332689f2/bitstreams"
+            }
+          }
+        }
+      }
+    } ]
+  },
+  "page" : {
+    "number" : 0,
+    "size" : 20,
+    "totalPages" : 1,
+    "totalElements" : 2
+  },
+  "_links" : {
+    "self" : {
+      "href" : "https://repositorio.imarpe.gob.pe/server/api/core/items/dc6e3c6f-98e2-45c6-a568-c4531b54949d/bundles?embed=bitstreams"
+    }
+  }
+}

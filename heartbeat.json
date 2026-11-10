@@ -1,29 +1,25 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-10T02:05:19+00:00",
+ "at": "2026-11-10T21:50:56+00:00",
  "result": "ok",
- "reachable": "44/51",
+ "reachable": "51/57",
  "summary": {
   "enfen": "4/4",
   "igp": "1/1",
   "senamhi": "9/9",
   "ana": "3/3",
   "imarpe": "5/5",
-  "cenepred": "0/1",
+  "cenepred": "2/2",
   "archive": "1/1",
   "bnp": "1/1",
   "contraloria": "1/1",
   "midagri": "1/1",
   "unsa": "1/1",
   "enfen-docs": "2/8",
-  "imarpe-repo": "15/15"
+  "imarpe-repo": "17/17",
+  "enlaces": "3/3"
  },
  "failures": [
-  {
-   "url": "https://sig.cenepred.gob.pe/arcgis_server/rest/services?f=pjson",
-   "class": "timeout",
-   "error": "ConnectTimeout: timed out"
-  },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
    "status": 200,
@@ -62,9 +58,9 @@
  "collector": {
   "host": "Pablos-MacBook-Pro.local",
   "tz": "America/Lima",
-  "contract": 2,
+  "contract": 3,
   "runner": "collector_service/1",
-  "kit": "2026.10.26-53f8c73",
+  "kit": "2026.11.10-111027b",
   "os": "macOS-26.6.2",
   "python": "3.12.15",
   "git": "2.50.1 (Apple Git-155)",
@@ -73,14 +69,13 @@
  },
  "registry": {
   "origin": "github",
-  "generated_at": "2026-11-09T20:02:44+00:00",
-  "sources": 219,
+  "generated_at": "2026-11-10T06:04:57+00:00",
+  "sources": 220,
   "peru_server": 21
  },
  "probes": {
   "dns": 5,
-  "http-403": 2,
-  "ok": 1
- },
- "carried": 1
+  "empty": 1,
+  "http-403": 2
+ }
 }
