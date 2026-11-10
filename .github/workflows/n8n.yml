@@ -87,16 +87,29 @@ jobs:
             ${{ runner.temp }}/e2e/copia/heartbeat.json
           retention-days: 14
 
+  # La validación pide unas 160 URL de una en una (con la pausa de cada servidor público y una segunda pasada
+  # para lo que falló): en un solo trabajo pasaba de los 30 minutos. Se reparte en 4 partes por servidor
+  # (shard «i/4» en el nodo Configuración; cada servidor entero en una parte, equilibradas por número de URL),
+  # que corren en paralelo y piden, entre todas, todas las URL. «alcance-informe» las junta en un solo informe.
   alcance:
     needs: pruebas
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        parte: [0, 1, 2, 3]
     steps:
       - uses: actions/checkout@v7
-      - name: Validation workflow in n8n against every registry source
+      - name: Validation workflow in n8n against its share of the registry sources
+        env:
+          PARTE: ${{ matrix.parte }}/4
         run: |
           mkdir -p "$RUNNER_TEMP/v" && chmod 777 "$RUNNER_TEMP/v"
-          cp n8n/dist/enso-n8n-validacion.json "$RUNNER_TEMP/v/"
+          jq --arg p "$PARTE" '(.nodes[] | select(.name == "Configuración") | .parameters.assignments.assignments[]
+            | select(.name == "shard") | .value) = $p' n8n/dist/enso-n8n-validacion.json > "$RUNNER_TEMP/v/enso-n8n-validacion.json"
+          jq -e --arg p "$PARTE" '[.nodes[] | select(.name == "Configuración") | .parameters.assignments.assignments[]
+            | select(.name == "shard" and .value == $p)] | length == 1' "$RUNNER_TEMP/v/enso-n8n-validacion.json" > /dev/null
           # La salida va a un archivo en la carpeta montada: por la salida estándar del contenedor, el JSON de
           # varios MB a veces llegaba cortado (jq: «Unfinished string at EOF»).
           docker run --rm --network host -u root -v "$RUNNER_TEMP/v:/w" -e N8N_USER_FOLDER=/w/home \
@@ -104,7 +117,39 @@ jobs:
             "n8n import:workflow --input=/w/enso-n8n-validacion.json && n8n execute --id=EnsoValidacion01 --rawOutput > /w/out.json" \
             > "$RUNNER_TEMP/v/run.log" 2>&1 || { tail -50 "$RUNNER_TEMP/v/run.log"; tail -c 2000 "$RUNNER_TEMP/v/out.json"; exit 1; }
           sed -n '/^{/,$p' "$RUNNER_TEMP/v/out.json" \
-            | jq '[.data.resultData.runData.Informe[0].data.main[0][].json]' > validacion-actions.json
+            | jq '[.data.resultData.runData.Informe[0].data.main[0][].json]' > "validacion-actions-${{ matrix.parte }}.json"
+          jq -r '"Parte " + env.PARTE + ": " + .[0].resultado' "validacion-actions-${{ matrix.parte }}.json" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: n8n-validacion-actions-${{ matrix.parte }}
+          path: validacion-actions-${{ matrix.parte }}.json
+          retention-days: 7
+
+  alcance-informe:
+    needs: alcance
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: n8n-validacion-actions-*
+          merge-multiple: true
+      - name: One report from the four parts
+        run: |
+          n=$(ls validacion-actions-*.json | wc -l)
+          [ "$n" -eq 4 ] || { echo "Faltan partes: $n de 4"; exit 1; }
+          # Un resumen como el del flujo (con el total de las cuatro partes) y las filas de todas, las fallas primero.
+          jq -s '
+            (map(.[1:]) | add) as $rows
+            | ($rows | map(select(.resultado == "OK" or .resultado == "FALLA"))) as $res
+            | ($res | map(select(.resultado == "OK")) | length) as $ok
+            | ($res | group_by(.veredicto) | map({key: .[0].veredicto, value: length}) | from_entries) as $counts
+            | ($res | group_by(.grupo) | map("\(.[0].grupo) \(map(select(.resultado == "OK")) | length)/\(length)") | join("; ")) as $groups
+            | [.[0][0] + {resultado: "RESUMEN: \($ok)/\($res | length) fuentes responden desde este n8n",
+                          veredicto: ($counts | tojson), grupo: $groups, nota: (.[0][0].nota + " · 4 partes")}]
+              + ($rows | sort_by(if .resultado == "NO PEDIDA" then 0 elif .resultado == "FALLA" then 1 else 2 end, .grupo, .id))
+          ' validacion-actions-*.json > validacion-actions.json
+          jq -e 'length > 1 and (.[1:] | map(.url) | length == (unique | length))' validacion-actions.json > /dev/null
           {
             echo "### n8n desde GitHub Actions (Azure, EE. UU.)"
             jq -r '.[0].resultado + "  \n" + .[0].veredicto + "  \n" + .[0].grupo' validacion-actions.json
