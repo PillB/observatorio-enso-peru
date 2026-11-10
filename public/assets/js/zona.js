@@ -1,12 +1,14 @@
 // Mi zona: para un lugar elegido (departamento, provincia o distrito), lo que pasó antes, lo que hay hoy y qué
-// meses suelen ser los peores, en una sola página. Donde el CENEPRED evaluó manzanas ante El Niño 2026-2027, también
-// lo que se espera.
+// meses suelen ser los peores, en una sola página, y lo que se espera: el escenario de riesgo por lluvias del CENEPRED
+// para cada distrito y, donde evaluó manzanas ante El Niño 2026-2027, ese detalle.
 //
 // No calcula nada propio: la historia es la de Memoria de desastres (historico-model.js, el mismo cálculo que los
 // CSV del equipo), los avisos son los de feed.json con el nivel que dio cada institución, y la fase del ENSO la
 // de resumen.json. Lo pasado no es un pronóstico, y la página lo dice. El riesgo esperado es el nivel que el CENEPRED
-// dio a cada manzana (assets/capas/manzanas-riesgo.json, la misma capa que la vista «Daños y pobreza» de la Memoria):
-// aquí solo se cuentan. La página no da recomendaciones propias: enlaza a las oficiales.
+// dio a cada distrito por movimientos en masa y por inundaciones (assets/capas/escenario-distritos.json, de
+// tools.build_escenario_distritos) y a cada manzana (assets/capas/manzanas-riesgo.json, la misma capa que la vista
+// «Daños y pobreza» de la Memoria): aquí solo se muestran y se cuentan, con los dos peligros siempre a la vista y el
+// más alto primero. La página no da recomendaciones propias: enlaza a las oficiales.
 //
 // «Usar mi ubicación» pide la posición al navegador y busca los distritos más cercanos aquí mismo: la posición no se
 // envía a ningún servidor ni se guarda.
@@ -27,6 +29,11 @@ const RISK_CLS = ['lvl-r3', 'lvl-r2', 'lvl-r1', 'lvl-r0'];
 export const NEAR_MAX_KM = 150;
 const KM_PER_DEG = 111.32;
 const collator = new Intl.Collator('es');
+/** El escenario por distrito del CENEPRED; se pide una vez. Si falla, la página lo dice y sigue. */
+let SCENARIO = null;
+const scenario = () => (SCENARIO ||= fetch('assets/capas/escenario-distritos.json', { cache: 'no-cache' })
+  .then((r) => { if (!r.ok) throw new Error(`escenario-distritos.json: HTTP ${r.status}`); return r.json(); })
+  .catch((e) => { console.warn(e); SCENARIO = null; return null; }));
 /** «A, B y C». */
 export const joinEs = (l) => (l.length > 1 ? `${l.slice(0, -1).join(', ')} y ${l[l.length - 1]}` : l[0] || '');
 
@@ -90,9 +97,52 @@ export function expectedRisk(K, area) {
   };
 }
 
-/** Los departamentos donde la capa tiene manzanas, por nombre: para decir qué cubre cuando el lugar no está. */
-export function riskCoverage(K, names) {
-  return [...new Set((K?.blocks || []).map((b) => String(b[2]).slice(0, 2)))].map((c) => names.departamento[c]).filter(Boolean).sort(collator.compare);
+/** El escenario por distrito del CENEPRED (escenario-distritos.json) para un distrito: por peligro, el nivel
+ * (índice en ``levels``) y lo que hay en las áreas de mayor susceptibilidad; ``worst``, el nivel más alto de los dos
+ * y qué peligros lo tienen. ``null`` si el distrito no está en la tabla. No combina ni corrige nada. */
+export function districtScenario(S, code) {
+  const row = S?.districts?.[code];
+  if (!row) return null;
+  const hazards = Object.keys(S.hazards || {}).map((key, i) => {
+    const r = row[i];
+    return r && S.levels[r[0]] ? { key, name: S.hazards[key], level: r[0], personas: r[1] || 0, viviendas: r[2] || 0, salud: r[3] || 0, educativas: r[4] || 0, viasKm: r[5] || 0 } : null;
+  }).filter(Boolean);
+  if (!hazards.length) return null;
+  const worst = Math.min(...hazards.map((h) => h.level));
+  return { hazards, worst, worstHazards: hazards.filter((h) => h.level === worst).map((h) => h.key) };
+}
+
+/** El escenario para un departamento o una provincia: cuántos distritos hay en cada nivel por cada peligro, cuántos
+ * están en riesgo alto o muy alto por al menos uno, y cuántos tiene la tabla. ``null`` si no hay ninguno. */
+export function scenarioSummary(S, area) {
+  const keys = Object.keys(S?.hazards || {});
+  const rows = Object.entries(S?.districts || {}).filter(([c]) => c.startsWith(area));
+  if (!area || !rows.length || !keys.length) return null;
+  const by = S.levels.map((name) => ({ name, n: keys.map(() => 0) }));
+  let highAny = 0;
+  const high = keys.map(() => 0);
+  for (const [, row] of rows) {
+    let any = false;
+    keys.forEach((_, i) => {
+      const l = row[i]?.[0];
+      if (!by[l]) return;
+      by[l].n[i]++;
+      if (l <= 1) { high[i]++; any = true; }
+    });
+    if (any) highAny++;
+  }
+  return { n: rows.length, hazards: keys.map((k) => S.hazards[k]), by, high, highAny };
+}
+
+/** «enero a marzo de 2027» de un escenario ({from: '2027-01', until: '2027-03'}); «octubre de 2026» de un mes. */
+export function monthEs(ym) {
+  const [y, m] = String(ym || '').split('-').map(Number);
+  return F.MESES[m - 1] && y ? `${F.MESES[m - 1]} de ${y}` : '';
+}
+export function scenarioPeriod(sc) {
+  const a = monthEs(sc?.from), b = monthEs(sc?.until);
+  if (!a || !b) return '';
+  return sc.from.slice(0, 4) === sc.until.slice(0, 4) ? `${a.split(' de ')[0]} a ${b}` : `${a} a ${b}`;
 }
 
 /** Si un aviso toca el lugar: un código del aviso es el lugar, lo contiene o está dentro de él. */
@@ -156,38 +206,76 @@ function seasonTable(rows) {
 
 const OFFICIAL = html`<p class="muted small">El observatorio no da recomendaciones propias ni es un servicio de alerta. Qué hacer antes, durante y después lo dicen el <a href="https://www.gob.pe/indeci" rel="noopener" target="_blank">INDECI</a> y su municipalidad; los escenarios de riesgo completos los publica el <a href="https://www.gob.pe/cenepred" rel="noopener" target="_blank">CENEPRED</a> en su sistema SIGRID.</p>`;
 
-function riskCard(K, names, area) {
-  const head = html`<h2 id="zn-rie">Riesgo esperado ante El Niño 2026-2027</h2>`;
-  if (!K?.blocks?.length) return html`<section class="card" aria-labelledby="zn-rie">${head}<p class="muted">No se pudo cargar la evaluación del CENEPRED. Vuelva a intentarlo más tarde.</p>${OFFICIAL}</section>`;
+const lvl = (S, l) => html`<span class="lvl ${RISK_CLS[l] || ''}">${S.levels[l]}</span>`;
+
+/** Un distrito: los dos peligros lado a lado (nunca en pestañas), con el más alto arriba y nombrado. */
+function scenarioDistrict(S, d) {
+  const names = d.hazards.filter((h) => h.level === d.worst).map((h) => h.name.split(' (')[0].toLowerCase());
+  return html`<p id="zn-rie-sum">Nivel más alto: ${lvl(S, d.worst)} por <strong>${joinEs(names)}</strong>.${d.hazards.length > 1 && d.worstHazards.length === 1 ? ' El otro peligro tiene un nivel menor: mire los dos.' : ''}</p>
+    <div class="grid zn-haz">${d.hazards.map((h) => html`<div class="zn-haz-c" data-hazard="${h.key}"><h3>${h.name}</h3>
+      <p>Nivel de riesgo: ${lvl(S, h.level)}</p>
+      <dl class="zn-dl"><div><dt>Personas</dt><dd>${F.fmtNumber(h.personas)}</dd></div><div><dt>Viviendas</dt><dd>${F.fmtNumber(h.viviendas)}</dd></div>
+        <div><dt>Establecimientos de salud</dt><dd>${F.fmtNumber(h.salud)}</dd></div><div><dt>Instituciones educativas</dt><dd>${F.fmtNumber(h.educativas)}</dd></div>
+        <div><dt>Vías</dt><dd>${F.fmtNumber(h.viasKm, 1)} km</dd></div></dl></div>`)}</div>
+    <p class="muted small">Las cifras son lo que el CENEPRED cuenta <strong>en las áreas de mayor susceptibilidad</strong> del distrito, no todo el distrito. Un cero con un nivel alto quiere decir que no ubicó personas o viviendas en esas áreas, no que no haya riesgo: el nivel también pesa la vulnerabilidad.</p>`;
+}
+
+/** Un departamento o una provincia: distritos por nivel, un peligro por columna. */
+function scenarioArea(S, a) {
+  return html`<p id="zn-rie-sum"><strong>${F.fmtNumber(a.highAny)} de ${F.fmtNumber(a.n)} distritos</strong> están en riesgo alto o muy alto por al menos uno de los dos peligros.</p>
+    <div class="table-wrap"><table class="data zn-risk zn-scen"><caption class="visually-hidden">Distritos por nivel de riesgo y peligro</caption>
+      <thead><tr><th scope="col">Nivel de riesgo</th>${a.hazards.map((h) => html`<th scope="col">${h.split(' (')[0]}</th>`)}</tr></thead>
+      <tbody>${a.by.map((x, i) => html`<tr><th scope="row">${lvl(S, i)}</th>${x.n.map((v) => html`<td>${F.fmtNumber(v)}</td>`)}</tr>`)}</tbody></table></div>
+    <p class="muted small">Número de distritos en cada nivel. Elija un distrito para ver sus dos niveles y lo que hay en sus áreas de mayor susceptibilidad.</p>`;
+}
+
+function scenarioPart(S, area) {
+  if (!S?.districts || !Object.keys(S.districts).length) return html`<p class="muted" id="zn-rie-none">No se pudo cargar el escenario del CENEPRED. Vuelva a intentarlo más tarde.</p>`;
+  const sc = S.scenario || {};
+  const source = html`<p class="muted small" id="zn-rie-src">Fuente: CENEPRED, SIGRID, escenario de riesgo por lluvias para ${scenarioPeriod(sc)}, elaborado en ${monthEs(sc.prepared)}. <a href="${safeUrl(S.url)}" rel="noopener" target="_blank">Página de escenarios del SIGRID</a>${S.document ? html` · <a href="${safeUrl(S.document)}" rel="noopener" target="_blank">documento del escenario</a>` : ''} · <a href="${safeUrl(S.table)}" rel="noopener">tabla original (ZIP)</a>. Es una copia de esa fecha: el CENEPRED publica escenarios nuevos durante el año.</p>`;
+  if (area.length === 6) {
+    const d = districtScenario(S, area);
+    return d ? html`${scenarioDistrict(S, d)}${source}` : html`<p id="zn-rie-none">Este distrito no está en la tabla del escenario del CENEPRED. <strong>Eso no quiere decir que aquí no haya riesgo.</strong> Mire su provincia.</p>${source}`;
+  }
+  const a = scenarioSummary(S, area);
+  return a ? html`${scenarioArea(S, a)}${source}` : html`<p id="zn-rie-none">Este lugar no está en la tabla del escenario del CENEPRED. <strong>Eso no quiere decir que aquí no haya riesgo.</strong></p>${source}`;
+}
+
+/** El detalle por manzana, solo donde el CENEPRED lo evaluó (zonas de Piura, Tumbes y Lambayeque). */
+function blocksPart(K, area) {
   const r = expectedRisk(K, area);
-  const cover = riskCoverage(K, names);
-  if (!r) return html`<section class="card" aria-labelledby="zn-rie">${head}
-    <p id="zn-rie-none">No tenemos el riesgo esperado de este lugar. De la evaluación del CENEPRED ante El Niño 2026-2027 publicamos solo las manzanas de algunas zonas de ${joinEs(cover)}. <strong>Eso no quiere decir que aquí no haya riesgo.</strong></p>${OFFICIAL}</section>`;
+  if (!r) return '';
   const worst = r.by[r.worst];
-  return html`<section class="card" aria-labelledby="zn-rie">${head}
-    <p id="zn-rie-sum">${r.high.n
+  return html`<h3 id="zn-mz">Detalle por manzana ante El Niño 2026-2027</h3>
+    <p id="zn-mz-sum">${r.high.n
     ? html`<strong>${F.fmtNumber(r.high.pob)} personas</strong> y ${F.fmtNumber(r.high.viv)} viviendas están en las ${F.fmtNumber(r.high.n)} manzanas que el CENEPRED calificó en riesgo alto o muy alto (censo 2017).`
     : html`Ninguna de las manzanas que el CENEPRED evaluó aquí está en riesgo alto o muy alto.`}
       Nivel más alto entre las ${F.fmtNumber(r.n)} manzanas evaluadas: <span class="lvl ${RISK_CLS[r.worst] || ''}">${worst.name}</span></p>
-    <div class="table-wrap"><table class="data zn-risk"><caption class="visually-hidden">Manzanas evaluadas por el CENEPRED, por nivel de riesgo</caption>
+    <div class="table-wrap"><table class="data zn-risk zn-blocks"><caption class="visually-hidden">Manzanas evaluadas por el CENEPRED, por nivel de riesgo</caption>
       <thead><tr><th scope="col">Nivel de riesgo</th><th scope="col">Manzanas</th><th scope="col">Personas</th><th scope="col">Viviendas</th></tr></thead>
       <tbody>${r.by.map((x, i) => html`<tr><th scope="row"><span class="lvl ${RISK_CLS[i] || ''}">${x.name}</span></th><td>${F.fmtNumber(x.n)}</td><td>${F.fmtNumber(x.pob)}</td><td>${F.fmtNumber(x.viv)}</td></tr>`)}</tbody></table></div>
     ${r.places.length ? html`<p>Centros poblados con más personas en riesgo alto o muy alto: ${r.places.map(([n, v], i) => html`${i ? '; ' : ''}${n} (${F.fmtNumber(v)})`)}.</p>` : ''}
-    <p class="muted small">El CENEPRED evaluó solo algunas zonas${area.length === 6 ? ' de este distrito' : ` (${F.fmtNumber(r.distritos)} ${r.distritos === 1 ? 'distrito' : 'distritos'} de este lugar)`}: una manzana que no aparece aquí no está libre de riesgo. Fuente: CENEPRED, SIGRID, escenario de riesgo ante El Niño 2026-2027; personas y viviendas por manzana del censo 2017 (INEI), no de hoy. <a href="#/memoria?area=${area}">Ver las manzanas en el mapa de la Memoria</a> (vista «Daños y pobreza»).</p>${OFFICIAL}</section>`;
+    <p class="muted small">Es otra evaluación del CENEPRED, más fina y solo de algunas zonas${area.length === 6 ? ' de este distrito' : ` (${F.fmtNumber(r.distritos)} ${r.distritos === 1 ? 'distrito' : 'distritos'} de este lugar)`}: una manzana que no aparece aquí no está libre de riesgo. Fuente: CENEPRED, SIGRID, escenario de riesgo ante El Niño 2026-2027; personas y viviendas por manzana del censo 2017 (INEI), no de hoy. <a href="#/memoria?area=${area}">Ver las manzanas en el mapa de la Memoria</a> (vista «Daños y pobreza»).</p>`;
+}
+
+function riskCard(S, K, area) {
+  const period = scenarioPeriod(S?.scenario);
+  return html`<section class="card" aria-labelledby="zn-rie"><h2 id="zn-rie">Riesgo esperado por lluvias${period ? `: ${period}` : ''}</h2>
+    ${scenarioPart(S, area)}${blocksPart(K, area)}${OFFICIAL}</section>`;
 }
 
 /** Preguntas que la página debe responder sin que nadie la explique: qué es, de cuándo es y qué no dice. */
 export const FAQ = [
   ['¿Esto es una alerta?', 'No. El observatorio no emite alertas ni recomendaciones de emergencia. Los avisos de la sección «Hoy» son los que publican el SENAMHI, el INDECI y otras instituciones, con el nivel que dio cada una y un enlace al original.'],
-  ['¿De cuándo son los datos?', 'Cada bloque tiene su fecha. La frecuencia de daños usa las temporadas 1970-71 a 2014-15 de DesInventar; los registros llegan hasta el último que figura arriba. Los avisos son los vigentes al abrir la página. El riesgo esperado es el del escenario del CENEPRED ante El Niño 2026-2027, con personas y viviendas del censo 2017.'],
-  ['¿Por qué mi lugar no tiene «riesgo esperado»?', 'Porque de esa evaluación del CENEPRED solo publicamos las manzanas de algunas zonas de la costa norte. Que un lugar no aparezca no quiere decir que no tenga riesgo: quiere decir que aquí no tenemos ese dato.'],
-  ['¿Qué cuenta como persona o vivienda en riesgo?', 'Las personas y las viviendas que el censo de 2017 contó en cada manzana que el CENEPRED calificó. No es un conteo de hoy, ni de daños: es cuánta gente vivía donde el escenario espera riesgo.'],
-  ['¿Un nivel bajo, o pocos registros, quiere decir que es seguro?', 'No. El nivel es de la manzana evaluada, y la historia cuenta solo lo que alguien registró. Una quebrada, una ladera o la ribera de un río pueden ser peligrosas en un lugar con pocos registros.'],
+  ['¿De cuándo son los datos?', 'Cada bloque dice su fecha. La frecuencia de daños usa las temporadas 1970-71 a 2014-15 de DesInventar; los registros llegan hasta el último que figura arriba. Los avisos son los vigentes al abrir la página. El riesgo esperado es el escenario del CENEPRED cuyo periodo y mes de elaboración figuran en su título y en su fuente: es una copia de esa fecha, y el CENEPRED publica escenarios nuevos durante el año.'],
+  ['¿Por qué hay dos niveles de riesgo?', 'Porque el CENEPRED evalúa por separado los movimientos en masa (huaycos y deslizamientos) y las inundaciones, y un distrito puede estar bajo en uno y muy alto en el otro. La página muestra siempre los dos y nombra el más alto; no los combina en un nivel propio.'],
+  ['¿Qué cuenta como persona o vivienda en el riesgo esperado?', 'Las que el CENEPRED ubica en las áreas de mayor susceptibilidad del distrito, no todo el distrito. Por eso un distrito puede tener un nivel alto y cero viviendas: el nivel también pesa la vulnerabilidad. En el detalle por manzana son las personas y viviendas del censo 2017.'],
+  ['¿Un nivel bajo, o pocos registros, quiere decir que es seguro?', 'No. El nivel es un resumen del distrito, y la historia cuenta solo lo que alguien registró. Una quebrada, una ladera o la ribera de un río pueden ser peligrosas en un distrito con nivel bajo o con pocos registros.'],
   ['¿Qué pasa con mi ubicación si uso «Usar mi ubicación»?', 'Se usa en su dispositivo para buscar los distritos más cercanos y se descarta. No se envía a ningún servidor ni se guarda.'],
   ['¿Qué debo hacer ante una emergencia?', 'Siga las indicaciones del INDECI, del SENAMHI y de su municipalidad. Esta página ayuda a entender el lugar; no reemplaza a esas instituciones.'],
 ];
 
-function report(D, feed, area, now, K) {
+function report(D, feed, area, now, K, S) {
   const names = D.sum.nombres;
   const recs = D.recs.filter((r) => r.u.startsWith(area));
   const years = M.coverageYears(D.sum.cobertura.homogenea, 0, 0);
@@ -211,7 +299,7 @@ function report(D, feed, area, now, K) {
     <section class="card" aria-labelledby="zn-hoy"><h2 id="zn-hoy">Hoy</h2>
       <p>${D.ongoing ? html`Evento en curso en el catálogo: <strong>${D.ongoing}</strong>.` : 'Sin un evento ENSO en curso en el catálogo.'}${period ? html` Último ICEN publicado: <strong>${F.fmtNumber(icen, 2)} °C</strong> (${period}).` : ''}</p>
       <h3>Avisos oficiales que tocan este lugar</h3><p class="muted small">Incluye los que nombran su provincia o su departamento.</p>${alertsCard(alerts, now)}</section>
-    ${riskCard(K, names, area)}
+    ${riskCard(S, K, area)}
     <section class="card" aria-labelledby="zn-est"><h2 id="zn-est">Qué meses suelen ser los peores</h2>${seasonTable(seasonality(recs))}</section>
     <section class="card" aria-labelledby="zn-des"><h2 id="zn-des">Seguir</h2>
       <ul class="link-list">
@@ -225,7 +313,7 @@ export const zonaView = {
   title: 'Mi zona',
   render() {
     return html`<div class="page-head"><div class="eyebrow">Mi zona</div><h1>¿Qué pasó antes en mi lugar, y qué hay hoy?</h1>
-      <p>Elija un departamento, una provincia o un distrito. Verá cuántas veces hubo daños, qué meses suelen ser los peores, cuánto cambia con El Niño, los avisos oficiales de hoy y, donde el CENEPRED lo evaluó, el riesgo esperado.</p></div>
+      <p>Elija un departamento, una provincia o un distrito. Verá cuántas veces hubo daños, qué meses suelen ser los peores, cuánto cambia con El Niño, los avisos oficiales de hoy y el riesgo esperado por lluvias según el CENEPRED.</p></div>
       <div class="card"><label for="zn-q"><strong>Lugar</strong></label>
         <input id="zn-q" class="input" type="search" list="zn-list" autocomplete="off" placeholder="Escriba un nombre, por ejemplo Chosica" style="width:100%;max-width:520px">
         <datalist id="zn-list"></datalist>
@@ -250,7 +338,7 @@ export const zonaView = {
       root.innerHTML = String(html`<div class="notice notice-warn">${raw(ICON.triangle)}<p>No se pudo cargar el catálogo histórico. Puede descargarlo directamente: <a href="assets/historico/eventos.zip" download>CSV (en un ZIP)</a>.</p></div>`);
       return;
     }
-    const [feed, K] = await Promise.all([load('feed.json').catch(() => null), blocks()]);
+    const [feed, K, S] = await Promise.all([load('feed.json').catch(() => null), blocks(), scenario()]);
     if (!root.isConnected) return;
     const labels = placeLabels(D.sum.nombres);
     const byCode = new Map([...labels].map(([l, c]) => [c, l]));
@@ -286,7 +374,7 @@ export const zonaView = {
       q.value = byCode.get(area);
       syncPick(area);
       msg.textContent = `${placeName(names, area)} · ${LEVEL[area.length]}`;
-      root.innerHTML = String(report(D, feed, area, Date.now(), K));
+      root.innerHTML = String(report(D, feed, area, Date.now(), K, S));
       $('#zn-csv', root)?.addEventListener('click', async (e) => {
         const btn = e.currentTarget;
         if (btn.disabled) return;

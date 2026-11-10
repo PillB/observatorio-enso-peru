@@ -64,7 +64,7 @@ it('separa los avisos vigentes y los próximos con las reglas del mapa y deja fu
 });
 
 // --- Elegir por pasos, ubicación y riesgo esperado ---
-import { NEAR_MAX_KM, childrenOf, expectedRisk, joinEs, nearestDistricts, riskCoverage } from '../../../public/assets/js/zona.js';
+import { NEAR_MAX_KM, childrenOf, districtScenario, expectedRisk, joinEs, monthEs, nearestDistricts, scenarioPeriod, scenarioSummary } from '../../../public/assets/js/zona.js';
 
 it('lista los lugares del nivel siguiente, por nombre', () => {
   const n = { departamento: { 15: 'Lima', '02': 'Áncash', 20: 'Piura' }, provincia: { 1501: 'Lima', 1502: 'Barranca', 2001: 'Piura' }, distrito: { 150110: 'Comas', 150101: 'Lima', 200101: 'Piura' } };
@@ -127,12 +127,74 @@ it('el nivel más alto es el peor que aparece, y un lugar sin manzanas no tiene 
   assert.equal(expectedRisk({ levels: [], blocks: [] }, '20'), null);
 });
 
-it('dice qué departamentos cubre la capa', () => {
-  assert.deepEqual(riskCoverage(K, names), ['Piura']);
-  assert.deepEqual(riskCoverage(null, names), []);
+it('une nombres en español', () => {
   assert.equal(joinEs(['Lambayeque', 'Piura', 'Tumbes']), 'Lambayeque, Piura y Tumbes');
   assert.equal(joinEs(['Piura']), 'Piura');
   assert.equal(joinEs([]), '');
+});
+
+const S = {
+  levels: ['Muy Alto', 'Alto', 'Medio', 'Bajo'],
+  hazards: { mm: 'Movimientos en masa (huaycos y deslizamientos)', inu: 'Inundaciones' },
+  scenario: { id: '103', from: '2027-01', until: '2027-03', prepared: '2026-10' },
+  districts: {
+    200101: [[3, 0, 0, 0, 1, 0.1], [0, 151601, 51085, 12, 359, 79.9]],
+    200104: [[1, 10, 4, 0, 0, 0], [1, 20, 8, 1, 2, 3.5]],
+    200105: [[2, 0, 0, 0, 0, 0], [3, 0, 0, 0, 0, 0]],
+    150110: [[0, 5, 1, 0, 0, 0], null],
+    150199: [null, null],
+  },
+};
+
+it('un distrito muestra los dos peligros y nombra el más alto, sin combinarlos', () => {
+  const d = districtScenario(S, '200101');
+  assert.deepEqual(d.hazards.map((h) => [h.key, h.level]), [['mm', 3], ['inu', 0]]);
+  assert.equal(d.worst, 0);
+  assert.deepEqual(d.worstHazards, ['inu']);
+  assert.equal(d.hazards[1].personas, 151601);
+  assert.equal(d.hazards[1].viasKm, 79.9);
+  assert.deepEqual(districtScenario(S, '200104').worstHazards, ['mm', 'inu']); // empate: los dos
+  const one = districtScenario(S, '150110'); // solo está en una de las dos tablas
+  assert.deepEqual(one.hazards.map((h) => h.key), ['mm']);
+  assert.equal(districtScenario(S, '150199'), null);
+  assert.equal(districtScenario(S, '999999'), null);
+  assert.equal(districtScenario(null, '200101'), null);
+});
+
+it('un departamento cuenta distritos por nivel y peligro, y los que están altos por al menos uno', () => {
+  const a = scenarioSummary(S, '20');
+  assert.equal(a.n, 3);
+  assert.deepEqual(a.by.map((x) => x.n), [[0, 1], [1, 1], [1, 0], [1, 1]]);
+  assert.deepEqual(a.high, [1, 2]);
+  assert.equal(a.highAny, 2);
+  assert.deepEqual(a.hazards, Object.values(S.hazards));
+  assert.equal(scenarioSummary(S, '15').highAny, 1);
+  assert.equal(scenarioSummary(S, '01'), null);
+  assert.equal(scenarioSummary(S, ''), null);
+  assert.equal(scenarioSummary(null, '20'), null);
+});
+
+it('escribe el periodo y el mes del escenario', () => {
+  assert.equal(scenarioPeriod(S.scenario), 'enero a marzo de 2027');
+  assert.equal(scenarioPeriod({ from: '2026-11', until: '2027-01' }), 'noviembre de 2026 a enero de 2027');
+  assert.equal(monthEs('2026-10'), 'octubre de 2026');
+  assert.equal(monthEs(''), '');
+  assert.equal(scenarioPeriod(undefined), '');
+  assert.equal(scenarioPeriod({ from: '2027-13', until: 'x' }), '');
+});
+
+it('con el escenario publicado: todos los distritos del catálogo tienen sus dos niveles', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const rd = async (rel) => JSON.parse(await readFile(new URL(`../../../public/assets/${rel}`, import.meta.url), 'utf8'));
+  const real = await rd('capas/escenario-distritos.json');
+  const catalog = Object.keys((await rd('historico/resumen.json')).nombres.distrito);
+  assert.ok(catalog.length > 1800);
+  for (const c of catalog) assert.equal(districtScenario(real, c)?.hazards.length, 2, c);
+  const all = scenarioSummary(real, '');
+  assert.equal(all, null);
+  const total = [...new Set(Object.keys(real.districts).map((c) => c.slice(0, 2)))].map((d) => scenarioSummary(real, d));
+  assert.equal(total.reduce((n, a) => n + a.n, 0), Object.keys(real.districts).length);
+  assert.ok(scenarioPeriod(real.scenario) && monthEs(real.scenario.prepared));
 });
 
 it('con la capa publicada: cada manzana cae en un distrito del catálogo de tres departamentos', async () => {
@@ -148,6 +210,6 @@ it('las preguntas frecuentes dicen que no es una alerta, de cuándo son los dato
   const { FAQ } = await import('../../../public/assets/js/zona.js');
   assert.ok(FAQ.length >= 6);
   const text = FAQ.map(([q, a]) => `${q} ${a}`).join(' ');
-  for (const must of ['no emite alertas', 'censo 2017', '2026-2027', 'no quiere decir que no tenga riesgo', 'No se envía a ningún servidor', 'INDECI']) assert.ok(text.includes(must), must);
+  for (const must of ['no emite alertas', 'censo 2017', 'áreas de mayor susceptibilidad', 'no los combina', 'No se envía a ningún servidor', 'INDECI']) assert.ok(text.includes(must), must);
   for (const [q, a] of FAQ) { assert.ok(q.startsWith('¿') && q.endsWith('?'), q); assert.ok(a.length > 40); }
 });

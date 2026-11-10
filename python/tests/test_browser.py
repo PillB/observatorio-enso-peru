@@ -1069,26 +1069,72 @@ def _zona(page, base, area=""):
     expect(page.locator("#zn-dep option")).not_to_have_count(0, timeout=20000)
 
 
-def test_zona_shows_expected_risk_where_cenepred_evaluated_and_says_so_where_not(site, page):
+def test_zona_shows_both_hazards_side_by_side_with_the_scenario_date_and_source(site, page):
+    base, root = site
+    S = json.loads((root / "assets/capas/escenario-distritos.json").read_text(encoding="utf-8"))
+    levels = S["levels"]
+    # Un distrito bajo en un peligro y muy alto en el otro: los dos a la vista, y el más alto nombrado.
+    area = next(c for c, (mm, inu) in sorted(S["districts"].items()) if mm and inu and mm[0] == 3 and inu[0] == 0)
+    mm, inu = S["districts"][area]
+    _zona(page, base, area)
+    card = page.locator("section[aria-labelledby='zn-rie']")
+    expect(card.locator("#zn-rie")).to_contain_text(re.compile(r"Riesgo esperado por lluvias: \w+ .*\d{4}"))
+    cards = card.locator(".zn-haz-c")
+    expect(cards).to_have_count(2)
+    for c in cards.all():
+        expect(c).to_be_visible()  # nunca detrás de una pestaña
+    expect(card.locator("[data-hazard='mm'] .lvl")).to_have_text(levels[mm[0]])
+    expect(card.locator("[data-hazard='inu'] .lvl")).to_have_text(levels[inu[0]])
+    expect(card.locator("#zn-rie-sum")).to_contain_text("Muy Alto")
+    expect(card.locator("#zn-rie-sum")).to_contain_text("inundaciones")
+    expect(card.locator("#zn-rie-sum")).to_contain_text("mire los dos")
+    shown = int(re.sub(r"\D", "", card.locator("[data-hazard='inu'] dd").first.inner_text()) or 0)
+    assert shown == inu[1], "las personas son las de la tabla del CENEPRED, sin cambios"
+    src = card.locator("#zn-rie-src")
+    expect(src).to_contain_text("elaborado en")
+    expect(src.locator("a[href='https://sigrid.cenepred.gob.pe/sigridv3/escenarios']")).to_have_count(1)
+    expect(card).to_contain_text("áreas de mayor susceptibilidad")
+    expect(card.locator("a[href='https://www.gob.pe/indeci']")).to_have_count(1)
+    # Un departamento: distritos por nivel, un peligro por columna, y la suma es la de la tabla.
+    dep = area[:2]
+    n = sum(1 for c in S["districts"] if c.startswith(dep))
+    _zona(page, base, dep)
+    rows = page.locator("table.zn-scen tbody tr")
+    expect(rows).to_have_count(4)
+    for col in (2, 3):
+        total = sum(int(re.sub(r"\D", "", x) or 0) for x in page.locator(f"table.zn-scen tbody td:nth-child({col})").all_inner_texts())
+        assert total == n
+    expect(page.locator("#zn-rie-sum")).to_contain_text(f"de {n} distritos")
+    assert not page.errors, page.errors
+
+
+def test_zona_adds_the_block_detail_only_where_cenepred_evaluated_blocks(site, page):
     base, root = site
     K = json.loads((root / "assets/capas/manzanas-riesgo.json").read_text(encoding="utf-8"))
     area = K["blocks"][0][2]
     n = sum(1 for b in K["blocks"] if b[2] == area)
     _zona(page, base, area)
     card = page.locator("section[aria-labelledby='zn-rie']")
-    expect(card).to_be_visible()
-    expect(card.locator("table.zn-risk tbody tr")).to_have_count(4)
-    shown = sum(int(re.sub(r"\D", "", t) or 0) for t in card.locator("table.zn-risk tbody td:nth-child(2)").all_inner_texts())
+    expect(card.locator("#zn-mz")).to_be_visible()
+    expect(card.locator("table.zn-blocks tbody tr")).to_have_count(4)
+    shown = sum(int(re.sub(r"\D", "", t) or 0) for t in card.locator("table.zn-blocks tbody td:nth-child(2)").all_inner_texts())
     assert shown == n, "la tabla cuenta las manzanas del distrito en la capa"
     expect(card).to_contain_text("censo 2017")
     expect(card).to_contain_text("no está libre de riesgo")
-    expect(card.locator("a[href='https://www.gob.pe/indeci']")).to_have_count(1)
-    # Un distrito sin manzanas evaluadas: se dice que falta el dato, nunca que no hay riesgo.
+    # Un distrito sin manzanas evaluadas tiene el escenario, sin el detalle por manzana.
     _zona(page, base, "150110")
-    none = page.locator("#zn-rie-none")
-    expect(none).to_contain_text("no quiere decir que aquí no haya riesgo")
-    expect(page.locator("table.zn-risk")).to_have_count(0)
+    expect(page.locator(".zn-haz-c")).to_have_count(2)
+    expect(page.locator("#zn-mz")).to_have_count(0)
     assert not page.errors, page.errors
+
+
+def test_zona_says_so_when_the_scenario_cannot_be_loaded(site, page):
+    base, _ = site
+    page.route("**/assets/capas/escenario-distritos.json", lambda r: r.fulfill(status=503, body="x"))
+    go(page, base, "zona?area=150110")
+    expect(page.locator("#zn-rie-none")).to_contain_text("No se pudo cargar el escenario", timeout=20000)
+    expect(page.locator("#zn-hoy")).to_be_visible()  # el resto de la página sigue
+    expect(page.locator("a[href='https://www.gob.pe/indeci']").first).to_be_visible()
 
 
 def test_zona_step_by_step_lists_follow_and_set_the_place(site, page):
