@@ -125,6 +125,8 @@ function github(name, method, url, body, opts = {}) {
 const CONFIG_COMMON = [
   ['contact', 'https://github.com/PillB/observatorio-enso-peru'],
   ['only', ''],
+  // «i/n»: solo una parte de los servidores (CI reparte la validación en n trabajos).
+  ['shard', ''],
 ];
 
 // El nodo HTTP lanza todas las peticiones de su entrada y recién al final lee

@@ -475,7 +475,7 @@ _In English: [anexos/a3-en.svg](anexos/a3-en.svg)._
 | **Rama data-n8n** | Hacia GitHub | Mueve la rama al commit nuevo (o la crea). index.json y heartbeat.json van siempre, aunque nada responda. _el pipeline la usa hasta 72 h._ Ver [A4](#a4). | git/refs |
 | **Avisar al sitio (apagado)** | Hacia GitHub | Puede mandar repository_dispatch enso-refresh al terminar; viene desactivado porque el token necesitaría ese permiso. Ver [A5](#a5). |  |
 | **Vigilante del sitio** | Otros flujos | Cada 6 horas lee data/manifest.json; si no responde o tiene más de 30 h, la ejecución falla y avisa el Error workflow, aunque GitHub esté apagado. Ver [A10](#a10). | Schedule Trigger, HTTP Request |
-| **Validación de fuentes** | Otros flujos | A mano: baja cada URL del registro con las mismas dos pasadas y entrega un informe CSV; el sondeo semanal lo importa como medición de la red n8n. n8n.yml lo corre los lunes desde Actions. Ver [A1](#a1). | Convert to File |
+| **Validación de fuentes** | Otros flujos | A mano: baja cada URL del registro con las mismas dos pasadas y entrega un informe CSV; el sondeo semanal lo importa como medición de la red n8n. n8n.yml lo corre los lunes desde Actions, repartido en 4 partes por servidor que corren en paralelo y se juntan en un informe. Ver [A1](#a1). | Convert to File |
 | **Extractor de informes** | Otros flujos | Webhook con token: cuando el lector de los informes del ENFEN falla, el pipeline le pide una lectura a OpenAI (temperatura 0, JSON con la cita de cada valor). Solo deja una propuesta para revisión. Ver [A5](#a5). | Webhook, OpenAI |
 
 | N.º | De → a | Qué viaja, cuándo y por qué |

@@ -93,6 +93,13 @@ dos peticiones al mismo servidor público del Perú, espera su `Crawl-delay`
 (el del `robots.txt` que n8n leyó, o `crawl_delay` en `by_url` si el registro lo trae) o 1 segundo, hasta 30
 (nodos «Pausa», con `pause_s`).
 
+Con `shard` = `i/n` en «Configuración», el flujo pide solo una de `n` partes de
+los servidores. Cada servidor va entero a una parte, así que su pausa se
+respeta, y las partes se equilibran por número de URL. Entre todas piden cada
+URL una vez. `n8n.yml` corre así la validación en 4 trabajos paralelos (una sola
+corrida pasaba de 30 minutos) y junta las partes en `validacion-actions.json`.
+Vacío (lo normal), se pide todo.
+
 El veredicto queda en la entrada de `index.json` de la URL pedida (`robots`)
 o, si no se pidió, en `not_requested`; en la validación, en la columna
 `robots` (fila `NO PEDIDA` si no se pidió). La medición siguiente lo pasa al

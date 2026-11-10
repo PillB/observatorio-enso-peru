@@ -115,9 +115,32 @@ for (const it of out) {
   if (!queues.has(h)) queues.set(h, []);
   queues.get(h).push(it);
 }
+// «shard» = «i/n»: esta corrida pide solo una de n partes de los servidores.
+// Cada servidor va entero a una parte (así su pausa se respeta) y las partes se
+// equilibran por número de URL: de mayor a menor, cada servidor a la parte con
+// menos URL. Todas las partes calculan el mismo reparto, así que juntas piden
+// todo y sin repetir.
+const shard = /^(\d+)\/(\d+)$/.exec(String(cfg.shard || '').trim());
+if (String(cfg.shard || '').trim() && !(shard && Number(shard[2]) >= 1 && Number(shard[1]) < Number(shard[2]))) throw new Error(`Parte inválida: «${cfg.shard}»`);
+const partOf = new Map();
+if (shard) {
+  const load = new Array(Number(shard[2])).fill(0);
+  const hosts = [...queues.entries()].sort((a, b) => b[1].length - a[1].length || (a[0] < b[0] ? -1 : 1));
+  for (const [h, q] of hosts) {
+    const k = load.indexOf(Math.min(...load));
+    partOf.set(h, k);
+    load[k] += q.length;
+  }
+}
+const mine = (h) => !shard || partOf.get(h) === Number(shard[1]);
 const spread = [];
-while (spread.length < out.length) {
-  for (const q of queues.values()) if (q.length) spread.push(q.shift());
+const kept = [...queues.entries()].filter(([h]) => mine(h)).map(([, q]) => q);
+const total = kept.reduce((n, q) => n + q.length, 0);
+while (spread.length < total) {
+  for (const q of kept) if (q.length) spread.push(q.shift());
+}
+if (!spread.length) {
+  throw new Error(`Ninguna fuente para descargar en la parte ${cfg.shard} (alcance «${scope}»; registro: ${origin}).`);
 }
 pacing(spread.map((it) => it.json)).forEach((p, i) => { spread[i].json.pause_s = p; });
 return spread;

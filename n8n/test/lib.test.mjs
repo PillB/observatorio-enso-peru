@@ -639,3 +639,31 @@ test('Fuentes espera entre peticiones al mismo servidor público del Perú', asy
   assert.deepEqual(out.map((i) => [i.json.id, i.json.pause_s]),
     [['i1', 0], ['n1', 0], ['m1', 0], ['i2', 1], ['n2', 0], ['m2', 29], ['i3', 0]]);
 });
+
+test('Fuentes: las partes «i/n» se reparten todo el registro, sin repetir y con cada servidor en una sola', async () => {
+  const reg = JSON.parse(readFileSync(new URL('../../registry/sources.json', import.meta.url), 'utf8'));
+  const run = async (shard) => (await runCode('fuentes', { REGISTRY: JSON.stringify(reg) },
+    { 'Configuración': [{ json: { scope: 'todas', only: '', shard } }] })).map((i) => i.json);
+  const all = await run('');
+  const host = (u) => new URL(u).host;
+  const parts = [];
+  for (let i = 0; i < 4; i++) parts.push(await run(`${i}/4`));
+  assert.ok(parts.every((p) => p.length > 0));
+  const urls = parts.flat().map((j) => j.url);
+  assert.deepEqual([...urls].sort(), all.map((j) => j.url).sort());
+  assert.equal(new Set(urls).size, urls.length);
+  const owner = new Map();
+  parts.forEach((p, i) => p.forEach((j) => { assert.ok(!owner.has(host(j.url)) || owner.get(host(j.url)) === i); owner.set(host(j.url), i); }));
+  // En cada parte, entre dos pedidos al mismo servidor público del Perú pasa al menos su Crawl-delay (o 1 s).
+  for (const p of parts) {
+    let t = 0;
+    const last = new Map();
+    for (const j of p) {
+      t += j.pause_s;
+      const h = host(j.url);
+      if (/\.(gob|mil|edu)\.pe$/.test(h) && last.has(h)) assert.ok(t - last.get(h) >= Math.min(30, Math.max(1, Number(j.crawl_delay) || 1)), j.url);
+      last.set(h, t);
+    }
+  }
+  await assert.rejects(run('4/4'), /Parte inválida/);
+});

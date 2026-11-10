@@ -1162,8 +1162,8 @@
      "group": "operations",
      "name_es": "Validación de fuentes",
      "name_en": "Source validation",
-     "what_es": "A mano: baja cada URL del registro con las mismas dos pasadas y entrega un informe CSV; el sondeo semanal lo importa como medición de la red n8n. n8n.yml lo corre los lunes desde Actions.",
-     "what_en": "By hand: fetches every registry URL with the same two passes and returns a CSV report; the weekly probe imports it as an n8n-network measurement. n8n.yml runs it on Mondays from Actions.",
+     "what_es": "A mano: baja cada URL del registro con las mismas dos pasadas y entrega un informe CSV; el sondeo semanal lo importa como medición de la red n8n. n8n.yml lo corre los lunes desde Actions, repartido en 4 partes por servidor que corren en paralelo y se juntan en un informe.",
+     "what_en": "By hand: fetches every registry URL with the same two passes and returns a CSV report; the weekly probe imports it as an n8n-network measurement. n8n.yml runs it on Mondays from Actions, split into 4 parallel parts by server that are merged into one report.",
      "tech": [
       "Convert to File"
      ],
