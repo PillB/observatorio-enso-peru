@@ -1090,3 +1090,20 @@ table.grd .chip { white-space: normal; }
 .zn-h3 { background: color-mix(in srgb, var(--brand-2) 50%, transparent); }
 .zn-h4 { background: color-mix(in srgb, var(--brand) 72%, transparent); color: var(--brand-ink); font-weight: 700; }
 #zn-root > * + * { margin-top: 16px; }
+.zn-pick { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; margin-top: 12px; }
+.zn-pick label { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; color: var(--fg-2); min-width: 0; flex: 1 1 180px; max-width: 260px; }
+.zn-pick select.input { width: 100%; max-width: 100%; }
+.zn-near { display: flex; flex-wrap: wrap; gap: 8px; }
+.zn-near .btn { height: auto; padding: 8px 14px; flex-direction: column; align-items: flex-start; text-align: left; max-width: 100%; white-space: normal; }
+.zn-risk td { text-align: right; }
+.zn-haz { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); margin: 12px 0; }
+.zn-haz-c { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+.zn-haz-c h3 { margin: 0 0 6px; font-size: 1rem; }
+.zn-dl { margin: 8px 0 0; }
+.zn-dl > div { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; border-top: 1px solid var(--line-2); }
+.zn-dl dt { color: var(--fg-2); } .zn-dl dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+#zn-mz { margin-top: 20px; }
+.zn-faq { margin-top: 16px; }
+.zn-faq details.more { margin-top: 4px; }
+.zn-faq details.more > summary { min-height: 44px; }
+.zn-risk th[scope="col"]:not(:first-child) { text-align: right; }
