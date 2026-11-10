@@ -118,10 +118,14 @@ def test_reviewer_logs_in_corrects_a_place_and_sees_the_history(console, browser
         errors = []
         page.on("pageerror", lambda e: errors.append(str(e)))
         expect = pw.expect
-        # La consola se encuentra desde el sitio público: «Ingresar» en la cabecera.
-        page.goto(console)
-        page.get_by_role("link", name="Ingresar a la consola de revisores").click()
-        expect(page).to_have_url(console + "admin/")
+        # La consola se encuentra desde el sitio público: «Ingresar» en la cabecera. prepare_site lo quita fuera
+        # de Cloudflare (la publicación en GitHub Pages corre esta prueba después): entonces se va directo.
+        if 'id="admin-link"' in page.request.get(console).text():
+            page.goto(console)
+            page.get_by_role("link", name="Ingresar a la consola de revisores").click()
+            expect(page).to_have_url(console + "admin/")
+        else:
+            page.goto(console + "admin/")
         expect(page.get_by_role("heading", name="Ingresar")).to_be_visible()
         # Sin sesión no se ve nada de la consola: ni «Salir» ni «Documentos» en la cabecera.
         expect(page.get_by_role("button", name="Salir")).to_be_hidden()
