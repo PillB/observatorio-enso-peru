@@ -13,7 +13,7 @@ registro de fuentes ──► n8n (AWS) ──► rama data-n8n ──┐
                         servidor del Perú ─► data-peru ─┘   (directo › relay más reciente › Internet Archive)
 ```
 
-Hay cuatro flujos, en `n8n/dist/`:
+Hay cinco flujos, en `n8n/dist/`:
 
 | Archivo | Para qué | Credenciales |
 |---|---|---|
@@ -21,6 +21,7 @@ Hay cuatro flujos, en `n8n/dist/`:
 | `enso-n8n-recolector.json` | Recolectar todos los días a las 22:50 (Lima) y publicar en `data-n8n` | Token de GitHub |
 | `enso-n8n-vigilante.json` | Cada 6 horas, revisar que el sitio publicado esté al día (`data/manifest.json`, `generatedAt` de menos de 30 h); si no, la ejecución falla y avisa | Ninguna |
 | `enso-n8n-extractor.json` | Respaldo con OpenAI para leer los informes del ENFEN cuando su formato cambia: el pipeline lo llama por un webhook con token y recibe una propuesta en JSON para revisión | OpenAI del colega y un token propio |
+| `enso-n8n-boletin.json` | Cada hora, leer el boletín de eventos El Niño del sitio y mandarlo por Gmail: al momento si hay un cambio importante, si no en un resumen diario ([boletin](boletin.md)) | Gmail (OAuth2) de quien manda |
 
 Probados de punta a punta con n8n **2.44** y **1.123** (CI: `.github/workflows/n8n.yml`).
 
@@ -243,6 +244,12 @@ curl -X POST "$ENSO_LLM_EXTRACT_URL" -H "Authorization: Bearer $ENSO_LLM_EXTRACT
 
 Sin el token responde 403. La prueba de punta a punta con n8n real y un
 OpenAI falso es `n8n/test/e2e-extractor.sh n8nio/n8n:2.44.4 /tmp/ext`.
+
+## Boletín por correo (Gmail)
+
+Lee `data/boletin.json` del sitio y decide si manda, a quién y con qué asunto. Viene en simulacro (`send = false`):
+arma el correo y no lo manda hasta que se configure la credencial de Gmail, las direcciones y `send = true`. El paso a
+paso, las reglas de aviso y la prueba con n8n real están en [boletin.md](boletin.md#correo-con-n8n-y-gmail).
 
 ## Qué publica
 

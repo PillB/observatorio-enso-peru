@@ -4,7 +4,8 @@ El botón «Ayuda y tutorial» de la cabecera y el botón «Cómo se usa esta pe
 recorridos guiados: uno por pestaña, uno de inicio rápido y uno completo (una parada por pestaña). Cada paso lleva a su
 pestaña, deja la vista en el estado que necesita, desplaza la página hasta la sección, la resalta y, cuando hace falta,
 la usa delante de la persona: pulsa la vista de detalle de un mapa, elige un filtro, abre la ficha de un área, mueve
-la animación semanal o escribe una pregunta en el asistente, con un puntero animado.
+la animación semanal, toca un departamento en el mapa del boletín o escribe una pregunta en el asistente, con un puntero
+animado.
 
 Código:
 
@@ -73,7 +74,7 @@ cuadro mientras dura un recorrido y falla si la ventana toca el resaltado, el pu
 o si sale de la pantalla.
 
 - Geometría: 5000 casos al azar de `placePopover` y `planScroll`.
-- Los 13 recorridos en un teléfono de 320×640, uno de 390×844 en tema oscuro, una tableta y un escritorio en tema
+- Los 15 recorridos en un teléfono de 320×640, uno de 390×844 en tema oscuro, una tableta y un escritorio en tema
   oscuro: cada paso encuentra su sección y nunca se cruza.
 - Con animaciones, en un teléfono: el puntero llega a cada control.
 - Cambio de tamaño a mitad de un paso (escritorio, teléfono, teléfono acostado, tableta) y cambio de tema.

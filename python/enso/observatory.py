@@ -1495,6 +1495,30 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         from .cenepred_escenario import csv_text
 
         (tmp / "csv" / "escenario-distritos.csv").write_text(csv_text(escenario), encoding="utf-8")
+    # Boletín de eventos de El Niño (pestaña «Boletín» y correo de n8n): el mismo registro para los dos. Con el
+    # boletín anterior se decide si hay edición nueva y qué cambió. Nunca detiene la publicación.
+    try:
+        from . import boletin as BOL
+
+        prev_bol = previous.get("boletin.json", carry=True) if previous is not None else None
+        if prev_bol is None and previous is not None and previous.state.get("boletin.json") == "unreachable":
+            # No se sabe qué edición iba: la numeración vuelve a 1 con la fecha de hoy, y n8n la reconoce como una
+            # serie nueva por esa fecha (n8n/lib/boletin.js) en vez de darla por ya enviada.
+            log.add("warning", "boletin", "build", "boletin-sin-anterior",
+                    "No se pudo leer el boletín publicado: la numeración de ediciones vuelve a empezar.")
+        bol = BOL.build(feed, official, escenario, now, prev_bol, freshness,
+                        site=os.environ.get("SITE_URL") or BOL.SITE)
+        dump("boletin.json", bol)
+        (tmp / "boletin-correo.html").write_text(bol["email"]["html"], encoding="utf-8")
+        (tmp / "csv" / "boletin-departamentos.csv").write_text(BOL.csv_segments(bol), encoding="utf-8")
+        (tmp / "csv" / "boletin-avisos.csv").write_text(BOL.csv_events(bol), encoding="utf-8")
+        if bol["edition"] != int((prev_bol or {}).get("edition") or 0):
+            log.add("info", "boletin", "build", "boletin-edicion",
+                    f"Boletín N° {bol['edition']}: {len(bol['changes'])} cambios"
+                    f"{' (aviso inmediato)' if bol['alert'] else ''}.")
+    except Exception as exc:  # noqa: BLE001
+        log.add("error", "boletin", "build", "boletin-exception", f"{type(exc).__name__}: {exc}"[:300])
+    events = [e.as_dict() for e in log.events]  # con lo que registró el boletín
     dump("run-report.json", {"events": events, "worst": log.worst(),
                              "counts": {s: sum(1 for e in events if e["severity"] == s) for s in ("info", "warning", "error", "critical")}})
     dump("health.json", {"pipelineStatus": "degraded" if log.worst() in ("error", "critical") else "ok",

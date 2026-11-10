@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1720 5735.8" role="img" aria-labelledby="af-t af-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1720 5750.4" role="img" aria-labelledby="af-t af-d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif">
   <title id="af-t">Arquitectura del Observatorio ENSO Perú: diagrama completo</title>
   <desc id="af-d">Las fuentes oficiales del ENSO, las alertas de peligros y los feeds de noticias se bajan cada noche con tres recolectores: un equipo en el Perú (21:00), n8n en la nube (22:50) y GitHub Actions (23:37), según un registro que se mide cada lunes. Si una fuente no responde se usan las copias del Perú y de n8n, el Internet Archive o la publicación anterior. El pipeline en Python lee, valida, ubica las noticias por lugar y publica todo de una vez; el sitio muestra cada dato con su enlace a la fuente en vivo y a la copia archivada. Dos vigilantes revisan el sitio cada 6 horas y las incidencias se vuelven issues.</desc>
   <style>
@@ -113,7 +113,7 @@
     <marker id="af-m-control" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-control" d="M0 0L10 5L0 10z"/></marker>
     <marker id="af-m-human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar-k-human" d="M0 0L10 5L0 10z"/></marker>
   </defs>
-  <rect class="ar-bg" x="0" y="0" width="1720" height="5735.8" rx="14"/>
+  <rect class="ar-bg" x="0" y="0" width="1720" height="5750.4" rx="14"/>
   <text class="ar-big" x="20" y="38" font-size="20">Arquitectura del Observatorio ENSO Perú: diagrama completo</text>
   <text class="ar-s" x="20" y="60" font-size="12">Cada caja dice qué es y qué hace. Cada línea lleva un número: abajo, en «Conexiones», está qué viaja por ella, cuándo y por qué. Las cajas de color de borde igual son del mismo tipo (fuentes, recolectores, copias, pipeline, publicación, sitio, operación y personas). Las etiquetas</text>
   <text class="ar-s" x="20" y="77" font-size="12">A1 a A11 abren el anexo de cada parte: sus pasos, tecnologías y respaldos.</text>
@@ -136,7 +136,7 @@
   <text class="ar-h" x="1091" y="149" font-size="15">4 · Pipeline diario</text>
   <rect class="ar-col" x="1424" y="124" width="252" height="1854.3" rx="10"/>
   <text class="ar-h" x="1436" y="149" font-size="15">5 · Publicación y sitio</text>
-  <rect class="ar-col" x="44" y="2058.3" width="1632" height="636.5" rx="10"/>
+  <rect class="ar-col" x="44" y="2058.3" width="1632" height="651.1" rx="10"/>
   <text class="ar-h" x="56" y="2083.3" font-size="15">6 · Operación, vigilancia y personas</text>
   
   <!-- conexiones -->
@@ -340,9 +340,9 @@
   </g>
   <g class="ar-edge" id="af-e-34" data-edge="34" data-from="maintainers" data-to="peru-operator" tabindex="0">
     <title>34. Mantenedores y propietario → Responsable del equipo en el Perú: token y kit. Le dan un token de GitHub de grano fino (solo este repositorio) y el kit, y uno nuevo cuando el recolector avisa que vence.</title>
-    <path class="ar-e ar-e-human" d="M1089 2574 L522 2574 Q516 2574 516 2568 L516 2472.7" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="802.5" cy="2574" r="9"/>
-    <text class="ar-t" x="802.5" y="2577.8" font-size="10.5" text-anchor="middle">34</text>
+    <path class="ar-e ar-e-human" d="M1089 2592 L522 2592 Q516 2592 516 2586 L516 2472.7" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="802.5" cy="2592" r="9"/>
+    <text class="ar-t" x="802.5" y="2595.8" font-size="10.5" text-anchor="middle">34</text>
   </g>
   <g class="ar-edge" id="af-e-35" data-edge="35" data-from="n8n-colleague" data-to="n8n-collector" tabindex="0">
     <title>35. Colega que opera n8n → Recolector n8n (nube AWS): importa y activa. La persona importa n8n/dist/enso-n8n-recolector.json en su n8n, elige la credencial de GitHub y lo activa. Los nodos se regeneran con build.mjs, no se editan en n8n.</title>
@@ -352,9 +352,9 @@
   </g>
   <g class="ar-edge" id="af-e-36" data-edge="36" data-from="maintainers" data-to="n8n-colleague" tabindex="0">
     <title>36. Mantenedores y propietario → Colega que opera n8n: token de GitHub. Le dan un token de grano fino (solo este repositorio, Contents de lectura y escritura, 1 año) para la credencial de n8n. n8n anota cuándo vence y la actualización diaria avisa desde 21 días antes (relay-token-expiring); si vence, la copia deja de subir y sale relay-n8n-stale.</title>
-    <path class="ar-e ar-e-human" d="M1089 2652 L864 2652 Q858 2652 858 2646 L858 2490.6" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="973.5" cy="2652" r="9"/>
-    <text class="ar-t" x="973.5" y="2655.8" font-size="10.5" text-anchor="middle">36</text>
+    <path class="ar-e ar-e-human" d="M1089 2664 L864 2664 Q858 2664 858 2658 L858 2521" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="973.5" cy="2664" r="9"/>
+    <text class="ar-t" x="973.5" y="2667.8" font-size="10.5" text-anchor="middle">36</text>
   </g>
   <g class="ar-edge" id="af-e-37" data-edge="37" data-from="observatory-workflow" data-to="fetch" tabindex="0">
     <title>37. Actualización diaria (observatory.yml) → Descarga en GitHub Actions (Fetcher): lanza el pipeline. El paso «Fetch, validate and build» corre python -m enso.observatory con las copias del Perú, de n8n y de la consola de documentos, el histórico y el estado reader ya bajados, con 26 min de límite.</title>
@@ -555,13 +555,13 @@
     <text class="ar-t" x="1173" y="843.8" font-size="10.5" text-anchor="middle">69</text>
   </g>
   <g class="ar-edge" id="af-e-70" data-edge="70" data-from="live-site" data-to="site-app" tabindex="0">
-    <title>70. Sitio en vivo (SITE_URL) → Sitio web (12 vistas): sirve páginas y datos. El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y luego cada archivo con el mismo publicationId.</title>
+    <title>70. Sitio en vivo (SITE_URL) → Sitio web (13 vistas): sirve páginas y datos. El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y luego cada archivo con el mismo publicationId.</title>
     <path class="ar-e ar-e-data" d="M1548 682.6 L1548 708.6" marker-end="url(#af-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="1548" cy="695.6" r="9"/>
     <text class="ar-t" x="1548" y="699.4" font-size="10.5" text-anchor="middle">70</text>
   </g>
   <g class="ar-edge" id="af-e-71" data-edge="71" data-from="public" data-to="site-app" tabindex="0">
-    <title>71. Público → Sitio web (12 vistas): abre el sitio o descarga. Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada dato puede ir a la fuente en vivo o a la copia archivada.</title>
+    <title>71. Público → Sitio web (13 vistas): abre el sitio o descarga. Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada dato puede ir a la fuente en vivo o a la copia archivada.</title>
     <path class="ar-e ar-e-human" d="M1548 902 L1548 876" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
     <circle class="ar-badge ar-e-human" cx="1548" cy="889" r="9"/>
     <text class="ar-t" x="1548" y="892.8" font-size="10.5" text-anchor="middle">71</text>
@@ -580,15 +580,15 @@
   </g>
   <g class="ar-edge" id="af-e-74" data-edge="74" data-from="publication-data" data-to="github-issues" tabindex="0">
     <title>74. Archivos publicados (data/) → Issues de incidencias (incidente-datos): run-report a issues. El job incidents baja run-report.json y abre, actualiza o cierra un issue por huella; un format-drift no lo cierra: lo comenta una vez y espera a una persona. Si build, deploy o archive fallan, abre además «La actualización diaria falló». Todo esto solo en main; en otra rama muestra lo que haría.</title>
-    <path class="ar-e ar-e-control" d="M1434 318 L1422 318 Q1416 318 1416 324 L1416 2106 Q1416 2112 1410 2112 L1074 2112 Q1068 2112 1068 2118 L1068 2310 Q1068 2316 1074 2316 L1146 2316 Q1152 2316 1152 2322 L1152 2338.3" stroke-dasharray="2 3" marker-end="url(#af-m-control)"/>
-    <circle class="ar-badge ar-e-control" cx="1416" cy="1215" r="9"/>
-    <text class="ar-t" x="1416" y="1218.8" font-size="10.5" text-anchor="middle">74</text>
+    <path class="ar-e ar-e-control" d="M1434 318 L1422 318 Q1416 318 1416 324 L1416 2298 Q1416 2304 1410 2304 L1158 2304 Q1152 2304 1152 2310 L1152 2338.3" stroke-dasharray="2 3" marker-end="url(#af-m-control)"/>
+    <circle class="ar-badge ar-e-control" cx="1416" cy="1311" r="9"/>
+    <text class="ar-t" x="1416" y="1314.8" font-size="10.5" text-anchor="middle">74</text>
   </g>
   <g class="ar-edge" id="af-e-75" data-edge="75" data-from="github-issues" data-to="maintainers" tabindex="0">
     <title>75. Issues de incidencias (incidente-datos) → Mantenedores y propietario: avisos para revisar. Los mantenedores ven las incidencias abiertas con la etiqueta incidente-datos; se cierran solas cuando el problema deja de aparecer, salvo un format-drift: ese lo cierra una persona después de revisar que los valores publicados sean coherentes.</title>
-    <path class="ar-e ar-e-human" d="M1206 2503.1 L1206 2514 Q1206 2520 1200 2520 L1170 2520 Q1164 2520 1164 2526 L1164 2546.4" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="1185" cy="2520" r="9"/>
-    <text class="ar-t" x="1185" y="2523.8" font-size="10.5" text-anchor="middle">75</text>
+    <path class="ar-e ar-e-human" d="M1206 2503.1 L1206 2532 Q1206 2538 1200 2538 L1170 2538 Q1164 2538 1164 2544 L1164 2561" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="1185" cy="2538" r="9"/>
+    <text class="ar-t" x="1185" y="2541.8" font-size="10.5" text-anchor="middle">75</text>
   </g>
   <g class="ar-edge" id="af-e-76" data-edge="76" data-from="live-site" data-to="watchdog" tabindex="0">
     <title>76. Sitio en vivo (SITE_URL) → Vigilante de GitHub (watchdog.yml): lee dashboard.json. Cada 6 horas pide data/dashboard.json sin caché y calcula la edad de la publicación con generatedAt.</title>
@@ -634,9 +634,9 @@
   </g>
   <g class="ar-edge" id="af-e-83" data-edge="83" data-from="n8n-watchdog" data-to="n8n-colleague" tabindex="0">
     <title>83. Vigilante n8n (fuera de GitHub) → Colega que opera n8n: Error workflow, si lo hay. Si el colega configuró un Error workflow en n8n (por ejemplo, un correo), una ejecución fallida lo dispara. Sirve aunque GitHub haya apagado sus flujos programados.</title>
-    <path class="ar-e ar-e-human" d="M1434 2424 L1362 2424 Q1356 2424 1356 2418 L1356 2310 Q1356 2304 1350 2304 L1008 2304 Q1002 2304 1002 2310 L1002 2406 Q1002 2412 996 2412 L976 2412" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="1179" cy="2304" r="9"/>
-    <text class="ar-t" x="1179" y="2307.8" font-size="10.5" text-anchor="middle">83</text>
+    <path class="ar-e ar-e-human" d="M1434 2424 L1356 2424 Q1350 2424 1350 2430 L1350 2520 Q1350 2526 1344 2526 L1008 2526 Q1002 2526 1002 2520 L1002 2436 Q1002 2430 996 2430 L976 2430" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="1350" cy="2475" r="9"/>
+    <text class="ar-t" x="1350" y="2478.8" font-size="10.5" text-anchor="middle">83</text>
   </g>
   <g class="ar-edge" id="af-e-84" data-edge="84" data-from="publication-data" data-to="geo-console" tabindex="0">
     <title>84. Archivos publicados (data/) → Consola de lugares (/admin/): notas por revisar. La consola carga data/geo/items.json (hasta 4000 notas de 120 días) y ubigeo.json para sus selectores; la API también usa ubigeo.json para rechazar códigos desconocidos.</title>
@@ -646,9 +646,9 @@
   </g>
   <g class="ar-edge" id="af-e-85" data-edge="85" data-from="maintainers" data-to="reviewers" tabindex="0">
     <title>85. Mantenedores y propietario → Revisores de lugares: cuentas de revisor. tools.geo_users crea usuario y clave para cada revisor; el propietario carga el secreto GEO_USERS y vincula la base D1 GEO_DB en Cloudflare.</title>
-    <path class="ar-e ar-e-human" d="M1248 2546.4 L1248 2526 Q1248 2520 1254 2520 L1398 2520 Q1404 2520 1404 2514 L1404 1446 Q1404 1440 1410 1440 L1434 1440" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="1404" cy="1980" r="9"/>
-    <text class="ar-t" x="1404" y="1983.8" font-size="10.5" text-anchor="middle">85</text>
+    <path class="ar-e ar-e-human" d="M1248 2561 L1248 2538 Q1248 2532 1254 2532 L1398 2532 Q1404 2532 1404 2526 L1404 1446 Q1404 1440 1410 1440 L1434 1440" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="1404" cy="1986" r="9"/>
+    <text class="ar-t" x="1404" y="1989.8" font-size="10.5" text-anchor="middle">85</text>
   </g>
   <g class="ar-edge" id="af-e-86" data-edge="86" data-from="reviewers" data-to="geo-console" tabindex="0">
     <title>86. Revisores de lugares → Consola de lugares (/admin/): corrigen lugares. Con su usuario fijan, confirman o marcan como nacional o «no es del Perú» cada nota. Cada cambio es una fila nueva en la base D1 y se aplica en la siguiente corrida (la de 23:37 u otra antes).</title>
@@ -658,15 +658,15 @@
   </g>
   <g class="ar-edge" id="af-e-87" data-edge="87" data-from="maintainers" data-to="observatory-workflow" tabindex="0">
     <title>87. Mantenedores y propietario → Actualización diaria (observatory.yml): fusión en main o a mano. Cada push a main publica enseguida (salvo cambios solo en .md o docs/). También se puede lanzar a mano y elegir si se piden copias nuevas al Internet Archive.</title>
-    <path class="ar-e ar-e-trigger" d="M1206 2546.4 L1206 2532 Q1206 2526 1212 2526 L1338 2526 Q1344 2526 1344 2520 L1344 2316 Q1344 2310 1338 2310 L1212 2310 Q1206 2310 1206 2304 L1206 2283.2" stroke-dasharray="2 3" marker-end="url(#af-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="1344" cy="2418" r="9"/>
-    <text class="ar-t" x="1344" y="2421.8" font-size="10.5" text-anchor="middle">87</text>
+    <path class="ar-e ar-e-trigger" d="M1206 2561 L1206 2544 Q1206 2538 1212 2538 L1338 2538 Q1344 2538 1344 2532 L1344 2316 Q1344 2310 1338 2310 L1212 2310 Q1206 2310 1206 2304 L1206 2283.2" stroke-dasharray="2 3" marker-end="url(#af-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="1344" cy="2424" r="9"/>
+    <text class="ar-t" x="1344" y="2427.8" font-size="10.5" text-anchor="middle">87</text>
   </g>
   <g class="ar-edge" id="af-e-88" data-edge="88" data-from="maintainers" data-to="dev-tools" tabindex="0">
     <title>88. Mantenedores y propietario → Herramientas de desarrollo: PR, ramas claude/** o a mano. ci.yml corre en cada PR y push a claude/**; n8n.yml, cuando cambia n8n/. Sondeos y capturas: a mano o al cambiar su herramienta en claude/**. Sus resultados se traen a mano de las ramas bot/.</title>
-    <path class="ar-e ar-e-trigger" d="M1089 2616 L174 2616 Q168 2616 168 2610 L168 2487.9" stroke-dasharray="2 3" marker-end="url(#af-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="628.5" cy="2616" r="9"/>
-    <text class="ar-t" x="628.5" y="2619.8" font-size="10.5" text-anchor="middle">88</text>
+    <path class="ar-e ar-e-trigger" d="M1089 2628 L174 2628 Q168 2628 168 2622 L168 2487.9" stroke-dasharray="2 3" marker-end="url(#af-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="628.5" cy="2628" r="9"/>
+    <text class="ar-t" x="628.5" y="2631.8" font-size="10.5" text-anchor="middle">88</text>
   </g>
   <g class="ar-edge" id="af-e-89" data-edge="89" data-from="publication-data" data-to="doc-console" tabindex="0">
     <title>89. Archivos publicados (data/) → Consola de documentos (/admin/documentos.html): documentos pendientes. La consola muestra data/manual-needed.json: cada documento que la corrida no pudo bajar, con los enlaces para abrirlo en un navegador, el motivo y, si una copia subida no sirvió, por qué.</title>
@@ -676,9 +676,9 @@
   </g>
   <g class="ar-edge" id="af-e-90" data-edge="90" data-from="maintainers" data-to="doc-console" tabindex="0">
     <title>90. Mantenedores y propietario → Consola de documentos (/admin/documentos.html): bajan y suben el PDF. Con el issue manual-download-needed, un administrador abre el documento en su navegador, pasa la verificación humana él mismo (el sistema nunca la evade), guarda el PDF y lo sube.</title>
-    <path class="ar-e ar-e-human" d="M1284 2546.4 L1284 2520 Q1284 2514 1290 2514 L1386 2514 Q1392 2514 1392 2508 L1392 1332 Q1392 1326 1398 1326 L1434 1326" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="1392" cy="1920" r="9"/>
-    <text class="ar-t" x="1392" y="1923.8" font-size="10.5" text-anchor="middle">90</text>
+    <path class="ar-e ar-e-human" d="M1284 2561 L1284 2550 Q1284 2544 1290 2544 L1386 2544 Q1392 2544 1392 2538 L1392 1332 Q1392 1326 1398 1326 L1434 1326" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="1392" cy="1935" r="9"/>
+    <text class="ar-t" x="1392" y="1938.8" font-size="10.5" text-anchor="middle">90</text>
   </g>
   <g class="ar-edge" id="af-e-91" data-edge="91" data-from="doc-console" data-to="data-manual-branch" tabindex="0">
     <title>91. Consola de documentos (/admin/documentos.html) → Rama data-manual: commit con el PDF. Blob del PDF en flujo, árbol con index.json nuevo, commit y avance de la rama sin forzar; si otra subida la movió, se rehace una vez.</title>
@@ -748,9 +748,9 @@
   </g>
   <g class="ar-edge" id="af-e-102" data-edge="102" data-from="maintainers" data-to="memoria-harvest" tabindex="0">
     <title>102. Mantenedores y propietario → Cosecha del catálogo histórico (memoria-cosecha.yml): revisan y fusionan el PR del catálogo. Una persona revisa la tabla de cambios por fuente del PR antes de fusionarlo. También puede pedir a mano «reconstruir» (PR con lo bajado hasta ahora) o «renovar» (cosecha nueva desde cero).</title>
-    <path class="ar-e ar-e-human" d="M1122 2546.4 L1122 2532 Q1122 2526 1116 2526 L666 2526 Q660 2526 660 2520 L660 1314 Q660 1308 654 1308 L631 1308" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
-    <circle class="ar-badge ar-e-human" cx="660" cy="1917" r="11"/>
-    <text class="ar-t" x="660" y="1920.8" font-size="10.5" text-anchor="middle">102</text>
+    <path class="ar-e ar-e-human" d="M1122 2561 L1122 2550 Q1122 2544 1116 2544 L666 2544 Q660 2544 660 2538 L660 1314 Q660 1308 654 1308 L631 1308" stroke-dasharray="8 3 2 3" marker-end="url(#af-m-human)"/>
+    <circle class="ar-badge ar-e-human" cx="660" cy="1926" r="11"/>
+    <text class="ar-t" x="660" y="1929.8" font-size="10.5" text-anchor="middle">102</text>
   </g>
   
   <!-- cajas -->
@@ -1253,10 +1253,10 @@
     <a class="ar-annex" href="anexos/a9.svg" data-annex="a9"><title>Anexo A9: El sitio en el navegador</title><rect class="ar-tag" x="1630.6" y="582.9" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1644.3" y="595.4" font-size="10.5" text-anchor="middle">A9</text></a>
   </g>
   <g class="ar-node-g" id="af-n-site-app" data-node="site-app">
-    <title>Sitio web (12 vistas). Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Mi zona, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada.</title>
+    <title>Sitio web (13 vistas). Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Mi zona, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada.</title>
     <rect class="ar-node ar-g-site" x="1434" y="708.6" width="232" height="167.4" rx="8"/>
     <rect class="ar-f-site" x="1434" y="716.6" width="4" height="151.4" rx="2"/>
-    <text class="ar-t" x="1446" y="733.1" font-size="12.5">Sitio web (12 vistas)</text>
+    <text class="ar-t" x="1446" y="733.1" font-size="12.5">Sitio web (13 vistas)</text>
     <text class="ar-s" x="1446" y="756" font-size="11">Página estática sin compilación:</text>
     <text class="ar-s" x="1446" y="771.2" font-size="11">Resumen, El Niño Costero, Pacífico,</text>
     <text class="ar-s" x="1446" y="786.4" font-size="11">Océano y atmósfera, Mapa, Historia,</text>
@@ -1416,17 +1416,19 @@
     <a class="ar-annex" href="anexos/a2.svg" data-annex="a2"><title>Anexo A2: Recolector en el Perú: el servidor local</title><rect class="ar-tag" x="595.6" y="2345.3" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="609.3" y="2357.8" font-size="10.5" text-anchor="middle">A2</text></a>
   </g>
   <g class="ar-node-g" id="af-n-n8n-colleague" data-node="n8n-colleague">
-    <title>Colega que opera n8n. Importa los 4 flujos de n8n/dist (recolector, vigilante, validación y el extractor opcional de informes) en su n8n de AWS, elige la credencial de GitHub y activa los programados; asignarles un Error workflow es opcional.</title>
-    <rect class="ar-node ar-g-people" x="744" y="2338.3" width="232" height="152.3" rx="8"/>
-    <rect class="ar-f-people" x="744" y="2346.3" width="4" height="136.3" rx="2"/>
+    <title>Colega que opera n8n. Importa los 5 flujos de n8n/dist (recolector, vigilante, validación, el extractor opcional de informes y «ENSO · Boletín de eventos El Niño por correo (Gmail)») en su n8n de AWS, elige las credenciales de GitHub y de Gmail y activa los programados; asignarles un Error workflow es opcional.</title>
+    <rect class="ar-node ar-g-people" x="744" y="2338.3" width="232" height="182.6" rx="8"/>
+    <rect class="ar-f-people" x="744" y="2346.3" width="4" height="166.6" rx="2"/>
     <text class="ar-t" x="756" y="2362.8" font-size="12.5">Colega que opera n8n</text>
-    <text class="ar-s" x="756" y="2385.8" font-size="11">Importa los 4 flujos de n8n/dist</text>
-    <text class="ar-s" x="756" y="2400.9" font-size="11">(recolector, vigilante, validación y el</text>
-    <text class="ar-s" x="756" y="2416.1" font-size="11">extractor opcional de informes) en su</text>
-    <text class="ar-s" x="756" y="2431.3" font-size="11">n8n de AWS, elige la credencial de</text>
-    <text class="ar-s" x="756" y="2446.5" font-size="11">GitHub y activa los programados;</text>
-    <text class="ar-s" x="756" y="2461.7" font-size="11">asignarles un Error workflow es</text>
-    <text class="ar-s" x="756" y="2476.8" font-size="11">opcional.</text>
+    <text class="ar-s" x="756" y="2385.8" font-size="11">Importa los 5 flujos de n8n/dist</text>
+    <text class="ar-s" x="756" y="2400.9" font-size="11">(recolector, vigilante, validación, el</text>
+    <text class="ar-s" x="756" y="2416.1" font-size="11">extractor opcional de informes y</text>
+    <text class="ar-s" x="756" y="2431.3" font-size="11">«ENSO · Boletín de eventos El Niño</text>
+    <text class="ar-s" x="756" y="2446.5" font-size="11">por correo (Gmail)») en su n8n de</text>
+    <text class="ar-s" x="756" y="2461.7" font-size="11">AWS, elige las credenciales de</text>
+    <text class="ar-s" x="756" y="2476.8" font-size="11">GitHub y de Gmail y activa los</text>
+    <text class="ar-s" x="756" y="2492" font-size="11">programados; asignarles un Error</text>
+    <text class="ar-s" x="756" y="2507.2" font-size="11">workflow es opcional.</text>
     <a class="ar-annex" href="anexos/a3.svg" data-annex="a3"><title>Anexo A3: n8n en la nube (AWS): segunda copia y flujos auxiliares</title><rect class="ar-tag" x="940.6" y="2345.3" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="954.3" y="2357.8" font-size="10.5" text-anchor="middle">A3</text></a>
   </g>
   <g class="ar-node-g" id="af-n-github-issues" data-node="github-issues">
@@ -1461,727 +1463,727 @@
   </g>
   <g class="ar-node-g" id="af-n-maintainers" data-node="maintainers">
     <title>Mantenedores y propietario. Quienes fusionan en main, lanzan flujos a mano, eligen el destino del sitio, crean las cuentas de la consola y revisan los issues y los resultados de las ramas bot/.</title>
-    <rect class="ar-node ar-g-people" x="1089" y="2546.4" width="232" height="134.4" rx="8"/>
-    <rect class="ar-f-people" x="1089" y="2554.4" width="4" height="118.4" rx="2"/>
-    <text class="ar-t" x="1101" y="2570.9" font-size="12.5">Mantenedores y</text>
-    <text class="ar-t" x="1101" y="2587.2" font-size="12.5">propietario</text>
-    <text class="ar-s" x="1101" y="2606.3" font-size="11">Quienes fusionan en main, lanzan</text>
-    <text class="ar-s" x="1101" y="2621.5" font-size="11">flujos a mano, eligen el destino del</text>
-    <text class="ar-s" x="1101" y="2636.7" font-size="11">sitio, crean las cuentas de la consola</text>
-    <text class="ar-s" x="1101" y="2651.9" font-size="11">y revisan los issues y los resultados</text>
-    <text class="ar-s" x="1101" y="2667" font-size="11">de las ramas bot/.</text>
-    <a class="ar-annex" href="anexos/a10.svg" data-annex="a10"><title>Anexo A10: Vigilancia, avisos y mantenimiento</title><rect class="ar-tag" x="1278.3" y="2553.4" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="1295.6" y="2565.9" font-size="10.5" text-anchor="middle">A10</text></a>
+    <rect class="ar-node ar-g-people" x="1089" y="2561" width="232" height="134.4" rx="8"/>
+    <rect class="ar-f-people" x="1089" y="2569" width="4" height="118.4" rx="2"/>
+    <text class="ar-t" x="1101" y="2585.5" font-size="12.5">Mantenedores y</text>
+    <text class="ar-t" x="1101" y="2601.7" font-size="12.5">propietario</text>
+    <text class="ar-s" x="1101" y="2620.9" font-size="11">Quienes fusionan en main, lanzan</text>
+    <text class="ar-s" x="1101" y="2636.1" font-size="11">flujos a mano, eligen el destino del</text>
+    <text class="ar-s" x="1101" y="2651.2" font-size="11">sitio, crean las cuentas de la consola</text>
+    <text class="ar-s" x="1101" y="2666.4" font-size="11">y revisan los issues y los resultados</text>
+    <text class="ar-s" x="1101" y="2681.6" font-size="11">de las ramas bot/.</text>
+    <a class="ar-annex" href="anexos/a10.svg" data-annex="a10"><title>Anexo A10: Vigilancia, avisos y mantenimiento</title><rect class="ar-tag" x="1278.3" y="2568" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="1295.6" y="2580.5" font-size="10.5" text-anchor="middle">A10</text></a>
   </g>
-  <line class="ar-rule" x1="20" y1="2734.8" x2="1700" y2="2734.8"/>
-  <text class="ar-h" x="20" y="2764.8" font-size="15">Conexiones: qué viaja por cada línea, cuándo y por qué</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2792.8" r="9"/>
-  <text class="ar-t" x="30" y="2796.6" font-size="10.5" text-anchor="middle">1</text>
-  <text class="ar-t" x="50" y="2796.8" font-size="11.5">portal ENFEN e ICEN</text>
-  <text class="ar-m" x="50" y="2810.8" font-size="10.5">ENFEN e IGP: fuentes oficiales del Perú → Recolector en el Perú · diario 21:00 Lima, reintentos</text>
-  <text class="ar-m" x="50" y="2824.8" font-size="10.5">hasta 23:30</text>
-  <text class="ar-s" x="50" y="2839.8" font-size="11">Cada noche el equipo en el Perú baja la API y el listado del portal del ENFEN y los PDF de los</text>
-  <text class="ar-s" x="50" y="2854.8" font-size="11">comunicados y de los informes técnicos, y el repositorio del IMARPE (búsquedas, paquetes y</text>
-  <text class="ar-s" x="50" y="2869.8" font-size="11">PDF), que no responden desde EE. UU., y su propia copia del ICEN por http, por si el IGP</text>
-  <text class="ar-s" x="50" y="2884.8" font-size="11">deja de responder a la nube. Así el comunicado oficial llega aunque el portal no responda a</text>
-  <text class="ar-s" x="50" y="2899.8" font-size="11">la nube.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="2922.8" r="9"/>
-  <text class="ar-t" x="30" y="2926.6" font-size="10.5" text-anchor="middle">2</text>
-  <text class="ar-t" x="50" y="2926.8" font-size="11.5">réplica DHN e ICEN, directo</text>
-  <text class="ar-m" x="50" y="2940.8" font-size="10.5">ENFEN e IGP: fuentes oficiales del Perú → Descarga en GitHub Actions (Fetcher) · diario 23:37</text>
-  <text class="ar-m" x="50" y="2954.8" font-size="10.5">Lima, primeras fuentes</text>
-  <text class="ar-s" x="50" y="2969.8" font-size="11">Actions pide el ICEN por http y el listado de la réplica de la DHN. Los PDF de la DHN le</text>
-  <text class="ar-s" x="50" y="2984.8" font-size="11">devuelven una verificación humana, que se anota y nunca se evade. Para la API y el listado</text>
-  <text class="ar-s" x="50" y="2999.8" font-size="11">del portal usa primero la copia del Perú; si no hay, los pide una vez. Las búsquedas del</text>
-  <text class="ar-s" x="50" y="3014.8" font-size="11">repositorio del IMARPE siguen el canal que les da el registro, y sus PDF se piden directo tras</text>
-  <text class="ar-s" x="50" y="3029.8" font-size="11">leer el robots.txt.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3052.8" r="9"/>
-  <text class="ar-t" x="30" y="3056.6" font-size="10.5" text-anchor="middle">3</text>
-  <text class="ar-t" x="50" y="3056.8" font-size="11.5">ICEN y listado de la DHN</text>
-  <text class="ar-m" x="50" y="3070.8" font-size="10.5">ENFEN e IGP: fuentes oficiales del Perú → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
-  <text class="ar-s" x="50" y="3085.8" font-size="11">n8n baja el ICEN por http y el listado de la réplica de la DHN, y deja una segunda copia por</text>
-  <text class="ar-s" x="50" y="3100.8" font-size="11">si Actions no obtiene una respuesta válida. Los PDF de la DHN le responden con una</text>
-  <text class="ar-s" x="50" y="3115.8" font-size="11">verificación humana, que se anota y nunca se evade: el PDF llega del Perú, del repositorio</text>
-  <text class="ar-s" x="50" y="3130.8" font-size="11">del IMARPE, de la consola de documentos o del Internet Archive. n8n no pide el repositorio</text>
-  <text class="ar-s" x="50" y="3145.8" font-size="11">del IMARPE: no verifica su certificado.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3168.8" r="9"/>
-  <text class="ar-t" x="30" y="3172.6" font-size="10.5" text-anchor="middle">4</text>
-  <text class="ar-t" x="50" y="3172.8" font-size="11.5">15 productos, directo</text>
-  <text class="ar-m" x="50" y="3186.8" font-size="10.5">NOAA (CPC y PSL) → Descarga en GitHub Actions (Fetcher) · diario 23:37 Lima</text>
-  <text class="ar-s" x="50" y="3201.8" font-size="11">Actions baja cada noche los índices, la temperatura del mar, el calor bajo la superficie y la</text>
-  <text class="ar-s" x="50" y="3216.8" font-size="11">discusión ENSO de NOAA. Si un producto crítico falla y no hay dato anterior, no se</text>
-  <text class="ar-s" x="50" y="3231.8" font-size="11">despliega.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3254.8" r="9"/>
-  <text class="ar-t" x="30" y="3258.6" font-size="10.5" text-anchor="middle">5</text>
-  <text class="ar-t" x="50" y="3258.8" font-size="11.5">copia de respaldo</text>
-  <text class="ar-m" x="50" y="3272.8" font-size="10.5">NOAA (CPC y PSL) → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
-  <text class="ar-s" x="50" y="3287.8" font-size="11">n8n baja cada noche las URL de NOAA que el registro le asigna; si el pedido directo de</text>
-  <text class="ar-s" x="50" y="3302.8" font-size="11">Actions falla, el pipeline usa esa copia. cpc-godas-d20 nunca: el registro la deja solo en</text>
-  <text class="ar-s" x="50" y="3317.8" font-size="11">actions y el flujo de validación de n8n solo mide si su listado responde.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3340.8" r="9"/>
-  <text class="ar-t" x="30" y="3344.6" font-size="10.5" text-anchor="middle">6</text>
-  <text class="ar-t" x="50" y="3344.8" font-size="11.5">15 fuentes de alertas</text>
-  <text class="ar-m" x="50" y="3358.8" font-size="10.5">Alertas oficiales de peligros (15 fuentes) → Descarga en GitHub Actions (Fetcher) · diario 23:37</text>
-  <text class="ar-m" x="50" y="3372.8" font-size="10.5">Lima</text>
-  <text class="ar-s" x="50" y="3387.8" font-size="11">Junto con las noticias, Actions lee los avisos del INDECI, SENAMHI, DHN, IGP, USGS, PTWC y</text>
-  <text class="ar-s" x="50" y="3402.8" font-size="11">NASA FIRMS, cada uno en su formato (RSS, JSON, HTML, CSV o texto).</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3425.8" r="9"/>
-  <text class="ar-t" x="30" y="3429.6" font-size="10.5" text-anchor="middle">7</text>
-  <text class="ar-t" x="50" y="3429.8" font-size="11.5">copia de respaldo</text>
-  <text class="ar-m" x="50" y="3443.8" font-size="10.5">Alertas oficiales de peligros (15 fuentes) → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
-  <text class="ar-s" x="50" y="3458.8" font-size="11">n8n guarda una copia de las fuentes de alertas que el registro le asigna, por si Actions no</text>
-  <text class="ar-s" x="50" y="3473.8" font-size="11">las alcanza esa noche.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3496.8" r="9"/>
-  <text class="ar-t" x="30" y="3500.6" font-size="10.5" text-anchor="middle">8</text>
-  <text class="ar-t" x="50" y="3500.8" font-size="11.5">solo archivo, desde el Perú</text>
-  <text class="ar-m" x="50" y="3514.8" font-size="10.5">Páginas del Estado que guarda el Perú → Recolector en el Perú · diario 21:00 Lima</text>
-  <text class="ar-s" x="50" y="3529.8" font-size="11">Cada noche el recolector baja las 13 páginas de su lista fija para guardar el original. Las que</text>
-  <text class="ar-s" x="50" y="3544.8" font-size="11">no responden desde EE. UU. (peru-server en el registro) solo llegan por aquí.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3567.8" r="9"/>
-  <text class="ar-t" x="30" y="3571.6" font-size="10.5" text-anchor="middle">9</text>
-  <text class="ar-t" x="50" y="3571.8" font-size="11.5">las del canal n8n</text>
-  <text class="ar-m" x="50" y="3585.8" font-size="10.5">Páginas del Estado que guarda el Perú → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
-  <text class="ar-s" x="50" y="3600.8" font-size="11">Las que el registro no marca geobloqueadas (abiertas o sin medir) llevan el canal n8n por</text>
-  <text class="ar-s" x="50" y="3615.8" font-size="11">regla, así que n8n también las baja. La corrida diaria no las pide: de estas páginas solo la</text>
-  <text class="ar-s" x="50" y="3630.8" font-size="11">tabla de avisos del SENAMHI tiene lector, y se lee de la copia del Perú.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3653.8" r="9"/>
-  <text class="ar-t" x="30" y="3657.6" font-size="10.5" text-anchor="middle">10</text>
-  <text class="ar-t" x="50" y="3657.8" font-size="11.5">lista y ZIP vigente</text>
-  <text class="ar-m" x="50" y="3671.8" font-size="10.5">Escenario de riesgo por lluvias del CENEPRED (SIGRID) → Descarga en GitHub Actions (Fetcher) ·</text>
-  <text class="ar-m" x="50" y="3685.8" font-size="10.5">diario 23:37 Lima</text>
-  <text class="ar-s" x="50" y="3700.8" font-size="11">La corrida diaria pide la lista de escenarios, elige el vigente hoy (entre varios, el elaborado</text>
-  <text class="ar-s" x="50" y="3715.8" font-size="11">más recientemente) y baja su ZIP. Si no llega, usa la copia de n8n o del Perú de esa misma</text>
-  <text class="ar-s" x="50" y="3730.8" font-size="11">URL y, si tampoco, conserva el escenario publicado.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3753.8" r="9"/>
-  <text class="ar-t" x="30" y="3757.6" font-size="10.5" text-anchor="middle">11</text>
-  <text class="ar-t" x="50" y="3757.8" font-size="11.5">lista y 3 ZIP</text>
-  <text class="ar-m" x="50" y="3771.8" font-size="10.5">Escenario de riesgo por lluvias del CENEPRED (SIGRID) → Recolector n8n (nube AWS) · diario</text>
-  <text class="ar-m" x="50" y="3785.8" font-size="10.5">22:50 Lima</text>
-  <text class="ar-s" x="50" y="3800.8" font-size="11">n8n baja la lista y, en su segunda pasada, el ZIP de los tres escenarios de número más alto</text>
-  <text class="ar-s" x="50" y="3815.8" font-size="11">(regla follow con template y order desc), con el Crawl-delay del SIGRID entre pedidos.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3838.8" r="9"/>
-  <text class="ar-t" x="30" y="3842.6" font-size="10.5" text-anchor="middle">12</text>
-  <text class="ar-t" x="50" y="3842.8" font-size="11.5">lista y 3 ZIP (kit 3)</text>
-  <text class="ar-m" x="50" y="3856.8" font-size="10.5">Escenario de riesgo por lluvias del CENEPRED (SIGRID) → Recolector en el Perú · diario 21:00</text>
-  <text class="ar-m" x="50" y="3870.8" font-size="10.5">Lima</text>
-  <text class="ar-s" x="50" y="3885.8" font-size="11">El recolector del Perú tiene la lista en su lista fija y sigue la misma regla para bajar los ZIP:</text>
-  <text class="ar-s" x="50" y="3900.8" font-size="11">un respaldo por si el SIGRID deja de responder fuera del país.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="3923.8" r="9"/>
-  <text class="ar-t" x="30" y="3927.6" font-size="10.5" text-anchor="middle">13</text>
-  <text class="ar-t" x="50" y="3927.8" font-size="11.5">116 feeds de noticias</text>
-  <text class="ar-m" x="50" y="3941.8" font-size="10.5">Medios y Estado: 116 feeds de noticias → Descarga en GitHub Actions (Fetcher) · diario 23:37</text>
-  <text class="ar-m" x="50" y="3955.8" font-size="10.5">Lima, tras las fuentes oficiales</text>
-  <text class="ar-s" x="50" y="3970.8" font-size="11">Actions lee cada noche los feeds del Estado, medios nacionales y regionales, radios e</text>
-  <text class="ar-s" x="50" y="3985.8" font-size="11">internacionales, uno tras otro por servidor por cortesía. De los que su robots.txt prohíbe,</text>
-  <text class="ar-s" x="50" y="4000.8" font-size="11">solo Google Noticias, Noticias ONU y Sin Rodeos se piden, como lector de feeds.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="4023.8" r="9"/>
-  <text class="ar-t" x="30" y="4027.6" font-size="10.5" text-anchor="middle">14</text>
-  <text class="ar-t" x="50" y="4027.8" font-size="11.5">copia de respaldo</text>
-  <text class="ar-m" x="50" y="4041.8" font-size="10.5">Medios y Estado: 116 feeds de noticias → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
-  <text class="ar-s" x="50" y="4056.8" font-size="11">n8n baja los mismos feeds menos los de lector de feeds; si uno falla desde Actions, el</text>
-  <text class="ar-s" x="50" y="4071.8" font-size="11">pipeline usa la copia más reciente.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="4094.8" r="9"/>
-  <text class="ar-t" x="30" y="4098.6" font-size="10.5" text-anchor="middle">15</text>
-  <text class="ar-t" x="50" y="4098.8" font-size="11.5">lector de feeds, 1 cada 20 h</text>
-  <text class="ar-m" x="50" y="4112.8" font-size="10.5">Google Noticias: 38 búsquedas → Descarga en GitHub Actions (Fetcher) · como mucho cada 20</text>
-  <text class="ar-m" x="50" y="4126.8" font-size="10.5">h; solo corridas de main</text>
-  <text class="ar-s" x="50" y="4141.8" font-size="11">Como su robots.txt prohíbe estos 38 feeds, Actions los pide como un lector de RSS: solo en</text>
-  <text class="ar-s" x="50" y="4156.8" font-size="11">main, sin reintento y como mucho una vez cada 20 h. Entre lecturas se repite la última.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="4179.8" r="9"/>
-  <text class="ar-t" x="30" y="4183.6" font-size="10.5" text-anchor="middle">16</text>
-  <text class="ar-t" x="50" y="4183.8" font-size="11.5">regla más larga gana</text>
-  <text class="ar-m" x="50" y="4197.8" font-size="10.5">robots.txt de cada servidor → Sondeo semanal de alcance · lunes 04:17 Lima</text>
-  <text class="ar-s" x="50" y="4212.8" font-size="11">Cada semana el sondeo lee el robots.txt de cada servidor antes de medir. Una ruta</text>
-  <text class="ar-s" x="50" y="4227.8" font-size="11">prohibida queda como robots-disallowed y pierde sus canales, salvo los feeds reader; una</text>
-  <text class="ar-s" x="50" y="4242.8" font-size="11">que nadie pudo leer queda con robots unknown.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="4265.8" r="9"/>
-  <text class="ar-t" x="30" y="4269.6" font-size="10.5" text-anchor="middle">17</text>
-  <text class="ar-t" x="50" y="4269.8" font-size="11.5">se respeta en vivo</text>
-  <text class="ar-m" x="50" y="4283.8" font-size="10.5">robots.txt de cada servidor → Recolector en el Perú · diario 21:00 Lima</text>
-  <text class="ar-s" x="50" y="4298.8" font-size="11">Cada noche el recolector lee el robots.txt antes de pedir. No pide una ruta prohibida, y si el</text>
-  <text class="ar-s" x="50" y="4313.8" font-size="11">robots.txt no responde no le pide nada a ese servidor.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="4336.8" r="9"/>
-  <text class="ar-t" x="30" y="4340.6" font-size="10.5" text-anchor="middle">18</text>
-  <text class="ar-t" x="50" y="4340.8" font-size="11.5">lo que la sonda no leyó</text>
-  <text class="ar-m" x="50" y="4354.8" font-size="10.5">robots.txt de cada servidor → Descarga en GitHub Actions (Fetcher) · cada corrida de</text>
-  <text class="ar-m" x="50" y="4368.8" font-size="10.5">observatory.yml</text>
-  <text class="ar-s" x="50" y="4383.8" font-size="11">Antes del pedido directo a una URL cuyo robots.txt no leyó la sonda semanal (fuera del</text>
-  <text class="ar-s" x="50" y="4398.8" font-size="11">registro, asignada a otro canal o unknown), la corrida lo lee (15 s, un reintento ante un fallo</text>
-  <text class="ar-s" x="50" y="4413.8" font-size="11">pasajero). Si no permite la ruta, o no responde y el registro no la daba por permitida, no se</text>
-  <text class="ar-s" x="50" y="4428.8" font-size="11">pide. Save Page Now y cada GRIB de GODAS siguen la misma regla; los feeds reader no lo</text>
-  <text class="ar-s" x="50" y="4443.8" font-size="11">consultan.</text>
-  <circle class="ar-badge ar-e-trigger" cx="30" cy="4466.8" r="9"/>
-  <text class="ar-t" x="30" y="4470.6" font-size="10.5" text-anchor="middle">19</text>
-  <text class="ar-t" x="50" y="4470.8" font-size="11.5">mide y regenera</text>
-  <text class="ar-m" x="50" y="4484.8" font-size="10.5">Sondeo semanal de alcance → Armado del registro · lunes 04:17 Lima (09:17 UTC)</text>
-  <text class="ar-s" x="50" y="4499.8" font-size="11">El sondeo escribe reachability.json con lo medido desde Actions, el Perú y n8n, y enseguida</text>
-  <text class="ar-s" x="50" y="4514.8" font-size="11">corre build_registry para que los canales sigan las mediciones nuevas.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="4537.8" r="9"/>
-  <text class="ar-t" x="30" y="4541.6" font-size="10.5" text-anchor="middle">20</text>
-  <text class="ar-t" x="50" y="4541.8" font-size="11.5">genera y valida</text>
-  <text class="ar-m" x="50" y="4555.8" font-size="10.5">Armado del registro → Registro de fuentes (registry/) · lunes 04:17 Lima</text>
-  <text class="ar-s" x="50" y="4570.8" font-size="11">Escribe sources.json con estado, canales y robots por URL, y en el mismo paso se rehacen</text>
-  <text class="ar-s" x="50" y="4585.8" font-size="11">los flujos de n8n/dist, que llevan una copia del registro (n8n.yml falla si no coinciden). En la</text>
-  <text class="ar-s" x="50" y="4600.8" font-size="11">rama principal, también en la corrida programada, el sondeo hace commit de los dos; en</text>
-  <text class="ar-s" x="50" y="4615.8" font-size="11">otras ramas el resultado va a bot/registry/&lt;rama&gt;.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="4638.8" r="9"/>
-  <text class="ar-t" x="30" y="4642.6" font-size="10.5" text-anchor="middle">21</text>
-  <text class="ar-t" x="50" y="4642.8" font-size="11.5">lo medido desde el Perú</text>
-  <text class="ar-m" x="50" y="4656.8" font-size="10.5">Rama data-peru → Sondeo semanal de alcance · lunes 04:17 Lima</text>
-  <text class="ar-s" x="50" y="4671.8" font-size="11">El sondeo lee el index.json del Perú: el resultado de cada URL allá y sus mediciones extra.</text>
-  <text class="ar-s" x="50" y="4686.8" font-size="11">Así el registro puede confirmar un geobloqueo o una caída.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="4709.8" r="9"/>
-  <text class="ar-t" x="30" y="4713.6" font-size="10.5" text-anchor="middle">22</text>
-  <text class="ar-t" x="50" y="4713.8" font-size="11.5">lo medido desde n8n</text>
-  <text class="ar-m" x="50" y="4727.8" font-size="10.5">Rama data-n8n → Sondeo semanal de alcance · lunes 04:17 Lima</text>
-  <text class="ar-s" x="50" y="4742.8" font-size="11">También suma el último intento de n8n en AWS como medición de la red n8n. Una copia</text>
-  <text class="ar-s" x="50" y="4757.8" font-size="11">arrastrada cuenta como su último fallo, no como medición de hoy.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="4780.8" r="9"/>
-  <text class="ar-t" x="30" y="4784.6" font-size="10.5" text-anchor="middle">23</text>
-  <text class="ar-t" x="50" y="4784.8" font-size="11.5">plan de canales por URL</text>
-  <text class="ar-m" x="50" y="4798.8" font-size="10.5">Registro de fuentes (registry/) → Descarga en GitHub Actions (Fetcher) · cada corrida de</text>
-  <text class="ar-m" x="50" y="4812.8" font-size="10.5">observatory.yml</text>
-  <text class="ar-s" x="50" y="4827.8" font-size="11">En cada corrida el pipeline lee quién pide cada URL. Lo que el registro no da a Actions se</text>
-  <text class="ar-s" x="50" y="4842.8" font-size="11">lee de las copias (sin copia, se pide directo una vez), lo prohibido no se pide y los feeds</text>
-  <text class="ar-s" x="50" y="4857.8" font-size="11">reader se piden como mucho cada 20 h, solo en main. Una URL cuyo robots.txt nadie pudo</text>
-  <text class="ar-s" x="50" y="4872.8" font-size="11">leer (unknown) se lee primero de las copias y, antes de pedirla directo, se lee su robots.txt.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="4895.8" r="9"/>
-  <text class="ar-t" x="30" y="4899.6" font-size="10.5" text-anchor="middle">24</text>
-  <text class="ar-t" x="50" y="4899.8" font-size="11.5">URL del canal n8n</text>
-  <text class="ar-m" x="50" y="4913.8" font-size="10.5">Registro de fuentes (registry/) → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
-  <text class="ar-s" x="50" y="4928.8" font-size="11">Al empezar, n8n lee el registro de main en GitHub (o la copia incluida en el flujo, que el</text>
-  <text class="ar-s" x="50" y="4943.8" font-size="11">sondeo semanal regenera) y pide solo las URL asignadas a n8n, menos las de robots</text>
-  <text class="ar-s" x="50" y="4958.8" font-size="11">unknown y las fuentes con n8n: false.</text>
-  <circle class="ar-badge ar-e-control" cx="30" cy="4981.8" r="9"/>
-  <text class="ar-t" x="30" y="4985.6" font-size="10.5" text-anchor="middle">25</text>
-  <text class="ar-t" x="50" y="4985.8" font-size="11.5">URL peru-server y PDF</text>
-  <text class="ar-m" x="50" y="4999.8" font-size="10.5">Registro de fuentes (registry/) → Recolector en el Perú · diario 21:00 Lima</text>
-  <text class="ar-s" x="50" y="5014.8" font-size="11">El recolector lee el registro de GitHub con su token (o la copia del kit), suma a su lista fija</text>
-  <text class="ar-s" x="50" y="5029.8" font-size="11">las URL peru-server y sus reglas para seguir PDF, y mide hasta 60 URL unknown,</text>
-  <text class="ar-s" x="50" y="5044.8" font-size="11">suspected-geoblock o down que esta corrida no pidió.</text>
-  <circle class="ar-badge ar-e-human" cx="30" cy="5067.8" r="9"/>
-  <text class="ar-t" x="30" y="5071.6" font-size="10.5" text-anchor="middle">26</text>
-  <text class="ar-t" x="50" y="5071.8" font-size="11.5">fuentes verificadas al catálogo</text>
-  <text class="ar-m" x="50" y="5085.8" font-size="10.5">Herramientas de desarrollo → Armado del registro · a mano</text>
-  <text class="ar-s" x="50" y="5100.8" font-size="11">Una persona revisa los informes de los sondeos y agrega al código los feeds y lectores que</text>
-  <text class="ar-s" x="50" y="5115.8" font-size="11">funcionan; desde ahí entran al registro. Así se armó el catálogo del 21-10-2026.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="5138.8" r="9"/>
-  <text class="ar-t" x="30" y="5142.6" font-size="10.5" text-anchor="middle">27</text>
-  <text class="ar-t" x="50" y="5142.8" font-size="11.5">copias, latido y mediciones</text>
-  <text class="ar-m" x="50" y="5156.8" font-size="10.5">Recolector en el Perú → Rama data-peru · 21:00 a 23:30 Lima</text>
-  <text class="ar-s" x="50" y="5171.8" font-size="11">Al terminar sube index.json, los archivos, heartbeat.json y sus mediciones a data-peru. Si</text>
-  <text class="ar-s" x="50" y="5186.8" font-size="11">nada respondió, solo sube el latido y deja intacta la última copia buena.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="5209.8" r="9"/>
-  <text class="ar-t" x="30" y="5213.6" font-size="10.5" text-anchor="middle">28</text>
-  <text class="ar-t" x="50" y="5213.8" font-size="11.5">copia anterior</text>
-  <text class="ar-m" x="50" y="5227.8" font-size="10.5">Rama data-peru → Recolector en el Perú · diario 21:00 Lima</text>
-  <text class="ar-s" x="50" y="5242.8" font-size="11">Antes de subir, el recolector lee su copia anterior y conserva hasta 72 h las URL que esta</text>
-  <text class="ar-s" x="50" y="5257.8" font-size="11">noche fallaron, marcadas carried.</text>
-  <circle class="ar-badge ar-e-trigger" cx="30" cy="5280.8" r="9"/>
-  <text class="ar-t" x="30" y="5284.6" font-size="10.5" text-anchor="middle">29</text>
-  <text class="ar-t" x="50" y="5284.8" font-size="11.5">pide actualizar (enso-refresh)</text>
-  <text class="ar-m" x="50" y="5298.8" font-size="10.5">Recolector en el Perú → Actualización diaria (observatory.yml) · tras subir una copia (no si solo</text>
-  <text class="ar-m" x="50" y="5312.8" font-size="10.5">sube el latido)</text>
-  <text class="ar-s" x="50" y="5327.8" font-size="11">Tras subir la copia envía repository_dispatch enso-refresh para que el sitio se actualice sin</text>
-  <text class="ar-s" x="50" y="5342.8" font-size="11">esperar a las 23:37. Si hay una corrida en curso, queda en cola. Viene activo en el kit.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="5365.8" r="9"/>
-  <text class="ar-t" x="30" y="5369.6" font-size="10.5" text-anchor="middle">30</text>
-  <text class="ar-t" x="50" y="5369.8" font-size="11.5">commit que reemplaza la rama</text>
-  <text class="ar-m" x="50" y="5383.8" font-size="10.5">Recolector n8n (nube AWS) → Rama data-n8n · diario 22:50 Lima</text>
-  <text class="ar-s" x="50" y="5398.8" font-size="11">n8n sube los archivos nuevos por la API de GitHub, arma un commit sin padre y mueve</text>
-  <text class="ar-s" x="50" y="5413.8" font-size="11">data-n8n. index.json y heartbeat.json van siempre, aunque nada responda.</text>
-  <circle class="ar-badge ar-e-data" cx="30" cy="5436.8" r="9"/>
-  <text class="ar-t" x="30" y="5440.6" font-size="10.5" text-anchor="middle">31</text>
-  <text class="ar-t" x="50" y="5440.8" font-size="11.5">copia anterior</text>
-  <text class="ar-m" x="50" y="5454.8" font-size="10.5">Rama data-n8n → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
-  <text class="ar-s" x="50" y="5469.8" font-size="11">Su nodo «Leer copia anterior» lee el index.json de data-n8n y conserva hasta 72 h las URL</text>
-  <text class="ar-s" x="50" y="5484.8" font-size="11">que esta noche fallaron, marcadas carried.</text>
-  <circle class="ar-badge ar-e-human" cx="30" cy="5507.8" r="9"/>
-  <text class="ar-t" x="30" y="5511.6" font-size="10.5" text-anchor="middle">32</text>
-  <text class="ar-t" x="50" y="5511.8" font-size="11.5">kit .zip y VERIFICAR</text>
-  <text class="ar-m" x="50" y="5525.8" font-size="10.5">Kit y verificación del recolector → Responsable del equipo en el Perú · al fusionar en main</text>
-  <text class="ar-m" x="50" y="5539.8" font-size="10.5">cambios del kit, python/enso/ o el registro (el commit semanal del bot no cuenta)</text>
-  <text class="ar-s" x="50" y="5554.8" font-size="11">La persona baja recolector-peru.zip de la versión recolector-kit y corre VERIFICAR (el</text>
-  <text class="ar-s" x="50" y="5569.8" font-size="11">informe queda en logs/ para enviarlo). El equipo no se actualiza solo: un kit nuevo se instala</text>
-  <text class="ar-s" x="50" y="5584.8" font-size="11">con ACTUALIZAR.</text>
-  <circle class="ar-badge ar-e-human" cx="30" cy="5607.8" r="9"/>
-  <text class="ar-t" x="30" y="5611.6" font-size="10.5" text-anchor="middle">33</text>
-  <text class="ar-t" x="50" y="5611.8" font-size="11.5">instala, token y tarea</text>
-  <text class="ar-m" x="50" y="5625.8" font-size="10.5">Responsable del equipo en el Perú → Recolector en el Perú</text>
-  <text class="ar-s" x="50" y="5640.8" font-size="11">Al ejecutar INSTALAR con el token queda registrada la tarea programada de las 21:00. El</text>
-  <text class="ar-s" x="50" y="5655.8" font-size="11">recolector le avisa en el escritorio tras 2 fallas o si el token vence en menos de 21 días.</text>
-  <circle class="ar-badge ar-e-human" cx="599.3" cy="2792.8" r="9"/>
-  <text class="ar-t" x="599.3" y="2796.6" font-size="10.5" text-anchor="middle">34</text>
-  <text class="ar-t" x="619.3" y="2796.8" font-size="11.5">token y kit</text>
-  <text class="ar-m" x="619.3" y="2810.8" font-size="10.5">Mantenedores y propietario → Responsable del equipo en el Perú</text>
-  <text class="ar-s" x="619.3" y="2825.8" font-size="11">Le dan un token de GitHub de grano fino (solo este repositorio) y el kit, y uno nuevo cuando</text>
-  <text class="ar-s" x="619.3" y="2840.8" font-size="11">el recolector avisa que vence.</text>
-  <circle class="ar-badge ar-e-human" cx="599.3" cy="2863.8" r="9"/>
-  <text class="ar-t" x="599.3" y="2867.6" font-size="10.5" text-anchor="middle">35</text>
-  <text class="ar-t" x="619.3" y="2867.8" font-size="11.5">importa y activa</text>
-  <text class="ar-m" x="619.3" y="2881.8" font-size="10.5">Colega que opera n8n → Recolector n8n (nube AWS)</text>
-  <text class="ar-s" x="619.3" y="2896.8" font-size="11">La persona importa n8n/dist/enso-n8n-recolector.json en su n8n, elige la credencial de</text>
-  <text class="ar-s" x="619.3" y="2911.8" font-size="11">GitHub y lo activa. Los nodos se regeneran con build.mjs, no se editan en n8n.</text>
-  <circle class="ar-badge ar-e-human" cx="599.3" cy="2934.8" r="9"/>
-  <text class="ar-t" x="599.3" y="2938.6" font-size="10.5" text-anchor="middle">36</text>
-  <text class="ar-t" x="619.3" y="2938.8" font-size="11.5">token de GitHub</text>
-  <text class="ar-m" x="619.3" y="2952.8" font-size="10.5">Mantenedores y propietario → Colega que opera n8n</text>
-  <text class="ar-s" x="619.3" y="2967.8" font-size="11">Le dan un token de grano fino (solo este repositorio, Contents de lectura y escritura, 1 año)</text>
-  <text class="ar-s" x="619.3" y="2982.8" font-size="11">para la credencial de n8n. n8n anota cuándo vence y la actualización diaria avisa desde 21</text>
-  <text class="ar-s" x="619.3" y="2997.8" font-size="11">días antes (relay-token-expiring); si vence, la copia deja de subir y sale relay-n8n-stale.</text>
-  <circle class="ar-badge ar-e-trigger" cx="599.3" cy="3020.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3024.6" font-size="10.5" text-anchor="middle">37</text>
-  <text class="ar-t" x="619.3" y="3024.8" font-size="11.5">lanza el pipeline</text>
-  <text class="ar-m" x="619.3" y="3038.8" font-size="10.5">Actualización diaria (observatory.yml) → Descarga en GitHub Actions (Fetcher) · 23:37 Lima</text>
-  <text class="ar-m" x="619.3" y="3052.8" font-size="10.5">(04:37 UTC); push a main; manual; enso-refresh; vigilante</text>
-  <text class="ar-s" x="619.3" y="3067.8" font-size="11">El paso «Fetch, validate and build» corre python -m enso.observatory con las copias del</text>
-  <text class="ar-s" x="619.3" y="3082.8" font-size="11">Perú, de n8n y de la consola de documentos, el histórico y el estado reader ya bajados, con</text>
-  <text class="ar-s" x="619.3" y="3097.8" font-size="11">26 min de límite.</text>
-  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="3120.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3124.6" font-size="10.5" text-anchor="middle">38</text>
-  <text class="ar-t" x="619.3" y="3124.8" font-size="11.5">copia del Perú (relay-peru)</text>
-  <text class="ar-m" x="619.3" y="3138.8" font-size="10.5">Rama data-peru → Descarga en GitHub Actions (Fetcher) · cada corrida de observatory.yml</text>
-  <text class="ar-s" x="619.3" y="3153.8" font-size="11">Si Actions no obtiene respuesta válida, o la URL es solo del Perú, usa la copia de data-peru:</text>
-  <text class="ar-s" x="619.3" y="3168.8" font-size="11">hasta 7 días de antigüedad, estado 200 y sha256 verificado.</text>
-  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="3191.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3195.6" font-size="10.5" text-anchor="middle">39</text>
-  <text class="ar-t" x="619.3" y="3195.8" font-size="11.5">copia de n8n (relay-n8n)</text>
-  <text class="ar-m" x="619.3" y="3209.8" font-size="10.5">Rama data-n8n → Descarga en GitHub Actions (Fetcher) · cada corrida de observatory.yml</text>
-  <text class="ar-s" x="619.3" y="3224.8" font-size="11">Lo mismo con las copias de n8n, válidas hasta 72 h. Si el Perú y n8n tienen copia de la</text>
-  <text class="ar-s" x="619.3" y="3239.8" font-size="11">misma URL, gana la más reciente.</text>
-  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="3262.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3266.6" font-size="10.5" text-anchor="middle">40</text>
-  <text class="ar-t" x="619.3" y="3266.8" font-size="11.5">copia archivada</text>
-  <text class="ar-m" x="619.3" y="3280.8" font-size="10.5">Internet Archive (Wayback) → Descarga en GitHub Actions (Fetcher) · solo si falla todo lo</text>
-  <text class="ar-m" x="619.3" y="3294.8" font-size="10.5">anterior, dentro de los 8 min oficiales</text>
-  <text class="ar-s" x="619.3" y="3309.8" font-size="11">Si la URL, la réplica y las copias fallan, se usa la última copia del Wayback, con su fecha.</text>
-  <text class="ar-s" x="619.3" y="3324.8" font-size="11">Para el ENFEN (listado y PDF) se pide una nueva si no hay o si la que hay tiene más de un</text>
-  <text class="ar-s" x="619.3" y="3339.8" font-size="11">día, y robots.txt lo permite.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="3362.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3366.6" font-size="10.5" text-anchor="middle">41</text>
-  <text class="ar-t" x="619.3" y="3366.8" font-size="11.5">respuesta con procedencia</text>
-  <text class="ar-m" x="619.3" y="3380.8" font-size="10.5">Descarga en GitHub Actions (Fetcher) → Lectura de fuentes oficiales</text>
-  <text class="ar-s" x="619.3" y="3395.8" font-size="11">Cada respuesta llega con cuerpo, canal, URL, fecha de copia, sha256 e intentos; si todo</text>
-  <text class="ar-s" x="619.3" y="3410.8" font-size="11">falló, llega el error con los intentos.</text>
-  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="3433.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3437.6" font-size="10.5" text-anchor="middle">42</text>
-  <text class="ar-t" x="619.3" y="3437.8" font-size="11.5">último dato válido</text>
-  <text class="ar-m" x="619.3" y="3451.8" font-size="10.5">Publicación anterior (data/ en vivo) → Lectura de fuentes oficiales · cada corrida</text>
-  <text class="ar-s" x="619.3" y="3466.8" font-size="11">Se lee sources/&lt;id&gt;.json de la publicación anterior para comparar la huella del formato. Si</text>
-  <text class="ar-s" x="619.3" y="3481.8" font-size="11">la fuente falla, se reutiliza ese dato con su fecha real, marcado carried. Si la fuente falla y</text>
-  <text class="ar-s" x="619.3" y="3496.8" font-size="11">ese archivo tampoco se pudo leer, se anota previous-unreachable: la publicación sale sin</text>
-  <text class="ar-s" x="619.3" y="3511.8" font-size="11">dato de la fuente.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="3534.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3538.6" font-size="10.5" text-anchor="middle">43</text>
-  <text class="ar-t" x="619.3" y="3538.8" font-size="11.5">datos y comunicado</text>
-  <text class="ar-m" x="619.3" y="3552.8" font-size="10.5">Lectura de fuentes oficiales → Series, estados y señal GRD</text>
-  <text class="ar-s" x="619.3" y="3567.8" font-size="11">Los datos de las 17 fuentes, frescos o arrastrados, y el último comunicado del ENFEN pasan</text>
-  <text class="ar-s" x="619.3" y="3582.8" font-size="11">a armar las series, el semanal y los estados oficiales.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="3605.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3609.6" font-size="10.5" text-anchor="middle">44</text>
-  <text class="ar-t" x="619.3" y="3609.8" font-size="11.5">umbrales GRD</text>
-  <text class="ar-m" x="619.3" y="3623.8" font-size="10.5">Datos de referencia: lugares y umbrales → Series, estados y señal GRD</text>
-  <text class="ar-s" x="619.3" y="3638.8" font-size="11">Cada indicador recibe su color GRD según expert-grd-image-v1.yaml. Un valor entre</text>
-  <text class="ar-s" x="619.3" y="3653.8" font-size="11">intervalos queda «sin clasificación», nunca normal. Las categorías ICEN están fijas en</text>
-  <text class="ar-s" x="619.3" y="3668.8" font-size="11">signals.py.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="3691.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3695.6" font-size="10.5" text-anchor="middle">45</text>
-  <text class="ar-t" x="619.3" y="3695.8" font-size="11.5">series, estados y señal GRD</text>
-  <text class="ar-m" x="619.3" y="3709.8" font-size="10.5">Series, estados y señal GRD → Escritura y validación de la publicación</text>
-  <text class="ar-s" x="619.3" y="3724.8" font-size="11">Las series, el semanal, los estados de ENFEN y NOAA, los eventos ICEN y la señal GRD van a</text>
-  <text class="ar-s" x="619.3" y="3739.8" font-size="11">series.json, weekly.json, los CSV y dashboard.json.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="3762.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3766.6" font-size="10.5" text-anchor="middle">46</text>
-  <text class="ar-t" x="619.3" y="3766.8" font-size="11.5">cuerpos de los feeds</text>
-  <text class="ar-m" x="619.3" y="3780.8" font-size="10.5">Descarga en GitHub Actions (Fetcher) → Noticias y alertas: lectura y filtro · diario 23:37 Lima,</text>
-  <text class="ar-m" x="619.3" y="3794.8" font-size="10.5">tras las fuentes oficiales</text>
-  <text class="ar-s" x="619.3" y="3809.8" font-size="11">Los feeds se bajan con dos clientes propios (normal, y de un solo intento para los reader)</text>
-  <text class="ar-s" x="619.3" y="3824.8" font-size="11">que comparten las copias del Perú y de n8n, pero nunca usan el Internet Archive.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="3847.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3851.6" font-size="10.5" text-anchor="middle">47</text>
-  <text class="ar-t" x="619.3" y="3851.8" font-size="11.5">estado reader (lee y guarda)</text>
-  <text class="ar-m" x="619.3" y="3865.8" font-size="10.5">Caché de Actions: feeds reader → Noticias y alertas: lectura y filtro · solo corridas de main</text>
-  <text class="ar-s" x="619.3" y="3880.8" font-size="11">Al empezar se restaura cuándo se pidió cada feed reader y sus notas sin publicar. Sin caché</text>
-  <text class="ar-s" x="619.3" y="3895.8" font-size="11">no se piden, salvo en la primera publicación. Cada pedido se anota antes de hacerlo y el</text>
-  <text class="ar-s" x="619.3" y="3910.8" font-size="11">estado se guarda al final aunque la corrida falle.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="3933.8" r="9"/>
-  <text class="ar-t" x="599.3" y="3937.6" font-size="10.5" text-anchor="middle">48</text>
-  <text class="ar-t" x="619.3" y="3937.8" font-size="11.5">estado anterior de los feeds</text>
-  <text class="ar-m" x="619.3" y="3951.8" font-size="10.5">Publicación anterior (data/ en vivo) → Noticias y alertas: lectura y filtro</text>
-  <text class="ar-s" x="619.3" y="3966.8" font-size="11">Se lee news/feeds.json de la publicación anterior (3 intentos): junto con la caché da la hora</text>
-  <text class="ar-s" x="619.3" y="3981.8" font-size="11">del último pedido de cada feed reader, para no repetirlo antes de 20 h.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="4004.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4008.6" font-size="10.5" text-anchor="middle">49</text>
-  <text class="ar-t" x="619.3" y="4008.8" font-size="11.5">notas nuevas ubicadas</text>
-  <text class="ar-m" x="619.3" y="4022.8" font-size="10.5">Noticias y alertas: lectura y filtro → Histórico de noticias (solo anexar)</text>
-  <text class="ar-s" x="619.3" y="4037.8" font-size="11">Las notas relevantes de hoy y las de feeds reader que aún no se publicaron, con sus</text>
-  <text class="ar-s" x="619.3" y="4052.8" font-size="11">peligros y su lugar, se agregan al final del histórico si su id es nuevo.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="4075.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4079.6" font-size="10.5" text-anchor="middle">50</text>
-  <text class="ar-t" x="619.3" y="4079.8" font-size="11.5">histórico anterior</text>
-  <text class="ar-m" x="619.3" y="4093.8" font-size="10.5">Publicación anterior (data/ en vivo) → Histórico de noticias (solo anexar)</text>
-  <text class="ar-s" x="619.3" y="4108.8" font-size="11">Se lee news/items.jsonl (hasta 3 intentos ante errores del servidor). Si llega, se completa</text>
-  <text class="ar-s" x="619.3" y="4123.8" font-size="11">con la copia de data-archive; si no, se rehace con ella o, sin copia, se marca restarted.</text>
-  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="4146.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4150.6" font-size="10.5" text-anchor="middle">51</text>
-  <text class="ar-t" x="619.3" y="4150.8" font-size="11.5">copia completa del histórico</text>
-  <text class="ar-m" x="619.3" y="4164.8" font-size="10.5">Rama data-archive → Histórico de noticias (solo anexar) · al inicio de cada corrida</text>
-  <text class="ar-s" x="619.3" y="4179.8" font-size="11">Antes del pipeline se baja sources/news/items.jsonl.gz por la API de GitHub. Con ella se</text>
-  <text class="ar-s" x="619.3" y="4194.8" font-size="11">agregan las notas que falten o se rehace el histórico si el sitio no lo sirvió.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="4217.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4221.6" font-size="10.5" text-anchor="middle">52</text>
-  <text class="ar-t" x="619.3" y="4221.8" font-size="11.5">todo el histórico</text>
-  <text class="ar-m" x="619.3" y="4235.8" font-size="10.5">Histórico de noticias (solo anexar) → Ubicación y correcciones de lugar</text>
-  <text class="ar-s" x="619.3" y="4250.8" font-size="11">El histórico entero, viejo y nuevo, se vuelve a ubicar y a corregir en bloque; el texto JSONL</text>
-  <text class="ar-s" x="619.3" y="4265.8" font-size="11">guardado no cambia.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="4288.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4292.6" font-size="10.5" text-anchor="middle">53</text>
-  <text class="ar-t" x="619.3" y="4292.8" font-size="11.5">UBIGEO y límites</text>
-  <text class="ar-m" x="619.3" y="4306.8" font-size="10.5">Datos de referencia: lugares y umbrales → Ubicación y correcciones de lugar</text>
-  <text class="ar-s" x="619.3" y="4321.8" font-size="11">Con los nombres del INEI se reconoce un lugar en el texto, y con los límites del IGN se sabe</text>
-  <text class="ar-s" x="619.3" y="4336.8" font-size="11">en qué distrito, provincia o departamento cae una coordenada.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="4359.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4363.6" font-size="10.5" text-anchor="middle">54</text>
-  <text class="ar-t" x="619.3" y="4363.8" font-size="11.5">correcciones vigentes</text>
-  <text class="ar-m" x="619.3" y="4377.8" font-size="10.5">Consola de lugares (/admin/) → Ubicación y correcciones de lugar · cada corrida, solo con</text>
-  <text class="ar-m" x="619.3" y="4391.8" font-size="10.5">DEPLOY_TARGET=cloudflare</text>
-  <text class="ar-s" x="619.3" y="4406.8" font-size="11">Con Cloudflare, el pipeline pide GET /api/geo/overrides (20 s de plazo) y aplica la última</text>
-  <text class="ar-s" x="619.3" y="4421.8" font-size="11">corrección de cada nota. Con GitHub Pages no hay consola y este paso no ocurre.</text>
-  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="4444.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4448.6" font-size="10.5" text-anchor="middle">55</text>
-  <text class="ar-t" x="619.3" y="4448.8" font-size="11.5">correcciones anteriores</text>
-  <text class="ar-m" x="619.3" y="4462.8" font-size="10.5">Publicación anterior (data/ en vivo) → Ubicación y correcciones de lugar</text>
-  <text class="ar-s" x="619.3" y="4477.8" font-size="11">Si la consola no está o no responde, se usan las de geo/overrides.json de la publicación</text>
-  <text class="ar-s" x="619.3" y="4492.8" font-size="11">anterior; si tampoco se lee, no se aplica ninguna (siguen guardadas en D1).</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="4515.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4519.6" font-size="10.5" text-anchor="middle">56</text>
-  <text class="ar-t" x="619.3" y="4519.8" font-size="11.5">notas, grupos y alertas</text>
-  <text class="ar-m" x="619.3" y="4533.8" font-size="10.5">Ubicación y correcciones de lugar → Escritura y validación de la publicación</text>
-  <text class="ar-s" x="619.3" y="4548.8" font-size="11">Pasan el histórico tal como se guardó y, con los lugares corregidos, items.csv, los grupos de</text>
-  <text class="ar-s" x="619.3" y="4563.8" font-size="11">14 días, los avisos de 7 días para feed.json (con su detalle para el mapa: zonas, distritos</text>
-  <text class="ar-s" x="619.3" y="4578.8" font-size="11">con quebradas, estaciones, epicentros, volcanes, focos y centros poblados) y los archivos</text>
-  <text class="ar-s" x="619.3" y="4593.8" font-size="11">geo/ para la consola.</text>
-  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="4616.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4620.6" font-size="10.5" text-anchor="middle">57</text>
-  <text class="ar-t" x="619.3" y="4620.8" font-size="11.5">copias y noticias anteriores</text>
-  <text class="ar-m" x="619.3" y="4634.8" font-size="10.5">Publicación anterior (data/ en vivo) → Escritura y validación de la publicación</text>
-  <text class="ar-s" x="619.3" y="4649.8" font-size="11">Si una fuente no respondió, se vuelve a publicar la copia archivada que tenía la publicación</text>
-  <text class="ar-s" x="619.3" y="4664.8" font-size="11">anterior. Si la lectura de noticias falló, se reusan sus news/ y geo/ con carriedFrom. Si una</text>
-  <text class="ar-s" x="619.3" y="4679.8" font-size="11">copia no se pudo leer, se anota archive-carry-failed y sale sin ese enlace; el comunicado y</text>
-  <text class="ar-s" x="619.3" y="4694.8" font-size="11">el informe olvidan además su ruta, para no buscarla en la corrida siguiente.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4717.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4721.6" font-size="10.5" text-anchor="middle">58</text>
-  <text class="ar-t" x="619.3" y="4721.8" font-size="11.5">fallos, arrastres y formato</text>
-  <text class="ar-m" x="619.3" y="4735.8" font-size="10.5">Lectura de fuentes oficiales → Registro de incidencias</text>
-  <text class="ar-s" x="619.3" y="4750.8" font-size="11">Se anotan unreachable (error si la fuente es crítica), format-drift, format-changed,</text>
-  <text class="ar-s" x="619.3" y="4765.8" font-size="11">carried-forward y communique-unread, outlook-unread (la perspectiva del comunicado no</text>
-  <text class="ar-s" x="619.3" y="4780.8" font-size="11">se pudo leer) e informe-* (el informe técnico no se bajó, no se pudo leer o una parte no</text>
-  <text class="ar-s" x="619.3" y="4795.8" font-size="11">pasó la validación; si no responde ninguna ruta es solo una advertencia). Si el comunicado</text>
-  <text class="ar-s" x="619.3" y="4810.8" font-size="11">más reciente o su informe no se pueden bajar por ninguna ruta, manual-download-needed</text>
-  <text class="ar-s" x="619.3" y="4825.8" font-size="11">(advertencia) los lista para la consola de documentos.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4848.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4852.6" font-size="10.5" text-anchor="middle">59</text>
-  <text class="ar-t" x="619.3" y="4852.8" font-size="11.5">datos vencidos y estados</text>
-  <text class="ar-m" x="619.3" y="4866.8" font-size="10.5">Series, estados y señal GRD → Registro de incidencias</text>
-  <text class="ar-s" x="619.3" y="4881.8" font-size="11">Se anotan stale-&lt;serie&gt; y stale-weekly (dato fuera de plazo), official-overdue (no llegó el</text>
-  <text class="ar-s" x="619.3" y="4896.8" font-size="11">boletín previsto de NOAA o del ENFEN), newer-communique-unparsed (hay un comunicado</text>
-  <text class="ar-s" x="619.3" y="4911.8" font-size="11">más nuevo que no se pudo leer), status-unknown (error: no hay estado del ENFEN),</text>
-  <text class="ar-s" x="619.3" y="4926.8" font-size="11">informe-icen-mismatch (el ICEN del informe técnico difiere del IGP) y late-&lt;dato&gt; (pasó la</text>
-  <text class="ar-s" x="619.3" y="4941.8" font-size="11">fecha en que debía llegar el siguiente).</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="4964.8" r="9"/>
-  <text class="ar-t" x="599.3" y="4968.6" font-size="10.5" text-anchor="middle">60</text>
-  <text class="ar-t" x="619.3" y="4968.8" font-size="11.5">salud de la copia del Perú</text>
-  <text class="ar-m" x="619.3" y="4982.8" font-size="10.5">Rama data-peru → Registro de incidencias · cada corrida de observatory.yml</text>
-  <text class="ar-s" x="619.3" y="4997.8" font-size="11">Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing,</text>
-  <text class="ar-s" x="619.3" y="5012.8" font-size="11">relay-stale (más de 36 h), relay-sources-down, relay-goal-missed (con la causa de cada</text>
-  <text class="ar-s" x="619.3" y="5027.8" font-size="11">documento), relay-token-expiring o relay-kit-outdated (un kit anterior al que el sitio</text>
-  <text class="ar-s" x="619.3" y="5042.8" font-size="11">necesita). Así un equipo apagado se vuelve issue.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="5065.8" r="9"/>
-  <text class="ar-t" x="599.3" y="5069.6" font-size="10.5" text-anchor="middle">61</text>
-  <text class="ar-t" x="619.3" y="5069.8" font-size="11.5">salud de la copia de n8n</text>
-  <text class="ar-m" x="619.3" y="5083.8" font-size="10.5">Rama data-n8n → Registro de incidencias · cada corrida de observatory.yml</text>
-  <text class="ar-s" x="619.3" y="5098.8" font-size="11">Lo mismo con data-n8n: relay-n8n-missing, relay-n8n-stale (más de 36 h),</text>
-  <text class="ar-s" x="619.3" y="5113.8" font-size="11">relay-n8n-sources-down o relay-token-expiring (la credencial de GitHub de n8n vence en</text>
-  <text class="ar-s" x="619.3" y="5128.8" font-size="11">menos de 21 días). Así un flujo de n8n detenido se vuelve issue.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="5151.8" r="9"/>
-  <text class="ar-t" x="599.3" y="5155.6" font-size="10.5" text-anchor="middle">62</text>
-  <text class="ar-t" x="619.3" y="5155.8" font-size="11.5">noticias e histórico</text>
-  <text class="ar-m" x="619.3" y="5169.8" font-size="10.5">Noticias y alertas: lectura y filtro → Registro de incidencias</text>
-  <text class="ar-s" x="619.3" y="5184.8" font-size="11">En la etapa de noticias se anotan feeds-reader-unknown, news-degraded,</text>
-  <text class="ar-s" x="619.3" y="5199.8" font-size="11">news-history-missing (error si tampoco hay copia), news-history-restored y</text>
-  <text class="ar-s" x="619.3" y="5214.8" font-size="11">news-history-large. También pasan a issues.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="5237.8" r="9"/>
-  <text class="ar-t" x="599.3" y="5241.6" font-size="10.5" text-anchor="middle">63</text>
-  <text class="ar-t" x="619.3" y="5241.8" font-size="11.5">correcciones fallidas</text>
-  <text class="ar-m" x="619.3" y="5255.8" font-size="10.5">Ubicación y correcciones de lugar → Registro de incidencias</text>
-  <text class="ar-s" x="619.3" y="5270.8" font-size="11">Se anotan overrides-http (la consola respondió con error), overrides-down (no respondió) y</text>
-  <text class="ar-s" x="619.3" y="5285.8" font-size="11">overrides-rejected (una corrección trae códigos inválidos).</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="5308.8" r="9"/>
-  <text class="ar-t" x="599.3" y="5312.6" font-size="10.5" text-anchor="middle">64</text>
-  <text class="ar-t" x="619.3" y="5312.8" font-size="11.5">incidencias y salud</text>
-  <text class="ar-m" x="619.3" y="5326.8" font-size="10.5">Registro de incidencias → Escritura y validación de la publicación</text>
-  <text class="ar-s" x="619.3" y="5341.8" font-size="11">Las incidencias, la peor severidad y los conteos van a run-report.json; health.json marca</text>
-  <text class="ar-s" x="619.3" y="5356.8" font-size="11">degraded (con error o critical) y dashboard.json guarda la peor severidad.</text>
-  <circle class="ar-badge ar-e-control" cx="599.3" cy="5379.8" r="9"/>
-  <text class="ar-t" x="599.3" y="5383.6" font-size="10.5" text-anchor="middle">65</text>
-  <text class="ar-t" x="619.3" y="5383.8" font-size="11.5">crítico: no se despliega</text>
-  <text class="ar-m" x="619.3" y="5397.8" font-size="10.5">Registro de incidencias → Despliegue y verificación</text>
-  <text class="ar-s" x="619.3" y="5412.8" font-size="11">Con --fail-on critical, si la peor severidad es critical el paso del pipeline sale con 1, el build</text>
-  <text class="ar-s" x="619.3" y="5427.8" font-size="11">falla y el despliegue no corre; sigue publicado el sitio anterior.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="5450.8" r="9"/>
-  <text class="ar-t" x="599.3" y="5454.6" font-size="10.5" text-anchor="middle">66</text>
-  <text class="ar-t" x="619.3" y="5454.8" font-size="11.5">reemplazo atómico de data/</text>
-  <text class="ar-m" x="619.3" y="5468.8" font-size="10.5">Escritura y validación de la publicación → Archivos publicados (data/)</text>
-  <text class="ar-s" x="619.3" y="5483.8" font-size="11">Si la validación pasa (mismo publicationId en todo, series ordenadas, dashboard con official,</text>
-  <text class="ar-s" x="619.3" y="5498.8" font-size="11">series y grd), public/data se reemplaza de una vez por la carpeta nueva.</text>
-  <circle class="ar-badge ar-e-trigger" cx="599.3" cy="5521.8" r="9"/>
-  <text class="ar-t" x="599.3" y="5525.6" font-size="10.5" text-anchor="middle">67</text>
-  <text class="ar-t" x="619.3" y="5525.8" font-size="11.5">public/ listo para probar</text>
-  <text class="ar-m" x="619.3" y="5539.8" font-size="10.5">Archivos publicados (data/) → Despliegue y verificación</text>
-  <text class="ar-s" x="619.3" y="5554.8" font-size="11">Con data/ escrita, el build adapta las direcciones del sitio, corre las pruebas de navegador</text>
-  <text class="ar-s" x="619.3" y="5569.8" font-size="11">en Chromium y sube el sitio; si falla uno de esos pasos, no se despliega.</text>
-  <circle class="ar-badge ar-e-data" cx="599.3" cy="5592.8" r="9"/>
-  <text class="ar-t" x="599.3" y="5596.6" font-size="10.5" text-anchor="middle">68</text>
-  <text class="ar-t" x="619.3" y="5596.8" font-size="11.5">publica y verifica en vivo</text>
-  <text class="ar-m" x="619.3" y="5610.8" font-size="10.5">Despliegue y verificación → Sitio en vivo (SITE_URL) · tras cada build exitoso</text>
-  <text class="ar-s" x="619.3" y="5625.8" font-size="11">Sube todo el sitio de una vez a GitHub Pages o Cloudflare Pages, y verify_live espera hasta</text>
-  <text class="ar-s" x="619.3" y="5640.8" font-size="11">10 min a que dashboard.json y manifest.json traigan el publicationId nuevo.</text>
-  <circle class="ar-badge ar-e-control" cx="1168.7" cy="2792.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="2796.6" font-size="10.5" text-anchor="middle">69</text>
-  <text class="ar-t" x="1188.7" y="2796.8" font-size="11.5">hoy es la anterior de mañana</text>
-  <text class="ar-m" x="1188.7" y="2810.8" font-size="10.5">Sitio en vivo (SITE_URL) → Publicación anterior (data/ en vivo) · en la corrida siguiente</text>
-  <text class="ar-s" x="1188.7" y="2825.8" font-size="11">Lo que el sitio sirve hoy en data/ es lo que la corrida siguiente lee con --previous para</text>
-  <text class="ar-s" x="1188.7" y="2840.8" font-size="11">arrastrar datos y seguir el histórico.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="2863.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="2867.6" font-size="10.5" text-anchor="middle">70</text>
-  <text class="ar-t" x="1188.7" y="2867.8" font-size="11.5">sirve páginas y datos</text>
-  <text class="ar-m" x="1188.7" y="2881.8" font-size="10.5">Sitio en vivo (SITE_URL) → Sitio web (12 vistas)</text>
-  <text class="ar-s" x="1188.7" y="2896.8" font-size="11">El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y</text>
-  <text class="ar-s" x="1188.7" y="2911.8" font-size="11">luego cada archivo con el mismo publicationId.</text>
-  <circle class="ar-badge ar-e-human" cx="1168.7" cy="2934.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="2938.6" font-size="10.5" text-anchor="middle">71</text>
-  <text class="ar-t" x="1188.7" y="2938.8" font-size="11.5">abre el sitio o descarga</text>
-  <text class="ar-m" x="1188.7" y="2952.8" font-size="10.5">Público → Sitio web (12 vistas)</text>
-  <text class="ar-s" x="1188.7" y="2967.8" font-size="11">Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada</text>
-  <text class="ar-s" x="1188.7" y="2982.8" font-size="11">dato puede ir a la fuente en vivo o a la copia archivada.</text>
-  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="3005.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3009.6" font-size="10.5" text-anchor="middle">72</text>
-  <text class="ar-t" x="1188.7" y="3009.8" font-size="11.5">tras build exitoso en main</text>
-  <text class="ar-m" x="1188.7" y="3023.8" font-size="10.5">Actualización diaria (observatory.yml) → Job archive · cada corrida de main cuyo build pasa</text>
-  <text class="ar-s" x="1188.7" y="3038.8" font-size="11">El build deja el artefacto raw-sources (7 días) con las respuestas originales nuevas y el</text>
-  <text class="ar-s" x="1188.7" y="3053.8" font-size="11">histórico de noticias; el job archive lo baja en paralelo al despliegue.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3076.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3080.6" font-size="10.5" text-anchor="middle">73</text>
-  <text class="ar-t" x="1188.7" y="3080.8" font-size="11.5">solo agrega, nunca borra</text>
-  <text class="ar-m" x="1188.7" y="3094.8" font-size="10.5">Job archive → Rama data-archive · tras cada build exitoso en main</text>
-  <text class="ar-s" x="1188.7" y="3109.8" font-size="11">Agrega las respuestas que no tenía, suma las notas del día y une el histórico con</text>
-  <text class="ar-s" x="1188.7" y="3124.8" font-size="11">merge_history.py. Rechaza commits con borrados e intenta el push hasta 3 veces.</text>
-  <circle class="ar-badge ar-e-control" cx="1168.7" cy="3147.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3151.6" font-size="10.5" text-anchor="middle">74</text>
-  <text class="ar-t" x="1188.7" y="3151.8" font-size="11.5">run-report a issues</text>
-  <text class="ar-m" x="1188.7" y="3165.8" font-size="10.5">Archivos publicados (data/) → Issues de incidencias (incidente-datos) · al final de cada corrida,</text>
-  <text class="ar-m" x="1188.7" y="3179.8" font-size="10.5">aunque falle (fuera de main, solo el plan)</text>
-  <text class="ar-s" x="1188.7" y="3194.8" font-size="11">El job incidents baja run-report.json y abre, actualiza o cierra un issue por huella; un</text>
-  <text class="ar-s" x="1188.7" y="3209.8" font-size="11">format-drift no lo cierra: lo comenta una vez y espera a una persona. Si build, deploy o</text>
-  <text class="ar-s" x="1188.7" y="3224.8" font-size="11">archive fallan, abre además «La actualización diaria falló». Todo esto solo en main; en otra</text>
-  <text class="ar-s" x="1188.7" y="3239.8" font-size="11">rama muestra lo que haría.</text>
-  <circle class="ar-badge ar-e-human" cx="1168.7" cy="3262.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3266.6" font-size="10.5" text-anchor="middle">75</text>
-  <text class="ar-t" x="1188.7" y="3266.8" font-size="11.5">avisos para revisar</text>
-  <text class="ar-m" x="1188.7" y="3280.8" font-size="10.5">Issues de incidencias (incidente-datos) → Mantenedores y propietario</text>
-  <text class="ar-s" x="1188.7" y="3295.8" font-size="11">Los mantenedores ven las incidencias abiertas con la etiqueta incidente-datos; se cierran</text>
-  <text class="ar-s" x="1188.7" y="3310.8" font-size="11">solas cuando el problema deja de aparecer, salvo un format-drift: ese lo cierra una persona</text>
-  <text class="ar-s" x="1188.7" y="3325.8" font-size="11">después de revisar que los valores publicados sean coherentes.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3348.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3352.6" font-size="10.5" text-anchor="middle">76</text>
-  <text class="ar-t" x="1188.7" y="3352.8" font-size="11.5">lee dashboard.json</text>
-  <text class="ar-m" x="1188.7" y="3366.8" font-size="10.5">Sitio en vivo (SITE_URL) → Vigilante de GitHub (watchdog.yml) · 19:17, 01:17, 07:17 y 13:17</text>
-  <text class="ar-m" x="1188.7" y="3380.8" font-size="10.5">Lima</text>
-  <text class="ar-s" x="1188.7" y="3395.8" font-size="11">Cada 6 horas pide data/dashboard.json sin caché y calcula la edad de la publicación con</text>
-  <text class="ar-s" x="1188.7" y="3410.8" font-size="11">generatedAt.</text>
-  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="3433.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3437.6" font-size="10.5" text-anchor="middle">77</text>
-  <text class="ar-t" x="1188.7" y="3437.8" font-size="11.5">relanza si pasa 30 h</text>
-  <text class="ar-m" x="1188.7" y="3451.8" font-size="10.5">Vigilante de GitHub (watchdog.yml) → Actualización diaria (observatory.yml) · solo si el sitio está</text>
-  <text class="ar-m" x="1188.7" y="3465.8" font-size="10.5">atrasado</text>
-  <text class="ar-s" x="1188.7" y="3480.8" font-size="11">Si la publicación tiene más de 30 h o no se puede leer, lanza la actualización diaria en main,</text>
-  <text class="ar-s" x="1188.7" y="3495.8" font-size="11">salvo que haya una corrida de main en curso o una lanzada a mano o por él en las últimas 6</text>
-  <text class="ar-s" x="1188.7" y="3510.8" font-size="11">h.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3533.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3537.6" font-size="10.5" text-anchor="middle">78</text>
-  <text class="ar-t" x="1188.7" y="3537.8" font-size="11.5">issues del vigilante</text>
-  <text class="ar-m" x="1188.7" y="3551.8" font-size="10.5">Vigilante de GitHub (watchdog.yml) → Issues de incidencias (incidente-datos) · si hay atraso,</text>
-  <text class="ar-m" x="1188.7" y="3565.8" font-size="10.5">silencio o recuperación</text>
-  <text class="ar-s" x="1188.7" y="3580.8" font-size="11">Abre o comenta «El sitio publicado está desactualizado» con la acción tomada y lo cierra</text>
-  <text class="ar-s" x="1188.7" y="3595.8" font-size="11">cuando el sitio vuelve a estar al día. Con un recolector callado más de 36 h abre «… no da</text>
-  <text class="ar-s" x="1188.7" y="3610.8" font-size="11">señales (&lt;rama&gt;)», lo recuerda una vez al día y lo cierra cuando vuelve a latir. Si sus</text>
-  <text class="ar-s" x="1188.7" y="3625.8" font-size="11">issues cambiaron, tools.alert_email manda el correo.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3648.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3652.6" font-size="10.5" text-anchor="middle">79</text>
-  <text class="ar-t" x="1188.7" y="3652.8" font-size="11.5">latido del Perú</text>
-  <text class="ar-m" x="1188.7" y="3666.8" font-size="10.5">Rama data-peru → Vigilante de GitHub (watchdog.yml) · 19:17, 01:17, 07:17 y 13:17 Lima</text>
-  <text class="ar-s" x="1188.7" y="3681.8" font-size="11">Cada 6 horas el vigilante lee heartbeat.json de data-peru por la API de GitHub. Más de 36 h</text>
-  <text class="ar-s" x="1188.7" y="3696.8" font-size="11">sin latido es un recolector callado, aunque el flujo diario esté fallando y no llegue a</text>
-  <text class="ar-s" x="1188.7" y="3711.8" font-size="11">sincronizar sus incidencias. Si la rama no existe, no se revisa.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3734.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3738.6" font-size="10.5" text-anchor="middle">80</text>
-  <text class="ar-t" x="1188.7" y="3738.8" font-size="11.5">latido de n8n</text>
-  <text class="ar-m" x="1188.7" y="3752.8" font-size="10.5">Rama data-n8n → Vigilante de GitHub (watchdog.yml) · 19:17, 01:17, 07:17 y 13:17 Lima</text>
-  <text class="ar-s" x="1188.7" y="3767.8" font-size="11">Lo mismo con heartbeat.json de data-n8n: así se ve un flujo de n8n detenido aunque la</text>
-  <text class="ar-s" x="1188.7" y="3782.8" font-size="11">actualización diaria no corra.</text>
-  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="3805.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3809.6" font-size="10.5" text-anchor="middle">81</text>
-  <text class="ar-t" x="1188.7" y="3809.8" font-size="11.5">relanza el sondeo</text>
-  <text class="ar-m" x="1188.7" y="3823.8" font-size="10.5">Vigilante de GitHub (watchdog.yml) → Sondeo semanal de alcance · si no hubo sondeo bueno en</text>
-  <text class="ar-m" x="1188.7" y="3837.8" font-size="10.5">8 días</text>
-  <text class="ar-s" x="1188.7" y="3852.8" font-size="11">Si probe-sources.yml no tiene una corrida buena en la rama principal en 8 días (GitHub</text>
-  <text class="ar-s" x="1188.7" y="3867.8" font-size="11">puede saltarse una programada), lo relanza, como mucho una vez al día y sin abrir issue.</text>
-  <text class="ar-s" x="1188.7" y="3882.8" font-size="11">Sin sondeo, las URL nuevas quedan unknown y los canales no siguen a los servidores que</text>
-  <text class="ar-s" x="1188.7" y="3897.8" font-size="11">dejan de responder.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3920.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3924.6" font-size="10.5" text-anchor="middle">82</text>
-  <text class="ar-t" x="1188.7" y="3924.8" font-size="11.5">lee manifest.json</text>
-  <text class="ar-m" x="1188.7" y="3938.8" font-size="10.5">Sitio en vivo (SITE_URL) → Vigilante n8n (fuera de GitHub) · cada 6 h (intervalo de n8n)</text>
-  <text class="ar-s" x="1188.7" y="3953.8" font-size="11">Cada 6 horas, desde fuera de GitHub, n8n pide data/manifest.json y revisa que generatedAt</text>
-  <text class="ar-s" x="1188.7" y="3968.8" font-size="11">tenga menos de 30 h.</text>
-  <circle class="ar-badge ar-e-human" cx="1168.7" cy="3991.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="3995.6" font-size="10.5" text-anchor="middle">83</text>
-  <text class="ar-t" x="1188.7" y="3995.8" font-size="11.5">Error workflow, si lo hay</text>
-  <text class="ar-m" x="1188.7" y="4009.8" font-size="10.5">Vigilante n8n (fuera de GitHub) → Colega que opera n8n</text>
-  <text class="ar-s" x="1188.7" y="4024.8" font-size="11">Si el colega configuró un Error workflow en n8n (por ejemplo, un correo), una ejecución</text>
-  <text class="ar-s" x="1188.7" y="4039.8" font-size="11">fallida lo dispara. Sirve aunque GitHub haya apagado sus flujos programados.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="4062.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4066.6" font-size="10.5" text-anchor="middle">84</text>
-  <text class="ar-t" x="1188.7" y="4066.8" font-size="11.5">notas por revisar</text>
-  <text class="ar-m" x="1188.7" y="4080.8" font-size="10.5">Archivos publicados (data/) → Consola de lugares (/admin/) · al abrir la consola</text>
-  <text class="ar-s" x="1188.7" y="4095.8" font-size="11">La consola carga data/geo/items.json (hasta 4000 notas de 120 días) y ubigeo.json para sus</text>
-  <text class="ar-s" x="1188.7" y="4110.8" font-size="11">selectores; la API también usa ubigeo.json para rechazar códigos desconocidos.</text>
-  <circle class="ar-badge ar-e-human" cx="1168.7" cy="4133.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4137.6" font-size="10.5" text-anchor="middle">85</text>
-  <text class="ar-t" x="1188.7" y="4137.8" font-size="11.5">cuentas de revisor</text>
-  <text class="ar-m" x="1188.7" y="4151.8" font-size="10.5">Mantenedores y propietario → Revisores de lugares</text>
-  <text class="ar-s" x="1188.7" y="4166.8" font-size="11">tools.geo_users crea usuario y clave para cada revisor; el propietario carga el secreto</text>
-  <text class="ar-s" x="1188.7" y="4181.8" font-size="11">GEO_USERS y vincula la base D1 GEO_DB en Cloudflare.</text>
-  <circle class="ar-badge ar-e-human" cx="1168.7" cy="4204.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4208.6" font-size="10.5" text-anchor="middle">86</text>
-  <text class="ar-t" x="1188.7" y="4208.8" font-size="11.5">corrigen lugares</text>
-  <text class="ar-m" x="1188.7" y="4222.8" font-size="10.5">Revisores de lugares → Consola de lugares (/admin/)</text>
-  <text class="ar-s" x="1188.7" y="4237.8" font-size="11">Con su usuario fijan, confirman o marcan como nacional o «no es del Perú» cada nota. Cada</text>
-  <text class="ar-s" x="1188.7" y="4252.8" font-size="11">cambio es una fila nueva en la base D1 y se aplica en la siguiente corrida (la de 23:37 u</text>
-  <text class="ar-s" x="1188.7" y="4267.8" font-size="11">otra antes).</text>
-  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="4290.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4294.6" font-size="10.5" text-anchor="middle">87</text>
-  <text class="ar-t" x="1188.7" y="4294.8" font-size="11.5">fusión en main o a mano</text>
-  <text class="ar-m" x="1188.7" y="4308.8" font-size="10.5">Mantenedores y propietario → Actualización diaria (observatory.yml) · al fusionar o a mano</text>
-  <text class="ar-s" x="1188.7" y="4323.8" font-size="11">Cada push a main publica enseguida (salvo cambios solo en .md o docs/). También se</text>
-  <text class="ar-s" x="1188.7" y="4338.8" font-size="11">puede lanzar a mano y elegir si se piden copias nuevas al Internet Archive.</text>
-  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="4361.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4365.6" font-size="10.5" text-anchor="middle">88</text>
-  <text class="ar-t" x="1188.7" y="4365.8" font-size="11.5">PR, ramas claude/** o a mano</text>
-  <text class="ar-m" x="1188.7" y="4379.8" font-size="10.5">Mantenedores y propietario → Herramientas de desarrollo</text>
-  <text class="ar-s" x="1188.7" y="4394.8" font-size="11">ci.yml corre en cada PR y push a claude/**; n8n.yml, cuando cambia n8n/. Sondeos y</text>
-  <text class="ar-s" x="1188.7" y="4409.8" font-size="11">capturas: a mano o al cambiar su herramienta en claude/**. Sus resultados se traen a mano</text>
-  <text class="ar-s" x="1188.7" y="4424.8" font-size="11">de las ramas bot/.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="4447.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4451.6" font-size="10.5" text-anchor="middle">89</text>
-  <text class="ar-t" x="1188.7" y="4451.8" font-size="11.5">documentos pendientes</text>
-  <text class="ar-m" x="1188.7" y="4465.8" font-size="10.5">Archivos publicados (data/) → Consola de documentos (/admin/documentos.html) · al abrir la</text>
-  <text class="ar-m" x="1188.7" y="4479.8" font-size="10.5">consola</text>
-  <text class="ar-s" x="1188.7" y="4494.8" font-size="11">La consola muestra data/manual-needed.json: cada documento que la corrida no pudo</text>
-  <text class="ar-s" x="1188.7" y="4509.8" font-size="11">bajar, con los enlaces para abrirlo en un navegador, el motivo y, si una copia subida no</text>
-  <text class="ar-s" x="1188.7" y="4524.8" font-size="11">sirvió, por qué.</text>
-  <circle class="ar-badge ar-e-human" cx="1168.7" cy="4547.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4551.6" font-size="10.5" text-anchor="middle">90</text>
-  <text class="ar-t" x="1188.7" y="4551.8" font-size="11.5">bajan y suben el PDF</text>
-  <text class="ar-m" x="1188.7" y="4565.8" font-size="10.5">Mantenedores y propietario → Consola de documentos (/admin/documentos.html)</text>
-  <text class="ar-s" x="1188.7" y="4580.8" font-size="11">Con el issue manual-download-needed, un administrador abre el documento en su</text>
-  <text class="ar-s" x="1188.7" y="4595.8" font-size="11">navegador, pasa la verificación humana él mismo (el sistema nunca la evade), guarda el</text>
-  <text class="ar-s" x="1188.7" y="4610.8" font-size="11">PDF y lo sube.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="4633.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4637.6" font-size="10.5" text-anchor="middle">91</text>
-  <text class="ar-t" x="1188.7" y="4637.8" font-size="11.5">commit con el PDF</text>
-  <text class="ar-m" x="1188.7" y="4651.8" font-size="10.5">Consola de documentos (/admin/documentos.html) → Rama data-manual · en cada subida</text>
-  <text class="ar-s" x="1188.7" y="4666.8" font-size="11">Blob del PDF en flujo, árbol con index.json nuevo, commit y avance de la rama sin forzar; si</text>
-  <text class="ar-s" x="1188.7" y="4681.8" font-size="11">otra subida la movió, se rehace una vez.</text>
-  <circle class="ar-badge ar-e-control" cx="1168.7" cy="4704.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4708.6" font-size="10.5" text-anchor="middle">92</text>
-  <text class="ar-t" x="1188.7" y="4708.8" font-size="11.5">pide actualizar (enso-refresh)</text>
-  <text class="ar-m" x="1188.7" y="4722.8" font-size="10.5">Consola de documentos (/admin/documentos.html) → Actualización diaria (observatory.yml) · en</text>
-  <text class="ar-m" x="1188.7" y="4736.8" font-size="10.5">cada subida</text>
-  <text class="ar-s" x="1188.7" y="4751.8" font-size="11">Tras guardar el PDF, la API manda repository_dispatch enso-refresh: la actualización</text>
-  <text class="ar-s" x="1188.7" y="4766.8" font-size="11">empieza al momento en vez de esperar a las 23:37.</text>
-  <circle class="ar-badge ar-e-fallback" cx="1168.7" cy="4789.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4793.6" font-size="10.5" text-anchor="middle">93</text>
-  <text class="ar-t" x="1188.7" y="4793.8" font-size="11.5">copia subida (relay-manual)</text>
-  <text class="ar-m" x="1188.7" y="4807.8" font-size="10.5">Rama data-manual → Descarga en GitHub Actions (Fetcher) · cada corrida de observatory.yml</text>
-  <text class="ar-s" x="1188.7" y="4822.8" font-size="11">El pipeline la busca con la misma URL que el documento (o manual://enfen-informe/&lt;id&gt; si</text>
-  <text class="ar-s" x="1188.7" y="4837.8" font-size="11">no se conoce). Se valida como cualquier otra copia: otro número u otro periodo no se</text>
-  <text class="ar-s" x="1188.7" y="4852.8" font-size="11">publica y el documento sigue pendiente con el motivo.</text>
-  <circle class="ar-badge ar-e-fallback" cx="1168.7" cy="4875.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="4879.6" font-size="10.5" text-anchor="middle">94</text>
-  <text class="ar-t" x="1188.7" y="4879.8" font-size="11.5">texto sin leer (opcional)</text>
-  <text class="ar-m" x="1188.7" y="4893.8" font-size="10.5">Lectura de fuentes oficiales → Extractor de informes n8n (opcional) · solo cuando el lector fijo</text>
-  <text class="ar-m" x="1188.7" y="4907.8" font-size="10.5">falla</text>
-  <text class="ar-s" x="1188.7" y="4922.8" font-size="11">Solo si el lector fijo falla (el informe técnico cambió de formato o la perspectiva del</text>
-  <text class="ar-s" x="1188.7" y="4937.8" font-size="11">comunicado no se pudo leer) y está el secreto ENSO_LLM_EXTRACT_URL: el pipeline manda</text>
-  <text class="ar-s" x="1188.7" y="4952.8" font-size="11">kind, el esquema y el texto (hasta 120 000 caracteres) con el token</text>
-  <text class="ar-s" x="1188.7" y="4967.8" font-size="11">ENSO_LLM_EXTRACT_TOKEN. Del informe, el mismo PDF no se vuelve a consultar si el</text>
-  <text class="ar-s" x="1188.7" y="4982.8" font-size="11">modelo ya respondió.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5005.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="5009.6" font-size="10.5" text-anchor="middle">95</text>
-  <text class="ar-t" x="1188.7" y="5009.8" font-size="11.5">propuesta para revisión</text>
-  <text class="ar-m" x="1188.7" y="5023.8" font-size="10.5">Extractor de informes n8n (opcional) → Lectura de fuentes oficiales</text>
-  <text class="ar-s" x="1188.7" y="5038.8" font-size="11">La respuesta se vuelve a validar con el esquema y queda como propuesta, con sus errores</text>
-  <text class="ar-s" x="1188.7" y="5053.8" font-size="11">de esquema, en informe.review u outlookReview de dashboard.json. Nunca reemplaza un</text>
-  <text class="ar-s" x="1188.7" y="5068.8" font-size="11">dato ni se publica como tal, y el sitio no la muestra. Si el flujo no responde, se anota</text>
-  <text class="ar-s" x="1188.7" y="5083.8" font-size="11">llm-extract-unavailable.</text>
-  <circle class="ar-badge ar-e-human" cx="1168.7" cy="5106.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="5110.6" font-size="10.5" text-anchor="middle">96</text>
-  <text class="ar-t" x="1188.7" y="5110.8" font-size="11.5">importa y crea credenciales</text>
-  <text class="ar-m" x="1188.7" y="5124.8" font-size="10.5">Colega que opera n8n → Extractor de informes n8n (opcional)</text>
-  <text class="ar-s" x="1188.7" y="5139.8" font-size="11">Si se usa, la persona importa n8n/dist/enso-n8n-extractor.json, crea las credenciales «Token</text>
-  <text class="ar-s" x="1188.7" y="5154.8" font-size="11">del extractor ENSO» y «OpenAI ENSO (n8n)» y lo activa; su Production URL y el token van a</text>
-  <text class="ar-s" x="1188.7" y="5169.8" font-size="11">los secretos ENSO_LLM_EXTRACT_URL y ENSO_LLM_EXTRACT_TOKEN del repositorio.</text>
-  <circle class="ar-badge ar-e-control" cx="1168.7" cy="5192.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="5196.6" font-size="10.5" text-anchor="middle">97</text>
-  <text class="ar-t" x="1188.7" y="5196.8" font-size="11.5">salud de la copia subida</text>
-  <text class="ar-m" x="1188.7" y="5210.8" font-size="10.5">Rama data-manual → Registro de incidencias · cada corrida de observatory.yml</text>
-  <text class="ar-s" x="1188.7" y="5225.8" font-size="11">Al empezar, el pipeline abre la rama data-manual: si existe y no se pudo bajar o leer, anota</text>
-  <text class="ar-s" x="1188.7" y="5240.8" font-size="11">manual-unreadable (advertencia) y las subidas no se usan en esta corrida; si la leyó,</text>
-  <text class="ar-s" x="1188.7" y="5255.8" font-size="11">manual-ok (info). Que la rama no exista no se anota.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5278.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="5282.6" font-size="10.5" text-anchor="middle">98</text>
-  <text class="ar-t" x="1188.7" y="5282.8" font-size="11.5">nivel de los avisos del SENAMHI</text>
-  <text class="ar-m" x="1188.7" y="5296.8" font-size="10.5">Rama data-peru → Noticias y alertas: lectura y filtro · cada corrida de observatory.yml</text>
-  <text class="ar-s" x="1188.7" y="5311.8" font-size="11">La tabla de avisos del SENAMHI de la copia del Perú da el nivel (amarillo, naranja o rojo) y el</text>
-  <text class="ar-s" x="1188.7" y="5326.8" font-size="11">inicio y fin a los avisos que llegan por Telegram y por el COEN. El sitio publica esa copia y</text>
-  <text class="ar-s" x="1188.7" y="5341.8" font-size="11">cada nivel la enlaza.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5364.8" r="9"/>
-  <text class="ar-t" x="1168.7" y="5368.6" font-size="10.5" text-anchor="middle">99</text>
-  <text class="ar-t" x="1188.7" y="5368.8" font-size="11.5">descargas largas, con pausa</text>
-  <text class="ar-m" x="1188.7" y="5382.8" font-size="10.5">Archivos de desastres pasados (66 fuentes) → Cosecha del catálogo histórico</text>
-  <text class="ar-m" x="1188.7" y="5396.8" font-size="10.5">(memoria-cosecha.yml)</text>
-  <text class="ar-s" x="1188.7" y="5411.8" font-size="11">Con al menos 5 s entre pedidos a cada servidor (o su Crawl-delay, si es mayor) y</text>
-  <text class="ar-s" x="1188.7" y="5426.8" font-size="11">respetando su robots.txt, salvo los Disallow de las instituciones públicas peruanas, que</text>
-  <text class="ar-s" x="1188.7" y="5441.8" font-size="11">autorizaron la descarga. Nunca se salta una verificación antirobots, un muro de pago ni un</text>
-  <text class="ar-s" x="1188.7" y="5456.8" font-size="11">inicio de sesión.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5479.8" r="11"/>
-  <text class="ar-t" x="1168.7" y="5483.6" font-size="10.5" text-anchor="middle">100</text>
-  <text class="ar-t" x="1188.7" y="5483.8" font-size="11.5">lo bajado, desde la caché</text>
-  <text class="ar-m" x="1188.7" y="5497.8" font-size="10.5">Cosecha del catálogo histórico (memoria-cosecha.yml) → Catálogo histórico e indicadores</text>
-  <text class="ar-m" x="1188.7" y="5511.8" font-size="10.5">(build_historico)</text>
-  <text class="ar-s" x="1188.7" y="5526.8" font-size="11">Cuando no falta ninguna fuente, build_historico --sin-red --parcial lee los archivos de la</text>
-  <text class="ar-s" x="1188.7" y="5541.8" font-size="11">caché, compara su SHA-256 con el manifiesto y anota en el PR qué cambió en cada fuente.</text>
-  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5564.8" r="11"/>
-  <text class="ar-t" x="1168.7" y="5568.6" font-size="10.5" text-anchor="middle">101</text>
-  <text class="ar-t" x="1188.7" y="5568.8" font-size="11.5">catálogo por PR a main</text>
-  <text class="ar-m" x="1188.7" y="5582.8" font-size="10.5">Catálogo histórico e indicadores (build_historico) → Despliegue y verificación</text>
-  <text class="ar-s" x="1188.7" y="5597.8" font-size="11">El PR de la cosecha cambia public/assets/historico/ y data/historico/; al fusionarlo, el</text>
-  <text class="ar-s" x="1188.7" y="5612.8" font-size="11">despliegue lo publica y la vista Memoria de desastres lo lee (historico.js).</text>
-  <circle class="ar-badge ar-e-human" cx="1168.7" cy="5635.8" r="11"/>
-  <text class="ar-t" x="1168.7" y="5639.6" font-size="10.5" text-anchor="middle">102</text>
-  <text class="ar-t" x="1188.7" y="5639.8" font-size="11.5">revisan y fusionan el PR del catálogo</text>
-  <text class="ar-m" x="1188.7" y="5653.8" font-size="10.5">Mantenedores y propietario → Cosecha del catálogo histórico (memoria-cosecha.yml)</text>
-  <text class="ar-s" x="1188.7" y="5668.8" font-size="11">Una persona revisa la tabla de cambios por fuente del PR antes de fusionarlo. También</text>
-  <text class="ar-s" x="1188.7" y="5683.8" font-size="11">puede pedir a mano «reconstruir» (PR con lo bajado hasta ahora) o «renovar» (cosecha</text>
-  <text class="ar-s" x="1188.7" y="5698.8" font-size="11">nueva desde cero).</text>
+  <line class="ar-rule" x1="20" y1="2749.4" x2="1700" y2="2749.4"/>
+  <text class="ar-h" x="20" y="2779.4" font-size="15">Conexiones: qué viaja por cada línea, cuándo y por qué</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2807.4" r="9"/>
+  <text class="ar-t" x="30" y="2811.2" font-size="10.5" text-anchor="middle">1</text>
+  <text class="ar-t" x="50" y="2811.4" font-size="11.5">portal ENFEN e ICEN</text>
+  <text class="ar-m" x="50" y="2825.4" font-size="10.5">ENFEN e IGP: fuentes oficiales del Perú → Recolector en el Perú · diario 21:00 Lima, reintentos</text>
+  <text class="ar-m" x="50" y="2839.4" font-size="10.5">hasta 23:30</text>
+  <text class="ar-s" x="50" y="2854.4" font-size="11">Cada noche el equipo en el Perú baja la API y el listado del portal del ENFEN y los PDF de los</text>
+  <text class="ar-s" x="50" y="2869.4" font-size="11">comunicados y de los informes técnicos, y el repositorio del IMARPE (búsquedas, paquetes y</text>
+  <text class="ar-s" x="50" y="2884.4" font-size="11">PDF), que no responden desde EE. UU., y su propia copia del ICEN por http, por si el IGP</text>
+  <text class="ar-s" x="50" y="2899.4" font-size="11">deja de responder a la nube. Así el comunicado oficial llega aunque el portal no responda a</text>
+  <text class="ar-s" x="50" y="2914.4" font-size="11">la nube.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="2937.4" r="9"/>
+  <text class="ar-t" x="30" y="2941.2" font-size="10.5" text-anchor="middle">2</text>
+  <text class="ar-t" x="50" y="2941.4" font-size="11.5">réplica DHN e ICEN, directo</text>
+  <text class="ar-m" x="50" y="2955.4" font-size="10.5">ENFEN e IGP: fuentes oficiales del Perú → Descarga en GitHub Actions (Fetcher) · diario 23:37</text>
+  <text class="ar-m" x="50" y="2969.4" font-size="10.5">Lima, primeras fuentes</text>
+  <text class="ar-s" x="50" y="2984.4" font-size="11">Actions pide el ICEN por http y el listado de la réplica de la DHN. Los PDF de la DHN le</text>
+  <text class="ar-s" x="50" y="2999.4" font-size="11">devuelven una verificación humana, que se anota y nunca se evade. Para la API y el listado</text>
+  <text class="ar-s" x="50" y="3014.4" font-size="11">del portal usa primero la copia del Perú; si no hay, los pide una vez. Las búsquedas del</text>
+  <text class="ar-s" x="50" y="3029.4" font-size="11">repositorio del IMARPE siguen el canal que les da el registro, y sus PDF se piden directo tras</text>
+  <text class="ar-s" x="50" y="3044.4" font-size="11">leer el robots.txt.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3067.4" r="9"/>
+  <text class="ar-t" x="30" y="3071.2" font-size="10.5" text-anchor="middle">3</text>
+  <text class="ar-t" x="50" y="3071.4" font-size="11.5">ICEN y listado de la DHN</text>
+  <text class="ar-m" x="50" y="3085.4" font-size="10.5">ENFEN e IGP: fuentes oficiales del Perú → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
+  <text class="ar-s" x="50" y="3100.4" font-size="11">n8n baja el ICEN por http y el listado de la réplica de la DHN, y deja una segunda copia por</text>
+  <text class="ar-s" x="50" y="3115.4" font-size="11">si Actions no obtiene una respuesta válida. Los PDF de la DHN le responden con una</text>
+  <text class="ar-s" x="50" y="3130.4" font-size="11">verificación humana, que se anota y nunca se evade: el PDF llega del Perú, del repositorio</text>
+  <text class="ar-s" x="50" y="3145.4" font-size="11">del IMARPE, de la consola de documentos o del Internet Archive. n8n no pide el repositorio</text>
+  <text class="ar-s" x="50" y="3160.4" font-size="11">del IMARPE: no verifica su certificado.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3183.4" r="9"/>
+  <text class="ar-t" x="30" y="3187.2" font-size="10.5" text-anchor="middle">4</text>
+  <text class="ar-t" x="50" y="3187.4" font-size="11.5">15 productos, directo</text>
+  <text class="ar-m" x="50" y="3201.4" font-size="10.5">NOAA (CPC y PSL) → Descarga en GitHub Actions (Fetcher) · diario 23:37 Lima</text>
+  <text class="ar-s" x="50" y="3216.4" font-size="11">Actions baja cada noche los índices, la temperatura del mar, el calor bajo la superficie y la</text>
+  <text class="ar-s" x="50" y="3231.4" font-size="11">discusión ENSO de NOAA. Si un producto crítico falla y no hay dato anterior, no se</text>
+  <text class="ar-s" x="50" y="3246.4" font-size="11">despliega.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3269.4" r="9"/>
+  <text class="ar-t" x="30" y="3273.2" font-size="10.5" text-anchor="middle">5</text>
+  <text class="ar-t" x="50" y="3273.4" font-size="11.5">copia de respaldo</text>
+  <text class="ar-m" x="50" y="3287.4" font-size="10.5">NOAA (CPC y PSL) → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
+  <text class="ar-s" x="50" y="3302.4" font-size="11">n8n baja cada noche las URL de NOAA que el registro le asigna; si el pedido directo de</text>
+  <text class="ar-s" x="50" y="3317.4" font-size="11">Actions falla, el pipeline usa esa copia. cpc-godas-d20 nunca: el registro la deja solo en</text>
+  <text class="ar-s" x="50" y="3332.4" font-size="11">actions y el flujo de validación de n8n solo mide si su listado responde.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3355.4" r="9"/>
+  <text class="ar-t" x="30" y="3359.2" font-size="10.5" text-anchor="middle">6</text>
+  <text class="ar-t" x="50" y="3359.4" font-size="11.5">15 fuentes de alertas</text>
+  <text class="ar-m" x="50" y="3373.4" font-size="10.5">Alertas oficiales de peligros (15 fuentes) → Descarga en GitHub Actions (Fetcher) · diario 23:37</text>
+  <text class="ar-m" x="50" y="3387.4" font-size="10.5">Lima</text>
+  <text class="ar-s" x="50" y="3402.4" font-size="11">Junto con las noticias, Actions lee los avisos del INDECI, SENAMHI, DHN, IGP, USGS, PTWC y</text>
+  <text class="ar-s" x="50" y="3417.4" font-size="11">NASA FIRMS, cada uno en su formato (RSS, JSON, HTML, CSV o texto).</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3440.4" r="9"/>
+  <text class="ar-t" x="30" y="3444.2" font-size="10.5" text-anchor="middle">7</text>
+  <text class="ar-t" x="50" y="3444.4" font-size="11.5">copia de respaldo</text>
+  <text class="ar-m" x="50" y="3458.4" font-size="10.5">Alertas oficiales de peligros (15 fuentes) → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
+  <text class="ar-s" x="50" y="3473.4" font-size="11">n8n guarda una copia de las fuentes de alertas que el registro le asigna, por si Actions no</text>
+  <text class="ar-s" x="50" y="3488.4" font-size="11">las alcanza esa noche.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3511.4" r="9"/>
+  <text class="ar-t" x="30" y="3515.2" font-size="10.5" text-anchor="middle">8</text>
+  <text class="ar-t" x="50" y="3515.4" font-size="11.5">solo archivo, desde el Perú</text>
+  <text class="ar-m" x="50" y="3529.4" font-size="10.5">Páginas del Estado que guarda el Perú → Recolector en el Perú · diario 21:00 Lima</text>
+  <text class="ar-s" x="50" y="3544.4" font-size="11">Cada noche el recolector baja las 13 páginas de su lista fija para guardar el original. Las que</text>
+  <text class="ar-s" x="50" y="3559.4" font-size="11">no responden desde EE. UU. (peru-server en el registro) solo llegan por aquí.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3582.4" r="9"/>
+  <text class="ar-t" x="30" y="3586.2" font-size="10.5" text-anchor="middle">9</text>
+  <text class="ar-t" x="50" y="3586.4" font-size="11.5">las del canal n8n</text>
+  <text class="ar-m" x="50" y="3600.4" font-size="10.5">Páginas del Estado que guarda el Perú → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
+  <text class="ar-s" x="50" y="3615.4" font-size="11">Las que el registro no marca geobloqueadas (abiertas o sin medir) llevan el canal n8n por</text>
+  <text class="ar-s" x="50" y="3630.4" font-size="11">regla, así que n8n también las baja. La corrida diaria no las pide: de estas páginas solo la</text>
+  <text class="ar-s" x="50" y="3645.4" font-size="11">tabla de avisos del SENAMHI tiene lector, y se lee de la copia del Perú.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3668.4" r="9"/>
+  <text class="ar-t" x="30" y="3672.2" font-size="10.5" text-anchor="middle">10</text>
+  <text class="ar-t" x="50" y="3672.4" font-size="11.5">lista y ZIP vigente</text>
+  <text class="ar-m" x="50" y="3686.4" font-size="10.5">Escenario de riesgo por lluvias del CENEPRED (SIGRID) → Descarga en GitHub Actions (Fetcher) ·</text>
+  <text class="ar-m" x="50" y="3700.4" font-size="10.5">diario 23:37 Lima</text>
+  <text class="ar-s" x="50" y="3715.4" font-size="11">La corrida diaria pide la lista de escenarios, elige el vigente hoy (entre varios, el elaborado</text>
+  <text class="ar-s" x="50" y="3730.4" font-size="11">más recientemente) y baja su ZIP. Si no llega, usa la copia de n8n o del Perú de esa misma</text>
+  <text class="ar-s" x="50" y="3745.4" font-size="11">URL y, si tampoco, conserva el escenario publicado.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3768.4" r="9"/>
+  <text class="ar-t" x="30" y="3772.2" font-size="10.5" text-anchor="middle">11</text>
+  <text class="ar-t" x="50" y="3772.4" font-size="11.5">lista y 3 ZIP</text>
+  <text class="ar-m" x="50" y="3786.4" font-size="10.5">Escenario de riesgo por lluvias del CENEPRED (SIGRID) → Recolector n8n (nube AWS) · diario</text>
+  <text class="ar-m" x="50" y="3800.4" font-size="10.5">22:50 Lima</text>
+  <text class="ar-s" x="50" y="3815.4" font-size="11">n8n baja la lista y, en su segunda pasada, el ZIP de los tres escenarios de número más alto</text>
+  <text class="ar-s" x="50" y="3830.4" font-size="11">(regla follow con template y order desc), con el Crawl-delay del SIGRID entre pedidos.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3853.4" r="9"/>
+  <text class="ar-t" x="30" y="3857.2" font-size="10.5" text-anchor="middle">12</text>
+  <text class="ar-t" x="50" y="3857.4" font-size="11.5">lista y 3 ZIP (kit 3)</text>
+  <text class="ar-m" x="50" y="3871.4" font-size="10.5">Escenario de riesgo por lluvias del CENEPRED (SIGRID) → Recolector en el Perú · diario 21:00</text>
+  <text class="ar-m" x="50" y="3885.4" font-size="10.5">Lima</text>
+  <text class="ar-s" x="50" y="3900.4" font-size="11">El recolector del Perú tiene la lista en su lista fija y sigue la misma regla para bajar los ZIP:</text>
+  <text class="ar-s" x="50" y="3915.4" font-size="11">un respaldo por si el SIGRID deja de responder fuera del país.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="3938.4" r="9"/>
+  <text class="ar-t" x="30" y="3942.2" font-size="10.5" text-anchor="middle">13</text>
+  <text class="ar-t" x="50" y="3942.4" font-size="11.5">116 feeds de noticias</text>
+  <text class="ar-m" x="50" y="3956.4" font-size="10.5">Medios y Estado: 116 feeds de noticias → Descarga en GitHub Actions (Fetcher) · diario 23:37</text>
+  <text class="ar-m" x="50" y="3970.4" font-size="10.5">Lima, tras las fuentes oficiales</text>
+  <text class="ar-s" x="50" y="3985.4" font-size="11">Actions lee cada noche los feeds del Estado, medios nacionales y regionales, radios e</text>
+  <text class="ar-s" x="50" y="4000.4" font-size="11">internacionales, uno tras otro por servidor por cortesía. De los que su robots.txt prohíbe,</text>
+  <text class="ar-s" x="50" y="4015.4" font-size="11">solo Google Noticias, Noticias ONU y Sin Rodeos se piden, como lector de feeds.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="4038.4" r="9"/>
+  <text class="ar-t" x="30" y="4042.2" font-size="10.5" text-anchor="middle">14</text>
+  <text class="ar-t" x="50" y="4042.4" font-size="11.5">copia de respaldo</text>
+  <text class="ar-m" x="50" y="4056.4" font-size="10.5">Medios y Estado: 116 feeds de noticias → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
+  <text class="ar-s" x="50" y="4071.4" font-size="11">n8n baja los mismos feeds menos los de lector de feeds; si uno falla desde Actions, el</text>
+  <text class="ar-s" x="50" y="4086.4" font-size="11">pipeline usa la copia más reciente.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="4109.4" r="9"/>
+  <text class="ar-t" x="30" y="4113.2" font-size="10.5" text-anchor="middle">15</text>
+  <text class="ar-t" x="50" y="4113.4" font-size="11.5">lector de feeds, 1 cada 20 h</text>
+  <text class="ar-m" x="50" y="4127.4" font-size="10.5">Google Noticias: 38 búsquedas → Descarga en GitHub Actions (Fetcher) · como mucho cada 20</text>
+  <text class="ar-m" x="50" y="4141.4" font-size="10.5">h; solo corridas de main</text>
+  <text class="ar-s" x="50" y="4156.4" font-size="11">Como su robots.txt prohíbe estos 38 feeds, Actions los pide como un lector de RSS: solo en</text>
+  <text class="ar-s" x="50" y="4171.4" font-size="11">main, sin reintento y como mucho una vez cada 20 h. Entre lecturas se repite la última.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="4194.4" r="9"/>
+  <text class="ar-t" x="30" y="4198.2" font-size="10.5" text-anchor="middle">16</text>
+  <text class="ar-t" x="50" y="4198.4" font-size="11.5">regla más larga gana</text>
+  <text class="ar-m" x="50" y="4212.4" font-size="10.5">robots.txt de cada servidor → Sondeo semanal de alcance · lunes 04:17 Lima</text>
+  <text class="ar-s" x="50" y="4227.4" font-size="11">Cada semana el sondeo lee el robots.txt de cada servidor antes de medir. Una ruta</text>
+  <text class="ar-s" x="50" y="4242.4" font-size="11">prohibida queda como robots-disallowed y pierde sus canales, salvo los feeds reader; una</text>
+  <text class="ar-s" x="50" y="4257.4" font-size="11">que nadie pudo leer queda con robots unknown.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="4280.4" r="9"/>
+  <text class="ar-t" x="30" y="4284.2" font-size="10.5" text-anchor="middle">17</text>
+  <text class="ar-t" x="50" y="4284.4" font-size="11.5">se respeta en vivo</text>
+  <text class="ar-m" x="50" y="4298.4" font-size="10.5">robots.txt de cada servidor → Recolector en el Perú · diario 21:00 Lima</text>
+  <text class="ar-s" x="50" y="4313.4" font-size="11">Cada noche el recolector lee el robots.txt antes de pedir. No pide una ruta prohibida, y si el</text>
+  <text class="ar-s" x="50" y="4328.4" font-size="11">robots.txt no responde no le pide nada a ese servidor.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="4351.4" r="9"/>
+  <text class="ar-t" x="30" y="4355.2" font-size="10.5" text-anchor="middle">18</text>
+  <text class="ar-t" x="50" y="4355.4" font-size="11.5">lo que la sonda no leyó</text>
+  <text class="ar-m" x="50" y="4369.4" font-size="10.5">robots.txt de cada servidor → Descarga en GitHub Actions (Fetcher) · cada corrida de</text>
+  <text class="ar-m" x="50" y="4383.4" font-size="10.5">observatory.yml</text>
+  <text class="ar-s" x="50" y="4398.4" font-size="11">Antes del pedido directo a una URL cuyo robots.txt no leyó la sonda semanal (fuera del</text>
+  <text class="ar-s" x="50" y="4413.4" font-size="11">registro, asignada a otro canal o unknown), la corrida lo lee (15 s, un reintento ante un fallo</text>
+  <text class="ar-s" x="50" y="4428.4" font-size="11">pasajero). Si no permite la ruta, o no responde y el registro no la daba por permitida, no se</text>
+  <text class="ar-s" x="50" y="4443.4" font-size="11">pide. Save Page Now y cada GRIB de GODAS siguen la misma regla; los feeds reader no lo</text>
+  <text class="ar-s" x="50" y="4458.4" font-size="11">consultan.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="4481.4" r="9"/>
+  <text class="ar-t" x="30" y="4485.2" font-size="10.5" text-anchor="middle">19</text>
+  <text class="ar-t" x="50" y="4485.4" font-size="11.5">mide y regenera</text>
+  <text class="ar-m" x="50" y="4499.4" font-size="10.5">Sondeo semanal de alcance → Armado del registro · lunes 04:17 Lima (09:17 UTC)</text>
+  <text class="ar-s" x="50" y="4514.4" font-size="11">El sondeo escribe reachability.json con lo medido desde Actions, el Perú y n8n, y enseguida</text>
+  <text class="ar-s" x="50" y="4529.4" font-size="11">corre build_registry para que los canales sigan las mediciones nuevas.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="4552.4" r="9"/>
+  <text class="ar-t" x="30" y="4556.2" font-size="10.5" text-anchor="middle">20</text>
+  <text class="ar-t" x="50" y="4556.4" font-size="11.5">genera y valida</text>
+  <text class="ar-m" x="50" y="4570.4" font-size="10.5">Armado del registro → Registro de fuentes (registry/) · lunes 04:17 Lima</text>
+  <text class="ar-s" x="50" y="4585.4" font-size="11">Escribe sources.json con estado, canales y robots por URL, y en el mismo paso se rehacen</text>
+  <text class="ar-s" x="50" y="4600.4" font-size="11">los flujos de n8n/dist, que llevan una copia del registro (n8n.yml falla si no coinciden). En la</text>
+  <text class="ar-s" x="50" y="4615.4" font-size="11">rama principal, también en la corrida programada, el sondeo hace commit de los dos; en</text>
+  <text class="ar-s" x="50" y="4630.4" font-size="11">otras ramas el resultado va a bot/registry/&lt;rama&gt;.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="4653.4" r="9"/>
+  <text class="ar-t" x="30" y="4657.2" font-size="10.5" text-anchor="middle">21</text>
+  <text class="ar-t" x="50" y="4657.4" font-size="11.5">lo medido desde el Perú</text>
+  <text class="ar-m" x="50" y="4671.4" font-size="10.5">Rama data-peru → Sondeo semanal de alcance · lunes 04:17 Lima</text>
+  <text class="ar-s" x="50" y="4686.4" font-size="11">El sondeo lee el index.json del Perú: el resultado de cada URL allá y sus mediciones extra.</text>
+  <text class="ar-s" x="50" y="4701.4" font-size="11">Así el registro puede confirmar un geobloqueo o una caída.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="4724.4" r="9"/>
+  <text class="ar-t" x="30" y="4728.2" font-size="10.5" text-anchor="middle">22</text>
+  <text class="ar-t" x="50" y="4728.4" font-size="11.5">lo medido desde n8n</text>
+  <text class="ar-m" x="50" y="4742.4" font-size="10.5">Rama data-n8n → Sondeo semanal de alcance · lunes 04:17 Lima</text>
+  <text class="ar-s" x="50" y="4757.4" font-size="11">También suma el último intento de n8n en AWS como medición de la red n8n. Una copia</text>
+  <text class="ar-s" x="50" y="4772.4" font-size="11">arrastrada cuenta como su último fallo, no como medición de hoy.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="4795.4" r="9"/>
+  <text class="ar-t" x="30" y="4799.2" font-size="10.5" text-anchor="middle">23</text>
+  <text class="ar-t" x="50" y="4799.4" font-size="11.5">plan de canales por URL</text>
+  <text class="ar-m" x="50" y="4813.4" font-size="10.5">Registro de fuentes (registry/) → Descarga en GitHub Actions (Fetcher) · cada corrida de</text>
+  <text class="ar-m" x="50" y="4827.4" font-size="10.5">observatory.yml</text>
+  <text class="ar-s" x="50" y="4842.4" font-size="11">En cada corrida el pipeline lee quién pide cada URL. Lo que el registro no da a Actions se</text>
+  <text class="ar-s" x="50" y="4857.4" font-size="11">lee de las copias (sin copia, se pide directo una vez), lo prohibido no se pide y los feeds</text>
+  <text class="ar-s" x="50" y="4872.4" font-size="11">reader se piden como mucho cada 20 h, solo en main. Una URL cuyo robots.txt nadie pudo</text>
+  <text class="ar-s" x="50" y="4887.4" font-size="11">leer (unknown) se lee primero de las copias y, antes de pedirla directo, se lee su robots.txt.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="4910.4" r="9"/>
+  <text class="ar-t" x="30" y="4914.2" font-size="10.5" text-anchor="middle">24</text>
+  <text class="ar-t" x="50" y="4914.4" font-size="11.5">URL del canal n8n</text>
+  <text class="ar-m" x="50" y="4928.4" font-size="10.5">Registro de fuentes (registry/) → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
+  <text class="ar-s" x="50" y="4943.4" font-size="11">Al empezar, n8n lee el registro de main en GitHub (o la copia incluida en el flujo, que el</text>
+  <text class="ar-s" x="50" y="4958.4" font-size="11">sondeo semanal regenera) y pide solo las URL asignadas a n8n, menos las de robots</text>
+  <text class="ar-s" x="50" y="4973.4" font-size="11">unknown y las fuentes con n8n: false.</text>
+  <circle class="ar-badge ar-e-control" cx="30" cy="4996.4" r="9"/>
+  <text class="ar-t" x="30" y="5000.2" font-size="10.5" text-anchor="middle">25</text>
+  <text class="ar-t" x="50" y="5000.4" font-size="11.5">URL peru-server y PDF</text>
+  <text class="ar-m" x="50" y="5014.4" font-size="10.5">Registro de fuentes (registry/) → Recolector en el Perú · diario 21:00 Lima</text>
+  <text class="ar-s" x="50" y="5029.4" font-size="11">El recolector lee el registro de GitHub con su token (o la copia del kit), suma a su lista fija</text>
+  <text class="ar-s" x="50" y="5044.4" font-size="11">las URL peru-server y sus reglas para seguir PDF, y mide hasta 60 URL unknown,</text>
+  <text class="ar-s" x="50" y="5059.4" font-size="11">suspected-geoblock o down que esta corrida no pidió.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="5082.4" r="9"/>
+  <text class="ar-t" x="30" y="5086.2" font-size="10.5" text-anchor="middle">26</text>
+  <text class="ar-t" x="50" y="5086.4" font-size="11.5">fuentes verificadas al catálogo</text>
+  <text class="ar-m" x="50" y="5100.4" font-size="10.5">Herramientas de desarrollo → Armado del registro · a mano</text>
+  <text class="ar-s" x="50" y="5115.4" font-size="11">Una persona revisa los informes de los sondeos y agrega al código los feeds y lectores que</text>
+  <text class="ar-s" x="50" y="5130.4" font-size="11">funcionan; desde ahí entran al registro. Así se armó el catálogo del 21-10-2026.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="5153.4" r="9"/>
+  <text class="ar-t" x="30" y="5157.2" font-size="10.5" text-anchor="middle">27</text>
+  <text class="ar-t" x="50" y="5157.4" font-size="11.5">copias, latido y mediciones</text>
+  <text class="ar-m" x="50" y="5171.4" font-size="10.5">Recolector en el Perú → Rama data-peru · 21:00 a 23:30 Lima</text>
+  <text class="ar-s" x="50" y="5186.4" font-size="11">Al terminar sube index.json, los archivos, heartbeat.json y sus mediciones a data-peru. Si</text>
+  <text class="ar-s" x="50" y="5201.4" font-size="11">nada respondió, solo sube el latido y deja intacta la última copia buena.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="5224.4" r="9"/>
+  <text class="ar-t" x="30" y="5228.2" font-size="10.5" text-anchor="middle">28</text>
+  <text class="ar-t" x="50" y="5228.4" font-size="11.5">copia anterior</text>
+  <text class="ar-m" x="50" y="5242.4" font-size="10.5">Rama data-peru → Recolector en el Perú · diario 21:00 Lima</text>
+  <text class="ar-s" x="50" y="5257.4" font-size="11">Antes de subir, el recolector lee su copia anterior y conserva hasta 72 h las URL que esta</text>
+  <text class="ar-s" x="50" y="5272.4" font-size="11">noche fallaron, marcadas carried.</text>
+  <circle class="ar-badge ar-e-trigger" cx="30" cy="5295.4" r="9"/>
+  <text class="ar-t" x="30" y="5299.2" font-size="10.5" text-anchor="middle">29</text>
+  <text class="ar-t" x="50" y="5299.4" font-size="11.5">pide actualizar (enso-refresh)</text>
+  <text class="ar-m" x="50" y="5313.4" font-size="10.5">Recolector en el Perú → Actualización diaria (observatory.yml) · tras subir una copia (no si solo</text>
+  <text class="ar-m" x="50" y="5327.4" font-size="10.5">sube el latido)</text>
+  <text class="ar-s" x="50" y="5342.4" font-size="11">Tras subir la copia envía repository_dispatch enso-refresh para que el sitio se actualice sin</text>
+  <text class="ar-s" x="50" y="5357.4" font-size="11">esperar a las 23:37. Si hay una corrida en curso, queda en cola. Viene activo en el kit.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="5380.4" r="9"/>
+  <text class="ar-t" x="30" y="5384.2" font-size="10.5" text-anchor="middle">30</text>
+  <text class="ar-t" x="50" y="5384.4" font-size="11.5">commit que reemplaza la rama</text>
+  <text class="ar-m" x="50" y="5398.4" font-size="10.5">Recolector n8n (nube AWS) → Rama data-n8n · diario 22:50 Lima</text>
+  <text class="ar-s" x="50" y="5413.4" font-size="11">n8n sube los archivos nuevos por la API de GitHub, arma un commit sin padre y mueve</text>
+  <text class="ar-s" x="50" y="5428.4" font-size="11">data-n8n. index.json y heartbeat.json van siempre, aunque nada responda.</text>
+  <circle class="ar-badge ar-e-data" cx="30" cy="5451.4" r="9"/>
+  <text class="ar-t" x="30" y="5455.2" font-size="10.5" text-anchor="middle">31</text>
+  <text class="ar-t" x="50" y="5455.4" font-size="11.5">copia anterior</text>
+  <text class="ar-m" x="50" y="5469.4" font-size="10.5">Rama data-n8n → Recolector n8n (nube AWS) · diario 22:50 Lima</text>
+  <text class="ar-s" x="50" y="5484.4" font-size="11">Su nodo «Leer copia anterior» lee el index.json de data-n8n y conserva hasta 72 h las URL</text>
+  <text class="ar-s" x="50" y="5499.4" font-size="11">que esta noche fallaron, marcadas carried.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="5522.4" r="9"/>
+  <text class="ar-t" x="30" y="5526.2" font-size="10.5" text-anchor="middle">32</text>
+  <text class="ar-t" x="50" y="5526.4" font-size="11.5">kit .zip y VERIFICAR</text>
+  <text class="ar-m" x="50" y="5540.4" font-size="10.5">Kit y verificación del recolector → Responsable del equipo en el Perú · al fusionar en main</text>
+  <text class="ar-m" x="50" y="5554.4" font-size="10.5">cambios del kit, python/enso/ o el registro (el commit semanal del bot no cuenta)</text>
+  <text class="ar-s" x="50" y="5569.4" font-size="11">La persona baja recolector-peru.zip de la versión recolector-kit y corre VERIFICAR (el</text>
+  <text class="ar-s" x="50" y="5584.4" font-size="11">informe queda en logs/ para enviarlo). El equipo no se actualiza solo: un kit nuevo se instala</text>
+  <text class="ar-s" x="50" y="5599.4" font-size="11">con ACTUALIZAR.</text>
+  <circle class="ar-badge ar-e-human" cx="30" cy="5622.4" r="9"/>
+  <text class="ar-t" x="30" y="5626.2" font-size="10.5" text-anchor="middle">33</text>
+  <text class="ar-t" x="50" y="5626.4" font-size="11.5">instala, token y tarea</text>
+  <text class="ar-m" x="50" y="5640.4" font-size="10.5">Responsable del equipo en el Perú → Recolector en el Perú</text>
+  <text class="ar-s" x="50" y="5655.4" font-size="11">Al ejecutar INSTALAR con el token queda registrada la tarea programada de las 21:00. El</text>
+  <text class="ar-s" x="50" y="5670.4" font-size="11">recolector le avisa en el escritorio tras 2 fallas o si el token vence en menos de 21 días.</text>
+  <circle class="ar-badge ar-e-human" cx="599.3" cy="2807.4" r="9"/>
+  <text class="ar-t" x="599.3" y="2811.2" font-size="10.5" text-anchor="middle">34</text>
+  <text class="ar-t" x="619.3" y="2811.4" font-size="11.5">token y kit</text>
+  <text class="ar-m" x="619.3" y="2825.4" font-size="10.5">Mantenedores y propietario → Responsable del equipo en el Perú</text>
+  <text class="ar-s" x="619.3" y="2840.4" font-size="11">Le dan un token de GitHub de grano fino (solo este repositorio) y el kit, y uno nuevo cuando</text>
+  <text class="ar-s" x="619.3" y="2855.4" font-size="11">el recolector avisa que vence.</text>
+  <circle class="ar-badge ar-e-human" cx="599.3" cy="2878.4" r="9"/>
+  <text class="ar-t" x="599.3" y="2882.2" font-size="10.5" text-anchor="middle">35</text>
+  <text class="ar-t" x="619.3" y="2882.4" font-size="11.5">importa y activa</text>
+  <text class="ar-m" x="619.3" y="2896.4" font-size="10.5">Colega que opera n8n → Recolector n8n (nube AWS)</text>
+  <text class="ar-s" x="619.3" y="2911.4" font-size="11">La persona importa n8n/dist/enso-n8n-recolector.json en su n8n, elige la credencial de</text>
+  <text class="ar-s" x="619.3" y="2926.4" font-size="11">GitHub y lo activa. Los nodos se regeneran con build.mjs, no se editan en n8n.</text>
+  <circle class="ar-badge ar-e-human" cx="599.3" cy="2949.4" r="9"/>
+  <text class="ar-t" x="599.3" y="2953.2" font-size="10.5" text-anchor="middle">36</text>
+  <text class="ar-t" x="619.3" y="2953.4" font-size="11.5">token de GitHub</text>
+  <text class="ar-m" x="619.3" y="2967.4" font-size="10.5">Mantenedores y propietario → Colega que opera n8n</text>
+  <text class="ar-s" x="619.3" y="2982.4" font-size="11">Le dan un token de grano fino (solo este repositorio, Contents de lectura y escritura, 1 año)</text>
+  <text class="ar-s" x="619.3" y="2997.4" font-size="11">para la credencial de n8n. n8n anota cuándo vence y la actualización diaria avisa desde 21</text>
+  <text class="ar-s" x="619.3" y="3012.4" font-size="11">días antes (relay-token-expiring); si vence, la copia deja de subir y sale relay-n8n-stale.</text>
+  <circle class="ar-badge ar-e-trigger" cx="599.3" cy="3035.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3039.2" font-size="10.5" text-anchor="middle">37</text>
+  <text class="ar-t" x="619.3" y="3039.4" font-size="11.5">lanza el pipeline</text>
+  <text class="ar-m" x="619.3" y="3053.4" font-size="10.5">Actualización diaria (observatory.yml) → Descarga en GitHub Actions (Fetcher) · 23:37 Lima</text>
+  <text class="ar-m" x="619.3" y="3067.4" font-size="10.5">(04:37 UTC); push a main; manual; enso-refresh; vigilante</text>
+  <text class="ar-s" x="619.3" y="3082.4" font-size="11">El paso «Fetch, validate and build» corre python -m enso.observatory con las copias del</text>
+  <text class="ar-s" x="619.3" y="3097.4" font-size="11">Perú, de n8n y de la consola de documentos, el histórico y el estado reader ya bajados, con</text>
+  <text class="ar-s" x="619.3" y="3112.4" font-size="11">26 min de límite.</text>
+  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="3135.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3139.2" font-size="10.5" text-anchor="middle">38</text>
+  <text class="ar-t" x="619.3" y="3139.4" font-size="11.5">copia del Perú (relay-peru)</text>
+  <text class="ar-m" x="619.3" y="3153.4" font-size="10.5">Rama data-peru → Descarga en GitHub Actions (Fetcher) · cada corrida de observatory.yml</text>
+  <text class="ar-s" x="619.3" y="3168.4" font-size="11">Si Actions no obtiene respuesta válida, o la URL es solo del Perú, usa la copia de data-peru:</text>
+  <text class="ar-s" x="619.3" y="3183.4" font-size="11">hasta 7 días de antigüedad, estado 200 y sha256 verificado.</text>
+  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="3206.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3210.2" font-size="10.5" text-anchor="middle">39</text>
+  <text class="ar-t" x="619.3" y="3210.4" font-size="11.5">copia de n8n (relay-n8n)</text>
+  <text class="ar-m" x="619.3" y="3224.4" font-size="10.5">Rama data-n8n → Descarga en GitHub Actions (Fetcher) · cada corrida de observatory.yml</text>
+  <text class="ar-s" x="619.3" y="3239.4" font-size="11">Lo mismo con las copias de n8n, válidas hasta 72 h. Si el Perú y n8n tienen copia de la</text>
+  <text class="ar-s" x="619.3" y="3254.4" font-size="11">misma URL, gana la más reciente.</text>
+  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="3277.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3281.2" font-size="10.5" text-anchor="middle">40</text>
+  <text class="ar-t" x="619.3" y="3281.4" font-size="11.5">copia archivada</text>
+  <text class="ar-m" x="619.3" y="3295.4" font-size="10.5">Internet Archive (Wayback) → Descarga en GitHub Actions (Fetcher) · solo si falla todo lo</text>
+  <text class="ar-m" x="619.3" y="3309.4" font-size="10.5">anterior, dentro de los 8 min oficiales</text>
+  <text class="ar-s" x="619.3" y="3324.4" font-size="11">Si la URL, la réplica y las copias fallan, se usa la última copia del Wayback, con su fecha.</text>
+  <text class="ar-s" x="619.3" y="3339.4" font-size="11">Para el ENFEN (listado y PDF) se pide una nueva si no hay o si la que hay tiene más de un</text>
+  <text class="ar-s" x="619.3" y="3354.4" font-size="11">día, y robots.txt lo permite.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="3377.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3381.2" font-size="10.5" text-anchor="middle">41</text>
+  <text class="ar-t" x="619.3" y="3381.4" font-size="11.5">respuesta con procedencia</text>
+  <text class="ar-m" x="619.3" y="3395.4" font-size="10.5">Descarga en GitHub Actions (Fetcher) → Lectura de fuentes oficiales</text>
+  <text class="ar-s" x="619.3" y="3410.4" font-size="11">Cada respuesta llega con cuerpo, canal, URL, fecha de copia, sha256 e intentos; si todo</text>
+  <text class="ar-s" x="619.3" y="3425.4" font-size="11">falló, llega el error con los intentos.</text>
+  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="3448.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3452.2" font-size="10.5" text-anchor="middle">42</text>
+  <text class="ar-t" x="619.3" y="3452.4" font-size="11.5">último dato válido</text>
+  <text class="ar-m" x="619.3" y="3466.4" font-size="10.5">Publicación anterior (data/ en vivo) → Lectura de fuentes oficiales · cada corrida</text>
+  <text class="ar-s" x="619.3" y="3481.4" font-size="11">Se lee sources/&lt;id&gt;.json de la publicación anterior para comparar la huella del formato. Si</text>
+  <text class="ar-s" x="619.3" y="3496.4" font-size="11">la fuente falla, se reutiliza ese dato con su fecha real, marcado carried. Si la fuente falla y</text>
+  <text class="ar-s" x="619.3" y="3511.4" font-size="11">ese archivo tampoco se pudo leer, se anota previous-unreachable: la publicación sale sin</text>
+  <text class="ar-s" x="619.3" y="3526.4" font-size="11">dato de la fuente.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="3549.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3553.2" font-size="10.5" text-anchor="middle">43</text>
+  <text class="ar-t" x="619.3" y="3553.4" font-size="11.5">datos y comunicado</text>
+  <text class="ar-m" x="619.3" y="3567.4" font-size="10.5">Lectura de fuentes oficiales → Series, estados y señal GRD</text>
+  <text class="ar-s" x="619.3" y="3582.4" font-size="11">Los datos de las 17 fuentes, frescos o arrastrados, y el último comunicado del ENFEN pasan</text>
+  <text class="ar-s" x="619.3" y="3597.4" font-size="11">a armar las series, el semanal y los estados oficiales.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="3620.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3624.2" font-size="10.5" text-anchor="middle">44</text>
+  <text class="ar-t" x="619.3" y="3624.4" font-size="11.5">umbrales GRD</text>
+  <text class="ar-m" x="619.3" y="3638.4" font-size="10.5">Datos de referencia: lugares y umbrales → Series, estados y señal GRD</text>
+  <text class="ar-s" x="619.3" y="3653.4" font-size="11">Cada indicador recibe su color GRD según expert-grd-image-v1.yaml. Un valor entre</text>
+  <text class="ar-s" x="619.3" y="3668.4" font-size="11">intervalos queda «sin clasificación», nunca normal. Las categorías ICEN están fijas en</text>
+  <text class="ar-s" x="619.3" y="3683.4" font-size="11">signals.py.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="3706.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3710.2" font-size="10.5" text-anchor="middle">45</text>
+  <text class="ar-t" x="619.3" y="3710.4" font-size="11.5">series, estados y señal GRD</text>
+  <text class="ar-m" x="619.3" y="3724.4" font-size="10.5">Series, estados y señal GRD → Escritura y validación de la publicación</text>
+  <text class="ar-s" x="619.3" y="3739.4" font-size="11">Las series, el semanal, los estados de ENFEN y NOAA, los eventos ICEN y la señal GRD van a</text>
+  <text class="ar-s" x="619.3" y="3754.4" font-size="11">series.json, weekly.json, los CSV y dashboard.json.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="3777.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3781.2" font-size="10.5" text-anchor="middle">46</text>
+  <text class="ar-t" x="619.3" y="3781.4" font-size="11.5">cuerpos de los feeds</text>
+  <text class="ar-m" x="619.3" y="3795.4" font-size="10.5">Descarga en GitHub Actions (Fetcher) → Noticias y alertas: lectura y filtro · diario 23:37 Lima,</text>
+  <text class="ar-m" x="619.3" y="3809.4" font-size="10.5">tras las fuentes oficiales</text>
+  <text class="ar-s" x="619.3" y="3824.4" font-size="11">Los feeds se bajan con dos clientes propios (normal, y de un solo intento para los reader)</text>
+  <text class="ar-s" x="619.3" y="3839.4" font-size="11">que comparten las copias del Perú y de n8n, pero nunca usan el Internet Archive.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="3862.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3866.2" font-size="10.5" text-anchor="middle">47</text>
+  <text class="ar-t" x="619.3" y="3866.4" font-size="11.5">estado reader (lee y guarda)</text>
+  <text class="ar-m" x="619.3" y="3880.4" font-size="10.5">Caché de Actions: feeds reader → Noticias y alertas: lectura y filtro · solo corridas de main</text>
+  <text class="ar-s" x="619.3" y="3895.4" font-size="11">Al empezar se restaura cuándo se pidió cada feed reader y sus notas sin publicar. Sin caché</text>
+  <text class="ar-s" x="619.3" y="3910.4" font-size="11">no se piden, salvo en la primera publicación. Cada pedido se anota antes de hacerlo y el</text>
+  <text class="ar-s" x="619.3" y="3925.4" font-size="11">estado se guarda al final aunque la corrida falle.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="3948.4" r="9"/>
+  <text class="ar-t" x="599.3" y="3952.2" font-size="10.5" text-anchor="middle">48</text>
+  <text class="ar-t" x="619.3" y="3952.4" font-size="11.5">estado anterior de los feeds</text>
+  <text class="ar-m" x="619.3" y="3966.4" font-size="10.5">Publicación anterior (data/ en vivo) → Noticias y alertas: lectura y filtro</text>
+  <text class="ar-s" x="619.3" y="3981.4" font-size="11">Se lee news/feeds.json de la publicación anterior (3 intentos): junto con la caché da la hora</text>
+  <text class="ar-s" x="619.3" y="3996.4" font-size="11">del último pedido de cada feed reader, para no repetirlo antes de 20 h.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="4019.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4023.2" font-size="10.5" text-anchor="middle">49</text>
+  <text class="ar-t" x="619.3" y="4023.4" font-size="11.5">notas nuevas ubicadas</text>
+  <text class="ar-m" x="619.3" y="4037.4" font-size="10.5">Noticias y alertas: lectura y filtro → Histórico de noticias (solo anexar)</text>
+  <text class="ar-s" x="619.3" y="4052.4" font-size="11">Las notas relevantes de hoy y las de feeds reader que aún no se publicaron, con sus</text>
+  <text class="ar-s" x="619.3" y="4067.4" font-size="11">peligros y su lugar, se agregan al final del histórico si su id es nuevo.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="4090.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4094.2" font-size="10.5" text-anchor="middle">50</text>
+  <text class="ar-t" x="619.3" y="4094.4" font-size="11.5">histórico anterior</text>
+  <text class="ar-m" x="619.3" y="4108.4" font-size="10.5">Publicación anterior (data/ en vivo) → Histórico de noticias (solo anexar)</text>
+  <text class="ar-s" x="619.3" y="4123.4" font-size="11">Se lee news/items.jsonl (hasta 3 intentos ante errores del servidor). Si llega, se completa</text>
+  <text class="ar-s" x="619.3" y="4138.4" font-size="11">con la copia de data-archive; si no, se rehace con ella o, sin copia, se marca restarted.</text>
+  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="4161.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4165.2" font-size="10.5" text-anchor="middle">51</text>
+  <text class="ar-t" x="619.3" y="4165.4" font-size="11.5">copia completa del histórico</text>
+  <text class="ar-m" x="619.3" y="4179.4" font-size="10.5">Rama data-archive → Histórico de noticias (solo anexar) · al inicio de cada corrida</text>
+  <text class="ar-s" x="619.3" y="4194.4" font-size="11">Antes del pipeline se baja sources/news/items.jsonl.gz por la API de GitHub. Con ella se</text>
+  <text class="ar-s" x="619.3" y="4209.4" font-size="11">agregan las notas que falten o se rehace el histórico si el sitio no lo sirvió.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="4232.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4236.2" font-size="10.5" text-anchor="middle">52</text>
+  <text class="ar-t" x="619.3" y="4236.4" font-size="11.5">todo el histórico</text>
+  <text class="ar-m" x="619.3" y="4250.4" font-size="10.5">Histórico de noticias (solo anexar) → Ubicación y correcciones de lugar</text>
+  <text class="ar-s" x="619.3" y="4265.4" font-size="11">El histórico entero, viejo y nuevo, se vuelve a ubicar y a corregir en bloque; el texto JSONL</text>
+  <text class="ar-s" x="619.3" y="4280.4" font-size="11">guardado no cambia.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="4303.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4307.2" font-size="10.5" text-anchor="middle">53</text>
+  <text class="ar-t" x="619.3" y="4307.4" font-size="11.5">UBIGEO y límites</text>
+  <text class="ar-m" x="619.3" y="4321.4" font-size="10.5">Datos de referencia: lugares y umbrales → Ubicación y correcciones de lugar</text>
+  <text class="ar-s" x="619.3" y="4336.4" font-size="11">Con los nombres del INEI se reconoce un lugar en el texto, y con los límites del IGN se sabe</text>
+  <text class="ar-s" x="619.3" y="4351.4" font-size="11">en qué distrito, provincia o departamento cae una coordenada.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="4374.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4378.2" font-size="10.5" text-anchor="middle">54</text>
+  <text class="ar-t" x="619.3" y="4378.4" font-size="11.5">correcciones vigentes</text>
+  <text class="ar-m" x="619.3" y="4392.4" font-size="10.5">Consola de lugares (/admin/) → Ubicación y correcciones de lugar · cada corrida, solo con</text>
+  <text class="ar-m" x="619.3" y="4406.4" font-size="10.5">DEPLOY_TARGET=cloudflare</text>
+  <text class="ar-s" x="619.3" y="4421.4" font-size="11">Con Cloudflare, el pipeline pide GET /api/geo/overrides (20 s de plazo) y aplica la última</text>
+  <text class="ar-s" x="619.3" y="4436.4" font-size="11">corrección de cada nota. Con GitHub Pages no hay consola y este paso no ocurre.</text>
+  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="4459.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4463.2" font-size="10.5" text-anchor="middle">55</text>
+  <text class="ar-t" x="619.3" y="4463.4" font-size="11.5">correcciones anteriores</text>
+  <text class="ar-m" x="619.3" y="4477.4" font-size="10.5">Publicación anterior (data/ en vivo) → Ubicación y correcciones de lugar</text>
+  <text class="ar-s" x="619.3" y="4492.4" font-size="11">Si la consola no está o no responde, se usan las de geo/overrides.json de la publicación</text>
+  <text class="ar-s" x="619.3" y="4507.4" font-size="11">anterior; si tampoco se lee, no se aplica ninguna (siguen guardadas en D1).</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="4530.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4534.2" font-size="10.5" text-anchor="middle">56</text>
+  <text class="ar-t" x="619.3" y="4534.4" font-size="11.5">notas, grupos y alertas</text>
+  <text class="ar-m" x="619.3" y="4548.4" font-size="10.5">Ubicación y correcciones de lugar → Escritura y validación de la publicación</text>
+  <text class="ar-s" x="619.3" y="4563.4" font-size="11">Pasan el histórico tal como se guardó y, con los lugares corregidos, items.csv, los grupos de</text>
+  <text class="ar-s" x="619.3" y="4578.4" font-size="11">14 días, los avisos de 7 días para feed.json (con su detalle para el mapa: zonas, distritos</text>
+  <text class="ar-s" x="619.3" y="4593.4" font-size="11">con quebradas, estaciones, epicentros, volcanes, focos y centros poblados) y los archivos</text>
+  <text class="ar-s" x="619.3" y="4608.4" font-size="11">geo/ para la consola.</text>
+  <circle class="ar-badge ar-e-fallback" cx="599.3" cy="4631.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4635.2" font-size="10.5" text-anchor="middle">57</text>
+  <text class="ar-t" x="619.3" y="4635.4" font-size="11.5">copias y noticias anteriores</text>
+  <text class="ar-m" x="619.3" y="4649.4" font-size="10.5">Publicación anterior (data/ en vivo) → Escritura y validación de la publicación</text>
+  <text class="ar-s" x="619.3" y="4664.4" font-size="11">Si una fuente no respondió, se vuelve a publicar la copia archivada que tenía la publicación</text>
+  <text class="ar-s" x="619.3" y="4679.4" font-size="11">anterior. Si la lectura de noticias falló, se reusan sus news/ y geo/ con carriedFrom. Si una</text>
+  <text class="ar-s" x="619.3" y="4694.4" font-size="11">copia no se pudo leer, se anota archive-carry-failed y sale sin ese enlace; el comunicado y</text>
+  <text class="ar-s" x="619.3" y="4709.4" font-size="11">el informe olvidan además su ruta, para no buscarla en la corrida siguiente.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4732.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4736.2" font-size="10.5" text-anchor="middle">58</text>
+  <text class="ar-t" x="619.3" y="4736.4" font-size="11.5">fallos, arrastres y formato</text>
+  <text class="ar-m" x="619.3" y="4750.4" font-size="10.5">Lectura de fuentes oficiales → Registro de incidencias</text>
+  <text class="ar-s" x="619.3" y="4765.4" font-size="11">Se anotan unreachable (error si la fuente es crítica), format-drift, format-changed,</text>
+  <text class="ar-s" x="619.3" y="4780.4" font-size="11">carried-forward y communique-unread, outlook-unread (la perspectiva del comunicado no</text>
+  <text class="ar-s" x="619.3" y="4795.4" font-size="11">se pudo leer) e informe-* (el informe técnico no se bajó, no se pudo leer o una parte no</text>
+  <text class="ar-s" x="619.3" y="4810.4" font-size="11">pasó la validación; si no responde ninguna ruta es solo una advertencia). Si el comunicado</text>
+  <text class="ar-s" x="619.3" y="4825.4" font-size="11">más reciente o su informe no se pueden bajar por ninguna ruta, manual-download-needed</text>
+  <text class="ar-s" x="619.3" y="4840.4" font-size="11">(advertencia) los lista para la consola de documentos.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4863.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4867.2" font-size="10.5" text-anchor="middle">59</text>
+  <text class="ar-t" x="619.3" y="4867.4" font-size="11.5">datos vencidos y estados</text>
+  <text class="ar-m" x="619.3" y="4881.4" font-size="10.5">Series, estados y señal GRD → Registro de incidencias</text>
+  <text class="ar-s" x="619.3" y="4896.4" font-size="11">Se anotan stale-&lt;serie&gt; y stale-weekly (dato fuera de plazo), official-overdue (no llegó el</text>
+  <text class="ar-s" x="619.3" y="4911.4" font-size="11">boletín previsto de NOAA o del ENFEN), newer-communique-unparsed (hay un comunicado</text>
+  <text class="ar-s" x="619.3" y="4926.4" font-size="11">más nuevo que no se pudo leer), status-unknown (error: no hay estado del ENFEN),</text>
+  <text class="ar-s" x="619.3" y="4941.4" font-size="11">informe-icen-mismatch (el ICEN del informe técnico difiere del IGP) y late-&lt;dato&gt; (pasó la</text>
+  <text class="ar-s" x="619.3" y="4956.4" font-size="11">fecha en que debía llegar el siguiente).</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="4979.4" r="9"/>
+  <text class="ar-t" x="599.3" y="4983.2" font-size="10.5" text-anchor="middle">60</text>
+  <text class="ar-t" x="619.3" y="4983.4" font-size="11.5">salud de la copia del Perú</text>
+  <text class="ar-m" x="619.3" y="4997.4" font-size="10.5">Rama data-peru → Registro de incidencias · cada corrida de observatory.yml</text>
+  <text class="ar-s" x="619.3" y="5012.4" font-size="11">Al empezar, el pipeline lee index.json y heartbeat.json de data-peru y anota relay-missing,</text>
+  <text class="ar-s" x="619.3" y="5027.4" font-size="11">relay-stale (más de 36 h), relay-sources-down, relay-goal-missed (con la causa de cada</text>
+  <text class="ar-s" x="619.3" y="5042.4" font-size="11">documento), relay-token-expiring o relay-kit-outdated (un kit anterior al que el sitio</text>
+  <text class="ar-s" x="619.3" y="5057.4" font-size="11">necesita). Así un equipo apagado se vuelve issue.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="5080.4" r="9"/>
+  <text class="ar-t" x="599.3" y="5084.2" font-size="10.5" text-anchor="middle">61</text>
+  <text class="ar-t" x="619.3" y="5084.4" font-size="11.5">salud de la copia de n8n</text>
+  <text class="ar-m" x="619.3" y="5098.4" font-size="10.5">Rama data-n8n → Registro de incidencias · cada corrida de observatory.yml</text>
+  <text class="ar-s" x="619.3" y="5113.4" font-size="11">Lo mismo con data-n8n: relay-n8n-missing, relay-n8n-stale (más de 36 h),</text>
+  <text class="ar-s" x="619.3" y="5128.4" font-size="11">relay-n8n-sources-down o relay-token-expiring (la credencial de GitHub de n8n vence en</text>
+  <text class="ar-s" x="619.3" y="5143.4" font-size="11">menos de 21 días). Así un flujo de n8n detenido se vuelve issue.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="5166.4" r="9"/>
+  <text class="ar-t" x="599.3" y="5170.2" font-size="10.5" text-anchor="middle">62</text>
+  <text class="ar-t" x="619.3" y="5170.4" font-size="11.5">noticias e histórico</text>
+  <text class="ar-m" x="619.3" y="5184.4" font-size="10.5">Noticias y alertas: lectura y filtro → Registro de incidencias</text>
+  <text class="ar-s" x="619.3" y="5199.4" font-size="11">En la etapa de noticias se anotan feeds-reader-unknown, news-degraded,</text>
+  <text class="ar-s" x="619.3" y="5214.4" font-size="11">news-history-missing (error si tampoco hay copia), news-history-restored y</text>
+  <text class="ar-s" x="619.3" y="5229.4" font-size="11">news-history-large. También pasan a issues.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="5252.4" r="9"/>
+  <text class="ar-t" x="599.3" y="5256.2" font-size="10.5" text-anchor="middle">63</text>
+  <text class="ar-t" x="619.3" y="5256.4" font-size="11.5">correcciones fallidas</text>
+  <text class="ar-m" x="619.3" y="5270.4" font-size="10.5">Ubicación y correcciones de lugar → Registro de incidencias</text>
+  <text class="ar-s" x="619.3" y="5285.4" font-size="11">Se anotan overrides-http (la consola respondió con error), overrides-down (no respondió) y</text>
+  <text class="ar-s" x="619.3" y="5300.4" font-size="11">overrides-rejected (una corrección trae códigos inválidos).</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="5323.4" r="9"/>
+  <text class="ar-t" x="599.3" y="5327.2" font-size="10.5" text-anchor="middle">64</text>
+  <text class="ar-t" x="619.3" y="5327.4" font-size="11.5">incidencias y salud</text>
+  <text class="ar-m" x="619.3" y="5341.4" font-size="10.5">Registro de incidencias → Escritura y validación de la publicación</text>
+  <text class="ar-s" x="619.3" y="5356.4" font-size="11">Las incidencias, la peor severidad y los conteos van a run-report.json; health.json marca</text>
+  <text class="ar-s" x="619.3" y="5371.4" font-size="11">degraded (con error o critical) y dashboard.json guarda la peor severidad.</text>
+  <circle class="ar-badge ar-e-control" cx="599.3" cy="5394.4" r="9"/>
+  <text class="ar-t" x="599.3" y="5398.2" font-size="10.5" text-anchor="middle">65</text>
+  <text class="ar-t" x="619.3" y="5398.4" font-size="11.5">crítico: no se despliega</text>
+  <text class="ar-m" x="619.3" y="5412.4" font-size="10.5">Registro de incidencias → Despliegue y verificación</text>
+  <text class="ar-s" x="619.3" y="5427.4" font-size="11">Con --fail-on critical, si la peor severidad es critical el paso del pipeline sale con 1, el build</text>
+  <text class="ar-s" x="619.3" y="5442.4" font-size="11">falla y el despliegue no corre; sigue publicado el sitio anterior.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="5465.4" r="9"/>
+  <text class="ar-t" x="599.3" y="5469.2" font-size="10.5" text-anchor="middle">66</text>
+  <text class="ar-t" x="619.3" y="5469.4" font-size="11.5">reemplazo atómico de data/</text>
+  <text class="ar-m" x="619.3" y="5483.4" font-size="10.5">Escritura y validación de la publicación → Archivos publicados (data/)</text>
+  <text class="ar-s" x="619.3" y="5498.4" font-size="11">Si la validación pasa (mismo publicationId en todo, series ordenadas, dashboard con official,</text>
+  <text class="ar-s" x="619.3" y="5513.4" font-size="11">series y grd), public/data se reemplaza de una vez por la carpeta nueva.</text>
+  <circle class="ar-badge ar-e-trigger" cx="599.3" cy="5536.4" r="9"/>
+  <text class="ar-t" x="599.3" y="5540.2" font-size="10.5" text-anchor="middle">67</text>
+  <text class="ar-t" x="619.3" y="5540.4" font-size="11.5">public/ listo para probar</text>
+  <text class="ar-m" x="619.3" y="5554.4" font-size="10.5">Archivos publicados (data/) → Despliegue y verificación</text>
+  <text class="ar-s" x="619.3" y="5569.4" font-size="11">Con data/ escrita, el build adapta las direcciones del sitio, corre las pruebas de navegador</text>
+  <text class="ar-s" x="619.3" y="5584.4" font-size="11">en Chromium y sube el sitio; si falla uno de esos pasos, no se despliega.</text>
+  <circle class="ar-badge ar-e-data" cx="599.3" cy="5607.4" r="9"/>
+  <text class="ar-t" x="599.3" y="5611.2" font-size="10.5" text-anchor="middle">68</text>
+  <text class="ar-t" x="619.3" y="5611.4" font-size="11.5">publica y verifica en vivo</text>
+  <text class="ar-m" x="619.3" y="5625.4" font-size="10.5">Despliegue y verificación → Sitio en vivo (SITE_URL) · tras cada build exitoso</text>
+  <text class="ar-s" x="619.3" y="5640.4" font-size="11">Sube todo el sitio de una vez a GitHub Pages o Cloudflare Pages, y verify_live espera hasta</text>
+  <text class="ar-s" x="619.3" y="5655.4" font-size="11">10 min a que dashboard.json y manifest.json traigan el publicationId nuevo.</text>
+  <circle class="ar-badge ar-e-control" cx="1168.7" cy="2807.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="2811.2" font-size="10.5" text-anchor="middle">69</text>
+  <text class="ar-t" x="1188.7" y="2811.4" font-size="11.5">hoy es la anterior de mañana</text>
+  <text class="ar-m" x="1188.7" y="2825.4" font-size="10.5">Sitio en vivo (SITE_URL) → Publicación anterior (data/ en vivo) · en la corrida siguiente</text>
+  <text class="ar-s" x="1188.7" y="2840.4" font-size="11">Lo que el sitio sirve hoy en data/ es lo que la corrida siguiente lee con --previous para</text>
+  <text class="ar-s" x="1188.7" y="2855.4" font-size="11">arrastrar datos y seguir el histórico.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="2878.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="2882.2" font-size="10.5" text-anchor="middle">70</text>
+  <text class="ar-t" x="1188.7" y="2882.4" font-size="11.5">sirve páginas y datos</text>
+  <text class="ar-m" x="1188.7" y="2896.4" font-size="10.5">Sitio en vivo (SITE_URL) → Sitio web (13 vistas)</text>
+  <text class="ar-s" x="1188.7" y="2911.4" font-size="11">El hosting entrega index.html, assets/ y data/. La página pide primero dashboard.json y</text>
+  <text class="ar-s" x="1188.7" y="2926.4" font-size="11">luego cada archivo con el mismo publicationId.</text>
+  <circle class="ar-badge ar-e-human" cx="1168.7" cy="2949.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="2953.2" font-size="10.5" text-anchor="middle">71</text>
+  <text class="ar-t" x="1188.7" y="2953.4" font-size="11.5">abre el sitio o descarga</text>
+  <text class="ar-m" x="1188.7" y="2967.4" font-size="10.5">Público → Sitio web (13 vistas)</text>
+  <text class="ar-s" x="1188.7" y="2982.4" font-size="11">Cualquier persona abre la página o baja directamente los CSV y JSON de data/; desde cada</text>
+  <text class="ar-s" x="1188.7" y="2997.4" font-size="11">dato puede ir a la fuente en vivo o a la copia archivada.</text>
+  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="3020.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3024.2" font-size="10.5" text-anchor="middle">72</text>
+  <text class="ar-t" x="1188.7" y="3024.4" font-size="11.5">tras build exitoso en main</text>
+  <text class="ar-m" x="1188.7" y="3038.4" font-size="10.5">Actualización diaria (observatory.yml) → Job archive · cada corrida de main cuyo build pasa</text>
+  <text class="ar-s" x="1188.7" y="3053.4" font-size="11">El build deja el artefacto raw-sources (7 días) con las respuestas originales nuevas y el</text>
+  <text class="ar-s" x="1188.7" y="3068.4" font-size="11">histórico de noticias; el job archive lo baja en paralelo al despliegue.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3091.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3095.2" font-size="10.5" text-anchor="middle">73</text>
+  <text class="ar-t" x="1188.7" y="3095.4" font-size="11.5">solo agrega, nunca borra</text>
+  <text class="ar-m" x="1188.7" y="3109.4" font-size="10.5">Job archive → Rama data-archive · tras cada build exitoso en main</text>
+  <text class="ar-s" x="1188.7" y="3124.4" font-size="11">Agrega las respuestas que no tenía, suma las notas del día y une el histórico con</text>
+  <text class="ar-s" x="1188.7" y="3139.4" font-size="11">merge_history.py. Rechaza commits con borrados e intenta el push hasta 3 veces.</text>
+  <circle class="ar-badge ar-e-control" cx="1168.7" cy="3162.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3166.2" font-size="10.5" text-anchor="middle">74</text>
+  <text class="ar-t" x="1188.7" y="3166.4" font-size="11.5">run-report a issues</text>
+  <text class="ar-m" x="1188.7" y="3180.4" font-size="10.5">Archivos publicados (data/) → Issues de incidencias (incidente-datos) · al final de cada corrida,</text>
+  <text class="ar-m" x="1188.7" y="3194.4" font-size="10.5">aunque falle (fuera de main, solo el plan)</text>
+  <text class="ar-s" x="1188.7" y="3209.4" font-size="11">El job incidents baja run-report.json y abre, actualiza o cierra un issue por huella; un</text>
+  <text class="ar-s" x="1188.7" y="3224.4" font-size="11">format-drift no lo cierra: lo comenta una vez y espera a una persona. Si build, deploy o</text>
+  <text class="ar-s" x="1188.7" y="3239.4" font-size="11">archive fallan, abre además «La actualización diaria falló». Todo esto solo en main; en otra</text>
+  <text class="ar-s" x="1188.7" y="3254.4" font-size="11">rama muestra lo que haría.</text>
+  <circle class="ar-badge ar-e-human" cx="1168.7" cy="3277.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3281.2" font-size="10.5" text-anchor="middle">75</text>
+  <text class="ar-t" x="1188.7" y="3281.4" font-size="11.5">avisos para revisar</text>
+  <text class="ar-m" x="1188.7" y="3295.4" font-size="10.5">Issues de incidencias (incidente-datos) → Mantenedores y propietario</text>
+  <text class="ar-s" x="1188.7" y="3310.4" font-size="11">Los mantenedores ven las incidencias abiertas con la etiqueta incidente-datos; se cierran</text>
+  <text class="ar-s" x="1188.7" y="3325.4" font-size="11">solas cuando el problema deja de aparecer, salvo un format-drift: ese lo cierra una persona</text>
+  <text class="ar-s" x="1188.7" y="3340.4" font-size="11">después de revisar que los valores publicados sean coherentes.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3363.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3367.2" font-size="10.5" text-anchor="middle">76</text>
+  <text class="ar-t" x="1188.7" y="3367.4" font-size="11.5">lee dashboard.json</text>
+  <text class="ar-m" x="1188.7" y="3381.4" font-size="10.5">Sitio en vivo (SITE_URL) → Vigilante de GitHub (watchdog.yml) · 19:17, 01:17, 07:17 y 13:17</text>
+  <text class="ar-m" x="1188.7" y="3395.4" font-size="10.5">Lima</text>
+  <text class="ar-s" x="1188.7" y="3410.4" font-size="11">Cada 6 horas pide data/dashboard.json sin caché y calcula la edad de la publicación con</text>
+  <text class="ar-s" x="1188.7" y="3425.4" font-size="11">generatedAt.</text>
+  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="3448.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3452.2" font-size="10.5" text-anchor="middle">77</text>
+  <text class="ar-t" x="1188.7" y="3452.4" font-size="11.5">relanza si pasa 30 h</text>
+  <text class="ar-m" x="1188.7" y="3466.4" font-size="10.5">Vigilante de GitHub (watchdog.yml) → Actualización diaria (observatory.yml) · solo si el sitio está</text>
+  <text class="ar-m" x="1188.7" y="3480.4" font-size="10.5">atrasado</text>
+  <text class="ar-s" x="1188.7" y="3495.4" font-size="11">Si la publicación tiene más de 30 h o no se puede leer, lanza la actualización diaria en main,</text>
+  <text class="ar-s" x="1188.7" y="3510.4" font-size="11">salvo que haya una corrida de main en curso o una lanzada a mano o por él en las últimas 6</text>
+  <text class="ar-s" x="1188.7" y="3525.4" font-size="11">h.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3548.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3552.2" font-size="10.5" text-anchor="middle">78</text>
+  <text class="ar-t" x="1188.7" y="3552.4" font-size="11.5">issues del vigilante</text>
+  <text class="ar-m" x="1188.7" y="3566.4" font-size="10.5">Vigilante de GitHub (watchdog.yml) → Issues de incidencias (incidente-datos) · si hay atraso,</text>
+  <text class="ar-m" x="1188.7" y="3580.4" font-size="10.5">silencio o recuperación</text>
+  <text class="ar-s" x="1188.7" y="3595.4" font-size="11">Abre o comenta «El sitio publicado está desactualizado» con la acción tomada y lo cierra</text>
+  <text class="ar-s" x="1188.7" y="3610.4" font-size="11">cuando el sitio vuelve a estar al día. Con un recolector callado más de 36 h abre «… no da</text>
+  <text class="ar-s" x="1188.7" y="3625.4" font-size="11">señales (&lt;rama&gt;)», lo recuerda una vez al día y lo cierra cuando vuelve a latir. Si sus</text>
+  <text class="ar-s" x="1188.7" y="3640.4" font-size="11">issues cambiaron, tools.alert_email manda el correo.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3663.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3667.2" font-size="10.5" text-anchor="middle">79</text>
+  <text class="ar-t" x="1188.7" y="3667.4" font-size="11.5">latido del Perú</text>
+  <text class="ar-m" x="1188.7" y="3681.4" font-size="10.5">Rama data-peru → Vigilante de GitHub (watchdog.yml) · 19:17, 01:17, 07:17 y 13:17 Lima</text>
+  <text class="ar-s" x="1188.7" y="3696.4" font-size="11">Cada 6 horas el vigilante lee heartbeat.json de data-peru por la API de GitHub. Más de 36 h</text>
+  <text class="ar-s" x="1188.7" y="3711.4" font-size="11">sin latido es un recolector callado, aunque el flujo diario esté fallando y no llegue a</text>
+  <text class="ar-s" x="1188.7" y="3726.4" font-size="11">sincronizar sus incidencias. Si la rama no existe, no se revisa.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3749.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3753.2" font-size="10.5" text-anchor="middle">80</text>
+  <text class="ar-t" x="1188.7" y="3753.4" font-size="11.5">latido de n8n</text>
+  <text class="ar-m" x="1188.7" y="3767.4" font-size="10.5">Rama data-n8n → Vigilante de GitHub (watchdog.yml) · 19:17, 01:17, 07:17 y 13:17 Lima</text>
+  <text class="ar-s" x="1188.7" y="3782.4" font-size="11">Lo mismo con heartbeat.json de data-n8n: así se ve un flujo de n8n detenido aunque la</text>
+  <text class="ar-s" x="1188.7" y="3797.4" font-size="11">actualización diaria no corra.</text>
+  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="3820.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3824.2" font-size="10.5" text-anchor="middle">81</text>
+  <text class="ar-t" x="1188.7" y="3824.4" font-size="11.5">relanza el sondeo</text>
+  <text class="ar-m" x="1188.7" y="3838.4" font-size="10.5">Vigilante de GitHub (watchdog.yml) → Sondeo semanal de alcance · si no hubo sondeo bueno en</text>
+  <text class="ar-m" x="1188.7" y="3852.4" font-size="10.5">8 días</text>
+  <text class="ar-s" x="1188.7" y="3867.4" font-size="11">Si probe-sources.yml no tiene una corrida buena en la rama principal en 8 días (GitHub</text>
+  <text class="ar-s" x="1188.7" y="3882.4" font-size="11">puede saltarse una programada), lo relanza, como mucho una vez al día y sin abrir issue.</text>
+  <text class="ar-s" x="1188.7" y="3897.4" font-size="11">Sin sondeo, las URL nuevas quedan unknown y los canales no siguen a los servidores que</text>
+  <text class="ar-s" x="1188.7" y="3912.4" font-size="11">dejan de responder.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="3935.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="3939.2" font-size="10.5" text-anchor="middle">82</text>
+  <text class="ar-t" x="1188.7" y="3939.4" font-size="11.5">lee manifest.json</text>
+  <text class="ar-m" x="1188.7" y="3953.4" font-size="10.5">Sitio en vivo (SITE_URL) → Vigilante n8n (fuera de GitHub) · cada 6 h (intervalo de n8n)</text>
+  <text class="ar-s" x="1188.7" y="3968.4" font-size="11">Cada 6 horas, desde fuera de GitHub, n8n pide data/manifest.json y revisa que generatedAt</text>
+  <text class="ar-s" x="1188.7" y="3983.4" font-size="11">tenga menos de 30 h.</text>
+  <circle class="ar-badge ar-e-human" cx="1168.7" cy="4006.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4010.2" font-size="10.5" text-anchor="middle">83</text>
+  <text class="ar-t" x="1188.7" y="4010.4" font-size="11.5">Error workflow, si lo hay</text>
+  <text class="ar-m" x="1188.7" y="4024.4" font-size="10.5">Vigilante n8n (fuera de GitHub) → Colega que opera n8n</text>
+  <text class="ar-s" x="1188.7" y="4039.4" font-size="11">Si el colega configuró un Error workflow en n8n (por ejemplo, un correo), una ejecución</text>
+  <text class="ar-s" x="1188.7" y="4054.4" font-size="11">fallida lo dispara. Sirve aunque GitHub haya apagado sus flujos programados.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="4077.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4081.2" font-size="10.5" text-anchor="middle">84</text>
+  <text class="ar-t" x="1188.7" y="4081.4" font-size="11.5">notas por revisar</text>
+  <text class="ar-m" x="1188.7" y="4095.4" font-size="10.5">Archivos publicados (data/) → Consola de lugares (/admin/) · al abrir la consola</text>
+  <text class="ar-s" x="1188.7" y="4110.4" font-size="11">La consola carga data/geo/items.json (hasta 4000 notas de 120 días) y ubigeo.json para sus</text>
+  <text class="ar-s" x="1188.7" y="4125.4" font-size="11">selectores; la API también usa ubigeo.json para rechazar códigos desconocidos.</text>
+  <circle class="ar-badge ar-e-human" cx="1168.7" cy="4148.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4152.2" font-size="10.5" text-anchor="middle">85</text>
+  <text class="ar-t" x="1188.7" y="4152.4" font-size="11.5">cuentas de revisor</text>
+  <text class="ar-m" x="1188.7" y="4166.4" font-size="10.5">Mantenedores y propietario → Revisores de lugares</text>
+  <text class="ar-s" x="1188.7" y="4181.4" font-size="11">tools.geo_users crea usuario y clave para cada revisor; el propietario carga el secreto</text>
+  <text class="ar-s" x="1188.7" y="4196.4" font-size="11">GEO_USERS y vincula la base D1 GEO_DB en Cloudflare.</text>
+  <circle class="ar-badge ar-e-human" cx="1168.7" cy="4219.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4223.2" font-size="10.5" text-anchor="middle">86</text>
+  <text class="ar-t" x="1188.7" y="4223.4" font-size="11.5">corrigen lugares</text>
+  <text class="ar-m" x="1188.7" y="4237.4" font-size="10.5">Revisores de lugares → Consola de lugares (/admin/)</text>
+  <text class="ar-s" x="1188.7" y="4252.4" font-size="11">Con su usuario fijan, confirman o marcan como nacional o «no es del Perú» cada nota. Cada</text>
+  <text class="ar-s" x="1188.7" y="4267.4" font-size="11">cambio es una fila nueva en la base D1 y se aplica en la siguiente corrida (la de 23:37 u</text>
+  <text class="ar-s" x="1188.7" y="4282.4" font-size="11">otra antes).</text>
+  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="4305.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4309.2" font-size="10.5" text-anchor="middle">87</text>
+  <text class="ar-t" x="1188.7" y="4309.4" font-size="11.5">fusión en main o a mano</text>
+  <text class="ar-m" x="1188.7" y="4323.4" font-size="10.5">Mantenedores y propietario → Actualización diaria (observatory.yml) · al fusionar o a mano</text>
+  <text class="ar-s" x="1188.7" y="4338.4" font-size="11">Cada push a main publica enseguida (salvo cambios solo en .md o docs/). También se</text>
+  <text class="ar-s" x="1188.7" y="4353.4" font-size="11">puede lanzar a mano y elegir si se piden copias nuevas al Internet Archive.</text>
+  <circle class="ar-badge ar-e-trigger" cx="1168.7" cy="4376.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4380.2" font-size="10.5" text-anchor="middle">88</text>
+  <text class="ar-t" x="1188.7" y="4380.4" font-size="11.5">PR, ramas claude/** o a mano</text>
+  <text class="ar-m" x="1188.7" y="4394.4" font-size="10.5">Mantenedores y propietario → Herramientas de desarrollo</text>
+  <text class="ar-s" x="1188.7" y="4409.4" font-size="11">ci.yml corre en cada PR y push a claude/**; n8n.yml, cuando cambia n8n/. Sondeos y</text>
+  <text class="ar-s" x="1188.7" y="4424.4" font-size="11">capturas: a mano o al cambiar su herramienta en claude/**. Sus resultados se traen a mano</text>
+  <text class="ar-s" x="1188.7" y="4439.4" font-size="11">de las ramas bot/.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="4462.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4466.2" font-size="10.5" text-anchor="middle">89</text>
+  <text class="ar-t" x="1188.7" y="4466.4" font-size="11.5">documentos pendientes</text>
+  <text class="ar-m" x="1188.7" y="4480.4" font-size="10.5">Archivos publicados (data/) → Consola de documentos (/admin/documentos.html) · al abrir la</text>
+  <text class="ar-m" x="1188.7" y="4494.4" font-size="10.5">consola</text>
+  <text class="ar-s" x="1188.7" y="4509.4" font-size="11">La consola muestra data/manual-needed.json: cada documento que la corrida no pudo</text>
+  <text class="ar-s" x="1188.7" y="4524.4" font-size="11">bajar, con los enlaces para abrirlo en un navegador, el motivo y, si una copia subida no</text>
+  <text class="ar-s" x="1188.7" y="4539.4" font-size="11">sirvió, por qué.</text>
+  <circle class="ar-badge ar-e-human" cx="1168.7" cy="4562.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4566.2" font-size="10.5" text-anchor="middle">90</text>
+  <text class="ar-t" x="1188.7" y="4566.4" font-size="11.5">bajan y suben el PDF</text>
+  <text class="ar-m" x="1188.7" y="4580.4" font-size="10.5">Mantenedores y propietario → Consola de documentos (/admin/documentos.html)</text>
+  <text class="ar-s" x="1188.7" y="4595.4" font-size="11">Con el issue manual-download-needed, un administrador abre el documento en su</text>
+  <text class="ar-s" x="1188.7" y="4610.4" font-size="11">navegador, pasa la verificación humana él mismo (el sistema nunca la evade), guarda el</text>
+  <text class="ar-s" x="1188.7" y="4625.4" font-size="11">PDF y lo sube.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="4648.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4652.2" font-size="10.5" text-anchor="middle">91</text>
+  <text class="ar-t" x="1188.7" y="4652.4" font-size="11.5">commit con el PDF</text>
+  <text class="ar-m" x="1188.7" y="4666.4" font-size="10.5">Consola de documentos (/admin/documentos.html) → Rama data-manual · en cada subida</text>
+  <text class="ar-s" x="1188.7" y="4681.4" font-size="11">Blob del PDF en flujo, árbol con index.json nuevo, commit y avance de la rama sin forzar; si</text>
+  <text class="ar-s" x="1188.7" y="4696.4" font-size="11">otra subida la movió, se rehace una vez.</text>
+  <circle class="ar-badge ar-e-control" cx="1168.7" cy="4719.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4723.2" font-size="10.5" text-anchor="middle">92</text>
+  <text class="ar-t" x="1188.7" y="4723.4" font-size="11.5">pide actualizar (enso-refresh)</text>
+  <text class="ar-m" x="1188.7" y="4737.4" font-size="10.5">Consola de documentos (/admin/documentos.html) → Actualización diaria (observatory.yml) · en</text>
+  <text class="ar-m" x="1188.7" y="4751.4" font-size="10.5">cada subida</text>
+  <text class="ar-s" x="1188.7" y="4766.4" font-size="11">Tras guardar el PDF, la API manda repository_dispatch enso-refresh: la actualización</text>
+  <text class="ar-s" x="1188.7" y="4781.4" font-size="11">empieza al momento en vez de esperar a las 23:37.</text>
+  <circle class="ar-badge ar-e-fallback" cx="1168.7" cy="4804.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4808.2" font-size="10.5" text-anchor="middle">93</text>
+  <text class="ar-t" x="1188.7" y="4808.4" font-size="11.5">copia subida (relay-manual)</text>
+  <text class="ar-m" x="1188.7" y="4822.4" font-size="10.5">Rama data-manual → Descarga en GitHub Actions (Fetcher) · cada corrida de observatory.yml</text>
+  <text class="ar-s" x="1188.7" y="4837.4" font-size="11">El pipeline la busca con la misma URL que el documento (o manual://enfen-informe/&lt;id&gt; si</text>
+  <text class="ar-s" x="1188.7" y="4852.4" font-size="11">no se conoce). Se valida como cualquier otra copia: otro número u otro periodo no se</text>
+  <text class="ar-s" x="1188.7" y="4867.4" font-size="11">publica y el documento sigue pendiente con el motivo.</text>
+  <circle class="ar-badge ar-e-fallback" cx="1168.7" cy="4890.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="4894.2" font-size="10.5" text-anchor="middle">94</text>
+  <text class="ar-t" x="1188.7" y="4894.4" font-size="11.5">texto sin leer (opcional)</text>
+  <text class="ar-m" x="1188.7" y="4908.4" font-size="10.5">Lectura de fuentes oficiales → Extractor de informes n8n (opcional) · solo cuando el lector fijo</text>
+  <text class="ar-m" x="1188.7" y="4922.4" font-size="10.5">falla</text>
+  <text class="ar-s" x="1188.7" y="4937.4" font-size="11">Solo si el lector fijo falla (el informe técnico cambió de formato o la perspectiva del</text>
+  <text class="ar-s" x="1188.7" y="4952.4" font-size="11">comunicado no se pudo leer) y está el secreto ENSO_LLM_EXTRACT_URL: el pipeline manda</text>
+  <text class="ar-s" x="1188.7" y="4967.4" font-size="11">kind, el esquema y el texto (hasta 120 000 caracteres) con el token</text>
+  <text class="ar-s" x="1188.7" y="4982.4" font-size="11">ENSO_LLM_EXTRACT_TOKEN. Del informe, el mismo PDF no se vuelve a consultar si el</text>
+  <text class="ar-s" x="1188.7" y="4997.4" font-size="11">modelo ya respondió.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5020.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="5024.2" font-size="10.5" text-anchor="middle">95</text>
+  <text class="ar-t" x="1188.7" y="5024.4" font-size="11.5">propuesta para revisión</text>
+  <text class="ar-m" x="1188.7" y="5038.4" font-size="10.5">Extractor de informes n8n (opcional) → Lectura de fuentes oficiales</text>
+  <text class="ar-s" x="1188.7" y="5053.4" font-size="11">La respuesta se vuelve a validar con el esquema y queda como propuesta, con sus errores</text>
+  <text class="ar-s" x="1188.7" y="5068.4" font-size="11">de esquema, en informe.review u outlookReview de dashboard.json. Nunca reemplaza un</text>
+  <text class="ar-s" x="1188.7" y="5083.4" font-size="11">dato ni se publica como tal, y el sitio no la muestra. Si el flujo no responde, se anota</text>
+  <text class="ar-s" x="1188.7" y="5098.4" font-size="11">llm-extract-unavailable.</text>
+  <circle class="ar-badge ar-e-human" cx="1168.7" cy="5121.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="5125.2" font-size="10.5" text-anchor="middle">96</text>
+  <text class="ar-t" x="1188.7" y="5125.4" font-size="11.5">importa y crea credenciales</text>
+  <text class="ar-m" x="1188.7" y="5139.4" font-size="10.5">Colega que opera n8n → Extractor de informes n8n (opcional)</text>
+  <text class="ar-s" x="1188.7" y="5154.4" font-size="11">Si se usa, la persona importa n8n/dist/enso-n8n-extractor.json, crea las credenciales «Token</text>
+  <text class="ar-s" x="1188.7" y="5169.4" font-size="11">del extractor ENSO» y «OpenAI ENSO (n8n)» y lo activa; su Production URL y el token van a</text>
+  <text class="ar-s" x="1188.7" y="5184.4" font-size="11">los secretos ENSO_LLM_EXTRACT_URL y ENSO_LLM_EXTRACT_TOKEN del repositorio.</text>
+  <circle class="ar-badge ar-e-control" cx="1168.7" cy="5207.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="5211.2" font-size="10.5" text-anchor="middle">97</text>
+  <text class="ar-t" x="1188.7" y="5211.4" font-size="11.5">salud de la copia subida</text>
+  <text class="ar-m" x="1188.7" y="5225.4" font-size="10.5">Rama data-manual → Registro de incidencias · cada corrida de observatory.yml</text>
+  <text class="ar-s" x="1188.7" y="5240.4" font-size="11">Al empezar, el pipeline abre la rama data-manual: si existe y no se pudo bajar o leer, anota</text>
+  <text class="ar-s" x="1188.7" y="5255.4" font-size="11">manual-unreadable (advertencia) y las subidas no se usan en esta corrida; si la leyó,</text>
+  <text class="ar-s" x="1188.7" y="5270.4" font-size="11">manual-ok (info). Que la rama no exista no se anota.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5293.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="5297.2" font-size="10.5" text-anchor="middle">98</text>
+  <text class="ar-t" x="1188.7" y="5297.4" font-size="11.5">nivel de los avisos del SENAMHI</text>
+  <text class="ar-m" x="1188.7" y="5311.4" font-size="10.5">Rama data-peru → Noticias y alertas: lectura y filtro · cada corrida de observatory.yml</text>
+  <text class="ar-s" x="1188.7" y="5326.4" font-size="11">La tabla de avisos del SENAMHI de la copia del Perú da el nivel (amarillo, naranja o rojo) y el</text>
+  <text class="ar-s" x="1188.7" y="5341.4" font-size="11">inicio y fin a los avisos que llegan por Telegram y por el COEN. El sitio publica esa copia y</text>
+  <text class="ar-s" x="1188.7" y="5356.4" font-size="11">cada nivel la enlaza.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5379.4" r="9"/>
+  <text class="ar-t" x="1168.7" y="5383.2" font-size="10.5" text-anchor="middle">99</text>
+  <text class="ar-t" x="1188.7" y="5383.4" font-size="11.5">descargas largas, con pausa</text>
+  <text class="ar-m" x="1188.7" y="5397.4" font-size="10.5">Archivos de desastres pasados (66 fuentes) → Cosecha del catálogo histórico</text>
+  <text class="ar-m" x="1188.7" y="5411.4" font-size="10.5">(memoria-cosecha.yml)</text>
+  <text class="ar-s" x="1188.7" y="5426.4" font-size="11">Con al menos 5 s entre pedidos a cada servidor (o su Crawl-delay, si es mayor) y</text>
+  <text class="ar-s" x="1188.7" y="5441.4" font-size="11">respetando su robots.txt, salvo los Disallow de las instituciones públicas peruanas, que</text>
+  <text class="ar-s" x="1188.7" y="5456.4" font-size="11">autorizaron la descarga. Nunca se salta una verificación antirobots, un muro de pago ni un</text>
+  <text class="ar-s" x="1188.7" y="5471.4" font-size="11">inicio de sesión.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5494.4" r="11"/>
+  <text class="ar-t" x="1168.7" y="5498.2" font-size="10.5" text-anchor="middle">100</text>
+  <text class="ar-t" x="1188.7" y="5498.4" font-size="11.5">lo bajado, desde la caché</text>
+  <text class="ar-m" x="1188.7" y="5512.4" font-size="10.5">Cosecha del catálogo histórico (memoria-cosecha.yml) → Catálogo histórico e indicadores</text>
+  <text class="ar-m" x="1188.7" y="5526.4" font-size="10.5">(build_historico)</text>
+  <text class="ar-s" x="1188.7" y="5541.4" font-size="11">Cuando no falta ninguna fuente, build_historico --sin-red --parcial lee los archivos de la</text>
+  <text class="ar-s" x="1188.7" y="5556.4" font-size="11">caché, compara su SHA-256 con el manifiesto y anota en el PR qué cambió en cada fuente.</text>
+  <circle class="ar-badge ar-e-data" cx="1168.7" cy="5579.4" r="11"/>
+  <text class="ar-t" x="1168.7" y="5583.2" font-size="10.5" text-anchor="middle">101</text>
+  <text class="ar-t" x="1188.7" y="5583.4" font-size="11.5">catálogo por PR a main</text>
+  <text class="ar-m" x="1188.7" y="5597.4" font-size="10.5">Catálogo histórico e indicadores (build_historico) → Despliegue y verificación</text>
+  <text class="ar-s" x="1188.7" y="5612.4" font-size="11">El PR de la cosecha cambia public/assets/historico/ y data/historico/; al fusionarlo, el</text>
+  <text class="ar-s" x="1188.7" y="5627.4" font-size="11">despliegue lo publica y la vista Memoria de desastres lo lee (historico.js).</text>
+  <circle class="ar-badge ar-e-human" cx="1168.7" cy="5650.4" r="11"/>
+  <text class="ar-t" x="1168.7" y="5654.2" font-size="10.5" text-anchor="middle">102</text>
+  <text class="ar-t" x="1188.7" y="5654.4" font-size="11.5">revisan y fusionan el PR del catálogo</text>
+  <text class="ar-m" x="1188.7" y="5668.4" font-size="10.5">Mantenedores y propietario → Cosecha del catálogo histórico (memoria-cosecha.yml)</text>
+  <text class="ar-s" x="1188.7" y="5683.4" font-size="11">Una persona revisa la tabla de cambios por fuente del PR antes de fusionarlo. También</text>
+  <text class="ar-s" x="1188.7" y="5698.4" font-size="11">puede pedir a mano «reconstruir» (PR con lo bajado hasta ahora) o «renovar» (cosecha</text>
+  <text class="ar-s" x="1188.7" y="5713.4" font-size="11">nueva desde cero).</text>
 </svg>

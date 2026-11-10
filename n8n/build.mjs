@@ -36,6 +36,8 @@ const NODE_LIBS = {
   'vigilante': [],
   'extraer-pedido': [],
   'extraer-respuesta': [],
+  'boletin': ['boletin'],
+  'boletin-guardar': ['boletin'],
 };
 
 /** Código final de un nodo Code: bibliotecas + cuerpo, con los marcadores reemplazados. */
@@ -52,7 +54,7 @@ export function nodeCode(name, vars = {}) {
 const registryText = readFileSync(join(ROOT, 'registry/sources.json'), 'utf8');
 const registry = JSON.parse(registryText);
 const VERSION = createHash('sha256')
-  .update(['hash', 'classify', 'enfen', 'relay', 'robots'].map(libSource).join(''))
+  .update(['hash', 'classify', 'enfen', 'relay', 'robots', 'boletin'].map(libSource).join(''))
   .update(Object.keys(NODE_LIBS).map((n) => read(`nodes/${n}.js`)).join(''))
   .update(registryText)
   .digest('hex').slice(0, 10);
@@ -337,11 +339,66 @@ const extractor = workflow('EnsoExtractor001', 'ENSO · Extractor de informes (O
   return chain(['Preguntar al modelo', 'Armar respuesta', 'Responder'], c);
 })());
 
+// ---------------------------------------------------------------- boletín
+// Cada hora lee data/boletin.json del sitio publicado (la actualización diaria lo arma con los avisos oficiales, el
+// ENFEN y el CENEPRED; docs/boletin.md) y, si hay una edición nueva con cambios que lo piden, manda el boletín por
+// Gmail. Las fuentes geobloqueadas ya llegan al boletín por el recolector del Perú. «send» empieza en false: el flujo
+// arma el correo pero no lo manda hasta que alguien configure la cuenta de Gmail y la lista (docs/boletin.md).
+const GMAIL_CRED = { gmailOAuth2: { id: process.env.N8N_GMAIL_CRED_ID || 'EnsoGmailCred001', name: 'Gmail boletín ENSO' } };
+nextX = -240;
+const bulletin = workflow('EnsoBoletin00001', 'ENSO · Boletín de eventos El Niño por correo (Gmail)', [
+  node('Cada hora', 'n8n-nodes-base.scheduleTrigger', 1.2, { rule: { interval: [{ field: 'hours', hoursInterval: 1 }] } }, { y: -120 }),
+  node('Ejecutar a mano', 'n8n-nodes-base.manualTrigger', 1, {}, { x: 0, y: 120 }),
+  setNode('Configuración', [
+    ['site', process.env.N8N_SITE_URL || 'https://enso-peru.pages.dev/'],
+    // Para quién: «to» va visible (por ejemplo, la misma cuenta que manda); «bcc», la lista, en copia oculta.
+    ['to', ''],
+    ['bcc', ''],
+    ['sender_name', 'Observatorio ENSO Perú'],
+    // Hora de Lima del resumen diario (cambios menores). Los cambios importantes salen en la hora en que llegan.
+    ['digest_hour', 7, 'number'],
+    ['max_age_hours', 36, 'number'],
+    // false: arma el correo y lo deja en la salida de «Decidir envío», sin mandarlo (simulacro).
+    ['send', false, 'boolean'],
+  ]),
+  node('Leer boletín', 'n8n-nodes-base.httpRequest', 4.2, {
+    url: "={{ $('Configuración').first().json.site.replace(/\\/?$/, '/') + 'data/boletin.json?t=' + Date.now() }}",
+    sendHeaders: true,
+    headerParameters: { parameters: [{ name: 'User-Agent', value: UA.replace("$('Configuración').first().json.contact", "'https://github.com/PillB/observatorio-enso-peru'") }, { name: 'Cache-Control', value: 'no-cache' }] },
+    options: { timeout: 30000, response: { response: { fullResponse: true, neverError: true, responseFormat: 'text' } } },
+  }, { onError: 'continueRegularOutput', retryOnFail: true, maxTries: 3, waitBetweenTries: 5000 }),
+  code('Decidir envío', 'boletin', {}),
+  node('¿Enviar?', 'n8n-nodes-base.if', 2, {
+    conditions: {
+      options: { caseSensitive: true, leftValue: '', typeValidation: 'strict' },
+      conditions: [{ id: '5b1d0f4e-2c3a-4b8d-9e6f-7a1b2c3d4e5f', leftValue: '={{ $json.send }}', rightValue: '', operator: { type: 'boolean', operation: 'true', singleValue: true } }],
+      combinator: 'and',
+    },
+    options: {},
+  }),
+  node('Enviar por Gmail', 'n8n-nodes-base.gmail', 2.1, {
+    resource: 'message',
+    operation: 'send',
+    sendTo: '={{ $json.to }}',
+    subject: '={{ $json.subject }}',
+    emailType: 'html',
+    message: '={{ $json.html }}',
+    options: { bccList: '={{ $json.bcc }}', senderName: "={{ $('Configuración').first().json.sender_name }}", appendAttribution: false },
+  }, { credentials: GMAIL_CRED, retryOnFail: true, maxTries: 3, waitBetweenTries: 5000 }),
+  code('Guardar estado', 'boletin-guardar', {}),
+], (() => {
+  const c = chain(['Cada hora', 'Configuración', 'Leer boletín', 'Decidir envío', '¿Enviar?']);
+  chain(['Ejecutar a mano', 'Configuración'], c);
+  c['¿Enviar?'] = { main: [[{ node: 'Enviar por Gmail', type: 'main', index: 0 }], []] };
+  return chain(['Enviar por Gmail', 'Guardar estado'], c);
+})());
+
 export const WORKFLOWS = {
   'enso-n8n-validacion.json': validation,
   'enso-n8n-recolector.json': collector,
   'enso-n8n-vigilante.json': watcher,
   'enso-n8n-extractor.json': extractor,
+  'enso-n8n-boletin.json': bulletin,
 };
 
 if (import.meta.url === `file://${process.argv[1]}`) {

@@ -495,8 +495,8 @@
     "id": "site-app",
     "group": "site",
     "col": "site",
-    "name_es": "Sitio web (12 vistas)",
-    "name_en": "Website (12 views)",
+    "name_es": "Sitio web (13 vistas)",
+    "name_en": "Website (13 views)",
     "what_es": "Página estática sin compilación: Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Mi zona, Noticias (con el mapa de alertas), Datos, Metodología y Asistente. Junto a cada dato enlaza la fuente en vivo y la copia archivada.",
     "what_en": "Static page with no build step: Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, My area, News (with the alert map), Data, Methodology and Assistant. Next to each value it links the live source and the archived copy.",
     "details_es": "Carga primero dashboard.json; su publicationId es la referencia y no muestra archivos de otra publicación. Avisa si la publicación tiene más de 36 h o si worst es error o critical. El Asistente usa reglas fijas, no un modelo de lenguaje. Metodología muestra el diagrama simplificado y, con un botón, el completo (copias de docs/). El mapa de alertas pinta cada departamento con el nivel que dio la institución (severity.py en el pipeline; un aviso sin nivel queda «sin nivel»); el navegador solo calcula si cada aviso está vigente, es próximo o venció según su vigencia (valid). Tiene cuatro versiones (A a D) y, como el mapa de la memoria, vistas de detalle (por cuenca, por distrito con su historia) que se eligen arriba del mapa: con Cloudflare, al salir de la página se manda un aviso anónimo por experimento a /api/ab/e (contadores por día en D1, sin IP ni cookies; nada con «No rastrear» o Global Privacy Control); /api/ab/defaults da la versión que más se usa (intervalo de Wilson, 200 visitas por versión como mínimo), que se muestra a 4 de cada 5 primeras visitas, y la vista #variantes, fuera del menú, muestra los resultados.",
@@ -657,9 +657,9 @@
     "row": 1,
     "name_es": "Colega que opera n8n",
     "name_en": "n8n operator (colleague)",
-    "what_es": "Importa los 4 flujos de n8n/dist (recolector, vigilante, validación y el extractor opcional de informes) en su n8n de AWS, elige la credencial de GitHub y activa los programados; asignarles un Error workflow es opcional.",
-    "what_en": "Imports the 4 n8n/dist flows (collector, watchdog, validation and the optional report extractor) into their AWS n8n, picks the GitHub credential and activates the scheduled ones; assigning an Error workflow is optional.",
-    "evidence": "n8n/README.md; n8n/build.mjs:1-8, 327-332; docs/n8n.md"
+    "what_es": "Importa los 5 flujos de n8n/dist (recolector, vigilante, validación, el extractor opcional de informes y «ENSO · Boletín de eventos El Niño por correo (Gmail)») en su n8n de AWS, elige las credenciales de GitHub y de Gmail y activa los programados; asignarles un Error workflow es opcional.",
+    "what_en": "Imports the 5 n8n/dist flows (collector, watchdog, validation, the optional report extractor and «ENSO · Boletín de eventos El Niño por correo (Gmail)») into their AWS n8n, picks the GitHub and Gmail credentials and activates the scheduled ones; assigning an Error workflow is optional.",
+    "evidence": "n8n/README.md; n8n/build.mjs:1-8, 327-332; docs/n8n.md; docs/boletin.md"
    },
    {
     "id": "github-issues",
@@ -1983,8 +1983,8 @@
     "w": 360,
     "name_es": "Sitio",
     "name_en": "Website",
-    "what_es": "La página pública con 12 vistas, un mapa de alertas y descargas abiertas. Junto a cada dato están el enlace a la fuente original y a su copia archivada.",
-    "what_en": "The public website with 12 views, an alert map and open downloads. Next to each value are links to the original source and its archived copy.",
+    "what_es": "La página pública con 13 vistas, un mapa de alertas y descargas abiertas. Junto a cada dato están el enlace a la fuente original y a su copia archivada.",
+    "what_en": "The public website with 13 views, an alert map and open downloads. Next to each value are links to the original source and its archived copy.",
     "covers": [
      "live-site",
      "site-app",
@@ -2320,8 +2320,8 @@
   {
    "title_es": "Lo que ve la gente",
    "title_en": "What people see",
-   "text_es": "El sitio muestra 12 vistas, un mapa de alertas con el nivel que dio cada institución y descargas abiertas, con el enlace a la fuente original y a la copia archivada junto a cada dato. Lo de hoy será el respaldo de mañana.",
-   "text_en": "The site shows 12 views, an alert map with the level each agency gave and open downloads, with links to the original source and the archived copy next to each value. Today's data will be tomorrow's backup.",
+   "text_es": "El sitio muestra 13 vistas, un mapa de alertas con el nivel que dio cada institución y descargas abiertas, con el enlace a la fuente original y a la copia archivada junto a cada dato. Lo de hoy será el respaldo de mañana.",
+   "text_en": "The site shows 13 views, an alert map with the level each agency gave and open downloads, with links to the original source and the archived copy next to each value. Today's data will be tomorrow's backup.",
    "nodes": [
     "s-sitio",
     "s-respaldo"

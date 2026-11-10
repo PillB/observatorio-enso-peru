@@ -1,8 +1,9 @@
-// Versiones de los mapas y su analítica anónima. Tres experimentos (functions/_lib/ab.js):
+// Versiones de los mapas y su analítica anónima. Cuatro experimentos (functions/_lib/ab.js):
 //
 //   mapa      la versión del mapa de alertas de Noticias («Versión A / B / C / D»)
 //   memoria   la vista con que abre el mapa de la memoria: el resumen por área o uno de sus detalles
 //   noticias  la vista con que abre el mapa de Noticias: el resumen (la versión A–D) o uno de sus detalles
+//   boletin   el mapa del Boletín: el del Perú o un mosaico de cuadros (el que lleva el correo)
 //
 // La primera visita recibe una versión de cada uno: al azar mientras no haya una ganadora; si ya la hay
 // (/api/ab/defaults: la que más se usa, con su intervalo), la ganadora a 4 de cada 5 personas y otra al azar al
@@ -22,6 +23,10 @@ export const EXPERIMENTS = {
   memoria: {
     key: 'enso-vista-memoria',
     variants: [['resumen', 'Resumen por área'], ['cuencas', 'Detalle: cuencas'], ['puntos', 'Detalle: ríos y lugares'], ['riesgo', 'Detalle: daños y pobreza']],
+  },
+  boletin: {
+    key: 'enso-vista-boletin',
+    variants: [['mapa', 'Mapa del Perú'], ['mosaico', 'Mosaico de cuadros (como en el correo)']],
   },
   noticias: {
     key: 'enso-vista-noticias',
