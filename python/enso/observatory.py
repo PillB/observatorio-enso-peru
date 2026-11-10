@@ -1501,6 +1501,11 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         from . import boletin as BOL
 
         prev_bol = previous.get("boletin.json", carry=True) if previous is not None else None
+        if prev_bol is None and previous is not None and previous.state.get("boletin.json") == "unreachable":
+            # No se sabe qué edición iba: la numeración vuelve a 1 con la fecha de hoy, y n8n la reconoce como una
+            # serie nueva por esa fecha (n8n/lib/boletin.js) en vez de darla por ya enviada.
+            log.add("warning", "boletin", "build", "boletin-sin-anterior",
+                    "No se pudo leer el boletín publicado: la numeración de ediciones vuelve a empezar.")
         bol = BOL.build(feed, official, escenario, now, prev_bol, freshness,
                         site=os.environ.get("SITE_URL") or BOL.SITE)
         dump("boletin.json", bol)

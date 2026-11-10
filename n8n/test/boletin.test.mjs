@@ -94,9 +94,20 @@ test('un boletín viejo o con otro formato detiene la ejecución (el «Error wor
   assert.throws(() => L.decide({ schema: 'otra' }, CFG, {}, NOW), /formato/);
 });
 
+test('una numeración reiniciada (fecha posterior) se manda completa; la misma edición no', () => {
+  const st = { lastEdition: 7, lastEditionAt: '2026-11-10T04:00:00Z' };
+  const restarted = L.decide(doc(1, [{ edition: 1, changes: [{ rule: 'inicial', tier: 'inmediata', text: 'Primer boletín' }] }], { editionAt: '2026-11-11T04:00:00Z' }), CFG, st, NOW);
+  assert.equal(restarted.send, true);
+  assert.match(restarted.kind, /reiniciada/);
+  assert.equal(restarted.editionAt, '2026-11-11T04:00:00Z');
+  const same = L.decide(doc(7, [{ edition: 7, changes: [imm('x')] }], { editionAt: '2026-11-10T04:00:00Z' }), CFG, st, NOW);
+  assert.equal(same.send, false);
+});
+
 test('el estado guarda la edición enviada y el día del resumen', () => {
   assert.deepEqual(L.nextState({}, { edition: 3, digest: false, digestDay: '2026-11-11', at: NOW }),
-    { lastEdition: 3, lastSentAt: '2026-11-11T15:00:00.000Z', lastDigestDay: '2026-11-11' });
+    { lastEdition: 3, lastEditionAt: null, lastSentAt: '2026-11-11T15:00:00.000Z', lastDigestDay: '2026-11-11' });
+  assert.equal(L.nextState({}, { edition: 3, editionAt: '2026-11-11T14:00:00Z', at: NOW }).lastEditionAt, '2026-11-11T14:00:00Z');
   const s = L.nextState({ lastEdition: 3, lastDigestDay: '2026-11-10' }, { edition: 4, digest: false, digestDay: '2026-11-11', at: NOW });
   assert.equal(s.lastDigestDay, '2026-11-10'); // un aviso inmediato no cuenta como el resumen del día
 });

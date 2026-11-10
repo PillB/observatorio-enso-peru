@@ -65,6 +65,7 @@ desde …»); si algo cambió, sale una edición nueva con la lista de cambios y
 | Un aviso oficial nuevo, rojo o naranja | `aviso-nuevo` | Correo inmediato |
 | Un departamento sube a naranja o a rojo | `departamento-sube` | Correo inmediato |
 | Un aviso sube a naranja o a rojo | `aviso-sube` | Correo inmediato |
+| Un aviso naranja o rojo que se esperaba empieza a regir | `aviso-empieza` | Correo inmediato (amarillo o sin nivel: resumen) |
 | El ENFEN cambia de estado | `enfen-estado` | Correo inmediato |
 | Se cancela un aviso naranja o rojo ya comunicado | `aviso-cancelado` | Correo inmediato |
 | Avisos amarillos o sin nivel, departamentos que bajan, un comunicado del ENFEN sin cambio de estado, un escenario nuevo del CENEPRED, otro estado de la NOAA | `resumen` | Van en el resumen diario |
@@ -80,6 +81,10 @@ lo que solo responde desde el Perú ya llegó por el recolector del Perú) y dec
 - **Solo cambios de resumen**: espera a la hora del resumen (`digest_hour`, 7:00 en Lima) y manda uno al día con
   «[Resumen]».
 - **Sin edición nueva**: nada.
+
+Si la actualización diaria no pudo leer el boletín anterior, la numeración vuelve a la N° 1 (incidencia
+`boletin-sin-anterior`); n8n reconoce esa serie nueva porque su fecha (`editionAt`) es posterior a la de la última
+edición enviada, y la manda completa.
 
 Compara con la última edición que **ese n8n** mandó y junta los cambios de todas las ediciones nuevas, así no se
 pierde ninguno si salieron dos entre dos revisiones. Si el boletín publicado tiene más de 36 h, la ejecución falla

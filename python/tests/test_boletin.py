@@ -183,6 +183,21 @@ def test_upcoming_aviso_is_shown_as_expected_not_current():
     assert "desde mié 11 nov, 00:00" in next(h for h in d["headline"] if h["id"] == "avisos")["text"]
 
 
+def test_an_expected_aviso_that_starts_makes_a_new_edition():
+    it = {"id": "p", "institution": "SENAMHI", "kind": "pronostico", "title": "SENAMHI · aviso de precipitaciones, nivel 3: Piura",
+          "hazards": [], "date": "2026-11-10T10:00:00Z", "severity": {"rank": 2, "label": "Nivel 3"},
+          "valid": {"from": "2026-11-11T05:00:00Z", "until": "2026-11-12T04:59:00Z"},
+          "geo": {"places": [{"code": "20", "level": "departamento"}]}}
+    feed = {"groups": [{"id": "alertas", "items": [it]}]}
+    before = B.build(feed, {}, None, NOW)
+    after = B.build(feed, {}, None, NOW + timedelta(hours=16), before)
+    assert after["segments"][0]["now"] is True
+    assert after["edition"] == before["edition"] + 1
+    (c,) = after["changes"]
+    assert c["rule"] == "aviso-empieza" and c["tier"] == "inmediata" and after["alert"] is True
+    assert B.build(feed, {}, None, NOW + timedelta(hours=17), after)["edition"] == after["edition"]
+
+
 def test_empty_feed_is_all_green_and_says_it_is_not_safety():
     d = B.build(None, None, None, NOW)
     assert d["counts"]["verde"] == 25 and d["edition"] == 1

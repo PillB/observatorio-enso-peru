@@ -67,6 +67,7 @@ RULES = [
     {"rule": "aviso-nuevo", "when": "Un aviso oficial nuevo, rojo o naranja", "tier": "inmediata"},
     {"rule": "departamento-sube", "when": "Un departamento sube a naranja o a rojo", "tier": "inmediata"},
     {"rule": "aviso-sube", "when": "Un aviso sube a naranja o a rojo", "tier": "inmediata"},
+    {"rule": "aviso-empieza", "when": "Un aviso naranja o rojo que se esperaba empieza a regir", "tier": "inmediata"},
     {"rule": "enfen-estado", "when": "El ENFEN cambia de estado (por ejemplo, de Vigilancia a Alerta)", "tier": "inmediata"},
     {"rule": "aviso-cancelado", "when": "Se cancela un aviso naranja o rojo que ya se había comunicado", "tier": "inmediata"},
     {"rule": "resumen", "when": "Avisos amarillos o sin nivel, departamentos que bajan, un comunicado del ENFEN sin cambio "
@@ -492,6 +493,11 @@ def diff(prev: Optional[dict], cur: dict, doc: dict) -> list[dict]:
         elif e["rank"] > old.get("rank", 0):
             out.append({"rule": "aviso-sube", "tier": "inmediata" if e["rank"] >= 2 else "resumen", "rank": e["rank"],
                         "text": f"Sube a {e['level']}: {e['title']} ({e['institution']})."})
+        elif old.get("phase") == "proxima" and e["phase"] in ("vigente", "en-curso"):
+            # El aviso esperado ya rige: cambia el «cuándo» del departamento aunque el nivel sea el mismo.
+            out.append({"rule": "aviso-empieza", "tier": "inmediata" if e["rank"] >= 2 else "resumen", "rank": e["rank"],
+                        "text": f"Ya rige: {e['title']} ({e['institution']})"
+                                + (f", hasta {when(e['until'])}" if e["until"] else "") + "."})
     order = {"inmediata": 0, "resumen": 1}
     out.sort(key=lambda c: (order.get(c["tier"], 2), -c.get("rank", 0)))
     return out

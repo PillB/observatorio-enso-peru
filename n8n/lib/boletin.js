@@ -11,6 +11,9 @@
 //   - Solo cambios «resumen»: se manda en la hora del resumen diario (``digestHour``, hora de Lima), una vez al día.
 //   - Sin ediciones nuevas: nada.
 //   - Primera vez (sin estado): el boletín completo, como «primer boletín».
+//   - Numeración reiniciada (la actualización no pudo leer el boletín anterior y volvió a la N° 1): una edición con
+//     número menor o igual al último enviado pero de fecha posterior (``editionAt``) es de una serie nueva y se
+//     manda completa, en vez de darla por enviada.
 
 /** Direcciones de una lista separada por comas, punto y coma o espacios, sin repetidas (en minúsculas). */
 function parseRecipients(text) {
@@ -71,8 +74,10 @@ function decide(doc, cfg, st, now) {
   }
   const to = parseRecipients(cfg.to);
   const bcc = parseRecipients(cfg.bcc).filter((a) => !to.includes(a));
-  const last = Number(st && st.lastEdition) || 0;
-  const base = { edition: doc.edition, cutoff: doc.cutoff, recipients: to.length + bcc.length };
+  const lastAt = Date.parse((st && st.lastEditionAt) || '');
+  const restarted = Number(st && st.lastEdition) >= doc.edition && Date.parse(doc.editionAt) > lastAt;
+  const last = restarted ? 0 : Number(st && st.lastEdition) || 0;
+  const base = { edition: doc.edition, editionAt: doc.editionAt, cutoff: doc.cutoff, recipients: to.length + bcc.length };
   if (last >= doc.edition && last > 0) return { ...base, send: false, reason: `Sin ediciones nuevas (la última enviada es la N° ${last}).` };
   const { editions, changes, gap } = pendingChanges(doc, last);
   const first = last === 0;
@@ -84,7 +89,7 @@ function decide(doc, cfg, st, now) {
     return { ...base, send: false, reason: `Solo cambios para el resumen diario: se mandan a las ${digestHour}:00 (hora de Lima).`, pending: changes.length };
   }
   if (!to.length) return { ...base, send: false, reason: 'Falta la dirección «to» en Configuración: no se manda nada.' };
-  const kind = first ? 'Primer boletín' : urgent ? 'Aviso' : 'Resumen diario';
+  const kind = restarted ? 'Boletín completo (numeración reiniciada)' : first ? 'Primer boletín' : urgent ? 'Aviso' : 'Resumen diario';
   const subject = `${first ? '' : urgent ? '[Aviso] ' : '[Resumen] '}${doc.email.subject}`;
   const block = first ? '' : changesHtml(changes, gap);
   let html = String(doc.email.html);
@@ -100,7 +105,7 @@ function decide(doc, cfg, st, now) {
 
 /** El estado que se guarda después de mandar el correo. */
 function nextState(st, sent) {
-  const out = { ...(st || {}), lastEdition: sent.edition, lastSentAt: new Date(sent.at || Date.now()).toISOString() };
+  const out = { ...(st || {}), lastEdition: sent.edition, lastEditionAt: sent.editionAt || null, lastSentAt: new Date(sent.at || Date.now()).toISOString() };
   if (sent.digest || !out.lastDigestDay) out.lastDigestDay = sent.digestDay;
   return out;
 }
