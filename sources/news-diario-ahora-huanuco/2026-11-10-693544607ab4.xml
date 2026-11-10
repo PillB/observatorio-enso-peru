@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Tue, 10 Nov 2026 16:33:25 GMT</lastBuildDate>
+    <pubDate>Mon, 09 Nov 2026 17:20:07 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Ministro Huaroc reporta más de 50 operativos contra minería ilegal en la Amazonía</title>
+    <link>https://ahora.com.pe/nacional/huaroc-balance-100-dias-minam-operativos-mineria-ilegal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/huaroc-balance-100-dias-minam-operativos-mineria-ilegal</guid>
+    <pubDate>Mon, 09 Nov 2026 17:20:07 GMT</pubDate>
+    <description><![CDATA[El ministro del Ambiente, Vladimiro Huaroc, informó que se ejecutaron más de 50 operativos contra la minería ilegal en la Amazonía durante los primeros 100 días de Gobierno. También detalló acciones frente a incendios forestales y anunció una reforma del Minam.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Vladimiro Huaroc]]></category>
+    <category><![CDATA[Ministerio del Ambiente]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Amazonía]]></category>
+    <category><![CDATA[100 días de Gobierno]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/26896f0900a4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/26896f0900a4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/26896f0900a4.jpg"/>
+    <media:description type="plain"><![CDATA[El titular del sector Ambiente resaltó que, en el corto tiemp de gestión, se ejecutaron más de 50 operativos en la Amazonía para enfrentar la minería ilegal. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Ysabella Sánchez, única peruana en el top 10 de anotadoras de la Liga de Vóley</title>
+    <link>https://ahora.com.pe/deportes/ysabella-sanchez-top-10-anotadoras-liga-voley</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/ysabella-sanchez-top-10-anotadoras-liga-voley</guid>
+    <pubDate>Tue, 10 Nov 2026 16:30:13 GMT</pubDate>
+    <description><![CDATA[Ysabella Sánchez es la única jugadora nacional en el top 10 de máximas anotadoras de la Liga Peruana de Vóley 2026/27 tras la fecha 4, con 64 puntos, y lidera la recepción con 71% de eficacia.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Ysabella Sánchez]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[máximas anotadoras]]></category>
+    <category><![CDATA[Kathy Ryan]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ed90a97b2003.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ed90a97b2003.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ed90a97b2003.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Minem declara en emergencia el abastecimiento de combustibles en Ucayali</title>
+    <link>https://ahora.com.pe/politica/minem-emergencia-combustibles-ucayali</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/minem-emergencia-combustibles-ucayali</guid>
+    <pubDate>Tue, 10 Nov 2026 16:30:12 GMT</pubDate>
+    <description><![CDATA[El Minem declaró en emergencia las actividades de hidrocarburos en Ucayali por hasta un año y aprobó medidas temporales para el abastecimiento tras el huaico en Padre Abad. La región tiene inventarios de entre 1.5 y 3 días de consumo.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Ucayali]]></category>
+    <category><![CDATA[Minem]]></category>
+    <category><![CDATA[combustibles]]></category>
+    <category><![CDATA[huaico Padre Abad]]></category>
+    <category><![CDATA[Osinergmin]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e624d9d2caee.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e624d9d2caee.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e624d9d2caee.webp"/>
+    <media:description type="plain"><![CDATA[El Ministerio de Energía y Minas (Minem) adoptó disposiciones excepcionales y temporales para facilitar el abastecimiento de combustibles en el departamento de Ucayali, ante el riesgo de restricciones en el suministro ocasionado por la interrupción de la carretera Puente Chino–Aguaytía, a consecuenc — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Astrid Bravo logra el sexto diploma peruano en Dakar 2026</title>
+    <link>https://ahora.com.pe/deportes/astrid-bravo-sexto-diploma-peru-dakar-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/astrid-bravo-sexto-diploma-peru-dakar-2026</guid>
+    <pubDate>Tue, 10 Nov 2026 16:00:14 GMT</pubDate>
+    <description><![CDATA[Astrid Bravo consiguió el sexto diploma olímpico para el Perú en los Juegos Olímpicos de la Juventud Dakar 2026 al llegar a cuartos de final en esgrima. Se suma a Stacy Rodríguez, Yesus Perea, Cielo Moya, Doménico Sotomayor y Thiago Goyzueta.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Astrid Bravo]]></category>
+    <category><![CDATA[Dakar 2026]]></category>
+    <category><![CDATA[Juegos Olímpicos de la Juventud]]></category>
+    <category><![CDATA[esgrima]]></category>
+    <category><![CDATA[diploma olímpico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ada07b3fbbd0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ada07b3fbbd0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ada07b3fbbd0.jpg"/>
+    <media:description type="plain"><![CDATA[La esgrimista peruana Astrid Bravo consiguió el sexto diploma olímpico para el Perú en los IV Juegos Olímpicos de la Juventud Dakar 2026, al ubicarse entre las ocho mejores de su competencia y destacar en una de las principales citas del deporte juvenil a nivel mundial. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Poder Judicial mantiene audiencias y plazos procesales en noviembre</title>
+    <link>https://ahora.com.pe/politica/poder-judicial-audiencias-plazos-noviembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/poder-judicial-audiencias-plazos-noviembre</guid>
+    <pubDate>Tue, 10 Nov 2026 15:30:13 GMT</pubDate>
+    <description><![CDATA[El Consejo Ejecutivo del Poder Judicial oficializó la Resolución Administrativa N.° 000370-2026-CE-PJ para mantener audiencias y plazos procesales en noviembre. La medida abarca sedes de Lima, Callao, Cajamarca, La Libertad, Lambayeque y Piura, donde se declararon días no laborables. Las presidencias de las cortes superiores podrán adoptar medidas de gestión interna.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Poder Judicial]]></category>
+    <category><![CDATA[plazos procesales]]></category>
+    <category><![CDATA[audiencias]]></category>
+    <category><![CDATA[días no laborables]]></category>
+    <category><![CDATA[Resolución Administrativa 000370-2026-CE-PJ]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4b0e5ee9d30e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4b0e5ee9d30e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4b0e5ee9d30e.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>León XIV celebró misa ante 800 mil fieles en Córdoba y reivindicó a los santos argentinos</title>
+    <link>https://ahora.com.pe/mundo/papa-leon-xiv-misa-cordoba-santos-argentinos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/papa-leon-xiv-misa-cordoba-santos-argentinos</guid>
+    <pubDate>Tue, 10 Nov 2026 15:30:12 GMT</pubDate>
+    <description><![CDATA[El papa León XIV ofició una misa multitudinaria en la Escuela de Aviación Militar de Córdoba ante 800 mil personas y destacó la santidad de referentes argentinos como el Cura Brochero y Mama Antula.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[papa León XIV]]></category>
+    <category><![CDATA[Córdoba]]></category>
+    <category><![CDATA[misa multitudinaria]]></category>
+    <category><![CDATA[Cura Brochero]]></category>
+    <category><![CDATA[Mama Antula]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e64bdaf4ca23.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e64bdaf4ca23.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e64bdaf4ca23.jpg"/>
+    <media:description type="plain"><![CDATA[El papa León XIV llegó esta mañana a la ciudad de Córdoba, en Argentina, donde oficiará una misa en la explanada de la ‘Escuela de Aviación Militar’. El periodista de RPP, Carlos Villarreal, sigue al sumo pontífice en su recorrido por Argentina, precio a su llegada a Perú. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Conmebol da la bienvenida a Alianza Lima como representante peruano a la Libertadores 2027</title>
+    <link>https://ahora.com.pe/deportes/conmebol-bienvenida-alianza-lima-libertadores-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/conmebol-bienvenida-alianza-lima-libertadores-2027</guid>
+    <pubDate>Tue, 10 Nov 2026 14:50:06 GMT</pubDate>
+    <description><![CDATA[Conmebol felicitó a Alianza Lima por asegurar su presencia en la Copa Libertadores 2027, a la que accedió tras ganar el Torneo Apertura y comandar la tabla acumulada de la Liga 1 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Copa Libertadores 2027]]></category>
+    <category><![CDATA[Conmebol]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2a7af196b1a3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2a7af196b1a3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2a7af196b1a3.jpg"/>
+    <media:description type="plain"><![CDATA[Conmebol sorprendió al cuadro blanquiazul con un anuncio oficial que despertó la ilusión de los hinchas de cara a la próxima temporada. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Mamoré vs Uberlândia sub-20 termina con 51 tarjetas rojas y récord mundial</title>
+    <link>https://ahora.com.pe/deportes/mamore-uberlandia-51-tarjetas-rojas-record</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/mamore-uberlandia-51-tarjetas-rojas-record</guid>
+    <pubDate>Tue, 10 Nov 2026 14:20:08 GMT</pubDate>
+    <description><![CDATA[El partido de ida de semifinales del Campeonato Mineiro sub-20 entre Uberlândia y Mamoré terminó con 51 tarjetas rojas, un récord mundial, tras una pelea multitudinaria desatada por la celebración del tercer gol visitante.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Mamoré]]></category>
+    <category><![CDATA[Uberlândia]]></category>
+    <category><![CDATA[tarjetas rojas]]></category>
+    <category><![CDATA[récord mundial]]></category>
+    <category><![CDATA[Campeonato Mineiro sub-20]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6bd77bd13344.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6bd77bd13344.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6bd77bd13344.jpg"/>
+    <media:description type="plain"><![CDATA[Brazil soccer ball — Foto: Souza Sergio (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco 2040: De la región olvidada al corredor productivo de los Andes amazónicos</title>
+    <link>https://ahora.com.pe/opinion/huanuco-2040-de-la-region-olvidada-al-corredor-productivo-de-los-andes-2</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/huanuco-2040-de-la-region-olvidada-al-corredor-productivo-de-los-andes-2</guid>
+    <pubDate>Tue, 10 Nov 2026 13:51:40 GMT</pubDate>
+    <description><![CDATA[Un plan de desarrollo integral para reducir la pobreza y la anemia, con turismo, agroexportación, superalimentos e infraestructura como motores del empleo Huánuco tiene todo lo que una región necesita para prosperar: tres pisos ecológicos en pocas horas de viaje, la segunda cuenca más rica en biodiv]]></description>
+    <dc:creator><![CDATA[Diario Ahora]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[olvidada al corredor]]></category>
+    <category><![CDATA[Andes amazónicos]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[productivo]]></category>
+    <category><![CDATA[región]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/01e736d9abc2.txt" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/01e736d9abc2.txt" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/01e736d9abc2.txt"/>
+  </item>
+  <item>
+    <title>Agua envenenada y contaminación desmedida: una “moda” que debe ser ignorada, según el gobierno</title>
+    <link>https://ahora.com.pe/opinion/agua-envenenada-y-contaminacion-desmedida-una-moda-que-debe-ser-ignorada-segun</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/agua-envenenada-y-contaminacion-desmedida-una-moda-que-debe-ser-ignorada-segun</guid>
+    <pubDate>Tue, 10 Nov 2026 13:42:10 GMT</pubDate>
+    <description><![CDATA[Mientras el diputado oficialista Arturo Alegría García tildaba de “moda” y “romanticismo” la problemática medioambiental, se constató un alto índice de]]></description>
+    <dc:creator><![CDATA[Diario Ahora]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[Agua envenenada contaminación]]></category>
+    <category><![CDATA[desmedida una moda]]></category>
+    <category><![CDATA[gobierno]]></category>
+    <category><![CDATA[ignorada]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b0a5bc1ed464.txt" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b0a5bc1ed464.txt" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b0a5bc1ed464.txt"/>
+  </item>
+  <item>
+    <title>Las lluvias no esperan al 1 de enero</title>
+    <link>https://ahora.com.pe/noticia/las-lluvias-no-esperan-al-1-de-enero</link>
+    <guid isPermaLink="true">https://ahora.com.pe/noticia/las-lluvias-no-esperan-al-1-de-enero</guid>
+    <pubDate>Tue, 10 Nov 2026 13:40:51 GMT</pubDate>
+    <description><![CDATA[El peligro en las quebradas de Huánuco no se mide solo en milímetros de lluvia. Se mide también en la gente que sabe dónde mirar cuando el cerro empieza a moverse. Y esa gente, en varios municipios, está a punto de irse. A menos de dos meses del cambio de autoridades, la región entra a la temporada]]></description>
+    <dc:creator><![CDATA[Diario Ahora]]></dc:creator>
+    <category><![CDATA[lluvias no esperan]]></category>
+    <category><![CDATA[enero]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6dce0248f61c.txt" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6dce0248f61c.txt" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6dce0248f61c.txt"/>
+  </item>
+  <item>
+    <title>Perú inicia entrenamientos para enfrentar a Bolivia con la mira en Jairo Vélez</title>
+    <link>https://ahora.com.pe/deportes/peru-entrena-bolivia-alerta-jairo-velez</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-entrena-bolivia-alerta-jairo-velez</guid>
+    <pubDate>Tue, 10 Nov 2026 13:10:06 GMT</pubDate>
+    <description><![CDATA[La selección peruana arrancó este lunes sus prácticas en la VIDENA para el amistoso ante Bolivia del viernes 13 de noviembre en Matute, con especial atención a la evolución de Jairo Vélez, quien presenta una lesión muscular.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Jairo Vélez]]></category>
+    <category><![CDATA[Mano Menezes]]></category>
+    <category><![CDATA[Bolivia]]></category>
+    <category><![CDATA[VIDENA]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/85c8d15b92ef.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/85c8d15b92ef.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/85c8d15b92ef.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>O2 cumple ocho años en España con más de 20 tarifas y servicios que lo acercan a Movistar</title>
+    <link>https://ahora.com.pe/tecnologia/o2-ocho-anos-espana-mas-tarifas-servicios</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/o2-ocho-anos-espana-mas-tarifas-servicios</guid>
+    <pubDate>Tue, 10 Nov 2026 12:20:06 GMT</pubDate>
+    <description><![CDATA[O2 cumple ocho años en España con un catálogo de más de 20 tarifas y servicios añadidos como Netflix, Disney+ y O2 Cloud, lo que difumina su frontera con Movistar.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[O2]]></category>
+    <category><![CDATA[Telefónica]]></category>
+    <category><![CDATA[Movistar]]></category>
+    <category><![CDATA[tarifas móviles]]></category>
+    <category><![CDATA[streaming]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4112aaa224ed.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4112aaa224ed.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4112aaa224ed.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Bolivia convoca a Barro y Centella para el amistoso ante Perú en Matute</title>
+    <link>https://ahora.com.pe/deportes/bolivia-convoca-barro-centella-amistoso-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/bolivia-convoca-barro-centella-amistoso-peru</guid>
+    <pubDate>Tue, 10 Nov 2026 11:30:12 GMT</pubDate>
+    <description><![CDATA[Bolivia convocó a Joaquín Barro y Guilmar Centella para el amistoso ante Perú del 13 de noviembre en Matute, tras las lesiones de Jesús Maraude, John Velásquez y Richet Gómez.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Bolivia]]></category>
+    <category><![CDATA[Perú]]></category>
+    <category><![CDATA[amistoso]]></category>
+    <category><![CDATA[Matute]]></category>
+    <category><![CDATA[Óscar Villegas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0bba35568e51.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0bba35568e51.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0bba35568e51.jpg"/>
+    <media:description type="plain"><![CDATA[A través de un comunicado, en Bolivia dieron cuenta de dos nuevos nombres en su convocatoria frente a la Selección Peruana. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Colau critica a Rufián por no encabezar la unión de la izquierda en Frente Amplio</title>
+    <link>https://ahora.com.pe/mundo/colau-critica-rufian-frente-amplio-elecciones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/colau-critica-rufian-frente-amplio-elecciones</guid>
+    <pubDate>Tue, 10 Nov 2026 11:20:08 GMT</pubDate>
+    <description><![CDATA[Ada Colau encabezará Frente Amplio, la coalición de Sumar, IU, Más Madrid y Comuns para el 29N. La exalcaldesa criticó a Gabriel Rufián por no asumir el liderazgo tras generar expectativas de unidad.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Ada Colau]]></category>
+    <category><![CDATA[Gabriel Rufián]]></category>
+    <category><![CDATA[Frente Amplio]]></category>
+    <category><![CDATA[elecciones 29N]]></category>
+    <category><![CDATA[unión de la izquierda]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e9d52741b677.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e9d52741b677.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e9d52741b677.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>MEF plantea flexibilizar despidos de sueldos altos y reducir aportes en microempresas</title>
+    <link>https://ahora.com.pe/economia/mef-reforma-laboral-despidos-aportes-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/mef-reforma-laboral-despidos-aportes-2027</guid>
+    <pubDate>Tue, 10 Nov 2026 11:20:06 GMT</pubDate>
+    <description><![CDATA[El ministro de Economía, Elmer Cuba, anunció una reforma laboral con dos ejes: flexibilizar el despido de trabajadores formales con mejores remuneraciones y reducir aportes a salud y pensiones en microempresas. Los proyectos se presentarían al Congreso en el verano de 2027.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[reforma laboral]]></category>
+    <category><![CDATA[MEF]]></category>
+    <category><![CDATA[Elmer Cuba]]></category>
+    <category><![CDATA[flexibilización de despidos]]></category>
+    <category><![CDATA[aportes previsionales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7d167f61a46d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7d167f61a46d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7d167f61a46d.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Louzán elogia el nivel arbitral español en la concentración de Sanxenxo</title>
+    <link>https://ahora.com.pe/deportes/louzan-elogia-nivel-arbitral-sanxenxo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/louzan-elogia-nivel-arbitral-sanxenxo</guid>
+    <pubDate>Tue, 10 Nov 2026 11:00:11 GMT</pubDate>
+    <description><![CDATA[Rafael Louzán, presidente de la RFEF, elogió el nivel de los árbitros españoles y agradeció al CTA su labor durante la concentración de Sanxenxo, que reúne a los colegiados de Primera y Segunda.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Rafael Louzán]]></category>
+    <category><![CDATA[RFEF]]></category>
+    <category><![CDATA[árbitros]]></category>
+    <category><![CDATA[Sanxenxo]]></category>
+    <category><![CDATA[CTA]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/38a00ffe365f.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/38a00ffe365f.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/38a00ffe365f.webp"/>
+    <media:description type="plain"><![CDATA["Tenemos un gran nivel de árbitros", es el mensaje que <b>Rafael Louzán,</b> presidente de la RFEF, transmitió en la noche de ayer a los árbitros de Primera división en <b>Sanxenxo</b>, donde están concentrados desde primera hora de ayer lunes. El presidente del estamento federativo y del cual depen — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Teddy Riner no sería el primer deportista que llega a la presidencia de un país</title>
+    <link>https://ahora.com.pe/deportes/teddy-riner-deportistas-presidentes</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/teddy-riner-deportistas-presidentes</guid>
+    <pubDate>Tue, 10 Nov 2026 10:20:06 GMT</pubDate>
+    <description><![CDATA[Teddy Riner, pentacampeón olímpico de judo, se presentará a las presidenciales francesas de 2027. Si gana, no sería el primer deportista en llegar a la jefatura de Estado: George Weah en Liberia, Míjeil Kavelashvili en Georgia o Pál Schmitt en Hungría ya lo hicieron.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Teddy Riner]]></category>
+    <category><![CDATA[elecciones Francia 2027]]></category>
+    <category><![CDATA[George Weah]]></category>
+    <category><![CDATA[deportistas presidentes]]></category>
+    <category><![CDATA[Pál Schmitt]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/499ebab4d263.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/499ebab4d263.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/499ebab4d263.jpg"/>
+    <media:description type="plain"><![CDATA[Teddy Riner, que quiere ser presidente de Francia, no sería el primer deportista que acaba como jefe de Estado de un país.&lt;span class=&quot;&quot; contenteditable=&quot;false&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot; style=&quot;user-select: none; pointer-events: auto;&quot;&gt;& — Foto: Marca]]></media:description>
+  </item>
+  <item>
+    <title>Sporting Cristal empata 1-1 con ADT en Tarma y ya no depende de sí mismo</title>
+    <link>https://ahora.com.pe/deportes/sporting-cristal-empate-adt-tarma-clausura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sporting-cristal-empate-adt-tarma-clausura-2026</guid>
+    <pubDate>Tue, 10 Nov 2026 09:50:05 GMT</pubDate>
+    <description><![CDATA[Sporting Cristal igualó 1-1 con ADT en Tarma por la fecha 17 del Clausura 2026 y perdió la dependencia propia. Deberá ganar a Cienciano y esperar resultados para llevarse el torneo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[ADT]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Roberto Mosquera]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2566e458b087.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2566e458b087.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2566e458b087.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Reino Unido evalúa rebajar del 80% al 50% o 60% su meta de autos cero emisiones para 2030</title>
+    <link>https://ahora.com.pe/mundo/reino-unido-rebaja-meta-autos-electricos-2030</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/reino-unido-rebaja-meta-autos-electricos-2030</guid>
+    <pubDate>Tue, 10 Nov 2026 09:20:07 GMT</pubDate>
+    <description><![CDATA[Reino Unido estudia reducir su objetivo de ventas de autos cero emisiones para 2030 del 80% a entre 50% y 60%, tras la presión de la industria por el bajo ritmo de ventas y el costo de vida.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Reino Unido]]></category>
+    <category><![CDATA[coche eléctrico]]></category>
+    <category><![CDATA[mandato ZEV]]></category>
+    <category><![CDATA[ACEA]]></category>
+    <category><![CDATA[industria automotriz]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/5e268f80ced9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/5e268f80ced9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/5e268f80ced9.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Cucurella: &quot;Ahora mismo, el Real Madrid es el mejor equipo de Europa&quot;</title>
+    <link>https://ahora.com.pe/deportes/cucurella-real-madrid-mejor-equipo-europa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cucurella-real-madrid-mejor-equipo-europa</guid>
+    <pubDate>Tue, 10 Nov 2026 09:20:06 GMT</pubDate>
+    <description><![CDATA[Marc Cucurella afirmó en El Partidazo de COPE que el Real Madrid es hoy el mejor equipo de Europa, explicó por qué ve al PSG por debajo y repasó su relación con Mourinho, Arda Güler y Vinicius.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Marc Cucurella]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[PSG]]></category>
+    <category><![CDATA[mejor equipo de Europa]]></category>
+    <category><![CDATA[El Partidazo COPE]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d19b9f0ced7a.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d19b9f0ced7a.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d19b9f0ced7a.webp"/>
+    <media:description type="plain"><![CDATA[<b>Marc Cucurella</b> lo tiene más que claro. El mejor equipo europeo del momento es, ahora mismo el <b>Real Madrid</b>. El lateral catalán cree que el conjunto blanco ofrece el mejor fútbol en estos momentos, por encima de cualquier otro y pese a que solo hace unas semanas era foco de muchas crític — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>León dejó escapar el triunfo</title>
+    <link>https://ahora.com.pe/deportes/leon-dejo-escapar-el-triunfo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/leon-dejo-escapar-el-triunfo</guid>
+    <pubDate>Tue, 10 Nov 2026 09:02:04 GMT</pubDate>
+    <description><![CDATA[La segunda fecha del Torneo Tradición Copera dejó resultados contrastantes para los equipos huanuqueños.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[León]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f80b36780b96.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f80b36780b96.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f80b36780b96.jpg"/>
+    <media:description type="plain"><![CDATA[León dejó escapar el triunfo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Castillo siembra dudas sobre su continuidad</title>
+    <link>https://ahora.com.pe/politica/castillo-siembra-dudas-sobre-su-continuidad</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/castillo-siembra-dudas-sobre-su-continuidad</guid>
+    <pubDate>Tue, 10 Nov 2026 09:02:01 GMT</pubDate>
+    <description><![CDATA[Eryc Castillo dejó abierta la incógnita sobre su continuidad en Alianza Lima para la temporada 2027, pese a mantener contrato con el club hasta finales de 2028.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Castillo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/179577464dfa.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/179577464dfa.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/179577464dfa.jpg"/>
+    <media:description type="plain"><![CDATA[Castillo siembra dudas sobre su continuidad — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Universitario se juega todo en Huancayo</title>
+    <link>https://ahora.com.pe/deportes/universitario-se-juega-todo-en-huancayo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-se-juega-todo-en-huancayo</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:58 GMT</pubDate>
+    <description><![CDATA[Universitario afrontará la última jornada del Torneo Clausura 2026 con la necesidad de vencer a Sport Huancayo como visitante.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Huancayo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6c07b3c47a1e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6c07b3c47a1e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6c07b3c47a1e.jpg"/>
+    <media:description type="plain"><![CDATA[Universitario se juega todo en Huancayo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Cristal necesita ganar y esperar</title>
+    <link>https://ahora.com.pe/deportes/cristal-necesita-ganar-y-esperar</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cristal-necesita-ganar-y-esperar</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:54 GMT</pubDate>
+    <description><![CDATA[Sporting Cristal llegará a la última fecha del Torneo Clausura 2026 con la obligación de vencer a Cienciano y esperar que Sport Huancayo deje puntos frente a Universitario.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Cristal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d1d4128a76a4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d1d4128a76a4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d1d4128a76a4.jpg"/>
+    <media:description type="plain"><![CDATA[Cristal necesita ganar y esperar — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima apunta al título</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-apunta-al-titulo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-apunta-al-titulo</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:50 GMT</pubDate>
+    <description><![CDATA[Alianza Lima quedó fuera de la lucha por el Torneo Clausura 2026 después de empatar 1-1 ante Los Chankas en Andahuaylas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e540207792d1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e540207792d1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e540207792d1.jpg"/>
+    <media:description type="plain"><![CDATA[Alianza Lima apunta al título — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Gimnastas huanuqueñas compiten pese al desalojo</title>
+    <link>https://ahora.com.pe/deportes/gimnastas-huanuquenas-compiten-pese-al-desalojo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/gimnastas-huanuquenas-compiten-pese-al-desalojo</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:47 GMT</pubDate>
+    <description><![CDATA[La Liga de Gimnasia de Huánuco continuará participando en competencias nacionales pese a haber sido desalojada del espacio que ocupaba en el Complejo de Paucarbamba.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7f1b99aea23d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7f1b99aea23d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7f1b99aea23d.jpg"/>
+    <media:description type="plain"><![CDATA[Gimnastas huanuqueñas compiten pese al desalojo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>FPV selecciona 33 promesas del voleibol</title>
+    <link>https://ahora.com.pe/deportes/fpv-selecciona-33-promesas-del-voleibol</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fpv-selecciona-33-promesas-del-voleibol</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:44 GMT</pubDate>
+    <description><![CDATA[La Federación Peruana de Voleibol (FPV) realizó una jornada de evaluación en Huánuco para identificar posibles talentos femeninos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[FPV]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/474e8183185c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/474e8183185c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/474e8183185c.jpg"/>
+    <media:description type="plain"><![CDATA[FPV selecciona 33 promesas del voleibol — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Tiro 28 sorprende y golpea en Trujillo</title>
+    <link>https://ahora.com.pe/deportes/tiro-28-sorprende-y-golpea-en-trujillo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/tiro-28-sorprende-y-golpea-en-trujillo</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:41 GMT</pubDate>
+    <description><![CDATA[Sociedad Tiro 28 de Colquijirca dio el golpe de la jornada en los octavos de final de la etapa nacional de la Copa Perú.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Tiro]]></category>
+    <category><![CDATA[Trujillo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/72b3b896674d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/72b3b896674d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/72b3b896674d.jpg"/>
+    <media:description type="plain"><![CDATA[Tiro 28 sorprende y golpea en Trujillo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Menor trabajaba en venta de cerveza: detienen a presunta administradora de bar</title>
+    <link>https://ahora.com.pe/policiales/menor-trabajaba-en-venta-de-cerveza-detienen-a-presunta-administradora-de-bar</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/menor-trabajaba-en-venta-de-cerveza-detienen-a-presunta-administradora-de-bar</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:35 GMT</pubDate>
+    <description><![CDATA[La intervención ocurrió en el acceso a Marabamba; policías incautaron celulares, dinero y apuntes, y comunicaron el caso a dos fiscalías.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e9ae921fb911.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e9ae921fb911.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e9ae921fb911.jpg"/>
+    <media:description type="plain"><![CDATA[Menor trabajaba en venta de cerveza: detienen a presunta administradora de bar — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Dictan prisión preventiva a cuatro investigados por exigir dinero para devolver trimóvil</title>
+    <link>https://ahora.com.pe/policiales/dictan-prision-preventiva-a-cuatro-investigados-por-exigir-dinero-para-devolver</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/dictan-prision-preventiva-a-cuatro-investigados-por-exigir-dinero-para-devolver</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:32 GMT</pubDate>
+    <description><![CDATA[El propietario había sufrido dos robos del mismo vehículo; la Fiscalía sostiene que entregó S/ 2200 durante un operativo policial]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/716194dffeb4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/716194dffeb4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/716194dffeb4.jpg"/>
+    <media:description type="plain"><![CDATA[Dictan prisión preventiva a cuatro investigados por exigir dinero para devolver trimóvil — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Agresión sexual a adolescente: tribunal ratifica la máxima pena para dos hombres</title>
+    <link>https://ahora.com.pe/policiales/agresion-sexual-a-adolescente-tribunal-ratifica-la-maxima-pena-para-dos-hombres</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/agresion-sexual-a-adolescente-tribunal-ratifica-la-maxima-pena-para-dos-hombres</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:28 GMT</pubDate>
+    <description><![CDATA[La decisión ratifica la condena dictada en julio de 2025 y mantiene una reparación civil de S/ 11 000; un tercer acusado continúa prófugo]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cfdc68016225.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cfdc68016225.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cfdc68016225.jpg"/>
+    <media:description type="plain"><![CDATA[Agresión sexual a adolescente: tribunal ratifica la máxima pena para dos hombres — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Conductor de camioneta robada deberá cumplir dos años de prueba</title>
+    <link>https://ahora.com.pe/policiales/conductor-de-camioneta-robada-debera-cumplir-dos-anos-de-prueba</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/conductor-de-camioneta-robada-debera-cumplir-dos-anos-de-prueba</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:24 GMT</pubDate>
+    <description><![CDATA[Jorge Chávez reconoció responsabilidad por receptación agravada; el juzgado dispuso reserva del fallo condenatorio y dos años de prueba.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9be1de3bb7af.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9be1de3bb7af.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9be1de3bb7af.png"/>
+    <media:description type="plain"><![CDATA[Conductor de camioneta robada deberá cumplir dos años de prueba — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Muerte de osa y crías: identifican a dos hombres fotografiados</title>
+    <link>https://ahora.com.pe/policiales/muerte-de-osa-y-crias-identifican-a-dos-hombres-fotografiados</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/muerte-de-osa-y-crias-identifican-a-dos-hombres-fotografiados</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:20 GMT</pubDate>
+    <description><![CDATA[Fiscal César González Ramos reporta dificultades para recoger testimonios en Huayricancha y espera informes policiales para evaluar medidas judiciales.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7ac68ca3a63b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7ac68ca3a63b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7ac68ca3a63b.jpg"/>
+    <media:description type="plain"><![CDATA[Muerte de osa y crías: identifican a dos hombres fotografiados — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Alerta por asaltos termina con dos detenidos cerca de la UNAS</title>
+    <link>https://ahora.com.pe/policiales/alerta-por-asaltos-termina-con-dos-detenidos-cerca-de-la-unas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/alerta-por-asaltos-termina-con-dos-detenidos-cerca-de-la-unas</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:16 GMT</pubDate>
+    <description><![CDATA[La Policía reportó el hallazgo de dos pistolas; una sería réplica y su naturaleza deberá confirmarse mediante un peritaje balístico]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a0545072032f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a0545072032f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a0545072032f.jpg"/>
+    <media:description type="plain"><![CDATA[Alerta por asaltos termina con dos detenidos cerca de la UNAS — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Brasil construye ferrocarril de 1.206 kilómetros para conectar zonas agrícolas con el Atlántico</title>
+    <link>https://ahora.com.pe/mundo/brasil-construye-ferrocarril-de-1-206-kilometros-para-conectar-zonas-agricolas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/brasil-construye-ferrocarril-de-1-206-kilometros-para-conectar-zonas-agricolas</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:13 GMT</pubDate>
+    <description><![CDATA[La Transnordestina atravesará 53 municipios de tres estados y contempla entregas por etapas en 2027 y 2028.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Atlántico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/600735490fa7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/600735490fa7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/600735490fa7.jpg"/>
+    <media:description type="plain"><![CDATA[Brasil construye ferrocarril de 1.206 kilómetros para conectar zonas agrícolas con el Atlántico — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>FDA exige advertencias en medicamentos GLP-1 por posible riesgo de pérdida visual</title>
+    <link>https://ahora.com.pe/sociedad/fda-exige-advertencias-en-medicamentos-glp-1-por-posible-riesgo-de-perdida</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/fda-exige-advertencias-en-medicamentos-glp-1-por-posible-riesgo-de-perdida</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:09 GMT</pubDate>
+    <description><![CDATA[La alerta comprende tratamientos para diabetes y obesidad; la enfermedad ocular es infrecuente, pero puede causar daños permanentes]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[FDA]]></category>
+    <category><![CDATA[GLP]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/31be37f601b3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/31be37f601b3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/31be37f601b3.jpg"/>
+    <media:description type="plain"><![CDATA[FDA exige advertencias en medicamentos GLP-1 por posible riesgo de pérdida visual — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Buenaventura celebra 30 años en Nueva York con campanazo de apertura</title>
+    <link>https://ahora.com.pe/nacional/buenaventura-celebra-30-anos-en-nueva-york-con-campanazo-de-apertura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/buenaventura-celebra-30-anos-en-nueva-york-con-campanazo-de-apertura</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:06 GMT</pubDate>
+    <description><![CDATA[La minera captó US$170 millones cuando ingresó a Wall Street en 1996; Benavides destaca exigencias de permanecer en ese mercado.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Buenaventura]]></category>
+    <category><![CDATA[Nueva York]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7acec47d8970.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7acec47d8970.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7acec47d8970.jpg"/>
+    <media:description type="plain"><![CDATA[Buenaventura celebra 30 años en Nueva York con campanazo de apertura — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Proponen ampliar retiro del 100% de la CTS hasta diciembre de 2028</title>
+    <link>https://ahora.com.pe/nacional/proponen-ampliar-retiro-del-100-de-la-cts-hasta-diciembre-de-2028</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/proponen-ampliar-retiro-del-100-de-la-cts-hasta-diciembre-de-2028</guid>
+    <pubDate>Tue, 10 Nov 2026 09:01:02 GMT</pubDate>
+    <description><![CDATA[Iniciativa de Norma Yarrow busca dar liquidez ante posibles daños de El Niño y no exige acreditar afectaciones]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[CTS]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/aa27e4986c87.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/aa27e4986c87.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/aa27e4986c87.jpg"/>
+    <media:description type="plain"><![CDATA[Proponen ampliar retiro del 100% de la CTS hasta diciembre de 2028 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Más de 50 empresas de transporte suspenderán servicios este martes en Lima</title>
+    <link>https://ahora.com.pe/economia/mas-de-50-empresas-de-transporte-suspenderan-servicios-este-martes-en-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/mas-de-50-empresas-de-transporte-suspenderan-servicios-este-martes-en-lima</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:59 GMT</pubDate>
+    <description><![CDATA[Anitra marchará desde Acho hasta el Congreso para exigir seguridad tras el asesinato de otro conductor en Pamplona Alta]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/99054d19bc65.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/99054d19bc65.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/99054d19bc65.jpg"/>
+    <media:description type="plain"><![CDATA[Más de 50 empresas de transporte suspenderán servicios este martes en Lima — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Unheval queda tercera entre 39 universidades en el examen del internado médico de EsSalud</title>
+    <link>https://ahora.com.pe/regional/unheval-queda-tercera-entre-39-universidades-en-el-examen-del-internado-medico</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/unheval-queda-tercera-entre-39-universidades-en-el-examen-del-internado-medico</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:55 GMT</pubDate>
+    <description><![CDATA[Los estudiantes de Huánuco obtuvieron un promedio de 16,192, detrás de la Universidad de Piura y San Marcos, según la tabla que difundió su facultad.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Unheval]]></category>
+    <category><![CDATA[EsSalud]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fa4c95229891.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fa4c95229891.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fa4c95229891.jpg"/>
+    <media:description type="plain"><![CDATA[Unheval queda tercera entre 39 universidades en el examen del internado médico de EsSalud — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco suma hasta 35 incendios forestales en 2026 y ningún detenido, según la Fiscalía</title>
+    <link>https://ahora.com.pe/regional/huanuco-suma-hasta-35-incendios-forestales-en-2026-y-ningun-detenido-segun-la</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/huanuco-suma-hasta-35-incendios-forestales-en-2026-y-ningun-detenido-segun-la</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:51 GMT</pubDate>
+    <description><![CDATA[El fiscal ambiental César González Ramos dijo que, en la mayoría de los casos, no se ha identificado a quien inició el fuego. Pide fotos, videos y testigos directos.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[Fiscalía]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c28b20539603.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c28b20539603.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c28b20539603.png"/>
+    <media:description type="plain"><![CDATA[Huánuco suma hasta 35 incendios forestales en 2026 y ningún detenido, según la Fiscalía — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Chocolate asháninka de Río Tambo gana la medalla de oro en los International Chocolate Awards</title>
+    <link>https://ahora.com.pe/regional/chocolate-ashaninka-de-rio-tambo-gana-la-medalla-de-oro-en-los-international</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/chocolate-ashaninka-de-rio-tambo-gana-la-medalla-de-oro-en-los-international</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:48 GMT</pubDate>
+    <description><![CDATA[La Cooperativa Agraria Asháninka Kemito Sankori, de Satipo (Junín), obtuvo 92 puntos y fue ganadora absoluta de su categoría. Su tableta combina cacao con miel de abejas nativas sin aguijón.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Chocolate]]></category>
+    <category><![CDATA[Río Tambo]]></category>
+    <category><![CDATA[International Chocolate Awards]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c8ed22e7b2af.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c8ed22e7b2af.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c8ed22e7b2af.webp"/>
+    <media:description type="plain"><![CDATA[Chocolate asháninka de Río Tambo gana la medalla de oro en los International Chocolate Awards — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Hospital Valdizán recibe cuatro torres laparoscópicas y espera un resonador para el 28 de diciembre</title>
+    <link>https://ahora.com.pe/regional/hospital-valdizan-recibe-cuatro-torres-laparoscopicas-y-espera-un-resonador-para</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/hospital-valdizan-recibe-cuatro-torres-laparoscopicas-y-espera-un-resonador-para</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:43 GMT</pubDate>
+    <description><![CDATA[El hospital opera con una sola torre armada con piezas de dos. El resonador antiguo está malogrado y de baja; el nuevo se instalaría tres días antes de que termine la gestión regional. El gobernador Antonio Pulgar anunció además una transferencia para pagar a los especialistas hasta diciembre.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Hospital Valdizán]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/71d66b333c61.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/71d66b333c61.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/71d66b333c61.png"/>
+    <media:description type="plain"><![CDATA[Hospital Valdizán recibe cuatro torres laparoscópicas y espera un resonador para el 28 de diciembre — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Jirón Tarapacá: La obra que iba a durar semana y media aún no termina</title>
+    <link>https://ahora.com.pe/regional/jiron-tarapaca-la-obra-que-iba-a-durar-semana-y-media-aun-no-termina</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/jiron-tarapaca-la-obra-que-iba-a-durar-semana-y-media-aun-no-termina</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:38 GMT</pubDate>
+    <description><![CDATA[El 23 de octubre, un ingeniero del Gobierno Regional dijo que las cuadras 2, 3 y 4 estarían listas en semana y media como máximo. Diecisiete días después, la cuadra 2 sigue en obra Los comerciantes de Aguilar e Independencia llegaron hasta ahí para mostrar el retraso y rechazar una obra en sus calles]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Tarapacá]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3c0e4acf45aa.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3c0e4acf45aa.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3c0e4acf45aa.png"/>
+    <media:description type="plain"><![CDATA[Jirón Tarapacá: La obra que iba a durar semana y media aún no termina — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Pistas sobre tuberías colapsadas: Regidora pide a la Contraloría frenar las obras en Huánuco</title>
+    <link>https://ahora.com.pe/regional/pistas-sobre-tuberias-colapsadas-regidora-pide-a-la-contraloria-frenar-las-obras</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/pistas-sobre-tuberias-colapsadas-regidora-pide-a-la-contraloria-frenar-las-obras</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:34 GMT</pubDate>
+    <description><![CDATA[La ingeniera Sherly Morales dice que las pistas nuevas del centro tendrán que romperse cuando llegue el proyecto integral de agua y desagüe. Responsabiliza a la Municipalidad Provincial de aprobar expedientes sin esas partidas Según Morales, una adenda firmada en 2023 con el Ministerio de Vivienda impide intervenir pavimento en la ciudad]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Contraloría]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/84394c0f9eab.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/84394c0f9eab.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/84394c0f9eab.png"/>
+    <media:description type="plain"><![CDATA[Pistas sobre tuberías colapsadas: Regidora pide a la Contraloría frenar las obras en Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Pulgar evalúa no pavimentar el jirón Aguilar si los comerciantes se oponen por Navidad</title>
+    <link>https://ahora.com.pe/regional/pulgar-evalua-no-pavimentar-el-jiron-aguilar-si-los-comerciantes-se-oponen-por</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/pulgar-evalua-no-pavimentar-el-jiron-aguilar-si-los-comerciantes-se-oponen-por</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:30 GMT</pubDate>
+    <description><![CDATA[El gobernador respondió a la protesta de fruteros, abarroteros y dueños de cocheras de los jirones Aguilar e Independencia. No dijo cuándo decidirá ni habló de Independencia. Una dirigente de los fruteros dice que cada puesto vende de S/ 2000 a S/ 3000 diarios en la campaña de fin de año.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Pulgar]]></category>
+    <category><![CDATA[Aguilar]]></category>
+    <category><![CDATA[Navidad]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e5a888b76334.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e5a888b76334.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e5a888b76334.jpg"/>
+    <media:description type="plain"><![CDATA[Pulgar evalúa no pavimentar el jirón Aguilar si los comerciantes se oponen por Navidad — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Rancho-Panao-Chaglla avanza, pero pagos pendientes y botaderos frenan la vía en Pachitea</title>
+    <link>https://ahora.com.pe/regional/rancho-panao-chaglla-avanza-pero-pagos-pendientes-y-botaderos-frenan-la-via-en</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/rancho-panao-chaglla-avanza-pero-pagos-pendientes-y-botaderos-frenan-la-via-en</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:26 GMT</pubDate>
+    <description><![CDATA[Muchos dueños entregaron sus terrenos por adelantado con la promesa de un 10 % adicional y aún no cobran. Los depósitos de desmonte del estudio, de hace casi 12 años, ya no sirven En la vía a La Unión, dueños que ya cobraron no desocupan. En Pachitea pasa lo contrario, según Raúl, que sigue la obra]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Rancho]]></category>
+    <category><![CDATA[Panao]]></category>
+    <category><![CDATA[Chaglla]]></category>
+    <category><![CDATA[Pachitea]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/26999bfee1cf.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/26999bfee1cf.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/26999bfee1cf.jpg"/>
+    <media:description type="plain"><![CDATA[Rancho-Panao-Chaglla avanza, pero pagos pendientes y botaderos frenan la vía en Pachitea — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Vía Huánuco-La Unión gasta más que su presupuesto y sigue a medias, advierte Hilder Muñoz</title>
+    <link>https://ahora.com.pe/regional/via-huanuco-la-union-gasta-mas-que-su-presupuesto-y-sigue-a-medias-advierte</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/via-huanuco-la-union-gasta-mas-que-su-presupuesto-y-sigue-a-medias-advierte</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:20 GMT</pubDate>
+    <description><![CDATA[Según el arquitecto, la obra lleva S/ 1850 millones invertidos frente a S/ 1241,4 millones presupuestados, con un avance de 60.65 %. Empezó en noviembre de 2019. Muñoz dice que los predios son un pretexto. El freno, según él, son los cerros que siguen cayendo en el tramo 2.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[Unión]]></category>
+    <category><![CDATA[Hilder Muñoz]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0ed69f798810.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0ed69f798810.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0ed69f798810.png"/>
+    <media:description type="plain"><![CDATA[Vía Huánuco-La Unión gasta más que su presupuesto y sigue a medias, advierte Hilder Muñoz — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Denuncia ante la Contraloría señala órdenes de Seda Huánuco para familiares de dirigentes</title>
+    <link>https://ahora.com.pe/regional/denuncia-ante-la-contraloria-senala-ordenes-de-seda-huanuco-para-familiares-de</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/denuncia-ante-la-contraloria-senala-ordenes-de-seda-huanuco-para-familiares-de</guid>
+    <pubDate>Tue, 10 Nov 2026 09:00:16 GMT</pubDate>
+    <description><![CDATA[El dirigente Pedro Beteta pidió el puesto por carta, amparado en el convenio colectivo. La empresa pagó S/ 1130 al mes en la Gerencia General Un escrito dirigido a la Contraloría señala a familiares de otros dirigentes que recibieron órdenes de servicio por S/ 24 614]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Contraloría]]></category>
+    <category><![CDATA[Seda Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/03ceedbf43fd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/03ceedbf43fd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/03ceedbf43fd.jpg"/>
+    <media:description type="plain"><![CDATA[Denuncia ante la Contraloría señala órdenes de Seda Huánuco para familiares de dirigentes — Licencia: propia]]></media:description>
+  </item>
+  </channel>
+</rss>
