@@ -15,6 +15,21 @@ variable `SITE_URL` si se publica en Cloudflare Pages; ver
 > los comunicados del ENFEN; ante una emergencia siga a INDECI y a su
 > gobierno local.
 
+## Descargar los datos
+
+Todo con las 13 columnas del tablero del equipo de prevención primero (Date, DangerType, Ubicacion, Distrito,
+Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud) y después los
+metadatos. Lea Ubigeo como texto.
+
+| Qué | Dónde | Se actualiza |
+|---|---|---|
+| Desastres pasados, completo | `assets/historico/eventos.zip` (pestaña Memoria de desastres, «Descargar los datos») | Al aceptar el PR de la cosecha del catálogo |
+| Desastres pasados, filtrado | Tabla «Registros del catálogo» al final de Memoria de desastres: sigue los filtros del mapa; también Mi zona para un lugar | Con el catálogo |
+| Lo más nuevo: noticias | `data/news/eventos-noticias.csv` (pestaña Noticias), una fila por nota y lugar | Cada día |
+| Qué dice cada columna | `assets/historico/diccionario.csv` | Con el catálogo |
+
+Detalle en [memoria-desastres](docs/memoria-desastres.md#tabla-de-registros-y-descargas).
+
 ## Qué hay en el repositorio
 
 | Carpeta | Contenido |
