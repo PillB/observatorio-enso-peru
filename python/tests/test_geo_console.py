@@ -117,6 +117,9 @@ def test_reviewer_logs_in_corrects_a_place_and_sees_the_history(console, browser
         page.goto(console + "admin/")
         expect = pw.expect
         expect(page.get_by_role("heading", name="Ingresar")).to_be_visible()
+        # Sin sesión no se ve nada de la consola: ni «Salir» ni «Documentos» en la cabecera.
+        expect(page.get_by_role("button", name="Salir")).to_be_hidden()
+        expect(page.get_by_role("link", name="Documentos")).to_be_hidden()
         page.get_by_label("Usuario").fill("revisor01")
         page.get_by_label("Contraseña").fill("mala")
         page.get_by_role("button", name="Ingresar").click()
@@ -150,8 +153,11 @@ def test_reviewer_logs_in_corrects_a_place_and_sees_the_history(console, browser
         expect(page.locator(".gc-item")).to_have_count(1)
         page.get_by_role("tab", name="Registro de cambios").click()
         expect(page.locator(".gc-audit-row").first).to_contain_text("corrigió")
+        expect(page.locator("#list")).to_be_hidden()
         page.get_by_role("button", name="Salir").click()
         expect(page.get_by_role("heading", name="Ingresar")).to_be_visible()
+        expect(page.get_by_role("button", name="Salir")).to_be_hidden()
+        expect(page.locator("#app-view")).to_be_hidden()
         assert not errors, errors
         # La lista pública que lee el pipeline ya trae la corrección, sin nombres.
         pub = page.request.get(console + "api/geo/overrides").json()
