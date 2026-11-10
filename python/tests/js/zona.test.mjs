@@ -213,3 +213,16 @@ it('las preguntas frecuentes dicen que no es una alerta, de cuándo son los dato
   for (const must of ['no emite alertas', 'censo 2017', 'áreas de mayor susceptibilidad', 'no los combina', 'No se envía a ningún servidor', 'INDECI']) assert.ok(text.includes(must), must);
   for (const [q, a] of FAQ) { assert.ok(q.startsWith('¿') && q.endsWith('?'), q); assert.ok(a.length > 40); }
 });
+
+it('la fuente del escenario dice de cuándo es la copia y qué pasa si no se pudo renovar', async () => {
+  const { scenarioFreshness } = await import('../../../public/assets/js/zona.js');
+  const base = { scenario: { id: '102', from: '2026-11', until: '2027-01', prepared: '2026-10' } };
+  const daily = scenarioFreshness({ ...base, retrievedAt: '2026-11-10T04:40:00+00:00', listed: { next: { from: '2027-01', until: '2027-03' } } }, '2026-11');
+  assert.match(daily, /consulta el SIGRID cada día; esta tabla se bajó el/);
+  assert.match(daily, /ya publicó el siguiente, para enero a marzo de 2027/);
+  const kept = scenarioFreshness({ ...base, retrievedAt: '2026-11-01T04:40:00+00:00', carried: true, problem: 'la lista de escenarios del SIGRID no respondió' }, '2026-11');
+  assert.match(kept, /No se pudo consultar el SIGRID en la última actualización \(la lista de escenarios del SIGRID no respondió\): es el último leído/);
+  assert.match(scenarioFreshness({ ...base, bundled: true }, '2026-11'), /copia incluida en el sitio/);
+  assert.match(scenarioFreshness({ ...base, seed: true, retrievedAt: null }, '2026-11'), /copia incluida en el sitio/);
+  assert.match(scenarioFreshness({ ...base, retrievedAt: '2026-11-10' }, '2027-02'), /Su vigencia terminó en enero de 2027/);
+});

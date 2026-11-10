@@ -124,7 +124,10 @@ Cada dato del sitio tiene uno de cuatro estados, según el calendario de su inst
 
 El resultado va en `dashboard.json` (`freshness`). Cada vista muestra un panel «Vigencia de los datos» con el
 peor estado de sus paneles, un resumen que nombra lo atrasado y lo que falta y, desplegado, cada dato con su
-fecha, fuente y próxima publicación esperada. El mapa reporta el OISST semanal, que es lo que dibuja. Un dato
+fecha, fuente y próxima publicación esperada. El mapa reporta el OISST semanal, que es lo que dibuja. «Mi zona»
+reporta las alertas y el escenario de riesgo por distrito del CENEPRED, que es vencido cuando termina su vigencia y
+atrasado si se conservó el anterior o si, quince días después del mes siguiente a su inicio, no hay uno más nuevo
+(`cenepred_escenario.freshness_item`; ver [mi-zona](mi-zona.md)). Un dato
 del informe que el panel da por vencido no se muestra como actual. Los datos atrasados quedan como
 incidencia `late-<id>`. Las noticias cuentan como fallidas las fuentes omitidas por servidor caído o por
 tiempo; solo no cuentan las que `robots.txt` no permite.

@@ -31,8 +31,15 @@ const KM_PER_DEG = 111.32;
 const collator = new Intl.Collator('es');
 /** El escenario por distrito del CENEPRED; se pide una vez. Si falla, la página lo dice y sigue. */
 let SCENARIO = null;
-const scenario = () => (SCENARIO ||= fetch('assets/capas/escenario-distritos.json', { cache: 'no-cache' })
-  .then((r) => { if (!r.ok) throw new Error(`escenario-distritos.json: HTTP ${r.status}`); return r.json(); })
+/** El escenario por distrito: primero el que publica la actualización diaria (data/escenario-distritos.json, leído
+ * cada día del SIGRID por ``enso.cenepred_escenario``) y, si falta o no se puede leer, la copia incluida en el sitio. */
+const usable = (S) => (S && S.districts && Object.keys(S.districts).length && S.scenario ? S : null);
+const scenario = (load) => (SCENARIO ||= Promise.resolve()
+  .then(() => (load ? load('escenario-distritos.json') : null))
+  .catch((e) => { console.warn(e); return null; })
+  .then((S) => usable(S) || fetch('assets/capas/escenario-distritos.json', { cache: 'no-cache' })
+    .then((r) => { if (!r.ok) throw new Error(`escenario-distritos.json: HTTP ${r.status}`); return r.json(); })
+    .then((B) => (usable(B) ? { ...B, bundled: true } : null)))
   .catch((e) => { console.warn(e); SCENARIO = null; return null; }));
 /** «A, B y C». */
 export const joinEs = (l) => (l.length > 1 ? `${l.slice(0, -1).join(', ')} y ${l[l.length - 1]}` : l[0] || '');
@@ -145,6 +152,25 @@ export function scenarioPeriod(sc) {
   return sc.from.slice(0, 4) === sc.until.slice(0, 4) ? `${a.split(' de ')[0]} a ${b}` : `${a} a ${b}`;
 }
 
+/** De cuándo es la copia del escenario que se muestra y qué pasa si no se pudo renovar (texto llano). ``today``:
+ * «AAAA-MM» (por omisión, el mes de hoy). */
+export function scenarioFreshness(S, today = new Date().toISOString().slice(0, 7)) {
+  const parts = [];
+  const sc = S?.scenario || {};
+  const day = (iso) => (iso ? F.fmtDate(String(iso).slice(0, 10)) : '');
+  if (S?.bundled || S?.seed || !S?.retrievedAt) {
+    parts.push('Es la copia incluida en el sitio: la actualización diaria no pudo leer el SIGRID.');
+  } else if (S.carried) {
+    parts.push(`No se pudo consultar el SIGRID en la última actualización${S.problem ? ` (${S.problem})` : ''}: es el último leído, del ${day(S.retrievedAt)}.`);
+  } else {
+    parts.push(`El observatorio consulta el SIGRID cada día; esta tabla se bajó el ${day(S.retrievedAt)}.`);
+  }
+  if (sc.until && sc.until < today) parts.push(`Su vigencia terminó en ${monthEs(sc.until)}.`);
+  const nxt = S?.listed?.next;
+  if (nxt && nxt.from) parts.push(`El CENEPRED ya publicó el siguiente, para ${scenarioPeriod(nxt)}: se mostrará cuando empiece.`);
+  return parts.join(' ');
+}
+
 /** Si un aviso toca el lugar: un código del aviso es el lugar, lo contiene o está dentro de él. */
 export function touches(alert, code) {
   return (alert.geo?.places || []).some((p) => p.code && (p.code.startsWith(code) || code.startsWith(p.code)));
@@ -232,7 +258,7 @@ function scenarioArea(S, a) {
 function scenarioPart(S, area) {
   if (!S?.districts || !Object.keys(S.districts).length) return html`<p class="muted" id="zn-rie-none">No se pudo cargar el escenario del CENEPRED. Vuelva a intentarlo más tarde.</p>`;
   const sc = S.scenario || {};
-  const source = html`<p class="muted small" id="zn-rie-src">Fuente: CENEPRED, SIGRID, escenario de riesgo por lluvias para ${scenarioPeriod(sc)}, elaborado en ${monthEs(sc.prepared)}. <a href="${safeUrl(S.url)}" rel="noopener" target="_blank">Página de escenarios del SIGRID</a>${S.document ? html` · <a href="${safeUrl(S.document)}" rel="noopener" target="_blank">documento del escenario</a>` : ''} · <a href="${safeUrl(S.table)}" rel="noopener">tabla original (ZIP)</a>. Es una copia de esa fecha: el CENEPRED publica escenarios nuevos durante el año.</p>`;
+  const source = html`<p class="muted small" id="zn-rie-src">Fuente: CENEPRED, SIGRID, escenario de riesgo por lluvias para ${scenarioPeriod(sc)}, elaborado en ${monthEs(sc.prepared)}. <a href="${safeUrl(S.url)}" rel="noopener" target="_blank">Página de escenarios del SIGRID</a>${S.document ? html` · <a href="${safeUrl(S.document)}" rel="noopener" target="_blank">documento del escenario</a>` : ''} · <a href="${safeUrl(S.table)}" rel="noopener">tabla original (ZIP)</a>${/^archive\/sources\/[a-z0-9-]+\/[0-9a-f]{12}\.zip$/.test(S.archive || '') ? html` · <a href="${safeUrl('data/' + S.archive)}" rel="noopener" title="Copia del ZIP que bajó el observatorio">copia archivada</a>` : ''}${S.bundled ? '' : html` · <a href="data/csv/escenario-distritos.csv" download>todos los distritos (CSV)</a>`}. ${scenarioFreshness(S)}</p>`;
   if (area.length === 6) {
     const d = districtScenario(S, area);
     return d ? html`${scenarioDistrict(S, d)}${source}` : html`<p id="zn-rie-none">Este distrito no está en la tabla del escenario del CENEPRED. <strong>Eso no quiere decir que aquí no haya riesgo.</strong> Mire su provincia.</p>${source}`;
@@ -267,7 +293,7 @@ function riskCard(S, K, area) {
 /** Preguntas que la página debe responder sin que nadie la explique: qué es, de cuándo es y qué no dice. */
 export const FAQ = [
   ['¿Esto es una alerta?', 'No. El observatorio no emite alertas ni recomendaciones de emergencia. Los avisos de la sección «Hoy» son los que publican el SENAMHI, el INDECI y otras instituciones, con el nivel que dio cada una y un enlace al original.'],
-  ['¿De cuándo son los datos?', 'Cada bloque dice su fecha. La frecuencia de daños usa las temporadas 1970-71 a 2014-15 de DesInventar; los registros llegan hasta el último que figura arriba. Los avisos son los vigentes al abrir la página. El riesgo esperado es el escenario del CENEPRED cuyo periodo y mes de elaboración figuran en su título y en su fuente: es una copia de esa fecha, y el CENEPRED publica escenarios nuevos durante el año.'],
+  ['¿De cuándo son los datos?', 'Cada bloque dice su fecha. La frecuencia de daños usa las temporadas 1970-71 a 2014-15 de DesInventar; los registros llegan hasta el último que figura arriba. Los avisos son los vigentes al abrir la página. El riesgo esperado es el escenario del CENEPRED vigente hoy, con su periodo en el título y su mes de elaboración en la fuente: el observatorio consulta el SIGRID cada día y cambia de escenario cuando el CENEPRED publica uno nuevo. El panel «¿Qué tan recientes son estos datos?» dice si está al día.'],
   ['¿Por qué hay dos niveles de riesgo?', 'Porque el CENEPRED evalúa por separado los movimientos en masa (huaycos y deslizamientos) y las inundaciones, y un distrito puede estar bajo en uno y muy alto en el otro. La página muestra siempre los dos y nombra el más alto; no los combina en un nivel propio.'],
   ['¿Qué cuenta como persona o vivienda en el riesgo esperado?', 'Las que el CENEPRED ubica en las áreas de mayor susceptibilidad del distrito, no todo el distrito. Por eso un distrito puede tener un nivel alto y cero viviendas: el nivel también pesa la vulnerabilidad. En el detalle por manzana son las personas y viviendas del censo 2017.'],
   ['¿Un nivel bajo, o pocos registros, quiere decir que es seguro?', 'No. El nivel es un resumen del distrito, y la historia cuenta solo lo que alguien registró. Una quebrada, una ladera o la ribera de un río pueden ser peligrosas en un distrito con nivel bajo o con pocos registros.'],
@@ -338,7 +364,7 @@ export const zonaView = {
       root.innerHTML = String(html`<div class="notice notice-warn">${raw(ICON.triangle)}<p>No se pudo cargar el catálogo histórico. Puede descargarlo directamente: <a href="assets/historico/eventos.zip" download>CSV (en un ZIP)</a>.</p></div>`);
       return;
     }
-    const [feed, K, S] = await Promise.all([load('feed.json').catch(() => null), blocks(), scenario()]);
+    const [feed, K, S] = await Promise.all([load('feed.json').catch(() => null), blocks(), scenario(load)]);
     if (!root.isConnected) return;
     const labels = placeLabels(D.sum.nombres);
     const byCode = new Map([...labels].map(([l, c]) => [c, l]));

@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-11-09T20:02:44+00:00",
+ "generated_at": "2026-11-10T05:25:44+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -11712,6 +11712,59 @@
      "status": "geoblocked",
      "channels": [
       "peru-server"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "cenepred-sigrid-escenarios",
+   "group": "cenepred",
+   "name": "SIGRID: escenarios de riesgo por lluvias, pronóstico trimestral (lista y tablas por distrito)",
+   "institution": "CENEPRED",
+   "url": "https://sigrid.cenepred.gob.pe/sigridv3/escenario-trimestral/data-mm",
+   "expect": "json",
+   "method": "hidden-api",
+   "kind": "document-list",
+   "home": "https://sigrid.cenepred.gob.pe/sigridv3/escenarios",
+   "alt_urls": [],
+   "hazards": [
+    "lluvias",
+    "huaico",
+    "inundacion"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.cenepred_escenario:acquire",
+   "needs_browser": false,
+   "follow": {
+    "pattern": "\"id\"\\s*:\\s*\"(\\d{1,6})\"",
+    "template": "https://sigrid.cenepred.gob.pe/sigridv3/storage/escenario_trimestral/{1}_tabla.zip",
+    "max": 3,
+    "order": "desc"
+   },
+   "archive": true,
+   "notes": "la tabla de cada escenario es un ZIP con dos libros de Excel; robots.txt prohíbe /sigridv3/storage/ y se pide igual por ser una entidad pública del Perú, con su Crawl-delay",
+   "tier": 3,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions",
+    "n8n"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://sigrid.cenepred.gob.pe/sigridv3/escenario-trimestral/data-mm": {
+     "status": "unknown",
+     "channels": [
+      "actions",
+      "n8n"
      ],
      "robots": "allowed"
     }

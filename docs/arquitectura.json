@@ -100,6 +100,18 @@
     "evidence": "python/tools/peru_collector.py#SOURCES, #plan; python/enso/registry.py#_COLLECTOR_READERS, #_collector_entries, #channels_for; python/enso/senamhi_avisos.py#load, #from_relay; python/enso/sourcefeed.py#levels_table"
    },
    {
+    "id": "cenepred-scenarios",
+    "group": "sources",
+    "col": "sources",
+    "name_es": "Escenario de riesgo por lluvias del CENEPRED (SIGRID)",
+    "name_en": "CENEPRED rainfall risk scenario (SIGRID)",
+    "what_es": "La lista pública de escenarios trimestrales del SIGRID y, de cada uno, un ZIP con dos libros de Excel: el nivel de riesgo por huaicos y por inundaciones de cada distrito y lo expuesto en sus áreas de mayor susceptibilidad.",
+    "what_en": "SIGRID's public list of quarterly scenarios and, for each one, a ZIP with two Excel workbooks: every district's risk level for mass movements and for floods, and what is exposed in its most susceptible areas.",
+    "details_es": "Página https://sigrid.cenepred.gob.pe/sigridv3/escenarios, sin inicio de sesión. La lista (escenario-trimestral/data-mm, JSON) no viene ordenada; el ZIP es storage/escenario_trimestral/<número>_tabla.zip. Actions pide la lista y el ZIP del escenario vigente hoy (dos pedidos, con el Crawl-delay de 5 s del SIGRID); n8n y el Perú bajan la lista y, por la regla follow con template del registro, el ZIP de los 3 escenarios de número más alto. robots.txt prohíbe /sigridv3/storage/: se pide igual por ser una entidad pública del Perú (decisión del 26 de octubre de 2026). Los servicios /arcgis/ piden token (499) y no se usan.",
+    "details_en": "Page https://sigrid.cenepred.gob.pe/sigridv3/escenarios, no login. The list (escenario-trimestral/data-mm, JSON) is not sorted; the ZIP is storage/escenario_trimestral/<number>_tabla.zip. Actions requests the list and the ZIP of the scenario in force today (two requests, with SIGRID's 5 s Crawl-delay); n8n and Peru download the list and, through the registry's follow rule with a template, the ZIP of the 3 highest-numbered scenarios. robots.txt disallows /sigridv3/storage/: it is requested anyway because it is a Peruvian public institution (decision of 26 October 2026). The /arcgis/ services ask for a token (499) and are not used.",
+    "evidence": "python/enso/cenepred_escenario.py#LIST_URL, #TABLE_URL, #FOLLOW, #acquire; python/enso/registry.py#_escenario_entries; python/tools/peru_collector.py#FIXED_FOLLOW, #follow_links; n8n/nodes/segunda.js"
+   },
+   {
     "id": "news-feeds",
     "group": "sources",
     "col": "sources",
@@ -185,8 +197,8 @@
     "what_en": "A program on a computer inside Peru that every night downloads what does not answer from abroad (ENFEN portal, SENAMHI, ANA) plus its own copy of the ICEN, and pushes it to the data-peru branch.",
     "meta_es": "21:00 Lima; reintentos hasta las 23:30",
     "meta_en": "21:00 Lima; retries until 23:30",
-    "details_es": "Tarea programada (Windows, macOS o Linux): 21:00 Lima, reintentos cada 30 min hasta las 23:30 y al encender; solo recolecta si falta la copia de esa noche. Las 17 URL de su lista fija más las URL peru-server del registro que no estén en ella, y los PDF del ENFEN (comunicados y los dos últimos informes técnicos, hasta 20 MB; el listado de informes, si el registro se lo asigna, se pide una vez con las URL del registro y se reutiliza) y, del repositorio del IMARPE, las búsquedas, paquetes y PDF que pide el sitio (comunicado e informe más recientes y los boletines BS-OBP que el historial del kit no tiene), con las mismas URL. Usa el mismo clasificador de alcance (reach.py), respeta robots.txt en vivo, no guarda páginas antirobots, conserva 72 h la última copia buena, 25 min de plazo y mide hasta 60 URL sin medición del Perú. Avisa en el escritorio tras 2 fallas o si el token vence en menos de 21 días.",
-    "details_en": "Scheduled task (Windows, macOS or Linux): 21:00 Lima, retries every 30 min until 23:30 and at startup; it only collects if that night's copy is missing. The 17 URLs on its fixed list plus the registry's peru-server URLs not already on it, and the ENFEN PDFs (communiqués and the two latest technical reports, up to 20 MB; the report listing, when the registry assigns it, is fetched once with the registry URLs and reused) and, from IMARPE's repository, the searches, bundles and PDFs the site asks for (latest communiqué and report and the BS-OBP bulletins missing from the kit's history), under the same URLs. It uses the same reach classifier (reach.py), honours robots.txt live, never stores anti-bot pages, keeps the last good copy for 72 h, has a 25 min limit and probes up to 60 URLs not yet measured from Peru. It shows a desktop notice after 2 failures or if the token expires in under 21 days.",
+    "details_es": "Tarea programada (Windows, macOS o Linux): 21:00 Lima, reintentos cada 30 min hasta las 23:30 y al encender; solo recolecta si falta la copia de esa noche. Las 18 URL de su lista fija más las URL peru-server del registro que no estén en ella, y los PDF del ENFEN (comunicados y los dos últimos informes técnicos, hasta 20 MB; el listado de informes, si el registro se lo asigna, se pide una vez con las URL del registro y se reutiliza) y, del repositorio del IMARPE, las búsquedas, paquetes y PDF que pide el sitio (comunicado e informe más recientes y los boletines BS-OBP que el historial del kit no tiene), con las mismas URL. Usa el mismo clasificador de alcance (reach.py), respeta robots.txt en vivo, no guarda páginas antirobots, conserva 72 h la última copia buena, 25 min de plazo y mide hasta 60 URL sin medición del Perú. Avisa en el escritorio tras 2 fallas o si el token vence en menos de 21 días.",
+    "details_en": "Scheduled task (Windows, macOS or Linux): 21:00 Lima, retries every 30 min until 23:30 and at startup; it only collects if that night's copy is missing. The 18 URLs on its fixed list plus the registry's peru-server URLs not already on it, and the ENFEN PDFs (communiqués and the two latest technical reports, up to 20 MB; the report listing, when the registry assigns it, is fetched once with the registry URLs and reused) and, from IMARPE's repository, the searches, bundles and PDFs the site asks for (latest communiqué and report and the BS-OBP bulletins missing from the kit's history), under the same URLs. It uses the same reach classifier (reach.py), honours robots.txt live, never stores anti-bot pages, keeps the last good copy for 72 h, has a 25 min limit and probes up to 60 URLs not yet measured from Peru. It shows a desktop notice after 2 failures or if the token expires in under 21 days.",
     "evidence": "python/tools/peru_collector.py#SOURCES, #plan, #probe_targets, #fetch, #enfen_documents, #enfen_informes, #probe_registry, #push, #dispatch, #run_once, #CARRY_HOURS, #MAX_PROBES; python/tools/collector_schedule.py#lima_slots, #RETRY_EVERY_MIN; python/tools/collector_service.py#NOTIFY_AFTER, #TOKEN_WARN_DAYS, #is_due, #alert"
    },
    {
@@ -319,8 +331,8 @@
     "name_en": "Previous publication (live data/)",
     "what_es": "Lo que publicó la corrida anterior, leído por HTTP desde el sitio en vivo. Da el último dato válido de cada fuente, el histórico de noticias, el estado de los feeds y las correcciones de lugar.",
     "what_en": "What the previous run published, read over HTTP from the live site. It supplies each source's last valid value, the news history, feed status and place corrections.",
-    "details_es": "--previous ${SITE_URL}data. Lo que arrastra (sources/<id>.json, imarpe-bsobp.json y las copias de archive/) tiene 3 intentos; si uno los agota sin respuesta útil, el sitio se da por caído y los siguientes se piden una vez hasta que uno responda o pasen 2 min. news/items.jsonl y news/feeds.json también tienen 3 intentos; geo/overrides.json, uno. Distingue ok, missing (404/410) y unreachable: si una fuente falla y su último dato no se pudo leer, anota previous-unreachable. El tope de 8 min de las fuentes oficiales no las corta, pero las de sources/ consumen ese tiempo.",
-    "details_en": "--previous ${SITE_URL}data. What it carries (sources/<id>.json, imarpe-bsobp.json and the archive/ copies) gets 3 tries; if one runs out without a usable answer, the site counts as down and the next ones get one try until one answers or 2 min pass. news/items.jsonl and news/feeds.json also get 3 tries; geo/overrides.json, one. Tells ok, missing (404/410) and unreachable apart: if a source fails and its last value could not be read, it logs previous-unreachable. The 8 min official cap does not cut them off, but the sources/ reads use up that time.",
+    "details_es": "--previous ${SITE_URL}data. Lo que arrastra (sources/<id>.json, imarpe-bsobp.json, escenario-distritos.json y las copias de archive/) tiene 3 intentos; si uno los agota sin respuesta útil, el sitio se da por caído y los siguientes se piden una vez hasta que uno responda o pasen 2 min. news/items.jsonl y news/feeds.json también tienen 3 intentos; geo/overrides.json, uno. Distingue ok, missing (404/410) y unreachable: si una fuente falla y su último dato no se pudo leer, anota previous-unreachable. El tope de 8 min de las fuentes oficiales no las corta, pero las de sources/ consumen ese tiempo.",
+    "details_en": "--previous ${SITE_URL}data. What it carries (sources/<id>.json, imarpe-bsobp.json, escenario-distritos.json and the archive/ copies) gets 3 tries; if one runs out without a usable answer, the site counts as down and the next ones get one try until one answers or 2 min pass. news/items.jsonl and news/feeds.json also get 3 tries; geo/overrides.json, one. Tells ok, missing (404/410) and unreachable apart: if a source fails and its last value could not be read, it logs previous-unreachable. The 8 min official cap does not cut them off, but the sources/ reads use up that time.",
     "evidence": "python/enso/observatory.py#PreviousPublication, #PreviousPublication.TRIES, #PreviousPublication.DOWN_S, #acquire; python/enso/archive.py#write_sources, #carry; .github/workflows/observatory.yml:230"
    },
    {
@@ -449,9 +461,9 @@
     "col": "site",
     "name_es": "Archivos publicados (data/)",
     "name_en": "Published files (data/)",
-    "what_es": "Lo que se publica: dashboard.json, series y CSV, estado de las 17 fuentes, feed.json, news/, geo/, manual-needed.json, imarpe-bsobp.json, run-report.json, manifest.json y data/archive/ con las copias archivadas.",
-    "what_en": "What gets published: dashboard.json, series and CSVs, the status of the 17 sources, feed.json, news/, geo/, manual-needed.json, imarpe-bsobp.json, run-report.json, manifest.json and data/archive/ with the archived copies.",
-    "details_es": "Cada JSON propio (no las copias de terceros) lleva schema observatorio-enso/4, publicationId y generatedAt. data/archive/: respuesta original y PDF de cada fuente oficial (archive/sources/; cpc-godas-d20 archiva el D20 calculado por mes en JSON, con las URL de los GRIB leídos), cada feed bajado (archive/feeds/) y una página por día de noticias (60 días); máx. 20 MiB por copia. geo/items.json: 120 días, máx. 4000 notas.",
+    "what_es": "Lo que se publica: dashboard.json, series y CSV, estado de las 17 fuentes, feed.json, news/, geo/, manual-needed.json, imarpe-bsobp.json, escenario-distritos.json (el escenario del CENEPRED por distrito, para «Mi zona»), run-report.json, manifest.json y data/archive/ con las copias archivadas.",
+    "what_en": "What gets published: dashboard.json, series and CSVs, the status of the 17 sources, feed.json, news/, geo/, manual-needed.json, imarpe-bsobp.json, escenario-distritos.json (CENEPRED's scenario by district, for «Mi zona»), run-report.json, manifest.json and data/archive/ with the archived copies.",
+    "details_es": "Cada JSON propio (no las copias de terceros) lleva schema observatorio-enso/4, publicationId y generatedAt. data/archive/: respuesta original y PDF de cada fuente oficial (archive/sources/; cpc-godas-d20 archiva el D20 calculado por mes en JSON, con las URL de los GRIB leídos; cenepred-escenario, el ZIP del escenario del CENEPRED), cada feed bajado (archive/feeds/) y una página por día de noticias (60 días); máx. 20 MiB por copia. geo/items.json: 120 días, máx. 4000 notas.",
     "details_en": "Every own JSON (not the third-party copies) carries schema observatorio-enso/4, publicationId and generatedAt. data/archive/: original response and PDF of each official source (archive/sources/; cpc-godas-d20 archives the computed monthly D20 as JSON, with the URLs of the GRIB files read), each downloaded feed (archive/feeds/) and one page per news day (60 days); max 20 MiB per copy. geo/items.json: 120 days, max 4000 items.",
     "evidence": "python/enso/observatory.py#write_publication; python/enso/archive.py#Writer, #write_sources, #write_feeds, #write_news_days, #MAX_BYTES; python/enso/geo_overrides.py#console_items, #console_gazetteer; python/enso/manual.py#ManualNeeds, #dump"
    },
@@ -800,6 +812,42 @@
     "when_es": "diario 22:50 Lima",
     "when_en": "daily 22:50 Lima",
     "evidence": "python/enso/registry.py#_collector_entries, #channels_for; n8n/nodes/fuentes.js; python/enso/senamhi_avisos.py#load"
+   },
+   {
+    "from": "cenepred-scenarios",
+    "to": "fetch",
+    "kind": "data",
+    "label_es": "lista y ZIP vigente",
+    "label_en": "list and current ZIP",
+    "explain_es": "La corrida diaria pide la lista de escenarios, elige el vigente hoy (entre varios, el elaborado más recientemente) y baja su ZIP. Si no llega, usa la copia de n8n o del Perú de esa misma URL y, si tampoco, conserva el escenario publicado.",
+    "explain_en": "The daily run requests the scenario list, picks the one in force today (among several, the most recently prepared) and downloads its ZIP. If it does not arrive, it uses the n8n or Peru copy of that same URL and, failing that, keeps the published scenario.",
+    "when_es": "diario 23:37 Lima",
+    "when_en": "daily 23:37 Lima",
+    "evidence": "python/enso/cenepred_escenario.py#acquire, #choose; python/enso/observatory.py#acquire_escenario"
+   },
+   {
+    "from": "cenepred-scenarios",
+    "to": "n8n-collector",
+    "kind": "data",
+    "label_es": "lista y 3 ZIP",
+    "label_en": "list and 3 ZIPs",
+    "explain_es": "n8n baja la lista y, en su segunda pasada, el ZIP de los tres escenarios de número más alto (regla follow con template y order desc), con el Crawl-delay del SIGRID entre pedidos.",
+    "explain_en": "n8n downloads the list and, in its second pass, the ZIP of the three highest-numbered scenarios (follow rule with template and order desc), with SIGRID's Crawl-delay between requests.",
+    "when_es": "diario 22:50 Lima",
+    "when_en": "daily 22:50 Lima",
+    "evidence": "n8n/nodes/segunda.js; registry/sources.json"
+   },
+   {
+    "from": "cenepred-scenarios",
+    "to": "peru-collector",
+    "kind": "data",
+    "label_es": "lista y 3 ZIP (kit 3)",
+    "label_en": "list and 3 ZIPs (kit 3)",
+    "explain_es": "El recolector del Perú tiene la lista en su lista fija y sigue la misma regla para bajar los ZIP: un respaldo por si el SIGRID deja de responder fuera del país.",
+    "explain_en": "The Peru collector has the list in its fixed list and follows the same rule to download the ZIPs: a fallback in case SIGRID stops answering outside the country.",
+    "when_es": "diario 21:00 Lima",
+    "when_en": "daily 21:00 Lima",
+    "evidence": "python/tools/peru_collector.py#FIXED_FOLLOW, #follow_links"
    },
    {
     "from": "news-feeds",
@@ -1831,6 +1879,7 @@
      "noaa",
      "hazard-alerts",
      "peru-archive-pages",
+     "cenepred-scenarios",
      "robots-txt"
     ]
    },

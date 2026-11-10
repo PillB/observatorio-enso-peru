@@ -95,6 +95,8 @@ function lowerHeaders(headers) {
 function detectFormat(bytes, contentType) {
   if (!bytes.length) return 'empty';
   if (bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46) return 'pdf';
+  // ZIP (p. ej. la tabla de un escenario del CENEPRED), como ``detect`` en python/enso/reach.py.
+  if (bytes[0] === 0x50 && bytes[1] === 0x4b && bytes[2] === 0x03 && bytes[3] === 0x04) return 'zip';
   let head = latin1(bytes, 4096);
   if (head.charCodeAt(0) === 0xef && head.charCodeAt(1) === 0xbb && head.charCodeAt(2) === 0xbf) head = head.slice(3);
   head = head.replace(/^[\s\u0000]+/, '');
@@ -258,6 +260,8 @@ function classifyRaw(r) {
     if (!st2.items) { out.verdict = 'empty'; out.note = 'feed sin entradas'; return out; }
   } else if (expect === 'pdf') {
     if (out.detected !== 'pdf') { out.verdict = 'wrong_type'; out.note = `se esperaba PDF y llegó ${out.detected}`; return out; }
+  } else if (expect === 'zip') {
+    if (out.detected !== 'zip') { out.verdict = 'wrong_type'; out.note = `se esperaba ZIP y llegó ${out.detected}`; return out; }
   } else if (expect === 'json') {
     if (out.detected !== 'json' && out.detected !== 'jsonfeed') { out.verdict = 'wrong_type'; out.note = `se esperaba JSON y llegó ${out.detected}`; return out; }
     try { JSON.parse(utf8Decode(bytes)); } catch (e) { out.verdict = 'parse_error'; out.note = 'JSON inválido'; return out; }
@@ -301,6 +305,7 @@ function reachClass(c) {
 /** Extensión del archivo guardado según el formato detectado. */
 function fileExtension(detected) {
   if (detected === 'pdf') return 'pdf';
+  if (detected === 'zip') return 'zip';
   if (detected === 'json' || detected === 'jsonfeed') return 'json';
   if (['rss', 'atom', 'rdf', 'xml'].includes(detected)) return 'xml';
   if (detected === 'html') return 'html';

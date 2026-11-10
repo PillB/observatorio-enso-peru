@@ -159,7 +159,8 @@ el canal que decide quién la pide, en `registry/sources.json`.
 | IMARPE, sitio web (`www.imarpe.gob.pe`) | La portada y la página de sección dan HTTP 403 con verificación anti-robots (se registra, no se evade); el feed y su robots.txt, según el ejecutor de Actions (2 de 3 lecturas el 26 de octubre). Desde n8n responden los tres | Feed en las noticias cuando Actions lo alcanza o n8n trae copia; las dos páginas las bajan n8n y el recolector del Perú como archivo, sin lector todavía |
 | SENAMHI (avisos, estaciones, boletines) | Tiempo de espera agotado | No disponible desde Actions |
 | ANA (caudales, SNIRH) | Tiempo de espera agotado | No disponible desde Actions |
-| INDECI, CENEPRED (SIGRID) | Responden | Candidatos |
+| INDECI | Responde | Candidato |
+| CENEPRED, SIGRID: página pública de escenarios (`sigridv3/escenario-trimestral/data-mm` y `storage/escenario_trimestral/<número>_tabla.zip`) | Responde, sin inicio de sesión; `/arcgis/` pide token (499) | En uso: escenario de riesgo por lluvias por distrito en «Mi zona» (`cenepred-sigrid-escenarios` en el registro; Actions, n8n y el recolector del Perú) |
 | CHIRPS (lluvia satelital) | Responde | Candidato |
 | NASA GPM IMERG | El índice responde; los datos piden cuenta Earthdata | Requiere credencial |
 | CIIFEN, INAMHI, INOCAR, IDEAM | Responden | Candidatos regionales |

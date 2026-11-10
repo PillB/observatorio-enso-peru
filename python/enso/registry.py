@@ -81,7 +81,7 @@ REGISTRY = ROOT / "registry" / "sources.json"
 REACHABILITY = ROOT / "registry" / "reachability.json"
 
 METHODS = {"api": 1, "feed": 1, "download": 1, "html": 2, "hidden-api": 3, "browser": 4, "hosted": 5}
-EXPECT = {"rss", "html", "pdf", "json", "text", "csv"}
+EXPECT = {"rss", "html", "pdf", "json", "text", "csv", "zip"}
 CHANNELS = ("actions", "n8n", "peru-server")
 #: Clases de resultado de una medición (el mismo clasificador en Actions, n8n y el Perú).
 CLASSES = {"ok", "http-403", "http-4xx", "http-5xx", "timeout", "connect", "dns", "tls", "challenge", "empty", "robots"}
@@ -119,7 +119,10 @@ class Entry:
     parser: str = ""  # «módulo:función» que interpreta la respuesta (en Actions)
     scraper: Optional[str] = None  # «módulo:función» para recorridos de varios pasos
     needs_browser: bool = False
-    follow: Optional[dict] = None  # {"pattern": regex, "max": n}: documentos enlazados desde un listado
+    #: Documentos enlazados desde un listado: {"pattern": regex, "max": n}; con "template" (p. ej.
+    #: ".../{1}_tabla.zip"), el enlace se arma con el primer grupo del patrón, y con "order": "desc" se toman primero
+    #: los de número mayor (n8n: nodo «Segunda pasada»; servidor del Perú: ``peru_collector.follow_links``).
+    follow: Optional[dict] = None
     department: Optional[str] = None
     archive: bool = True  # se publica la copia descargada como respaldo
     notes: str = ""
@@ -230,6 +233,21 @@ def _report_entries() -> list[Entry]:
               home=repo.BASE, hazards=["enso"], parser="enso.feeds.imarpe_bsobp:acquire", n8n=False,
               notes=_REPO_NO_N8N),
     ]
+
+
+def _escenario_entries() -> list[Entry]:
+    """La lista de escenarios de riesgo por lluvias del SIGRID (CENEPRED) y, por su regla ``follow``, el ZIP con la
+    tabla por distrito de los de número más alto: la actualización diaria la pide directo y usa las copias de n8n y
+    del Perú si el SIGRID no le responde (``enso.cenepred_escenario``)."""
+    from . import cenepred_escenario as CE
+
+    return [Entry(id="cenepred-sigrid-escenarios", group="cenepred",
+                  name="SIGRID: escenarios de riesgo por lluvias, pronóstico trimestral (lista y tablas por distrito)",
+                  institution="CENEPRED", url=CE.LIST_URL, expect="json", method="hidden-api", kind="document-list",
+                  home=CE.PAGE, hazards=["lluvias", "huaico", "inundacion"], parser="enso.cenepred_escenario:acquire",
+                  follow=dict(CE.FOLLOW),
+                  notes="la tabla de cada escenario es un ZIP con dos libros de Excel; robots.txt prohíbe "
+                        "/sigridv3/storage/ y se pide igual por ser una entidad pública del Perú, con su Crawl-delay")]
 
 
 #: Servidores con archivos de desastres pasados (pestaña «Memoria de desastres») que no responden fuera del Perú:
@@ -510,7 +528,7 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
     medición más reciente (no el reloj): así el registro no cambia solo con el paso de los días."""
     reach = load_reachability() if reach is None else reach
     ref = now or newest_at(reach)
-    entries = _feed_entries() + _source_entries() + _report_entries() + _memoria_entries()
+    entries = _feed_entries() + _source_entries() + _report_entries() + _escenario_entries() + _memoria_entries()
     known = {e.url for e in entries} | {u for e in entries for u in e.alt_urls}
     entries += _collector_entries(known)
     sources = []

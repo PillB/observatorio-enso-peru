@@ -37,10 +37,25 @@ for (let i = 0; i < items.length; i++) {
     try { rx = new RegExp(j.follow.pattern, 'gi'); } catch (e) { continue; }
     // Solo enlaces del mismo servidor que la página: el robots.txt de otro servidor no se leyó.
     const host = (u) => ((/^https?:\/\/([^/?#]+)/i.exec(u) || [])[1] || '').toLowerCase();
-    const found = [...new Set((text.match(rx) || []).map((u) => u.replace(/&amp;/g, '&')))]
-      .filter((u) => host(u) === host(j.url)).slice(0, Number(j.follow.max) || 8);
+    // Con «template», el enlace se arma con el primer grupo del patrón (p. ej. el número de cada escenario del
+    // CENEPRED en la lista JSON → su ZIP), y con «order: desc» van primero los de número mayor (la lista no viene
+    // ordenada). Igual que ``follow_links`` en python/tools/peru_collector.py.
+    const tpl = typeof j.follow.template === 'string' ? j.follow.template : null;
+    let caps = [];
+    for (const m of text.replace(/\\\//g, '/').matchAll(rx)) {
+      const cap = m.length > 1 && m[1] !== undefined ? m[1] : m[0];
+      if (tpl) { if (/^[A-Za-z0-9._-]{1,64}$/.test(cap)) caps.push(tpl.replace('{1}', cap)); }
+      else caps.push(cap.replace(/&amp;/g, '&'));
+    }
+    caps = [...new Set(caps)];
+    if (j.follow.order === 'desc') {
+      const num = (u) => { const d = u.match(/\d+/g); return d ? Number(d[d.length - 1]) : -1; };
+      caps.sort((a, b) => num(b) - num(a));
+    }
+    const found = caps.filter((u) => host(u) === host(j.url)).slice(0, Number(j.follow.max) || 8);
     for (const url of found) {
-      add({ id: `${j.id}:enlace`, group: j.group, name: `${j.name} (documento enlazado)`, url, expect: /\.pdf\b/i.test(url) ? 'pdf' : 'any' });
+      const expect = /\.pdf\b/i.test(url) ? 'pdf' : /\.zip(?:[?#]|$)/i.test(url) ? 'zip' : 'any';
+      add({ id: `${j.id}:enlace`, group: j.group, name: `${j.name} (documento enlazado)`, url, expect, robots_public: j.robots_public, crawl_delay: j.crawl_delay });
     }
   }
 }
