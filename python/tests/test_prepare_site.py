@@ -27,6 +27,7 @@ def test_rewrites_address_and_hides_repo(site):
     index = (site / "index.html").read_text(encoding="utf-8")
     assert '<link rel="canonical" href="https://observatorio-enso.pages.dev/">' in index
     assert 'content="https://observatorio-enso.pages.dev/og-image.png"' in index
+    assert 'id="admin-link" href="admin/"' in index  # en Cloudflare la consola sí funciona y se enlaza
     assert 'href="/assets/css/app.css"' in (site / "404.html").read_text(encoding="utf-8")
     assert "Sitemap: https://observatorio-enso.pages.dev/sitemap.xml" in (site / "robots.txt").read_text()
     headers = (site / "_headers").read_text()
@@ -38,7 +39,10 @@ def test_rewrites_address_and_hides_repo(site):
 def test_subpath_and_repo_kept_by_default(site):
     prepare(site, "https://example.org/enso/", hide_repo=False, cloudflare=False)
     assert 'href="/enso/assets/css/app.css"' in (site / "404.html").read_text(encoding="utf-8")
-    assert REPO_HOST in (site / "index.html").read_text(encoding="utf-8")
+    index = (site / "index.html").read_text(encoding="utf-8")
+    assert REPO_HOST in index
+    # Sin Cloudflare no hay consola: el botón «Ingresar» no se publica.
+    assert "admin/" not in index and "admin-link" not in index
     assert not (site / "_headers").exists()
 
 

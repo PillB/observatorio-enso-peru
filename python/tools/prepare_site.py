@@ -65,6 +65,10 @@ def prepare(site_dir: Path, site_url: str, hide_repo: bool, cloudflare: bool) ->
         s = s.replace(DEFAULT_URL, site_url)
         if name == "404.html":
             s = s.replace(f'"{DEFAULT_PATH}', f'"{path}')
+        # La consola de lugares (/admin/) solo funciona en Cloudflare Pages (Pages Function + D1): en otro
+        # servidor el botón «Ingresar» llevaría a una página que no puede iniciar sesión.
+        if not cloudflare and name == "index.html":
+            s = re.sub(r"\s*<!-- admin-link -->.*?<!-- /admin-link -->", "", s, flags=re.S)
         if hide_repo and name == "index.html":
             s = re.sub(r"\s*<!-- repo-links -->.*?<!-- /repo-links -->", "", s, flags=re.S)
         if s != orig:
