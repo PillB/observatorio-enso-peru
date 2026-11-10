@@ -65,12 +65,15 @@ def test_accounts_hash_only_and_stay_out_of_the_repo(tmp_path):
     assert oct((tmp_path / "GEO_USERS.json").stat().st_mode)[-3:] == "600"
 
 
-def test_public_site_does_not_link_the_console_or_the_repo():
+def test_console_is_reachable_from_the_header_but_kept_out_of_search():
     admin = (ROOT / "public" / "admin" / "index.html").read_text(encoding="utf-8")
     assert 'name="robots" content="noindex' in admin
     for f in (ROOT / "public" / "admin").iterdir():
         assert "github.com" not in f.read_text(encoding="utf-8").lower(), f
-    for f in ("index.html", "sitemap.xml", "robots.txt"):
+    # El botón «Ingresar» de la cabecera lleva a la consola (la API pide sesión para todo salvo «overrides»)...
+    assert 'id="admin-link" href="admin/"' in (ROOT / "public" / "index.html").read_text(encoding="utf-8")
+    # ...pero la consola no se ofrece a los buscadores.
+    for f in ("sitemap.xml", "robots.txt"):
         assert "admin/" not in (ROOT / "public" / f).read_text(encoding="utf-8"), f
 
 
@@ -114,8 +117,11 @@ def test_reviewer_logs_in_corrects_a_place_and_sees_the_history(console, browser
         page = ctx.new_page()
         errors = []
         page.on("pageerror", lambda e: errors.append(str(e)))
-        page.goto(console + "admin/")
         expect = pw.expect
+        # La consola se encuentra desde el sitio público: «Ingresar» en la cabecera.
+        page.goto(console)
+        page.get_by_role("link", name="Ingresar a la consola de revisores").click()
+        expect(page).to_have_url(console + "admin/")
         expect(page.get_by_role("heading", name="Ingresar")).to_be_visible()
         # Sin sesión no se ve nada de la consola: ni «Salir» ni «Documentos» en la cabecera.
         expect(page.get_by_role("button", name="Salir")).to_be_hidden()

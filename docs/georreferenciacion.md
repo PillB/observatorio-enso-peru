@@ -236,8 +236,10 @@ python -m tools.geo_eval --gold tests/geo/holdout-noticias.jsonl --errors
 
 ## Consola de lugares
 
-Dirección: `https://<sitio>/admin/` (no está enlazada desde el sitio y
-pide a los buscadores no indexarla). Solo funciona en Cloudflare Pages,
+Dirección: `https://<sitio>/admin/`, con el botón «Ingresar» (candado) de
+la cabecera del sitio. El sitio público no pide usuario; la consola sí, y
+pide a los buscadores no indexarla. El botón solo se publica en Cloudflare
+(`prepare_site --cloudflare`); en otro servidor se quita. Solo funciona en Cloudflare Pages,
 porque usa una Pages Function (`functions/api/geo/[[path]].js`) y una
 base D1.
 
