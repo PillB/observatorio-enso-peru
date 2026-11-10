@@ -160,9 +160,10 @@ export const TOURS = [
     ],
   },
   {
-    id: 'memoria', tab: 'memoria', next: 'zona', title: 'Memoria de desastres', desc: 'El mapa de los desastres pasados: filtros, fichas y vistas de detalle.',
+    id: 'memoria', tab: 'memoria', next: 'zona', title: 'Memoria de desastres', desc: 'El mapa de los desastres pasados: filtros, fichas, vistas de detalle, la tabla de registros y las descargas.',
     steps: [
       { route: '#/memoria?vista=resumen', target: '.hz-context', ensure: hzResumen, optional: true, title: 'Lo que dice la historia ahora', text: 'Si hay un Niño costero en curso, aquí aparece qué departamentos tuvieron claramente más daños en temporadas con Niño. Cada nombre abre su ficha.' },
+      { route: '#/memoria?vista=resumen', target: '#hz-get', ensure: hzResumen, title: 'Descargar los datos', text: 'Tres formas de bajar los datos, todas con las 13 columnas del tablero del equipo de prevención primero: el catálogo completo (ZIP), lo que filtra el mapa (con la tabla del final) y lo más nuevo (las noticias de cada día).' },
       { route: '#/memoria?vista=resumen', target: '.hz-views', ensure: hzResumen, title: 'Resumen y detalle', text: '«Resumen» colorea departamentos, provincias o distritos. Las vistas de detalle muestran cuencas, ríos y lugares, o daños frente a pobreza.' },
       { route: '#/memoria?vista=resumen', target: HZ_MAP, ensure: hzResumen, title: 'El mapa', text: 'Cada provincia según en cuántos años de 1970-2015 tuvo daños. Pase el puntero (o el foco) por un área para leer su resumen.',
         avoid: ['.hz-tip:not([hidden])'],
@@ -201,6 +202,10 @@ export const TOURS = [
       { route: '#/memoria?vista=resumen', target: '[aria-labelledby="hz-great-h"] .hz-sms', ensure: hzResumen, title: 'Los grandes Niños', text: 'Un mapa por cada gran Niño, uno al lado del otro, con la misma escala, y su tabla de daños reportados.' },
       { route: '#/memoria?vista=resumen', target: '[aria-labelledby="hz-val-h"] .section-head', ensure: hzResumen, title: '¿La historia anticipa?', text: 'Se probó con 2016-2025: qué tan bien la frecuencia de 1970-2015 ordenó los lugares con daños después. Léalo antes de usar las cifras.' },
       { route: '#/memoria?vista=resumen', target: '#hz-m-h', ensure: hzResumen, title: 'Fuentes y descargas', text: 'De dónde sale cada registro, cómo se ubicó, sus límites y el catálogo completo para descargar.' },
+      { route: '#/memoria?vista=resumen', target: '#hz-tbl .section-head', ensure: hzResumen, title: 'Registros del catálogo', text: 'Los registros que suma el mapa, con sus mismos filtros: primero los 25 más recientes. «Mostrar más» agrega filas; cada encabezado con flechas ordena la tabla.',
+        demo: [{ click: '#hz-tbl [data-sort="muertos"]', say: 'Ordenada por fallecidos y desaparecidos, de mayor a menor.', ready: '#hz-tbl th[aria-sort]', target: '#hz-tbl .hz-tbl-wrap', keep: '#hz-tbl .section-head', pause: 1400 }],
+        after: '#hz-tbl .hz-tbl-wrap' },
+      { route: '#/memoria?vista=resumen', target: '#hz-tbl .hz-tbl-dl', ensure: hzResumen, title: 'Descargar lo filtrado', text: 'Con un filtro elegido, «Descargar los registros del filtro» baja esas filas en CSV con las columnas del equipo de prevención y los metadatos, en el orden de la tabla. Sin filtros, el botón es el del catálogo completo.' },
     ],
   },
   {
@@ -210,12 +215,13 @@ export const TOURS = [
       { route: '#/zona?area=150110', target: '#zn-root .grid', title: 'Qué pasó antes', text: 'Cuántos años hubo daños, cada cuánto tiempo, la probabilidad en los próximos 5 años y cuánto cambia con El Niño costero, con su intervalo de confianza. Es historia, no pronóstico.' },
       { route: '#/zona?area=150110', target: '#zn-hoy', title: 'Hoy', text: 'La fase del ENSO y los avisos oficiales vigentes que tocan este lugar, con el nivel que dio cada institución.' },
       { route: '#/zona?area=150110', target: '.zn-season', title: 'Meses críticos', text: 'Cuántos registros hubo de cada peligro en cada mes: los más oscuros son los peores meses de ese peligro en este lugar.' },
-      { route: '#/zona?area=150110', target: '#zn-csv', title: 'Descargar', text: 'Los registros del lugar en CSV; el catálogo completo, con todas las columnas del equipo de prevención, está en Memoria de desastres.' },
+      { route: '#/zona?area=150110', target: '#zn-csv', title: 'Descargar', text: 'Los registros del lugar en CSV, con las 13 columnas del tablero del equipo de prevención y los metadatos de la Memoria: el mismo archivo que da la tabla de la Memoria con este lugar elegido.' },
     ],
   },
   {
     id: 'noticias', tab: 'noticias', next: 'datos', title: 'Noticias', desc: 'El mapa de avisos oficiales y las noticias por departamento.',
     steps: [
+      { route: '#/noticias?tab=oficial&vista=resumen', target: '[data-tour-id="news-team-csv"]', ensure: [amView('resumen'), amClean, newsTab('oficial')], title: 'Descargar las noticias', text: 'Las noticias de cada día en CSV, una fila por nota y lugar, con las mismas 13 columnas del tablero del equipo de prevención que la Memoria de desastres.' },
       { route: '#/noticias?tab=oficial&vista=resumen', target: `${AM} .amap-head`, ensure: [amView('resumen'), amClean, newsTab('oficial')], title: 'Mapa de avisos oficiales', text: 'Los avisos vigentes y próximos del SENAMHI, el INDECI, el IGP y la DHN. El observatorio no asigna niveles: son los de cada institución.' },
       { route: '#/noticias?tab=oficial&vista=resumen', target: '.amap-mapbox', ensure: [amView('resumen'), amClean, newsTab('oficial')], title: 'Cada departamento', text: 'El color dice el nivel más alto vigente. Pase el puntero para ver sus avisos; tóquelo para filtrar la lista de abajo.',
         avoid: ['.amap-tip:not([hidden])'],
@@ -236,7 +242,7 @@ export const TOURS = [
       { route: '#/noticias?tab=peru', target: '.news-filters', ensure: [newsTab('peru')], title: 'Filtrar noticias', text: 'Por tipo de medio, departamento y peligro. Cada filtro dice cuántas noticias deja.',
         demo: [{ click: '.news-filters [data-kind="radiotv"]', say: 'Solo radio y TV…', pause: 1100 }, { click: '.news-filters [data-kind=""]', say: '…o todas.' }] },
       { route: '#/noticias?tab=peru', target: '#news-body .feed-item', ensure: [newsTab('peru')], optional: true, title: 'Una noticia', text: 'Varios medios que cuentan lo mismo van juntos. Cada una enlaza a la nota original y a la copia que guardó el observatorio.' },
-      { route: '#/noticias?tab=peru', target: '[data-tour-id="news-downloads"]', title: 'Descargas', text: 'El histórico de noticias en CSV y JSON, y el estado de cada feed en esta publicación.' },
+      { route: '#/noticias?tab=peru', target: '[data-tour-id="news-downloads"]', title: 'Descargas', text: 'El histórico de noticias en CSV y JSON, las noticias en el esquema del equipo de prevención y el estado de cada feed en esta publicación.' },
     ],
   },
   {
