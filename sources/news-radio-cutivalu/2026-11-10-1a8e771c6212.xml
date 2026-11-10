@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Tue, 10 Nov 2026 18:52:57 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Estudiantes de la I.E. N.° 20138 debatieron sobre el consumo de drogas y sus riesgos en la adolescencia</title>
+		<link>https://www.cutivalu.pe/estudiantes-de-la-i-e-n-20138-debatieron-sobre-el-consumo-de-drogas-y-sus-riesgos-en-la-adolescencia/</link>
+		
+		<dc:creator><![CDATA[Cruzanny Crespo]]></dc:creator>
+		<pubDate>Tue, 10 Nov 2026 18:52:56 +0000</pubDate>
+				<category><![CDATA[Construyendo juntos proyectos de vida]]></category>
+		<category><![CDATA[Proyectos de vida]]></category>
+		<category><![CDATA[Cutivalú]]></category>
+		<category><![CDATA[I.E. 20138]]></category>
+		<category><![CDATA[Pacasmayo]]></category>
+		<category><![CDATA[VEINTISEIS DE OCTUBRE]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=195045</guid>
+
+					<description><![CDATA[<p>Seis estudiantes de la Institución Educativa N.° 20138 participaron en el segundo debate escolar del proyecto Construyendo Juntos Proyectos de Vida, impulsado por Cementos Pacasmayo y Cutivalú. En esta oportunidad, la actividad abordó una problemática que afecta el bienestar y el desarrollo de las y los adolescentes: el consumo de drogas. La pregunta que orientó [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/estudiantes-de-la-i-e-n-20138-debatieron-sobre-el-consumo-de-drogas-y-sus-riesgos-en-la-adolescencia/">Estudiantes de la I.E. N.° 20138 debatieron sobre el consumo de drogas y sus riesgos en la adolescencia</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
