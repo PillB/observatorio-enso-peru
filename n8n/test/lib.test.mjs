@@ -540,6 +540,22 @@ test('Segunda pasada: «follow» solo sigue enlaces del mismo servidor que la p�
   assert.deepEqual(out.map((i) => i.json.url), ['https://www.dhn.mil.pe/a/01-2026.pdf']);
 });
 
+test('Segunda pasada: «follow» con «template» arma el ZIP de cada escenario del CENEPRED, los de número mayor primero', async () => {
+  const list = Buffer.from(JSON.stringify({ data: [{ id: '40' }, { id: '103' }, { id: '7"x' }, { id: '102' }, { id: '99' }, { id: '101' }] }));
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const fn = new AsyncFunction('$', '$input', 'URL', nodeCode('segunda', { VERSION: 'test' }));
+  const reg = JSON.parse(readFileSync(join(HERE, '..', '..', 'registry', 'sources.json'), 'utf8'));
+  const src = reg.sources.find((s) => s.id === 'cenepred-sigrid-escenarios');
+  const item = { json: { id: src.id, group: src.group, name: 'L', url: src.url, cls: { ok: true }, follow: src.follow, crawl_delay: 5, robots_public: true },
+    binary: { data: {} } };
+  const out = await fn.call({ helpers: { getBinaryDataBuffer: async () => list } }, () => ({}), { all: () => [item] }, undefined);
+  const base = 'https://sigrid.cenepred.gob.pe/sigridv3/storage/escenario_trimestral/';
+  assert.deepEqual(out.map((i) => i.json.url), [`${base}103_tabla.zip`, `${base}102_tabla.zip`, `${base}101_tabla.zip`]);
+  assert.ok(out.every((i) => i.json.expect === 'zip' && i.json.crawl_delay === 5));
+  // El Crawl-delay del SIGRID (5 s) entre los tres pedidos.
+  assert.deepEqual(out.map((i) => i.json.pause_s), [0, 5, 5]);
+});
+
 test('Fuentes y Analizar: con «hop», se lee el robots.txt del destino de la redirección', async () => {
   const reg = { schema: 'enso-source-registry/1', sources: [
     { id: 'h', group: 'g', url: 'https://viejo.pe/feed', expect: 'rss', channels: ['actions', 'n8n'],

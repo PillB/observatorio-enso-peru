@@ -10,7 +10,9 @@ from pathlib import Path
 
 import pytest
 
-from tools import build_escenario_distritos as E
+from enso import cenepred_escenario as E
+from enso.feeds import FormatChanged
+from tools import build_escenario_distritos as T
 
 ROOT = Path(__file__).resolve().parents[2]
 PUB = ROOT / "public" / "assets"
@@ -100,7 +102,7 @@ def test_a_district_missing_from_one_table_is_null_there():
     ([["UBIGEO", "nriesg_mm"], ["010101", "Alto"]], "cambió el formato"),
 ])
 def test_stops_instead_of_guessing_when_the_format_changes(bad, why):
-    with pytest.raises(SystemExit, match=why):
+    with pytest.raises(FormatChanged, match=why):
         E.read_tables(_zip(mm=bad))
 
 
@@ -108,19 +110,22 @@ def test_stops_when_a_hazard_sheet_is_missing():
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w") as z:
         z.writestr("a.xlsx", _xlsx({"BD_ERMMasa": MM}))
-    with pytest.raises(SystemExit, match="BD_ERInund"):
+    with pytest.raises(FormatChanged, match="BD_ERInund"):
         E.read_tables(buf.getvalue())
 
 
-def test_picks_the_requested_scenario_or_the_one_valid_furthest_ahead():
-    sc = [{"id": "102", "mes_fin_vigencia": "2027-01-01"}, {"id": "103", "mes_fin_vigencia": "2027-03-01"},
-          {"id": "40", "mes_fin_vigencia": "2022-07-01"}]
-    assert E.pick(sc)["id"] == "103"
-    assert E.pick(sc, "102")["id"] == "102"
+def test_the_tool_picks_the_requested_scenario_or_todays_and_stops_on_an_unknown_one():
+    sc = [{"id": "102", "mes_inicio_vigencia": "2026-11-01", "mes_fin_vigencia": "2027-01-01", "mes_elaboracion": "2026-10-01"},
+          {"id": "103", "mes_inicio_vigencia": "2027-01-01", "mes_fin_vigencia": "2027-03-01", "mes_elaboracion": "2026-10-01"},
+          {"id": "40", "mes_inicio_vigencia": "2022-05-01", "mes_fin_vigencia": "2022-07-01", "mes_elaboracion": "2022-05-01"}]
+    from datetime import date
+
+    assert T.pick(sc, today=date(2026, 11, 10))["id"] == "102"
+    assert T.pick(sc, "103")["id"] == "103"
     with pytest.raises(SystemExit):
-        E.pick(sc, "999")
+        T.pick(sc, "999")
     with pytest.raises(SystemExit):
-        E.pick([])
+        T.pick([])
 
 
 def test_main_builds_offline_from_a_saved_folder(tmp_path):
@@ -129,7 +134,12 @@ def test_main_builds_offline_from_a_saved_folder(tmp_path):
          "id_documento": "99"}]}), encoding="utf-8")
     (tmp_path / "7_tabla.zip").write_bytes(_zip())
     out = tmp_path / "out"
-    assert E.main(["--tablas", str(tmp_path), "--sin-red", "--out", str(out)]) == 0
+    with pytest.raises(SystemExit, match="no es un ZIP"):  # una página en lugar del ZIP detiene la herramienta
+        (tmp_path / "bad").mkdir()
+        (tmp_path / "bad" / "lista.json").write_text((tmp_path / "lista.json").read_text(), encoding="utf-8")
+        (tmp_path / "bad" / "7_tabla.zip").write_bytes(b"<!doctype html><html>Iniciar sesi\xc3\xb3n</html>")
+        T.main(["--tablas", str(tmp_path / "bad"), "--sin-red", "--out", str(out)])
+    assert T.main(["--tablas", str(tmp_path), "--sin-red", "--out", str(out)]) == 0
     doc = json.loads((out / "escenario-distritos.json").read_text(encoding="utf-8"))
     assert len(doc["districts"]) == 3
 

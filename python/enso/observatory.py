@@ -1303,8 +1303,9 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                       log: EventLog, started: datetime, news: Optional[dict] = None,
                       feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None,
                       freshness: Optional[dict] = None, manual_needed: Optional[dict] = None,
-                      imarpe_bsobp: Optional[dict] = None, levels=None) -> dict:
-    """``levels``: la tabla de avisos del SENAMHI con que se dio nivel a los avisos (``sourcefeed.levels_table``)."""
+                      imarpe_bsobp: Optional[dict] = None, levels=None, escenario: Optional[dict] = None) -> dict:
+    """``levels``: la tabla de avisos del SENAMHI con que se dio nivel a los avisos (``sourcefeed.levels_table``).
+    ``escenario``: el escenario de riesgo por distrito del CENEPRED (``cenepred_escenario.acquire``)."""
     now = datetime.now(timezone.utc)
     content_hash = hashlib.sha256(json.dumps(
         {k: v["points"][-24:] for k, v in sorted(b.series.items())} | {"official": official}, sort_keys=True, default=str
@@ -1474,6 +1475,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                              "feedsActive": sum(1 for f in nf.get("feeds") or [] if f.get("active")),
                              "feedsTotal": len(nf.get("feeds") or [])}
     dump("dashboard.json", dashboard)
+    if escenario:
+        escenario = archive_escenario(aw, escenario, prev_bytes)
     (tmp / archive.ROOT).mkdir(exist_ok=True)
     dump(f"{archive.ROOT}/index.json", aw.index(now.isoformat(timespec="seconds")))
     dump("series.json", {"series": b.series})
@@ -1486,6 +1489,12 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
         # Boletín semanal del IMARPE: anomalía subsuperficial frente a Paita y Chicama, con su cita.
         # Lo conservado de la publicación anterior trae su propio publicationId: vale el de esta publicación.
         dump("imarpe-bsobp.json", {k: v for k, v in imarpe_bsobp.items() if k not in common})
+    if escenario:
+        # Escenario de riesgo por lluvias del CENEPRED por distrito («Mi zona»); sin él, el sitio usa su copia.
+        dump("escenario-distritos.json", {k: v for k, v in escenario.items() if k not in common})
+        from .cenepred_escenario import csv_text
+
+        (tmp / "csv" / "escenario-distritos.csv").write_text(csv_text(escenario), encoding="utf-8")
     dump("run-report.json", {"events": events, "worst": log.worst(),
                              "counts": {s: sum(1 for e in events if e["severity"] == s) for s in ("info", "warning", "error", "critical")}})
     dump("health.json", {"pipelineStatus": "degraded" if log.worst() in ("error", "critical") else "ok",
@@ -1663,6 +1672,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
             log.add("error", imarpe_bsobp.SOURCE, "parse", "bsobp-exception", f"{type(exc).__name__}: {exc}"[:300])
     elif fixtures is None:
         bsobp = prev.get("imarpe-bsobp.json", carry=True)  # corrida parcial o sin red: se conserva lo publicado
+    escenario = acquire_escenario(fetcher, fixtures, offline, only, prev, log, today)
     needs.log(log)
     acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
     b = Builder(acquired, log, today)
@@ -1709,7 +1719,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                             feed_status=feed_status, avisos=levels)
     from . import freshness
     fresh = freshness.build(b.series, weekly, official, meta, feed, feed_status, today,
-                            started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc))
+                            started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc),
+                            escenario=escenario)
     freshness.log_late(fresh, log)
     for s in SOURCES:
         a = acquired.get(s.id)
@@ -1718,12 +1729,31 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                     "La fuente falló y no hay un dato anterior que conservar.")
     res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev,
                             freshness=fresh, manual_needed=needs.as_json(prev.get("manual-needed.json"), today),
-                            imarpe_bsobp=bsobp, levels=levels)
+                            imarpe_bsobp=bsobp, levels=levels, escenario=escenario)
     if raw_dir is not None:
         res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
     res.update({"worst": log.worst(), "events": len(log.events)})
     return res
+
+
+def acquire_escenario(fetcher, fixtures: Optional[Path], offline: bool, only, prev: "PreviousPublication",
+                      log: EventLog, today: date) -> Optional[dict]:
+    """El escenario de riesgo por distrito del CENEPRED (``cenepred_escenario``). Con fixtures (pruebas), la copia
+    incluida en el sitio; sin red o en una corrida parcial, el de la publicación anterior. Nunca detiene la
+    publicación."""
+    from . import cenepred_escenario as CE
+
+    if fixtures is not None:
+        return CE.from_seed(today)
+    previous = prev.get("escenario-distritos.json", carry=True)
+    if offline or only:
+        return CE._carry(previous, today, "corrida sin red o parcial: no se consultó el SIGRID", log)
+    try:
+        return CE.acquire(fetcher, previous, log, today)
+    except Exception as exc:  # noqa: BLE001 — el escenario nunca detiene la publicación
+        log.add("error", CE.SOURCE, "parse", "escenario-exception", f"{type(exc).__name__}: {exc}"[:300])
+        return CE._carry(previous, today, "error inesperado al leer el escenario", log)
 
 
 RELAY_STALE_HOURS = 36
@@ -2186,6 +2216,28 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
                 "overrides": {"source": ov_source, "overrides": overrides}, "quality": geo_quality,
                 "ubigeo": GO.console_gazetteer()},
     }
+
+
+def archive_escenario(aw: "archive.Writer", doc: dict, prev_bytes=None) -> dict:
+    """Publica en el archivo del sitio el ZIP del CENEPRED del que salió el escenario (``doc["archive"]``); si hoy
+    no se bajó (escenario conservado), la copia de la publicación anterior, si sigue publicada."""
+    from .cenepred_escenario import SOURCE
+
+    doc = dict(doc)
+    raw = doc.pop("_raw", None)
+    rel = doc.pop("archive", None)
+    if raw:
+        rel = aw.add(archive.source_path(SOURCE, raw, "application/zip", doc.get("table", "")), raw, source=SOURCE,
+                     url=doc.get("table"), retrievedAt=doc.get("retrievedAt"), channel=doc.get("channel"))
+    elif rel and prev_bytes and archive._is_archive_path(rel):
+        body = prev_bytes(rel)
+        rel = aw.add(rel, body, source=SOURCE, url=doc.get("table"), retrievedAt=doc.get("retrievedAt"),
+                     channel=doc.get("channel"), carried=True) if body else None
+    else:
+        rel = None
+    if rel:
+        doc["archive"] = rel
+    return doc
 
 
 def archive_levels(aw: "archive.Writer", feed: dict, table) -> Optional[str]:

@@ -1130,11 +1130,48 @@ def test_zona_adds_the_block_detail_only_where_cenepred_evaluated_blocks(site, p
 
 def test_zona_says_so_when_the_scenario_cannot_be_loaded(site, page):
     base, _ = site
+    page.route("**/data/escenario-distritos.json*", lambda r: r.fulfill(status=503, body="x"))
     page.route("**/assets/capas/escenario-distritos.json", lambda r: r.fulfill(status=503, body="x"))
     go(page, base, "zona?area=150110")
     expect(page.locator("#zn-rie-none")).to_contain_text("No se pudo cargar el escenario", timeout=20000)
     expect(page.locator("#zn-hoy")).to_be_visible()  # el resto de la página sigue
     expect(page.locator("a[href='https://www.gob.pe/indeci']").first).to_be_visible()
+
+
+def test_zona_uses_the_scenario_of_the_daily_update_and_says_when_it_was_read(site, page):
+    """Primero el escenario que publica la actualización diaria (data/), con su fecha de lectura y el siguiente ya
+    publicado; el panel de vigencia de la página tiene su fila."""
+    base, root = site
+    S = json.loads((root / "assets/capas/escenario-distritos.json").read_text(encoding="utf-8"))
+    daily = {**S, "scenario": {"id": "777", "from": "2027-02", "until": "2027-04", "prepared": "2027-01"},
+             "retrievedAt": "2027-01-20T04:40:00+00:00", "channel": "direct", "carried": False,
+             "archive": "archive/sources/cenepred-escenario/0123456789ab.zip",
+             "listed": {"next": {"id": "778", "from": "2027-03", "until": "2027-05", "prepared": "2027-02"}}}
+    # Del mismo publicationId que el resto: el sitio no muestra archivos de otra publicación.
+    daily["publicationId"] = json.loads((root / "data/dashboard.json").read_text(encoding="utf-8"))["publicationId"]
+    page.route("**/data/escenario-distritos.json*", lambda r: r.fulfill(status=200, content_type="application/json",
+                                                                         body=json.dumps(daily)))
+    go(page, base, "zona?area=150110")
+    card = page.locator("section[aria-labelledby='zn-rie']")
+    expect(card.locator("#zn-rie")).to_contain_text("febrero a abril de 2027", timeout=20000)
+    src = card.locator("#zn-rie-src")
+    expect(src).to_contain_text("elaborado en enero de 2027")
+    expect(src).to_contain_text("consulta el SIGRID cada día")
+    expect(src).to_contain_text("marzo a mayo de 2027")
+    expect(src.locator("a[href$='/data/archive/sources/cenepred-escenario/0123456789ab.zip']")).to_have_count(1)
+    panel = page.locator("details.fresh-panel")
+    expect(panel).to_have_count(1)
+    expect(panel.locator("tr[data-fresh='escenario']")).to_have_count(1)
+    expect(panel.locator("tr[data-fresh='alerts']")).to_have_count(1)
+    assert not page.errors, page.errors
+
+
+def test_zona_falls_back_to_the_copy_bundled_with_the_site(site, page):
+    base, _ = site
+    page.route("**/data/escenario-distritos.json*", lambda r: r.fulfill(status=404, body="no"))
+    go(page, base, "zona?area=150110")
+    expect(page.locator(".zn-haz-c")).to_have_count(2, timeout=20000)
+    expect(page.locator("#zn-rie-src")).to_contain_text("copia incluida en el sitio")
 
 
 def test_zona_step_by_step_lists_follow_and_set_the_place(site, page):

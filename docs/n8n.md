@@ -53,7 +53,14 @@ bloqueo, 429 y respuestas vacías) se reintentan una vez, tras esperar 30 s,
 en una segunda pasada. DNS, TLS, 403 y verificaciones no se reintentan. En la misma segunda pasada se bajan los
 documentos que el registro indica seguir (`follow`) y los PDF de los
 comunicados del ENFEN deducidos de sus listados (los dos últimos y los dos
-números siguientes), con el mismo criterio que el pipeline.
+números siguientes), con el mismo criterio que el pipeline. Una regla
+`follow` con `template` arma el enlace con lo que captura el patrón (`{1}`)
+y, con `order: "desc"`, toma primero los de número mayor: así se bajan, de
+la lista de escenarios del SIGRID (CENEPRED), los ZIP con la tabla por
+distrito de los tres escenarios más recientes
+(`storage/escenario_trimestral/<número>_tabla.zip`), con el Crawl-delay del
+SIGRID entre pedidos. Los ZIP se guardan como `files/<sha>.zip` y el
+clasificador los reconoce por su firma (`detectFormat` → `zip`).
 
 ### robots.txt
 

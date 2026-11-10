@@ -650,7 +650,7 @@ VIEWS.historia = {
 };
 
 VIEWS.memoria = memoriaView;
-VIEWS.zona = { title: zonaView.title, render: () => zonaView.render(), after: () => zonaView.after(load) };
+VIEWS.zona = { title: zonaView.title, render: () => html`${raw(String(zonaView.render()))}${freshnessPanel('zona')}`, after: () => zonaView.after(load) };
 
 VIEWS.datos = {
   title: 'Datos',
@@ -679,6 +679,7 @@ VIEWS.datos = {
           <li><a href="${DATA}dashboard.json">Resumen de la publicación (JSON)</a></li>
           <li><a href="${DATA}sources.json">Registro de fuentes (JSON)</a></li>
           <li><a href="${DATA}run-report.json">Informe de la última corrida (JSON)</a></li>
+          <li><a href="${DATA}csv/escenario-distritos.csv" download>Riesgo esperado por lluvias por distrito, escenario vigente del CENEPRED (CSV)</a></li>
         </ul>
         <h3>Por serie</h3><ul class="link-list cols">${csvs}</ul>
         <p class="muted small">Los valores de texto que empiezan con =, +, − o @ se protegen para evitar fórmulas en hojas de cálculo.</p>
@@ -877,7 +878,7 @@ function officialItem(it) {
 // «mirror» es cualquier otra URL de la misma fuente (el mismo archivo por https, la página de la propia
 // institución o la réplica de la DHN), no una copia: no entra en «Leídas de una copia».
 const CHANNEL_TAG = { 'relay-peru': 'vía recolector en el Perú', 'relay-n8n': 'vía n8n', 'relay-manual': 'subido a mano (consola de documentos)', archive: 'vía Internet Archive', 'archive-fresh': 'vía Internet Archive', mirror: 'vía otra dirección oficial' };
-const CHANNEL_SHORT = { 'relay-peru': 'recolector en el Perú', 'relay-n8n': 'n8n', 'relay-manual': 'subido a mano', mirror: 'otra dirección oficial', archive: 'Internet Archive', 'archive-fresh': 'Internet Archive' };
+const CHANNEL_SHORT = { seed: 'copia incluida en el sitio', 'relay-peru': 'recolector en el Perú', 'relay-n8n': 'n8n', 'relay-manual': 'subido a mano', mirror: 'otra dirección oficial', archive: 'Internet Archive', 'archive-fresh': 'Internet Archive' };
 function channelTag(ch) {
   return CHANNEL_TAG[ch] ? html`<span class="tag">${CHANNEL_TAG[ch]}</span>` : '';
 }
