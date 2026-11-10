@@ -131,6 +131,9 @@ class Entry:
     #: GODAS: pide por rangos archivos GRIB mensuales) solo se lee desde Actions; n8n copiaría un listado inútil.
     only_channels: Optional[list[str]] = None
     n8n: bool = True  # False: n8n no la pide nunca (el motivo va en notes)
+    #: Crawl-delay conocido del servidor (s): va en ``by_url`` para que n8n espere entre pedidos aunque no lea su
+    #: robots.txt (``n8n/lib/robots.js#pacing``; los enlaces de ``follow`` heredan el de su página).
+    crawl_delay: Optional[float] = None
 
 
 def _slug(text: str) -> str:
@@ -245,7 +248,7 @@ def _escenario_entries() -> list[Entry]:
                   name="SIGRID: escenarios de riesgo por lluvias, pronóstico trimestral (lista y tablas por distrito)",
                   institution="CENEPRED", url=CE.LIST_URL, expect="json", method="hidden-api", kind="document-list",
                   home=CE.PAGE, hazards=["lluvias", "huaico", "inundacion"], parser="enso.cenepred_escenario:acquire",
-                  follow=dict(CE.FOLLOW),
+                  follow=dict(CE.FOLLOW), crawl_delay=CE.CRAWL_DELAY_S,
                   notes="la tabla de cada escenario es un ZIP con dos libros de Excel; robots.txt prohíbe "
                         "/sigridv3/storage/ y se pide igual por ser una entidad pública del Perú, con su Crawl-delay")]
 
@@ -545,12 +548,14 @@ def build(reach: Optional[dict] = None, now: Optional[datetime] = None) -> dict:
                 if by_url[u]["robots"] == "allowed":
                     # La lectura del robots.txt de la URL (otra red, el recolector del Perú) no cubre el de su destino.
                     by_url[u]["robots"] = "unknown"
+            if e.crawl_delay:
+                by_url[u]["crawl_delay"] = e.crawl_delay
             if e.reader and g["status"] == "robots-disallowed":
                 by_url[u].update(channels=list(READER_CHANNELS), reader=True)
             if e.only_channels is not None and g["status"] != "robots-disallowed":
                 by_url[u]["channels"] = [c for c in by_url[u]["channels"] if c in e.only_channels] or list(e.only_channels)
         d = {k: v for k, v in e.__dict__.items()
-             if (v not in (None, [], "") or k in ("hazards", "alt_urls")) and k not in ("reader", "only_channels", "n8n")}
+             if (v not in (None, [], "") or k in ("hazards", "alt_urls")) and k not in ("reader", "only_channels", "n8n", "crawl_delay")}
         if not e.n8n:
             d["n8n"] = False
         d["tier"] = METHODS[e.method]

@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-11-10T05:25:44+00:00",
+ "generated_at": "2026-11-10T06:04:57+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -11766,7 +11766,8 @@
       "actions",
       "n8n"
      ],
-     "robots": "allowed"
+     "robots": "allowed",
+     "crawl_delay": 5
     }
    }
   },

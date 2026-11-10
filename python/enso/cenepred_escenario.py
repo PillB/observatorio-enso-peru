@@ -54,6 +54,10 @@ DOC_URL = "https://sigrid.cenepred.gob.pe/sigridv3/documento/{doc}"
 #: número más alto (el vigente y los próximos están siempre entre ellos: los números crecen con cada publicación).
 FOLLOW = {"pattern": r'"id"\s*:\s*"(\d{1,6})"', "template": TABLE_URL.replace("{id}", "{1}"), "max": 3,
           "order": "desc"}
+#: Crawl-delay del robots.txt del SIGRID (leído el 10 de noviembre de 2026). Va en el registro (``by_url``) para que
+#: n8n espere entre la lista y cada ZIP aunque no lea el robots.txt (la ruta está «allowed» por ser una entidad
+#: pública del Perú); el pipeline y el recolector del Perú lo leen en vivo (``reach.Robots.pace``).
+CRAWL_DELAY_S = 5
 #: Copia incluida en el sitio (``tools.build_escenario_distritos``).
 SEED_PATH = Path(__file__).resolve().parents[2] / "public" / "assets" / "capas" / "escenario-distritos.json"
 #: Niveles del CENEPRED, de mayor a menor.
@@ -74,7 +78,7 @@ GRACE_DAYS = 15
 NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
       "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
       "p": "http://schemas.openxmlformats.org/package/2006/relationships"}
-_MONTH = re.compile(r"^\d{4}-\d{2}-\d{2}")
+_MONTH = re.compile(r"^(?:19|20)\d{2}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])")
 
 
 # --- Leer un libro de Excel sin dependencias ------------------------------------------------------------------------

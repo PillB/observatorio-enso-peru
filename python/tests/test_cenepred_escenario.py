@@ -116,6 +116,8 @@ def test_before_any_is_in_force_the_next_to_start_and_when_all_ended_the_last_on
     (_list([{**LIST[0], "id": "4 0"}]), "otra forma"),
     (_list([{**LIST[0], "mes_fin_vigencia": "julio"}]), "otra forma"),
     (_list([{**LIST[0], "mes_inicio_vigencia": "2022-09-01"}]), "termina antes de empezar"),
+    (_list([{**LIST[0], "mes_fin_vigencia": "2026-13-01"}]), "otra forma"),  # un mes imposible no llega a la vigencia
+    (_list([{**LIST[0], "mes_elaboracion": "2026-00-01"}]), "otra forma"),
 ])
 def test_a_list_with_another_shape_stops_instead_of_guessing(body, why):
     with pytest.raises(FormatChanged, match=why):
@@ -249,6 +251,8 @@ def test_the_registry_rule_is_the_one_the_collectors_follow():
 
     e = next(s for s in registry.build(reach={})["sources"] if s["id"] == "cenepred-sigrid-escenarios")
     assert e["url"] == CE.LIST_URL and e["follow"] == CE.FOLLOW and e["expect"] == "json"
+    # n8n no lee el robots.txt de una ruta «allowed»: el Crawl-delay del SIGRID va en el registro.
+    assert e["by_url"][CE.LIST_URL]["crawl_delay"] == CE.CRAWL_DELAY_S == 5
     assert {"actions", "n8n"} <= set(e["channels"])
 
 
