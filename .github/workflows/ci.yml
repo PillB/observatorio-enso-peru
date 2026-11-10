@@ -48,9 +48,22 @@ jobs:
       # job antes de la primera prueba (#49, #55, #56, #58; 26 de octubre). La
       # etiqueta sale de la versión de Playwright que pip acaba de instalar, así que
       # Dependabot no tiene que subirla aparte. Node 22 entra desde setup-node.
+      # PyPI publica una versión nueva antes que su imagen (1.65.0, 10 de noviembre):
+      # si la imagen de esa versión todavía no existe, se usa la versión anterior más
+      # nueva que sí la tiene, y el contenedor instala esa misma versión de Playwright.
       - name: Browser journeys (Chromium, WebKit, Firefox in the Playwright image)
         run: |
           pw=$(python -c 'import importlib.metadata as m; print(m.version("playwright"))')
+          if ! docker manifest inspect "mcr.microsoft.com/playwright/python:v$pw-noble" > /dev/null 2>&1; then
+            for v in $(pip index versions playwright 2>/dev/null | sed -n 's/^Available versions: //p' | tr -d ',' | tr ' ' '\n' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'); do
+              if [ "$(printf '%s\n%s\n' "$v" "$pw" | sort -V | head -1)" = "$v" ] && [ "$v" != "$pw" ] \
+                && docker manifest inspect "mcr.microsoft.com/playwright/python:v$v-noble" > /dev/null 2>&1; then
+                echo "::warning::No Playwright image for $pw yet; using $v"
+                pw=$v
+                break
+              fi
+            done
+          fi
           node_dir=$(dirname "$(dirname "$(readlink -f "$(command -v node)")")")
           docker run --rm --ipc=host -e CI \
             -v "$node_dir:/opt/node:ro" -e PATH="/opt/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
