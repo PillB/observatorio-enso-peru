@@ -1107,3 +1107,125 @@ table.grd .chip { white-space: normal; }
 .zn-faq details.more { margin-top: 4px; }
 .zn-faq details.more > summary { min-height: 44px; }
 .zn-risk th[scope="col"]:not(:first-child) { text-align: right; }
+
+/* ---------------------------------------------------------------------------------------------------------------
+   Boletín de eventos El Niño (boletin.js): una hoja, arriba el país y abajo los diez departamentos más críticos.
+   Los colores son los del mapa de alertas (--amap-r*); el verde es «sin avisos», no «sin peligro».
+   --------------------------------------------------------------------------------------------------------------- */
+:root { --bol-ok: #2e8b57; --bol-ok-ink: #ffffff; }
+:root[data-theme='dark'] { --bol-ok: #3aa36a; --bol-ok-ink: #04140b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) { --bol-ok: #3aa36a; --bol-ok-ink: #04140b; } }
+.bol-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+.bol-actions .btn svg { width: 16px; height: 16px; vertical-align: -3px; }
+.bol-sheet { display: grid; gap: 12px; }
+.bol-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; border-bottom: 3px solid var(--brand); padding-bottom: 10px; }
+.bol-top h2 { margin: 2px 0; font-size: 1.45rem; }
+.bol-top p { margin: 0; }
+.bol-counts { display: flex; gap: 6px; flex-wrap: wrap; }
+.bol-count { min-width: 74px; padding: 6px 8px; border-radius: var(--radius-s); text-align: center; line-height: 1.1; border: 1px solid transparent; }
+.bol-count strong { display: block; font-size: 1.5rem; }
+.bol-count span { font-size: 0.74rem; font-weight: 600; }
+.bc-r3 { background: var(--amap-r3); color: #fff; }
+.bc-r2 { background: var(--amap-r2); color: #1f1f1f; }
+.bc-r1 { background: var(--amap-r1); color: #1f1f1f; }
+.bc-un { background: var(--amap-un); color: #10161d; }
+.bc-ok { background: var(--bol-ok); color: var(--bol-ok-ink); }
+.bol-enfen { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
+.bol-changes { background: color-mix(in srgb, var(--amap-r2) 12%, var(--bg-elev)); border-left: 4px solid var(--amap-r2); padding: 8px 12px; border-radius: 0 var(--radius-s) var(--radius-s) 0; font-size: 0.9rem; }
+.bol-changes ul { margin: 4px 0 0; padding-left: 18px; }
+.bol-changes li { margin: 2px 0; }
+.bol-half { display: grid; grid-template-columns: minmax(240px, 0.9fr) 1.4fr; gap: 18px; align-items: start; }
+.bol-map-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 0.88rem; margin-bottom: 6px; }
+.bol-svg { width: 100%; max-height: 430px; display: block; }
+.bol-dep { stroke: var(--amap-stroke); stroke-width: 1.1; cursor: pointer; outline: none; }
+.bol-dep.d-r3 { fill: var(--amap-r3); } .bol-dep.d-r2 { fill: var(--amap-r2); } .bol-dep.d-r1 { fill: var(--amap-r1); }
+.bol-dep.d-un { fill: var(--amap-un); } .bol-dep.d-ok { fill: var(--bol-ok); }
+.bol-dep.soon.d-r3 { fill: url(#bol-soon-r3); } .bol-dep.soon.d-r2 { fill: url(#bol-soon-r2); } .bol-dep.soon.d-r1 { fill: url(#bol-soon-r1); } .bol-dep.soon.d-un { fill: url(#bol-soon-un); }
+.bol-dep:hover, .bol-dep:focus-visible { stroke: var(--fg); stroke-width: 2.2; }
+.bol-dep.sel { stroke: var(--fg); stroke-width: 3; }
+.bol-svg .pt-r3 { fill: var(--amap-r3); } .bol-svg .pt-r2 { fill: var(--amap-r2); } .bol-svg .pt-r1 { fill: var(--amap-r1); } .bol-svg .pt-un { fill: var(--amap-un); }
+.bol-svg .pt-bg { fill: var(--amap-base); }
+.bol-lbl { font: 700 13px var(--font); fill: #fff; paint-order: stroke; stroke: rgba(0, 0, 0, 0.55); stroke-width: 2.4px; text-anchor: middle; pointer-events: none; }
+.bol-tiles { display: grid; grid-template-columns: repeat(6, minmax(34px, 50px)); grid-auto-rows: 34px; gap: 3px; }
+.bol-tile { border: 0; border-radius: 4px; font: 700 0.72rem var(--font); cursor: pointer; color: #1f1f1f; }
+.bol-tile.d-r3 { background: var(--amap-r3); color: #fff; } .bol-tile.d-r2 { background: var(--amap-r2); } .bol-tile.d-r1 { background: var(--amap-r1); }
+.bol-tile.d-un { background: var(--amap-un); } .bol-tile.d-ok { background: var(--bol-ok); color: var(--bol-ok-ink); }
+.bol-tile.soon { background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.5) 0 4px, transparent 4px 8px); }
+.bol-tile.sel, .bol-tile:focus-visible { outline: 3px solid var(--fg); outline-offset: 1px; }
+.bol-legend { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 3px; font-size: 0.78rem; color: var(--fg-2); }
+.bol-legend li { display: flex; gap: 7px; align-items: flex-start; }
+.bol-legend .sw { flex: none; margin-top: 2px; }
+.sw-ok { background: var(--bol-ok); }
+.bol-what h3 { margin: 0 0 6px; }
+.bol-head p { margin: 0 0 8px; line-height: 1.45; }
+.bol-prob { margin: 10px 0; padding: 8px 10px; background: var(--bg-sunk); border-radius: var(--radius-s); }
+.bol-pbar { display: grid; grid-template-columns: 11em 1fr 3.4em; gap: 8px; align-items: center; font-size: 0.85rem; margin-top: 4px; }
+.bol-ptrack, .bol-risk { display: inline-block; height: 9px; background: var(--line); border-radius: 5px; overflow: hidden; }
+.bol-ptrack span, .bol-risk span { display: block; height: 100%; background: var(--warm); }
+.bol-risk { width: 54px; margin-right: 6px; vertical-align: middle; }
+.bol-risk span { background: var(--amap-r3); }
+.bol-depcard { margin-top: 10px; border: 1px solid var(--line); border-radius: var(--radius-s); padding: 8px 10px; }
+.bol-depcard ul { margin: 4px 0; padding-left: 18px; }
+.bol-table th[scope='row'] { min-width: 8.5em; }
+.bol-table td, .bol-table th { vertical-align: top; }
+.bol-row.on { background: color-mix(in srgb, var(--brand) 10%, transparent); }
+.bol-evs summary { cursor: pointer; }
+.bol-evs ul { margin: 6px 0 0; padding-left: 16px; display: grid; gap: 4px; }
+.bol-order { margin-top: 8px; }
+.bol-foot { border-top: 1px solid var(--line); padding-top: 6px; }
+.bol-recent { padding-left: 18px; }
+@media (max-width: 760px) {
+  .bol-half { grid-template-columns: 1fr; }
+  .bol-svg { max-height: 360px; }
+  .bol-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .bol-table, .bol-table tbody, .bol-table tr, .bol-table td, .bol-table th { display: block; width: 100%; }
+  .bol-table tr { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .bol-table td, .bol-table th { border: 0; padding: 2px 0; text-align: left; }
+  .bol-table td.num:first-child { font-weight: 700; }
+  .bol-table td[data-label]::before { content: attr(data-label) ': '; color: var(--fg-3); font-size: 0.82rem; }
+  .bol-pbar { grid-template-columns: 8.5em 1fr 3.2em; }
+}
+/* En papel: solo la hoja, en una página A4, con los colores del mapa. */
+@media print {
+  @page { size: A4 portrait; margin: 9mm; }
+  body:has(#bol-sheet) .page-head, body:has(#bol-sheet) .no-print, body:has(#bol-sheet) .notice, body:has(#bol-sheet) #banner,
+  body:has(#bol-sheet) .freshness, body:has(#bol-sheet) .bol-variant, body:has(#bol-sheet) .tour-ui { display: none !important; }
+  body:has(#bol-sheet) main { max-width: none; margin: 0; }
+  .bol-sheet { box-shadow: none; border: 0; padding: 0; gap: 6px; font-size: 9.5pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .bol-sheet * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .bol-top h2 { font-size: 15pt; }
+  .bol-count { min-width: 56px; padding: 3px 6px; } .bol-count strong { font-size: 13pt; }
+  .bol-half { grid-template-columns: 62mm 1fr; gap: 6mm; }
+  .bol-svg { max-height: 82mm; }
+  .bol-legend { font-size: 7.5pt; }
+  .bol-head p { margin: 0 0 4px; }
+  .bol-table { font-size: 8pt; }
+  .bol-table td, .bol-table th { padding: 2px 4px; }
+  .bol-table .lvl { font-size: 7pt; padding: 0 5px; }
+  .bol-evs ul { display: none; }
+  .bol-evs summary { list-style: none; }
+  .bol-evs summary::-webkit-details-marker { display: none; }
+  .bol-order, .bol-foot { font-size: 7pt; }
+  .bol-table th[scope='row'] > div { display: inline; margin-left: 4px; }
+  .bol-table th[scope='row'] { min-width: 0; white-space: nowrap; }
+  .bol-legend { grid-template-columns: 1fr; gap: 1px; }
+  .bol-legend li { line-height: 1.2; }
+  .bol-risk, .bol-evs summary .muted { display: none; }
+  .bol-sheet { font-size: 8.2pt; line-height: 1.3; zoom: 0.86; }
+  .bol-top { padding-bottom: 4px; }
+  .bol-top p, .bol-enfen .muted { font-size: 7.5pt; }
+  .bol-what h3, .bol-bottom h3 { font-size: 10.5pt; margin: 0 0 3px; }
+  .bol-half { grid-template-columns: 56mm 1fr; }
+  .bol-svg { max-height: 74mm; }
+  .bol-table { font-size: 7.4pt; }
+  .bol-table td[data-label='Cuándo'] { white-space: nowrap !important; }
+  .bol-sheet .small, .bol-sheet .muted.small, .bol-table .small { font-size: inherit; }
+  .bol-table td[data-label='Riesgo CENEPRED'] { white-space: nowrap !important; }
+  .bol-sheet .eyebrow { margin-bottom: 0; }
+  .bol-changes { padding: 4px 8px; font-size: 8pt; }
+  .bol-prob { padding: 4px 8px; margin: 4px 0; }
+  .bol-sheet a { color: inherit; text-decoration: none; }
+}
+.bol-sheet > *, .bol-half > *, .bol-bottom > * { min-width: 0; }
+table.data.bol-table td, table.data.bol-table th, table.data.bol-rules td, table.data.bol-rules th { text-align: left; white-space: normal; }
+table.data.bol-table td.num { text-align: right; white-space: nowrap; }

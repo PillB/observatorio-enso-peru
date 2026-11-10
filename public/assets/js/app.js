@@ -18,6 +18,7 @@ import * as AM from './alertmap.js';
 import { stats as abStats } from './ab.js';
 import { memoriaView } from './historico.js';
 import { zonaView } from './zona.js';
+import { boletinView } from './boletin.js';
 
 const DATA = 'data/';
 export const S = { dash: null, files: {}, pub: null, mismatch: [] };
@@ -650,6 +651,7 @@ VIEWS.historia = {
 };
 
 VIEWS.memoria = memoriaView;
+VIEWS.boletin = { title: boletinView.title, render: () => boletinView.render(), after: () => boletinView.after(load) };
 VIEWS.zona = { title: zonaView.title, render: () => html`${raw(String(zonaView.render()))}${freshnessPanel('zona')}`, after: () => zonaView.after(load) };
 
 VIEWS.datos = {
@@ -1058,7 +1060,7 @@ VIEWS.asistente = { title: 'Asistente', render: () => assistantView.render(), af
 // ---------------------------------------------------------------------------
 // Estructura, navegación y arranque
 // ---------------------------------------------------------------------------
-const NAV = [['', 'Resumen', 'home'], ['costero', 'El Niño Costero', 'wave'], ['pacifico', 'Pacífico', 'globe'], ['oceano', 'Océano y atmósfera', 'layers'], ['mapa', 'Mapa', 'map'], ['historia', 'Historia', 'clock'], ['memoria', 'Memoria de desastres', 'pin'], ['zona', 'Mi zona', 'pin'], ['noticias', 'Noticias', 'news'], ['datos', 'Datos', 'table'], ['metodologia', 'Metodología', 'book'], ['asistente', 'Asistente', 'chat']];
+const NAV = [['', 'Resumen', 'home'], ['boletin', 'Boletín', 'bell'], ['costero', 'El Niño Costero', 'wave'], ['pacifico', 'Pacífico', 'globe'], ['oceano', 'Océano y atmósfera', 'layers'], ['mapa', 'Mapa', 'map'], ['historia', 'Historia', 'clock'], ['memoria', 'Memoria de desastres', 'pin'], ['zona', 'Mi zona', 'pin'], ['noticias', 'Noticias', 'news'], ['datos', 'Datos', 'table'], ['metodologia', 'Metodología', 'book'], ['asistente', 'Asistente', 'chat']];
 
 function routeName() {
   const h = location.hash.replace(/^#\/?/, '').split('?')[0];

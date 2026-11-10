@@ -30,5 +30,6 @@ export const ICON = {
   replay: svg('<path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5"/><path d="M4 4v4.5h4.5"/>'),
   // Puntero del tutorial: relleno, con borde claro para verse sobre el mapa y en el tema oscuro.
   pointer: '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false"><path d="M5 3l14 8.5-6.2 1.3 3.7 6.9-2.7 1.4-3.7-6.9L5 19z" fill="currentColor" stroke="var(--bg-elev)" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  bell: svg('<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>'),
   download: svg('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>'),
 };
