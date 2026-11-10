@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Mon, 09 Nov 2026 16:48:22 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Delegación de Piura participará en pasantía interregional en Jaén para fortalecer emprendimientos liderados por mujeres</title>
+		<link>https://www.cutivalu.pe/delegacion-de-piura-participara-en-pasantia-interregional-en-jaen-para-fortalecer-emprendimientos-liderados-por-mujeres/</link>
+		
+		<dc:creator><![CDATA[Diego Castro]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 16:20:45 +0000</pubDate>
+				<category><![CDATA[Piura]]></category>
+		<category><![CDATA[Portada]]></category>
+		<category><![CDATA[Región]]></category>
+		<category><![CDATA[emprendimientos mujeres]]></category>
+		<category><![CDATA[Jaén]]></category>
+		<category><![CDATA[Pasantía]]></category>
+		<category><![CDATA[Proyecto Sembrando Libertad]]></category>
+		<category><![CDATA[TDS]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=195023</guid>
+
+					<description><![CDATA[<p>La agenda contempla visitas a emprendimientos, intercambio de experiencias con organizaciones de emprendedoras de Jaén y espacios de aprendizaje sobre modelos de gestión, innovación y desarrollo económico. Una delegación de mujeres emprendedoras y representantes de organizaciones de Piura participará del 8 al 11 de noviembre de 2026 en el Programa General de la Pasantía a [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/delegacion-de-piura-participara-en-pasantia-interregional-en-jaen-para-fortalecer-emprendimientos-liderados-por-mujeres/">Delegación de Piura participará en pasantía interregional en Jaén para fortalecer emprendimientos liderados por mujeres</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>

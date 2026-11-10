@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","id":5,"geometry":{"type":"Polygon","coordinates":[[[-75.5,-1.494],[-75.507,-1.5],[-75.5,-1.508],[-75.5,-1.494]]]},"properties":{"OBJECTID":5,"ID":null,"RANGO":"\u003e 97","INTENSIDAD":"EXTREMO","FECHA":1794182400000,"FECHA_ETL":null,"SHAPE.AREA":947780.79130509996,"SHAPE.LEN":3968.1654278704805}}]}

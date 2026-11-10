@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:media="http://search.yahoo.com/mrss/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Diario Jornada</title>
+	<atom:link href="https://jornada.com.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://jornada.com.pe</link>
+	<description>iÚnete a nuestra comunidad de lectores y mantente informado con Diario Jornada! • EI diario judicial de la región de Ayacucho • Contáctenos: +51 944 233 745</description>
+	<lastBuildDate>Mon, 09 Nov 2026 23:52:29 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.1.3</generator>
+
+<image>
+	<url>https://jornada.com.pe/wp-content/uploads/2024/06/cropped-logoRedondeadoJORNADA-150x150.webp</url>
+	<title>Diario Jornada</title>
+	<link>https://jornada.com.pe</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Senamhi alerta por lluvias, descargas eléctricas y vientos fuertes en Ayacucho hasta el 11 de noviembre</title>
+		<link>https://jornada.com.pe/senamhi-alerta-por-lluvias-descargas-electricas-y-vientos-fuertes-en-ayacucho-hasta-el-11-de-noviembre/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 23:52:29 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105660</guid>
+
+					<description><![CDATA[<p>El Senamhi advierte lluvias, descargas eléctricas y ráfagas de viento de hasta 40 km/h en Ayacucho y otras regiones hasta el 11 de noviembre</p>
+<p>The post <a href="https://jornada.com.pe/senamhi-alerta-por-lluvias-descargas-electricas-y-vientos-fuertes-en-ayacucho-hasta-el-11-de-noviembre/">Senamhi alerta por lluvias, descargas eléctricas y vientos fuertes en Ayacucho hasta el 11 de noviembre</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>El Servicio Nacional de Meteorología e Hidrología del Perú (Senamhi) emitió una alerta meteorológica por la continuidad de lluvias de ligera a fuerte intensidad en distintas zonas del país, fenómeno que también comprende a regiones de la sierra como Ayacucho. El aviso tiene vigencia hasta el miércoles 11 de noviembre.</p>
+<p>Las <a href="https://jornada.com.pe/precipitaciones-continuaran-en-la-sierra-de-ayacucho-los-dias-24-y-25-de-marzo/">precipitaciones</a> estarán acompañadas de descargas eléctricas y ráfagas de viento cercanas a los 40 kilómetros por hora. El organismo meteorológico también advierte la posible caída de granizo en zonas ubicadas por encima de los 2800 metros sobre el nivel del mar en la sierra norte.</p>
+<p>El aviso meteorológico N.° 462 comprende a 19 departamentos, entre ellos Ayacucho, Apurímac, Huancavelica, Cusco y Junín. Para Ayacucho, el Senamhi también reportó precipitaciones previstas en la provincia de Lucanas durante el periodo de alerta.</p>
+<p>En cuanto a la intensidad de las lluvias, el pronóstico contempla acumulados de entre 6 y 17 milímetros por día en la sierra centro y valores próximos a 17 milímetros diarios en la sierra sur. Estas cifras corresponden a la previsión del lunes 9 de noviembre y no deben interpretarse como acumulados específicos para los días 10 y 11.</p>
+<p>El aviso también advierte sobre lluvias de fuerte a extrema intensidad en la costa norte, principalmente en Tumbes, y precipitaciones de moderada a fuerte intensidad en la costa interior de Piura. En estas zonas, las condiciones meteorológicas podrían generar mayores acumulaciones de agua.</p>
+<p>Ante este escenario, el Senamhi recomienda a la población mantenerse informada sobre la evolución de las condiciones meteorológicas, tomar precauciones y seguir las indicaciones de las autoridades. El aviso tiene una vigencia de 71 horas y culmina el miércoles 11 de noviembre a las 11:59 p. m.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/senamhi-alerta-por-lluvias-descargas-electricas-y-vientos-fuertes-en-ayacucho-hasta-el-11-de-noviembre/">Senamhi alerta por lluvias, descargas eléctricas y vientos fuertes en Ayacucho hasta el 11 de noviembre</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/09-11-Senamhi-alerta-por-lluvias-descargas-electricas-y-vientos-fuertes-en-Ayacucho-hasta-el-11-de-noviembre.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Gobierno plantea flexibilizar despidos y reducir aportes a salud y pensiones desde 2027</title>
+		<link>https://jornada.com.pe/gobierno-plantea-flexibilizar-despidos-y-reducir-aportes-a-salud-y-pensiones-desde-2027/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 23:32:50 +0000</pubDate>
+				<category><![CDATA[NACIONAL]]></category>
+		<category><![CDATA[aportes a EsSalud]]></category>
+		<category><![CDATA[Congreso del Perú]]></category>
+		<category><![CDATA[despidos laborales]]></category>
+		<category><![CDATA[Elmer Cuba]]></category>
+		<category><![CDATA[empleo formal]]></category>
+		<category><![CDATA[Keiko Fujimori]]></category>
+		<category><![CDATA[MEF]]></category>
+		<category><![CDATA[microempresas]]></category>
+		<category><![CDATA[Pensiones]]></category>
+		<category><![CDATA[reforma laboral]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105657</guid>
+
+					<description><![CDATA[<p>El MEF propone flexibilizar despidos y reducir aportes a salud y pensiones. Los proyectos serán presentados al Congreso en 2027</p>
+<p>The post <a href="https://jornada.com.pe/gobierno-plantea-flexibilizar-despidos-y-reducir-aportes-a-salud-y-pensiones-desde-2027/">Gobierno plantea flexibilizar despidos y reducir aportes a salud y pensiones desde 2027</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>El Gobierno de Keiko Fujimori prepara dos proyectos de ley que modificarían las condiciones laborales de los trabajadores formales en el país. Las propuestas contemplan flexibilizar el despido de empleados con mayores remuneraciones y reducir los aportes obligatorios a salud y pensiones para quienes perciben menores ingresos. El Ministerio de Economía y Finanzas (MEF) prevé presentar ambas iniciativas al Congreso durante el verano de 2027.</p>
+<p>El ministro de Economía y Finanzas, Elmer Cuba, explicó que la reforma tendrá dos componentes. El primero busca modificar las restricciones que regulan la desvinculación de trabajadores formales con mejores salarios, tanto de quienes tienen contratos en planilla como de aquellos que cuentan con contratos a plazo determinado.</p>
+<p>Durante una entrevista con el programa Cuarto Poder, Cuba reconoció que esta propuesta podría no conseguir respaldo parlamentario, pero afirmó que el Ejecutivo la presentará. Según sostuvo, las actuales restricciones para despedir trabajadores afectan principalmente a quienes ocupan los niveles superiores de la estructura salarial y no a quienes se encuentran en la informalidad.</p>
+<p>El segundo componente está dirigido a las microempresas, donde el MEF estima que la informalidad laboral alcanza aproximadamente el 90 %. Para este sector, el Gobierno plantea modificar el régimen de aportes obligatorios a salud y pensiones con el argumento de reducir los costos de contratación formal. Cuba indicó que la propuesta mantendría beneficios como las vacaciones y los aguinaldos.</p>
+<p>Como referencia, el ministro mencionó la posibilidad de reducir de 10 % a 5 % el aporte previsional de los trabajadores ubicados en los tramos salariales más bajos. También comparó los aportes de un empleado que percibe 10.000 soles con los de otro que gana 1.200 soles, al señalar que ambos están sujetos a porcentajes similares de contribución.</p>
+<p>Las dos iniciativas todavía deben ser desarrolladas y presentadas ante el Congreso. Su eventual aprobación modificaría las condiciones de desvinculación laboral y los aportes de los trabajadores a los sistemas de salud y pensiones. Entre los aspectos pendientes están los alcances de la flexibilización del despido y las consecuencias que tendría la reducción de aportes sobre la cobertura de salud y las futuras jubilaciones.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/gobierno-plantea-flexibilizar-despidos-y-reducir-aportes-a-salud-y-pensiones-desde-2027/">Gobierno plantea flexibilizar despidos y reducir aportes a salud y pensiones desde 2027</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/09-11-Gobierno-plantea-flexibilizar-despidos-y-reducir-aportes-a-salud-y-pensiones-desde-2027.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Educación tendrá 49 mil millones de soles en 2027, pero no se precisa cuánto irá a reconstruir colegios</title>
+		<link>https://jornada.com.pe/educacion-tendra-49-mil-millones-de-soles-en-2027-pero-no-se-precisa-cuanto-ira-a-reconstruir-colegios/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 22:38:01 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<category><![CDATA[#Infraestructura Educativa]]></category>
+		<category><![CDATA[Alejandro Manay]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[Congreso]]></category>
+		<category><![CDATA[Educación]]></category>
+		<category><![CDATA[MEF]]></category>
+		<category><![CDATA[Presupuesto 2027]]></category>
+		<category><![CDATA[presupuesto público]]></category>
+		<category><![CDATA[reconstrucción de colegios]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105648</guid>
+
+					<description><![CDATA[<p>El presupuesto 2027 asigna S/ 49 068 millones a Educación, pero el cuadro no precisa cuánto financiará la reconstrucción de colegios.</p>
+<p>The post <a href="https://jornada.com.pe/educacion-tendra-49-mil-millones-de-soles-en-2027-pero-no-se-precisa-cuanto-ira-a-reconstruir-colegios/">Educación tendrá 49 mil millones de soles en 2027, pero no se precisa cuánto irá a reconstruir colegios</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p data-pm-slice="1 1 []">El sector Educación tendrá S/ 49 068 millones en el proyecto de Presupuesto Público 2027, pero la distribución de estos recursos no permite identificar cuánto se destinará a reconstruir colegios con infraestructura deteriorada. La cifra cobra relevancia luego de que el diputado ayacuchano Alejandro Manay, de Juntos por el Perú, denunciara que instituciones educativas con expedientes técnicos aprobados continúan sin financiamiento para ejecutar sus proyectos.</p>
+<p data-pm-slice="1 1 []">En ese contexto, un funcionario de Ayacucho, que solicitó mantener su identidad en reserva, remitió al diario Jornada un cuadro con la distribución presupuestal del próximo año. El documento consigna los montos asignados a cada función del Estado y permite conocer cómo se distribuyen los recursos previstos para Educación entre las distintas categorías presupuestales.</p>
+<p>De acuerdo con el cuadro, Educación concentra el 18,4 % de los 266 506 millones de soles proyectados para el presupuesto nacional de 2027. De ese total, 36 742 millones de soles corresponden a programas presupuestales, 6 165 millones de soles a acciones centrales y 6 161 millones de soles a asignaciones presupuestarias que no resultan en productos (APNOP). Los programas presupuestales representan el 74,9 % de los recursos asignados a este sector.</p>
+<p>Para interpretar estas cifras, Jornada consultó a una especialista, quien explicó que cada categoría tiene una finalidad distinta. Los programas presupuestales financian intervenciones orientadas a cumplir objetivos e indicadores específicos; las acciones centrales cubren principalmente los gastos administrativos y de funcionamiento de las entidades públicas, mientras que las APNOP agrupan recursos destinados a actividades que no están comprendidas en los programas presupuestales.</p>
+<p>La especialista precisó que el porcentaje de la última columna del cuadro corresponde a la participación de los programas presupuestales dentro del presupuesto de cada función. En Educación, por ejemplo, los 36 742 millones soles representan el 74,9 % de sus 49 068 millones de soles. Por tanto, este porcentaje no significa que ese dinero esté destinado exclusivamente a infraestructura educativa, sino que financia las distintas intervenciones comprendidas en los programas del sector.</p>
+<p>El <a href="https://www.mef.gob.pe/es/?option=com_content&amp;language=es-ES&amp;Itemid=101156&amp;lang=es-ES&amp;view=article&amp;id=8765">proyecto de Presupuesto Público 2027 asciende a 266 506 millones de soles</a> y contempla una asignación de 36 997 millones de soles para Planeamiento, Gestión y Reserva de Contingencia, y 32 208 millones de soles para Salud, que ocupan el segundo y tercer lugar, respectivamente. Aunque Educación concentra la mayor cantidad de recursos, el cuadro no desagrega los montos destinados a construcción, reconstrucción o mejoramiento de colegios, ni identifica los proyectos que recibirán financiamiento.</p>
+<p>De esta manera, permanece pendiente conocer si las instituciones educativas con expedientes técnicos aprobados, cuya falta de presupuesto fue advertida por Manay, tendrán recursos para ejecutar sus obras durante 2027. La asignación general al sector no permite determinar qué colegios serán atendidos ni cuánto se destinará a resolver sus necesidades de infraestructura.</p>
+<style>
+  .lt-social {<br />
+    width: 100%;<br />
+    max-width: 400px;<br />
+    margin: 30px auto;<br />
+    border-collapse: collapse;<br />
+    text-align: left;<br />
+    font-family: "Helvetica", Arial, sans-serif;<br />
+    background-color: #fff;<br />
+    border-radius: 8px;<br />
+    overflow: hidden;<br />
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);<br />
+  }</p>
+<p>  .lt-social caption {<br />
+    caption-side: top;<br />
+    font-weight: bold;<br />
+    font-size: 1.1rem;<br />
+    padding: 12px 10px;<br />
+    text-align: left;<br />
+    color: #fff;<br />
+    background: #334b8c;<br />
+  }</p>
+<p>  .lt-social td {<br />
+    padding: 8px 6px;<br />
+    vertical-align: middle;<br />
+    border-top: 1px solid #ddd;<br />
+    color: #000;<br />
+  }</p>
+<p>  /* CELDA DEL ÍCONO */<br />
+  .lt-social td.icon {<br />
+    width: 42px;<br />
+    text-align: center;<br />
+    background-color: #334b8c; /* azul estándar */<br />
+  }</p>
+<p>  /* ÍCONO */<br />
+  .lt-social td.icon img {<br />
+    width: 20px;<br />
+    height: 20px;<br />
+    filter: invert(1); /* blanco puro */<br />
+  }</p>
+<p>  .lt-social a {<br />
+    color: #000;<br />
+    text-decoration: none;<br />
+  }</p>
+<p>  .lt-social a:hover {<br />
+    text-decoration: underline;<br />
+  }</p>
+<p>  @media (max-width: 600px) {<br />
+    .lt-social {<br />
+      font-size: 0.95rem;<br />
+    }<br />
+  }<br />
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/educacion-tendra-49-mil-millones-de-soles-en-2027-pero-no-se-precisa-cuanto-ira-a-reconstruir-colegios/">Educación tendrá 49 mil millones de soles en 2027, pero no se precisa cuánto irá a reconstruir colegios</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/09-11-Educacion-tendra-49-mil-millones-de-soles-en-2027-pero-no-se-precisa-cuanto-ira-a-reconstruir-colegios.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>TV de 50 pulgadas: medidas, distancia y cómo elegirlo</title>
+		<link>https://jornada.com.pe/tv-de-50-pulgadas-medidas-distancia-y-como-elegirlo/</link>
+		
+		<dc:creator><![CDATA[Redacción &#124; Jornada]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 22:37:28 +0000</pubDate>
+				<category><![CDATA[REDES]]></category>
+		<category><![CDATA[ambiente]]></category>
+		<category><![CDATA[pulgadas]]></category>
+		<category><![CDATA[tamaño]]></category>
+		<category><![CDATA[tv]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105649</guid>
+
+					<description><![CDATA[<p>Un TV de 50 pulgadas puede ofrecer una pantalla amplia sin exigir una sala demasiado grande, siempre que exista una distancia cómoda desde el sofá. Antes de elegir, conviene comparar los distintos televisores disponibles y considerar no solo la diagonal, sino también el espacio que ocupará el equipo, su resolución y la ubicación prevista. El [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/tv-de-50-pulgadas-medidas-distancia-y-como-elegirlo/">TV de 50 pulgadas: medidas, distancia y cómo elegirlo</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>Un <strong>TV de 50 pulgadas</strong> puede ofrecer una pantalla amplia sin exigir una sala demasiado grande, siempre que exista una distancia cómoda desde el sofá.</p>
+<p>Antes de elegir, conviene comparar los distintos <a href="https://www.sodimac.com.pe/sodimac-pe/lista/cat6370551/Televisores-Smart-TV"><strong>televisores</strong></a> disponibles y considerar no solo la diagonal, sino también el espacio que ocupará el equipo, su resolución y la ubicación prevista.</p>
+<p>El tamaño adecuado depende de la distribución del ambiente, la distancia de visualización y el contenido que se consume con mayor frecuencia. Medir antes de comprar permite saber si la pantalla mantendrá una buena proporción con el espacio disponible.</p>
+<h2>Cuánto ocupa realmente en la pared o el mueble</h2>
+<p>Las <strong>medidas de un TV de 50 pulgadas</strong> parten de una diagonal de 127 cm. En formato 16:9, el panel mide aproximadamente 110,7 cm de ancho por 62,3 cm de alto, sin contar marcos ni base.</p>
+<p>Las dimensiones exteriores cambian según el diseño. Con los bordes incluidos, el ancho puede situarse alrededor de 113 a 115 cm, mientras que la base puede sumar entre 5 y 8 cm a la altura total.</p>
+<p>Si va sobre un mueble, también hay que comprobar que la superficie tenga la profundidad y estabilidad necesarias. Para una instalación en pared o dentro de un nicho, conviene revisar primero las dimensiones exactas del modelo para evitar ajustes posteriores.</p>
+<p>El peso puede variar entre equipos y situarse aproximadamente entre 10 y 20 kg en este tamaño, por lo que el soporte elegido debe ser adecuado para el aparato.</p>
+<h2>Qué distancia conviene para una pantalla de este tamaño</h2>
+<p>La separación entre el sofá y el panel influye en la comodidad y en cuánto detalle se percibe en la imagen.</p>
+<p>Para una pantalla 4K de 50 pulgadas, el material de referencia plantea una distancia aproximada de <strong>1,5 a 2,2 metros</strong>. Este rango puede funcionar bien en salas donde no existe una separación demasiado amplia entre los asientos y la pared.</p>
+<table width="602">
+<tbody>
+<tr>
+<td width="81"><strong>Tamaño</strong></td>
+<td width="301"><strong>Referencia del material</strong></td>
+<td width="219"><strong>Qué considerar</strong></td>
+</tr>
+<tr>
+<td width="81">50 pulgadas</td>
+<td width="301">Aproximadamente 1,5 a 2,2 m</td>
+<td width="219">Puede adaptarse a salas compactas o medianas</td>
+</tr>
+<tr>
+<td width="81">55 pulgadas</td>
+<td width="301">Se plantea como alternativa cuando la distancia supera unos 2,5 m</td>
+<td width="219">Requiere algo más de espacio en pared o mueble</td>
+</tr>
+</tbody>
+</table>
+<p>Estas cifras funcionan como orientación. La elección también depende de la resolución, el contenido y la sensación de inmersión que prefiera cada persona.</p>
+<p>Si el sofá queda demasiado lejos, una pantalla mayor puede ganar presencia. Cuando la distancia es más reducida, 50 pulgadas puede mantener una relación más equilibrada con el ambiente.</p>
+<h2>Televisor de 50 o 55 pulgadas: cuándo considerar el cambio</h2>
+<p>Al comparar un <strong>televisor de 50 o 55 pulgadas</strong>, las cinco pulgadas adicionales representan también una mayor superficie visible.</p>
+<p>Como referencia, una pantalla de 55 pulgadas mide aproximadamente 121,8 cm de ancho por 68,5 cm de alto, sin considerar las variaciones propias de marcos y bases.</p>
+<p>El salto puede tener más sentido cuando la distancia de visualización supera los 2,5 metros y existe espacio suficiente para una pantalla mayor. También puede aportar una experiencia más envolvente en películas, deportes o contenido pensado para pantallas grandes.</p>
+<p>En una sala más compacta o con el sofá a menor distancia, el formato de 50 pulgadas puede resultar más proporcionado.</p>
+<p>Antes de decidir, una opción práctica es medir sobre la pared cuánto ocuparía cada alternativa para visualizar la diferencia real.</p>
+<p><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=75&resize=75&ssl=1 75w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=100&resize=100&ssl=1 100w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=150&resize=150&ssl=1 150w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=240&resize=240&ssl=1 240w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=320&resize=320&ssl=1 320w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=500&resize=500&ssl=1 500w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=640&resize=640&ssl=1 640w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=800&resize=800&ssl=1 800w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=1024&resize=1024&ssl=1 1024w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=1280&resize=1280&ssl=1 1280w, https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1&w=1600&resize=1600&ssl=1 1600w" fifu-data-src="https://i0.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo1.webp?ssl=1" alt="" /></p>
+<p><em>Fuente: Shutterstock</em></p>
+<h2>Resolución y contenido: qué conviene considerar</h2>
+<p>En un <strong>televisor de 50 pulgadas</strong>, la resolución influye especialmente en la nitidez percibida.</p>
+<p>El material base plantea 4K Ultra HD como una alternativa adecuada para este tamaño, ya que ofrece una mayor cantidad de píxeles que Full HD y permite aprovechar contenidos disponibles en alta resolución.</p>
+<p>También importa el tipo de uso. Películas, series, videojuegos y deportes pueden beneficiarse de características como HDR o una buena tasa de refresco, según el modelo.</p>
+<p>En el caso de la señal abierta, la calidad final dependerá de la resolución en la que se emita cada canal. Algunos equipos incorporan procesamiento de imagen para mejorar la presentación de contenidos de menor calidad.</p>
+<h2>Dónde colocarlo para verlo con comodidad</h2>
+<p>La ubicación influye tanto como el tamaño de la pantalla.</p>
+<p>Como referencia general, conviene que su zona central quede cerca de la altura de los ojos cuando las personas están sentadas. Esto ayuda a mantener una postura cómoda durante el uso.</p>
+<p>También es importante observar cómo entra la luz en la habitación. Una ventana ubicada frente al panel puede generar reflejos, especialmente en escenas oscuras, por lo que conviene considerar este factor antes de fijar su posición.</p>
+<p>Si va sobre un mueble, la superficie debe ser estable y suficientemente amplia para que la base quede correctamente apoyada.</p>
+<p>Cuando existen varios asientos, una posición frontal suele ofrecer una mejor visualización que los ángulos demasiado laterales.</p>
+<h2>Audio, iluminación y cables: detalles que completan el espacio</h2>
+<p>Una vez definidos tamaño y ubicación, algunos complementos pueden mejorar la organización del área de entretenimiento.</p>
+<p>Una barra de sonido o un sistema de audio externo puede reforzar los parlantes integrados, especialmente para películas y videojuegos. Si se planea incorporar uno, conviene decidir su ubicación antes de instalar definitivamente la pantalla.</p>
+<p>La iluminación ambiental también puede ayudar a suavizar el contraste entre el brillo del panel y una habitación oscura. Al mismo tiempo, es preferible evitar fuentes de luz que se reflejen directamente sobre la imagen.</p>
+<p>La organización de cables es otro punto a planificar. Canaletas, clips o pasacables permiten mantener ordenadas las conexiones de consolas, decodificadores y equipos de audio.</p>
+<p>Si el aparato irá en la pared, definir el recorrido de los cables antes de perforar puede facilitar una instalación más limpia.</p>
+<p><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=75&resize=75&ssl=1 75w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=100&resize=100&ssl=1 100w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=150&resize=150&ssl=1 150w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=240&resize=240&ssl=1 240w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=320&resize=320&ssl=1 320w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=500&resize=500&ssl=1 500w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=640&resize=640&ssl=1 640w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=800&resize=800&ssl=1 800w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=1024&resize=1024&ssl=1 1024w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=1280&resize=1280&ssl=1 1280w, https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1&w=1600&resize=1600&ssl=1 1600w" fifu-data-src="https://i2.wp.com/biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo2.webp?ssl=1" alt="" /></p>
+<p><em>Fuente: Shutterstock</em></p>
+<h2>El tamaño correcto depende de tu espacio</h2>
+<p>Elegir un <em>TV de 50 pulgadas</em> no consiste simplemente en buscar la pantalla más grande que permita el presupuesto. El ancho real del equipo, la distancia hasta el sofá, la resolución y la ubicación dentro de la sala determinan si esta medida resultará cómoda.</p>
+<p>Tomar las medidas antes de comprar permite decidir con mayor criterio si este formato encaja bien o si vale la pena considerar 55 pulgadas. La mejor elección será la que mantenga una proporción adecuada con el ambiente y permita disfrutar del contenido sin tener que reorganizar por completo la sala.</p><p>The post <a href="https://jornada.com.pe/tv-de-50-pulgadas-medidas-distancia-y-como-elegirlo/">TV de 50 pulgadas: medidas, distancia y cómo elegirlo</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/9-11-TV-de-50-pulgadas----medidas-distancia-y-como-elegirlo.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Congreso Nacional de Estudiantes de Ingeniería Agroindustrial presenta investigación sobre propiedades del cushuro</title>
+		<link>https://jornada.com.pe/congreso-nacional-de-estudiantes-de-ingenieria-agroindustrial-presenta-investigacion-sobre-propiedades-del-cushuro/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 22:14:47 +0000</pubDate>
+				<category><![CDATA[LOCAL]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[Congreso Nacional de Estudiantes de Ingeniería Agroindustrial]]></category>
+		<category><![CDATA[cushuro]]></category>
+		<category><![CDATA[industria alimentaria]]></category>
+		<category><![CDATA[ingeniería agroindustrial]]></category>
+		<category><![CDATA[investigación científica]]></category>
+		<category><![CDATA[Nostoc]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105643</guid>
+
+					<description><![CDATA[<p>Estudiantes de Ingeniería Agroindustrial exponen investigaciones sobre el cushuro, sus compuestos fenólicos y aplicaciones alimentarias hasta el 13 de noviembre</p>
+<p>The post <a href="https://jornada.com.pe/congreso-nacional-de-estudiantes-de-ingenieria-agroindustrial-presenta-investigacion-sobre-propiedades-del-cushuro/">Congreso Nacional de Estudiantes de Ingeniería Agroindustrial presenta investigación sobre propiedades del cushuro</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p data-pm-slice="1 1 []">El <a href="https://jornada.com.pe/estudiantes-de-ingenieria-agroindustrial-ponen-en-agenda-la-transformacion-de-materias-primas-en-ayacucho/">Congreso Nacional de Estudiantes de Ingeniería Agroindustrial</a> reúne investigaciones sobre el aprovechamiento de recursos naturales y el desarrollo de nuevos productos alimentarios. Entre los trabajos expuestos destaca un estudio sobre el cushuro, que identificó 3,074 miligramos de compuestos fenólicos totales en los extractos analizados y evaluó su capacidad antioxidante.</p>
+<p>Durante una de las ponencias, los investigadores explicaron los procedimientos utilizados para extraer los compuestos del <em>Nostoc</em>, conocido como cushuro, mediante solventes como etanol, metanol, agua, cloroformo y hexano. Los resultados también incluyeron una comparación con el yuyo, un alga marina que registró 2,610 en la medición presentada.</p>
+<p>El trabajo evaluó el contenido de compuestos fenólicos totales y la capacidad antioxidante de los extractos. En esta última prueba, los expositores compararon el cushuro con otras muestras, entre ellas Gracilaria, Ulva y espirulina. Asimismo, plantearon nuevas pruebas para determinar si condiciones como la radiación y la deshidratación pueden modificar la concentración de estos compuestos.</p>
+<p>La investigación se desarrolló con muestras recolectadas en la Laguna Chica, ubicada a 4,129.9 metros sobre el nivel del mar, en el distrito de Canta, provincia de Recuay. El procedimiento comprendió cuatro etapas: recolección y evaluación fisicoquímica y morfológica del microorganismo; optimización de la extracción de exopolisacáridos; evaluación de sus propiedades tecnofuncionales; y elaboración de una cobertura alimentaria aplicada sobre trozos de yuyo.</p>
+<p>La presentación forma parte de los trabajos que se exponen en el Congreso Nacional de Estudiantes de Ingeniería Agroindustrial, espacio académico en el que los participantes dan a conocer metodologías, resultados y propuestas de investigación relacionadas con el procesamiento y aprovechamiento de materias primas.</p>
+<p>Las ponencias y exposiciones del encuentro se desarrollan hasta el 13 de noviembre, fecha prevista para la presentación de diferentes trabajos de investigación. Entre los temas abordados figura el aprovechamiento de recursos altoandinos para explorar nuevas aplicaciones en la industria alimentaria.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<caption> </caption>
+<p>Jornada &#8211; Redes sociales</p>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/congreso-nacional-de-estudiantes-de-ingenieria-agroindustrial-presenta-investigacion-sobre-propiedades-del-cushuro/">Congreso Nacional de Estudiantes de Ingeniería Agroindustrial presenta investigación sobre propiedades del cushuro</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/09-11-Congreso-Nacional-de-Estudiantes-de-Ingenieria-Agroindustrial-presenta-investigacion-sobre-propiedades-del-cushuro.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>MTC otorga buena pro para construir el nuevo puente San Francisco en el Vraem</title>
+		<link>https://jornada.com.pe/mtc-otorga-buena-pro-para-construir-el-nuevo-puente-san-francisco-en-el-vraem/</link>
+		
+		<dc:creator><![CDATA[Redacción &#124; Jornada]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 22:09:58 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<category><![CDATA[VRAEM]]></category>
+		<category><![CDATA[#Vraem]]></category>
+		<category><![CDATA[Buena Pro]]></category>
+		<category><![CDATA[MTC]]></category>
+		<category><![CDATA[Puente San Francisco]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105640</guid>
+
+					<description><![CDATA[<p>El Ministerio de Transportes y Comunicaciones (MTC) otorgó la buena pro para la construcción del nuevo puente San Francisco, infraestructura estratégica que conecta las regiones de Ayacucho y Cusco a través del corredor vial del Valle de los Ríos Apurímac, Ene y Mantaro (Vraem). El anuncio fue presentado por el sector como uno de los [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/mtc-otorga-buena-pro-para-construir-el-nuevo-puente-san-francisco-en-el-vraem/">MTC otorga buena pro para construir el nuevo puente San Francisco en el Vraem</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>El<strong> Ministerio de Transportes y Comunicaciones (MTC)</strong> otorgó la buena pro para la construcción del nuevo puente San Francisco, infraestructura estratégica que conecta las regiones de Ayacucho y Cusco a través del corredor vial del <strong>Valle de los Ríos Apurímac, Ene y Mantaro (Vraem).</strong></p>
+<p>El anuncio fue presentado por el sector como uno de los avances de los primeros 100 días de gestión de la presidenta Keiko Fujimori. La obra busca mejorar la conectividad, brindar condiciones más seguras de tránsito y facilitar el transporte de pasajeros y productos agrícolas.</p>
+<p>El proyecto contempla una inversión de S/ 522,3 millones y una nueva estructura de casi 600 metros, incluidos sus accesos, según información difundida por el MTC en junio de 2026.</p>
+<h4 style="text-align: center;"><strong>Una conexión estratégica en riesgo</strong></h4>
+<p>La necesidad de reemplazar el actual puente fue advertida por la Defensoría del Pueblo en septiembre de 2025. Durante una inspección, la entidad constató corrosión severa, fisuras y deterioro del pavimento, además de alertar sobre el riesgo de colapso.</p>
+<p>Según la institución, una eventual interrupción de esta conexión podría dejar aislados a más de 150 mil habitantes y afectar el traslado de productos agrícolas, así como el tránsito de ambulancias hacia el Hospital Regional de Ayacucho.</p>
+<p>La estructura tiene más de 50 años de antigüedad y fue diseñada originalmente para soportar cargas inferiores a 36 toneladas. El tránsito constante de vehículos pesados y las condiciones climáticas habrían contribuido a su deterioro, de acuerdo con la información proporcionada.</p>
+<h4 style="text-align: center;"><strong>Pendiente de concretar la ejecución</strong></h4>
+<p>El otorgamiento de la buena pro constituye un avance en el proceso de contratación, pero no significa que los trabajos hayan comenzado. Entre los siguientes pasos se encuentran la firma del contrato y la definición del inicio y plazo de ejecución.</p>
+<p>En septiembre de 2026, pobladores y organizaciones sociales del Vraem realizaron una movilización para exigir que el proyecto no vuelva a retrasarse.</p>
+<p>La expectativa de las localidades de Ayacucho y Cusco es que la adjudicación se traduzca en una obra concreta, ejecutada con transparencia y dentro de los plazos establecidos. También será importante conocer las medidas que garantizarán la continuidad del tránsito mientras se construye la nueva infraestructura.</p>
+<ul>
+<li><strong>Versión resumida, lee la información completa en la edición impresa y la edición digital de <a href="https://pro.jornada.com.pe/"><em>Jornada</em></a></strong></li>
+</ul>
+<table class="lt-social">
+<caption>Jornada – Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/mtc-otorga-buena-pro-para-construir-el-nuevo-puente-san-francisco-en-el-vraem/">MTC otorga buena pro para construir el nuevo puente San Francisco en el Vraem</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/9-11-MTC-otorga-buena-pro-para-construir-el-nuevo-puente-San-Francisco.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Hospital Regional de Ayacucho desarrolla campaña de vasectomía sin bisturí para varones que decidieron no tener más hijos</title>
+		<link>https://jornada.com.pe/hospital-regional-de-ayacucho-desarrolla-campana-de-vasectomia-sin-bisturi-para-varones-que-decidieron-no-tener-mas-hijos/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 22:04:58 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<category><![CDATA[#Hospital Regional de Ayacucho]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[campaña de vasectomía]]></category>
+		<category><![CDATA[métodos anticonceptivos]]></category>
+		<category><![CDATA[planificación familiar]]></category>
+		<category><![CDATA[salud masculina]]></category>
+		<category><![CDATA[vasectomía]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105634</guid>
+
+					<description><![CDATA[<p>Hospital Regional de Ayacucho realiza campaña de vasectomía sin bisturí. Siete varones ya fueron intervenidos y se programan nuevas atenciones</p>
+<p>The post <a href="https://jornada.com.pe/hospital-regional-de-ayacucho-desarrolla-campana-de-vasectomia-sin-bisturi-para-varones-que-decidieron-no-tener-mas-hijos/">Hospital Regional de Ayacucho desarrolla campaña de vasectomía sin bisturí para varones que decidieron no tener más hijos</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>El Hospital Regional de Ayacucho desarrolla una campaña de <a href="https://jornada.com.pe/pese-a-mitos-y-prejuicios-crece-el-numero-de-varones-que-optan-por-la-vasectomia-en-ayacucho/">vasectomía</a> sin bisturí dirigida a varones que decidieron no tener más hijos y buscan acceder a un método anticonceptivo permanente.</p>
+<p>Jorge Miguel Ceballos Sáenz, médico ginecólogo y asistente del Departamento de Gineco-Obstetricia del establecimiento, informó que las intervenciones están programadas para los días 9, 11, 12, 24 y 25 de noviembre. El principal requisito para acceder a este método es que el paciente haya decidido voluntariamente no tener más hijos y reciba la orientación médica correspondiente.</p>
+<p>La campaña aplica la técnica de vasectomía sin bisturí, que consiste en acceder a los conductos deferentes mediante una pequeña abertura en la región escrotal para ligarlos y cortarlos. De esta manera, se impide el paso de los espermatozoides hacia el semen y se evita la fecundación. Según el especialista, el procedimiento requiere cuidados posteriores, como reposo, aplicación de hielo y evitar esfuerzos físicos durante los primeros días.</p>
+<p>Hasta el 9 de noviembre, el hospital contabilizó siete vasectomías realizadas, de las cuales cinco correspondieron a esa jornada y las demás se efectuaron en días anteriores. Ceballos Sáenz señaló que esperan realizar alrededor de cuatro intervenciones adicionales; sin embargo, precisó que la disponibilidad limitada de materiales condiciona la cantidad de atenciones que pueden brindar.</p>
+<p>Durante la entrevista, el médico también abordó algunos mitos que generan temor entre los varones. Uno de ellos sostiene que la vasectomía provoca pérdida de virilidad o disminución del deseo sexual. Al respecto, explicó que el procedimiento no afecta la función sexual ni la libido, debido a que únicamente interrumpe el paso de los espermatozoides y no altera la producción de testosterona.</p>
+<p>Otro temor está relacionado con la posibilidad de revertir la intervención. Sobre este punto, el especialista aclaró que la vasectomía se considera un método permanente y que no debe asumirse como reversible, debido a que una eventual cirugía para reconectar los conductos deferentes no garantiza recuperar la fertilidad.</p>
+<p>En el ámbito nacional, el Ministerio de Salud incluye la vasectomía entre los métodos anticonceptivos permanentes disponibles en los servicios de planificación familiar. Asimismo, precisa que el procedimiento no tiene efecto inmediato: los pacientes deben continuar utilizando otro método anticonceptivo hasta que un espermatograma confirme la ausencia de espermatozoides en el semen, generalmente después de tres meses.</p>
+<p>La campaña del Hospital Regional busca acercar este procedimiento a los varones interesados en la planificación familiar. Las intervenciones se desarrollan en las fechas programadas, de acuerdo con la disponibilidad de materiales del establecimiento.</p>
+<style>
+  .lt-social {<br />
+    width: 100%;<br />
+    max-width: 400px;<br />
+    margin: 30px auto;<br />
+    border-collapse: collapse;<br />
+    text-align: left;<br />
+    font-family: "Helvetica", Arial, sans-serif;<br />
+    background-color: #fff;<br />
+    border-radius: 8px;<br />
+    overflow: hidden;<br />
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);<br />
+  }</p>
+<p>  .lt-social caption {<br />
+    caption-side: top;<br />
+    font-weight: bold;<br />
+    font-size: 1.1rem;<br />
+    padding: 12px 10px;<br />
+    text-align: left;<br />
+    color: #fff;<br />
+    background: #334b8c;<br />
+  }</p>
+<p>  .lt-social td {<br />
+    padding: 8px 6px;<br />
+    vertical-align: middle;<br />
+    border-top: 1px solid #ddd;<br />
+    color: #000;<br />
+  }</p>
+<p>  /* CELDA DEL ÍCONO */<br />
+  .lt-social td.icon {<br />
+    width: 42px;<br />
+    text-align: center;<br />
+    background-color: #334b8c; /* azul estándar */<br />
+  }</p>
+<p>  /* ÍCONO */<br />
+  .lt-social td.icon img {<br />
+    width: 20px;<br />
+    height: 20px;<br />
+    filter: invert(1); /* blanco puro */<br />
+  }</p>
+<p>  .lt-social a {<br />
+    color: #000;<br />
+    text-decoration: none;<br />
+  }</p>
+<p>  .lt-social a:hover {<br />
+    text-decoration: underline;<br />
+  }</p>
+<p>  @media (max-width: 600px) {<br />
+    .lt-social {<br />
+      font-size: 0.95rem;<br />
+    }<br />
+  }<br />
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/hospital-regional-de-ayacucho-desarrolla-campana-de-vasectomia-sin-bisturi-para-varones-que-decidieron-no-tener-mas-hijos/">Hospital Regional de Ayacucho desarrolla campaña de vasectomía sin bisturí para varones que decidieron no tener más hijos</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/09-11-Hospital-Regional-de-Ayacucho-desarrolla-campana-de-vasectomia-sin-bisturi-para-varones-que-decidieron-no-tener-mas-hijos.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Construir la identidad en un país diverso &#124; Editorial</title>
+		<link>https://jornada.com.pe/construir-la-identidad-en-un-pais-diverso-editorial/</link>
+		
+		<dc:creator><![CDATA[Redacción &#124; Jornada]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 21:56:11 +0000</pubDate>
+				<category><![CDATA[NOTICIA]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105637</guid>
+
+					<description><![CDATA[<p>Una de las tareas más importantes encomendadas al Acuerdo Nacional, es desarrollar las Políticas de Estado. Estas son elaboradas y aprobadas sobre la base del diálogo y la construcción de consensos, con la finalidad de proponer los cambios necesarios en aspectos sociales, políticos y económicos para alcanzar el bien común en un marco de desarrollo [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/construir-la-identidad-en-un-pais-diverso-editorial/">Construir la identidad en un país diverso | Editorial</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>Una de las tareas más importantes encomendadas al Acuerdo Nacional, es desarrollar las Políticas de Estado. Estas son elaboradas y aprobadas sobre la base del diálogo y la construcción de consensos, con la finalidad de proponer los cambios necesarios en aspectos sociales, políticos y económicos para alcanzar el bien común en un marco de desarrollo sostenible y gobernabilidad democrática.</p>
+<p>Si bien es cierto no son vinculantes, al ser documentos esencialmente políticos, permiten señalar los objetivos de Estado, y los lineamientos generales para alcanzarlos. Se centran en el qué y el cómo y los aspectos institucionales deben ser definidos por los gobiernos de turno. Algo fundamental es que incluyen formulaciones irrenunciables por su carácter democrático e inclusivo, tales como desarrollo humano, igualdad de oportunidades, participación, interculturalidad, territorio nacional, entre otros.</p>
+<p>Uno de los grandes objetivos en que están agrupadas las políticas de estado, es Democracia y Estado de Derecho, cuyo sustento señala el compromiso de consolidar una nación peruana, respetuosa de sus valores, de su patrimonio milenario y de su diversidad étnica y cultural, vinculada al mundo y proyectada hacia el futuro.</p>
+<p>Es importante destacar, que desde el Estado se debe: promover la protección y difusión de la memoria histórica del país; desarrollar acciones que promuevan la solidaridad como el fundamento de la convivencia, que afirmen las coincidencias y estimulen la tolerancia y el respeto a las diferencias, para la construcción de una auténtica unidad entre todos los peruanos; y promover una visión de futuro ampliamente compartida, reafirmada en valores que conduzcan a la superación individual y colectiva para permitir un desarrollo nacional armónico y abierto al mundo.</p>
+<p>¿Quiénes somos los peruanos? En un país tan diverso, la afirmación de la identidad nacional requiere de lograr consensos entre personas que por diversas razones podemos parecer distintos: los andinos de los costeños y amazónicos; los descendientes de los pueblos originarios, con los afrodescendientes y los descendientes de los colonizadores españoles. Y a ellos sumamos las diversas migraciones operadas durante los 200 años de república: europeos, asiáticos y africanos y los mestizajes ocurridos.</p>
+<p>Por eso, el Acuerdo Nacional es el compromiso de consolidad una nación peruana integrada, respetuosa de sus valores, de su patrimonio milenario y de su diversidad étnica y cultural, vinculada al mundo y proyectada hacia el futuro.</p>
+<p>En Ayacucho está prevista un encuentro justamente para intercambiar, entre quienes desde el arte cultivan la cultura ayacuchana, como se percibe esa identidad que, siendo regional, lo es también nacional.</p>
+<table class="lt-social">
+<caption>Jornada – Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/construir-la-identidad-en-un-pais-diverso-editorial/">Construir la identidad en un país diverso | Editorial</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/9-11-Construir-la-identidad-en-un-pais-diverso---editorial.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>El cuento del malcriado &#124; Opinión</title>
+		<link>https://jornada.com.pe/el-cuento-del-malcriado-opinion/</link>
+		
+		<dc:creator><![CDATA[Redacción &#124; Jornada]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 21:51:24 +0000</pubDate>
+				<category><![CDATA[COLUMNISTAS]]></category>
+		<category><![CDATA[EL PARTERO]]></category>
+		<category><![CDATA[cuento]]></category>
+		<category><![CDATA[cuento del malcriado]]></category>
+		<category><![CDATA[Estados Unidos]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105630</guid>
+
+					<description><![CDATA[<p>Lalo Quiroz &#124; El partero prensa@jornada.com.pe Las elecciones midterms (medio mandato) que se realizaron en Estados Unidos, el 06 de noviembre último, han significado un revés claro y contundente para los republicanos; pero, sobre todo para el presidente Donald Trump –aunque, su egocentrismo haya buscado responsables en todas partes, menos en su grandilocuente y mediática gestión—. [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/el-cuento-del-malcriado-opinion/">El cuento del malcriado | Opinión</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<h6 style="text-align: right;">Lalo Quiroz | <a href="https://jornada.com.pe/columnistas/el-partero/">El partero</a><br />
+<span style="color: #3366ff;">prensa@jornada.com.pe</span></h6>
+<p>Las elecciones midterms <strong>(medio mandato)</strong> que se realizaron en Estados Unidos, el 06 de noviembre último, han significado un revés claro y contundente para los republicanos; pero, sobre todo para el presidente Donald Trump –aunque, su egocentrismo haya buscado responsables en todas partes, menos en su grandilocuente y mediática gestión—. Esta debacle política para su partido, no solamente habría sido producto de su política exterior injerencista, ‘policiaca’ y guerrerista que habría conllevado –junto a Israel, su aliado incondicional en Oriente Medio— a atacar a Irán con el cuento de la fabricación de una bomba nuclear; ocasionando que, la nación persa cierre el estrecho de Ormuz y se eleve el precio del petróleo a niveles récord, dañando la economía mundial y la de su propio país. Sino, además, sería consecuencia de su política interna que ha elevado los costos de vida y ha estado plagada de arrebatos en contra del recorte de derechos de sus propios ciudadanos, de las minorías y de los miles de migrantes que habrían sido perseguidos, torturados, deportados y asesinados a manos del Servicio de Inmigración y Control de Aduanas de Estados Unidos (ICE).</p>
+<blockquote class="wp-embedded-content" data-secret="lSSilU7zQv"><p><a href="https://jornada.com.pe/el-vivo-vive-del-muerto-opinion/">El vivo vive del muerto | Opinión</a></p></blockquote>
+<p><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted"  title="«El vivo vive del muerto | Opinión» — Diario Jornada" src="https://jornada.com.pe/el-vivo-vive-del-muerto-opinion/embed/#?secret=IMEGt5YmF5#?secret=lSSilU7zQv" data-secret="lSSilU7zQv" width="600" height="338" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></p>
+<p>La derrota de los republicanos en las dos cámaras del Congreso de Estados Unidos, inclusive logrando representantes y senadores de los demócratas en bastiones como Texas –históricamente, dominado por los republicanos—, representaría una clara demostración del hartazgo del pueblo estadounidense; lo cual, sería plasmado en la movilización de distintos colectivos que habrían salido a las calles a refrendar ese triunfo y rechazar la política ‘trumpista’. Uno de estos grupos, sería el colectivo Handmaid Army (Ejército de Criadas) que habría liderado diversas manifestaciones en estados como Washington D.C., Minnesota, Nueva York y Nashville para protestar contra la administración de Donald Trump y las medidas restrictivas contra los derechos de las mujeres. Este colectivo de mujeres caracterizado por su peculiar vestuario, compuesto por túnicas rojas y cofias blancas, más que aludir a sirvientas comunes representaría a los personajes de The Handmaid’s Tale (“El cuento de la criada”). Este atuendo –en donde, el color rojo de las túnicas simbolizaría la opresión y la sangre, mientras que las cofias blancas ocultarían sus rostros e invisibilizarían su individualidad—, se utilizaría como un símbolo visual de resistencia en marchas y centros de votación para denunciar el retroceso en los derechos reproductivos, las restricciones al aborto y las políticas que amenazan las libertades civiles de las mujeres.</p>
+<p>La famosa novela distópica y de ficción especulativa “El cuento de la criada”, publicada por Margaret Atwood en 1985, narra la pérdida absoluta de los derechos de las mujeres. La historia se situaría en un futuro cercano, en lo que antes serían los Estados Unidos de Norteamérica y en donde tras un golpe de Estado perpetrado por un grupo fundamentalista cristiano puritano (“Los Hijos de Jacob”), se instauraría una dictadura teocrática militarizada denominada la República de Gilead. Esto, en un contexto en donde debido a una crisis biológica global provocada por la contaminación ambiental y las enfermedades, la tasa de natalidad habría caído drásticamente y la fertilidad sería extremadamente escasa. El nuevo régimen, para solucionar este problema, aboliría la Constitución, confiscaría el dinero de las mujeres, les prohibiría trabajar, leer o escribir, y reorganizaría la sociedad en un estricto sistema de castas. Así, las pocas mujeres que aún conservaban la capacidad de concebir, serían reclutadas y sometidas a la fuerza; quitándoles sus derechos y reduciéndolas a la mera función reproductiva. Estas mujeres, denominadas ‘criadas’, serían asignadas a las casas de los altos mandos políticos y militares (los Comandantes) cuyas esposas son infértiles. Una vez al mes, las ‘criadas’ serían sometidas a un ritual sexual obligatorio basado en una interpretación literal de pasajes bíblicos; y si lograban tener un hijo, este les sería arrebatado de inmediato para ser criado por la élite. Asimismo, bajo el régimen de Gilead, a las ‘criadas’ se les despojaría de su identidad y se les asignaría un nombre compuesto por la preposición “de” seguida del nombre de su Comandante a cargo; así, en el caso del personaje principal Defred –y quien narra la historia—, “de Fred” indicaría que esta ‘criada’ pertenecía al Comandante Fred Waterford. En uno de los pasajes de la novela, sobre su cuerpo y la deshumanización de las mujeres, Defred reflexionaría: «Somos úteros con dos piernas, eso es todo: vasijas sagradas, cálices ambulatorios».</p>
+<p>Si bien, esta novela distópica podría parecer ficción pura, no dejaría de advertir ciertos aspectos que parecieran rozar con la realidad. En cualquier caso, resulta relevante la interpretación metafórica y simbólica que han hecho miles de mujeres estadounidenses y en donde anclan sus demandas, en el contexto actual de poralización en Estados Unidos; demandas que –por cierto— no están aisladas, sino que se suman a muchas otras que exigen un cambio en la política de su país y que han quedado claramente expresadas en las elecciones de medio mandato. Sin embargo, el señor MAGA, ¿seguirá insistiendo con el cuento de la supuesta bomba nuclear de Irán o que una pequeña isla del caribe representa una amenaza para la seguridad de Estados Unidos?</p>
+<table class="lt-social">
+<caption>Jornada – Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/el-cuento-del-malcriado-opinion/">El cuento del malcriado | Opinión</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/9-11-El-cuento-del-malcriado---op.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Situación de la vía Los Libertadores y alza del combustible encarecen productos que llegan al mercado Nery García</title>
+		<link>https://jornada.com.pe/situacion-de-la-via-los-libertadores-y-alza-del-combustible-encarecen-productos-que-llegan-al-mercado-nery-garcia/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 09 Nov 2026 21:48:58 +0000</pubDate>
+				<category><![CDATA[LOCAL]]></category>
+		<category><![CDATA[abastecimiento de mercados ¿Te fue útil esta conversación hasta ahora?]]></category>
+		<category><![CDATA[alza de combustibles]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[costo de vida]]></category>
+		<category><![CDATA[mercado Nery García]]></category>
+		<category><![CDATA[precios de alimentos]]></category>
+		<category><![CDATA[productos agrícolas]]></category>
+		<category><![CDATA[transporte de carga]]></category>
+		<category><![CDATA[Vía Los Libertadores]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=105627</guid>
+
+					<description><![CDATA[<p>El alza del combustible y los baches en Los Libertadores encarecen el transporte de productos que llegan al mercado Nery García de Ayacucho</p>
+<p>The post <a href="https://jornada.com.pe/situacion-de-la-via-los-libertadores-y-alza-del-combustible-encarecen-productos-que-llegan-al-mercado-nery-garcia/">Situación de la vía Los Libertadores y alza del combustible encarecen productos que llegan al mercado Nery García</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p data-pm-slice="1 1 []">El traslado de productos hacia el mercado Nery García Zárate de Ayacucho enfrenta dos dificultades: el incremento del costo de los <a href="https://jornada.com.pe/alza-del-combustible-encarece-la-cebolla-zanahoria-y-apio-en-el-mercado-covadonga-y-reduce-las-compras-familiares/">combustibles</a> y el deterioro de la carretera Los Libertadores. Ambos factores elevan los gastos de transporte y retrasan la llegada de mercadería procedente de Lima y otras zonas de la costa, según informó Oscar Gamarra, representante de los comerciantes del centro de abastos.</p>
+<p>El dirigente explicó que los transportistas trasladan el incremento del combustible al costo de los fletes, que es el pago por llevar los productos hasta Ayacucho. Esta variación repercute en los precios de venta, debido a que los comerciantes deben cubrir el mayor gasto para abastecer sus puestos. Entre los productos que registran incrementos mencionó la beterraga, cebolla, kion y limón, además del pescado.</p>
+<p>Sin embargo, precisó que las verduras procedentes del valle de Huamanga mantienen precios con pocas variaciones. Según indicó, los mayores incrementos se presentan en los productos que llegan desde Lima y la costa, mientras que la mercadería de producción local registra alzas mínimas.</p>
+<p>A este escenario se suma el estado de la vía Los Libertadores. Vargas señaló que los viajes de transporte de carga que anteriormente tomaban entre 14 y 16 horas ahora pueden prolongarse hasta dos días. Explicó que los baches y el deterioro de la carretera dificultan el desplazamiento de los vehículos pesados, incrementan los gastos de mantenimiento y afectan los horarios de descarga. En algunos casos, los camiones llegan cuando los comerciantes de otros mercados ya realizaron sus compras.</p>
+<p>El problema del combustible también forma parte del contexto económico nacional. Según el Instituto Nacional de Estadística e Informática (INEI), en setiembre de 2026 los precios de los combustibles para vehículos aumentaron 4,8% a nivel nacional, con incrementos de 5,3% en el gasohol y 3,9% en el diésel. En el mismo periodo, el rubro transporte registró una variación de 0,31%. Asimismo, el índice de precios al consumidor nacional acumuló un incremento de 4,02% entre enero y setiembre.</p>
+<p>Por su parte, el Gobierno publicó en agosto el Decreto de Urgencia N.° 007-2026, que estableció un subsidio temporal de S/ 4 por galón de diésel B5 y B20 para transportistas autorizados de pasajeros y mercancías, durante tres periodos de adquisición de combustible. La medida respondió al incremento de los costos operativos del transporte terrestre y buscó reducir su traslado a los precios de los bienes y servicios.</p>
+<p>Respecto a las dificultades en la carretera, Provías Nacional informó en marzo de 2026 que la vía Los Libertadores, correspondiente a la ruta nacional PE-28A, fue declarada en emergencia y anunció intervenciones de mantenimiento en coordinación con el Gobierno Regional de Ayacucho. Un convenio contempló trabajos en aproximadamente 68 kilómetros del corredor vial, donde se habían identificado baches profundos y pérdida de la carpeta asfáltica.</p>
+<p>Finalmente, Gamarra descartó que los comerciantes estén considerando una paralización como respuesta a esta situación. Señaló que una medida de ese tipo también afectaría a la población y sostuvo que esperan soluciones a los problemas del transporte y la infraestructura vial.</p>
+<style>
+  .lt-social {<br />    width: 100%;<br />    max-width: 400px;<br />    margin: 30px auto;<br />    border-collapse: collapse;<br />    text-align: left;<br />    font-family: "Helvetica", Arial, sans-serif;<br />    background-color: #fff;<br />    border-radius: 8px;<br />    overflow: hidden;<br />    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);<br />  }</p>
+<p>  .lt-social caption {<br />    caption-side: top;<br />    font-weight: bold;<br />    font-size: 1.1rem;<br />    padding: 12px 10px;<br />    text-align: left;<br />    color: #fff;<br />    background: #334b8c;<br />  }</p>
+<p>  .lt-social td {<br />    padding: 8px 6px;<br />    vertical-align: middle;<br />    border-top: 1px solid #ddd;<br />    color: #000;<br />  }</p>
+<p>  /* CELDA DEL ÍCONO */<br />  .lt-social td.icon {<br />    width: 42px;<br />    text-align: center;<br />    background-color: #334b8c; /* azul estándar */<br />  }</p>
+<p>  /* ÍCONO */<br />  .lt-social td.icon img {<br />    width: 20px;<br />    height: 20px;<br />    filter: invert(1); /* blanco puro */<br />  }</p>
+<p>  .lt-social a {<br />    color: #000;<br />    text-decoration: none;<br />  }</p>
+<p>  .lt-social a:hover {<br />    text-decoration: underline;<br />  }</p>
+<p>  @media (max-width: 600px) {<br />    .lt-social {<br />      font-size: 0.95rem;<br />    }<br />  }<br /></style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/situacion-de-la-via-los-libertadores-y-alza-del-combustible-encarecen-productos-que-llegan-al-mercado-nery-garcia/">Situación de la vía Los Libertadores y alza del combustible encarecen productos que llegan al mercado Nery García</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/09/09-11-en-la-via-Los-Libertadores-y-alza-del-combustible-encarecen-productos-que-llegan-al-mercado-Nery-Garcia.webp" medium="image"></media:content>
+	</item>
+	</channel>
+</rss>
