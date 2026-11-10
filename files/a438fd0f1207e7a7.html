@@ -3,119 +3,44 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src http: https:;"> -->
+    <meta name="description" content="Servicio Nacional de Meteorolog&iacute;a e Hidrolog&iacute;a del Per&uacute; - SENAMHI">
     <link rel="icon" href="favicon.ico">
-
     <title>SENAMHI - Boletines</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900" rel="stylesheet">
-    <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:100,300,400,500,600,700,800,900"
-          rel="stylesheet"> -->
-
-    <!-- Bootstrap core CSS -->
     <link href="public/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template
-    <link href="public/css/product.css" rel="stylesheet">-->
-
-    <!-- estilos -->
     <link href="public/css/style.css" rel="stylesheet">
-
-    <!--menu
-    <style type="text/css">
-        .dropdown:hover>.dropdown-menu {
-            display: block;
-        }
-    </style>-->
-
     <script src="public/lib/jquery/jquery-3.2.1.min.js"></script>
-
-    <!-- google -->
-    <!--      <script>
-                (function (i, s, o, g, r, a, m) {
-                    i['GoogleAnalyticsObject'] = r;
-                    i[r] = i[r] || function () {
-                        (i[r].q = i[r].q || []).push(arguments)
-                    }, i[r].l = 1 * new Date();
-                    a = s.createElement(o),
-                            m = s.getElementsByTagName(o)[0];
-                    a.async = 1;
-                    a.src = g;
-                    m.parentNode.insertBefore(a, m)
-                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-                ga('create', 'UA-9445737-1', 'auto');
-                ga('send', 'pageview');
-            </script>-->
-
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8407SG8D31"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
         function gtag() {
             dataLayer.push(arguments);
         }
-
         gtag('js', new Date());
-
         gtag('config', 'G-8407SG8D31');
-    </script>
-
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7G3WVK3HHH"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-
         gtag('config', 'G-7G3WVK3HHH');
     </script>
-
-    <!-- Google Tag Manager -->
-    <script>(function (w, d, s, l, i) {
+    <script>
+        (function (w, d, s, l, i) {
             w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            });
+            w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
             var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
             j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
             f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-W2TVBHD');</script>
-    <!-- End Google Tag Manager -->
-
-    <script type="text/javascript">
-        var pagInicio = 'boletines';
-        $(document).ready(function () {
-            if (pagInicio == 'nacional_msj') {
-            }
-        });
+        })(window, document, 'script', 'dataLayer', 'GTM-W2TVBHD');
     </script>
-
 </head>
-
-
 <body>
-<!-- Google Tag Manager (noscript) -->
 <noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W2TVBHD"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W2TVBHD" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
-<!-- End Google Tag Manager (noscript) -->
 <div id="cabeweb" class="container bg-header d-none d-sm-block cabe-web">
     <div class="row">
         <div class="col-sm-8">
-            <a class="navbar-brand" href="https://www.gob.pe/minam" target="_blank"><img
+            <a class="navbar-brand" href="https://www.gob.pe/minam" target="_blank" rel="noopener"><img
                         src="public/images/logo-minam.png" height="45px" class="logo d-inline-block align-middle"
                         alt="logo MINAM"/></a>
             <a class="navbar-brand" href="https://www.senamhi.gob.pe"><img src="public/images/logo-senamhi.svg"
@@ -124,10 +49,8 @@
                                                                            alt="logo SENAMHI"/></a>
         </div>
         <div class="col-sm-4 text-right">
-            <a class="navbar-brand"
-               href="http://www.transparencia.gob.pe/enlaces/pte_transparencia_enlaces.aspx?id_entidad=87#.XG9BzKIzaUl"
-               target="_blank"><img src="public/images/logo-portal-pte.png" height="39px"
-                                    class="logo d-inline-block align-middle" alt="logo Portal de Transparencia"/></a>
+            <a class="navbar-brand" href="https://www.transparencia.gob.pe/enlaces/pte_transparencia_enlaces.aspx?id_entidad=87" target="_blank" rel="noopener"><img src="public/images/logo-portal-pte.png" height="39px"
+                                    class="logo d-inline-block align-middle" alt="Portal de Transparencia"/></a>
         </div>
     </div>
 </div>
@@ -474,42 +397,329 @@
         }        
 </style>
 
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <span class="icon mr-2 flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none" class="w-6 h-6">
-                        <path d="M11 0C4.928 0 0 4.928 0 11C0 17.072 4.928 22 11 22C17.072 22 22 17.072 22 11C22 4.928 17.072 0 11 0ZM12.1 16.5H9.9V9.9H12.1V16.5ZM12.1 7.7H9.9V5.5H12.1V7.7Z" fill="#0056AC"></path>
-                    </svg>
-                </span>
-                <a href="https://observatorio.senamhi.gob.pe/" target="_blank" rel="noopener"><strong>A partir de ahora  puedes acceder a nuestros productos y servicios a través del <span style="background:linear-gradient(90deg,#2E8B3A,#1F4063);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;">OBSERVATORIO NACIONAL DEL TIEMPO, AGUA Y CLIMA DEL PERÚ</span>   </strong> </a>
-                 
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<style>
+        .snm-avisos {
+                background: #e8f1fb;
+                border-bottom: 1px solid #c9dcf1;
+                color: #12324f;
+                font-size: .9rem;
+        }
 
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <div class="container"> 
-        <div class="row"> 
-            <div class="col-sm-12">
-                <span class="icon mr-2 flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none" class="w-6 h-6">
-                        <path d="M11 0C4.928 0 0 4.928 0 11C0 17.072 4.928 22 11 22C17.072 22 22 17.072 22 11C22 4.928 17.072 0 11 0ZM12.1 16.5H9.9V9.9H12.1V16.5ZM12.1 7.7H9.9V5.5H12.1V7.7Z" fill="#0056AC"></path>
-                    </svg>
-                </span>                
-                <strong>Infórmate sobre el Fenómeno El Niño 2026-2027   </strong> <a href="?p=fenomeno-el-nino"> VER MÁS </a>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+        .snm-avisos[hidden] {
+                display: none;
+        }
+
+        .snm-avisos__fila {
+                display: flex;
+                align-items: center;
+                gap: .75rem;
+                min-height: 44px;
+        }
+
+        .snm-avisos__icono {
+                flex: 0 0 auto;
+                display: flex;
+        }
+
+        .snm-avisos__ventana {
+                flex: 1 1 auto;
+                min-width: 0;
+                overflow: hidden;
+                touch-action: pan-y;
+        }
+
+        .snm-avisos__pista {
+                display: flex;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                transition: transform .45s ease;
+        }
+
+        .snm-avisos__item {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+                flex: 0 0 100%;
+                min-width: 0;
+                padding: .55rem 0;
+                line-height: 1.35;
+        }
+
+        .snm-avisos__texto {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+        }
+
+        .snm-avisos__item a {
+                display: inline-flex;
+                align-items: center;
+                gap: .35rem;
+                flex: 0 0 auto;
+                padding: .3rem .85rem;
+                border-radius: 999px;
+                background: #0056ac;
+                color: #fff;
+                font-size: .72rem;
+                font-weight: 700;
+                letter-spacing: .06em;
+                line-height: 1.2;
+                text-transform: uppercase;
+                text-decoration: none;
+                white-space: nowrap;
+                box-shadow: 0 1px 2px rgba(0, 40, 90, .2);
+                transition: background-color .15s ease, transform .15s ease;
+        }
+
+        .snm-avisos__item a::after {
+                content: "\203A";
+                font-size: 1rem;
+                line-height: 1;
+        }
+
+        .snm-avisos__item a:hover,
+        .snm-avisos__item a:focus-visible {
+                background: #003c78;
+                color: #fff;
+                text-decoration: none;
+                transform: translateX(2px);
+                outline: none;
+        }
+
+        .snm-avisos__controles {
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
+                gap: .35rem;
+        }
+
+        .snm-avisos__boton {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 28px;
+                height: 28px;
+                padding: 0;
+                border: 0;
+                border-radius: 50%;
+                background: transparent;
+                color: #0056ac;
+                cursor: pointer;
+        }
+
+        .snm-avisos__boton:hover,
+        .snm-avisos__boton:focus-visible {
+                background: #d3e4f7;
+                outline: none;
+        }
+
+        .snm-avisos__puntos {
+                display: flex;
+                gap: 6px;
+                margin: 0 .25rem;
+        }
+
+        .snm-avisos__punto {
+                width: 8px;
+                height: 8px;
+                padding: 0;
+                border: 0;
+                border-radius: 50%;
+                background: #a9c5e6;
+                cursor: pointer;
+        }
+
+        .snm-avisos__punto[aria-current="true"] {
+                width: 20px;
+                border-radius: 4px;
+                background: #0056ac;
+        }
+
+        .snm-avisos--uno .snm-avisos__nav {
+                display: none;
+        }
+
+        @media (max-width: 575.98px) {
+                .snm-avisos__fila {
+                        gap: .5rem;
+                }
+
+                .snm-avisos__icono,
+                .snm-avisos__boton--flecha {
+                        display: none;
+                }
+
+                .snm-avisos {
+                        font-size: .85rem;
+                }
+
+                .snm-avisos__item {
+                        display: block;
+                        padding: .45rem 0;
+                }
+
+                .snm-avisos__texto {
+                        white-space: normal;
+                }
+
+                .snm-avisos__item a {
+                        margin-top: .35rem;
+                }
+        }
+</style>
+
+<section class="snm-avisos" id="snm-avisos" aria-label="Avisos" aria-roledescription="carrusel">
+        <div class="container">
+                <div class="snm-avisos__fila">
+                        <span class="snm-avisos__icono" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+                                        <path d="M11 0C4.928 0 0 4.928 0 11C0 17.072 4.928 22 11 22C17.072 22 22 17.072 22 11C22 4.928 17.072 0 11 0ZM12.1 16.5H9.9V9.9H12.1V16.5ZM12.1 7.7H9.9V5.5H12.1V7.7Z" fill="#0056AC"></path>
+                                </svg>
+                        </span>
+                        <div class="snm-avisos__ventana">
+                                <ul class="snm-avisos__pista">
+                                        <li class="snm-avisos__item" aria-roledescription="aviso">
+                                                <span class="snm-avisos__texto">Accede a nuestros productos y servicios en el Observatorio Nacional del Tiempo, Agua y Clima del Perú.</span>
+                                                <a href="https://observatorio.senamhi.gob.pe/" target="_blank" rel="noopener">Ir al Observatorio</a>
+                                        </li>
+                                        <li class="snm-avisos__item" aria-roledescription="aviso">
+                                                <span class="snm-avisos__texto">Infórmate sobre el Fenómeno El Niño 2026-2027.</span>
+                                                <a href="?p=fenomeno-el-nino">Ver más</a>
+                                        </li>
+                                </ul>
+                        </div>
+                        <div class="snm-avisos__controles">
+                                <button type="button" class="snm-avisos__boton snm-avisos__boton--flecha snm-avisos__nav" data-avisos="anterior" aria-label="Aviso anterior">
+                                        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M10.8 1.6 4.4 8l6.4 6.4 1.2-1.2L6.8 8 12 2.8z"/></svg>
+                                </button>
+                                <div class="snm-avisos__puntos snm-avisos__nav" role="tablist" aria-label="Elegir aviso"></div>
+                                <button type="button" class="snm-avisos__boton snm-avisos__boton--flecha snm-avisos__nav" data-avisos="siguiente" aria-label="Aviso siguiente">
+                                        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M5.2 1.6 4 2.8 9.2 8 4 13.2l1.2 1.2L11.6 8z"/></svg>
+                                </button>
+                                <button type="button" class="snm-avisos__boton" data-avisos="cerrar" aria-label="Cerrar avisos">
+                                        <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M14.4 2.8 13.2 1.6 8 6.8 2.8 1.6 1.6 2.8 6.8 8l-5.2 5.2 1.2 1.2L8 9.2l5.2 5.2 1.2-1.2L9.2 8z"/></svg>
+                                </button>
+                        </div>
+                </div>
         </div>
-    </div>
-</div>
+</section>
+
+<script>
+        (function () {
+                var raiz = document.getElementById('snm-avisos');
+                if (!raiz) {
+                        return;
+                }
+                try {
+                        if (sessionStorage.getItem('snm-avisos-cerrados') === '1') {
+                                raiz.hidden = true;
+                                return;
+                        }
+                } catch (e) {
+                }
+                var pista = raiz.querySelector('.snm-avisos__pista');
+                var items = raiz.querySelectorAll('.snm-avisos__item');
+                var puntos = raiz.querySelector('.snm-avisos__puntos');
+                var total = items.length;
+                var actual = 0;
+                var temporizador = null;
+                var reducido = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                if (total < 2) {
+                        raiz.classList.add('snm-avisos--uno');
+                }
+
+                for (var i = 0; i < total; i++) {
+                        var punto = document.createElement('button');
+                        punto.type = 'button';
+                        punto.className = 'snm-avisos__punto';
+                        punto.setAttribute('aria-label', 'Aviso ' + (i + 1) + ' de ' + total);
+                        punto.setAttribute('data-indice', i);
+                        puntos.appendChild(punto);
+                }
+
+                function mostrar(indice) {
+                        actual = (indice + total) % total;
+                        pista.style.transform = 'translateX(' + (-100 * actual) + '%)';
+                        Array.prototype.forEach.call(items, function (item, n) {
+                                item.setAttribute('aria-hidden', n === actual ? 'false' : 'true');
+                                Array.prototype.forEach.call(item.querySelectorAll('a'), function (a) {
+                                        a.tabIndex = n === actual ? 0 : -1;
+                                });
+                        });
+                        Array.prototype.forEach.call(puntos.children, function (p, n) {
+                                p.setAttribute('aria-current', n === actual ? 'true' : 'false');
+                        });
+                }
+
+                function detener() {
+                        clearInterval(temporizador);
+                        temporizador = null;
+                }
+
+                function iniciar() {
+                        detener();
+                        if (total > 1 && !reducido) {
+                                temporizador = setInterval(function () {
+                                        mostrar(actual + 1);
+                                }, 3000);
+                        }
+                }
+
+                raiz.addEventListener('click', function (e) {
+                        var boton = e.target.closest('button');
+                        if (!boton) {
+                                return;
+                        }
+                        var accion = boton.getAttribute('data-avisos');
+                        if (accion === 'anterior') {
+                                mostrar(actual - 1);
+                                iniciar();
+                        } else if (accion === 'siguiente') {
+                                mostrar(actual + 1);
+                                iniciar();
+                        } else if (accion === 'cerrar') {
+                                detener();
+                                raiz.hidden = true;
+                                try {
+                                        sessionStorage.setItem('snm-avisos-cerrados', '1');
+                                } catch (err) {
+                                }
+                        } else if (boton.hasAttribute('data-indice')) {
+                                mostrar(parseInt(boton.getAttribute('data-indice'), 10));
+                                iniciar();
+                        }
+                });
+
+                raiz.addEventListener('mouseenter', detener);
+                raiz.addEventListener('mouseleave', iniciar);
+                raiz.addEventListener('focusin', detener);
+                raiz.addEventListener('focusout', iniciar);
+
+                var inicioX = null;
+                var ventana = raiz.querySelector('.snm-avisos__ventana');
+                ventana.addEventListener('touchstart', function (e) {
+                        inicioX = e.touches[0].clientX;
+                        detener();
+                }, {passive: true});
+                ventana.addEventListener('touchend', function (e) {
+                        if (inicioX === null) {
+                                return;
+                        }
+                        var dx = e.changedTouches[0].clientX - inicioX;
+                        if (Math.abs(dx) > 40) {
+                                mostrar(actual + (dx < 0 ? 1 : -1));
+                        }
+                        inicioX = null;
+                        iniciar();
+                });
+
+                mostrar(0);
+                iniciar();
+        })();
+</script>
 
 
 <nav class="snm-nav">
@@ -665,7 +875,6 @@
                                         { title: 'Servicios (TUSNE)', url: BASE_URL + '?p=tusne' },
                                         { title: 'Servicios con fines académicos', url: BASE_URL + '?p=tusne-tesis' },
                                         { title: 'Evaluación de documentos técnicos', url: BASE_URL + '?p=servicios-sea' },
-                                        { title: 'ASP - 8 UIT', url: BASE_URL + '?p=contrataciones-8uit' },
                                         { title: 'TUPA', url: BASE_URL + '?p=tupa' },
                                         // { title: 'Libro de reclamaciones', url: 'https://reclamos.servicios.gob.pe/?institution_id=203' },
                                         { title: 'Libro de reclamaciones', url: BASE_URL + '?p=libro-reclamaciones' },
@@ -921,15 +1130,15 @@
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02217SENA-261.pdf" title="Boletín Semanal de Temperaturas Extremas" alt="Boletín Semanal de Temperaturas Extremas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Temperaturas Extremas', 0);">21 Agosto    - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li></ul></div>    
-<div class="list-group-item grp tesi"><li class="list-group-item nTitle"><strong>Boletín Semanal de Lluvias</strong></li><li class="list-group-item"><ul><li><a href="https://www.senamhi.gob.pe/load/file/02233SENA-353.pdf" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias', 0);">30 Octubre   - 2026</a>&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;<a href="https://www.senamhi.gob.pe/load/file/02239SENA-287.zip" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias - Shape', 0);">Descargar Shape</a>
+<div class="list-group-item grp tesi"><li class="list-group-item nTitle"><strong>Boletín Semanal de Lluvias</strong></li><li class="list-group-item"><ul><li><a href="https://www.senamhi.gob.pe/load/file/02233SENA-354.pdf" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias', 0);">06 Noviembre - 2026</a>&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;<a href="https://www.senamhi.gob.pe/load/file/02239SENA-288.zip" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias - Shape', 0);">Descargar Shape</a>
+			<input class="nAnio" type="hidden" value="2026" />			
+			</li><li><a href="https://www.senamhi.gob.pe/load/file/02233SENA-353.pdf" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias', 0);">30 Octubre   - 2026</a>&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;<a href="https://www.senamhi.gob.pe/load/file/02239SENA-287.zip" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias - Shape', 0);">Descargar Shape</a>
 			<input class="nAnio" type="hidden" value="2026" />			
 			</li><li><a href="https://www.senamhi.gob.pe/load/file/02233SENA-352.pdf" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias', 0);">23 Octubre   - 2026</a>&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;<a href="https://www.senamhi.gob.pe/load/file/02239SENA-286.zip" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias - Shape', 0);">Descargar Shape</a>
 			<input class="nAnio" type="hidden" value="2026" />			
 			</li><li><a href="https://www.senamhi.gob.pe/load/file/02233SENA-351.pdf" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias', 0);">16 Octubre   - 2026</a>&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;<a href="https://www.senamhi.gob.pe/load/file/02239SENA-285.zip" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias - Shape', 0);">Descargar Shape</a>
 			<input class="nAnio" type="hidden" value="2026" />			
 			</li><li><a href="https://www.senamhi.gob.pe/load/file/02233SENA-350.pdf" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias', 0);">09 Octubre   - 2026</a>&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;<a href="https://www.senamhi.gob.pe/load/file/02239SENA-284.zip" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias - Shape', 0);">Descargar Shape</a>
-			<input class="nAnio" type="hidden" value="2026" />			
-			</li><li><a href="https://www.senamhi.gob.pe/load/file/02233SENA-349.pdf" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias', 0);">02 Octubre   - 2026</a>&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;<a href="https://www.senamhi.gob.pe/load/file/02239SENA-283.zip" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Boletín Semanal de Lluvias - Shape', 0);">Descargar Shape</a>
 			<input class="nAnio" type="hidden" value="2026" />			
 			</li></ul></li></div><!--AGREGADO PARA VER: Boletin semanal de lluvias + DESCARGA SHAPE-->    
 <!--Boletin semanal de lluvias-->
@@ -1242,7 +1451,9 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02953SENA-214.pdf" title="Pronóstico Agrometeorológico para el Cultivo de Cacao" alt="Pronóstico Agrometeorológico para el Cultivo de Cacao" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico Agrometeorológico para el Cultivo de Cacao', 0);">Decada del 01/09/2026 al 10/09/2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Papa</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02954SENA-104.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Papa', 0);">Octubre   - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Papa</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02954SENA-105.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Papa', 0);">Noviembre - 2026</a>
+ 			 <input class="nAnio" type="hidden" value="2026" /> 			 
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02954SENA-104.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Papa', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02954SENA-103.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Papa', 0);">Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1252,9 +1463,9 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02954SENA-100.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Papa', 0);">Junio     - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02954SENA-99.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Papa" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Papa', 0);">Mayo      - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02955SENA-107.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz', 0);">Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02955SENA-106.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz', 0);">Octubre   - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02955SENA-106.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02955SENA-105.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz', 0);">Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1263,8 +1474,6 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02955SENA-103.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz', 0);">Julio     - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02955SENA-102.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz', 0);">Junio     - 2026</a>
- 			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02955SENA-101.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Maíz', 0);">Mayo      - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Arróz</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02956SENA-102.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Arróz" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Arróz" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Arróz', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1278,7 +1487,9 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02956SENA-97.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Arróz" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Arróz" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Arróz', 0);">Mayo      - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Café</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02957SENA-104.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Café', 0);">Octubre   - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Café</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02957SENA-105.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Café', 0);">Noviembre - 2026</a>
+ 			 <input class="nAnio" type="hidden" value="2026" /> 			 
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02957SENA-104.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Café', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02957SENA-103.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Café', 0);">Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1288,9 +1499,9 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02957SENA-100.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Café', 0);">Junio     - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02957SENA-99.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Café" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Café', 0);">Mayo      - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02958SENA-106.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao', 0);">Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02958SENA-105.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao', 0);">Octubre   - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02958SENA-105.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02958SENA-104.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao', 0);">Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1299,8 +1510,6 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02958SENA-102.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao', 0);">Julio     - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02958SENA-101.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao', 0);">Junio     - 2026</a>
- 			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02958SENA-100.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Cacao', 0);">Mayo      - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li></ul></div>                <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico Agroclimático de Rendimiento de los Cultivos de Frijol y Maíz en la Costa Central</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02960SENA-2.pdf" title="Pronóstico Agroclimático de Rendimiento de los Cultivos de Frijol y Maíz en la Costa Central" alt="Pronóstico Agroclimático de Rendimiento de los Cultivos de Frijol y Maíz en la Costa Central" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico Agroclimático de Rendimiento de los Cultivos de Frijol y Maíz en la Costa Central', 0);">Febrero   - 2018</a>
  			 <input class="nAnio" type="hidden" value="2018" /> 			 
@@ -1319,7 +1528,9 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02961SENA-162.pdf" title="Pronóstico Agrometeorológico para los pastizales" alt="Pronóstico Agrometeorológico para los pastizales" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico Agrometeorológico para los pastizales', 0);">Decada del 01/09/2026 al 10/09/2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para los pastizales</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02962SENA-55.pdf" title="Pronóstico de Riesgo Agroclimático para los pastizales" alt="Pronóstico de Riesgo Agroclimático para los pastizales" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para los pastizales', 0);">Octubre   - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para los pastizales</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02962SENA-56.pdf" title="Pronóstico de Riesgo Agroclimático para los pastizales" alt="Pronóstico de Riesgo Agroclimático para los pastizales" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para los pastizales', 0);">Noviembre - 2026</a>
+ 			 <input class="nAnio" type="hidden" value="2026" /> 			 
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02962SENA-55.pdf" title="Pronóstico de Riesgo Agroclimático para los pastizales" alt="Pronóstico de Riesgo Agroclimático para los pastizales" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para los pastizales', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02962SENA-54.pdf" title="Pronóstico de Riesgo Agroclimático para los pastizales" alt="Pronóstico de Riesgo Agroclimático para los pastizales" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para los pastizales', 0);">Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1329,10 +1540,10 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02962SENA-51.pdf" title="Pronóstico de Riesgo Agroclimático para los pastizales" alt="Pronóstico de Riesgo Agroclimático para los pastizales" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para los pastizales', 0);">Junio     - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02962SENA-50.pdf" title="Pronóstico de Riesgo Agroclimático para los pastizales" alt="Pronóstico de Riesgo Agroclimático para los pastizales" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para los pastizales', 0);">Mayo      - 2026</a>
- 			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li></ul></div>
-                <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02963SENA-64.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol', 0);">Octubre   - 2026</a>
+                <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02963SENA-65.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol', 0);">Noviembre - 2026</a>
+ 			 <input class="nAnio" type="hidden" value="2026" /> 			 
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02963SENA-64.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02963SENA-63.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol', 0);">Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1342,9 +1553,9 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02963SENA-60.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol', 0);">Junio     - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02963SENA-59.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Frijol', 0);">Mayo      - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Palto</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02964SENA-70.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Palto', 0);">Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Palto</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02964SENA-69.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Palto', 0);">Octubre   - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02964SENA-69.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Palto', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02964SENA-68.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Palto', 0);">Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1354,9 +1565,9 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02964SENA-65.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Palto', 0);">Junio     - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02964SENA-64.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Palto" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Palto', 0);">Mayo      - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02965SENA-75.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua', 0);">Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02965SENA-74.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua', 0);">Octubre   - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02965SENA-74.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02965SENA-73.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua', 0);">Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1366,9 +1577,9 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02965SENA-70.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua', 0);">Junio     - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02965SENA-69.pdf" title="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" alt="Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático para el Cultivo de Quinua', 0);">Mayo      - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02966SENA-76.pdf" title="Pronóstico de Riesgo Agroclimático" alt="Pronóstico de Riesgo Agroclimático" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático', 0);">Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Riesgo Agroclimático</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02966SENA-75.pdf" title="Pronóstico de Riesgo Agroclimático" alt="Pronóstico de Riesgo Agroclimático" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático', 0);">Octubre   - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02966SENA-75.pdf" title="Pronóstico de Riesgo Agroclimático" alt="Pronóstico de Riesgo Agroclimático" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02966SENA-74.pdf" title="Pronóstico de Riesgo Agroclimático" alt="Pronóstico de Riesgo Agroclimático" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático', 0);">Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1377,8 +1588,6 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02966SENA-72.pdf" title="Pronóstico de Riesgo Agroclimático" alt="Pronóstico de Riesgo Agroclimático" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático', 0);">Julio     - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02966SENA-71.pdf" title="Pronóstico de Riesgo Agroclimático" alt="Pronóstico de Riesgo Agroclimático" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático', 0);">Junio     - 2026</a>
- 			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02966SENA-70.pdf" title="Pronóstico de Riesgo Agroclimático" alt="Pronóstico de Riesgo Agroclimático" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Riesgo Agroclimático', 0);">Mayo      - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico Agrometeorológico de Rendimiento de la Quinua</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02967SENA-35.pdf" title="Pronóstico Agrometeorológico de Rendimiento de la Quinua" alt="Pronóstico Agrometeorológico de Rendimiento de la Quinua" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico Agrometeorológico de Rendimiento de la Quinua', 0);">01 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1476,41 +1685,41 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02974SENA-165.pdf" title="Reporte Agrometeorológico de impactos - Región Sierra" alt="Reporte Agrometeorológico de impactos - Región Sierra" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Reporte Agrometeorológico de impactos - Región Sierra', 0);">22 Septiembre- 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Estrés por Calor en Ganado Bovino</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1232.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">07 Noviembre - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de Estrés por Calor en Ganado Bovino</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1235.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">10 Noviembre - 2026</a>
+ 			 <input class="nAnio" type="hidden" value="2026" /> 			 
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1234.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">09 Noviembre - 2026</a>
+ 			 <input class="nAnio" type="hidden" value="2026" /> 			 
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1233.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">08 Noviembre - 2026</a>
+ 			 <input class="nAnio" type="hidden" value="2026" /> 			 
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1232.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">07 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1231.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">06 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1230.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">05 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1229.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">04 Noviembre - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de condiciones favorables para insectos - plagas</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1162.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">10 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1228.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">03 Noviembre - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1161.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">09 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02975SENA-1227.pdf" title="Pronóstico de Estrés por Calor en Ganado Bovino" alt="Pronóstico de Estrés por Calor en Ganado Bovino" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de Estrés por Calor en Ganado Bovino', 0);">01 Noviembre - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1160.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">08 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de condiciones favorables para insectos - plagas</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1159.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">07 Noviembre - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1159.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">07 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1158.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">06 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1157.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">05 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1156.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">04 Noviembre - 2026</a>
+			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de condiciones favorables para enfermedades</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1162.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">10 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1155.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">03 Noviembre - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1161.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">09 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02976SENA-1154.pdf" title="Pronóstico de condiciones favorables para insectos - plagas" alt="Pronóstico de condiciones favorables para insectos - plagas" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para insectos - plagas', 0);">01 Noviembre - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1160.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">08 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico de condiciones favorables para enfermedades</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1159.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">07 Noviembre - 2026</a>
+			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1159.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">07 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1158.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">06 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1157.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">05 Noviembre - 2026</a>
- 			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1156.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">04 Noviembre - 2026</a>
- 			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1155.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">03 Noviembre - 2026</a>
- 			 <input class="nAnio" type="hidden" value="2026" /> 			 
-			 </li><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02977SENA-1154.pdf" title="Pronóstico de condiciones favorables para enfermedades" alt="Pronóstico de condiciones favorables para enfermedades" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico de condiciones favorables para enfermedades', 0);">01 Noviembre - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li></ul></div>        <div class="card grp tesi mb-4"><div class="card-header nTitle"><strong>Pronóstico Agrometeorológico para el Cultivo de Arándano</strong></div><ul class="list-group list-group-flush"><li class="list-group-item"><a href="https://www.senamhi.gob.pe/load/file/02981SENA-73.pdf" title="Pronóstico Agrometeorológico para el Cultivo de Arándano" alt="Pronóstico Agrometeorológico para el Cultivo de Arándano" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Pronóstico Agrometeorológico para el Cultivo de Arándano', 0);">Octubre   - 2026</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
@@ -1551,7 +1760,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li></ul></div>                <div class="border rounded text-center" id="feedback" style="padding:10px; margin:10px 0px;">
         <form id="feedback_id1">
-            <input id="prod" name="prod" type="hidden" value="RbhGg31jbDt7ukZE4ZPHUUkzbm42L2phczF6VTJ2L2NkNEhIc0E9PQ==" />
+            <input id="prod" name="prod" type="hidden" value="escFQDkaMx6SCiNognOJD3R1SDBvcXUzQUhuV1V4NXFXT3VDYkE9PQ==" />
             <input id="like" name="like" type="hidden" />
             <div class="col-sm-12"> 
                 <div class="title-gusta">¿ Te sirvió este contenido ?</div>
@@ -1562,7 +1771,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
                     <div class="col-sm-4"> 
                         <div class="row justify-content-md-center">
                             <div >
-                                <button type="button" class="btn yes feedback_yes" id="feedback_yes" like="VjUCI39+QF0e5gMU1+ptfDJBeENlL1BVbDY4R3BCa09rUlR4dXc9PQ==" item="#feedback_id1">
+                                <button type="button" class="btn yes feedback_yes" id="feedback_yes" like="LCVqbfjztvuLhfWIN9ugTWZNcFI2MjdCU2FpamJGVHBmeXlVSFE9PQ==" item="#feedback_id1">
                                 <div class="img-radius">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
                                         <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2 2 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a10 10 0 0 0-.443.05 9.4 9.4 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a9 9 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.2 2.2 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.9.9 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
@@ -1572,7 +1781,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
                                 </button>
                             </div> 
                             <div >
-                                <button type="button" class="btn no feedback_no" id="feedback_no" like="xcRWZIGNPCOrwUsbA/s4yWZPRXcyaXlNcnNqN0RleXpvQXhpcEE9PQ==" item="#feedback_id1">
+                                <button type="button" class="btn no feedback_no" id="feedback_no" like="zR4FafAcO/DwVOSfJmuna2E2cHZkbmtPL1c3TENsWSsra1pTcXc9PQ==" item="#feedback_id1">
                                 <div class="img-radius">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
                                         <path d="M8.864 15.674c-.956.24-1.843-.484-1.908-1.42-.072-1.05-.23-2.015-.428-2.59-.125-.36-.479-1.012-1.04-1.638-.557-.624-1.282-1.179-2.131-1.41C2.685 8.432 2 7.85 2 7V3c0-.845.682-1.464 1.448-1.546 1.07-.113 1.564-.415 2.068-.723l.048-.029c.272-.166.578-.349.97-.484C6.931.08 7.395 0 8 0h3.5c.937 0 1.599.478 1.934 1.064.164.287.254.607.254.913 0 .152-.023.312-.077.464.201.262.38.577.488.9.11.33.172.762.004 1.15.069.13.12.268.159.403.077.27.113.567.113.856s-.036.586-.113.856c-.035.12-.08.244-.138.363.394.571.418 1.2.234 1.733-.206.592-.682 1.1-1.2 1.272-.847.283-1.803.276-2.516.211a10 10 0 0 1-.443-.05 9.36 9.36 0 0 1-.062 4.51c-.138.508-.55.848-1.012.964zM11.5 1H8c-.51 0-.863.068-1.14.163-.281.097-.506.229-.776.393l-.04.025c-.555.338-1.198.73-2.49.868-.333.035-.554.29-.554.55V7c0 .255.226.543.62.65 1.095.3 1.977.997 2.614 1.709.635.71 1.064 1.475 1.238 1.977.243.7.407 1.768.482 2.85.025.362.36.595.667.518l.262-.065c.16-.04.258-.144.288-.255a8.34 8.34 0 0 0-.145-4.726.5.5 0 0 1 .595-.643h.003l.014.004.058.013a9 9 0 0 0 1.036.157c.663.06 1.457.054 2.11-.163.175-.059.45-.301.57-.651.107-.308.087-.67-.266-1.021L12.793 7l.353-.354c.043-.042.105-.14.154-.315.048-.167.075-.37.075-.581s-.027-.414-.075-.581c-.05-.174-.111-.273-.154-.315l-.353-.354.353-.354c.047-.047.109-.176.005-.488a2.2 2.2 0 0 0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.9.9 0 0 0-.121-.415C12.4 1.272 12.063 1 11.5 1"/>
@@ -1646,7 +1855,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li></ul></div>                <div class="border rounded text-center" id="feedback" style="padding:10px; margin:10px 0px;">
         <form id="feedback_id2">
-            <input id="prod" name="prod" type="hidden" value="1Cwv9dM/63dUQsfPsIUJpmVieHBtN3NZVWM3ZXkxOHpITVdZRXc9PQ==" />
+            <input id="prod" name="prod" type="hidden" value="frnNLl5rxkWLIzi4fKEGmVlPbEx1U3hhY21lTERCWkRmZTlaU0E9PQ==" />
             <input id="like" name="like" type="hidden" />
             <div class="col-sm-12"> 
                 <div class="title-gusta">¿ Te sirvió este contenido ?</div>
@@ -1657,7 +1866,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
                     <div class="col-sm-4"> 
                         <div class="row justify-content-md-center">
                             <div >
-                                <button type="button" class="btn yes feedback_yes" id="feedback_yes" like="uqpRqAfNoeDZKdVuBV3RGmVwelhnU3M0TGUvOURMNzZVeTA1L2c9PQ==" item="#feedback_id2">
+                                <button type="button" class="btn yes feedback_yes" id="feedback_yes" like="CmE1gnpN0FE8sfRvblsqaXp5d3RBZHpEbDhxZGErc0FVYm9Bemc9PQ==" item="#feedback_id2">
                                 <div class="img-radius">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
                                         <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2 2 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a10 10 0 0 0-.443.05 9.4 9.4 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a9 9 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.2 2.2 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.9.9 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
@@ -1667,7 +1876,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
                                 </button>
                             </div> 
                             <div >
-                                <button type="button" class="btn no feedback_no" id="feedback_no" like="OroELHAnGAUES723MIETBWwzS1VHMnhTTFFHcExRZkpIZit0c3c9PQ==" item="#feedback_id2">
+                                <button type="button" class="btn no feedback_no" id="feedback_no" like="pwr1NHFIOi37FoZRinO+wXNjdE1Id0ZTRXpWKzJRRlVaYTJtd0E9PQ==" item="#feedback_id2">
                                 <div class="img-radius">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
                                         <path d="M8.864 15.674c-.956.24-1.843-.484-1.908-1.42-.072-1.05-.23-2.015-.428-2.59-.125-.36-.479-1.012-1.04-1.638-.557-.624-1.282-1.179-2.131-1.41C2.685 8.432 2 7.85 2 7V3c0-.845.682-1.464 1.448-1.546 1.07-.113 1.564-.415 2.068-.723l.048-.029c.272-.166.578-.349.97-.484C6.931.08 7.395 0 8 0h3.5c.937 0 1.599.478 1.934 1.064.164.287.254.607.254.913 0 .152-.023.312-.077.464.201.262.38.577.488.9.11.33.172.762.004 1.15.069.13.12.268.159.403.077.27.113.567.113.856s-.036.586-.113.856c-.035.12-.08.244-.138.363.394.571.418 1.2.234 1.733-.206.592-.682 1.1-1.2 1.272-.847.283-1.803.276-2.516.211a10 10 0 0 1-.443-.05 9.36 9.36 0 0 1-.062 4.51c-.138.508-.55.848-1.012.964zM11.5 1H8c-.51 0-.863.068-1.14.163-.281.097-.506.229-.776.393l-.04.025c-.555.338-1.198.73-2.49.868-.333.035-.554.29-.554.55V7c0 .255.226.543.62.65 1.095.3 1.977.997 2.614 1.709.635.71 1.064 1.475 1.238 1.977.243.7.407 1.768.482 2.85.025.362.36.595.667.518l.262-.065c.16-.04.258-.144.288-.255a8.34 8.34 0 0 0-.145-4.726.5.5 0 0 1 .595-.643h.003l.014.004.058.013a9 9 0 0 0 1.036.157c.663.06 1.457.054 2.11-.163.175-.059.45-.301.57-.651.107-.308.087-.67-.266-1.021L12.793 7l.353-.354c.043-.042.105-.14.154-.315.048-.167.075-.37.075-.581s-.027-.414-.075-.581c-.05-.174-.111-.273-.154-.315l-.353-.354.353-.354c.047-.047.109-.176.005-.488a2.2 2.2 0 0 0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.9.9 0 0 0-.121-.415C12.4 1.272 12.063 1 11.5 1"/>
@@ -1741,7 +1950,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
  			 <input class="nAnio" type="hidden" value="2026" /> 			 
 			 </li></ul></div>                <div class="border rounded text-center" id="feedback" style="padding:10px; margin:10px 0px;">
         <form id="feedback_id3">
-            <input id="prod" name="prod" type="hidden" value="gP1xbBO2g2CvjkWOQC7MDy9CeGsyWC9wRWwvNGR2UWk3UmRSOVE9PQ==" />
+            <input id="prod" name="prod" type="hidden" value="otTqFRLrlRIipHHEj0wNtXdGUWhpOWlTc1RWemhPNUJybXlhQVE9PQ==" />
             <input id="like" name="like" type="hidden" />
             <div class="col-sm-12"> 
                 <div class="title-gusta">¿ Te sirvió este contenido ?</div>
@@ -1752,7 +1961,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
                     <div class="col-sm-4"> 
                         <div class="row justify-content-md-center">
                             <div >
-                                <button type="button" class="btn yes feedback_yes" id="feedback_yes" like="rLbB1Cpy3xEzHPZ50eN5UnNoSlgvZXdWeG95QjdvR284ejlISnc9PQ==" item="#feedback_id3">
+                                <button type="button" class="btn yes feedback_yes" id="feedback_yes" like="iMCeZzU5mn7wYdTzk+OfRURESTNWL3ZXZ1NmbGVWbUlZUnhzYVE9PQ==" item="#feedback_id3">
                                 <div class="img-radius">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
                                         <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2 2 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a10 10 0 0 0-.443.05 9.4 9.4 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a9 9 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.2 2.2 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.9.9 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
@@ -1762,7 +1971,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
                                 </button>
                             </div> 
                             <div >
-                                <button type="button" class="btn no feedback_no" id="feedback_no" like="LySQaW7V0YWXbtfqrSW+93g5SHBUVWRMRzJ4L0RMejVSMGFtNFE9PQ==" item="#feedback_id3">
+                                <button type="button" class="btn no feedback_no" id="feedback_no" like="Ny7Cf83zZtTgF/rkrl+5zXdJb1IrSnRSeHdXcnlPeW9NYnVCbnc9PQ==" item="#feedback_id3">
                                 <div class="img-radius">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
                                         <path d="M8.864 15.674c-.956.24-1.843-.484-1.908-1.42-.072-1.05-.23-2.015-.428-2.59-.125-.36-.479-1.012-1.04-1.638-.557-.624-1.282-1.179-2.131-1.41C2.685 8.432 2 7.85 2 7V3c0-.845.682-1.464 1.448-1.546 1.07-.113 1.564-.415 2.068-.723l.048-.029c.272-.166.578-.349.97-.484C6.931.08 7.395 0 8 0h3.5c.937 0 1.599.478 1.934 1.064.164.287.254.607.254.913 0 .152-.023.312-.077.464.201.262.38.577.488.9.11.33.172.762.004 1.15.069.13.12.268.159.403.077.27.113.567.113.856s-.036.586-.113.856c-.035.12-.08.244-.138.363.394.571.418 1.2.234 1.733-.206.592-.682 1.1-1.2 1.272-.847.283-1.803.276-2.516.211a10 10 0 0 1-.443-.05 9.36 9.36 0 0 1-.062 4.51c-.138.508-.55.848-1.012.964zM11.5 1H8c-.51 0-.863.068-1.14.163-.281.097-.506.229-.776.393l-.04.025c-.555.338-1.198.73-2.49.868-.333.035-.554.29-.554.55V7c0 .255.226.543.62.65 1.095.3 1.977.997 2.614 1.709.635.71 1.064 1.475 1.238 1.977.243.7.407 1.768.482 2.85.025.362.36.595.667.518l.262-.065c.16-.04.258-.144.288-.255a8.34 8.34 0 0 0-.145-4.726.5.5 0 0 1 .595-.643h.003l.014.004.058.013a9 9 0 0 0 1.036.157c.663.06 1.457.054 2.11-.163.175-.059.45-.301.57-.651.107-.308.087-.67-.266-1.021L12.793 7l.353-.354c.043-.042.105-.14.154-.315.048-.167.075-.37.075-.581s-.027-.414-.075-.581c-.05-.174-.111-.273-.154-.315l-.353-.354.353-.354c.047-.047.109-.176.005-.488a2.2 2.2 0 0 0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.9.9 0 0 0-.121-.415C12.4 1.272 12.063 1 11.5 1"/>
@@ -2098,62 +2307,58 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
 <script src="include/mgs/mgs.js"></script>
 <footer class="container-fluid box-bg box-bg-footer footer-web">
     <div class="row">
-        
-<div class="container pt-5">   
+        <div class="container pt-5" id="footer-contacto" data-dz="">
     <div class="row">
         <div class="col-lg-6 col-md-12 col-sm-12 py-5">
             <section>
-                <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=SENAMHI+lima+peru"
-                    width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                <div id="footer-mapa" data-mapa-sede="SEDE-CENTRAL" data-titulo="SENAMHI - Sede Central" style="width:100%;height:450px;"></div>
             </section>
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="box-conten-footer">
                 <div class="col-12 col-md-12 col-lg-12">
-                    <h2 class="tittle-line">Contáctenos</h2>
-                </div> 
+                    <h2 class="tittle-line">Cont&aacute;ctenos</h2>
+                </div>
+                <div id="footer-sedes">
+                    <address>
+                        <strong class="black">SENAMHI - Sede Central</strong><br/>
+                        <span>Jr. Cahuide 785, Jes&uacute;s Mar&iacute;a - Lima</span><br/>
+                        <a href="https://www.senamhi.gob.pe/?p=sedes">Ver sedes y contactos</a>
+                    </address>
+                </div>
                 <address>
-                    <strong class="black">SENAMHI - Sede Central</strong><br/>
-                    <span>Jr. Cahuide 785, Jesús María - Lima</span><br/>
-                    <abbr title="Phone" class="black">Central telefónica: </abbr> <a href="tel:+511 6141414">(01) 614 1414</a><br/>
-                    <abbr title="Phone" class="black">Atención al ciudadano: </abbr> <a href="tel:+511 4702867">(01) 470 2867</a> / <a href="tel:+511 998487805">(01) 998 487 805</a><br/>
-                    <abbr title="Phone" class="black">Pronóstico del tiempo: </abbr> <a href="tel:+511 2658798">(01) 265 8798</a> / <a href="tel:+511 996369766">(01) 996 369 766</a><br/>
-                    <abbr title="mail" class="black">Consultas: </abbr> <a href="mailto:atencionalciudadano@senamhi.gob.pe">atencionalciudadano@senamhi.gob.pe</a><br/>
-                    <abbr title="working" class="black">Horario de atención: </abbr>
-                    <br/>Atención al ciudadano: De lunes a viernes de 8:30 a 17:15 Hrs.
-                    <br/>Mesa de partes: De lunes a viernes de 8:30 a 16:45 Hrs. <br/>
                     <abbr title="working" class="black">Registra tus documentos: </abbr>
-                    <a href="https://www.senamhi.gob.pe/mesadepartesdigital/inicio.do" target="_blank">https://www.senamhi.gob.pe/mesadepartesdigital/inicio.do</a><br/>
-                    <abbr title="mail" class="black">Consulta tu trámite: </abbr>
-                    <a href="https://www.senamhi.gob.pe/consultatutramite/inicio.do" target="_blank">https://www.senamhi.gob.pe/consultatutramite/inicio.do</a><br/>
-                    <a href="tel:+511 982958271">(01) 982 958 271</a>
-                </address> 
-                 
-                <div class="row"> 
-                    <div class="col-8"> 
+                    <a href="https://www.senamhi.gob.pe/mesadepartesdigital/inicio.do" target="_blank" rel="noopener">https://www.senamhi.gob.pe/mesadepartesdigital/inicio.do</a><br/>
+                    <abbr title="mail" class="black">Consulta tu tr&aacute;mite: </abbr>
+                    <a href="https://www.senamhi.gob.pe/consultatutramite/inicio.do" target="_blank" rel="noopener">https://www.senamhi.gob.pe/consultatutramite/inicio.do</a>
+                </address>
+                <div class="row">
+                    <div class="col-8">
                         <aside>
-                            <a href="https://www.facebook.com/senamhiperu" target="_blank" title="enlace facebook puno">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-facebook.svg" height="25px" class="mr-3"/></a>
-                            <a href="https://twitter.com/senamhiperu" target="_blank" title="enlace twitter puno">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-twitter.svg" height="25px" class="ml-2 mr-3"/></a>
-                            <a href="https://www.youtube.com/channel/UCSy_etV_nlGLFlq7KTx1e9Q" target="_blank" title="enlace youtube SENAMHI">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-youtube.svg" height="25px" class="ml-2 mr-3"/></a>
-                            <a href="https://www.flickr.com/photos/senamhiperu/" target="_blank" title="enlace flicker SENAMHI">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-flickr.svg" height="15px" class="ml-2 mr-3"/></a>
-                            <a href="https://issuu.com/senamhi_peru" target="_blank" title="enlace issuu SENAMHI">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-issuu.svg" height="25px" class="ml-3"/></a>
-                        </aside> 
-                    </div> 
+                            <a href="https://www.facebook.com/senamhiperu" target="_blank" rel="noopener" title="Facebook del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-facebook.svg" height="25px" class="mr-3" alt="Facebook"/></a>
+                            <a href="https://twitter.com/senamhiperu" target="_blank" rel="noopener" title="X del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-twitter.svg" height="25px" class="ml-2 mr-3" alt="X"/></a>
+                            <a href="https://www.youtube.com/channel/UCSy_etV_nlGLFlq7KTx1e9Q" target="_blank" rel="noopener" title="YouTube del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-youtube.svg" height="25px" class="ml-2 mr-3" alt="YouTube"/></a>
+                            <a href="https://www.flickr.com/photos/senamhiperu/" target="_blank" rel="noopener" title="Flickr del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-flickr.svg" height="15px" class="ml-2 mr-3" alt="Flickr"/></a>
+                            <a href="https://issuu.com/senamhi_peru" target="_blank" rel="noopener" title="Issuu del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-issuu.svg" height="25px" class="ml-3" alt="Issuu"/></a>
+                        </aside>
+                    </div>
                     <div class="col-4 pt-4 m-0">
                         <a href="https://www.senamhi.gob.pe/?p=libro-reclamaciones">
-                            <img class="img-thumbnail" src="https://www.senamhi.gob.pe/public/images/logo-libro-reclamaciones.jpg"  width="120">
+                            <img class="img-thumbnail" src="https://www.senamhi.gob.pe/public/images/logo-libro-reclamaciones.jpg" width="120" alt="Libro de reclamaciones">
                         </a>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="/public/js/mapa-sede.js" defer></script>
+<script src="/public/js/footer-contacto.js" defer></script>
         
 <div class="container-fluid box-bg-footer" style="padding: 50px 0 35px 0; background: #062243; min-height: 400px;">
     <div class="container">
@@ -2168,6 +2373,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
                         <li><a href="https://www.senamhi.gob.pe/?&p=organigrama">Organigrama</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=funcionarios">Funcionarios</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=sedes">Sedes</a></li>
+                        <li><a href="https://www.senamhi.gob.pe/?&p=transparencia">Portal de Transparencia Est&aacute;ndar</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=normas">Normas Emitidas</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=control-interno">Control Interno</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=codigo-de-etica">Codigo de ética</a></li>
@@ -2193,7 +2399,6 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
                         <li><a href="https://www.senamhi.gob.pe/site/volcan/" target="_blank" title="Vigilancia de Volcanes">Vigilancia de Volcanes</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=cambio-climatico" target="_parent" title="Cambio Climático">Cambio Climático</a></li>
                         <li><a href="http://idesep.senamhi.gob.pe/indicadores/" target="_blank" title="Indicadores Climáticos">Indicadores Climáticos</a></li>
-                        <li><a href="https://web2.senamhi.gob.pe" title="Versión Web anterior">Versión Web anterior</a></li>
                     </ul>
                 </div>
             </div>
@@ -2203,7 +2408,6 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
                         <h3 class="tittle-line">Enlaces de Interés</h3>
                     </div>
                     <ul>
-                        <li><a href="https://www.senamhi.gob.pe/?p=contrataciones-8uit" target="_blank">ASP - 8 UIT</a></li>
                         <li><a href="https://www.gob.pe/8901" target="_blank">Integridad y Transparencia durante la emergencia sanitaria</a></li>
                         <li><a href="https://www.minam.gob.pe/" target="_blank">Ministerio del Ambiente</a></li>
                         <li><a href="https://www.wmo.int/pages/index_es.html" target="_blank">OMM</a></li>
@@ -2220,54 +2424,7 @@ del río Pampas - Alto Apurimac', 0);">Septiembre- 2017</a>
 </div>    </div>
 </footer>
 
-<div class="modal" tabindex="-1" role="dialog" id="myModal">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-light text-dark d-none">
-                <!--<h5 class="modal-title"><strong>COMUNICADO</strong></h5>-->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img class="img-fluid" src="public/images/banner-www.gob.pe.senamhi.jpg">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-
-<!-- <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>-->
 <script src="public/lib/vendor/popper.min.js"></script>
 <script src="public/lib/bootstrap/js/bootstrap.min.js"></script>
-<script src="public/lib/vendor/holder.min.js"></script>
-<script>
-    Holder.addTheme('thumb', {
-        bg: '#55595c',
-        fg: '#eceeef',
-        text: 'Thumbnail'
-    });
-</script>
-<script>
-    //            $(window).scroll(function () {
-    //                if ($("#menu").offset().top > 25) {
-    //                    $("#menu img").css("margin-top", "0");
-    //                    $("#menu img").css("margin-bottom", "0");
-    //                    $(".logo").css("height", "25px");
-    //                    $("nav").css("border-bottom", "4px solid #E93400");
-    //                } else {
-    //                    $("#menu").removeClass("bg-inverse");
-    //                    $("#menu img").css("margin-top", "3px");
-    //                    $("#menu img").css("margin-bottom", "3px");
-    //                    $(".logo").css("height", "35px");
-    //                }
-    //            });
-</script>
 </body>
 </html>

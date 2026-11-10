@@ -3,119 +3,44 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src http: https:;"> -->
+    <meta name="description" content="Servicio Nacional de Meteorolog&iacute;a e Hidrolog&iacute;a del Per&uacute; - SENAMHI">
     <link rel="icon" href="favicon.ico">
-
     <title>SENAMHI - Fenomeno El Nino</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900" rel="stylesheet">
-    <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:100,300,400,500,600,700,800,900"
-          rel="stylesheet"> -->
-
-    <!-- Bootstrap core CSS -->
     <link href="public/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template
-    <link href="public/css/product.css" rel="stylesheet">-->
-
-    <!-- estilos -->
     <link href="public/css/style.css" rel="stylesheet">
-
-    <!--menu
-    <style type="text/css">
-        .dropdown:hover>.dropdown-menu {
-            display: block;
-        }
-    </style>-->
-
     <script src="public/lib/jquery/jquery-3.2.1.min.js"></script>
-
-    <!-- google -->
-    <!--      <script>
-                (function (i, s, o, g, r, a, m) {
-                    i['GoogleAnalyticsObject'] = r;
-                    i[r] = i[r] || function () {
-                        (i[r].q = i[r].q || []).push(arguments)
-                    }, i[r].l = 1 * new Date();
-                    a = s.createElement(o),
-                            m = s.getElementsByTagName(o)[0];
-                    a.async = 1;
-                    a.src = g;
-                    m.parentNode.insertBefore(a, m)
-                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-                ga('create', 'UA-9445737-1', 'auto');
-                ga('send', 'pageview');
-            </script>-->
-
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8407SG8D31"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
         function gtag() {
             dataLayer.push(arguments);
         }
-
         gtag('js', new Date());
-
         gtag('config', 'G-8407SG8D31');
-    </script>
-
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7G3WVK3HHH"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-
         gtag('config', 'G-7G3WVK3HHH');
     </script>
-
-    <!-- Google Tag Manager -->
-    <script>(function (w, d, s, l, i) {
+    <script>
+        (function (w, d, s, l, i) {
             w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            });
+            w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
             var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
             j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
             f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-W2TVBHD');</script>
-    <!-- End Google Tag Manager -->
-
-    <script type="text/javascript">
-        var pagInicio = 'fenomeno-el-nino';
-        $(document).ready(function () {
-            if (pagInicio == 'nacional_msj') {
-            }
-        });
+        })(window, document, 'script', 'dataLayer', 'GTM-W2TVBHD');
     </script>
-
 </head>
-
-
 <body>
-<!-- Google Tag Manager (noscript) -->
 <noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W2TVBHD"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W2TVBHD" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
-<!-- End Google Tag Manager (noscript) -->
 <div id="cabeweb" class="container bg-header d-none d-sm-block cabe-web">
     <div class="row">
         <div class="col-sm-8">
-            <a class="navbar-brand" href="https://www.gob.pe/minam" target="_blank"><img
+            <a class="navbar-brand" href="https://www.gob.pe/minam" target="_blank" rel="noopener"><img
                         src="public/images/logo-minam.png" height="45px" class="logo d-inline-block align-middle"
                         alt="logo MINAM"/></a>
             <a class="navbar-brand" href="https://www.senamhi.gob.pe"><img src="public/images/logo-senamhi.svg"
@@ -124,10 +49,8 @@
                                                                            alt="logo SENAMHI"/></a>
         </div>
         <div class="col-sm-4 text-right">
-            <a class="navbar-brand"
-               href="http://www.transparencia.gob.pe/enlaces/pte_transparencia_enlaces.aspx?id_entidad=87#.XG9BzKIzaUl"
-               target="_blank"><img src="public/images/logo-portal-pte.png" height="39px"
-                                    class="logo d-inline-block align-middle" alt="logo Portal de Transparencia"/></a>
+            <a class="navbar-brand" href="https://www.transparencia.gob.pe/enlaces/pte_transparencia_enlaces.aspx?id_entidad=87" target="_blank" rel="noopener"><img src="public/images/logo-portal-pte.png" height="39px"
+                                    class="logo d-inline-block align-middle" alt="Portal de Transparencia"/></a>
         </div>
     </div>
 </div>
@@ -474,42 +397,329 @@
         }        
 </style>
 
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <span class="icon mr-2 flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none" class="w-6 h-6">
-                        <path d="M11 0C4.928 0 0 4.928 0 11C0 17.072 4.928 22 11 22C17.072 22 22 17.072 22 11C22 4.928 17.072 0 11 0ZM12.1 16.5H9.9V9.9H12.1V16.5ZM12.1 7.7H9.9V5.5H12.1V7.7Z" fill="#0056AC"></path>
-                    </svg>
-                </span>
-                <a href="https://observatorio.senamhi.gob.pe/" target="_blank" rel="noopener"><strong>A partir de ahora  puedes acceder a nuestros productos y servicios a través del <span style="background:linear-gradient(90deg,#2E8B3A,#1F4063);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;">OBSERVATORIO NACIONAL DEL TIEMPO, AGUA Y CLIMA DEL PERÚ</span>   </strong> </a>
-                 
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<style>
+        .snm-avisos {
+                background: #e8f1fb;
+                border-bottom: 1px solid #c9dcf1;
+                color: #12324f;
+                font-size: .9rem;
+        }
 
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <div class="container"> 
-        <div class="row"> 
-            <div class="col-sm-12">
-                <span class="icon mr-2 flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none" class="w-6 h-6">
-                        <path d="M11 0C4.928 0 0 4.928 0 11C0 17.072 4.928 22 11 22C17.072 22 22 17.072 22 11C22 4.928 17.072 0 11 0ZM12.1 16.5H9.9V9.9H12.1V16.5ZM12.1 7.7H9.9V5.5H12.1V7.7Z" fill="#0056AC"></path>
-                    </svg>
-                </span>                
-                <strong>Infórmate sobre el Fenómeno El Niño 2026-2027   </strong> <a href="?p=fenomeno-el-nino"> VER MÁS </a>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+        .snm-avisos[hidden] {
+                display: none;
+        }
+
+        .snm-avisos__fila {
+                display: flex;
+                align-items: center;
+                gap: .75rem;
+                min-height: 44px;
+        }
+
+        .snm-avisos__icono {
+                flex: 0 0 auto;
+                display: flex;
+        }
+
+        .snm-avisos__ventana {
+                flex: 1 1 auto;
+                min-width: 0;
+                overflow: hidden;
+                touch-action: pan-y;
+        }
+
+        .snm-avisos__pista {
+                display: flex;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                transition: transform .45s ease;
+        }
+
+        .snm-avisos__item {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+                flex: 0 0 100%;
+                min-width: 0;
+                padding: .55rem 0;
+                line-height: 1.35;
+        }
+
+        .snm-avisos__texto {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+        }
+
+        .snm-avisos__item a {
+                display: inline-flex;
+                align-items: center;
+                gap: .35rem;
+                flex: 0 0 auto;
+                padding: .3rem .85rem;
+                border-radius: 999px;
+                background: #0056ac;
+                color: #fff;
+                font-size: .72rem;
+                font-weight: 700;
+                letter-spacing: .06em;
+                line-height: 1.2;
+                text-transform: uppercase;
+                text-decoration: none;
+                white-space: nowrap;
+                box-shadow: 0 1px 2px rgba(0, 40, 90, .2);
+                transition: background-color .15s ease, transform .15s ease;
+        }
+
+        .snm-avisos__item a::after {
+                content: "\203A";
+                font-size: 1rem;
+                line-height: 1;
+        }
+
+        .snm-avisos__item a:hover,
+        .snm-avisos__item a:focus-visible {
+                background: #003c78;
+                color: #fff;
+                text-decoration: none;
+                transform: translateX(2px);
+                outline: none;
+        }
+
+        .snm-avisos__controles {
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
+                gap: .35rem;
+        }
+
+        .snm-avisos__boton {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 28px;
+                height: 28px;
+                padding: 0;
+                border: 0;
+                border-radius: 50%;
+                background: transparent;
+                color: #0056ac;
+                cursor: pointer;
+        }
+
+        .snm-avisos__boton:hover,
+        .snm-avisos__boton:focus-visible {
+                background: #d3e4f7;
+                outline: none;
+        }
+
+        .snm-avisos__puntos {
+                display: flex;
+                gap: 6px;
+                margin: 0 .25rem;
+        }
+
+        .snm-avisos__punto {
+                width: 8px;
+                height: 8px;
+                padding: 0;
+                border: 0;
+                border-radius: 50%;
+                background: #a9c5e6;
+                cursor: pointer;
+        }
+
+        .snm-avisos__punto[aria-current="true"] {
+                width: 20px;
+                border-radius: 4px;
+                background: #0056ac;
+        }
+
+        .snm-avisos--uno .snm-avisos__nav {
+                display: none;
+        }
+
+        @media (max-width: 575.98px) {
+                .snm-avisos__fila {
+                        gap: .5rem;
+                }
+
+                .snm-avisos__icono,
+                .snm-avisos__boton--flecha {
+                        display: none;
+                }
+
+                .snm-avisos {
+                        font-size: .85rem;
+                }
+
+                .snm-avisos__item {
+                        display: block;
+                        padding: .45rem 0;
+                }
+
+                .snm-avisos__texto {
+                        white-space: normal;
+                }
+
+                .snm-avisos__item a {
+                        margin-top: .35rem;
+                }
+        }
+</style>
+
+<section class="snm-avisos" id="snm-avisos" aria-label="Avisos" aria-roledescription="carrusel">
+        <div class="container">
+                <div class="snm-avisos__fila">
+                        <span class="snm-avisos__icono" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+                                        <path d="M11 0C4.928 0 0 4.928 0 11C0 17.072 4.928 22 11 22C17.072 22 22 17.072 22 11C22 4.928 17.072 0 11 0ZM12.1 16.5H9.9V9.9H12.1V16.5ZM12.1 7.7H9.9V5.5H12.1V7.7Z" fill="#0056AC"></path>
+                                </svg>
+                        </span>
+                        <div class="snm-avisos__ventana">
+                                <ul class="snm-avisos__pista">
+                                        <li class="snm-avisos__item" aria-roledescription="aviso">
+                                                <span class="snm-avisos__texto">Accede a nuestros productos y servicios en el Observatorio Nacional del Tiempo, Agua y Clima del Perú.</span>
+                                                <a href="https://observatorio.senamhi.gob.pe/" target="_blank" rel="noopener">Ir al Observatorio</a>
+                                        </li>
+                                        <li class="snm-avisos__item" aria-roledescription="aviso">
+                                                <span class="snm-avisos__texto">Infórmate sobre el Fenómeno El Niño 2026-2027.</span>
+                                                <a href="?p=fenomeno-el-nino">Ver más</a>
+                                        </li>
+                                </ul>
+                        </div>
+                        <div class="snm-avisos__controles">
+                                <button type="button" class="snm-avisos__boton snm-avisos__boton--flecha snm-avisos__nav" data-avisos="anterior" aria-label="Aviso anterior">
+                                        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M10.8 1.6 4.4 8l6.4 6.4 1.2-1.2L6.8 8 12 2.8z"/></svg>
+                                </button>
+                                <div class="snm-avisos__puntos snm-avisos__nav" role="tablist" aria-label="Elegir aviso"></div>
+                                <button type="button" class="snm-avisos__boton snm-avisos__boton--flecha snm-avisos__nav" data-avisos="siguiente" aria-label="Aviso siguiente">
+                                        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M5.2 1.6 4 2.8 9.2 8 4 13.2l1.2 1.2L11.6 8z"/></svg>
+                                </button>
+                                <button type="button" class="snm-avisos__boton" data-avisos="cerrar" aria-label="Cerrar avisos">
+                                        <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M14.4 2.8 13.2 1.6 8 6.8 2.8 1.6 1.6 2.8 6.8 8l-5.2 5.2 1.2 1.2L8 9.2l5.2 5.2 1.2-1.2L9.2 8z"/></svg>
+                                </button>
+                        </div>
+                </div>
         </div>
-    </div>
-</div>
+</section>
+
+<script>
+        (function () {
+                var raiz = document.getElementById('snm-avisos');
+                if (!raiz) {
+                        return;
+                }
+                try {
+                        if (sessionStorage.getItem('snm-avisos-cerrados') === '1') {
+                                raiz.hidden = true;
+                                return;
+                        }
+                } catch (e) {
+                }
+                var pista = raiz.querySelector('.snm-avisos__pista');
+                var items = raiz.querySelectorAll('.snm-avisos__item');
+                var puntos = raiz.querySelector('.snm-avisos__puntos');
+                var total = items.length;
+                var actual = 0;
+                var temporizador = null;
+                var reducido = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                if (total < 2) {
+                        raiz.classList.add('snm-avisos--uno');
+                }
+
+                for (var i = 0; i < total; i++) {
+                        var punto = document.createElement('button');
+                        punto.type = 'button';
+                        punto.className = 'snm-avisos__punto';
+                        punto.setAttribute('aria-label', 'Aviso ' + (i + 1) + ' de ' + total);
+                        punto.setAttribute('data-indice', i);
+                        puntos.appendChild(punto);
+                }
+
+                function mostrar(indice) {
+                        actual = (indice + total) % total;
+                        pista.style.transform = 'translateX(' + (-100 * actual) + '%)';
+                        Array.prototype.forEach.call(items, function (item, n) {
+                                item.setAttribute('aria-hidden', n === actual ? 'false' : 'true');
+                                Array.prototype.forEach.call(item.querySelectorAll('a'), function (a) {
+                                        a.tabIndex = n === actual ? 0 : -1;
+                                });
+                        });
+                        Array.prototype.forEach.call(puntos.children, function (p, n) {
+                                p.setAttribute('aria-current', n === actual ? 'true' : 'false');
+                        });
+                }
+
+                function detener() {
+                        clearInterval(temporizador);
+                        temporizador = null;
+                }
+
+                function iniciar() {
+                        detener();
+                        if (total > 1 && !reducido) {
+                                temporizador = setInterval(function () {
+                                        mostrar(actual + 1);
+                                }, 3000);
+                        }
+                }
+
+                raiz.addEventListener('click', function (e) {
+                        var boton = e.target.closest('button');
+                        if (!boton) {
+                                return;
+                        }
+                        var accion = boton.getAttribute('data-avisos');
+                        if (accion === 'anterior') {
+                                mostrar(actual - 1);
+                                iniciar();
+                        } else if (accion === 'siguiente') {
+                                mostrar(actual + 1);
+                                iniciar();
+                        } else if (accion === 'cerrar') {
+                                detener();
+                                raiz.hidden = true;
+                                try {
+                                        sessionStorage.setItem('snm-avisos-cerrados', '1');
+                                } catch (err) {
+                                }
+                        } else if (boton.hasAttribute('data-indice')) {
+                                mostrar(parseInt(boton.getAttribute('data-indice'), 10));
+                                iniciar();
+                        }
+                });
+
+                raiz.addEventListener('mouseenter', detener);
+                raiz.addEventListener('mouseleave', iniciar);
+                raiz.addEventListener('focusin', detener);
+                raiz.addEventListener('focusout', iniciar);
+
+                var inicioX = null;
+                var ventana = raiz.querySelector('.snm-avisos__ventana');
+                ventana.addEventListener('touchstart', function (e) {
+                        inicioX = e.touches[0].clientX;
+                        detener();
+                }, {passive: true});
+                ventana.addEventListener('touchend', function (e) {
+                        if (inicioX === null) {
+                                return;
+                        }
+                        var dx = e.changedTouches[0].clientX - inicioX;
+                        if (Math.abs(dx) > 40) {
+                                mostrar(actual + (dx < 0 ? 1 : -1));
+                        }
+                        inicioX = null;
+                        iniciar();
+                });
+
+                mostrar(0);
+                iniciar();
+        })();
+</script>
 
 
 <nav class="snm-nav">
@@ -665,7 +875,6 @@
                                         { title: 'Servicios (TUSNE)', url: BASE_URL + '?p=tusne' },
                                         { title: 'Servicios con fines académicos', url: BASE_URL + '?p=tusne-tesis' },
                                         { title: 'Evaluación de documentos técnicos', url: BASE_URL + '?p=servicios-sea' },
-                                        { title: 'ASP - 8 UIT', url: BASE_URL + '?p=contrataciones-8uit' },
                                         { title: 'TUPA', url: BASE_URL + '?p=tupa' },
                                         // { title: 'Libro de reclamaciones', url: 'https://reclamos.servicios.gob.pe/?institution_id=203' },
                                         { title: 'Libro de reclamaciones', url: BASE_URL + '?p=libro-reclamaciones' },
@@ -982,7 +1191,7 @@
                 </div>
                 <div class="card mb-3">
                     <div class="card-body" style="padding: 0.25rem 1rem;">
-                        <h4>Informe Técnico ENFEN</h4><ul><li><a href="../../load/file/02273SENA-57.pdf" title="Informe Técnico ENFEN" alt="16 Octubre   - 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">16 Octubre   - 2026</a></li><li><a href="../../load/file/02273SENA-56.pdf" title="Informe Técnico ENFEN" alt="28 Septiembre- 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">28 Septiembre- 2026</a></li><li><a href="../../load/file/02273SENA-55.pdf" title="Informe Técnico ENFEN" alt="14 Septiembre- 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">14 Septiembre- 2026</a></li><li><a href="../../load/file/02273SENA-54.pdf" title="Informe Técnico ENFEN" alt="28 Agosto    - 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">28 Agosto    - 2026</a></li><li><a href="../../load/file/02273SENA-53.pdf" title="Informe Técnico ENFEN" alt="14 Agosto    - 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">14 Agosto    - 2026</a></li></ul>                    </div>
+                        <h4>Informe Técnico ENFEN</h4><ul><li><a href="../../load/file/02273SENA-58.pdf" title="Informe Técnico ENFEN" alt="30 Octubre   - 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">30 Octubre   - 2026</a></li><li><a href="../../load/file/02273SENA-57.pdf" title="Informe Técnico ENFEN" alt="16 Octubre   - 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">16 Octubre   - 2026</a></li><li><a href="../../load/file/02273SENA-56.pdf" title="Informe Técnico ENFEN" alt="28 Septiembre- 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">28 Septiembre- 2026</a></li><li><a href="../../load/file/02273SENA-55.pdf" title="Informe Técnico ENFEN" alt="14 Septiembre- 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">14 Septiembre- 2026</a></li><li><a href="../../load/file/02273SENA-54.pdf" title="Informe Técnico ENFEN" alt="28 Agosto    - 2026" target="_blank" onclick="ga('send', 'event', 'Boletines', 'descarga', 'Informe Técnico ENFEN', 0);">28 Agosto    - 2026</a></li></ul>                    </div>
                 </div>
                 <div class="card mb-3">
                     <div class="card-body" style="padding: 0.25rem 1rem;">
@@ -1085,62 +1294,58 @@
 </script>
 <footer class="container-fluid box-bg box-bg-footer footer-web">
     <div class="row">
-        
-<div class="container pt-5">   
+        <div class="container pt-5" id="footer-contacto" data-dz="">
     <div class="row">
         <div class="col-lg-6 col-md-12 col-sm-12 py-5">
             <section>
-                <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=SENAMHI+lima+peru"
-                    width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                <div id="footer-mapa" data-mapa-sede="SEDE-CENTRAL" data-titulo="SENAMHI - Sede Central" style="width:100%;height:450px;"></div>
             </section>
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="box-conten-footer">
                 <div class="col-12 col-md-12 col-lg-12">
-                    <h2 class="tittle-line">Contáctenos</h2>
-                </div> 
+                    <h2 class="tittle-line">Cont&aacute;ctenos</h2>
+                </div>
+                <div id="footer-sedes">
+                    <address>
+                        <strong class="black">SENAMHI - Sede Central</strong><br/>
+                        <span>Jr. Cahuide 785, Jes&uacute;s Mar&iacute;a - Lima</span><br/>
+                        <a href="https://www.senamhi.gob.pe/?p=sedes">Ver sedes y contactos</a>
+                    </address>
+                </div>
                 <address>
-                    <strong class="black">SENAMHI - Sede Central</strong><br/>
-                    <span>Jr. Cahuide 785, Jesús María - Lima</span><br/>
-                    <abbr title="Phone" class="black">Central telefónica: </abbr> <a href="tel:+511 6141414">(01) 614 1414</a><br/>
-                    <abbr title="Phone" class="black">Atención al ciudadano: </abbr> <a href="tel:+511 4702867">(01) 470 2867</a> / <a href="tel:+511 998487805">(01) 998 487 805</a><br/>
-                    <abbr title="Phone" class="black">Pronóstico del tiempo: </abbr> <a href="tel:+511 2658798">(01) 265 8798</a> / <a href="tel:+511 996369766">(01) 996 369 766</a><br/>
-                    <abbr title="mail" class="black">Consultas: </abbr> <a href="mailto:atencionalciudadano@senamhi.gob.pe">atencionalciudadano@senamhi.gob.pe</a><br/>
-                    <abbr title="working" class="black">Horario de atención: </abbr>
-                    <br/>Atención al ciudadano: De lunes a viernes de 8:30 a 17:15 Hrs.
-                    <br/>Mesa de partes: De lunes a viernes de 8:30 a 16:45 Hrs. <br/>
                     <abbr title="working" class="black">Registra tus documentos: </abbr>
-                    <a href="https://www.senamhi.gob.pe/mesadepartesdigital/inicio.do" target="_blank">https://www.senamhi.gob.pe/mesadepartesdigital/inicio.do</a><br/>
-                    <abbr title="mail" class="black">Consulta tu trámite: </abbr>
-                    <a href="https://www.senamhi.gob.pe/consultatutramite/inicio.do" target="_blank">https://www.senamhi.gob.pe/consultatutramite/inicio.do</a><br/>
-                    <a href="tel:+511 982958271">(01) 982 958 271</a>
-                </address> 
-                 
-                <div class="row"> 
-                    <div class="col-8"> 
+                    <a href="https://www.senamhi.gob.pe/mesadepartesdigital/inicio.do" target="_blank" rel="noopener">https://www.senamhi.gob.pe/mesadepartesdigital/inicio.do</a><br/>
+                    <abbr title="mail" class="black">Consulta tu tr&aacute;mite: </abbr>
+                    <a href="https://www.senamhi.gob.pe/consultatutramite/inicio.do" target="_blank" rel="noopener">https://www.senamhi.gob.pe/consultatutramite/inicio.do</a>
+                </address>
+                <div class="row">
+                    <div class="col-8">
                         <aside>
-                            <a href="https://www.facebook.com/senamhiperu" target="_blank" title="enlace facebook puno">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-facebook.svg" height="25px" class="mr-3"/></a>
-                            <a href="https://twitter.com/senamhiperu" target="_blank" title="enlace twitter puno">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-twitter.svg" height="25px" class="ml-2 mr-3"/></a>
-                            <a href="https://www.youtube.com/channel/UCSy_etV_nlGLFlq7KTx1e9Q" target="_blank" title="enlace youtube SENAMHI">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-youtube.svg" height="25px" class="ml-2 mr-3"/></a>
-                            <a href="https://www.flickr.com/photos/senamhiperu/" target="_blank" title="enlace flicker SENAMHI">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-flickr.svg" height="15px" class="ml-2 mr-3"/></a>
-                            <a href="https://issuu.com/senamhi_peru" target="_blank" title="enlace issuu SENAMHI">
-                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-issuu.svg" height="25px" class="ml-3"/></a>
-                        </aside> 
-                    </div> 
+                            <a href="https://www.facebook.com/senamhiperu" target="_blank" rel="noopener" title="Facebook del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-facebook.svg" height="25px" class="mr-3" alt="Facebook"/></a>
+                            <a href="https://twitter.com/senamhiperu" target="_blank" rel="noopener" title="X del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-twitter.svg" height="25px" class="ml-2 mr-3" alt="X"/></a>
+                            <a href="https://www.youtube.com/channel/UCSy_etV_nlGLFlq7KTx1e9Q" target="_blank" rel="noopener" title="YouTube del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-youtube.svg" height="25px" class="ml-2 mr-3" alt="YouTube"/></a>
+                            <a href="https://www.flickr.com/photos/senamhiperu/" target="_blank" rel="noopener" title="Flickr del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-flickr.svg" height="15px" class="ml-2 mr-3" alt="Flickr"/></a>
+                            <a href="https://issuu.com/senamhi_peru" target="_blank" rel="noopener" title="Issuu del SENAMHI">
+                               <img src="https://www.senamhi.gob.pe/public/images/logo-bn-rs-issuu.svg" height="25px" class="ml-3" alt="Issuu"/></a>
+                        </aside>
+                    </div>
                     <div class="col-4 pt-4 m-0">
                         <a href="https://www.senamhi.gob.pe/?p=libro-reclamaciones">
-                            <img class="img-thumbnail" src="https://www.senamhi.gob.pe/public/images/logo-libro-reclamaciones.jpg"  width="120">
+                            <img class="img-thumbnail" src="https://www.senamhi.gob.pe/public/images/logo-libro-reclamaciones.jpg" width="120" alt="Libro de reclamaciones">
                         </a>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="/public/js/mapa-sede.js" defer></script>
+<script src="/public/js/footer-contacto.js" defer></script>
         
 <div class="container-fluid box-bg-footer" style="padding: 50px 0 35px 0; background: #062243; min-height: 400px;">
     <div class="container">
@@ -1155,6 +1360,7 @@
                         <li><a href="https://www.senamhi.gob.pe/?&p=organigrama">Organigrama</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=funcionarios">Funcionarios</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=sedes">Sedes</a></li>
+                        <li><a href="https://www.senamhi.gob.pe/?&p=transparencia">Portal de Transparencia Est&aacute;ndar</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=normas">Normas Emitidas</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=control-interno">Control Interno</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=codigo-de-etica">Codigo de ética</a></li>
@@ -1180,7 +1386,6 @@
                         <li><a href="https://www.senamhi.gob.pe/site/volcan/" target="_blank" title="Vigilancia de Volcanes">Vigilancia de Volcanes</a></li>
                         <li><a href="https://www.senamhi.gob.pe/?&p=cambio-climatico" target="_parent" title="Cambio Climático">Cambio Climático</a></li>
                         <li><a href="http://idesep.senamhi.gob.pe/indicadores/" target="_blank" title="Indicadores Climáticos">Indicadores Climáticos</a></li>
-                        <li><a href="https://web2.senamhi.gob.pe" title="Versión Web anterior">Versión Web anterior</a></li>
                     </ul>
                 </div>
             </div>
@@ -1190,7 +1395,6 @@
                         <h3 class="tittle-line">Enlaces de Interés</h3>
                     </div>
                     <ul>
-                        <li><a href="https://www.senamhi.gob.pe/?p=contrataciones-8uit" target="_blank">ASP - 8 UIT</a></li>
                         <li><a href="https://www.gob.pe/8901" target="_blank">Integridad y Transparencia durante la emergencia sanitaria</a></li>
                         <li><a href="https://www.minam.gob.pe/" target="_blank">Ministerio del Ambiente</a></li>
                         <li><a href="https://www.wmo.int/pages/index_es.html" target="_blank">OMM</a></li>
@@ -1207,54 +1411,7 @@
 </div>    </div>
 </footer>
 
-<div class="modal" tabindex="-1" role="dialog" id="myModal">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-light text-dark d-none">
-                <!--<h5 class="modal-title"><strong>COMUNICADO</strong></h5>-->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img class="img-fluid" src="public/images/banner-www.gob.pe.senamhi.jpg">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-
-<!-- <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>-->
 <script src="public/lib/vendor/popper.min.js"></script>
 <script src="public/lib/bootstrap/js/bootstrap.min.js"></script>
-<script src="public/lib/vendor/holder.min.js"></script>
-<script>
-    Holder.addTheme('thumb', {
-        bg: '#55595c',
-        fg: '#eceeef',
-        text: 'Thumbnail'
-    });
-</script>
-<script>
-    //            $(window).scroll(function () {
-    //                if ($("#menu").offset().top > 25) {
-    //                    $("#menu img").css("margin-top", "0");
-    //                    $("#menu img").css("margin-bottom", "0");
-    //                    $(".logo").css("height", "25px");
-    //                    $("nav").css("border-bottom", "4px solid #E93400");
-    //                } else {
-    //                    $("#menu").removeClass("bg-inverse");
-    //                    $("#menu img").css("margin-top", "3px");
-    //                    $("#menu img").css("margin-bottom", "3px");
-    //                    $(".logo").css("height", "35px");
-    //                }
-    //            });
-</script>
 </body>
 </html>
